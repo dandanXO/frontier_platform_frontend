@@ -1,0 +1,8 @@
+@each $type, $color in $colors {
+  .#{$type}--text {
+    color: $color;
+  }
+  .#{$type}--bg {
+    background-color: $color;
+  }
+}

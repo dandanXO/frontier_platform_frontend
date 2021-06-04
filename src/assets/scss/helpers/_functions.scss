@@ -1,0 +1,10 @@
+$target-width: 1920;
+$target-height: 1080;
+
+@function get-vw($px) {
+  @return ($px/$target-width) * 100vw;
+}
+
+@function get-vh($px) {
+  @return ($px/$target-height) * 100vh;
+}

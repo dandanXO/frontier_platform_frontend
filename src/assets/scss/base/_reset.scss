@@ -1,0 +1,60 @@
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: "Segoe UI", "微軟正黑體", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+  font-weight: normal;
+  background-color: map-get($map: $colors, $key: bg-white);
+}
+
+body {
+  overflow-x: hidden !important;
+}
+
+a,
+button {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+button {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: none;
+  background: none;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+ul,
+li {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+input {
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  outline: none;
+}

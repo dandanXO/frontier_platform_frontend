@@ -1,0 +1,15 @@
+@each $type, $size in $font-size-desktop {
+  .f-#{$type} {
+    font-size: $size;
+    line-height: $size;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  @each $type, $size in $font-size-mobile {
+    .f-#{$type} {
+      font-size: $size;
+      line-height: $size;
+    }
+  }
+}
