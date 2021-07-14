@@ -1,0 +1,72 @@
+@mixin spacing($className, $i) {
+  .w-#{$className} {
+    width: ($i * 0.125) + rem;
+  }
+  .h-#{$className} {
+    height: ($i * 0.125) + rem;
+  }
+  .p-#{$className} {
+    padding: ($i * 0.125) + rem;
+  }
+  .pt-#{$className} {
+    padding-top: ($i * 0.125) + rem;
+  }
+  .pb-#{$className} {
+    padding-bottom: ($i * 0.125) + rem;
+  }
+  .pl-#{$className} {
+    padding-left: ($i * 0.125) + rem;
+  }
+  .pr-#{$className} {
+    padding-right: ($i * 0.125) + rem;
+  }
+  .px-#{$className} {
+    padding-left: ($i * 0.125) + rem;
+    padding-right: ($i * 0.125) + rem;
+  }
+  .py-#{$className} {
+    padding-top: ($i * 0.125) + rem;
+    padding-bottom: ($i * 0.125) + rem;
+  }
+  .m-#{$className} {
+    margin: ($i * 0.125) + rem;
+  }
+  .mt-#{$className} {
+    margin-top: ($i * 0.125) + rem;
+  }
+  .mb-#{$className} {
+    margin-bottom: ($i * 0.125) + rem;
+  }
+  .ml-#{$className} {
+    margin-left: ($i * 0.125) + rem;
+  }
+  .mr-#{$className} {
+    margin-right: ($i * 0.125) + rem;
+  }
+  .mx-#{$className} {
+    margin-left: ($i * 0.125) + rem;
+    margin-right: ($i * 0.125) + rem;
+  }
+  .my-#{$className} {
+    margin-top: ($i * 0.125) + rem;
+    margin-bottom: ($i * 0.125) + rem;
+  }
+  .gap-x-#{$className} {
+    column-gap: ($i * 0.125) + rem;
+  }
+  .gap-y-#{$className} {
+    column-gap: ($i * 0.125) + rem;
+  }
+  .gap-#{$className} {
+    gap: ($i * 0.125) + rem;
+  }
+}
+
+@for $i from 0 through 720 {
+  $index: $i * 0.5;
+  @if $index - floor($index) != 0 {
+    @include spacing(floor($index) + \.5, $i);
+  } @else {
+    @include spacing($index, $i);
+  }
+}

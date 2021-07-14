@@ -1,0 +1,31 @@
+@mixin color($className, $color) {
+  .text-#{$className} {
+    color: $color;
+  }
+  .disabled\:text-#{$className} {
+    color: $color !important;
+  }
+  .bg-#{$className} {
+    background-color: $color;
+  }
+  .disabled\:bg-#{$className} {
+    background-color: $color !important;
+  }
+  .placeholder-#{$className}::placeholder {
+    color: $color;
+    opacity: 1;
+  }
+  .border-#{$className} {
+    border-color: $color;
+  }
+}
+
+@each $name, $colorMap in $colors {
+  @each $subName, $color in $colorMap {
+    @if $subName == DEFAULT {
+      @include color($name, $color);
+    } @else {
+      @include color(#{$name}-#{$subName}, $color);
+    }
+  }
+}
