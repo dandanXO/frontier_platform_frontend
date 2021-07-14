@@ -1,8 +1,12 @@
-// Helpers
-@import "helpers/variables";
-@import "helpers/functions";
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap");
 
-// Base
-@import "base/reset";
-@import "base/typography";
-@import "base/color";
+@import "abstracts/variables";
+
+@import "utilities/color";
+@import "utilities/font-size";
+@import "utilities/spacing";
+
+html,
+body {
+  font-family: "Noto Sans TC", "微軟正黑體", sans-serif;
+}
