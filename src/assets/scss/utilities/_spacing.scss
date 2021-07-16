@@ -60,6 +60,18 @@
   .gap-#{$className} {
     gap: ($i * 0.125) + rem;
   }
+  .top-#{$className} {
+    top: ($i * 0.125) + rem;
+  }
+  .bottom-#{$className} {
+    bottom: ($i * 0.125) + rem;
+  }
+  .left-#{$className} {
+    left: ($i * 0.125) + rem;
+  }
+  .right-#{$className} {
+    right: ($i * 0.125) + rem;
+  }
 }
 
 @for $i from 0 through 720 {
