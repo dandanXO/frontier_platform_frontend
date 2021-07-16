@@ -1,3 +1,83 @@
 {
-  "message": "hello i18n !!"
+  "word": {
+    "email": "Email",
+    "password": "Password",
+    "or": "OR",
+    "member": "Member | Members",
+    "terms": "Terms",
+    "logout": "Log out",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "next": "Next",
+    "privacyPolicy": "Privacy Policy",
+    "create": "Create",
+    "send": "Send",
+    "verification": "Verification",
+    "resend": "Resend",
+    "verify": "Verify",
+    "phone": "Phone Number",
+    "fax": "Fax"
+  },
+  "form": {
+    "signIn": {
+      "forgotPassword": "Forgot Password?",
+      "signInWithGoogle": "Log in with Google",
+      "doNotHaveAnAccount": "Don't have an account?  {signUp}"
+    },
+    "signUp": {
+      "atLeast6Char": "between 6-18 characters",
+      "atLeast1Letter": "At least one letter",
+      "alreadyHaveAnAccount": "Already have an account? {signIn}",
+      "signUpWithGoogle": "Sign up with Google"
+    },
+    "org": {
+      "country": "Select your country/region",
+      "orgName": "Your organization name",
+      "orgAddress": "Your organization address",
+      "phone": "Your phone number",
+      "fax": "Your fax number"
+    }
+  },
+  "error": {
+    "emailOrPasswordIncorrect": "Your email or password is incorrect",
+    "invalidEmail": "Invalid email address",
+    "emailAlreadyExist": "This email already exists. {signIn}",
+    "emailNotExist": "We couldn't find an account with that email address.",
+    "invalidVerificationCode": "Invalid verification code",
+    "expiredVerificationCode": "Expired verification code",
+    "passwordNotMatch": "Passwords do not match.",
+    "couldNotFindGoogleAccount": "Couldn't find your Google Account",
+    "googleSideError": "Google side error",
+    "enterEmail": "Enter an email address",
+    "enterPassword": "Enter a password"
+  },
+  "term": {
+    "LOGIN": "LOG IN",
+    "SIGNUP": "SIGN UP",
+    "yourOrg": "Your Organization",
+    "createOrg": "Create Organization",
+    "createYourOrg": "Create your organization ",
+    "required": "*Required ",
+    "country": "Country/Region*",
+    "orgName": "Organization Name*",
+    "orgAddress": "Organization Address",
+    "changePassword": "Change Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "resetPassword": "Reset Password",
+    "emailAddress": "Email Address"
+  },
+  "sentence": {
+    "providePlatform": "Frontier provides an online collaboration platform for your organization, you can build your fabric on Frontier. And search for your ideal cloth piece, inquire immediately, \nand sample the cloth card.",
+    "agreeTermsAndPrivacy": "I agree to the {terms} and the {privacy}.",
+    "greeting": "Hi {name}",
+    "welcomeToFrontier": "Ｗelcome to Frontier! ",
+    "signUpSuccessfully": "Your account was successfully created! We have sent an activation link to your email.",
+    "emailToReceiveCode": "Please enter your email address to receive a verifictaion code. ",
+    "createAccount": "Create a new account",
+    "enter6DigitCode": "Please enter the 6 digit code sent to {email}",
+    "enterPasswordAndConfirmPassword": "Enter your new password and confirm password.",
+    "passwordResetSuccessfully": "Your password has been reset successfully. ",
+    "askToResetPassword": "In order to enhance your experience with Frontier, the platform has recently been revised and updated. Due to information security considerations,old users need to update their passwords when logging in to the new platform for the first time.\nIf you cause any inconvenience, Sorry about it!"
+  }
 }

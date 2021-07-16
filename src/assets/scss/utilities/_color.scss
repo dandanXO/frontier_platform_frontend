@@ -2,13 +2,13 @@
   .text-#{$className} {
     color: $color;
   }
-  .disabled\:text-#{$className} {
+  .disabled\:text-#{$className}:disabled {
     color: $color !important;
   }
   .bg-#{$className} {
     background-color: $color;
   }
-  .disabled\:bg-#{$className} {
+  .disabled\:bg-#{$className}:disabled {
     background-color: $color !important;
   }
   .placeholder-#{$className}::placeholder {

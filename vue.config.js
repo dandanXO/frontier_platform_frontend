@@ -20,8 +20,8 @@ module.exports = {
   },
   pluginOptions: {
     i18n: {
-      locale: 'zh-TW',
-      fallbackLocale: 'zh-TW',
+      locale: 'en-US',
+      fallbackLocale: 'en-US',
       localeDir: '../locales',
       enableLegacy: true,
       runtimeOnly: false,

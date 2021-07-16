@@ -20,7 +20,7 @@ function loadLocaleMessages () {
 }
 
 export default createI18n({
-  locale: 'zh-TW',
-  fallbackLocale: 'zh-TW',
+  locale: 'en-US',
+  fallbackLocale: 'en-US',
   messages: loadLocaleMessages()
 })

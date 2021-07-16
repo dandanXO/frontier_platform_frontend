@@ -1,3 +1,83 @@
 {
-  "message": "哈囉 i18n !!"
+  "word": {
+    "email": "",
+    "password": "",
+    "or": "",
+    "member": "",
+    "terms": "",
+    "logout": "",
+    "firstName": "",
+    "lastName": "",
+    "next": "",
+    "privacyPolicy": "",
+    "create": "",
+    "send": "",
+    "verification": "",
+    "resend": "",
+    "verify": "",
+    "phone": "",
+    "fax": ""
+  },
+  "form": {
+    "signIn": {
+      "forgotPassword": "",
+      "signInWithGoogle": "",
+      "doNotHaveAnAccount": ""
+    },
+    "signUp": {
+      "atLeast6Char": "",
+      "atLeast1Letter": "",
+      "alreadyHaveAnAccount": "",
+      "signUpWithGoogle": ""
+    },
+    "org": {
+      "country": "",
+      "orgName": "",
+      "orgAddress": "",
+      "phone": "",
+      "fax": ""
+    }
+  },
+  "error": {
+    "emailOrPasswordIncorrect": "",
+    "invalidEmail": "",
+    "emailAlreadyExist": "",
+    "emailNotExist": "",
+    "invalidVerificationCode": "",
+    "expiredVerificationCode": "",
+    "passwordNotMatch": "",
+    "couldNotFindGoogleAccount": "",
+    "googleSideError": "",
+    "enterEmail": "",
+    "enterPassword": ""
+  },
+  "term": {
+    "LOGIN": "",
+    "SIGNUP": "",
+    "yourOrg": "",
+    "createOrg": " ",
+    "createYourOrg": "",
+    "required": "",
+    "country": "",
+    "orgName": "",
+    "orgAddress": "",
+    "changePassword": "",
+    "newPassword": "",
+    "confirmPassword": "",
+    "resetPassword": "",
+    "emailAddress": ""
+  },
+  "sentence": {
+    "providePlatform": "",
+    "agreeTermsAndPrivacy": "",
+    "greeting": " ",
+    "welcomeToFrontier": "",
+    "signUpSuccessfully": "",
+    "emailToReceiveCode": "",
+    "createAccount": "",
+    "enter6DigitCode": "",
+    "enterPasswordAndConfirmPassword": "",
+    "passwordResetSuccessfully": "",
+    "askToResetPassword": ""
+  }
 }
