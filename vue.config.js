@@ -28,5 +28,12 @@ module.exports = {
       compositionOnly: true,
       fullInstall: true
     }
+  },
+  css: {
+    loaderOptions: {
+      scss: {
+        prependData: '@import "~@/assets/scss/abstracts/_functions.scss";'
+      }
+    }
   }
 }

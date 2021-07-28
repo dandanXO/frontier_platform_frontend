@@ -1,5 +1,5 @@
 <template lang="pug">
-input-field(:inputType="isVisible ? 'text' : 'password'")
+input-text(:inputType="isVisible ? 'text' : 'password'")
   template(#appendIcon)
     svg-icon(
       class="mr-2"
@@ -13,7 +13,7 @@ input-field(:inputType="isVisible ? 'text' : 'password'")
 import { ref } from '@vue/reactivity'
 
 export default {
-  name: 'InputFieldPassword',
+  name: 'InputPassword',
   setup () {
     const isVisible = ref(false)
     return {

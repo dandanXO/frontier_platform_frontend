@@ -4,11 +4,11 @@
 }
 
 .mt-sign-up {
-  margin-top: calc((100vh - 534px) * (186 / (900 - 534)));
+  margin-top: grow-shrink-y(534, 186);
 }
 
 .mt-sign-up-success {
-  margin-top: calc((100vh - 368px) * (210 / (900 - 368)));
+  margin-top: grow-shrink-y(386, 210);
 }
 </style>
 
@@ -31,10 +31,10 @@ div(class="w-screen h-screen flex justify-center bg-black-100")
           div(class="w-19 h-px border-b border-black-400")
         span(class="self-end text-black-500 text-caption my-1.5") *{{$t('term.required')}}
         form(class="grid grid-cols-2 gap-3")
-          input-field(v-model:value="formData.firstName" :placeholder="$t('word.firstName')+'*'")
-          input-field(v-model:value="formData.lastName" :placeholder="$t('word.lastName')+'*'")
-          input-field(v-model:value="formData.email" :placeholder="$t('word.email')+'*'" prependIcon="mail" class="col-span-2" @blur="validateEmailFormat")
-          input-field-password(v-model:value="formData.password" :placeholder="$t('word.password')+'*'" prependIcon="lock" class="col-span-2")
+          input-text(v-model:value="formData.firstName" :placeholder="$t('word.firstName')+'*'")
+          input-text(v-model:value="formData.lastName" :placeholder="$t('word.lastName')+'*'")
+          input-text(v-model:value="formData.email" :placeholder="$t('word.email')+'*'" prependIcon="mail" class="col-span-2" @blur="validateEmailFormat")
+          input-password(v-model:value="formData.password" :placeholder="$t('word.password')+'*'" prependIcon="lock" class="col-span-2")
         div(class="grid gap-y-1.5 text-caption mt-1 mb-2")
           div(class="flex")
             p(:class="[moreThanSix && moreThanSix ? 'text-black-800' : 'text-black-500']")  {{$t('form.signUp.atLeast6Char')}}
@@ -64,8 +64,8 @@ div(v-if="isSignUpSuccessfully" class="fixed inset-0 w-full h-full bg-black-100 
     i18n-t(keypath="sentence.greeting" tag="h4" class="text-primary text-h4 mb-3")
       template(#name) {{`${formData.lastName} ${formData.firstName}`}}
     h4(class="text-primary text-h4 mb-9") {{$t('sentence.welcomeToFrontier')}}
-    p(class="text-black-650 text-body2 text-center mb-10" style="line-height: 1.4") {{$t('sentence.signUpSuccessfully')}}
-    btn(size="md" @click="$router.replace('/home')") {{$t('word.next')}}
+    p(class="text-black-650 text-body2 text-center mb-10 line-height-1.4") {{$t('sentence.signUpSuccessfully')}}
+    btn(size="md" @click="redirectToNextPage") {{$t('word.next')}}
 </template>
 
 <script>
@@ -73,6 +73,7 @@ import { reactive, ref } from '@vue/reactivity'
 import { computed, onMounted, toRaw } from '@vue/runtime-core'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import googleSignInApi from '@/utils/google-sign-in-api'
 import DropdownLocale from '@/components/DropdownLocale'
 
@@ -84,6 +85,7 @@ export default {
   setup () {
     const { t } = useI18n()
     const store = useStore()
+    const router = useRouter()
     const formData = reactive({
       lastName: '',
       firstName: '',
@@ -112,9 +114,16 @@ export default {
        */
     }
 
+    const redirectToNextPage = () => {
+      /**
+       * @todo need to according to organization amount to decide where to redirect
+       */
+      router.push('/')
+    }
+
     const signUp = async () => {
       try {
-        await store.dispatch('account/generalSignUp', toRaw(formData))
+        await store.dispatch('user/generalSignUp', toRaw(formData))
         isSignUpSuccessfully.value = true
       } catch (error) {
         errorMsg.value = error
@@ -123,7 +132,8 @@ export default {
 
     const googleSignUp = async (googleUser) => {
       try {
-        await store.dispatch('account/googleSignUp', { idToken: googleUser.getAuthResponse().id_token })
+        await store.dispatch('user/googleSignUp', { idToken: googleUser.getAuthResponse().id_token })
+        redirectToNextPage()
       } catch (error) {
         errorMsg.value = error
       }
@@ -151,7 +161,8 @@ export default {
       validateEmailFormat,
       signUp,
       avaliableToSignUp,
-      isSignUpSuccessfully
+      isSignUpSuccessfully,
+      redirectToNextPage
     }
   }
 }

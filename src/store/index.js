@@ -1,10 +1,14 @@
 import { createStore } from 'vuex'
-import account from '@/store/modules/account'
+import user from '@/store/modules/user'
+import code from '@/store/modules/code'
+import organization from '@/store/modules/organization'
 
 export default createStore({
   actions: {
   },
   modules: {
-    account
+    code,
+    user,
+    organization
   }
 })
