@@ -17,4 +17,16 @@ commonComponents.keys().forEach(key => {
   app.component(component.name, component)
 })
 
-app.use(store).use(router).use(i18n).mount('#app')
+function prepare () {
+  if (process.env.NODE_ENV === 'development') {
+    const { worker } = require('@/mocks/browser')
+    return worker.start({
+      onUnhandledRequest: 'bypass'
+    })
+  }
+  return Promise.resolve()
+}
+
+prepare().then(() => {
+  app.use(store).use(router).use(i18n).mount('#app')
+})
