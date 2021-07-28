@@ -1,11 +1,19 @@
 <template lang="pug">
 div(ref="rootElement" class="dropdown relative cursor-pointer" @click="isExpand ? collapse() : expand()")
-  slot(name="displayItem" :isExpand="isExpand" :currentIndex="currentIndex" :option="options[currentIndex]")
-  slot(name="dropdownList" v-if="isExpand" :select="select" :currentIndex="currentIndex")
+  slot(name="displayItem"
+    :isExpand="isExpand"
+    :currentIndex="currentIndex"
+    :option="options[currentIndex]"
+  )
+  slot(name="dropdownList"
+    v-if="isExpand"
+    :select="select"
+    :currentIndex="currentIndex"
+  )
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 export default {
   name: 'Dropdown',
@@ -13,21 +21,32 @@ export default {
     options: {
       type: Array,
       required: true
+    },
+    keyOptionValue: {
+      type: String,
+      required: true
+    },
+    value: {
+      type: [String, Number],
+      required: true
     }
   },
-  setup () {
+  setup (props, { emit }) {
     const isExpand = ref(false)
-    const currentIndex = ref(0)
     const rootElement = ref(null)
+
+    const currentIndex = computed(() => props.options.findIndex(option => option[props.keyOptionValue] === props.value))
 
     const expand = () => {
       document.addEventListener('click', captureOutsideClick)
       isExpand.value = true
+      emit('expand')
     }
 
     const collapse = () => {
       document.removeEventListener('click', captureOutsideClick)
       isExpand.value = false
+      emit('collapse')
     }
 
     const captureOutsideClick = (e) => {
@@ -36,10 +55,10 @@ export default {
       }
     }
 
-    const select = (e, index) => {
+    const select = (e, option) => {
       e.stopPropagation()
 
-      currentIndex.value = index
+      emit('update:value', option[props.keyOptionValue])
       collapse()
     }
 

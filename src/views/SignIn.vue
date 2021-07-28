@@ -4,7 +4,7 @@
 }
 
 .mt-signIn {
-  margin-top: calc((100vh - 498px) * (186 / (900 - 498)));
+  margin-top: grow-shrink-y(498, 186);
 }
 </style>
 
@@ -18,8 +18,8 @@ div(class="w-screen h-screen flex justify-center bg-black-100")
       div(class="w-full h-110 rounded-lg card-shadow px-10 py-11 flex flex-col")
         p(class="text-primary text-h6 font-bold text-center pb-5.5 border-b border-black-400") {{$t('term.LOGIN')}}
         form(class="grid gap-y-3 mt-5 mb-1.5")
-          input-field(v-model:value="formData.email" :placeholder="$t('word.email')" prependIcon="mail")
-          input-field-password(v-model:value="formData.password" :placeholder="$t('word.password')" prependIcon="lock")
+          input-text(v-model:value="formData.email" :placeholder="$t('word.email')" prependIcon="mail")
+          input-password(v-model:value="formData.password" :placeholder="$t('word.password')" prependIcon="lock")
         span(class="self-end text-caption text-black-800 mb-4") {{$t('form.signIn.forgotPassword')}}
         btn(size="lg" class="font-bold" @click="generalSignIn") {{$t('term.LOGIN')}}
         div(class="flex-grow text-caption mt-1.5")
@@ -41,6 +41,7 @@ div(class="w-screen h-screen flex justify-center bg-black-100")
 import { reactive, ref, toRaw, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import googleSignInApi from '@/utils/google-sign-in-api'
 import DropdownLocale from '@/components/DropdownLocale'
 
@@ -52,12 +53,19 @@ export default {
   setup () {
     const { t } = useI18n()
     const store = useStore()
-
+    const router = useRouter()
     const formData = reactive({
       email: '',
       password: ''
     })
     const errorMsg = ref('')
+
+    const redirectToNextPage = () => {
+      /**
+       * @todo need to according to organization amount to decide where to redirect
+       */
+      router.push('/')
+    }
 
     const generalSignIn = async () => {
       try {
@@ -70,7 +78,8 @@ export default {
           throw t('error.invalidEmail')
         }
 
-        await store.dispatch('account/generalSignIn', toRaw(formData))
+        await store.dispatch('user/generalSignIn', toRaw(formData))
+        redirectToNextPage()
       } catch (error) {
         errorMsg.value = error
       }
@@ -78,7 +87,8 @@ export default {
 
     const googleSignIn = async (googleUser) => {
       try {
-        await store.dispatch('account/googleSignIn', { idToken: googleUser.getAuthResponse().id_token })
+        await store.dispatch('user/googleSignIn', { idToken: googleUser.getAuthResponse().id_token })
+        redirectToNextPage()
       } catch (error) {
         errorMsg.value = error
       }

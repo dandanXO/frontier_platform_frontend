@@ -16,5 +16,9 @@ export default {
   googleSignIn: (data) => axios('/sign-in/google', {
     method: 'POST',
     data
+  }),
+  getUser: (data) => axios('/user/get', {
+    method: 'POST',
+    data
   })
 }

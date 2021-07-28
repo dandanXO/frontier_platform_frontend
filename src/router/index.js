@@ -1,27 +1,81 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/Home.vue'
+import store from '@/store'
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Lobby',
+    meta: {
+      requiresLogin: true
+    },
+    component: () => import('@/views/Lobby.vue'),
+    beforeEnter: async (to, from, next) => {
+      store.dispatch('code/getCountryList')
+      next()
+    }
+  },
+  {
+    path: '/public-library',
+    name: 'PublicLibrary',
+    meta: {
+      requiresLogin: true
+    },
+    component: () => import('@/views/PublicLibrary.vue')
   },
   {
     path: '/sign-up',
     name: 'SignUp',
-    component: () => import('@/views/SignUp.vue')
+    meta: {
+      requiresLogin: false
+    },
+    component: () => import('@/views/SignUp.vue'),
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('accessToken') !== null) {
+        return next('/')
+      }
+      next()
+    }
   },
   {
     path: '/sign-in',
     name: 'SignIn',
-    component: () => import('@/views/SignIn.vue')
+    meta: {
+      requiresLogin: false
+    },
+    component: () => import('@/views/SignIn.vue'),
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('accessToken') !== null) {
+        return next('/')
+      }
+      next()
+    }
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    meta: {
+      requiresLogin: false
+    },
+    beforeEnter: (to, from, next) => {
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
+      window.location.replace('https://frontier.cool/')
+    }
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach(async (to, from, next) => {
+  if (to.meta.requiresLogin) {
+    await store.dispatch('user/getUser')
+    next()
+  } else {
+    next()
+  }
 })
 
 export default router

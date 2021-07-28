@@ -1,5 +1,5 @@
 <template lang="pug">
-label(class="h-11 pl-5 border border-black-400 rounded-md flex items-center"
+label(class="h-11 pl-4 border border-black-400 rounded flex items-center"
     :class="[isFocus ? 'border-primary' :'border-black-400']"
   )
   svg-icon(
@@ -14,7 +14,7 @@ label(class="h-11 pl-5 border border-black-400 rounded-md flex items-center"
     @input="typing"
     @focus="focusHandler"
     @blur="blurHandler"
-    class="flex-grow outline-none overflow-hidden placeholder-black-400 text-primary text-body1 bg-transparent"
+    class="flex-grow outline-none overflow-hidden placeholder-black-400 text-primary text-body1 placeholder-text-body2 bg-transparent"
     autocomplete
   )
   slot(name="appendIcon")
@@ -24,7 +24,7 @@ label(class="h-11 pl-5 border border-black-400 rounded-md flex items-center"
 import { ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
 export default {
-  name: 'InputField',
+  name: 'InputText',
   props: {
     value: {
       type: String,

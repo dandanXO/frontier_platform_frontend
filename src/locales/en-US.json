@@ -35,7 +35,8 @@
       "orgName": "Your organization name",
       "orgAddress": "Your organization address",
       "phone": "Your phone number",
-      "fax": "Your fax number"
+      "fax": "Your fax number",
+      "selectCountryCode": "Select your country code"
     }
   },
   "error": {
@@ -56,10 +57,11 @@
     "SIGNUP": "SIGN UP",
     "yourOrg": "Your Organization",
     "createOrg": "Create Organization",
-    "createYourOrg": "Create your organization ",
+    "createYourOrg": "Create your organization",
     "required": "*Required ",
     "country": "Country/Region*",
     "orgName": "Organization Name*",
+    "orgType": "Organization Type",
     "orgAddress": "Organization Address",
     "changePassword": "Change Password",
     "newPassword": "New Password",

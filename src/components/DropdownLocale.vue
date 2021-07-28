@@ -1,5 +1,5 @@
 <template lang="pug">
-dropdown(:options="localeOptions")
+dropdown(v-model:value="$i18n.locale" :options="localeOptions" keyOptionValue="locale")
   template(#displayItem="{ isExpand, option }")
     div(class="flex items-center")
       span(class="text-primary font-bold text-caption") {{option.abbr}}
@@ -9,19 +9,17 @@ dropdown(:options="localeOptions")
       div(v-for="(option, index) in localeOptions"
         class="h-6 flex justify-center items-center"
         :class="{'bg-primary-thin rounded': index === currentIndex }"
-        @click="select($event, index), changeLocale(option)"
+        @click="select($event, option)"
       )
         span(class="text-body2 text-primary") {{option.lang}}
 </template>
 
 <script>
 import { reactive } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'DropdownLocale',
   setup () {
-    const { locale } = useI18n()
     const localeOptions = reactive([
       {
         lang: 'English',
@@ -35,13 +33,8 @@ export default {
       }
     ])
 
-    const changeLocale = (option) => {
-      locale.value = option.locale
-    }
-
     return {
-      localeOptions,
-      changeLocale
+      localeOptions
     }
   }
 }

@@ -5,6 +5,9 @@
   .h-#{$className} {
     height: ($i * 0.125) + rem;
   }
+  .max-h-#{$className} {
+    max-height: ($i * 0.125) + rem;
+  }
   .p-#{$className} {
     padding: ($i * 0.125) + rem;
   }

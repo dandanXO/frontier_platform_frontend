@@ -22,6 +22,15 @@ instance.interceptors.request.use(async request => {
 })
 
 instance.interceptors.response.use(async response => {
+  const { data } = response
+  const { result } = data
+
+  if (result && Object.prototype.hasOwnProperty.call(data.result, 'accessToken')) {
+    localStorage.setItem('accessToken', result.accessToken)
+  }
+  if (result && Object.prototype.hasOwnProperty.call(data.result, 'refreshToken')) {
+    localStorage.setItem('refreshToken', result.refreshToken)
+  }
   return response
 }, async error => {
   const { config, response } = error
@@ -38,7 +47,7 @@ instance.interceptors.response.use(async response => {
   const { status } = response
 
   if (status === 401) {
-    router.push('/logout')
+    router.push('/sign-in')
     return Promise.reject(response)
   }
 

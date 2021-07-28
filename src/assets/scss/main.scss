@@ -1,10 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap");
 
 @import "abstracts/variables";
+@import "abstracts/functions";
 
 @import "utilities/color";
 @import "utilities/font-size";
 @import "utilities/spacing";
+@import "utilities/z-index";
 
 html,
 body {
