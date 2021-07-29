@@ -1,8 +1,4 @@
 <style lang="scss" scoped>
-.card-shadow {
-  box-shadow: 2px 3px 15px 5px rgba(0, 0, 0, 0.03);
-}
-
 .mt-sign-up {
   margin-top: grow-shrink-y(534, 186);
 }
@@ -43,7 +39,10 @@ div(class="w-screen h-screen flex justify-center bg-black-100")
             p(:class="[containsLetter ? 'text-black-800' : 'text-black-500']") {{$t('form.signUp.atLeast1Letter')}}
             svg-icon(v-if="containsLetter" iconName="tick-bold" color="black-800" class="ml-0.5" :width="12" :height="12")
         div(class="flex-grow text-caption")
-          p(v-if="errorMsg !== ''" class="text-warn") {{errorMsg}}
+          i18n-t(v-if="isEmailExist" keypath="error.emailAlreadyExist" tag="p" class="text-warn")
+            template(#signIn)
+              router-link-extending(class="text-primary" to="/sign-in") {{$t('term.LOGIN')}}
+          p(v-else-if="errorMsg !== '' && !isEmailExist" class="text-warn") {{errorMsg}}
         btn(size="lg" class="font-bold" :disabled="!avaliableToSignUp" @click="signUp") {{$t('term.SIGNUP')}}
         div(class="flex items-center mt-1.5")
           div(class="w-3 h-3 border  flex justify-center items-center"
@@ -95,6 +94,7 @@ export default {
     const errorMsg = ref('')
     const agreeTermsAndPrivacy = ref(false)
     const isSignUpSuccessfully = ref(false)
+    const isEmailExist = ref(false)
 
     const containsLetter = computed(() => (/[a-zA-Z]/ig).test(formData.password))
     const moreThanSix = computed(() => formData.password.length >= 6)
@@ -103,15 +103,19 @@ export default {
     const isPasswordValid = computed(() => containsLetter.value && moreThanSix.value && lessThanEighteen.value)
     const avaliableToSignUp = computed(() => formData.firstName !== '' && formData.lastName !== '' && isEmailValid.value && isPasswordValid.value && agreeTermsAndPrivacy.value)
 
-    const validateEmailFormat = () => {
-      errorMsg.value = ''
+    const validateEmailFormat = async () => {
+      try {
+        isEmailExist.value = false
+        errorMsg.value = ''
 
-      if (formData.email !== '' && !isEmailValid.value) {
-        errorMsg.value = t('error.invalidEmail')
+        if (formData.email !== '' && !isEmailValid.value) {
+          throw t('error.invalidEmail')
+        }
+
+        isEmailExist.value = await store.dispatch('user/checkEmailExist', { email: formData.email })
+      } catch (error) {
+        errorMsg.value = error
       }
-      /**
-       * @todo need to request api to check whether has registered or not
-       */
     }
 
     const redirectToNextPage = () => {
@@ -162,7 +166,8 @@ export default {
       signUp,
       avaliableToSignUp,
       isSignUpSuccessfully,
-      redirectToNextPage
+      redirectToNextPage,
+      isEmailExist
     }
   }
 }

@@ -1,8 +1,4 @@
 <style lang="scss" scoped>
-.card-shadow {
-  box-shadow: 2px 3px 15px 5px rgba(0, 0, 0, 0.03);
-}
-
 .mt-signIn {
   margin-top: grow-shrink-y(498, 186);
 }
@@ -35,6 +31,21 @@ div(class="w-screen h-screen flex justify-center bg-black-100")
       i18n-t(keypath="form.signIn.doNotHaveAnAccount" tag="p" class="text-black-800 text-body2 font-normal")
         template(#signUp)
           router-link-extending(class="text-primary font-bold ml-3" to="/sign-up") {{$t('term.SIGNUP')}}
+div(
+  v-if="stateOfResetPassword !== 0"
+  class="fixed inset-0 z-10 w-screen h-screen flex justify-center items-center"
+  :class="[ {'bg-opacity-70 bg-black': stateOfResetPassword === 1}, {'bg-black-100': stateOfResetPassword === 2 || stateOfResetPassword === 3 }]"
+)
+  div(v-if="stateOfResetPassword === 1" class="relative bg-black-0 w-115 h-85 px-8.5 pt-14 pb-9.5 rounded-md flex flex-col justify-between items-center")
+    svg-icon(iconName="close" class="absolute top-3 right-3 cursor-pointer" color="black-700" @click="stateOfResetPassword = 0")
+    p(class="text-primary text-body1 line-height-1.6") {{$t('sentence.askToResetPassword')}}
+    btn(size="lg" @click="stateOfResetPassword = 2") {{$t('term.resetPassword')}}
+  form-reset-password(v-else-if="stateOfResetPassword === 2" :email="formData.email" @submit="stateOfResetPassword = 3" @close="stateOfResetPassword = 0")
+  div(v-else-if="stateOfResetPassword === 3" class="relative bg-black-0 w-112 h-92 rounded-md flex flex-col items-center")
+    svg-icon(iconName="close" class="absolute top-3 right-3 cursor-pointer" color="black-700" @click="redirectToNextPage")
+    svg-icon(iconName="frontier-logo" :width="136" :height="26" class="mt-10")
+    svg-icon(iconName="reset-successfully" :width="88" :height="88" class="mt-15")
+    p(class="text-body1 text-black-800 mt-9") {{$t('sentence.passwordResetSuccessfully')}}
 </template>
 
 <script>
@@ -44,11 +55,13 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import googleSignInApi from '@/utils/google-sign-in-api'
 import DropdownLocale from '@/components/DropdownLocale'
+import FormResetPassword from '@/components/FormResetPassword'
 
 export default {
   name: 'SignIn',
   components: {
-    DropdownLocale
+    DropdownLocale,
+    FormResetPassword
   },
   setup () {
     const { t } = useI18n()
@@ -59,6 +72,15 @@ export default {
       password: ''
     })
     const errorMsg = ref('')
+
+    /**
+     * state of reset password have three state
+     * 0 -> not on resetting
+     * 1 -> show confirm modal to ask user to reset password
+     * 2 -> on resetting
+     * 3 -> success
+     */
+    const stateOfResetPassword = ref(0)
 
     const redirectToNextPage = () => {
       /**
@@ -78,8 +100,13 @@ export default {
           throw t('error.invalidEmail')
         }
 
-        await store.dispatch('user/generalSignIn', toRaw(formData))
-        redirectToNextPage()
+        const isOldUser = await store.dispatch('user/generalSignIn', toRaw(formData))
+
+        if (!isOldUser) {
+          redirectToNextPage()
+        } else {
+          stateOfResetPassword.value = 1
+        }
       } catch (error) {
         errorMsg.value = error
       }
@@ -110,7 +137,9 @@ export default {
     return {
       formData,
       errorMsg,
-      generalSignIn
+      generalSignIn,
+      stateOfResetPassword,
+      redirectToNextPage
     }
   }
 }

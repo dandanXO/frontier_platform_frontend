@@ -1,5 +1,5 @@
-// src/mocks/handlers.js
 import { rest } from 'msw'
+import { generalLogin, changePassword } from '@/mocks/resolvers/mockUser'
 
 const BASE_URL = process.env.VUE_APP_API_ENDPOINT
 
@@ -15,27 +15,10 @@ const initialState = {
 const deepClone = (data) => JSON.parse(JSON.stringify(data))
 
 export const handlers = [
-  // rest.post(BASE_URL + '/sign-in/general', (req, res, ctx) => {
-  //   // Persist user's authentication in the session
-  //   sessionStorage.setItem('is-authenticated', 'true')
-  //   return res(
-  //     // Respond with a 200 status code
-  //     ctx.status(200)
-  //   )
-  // }),
-  // Handles a GET /user request
+  rest.post(BASE_URL + '/sign-in/general', generalLogin),
   rest.post(BASE_URL + '/user/get', (req, res, ctx) => {
-    // const isAuthenticated = sessionStorage.getItem('is-authenticated')
-
-    // if (!isAuthenticated) {
-    //   // If not authenticated, respond with a 403 error
-    //   return res(
-    //     ctx.status(401)
-    //   )
-    // }
-    // If authenticated, return a mocked user details
     const response = deepClone(initialState)
-    response.user = {
+    response.result.user = {
       lastName: 'Mia',
       firstName: 'Yang',
       displayName: 'Mia Yang',
@@ -49,5 +32,19 @@ export const handlers = [
       ctx.status(200),
       ctx.json(response)
     )
-  })
+  }),
+  rest.post(BASE_URL + '/user/check-email-exist', (req, res, ctx) => {
+    const response = deepClone(initialState)
+
+    const { email } = req.body
+    const isExist = (/exist/ig).test(email)
+
+    response.result.isExist = isExist
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  }),
+  rest.post(BASE_URL + '/user/change-password', changePassword)
 ]

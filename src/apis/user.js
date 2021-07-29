@@ -20,5 +20,13 @@ export default {
   getUser: (data) => axios('/user/get', {
     method: 'POST',
     data
+  }),
+  checkEmailExist: (data) => axios('/user/check-email-exist', {
+    method: 'POST',
+    data
+  }),
+  changePassword: (data) => axios('/user/change-password', {
+    method: 'POST',
+    data
   })
 }
