@@ -42,7 +42,7 @@ const mutations = {
 }
 
 const actions = {
-  async createOrg ({ dispatch }, params) {
+  async createOrg (_, params) {
     const temp = {}
     Object.keys(params).forEach(key => {
       if (params[key] !== '') {
@@ -57,6 +57,12 @@ const actions = {
     }
 
     await organizationApi.createOrg(temp)
+  },
+  async checkOrgNameExist (_, params) {
+    const { data } = await organizationApi.checkOrgNameExist(params)
+    const { result } = data
+
+    return result.isExist
   }
 }
 

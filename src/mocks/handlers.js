@@ -1,4 +1,5 @@
 import { rest } from 'msw'
+// eslint-disable-next-line no-unused-vars
 import { generalLogin, changePassword } from '@/mocks/resolvers/mockUser'
 
 const BASE_URL = process.env.VUE_APP_API_ENDPOINT
@@ -15,7 +16,7 @@ const initialState = {
 const deepClone = (data) => JSON.parse(JSON.stringify(data))
 
 export const handlers = [
-  rest.post(BASE_URL + '/sign-in/general', generalLogin),
+  // rest.post(BASE_URL + '/sign-in/general', generalLogin),
   rest.post(BASE_URL + '/user/get', (req, res, ctx) => {
     const response = deepClone(initialState)
     response.result.user = {

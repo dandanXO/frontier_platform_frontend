@@ -78,10 +78,11 @@ div(v-if="isOpenCreateForm" class="fixed inset-0 z-10 w-screen h-screen bg-black
         span(class="text-primary font-bold text-body2") {{$t('term.country')}}
           span(class="text-warn") *
         input-select(v-model:value="formData.countryCode" :options="countryList" keyOptionDisplay="name" keyOptionValue="countryCode" :placeholder="$t('form.org.country')")
-      div(class="grid gap-y-3")
+      div(class="grid gap-y-3 relative")
+        span(v-if="isOrgNameExist" class="absolute right-0 top-1.5 text-caption text-warn") {{$t('error.orgNameAlreadyExist')}}
         span(class="text-primary font-bold text-body2") {{$t('term.orgName')}}
           span(class="text-warn") *
-        input-text(v-model:value="formData.orgName" :placeholder="$t('form.org.orgName')")
+        input-text(v-model:value="formData.orgName" :placeholder="$t('form.org.orgName')" @blur="checkOrgNameExist" :class="[{ 'border-warn': isOrgNameExist }]")
       div(class="grid gap-y-3")
         span(class="text-primary font-bold text-body2") {{$t('term.orgAddress')}}
         input-text(v-model:value="formData.address" :placeholder="$t('form.org.orgAddress')")
@@ -99,7 +100,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import DropdownLocale from '@/components/DropdownLocale'
 import InputCallingCode from '@/components/InputCallingCode'
-import { computed, reactive, ref, toRaw } from 'vue'
+import { computed, reactive, ref, toRaw, watch } from 'vue'
 
 export default {
   name: 'Lobby',
@@ -121,6 +122,7 @@ export default {
       faxCountryCode: 'TW'
     }
     const isOpenCreateForm = ref(false)
+    const isOrgNameExist = ref(false)
     const formData = reactive({ ...initialFormData })
     const orgCategoryList = reactive([
       {
@@ -143,7 +145,16 @@ export default {
 
     const countryList = computed(() => store.getters['code/countryList'])
     const orgList = computed(() => store.getters['user/organizationList'])
-    const avaliableToCreateOrg = computed(() => formData.countryCode !== '' && formData.orgName !== '')
+    const avaliableToCreateOrg = computed(() => formData.countryCode !== '' && formData.orgName !== '' && !isOrgNameExist.value)
+
+    watch(
+      () => formData.orgName,
+      () => {
+        if (isOrgNameExist.value) {
+          isOrgNameExist.value = false
+        }
+      }
+    )
 
     const closeCreateForm = () => {
       isOpenCreateForm.value = false
@@ -163,12 +174,20 @@ export default {
 
     const createOrg = async () => {
       try {
+        await checkOrgNameExist()
+
+        if (isOrgNameExist.value) { return }
+
         await store.dispatch('organization/createOrg', toRaw(formData))
         goToPublicLibrary()
         closeCreateForm()
       } catch (error) {
         console.error(error)
       }
+    }
+
+    const checkOrgNameExist = async () => {
+      isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: formData.orgName })
     }
 
     return {
@@ -180,7 +199,9 @@ export default {
       closeCreateForm,
       createOrg,
       avaliableToCreateOrg,
-      goToPublicLibrary
+      goToPublicLibrary,
+      checkOrgNameExist,
+      isOrgNameExist
     }
   }
 }
