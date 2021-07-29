@@ -11,6 +11,7 @@ const routes = [
     component: () => import('@/views/Lobby.vue'),
     beforeEnter: async (to, from, next) => {
       store.dispatch('code/getCountryList')
+      store.dispatch('user/getUserOrgList')
       next()
     }
   },

@@ -21,6 +21,9 @@ export default {
     method: 'POST',
     data
   }),
+  getUserOrgList: () => axios('/user/get-org-list', {
+    method: 'POST'
+  }),
   checkEmailExist: (data) => axios('/user/check-email-exist', {
     method: 'POST',
     data
