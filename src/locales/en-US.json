@@ -50,7 +50,8 @@
     "couldNotFindGoogleAccount": "Couldn't find your Google Account",
     "googleSideError": "Google side error",
     "enterEmail": "Enter an email address",
-    "enterPassword": "Enter a password"
+    "enterPassword": "Enter a password",
+    "orgNameAlreadyExist": "This name already exists"
   },
   "term": {
     "LOGIN": "LOG IN",
