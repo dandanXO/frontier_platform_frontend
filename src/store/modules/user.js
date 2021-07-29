@@ -61,6 +61,10 @@ const actions = {
     const { data } = await userApi.getUser(params)
     dispatch('handleResponseData', { data }, { root: true })
   },
+  async getUserOrgList ({ dispatch }) {
+    const { data } = await userApi.getUserOrgList()
+    dispatch('handleResponseData', { data }, { root: true })
+  },
   async checkEmailExist (_, params) {
     const { data } = await userApi.checkEmailExist(params)
     const { success, message, result } = data

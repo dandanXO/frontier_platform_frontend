@@ -118,10 +118,14 @@ export default {
       }
     }
 
-    const redirectToNextPage = () => {
-      /**
-       * @todo need to according to organization amount to decide where to redirect
-       */
+    const redirectToNextPage = async () => {
+      await store.dispatch('user/getUserOrgList')
+      const organizationList = store.getters['user/organizationList']
+
+      if (organizationList.length === 1) {
+        return router.push('/public-library')
+      }
+
       router.push('/')
     }
 
