@@ -1,6 +1,6 @@
 import { rest } from 'msw'
 // eslint-disable-next-line no-unused-vars
-import { generalLogin, changePassword } from '@/mocks/resolvers/mockUser'
+import { generalLogin, changePassword, sendForgotPasswordEmail, verifyForgotPasswordCode, resetPassword } from '@/mocks/resolvers/mockUser'
 
 const BASE_URL = process.env.VUE_APP_API_ENDPOINT
 
@@ -47,5 +47,8 @@ export const handlers = [
       ctx.json(response)
     )
   }),
-  rest.post(BASE_URL + '/user/change-password', changePassword)
+  rest.post(BASE_URL + '/user/change-password', changePassword),
+  rest.post(BASE_URL + '/user/forgot-password/send-email', sendForgotPasswordEmail),
+  rest.post(BASE_URL + '/user/forgot-password/verify', verifyForgotPasswordCode),
+  rest.post(BASE_URL + '/user/forgot-password/reset-password', resetPassword)
 ]

@@ -16,10 +16,10 @@ div(class="w-screen h-screen flex justify-center bg-black-100")
         form(class="grid gap-y-3 mt-5 mb-1.5")
           input-text(v-model:value="formData.email" :placeholder="$t('word.email')" prependIcon="mail")
           input-password(v-model:value="formData.password" :placeholder="$t('word.password')" prependIcon="lock")
-        span(class="self-end text-caption text-black-800 mb-4") {{$t('form.signIn.forgotPassword')}}
+        span(class="self-end text-caption text-black-800 mb-4 cursor-pointer" @click="stateOfForgotPassword = 1") {{$t('form.signIn.forgotPassword')}}?
         btn(size="lg" class="font-bold" @click="generalSignIn") {{$t('term.LOGIN')}}
         div(class="flex-grow text-caption mt-1.5")
-          p(v-if="errorMsg !== ''" class="text-warn text-center") {{errorMsg}}
+          p(v-if="errorMsgSignIn !== ''" class="text-warn text-center") {{errorMsgSignIn}}
         div(class="grid grid-flow-col gap-x-3 items-center justify-center mb-4")
           div(class="w-19 h-px border-b border-black-400")
           span(class="w-30.5 text-black-500 text-body2 text-center") {{$t('word.or')}}
@@ -31,6 +31,7 @@ div(class="w-screen h-screen flex justify-center bg-black-100")
       i18n-t(keypath="form.signIn.doNotHaveAnAccount" tag="p" class="text-black-800 text-body2 font-normal")
         template(#signUp)
           router-link-extending(class="text-primary font-bold ml-3" to="/sign-up") {{$t('term.SIGNUP')}}
+
 div(
   v-if="stateOfResetPassword !== 0"
   class="fixed inset-0 z-10 w-screen h-screen flex justify-center items-center"
@@ -40,8 +41,53 @@ div(
     svg-icon(iconName="close" class="absolute top-3 right-3 cursor-pointer" color="black-700" @click="stateOfResetPassword = 0")
     p(class="text-primary text-body1 line-height-1.6") {{$t('sentence.askToResetPassword')}}
     btn(size="lg" @click="stateOfResetPassword = 2") {{$t('term.resetPassword')}}
-  form-reset-password(v-else-if="stateOfResetPassword === 2" :email="formData.email" @submit="stateOfResetPassword = 3" @close="stateOfResetPassword = 0")
+  form-reset-password(
+    v-else-if="stateOfResetPassword === 2"
+    v-model:newPassword="newPassword"
+    :email="formData.email"
+    @submit="changePassword"
+    @close="stateOfResetPassword = 0"
+  )
   div(v-else-if="stateOfResetPassword === 3" class="relative bg-black-0 w-112 h-92 rounded-md flex flex-col items-center")
+    svg-icon(iconName="close" class="absolute top-3 right-3 cursor-pointer" color="black-700" @click="redirectToNextPage")
+    svg-icon(iconName="frontier-logo" :width="136" :height="26" class="mt-10")
+    svg-icon(iconName="reset-successfully" :width="88" :height="88" class="mt-15")
+    p(class="text-body1 text-black-800 mt-9") {{$t('sentence.passwordResetSuccessfully')}}
+
+div(
+  v-if="stateOfForgotPassword !== 0"
+  class="fixed inset-0 z-10 w-screen h-screen flex justify-center items-center bg-black-100"
+)
+  div(v-if="stateOfForgotPassword === 1" class="relative bg-black-0 w-105 h-110 p-10 rounded-md flex flex-col items-center")
+    svg-icon(iconName="close" class="absolute top-3 right-3 cursor-pointer" color="black-700" @click="closeProcessForgotPassword")
+    p(class="text-body1 text-black-800 font-bold mb-10") {{$t('form.signIn.forgotPassword')}}
+    svg-icon(iconName="ic-forgot-key" :width="68" :height="68" class="mb-8")
+    p(class="text-body2 text-primary mb-3") {{$t('term.emailAddress')}}
+    p(class="max-w-61 text-caption text-black-600 text-center mb-6.5") {{$t('sentence.emailToReceiveCode')}}
+    input-text(v-model:value="emailForgotPassword" class="w-65" prependIcon="mail" size="sm" placeholder="example@gmail.com")
+    div(class="flex-grow mt-1.5")
+      div(v-if="errorMsgSendForgotPasswordEmail !== ''" class="text-caption text-center")
+        p(class="text-warn") {{errorMsgSendForgotPasswordEmail}}
+        p(v-if="!isEmailExist" class="text-primary coursor-pointer" @click="closeProcessForgotPassword") {{$t('sentence.createAccount')}}
+    btn(size="lg" @click="sendEmail" :disabled="!inputValidator.required(emailForgotPassword)") {{$t('word.send')}}
+  div(v-else-if="stateOfForgotPassword === 2" class="relative bg-black-0 w-105 h-110 p-10 rounded-md flex flex-col items-center")
+    svg-icon(iconName="close" class="absolute top-3 right-3 cursor-pointer" color="black-700" @click="closeProcessForgotPassword")
+    svg-icon(iconName="send-mail" :width="68" :height="68" class="mt-24 mb-8")
+    p(class="text-body2 text-primary mb-3") {{$t('word.verification')}}
+    p(class="max-w-61 text-caption text-black-600 text-center mb-6.5") {{$t('sentence.enter6DigitCode')}}
+    div(class="flex-grow")
+      p(v-if="errorMsgVerifyCode !== ''") {{errorMsgVerifyCode}}
+    div(class="flex justify-center gap-x-3")
+      button(class="w-35 h-10.5 rounded border border-primary-middle text-brand text-body1" @click="sendForgotPasswordEmail") {{$t('word.resend')}}
+      btn(size="special" class="w-35 h-10.5" @click="verifyForgotPasswordCode") {{$t('word.verify')}}
+  form-reset-password(
+    v-else-if="stateOfForgotPassword === 3"
+    v-model:newPassword="newPassword"
+    :email="emailForgotPassword"
+    @submit="resetPassword"
+    @close="closeProcessForgotPassword"
+  )
+  div(v-else-if="stateOfForgotPassword === 4" class="relative bg-black-0 w-112 h-92 rounded-md flex flex-col items-center")
     svg-icon(iconName="close" class="absolute top-3 right-3 cursor-pointer" color="black-700" @click="redirectToNextPage")
     svg-icon(iconName="frontier-logo" :width="136" :height="26" class="mt-10")
     svg-icon(iconName="reset-successfully" :width="88" :height="88" class="mt-15")
@@ -56,6 +102,7 @@ import { useRouter } from 'vue-router'
 import googleSignInApi from '@/utils/google-sign-in-api'
 import DropdownLocale from '@/components/DropdownLocale'
 import FormResetPassword from '@/components/FormResetPassword'
+import inputValidator from '@/utils/input-validator'
 
 export default {
   name: 'SignIn',
@@ -71,16 +118,39 @@ export default {
       email: '',
       password: ''
     })
-    const errorMsg = ref('')
+    const emailForgotPassword = ref('')
+    const newPassword = ref('')
+    const errorMsgSignIn = ref('')
+    const errorMsgSendForgotPasswordEmail = ref('')
+    const errorMsgVerifyCode = ref('')
+    const isEmailExist = ref(true)
+    const verifyToken = ref('')
 
     /**
-     * state of reset password have three state
-     * 0 -> not on resetting
+     * state of forgot password
+     * 0 -> not on verifying (sigin page)
+     * 1 -> key in email which will receive verify code
+     * 2 -> key in verify code
+     * 3 -> on resetting
+     * 4 -> success
+     */
+    const stateOfForgotPassword = ref(0)
+
+    /**
+     * state of reset password
+     * 0 -> not on resetting (sigin page)
      * 1 -> show confirm modal to ask user to reset password
      * 2 -> on resetting
      * 3 -> success
      */
     const stateOfResetPassword = ref(0)
+
+    const closeProcessForgotPassword = () => {
+      stateOfForgotPassword.value = 0
+      emailForgotPassword.value = ''
+      isEmailExist.value = true
+      errorMsgSendForgotPasswordEmail.value = ''
+    }
 
     const redirectToNextPage = async () => {
       await store.dispatch('user/getUserOrgList')
@@ -95,12 +165,12 @@ export default {
 
     const generalSignIn = async () => {
       try {
-        errorMsg.value = ''
-        if (formData.email === '') {
+        errorMsgSignIn.value = ''
+        if (!inputValidator.required(formData.email)) {
           throw t('error.enterEmail')
-        } else if (formData.password === '') {
+        } else if (!inputValidator.required(formData.password)) {
           throw t('error.enterPassword')
-        } else if (!(/.+@.+/ig).test(formData.email)) {
+        } else if (!inputValidator.emailFormat(formData.email)) {
           throw t('error.invalidEmail')
         }
 
@@ -112,7 +182,7 @@ export default {
           stateOfResetPassword.value = 1
         }
       } catch (error) {
-        errorMsg.value = error
+        errorMsgSignIn.value = error
       }
     }
 
@@ -121,8 +191,51 @@ export default {
         await store.dispatch('user/googleSignIn', { idToken: googleUser.getAuthResponse().id_token })
         redirectToNextPage()
       } catch (error) {
-        errorMsg.value = error
+        errorMsgSignIn.value = error
       }
+    }
+
+    const changePassword = async () => {
+      await store.dispatch('user/changePassword', { password: newPassword.value })
+      stateOfResetPassword.value = 3
+    }
+
+    const sendForgotPasswordEmail = () => store.dispatch('user/sendForgotPasswordEmail', { email: emailForgotPassword.value })
+
+    const sendEmail = async () => {
+      try {
+        isEmailExist.value = true
+        errorMsgSendForgotPasswordEmail.value = ''
+
+        if (!inputValidator.emailFormat(emailForgotPassword.value)) {
+          throw t('error.invalidEmail')
+        }
+
+        isEmailExist.value = await store.dispatch('user/checkEmailExist', { email: emailForgotPassword.value })
+
+        if (!isEmailExist.value) {
+          throw t('error.emailNotExist')
+        }
+
+        await sendForgotPasswordEmail()
+        stateOfForgotPassword.value = 2
+      } catch (error) {
+        errorMsgSendForgotPasswordEmail.value = error
+      }
+    }
+
+    const verifyForgotPasswordCode = async () => {
+      try {
+        verifyToken.value = await store.dispatch('user/verifyForgotPasswordCode', { verifyCode: '012345' })
+        stateOfForgotPassword.value = 3
+      } catch (error) {
+        errorMsgVerifyCode.value = error
+      }
+    }
+
+    const resetPassword = async () => {
+      await store.dispatch('user/resetPassword', { password: newPassword.value, verifyToken: verifyToken.value })
+      stateOfForgotPassword.value = 4
     }
 
     onMounted(async () => {
@@ -133,17 +246,30 @@ export default {
         failHandler (error) {
           console.log(error)
           if (error.error === 'popup_closed_by_user') { return }
-          errorMsg.value = t('error.googleSideError')
+          errorMsgSignIn.value = t('error.googleSideError')
         }
       })
     })
 
     return {
       formData,
-      errorMsg,
+      errorMsgSignIn,
       generalSignIn,
       stateOfResetPassword,
-      redirectToNextPage
+      stateOfForgotPassword,
+      redirectToNextPage,
+      sendEmail,
+      emailForgotPassword,
+      errorMsgSendForgotPasswordEmail,
+      inputValidator,
+      isEmailExist,
+      closeProcessForgotPassword,
+      sendForgotPasswordEmail,
+      errorMsgVerifyCode,
+      verifyForgotPasswordCode,
+      newPassword,
+      changePassword,
+      resetPassword
     }
   }
 }

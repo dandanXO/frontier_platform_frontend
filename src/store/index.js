@@ -6,7 +6,7 @@ import organization from '@/store/modules/organization'
 export default createStore({
   actions: {
     handleResponseData ({ dispatch }, { data }) {
-      const { result } = JSON.parse(JSON.stringify(data))
+      const { success, message, result } = JSON.parse(JSON.stringify(data))
 
       const moduleList = ['user']
 
@@ -16,6 +16,10 @@ export default createStore({
           dispatch(`${module}/set${capitalizedModule}`, result[module], { root: true })
         }
       })
+
+      if (!success) {
+        throw message.content
+      }
     }
   },
   modules: {

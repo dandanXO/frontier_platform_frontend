@@ -31,5 +31,17 @@ export default {
   changePassword: (data) => axios('/user/change-password', {
     method: 'POST',
     data
+  }),
+  sendForgotPasswordEmail: (data) => axios('/user/forgot-password/send-email', {
+    method: 'POST',
+    data
+  }),
+  verifyForgotPasswordCode: (data) => axios('/user/forgot-password/verify', {
+    method: 'POST',
+    data
+  }),
+  resetPassword: (data) => axios('/user/forgot-password/reset-password', {
+    method: 'POST',
+    data
   })
 }

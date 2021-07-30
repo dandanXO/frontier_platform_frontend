@@ -1,6 +1,6 @@
 <template lang="pug">
-label(class="h-11 pl-4 border border-black-400 rounded flex items-center"
-    :class="[isFocus ? 'border-primary' :'border-black-400']"
+label(class="pl-4 border border-black-400 rounded flex items-center"
+    :class="[isFocus ? 'border-primary' :'border-black-400', size === 'lg' ? 'h-11' : 'h-9']"
   )
   svg-icon(
     v-if="prependIcon !== ''"
@@ -14,7 +14,7 @@ label(class="h-11 pl-4 border border-black-400 rounded flex items-center"
     @input="typing"
     @focus="focusHandler"
     @blur="blurHandler"
-    class="flex-grow outline-none overflow-hidden placeholder-black-400 text-primary text-body1 placeholder-text-body2 bg-transparent"
+    class="flex-grow outline-none overflow-hidden placeholder-black-400 text-primary text-body1 placeholder-text-body2 bg-transparent placeholder-overflow-visible"
     autocomplete
   )
   slot(name="appendIcon")
@@ -45,6 +45,10 @@ export default {
     appendIcon: {
       type: String,
       default: ''
+    },
+    size: {
+      type: String,
+      default: 'lg'
     }
   },
   setup (props, { emit }) {
