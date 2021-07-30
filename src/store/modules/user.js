@@ -111,6 +111,18 @@ const actions = {
   },
   async changePassword (_, params) {
     await userApi.changePassword(params)
+  },
+  async sendForgotPasswordEmail (_, params) {
+    await userApi.sendForgotPasswordEmail(params)
+  },
+  async verifyForgotPasswordCode ({ dispatch }, params) {
+    const { data } = await userApi.verifyForgotPasswordCode(params)
+    dispatch('handleResponseData', { data }, { root: true })
+    return data.result.verifyToken
+  },
+  async resetPassword ({ dispatch }, params) {
+    const { data } = await userApi.resetPassword(params)
+    dispatch('handleResponseData', { data }, { root: true })
   }
 }
 

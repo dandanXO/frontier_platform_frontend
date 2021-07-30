@@ -47,6 +47,8 @@ instance.interceptors.response.use(async response => {
   const { status } = response
 
   if (status === 401) {
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
     router.push('/sign-in')
     return Promise.reject(response)
   }

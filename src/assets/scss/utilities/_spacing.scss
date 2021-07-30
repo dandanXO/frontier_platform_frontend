@@ -8,6 +8,9 @@
   .max-h-#{$className} {
     max-height: ($i * 0.125) + rem;
   }
+  .max-w-#{$className} {
+    max-width: ($i * 0.125) + rem;
+  }
   .p-#{$className} {
     padding: ($i * 0.125) + rem;
   }

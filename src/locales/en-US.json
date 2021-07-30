@@ -20,7 +20,7 @@
   },
   "form": {
     "signIn": {
-      "forgotPassword": "Forgot Password?",
+      "forgotPassword": "Forgot Password",
       "signInWithGoogle": "Log in with Google",
       "doNotHaveAnAccount": "Don't have an account?  {signUp}"
     },

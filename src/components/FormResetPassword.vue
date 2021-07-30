@@ -10,14 +10,13 @@ div(class="card-shadow w-105 h-110 rounded-lg relative p-10 flex flex-col items-
     input-password(v-model:value="confirmPassword" :placeholder="$t('term.confirmPassword')" prependIcon="lock")
   div(class="flex-grow self-start" class="mt-1 mb-7.5")
     p(v-if="errorMsg !== ''" class="text-caption text-warn") {{errorMsg}}
-  btn(size="lg" :disabled="!avaliableToChangePassword" @click="changePassword") {{$t('term.changePassword')}}
+  btn(size="lg" :disabled="!avaliableToChangePassword" @click="$emit('submit')") {{$t('term.changePassword')}}
 </template>
 
 <script>
 import { computed, ref } from 'vue'
 import PasswordValidator from '@/components/PasswordValidator'
 import { useI18n } from 'vue-i18n'
-import { useStore } from 'vuex'
 
 export default {
   name: 'FormResetPassword',
@@ -25,18 +24,25 @@ export default {
     PasswordValidator
   },
   props: {
+    newPassword: {
+      type: String,
+      required: true
+    },
     email: {
       type: String,
       required: true
     }
   },
-  setup (_, { emit }) {
+  emits: ['submit', 'update:newPassword'],
+  setup (props, { emit }) {
     const { t } = useI18n()
-    const store = useStore()
-    const password = ref('')
     const confirmPassword = ref('')
     const isPasswordValid = ref(false)
 
+    const password = computed({
+      get: () => props.newPassword,
+      set: (v) => emit('update:newPassword', v)
+    })
     const errorMsg = computed(() => {
       if (password.value === '' || confirmPassword.value === '') {
         return ''
@@ -48,18 +54,12 @@ export default {
     })
     const avaliableToChangePassword = computed(() => password.value !== '' && confirmPassword.value !== '' && isPasswordValid.value && password.value === confirmPassword.value)
 
-    const changePassword = async () => {
-      await store.dispatch('user/changePassword', { password: password.value })
-      emit('submit')
-    }
-
     return {
       password,
       confirmPassword,
       isPasswordValid,
       errorMsg,
-      avaliableToChangePassword,
-      changePassword
+      avaliableToChangePassword
     }
   }
 }
