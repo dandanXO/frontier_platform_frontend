@@ -1,54 +1,16 @@
 import { rest } from 'msw'
-// eslint-disable-next-line no-unused-vars
-import { generalLogin, changePassword, sendForgotPasswordEmail, verifyForgotPasswordCode, resetPassword } from '@/mocks/resolvers/mockUser'
+import mockUser from '@/mocks/resolvers/mockUser'
+import deserializeUser from './middleware/deserialize-user'
 
 const BASE_URL = process.env.VUE_APP_API_ENDPOINT
 
-const initialState = {
-  success: true,
-  message: {
-    title: '',
-    content: ''
-  },
-  result: {}
-}
-
-const deepClone = (data) => JSON.parse(JSON.stringify(data))
-
 export const handlers = [
-  // rest.post(BASE_URL + '/sign-in/general', generalLogin),
-  rest.post(BASE_URL + '/user/get', (req, res, ctx) => {
-    const response = deepClone(initialState)
-    response.result.user = {
-      lastName: 'Mia',
-      firstName: 'Yang',
-      displayName: 'Mia Yang',
-      avatar: 'https://picsum.photos/200',
-      email: 'mia.yang@frontier.cool',
-      isVerify: true, // 是否驗證
-      locale: 'zh-TW'
-    }
-
-    return res(
-      ctx.status(200),
-      ctx.json(response)
-    )
-  }),
-  rest.post(BASE_URL + '/user/check-email-exist', (req, res, ctx) => {
-    const response = deepClone(initialState)
-
-    const { email } = req.body
-    const isExist = (/exist/ig).test(email)
-
-    response.result.isExist = isExist
-
-    return res(
-      ctx.status(200),
-      ctx.json(response)
-    )
-  }),
-  rest.post(BASE_URL + '/user/change-password', changePassword),
-  rest.post(BASE_URL + '/user/forgot-password/send-email', sendForgotPasswordEmail),
-  rest.post(BASE_URL + '/user/forgot-password/verify', verifyForgotPasswordCode),
-  rest.post(BASE_URL + '/user/forgot-password/reset-password', resetPassword)
+  rest.post(BASE_URL + '/sign-in/general', mockUser.generalLogin),
+  rest.post(BASE_URL + '/user/get-org-list', deserializeUser(mockUser.getUserOrgList)),
+  rest.post(BASE_URL + '/user/get', deserializeUser(mockUser.getUser)),
+  rest.post(BASE_URL + '/user/check-email-exist', mockUser.checkEmailExist),
+  rest.post(BASE_URL + '/user/change-password', mockUser.changePassword),
+  rest.post(BASE_URL + '/user/forgot-password/send-email', mockUser.sendForgotPasswordEmail),
+  rest.post(BASE_URL + '/user/forgot-password/verify', mockUser.verifyForgotPasswordCode),
+  rest.post(BASE_URL + '/user/forgot-password/reset-password', mockUser.resetPassword)
 ]
