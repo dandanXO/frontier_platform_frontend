@@ -3,7 +3,7 @@ dropdown(v-model:value="$i18n.locale" :options="localeOptions" keyOptionValue="l
   template(#displayItem="{ isExpand, option }")
     div(class="flex items-center")
       span(class="text-primary font-bold text-caption") {{option.abbr}}
-      svg-icon(iconName="arrow-down" color="black-650" class="transform" :class="[ isExpand ? '-rotate-90' : 'rotate-90' ]")
+      svg-icon(iconName="arrow-down" size="24" class="text-black-650 transform" :class="[ isExpand ? '-rotate-90' : 'rotate-90' ]")
   template(#dropdownList="{ select, currentIndex }")
     div(class="absolute top-full right-0 transform translate-y-2 w-20 py-2 px-1 rounded grid gap-y-1" style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);")
       div(v-for="(option, index) in localeOptions"

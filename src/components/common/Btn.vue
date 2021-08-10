@@ -1,5 +1,6 @@
 <template lang="pug">
-button(class="rounded disabled:bg-primary-middle bg-brand text-black-0 text-body1 font-normal" :class="btnSize")
+button(class="rounded font-normal flex gap-x-1 items-center justify-center" :class="[btnSize, btnType]")
+  svg-icon(v-if="prependIcon !== ''" :iconName="prependIcon")
   slot
 </template>
 
@@ -10,22 +11,40 @@ export default {
   props: {
     size: {
       type: String,
-      default: 'lg'
+      default: 'special'
+    },
+    type: {
+      type: String,
+      default: 'primary'
+    },
+    prependIcon: {
+      type: String,
+      default: ''
     }
   },
   setup (props) {
     const btnSize = computed(() => {
       switch (props.size) {
         case 'lg':
-          return ['w-85', 'h-11']
+          return ['text-body1', 'min-w-21.5', 'h-11', props.prependIcon === '' ? 'px-6' : 'px-3']
         case 'md':
-          return ['w-35', 'h-10.5']
+          return ['text-body1', 'min-w-21', 'h-10', props.prependIcon === '' ? 'px-4' : 'px-3']
         case 'sm':
-          return ['w-25', 'h-10']
+          return ['text-body2', 'min-w-14', 'h-8.5', props.prependIcon === '' ? 'px-3.5' : 'px-3']
+      }
+    })
+
+    const btnType = computed(() => {
+      switch (props.type) {
+        case 'primary':
+          return ['bg-brand', 'text-black-0', 'disabled:bg-primary-middle', 'hover:bg-brand-dark']
+        case 'secondary':
+          return ['bg-black-0', 'text-brand', 'disabled:text-black-500', 'border', 'border-primary-middle', 'hover:text-brand-dark']
       }
     })
     return {
-      btnSize
+      btnSize,
+      btnType
     }
   }
 }

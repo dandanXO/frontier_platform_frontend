@@ -17,6 +17,13 @@ commonComponents.keys().forEach(key => {
   app.component(component.name, component)
 })
 
+const oldComponents = require.context('@/components/old', true, /.vue/)
+
+oldComponents.keys().forEach(key => {
+  const component = oldComponents(key).default
+  app.component(component.name, component)
+})
+
 function prepare () {
   if (process.env.NODE_ENV === 'development') {
     const { worker } = require('@/mocks/browser')

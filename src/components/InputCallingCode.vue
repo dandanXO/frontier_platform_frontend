@@ -23,9 +23,9 @@ div(class="w-full h-11 border-black-400 bg-black-0 flex")
             span(v-if="isExpand" class="text-body2 text-black-650") +{{option.phone}}
           svg-icon(
             iconName="arrow-down"
-            :color=" isExpand ? 'black-500' : 'black-650'"
+            size="24"
             class="transform"
-            :class="[ isExpand ? '-rotate-90' :'rotate-90']"
+            :class="[ isExpand ? '-rotate-90 text-black-500' :'rotate-90 text-black-650']"
           )
     template(#dropdownList="{ select, currentIndex }")
       div(

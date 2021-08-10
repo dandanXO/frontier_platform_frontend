@@ -14,10 +14,10 @@ div(class="w-screen h-screen flex justify-center bg-black-100")
       div(class="w-full h-110 rounded-lg card-shadow px-10 py-11 flex flex-col")
         p(class="text-primary text-h6 font-bold text-center pb-5.5 border-b border-black-400") {{$t('term.LOGIN')}}
         form(class="grid gap-y-3 mt-5 mb-1.5")
-          input-text(v-model:value="formData.email" :placeholder="$t('word.email')" prependIcon="mail")
-          input-password(v-model:value="formData.password" :placeholder="$t('word.password')" prependIcon="lock")
+          old-input-text(v-model:value="formData.email" :placeholder="$t('word.email')" prependIcon="mail")
+          old-input-password(v-model:value="formData.password" :placeholder="$t('word.password')" prependIcon="lock")
         span(class="self-end text-caption text-black-800 mb-4 cursor-pointer" @click="stateOfForgotPassword = 1") {{$t('form.signIn.forgotPassword')}}?
-        btn(size="lg" class="font-bold" @click="generalSignIn") {{$t('term.LOGIN')}}
+        btn(size="lg" class="w-full font-bold self-center" @click="generalSignIn") {{$t('term.LOGIN')}}
         div(class="flex-grow text-caption mt-1.5")
           p(v-if="errorMsgSignIn !== ''" class="text-warn text-center") {{errorMsgSignIn}}
         div(class="grid grid-flow-col gap-x-3 items-center justify-center mb-4")
@@ -26,7 +26,7 @@ div(class="w-screen h-screen flex justify-center bg-black-100")
           div(class="w-19 h-px border-b border-black-400")
         button(id="google-sign-in" class="w-85 h-11 rounded border text-body2 font-bold text-black-800 flex justify-center items-center")
           div(class="grid grid-flow-col gap-x-2.5 items-center")
-            svg-icon(iconName="google")
+            svg-icon(iconName="google" size="24")
             span(class="w-40.5 text-center text-body2") {{$t('form.signIn.signInWithGoogle')}}
       i18n-t(keypath="form.signIn.doNotHaveAnAccount" tag="p" class="text-black-800 text-body2 font-normal")
         template(#signUp)
@@ -38,9 +38,9 @@ div(
   :class="[ {'bg-opacity-70 bg-black': stateOfResetPassword === 1}, {'bg-black-100': stateOfResetPassword === 2 || stateOfResetPassword === 3 }]"
 )
   div(v-if="stateOfResetPassword === 1" class="relative bg-black-0 w-115 h-85 px-8.5 pt-14 pb-9.5 rounded-md flex flex-col justify-between items-center")
-    svg-icon(iconName="close" class="absolute top-3 right-3 cursor-pointer" color="black-700" @click="stateOfResetPassword = 0")
+    svg-icon(iconName="close" size="24" class="absolute top-3 right-3 cursor-pointer text-black-700" @click="stateOfResetPassword = 0")
     p(class="text-primary text-body1 line-height-1.6") {{$t('sentence.askToResetPassword')}}
-    btn(size="lg" @click="stateOfResetPassword = 2") {{$t('term.resetPassword')}}
+    btn(size="lg" class="w-85" @click="stateOfResetPassword = 2") {{$t('term.resetPassword')}}
   form-reset-password(
     v-else-if="stateOfResetPassword === 2"
     v-model:newPassword="newPassword"
@@ -49,9 +49,9 @@ div(
     @close="stateOfResetPassword = 0"
   )
   div(v-else-if="stateOfResetPassword === 3" class="relative bg-black-0 w-112 h-92 rounded-md flex flex-col items-center")
-    svg-icon(iconName="close" class="absolute top-3 right-3 cursor-pointer" color="black-700" @click="redirectToNextPage")
-    svg-icon(iconName="frontier-logo" :width="136" :height="26" class="mt-10")
-    svg-icon(iconName="reset-successfully" :width="88" :height="88" class="mt-15")
+    svg-icon(iconName="close" size="24" class="absolute top-3 right-3 cursor-pointer text-black-700" @click="redirectToNextPage")
+    svg-icon(iconName="frontier-logo" size="special" class="mt-10 w-34 h-6.5")
+    svg-icon(iconName="reset-successfully" size="88" class="mt-15")
     p(class="text-body1 text-black-800 mt-9") {{$t('sentence.passwordResetSuccessfully')}}
 
 div(
@@ -59,27 +59,35 @@ div(
   class="fixed inset-0 z-10 w-screen h-screen flex justify-center items-center bg-black-100"
 )
   div(v-if="stateOfForgotPassword === 1" class="relative bg-black-0 w-105 h-110 p-10 rounded-md flex flex-col items-center")
-    svg-icon(iconName="close" class="absolute top-3 right-3 cursor-pointer" color="black-700" @click="closeProcessForgotPassword")
+    svg-icon(iconName="close" size="24" class="absolute top-3 right-3 cursor-pointer text-black-700" @click="closeProcessForgotPassword")
     p(class="text-body1 text-black-800 font-bold mb-10") {{$t('form.signIn.forgotPassword')}}
-    svg-icon(iconName="ic-forgot-key" :width="68" :height="68" class="mb-8")
+    svg-icon(iconName="ic-forgot-key" size="68" class="mb-8")
     p(class="text-body2 text-primary mb-3") {{$t('term.emailAddress')}}
     p(class="max-w-61 text-caption text-black-600 text-center mb-6.5") {{$t('sentence.emailToReceiveCode')}}
-    input-text(v-model:value="emailForgotPassword" class="w-65" prependIcon="mail" size="sm" placeholder="example@gmail.com")
+    old-input-text(v-model:value="emailForgotPassword" class="w-65" prependIcon="mail" size="sm" placeholder="example@gmail.com")
     div(class="flex-grow mt-1.5")
       div(v-if="errorMsgSendForgotPasswordEmail !== ''" class="text-caption text-center")
         p(class="text-warn") {{errorMsgSendForgotPasswordEmail}}
         p(v-if="!isEmailExist" class="text-primary coursor-pointer" @click="closeProcessForgotPassword") {{$t('sentence.createAccount')}}
-    btn(size="lg" @click="sendEmail" :disabled="!inputValidator.required(emailForgotPassword)") {{$t('word.send')}}
+    btn(size="lg" class="w-85" @click="sendEmail" :disabled="!inputValidator.required(emailForgotPassword)") {{$t('word.send')}}
   div(v-else-if="stateOfForgotPassword === 2" class="relative bg-black-0 w-105 h-110 p-10 rounded-md flex flex-col items-center")
-    svg-icon(iconName="close" class="absolute top-3 right-3 cursor-pointer" color="black-700" @click="closeProcessForgotPassword")
-    svg-icon(iconName="send-mail" :width="68" :height="68" class="mt-24 mb-8")
+    svg-icon(iconName="close" size="24" class="absolute top-3 right-3 cursor-pointer text-black-700" @click="closeProcessForgotPassword")
+    svg-icon(iconName="send-mail" size="68" class="mt-24 mb-8")
     p(class="text-body2 text-primary mb-3") {{$t('word.verification')}}
     p(class="max-w-61 text-caption text-black-600 text-center mb-6.5") {{$t('sentence.enter6DigitCode')}}
+    old-input-text(v-model:value="verifyCode" class="w-40" size="sm")
+    //- div(class="flex gap-x-3 justify-center")
+    //-   input(
+    //-     v-for="code, index in verifyCode"
+    //-     :value="code"
+    //-     class="w-8 h-9 border placeholder-border-primary-middle outline-none rounded-sm text-center font-bold text-h6 text-primary"
+    //-     @keyup="enterVerifyCode($event, index)"
+    //-   )
     div(class="flex-grow")
-      p(v-if="errorMsgVerifyCode !== ''") {{errorMsgVerifyCode}}
+      p(v-if="errorMsgVerifyCode !== ''" class="text-warn text-caption") {{errorMsgVerifyCode}}
     div(class="flex justify-center gap-x-3")
-      button(class="w-35 h-10.5 rounded border border-primary-middle text-brand text-body1" @click="sendForgotPasswordEmail") {{$t('word.resend')}}
-      btn(size="special" class="w-35 h-10.5" @click="verifyForgotPasswordCode") {{$t('word.verify')}}
+      btn(type="secondary" class="w-35 h-10.5" @click="sendForgotPasswordEmail") {{$t('word.resend')}}
+      btn(class="w-35 h-10.5" @click="verifyForgotPasswordCode") {{$t('word.verify')}}
   form-reset-password(
     v-else-if="stateOfForgotPassword === 3"
     v-model:newPassword="newPassword"
@@ -88,9 +96,9 @@ div(
     @close="closeProcessForgotPassword"
   )
   div(v-else-if="stateOfForgotPassword === 4" class="relative bg-black-0 w-112 h-92 rounded-md flex flex-col items-center")
-    svg-icon(iconName="close" class="absolute top-3 right-3 cursor-pointer" color="black-700" @click="redirectToNextPage")
-    svg-icon(iconName="frontier-logo" :width="136" :height="26" class="mt-10")
-    svg-icon(iconName="reset-successfully" :width="88" :height="88" class="mt-15")
+    svg-icon(iconName="close" size="24" class="absolute top-3 right-3 cursor-pointer text-black-700" @click="redirectToNextPage")
+    svg-icon(iconName="frontier-logo" size="special" class="mt-10 w-34 h-6.5")
+    svg-icon(iconName="reset-successfully" size="88" class="mt-15")
     p(class="text-body1 text-black-800 mt-9") {{$t('sentence.passwordResetSuccessfully')}}
 </template>
 
@@ -124,6 +132,15 @@ export default {
     const errorMsgSendForgotPasswordEmail = ref('')
     const errorMsgVerifyCode = ref('')
     const isEmailExist = ref(true)
+    const verifyCode = ref('')
+    // const verifyCode = reactive({
+    //   0: '',
+    //   1: '',
+    //   2: '',
+    //   3: '',
+    //   4: '',
+    //   5: ''
+    // })
     const verifyToken = ref('')
 
     /**
@@ -157,7 +174,7 @@ export default {
       const organizationList = store.getters['user/organizationList']
 
       if (organizationList.length === 1) {
-        return router.push('/public-library')
+        return router.push(`/${organizationList[0].orgName}/public-library`)
       }
 
       router.push('/')
@@ -217,7 +234,7 @@ export default {
           throw t('error.emailNotExist')
         }
 
-        await sendForgotPasswordEmail()
+        await sendForgotPasswordEmail({ email: emailForgotPassword.value })
         stateOfForgotPassword.value = 2
       } catch (error) {
         errorMsgSendForgotPasswordEmail.value = error
@@ -226,7 +243,7 @@ export default {
 
     const verifyForgotPasswordCode = async () => {
       try {
-        verifyToken.value = await store.dispatch('user/verifyForgotPasswordCode', { verifyCode: '012345' })
+        verifyToken.value = await store.dispatch('user/verifyForgotPasswordCode', { verifyCode: verifyCode.value })
         stateOfForgotPassword.value = 3
       } catch (error) {
         errorMsgVerifyCode.value = error
@@ -237,6 +254,22 @@ export default {
       await store.dispatch('user/resetPassword', { password: newPassword.value, verifyToken: verifyToken.value })
       stateOfForgotPassword.value = 4
     }
+
+    // const enterVerifyCode = (e, index) => {
+    //   const code = e.target.value
+    //   const currentElement = e.target
+    //   const currentLength = code.length
+    //   verifyCode[index] = code
+
+    //   if (currentLength >= 1) {
+    //     const nextElement = currentElement.nextElementSibling
+    //     console.log(nextElement)
+    //     if (nextElement === null) {
+    //       return
+    //     }
+    //     nextElement.focus()
+    //   }
+    // }
 
     onMounted(async () => {
       await googleSignInApi.init()
@@ -269,7 +302,9 @@ export default {
       verifyForgotPasswordCode,
       newPassword,
       changePassword,
-      resetPassword
+      resetPassword,
+      verifyCode
+      // enterVerifyCode
     }
   }
 }

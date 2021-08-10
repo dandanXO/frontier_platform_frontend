@@ -1,16 +1,16 @@
 <template lang="pug">
 div(class="card-shadow w-105 h-110 rounded-lg relative p-10 flex flex-col items-center")
-  svg-icon(iconName="close" class="absolute top-3 right-3 cursor-pointer" color="black-700" @click="$emit('close')")
+  svg-icon(iconName="close" size="24" class="absolute top-3 right-3 cursor-pointer text-black-700" @click="$emit('close')")
   p(class="text-body1 text-black-800 font-bold mb-8") {{$t('term.resetPassword')}}
   span(class="text-body2 text-primary mb-3") {{email}}
   span(class="text-body2 text-black-600 mb-8") {{$t('sentence.enterPasswordAndConfirmPassword')}}
   form(class="w-full")
-    input-password(v-model:value="password" :placeholder="$t('term.newPassword')" prependIcon="lock")
+    old-input-password(v-model:value="password" :placeholder="$t('term.newPassword')" prependIcon="lock")
     password-validator(v-model:isValid="isPasswordValid" :password="password" class="mt-1 mb-7")
-    input-password(v-model:value="confirmPassword" :placeholder="$t('term.confirmPassword')" prependIcon="lock")
+    old-input-password(v-model:value="confirmPassword" :placeholder="$t('term.confirmPassword')" prependIcon="lock")
   div(class="flex-grow self-start" class="mt-1 mb-7.5")
     p(v-if="errorMsg !== ''" class="text-caption text-warn") {{errorMsg}}
-  btn(size="lg" :disabled="!avaliableToChangePassword" @click="$emit('submit')") {{$t('term.changePassword')}}
+  btn(size="lg" class="w-85" :disabled="!avaliableToChangePassword" @click="$emit('submit')") {{$t('term.changePassword')}}
 </template>
 
 <script>

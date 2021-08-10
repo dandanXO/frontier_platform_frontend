@@ -21,9 +21,9 @@ dropdown(
         ) {{currentIndex === -1 ? placeholder: option[keyOptionDisplay]}}
         svg-icon(
           iconName="arrow-down"
-          :color=" isExpand ? 'black-500' : 'black-650'"
+          size="24"
           class="transform"
-          :class="[ isExpand ? '-rotate-90' :'rotate-90']"
+          :class="[ isExpand ? '-rotate-90 text-black-500' :'rotate-90 text-black-650']"
         )
   template(#dropdownList="{ select, currentIndex }")
     div(
@@ -43,7 +43,7 @@ dropdown(
 import { ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
 export default {
-  name: 'InputSelect',
+  name: 'OldInputSelect',
   props: {
     value: {
       type: [String, Number],

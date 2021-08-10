@@ -6,6 +6,7 @@ const state = () => ({
   firstName: '',
   displayName: '',
   avatar: '',
+  originalAvatar: '',
   email: '',
   isVerify: false,
   locale: 'zh-TW',
@@ -57,8 +58,9 @@ const actions = {
   setUser ({ state }, data) {
     setVuexState(state, data)
   },
-  async getUser ({ dispatch }, params) {
-    const { data } = await userApi.getUser(params)
+  async getUser ({ getters, dispatch }, { orgName }) {
+    const orgId = getters.organizationList.find(org => org.orgName === orgName)?.orgId || null
+    const { data } = await userApi.getUser({ orgId })
     dispatch('handleResponseData', { data }, { root: true })
   },
   async getUserOrgList ({ dispatch }) {

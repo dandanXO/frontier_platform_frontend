@@ -29,6 +29,14 @@ export default {
     value: {
       type: [String, Number],
       required: true
+    },
+    closeAfterOutsideClick: {
+      type: Boolean,
+      default: true
+    },
+    closeAfterSelect: {
+      type: Boolean,
+      default: true
     }
   },
   setup (props, { emit }) {
@@ -38,13 +46,13 @@ export default {
     const currentIndex = computed(() => props.options.findIndex(option => option[props.keyOptionValue] === props.value))
 
     const expand = () => {
-      document.addEventListener('click', captureOutsideClick)
+      props.closeAfterOutsideClick && document.addEventListener('click', captureOutsideClick)
       isExpand.value = true
       emit('expand')
     }
 
     const collapse = () => {
-      document.removeEventListener('click', captureOutsideClick)
+      props.closeAfterOutsideClick && document.removeEventListener('click', captureOutsideClick)
       isExpand.value = false
       emit('collapse')
     }
@@ -59,7 +67,7 @@ export default {
       e.stopPropagation()
 
       emit('update:value', option[props.keyOptionValue])
-      collapse()
+      props.closeAfterSelect && collapse()
     }
 
     return {

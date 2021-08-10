@@ -1,11 +1,11 @@
-import users from '@/mocks/seeds/user'
+import userList from '@/mocks/seeds/user'
 
 const deepClone = (data) => JSON.parse(JSON.stringify(data))
 
 export default (resolver) => {
   return (req, res, ctx) => {
     const email = sessionStorage.getItem('accessToken')
-    const user = deepClone(users).find(user => user.email === email)
+    const user = deepClone(userList).find(user => user.email === email)
 
     if (user === undefined) {
       return res(ctx.status(401))

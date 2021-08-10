@@ -1,6 +1,6 @@
 <template lang="pug">
 label(class="flex items-center" :for="value")
-  svg-icon(v-if="inputValue === value" iconName="selected")
+  svg-icon(v-if="inputValue === value" iconName="selected" size="24")
   div(v-else class="w-6 h-6 flex justify-center items-center")
     div(class="w-4 h-4 border border-black-400 rounded-full")
   input(type="radio"
@@ -16,7 +16,7 @@ label(class="flex items-center" :for="value")
 
 <script>
 export default {
-  name: 'InputRadio',
+  name: 'OldInputRadio',
   props: {
     inputValue: {
       type: [String, Number],

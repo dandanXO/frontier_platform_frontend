@@ -1,4 +1,4 @@
-import users from '@/mocks/seeds/user'
+import userList from '@/mocks/seeds/user'
 
 const deepClone = (data) => JSON.parse(JSON.stringify(data))
 
@@ -22,7 +22,7 @@ export default {
   generalLogin: (req, res, ctx) => {
     const { email } = req.body
 
-    const user = users.find(user => user.email === email)
+    const user = userList.find(user => user.email === email)
     const response = deepClone(successState)
 
     if (user === undefined) {
@@ -65,7 +65,7 @@ export default {
     const response = deepClone(successState)
 
     const { email } = req.body
-    const isExist = (/exist/ig).test(email)
+    const isExist = userList.some(user => user.email === email)
 
     response.result.isExist = isExist
 
@@ -82,6 +82,8 @@ export default {
     )
   },
   sendForgotPasswordEmail: (req, res, ctx) => {
+    const { email } = req.body
+    sessionStorage.setItem('emailForgotPassword', email)
     const response = deepClone(successState)
     return res(
       ctx.status(200),
@@ -122,10 +124,9 @@ export default {
       )
     } else {
       const response = deepClone(successState)
-      response.result = {
-        accessToken: 'access',
-        refreshToken: 'refresh'
-      }
+      const email = sessionStorage.getItem('emailForgotPassword')
+      sessionStorage.setItem('accessToken', email)
+      sessionStorage.setItem('refreshToken', email)
       return res(
         ctx.status(200),
         ctx.json(response)

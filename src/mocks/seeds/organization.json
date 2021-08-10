@@ -1,0 +1,49 @@
+[
+  {
+    "orgId": 1,
+    "logo": "https://picsum.photos/200",
+    "originalLogo": "https://picsum.photos/200",
+    "orgName": "Coop Inc.",
+    "orgCategoryId": "",
+    "countryCode": "",
+    "address": "",
+    "phone": "",
+    "phoneCountryCode": "",
+    "fax": "",
+    "faxCountryCode": "",
+    "inviteCode": "kjkdjxzm",
+    "labelColor": "#7b61ff",
+    "memberList": [
+      {
+        "orgUserId": 1,
+        "displayName": "Mia Yang",
+        "avatar": "https://www.ddsdsdsd",
+        "email": "mia.yang@f",
+        "roleId": 1,
+        "lastSignInTime": "8小時前",
+        "isPending": false
+      },
+      {
+        "orgUserId": 2,
+        "displayName": null,
+        "avatar": "https://www.ddsdsdsd",
+        "email": "mia.yang@frontier.cool",
+        "roleId": null,
+        "lastSignInTime": null,
+        "isPending": true
+      }
+    ],
+    "groupList": [
+      {
+        "groupId": 1,
+        "groupName": "Sales Department",
+        "labelColor": "#18AAFD"
+      },
+      {
+        "groupId": 2,
+        "groupName": "IT Department",
+        "labelColor": "#ee695e"
+      }
+    ]
+  }
+]

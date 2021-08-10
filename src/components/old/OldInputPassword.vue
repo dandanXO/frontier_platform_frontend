@@ -1,10 +1,11 @@
 <template lang="pug">
-input-text(:inputType="isVisible ? 'text' : 'password'")
+old-input-text(:inputType="isVisible ? 'text' : 'password'")
   template(#appendIcon)
     svg-icon(
       class="mr-2"
+      size="24"
+      :class="[isVisible ? 'text-primary' : 'text-black-400']"
       :iconName="isVisible ? 'openeye' : 'hideeye'"
-      :color="isVisible ? 'primary' : 'black-400'"
       @click="isVisible = !isVisible"
     )
 </template>
@@ -13,7 +14,7 @@ input-text(:inputType="isVisible ? 'text' : 'password'")
 import { ref } from '@vue/reactivity'
 
 export default {
-  name: 'InputPassword',
+  name: 'OldInputPassword',
   setup () {
     const isVisible = ref(false)
     return {

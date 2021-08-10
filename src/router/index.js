@@ -3,27 +3,6 @@ import store from '@/store'
 
 const routes = [
   {
-    path: '/',
-    name: 'Lobby',
-    meta: {
-      requiresLogin: true
-    },
-    component: () => import('@/views/Lobby.vue'),
-    beforeEnter: async (to, from, next) => {
-      store.dispatch('code/getCountryList')
-      store.dispatch('user/getUserOrgList')
-      next()
-    }
-  },
-  {
-    path: '/public-library',
-    name: 'PublicLibrary',
-    meta: {
-      requiresLogin: true
-    },
-    component: () => import('@/views/PublicLibrary.vue')
-  },
-  {
     path: '/sign-up',
     name: 'SignUp',
     meta: {
@@ -62,6 +41,38 @@ const routes = [
       localStorage.removeItem('refreshToken')
       window.location.replace('https://frontier.cool/')
     }
+  },
+  {
+    path: '/',
+    name: 'Lobby',
+    meta: {
+      requiresLogin: true
+    },
+    component: () => import('@/views/Lobby.vue'),
+    beforeEnter: async (to, from, next) => {
+      await store.dispatch('code/getCountryList')
+      await store.dispatch('user/getUserOrgList')
+      next()
+    }
+  },
+  {
+    path: '/:orgName',
+    name: 'InnerAppLayout',
+    meta: {
+      requiresLogin: true
+    },
+    component: () => import('@/views/innerApp/InnerAppLayout.vue'),
+    beforeEnter: async (to, from, next) => {
+      await store.dispatch('organization/getOrg', { orgName: to.params.orgName })
+      next()
+    },
+    children: [
+      {
+        path: 'public-library',
+        name: 'PublicLibrary',
+        component: () => import('@/views/innerApp/PublicLibrary.vue')
+      }
+    ]
   }
 ]
 
@@ -72,7 +83,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresLogin) {
-    await store.dispatch('user/getUser')
+    await store.dispatch('user/getUser', { orgName: to.params.orgName })
     next()
   } else {
     next()

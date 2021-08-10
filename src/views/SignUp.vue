@@ -19,7 +19,7 @@ div(class="w-screen h-screen flex justify-center bg-black-100")
         p(class="text-primary text-h6 font-bold text-center pb-5.5 border-b border-black-400") {{$t('term.SIGNUP')}}
         button(id="google-sign-up" class="w-85 h-11 rounded border text-body2 font-bold text-black-800 mt-5 mb-3 flex justify-center items-center")
           div(class="grid grid-flow-col gap-x-2.5 items-center")
-            svg-icon(iconName="google")
+            svg-icon(iconName="google" size="24")
             span(class="w-40.5 text-center text-body2") {{$t('form.signUp.signUpWithGoogle')}}
         div(class="grid grid-flow-col gap-x-3 items-center justify-center")
           div(class="w-19 h-px border-b border-black-400")
@@ -27,29 +27,29 @@ div(class="w-screen h-screen flex justify-center bg-black-100")
           div(class="w-19 h-px border-b border-black-400")
         span(class="self-end text-black-500 text-caption my-1.5") *{{$t('term.required')}}
         form(class="grid grid-cols-2 gap-3")
-          input-text(v-model:value="formData.firstName" :placeholder="$t('word.firstName')+'*'")
-          input-text(v-model:value="formData.lastName" :placeholder="$t('word.lastName')+'*'")
-          input-text(v-model:value="formData.email" :placeholder="$t('word.email')+'*'" prependIcon="mail" class="col-span-2" @blur="validateEmailFormat")
-          input-password(v-model:value="formData.password" :placeholder="$t('word.password')+'*'" prependIcon="lock" class="col-span-2")
+          old-input-text(v-model:value="formData.firstName" :placeholder="$t('word.firstName')+'*'")
+          old-input-text(v-model:value="formData.lastName" :placeholder="$t('word.lastName')+'*'")
+          old-input-text(v-model:value="formData.email" :placeholder="$t('word.email')+'*'" prependIcon="mail" class="col-span-2" @blur="validateEmailFormat")
+          old-input-password(v-model:value="formData.password" :placeholder="$t('word.password')+'*'" prependIcon="lock" class="col-span-2")
         div(class="grid gap-y-1.5 text-caption mt-1 mb-2")
           div(class="flex")
             p(:class="[moreThanSix && moreThanSix ? 'text-black-800' : 'text-black-500']")  {{$t('form.signUp.atLeast6Char')}}
-            svg-icon(v-if="moreThanSix && lessThanEighteen" iconName="tick-bold" class="ml-0.5" :width="12" :height="12")
+            svg-icon(v-if="moreThanSix && lessThanEighteen" iconName="tick-bold" class="ml-0.5 text-black-800" size="12")
           div(class="flex")
             p(:class="[containsLetter ? 'text-black-800' : 'text-black-500']") {{$t('form.signUp.atLeast1Letter')}}
-            svg-icon(v-if="containsLetter" iconName="tick-bold" color="black-800" class="ml-0.5" :width="12" :height="12")
+            svg-icon(v-if="containsLetter" iconName="tick-bold" class="ml-0.5 text-black-800" size="12")
         div(class="flex-grow text-caption")
           i18n-t(v-if="isEmailExist" keypath="error.emailAlreadyExist" tag="p" class="text-warn")
             template(#signIn)
               router-link-extending(class="text-primary" to="/sign-in") {{$t('term.LOGIN')}}
           p(v-else-if="errorMsg !== '' && !isEmailExist" class="text-warn") {{errorMsg}}
-        btn(size="lg" class="font-bold" :disabled="!avaliableToSignUp" @click="signUp") {{$t('term.SIGNUP')}}
+        btn(size="lg" class="font-bold w-85" :disabled="!avaliableToSignUp" @click="signUp") {{$t('term.SIGNUP')}}
         div(class="flex items-center mt-1.5")
           div(class="w-3 h-3 border  flex justify-center items-center"
             :class="[agreeTermsAndPrivacy ? 'border-primary' : 'border-black-400']"
             @click="agreeTermsAndPrivacy = !agreeTermsAndPrivacy"
           )
-            svg-icon(v-if="agreeTermsAndPrivacy" iconName="tick" :color="'primary'" :width="10" :height="10")
+            svg-icon(v-if="agreeTermsAndPrivacy" iconName="tick" size="10" class="text-primary")
           i18n-t(keypath="sentence.agreeTermsAndPrivacy" tag="p" class="text-caption text-black-600 ml-1")
             template(#terms)
               span(class="text-primary") {{$t('word.terms')}}
@@ -64,7 +64,7 @@ div(v-if="isSignUpSuccessfully" class="fixed inset-0 w-full h-full bg-black-100 
       template(#name) {{`${formData.lastName} ${formData.firstName}`}}
     h4(class="text-primary text-h4 mb-9") {{$t('sentence.welcomeToFrontier')}}
     p(class="text-black-650 text-body2 text-center mb-10 line-height-1.4") {{$t('sentence.signUpSuccessfully')}}
-    btn(size="md" @click="redirectToNextPage") {{$t('word.next')}}
+    btn(size="special" class="w-35 h-10.5" @click="redirectToNextPage") {{$t('word.next')}}
 </template>
 
 <script>
@@ -123,7 +123,7 @@ export default {
       const organizationList = store.getters['user/organizationList']
 
       if (organizationList.length === 1) {
-        return router.push('/public-library')
+        return router.push(`/${organizationList[0].orgName}/public-library`)
       }
 
       router.push('/')

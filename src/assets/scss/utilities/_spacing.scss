@@ -11,6 +11,12 @@
   .max-w-#{$className} {
     max-width: ($i * 0.125) + rem;
   }
+  .min-h-#{$className} {
+    min-height: ($i * 0.125) + rem;
+  }
+  .min-w-#{$className} {
+    min-width: ($i * 0.125) + rem;
+  }
   .p-#{$className} {
     padding: ($i * 0.125) + rem;
   }
