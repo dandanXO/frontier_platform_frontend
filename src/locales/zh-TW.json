@@ -1,4 +1,25 @@
 {
+  "term": {
+    "LOGIN": "",
+    "yourOrg": "",
+    "createOrg": " ",
+    "createYourOrg": "",
+    "SIGNUP": "",
+    "required": "",
+    "country": "",
+    "orgName": "",
+    "orgAddress": "",
+    "changePassword": "",
+    "newPassword": "",
+    "confirmPassword": "",
+    "resetPassword": "",
+    "emailAddress": "",
+    "orgType": "",
+    "publicLibrary": "",
+    "globalSearch": "",
+    "shareToMe": "",
+    "copyId": ""
+  },
   "word": {
     "email": "",
     "password": "",
@@ -16,7 +37,15 @@
     "resend": "",
     "verify": "",
     "phone": "",
-    "fax": ""
+    "fax": "",
+    "management": "",
+    "organization": "",
+    "assets": "",
+    "workspace": "",
+    "favorites": "",
+    "sticker": "",
+    "upload": "",
+    "save": ""
   },
   "form": {
     "signIn": {
@@ -34,6 +63,7 @@
       "country": "",
       "orgName": "",
       "orgAddress": "",
+      "selectCountryCode": "",
       "phone": "",
       "fax": ""
     }
@@ -49,23 +79,8 @@
     "couldNotFindGoogleAccount": "",
     "googleSideError": "",
     "enterEmail": "",
-    "enterPassword": ""
-  },
-  "term": {
-    "LOGIN": "",
-    "SIGNUP": "",
-    "yourOrg": "",
-    "createOrg": " ",
-    "createYourOrg": "",
-    "required": "",
-    "country": "",
-    "orgName": "",
-    "orgAddress": "",
-    "changePassword": "",
-    "newPassword": "",
-    "confirmPassword": "",
-    "resetPassword": "",
-    "emailAddress": ""
+    "enterPassword": "",
+    "orgNameAlreadyExist": ""
   },
   "sentence": {
     "providePlatform": "",
@@ -79,5 +94,28 @@
     "enterPasswordAndConfirmPassword": "",
     "passwordResetSuccessfully": "",
     "askToResetPassword": ""
+  },
+  "management": {
+    "about": "",
+    "member": "",
+    "history": "",
+    "invite": "",
+    "searchMember": "",
+    "name": "",
+    "email": "",
+    "role": {
+      "role": "",
+      "owner": "",
+      "admin": "",
+      "member": ""
+    },
+    "lastLogin": "",
+    "stn": {
+      "inviteToOrg": "",
+      "increaseAmount": "",
+      "daysAgo": "",
+      "hrsAgo": "",
+      "minsAgo": ""
+    }
   }
 }

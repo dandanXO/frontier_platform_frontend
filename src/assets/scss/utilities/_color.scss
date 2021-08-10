@@ -5,10 +5,16 @@
   .disabled\:text-#{$className}:disabled {
     color: $color !important;
   }
+  .hover\:text-#{$className}:hover:not([disabled]) {
+    color: $color !important;
+  }
   .bg-#{$className} {
     background-color: $color;
   }
   .disabled\:bg-#{$className}:disabled {
+    background-color: $color !important;
+  }
+  .hover\:bg-#{$className}:hover:not([disabled]) {
     background-color: $color !important;
   }
   .placeholder-#{$className}::placeholder {

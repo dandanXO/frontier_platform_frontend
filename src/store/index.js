@@ -8,7 +8,7 @@ export default createStore({
     handleResponseData ({ dispatch }, { data }) {
       const { success, message, result } = JSON.parse(JSON.stringify(data))
 
-      const moduleList = ['user']
+      const moduleList = ['user', 'organization']
 
       moduleList.forEach(module => {
         if (Object.prototype.hasOwnProperty.call(result, module)) {

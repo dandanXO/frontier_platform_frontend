@@ -1,10 +1,10 @@
 <template lang="pug">
-svg(class="svg-icon" arid-hidden="true" :style="style" :class="`text-${color}`")
+svg(class="svg-icon" arid-hidden="true" :class="iconSize")
   use(:xlink:href="`#${iconName}`")
 </template>
 
 <script>
-import { reactive } from '@vue/reactivity'
+import { computed } from '@vue/reactivity'
 export default {
   name: 'SvgIcon',
   props: {
@@ -12,29 +12,28 @@ export default {
       type: String,
       required: true
     },
-    width: {
-      type: Number,
-      default: 24
-    },
-    height: {
-      type: Number,
-      default: 24
-    },
-    color: {
+    size: {
       type: String,
-      default: 'black-800'
+      default: '20'
     }
   },
   setup (props) {
-    const style = reactive({
-      width: props.width + 'px',
-      height: props.height + 'px',
-      'min-width': props.width + 'px',
-      'min-height:': props.height + 'px'
-    })
+    const iconSize = computed(() => {
+      if (props.size === 'special') {
+        return
+      }
 
+      const sizeNum = parseInt(props.size)
+
+      return [
+        `min-w-${sizeNum / 4}`,
+        `min-h-${sizeNum / 4}`,
+        `w-${sizeNum / 4}`,
+        `h-${sizeNum / 4}`
+      ]
+    })
     return {
-      style
+      iconSize
     }
   }
 }

@@ -16,7 +16,15 @@
     "resend": "Resend",
     "verify": "Verify",
     "phone": "Phone Number",
-    "fax": "Fax"
+    "fax": "Fax",
+    "management": "Management",
+    "organization": "Organization",
+    "assets": "Assets",
+    "workspace": "Workspace",
+    "favorites": "Favorites",
+    "sticker": "Sticker",
+    "upload": "Upload",
+    "save": "Save"
   },
   "form": {
     "signIn": {
@@ -36,7 +44,7 @@
       "orgAddress": "Your organization address",
       "phone": "Your phone number",
       "fax": "Your fax number",
-      "selectCountryCode": "Select your country code"
+      "selectCountryCode": "Select your Country code"
     }
   },
   "error": {
@@ -58,17 +66,21 @@
     "SIGNUP": "SIGN UP",
     "yourOrg": "Your Organization",
     "createOrg": "Create Organization",
-    "createYourOrg": "Create your organization",
+    "createYourOrg": "Create your organization ",
     "required": "*Required ",
     "country": "Country/Region*",
     "orgName": "Organization Name*",
-    "orgType": "Organization Type",
     "orgAddress": "Organization Address",
     "changePassword": "Change Password",
     "newPassword": "New Password",
     "confirmPassword": "Confirm Password",
     "resetPassword": "Reset Password",
-    "emailAddress": "Email Address"
+    "emailAddress": "Email Address",
+    "orgType": "Organization Type",
+    "publicLibrary": "Public Library",
+    "globalSearch": "Global Search (待定)",
+    "shareToMe": "Share to me",
+    "copyId": "Copy ID"
   },
   "sentence": {
     "providePlatform": "Frontier provides an online collaboration platform for your organization, you can build your fabric on Frontier. And search for your ideal cloth piece, inquire immediately, \nand sample the cloth card.",
@@ -82,5 +94,28 @@
     "enterPasswordAndConfirmPassword": "Enter your new password and confirm password.",
     "passwordResetSuccessfully": "Your password has been reset successfully. ",
     "askToResetPassword": "In order to enhance your experience with Frontier, the platform has recently been revised and updated. Due to information security considerations,old users need to update their passwords when logging in to the new platform for the first time.\nIf you cause any inconvenience, Sorry about it!"
+  },
+  "management": {
+    "about": "About",
+    "member": "Members",
+    "history": "History",
+    "invite": "Invite",
+    "searchMember": "Search members",
+    "name": "Name",
+    "email": "E-mail",
+    "role": {
+      "role": "Role",
+      "owner": "Owner",
+      "admin": "Admin",
+      "member": "Member"
+    },
+    "lastLogin": "Last login",
+    "stn": {
+      "inviteToOrg": "Invite people to join your organization",
+      "increaseAmount": "New members of the organization will automatically \nincrease your monthly subscription amount.",
+      "daysAgo": "{number} days ago",
+      "hrsAgo": "{number} hrs ago",
+      "minsAgo": "{number} mins ago"
+    }
   }
 }

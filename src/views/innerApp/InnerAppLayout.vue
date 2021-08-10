@@ -1,0 +1,159 @@
+<style lang="scss" scoped>
+.sidebar-shadow {
+  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25));
+}
+</style>
+
+<template lang="pug">
+div(class="fixed z-20 w-60 h-full left-0 top-0 bottom-0 bg-black-100 sidebar-shadow flex flex-col")
+  div(class="h-18 pt-4 pr-5.5 pb-5 pl-4")
+    div(class="flex items-center")
+      img(:src="organization.logo" class="rounded-full w-9 h-9 mr-2")
+      div(class="flex items-center flex-grow")
+        span(class="text-body1 text-primary font-bold max-w-28.5 truncate line-height-1.4") {{organization.orgName}}
+        svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-600")
+      svg-icon(iconName="notification" class="text-black-700")
+  div(class="border-t border-primary-thin flex-grow p-2.5 flex flex-col")
+    div(class="pb-2.5 mb-2.5 border-b border-primary-thin")
+      div(class="grid gap-y-1.5 -mx-1.5")
+        div(
+          v-for="menu in menuGlobal"
+          class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-black-400"
+          :class="[{ 'bg-black-500': currentTab === menu.path }]"
+          @click="currentTab = menu.path, $router.push(menu.path)"
+        )
+          svg-icon(:iconName="menu.icon" class="text-black-700")
+          span(class="text-body2 text-primary") {{$t(menu.title)}}
+    div(class="flex-grow overflow-y-auto overflow-x-hidden h-0")
+      div(v-for="item in menuOrgOrGroup" class="pb-2.5 mb-2.5 border-b border-primary-thin")
+        div(class="-mx-1.5")
+          dropdown(v-model:value="currentTab" :options="item.menuList" keyOptionValue="path" :closeAfterSelect="false" :closeAfterOutsideClick="false")
+            template(#displayItem="{ isExpand }")
+              div(class="flex items-center h-9 pl-4 pr-2 hover:bg-black-400")
+                label(class="w-3 h-3 rounded-sm mr-3" :style="{ 'background-color': item.labelColor }")
+                span(class="flex-grow text-body2 text-primary truncate line-height-1.4") {{item.name}}
+                svg-icon(iconName="keyboard_arrow_right" size="24" class="text-black-650 transform" :class="[ isExpand ? 'rotate-90' : 'rotate-0' ]")
+            template(#dropdownList="{ select }")
+              div(class="flex flex-col gap-y-0.5" @click.stop)
+                div(
+                  v-for="menu in item.menuList"
+                  class="flex items-center justify-between h-9 pl-10 pr-2 hover:bg-black-400"
+                  :class="[{ 'bg-black-500': currentTab === menu.path }]"
+                  @click="select($event, menu), $router.push(menu.path)"
+                )
+                  span(class="text-body2 text-primary") {{$t(menu.title)}}
+                  svg-icon(v-if="menu.icon" :iconName="menu.icon" size="24" class="text-black-800")
+  div(class="h-13 bg-black-200 py-2.5 pl-4 pr-3")
+    div(class="flex items-center")
+      img(:src="user.avatar" class="rounded-full w-8 h-8 mr-2")
+      span(class="flex-grow text-body2 text-primary truncate line-height-1.4") {{user.displayName}}
+      svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650")
+main(class="ml-60")
+  router-view
+</template>
+
+<script>
+import { ref, reactive } from '@vue/reactivity'
+import { useStore } from 'vuex'
+import { computed } from '@vue/runtime-core'
+import { useI18n } from 'vue-i18n'
+
+export default {
+  name: 'InnerAppLayout',
+  setup () {
+    const store = useStore()
+    const { t } = useI18n()
+
+    const organization = computed(() => store.getters['organization/organization'])
+    const user = computed(() => store.getters['user/user'])
+
+    const currentTab = ref('')
+    const menuGlobal = reactive([
+      {
+        title: 'term.publicLibrary',
+        icon: 'bookmark_border',
+        path: `/${organization.value.orgName}/public-library`
+      },
+      {
+        title: 'word.management',
+        icon: 'management',
+        path: `/${organization.value.orgName}/management`
+      },
+      {
+        title: 'term.globalSearch',
+        icon: 'search_all',
+        path: `/${organization.value.orgName}/assglobal-searchets`
+      },
+      {
+        title: 'word.favorites',
+        icon: 'favorite_border',
+        path: `/${organization.value.orgName}/favorites`
+      }
+    ])
+    const menuOrgOrGroup = computed(() => {
+      const { orgId, orgName, labelColor } = organization.value
+      return [
+        {
+          id: orgId,
+          name: t('word.organization'),
+          labelColor: labelColor,
+          menuList: [
+            {
+              title: 'word.assets',
+              path: `/${orgName}/assets`,
+              icon: 'search_all'
+            },
+            {
+              title: 'word.workspace',
+              path: `/${orgName}/workspace`
+            },
+            {
+              title: 'term.shareToMe',
+              path: `/${orgName}/shareToMe`
+            },
+            {
+              title: 'word.sticker',
+              path: `/${orgName}/sticker`
+            }
+          ]
+        },
+        ...store.getters['organization/groupList'].map(group => {
+          const { groupId, groupName, labelColor } = group
+          return {
+            id: groupId,
+            name: groupName,
+            labelColor: labelColor,
+            menuList: [
+              {
+                title: 'word.assets',
+                path: `/${orgName}/${groupId}/assets`,
+                icon: 'search_all'
+              },
+              {
+                title: 'word.workspace',
+                path: `/${orgName}/${groupId}/workspace`
+              },
+              {
+                title: 'term.shareToMe',
+                path: `/${orgName}/${groupId}/shareToMe`
+              },
+              {
+                title: 'word.sticker',
+                path: `/${orgName}/${groupId}/sticker`
+              }
+            ]
+          }
+        })
+      ]
+    })
+
+    return {
+      menuGlobal,
+      currentTab,
+      organization,
+      menuOrgOrGroup,
+      user
+    }
+  }
+}
+</script>

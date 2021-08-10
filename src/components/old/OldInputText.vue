@@ -4,7 +4,9 @@ label(class="pl-4 border border-black-400 rounded flex items-center"
   )
   svg-icon(
     v-if="prependIcon !== ''"
-    :iconName="prependIcon" :color="isFocus || !isEmpty ? 'primary' : 'black-400'"
+    size="24"
+    :iconName="prependIcon"
+    :class="[isFocus || !isEmpty ? 'text-primary' : 'text-black-400']"
     class="mr-1"
   )
   input(
@@ -24,7 +26,7 @@ label(class="pl-4 border border-black-400 rounded flex items-center"
 import { ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
 export default {
-  name: 'InputText',
+  name: 'OldInputText',
   props: {
     value: {
       type: String,
