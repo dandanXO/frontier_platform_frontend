@@ -5,9 +5,9 @@ div(class="card-shadow w-105 h-110 rounded-lg relative p-10 flex flex-col items-
   span(class="text-body2 text-primary mb-3") {{email}}
   span(class="text-body2 text-black-600 mb-8") {{$t('sentence.enterPasswordAndConfirmPassword')}}
   form(class="w-full")
-    old-input-password(v-model:value="password" :placeholder="$t('term.newPassword')" prependIcon="lock")
+    input-password(v-model:value="password" :placeholder="$t('term.newPassword')")
     password-validator(v-model:isValid="isPasswordValid" :password="password" class="mt-1 mb-7")
-    old-input-password(v-model:value="confirmPassword" :placeholder="$t('term.confirmPassword')" prependIcon="lock")
+    input-password(v-model:value="confirmPassword" :placeholder="$t('term.confirmPassword')")
   div(class="flex-grow self-start" class="mt-1 mb-7.5")
     p(v-if="errorMsg !== ''" class="text-caption text-warn") {{errorMsg}}
   btn(size="lg" class="w-85" :disabled="!avaliableToChangePassword" @click="$emit('submit')") {{$t('term.changePassword')}}

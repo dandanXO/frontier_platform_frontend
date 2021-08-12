@@ -1,8 +1,16 @@
 export default {
-  emailFormat (email) {
-    return (/.+@.+/ig).test(email)
+  emailFormat (email, errorMsg = 'error.invalidEmail') {
+    const isValid = (/.+@.+/ig).test(email)
+    return {
+      isValid,
+      message: isValid ? '' : errorMsg
+    }
   },
-  required (text) {
-    return text.length > 0
+  required (text, errorMsg = 'term.required') {
+    const isValid = !!text
+    return {
+      isValid,
+      message: isValid ? '' : errorMsg
+    }
   }
 }

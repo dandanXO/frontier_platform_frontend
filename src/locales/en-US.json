@@ -93,7 +93,8 @@
     "enter6DigitCode": "Please enter the 6 digit code sent to {email}",
     "enterPasswordAndConfirmPassword": "Enter your new password and confirm password.",
     "passwordResetSuccessfully": "Your password has been reset successfully. ",
-    "askToResetPassword": "In order to enhance your experience with Frontier, the platform has recently been revised and updated. Due to information security considerations,old users need to update their passwords when logging in to the new platform for the first time.\nIf you cause any inconvenience, Sorry about it!"
+    "askToResetPassword": "In order to enhance your experience with Frontier, the platform has recently been revised and updated. Due to information security considerations,old users need to update their passwords when logging in to the new platform for the first time.\nIf you cause any inconvenience, Sorry about it!",
+    "enter6digit": "Enter 6 digit code"
   },
   "management": {
     "about": "About",
