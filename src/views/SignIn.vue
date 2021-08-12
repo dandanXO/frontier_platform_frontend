@@ -14,8 +14,8 @@ div(class="w-screen h-screen flex justify-center bg-black-100")
       div(class="w-full h-110 rounded-lg card-shadow px-10 py-11 flex flex-col")
         p(class="text-primary text-h6 font-bold text-center pb-5.5 border-b border-black-400") {{$t('term.LOGIN')}}
         form(class="grid gap-y-3 mt-5 mb-1.5")
-          old-input-text(v-model:value="formData.email" :placeholder="$t('word.email')" prependIcon="mail")
-          old-input-password(v-model:value="formData.password" :placeholder="$t('word.password')" prependIcon="lock")
+          input-text(v-model:value="formData.email" :placeholder="$t('word.email')" prependIcon="mail")
+          input-password(v-model:value="formData.password" :placeholder="$t('word.password')")
         span(class="self-end text-caption text-black-800 mb-4 cursor-pointer" @click="stateOfForgotPassword = 1") {{$t('form.signIn.forgotPassword')}}?
         btn(size="lg" class="w-full font-bold self-center" @click="generalSignIn") {{$t('term.LOGIN')}}
         div(class="flex-grow text-caption mt-1.5")
@@ -58,36 +58,32 @@ div(
   v-if="stateOfForgotPassword !== 0"
   class="fixed inset-0 z-10 w-screen h-screen flex justify-center items-center bg-black-100"
 )
-  div(v-if="stateOfForgotPassword === 1" class="relative bg-black-0 w-105 h-110 p-10 rounded-md flex flex-col items-center")
-    svg-icon(iconName="close" size="24" class="absolute top-3 right-3 cursor-pointer text-black-700" @click="closeProcessForgotPassword")
-    p(class="text-body1 text-black-800 font-bold mb-10") {{$t('form.signIn.forgotPassword')}}
-    svg-icon(iconName="ic-forgot-key" size="68" class="mb-8")
-    p(class="text-body2 text-primary mb-3") {{$t('term.emailAddress')}}
-    p(class="max-w-61 text-caption text-black-600 text-center mb-6.5") {{$t('sentence.emailToReceiveCode')}}
-    old-input-text(v-model:value="emailForgotPassword" class="w-65" prependIcon="mail" size="sm" placeholder="example@gmail.com")
-    div(class="flex-grow mt-1.5")
-      div(v-if="errorMsgSendForgotPasswordEmail !== ''" class="text-caption text-center")
-        p(class="text-warn") {{errorMsgSendForgotPasswordEmail}}
-        p(v-if="!isEmailExist" class="text-primary coursor-pointer" @click="closeProcessForgotPassword") {{$t('sentence.createAccount')}}
-    btn(size="lg" class="w-85" @click="sendEmail" :disabled="!inputValidator.required(emailForgotPassword)") {{$t('word.send')}}
-  div(v-else-if="stateOfForgotPassword === 2" class="relative bg-black-0 w-105 h-110 p-10 rounded-md flex flex-col items-center")
-    svg-icon(iconName="close" size="24" class="absolute top-3 right-3 cursor-pointer text-black-700" @click="closeProcessForgotPassword")
-    svg-icon(iconName="send-mail" size="68" class="mt-24 mb-8")
-    p(class="text-body2 text-primary mb-3") {{$t('word.verification')}}
-    p(class="max-w-61 text-caption text-black-600 text-center mb-6.5") {{$t('sentence.enter6DigitCode')}}
-    old-input-text(v-model:value="verifyCode" class="w-40" size="sm")
-    //- div(class="flex gap-x-3 justify-center")
-    //-   input(
-    //-     v-for="code, index in verifyCode"
-    //-     :value="code"
-    //-     class="w-8 h-9 border placeholder-border-primary-middle outline-none rounded-sm text-center font-bold text-h6 text-primary"
-    //-     @keyup="enterVerifyCode($event, index)"
-    //-   )
-    div(class="flex-grow")
-      p(v-if="errorMsgVerifyCode !== ''" class="text-warn text-caption") {{errorMsgVerifyCode}}
-    div(class="flex justify-center gap-x-3")
-      btn(type="secondary" class="w-35 h-10.5" @click="sendForgotPasswordEmail") {{$t('word.resend')}}
-      btn(class="w-35 h-10.5" @click="verifyForgotPasswordCode") {{$t('word.verify')}}
+  div(v-if="stateOfForgotPassword === 1" class="bg-black-0 w-100 h-100 rounded-md flex flex-col")
+    div(class="h-12 pr-3 grid items-center")
+      svg-icon(iconName="close" size="24" class="justify-self-end cursor-pointer text-black-700" @click="closeProcessForgotPassword")
+    div(class="flex-grow grid justify-items-center content-start gap-y-4")
+      svg-icon(iconName="ic-forgot-key" size="68")
+      p(class="text-h6 text-primary font-bold") {{$t('form.signIn.forgotPassword')}}
+      p(class="max-w-57 text-body2 text-primary text-center line-height-1.6") {{$t('sentence.emailToReceiveCode')}}
+      input-text(v-model:value="emailForgotPassword" class="w-72" prependIcon="mail" size="lg" placeholder="example@gmail.com" :customIsError="errorMsgSendForgotPasswordEmail !== ''")
+        template(#errorMsg)
+          div(v-if="errorMsgSendForgotPasswordEmail !== ''" class="text-caption pt-1")
+            p(class="text-warn whitespace-nowrap") {{errorMsgSendForgotPasswordEmail}}
+            p(v-if="!isEmailExist" class="text-assist-blue cursor-pointer pt-1" @click="closeProcessForgotPassword") {{$t('sentence.createAccount')}}
+    div(class="h-21 flex justify-center")
+      btn(size="lg" class="w-85" @click="sendEmail" :disabled="!inputValidator.required(emailForgotPassword).isValid") {{$t('word.send')}}
+  div(v-else-if="stateOfForgotPassword === 2" class="bg-black-0 w-105 h-96.5 rounded-md flex flex-col")
+    div(class="h-12 pr-3 grid items-center")
+      svg-icon(iconName="close" size="24" class="justify-self-end cursor-pointer text-black-700" @click="closeProcessForgotPassword")
+    div(class="flex-grow px-8 flex flex-col items-center")
+      svg-icon(iconName="send-mail" size="68" class="mb-4")
+      p(class="text-h6 text-primary font-bold mb-4") {{$t('word.verification')}}
+      p(class="max-w-58 text-body2 text-primary text-center line-height-1.6 mb-4") {{$t('sentence.enter6DigitCode', { email: emailForgotPassword })}}
+      input-text(v-model:value="verifyCode" class="w-72" size="lg" :placeholder="$t('sentence.enter6digit')" :customErrorMsg="errorMsgVerifyCode")
+    div(class="h-25 flex justify-center items-center")
+      div(class="grid grid-cols-2 gap-x-3")
+        btn(size="md" type="secondary" class="h-10" @click="sendForgotPasswordEmail") {{$t('word.resend')}}
+        btn(size="md" class="h-10" @click="verifyForgotPasswordCode") {{$t('word.verify')}}
   form-reset-password(
     v-else-if="stateOfForgotPassword === 3"
     v-model:newPassword="newPassword"
@@ -133,14 +129,6 @@ export default {
     const errorMsgVerifyCode = ref('')
     const isEmailExist = ref(true)
     const verifyCode = ref('')
-    // const verifyCode = reactive({
-    //   0: '',
-    //   1: '',
-    //   2: '',
-    //   3: '',
-    //   4: '',
-    //   5: ''
-    // })
     const verifyToken = ref('')
 
     /**
@@ -183,11 +171,11 @@ export default {
     const generalSignIn = async () => {
       try {
         errorMsgSignIn.value = ''
-        if (!inputValidator.required(formData.email)) {
+        if (!inputValidator.required(formData.email).isValid) {
           throw t('error.enterEmail')
-        } else if (!inputValidator.required(formData.password)) {
+        } else if (!inputValidator.required(formData.password).isValid) {
           throw t('error.enterPassword')
-        } else if (!inputValidator.emailFormat(formData.email)) {
+        } else if (!inputValidator.emailFormat(formData.email).isValid) {
           throw t('error.invalidEmail')
         }
 
@@ -224,7 +212,7 @@ export default {
         isEmailExist.value = true
         errorMsgSendForgotPasswordEmail.value = ''
 
-        if (!inputValidator.emailFormat(emailForgotPassword.value)) {
+        if (!inputValidator.emailFormat(emailForgotPassword.value).isValid) {
           throw t('error.invalidEmail')
         }
 
@@ -254,22 +242,6 @@ export default {
       await store.dispatch('user/resetPassword', { password: newPassword.value, verifyToken: verifyToken.value })
       stateOfForgotPassword.value = 4
     }
-
-    // const enterVerifyCode = (e, index) => {
-    //   const code = e.target.value
-    //   const currentElement = e.target
-    //   const currentLength = code.length
-    //   verifyCode[index] = code
-
-    //   if (currentLength >= 1) {
-    //     const nextElement = currentElement.nextElementSibling
-    //     console.log(nextElement)
-    //     if (nextElement === null) {
-    //       return
-    //     }
-    //     nextElement.focus()
-    //   }
-    // }
 
     onMounted(async () => {
       await googleSignInApi.init()
@@ -304,7 +276,6 @@ export default {
       changePassword,
       resetPassword,
       verifyCode
-      // enterVerifyCode
     }
   }
 }
