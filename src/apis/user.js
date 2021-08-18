@@ -1,47 +1,70 @@
 import axios from '@/apis'
 
 export default {
-  generalSignUp: (data) => axios('/sign-up/general', {
+  generalSignUp: ({ email, lastName, firstName, locale }) => axios('/sign-up/general', {
     method: 'POST',
-    data
+    data: { email, lastName, firstName, locale }
   }),
-  generalSignIn: (data) => axios('/sign-in/general', {
+  generalSignIn: ({ email, password }) => axios('/sign-in/general', {
     method: 'POST',
-    data
+    data: { email, password }
   }),
-  googleSignUp: (data) => axios('/sign-up/google', {
+  googleSignUp: ({ idToken, locale }) => axios('/sign-up/google', {
     method: 'POST',
-    data
+    data: { idToken, locale }
   }),
-  googleSignIn: (data) => axios('/sign-in/google', {
+  googleSignIn: ({ idToken }) => axios('/sign-in/google', {
     method: 'POST',
-    data
+    data: { idToken }
   }),
-  getUser: (data) => axios('/user/get', {
+  getUser: () => axios('/user', {
+    method: 'GET'
+  }),
+  updateUser: ({ firstName, lastName }) => axios('/user/update', {
     method: 'POST',
-    data
+    data: { firstName, lastName }
   }),
-  getUserOrgList: () => axios('/user/get-org-list', {
-    method: 'POST'
-  }),
-  checkEmailExist: (data) => axios('/user/check-email-exist', {
+  checkEmailExist: ({ email }) => axios('/user/check-email-exist', {
     method: 'POST',
-    data
+    data: { email }
   }),
-  changePassword: (data) => axios('/user/change-password', {
+  changePassword: ({ password }) => axios('/user/change-password', {
     method: 'POST',
-    data
+    data: { password }
   }),
-  sendForgotPasswordEmail: (data) => axios('/user/forgot-password/send-email', {
+  sendForgotPasswordEmail: ({ email }) => axios('/user/forgot-password/send-email', {
     method: 'POST',
-    data
+    data: { email }
   }),
-  verifyForgotPasswordCode: (data) => axios('/user/forgot-password/verify', {
+  verifyForgotPasswordCode: ({ verifyCode }) => axios('/user/forgot-password/verify', {
     method: 'POST',
-    data
+    data: { verifyCode }
   }),
-  resetPassword: (data) => axios('/user/forgot-password/reset-password', {
+  resetPassword: ({ verifyToken, password }) => axios('/user/forgot-password/reset-password', {
     method: 'POST',
-    data
+    data: { verifyToken, password }
+  }),
+  changeLocale: ({ locale }) => axios('/user/change-language', {
+    method: 'POST',
+    data: { locale }
+  }),
+  getOrgUser: ({ orgId }) => axios('/org/user/get', {
+    method: 'POST',
+    data: { orgId }
+  }),
+  updateDisplayName: ({ orgId, displayName }) => axios('/org/user//org/user/update-display-name', {
+    method: 'POST',
+    data: { orgId, displayName }
+  }),
+  /**
+   * @param {formData} formData
+   * @param {number} formData.orgId
+   * @param {binary} formData.avatar
+   * @param {binary} formData.originalAvatar
+   */
+  updateAvatar: (formData) => axios('/org/user/update-avatar', {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    method: 'POST',
+    data: formData
   })
 }

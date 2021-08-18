@@ -51,18 +51,19 @@ const routes = [
     component: () => import('@/views/Lobby.vue'),
     beforeEnter: async (to, from, next) => {
       await store.dispatch('code/getCountryList')
-      await store.dispatch('user/getUserOrgList')
       next()
     }
   },
   {
     path: '/:orgName',
+    redirect: to => `/${to.params.orgName}/public-library`,
     name: 'InnerAppLayout',
     meta: {
       requiresLogin: true
     },
     component: () => import('@/views/innerApp/InnerAppLayout.vue'),
     beforeEnter: async (to, from, next) => {
+      await store.dispatch('user/orgUser/getOrgUser', { orgName: to.params.orgName })
       await store.dispatch('organization/getOrg', { orgName: to.params.orgName })
       next()
     },
@@ -71,6 +72,30 @@ const routes = [
         path: 'public-library',
         name: 'PublicLibrary',
         component: () => import('@/views/innerApp/PublicLibrary.vue')
+      },
+      {
+        path: 'management',
+        redirect: to => `/${to.params.orgName}/management/about`,
+        name: 'Management',
+        component: () => import('@/views/innerApp/management/Management.vue'),
+        children: [
+          {
+            path: ':tab(about|members|history)',
+            name: 'ManagementOrg',
+            props: true,
+            component: () => import('@/views/innerApp/management/ManagementOrg.vue'),
+            beforeEnter: async (to, from, next) => {
+              await store.dispatch('code/getCountryList')
+              next()
+            }
+          },
+          {
+            path: ':groupId(\\d+)/:tab(about|members|history)',
+            name: 'ManagementGroup',
+            props: true,
+            component: () => import('@/views/innerApp/management/ManagementGroup.vue')
+          }
+        ]
       }
     ]
   }
@@ -78,12 +103,13 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  sensitive: true
 })
 
 router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresLogin) {
-    await store.dispatch('user/getUser', { orgName: to.params.orgName })
+    await store.dispatch('user/getUser')
     next()
   } else {
     next()

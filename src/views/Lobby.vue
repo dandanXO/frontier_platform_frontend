@@ -16,24 +16,24 @@ header(class="w-screen h-14.5 pt-8 pl-10 pr-9 fixed inset-0")
       li
         dropdown-locale
       li(class="flex items-center")
-        router-link-extending(class="text-primary font-bold text-caption" to="/logout") {{$t('word.logout')}}
+        router-link-extending(class="text-primary font-bold text-caption" to="/logout") {{$t('a.logout')}}
         svg-icon(iconName="arrow-right" size="24" class="text-black-650")
 div(class="w-screen mt-14.5")
   div(v-if="orgList.length === 0" class="w-full flex flex-col items-center pt-with-header-empty")
-    h3(class="text-primary font-bold text-h3 mb-6") {{$t('term.createYourOrg')}}
-    p(class="text-primary text-body1 line-height-1.6 w-160 text-center mb-7.5") {{$t('sentence.providePlatform')}}
+    h3(class="text-primary font-bold text-h3 mb-6") {{$t('a.createYourOrg')}}
+    p(class="text-primary text-body1 line-height-1.6 w-160 text-center mb-7.5") {{$t('a.providePlatform')}}
     div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="isOpenCreateForm = true")
       div(class="grid justify-items-center gap-y-3.5")
         svg-icon(iconName="old-add" size="24")
-        span(class="text-primary-middle text-body2 font-bold") {{$t('term.createOrg')}}
+        span(class="text-primary-middle text-body2 font-bold") {{$t('a.createOrg')}}
   div(v-else class="pt-with-header px-88")
-    p(class="text-black-800 font-bold text-body1 pb-3 border-b border-black-200") {{$t('term.yourOrg')}}
+    p(class="text-black-800 font-bold text-body1 pb-3 border-b border-black-200") {{$t('a.yourOrg')}}
     div(class="flex gap-5 flex-wrap mt-7.5")
       div(v-for="org in orgList" class="w-58 h-55 rounded-md border border-black-400 bg-black-100 flex flex-col items-center py-5 cursor-pointer" @click="goToPublicLibrary(org.orgName)")
         div(class="w-15 h-15 mb-5")
           img(:src="org.logo" class="rounded-full")
         span(class="text-body1 text-primary font-bold mb-3") {{org.orgName}}
-        span(class="text-black-650 text-caption mb-7.5") {{`${org.memberList.length} ${$t('word.member')}`}}
+        span(class="text-black-650 text-caption mb-7.5") {{`${org.memberList.length} ${$t('a.member')}`}}
         div(class="flex flex-row-reverse transform -translate-x-1.5")
           template(v-if="org.memberList.length <= 6")
             img(v-for="(member, index) in org.memberList"
@@ -57,15 +57,15 @@ div(class="w-screen mt-14.5")
       div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="isOpenCreateForm = true")
         div(class="grid justify-items-center gap-y-3.5")
           svg-icon(iconName="old-add" size="24")
-          span(class="text-primary-middle text-body2 font-bold") {{$t('term.createOrg')}}
+          span(class="text-primary-middle text-body2 font-bold") {{$t('a.createOrg')}}
 div(v-if="isOpenCreateForm" class="fixed inset-0 z-10 w-screen h-screen bg-black bg-opacity-70 flex justify-center overflow-y-scroll")
   div(class="flex flex-col w-105 h-175 rounded-lg bg-black-0 mt-28.5 mb-20.5 relative pt-10.5 px-10 pb-7.5")
     svg-icon(iconName="close" size="24" class="text-black-700 absolute top-3 right-3 cursor-pointer" @click="closeCreateForm")
-    h6(class="text-primary font-bold text-h6 pb-8.5 mb-2.5 border-b border-black-400 w-full text-center") {{$t('term.createOrg')}}
-    span(class="self-end text-caption text-black-600 mb-1.5") {{$t('term.required')}}
+    h6(class="text-primary font-bold text-h6 pb-8.5 mb-2.5 border-b border-black-400 w-full text-center") {{$t('a.createOrg')}}
+    span(class="self-end text-caption text-black-600 mb-1.5") {{$t('a.required')}}
     form(class="w-full grid gap-y-4")
       div(class="grid gap-y-3")
-        span(class="text-primary font-bold text-body2") {{$t('term.orgType')}}
+        span(class="text-primary font-bold text-body2") {{$t('a.orgType')}}
           span(class="text-warn") *
         div(class="flex justify-between")
           old-input-radio(v-for="type in orgCategoryList"
@@ -75,24 +75,25 @@ div(v-if="isOpenCreateForm" class="fixed inset-0 z-10 w-screen h-screen bg-black
             :label="type.label"
           )
       div(class="grid gap-y-3 relative z-10")
-        span(class="text-primary font-bold text-body2") {{$t('term.country')}}
+        span(class="text-primary font-bold text-body2") {{$t('a.country')}}
           span(class="text-warn") *
-        old-input-select(v-model:value="formData.countryCode" :options="countryList" keyOptionDisplay="name" keyOptionValue="countryCode" :placeholder="$t('form.org.country')")
+        old-input-select(v-model:value="formData.countryCode" :options="countryList" keyOptionDisplay="name" keyOptionValue="countryCode" :placeholder="$t('a.country')")
       div(class="grid gap-y-3 relative")
-        span(v-if="isOrgNameExist" class="absolute right-0 top-1.5 text-caption text-warn") {{$t('error.orgNameAlreadyExist')}}
-        span(class="text-primary font-bold text-body2") {{$t('term.orgName')}}
+        span(class="text-primary font-bold text-body2") {{$t('a.orgName')}}
           span(class="text-warn") *
-        input-text(v-model:value="formData.orgName" :placeholder="$t('form.org.orgName')" @blur="checkOrgNameExist" :customIsError="isOrgNameExist")
+        input-text(v-model:value="formData.orgName" :placeholder="$t('a.orgName')" @blur="checkOrgNameExist")
+          template(#errorMsg v-if="isOrgNameExist")
+            span(class="absolute right-0 -top-1.5 transform -translate-y-full text-caption text-warn") {{$t('reuse.nameAlreadyExists')}}
       div(class="grid gap-y-3")
-        span(class="text-primary font-bold text-body2") {{$t('term.orgAddress')}}
-        input-text(v-model:value="formData.address" :placeholder="$t('form.org.orgAddress')")
+        span(class="text-primary font-bold text-body2") {{$t('a.orgAddress')}}
+        input-text(v-model:value="formData.address" :placeholder="$t('a.orgAddress')")
       div(class="grid gap-y-3 relative z-9")
-        span(class="text-primary font-bold text-body2") {{$t('word.phone')}}
-        input-calling-code(v-model:value="formData.phone" v-model:countryCode="formData.phoneCountryCode" :placeholder="$t('form.org.phone')")
+        span(class="text-primary font-bold text-body2") {{$t('a.phone')}}
+        input-calling-code(v-model:value="formData.phone" v-model:countryCode="formData.phoneCountryCode" :placeholder="$t('a.yourPhone')")
       div(class="grid gap-y-3 relative z-8")
-        span(class="text-primary font-bold text-body2") {{$t('word.fax')}}
-        input-calling-code(v-model:value="formData.fax" v-model:countryCode="formData.faxCountryCode" :placeholder="$t('form.org.fax')")
-    btn(size="lg" class="mt-6" :disabled="!avaliableToCreateOrg" @click="createOrg") {{$t('word.create')}}
+        span(class="text-primary font-bold text-body2") {{$t('a.fax')}}
+        input-calling-code(v-model:value="formData.fax" v-model:countryCode="formData.faxCountryCode" :placeholder="$t('a.yourFax')")
+    btn(size="lg" class="mt-6" :disabled="!avaliableToCreateOrg" @click="createOrg") {{$t('a.create')}}
 </template>
 
 <script>
@@ -187,7 +188,7 @@ export default {
     }
 
     const checkOrgNameExist = async () => {
-      // isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: formData.orgName })
+      isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: formData.orgName })
     }
 
     return {

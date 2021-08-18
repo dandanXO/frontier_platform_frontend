@@ -1,16 +1,51 @@
 import axios from '@/apis'
 
 export default {
-  createOrg: (data) => axios('/org/create', {
+  createOrg: ({ orgName, orgCategoryId, countryCode, address, phone, phoneCountryCode, fax, faxCountryCode }) => axios('/org/create', {
     method: 'POST',
-    data
+    data: { orgName, orgCategoryId, countryCode, address, phone, phoneCountryCode, fax, faxCountryCode }
   }),
-  getOrg: (data) => axios('/org/get', {
+  getOrg: ({ orgId }) => axios('/org/get', {
     method: 'POST',
-    data
+    data: { orgId }
   }),
-  checkOrgNameExist: (data) => axios('/org/check-name-exist', {
+  updateOrg: ({ orgId, orgName, labelColor, orgCategoryId, countryCode, address, phone, phoneCountryCode, fax, faxCountryCode }) => axios('/org/update', {
     method: 'POST',
-    data
+    data: { orgId, orgName, labelColor, orgCategoryId, countryCode, address, phone, phoneCountryCode, fax, faxCountryCode }
+  }),
+  /**
+   * @param {formData} formData
+   * @param {number} formData.orgId
+   * @param {binary} formData.logo
+   * @param {binary} formData.originalLogo
+   */
+  updateOrgLogo: (formData) => axios('/org/update-logo', {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    method: 'POST',
+    data: formData
+  }),
+  deleteOrg: ({ orgId }) => axios('/org/delete', {
+    method: 'POST',
+    data: { orgId }
+  }),
+  checkOrgNameExist: ({ orgName, orgId = null }) => axios('/org/check-name-exist', {
+    method: 'POST',
+    data: { orgName, orgId }
+  }),
+  orgInviteViaEmail: ({ orgId, emailList }) => axios('/org/member/invite-via-email', {
+    method: 'POST',
+    data: { orgId, emailList }
+  }),
+  orgCancelInvite: ({ orgId, email }) => axios('/org/member/cancel-invitation', {
+    method: 'POST',
+    data: { orgId, email }
+  }),
+  changeOrgMemberRole: ({ orgId, roleId }) => axios('/org/member/change-role', {
+    method: 'POST',
+    data: { orgId, roleId }
+  }),
+  removeOrgMember: ({ orgUserId }) => axios('/org/member/delete', {
+    method: 'POST',
+    data: { orgUserId }
   })
 }

@@ -1,48 +1,14 @@
 import userApi from '@/apis/user'
+import orgUser from '@/store/modules/user/orgUser'
 import setVuexState from '@/utils/set-vuex-state'
 
 const state = () => ({
   lastName: '',
   firstName: '',
-  displayName: '',
-  avatar: '',
-  originalAvatar: '',
   email: '',
   isVerify: false,
   locale: 'zh-TW',
-  organizationList: [
-    {
-      orgId: 1,
-      orgName: 'Coop Inc.',
-      logo: 'https://picsum.photos/200',
-      memberList: [
-        {
-          avatar: 'https://picsum.photos/200'
-        },
-        {
-          avatar: 'https://picsum.photos/200'
-        },
-        {
-          avatar: 'https://picsum.photos/200'
-        },
-        {
-          avatar: 'https://picsum.photos/200'
-        },
-        {
-          avatar: 'https://picsum.photos/200'
-        },
-        {
-          avatar: 'https://picsum.photos/200'
-        },
-        {
-          avatar: 'https://picsum.photos/200'
-        },
-        {
-          avatar: 'https://picsum.photos/200'
-        }
-      ]
-    }
-  ]
+  organizationList: []
 })
 
 const getters = {
@@ -51,20 +17,12 @@ const getters = {
   organizationList: (state) => state.organizationList
 }
 
-const mutations = {
-}
-
 const actions = {
   setUser ({ state }, data) {
     setVuexState(state, data)
   },
-  async getUser ({ getters, dispatch }, { orgName }) {
-    const orgId = getters.organizationList.find(org => org.orgName === orgName)?.orgId || null
-    const { data } = await userApi.getUser({ orgId })
-    dispatch('handleResponseData', { data }, { root: true })
-  },
-  async getUserOrgList ({ dispatch }) {
-    const { data } = await userApi.getUserOrgList()
+  async getUser ({ dispatch }) {
+    const { data } = await userApi.getUser()
     dispatch('handleResponseData', { data }, { root: true })
   },
   async checkEmailExist (_, params) {
@@ -132,6 +90,8 @@ export default {
   namespaced: true,
   state,
   getters,
-  mutations,
-  actions
+  actions,
+  modules: {
+    orgUser
+  }
 }

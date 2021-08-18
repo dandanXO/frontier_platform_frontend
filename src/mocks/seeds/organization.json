@@ -1,32 +1,36 @@
 [
   {
     "orgId": 1,
+    "orgNo": "20200601",
     "logo": "https://picsum.photos/200",
     "originalLogo": "https://picsum.photos/200",
     "orgName": "Coop Inc.",
-    "orgCategoryId": "",
-    "countryCode": "",
+    "orgCategoryId": 1,
+    "countryCode": "TW",
     "address": "",
     "phone": "",
-    "phoneCountryCode": "",
+    "phoneCountryCode": "TW",
     "fax": "",
-    "faxCountryCode": "",
+    "faxCountryCode": "TW",
     "inviteCode": "kjkdjxzm",
-    "labelColor": "#7b61ff",
+    "labelColor": "#D3242A",
+    "uploadMaterialEmail": "",
     "memberList": [
       {
         "orgUserId": 1,
         "displayName": "Mia Yang",
-        "avatar": "https://www.ddsdsdsd",
+        "avatar": "https://picsum.photos/300",
+        "originalAvatar": "https://picsum.photos/300",
         "email": "mia.yang@f",
         "roleId": 1,
         "lastSignInTime": "8小時前",
         "isPending": false
       },
       {
-        "orgUserId": 2,
+        "orgUserId": null,
         "displayName": null,
-        "avatar": "https://www.ddsdsdsd",
+        "avatar": null,
+        "originalAvatar": null,
         "email": "mia.yang@frontier.cool",
         "roleId": null,
         "lastSignInTime": null,
@@ -43,6 +47,12 @@
         "groupId": 2,
         "groupName": "IT Department",
         "labelColor": "#ee695e"
+      }
+    ],
+    "historyList": [
+      {
+        "createDate": "",
+        "content": ""
       }
     ]
   }

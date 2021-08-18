@@ -1,5 +1,5 @@
 <template lang="pug">
-label
+div(class="relative")
   slot(name="label")
     div(v-if="label !== ''" class="flex pb-2 text-body2 font-bold")
       i(v-if="required" class="text-warn") *
@@ -25,22 +25,22 @@ label
       class="flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 placeholder-black-400 placeholder-text-body2 placeholder-overflow-visible disabled:text-black-600"
       autocomplete
     )
-    div(v-if="appendIcon !== '' || clearable" class="pl-1")
+    div(v-if="appendIcon !== '' || clearable" class="pl-1 h-full")
       slot(name="appendIcon")
-        svg-icon(
-          v-if="clearable && value !== ''"
-          size="20"
-          iconName="clear"
-          class="text-black-500"
-          @click="$emit('update:value', '')"
-        )
-  slot(name="errorMsg")
-    p(v-if="errorMsg" class="text-caption text-warn pt-1") {{$t(errorMsg)}}
+        div(v-if="clearable && value !== ''" class="h-full flex items-center")
+          svg-icon(
+            size="20"
+            iconName="clear"
+            class="text-black-500"
+            @click="$emit('update:value', '')"
+          )
+  p(v-if="errorMsg !== ''" class="absolute text-caption text-warn pt-1") {{$t(errorMsg)}}
+  slot(v-else name="errorMsg")
 </template>
 
 <script>
 import { ref } from '@vue/reactivity'
-import { computed, watch } from '@vue/runtime-core'
+import { computed, onUpdated, watch } from '@vue/runtime-core'
 export default {
   name: 'InputText',
   props: {
@@ -84,18 +84,26 @@ export default {
       type: Array,
       default: () => []
     },
-    customIsError: {
-      type: Boolean,
-      default: false
+    customErrorMsg: {
+      type: String,
+      default: ''
     },
     disabled: {
       type: Boolean,
       default: false
     }
   },
-  setup (props, { emit }) {
+  setup (props, { emit, slots }) {
     const isFocus = ref(false)
-    const errorMsg = ref('')
+    const isError = ref(false)
+    const ruleErrorMsg = ref('')
+    const isEmpty = computed(() => props.value === '')
+    const errorMsg = computed(() => {
+      if (ruleErrorMsg.value !== '') {
+        return ruleErrorMsg.value
+      }
+      return props.customErrorMsg
+    })
 
     const classBorder = computed(() => {
       if (props.disabled) {
@@ -114,12 +122,9 @@ export default {
         : 'text-black-500'
     })
 
-    const isError = computed(() => props.customIsError || errorMsg.value !== '')
-    const isEmpty = computed(() => props.value === '')
     const typing = (e) => {
       emit('update:value', e.target.value)
     }
-
     const focusHandler = () => {
       isFocus.value = true
     }
@@ -136,18 +141,26 @@ export default {
 
           for (let i = 0; i < rules.length; i++) {
             const rule = rules[i]
-            const { isValid, message } = rule(v)
+            const result = rule(v)
 
-            if (!isValid) {
-              errorMsg.value = message
-              break
+            if (typeof result !== 'boolean') {
+              ruleErrorMsg.value = result
+              return
             } else {
-              errorMsg.value = ''
+              ruleErrorMsg.value = ''
             }
           }
         }
       )
     }
+
+    /**
+     * Because attrs and slots and not reactive, so in order to apply side effects based on slots changes,
+     * it have to do inside an onUpdated lifecycle hook.
+     */
+    onUpdated(() => {
+      isError.value = errorMsg.value !== '' || slots.errorMsg !== undefined
+    })
 
     return {
       isFocus,
