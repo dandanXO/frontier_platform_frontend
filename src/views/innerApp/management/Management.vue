@@ -30,17 +30,17 @@ export default {
 
     const organization = computed(() => store.getters['organization/organization'])
     const menuOrgOrGroup = computed(() => {
-      const { orgName } = organization.value
+      const { orgNo, orgName } = organization.value
       return [
         {
           name: orgName,
-          path: `/${orgName}/management/about`
+          path: `/${orgNo}/management/about`
         },
         ...store.getters['organization/groupList'].map(group => {
           const { groupId, groupName } = group
           return {
             name: groupName,
-            path: `/${orgName}/management/${groupId}/about`
+            path: `/${orgNo}/management/${groupId}/about`
           }
         })
       ]

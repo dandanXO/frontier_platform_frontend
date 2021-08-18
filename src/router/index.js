@@ -55,16 +55,16 @@ const routes = [
     }
   },
   {
-    path: '/:orgName',
-    redirect: to => `/${to.params.orgName}/public-library`,
+    path: '/:orgNo',
+    redirect: to => `/${to.params.orgNo}/public-library`,
     name: 'InnerAppLayout',
     meta: {
       requiresLogin: true
     },
     component: () => import('@/views/innerApp/InnerAppLayout.vue'),
     beforeEnter: async (to, from, next) => {
-      await store.dispatch('user/orgUser/getOrgUser', { orgName: to.params.orgName })
-      await store.dispatch('organization/getOrg', { orgName: to.params.orgName })
+      await store.dispatch('user/orgUser/getOrgUser', { orgNo: to.params.orgNo })
+      await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
       next()
     },
     children: [
@@ -75,7 +75,7 @@ const routes = [
       },
       {
         path: 'management',
-        redirect: to => `/${to.params.orgName}/management/about`,
+        redirect: to => `/${to.params.orgNo}/management/about`,
         name: 'Management',
         component: () => import('@/views/innerApp/management/Management.vue'),
         children: [
@@ -94,6 +94,63 @@ const routes = [
             name: 'ManagementGroup',
             props: true,
             component: () => import('@/views/innerApp/management/ManagementGroup.vue')
+          }
+        ]
+      },
+      {
+        path: 'global-search',
+        name: 'GlobalSearch',
+        component: () => import('@/views/innerApp/GlobalSearch.vue')
+      },
+      {
+        path: 'favorites',
+        name: 'Favorites',
+        component: () => import('@/views/innerApp/Favorites.vue')
+      },
+      {
+        path: 'workspace',
+        name: 'OrgWorkspace',
+        component: () => import('@/views/innerApp/organization/OrgWorkspace.vue')
+      },
+      {
+        path: 'assets',
+        name: 'OrgAssets',
+        component: () => import('@/views/innerApp/organization/OrgAssets.vue')
+      },
+      {
+        path: 'share-to-me',
+        name: 'OrgShareToMe',
+        component: () => import('@/views/innerApp/organization/OrgShareToMe.vue')
+      },
+      {
+        path: 'sticker',
+        name: 'OrgSticker',
+        component: () => import('@/views/innerApp/organization/OrgSticker.vue')
+      },
+      {
+        path: ':groupId(\\d+)',
+        redirect: to => `/${to.params.orgNo}/${to.params.groupId}/workspace`,
+        component: () => import('@/views/PassThrough'),
+        children: [
+          {
+            path: 'workspace',
+            name: 'GroupWorkspace',
+            component: () => import('@/views/innerApp/group/GroupWorkspace.vue')
+          },
+          {
+            path: 'assets',
+            name: 'GroupAssets',
+            component: () => import('@/views/innerApp/group/GroupAssets.vue')
+          },
+          {
+            path: 'share-to-me',
+            name: 'GroupShareToMe',
+            component: () => import('@/views/innerApp/group/GroupShareToMe.vue')
+          },
+          {
+            path: 'sticker',
+            name: 'GroupSticker',
+            component: () => import('@/views/innerApp/group/GroupSticker.vue')
           }
         ]
       }

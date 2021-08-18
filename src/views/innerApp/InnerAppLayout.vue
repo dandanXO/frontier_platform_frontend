@@ -19,7 +19,7 @@ div(class="fixed z-20 w-60 h-full left-0 top-0 bottom-0 bg-black-100 sidebar-sha
         div(
           v-for="menu in menuGlobal"
           class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-black-400"
-          :class="[{ 'bg-black-500': currentTab === menu.path }]"
+          :class="[{ 'bg-black-500': $route.matched.some(route => route.name === menu.routeName) }]"
           @click="currentTab = menu.path, $router.push(menu.path)"
         )
           svg-icon(:iconName="menu.icon" class="text-black-700")
@@ -55,50 +55,55 @@ main(class="ml-60")
 </template>
 
 <script>
-import { ref, reactive } from '@vue/reactivity'
 import { useStore } from 'vuex'
-import { computed } from '@vue/runtime-core'
+import { computed, ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 
 export default {
   name: 'InnerAppLayout',
   setup () {
     const store = useStore()
+    const route = useRoute()
     const { t } = useI18n()
 
     const organization = computed(() => store.getters['organization/organization'])
     const user = computed(() => store.getters['user/user'])
     const orgUser = computed(() => store.getters['user/orgUser/orgUser'])
 
-    const currentTab = ref('')
+    const currentTab = ref(decodeURI(route.path))
     const menuGlobal = reactive([
       {
         id: 'publicLibrary',
         title: 'reuse.publicLibrary',
         icon: 'bookmark_border',
-        path: `/${organization.value.orgName}/public-library`
+        routeName: 'PublicLibrary',
+        path: `/${organization.value.orgNo}/public-library`
       },
       {
         id: 'management',
         title: 'reuse.management',
         icon: 'management',
-        path: `/${organization.value.orgName}/management`
+        routeName: 'Management',
+        path: `/${organization.value.orgNo}/management`
       },
       {
         id: 'globalSearch',
         title: 'reuse.globalSearch',
         icon: 'search_all',
-        path: `/${organization.value.orgName}/assglobal-searchets`
+        routeName: 'GlobalSearch',
+        path: `/${organization.value.orgNo}/global-search`
       },
       {
         id: 'favorites',
         title: 'reuse.favorites',
         icon: 'favorite_border',
-        path: `/${organization.value.orgName}/favorites`
+        routeName: 'Favorites',
+        path: `/${organization.value.orgNo}/favorites`
       }
     ])
     const menuOrgOrGroup = computed(() => {
-      const { orgId, orgName, labelColor } = organization.value
+      const { orgId, orgNo, labelColor } = organization.value
       return [
         {
           id: orgId,
@@ -108,23 +113,23 @@ export default {
             {
               id: 'assets',
               title: 'reuse.assets',
-              path: `/${orgName}/assets`,
+              path: `/${orgNo}/assets`,
               icon: 'upload'
             },
             {
               id: 'workspace',
               title: 'reuse.workspace',
-              path: `/${orgName}/workspace`
+              path: `/${orgNo}/workspace`
             },
             {
               id: 'shareToMe',
               title: 'reuse.shareToMe',
-              path: `/${orgName}/shareToMe`
+              path: `/${orgNo}/share-to-me`
             },
             {
               id: 'sticker',
               title: 'reuse.sticker',
-              path: `/${orgName}/sticker`
+              path: `/${orgNo}/sticker`
             }
           ]
         },
@@ -138,23 +143,23 @@ export default {
               {
                 id: 'assets',
                 title: 'reuse.assets',
-                path: `/${orgName}/${groupId}/assets`,
+                path: `/${orgNo}/${groupId}/assets`,
                 icon: 'upload'
               },
               {
                 id: 'workspace',
                 title: 'reuse.workspace',
-                path: `/${orgName}/${groupId}/workspace`
+                path: `/${orgNo}/${groupId}/workspace`
               },
               {
                 id: 'shareToMe',
                 title: 'reuse.shareToMe',
-                path: `/${orgName}/${groupId}/shareToMe`
+                path: `/${orgNo}/${groupId}/share-to-me`
               },
               {
                 id: 'sticker',
                 title: 'reuse.sticker',
-                path: `/${orgName}/${groupId}/sticker`
+                path: `/${orgNo}/${groupId}/sticker`
               }
             ]
           }
