@@ -1,7 +1,8 @@
+import 'overlayscrollbars/css/OverlayScrollbars.css'
 import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import App from '@/App.vue'
+import router from '@/router'
+import store from '@/store'
 import i18n from '@/utils/i18n'
 
 const requireAll = requireContext => requireContext.keys().map(requireContext)

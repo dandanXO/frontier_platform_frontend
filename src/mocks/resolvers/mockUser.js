@@ -41,21 +41,8 @@ export default {
   },
   getUser: (req, res, ctx) => {
     const response = deepClone(successState)
-    delete req.user.organizationList
     response.result.user = req.user
 
-    return res(
-      ctx.status(200),
-      ctx.json(response)
-    )
-  },
-  getUserOrgList: (req, res, ctx) => {
-    const response = deepClone(successState)
-    response.result = {
-      user: {
-        organizationList: req.user.organizationList
-      }
-    }
     return res(
       ctx.status(200),
       ctx.json(response)

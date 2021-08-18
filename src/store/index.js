@@ -8,14 +8,18 @@ export default createStore({
     handleResponseData ({ dispatch }, { data }) {
       const { success, message, result } = JSON.parse(JSON.stringify(data))
 
-      const moduleList = ['user', 'organization']
+      const namespacedParentModuleList = ['user', 'organization']
 
-      moduleList.forEach(module => {
+      namespacedParentModuleList.forEach(module => {
         if (Object.prototype.hasOwnProperty.call(result, module)) {
           const capitalizedModule = module.charAt(0).toUpperCase() + module.slice(1)
           dispatch(`${module}/set${capitalizedModule}`, result[module], { root: true })
         }
       })
+
+      if (Object.prototype.hasOwnProperty.call(result, 'orgUser')) {
+        dispatch('user/orgUser/setOrgUser', result.orgUser, { root: true })
+      }
 
       if (!success) {
         throw message.content

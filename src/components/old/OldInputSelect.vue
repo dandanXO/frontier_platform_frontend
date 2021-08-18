@@ -34,7 +34,7 @@ dropdown(
         v-for="(option, index) in options"
         class="h-8.5 pl-2 flex items-center"
         :class="[ index === currentIndex ? 'bg-black-200 rounded' : '']"
-        @click="select($event, option)"
+        @click="select($event, option), $emit('select', option[keyOptionValue])"
       )
         span(class="text-body2 text-black-600") {{option[keyOptionDisplay]}}
 </template>

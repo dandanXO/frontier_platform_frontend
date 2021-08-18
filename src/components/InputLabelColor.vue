@@ -1,0 +1,101 @@
+<template lang="pug">
+input-text(v-model:value="inputTextValue" class="w-85")
+  template(#appendIcon)
+    div(class="h-full flex items-center gap-x-4 -mr-4" click.stop)
+      svg-icon(v-if="textValue !== ''" iconName="clear" size="20"  class="text-black-500" @click="$emit('update:textValue', '')")
+      dropdown(v-model:value="inputLabelColor" class="w-18 h-full" :options="labelColorList" keyOptionValue="labelColor")
+        template(#displayItem="{ isExpand, option }")
+          div(class="h-full flex items-center gap-x-1 pl-3 border-l border-black-400")
+            label(class="w-5 h-5 rounded-sm" :style="{ 'background-color': option.labelColor }")
+            svg-icon(iconName="arrow-down" size="20" class="text-black-600 transform" :class="[ isExpand ? '-rotate-90' : 'rotate-90' ]")
+        template(#dropdownList="{ select, currentIndex }")
+          div(class="w-max absolute top-full -right-px transform translate-y-1.5 p-2.5 rounded bg-black-0" style="box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);")
+            div(class="grid grid-cols-6 grid-rows-3 gap-x-2 gap-y-1.5")
+              label(v-for="(item, index) in labelColorList" class="w-5 h-5 rounded-sm relative cursor-pointer" :style="{ 'background-color': item.labelColor }" @click="select($event, item)")
+                svg-icon(v-if="index === currentIndex" iconName="done" size="14" class="text-black-0 absolute transform top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2")
+  template(#errorMsg v-if="hasSlotContent")
+    slot(name="errorMsg")
+</template>
+
+<script>
+import { reactive, computed } from 'vue'
+export default {
+  name: 'InputLabelColor',
+  props: {
+    labelColor: {
+      type: String,
+      required: true
+    },
+    textValue: {
+      type: String,
+      required: true
+    },
+    hasSlotContent: {
+      type: Boolean,
+      default: false
+    }
+  },
+  emits: ['update:labelColor', 'update:textValue'],
+  setup (props, { emit }) {
+    const labelColorList = reactive([
+      {
+        labelColor: '#D3242A'
+      },
+      {
+        labelColor: '#EE695E'
+      },
+      {
+        labelColor: '#FAA62A'
+      },
+      {
+        labelColor: '#FED402'
+      },
+      {
+        labelColor: '#61C554'
+      },
+      {
+        labelColor: '#139613'
+      },
+      {
+        labelColor: '#00CEB4'
+      },
+      {
+        labelColor: '#18AAFD'
+      },
+      {
+        labelColor: '#0369DA'
+      },
+      {
+        labelColor: '#7B61FF'
+      },
+      {
+        labelColor: '#CD9BFF'
+      },
+      {
+        labelColor: '#FF79B9'
+      },
+      {
+        labelColor: '#964800'
+      },
+      {
+        labelColor: '#616161'
+      }
+    ])
+
+    const inputLabelColor = computed({
+      get: () => props.labelColor,
+      set: (v) => emit('update:labelColor', v)
+    })
+    const inputTextValue = computed({
+      get: () => props.textValue,
+      set: (v) => emit('update:textValue', v)
+    })
+
+    return {
+      labelColorList,
+      inputLabelColor,
+      inputTextValue
+    }
+  }
+}
+</script>

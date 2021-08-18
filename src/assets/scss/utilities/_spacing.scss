@@ -1,88 +1,106 @@
-@mixin spacing($className, $i) {
-  .w-#{$className} {
+@mixin spacing($className, $i, $rwd: "xl") {
+  $prefix: "";
+
+  @if $rwd != xl {
+    $prefix: $rwd + \: ;
+  }
+
+  .#{$prefix}w-#{$className} {
     width: ($i * 0.125) + rem;
   }
-  .h-#{$className} {
+  .#{$prefix}h-#{$className} {
     height: ($i * 0.125) + rem;
   }
-  .max-h-#{$className} {
+  .#{$prefix}max-h-#{$className} {
     max-height: ($i * 0.125) + rem;
   }
-  .max-w-#{$className} {
+  .#{$prefix}max-w-#{$className} {
     max-width: ($i * 0.125) + rem;
   }
-  .min-h-#{$className} {
+  .#{$prefix}min-h-#{$className} {
     min-height: ($i * 0.125) + rem;
   }
-  .min-w-#{$className} {
+  .#{$prefix}min-w-#{$className} {
     min-width: ($i * 0.125) + rem;
   }
-  .p-#{$className} {
+  .#{$prefix}p-#{$className} {
     padding: ($i * 0.125) + rem;
   }
-  .pt-#{$className} {
+  .#{$prefix}pt-#{$className} {
     padding-top: ($i * 0.125) + rem;
   }
-  .pb-#{$className} {
+  .#{$prefix}pb-#{$className} {
     padding-bottom: ($i * 0.125) + rem;
   }
-  .pl-#{$className} {
+  .#{$prefix}pl-#{$className} {
     padding-left: ($i * 0.125) + rem;
   }
-  .pr-#{$className} {
+  .#{$prefix}pr-#{$className} {
     padding-right: ($i * 0.125) + rem;
   }
-  .px-#{$className} {
+  .#{$prefix}px-#{$className} {
     padding-left: ($i * 0.125) + rem;
     padding-right: ($i * 0.125) + rem;
   }
-  .py-#{$className} {
+  .#{$prefix}py-#{$className} {
     padding-top: ($i * 0.125) + rem;
     padding-bottom: ($i * 0.125) + rem;
   }
-  .m-#{$className} {
+  .#{$prefix}m-#{$className} {
     margin: ($i * 0.125) + rem;
   }
-  .mt-#{$className} {
+  .#{$prefix}mt-#{$className} {
     margin-top: ($i * 0.125) + rem;
   }
-  .mb-#{$className} {
+  .#{$prefix}mb-#{$className} {
     margin-bottom: ($i * 0.125) + rem;
   }
-  .ml-#{$className} {
+  .#{$prefix}ml-#{$className} {
     margin-left: ($i * 0.125) + rem;
   }
-  .mr-#{$className} {
+  .#{$prefix}mr-#{$className} {
     margin-right: ($i * 0.125) + rem;
   }
-  .mx-#{$className} {
+  .#{$prefix}mx-#{$className} {
     margin-left: ($i * 0.125) + rem;
     margin-right: ($i * 0.125) + rem;
   }
-  .my-#{$className} {
+  .#{$prefix}my-#{$className} {
     margin-top: ($i * 0.125) + rem;
     margin-bottom: ($i * 0.125) + rem;
   }
-  .gap-x-#{$className} {
+  .#{$prefix}gap-x-#{$className} {
     column-gap: ($i * 0.125) + rem;
   }
-  .gap-y-#{$className} {
-    column-gap: ($i * 0.125) + rem;
+  .#{$prefix}gap-y-#{$className} {
+    row-gap: ($i * 0.125) + rem;
   }
-  .gap-#{$className} {
+  .#{$prefix}gap-#{$className} {
     gap: ($i * 0.125) + rem;
   }
-  .top-#{$className} {
+  .#{$prefix}top-#{$className} {
     top: ($i * 0.125) + rem;
   }
-  .bottom-#{$className} {
+  .#{$prefix}-top-#{$className} {
+    top: -($i * 0.125) + rem;
+  }
+  .#{$prefix}bottom-#{$className} {
     bottom: ($i * 0.125) + rem;
   }
-  .left-#{$className} {
+  .#{$prefix}-bottom-#{$className} {
+    bottom: -($i * 0.125) + rem;
+  }
+  .#{$prefix}left-#{$className} {
     left: ($i * 0.125) + rem;
   }
-  .right-#{$className} {
+  .#{$prefix}-left-#{$className} {
+    left: -($i * 0.125) + rem;
+  }
+  .#{$prefix}right-#{$className} {
     right: ($i * 0.125) + rem;
+  }
+  .#{$prefix}-right-#{$className} {
+    right: -($i * 0.125) + rem;
   }
 }
 
@@ -92,5 +110,27 @@
     @include spacing(floor($index) + \.5, $i);
   } @else {
     @include spacing($index, $i);
+  }
+}
+
+@media (max-width: 1280px) {
+  @for $i from 0 through 720 {
+    $index: $i * 0.5;
+    @if $index - floor($index) != 0 {
+      @include spacing(floor($index) + \.5, $i, "l");
+    } @else {
+      @include spacing($index, $i, "l");
+    }
+  }
+}
+
+@media (min-width: 1441px) {
+  @for $i from 0 through 720 {
+    $index: $i * 0.5;
+    @if $index - floor($index) != 0 {
+      @include spacing(floor($index) + \.5, $i, \32xl);
+    } @else {
+      @include spacing($index, $i, \32xl);
+    }
   }
 }

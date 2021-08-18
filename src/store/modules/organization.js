@@ -3,7 +3,9 @@ import setVuexState from '@/utils/set-vuex-state'
 
 const state = () => ({
   orgId: 1,
+  orgNo: '',
   logo: '',
+  originalLogo: '',
   orgName: '',
   orgCategoryId: 1,
   countryCode: '',
@@ -14,33 +16,17 @@ const state = () => ({
   faxCountryCode: '',
   inviteCode: '',
   labelColor: '',
-  memberList: [
-    // {
-    //   orgUserId: 1,
-    //   displayName: 'Mia Yang',
-    //   avatar: 'https://fdkjasdjask',
-    //   email: 'mia.yang@frontier.cool',
-    //   roleId: 1,
-    //   lastSignInTime: '8小時前',
-    //   isPending: false
-    // }
-  ],
-  groupList: [
-    // {
-    //   groupId: 1,
-    //   groupName: 'Sales Department',
-    //   labelColor: '#18AAFD'
-    // }
-  ]
+  uploadMaterialEmail: '',
+  memberList: [],
+  groupList: [],
+  historyList: []
 })
 
 const getters = {
   organization: state => state,
   memberList: state => state.memberList,
-  groupList: state => state.groupList
-}
-
-const mutations = {
+  groupList: state => state.groupList,
+  historyList: state => state.historyList
 }
 
 const actions = {
@@ -73,6 +59,13 @@ const actions = {
     const { result } = data
 
     return result.isExist
+  },
+  async updateOrg ({ state, dispatch }, params) {
+    const { data } = await organizationApi.updateOrg({
+      orgId: state.orgId,
+      ...params
+    })
+    dispatch('handleResponseData', { data }, { root: true })
   }
 }
 
@@ -80,6 +73,5 @@ export default {
   namespaced: true,
   state,
   getters,
-  mutations,
   actions
 }

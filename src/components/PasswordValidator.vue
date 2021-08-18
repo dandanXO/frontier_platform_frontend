@@ -1,10 +1,10 @@
 <template lang="pug">
 div(class="grid gap-y-1.5 text-caption")
   div(class="flex")
-    p(:class="[moreThanSix && moreThanSix ? 'text-black-800' : 'text-black-500']") {{$t('form.signUp.atLeast6Char')}}
+    p(:class="[moreThanSix && moreThanSix ? 'text-black-800' : 'text-black-500']") {{$t('a.atLeast6Char')}}
     svg-icon(v-if="moreThanSix && lessThanEighteen" iconName="tick-bold" size="12" class="ml-0.5 text-black-800")
   div(class="flex")
-    p(:class="[containsLetter ? 'text-black-800' : 'text-black-500']") {{$t('form.signUp.atLeast1Letter')}}
+    p(:class="[containsLetter ? 'text-black-800' : 'text-black-500']") {{$t('a.atLeast1Letter')}}
     svg-icon(v-if="containsLetter" iconName="tick-bold" size="12" class="ml-0.5 text-black-800")
 </template>
 
