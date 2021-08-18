@@ -123,7 +123,7 @@ export default {
       const organizationList = store.getters['user/organizationList']
 
       if (organizationList.length === 1) {
-        return router.push(`/${organizationList[0].orgName}/public-library`)
+        return router.push({ name: 'PublicLibrary', params: { orgNo: organizationList[0].orgNo } })
       }
 
       router.push('/')

@@ -29,7 +29,7 @@ div(class="w-screen mt-14.5")
   div(v-else class="pt-with-header px-88")
     p(class="text-black-800 font-bold text-body1 pb-3 border-b border-black-200") {{$t('a.yourOrg')}}
     div(class="flex gap-5 flex-wrap mt-7.5")
-      div(v-for="org in orgList" class="w-58 h-55 rounded-md border border-black-400 bg-black-100 flex flex-col items-center py-5 cursor-pointer" @click="goToPublicLibrary(org.orgName)")
+      div(v-for="org in orgList" class="w-58 h-55 rounded-md border border-black-400 bg-black-100 flex flex-col items-center py-5 cursor-pointer" @click="goToPublicLibrary(org.orgNo)")
         div(class="w-15 h-15 mb-5")
           img(:src="org.logo" class="rounded-full")
         span(class="text-body1 text-primary font-bold mb-3") {{org.orgName}}
@@ -166,11 +166,8 @@ export default {
       Object.assign(formData, initialFormData)
     }
 
-    const goToPublicLibrary = (orgName) => {
-      /**
-       * @todo 需要定義組織下的 URL
-       */
-      router.push(`/${orgName}/public-library`)
+    const goToPublicLibrary = (orgNo) => {
+      router.push({ name: 'PublicLibrary', params: { orgNo } })
     }
 
     const createOrg = async () => {
@@ -180,7 +177,7 @@ export default {
         if (isOrgNameExist.value) { return }
 
         await store.dispatch('organization/createOrg', toRaw(formData))
-        goToPublicLibrary(formData.orgName)
+        goToPublicLibrary(store.getters['organization/organization'].orgNo)
         closeCreateForm()
       } catch (error) {
         console.error(error)

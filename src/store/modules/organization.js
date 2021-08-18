@@ -49,8 +49,8 @@ const actions = {
 
     await organizationApi.createOrg(temp)
   },
-  async getOrg ({ rootGetters, dispatch }, { orgName }) {
-    const orgId = rootGetters['user/organizationList'].find(org => org.orgName === orgName)?.orgId || null
+  async getOrg ({ rootGetters, dispatch }, { orgNo }) {
+    const orgId = rootGetters['user/organizationList'].find(org => org.orgNo === orgNo)?.orgId || null
     const { data } = await organizationApi.getOrg({ orgId })
     dispatch('handleResponseData', { data }, { root: true })
   },
