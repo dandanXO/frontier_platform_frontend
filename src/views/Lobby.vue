@@ -72,12 +72,12 @@ div(v-if="isOpenCreateForm" class="fixed inset-0 z-10 w-screen h-screen bg-black
             v-model:inputValue="formData.orgCategoryId"
             name="orgCategory"
             :value="type.orgCategoryId"
-            :label="type.label"
+            :label="type.name"
           )
       div(class="grid gap-y-3 relative z-10")
         span(class="text-primary font-bold text-body2") {{$t('a.country')}}
           span(class="text-warn") *
-        old-input-select(v-model:value="formData.countryCode" :options="countryList" keyOptionDisplay="name" keyOptionValue="countryCode" :placeholder="$t('a.country')")
+        input-select(v-model:value="formData.countryCode" :options="countryList" keyOptionDisplay="name" keyOptionValue="countryCode" :placeholder="$t('a.country')" searchBox)
       div(class="grid gap-y-3 relative")
         span(class="text-primary font-bold text-body2") {{$t('a.orgName')}}
           span(class="text-warn") *
@@ -125,25 +125,7 @@ export default {
     const isOpenCreateForm = ref(false)
     const isOrgNameExist = ref(false)
     const formData = reactive({ ...initialFormData })
-    const orgCategoryList = reactive([
-      {
-        label: 'Brand',
-        orgCategoryId: 1
-      },
-      {
-        label: 'Supplier',
-        orgCategoryId: 2
-      },
-      {
-        label: 'Designer',
-        orgCategoryId: 3
-      },
-      {
-        label: 'Other',
-        orgCategoryId: 4
-      }
-    ])
-
+    const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
     const countryList = computed(() => store.getters['code/countryList'])
     const orgList = computed(() => store.getters['user/organizationList'])
     const avaliableToCreateOrg = computed(() => formData.countryCode !== '' && formData.orgName !== '' && !isOrgNameExist.value)

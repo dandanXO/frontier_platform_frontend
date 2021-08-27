@@ -1,0 +1,8 @@
+@for $i from 0 through 20 {
+  $classValue: $i * 5;
+  $opacity: $classValue / 100;
+
+  .bg-opacity-#{$classValue} {
+    --bg-opacity: #{$opacity} !important;
+  }
+}

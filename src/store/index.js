@@ -2,13 +2,14 @@ import { createStore } from 'vuex'
 import user from '@/store/modules/user'
 import code from '@/store/modules/code'
 import organization from '@/store/modules/organization'
+import helper from '@/store/modules/helper'
 
 export default createStore({
   actions: {
     handleResponseData ({ dispatch }, { data }) {
       const { success, message, result } = JSON.parse(JSON.stringify(data))
 
-      const namespacedParentModuleList = ['user', 'organization']
+      const namespacedParentModuleList = ['user', 'organization', 'code']
 
       namespacedParentModuleList.forEach(module => {
         if (Object.prototype.hasOwnProperty.call(result, module)) {
@@ -29,6 +30,7 @@ export default createStore({
   modules: {
     code,
     user,
-    organization
+    organization,
+    helper
   }
 })

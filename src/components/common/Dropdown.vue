@@ -8,6 +8,7 @@ div(ref="rootElement" class="dropdown relative cursor-pointer" @click="isExpand 
   slot(name="dropdownList"
     v-if="isExpand"
     :select="select"
+    :options="options"
     :currentIndex="currentIndex"
   )
 </template>

@@ -9,13 +9,16 @@
     color: $color !important;
   }
   .bg-#{$className} {
-    background-color: $color;
+    --bg-opacity: 1;
+    background-color: rgba($color, var(--bg-opacity));
   }
   .disabled\:bg-#{$className}:disabled {
-    background-color: $color !important;
+    --bg-opacity: 1;
+    background-color: rgba($color, var(--bg-opacity)) !important;
   }
   .hover\:bg-#{$className}:hover:not([disabled]) {
-    background-color: $color !important;
+    --bg-opacity: 1;
+    background-color: rgba($color, var(--bg-opacity)) !important;
   }
   .placeholder-#{$className}::placeholder {
     color: $color;

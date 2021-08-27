@@ -2,13 +2,6 @@ import organizationList from '@/mocks/seeds/organization'
 
 const deepClone = (data) => JSON.parse(JSON.stringify(data))
 
-// const errorState = {
-//   message: {
-//     title: '',
-//     content: ''
-//   }
-// }
-
 const successState = {
   success: true,
   message: {
@@ -59,6 +52,53 @@ export default {
     const { orgId } = req.body
     const organization = organizationList.find(org => org.orgId === orgId)
     Object.assign(organization, req.body)
+    const response = deepClone(successState)
+    response.result.organization = organization
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
+  changeOrgMemberRole: (req, res, ctx) => {
+    const { orgUserId, roleId } = req.body
+    const orgId = req.user.organizationList[0].orgId
+    const organization = organizationList.find(org => org.orgId === orgId)
+
+    const memberIndex = organization.memberList.findIndex(member => member.orgUserId === orgUserId)
+    organization.memberList[memberIndex].roleId = roleId
+
+    const response = deepClone(successState)
+    response.result.organization = organization
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
+  removeOrgMember: (req, res, ctx) => {
+    const { orgUserId } = req.body
+    const orgId = req.user.organizationList[0].orgId
+    const organization = organizationList.find(org => org.orgId === orgId)
+
+    const memberIndex = organization.memberList.findIndex(member => member.orgUserId === orgUserId)
+    organization.memberList.splice(memberIndex, 1)
+
+    const response = deepClone(successState)
+    response.result.organization = organization
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
+  cancelOrgInvitation: (req, res, ctx) => {
+    const { orgId, email } = req.body
+    const organization = organizationList.find(org => org.orgId === orgId)
+
+    const memberIndex = organization.memberList.findIndex(member => member.email === email)
+    organization.memberList.splice(memberIndex, 1)
+
     const response = deepClone(successState)
     response.result.organization = organization
 

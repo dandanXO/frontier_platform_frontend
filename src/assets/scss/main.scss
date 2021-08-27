@@ -3,6 +3,7 @@
 @import "abstracts/variables";
 @import "abstracts/functions";
 
+@import "utilities/opacity";
 @import "utilities/color";
 @import "utilities/font-size";
 @import "utilities/spacing";
@@ -10,8 +11,10 @@
 @import "utilities/overflow";
 
 html,
-body {
+body,
+#app {
   font-family: "Noto Sans TC", "微軟正黑體", sans-serif;
+  height: 100%;
 }
 
 .card-shadow {
