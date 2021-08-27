@@ -7,7 +7,7 @@ div(class="relative")
   div(class="px-4 border rounded flex items-center"
       :class="[classBorder, { 'border-warn': isError }, { 'bg-primary-thin': disabled } , size === 'lg' ? 'h-11' : 'h-9']"
     )
-    div(v-if="prependIcon !== ''" class="pr-1")
+    div(v-if="prependIcon !== '' && value === ''" class="pr-1")
       slot(name="prependIcon")
         svg-icon(
           size="20"

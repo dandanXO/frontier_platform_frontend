@@ -4,9 +4,9 @@ dropdown(v-model:value="$i18n.locale" :options="localeOptions" keyOptionValue="l
     div(class="flex items-center")
       span(class="text-primary font-bold text-caption") {{option.abbr}}
       svg-icon(iconName="arrow-down" size="24" class="text-black-650 transform" :class="[ isExpand ? '-rotate-90' : 'rotate-90' ]")
-  template(#dropdownList="{ select, currentIndex }")
+  template(#dropdownList="{ select, options, currentIndex }")
     div(class="absolute top-full right-0 transform translate-y-2 w-20 py-2 px-1 rounded grid gap-y-1" style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);")
-      div(v-for="(option, index) in localeOptions"
+      div(v-for="(option, index) in options"
         class="h-6 flex justify-center items-center"
         :class="{'bg-primary-thin rounded': index === currentIndex }"
         @click="select($event, option)"

@@ -1,0 +1,88 @@
+{
+  "countryList": [
+    {
+      "countryCode": "TW",
+      "name": "Taiwan",
+      "native": "臺灣",
+      "phone": "886",
+      "emoji": "U+1F1F9 U+1F1FC"
+    },
+    {
+      "countryCode": "SD",
+      "name": "Sudan",
+      "native": "السودان",
+      "phone": "249",
+      "emoji": "U+1F1F8 U+1F1E9"
+    }
+  ],
+  "roleList": [
+    {
+      "name": "Org Owner",
+      "roleId": 1
+    },
+    {
+      "name": "Org Admin",
+      "roleId": 2
+    },
+    {
+      "name": "Group Manager",
+      "roleId": 3
+    },
+    {
+      "name": "Member 1",
+      "roleId": 4
+    },
+    {
+      "name": "Member 2",
+      "roleId": 5
+    },
+    {
+      "name": "Member 3",
+      "roleId": 6
+    }
+  ],
+  "roleLimit": [
+    {
+      "orgRoleId": 1,
+      "groupRoleIdList": [1]
+    },
+    {
+      "orgRoleId": 2,
+      "groupRoleIdList": [2]
+    },
+    {
+      "orgRoleId": 3,
+      "groupRoleIdList": [3, 4, 5, 6]
+    },
+    {
+      "orgRoleId": 4,
+      "groupRoleIdList": [4, 5, 6]
+    },
+    {
+      "orgRoleId": 5,
+      "groupRoleIdList": [5]
+    },
+    {
+      "orgRoleId": 6,
+      "groupRoleIdList": [6]
+    }
+  ],
+  "orgCategoryList": [
+    {
+      "name": "Brand",
+      "orgCategoryId": 1
+    },
+    {
+      "name": "Supplier",
+      "orgCategoryId": 2
+    },
+    {
+      "name": "Designer",
+      "orgCategoryId": 3
+    },
+    {
+      "name": "Other",
+      "orgCategoryId": 4
+    }
+  ]
+}

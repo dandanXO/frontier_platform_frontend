@@ -1,38 +1,42 @@
 import codeApi from '@/apis/code'
+import setVuexState from '@/utils/set-vuex-state'
 
 const state = () => ({
-  countryList: [
-    // {
-    //   countryCode: 'TW',
-    //   name: 'Taiwan',
-    //   native: '臺灣',
-    //   phone: '886',
-    //   emoji: 'U+1F1F9 U+1F1FC'
-    // },
-    // {
-    //   countryCode: 'SD',
-    //   name: 'Sudan',
-    //   native: 'السودان',
-    //   phone: '249',
-    //   emoji: 'U+1F1F8 U+1F1E9'
-    // }
-  ]
+  countryList: [],
+  orgCategoryList: [],
+  roleList: [],
+  roleLimit: []
 })
 
 const getters = {
-  countryList: (state) => state.countryList
-}
-
-const mutations = {
-  SET_countryList (state, countryList) {
-    state.countryList = countryList
-  }
+  countryList: (state) => state.countryList,
+  roleList: (state) => state.roleList,
+  getRoleName: (state) => (roleId) => state.roleList.find(role => role.roleId === roleId).name,
+  roleLimit: (state) => state.roleLimit,
+  orgRoleLimitList: (state) => state.roleList.filter(role => role.roleId !== 1),
+  getGroupRoleLimitList: (state) => (orgRoleId) => state.roleLimit.find(item => item.orgRoleId === orgRoleId).groupRoleIdList,
+  orgCategoryList: (state) => state.orgCategoryList
 }
 
 const actions = {
-  async getCountryList ({ commit }) {
+  setCode ({ state }, data) {
+    setVuexState(state, data)
+  },
+  async getCountryList ({ dispatch }) {
     const { data } = await codeApi.getCountryList()
-    commit('SET_countryList', data.result.countryList)
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async getOrgCategoryList ({ dispatch }) {
+    const { data } = await codeApi.getOrgCategoryList()
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async getRoleList ({ dispatch }) {
+    const { data } = await codeApi.getRoleList()
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async getRoleLimitTable ({ dispatch }) {
+    const { data } = await codeApi.getRoleLimitTable()
+    dispatch('handleResponseData', { data }, { root: true })
   }
 }
 
@@ -40,6 +44,5 @@ export default {
   namespaced: true,
   state,
   getters,
-  mutations,
   actions
 }

@@ -66,6 +66,21 @@ const actions = {
       ...params
     })
     dispatch('handleResponseData', { data }, { root: true })
+  },
+  async changeOrgMemberRole ({ dispatch }, params) {
+    const { data } = await organizationApi.changeOrgMemberRole(params)
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async removeOrgMember ({ dispatch }, params) {
+    const { data } = await organizationApi.removeOrgMember(params)
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async cancelOrgInvitation ({ state, dispatch }, params) {
+    const { data } = await organizationApi.cancelOrgInvitation({
+      orgId: state.orgId,
+      ...params
+    })
+    dispatch('handleResponseData', { data }, { root: true })
   }
 }
 

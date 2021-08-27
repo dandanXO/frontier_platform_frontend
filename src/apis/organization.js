@@ -36,13 +36,13 @@ export default {
     method: 'POST',
     data: { orgId, emailList }
   }),
-  orgCancelInvite: ({ orgId, email }) => axios('/org/member/cancel-invitation', {
+  cancelOrgInvitation: ({ orgId, email }) => axios('/org/member/cancel-invitation', {
     method: 'POST',
     data: { orgId, email }
   }),
-  changeOrgMemberRole: ({ orgId, roleId }) => axios('/org/member/change-role', {
+  changeOrgMemberRole: ({ orgUserId, roleId }) => axios('/org/member/change-role', {
     method: 'POST',
-    data: { orgId, roleId }
+    data: { orgUserId, roleId }
   }),
   removeOrgMember: ({ orgUserId }) => axios('/org/member/delete', {
     method: 'POST',

@@ -27,13 +27,13 @@ div(class="w-full h-11 border-black-400 bg-black-0 flex")
             class="transform"
             :class="[ isExpand ? '-rotate-90 text-black-500' :'rotate-90 text-black-650']"
           )
-    template(#dropdownList="{ select, currentIndex }")
+    template(#dropdownList="{ select, options, currentIndex }")
       div(
         class="absolute top-full w-85 overflow-y-auto pt-1.5 pb-3.5 px-2 bg-black-0 border-l border-r border-b rounded-b border-primary-middle"
         :class="[classMaxHeight]"
       )
         div(
-          v-for="(country, index) in countryList"
+          v-for="(country, index) in options"
           class="h-8.5 pl-3 flex items-center"
           :class="[ index === currentIndex ? 'bg-black-200 rounded' : '']"
           @click="select($event, country)"

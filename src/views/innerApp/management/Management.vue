@@ -1,9 +1,9 @@
 <template lang="pug">
-div(class="px-6 pt-6.5")
-  div(class="h-37 flex flex-col justify-between")
+div(class="px-6 pt-6.5 h-full flex flex-col")
+  div(class="h-37 flex flex-col justify-between relative z-10")
     div(class="h-11 flex justify-between items-center")
       div(class="w-75")
-        old-input-select(v-model:value="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup")
+        input-select(v-model:value="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup")
       div(class="flex gap-x-6")
         div(class="flex gap-x-1 items-center")
           svg-icon(iconName="add_box" size="20" class="text-brand")
@@ -13,7 +13,7 @@ div(class="px-6 pt-6.5")
       div(class="flex gap-x-5 pl-3")
         div(v-for="tab in tabList" class="cursor-pointer" @click="toggleTab(tab.path)")
           p(class="pb-2 text-body1" :class="[tab.path === currentTab ? 'border-b-4 border-brand text-primary font-bold' : 'text-black-600' ]" ) {{$t(tab.name)}}
-  router-view
+  router-view(class="flex-grow")
 </template>
 
 <script>

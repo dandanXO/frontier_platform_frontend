@@ -51,6 +51,9 @@ const routes = [
     component: () => import('@/views/Lobby.vue'),
     beforeEnter: async (to, from, next) => {
       await store.dispatch('code/getCountryList')
+      await store.dispatch('code/getOrgCategoryList')
+      await store.dispatch('code/getRoleList')
+      await store.dispatch('code/getRoleLimitTable')
       next()
     }
   },
@@ -86,6 +89,9 @@ const routes = [
             component: () => import('@/views/innerApp/management/ManagementOrg.vue'),
             beforeEnter: async (to, from, next) => {
               await store.dispatch('code/getCountryList')
+              await store.dispatch('code/getOrgCategoryList')
+              await store.dispatch('code/getRoleList')
+              await store.dispatch('code/getRoleLimitTable')
               next()
             }
           },

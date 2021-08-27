@@ -33,10 +33,10 @@ div(class="fixed z-20 w-60 h-full left-0 top-0 bottom-0 bg-black-100 sidebar-sha
                 label(class="w-3 h-3 rounded-sm mr-3" :style="{ 'background-color': item.labelColor }")
                 span(class="flex-grow text-body2 text-primary truncate line-height-1.4") {{item.name}}
                 svg-icon(iconName="keyboard_arrow_right" size="24" class="text-black-650 transform" :class="[ isExpand ? 'rotate-90' : 'rotate-0' ]")
-            template(#dropdownList="{ select }")
+            template(#dropdownList="{ select, options }")
               div(class="flex flex-col gap-y-0.5" @click.stop)
                 div(
-                  v-for="menu in item.menuList"
+                  v-for="menu in options"
                   class="flex items-center justify-between h-9 pl-10 pr-5 hover:bg-black-400"
                   :class="[{ 'bg-black-500': currentTab === menu.path }]"
                   @click="select($event, menu), $router.push(menu.path)"
@@ -50,7 +50,7 @@ div(class="fixed z-20 w-60 h-full left-0 top-0 bottom-0 bg-black-100 sidebar-sha
       img(:src="orgUser.avatar" class="rounded-full w-8 h-8 mr-2")
       span(class="flex-grow text-body2 text-primary truncate line-height-1.4") {{orgUser.displayName}}
       svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650")
-main(class="ml-60")
+main(class="ml-60 h-full")
   router-view
 </template>
 

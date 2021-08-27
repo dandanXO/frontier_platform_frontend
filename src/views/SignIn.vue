@@ -80,7 +80,6 @@ div(
       p(class="text-h6 text-primary font-bold mb-4") {{$t('a.verification')}}
       p(class="max-w-58 text-body2 text-primary text-center line-height-1.6 mb-4") {{$t('a.enter6DigitCode', { email: emailForgotPassword })}}
       input-text(v-model:value="verifyCode" class="w-72" size="lg" :placeholder="$t('a.enter6digit')" :customErrorMsg="errorMsgVerifyCode")
-      //- todo: fix custom error msg
     div(class="h-25 flex justify-center items-center")
       div(class="grid grid-cols-2 gap-x-3")
         btn(size="md" type="secondary" class="h-10" @click="sendForgotPasswordEmail") {{$t('a.resend')}}

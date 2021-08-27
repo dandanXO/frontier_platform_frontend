@@ -1,4 +1,4 @@
 export default {
-  emailForma: (v) => (/.+@.+/ig).test(v),
+  emailFormat: (v) => (/.+@.+/ig).test(v),
   required: (v) => !!v
 }
