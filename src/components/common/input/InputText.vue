@@ -5,9 +5,9 @@ div(class="relative")
       i(v-if="required" class="text-warn") *
       p(class="text-primary") {{label}}
   div(class="px-4 border rounded flex items-center"
-      :class="[classBorder, { 'border-warn': isError }, { 'bg-primary-thin': disabled } , size === 'lg' ? 'h-11' : 'h-9']"
+      :class="[classBorder, { 'bg-primary-thin': disabled } , size === 'lg' ? 'h-11' : 'h-9']"
     )
-    div(v-if="prependIcon !== '' && value === ''" class="pr-1")
+    div(v-if="prependIcon !== '' && isEmpty" class="pr-1")
       slot(name="prependIcon")
         svg-icon(
           size="20"
@@ -20,8 +20,8 @@ div(class="relative")
       :placeholder="placeholder"
       :disabled="disabled"
       @input="typing"
-      @focus="focusHandler"
-      @blur="blurHandler"
+      @focus="onFocus"
+      @blur="onBlur"
       class="flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 placeholder-black-400 placeholder-text-body2 placeholder-overflow-visible disabled:text-black-600"
       autocomplete
     )
@@ -32,15 +32,16 @@ div(class="relative")
             size="20"
             iconName="clear"
             class="text-black-500"
-            @click="$emit('update:value', '')"
+            @click="clear"
           )
   p(v-if="errorMsg !== ''" class="absolute text-caption text-warn pt-1") {{$t(errorMsg)}}
   slot(v-else name="errorMsg")
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
-import { computed, onUpdated, watch } from '@vue/runtime-core'
+import { toRefs } from '@vue/reactivity'
+import useInput from '@/composables/useInput'
+
 export default {
   name: 'InputText',
   props: {
@@ -93,81 +94,18 @@ export default {
       default: false
     }
   },
-  setup (props, { emit, slots }) {
-    const isFocus = ref(false)
-    const isError = ref(false)
-    const ruleErrorMsg = ref('')
-    const isEmpty = computed(() => props.value === '')
-    const errorMsg = computed(() => {
-      if (ruleErrorMsg.value !== '') {
-        return ruleErrorMsg.value
-      }
-      return props.customErrorMsg
-    })
-
-    const classBorder = computed(() => {
-      if (props.disabled) {
-        return 'border-transparent'
-      }
-      return isFocus.value
-        ? 'border-black-600'
-        : 'border-black-400'
-    })
-    const classPrependIcon = computed(() => {
-      if (props.disabled) {
-        return 'text-black-600'
-      }
-      return isFocus.value || !isEmpty.value
-        ? 'text-primary'
-        : 'text-black-500'
-    })
-
-    const typing = (e) => {
-      emit('update:value', e.target.value)
-    }
-    const focusHandler = () => {
-      isFocus.value = true
-    }
-    const blurHandler = () => {
-      isFocus.value = false
-      emit('blur')
-    }
-
-    if (props.rules.length > 0) {
-      watch(
-        () => props.value,
-        (v) => {
-          const rules = props.rules
-
-          for (let i = 0; i < rules.length; i++) {
-            const rule = rules[i]
-            const result = rule(v)
-
-            if (typeof result !== 'boolean') {
-              ruleErrorMsg.value = result
-              return
-            } else {
-              ruleErrorMsg.value = ''
-            }
-          }
-        }
-      )
-    }
-
-    /**
-     * Because attrs and slots and not reactive, so in order to apply side effects based on slots changes,
-     * it have to do inside an onUpdated lifecycle hook.
-     */
-    onUpdated(() => {
-      isError.value = errorMsg.value !== '' || slots.errorMsg !== undefined
-    })
+  emits: ['update:value', 'blur'],
+  setup (props, context) {
+    const { value, disabled, rules, required, customErrorMsg } = toRefs(props)
+    const { isFocus, isError, onFocus, onBlur, clear, typing, isEmpty, classBorder, errorMsg, classPrependIcon } = useInput({ context, inputText: value, disabled, rules, required, customErrorMsg })
 
     return {
       isFocus,
       isEmpty,
       typing,
-      focusHandler,
-      blurHandler,
+      onFocus,
+      onBlur,
+      clear,
       errorMsg,
       isError,
       classBorder,

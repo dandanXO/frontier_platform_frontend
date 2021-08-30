@@ -1,6 +1,6 @@
 <template lang="pug">
 org-about(v-if="tab === 'about'")
-member-list(v-else-if="tab === 'members'" :memberList="memberList" location="org")
+member-list(v-else-if="tab === 'members'" :memberList="memberList")
 history-list(v-else-if="tab === 'history'" :historyList="historyList")
 </template>
 

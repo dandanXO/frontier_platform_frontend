@@ -99,7 +99,13 @@ const routes = [
             path: ':groupId(\\d+)/:tab(about|members|history)',
             name: 'ManagementGroup',
             props: true,
-            component: () => import('@/views/innerApp/management/ManagementGroup.vue')
+            component: () => import('@/views/innerApp/management/ManagementGroup.vue'),
+            beforeEnter: async (to, from, next) => {
+              await store.dispatch('code/getRoleList')
+              await store.dispatch('code/getRoleLimitTable')
+              await store.dispatch('group/getGroup', { groupId: to.params.groupId })
+              next()
+            }
           }
         ]
       },

@@ -1,0 +1,135 @@
+import organizationList from '@/mocks/seeds/organization'
+import groupList from '@/mocks/seeds/group'
+import { ROLE_ID } from '@/utils/constants'
+
+const deepClone = (data) => JSON.parse(JSON.stringify(data))
+
+const successState = {
+  success: true,
+  message: {
+    title: '',
+    content: ''
+  },
+  result: {}
+}
+
+export default {
+  createGroup: (req, res, ctx) => {
+    const { orgId, groupName, labelColor, description } = req.body
+
+    const organization = organizationList.find(org => org.orgId === orgId)
+    organization.groupList.push({
+      groupId: groupList.length + 1,
+      groupName,
+      labelColor
+    })
+
+    const defaultGroupMemberList = organization.memberList
+      .filter(member => member.roleId === ROLE_ID.OWNER || member.roleId === ROLE_ID.ADMIN)
+      .map((member, index) => {
+        delete member.orgUserId
+        return {
+          groupUserId: index,
+          ...member
+        }
+      })
+    const group = {
+      groupId: groupList.length + 1,
+      groupName,
+      labelColor,
+      description,
+      inviteCode: `invite-code:${groupName}`,
+      uploadMaterialEmail: '',
+      memberList: defaultGroupMemberList,
+      historyList: []
+    }
+    const response = deepClone(successState)
+
+    response.result.organization = organization
+    response.result.group = group
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
+  getGroup: (req, res, ctx) => {
+    const { groupId } = req.body
+    const group = groupList.find(group => group.groupId === groupId)
+    const response = deepClone(successState)
+
+    response.result.group = group
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
+  updateGroup: (req, res, ctx) => {
+    const { groupId } = req.body
+    const group = groupList.find(group => group.groupId === groupId)
+    Object.assign(group, req.body)
+
+    const organization = organizationList.find(org => org.groupList.some(group => group.groupId === groupId))
+    const orgGroupIndex = organization.groupList.findIndex(group => group.groupId === groupId)
+    organization.groupList[orgGroupIndex] = {
+      groupId,
+      groupName: group.groupName,
+      labelColor: group.labelColor
+    }
+
+    const response = deepClone(successState)
+    response.result.group = group
+    response.result.organization = organization
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
+  cancelGroupInvitation: (req, res, ctx) => {
+    const { groupId, email } = req.body
+    const group = groupList.find(group => group.groupId === groupId)
+
+    const memberIndex = group.memberList.findIndex(member => member.email === email)
+    group.memberList.splice(memberIndex, 1)
+
+    const response = deepClone(successState)
+    response.result.group = group
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
+  changeGroupMemberRole: (req, res, ctx) => {
+    const { groupUserId, roleId } = req.body
+
+    const group = groupList.find(group => group.memberList.some(member => member.groupUserId === groupUserId))
+    const memberIndex = group.memberList.findIndex(member => member.groupUserId === groupUserId)
+    group.memberList[memberIndex].groupRoleId = roleId
+
+    const response = deepClone(successState)
+    response.result.group = group
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
+  removeGroupMember: (req, res, ctx) => {
+    const { groupUserId } = req.body
+    const group = groupList.find(group => group.memberList.some(member => member.groupUserId === groupUserId))
+
+    const memberIndex = group.memberList.findIndex(member => member.groupUserId === groupUserId)
+    group.memberList.splice(memberIndex, 1)
+
+    const response = deepClone(successState)
+    response.result.group = group
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  }
+}

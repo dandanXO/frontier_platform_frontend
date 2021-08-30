@@ -5,7 +5,7 @@
 </style>
 
 <template lang="pug">
-div(class="fixed z-20 w-60 h-full left-0 top-0 bottom-0 bg-black-100 sidebar-shadow flex flex-col")
+div(class="fixed z-index:sidebar w-60 h-full left-0 top-0 bottom-0 bg-black-100 sidebar-shadow flex flex-col")
   div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
     div(class="flex items-center")
       img(:src="organization.logo" class="rounded-full w-9 h-9 mr-2")

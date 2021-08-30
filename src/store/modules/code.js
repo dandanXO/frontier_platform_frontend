@@ -1,5 +1,6 @@
 import codeApi from '@/apis/code'
 import setVuexState from '@/utils/set-vuex-state'
+import { ROLE_ID } from '@/utils/constants'
 
 const state = () => ({
   countryList: [],
@@ -13,8 +14,18 @@ const getters = {
   roleList: (state) => state.roleList,
   getRoleName: (state) => (roleId) => state.roleList.find(role => role.roleId === roleId).name,
   roleLimit: (state) => state.roleLimit,
-  orgRoleLimitList: (state) => state.roleList.filter(role => role.roleId !== 1),
-  getGroupRoleLimitList: (state) => (orgRoleId) => state.roleLimit.find(item => item.orgRoleId === orgRoleId).groupRoleIdList,
+  orgRoleLimitList: (state) => state.roleList.filter(role => role.roleId !== ROLE_ID.OWNER),
+  getGroupRoleLimitList: (state, getters) => (orgRoleId) => {
+    if (!orgRoleId) {
+      return []
+    }
+    return state.roleLimit
+      .find(item => item.orgRoleId === orgRoleId).groupRoleIdList
+      .map(roleId => ({
+        name: getters.getRoleName(roleId),
+        roleId
+      }))
+  },
   orgCategoryList: (state) => state.orgCategoryList
 }
 
