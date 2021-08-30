@@ -3,3 +3,9 @@
     z-index: $i;
   }
 }
+
+@each $item, $z-index in $itemIndex {
+  .z-index\:#{$item} {
+    z-index: $z-index;
+  }
+}

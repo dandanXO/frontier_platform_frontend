@@ -15,7 +15,6 @@ div(class="l:pl-5 pl-19 2xl:pl-59 l:pt-16 pt-17.5")
           v-model:labelColor="orgFormData.labelColor"
           v-model:textValue="orgFormData.orgName"
           :label="$t('b.orgName')"
-          :rules="[inputRules.required()]"
           :hasSlotContent="isOrgNameExist"
           required
           class="w-85 relative z-11"
@@ -58,7 +57,6 @@ import { computed, reactive, toRaw, watch, ref } from 'vue'
 import { useStore } from 'vuex'
 import InputCallingCode from '@/components/InputCallingCode'
 import InputLabelColor from '@/components/InputLabelColor'
-import inputRules from '@/utils/input-rules'
 
 export default {
   name: 'OrgAbout',
@@ -110,7 +108,6 @@ export default {
       orgCategoryList,
       countryList,
       updateOrg,
-      inputRules,
       isOrgNameExist,
       avaliableToUpdateOrg,
       organization

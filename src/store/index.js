@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import user from '@/store/modules/user'
 import code from '@/store/modules/code'
 import organization from '@/store/modules/organization'
+import group from '@/store/modules/group'
 import helper from '@/store/modules/helper'
 
 export default createStore({
@@ -9,7 +10,7 @@ export default createStore({
     handleResponseData ({ dispatch }, { data }) {
       const { success, message, result } = JSON.parse(JSON.stringify(data))
 
-      const namespacedParentModuleList = ['user', 'organization', 'code']
+      const namespacedParentModuleList = ['user', 'organization', 'code', 'group']
 
       namespacedParentModuleList.forEach(module => {
         if (Object.prototype.hasOwnProperty.call(result, module)) {
@@ -31,6 +32,7 @@ export default createStore({
     code,
     user,
     organization,
+    group,
     helper
   }
 })

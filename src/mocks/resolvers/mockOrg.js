@@ -66,7 +66,7 @@ export default {
     const organization = organizationList.find(org => org.orgId === orgId)
 
     const memberIndex = organization.memberList.findIndex(member => member.orgUserId === orgUserId)
-    organization.memberList[memberIndex].roleId = roleId
+    organization.memberList[memberIndex].orgRoleId = roleId
 
     const response = deepClone(successState)
     response.result.organization = organization

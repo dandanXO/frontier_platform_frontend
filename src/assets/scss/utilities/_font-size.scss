@@ -24,4 +24,7 @@
   .line-height-#{$className} {
     line-height: $value;
   }
+  .placeholder-line-height-#{$className}::placeholder {
+    line-height: $value;
+  }
 }

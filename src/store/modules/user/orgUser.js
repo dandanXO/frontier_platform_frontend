@@ -4,7 +4,7 @@ import setVuexState from '@/utils/set-vuex-state'
 const state = () => ({
   orgUserId: 0,
   displayName: '',
-  roleId: 0,
+  orgRoleId: 0,
   originalAvatar: '',
   avatar: '',
   lastSignInTime: '',

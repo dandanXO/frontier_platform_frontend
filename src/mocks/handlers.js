@@ -1,6 +1,7 @@
 import { rest } from 'msw'
 import mockUser from '@/mocks/resolvers/mockUser'
 import mockOrg from '@/mocks/resolvers/mockOrg'
+import mockGroup from '@/mocks/resolvers/mockGroup'
 import mockCode from '@/mocks/resolvers/mockCode'
 import deserializeUser from './middleware/deserialize-user'
 
@@ -24,5 +25,11 @@ export const handlers = [
   rest.post(BASE_URL + '/org/update', deserializeUser(mockOrg.updateOrg)),
   rest.post(BASE_URL + '/org/member/change-role', deserializeUser(mockOrg.changeOrgMemberRole)),
   rest.post(BASE_URL + '/org/member/delete', deserializeUser(mockOrg.removeOrgMember)),
-  rest.post(BASE_URL + '/org/member/cancel-invitation', deserializeUser(mockOrg.cancelOrgInvitation))
+  rest.post(BASE_URL + '/org/member/cancel-invitation', deserializeUser(mockOrg.cancelOrgInvitation)),
+  rest.post(BASE_URL + '/org/group/create', deserializeUser(mockGroup.createGroup)),
+  rest.post(BASE_URL + '/org/group/get', deserializeUser(mockGroup.getGroup)),
+  rest.post(BASE_URL + '/org/group/update', deserializeUser(mockGroup.updateGroup)),
+  rest.post(BASE_URL + '/org/group/member/cancel-invitation', deserializeUser(mockGroup.cancelGroupInvitation)),
+  rest.post(BASE_URL + '/org/group/member/change-role', deserializeUser(mockGroup.changeGroupMemberRole)),
+  rest.post(BASE_URL + '/org/group/member/delete-member', deserializeUser(mockGroup.removeGroupMember))
 ]

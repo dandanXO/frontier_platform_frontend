@@ -24,6 +24,7 @@ const state = () => ({
 
 const getters = {
   organization: state => state,
+  orgId: state => state.orgId,
   memberList: state => state.memberList,
   groupList: state => state.groupList,
   historyList: state => state.historyList

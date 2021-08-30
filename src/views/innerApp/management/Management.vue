@@ -1,13 +1,32 @@
 <template lang="pug">
 div(class="px-6 pt-6.5 h-full flex flex-col")
-  div(class="h-37 flex flex-col justify-between relative z-10")
+  div(class="h-37 flex flex-col justify-between relative")
     div(class="h-11 flex justify-between items-center")
-      div(class="w-75")
+      div(class="w-75 relative z-10")
         input-select(v-model:value="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup")
       div(class="flex gap-x-6")
-        div(class="flex gap-x-1 items-center")
-          svg-icon(iconName="add_box" size="20" class="text-brand")
-          p(class="text-body2 text-primary") {{$t('b.createGroup')}}
+        modal(:primaryText="$t('b.save')" :primaryHandler="createGroup" :primaryDisabled="!avaliableToCreateGroup" @close="modalCloseHandler")
+          template(#activator="{ open }")
+            div(class="h-full flex gap-x-1 items-center cursor-pointer" @click="open")
+              svg-icon(iconName="add_box" size="20" class="text-brand")
+              p(class="text-body2 text-primary") {{$t('b.createGroup')}}
+          div(class="w-full")
+            h6(class="text-h6 text-primary font-bold text-center pb-7.5") {{$t('b.createGroup')}}
+            input-label-color(
+              v-model:labelColor="groupFormData.labelColor"
+              v-model:textValue="groupFormData.groupName"
+              :label="$t('c.groupName')"
+              :placeholder="$t('c.yourGroupName')"
+              :hasSlotContent="isGroupNameExist"
+              required
+              class="w-85 relative z-11 mb-7.5"
+            )
+              template(#errorMsg v-if="isGroupNameExist")
+                p(class="absolute text-warn text-caption pt-1") {{$t('reuse.nameAlreadyExists')}}
+            input-textarea(v-model:value="groupFormData.description" :label="$t('c.groupDescription')" :placeholder="$t('c.describeGroup')" class="w-85 mb-1" height="160")
+            div(class="flex items-center pb-0.5")
+              svg-icon(size="14" iconName="error_outline" class="text-primary")
+              p(class="pl-1.5 text-caption text-primary") {{$t('c.afterGroupCreate')}}
         btn(size="sm" prependIcon="person_add") {{$t('b.invite')}}
     div(class="border-b border-black-400")
       div(class="flex gap-x-5 pl-3")
@@ -17,12 +36,16 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
 </template>
 
 <script>
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, toRaw } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import InputLabelColor from '@/components/InputLabelColor'
 
 export default {
   name: 'Management',
+  components: {
+    InputLabelColor
+  },
   setup () {
     const route = useRoute()
     const router = useRouter()
@@ -69,6 +92,26 @@ export default {
     const toggleTab = (tab) => {
       router.push({ name: route.name, params: { tab } })
     }
+    const initialGroupFormData = {
+      groupName: '',
+      labelColor: '#D3242A',
+      description: ''
+    }
+    const groupFormData = reactive({ ...initialGroupFormData })
+    const isGroupNameExist = computed(() => store.getters['organization/groupList'].some(group => group.groupName === groupFormData.groupName))
+    const avaliableToCreateGroup = computed(() => groupFormData.groupName !== '' && !isGroupNameExist.value)
+    const createGroup = async () => {
+      await store.dispatch('group/createGroup', toRaw(groupFormData))
+    }
+    const resetGroupFormData = () => {
+      Object.assign(groupFormData, initialGroupFormData)
+    }
+    const modalCloseHandler = () => {
+      resetGroupFormData()
+      /**
+       * @todo: create group upload email
+       */
+    }
 
     return {
       currentMenu,
@@ -76,7 +119,12 @@ export default {
       currentTab,
       tabList,
       toggleTab,
-      toggleOrgOrGroup
+      toggleOrgOrGroup,
+      createGroup,
+      groupFormData,
+      avaliableToCreateGroup,
+      isGroupNameExist,
+      modalCloseHandler
     }
   }
 }
