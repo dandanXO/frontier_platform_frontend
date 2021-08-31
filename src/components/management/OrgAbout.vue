@@ -33,7 +33,7 @@ div(class="l:pl-5 pl-19 2xl:pl-59 l:pt-16 pt-17.5")
               :label="type.name"
             )
         input-select(
-          v-model:value="orgFormData.countryCode"
+          v-model:selectValue="orgFormData.countryCode"
           :options="countryList"
           :label="$t('b.country')"
           keyOptionDisplay="name"
@@ -42,7 +42,7 @@ div(class="l:pl-5 pl-19 2xl:pl-59 l:pt-16 pt-17.5")
           class="relative z-10 w-85"
           required
         )
-        input-text(v-model:value="orgFormData.address" :label="$t('b.orgAddress')" class="w-85" :placeholder="$t('b.yourAddress')")
+        input-text(v-model:textValue="orgFormData.address" :label="$t('b.orgAddress')" class="w-85" :placeholder="$t('b.yourAddress')")
         div(class="grid gap-y-2 relative z-9")
           p(class="text-primary font-bold text-body2") {{$t('b.phone')}}
           input-calling-code(v-model:value="orgFormData.phone" v-model:countryCode="orgFormData.phoneCountryCode" :placeholder="$t('b.yourPhone')")

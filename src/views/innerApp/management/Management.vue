@@ -3,7 +3,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
   div(class="h-37 flex flex-col justify-between relative")
     div(class="h-11 flex justify-between items-center")
       div(class="w-75 relative z-10")
-        input-select(v-model:value="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup")
+        input-select(v-model:selectValue="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup")
       div(class="flex gap-x-6")
         modal(:primaryText="$t('b.save')" :primaryHandler="createGroup" :primaryDisabled="!avaliableToCreateGroup" @close="modalCloseHandler")
           template(#activator="{ open }")
@@ -27,7 +27,9 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
             div(class="flex items-center pb-0.5")
               svg-icon(size="14" iconName="error_outline" class="text-primary")
               p(class="pl-1.5 text-caption text-primary") {{$t('c.afterGroupCreate')}}
-        btn(size="sm" prependIcon="person_add") {{$t('b.invite')}}
+        modal-invite-to-org(:via="'org'")
+          template(#activator="{ open }")
+            btn(size="sm" prependIcon="person_add" @click="open") {{$t('b.invite')}}
     div(class="border-b border-black-400")
       div(class="flex gap-x-5 pl-3")
         div(v-for="tab in tabList" class="cursor-pointer" @click="toggleTab(tab.path)")
@@ -40,11 +42,13 @@ import { computed, reactive, ref, toRaw } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import InputLabelColor from '@/components/InputLabelColor'
+import ModalInviteToOrg from '@/components/modal/ModalInviteToOrg'
 
 export default {
   name: 'Management',
   components: {
-    InputLabelColor
+    InputLabelColor,
+    ModalInviteToOrg
   },
   setup () {
     const route = useRoute()
