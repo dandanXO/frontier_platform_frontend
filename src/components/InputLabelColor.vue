@@ -1,9 +1,8 @@
 <template lang="pug">
-input-text(v-model:value="inputTextValue" class="w-85")
-  template(#appendIcon)
-    div(class="h-full flex items-center gap-x-4 -mr-4" click.stop)
-      svg-icon(v-if="textValue !== ''" iconName="clear" size="20"  class="text-black-500" @click="$emit('update:textValue', '')")
-      dropdown(v-model:value="inputLabelColor" class="w-18 h-full" :options="labelColorList" keyOptionValue="labelColor")
+input-text(class="w-85")
+  template(#appendItem)
+    div(class="h-full flex items-center -mr-4 pl-4" click.stop)
+      dropdown(v-model:value="innerLabelColor" class="w-18 h-full" :options="labelColorList" keyOptionValue="labelColor")
         template(#displayItem="{ isExpand, option }")
           div(class="h-full flex items-center gap-x-1 pl-3 border-l border-black-400")
             label(class="w-5 h-5 rounded-sm" :style="{ 'background-color': option.labelColor }")
@@ -26,16 +25,12 @@ export default {
       type: String,
       required: true
     },
-    textValue: {
-      type: String,
-      required: true
-    },
     hasSlotContent: {
       type: Boolean,
       default: false
     }
   },
-  emits: ['update:labelColor', 'update:textValue'],
+  emits: ['update:labelColor'],
   setup (props, { emit }) {
     const labelColorList = reactive([
       {
@@ -82,19 +77,14 @@ export default {
       }
     ])
 
-    const inputLabelColor = computed({
+    const innerLabelColor = computed({
       get: () => props.labelColor,
       set: (v) => emit('update:labelColor', v)
-    })
-    const inputTextValue = computed({
-      get: () => props.textValue,
-      set: (v) => emit('update:textValue', v)
     })
 
     return {
       labelColorList,
-      inputLabelColor,
-      inputTextValue
+      innerLabelColor
     }
   }
 }

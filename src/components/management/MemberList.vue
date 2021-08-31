@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="pt-2.5 flex flex-col relative")
   div(class="absolute right-0 -top-3.5 transform -translate-y-full")
-    input-text(v-model:value="searchInput" size="sm" class="w-67.5" prependIcon="search")
+    input-text(v-model:textValue="searchInput" size="sm" class="w-67.5" prependIcon="search")
   div(class="w-full h-12 bg-black-200 l:pl-21 pl-25 2xl:pl-35 flex items-center text-body1 text-primary")
     p(class="l:w-46.5 w-61.5 2xl:w-74") {{$t('b.name')}}
     p(class="l:w-65 w-83.5 2xl:w-105") {{$t('b.email')}}

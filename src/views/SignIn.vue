@@ -14,8 +14,8 @@ div(class="w-screen h-screen flex justify-center bg-black-100")
       div(class="w-full h-110 rounded-lg card-shadow px-10 py-11 flex flex-col")
         p(class="text-primary text-h6 font-bold text-center pb-5.5 border-b border-black-400") {{$t('a.LOGIN')}}
         form(class="grid gap-y-3 mt-5 mb-1.5")
-          input-text(v-model:value="formData.email" :placeholder="$t('a.email')" prependIcon="mail")
-          input-password(v-model:value="formData.password" :placeholder="$t('a.password')")
+          input-text(v-model:textValue="formData.email" :placeholder="$t('a.email')" prependIcon="mail")
+          input-password(v-model:textValue="formData.password" :placeholder="$t('a.password')")
         span(class="self-end text-caption text-black-800 mb-4 cursor-pointer" @click="stateOfForgotPassword = 1") {{$t('a.forgotPassword')}}?
         btn(size="lg" class="w-full font-bold self-center" @click="generalSignIn") {{$t('a.LOGIN')}}
         div(class="flex-grow text-caption mt-1.5")
@@ -65,7 +65,7 @@ div(
       svg-icon(iconName="ic-forgot-key" size="68")
       p(class="text-h6 text-primary font-bold") {{$t('a.forgotPassword')}}
       p(class="max-w-57 text-body2 text-primary text-center line-height-1.6") {{$t('a.emailToReceiveCode')}}
-      input-text(v-model:value="emailForgotPassword" class="w-72" prependIcon="mail" size="lg" placeholder="example@gmail.com" :customErrorMsg="errorMsgSendForgotPasswordEmail")
+      input-text(v-model:textValue="emailForgotPassword" class="w-72" prependIcon="mail" size="lg" placeholder="example@gmail.com" :customErrorMsg="errorMsgSendForgotPasswordEmail")
         template(#errorMsg v-if="!isEmailExist")
           div(class="text-caption pt-1")
             p(class="text-warn whitespace-nowrap") {{$t('a.emailNotExist')}}
@@ -79,7 +79,7 @@ div(
       svg-icon(iconName="send-mail" size="68" class="mb-4")
       p(class="text-h6 text-primary font-bold mb-4") {{$t('a.verification')}}
       p(class="max-w-58 text-body2 text-primary text-center line-height-1.6 mb-4") {{$t('a.enter6DigitCode', { email: emailForgotPassword })}}
-      input-text(v-model:value="verifyCode" class="w-72" size="lg" :placeholder="$t('a.enter6digit')" :customErrorMsg="errorMsgVerifyCode")
+      input-text(v-model:textValue="verifyCode" class="w-72" size="lg" :placeholder="$t('a.enter6digit')" :customErrorMsg="errorMsgVerifyCode")
     div(class="h-25 flex justify-center items-center")
       div(class="grid grid-cols-2 gap-x-3")
         btn(size="md" type="secondary" class="h-10" @click="sendForgotPasswordEmail") {{$t('a.resend')}}

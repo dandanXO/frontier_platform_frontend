@@ -2,11 +2,11 @@ import { ref } from '@vue/reactivity'
 import { computed, watch, onUpdated } from '@vue/runtime-core'
 import inputRules from '@/utils/input-rules'
 
-export default function useInput ({ context: { emit, slots }, inputText, disabled = ref(false), rules = ref([]), required = ref(false), customErrorMsg = ref('') }) {
+export default function useInput ({ context: { emit, slots }, textValue, disabled = ref(false), rules = ref([]), required = ref(false), customErrorMsg = ref('') }) {
   const isFocus = ref(false)
 
   const isEmpty = computed(() => {
-    return inputText.value === ''
+    return textValue.value === ''
   })
 
   const classBorder = computed(() => {
@@ -30,7 +30,7 @@ export default function useInput ({ context: { emit, slots }, inputText, disable
   })
 
   const typing = (e) => {
-    emit('update:value', e.target.value)
+    emit('update:textValue', e.target.value)
   }
 
   const onFocus = () => {
@@ -43,7 +43,7 @@ export default function useInput ({ context: { emit, slots }, inputText, disable
   }
 
   const clear = () => {
-    emit('update:value', '')
+    emit('update:textValue', '')
   }
 
   const isError = ref(false)
@@ -57,7 +57,7 @@ export default function useInput ({ context: { emit, slots }, inputText, disable
 
   if (required.value || rules.value.length > 0) {
     watch(
-      () => inputText.value,
+      () => textValue.value,
       (v) => {
         const _rules = [...rules.value]
         if (required.value) {

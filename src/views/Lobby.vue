@@ -77,16 +77,16 @@ div(v-if="isOpenCreateForm" class="fixed inset-0 z-10 w-screen h-screen bg-black
       div(class="grid gap-y-3 relative z-10")
         span(class="text-primary font-bold text-body2") {{$t('a.country')}}
           span(class="text-warn") *
-        input-select(v-model:value="formData.countryCode" :options="countryList" keyOptionDisplay="name" keyOptionValue="countryCode" :placeholder="$t('a.country')" searchBox)
+        input-select(v-model:selectValue="formData.countryCode" :options="countryList" keyOptionDisplay="name" keyOptionValue="countryCode" :placeholder="$t('a.country')" searchBox)
       div(class="grid gap-y-3 relative")
         span(class="text-primary font-bold text-body2") {{$t('a.orgName')}}
           span(class="text-warn") *
-        input-text(v-model:value="formData.orgName" :placeholder="$t('a.orgName')" @blur="checkOrgNameExist")
+        input-text(v-model:textValue="formData.orgName" :placeholder="$t('a.orgName')" @blur="checkOrgNameExist")
           template(#errorMsg v-if="isOrgNameExist")
             span(class="absolute right-0 -top-1.5 transform -translate-y-full text-caption text-warn") {{$t('reuse.nameAlreadyExists')}}
       div(class="grid gap-y-3")
         span(class="text-primary font-bold text-body2") {{$t('a.orgAddress')}}
-        input-text(v-model:value="formData.address" :placeholder="$t('a.orgAddress')")
+        input-text(v-model:textValue="formData.address" :placeholder="$t('a.orgAddress')")
       div(class="grid gap-y-3 relative z-9")
         span(class="text-primary font-bold text-body2") {{$t('a.phone')}}
         input-calling-code(v-model:value="formData.phone" v-model:countryCode="formData.phoneCountryCode" :placeholder="$t('a.yourPhone')")
