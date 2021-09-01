@@ -1,19 +1,19 @@
 <template lang="pug">
 div(class="l:pl-71.5 pl-91.5 2xl:146.5")
   div(class="w-85 grid grid-flow-row")
-    p(class="justify-self-end pt-4.5 pb-5 text-caption text-black-600") *{{$t('c.required')}}
+    p(class="justify-self-end pt-4.5 pb-5 text-caption text-black-600") *{{$t('b.required')}}
     input-label-color(
       v-model:labelColor="groupFormData.labelColor"
       v-model:textValue="groupFormData.groupName"
-      :label="$t('c.groupName')"
-      :placeholder="$t('c.yourGroupName')"
+      :label="$t('b.groupName')"
+      :placeholder="$t('b.yourGroupName')"
       :hasSlotContent="isGroupNameExist"
       required
       class="w-85 relative z-11 mb-7.5"
     )
       template(#errorMsg v-if="isGroupNameExist")
-        p(class="absolute text-warn text-caption pt-1") {{$t('reuse.nameAlreadyExists')}}
-    input-textarea(v-model:value="groupFormData.description" :label="$t('c.groupDescription')" :placeholder="$t('c.describeGroup')" class="w-85 mb-7.5" height="160")
+        p(class="absolute text-warn text-caption pt-1") {{$t('err.nameAlreadyExists')}}
+    input-textarea(v-model:value="groupFormData.description" :label="$t('b.groupDescription')" :placeholder="$t('b.groupDescribeToUnderstand')" class="w-85 mb-7.5" height="160")
     btn(size="md" class="justify-self-center" :disabled="!avaliableToCreateGroup" @click="updateGroup") {{$t('reuse.save')}}
 </template>
 

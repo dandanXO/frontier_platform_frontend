@@ -176,7 +176,7 @@ export default {
         } else if (!inputValidator.required(formData.password)) {
           throw t('a.enterPassword')
         } else if (!inputValidator.emailFormat(formData.email)) {
-          throw t('a.invalidEmail')
+          throw t('err.invalidEmail')
         }
 
         const isOldUser = await store.dispatch('user/generalSignIn', toRaw(formData))
@@ -210,7 +210,7 @@ export default {
     const sendEmail = async () => {
       try {
         if (!inputValidator.emailFormat(emailForgotPassword.value)) {
-          throw t('a.invalidEmail')
+          throw t('err.invalidEmail')
         }
 
         isEmailExist.value = await store.dispatch('user/checkEmailExist', { email: emailForgotPassword.value })
