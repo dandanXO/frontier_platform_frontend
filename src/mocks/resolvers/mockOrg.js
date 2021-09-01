@@ -1,4 +1,5 @@
 import organizationList from '@/mocks/seeds/organization'
+import { ROLE_ID } from '@/utils/constants'
 
 const deepClone = (data) => JSON.parse(JSON.stringify(data))
 
@@ -98,6 +99,56 @@ export default {
 
     const memberIndex = organization.memberList.findIndex(member => member.email === email)
     organization.memberList.splice(memberIndex, 1)
+
+    const response = deepClone(successState)
+    response.result.organization = organization
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
+  checkOrgMemberExist: (req, res, ctx) => {
+    const { orgId, email } = req.body
+    const organization = organizationList.find(org => org.orgId === orgId)
+    const isExist = organization.memberList.some(member => member.email === email)
+    const response = deepClone(successState)
+    response.result.isExist = isExist
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
+  inviteToOrg: (req, res, ctx) => {
+    const { orgId, emailList } = req.body
+    const organization = organizationList.find(org => org.orgId === orgId)
+
+    const invitedMemberList = emailList.map((email, index) => {
+      return (index === 0)
+        ? {
+          orgUserId: null,
+          displayName: null,
+          avatar: null,
+          originalAvatar: null,
+          email,
+          orgRoleId: null,
+          lastSignInTime: null,
+          isPending: true
+        }
+        : {
+          orgUserId: index,
+          displayName: `New Member ${index}`,
+          avatar: null,
+          originalAvatar: null,
+          email,
+          orgRoleId: ROLE_ID.MEMBER3,
+          lastSignInTime: '8小時前',
+          isPending: true
+        }
+    })
+
+    organization.memberList.push(...invitedMemberList)
 
     const response = deepClone(successState)
     response.result.organization = organization

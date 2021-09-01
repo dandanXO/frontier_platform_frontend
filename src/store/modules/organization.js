@@ -61,6 +61,15 @@ const actions = {
 
     return result.isExist
   },
+  async checkOrgMemberExist ({ state }, params) {
+    const { data } = await organizationApi.checkOrgMemberExist({
+      orgId: state.orgId,
+      ...params
+    })
+    const { result } = data
+
+    return result.isExist
+  },
   async updateOrg ({ state, dispatch }, params) {
     const { data } = await organizationApi.updateOrg({
       orgId: state.orgId,
@@ -78,6 +87,13 @@ const actions = {
   },
   async cancelOrgInvitation ({ state, dispatch }, params) {
     const { data } = await organizationApi.cancelOrgInvitation({
+      orgId: state.orgId,
+      ...params
+    })
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async inviteToOrg ({ state, dispatch }, params) {
+    const { data } = await organizationApi.inviteToOrg({
       orgId: state.orgId,
       ...params
     })

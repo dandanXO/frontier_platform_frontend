@@ -13,7 +13,8 @@
     "sticker": "Sticker",
     "upload": "Upload",
     "nameAlreadyExists": "This name already exists",
-    "fieldRequired": "This field is required"
+    "fieldRequired": "This field is required",
+    "invalidEmail": "Invalid email address"
   },
   "a": {
     "LOGIN": "LOG IN",

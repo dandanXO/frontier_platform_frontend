@@ -47,5 +47,13 @@ export default {
   removeOrgMember: ({ orgUserId }) => axios('/org/member/delete', {
     method: 'POST',
     data: { orgUserId }
+  }),
+  checkOrgMemberExist: ({ orgId, email }) => axios('/org/member/check-exist', {
+    method: 'POST',
+    data: { orgId, email }
+  }),
+  inviteToOrg: ({ orgId, emailList }) => axios('/org/member/invite-via-email', {
+    method: 'POST',
+    data: { orgId, emailList }
   })
 }
