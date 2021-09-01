@@ -35,7 +35,7 @@ div(
     p(v-else class="ml-4 w-4 border-t border-primary")
   div(v-if="isHover" class="l:pr-5 pr-7 2xl:pr-26")
     p(v-if="member.orgRoleId === null" class="text-body2 text-black-600 cursor-pointer" @click="confirmToCancelInvitation") {{$t('b.cancel')}}
-    p(v-else-if="member.orgRoleId !== ROLE_ID.OWNER" class="text-body2 text-black-600 cursor-pointer" @click="confirmToRemoveMember") {{$t('b.remove')}}
+    p(v-else-if="member.orgRoleId !== ROLE_ID.OWNER" class="text-body2 text-black-600 cursor-pointer" @click="confirmToRemoveMember") {{$t('reuse.remove')}}
 </template>
 
 <script>
@@ -76,7 +76,7 @@ export default {
     const confirmToRemoveMember = () => {
       store.dispatch('helper/openModalConfirm', {
         title: t('b.removeMember'),
-        content: t('b.sureToRemoveMemebr', { name: props.member.displayName }),
+        content: t('b.sureToRemoveMember', { name: props.member.displayName }),
         secondaryText: t('b.confirm'),
         secondaryHandler: async () => {
           location.value === 'org'
@@ -88,7 +88,7 @@ export default {
 
     const confirmToCancelInvitation = () => {
       store.dispatch('helper/openModalConfirm', {
-        title: t('b.canelInvite'),
+        title: t('b.cancelInvite'),
         content: t('b.sureToCancelInvite'),
         secondaryText: t('b.confirm'),
         secondaryHandler: async () => {

@@ -5,31 +5,31 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
       div(class="w-75 relative z-10")
         input-select(v-model:selectValue="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup")
       div(class="flex gap-x-6")
-        modal(:primaryText="$t('b.save')" :primaryHandler="createGroup" :primaryDisabled="!avaliableToCreateGroup" @close="modalCloseHandler")
+        modal(:primaryText="$t('reuse.save')" :primaryHandler="createGroup" :primaryDisabled="!avaliableToCreateGroup" @close="modalCloseHandler")
           template(#activator="{ open }")
             div(class="h-full flex gap-x-1 items-center cursor-pointer" @click="open")
               svg-icon(iconName="add_box" size="20" class="text-brand")
-              p(class="text-body2 text-primary") {{$t('b.createGroup')}}
+              p(class="text-body2 text-primary") {{$t('reuse.createGroup')}}
           div(class="w-full")
             h6(class="text-h6 text-primary font-bold text-center pb-7.5") {{$t('b.createGroup')}}
             input-label-color(
               v-model:labelColor="groupFormData.labelColor"
               v-model:textValue="groupFormData.groupName"
-              :label="$t('c.groupName')"
-              :placeholder="$t('c.yourGroupName')"
+              :label="$t('b.groupName')"
+              :placeholder="$t('b.yourGroupName')"
               :hasSlotContent="isGroupNameExist"
               required
               class="w-85 relative z-11 mb-7.5"
             )
               template(#errorMsg v-if="isGroupNameExist")
-                p(class="absolute text-warn text-caption pt-1") {{$t('reuse.nameAlreadyExists')}}
-            input-textarea(v-model:value="groupFormData.description" :label="$t('c.groupDescription')" :placeholder="$t('c.describeGroup')" class="w-85 mb-1" height="160")
+                p(class="absolute text-warn text-caption pt-1") {{$t('err.nameAlreadyExists')}}
+            input-textarea(v-model:value="groupFormData.description" :label="$t('b.groupDescription')" :placeholder="$t('b.groupDescribeToUnderstand')" class="w-85 mb-1" height="160")
             div(class="flex items-center pb-0.5")
               svg-icon(size="14" iconName="error_outline" class="text-primary")
-              p(class="pl-1.5 text-caption text-primary") {{$t('c.afterGroupCreate')}}
+              p(class="pl-1.5 text-caption text-primary") {{$t('b.afterGroupCreate')}}
         modal-invite-to-org(:via="'org'")
           template(#activator="{ open }")
-            btn(size="sm" prependIcon="person_add" @click="open") {{$t('b.invite')}}
+            btn(size="sm" prependIcon="person_add" @click="open") {{$t('reuse.invite')}}
     div(class="border-b border-black-400")
       div(class="flex gap-x-5 pl-3")
         div(v-for="tab in tabList" class="cursor-pointer" @click="toggleTab(tab.path)")

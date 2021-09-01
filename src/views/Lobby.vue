@@ -83,7 +83,7 @@ div(v-if="isOpenCreateForm" class="fixed inset-0 z-10 w-screen h-screen bg-black
           span(class="text-warn") *
         input-text(v-model:textValue="formData.orgName" :placeholder="$t('a.orgName')" @blur="checkOrgNameExist")
           template(#errorMsg v-if="isOrgNameExist")
-            span(class="absolute right-0 -top-1.5 transform -translate-y-full text-caption text-warn") {{$t('reuse.nameAlreadyExists')}}
+            span(class="absolute right-0 -top-1.5 transform -translate-y-full text-caption text-warn") {{$t('err.nameAlreadyExists')}}
       div(class="grid gap-y-3")
         span(class="text-primary font-bold text-body2") {{$t('a.orgAddress')}}
         input-text(v-model:textValue="formData.address" :placeholder="$t('a.orgAddress')")

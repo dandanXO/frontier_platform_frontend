@@ -109,7 +109,7 @@ export default {
         errorMsg.value = ''
 
         if (formData.email !== '' && !isEmailValid.value) {
-          throw t('a.invalidEmail')
+          throw t('err.invalidEmail')
         }
 
         isEmailExist.value = await store.dispatch('user/checkEmailExist', { email: formData.email })

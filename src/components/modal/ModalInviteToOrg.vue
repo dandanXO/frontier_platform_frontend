@@ -7,7 +7,7 @@ modal(@close="resetData")
     input-text-icon(
       v-model:textValue="email"
       prependIcon="search"
-      :placeholder="$t('b.search')"
+      :placeholder="$t('b.enterEmailYouLikeToAdd')"
       :diabledIcon="email === ''"
       :customErrorMsg="errorMsg"
       @click:icon="addToInviteList"
@@ -22,7 +22,7 @@ modal(@close="resetData")
       div(class="py-5 px-8 flex items-start gap-x-2")
         svg-icon(iconName="error_outline" class="text-primary")
         p(class="flex-grow text-caption text-primary line-height-1.6") {{$t('b.increaseAmount')}}
-        btn(size="sm" :disabled="emailList.length === 0" @click="inviteToOrg(close)") {{$t('b.invite')}}
+        btn(size="sm" :disabled="emailList.length === 0" @click="inviteToOrg(close)") {{$t('reuse.invite')}}
       div(class="bg-black-100 py-5.5 px-8 flex items-center gap-x-3")
         svg-icon(iconName="link" size="36")
         input-text-btn(
@@ -31,7 +31,7 @@ modal(@close="resetData")
           diabledInput
           :textValue="inviteLink"
           :clearable="false"
-          :buttonLabel="$t('b.copy')"
+          :buttonLabel="$t('reuse.copy')"
           @click:button="copyText(inviteLink)"
         )
 </template>
@@ -65,11 +65,11 @@ export default {
     const addToInviteList = async () => {
       try {
         if (!inputValidator.emailFormat(email.value)) {
-          throw t('reuse.invalidEmail')
+          throw t('err.invalidEmail')
         }
 
         if (await store.dispatch('organization/checkOrgMemberExist', { email: toRaw(email.value) })) {
-          throw t('b.alreadyInOrg')
+          throw t('err.alreadyInOrg')
         }
 
         emailList.unshift(email.value)

@@ -7,7 +7,7 @@ div(class="l:pl-5 pl-19 2xl:pl-59 l:pt-16 pt-17.5")
         div(class="flex items-center pt-4")
           p(class="text-caption text-primary") ID: {{organization.orgNo}}
           svg-icon(iconName="content_copy" size="14" class="text-black-700")
-        p(class="pt-2.5 text-caption text-black-500 cursor-pointer") {{$t('b.delete')}}
+        p(class="pt-2.5 text-caption text-black-500 cursor-pointer") {{$t('reuse.delete')}}
     div(class="grid gap-y-8.5 relative")
       p(class="absolute text-caption text-black-500 right-0 -top-7 transform -translate-y-full") *{{$t('b.required')}}
       div(class="grid grid-cols-2 grid-rows-3 gap-y-7.5 l:gap-x-8 gap-x-15")
@@ -20,7 +20,7 @@ div(class="l:pl-5 pl-19 2xl:pl-59 l:pt-16 pt-17.5")
           class="w-85 relative z-11"
         )
           template(#errorMsg v-if="isOrgNameExist")
-            p(class="absolute text-warn text-caption pt-1") {{$t('reuse.nameAlreadyExists')}}
+            p(class="absolute text-warn text-caption pt-1") {{$t('err.nameAlreadyExists')}}
         div(class="grid gap-y-2 items-start w-85")
           div(class="flex text-body2 font-bold")
             i(class="text-warn") *
@@ -49,7 +49,7 @@ div(class="l:pl-5 pl-19 2xl:pl-59 l:pt-16 pt-17.5")
         div(class="grid gap-y-2 relative z-8")
           p(class="text-primary font-bold text-body2") {{$t('b.fax')}}
           input-calling-code(v-model:value="orgFormData.fax" v-model:countryCode="orgFormData.faxCountryCode" :placeholder="$t('b.faxNumber')")
-      btn(size="md" class="justify-self-end" :disabled="!avaliableToUpdateOrg" @click="updateOrg") {{$t('b.save')}}
+      btn(size="md" class="justify-self-end" :disabled="!avaliableToUpdateOrg" @click="updateOrg") {{$t('reuse.save')}}
 </template>
 
 <script>
