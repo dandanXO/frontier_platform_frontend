@@ -23,7 +23,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
             )
               template(#errorMsg v-if="isGroupNameExist")
                 p(class="absolute text-warn text-caption pt-1") {{$t('err.nameAlreadyExists')}}
-            input-textarea(v-model:value="groupFormData.description" :label="$t('b.groupDescription')" :placeholder="$t('b.groupDescribeToUnderstand')" class="w-85 mb-1" height="160")
+            input-textarea(v-model:textValue="groupFormData.description" :label="$t('b.groupDescription')" :placeholder="$t('b.groupDescribeToUnderstand')" class="w-85 mb-1" height="160")
             div(class="flex items-center pb-0.5")
               svg-icon(size="14" iconName="error_outline" class="text-primary")
               p(class="pl-1.5 text-caption text-primary") {{$t('b.afterGroupCreate')}}

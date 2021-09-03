@@ -94,7 +94,7 @@ export default {
 
     const countryList = computed(() => store.getters['code/countryList'])
     const inputCountryCode = computed({
-      get: () => props.countryCode,
+      get: () => props.countryCode || countryList.value[0].countryCode,
       set: (v) => emit('update:countryCode', v)
     })
     const callingCode = computed(() => countryList.value.find(country => country.countryCode === inputCountryCode.value).phone)
