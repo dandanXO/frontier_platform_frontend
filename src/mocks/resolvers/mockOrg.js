@@ -137,7 +137,7 @@ export default {
           isPending: true
         }
         : {
-          orgUserId: index,
+          orgUserId: index + 100,
           displayName: `New Member ${index}`,
           avatar: null,
           originalAvatar: null,

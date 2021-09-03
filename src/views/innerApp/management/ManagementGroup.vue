@@ -11,6 +11,7 @@ import HistoryList from '@/components/management/HistoryList.vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { onBeforeRouteUpdate } from 'vue-router'
+import { ROLE_ID } from '@/utils/constants'
 
 export default {
   name: 'ManagementGroup',
@@ -31,8 +32,19 @@ export default {
   },
   setup () {
     const store = useStore()
-    const memberList = computed(() => store.getters['group/memberList'])
+    const orgMemberList = computed(() => store.getters['organization/memberList'])
+    const groupMemberList = computed(() => store.getters['group/memberList'])
     const historyList = computed(() => store.getters['group/historyList'])
+    const memberList = computed(() => {
+      return orgMemberList.value
+        .filter(member => member.orgRoleId === ROLE_ID.OWNER || member.orgRoleId === ROLE_ID.ADMIN)
+        .map(member => ({
+          groupUserId: null,
+          groupRoleId: member.orgRoleId,
+          ...member
+        }))
+        .concat(groupMemberList.value)
+    })
 
     onBeforeRouteUpdate(async (to, from) => {
       to.params.groupId !== from.params.groupId && await store.dispatch('group/getGroup', { groupId: to.params.groupId })

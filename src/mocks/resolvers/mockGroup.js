@@ -25,7 +25,7 @@ export default {
     })
 
     const defaultGroupMemberList = organization.memberList
-      .filter(member => member.roleId === ROLE_ID.OWNER || member.roleId === ROLE_ID.ADMIN)
+      .filter(member => member.orgRoleId === ROLE_ID.OWNER || member.orgRoleId === ROLE_ID.ADMIN)
       .map((member, index) => {
         delete member.orgUserId
         return {

@@ -3,7 +3,7 @@ input-container(:required="required")
   template(#input)
     div(class="p-4 rounded border" :class="[classBorder, textareaHeight, { 'bg-primary-thin': disabled }]")
       textarea(
-        :value="value"
+        :value="textValue"
         :placeholder="placeholder"
         :disabled="disabled"
         @input="typing"
@@ -26,7 +26,7 @@ export default {
       type: Boolean,
       default: false
     },
-    value: {
+    textValue: {
       type: String,
       required: true
     },
@@ -43,10 +43,10 @@ export default {
       required: true
     }
   },
-  emits: ['update:value', 'blur'],
+  emits: ['update:textValue', 'blur'],
   setup (props, context) {
-    const { value, disabled, required } = toRefs(props)
-    const { isFocus, isError, onFocus, onBlur, typing, isEmpty, classBorder, errorMsg } = useInput({ context, inputText: value, disabled, required })
+    const { textValue, disabled, required } = toRefs(props)
+    const { isFocus, isError, onFocus, onBlur, typing, isEmpty, classBorder, errorMsg } = useInput({ context, textValue, disabled, required })
     const textareaHeight = computed(() => `h-${props.height / 4}`)
 
     return {

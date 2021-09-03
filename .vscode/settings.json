@@ -7,5 +7,7 @@
   "javascript.format.semicolons": "remove",
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
-  "files.insertFinalNewline": true
+  "files.insertFinalNewline": true,
+  "i18n-ally.localesPaths": ["src/locales"],
+  "i18n-ally.sourceLanguage": "en-US"
 }

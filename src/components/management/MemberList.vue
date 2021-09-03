@@ -10,7 +10,7 @@ div(class="pt-2.5 flex flex-col relative")
   div(class="py-6 flex-grow")
     overlay-scrollbar-container(class="h-full")
       div(class="grid gap-y-2.5")
-        member-row(v-for="member in filteredmemberList" :member="member")
+        member-row(v-for="(member, index) in filteredmemberList" :member="member" class="relative" :class="`z-${100-index}`")
 </template>
 
 <script>

@@ -1,9 +1,9 @@
 import axios from '@/apis'
 
 export default {
-  generalSignUp: ({ email, lastName, firstName, locale }) => axios('/sign-up/general', {
+  generalSignUp: ({ email, lastName, firstName, password, locale }) => axios('/sign-up/general', {
     method: 'POST',
-    data: { email, lastName, firstName, locale }
+    data: { email, lastName, firstName, password, locale }
   }),
   generalSignIn: ({ email, password }) => axios('/sign-in/general', {
     method: 'POST',

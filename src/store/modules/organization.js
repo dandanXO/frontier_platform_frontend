@@ -34,7 +34,7 @@ const actions = {
   setOrganization ({ state }, data) {
     setVuexState(state, data)
   },
-  async createOrg (_, params) {
+  async createOrg ({ dispatch }, params) {
     const temp = {}
     Object.keys(params).forEach(key => {
       if (params[key] !== '') {
@@ -48,7 +48,8 @@ const actions = {
       delete temp.faxCountryCode
     }
 
-    await organizationApi.createOrg(temp)
+    const { data } = await organizationApi.createOrg(temp)
+    dispatch('handleResponseData', { data }, { root: true })
   },
   async getOrg ({ rootGetters, dispatch }, { orgNo }) {
     const orgId = rootGetters['user/organizationList'].find(org => org.orgNo === orgNo)?.orgId || null

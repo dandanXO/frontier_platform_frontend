@@ -9,9 +9,9 @@
     "countryCode": "TW",
     "address": "",
     "phone": "",
-    "phoneCountryCode": "TW",
+    "phoneCountryCode": "",
     "fax": "",
-    "faxCountryCode": "TW",
+    "faxCountryCode": "",
     "inviteCode": "kjkdjxzm",
     "labelColor": "#D3242A",
     "uploadMaterialEmail": "",
@@ -37,11 +37,21 @@
         "isPending": false
       },
       {
+        "orgUserId": 4,
+        "displayName": "Lilia Chen",
+        "avatar": "https://picsum.photos/300",
+        "originalAvatar": "https://picsum.photos/300",
+        "email": "lilia.chen@f",
+        "orgRoleId": 3,
+        "lastSignInTime": "8小時前",
+        "isPending": false
+      },
+      {
         "orgUserId": null,
         "displayName": null,
         "avatar": null,
         "originalAvatar": null,
-        "email": "lilia.chen@frontier.cool",
+        "email": "brian.chou@frontier.cool",
         "orgRoleId": null,
         "lastSignInTime": null,
         "isPending": true
@@ -50,11 +60,6 @@
     "groupList": [
       {
         "groupId": 1,
-        "groupName": "Sales Department",
-        "labelColor": "#18AAFD"
-      },
-      {
-        "groupId": 2,
         "groupName": "IT Department",
         "labelColor": "#EE695E"
       }
@@ -75,52 +80,6 @@
       {
         "createDate": "1614556799",
         "content": "Lynn create Sale Department"
-      }
-    ]
-  },
-  {
-    "orgId": 2,
-    "orgNo": "000002000",
-    "logo": "https://picsum.photos/200",
-    "originalLogo": "https://picsum.photos/200",
-    "orgName": "Frontier.cool",
-    "orgCategoryId": 1,
-    "countryCode": "TW",
-    "address": "",
-    "phone": "",
-    "phoneCountryCode": "TW",
-    "fax": "",
-    "faxCountryCode": "TW",
-    "inviteCode": "kjkdjxzm",
-    "labelColor": "#D3242A",
-    "uploadMaterialEmail": "",
-    "memberList": [
-      {
-        "orgUserId": 3,
-        "displayName": "Mia Yang",
-        "avatar": "https://picsum.photos/300",
-        "originalAvatar": "https://picsum.photos/300",
-        "email": "mia.yang@f",
-        "orgRoleId": 1,
-        "lastSignInTime": "8小時前",
-        "isPending": false
-      },
-      {
-        "orgUserId": null,
-        "displayName": null,
-        "avatar": null,
-        "originalAvatar": null,
-        "email": "mia.yang@frontier.cool",
-        "orgRoleId": null,
-        "lastSignInTime": null,
-        "isPending": true
-      }
-    ],
-    "groupList": [],
-    "historyList": [
-      {
-        "createDate": "",
-        "content": ""
       }
     ]
   }
