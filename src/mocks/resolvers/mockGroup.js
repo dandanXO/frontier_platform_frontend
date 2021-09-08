@@ -15,7 +15,22 @@ const successState = {
 
 export default {
   createGroup: (req, res, ctx) => {
-    const { orgId, groupName, labelColor, description } = req.body
+    const { orgId, groupName, labelColor, description, uploadMaterialEmail } = req.body
+    const response = deepClone(successState)
+    if ((/exist/).test(uploadMaterialEmail)) {
+      response.success = false
+      response.result.organization = null
+      response.result.group = null
+      response.result.availableEmailList = [
+        'frontier',
+        'frontier01',
+        'frontier02'
+      ]
+      return res(
+        ctx.status(200),
+        ctx.json(response)
+      )
+    }
 
     const organization = organizationList.find(org => org.orgId === orgId)
     organization.groupList.push({
@@ -43,10 +58,10 @@ export default {
       memberList: defaultGroupMemberList,
       historyList: []
     }
-    const response = deepClone(successState)
 
     response.result.organization = organization
     response.result.group = group
+    response.result.availableEmailList = null
 
     return res(
       ctx.status(200),

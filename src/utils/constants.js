@@ -6,3 +6,20 @@ export const ROLE_ID = {
   MEMBER2: 5,
   MEMBER3: 6
 }
+
+export const COLOR = {
+  RED: '#D3242A',
+  LAVA: '#EE695E',
+  ORANGE: '#FAA62A',
+  YELLOW: '#FED402',
+  LIGHTGREEN: '#61C554',
+  DARKGREEN: '#139613',
+  CYAN: '#00CEB4',
+  LIGHTBLUE: '#18AAFD',
+  DARKBLUE: '#0369DA',
+  DARKPURPLE: '#7B61FF',
+  LIGHTPURPLE: '#CD9BFF',
+  PINK: '#FF79B9',
+  BROWN: '#964800',
+  GRAY: '#616161'
+}
