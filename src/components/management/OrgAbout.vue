@@ -26,11 +26,11 @@ div(class="l:pl-5 pl-19 2xl:pl-59 l:pt-16 pt-17.5")
             i(class="text-warn") *
             p(class="text-primary") {{$t('b.orgType')}}
           div(class="flex justify-between")
-            old-input-radio(v-for="type in orgCategoryList"
+            input-radio(v-for="type in orgCategoryList"
               v-model:inputValue="orgFormData.orgCategoryId"
-              name="orgCategory"
               :value="type.orgCategoryId"
               :label="type.name"
+              size="20"
             )
         input-select(
           v-model:selectValue="orgFormData.countryCode"

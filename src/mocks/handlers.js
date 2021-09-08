@@ -33,5 +33,7 @@ export const handlers = [
   rest.post(BASE_URL + '/org/group/update', deserializeUser(mockGroup.updateGroup)),
   rest.post(BASE_URL + '/org/group/member/cancel-invitation', deserializeUser(mockGroup.cancelGroupInvitation)),
   rest.post(BASE_URL + '/org/group/member/change-role', deserializeUser(mockGroup.changeGroupMemberRole)),
-  rest.post(BASE_URL + '/org/group/member/delete-member', deserializeUser(mockGroup.removeGroupMember))
+  rest.post(BASE_URL + '/org/group/member/delete-member', deserializeUser(mockGroup.removeGroupMember)),
+  rest.post(BASE_URL + '/org/group/member/add-members', deserializeUser(mockGroup.addMemberToGroup)),
+  rest.post(BASE_URL + '/org/group/member/invite-via-email', deserializeUser(mockGroup.inviteToOrgFromGroup))
 ]

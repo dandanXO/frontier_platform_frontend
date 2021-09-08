@@ -131,5 +131,62 @@ export default {
       ctx.status(200),
       ctx.json(response)
     )
+  },
+  addMemberToGroup: (req, res, ctx) => {
+    const { groupId, orgUserIdList } = req.body
+    const organization = organizationList.find(org => org.groupList.some(group => group.groupId === groupId))
+    const addedMemberList = organization.memberList
+      .filter(member => orgUserIdList.includes(member.orgUserId))
+      .map(member => ({
+        groupUserId: member.orgUserId + 100,
+        groupRoleId: member.orgRoleId,
+        ...member
+      }))
+    const group = groupList.find(group => group.groupId === groupId)
+    group.memberList.push(...addedMemberList)
+    const response = deepClone(successState)
+    response.result.group = group
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
+  inviteToOrgFromGroup: (req, res, ctx) => {
+    const { groupId, emailList } = req.body
+    const group = groupList.find(group => group.groupId === groupId)
+    const invitedMemberList = emailList.map((email, index) => {
+      return (index === 0)
+        ? {
+          groupUserId: null,
+          orgRoleId: null,
+          groupRoleId: null,
+          email,
+          displayName: null,
+          avatar: null,
+          originalAvatar: null,
+          lastSignInTime: null,
+          isPending: true
+        }
+        : {
+          groupUserId: index + 100,
+          orgRoleId: ROLE_ID.MEMBER3,
+          groupRoleId: ROLE_ID.MEMBER3,
+          email,
+          displayName: `New Member ${index}`,
+          avatar: null,
+          originalAvatar: null,
+          lastSignInTime: '8小時前',
+          isPending: false
+        }
+    })
+    group.memberList.push(...invitedMemberList)
+    const response = deepClone(successState)
+    response.result.group = group
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
   }
 }

@@ -68,9 +68,8 @@ div(v-if="isOpenCreateForm" class="fixed inset-0 z-10 w-screen h-screen bg-black
         span(class="text-primary font-bold text-body2") {{$t('a.orgType')}}
           span(class="text-warn") *
         div(class="flex justify-between")
-          old-input-radio(v-for="type in orgCategoryList"
+          input-radio(v-for="type in orgCategoryList"
             v-model:inputValue="formData.orgCategoryId"
-            name="orgCategory"
             :value="type.orgCategoryId"
             :label="type.name"
           )

@@ -24,5 +24,13 @@ export default {
   removeGroupMember: ({ groupUserId }) => axios('/org/group/member/delete-member', {
     method: 'POST',
     data: { groupUserId }
+  }),
+  addMemberToGroup: ({ groupId, orgUserIdList }) => axios('/org/group/member/add-members', {
+    method: 'POST',
+    data: { groupId, orgUserIdList }
+  }),
+  inviteToOrgFromGroup: ({ groupId, emailList }) => axios('/org/group/member/invite-via-email', {
+    method: 'POST',
+    data: { groupId, emailList }
   })
 }
