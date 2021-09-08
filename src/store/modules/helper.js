@@ -10,12 +10,20 @@ const state = () => ({
     primaryHandler: null,
     secondaryText: '',
     secondaryHandler: null
+  },
+  isModalOpen: false,
+  modalComponent: {
+    component: '',
+    header: '',
+    properties: {}
   }
 })
 
 const getters = {
   isModalConfirmOpen: (state) => state.isModalConfirmOpen,
-  modalConfirmComponent: (state) => state.modalConfirmComponent
+  modalConfirmComponent: (state) => state.modalConfirmComponent,
+  isModalOpen: (state) => state.isModalOpen,
+  modalComponent: (state) => state.modalComponent
 }
 
 const mutations = {
@@ -24,6 +32,12 @@ const mutations = {
   },
   SET_modalConfirmComponent (state, configs) {
     Object.assign(state.modalConfirmComponent, configs)
+  },
+  SET_isModalOpen (state, bool) {
+    state.isModalOpen = bool
+  },
+  SET_modalComponent (state, configs) {
+    Object.assign(state.modalComponent, configs)
   }
 }
 
@@ -42,6 +56,18 @@ const actions = {
       primaryHandler: null,
       secondaryText: '',
       secondaryHandler: null
+    })
+  },
+  openModal ({ commit }, configs) {
+    commit('SET_isModalOpen', true)
+    commit('SET_modalComponent', configs)
+  },
+  closeModal ({ commit }) {
+    commit('SET_isModalOpen', false)
+    commit('SET_modalComponent', {
+      component: '',
+      header: '',
+      properties: {}
     })
   }
 }

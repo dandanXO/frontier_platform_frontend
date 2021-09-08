@@ -21,7 +21,7 @@ div
 import { ref } from 'vue'
 import { computed } from '@vue/runtime-core'
 export default {
-  name: 'Modal',
+  name: 'OldModal',
   props: {
     header: {
       type: String,

@@ -1,8 +1,6 @@
 <template lang="pug">
-modal(@close="resetData")
-  template(#activator="{ open }")
-    slot(name="activator" :open="open")
-  div(class="w-102.5")
+div(class="w-118.5")
+  div(class="px-8")
     h6(class="text-h6 text-primary font-bold pb-7.5 text-center") {{$t('b.inviteToOrg')}}
     input-text-icon(
       v-model:textValue="email"
@@ -17,23 +15,22 @@ modal(@close="resetData")
         div(v-for="(email, index) in emailList" class="h-10 flex items-center justify-between hover:bg-black-200 px-2.5")
           p(class="text-body2 text-primary") {{email}}
           svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removeInvite(index)")
-  template(#footer="{ close }")
-    div(class="w-118.5 border-t border-primary-thin mt-7.5")
-      div(class="py-5 px-8 flex items-start gap-x-2")
-        svg-icon(iconName="error_outline" class="text-primary")
-        p(class="flex-grow text-caption text-primary line-height-1.6") {{$t('b.increaseAmount')}}
-        btn(size="sm" :disabled="emailList.length === 0" @click="inviteToOrg(close)") {{$t('reuse.invite')}}
-      div(class="bg-black-100 py-5.5 px-8 flex items-center gap-x-3")
-        svg-icon(iconName="link" size="36")
-        input-text-btn(
-          class="w-full"
-          size="sm"
-          diabledInput
-          :textValue="inviteLink"
-          :clearable="false"
-          :buttonLabel="$t('reuse.copy')"
-          @click:button="copyText(inviteLink)"
-        )
+  div(class="border-t border-primary-thin mt-7.5")
+    div(class="py-5 px-8 flex items-start gap-x-2")
+      svg-icon(iconName="error_outline" class="text-primary")
+      p(class="flex-grow text-caption text-primary line-height-1.6") {{$t('b.increaseAmount')}}
+      btn(size="sm" :disabled="emailList.length === 0" @click="inviteToOrg(close)") {{$t('reuse.invite')}}
+    div(class="bg-black-100 py-5.5 px-8 flex items-center gap-x-3")
+      svg-icon(iconName="link" size="36")
+      input-text-btn(
+        class="w-full"
+        size="sm"
+        diabledInput
+        :textValue="inviteLink"
+        :clearable="false"
+        :buttonLabel="$t('reuse.copy')"
+        @click:button="copyText(inviteLink)"
+      )
 </template>
 
 <script>
@@ -94,9 +91,9 @@ export default {
       clearEmailList()
     }
 
-    const inviteToOrg = async (closeModalFunc) => {
+    const inviteToOrg = async () => {
       await store.dispatch('organization/inviteToOrg', { emailList: toRaw(emailList) })
-      closeModalFunc()
+      store.dispatch('helper/closeModal')
     }
 
     watch(

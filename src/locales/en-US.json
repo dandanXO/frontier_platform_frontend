@@ -28,7 +28,8 @@
     "remove": "Remove",
     "createGroup": "Create group",
     "save": "Save",
-    "changeLogo": "Change"
+    "changeLogo": "Change",
+    "next": "Next"
   },
   "err": {
     "nameAlreadyExists": "This name already exists",
