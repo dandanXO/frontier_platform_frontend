@@ -1,9 +1,9 @@
 import axios from '@/apis'
 
 export default {
-  createGroup: ({ orgId, groupName, description = '', labelColor }) => axios('/org/group/create', {
+  createGroup: ({ orgId, groupName, description = '', labelColor, uploadMaterialEmail }) => axios('/org/group/create', {
     method: 'POST',
-    data: { orgId, groupName, description, labelColor }
+    data: { orgId, groupName, description, labelColor, uploadMaterialEmail }
   }),
   getGroup: ({ groupId }) => axios('/org/group/get', {
     method: 'POST',

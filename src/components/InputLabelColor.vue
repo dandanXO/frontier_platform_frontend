@@ -17,7 +17,9 @@ input-text(class="w-85")
 </template>
 
 <script>
-import { reactive, computed } from 'vue'
+import { computed } from 'vue'
+import { COLOR } from '@/utils/constants'
+
 export default {
   name: 'InputLabelColor',
   props: {
@@ -32,50 +34,7 @@ export default {
   },
   emits: ['update:labelColor'],
   setup (props, { emit }) {
-    const labelColorList = reactive([
-      {
-        labelColor: '#D3242A'
-      },
-      {
-        labelColor: '#EE695E'
-      },
-      {
-        labelColor: '#FAA62A'
-      },
-      {
-        labelColor: '#FED402'
-      },
-      {
-        labelColor: '#61C554'
-      },
-      {
-        labelColor: '#139613'
-      },
-      {
-        labelColor: '#00CEB4'
-      },
-      {
-        labelColor: '#18AAFD'
-      },
-      {
-        labelColor: '#0369DA'
-      },
-      {
-        labelColor: '#7B61FF'
-      },
-      {
-        labelColor: '#CD9BFF'
-      },
-      {
-        labelColor: '#FF79B9'
-      },
-      {
-        labelColor: '#964800'
-      },
-      {
-        labelColor: '#616161'
-      }
-    ])
+    const labelColorList = computed(() => Object.values(COLOR).map(color => ({ labelColor: color })))
 
     const innerLabelColor = computed({
       get: () => props.labelColor,

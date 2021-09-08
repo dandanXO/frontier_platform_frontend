@@ -81,6 +81,7 @@ export default {
       router.push({ name: route.name, params: { tab } })
     }
     const openModalCreateGroup = () => {
+      store.dispatch('group/resetCreateForm')
       store.dispatch('helper/openModal', {
         component: 'modal-create-group'
       })

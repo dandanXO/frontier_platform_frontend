@@ -29,7 +29,8 @@
     "createGroup": "Create group",
     "save": "Save",
     "changeLogo": "Change",
-    "next": "Next"
+    "next": "Next",
+    "create": "Create"
   },
   "err": {
     "nameAlreadyExists": "This name already exists",
@@ -135,7 +136,7 @@
     "enter6digit": "Enter 6 digit code",
     "createUploadMail": "Create upload mail",
     "createMailForOrg": "Create an email for organization to upload fabric",
-    "textileCloud": "@textile.cloud",
+    "textileCloud": "{'@'}textile.cloud",
     "between4To10": "Between 4-10 characters",
     "atLeastOneLetter": "At least one letter",
     "atLeastOneDot": "At least one“.”"
@@ -219,7 +220,7 @@
     "afterGroupCreate": "After the team is created, you can invite members to join.",
     "createUploadMail": "Create upload mail",
     "createMailForUpload": "Create an email for group to upload fabric",
-    "textileCloud": "@textile.cloud",
+    "textileCloud": "{'@'}textile.cloud",
     "invitePeopleToJoinGroup": "Invite people to join {groupName}",
     "invitePeopleOutsideOrg": "Invite people outside the organization",
     "joined": "Joined",
@@ -230,6 +231,7 @@
     "chooseLocation": "Choose a material storage location",
     "materialsMoveToLocation": "All your material assets will be moved to the selected location.",
     "storageLocation": "storage location",
-    "permanentlyDelete": "Permanently delete all material assets"
+    "permanentlyDelete": "Permanently delete all material assets",
+    "available": "Available"
   }
 }

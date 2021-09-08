@@ -1,5 +1,6 @@
 import groupApi from '@/apis/group'
 import setVuexState from '@/utils/set-vuex-state'
+import { COLOR } from '@/utils/constants'
 
 const state = () => ({
   groupId: '',
@@ -10,25 +11,54 @@ const state = () => ({
   inviteCode: '',
   uploadMaterialEmail: '',
   memberList: [],
-  historyList: []
+  historyList: [],
+
+  /** LOCAL VAR */
+  createForm: {
+    groupName: '',
+    labelColor: COLOR.RED,
+    description: '',
+    uploadMaterialEmail: ''
+  }
 })
 
 const getters = {
   group: state => state,
   memberList: state => state.memberList,
-  historyList: state => state.historyList
+  historyList: state => state.historyList,
+  createForm: state => state.createForm
+}
+
+const mutations = {
+  SET_createForm_groupName (state, groupName) {
+    state.createForm.groupName = groupName
+  },
+  SET_createForm_labelColor (state, labelColor) {
+    state.createForm.labelColor = labelColor
+  },
+  SET_createForm_description (state, description) {
+    state.createForm.description = description
+  },
+  SET_createForm_uploadMaterialEmail (state, uploadMaterialEmail) {
+    state.createForm.uploadMaterialEmail = uploadMaterialEmail
+  }
 }
 
 const actions = {
   setGroup ({ state }, data) {
     setVuexState(state, data)
   },
-  async createGroup ({ rootGetters, dispatch }, params) {
+  async createGroup ({ rootGetters, state, dispatch }) {
     const { data } = await groupApi.createGroup({
-      ...params,
+      ...state.createForm,
       orgId: rootGetters['organization/orgId']
     })
-    dispatch('handleResponseData', { data }, { root: true })
+    const { success, result } = data
+    if (success) {
+      dispatch('handleResponseData', { data }, { root: true })
+    } else {
+      throw result.availableEmailList
+    }
   },
   async getGroup ({ dispatch }, params) {
     const { data } = await groupApi.getGroup(params)
@@ -69,6 +99,12 @@ const actions = {
       ...params
     })
     dispatch('handleResponseData', { data }, { root: true })
+  },
+  resetCreateForm ({ commit }) {
+    commit('SET_createForm_groupName', '')
+    commit('SET_createForm_labelColor', COLOR.RED)
+    commit('SET_createForm_description', '')
+    commit('SET_createForm_uploadMaterialEmail', '')
   }
 }
 
@@ -76,5 +112,6 @@ export default {
   namespaced: true,
   state,
   getters,
+  mutations,
   actions
 }

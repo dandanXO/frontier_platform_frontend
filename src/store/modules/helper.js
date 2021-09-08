@@ -1,5 +1,3 @@
-// import setVuexState from '@/utils/set-vuex-state'
-
 const state = () => ({
   isModalConfirmOpen: false,
   modalConfirmComponent: {
@@ -15,7 +13,8 @@ const state = () => ({
   modalComponent: {
     component: '',
     header: '',
-    properties: {}
+    properties: {},
+    closeHandler: null
   }
 })
 
@@ -58,12 +57,13 @@ const actions = {
       secondaryHandler: null
     })
   },
-  openModal ({ commit }, { component = '', header = '', properties = {} }) {
+  openModal ({ commit }, { component = '', header = '', properties = {}, closeHandler = null }) {
     commit('SET_isModalOpen', true)
     commit('SET_modalComponent', {
       component,
       header,
-      properties
+      properties,
+      closeHandler
     })
   },
   closeModal ({ commit }) {
@@ -71,7 +71,8 @@ const actions = {
     commit('SET_modalComponent', {
       component: '',
       header: '',
-      properties: {}
+      properties: {},
+      closeHandler: null
     })
   }
 }
