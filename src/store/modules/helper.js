@@ -58,9 +58,13 @@ const actions = {
       secondaryHandler: null
     })
   },
-  openModal ({ commit }, configs) {
+  openModal ({ commit }, { component = '', header = '', properties = {} }) {
     commit('SET_isModalOpen', true)
-    commit('SET_modalComponent', configs)
+    commit('SET_modalComponent', {
+      component,
+      header,
+      properties
+    })
   },
   closeModal ({ commit }) {
     commit('SET_isModalOpen', false)

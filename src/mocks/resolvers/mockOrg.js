@@ -144,7 +144,7 @@ export default {
           email,
           orgRoleId: ROLE_ID.MEMBER3,
           lastSignInTime: '8小時前',
-          isPending: true
+          isPending: false
         }
     })
 

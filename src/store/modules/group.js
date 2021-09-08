@@ -55,6 +55,20 @@ const actions = {
   async removeGroupMember ({ dispatch }, params) {
     const { data } = await groupApi.removeGroupMember(params)
     dispatch('handleResponseData', { data }, { root: true })
+  },
+  async addMemberToGroup ({ state, dispatch }, params) {
+    const { data } = await groupApi.addMemberToGroup({
+      groupId: state.groupId,
+      ...params
+    })
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async inviteToOrgFromGroup ({ state, dispatch }, params) {
+    const { data } = await groupApi.inviteToOrgFromGroup({
+      groupId: state.groupId,
+      ...params
+    })
+    dispatch('handleResponseData', { data }, { root: true })
   }
 }
 

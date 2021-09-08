@@ -43,12 +43,12 @@ import copyText from '@/utils/copy-text'
 export default {
   name: 'ModalInviteToOrg',
   props: {
-    via: {
+    from: {
       type: String,
       default: 'org'
     }
   },
-  setup () {
+  setup (props) {
     const { t } = useI18n()
     const store = useStore()
     const email = ref('')
@@ -92,7 +92,11 @@ export default {
     }
 
     const inviteToOrg = async () => {
-      await store.dispatch('organization/inviteToOrg', { emailList: toRaw(emailList) })
+      if (props.from === 'org') {
+        await store.dispatch('organization/inviteToOrg', { emailList: toRaw(emailList) })
+      } else {
+        await store.dispatch('group/inviteToOrgFromGroup', { emailList: toRaw(emailList) })
+      }
       store.dispatch('helper/closeModal')
     }
 
