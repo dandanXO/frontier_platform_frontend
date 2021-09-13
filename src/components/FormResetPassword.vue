@@ -33,7 +33,7 @@ export default {
       required: true
     }
   },
-  emits: ['submit', 'update:newPassword'],
+  emits: ['submit', 'update:newPassword', 'close'],
   setup (props, { emit }) {
     const { t } = useI18n()
     const confirmPassword = ref('')

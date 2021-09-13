@@ -34,6 +34,7 @@ export default {
       default: '24'
     }
   },
+  emits: ['update:inputValue'],
   setup (props, { emit }) {
     const checked = computed(() => props.inputValue.includes(props.value))
     const check = (e) => {

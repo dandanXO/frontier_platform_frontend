@@ -6,12 +6,10 @@ div(class="px-8")
     v-model:textValue="groupName"
     :label="$t('b.groupName')"
     :placeholder="$t('b.yourGroupName')"
-    :hasSlotContent="isGroupNameExist"
+    :customErrorMsg="isGroupNameExist ? $t('err.nameAlreadyExists') : ''"
     required
     class="w-85 relative z-11 mb-7.5"
   )
-    template(#errorMsg v-if="isGroupNameExist")
-      p(class="absolute text-warn text-caption pt-1") {{$t('err.nameAlreadyExists')}}
   input-textarea(v-model:textValue="description" :label="$t('b.groupDescription')" :placeholder="$t('b.groupDescribeToUnderstand')" class="w-85 mb-1" height="160")
   div(class="flex items-center pb-0.5")
     svg-icon(size="14" iconName="error_outline" class="text-primary")

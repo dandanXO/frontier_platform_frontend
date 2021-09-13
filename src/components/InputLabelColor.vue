@@ -12,8 +12,6 @@ input-text(class="w-85")
             div(class="grid grid-cols-6 grid-rows-3 gap-x-2 gap-y-1.5")
               label(v-for="(item, index) in options" class="w-5 h-5 rounded-sm relative cursor-pointer" :style="{ 'background-color': item.labelColor }" @click="select($event, item)")
                 svg-icon(v-if="index === currentIndex" iconName="done" size="14" class="text-black-0 absolute transform top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2")
-  template(#errorMsg v-if="hasSlotContent")
-    slot(name="errorMsg")
 </template>
 
 <script>
@@ -26,10 +24,6 @@ export default {
     labelColor: {
       type: String,
       required: true
-    },
-    hasSlotContent: {
-      type: Boolean,
-      default: false
     }
   },
   emits: ['update:labelColor'],

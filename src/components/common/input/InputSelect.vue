@@ -37,7 +37,7 @@ input-container(:required="required")
             div(
               v-for="(option, index) in searchedOptions"
               class="h-9 pl-3 flex items-center"
-              :class="[ index === currentIndex ? 'bg-black-200 rounded' : '']"
+              :class="[ index === currentIndex ? 'bg-black-200' : '']"
               @click="select($event, option), $emit('select', option[keyOptionValue])"
             )
               p(class="text-body2 text-black-600") {{option[keyOptionDisplay]}}
@@ -99,6 +99,7 @@ export default {
       default: false
     }
   },
+  emits: ['expand', 'collapse', 'select', 'update:selectValue'],
   setup (props, { emit }) {
     const classMaxHeight = ref(`max-h-${9 * props.maxLength}`) // 9: each option height
     const searchInput = ref('')
