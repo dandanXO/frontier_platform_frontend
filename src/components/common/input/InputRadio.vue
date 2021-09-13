@@ -33,6 +33,7 @@ export default {
       default: '24'
     }
   },
+  emits: ['update:inputValue'],
   setup (_, { emit }) {
     const check = (e) => {
       emit('update:inputValue', e.target.value)

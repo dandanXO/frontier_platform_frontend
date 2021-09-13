@@ -23,6 +23,7 @@ export default {
       default: false
     }
   },
+  emits: ['update:isValid'],
   setup (props, { emit }) {
     const containsLetter = computed(() => (/[a-zA-Z]/ig).test(props.password))
     const moreThanSix = computed(() => props.password.length >= 6)

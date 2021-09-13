@@ -19,7 +19,20 @@ const state = () => ({
   uploadMaterialEmail: '',
   memberList: [],
   groupList: [],
-  historyList: []
+  historyList: [],
+
+  /** LOCAL VAR */
+  createForm: {
+    orgCategoryId: 1,
+    countryCode: '',
+    address: '',
+    orgName: '',
+    phone: '',
+    phoneCountryCode: 'TW',
+    fax: '',
+    faxCountryCode: 'TW',
+    uploadMaterialEmail: ''
+  }
 })
 
 const getters = {
@@ -27,18 +40,28 @@ const getters = {
   orgId: state => state.orgId,
   memberList: state => state.memberList,
   groupList: state => state.groupList,
-  historyList: state => state.historyList
+  historyList: state => state.historyList,
+  createForm: state => state.createForm
+}
+
+const mutations = {
+  SET_createForm (state, data) {
+    Object.assign(state.createForm, data)
+  },
+  SET_createForm_uploadMaterialEmail (state, uploadMaterialEmail) {
+    state.createForm.uploadMaterialEmail = uploadMaterialEmail
+  }
 }
 
 const actions = {
   setOrganization ({ state }, data) {
     setVuexState(state, data)
   },
-  async createOrg ({ dispatch }, params) {
+  async createOrg ({ state, dispatch }) {
     const temp = {}
-    Object.keys(params).forEach(key => {
-      if (params[key] !== '') {
-        temp[key] = params[key]
+    Object.keys(state.createForm).forEach(key => {
+      if (state.createForm[key] !== '') {
+        temp[key] = state.createForm[key]
       }
     })
     if (!Object.prototype.hasOwnProperty.call(temp, 'phone')) {
@@ -49,7 +72,12 @@ const actions = {
     }
 
     const { data } = await organizationApi.createOrg(temp)
-    dispatch('handleResponseData', { data }, { root: true })
+    const { success, result } = data
+    if (success) {
+      dispatch('handleResponseData', { data }, { root: true })
+    } else {
+      throw result.availableEmailList
+    }
   },
   async getOrg ({ rootGetters, dispatch }, { orgNo }) {
     const orgId = rootGetters['user/organizationList'].find(org => org.orgNo === orgNo)?.orgId || null
@@ -99,6 +127,19 @@ const actions = {
       ...params
     })
     dispatch('handleResponseData', { data }, { root: true })
+  },
+  resetCreateForm ({ commit }) {
+    commit('SET_createForm', {
+      orgCategoryId: 1,
+      countryCode: '',
+      address: '',
+      orgName: '',
+      phone: '',
+      phoneCountryCode: 'TW',
+      fax: '',
+      faxCountryCode: 'TW',
+      uploadMaterialEmail: ''
+    })
   }
 }
 
@@ -106,5 +147,6 @@ export default {
   namespaced: true,
   state,
   getters,
+  mutations,
   actions
 }

@@ -13,6 +13,45 @@ const successState = {
 }
 
 export default {
+  createOrg: (req, res, ctx) => {
+    const { uploadMaterialEmail } = req.body
+    const response = deepClone(successState)
+    if ((/exist/).test(uploadMaterialEmail)) {
+      response.success = false
+      response.result.organization = null
+      response.result.availableEmailList = [
+        'frontier',
+        'frontier01',
+        'frontier02'
+      ]
+      return res(
+        ctx.status(200),
+        ctx.json(response)
+      )
+    }
+
+    const organization = Object.assign(organizationList[0], {
+      orgId: organizationList.length + 1,
+      orgNo: `00000100${organizationList.length + 1}`,
+      ...req.body,
+      memberList: [
+        {
+          orgUserId: 100,
+          displayName: req.user.firstName + req.user.lastName,
+          ...req.user
+        }
+      ],
+      groupList: [],
+      historyList: []
+    })
+
+    response.result.organization = organization
+    response.result.availableEmailList = null
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
   getOrg: (req, res, ctx) => {
     const { orgId } = req.body
 

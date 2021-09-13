@@ -15,12 +15,10 @@ div(class="l:pl-5 pl-19 2xl:pl-59 l:pt-16 pt-17.5")
           v-model:labelColor="orgFormData.labelColor"
           v-model:textValue="orgFormData.orgName"
           :label="$t('b.orgName')"
-          :hasSlotContent="isOrgNameExist"
+          :customErrorMsg="isOrgNameExist ? $t('err.nameAlreadyExists') : ''"
           required
           class="w-85 relative z-11"
         )
-          template(#errorMsg v-if="isOrgNameExist")
-            p(class="absolute text-warn text-caption pt-1") {{$t('err.nameAlreadyExists')}}
         div(class="grid gap-y-2 items-start w-85")
           div(class="flex text-body2 font-bold")
             i(class="text-warn") *
@@ -43,12 +41,22 @@ div(class="l:pl-5 pl-19 2xl:pl-59 l:pt-16 pt-17.5")
           required
         )
         input-text(v-model:textValue="orgFormData.address" :label="$t('b.orgAddress')" class="w-85" :placeholder="$t('b.yourAddress')")
-        div(class="grid gap-y-2 relative z-9")
-          p(class="text-primary font-bold text-body2") {{$t('b.phone')}}
-          input-calling-code(v-model:value="orgFormData.phone" v-model:countryCode="orgFormData.phoneCountryCode" :placeholder="$t('b.yourPhone')")
-        div(class="grid gap-y-2 relative z-8")
-          p(class="text-primary font-bold text-body2") {{$t('b.fax')}}
-          input-calling-code(v-model:value="orgFormData.fax" v-model:countryCode="orgFormData.faxCountryCode" :placeholder="$t('b.faxNumber')")
+        input-calling-code(
+          v-model:textValue="orgFormData.phone"
+          v-model:countryCode="orgFormData.phoneCountryCode"
+          class="relative z-9"
+          width="340"
+          :label="$t('b.phone')"
+          :placeholder="$t('b.yourPhone')"
+        )
+        input-calling-code(
+          v-model:textValue="orgFormData.fax"
+          v-model:countryCode="orgFormData.faxCountryCode"
+          class="relative z-8"
+          width="340"
+          :label="$t('b.fax')"
+          :placeholder="$t('b.faxNumber')"
+        )
       btn(size="md" class="justify-self-end" :disabled="!avaliableToUpdateOrg" @click="updateOrg") {{$t('reuse.save')}}
 </template>
 

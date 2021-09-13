@@ -1,59 +1,37 @@
 <template lang="pug">
-div(class="w-full h-11 border-black-400 bg-black-0 flex")
-  dropdown(
-    v-model:value="inputCountryCode"
-    :options="countryList"
-    class="w-23"
-    keyOptionValue="countryCode"
-    @expand="isExpand = true"
-    @collapse="isExpand = false"
-  )
-    template(#displayItem="{ option }")
-      div(
-        class="h-full absolute bg-black-0"
-        :class="[ isExpand ? 'w-85 pl-2 pr-3 border-l border-t border-r rounded-t' : 'w-full px-2 border rounded-l']"
+input-text(v-model:textValue="innerTextValue" :class="[classWidth]")
+  template(#prependItem)
+    div(class="h-full -ml-4 pr-3 flex")
+      dropdown(
+        v-model:value="inputCountryCode"
+        :options="countryList"
+        class="w-19"
+        keyOptionValue="countryCode"
+        @expand="isExpand = true"
+        @collapse="isExpand = false"
       )
-        div(
-          class="h-full flex justify-between items-center"
-          :class="[isExpand ? 'border-b pl-3' : 'px-3']"
-        )
-          span(class="flex items-center")
+        template(#displayItem="{ option }")
+          div(class="h-full w-full pl-4 pr-3 border-r rounded-l flex justify-between items-center")
             i(class="text-h4") {{getEmojiFlag(option.countryCode)}}
-            span(v-if="isExpand" class="text-body2 text-primary ml-1.5 mr-2") {{option.name}}
-            span(v-if="isExpand" class="text-body2 text-black-650") +{{option.phone}}
-          svg-icon(
-            iconName="arrow-down"
-            size="24"
-            class="transform"
-            :class="[ isExpand ? '-rotate-90 text-black-500' :'rotate-90 text-black-650']"
-          )
-    template(#dropdownList="{ select, options, currentIndex }")
-      div(
-        class="absolute top-full w-85 overflow-y-auto pt-1.5 pb-3.5 px-2 bg-black-0 border-l border-r border-b rounded-b border-primary-middle"
-        :class="[classMaxHeight]"
-      )
-        div(
-          v-for="(country, index) in options"
-          class="h-8.5 pl-3 flex items-center"
-          :class="[ index === currentIndex ? 'bg-black-200 rounded' : '']"
-          @click="select($event, country)"
-        )
-          i(class="text-h4 mr-1.5") {{getEmojiFlag(country.countryCode)}}
-          span(class="text-body2 text-primary mr-2") {{country.name}}
-          span(class="text-body2 text-black-650") +{{country.phone}}
-  label(
-    class="flex-grow h-full pl-3.5 flex items-center"
-    :class="[isExpand ? '' : 'border-t border-r border-b rounded-r']"
-  )
-    span(v-if="value.length > 0" class="text-primary text-body1 pr-1") {{`(+${callingCode}) `}}
-    input(
-      type="text"
-      :value="value"
-      @input="typing"
-      :placeholder="placeholder"
-      class="flex-grow outline-none overflow-hidden placeholder-black-400 text-primary text-body1 placeholder-text-body2 bg-transparent"
-      autocomplete
-    )
+            svg-icon(
+              iconName="arrow-down"
+              size="20"
+              class="transform"
+              :class="[ isExpand ? '-rotate-90 text-black-500' :'rotate-90 text-black-650']"
+            )
+        template(#dropdownList="{ select, options, currentIndex }")
+          div(class="absolute top-full transform translate-y-2 py-2 bg-black-0 border rounded border-primary-middle card-shadow" :class="[classWidth]")
+            overlay-scrollbar-container(:class="[classMaxHeight]")
+              div(
+                v-for="(country, index) in options"
+                class="h-9 pl-3 flex items-center"
+                :class="[ index === currentIndex ? 'bg-black-200' : '']"
+                @click="select($event, country)"
+              )
+                i(class="text-h4 mr-1.5") {{getEmojiFlag(country.countryCode)}}
+                span(class="text-body2 text-primary mr-2") {{country.name}}
+                span(class="text-body2 text-black-650") +{{country.phone}}
+    span(v-if="innerTextValue !== ''" class="text-primary text-body1 pr-1") {{`(+${callingCode}) `}}
 </template>
 
 <script>
@@ -68,29 +46,25 @@ export default {
       type: Number,
       default: 4
     },
-    value: {
-      type: String,
-      required: true
-    },
     countryCode: {
       type: String,
       required: true
     },
-    placeholder: {
+    textValue: {
       type: String,
-      default: ''
+      required: true
+    },
+    width: {
+      type: String,
+      default: '340'
     }
   },
+  emits: ['update:textValue', 'update:countryCode'],
   setup (props, { emit }) {
     const store = useStore()
     const isExpand = ref(false)
-
-    /**
-     * 8.5: each option height
-     * 5: padding top(1.5) + padding bottom(3.5)
-     * 1: padding bottom(3.5) - option gap(2.5)
-     */
-    const classMaxHeight = ref(`max-h-${8.5 * props.maxLength - 1 + 5}`)
+    const classWidth = ref(`w-${Number(props.width) / 4}`)
+    const classMaxHeight = ref(`max-h-${9 * props.maxLength}`)
 
     const countryList = computed(() => store.getters['code/countryList'])
     const inputCountryCode = computed({
@@ -99,18 +73,20 @@ export default {
     })
     const callingCode = computed(() => countryList.value.find(country => country.countryCode === inputCountryCode.value).phone)
 
-    const typing = (e) => {
-      emit('update:value', e.target.value)
-    }
+    const innerTextValue = computed({
+      get: () => props.textValue,
+      set: (v) => emit('update:textValue', v)
+    })
 
     return {
       countryList,
+      classWidth,
       classMaxHeight,
       isExpand,
-      typing,
       inputCountryCode,
       callingCode,
-      getEmojiFlag
+      getEmojiFlag,
+      innerTextValue
     }
   }
 }

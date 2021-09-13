@@ -1,9 +1,9 @@
 import axios from '@/apis'
 
 export default {
-  createOrg: ({ orgName, orgCategoryId, countryCode, address, phone, phoneCountryCode, fax, faxCountryCode }) => axios('/org/create', {
+  createOrg: ({ orgName, orgCategoryId, countryCode, address, phone, phoneCountryCode, fax, faxCountryCode, uploadMaterialEmail }) => axios('/org/create', {
     method: 'POST',
-    data: { orgName, orgCategoryId, countryCode, address, phone, phoneCountryCode, fax, faxCountryCode }
+    data: { orgName, orgCategoryId, countryCode, address, phone, phoneCountryCode, fax, faxCountryCode, uploadMaterialEmail }
   }),
   getOrg: ({ orgId }) => axios('/org/get', {
     method: 'POST',

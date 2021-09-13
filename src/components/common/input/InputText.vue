@@ -2,6 +2,7 @@
 input-container(:required="required")
   template(#input)
     div(class="h-full px-4 border rounded flex items-center" :class="[classBorder, { 'bg-primary-thin': disabled }, size === 'lg' ? 'h-11' : 'h-9']")
+      slot(name="prependItem")
       div(v-if="prependIcon !== '' && isEmpty" class="pr-1")
         slot(name="prependIcon")
           svg-icon(

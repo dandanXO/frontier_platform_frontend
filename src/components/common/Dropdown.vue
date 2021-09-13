@@ -40,6 +40,7 @@ export default {
       default: true
     }
   },
+  emits: ['expand', 'collapse', 'update:value'],
   setup (props, { emit }) {
     const isExpand = ref(false)
     const rootElement = ref(null)

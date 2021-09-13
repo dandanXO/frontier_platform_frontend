@@ -22,7 +22,7 @@ div(class="w-screen mt-14.5")
   div(v-if="orgList.length === 0" class="w-full flex flex-col items-center pt-with-header-empty")
     h3(class="text-primary font-bold text-h3 mb-6") {{$t('a.createYourOrg')}}
     p(class="text-primary text-body1 line-height-1.6 w-160 text-center mb-7.5") {{$t('a.providePlatform')}}
-    div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="isOpenCreateForm = true")
+    div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg")
       div(class="grid justify-items-center gap-y-3.5")
         svg-icon(iconName="old-add" size="24")
         span(class="text-primary-middle text-body2 font-bold") {{$t('a.createOrg')}}
@@ -54,45 +54,10 @@ div(class="w-screen mt-14.5")
                 :style="{ 'margin-right': '-12px' }"
               )
                 svg-icon(iconName="more" size="24" class="text-black-600")
-      div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="isOpenCreateForm = true")
+      div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg")
         div(class="grid justify-items-center gap-y-3.5")
           svg-icon(iconName="old-add" size="24")
           span(class="text-primary-middle text-body2 font-bold") {{$t('a.createOrg')}}
-div(v-if="isOpenCreateForm" class="fixed inset-0 z-10 w-screen h-screen bg-black bg-opacity-70 flex justify-center overflow-y-scroll")
-  div(class="flex flex-col w-105 h-175 rounded-lg bg-black-0 mt-28.5 mb-20.5 relative pt-10.5 px-10 pb-7.5")
-    svg-icon(iconName="close" size="24" class="text-black-700 absolute top-3 right-3 cursor-pointer" @click="closeCreateForm")
-    h6(class="text-primary font-bold text-h6 pb-8.5 mb-2.5 border-b border-black-400 w-full text-center") {{$t('a.createOrg')}}
-    span(class="self-end text-caption text-black-600 mb-1.5") {{$t('a.required')}}
-    form(class="w-full grid gap-y-4")
-      div(class="grid gap-y-3")
-        span(class="text-primary font-bold text-body2") {{$t('a.orgType')}}
-          span(class="text-warn") *
-        div(class="flex justify-between")
-          input-radio(v-for="type in orgCategoryList"
-            v-model:inputValue="formData.orgCategoryId"
-            :value="type.orgCategoryId"
-            :label="type.name"
-          )
-      div(class="grid gap-y-3 relative z-10")
-        span(class="text-primary font-bold text-body2") {{$t('a.country')}}
-          span(class="text-warn") *
-        input-select(v-model:selectValue="formData.countryCode" :options="countryList" keyOptionDisplay="name" keyOptionValue="countryCode" :placeholder="$t('a.country')" searchBox)
-      div(class="grid gap-y-3 relative")
-        span(class="text-primary font-bold text-body2") {{$t('a.orgName')}}
-          span(class="text-warn") *
-        input-text(v-model:textValue="formData.orgName" :placeholder="$t('a.orgName')" @blur="checkOrgNameExist")
-          template(#errorMsg v-if="isOrgNameExist")
-            span(class="absolute right-0 -top-1.5 transform -translate-y-full text-caption text-warn") {{$t('err.nameAlreadyExists')}}
-      div(class="grid gap-y-3")
-        span(class="text-primary font-bold text-body2") {{$t('a.orgAddress')}}
-        input-text(v-model:textValue="formData.address" :placeholder="$t('a.orgAddress')")
-      div(class="grid gap-y-3 relative z-9")
-        span(class="text-primary font-bold text-body2") {{$t('a.phone')}}
-        input-calling-code(v-model:value="formData.phone" v-model:countryCode="formData.phoneCountryCode" :placeholder="$t('a.yourPhone')")
-      div(class="grid gap-y-3 relative z-8")
-        span(class="text-primary font-bold text-body2") {{$t('a.fax')}}
-        input-calling-code(v-model:value="formData.fax" v-model:countryCode="formData.faxCountryCode" :placeholder="$t('a.yourFax')")
-    btn(size="lg" class="mt-6" :disabled="!avaliableToCreateOrg" @click="createOrg") {{$t('a.create')}}
 </template>
 
 <script>
@@ -100,7 +65,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import DropdownLocale from '@/components/DropdownLocale'
 import InputCallingCode from '@/components/InputCallingCode'
-import { computed, reactive, ref, toRaw, watch } from 'vue'
+import { computed } from 'vue'
 
 export default {
   name: 'Lobby',
@@ -111,76 +76,23 @@ export default {
   setup () {
     const store = useStore()
     const router = useRouter()
-    const initialFormData = {
-      orgCategoryId: 1,
-      countryCode: '',
-      address: '',
-      orgName: '',
-      phone: '',
-      phoneCountryCode: 'TW',
-      fax: '',
-      faxCountryCode: 'TW'
-    }
-    const isOpenCreateForm = ref(false)
-    const isOrgNameExist = ref(false)
-    const formData = reactive({ ...initialFormData })
-    const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
-    const countryList = computed(() => store.getters['code/countryList'])
     const orgList = computed(() => store.getters['user/organizationList'])
-    const avaliableToCreateOrg = computed(() => formData.countryCode !== '' && formData.orgName !== '' && !isOrgNameExist.value)
-
-    watch(
-      () => formData.orgName,
-      () => {
-        if (isOrgNameExist.value) {
-          isOrgNameExist.value = false
-        }
-      }
-    )
-
-    const closeCreateForm = () => {
-      isOpenCreateForm.value = false
-      resetFormData()
-    }
-
-    const resetFormData = () => {
-      Object.assign(formData, initialFormData)
-    }
 
     const goToPublicLibrary = (orgNo) => {
       router.push({ name: 'PublicLibrary', params: { orgNo } })
     }
 
-    const createOrg = async () => {
-      try {
-        await checkOrgNameExist()
-
-        if (isOrgNameExist.value) { return }
-
-        await store.dispatch('organization/createOrg', toRaw(formData))
-        goToPublicLibrary(store.getters['organization/organization'].orgNo)
-        closeCreateForm()
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    const checkOrgNameExist = async () => {
-      isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: formData.orgName })
+    const openModalCreateOrg = () => {
+      store.dispatch('organization/resetCreateForm')
+      store.dispatch('helper/openModal', {
+        component: 'modal-create-org'
+      })
     }
 
     return {
       orgList,
-      orgCategoryList,
-      formData,
-      countryList,
-      isOpenCreateForm,
-      closeCreateForm,
-      createOrg,
-      avaliableToCreateOrg,
       goToPublicLibrary,
-      checkOrgNameExist,
-      isOrgNameExist
+      openModalCreateOrg
     }
   }
 }

@@ -7,12 +7,10 @@ div(class="l:pl-71.5 pl-91.5 2xl:146.5")
       v-model:textValue="groupFormData.groupName"
       :label="$t('b.groupName')"
       :placeholder="$t('b.yourGroupName')"
-      :hasSlotContent="isGroupNameExist"
+      :customErrorMsg="isGroupNameExist ? $t('err.nameAlreadyExists') : ''"
       required
       class="w-85 relative z-11 mb-7.5"
     )
-      template(#errorMsg v-if="isGroupNameExist")
-        p(class="absolute text-warn text-caption pt-1") {{$t('err.nameAlreadyExists')}}
     input-textarea(v-model:textValue="groupFormData.description" :label="$t('b.groupDescription')" :placeholder="$t('b.groupDescribeToUnderstand')" class="w-85 mb-7.5" height="160")
     btn(size="md" class="justify-self-center" :disabled="!avaliableToCreateGroup" @click="updateGroup") {{$t('reuse.save')}}
 </template>
