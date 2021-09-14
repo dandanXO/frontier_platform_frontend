@@ -48,6 +48,16 @@ export default {
       ctx.json(response)
     )
   },
+  changeLocale: (req, res, ctx) => {
+    const response = deepClone(successState)
+    req.user.locale = req.body.locale
+    response.result.user = req.user
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
   checkEmailExist: (req, res, ctx) => {
     const response = deepClone(successState)
 

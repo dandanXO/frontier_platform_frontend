@@ -9,17 +9,19 @@ dropdown(v-model:value="$i18n.locale" :options="localeOptions" keyOptionValue="l
       div(v-for="(option, index) in options"
         class="h-6 flex justify-center items-center"
         :class="{'bg-primary-thin rounded': index === currentIndex }"
-        @click="select($event, option)"
+        @click="select($event, option), changeLocale(option.locale)"
       )
         span(class="text-body2 text-primary") {{option.lang}}
 </template>
 
 <script>
 import { reactive } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   name: 'DropdownLocale',
   setup () {
+    const store = useStore()
     const localeOptions = reactive([
       {
         lang: 'English',
@@ -33,8 +35,13 @@ export default {
       }
     ])
 
+    const changeLocale = (locale) => {
+      store.dispatch('user/changeLocale', { locale })
+    }
+
     return {
-      localeOptions
+      localeOptions,
+      changeLocale
     }
   }
 }
