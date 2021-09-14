@@ -3,15 +3,13 @@ div(class="w-101 px-8")
   h6(class="text-primary font-bold text-h6 pb-7.5 mb-2.5 border-b border-black-400 w-full text-center") {{$t('a.createOrg')}}
   p(class="text-caption text-black-600 text-right mb-1.5") {{$t('a.required')}}
   form(class="w-full grid gap-y-6")
-    div(class="grid gap-y-3")
-      span(class="text-primary font-bold text-body2") {{$t('a.orgType')}}
-        span(class="text-warn") *
-      div(class="flex justify-between")
-        input-radio(v-for="type in orgCategoryList"
-          v-model:inputValue="formData.orgCategoryId"
-          :value="type.orgCategoryId"
-          :label="type.name"
-        )
+    input-radio-group(
+      v-model:inputValue="formData.orgCategoryId"
+      :label="$t('a.orgType')"
+      :optionList="orgCategoryList"
+      keyOptionValue="orgCategoryId"
+      required
+    )
     input-select(
       v-model:selectValue="formData.countryCode"
       class="relative z-10"

@@ -52,6 +52,33 @@ export default {
       ctx.json(response)
     )
   },
+  setOrgUploadMail: (req, res, ctx) => {
+    const { orgId, uploadMaterialEmail } = req.body
+    const response = deepClone(successState)
+    if ((/exist/).test(uploadMaterialEmail)) {
+      response.success = false
+      response.result.organization = null
+      response.result.availableEmailList = [
+        'frontier',
+        'frontier01',
+        'frontier02'
+      ]
+      return res(
+        ctx.status(200),
+        ctx.json(response)
+      )
+    }
+
+    const organization = organizationList.find(org => org.orgId === orgId)
+    organization.uploadMaterialEmail = uploadMaterialEmail
+
+    response.result.organization = organization
+    response.result.availableEmailList = null
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
   getOrg: (req, res, ctx) => {
     const { orgId } = req.body
 

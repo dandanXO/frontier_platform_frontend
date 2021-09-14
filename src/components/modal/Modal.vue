@@ -1,10 +1,10 @@
 <template lang="pug">
 div(v-if="isModalOpen" class="fixed inset-0 z-index:modal w-screen h-screen bg-black-900 bg-opacity-70 flex justify-center items-center")
-  div(class="w-screen h-screen" @click="close")
+  div(class="w-screen h-screen" @click="closable && close()")
   div(class="absolute bg-black-0 rounded")
     div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
       p(v-if="header !== ''" class="text-body1 text-primary") {{header}}
-      svg-icon(iconName="close" size="24" class="justify-self-end cursor-pointer text-black-700" @click="close")
+      svg-icon(v-if="closable" iconName="close" size="24" class="justify-self-end cursor-pointer text-black-700" @click="close")
     component(:is="component" v-bind="properties")
 </template>
 
@@ -33,7 +33,7 @@ export default {
     const store = useStore()
     const isModalOpen = computed(() => store.getters['helper/isModalOpen'])
     const modalComponent = computed(() => store.getters['helper/modalComponent'])
-    const { component, header, properties, closeHandler } = toRefs(modalComponent.value)
+    const { component, header, properties, closeHandler, closable } = toRefs(modalComponent.value)
 
     const close = async () => {
       if (typeof closeHandler.value === 'function') {
@@ -47,7 +47,8 @@ export default {
       header,
       component,
       properties,
-      close
+      close,
+      closable
     }
   }
 }
