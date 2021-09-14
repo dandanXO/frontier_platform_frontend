@@ -14,7 +14,8 @@ const state = () => ({
     component: '',
     header: '',
     properties: {},
-    closeHandler: null
+    closeHandler: null,
+    closable: true
   }
 })
 
@@ -57,13 +58,14 @@ const actions = {
       secondaryHandler: null
     })
   },
-  openModal ({ commit }, { component = '', header = '', properties = {}, closeHandler = null }) {
+  openModal ({ commit }, { component = '', header = '', properties = {}, closeHandler = null, closable = true }) {
     commit('SET_isModalOpen', true)
     commit('SET_modalComponent', {
       component,
       header,
       properties,
-      closeHandler
+      closeHandler,
+      closable
     })
   },
   closeModal ({ commit }) {
@@ -72,7 +74,8 @@ const actions = {
       component: '',
       header: '',
       properties: {},
-      closeHandler: null
+      closeHandler: null,
+      closable: true
     })
   }
 }

@@ -155,6 +155,8 @@ export default {
       emailForgotPassword.value = ''
       isEmailExist.value = true
       errorMsgSendForgotPasswordEmail.value = ''
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
     }
 
     const redirectToNextPage = async () => {

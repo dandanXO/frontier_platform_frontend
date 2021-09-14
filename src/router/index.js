@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
+import { ROLE_ID } from '@/utils/constants'
 
 const routes = [
   {
@@ -68,6 +69,19 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       await store.dispatch('user/orgUser/getOrgUser', { orgNo: to.params.orgNo })
       await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
+      const org = store.getters['organization/organization']
+      const orgUser = store.getters['user/orgUser/orgUser']
+
+      if (orgUser.orgRoleId === ROLE_ID.OWNER && org.uploadMaterialEmail === '') {
+        console.log('reset')
+        store.dispatch('helper/openModal', {
+          component: 'modal-create-mail-org',
+          properties: {
+            isOldOrg: true
+          },
+          closable: false
+        })
+      }
       next()
     },
     children: [

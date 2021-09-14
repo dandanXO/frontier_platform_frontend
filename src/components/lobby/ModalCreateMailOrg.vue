@@ -10,7 +10,8 @@ div(class="w-100 px-8")
     div
       p(v-for="email in suggestEmailList" class="text-body2 text-assist-blue pb-2.5") {{email}}
   div(class="h-25 flex justify-center items-center")
-    div(class="grid grid-cols-2 gap-x-3")
+    btn(v-if="isOldOrg" size="lg" class="w-full" :disabled="!availableToCreateOrg" @click="setOrgUploadMail") {{$t('reuse.create')}}
+    div(v-else class="grid grid-cols-2 gap-x-3")
       btn(size="md" type="secondary" @click="openModalCreateOrg") {{$t('reuse.back')}}
       btn(size="md" type="primary" :disabled="!availableToCreateOrg" @click="createOrg") {{$t('reuse.create')}}
 </template>
@@ -45,10 +46,17 @@ export default {
     }
     const createOrg = async () => {
       try {
-        console.log('here')
         await store.dispatch('organization/createOrg')
         store.dispatch('helper/closeModal')
         router.push({ name: 'PublicLibrary', params: { orgNo: store.getters['organization/organization'].orgNo } })
+      } catch (availableEmailList) {
+        suggestEmailList.value = availableEmailList
+      }
+    }
+    const setOrgUploadMail = async () => {
+      try {
+        await store.dispatch('organization/setOrgUploadMail', { uploadMaterialEmail: uploadMaterialEmail.value })
+        store.dispatch('helper/closeModal')
       } catch (availableEmailList) {
         suggestEmailList.value = availableEmailList
       }
@@ -66,7 +74,8 @@ export default {
       openModalCreateOrg,
       createOrg,
       suggestEmailList,
-      availableToCreateOrg
+      availableToCreateOrg,
+      setOrgUploadMail
     }
   }
 }

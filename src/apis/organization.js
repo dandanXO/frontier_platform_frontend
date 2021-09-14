@@ -55,5 +55,9 @@ export default {
   inviteToOrg: ({ orgId, emailList }) => axios('/org/member/invite-via-email', {
     method: 'POST',
     data: { orgId, emailList }
+  }),
+  setOrgUploadMail: ({ orgId, uploadMaterialEmail }) => axios('/org/create-upload-material-email', {
+    method: 'POST',
+    data: { orgId, uploadMaterialEmail }
   })
 }

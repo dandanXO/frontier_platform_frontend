@@ -19,17 +19,13 @@ div(class="l:pl-5 pl-19 2xl:pl-59 l:pt-16 pt-17.5")
           required
           class="w-85 relative z-11"
         )
-        div(class="grid gap-y-2 items-start w-85")
-          div(class="flex text-body2 font-bold")
-            i(class="text-warn") *
-            p(class="text-primary") {{$t('b.orgType')}}
-          div(class="flex justify-between")
-            input-radio(v-for="type in orgCategoryList"
-              v-model:inputValue="orgFormData.orgCategoryId"
-              :value="type.orgCategoryId"
-              :label="type.name"
-              size="20"
-            )
+        input-radio-group(
+          v-model:inputValue="orgFormData.orgCategoryId"
+          :label="$t('b.orgType')"
+          :optionList="orgCategoryList"
+          keyOptionValue="orgCategoryId"
+          required
+        )
         input-select(
           v-model:selectValue="orgFormData.countryCode"
           :options="countryList"

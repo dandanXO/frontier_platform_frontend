@@ -21,6 +21,7 @@ export const handlers = [
   rest.post(BASE_URL + '/user/forgot-password/reset-password', mockUser.resetPassword),
   rest.post(BASE_URL + '/org/get', mockOrg.getOrg),
   rest.post(BASE_URL + '/org/create', deserializeUser(mockOrg.createOrg)),
+  rest.post(BASE_URL + '/org/create-upload-material-email', mockOrg.setOrgUploadMail),
   rest.post(BASE_URL + '/org/user/get', deserializeUser(mockOrg.getOrgUser)),
   rest.post(BASE_URL + '/org/check-name-exist', deserializeUser(mockOrg.checkOrgNameExist)),
   rest.post(BASE_URL + '/org/update', deserializeUser(mockOrg.updateOrg)),

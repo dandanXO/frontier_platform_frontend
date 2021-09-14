@@ -9,7 +9,7 @@ label(class="flex items-center" :for="value")
     :value="value"
     @input="check"
   )
-  div(v-if="label !== ''" class="pl-1 text-body2 text-primary") {{label}}
+  div(v-if="name !== ''" class="pl-1 text-body2 text-primary") {{name}}
 </template>
 
 <script>
@@ -24,7 +24,7 @@ export default {
       type: [String, Number],
       required: true
     },
-    label: {
+    name: {
       type: [String, Number],
       default: ''
     },

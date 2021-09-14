@@ -1,5 +1,5 @@
 <template lang="pug">
-input-text(class="w-85")
+input-text
   template(#appendItem)
     div(class="h-full flex items-center -mr-4 pl-4" click.stop)
       dropdown(v-model:value="innerLabelColor" class="w-18 h-full" :options="labelColorList" keyOptionValue="labelColor")
