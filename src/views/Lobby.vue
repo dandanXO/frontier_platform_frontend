@@ -18,7 +18,7 @@ header(class="w-screen h-14.5 pt-8 pl-10 pr-9 fixed inset-0")
       li(class="flex items-center")
         router-link-extending(class="text-primary font-bold text-caption" to="/logout") {{$t('a.logout')}}
         svg-icon(iconName="arrow-right" size="24" class="text-black-650")
-div(class="w-screen mt-14.5")
+div(class="w-screen pt-14.5")
   div(v-if="orgList.length === 0" class="w-full flex flex-col items-center pt-with-header-empty")
     h3(class="text-primary font-bold text-h3 mb-6") {{$t('a.createYourOrg')}}
     p(class="text-primary text-body1 line-height-1.6 w-160 text-center mb-7.5") {{$t('a.providePlatform')}}
@@ -65,7 +65,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import DropdownLocale from '@/components/DropdownLocale'
 import InputCallingCode from '@/components/InputCallingCode'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 
 export default {
   name: 'Lobby',
@@ -82,12 +82,19 @@ export default {
       router.push({ name: 'PublicLibrary', params: { orgNo } })
     }
 
-    const openModalCreateOrg = () => {
+    const openModalCreateOrg = (closable = true) => {
       store.dispatch('organization/resetCreateForm')
       store.dispatch('helper/openModal', {
-        component: 'modal-create-org'
+        component: 'modal-create-org',
+        closable
       })
     }
+
+    onMounted(() => {
+      if (orgList.value.length === 0) {
+        openModalCreateOrg(false)
+      }
+    })
 
     return {
       orgList,
