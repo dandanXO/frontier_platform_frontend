@@ -12,7 +12,7 @@ export default {
   name: 'RouterLinkExtending',
   props: {
     to: {
-      type: String,
+      type: [String, Object],
       required: true
     }
   },

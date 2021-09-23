@@ -3,7 +3,7 @@
     "lastName": "Mia",
     "firstName": "Yang",
     "email": "mia.yang@f",
-    "locale": "zh-TW",
+    "locale": "en-US",
     "isVerify": true,
     "organizationList": [
       {
@@ -24,7 +24,7 @@
     "lastName": "Old",
     "firstName": "User",
     "email": "old.user@f",
-    "locale": "zh-TW",
+    "locale": "en-US",
     "isVerify": false,
     "organizationList": [],
     "isOldUser": true

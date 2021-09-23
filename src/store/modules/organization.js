@@ -38,6 +38,7 @@ const state = () => ({
 const getters = {
   organization: state => state,
   orgId: state => state.orgId,
+  orgNo: state => state.orgNo,
   memberList: state => state.memberList,
   groupList: state => state.groupList,
   historyList: state => state.historyList,
@@ -138,6 +139,10 @@ const actions = {
       orgId: state.orgId,
       ...params
     })
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async joinOrgViaLink ({ dispatch }, params) {
+    const { data } = await organizationApi.joinOrgViaLink(params)
     dispatch('handleResponseData', { data }, { root: true })
   },
   resetCreateForm ({ commit }) {

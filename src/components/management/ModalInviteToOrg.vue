@@ -34,7 +34,7 @@ div(class="w-118.5")
 </template>
 
 <script>
-import { reactive, ref, toRaw, watch } from 'vue'
+import { computed, reactive, ref, toRaw, watch } from 'vue'
 import inputValidator from '@/utils/input-validator'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
@@ -53,7 +53,15 @@ export default {
     const store = useStore()
     const email = ref('')
     const errorMsg = ref('')
-    const inviteLink = ref('http://www.froniter.cool/1234')
+    const inviteLink = computed(() => {
+      const origin = window.location.origin
+      const orgNo = store.getters['organization/orgNo']
+      const inviteCode = props.from === 'org'
+        ? store.getters['organization/organization'].inviteCode
+        : store.getters['group/group'].inviteCode
+
+      return `${origin}/invite-link?orgNo=${orgNo}&from=${props.from}&inviteCode=${inviteCode}`
+    })
     /**
      * @todo: need to design invite link and redirect process
      */

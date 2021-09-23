@@ -1,7 +1,7 @@
 <template lang="pug">
 div(v-if="isModalOpen" class="fixed inset-0 z-index:modal w-screen h-screen bg-black-900 bg-opacity-70 flex justify-center items-center")
   div(class="w-screen h-screen" @click="closable && close()")
-  div(class="absolute bg-black-0 rounded")
+  div(class="absolute bg-black-0 rounded card-shadow")
     div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
       p(v-if="header !== ''" class="text-body1 text-primary") {{header}}
       svg-icon(v-if="closable" iconName="close" size="24" class="justify-self-end cursor-pointer text-black-700" @click="close")
@@ -18,6 +18,10 @@ import ModalAddToGroup from '@/components/management/ModalAddToGroup.vue'
 import ModalCreateMailGroup from '@/components/management/ModalCreateMailGroup.vue'
 import ModalCreateOrg from '@/components/lobby/ModalCreateOrg.vue'
 import ModalCreateMailOrg from '@/components/lobby/ModalCreateMailOrg.vue'
+import ModalForgotPasswordEmail from '@/components/account/ModalForgotPasswordEmail.vue'
+import ModalForgotPasswordCode from '@/components/account/ModalForgotPasswordCode.vue'
+import ModalResetPassword from '@/components/account/ModalResetPassword.vue'
+import ModalAskResetPassword from '@/components/account/ModalAskResetPassword.vue'
 
 export default {
   name: 'Modal',
@@ -27,7 +31,11 @@ export default {
     ModalAddToGroup,
     ModalCreateMailGroup,
     ModalCreateOrg,
-    ModalCreateMailOrg
+    ModalCreateMailOrg,
+    ModalForgotPasswordEmail,
+    ModalForgotPasswordCode,
+    ModalResetPassword,
+    ModalAskResetPassword
   },
   setup () {
     const store = useStore()

@@ -1,0 +1,88 @@
+<template lang="pug">
+div(class="w-105 px-8 flex flex-col items-center")
+  p(class="text-body1 text-black-800 font-bold mb-8") {{$t('a.resetPassword')}}
+  span(class="text-body2 text-primary mb-3") {{email}}
+  span(class="text-body2 text-black-600 mb-8") {{$t('a.enterPasswordAndConfirmPassword')}}
+  form(class="w-full pb-5.5")
+    input-password(v-model:textValue="password" :placeholder="$t('a.newPassword')")
+    password-validator(v-model:isValid="isPasswordValid" :password="password" class="mt-1 mb-7")
+    input-password(v-model:textValue="confirmPassword" :placeholder="$t('a.confirmPassword')" :customErrorMsg="errorMsg")
+  div(class="h-25 flex items-center")
+    btn(size="lg" class="w-85" :disabled="!avaliableToChangePassword" @click="changeHandler") {{$t('a.changePassword')}}
+</template>
+
+<script>
+import { computed, ref } from 'vue'
+import PasswordValidator from '@/components/account/PasswordValidator'
+import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
+import useNavigation from '@/composables/useNavigation'
+
+export default {
+  name: 'ModalResetPassword',
+  components: {
+    PasswordValidator
+  },
+  props: {
+    email: {
+      type: String,
+      required: true
+    },
+    verifyToken: {
+      type: String
+    },
+    mode: {
+      type: Number,
+      default: 0
+    }
+  },
+  setup (props) {
+    const MODE = {
+      FORGOT: 0,
+      OLD_RESET: 1,
+      CHANGE: 2
+    }
+    const { t } = useI18n()
+    const store = useStore()
+    const confirmPassword = ref('')
+    const isPasswordValid = ref(false)
+    const { nextAfterSignIn } = useNavigation()
+
+    const password = ref('')
+    const errorMsg = computed(() => {
+      if (password.value === '' || confirmPassword.value === '') {
+        return ''
+      }
+
+      return (password.value !== confirmPassword.value)
+        ? t('a.passwordNotMatch')
+        : ''
+    })
+    const avaliableToChangePassword = computed(() => password.value !== '' && confirmPassword.value !== '' && isPasswordValid.value && password.value === confirmPassword.value)
+
+    const changeHandler = async () => {
+      switch (props.mode) {
+        case MODE.FORGOT:
+          await store.dispatch('user/resetPassword', { password: password.value, verifyToken: props.verifyToken })
+          break
+        case MODE.OLD_RESET:
+          await store.dispatch('user/changePassword', { password: password.value })
+          break
+        case MODE.CHANGE:
+          break
+      }
+      await nextAfterSignIn()
+      store.dispatch('helper/closeModal')
+    }
+
+    return {
+      password,
+      confirmPassword,
+      isPasswordValid,
+      errorMsg,
+      avaliableToChangePassword,
+      changeHandler
+    }
+  }
+}
+</script>

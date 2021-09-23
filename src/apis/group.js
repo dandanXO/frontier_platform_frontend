@@ -32,5 +32,9 @@ export default {
   inviteToOrgFromGroup: ({ groupId, emailList }) => axios('/org/group/member/invite-via-email', {
     method: 'POST',
     data: { groupId, emailList }
+  }),
+  joinGroupViaLink: ({ inviteCode }) => axios('/org/group/member/join-via-link', {
+    method: 'POST',
+    data: { inviteCode }
   })
 }
