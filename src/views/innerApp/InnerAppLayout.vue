@@ -13,38 +13,47 @@ div(class="fixed z-index:sidebar w-60 h-full left-0 top-0 bottom-0 bg-black-100 
         span(class="text-body1 text-primary font-bold max-w-27.5 truncate line-height-1.4") {{organization.orgName}}
         svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-600")
       svg-icon(iconName="notification" class="text-black-700")
-  div(class="border-t border-primary-thin flex-grow p-2.5 flex flex-col")
-    div(class="pb-2.5 mb-2.5 border-b border-primary-thin")
-      div(class="grid gap-y-1.5 -mx-1.5")
+  div(class="border-t border-primary-thin px-1 py-1.5 flex flex-col")
+    div(class="grid gap-y-1.5")
+      div(
+        v-for="menu in menuGlobal.slice(0, 3)"
+        class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-black-400"
+        :class="[{ 'bg-black-500': $route.matched.some(route => route.name === menu.routeName) }]"
+        @click="currentTab = menu.path, $router.push(menu.path)"
+      )
+        svg-icon(:iconName="menu.icon" class="text-black-700")
+        span(class="text-body2 text-primary") {{$t(menu.title)}}
+  div(class="flex-grow px-1 flex flex-col")
+    div(class="w-auto h-px bg-primary-thin mx-1.5 my-1.5")
+    overlay-scrollbar-container(class="flex-grow")
+      div(class="grid gap-y-1.5")
         div(
-          v-for="menu in menuGlobal"
+          v-for="menu in menuGlobal.slice(3, 4)"
           class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-black-400"
           :class="[{ 'bg-black-500': $route.matched.some(route => route.name === menu.routeName) }]"
           @click="currentTab = menu.path, $router.push(menu.path)"
         )
           svg-icon(:iconName="menu.icon" class="text-black-700")
           span(class="text-body2 text-primary") {{$t(menu.title)}}
-    overlay-scrollbar-container(class="flex-grow")
-      div(v-for="item in menuOrgOrGroup" class="pb-2.5 mb-2.5 border-b border-primary-thin")
-        div(class="-mx-1.5")
-          dropdown(v-model:value="currentTab" :options="item.menuList" keyOptionValue="path" :closeAfterSelect="false" :closeAfterOutsideClick="false")
-            template(#displayItem="{ isExpand }")
-              div(class="flex items-center h-9 pl-4 pr-5 hover:bg-black-400")
-                label(class="w-3 h-3 rounded-sm mr-3" :style="{ 'background-color': item.labelColor }")
-                span(class="flex-grow text-body2 text-primary truncate line-height-1.4") {{item.name}}
-                svg-icon(iconName="keyboard_arrow_right" size="24" class="text-black-650 transform" :class="[ isExpand ? 'rotate-90' : 'rotate-0' ]")
-            template(#dropdownList="{ select, options }")
-              div(class="flex flex-col gap-y-0.5" @click.stop)
-                div(
-                  v-for="menu in options"
-                  class="flex items-center justify-between h-9 pl-10 pr-5 hover:bg-black-400"
-                  :class="[{ 'bg-black-500': currentTab === menu.path }]"
-                  @click="select($event, menu), $router.push(menu.path)"
-                )
-                  span(class="text-body2 text-primary") {{$t(menu.title)}}
-                  template(v-if="menu.id === 'assets'")
-                    div(class="flex justify-center items-center w-6 h-6 rounded bg-primary-thin")
-                      svg-icon(:iconName="menu.icon" size="20" class="text-black-800")
+        dropdown(v-for="item in menuOrgOrGroup" v-model:value="currentTab" :options="item.menuList" keyOptionValue="path" :closeAfterSelect="false" :closeAfterOutsideClick="false")
+          template(#displayItem="{ isExpand }")
+            div(class="flex items-center h-9 pl-4 pr-5 hover:bg-black-400")
+              label(class="w-3 h-3 rounded-sm mr-3" :style="{ 'background-color': item.labelColor }")
+              span(class="flex-grow text-body2 text-primary truncate line-height-1.4") {{item.name}}
+              svg-icon(iconName="keyboard_arrow_right" size="24" class="text-black-650 transform" :class="[ isExpand ? 'rotate-90' : 'rotate-0' ]")
+          template(#dropdownList="{ select, options }")
+            div(class="flex flex-col gap-y-0.5" @click.stop)
+              div(
+                v-for="menu in options"
+                class="flex items-center justify-between h-9 pl-10 pr-5 hover:bg-black-400"
+                :class="[{ 'bg-black-500': currentTab === menu.path }]"
+                @click="select($event, menu), $router.push(menu.path)"
+              )
+                span(class="text-body2 text-primary") {{$t(menu.title)}}
+                template(v-if="menu.id === 'assets'")
+                  div(class="flex justify-center items-center w-6 h-6 rounded bg-primary-thin")
+                    svg-icon(:iconName="menu.icon" size="20" class="text-black-800")
+      div(class="w-auto h-px bg-primary-thin mx-1.5 my-1.5")
   div(class="h-13 bg-black-200 py-2.5 pl-4 pr-6")
     div(class="flex items-center")
       img(:src="orgUser.avatar" class="rounded-full w-8 h-8 mr-2")
@@ -81,13 +90,6 @@ export default {
         path: `/${organization.value.orgNo}/public-library`
       },
       {
-        id: 'management',
-        title: 'reuse.management',
-        icon: 'management',
-        routeName: 'Management',
-        path: `/${organization.value.orgNo}/management`
-      },
-      {
         id: 'globalSearch',
         title: 'reuse.globalSearch',
         icon: 'search_all',
@@ -100,6 +102,13 @@ export default {
         icon: 'favorite_border',
         routeName: 'Favorites',
         path: `/${organization.value.orgNo}/favorites`
+      },
+      {
+        id: 'management',
+        title: 'reuse.management',
+        icon: 'member_setting',
+        routeName: 'Management',
+        path: `/${organization.value.orgNo}/management`
       }
     ])
     const menuOrgOrGroup = computed(() => {
