@@ -1,7 +1,7 @@
 <template lang="pug">
-div(class="l:pl-71.5 pl-91.5 2xl:146.5")
-  div(class="w-85 grid grid-flow-row")
-    p(class="justify-self-end pt-4.5 pb-5 text-caption text-black-600") *{{$t('b.required')}}
+div
+  div(class="w-85 mx-auto")
+    p(class="text-right pt-4.5 pb-5 text-caption text-black-600") *{{$t('b.required')}}
     input-label-color(
       v-model:labelColor="groupFormData.labelColor"
       v-model:textValue="groupFormData.groupName"
@@ -12,7 +12,7 @@ div(class="l:pl-71.5 pl-91.5 2xl:146.5")
       class="w-85 relative z-11 mb-7.5"
     )
     input-textarea(v-model:textValue="groupFormData.description" :label="$t('b.groupDescription')" :placeholder="$t('b.groupDescribeToUnderstand')" class="w-85 mb-7.5" height="160")
-    btn(size="md" class="justify-self-center" :disabled="!avaliableToCreateGroup" @click="updateGroup") {{$t('reuse.save')}}
+    btn(size="md" class="mx-auto" :disabled="!avaliableToCreateGroup" @click="updateGroup") {{$t('reuse.save')}}
 </template>
 
 <script>

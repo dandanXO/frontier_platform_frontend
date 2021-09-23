@@ -1,6 +1,6 @@
 <template lang="pug">
-div(class="l:pl-5 pl-19 2xl:pl-59 l:pt-16 pt-17.5")
-  div(class="flex")
+div(class="l:pt-16 pt-17.5")
+  div(class="flex justify-center")
     div(class="w-40 l:mr-11 mr-15")
       div(class="flex flex-col items-center")
         img(:src="organization.logo" class="w-40 h-40 rounded-full bg-black-500")
