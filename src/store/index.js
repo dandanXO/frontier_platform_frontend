@@ -12,15 +12,17 @@ export default createStore({
 
       const namespacedParentModuleList = ['user', 'organization', 'code', 'group']
 
-      namespacedParentModuleList.forEach(module => {
-        if (Object.prototype.hasOwnProperty.call(result, module)) {
-          const capitalizedModule = module.charAt(0).toUpperCase() + module.slice(1)
-          dispatch(`${module}/set${capitalizedModule}`, result[module], { root: true })
-        }
-      })
+      if (result !== null) {
+        namespacedParentModuleList.forEach(module => {
+          if (Object.prototype.hasOwnProperty.call(result, module)) {
+            const capitalizedModule = module.charAt(0).toUpperCase() + module.slice(1)
+            dispatch(`${module}/set${capitalizedModule}`, result[module], { root: true })
+          }
+        })
 
-      if (Object.prototype.hasOwnProperty.call(result, 'orgUser')) {
-        dispatch('user/orgUser/setOrgUser', result.orgUser, { root: true })
+        if (Object.prototype.hasOwnProperty.call(result, 'orgUser')) {
+          dispatch('user/orgUser/setOrgUser', result.orgUser, { root: true })
+        }
       }
 
       if (!success) {

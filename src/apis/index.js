@@ -49,7 +49,7 @@ instance.interceptors.response.use(async response => {
   if (status === 401) {
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
-    router.push('/sign-in')
+    router.push(`/sign-in/${window.location.search}`)
     return Promise.reject(response)
   }
 

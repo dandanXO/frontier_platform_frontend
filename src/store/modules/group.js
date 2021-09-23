@@ -100,6 +100,10 @@ const actions = {
     })
     dispatch('handleResponseData', { data }, { root: true })
   },
+  async joinGroupViaLink ({ dispatch }, params) {
+    const { data } = await groupApi.joinGroupViaLink(params)
+    dispatch('handleResponseData', { data }, { root: true })
+  },
   resetCreateForm ({ commit }) {
     commit('SET_createForm_groupName', '')
     commit('SET_createForm_labelColor', COLOR.RED)

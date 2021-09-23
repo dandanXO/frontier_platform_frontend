@@ -44,6 +44,30 @@ const routes = [
     }
   },
   {
+    path: '/invite-link',
+    name: 'InviteLink',
+    meta: {
+      requiresLogin: true
+    },
+    component: () => import('@/views/PassThrough'),
+    beforeEnter: async (to, from, next) => {
+      const { from: fromWhere, inviteCode, orgNo } = to.query
+
+      const organizationList = store.getters['user/organizationList']
+      if (organizationList.some(org => Number(org.orgNo) === Number(orgNo))) {
+        return next(`/${orgNo}`)
+      }
+
+      if (fromWhere === 'org') {
+        await store.dispatch('organization/joinOrgViaLink', { inviteCode })
+      } else if (fromWhere === 'group') {
+        await store.dispatch('group/joinGroupViaLink', { inviteCode })
+      }
+      await store.dispatch('user/getUser')
+      return next(`/${orgNo}`)
+    }
+  },
+  {
     path: '/',
     name: 'Lobby',
     meta: {
@@ -102,6 +126,7 @@ const routes = [
             props: true,
             component: () => import('@/views/innerApp/management/ManagementOrg.vue'),
             beforeEnter: async (to, from, next) => {
+              await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
               await store.dispatch('code/getCountryList')
               await store.dispatch('code/getOrgCategoryList')
               await store.dispatch('code/getRoleList')

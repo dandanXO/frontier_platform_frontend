@@ -56,6 +56,10 @@ export default {
     method: 'POST',
     data: { orgId, emailList }
   }),
+  joinOrgViaLink: ({ inviteCode }) => axios('/org/member/join-via-link', {
+    method: 'POST',
+    data: { inviteCode }
+  }),
   setOrgUploadMail: ({ orgId, uploadMaterialEmail }) => axios('/org/create-upload-material-email', {
     method: 'POST',
     data: { orgId, uploadMaterialEmail }
