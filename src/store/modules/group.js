@@ -24,6 +24,7 @@ const state = () => ({
 
 const getters = {
   group: state => state,
+  uploadMaterialEmail: state => state.uploadMaterialEmail,
   memberList: state => state.memberList,
   historyList: state => state.historyList,
   createForm: state => state.createForm

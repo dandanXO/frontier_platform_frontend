@@ -169,6 +169,11 @@ const routes = [
         component: () => import('@/views/innerApp/organization/OrgAssets.vue')
       },
       {
+        path: 'assets/upload',
+        name: 'OrgUploadAssets',
+        component: () => import('@/views/innerApp/UploadAssets.vue')
+      },
+      {
         path: 'share-to-me',
         name: 'OrgShareToMe',
         component: () => import('@/views/innerApp/organization/OrgShareToMe.vue')
@@ -184,14 +189,19 @@ const routes = [
         component: () => import('@/views/PassThrough'),
         children: [
           {
-            path: 'workspace',
-            name: 'GroupWorkspace',
-            component: () => import('@/views/innerApp/group/GroupWorkspace.vue')
-          },
-          {
             path: 'assets',
             name: 'GroupAssets',
             component: () => import('@/views/innerApp/group/GroupAssets.vue')
+          },
+          {
+            path: 'assets/upload',
+            name: 'GroupUploadAssets',
+            component: () => import('@/views/innerApp/UploadAssets.vue')
+          },
+          {
+            path: 'workspace',
+            name: 'GroupWorkspace',
+            component: () => import('@/views/innerApp/group/GroupWorkspace.vue')
           },
           {
             path: 'share-to-me',

@@ -22,6 +22,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import InputLabelColor from '@/components/InputLabelColor'
 import ModalInviteToOrg from '@/components/management/ModalInviteToOrg'
+import useNavigation from '@/composables/useNavigation'
 
 export default {
   name: 'Management',
@@ -33,6 +34,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const store = useStore()
+    const { location } = useNavigation()
 
     const organization = computed(() => store.getters['organization/organization'])
     const menuOrgOrGroup = computed(() => {
@@ -51,7 +53,6 @@ export default {
         })
       ]
     })
-    const location = computed(() => route.name === 'ManagementOrg' ? 'org' : 'group')
     const currentTab = computed(() => route.params.tab)
     const currentMenu = computed(() => {
       const { orgNo } = organization.value

@@ -1,10 +1,13 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { computed } from '@vue/runtime-core'
 
 export default function useNavigation () {
   const store = useStore()
   const router = useRouter()
   const route = useRoute()
+
+  const location = computed(() => Object.prototype.hasOwnProperty.call(route.params, 'groupId') ? 'group' : 'org')
 
   const nextAfterSignIn = async () => {
     if (route.query.inviteCode !== undefined) {
@@ -20,7 +23,19 @@ export default function useNavigation () {
     router.push('/')
   }
 
+  const parsePath = (path) => {
+    let temp = path
+    Object.keys(route.params).forEach(key => {
+      const regex = new RegExp(':' + key)
+      temp = temp.replace(regex, route.params[key])
+    })
+    temp = temp.replace(/\(\\d\+\)/, '')
+    return temp
+  }
+
   return {
-    nextAfterSignIn
+    location,
+    nextAfterSignIn,
+    parsePath
   }
 }

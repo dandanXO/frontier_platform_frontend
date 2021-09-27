@@ -6,7 +6,7 @@ div(class="w-100 px-8")
     input-text(v-model:textValue="uploadMaterialEmail" required class="w-58.5" :customErrorMsg="suggestEmailList.length > 0 ? $t('err.nameInUse') : ''")
     p(class="text-body2 text-primary") {{$t('a.textileCloud')}}
   div(v-if="suggestEmailList.length > 0" class="pt-7.5 flex")
-    p(class="text-body2 text-primary pr-2") {{$t('b.available')}}:
+    p(class="text-body2 text-primary pr-2") {{$t('a.available')}}:
     div
       p(v-for="email in suggestEmailList" class="text-body2 text-assist-blue pb-2.5") {{email}}
   div(class="h-25 flex justify-center items-center")

@@ -11,6 +11,12 @@ div(ref="rootElement" class="dropdown relative cursor-pointer" @click="isExpand 
     :options="options"
     :currentIndex="currentIndex"
   )
+    list(class="absolute top-full -left-1 transform translate-y-2.5 min-w-24")
+      list-item(
+        v-for="(option, index) in options"
+        :class="{'bg-primary-thin': index === currentIndex }"
+        @click="select($event, option)"
+      ) {{option[keyOptionDisplay]}}
 </template>
 
 <script>
@@ -23,13 +29,16 @@ export default {
       type: Array,
       required: true
     },
+    keyOptionDisplay: {
+      type: String,
+      default: 'name'
+    },
     keyOptionValue: {
       type: String,
-      required: true
+      default: 'value'
     },
     value: {
-      type: [String, Number],
-      required: true
+      type: [String, Number]
     },
     closeAfterOutsideClick: {
       type: Boolean,
@@ -40,12 +49,17 @@ export default {
       default: true
     }
   },
-  emits: ['expand', 'collapse', 'update:value'],
+  emits: ['expand', 'collapse', 'update:value', 'select'],
   setup (props, { emit }) {
     const isExpand = ref(false)
     const rootElement = ref(null)
 
-    const currentIndex = computed(() => props.options.findIndex(option => option[props.keyOptionValue] === props.value))
+    const isBindingValue = computed(() => props.value !== undefined)
+    const currentIndex = computed(() => {
+      return isBindingValue.value
+        ? props.options.findIndex(option => option[props.keyOptionValue] === props.value)
+        : -1
+    })
 
     const expand = () => {
       props.closeAfterOutsideClick && document.addEventListener('click', captureOutsideClick)
@@ -68,7 +82,10 @@ export default {
     const select = (e, option) => {
       e.stopPropagation()
 
-      emit('update:value', option[props.keyOptionValue])
+      if (isBindingValue.value) {
+        emit('update:value', option[props.keyOptionValue])
+      }
+      emit('select', option)
       props.closeAfterSelect && collapse()
     }
 
