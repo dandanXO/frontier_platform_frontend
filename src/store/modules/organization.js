@@ -39,6 +39,7 @@ const getters = {
   organization: state => state,
   orgId: state => state.orgId,
   orgNo: state => state.orgNo,
+  uploadMaterialEmail: state => state.uploadMaterialEmail,
   memberList: state => state.memberList,
   groupList: state => state.groupList,
   historyList: state => state.historyList,

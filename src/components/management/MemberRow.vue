@@ -17,18 +17,17 @@ div(
       p(v-if="member.orgRoleId === ROLE_ID.OWNER") {{getRoleName(member.orgRoleId)}}
       p(v-else-if="roleLimitList.length === 1") {{getRoleName(member.orgRoleId)}}
       template(v-else)
-        dropdown(:value="currentRoleId" :options="roleLimitList" keyOptionValue="roleId")
+        dropdown(
+          :value="currentRoleId"
+          :options="roleLimitList"
+          keyOptionDisplay="name"
+          keyOptionValue="roleId"
+          @select="changeMemberRole($event.roleId)"
+        )
           template(#displayItem="{ isExpand, option }")
             div(class="flex items-center")
               p {{option.name}}
               svg-icon(iconName="arrow-down" size="20" class="ml-4 text-black-600 transform" :class="[ isExpand ? '-rotate-90' : 'rotate-90' ]")
-          template(#dropdownList="{ select, options, currentIndex }")
-            div(class="absolute top-full -left-1 transform translate-y-2.5 w-auto py-2 rounded bg-black-0" style="box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);")
-              div(v-for="(option, index) in options"
-                class="h-9 flex items-center px-3 text-body2 text-primary"
-                :class="{'bg-primary-thin': index === currentIndex }"
-                @click="select($event, option), changeMemberRole(option.roleId)"
-              ) {{option.name}}
     p(v-else class="ml-4 w-4 border-t border-primary")
   div(class="flex-grow")
     p(v-if="member.lastSignInTime !== null") {{member.lastSignInTime}}
@@ -43,7 +42,7 @@ import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { ROLE_ID } from '@/utils/constants'
-import { useRoute } from 'vue-router'
+import useNavigation from '@/composables/useNavigation'
 
 export default {
   name: 'MemberRow',
@@ -56,10 +55,9 @@ export default {
   setup (props) {
     const isHover = ref(false)
     const store = useStore()
-    const route = useRoute()
     const { t } = useI18n()
+    const { location } = useNavigation()
 
-    const location = computed(() => route.name === 'ManagementOrg' ? 'org' : 'group')
     const orgRoleLimitList = computed(() => store.getters['code/orgRoleLimitList'])
     const groupRoleLimitList = computed(() => store.getters['code/getGroupRoleLimitList'](props.member.orgRoleId))
     const roleLimitList = computed(() => location.value === 'org' ? orgRoleLimitList.value : groupRoleLimitList.value)
