@@ -1,17 +1,17 @@
 <template lang="pug">
 div(class="croped-image")
-  div(:style="styles()")
-    div(:style="scaleStyles()")
-        img(ref="body"
-          :class="[{'opacity-30': isTransparent}]"
-          draggable="false"
-          :src="config.src"
-          @mousedown.left.stop="moveStart")
-        div(v-for="(scaler, index)  in scalers"
-            class="controller-point absolute bg-black-0"
-            :key="index"
-            :style="Object.assign(scaler, cursorStyles(index, 0))"
-            @mousedown.stop="scaleStart")
+  div(:style="styles")
+    div
+      img(ref="body"
+        :class="[{'opacity-30': isTransparent}]"
+        draggable="false"
+        :src="config.src"
+        @mousedown.left.stop="moveStart")
+      div(v-for="(scaler, index)  in scalers"
+          class="controller-point absolute bg-black-0"
+          :key="index"
+          :style="Object.assign(scaler, cursorStyles(index, 0))"
+          @mousedown.stop="scaleStart")
 </template>
 
 <script>
@@ -19,17 +19,13 @@ import { computed, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 export default {
   props: {
-    scaleRatio: {
-      default: 1,
-      type: Number
-    },
     rotateDeg: {
       default: 0,
       type: Number
     },
     movable: {
-      default: false,
-      type: Boolean
+      type: Boolean,
+      default: true
     },
     isTransparent: {
       default: false,
@@ -38,7 +34,6 @@ export default {
   },
   setup (props) {
     const store = useStore()
-    const organization = computed(() => store.getters['organization/organization'])
     let initialPos = { x: 0, y: 0 }
     const initImgPos = { x: 0, y: 0 }
     const controlling = ref(false)
@@ -97,22 +92,14 @@ export default {
       return store.getters['helper/uploadImage/getUploadImgConfig']
     })
 
-    // const cropSize = 200
-
-    function styles () {
+    const styles = computed(() => {
       const styles = config.value.styles
       return {
         transform: `translate(${styles.x}px, ${styles.y}px)`,
         width: `${styles.width}px`,
         height: `${styles.height}px`
       }
-    }
-
-    function scaleStyles () {
-      return {
-        transform: `scale(${props.scaleRatio}`
-      }
-    }
+    })
 
     function cursorStyles (index, rotateAngle) {
       const cursorIndex = rotateAngle >= 0 ? (index + Math.floor(rotateAngle / 45)) % 8
@@ -336,9 +323,7 @@ export default {
       styles,
       moveStart,
       scaleStart,
-      scaleStyles,
       config,
-      organization,
       scalers,
       cursorStyles,
       body

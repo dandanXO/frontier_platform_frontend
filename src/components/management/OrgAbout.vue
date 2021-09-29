@@ -95,6 +95,20 @@ export default {
       store.dispatch('helper/openModal', {
         component: 'modal-upload',
         header: t('b.updateOrgLogo'),
+        properties: {
+          // pure logo no preprocessing
+          image: organization.value.logo,
+          removeHandler: async () => {
+            await store.dispatch('organization/removeOrgLogo')
+          },
+          uploadHandler: async (cropImage, originalImage) => {
+            const formData = new FormData()
+            formData.append('orgId', store.getters['organization/orgId'])
+            formData.append('logo', cropImage)
+            formData.append('originalLogo', originalImage)
+            store.dispatch('organization/updateOrgLogo', formData)
+          }
+        },
         closeHandler: () => {
           store.commit('helper/uploadImage/SET_uploadStatus', 'none')
         }

@@ -3,46 +3,63 @@ div(class="w-120 border-t border-black-400")
   div(class="w-full flex justify-center items-center border-b border-black-400 overflow-hidden")
     div(class="w-full h-full flex justify-center items-center py-15 relative"
         :class="{'bg-black-500': uploadStatus === 'done' || uploadStatus === 'croping'}")
-      div(v-if="uploadStatus === 'none' && organization.logo === ''"
-        class="flex flex-col")
+      div(v-if="uploadStatus === 'none' && image === ''"
+        class="flex flex-col"
+        @drop.stop.prevent="onDrop($event)"
+        @dragover.prevent
+        @dragenter.prevent
+      )
         btn(size="md" type="secondary" class="h-10 mb-2" @click="uploadImg") {{$t('b.chooseImageToUpload') }}
         span(class="text-body2 font-bold mb-2 text-black-500") {{$t('b.pictureRestriction')}}
         span(class="text-body2 mb-2 text-black-500") {{$t('b.fileSupported')}}
         span(class="text-body2 mb-2 text-black-500") {{$t('b.imageFormat')}}
         span(class="text-body2 mb-2 text-black-500") {{$t('b.ImageMaxSize')}}
-      img(v-else-if="uploadStatus === 'none' && organization.logo === ''" class="w-50 h-50" :src="organization.logo"
+      img(v-else-if="uploadStatus === 'none' && image === ''" class="w-50 h-50" :src="image"
         :class="{'rounded-full': uploadStatus === 'none'}")
-      svg-icon(v-else-if="uploadStatus === 'uploading'" iconName="loading" size="100" class="justify-self-end cursor-pointer text-brand-dark" @click="closeModal")
-      image-crop(v-else-if="uploadStatus === 'done' || uploadStatus === 'croping'")
-      img(v-else class="w-50 h-50" :src="organization.logo"
+      svg-icon(v-else-if="uploadStatus === 'uploading'" iconName="loading" size="100" class="justify-self-end cursor-pointer text-brand-dark")
+      image-crop(v-else-if="uploadStatus === 'done' || uploadStatus === 'croping'" :cropRectSize="cropRectSize")
+      img(v-else class="w-50 h-50" :src="image"
         :class="{'rounded-full': uploadStatus === 'none'}")
       div(v-if="uploadStatus === 'croping'" class="w-full absolute bottom-0 flex justify-center")
         svg-icon(iconName="loading" size="50" class="justify-self-end cursor-pointer text-brand-dark" @click="closeModal")
   div(class="h-25 flex justify-center items-center")
     div(v-if="uploadStatus === 'done'" class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" class="h-10" :disabled="btnDisabled" @click="cancel") {{$t('b.cancel') }}
+      btn(size="md" type="secondary" class="h-10" :disabled="btnDisabled" @click="closeModal") {{$t('b.cancel') }}
       btn(size="md" class="h-10" :disabled="btnDisabled" @click="confirm") {{$t('b.confirm')}}
-    div(v-else-if="uploadStatus === 'none' && organization.logo !== ''" class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" class="h-10"  @click="removeOrgLogo") {{$t('b.remove') }}
+    div(v-else-if="uploadStatus === 'none' && image !== ''" class="grid grid-cols-2 gap-x-3")
+      btn(size="md" type="secondary" class="h-10"  @click="innerRemoveHandler") {{$t('b.remove') }}
       btn(size="md" class="h-10"  @click="uploadImg") {{$t('b.changeLogo')}}
     btn(v-else size="md" class="h-10" :disabled="btnDisabled") {{$t('b.confirm')}}
 </template>
 
 <script>
-import { computed } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import ImageCrop from '@/components/management/logo/ImageCrop.vue'
 import * as htmlToImage from 'html-to-image'
-import FileUtils from '@/utils/fileUtils.js'
+import ImageOperator from '@/utils/imageOperator.js'
 
 export default {
   name: 'ModalUpload',
   components: {
     ImageCrop
   },
-  setup () {
+  props: {
+    image: {
+      type: String,
+      default: ''
+    },
+    removeHandler: {
+      type: Function,
+      required: true
+    },
+    uploadHandler: {
+      type: Function,
+      required: true
+    }
+  },
+  setup (props) {
     const store = useStore()
-    const organization = computed(() => store.getters['organization/organization'])
     const uploadStatus = computed(() => store.getters['helper/uploadImage/getUploadStatus'])
     const uploadImgConfig = computed(() => store.getters['helper/uploadImage/getUploadImgConfig'])
 
@@ -50,36 +67,30 @@ export default {
       return ['none', 'croping', 'uploading'].includes(uploadStatus.value)
     })
 
-    const closeModal = () => store.dispatch('helper/closeModal')
-
-    async function removeOrgLogo () {
-      store.dispatch('organization/removeOrgLogo')
-      closeModal()
+    const closeModal = () => {
+      store.commit('helper/uploadImage/SET_uploadStatus', 'none')
+      store.dispatch('helper/closeModal')
     }
+
+    const cropRectSize = ref(200)
 
     async function uploadImg () {
-      FileUtils.uploadImg()
+      new ImageOperator(cropRectSize.value).uploadImg()
     }
 
-    function cancel () {
-      store.commit('helper/uploadImage/SET_uploadStatus', 'none')
-      closeModal()
+    function onDrop (evt) {
+      new ImageOperator(cropRectSize.value).onDropImg(evt)
     }
 
     function confirm () {
       const cropTarget = document.getElementById('crop-target')
       store.commit('helper/uploadImage/SET_uploadStatus', 'croping')
       htmlToImage.toJpeg(cropTarget).then((dataUrl) => {
-        store.commit('helper/uploadImage/SET_uploadStatus', 'none')
+        props.uploadHandler(dataURLtoBlob(dataUrl), dataURLtoBlob(uploadImgConfig.value.src))
         closeModal()
-        const formData = new FormData()
-        formData.append('orgId', store.getters['organization/orgId'])
-        formData.append('logo', dataURLtoBlob(dataUrl))
-        formData.append('originalLogo', dataURLtoBlob(uploadImgConfig.value.src))
-        store.dispatch('organization/updateOrgLogo', formData)
 
         // used to see the croped image in local
-
+        // const link = document.createElement('a')
         // link.download = 'my-image-name.jpeg'
         // link.href = dataUrl
         // link.click()
@@ -98,15 +109,24 @@ export default {
       return new Blob([u8arr], { type: mime })
     }
 
+    const innerRemoveHandler = async () => {
+      await props.removeHandler()
+      closeModal()
+    }
+
+    onUnmounted(() => {
+      store.commit('helper/uploadImage/SET_uploadStatus', 'none')
+    })
+
     return {
-      organization,
       uploadStatus,
       btnDisabled,
-      removeOrgLogo,
       closeModal,
-      cancel,
       confirm,
-      uploadImg
+      uploadImg,
+      innerRemoveHandler,
+      onDrop,
+      cropRectSize
     }
   }
 }

@@ -59,13 +59,10 @@ const mutations = {
     state.uploadStatus = status
   }
 }
-const actions = {
-}
 
 export default {
   namespaced: true,
   state,
   getters,
-  mutations,
-  actions
+  mutations
 }
