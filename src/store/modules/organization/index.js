@@ -1,5 +1,6 @@
 import organizationApi from '@/apis/organization'
 import setVuexState from '@/utils/set-vuex-state'
+import orgLogo from '@/store/modules/organization/orgLogo'
 
 const state = () => ({
   orgId: 1,
@@ -37,6 +38,9 @@ const state = () => ({
 
 const getters = {
   organization: state => state,
+  orgLogo: state => {
+    return state.logo === '' ? require('@/assets/images/logo-default.png') : state.logo
+  },
   orgId: state => state.orgId,
   orgNo: state => state.orgNo,
   uploadMaterialEmail: state => state.uploadMaterialEmail,
@@ -120,6 +124,16 @@ const actions = {
     })
     dispatch('handleResponseData', { data }, { root: true })
   },
+  async updateOrgLogo ({ state, dispatch }, formData) {
+    const { data } = await organizationApi.updateOrgLogo(formData)
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async removeOrgLogo ({ state, dispatch }) {
+    const { data } = await organizationApi.removeOrgLogo({
+      orgId: state.orgId
+    })
+    dispatch('handleResponseData', { data }, { root: true })
+  },
   async changeOrgMemberRole ({ dispatch }, params) {
     const { data } = await organizationApi.changeOrgMemberRole(params)
     dispatch('handleResponseData', { data }, { root: true })
@@ -166,5 +180,8 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
+  modules: {
+    orgLogo
+  }
 }

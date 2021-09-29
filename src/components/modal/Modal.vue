@@ -11,6 +11,7 @@ div(class="fixed inset-0 z-index:modal w-screen h-screen bg-black-900 bg-opacity
 <script>
 import { useStore } from 'vuex'
 import ModalCreateGroup from '@/components/management/ModalCreateGroup.vue'
+import ModalUpload from '@/components/management/ModalUpload.vue'
 import ModalInviteToOrg from '@/components/management/ModalInviteToOrg.vue'
 import ModalAddToGroup from '@/components/management/ModalAddToGroup.vue'
 import ModalCreateMailGroup from '@/components/management/ModalCreateMailGroup.vue'
@@ -25,6 +26,7 @@ export default {
   name: 'Modal',
   components: {
     ModalCreateGroup,
+    ModalUpload,
     ModalInviteToOrg,
     ModalAddToGroup,
     ModalCreateMailGroup,
