@@ -14,22 +14,19 @@ div(class="w-120 border-t border-black-400")
         span(class="text-body2 mb-2 text-black-500") {{$t('b.fileSupported')}}
         span(class="text-body2 mb-2 text-black-500") {{$t('b.imageFormat')}}
         span(class="text-body2 mb-2 text-black-500") {{$t('b.ImageMaxSize')}}
-      img(v-else-if="uploadStatus === 'none' && image === ''" class="w-50 h-50" :src="image"
-        :class="{'rounded-full': uploadStatus === 'none'}")
       svg-icon(v-else-if="uploadStatus === 'uploading'" iconName="loading" size="100" class="justify-self-end cursor-pointer text-brand-dark")
       image-crop(v-else-if="uploadStatus === 'done' || uploadStatus === 'croping'" :cropRectSize="cropRectSize")
-      img(v-else class="w-50 h-50" :src="image"
-        :class="{'rounded-full': uploadStatus === 'none'}")
+      img(v-else class="w-50 h-50" :src="image")
       div(v-if="uploadStatus === 'croping'" class="w-full absolute bottom-0 flex justify-center")
-        svg-icon(iconName="loading" size="50" class="justify-self-end cursor-pointer text-brand-dark" @click="closeModal")
+        svg-icon(iconName="loading" size="50" class="justify-self-end cursor-pointer text-brand-dark")
   div(class="h-25 flex justify-center items-center")
     div(v-if="uploadStatus === 'done'" class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" class="h-10" :disabled="btnDisabled" @click="closeModal") {{$t('b.cancel') }}
-      btn(size="md" class="h-10" :disabled="btnDisabled" @click="confirm") {{$t('b.confirm')}}
+      btn(size="md" type="secondary" :disabled="btnDisabled" @click="closeModal") {{$t('b.cancel') }}
+      btn(size="md" :disabled="btnDisabled" @click="confirm") {{$t('b.confirm')}}
     div(v-else-if="uploadStatus === 'none' && image !== ''" class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" class="h-10"  @click="innerRemoveHandler") {{$t('b.remove') }}
-      btn(size="md" class="h-10"  @click="uploadImg") {{$t('b.changeLogo')}}
-    btn(v-else size="md" class="h-10" :disabled="btnDisabled") {{$t('b.confirm')}}
+      btn(size="md" type="secondary" @click="innerRemoveHandler") {{$t('b.remove') }}
+      btn(size="md" @click="uploadImg") {{$t('b.changeLogo')}}
+    btn(v-else size="md" :disabled="btnDisabled") {{$t('b.confirm')}}
 </template>
 
 <script>
