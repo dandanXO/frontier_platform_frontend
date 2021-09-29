@@ -1,18 +1,15 @@
 <template lang="pug">
 router-view
-modal-confirm
-modal
+modal-pipeline
 </template>
 
 <script>
-import ModalConfirm from '@/components/modal/ModalConfirm.vue'
-import Modal from '@/components/modal/Modal.vue'
+import ModalPipeline from '@/components/modal/ModalPipeline.vue'
 
 export default {
   name: 'App',
   components: {
-    ModalConfirm,
-    Modal
+    ModalPipeline
   }
 }
 </script>

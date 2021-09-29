@@ -1,5 +1,5 @@
 <template lang="pug">
-div(v-if="isModalOpen" class="fixed inset-0 z-index:modal w-screen h-screen bg-black-900 bg-opacity-70 flex justify-center items-center")
+div(class="fixed inset-0 z-index:modal w-screen h-screen bg-black-900 bg-opacity-70 flex justify-center items-center")
   div(class="w-screen h-screen" @click="closable && close()")
   div(class="absolute bg-black-0 rounded card-shadow")
     div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
@@ -9,9 +9,7 @@ div(v-if="isModalOpen" class="fixed inset-0 z-index:modal w-screen h-screen bg-b
 </template>
 
 <script>
-import { toRefs } from 'vue'
 import { useStore } from 'vuex'
-import { computed } from '@vue/runtime-core'
 import ModalCreateGroup from '@/components/management/ModalCreateGroup.vue'
 import ModalInviteToOrg from '@/components/management/ModalInviteToOrg.vue'
 import ModalAddToGroup from '@/components/management/ModalAddToGroup.vue'
@@ -37,26 +35,31 @@ export default {
     ModalResetPassword,
     ModalAskResetPassword
   },
+  props: {
+    component: {
+      type: String,
+      required: true
+    },
+    header: {
+      type: String,
+      default: ''
+    },
+    properties: {
+      type: Object
+    },
+    closable: {
+      type: Boolean,
+      default: true
+    }
+  },
   setup () {
     const store = useStore()
-    const isModalOpen = computed(() => store.getters['helper/isModalOpen'])
-    const modalComponent = computed(() => store.getters['helper/modalComponent'])
-    const { component, header, properties, closeHandler, closable } = toRefs(modalComponent.value)
-
-    const close = async () => {
-      if (typeof closeHandler.value === 'function') {
-        await closeHandler.value()
-      }
+    const close = () => {
       store.dispatch('helper/closeModal')
     }
 
     return {
-      isModalOpen,
-      header,
-      component,
-      properties,
-      close,
-      closable
+      close
     }
   }
 }

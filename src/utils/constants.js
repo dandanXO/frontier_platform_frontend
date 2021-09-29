@@ -23,3 +23,9 @@ export const COLOR = {
   BROWN: '#964800',
   GRAY: '#616161'
 }
+
+export const MODAL_TYPE = {
+  MODAL: 0,
+  FULLSCREEN: 1,
+  CONFIRM: 3
+}
