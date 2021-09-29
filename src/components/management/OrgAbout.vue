@@ -6,7 +6,7 @@ div(class="l:pt-16 pt-17.5")
         div(class="relative")
           img(:src="logo" class="w-40 h-40 rounded-full bg-black-500")
           div(class="absolute flex justify-center items-center right-2 bottom-2 w-8 h-8 rounded-full bg-black-0 border-4 border-black-200 cursor-pointer"
-            @click="openModalUpload()"
+            @click="openModalUpload"
           )
             svg-icon(iconName="camera" size="20" class="text-black-700")
         div(class="flex items-center pt-4")
@@ -96,7 +96,7 @@ export default {
         component: 'modal-upload',
         header: t('b.updateOrgLogo'),
         closeHandler: () => {
-          store.commit('organization/orgLogo/SET_uploadStatus', 'none')
+          store.commit('helper/uploadImage/SET_uploadStatus', 'none')
         }
       })
     }

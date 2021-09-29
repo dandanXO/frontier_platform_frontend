@@ -37,7 +37,7 @@ export default {
     const previewScaleRatio = ref(1)
     const rotateDeg = ref(0)
     const cropedImage = ref(null)
-    const uploadStatus = computed(() => store.getters['organization/orgLogo/getUploadStatus'])
+    const uploadStatus = computed(() => store.getters['helper/uploadImage/getUploadStatus'])
 
     const uploaded = computed(() => {
       return uploadStatus.value === 'done'

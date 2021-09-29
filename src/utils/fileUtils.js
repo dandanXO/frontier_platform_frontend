@@ -51,16 +51,16 @@ function checkImgFormat (file, em) {
               store.dispatch('helper/closeModalConfirm')
             }
           })
-          store.commit('organization/orgLogo/SET_uploadStatus', 'none')
+          store.commit('helper/uploadImage/SET_uploadStatus', 'none')
           return
         }
         setTimeout(() => {
-          store.commit('organization/orgLogo/SET_uploadStatus', 'done')
+          store.commit('helper/uploadImage/SET_uploadStatus', 'done')
           const aspectRatio = width / height
           const resizeRatio = aspectRatio > 1 ? height / CROP_RECT_SIZE : width / CROP_RECT_SIZE
           const scaledWidth = aspectRatio > 1 ? width / resizeRatio : CROP_RECT_SIZE
           const scaledHeight = aspectRatio > 1 ? CROP_RECT_SIZE : height / (resizeRatio)
-          store.commit('organization/orgLogo/SET_uploadImgConfig', {
+          store.commit('helper/uploadImage/SET_uploadImgConfig', {
             src,
             binaryData: '',
             size: mb,
@@ -102,7 +102,7 @@ class FileUtils {
   handleFileSelect (evt) {
     // store.commit('SET_isUploading', true)
     const file = evt.target.files[0]
-    store.commit('organization/orgLogo/SET_uploadStatus', 'uploading')
+    store.commit('helper/uploadImage/SET_uploadStatus', 'uploading')
     evt.target.removeEventListener('change', this.handleFileSelect, false)
     checkImgFormat(file, evt.currentTarget.em)
   }

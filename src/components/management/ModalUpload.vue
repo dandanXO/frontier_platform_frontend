@@ -1,8 +1,8 @@
 <template lang="pug">
-div(class="w-120 bg-black-0 rounded border-t border-black-400")
+div(class="w-120 border-t border-black-400")
   div(class="w-full flex justify-center items-center border-b border-black-400 overflow-hidden")
     div(class="w-full h-full flex justify-center items-center py-15 relative"
-        :class="{'bg-black-500':uploadStatus === 'done' || uploadStatus === 'croping'}")
+        :class="{'bg-black-500': uploadStatus === 'done' || uploadStatus === 'croping'}")
       div(v-if="uploadStatus === 'none' && organization.logo === ''"
         class="flex flex-col")
         btn(size="md" type="secondary" class="h-10 mb-2" @click="uploadImg") {{$t('b.chooseImageToUpload') }}
@@ -25,12 +25,11 @@ div(class="w-120 bg-black-0 rounded border-t border-black-400")
     div(v-else-if="uploadStatus === 'none' && organization.logo !== ''" class="grid grid-cols-2 gap-x-3")
       btn(size="md" type="secondary" class="h-10"  @click="removeOrgLogo") {{$t('b.remove') }}
       btn(size="md" class="h-10"  @click="uploadImg") {{$t('b.changeLogo')}}
-    btn(v-else size="md" class="h-10" :disabled="btnDisabled" @click="primaryHandler") {{$t('b.confirm')}}
+    btn(v-else size="md" class="h-10" :disabled="btnDisabled") {{$t('b.confirm')}}
 </template>
 
 <script>
 import { computed } from 'vue'
-// import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import ImageCrop from '@/components/management/logo/ImageCrop.vue'
 import * as htmlToImage from 'html-to-image'
@@ -41,13 +40,11 @@ export default {
   components: {
     ImageCrop
   },
-  props: {
-  },
-  setup (props) {
+  setup () {
     const store = useStore()
     const organization = computed(() => store.getters['organization/organization'])
-    const uploadStatus = computed(() => store.getters['organization/orgLogo/getUploadStatus'])
-    const uploadImgConfig = computed(() => store.getters['organization/orgLogo/getUploadImgConfig'])
+    const uploadStatus = computed(() => store.getters['helper/uploadImage/getUploadStatus'])
+    const uploadImgConfig = computed(() => store.getters['helper/uploadImage/getUploadImgConfig'])
 
     const btnDisabled = computed(() => {
       return ['none', 'croping', 'uploading'].includes(uploadStatus.value)
@@ -57,7 +54,7 @@ export default {
 
     async function removeOrgLogo () {
       store.dispatch('organization/removeOrgLogo')
-      store.dispatch('helper/closeModal')
+      closeModal()
     }
 
     async function uploadImg () {
@@ -65,16 +62,16 @@ export default {
     }
 
     function cancel () {
-      store.commit('organization/orgLogo/SET_uploadStatus', 'none')
+      store.commit('helper/uploadImage/SET_uploadStatus', 'none')
       closeModal()
     }
 
     function confirm () {
       const cropTarget = document.getElementById('crop-target')
-      store.commit('organization/orgLogo/SET_uploadStatus', 'croping')
+      store.commit('helper/uploadImage/SET_uploadStatus', 'croping')
       htmlToImage.toJpeg(cropTarget).then((dataUrl) => {
-        store.commit('organization/orgLogo/SET_uploadStatus', 'none')
-        store.dispatch('helper/closeModal')
+        store.commit('helper/uploadImage/SET_uploadStatus', 'none')
+        closeModal()
         const formData = new FormData()
         formData.append('orgId', store.getters['organization/orgId'])
         formData.append('logo', dataURLtoBlob(dataUrl))

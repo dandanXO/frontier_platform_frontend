@@ -1,31 +1,15 @@
 import { MODAL_TYPE } from '@/utils/constants'
+import uploadImage from '@/store/modules/helper/uploadImage'
 
 const state = () => ({
-  isModalFeatureOpen: false,
-  modalFeatureComponent: {
-    component: '',
-    header: '',
-    primaryText: '',
-    primaryHandler: null,
-    secondaryText: '',
-    secondaryHandler: null
-  },
   modalPipeline: []
 })
 
 const getters = {
-  isModalFeatureOpen: (state) => state.isModalFeatureOpen,
-  modalFeatureComponent: (state) => state.modalFeatureComponent,
   modalPipeline: (state) => state.modalPipeline
 }
 
 const mutations = {
-  SET_isModalFeatureOpen (state, bool) {
-    state.isModalFeatureOpen = bool
-  },
-  SET_modalFeatureComponent (state, configs) {
-    Object.assign(state.modalFeatureComponent, configs)
-  },
   PUSH_modalPipeline (state, { type, options }) {
     state.modalPipeline.push({ type, options })
   },
@@ -42,21 +26,6 @@ const mutations = {
 }
 
 const actions = {
-  openModalFeature ({ commit }, configs) {
-    commit('SET_isModalFeatureOpen', true)
-    commit('SET_modalFeatureComponent', configs)
-  },
-  closeModalFeature ({ commit }) {
-    commit('SET_isModalFeatureOpen', false)
-    commit('SET_modalFeatureComponent', {
-      component: '',
-      header: '',
-      primaryText: '',
-      primaryHandler: null,
-      secondaryText: '',
-      secondaryHandler: null
-    })
-  },
   openModalConfirm ({ commit }, options) {
     commit('CLEAR_modalPipeline')
     commit('PUSH_modalPipeline', { type: MODAL_TYPE.CONFIRM, options })
@@ -100,5 +69,8 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
+  modules: {
+    uploadImage
+  }
 }

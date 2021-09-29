@@ -94,7 +94,7 @@ export default {
     ]
 
     const config = computed(() => {
-      return store.getters['organization/orgLogo/getUploadImgConfig']
+      return store.getters['helper/uploadImage/getUploadImgConfig']
     })
 
     // const cropSize = 200
@@ -144,14 +144,14 @@ export default {
     }
 
     function updateImgPos (x, y) {
-      store.commit('organization/orgLogo/UPDATE_imgStyles', {
+      store.commit('helper/uploadImage/UPDATE_imgStyles', {
         x,
         y
       })
     }
 
     function updateImgSize (width, height) {
-      store.commit('organization/orgLogo/UPDATE_imgStyles', {
+      store.commit('helper/uploadImage/UPDATE_imgStyles', {
         width,
         height
       })
@@ -194,7 +194,7 @@ export default {
         rotatedOffset.y = rotatedOffset.y - baseLine.y > 0 ? 0 : 200 - height
       }
 
-      store.commit('organization/orgLogo/UPDATE_imgStyles', rotatedOffset)
+      store.commit('helper/uploadImage/UPDATE_imgStyles', rotatedOffset)
       // initialPos.x += rotatedOffset.x
       // initialPos.y += rotatedOffset.y
     }
