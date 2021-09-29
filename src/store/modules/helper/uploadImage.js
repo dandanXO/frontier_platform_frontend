@@ -1,7 +1,6 @@
 const state = {
   uploadImgConfig: {
     src: '',
-    binaryData: '',
     size: 0,
     dpi: 0,
     styles: {
@@ -19,19 +18,13 @@ const state = {
       imgY: 0,
       imgWidth: 400,
       imgHeight: 400
-    },
-    exif: {
     }
-  },
-  uploadStatus: 'none'
+  }
 }
 
 const getters = {
   getUploadImgConfig (state) {
     return state.uploadImgConfig
-  },
-  getUploadStatus (state) {
-    return state.uploadStatus
   }
 }
 const mutations = {
@@ -53,10 +46,6 @@ const mutations = {
   UPDATE_imgPos (state, pos) {
     state.uploadImgConfig.styles.x += pos.x
     state.uploadImgConfig.styles.y += pos.y
-  },
-  SET_uploadStatus (state, status) {
-    // none -> uploading -> done
-    state.uploadStatus = status
   }
 }
 

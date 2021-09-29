@@ -108,9 +108,6 @@ export default {
             formData.append('originalLogo', originalImage)
             store.dispatch('organization/updateOrgLogo', formData)
           }
-        },
-        closeHandler: () => {
-          store.commit('helper/uploadImage/SET_uploadStatus', 'none')
         }
       })
     }

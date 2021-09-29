@@ -33,11 +33,12 @@ div(class="w-120 border-t border-black-400")
 </template>
 
 <script>
-import { ref, computed, onUnmounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import ImageCrop from '@/components/management/logo/ImageCrop.vue'
 import * as htmlToImage from 'html-to-image'
 import ImageOperator from '@/utils/imageOperator.js'
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'ModalUpload',
@@ -60,31 +61,72 @@ export default {
   },
   setup (props) {
     const store = useStore()
-    const uploadStatus = computed(() => store.getters['helper/uploadImage/getUploadStatus'])
+    const { t } = useI18n()
+    const uploadStatus = ref('none')
     const uploadImgConfig = computed(() => store.getters['helper/uploadImage/getUploadImgConfig'])
 
     const btnDisabled = computed(() => {
       return ['none', 'croping', 'uploading'].includes(uploadStatus.value)
     })
 
+    const setUploadStatus = (status) => {
+      uploadStatus.value = status
+    }
+
     const closeModal = () => {
-      store.commit('helper/uploadImage/SET_uploadStatus', 'none')
+      setUploadStatus('none')
       store.dispatch('helper/closeModal')
     }
 
     const cropRectSize = ref(200)
+    const imageOperator = new ImageOperator(cropRectSize.value)
 
-    async function uploadImg () {
-      new ImageOperator(cropRectSize.value).uploadImg()
+    imageOperator.on('uploading', () => {
+      setUploadStatus('uploading')
+    })
+    imageOperator.on('finish', (image) => {
+      setUploadStatus('done')
+      store.commit('helper/uploadImage/SET_uploadImgConfig', image)
+    })
+    imageOperator.on('error', (errorCode) => {
+      const ERROR_CODE = imageOperator.errorCode
+      switch (errorCode) {
+        case ERROR_CODE.INVALID_TYPE:
+          store.dispatch('helper/pushModalConfirm', {
+            title: t('b.uploadFailed'),
+            content: t(t('err.errorImageFormat')),
+            primaryText: t('b.confirm')
+          })
+          break
+        case ERROR_CODE.EXCEED_LIMIT:
+          store.dispatch('helper/pushModalConfirm', {
+            title: t('b.uploadFailed'),
+            content: t('err.errorExceedImageSize'),
+            primaryText: t('b.confirm')
+          })
+          break
+        case ERROR_CODE.TOO_SMALL:
+          store.dispatch('helper/pushModalConfirm', {
+            title: t('b.uploadFailed'),
+            content: t('err.errorImageTooSmall'),
+            primaryText: t('b.confirm')
+          })
+          break
+      }
+      setUploadStatus('none')
+    })
+
+    const uploadImg = () => {
+      imageOperator.uploadImg()
     }
 
-    function onDrop (evt) {
-      new ImageOperator(cropRectSize.value).onDropImg(evt)
+    const onDrop = (evt) => {
+      imageOperator.onDropImg(evt)
     }
 
-    function confirm () {
+    const confirm = () => {
+      setUploadStatus('croping')
       const cropTarget = document.getElementById('crop-target')
-      store.commit('helper/uploadImage/SET_uploadStatus', 'croping')
       htmlToImage.toJpeg(cropTarget).then((dataUrl) => {
         props.uploadHandler(dataURLtoBlob(dataUrl), dataURLtoBlob(uploadImgConfig.value.src))
         closeModal()
@@ -97,7 +139,7 @@ export default {
       })
     }
 
-    function dataURLtoBlob (dataurl) {
+    const dataURLtoBlob = (dataurl) => {
       const arr = dataurl.split(',')
       const mime = arr[0].match(/:(.*?);/)[1]
       const bstr = atob(arr[1])
@@ -113,10 +155,6 @@ export default {
       await props.removeHandler()
       closeModal()
     }
-
-    onUnmounted(() => {
-      store.commit('helper/uploadImage/SET_uploadStatus', 'none')
-    })
 
     return {
       uploadStatus,
