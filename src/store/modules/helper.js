@@ -1,82 +1,65 @@
+import { MODAL_TYPE } from '@/utils/constants'
+
 const state = () => ({
-  isModalConfirmOpen: false,
-  modalConfirmComponent: {
-    header: '',
-    title: '',
-    content: '',
-    primaryText: '',
-    primaryHandler: null,
-    secondaryText: '',
-    secondaryHandler: null
-  },
-  isModalOpen: false,
-  modalComponent: {
-    component: '',
-    header: '',
-    properties: {},
-    closeHandler: null,
-    closable: true
-  }
+  modalPipeline: []
 })
 
 const getters = {
-  isModalConfirmOpen: (state) => state.isModalConfirmOpen,
-  modalConfirmComponent: (state) => state.modalConfirmComponent,
-  isModalOpen: (state) => state.isModalOpen,
-  modalComponent: (state) => state.modalComponent
+  modalPipeline: (state) => state.modalPipeline
 }
 
 const mutations = {
-  SET_isModalConfirmOpen (state, bool) {
-    state.isModalConfirmOpen = bool
+  PUSH_modalPipeline (state, { type, options }) {
+    state.modalPipeline.push({ type, options })
   },
-  SET_modalConfirmComponent (state, configs) {
-    Object.assign(state.modalConfirmComponent, configs)
+  REPLACE_modalPipeline (state, { type, options }) {
+    const length = state.modalPipeline.length
+    state.modalPipeline[length - 1] = { type, options }
   },
-  SET_isModalOpen (state, bool) {
-    state.isModalOpen = bool
+  CLOSE_modalPipeline (state) {
+    state.modalPipeline.pop()
   },
-  SET_modalComponent (state, configs) {
-    Object.assign(state.modalComponent, configs)
+  CLEAR_modalPipeline (state) {
+    state.modalPipeline.length = 0
   }
 }
 
 const actions = {
-  openModalConfirm ({ commit }, configs) {
-    commit('SET_isModalConfirmOpen', true)
-    commit('SET_modalConfirmComponent', configs)
+  openModalConfirm ({ commit }, options) {
+    commit('CLEAR_modalPipeline')
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.CONFIRM, options })
+  },
+  pushModalConfirm ({ commit }, options) {
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.CONFIRM, options })
   },
   closeModalConfirm ({ commit }) {
-    commit('SET_isModalConfirmOpen', false)
-    commit('SET_modalConfirmComponent', {
-      header: '',
-      title: '',
-      content: '',
-      primaryText: '',
-      primaryHandler: null,
-      secondaryText: '',
-      secondaryHandler: null
-    })
+    commit('CLOSE_modalPipeline')
   },
-  openModal ({ commit }, { component = '', header = '', properties = {}, closeHandler = null, closable = true }) {
-    commit('SET_isModalOpen', true)
-    commit('SET_modalComponent', {
-      component,
-      header,
-      properties,
-      closeHandler,
-      closable
-    })
+  openModal ({ commit }, options) {
+    commit('CLEAR_modalPipeline')
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.MODAL, options })
+  },
+  pushModal ({ commit }, options) {
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.MODAL, options })
+  },
+  replaceModal ({ commit }, options) {
+    commit('REPLACE_modalPipeline', { type: MODAL_TYPE.MODAL, options })
   },
   closeModal ({ commit }) {
-    commit('SET_isModalOpen', false)
-    commit('SET_modalComponent', {
-      component: '',
-      header: '',
-      properties: {},
-      closeHandler: null,
-      closable: true
-    })
+    commit('CLOSE_modalPipeline')
+  },
+  openFullScreen ({ commit }, options) {
+    commit('CLEAR_modalPipeline')
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.FULLSCREEN, options })
+  },
+  pushFullScreen ({ commit }, options) {
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.FULLSCREEN, options })
+  },
+  closeFullscreen ({ commit }) {
+    commit('CLOSE_modalPipeline')
+  },
+  clearModalPipeline ({ commit }) {
+    commit('CLEAR_modalPipeline')
   }
 }
 
