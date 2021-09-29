@@ -127,6 +127,37 @@ export default {
       ctx.json(response)
     )
   },
+  updateOrgLogo: (req, res, ctx) => {
+    // const { orgId } = req.body
+    // I'm not sure why orgId become string type instead of number, probably it's related to formData?
+    // const organization = organizationList.find(org => org.orgId === toString(orgId))
+    const organization = organizationList[0]
+    Object.assign(organization, req.body)
+    organization.logo = require('@/assets/images/cover.png')
+    const response = deepClone(successState)
+    response.result.organization = organization
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
+  removeOrgLogo: (req, res, ctx) => {
+    // const { orgId } = req.body
+    // const organization = organizationList.find(org => org.orgId === orgId)
+    const organization = organizationList[0]
+    Object.assign(organization, {
+      logo: '',
+      originalLogo: ''
+    })
+    const response = deepClone(successState)
+    response.result.organization = organization
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
   changeOrgMemberRole: (req, res, ctx) => {
     const { orgUserId, roleId } = req.body
     const orgId = req.user.organizationList[0].orgId

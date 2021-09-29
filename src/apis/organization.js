@@ -24,6 +24,10 @@ export default {
     method: 'POST',
     data: formData
   }),
+  removeOrgLogo: ({ orgId }) => axios('/org/remove-logo', {
+    method: 'POST',
+    data: { orgId }
+  }),
   deleteOrg: ({ orgId }) => axios('/org/delete', {
     method: 'POST',
     data: { orgId }
