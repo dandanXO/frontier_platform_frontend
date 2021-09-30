@@ -4,12 +4,12 @@ div(class="fixed inset-0 z-index:modal bg-black-0")
 </template>
 
 <script>
-import MaterialUpload from '@/components/material/MaterialUpload.vue'
+// import MaterialUpload from '@/components/material/MaterialUpload.vue'
 
 export default {
   name: 'ModalFullscreen',
   components: {
-    MaterialUpload
+    // MaterialUpload
   },
   props: {
     component: {

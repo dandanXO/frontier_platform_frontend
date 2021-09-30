@@ -1,50 +1,50 @@
 <template lang="pug">
 div(class="croped-image")
-  div(:style="styles()")
-    div(:style="scaleStyles()")
-        img(ref="body"
-          :class="[{'opacity-30': isTransparent}]"
-          draggable="false"
-          :src="config.src"
-          @mousedown.left.stop="moveStart")
-        div(v-for="(scaler, index)  in scalers"
-            class="controller-point absolute bg-black-0"
-            :key="index"
-            :style="Object.assign(scaler, cursorStyles(index, 0))"
-            @mousedown.stop="scaleStart")
+  div(:style="styles")
+    div
+      img(ref="body"
+        draggable="false"
+        :class="[{'opacity-30': isTransparent}]"
+        :src="imageSrc"
+        @mousedown.left.stop="moveStart"
+      )
+      div(v-for="(scaler, index)  in scalers"
+        class="controller-point absolute bg-black-0"
+        :key="index"
+        :style="Object.assign(scaler, cursorStyles(index, 0))"
+        @mousedown.stop="scaleStart"
+      )
 </template>
 
 <script>
 import { computed, reactive, ref } from 'vue'
-import { useStore } from 'vuex'
 export default {
   props: {
-    scaleRatio: {
-      default: 1,
-      type: Number
-    },
-    rotateDeg: {
-      default: 0,
-      type: Number
-    },
     movable: {
-      default: false,
-      type: Boolean
+      type: Boolean,
+      default: true
     },
     isTransparent: {
       default: false,
       type: Boolean
+    },
+    imageSrc: {
+      type: String,
+      required: true
+    },
+    options: {
+      type: Object,
+      required: true
     }
   },
-  setup (props) {
-    const store = useStore()
-    const organization = computed(() => store.getters['organization/organization'])
-    let initialPos = { x: 0, y: 0 }
+  emits: ['update'],
+  setup (props, { emit }) {
+    const options = reactive(props.options)
+    const initialPos = { x: 0, y: 0 }
     const initImgPos = { x: 0, y: 0 }
-    const controlling = ref(false)
     const initialWH = { width: 0, height: 0 }
     const control = { xSign: 1, ySign: 1, isHorizon: false }
-    let center = { x: 0, y: 0 }
+    const center = { x: 0, y: 0 }
     const body = ref(null)
 
     const scalers = reactive([
@@ -93,26 +93,14 @@ export default {
       'ns-resize'
     ]
 
-    const config = computed(() => {
-      return store.getters['organization/orgLogo/getUploadImgConfig']
+    const styles = computed(() => {
+      const { x, y, width, height } = options
+      return {
+        transform: `translate(${x}px, ${y}px)`,
+        width: `${width}px`,
+        height: `${height}px`
+      }
     })
-
-    // const cropSize = 200
-
-    function styles () {
-      const styles = config.value.styles
-      return {
-        transform: `translate(${styles.x}px, ${styles.y}px)`,
-        width: `${styles.width}px`,
-        height: `${styles.height}px`
-      }
-    }
-
-    function scaleStyles () {
-      return {
-        transform: `scale(${props.scaleRatio}`
-      }
-    }
 
     function cursorStyles (index, rotateAngle) {
       const cursorIndex = rotateAngle >= 0 ? (index + Math.floor(rotateAngle / 45)) % 8
@@ -144,23 +132,17 @@ export default {
     }
 
     function updateImgPos (x, y) {
-      store.commit('organization/orgLogo/UPDATE_imgStyles', {
-        x,
-        y
-      })
+      emit('update', { x, y })
     }
 
     function updateImgSize (width, height) {
-      store.commit('organization/orgLogo/UPDATE_imgStyles', {
-        width,
-        height
-      })
+      emit('update', { width, height })
     }
 
     function moveStart (event) {
       if (props.movable) {
-        initialPos = getMouseAbsPoint(event)
-        Object.assign(initImgPos, { x: config.value.styles.x, y: config.value.styles.y })
+        Object.assign(initialPos, getMouseAbsPoint(event))
+        Object.assign(initImgPos, { x: options.x, y: options.y })
         document.documentElement.addEventListener('mouseup', moveEnd)
         window.addEventListener('mousemove', moving)
       }
@@ -169,8 +151,8 @@ export default {
     function moving (event) {
       event.preventDefault()
 
-      const width = config.value.styles.width
-      const height = config.value.styles.height
+      const width = options.width
+      const height = options.height
 
       const baseLine = {
         x: -width / 2 + 200 / 2,
@@ -194,9 +176,7 @@ export default {
         rotatedOffset.y = rotatedOffset.y - baseLine.y > 0 ? 0 : 200 - height
       }
 
-      store.commit('organization/orgLogo/UPDATE_imgStyles', rotatedOffset)
-      // initialPos.x += rotatedOffset.x
-      // initialPos.y += rotatedOffset.y
+      emit('update', rotatedOffset)
     }
 
     function moveEnd () {
@@ -205,17 +185,14 @@ export default {
     }
 
     function scaleStart (event) {
-      controlling.value = true
-      initialPos = getMouseAbsPoint(event)
-      // this.initImgControllerPos = this.getImgController
+      Object.assign(initialPos, getMouseAbsPoint(event))
       Object.assign(initialWH, {
-        width: config.value.styles.width,
-        height: config.value.styles.height
+        width: options.width,
+        height: options.height
       })
       const rect = body.value.getBoundingClientRect()
-      center = getRectCenter(rect)
-
-      Object.assign(initImgPos, { x: config.value.styles.x, y: config.value.styles.y })
+      Object.assign(center, getRectCenter(rect))
+      Object.assign(initImgPos, { x: options.x, y: options.y })
 
       // const angleInRad = getLayerRotate * Math.PI / 180
       const vect = getMouseRelPoint(event, center)
@@ -229,8 +206,8 @@ export default {
 
     function scaling (event) {
       event.preventDefault()
-      let width = config.value.styles.width
-      let height = config.value.styles.height
+      let width = options.width
+      let height = options.height
 
       // const angleInRad = this.getLayerRotate * Math.PI / 180
       const angleInRad = 0
@@ -255,7 +232,6 @@ export default {
         width = height * initWidth / initHeight
       }
 
-      // if (width <= 40 || height <= 40) return
       const offsetSize = {
         width: width - initWidth,
         height: height - initHeight
@@ -288,7 +264,7 @@ export default {
         width = offsetSize.width + initWidth
 
         baseLine.x = -width / 2 + (200) / 2
-        baseLine.y = -height / 2 + (config.value.styles.height) / 2
+        baseLine.y = -height / 2 + (options.height) / 2
         translateLimit.width = (width - 200) / 2
         translateLimit.height = (height - 200) / 2
       }
@@ -309,16 +285,14 @@ export default {
     }
 
     function scaleEnd () {
-      controlling.value = false
-      // this.setCursorStyle('default')
       document.documentElement.removeEventListener('mousemove', scaling, false)
       document.documentElement.removeEventListener('mouseup', scaleEnd, false)
     }
 
     function getRotatedOffset (offset) {
       return {
-        x: offset.x * cos(-props.rotateDeg) - offset.y * sin(-props.rotateDeg),
-        y: offset.x * sin(-props.rotateDeg) + offset.y * cos(-props.rotateDeg)
+        x: offset.x * cos(-options.rotate) - offset.y * sin(-options.rotate),
+        y: offset.x * sin(-options.rotate) + offset.y * cos(-options.rotate)
       }
     }
 
@@ -336,9 +310,6 @@ export default {
       styles,
       moveStart,
       scaleStart,
-      scaleStyles,
-      config,
-      organization,
       scalers,
       cursorStyles,
       body

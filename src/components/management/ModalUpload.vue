@@ -1,40 +1,41 @@
 <template lang="pug">
-div(class="w-120 bg-black-0 rounded border-t border-black-400")
+div(class="w-120 border-t border-black-400")
   div(class="w-full flex justify-center items-center border-b border-black-400 overflow-hidden")
     div(class="w-full h-full flex justify-center items-center py-15 relative"
-        :class="{'bg-black-500':uploadStatus === 'done' || uploadStatus === 'croping'}")
-      div(v-if="uploadStatus === 'none' && organization.logo === ''"
-        class="flex flex-col")
+        :class="{'bg-black-500': uploadStatus === 'done' || uploadStatus === 'croping'}")
+      div(v-if="uploadStatus === 'none' && image === ''"
+        class="flex flex-col"
+        @drop.stop.prevent="onDrop($event)"
+        @dragover.prevent
+        @dragenter.prevent
+      )
         btn(size="md" type="secondary" class="h-10 mb-2" @click="uploadImg") {{$t('b.chooseImageToUpload') }}
         span(class="text-body2 font-bold mb-2 text-black-500") {{$t('b.pictureRestriction')}}
         span(class="text-body2 mb-2 text-black-500") {{$t('b.fileSupported')}}
         span(class="text-body2 mb-2 text-black-500") {{$t('b.imageFormat')}}
         span(class="text-body2 mb-2 text-black-500") {{$t('b.ImageMaxSize')}}
-      img(v-else-if="uploadStatus === 'none' && organization.logo === ''" class="w-50 h-50" :src="organization.logo"
-        :class="{'rounded-full': uploadStatus === 'none'}")
-      svg-icon(v-else-if="uploadStatus === 'uploading'" iconName="loading" size="100" class="justify-self-end cursor-pointer text-brand-dark" @click="closeModal")
-      image-crop(v-else-if="uploadStatus === 'done' || uploadStatus === 'croping'")
-      img(v-else class="w-50 h-50" :src="organization.logo"
-        :class="{'rounded-full': uploadStatus === 'none'}")
+      svg-icon(v-else-if="uploadStatus === 'uploading'" iconName="loading" size="100" class="justify-self-end cursor-pointer text-brand-dark")
+      image-crop(ref="imageCroper" v-else-if="uploadStatus === 'done' || uploadStatus === 'croping'" :cropRectSize="cropRectSize" :image="uploadedImage")
+      img(v-else class="w-50 h-50" :src="image")
       div(v-if="uploadStatus === 'croping'" class="w-full absolute bottom-0 flex justify-center")
-        svg-icon(iconName="loading" size="50" class="justify-self-end cursor-pointer text-brand-dark" @click="closeModal")
+        svg-icon(iconName="loading" size="50" class="justify-self-end cursor-pointer text-brand-dark")
   div(class="h-25 flex justify-center items-center")
     div(v-if="uploadStatus === 'done'" class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" class="h-10" :disabled="btnDisabled" @click="cancel") {{$t('b.cancel') }}
-      btn(size="md" class="h-10" :disabled="btnDisabled" @click="confirm") {{$t('b.confirm')}}
-    div(v-else-if="uploadStatus === 'none' && organization.logo !== ''" class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" class="h-10"  @click="removeOrgLogo") {{$t('b.remove') }}
-      btn(size="md" class="h-10"  @click="uploadImg") {{$t('b.changeLogo')}}
-    btn(v-else size="md" class="h-10" :disabled="btnDisabled" @click="primaryHandler") {{$t('b.confirm')}}
+      btn(size="md" type="secondary" :disabled="btnDisabled" @click="closeModal") {{$t('b.cancel') }}
+      btn(size="md" :disabled="btnDisabled" @click="confirm") {{$t('b.confirm')}}
+    div(v-else-if="uploadStatus === 'none' && image !== ''" class="grid grid-cols-2 gap-x-3")
+      btn(size="md" type="secondary" @click="innerRemoveHandler") {{$t('b.remove') }}
+      btn(size="md" @click="uploadImg") {{$t('b.changeLogo')}}
+    btn(v-else size="md" :disabled="btnDisabled") {{$t('b.confirm')}}
 </template>
 
 <script>
-import { computed } from 'vue'
-// import { useI18n } from 'vue-i18n'
+import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import ImageCrop from '@/components/management/logo/ImageCrop.vue'
-import * as htmlToImage from 'html-to-image'
-import FileUtils from '@/utils/fileUtils.js'
+import ImageOperator from '@/utils/imageOperator.js'
+import { useI18n } from 'vue-i18n'
+import dataUrlToBlob from '@/utils/dataUrlToBlob'
 
 export default {
   name: 'ModalUpload',
@@ -42,74 +43,107 @@ export default {
     ImageCrop
   },
   props: {
+    image: {
+      type: String,
+      default: ''
+    },
+    removeHandler: {
+      type: Function,
+      required: true
+    },
+    uploadHandler: {
+      type: Function,
+      required: true
+    }
   },
   setup (props) {
     const store = useStore()
-    const organization = computed(() => store.getters['organization/organization'])
-    const uploadStatus = computed(() => store.getters['organization/orgLogo/getUploadStatus'])
-    const uploadImgConfig = computed(() => store.getters['organization/orgLogo/getUploadImgConfig'])
-
+    const { t } = useI18n()
+    const uploadStatus = ref('none')
+    const uploadedImage = reactive({})
+    const imageCroper = ref(null)
     const btnDisabled = computed(() => {
       return ['none', 'croping', 'uploading'].includes(uploadStatus.value)
     })
 
-    const closeModal = () => store.dispatch('helper/closeModal')
+    const setUploadStatus = (status) => {
+      uploadStatus.value = status
+    }
 
-    async function removeOrgLogo () {
-      store.dispatch('organization/removeOrgLogo')
+    const closeModal = () => {
+      setUploadStatus('none')
       store.dispatch('helper/closeModal')
     }
 
-    async function uploadImg () {
-      FileUtils.uploadImg()
+    const cropRectSize = ref(200)
+    const imageOperator = new ImageOperator(cropRectSize.value)
+
+    imageOperator.on('uploading', () => {
+      setUploadStatus('uploading')
+    })
+    imageOperator.on('finish', (image) => {
+      setUploadStatus('done')
+      Object.assign(uploadedImage, image)
+    })
+    imageOperator.on('error', (errorCode) => {
+      const ERROR_CODE = imageOperator.errorCode
+      switch (errorCode) {
+        case ERROR_CODE.INVALID_TYPE:
+          store.dispatch('helper/pushModalConfirm', {
+            title: t('b.uploadFailed'),
+            content: t(t('err.errorImageFormat')),
+            primaryText: t('b.confirm')
+          })
+          break
+        case ERROR_CODE.EXCEED_LIMIT:
+          store.dispatch('helper/pushModalConfirm', {
+            title: t('b.uploadFailed'),
+            content: t('err.errorExceedImageSize'),
+            primaryText: t('b.confirm')
+          })
+          break
+        case ERROR_CODE.TOO_SMALL:
+          store.dispatch('helper/pushModalConfirm', {
+            title: t('b.uploadFailed'),
+            content: t('err.errorImageTooSmall'),
+            primaryText: t('b.confirm')
+          })
+          break
+      }
+      setUploadStatus('none')
+    })
+
+    const uploadImg = () => {
+      imageOperator.uploadImg()
     }
 
-    function cancel () {
-      store.commit('organization/orgLogo/SET_uploadStatus', 'none')
+    const onDrop = (evt) => {
+      imageOperator.onDropImg(evt)
+    }
+
+    const confirm = async () => {
+      setUploadStatus('croping')
+      const cropedImage = await imageCroper.value?.cropImage()
+      props.uploadHandler(cropedImage, dataUrlToBlob(uploadedImage.src))
       closeModal()
     }
 
-    function confirm () {
-      const cropTarget = document.getElementById('crop-target')
-      store.commit('organization/orgLogo/SET_uploadStatus', 'croping')
-      htmlToImage.toJpeg(cropTarget).then((dataUrl) => {
-        store.commit('organization/orgLogo/SET_uploadStatus', 'none')
-        store.dispatch('helper/closeModal')
-        const formData = new FormData()
-        formData.append('orgId', store.getters['organization/orgId'])
-        formData.append('logo', dataURLtoBlob(dataUrl))
-        formData.append('originalLogo', dataURLtoBlob(uploadImgConfig.value.src))
-        store.dispatch('organization/updateOrgLogo', formData)
-
-        // used to see the croped image in local
-
-        // link.download = 'my-image-name.jpeg'
-        // link.href = dataUrl
-        // link.click()
-      })
-    }
-
-    function dataURLtoBlob (dataurl) {
-      const arr = dataurl.split(',')
-      const mime = arr[0].match(/:(.*?);/)[1]
-      const bstr = atob(arr[1])
-      let n = bstr.length
-      const u8arr = new Uint8Array(n)
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n)
-      }
-      return new Blob([u8arr], { type: mime })
+    const innerRemoveHandler = async () => {
+      await props.removeHandler()
+      closeModal()
     }
 
     return {
-      organization,
       uploadStatus,
       btnDisabled,
-      removeOrgLogo,
       closeModal,
-      cancel,
       confirm,
-      uploadImg
+      uploadImg,
+      innerRemoveHandler,
+      onDrop,
+      cropRectSize,
+      uploadedImage,
+      imageCroper
     }
   }
 }
