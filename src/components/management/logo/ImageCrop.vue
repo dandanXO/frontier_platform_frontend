@@ -1,92 +1,91 @@
 <template lang="pug">
-div(class="upload__upload-area w-50 h-50 relative"
-    @drop.stop.prevent="onDrop($event)"
-    @dragover.prevent,
-    @dragenter.prevent)
-  template(v-if="uploaded || croping")
-    div(class="upload__uploaded relative")
-      div(class="upload__crop-rect absolute"
-          :style="cropRectStyles()")
-        croped-image(:rotateDeg="rotateDeg" :scaleRatio="cropedScaleRatio" :movable="true" :isTransparent="true")
-      div(class="upload__crop-rect overflow-hidden bg-black-0"
-          id="crop-target"
-          :style="cropRectStyles()"
-          ref="cropRect" )
-        div(class="target cursor-move" :style="cropRectStyles()")
-          croped-image(:rotateDeg="rotateDeg" :scaleRatio="cropedScaleRatio" :movable="true")
+div(class="w-50 h-50 relative")
+  div(class="absolute" :style="cropRectStyles")
+    croped-image(:imageSrc="image.src" :options="options" @update="updateOptions" isTransparent)
+  div(class="overflow-hidden bg-black-0"
+    ref="cropRect"
+    :style="cropRectStyles"
+  )
+    div(class="cursor-move" :style="cropRectStyles")
+      croped-image(:imageSrc="image.src" :options="options" @update="updateOptions")
 </template>
 
 <script>
 import CropedImage from '@/components/management/logo/CropedImage.vue'
-import FileUtils from '@/utils/fileUtils.js'
-import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
+import * as htmlToImage from 'html-to-image'
+import { ref, computed, reactive } from 'vue'
+import dataUrlToBlob from '@/utils/dataUrlToBlob'
 
 export default {
   name: 'ImageCrop',
   components: {
     CropedImage
   },
-
-  setup () {
-    const store = useStore()
+  props: {
+    cropRectSize: {
+      type: Number,
+      required: true
+    },
+    image: {
+      type: Object,
+      required: true
+    }
+  },
+  setup (props) {
     const cropRect = ref(null)
-    const previewRect = ref(null)
-    const cropedScaleRatio = ref(1)
-    const scaleSize = ref(4)
-    const previewScaleRatio = ref(1)
-    const rotateDeg = ref(0)
-    const cropedImage = ref(null)
-    const uploadStatus = computed(() => store.getters['organization/orgLogo/getUploadStatus'])
+    const image = reactive(props.image)
+    const { width, height } = image
+    const aspectRatio = width / height
+    const resizeRatio = aspectRatio > 1 ? height / props.cropRectSize : width / props.cropRectSize
+    const scaledWidth = aspectRatio > 1 ? width / resizeRatio : props.cropRectSize
+    const scaledHeight = aspectRatio > 1 ? props.cropRectSize : height / (resizeRatio)
 
-    const uploaded = computed(() => {
-      return uploadStatus.value === 'done'
+    const options = reactive({
+      x: props.cropRectSize / 2 - scaledWidth / 2,
+      y: props.cropRectSize / 2 - scaledHeight / 2,
+      scale: 1,
+      scaleX: 0,
+      scaleY: 0,
+      rotate: 0,
+      width: scaledWidth,
+      height: scaledHeight,
+      initWidth: scaledWidth,
+      initHeight: scaledHeight,
+      imgWidth: scaledWidth,
+      imgHeight: scaledHeight
     })
 
-    const uploadWarning = computed(() => {
-      return store.getters.getUploadWarning
-    })
+    const cropRectStyles = computed(() => ({
+      width: `${props.cropRectSize}px`,
+      height: `${props.cropRectSize}px`
+    }))
 
-    const croping = computed(() => {
-      return uploadStatus.value === 'croping'
-    })
-
-    function onBlur () {
-      if (rotateDeg.value.toString().length === 0) {
-        rotateDeg.value = 0
-      }
+    const updateOptions = (o) => {
+      Object.assign(options, o)
     }
 
-    function cropRectStyles () {
-      return {
-        width: '200px',
-        height: '200px'
-      }
-    }
-    function uploadImg () {
-      FileUtils.uploadImg()
+    const cropImage = () => {
+      return new Promise((resolve, reject) => {
+        htmlToImage.toJpeg(cropRect.value)
+          .then((dataUrl) => {
+            resolve(dataUrlToBlob(dataUrl))
+
+            // used to see the croped image in local
+            // const link = document.createElement('a')
+            // link.download = 'my-image-name.jpeg'
+            // link.href = dataUrl
+            // link.click()
+          })
+          .catch(error => reject(error))
+      })
     }
 
-    function onDrop (e) {
-      const dt = e.dataTransfer
-      const files = dt.files
-      FileUtils.onDropImg(files)
-    }
     return {
-      previewRect,
-      cropedImage,
-      previewScaleRatio,
-      cropedScaleRatio,
-      rotateDeg,
-      uploadImg,
-      uploaded,
-      uploadWarning,
       cropRectStyles,
-      onDrop,
-      onBlur,
-      scaleSize,
       cropRect,
-      croping
+      options,
+      updateOptions,
+      cropImage
     }
   }
 }

@@ -1,6 +1,5 @@
 import organizationApi from '@/apis/organization'
 import setVuexState from '@/utils/set-vuex-state'
-import orgLogo from '@/store/modules/organization/orgLogo'
 
 const state = () => ({
   orgId: 1,
@@ -180,8 +179,5 @@ export default {
   state,
   getters,
   mutations,
-  actions,
-  modules: {
-    orgLogo
-  }
+  actions
 }
