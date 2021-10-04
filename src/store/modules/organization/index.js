@@ -123,6 +123,12 @@ const actions = {
     })
     dispatch('handleResponseData', { data }, { root: true })
   },
+  async deleteOrg ({ state, dispatch }) {
+    const { data } = await organizationApi.deleteOrg({
+      orgId: state.orgId
+    })
+    dispatch('handleResponseData', { data }, { root: true })
+  },
   async updateOrgLogo ({ state, dispatch }, formData) {
     const { data } = await organizationApi.updateOrgLogo(formData)
     dispatch('handleResponseData', { data }, { root: true })
