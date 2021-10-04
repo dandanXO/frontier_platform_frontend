@@ -16,6 +16,7 @@ import ModalInviteToOrg from '@/components/management/ModalInviteToOrg.vue'
 import ModalAddToGroup from '@/components/management/ModalAddToGroup.vue'
 import ModalCreateMailGroup from '@/components/management/ModalCreateMailGroup.vue'
 import ModalCreateOrg from '@/components/lobby/ModalCreateOrg.vue'
+import ModalDeleteOrg from '@/components/management/ModalDeleteOrg'
 import ModalCreateMailOrg from '@/components/lobby/ModalCreateMailOrg.vue'
 import ModalForgotPasswordEmail from '@/components/account/ModalForgotPasswordEmail.vue'
 import ModalForgotPasswordCode from '@/components/account/ModalForgotPasswordCode.vue'
@@ -31,6 +32,7 @@ export default {
     ModalAddToGroup,
     ModalCreateMailGroup,
     ModalCreateOrg,
+    ModalDeleteOrg,
     ModalCreateMailOrg,
     ModalForgotPasswordEmail,
     ModalForgotPasswordCode,
