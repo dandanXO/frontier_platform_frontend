@@ -114,10 +114,7 @@ export default {
 
     const openModalDelete = () => {
       store.dispatch('helper/openModal', {
-        component: 'modal-delete-org',
-        properties: {
-          orgName: organization.value.orgName
-        }
+        component: 'modal-delete-org-or-group'
       })
     }
 

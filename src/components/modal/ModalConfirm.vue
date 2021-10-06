@@ -8,9 +8,9 @@ div(class="fixed inset-0  z-index:modal-confirm  w-screen h-screen bg-black-900 
       h6(class="text-h6 text-primary font-bold pb-4") {{title}}
       p(class="text-body2 text-primary text-center line-height-1.6") {{content}}
     div(class="h-25 flex justify-center items-center")
-      div(v-if="hasDefineSecondaryHandler" class="grid grid-cols-2 gap-x-3")
+      div(v-if="secondaryText !== ''" class="grid grid-cols-2 gap-x-3")
         btn(size="md" type="secondary" class="h-10" @click="innerSecondaryHandler") {{secondaryText}}
-        btn(size="md" class="h-10" @click="innerPrimaryHandler") {{hasDefinePrimaryHandler ? primaryText : $t('b.cancel')}}
+        btn(size="md" class="h-10" @click="innerPrimaryHandler") {{primaryText !== '' ? primaryText : $t('b.cancel')}}
       btn(v-else size="md" class="h-10" @click="innerPrimaryHandler") {{primaryText}}
 </template>
 
@@ -39,41 +39,55 @@ export default {
     primaryHandler: {
       type: Function
     },
+    afterPrimaryHandler: {
+      type: Function
+    },
     secondaryText: {
       type: String,
       default: ''
     },
     secondaryHandler: {
       type: Function
+    },
+    afterSecondaryHandler: {
+      type: Function
     }
   },
   setup (props) {
     const store = useStore()
     const hasDefinePrimaryHandler = computed(() => typeof props.primaryHandler === 'function')
+    const hasDefineAfterPrimaryHandler = computed(() => typeof props.afterPrimaryHandler === 'function')
     const hasDefineSecondaryHandler = computed(() => typeof props.secondaryHandler === 'function')
+    const hasDefindAfterSecondaryHandler = computed(() => typeof props.afterSecondaryHandler === 'function')
 
-    const closeModalConfirm = () => store.dispatch('helper/closeModalConfirm')
+    const closeModalConfirm = () => {
+      store.dispatch('helper/closeModalConfirm')
+    }
 
     const innerPrimaryHandler = async () => {
       if (hasDefinePrimaryHandler.value) {
         await props.primaryHandler()
       }
+
       closeModalConfirm()
+
+      hasDefineAfterPrimaryHandler.value && props.afterPrimaryHandler()
     }
 
     const innerSecondaryHandler = async () => {
       if (hasDefineSecondaryHandler.value) {
         await props.secondaryHandler()
       }
+
       closeModalConfirm()
+
+      hasDefindAfterSecondaryHandler.value && props.afterSecondaryHandler()
     }
 
     return {
       closeModalConfirm,
       innerPrimaryHandler,
-      innerSecondaryHandler,
-      hasDefineSecondaryHandler,
-      hasDefinePrimaryHandler
+      innerSecondaryHandler
     }
   }
 }

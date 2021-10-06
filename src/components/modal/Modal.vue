@@ -16,12 +16,13 @@ import ModalInviteToOrg from '@/components/management/ModalInviteToOrg.vue'
 import ModalAddToGroup from '@/components/management/ModalAddToGroup.vue'
 import ModalCreateMailGroup from '@/components/management/ModalCreateMailGroup.vue'
 import ModalCreateOrg from '@/components/lobby/ModalCreateOrg.vue'
-import ModalDeleteOrg from '@/components/management/ModalDeleteOrg'
+import ModalDeleteOrgOrGroup from '@/components/management/ModalDeleteOrgOrGroup'
 import ModalCreateMailOrg from '@/components/lobby/ModalCreateMailOrg.vue'
 import ModalForgotPasswordEmail from '@/components/account/ModalForgotPasswordEmail.vue'
 import ModalForgotPasswordCode from '@/components/account/ModalForgotPasswordCode.vue'
 import ModalResetPassword from '@/components/account/ModalResetPassword.vue'
 import ModalAskResetPassword from '@/components/account/ModalAskResetPassword.vue'
+import ModalChooseStorage from '@/components/management/ModalChooseStorage'
 
 export default {
   name: 'Modal',
@@ -32,12 +33,13 @@ export default {
     ModalAddToGroup,
     ModalCreateMailGroup,
     ModalCreateOrg,
-    ModalDeleteOrg,
+    ModalDeleteOrgOrGroup,
     ModalCreateMailOrg,
     ModalForgotPasswordEmail,
     ModalForgotPasswordCode,
     ModalResetPassword,
-    ModalAskResetPassword
+    ModalAskResetPassword,
+    ModalChooseStorage
   },
   props: {
     component: {
