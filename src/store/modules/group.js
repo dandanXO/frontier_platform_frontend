@@ -72,6 +72,13 @@ const actions = {
     })
     dispatch('handleResponseData', { data }, { root: true })
   },
+  async deleteGroup ({ state, dispatch }, params) {
+    const { data } = await groupApi.deleteGroup({
+      ...params,
+      groupId: state.groupId
+    })
+    dispatch('handleResponseData', { data }, { root: true })
+  },
   async cancelGroupInvitation ({ state, dispatch }, params) {
     const { data } = await groupApi.cancelGroupInvitation({
       ...params,

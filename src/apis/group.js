@@ -13,6 +13,10 @@ export default {
     method: 'POST',
     data: { groupId, groupName, description, labelColor }
   }),
+  deleteGroup: ({ groupId, transferOrgId, transferGroupId }) => axios('/org/group/delete', {
+    method: 'POST',
+    data: { groupId, transferOrgId, transferGroupId }
+  }),
   cancelGroupInvitation: ({ groupId, email }) => axios('/org/group/member/cancel-invitation', {
     method: 'POST',
     data: { groupId, email }
