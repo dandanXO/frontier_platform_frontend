@@ -17,7 +17,7 @@ class ImageOperator {
   on (type, callback) {
     // replace origin event
     if (this.eventHash[type]) {
-      this.event.off(this.callback)
+      this.event.off(type, this.eventHash[type])
       delete this.eventHash[type]
     }
     this.event.on(type, callback)
@@ -62,24 +62,11 @@ class ImageOperator {
           if (width < this.cropRectSize || height < this.cropRectSize) {
             return this.event.emit('error', this.errorCode.TOO_SMALL)
           }
-
-          const aspectRatio = width / height
-          const resizeRatio = aspectRatio > 1 ? height / this.cropRectSize : width / this.cropRectSize
-          const scaledWidth = aspectRatio > 1 ? width / resizeRatio : this.cropRectSize
-          const scaledHeight = aspectRatio > 1 ? this.cropRectSize : height / (resizeRatio)
           this.event.emit('finish', {
+            width,
+            height,
             src,
-            size: mb,
-            styles: {
-              x: this.cropRectSize / 2 - scaledWidth / 2,
-              y: this.cropRectSize / 2 - scaledHeight / 2,
-              width: scaledWidth,
-              height: scaledHeight,
-              initWidth: scaledWidth,
-              initHeight: scaledHeight,
-              imgWidth: scaledWidth,
-              imgHeight: scaledHeight
-            }
+            size: mb
           })
         }
       }

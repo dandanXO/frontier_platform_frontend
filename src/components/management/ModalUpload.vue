@@ -15,7 +15,7 @@ div(class="w-120 border-t border-black-400")
         span(class="text-body2 mb-2 text-black-500") {{$t('b.imageFormat')}}
         span(class="text-body2 mb-2 text-black-500") {{$t('b.ImageMaxSize')}}
       svg-icon(v-else-if="uploadStatus === 'uploading'" iconName="loading" size="100" class="justify-self-end cursor-pointer text-brand-dark")
-      image-crop(v-else-if="uploadStatus === 'done' || uploadStatus === 'croping'" :cropRectSize="cropRectSize")
+      image-crop(ref="imageCroper" v-else-if="uploadStatus === 'done' || uploadStatus === 'croping'" :cropRectSize="cropRectSize" :image="uploadedImage")
       img(v-else class="w-50 h-50" :src="image")
       div(v-if="uploadStatus === 'croping'" class="w-full absolute bottom-0 flex justify-center")
         svg-icon(iconName="loading" size="50" class="justify-self-end cursor-pointer text-brand-dark")
@@ -30,12 +30,12 @@ div(class="w-120 border-t border-black-400")
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import ImageCrop from '@/components/management/logo/ImageCrop.vue'
-import * as htmlToImage from 'html-to-image'
 import ImageOperator from '@/utils/imageOperator.js'
 import { useI18n } from 'vue-i18n'
+import dataUrlToBlob from '@/utils/dataUrlToBlob'
 
 export default {
   name: 'ModalUpload',
@@ -60,8 +60,8 @@ export default {
     const store = useStore()
     const { t } = useI18n()
     const uploadStatus = ref('none')
-    const uploadImgConfig = computed(() => store.getters['helper/uploadImage/getUploadImgConfig'])
-
+    const uploadedImage = reactive({})
+    const imageCroper = ref(null)
     const btnDisabled = computed(() => {
       return ['none', 'croping', 'uploading'].includes(uploadStatus.value)
     })
@@ -83,7 +83,7 @@ export default {
     })
     imageOperator.on('finish', (image) => {
       setUploadStatus('done')
-      store.commit('helper/uploadImage/SET_uploadImgConfig', image)
+      Object.assign(uploadedImage, image)
     })
     imageOperator.on('error', (errorCode) => {
       const ERROR_CODE = imageOperator.errorCode
@@ -121,31 +121,11 @@ export default {
       imageOperator.onDropImg(evt)
     }
 
-    const confirm = () => {
+    const confirm = async () => {
       setUploadStatus('croping')
-      const cropTarget = document.getElementById('crop-target')
-      htmlToImage.toJpeg(cropTarget).then((dataUrl) => {
-        props.uploadHandler(dataURLtoBlob(dataUrl), dataURLtoBlob(uploadImgConfig.value.src))
-        closeModal()
-
-        // used to see the croped image in local
-        // const link = document.createElement('a')
-        // link.download = 'my-image-name.jpeg'
-        // link.href = dataUrl
-        // link.click()
-      })
-    }
-
-    const dataURLtoBlob = (dataurl) => {
-      const arr = dataurl.split(',')
-      const mime = arr[0].match(/:(.*?);/)[1]
-      const bstr = atob(arr[1])
-      let n = bstr.length
-      const u8arr = new Uint8Array(n)
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n)
-      }
-      return new Blob([u8arr], { type: mime })
+      const cropedImage = await imageCroper.value?.cropImage()
+      props.uploadHandler(cropedImage, dataUrlToBlob(uploadedImage.src))
+      closeModal()
     }
 
     const innerRemoveHandler = async () => {
@@ -161,7 +141,9 @@ export default {
       uploadImg,
       innerRemoveHandler,
       onDrop,
-      cropRectSize
+      cropRectSize,
+      uploadedImage,
+      imageCroper
     }
   }
 }
