@@ -34,19 +34,22 @@ input-container(:required="required")
             input-text(v-model:textValue="searchInput" size="sm" prependIcon="search" class="px-3.5")
             div(class="mx-2 border-b border-black-400 pt-2")
           overlay-scrollbar-container(v-if="searchedOptions.length > 0" :class="[classMaxHeight]")
-            div(
+            list-item(
               v-for="(option, index) in searchedOptions"
-              class="h-9 pl-3 flex items-center"
               :class="[ index === currentIndex ? 'bg-black-200' : '']"
               @click="select($event, option), $emit('select', option[keyOptionValue])"
             )
-              p(class="text-body2 text-black-600") {{option[keyOptionDisplay]}}
-          p(v-else class="h-9 pl-7.5 text-primary text-body2 flex items-center") No search result
+              p(class="text-black-600") {{option[keyOptionDisplay]}}
+          div(v-if="canAddNewOption && !isOptionExist")
+            list-item(v-if="searchInput !== ''" @click="addNewOption($event, select)") {{searchInput}}
+          p(v-if="!canAddNewOption && searchedOptions.length === 0" class="h-9 pl-7.5 text-primary text-body2 flex items-center") No search result
 </template>
 
 <script>
 import { ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
+import { nextTick } from 'vue'
+
 export default {
   name: 'InputSelect',
   props: {
@@ -97,9 +100,13 @@ export default {
     required: {
       type: Boolean,
       default: false
+    },
+    canAddNewOption: {
+      type: Boolean,
+      default: false
     }
   },
-  emits: ['expand', 'collapse', 'select', 'update:selectValue'],
+  emits: ['expand', 'collapse', 'select', 'update:selectValue', 'addNewOption'],
   setup (props, { emit }) {
     const classMaxHeight = ref(`max-h-${9 * props.maxLength}`) // 9: each option height
     const searchInput = ref('')
@@ -110,11 +117,22 @@ export default {
       set: (v) => emit('update:selectValue', v)
     })
 
+    const isOptionExist = computed(() => props.options.some(option => option[props.keyOptionDisplay] === searchInput.value))
+
+    const addNewOption = async (e, selectCallback) => {
+      // create new option first, then after component update selecting the option
+      emit('addNewOption', searchInput.value)
+      await nextTick()
+      selectCallback(e, props.options[props.options.length - 1])
+    }
+
     return {
       classMaxHeight,
       innerSelectValue,
       searchInput,
-      searchedOptions
+      searchedOptions,
+      isOptionExist,
+      addNewOption
     }
   }
 }

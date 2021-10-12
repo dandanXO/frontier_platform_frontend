@@ -5,9 +5,10 @@
   "scripts": {
     "serve": "vue-cli-service serve --mode $npm_config_NODE_ENV",
     "serve:dev": "npm run serve --NODE_ENV=development",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --mode $npm_config_NODE_ENV",
     "lint": "vue-cli-service lint",
-    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\""
+    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\"",
+    "deploy:dev": "npm run build --NODE_ENV=development && aws s3 sync dist/ s3://textile-dev.frontier.cool  && aws cloudfront create-invalidation --distribution-id E399Q6A2FXF69L --paths '/*' --profile=default"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -20,6 +21,7 @@
     "vue": "^3.0.0",
     "vue-i18n": "^9.1.0",
     "vue-router": "^4.0.0-0",
+    "vue3-click-away": "^1.2.1",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {

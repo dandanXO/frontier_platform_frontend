@@ -1,5 +1,5 @@
 <template lang="pug">
-input-container(:required="required")
+input-container(:label="label" :required="required")
   template(#input)
     div(class="p-4 rounded border" :class="[classBorder, textareaHeight, { 'bg-primary-thin': disabled }]")
       textarea(
@@ -22,6 +22,10 @@ import { toRefs, computed } from 'vue'
 export default {
   name: 'InputTextarea',
   props: {
+    label: {
+      type: String,
+      default: ''
+    },
     required: {
       type: Boolean,
       default: false
