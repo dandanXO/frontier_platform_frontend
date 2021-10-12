@@ -60,7 +60,7 @@ export default {
     })
 
     const deleteGroup = async () => {
-      const { id, storageLocation } = storageOrgOrGroup.value[currentStorage]
+      const { id, storageLocation } = storageOrgOrGroup.value[currentStorage.value]
       const transferOrgId = storageLocation === STORAGE_LOCATION.ORG ? Number(id) : null
       const transferGroupId = storageLocation === STORAGE_LOCATION.GROUP ? Number(id) : null
       await store.dispatch('group/deleteGroup', {
