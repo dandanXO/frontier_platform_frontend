@@ -34,9 +34,13 @@ export default {
     }
   },
   emits: ['update:inputValue'],
-  setup (_, { emit }) {
+  setup (props, { emit }) {
     const check = (e) => {
-      emit('update:inputValue', e.target.value)
+      let value = e.target.value
+      if (typeof props.value === 'number') {
+        value = Number(value)
+      }
+      emit('update:inputValue', value)
     }
     return {
       check

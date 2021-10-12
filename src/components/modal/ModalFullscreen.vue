@@ -1,15 +1,15 @@
 <template lang="pug">
 div(class="fixed inset-0 z-index:modal bg-black-0")
-  component(:is="component")
+  component(:is="component" class="h-screen overflow-y-auto")
 </template>
 
 <script>
-// import MaterialUpload from '@/components/material/MaterialUpload.vue'
+import MaterialUpload from '@/components/assets/material/edit/MaterialUpload.vue'
 
 export default {
   name: 'ModalFullscreen',
   components: {
-    // MaterialUpload
+    MaterialUpload
   },
   props: {
     component: {

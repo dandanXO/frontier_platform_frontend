@@ -2,7 +2,7 @@ import { ref } from '@vue/reactivity'
 import { computed, watch, onUpdated } from '@vue/runtime-core'
 import inputRules from '@/utils/input-rules'
 
-export default function useInput ({ context: { emit, slots }, textValue, disabled = ref(false), rules = ref([]), required = ref(false), customErrorMsg = ref('') }) {
+export default function useInput ({ context: { emit, slots }, inputType, textValue, disabled = ref(false), rules = ref([]), required = ref(false), customErrorMsg = ref('') }) {
   const isFocus = ref(false)
 
   const isEmpty = computed(() => {
@@ -30,7 +30,11 @@ export default function useInput ({ context: { emit, slots }, textValue, disable
   })
 
   const typing = (e) => {
-    emit('update:textValue', e.target.value)
+    let value = e.target.value
+    if (inputType.value === 'number') {
+      value = Number(value)
+    }
+    emit('update:textValue', value)
   }
 
   const onFocus = () => {
