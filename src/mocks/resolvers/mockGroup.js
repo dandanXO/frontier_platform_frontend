@@ -102,6 +102,20 @@ export default {
       ctx.json(response)
     )
   },
+  deleteGroup: (req, res, ctx) => {
+    const { groupId } = req.body
+    const organization = organizationList.find(org => org.groupList.some(group => group.groupId === groupId))
+    const orgGroupIndex = organization.groupList.findIndex(group => group.groupId === groupId)
+    organization.groupList.splice(orgGroupIndex, 1)
+
+    const response = deepClone(successState)
+    response.result.organization = organization
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
   cancelGroupInvitation: (req, res, ctx) => {
     const { groupId, email } = req.body
     const group = groupList.find(group => group.groupId === groupId)

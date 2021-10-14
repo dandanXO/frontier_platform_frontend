@@ -22,7 +22,7 @@ div(class="relative")
       p(class="text-body1 text-primary line-height-1.6") {{$t('DD0008')}}
     div(class='flex flex-col gap-y-8')
       div
-        btn(size="md") {{$t('reuse.createFabric')}}
+        btn(size="md" @click="openFullscreenMaterialUpload") {{$t('reuse.createFabric')}}
       div(class="flex gap-x-7.5")
         btn(size='md' type="secondary") {{$t('reuse.massUpdate')}}
         div
@@ -63,9 +63,16 @@ export default {
         : store.getters['group/uploadMaterialEmail']
     })
 
+    const openFullscreenMaterialUpload = () => {
+      store.dispatch('helper/openFullScreen', {
+        component: 'material-upload'
+      })
+    }
+
     return {
       breadcrumbsList,
-      uploadMaterialEmail
+      uploadMaterialEmail,
+      openFullscreenMaterialUpload
     }
   }
 }

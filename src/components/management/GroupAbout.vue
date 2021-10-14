@@ -1,6 +1,7 @@
 <template lang="pug">
 div
-  div(class="w-85 mx-auto")
+  div(class="w-85 mx-auto relative")
+    p(class="text-caption text-black-500 cursor-pointer absolute top-13 left-25 z-12" @click="openModalDelete") {{$t('reuse.delete')}}
     p(class="text-right pt-4.5 pb-5 text-caption text-black-600") *{{$t('b.required')}}
     input-label-color(
       v-model:labelColor="groupFormData.labelColor"
@@ -36,11 +37,18 @@ export default {
       await store.dispatch('group/updateGroup', toRaw(groupFormData))
     }
 
+    const openModalDelete = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-delete-org-or-group'
+      })
+    }
+
     return {
       groupFormData,
       isGroupNameExist,
       avaliableToCreateGroup,
-      updateGroup
+      updateGroup,
+      openModalDelete
     }
   }
 }

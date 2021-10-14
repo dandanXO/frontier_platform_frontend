@@ -1,5 +1,5 @@
 <template lang="pug">
-input-container(:required="required")
+input-container(:label="label" :required="required")
   template(#input)
     div(class="h-full px-4 border rounded flex items-center" :class="[classBorder, { 'bg-primary-thin': disabled }, size === 'lg' ? 'h-11' : 'h-9']")
       slot(name="prependItem")
@@ -44,7 +44,7 @@ export default {
   name: 'InputText',
   props: {
     textValue: {
-      type: String,
+      type: [String, Number],
       required: true
     },
     inputType: {
@@ -71,6 +71,10 @@ export default {
       type: Boolean,
       default: false
     },
+    label: {
+      type: String,
+      default: ''
+    },
     size: {
       type: String,
       default: 'lg'
@@ -90,8 +94,8 @@ export default {
   },
   emits: ['update:textValue', 'blur'],
   setup (props, context) {
-    const { textValue, disabled, rules, required, customErrorMsg } = toRefs(props)
-    const { isFocus, isError, onFocus, onBlur, clear, typing, isEmpty, classBorder, errorMsg, classPrependIcon } = useInput({ context, textValue, disabled, rules, required, customErrorMsg })
+    const { inputType, textValue, disabled, rules, required, customErrorMsg } = toRefs(props)
+    const { isFocus, isError, onFocus, onBlur, clear, typing, isEmpty, classBorder, errorMsg, classPrependIcon } = useInput({ context, inputType, textValue, disabled, rules, required, customErrorMsg })
 
     return {
       isFocus,

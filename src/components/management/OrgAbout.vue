@@ -12,7 +12,7 @@ div(class="l:pt-16 pt-17.5")
         div(class="flex items-center pt-4")
           p(class="text-caption text-primary") ID: {{organization.orgNo}}
           svg-icon(iconName="content_copy" size="14" class="text-black-700")
-        p(class="pt-2.5 text-caption text-black-500 cursor-pointer") {{$t('reuse.delete')}}
+        p(class="pt-2.5 text-caption text-black-500 cursor-pointer" @click="openModalDelete") {{$t('reuse.delete')}}
     div(class="grid gap-y-8.5 relative")
       p(class="absolute text-caption text-black-500 right-0 -top-7 transform -translate-y-full") *{{$t('b.required')}}
       div(class="grid grid-cols-2 grid-rows-3 gap-y-7.5 l:gap-x-8 gap-x-15")
@@ -112,6 +112,12 @@ export default {
       })
     }
 
+    const openModalDelete = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-delete-org-or-group'
+      })
+    }
+
     const updateOrg = async () => {
       try {
         if (orgFormData.orgName !== organization.value.orgName) {
@@ -144,6 +150,7 @@ export default {
       countryList,
       updateOrg,
       openModalUpload,
+      openModalDelete,
       isOrgNameExist,
       avaliableToUpdateOrg,
       organization,

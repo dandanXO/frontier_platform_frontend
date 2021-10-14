@@ -19,16 +19,20 @@ div(class="w-100 px-8")
 import { ref } from 'vue'
 import { computed, watch } from '@vue/runtime-core'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 export default {
   name: 'ModalCreateMailGroup',
   setup () {
     const store = useStore()
+    const router = useRouter()
     const suggestEmailList = ref([])
     const uploadMaterialEmail = computed({
       get: () => store.getters['group/createForm'].uploadMaterialEmail,
       set: (v) => store.commit('group/SET_createForm_uploadMaterialEmail', v)
     })
     const availableToCreateGroup = computed(() => uploadMaterialEmail.value !== '' && suggestEmailList.value.length === 0)
+    const groupId = computed(() => store.getters['group/group'].groupId)
+    const orgNo = computed(() => store.getters['organization/organization'].orgNo)
 
     const openModalCreateGroup = () => {
       store.dispatch('helper/openModal', {
@@ -39,6 +43,7 @@ export default {
       try {
         await store.dispatch('group/createGroup')
         store.dispatch('helper/closeModal')
+        router.push(`/${orgNo.value}/management/${groupId.value}/about`)
       } catch (availableEmailList) {
         suggestEmailList.value = availableEmailList
       }

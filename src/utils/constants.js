@@ -29,3 +29,13 @@ export const MODAL_TYPE = {
   FULLSCREEN: 1,
   CONFIRM: 3
 }
+
+export const SIDE_TYPE = {
+  FACE: 1,
+  BACK: 2
+}
+
+export const WEIGHT_UNIT = {
+  GSM: 1,
+  OZ: 2
+}

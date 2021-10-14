@@ -127,6 +127,14 @@ export default {
       ctx.json(response)
     )
   },
+  deleteOrg: (req, res, ctx) => {
+    const response = deepClone(successState)
+
+    return res(
+      ctx.status(200),
+      ctx.json(response)
+    )
+  },
   updateOrgLogo: (req, res, ctx) => {
     // const { orgId } = req.body
     // I'm not sure why orgId become string type instead of number, probably it's related to formData?
