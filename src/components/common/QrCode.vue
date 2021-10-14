@@ -16,8 +16,8 @@ export default {
       required: true
     },
     size: {
-      type: String,
-      default: '200'
+      type: Number,
+      default: 200
     }
   },
   setup (props) {
