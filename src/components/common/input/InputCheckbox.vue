@@ -1,10 +1,9 @@
 <template lang="pug">
-label(class="flex items-center" :for="value")
+label(class="flex items-center")
   svg-icon(v-if="checked" iconName="check_box" :size="size" class="text-brand")
   svg-icon(v-else iconName="check_box_outline_blank" :size="size" class="text-black-400")
   input(type="checkbox"
     class="hidden"
-    :id="value"
     :checked="checked"
     :value="value"
     @input="check($event)"
@@ -18,12 +17,11 @@ export default {
   name: 'InputCheckbox',
   props: {
     inputValue: {
-      type: Array,
+      type: [Array, Boolean],
       required: true
     },
     value: {
-      type: [String, Number],
-      required: true
+      type: [String, Number]
     },
     label: {
       type: [String, Number],
@@ -32,12 +30,20 @@ export default {
     size: {
       type: String,
       default: '24'
+    },
+    binary: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['update:inputValue'],
   setup (props, { emit }) {
-    const checked = computed(() => props.inputValue.includes(props.value))
+    const checked = computed(() => props.binary ? props.inputValue : props.inputValue.includes(props.value))
     const check = (e) => {
+      if (props.binary) {
+        emit('update:inputValue', !props.inputValue)
+        return
+      }
       const updatedInputValue = [...props.inputValue]
       if (!e.target.checked) {
         updatedInputValue.splice(updatedInputValue.indexOf(props.value), 1)

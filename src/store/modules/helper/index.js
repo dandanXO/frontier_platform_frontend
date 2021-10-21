@@ -63,6 +63,9 @@ const actions = {
   pushFullScreen ({ commit }, options) {
     commit('PUSH_modalPipeline', { type: MODAL_TYPE.FULLSCREEN, options })
   },
+  replaceFullScreen ({ commit }, options) {
+    commit('REPLACE_modalPipeline', { type: MODAL_TYPE.FULLSCREEN, options })
+  },
   closeFullscreen ({ commit }) {
     commit('CLOSE_modalPipeline')
   },

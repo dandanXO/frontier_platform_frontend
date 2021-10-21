@@ -28,7 +28,7 @@ div(class="fixed z-index:sidebar w-60 h-full left-0 top-0 bottom-0 bg-black-100 
               span(class="flex-grow text-body2 text-primary truncate line-height-1.4") {{item.name}}
               svg-icon(iconName="keyboard_arrow_right" size="24" class="text-black-650 transform" :class="[ isExpand ? 'rotate-90' : 'rotate-0' ]")
           template(#dropdownList="{ options }")
-            div(class="flex flex-col gap-y-0.5" @click.stop)
+            div(class="flex flex-col gap-y-0.5")
               sidebar-item(v-for="menu in options" v-bind="menu" class="relative")
                 p(class="pl-7 text-body2 text-primary") {{$t(menu.title)}}
                 template(v-if="menu.id === 'assets'")

@@ -1,136 +1,139 @@
 <template lang="pug">
-div
+div(class="pb-15 border-b border-black-400")
   div(class="h-16 flex items-center")
-    h5(class="text-h5 text-primary") {{$t('DD0013')}}
+    h5(class="text-h5 text-primary font-bold") {{$t('DD0013')}}
   div(class="px-15 grid gap-y-7.5")
     div(class="flex items-center")
-      input-switch(v-model:inputValue="form.isDoubleSide" name="Dobule-side")
-      div(v-if="!form.isDoubleSide" class="flex gap-x-1 pl-3.5")
+      input-switch(v-model:inputValue="material.isDoubleSideMaterial" name="Dobule-side")
+      div(v-if="!material.isDoubleSideMaterial" class="flex gap-x-1 pl-3.5")
         input-radio(
-          v-model:inputValue="form.sideType"
+          v-model:inputValue="material.sideType"
           :name="$t('DD0048')"
           :value="SIDE_TYPE.FACE"
           size="20"
         )
         input-radio(
-          v-model:inputValue="form.sideType"
+          v-model:inputValue="material.sideType"
           :name="$t('DD0049')"
           :value="SIDE_TYPE.BACK"
           size="20"
         )
     input-text(
-      v-model:textValue="form.materialNo"
+      v-model:textValue="material.materialNo"
       :placeholder="$t('DD0015')"
       :label="$t('RR0013')"
-      required
+      :customErrorMsg="validations.materialNo"
     )
     input-chips(
-      v-model:chips="form.descriptionList"
+      v-model:chips="material.descriptionList"
       :label="$t('RR0014')"
-      :options="options.contentList"
+      :options="options.descriptionList"
       :placeholder="$t('DD0016')"
-      @addNewOption="addContentOption($event)"
+      @addNewOption="addDescriptionOption($event)"
       class="relative z-13"
     )
     input-container(:label="$t('RR0015')" required class="relative z-12")
-      template(#input)
-        div(class="flex items-center gap-x-3")
-          input-text(
-            v-model:textValue="form.weight"
-            inputType="number"
-            class="w-50"
-          )
-          input-select(
-            v-model:selectValue="form.weightUnit"
-            :options="options.weightUnitList"
-            keyOptionDisplay="name"
-            keyOptionValue="weightUnit"
-            class="w-25"
-          )
-          input-text(
-            v-model:textValue="form.weightGy"
-            inputType="number"
-            :placeholder="$t('DD0017')"
-            class="w-50"
-          )
-          p(class="text-body2 text-primary font-bold") {{$t('RR0018')}}
+      div(class="flex items-center gap-x-3")
+        input-text(
+          v-model:textValue="material.weight"
+          inputType="number"
+          :customErrorMsg="validations.weight"
+          class="w-50"
+        )
+        input-select(
+          v-model:selectValue="material.weightUnit"
+          :options="options.weightUnitList"
+          keyOptionDisplay="name"
+          keyOptionValue="weightUnit"
+          class="w-25"
+        )
+        input-text(
+          v-model:textValue="material.weightGy"
+          inputType="number"
+          :placeholder="$t('DD0017')"
+          class="w-50"
+        )
+        p(class="text-body2 text-primary font-bold") {{$t('RR0018')}}
     input-container(:label="$t('RR0019')" required class="relative z-11")
-      template(#input)
-        div(class="flex items-center gap-x-3")
-          input-text(
-            v-model:textValue="form.width"
-            inputType="number"
-            class="w-50"
-          )
-          p(class="text-body2 text-primary font-bold") {{$t('RR0020')}}
+      div(class="flex items-center gap-x-3")
+        input-text(
+          v-model:textValue="material.width"
+          inputType="number"
+          class="w-50"
+        )
+        p(class="text-body2 text-primary font-bold") {{$t('RR0020')}}
     input-container(:label="$t('RR0021')" required class="relative z-10")
-      template(#input)
-        div(class="grid gap-y-3")
-          div(v-for="(content, selectInputIndex) in form.contentList" class="flex items-center")
-            input-select(
-              v-model:selectValue="content.index"
-              :options="options.contentList"
-              :placeholder="$t('DD0016')"
-              @select="selectContent($event, selectInputIndex)"
-              @addNewOption="addContentOption($event)"
-              keyOptionDisplay="name"
-              keyOptionValue="index"
-              searchBox
-              canAddNewOption
-              required
-              class="w-100 mr-3"
-              :class="`z-${form.contentList.length - selectInputIndex}`"
-            )
-            input-text(v-model:textValue="content.percentage" inputType="number" class="w-25 mr-3")
-            p(class="text-body2 text-primary pr-7.5") %
-            svg-icon(v-if="selectInputIndex === 0" size="20" iconName="add_box" class="text-black-700" @click="addNewContent")
-            svg-icon(v-else size="20" iconName="delete" class="text-black-700" @click="removeContent(selectInputIndex)")
+      div(class="grid gap-y-3")
+        div(v-for="(content, contentItemIndex) in material.contentList" class="flex items-center")
+          input-select(
+            v-model:selectValue="content.index"
+            :options="options.contentList"
+            :placeholder="$t('DD0016')"
+            @select="selectContent($event, contentItemIndex)"
+            @addNewOption="addContentOption($event)"
+            keyOptionDisplay="name"
+            keyOptionValue="index"
+            searchBox
+            canAddNewOption
+            required
+            class="w-100 mr-3"
+            :class="`z-${material.contentList.length - contentItemIndex}`"
+          )
+          input-text(v-model:textValue="content.percentage" inputType="number" class="w-25 mr-3")
+          p(class="text-body2 text-primary pr-7.5") %
+          svg-icon(v-if="contentItemIndex === 0" size="20" iconName="add_box" class="text-black-700" @click="addNewContent")
+          svg-icon(v-else size="20" iconName="delete" class="text-black-700" @click="removeContent(contentItemIndex)")
+      template(#hint)
+        p(v-if="validations.contentList" class="text-caption text-warn absolute pt-1") {{validations.contentList}}
     input-chips(
-      v-model:chips="form.finishList"
+      v-model:chips="material.finishList"
       :label="$t('RR0022')"
-      :options="options.contentList"
+      :options="options.finishList"
       :placeholder="$t('DD0016')"
-      @addNewOption="addContentOption($event)"
+      @addNewOption="addFinishOption($event)"
       class="relative z-9"
     )
     input-container(:label="$t('RR0023')")
-      template(#input)
-        div(class="flex items-center gap-x-3")
-          input-text(
-            v-model:textValue="form.warpYarnCount"
-            class="w-50"
-          )
-          svg-icon(iconName="clear" size="20" class="text-primary")
-          input-text(
-            v-model:textValue="form.weftYarnCount"
-            class="w-50"
-          )
+      div(class="flex items-center gap-x-3")
+        input-text(
+          v-model:textValue="material.warpYarnCount"
+          :customErrorMsg="validations.warpYarnCount"
+          class="w-50"
+        )
+        svg-icon(iconName="clear" size="20" class="text-primary")
+        input-text(
+          v-model:textValue="material.weftYarnCount"
+          :customErrorMsg="validations.weftYarnCount"
+          class="w-50"
+        )
     input-container(:label="$t('RR0024')")
-      template(#input)
-        div(class="flex items-center gap-x-3")
-          input-text(
-            v-model:textValue="form.warpDensity"
-            class="w-50"
-          )
-          svg-icon(iconName="clear" size="20" class="text-primary")
-          input-text(
-            v-model:textValue="form.weftDensity"
-            class="w-50"
-          )
+      div(class="flex items-center gap-x-3")
+        input-text(
+          v-model:textValue="material.warpDensity"
+          :customErrorMsg="validations.warpDensity"
+          class="w-50"
+        )
+        svg-icon(iconName="clear" size="20" class="text-primary")
+        input-text(
+          v-model:textValue="material.weftDensity"
+          :customErrorMsg="validations.weftDensity"
+          class="w-50"
+        )
     input-container(:label="`${$t('RR0025')} / ${$t('RR0026')}`")
-      template(#input)
-        div(class="flex items-center gap-x-3")
-          input-text(
-            v-model:textValue="form.pattern"
-            class="w-50"
-          )
-          svg-icon(iconName="slash" size="20" class="text-primary")
-          input-text(
-            v-model:textValue="form.color"
-            class="w-50"
-          )
+      div(class="flex items-center gap-x-3")
+        input-text(
+          v-model:textValue="material.pattern"
+          :customErrorMsg="validations.pattern"
+          class="w-50"
+        )
+        svg-icon(iconName="slash" size="20" class="text-primary")
+        input-text(
+          v-model:textValue="material.color"
+          :customErrorMsg="validations.color"
+          class="w-50"
+        )
     input-chips(
-      v-model:chips="form.publicTagList"
+      v-model:chips="material.publicTagList"
       :label="$t('RR0027')"
       :placeholder="$t('DD0018')"
       class="relative z-9"
@@ -138,90 +141,40 @@ div
     div(class="-mx-15 bg-black-100 px-15 py-12.5 grid gap-y-7.5")
       h6(class="text-h6 text-black-600 font-bold") {{$t('DD0019')}}
       input-chips(
-        v-model:chips="form.privateTagList"
+        v-model:chips="material.privateTagList"
         :label="$t('RR0028')"
         :placeholder="$t('DD0020')"
         class="relative z-8"
       )
       input-textarea(
-        v-model:textValue="form.remark"
+        v-model:textValue="material.remark"
         :label="$t('RR0029')"
         height="110"
       )
 </template>
 
 <script>
-import { reactive, computed } from 'vue'
+import { reactive, computed, watch } from 'vue'
 import { SIDE_TYPE, WEIGHT_UNIT } from '@/utils/constants'
+import { useStore } from 'vuex'
 
 export default {
   name: 'BlockMaterialInformation',
-  setup () {
-    const defaultState = {
-      content: { index: -1, contentId: -1, name: '', percentage: '' }
+  props: {
+    validations: {
+      type: Object,
+      required: true
     }
-    const form = reactive({
-      isDoubleSide: false,
-      sideType: SIDE_TYPE.FACE,
-      materialNo: '',
-      contentList: [{ ...defaultState.content }],
-      descriptionList: [],
-      width: '',
-      weight: '',
-      weightUnit: WEIGHT_UNIT.GSM,
-      weightGy: '',
-      finishList: [],
-      warpYarnCount: '',
-      weftYarnCount: '',
-      warpDensity: '',
-      weftDensity: '',
-      pattern: '',
-      color: '',
-      publicTagList: [],
-      privateTagList: [],
-      remark: ''
-    })
-
+  },
+  setup () {
+    const store = useStore()
+    const material = computed(() => store.getters['material/material'])
+    const newContentList = reactive([])
+    const newDescriptionList = reactive([])
+    const newFinishList = reactive([])
     const options = reactive({
       contentList: computed(() => {
-        const originalContentList = [
-          {
-            contentId: 1,
-            name: 'C'
-          },
-          {
-            contentId: 2,
-            name: 'CD'
-          },
-          {
-            contentId: 3,
-            name: 'recycled cotton'
-          },
-          {
-            contentId: 4,
-            name: 'Cotton'
-          },
-          {
-            contentId: 5,
-            name: 'Spandex'
-          },
-          {
-            contentId: 6,
-            name: 'Linen'
-          },
-          {
-            contentId: 7,
-            name: 'Polyester'
-          },
-          {
-            contentId: 8,
-            name: 'Rayon'
-          },
-          {
-            contentId: 9,
-            name: 'Nylon'
-          }
-        ]
+        const originalContentList = store.getters['material/code'].contentList.slice(0, 10)
         return originalContentList
           .concat(newContentList)
           .map((content, index) => ({ index, ...content }))
@@ -232,10 +185,26 @@ export default {
             weightUnit: WEIGHT_UNIT[key],
             name: key.toLowerCase()
           }))
+      }),
+      descriptionList: computed(() => {
+        return store.getters['material/code'].descriptionList.slice(0, 10)
+          .map(description => description.name)
+          .concat(newDescriptionList)
+      }),
+      finishList: computed(() => {
+        return store.getters['material/code'].finishList.slice(0, 10)
+          .map(finishList => finishList.name)
+          .concat(newFinishList)
       })
     })
 
-    const newContentList = reactive([])
+    const addDescriptionOption = (descriptionName) => {
+      newDescriptionList.push(descriptionName)
+    }
+
+    const addFinishOption = (finishName) => {
+      newDescriptionList.push(finishName)
+    }
 
     const addContentOption = (contentName) => {
       newContentList.push({
@@ -244,26 +213,38 @@ export default {
       })
     }
 
-    const selectContent = (contentIndex, selectInputIndex) => {
-      Object.assign(form.contentList[selectInputIndex], options.contentList[contentIndex])
+    const selectContent = (contentOptionIndex, contentItemIndex) => {
+      store.commit('material/UPDATE_content_item', { index: contentItemIndex, content: options.contentList[contentOptionIndex] })
     }
 
     const addNewContent = () => {
-      form.contentList.push({ ...defaultState.content })
+      store.commit('material/ADD_content_item')
     }
 
-    const removeContent = (selectInputIndex) => {
-      form.contentList.splice(selectInputIndex, 1)
+    const removeContent = (contentItemIndex) => {
+      store.commit('material/REMOVE_content_item', contentItemIndex)
     }
+
+    watch(
+      () => material.value,
+      () => {
+        store.commit('material/UPDATE_material', material.value)
+      },
+      {
+        deep: true
+      }
+    )
 
     return {
-      form,
       options,
       addContentOption,
       selectContent,
       addNewContent,
       removeContent,
-      SIDE_TYPE
+      SIDE_TYPE,
+      material,
+      addDescriptionOption,
+      addFinishOption
     }
   }
 }

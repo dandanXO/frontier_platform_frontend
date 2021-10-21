@@ -1,10 +1,11 @@
 <template lang="pug">
-div(ref="rootElement" class="dropdown relative cursor-pointer" @click="isExpand ? collapse() : expand()")
-  slot(name="displayItem"
-    :isExpand="isExpand"
-    :currentIndex="currentIndex"
-    :option="options[currentIndex]"
-  )
+div(class="dropdown relative cursor-pointer" v-click-away="clickAway")
+  div(@click="isExpand ? collapse() : expand()")
+    slot(name="displayItem"
+      :isExpand="isExpand"
+      :currentIndex="currentIndex"
+      :option="options[currentIndex]"
+    )
   slot(name="dropdownList"
     v-if="isExpand"
     :select="select"
@@ -21,13 +22,17 @@ div(ref="rootElement" class="dropdown relative cursor-pointer" @click="isExpand 
 
 <script>
 import { computed, ref } from 'vue'
+import { directive } from 'vue3-click-away'
 
 export default {
   name: 'Dropdown',
+  directives: {
+    ClickAway: directive
+  },
   props: {
     options: {
       type: Array,
-      required: true
+      default: () => []
     },
     keyOptionDisplay: {
       type: String,
@@ -52,7 +57,6 @@ export default {
   emits: ['expand', 'collapse', 'update:value', 'select'],
   setup (props, { emit }) {
     const isExpand = ref(false)
-    const rootElement = ref(null)
 
     const isBindingValue = computed(() => props.value !== undefined)
     const currentIndex = computed(() => {
@@ -62,21 +66,13 @@ export default {
     })
 
     const expand = () => {
-      props.closeAfterOutsideClick && document.addEventListener('click', captureOutsideClick)
       isExpand.value = true
       emit('expand')
     }
 
     const collapse = () => {
-      props.closeAfterOutsideClick && document.removeEventListener('click', captureOutsideClick)
       isExpand.value = false
       emit('collapse')
-    }
-
-    const captureOutsideClick = (e) => {
-      if (e.target.closest('.dropdown') !== rootElement.value) {
-        collapse()
-      }
     }
 
     const select = (e, option) => {
@@ -89,13 +85,17 @@ export default {
       props.closeAfterSelect && collapse()
     }
 
+    const clickAway = () => {
+      props.closeAfterOutsideClick && collapse()
+    }
+
     return {
       isExpand,
       currentIndex,
       expand,
       collapse,
       select,
-      rootElement
+      clickAway
     }
   }
 }

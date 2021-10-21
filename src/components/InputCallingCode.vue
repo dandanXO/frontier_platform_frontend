@@ -1,5 +1,5 @@
 <template lang="pug">
-input-text(v-model:textValue="innerTextValue" :class="[classWidth]")
+input-text(v-model:textValue="innerTextValue" :class="[classWidth]" :size="size")
   template(#prependItem)
     div(class="h-full -ml-4 pr-3 flex")
       dropdown(
@@ -11,7 +11,7 @@ input-text(v-model:textValue="innerTextValue" :class="[classWidth]")
         @collapse="isExpand = false"
       )
         template(#displayItem="{ option }")
-          div(class="h-full w-full pl-4 pr-3 border-r rounded-l flex justify-between items-center")
+          div(class="w-full pl-4 pr-3 border-r rounded-l flex justify-between items-center" :class="[size === 'lg' ? 'h-11' : 'h-9']")
             i(class="text-h4") {{getEmojiFlag(option.countryCode)}}
             svg-icon(
               iconName="arrow-down"
@@ -57,6 +57,10 @@ export default {
     width: {
       type: String,
       default: '340'
+    },
+    size: {
+      type: String,
+      default: 'lg'
     }
   },
   emits: ['update:textValue', 'update:countryCode'],

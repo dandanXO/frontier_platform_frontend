@@ -37,6 +37,13 @@ export default {
     primaryHandler: {
       type: Function
     },
+    primaryCloseAfterHandle: {
+      type: Boolean,
+      default: true
+    },
+    afterPrimaryHandler: {
+      type: Function
+    },
     secondaryButton: {
       type: Boolean,
       default: true
@@ -47,6 +54,13 @@ export default {
     },
     secondaryHandler: {
       type: Function
+    },
+    afterSecondaryHandler: {
+      type: Function
+    },
+    secondaryCloseAfterHandle: {
+      type: Boolean,
+      default: true
     }
   },
   setup (props) {
@@ -55,7 +69,9 @@ export default {
     const isScrolling = ref(false)
 
     const hasDefinePrimaryHandler = computed(() => typeof props.primaryHandler === 'function')
+    const hasDefineAfterPrimaryHandler = computed(() => typeof props.afterPrimaryHandler === 'function')
     const hasDefineSecondaryHandler = computed(() => typeof props.secondaryHandler === 'function')
+    const hasDefindAfterSecondaryHandler = computed(() => typeof props.afterSecondaryHandler === 'function')
 
     const closeFullscreen = () => store.dispatch('helper/closeFullscreen')
 
@@ -63,14 +79,20 @@ export default {
       if (hasDefinePrimaryHandler.value) {
         await props.primaryHandler()
       }
-      closeFullscreen()
+
+      props.primaryCloseAfterHandle && closeFullscreen()
+
+      hasDefineAfterPrimaryHandler.value && props.afterPrimaryHandler()
     }
 
     const innerSecondaryHandler = async () => {
       if (hasDefineSecondaryHandler.value) {
         await props.secondaryHandler()
       }
-      closeFullscreen()
+
+      props.secondaryCloseAfterHandle && closeFullscreen()
+
+      hasDefindAfterSecondaryHandler.value && props.afterSecondaryHandler()
     }
 
     onMounted(() => {

@@ -1,10 +1,10 @@
 <template lang="pug">
-input-text
+input-text(:size="size")
   template(#appendItem)
-    div(class="h-full flex items-center -mr-4 pl-4" click.stop)
+    div(class="flex items-center -mr-4 pl-4")
       dropdown(v-model:value="innerLabelColor" class="w-18 h-full" :options="labelColorList" keyOptionValue="labelColor")
         template(#displayItem="{ isExpand, option }")
-          div(class="h-full flex items-center gap-x-1 pl-3 border-l border-black-400")
+          div(class="flex items-center gap-x-1 pl-3 border-l border-black-400" :class="[size === 'lg' ? 'h-11' : 'h-9']")
             label(class="w-5 h-5 rounded-sm" :style="{ 'background-color': option.labelColor }")
             svg-icon(iconName="arrow-down" size="20" class="text-black-600 transform" :class="[ isExpand ? '-rotate-90' : 'rotate-90' ]")
         template(#dropdownList="{ select, options ,currentIndex }")
@@ -24,6 +24,10 @@ export default {
     labelColor: {
       type: String,
       required: true
+    },
+    size: {
+      type: String,
+      default: 'lg'
     }
   },
   emits: ['update:labelColor'],
