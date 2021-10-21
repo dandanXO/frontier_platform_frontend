@@ -1,0 +1,42 @@
+[
+  {
+    "materialId": 1,
+    "faceSideImg": "https://picsum.photos/id/1/200/200",
+    "backSideImg": "https://picsum.photos/id/10/200/200",
+    "isDoubleSideMaterial": true,
+    "sideType": 1,
+    "word": "aaaaaaaaa"
+  },
+  {
+    "materialId": 2,
+    "faceSideImg": "https://picsum.photos/id/100/200/200",
+    "backSideImg": "",
+    "isDoubleSideMaterial": false,
+    "sideType": 1,
+    "word": "bbbbbbbbb"
+  },
+  {
+    "materialId": 3,
+    "faceSideImg": "https://picsum.photos/id/1001/200/200",
+    "backSideImg": "https://picsum.photos/id/1003/200/200",
+    "isDoubleSideMaterial": true,
+    "sideType": 1,
+    "word": "ccccccccc"
+  },
+  {
+    "materialId": 4,
+    "faceSideImg": "",
+    "backSideImg": "https://picsum.photos/id/1008/200/200",
+    "isDoubleSideMaterial": false,
+    "sideType": 2,
+    "word": "ddddddddd"
+  },
+  {
+    "materialId": 5,
+    "faceSideImg": "https://picsum.photos/id/101/200/200",
+    "backSideImg": "https://picsum.photos/id/1014/200/200",
+    "isDoubleSideMaterial": false,
+    "sideType": 1,
+    "word": "eeeeeeeeee"
+  }
+]
