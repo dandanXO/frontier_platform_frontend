@@ -1,11 +1,13 @@
 import { MODAL_TYPE } from '@/utils/constants'
 
 const state = () => ({
-  modalPipeline: []
+  modalPipeline: [],
+  message: ''
 })
 
 const getters = {
-  modalPipeline: (state) => state.modalPipeline
+  modalPipeline: (state) => state.modalPipeline,
+  message: (state) => state.message
 }
 
 const mutations = {
@@ -21,6 +23,12 @@ const mutations = {
   },
   CLEAR_modalPipeline (state) {
     state.modalPipeline.length = 0
+  },
+  PUSH_message (state, message) {
+    state.message = message
+  },
+  REMOVE_message (state) {
+    state.message = ''
   }
 }
 
