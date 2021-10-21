@@ -97,7 +97,6 @@ const routes = [
       const orgUser = store.getters['user/orgUser/orgUser']
 
       if (orgUser.orgRoleId === ROLE_ID.OWNER && org.uploadMaterialEmail === '') {
-        console.log('reset')
         store.dispatch('helper/openModal', {
           component: 'modal-create-mail-org',
           properties: {
@@ -171,7 +170,11 @@ const routes = [
       {
         path: 'assets/upload',
         name: 'OrgUploadAssets',
-        component: () => import('@/views/innerApp/UploadAssets.vue')
+        component: () => import('@/views/innerApp/UploadAssets.vue'),
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('code/getCountryList')
+          next()
+        }
       },
       {
         path: 'share-to-me',
@@ -187,6 +190,10 @@ const routes = [
         path: ':groupId(\\d+)',
         redirect: to => `/${to.params.orgNo}/${to.params.groupId}/workspace`,
         component: () => import('@/views/PassThrough'),
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('group/getGroup', { groupId: to.params.groupId })
+          next()
+        },
         children: [
           {
             path: 'assets',

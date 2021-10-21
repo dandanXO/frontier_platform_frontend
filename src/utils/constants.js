@@ -39,3 +39,15 @@ export const WEIGHT_UNIT = {
   GSM: 1,
   OZ: 2
 }
+
+export const INVENTORY_UNIT = {
+  Y: 'Y',
+  M: 'M',
+  KG: 'KG'
+}
+
+export const MATERIAL_PRICING_CURRENCY = {
+  USD: 'USD',
+  RMB: 'RMB',
+  TWD: 'TWD'
+}

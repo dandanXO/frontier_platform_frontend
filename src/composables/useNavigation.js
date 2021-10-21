@@ -33,9 +33,16 @@ export default function useNavigation () {
     return temp
   }
 
+  const prefixPath = computed(() => location.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId')
+
+  const goToAssets = () => {
+    router.push(parsePath(`${prefixPath.value}/assets`))
+  }
+
   return {
     location,
     nextAfterSignIn,
-    parsePath
+    parsePath,
+    goToAssets
   }
 }

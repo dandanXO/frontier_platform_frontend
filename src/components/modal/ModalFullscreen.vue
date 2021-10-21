@@ -5,11 +5,13 @@ div(class="fixed inset-0 z-index:modal bg-black-0")
 
 <script>
 import MaterialUpload from '@/components/assets/material/edit/MaterialUpload.vue'
+import MaterialUploadSuccess from '@/components/assets/material/edit/MaterialUploadSuccess.vue'
 
 export default {
   name: 'ModalFullscreen',
   components: {
-    MaterialUpload
+    MaterialUpload,
+    MaterialUploadSuccess
   },
   props: {
     component: {
