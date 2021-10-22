@@ -24,7 +24,6 @@ const getDefaultState = () => ({
   width: 0,
   content: '',
   contentList: [{
-    index: -1,
     contentId: -1,
     name: '',
     percentage: 0
@@ -147,6 +146,7 @@ const mutations = {
 
 const actions = {
   setMaterial ({ state }, data) {
+    console.log(data)
     setVuexState(state, data)
   },
   resetMaterial ({ commit }) {
@@ -198,6 +198,45 @@ const actions = {
     location === 'org'
       ? await materialApi.org.createMaterial({ orgId: rootGetters['organization/orgId'], tempMaterialId, material })
       : await materialApi.group.createMaterial({ groupId: rootGetters['group/groupId'], tempMaterialId, material })
+  },
+  async updateMaterial ({ rootGetters, getters }, { location }) {
+    const materialId = getters.material.materialId
+    const material = Object.fromEntries(
+      Object.entries(getters.material)
+        .filter(([key]) => [
+          'isDoubleSideMaterial',
+          'sideType',
+          'materialNo',
+          'descriptionList',
+          'weight',
+          'weightUnit',
+          'weightGy',
+          'width',
+          'contentList',
+          'finishList',
+          'warpYarnCount',
+          'weftYarnCount',
+          'warpDensity',
+          'weftDensity',
+          'pattern',
+          'color',
+          'publicTagList',
+          'privateTagList',
+          'remark',
+          'materialSeq',
+          'sampleCardsRemainingQty',
+          'sampleCardsLocation',
+          'hangersRemainingQty',
+          'hangersLocation',
+          'inventoryList',
+          'isPublicInventory',
+          'publicPrice',
+          'privatePrice'
+        ].includes(key))
+    )
+    location === 'org'
+      ? await materialApi.org.updateMaterial({ orgId: rootGetters['organization/orgId'], materialId, material })
+      : await materialApi.group.updateMaterial({ groupId: rootGetters['group/groupId'], materialId, material })
   }
 }
 

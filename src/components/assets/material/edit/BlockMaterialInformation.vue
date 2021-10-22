@@ -29,6 +29,8 @@ div(class="pb-15 border-b border-black-400")
       :label="$t('RR0014')"
       :options="options.descriptionList"
       :placeholder="$t('DD0016')"
+      keyOptionDisplay="name"
+      keyOptionValue="name"
       @addNewOption="addDescriptionOption($event)"
       class="relative z-13"
     )
@@ -66,13 +68,13 @@ div(class="pb-15 border-b border-black-400")
       div(class="grid gap-y-3")
         div(v-for="(content, contentItemIndex) in material.contentList" class="flex items-center")
           input-select(
-            v-model:selectValue="content.index"
+            v-model:selectValue="content.name"
             :options="options.contentList"
             :placeholder="$t('DD0016')"
             @select="selectContent($event, contentItemIndex)"
             @addNewOption="addContentOption($event)"
             keyOptionDisplay="name"
-            keyOptionValue="index"
+            keyOptionValue="name"
             searchBox
             canAddNewOption
             required
@@ -90,6 +92,8 @@ div(class="pb-15 border-b border-black-400")
       :label="$t('RR0022')"
       :options="options.finishList"
       :placeholder="$t('DD0016')"
+      keyOptionDisplay="name"
+      keyOptionValue="name"
       @addNewOption="addFinishOption($event)"
       class="relative z-9"
     )
@@ -177,7 +181,6 @@ export default {
         const originalContentList = store.getters['material/code'].contentList.slice(0, 10)
         return originalContentList
           .concat(newContentList)
-          .map((content, index) => ({ index, ...content }))
       }),
       weightUnitList: computed(() => {
         return Object.keys(WEIGHT_UNIT)
@@ -188,22 +191,26 @@ export default {
       }),
       descriptionList: computed(() => {
         return store.getters['material/code'].descriptionList.slice(0, 10)
-          .map(description => description.name)
           .concat(newDescriptionList)
       }),
       finishList: computed(() => {
         return store.getters['material/code'].finishList.slice(0, 10)
-          .map(finishList => finishList.name)
           .concat(newFinishList)
       })
     })
 
     const addDescriptionOption = (descriptionName) => {
-      newDescriptionList.push(descriptionName)
+      newDescriptionList.push({
+        descriptionId: null,
+        name: descriptionName
+      })
     }
 
     const addFinishOption = (finishName) => {
-      newDescriptionList.push(finishName)
+      newFinishList.push({
+        finishId: null,
+        name: finishName
+      })
     }
 
     const addContentOption = (contentName) => {
@@ -213,8 +220,9 @@ export default {
       })
     }
 
-    const selectContent = (contentOptionIndex, contentItemIndex) => {
-      store.commit('material/UPDATE_content_item', { index: contentItemIndex, content: options.contentList[contentOptionIndex] })
+    const selectContent = (contentName, contentItemIndex) => {
+      const content = options.contentList.find(content => content.name === contentName)
+      store.commit('material/UPDATE_content_item', { index: contentItemIndex, content })
     }
 
     const addNewContent = () => {
