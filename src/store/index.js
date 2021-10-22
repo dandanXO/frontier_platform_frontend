@@ -5,13 +5,14 @@ import organization from '@/store/modules/organization'
 import group from '@/store/modules/group'
 import material from '@/store/modules/material'
 import helper from '@/store/modules/helper'
+import assets from '@/store/modules/assets'
 
 export default createStore({
   actions: {
     handleResponseData ({ dispatch }, { data }) {
       const { success, message, result } = JSON.parse(JSON.stringify(data))
 
-      const namespacedParentModuleList = ['user', 'organization', 'code', 'group', 'material']
+      const namespacedParentModuleList = ['user', 'organization', 'code', 'group', 'material', 'assets']
 
       if (result !== null) {
         namespacedParentModuleList.forEach(module => {
@@ -37,6 +38,7 @@ export default createStore({
     organization,
     group,
     helper,
-    material
+    material,
+    assets
   }
 })

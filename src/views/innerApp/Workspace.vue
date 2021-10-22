@@ -4,6 +4,6 @@ h1 I'm {{$route.name}} Page
 
 <script>
 export default {
-  name: 'OrgWorkspace'
+  name: 'Workspace'
 }
 </script>

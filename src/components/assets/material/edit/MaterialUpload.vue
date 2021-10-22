@@ -46,8 +46,7 @@ export default {
     store.dispatch('material/getMaterialOptions', { location: location.value })
 
     const createMaterial = async () => {
-      // await store.dispatch('material/createMaterial', { location: location.value, tempMaterialId })
-      console.log('create', tempMaterialId)
+      await store.dispatch('material/createMaterial', { location: location.value, tempMaterialId })
       store.dispatch('helper/replaceFullScreen', {
         component: 'material-upload-success'
       })
