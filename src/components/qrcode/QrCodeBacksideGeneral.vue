@@ -18,6 +18,7 @@ import domtoimage from 'dom-to-image'
 import { ref } from '@vue/reactivity'
 import { jsPDF } from 'jspdf'
 import { nextTick } from '@vue/runtime-core'
+import { useStore } from 'vuex'
 
 export default {
   name: 'QrCodeBacksideGeneral',
@@ -27,11 +28,13 @@ export default {
   props: {
   },
   setup () {
+    const store = useStore()
     const isShown = ref(false)
     const pdfTarget = ref(null)
     const scale = 5
     const generatePdf = async () => {
       isShown.value = true
+      openModalLoading()
       nextTick(async () => {
         await domtoimage.toJpeg(pdfTarget.value, {
           quality: 1.5,
@@ -48,9 +51,22 @@ export default {
             doc.addImage(dataUrl, 'JPEG', 0, 0, 8, 4)
             doc.output('dataurlnewwindow')
             isShown.value = false
+            closeModal()
           })
       })
     }
+
+    const openModalLoading = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-loading',
+        closable: false
+      })
+    }
+
+    const closeModal = () => {
+      store.dispatch('helper/closeModal')
+    }
+
     return {
       generatePdf,
       pdfTarget

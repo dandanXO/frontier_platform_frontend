@@ -2,7 +2,7 @@
 div(class="fixed inset-0 z-index:modal w-screen h-screen bg-black-900 bg-opacity-70 flex justify-center items-center")
   div(class="w-screen h-screen" @click="closable && close()")
   div(class="absolute bg-black-0 rounded card-shadow")
-    div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
+    div(v-if="header !== '' || closable" class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
       p(v-if="header !== ''" class="text-body1 text-primary") {{header}}
       svg-icon(v-if="closable" iconName="close" size="24" class="justify-self-end cursor-pointer text-black-700" @click="close")
     component(:is="component" v-bind="properties")
@@ -23,6 +23,7 @@ import ModalForgotPasswordCode from '@/components/account/ModalForgotPasswordCod
 import ModalResetPassword from '@/components/account/ModalResetPassword.vue'
 import ModalAskResetPassword from '@/components/account/ModalAskResetPassword.vue'
 import ModalChooseStorage from '@/components/management/ModalChooseStorage'
+import ModalLoading from '@/components/management/ModalLoading'
 
 export default {
   name: 'Modal',
@@ -39,7 +40,8 @@ export default {
     ModalForgotPasswordCode,
     ModalResetPassword,
     ModalAskResetPassword,
-    ModalChooseStorage
+    ModalChooseStorage,
+    ModalLoading
   },
   props: {
     component: {
