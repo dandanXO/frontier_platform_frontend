@@ -1,6 +1,7 @@
 <template lang="pug">
 h1 I'm {{$route.name}} Page
 div(class="flex flex-col p-10")
+<<<<<<< HEAD
   div(class="flex items-center")
     qr-code-general(:options="options" :datas="generalDatas")
       template(#activator="{ generatePdf}")
@@ -12,25 +13,50 @@ div(class="flex flex-col p-10")
       template(#activator="{ generatePdf}")
         btn(size="md" class="h-10 mr-10" @click="generatePdf") Print Backside General QRCode
 div(v-if="showFrontside" class="absolute right-0 transform translate-x-full border-2 border-black-200")
+=======
+  div(class="flex items-center mb-4 justify-between")
+    btn(size="md" class="h-10 mr-10" @click="generateBacksideGenearal") Print Backside General QRCode
+  div(class="flex items-center")
+    btn(size="md" class="h-10 mr-10" @click="generateFrontside") Print General QRCode
+    div(class="flex items-center")
+      input(class="mr-2" id="frontside" type="checkbox", value="f", v-model="options")
+      label(class="mr-2" for="frontside") frontside
+      input(class="mr-2" id="backside" type="checkbox", value="b", v-model="options")
+      label(class="mr-2" for="backside") backside
+div(v-if="showBacksideGeneral" class="absolute right-0 transform translate-x-full border-2 border-black-200")
+  qr-code-backside-general(class="target" ref="qrcodeBacksideGeneral")
+div(v-if="showFrontside" class="absolute right-0 transform translate-x-full border-2 border-black-200")
+  qr-code-general(class="target" ref="qrcodeGeneral" :options="options")
+>>>>>>> ed950b536885ca24d943cf98fd4fa541708ee5d2
 router-link-extending(tag="h1" to="/") Back To Lobby Page
 </template>
 
 <script>
 import QrCodeBacksideGeneral from '@/components/qrcode/QrCodeBacksideGeneral'
 import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral'
+<<<<<<< HEAD
 import QrCodeA4 from '@/components/qrcode/QrCodeA4'
 import { reactive, ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
+=======
+import { ref } from '@vue/reactivity'
+import { nextTick } from '@vue/runtime-core'
+>>>>>>> ed950b536885ca24d943cf98fd4fa541708ee5d2
 export default {
   name: 'Management',
   components: {
     QrCodeBacksideGeneral,
+<<<<<<< HEAD
     QrCodeGeneral,
     QrCodeA4
+=======
+    QrCodeGeneral
+>>>>>>> ed950b536885ca24d943cf98fd4fa541708ee5d2
   },
   setup () {
     const qrcodeBacksideGeneral = ref(null)
     const qrcodeGeneral = ref(null)
+<<<<<<< HEAD
     const qrcodeA4 = ref(null)
     const showBacksideGeneral = ref(false)
     const showFrontside = ref(false)
@@ -77,6 +103,34 @@ export default {
       options,
       generalDatas,
       a4Datas
+=======
+    const showBacksideGeneral = ref(false)
+    const showFrontside = ref(false)
+    const options = ref([])
+    const generateBacksideGenearal = () => {
+      showBacksideGeneral.value = true
+      nextTick(async () => {
+        await qrcodeBacksideGeneral.value.generatePdf()
+        showBacksideGeneral.value = false
+      })
+    }
+
+    const generateFrontside = () => {
+      showFrontside.value = true
+      nextTick(async () => {
+        await qrcodeGeneral.value.generatePdf()
+        showFrontside.value = false
+      })
+    }
+    return {
+      qrcodeBacksideGeneral,
+      qrcodeGeneral,
+      generateBacksideGenearal,
+      generateFrontside,
+      showBacksideGeneral,
+      showFrontside,
+      options
+>>>>>>> ed950b536885ca24d943cf98fd4fa541708ee5d2
     }
   }
 }
