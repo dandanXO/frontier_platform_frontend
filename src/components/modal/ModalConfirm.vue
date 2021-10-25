@@ -42,6 +42,10 @@ export default {
     afterPrimaryHandler: {
       type: Function
     },
+    primaryCloseAfterHandle: {
+      type: Boolean,
+      default: true
+    },
     secondaryText: {
       type: String,
       default: ''
@@ -51,6 +55,10 @@ export default {
     },
     afterSecondaryHandler: {
       type: Function
+    },
+    secondaryCloseAfterHandle: {
+      type: Boolean,
+      default: true
     }
   },
   setup (props) {
@@ -60,16 +68,14 @@ export default {
     const hasDefineSecondaryHandler = computed(() => typeof props.secondaryHandler === 'function')
     const hasDefindAfterSecondaryHandler = computed(() => typeof props.afterSecondaryHandler === 'function')
 
-    const closeModalConfirm = () => {
-      store.dispatch('helper/closeModalConfirm')
-    }
+    const closeModalConfirm = () => { store.dispatch('helper/closeModalConfirm') }
 
     const innerPrimaryHandler = async () => {
       if (hasDefinePrimaryHandler.value) {
         await props.primaryHandler()
       }
 
-      closeModalConfirm()
+      props.primaryCloseAfterHandle && closeModalConfirm()
 
       hasDefineAfterPrimaryHandler.value && props.afterPrimaryHandler()
     }
@@ -79,7 +85,7 @@ export default {
         await props.secondaryHandler()
       }
 
-      closeModalConfirm()
+      props.secondaryCloseAfterHandle && closeModalConfirm()
 
       hasDefindAfterSecondaryHandler.value && props.afterSecondaryHandler()
     }

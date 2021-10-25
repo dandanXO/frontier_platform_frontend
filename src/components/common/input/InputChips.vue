@@ -1,31 +1,30 @@
 <template lang="pug">
 input-container(:label="label" :required="required" v-click-away="onBlur")
-  template(#input)
-    label(class="relative px-4 py-1.5 border rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11" :class="[classBorder]")
-      div(v-for="(chip, index) in chips" class="flex")
-        div(class="px-3 h-8 flex items-center gap-x-1 bg-primary-thin rounded")
-          p(class="text-body2 text-primary") {{chip}}
-          svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removeChip(index)")
-      input(
-        ref="inputElement"
-        type="text"
-        v-model="inputValue"
-        @focus="onFocus"
-        @keydown="onKeydown($event)"
-        :placeholder="chips.length === 0 ? placeholder :''"
-        class="h-8 flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 placeholder-black-400 placeholder-text-body2 placeholder-overflow-visible disabled:text-black-600"
-      )
-      list(v-if="options.length !== 0 && isFocus" class="absolute z-10 top-full left-0 w-full transform translate-y-2 bg-black-0")
-        overlay-scrollbar-container(v-if="filteredOptions.length > 0" class="max-h-72")
-          list-item(
-            v-for="option in filteredOptions"
-            class="cursor-pointer"
-            :class="[{ 'bg-black-200': option.checked }]"
-            @click="option.checked ? removeChipFromOptions(option) : addChipFromOptions(option)"
-          )
-            p(class="text-black-600") {{option[keyOptionDisplay]}}
-        list-item(v-else @click.stop="addChip")
-          p(class="text-primary") {{inputValue}}
+  label(class="relative px-4 py-1.5 border rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11" :class="[classBorder]")
+    div(v-for="(chip, index) in chips" class="flex")
+      div(class="px-3 h-8 flex items-center gap-x-1 bg-primary-thin rounded")
+        p(class="text-body2 text-primary") {{returnObject ? chip[keyOptionDisplay]: chip}}
+        svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removeChip(index)")
+    input(
+      ref="inputElement"
+      type="text"
+      v-model="inputValue"
+      @focus="onFocus"
+      @keydown="onKeydown($event)"
+      :placeholder="chips.length === 0 ? placeholder :''"
+      class="h-8 flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 placeholder-black-400 placeholder-text-body2 placeholder-overflow-visible disabled:text-black-600"
+    )
+    list(v-if="options.length !== 0 && isFocus" class="absolute z-10 top-full left-0 w-full transform translate-y-2 bg-black-0")
+      overlay-scrollbar-container(v-if="filteredOptions.length > 0" class="max-h-72")
+        list-item(
+          v-for="option in filteredOptions"
+          class="cursor-pointer"
+          :class="[{ 'bg-black-200': option.checked }]"
+          @click="option.checked ? removeChipFromOptions(option) : addChipFromOptions(option)"
+        )
+          p(class="text-black-600") {{returnObject ? option[keyOptionDisplay]: option.name}}
+      list-item(v-else @click.stop="addChip")
+        p(class="text-primary") {{inputValue}}
 </template>
 
 <script>
@@ -55,17 +54,17 @@ export default {
       type: Array,
       default: () => []
     },
+    placeholder: {
+      type: String,
+      default: ''
+    },
     keyOptionDisplay: {
       type: String,
       default: 'name'
     },
     keyOptionValue: {
       type: String,
-      default: 'value'
-    },
-    placeholder: {
-      type: String,
-      default: ''
+      default: 'id'
     }
   },
   emits: ['update:chips', 'blur', 'addNewOption'],
@@ -73,6 +72,7 @@ export default {
     const inputElement = ref(null)
     const inputValue = ref('')
     const { isFocus, onFocus, onBlur, classBorder } = useInput({ context })
+    const returnObject = computed(() => typeof props.options[0] === 'object')
 
     const filteredOptions = computed(() => {
       inputValue.value.trim()
@@ -81,26 +81,43 @@ export default {
           if (inputValue.value.trim().length === 0) {
             return true
           }
-          return option[props.keyOptionDisplay].includes(inputValue.value)
+          const comparedValue = returnObject.value ? option[props.keyOptionValue] : option
+          return comparedValue.includes(inputValue.value)
         })
         .map(option => {
-          const checked = props.chips.some(chip => chip === option[props.keyOptionDisplay])
-          return {
-            ...option,
-            checked
-          }
+          const checked = props.chips.some(chip => {
+            return returnObject.value
+              ? chip[props.keyOptionValue] === option[props.keyOptionValue]
+              : chip === option
+          })
+          return returnObject.value
+            ? {
+              ...option,
+              checked
+            }
+            : {
+              name: option,
+              checked
+            }
         })
     })
 
     const addChip = async () => {
-      if (inputValue.value.trim().length === 0) {
+      inputValue.value = inputValue.value.trim()
+
+      if (inputValue.value.length === 0) {
         return
       }
       /**
        * if the chip to be added doesn't exist in option list,
        * emit "addNewOption" to outside to add an new option in option list
        */
-      if (!props.options.some(option => option[props.keyOptionDisplay] === inputValue.value)) {
+      const isOptionExist = props.options.some(option => {
+        return returnObject.value
+          ? option[props.keyOptionValue] === inputValue.value
+          : option === inputValue.value
+      })
+      if (!isOptionExist) {
         context.emit('addNewOption', inputValue.value)
         await nextTick()
       }
@@ -110,8 +127,16 @@ export default {
        *  emit "update:chips" to outside to append an new chip,
        *  in the other way, do nothing just clear input text
        */
-      if (!props.chips.some(chip => chip === inputValue.value)) {
-        context.emit('update:chips', [...props.chips, inputValue.value])
+      const isChipExist = props.chips.some(chip => {
+        return returnObject.value
+          ? chip[props.keyOptionValue] === inputValue.value
+          : chip === inputValue.value
+      })
+      if (!isChipExist) {
+        const newChip = returnObject.value
+          ? props.options.find(option => option[props.keyOptionValue] === inputValue.value)
+          : inputValue.value
+        context.emit('update:chips', [...props.chips, newChip])
       }
 
       inputValue.value = ''
@@ -136,12 +161,16 @@ export default {
     }
 
     const addChipFromOptions = (option) => {
-      inputValue.value = option[props.keyOptionDisplay]
+      inputValue.value = returnObject.value ? option[props.keyOptionValue] : option.name
       addChip()
     }
 
     const removeChipFromOptions = (option) => {
-      const index = props.chips.findIndex(chip => chip === option[props.keyOptionDisplay])
+      const index = props.chips.findIndex(chip => {
+        return returnObject.value
+          ? chip[props.keyOptionValue] === option[props.keyOptionValue]
+          : chip === option.name
+      })
       removeChip(index)
     }
 
@@ -157,7 +186,8 @@ export default {
       filteredOptions,
       addChipFromOptions,
       removeChipFromOptions,
-      addChip
+      addChip,
+      returnObject
     }
   }
 }

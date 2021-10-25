@@ -3,14 +3,16 @@ import user from '@/store/modules/user'
 import code from '@/store/modules/code'
 import organization from '@/store/modules/organization'
 import group from '@/store/modules/group'
+import material from '@/store/modules/material'
 import helper from '@/store/modules/helper'
+import assets from '@/store/modules/assets'
 
 export default createStore({
   actions: {
     handleResponseData ({ dispatch }, { data }) {
       const { success, message, result } = JSON.parse(JSON.stringify(data))
 
-      const namespacedParentModuleList = ['user', 'organization', 'code', 'group']
+      const namespacedParentModuleList = ['user', 'organization', 'code', 'group', 'material', 'assets']
 
       if (result !== null) {
         namespacedParentModuleList.forEach(module => {
@@ -35,6 +37,8 @@ export default createStore({
     user,
     organization,
     group,
-    helper
+    helper,
+    material,
+    assets
   }
 })

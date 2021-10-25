@@ -2,7 +2,7 @@ import { ref } from '@vue/reactivity'
 import { computed, watch, onUpdated } from '@vue/runtime-core'
 import inputRules from '@/utils/input-rules'
 
-export default function useInput ({ context: { emit, slots }, inputType, textValue, disabled = ref(false), rules = ref([]), required = ref(false), customErrorMsg = ref('') }) {
+export default function useInput ({ context: { emit, slots }, inputType = ref('text'), textValue, disabled = ref(false), rules = ref([]), required = ref(false), customErrorMsg = ref('') }) {
   const isFocus = ref(false)
 
   const isEmpty = computed(() => {
@@ -87,7 +87,7 @@ export default function useInput ({ context: { emit, slots }, inputType, textVal
    * it have to do inside an onUpdated lifecycle hook.
    */
   onUpdated(() => {
-    isError.value = errorMsg.value !== '' || slots.errorMsg !== undefined
+    isError.value = !!errorMsg.value || slots.errorMsg !== undefined
   })
 
   return {

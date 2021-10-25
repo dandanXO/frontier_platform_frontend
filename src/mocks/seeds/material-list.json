@@ -1,0 +1,653 @@
+[
+  {
+    "materialId": 1,
+    "frontierNo": "F1509m04212",
+    "materialNo": "EY04212",
+    "materialSeq": "1234",
+    "relationMaterialId": 99,
+    "content": "69% Wool 30% Nylon",
+    "contentList": [
+      {
+        "contentId": 1,
+        "name": "Nylon",
+        "percentage": 30
+      }
+    ],
+    "description": "Knit,Yarn,Dyed-Lurex, dededxewxew",
+    "descriptionList": [
+      {
+        "materialDescriptionId": 1,
+        "descriptionId": 11
+      }
+    ],
+    "finish": "Regular Finish",
+    "finishList": [
+      {
+        "materialFinishId": 1,
+        "finishId": 30
+      }
+    ],
+    "width": 60,
+    "weightUnit": 1,
+    "weightGsm": 127,
+    "weightOz": 3.75,
+    "weightGy": 210,
+    "warpDensity": "144",
+    "weftDensity": "80",
+    "warpYarnCount": "50",
+    "weftYarnCount": "50",
+    "pattern": "Camo",
+    "color": "Green",
+    "sampleCardsRemainingQty": 4,
+    "sampleCardsLocation": "HK",
+    "hangersRemainingQty": 10,
+    "hangersLocation": "Taipei",
+    "publicTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "privateTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "tagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "aiTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "coverMode": "1 (正面為封面)",
+    "coverImg": "https://picsum.photos/id/1/200/200",
+    "faceSideImg": {
+      "crop": "https://face-side-crop",
+      "ruler": "https://face-side-ruler",
+      "original": "https://face-side-original",
+      "dpi": 300,
+      "u3mCrop": "https://face-side-u3m-crop",
+      "u3mOriginal": "https://face-side-u3m-original"
+    },
+    "backSideImg": {
+      "crop": "https://back-side-crop",
+      "ruler": "https://back-side-ruler",
+      "original": "https://back-side-original",
+      "dpi": 300,
+      "u3mCrop": "https://back-side-u3m-crop",
+      "u3mOriginal": "https://back-side-u3m-original"
+    },
+    "isDoubleSideMaterial": true,
+    "sideType": 1,
+    "remark": "string",
+    "isComplete": false,
+    "cloneFromMaterialId": 0,
+    "totalInventoryQty": 0,
+    "inventoryUnit": "Y",
+    "inventoryList": [
+      {
+        "section": "RS A9",
+        "shelf": "G.STOCK",
+        "quantity": 20,
+        "unit": "M"
+      }
+    ],
+    "isPublicInventory": false,
+    "publicPrice": {
+      "countryCode": "TW",
+      "currency": "USD",
+      "price": 120,
+      "unit": "M",
+      "minimumOrderQuantity": 100,
+      "minimumOrderQuantityUnit": "M",
+      "minimumContainerQuantity": 100,
+      "minimumContainerQuantityUnit": "M",
+      "productionLeadTime": "1",
+      "sampleLeadTime": "1"
+    },
+    "privatePrice": {
+      "countryCode": "TW",
+      "currency": "USD",
+      "price": 120,
+      "unit": "M",
+      "minimumOrderQuantity": 100,
+      "minimumOrderQuantityUnit": "M",
+      "minimumContainerQuantity": 100,
+      "minimumContainerQuantityUnit": "M",
+      "productionLeadTime": "1",
+      "sampleLeadTime": "1"
+    },
+    "attachmentList": [
+      {
+        "materialAttachmentId": 0,
+        "displayFileName": "string",
+        "url": "http://20200611170258423_HPCD-012-1.pdf",
+        "isCover": false
+      }
+    ],
+    "pantoneList": [
+      {
+        "materialPantoneId": 0,
+        "pantoneId": 0,
+        "name": "11-0103 TCX",
+        "majorColorName": "Tiffany Green",
+        "r": 0,
+        "g": 0,
+        "b": 0
+      }
+    ],
+    "u3m": {
+      "status": "(-1 不符合資格)",
+      "zipUrl": "string",
+      "baseImgUrl": "string",
+      "normalImgUrl": "string"
+    },
+    "createDate": 1608905630674,
+    "updateDate": 1608905630674
+  },
+  {
+    "materialId": 2,
+    "frontierNo": "F1509m04212",
+    "materialNo": "EY04212",
+    "materialSeq": "1234",
+    "relationMaterialId": 99,
+    "content": "69% Wool 30% Nylon",
+    "contentList": [
+      {
+        "contentId": 1,
+        "name": "Nylon",
+        "percentage": 30
+      }
+    ],
+    "description": "Knit,Yarn,Dyed-Lurex, dededxewxew",
+    "descriptionList": [
+      {
+        "materialDescriptionId": 1,
+        "descriptionId": 11
+      }
+    ],
+    "finish": "Regular Finish",
+    "finishList": [
+      {
+        "materialFinishId": 1,
+        "finishId": 30
+      }
+    ],
+    "width": 60,
+    "weightUnit": 1,
+    "weightGsm": 127,
+    "weightOz": 3.75,
+    "weightGy": 210,
+    "warpDensity": "144",
+    "weftDensity": "80",
+    "warpYarnCount": "50",
+    "weftYarnCount": "50",
+    "pattern": "Camo",
+    "color": "Green",
+    "sampleCardsRemainingQty": 4,
+    "sampleCardsLocation": "HK",
+    "hangersRemainingQty": 10,
+    "hangersLocation": "Taipei",
+    "publicTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "privateTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "tagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "aiTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "coverMode": "1 (正面為封面)",
+    "coverImg": "https://picsum.photos/id/10/200/200",
+    "faceSideImg": {
+      "crop": "https://face-side-crop",
+      "ruler": "https://face-side-ruler",
+      "original": "https://face-side-original",
+      "dpi": 300,
+      "u3mCrop": "https://face-side-u3m-crop",
+      "u3mOriginal": "https://face-side-u3m-original"
+    },
+    "backSideImg": null,
+    "isDoubleSideMaterial": true,
+    "sideType": 1,
+    "remark": "string",
+    "isComplete": false,
+    "cloneFromMaterialId": 0,
+    "totalInventoryQty": 0,
+    "inventoryUnit": "Y",
+    "inventoryList": [
+      {
+        "section": "RS A9",
+        "shelf": "G.STOCK",
+        "quantity": 20,
+        "unit": "M"
+      }
+    ],
+    "isPublicInventory": false,
+    "publicPrice": {
+      "countryCode": "TW",
+      "currency": "USD",
+      "price": 120,
+      "unit": "M",
+      "minimumOrderQuantity": 100,
+      "minimumOrderQuantityUnit": "M",
+      "minimumContainerQuantity": 100,
+      "minimumContainerQuantityUnit": "M",
+      "productionLeadTime": "1",
+      "sampleLeadTime": "1"
+    },
+    "privatePrice": {
+      "countryCode": "TW",
+      "currency": "USD",
+      "price": 120,
+      "unit": "M",
+      "minimumOrderQuantity": 100,
+      "minimumOrderQuantityUnit": "M",
+      "minimumContainerQuantity": 100,
+      "minimumContainerQuantityUnit": "M",
+      "productionLeadTime": "1",
+      "sampleLeadTime": "1"
+    },
+    "attachmentList": [
+      {
+        "materialAttachmentId": 0,
+        "displayFileName": "string",
+        "url": "http://20200611170258423_HPCD-012-1.pdf",
+        "isCover": false
+      }
+    ],
+    "pantoneList": [
+      {
+        "materialPantoneId": 0,
+        "pantoneId": 0,
+        "name": "11-0103 TCX",
+        "majorColorName": "Tiffany Green",
+        "r": 0,
+        "g": 0,
+        "b": 0
+      }
+    ],
+    "u3m": {
+      "status": "(-1 不符合資格)",
+      "zipUrl": "string",
+      "baseImgUrl": "string",
+      "normalImgUrl": "string"
+    },
+    "createDate": 1608905630674,
+    "updateDate": 1608905630674
+  },
+  {
+    "materialId": 3,
+    "frontierNo": "F1509m04212",
+    "materialNo": "EY04212",
+    "materialSeq": "1234",
+    "relationMaterialId": 99,
+    "content": "69% Wool 30% Nylon",
+    "contentList": [
+      {
+        "contentId": 1,
+        "name": "Nylon",
+        "percentage": 30
+      }
+    ],
+    "description": "Knit,Yarn,Dyed-Lurex, dededxewxew",
+    "descriptionList": [
+      {
+        "materialDescriptionId": 1,
+        "descriptionId": 11
+      }
+    ],
+    "finish": "Regular Finish",
+    "finishList": [
+      {
+        "materialFinishId": 1,
+        "finishId": 30
+      }
+    ],
+    "width": 60,
+    "weightUnit": 1,
+    "weightGsm": 127,
+    "weightOz": 3.75,
+    "weightGy": 210,
+    "warpDensity": "144",
+    "weftDensity": "80",
+    "warpYarnCount": "50",
+    "weftYarnCount": "50",
+    "pattern": "Camo",
+    "color": "Green",
+    "sampleCardsRemainingQty": 4,
+    "sampleCardsLocation": "HK",
+    "hangersRemainingQty": 10,
+    "hangersLocation": "Taipei",
+    "publicTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "privateTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "tagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "aiTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "coverMode": "1 (正面為封面)",
+    "coverImg": "https://picsum.photos/id/100/200/200",
+    "faceSideImg": {},
+    "backSideImg": {
+      "crop": "https://back-side-crop",
+      "ruler": "https://back-side-ruler",
+      "original": "https://back-side-original",
+      "dpi": 300,
+      "u3mCrop": "https://back-side-u3m-crop",
+      "u3mOriginal": "https://back-side-u3m-original"
+    },
+    "isDoubleSideMaterial": true,
+    "sideType": 1,
+    "remark": "string",
+    "isComplete": false,
+    "cloneFromMaterialId": 0,
+    "totalInventoryQty": 0,
+    "inventoryUnit": "Y",
+    "inventoryList": [
+      {
+        "section": "RS A9",
+        "shelf": "G.STOCK",
+        "quantity": 20,
+        "unit": "M"
+      }
+    ],
+    "isPublicInventory": false,
+    "publicPrice": {
+      "countryCode": "TW",
+      "currency": "USD",
+      "price": 120,
+      "unit": "M",
+      "minimumOrderQuantity": 100,
+      "minimumOrderQuantityUnit": "M",
+      "minimumContainerQuantity": 100,
+      "minimumContainerQuantityUnit": "M",
+      "productionLeadTime": "1",
+      "sampleLeadTime": "1"
+    },
+    "privatePrice": {
+      "countryCode": "TW",
+      "currency": "USD",
+      "price": 120,
+      "unit": "M",
+      "minimumOrderQuantity": 100,
+      "minimumOrderQuantityUnit": "M",
+      "minimumContainerQuantity": 100,
+      "minimumContainerQuantityUnit": "M",
+      "productionLeadTime": "1",
+      "sampleLeadTime": "1"
+    },
+    "attachmentList": [
+      {
+        "materialAttachmentId": 0,
+        "displayFileName": "string",
+        "url": "http://20200611170258423_HPCD-012-1.pdf",
+        "isCover": false
+      }
+    ],
+    "pantoneList": [
+      {
+        "materialPantoneId": 0,
+        "pantoneId": 0,
+        "name": "11-0103 TCX",
+        "majorColorName": "Tiffany Green",
+        "r": 0,
+        "g": 0,
+        "b": 0
+      }
+    ],
+    "u3m": {
+      "status": "(-1 不符合資格)",
+      "zipUrl": "string",
+      "baseImgUrl": "string",
+      "normalImgUrl": "string"
+    },
+    "createDate": 1608905630674,
+    "updateDate": 1608905630674
+  },
+  {
+    "materialId": 4,
+    "frontierNo": "F1509m04212",
+    "materialNo": "EY04212",
+    "materialSeq": "1234",
+    "relationMaterialId": 99,
+    "content": "69% Wool 30% Nylon",
+    "contentList": [
+      {
+        "contentId": 1,
+        "name": "Nylon",
+        "percentage": 30
+      }
+    ],
+    "description": "Knit,Yarn,Dyed-Lurex, dededxewxew",
+    "descriptionList": [
+      {
+        "materialDescriptionId": 1,
+        "descriptionId": 11
+      }
+    ],
+    "finish": "Regular Finish",
+    "finishList": [
+      {
+        "materialFinishId": 1,
+        "finishId": 30
+      }
+    ],
+    "width": 60,
+    "weightUnit": 1,
+    "weightGsm": 127,
+    "weightOz": 3.75,
+    "weightGy": 210,
+    "warpDensity": "144",
+    "weftDensity": "80",
+    "warpYarnCount": "50",
+    "weftYarnCount": "50",
+    "pattern": "Camo",
+    "color": "Green",
+    "sampleCardsRemainingQty": 4,
+    "sampleCardsLocation": "HK",
+    "hangersRemainingQty": 10,
+    "hangersLocation": "Taipei",
+    "publicTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "privateTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "tagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "aiTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "coverMode": "1 (正面為封面)",
+    "coverImg": "https://picsum.photos/id/1000/200/200",
+    "faceSideImg": {
+      "crop": "https://face-side-crop",
+      "ruler": "https://face-side-ruler",
+      "original": "https://face-side-original",
+      "dpi": 300,
+      "u3mCrop": "https://face-side-u3m-crop",
+      "u3mOriginal": "https://face-side-u3m-original"
+    },
+    "backSideImg": {
+      "crop": "https://back-side-crop",
+      "ruler": "https://back-side-ruler",
+      "original": "https://back-side-original",
+      "dpi": 300,
+      "u3mCrop": "https://back-side-u3m-crop",
+      "u3mOriginal": "https://back-side-u3m-original"
+    },
+    "isDoubleSideMaterial": false,
+    "sideType": 2,
+    "remark": "string",
+    "isComplete": false,
+    "cloneFromMaterialId": 0,
+    "totalInventoryQty": 0,
+    "inventoryUnit": "Y",
+    "inventoryList": [
+      {
+        "section": "RS A9",
+        "shelf": "G.STOCK",
+        "quantity": 20,
+        "unit": "M"
+      }
+    ],
+    "isPublicInventory": false,
+    "publicPrice": {
+      "countryCode": "TW",
+      "currency": "USD",
+      "price": 120,
+      "unit": "M",
+      "minimumOrderQuantity": 100,
+      "minimumOrderQuantityUnit": "M",
+      "minimumContainerQuantity": 100,
+      "minimumContainerQuantityUnit": "M",
+      "productionLeadTime": "1",
+      "sampleLeadTime": "1"
+    },
+    "privatePrice": {
+      "countryCode": "TW",
+      "currency": "USD",
+      "price": 120,
+      "unit": "M",
+      "minimumOrderQuantity": 100,
+      "minimumOrderQuantityUnit": "M",
+      "minimumContainerQuantity": 100,
+      "minimumContainerQuantityUnit": "M",
+      "productionLeadTime": "1",
+      "sampleLeadTime": "1"
+    },
+    "attachmentList": [
+      {
+        "materialAttachmentId": 0,
+        "displayFileName": "string",
+        "url": "http://20200611170258423_HPCD-012-1.pdf",
+        "isCover": false
+      }
+    ],
+    "pantoneList": [
+      {
+        "materialPantoneId": 0,
+        "pantoneId": 0,
+        "name": "11-0103 TCX",
+        "majorColorName": "Tiffany Green",
+        "r": 0,
+        "g": 0,
+        "b": 0
+      }
+    ],
+    "u3m": {
+      "status": "(-1 不符合資格)",
+      "zipUrl": "string",
+      "baseImgUrl": "string",
+      "normalImgUrl": "string"
+    },
+    "createDate": 1608905630674,
+    "updateDate": 1608905630674
+  },
+  {
+    "materialId": 5,
+    "frontierNo": "F1509m04212",
+    "materialNo": "EY04212",
+    "materialSeq": "1234",
+    "relationMaterialId": 99,
+    "content": "69% Wool 30% Nylon",
+    "contentList": [
+      {
+        "contentId": 1,
+        "name": "Nylon",
+        "percentage": 30
+      }
+    ],
+    "description": "Knit,Yarn,Dyed-Lurex, dededxewxew",
+    "descriptionList": [
+      {
+        "materialDescriptionId": 1,
+        "descriptionId": 11
+      }
+    ],
+    "finish": "Regular Finish",
+    "finishList": [
+      {
+        "materialFinishId": 1,
+        "finishId": 30
+      }
+    ],
+    "width": 60,
+    "weightUnit": 1,
+    "weightGsm": 127,
+    "weightOz": 3.75,
+    "weightGy": 210,
+    "warpDensity": "144",
+    "weftDensity": "80",
+    "warpYarnCount": "50",
+    "weftYarnCount": "50",
+    "pattern": "Camo",
+    "color": "Green",
+    "sampleCardsRemainingQty": 4,
+    "sampleCardsLocation": "HK",
+    "hangersRemainingQty": 10,
+    "hangersLocation": "Taipei",
+    "publicTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "privateTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "tagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "aiTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
+    "coverMode": "1 (正面為封面)",
+    "coverImg": "https://picsum.photos/id/1001/200/200",
+    "faceSideImg": {
+      "crop": "https://face-side-crop",
+      "ruler": "https://face-side-ruler",
+      "original": "https://face-side-original",
+      "dpi": 300,
+      "u3mCrop": "https://face-side-u3m-crop",
+      "u3mOriginal": "https://face-side-u3m-original"
+    },
+    "backSideImg": {
+      "crop": "https://back-side-crop",
+      "ruler": "https://back-side-ruler",
+      "original": "https://back-side-original",
+      "dpi": 300,
+      "u3mCrop": "https://back-side-u3m-crop",
+      "u3mOriginal": "https://back-side-u3m-original"
+    },
+    "isDoubleSideMaterial": false,
+    "sideType": 1,
+    "remark": "string",
+    "isComplete": false,
+    "cloneFromMaterialId": 0,
+    "totalInventoryQty": 0,
+    "inventoryUnit": "Y",
+    "inventoryList": [
+      {
+        "section": "RS A9",
+        "shelf": "G.STOCK",
+        "quantity": 20,
+        "unit": "M"
+      }
+    ],
+    "isPublicInventory": false,
+    "publicPrice": {
+      "countryCode": "TW",
+      "currency": "USD",
+      "price": 120,
+      "unit": "M",
+      "minimumOrderQuantity": 100,
+      "minimumOrderQuantityUnit": "M",
+      "minimumContainerQuantity": 100,
+      "minimumContainerQuantityUnit": "M",
+      "productionLeadTime": "1",
+      "sampleLeadTime": "1"
+    },
+    "privatePrice": {
+      "countryCode": "TW",
+      "currency": "USD",
+      "price": 120,
+      "unit": "M",
+      "minimumOrderQuantity": 100,
+      "minimumOrderQuantityUnit": "M",
+      "minimumContainerQuantity": 100,
+      "minimumContainerQuantityUnit": "M",
+      "productionLeadTime": "1",
+      "sampleLeadTime": "1"
+    },
+    "attachmentList": [
+      {
+        "materialAttachmentId": 0,
+        "displayFileName": "string",
+        "url": "http://20200611170258423_HPCD-012-1.pdf",
+        "isCover": false
+      }
+    ],
+    "pantoneList": [
+      {
+        "materialPantoneId": 0,
+        "pantoneId": 0,
+        "name": "11-0103 TCX",
+        "majorColorName": "Tiffany Green",
+        "r": 0,
+        "g": 0,
+        "b": 0
+      }
+    ],
+    "u3m": {
+      "status": "(-1 不符合資格)",
+      "zipUrl": "string",
+      "baseImgUrl": "string",
+      "normalImgUrl": "string"
+    },
+    "createDate": 1608905630674,
+    "updateDate": 1608905630674
+  }
+]

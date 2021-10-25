@@ -97,7 +97,6 @@ const routes = [
       const orgUser = store.getters['user/orgUser/orgUser']
 
       if (orgUser.orgRoleId === ROLE_ID.OWNER && org.uploadMaterialEmail === '') {
-        console.log('reset')
         store.dispatch('helper/openModal', {
           component: 'modal-create-mail-org',
           properties: {
@@ -161,37 +160,45 @@ const routes = [
       {
         path: 'workspace',
         name: 'OrgWorkspace',
-        component: () => import('@/views/innerApp/organization/OrgWorkspace.vue')
+        component: () => import('@/views/innerApp/Workspace.vue')
       },
       {
         path: 'assets',
         name: 'OrgAssets',
-        component: () => import('@/views/innerApp/organization/OrgAssets.vue')
+        component: () => import('@/views/innerApp/Assets.vue')
       },
       {
         path: 'assets/upload',
         name: 'OrgUploadAssets',
-        component: () => import('@/views/innerApp/UploadAssets.vue')
+        component: () => import('@/views/innerApp/UploadAssets.vue'),
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('code/getCountryList')
+          next()
+        }
       },
       {
         path: 'share-to-me',
         name: 'OrgShareToMe',
-        component: () => import('@/views/innerApp/organization/OrgShareToMe.vue')
+        component: () => import('@/views/innerApp/ShareToMe.vue')
       },
       {
         path: 'sticker',
         name: 'OrgSticker',
-        component: () => import('@/views/innerApp/organization/OrgSticker.vue')
+        component: () => import('@/views/innerApp/Sticker.vue')
       },
       {
         path: ':groupId(\\d+)',
         redirect: to => `/${to.params.orgNo}/${to.params.groupId}/workspace`,
         component: () => import('@/views/PassThrough'),
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('group/getGroup', { groupId: to.params.groupId })
+          next()
+        },
         children: [
           {
             path: 'assets',
             name: 'GroupAssets',
-            component: () => import('@/views/innerApp/group/GroupAssets.vue')
+            component: () => import('@/views/innerApp/Assets.vue')
           },
           {
             path: 'assets/upload',
@@ -201,17 +208,17 @@ const routes = [
           {
             path: 'workspace',
             name: 'GroupWorkspace',
-            component: () => import('@/views/innerApp/group/GroupWorkspace.vue')
+            component: () => import('@/views/innerApp/Workspace.vue')
           },
           {
             path: 'share-to-me',
             name: 'GroupShareToMe',
-            component: () => import('@/views/innerApp/group/GroupShareToMe.vue')
+            component: () => import('@/views/innerApp/ShareToMe.vue')
           },
           {
             path: 'sticker',
             name: 'GroupSticker',
-            component: () => import('@/views/innerApp/group/GroupSticker.vue')
+            component: () => import('@/views/innerApp/Sticker.vue')
           }
         ]
       }

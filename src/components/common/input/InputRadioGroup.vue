@@ -1,13 +1,12 @@
 <template lang="pug">
 input-container(:required="required")
-  template(#input)
-    div(class="flex justify-between")
-      input-radio(v-for="option in optionList"
-        v-model:inputValue="innerInputValue"
-        :name="option[keyOptionName]"
-        :value="option[keyOptionValue]"
-        :size="radioSize"
-      )
+  div(class="flex justify-between")
+    input-radio(v-for="option in optionList"
+      v-model:inputValue="innerInputValue"
+      :name="option[keyOptionName]"
+      :value="option[keyOptionValue]"
+      :size="radioSize"
+    )
 </template>
 
 <script>
