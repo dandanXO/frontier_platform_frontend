@@ -17,7 +17,10 @@ div(class="flex flex-col")
               span(class="text-caption") {{`Weight : ${datas[index].weight}`}}
               span(class="text-caption") {{`Cuttable Width : ${datas[index].cuttableWidth}`}}
               span(class="text-caption") {{`Finish : ${datas[index].finish}`}}
-            qr-code(:value="'1234567'" :size="60")
+            div(class="flex flex-col items-center")
+              span(class="text-black-600 whitespace-nowrap text-caption mb-2.5") FACE SIDE
+              qr-code(:value="'1234567'" :size="60")
+              span(class="whitespace-nowrap text-caption  mt-2.5") B210712195
           div(class="relative flex flex-col items-center justify-center w-full h-87")
             span(class="text-black-600 whitespace-nowrap text-caption mb-2.5") FACE SIDE
             span(class="text-black-600 whitespace-nowrap text-caption") Printed from Frontier's Online
@@ -41,7 +44,10 @@ div(class="flex flex-col")
               span(class="text-caption") {{`Weight : ${datas[index].weight}`}}
               span(class="text-caption") {{`Cuttable Width : ${datas[index].cuttableWidth}`}}
               span(class="text-caption") {{`Finish : ${datas[index].finish}`}}
-            qr-code(:value="'1234567'" :size="60")
+            div(class="flex flex-col items-center")
+              span(class="text-black-0 whitespace-nowrap text-caption mb-2.5") BACK SIDE
+              qr-code(:value="'1234567'" :size="60")
+              span(class="whitespace-nowrap text-caption  mt-2.5") B210712195
           div(class="relative flex flex-col items-center justify-center w-full h-87")
             span(class="text-black-600 whitespace-nowrap text-caption mb-2.5") BACK SIDE
             span(class="text-black-600 whitespace-nowrap text-caption") Printed from Frontier's Online
@@ -60,6 +66,7 @@ import domtoimage from 'dom-to-image'
 import { ref } from '@vue/reactivity'
 import { jsPDF } from 'jspdf'
 import { nextTick } from '@vue/runtime-core'
+import { useStore } from 'vuex'
 
 export default {
   name: 'QrCodeA4',
@@ -74,6 +81,7 @@ export default {
     datas: Array
   },
   setup () {
+    const store = useStore()
     const isShown = ref(false)
     const TYPE = {
       SINGLE_FRONT: 0,
@@ -91,6 +99,7 @@ export default {
     const PDF_HEIGHT = 29.7
     const scale = 3
     const generatePdf = async () => {
+      openModalLoading()
       isShown.value = true
       nextTick(async () => {
         await domtoimage.toJpeg(pdfTarget.value, {
@@ -114,9 +123,22 @@ export default {
             }
             doc.output('dataurlnewwindow')
             isShown.value = false
+            closeModal()
           })
       })
     }
+
+    const openModalLoading = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-loading',
+        closable: false
+      })
+    }
+
+    const closeModal = () => {
+      store.dispatch('helper/closeModal')
+    }
+
     return {
       generatePdf,
       pdfTarget,
