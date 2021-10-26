@@ -1,5 +1,4 @@
 import { MODAL_TYPE } from '@/utils/constants'
-import uploadImage from '@/store/modules/helper/uploadImage'
 
 const state = () => ({
   modalPipeline: [],
@@ -80,8 +79,5 @@ export default {
   state,
   getters,
   mutations,
-  actions,
-  modules: {
-    uploadImage
-  }
+  actions
 }
