@@ -27,6 +27,7 @@ export const COLOR = {
 export const MODAL_TYPE = {
   MODAL: 0,
   FULLSCREEN: 1,
+  LOADING: 2,
   CONFIRM: 3
 }
 
