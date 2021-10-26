@@ -3,15 +3,14 @@ h1 I'm {{$route.name}} Page
 div(class="flex flex-col p-10")
   div(class="flex items-center")
     qr-code-general(:options="options" :datas="generalDatas")
-      template(#activator="{ generatePdf}")
+      template(#activator="{ generatePdf }")
         btn(size="md" class="h-10 mr-10" @click="generatePdf") Print General QRCode
-    qr-code-a4( :options="options" :datas="a4Datas")
-      template(#activator="{ generatePdf}")
+    qr-code-a4(:options="options" :datas="a4Datas")
+      template(#activator="{ generatePdf }")
         btn(size="md" class="h-10 mr-10" @click="generatePdf") Print A4 QRCode
     qr-code-backside-general(:options="options")
-      template(#activator="{ generatePdf}")
+      template(#activator="{ generatePdf }")
         btn(size="md" class="h-10 mr-10" @click="generatePdf") Print Backside General QRCode
-div(v-if="showFrontside" class="absolute right-0 transform translate-x-full border-2 border-black-200")
 router-link-extending(tag="h1" to="/") Back To Lobby Page
 </template>
 
@@ -21,6 +20,7 @@ import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral'
 import QrCodeA4 from '@/components/qrcode/QrCodeA4'
 import { reactive, ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
+
 export default {
   name: 'Management',
   components: {
@@ -29,12 +29,6 @@ export default {
     QrCodeA4
   },
   setup () {
-    const qrcodeBacksideGeneral = ref(null)
-    const qrcodeGeneral = ref(null)
-    const qrcodeA4 = ref(null)
-    const showBacksideGeneral = ref(false)
-    const showFrontside = ref(false)
-
     const tmpGeneralDatas = ref([
       'Kahki black',
       'Woven-Y/D Heather Twill xxxxxxx xxxxxxxxxx xxxxxxxxxxxxxxxxxxxx',
@@ -66,14 +60,9 @@ export default {
       return new Array(options.value.length).fill(JSON.parse(JSON.stringify(tmpA4Datas)))
     })
 
-    const options = ref([0, 2, 1])
+    const options = ref([2, 0, 1])
 
     return {
-      qrcodeBacksideGeneral,
-      qrcodeGeneral,
-      qrcodeA4,
-      showBacksideGeneral,
-      showFrontside,
       options,
       generalDatas,
       a4Datas

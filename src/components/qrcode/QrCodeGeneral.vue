@@ -29,7 +29,7 @@ div(class="flex flex-col")
 import QrCode from '@/components/common/QrCode'
 import domtoimage from 'dom-to-image'
 import { ref } from '@vue/reactivity'
-import { jsPDF } from 'jspdf'
+import { jsPDF as JsPDF } from 'jspdf'
 import { nextTick } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 
@@ -58,9 +58,6 @@ export default {
       DOUBLE: 2
     }
     const pdfTarget = ref(null)
-    const PDF_WIDTH = 8
-    const PDF_HEIGHT = 4
-    const scale = 3
     const printFront = (type) => {
       return ((type === TYPE.SINGLE_FRONT) || (type === TYPE.DOUBLE))
     }
@@ -68,45 +65,35 @@ export default {
       return ((type === TYPE.SINGLE_BACK) || (type === TYPE.DOUBLE))
     }
 
-    const generatePdf = () => {
+    const generatePdf = async () => {
       isShown.value = true
-      openModalLoading()
-      nextTick(async () => {
-        await domtoimage.toJpeg(pdfTarget.value, {
-          quality: 1.5,
-          width: pdfTarget.value.clientWidth * scale,
-          height: pdfTarget.value.clientHeight * scale,
-          style: {
-            transform: 'scale(' + scale + ')',
-            transformOrigin: 'top left'
-          }
-        })
-          .then(function (dataUrl) {
-            const pdfNum = pdfTarget.value.children.length
-            // eslint-disable-next-line new-cap
-            const doc = new jsPDF({ unit: 'cm', format: [PDF_HEIGHT, PDF_WIDTH], orientation: 'l' })
-            for (let i = 0; i < pdfNum; i++) {
-              doc.addImage(dataUrl, 'JPEG', 0, -i * PDF_HEIGHT, PDF_WIDTH, PDF_HEIGHT * pdfNum)
-              if (i !== (pdfNum - 1)) {
-                doc.addPage()
-              }
-            }
-            doc.output('dataurlnewwindow')
-            isShown.value = false
-            closeModal()
-          })
-      })
-    }
+      store.dispatch('helper/openModalLoading')
 
-    const openModalLoading = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-loading',
-        closable: false
-      })
-    }
+      await nextTick()
 
-    const closeModal = () => {
-      store.dispatch('helper/closeModal')
+      const PDF_WIDTH = 8
+      const PDF_HEIGHT = 4
+      const scale = 3
+      const dataUrl = await domtoimage.toJpeg(pdfTarget.value, {
+        quality: 1.5,
+        width: pdfTarget.value.clientWidth * scale,
+        height: pdfTarget.value.clientHeight * scale,
+        style: {
+          transform: 'scale(' + scale + ')',
+          transformOrigin: 'top left'
+        }
+      })
+      const pdfNum = pdfTarget.value.children.length
+      const doc = new JsPDF({ unit: 'cm', format: [PDF_HEIGHT, PDF_WIDTH], orientation: 'l' })
+      for (let i = 0; i < pdfNum; i++) {
+        doc.addImage(dataUrl, 'JPEG', 0, -i * PDF_HEIGHT, PDF_WIDTH, PDF_HEIGHT * pdfNum)
+        if (i !== (pdfNum - 1)) {
+          doc.addPage()
+        }
+      }
+      doc.output('dataurlnewwindow')
+      isShown.value = false
+      store.dispatch('helper/closeModalLoading')
     }
 
     return {
