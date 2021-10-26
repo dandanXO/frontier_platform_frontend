@@ -7,6 +7,8 @@ template(v-if="modalPipeline.length > 0")
       modal-fullscreen(v-bind="modal.options")
     template(v-else-if="modal.type === MODAL_TYPE.CONFIRM")
       modal-confirm(v-bind="modal.options")
+    template(v-else-if="modal.type === MODAL_TYPE.LOADING")
+      modal-loading
 </template>
 
 <script>
@@ -15,6 +17,7 @@ import { useStore } from 'vuex'
 import Modal from '@/components/modal/Modal.vue'
 import ModalFullscreen from '@/components/modal/ModalFullscreen.vue'
 import ModalConfirm from '@/components/modal/ModalConfirm.vue'
+import ModalLoading from '@/components/modal/ModalLoading'
 import { MODAL_TYPE } from '@/utils/constants'
 
 export default {
@@ -22,7 +25,8 @@ export default {
   components: {
     Modal,
     ModalFullscreen,
-    ModalConfirm
+    ModalConfirm,
+    ModalLoading
   },
   setup () {
     const store = useStore()
