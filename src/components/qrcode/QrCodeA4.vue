@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="flex flex-col")
   slot(name="activator" :generatePdf="generatePdf")
-  div(class="fixed right-0 transform translate-x-full")
+  div(v-if="isShown" class="fixed right-0 transform translate-x-full")
     div(class="flex flex-col" ref="pdfTarget")
       template(v-for="(option,index) in options")
         div(v-if="printFront(option)"  class="relative flex flex-col  justify-between items-center w-148.5 h-210.5 bg-black-0 px-10 py-10")
@@ -95,54 +95,43 @@ export default {
       return ((type === TYPE.SINGLE_BACK) || (type === TYPE.DOUBLE))
     }
     const pdfTarget = ref(null)
-    const PDF_WIDTH = 21
-    const PDF_HEIGHT = 29.7
-    const scale = 3
     const generatePdf = async () => {
-      openModalLoading()
+      store.dispatch('helper/openModalLoading')
       isShown.value = true
-      nextTick(async () => {
-        await domtoimage.toJpeg(pdfTarget.value, {
-          quality: 1.5,
-          width: pdfTarget.value.clientWidth * scale,
-          height: pdfTarget.value.clientHeight * scale,
-          style: {
-            transform: 'scale(' + scale + ')',
-            transformOrigin: 'top left'
-          }
-        })
-          .then(function (dataUrl) {
-            const pdfNum = pdfTarget.value.children.length
-            // eslint-disable-next-line new-cap
-            const doc = new jsPDF({ unit: 'cm', format: 'a4', orientation: 'p' })
-            for (let i = 0; i < pdfNum; i++) {
-              doc.addImage(dataUrl, 'JPEG', 0, -i * PDF_HEIGHT, PDF_WIDTH, PDF_HEIGHT * pdfNum)
-              if (i !== (pdfNum - 1)) {
-                doc.addPage()
-              }
-            }
-            doc.output('dataurlnewwindow')
-            isShown.value = false
-            closeModal()
-          })
-      })
-    }
 
-    const openModalLoading = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-loading',
-        closable: false
-      })
-    }
+      await nextTick()
 
-    const closeModal = () => {
-      store.dispatch('helper/closeModal')
+      const PDF_WIDTH = 21
+      const PDF_HEIGHT = 29.7
+      const scale = 3
+      const dataUrl = await domtoimage.toJpeg(pdfTarget.value, {
+        quality: 1.5,
+        width: pdfTarget.value.clientWidth * scale,
+        height: pdfTarget.value.clientHeight * scale,
+        style: {
+          transform: 'scale(' + scale + ')',
+          transformOrigin: 'top left'
+        }
+      })
+      const pdfNum = pdfTarget.value.children.length
+      // eslint-disable-next-line new-cap
+      const doc = new jsPDF({ unit: 'cm', format: 'a4', orientation: 'p' })
+      for (let i = 0; i < pdfNum; i++) {
+        doc.addImage(dataUrl, 'JPEG', 0, -i * PDF_HEIGHT, PDF_WIDTH, PDF_HEIGHT * pdfNum)
+        if (i !== (pdfNum - 1)) {
+          doc.addPage()
+        }
+      }
+      doc.output('dataurlnewwindow')
+      isShown.value = false
+      store.dispatch('helper/closeModalLoading')
     }
 
     return {
       generatePdf,
       pdfTarget,
       printFront,
+      isShown,
       printBack
     }
   }
