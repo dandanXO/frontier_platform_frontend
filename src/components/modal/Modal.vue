@@ -23,6 +23,8 @@ import ModalForgotPasswordCode from '@/components/account/ModalForgotPasswordCod
 import ModalResetPassword from '@/components/account/ModalResetPassword.vue'
 import ModalAskResetPassword from '@/components/account/ModalAskResetPassword.vue'
 import ModalChooseStorage from '@/components/management/ModalChooseStorage'
+import ModalHowToScan from '@/components/assets/material/ModalHowToScan'
+import ModalChangeCover from '@/components/assets/material/edit/ModalChangeCover'
 
 export default {
   name: 'Modal',
@@ -39,7 +41,9 @@ export default {
     ModalForgotPasswordCode,
     ModalResetPassword,
     ModalAskResetPassword,
-    ModalChooseStorage
+    ModalChooseStorage,
+    ModalHowToScan,
+    ModalChangeCover
   },
   props: {
     component: {

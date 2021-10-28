@@ -146,7 +146,6 @@ const mutations = {
 
 const actions = {
   setMaterial ({ state }, data) {
-    console.log(data)
     setVuexState(state, data)
   },
   resetMaterial ({ commit }) {
@@ -237,6 +236,41 @@ const actions = {
     location === 'org'
       ? await materialApi.org.updateMaterial({ orgId: rootGetters['organization/orgId'], materialId, material })
       : await materialApi.group.updateMaterial({ groupId: rootGetters['group/groupId'], materialId, material })
+  },
+  async addPantone ({ rootGetters, getters, dispatch }, { location, name }) {
+    const params = {
+      name,
+      materialId: getters.material.materialId
+    }
+    const { data } = location === 'org'
+      ? await materialApi.org.addPantone({ orgId: rootGetters['organization/orgId'], ...params })
+      : await materialApi.group.addPantone({ groupId: rootGetters['group/groupId'], ...params })
+
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async removePantone ({ rootGetters, getters, dispatch }, { location, materialPantoneId }) {
+    const params = {
+      materialPantoneId,
+      materialId: getters.material.materialId
+    }
+    const { data } = location === 'org'
+      ? await materialApi.org.removePantone({ orgId: rootGetters['organization/orgId'], ...params })
+      : await materialApi.group.removePantone({ groupId: rootGetters['group/groupId'], ...params })
+
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async changeCoverImg ({ rootGetters, getters, dispatch }, { location, coverMode, materialAttachmentId = null, attachmentCropImg = null }) {
+    const params = {
+      materialId: getters.material.materialId,
+      coverMode,
+      materialAttachmentId,
+      attachmentCropImg
+    }
+    const { data } = location === 'org'
+      ? await materialApi.org.changeCoverImg({ orgId: rootGetters['organization/orgId'], ...params })
+      : await materialApi.group.changeCoverImg({ groupId: rootGetters['group/groupId'], ...params })
+
+    dispatch('handleResponseData', { data }, { root: true })
   }
 }
 

@@ -5,6 +5,7 @@ div(class="fixed inset-0 z-index:modal bg-black-0")
 
 <script>
 import MaterialUpload from '@/components/assets/material/edit/MaterialUpload.vue'
+import MaterialEdit from '@/components/assets/material/edit/MaterialEdit.vue'
 import MaterialMerge from '@/components/assets/material/MaterialMerge'
 import MaterialMergePreview from '@/components/assets/material/MaterialMergePreview'
 import MaterialUploadSuccess from '@/components/assets/material/edit/MaterialUploadSuccess.vue'
@@ -13,6 +14,7 @@ export default {
   name: 'ModalFullscreen',
   components: {
     MaterialUpload,
+    MaterialEdit,
     MaterialMerge,
     MaterialMergePreview,
     MaterialUploadSuccess
