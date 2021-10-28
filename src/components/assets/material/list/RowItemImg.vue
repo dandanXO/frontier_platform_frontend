@@ -33,7 +33,7 @@ const SIDE_TYPE = {
 }
 
 export default {
-  name: 'ListItemImg',
+  name: 'RowItemImg',
   props: {
     material: {
       type: Object
@@ -46,8 +46,9 @@ export default {
     const active = ref(false)
 
     const iconName = computed(() => {
-      const isFaceSideImgExist = !isEmptyObject(props.material.faceSideImg)
-      const isBackSideImgExist = !isEmptyObject(props.material.backSideImg)
+      const isFaceSideImgExist = !!props.material.faceSideImg.crop
+      const isBackSideImgExist = !!props.material.backSideImg.crop
+
       if (props.material.isDoubleSideMaterial) {
         if (isFaceSideImgExist && isBackSideImgExist) return 'double'
         else if (isFaceSideImgExist && !isBackSideImgExist) return 'double-front'
@@ -68,11 +69,6 @@ export default {
     const checked = computed(() => {
       return props.addedMaterialList.includes(props.material.materialId)
     })
-
-    const isEmptyObject = (obj) => {
-      if (obj !== null) return Object.keys(obj)?.length === 0
-      else return !obj
-    }
 
     return {
       iconName,

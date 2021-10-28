@@ -1,13 +1,14 @@
 <template lang="pug">
 div(class='w-full h-23.5')
-  button(@click='isList = !isList') change status
-div(v-if='isList' class='grid gap-10 mx-14 lg:mx-20')
-  list-item(v-for='material in materialList'
-  :material='material'
-  :addedMaterialList='addedMaterialList'
-)
-div(v-else class='flex flex-wrap gap-y-6 gap-x-5 mx-7.5')
-  gallery-item(
+  grid-or-row(@change='isGrid = $event' :isGrid='isGrid')
+div(v-if='isGrid' class='grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5')
+  grid-item(
+    v-for='material in materialList'
+    :material='material'
+    :addedMaterialList='addedMaterialList'
+  )
+div(v-else class='grid gap-10 mx-14 lg:mx-20')
+  row-item(
     v-for='material in materialList'
     :material='material'
     :addedMaterialList='addedMaterialList'
@@ -15,8 +16,9 @@ div(v-else class='flex flex-wrap gap-y-6 gap-x-5 mx-7.5')
 </template>
 
 <script>
-import ListItem from '@/components/assets/material/list/ListItem'
-import GalleryItem from '@/components/assets/material/list/GalleryItem'
+import RowItem from '@/components/assets/material/list/RowItem'
+import GridItem from '@/components/assets/material/list/GridItem'
+import GridOrRow from '@/components/assets/material/list/GridOrRow'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
@@ -24,8 +26,9 @@ import useNavigation from '@/composables/useNavigation'
 export default {
   name: 'Assets',
   components: {
-    ListItem,
-    GalleryItem
+    RowItem,
+    GridItem,
+    GridOrRow
   },
   setup () {
     const store = useStore()
@@ -35,12 +38,12 @@ export default {
 
     const materialList = computed(() => store.getters['assets/materialList'])
 
-    const isList = ref(true)
+    const isGrid = ref(false)
     const addedMaterialList = ref([])
 
     return {
       materialList,
-      isList,
+      isGrid,
       addedMaterialList
     }
   }
