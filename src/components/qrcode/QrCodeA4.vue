@@ -120,6 +120,7 @@ export default {
             num: pdfTarget.value.children.length
           })
           currExecOptionIndex.value++
+          console.log(`Croping completed num: ${index + 1}`)
         })
       })
 
@@ -138,8 +139,14 @@ export default {
         if (index !== (arr.length - 1)) {
           doc.addPage()
         }
+        console.log(`Completed task num: ${index + 1}`)
       })
-      doc.output('dataurlnewwindow')
+      // eslint-disable-next-line no-unused-vars
+      doc.setProperties({
+        title: 'new Report'
+      })
+      window.open(doc.output('bloburl').toString())
+
       isShown.value = false
       store.dispatch('helper/closeModalLoading')
     }

@@ -46,7 +46,8 @@ export default {
       })
       const doc = new JsPDF({ unit: 'cm', format: [4, 8], orientation: 'l' })
       doc.addImage(dataUrl, 'JPEG', 0, 0, 8, 4)
-      doc.output('dataurlnewwindow')
+
+      window.open(doc.output('bloburl').toString())
       isShown.value = false
       store.dispatch('helper/closeModalLoading')
     }

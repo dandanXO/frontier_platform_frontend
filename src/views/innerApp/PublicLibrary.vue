@@ -60,7 +60,7 @@ export default {
       return new Array(options.value.length).fill(JSON.parse(JSON.stringify(tmpA4Datas)))
     })
 
-    const options = ref([2, 0, 1])
+    const options = ref([2, 0, 1, 2, 0, 1])
 
     return {
       options,

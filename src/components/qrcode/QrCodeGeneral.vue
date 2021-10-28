@@ -109,7 +109,7 @@ export default {
           doc.addPage()
         }
       })
-      doc.output('dataurlnewwindow')
+      window.open(doc.output('bloburl').toString())
       isShown.value = false
       store.dispatch('helper/closeModalLoading')
     }
