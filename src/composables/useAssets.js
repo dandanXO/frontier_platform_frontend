@@ -1,8 +1,10 @@
 import { useI18n } from 'vue-i18n'
 import { WEIGHT_UNIT } from '@/utils/constants.js'
+import { useStore } from 'vuex'
 
-export default function useMaterial () {
+export default function useAssets (material) {
   const { t } = useI18n()
+  const store = useStore()
 
   const weight = ({ weightUnit, weightOz, weightGsm }) => {
     if (weightUnit === WEIGHT_UNIT.GSM) return `${weightGsm} g/m^2`
@@ -13,7 +15,12 @@ export default function useMaterial () {
   const editMaterial = {
     icon: 'create',
     name: t('RR0054'),
-    func: () => { console.log('editMaterial') }
+    func: () => {
+      store.dispatch('material/setMaterial', material)
+      store.dispatch('helper/openFullScreen', {
+        component: 'material-edit'
+      })
+    }
   }
 
   const carbonCopy = {

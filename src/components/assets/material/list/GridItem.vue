@@ -82,7 +82,7 @@ export default {
       exportExcel,
       printQRCode,
       deleteMaterial
-    } = useAssets()
+    } = useAssets(props.material)
 
     const options = [
       [

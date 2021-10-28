@@ -1,5 +1,5 @@
 <template lang="pug">
-input-text(:size="size" :disabled="diabledInput")
+input-text(:label="label" :required="required" :size="size" :disabled="diabledInput")
   template(#appendItem)
     div(class="-mr-4 pl-4 h-full flex items-center")
       button(
@@ -15,6 +15,14 @@ import { computed } from '@vue/runtime-core'
 export default {
   name: 'InputTextIcon',
   props: {
+    label: {
+      type: String,
+      default: ''
+    },
+    required: {
+      type: Boolean,
+      default: false
+    },
     size: {
       type: String,
       default: 'lg'

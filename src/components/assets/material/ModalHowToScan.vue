@@ -1,15 +1,6 @@
 <template lang="pug">
-div(class="flex justify-center pt-28.5")
-  fullscreen-header(
-    :title="$t('DD0012')"
-    :primaryButton="false"
-    :secondaryButton="false"
-  )
-  div(class="w-229 pb-25 flex flex-col gap-y-12.5")
-    div(class="flex gap-x-2.5 text-brand justify-center")
-      svg-icon(iconName="check_circle_outline" size="24")
-      p(class="text-body1 line-height-1.6") {{$t('DD0028')}}
-    h4(class="text-h4 text-center text-primary") {{$t('DD0029')}}
+div(class="w-245")
+  div(class="border-t border-b border-black-400 px-8 py-10")
     div(class="flex gap-x-12")
       div(class="w-100 flex flex-col gap-y-5")
         h6(class="text-h6 text-primary font-bold text-center") {{$t('DD0030')}}
@@ -30,23 +21,20 @@ div(class="flex justify-center pt-28.5")
           p(class="text-body2 text-primary line-height-1.6") {{$t('DD0004')}}
           p(class="text-body1 text-primary font-bold") {{uploadMaterialEmail}}
           span(class="text-body2 text-assist-blue underline line-height-1.6") {{$t('reuse.printBackQRCode')}}
-    btn(size="md" class="self-center" @click="close") {{$t('UU0023')}}
+  div(class="h-25 flex justify-center items-center")
+    btn(size="md" @click="close") {{$t('Completed')}}
 </template>
 
 <script>
-import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
-import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
+import useNavigation from '@/composables/useNavigation'
 
 export default {
-  name: 'MaterialUploadSuccess',
-  components: {
-    FullscreenHeader
-  },
+  name: 'ModalHowToScan',
   setup () {
     const store = useStore()
-    const { location, goToAssets } = useNavigation()
+    const { location } = useNavigation()
 
     const uploadMaterialEmail = computed(() => {
       return location.value === 'org'
@@ -55,13 +43,12 @@ export default {
     })
 
     const close = () => {
-      store.dispatch('helper/clearModalPipeline')
-      goToAssets()
+      store.dispatch('helper/closeModal')
     }
 
     return {
-      uploadMaterialEmail,
-      close
+      close,
+      uploadMaterialEmail
     }
   }
 }
