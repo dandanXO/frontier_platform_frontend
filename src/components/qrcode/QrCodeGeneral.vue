@@ -4,7 +4,7 @@ div(class="flex flex-col")
   div(v-if="isShown" class="fixed right-0 transform translate-x-full")
     div(class="flex flex-col" ref="pdfTarget")
       template(v-for="(option,index) in options")
-        div(v-if="printFront(option)" class="relative flex items-center w-113 h-56.5 bg-black-0 px-8 py-8")
+        div(v-if="(currExecOptionIndex ===index) && printFront(option)" class="relative flex items-center w-113 h-56.5 bg-black-0 px-8 py-8")
           img(:src="require('@/assets/images/gat.png')" class="absolute top-2 left-2")
           div(class="mr-8 flex flex-col items-center  pl-5")
             qr-code(:value="'1234567'" :size="90")
@@ -16,7 +16,7 @@ div(class="flex flex-col")
               span(class="mb-2 text-black-900 font-bold text-h5") FT10441
             div
               span(class="line-clamp text-sm" v-for="data in datas[index]") {{data}}
-        div(v-if="printBack(option)" class="relative flex flex-col items-center w-113 h-56.5 bg-black-0 px-8 py-8")
+        div(v-if="(currExecOptionIndex ===index) && printBack(option)" class="relative flex flex-col items-center w-113 h-56.5 bg-black-0 px-8 py-8")
           img(:src="require('@/assets/images/gat.png')" class="absolute top-2 left-2")
           span(class="mb-2 text-black-900 font-bold text-h5") FT10441
           qr-code(:value="'1234567'" :size="90")
@@ -49,9 +49,10 @@ export default {
     },
     datas: Array
   },
-  setup () {
+  setup (props) {
     const store = useStore()
     const isShown = ref(false)
+    const currExecOptionIndex = ref(0)
     const TYPE = {
       SINGLE_FRONT: 0,
       SINGLE_BACK: 1,
@@ -66,34 +67,58 @@ export default {
     }
 
     const generatePdf = async () => {
-      isShown.value = true
       store.dispatch('helper/openModalLoading')
+      isShown.value = true
+      currExecOptionIndex.value = 0
+      const scale = 3
+      // eslint-disable-next-line new-cap
 
-      await nextTick()
+      const dataUrls = []
+      await asyncForEach(props.options, async (el, index, arr) => {
+        await nextTick(async () => {
+          const dataUrl = await domtoimage.toJpeg(pdfTarget.value, {
+            quality: 1.5,
+            width: pdfTarget.value.clientWidth * scale,
+            height: pdfTarget.value.clientHeight * scale,
+            style: {
+              transform: 'scale(' + scale + ')',
+              transformOrigin: 'top left'
+            }
+          })
+          dataUrls.push({
+            dataUrl,
+            num: pdfTarget.value.children.length
+          })
+          currExecOptionIndex.value++
+        })
+      })
 
       const PDF_WIDTH = 8
       const PDF_HEIGHT = 4
-      const scale = 3
-      const dataUrl = await domtoimage.toJpeg(pdfTarget.value, {
-        quality: 1.5,
-        width: pdfTarget.value.clientWidth * scale,
-        height: pdfTarget.value.clientHeight * scale,
-        style: {
-          transform: 'scale(' + scale + ')',
-          transformOrigin: 'top left'
-        }
-      })
-      const pdfNum = pdfTarget.value.children.length
       const doc = new JsPDF({ unit: 'cm', format: [PDF_HEIGHT, PDF_WIDTH], orientation: 'l' })
-      for (let i = 0; i < pdfNum; i++) {
-        doc.addImage(dataUrl, 'JPEG', 0, -i * PDF_HEIGHT, PDF_WIDTH, PDF_HEIGHT * pdfNum)
-        if (i !== (pdfNum - 1)) {
+
+      await asyncForEach(dataUrls, async (el, index, arr) => {
+        console.log(index, el.num)
+        for (let i = 0; i < el.num; i++) {
+          doc.addImage(el.dataUrl, 'JPEG', 0, -i * PDF_HEIGHT, PDF_WIDTH, PDF_HEIGHT * el.num)
+          if (i !== (el.num - 1)) {
+            doc.addPage()
+          }
+        }
+        if (index !== (arr.length - 1)) {
           doc.addPage()
         }
-      }
+      })
       doc.output('dataurlnewwindow')
       isShown.value = false
       store.dispatch('helper/closeModalLoading')
+    }
+
+    // We need this function because the build-in forEach won't confirm the generated Pdf orders when calling async function
+    const asyncForEach = async (array, callback) => {
+      for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array)
+      }
     }
 
     return {
@@ -101,7 +126,8 @@ export default {
       generatePdf,
       pdfTarget,
       printFront,
-      printBack
+      printBack,
+      currExecOptionIndex
     }
   }
 }
