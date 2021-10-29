@@ -6,47 +6,50 @@ div(class="flex my-5 mx-auto pl-17 pr-7 relative max-w-286")
         svg-icon(iconName="delete" size="24" class="cursor-pointer text-black-700")
       div(v-if="material.[BLOCK_TYPE.FACE].exist" class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-black-0 bg-opacity-70 cursor-pointer" @click="clearBlock(BLOCK_TYPE.FACE)")
         svg-icon(iconName="clear" size="14" class="text-black-700")
-      div(class="w-47.5 h-47.5 rounded" :style="getBgImg(BLOCK_TYPE.FACE)" :class="[!material.[BLOCK_TYPE.FACE].exist ? emptyBoxClass : '']" :data-type="BLOCK_TYPE.FACE" @drop="onDrop($event)" @dragover.prevent)
-        template(v-if="!material.[BLOCK_TYPE.FACE].exist") {{$t('EE0007')}}
+      div(class="w-47.5 h-47.5 rounded bg-cover" :style="getBgImg(BLOCK_TYPE.FACE)" :class="[!material.[BLOCK_TYPE.FACE].exist ? emptyBoxClass : '']" :data-type="BLOCK_TYPE.FACE" @drop="onDrop($event)" @dragover.prevent)
+        p(v-if="!material.[BLOCK_TYPE.FACE].exist" class="px-1 text-center") {{$t('EE0007')}}
     div(class="relative mr-11")
       div(v-if="material.[BLOCK_TYPE.BACK].exist" class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-black-0 bg-opacity-70 cursor-pointer" @click="clearBlock(BLOCK_TYPE.BACK)")
         svg-icon(iconName="clear" size="14" class="text-black-700")
-      div(class="w-47.5 h-47.5 rounded" :style="getBgImg(BLOCK_TYPE.BACK)" :class="[!material.[BLOCK_TYPE.BACK].exist ? emptyBoxClass : '']" :data-type="BLOCK_TYPE.BACK" @drop="onDrop($event)" @dragover.prevent)
-        template(v-if="!material.[BLOCK_TYPE.BACK].exist") {{$t('EE0008')}}
+      div(class="w-47.5 h-47.5 rounded bg-cover" :style="getBgImg(BLOCK_TYPE.BACK)" :class="[!material.[BLOCK_TYPE.BACK].exist ? emptyBoxClass : '']" :data-type="BLOCK_TYPE.BACK" @drop="onDrop($event)" @dragover.prevent)
+        p(v-if="!material.[BLOCK_TYPE.BACK].exist" class="px-1 text-center") {{$t('EE0008')}}
     div(class="relative w-full")
       div(v-if="material.[BLOCK_TYPE.DETAIL].exist" class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-black-0 bg-opacity-70 cursor-pointer" @click="clearBlock(BLOCK_TYPE.DETAIL)")
         svg-icon(iconName="clear" size="14" class="text-black-700")
-      div(class="h-47.5 rounded p-7.5" :class="[!material.[BLOCK_TYPE.DETAIL].exist ? emptyBoxClass : filledTextBoxClass]" :data-type="BLOCK_TYPE.DETAIL" @drop="onDrop($event)" @dragover.prevent)
+      div(class="h-47.5 rounded" :class="[!material.[BLOCK_TYPE.DETAIL].exist ? emptyBoxClass : filledTextBoxClass]" :data-type="BLOCK_TYPE.DETAIL" @drop="onDrop($event)" @dragover.prevent)
         template(v-if="!material.[BLOCK_TYPE.DETAIL].exist") {{$t('EE0009')}}
-        template(v-else) {{material.detail.word}}
+        material-merge-row-detail(v-else :material='material.[BLOCK_TYPE.DETAIL]')
   template(v-else)
     div(class="relative mr-11" )
-      div(v-if="material.[BLOCK_TYPE.FACE].faceSideImg" class="absolute -left-6 top-20")
+      div(v-if="material.[BLOCK_TYPE.FACE].faceSideImg.crop" class="absolute -left-6 top-20")
         svg-icon(iconName="drag_indicator" size="24" class="text-black-500")
-      div(class="w-47.5 h-47.5 rounded border-2 border-solid border-black-400" :class="{'border-none': material.[BLOCK_TYPE.FACE].faceSideImg}")
-        img(:src="material.[BLOCK_TYPE.FACE].faceSideImg" class="cursor-move rounded" :data-type='BLOCK_TYPE.FACE' draggable="true" @dragstart='startDrag($event)')
+      div(class="w-47.5 h-47.5 rounded border-2 border-solid border-black-400" :class="{'border-none': material.[BLOCK_TYPE.FACE].faceSideImg.crop}")
+        img(v-if="material.[BLOCK_TYPE.FACE].faceSideImg.crop" :src="material.[BLOCK_TYPE.FACE].faceSideImg.crop" class="w-full h-full cursor-move rounded" :data-type='BLOCK_TYPE.FACE' draggable="true" @dragstart='startDrag($event)')
     div(class="relative mr-11")
-      div(v-if="material.[BLOCK_TYPE.BACK].backSideImg" class="absolute -left-6 top-20")
+      div(v-if="material.[BLOCK_TYPE.BACK].backSideImg.crop" class="absolute -left-6 top-20")
         svg-icon(iconName="drag_indicator" size="24" class="text-black-500")
-      div(class="w-47.5 h-47.5 rounded border-2 border-solid border-black-400" :class="{'border-none': material.[BLOCK_TYPE.BACK].backSideImg}")
-        img(:src="material.[BLOCK_TYPE.BACK].backSideImg" class="cursor-move rounded" :data-type='BLOCK_TYPE.BACK' draggable="true" @dragstart='startDrag($event)')
+      div(class="w-47.5 h-47.5 rounded border-2 border-solid border-black-400" :class="{'border-none': material.[BLOCK_TYPE.BACK].backSideImg.crop}")
+        img(v-if="material.[BLOCK_TYPE.BACK].backSideImg.crop" :src="material.[BLOCK_TYPE.BACK].backSideImg.crop" class="w-full h-full cursor-move rounded" :data-type='BLOCK_TYPE.BACK' draggable="true" @dragstart='startDrag($event)')
     div(class="relative w-full")
-      div(v-if="material.[BLOCK_TYPE.DETAIL].word" class="absolute -left-6 top-20")
+      div(class="absolute -left-6 top-20")
         svg-icon(iconName="drag_indicator" size="24" class="text-black-500")
-      div(class="h-47.5 rounded border-2 border-solid border-black-400 cursor-move p-7.5" :data-type='BLOCK_TYPE.DETAIL' draggable="true" @dragstart='startDrag($event)') {{material.[BLOCK_TYPE.DETAIL].word}}
+      div(class="h-47.5 rounded border-2 border-solid border-black-400 cursor-move" :data-type='BLOCK_TYPE.DETAIL' draggable="true" @dragstart='startDrag($event)')
+        material-merge-row-detail(:material='material.[BLOCK_TYPE.DETAIL]')
 </template>
 
 <script>
+import MaterialMergeRowDetail from '@/components/assets/material/MaterialMergeRowDetail'
+
 export default {
   name: 'MaterialMergeRow',
+  components: { MaterialMergeRowDetail },
   props: {
     droppable: {
       type: Boolean,
       default: false
     },
     material: {
-      type: Object,
-      default: () => { }
+      type: Object
     },
     length: {
       type: Number,
@@ -66,8 +69,10 @@ export default {
 
     const getBgImg = (blockType) => {
       const fromType = props.material[blockType].fromType
-      const path = props.material[blockType][`${fromType}Img`]
-      return { 'background-image': `url(${path})` }
+      if (fromType) {
+        const path = props.material[blockType][`${fromType}Img`].crop
+        return { 'background-image': `url(${path})` }
+      }
     }
 
     const startDrag = (e) => {

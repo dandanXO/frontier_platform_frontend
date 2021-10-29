@@ -15,7 +15,7 @@ div(class='grid grid-rows-4 grid-cols-2 gap-x-14')
 <script>
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import useAssets from '@/composables/useAssets'
+import useMaterial from '@/composables/useMaterial'
 
 export default {
   name: 'RowItemContentBlock',
@@ -26,11 +26,10 @@ export default {
   },
   setup (props) {
     const { t } = useI18n()
-
-    const { weight } = useAssets()
+    const { materialWeight } = useMaterial(props.material)
 
     const structure = computed(() => {
-      const { content, pattern, color, width, finish, weightUnit, weightGsm, weightOz, warpYarnCount, weftYarnCount, warpDensity, weftDensity, totalInventoryQty, publicPrice, publicTagList, aiTagList, privateTagList } = props.material
+      const { content, pattern, color, width, finish, warpYarnCount, weftYarnCount, warpDensity, weftDensity, totalInventoryQty, publicPrice, publicTagList, aiTagList, privateTagList } = props.material
 
       return [
         {
@@ -42,7 +41,7 @@ export default {
             { name: t('RR0024'), value: warpDensity && `${warpDensity}*${weftDensity}` },
             { name: t('RR0025'), value: pattern },
             { name: t('RR0026'), value: color },
-            { name: t('RR0015'), value: weight({ weightUnit, weightGsm, weightOz }) },
+            { name: t('RR0015'), value: materialWeight.value },
             { name: t('RR0019'), value: width },
             { name: t('RR0022'), value: finish }
           ],
@@ -57,7 +56,7 @@ export default {
         {
           id: 'price',
           title: t('EE0004'),
-          column: [{ name: t('RR0043'), value: publicPrice.price && `${publicPrice.currency} ${publicPrice.price}/${publicPrice.unit}` }],
+          column: [{ name: t('RR0043'), value: publicPrice?.price && `${publicPrice?.currency} ${publicPrice?.price}/${publicPrice?.unit}` }],
           class: 'row-span-1'
         },
         {

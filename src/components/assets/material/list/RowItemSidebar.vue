@@ -27,7 +27,13 @@ import useAssets from '@/composables/useAssets'
 
 export default {
   name: 'RowItemSidebar',
-  setup () {
+  props: {
+    material: {
+      type: Object,
+      required: true
+    }
+  },
+  setup (props) {
     const {
       editMaterial,
       printCard,
@@ -39,7 +45,7 @@ export default {
       exportExcel,
       printQRCode,
       deleteMaterial
-    } = useAssets()
+    } = useAssets(props.material)
 
     const iconList = [
       editMaterial,
@@ -64,8 +70,8 @@ export default {
       ]
     ]
 
-    const handleClick = (target) => {
-      target.func && target.func()
+    const handleClick = (option) => {
+      option.func && option.func()
     }
 
     return {

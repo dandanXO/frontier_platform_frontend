@@ -52,3 +52,17 @@ export const MATERIAL_PRICING_CURRENCY = {
   RMB: 'RMB',
   TWD: 'TWD'
 }
+
+export const COVER_MODE = {
+  FACE: 1,
+  BACK: 2,
+  SUP: 3
+}
+
+export const U3M_STATUS = {
+  UNQUALIFIED: -1,
+  INITIAL: 0,
+  PROCESSING: 1,
+  COMPLETED: 2,
+  FAIL: 99
+}

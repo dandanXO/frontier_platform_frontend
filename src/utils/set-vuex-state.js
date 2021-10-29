@@ -5,7 +5,7 @@ export default (state, data) => {
   Object.keys(data).forEach(key => {
     if (!Object.prototype.hasOwnProperty.call(state, key)) { return }
 
-    if (typeof data[key] === 'object' && !Array.isArray(data[key])) {
+    if (data[key] !== null && typeof data[key] === 'object' && !Array.isArray(data[key])) {
       Object.assign(state[key], data[key])
       return
     }
