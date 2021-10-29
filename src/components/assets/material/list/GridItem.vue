@@ -11,19 +11,18 @@ div(
   @mouseleave="active = false"
 )
   div(
-    class='relative aspect-ratio rounded bg-black-200 border-block-400 border-2 bg-cover mb-2'
-    :class="{'border-none': !!coverImg}"
-    :style='coverImg'
+    class='relative aspect-ratio rounded bg-black-200 border-block-400 border bg-cover mb-2'
+    :class="{'border': neverScanBefore }"
   )
+    img(:src="currentCoverImg" class="w-full h-full")
     input-checkbox(
       v-if='active || checked'
       v-model:inputValue='addedMaterialList'
-      :value='material.materialId'
-      class='absolute top-3 left-3 cursor-pointer'
+      :value='material'
+      class='absolute z-10 top-3 left-3 cursor-pointer'
       iconColor='text-black-0'
     )
-    div(v-if='active' class='w-full h-full rounded bg-opacity-70 bg-black-900 bg-black')
-      div(class='absolute linear-bg bg-opacity-15 rounded h-12')
+    div(v-if="active" class='absolute z-9 inset-0 w-full h-full rounded bg-opacity-70 bg-black-900')
       div(class='line-height-1.6 text-body2 text-black-0 max-w-38 m-auto h-full flex flex-col items-center justify-center')
         div(class='font-bold') {{material.materialNo}}
         div(class='text-body1 font-bold line-clamp-2') {{material.description}}
@@ -33,7 +32,7 @@ div(
           span(class='pr-1') {{material.warpDensity}}X{{material.weftDensity}}
           span {{material.width}}
         div(class='line-clamp-1') {{material.finish}}
-        div(class='line-clamp-1') {{getWeightValue}}
+        div(class='line-clamp-1') {{materialWeight}}
       tooltip(
         class='absolute bottom-3 right-3 cursor-pointer'
         placement="right"
@@ -57,21 +56,20 @@ div(
 <script>
 import { ref, computed } from '@vue/runtime-core'
 import useAssets from '@/composables/useAssets'
+import useMaterial from '@/composables/useMaterial'
+import { useStore } from 'vuex'
 
 export default {
   name: 'GridItem',
   props: {
     material: {
       type: Object
-    },
-    addedMaterialList: {
-      type: Array
     }
   },
   setup (props) {
+    const store = useStore()
     const active = ref(false)
     const {
-      weight,
       editMaterial,
       printCard,
       downloadU3M,
@@ -83,6 +81,8 @@ export default {
       printQRCode,
       deleteMaterial
     } = useAssets(props.material)
+
+    const { currentCoverImg, neverScanBefore, materialWeight } = useMaterial(props.material)
 
     const options = [
       [
@@ -111,28 +111,22 @@ export default {
       option.func && option.func()
     }
 
-    const coverImg = computed(() => {
-      return {
-        'background-image': `url(${props.material.coverImg})`
-      }
+    const addedMaterialList = computed({
+      get: () => store.getters['assets/addedMaterialList'],
+      set: (v) => store.commit('assets/SET_addedMaterialList', v)
     })
 
-    const checked = computed(() => {
-      return props.addedMaterialList.includes(props.material.materialId)
-    })
-
-    const getWeightValue = computed(() => {
-      const { weightUnit, weightOz, weightGsm } = props.material
-      return weight({ weightUnit, weightOz, weightGsm })
-    })
+    const checked = computed(() => addedMaterialList.value.includes(props.material))
 
     return {
+      addedMaterialList,
       options,
       handleClick,
-      coverImg,
+      currentCoverImg,
+      neverScanBefore,
       active,
-      getWeightValue,
-      checked
+      checked,
+      materialWeight
     }
   }
 }

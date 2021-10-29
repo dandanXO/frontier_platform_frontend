@@ -2,7 +2,7 @@
 div(class="pb-15 border-b border-black-400")
   div(class="h-16 flex items-center justify-between")
     h5(class="text-h5 text-primary font-bold") {{$t('DD0013')}}
-    btn(v-if="isEditMode" size="sm" type="secondary" @click="isOpenSampleCard = !isOpenSampleCard") {{isOpenSampleCard ? $t('Close') : $t('Sample Card Display')}}
+    btn(v-if="isEditMode" size="sm" type="secondary" @click="isOpenSampleCard = !isOpenSampleCard") {{isOpenSampleCard ? $t('UU0026') : $t('UU0033')}}
   div
     div(class="flex")
       div(class="grid gap-y-7.5 flex-grow" :class="{ 'px-15': !isOpenSampleCard }")
@@ -26,6 +26,7 @@ div(class="pb-15 border-b border-black-400")
           :placeholder="$t('DD0015')"
           :label="$t('RR0013')"
           :customErrorMsg="validations.materialNo"
+          required
         )
         input-chips(
           v-model:chips="material.descriptionList"

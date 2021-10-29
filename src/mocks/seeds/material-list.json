@@ -46,10 +46,10 @@
     "privateTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
     "tagList": ["Cooling yarn", "Weft stretch", "Cool max"],
     "aiTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
-    "coverMode": "1 (正面為封面)",
+    "coverMode": 1,
     "coverImg": "https://picsum.photos/id/1/200/200",
     "faceSideImg": {
-      "crop": "https://face-side-crop",
+      "crop": "https://picsum.photos/id/1024/200/200",
       "ruler": "https://face-side-ruler",
       "original": "https://face-side-original",
       "dpi": 300,
@@ -57,7 +57,7 @@
       "u3mOriginal": "https://face-side-u3m-original"
     },
     "backSideImg": {
-      "crop": "https://back-side-crop",
+      "crop": "https://picsum.photos/id/1023/200/200",
       "ruler": "https://back-side-ruler",
       "original": "https://back-side-original",
       "dpi": 300,
@@ -179,17 +179,24 @@
     "privateTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
     "tagList": ["Cooling yarn", "Weft stretch", "Cool max"],
     "aiTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
-    "coverMode": "1 (正面為封面)",
+    "coverMode": 2,
     "coverImg": "https://picsum.photos/id/10/200/200",
     "faceSideImg": {
-      "crop": "https://face-side-crop",
+      "crop": "https://picsum.photos/id/1025/200/200",
       "ruler": "https://face-side-ruler",
       "original": "https://face-side-original",
       "dpi": 300,
       "u3mCrop": "https://face-side-u3m-crop",
       "u3mOriginal": "https://face-side-u3m-original"
     },
-    "backSideImg": null,
+    "backSideImg": {
+      "crop": null,
+      "ruler": null,
+      "original": null,
+      "dpi": null,
+      "u3mCrop": null,
+      "u3mOriginal": null
+    },
     "isDoubleSideMaterial": true,
     "sideType": 1,
     "remark": "string",
@@ -305,11 +312,18 @@
     "privateTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
     "tagList": ["Cooling yarn", "Weft stretch", "Cool max"],
     "aiTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
-    "coverMode": "1 (正面為封面)",
+    "coverMode": 2,
     "coverImg": "https://picsum.photos/id/100/200/200",
-    "faceSideImg": {},
+    "faceSideImg": {
+      "crop": null,
+      "ruler": null,
+      "original": null,
+      "dpi": null,
+      "u3mCrop": null,
+      "u3mOriginal": null
+    },
     "backSideImg": {
-      "crop": "https://back-side-crop",
+      "crop": "https://picsum.photos/id/1028/200/200",
       "ruler": "https://back-side-ruler",
       "original": "https://back-side-original",
       "dpi": 300,
@@ -431,18 +445,18 @@
     "privateTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
     "tagList": ["Cooling yarn", "Weft stretch", "Cool max"],
     "aiTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
-    "coverMode": "1 (正面為封面)",
+    "coverMode": 3,
     "coverImg": "https://picsum.photos/id/1000/200/200",
     "faceSideImg": {
-      "crop": "https://face-side-crop",
-      "ruler": "https://face-side-ruler",
-      "original": "https://face-side-original",
-      "dpi": 300,
-      "u3mCrop": "https://face-side-u3m-crop",
-      "u3mOriginal": "https://face-side-u3m-original"
+      "crop": null,
+      "ruler": null,
+      "original": null,
+      "dpi": null,
+      "u3mCrop": null,
+      "u3mOriginal": null
     },
     "backSideImg": {
-      "crop": "https://back-side-crop",
+      "crop": "https://picsum.photos/id/1026/200/200",
       "ruler": "https://back-side-ruler",
       "original": "https://back-side-original",
       "dpi": 300,
@@ -564,10 +578,10 @@
     "privateTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
     "tagList": ["Cooling yarn", "Weft stretch", "Cool max"],
     "aiTagList": ["Cooling yarn", "Weft stretch", "Cool max"],
-    "coverMode": "1 (正面為封面)",
+    "coverMode": 1,
     "coverImg": "https://picsum.photos/id/1001/200/200",
     "faceSideImg": {
-      "crop": "https://face-side-crop",
+      "crop": "https://picsum.photos/id/1022/200/200",
       "ruler": "https://face-side-ruler",
       "original": "https://face-side-original",
       "dpi": 300,
@@ -575,7 +589,7 @@
       "u3mOriginal": "https://face-side-u3m-original"
     },
     "backSideImg": {
-      "crop": "https://back-side-crop",
+      "crop": "https://picsum.photos/id/1029/200/200",
       "ruler": "https://back-side-ruler",
       "original": "https://back-side-original",
       "dpi": 300,
