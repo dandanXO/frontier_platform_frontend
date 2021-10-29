@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="flex justify-center pt-31")
   fullscreen-header(
-    :title="$t('Edited fabric')"
+    :title="$t('EE0037')"
     :primaryText="$t('reuse.save')"
     :primaryHandler="primaryHandler"
     :secondaryHandler="secondaryHandler"
@@ -24,7 +24,7 @@ import BlockMaterialPricing from '@/components/assets/material/edit/BlockMateria
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
-import useMaterial from '@/composables/useMaterial'
+import useMaterialValidation from '@/composables/useMaterialValidation'
 
 export default {
   name: 'MaterialEdit',
@@ -39,7 +39,7 @@ export default {
     const { t } = useI18n()
     const store = useStore()
     const { location } = useNavigation()
-    const { validations, validate, goToAssets } = useMaterial()
+    const { validations, validate, goToAssets } = useMaterialValidation()
 
     store.dispatch('material/getMaterialOptions', { location: location.value })
 
@@ -59,8 +59,8 @@ export default {
 
     const secondaryHandler = async () => {
       store.dispatch('helper/pushModalConfirm', {
-        title: t('DD0033'),
-        content: t('DD0034'),
+        title: t('EE0045'),
+        content: t('EE0046'),
         secondaryText: t('reuse.confirm'),
         secondaryHandler: () => {
           store.dispatch('helper/closeFullscreen')

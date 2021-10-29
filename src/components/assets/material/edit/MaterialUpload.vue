@@ -24,7 +24,7 @@ import BlockMaterialPricing from '@/components/assets/material/edit/BlockMateria
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
-import useMaterial from '@/composables/useMaterial'
+import useMaterialValidation from '@/composables/useMaterialValidation'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -39,7 +39,7 @@ export default {
     const { t } = useI18n()
     const store = useStore()
     const { location } = useNavigation()
-    const { validations, validate } = useMaterial()
+    const { validations, validate } = useMaterialValidation()
     const tempMaterialId = uuidv4()
 
     store.dispatch('material/resetMaterial')

@@ -1,16 +1,11 @@
 import { useI18n } from 'vue-i18n'
-import { WEIGHT_UNIT } from '@/utils/constants.js'
 import { useStore } from 'vuex'
+import { computed } from '@vue/runtime-core'
 
 export default function useAssets (material) {
   const { t } = useI18n()
   const store = useStore()
-
-  const weight = ({ weightUnit, weightOz, weightGsm }) => {
-    if (weightUnit === WEIGHT_UNIT.GSM) return `${weightGsm} g/m^2`
-    else if (weightUnit === WEIGHT_UNIT.OZ) return `${weightOz} oz/y^2`
-    else return ''
-  }
+  const addedMaterialList = computed(() => store.getters['assets/addedMaterialList'])
 
   const editMaterial = {
     icon: 'create',
@@ -67,7 +62,14 @@ export default function useAssets (material) {
 
   const mergeCard = {
     name: t('RR0072'),
-    func: () => { console.log('mergeCard') }
+    func: () => {
+      store.dispatch('helper/openFullScreen', {
+        component: 'material-merge',
+        properties: {
+          materialListData: addedMaterialList
+        }
+      })
+    }
   }
 
   const deleteMaterial = {
@@ -76,7 +78,6 @@ export default function useAssets (material) {
   }
 
   return {
-    weight,
     editMaterial,
     carbonCopy,
     cloneTo,

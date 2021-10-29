@@ -21,8 +21,8 @@ div(class="w-131 px-8")
             p(class="text-body2 font-bold text-primary pt-1.5") {{image.name}}
   div(class="h-25 flex justify-center items-center")
     div(class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" @click="closeModal") {{$t('UU0002') }}
-      btn(size="md" @click="choose") {{$t('UU0018')}}
+      btn(size="md" type="secondary" @click="closeModal") {{$t('reuse.cancel') }}
+      btn(size="md" @click="choose") {{$t('reuse.save')}}
 </template>
 
 <script>
