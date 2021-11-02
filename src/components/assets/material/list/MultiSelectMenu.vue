@@ -1,6 +1,6 @@
 <template lang="pug">
 div(v-if='addedMaterialList.length > 0' class='fixed z-100 bottom-5 inset-x-0 w-fit m-auto px-15 py-7.5 bg-black-0 rounded-full menu-shadow text-body2 text-primary flex justify-center items-center')
-  svg-icon(iconName='cancel' size='24' class='text-black-400 mr-4' @click='clearList')
+  svg-icon(iconName='cancel' size='24' class='text-black-400 mr-4 cursor-pointer' @click='clearList')
   i18n-t(keypath="RR0073" tag='div' class='mr-7.5')
     template(#number) {{addedMaterialList.length}}
   div(class='flex flex-col gap-5')

@@ -5,9 +5,7 @@ import inputRules from '@/utils/input-rules'
 export default function useInput ({ context: { emit, slots }, inputType = ref('text'), textValue, disabled = ref(false), rules = ref([]), required = ref(false), customErrorMsg = ref('') }) {
   const isFocus = ref(false)
 
-  const isEmpty = computed(() => {
-    return textValue.value === ''
-  })
+  const isEmpty = computed(() => !textValue.value)
 
   const classBorder = computed(() => {
     if (disabled.value) {
