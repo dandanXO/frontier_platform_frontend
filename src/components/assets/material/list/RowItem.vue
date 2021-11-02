@@ -1,8 +1,10 @@
 <template lang="pug">
-div(class='grid grid-cols-12 max-w-405 gap-12 lg:gap-14 pb-10')
-  row-item-img(:material='material' class='col-span-3')
-  row-item-content(:material='material' class='col-span-8 max-w-240')
-  row-item-sidebar(:material='material' class='col-span-1')
+div
+  div(class='grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-black-50')
+    row-item-img(:material='material' class='col-span-3')
+    row-item-content(:material='material' class='col-span-8 max-w-240')
+    row-item-sidebar(:material='material' class='col-span-1')
+  slot(name='divide')
 </template>
 
 <script>

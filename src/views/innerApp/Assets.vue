@@ -8,7 +8,7 @@ div(class="w-full h-full flex flex-col")
     @search="getMaterialList"
     @resetFilter="resetFilter"
   )
-  div(class="py-7.5 mx-7.5 flex justify-between items-center")
+  div(class="pt-7.5 pb-2.5 mx-7.5 flex justify-between items-center")
     div
       h5(class="text-h5 font-bold text-primary") {{$t('EE0001')}}
         i18n-t(keypath="RR0068" tag='span' class='text-caption text-black-700 pl-1')
@@ -25,9 +25,11 @@ div(class="w-full h-full flex flex-col")
       ) {{$t('reuse.create')}}
   div(class="overflow-y-auto flex-grow grid")
     template(v-if="!isSearching && materialList.length > 0")
-      div(:class="[isGrid ? 'grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5' : 'grid gap-y-10 mx-7.5 lg:mx-20']")
+      div(:class="[isGrid ? 'grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5' : 'grid']")
         grid-item(v-show="isGrid" v-for='material in materialList' :material='material')
-        row-item(v-show="!isGrid" v-for='(material, index) in materialList' :material='material' :class="{ 'border-b': index !== materialList.length - 1 }")
+        row-item(v-show="!isGrid" v-for='(material, index) in materialList' :material='material')
+          template(#divide)
+            div(v-if='index !== materialList.length - 1' class='border-b my-5 mx-8')
     div(v-else class="flex flex-col justify-center items-center -mt-50")
       svg-icon(v-if="isSearching" iconName="loading" size="92" class="text-brand")
       p(v-else-if="inSearch" class="text-center text-body2 text-primary") {{$t('Sorry ! No results found.')}}

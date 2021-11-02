@@ -1,13 +1,17 @@
 <template lang="pug">
-dropdown
-  template(#displayItem="{ isExpand }")
-    div(class="flex items-center gap-x-1 p-1.5 border rounded-lg" :class="[ isExpand || dirty ? 'border-primary' : 'border-black-400' ]")
+tooltip(
+  placement='bottom-start'
+  :manual='true'
+  :showArrow='false'
+  :offset='[0, 8]'
+)
+  template(#trigger="{ isActive }")
+    div(class="flex items-center gap-x-1 p-1.5 border rounded-lg cursor-pointer" :class="[ isActive || dirty ? 'border-primary' : 'border-black-400' ]")
       svg-icon(:iconName="iconName" size="24" class="text-primary")
       span(class="text-primary text-body2") {{displayName}}
-      svg-icon(iconName="arrow-down" size="24" class="text-black-500 transform" :class="[ isExpand ? '-rotate-90' : 'rotate-90' ]")
-  template(#dropdownList)
-    div(class="absolute z-10 top-full left-0 transform translate-y-2 bg-black-0")
-      slot
+      svg-icon(iconName="arrow-down" size="24" class="text-black-500 transform" :class="[ isActive ? '-rotate-90' : 'rotate-90' ]")
+  template(#content)
+    slot
 </template>
 
 <script>
