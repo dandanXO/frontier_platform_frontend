@@ -6,7 +6,8 @@ dropdown
       span(class="text-primary text-body2") {{displayName}}
       svg-icon(iconName="arrow-down" size="24" class="text-black-500 transform" :class="[ isExpand ? '-rotate-90' : 'rotate-90' ]")
   template(#dropdownList)
-    slot
+    div(class="absolute z-10 top-full left-0 transform translate-y-2 bg-black-0")
+      slot
 </template>
 
 <script>

@@ -54,6 +54,10 @@ const state = () => ({
         key: 'Pattern',
         list: [
           {
+            value: 'Floral1',
+            img: 'http://s3/aa.jpg'
+          },
+          {
             value: 'Floral',
             img: 'http://s3/aa.jpg'
           }
@@ -62,11 +66,11 @@ const state = () => ({
     ],
     colorList: [
       {
-        value: 'Green',
-        hex: '#123456'
+        value: 'Red',
+        hex: '#123356'
       },
       {
-        value: 'Red',
+        value: 'Green',
         hex: '#123456'
       }
     ],
