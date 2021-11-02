@@ -35,12 +35,13 @@ div(
         div(class='line-clamp-1') {{materialWeight}}
       tooltip(
         class='absolute bottom-3 right-3 cursor-pointer'
-        placement="right"
+        placement="right-start"
         :showArrow="false"
         :manual="true"
-        :offset="['50%', 5]"
+        :offset="[0, 5]"
       )
-        svg-icon(iconName='more_vert' size='20' class="text-black-500 hover:text-black-200" )
+        template(#trigger)
+          svg-icon(iconName='more_vert' size='20' class="text-black-500 hover:text-black-200" )
         template(#content)
           div(class='w-55 py-2.5')
             div(v-for="(block, index) in options" class='text-black-400')
