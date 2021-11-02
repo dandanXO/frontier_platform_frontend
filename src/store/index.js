@@ -25,6 +25,10 @@ export default createStore({
         if (Object.prototype.hasOwnProperty.call(result, 'orgUser')) {
           dispatch('user/orgUser/setOrgUser', result.orgUser, { root: true })
         }
+
+        if (Object.prototype.hasOwnProperty.call(result, 'pagination')) {
+          dispatch('helper/setPagination', result.pagination, { root: true })
+        }
       }
 
       if (!success) {

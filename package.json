@@ -11,6 +11,7 @@
     "deploy:dev": "npm run build --NODE_ENV=development && aws s3 sync dist/ s3://textile-dev.frontier.cool  && aws cloudfront create-invalidation --distribution-id E399Q6A2FXF69L --paths '/*' --profile=default"
   },
   "dependencies": {
+    "@hennge/vue3-pagination": "^1.0.17",
     "@popperjs/core": "^2.10.2",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",

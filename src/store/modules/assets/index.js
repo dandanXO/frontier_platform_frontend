@@ -7,7 +7,7 @@ const state = () => ({
 })
 
 const getters = {
-  materialList: state => state.materialList.slice(0, 10),
+  materialList: state => state.materialList,
   addedMaterialList: state => state.addedMaterialList
 }
 
@@ -24,19 +24,27 @@ const actions = {
   setAssets ({ state }, data) {
     setVuexState(state, data)
   },
-  async getMaterialList ({ rootGetters, dispatch }, { location, targetPage = 1 }) {
-    const pagination = {
-      perPageCount: 40,
-      targetPage
+  async getMaterialList ({ rootGetters, dispatch }, { location, search, filter, targetPage = 1 }) {
+    const params = {
+      pagination: {
+        perPageCount: rootGetters['helper/pagination'].perPageCount,
+        targetPage
+      },
+      filter
     }
+
+    if (!(search.keyword === '' && search.tagList.length === 0)) {
+      params.search = search
+    }
+
     const { data } = location === 'org'
       ? await assetsApi.org.getMaterialList({
         orgId: rootGetters['organization/orgId'],
-        pagination
+        ...params
       })
       : await assetsApi.group.getMaterialList({
         groupId: rootGetters['group/groupId'],
-        pagination
+        ...params
       })
 
     dispatch('handleResponseData', { data }, { root: true })

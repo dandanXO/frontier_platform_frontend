@@ -2,12 +2,20 @@ import { MODAL_TYPE } from '@/utils/constants'
 
 const state = () => ({
   modalPipeline: [],
-  message: ''
+  message: '',
+  pagination: {
+    currentPage: 1,
+    perPageCount: 40,
+    totalCount: 0,
+    totalMatchCount: 0,
+    totalPage: 1
+  }
 })
 
 const getters = {
   modalPipeline: (state) => state.modalPipeline,
-  message: (state) => state.message
+  message: (state) => state.message,
+  pagination: (state) => state.pagination
 }
 
 const mutations = {
@@ -29,6 +37,9 @@ const mutations = {
   },
   REMOVE_message (state) {
     state.message = ''
+  },
+  SET_pagination (state, pagination) {
+    Object.assign(state.pagination, pagination)
   }
 }
 
@@ -71,6 +82,9 @@ const actions = {
   },
   clearModalPipeline ({ commit }) {
     commit('CLEAR_modalPipeline')
+  },
+  setPagination ({ commit }, pagination) {
+    commit('SET_pagination', pagination)
   }
 }
 
