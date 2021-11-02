@@ -75,7 +75,14 @@ export default {
     const initFilterState = {
       contentList: [],
       finishList: [],
-      complete: null
+      complete: null,
+      wovenWarpYarnCount: null,
+      wovenWeftYarnCount: null,
+      knitYarnCount: null,
+      warpDensity: null,
+      weftDensity: null,
+      color: null,
+      pattern: null
     }
     const filter = reactive({})
     let timer

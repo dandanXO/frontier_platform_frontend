@@ -62,7 +62,7 @@ div(class="grid" :class="{ 'border-b border-primary-thin': !isOpenFilterPanel }"
       div(class="flex flex-wrap gap-x-2 gap-y-4")
         filter-wrapper(iconName="fabric" :displayName="$t('RR0087')")
         filter-wrapper(iconName="ingredient" :displayName="$t('RR0021')" :dirty="filterDirty.contentList")
-          list(class="min-w-57.5 absolute z-10 top-full left-0 transform translate-y-2 bg-black-0")
+          list(class="min-w-57.5")
             overlay-scrollbar-container(class="max-h-72")
               list-item(
                 v-for="content in filterOptions.contentList"
@@ -72,12 +72,79 @@ div(class="grid" :class="{ 'border-b border-primary-thin': !isOpenFilterPanel }"
               )
                 p {{content.displayName}}
                 svg-icon(v-if="content.isSelected" iconName="done" size="20" class="text-brand")
-        filter-wrapper(iconName="pattern" :displayName="$t('RR0025')")
-        filter-wrapper(iconName="color-circle" :displayName="$t('RR0026')")
+        filter-wrapper(iconName="pattern" :displayName="$t('RR0025')" :dirty="filterDirty.pattern")
+          div(class="w-153 h-100.5 px-8 py-7.5 rounded card-shadow grid gap-y-2.5")
+            div(v-for="pattenGroup in filterOptions.patternList")
+              p(class="text-body1 font-bold text-primary border-b border-black-400 pb-2 mb-3") {{pattenGroup.key}}
+              div(class="grid grid-cols-5 gap-x-3 gap-y-5")
+                div(
+                  v-for="pattern in pattenGroup.list"
+                  class="w-25"
+                  @click="filterSingleSelectHandler('pattern', pattern.value)"
+                )
+                  div(class="h-15 rounded overflow-hidden" :class="{ 'border-2 border-brand': innerFilter.pattern === pattern.value }")
+                    img(class="w-full h-full" :src="pattern.img")
+                  p(class="text-body2 text-primary text-center pt-1.5") {{pattern.value}}
+        filter-wrapper(iconName="color-circle" :displayName="$t('RR0026')" :dirty="filterDirty.color")
+          div(class="w-82 h-56.5 px-8 py-7.5 rounded card-shadow grid grid-cols-4 grid-rows-3 gap-2")
+            div(
+              v-for="color in filterOptions.colorList"
+              class="w-15 h-12.5 rounded flex items-center justify-center"
+              :style="{ 'background-color': `${color.hex}`}"
+              @click="filterSingleSelectHandler('color', color.value)"
+            )
+              svg-icon(v-if="innerFilter.color === color.value" iconName="done" size="24" class="text-black-0")
         filter-wrapper(iconName="measure" :displayName="`${$t('RR0088')}/${$t('RR0015')}`")
         filter-wrapper(iconName="fabric_2" :displayName="`${$t('RR0023')}/${$t('RR0024')}`")
+          div(class="w-127 h-97 px-8 py-7.5 rounded card-shadow grid gap-y-7.5")
+            div(class="flex flex-col gap-y-5")
+              input-radio(
+                v-model:inputValue="currentYarnType"
+                :name="$t('RR0091')"
+                :value="YARN_TYPE.WOVEN"
+                size="20"
+              )
+              input-container(:label="$t('RR0023')")
+                div(class="flex items-center gap-x-3")
+                  input-text(
+                    v-model:textValue="innerFilter.wovenWarpYarnCount"
+                    :disabled="currentYarnType !== YARN_TYPE.WOVEN"
+                    class="w-50"
+                  )
+                  svg-icon(iconName="clear" size="20" class="text-primary")
+                  input-text(
+                    v-model:textValue="innerFilter.wovenWeftYarnCount"
+                    :disabled="currentYarnType !== YARN_TYPE.WOVEN"
+                    class="w-50"
+                  )
+              input-container(:label="$t('RR0024')")
+                div(class="flex items-center gap-x-3")
+                  input-text(
+                    v-model:textValue="innerFilter.warpDensity"
+                    :disabled="currentYarnType !== YARN_TYPE.WOVEN"
+                    class="w-50"
+                  )
+                  svg-icon(iconName="clear" size="20" class="text-primary")
+                  input-text(
+                    v-model:textValue="innerFilter.weftDensity"
+                    :disabled="currentYarnType !== YARN_TYPE.WOVEN"
+                    class="w-50"
+                  )
+            div(class="flex flex-col gap-y-5")
+              input-radio(
+                v-model:inputValue="currentYarnType"
+                :name="$t('RR0092')"
+                :value="YARN_TYPE.KNIT"
+                size="20"
+              )
+              input-text(
+                v-model:textValue="innerFilter.knitYarnCount"
+                :label="$t('RR0023')"
+                :disabled="currentYarnType !== YARN_TYPE.KNIT"
+                class="w-50"
+              )
         filter-wrapper(iconName="deal" :displayName="$t('RR0022')" :dirty="filterDirty.finishList")
-          list(class="min-w-57.5 absolute z-10 top-full left-0 transform translate-y-2 bg-black-0")
+          list(class="min-w-57.5")
             overlay-scrollbar-container(class="max-h-72")
               list-item(
                 v-for="finish in filterOptions.finishList"
@@ -90,7 +157,7 @@ div(class="grid" :class="{ 'border-b border-primary-thin': !isOpenFilterPanel }"
         filter-wrapper(iconName="stock" :displayName="$t('RR0093')")
         filter-wrapper(iconName="price" :displayName="$t('RR0094')")
         filter-wrapper(iconName="paper" :displayName="$t('RR0098')" :dirty="filterDirty.complete")
-          list(class="min-w-57.5 absolute z-10 top-full left-0 transform translate-y-2 bg-black-0")
+          list(class="min-w-57.5")
             overlay-scrollbar-container(class="max-h-72")
               list-item(
                 v-for="complete in filterOptions.completeList"
@@ -139,6 +206,12 @@ export default {
     const { isFocus, onFocus, onBlur, clear, typing, isEmpty } = useInput({ context, textValue })
     const isOpenFilterPanel = ref(false)
 
+    const YARN_TYPE = {
+      WOVEN: 0,
+      KNIT: 1
+    }
+    const currentYarnType = ref(0)
+
     const innerTagList = computed(() => {
       return props.tagList.map(tag => ({
         ...tag,
@@ -152,18 +225,20 @@ export default {
     })
 
     const filterOptions = computed(() => {
-      const filterOptionList = store.getters['code/filterOptionList']
+      const { contentList, finishList, colorList, patternList, completeList } = store.getters['code/filterOptionList']
 
       return {
-        contentList: filterOptionList.contentList.map(content => ({
+        contentList: contentList.map(content => ({
           ...content,
           isSelected: innerFilter.value.contentList.some(value => value === content.value)
         })),
-        finishList: filterOptionList.finishList.map(finish => ({
+        finishList: finishList.map(finish => ({
           ...finish,
           isSelected: innerFilter.value.finishList.some(value => value === finish.value)
         })),
-        completeList: filterOptionList.completeList
+        colorList,
+        patternList,
+        completeList
       }
     })
 
@@ -171,7 +246,9 @@ export default {
       return {
         contentList: innerFilter.value.contentList.length !== 0,
         finishList: innerFilter.value.finishList.length !== 0,
-        complete: !!innerFilter.value.complete
+        color: !!innerFilter.value.color,
+        complete: !!innerFilter.value.complete,
+        pattern: !!innerFilter.value.pattern
       }
     })
 
@@ -234,7 +311,9 @@ export default {
       filterMultipleSelectHandler,
       filterSingleSelectHandler,
       clearAllFilter,
-      filterDirty
+      filterDirty,
+      YARN_TYPE,
+      currentYarnType
     }
   }
 }
