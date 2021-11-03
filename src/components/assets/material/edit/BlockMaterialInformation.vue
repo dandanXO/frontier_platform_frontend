@@ -6,21 +6,6 @@ div(class="pb-15 border-b border-black-400")
   div
     div(class="flex")
       div(class="grid gap-y-7.5 flex-grow" :class="{ 'px-15': !isOpenSampleCard }")
-        div(v-if="!isEditMode" class="flex items-center")
-          input-switch(v-model:inputValue="material.isDoubleSideMaterial" name="Dobule-side")
-          div(v-if="!material.isDoubleSideMaterial" class="flex gap-x-1 pl-3.5")
-            input-radio(
-              v-model:inputValue="material.sideType"
-              :name="$t('DD0048')"
-              :value="SIDE_TYPE.FACE"
-              size="20"
-            )
-            input-radio(
-              v-model:inputValue="material.sideType"
-              :name="$t('DD0049')"
-              :value="SIDE_TYPE.BACK"
-              size="20"
-            )
         input-text(
           v-model:textValue="material.materialNo"
           :placeholder="$t('DD0015')"
