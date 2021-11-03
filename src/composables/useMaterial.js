@@ -1,11 +1,11 @@
 // import { useI18n } from 'vue-i18n'
 import { COVER_MODE, SIDE_TYPE, WEIGHT_UNIT } from '@/utils/constants.js'
-// import { computed } from '@vue/runtime-core'
+import { computed } from '@vue/runtime-core'
 import { ref } from 'vue'
 
 export default function useMaterial (material) {
   // const { t } = useI18n()
-  const { isDoubleSideMaterial, sideType, coverMode, faceSideImg, backSideImg, coverImg, weightUnit, weightOz, weightGsm, weightGy } = material
+  const { isDoubleSideMaterial, sideType, coverMode, faceSideImg, backSideImg, coverImg, weightUnit, weightOz, weightGsm, weightGy, warpYarnCount, weftYarnCount, warpDensity, weftDensity, width } = material
 
   const scanFaceSide = !!faceSideImg?.crop
   const scanBackSide = !!backSideImg?.crop
@@ -46,10 +46,28 @@ export default function useMaterial (material) {
     materialWeight.value += `(${weightGy} g/y)`
   }
 
+  const materialYarnCount = computed(() => {
+    if (warpYarnCount > 0 && weftYarnCount > 0) return `${warpYarnCount}X${weftYarnCount}`
+    else return ''
+  })
+
+  const materialDensity = computed(() => {
+    if (warpDensity > 0 && weftDensity > 0) return `${warpDensity}X${weftDensity}`
+    else return ''
+  })
+
+  const materialWidth = computed(() => {
+    if (width > 0) return `${width}"`
+    else return ''
+  })
+
   return {
     currentCoverImg,
     neverScanBefore,
     statusIconName,
-    materialWeight
+    materialWeight,
+    materialYarnCount,
+    materialDensity,
+    materialWidth
   }
 }
