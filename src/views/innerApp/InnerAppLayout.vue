@@ -41,12 +41,12 @@ div(class="fixed z-index:sidebar w-60 h-full left-0 top-0 bottom-0 bg-black-100 
       span(class="flex-grow text-body2 text-primary truncate line-height-1.4") {{orgUser.displayName}}
       svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650")
 main(class="ml-60 h-full" :class='{"overflow-hidden": modalPipeline.length > 0}')
-  router-view
+  router-view(v-if="isRouterAlive")
 </template>
 
 <script>
 import { useStore } from 'vuex'
-import { computed, reactive } from 'vue'
+import { ref, computed, reactive, nextTick, provide } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SidebarItem from '@/components/layout/SidebarItem.vue'
 
@@ -58,6 +58,14 @@ export default {
   setup () {
     const store = useStore()
     const { t } = useI18n()
+
+    const isRouterAlive = ref(true)
+    const reloadRootRoute = async () => {
+      isRouterAlive.value = false
+      await nextTick()
+      isRouterAlive.value = true
+    }
+    provide('reloadRootRoute', reloadRootRoute)
 
     const organization = computed(() => store.getters['organization/organization'])
     const orgUser = computed(() => store.getters['user/orgUser/orgUser'])
@@ -155,6 +163,7 @@ export default {
     })
 
     return {
+      isRouterAlive,
       menuGlobal,
       organization,
       menuOrgOrGroup,

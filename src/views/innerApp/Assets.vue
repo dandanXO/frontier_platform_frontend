@@ -12,7 +12,7 @@ div(class="w-full h-full flex flex-col")
     div
       h5(class="text-h5 font-bold text-primary") {{$t('EE0001')}}
         i18n-t(keypath="RR0068" tag='span' class='text-caption text-black-700 pl-1')
-          template(#number) {{materialList.length}}
+          template(#number) {{pagination.totalCount}}
     div(class="flex items-center gap-x-5")
       btn-functional(
         size='lg'
@@ -30,7 +30,7 @@ div(class="w-full h-full flex flex-col")
         row-item(v-show="!isGrid" v-for='(material, index) in materialList' :material='material')
           template(#divide)
             div(v-if='index !== materialList.length - 1' class='border-b my-5 mx-8')
-    div(v-else class="flex flex-col justify-center items-center -mt-50")
+    div(v-else class="flex flex-col justify-center items-center")
       svg-icon(v-if="isSearching" iconName="loading" size="92" class="text-brand")
       p(v-else-if="inSearch" class="text-center text-body2 text-primary") {{$t('Sorry ! No results found.')}}
       template(v-else)
@@ -38,7 +38,7 @@ div(class="w-full h-full flex flex-col")
           svg-icon(iconName="add" size="24" class="text-primary")
         p(class="text-body2 text-primary pt-3") {{$t('Create your first fabric')}}
     div(class="py-9.5 justify-self-center self-end")
-      pagination(v-model:currentPage="pagination.currentPage" :totalPage="pagination.totalPage" @goTo="getMaterialList($event)")
+      pagination(v-if="pagination.totalCount !== 0 && pagination.totalMatchCount !== 0" v-model:currentPage="pagination.currentPage" :totalPage="pagination.totalPage" @goTo="getMaterialList($event)")
 multi-select-menu
 </template>
 
