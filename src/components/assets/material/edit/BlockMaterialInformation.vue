@@ -185,8 +185,8 @@ export default {
     const isOpenSampleCard = ref(false)
     const options = reactive({
       contentList: computed(() => {
-        const originalContentList = store.getters['material/code'].contentList.slice(0, 10)
-        return originalContentList
+        return store.getters['material/code'].contentList
+          .slice(0, 20)
           .concat(newContentList)
       }),
       weightUnitList: computed(() => {
@@ -197,11 +197,13 @@ export default {
           }))
       }),
       descriptionList: computed(() => {
-        return store.getters['material/code'].descriptionList.slice(0, 10)
+        return store.getters['material/code'].descriptionList
+          .slice(0, 20)
           .concat(newDescriptionList)
       }),
       finishList: computed(() => {
-        return store.getters['material/code'].finishList.slice(0, 10)
+        return store.getters['material/code'].finishList
+          .slice(0, 20)
           .concat(newFinishList)
       })
     })
