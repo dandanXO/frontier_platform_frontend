@@ -84,7 +84,8 @@ export default {
       warpDensity: null,
       weftDensity: null,
       color: null,
-      pattern: null
+      pattern: null,
+      category: null
     }
     const filter = reactive({})
     let timer
@@ -100,10 +101,7 @@ export default {
     }
 
     const handleSelectAll = () => {
-      if (!isSelectAll.value) {
-        isSelectAll.value = true
-        store.commit('assets/SET_addedMaterialList', materialList.value)
-      }
+      store.commit('assets/SET_addedMaterialList', JSON.parse(JSON.stringify(materialList.value)))
     }
 
     const getMaterialList = async (targetPage = 1) => {
@@ -142,7 +140,7 @@ export default {
         clearTimeout(timer)
         timer = undefined
         if (keyword.value !== '') {
-          timer = setTimeout(getAITags, 500)
+          timer = setTimeout(getAITags, 300)
         } else {
           tagList.value.length = 0
           selectedTagList.value.length = 0

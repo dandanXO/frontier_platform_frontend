@@ -1,16 +1,17 @@
 <template lang="pug">
-div(v-if='addedMaterialList.length > 0' class='fixed z-100 bottom-5 inset-x-0 w-fit m-auto px-15 py-7.5 bg-black-0 rounded-full menu-shadow text-body2 text-primary flex justify-center items-center')
-  svg-icon(iconName='cancel' size='24' class='text-black-400 mr-4 cursor-pointer' @click='clearList')
-  i18n-t(keypath="RR0073" tag='div' class='mr-7.5')
-    template(#number) {{addedMaterialList.length}}
-  div(class='flex flex-col gap-5')
-    div(v-for='block in options' class='flex')
-      div(
-        v-for='(option,index) in block'
-        class='whitespace-nowrap cursor-pointer hover:text-brand'
-        :class='{"border-r mr-5 pr-5": index !== block.length-1}'
-        @click='handleClick(option)'
-      ) {{option.name}}
+div(class='fixed z-100 bottom-20.5 inset-x-0 ml-60')
+  div(v-if='addedMaterialList.length > 0' class='m-auto w-fit px-15 py-7.5 bg-black-0 rounded-full menu-shadow text-body2 text-primary flex justify-center items-center')
+    svg-icon(iconName='cancel' size='24' class='text-black-400 mr-4 cursor-pointer' @click='clearList')
+    i18n-t(keypath="RR0073" tag='div' class='mr-7.5')
+      template(#number) {{addedMaterialList.length}}
+    div(class='flex flex-col gap-5')
+      div(v-for='block in options' class='flex')
+        div(
+          v-for='(option,index) in block'
+          class='whitespace-nowrap cursor-pointer hover:text-brand'
+          :class='{"border-r mr-5 pr-5": index !== block.length-1}'
+          @click='handleClick(option)'
+        ) {{option.name}}
 </template>
 
 <script>

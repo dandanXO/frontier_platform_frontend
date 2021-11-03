@@ -165,7 +165,11 @@ const routes = [
       {
         path: 'assets',
         name: 'OrgAssets',
-        component: () => import('@/views/innerApp/Assets.vue')
+        component: () => import('@/views/innerApp/Assets.vue'),
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('code/getFilterOptions')
+          next()
+        }
       },
       {
         path: 'assets/upload',

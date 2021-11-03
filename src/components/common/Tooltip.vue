@@ -69,7 +69,7 @@ div(class="w-fit" v-click-away="clickAway")
   )
     slot(name='trigger' :isActive="isActive")
   div(ref="tooltip" role="tooltip" class="z-100 rounded bg-black-0" :class="{'hidden': !isActive}")
-    slot(name="content")
+    slot(name="content" :isActive="isActive")
     div(v-if="showArrow" id="arrow" data-popper-arrow)
 </template>
 
@@ -121,7 +121,8 @@ export default {
       default: false
     }
   },
-  setup (props) {
+  emits: ['show', 'hide'],
+  setup (props, { emit }) {
     const isActive = ref(false)
     const trigger = ref(null)
     const tooltip = ref(null)
@@ -148,6 +149,7 @@ export default {
           { name: 'eventListeners', enabled: true }
         ]
       }))
+      emit('show')
     }
 
     const hideTooltip = () => {
@@ -160,6 +162,7 @@ export default {
           { name: 'eventListeners', enabled: false }
         ]
       }))
+      emit('hide')
     }
 
     const clickAway = () => {

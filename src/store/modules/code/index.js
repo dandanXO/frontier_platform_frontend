@@ -129,6 +129,10 @@ const actions = {
     const { data } = await codeApi.getRoleLimitTable()
     dispatch('handleResponseData', { data }, { root: true })
   },
+  async getFilterOptions ({ dispatch }) {
+    const { data } = await codeApi.getFilterOptions()
+    dispatch('handleResponseData', { data }, { root: true })
+  },
   async getAITags (_, { searchKeyword }) {
     const { data } = await codeApi.getAITags({ searchKeyword })
     return data.result?.tagList

@@ -4,6 +4,8 @@ tooltip(
   :manual='true'
   :showArrow='false'
   :offset='[0, 8]'
+  @show="$emit('show')"
+  @hide="$emit('hide')"
 )
   template(#trigger="{ isActive }")
     div(class="flex items-center gap-x-1 p-1.5 border rounded-lg cursor-pointer" :class="[ isActive || dirty ? 'border-primary' : 'border-black-400' ]")
@@ -30,6 +32,7 @@ export default {
       type: Boolean,
       default: false
     }
-  }
+  },
+  emits: ['show', 'hide']
 }
 </script>

@@ -23,7 +23,7 @@ export default {
       const base = ['flex', 'items-center', 'rounded-full', 'whitespace-nowrap', 'cursor-pointer']
 
       return props.size === 'lg'
-        ? [...base, 'h-8.5', 'px-5', 'bg-black-800', 'hover:bg-primary', 'text-black-0']
+        ? [...base, 'h-8.5', 'px-5', 'bg-black-600', 'hover:bg-primary', 'text-black-0']
         : [...base, '']
     })
 
