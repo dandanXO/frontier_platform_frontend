@@ -131,6 +131,13 @@ div(class="pb-15 border-b border-black-400")
           :placeholder="$t('DD0018')"
           class="relative z-9"
         )
+        input-chips(
+          v-if="isEditMode"
+          v-model:chips="material.aiTagList"
+          :label="$t('RR0071')"
+          :placeholder="$t('DD0018')"
+          class="relative z-9"
+        )
       div(v-if="isOpenSampleCard" class="w-75 h-75 bg-black-200 ml-8 sticky top-0")
     div(class="bg-black-100 px-15 py-12.5 mt-7.5 grid gap-y-7.5")
       h6(class="text-h6 text-black-600 font-bold") {{$t('DD0019')}}
