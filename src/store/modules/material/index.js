@@ -145,8 +145,12 @@ const mutations = {
 }
 
 const actions = {
-  setMaterial ({ state }, data) {
+  setMaterial ({ state, commit }, data) {
     setVuexState(state, data)
+
+    if (data.contentList && data.contentList.length === 0) {
+      commit('ADD_content_item')
+    }
   },
   resetMaterial ({ commit }) {
     commit('RESET_material')
