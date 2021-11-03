@@ -15,8 +15,9 @@ const mutations = {
   CLEAR_addedMaterialList (state) {
     state.addedMaterialList.length = 0
   },
-  SET_addedMaterialList (state, value) {
-    state.addedMaterialList = value
+  SET_addedMaterialList (state, list) {
+    const ids = new Set(state.addedMaterialList.map(org => org.materialId))
+    state.addedMaterialList = [...state.addedMaterialList, ...list.filter(newAdd => !ids.has(newAdd.materialId))]
   }
 }
 

@@ -40,7 +40,7 @@ div(class="fixed z-index:sidebar w-60 h-full left-0 top-0 bottom-0 bg-black-100 
       img(:src="orgUser.avatar" class="rounded-full w-8 h-8 mr-2")
       span(class="flex-grow text-body2 text-primary truncate line-height-1.4") {{orgUser.displayName}}
       svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650")
-main(class="ml-60 h-full")
+main(class="ml-60 h-full" :class='{"overflow-hidden": modalPipeline.length > 0}')
   router-view
 </template>
 
@@ -61,6 +61,7 @@ export default {
 
     const organization = computed(() => store.getters['organization/organization'])
     const orgUser = computed(() => store.getters['user/orgUser/orgUser'])
+    const modalPipeline = computed(() => store.getters['helper/modalPipeline'])
 
     const menuGlobal = reactive([
       {
@@ -157,7 +158,8 @@ export default {
       menuGlobal,
       organization,
       menuOrgOrGroup,
-      orgUser
+      orgUser,
+      modalPipeline
     }
   }
 }
