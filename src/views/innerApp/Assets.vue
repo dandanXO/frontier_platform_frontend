@@ -26,11 +26,20 @@ div(class="w-full h-full flex flex-col")
       ) {{$t('reuse.create')}}
   div(class="overflow-y-auto flex-grow grid")
     template(v-if="!isSearching && sortedMaterialList.length > 0")
-      div(:class="[isGrid ? 'grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5' : 'grid']")
-        grid-item(v-show="isGrid" v-for='material in sortedMaterialList' :key="material.materialId" :material='material')
-        row-item(v-show="!isGrid" v-for='(material, index) in sortedMaterialList' :key="material.materialId" :material='material')
+      recycle-scroller(
+        v-show="!isGrid"
+        class="grid"
+        :items="sortedMaterialList"
+        key-field="materialId"
+        :item-size="375"
+        v-slot="{ item, index }"
+        pageMode
+      )
+        row-item(:key="item.materialId" :material='item')
           template(#divide)
             div(v-if='index !== sortedMaterialList.length - 1' class='border-b my-5 mx-8')
+      div(v-show="isGrid" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5")
+        grid-item(v-for='material in sortedMaterialList' :key="material.materialId" :material='material')
     div(v-else class="flex flex-col justify-center items-center")
       svg-icon(v-if="isSearching" iconName="loading" size="92" class="text-brand")
       p(v-else-if="inSearch" class="text-center text-body2 text-primary") {{$t('Sorry ! No results found.')}}
@@ -56,10 +65,14 @@ import SearchBox from '@/components/layout/SearchBox.vue'
 import Pagination from '@/components/layout/Pagination.vue'
 import BtnSort from '@/components/layout/BtnSort.vue'
 import { useRoute, useRouter } from 'vue-router'
+import { RecycleScroller } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+// https://github.com/Akryum/vue-virtual-scroller/tree/next/packages/vue-virtual-scroller
 
 export default {
   name: 'Assets',
   components: {
+    RecycleScroller,
     RowItem,
     GridItem,
     GridOrRow,
