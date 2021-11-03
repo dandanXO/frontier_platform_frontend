@@ -38,14 +38,13 @@ export default {
   setup () {
     const { t } = useI18n()
     const store = useStore()
-    const { location } = useNavigation()
-    const { validations, validate, goToAssets } = useMaterialValidation()
+    const { location, goToAssets } = useNavigation()
+    const { validations, validate } = useMaterialValidation()
 
     store.dispatch('material/getMaterialOptions', { location: location.value })
 
     const updateMaterial = async () => {
       await store.dispatch('material/updateMaterial', { location: location.value })
-      await store.dispatch('assets/getMaterialList', { location: location.value })
       store.dispatch('helper/clearModalPipeline')
       goToAssets()
     }
