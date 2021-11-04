@@ -43,7 +43,7 @@ export default {
       default: 'value'
     },
     value: {
-      type: [String, Number, Boolean]
+      validator: () => true
     },
     closeAfterOutsideClick: {
       type: Boolean,
