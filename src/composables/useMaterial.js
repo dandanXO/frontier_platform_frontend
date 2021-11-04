@@ -1,11 +1,9 @@
-// import { useI18n } from 'vue-i18n'
 import { COVER_MODE, SIDE_TYPE, WEIGHT_UNIT } from '@/utils/constants.js'
-// import { computed } from '@vue/runtime-core'
+import { computed } from '@vue/runtime-core'
 import { ref } from 'vue'
 
 export default function useMaterial (material) {
-  // const { t } = useI18n()
-  const { isDoubleSideMaterial, sideType, coverMode, faceSideImg, backSideImg, coverImg, weightUnit, weightOz, weightGsm, weightGy } = material
+  const { isDoubleSideMaterial, sideType, coverMode, faceSideImg, backSideImg, coverImg, weightUnit, weightOz, weightGsm, weightGy, warpYarnCount, weftYarnCount, warpDensity, weftDensity, width } = material
 
   const scanFaceSide = !!faceSideImg?.crop
   const scanBackSide = !!backSideImg?.crop
@@ -13,7 +11,6 @@ export default function useMaterial (material) {
   const currentCoverImg = ref(require('@/assets/images/default_material.png'))
   const neverScanBefore = ref(true)
   const statusIconName = ref('front')
-  const materialWeight = ref('')
 
   if (coverMode === COVER_MODE.FACE && scanFaceSide) {
     currentCoverImg.value = faceSideImg.crop
@@ -36,20 +33,32 @@ export default function useMaterial (material) {
     else if (sideType === SIDE_TYPE.BACK) statusIconName.value = scanBackSide ? 'back' : 'no-image-back'
   }
 
-  if (weightUnit === WEIGHT_UNIT.GSM) {
-    materialWeight.value = `${weightGsm} g/m^2(${weightOz} oz/y^2)`
-  } else if (weightUnit === WEIGHT_UNIT.OZ) {
-    materialWeight.value = `${weightOz} oz/y^2(${weightGsm} g/m^2)`
-  }
+  const square = String.fromCodePoint(0xB2)
+  const materialWeight = computed(() => {
+    let html = ''
+    if (weightUnit === WEIGHT_UNIT.GSM) {
+      html = weightGsm ? `${weightGsm} g/m${square}(${weightOz} oz/y${square})` : ''
+    } else if (weightUnit === WEIGHT_UNIT.OZ) {
+      html = weightOz ? `${weightOz} oz/y${square}(${weightGsm} g/m${square})` : ''
+    }
 
-  if (weightGy) {
-    materialWeight.value += `(${weightGy} g/y)`
-  }
+    if (weightGy) {
+      html += `(${weightGy} g/y)`
+    }
+    return html
+  })
+
+  const materialYarnCount = computed(() => warpYarnCount > 0 && weftYarnCount > 0 ? `${warpYarnCount}X${weftYarnCount}` : '')
+  const materialDensity = computed(() => warpDensity > 0 && weftDensity > 0 ? `${warpDensity}X${weftDensity}` : '')
+  const materialWidth = computed(() => width > 0 ? `${width}"` : '')
 
   return {
     currentCoverImg,
     neverScanBefore,
     statusIconName,
-    materialWeight
+    materialWeight,
+    materialYarnCount,
+    materialDensity,
+    materialWidth
   }
 }

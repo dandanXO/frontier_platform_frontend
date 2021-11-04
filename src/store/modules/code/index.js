@@ -1,12 +1,91 @@
 import codeApi from '@/apis/code'
 import setVuexState from '@/utils/set-vuex-state'
-import { ROLE_ID } from '@/utils/constants'
+import { ROLE_ID, FILTER_COMPLETE } from '@/utils/constants'
+
+const filterCompleteList = Object
+  .keys(FILTER_COMPLETE)
+  .map(key => ({ ...FILTER_COMPLETE[key] }))
 
 const state = () => ({
   countryList: [],
   orgCategoryList: [],
   roleList: [],
-  roleLimit: []
+  roleLimit: [],
+  filter: {
+    categoryList: [
+      {
+        key: 'Woven',
+        list: [
+          {
+            displayName: 'satin',
+            value: 'satin,satten'
+          }
+        ]
+      },
+      {
+        key: 'Knit',
+        list: [
+          'chiffon',
+          'dobby'
+        ]
+      }
+    ],
+    contentList: [
+      {
+        displayName: 'satin',
+        value: 'satin,satten'
+      },
+      {
+        displayName: 'Cotton',
+        value: 'Cotton,Cotton'
+      }
+    ],
+    patternList: [
+      {
+        key: 'Solid',
+        list: [
+          {
+            value: 'Solid',
+            img: 'http://s3/aa.jpg'
+          }
+        ]
+      },
+      {
+        key: 'Pattern',
+        list: [
+          {
+            value: 'Floral1',
+            img: 'http://s3/aa.jpg'
+          },
+          {
+            value: 'Floral',
+            img: 'http://s3/aa.jpg'
+          }
+        ]
+      }
+    ],
+    colorList: [
+      {
+        value: 'Red',
+        hex: '#123356'
+      },
+      {
+        value: 'Green',
+        hex: '#123456'
+      }
+    ],
+    finishList: [
+      {
+        displayName: 'satin',
+        value: 'satin,satten'
+      },
+      {
+        displayName: 'Cotton',
+        value: 'Cotton,Cotton'
+      }
+    ],
+    completeList: filterCompleteList
+  }
 })
 
 const getters = {
@@ -26,7 +105,8 @@ const getters = {
         roleId
       }))
   },
-  orgCategoryList: (state) => state.orgCategoryList
+  orgCategoryList: (state) => state.orgCategoryList,
+  filterOptionList: (state) => state.filter
 }
 
 const actions = {
@@ -48,6 +128,14 @@ const actions = {
   async getRoleLimitTable ({ dispatch }) {
     const { data } = await codeApi.getRoleLimitTable()
     dispatch('handleResponseData', { data }, { root: true })
+  },
+  async getFilterOptions ({ dispatch }) {
+    const { data } = await codeApi.getFilterOptions()
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async getAITags (_, { searchKeyword }) {
+    const { data } = await codeApi.getAITags({ searchKeyword })
+    return data.result?.tagList
   }
 }
 

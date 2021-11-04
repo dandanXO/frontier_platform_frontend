@@ -65,11 +65,11 @@ div(class="w-fit" v-click-away="clickAway")
     aria-describedby="tooltip"
     @mouseenter="manual ? '' : showTooltip()"
     @mouseleave="manual ? '' : hideTooltip()"
-    @click="manual ? showTooltip() : ''"
+    @click="handleClick"
   )
-    slot
-  div(ref="tooltip" role="tooltip" class="z-100 rounded bg-black-0" :class="{'hidden': !show}")
-    slot(name="content")
+    slot(name='trigger' :isActive="isActive")
+  div(ref="tooltip" role="tooltip" class="z-100 rounded bg-black-0" :class="{'hidden': !isActive}")
+    slot(name="content" :isActive="isActive")
     div(v-if="showArrow" id="arrow" data-popper-arrow)
 </template>
 
@@ -92,9 +92,17 @@ export default {
         return [
           'auto',
           'top',
+          'top-start',
+          'top-end',
           'bottom',
+          'bottom-start',
+          'bottom-end',
           'right',
-          'left'
+          'right-start',
+          'right-end',
+          'left',
+          'left-start',
+          'left-end'
         ].includes(value)
       }
     },
@@ -113,8 +121,9 @@ export default {
       default: false
     }
   },
-  setup (props) {
-    const show = ref(false)
+  emits: ['show', 'hide'],
+  setup (props, { emit }) {
+    const isActive = ref(false)
     const trigger = ref(null)
     const tooltip = ref(null)
     let popperInstance = reactive({})
@@ -131,7 +140,7 @@ export default {
     }
 
     const showTooltip = () => {
-      show.value = true
+      isActive.value = true
 
       popperInstance.setOptions((options) => ({
         ...options,
@@ -140,10 +149,11 @@ export default {
           { name: 'eventListeners', enabled: true }
         ]
       }))
+      emit('show')
     }
 
     const hideTooltip = () => {
-      show.value = false
+      isActive.value = false
 
       popperInstance.setOptions((options) => ({
         ...options,
@@ -152,10 +162,18 @@ export default {
           { name: 'eventListeners', enabled: false }
         ]
       }))
+      emit('hide')
     }
 
     const clickAway = () => {
       props.manual && hideTooltip()
+    }
+
+    const handleClick = () => {
+      if (!props.manual) return
+
+      if (isActive.value) hideTooltip()
+      else showTooltip()
     }
 
     onMounted(() => {
@@ -165,10 +183,11 @@ export default {
     return {
       trigger,
       tooltip,
-      show,
+      isActive,
       showTooltip,
       hideTooltip,
-      clickAway
+      clickAway,
+      handleClick
     }
   }
 }

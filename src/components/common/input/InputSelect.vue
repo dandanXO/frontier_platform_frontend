@@ -10,8 +10,8 @@ input-container(:required="required")
   )
     template(#displayItem="{ isExpand, currentIndex, option }")
       div(
-        class="px-4 border-black-400 border rounded flex items-center"
-        :class="[size === 'lg' ? 'h-11' : 'h-9'], { 'bg-primary-thin': disabled }"
+        class="px-4 border rounded flex items-center"
+        :class="[isExpand ? 'border-primary' : 'border-black-400', size === 'lg' ? 'h-11' : 'h-9'], { 'bg-primary-thin': disabled, }"
       )
         div(v-if="prependIcon !== ''" class="pr-1")
           slot(name="prependIcon")
@@ -53,8 +53,8 @@ export default {
   name: 'InputSelect',
   props: {
     selectValue: {
-      type: [String, Number],
-      required: true
+      required: true,
+      validator: () => true
     },
     size: {
       type: String,

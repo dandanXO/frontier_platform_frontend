@@ -49,6 +49,9 @@
   .#{$prefix}m-#{$className} {
     margin: ($i * 0.125) + rem;
   }
+  .#{$prefix}-mt-#{$className} {
+    margin-top: -($i * 0.125) + rem;
+  }
   .#{$prefix}mt-#{$className} {
     margin-top: ($i * 0.125) + rem;
   }

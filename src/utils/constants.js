@@ -1,3 +1,5 @@
+import i18n from '@/utils/i18n'
+
 export const ROLE_ID = {
   OWNER: 1,
   ADMIN: 2,
@@ -65,4 +67,31 @@ export const U3M_STATUS = {
   PROCESSING: 1,
   COMPLETED: 2,
   FAIL: 99
+}
+
+export const FILTER_COMPLETE = {
+  NOT_IN_WORKSPACE: {
+    text: i18n.global.t('RR0099'),
+    code: 1
+  },
+  WITH_U3M: {
+    text: i18n.global.t('RR0100'),
+    code: 2
+  },
+  WITHOUT_U3M: {
+    text: i18n.global.t('RR0101'),
+    code: 3
+  },
+  NO_SCAN_IMG: {
+    text: i18n.global.t('RR0102'),
+    code: 4
+  },
+  NO_IMG: {
+    text: i18n.global.t('RR0103'),
+    code: 5
+  },
+  WITH_REQUIRED_FIELDS: {
+    text: i18n.global.t('RR0104'),
+    code: 6
+  }
 }

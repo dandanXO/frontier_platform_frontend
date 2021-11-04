@@ -11,7 +11,7 @@ div(class="relative")
         div(class="flex flex-col gap-y-2 text-primary")
           p(class="text-body2 line-height-1.6") {{$t('DD0004')}}
           p(class="text-body1 font-bold") {{uploadMaterialEmail}}
-          a(class="text-assist-blue underline flex items-center gap-x-1") {{$t('reuse.printBackQRCode')}}
+          a(class="text-assist-blue underline flex items-center gap-x-1") {{$t('UU0007')}}
             svg-icon(iconName="info_outline" size="14" class="text-primary")
       div(class="flex gap-x-7.5 text-primary")
         h5(class="text-h5 font-bold whitespace-nowrap") {{$t('DD0005')}}

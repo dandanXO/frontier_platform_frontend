@@ -6,21 +6,6 @@ div(class="pb-15 border-b border-black-400")
   div
     div(class="flex")
       div(class="grid gap-y-7.5 flex-grow" :class="{ 'px-15': !isOpenSampleCard }")
-        div(v-if="!isEditMode" class="flex items-center")
-          input-switch(v-model:inputValue="material.isDoubleSideMaterial" name="Dobule-side")
-          div(v-if="!material.isDoubleSideMaterial" class="flex gap-x-1 pl-3.5")
-            input-radio(
-              v-model:inputValue="material.sideType"
-              :name="$t('DD0048')"
-              :value="SIDE_TYPE.FACE"
-              size="20"
-            )
-            input-radio(
-              v-model:inputValue="material.sideType"
-              :name="$t('DD0049')"
-              :value="SIDE_TYPE.BACK"
-              size="20"
-            )
         input-text(
           v-model:textValue="material.materialNo"
           :placeholder="$t('DD0015')"
@@ -146,6 +131,13 @@ div(class="pb-15 border-b border-black-400")
           :placeholder="$t('DD0018')"
           class="relative z-9"
         )
+        input-chips(
+          v-if="isEditMode"
+          v-model:chips="material.aiTagList"
+          :label="$t('RR0071')"
+          :placeholder="$t('DD0018')"
+          class="relative z-9"
+        )
       div(v-if="isOpenSampleCard" class="w-75 h-75 bg-black-200 ml-8 sticky top-0")
     div(class="bg-black-100 px-15 py-12.5 mt-7.5 grid gap-y-7.5")
       h6(class="text-h6 text-black-600 font-bold") {{$t('DD0019')}}
@@ -185,8 +177,8 @@ export default {
     const isOpenSampleCard = ref(false)
     const options = reactive({
       contentList: computed(() => {
-        const originalContentList = store.getters['material/code'].contentList.slice(0, 10)
-        return originalContentList
+        return store.getters['material/code'].contentList
+          .slice(0, 20)
           .concat(newContentList)
       }),
       weightUnitList: computed(() => {
@@ -197,11 +189,13 @@ export default {
           }))
       }),
       descriptionList: computed(() => {
-        return store.getters['material/code'].descriptionList.slice(0, 10)
+        return store.getters['material/code'].descriptionList
+          .slice(0, 20)
           .concat(newDescriptionList)
       }),
       finishList: computed(() => {
-        return store.getters['material/code'].finishList.slice(0, 10)
+        return store.getters['material/code'].finishList
+          .slice(0, 20)
           .concat(newFinishList)
       })
     })

@@ -16,7 +16,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
           div(class="w-full h-75 rounded overflow-hidden")
             template(v-if="!!imageList[currentDisplayIndex].src")
               img(class="w-full h-full" :src="imageList[currentDisplayIndex].src")
-            div(class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-h4 font-bold text-black-400") {{$t('No image')}}
+            div(class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-h4 font-bold text-black-400") {{$t('RR0103')}}
           div(class="grid grid-flow-col gap-x-2 justify-start pt-2 pb-6")
             div(v-for="(image, index) in imageList" @click="currentDisplayIndex = index")
               div(class="w-13 h-13 rounded overflow-hidden border border-black-400 bg-black-200")
@@ -41,15 +41,23 @@ div(class="pb-15 mb-5 border-b border-black-400")
           )
           div(class="grid gap-y-3")
             div(v-for="pantone in material.pantoneList" class="flex items-center gap-x-3")
-              div(class="rounded w-5.5 h-5.5" :style="{ 'background-color': `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }")
+              tooltip(placement="right")
+                template(#trigger)
+                  div(class="rounded w-5.5 h-5.5" :style="{ 'background-color': `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }")
+                template(#content)
+                  div(class="w-30 h-11 relative")
+                    div(class="w-30 h-30 absolute -top-29 rounded-t" :style="{ 'background-color': `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }")
+                    div(class="p-2 text-primary text-caption font-bold")
+                      div(class="pb-1") {{pantone.name}}
+                      div {{pantone.majorColorName}}
               p(class="text-body2 text-primary") {{pantone.name}}
               svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removePantone(pantone.materialPantoneId)")
         div
           h5(class="text-h5 font-bold text-primary pb-3") {{$t('EE0016')}}
           template(v-if="material.u3m.status === U3M_STATUS.UNQUALIFIED")
             p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0020')}}
-              tooltip(placement="top" class="pl-1")
-                svg-icon(iconName="info_outline")
+              tooltip(placement="top" class="pl-1" :manual='true')
+                svg-icon(iconName="info_outline" class='cursor-pointer')
                 template(#content)
                   div(class="p-5 w-68.5")
                     span(class="line-height-1.6") {{$t('EE0021')}}
@@ -64,7 +72,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
           template(v-if="material.u3m.status === U3M_STATUS.COMPLETED")
             p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0018')}} &nbsp
               span(class="text-assist-blue underline cursor-pointer") {{$t('UU0005')}}
-            btn(size="md") {{$t('UU0006')}}
+            btn(size="md" @click='openModalViewer') {{$t('UU0006')}}
           template(v-if="material.u3m.status === U3M_STATUS.FAIL")
             p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0024')}}
               tooltip(placement="top" class="pl-1")
@@ -204,6 +212,17 @@ export default {
       })
     }
 
+    const openModalViewer = () => {
+      store.dispatch('helper/pushModal', {
+        component: 'modal-viewer',
+        header: t('UU0006'),
+        properties: {
+          baseImgUrl: material.value.u3m.baseImgUrl,
+          normalImgUrl: material.value.u3m.normalImgUrl
+        }
+      })
+    }
+
     watch(
       () => pantoneName.value,
       () => {
@@ -223,6 +242,7 @@ export default {
       U3M_STATUS,
       pushModalHowToScan,
       pushModalChangeCover,
+      openModalViewer,
       statusIconName
     }
   }

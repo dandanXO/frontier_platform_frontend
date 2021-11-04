@@ -8,8 +8,8 @@ div(class='grid grid-rows-4 grid-cols-2 gap-x-14')
     div(class='flex justify-between pb-2 border-b-2 mb-3')
       div(class='text-body1 font-bold text-primary') {{block.title}}
       btn-functional(@click='handleEdit(block.id)') {{$t('UU0027')}}
-    div(class='grid gap-4')
-      div(v-for='item in block.column' class='line-clamp-1') {{item.name}} : {{item.value}}
+    div(class='grid gap-3')
+      div(v-for='item in block.column' class='text-body2 line-clamp-1') {{item.name}} : {{item.value}}
 </template>
 
 <script>
@@ -26,10 +26,10 @@ export default {
   },
   setup (props) {
     const { t } = useI18n()
-    const { materialWeight } = useMaterial(props.material)
+    const { materialWeight, materialYarnCount, materialDensity, materialWidth } = useMaterial(props.material)
 
     const structure = computed(() => {
-      const { content, pattern, color, width, finish, warpYarnCount, weftYarnCount, warpDensity, weftDensity, totalInventoryQty, publicPrice, publicTagList, aiTagList, privateTagList } = props.material
+      const { content, pattern, color, finish, totalInventoryQty, publicPrice, publicTagList, aiTagList, privateTagList } = props.material
 
       return [
         {
@@ -37,12 +37,12 @@ export default {
           title: t('EE0002'),
           column: [
             { name: t('RR0021'), value: content },
-            { name: t('RR0023'), value: warpYarnCount && `${warpYarnCount}*${weftYarnCount}` },
-            { name: t('RR0024'), value: warpDensity && `${warpDensity}*${weftDensity}` },
+            { name: t('RR0023'), value: materialYarnCount.value },
+            { name: t('RR0024'), value: materialDensity.value },
             { name: t('RR0025'), value: pattern },
             { name: t('RR0026'), value: color },
             { name: t('RR0015'), value: materialWeight.value },
-            { name: t('RR0019'), value: width },
+            { name: t('RR0019'), value: materialWidth.value },
             { name: t('RR0022'), value: finish }
           ],
           class: 'row-span-4'
