@@ -34,17 +34,21 @@ div(class="w-full h-full flex flex-col")
       ) {{$t('reuse.create')}}
   div(class="overflow-y-auto flex-grow grid")
     template(v-if="!isSearching && sortedMaterialList.length > 0")
-      recycle-scroller(
+      dynamic-scroller(
         v-show="!isGrid"
-        class="grid"
         :items="sortedMaterialList"
+        :min-item-size="364"
         key-field="materialId"
-        :item-size="375"
-        v-slot="{ item, index }"
         pageMode
       )
-        row-item(:key="item.materialId" :material='item')
-        div(v-if='index !== sortedMaterialList.length - 1' class='border-b mx-7.5 mt-5.5')
+        template(v-slot='{ item, index, active }')
+          dynamic-scroller-item(
+            :item="item"
+            :active="active"
+            :data-index="index"
+          )
+            row-item(:key="item.materialId" :material='item')
+            div(v-if='index !== sortedMaterialList.length - 1' class='border-b mx-7.5 my-5.5')
       div(v-show="isGrid" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5")
         grid-item(v-for='material in sortedMaterialList' :key="material.materialId" :material='material')
     div(v-else class="flex flex-col justify-center items-center")
@@ -72,14 +76,15 @@ import SearchBox from '@/components/layout/SearchBox.vue'
 import Pagination from '@/components/layout/Pagination.vue'
 import BtnSort from '@/components/layout/BtnSort.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { RecycleScroller } from 'vue-virtual-scroller'
+import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 // https://github.com/Akryum/vue-virtual-scroller/tree/next/packages/vue-virtual-scroller
 
 export default {
   name: 'Assets',
   components: {
-    RecycleScroller,
+    DynamicScroller,
+    DynamicScrollerItem,
     RowItem,
     GridItem,
     GridOrRow,
