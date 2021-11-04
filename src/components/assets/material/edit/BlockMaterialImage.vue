@@ -48,8 +48,8 @@ div(class="pb-15 mb-5 border-b border-black-400")
           h5(class="text-h5 font-bold text-primary pb-3") {{$t('EE0016')}}
           template(v-if="material.u3m.status === U3M_STATUS.UNQUALIFIED")
             p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0020')}}
-              tooltip(placement="top" class="pl-1")
-                svg-icon(iconName="info_outline")
+              tooltip(placement="top" class="pl-1" :manual='true')
+                svg-icon(iconName="info_outline" class='cursor-pointer')
                 template(#content)
                   div(class="p-5 w-68.5")
                     span(class="line-height-1.6") {{$t('EE0021')}}
@@ -64,7 +64,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
           template(v-if="material.u3m.status === U3M_STATUS.COMPLETED")
             p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0018')}} &nbsp
               span(class="text-assist-blue underline cursor-pointer") {{$t('UU0005')}}
-            btn(size="md") {{$t('UU0006')}}
+            btn(size="md" @click='openModalViewer') {{$t('UU0006')}}
           template(v-if="material.u3m.status === U3M_STATUS.FAIL")
             p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0024')}}
               tooltip(placement="top" class="pl-1")
@@ -204,6 +204,17 @@ export default {
       })
     }
 
+    const openModalViewer = () => {
+      store.dispatch('helper/pushModal', {
+        component: 'modal-viewer',
+        header: t('UU0006'),
+        properties: {
+          baseImgUrl: material.value.u3m.baseImgUrl,
+          normalImgUrl: material.value.u3m.normalImgUrl
+        }
+      })
+    }
+
     watch(
       () => pantoneName.value,
       () => {
@@ -223,6 +234,7 @@ export default {
       U3M_STATUS,
       pushModalHowToScan,
       pushModalChangeCover,
+      openModalViewer,
       statusIconName
     }
   }
