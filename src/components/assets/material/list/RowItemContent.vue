@@ -26,10 +26,10 @@ export default {
   },
   setup (props) {
     const { t } = useI18n()
-    const { materialWeight } = useMaterial(props.material)
+    const { materialWeight, materialYarnCount, materialDensity, materialWidth } = useMaterial(props.material)
 
     const structure = computed(() => {
-      const { content, pattern, color, width, finish, warpYarnCount, weftYarnCount, warpDensity, weftDensity, totalInventoryQty, publicPrice, publicTagList, aiTagList, privateTagList } = props.material
+      const { content, pattern, color, finish, totalInventoryQty, publicPrice, publicTagList, aiTagList, privateTagList } = props.material
 
       return [
         {
@@ -37,12 +37,12 @@ export default {
           title: t('EE0002'),
           column: [
             { name: t('RR0021'), value: content },
-            { name: t('RR0023'), value: warpYarnCount && `${warpYarnCount}*${weftYarnCount}` },
-            { name: t('RR0024'), value: warpDensity && `${warpDensity}*${weftDensity}` },
+            { name: t('RR0023'), value: materialYarnCount.value },
+            { name: t('RR0024'), value: materialDensity.value },
             { name: t('RR0025'), value: pattern },
             { name: t('RR0026'), value: color },
             { name: t('RR0015'), value: materialWeight.value },
-            { name: t('RR0019'), value: width },
+            { name: t('RR0019'), value: materialWidth.value },
             { name: t('RR0022'), value: finish }
           ],
           class: 'row-span-4'

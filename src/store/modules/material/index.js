@@ -151,6 +151,9 @@ const actions = {
     if (data.contentList && data.contentList.length === 0) {
       commit('ADD_content_item')
     }
+    if (data.inventoryList && data.inventoryList.length === 0) {
+      commit('ADD_inventory_item')
+    }
     if (data.weightUnit) {
       state.weight = data.weightUnit === WEIGHT_UNIT.GSM ? data.weightGsm : data.weightOz
     }

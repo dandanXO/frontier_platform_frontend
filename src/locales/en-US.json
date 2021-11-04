@@ -119,6 +119,7 @@
   "RR0102": "No scanned image",
   "RR0103": "No image",
   "RR0104": "Without required fields",
+  "RR0105": "Sorry! No results found",
   "UU0005": "Download U3M",
   "UU0006": "3D viewer",
   "UU0007": "Print the back side QR code label",
@@ -290,7 +291,7 @@
     "errorImageTooSmall": "Your image is too small. The image must be at least 200 x 200 pixels.",
     "about": "About",
     "member": "Members",
-    "history": "History",
+    "history": "Activity",
     "invite": "Invite",
     "searchMember": "Search members",
     "name": "Name",
@@ -513,5 +514,6 @@
   "EE0075": "Delete the materials?",
   "EE0076": "This action cannot be undone. ",
   "EE0077": "Successfully merged materials. ",
-  "EE0078": "E.g., 11-0102TCX"
+  "EE0078": "E.g., 11-0102TCX",
+  "EE0079": "Create your first material!"
 }

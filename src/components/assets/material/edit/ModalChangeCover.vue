@@ -11,7 +11,7 @@ div(class="w-131 px-8")
           label(v-for="(image, index) in imageList" class="h-30.5")
             div(class="h-25 rounded border overflow-hidden relative")
               img(v-if="!!image.imgSrc" :src="image.imgSrc")
-              div(v-else class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-body2 font-bold text-black-400") {{$t('No image')}}
+              div(v-else class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-body2 font-bold text-black-400") {{$t('RR0103')}}
               input-radio(
                 v-model:inputValue="coverImageIndex"
                 :value="index"
@@ -30,11 +30,13 @@ import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import { COVER_MODE } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'ModalChangeCover',
   setup () {
     const store = useStore()
+    const { t } = useI18n()
     const { location } = useNavigation()
     const material = computed(() => store.getters['material/material'])
     const coverImageIndex = ref(0)
@@ -83,7 +85,7 @@ export default {
       //   }
       // ]
 
-      list.push({ name: 'Front', imgSrc: faceSideImg.crop }, { name: 'Back', imgSrc: backSideImg.crop })
+      list.push({ name: t('RR0075'), imgSrc: faceSideImg.crop }, { name: t('RR0078'), imgSrc: backSideImg.crop })
 
       for (let i = 0; i < attachmentList.length; i++) {
         const { displayFileName, url } = attachmentList[i]

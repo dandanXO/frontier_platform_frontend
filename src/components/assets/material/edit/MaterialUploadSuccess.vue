@@ -5,8 +5,8 @@ div(class="flex justify-center pt-28.5")
     :primaryButton="false"
     :secondaryButton="false"
   )
-  div(class="w-229 pb-25 flex flex-col gap-y-12.5")
-    div(class="flex gap-x-2.5 text-brand justify-center")
+  div(class="w-229 flex flex-col gap-y-7.5")
+    div(class="flex gap-x-2.5 text-brand justify-center pb-2.5")
       svg-icon(iconName="check_circle_outline" size="24")
       p(class="text-body1 line-height-1.6") {{$t('DD0028')}}
     h4(class="text-h4 text-center text-primary") {{$t('DD0029')}}
@@ -29,7 +29,7 @@ div(class="flex justify-center pt-28.5")
         div(class="flex flex-col gap-y-2")
           p(class="text-body2 text-primary line-height-1.6") {{$t('DD0004')}}
           p(class="text-body1 text-primary font-bold") {{uploadMaterialEmail}}
-          span(class="text-body2 text-assist-blue underline line-height-1.6") {{$t('reuse.printBackQRCode')}}
+          span(class="text-body2 text-assist-blue underline line-height-1.6") {{$t('UU0007')}}
     btn(size="md" class="self-center" @click="close") {{$t('UU0023')}}
 </template>
 

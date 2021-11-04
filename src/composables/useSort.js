@@ -7,7 +7,8 @@ export default function useSort (material) {
   const SORT_BY = {
     CREATE_DATE: 0,
     LAST_UPDATE: 1,
-    MATERIAL_NO_A_Z: 2
+    MATERIAL_NO_A_Z: 2,
+    RELEVANCE: 99
   }
 
   const createDate = {
@@ -25,9 +26,14 @@ export default function useSort (material) {
     value: SORT_BY.MATERIAL_NO_A_Z
   }
 
+  const relevance = {
+    name: t('RR0070'),
+    value: SORT_BY.RELEVANCE
+  }
+
   const sort = (materialList, sortBy) => {
     const tempArr = [...materialList]
-    const { CREATE_DATE, LAST_UPDATE, MATERIAL_NO_A_Z } = SORT_BY
+    const { CREATE_DATE, LAST_UPDATE, MATERIAL_NO_A_Z, RELEVANCE } = SORT_BY
 
     switch (sortBy) {
       case CREATE_DATE:
@@ -49,6 +55,8 @@ export default function useSort (material) {
           return 0
         })
         break
+      case RELEVANCE:
+        break
     }
     return tempArr
   }
@@ -57,6 +65,7 @@ export default function useSort (material) {
     sort,
     createDate,
     lastUpdate,
-    materialNoA2Z
+    materialNoA2Z,
+    relevance
   }
 }

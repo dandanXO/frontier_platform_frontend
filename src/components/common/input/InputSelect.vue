@@ -53,8 +53,8 @@ export default {
   name: 'InputSelect',
   props: {
     selectValue: {
-      type: [String, Number, Boolean],
-      required: true
+      required: true,
+      validator: () => true
     },
     size: {
       type: String,

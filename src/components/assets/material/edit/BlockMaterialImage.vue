@@ -16,7 +16,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
           div(class="w-full h-75 rounded overflow-hidden")
             template(v-if="!!imageList[currentDisplayIndex].src")
               img(class="w-full h-full" :src="imageList[currentDisplayIndex].src")
-            div(class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-h4 font-bold text-black-400") {{$t('No image')}}
+            div(class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-h4 font-bold text-black-400") {{$t('RR0103')}}
           div(class="grid grid-flow-col gap-x-2 justify-start pt-2 pb-6")
             div(v-for="(image, index) in imageList" @click="currentDisplayIndex = index")
               div(class="w-13 h-13 rounded overflow-hidden border border-black-400 bg-black-200")
@@ -41,7 +41,15 @@ div(class="pb-15 mb-5 border-b border-black-400")
           )
           div(class="grid gap-y-3")
             div(v-for="pantone in material.pantoneList" class="flex items-center gap-x-3")
-              div(class="rounded w-5.5 h-5.5" :style="{ 'background-color': `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }")
+              tooltip(placement="right")
+                template(#trigger)
+                  div(class="rounded w-5.5 h-5.5" :style="{ 'background-color': `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }")
+                template(#content)
+                  div(class="w-30 h-11 relative")
+                    div(class="w-30 h-30 absolute -top-29 rounded-t" :style="{ 'background-color': `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }")
+                    div(class="p-2 text-primary text-caption font-bold")
+                      div(class="pb-1") {{pantone.name}}
+                      div {{pantone.majorColorName}}
               p(class="text-body2 text-primary") {{pantone.name}}
               svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removePantone(pantone.materialPantoneId)")
         div
