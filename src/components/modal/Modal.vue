@@ -25,6 +25,7 @@ import ModalAskResetPassword from '@/components/account/ModalAskResetPassword.vu
 import ModalChooseStorage from '@/components/management/ModalChooseStorage'
 import ModalHowToScan from '@/components/assets/material/ModalHowToScan'
 import ModalChangeCover from '@/components/assets/material/edit/ModalChangeCover'
+import ModalViewer from '@/components/assets/material/ModalViewer'
 
 export default {
   name: 'Modal',
@@ -43,7 +44,8 @@ export default {
     ModalAskResetPassword,
     ModalChooseStorage,
     ModalHowToScan,
-    ModalChangeCover
+    ModalChangeCover,
+    ModalViewer
   },
   props: {
     component: {
