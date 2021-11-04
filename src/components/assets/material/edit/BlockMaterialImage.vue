@@ -16,7 +16,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
           div(class="w-full h-75 rounded overflow-hidden")
             template(v-if="!!imageList[currentDisplayIndex].src")
               img(class="w-full h-full" :src="imageList[currentDisplayIndex].src")
-            div(class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-h4 font-bold text-black-400") {{$t('No image')}}
+            div(class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-h4 font-bold text-black-400") {{$t('RR0103')}}
           div(class="grid grid-flow-col gap-x-2 justify-start pt-2 pb-6")
             div(v-for="(image, index) in imageList" @click="currentDisplayIndex = index")
               div(class="w-13 h-13 rounded overflow-hidden border border-black-400 bg-black-200")
