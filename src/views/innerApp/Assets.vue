@@ -12,7 +12,7 @@ div(class="w-full h-full flex flex-col")
     div
       h5(class="text-h5 font-bold text-primary") {{$t('EE0001')}}
         i18n-t(keypath="RR0068" tag='span' class='text-caption text-black-700 pl-1')
-          template(#number) {{pagination.totalCount}}
+          template(#number) {{isShowExcatMatch ? pagination.totalMatchCount : pagination.totalCount}}
     div(class="flex items-center gap-x-5")
       input-checkbox(
         v-if="inSearch"
@@ -49,13 +49,13 @@ div(class="w-full h-full flex flex-col")
         grid-item(v-for='material in sortedMaterialList' :key="material.materialId" :material='material')
     div(v-else class="flex flex-col justify-center items-center")
       svg-icon(v-if="isSearching" iconName="loading" size="92" class="text-brand")
-      p(v-else-if="inSearch" class="text-center text-body2 text-primary") {{$t('Sorry ! No results found.')}}
+      p(v-else-if="inSearch" class="text-center text-body2 text-primary") {{$t('RR0105')}}
       template(v-else)
         div(class="border border-black-400 rounded-md border-dashed p-2 mt-40")
           svg-icon(iconName="add" size="24" class="text-primary")
-        p(class="text-body2 text-primary pt-3") {{$t('Create your first fabric')}}
+        p(class="text-body2 text-primary pt-3") {{$t('EE0079')}}
     div(class="py-9.5 justify-self-center self-end")
-      pagination(v-if="!isSearching && pagination.totalCount !== 0" v-model:currentPage="pagination.currentPage" :totalPage="totalPage" @goTo="getMaterialList($event)")
+      pagination(v-if="!isSearching && sortedMaterialList.length > 0" v-model:currentPage="pagination.currentPage" :totalPage="totalPage" @goTo="getMaterialList($event)")
 multi-select-menu
 </template>
 
@@ -224,6 +224,7 @@ export default {
          */
         if (oldValue && !newValue) {
           sortBy.value = createDate.value
+          isShowExcatMatch.value = false
         }
       },
       {
