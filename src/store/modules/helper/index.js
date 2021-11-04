@@ -83,6 +83,16 @@ const actions = {
   clearModalPipeline ({ commit }) {
     commit('CLEAR_modalPipeline')
   },
+  openModalLoading ({ commit }) {
+    commit('CLEAR_modalPipeline')
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.LOADING })
+  },
+  pushModalLoading ({ commit }) {
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.LOADING })
+  },
+  closeModalLoading ({ commit }) {
+    commit('CLOSE_modalPipeline')
+  },
   setPagination ({ commit }, pagination) {
     commit('SET_pagination', pagination)
   }

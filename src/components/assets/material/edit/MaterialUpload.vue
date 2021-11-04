@@ -48,7 +48,7 @@ import useNavigation from '@/composables/useNavigation'
 import useMaterialValidation from '@/composables/useMaterialValidation'
 import { v4 as uuidv4 } from 'uuid'
 import { SIDE_TYPE } from '@/utils/constants'
-import { computed } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 
 export default {
   name: 'MaterialUpload',
@@ -89,7 +89,9 @@ export default {
     ]
 
     const createMaterial = async () => {
+      store.dispatch('helper/pushModalLoading')
       await store.dispatch('material/createMaterial', { location: location.value, tempMaterialId })
+      store.dispatch('helper/closeModalLoading')
       store.dispatch('helper/replaceFullScreen', {
         component: 'material-upload-success'
       })
@@ -114,8 +116,12 @@ export default {
       })
     }
 
-    store.dispatch('material/resetMaterial')
-    store.dispatch('material/getMaterialOptions', { location: location.value })
+    onBeforeMount(async () => {
+      store.dispatch('helper/pushModalLoading')
+      store.dispatch('material/resetMaterial')
+      await store.dispatch('material/getMaterialOptions', { location: location.value })
+      store.dispatch('helper/closeModalLoading')
+    })
 
     return {
       validations,

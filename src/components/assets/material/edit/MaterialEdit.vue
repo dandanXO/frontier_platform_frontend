@@ -44,7 +44,9 @@ export default {
     store.dispatch('material/getMaterialOptions', { location: location.value })
 
     const updateMaterial = async () => {
+      store.dispatch('helper/pushModalLoading')
       await store.dispatch('material/updateMaterial', { location: location.value })
+      store.dispatch('helper/closeModalLoading')
       store.dispatch('helper/clearModalPipeline')
       goToAssets()
     }
