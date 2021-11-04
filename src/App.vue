@@ -1,6 +1,5 @@
 <template lang="pug">
 router-view
-modal-pipeline
 flash-message
 </template>
 

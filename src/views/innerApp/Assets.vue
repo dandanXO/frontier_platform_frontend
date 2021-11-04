@@ -1,4 +1,4 @@
-updateHandler<template lang="pug">
+<template lang="pug">
 div(class="w-full h-full flex flex-col")
   search-box(
     v-model:textValue="keyword"
@@ -14,6 +14,14 @@ div(class="w-full h-full flex flex-col")
         i18n-t(keypath="RR0068" tag='span' class='text-caption text-black-700 pl-1')
           template(#number) {{pagination.totalCount}}
     div(class="flex items-center gap-x-5")
+      input-checkbox(
+        v-if="inSearch"
+        :inputValue="isShowExcatMatch"
+        @update:inputValue="showExcatMatch"
+        :label="$t('RR0069')"
+        binary
+        size="20"
+      )
       btn-functional(
         size='lg'
         @click='handleSelectAll'
@@ -47,7 +55,7 @@ div(class="w-full h-full flex flex-col")
           svg-icon(iconName="add" size="24" class="text-primary")
         p(class="text-body2 text-primary pt-3") {{$t('Create your first fabric')}}
     div(class="py-9.5 justify-self-center self-end")
-      pagination(v-if="pagination.totalCount !== 0" v-model:currentPage="pagination.currentPage" :totalPage="pagination.totalPage" @goTo="getMaterialList($event)")
+      pagination(v-if="!isSearching && pagination.totalCount !== 0" v-model:currentPage="pagination.currentPage" :totalPage="totalPage" @goTo="getMaterialList($event)")
 multi-select-menu
 </template>
 
@@ -85,12 +93,6 @@ export default {
     const router = useRouter()
     const route = useRoute()
     const { location } = useNavigation()
-    const { sort, createDate, lastUpdate, materialNoA2Z } = useSort()
-    const isGrid = ref(false)
-    const isSelectAll = ref(false)
-    const keyword = ref('')
-    const tagList = ref([])
-    const selectedTagList = ref([])
     const initFilterState = {
       contentList: [],
       finishList: [],
@@ -104,22 +106,55 @@ export default {
       pattern: null,
       category: null
     }
-    const filter = reactive({})
     let timer
-    const sortBy = ref(1)
-    const optionSort = [
-      createDate,
-      lastUpdate,
-      materialNoA2Z
-    ]
+    const { sort, createDate, lastUpdate, materialNoA2Z, relevance } = useSort()
+    const isGrid = ref(false)
+    const isSelectAll = ref(false)
+    const keyword = ref('')
+    const tagList = ref([])
+    const selectedTagList = ref([])
+    const filter = reactive({})
+    const sortBy = ref(0)
+    const isSearching = ref(false)
+    const inSearch = ref(false)
+    const isShowExcatMatch = ref(false)
 
+    const searchDirty = computed(() => keyword.value !== '' || selectedTagList.value.length !== 0 || JSON.stringify(filter) !== JSON.stringify(initFilterState))
     const materialList = computed(() => store.getters['assets/materialList'])
     const pagination = computed(() => store.getters['helper/pagination'])
+    const totalPage = computed(() => {
+      const { totalPage, totalMatchCount, perPageCount } = pagination.value
+      if (!isShowExcatMatch.value) {
+        return totalPage
+      }
+      return totalMatchCount === 0 ? 1 : Math.ceil(totalMatchCount / perPageCount)
+    })
+    const sortedMaterialList = computed(() => {
+      const { totalMatchCount, perPageCount } = pagination.value
+      if (isShowExcatMatch.value && pagination.value.currentPage === totalPage.value) {
+        const matchedList = [...materialList.value].splice(0, totalMatchCount % perPageCount)
+        return sort(matchedList, sortBy.value)
+      }
+      return sort(materialList.value, sortBy.value)
+    })
+    const optionSort = computed(() => {
+      const base = [
+        createDate,
+        lastUpdate,
+        materialNoA2Z
+      ]
+      if (inSearch.value) {
+        base.unshift(relevance)
+      }
+      return base
+    })
 
-    const sortedMaterialList = computed(() => sort(materialList.value, sortBy.value))
-
-    const inSearch = computed(() => keyword.value !== '' || tagList.value.length !== 0 || JSON.stringify(filter) !== JSON.stringify(initFilterState))
-    const isSearching = ref(false)
+    const showExcatMatch = (bool) => {
+      isShowExcatMatch.value = bool
+      if (isShowExcatMatch.value) {
+        getMaterialList(1)
+      }
+    }
 
     const resetFilter = () => {
       Object.assign(filter, JSON.parse(JSON.stringify(initFilterState)))
@@ -131,6 +166,9 @@ export default {
 
     const getMaterialList = async (targetPage = 1) => {
       isSearching.value = true
+
+      // only when searchDirty is true, it's considered a seach mode
+      inSearch.value = searchDirty.value
 
       router.push({
         name: route.name,
@@ -173,6 +211,26 @@ export default {
       }
     )
 
+    watch(
+      () => inSearch.value,
+      (newValue, oldValue) => {
+        // only first time inSearch changes from false to true will set the value of sortBy to relevance
+        if (!oldValue && newValue) {
+          sortBy.value = relevance.value
+        }
+        /**
+         * only when inSearch changes from true to false,
+         * it will set the value of sortBy to default value and default value is createDate
+         */
+        if (oldValue && !newValue) {
+          sortBy.value = createDate.value
+        }
+      },
+      {
+        immediate: true
+      }
+    )
+
     // INIT
     resetFilter()
     const { currentPage, keyword: qKeyword, tagList: qTagList, filter: qFilter } = route.query
@@ -205,7 +263,10 @@ export default {
       isSelectAll,
       sortedMaterialList,
       sortBy,
-      optionSort
+      optionSort,
+      isShowExcatMatch,
+      totalPage,
+      showExcatMatch
     }
   }
 }

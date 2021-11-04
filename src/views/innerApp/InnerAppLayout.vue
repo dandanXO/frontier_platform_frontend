@@ -42,6 +42,7 @@ div(class="fixed z-index:sidebar w-60 h-full left-0 top-0 bottom-0 bg-black-100 
       svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650")
 main(class="ml-60 h-full" :class='{"overflow-hidden": modalPipeline.length > 0}')
   router-view(v-if="isRouterAlive")
+modal-pipeline
 </template>
 
 <script>
@@ -49,11 +50,13 @@ import { useStore } from 'vuex'
 import { ref, computed, reactive, nextTick, provide } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SidebarItem from '@/components/layout/SidebarItem.vue'
+import ModalPipeline from '@/components/modal/ModalPipeline.vue'
 
 export default {
   name: 'InnerAppLayout',
   components: {
-    SidebarItem
+    SidebarItem,
+    ModalPipeline
   },
   setup () {
     const store = useStore()

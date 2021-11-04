@@ -8,7 +8,7 @@ label(class="flex items-center")
     :value="value"
     @input="check($event)"
   )
-  div(v-if="label !== ''" class="text-body2 text-primary") {{label}}
+  div(v-if="label !== ''" class="text-body2 text-primary pl-1") {{label}}
 </template>
 
 <script>
