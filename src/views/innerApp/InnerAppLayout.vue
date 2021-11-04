@@ -78,7 +78,7 @@ export default {
       {
         id: 'publicLibrary',
         title: 'reuse.publicLibrary',
-        icon: 'bookmark_border',
+        icon: 'logo',
         path: `/${organization.value.orgNo}/public-library`
       },
       {
