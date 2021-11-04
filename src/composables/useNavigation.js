@@ -42,10 +42,15 @@ export default function useNavigation () {
     reloadRootRoute()
   }
 
+  const goToMaterialUpload = () => {
+    router.push(parsePath(`${prefixPath.value}/assets/upload`))
+  }
+
   return {
     location,
     nextAfterSignIn,
     parsePath,
-    goToAssets
+    goToAssets,
+    goToMaterialUpload
   }
 }

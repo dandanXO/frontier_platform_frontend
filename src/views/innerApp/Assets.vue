@@ -31,6 +31,7 @@ div(class="w-full h-full flex flex-col")
       btn(
         size="sm"
         prependIcon="add"
+        @click="goToMaterialUpload"
       ) {{$t('reuse.create')}}
   div(class="overflow-y-auto flex-grow grid")
     template(v-if="!isSearching && sortedMaterialList.length > 0")
@@ -55,7 +56,7 @@ div(class="w-full h-full flex flex-col")
       svg-icon(v-if="isSearching" iconName="loading" size="92" class="text-brand")
       p(v-else-if="inSearch" class="text-center text-body2 text-primary") {{$t('RR0105')}}
       template(v-else)
-        div(class="border border-black-400 rounded-md border-dashed p-2 mt-40")
+        div(class="border border-black-400 rounded-md border-dashed p-2 mt-40 cursor-pointer" @click="goToMaterialUpload")
           svg-icon(iconName="add" size="24" class="text-primary")
         p(class="text-body2 text-primary pt-3") {{$t('EE0079')}}
     div(class="py-9.5 justify-self-center self-end")
@@ -97,7 +98,7 @@ export default {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
-    const { location } = useNavigation()
+    const { location, goToMaterialUpload } = useNavigation()
     const initFilterState = {
       contentList: [],
       finishList: [],
@@ -272,7 +273,8 @@ export default {
       optionSort,
       isShowExcatMatch,
       totalPage,
-      showExcatMatch
+      showExcatMatch,
+      goToMaterialUpload
     }
   }
 }
