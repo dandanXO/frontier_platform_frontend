@@ -53,7 +53,7 @@ export default {
   name: 'InputSelect',
   props: {
     selectValue: {
-      type: [String, Number],
+      type: [String, Number, Boolean],
       required: true
     },
     size: {

@@ -12,25 +12,35 @@ div(class="w-full h-full flex flex-col")
     div
       h5(class="text-h5 font-bold text-primary") {{$t('EE0001')}}
         i18n-t(keypath="RR0068" tag='span' class='text-caption text-black-700 pl-1')
-          template(#number) {{materialList.length}}
+          template(#number) {{pagination.totalCount}}
     div(class="flex items-center gap-x-5")
       btn-functional(
         size='lg'
         @click='handleSelectAll'
       ) {{$t('RR0052')}}
+      btn-sort(v-model:value="sortBy" :optionList="optionSort")
       grid-or-row(@change='isGrid = $event' :isGrid='isGrid' class="justify-self-end")
       btn(
         size="sm"
         prependIcon="add"
       ) {{$t('reuse.create')}}
   div(class="overflow-y-auto flex-grow grid")
-    template(v-if="!isSearching && materialList.length > 0")
-      div(:class="[isGrid ? 'grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5' : 'grid']")
-        grid-item(v-show="isGrid" v-for='material in materialList' :material='material')
-        row-item(v-show="!isGrid" v-for='(material, index) in materialList' :material='material')
+    template(v-if="!isSearching && sortedMaterialList.length > 0")
+      recycle-scroller(
+        v-show="!isGrid"
+        class="grid"
+        :items="sortedMaterialList"
+        key-field="materialId"
+        :item-size="375"
+        v-slot="{ item, index }"
+        pageMode
+      )
+        row-item(:key="item.materialId" :material='item')
           template(#divide)
-            div(v-if='index !== materialList.length - 1' class='border-b my-5 mx-8')
-    div(v-else class="flex flex-col justify-center items-center -mt-50")
+            div(v-if='index !== sortedMaterialList.length - 1' class='border-b my-5 mx-8')
+      div(v-show="isGrid" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5")
+        grid-item(v-for='material in sortedMaterialList' :key="material.materialId" :material='material')
+    div(v-else class="flex flex-col justify-center items-center")
       svg-icon(v-if="isSearching" iconName="loading" size="92" class="text-brand")
       p(v-else-if="inSearch" class="text-center text-body2 text-primary") {{$t('Sorry ! No results found.')}}
       template(v-else)
@@ -38,7 +48,7 @@ div(class="w-full h-full flex flex-col")
           svg-icon(iconName="add" size="24" class="text-primary")
         p(class="text-body2 text-primary pt-3") {{$t('Create your first fabric')}}
     div(class="py-9.5 justify-self-center self-end")
-      pagination(v-model:currentPage="pagination.currentPage" :totalPage="pagination.totalPage" @goTo="getMaterialList($event)")
+      pagination(v-if="pagination.totalCount !== 0" v-model:currentPage="pagination.currentPage" :totalPage="pagination.totalPage" @goTo="getMaterialList($event)")
 multi-select-menu
 </template>
 
@@ -50,25 +60,33 @@ import MultiSelectMenu from '@/components/assets/material/list/MultiSelectMenu'
 import { useStore } from 'vuex'
 import { ref, computed, watch, reactive } from 'vue'
 import useNavigation from '@/composables/useNavigation'
+import useSort from '@/composables/useSort'
 import SearchBox from '@/components/layout/SearchBox.vue'
 import Pagination from '@/components/layout/Pagination.vue'
+import BtnSort from '@/components/layout/BtnSort.vue'
 import { useRoute, useRouter } from 'vue-router'
+import { RecycleScroller } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+// https://github.com/Akryum/vue-virtual-scroller/tree/next/packages/vue-virtual-scroller
 
 export default {
   name: 'Assets',
   components: {
+    RecycleScroller,
     RowItem,
     GridItem,
     GridOrRow,
     MultiSelectMenu,
     SearchBox,
-    Pagination
+    Pagination,
+    BtnSort
   },
   setup () {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
     const { location } = useNavigation()
+    const { sort, createDate, lastUpdate, materialNoA2Z } = useSort()
     const isGrid = ref(false)
     const isSelectAll = ref(false)
     const keyword = ref('')
@@ -89,9 +107,17 @@ export default {
     }
     const filter = reactive({})
     let timer
+    const sortBy = ref(1)
+    const optionSort = [
+      createDate,
+      lastUpdate,
+      materialNoA2Z
+    ]
 
     const materialList = computed(() => store.getters['assets/materialList'])
     const pagination = computed(() => store.getters['helper/pagination'])
+
+    const sortedMaterialList = computed(() => sort(materialList.value, sortBy.value))
 
     const inSearch = computed(() => keyword.value !== '' || tagList.value.length !== 0 || JSON.stringify(filter) !== JSON.stringify(initFilterState))
     const isSearching = ref(false)
@@ -177,7 +203,10 @@ export default {
       inSearch,
       isSearching,
       handleSelectAll,
-      isSelectAll
+      isSelectAll,
+      sortedMaterialList,
+      sortBy,
+      optionSort
     }
   }
 }

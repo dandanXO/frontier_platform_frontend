@@ -23,16 +23,15 @@ div(
       iconColor='text-black-0'
     )
     div(v-if="active" class='absolute z-9 inset-0 w-full h-full rounded bg-opacity-70 bg-black-900')
-      div(class='line-height-1.6 text-body2 text-black-0 max-w-38 m-auto h-full flex flex-col items-center justify-center')
-        div(class='font-bold') {{material.materialNo}}
-        div(class='text-body1 font-bold line-clamp-2') {{material.description}}
-        div(class='line-clamp-1') {{material.content}}
-        div(class='line-clamp-1')
-          span(class='pr-1') {{material.warpYarnCount}}X{{material.weftYarnCount}}
-          span(class='pr-1') {{material.warpDensity}}X{{material.weftDensity}}
-          span {{material.width}}
-        div(class='line-clamp-1') {{material.finish}}
-        div(class='line-clamp-1') {{materialWeight}}
+      div(class='text-black-0 px-7.5 py-10 h-full flex flex-col items-center justify-center text-center')
+        div(class='line-height-1.6 text-body2 font-bold line-clamp-2') {{material.description}}
+        div(class='line-height-1.6 text-caption line-clamp-2') {{material.content}}
+        div(class='line-height-1.6 text-caption flex gap-1')
+          div {{materialYarnCount}}
+          div {{materialDensity}}
+          div {{materialWidth}}
+        div(class='line-height-1.6 text-caption line-clamp-2') {{material.finish}}
+        div(class='line-height-1.6 text-caption line-clamp-1') {{materialWeight}}
       tooltip(
         class='absolute bottom-3 right-3 cursor-pointer'
         placement="right-start"
@@ -51,7 +50,7 @@ div(
                 @click="handleClick(option)"
               ) {{option.name}}
               div(class="mx-2 my-1" :class='{"border-b": index !== options.length-1}')
-  div(class='text-primary font-bold text-body1 line-clamp-1 line-height-1.6') {{material.description}}
+  div(class='text-primary font-bold text-body1 line-clamp-1 line-height-1.6') {{material.materialNo}}
 </template>
 
 <script>
@@ -83,7 +82,7 @@ export default {
       deleteMaterial
     } = useAssets(props.material)
 
-    const { currentCoverImg, neverScanBefore, materialWeight } = useMaterial(props.material)
+    const { currentCoverImg, neverScanBefore, materialWeight, materialYarnCount, materialDensity, materialWidth } = useMaterial(props.material)
 
     const options = [
       [
@@ -127,7 +126,10 @@ export default {
       neverScanBefore,
       active,
       checked,
-      materialWeight
+      materialWeight,
+      materialYarnCount,
+      materialDensity,
+      materialWidth
     }
   }
 }

@@ -145,8 +145,15 @@ const mutations = {
 }
 
 const actions = {
-  setMaterial ({ state }, data) {
+  setMaterial ({ state, commit }, data) {
     setVuexState(state, data)
+
+    if (data.contentList && data.contentList.length === 0) {
+      commit('ADD_content_item')
+    }
+    if (data.weightUnit) {
+      state.weight = data.weightUnit === WEIGHT_UNIT.GSM ? data.weightGsm : data.weightOz
+    }
   },
   resetMaterial ({ commit }) {
     commit('RESET_material')
@@ -182,6 +189,7 @@ const actions = {
           'color',
           'publicTagList',
           'privateTagList',
+          'aiTagList',
           'remark',
           'materialSeq',
           'sampleCardsRemainingQty',
@@ -221,6 +229,7 @@ const actions = {
           'color',
           'publicTagList',
           'privateTagList',
+          'aiTagList',
           'remark',
           'materialSeq',
           'sampleCardsRemainingQty',

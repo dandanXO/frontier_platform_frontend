@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-black-400 cursor-pointer"
   :class="[{ 'bg-black-500': isActive }]"
-  @click="$router.push(path)"
+  @click="goTo"
 )
   slot
     svg-icon(:iconName="icon" class="text-black-700")
@@ -10,7 +10,9 @@ div(class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-black-400 cursor-poi
 
 <script>
 import { computed } from '@vue/runtime-core'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { inject } from 'vue'
+
 export default {
   name: 'SidebarItem',
   props: {
@@ -28,6 +30,9 @@ export default {
   },
   setup (props) {
     const route = useRoute()
+    const router = useRouter()
+    const reloadRootRoute = inject('reloadRootRoute')
+
     const isActive = computed(() => {
       const matched = route.matched
       const matchedPathList = matched.map(item => {
@@ -41,8 +46,20 @@ export default {
       })
       return matchedPathList.some(matchedPath => matchedPath.includes(props.path))
     })
+
+    const goTo = async () => {
+      if (props.path === route.path) {
+        await router.push(props.path)
+        reloadRootRoute()
+      } else {
+        router.push(props.path)
+      }
+    }
+
     return {
-      isActive
+      goTo,
+      isActive,
+      reloadRootRoute
     }
   }
 }

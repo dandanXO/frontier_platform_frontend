@@ -1,11 +1,13 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
+import { inject } from 'vue'
 
 export default function useNavigation () {
   const store = useStore()
   const router = useRouter()
   const route = useRoute()
+  const reloadRootRoute = inject('reloadRootRoute')
 
   const location = computed(() => Object.prototype.hasOwnProperty.call(route.params, 'groupId') ? 'group' : 'org')
 
@@ -37,6 +39,7 @@ export default function useNavigation () {
 
   const goToAssets = () => {
     router.push(parsePath(`${prefixPath.value}/assets`))
+    reloadRootRoute()
   }
 
   return {
