@@ -21,7 +21,7 @@ export default {
       required: true
     },
     value: {
-      type: [String, Number, Object]
+      type: [String, Number]
     },
     label: {
       type: [String, Number],
