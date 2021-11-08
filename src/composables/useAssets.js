@@ -5,7 +5,7 @@ import { computed } from '@vue/runtime-core'
 export default function useAssets (material) {
   const { t } = useI18n()
   const store = useStore()
-  const addedMaterialList = computed(() => store.getters['assets/addedMaterialList'])
+  const formalAddedMaterialList = computed(() => store.getters['assets/formalAddedMaterialList'])
 
   const editMaterial = {
     icon: 'create',
@@ -66,7 +66,7 @@ export default function useAssets (material) {
       store.dispatch('helper/openFullScreen', {
         component: 'material-merge',
         properties: {
-          materialListData: addedMaterialList
+          materialListData: formalAddedMaterialList
         }
       })
     }

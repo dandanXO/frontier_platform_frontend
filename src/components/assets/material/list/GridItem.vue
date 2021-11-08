@@ -18,7 +18,7 @@ div(
     input-checkbox(
       v-if='active || checked'
       v-model:inputValue='addedMaterialList'
-      :value='material'
+      :value='JSON.stringify(material)'
       class='absolute z-10 top-3 left-3 cursor-pointer'
       iconColor='text-black-0'
     )
@@ -116,7 +116,7 @@ export default {
       set: (v) => store.commit('assets/SET_addedMaterialList', v)
     })
 
-    const checked = computed(() => addedMaterialList.value.includes(props.material))
+    const checked = computed(() => addedMaterialList.value.includes(JSON.stringify(props.material)))
 
     return {
       addedMaterialList,

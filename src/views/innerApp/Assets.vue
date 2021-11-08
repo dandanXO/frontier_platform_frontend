@@ -166,8 +166,11 @@ export default {
       Object.assign(filter, JSON.parse(JSON.stringify(initFilterState)))
     }
 
+    const addedMaterialList = computed(() => store.getters['assets/addedMaterialList'])
     const handleSelectAll = () => {
-      store.commit('assets/SET_addedMaterialList', JSON.parse(JSON.stringify(materialList.value)))
+      const stringifyArr = materialList.value.map(item => JSON.stringify(item))
+      const duplicateArr = addedMaterialList.value.concat(stringifyArr)
+      store.commit('assets/SET_addedMaterialList', [...new Set(duplicateArr)])
     }
 
     const getMaterialList = async (targetPage = 1) => {
