@@ -34,7 +34,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
           input-text-icon(
             v-model:textValue="pantoneName"
             :label="$t('EE0040')"
-            placeholder="Ex: 11-0102TCX"
+            :placeholder="$t('EE0078')"
             :customErrorMsg="pantoneErrorMsg"
             @click:icon="addPantone"
             class="pb-5"

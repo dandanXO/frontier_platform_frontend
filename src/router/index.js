@@ -96,7 +96,7 @@ const routes = [
       const org = store.getters['organization/organization']
       const orgUser = store.getters['user/orgUser/orgUser']
 
-      if (orgUser.orgRoleId === ROLE_ID.OWNER && org.uploadMaterialEmail === '') {
+      if (orgUser.orgRoleId === ROLE_ID.OWNER && !org.uploadMaterialEmail) {
         store.dispatch('helper/openModal', {
           component: 'modal-create-mail-org',
           properties: {

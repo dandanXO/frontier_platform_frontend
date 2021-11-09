@@ -25,6 +25,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import useMaterialValidation from '@/composables/useMaterialValidation'
+import { onBeforeMount } from '@vue/runtime-core'
 
 export default {
   name: 'MaterialEdit',
@@ -40,8 +41,6 @@ export default {
     const store = useStore()
     const { location, goToAssets } = useNavigation()
     const { validations, validate } = useMaterialValidation()
-
-    store.dispatch('material/getMaterialOptions', { location: location.value })
 
     const updateMaterial = async () => {
       store.dispatch('helper/pushModalLoading')
@@ -69,6 +68,12 @@ export default {
         primaryText: t('reuse.cancel')
       })
     }
+
+    onBeforeMount(async () => {
+      store.dispatch('helper/pushModalLoading')
+      await store.dispatch('material/getMaterialOptions', { location: location.value })
+      store.dispatch('helper/closeModalLoading')
+    })
 
     return {
       validations,

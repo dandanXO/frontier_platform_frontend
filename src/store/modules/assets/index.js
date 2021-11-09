@@ -32,16 +32,24 @@ const actions = {
   setAssets ({ state }, data) {
     setVuexState(state, data)
   },
-  async getMaterialList ({ rootGetters, dispatch }, { location, search, filter, targetPage = 1 }) {
+  async getMaterialList ({ rootGetters, dispatch }, { location, targetPage = 1 }) {
+    const pagination = rootGetters['helper/search/pagination']
+    const { perPageCount, isShowMatch, sort } = pagination
     const params = {
       pagination: {
-        perPageCount: rootGetters['helper/pagination'].perPageCount,
-        targetPage
+        perPageCount: Number(perPageCount),
+        isShowMatch: Boolean(isShowMatch),
+        sort: Number(sort),
+        targetPage: Number(targetPage)
       },
-      filter
+      filter: rootGetters['helper/search/filter']
+    }
+    const search = {
+      keyword: rootGetters['helper/search/keyword'],
+      selectedTagList: rootGetters['helper/search/selectedTagList']
     }
 
-    if (!(search.keyword === '' && search.tagList.length === 0)) {
+    if (!(search.keyword === '' && search.selectedTagList.length === 0)) {
       params.search = search
     }
 
