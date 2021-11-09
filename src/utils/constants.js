@@ -72,26 +72,91 @@ export const U3M_STATUS = {
 export const FILTER_COMPLETE = {
   NOT_IN_WORKSPACE: {
     text: i18n.global.t('RR0099'),
-    code: 1
+    value: 1
   },
   WITH_U3M: {
     text: i18n.global.t('RR0100'),
-    code: 2
+    value: 2
   },
   WITHOUT_U3M: {
     text: i18n.global.t('RR0101'),
-    code: 3
+    value: 3
   },
   NO_SCAN_IMG: {
     text: i18n.global.t('RR0102'),
-    code: 4
+    value: 4
   },
   NO_IMG: {
     text: i18n.global.t('RR0103'),
-    code: 5
+    value: 5
   },
   WITH_REQUIRED_FIELDS: {
     text: i18n.global.t('RR0104'),
-    code: 6
+    value: 6
+  }
+}
+
+/**
+ * 1. 關聯度 Relevance：照分數高至低排名
+ * 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名
+ * 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名
+ * 4. 字母順序 A to Z
+ * 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z)
+ * 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z)
+ * 7. 建立時間：最新建立的排前
+ * 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前
+ * 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前
+ * 10. 最新加入 (New arrived)：最新加入的排前
+ * 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新
+ * 12. 隨機排序 (Random)：隨機重新排序
+ */
+export const SORT_BY = {
+  RELEVANCE: {
+    text: i18n.global.t('RR0070'),
+    value: 1
+  },
+  RELEVANCE_C_M: {
+    text: i18n.global.t('RELEVANCE_C_M'),
+    value: 2
+  },
+  RELEVANCE_M_C: {
+    text: i18n.global.t('RELEVANCE_M_C'),
+    value: 3
+  },
+  MATERIAL_NO_A_Z: {
+    text: i18n.global.t('RR0067'),
+    value: 4
+  },
+  MATERIAL_NO_A_Z_C_M: {
+    text: i18n.global.t('MATERIAL_NO_A_Z_C_M'),
+    value: 5
+  },
+  MATERIAL_NO_A_Z_M_C: {
+    text: i18n.global.t('MATERIAL_NO_A_Z_M_C'),
+    value: 6
+  },
+  CREATE_DATE: {
+    text: i18n.global.t('RR0065'),
+    value: 7
+  },
+  CREATE_DATE_C_M: {
+    text: i18n.global.t('CREATE_DATE_C_M'),
+    value: 8
+  },
+  CREATE_DATE_M_C: {
+    text: i18n.global.t('CREATE_DATE_M_C'),
+    value: 9
+  },
+  NEW_ARRIVED: {
+    text: i18n.global.t('NEW_ARRIVED'),
+    value: 10
+  },
+  LAST_UPDATE: {
+    text: i18n.global.t('RR0066'),
+    value: 11
+  },
+  RANDOM: {
+    text: i18n.global.t('RANDOM'),
+    value: 12
   }
 }

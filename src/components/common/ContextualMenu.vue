@@ -2,9 +2,10 @@
 list(class="min-w-57.5" @mouseleave="indexOfOnHover = -1")
   list-item(
     v-for="(option ,index) in optionList"
-    class="justify-between relative"
+    class="justify-between relative cursor-pointer"
+    :class="{ 'bg-black-200': multiSelect ? innerSelectValue.includes(option.value) : innerSelectValue === option.value }"
     @mouseenter="indexOfOnHover = index"
-    @click.stop="select(option, index)"
+    @click.stop="select(option)"
   )
     p(class="pl-5") {{option.text}}
     template(v-if="option.subList && option.subList.length > 0")
@@ -15,7 +16,7 @@ list(class="min-w-57.5" @mouseleave="indexOfOnHover = -1")
         :optionList="option.subList" class="absolute -top-2 left-px transform translate-x-full"
         @select="select($event)"
       )
-    svg-icon(v-if="selectValue === option.value" iconName="done" size="20" class="text-brand")
+    svg-icon(v-if="multiSelect ? innerSelectValue.includes(option.value) : innerSelectValue === option.value" iconName="done" size="20" class="text-brand")
 </template>
 
 <script>
@@ -52,16 +53,20 @@ export default {
       }
       if (props.multiSelect) {
         const tempArr = [...props.selectValue]
-        const index = tempArr.findIndex(tempItem => tempItem === index)
+        const index = tempArr.findIndex(tempItem => tempItem === option.value)
 
         if (!~index) {
-          tempArr.push(index)
+          tempArr.push(option.value)
         } else {
           tempArr.splice(index, 1)
         }
         innerSelectValue.value = tempArr
       } else {
-        innerSelectValue.value = option.value
+        if (innerSelectValue.value === option.value) {
+          innerSelectValue.value = null
+        } else {
+          innerSelectValue.value = option.value
+        }
       }
     }
 

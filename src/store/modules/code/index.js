@@ -1,6 +1,7 @@
 import codeApi from '@/apis/code'
 import setVuexState from '@/utils/set-vuex-state'
 import { ROLE_ID, FILTER_COMPLETE } from '@/utils/constants'
+import i18n from '@/utils/i18n'
 
 const filterCompleteList = Object
   .keys(FILTER_COMPLETE)
@@ -84,7 +85,17 @@ const state = () => ({
         value: 'Cotton,Cotton'
       }
     ],
-    completeList: filterCompleteList
+    completeList: filterCompleteList,
+    priceList: [
+      {
+        text: i18n.global.t('RR0096'),
+        value: true
+      },
+      {
+        text: i18n.global.t('RR0097'),
+        value: false
+      }
+    ]
   }
 })
 
@@ -132,10 +143,6 @@ const actions = {
   async getFilterOptions ({ dispatch }) {
     const { data } = await codeApi.getFilterOptions()
     dispatch('handleResponseData', { data }, { root: true })
-  },
-  async getAITags (_, { searchKeyword }) {
-    const { data } = await codeApi.getAITags({ searchKeyword })
-    return data.result?.tagList
   }
 }
 

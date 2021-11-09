@@ -1,21 +1,14 @@
+import search from './search'
 import { MODAL_TYPE } from '@/utils/constants'
 
 const state = () => ({
   modalPipeline: [],
-  message: '',
-  pagination: {
-    currentPage: 1,
-    perPageCount: 40,
-    totalCount: 0,
-    totalMatchCount: 0,
-    totalPage: 1
-  }
+  message: ''
 })
 
 const getters = {
   modalPipeline: (state) => state.modalPipeline,
-  message: (state) => state.message,
-  pagination: (state) => state.pagination
+  message: (state) => state.message
 }
 
 const mutations = {
@@ -37,9 +30,6 @@ const mutations = {
   },
   REMOVE_message (state) {
     state.message = ''
-  },
-  SET_pagination (state, pagination) {
-    Object.assign(state.pagination, pagination)
   }
 }
 
@@ -92,9 +82,6 @@ const actions = {
   },
   closeModalLoading ({ commit }) {
     commit('CLOSE_modalPipeline')
-  },
-  setPagination ({ commit }, pagination) {
-    commit('SET_pagination', pagination)
   }
 }
 
@@ -103,5 +90,8 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
+  modules: {
+    search
+  }
 }
