@@ -2,7 +2,7 @@
 div(class="flex justify-center pt-31")
   fullscreen-header(
     :title="$t('EE0037')"
-    :primaryText="$t('reuse.save')"
+    :primaryText="$t('UU0018')"
     :primaryHandler="primaryHandler"
     :secondaryHandler="secondaryHandler"
     :primaryCloseAfterHandle="false"
@@ -39,12 +39,12 @@ export default {
   setup () {
     const { t } = useI18n()
     const store = useStore()
-    const { location, goToAssets } = useNavigation()
+    const { goToAssets } = useNavigation()
     const { validations, validate } = useMaterialValidation()
 
     const updateMaterial = async () => {
       store.dispatch('helper/pushModalLoading')
-      await store.dispatch('material/updateMaterial', { location: location.value })
+      await store.dispatch('material/updateMaterial')
       store.dispatch('helper/closeModalLoading')
       store.dispatch('helper/clearModalPipeline')
       goToAssets()
@@ -61,17 +61,17 @@ export default {
       store.dispatch('helper/pushModalConfirm', {
         title: t('EE0045'),
         content: t('EE0046'),
-        secondaryText: t('reuse.confirm'),
+        secondaryText: t('UU0001'),
         secondaryHandler: () => {
           store.dispatch('helper/closeFullscreen')
         },
-        primaryText: t('reuse.cancel')
+        primaryText: t('UU0002')
       })
     }
 
     onBeforeMount(async () => {
       store.dispatch('helper/pushModalLoading')
-      await store.dispatch('material/getMaterialOptions', { location: location.value })
+      await store.dispatch('material/getMaterialOptions')
       store.dispatch('helper/closeModalLoading')
     })
 

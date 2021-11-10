@@ -1,14 +1,14 @@
 <template lang="pug">
 div(class="w-105 px-8 flex flex-col items-center")
-  p(class="text-body1 text-black-800 font-bold mb-8") {{$t('a.resetPassword')}}
+  p(class="text-body1 text-black-800 font-bold mb-8") {{$t('AA0060')}}
   span(class="text-body2 text-primary mb-3") {{email}}
-  span(class="text-body2 text-black-600 mb-8") {{$t('a.enterPasswordAndConfirmPassword')}}
+  span(class="text-body2 text-black-600 mb-8") {{$t('AA0053')}}
   form(class="w-full pb-5.5")
-    input-password(v-model:textValue="password" :placeholder="$t('a.newPassword')")
+    input-password(v-model:textValue="password" :placeholder="$t('AA0055')")
     password-validator(v-model:isValid="isPasswordValid" :password="password" class="mt-1 mb-7")
-    input-password(v-model:textValue="confirmPassword" :placeholder="$t('a.confirmPassword')" :customErrorMsg="errorMsg")
+    input-password(v-model:textValue="confirmPassword" :placeholder="$t('AA0056')" :customErrorMsg="errorMsg")
   div(class="h-25 flex items-center")
-    btn(size="lg" class="w-85" :disabled="!avaliableToChangePassword" @click="changeHandler") {{$t('a.changePassword')}}
+    btn(size="lg" class="w-85" :disabled="!avaliableToChangePassword" @click="changeHandler") {{$t('AA0054')}}
 </template>
 
 <script>
@@ -55,7 +55,7 @@ export default {
       }
 
       return (password.value !== confirmPassword.value)
-        ? t('a.passwordNotMatch')
+        ? t('AA0003NotMatch')
         : ''
     })
     const avaliableToChangePassword = computed(() => password.value !== '' && confirmPassword.value !== '' && isPasswordValid.value && password.value === confirmPassword.value)

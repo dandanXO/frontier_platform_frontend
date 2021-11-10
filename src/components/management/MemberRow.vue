@@ -10,7 +10,7 @@ div(
     div(v-else class="w-10 h-10 rounded-full border border-primary border-dashed")
   div(class="l:w-46.5 w-61.5 2xl:w-74")
     p(v-if="member.displayName !== null") {{member.displayName}}
-    div(v-else class="w-min px-2 py-1.5 text-caption text-primary border rounded border-primary") {{$t('b.pending')}}
+    div(v-else class="w-min px-2 py-1.5 text-caption text-primary border rounded border-primary") {{$t('BB0024')}}
   div(class="l:w-65 w-83.5 2xl:w-105") {{member.email}}
   div(class="l:w-41 w-54.5 2xl:w-82.5")
     template(v-if="member.orgRoleId !== null")
@@ -33,8 +33,8 @@ div(
     p(v-if="member.lastSignInTime !== null") {{member.lastSignInTime}}
     p(v-else class="ml-4 w-4 border-t border-primary")
   div(v-if="isHover" class="l:pr-5 pr-7 2xl:pr-26")
-    p(v-if="member.orgRoleId === null" class="text-body2 text-black-600 cursor-pointer" @click="confirmToCancelInvitation") {{$t('b.cancel')}}
-    p(v-else-if="member.orgRoleId !== ROLE_ID.OWNER && member.orgRoleId !== ROLE_ID.ADMIN" class="text-body2 text-black-600 cursor-pointer" @click="confirmToRemoveMember") {{$t('reuse.remove')}}
+    p(v-if="member.orgRoleId === null" class="text-body2 text-black-600 cursor-pointer" @click="confirmToCancelInvitation") {{$t('UU0002')}}
+    p(v-else-if="member.orgRoleId !== ROLE_ID.OWNER && member.orgRoleId !== ROLE_ID.ADMIN" class="text-body2 text-black-600 cursor-pointer" @click="confirmToRemoveMember") {{$t('UU0016')}}
 </template>
 
 <script>
@@ -42,7 +42,6 @@ import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { ROLE_ID } from '@/utils/constants'
-import useNavigation from '@/composables/useNavigation'
 
 export default {
   name: 'MemberRow',
@@ -56,28 +55,28 @@ export default {
     const isHover = ref(false)
     const store = useStore()
     const { t } = useI18n()
-    const { location } = useNavigation()
 
+    const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const orgRoleLimitList = computed(() => store.getters['code/orgRoleLimitList'])
     const groupRoleLimitList = computed(() => store.getters['code/getGroupRoleLimitList'](props.member.orgRoleId))
-    const roleLimitList = computed(() => location.value === 'org' ? orgRoleLimitList.value : groupRoleLimitList.value)
-    const currentRoleId = computed(() => location.value === 'org' ? props.member.orgRoleId : props.member.groupRoleId)
+    const roleLimitList = computed(() => routeLocation.value === 'org' ? orgRoleLimitList.value : groupRoleLimitList.value)
+    const currentRoleId = computed(() => routeLocation.value === 'org' ? props.member.orgRoleId : props.member.groupRoleId)
 
     const getRoleName = (roleId) => store.getters['code/getRoleName'](roleId)
 
     const changeMemberRole = async (roleId) => {
-      location.value === 'org'
+      routeLocation.value === 'org'
         ? await store.dispatch('organization/changeOrgMemberRole', { orgUserId: props.member.orgUserId, roleId })
         : await store.dispatch('group/changeGroupMemberRole', { groupUserId: props.member.groupUserId, roleId })
     }
 
     const confirmToRemoveMember = () => {
       store.dispatch('helper/openModalConfirm', {
-        title: t('b.removeMember'),
-        content: t('b.sureToRemoveMember', { name: props.member.displayName }),
-        secondaryText: t('b.confirm'),
+        title: t('BB0058'),
+        content: t('BB0062', { name: props.member.displayName }),
+        secondaryText: t('UU0001'),
         secondaryHandler: async () => {
-          location.value === 'org'
+          routeLocation.value === 'org'
             ? await store.dispatch('organization/removeOrgMember', { orgUserId: props.member.orgUserId })
             : await store.dispatch('group/removeGroupMember', { groupUserId: props.member.groupUserId })
         }
@@ -86,11 +85,11 @@ export default {
 
     const confirmToCancelInvitation = () => {
       store.dispatch('helper/openModalConfirm', {
-        title: t('b.cancelInvite'),
-        content: t('b.sureToCancelInvite'),
-        secondaryText: t('b.confirm'),
+        title: t('BB0057'),
+        content: t('BB0061'),
+        secondaryText: t('UU0001'),
         secondaryHandler: async () => {
-          location.value === 'org'
+          routeLocation.value === 'org'
             ? await store.dispatch('organization/cancelOrgInvitation', { email: props.member.email })
             : await store.dispatch('group/cancelGroupInvitation', { email: props.member.email })
         }
@@ -106,7 +105,6 @@ export default {
       changeMemberRole,
       confirmToRemoveMember,
       ROLE_ID,
-      location,
       currentRoleId,
       confirmToCancelInvitation
     }

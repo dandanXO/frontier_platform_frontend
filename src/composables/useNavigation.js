@@ -7,9 +7,9 @@ export default function useNavigation () {
   const store = useStore()
   const router = useRouter()
   const route = useRoute()
-  const reloadRootRoute = inject('reloadRootRoute')
 
-  const location = computed(() => Object.prototype.hasOwnProperty.call(route.params, 'groupId') ? 'group' : 'org')
+  const routeLocation = computed(() => store.getters['helper/routeLocation'])
+  const prefixPath = computed(() => routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId')
 
   const nextAfterSignIn = async () => {
     if (route.query.inviteCode !== undefined) {
@@ -35,10 +35,9 @@ export default function useNavigation () {
     return temp
   }
 
-  const prefixPath = computed(() => location.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId')
-
   const goToAssets = () => {
     router.push(parsePath(`${prefixPath.value}/assets`))
+    const reloadRootRoute = inject('reloadRootRoute')
     reloadRootRoute()
   }
 
@@ -47,7 +46,6 @@ export default function useNavigation () {
   }
 
   return {
-    location,
     nextAfterSignIn,
     parsePath,
     goToAssets,

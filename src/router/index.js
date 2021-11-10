@@ -85,17 +85,17 @@ const routes = [
   {
     path: '/:orgNo',
     redirect: to => `/${to.params.orgNo}/public-library`,
-    name: 'InnerAppLayout',
+    name: 'OrgRoot',
     meta: {
       requiresLogin: true
     },
     component: () => import('@/views/innerApp/InnerAppLayout.vue'),
     beforeEnter: async (to, from, next) => {
+      store.commit('helper/SET_routeLocation', 'org')
       await store.dispatch('user/orgUser/getOrgUser', { orgNo: to.params.orgNo })
       await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
       const org = store.getters['organization/organization']
       const orgUser = store.getters['user/orgUser/orgUser']
-
       if (orgUser.orgRoleId === ROLE_ID.OWNER && !org.uploadMaterialEmail) {
         store.dispatch('helper/openModal', {
           component: 'modal-create-mail-org',
@@ -114,38 +114,17 @@ const routes = [
         component: () => import('@/views/innerApp/PublicLibrary.vue')
       },
       {
-        path: 'management',
-        redirect: to => `/${to.params.orgNo}/management/about`,
-        name: 'Management',
-        component: () => import('@/views/innerApp/management/Management.vue'),
-        children: [
-          {
-            path: ':tab(about|members|history)',
-            name: 'ManagementOrg',
-            props: true,
-            component: () => import('@/views/innerApp/management/ManagementOrg.vue'),
-            beforeEnter: async (to, from, next) => {
-              await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
-              await store.dispatch('code/getCountryList')
-              await store.dispatch('code/getOrgCategoryList')
-              await store.dispatch('code/getRoleList')
-              await store.dispatch('code/getRoleLimitTable')
-              next()
-            }
-          },
-          {
-            path: ':groupId(\\d+)/:tab(about|members|history)',
-            name: 'ManagementGroup',
-            props: true,
-            component: () => import('@/views/innerApp/management/ManagementGroup.vue'),
-            beforeEnter: async (to, from, next) => {
-              await store.dispatch('code/getRoleList')
-              await store.dispatch('code/getRoleLimitTable')
-              await store.dispatch('group/getGroup', { groupId: to.params.groupId })
-              next()
-            }
-          }
-        ]
+        path: 'management/:tab(about|members|history)',
+        name: 'OrgManagement',
+        component: () => import('@/views/innerApp/Management.vue'),
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
+          await store.dispatch('code/getCountryList')
+          await store.dispatch('code/getOrgCategoryList')
+          await store.dispatch('code/getRoleList')
+          await store.dispatch('code/getRoleLimitTable')
+          next()
+        }
       },
       {
         path: 'global-search',
@@ -189,42 +168,60 @@ const routes = [
         path: 'sticker',
         name: 'OrgSticker',
         component: () => import('@/views/innerApp/Sticker.vue')
-      },
+      }
+    ]
+  },
+  {
+    path: '/:orgNo/:groupId(\\d+)',
+    name: 'GroupRoot',
+    redirect: to => `/${to.params.orgNo}/${to.params.groupId}/assets`,
+    meta: {
+      requiresLogin: true
+    },
+    component: () => import('@/views/innerApp/InnerAppLayout.vue'),
+    beforeEnter: async (to, from, next) => {
+      store.commit('helper/SET_routeLocation', 'group')
+      await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
+      await store.dispatch('group/getGroup', { groupId: to.params.groupId })
+      next()
+    },
+    children: [
       {
-        path: ':groupId(\\d+)',
-        redirect: to => `/${to.params.orgNo}/${to.params.groupId}/workspace`,
-        component: () => import('@/views/PassThrough'),
+        path: 'management/:tab(about|members|history)',
+        name: 'GroupManagement',
+        props: true,
+        component: () => import('@/views/innerApp/Management.vue'),
         beforeEnter: async (to, from, next) => {
+          await store.dispatch('code/getRoleList')
+          await store.dispatch('code/getRoleLimitTable')
           await store.dispatch('group/getGroup', { groupId: to.params.groupId })
           next()
-        },
-        children: [
-          {
-            path: 'assets',
-            name: 'GroupAssets',
-            component: () => import('@/views/innerApp/Assets.vue')
-          },
-          {
-            path: 'assets/upload',
-            name: 'GroupUploadAssets',
-            component: () => import('@/views/innerApp/UploadAssets.vue')
-          },
-          {
-            path: 'workspace',
-            name: 'GroupWorkspace',
-            component: () => import('@/views/innerApp/Workspace.vue')
-          },
-          {
-            path: 'share-to-me',
-            name: 'GroupShareToMe',
-            component: () => import('@/views/innerApp/ShareToMe.vue')
-          },
-          {
-            path: 'sticker',
-            name: 'GroupSticker',
-            component: () => import('@/views/innerApp/Sticker.vue')
-          }
-        ]
+        }
+      },
+      {
+        path: 'assets',
+        name: 'GroupAssets',
+        component: () => import('@/views/innerApp/Assets.vue')
+      },
+      {
+        path: 'assets/upload',
+        name: 'GroupUploadAssets',
+        component: () => import('@/views/innerApp/UploadAssets.vue')
+      },
+      {
+        path: 'workspace',
+        name: 'GroupWorkspace',
+        component: () => import('@/views/innerApp/Workspace.vue')
+      },
+      {
+        path: 'share-to-me',
+        name: 'GroupShareToMe',
+        component: () => import('@/views/innerApp/ShareToMe.vue')
+      },
+      {
+        path: 'sticker',
+        name: 'GroupSticker',
+        component: () => import('@/views/innerApp/Sticker.vue')
       }
     ]
   }

@@ -21,15 +21,14 @@ div(class="w-131 px-8")
             p(class="text-body2 font-bold text-primary pt-1.5") {{image.name}}
   div(class="h-25 flex justify-center items-center")
     div(class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" @click="closeModal") {{$t('reuse.cancel') }}
-      btn(size="md" @click="choose") {{$t('reuse.save')}}
+      btn(size="md" type="secondary" @click="closeModal") {{$t('UU0002') }}
+      btn(size="md" @click="choose") {{$t('UU0018')}}
 </template>
 
 <script>
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import { COVER_MODE } from '@/utils/constants'
-import useNavigation from '@/composables/useNavigation'
 import { useI18n } from 'vue-i18n'
 
 export default {
@@ -37,7 +36,6 @@ export default {
   setup () {
     const store = useStore()
     const { t } = useI18n()
-    const { location } = useNavigation()
     const material = computed(() => store.getters['material/material'])
     const coverImageIndex = ref(0)
     const { coverMode, attachmentList } = material.value
@@ -112,10 +110,7 @@ export default {
          */
       } else {
         coverMode = coverImageIndex.value + 1
-        store.dispatch('material/changeCoverImg', {
-          location: location.value,
-          coverMode
-        })
+        store.dispatch('material/changeCoverImg', { coverMode })
       }
     }
 

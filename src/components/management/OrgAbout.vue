@@ -12,21 +12,21 @@ div(class="l:pt-16 pt-17.5")
         div(class="flex items-center pt-4")
           p(class="text-caption text-primary") ID: {{organization.orgNo}}
           svg-icon(iconName="content_copy" size="14" class="text-black-700")
-        p(class="pt-2.5 text-caption text-black-500 cursor-pointer" @click="openModalDelete") {{$t('reuse.delete')}}
+        p(class="pt-2.5 text-caption text-black-500 cursor-pointer" @click="openModalDelete") {{$t('UU0013')}}
     div(class="grid gap-y-8.5 relative")
-      p(class="absolute text-caption text-black-500 right-0 -top-7 transform -translate-y-full") *{{$t('b.required')}}
+      p(class="absolute text-caption text-black-500 right-0 -top-7 transform -translate-y-full") *{{$t('BB0073')}}
       div(class="grid grid-cols-2 grid-rows-3 gap-y-7.5 l:gap-x-8 gap-x-15")
         input-label-color(
           v-model:labelColor="orgFormData.labelColor"
           v-model:textValue="orgFormData.orgName"
-          :label="$t('b.orgName')"
-          :customErrorMsg="isOrgNameExist ? $t('err.nameAlreadyExists') : ''"
+          :label="$t('BB0068')"
+          :customErrorMsg="isOrgNameExist ? $t('WW0001') : ''"
           required
           class="w-85 relative z-11"
         )
         input-radio-group(
           v-model:inputValue="orgFormData.orgCategoryId"
-          :label="$t('b.orgType')"
+          :label="$t('BB0072')"
           :optionList="orgCategoryList"
           keyOptionValue="orgCategoryId"
           required
@@ -34,31 +34,31 @@ div(class="l:pt-16 pt-17.5")
         input-select(
           v-model:selectValue="orgFormData.countryCode"
           :options="countryList"
-          :label="$t('b.country')"
+          :label="$t('BB0069')"
           keyOptionDisplay="name"
           keyOptionValue="countryCode"
           searchBox
           class="relative z-10 w-85"
           required
         )
-        input-text(v-model:textValue="orgFormData.address" :label="$t('b.orgAddress')" class="w-85" :placeholder="$t('b.yourAddress')")
+        input-text(v-model:textValue="orgFormData.address" :label="$t('BB0078')" class="w-85" :placeholder="$t('BB0079')")
         input-calling-code(
           v-model:textValue="orgFormData.phone"
           v-model:countryCode="orgFormData.phoneCountryCode"
           class="relative z-9"
           width="340"
-          :label="$t('b.phone')"
-          :placeholder="$t('b.yourPhone')"
+          :label="$t('BB0070')"
+          :placeholder="$t('BB0071')"
         )
         input-calling-code(
           v-model:textValue="orgFormData.fax"
           v-model:countryCode="orgFormData.faxCountryCode"
           class="relative z-8"
           width="340"
-          :label="$t('b.fax')"
-          :placeholder="$t('b.faxNumber')"
+          :label="$t('BB0080')"
+          :placeholder="$t('BB0081')"
         )
-      btn(size="md" class="justify-self-end" :disabled="!avaliableToUpdateOrg" @click="updateOrg") {{$t('reuse.save')}}
+      btn(size="md" class="justify-self-end" :disabled="!avaliableToUpdateOrg" @click="updateOrg") {{$t('UU0018')}}
 </template>
 
 <script>
@@ -94,7 +94,7 @@ export default {
     const openModalUpload = () => {
       store.dispatch('helper/openModal', {
         component: 'modal-upload',
-        header: t('b.updateOrgLogo'),
+        header: t('BB0032'),
         properties: {
           // pure logo no preprocessing
           image: organization.value.logo,

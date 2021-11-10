@@ -139,7 +139,7 @@ div(class="grid" :class="{ 'border-b border-primary-thin': !isOpenFilterPanel }"
                 :disabled="currentYarnType !== YARN_TYPE.KNIT"
                 class="w-50"
               )
-            btn(size="sm" class="justify-self-center" @click="updateYarnAndDensity") {{$t('reuse.confirm')}}
+            btn(size="sm" class="justify-self-center" @click="updateYarnAndDensity") {{$t('UU0001')}}
         filter-wrapper(iconName="deal" :displayName="$t('RR0022')" :dirty="filterDirty.finishList")
           contextual-menu(
             v-model:selectValue="filter.finishList"

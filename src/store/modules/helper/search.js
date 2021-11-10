@@ -90,11 +90,12 @@ const mutations = {
 }
 
 const actions = {
-  reset ({ dispatch }) {
+  reset ({ dispatch }, { sort }) {
     dispatch('resetKeyword')
     dispatch('resetTagList')
     dispatch('resetFilter')
     dispatch('resetSelectedTagList')
+    dispatch('setPagination', { sort })
   },
   setFilter ({ commit }, filter) {
     commit('SET_filter', filter)

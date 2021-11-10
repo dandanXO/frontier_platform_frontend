@@ -9,7 +9,7 @@ div(
     slot(name="left")
   div(class="flex justify-center items-center")
     div(v-if="secondaryButton" class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" class="h-10" @click="innerSecondaryHandler") {{secondaryText !== '' ? secondaryText : $t('b.cancel')}}
+      btn(size="md" type="secondary" class="h-10" @click="innerSecondaryHandler") {{secondaryText !== '' ? secondaryText : $t('UU0002')}}
       btn(size="md" class="h-10" @click="innerPrimaryHandler") {{primaryText}}
     btn(v-else-if="primaryButton" size="md" class="h-10" @click="innerPrimaryHandler") {{primaryText}}
 </template>

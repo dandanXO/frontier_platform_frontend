@@ -2,10 +2,10 @@
 div(class="pt-28.5 h-screen")
   fullscreen-header(
     :title="$t('EE0006')"
-    :primaryText="$t('reuse.confirm')"
+    :primaryText="$t('UU0001')"
     :primaryHandler="primaryHandler"
     :primaryCloseAfterHandle='false'
-    :secondaryText="$t('reuse.back')"
+    :secondaryText="$t('UU0004')"
   )
   div(class='max-w-286 pl-17 pr-7 mx-auto')
     div(class='mb-10')
@@ -29,7 +29,6 @@ import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
 import MaterialMergeRowDetail from '@/components/assets/material/MaterialMergeRowDetail'
 import { computed } from '@vue/runtime-core'
 import { useStore } from 'vuex'
-import useNavigation from '@/composables/useNavigation'
 import { useI18n } from 'vue-i18n'
 
 export default {
@@ -44,7 +43,6 @@ export default {
     }
   },
   setup (props) {
-    const { location } = useNavigation()
     const { t } = useI18n()
     const store = useStore()
     const clearModalPipeline = () => store.dispatch('helper/clearModalPipeline')
@@ -58,7 +56,7 @@ export default {
         }
       })
 
-      await store.dispatch('assets/mergeMaterial', { location: location.value, mergedList: apiInput })
+      await store.dispatch('assets/mergeMaterial', { mergedList: apiInput })
       store.commit('assets/CLEAR_addedMaterialList')
       clearModalPipeline()
       store.commit('helper/PUSH_message', t('Merge Material successfully!'))

@@ -2,13 +2,13 @@
 div(class="w-100 px-8")
   div(class="flex flex-col items-center")
     svg-icon(iconName="send-mail" size="68" class="mb-4")
-    p(class="text-h6 text-primary font-bold mb-4") {{$t('a.verification')}}
-    p(class="max-w-58 text-body2 text-primary text-center line-height-1.6 mb-4") {{$t('a.enter6DigitCode', { email })}}
-    input-text(v-model:textValue="verifyCode" class="w-72" size="lg" :placeholder="$t('a.enter6digit')" :customErrorMsg="errorMsg")
+    p(class="text-h6 text-primary font-bold mb-4") {{$t('AA0047')}}
+    p(class="max-w-58 text-body2 text-primary text-center line-height-1.6 mb-4") {{$t('AA0048', { email })}}
+    input-text(v-model:textValue="verifyCode" class="w-72" size="lg" :placeholder="$t('AA0076')" :customErrorMsg="errorMsg")
   div(class="h-25 flex justify-center items-center")
     div(class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" class="h-10" @click="sendForgotPasswordEmail") {{$t('a.resend')}}
-      btn(size="md" class="h-10" @click="verifyForgotPasswordCode") {{$t('a.verify')}}
+      btn(size="md" type="secondary" class="h-10" @click="sendForgotPasswordEmail") {{$t('AA0049')}}
+      btn(size="md" class="h-10" @click="verifyForgotPasswordCode") {{$t('AA0062')}}
 </template>
 
 <script>

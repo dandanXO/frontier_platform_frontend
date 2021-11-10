@@ -9,7 +9,7 @@ material-table(@selectAll="handleSelectAll" :sortOptionList="optionSort")
         span )
   template(#header-right)
     grid-or-row(@change='isGrid = $event' :isGrid='isGrid' class="justify-self-end")
-    btn(size="sm" prependIcon="add" @click="goToMaterialUpload") {{$t('reuse.create')}}
+    btn(size="sm" prependIcon="add" @click="goToMaterialUpload") {{$t('UU0020')}}
   template(#default)
     template(v-if="materialList.length > 0")
       dynamic-scroller(
