@@ -2,7 +2,7 @@
 div(class="pt-16 h-screen")
   fullscreen-header(
     :title="$t('EE0006')"
-    :primaryText="$t('reuse.preview')"
+    :primaryText="$t('UU0003')"
     :primaryHandler="primaryHandler"
     :primaryCloseAfterHandle="false"
   )

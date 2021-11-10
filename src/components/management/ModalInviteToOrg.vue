@@ -1,11 +1,11 @@
 <template lang="pug">
 div(class="w-118.5")
   div(class="px-8")
-    h6(class="text-h6 text-primary font-bold pb-7.5 text-center") {{$t('b.inviteToOrg')}}
+    h6(class="text-h6 text-primary font-bold pb-7.5 text-center") {{$t('BB0020')}}
     input-text-icon(
       v-model:textValue="email"
       prependIcon="search"
-      :placeholder="$t('b.enterEmailYouLikeToAdd')"
+      :placeholder="$t('BB0065')"
       :diabledIcon="email === ''"
       :customErrorMsg="errorMsg"
       @click:icon="addToInviteList"
@@ -18,8 +18,8 @@ div(class="w-118.5")
   div(class="border-t border-primary-thin mt-7.5")
     div(class="py-5 px-8 flex items-start gap-x-2")
       svg-icon(iconName="error_outline" class="text-primary")
-      p(class="flex-grow text-caption text-primary line-height-1.6") {{$t('b.increaseAmount')}}
-      btn(size="sm" :disabled="emailList.length === 0" @click="inviteToOrg(close)") {{$t('reuse.invite')}}
+      p(class="flex-grow text-caption text-primary line-height-1.6") {{$t('BB0021')}}
+      btn(size="sm" :disabled="emailList.length === 0" @click="inviteToOrg(close)") {{$t('UU0014')}}
     div(class="bg-black-100 py-5.5 px-8 flex items-center gap-x-3")
       svg-icon(iconName="link" size="36")
       input-text-btn(
@@ -28,7 +28,7 @@ div(class="w-118.5")
         diabledInput
         :textValue="inviteLink"
         :clearable="false"
-        :buttonLabel="$t('reuse.copy')"
+        :buttonLabel="$t('UU0015')"
         @click:button="copyText(inviteLink)"
       )
 </template>
@@ -70,11 +70,11 @@ export default {
     const addToInviteList = async () => {
       try {
         if (!inputValidator.emailFormat(email.value)) {
-          throw t('err.invalidEmail')
+          throw t('WW0019')
         }
 
         if (await store.dispatch('organization/checkOrgMemberExist', { email: toRaw(email.value) })) {
-          throw t('err.alreadyInOrg')
+          throw t('WW0013')
         }
 
         emailList.unshift(email.value)

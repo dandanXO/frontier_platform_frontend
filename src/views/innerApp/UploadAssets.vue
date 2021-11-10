@@ -22,12 +22,12 @@ div(class="relative")
       p(class="text-body1 text-primary line-height-1.6") {{$t('DD0008')}}
     div(class='flex flex-col gap-y-8')
       div
-        btn(size="md" @click="openFullscreenMaterialUpload") {{$t('reuse.createFabric')}}
+        btn(size="md" @click="openFullscreenMaterialUpload") {{$t('UU0008')}}
       div(class="flex gap-x-7.5")
-        btn(size='md' type="secondary") {{$t('reuse.massUpdate')}}
+        btn(size='md' type="secondary") {{$t('UU0009')}}
         div
           p(class="text-body2 text-black-900") {{$t('DD0009')}}
-          a(class="text-assist-blue underline flex items-center gap-x-1") {{$t('reuse.latestVersionForm')}}
+          a(class="text-assist-blue underline flex items-center gap-x-1") {{$t('UU0010')}}
             svg-icon(iconName="info_outline" size="14" class="text-primary")
 </template>
 
@@ -42,9 +42,10 @@ export default {
   setup () {
     const { t } = useI18n()
     const store = useStore()
-    const { location, parsePath } = useNavigation()
+    const { parsePath } = useNavigation()
+    const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const breadcrumbsList = computed(() => {
-      const prefix = location.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
+      const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
       return [
         {
           name: t('DD0044'),
@@ -58,7 +59,7 @@ export default {
     })
 
     const uploadMaterialEmail = computed(() => {
-      return location.value === 'org'
+      return routeLocation.value === 'org'
         ? store.getters['organization/uploadMaterialEmail']
         : store.getters['group/uploadMaterialEmail']
     })

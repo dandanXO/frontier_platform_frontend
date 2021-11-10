@@ -41,7 +41,7 @@ div(class="fixed z-index:sidebar w-60 h-full left-0 top-0 bottom-0 bg-black-100 
       span(class="flex-grow text-body2 text-primary truncate line-height-1.4") {{orgUser.displayName}}
       svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650")
 main(class="ml-60 h-full" :class='{"overflow-hidden": modalPipeline.length > 0}')
-  router-view(v-if="isRouterAlive")
+  router-view(v-if="isRouterAlive" :key="$route.path")
 modal-pipeline
 </template>
 
@@ -77,27 +77,27 @@ export default {
     const menuGlobal = reactive([
       {
         id: 'publicLibrary',
-        title: 'reuse.publicLibrary',
+        title: 'RR0003',
         icon: 'logo',
         path: `/${organization.value.orgNo}/public-library`
       },
       {
         id: 'globalSearch',
-        title: 'reuse.globalSearch',
+        title: 'RR0005',
         icon: 'search_all',
         path: `/${organization.value.orgNo}/global-search`
       },
       {
         id: 'favorites',
-        title: 'reuse.favorites',
+        title: 'RR0006',
         icon: 'favorite_border',
         path: `/${organization.value.orgNo}/favorites`
       },
       {
         id: 'management',
-        title: 'reuse.management',
+        title: 'RR0004',
         icon: 'member_setting',
-        path: `/${organization.value.orgNo}/management`
+        path: `/${organization.value.orgNo}/management/about`
       }
     ])
     const menuOrgOrGroup = computed(() => {
@@ -105,28 +105,28 @@ export default {
       return [
         {
           id: orgId,
-          name: t('reuse.organization'),
+          name: t('RR0007'),
           labelColor: labelColor,
           menuList: [
             {
               id: 'assets',
-              title: 'reuse.assets',
+              title: 'RR0008',
               path: `/${orgNo}/assets`,
               icon: 'upload'
             },
             {
               id: 'workspace',
-              title: 'reuse.workspace',
+              title: 'RR0009',
               path: `/${orgNo}/workspace`
             },
             {
               id: 'shareToMe',
-              title: 'reuse.shareToMe',
+              title: 'RR0010',
               path: `/${orgNo}/share-to-me`
             },
             {
               id: 'sticker',
-              title: 'reuse.sticker',
+              title: 'RR0011',
               path: `/${orgNo}/sticker`
             }
           ]
@@ -140,23 +140,23 @@ export default {
             menuList: [
               {
                 id: 'assets',
-                title: 'reuse.assets',
+                title: 'RR0008',
                 path: `/${orgNo}/${groupId}/assets`,
                 icon: 'upload'
               },
               {
                 id: 'workspace',
-                title: 'reuse.workspace',
+                title: 'RR0009',
                 path: `/${orgNo}/${groupId}/workspace`
               },
               {
                 id: 'shareToMe',
-                title: 'reuse.shareToMe',
+                title: 'RR0010',
                 path: `/${orgNo}/${groupId}/share-to-me`
               },
               {
                 id: 'sticker',
-                title: 'reuse.sticker',
+                title: 'RR0011',
                 path: `/${orgNo}/${groupId}/sticker`
               }
             ]

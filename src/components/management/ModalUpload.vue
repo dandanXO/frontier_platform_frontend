@@ -9,11 +9,11 @@ div(class="w-120 border-t border-black-400")
         @dragover.prevent
         @dragenter.prevent
       )
-        btn(size="md" type="secondary" class="h-10 mb-2" @click="uploadImg") {{$t('b.chooseImageToUpload') }}
-        span(class="text-body2 font-bold mb-2 text-black-500") {{$t('b.pictureRestriction')}}
-        span(class="text-body2 mb-2 text-black-500") {{$t('b.fileSupported')}}
-        span(class="text-body2 mb-2 text-black-500") {{$t('b.imageFormat')}}
-        span(class="text-body2 mb-2 text-black-500") {{$t('b.ImageMaxSize')}}
+        btn(size="md" type="secondary" class="h-10 mb-2" @click="uploadImg") {{$t('BB0035') }}
+        span(class="text-body2 font-bold mb-2 text-black-500") {{$t('BB0033')}}
+        span(class="text-body2 mb-2 text-black-500") {{$t('BB0034')}}
+        span(class="text-body2 mb-2 text-black-500") {{$t('BB0059')}}
+        span(class="text-body2 mb-2 text-black-500") {{$t('BB0060')}}
       svg-icon(v-else-if="uploadStatus === 'uploading'" iconName="loading" size="100" class="justify-self-end cursor-pointer text-brand-dark")
       image-crop(ref="imageCroper" v-else-if="uploadStatus === 'done' || uploadStatus === 'croping'" :cropRectSize="cropRectSize" :image="uploadedImage")
       img(v-else class="w-50 h-50" :src="image")
@@ -21,12 +21,12 @@ div(class="w-120 border-t border-black-400")
         svg-icon(iconName="loading" size="50" class="justify-self-end cursor-pointer text-brand-dark")
   div(class="h-25 flex justify-center items-center")
     div(v-if="uploadStatus === 'done'" class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" :disabled="btnDisabled" @click="closeModal") {{$t('b.cancel') }}
-      btn(size="md" :disabled="btnDisabled" @click="confirm") {{$t('b.confirm')}}
+      btn(size="md" type="secondary" :disabled="btnDisabled" @click="closeModal") {{$t('UU0002') }}
+      btn(size="md" :disabled="btnDisabled" @click="confirm") {{$t('UU0001')}}
     div(v-else-if="uploadStatus === 'none' && image !== ''" class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" @click="innerRemoveHandler") {{$t('b.remove') }}
-      btn(size="md" @click="uploadImg") {{$t('b.changeLogo')}}
-    btn(v-else size="md" :disabled="btnDisabled") {{$t('b.confirm')}}
+      btn(size="md" type="secondary" @click="innerRemoveHandler") {{$t('UU0016') }}
+      btn(size="md" @click="uploadImg") {{$t('UU0019')}}
+    btn(v-else size="md" :disabled="btnDisabled") {{$t('UU0001')}}
 </template>
 
 <script>
@@ -90,23 +90,23 @@ export default {
       switch (errorCode) {
         case ERROR_CODE.INVALID_TYPE:
           store.dispatch('helper/pushModalConfirm', {
-            title: t('b.uploadFailed'),
-            content: t(t('err.errorImageFormat')),
-            primaryText: t('b.confirm')
+            title: t('BB0063'),
+            content: t(t('WW0016')),
+            primaryText: t('UU0001')
           })
           break
         case ERROR_CODE.EXCEED_LIMIT:
           store.dispatch('helper/pushModalConfirm', {
-            title: t('b.uploadFailed'),
-            content: t('err.errorExceedImageSize'),
-            primaryText: t('b.confirm')
+            title: t('BB0063'),
+            content: t('WW0017'),
+            primaryText: t('UU0001')
           })
           break
         case ERROR_CODE.TOO_SMALL:
           store.dispatch('helper/pushModalConfirm', {
-            title: t('b.uploadFailed'),
-            content: t('err.errorImageTooSmall'),
-            primaryText: t('b.confirm')
+            title: t('BB0063'),
+            content: t('WW0018'),
+            primaryText: t('UU0001')
           })
           break
       }

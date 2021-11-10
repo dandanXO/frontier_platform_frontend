@@ -2,13 +2,20 @@ import search from './search'
 import { MODAL_TYPE } from '@/utils/constants'
 
 const state = () => ({
+  /**
+   * control by route
+   * /:orgNo -> org
+   * /:orgNo/:groupId -> group
+   */
+  routeLocation: 'org',
   modalPipeline: [],
   message: ''
 })
 
 const getters = {
   modalPipeline: (state) => state.modalPipeline,
-  message: (state) => state.message
+  message: (state) => state.message,
+  routeLocation: (state) => state.routeLocation
 }
 
 const mutations = {
@@ -30,6 +37,10 @@ const mutations = {
   },
   REMOVE_message (state) {
     state.message = ''
+  },
+  SET_routeLocation (state, routeLocation) {
+    state.routeLocation = routeLocation
+    console.log('Route Location:', state.routeLocation)
   }
 }
 

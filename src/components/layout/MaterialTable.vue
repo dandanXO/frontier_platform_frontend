@@ -45,7 +45,6 @@ import Pagination from '@/components/layout/Pagination.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import useNavigation from '@/composables/useNavigation'
 
 export default {
   name: 'MaterialTable',
@@ -68,7 +67,6 @@ export default {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
-    const { location } = useNavigation()
 
     const isSearching = ref(false)
     const inSearch = ref(false)
@@ -132,16 +130,13 @@ export default {
           filter: encodeURI(JSON.stringify(filter.value))
         }
       })
-      await store.dispatch('assets/getMaterialList', {
-        location: location.value,
-        targetPage
-      })
+      await store.dispatch('assets/getMaterialList', { targetPage })
 
       isSearching.value = false
     }
 
     // INIT
-    store.dispatch('helper/search/reset')
+    store.dispatch('helper/search/reset', { sort: props.sortOptionList.base[0].value })
     const { currentPage, sort: qSort, isShowMatch: qIsShowMatch, keyword: qKeyword, tagList: qTagList, filter: qFilter } = route.query
     if (qSort) {
       store.dispatch('helper/search/setPagination', { sort: Number(qSort) })

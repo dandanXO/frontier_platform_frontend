@@ -32,7 +32,7 @@ const actions = {
   setAssets ({ state }, data) {
     setVuexState(state, data)
   },
-  async getMaterialList ({ rootGetters, dispatch }, { location, targetPage = 1 }) {
+  async getMaterialList ({ rootGetters, dispatch }, { targetPage = 1 }) {
     const pagination = rootGetters['helper/search/pagination']
     const { perPageCount, isShowMatch, sort } = pagination
     const params = {
@@ -53,28 +53,16 @@ const actions = {
       params.search = search
     }
 
-    const { data } = location === 'org'
-      ? await assetsApi.org.getMaterialList({
-        orgId: rootGetters['organization/orgId'],
-        ...params
-      })
-      : await assetsApi.group.getMaterialList({
-        groupId: rootGetters['group/groupId'],
-        ...params
-      })
+    const { data } = rootGetters['helper/routeLocation'] === 'org'
+      ? await assetsApi.org.getMaterialList({ orgId: rootGetters['organization/orgId'], ...params })
+      : await assetsApi.group.getMaterialList({ groupId: rootGetters['group/groupId'], ...params })
 
     dispatch('handleResponseData', { data }, { root: true })
   },
-  async mergeMaterial ({ rootGetters, dispatch }, { location, mergedList }) {
-    const { data } = location === 'org'
-      ? await assetsApi.org.mergeMaterial({
-        orgId: rootGetters['organization/orgId'],
-        mergedList
-      })
-      : await assetsApi.group.mergeMaterial({
-        groupId: rootGetters['group/groupId'],
-        mergedList
-      })
+  async mergeMaterial ({ rootGetters, dispatch }, { mergedList }) {
+    const { data } = rootGetters['helper/routeLocation'] === 'org'
+      ? await assetsApi.org.mergeMaterial({ orgId: rootGetters['organization/orgId'], mergedList })
+      : await assetsApi.group.mergeMaterial({ groupId: rootGetters['group/groupId'], mergedList })
 
     dispatch('handleResponseData', { data }, { root: true })
   }

@@ -28,16 +28,14 @@ div(class="w-245")
 <script>
 import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
-import useNavigation from '@/composables/useNavigation'
 
 export default {
   name: 'ModalHowToScan',
   setup () {
     const store = useStore()
-    const { location } = useNavigation()
 
     const uploadMaterialEmail = computed(() => {
-      return location.value === 'org'
+      return store.getters['helper/routeLocation'] === 'org'
         ? store.getters['organization/uploadMaterialEmail']
         : store.getters['group/uploadMaterialEmail']
     })

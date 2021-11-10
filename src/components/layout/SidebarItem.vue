@@ -26,6 +26,10 @@ export default {
     path: {
       type: String,
       required: true
+    },
+    id: {
+      type: String,
+      required: true
     }
   },
   setup (props) {
@@ -34,6 +38,11 @@ export default {
     const reloadRootRoute = inject('reloadRootRoute')
 
     const isActive = computed(() => {
+      // Speacial case
+      if (route.name === 'GroupManagement' && props.id === 'management') {
+        return true
+      }
+
       const matched = route.matched
       const matchedPathList = matched.map(item => {
         let path = item.path

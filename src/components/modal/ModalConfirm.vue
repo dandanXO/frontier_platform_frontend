@@ -10,7 +10,7 @@ div(class="fixed inset-0  z-index:modal-confirm  w-screen h-screen bg-black-900 
     div(class="h-25 flex justify-center items-center")
       div(v-if="secondaryText !== ''" class="grid grid-cols-2 gap-x-3")
         btn(size="md" type="secondary" class="h-10" @click="innerSecondaryHandler") {{secondaryText}}
-        btn(size="md" class="h-10" @click="innerPrimaryHandler") {{primaryText !== '' ? primaryText : $t('b.cancel')}}
+        btn(size="md" class="h-10" @click="innerPrimaryHandler") {{primaryText !== '' ? primaryText : $t('UU0002')}}
       btn(v-else size="md" class="h-10" @click="innerPrimaryHandler") {{primaryText}}
 </template>
 

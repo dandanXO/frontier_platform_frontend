@@ -46,10 +46,10 @@ export default {
   },
   setup () {
     const store = useStore()
-    const { location, goToAssets } = useNavigation()
+    const { goToAssets } = useNavigation()
 
     const uploadMaterialEmail = computed(() => {
-      return location.value === 'org'
+      return store.getters['helper/routeLocation']
         ? store.getters['organization/uploadMaterialEmail']
         : store.getters['group/uploadMaterialEmail']
     })

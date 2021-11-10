@@ -1,11 +1,11 @@
 <template lang="pug">
 div(class="w-101 px-8")
-  h6(class="text-primary font-bold text-h6 pb-7.5 mb-2.5 border-b border-black-400 w-full text-center") {{$t('a.createOrg')}}
-  p(class="text-caption text-black-600 text-right mb-1.5") {{$t('a.required')}}
+  h6(class="text-primary font-bold text-h6 pb-7.5 mb-2.5 border-b border-black-400 w-full text-center") {{$t('AA0011')}}
+  p(class="text-caption text-black-600 text-right mb-1.5") {{$t('AA0031')}}
   form(class="w-full grid gap-y-6")
     input-radio-group(
       v-model:inputValue="formData.orgCategoryId"
-      :label="$t('a.orgType')"
+      :label="$t('AA0005')"
       :optionList="orgCategoryList"
       keyOptionValue="orgCategoryId"
       required
@@ -14,39 +14,39 @@ div(class="w-101 px-8")
       v-model:selectValue="formData.countryCode"
       class="relative z-10"
       :options="countryList"
-      :label="$t('a.country')"
+      :label="$t('AA0036')"
       keyOptionDisplay="name"
       keyOptionValue="countryCode"
       searchBox
-      :placeholder="$t('a.yourCountry')"
+      :placeholder="$t('AA0037')"
       required
     )
     input-text(
       v-model:textValue="formData.orgName"
       class="relative"
       required
-      :label="$t('a.orgName')"
-      :placeholder="$t('a.yourOrgName')"
-      :customErrorMsg="isOrgNameExist ? $t('err.nameAlreadyExists') : ''"
+      :label="$t('AA0005')"
+      :placeholder="$t('AA0009')"
+      :customErrorMsg="isOrgNameExist ? $t('WW0001') : ''"
       @blur="checkOrgNameExist")
-    input-text(v-model:textValue="formData.address" :label="$t('a.orgAddress')" :placeholder="$t('a.yourOrgAddress')")
+    input-text(v-model:textValue="formData.address" :label="$t('AA0005')" :placeholder="$t('AA0009')")
     input-calling-code(
       v-model:textValue="formData.phone"
       v-model:countryCode="formData.phoneCountryCode"
       class="relative z-9"
       width="340"
-      :label="$t('a.phone')"
-      :placeholder="$t('a.yourPhone')"
+      :label="$t('AA0071')"
+      :placeholder="$t('AA0072')"
     )
     input-calling-code(
       v-model:textValue="formData.fax"
       v-model:countryCode="formData.faxCountryCode"
       class="relative z-8"
       width="340"
-      :label="$t('a.fax')"
-      :placeholder="$t('a.yourFax')")
+      :label="$t('AA0073')"
+      :placeholder="$t('AA0074')")
   div(class="h-25 flex items-center")
-    btn(size="lg" class="w-full" :disabled="!avaliableToCreateOrg" @click="openModalCreateMailOrg") {{$t('reuse.next')}}
+    btn(size="lg" class="w-full" :disabled="!avaliableToCreateOrg" @click="openModalCreateMailOrg") {{$t('UU0021')}}
 </template>
 
 <script>

@@ -62,13 +62,13 @@ div(class="pb-15 mb-5 border-b border-black-400")
                   div(class="p-5 w-68.5")
                     span(class="line-height-1.6") {{$t('EE0021')}}
                     span(class="text-body2 text-assist-blue underline line-height-1.6") {{$t('UU0029')}}
-            btn(size="md" disabled) {{$t('reuse.create')}}
+            btn(size="md" disabled) {{$t('UU0020')}}
           template(v-if="material.u3m.status === U3M_STATUS.INITIAL")
             p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0019')}}
-            btn(size="md") {{$t('reuse.create')}}
+            btn(size="md") {{$t('UU0020')}}
           template(v-if="material.u3m.status === U3M_STATUS.PROCESSING")
             p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0022')}}
-            btn(size="md" disabled) {{$t('reuse.create')}}
+            btn(size="md" disabled) {{$t('UU0020')}}
           template(v-if="material.u3m.status === U3M_STATUS.COMPLETED")
             p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0018')}} &nbsp
               span(class="text-assist-blue underline cursor-pointer") {{$t('UU0005')}}
@@ -87,7 +87,6 @@ div(class="pb-15 mb-5 border-b border-black-400")
 <script>
 import { useStore } from 'vuex'
 import { computed, ref, watch } from 'vue'
-import useNavigation from '@/composables/useNavigation'
 import useMaterial from '@/composables/useMaterial'
 import { COVER_MODE, SIDE_TYPE, U3M_STATUS } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
@@ -98,12 +97,11 @@ export default {
     const { t } = useI18n()
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
-    const { location } = useNavigation()
 
     const { statusIconName } = useMaterial(material.value)
 
     const uploadMaterialEmail = computed(() => {
-      return location.value === 'org'
+      return store.getters['helper/routeLocation']
         ? store.getters['organization/uploadMaterialEmail']
         : store.getters['group/uploadMaterialEmail']
     })
@@ -188,7 +186,7 @@ export default {
           return
         }
 
-        await store.dispatch('material/addPantone', { location: location.value, name: pantoneName.value })
+        await store.dispatch('material/addPantone', { name: pantoneName.value })
         pantoneName.value = ''
       } catch (error) {
         pantoneErrorMsg.value = error
@@ -196,7 +194,7 @@ export default {
     }
 
     const removePantone = (materialPantoneId) => {
-      store.dispatch('material/removePantone', { location: location.value, materialPantoneId })
+      store.dispatch('material/removePantone', { materialPantoneId })
     }
 
     const pushModalHowToScan = () => {

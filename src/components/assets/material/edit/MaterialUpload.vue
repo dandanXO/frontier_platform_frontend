@@ -2,14 +2,14 @@
 div(class="flex justify-center pt-31")
   fullscreen-header(
     :title="$t('DD0012')"
-    :primaryText="$t('reuse.create')"
+    :primaryText="$t('UU0020')"
     :primaryHandler="primaryHandler"
     :secondaryHandler="secondaryHandler"
     :primaryCloseAfterHandle="false"
     :secondaryCloseAfterHandle="false"
   )
     template(#left)
-      btn(size="sm" type="secondary" class="ml-5") {{$t('reuse.massUpdate')}}
+      btn(size="sm" type="secondary" class="ml-5") {{$t('UU0009')}}
   div(class="w-230 h-fit pb-25")
     div(class="pb-15 mb-5 border-b border-black-400")
       div(class="h-16 flex items-center")
@@ -44,7 +44,6 @@ import BlockMaterialInventory from '@/components/assets/material/edit/BlockMater
 import BlockMaterialPricing from '@/components/assets/material/edit/BlockMaterialPricing.vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import useNavigation from '@/composables/useNavigation'
 import useMaterialValidation from '@/composables/useMaterialValidation'
 import { v4 as uuidv4 } from 'uuid'
 import { SIDE_TYPE } from '@/utils/constants'
@@ -61,7 +60,6 @@ export default {
   setup () {
     const { t } = useI18n()
     const store = useStore()
-    const { location } = useNavigation()
     const { validations, validate } = useMaterialValidation()
     const tempMaterialId = uuidv4()
     const material = computed(() => store.getters['material/material'])
@@ -90,7 +88,7 @@ export default {
 
     const createMaterial = async () => {
       store.dispatch('helper/pushModalLoading')
-      await store.dispatch('material/createMaterial', { location: location.value, tempMaterialId })
+      await store.dispatch('material/createMaterial', { tempMaterialId })
       store.dispatch('helper/closeModalLoading')
       store.dispatch('helper/replaceFullScreen', {
         component: 'material-upload-success'
@@ -108,18 +106,18 @@ export default {
       store.dispatch('helper/pushModalConfirm', {
         title: t('DD0033'),
         content: t('DD0034'),
-        secondaryText: t('reuse.confirm'),
+        secondaryText: t('UU0001'),
         secondaryHandler: () => {
           store.dispatch('helper/closeFullscreen')
         },
-        primaryText: t('reuse.cancel')
+        primaryText: t('UU0002')
       })
     }
 
     onBeforeMount(async () => {
       store.dispatch('helper/pushModalLoading')
       store.dispatch('material/resetMaterial')
-      await store.dispatch('material/getMaterialOptions', { location: location.value })
+      await store.dispatch('material/getMaterialOptions')
       store.dispatch('helper/closeModalLoading')
     })
 
