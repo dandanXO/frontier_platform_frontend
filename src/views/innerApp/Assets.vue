@@ -1,5 +1,5 @@
 <template lang="pug">
-material-table(@selectAll="handleSelectAll" :sortOptionList="optionSort")
+material-table(@selectAll="handleSelectAll" :optionSort="optionSort" :optionMultiSelect="optionMultiSelect")
   template(#header-left)
     h5(class="text-h5 font-bold text-primary") {{$t('EE0001')}}
       span(class='text-caption text-black-700 pl-1')
@@ -33,7 +33,6 @@ material-table(@selectAll="handleSelectAll" :sortOptionList="optionSort")
       div(class="border border-black-400 rounded-md border-dashed p-2 mt-40 cursor-pointer" @click="goToMaterialUpload")
         svg-icon(iconName="add" size="24" class="text-primary")
       p(class="text-body2 text-primary pt-3") {{$t('EE0079')}}
-multi-select-menu
 </template>
 
 <script>
@@ -41,10 +40,10 @@ import MaterialTable from '@/components/layout/MaterialTable'
 import RowItem from '@/components/assets/material/list/RowItem'
 import GridItem from '@/components/assets/material/list/GridItem'
 import GridOrRow from '@/components/assets/material/list/GridOrRow'
-import MultiSelectMenu from '@/components/assets/material/list/MultiSelectMenu'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
+import useAssets from '@/composables/useAssets'
 import { SORT_BY } from '@/utils/constants.js'
 import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
@@ -58,13 +57,25 @@ export default {
     DynamicScrollerItem,
     RowItem,
     GridItem,
-    GridOrRow,
-    MultiSelectMenu
+    GridOrRow
   },
   setup () {
     const store = useStore()
     const { goToMaterialUpload } = useNavigation()
     const isGrid = ref(false)
+    const { printCard, downloadU3M, cloneTo, addToWorkspace, exportExcel, printQRCode, mergeCard, deleteMaterial } = useAssets()
+
+    const optionMultiSelect = [
+      cloneTo,
+      addToWorkspace,
+      printCard,
+      printQRCode,
+      downloadU3M,
+      exportExcel,
+      mergeCard,
+      deleteMaterial
+    ]
+
     const materialList = computed(() => store.getters['assets/materialList'])
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const optionSort = computed(() => ({
@@ -91,6 +102,7 @@ export default {
       pagination,
       handleSelectAll,
       optionSort,
+      optionMultiSelect,
       goToMaterialUpload
     }
   }

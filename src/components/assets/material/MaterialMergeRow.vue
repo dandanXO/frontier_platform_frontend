@@ -7,17 +7,17 @@ div(class="flex my-5 mx-auto pl-17 pr-7 relative max-w-286")
       div(v-if="material.[BLOCK_TYPE.FACE].exist" class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-black-0 bg-opacity-70 cursor-pointer" @click="clearBlock(BLOCK_TYPE.FACE)")
         svg-icon(iconName="clear" size="14" class="text-black-700")
       div(class="w-47.5 h-47.5 rounded bg-cover" :style="getBgImg(BLOCK_TYPE.FACE)" :class="[!material.[BLOCK_TYPE.FACE].exist ? emptyBoxClass : '']" :data-type="BLOCK_TYPE.FACE" @drop="onDrop($event)" @dragover.prevent)
-        p(v-if="!material.[BLOCK_TYPE.FACE].exist" class="px-1 text-center") {{$t('EE0007')}}
+        p(v-if="!material.[BLOCK_TYPE.FACE].exist" class="px-4 line-height-1.6 text-center pointer-events-none" ) {{$t('EE0007')}}
     div(class="relative mr-11")
       div(v-if="material.[BLOCK_TYPE.BACK].exist" class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-black-0 bg-opacity-70 cursor-pointer" @click="clearBlock(BLOCK_TYPE.BACK)")
         svg-icon(iconName="clear" size="14" class="text-black-700")
       div(class="w-47.5 h-47.5 rounded bg-cover" :style="getBgImg(BLOCK_TYPE.BACK)" :class="[!material.[BLOCK_TYPE.BACK].exist ? emptyBoxClass : '']" :data-type="BLOCK_TYPE.BACK" @drop="onDrop($event)" @dragover.prevent)
-        p(v-if="!material.[BLOCK_TYPE.BACK].exist" class="px-1 text-center") {{$t('EE0008')}}
+        p(v-if="!material.[BLOCK_TYPE.BACK].exist" class="px-4 line-height-1.6 text-center pointer-events-none") {{$t('EE0008')}}
     div(class="relative w-full")
       div(v-if="material.[BLOCK_TYPE.DETAIL].exist" class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-black-0 bg-opacity-70 cursor-pointer" @click="clearBlock(BLOCK_TYPE.DETAIL)")
         svg-icon(iconName="clear" size="14" class="text-black-700")
       div(class="h-47.5 rounded" :class="[!material.[BLOCK_TYPE.DETAIL].exist ? emptyBoxClass : filledTextBoxClass]" :data-type="BLOCK_TYPE.DETAIL" @drop="onDrop($event)" @dragover.prevent)
-        template(v-if="!material.[BLOCK_TYPE.DETAIL].exist") {{$t('EE0009')}}
+        p(v-if="!material.[BLOCK_TYPE.DETAIL].exist" class="px-4 line-height-1.6 text-center pointer-events-none") {{$t('EE0009')}}
         material-merge-row-detail(v-else :material='material.[BLOCK_TYPE.DETAIL]')
   template(v-else)
     div(class="relative mr-11" )
@@ -90,8 +90,10 @@ export default {
       if (item.fromType === BLOCK_TYPE.DETAIL && toType !== BLOCK_TYPE.DETAIL) return
       if (item.fromType !== BLOCK_TYPE.DETAIL && toType === BLOCK_TYPE.DETAIL) return
 
-      copyMaterial[toType] = { ...item[item.fromType], fromType: item.fromType, exist: item.exist }
-      emit('setRow', copyMaterial)
+      if (toType) {
+        copyMaterial[toType] = { ...item[item.fromType], fromType: item.fromType, exist: item.exist }
+        emit('setRow', copyMaterial)
+      }
     }
 
     const deleteRow = () => {

@@ -6,7 +6,7 @@ qrcode-vue(:value="value" :size="size" level="H")
 import QrcodeVue from 'qrcode.vue'
 
 export default {
-  name: 'SvgIcon',
+  name: 'QrCode',
   components: {
     QrcodeVue
   },

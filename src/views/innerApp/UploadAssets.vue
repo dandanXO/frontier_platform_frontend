@@ -11,8 +11,17 @@ div(class="relative")
         div(class="flex flex-col gap-y-2 text-primary")
           p(class="text-body2 line-height-1.6") {{$t('DD0004')}}
           p(class="text-body1 font-bold") {{uploadMaterialEmail}}
-          a(class="text-assist-blue underline flex items-center gap-x-1") {{$t('UU0007')}}
-            svg-icon(iconName="info_outline" size="14" class="text-primary")
+          div(class="flex items-center gap-x-1")
+            qr-code-backside-general
+              template(#activator="{ generatePdf }")
+                span(class='text-assist-blue underline cursor-pointer' @click="generatePdf") {{$t('UU0007')}}
+            tooltip(placement='right')
+              template(#trigger)
+                svg-icon(iconName="info_outline" size="14" class="text-primary")
+              template(#content)
+                div(class='w-75 p-5')
+                  img(:src='require("@/assets/images/print-back-side.png")')
+                  p(class='mt-5 text-primary text-body2 line-height-1.6') {{$t('DD0010')}}
       div(class="flex gap-x-7.5 text-primary")
         h5(class="text-h5 font-bold whitespace-nowrap") {{$t('DD0005')}}
         p(class="text-body2 line-height-1.6") {{$t('DD0006')}}
@@ -27,18 +36,26 @@ div(class="relative")
         btn(size='md' type="secondary") {{$t('UU0009')}}
         div
           p(class="text-body2 text-black-900") {{$t('DD0009')}}
-          a(class="text-assist-blue underline flex items-center gap-x-1") {{$t('UU0010')}}
-            svg-icon(iconName="info_outline" size="14" class="text-primary")
+          div(class="text-assist-blue underline flex items-center gap-x-1") {{$t('UU0010')}}
+            tooltip(placement='bottom')
+              template(#trigger)
+                svg-icon(iconName="info_outline" size="14" class="text-primary")
+              template(#content)
+                p(class='w-75 p-5 text-primary text-body2 line-height-1.6') {{$t('DD0011')}}
 </template>
 
 <script>
 import useNavigation from '@/composables/useNavigation'
+import QrCodeBacksideGeneral from '@/components/qrcode/QrCodeBacksideGeneral'
 import { computed } from '@vue/runtime-core'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 
 export default {
   name: 'UploadAssets',
+  components: {
+    QrCodeBacksideGeneral
+  },
   setup () {
     const { t } = useI18n()
     const store = useStore()
