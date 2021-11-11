@@ -28,7 +28,7 @@ div(class="w-full h-full flex flex-col")
             :class="{ 'text-brand': isActive }"
           )
         template(#content)
-          contextual-menu(v-model:selectValue="sort" :optionList="innerSortOptionList" @update:selectValue="getMaterialList()")
+          contextual-menu(v-model:selectValue="sort" :optionList="innerOptionSort" @update:selectValue="getMaterialList()")
       slot(name="header-right")
   div(class="overflow-y-auto flex-grow grid")
     div(v-if="isSearching || inSearch && pagination.totalCount === 0" class="flex flex-col justify-center items-center")
@@ -37,6 +37,7 @@ div(class="w-full h-full flex flex-col")
     slot(v-else)
     div(class="py-9.5 justify-self-center self-end")
       pagination(v-if="!isSearching && pagination.totalCount > 0" v-model:currentPage="pagination.currentPage" :totalPage="pagination.totalPage" @goTo="getMaterialList($event)")
+multi-select-menu(:options='optionMultiSelect')
 </template>
 
 <script>
@@ -57,8 +58,12 @@ export default {
       type: Boolean,
       default: true
     },
-    sortOptionList: {
+    optionSort: {
       type: Object,
+      required: true
+    },
+    optionMultiSelect: {
+      type: Array,
       required: true
     }
   },
@@ -72,8 +77,8 @@ export default {
     const inSearch = ref(false)
     const keywordDirty = ref(false)
 
-    const innerSortOptionList = computed(() => {
-      const { base, keywordSearch } = props.sortOptionList
+    const innerOptionSort = computed(() => {
+      const { base, keywordSearch } = props.optionSort
       const temp = [...base]
       if (keywordDirty.value) {
         temp.unshift(...keywordSearch)
@@ -104,14 +109,14 @@ export default {
 
       /**
        * when first time using keyword search (no keyword -> with keyword),
-       * sort value will automatically change to sortOptionList.keywordSearch[0].value,
+       * sort value will automatically change to optionSort.keywordSearch[0].value,
        * and when first time searhcing without keyword (with keyword -> no keyword),
-       * sort value will autmatically chanfe to props.sortOptionList.base[0].value
+       * sort value will autmatically chanfe to props.optionSort.base[0].value
        */
       if (!keywordDirty.value && !!keyword.value) {
-        store.dispatch('helper/search/setPagination', { sort: props.sortOptionList.keywordSearch[0].value })
+        store.dispatch('helper/search/setPagination', { sort: props.optionSort.keywordSearch[0].value })
       } else if (keywordDirty.value && !keyword.value) {
-        store.dispatch('helper/search/setPagination', { sort: props.sortOptionList.base[0].value })
+        store.dispatch('helper/search/setPagination', { sort: props.optionSort.base[0].value })
       }
 
       keywordDirty.value = !!keyword.value
@@ -136,7 +141,7 @@ export default {
     }
 
     // INIT
-    store.dispatch('helper/search/reset', { sort: props.sortOptionList.base[0].value })
+    store.dispatch('helper/search/reset', { sort: props.optionSort.base[0].value })
     const { currentPage, sort: qSort, isShowMatch: qIsShowMatch, keyword: qKeyword, tagList: qTagList, filter: qFilter } = route.query
     if (qSort) {
       store.dispatch('helper/search/setPagination', { sort: Number(qSort) })
@@ -164,7 +169,7 @@ export default {
       sort,
       isSearching,
       keywordDirty,
-      innerSortOptionList
+      innerOptionSort
     }
   }
 }

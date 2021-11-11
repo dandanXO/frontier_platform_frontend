@@ -16,9 +16,13 @@ div(class="flex justify-center pt-28.5")
         img(:src="require('@/assets/images/how_to_scan_left.png')")
         i18n-t(keypath="DD0032" tag="p" class="text-body2 text-primary line-height-1.6")
           template(#RR0062)
-            span(class="text-assist-blue underline") {{$t('RR0062')}}
+            qr-code-a4
+              template(#activator="{ generatePdf }")
+                span(class="cursor-pointer text-assist-blue underline" @click="generatePdf([])") {{$t('RR0062')}}
           template(#RR0061)
-            span(class="text-assist-blue underline") {{$t('RR0061')}}
+            qr-code-general
+              template(#activator="{ generatePdf }")
+                span(class="cursor-pointer text-assist-blue underline" @click="generatePdf([])") {{$t('RR0061')}}
         div(class="flex flex-col gap-y-2")
           p(class="text-body2 text-primary line-height-1.6") {{$t('DD0004')}}
           p(class="text-body1 text-primary font-bold") {{uploadMaterialEmail}}
@@ -29,11 +33,16 @@ div(class="flex justify-center pt-28.5")
         div(class="flex flex-col gap-y-2")
           p(class="text-body2 text-primary line-height-1.6") {{$t('DD0004')}}
           p(class="text-body1 text-primary font-bold") {{uploadMaterialEmail}}
-          span(class="text-body2 text-assist-blue underline line-height-1.6") {{$t('UU0007')}}
+          qr-code-backside-general
+            template(#activator="{ generatePdf }")
+              span(class="cursor-pointer text-body2 text-assist-blue underline line-height-1.6" @click="generatePdf") {{$t('UU0007')}}
     btn(size="md" class="self-center" @click="close") {{$t('UU0023')}}
 </template>
 
 <script>
+import QrCodeA4 from '@/components/qrcode/QrCodeA4'
+import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral'
+import QrCodeBacksideGeneral from '@/components/qrcode/QrCodeBacksideGeneral'
 import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
 import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
@@ -42,7 +51,10 @@ import { computed } from '@vue/runtime-core'
 export default {
   name: 'MaterialUploadSuccess',
   components: {
-    FullscreenHeader
+    FullscreenHeader,
+    QrCodeA4,
+    QrCodeGeneral,
+    QrCodeBacksideGeneral
   },
   setup () {
     const store = useStore()
