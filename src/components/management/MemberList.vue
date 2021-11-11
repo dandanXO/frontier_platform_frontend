@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="pt-2.5 flex flex-col relative")
+div(class="pt-2.5 h-full flex flex-col relative")
   div(class="absolute right-0 -top-3.5 transform -translate-y-full")
     input-text(v-model:textValue="searchInput" size="sm" class="w-67.5" prependIcon="search" :placeholder="$t('BB0012')")
   div(class="w-full h-12 bg-black-200 l:pl-21 pl-25 2xl:pl-35 flex items-center text-body1 text-primary")
@@ -16,21 +16,34 @@ div(class="pt-2.5 flex flex-col relative")
 <script>
 import { computed, ref } from 'vue'
 import MemberRow from '@/components/management/MemberRow'
+import { useStore } from 'vuex'
+import { ROLE_ID } from '@/utils/constants'
 
 export default {
   name: 'MemeberList',
   components: {
     MemberRow
   },
-  props: {
-    memberList: {
-      type: Array,
-      required: true
-    }
-  },
-  setup (props) {
+  setup () {
+    const store = useStore()
     const searchInput = ref('')
-    const filteredmemberList = computed(() => props.memberList.filter(member => member.displayName?.includes(searchInput.value) || member.email.includes(searchInput.value)))
+    const routeLocation = computed(() => store.getters['helper/routeLocation'])
+    const memberList = computed(() => {
+      const orgMemberList = store.getters['organization/memberList']
+      if (routeLocation.value === 'org') {
+        return orgMemberList
+      }
+
+      return orgMemberList
+        .filter(member => member.orgRoleId === ROLE_ID.OWNER || member.orgRoleId === ROLE_ID.ADMIN)
+        .map(member => ({
+          groupUserId: null,
+          groupRoleId: member.orgRoleId,
+          ...member
+        }))
+        .concat(store.getters['group/memberList'])
+    })
+    const filteredmemberList = computed(() => memberList.value.filter(member => member.displayName?.includes(searchInput.value) || member.email.includes(searchInput.value)))
 
     return {
       filteredmemberList,

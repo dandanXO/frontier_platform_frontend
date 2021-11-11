@@ -77,8 +77,6 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       await store.dispatch('code/getCountryList')
       await store.dispatch('code/getOrgCategoryList')
-      await store.dispatch('code/getRoleList')
-      await store.dispatch('code/getRoleLimitTable')
       next()
     }
   },
@@ -116,15 +114,7 @@ const routes = [
       {
         path: 'management/:tab(about|members|history)',
         name: 'OrgManagement',
-        component: () => import('@/views/innerApp/Management.vue'),
-        beforeEnter: async (to, from, next) => {
-          await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
-          await store.dispatch('code/getCountryList')
-          await store.dispatch('code/getOrgCategoryList')
-          await store.dispatch('code/getRoleList')
-          await store.dispatch('code/getRoleLimitTable')
-          next()
-        }
+        component: () => import('@/views/innerApp/Management.vue')
       },
       {
         path: 'global-search',
@@ -153,11 +143,7 @@ const routes = [
       {
         path: 'assets/upload',
         name: 'OrgUploadAssets',
-        component: () => import('@/views/innerApp/UploadAssets.vue'),
-        beforeEnter: async (to, from, next) => {
-          await store.dispatch('code/getCountryList')
-          next()
-        }
+        component: () => import('@/views/innerApp/UploadAssets.vue')
       },
       {
         path: 'share-to-me',
@@ -190,18 +176,16 @@ const routes = [
         path: 'management/:tab(about|members|history)',
         name: 'GroupManagement',
         props: true,
-        component: () => import('@/views/innerApp/Management.vue'),
-        beforeEnter: async (to, from, next) => {
-          await store.dispatch('code/getRoleList')
-          await store.dispatch('code/getRoleLimitTable')
-          await store.dispatch('group/getGroup', { groupId: to.params.groupId })
-          next()
-        }
+        component: () => import('@/views/innerApp/Management.vue')
       },
       {
         path: 'assets',
         name: 'GroupAssets',
-        component: () => import('@/views/innerApp/Assets.vue')
+        component: () => import('@/views/innerApp/Assets.vue'),
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('code/getFilterOptions')
+          next()
+        }
       },
       {
         path: 'assets/upload',

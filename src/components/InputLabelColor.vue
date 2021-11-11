@@ -22,7 +22,7 @@ export default {
   name: 'InputLabelColor',
   props: {
     labelColor: {
-      type: String,
+      validator: (v) => true,
       required: true
     },
     size: {

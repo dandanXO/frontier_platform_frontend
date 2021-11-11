@@ -13,78 +13,11 @@ const state = () => ({
   roleList: [],
   roleLimit: [],
   filter: {
-    categoryList: [
-      {
-        key: 'Woven',
-        list: [
-          {
-            displayName: 'satin',
-            value: 'satin,satten'
-          }
-        ]
-      },
-      {
-        key: 'Knit',
-        list: [
-          'chiffon',
-          'dobby'
-        ]
-      }
-    ],
-    contentList: [
-      {
-        displayName: 'satin',
-        value: 'satin,satten'
-      },
-      {
-        displayName: 'Cotton',
-        value: 'Cotton,Cotton'
-      }
-    ],
-    patternList: [
-      {
-        key: 'Solid',
-        list: [
-          {
-            value: 'Solid',
-            img: 'http://s3/aa.jpg'
-          }
-        ]
-      },
-      {
-        key: 'Pattern',
-        list: [
-          {
-            value: 'Floral1',
-            img: 'http://s3/aa.jpg'
-          },
-          {
-            value: 'Floral',
-            img: 'http://s3/aa.jpg'
-          }
-        ]
-      }
-    ],
-    colorList: [
-      {
-        value: 'Red',
-        hex: '#123356'
-      },
-      {
-        value: 'Green',
-        hex: '#123456'
-      }
-    ],
-    finishList: [
-      {
-        displayName: 'satin',
-        value: 'satin,satten'
-      },
-      {
-        displayName: 'Cotton',
-        value: 'Cotton,Cotton'
-      }
-    ],
+    categoryList: [],
+    contentList: [],
+    patternList: [],
+    colorList: [],
+    finishList: [],
     completeList: filterCompleteList,
     priceList: [
       {
