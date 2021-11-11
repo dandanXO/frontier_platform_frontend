@@ -67,7 +67,6 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import InputCallingCode from '@/components/InputCallingCode'
 import InputLabelColor from '@/components/InputLabelColor'
-// import domToImage from 'dom-to-image'
 
 export default {
   name: 'OrgAbout',

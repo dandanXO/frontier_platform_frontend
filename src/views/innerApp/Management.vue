@@ -14,57 +14,39 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
         div(v-for="tab in tabList" class="cursor-pointer" @click="toggleTab(tab.path)")
           p(class="pb-2 text-body1" :class="[tab.path === currentTab ? 'border-b-4 border-brand text-primary font-bold' : 'text-black-600' ]" ) {{tab.name}}
   div(class="flex-grow")
-    template(v-if="currentTab === 'about'")
-      org-about(v-if="routeLocation === 'org'")
-      group-about(v-else :key="$route.params.groupId")
-    member-list(v-else-if="currentTab === 'members'" :memberList="memberList")
-    history-list(v-else-if="currentTab === 'history'" :historyList="historyList")
+    div(v-if="isLoading" class="w-full h-full flex justify-center items-center")
+      svg-icon(iconName="loading" size="92" class="text-brand")
+    template(v-else)
+      template(v-if="currentTab === 'about'")
+        org-about(v-if="routeLocation === 'org'")
+        group-about(v-else :key="$route.params.groupId")
+      member-list(v-else-if="currentTab === 'members'")
+      history-list(v-else-if="currentTab === 'history'")
 </template>
 
 <script>
-import { computed, reactive } from 'vue'
-import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
+import { ref, computed, reactive, defineAsyncComponent, onBeforeMount } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import OrgAbout from '@/components/management/OrgAbout.vue'
-import GroupAbout from '@/components/management/GroupAbout.vue'
-import MemberList from '@/components/management/MemberList.vue'
-import HistoryList from '@/components/management/HistoryList.vue'
-import InputLabelColor from '@/components/InputLabelColor'
-import { ROLE_ID } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'Management',
   components: {
-    InputLabelColor,
     OrgAbout,
-    GroupAbout,
-    MemberList,
-    HistoryList
+    GroupAbout: defineAsyncComponent(() => import('@/components/management/GroupAbout.vue')),
+    MemberList: defineAsyncComponent(() => import('@/components/management/MemberList.vue')),
+    HistoryList: defineAsyncComponent(() => import('@/components/management/HistoryList.vue'))
   },
   setup () {
     const { t } = useI18n()
     const route = useRoute()
     const router = useRouter()
     const store = useStore()
+    const isLoading = ref(false)
 
-    const routeLocation = computed(() => store.getters['helper/routeLocation'])
-    const memberList = computed(() => {
-      const orgMemberList = store.getters['organization/memberList']
-      if (routeLocation.value === 'org') {
-        return orgMemberList
-      }
-
-      return orgMemberList
-        .filter(member => member.orgRoleId === ROLE_ID.OWNER || member.orgRoleId === ROLE_ID.ADMIN)
-        .map(member => ({
-          groupUserId: null,
-          groupRoleId: member.orgRoleId,
-          ...member
-        }))
-        .concat(store.getters['group/memberList'])
-    })
-    const historyList = computed(() => routeLocation.value === 'org' ? store.getters['organization/historyList'] : store.getters['group/historyList'])
+    const routeLocation = computed(() => route.name === 'OrgManagement' ? 'org' : 'group')
     const organization = computed(() => store.getters['organization/organization'])
     const menuOrgOrGroup = computed(() => {
       const { orgNo, orgName } = organization.value
@@ -130,9 +112,21 @@ export default {
       })
     }
 
-    onBeforeRouteUpdate(async (to, from) => {
-      if (routeLocation.value === 'group') {
-        to.params.groupId !== from.params.groupId && await store.dispatch('group/getGroup', { groupId: to.params.groupId })
+    onBeforeMount(async () => {
+      try {
+        isLoading.value = true
+        if (routeLocation.value === 'org' && currentTab.value === 'about') {
+          await store.dispatch('code/getCountryList')
+          await store.dispatch('code/getOrgCategoryList')
+        }
+        if (routeLocation.value === 'group' && currentTab.value === 'about') {
+          await store.dispatch('group/getGroup', { groupId: route.params.groupId })
+        }
+        if (currentTab.value === 'members') {
+          await store.dispatch('code/getRoleLimitTable')
+        }
+      } finally {
+        isLoading.value = false
       }
     })
 
@@ -147,8 +141,7 @@ export default {
       openModalCreateGroup,
       openModalInviteToOrg,
       openModalAddToGroup,
-      memberList,
-      historyList
+      isLoading
     }
   }
 }

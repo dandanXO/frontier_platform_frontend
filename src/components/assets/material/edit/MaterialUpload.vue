@@ -47,7 +47,7 @@ import { useI18n } from 'vue-i18n'
 import useMaterialValidation from '@/composables/useMaterialValidation'
 import { v4 as uuidv4 } from 'uuid'
 import { SIDE_TYPE } from '@/utils/constants'
-import { computed, onBeforeMount } from 'vue'
+import { computed } from 'vue'
 
 export default {
   name: 'MaterialUpload',
@@ -57,7 +57,7 @@ export default {
     BlockMaterialInventory,
     BlockMaterialPricing
   },
-  setup () {
+  async setup () {
     const { t } = useI18n()
     const store = useStore()
     const { validations, validate } = useMaterialValidation()
@@ -114,12 +114,9 @@ export default {
       })
     }
 
-    onBeforeMount(async () => {
-      store.dispatch('helper/pushModalLoading')
-      store.dispatch('material/resetMaterial')
-      await store.dispatch('material/getMaterialOptions')
-      store.dispatch('helper/closeModalLoading')
-    })
+    store.dispatch('material/resetMaterial')
+    await store.dispatch('material/getMaterialOptions')
+    await store.dispatch('code/getCountryList')
 
     return {
       validations,

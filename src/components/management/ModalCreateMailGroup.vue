@@ -43,7 +43,7 @@ export default {
       try {
         await store.dispatch('group/createGroup')
         store.dispatch('helper/closeModal')
-        router.push(`/${orgNo.value}/management/${groupId.value}/about`)
+        router.push(`/${orgNo.value}/${groupId.value}/management/about`)
       } catch (availableEmailList) {
         suggestEmailList.value = availableEmailList
       }

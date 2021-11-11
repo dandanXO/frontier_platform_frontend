@@ -5,47 +5,37 @@ div(class="fixed inset-0 z-index:modal w-screen h-screen bg-black-900 bg-opacity
     div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
       p(v-if="header !== ''" class="text-body1 text-primary") {{header}}
       svg-icon(v-if="closable" iconName="close" size="24" class="justify-self-end cursor-pointer text-black-700" @click="close")
-    component(:is="component" v-bind="properties")
+    suspense
+      component(:is="component" v-bind="properties")
+      template(#fallback)
+        modal-loading
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import { useStore } from 'vuex'
-import ModalCreateGroup from '@/components/management/ModalCreateGroup.vue'
-import ModalUpload from '@/components/management/ModalUpload.vue'
-import ModalInviteToOrg from '@/components/management/ModalInviteToOrg.vue'
-import ModalAddToGroup from '@/components/management/ModalAddToGroup.vue'
-import ModalCreateMailGroup from '@/components/management/ModalCreateMailGroup.vue'
-import ModalCreateOrg from '@/components/lobby/ModalCreateOrg.vue'
-import ModalDeleteOrgOrGroup from '@/components/management/ModalDeleteOrgOrGroup'
-import ModalCreateMailOrg from '@/components/lobby/ModalCreateMailOrg.vue'
-import ModalForgotPasswordEmail from '@/components/account/ModalForgotPasswordEmail.vue'
-import ModalForgotPasswordCode from '@/components/account/ModalForgotPasswordCode.vue'
-import ModalResetPassword from '@/components/account/ModalResetPassword.vue'
-import ModalAskResetPassword from '@/components/account/ModalAskResetPassword.vue'
-import ModalChooseStorage from '@/components/management/ModalChooseStorage'
-import ModalHowToScan from '@/components/assets/material/ModalHowToScan'
-import ModalChangeCover from '@/components/assets/material/edit/ModalChangeCover'
-import ModalViewer from '@/components/assets/material/ModalViewer'
+import ModalLoading from '@/components/modal/ModalLoading'
 
 export default {
   name: 'Modal',
   components: {
-    ModalCreateGroup,
-    ModalUpload,
-    ModalInviteToOrg,
-    ModalAddToGroup,
-    ModalCreateMailGroup,
-    ModalCreateOrg,
-    ModalDeleteOrgOrGroup,
-    ModalCreateMailOrg,
-    ModalForgotPasswordEmail,
-    ModalForgotPasswordCode,
-    ModalResetPassword,
-    ModalAskResetPassword,
-    ModalChooseStorage,
-    ModalHowToScan,
-    ModalChangeCover,
-    ModalViewer
+    ModalLoading,
+    ModalCreateGroup: defineAsyncComponent(() => import('@/components/management/ModalCreateGroup.vue')),
+    ModalUpload: defineAsyncComponent(() => import('@/components/management/ModalUpload.vue')),
+    ModalInviteToOrg: defineAsyncComponent(() => import('@/components/management/ModalInviteToOrg.vue')),
+    ModalAddToGroup: defineAsyncComponent(() => import('@/components/management/ModalAddToGroup.vue')),
+    ModalCreateMailGroup: defineAsyncComponent(() => import('@/components/management/ModalCreateMailGroup.vue')),
+    ModalCreateOrg: defineAsyncComponent(() => import('@/components/lobby/ModalCreateOrg.vue')),
+    ModalDeleteOrgOrGroup: defineAsyncComponent(() => import('@/components/management/ModalDeleteOrgOrGroup')),
+    ModalCreateMailOrg: defineAsyncComponent(() => import('@/components/lobby/ModalCreateMailOrg.vue')),
+    ModalForgotPasswordEmail: defineAsyncComponent(() => import('@/components/account/ModalForgotPasswordEmail.vue')),
+    ModalForgotPasswordCode: defineAsyncComponent(() => import('@/components/account/ModalForgotPasswordCode.vue')),
+    ModalResetPassword: defineAsyncComponent(() => import('@/components/account/ModalResetPassword.vue')),
+    ModalAskResetPassword: defineAsyncComponent(() => import('@/components/account/ModalAskResetPassword.vue')),
+    ModalChooseStorage: defineAsyncComponent(() => import('@/components/management/ModalChooseStorage')),
+    ModalHowToScan: defineAsyncComponent(() => import('@/components/assets/material/ModalHowToScan')),
+    ModalChangeCover: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalChangeCover')),
+    ModalViewer: defineAsyncComponent(() => import('@/components/assets/material/ModalViewer'))
   },
   props: {
     component: {

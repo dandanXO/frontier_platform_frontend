@@ -25,7 +25,6 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import useMaterialValidation from '@/composables/useMaterialValidation'
-import { onBeforeMount } from '@vue/runtime-core'
 
 export default {
   name: 'MaterialEdit',
@@ -36,7 +35,7 @@ export default {
     BlockMaterialInventory,
     BlockMaterialPricing
   },
-  setup () {
+  async setup () {
     const { t } = useI18n()
     const store = useStore()
     const { goToAssets } = useNavigation()
@@ -69,11 +68,7 @@ export default {
       })
     }
 
-    onBeforeMount(async () => {
-      store.dispatch('helper/pushModalLoading')
-      await store.dispatch('material/getMaterialOptions')
-      store.dispatch('helper/closeModalLoading')
-    })
+    await store.dispatch('material/getMaterialOptions')
 
     return {
       validations,

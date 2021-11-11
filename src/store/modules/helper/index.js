@@ -40,7 +40,6 @@ const mutations = {
   },
   SET_routeLocation (state, routeLocation) {
     state.routeLocation = routeLocation
-    console.log('Route Location:', state.routeLocation)
   }
 }
 
