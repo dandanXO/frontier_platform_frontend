@@ -3,7 +3,7 @@ div(class="w-120 border-t border-black-400")
   div(class="w-full flex justify-center items-center border-b border-black-400 overflow-hidden")
     div(class="w-full h-full flex justify-center items-center py-15 relative"
         :class="{'bg-black-500': uploadStatus === 'done' || uploadStatus === 'croping'}")
-      div(v-if="uploadStatus === 'none' && image === ''"
+      div(v-if="uploadStatus === 'none' && !haveUploadedImage"
         class="flex flex-col"
         @drop.stop.prevent="onDrop($event)"
         @dragover.prevent
@@ -23,7 +23,7 @@ div(class="w-120 border-t border-black-400")
     div(v-if="uploadStatus === 'done'" class="grid grid-cols-2 gap-x-3")
       btn(size="md" type="secondary" :disabled="btnDisabled" @click="closeModal") {{$t('UU0002') }}
       btn(size="md" :disabled="btnDisabled" @click="confirm") {{$t('UU0001')}}
-    div(v-else-if="uploadStatus === 'none' && image !== ''" class="grid grid-cols-2 gap-x-3")
+    div(v-else-if="uploadStatus === 'none' && haveUploadedImage" class="grid grid-cols-2 gap-x-3")
       btn(size="md" type="secondary" @click="innerRemoveHandler") {{$t('UU0016') }}
       btn(size="md" @click="uploadImg") {{$t('UU0019')}}
     btn(v-else size="md" :disabled="btnDisabled") {{$t('UU0001')}}
@@ -62,6 +62,8 @@ export default {
     const uploadStatus = ref('none')
     const uploadedImage = reactive({})
     const imageCroper = ref(null)
+
+    const haveUploadedImage = computed(() => !!props.image)
     const btnDisabled = computed(() => {
       return ['none', 'croping', 'uploading'].includes(uploadStatus.value)
     })
@@ -143,7 +145,8 @@ export default {
       onDrop,
       cropRectSize,
       uploadedImage,
-      imageCroper
+      imageCroper,
+      haveUploadedImage
     }
   }
 }

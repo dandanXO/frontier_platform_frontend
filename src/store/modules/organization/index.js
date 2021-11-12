@@ -37,9 +37,7 @@ const state = () => ({
 
 const getters = {
   organization: state => state,
-  orgLogo: state => {
-    return state.logo === '' ? require('@/assets/images/logo-default.png') : state.logo
-  },
+  orgLogo: state => state.logo ? state.logo : require('@/assets/images/logo-default.png'),
   orgId: state => state.orgId,
   orgNo: state => state.orgNo,
   uploadMaterialEmail: state => state.uploadMaterialEmail,
