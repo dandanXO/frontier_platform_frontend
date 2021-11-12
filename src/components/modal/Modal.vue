@@ -35,7 +35,8 @@ export default {
     ModalChooseStorage: defineAsyncComponent(() => import('@/components/management/ModalChooseStorage')),
     ModalHowToScan: defineAsyncComponent(() => import('@/components/assets/material/ModalHowToScan')),
     ModalChangeCover: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalChangeCover')),
-    ModalViewer: defineAsyncComponent(() => import('@/components/assets/material/ModalViewer'))
+    ModalViewer: defineAsyncComponent(() => import('@/components/assets/material/ModalViewer')),
+    ModalError: defineAsyncComponent(() => import('@/components/modal/ModalError'))
   },
   props: {
     component: {
