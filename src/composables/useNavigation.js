@@ -1,7 +1,6 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
-import { inject } from 'vue'
 
 export default function useNavigation () {
   const store = useStore()
@@ -37,18 +36,33 @@ export default function useNavigation () {
 
   const goToAssets = () => {
     router.push(parsePath(`${prefixPath.value}/assets`))
-    const reloadRootRoute = inject('reloadRootRoute')
-    reloadRootRoute()
   }
 
   const goToMaterialUpload = () => {
     router.push(parsePath(`${prefixPath.value}/assets/upload`))
   }
 
+  const goToAssetMaterialDetail = (material) => {
+    store.dispatch('material/setMaterial', material)
+    router.push(parsePath(`${prefixPath.value}/assets/${material.materialId}`))
+  }
+
+  const goToAssetMaterialEdit = (material) => {
+    store.dispatch('material/setMaterial', material)
+    router.push(parsePath(`${prefixPath.value}/assets/${material.materialId}/edit`))
+  }
+
+  const goToAssetsMaterialCreate = () => {
+    router.push(parsePath(`${prefixPath.value}/assets/upload/manual`))
+  }
+
   return {
     nextAfterSignIn,
     parsePath,
     goToAssets,
-    goToMaterialUpload
+    goToMaterialUpload,
+    goToAssetMaterialDetail,
+    goToAssetsMaterialCreate,
+    goToAssetMaterialEdit
   }
 }

@@ -17,13 +17,14 @@ div(class='w-full min-w-42.5 max-w-67.5')
       class='absolute z-10 top-3 left-3 cursor-pointer'
       iconColor='text-black-0'
     )
-    div(v-if="active" class='absolute z-9 inset-0 w-full h-full rounded bg-opacity-70 bg-black-900')
+    div(v-if="active" class='absolute z-9 inset-0 w-full h-full rounded bg-opacity-70 bg-black-900' @click.stop="goToAssetMaterialDetail(material)")
   div(class='text-primary text-body1 line-clamp-1 line-height-1.6') {{material.description}}
 </template>
 
 <script>
 import { ref, computed } from '@vue/runtime-core'
 import useMaterial from '@/composables/useMaterial'
+import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
 
 export default {
@@ -35,6 +36,7 @@ export default {
   },
   setup (props) {
     const store = useStore()
+    const { goToAssetMaterialDetail } = useNavigation()
     const active = ref(false)
     const { currentCoverImg, neverScanBefore, statusIconName } = useMaterial(props.material)
 
@@ -51,7 +53,8 @@ export default {
       currentCoverImg,
       neverScanBefore,
       active,
-      checked
+      checked,
+      goToAssetMaterialDetail
     }
   }
 }

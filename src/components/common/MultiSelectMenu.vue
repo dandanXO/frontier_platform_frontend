@@ -43,7 +43,7 @@ export default {
     const store = useStore()
     const formalAddedMaterialList = computed(() => store.getters['assets/formalAddedMaterialList'])
     const clearList = () => store.commit('assets/CLEAR_addedMaterialList')
-    const handleClick = (option) => option.func && option.func()
+    const handleClick = (option) => option.func && option.func(formalAddedMaterialList.value)
 
     return {
       formalAddedMaterialList,

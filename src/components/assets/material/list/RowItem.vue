@@ -12,15 +12,15 @@ import RowItemSidebar from '@/components/assets/material/list/RowItemSidebar'
 
 export default {
   name: 'RowItem',
-  props: {
-    material: {
-      type: Object
-    }
-  },
   components: {
     RowItemImg,
     RowItemContent,
     RowItemSidebar
+  },
+  props: {
+    material: {
+      type: Object
+    }
   }
 }
 </script>

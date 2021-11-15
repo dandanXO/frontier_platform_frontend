@@ -31,7 +31,7 @@ div(class="relative")
       p(class="text-body1 text-primary line-height-1.6") {{$t('DD0008')}}
     div(class='flex flex-col gap-y-8')
       div
-        btn(size="md" @click="openFullscreenMaterialUpload") {{$t('UU0008')}}
+        btn(size="md" @click="goToAssetsMaterialCreate") {{$t('UU0008')}}
       div(class="flex gap-x-7.5")
         btn(size='md' type="secondary") {{$t('UU0009')}}
         div
@@ -52,14 +52,14 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 
 export default {
-  name: 'UploadAssets',
+  name: 'AssetsUpload',
   components: {
     QrCodeBacksideGeneral
   },
   setup () {
     const { t } = useI18n()
     const store = useStore()
-    const { parsePath } = useNavigation()
+    const { parsePath, goToAssetsMaterialCreate } = useNavigation()
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const breadcrumbsList = computed(() => {
       const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
@@ -81,16 +81,10 @@ export default {
         : store.getters['group/uploadMaterialEmail']
     })
 
-    const openFullscreenMaterialUpload = () => {
-      store.dispatch('helper/openFullScreen', {
-        component: 'material-upload'
-      })
-    }
-
     return {
       breadcrumbsList,
       uploadMaterialEmail,
-      openFullscreenMaterialUpload
+      goToAssetsMaterialCreate
     }
   }
 }
