@@ -170,7 +170,14 @@ const actions = {
       code: data.result.code
     })
   },
-  async createMaterial ({ rootGetters, getters }, { tempMaterialId }) {
+  async getMaterial ({ rootGetters, dispatch }, { materialId }) {
+    const { data } = rootGetters['helper/routeLocation'] === 'org'
+      ? await materialApi.org.getMaterial({ orgId: rootGetters['organization/orgId'], materialId })
+      : await materialApi.group.getMaterial({ groupId: rootGetters['group/groupId'], materialId })
+
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async createMaterial ({ rootGetters, getters, dispatch }, { tempMaterialId }) {
     const material = Object.fromEntries(
       Object.entries(getters.material)
         .filter(([key]) => [
@@ -205,9 +212,11 @@ const actions = {
           'privatePrice'
         ].includes(key))
     )
-    rootGetters['helper/routeLocation'] === 'org'
+    const { data } = rootGetters['helper/routeLocation'] === 'org'
       ? await materialApi.org.createMaterial({ orgId: rootGetters['organization/orgId'], tempMaterialId, material })
       : await materialApi.group.createMaterial({ groupId: rootGetters['group/groupId'], tempMaterialId, material })
+
+    dispatch('handleResponseData', { data }, { root: true })
   },
   async updateMaterial ({ rootGetters, getters }) {
     const materialId = getters.material.materialId

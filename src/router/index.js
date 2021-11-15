@@ -133,17 +133,42 @@ const routes = [
       },
       {
         path: 'assets',
-        name: 'OrgAssets',
-        component: () => import('@/views/innerApp/Assets.vue'),
-        beforeEnter: async (to, from, next) => {
-          await store.dispatch('code/getFilterOptions')
-          next()
-        }
-      },
-      {
-        path: 'assets/upload',
-        name: 'OrgUploadAssets',
-        component: () => import('@/views/innerApp/UploadAssets.vue')
+        component: () => import('@/views/PassThrough'),
+        children: [
+          {
+            path: '',
+            name: 'OrgAssets',
+            component: () => import('@/views/innerApp/assets/Assets.vue'),
+            beforeEnter: async (to, from, next) => {
+              await store.dispatch('code/getFilterOptions')
+              next()
+            }
+          },
+          {
+            path: 'upload',
+            name: 'OrgAssetsUpload',
+            component: () => import('@/views/innerApp/assets/AssetsUpload.vue')
+          },
+          {
+            path: 'upload/manual',
+            name: 'OrgAssetsMaterialCreate',
+            component: () => import('@/views/innerApp/assets/AssetsMaterialCreate.vue')
+          },
+          {
+            path: ':materialId',
+            name: 'OrgAssetsMaterialDetail',
+            component: () => import('@/views/innerApp/assets/AssetsMaterialDetail.vue')
+          },
+          {
+            path: ':materialId/edit',
+            name: 'OrgAssetsMaterialEdit',
+            component: () => import('@/views/innerApp/assets/AssetsMaterialEdit.vue'),
+            beforeEnter: async (to, from, next) => {
+              await store.dispatch('material/getMaterial', { materialId: to.params.materialId })
+              next()
+            }
+          }
+        ]
       },
       {
         path: 'share-to-me',
@@ -180,17 +205,42 @@ const routes = [
       },
       {
         path: 'assets',
-        name: 'GroupAssets',
-        component: () => import('@/views/innerApp/Assets.vue'),
-        beforeEnter: async (to, from, next) => {
-          await store.dispatch('code/getFilterOptions')
-          next()
-        }
-      },
-      {
-        path: 'assets/upload',
-        name: 'GroupUploadAssets',
-        component: () => import('@/views/innerApp/UploadAssets.vue')
+        component: () => import('@/views/PassThrough'),
+        children: [
+          {
+            path: '',
+            name: 'GroupAssets',
+            component: () => import('@/views/innerApp/assets/Assets.vue'),
+            beforeEnter: async (to, from, next) => {
+              await store.dispatch('code/getFilterOptions')
+              next()
+            }
+          },
+          {
+            path: 'upload',
+            name: 'GroupAssetsUpload',
+            component: () => import('@/views/innerApp/assets/AssetsUpload.vue')
+          },
+          {
+            path: 'upload/manual',
+            name: 'GroupAssetsMaterialCreate',
+            component: () => import('@/views/innerApp/assets/AssetsMaterialCreate.vue')
+          },
+          {
+            path: ':materialId',
+            name: 'GroupAssetsMaterialDetail',
+            component: () => import('@/views/innerApp/assets/AssetsMaterialDetail.vue')
+          },
+          {
+            path: ':materialId/edit',
+            name: 'GroupAssetsMaterialEdit',
+            component: () => import('@/views/innerApp/assets/AssetsMaterialEdit.vue'),
+            beforeEnter: async (to, from, next) => {
+              await store.dispatch('material/getMaterial', { materialId: to.params.materialId })
+              next()
+            }
+          }
+        ]
       },
       {
         path: 'workspace',

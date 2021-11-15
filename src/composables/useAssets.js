@@ -1,22 +1,17 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { computed } from '@vue/runtime-core'
+import useNavigation from '@/composables/useNavigation'
 
-export default function useAssets (material) {
+export default function useAssets () {
   const { t } = useI18n()
+  const { goToAssetMaterialEdit } = useNavigation()
   const store = useStore()
-  const formalAddedMaterialList = computed(() => store.getters['assets/formalAddedMaterialList'])
 
   const editMaterial = {
     id: 'editMaterial',
     icon: 'create',
     name: t('RR0054'),
-    func: () => {
-      store.dispatch('material/setMaterial', material)
-      store.dispatch('helper/openFullScreen', {
-        component: 'material-edit'
-      })
-    }
+    func: goToAssetMaterialEdit
   }
 
   const carbonCopy = {
@@ -71,7 +66,7 @@ export default function useAssets (material) {
   const mergeCard = {
     id: 'mergeCard',
     name: t('RR0072'),
-    func: () => {
+    func: (formalAddedMaterialList) => {
       store.dispatch('helper/openFullScreen', {
         component: 'material-merge',
         properties: {

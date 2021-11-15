@@ -6,6 +6,10 @@ export default {
       method: 'POST',
       data: { orgId }
     }),
+    getMaterial: ({ orgId, materialId }) => axios('/org/assets/material/get', {
+      method: 'POST',
+      data: { orgId, materialId }
+    }),
     createMaterial: ({ orgId, tempMaterialId, material }) => axios('/org/assets/material/create', {
       method: 'POST',
       data: { orgId, tempMaterialId, material }
@@ -41,6 +45,10 @@ export default {
     getMaterialOptions: ({ groupId }) => axios('/org/group/assets/material/options', {
       method: 'POST',
       data: { groupId }
+    }),
+    getMaterial: ({ orgId, materialId }) => axios('/org/group/assets/material/get', {
+      method: 'POST',
+      data: { orgId, materialId }
     }),
     createMaterial: ({ groupId, tempMaterialId, material }) => axios('/org/group/assets/material/create', {
       method: 'POST',

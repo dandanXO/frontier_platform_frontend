@@ -56,7 +56,7 @@ export default {
       exportExcel,
       printQRCode,
       deleteMaterial
-    } = useAssets(props.material)
+    } = useAssets()
 
     const iconList = [
       editMaterial,
@@ -82,7 +82,7 @@ export default {
     ]
 
     const handleClick = (option) => {
-      option.func && option.func()
+      option.func && option.func(props.material)
     }
 
     return {

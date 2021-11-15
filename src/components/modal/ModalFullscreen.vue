@@ -14,11 +14,8 @@ export default {
   name: 'ModalFullscreen',
   components: {
     ModalLoading,
-    MaterialUpload: defineAsyncComponent(() => import('@/components/assets/material/edit/MaterialUpload.vue')),
-    MaterialEdit: defineAsyncComponent(() => import('@/components/assets/material/edit/MaterialEdit.vue')),
     MaterialMerge: defineAsyncComponent(() => import('@/components/assets/material/MaterialMerge')),
-    MaterialMergePreview: defineAsyncComponent(() => import('@/components/assets/material/MaterialMergePreview')),
-    MaterialUploadSuccess: defineAsyncComponent(() => import('@/components/assets/material/edit/MaterialUploadSuccess.vue'))
+    MaterialMergePreview: defineAsyncComponent(() => import('@/components/assets/material/MaterialMergePreview'))
   },
   props: {
     component: {

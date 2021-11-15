@@ -20,7 +20,7 @@ div(class='w-full')
       class='absolute z-10 top-3 left-3 cursor-pointer'
       iconColor='text-black-0'
     )
-    div(v-show="active" class='absolute z-9 inset-0 w-full h-full rounded bg-opacity-70 bg-black-900')
+    div(v-show="active" class='absolute z-9 inset-0 w-full h-full rounded bg-opacity-70 bg-black-900' @click.stop="goToAssetMaterialDetail(material)")
       div(class='text-black-0 px-7.5 py-10 h-full flex flex-col items-center justify-center text-center')
         div(class='line-height-1.6 text-body2 font-bold line-clamp-2') {{material.description}}
         div(class='line-height-1.6 text-caption line-clamp-2') {{material.content}}
@@ -66,6 +66,7 @@ import useMaterial from '@/composables/useMaterial'
 import { useStore } from 'vuex'
 import QrCodeA4 from '@/components/qrcode/QrCodeA4'
 import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral'
+import useNavigation from '@/composables/useNavigation'
 
 export default {
   name: 'GridItem',
@@ -76,9 +77,8 @@ export default {
     }
   },
   setup (props) {
-    const randomKey = ref(0)
     const store = useStore()
-    const active = ref(false)
+    const { goToAssetMaterialDetail } = useNavigation()
     const {
       editMaterial,
       printCard,
@@ -90,10 +90,8 @@ export default {
       exportExcel,
       printQRCode,
       deleteMaterial
-    } = useAssets(props.material)
-
+    } = useAssets()
     const { currentCoverImg, neverScanBefore, materialWeight, materialYarnCount, materialDensity, materialWidth } = useMaterial(props.material)
-
     const options = [
       [
         editMaterial
@@ -117,17 +115,18 @@ export default {
       ]
     ]
 
-    const handleClick = (option) => {
-      option.func && option.func()
-    }
+    const randomKey = ref(0)
+    const active = ref(false)
 
     const addedMaterialList = computed({
       get: () => store.getters['assets/addedMaterialList'],
       set: (v) => store.commit('assets/SET_addedMaterialList', v)
     })
-
     const checked = computed(() => addedMaterialList.value.includes(JSON.stringify(props.material)))
 
+    const handleClick = (option) => {
+      option.func && option.func(props.material)
+    }
     const handleMouseEnter = () => {
       active.value = true
       randomKey.value++
@@ -146,7 +145,8 @@ export default {
       materialWeight,
       materialYarnCount,
       materialDensity,
-      materialWidth
+      materialWidth,
+      goToAssetMaterialDetail
     }
   }
 }
