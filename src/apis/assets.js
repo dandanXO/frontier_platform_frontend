@@ -10,6 +10,10 @@ export default {
       method: 'POST',
       data: { orgId, mergedList }
     }),
+    carbonCopyMaterial: ({ orgId, materialId }) => axios('/org/assets/material/carbon-copy', {
+      method: 'POST',
+      data: { orgId, materialId }
+    }),
     deleteMaterial: ({ orgId, materialIdList }) => axios('/org/assets/material/delete', {
       method: 'POST',
       data: { orgId, materialIdList }
@@ -27,6 +31,10 @@ export default {
     mergeMaterial: ({ groupId, mergedList }) => axios('/org/group/assets/material/merge', {
       method: 'POST',
       data: { groupId, mergedList }
+    }),
+    carbonCopyMaterial: ({ groupId, materialId }) => axios('/org/group/assets/material/carbon-copy', {
+      method: 'POST',
+      data: { groupId, materialId }
     }),
     deleteMaterial: ({ groupId, materialIdList }) => axios('/org/group/assets/material/delete', {
       method: 'POST',

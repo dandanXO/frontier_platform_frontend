@@ -67,6 +67,11 @@ const actions = {
 
     dispatch('handleResponseData', { data }, { root: true })
   },
+  async carbonCopyMaterial ({ rootGetters }, { materialId }) {
+    rootGetters['helper/routeLocation'] === 'org'
+      ? await assetsApi.org.carbonCopyMaterial({ orgId: rootGetters['organization/orgId'], materialId })
+      : await assetsApi.group.carbonCopyMaterial({ groupId: rootGetters['group/groupId'], materialId })
+  },
   async deleteMaterial ({ rootGetters }, { materialIdList }) {
     rootGetters['helper/routeLocation'] === 'org'
       ? await assetsApi.org.deleteMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })

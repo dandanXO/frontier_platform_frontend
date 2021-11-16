@@ -17,7 +17,11 @@ export default function useAssets () {
   const carbonCopy = {
     id: 'carbonCopy',
     name: t('RR0055'),
-    func: () => { console.log('carbonCopy') }
+    func: async (v) => {
+      store.dispatch('helper/openModalLoading')
+      await store.dispatch('assets/carbonCopyMaterial', { materialId: v.materialId })
+      store.dispatch('helper/closeModalLoading')
+    }
   }
 
   const cloneTo = {
