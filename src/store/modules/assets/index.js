@@ -67,6 +67,11 @@ const actions = {
 
     dispatch('handleResponseData', { data }, { root: true })
   },
+  async deleteMaterial ({ rootGetters }, { materialIdList }) {
+    rootGetters['helper/routeLocation'] === 'org'
+      ? await assetsApi.org.deleteMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
+      : await assetsApi.group.deleteMaterial({ groupId: rootGetters['group/groupId'], materialIdList })
+  },
   async exportMaterial ({ rootGetters }, { materialIdList }) {
     const { data } = rootGetters['helper/routeLocation'] === 'org'
       ? await assetsApi.org.exportMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
