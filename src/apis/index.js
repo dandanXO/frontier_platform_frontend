@@ -41,7 +41,7 @@ instance.interceptors.response.use(response => {
     router.push(`/sign-in/${window.location.search}`)
   }
 
-  if ([400, 500].includes(status)) {
+  if ([400, 404, 500].includes(status)) {
     store.dispatch('helper/pushModal', {
       component: 'modal-error'
     })

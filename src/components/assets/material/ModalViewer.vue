@@ -100,6 +100,7 @@ div(class='w-175 h-141 relative' :style='{width: outputWidth, height: outputHeig
 </template>
 
 <script>
+import { downloadDataURLFile } from '@/utils/fileOperator'
 import { onMounted, onUnmounted, ref } from 'vue'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
@@ -316,7 +317,9 @@ export default {
       const resizedCanvas = getResizedCanvas(canvas.value, outputWidth, outputHeight)
 
       resizedCanvas.toBlob((blob) => {
-        saveBlob(blob, `screencapture-${outputWidth}x${outputHeight}.png`)
+        const fileName = `screencapture-${outputWidth}x${outputHeight}.png`
+        const url = window.URL.createObjectURL(blob)
+        downloadDataURLFile(url, fileName)
       })
 
       function getResizedCanvas (canvas, newWidth, newHeight) {
@@ -329,18 +332,6 @@ export default {
 
         return tmpCanvas
       }
-
-      const saveBlob = (() => {
-        const a = document.createElement('a')
-        document.body.appendChild(a)
-        a.style.display = 'none'
-        return function saveData (blob, fileName) {
-          const url = window.URL.createObjectURL(blob)
-          a.href = url
-          a.download = fileName
-          a.click()
-        }
-      })()
     }
 
     onMounted(() => {

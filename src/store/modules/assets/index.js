@@ -1,5 +1,6 @@
 import setVuexState from '@/utils/set-vuex-state'
 import assetsApi from '@/apis/assets'
+import { downloadBase64File } from '@/utils/fileOperator'
 
 const state = () => ({
   materialList: [],
@@ -65,6 +66,14 @@ const actions = {
       : await assetsApi.group.mergeMaterial({ groupId: rootGetters['group/groupId'], mergedList })
 
     dispatch('handleResponseData', { data }, { root: true })
+  },
+  async exportMaterial ({ rootGetters }, { materialIdList }) {
+    const { data } = rootGetters['helper/routeLocation'] === 'org'
+      ? await assetsApi.org.exportMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
+      : await assetsApi.group.exportMaterial({ groupId: rootGetters['group/groupId'], materialIdList })
+
+    const { extension, file, fileName } = data?.result
+    downloadBase64File(file, extension, fileName)
   }
 }
 

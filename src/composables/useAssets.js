@@ -48,7 +48,12 @@ export default function useAssets () {
   const exportExcel = {
     id: 'exportExcel',
     name: t('RR0060'),
-    func: () => { console.log('exportExcel') }
+    func: async (v) => {
+      const materialIdList = Array.isArray(v) ? v.map(item => item.materialId) : [v.materialId]
+      store.dispatch('helper/openModalLoading')
+      await store.dispatch('assets/exportMaterial', { materialIdList })
+      store.dispatch('helper/closeModalLoading')
+    }
   }
 
   const printQRCode = {
