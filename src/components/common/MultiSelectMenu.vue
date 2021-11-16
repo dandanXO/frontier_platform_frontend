@@ -20,16 +20,18 @@ div(class='fixed z-100 bottom-20.5 inset-x-0 ml-60')
             ) {{option.name}}
         div(
           v-else
-          class='whitespace-nowrap cursor-pointer hover:text-brand px-5'
+          class='whitespace-nowrap px-5'
+          :class="[option.disabled ? 'text-black-500': 'cursor-pointer hover:text-brand']"
           @click='handleClick(option)'
         ) {{option.name}}
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import QrCodeA4 from '@/components/qrcode/QrCodeA4'
 import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral'
+import { useRoute } from 'vue-router'
 
 export default {
   name: 'MultiSelectMenu',
@@ -41,9 +43,22 @@ export default {
   },
   setup () {
     const store = useStore()
+    const route = useRoute()
     const formalAddedMaterialList = computed(() => store.getters['assets/formalAddedMaterialList'])
     const clearList = () => store.commit('assets/CLEAR_addedMaterialList')
-    const handleClick = (option) => option.func && option.func(formalAddedMaterialList.value)
+    const handleClick = (option) => option.func && !option.disabled && option.func(formalAddedMaterialList.value)
+
+    watch(
+      () => route.path,
+      (val, old) => {
+        if (val !== old) {
+          clearList()
+        }
+      },
+      {
+        deep: true
+      }
+    )
 
     return {
       formalAddedMaterialList,

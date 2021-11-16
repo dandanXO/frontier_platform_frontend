@@ -65,17 +65,7 @@ export default {
     const isGrid = ref(false)
     const { printCard, downloadU3M, cloneTo, addToWorkspace, exportExcel, printQRCode, mergeCard, deleteMaterial } = useAssets()
 
-    const optionMultiSelect = [
-      cloneTo,
-      addToWorkspace,
-      printCard,
-      printQRCode,
-      downloadU3M,
-      exportExcel,
-      mergeCard,
-      deleteMaterial
-    ]
-
+    const addedMaterialList = computed(() => store.getters['assets/addedMaterialList'])
     const materialList = computed(() => store.getters['assets/materialList'])
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const optionSort = computed(() => ({
@@ -89,7 +79,17 @@ export default {
       ]
     }))
 
-    const addedMaterialList = computed(() => store.getters['assets/addedMaterialList'])
+    const optionMultiSelect = computed(() => [
+      cloneTo,
+      addToWorkspace,
+      printCard,
+      printQRCode,
+      downloadU3M,
+      exportExcel,
+      { ...mergeCard, disabled: addedMaterialList.value.length < 2 },
+      deleteMaterial
+    ])
+
     const handleSelectAll = () => {
       const stringifyArr = materialList.value.map(item => JSON.stringify(item))
       const duplicateArr = addedMaterialList.value.concat(stringifyArr)
