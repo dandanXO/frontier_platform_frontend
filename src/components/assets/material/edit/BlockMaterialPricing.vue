@@ -41,7 +41,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
           )
           input-select(
             v-model:selectValue="material.publicPrice.minimumOrderQuantityUnit"
-            :options="options.inventoryUnitList"
+            :options="inventoryUnitList"
             keyOptionDisplay="unit"
             keyOptionValue="unit"
             class="w-25"
@@ -56,7 +56,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
           )
           input-select(
             v-model:selectValue="material.publicPrice.minimumContainerQuantityUnit"
-            :options="options.inventoryUnitList"
+            :options="inventoryUnitList"
             keyOptionDisplay="unit"
             keyOptionValue="unit"
             class="w-25"
@@ -93,7 +93,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
           div(class="flex items-center gap-x-3")
             input-select(
               v-model:selectValue="material.privatePrice.currency"
-              :options="options.currencyList"
+              :options="currencyList"
               keyOptionDisplay="currency"
               keyOptionValue="currency"
               class="w-25 relative z-16"
@@ -106,7 +106,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
             )
             input-select(
               v-model:selectValue="material.privatePrice.unit"
-              :options="options.inventoryUnitList"
+              :options="inventoryUnitList"
               keyOptionDisplay="unit"
               keyOptionValue="unit"
               class="w-25 relative z-16"
@@ -121,7 +121,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
             )
             input-select(
               v-model:selectValue="material.privatePrice.minimumOrderQuantityUnit"
-              :options="options.inventoryUnitList"
+              :options="inventoryUnitList"
               keyOptionDisplay="unit"
               keyOptionValue="unit"
               class="w-25"
@@ -136,7 +136,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
             )
             input-select(
               v-model:selectValue="material.privatePrice.minimumContainerQuantityUnit"
-              :options="options.inventoryUnitList"
+              :options="inventoryUnitList"
               keyOptionDisplay="unit"
               keyOptionValue="unit"
               class="w-25"
@@ -160,9 +160,10 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
 </template>
 
 <script>
-import { reactive, computed, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useStore } from 'vuex'
-import { INVENTORY_UNIT, MATERIAL_PRICING_CURRENCY } from '@/utils/constants'
+import { INVENTORY_UNIT } from '@/utils/constants'
+import useMaterialEdit from '@/composables/useMaterialEdit'
 
 export default {
   name: 'BlockMaterialPricing',
@@ -177,10 +178,7 @@ export default {
     const material = computed(() => store.getters['material/material'])
     const countryList = computed(() => store.getters['code/countryList'])
 
-    const options = reactive({
-      inventoryUnitList: computed(() => Object.keys(INVENTORY_UNIT).map(key => ({ unit: INVENTORY_UNIT[key] }))),
-      currencyList: computed(() => Object.keys(MATERIAL_PRICING_CURRENCY).map(key => ({ currency: MATERIAL_PRICING_CURRENCY[key] })))
-    })
+    const { inventoryUnitList, currencyList } = useMaterialEdit(material.value)
 
     watch(
       () => material.value,
@@ -196,7 +194,8 @@ export default {
       countryList,
       material,
       INVENTORY_UNIT,
-      options
+      inventoryUnitList,
+      currencyList
     }
   }
 }

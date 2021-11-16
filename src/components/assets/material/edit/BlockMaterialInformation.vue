@@ -16,7 +16,7 @@ div(class="pb-15 border-b border-black-400")
         input-chips(
           v-model:chips="material.descriptionList"
           :label="$t('RR0014')"
-          :options="options.descriptionList"
+          :options="specOptions.descriptionList"
           :placeholder="$t('DD0016')"
           keyOptionDisplay="name"
           keyOptionValue="name"
@@ -33,7 +33,7 @@ div(class="pb-15 border-b border-black-400")
             )
             input-select(
               v-model:selectValue="material.weightUnit"
-              :options="options.weightUnitList"
+              :options="specOptions.weightUnitList"
               keyOptionDisplay="name"
               keyOptionValue="weightUnit"
               class="w-25"
@@ -58,7 +58,7 @@ div(class="pb-15 border-b border-black-400")
             div(v-for="(content, contentItemIndex) in material.contentList" class="flex items-center")
               input-select(
                 v-model:selectValue="content.name"
-                :options="options.contentList"
+                :options="specOptions.contentList"
                 :placeholder="$t('DD0016')"
                 @select="selectContent($event, contentItemIndex)"
                 @addNewOption="addContentOption($event)"
@@ -79,7 +79,7 @@ div(class="pb-15 border-b border-black-400")
         input-chips(
           v-model:chips="material.finishList"
           :label="$t('RR0022')"
-          :options="options.finishList"
+          :options="specOptions.finishList"
           :placeholder="$t('DD0016')"
           keyOptionDisplay="name"
           keyOptionValue="name"
@@ -155,9 +155,10 @@ div(class="pb-15 border-b border-black-400")
 </template>
 
 <script>
-import { ref, reactive, computed, watch } from 'vue'
-import { SIDE_TYPE, WEIGHT_UNIT } from '@/utils/constants'
+import { ref, computed, watch } from 'vue'
+import { SIDE_TYPE } from '@/utils/constants'
 import { useStore } from 'vuex'
+import useMaterialEdit from '@/composables/useMaterialEdit'
 
 export default {
   name: 'BlockMaterialInformation',
@@ -171,68 +172,17 @@ export default {
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
     const isEditMode = computed(() => material.value.materialId !== null)
-    const newContentList = reactive([])
-    const newDescriptionList = reactive([])
-    const newFinishList = reactive([])
     const isOpenSampleCard = ref(false)
-    const options = reactive({
-      contentList: computed(() => {
-        return store.getters['material/code'].contentList
-          .slice(0, 20)
-          .concat(newContentList)
-      }),
-      weightUnitList: computed(() => {
-        return Object.keys(WEIGHT_UNIT)
-          .map(key => ({
-            weightUnit: WEIGHT_UNIT[key],
-            name: key.toLowerCase()
-          }))
-      }),
-      descriptionList: computed(() => {
-        return store.getters['material/code'].descriptionList
-          .slice(0, 20)
-          .concat(newDescriptionList)
-      }),
-      finishList: computed(() => {
-        return store.getters['material/code'].finishList
-          .slice(0, 20)
-          .concat(newFinishList)
-      })
-    })
 
-    const addDescriptionOption = (descriptionName) => {
-      newDescriptionList.push({
-        descriptionId: null,
-        name: descriptionName
-      })
-    }
-
-    const addFinishOption = (finishName) => {
-      newFinishList.push({
-        finishId: null,
-        name: finishName
-      })
-    }
-
-    const addContentOption = (contentName) => {
-      newContentList.push({
-        contentId: null,
-        name: contentName
-      })
-    }
-
-    const selectContent = (contentName, contentItemIndex) => {
-      const content = options.contentList.find(content => content.name === contentName)
-      store.commit('material/UPDATE_content_item', { index: contentItemIndex, content })
-    }
-
-    const addNewContent = () => {
-      store.commit('material/ADD_content_item')
-    }
-
-    const removeContent = (contentItemIndex) => {
-      store.commit('material/REMOVE_content_item', contentItemIndex)
-    }
+    const {
+      specOptions,
+      addContentOption,
+      selectContent,
+      addNewContent,
+      removeContent,
+      addDescriptionOption,
+      addFinishOption
+    } = useMaterialEdit(material.value)
 
     watch(
       () => material.value,
@@ -245,7 +195,7 @@ export default {
     )
 
     return {
-      options,
+      specOptions,
       addContentOption,
       selectContent,
       addNewContent,

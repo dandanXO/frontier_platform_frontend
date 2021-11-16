@@ -3,7 +3,7 @@ div(class="fixed inset-0 z-index:modal w-screen h-screen bg-black-900 bg-opacity
   div(class="w-screen h-screen" @click="closable && close()")
   div(class="absolute bg-black-0 rounded card-shadow")
     div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
-      p(v-if="header !== ''" class="text-body1 text-primary") {{header}}
+      p(v-if="header !== ''" class="text-h6 font-bold text-primary") {{header}}
       svg-icon(v-if="closable" iconName="close" size="24" class="justify-self-end cursor-pointer text-black-700" @click="close")
     suspense
       component(:is="component" v-bind="properties")
@@ -35,6 +35,7 @@ export default {
     ModalChooseStorage: defineAsyncComponent(() => import('@/components/management/ModalChooseStorage')),
     ModalHowToScan: defineAsyncComponent(() => import('@/components/assets/material/ModalHowToScan')),
     ModalChangeCover: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalChangeCover')),
+    ModalEditSimpleInfo: defineAsyncComponent(() => import('@/components/assets/material/list/ModalEditSimpleInfo')),
     ModalViewer: defineAsyncComponent(() => import('@/components/assets/material/ModalViewer')),
     ModalError: defineAsyncComponent(() => import('@/components/modal/ModalError'))
   },

@@ -81,7 +81,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
           input-select(
             v-model:selectValue="material.inventoryUnit"
             :label="index === 0 ? $t('RR0038') :''"
-            :options="options.inventoryUnitList"
+            :options="inventoryUnitList"
             keyOptionDisplay="unit"
             keyOptionValue="unit"
             class="w-25"
@@ -92,9 +92,10 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
 </template>
 
 <script>
-import { reactive, computed, watch } from 'vue'
-import { INVENTORY_UNIT, WEIGHT_UNIT } from '@/utils/constants'
 import { useStore } from 'vuex'
+import { computed, watch } from 'vue'
+import { INVENTORY_UNIT } from '@/utils/constants'
+import useMaterialEdit from '@/composables/useMaterialEdit'
 
 export default {
   name: 'BlockMaterialInventory',
@@ -107,46 +108,13 @@ export default {
   setup () {
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
-    const options = reactive({
-      inventoryUnitList: computed(() => Object.keys(INVENTORY_UNIT).map(key => ({ unit: INVENTORY_UNIT[key] })))
-    })
 
-    const addNewInventory = () => {
-      store.commit('material/ADD_inventory_item')
-    }
-
-    const removeInventory = (index) => {
-      store.commit('material/REMOVE_inventory_item', index)
-    }
-
-    const totalInventory = computed(() => {
-      const total = material.value.inventoryList.reduce((prev, current) => {
-        const { inventoryUnit, weightUnit, weight, width } = material.value
-        const quantity = current.quantity
-
-        switch (inventoryUnit) {
-          case INVENTORY_UNIT.Y: {
-            return prev + Number(quantity)
-          }
-          case INVENTORY_UNIT.M: {
-            return prev + Number(quantity) / 0.9114
-          }
-          case INVENTORY_UNIT.KG: {
-            let gsm
-            if (weightUnit === WEIGHT_UNIT.GSM) {
-              gsm = weight
-            } else if (weightUnit === WEIGHT_UNIT.OZ) {
-              gsm = weight / 0.9114
-            }
-            return prev + Number(quantity) / (gsm * 0.02323 * width) / 1000
-          }
-          default:
-            return prev + Number(quantity)
-        }
-      }, 0)
-
-      return Math.floor(total)
-    })
+    const {
+      inventoryUnitList,
+      addNewInventory,
+      removeInventory,
+      totalInventory
+    } = useMaterialEdit(material.value)
 
     watch(
       () => material.value,
@@ -160,7 +128,7 @@ export default {
 
     return {
       material,
-      options,
+      inventoryUnitList,
       addNewInventory,
       removeInventory,
       totalInventory,
