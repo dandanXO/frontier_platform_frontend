@@ -84,7 +84,20 @@ export default function useAssets () {
   const deleteMaterial = {
     id: 'deleteMaterial',
     name: t('RR0063'),
-    func: () => { console.log('deleteMaterial') }
+    func: (v) => {
+      const materialIdList = Array.isArray(v) ? v.map(item => item.materialId) : [v.materialId]
+      store.dispatch('helper/openModalConfirm', {
+        title: t('EE0075'),
+        content: t('EE0076'),
+        secondaryText: t('UU0001'),
+        secondaryHandler: async () => {
+          await store.dispatch('assets/deleteMaterial', { materialIdList })
+          if (Array.isArray(v)) {
+            store.commit('assets/CLEAR_addedMaterialList')
+          }
+        }
+      })
+    }
   }
 
   return {

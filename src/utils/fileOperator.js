@@ -1,12 +1,12 @@
 /**
  * Common MIME types: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
  */
-const extension2MineType = {
+const extension2MimeType = {
   xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 }
 
 const downloadBase64File = (base64Data, extension, fileName = 'file') => {
-  const dataURL = `data:${extension2MineType[extension]};base64,${base64Data}`
+  const dataURL = `data:${extension2MimeType[extension]};base64,${base64Data}`
   downloadDataURLFile(dataURL, fileName)
 }
 
