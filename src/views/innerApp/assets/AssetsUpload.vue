@@ -36,7 +36,17 @@ div(class="relative")
         btn(size='md' type="secondary") {{$t('UU0009')}}
         div
           p(class="text-body2 text-black-900") {{$t('DD0009')}}
-          div(class="text-assist-blue underline flex items-center gap-x-1") {{$t('UU0010')}}
+          div(class="flex items-center gap-x-1")
+            a(v-if="locale === 'en-US'"
+              target="_blank"
+              class='text-assist-blue underline cursor-pointer'
+              href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(英文版).xlsx"
+            ) {{$t('UU0010')}}
+            a(v-else
+              target="_blank"
+              class='text-assist-blue underline cursor-pointer'
+              href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(中文版).xlsx"
+            ) {{$t('UU0010')}}
             tooltip(placement='bottom')
               template(#trigger)
                 svg-icon(iconName="info_outline" size="14" class="text-primary")
@@ -57,7 +67,7 @@ export default {
     QrCodeBacksideGeneral
   },
   setup () {
-    const { t } = useI18n()
+    const { t, locale } = useI18n()
     const store = useStore()
     const { parsePath, goToAssetsMaterialCreate } = useNavigation()
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
@@ -82,6 +92,7 @@ export default {
     })
 
     return {
+      locale,
       breadcrumbsList,
       uploadMaterialEmail,
       goToAssetsMaterialCreate

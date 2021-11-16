@@ -9,6 +9,10 @@ export default {
     mergeMaterial: ({ orgId, mergedList }) => axios('/org/assets/material/merge', {
       method: 'POST',
       data: { orgId, mergedList }
+    }),
+    exportMaterial: ({ orgId, materialIdList }) => axios('/org/assets/material/export', {
+      method: 'POST',
+      data: { orgId, materialIdList }
     })
   },
   group: {
@@ -19,6 +23,10 @@ export default {
     mergeMaterial: ({ groupId, mergedList }) => axios('/org/group/assets/material/merge', {
       method: 'POST',
       data: { groupId, mergedList }
+    }),
+    exportMaterial: ({ groupId, materialIdList }) => axios('/org/group/assets/material/export', {
+      method: 'POST',
+      data: { groupId, materialIdList }
     })
   }
 }
