@@ -26,10 +26,16 @@ export default function useMaterialValidation () {
   const validations = reactive({
     materialNo: computed(() => {
       const materialNo = material.value.materialNo
-      return hasValidate.value && (required(materialNo) || maxLength(materialNo, 50)
-      )
+      return hasValidate.value && (required(materialNo) || maxLength(materialNo, 50))
     }),
-    weight: computed(() => hasValidate.value && maxI6D2(material.value.weight)),
+    width: computed(() => {
+      const width = material.value.width
+      return hasValidate.value && (required(width) || integerOnly(width))
+    }),
+    weight: computed(() => {
+      const weight = material.value.weight
+      return hasValidate.value && (required(weight) || maxI6D2(weight))
+    }),
     contentList: computed(() => {
       if (!hasValidate.value) {
         return false

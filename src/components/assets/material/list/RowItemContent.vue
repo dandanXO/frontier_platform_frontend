@@ -7,13 +7,14 @@ div(class='grid grid-rows-4 grid-cols-2 gap-x-14')
   )
     div(class='flex justify-between pb-2 border-b-2 mb-3')
       div(class='text-body1 font-bold text-primary') {{block.title}}
-      btn-functional(@click='handleEdit(block.id)') {{$t('UU0027')}}
+      btn-functional(@click='handleEdit(block)') {{$t('UU0027')}}
     div(class='grid gap-3')
       div(v-for='item in block.column' class='text-body2 line-clamp-1') {{item.name}} : {{item.value}}
 </template>
 
 <script>
 import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
 import { computed } from 'vue'
 import useMaterial from '@/composables/useMaterial'
 
@@ -26,6 +27,7 @@ export default {
   },
   setup (props) {
     const { t } = useI18n()
+    const store = useStore()
     const { materialWeight, materialYarnCount, materialDensity, materialWidth } = useMaterial(props.material)
 
     const structure = computed(() => {
@@ -33,7 +35,7 @@ export default {
 
       return [
         {
-          id: 'specification',
+          id: 'spec',
           title: t('EE0002'),
           column: [
             { name: t('RR0021'), value: content },
@@ -72,8 +74,15 @@ export default {
       ]
     })
 
-    const handleEdit = (id) => {
-      console.log('edit', id)
+    const handleEdit = (block) => {
+      store.dispatch('material/setMaterial', JSON.parse(JSON.stringify(props.material)))
+      store.dispatch('helper/openModal', {
+        component: 'ModalEditSimpleInfo',
+        header: block.title,
+        properties: {
+          blockId: `simple-${block.id}`
+        }
+      })
     }
 
     return {
