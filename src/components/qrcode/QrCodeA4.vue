@@ -80,11 +80,11 @@ export default {
       currExecOptionIndex.value = 0
 
       list.forEach((item) => {
-        const { materialWeight, materialYarnCount, materialDensity, materialWidth } = useMaterial(item)
-        item.materialWeight = materialWeight.value
-        item.materialYarnCount = materialYarnCount.value
-        item.materialDensity = materialDensity.value
-        item.materialWidth = materialWidth.value
+        const { materialInfo } = useMaterial(item)
+        item.materialWeight = materialInfo.weight.value
+        item.materialYarnCount = materialInfo.yarn.value
+        item.materialDensity = materialInfo.density.value
+        item.materialWidth = materialInfo.width.value
       })
 
       const scale = 3

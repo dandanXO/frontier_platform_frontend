@@ -25,11 +25,11 @@ div(class='w-full')
         div(class='line-height-1.6 text-body2 font-bold line-clamp-2') {{material.description}}
         div(class='line-height-1.6 text-caption line-clamp-2') {{material.content}}
         div(class='line-height-1.6 text-caption flex gap-1')
-          div {{materialYarnCount}}
-          div {{materialDensity}}
-          div {{materialWidth}}
+          div {{materialInfo.yarn.value}}
+          div {{materialInfo.density.value}}
+          div {{materialInfo.width.value}}
         div(class='line-height-1.6 text-caption line-clamp-2') {{material.finish}}
-        div(class='line-height-1.6 text-caption line-clamp-1') {{materialWeight}}
+        div(class='line-height-1.6 text-caption line-clamp-1') {{materialInfo.weight.value}}
       tooltip(
         class='absolute bottom-3 right-3 cursor-pointer'
         placement="right-start"
@@ -91,7 +91,7 @@ export default {
       printQRCode,
       deleteMaterial
     } = useAssets()
-    const { currentCoverImg, neverScanBefore, materialWeight, materialYarnCount, materialDensity, materialWidth } = useMaterial(props.material)
+    const { currentCoverImg, neverScanBefore, materialInfo } = useMaterial(props.material)
     const options = [
       [
         editMaterial
@@ -142,10 +142,7 @@ export default {
       neverScanBefore,
       active,
       checked,
-      materialWeight,
-      materialYarnCount,
-      materialDensity,
-      materialWidth,
+      materialInfo,
       goToAssetMaterialDetail
     }
   }

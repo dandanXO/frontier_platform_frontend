@@ -57,7 +57,8 @@ div(class="pb-15 mb-5 border-b border-black-400")
           template(v-if="material.u3m.status === U3M_STATUS.UNQUALIFIED")
             p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0020')}}
               tooltip(placement="top" class="pl-1" :manual='true')
-                svg-icon(iconName="info_outline" class='cursor-pointer')
+                template(#trigger)
+                  svg-icon(iconName="info_outline" class='cursor-pointer' size="14")
                 template(#content)
                   div(class="p-5 w-68.5")
                     span(class="line-height-1.6") {{$t('EE0021')}}
@@ -72,15 +73,17 @@ div(class="pb-15 mb-5 border-b border-black-400")
           template(v-if="material.u3m.status === U3M_STATUS.COMPLETED")
             p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0018')}} &nbsp
               span(class="text-assist-blue underline cursor-pointer") {{$t('UU0005')}}
-            btn(size="md" @click='openModalViewer') {{$t('UU0006')}}
+            btn(size="md") {{$t('UU0006')}}
           template(v-if="material.u3m.status === U3M_STATUS.FAIL")
             p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0024')}}
               tooltip(placement="top" class="pl-1")
-                svg-icon(iconName="info_outline")
+                template(#trigger)
+                  svg-icon(iconName="info_outline" size="14")
                 template(#content)
                   div(class="p-5 w-71")
                     i18n-t(keypath="EE0023" tag="p")
-                      template(#email) support@frontier.cool
+                      template(#email)
+                        span(class="text-assist-blue") support@frontier.cool
             btn(size="md") {{$t('UU0030')}}
 </template>
 
@@ -88,7 +91,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
 import { useStore } from 'vuex'
 import { computed, ref, watch } from 'vue'
 import useMaterial from '@/composables/useMaterial'
-import { COVER_MODE, SIDE_TYPE, U3M_STATUS } from '@/utils/constants'
+import { U3M_STATUS } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 
 export default {
@@ -98,7 +101,7 @@ export default {
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
 
-    const { statusIconName } = useMaterial(material.value)
+    const { statusIconName, imageList, defaultCoverImgIndex } = useMaterial(material.value)
 
     const uploadMaterialEmail = computed(() => {
       return store.getters['helper/routeLocation']
@@ -106,76 +109,7 @@ export default {
         : store.getters['group/uploadMaterialEmail']
     })
 
-    const currentDisplayIndex = ref(0)
-    const { coverMode } = material.value
-    if (coverMode === COVER_MODE.FACE) {
-      currentDisplayIndex.value = 0
-    } else if (coverMode === COVER_MODE.BACK) {
-      currentDisplayIndex.value = 2
-    } else if (coverMode === COVER_MODE.SUP) {
-      currentDisplayIndex.value = 4
-    }
-
-    const imageList = computed(() => {
-      const { isDoubleSideMaterial, sideType, coverMode, coverImg, faceSideImg, backSideImg } = material.value
-      const list = []
-      const faceCrop = {
-        src: faceSideImg.crop,
-        text: [t('RR0075')]
-      }
-      const faceRuler = {
-        src: faceSideImg.ruler,
-        text: [t('RR0075'), `(${t('RR0080')})`]
-      }
-      const backCrop = {
-        src: backSideImg.crop,
-        text: [t('RR0078')]
-      }
-      const backRuler = {
-        src: backSideImg.ruler,
-        text: [t('RR0078'), `(${t('RR0080')})`]
-      }
-
-      if (isDoubleSideMaterial) {
-        if (coverMode === COVER_MODE.SUP) {
-          list.push({
-            src: coverImg,
-            text: [t('RR0081')]
-          })
-          list.push(faceCrop, faceRuler, backCrop, backRuler)
-        } else if (coverMode === COVER_MODE.FACE) {
-          faceCrop.text.push(`(${t('RR0081')})`)
-          list.push(faceCrop, faceRuler, backCrop, backRuler)
-        } else if (coverMode === COVER_MODE.BACK) {
-          backCrop.text.push(`(${t('RR0081')})`)
-          list.push(faceCrop, faceRuler, backCrop, backRuler)
-        }
-      } else {
-        if (sideType === SIDE_TYPE.FACE) {
-          if (coverMode === COVER_MODE.SUP) {
-            list.push({
-              src: coverImg,
-              text: [t('RR0081')]
-            })
-          } else {
-            faceCrop.text.push(`(${t('RR0081')})`)
-          }
-          list.push(faceCrop, faceRuler)
-        } else if (sideType === SIDE_TYPE.BACK) {
-          if (coverMode === COVER_MODE.SUP) {
-            list.push({
-              src: coverImg,
-              text: [t('RR0081')]
-            })
-          } else {
-            backCrop.text.push(`(${t('RR0081')})`)
-          }
-          list.push(backCrop, backRuler)
-        }
-      }
-
-      return list
-    })
+    const currentDisplayIndex = ref(defaultCoverImgIndex.value)
 
     const pantoneName = ref('')
     const pantoneErrorMsg = ref('')
@@ -210,17 +144,6 @@ export default {
       })
     }
 
-    const openModalViewer = () => {
-      store.dispatch('helper/pushModal', {
-        component: 'modal-viewer',
-        header: t('UU0006'),
-        properties: {
-          baseImgUrl: material.value.u3m.baseImgUrl,
-          normalImgUrl: material.value.u3m.normalImgUrl
-        }
-      })
-    }
-
     watch(
       () => pantoneName.value,
       () => {
@@ -240,7 +163,6 @@ export default {
       U3M_STATUS,
       pushModalHowToScan,
       pushModalChangeCover,
-      openModalViewer,
       statusIconName
     }
   }
