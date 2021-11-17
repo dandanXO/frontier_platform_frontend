@@ -28,37 +28,28 @@ export default {
   setup (props) {
     const { t } = useI18n()
     const store = useStore()
-    const { materialWeight, materialYarnCount, materialDensity, materialWidth } = useMaterial(props.material)
+    const { materialBasicInfo, materialInfo } = useMaterial(props.material)
 
     const structure = computed(() => {
-      const { content, pattern, color, finish, totalInventoryQty, publicPrice, publicTagList, aiTagList, privateTagList } = props.material
+      const { publicTagList, aiTagList, privateTagList } = props.material
 
       return [
         {
           id: 'spec',
           title: t('EE0002'),
-          column: [
-            { name: t('RR0021'), value: content },
-            { name: t('RR0023'), value: materialYarnCount.value },
-            { name: t('RR0024'), value: materialDensity.value },
-            { name: t('RR0025'), value: pattern },
-            { name: t('RR0026'), value: color },
-            { name: t('RR0015'), value: materialWeight.value },
-            { name: t('RR0019'), value: materialWidth.value },
-            { name: t('RR0022'), value: finish }
-          ],
+          column: materialBasicInfo.value,
           class: 'row-span-4'
         },
         {
           id: 'inventory',
           title: t('EE0003'),
-          column: [{ name: t('RR0034'), value: totalInventoryQty }],
+          column: [materialInfo.totalInventoryQty],
           class: 'row-span-1'
         },
         {
           id: 'price',
           title: t('EE0004'),
-          column: [{ name: t('RR0043'), value: publicPrice?.price && `${publicPrice?.currency} ${publicPrice?.price}/${publicPrice?.unit}` }],
+          column: [materialInfo.publicPrice.pricing],
           class: 'row-span-1'
         },
         {

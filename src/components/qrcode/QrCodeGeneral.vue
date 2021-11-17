@@ -20,7 +20,6 @@ div
                     div(class='flex-none border border-black-400 mx-6 my-5')
                     div(class="flex flex-col justify-center text-black-900 w-56")
                       div(class="mb-2 font-bold text-body2") {{item.materialNo}}
-                      div(class="line-clamp-1 text-body2 line-height-1.5") {{item.pattern}} {{item.color}}
                       div(class="line-clamp-2 text-body2 line-height-1.5") {{item.description}}
                       div(class="line-clamp-2 text-body2 line-height-1.5") {{item.content}}
                       div(class="line-clamp-1 text-body2 line-height-1.5") {{item.materialYarnCount}} {{item.materialDensity}} {{item.materialWidth}}
@@ -70,11 +69,11 @@ export default {
       currExecOptionIndex.value = 0
 
       list.forEach((item) => {
-        const { materialWeight, materialYarnCount, materialDensity, materialWidth } = useMaterial(item)
-        item.materialWeight = materialWeight.value
-        item.materialYarnCount = materialYarnCount.value
-        item.materialDensity = materialDensity.value
-        item.materialWidth = materialWidth.value
+        const { materialInfo } = useMaterial(item)
+        item.materialWeight = materialInfo.weight.value
+        item.materialYarnCount = materialInfo.yarn.value
+        item.materialDensity = materialInfo.density.value
+        item.materialWidth = materialInfo.width.value
       })
 
       const scale = 3

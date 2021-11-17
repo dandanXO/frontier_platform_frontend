@@ -43,12 +43,10 @@ export default function useNavigation () {
   }
 
   const goToAssetMaterialDetail = (material) => {
-    store.dispatch('material/setMaterial', material)
     router.push(parsePath(`${prefixPath.value}/assets/${material.materialId}`))
   }
 
   const goToAssetMaterialEdit = (material) => {
-    store.dispatch('material/setMaterial', material)
     router.push(parsePath(`${prefixPath.value}/assets/${material.materialId}/edit`))
   }
 

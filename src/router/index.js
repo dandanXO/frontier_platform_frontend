@@ -157,7 +157,12 @@ const routes = [
           {
             path: ':materialId',
             name: 'OrgAssetsMaterialDetail',
-            component: () => import('@/views/innerApp/assets/AssetsMaterialDetail.vue')
+            component: () => import('@/views/innerApp/assets/AssetsMaterialDetail.vue'),
+            beforeEnter: async (to, from, next) => {
+              await store.dispatch('material/getMaterial', { materialId: to.params.materialId })
+              await store.dispatch('code/getCountryList')
+              next()
+            }
           },
           {
             path: ':materialId/edit',
@@ -229,7 +234,12 @@ const routes = [
           {
             path: ':materialId',
             name: 'GroupAssetsMaterialDetail',
-            component: () => import('@/views/innerApp/assets/AssetsMaterialDetail.vue')
+            component: () => import('@/views/innerApp/assets/AssetsMaterialDetail.vue'),
+            beforeEnter: async (to, from, next) => {
+              await store.dispatch('material/getMaterial', { materialId: to.params.materialId })
+              await store.dispatch('code/getCountryList')
+              next()
+            }
           },
           {
             path: ':materialId/edit',

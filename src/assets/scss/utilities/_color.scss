@@ -27,6 +27,9 @@
   .border-#{$className} {
     border-color: $color;
   }
+  .divide-#{$className} {
+    border-color: $color;
+  }
 }
 
 @each $name, $colorMap in $colors {
