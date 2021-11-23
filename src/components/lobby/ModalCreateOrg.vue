@@ -5,7 +5,7 @@ div(class="w-101 px-8")
   form(class="w-full grid gap-y-6")
     input-radio-group(
       v-model:inputValue="formData.orgCategoryId"
-      :label="$t('AA0005')"
+      :label="$t('AA0069')"
       :optionList="orgCategoryList"
       keyOptionValue="orgCategoryId"
       required
@@ -25,11 +25,11 @@ div(class="w-101 px-8")
       v-model:textValue="formData.orgName"
       class="relative"
       required
-      :label="$t('AA0005')"
-      :placeholder="$t('AA0009')"
+      :label="$t('AA0038')"
+      :placeholder="$t('AA0039')"
       :customErrorMsg="isOrgNameExist ? $t('WW0001') : ''"
       @blur="checkOrgNameExist")
-    input-text(v-model:textValue="formData.address" :label="$t('AA0005')" :placeholder="$t('AA0009')")
+    input-text(v-model:textValue="formData.address" :label="$t('AA0040')" :placeholder="$t('AA0041')")
     input-calling-code(
       v-model:textValue="formData.phone"
       v-model:countryCode="formData.phoneCountryCode"

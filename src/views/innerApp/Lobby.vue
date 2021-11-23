@@ -22,7 +22,7 @@ div(class="w-screen pt-14.5")
   div(v-if="orgList.length === 0" class="w-full flex flex-col items-center pt-with-header-empty")
     h3(class="text-primary font-bold text-h3 mb-6") {{$t('AA0014')}}
     p(class="text-primary text-body1 line-height-1.6 w-160 text-center mb-7.5") {{$t('AA0015')}}
-    div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg")
+    div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg(true)")
       div(class="grid justify-items-center gap-y-3.5")
         svg-icon(iconName="old-add" size="24")
         span(class="text-primary-middle text-body2 font-bold") {{$t('AA0011')}}
@@ -54,7 +54,7 @@ div(class="w-screen pt-14.5")
                 :style="{ 'margin-right': '-12px' }"
               )
                 svg-icon(iconName="more" size="24" class="text-black-600")
-      div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg")
+      div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg(true)")
         div(class="grid justify-items-center gap-y-3.5")
           svg-icon(iconName="old-add" size="24")
           span(class="text-primary-middle text-body2 font-bold") {{$t('AA0011')}}
@@ -73,7 +73,7 @@ export default {
     DropdownLocale,
     InputCallingCode
   },
-  setup () {
+  async setup () {
     const store = useStore()
     const router = useRouter()
     const orgList = computed(() => store.getters['user/organizationList'])
@@ -95,6 +95,8 @@ export default {
         openModalCreateOrg(false)
       }
     })
+
+    await store.dispatch('code/getOrgCategoryList')
 
     return {
       orgList,

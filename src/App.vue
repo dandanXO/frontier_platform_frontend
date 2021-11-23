@@ -1,16 +1,16 @@
 <template lang="pug">
 router-view
+modal-pipeline
 flash-message
 </template>
 
 <script>
-import { useStore } from 'vuex'
+import ModalPipeline from '@/components/modal/ModalPipeline.vue'
 
 export default {
   name: 'App',
-  setup () {
-    const store = useStore()
-    store.dispatch('code/getRoleList')
+  components: {
+    ModalPipeline
   }
 }
 </script>

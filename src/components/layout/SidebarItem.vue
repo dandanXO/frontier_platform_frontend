@@ -39,7 +39,7 @@ export default {
 
     const isActive = computed(() => {
       // Speacial case
-      if (route.name === 'GroupManagement' && props.id === 'management') {
+      if (props.id === 'management' && ['OrgManagement', 'GroupManagement'].includes(route.name)) {
         return true
       }
 

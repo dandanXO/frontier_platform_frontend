@@ -1,10 +1,10 @@
 <template lang="pug">
-div(class="pt-16 h-screen")
+div(class="fixed inset-0 z-index:modal pt-16 w-screen h-screen bg-black-0")
   fullscreen-header(
     :title="$t('EE0006')"
     :primaryText="$t('UU0003')"
-    :primaryHandler="primaryHandler"
-    :primaryCloseAfterHandle="false"
+    @click:primary="goToAssetsMaterialMergePreview"
+    @click:secondary="goToAssets"
   )
   div(class="flex flex-col h-full")
     div(class="min-h-71.5 bg-black-0")
@@ -31,73 +31,48 @@ div(class="pt-16 h-screen")
 
 <script>
 import { useStore } from 'vuex'
-import { reactive } from 'vue'
+import { computed } from 'vue'
 import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
 import MaterialMergeRow from '@/components/assets/material/MaterialMergeRow'
-
-const mergedRow = {
-  faceSide: {},
-  backSide: {},
-  detail: {}
-}
+import useNavigation from '@/composables/useNavigation'
 
 export default {
-  name: 'MaterialMerge',
+  name: 'AssetsMaterialMerge',
   components: {
     FullscreenHeader,
     MaterialMergeRow
   },
-  props: {
-    materialListData: {
-      type: Array
-    }
-  },
-  setup (props) {
+  setup () {
     const store = useStore()
-    const materialList = reactive(
-      props.materialListData.map(material => {
-        const temp = {}
-        Object.keys(mergedRow).forEach(key => {
-          temp[key] = material
-        })
-        return temp
-      })
-    )
-    const mergedList = reactive([{ ...mergedRow }])
-
-    const primaryHandler = () => {
-      store.dispatch('helper/pushFullScreen', {
-        component: 'material-merge-preview',
-        properties: {
-          mergedList
-        }
-      })
-    }
+    const { goToAssets, goToAssetsMaterialMergePreview } = useNavigation()
+    const materialList = computed(() => store.getters['assets/preMergeList'])
+    const mergedList = computed(() => store.getters['assets/mergedList'])
 
     const addNewRow = () => {
-      mergedList.push({ ...JSON.parse(JSON.stringify(mergedRow)) })
+      store.commit('assets/ADD_mergedList_row')
     }
 
     const setRow = (index, row) => {
-      mergedList[index] = row
+      store.commit('assets/UPDATE_mergedList_row', { index, item: row })
     }
 
     const deleteRow = (index) => {
-      mergedList.splice(index, 1)
+      store.commit('assets/REMOVE_mergedList_row', index)
     }
 
     const clearBlock = (index, blockType) => {
-      mergedList[index][blockType] = {}
+      store.commit('assets/CLEAR_mergedList_row_block', { index, blockType })
     }
 
     return {
-      primaryHandler,
       materialList,
       mergedList,
       addNewRow,
       deleteRow,
       setRow,
-      clearBlock
+      clearBlock,
+      goToAssets,
+      goToAssetsMaterialMergePreview
     }
   }
 }

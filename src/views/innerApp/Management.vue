@@ -116,7 +116,6 @@ export default {
       try {
         isLoading.value = true
         if (routeLocation.value === 'org' && currentTab.value === 'about') {
-          await store.dispatch('code/getCountryList')
           await store.dispatch('code/getOrgCategoryList')
         }
         if (routeLocation.value === 'group' && currentTab.value === 'about') {

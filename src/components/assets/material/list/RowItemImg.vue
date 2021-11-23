@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class='w-full min-w-42.5 max-w-67.5')
   div(class='pb-2.5 flex justify-between')
-    div(class="font-bold text-primary") {{material.materialNo}}
+    div(class="font-bold text-primary line-clamp-1") {{material.materialNo}}
     svg-icon(:iconName='statusIconName' size='24' class="text-primary")
   div(
     class='relative aspect-ratio rounded bg-black-200 border-block-400 bg-cover mb-2.5 overflow-hidden'

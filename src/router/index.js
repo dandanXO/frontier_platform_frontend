@@ -1,14 +1,90 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import { ROLE_ID } from '@/utils/constants'
+import Sidebar from '@/components/layout/Sidebar.vue'
+
+const reuseRoutes = (prefix) => ([
+  {
+    path: 'management/:tab(about|members|history)',
+    name: `${prefix}Management`,
+    component: () => import('@/views/innerApp/Management.vue')
+  },
+  {
+    path: 'assets',
+    component: () => import('@/views/PassThrough'),
+    children: [
+      {
+        path: '',
+        name: `${prefix}Assets`,
+        component: () => import('@/views/innerApp/assets/Assets.vue')
+      },
+      {
+        path: 'upload',
+        name: `${prefix}AssetsUpload`,
+        component: () => import('@/views/innerApp/assets/AssetsUpload.vue')
+      },
+      {
+        path: 'upload/manual',
+        name: `${prefix}AssetsMaterialCreate`,
+        component: () => import('@/views/innerApp/assets/AssetsMaterialCreate.vue')
+      },
+      {
+        path: 'merge',
+        name: `${prefix}AssetsMaterialMerge`,
+        component: () => import('@/views/innerApp/assets/AssetsMaterialMerge.vue'),
+        beforeEnter: (to, from, next) => {
+          if ([`${prefix}Assets`, `${prefix}AssetsMaterialMergePreview`].includes(from.name)) {
+            next()
+          } else {
+            next(to.path.replace('/merge', ''))
+          }
+        }
+      },
+      {
+        path: 'merge/preview',
+        name: `${prefix}AssetsMaterialMergePreview`,
+        component: () => import('@/views/innerApp/assets/AssetsMaterialMergePreview.vue'),
+        beforeEnter: (to, from, next) => {
+          if ([`${prefix}AssetsMaterialMerge`].includes(from.name)) {
+            next()
+          } else {
+            next(to.path.replace('/merge/preview', ''))
+          }
+        }
+      },
+      {
+        path: ':materialId',
+        name: `${prefix}AssetsMaterialDetail`,
+        component: () => import('@/views/innerApp/assets/AssetsMaterialDetail.vue')
+      },
+      {
+        path: ':materialId/edit',
+        name: `${prefix}AssetsMaterialEdit`,
+        component: () => import('@/views/innerApp/assets/AssetsMaterialEdit.vue')
+      }
+    ]
+  },
+  {
+    path: 'workspace',
+    name: `${prefix}Workspace`,
+    component: () => import('@/views/innerApp/Workspace.vue')
+  },
+  {
+    path: 'share-to-me',
+    name: `${prefix}ShareToMe`,
+    component: () => import('@/views/innerApp/ShareToMe.vue')
+  },
+  {
+    path: 'sticker',
+    name: `${prefix}Sticker`,
+    component: () => import('@/views/innerApp/Sticker.vue')
+  }
+])
 
 const routes = [
   {
     path: '/sign-up',
     name: 'SignUp',
-    meta: {
-      requiresLogin: false
-    },
     component: () => import('@/views/SignUp.vue'),
     beforeEnter: (to, from, next) => {
       if (localStorage.getItem('accessToken') !== null) {
@@ -20,9 +96,6 @@ const routes = [
   {
     path: '/sign-in',
     name: 'SignIn',
-    meta: {
-      requiresLogin: false
-    },
     component: () => import('@/views/SignIn.vue'),
     beforeEnter: (to, from, next) => {
       if (localStorage.getItem('accessToken') !== null) {
@@ -34,9 +107,6 @@ const routes = [
   {
     path: '/logout',
     name: 'Logout',
-    meta: {
-      requiresLogin: false
-    },
     beforeEnter: (to, from, next) => {
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
@@ -44,228 +114,102 @@ const routes = [
     }
   },
   {
-    path: '/invite-link',
-    name: 'InviteLink',
-    meta: {
-      requiresLogin: true
-    },
-    component: () => import('@/views/PassThrough'),
-    beforeEnter: async (to, from, next) => {
-      const { from: fromWhere, inviteCode, orgNo } = to.query
-
-      const organizationList = store.getters['user/organizationList']
-      if (organizationList.some(org => Number(org.orgNo) === Number(orgNo))) {
-        return next(`/${orgNo}`)
-      }
-
-      if (fromWhere === 'org') {
-        await store.dispatch('organization/joinOrgViaLink', { inviteCode })
-      } else if (fromWhere === 'group') {
-        await store.dispatch('group/joinGroupViaLink', { inviteCode })
-      }
-      await store.dispatch('user/getUser')
-      return next(`/${orgNo}`)
-    }
-  },
-  {
     path: '/',
-    name: 'Lobby',
-    meta: {
-      requiresLogin: true
-    },
-    component: () => import('@/views/Lobby.vue'),
-    beforeEnter: async (to, from, next) => {
-      await store.dispatch('code/getCountryList')
-      await store.dispatch('code/getOrgCategoryList')
-      next()
-    }
-  },
-  {
-    path: '/:orgNo',
-    redirect: to => `/${to.params.orgNo}/public-library`,
-    name: 'OrgRoot',
-    meta: {
-      requiresLogin: true
-    },
+    name: 'Root',
     component: () => import('@/views/innerApp/InnerAppLayout.vue'),
     beforeEnter: async (to, from, next) => {
-      store.commit('helper/SET_routeLocation', 'org')
-      await store.dispatch('user/orgUser/getOrgUser', { orgNo: to.params.orgNo })
-      await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
-      const org = store.getters['organization/organization']
-      const orgUser = store.getters['user/orgUser/orgUser']
-      if (orgUser.orgRoleId === ROLE_ID.OWNER && !org.uploadMaterialEmail) {
-        store.dispatch('helper/openModal', {
-          component: 'modal-create-mail-org',
-          properties: {
-            isOldOrg: true
-          },
-          closable: false
-        })
-      }
+      store.dispatch('code/getRoleList')
+      store.dispatch('code/getCountryList')
+      store.dispatch('code/getFilterOptions')
+      await store.dispatch('user/getUser')
       next()
     },
     children: [
       {
-        path: 'public-library',
-        name: 'PublicLibrary',
-        component: () => import('@/views/innerApp/PublicLibrary.vue')
+        path: '',
+        name: 'Lobby',
+        component: () => import('@/views/innerApp/Lobby.vue')
       },
       {
-        path: 'management/:tab(about|members|history)',
-        name: 'OrgManagement',
-        component: () => import('@/views/innerApp/Management.vue')
-      },
-      {
-        path: 'global-search',
-        name: 'GlobalSearch',
-        component: () => import('@/views/innerApp/GlobalSearch.vue')
-      },
-      {
-        path: 'favorites',
-        name: 'Favorites',
-        component: () => import('@/views/innerApp/Favorites.vue')
-      },
-      {
-        path: 'workspace',
-        name: 'OrgWorkspace',
-        component: () => import('@/views/innerApp/Workspace.vue')
-      },
-      {
-        path: 'assets',
+        path: 'invite-link',
+        name: 'InviteLink',
         component: () => import('@/views/PassThrough'),
+        beforeEnter: async (to, from, next) => {
+          const { from: fromWhere, inviteCode, orgNo } = to.query
+
+          const organizationList = store.getters['user/organizationList']
+          if (organizationList.some(org => Number(org.orgNo) === Number(orgNo))) {
+            return next(`/${orgNo}`)
+          }
+
+          if (fromWhere === 'org') {
+            await store.dispatch('organization/joinOrgViaLink', { inviteCode })
+          } else if (fromWhere === 'group') {
+            await store.dispatch('group/joinGroupViaLink', { inviteCode })
+          }
+          await store.dispatch('user/getUser')
+          return next(`/${orgNo}`)
+        }
+      },
+      {
+        path: ':orgNo',
+        redirect: to => `/${to.params.orgNo}/public-library`,
+        name: 'OrgRoot',
+        components: {
+          default: () => import('@/views/PassThrough.vue'),
+          sidebar: Sidebar
+        },
+        beforeEnter: async (to, from, next) => {
+          store.commit('helper/SET_routeLocation', 'org')
+          await store.dispatch('user/orgUser/getOrgUser', { orgNo: to.params.orgNo })
+          await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
+          const org = store.getters['organization/organization']
+          const orgUser = store.getters['user/orgUser/orgUser']
+          if (orgUser.orgRoleId === ROLE_ID.OWNER && !org.uploadMaterialEmail) {
+            store.dispatch('helper/openModal', {
+              component: 'modal-create-mail-org',
+              properties: {
+                isOldOrg: true
+              },
+              closable: false
+            })
+          }
+          next()
+        },
         children: [
           {
-            path: '',
-            name: 'OrgAssets',
-            component: () => import('@/views/innerApp/assets/Assets.vue'),
-            beforeEnter: async (to, from, next) => {
-              await store.dispatch('code/getFilterOptions')
-              next()
-            }
+            path: 'public-library',
+            name: 'PublicLibrary',
+            component: () => import('@/views/innerApp/PublicLibrary.vue')
           },
           {
-            path: 'upload',
-            name: 'OrgAssetsUpload',
-            component: () => import('@/views/innerApp/assets/AssetsUpload.vue')
+            path: 'global-search',
+            name: 'GlobalSearch',
+            component: () => import('@/views/innerApp/GlobalSearch.vue')
           },
           {
-            path: 'upload/manual',
-            name: 'OrgAssetsMaterialCreate',
-            component: () => import('@/views/innerApp/assets/AssetsMaterialCreate.vue')
+            path: 'favorites',
+            name: 'Favorites',
+            component: () => import('@/views/innerApp/Favorites.vue')
           },
-          {
-            path: ':materialId',
-            name: 'OrgAssetsMaterialDetail',
-            component: () => import('@/views/innerApp/assets/AssetsMaterialDetail.vue'),
-            beforeEnter: async (to, from, next) => {
-              await store.dispatch('material/getMaterial', { materialId: to.params.materialId })
-              await store.dispatch('code/getCountryList')
-              next()
-            }
-          },
-          {
-            path: ':materialId/edit',
-            name: 'OrgAssetsMaterialEdit',
-            component: () => import('@/views/innerApp/assets/AssetsMaterialEdit.vue'),
-            beforeEnter: async (to, from, next) => {
-              await store.dispatch('material/getMaterial', { materialId: to.params.materialId })
-              next()
-            }
-          }
+          ...reuseRoutes('Org')
         ]
       },
       {
-        path: 'share-to-me',
-        name: 'OrgShareToMe',
-        component: () => import('@/views/innerApp/ShareToMe.vue')
-      },
-      {
-        path: 'sticker',
-        name: 'OrgSticker',
-        component: () => import('@/views/innerApp/Sticker.vue')
-      }
-    ]
-  },
-  {
-    path: '/:orgNo/:groupId(\\d+)',
-    name: 'GroupRoot',
-    redirect: to => `/${to.params.orgNo}/${to.params.groupId}/assets`,
-    meta: {
-      requiresLogin: true
-    },
-    component: () => import('@/views/innerApp/InnerAppLayout.vue'),
-    beforeEnter: async (to, from, next) => {
-      store.commit('helper/SET_routeLocation', 'group')
-      await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
-      await store.dispatch('group/getGroup', { groupId: to.params.groupId })
-      next()
-    },
-    children: [
-      {
-        path: 'management/:tab(about|members|history)',
-        name: 'GroupManagement',
-        props: true,
-        component: () => import('@/views/innerApp/Management.vue')
-      },
-      {
-        path: 'assets',
-        component: () => import('@/views/PassThrough'),
-        children: [
-          {
-            path: '',
-            name: 'GroupAssets',
-            component: () => import('@/views/innerApp/assets/Assets.vue'),
-            beforeEnter: async (to, from, next) => {
-              await store.dispatch('code/getFilterOptions')
-              next()
-            }
-          },
-          {
-            path: 'upload',
-            name: 'GroupAssetsUpload',
-            component: () => import('@/views/innerApp/assets/AssetsUpload.vue')
-          },
-          {
-            path: 'upload/manual',
-            name: 'GroupAssetsMaterialCreate',
-            component: () => import('@/views/innerApp/assets/AssetsMaterialCreate.vue')
-          },
-          {
-            path: ':materialId',
-            name: 'GroupAssetsMaterialDetail',
-            component: () => import('@/views/innerApp/assets/AssetsMaterialDetail.vue'),
-            beforeEnter: async (to, from, next) => {
-              await store.dispatch('material/getMaterial', { materialId: to.params.materialId })
-              await store.dispatch('code/getCountryList')
-              next()
-            }
-          },
-          {
-            path: ':materialId/edit',
-            name: 'GroupAssetsMaterialEdit',
-            component: () => import('@/views/innerApp/assets/AssetsMaterialEdit.vue'),
-            beforeEnter: async (to, from, next) => {
-              await store.dispatch('material/getMaterial', { materialId: to.params.materialId })
-              next()
-            }
-          }
-        ]
-      },
-      {
-        path: 'workspace',
-        name: 'GroupWorkspace',
-        component: () => import('@/views/innerApp/Workspace.vue')
-      },
-      {
-        path: 'share-to-me',
-        name: 'GroupShareToMe',
-        component: () => import('@/views/innerApp/ShareToMe.vue')
-      },
-      {
-        path: 'sticker',
-        name: 'GroupSticker',
-        component: () => import('@/views/innerApp/Sticker.vue')
+        path: ':orgNo/:groupId(\\d+)',
+        name: 'GroupRoot',
+        redirect: to => `/${to.params.orgNo}/${to.params.groupId}/assets`,
+        components: {
+          default: () => import('@/views/PassThrough.vue'),
+          sidebar: Sidebar
+        },
+        beforeEnter: async (to, from, next) => {
+          store.commit('helper/SET_routeLocation', 'group')
+          await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
+          await store.dispatch('group/getGroup', { groupId: to.params.groupId })
+          next()
+        },
+        children: reuseRoutes('Group')
       }
     ]
   }
@@ -275,15 +219,6 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   sensitive: true
-})
-
-router.beforeEach(async (to, from, next) => {
-  if (to.meta.requiresLogin) {
-    await store.dispatch('user/getUser')
-    next()
-  } else {
-    next()
-  }
 })
 
 export default router

@@ -45,7 +45,6 @@ export default {
     }
 
     await store.dispatch('material/getMaterialOptions')
-    await store.dispatch('code/getCountryList')
 
     return {
       validations,

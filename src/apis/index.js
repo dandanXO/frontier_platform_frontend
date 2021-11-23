@@ -42,9 +42,7 @@ instance.interceptors.response.use(response => {
   }
 
   if ([400, 404, 500].includes(status)) {
-    store.dispatch('helper/pushModal', {
-      component: 'modal-error'
-    })
+    store.dispatch('helper/openModalError')
   }
 
   return Promise.reject(error)
