@@ -150,13 +150,18 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { U3M_STATUS } from '@/utils/constants'
 import useMaterial from '@/composables/useMaterial'
+import { useRoute } from 'vue-router'
 
 export default {
   name: 'AssetsMaterialDetail',
-  setup () {
+  async setup () {
     const { t } = useI18n()
     const store = useStore()
+    const route = useRoute()
     const { parsePath, goToAssetMaterialEdit } = useNavigation()
+
+    await store.dispatch('material/getMaterial', { materialId: route.params.materialId })
+
     const TAB = {
       TAGS: 0,
       PRICING: 1,

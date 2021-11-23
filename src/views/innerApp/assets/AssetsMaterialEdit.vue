@@ -15,7 +15,6 @@ div(class="w-full h-full flex justify-center")
 </template>
 
 <script>
-import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
 import BlockMaterialImage from '@/components/assets/material/edit/BlockMaterialImage.vue'
 import BlockMaterialInformation from '@/components/assets/material/edit/BlockMaterialInformation.vue'
 import BlockMaterialInventory from '@/components/assets/material/edit/BlockMaterialInventory.vue'
@@ -25,21 +24,25 @@ import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import useMaterialValidation from '@/composables/useMaterialValidation'
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 
 export default {
   name: 'AssetsMaterialEdit',
   components: {
-    FullscreenHeader,
     BlockMaterialImage,
     BlockMaterialInformation,
     BlockMaterialInventory,
     BlockMaterialPricing
   },
-  setup () {
+  async setup () {
     const { t } = useI18n()
     const store = useStore()
+    const route = useRoute()
     const { parsePath, goToAssets } = useNavigation()
     const { validations, validate } = useMaterialValidation()
+
+    await store.dispatch('material/getMaterialOptions')
+    await store.dispatch('material/getMaterial', { materialId: route.params.materialId })
 
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const breadcrumbsList = computed(() => {
@@ -75,8 +78,6 @@ export default {
         primaryText: t('UU0002')
       })
     }
-
-    store.dispatch('material/getMaterialOptions')
 
     return {
       validations,

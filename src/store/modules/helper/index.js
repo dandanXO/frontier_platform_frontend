@@ -67,19 +67,6 @@ const actions = {
   closeModal ({ commit }) {
     commit('CLOSE_modalPipeline')
   },
-  openFullScreen ({ commit }, options) {
-    commit('CLEAR_modalPipeline')
-    commit('PUSH_modalPipeline', { type: MODAL_TYPE.FULLSCREEN, options })
-  },
-  pushFullScreen ({ commit }, options) {
-    commit('PUSH_modalPipeline', { type: MODAL_TYPE.FULLSCREEN, options })
-  },
-  replaceFullScreen ({ commit }, options) {
-    commit('REPLACE_modalPipeline', { type: MODAL_TYPE.FULLSCREEN, options })
-  },
-  closeFullscreen ({ commit }) {
-    commit('CLOSE_modalPipeline')
-  },
   clearModalPipeline ({ commit }) {
     commit('CLEAR_modalPipeline')
   },
@@ -92,6 +79,12 @@ const actions = {
   },
   closeModalLoading ({ commit }) {
     commit('CLOSE_modalPipeline')
+  },
+  openModalError ({ state, commit }) {
+    const isExist = state.modalPipeline.some(modal => modal.options.component === 'modal-error')
+    if (!isExist) {
+      commit('PUSH_modalPipeline', { type: MODAL_TYPE.MODAL, options: { component: 'modal-error' } })
+    }
   }
 }
 

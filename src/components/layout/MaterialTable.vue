@@ -37,7 +37,7 @@ div(class="w-full h-full flex flex-col")
     slot(v-else)
     div(class="py-9.5 justify-self-center self-end")
       pagination(v-if="!isSearching && pagination.totalCount > 0" v-model:currentPage="pagination.currentPage" :totalPage="pagination.totalPage" @goTo="getMaterialList($event)")
-multi-select-menu(:options='optionMultiSelect')
+  multi-select-menu(:options='optionMultiSelect')
 </template>
 
 <script>

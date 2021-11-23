@@ -34,8 +34,8 @@ export default function useNavigation () {
     return temp
   }
 
-  const goToAssets = () => {
-    router.push(parsePath(`${prefixPath.value}/assets`))
+  const goToAssets = async () => {
+    await router.push(parsePath(`${prefixPath.value}/assets`))
   }
 
   const goToMaterialUpload = () => {
@@ -54,6 +54,14 @@ export default function useNavigation () {
     router.push(parsePath(`${prefixPath.value}/assets/upload/manual`))
   }
 
+  const goToAssetsMaterialMerge = () => {
+    router.push(parsePath(`${prefixPath.value}/assets/merge`))
+  }
+
+  const goToAssetsMaterialMergePreview = () => {
+    router.push(parsePath(`${prefixPath.value}/assets/merge/preview`))
+  }
+
   return {
     nextAfterSignIn,
     parsePath,
@@ -61,6 +69,8 @@ export default function useNavigation () {
     goToMaterialUpload,
     goToAssetMaterialDetail,
     goToAssetsMaterialCreate,
-    goToAssetMaterialEdit
+    goToAssetMaterialEdit,
+    goToAssetsMaterialMerge,
+    goToAssetsMaterialMergePreview
   }
 }

@@ -1,11 +1,13 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation'
+import { inject } from 'vue'
 
 export default function useAssets () {
   const { t } = useI18n()
-  const { goToAssetMaterialEdit } = useNavigation()
+  const { goToAssetMaterialEdit, goToAssetsMaterialMerge } = useNavigation()
   const store = useStore()
+  const reloadRootRoute = inject('reloadRootRoute')
 
   const editMaterial = {
     id: 'editMaterial',
@@ -21,6 +23,7 @@ export default function useAssets () {
       store.dispatch('helper/openModalLoading')
       await store.dispatch('assets/carbonCopyMaterial', { materialId: v.materialId })
       store.dispatch('helper/closeModalLoading')
+      reloadRootRoute()
     }
   }
 
@@ -75,13 +78,10 @@ export default function useAssets () {
   const mergeCard = {
     id: 'mergeCard',
     name: t('RR0072'),
-    func: (formalAddedMaterialList) => {
-      store.dispatch('helper/openFullScreen', {
-        component: 'material-merge',
-        properties: {
-          materialListData: formalAddedMaterialList
-        }
-      })
+    func: (materialList) => {
+      store.commit('assets/SET_preMergeList', materialList)
+      store.commit('assets/RESET_mergedList')
+      goToAssetsMaterialMerge()
     }
   }
 
@@ -95,10 +95,13 @@ export default function useAssets () {
         content: t('EE0076'),
         secondaryText: t('UU0001'),
         secondaryHandler: async () => {
+          store.dispatch('helper/openModalLoading')
           await store.dispatch('assets/deleteMaterial', { materialIdList })
           if (Array.isArray(v)) {
             store.commit('assets/CLEAR_addedMaterialList')
           }
+          store.dispatch('helper/closeModalLoading')
+          reloadRootRoute()
         }
       })
     }

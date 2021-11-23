@@ -11,6 +11,11 @@ requireAll(req)
 
 const app = createApp(App)
 
+app.config.errorHandler = (err, vm, info) => {
+  store.dispatch('helper/openModalError')
+  console.log(err, vm)
+}
+
 const commonComponents = require.context('@/components/common', true, /.vue/)
 
 commonComponents.keys().forEach(key => {

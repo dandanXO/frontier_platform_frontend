@@ -1,11 +1,11 @@
 <template lang="pug">
-div(class="pt-28.5 h-screen")
+div(class="pt-28.5 fixed inset-0 z-index:modal w-screen h-screen bg-black-0")
   fullscreen-header(
     :title="$t('EE0006')"
     :primaryText="$t('UU0001')"
-    :primaryHandler="primaryHandler"
-    :primaryCloseAfterHandle='false'
+    @click:primary="primaryHandler"
     :secondaryText="$t('UU0004')"
+    @click:secondary="goToAssetsMaterialMerge"
   )
   div(class='max-w-286 pl-17 pr-7 mx-auto')
     div(class='mb-10')
@@ -25,6 +25,7 @@ div(class="pt-28.5 h-screen")
 </template>
 
 <script>
+import useNavigation from '@/composables/useNavigation'
 import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
 import MaterialMergeRowDetail from '@/components/assets/material/MaterialMergeRowDetail'
 import { computed } from '@vue/runtime-core'
@@ -37,15 +38,10 @@ export default {
     FullscreenHeader,
     MaterialMergeRowDetail
   },
-  props: {
-    mergedList: {
-      type: Array
-    }
-  },
-  setup (props) {
+  setup () {
     const { t } = useI18n()
+    const { goToAssets, goToAssetsMaterialMerge } = useNavigation()
     const store = useStore()
-    const clearModalPipeline = () => store.dispatch('helper/clearModalPipeline')
 
     const primaryHandler = async () => {
       const apiInput = notEmptyList.value.map(item => {
@@ -55,10 +51,10 @@ export default {
           detailMaterialId: item.detail.materialId || null
         }
       })
-
+      store.dispatch('helper/pushModalLoading')
       await store.dispatch('assets/mergeMaterial', { mergedList: apiInput })
-      store.commit('assets/CLEAR_addedMaterialList')
-      clearModalPipeline()
+      store.dispatch('helper/closeModalLoading')
+      await goToAssets()
       store.commit('helper/PUSH_message', t('Merge Material successfully!'))
     }
 
@@ -71,17 +67,19 @@ export default {
     }
 
     const notEmptyList = computed(() => {
-      return props.mergedList.filter(item =>
-        item.faceSide.exist ||
-        item.backSide.exist ||
-        item.detail.exist
-      )
+      return store.getters['assets/mergedList']
+        .filter(item =>
+          item.faceSide?.exist ||
+          item.backSide?.exist ||
+          item.detail?.exist
+        )
     })
 
     return {
       primaryHandler,
       getBgImg,
-      notEmptyList
+      notEmptyList,
+      goToAssetsMaterialMerge
     }
   }
 }

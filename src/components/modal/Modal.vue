@@ -5,10 +5,7 @@ div(class="fixed inset-0 z-index:modal w-screen h-screen bg-black-900 bg-opacity
     div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
       p(v-if="header !== ''" class="text-h6 font-bold text-primary") {{header}}
       svg-icon(v-if="closable" iconName="close" size="24" class="justify-self-end cursor-pointer text-black-700" @click="close")
-    suspense
-      component(:is="component" v-bind="properties")
-      template(#fallback)
-        modal-loading
+    component(:is="component" v-bind="properties")
 </template>
 
 <script>

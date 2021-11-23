@@ -16,17 +16,17 @@ const getDefaultState = () => ({
   cloneFromMaterialId: null,
   description: null,
   descriptionList: [],
-  weight: 0, // LOCAL VAR
+  weight: null, // LOCAL VAR
   weightUnit: WEIGHT_UNIT.GSM,
   weightGsm: 0,
   weightOz: 0,
   weightGy: null,
-  width: 0,
+  width: null,
   content: '',
   contentList: [{
     contentId: -1,
     name: '',
-    percentage: 0
+    percentage: null
   }],
   finish: '',
   finishList: [],

@@ -46,9 +46,9 @@ export default {
       method: 'POST',
       data: { groupId }
     }),
-    getMaterial: ({ orgId, materialId }) => axios('/org/group/assets/material/get', {
+    getMaterial: ({ groupId, materialId }) => axios('/org/group/assets/material/get', {
       method: 'POST',
-      data: { orgId, materialId }
+      data: { groupId, materialId }
     }),
     createMaterial: ({ groupId, tempMaterialId, material }) => axios('/org/group/assets/material/create', {
       method: 'POST',

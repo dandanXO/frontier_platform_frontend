@@ -54,7 +54,7 @@ export default {
     BlockMaterialInventory,
     BlockMaterialPricing
   },
-  setup () {
+  async setup () {
     const { t } = useI18n()
     const store = useStore()
     const { validations, validate } = useMaterialValidation()
@@ -128,8 +128,7 @@ export default {
     }
 
     store.dispatch('material/resetMaterial')
-    store.dispatch('material/getMaterialOptions')
-    store.dispatch('code/getCountryList')
+    await store.dispatch('material/getMaterialOptions')
 
     return {
       validations,

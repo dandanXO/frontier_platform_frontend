@@ -49,6 +49,7 @@ div(class="pb-15 border-b border-black-400")
           div(class="flex items-center gap-x-3")
             input-text(
               v-model:textValue="material.width"
+              :customErrorMsg="validations.width"
               inputType="number"
               class="w-50"
             )
