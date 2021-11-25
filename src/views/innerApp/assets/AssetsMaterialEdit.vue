@@ -8,7 +8,7 @@ div(class="w-full h-full flex justify-center")
       block-material-information(:validations="validations")
       block-material-inventory(:validations="validations")
       block-material-pricing(:validations="validations")
-      block-material-attachment(:isEditMode='true')
+      block-material-attachment
       div(class="flex justify-center items-center pt-17.5")
         div(class="grid grid-cols-2 gap-x-2")
           btn(size="md" type="secondary" class="h-10" @click="cancel") {{$t('UU0002')}}

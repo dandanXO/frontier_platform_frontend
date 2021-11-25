@@ -10,7 +10,7 @@ div(class='w-44 rounded bg-black-100')
       svg-icon(iconName='folder' size="50" class='text-black-100')
   div(class='h-11 flex justify-between items-center px-3 py-4')
     div(class='text-primary text-caption') {{attachment.displayFileName}}
-    svg-icon(iconName="delete" size="20" class='text-black-700 cursor-pointer' @click="$emit('handleRemove', attachment.tempMaterialAttachmentId)")
+    svg-icon(iconName="delete" size="20" class='text-black-700 cursor-pointer' @click="$emit('handleRemove', attachment)")
 </template>
 
 <script>
@@ -26,10 +26,10 @@ export default {
     const showFileIcon = ref(true)
 
     const showPlaceholderOrNot = () => {
-      const tester = new Image()
-      tester.onload = imageFound
-      tester.onerror = imageNotFound
-      tester.src = props.attachment.url
+      const image = new Image()
+      image.onload = imageFound
+      image.onerror = imageNotFound
+      image.src = props.attachment.url
     }
 
     const imageFound = () => {
