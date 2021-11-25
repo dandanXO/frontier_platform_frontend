@@ -21,6 +21,10 @@ export default {
     exportMaterial: ({ orgId, materialIdList }) => axios('/org/assets/material/export', {
       method: 'POST',
       data: { orgId, materialIdList }
+    }),
+    cloneMaterial: ({ orgId, materialIdList, targetIdList }) => axios('/org/assets/material/clone', {
+      method: 'POST',
+      data: { orgId, materialIdList, targetIdList }
     })
   },
   group: {
@@ -43,6 +47,10 @@ export default {
     exportMaterial: ({ groupId, materialIdList }) => axios('/org/group/assets/material/export', {
       method: 'POST',
       data: { groupId, materialIdList }
+    }),
+    cloneMaterial: ({ groupId, materialIdList, targetIdList }) => axios('/org/group/assets/material/clone', {
+      method: 'POST',
+      data: { groupId, materialIdList, targetIdList }
     })
   }
 }

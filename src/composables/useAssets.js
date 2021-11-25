@@ -30,7 +30,15 @@ export default function useAssets () {
   const cloneTo = {
     id: 'cloneTo',
     name: t('RR0056'),
-    func: () => { console.log('cloneTo') }
+    func: (v) => {
+      const materialIdList = Array.isArray(v) ? v.map(item => item.materialId) : [v.materialId]
+      store.dispatch('helper/openModal', {
+        component: 'modal-clone-to',
+        properties: {
+          materialIdList: materialIdList
+        }
+      })
+    }
   }
 
   const addToWorkspace = {
@@ -65,8 +73,7 @@ export default function useAssets () {
 
   const printQRCode = {
     id: 'printQRCode',
-    name: t('RR0061'),
-    func: () => { console.log('printQRCode') }
+    name: t('RR0061')
   }
 
   const printCard = {

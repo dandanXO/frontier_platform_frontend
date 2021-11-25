@@ -120,6 +120,11 @@ const actions = {
 
     const { extension, file, fileName } = data?.result
     downloadBase64File(file, extension, fileName)
+  },
+  async cloneMaterial ({ rootGetters }, { targetIdList, materialIdList }) {
+    rootGetters['helper/routeLocation'] === 'org'
+      ? await assetsApi.org.cloneMaterial({ orgId: rootGetters['organization/orgId'], targetIdList, materialIdList })
+      : await assetsApi.group.cloneMaterial({ groupId: rootGetters['group/groupId'], targetIdList, materialIdList })
   }
 }
 
