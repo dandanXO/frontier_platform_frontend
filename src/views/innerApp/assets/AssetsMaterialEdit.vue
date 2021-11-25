@@ -8,6 +8,7 @@ div(class="w-full h-full flex justify-center")
       block-material-information(:validations="validations")
       block-material-inventory(:validations="validations")
       block-material-pricing(:validations="validations")
+      block-material-attachment(:isEditMode='true')
       div(class="flex justify-center items-center pt-17.5")
         div(class="grid grid-cols-2 gap-x-2")
           btn(size="md" type="secondary" class="h-10" @click="cancel") {{$t('UU0002')}}
@@ -19,6 +20,7 @@ import BlockMaterialImage from '@/components/assets/material/edit/BlockMaterialI
 import BlockMaterialInformation from '@/components/assets/material/edit/BlockMaterialInformation.vue'
 import BlockMaterialInventory from '@/components/assets/material/edit/BlockMaterialInventory.vue'
 import BlockMaterialPricing from '@/components/assets/material/edit/BlockMaterialPricing.vue'
+import BlockMaterialAttachment from '@/components/assets/material/edit/BlockMaterialAttachment'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
@@ -32,7 +34,8 @@ export default {
     BlockMaterialImage,
     BlockMaterialInformation,
     BlockMaterialInventory,
-    BlockMaterialPricing
+    BlockMaterialPricing,
+    BlockMaterialAttachment
   },
   async setup () {
     const { t } = useI18n()

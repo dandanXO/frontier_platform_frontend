@@ -37,8 +37,8 @@ import { FileOperator } from '@/utils/fileOperator'
 export default {
   name: 'ModalUploadAttachment',
   props: {
-    tempMaterialId: {
-      type: String
+    uploadHandler: {
+      type: Function
     }
   },
   setup (props) {
@@ -81,13 +81,11 @@ export default {
     })
 
     const upload = async () => {
-      store.dispatch('helper/openModalLoading')
-      await store.dispatch('material/uploadAttachmentWhenCreate', {
-        tempMaterialId: props.tempMaterialId,
-        file: binaryFile,
-        fileName: fileName.value
-      })
-      closeModal()
+      if (typeof props.uploadHandler === 'function') {
+        store.dispatch('helper/openModalLoading')
+        await props.uploadHandler(binaryFile, fileName.value)
+        closeModal()
+      }
     }
 
     const disabled = computed(() => !fileName.value || !originalFileName.value)

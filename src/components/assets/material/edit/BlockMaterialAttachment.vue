@@ -25,6 +25,10 @@ export default {
   props: {
     tempMaterialId: {
       type: String
+    },
+    isEditMode: {
+      type: Boolean,
+      default: false
     }
   },
   components: { SingleAttachment },
@@ -36,7 +40,20 @@ export default {
       store.dispatch('helper/openModal', {
         component: 'modal-upload-attachment',
         properties: {
-          tempMaterialId: props.tempMaterialId
+          uploadHandler: (file, fileName) => {
+            if (props.isEditMode) {
+              store.dispatch('material/uploadAttachmentWhenUpdate', {
+                file,
+                fileName
+              })
+            } else {
+              store.dispatch('material/uploadAttachmentWhenCreate', {
+                tempMaterialId: props.tempMaterialId,
+                file,
+                fileName
+              })
+            }
+          }
         }
       })
     }
