@@ -1,6 +1,6 @@
 <template lang="pug">
 input-container(:label="label" :required="required")
-  div(class="h-full px-4 border rounded flex items-center" :class="[classBorder, { 'bg-primary-thin': disabled }, size === 'lg' ? 'h-11' : 'h-9']")
+  div(class="h-full px-4 border rounded flex items-center" :class="[classBorder, { 'bg-black-200': disabled }, size === 'lg' ? 'h-11' : 'h-9']")
     slot(name="prependItem")
     div(v-if="prependIcon !== '' && isEmpty" class="pr-1")
       slot(name="prependIcon")
@@ -27,7 +27,7 @@ input-container(:label="label" :required="required")
           size="20"
           iconName="clear"
           class="text-black-500"
-          @click="clear"
+          @click.stop="clear"
         )
     slot(name="appendItem")
   template(#hint)

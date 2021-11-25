@@ -1,4 +1,6 @@
 import codeApi from '@/apis/code'
+import { FILTER_COMPLETE } from '@/utils/constants'
+import i18n from '@/utils/i18n'
 
 const defaultFilterState = () => ({
   contentList: [],
@@ -12,7 +14,25 @@ const defaultFilterState = () => ({
   color: null,
   pattern: null,
   category: null,
-  hasPrice: null
+  hasPrice: null,
+  width: {
+    min: null,
+    max: null,
+    isInfinity: false
+  },
+  weightGsm: {
+    min: null,
+    max: null,
+    isInfinity: false
+  },
+  inventory: {
+    unit: null,
+    quantity: {
+      min: null,
+      max: null,
+      isInfinity: false
+    }
+  }
 })
 
 const state = () => ({
@@ -40,11 +60,14 @@ const getters = {
     complete: !!state.filter.complete,
     pattern: !!state.filter.pattern,
     category: !!state.filter.category,
-    yarnAndDensity: !!state.filter.wovenWarpYarnCount || !!state.filter.wovenWeftYarnCount || !!state.filter.warpDensity || !!state.filter.weftDensity || !!state.filter.knitYarnCount
+    hasPrice: state.filter.hasPrice !== null,
+    yarnAndDensity: !!state.filter.wovenWarpYarnCount || !!state.filter.wovenWeftYarnCount || !!state.filter.warpDensity || !!state.filter.weftDensity || !!state.filter.knitYarnCount,
+    widthAndWeightGsm: !!state.filter.width.min || !!state.filter.width.max || !!state.filter.weightGsm.min || !!state.filter.weightGsm.max,
+    inventory: !!state.filter.inventory.quantity.min || !!state.filter.inventory.quantity.max
   }),
   filterOptions: (state, getters, rootState, rootGetters) => {
     const filterOptionList = rootGetters['code/filterOptionList']
-    const { categoryList, contentList, finishList } = filterOptionList
+    const { categoryList, finishList } = filterOptionList
     return {
       ...filterOptionList,
       categoryList: categoryList.map(({ key, list }) => ({
@@ -55,14 +78,24 @@ const getters = {
             value
           }))
       })),
-      contentList: contentList.map(({ displayName, value }) => ({
-        text: displayName,
-        value
-      })),
       finishList: finishList.map(({ displayName, value }) => ({
         text: displayName,
         value
-      }))
+      })),
+      completeList: Object.keys(FILTER_COMPLETE).map(key => ({ ...FILTER_COMPLETE[key] })),
+      priceList: [
+        {
+          text: i18n.global.t('RR0096'),
+          value: true
+        },
+        {
+          text: i18n.global.t('RR0097'),
+          value: false
+        }
+      ],
+      width: { min: 0, max: 200 },
+      weightGsm: { min: 0, max: 600 },
+      inventory: { min: 0, max: 10000 }
     }
   },
   keyword: state => state.keyword,

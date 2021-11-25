@@ -1,11 +1,6 @@
 import codeApi from '@/apis/code'
 import setVuexState from '@/utils/set-vuex-state'
-import { ROLE_ID, FILTER_COMPLETE } from '@/utils/constants'
-import i18n from '@/utils/i18n'
-
-const filterCompleteList = Object
-  .keys(FILTER_COMPLETE)
-  .map(key => ({ ...FILTER_COMPLETE[key] }))
+import { ROLE_ID } from '@/utils/constants'
 
 const state = () => ({
   countryList: [],
@@ -17,18 +12,7 @@ const state = () => ({
     contentList: [],
     patternList: [],
     colorList: [],
-    finishList: [],
-    completeList: filterCompleteList,
-    priceList: [
-      {
-        text: i18n.global.t('RR0096'),
-        value: true
-      },
-      {
-        text: i18n.global.t('RR0097'),
-        value: false
-      }
-    ]
+    finishList: []
   }
 })
 
