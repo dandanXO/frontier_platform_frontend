@@ -17,6 +17,7 @@ div
 
 <script>
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import SingleAttachment from '@/components/assets/material/edit/SingleAttachment'
 
@@ -25,23 +26,21 @@ export default {
   props: {
     tempMaterialId: {
       type: String
-    },
-    isEditMode: {
-      type: Boolean,
-      default: false
     }
   },
   components: { SingleAttachment },
   setup (props) {
+    const { t } = useI18n()
     const store = useStore()
     const attachmentList = computed(() => store.getters['material/attachmentList'])
+    const isEditMode = computed(() => store.getters['material/material'].materialId !== null)
 
     const openModalUpload = () => {
       store.dispatch('helper/openModal', {
         component: 'modal-upload-attachment',
         properties: {
           uploadHandler: (file, fileName) => {
-            if (props.isEditMode) {
+            if (isEditMode.value) {
               store.dispatch('material/uploadAttachmentWhenUpdate', {
                 file,
                 fileName
@@ -58,8 +57,24 @@ export default {
       })
     }
 
-    const handleRemove = (tempMaterialAttachmentId) => {
-      console.log('handleRemove')
+    const handleRemove = (attachment) => {
+      store.dispatch('helper/openModalConfirm', {
+        title: t('DD0068'),
+        content: t('DD0069'),
+        secondaryText: t('UU0001'),
+        secondaryHandler: async () => {
+          if (isEditMode.value) {
+            store.dispatch('material/removeAttachmentWhenUpdate', {
+              materialAttachmentId: attachment.materialAttachmentId
+            })
+          } else {
+            store.dispatch('material/removeAttachmentWhenCreate', {
+              tempMaterialId: props.tempMaterialId,
+              tempMaterialAttachmentId: attachment.tempMaterialAttachmentId
+            })
+          }
+        }
+      })
     }
 
     const openModalPreview = () => {
