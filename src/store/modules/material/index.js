@@ -311,17 +311,28 @@ const actions = {
 
     commit('UPDATE_attachmentList', data.result.attachmentList)
   },
-  async uploadAttachmentWhenUpdate ({ rootGetters, dispatch }, { materialId, file, fileName }) {
+  async uploadAttachmentWhenUpdate ({ rootGetters, getters, dispatch }, { file, fileName }) {
+    const params = {
+      materialId: getters.material.materialId,
+      file,
+      fileName
+    }
+
     const { data } = rootGetters['helper/routeLocation'] === 'org'
-      ? await materialApi.org.updateAttachment.upload({ orgId: rootGetters['organization/orgId'], materialId, file, fileName })
-      : await materialApi.group.updateAttachment.upload({ groupId: rootGetters['group/groupId'], materialId, file, fileName })
+      ? await materialApi.org.updateAttachment.upload({ orgId: rootGetters['organization/orgId'], ...params })
+      : await materialApi.group.updateAttachment.upload({ groupId: rootGetters['group/groupId'], ...params })
 
     dispatch('handleResponseData', { data }, { root: true })
   },
-  async removeAttachmentWhenUpdate ({ rootGetters, dispatch }, { materialId, materialAttachmentId }) {
+  async removeAttachmentWhenUpdate ({ rootGetters, getters, dispatch }, { materialAttachmentId }) {
+    const params = {
+      materialId: getters.material.materialId,
+      materialAttachmentId
+    }
+
     const { data } = rootGetters['helper/routeLocation'] === 'org'
-      ? await materialApi.org.updateAttachment.remove({ orgId: rootGetters['organization/orgId'], materialId, materialAttachmentId })
-      : await materialApi.group.updateAttachment.remove({ groupId: rootGetters['group/groupId'], materialId, materialAttachmentId })
+      ? await materialApi.org.updateAttachment.remove({ orgId: rootGetters['organization/orgId'], ...params })
+      : await materialApi.group.updateAttachment.remove({ groupId: rootGetters['group/groupId'], ...params })
 
     dispatch('handleResponseData', { data }, { root: true })
   }
