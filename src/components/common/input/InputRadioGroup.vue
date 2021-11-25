@@ -1,6 +1,6 @@
 <template lang="pug">
 input-container(:required="required")
-  div(class="flex justify-between")
+  div(class="flex justify-between gap-x-3")
     input-radio(v-for="option in optionList"
       v-model:inputValue="innerInputValue"
       :name="option[keyOptionName]"

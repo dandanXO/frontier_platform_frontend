@@ -1,11 +1,12 @@
 <template lang="pug">
-vue-slider(v-model="innerRange" v-bind="options")
-  template(#dot)
-    div(class='w-2 h-5 bg-brand transform -translate-y-1')
-  template(#tooltip="{ value }")
-    div(class='text-black-700 text-body2 mt-1')
-      template(v-if='value === fakeMaxValue') {{max}}+
-      template(v-else) {{ value }}
+div(class="px-1")
+  vue-slider(v-model="innerRange" v-bind="options")
+    template(#dot)
+      div(class='w-2 h-5 bg-brand transform -translate-y-1')
+    template(#tooltip="{ value }")
+      div(class='text-black-700 text-body2 mt-1')
+        template(v-if='value === fakeMaxValue') {{max}}+
+        template(v-else) {{ value }}
 </template>
 
 <script>
@@ -58,10 +59,15 @@ export default {
       set: (v) => emit('update:range', v)
     })
 
+    const reset = () => {
+      emit('update:range', [null, null])
+    }
+
     return {
       options,
       innerRange,
-      fakeMaxValue
+      fakeMaxValue,
+      reset
     }
   }
 }

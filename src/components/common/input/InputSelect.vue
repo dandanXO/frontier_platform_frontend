@@ -11,7 +11,7 @@ input-container(:required="required")
     template(#displayItem="{ isExpand, currentIndex, option }")
       div(
         class="px-4 border rounded flex items-center"
-        :class="[isExpand ? 'border-primary' : 'border-black-400', size === 'lg' ? 'h-11' : 'h-9'], { 'bg-primary-thin': disabled, }"
+        :class="[isExpand ? 'border-primary' : 'border-black-400', size === 'lg' ? 'h-11' : 'h-9'], { 'bg-black-200': disabled, }"
       )
         div(v-if="prependIcon !== ''" class="pr-1")
           slot(name="prependIcon")
