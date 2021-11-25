@@ -34,7 +34,8 @@ export default {
     ModalChangeCover: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalChangeCover')),
     ModalEditSimpleInfo: defineAsyncComponent(() => import('@/components/assets/material/list/ModalEditSimpleInfo')),
     ModalViewer: defineAsyncComponent(() => import('@/components/assets/material/ModalViewer')),
-    ModalError: defineAsyncComponent(() => import('@/components/modal/ModalError'))
+    ModalError: defineAsyncComponent(() => import('@/components/modal/ModalError')),
+    ModalUploadAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalUploadAttachment.vue'))
   },
   props: {
     component: {
