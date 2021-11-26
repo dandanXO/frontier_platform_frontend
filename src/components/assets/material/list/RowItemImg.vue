@@ -18,7 +18,7 @@ div(class='w-full min-w-42.5 max-w-67.5')
       iconColor='text-black-0'
     )
     div(v-if="active" class='absolute z-9 inset-0 w-full h-full rounded bg-opacity-70 bg-black-900' @click.stop="goToAssetMaterialDetail(material)")
-  div(class='text-primary text-body1 line-clamp-1 line-height-1.6') {{material.description}}
+  div(class="h-6.5 text-primary text-body1 line-clamp-1 line-height-1.6") {{material.description}}
 </template>
 
 <script>

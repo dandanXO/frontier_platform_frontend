@@ -13,11 +13,7 @@ export default function useMaterialEdit (material) {
   const newFinishList = reactive([])
 
   const specOptions = reactive({
-    contentList: computed(() => {
-      return store.getters['material/code'].contentList
-        .slice(0, 20)
-        .concat(newContentList)
-    }),
+    contentList: computed(() => store.getters['material/code'].contentList.concat(newContentList)),
     weightUnitList: computed(() => {
       return Object.keys(WEIGHT_UNIT)
         .map(key => ({
@@ -25,16 +21,8 @@ export default function useMaterialEdit (material) {
           name: key.toLowerCase()
         }))
     }),
-    descriptionList: computed(() => {
-      return store.getters['material/code'].descriptionList
-        .slice(0, 20)
-        .concat(newDescriptionList)
-    }),
-    finishList: computed(() => {
-      return store.getters['material/code'].finishList
-        .slice(0, 20)
-        .concat(newFinishList)
-    })
+    descriptionList: computed(() => store.getters['material/code'].descriptionList.concat(newDescriptionList)),
+    finishList: computed(() => store.getters['material/code'].finishList.concat(newFinishList))
   })
 
   const addDescriptionOption = (descriptionName) => {
