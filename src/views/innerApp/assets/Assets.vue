@@ -20,22 +20,18 @@ material-table(@selectAll="handleSelectAll" :optionSort="optionSort" :optionMult
     btn(size="sm" prependIcon="add" @click="goToMaterialUpload") {{$t('UU0020')}}
   template(#default)
     template(v-if="materialList.length > 0")
-      dynamic-scroller(
+      recycle-scroller(
         v-show="!isGrid"
         :items="materialList"
-        :min-item-size="364"
+        :itemSize="currentItemSize"
         key-field="materialId"
         pageMode
+        v-slot="{ item, index, active }"
+        @resize="resize"
+        :buffer="currentItemSize * 3"
       )
-        template(v-slot='{ item, index, active }')
-          dynamic-scroller-item(
-            :item="item"
-            :active="active"
-            :data-index="index"
-            @mouseenter="onMounseEnter"
-          )
-            row-item(:key="item.materialId" :material='item')
-            div(v-if='index !== materialList.length - 1' class='border-b mx-7.5 my-5.5')
+        row-item(:key="item.materialId" :material='item' @mouseenter="onMounseEnter")
+        div(v-if='index !== materialList.length - 1' class='border-b mx-7.5 my-5')
       div(v-show="isGrid" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5")
         grid-item(v-for='material in materialList' :key="material.materialId" :material='material')
     div(v-else class="flex flex-col justify-center items-center")
@@ -54,7 +50,7 @@ import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
 import { SORT_BY } from '@/utils/constants.js'
-import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
+import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 // https://github.com/Akryum/vue-virtual-scroller/tree/next/packages/vue-virtual-scroller
 
@@ -62,8 +58,7 @@ export default {
   name: 'Assets',
   components: {
     MaterialTable,
-    DynamicScroller,
-    DynamicScrollerItem,
+    RecycleScroller,
     RowItem,
     GridItem,
     GridOrRow
@@ -72,6 +67,7 @@ export default {
     const store = useStore()
     const { goToMaterialUpload } = useNavigation()
     const isGrid = ref(false)
+    const currentItemSize = ref(379)
     const { printCard, downloadU3M, cloneTo, addToWorkspace, exportExcel, printQRCode, mergeCard, deleteMaterial } = useAssets()
 
     const addedMaterialList = computed(() => store.getters['assets/addedMaterialList'])
@@ -118,6 +114,10 @@ export default {
       e.target.parentElement.dataset.lastHover = true
     }
 
+    const resize = () => {
+      currentItemSize.value = document.querySelector('.vue-recycle-scroller__item-view').clientHeight
+    }
+
     return {
       materialList,
       isGrid,
@@ -126,7 +126,9 @@ export default {
       optionSort,
       optionMultiSelect,
       goToMaterialUpload,
-      onMounseEnter
+      onMounseEnter,
+      currentItemSize,
+      resize
     }
   }
 }
