@@ -1,3 +1,11 @@
+<style lang="scss" scoped>
+.vue-recycle-scroller__item-view {
+  :deep(&[data-last-hover="true"]) {
+    z-index: 99;
+  }
+}
+</style>
+
 <template lang="pug">
 material-table(@selectAll="handleSelectAll" :optionSort="optionSort" :optionMultiSelect="optionMultiSelect")
   template(#header-left)
@@ -24,6 +32,7 @@ material-table(@selectAll="handleSelectAll" :optionSort="optionSort" :optionMult
             :item="item"
             :active="active"
             :data-index="index"
+            @mouseenter="onMounseEnter"
           )
             row-item(:key="item.materialId" :material='item')
             div(v-if='index !== materialList.length - 1' class='border-b mx-7.5 my-5.5')
@@ -96,6 +105,19 @@ export default {
       store.commit('assets/SET_addedMaterialList', [...new Set(duplicateArr)])
     }
 
+    const onMounseEnter = (e) => {
+      /**
+       * Choose to set the state in the dataset instead of setting it in class
+       * is because DynamicScroller will re-overwrite class when hovered on.
+       */
+      document
+        .querySelectorAll('[data-last-hover="true"]')
+        .forEach(element => {
+          element.dataset.lastHover = false
+        })
+      e.target.parentElement.dataset.lastHover = true
+    }
+
     return {
       materialList,
       isGrid,
@@ -103,7 +125,8 @@ export default {
       handleSelectAll,
       optionSort,
       optionMultiSelect,
-      goToMaterialUpload
+      goToMaterialUpload,
+      onMounseEnter
     }
   }
 }

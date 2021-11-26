@@ -20,8 +20,8 @@ div(class='w-full')
       class='absolute z-10 top-3 left-3 cursor-pointer'
       iconColor='text-black-0'
     )
-    div(v-show="active" class='absolute z-9 inset-0 w-full h-full rounded bg-opacity-70 bg-black-900' @click.stop="goToAssetMaterialDetail(material)")
-      div(class='text-black-0 px-7.5 py-10 h-full flex flex-col items-center justify-center text-center')
+    div(v-show="active" class='absolute z-9 inset-0 w-full h-full rounded bg-opacity-70 bg-black-900')
+      div(class='text-black-0 px-7.5 py-10 h-full flex flex-col items-center justify-center text-center' @click.stop="goToAssetMaterialDetail(material)")
         div(class='line-height-1.6 text-body2 font-bold line-clamp-2') {{material.description}}
         div(class='line-height-1.6 text-caption line-clamp-2') {{material.content}}
         div(class='line-height-1.6 text-caption flex gap-1')
