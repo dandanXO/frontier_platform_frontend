@@ -1,5 +1,6 @@
 <template lang="pug">
 div(class='text-black-700 flex flex-col gap-3.5')
+  div(v-if="isShowOverlay" class="fixed" style="width: 4000px; height: 3000px; top: -1500px; left: -2000px; z-index: -1;")
   tooltip(
     v-for='item in iconList'
     class="relative cursor-pointer"
@@ -7,6 +8,8 @@ div(class='text-black-700 flex flex-col gap-3.5')
     :showArrow="item.icon !== 'more_horiz'"
     :manual="item.icon === 'more_horiz'"
     :offset="item.icon === 'more_horiz' ? [0, 8] : [0, 12]"
+    @show="item.icon === 'more_horiz' && openOverlay()"
+    @hide="item.icon === 'more_horiz' && closeOverlay()"
   )
     template(#trigger)
       qr-code-a4(v-if='item.id === "printCard"' class='w-7.5 h-7.5 hover:bg-brand hover:text-brand flex justify-center items-center rounded-full bg-opacity-10')
@@ -34,6 +37,7 @@ div(class='text-black-700 flex flex-col gap-3.5')
 import useAssets from '@/composables/useAssets'
 import QrCodeA4 from '@/components/qrcode/QrCodeA4'
 import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral'
+import { ref } from 'vue'
 
 export default {
   name: 'RowItemSidebar',
@@ -81,6 +85,9 @@ export default {
       ]
     ]
 
+    const isShowOverlay = ref(false)
+    const openOverlay = () => { isShowOverlay.value = true }
+    const closeOverlay = () => { isShowOverlay.value = false }
     const handleClick = (option) => {
       option.func && option.func(props.material)
     }
@@ -88,7 +95,10 @@ export default {
     return {
       iconList,
       options,
-      handleClick
+      handleClick,
+      isShowOverlay,
+      openOverlay,
+      closeOverlay
     }
   }
 }
