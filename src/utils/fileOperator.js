@@ -8,14 +8,13 @@ const extension2MimeType = {
   pdf: 'application/pdf',
   zip: 'application/zip',
   jpg: 'image/jpg',
-  jpeg: 'image/jpeg',
   png: 'image/png',
   gif: 'image/gif',
-  mov: '.mov',
+  mov: 'video/quicktime',
   mp4: 'video/mp4'
 }
 
-const generalImageType = ['jpg', 'jpeg', 'png']
+const generalImageType = ['jpg', 'png']
 
 /**
  * @param {string} base64Data

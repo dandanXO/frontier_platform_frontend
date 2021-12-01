@@ -141,6 +141,9 @@ div(class="w-full h-full flex justify-center")
                         p {{inventory.shelf}}
                         p {{inventory.quantity}}
                         p {{inventory.unit}}
+          template(v-else-if="currentTab === TAB.SUP")
+            div(class='flex gap-5')
+              attachment-item(v-for='attachment in attachmentList' :attachment='attachment' :isReadOnly='true')
 </template>
 
 <script>
@@ -151,9 +154,11 @@ import { useStore } from 'vuex'
 import { U3M_STATUS } from '@/utils/constants'
 import useMaterial from '@/composables/useMaterial'
 import { useRoute } from 'vue-router'
+import AttachmentItem from '@/components/assets/material/edit/AttachmentItem'
 
 export default {
   name: 'AssetsMaterialDetail',
+  components: { AttachmentItem },
   async setup () {
     const { t } = useI18n()
     const store = useStore()
@@ -188,6 +193,7 @@ export default {
     ]
     const currentTab = ref(tabList[0].id)
     const material = computed(() => store.getters['material/material'])
+    const attachmentList = computed(() => store.getters['material/attachmentList'])
     const { materialInfo, materialBasicInfo, materialInventoryInfo, materialPublicPriceInfo, materialPrivatePriceInfo, imageList, defaultCoverImgIndex } = useMaterial(material.value)
     const currentDisplayIndex = ref(defaultCoverImgIndex.value)
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
@@ -228,6 +234,7 @@ export default {
 
     return {
       material,
+      attachmentList,
       breadcrumbsList,
       goToAssetMaterialEdit,
       currentDisplayIndex,

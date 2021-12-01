@@ -113,11 +113,25 @@ const getDefaultState = () => ({
   }
 })
 
+const extensionOrder = {
+  '.png': 5,
+  '.jpg': 5,
+  '.gif': 4,
+  '.mov': 3,
+  '.mp4': 3,
+  '.pdf': 2,
+  '.zip': 1
+}
+
 const state = getDefaultState()
 
 const getters = {
   material: (state) => state,
-  attachmentList: (state) => state.attachmentList,
+  attachmentList: (state) => {
+    const sortedAttachmentList = JSON.parse(JSON.stringify(state.attachmentList))
+    sortedAttachmentList.sort((a, b) => extensionOrder[b.extension] - extensionOrder[a.extension])
+    return sortedAttachmentList
+  },
   code: (state) => state.code
 }
 
