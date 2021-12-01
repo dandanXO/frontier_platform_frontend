@@ -7,11 +7,11 @@ div
       div(class='mb-4.5 text-body2') {{$t('DD0027')}}
       btn(size='md' @click='openModalUpload') {{$t('UU0022')}}
     div(class='flex gap-5')
-      single-attachment(
+      attachment-item(
         v-for='attachment in attachmentList'
+        :key='attachment.url'
         :attachment='attachment'
         @handleRemove='handleRemove'
-        @openModalPreview='openModalPreview'
       )
 </template>
 
@@ -19,7 +19,7 @@ div
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import SingleAttachment from '@/components/assets/material/edit/SingleAttachment'
+import AttachmentItem from '@/components/assets/material/edit/AttachmentItem'
 
 export default {
   name: 'BlockMaterialAttachment',
@@ -28,7 +28,7 @@ export default {
       type: String
     }
   },
-  components: { SingleAttachment },
+  components: { AttachmentItem },
   setup (props) {
     const { t } = useI18n()
     const store = useStore()
