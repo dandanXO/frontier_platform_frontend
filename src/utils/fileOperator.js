@@ -7,6 +7,7 @@ const extension2MimeType = {
   xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   pdf: 'application/pdf',
   zip: 'application/zip',
+  jpeg: 'image/jpeg',
   jpg: 'image/jpg',
   png: 'image/png',
   gif: 'image/gif',
@@ -14,7 +15,7 @@ const extension2MimeType = {
   mp4: 'video/mp4'
 }
 
-const generalImageType = ['jpg', 'png']
+const generalImageType = ['jpg', 'jpeg', 'png']
 
 /**
  * @param {string} base64Data
@@ -98,9 +99,45 @@ class FileOperator {
     } else if (mb > this.fileSizeMaxLimit) {
       return this.event.emit('error', this.errorCode.EXCEED_LIMIT)
     } else {
-      this.event.emit('finish', file)
+      this.uploadHandler(file)
     }
+  }
+
+  uploadHandler (file) {
+    this.event.emit('finish', file)
   }
 }
 
-export { downloadDataURLFile, downloadBase64File, FileOperator }
+class ImageOperator extends FileOperator {
+  constructor (validType, fileSizeMaxLimit, cropRectSize = 200) {
+    super(validType, fileSizeMaxLimit)
+
+    this.cropRectSize = cropRectSize
+  }
+
+  uploadHandler (file) {
+    const reader = new FileReader()
+
+    reader.onload = (evt) => {
+      const target = evt.target.result
+      const img = new Image()
+      img.src = target
+
+      img.onload = () => {
+        const { width, height, src } = img
+        if (width < this.cropRectSize || height < this.cropRectSize) {
+          return this.event.emit('error', this.errorCode.TOO_SMALL)
+        }
+        this.event.emit('finish', {
+          width,
+          height,
+          src,
+          file
+        })
+      }
+    }
+    reader.readAsDataURL(file)
+  }
+}
+
+export { downloadDataURLFile, downloadBase64File, FileOperator, ImageOperator }

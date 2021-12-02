@@ -2,8 +2,9 @@
 div(class="w-50 h-50 relative")
   div(class="absolute" :style="cropRectStyles")
     croped-image(:imageSrc="image.src" :options="options" @update="updateOptions" isTransparent)
-  div(class="overflow-hidden bg-black-0"
+  div(
     ref="cropRect"
+    class="overflow-hidden bg-black-0"
     :style="cropRectStyles"
   )
     div(class="cursor-move" :style="cropRectStyles")
@@ -12,9 +13,8 @@ div(class="w-50 h-50 relative")
 
 <script>
 import CropedImage from '@/components/management/logo/CropedImage.vue'
-import * as htmlToImage from 'html-to-image'
 import { ref, computed, reactive } from 'vue'
-import dataUrlToBlob from '@/utils/dataUrlToBlob'
+import domtoimage from 'dom-to-image'
 
 export default {
   name: 'ImageCrop',
@@ -34,7 +34,7 @@ export default {
   setup (props) {
     const cropRect = ref(null)
     const image = reactive(props.image)
-    const { width, height } = image
+    const { width, height, file } = image
     const aspectRatio = width / height
     const resizeRatio = aspectRatio > 1 ? height / props.cropRectSize : width / props.cropRectSize
     const scaledWidth = aspectRatio > 1 ? width / resizeRatio : props.cropRectSize
@@ -66,15 +66,15 @@ export default {
 
     const cropImage = () => {
       return new Promise((resolve, reject) => {
-        htmlToImage.toJpeg(cropRect.value)
-          .then((dataUrl) => {
-            resolve(dataUrlToBlob(dataUrl))
+        const controllers = cropRect.value.querySelectorAll('.controller-point')
+        controllers.forEach(node => node.remove())
 
-            // used to see the croped image in local
-            // const link = document.createElement('a')
-            // link.download = 'my-image-name.jpeg'
-            // link.href = dataUrl
-            // link.click()
+        domtoimage.toBlob(cropRect.value, {
+          width: cropRect.value.clientWidth,
+          height: cropRect.value.clientHeight
+        })
+          .then(blob => {
+            resolve(new File([blob], file.name, { type: 'image/jpeg' }))
           })
           .catch(error => reject(error))
       })

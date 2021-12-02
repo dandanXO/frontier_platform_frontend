@@ -6,7 +6,7 @@ div(class="l:pt-16 pt-17.5")
         div(class="relative")
           img(:src="logo" class="w-40 h-40 rounded-full bg-black-500")
           div(class="absolute flex justify-center items-center right-2 bottom-2 w-8 h-8 rounded-full bg-black-0 border-4 border-black-200 cursor-pointer"
-            @click="openModalUpload"
+            @click="openModalUploadLogo"
           )
             svg-icon(iconName="camera" size="20" class="text-black-700")
         div(class="flex items-center pt-4")
@@ -90,9 +90,9 @@ export default {
       isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: orgFormData.orgName, orgId: organization.value.orgId })
     }
 
-    const openModalUpload = () => {
+    const openModalUploadLogo = () => {
       store.dispatch('helper/openModal', {
-        component: 'modal-upload',
+        component: 'modal-upload-logo',
         header: t('BB0032'),
         properties: {
           // pure logo no preprocessing
@@ -105,7 +105,7 @@ export default {
             formData.append('orgId', store.getters['organization/orgId'])
             formData.append('logo', cropImage)
             formData.append('originalLogo', originalImage)
-            store.dispatch('organization/updateOrgLogo', formData)
+            await store.dispatch('organization/updateOrgLogo', formData)
           }
         }
       })
@@ -148,7 +148,7 @@ export default {
       orgCategoryList,
       countryList,
       updateOrg,
-      openModalUpload,
+      openModalUploadLogo,
       openModalDelete,
       isOrgNameExist,
       avaliableToUpdateOrg,

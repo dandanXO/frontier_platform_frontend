@@ -5,7 +5,7 @@ div(class='w-44 rounded bg-black-100')
     @click="openModalPreview(attachment)"
   )
     svg-icon(iconName='open_in_full' size="20" class='absolute top-1.5 left-1.5 text-black-0')
-    img(v-if="['.png', '.jpg', '.gif'].includes(attachment.extension)" :src="attachment.url" class="h-full")
+    img(v-if="['.png', '.jpg', '.gif'].includes(attachment.extension)" :src="attachment.url" class="max-h-full max-w-full")
     video(v-else-if="['.mov', '.mp4'].includes(attachment.extension)")
       source(:src="attachment.url" type="video/mp4")
     svg-icon(v-else iconName='folder' size="50" class='text-black-100')

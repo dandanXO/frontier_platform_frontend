@@ -2,14 +2,15 @@
 div(class="croped-image")
   div(:style="styles")
     div
-      img(ref="body"
+      img(
+        ref="body"
         draggable="false"
         :class="[{'opacity-30': isTransparent}]"
         :src="imageSrc"
         @mousedown.left.stop="moveStart"
       )
       div(v-for="(scaler, index)  in scalers"
-        class="controller-point absolute bg-black-0"
+        class="controller-point absolute bg-black-500"
         :key="index"
         :style="Object.assign(scaler, cursorStyles(index, 0))"
         @mousedown.stop="scaleStart"

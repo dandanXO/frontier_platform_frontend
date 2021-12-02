@@ -4,7 +4,7 @@ div(class="w-200")
     class="relative h-113 flex justify-center items-center"
     :class="[extensionInfo[currentAttachment.extension].display === 'video' ? 'bg-black-900' : 'bg-primary-thin']"
   )
-    img(v-if="extensionInfo[currentAttachment.extension].display === 'image'" :src="currentAttachment.url" class="h-full")
+    img(v-if="extensionInfo[currentAttachment.extension].display === 'image'" :src="currentAttachment.url" class="max-h-full max-w-full")
     video(v-else-if="extensionInfo[currentAttachment.extension].display === 'video'" class="max-h-113" controls)
       source(:src="currentAttachment.url" type="video/mp4")
     svg-icon(v-else :iconName="extensionInfo[currentAttachment.extension].placeholder" size="110" class="text-primary")

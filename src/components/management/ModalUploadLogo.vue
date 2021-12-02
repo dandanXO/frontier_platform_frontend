@@ -1,9 +1,9 @@
 <template lang="pug">
 div(class="w-120 border-t border-black-400")
   div(class="w-full flex justify-center items-center border-b border-black-400 overflow-hidden")
-    div(class="w-full h-full flex justify-center items-center py-15 relative"
-        :class="{'bg-black-500': uploadStatus === 'done' || uploadStatus === 'croping'}")
-      div(v-if="uploadStatus === 'none' && !haveUploadedImage"
+    div(class="w-full h-full flex justify-center items-center py-15 relative" :class="{'bg-black-0': uploadStatus === 'done' || uploadStatus === 'croping'}")
+      div(
+        v-if="uploadStatus === 'none' && !haveUploadedImage"
         class="flex flex-col"
         @drop.stop.prevent="onDrop($event)"
         @dragover.prevent
@@ -14,8 +14,18 @@ div(class="w-120 border-t border-black-400")
         span(class="text-body2 mb-2 text-black-500") {{$t('BB0034')}}
         span(class="text-body2 mb-2 text-black-500") {{$t('BB0059')}}
         span(class="text-body2 mb-2 text-black-500") {{$t('BB0060')}}
-      svg-icon(v-else-if="uploadStatus === 'uploading'" iconName="loading" size="100" class="justify-self-end cursor-pointer text-brand-dark")
-      image-crop(ref="imageCroper" v-else-if="uploadStatus === 'done' || uploadStatus === 'croping'" :cropRectSize="cropRectSize" :image="uploadedImage")
+      svg-icon(
+        v-else-if="uploadStatus === 'uploading'"
+        iconName="loading"
+        size="100"
+        class="justify-self-end cursor-pointer text-brand-dark"
+      )
+      image-crop(
+        v-else-if="uploadStatus === 'done' || uploadStatus === 'croping'"
+        ref="imageCroper"
+        :cropRectSize="cropRectSize"
+        :image="uploadedImage"
+      )
       img(v-else class="w-50 h-50" :src="image")
       div(v-if="uploadStatus === 'croping'" class="w-full absolute bottom-0 flex justify-center")
         svg-icon(iconName="loading" size="50" class="justify-self-end cursor-pointer text-brand-dark")
@@ -30,12 +40,11 @@ div(class="w-120 border-t border-black-400")
 </template>
 
 <script>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, nextTick } from 'vue'
 import { useStore } from 'vuex'
 import ImageCrop from '@/components/management/logo/ImageCrop.vue'
-import ImageOperator from '@/utils/imageOperator.js'
+import { ImageOperator } from '@/utils/fileOperator.js'
 import { useI18n } from 'vue-i18n'
-import dataUrlToBlob from '@/utils/dataUrlToBlob'
 
 export default {
   name: 'ModalUpload',
@@ -78,15 +87,17 @@ export default {
     }
 
     const cropRectSize = ref(200)
-    const imageOperator = new ImageOperator(cropRectSize.value)
+    const imageOperator = new ImageOperator(['jpeg', 'png'], 5, cropRectSize.value)
 
     imageOperator.on('uploading', () => {
       setUploadStatus('uploading')
     })
+
     imageOperator.on('finish', (image) => {
       setUploadStatus('done')
       Object.assign(uploadedImage, image)
     })
+
     imageOperator.on('error', (errorCode) => {
       const ERROR_CODE = imageOperator.errorCode
       switch (errorCode) {
@@ -116,17 +127,18 @@ export default {
     })
 
     const uploadImg = () => {
-      imageOperator.uploadImg()
+      imageOperator.upload()
     }
 
     const onDrop = (evt) => {
-      imageOperator.onDropImg(evt)
+      imageOperator.onDrop(evt)
     }
 
     const confirm = async () => {
       setUploadStatus('croping')
+      await nextTick()
       const cropedImage = await imageCroper.value?.cropImage()
-      props.uploadHandler(cropedImage, dataUrlToBlob(uploadedImage.src))
+      await props.uploadHandler(cropedImage, uploadedImage.file)
       closeModal()
     }
 

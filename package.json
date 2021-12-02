@@ -17,7 +17,6 @@
     "core-js": "^3.6.5",
     "countries-list": "^2.6.1",
     "dom-to-image": "^2.6.0",
-    "html-to-image": "^1.8.5",
     "html2pdf.js": "^0.10.1",
     "overlayscrollbars": "^1.13.1",
     "qrcode.vue": "^3.3.2",
