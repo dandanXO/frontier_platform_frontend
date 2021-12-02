@@ -17,6 +17,7 @@ const state = () => ({
   inviteCode: '',
   labelColor: '',
   uploadMaterialEmail: '',
+  workspaceNodeId: null,
   memberList: [],
   groupList: [],
   historyList: [],

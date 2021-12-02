@@ -10,14 +10,24 @@ import overlayscrollbars from 'overlayscrollbars'
 
 export default {
   name: 'OverlayScrollbarContainer',
-  setup () {
+  emits: ['reach-bottom'],
+  setup (props, { emit }) {
     const rootElement = ref(null)
 
     onMounted(() => {
-      overlayscrollbars(rootElement.value, {
+      const instance = overlayscrollbars(rootElement.value, {
         overflowBehavior: {
           x: 'hidden',
           y: 'scroll'
+        },
+        callbacks: {
+          onScroll: () => {
+            const scrollInfo = instance.scroll()
+
+            if (scrollInfo.ratio.y === 1) {
+              emit('reach-bottom')
+            }
+          }
         }
       })
     })

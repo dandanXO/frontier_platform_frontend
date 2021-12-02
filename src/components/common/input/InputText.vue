@@ -17,6 +17,7 @@ input-container(:label="label" :required="required")
       @input="typing"
       @focus="onFocus"
       @blur="onBlur"
+      @keydown.enter="$emit('enter')"
       class="flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 placeholder-black-400 placeholder-text-body2 placeholder-overflow-visible disabled:text-black-600"
       autocomplete
     )
@@ -91,7 +92,7 @@ export default {
       default: false
     }
   },
-  emits: ['update:textValue', 'blur'],
+  emits: ['update:textValue', 'blur', 'enter'],
   setup (props, context) {
     const { inputType, textValue, disabled, rules, required, customErrorMsg } = toRefs(props)
     const { isFocus, isError, onFocus, onBlur, clear, typing, isEmpty, classBorder, errorMsg, classPrependIcon } = useInput({ context, inputType, textValue, disabled, rules, required, customErrorMsg })
