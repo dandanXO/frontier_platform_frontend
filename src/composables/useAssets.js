@@ -44,7 +44,15 @@ export default function useAssets () {
   const addToWorkspace = {
     id: 'addToWorkspace',
     name: t('RR0057'),
-    func: () => { console.log('addToWorkspace') }
+    func: (v) => {
+      const materialList = Array.isArray(v) ? v : [v]
+      store.dispatch('helper/openModal', {
+        component: 'modal-add-to-workspace',
+        properties: {
+          materialList: materialList
+        }
+      })
+    }
   }
 
   const create3DMaterial = {

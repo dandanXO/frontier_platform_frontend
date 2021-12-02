@@ -137,6 +137,13 @@ const actions = {
     rootGetters['helper/routeLocation'] === 'org'
       ? await assetsApi.org.cloneMaterial({ orgId: rootGetters['organization/orgId'], targetIdList, materialIdList })
       : await assetsApi.group.cloneMaterial({ groupId: rootGetters['group/groupId'], targetIdList, materialIdList })
+  },
+  async addToWorkspace ({ rootGetters }, { targetWorkspaceNodeIdList, materialIdList }) {
+    const { data } = rootGetters['helper/routeLocation'] === 'org'
+      ? await assetsApi.org.addToWorkspace({ orgId: rootGetters['organization/orgId'], targetWorkspaceNodeIdList, materialIdList })
+      : await assetsApi.group.addToWorkspace({ groupId: rootGetters['group/groupId'], targetWorkspaceNodeIdList, materialIdList })
+
+    return data.result.failMaterialList
   }
 }
 

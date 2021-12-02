@@ -6,6 +6,7 @@ import group from '@/store/modules/group'
 import material from '@/store/modules/material'
 import helper from '@/store/modules/helper'
 import assets from '@/store/modules/assets'
+import workspace from '@/store/modules/workspace'
 
 export default createStore({
   actions: {
@@ -43,6 +44,7 @@ export default createStore({
     group,
     helper,
     material,
-    assets
+    assets,
+    workspace
   }
 })

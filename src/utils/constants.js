@@ -160,3 +160,13 @@ export const SORT_BY = {
     value: 12
   }
 }
+
+export const NODE_LOCATION = {
+  ORG: 1,
+  GROUP: 2
+}
+
+export const NODE_TYPE = {
+  MATERIAL: 1,
+  COLLECTION: 2
+}

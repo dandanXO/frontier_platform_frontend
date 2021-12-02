@@ -1,7 +1,7 @@
 <template lang="pug">
 label(class="flex items-center")
   svg-icon(v-if="checked" iconName="check_box" :size="size" :class="[disabled ? 'text-black-400' : iconColor]")
-  svg-icon(v-else iconName="check_box_outline_blank" :size="size" class="text-black-400")
+  svg-icon(v-else iconName="check_box_outline_blank" :size="size" :class="[uncheckColor]")
   input(type="checkbox"
     class="hidden"
     :checked="checked"
@@ -35,6 +35,10 @@ export default {
     iconColor: {
       type: String,
       default: 'text-brand'
+    },
+    uncheckColor: {
+      type: String,
+      default: 'text-black-400'
     },
     binary: {
       type: Boolean,

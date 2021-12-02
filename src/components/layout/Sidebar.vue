@@ -6,7 +6,7 @@
 </style>
 
 <template lang="pug">
-div(class="relative z-index:sidebar w-60 h-full bg-black-100 sidebar-shadow flex flex-col")
+div(class="relative z-index:sidebar min-w-60 w-60 h-full bg-black-100 sidebar-shadow flex flex-col")
   div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
     div(class="flex items-center")
       img(:src="organization.logo" class="rounded-full w-9 h-9 mr-2")
