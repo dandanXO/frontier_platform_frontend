@@ -18,7 +18,7 @@ export default {
   components: {
     ModalLoading,
     ModalCreateGroup: defineAsyncComponent(() => import('@/components/management/ModalCreateGroup')),
-    ModalUpload: defineAsyncComponent(() => import('@/components/management/ModalUpload')),
+    ModalUploadLogo: defineAsyncComponent(() => import('@/components/management/ModalUploadLogo')),
     ModalInviteToOrg: defineAsyncComponent(() => import('@/components/management/ModalInviteToOrg')),
     ModalAddToGroup: defineAsyncComponent(() => import('@/components/management/ModalAddToGroup')),
     ModalCreateMailGroup: defineAsyncComponent(() => import('@/components/management/ModalCreateMailGroup')),

@@ -82,9 +82,10 @@ export default {
 
     const upload = async () => {
       if (typeof props.uploadHandler === 'function') {
-        store.dispatch('helper/openModalLoading')
+        store.dispatch('helper/pushModalLoading')
         await props.uploadHandler(binaryFile, fileName.value)
         store.dispatch('helper/closeModalLoading')
+        closeModal()
       }
     }
 
