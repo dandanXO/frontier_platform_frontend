@@ -98,10 +98,48 @@ const getters = {
       inventory: { min: 0, max: 10000 }
     }
   },
+  isFilterDirty: (state, getters) => Object.keys(getters.filterDirty).some(key => getters.filterDirty[key]),
   keyword: state => state.keyword,
   tagList: state => state.tagList,
   selectedTagList: state => state.selectedTagList,
-  pagination: state => state.pagination
+  pagination: state => state.pagination,
+  getSearchParams: (state, getters) => targetPage => {
+    const { keyword, selectedTagList, filter, pagination } = JSON.parse(JSON.stringify(state))
+    const { perPageCount, isShowMatch, sort } = pagination
+    const params = {
+      search: null,
+      filter,
+      pagination: {
+        perPageCount: Number(perPageCount),
+        isShowMatch: Boolean(isShowMatch),
+        sort: Number(sort),
+        targetPage: Number(targetPage)
+      }
+    }
+
+    if (!(keyword === '' && selectedTagList.length === 0)) {
+      params.search = {
+        keyword,
+        selectedTagList
+      }
+    }
+
+    if (!getters.isFilterDirty) {
+      params.filter = null
+    } else {
+      if (filter.width.min === null && filter.width.max === null) {
+        filter.width = null
+      }
+      if (filter.weightGsm.min === null && filter.weightGsm.max === null) {
+        filter.weightGsm = null
+      }
+      if (filter.inventory.quantity.min === null && filter.inventory.quantity.max === null) {
+        filter.inventory = null
+      }
+    }
+
+    return params
+  }
 }
 
 const mutations = {

@@ -55,8 +55,8 @@ div(class="grid" :class="{ 'border-b border-primary-thin': !isOpenFilterPanel }"
         filter-yarn-density
         filter-finish
         filter-inventory
-        filter-price
-        filter-complete
+        filter-has-price
+        filter-complete(v-if="searchType === SEARCH_TYPE.ASSETS")
 </template>
 
 <script>
@@ -69,10 +69,11 @@ import FilterPattern from '@/components/layout/filter/FilterPattern'
 import FilterColor from '@/components/layout/filter/FilterColor'
 import FilterCategory from '@/components/layout/filter/FilterCategory'
 import FilterFinish from '@/components/layout/filter/FilterFinish'
-import FilterPrice from '@/components/layout/filter/assets/FilterPrice'
-import FilterComplete from '@/components/layout/filter/assets/FilterComplete'
+import FilterHasPrice from '@/components/layout/filter/FilterHasPrice'
+import FilterComplete from '@/components/layout/filter/FilterComplete'
 import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
+import { SEARCH_TYPE } from '@/utils/constants'
 
 export default {
   name: 'SearchBox',
@@ -85,9 +86,15 @@ export default {
     FilterColor,
     FilterCategory,
     FilterFinish,
-    FilterPrice,
+    FilterHasPrice,
     FilterComplete,
     FilterContent
+  },
+  props: {
+    searchType: {
+      type: Number,
+      required: true
+    }
   },
   emits: ['blur', 'search'],
   setup (props, context) {
@@ -101,8 +108,6 @@ export default {
     const filter = computed(() => store.getters['helper/search/filter'])
     const tagList = computed(() => store.getters['helper/search/tagList'])
     const selectedTagList = computed(() => store.getters['helper/search/selectedTagList'])
-    const filterOptions = computed(() => store.getters['helper/search/filterOptions'])
-    const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
     const innerTagList = computed(() => {
       return tagList.value.map(tag => ({
         ...tag,
@@ -171,9 +176,8 @@ export default {
       onEnter,
       isOpenFilterPanel,
       filter,
-      filterOptions,
       resetFilter,
-      filterDirty
+      SEARCH_TYPE
     }
   }
 }

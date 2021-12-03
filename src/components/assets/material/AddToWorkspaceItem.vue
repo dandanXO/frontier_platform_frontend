@@ -1,11 +1,3 @@
-<style lang="scss" scoped>
-.checkbox-overlay {
-  background: linear-gradient(180deg, #000000 0%, rgba(34, 34, 34, 0) 100%);
-  opacity: 0.15;
-  border-radius: 4px 4px 0px 0px;
-}
-</style>
-
 <template lang="pug">
 div(@mouseenter="isHover = true" @mouseleave="isHover = false")
   div(class="w-full aspect-ratio border border-black-400 rounded-md overflow-hidden relative")
@@ -18,7 +10,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
         div(class="bg-black-50")
           img(v-if="item.coverImgList[2]" :src="item.coverImgList[2]" class="w-full h-full")
       div(class="w-full h-7.5 absolute top-0 left-0")
-        div(class="w-full h-full checkbox-overlay")
+        div(class="bg-linear w-full h-full rounded-t-md")
         input-checkbox(
           v-model:inputValue="innerSelectedList"
           :value="`${item.type}-${item.workspaceNodeId}`"
@@ -29,7 +21,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
           @click.stop
         )
       div(v-if="item.hasChildCollection" class="w-full h-7.5 absolute bottom-0 left-0")
-        div(class="w-full h-full checkbox-overlay transform rotate-180")
+        div(class="bg-linear w-full h-full rounded-t-md transform rotate-180")
         svg-icon(iconName="folder" class="text-black-0" size="14" class="absolute right-2 bottom-2")
     template(v-if="itemType === NODE_TYPE.MATERIAL")
       img(:src="item.coverImg" class="w-full h-full")
@@ -65,6 +57,7 @@ export default {
       default: false
     }
   },
+  emits: ['update:selectedList'],
   setup (props, { emit }) {
     const isHover = ref(false)
     const displayName = computed(() => {
@@ -78,11 +71,8 @@ export default {
       set: (v) => emit('update:selectedList', v)
     })
 
-    const test = () => console.log('rher')
-
     return {
       isHover,
-      test,
       displayName,
       innerSelectedList,
       NODE_TYPE

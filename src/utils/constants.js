@@ -170,3 +170,8 @@ export const NODE_TYPE = {
   MATERIAL: 1,
   COLLECTION: 2
 }
+
+export const SEARCH_TYPE = {
+  ASSETS: 1,
+  WORKSPACE: 2
+}

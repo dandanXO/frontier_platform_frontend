@@ -1,9 +1,3 @@
-<style lang="scss" scoped>
-.linear-bg {
-  background: linear-gradient(180deg, #000000 0%, rgba(34, 34, 34, 0) 100%);
-}
-</style>
-
 <template lang="pug">
 div(class='w-full')
   div(
@@ -12,7 +6,7 @@ div(class='w-full')
     @mouseenter="handleMouseEnter"
     @mouseleave="active = false"
   )
-    img(:src="currentCoverImg" class="w-full h-full")
+    img(:src="currentCoverImg" class="w-full h-full rounded")
     input-checkbox(
       v-if='active || checked'
       v-model:inputValue='addedMaterialList'
