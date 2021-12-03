@@ -26,6 +26,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
           i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption")
             template(#number) {{selectedNodeKeyList.length}}
         tooltip(
+          v-if="!isInOrgRoot"
           placement="bottom-end"
           :manual="true"
           :showArrow="false"
@@ -163,9 +164,15 @@ export default {
     })
     const breadcrumbsList = computed(() => {
       const list = [...appendedBreadcrumbsList.value]
+      let key = 'root'
+
+      if (routeLocation.value === 'group') {
+        const { workspaceNodeId, type } = store.getters['group/group']
+        key = `${type}-${workspaceNodeId}`
+      }
       list.unshift({
         name: t('EE0058'),
-        key: 'root'
+        key
       })
       return list
     })
@@ -188,6 +195,13 @@ export default {
 
       const { pagination, workspaceCollection } = await store.dispatch('workspace/getWorkspaceForModal', queryParams)
       totalPage.value = pagination.totalPage
+
+      if (workspaceCollection.breadcrumbList.length > 0) {
+        appendedBreadcrumbsList.value = workspaceCollection.breadcrumbList.map(item => ({
+          key: `${item.type}-${item.workspaceNodeId}`,
+          name: item.name
+        }))
+      }
 
       if (workspaceCollection.childCollectionList.length > 0) {
         workspaceCollection.childCollectionList.forEach(collection => {
@@ -231,7 +245,6 @@ export default {
     const enterTo = (key, name) => {
       clearKeyword()
       clearNodeList()
-      appendedBreadcrumbsList.value.push({ key, name })
       parseAndSetKey(key)
       getWorkspaceForModal()
     }
@@ -242,8 +255,6 @@ export default {
       if (key === 'root') {
         appendedBreadcrumbsList.value.length = 0
       } else {
-        const index = appendedBreadcrumbsList.value.findIndex(item => item.key === key)
-        appendedBreadcrumbsList.value.splice(index + 1)
         parseAndSetKey(key)
         getWorkspaceForModal()
       }
@@ -302,8 +313,11 @@ export default {
             failMaterialList
           }
         })
+      } else {
+        store.dispatch('helper/closeModal')
       }
-      if (props.materialList.length !== failMaterialList.length) {
+
+      if (!failMaterialList || (failMaterialList.length !== props.materialList.length)) {
         store.commit('helper/PUSH_message', t('EE0062'))
       }
     }

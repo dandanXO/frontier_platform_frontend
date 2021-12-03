@@ -116,11 +116,11 @@ export const SORT_BY = {
     value: 1
   },
   RELEVANCE_C_M: {
-    text: i18n.global.t('RELEVANCE_C_M'),
+    text: i18n.global.t('RR0114'),
     value: 2
   },
   RELEVANCE_M_C: {
-    text: i18n.global.t('RELEVANCE_M_C'),
+    text: i18n.global.t('RR0115'),
     value: 3
   },
   MATERIAL_NO_A_Z: {
@@ -128,11 +128,11 @@ export const SORT_BY = {
     value: 4
   },
   MATERIAL_NO_A_Z_C_M: {
-    text: i18n.global.t('MATERIAL_NO_A_Z_C_M'),
+    text: i18n.global.t('RR0110'),
     value: 5
   },
   MATERIAL_NO_A_Z_M_C: {
-    text: i18n.global.t('MATERIAL_NO_A_Z_M_C'),
+    text: i18n.global.t('RR0111'),
     value: 6
   },
   CREATE_DATE: {
@@ -140,11 +140,11 @@ export const SORT_BY = {
     value: 7
   },
   CREATE_DATE_C_M: {
-    text: i18n.global.t('CREATE_DATE_C_M'),
+    text: i18n.global.t('RR0112'),
     value: 8
   },
   CREATE_DATE_M_C: {
-    text: i18n.global.t('CREATE_DATE_M_C'),
+    text: i18n.global.t('RR0113'),
     value: 9
   },
   NEW_ARRIVED: {
