@@ -1,11 +1,3 @@
-<style lang="scss" scoped>
-.checkbox-overlay {
-  background: linear-gradient(180deg, #000000 0%, rgba(34, 34, 34, 0) 100%);
-  opacity: 0.15;
-  border-radius: 4px 4px 0px 0px;
-}
-</style>
-
 <template lang="pug">
 div(class="w-161 h-138 px-8 flex flex-col")
   div
@@ -19,7 +11,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
     )
   div(class="flex-grow flex flex-col")
     div(class="relative z-20 flex justify-between items-center py-4")
-      breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="backTo($event.key)")
+      breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="goTo($event.key)")
       div(class="flex items-center")
         div(v-if="selectedNodeKeyList.length > 0" class="flex items-center")
           svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
@@ -49,11 +41,11 @@ div(class="w-161 h-138 px-8 flex flex-col")
           div(v-for="item in orgAndGroupList"
             class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden"
             :class="[selectedNodeKeyList.includes(item.key) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
-            @click="enterTo(item.key, item.name), setRootId(item.id)"
+            @click="goTo(item.key), setRootId(item.id)"
           )
             p(class="text-caption text-center line-height-1.6 font-bold line-clamp-3") {{item.name}}
             div(class="w-full h-7.5 absolute top-0 left-0")
-              div(class="w-full h-full checkbox-overlay")
+              div(class="bg-linear w-full h-full rounded-t-md")
               input-checkbox(
                 v-model:inputValue="selectedNodeKeyList"
                 :value="item.key"
@@ -77,7 +69,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
                 :itemType="node.nodeType"
                 :item="node.value"
                 :isShowLocation="isInKeywordSearch"
-                @click="enterTo(node.key, node.value.name)"
+                @click="goTo(node.key)"
               )
             template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
               add-to-workspace-item(
@@ -242,14 +234,7 @@ export default {
       queryParams.keyword = ''
     }
 
-    const enterTo = (key, name) => {
-      clearKeyword()
-      clearNodeList()
-      parseAndSetKey(key)
-      getWorkspaceForModal()
-    }
-
-    const backTo = (key) => {
+    const goTo = (key) => {
       clearKeyword()
       clearNodeList()
       if (key === 'root') {
@@ -336,8 +321,7 @@ export default {
       selectedNodeKeyList,
       infiniteScroll,
       breadcrumbsList,
-      enterTo,
-      backTo,
+      goTo,
       isInOrgRoot,
       isOnlyShowCollection,
       isSearching,

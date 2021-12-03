@@ -30,6 +30,10 @@ export default createStore({
         if (Object.prototype.hasOwnProperty.call(result, 'pagination')) {
           dispatch('helper/search/setPagination', result.pagination, { root: true })
         }
+
+        if (Object.prototype.hasOwnProperty.call(result, 'workspaceCollection')) {
+          dispatch('workspace/setWorkspace', result.workspaceCollection, { root: true })
+        }
       }
 
       if (!success) {

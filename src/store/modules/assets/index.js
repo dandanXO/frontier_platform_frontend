@@ -70,41 +70,11 @@ const actions = {
     setVuexState(state, data)
   },
   async getMaterialList ({ rootGetters, dispatch }, { targetPage = 1 }) {
-    const pagination = rootGetters['helper/search/pagination']
-    const filter = JSON.parse(JSON.stringify(rootGetters['helper/search/filter']))
-    const { perPageCount, isShowMatch, sort } = pagination
-    const params = {
-      pagination: {
-        perPageCount: Number(perPageCount),
-        isShowMatch: Boolean(isShowMatch),
-        sort: Number(sort),
-        targetPage: Number(targetPage)
-      },
-      filter
-    }
-
-    if (filter.width.min === null && filter.width.max === null) {
-      filter.width = null
-    }
-    if (filter.weightGsm.min === null && filter.weightGsm.max === null) {
-      filter.weightGsm = null
-    }
-    if (filter.inventory.quantity.min === null && filter.inventory.quantity.max === null) {
-      filter.inventory = null
-    }
-
-    const search = {
-      keyword: rootGetters['helper/search/keyword'],
-      selectedTagList: rootGetters['helper/search/selectedTagList']
-    }
-
-    if (!(search.keyword === '' && search.selectedTagList.length === 0)) {
-      params.search = search
-    }
+    const searchParams = rootGetters['helper/search/getSearchParams'](targetPage)
 
     const { data } = rootGetters['helper/routeLocation'] === 'org'
-      ? await assetsApi.org.getMaterialList({ orgId: rootGetters['organization/orgId'], ...params })
-      : await assetsApi.group.getMaterialList({ groupId: rootGetters['group/groupId'], ...params })
+      ? await assetsApi.org.getMaterialList({ orgId: rootGetters['organization/orgId'], ...searchParams })
+      : await assetsApi.group.getMaterialList({ groupId: rootGetters['group/groupId'], ...searchParams })
 
     dispatch('handleResponseData', { data }, { root: true })
   },

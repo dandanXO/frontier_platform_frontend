@@ -12,7 +12,7 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 
 export default {
-  name: 'FilterPrice',
+  name: 'FilterHasPrice',
   components: {
     FilterWrapper
   },

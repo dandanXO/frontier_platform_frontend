@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-full h-full flex flex-col")
-  search-box(@search="getMaterialList")
+  search-box(:searchType="searchType" @search="search")
   div(class="pt-7.5 pb-2.5 mx-7.5 flex justify-between items-center")
     div
       slot(name="header-left")
@@ -8,7 +8,7 @@ div(class="w-full h-full flex flex-col")
       input-checkbox(
         v-if="keywordDirty"
         v-model:inputValue="isShowMatch"
-        @update:inputValue="getMaterialList()"
+        @update:inputValue="search()"
         :label="$t('RR0069')"
         binary
         size="20"
@@ -28,16 +28,16 @@ div(class="w-full h-full flex flex-col")
             :class="{ 'text-brand': isActive }"
           )
         template(#content)
-          contextual-menu(v-model:selectValue="sort" :optionList="innerOptionSort" @update:selectValue="getMaterialList()")
+          contextual-menu(v-model:selectValue="sort" :optionList="innerOptionSort" @update:selectValue="search()")
       slot(name="header-right")
+  slot(name="sub-header")
   div(class="overflow-y-auto flex-grow grid")
     div(v-if="isSearching || inSearch && pagination.totalCount === 0" class="flex flex-col justify-center items-center")
       svg-icon(v-if="isSearching" iconName="loading" size="92" class="text-brand")
       p(v-else-if="inSearch && pagination.totalCount === 0" class="text-center text-body2 text-primary") {{$t('RR0105')}}
-    slot(v-else)
+    slot(v-else :inSearch="inSearch")
     div(class="py-9.5 justify-self-center self-end")
-      pagination(v-if="!isSearching && pagination.totalCount > 0" v-model:currentPage="pagination.currentPage" :totalPage="pagination.totalPage" @goTo="getMaterialList($event)")
-  multi-select-menu(:options='optionMultiSelect')
+      pagination(v-if="!isSearching && pagination.totalCount > 0" v-model:currentPage="pagination.currentPage" :totalPage="pagination.totalPage" @goTo="search($event)")
 </template>
 
 <script>
@@ -46,14 +46,19 @@ import Pagination from '@/components/layout/Pagination.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { SEARCH_TYPE } from '@/utils/constants'
 
 export default {
-  name: 'MaterialTable',
+  name: 'SearchTable',
   components: {
     SearchBox,
     Pagination
   },
   props: {
+    searchType: {
+      type: Number,
+      default: SEARCH_TYPE.ASSETS
+    },
     selectAll: {
       type: Boolean,
       default: true
@@ -62,8 +67,8 @@ export default {
       type: Object,
       required: true
     },
-    optionMultiSelect: {
-      type: Array,
+    searchCallback: {
+      type: Function,
       required: true
     }
   },
@@ -97,21 +102,19 @@ export default {
       get: () => pagination.value.isShowMatch,
       set: (v) => store.dispatch('helper/search/setPagination', { isShowMatch: v })
     })
-
     const searchDirty = computed(() => {
-      const filterDirty = store.getters['helper/search/filterDirty']
-      const isFilterDirty = Object.keys(filterDirty).some(key => filterDirty[key])
+      const isFilterDirty = store.getters['helper/search/isFilterDirty']
       return keywordDirty.value || isFilterDirty
     })
 
-    const getMaterialList = async (targetPage = 1) => {
+    const search = async (targetPage = 1) => {
       isSearching.value = true
 
       /**
        * when first time using keyword search (no keyword -> with keyword),
        * sort value will automatically change to optionSort.keywordSearch[0].value,
-       * and when first time searhcing without keyword (with keyword -> no keyword),
-       * sort value will autmatically chanfe to props.optionSort.base[0].value
+       * and when first time searching without keyword (with keyword -> no keyword),
+       * sort value will automatically change to props.optionSort.base[0].value
        */
       if (!keywordDirty.value && !!keyword.value) {
         store.dispatch('helper/search/setPagination', { sort: props.optionSort.keywordSearch[0].value })
@@ -124,7 +127,7 @@ export default {
       // only when searchDirty is true, it's considered a search mode
       inSearch.value = searchDirty.value
 
-      router.push({
+      await router.push({
         name: route.name,
         query: {
           currentPage: targetPage,
@@ -135,7 +138,7 @@ export default {
           filter: encodeURI(JSON.stringify(filter.value))
         }
       })
-      await store.dispatch('assets/getMaterialList', { targetPage })
+      await props.searchCallback(targetPage)
 
       isSearching.value = false
     }
@@ -159,10 +162,10 @@ export default {
       store.dispatch('helper/search/setFilter', JSON.parse(decodeURI(qFilter)))
     }
 
-    getMaterialList(currentPage)
+    search(currentPage)
 
     return {
-      getMaterialList,
+      search,
       pagination,
       inSearch,
       isShowMatch,

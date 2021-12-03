@@ -2,6 +2,10 @@ import axios from '@/apis'
 
 export default {
   org: {
+    getWorkspace: ({ orgId, workspaceNodeId, pagination, search = null, filter = null }) => axios('/org/workspace/get', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId, pagination, search, filter }
+    }),
     getWorkspaceForModal: ({ orgId, pagination, search = null, workspaceNodeId, type }) => axios('/org/workspace/get-for-modal', {
       method: 'POST',
       data: { orgId, pagination, search, workspaceNodeId, type }
@@ -22,6 +26,10 @@ export default {
     }
   },
   group: {
+    getWorkspace: ({ groupId, workspaceNodeId, pagination, search = null, filter = null }) => axios('/org/group/workspace/get', {
+      method: 'POST',
+      data: { groupId, workspaceNodeId, pagination, search, filter }
+    }),
     getWorkspaceForModal: ({ groupId, pagination, search = null, workspaceNodeId, type }) => axios('/org/group/workspace/get-for-modal', {
       method: 'POST',
       data: { groupId, pagination, search, workspaceNodeId, type }

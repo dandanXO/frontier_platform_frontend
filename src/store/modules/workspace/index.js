@@ -25,12 +25,30 @@ const getWorkspaceCollectionState = () => ({
 const state = getWorkspaceCollectionState()
 
 const getters = {
+  defaultWorkspaceNodeId: (state, getters, rootState, rootGetters) => {
+    return rootGetters['helper/routeLocation'] === 'org'
+      ? rootGetters['organization/organization'].workspaceNodeId
+      : rootGetters['group/group'].workspaceNodeId
+  },
   workspaceCollection: state => state
 }
 
 const actions = {
   setWorkspace ({ state }, data) {
     setVuexState(state, data)
+  },
+  async getWorkspace ({ rootGetters, dispatch }, { targetPage = 1, workspaceNodeId }) {
+    const searchParams = rootGetters['helper/search/getSearchParams'](targetPage)
+    const params = {
+      workspaceNodeId,
+      ...searchParams
+    }
+
+    const { data } = rootGetters['helper/routeLocation'] === 'org'
+      ? await workspaceApi.org.getWorkspace({ orgId: rootGetters['organization/orgId'], ...params })
+      : await workspaceApi.group.getWorkspace({ groupId: rootGetters['group/groupId'], ...params })
+
+    dispatch('handleResponseData', { data }, { root: true })
   },
   async getWorkspaceForModal ({ rootGetters }, { keyword, sort, targetPage = 1, workspaceNodeId, type }) {
     const params = {

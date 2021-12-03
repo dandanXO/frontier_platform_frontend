@@ -41,3 +41,8 @@
     }
   }
 }
+
+.bg-linear {
+  background: linear-gradient(180deg, #000000 0%, rgba(34, 34, 34, 0) 100%);
+  opacity: 0.15;
+}
