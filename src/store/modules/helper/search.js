@@ -32,7 +32,8 @@ const defaultFilterState = () => ({
       max: null,
       isInfinity: false
     }
-  }
+  },
+  hasU3M: null
 })
 
 const state = () => ({
@@ -61,6 +62,7 @@ const getters = {
     pattern: !!state.filter.pattern,
     category: !!state.filter.category,
     hasPrice: state.filter.hasPrice !== null,
+    hasU3M: state.filter.hasU3M !== null,
     yarnAndDensity: !!state.filter.wovenWarpYarnCount || !!state.filter.wovenWeftYarnCount || !!state.filter.warpDensity || !!state.filter.weftDensity || !!state.filter.knitYarnCount,
     widthAndWeightGsm: !!state.filter.width.min || !!state.filter.width.max || !!state.filter.weightGsm.min || !!state.filter.weightGsm.max,
     inventory: !!state.filter.inventory.quantity.min || !!state.filter.inventory.quantity.max
@@ -83,13 +85,23 @@ const getters = {
         value
       })),
       completeList: Object.keys(FILTER_COMPLETE).map(key => ({ ...FILTER_COMPLETE[key] })),
-      priceList: [
+      hasPrice: [
         {
           text: i18n.global.t('RR0096'),
           value: true
         },
         {
           text: i18n.global.t('RR0097'),
+          value: false
+        }
+      ],
+      hasU3M: [
+        {
+          text: i18n.global.t('RR0100'),
+          value: true
+        },
+        {
+          text: i18n.global.t('RR0101'),
           value: false
         }
       ],
