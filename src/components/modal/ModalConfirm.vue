@@ -66,7 +66,7 @@ export default {
     const hasDefinePrimaryHandler = computed(() => typeof props.primaryHandler === 'function')
     const hasDefineAfterPrimaryHandler = computed(() => typeof props.afterPrimaryHandler === 'function')
     const hasDefineSecondaryHandler = computed(() => typeof props.secondaryHandler === 'function')
-    const hasDefindAfterSecondaryHandler = computed(() => typeof props.afterSecondaryHandler === 'function')
+    const hasDefineAfterSecondaryHandler = computed(() => typeof props.afterSecondaryHandler === 'function')
 
     const closeModalConfirm = () => { store.dispatch('helper/closeModalConfirm') }
 
@@ -87,7 +87,7 @@ export default {
 
       props.secondaryCloseAfterHandle && closeModalConfirm()
 
-      hasDefindAfterSecondaryHandler.value && props.afterSecondaryHandler()
+      hasDefineAfterSecondaryHandler.value && props.afterSecondaryHandler()
     }
 
     return {

@@ -20,7 +20,7 @@ search-table(
   template(v-if="!isFirstLayer" #sub-header)
     p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('FF0002')}}: {{unixToDate(workspaceCollection.createDate)}}
   template(#default="{ inSearch }")
-    div(class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto")
+    div(class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
       div(class="aspect-ratio border border-black-400 border-dashed rounded-md flex justify-center items-center")
         div(class="grid justify-items-center gap-y-3.5")
           svg-icon(iconName="add" size="24" class="text-primary")
@@ -35,6 +35,7 @@ search-table(
             :optionList="optionNodeCollection"
             :isShowLocation="inSearch"
             @click="goTo(node.value.workspaceNodeId)"
+            @click:option="$event.func(node.value.workspaceNodeId)"
           )
         template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
           node-item(
@@ -44,6 +45,7 @@ search-table(
             :displayName="node.value.materialNo"
             :optionList="optionNodeMaterial"
             :isShowLocation="inSearch"
+            @click:option="$event.func(node.value.workspaceNodeId)"
           )
 </template>
 
@@ -56,6 +58,7 @@ import { ref, computed } from 'vue'
 import NodeItem from '@/components/layout/NodeItem'
 import { useRoute, useRouter } from 'vue-router'
 import { unixToDate } from '@/utils/time-formatting'
+import useWorkspace from '@/composables/useWorkspace'
 
 export default {
   name: 'Workspace',
@@ -68,6 +71,7 @@ export default {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
+    const { editCollection, editMaterial, duplicateNode, moveNode, deleteNode, shareNode } = useWorkspace()
 
     const optionSort = {
       base: [
@@ -82,12 +86,7 @@ export default {
       ]
     }
 
-    const optionMultiSelect = [
-      {
-        id: 'deleteNode',
-        name: t('FF.delete')
-      }
-    ]
+    const optionMultiSelect = [deleteNode]
 
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const workspaceCollection = computed(() => store.getters['workspace/workspaceCollection'])
@@ -132,34 +131,19 @@ export default {
     const optionNodeCollection = computed(() => {
       const optionList = [
         [
-          {
-            id: 'edit',
-            name: t('RR0054')
-          }
+          editCollection
         ],
         [
-          {
-            id: 'duplicate',
-            name: t('RR0076')
-          },
-          {
-            id: 'moveToCollection',
-            name: t('RR0077')
-          }
+          duplicateNode,
+          moveNode
         ],
         [
-          {
-            id: 'delete',
-            name: t('RR0063')
-          }
+          deleteNode
         ]
       ]
 
       if (isFirstLayer.value) {
-        optionList[1].push({
-          id: 'share',
-          name: t('RR0079')
-        })
+        optionList[1].push(shareNode)
       }
 
       return optionList
@@ -167,30 +151,18 @@ export default {
     const optionNodeMaterial = computed(() => {
       const optionList = [
         [
-          {
-            id: 'edit',
-            name: t('RR0054')
-          }
+          editMaterial
         ],
         [
-          {
-            id: 'duplicate',
-            name: t('RR0076')
-          }
+          moveNode
         ],
         [
-          {
-            id: 'delete',
-            name: t('RR0063')
-          }
+          deleteNode
         ]
       ]
 
       if (isFirstLayer.value) {
-        optionList[1].push({
-          id: 'share',
-          name: t('RR0079')
-        })
+        optionList[1].push(shareNode)
       }
 
       return optionList

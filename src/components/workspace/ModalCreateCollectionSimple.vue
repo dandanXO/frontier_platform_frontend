@@ -16,7 +16,7 @@ import { ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
-  name: 'ModalAddToWorkspaceCreateCollection',
+  name: 'ModalCreateCollectionSimple',
   props: {
     id: {
       type: Number,

@@ -45,11 +45,36 @@ export default function useAssets () {
     id: 'addToWorkspace',
     name: t('RR0057'),
     func: (v) => {
-      const materialList = Array.isArray(v) ? v : [v]
       store.dispatch('helper/openModal', {
-        component: 'modal-add-to-workspace',
+        component: 'modal-workspace-node-list',
         properties: {
-          materialList: materialList
+          modalTitle: t('EE0057'),
+          actionText: t('UU0035'),
+          actionCallback: async (selectedNodeKeyList) => {
+            const materialList = Array.isArray(v) ? v : [v]
+
+            const failMaterialList = await store.dispatch('assets/addToWorkspace', {
+              materialIdList: materialList.map(material => material.materialId),
+              targetWorkspaceNodeIdList: selectedNodeKeyList.map(nodeKey => {
+                const [type, id] = nodeKey.split('-')
+                return { id, type }
+              })
+            })
+            if (failMaterialList && failMaterialList.length > 0) {
+              store.dispatch('helper/openModal', {
+                component: 'modal-add-to-workspace-fail',
+                properties: {
+                  failMaterialList
+                }
+              })
+            } else {
+              store.dispatch('helper/closeModal')
+            }
+
+            if (!failMaterialList || (failMaterialList.length !== materialList.length)) {
+              store.commit('helper/PUSH_message', t('EE0062'))
+            }
+          }
         }
       })
     }

@@ -86,6 +86,11 @@ const actions = {
     rootGetters['helper/routeLocation'] === 'org'
       ? await workspaceApi.org.createCollection({ orgId: rootGetters['organization/orgId'], workspaceNodeId, collectionName, trendBoard, description })
       : await workspaceApi.group.createCollection({ groupId: rootGetters['group/groupId'], workspaceNodeId, collectionName, trendBoard, description })
+  },
+  async duplicateNode ({ rootGetters }, { workspaceNodeId, targetWorkspaceNodeIdList }) {
+    rootGetters['helper/routeLocation'] === 'org'
+      ? await workspaceApi.org.duplicateNode({ orgId: rootGetters['organization/orgId'], workspaceNodeId, targetWorkspaceNodeIdList })
+      : await workspaceApi.group.duplicateNode({ groupId: rootGetters['group/groupId'], workspaceNodeId, targetWorkspaceNodeIdList })
   }
 }
 

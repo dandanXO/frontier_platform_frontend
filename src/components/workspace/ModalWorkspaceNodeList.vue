@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="w-161 h-138 px-8 flex flex-col")
   div
-    h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{$t('EE0057')}}
+    h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{modalTitle}}
     input-text(
       v-model:textValue="keyword"
       prependIcon="search"
@@ -58,12 +58,12 @@ div(class="w-161 h-138 px-8 flex flex-col")
         template(v-else)
           div(
             class="w-25 h-25 rounded-md border border-black-500 border-dashed flex items-center justify-center cursor-pointer"
-            @click="openModalAddToWorkspaceCreateCollection"
+            @click="openModalCreateCollectionSimple"
           )
             svg-icon(iconName="add" size="24" class="text-primary")
           template(v-for="node in nodeList")
             template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
-              add-to-workspace-item(
+              node-item-for-modal(
                 class="w-25 cursor-pointer"
                 v-model:selectedList="selectedNodeKeyList"
                 :itemType="node.nodeType"
@@ -72,7 +72,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
                 @click="goTo(node.key)"
               )
             template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
-              add-to-workspace-item(
+              node-item-for-modal(
                 class="w-25"
                 :itemType="node.nodeType"
                 :item="node.value"
@@ -86,9 +86,9 @@ div(class="w-161 h-138 px-8 flex flex-col")
     p(class="text-caption text-assist-blue cursor-pointer" @click="isOnlyShowCollection = !isOnlyShowCollection") {{isOnlyShowCollection ? $t('UU0037') : $t('UU0036')}}
   btn-group(
     class="h-25"
-    :primaryText="$t('UU0035')"
+    :primaryText="actionText"
     :primaryButtonDisabled="selectedNodeKeyList.length === 0"
-    @click:primary="addToWorkspace"
+    @click:primary="innerActionCallback"
     :secondaryButton="false"
   )
 </template>
@@ -98,16 +98,24 @@ import { ref, computed, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { NODE_LOCATION, NODE_TYPE, SORT_BY } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import AddToWorkspaceItem from '@/components/assets/material/AddToWorkspaceItem.vue'
+import NodeItemForModal from '@/components/layout/NodeItemForModal.vue'
 
 export default {
-  name: 'ModalAddToWorkspace',
+  name: 'ModalWorkspaceNodeList',
   components: {
-    AddToWorkspaceItem
+    NodeItemForModal
   },
   props: {
-    materialList: {
-      type: Array,
+    modalTitle: {
+      type: String,
+      required: true
+    },
+    actionText: {
+      type: String,
+      required: true
+    },
+    actionCallback: {
+      type: Function,
       required: true
     }
   },
@@ -268,9 +276,9 @@ export default {
 
     const clearSelect = () => (selectedNodeKeyList.value.length = 0)
 
-    const openModalAddToWorkspaceCreateCollection = () => {
+    const openModalCreateCollectionSimple = () => {
       store.dispatch('helper/pushModal', {
-        component: 'modal-add-to-workspace-create-collection',
+        component: 'modal-create-collection-simple',
         properties: {
           id: rootId.value,
           type: Number(queryParams.type),
@@ -283,28 +291,9 @@ export default {
       })
     }
 
-    const addToWorkspace = async () => {
-      const failMaterialList = await store.dispatch('assets/addToWorkspace', {
-        materialIdList: props.materialList.map(material => material.materialId),
-        targetWorkspaceNodeIdList: selectedNodeKeyList.value.map(nodeKey => {
-          const [type, id] = nodeKey.split('-')
-          return { id, type }
-        })
-      })
-      if (failMaterialList && failMaterialList.length > 0) {
-        store.dispatch('helper/openModal', {
-          component: 'modal-add-to-workspace-fail',
-          properties: {
-            failMaterialList
-          }
-        })
-      } else {
-        store.dispatch('helper/closeModal')
-      }
-
-      if (!failMaterialList || (failMaterialList.length !== props.materialList.length)) {
-        store.commit('helper/PUSH_message', t('EE0062'))
-      }
+    const innerActionCallback = async () => {
+      await props.actionCallback(selectedNodeKeyList.value)
+      store.dispatch('helper/closeModal')
     }
 
     if (routeLocation.value === 'group') {
@@ -329,14 +318,14 @@ export default {
       nodeList,
       search,
       clearSelect,
-      openModalAddToWorkspaceCreateCollection,
+      openModalCreateCollectionSimple,
       setRootId,
       keyword,
       sortOptionList,
       getWorkspaceForModal,
       sort,
-      addToWorkspace,
-      isInKeywordSearch
+      isInKeywordSearch,
+      innerActionCallback
     }
   }
 }
