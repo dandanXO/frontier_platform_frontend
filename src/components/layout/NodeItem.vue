@@ -53,7 +53,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
         template(#content)
           list(class="w-55")
             template(v-for="(block, index) in optionList")
-              list-item(v-for="option in block") {{option.name}}
+              list-item(v-for="option in block" @click.stop="$emit('click:option', option)") {{option.name}}
               div(v-if="index !== optionList.length - 1" class="mx-2 my-1 h-px bg-black-400")
   div(class="text-caption font-bold mt-2 flex items-center justify-between text-primary")
     p(class="line-clamp-1") {{displayName}}
@@ -95,7 +95,7 @@ export default {
       default: () => []
     }
   },
-  emits: ['update:selectedList'],
+  emits: ['update:selectedList', 'click:option'],
   setup (props, { emit }) {
     const isHover = ref(false)
     const refInputCheckbox = ref(null)

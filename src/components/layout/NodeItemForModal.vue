@@ -36,7 +36,7 @@ import { ref, computed } from 'vue'
 import TooltipLocation from '@/components/TooltipLocation.vue'
 
 export default {
-  name: 'AddToWorkspaceItem',
+  name: 'NodeItemForModal',
   components: {
     TooltipLocation
   },

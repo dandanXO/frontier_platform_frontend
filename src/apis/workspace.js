@@ -23,7 +23,11 @@ export default {
         method: 'POST',
         data: formData
       })
-    }
+    },
+    duplicateNode: ({ orgId, workspaceNodeId, targetWorkspaceNodeIdList }) => axios('/org/workspace/node/duplicate', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId, targetWorkspaceNodeIdList }
+    })
   },
   group: {
     getWorkspace: ({ groupId, workspaceNodeId, pagination, search = null, filter = null }) => axios('/org/group/workspace/get', {
@@ -47,6 +51,10 @@ export default {
         method: 'POST',
         data: formData
       })
-    }
+    },
+    duplicateNode: ({ groupId, workspaceNodeId, targetWorkspaceNodeIdList }) => axios('/org/group/workspace/node/duplicate', {
+      method: 'POST',
+      data: { groupId, workspaceNodeId, targetWorkspaceNodeIdList }
+    })
   }
 }
