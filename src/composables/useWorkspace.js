@@ -19,7 +19,7 @@ export default function useWorkspace () {
   }
 
   const editCollection = {
-    functionId: FUNCTION_ID.EDIT_COLLECTION,
+    id: FUNCTION_ID.EDIT_COLLECTION,
     name: t('RR0054'),
     func: () => {
       console.log('here')
@@ -27,7 +27,7 @@ export default function useWorkspace () {
   }
 
   const editMaterial = {
-    functionId: FUNCTION_ID.EDIT_MATERIAL,
+    id: FUNCTION_ID.EDIT_MATERIAL,
     name: t('RR0054'),
     func: () => {
       console.log('here')
@@ -35,7 +35,7 @@ export default function useWorkspace () {
   }
 
   const duplicateNode = {
-    functionId: FUNCTION_ID.DUPLICATE_NODE,
+    id: FUNCTION_ID.DUPLICATE_NODE,
     name: t('RR0076'),
     func: (workspaceNodeId) => {
       store.dispatch('helper/openModal', {
@@ -74,7 +74,7 @@ export default function useWorkspace () {
   }
 
   const moveNode = {
-    functionId: FUNCTION_ID.MOVE_NODE,
+    id: FUNCTION_ID.MOVE_NODE,
     name: t('RR0077'),
     func: (workspaceNodeId) => {
       store.dispatch('helper/openModal', {
@@ -112,15 +112,16 @@ export default function useWorkspace () {
   }
 
   const deleteNode = {
-    functionId: FUNCTION_ID.DELETE_NODE,
+    id: FUNCTION_ID.DELETE_NODE,
     name: t('RR0063'),
-    func: () => {
-      console.log('here')
+    func: (v) => {
+      const workspaceNodeIdList = Array.isArray(v) ? v : [v]
+      console.log('here', workspaceNodeIdList)
     }
   }
 
   const shareNode = {
-    functionId: FUNCTION_ID.SHARE_NODE,
+    id: FUNCTION_ID.SHARE_NODE,
     name: t('RR0079'),
     func: () => {
       console.log('here')

@@ -1,52 +1,54 @@
 <template lang="pug">
-search-table(
-  ref="refSearchTable"
-  @selectAll=""
-  :searchType="SEARCH_TYPE.WORKSPACE"
-  :searchCallback="getWorkspace"
-  :optionSort="optionSort"
-)
-  template(#header-left)
-    div(class="flex items-end")
-      breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="goTo($event.workspaceNodeId)" fontSize="text-h6")
-      p(class="flex text-caption text-black-700 pl-1")
-        span (
-        i18n-t(keypath="RR0068" tag="span")
-          template(#number) {{pagination.totalCount}}
-        span )
-  template(#header-right)
-    btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3") {{$t('UU0057')}}
-    btn(size="sm" prependIcon="add" @click="search") {{$t('UU0055')}}
-  template(v-if="!isFirstLayer" #sub-header)
-    p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('FF0002')}}: {{unixToDate(workspaceCollection.createDate)}}
-  template(#default="{ inSearch }")
-    div(class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
-      div(class="aspect-ratio border border-black-400 border-dashed rounded-md flex justify-center items-center")
-        div(class="grid justify-items-center gap-y-3.5")
-          svg-icon(iconName="add" size="24" class="text-primary")
-          span(class="text-body1 text-primary") {{$t('FF0003')}}
-      template(v-for="node in nodeList")
-        template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
-          node-item(
-            v-model:selectedList="selectedNodeKeyList"
-            :nodeType="node.nodeType"
-            :node="node.value"
-            :displayName="node.value.name"
-            :optionList="optionNodeCollection"
-            :isShowLocation="inSearch"
-            @click="goTo(node.value.workspaceNodeId)"
-            @click:option="$event.func(node.value.workspaceNodeId)"
-          )
-        template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
-          node-item(
-            v-model:selectedList="selectedNodeKeyList"
-            :nodeType="node.nodeType"
-            :node="node.value"
-            :displayName="node.value.materialNo"
-            :optionList="optionNodeMaterial"
-            :isShowLocation="inSearch"
-            @click:option="$event.func(node.value.workspaceNodeId)"
-          )
+div(class="w-full h-full")
+  search-table(
+    ref="refSearchTable"
+    @selectAll="handleSelectAll"
+    :searchType="SEARCH_TYPE.WORKSPACE"
+    :searchCallback="getWorkspace"
+    :optionSort="optionSort"
+  )
+    template(#header-left)
+      div(class="flex items-end")
+        breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="goTo($event.workspaceNodeId)" fontSize="text-h6")
+        p(class="flex text-caption text-black-700 pl-1")
+          span (
+          i18n-t(keypath="RR0068" tag="span")
+            template(#number) {{pagination.totalCount}}
+          span )
+    template(#header-right)
+      btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3") {{$t('UU0057')}}
+      btn(size="sm" prependIcon="add" @click="search") {{$t('UU0055')}}
+    template(v-if="!isFirstLayer" #sub-header)
+      p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('FF0002')}}: {{unixToDate(workspaceCollection.createDate)}}
+    template(#default="{ inSearch }")
+      div(class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
+        div(class="aspect-ratio border border-black-400 border-dashed rounded-md flex justify-center items-center")
+          div(class="grid justify-items-center gap-y-3.5")
+            svg-icon(iconName="add" size="24" class="text-primary")
+            span(class="text-body1 text-primary") {{$t('FF0003')}}
+        template(v-for="node in nodeList")
+          template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
+            node-item(
+              v-model:selectedList="selectedNodeKeyList"
+              :nodeType="node.nodeType"
+              :node="node.data"
+              :displayName="node.data.name"
+              :optionList="optionNodeCollection"
+              :isShowLocation="inSearch"
+              @click="goTo(node.data.workspaceNodeId)"
+              @click:option="$event.func(node.data.workspaceNodeId)"
+            )
+          template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
+            node-item(
+              v-model:selectedList="selectedNodeKeyList"
+              :nodeType="node.nodeType"
+              :node="node.data"
+              :displayName="node.data.materialNo"
+              :optionList="optionNodeMaterial"
+              :isShowLocation="inSearch"
+              @click:option="$event.func(node.data.workspaceNodeId)"
+            )
+  multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeKeyList")
 </template>
 
 <script>
@@ -112,7 +114,7 @@ export default {
         childCollectionList.forEach(collection => {
           list.push({
             nodeType: NODE_TYPE.COLLECTION,
-            value: collection
+            data: collection
           })
         })
       }
@@ -121,7 +123,7 @@ export default {
         childMaterialList.forEach(material => {
           list.push({
             nodeType: NODE_TYPE.MATERIAL,
-            value: material
+            data: material
           })
         })
       }
@@ -191,6 +193,12 @@ export default {
       search()
     }
 
+    const handleSelectAll = () => {
+      const stringifyArr = nodeList.value.map(node => node.value.workspaceNodeId)
+      const duplicateArr = selectedNodeKeyList.value.concat(stringifyArr)
+      selectedNodeKeyList.value = [...new Set(duplicateArr)]
+    }
+
     return {
       getWorkspace,
       optionSort,
@@ -208,7 +216,8 @@ export default {
       optionNodeMaterial,
       isFirstLayer,
       workspaceCollection,
-      unixToDate
+      unixToDate,
+      handleSelectAll
     }
   }
 }

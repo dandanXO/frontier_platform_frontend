@@ -10,15 +10,12 @@ const getMergeRowState = () => ({
 
 const state = () => ({
   materialList: [],
-  addedMaterialList: [],
   preMergeList: [],
   mergedList: [getMergeRowState()]
 })
 
 const getters = {
   materialList: state => state.materialList,
-  addedMaterialList: state => state.addedMaterialList,
-  formalAddedMaterialList: state => state.addedMaterialList.map((item) => JSON.parse(item)),
   preMergeList: state => state.preMergeList
     .map(material => {
       const temp = {}
@@ -31,19 +28,6 @@ const getters = {
 }
 
 const mutations = {
-  CLEAR_addedMaterialList (state) {
-    state.addedMaterialList.length = 0
-  },
-  SET_addedMaterialList (state, arr) {
-    /**
-     * addedMaterialList 是 String 組成的陣列，其中的字串是由 JSON.stringify(object) 轉型而來
-     * 比對時一定要以 string 格式比對，所以下面會判斷 arr 裡面的東西是不是字串，並且進行轉換
-     * 目前有 2 種來源：assets page 裡面的 handleSelectAll（object）、inputCheckbox（string）
-     */
-    state.addedMaterialList = arr.map(item => {
-      return typeof item === 'string' || item instanceof String ? item : JSON.stringify(item)
-    })
-  },
   SET_preMergeList (state, preMergeList) {
     Object.assign(state.preMergeList, [...preMergeList])
   },

@@ -66,8 +66,9 @@ div(class="w-161 h-138 px-8 flex flex-col")
               node-item-for-modal(
                 class="w-25 cursor-pointer"
                 v-model:selectedValue="selectedValue"
-                :itemType="node.nodeType"
-                :item="node.value"
+                :nodeType="node.nodeType"
+                :node="node.data"
+                :displayName="node.data.name"
                 :isShowLocation="isInKeywordSearch"
                 :isMultiSelect="isMultiSelect"
                 @click="goTo(node.key)"
@@ -75,8 +76,9 @@ div(class="w-161 h-138 px-8 flex flex-col")
             template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
               node-item-for-modal(
                 class="w-25"
-                :itemType="node.nodeType"
-                :item="node.value"
+                :nodeType="node.nodeType"
+                :node="node.data"
+                :displayName="node.data.materialNo"
                 :isShowLocation="isInKeywordSearch"
               )
       div(v-if="isSearching && nodeList.length > 0" class="flex justify-center items-center")
@@ -232,7 +234,7 @@ export default {
           pureNodeList.value.push({
             key: `${collection.type}-${collection.workspaceNodeId}`,
             nodeType: NODE_TYPE.COLLECTION,
-            value: collection
+            data: collection
           })
         })
       }
@@ -242,7 +244,7 @@ export default {
           pureNodeList.value.push({
             key: `${material.type}-${material.workspaceNodeId}`,
             nodeType: NODE_TYPE.MATERIAL,
-            value: material
+            data: material
           })
         })
       }

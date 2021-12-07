@@ -33,7 +33,7 @@ export default function useAssets () {
     id: 'cloneTo',
     name: t('RR0056'),
     func: (v) => {
-      const materialIdList = Array.isArray(v) ? v.map(item => item.materialId) : [v.materialId]
+      const materialIdList = Array.isArray(v) ? v.map(material => JSON.parse(material).materialId) : [v.materialId]
       store.dispatch('helper/openModal', {
         component: 'modal-clone-to',
         properties: {
@@ -54,10 +54,10 @@ export default function useAssets () {
           canCrossLocation: routeLocation.value === 'org',
           actionText: t('UU0035'),
           actionCallback: async (selectedNodeKeyList) => {
-            const materialList = Array.isArray(v) ? v : [v]
+            const materialIdList = Array.isArray(v) ? v.map(material => JSON.parse(material).materialId) : [v.materialId]
 
             const failMaterialList = await store.dispatch('assets/addToWorkspace', {
-              materialIdList: materialList.map(material => material.materialId),
+              materialIdList,
               targetWorkspaceNodeIdList: selectedNodeKeyList.map(nodeKey => {
                 const [type, id] = nodeKey.split('-')
                 return { id, type }
@@ -75,7 +75,7 @@ export default function useAssets () {
               store.dispatch('helper/closeModal')
             }
 
-            if (!failMaterialList || (failMaterialList.length !== materialList.length)) {
+            if (!failMaterialList || (failMaterialList.length !== materialIdList.length)) {
               store.commit('helper/PUSH_message', t('EE0062'))
             }
           }
@@ -101,7 +101,7 @@ export default function useAssets () {
     id: 'exportExcel',
     name: t('RR0060'),
     func: async (v) => {
-      const materialIdList = Array.isArray(v) ? v.map(item => item.materialId) : [v.materialId]
+      const materialIdList = Array.isArray(v) ? v.map(material => JSON.parse(material).materialId) : [v.materialId]
       store.dispatch('helper/openModalLoading')
       await store.dispatch('assets/exportMaterial', { materialIdList })
       store.dispatch('helper/closeModalLoading')
@@ -122,7 +122,8 @@ export default function useAssets () {
   const mergeCard = {
     id: 'mergeCard',
     name: t('RR0072'),
-    func: (materialList) => {
+    func: (v) => {
+      const materialList = v.map(material => JSON.parse(material))
       store.commit('assets/SET_preMergeList', materialList)
       store.commit('assets/RESET_mergedList')
       goToAssetsMaterialMerge()
@@ -133,7 +134,7 @@ export default function useAssets () {
     id: 'deleteMaterial',
     name: t('RR0063'),
     func: (v) => {
-      const materialIdList = Array.isArray(v) ? v.map(item => item.materialId) : [v.materialId]
+      const materialIdList = Array.isArray(v) ? v.map(material => JSON.parse(material).materialId) : [v.materialId]
       store.dispatch('helper/openModalConfirm', {
         title: t('EE0075'),
         content: t('EE0076'),
@@ -141,9 +142,6 @@ export default function useAssets () {
         secondaryHandler: async () => {
           store.dispatch('helper/openModalLoading')
           await store.dispatch('assets/deleteMaterial', { materialIdList })
-          if (Array.isArray(v)) {
-            store.commit('assets/CLEAR_addedMaterialList')
-          }
           store.dispatch('helper/closeModalLoading')
           reloadRootRoute()
         }
