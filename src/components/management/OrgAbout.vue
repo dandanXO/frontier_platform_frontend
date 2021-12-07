@@ -100,12 +100,22 @@ export default {
           removeHandler: async () => {
             await store.dispatch('organization/removeOrgLogo')
           },
-          uploadHandler: async (cropImage, originalImage) => {
-            const formData = new FormData()
-            formData.append('orgId', store.getters['organization/orgId'])
-            formData.append('logo', cropImage)
-            formData.append('originalLogo', originalImage)
-            await store.dispatch('organization/updateOrgLogo', formData)
+          afterUploadHandler: (image, cropRectSize) => {
+            store.dispatch('helper/replaceModal', {
+              component: 'modal-crop-image',
+              header: t('BB0032'),
+              properties: {
+                image,
+                cropRectSize,
+                afterCropHandler: async (cropImage, originalImage) => {
+                  const formData = new FormData()
+                  formData.append('orgId', store.getters['organization/orgId'])
+                  formData.append('logo', cropImage)
+                  formData.append('originalLogo', originalImage)
+                  await store.dispatch('organization/updateOrgLogo', formData)
+                }
+              }
+            })
           }
         }
       })

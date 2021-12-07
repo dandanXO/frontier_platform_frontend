@@ -1,21 +1,21 @@
 <template lang="pug">
-div(class='w-44 rounded bg-black-100')
+div(class="w-44 rounded bg-black-100")
   div(
-    class='relative cursor-pointer h-33 rounded-t bg-black-400 flex justify-center items-center'
+    class="relative cursor-pointer h-33 rounded-t bg-black-400 flex justify-center items-center"
     @click="openModalPreview(attachment)"
   )
     svg-icon(iconName='open_in_full' size="20" class='absolute top-1.5 left-1.5 text-black-0')
     img(v-if="['.png', '.jpg', '.gif'].includes(attachment.extension)" :src="attachment.url" class="max-h-full max-w-full")
     video(v-else-if="['.mov', '.mp4'].includes(attachment.extension)")
       source(:src="attachment.url" type="video/mp4")
-    svg-icon(v-else iconName='folder' size="50" class='text-black-100')
-  div(class='h-11 flex justify-between items-center px-3 py-4')
-    div(class='text-primary text-caption') {{attachment.displayFileName}}
+    svg-icon(v-else iconName="folder" size="50" class="text-black-100")
+  div(class="h-11 flex justify-between items-center px-3 py-4")
+    div(class="text-primary text-caption line-clamp-1") {{attachment.displayFileName}}
     svg-icon(
-      v-if='!isReadOnly'
+      v-if="!isReadOnly"
       iconName="delete"
       size="20"
-      class='text-black-700 cursor-pointer'
+      class="text-black-700 cursor-pointer"
       @click="$emit('handleRemove', attachment)"
     )
 </template>

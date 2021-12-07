@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="croped-image")
   div(:style="styles")
-    div
+    div(:style="transformRotate")
       img(
         ref="body"
         draggable="false"
@@ -20,6 +20,7 @@ div(class="croped-image")
 <script>
 import { computed, reactive, ref } from 'vue'
 export default {
+  name: 'CroppedImage',
   props: {
     movable: {
       type: Boolean,
@@ -32,6 +33,10 @@ export default {
     imageSrc: {
       type: String,
       required: true
+    },
+    rotationAngle: {
+      type: Number,
+      default: 0
     },
     options: {
       type: Object,
@@ -47,6 +52,10 @@ export default {
     const control = { xSign: 1, ySign: 1, isHorizon: false }
     const center = { x: 0, y: 0 }
     const body = ref(null)
+
+    const transformRotate = computed(() => {
+      return { transform: `rotate(${props.rotationAngle}deg)` }
+    })
 
     const scalers = reactive([
       {
@@ -313,6 +322,7 @@ export default {
       scaleStart,
       scalers,
       cursorStyles,
+      transformRotate,
       body
     }
   }

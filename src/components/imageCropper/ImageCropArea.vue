@@ -1,30 +1,43 @@
 <template lang="pug">
 div(class="w-50 h-50 relative")
   div(class="absolute" :style="cropRectStyles")
-    croped-image(:imageSrc="image.src" :options="options" @update="updateOptions" isTransparent)
+    cropped-image(
+      :imageSrc="image.src"
+      :options="options"
+      :rotationAngle="rotationAngle"
+      isTransparent
+      @update="updateOptions"
+    )
   div(
     ref="cropRect"
     class="overflow-hidden bg-black-0"
     :style="cropRectStyles"
   )
     div(class="cursor-move" :style="cropRectStyles")
-      croped-image(:imageSrc="image.src" :options="options" @update="updateOptions")
+      cropped-image(
+        :imageSrc="image.src"
+        :options="options"
+        :rotationAngle="rotationAngle"
+        @update="updateOptions"
+      )
 </template>
 
 <script>
-import CropedImage from '@/components/management/logo/CropedImage.vue'
+import CroppedImage from '@/components/imageCropper/CroppedImage.vue'
 import { ref, computed, reactive } from 'vue'
 import domtoimage from 'dom-to-image'
 
 export default {
-  name: 'ImageCrop',
-  components: {
-    CropedImage
-  },
+  name: 'ImageCropArea',
+  components: { CroppedImage },
   props: {
     cropRectSize: {
       type: Number,
       required: true
+    },
+    rotationAngle: {
+      type: Number,
+      default: 0
     },
     image: {
       type: Object,

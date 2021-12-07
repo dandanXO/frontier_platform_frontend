@@ -6,11 +6,11 @@ div(class="w-131 px-8")
       p(class="text-body2 font-bold text-primary pb-4.5") {{$t('EE0048')}}
       overlay-scrollbar-container(class="min-h-31" :class="{ 'h-66': imageList.length > 3 }")
         div(class="grid grid-cols-4 gap-x-5 gap-y-4.5")
-          div(class="h-25 rounded border border-dashed border-black-500 flex justify-center items-center cursor-pointer")
+          div(class="h-25 rounded border border-dashed border-black-500 flex justify-center items-center cursor-pointer" @click="openModalUploadAttachment")
             svg-icon(iconName="add" size="24" class="text-primary")
           label(v-for="(image, index) in imageList" class="h-30.5")
-            div(class="h-25 rounded border overflow-hidden relative")
-              img(v-if="!!image.imgSrc" :src="image.imgSrc")
+            div(class="h-25 rounded border relative flex justify-center items-center")
+              img(v-if="!!image.imgSrc" :src="image.imgSrc" class='max-w-full max-h-full')
               div(v-else class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-body2 font-bold text-black-400") {{$t('RR0103')}}
               input-radio(
                 v-model:inputValue="coverImageIndex"
@@ -18,7 +18,7 @@ div(class="w-131 px-8")
                 size="20"
                 class="absolute top-1 left-1"
               )
-            p(class="text-body2 font-bold text-primary pt-1.5") {{image.name}}
+            p(class="text-body2 font-bold text-primary pt-1.5 line-clamp-1") {{image.name}}
   div(class="h-25 flex justify-center items-center")
     div(class="grid grid-cols-2 gap-x-3")
       btn(size="md" type="secondary" @click="closeModal") {{$t('UU0002') }}
@@ -34,8 +34,8 @@ import { useI18n } from 'vue-i18n'
 export default {
   name: 'ModalChangeCover',
   setup () {
-    const store = useStore()
     const { t } = useI18n()
+    const store = useStore()
     const material = computed(() => store.getters['material/material'])
     const coverImageIndex = ref(0)
     const { coverMode, attachmentList } = material.value
@@ -52,46 +52,16 @@ export default {
       const { faceSideImg, backSideImg, attachmentList } = material.value
       const list = []
 
-      // const faceSideImg = {
-      //   crop: null,
-      //   ruler: '',
-      //   original: 'https://picsum.photos/id/1/200/200',
-      //   dpi: 300,
-      //   u3mCrop: '',
-      //   u3mOriginal: ''
-      // }
-      // const backSideImg = {
-      //   crop: 'https://picsum.photos/id/1/200/200',
-      //   ruler: 'https://picsum.photos/id/1/200/200',
-      //   original: 'https://picsum.photos/id/1/200/200',
-      //   dpi: 300,
-      //   u3mCrop: '',
-      //   u3mOriginal: ''
-      // }
-      // const attachmentList = [
-      //   {
-      //     materialAttachmentId: 0,
-      //     displayFileName: 'string',
-      //     url: 'http://20200611170258423_HPCD-012-1.pdf',
-      //     isCover: false
-      //   },
-      //   {
-      //     materialAttachmentId: 1,
-      //     displayFileName: 'a1',
-      //     url: 'http://20200611170258423_HPCD-012-1.png',
-      //     isCover: false
-      //   }
-      // ]
-
       list.push({ name: t('RR0075'), imgSrc: faceSideImg.crop }, { name: t('RR0078'), imgSrc: backSideImg.crop })
 
       for (let i = 0; i < attachmentList.length; i++) {
-        const { displayFileName, url } = attachmentList[i]
+        const { materialAttachmentId, displayFileName, url } = attachmentList[i]
         const splitedUrl = url.split('.')
         const fileType = splitedUrl[splitedUrl.length - 1]
 
         if (['jpg', 'jpeg', 'png'].includes(fileType)) {
           list.push({
+            materialAttachmentId,
             name: displayFileName,
             imgSrc: url
           })
@@ -101,17 +71,60 @@ export default {
       return list
     })
 
-    const choose = () => {
+    const choose = async () => {
       let coverMode
 
-      if (coverImageIndex.value - 2 > 0) {
-        /**
-         * @todo crop attachment
-         */
+      if (coverImageIndex.value - 2 >= 0) {
+        const targetAttachment = imageList.value[coverImageIndex.value]
+        const { materialAttachmentId, imgSrc } = targetAttachment
+        const image = await getImage(imgSrc)
+        store.dispatch('helper/pushModal', {
+          component: 'modal-crop-image',
+          header: t('EE0048'),
+          properties: {
+            image,
+            cropRectSize: 200,
+            afterCropHandler: async (cropedImage, file) => {
+              await store.dispatch('material/changeCoverImg', {
+                coverMode: COVER_MODE.SUP,
+                materialAttachmentId,
+                attachmentCropImg: cropedImage
+              })
+              closeModal()
+            }
+          }
+        })
       } else {
         coverMode = coverImageIndex.value + 1
         store.dispatch('material/changeCoverImg', { coverMode })
       }
+    }
+
+    const getImage = (url) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image()
+
+        img.onload = () => {
+          const { width, height, src } = img
+          resolve({ width, height, src })
+        }
+
+        img.src = url
+      })
+    }
+
+    const openModalUploadAttachment = () => {
+      store.dispatch('helper/pushModal', {
+        component: 'modal-upload-attachment',
+        properties: {
+          uploadHandler: (file, fileName) => {
+            store.dispatch('material/uploadAttachmentWhenUpdate', {
+              file,
+              fileName
+            })
+          }
+        }
+      })
     }
 
     const closeModal = () => { store.dispatch('helper/closeModal') }
@@ -119,6 +132,7 @@ export default {
     return {
       choose,
       closeModal,
+      openModalUploadAttachment,
       imageList,
       coverImageIndex
     }
