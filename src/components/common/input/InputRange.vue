@@ -1,6 +1,16 @@
 <template lang="pug">
 div(class="px-1")
-  vue-slider(v-model="innerRange" v-bind="options")
+  div(v-if="startAtCenter" class="grid grid-cols-12 gap-1 justify-center items-center")
+    div(class="col-span-2")
+      slot(name="min-end" :min="min")
+    vue-slider(v-model="innerRange" v-bind="optionForCentered" class="col-span-8" :disabled="disabled")
+      template(#dot)
+        div(class="w-3 h-3 bg-brand rounded-full")
+      template(#tooltip="{ value }")
+        div(class="text-black-700 text-body2 mt-1") {{ value }}
+    div(class="col-span-2")
+      slot(name="max-end" :max="max")
+  vue-slider(v-else v-model="innerRange" v-bind="optionForNormal")
     template(#dot)
       div(class='w-2 h-5 bg-brand transform -translate-y-1')
     template(#tooltip="{ value }")
@@ -28,20 +38,32 @@ export default {
       default: 100
     },
     range: {
-      type: Array
+      type: [Number, Array]
+    },
+    direction: {
+      type: String,
+      default: 'ltr',
+      validator: (v) => {
+        return ['ltr', 'rtl', 'ttb', 'btt'].indexOf(v) !== -1
+      }
+    },
+    startAtCenter: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['update:range'],
   setup (props, { emit }) {
     const fakeMaxValue = props.max + 1
 
-    const options = {
-      dotSize: 8,
-      height: 4,
-      min: props.min,
-      max: fakeMaxValue,
-      tooltip: 'always',
+    const common = {
+      contained: true,
       tooltipPlacement: 'bottom',
+      direction: props.direction,
       processStyle: {
         'background-color': '#21b1866e'
       },
@@ -50,11 +72,47 @@ export default {
       }
     }
 
+    const optionForNormal = {
+      ...common,
+      tooltip: 'always',
+      dotSize: 8,
+      height: 4,
+      min: props.min,
+      max: fakeMaxValue
+    }
+
+    const optionForCentered = {
+      ...common,
+      tooltip: 'none',
+      dotSize: 12,
+      height: 2,
+      min: props.min,
+      max: props.max,
+      process: false,
+      hideLabel: true,
+      marks: {
+        0: {
+          style: {
+            width: '2px',
+            height: '10px',
+            display: 'block',
+            borderRadius: '2px',
+            backgroundColor: '#e0e0e0',
+            transform: 'translate(0, -4px)'
+          }
+        }
+      }
+    }
+
     const innerRange = computed({
       get: () => {
-        const inputMin = props.range[0] === null ? props.min : props.range[0]
-        const inputMax = props.range[1] === null ? fakeMaxValue : props.range[1]
-        return [inputMin, inputMax]
+        if (props.startAtCenter) {
+          return props.range
+        } else {
+          const inputMin = props.range[0] === null ? props.min : props.range[0]
+          const inputMax = props.range[1] === null ? fakeMaxValue : props.range[1]
+          return [inputMin, inputMax]
+        }
       },
       set: (v) => emit('update:range', v)
     })
@@ -64,7 +122,8 @@ export default {
     }
 
     return {
-      options,
+      optionForNormal,
+      optionForCentered,
       innerRange,
       fakeMaxValue,
       reset

@@ -40,7 +40,8 @@ export default {
     ModalWorkspaceNodeList: defineAsyncComponent(() => import('@/components/workspace/ModalWorkspaceNodeList.vue')),
     ModalCreateCollectionSimple: defineAsyncComponent(() => import('@/components/workspace/ModalCreateCollectionSimple.vue')),
     ModalAddToWorkspaceFail: defineAsyncComponent(() => import('@/components/assets/material/ModalAddToWorkspaceFail.vue')),
-    ModalPreviewAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalPreviewAttachment'))
+    ModalPreviewAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalPreviewAttachment')),
+    ModalCropImage: defineAsyncComponent(() => import('@/components/imageCropper/ModalCropImage'))
   },
   props: {
     component: {

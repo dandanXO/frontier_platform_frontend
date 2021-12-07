@@ -142,8 +142,8 @@ div(class="w-full h-full flex justify-center")
                         p {{inventory.quantity}}
                         p {{inventory.unit}}
           template(v-else-if="currentTab === TAB.SUP")
-            div(class='flex gap-5')
-              attachment-item(v-for='attachment in attachmentList' :attachment='attachment' :isReadOnly='true')
+            div(class="flex flex-wrap gap-5")
+              attachment-item(v-for="attachment in attachmentList" :attachment="attachment" :isReadOnly="true")
 </template>
 
 <script>
