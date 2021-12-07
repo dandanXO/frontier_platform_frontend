@@ -1,13 +1,15 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation'
-import { inject } from 'vue'
+import { inject, computed } from 'vue'
 
 export default function useAssets () {
   const { t } = useI18n()
   const { goToAssetMaterialEdit, goToAssetsMaterialMerge } = useNavigation()
   const store = useStore()
   const reloadRootRoute = inject('reloadRootRoute')
+
+  const routeLocation = computed(() => store.getters['helper/routeLocation'])
 
   const editMaterial = {
     id: 'editMaterial',
@@ -49,6 +51,7 @@ export default function useAssets () {
         component: 'modal-workspace-node-list',
         properties: {
           modalTitle: t('EE0057'),
+          canCrossLocation: routeLocation.value === 'org',
           actionText: t('UU0035'),
           actionCallback: async (selectedNodeKeyList) => {
             const materialList = Array.isArray(v) ? v : [v]
@@ -60,6 +63,7 @@ export default function useAssets () {
                 return { id, type }
               })
             })
+
             if (failMaterialList && failMaterialList.length > 0) {
               store.dispatch('helper/openModal', {
                 component: 'modal-add-to-workspace-fail',

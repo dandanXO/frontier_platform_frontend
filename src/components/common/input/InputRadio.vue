@@ -1,7 +1,7 @@
 <template lang="pug">
 label(class="flex items-center" :for="value")
-  svg-icon(v-if="inputValue === value" iconName="radio_button_checked" :size="size" class="text-brand")
-  svg-icon(v-else iconName="radio_button_unchecked" :size="size" class="text-black-400")
+  svg-icon(v-if="inputValue === value" iconName="radio_button_checked" :size="size" :class="[checkColor]")
+  svg-icon(v-else iconName="radio_button_unchecked" :size="size" :class="[uncheckColor]")
   input(type="radio"
     class="hidden"
     v-model="inputValue"
@@ -31,6 +31,14 @@ export default {
     size: {
       type: String,
       default: '24'
+    },
+    checkColor: {
+      type: String,
+      default: 'text-brand'
+    },
+    uncheckColor: {
+      type: String,
+      default: 'text-black-400'
     }
   },
   emits: ['update:inputValue'],

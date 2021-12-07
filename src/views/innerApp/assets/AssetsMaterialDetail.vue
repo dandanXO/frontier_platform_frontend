@@ -30,7 +30,7 @@ div(class="w-full h-full flex justify-center")
             div
               h5(class="text-h5 font-bold text-primary pb-3") {{$t('EE0002')}}
               div(class="grid gap-y-2")
-                p(v-for='item in materialBasicInfo' class='text-body2 text-primary line-clamp-1') {{item.name}} : {{item.value}}
+                p(v-for='item in materialBasicInfo' class='text-body2 text-primary line-clamp-1') {{item.name}}: {{item.value}}
             //- Colors
             div
               h5(class="text-h5 font-bold text-primary pb-3") {{$t('EE0015')}}
@@ -58,14 +58,14 @@ div(class="w-full h-full flex justify-center")
                         span(class="line-height-1.6") {{$t('EE0021')}}
                         span(class="text-body2 text-assist-blue underline line-height-1.6") {{$t('UU0029')}}
               template(v-else-if="material.u3m.status === U3M_STATUS.INITIAL")
-                p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0019')}}
+                p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}}: {{$t('EE0019')}}
               template(v-if="material.u3m.status === U3M_STATUS.PROCESSING")
-                p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0022')}}
+                p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}}: {{$t('EE0022')}}
               template(v-else-if="material.u3m.status === U3M_STATUS.COMPLETED")
-                p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0018')}} &nbsp
+                p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}}: {{$t('EE0018')}} &nbsp
                   span(class="text-assist-blue underline cursor-pointer") {{$t('UU0005')}}
               template(v-else-if="material.u3m.status === U3M_STATUS.FAIL")
-                p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0024')}}
+                p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}}: {{$t('EE0024')}}
                   tooltip(placement="top" class="pl-1")
                     template(#trigger)
                       svg-icon(iconName="info_outline" size="14")
