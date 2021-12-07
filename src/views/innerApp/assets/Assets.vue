@@ -36,15 +36,28 @@ div(class="w-full h-full")
           @resize="resize"
           :buffer="currentItemSize * 3"
         )
-          row-item(:key="item.materialId" :material='item' @mouseenter="onMouseEnter")
-          div(v-if='index !== materialList.length - 1' class='border-b mx-7.5 my-5')
+          row-item(:key="item.materialId" :material="item" v-model:selectedList="selectedMaterialList" @mouseenter="onMouseEnter")
+          div(v-if="index !== materialList.length - 1" class="border-b mx-7.5 my-5")
         div(v-show="isGrid" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5")
-          grid-item(v-for='material in materialList' :key="material.materialId" :material='material')
+          grid-item(v-for="material in materialList" :key="material.materialId" :material="material" v-model:selectedList="selectedMaterialList")
       div(v-else class="flex flex-col justify-center items-center")
         div(class="border border-black-400 rounded-md border-dashed p-2 mt-40 cursor-pointer" @click="goToMaterialUpload")
           svg-icon(iconName="add" size="24" class="text-primary")
         p(class="text-body2 text-primary pt-3") {{$t('EE0079')}}
-  multi-select-menu(:options='optionMultiSelect')
+  multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedMaterialList")
+    template(#default="{ option }")
+      qr-code-general(v-if="option.id === 'printQRCode'")
+        template(#activator="{ generatePdf }")
+          div(
+            class="whitespace-nowrap cursor-pointer hover:text-brand px-5"
+            @click="generatePdf(selectedMaterialList)"
+          ) {{option.name}}
+      qr-code-a4(v-else-if="option.id === 'printCard'")
+        template(#activator="{ generatePdf }")
+          div(
+            class="whitespace-nowrap cursor-pointer hover:text-brand px-5"
+            @click="generatePdf(selectedMaterialList)"
+          ) {{option.name}}
 </template>
 
 <script>
@@ -52,6 +65,8 @@ import SearchTable from '@/components/layout/SearchTable'
 import RowItem from '@/components/assets/material/list/RowItem'
 import GridItem from '@/components/assets/material/list/GridItem'
 import GridOrRow from '@/components/assets/material/list/GridOrRow'
+import QrCodeA4 from '@/components/qrcode/QrCodeA4'
+import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
@@ -68,7 +83,9 @@ export default {
     RecycleScroller,
     RowItem,
     GridItem,
-    GridOrRow
+    GridOrRow,
+    QrCodeA4,
+    QrCodeGeneral
   },
   setup () {
     const store = useStore()
@@ -77,7 +94,7 @@ export default {
     const currentItemSize = ref(379)
     const { printCard, downloadU3M, cloneTo, addToWorkspace, exportExcel, printQRCode, mergeCard, deleteMaterial } = useAssets()
 
-    const addedMaterialList = computed(() => store.getters['assets/addedMaterialList'])
+    const selectedMaterialList = ref([])
     const materialList = computed(() => store.getters['assets/materialList'])
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const optionSort = computed(() => ({
@@ -98,14 +115,14 @@ export default {
       printQRCode,
       downloadU3M,
       exportExcel,
-      { ...mergeCard, disabled: addedMaterialList.value.length < 2 },
+      { ...mergeCard, disabled: selectedMaterialList.value.length < 2 },
       deleteMaterial
     ])
 
     const handleSelectAll = () => {
       const stringifyArr = materialList.value.map(item => JSON.stringify(item))
-      const duplicateArr = addedMaterialList.value.concat(stringifyArr)
-      store.commit('assets/SET_addedMaterialList', [...new Set(duplicateArr)])
+      const duplicateArr = selectedMaterialList.value.concat(stringifyArr)
+      selectedMaterialList.value = [...new Set(duplicateArr)]
     }
 
     const getMaterialList = async (targetPage = 1) => await store.dispatch('assets/getMaterialList', { targetPage })
@@ -139,7 +156,8 @@ export default {
       currentItemSize,
       resize,
       getMaterialList,
-      SEARCH_TYPE
+      SEARCH_TYPE,
+      selectedMaterialList
     }
   }
 }

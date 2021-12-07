@@ -15,7 +15,6 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
     div(v-if="isHover || checked" class="absolute top-0 left-0 z-10 w-full h-11")
       div(class="bg-linear w-full h-full rounded-t-md")
       input-checkbox(
-        ref="refInputCheckbox"
         v-if="isHover || checked"
         v-model:inputValue="innerSelectedList"
         :value="node.workspaceNodeId"
@@ -98,7 +97,6 @@ export default {
   emits: ['update:selectedList', 'click:option'],
   setup (props, { emit }) {
     const isHover = ref(false)
-    const refInputCheckbox = ref(null)
 
     const nodeHoverInfo = ref(null)
 
@@ -134,12 +132,11 @@ export default {
       set: (v) => emit('update:selectedList', v)
     })
 
-    const checked = computed(() => refInputCheckbox.value?.checked)
+    const checked = computed(() => props.selectedList.includes(props.node.workspaceNodeId))
 
     return {
       isHover,
       innerSelectedList,
-      refInputCheckbox,
       checked,
       NODE_TYPE,
       nodeHoverInfo
