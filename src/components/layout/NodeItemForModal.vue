@@ -11,15 +11,26 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
           img(v-if="item.coverImgList[2]" :src="item.coverImgList[2]" class="w-full h-full")
       div(class="w-full h-7.5 absolute top-0 left-0")
         div(class="bg-linear w-full h-full rounded-t-md")
-        input-checkbox(
-          v-model:inputValue="innerSelectedList"
-          :value="`${item.type}-${item.workspaceNodeId}`"
-          size="20"
-          class="absolute top-1 left-1 cursor-pointer"
-          iconColor="text-black-0"
-          uncheckColor="text-black-0"
-          @click.stop
-        )
+        template(v-if="isMultiSelect")
+          input-checkbox(
+            v-model:inputValue="multipleSelectedValue"
+            :value="`${item.type}-${item.workspaceNodeId}`"
+            size="20"
+            class="absolute top-1 left-1 cursor-pointer"
+            iconColor="text-black-0"
+            uncheckColor="text-black-0"
+            @click.stop
+          )
+        template(v-else)
+          input-radio(
+            v-model:inputValue="singleSelectedValue"
+            :value="`${item.type}-${item.workspaceNodeId}`"
+            size="20"
+            class="absolute top-1 left-1 cursor-pointer"
+            checkColor="text-black-0"
+            uncheckColor="text-black-0"
+            @click.stop
+          )
       div(v-if="item.hasChildCollection" class="w-full h-7.5 absolute bottom-0 left-0")
         div(class="bg-linear w-full h-full rounded-t-md transform rotate-180")
         svg-icon(iconName="folder" class="text-black-0" size="14" class="absolute right-2 bottom-2")
@@ -49,15 +60,19 @@ export default {
       type: Object,
       required: true
     },
-    selectedList: {
-      type: Array
+    isMultiSelect: {
+      type: Boolean,
+      default: true
+    },
+    selectedValue: {
+      type: Object
     },
     isShowLocation: {
       type: Boolean,
       default: false
     }
   },
-  emits: ['update:selectedList'],
+  emits: ['update:selectedValue'],
   setup (props, { emit }) {
     const isHover = ref(false)
     const displayName = computed(() => {
@@ -66,15 +81,29 @@ export default {
         : props.item.materialNo
     })
 
-    const innerSelectedList = computed({
-      get: () => props.selectedList,
-      set: (v) => emit('update:selectedList', v)
+    const multipleSelectedValue = computed({
+      get: () => props.selectedValue.multiple,
+      set: (v) => {
+        const selectedValue = props.selectedValue
+        selectedValue.multiple = v
+        emit('update:selectedValue', selectedValue)
+      }
+    })
+
+    const singleSelectedValue = computed({
+      get: () => props.selectedValue.single,
+      set: (v) => {
+        const selectedValue = props.selectedValue
+        selectedValue.single = v
+        emit('update:selectedValue', selectedValue)
+      }
     })
 
     return {
       isHover,
       displayName,
-      innerSelectedList,
+      multipleSelectedValue,
+      singleSelectedValue,
       NODE_TYPE
     }
   }

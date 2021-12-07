@@ -27,6 +27,10 @@ export default {
     duplicateNode: ({ orgId, workspaceNodeId, targetWorkspaceNodeIdList }) => axios('/org/workspace/node/duplicate', {
       method: 'POST',
       data: { orgId, workspaceNodeId, targetWorkspaceNodeIdList }
+    }),
+    moveNode: ({ orgId, workspaceNodeId, targetWorkspaceNodeId }) => axios('/org/workspace/node/move', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId, targetWorkspaceNodeId }
     })
   },
   group: {
@@ -55,6 +59,10 @@ export default {
     duplicateNode: ({ groupId, workspaceNodeId, targetWorkspaceNodeIdList }) => axios('/org/group/workspace/node/duplicate', {
       method: 'POST',
       data: { groupId, workspaceNodeId, targetWorkspaceNodeIdList }
+    }),
+    moveNode: ({ groupId, workspaceNodeId, targetWorkspaceNodeId }) => axios('/org/group/workspace/node/move', {
+      method: 'POST',
+      data: { groupId, workspaceNodeId, targetWorkspaceNodeId }
     })
   }
 }

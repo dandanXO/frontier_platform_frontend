@@ -6,19 +6,19 @@ div(class="w-161 h-138 px-8 flex flex-col")
       v-model:textValue="keyword"
       prependIcon="search"
       :placeholder="$t('EE0059')"
-      :disabled="isInOrgRoot"
+      :disabled="isInRoot"
       @enter="search"
     )
   div(class="flex-grow flex flex-col")
     div(class="relative z-20 flex justify-between items-center py-4")
       breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="goTo($event.key)")
       div(class="flex items-center")
-        div(v-if="selectedNodeKeyList.length > 0" class="flex items-center")
+        div(v-if="isMultiSelect && selectedValue.multiple.length > 0" class="flex items-center")
           svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
           i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption")
-            template(#number) {{selectedNodeKeyList.length}}
+            template(#number) {{selectedValue.multiple.length}}
         tooltip(
-          v-if="!isInOrgRoot"
+          v-if="!isInRoot"
           placement="bottom-end"
           :manual="true"
           :showArrow="false"
@@ -37,17 +37,17 @@ div(class="w-161 h-138 px-8 flex flex-col")
       svg-icon(iconName="loading" size="92" class="text-brand")
     overlay-scrollbar-container(v-show="!isSearching || nodeList.length > 0" class="flex-grow -mx-8" @reachBottom="infiniteScroll")
       div(class="grid grid-flow-row grid-cols-5 auto-rows-auto gap-5 px-8")
-        template(v-if="isInOrgRoot")
+        template(v-if="isInRoot")
           div(v-for="item in orgAndGroupList"
             class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden"
-            :class="[selectedNodeKeyList.includes(item.key) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
+            :class="[isMultiSelect && selectedValue.multiple.includes(item.key) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
             @click="goTo(item.key), setRootId(item.id)"
           )
             p(class="text-caption text-center line-height-1.6 font-bold line-clamp-3") {{item.name}}
             div(class="w-full h-7.5 absolute top-0 left-0")
               div(class="bg-linear w-full h-full rounded-t-md")
               input-checkbox(
-                v-model:inputValue="selectedNodeKeyList"
+                v-model:inputValue="selectedValue.multiple"
                 :value="item.key"
                 size="20"
                 class="cursor-pointer absolute top-1 left-1 -z-1"
@@ -65,10 +65,11 @@ div(class="w-161 h-138 px-8 flex flex-col")
             template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
               node-item-for-modal(
                 class="w-25 cursor-pointer"
-                v-model:selectedList="selectedNodeKeyList"
+                v-model:selectedValue="selectedValue"
                 :itemType="node.nodeType"
                 :item="node.value"
                 :isShowLocation="isInKeywordSearch"
+                :isMultiSelect="isMultiSelect"
                 @click="goTo(node.key)"
               )
             template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
@@ -80,14 +81,14 @@ div(class="w-161 h-138 px-8 flex flex-col")
               )
       div(v-if="isSearching && nodeList.length > 0" class="flex justify-center items-center")
         svg-icon(iconName="loading" size="54" class="text-brand")
-  div(v-if="!isInOrgRoot" class="w-full h-8.5 mt-3.5 px-2.5 bg-black-50 flex items-center gap-x-1")
+  div(v-if="!isInRoot" class="w-full h-8.5 mt-3.5 px-2.5 bg-black-50 flex items-center gap-x-1")
     svg-icon(iconName="error_outline" size="14" class="text-primary")
     p(class="text-caption text-primary") {{isOnlyShowCollection ? $t('EE0061'): $t('EE0060')}}
     p(class="text-caption text-assist-blue cursor-pointer" @click="isOnlyShowCollection = !isOnlyShowCollection") {{isOnlyShowCollection ? $t('UU0037') : $t('UU0036')}}
   btn-group(
     class="h-25"
     :primaryText="actionText"
-    :primaryButtonDisabled="selectedNodeKeyList.length === 0"
+    :primaryButtonDisabled="actionButtonDisabled"
     @click:primary="innerActionCallback"
     :secondaryButton="false"
   )
@@ -117,6 +118,14 @@ export default {
     actionCallback: {
       type: Function,
       required: true
+    },
+    canCrossLocation: {
+      type: Boolean,
+      default: false
+    },
+    isMultiSelect: {
+      type: Boolean,
+      default: true
     }
   },
   setup (props) {
@@ -131,7 +140,10 @@ export default {
     const isSearching = ref(false)
     const isOnlyShowCollection = ref(false)
     const pureNodeList = ref([])
-    const selectedNodeKeyList = ref([])
+    const selectedValue = ref({
+      multiple: [],
+      single: ''
+    })
     const appendedBreadcrumbsList = ref([])
     const keyword = ref('')
     const queryParams = reactive({
@@ -164,12 +176,21 @@ export default {
     })
     const breadcrumbsList = computed(() => {
       const list = [...appendedBreadcrumbsList.value]
-      let key = 'root'
+      let key
 
-      if (routeLocation.value === 'group') {
-        const { workspaceNodeId, type } = store.getters['group/group']
-        key = `${type}-${workspaceNodeId}`
+      if (props.canCrossLocation) {
+        key = 'root'
+      } else {
+        if (routeLocation.value === 'org') {
+          const { workspaceNodeId } = store.getters['organization/organization']
+          key = `${NODE_LOCATION.ORG}-${workspaceNodeId}`
+        }
+        if (routeLocation.value === 'group') {
+          const { workspaceNodeId } = store.getters['group/group']
+          key = `${NODE_LOCATION.GROUP}-${workspaceNodeId}`
+        }
       }
+
       list.unshift({
         name: t('EE0058'),
         key
@@ -177,7 +198,7 @@ export default {
       return list
     })
     const isInKeywordSearch = computed(() => !!queryParams.keyword)
-    const isInOrgRoot = computed(() => routeLocation.value === 'org' && breadcrumbsList.value.length === 1)
+    const isInRoot = computed(() => props.canCrossLocation && breadcrumbsList.value.length === 1)
     const nodeList = computed(() => {
       if (isOnlyShowCollection.value) {
         return pureNodeList.value.filter(node => node.nodeType === NODE_TYPE.COLLECTION)
@@ -186,6 +207,11 @@ export default {
         return pureNodeList.value.filter(node => node.nodeType === NODE_TYPE.COLLECTION)
       }
       return pureNodeList.value
+    })
+    const actionButtonDisabled = computed(() => {
+      return props.isMultiSelect
+        ? selectedValue.value.multiple.length === 0
+        : !selectedValue.value.single
     })
 
     const setRootId = (id) => (rootId.value = id)
@@ -196,12 +222,10 @@ export default {
       const { pagination, workspaceCollection } = await store.dispatch('workspace/getWorkspaceForModal', queryParams)
       totalPage.value = pagination.totalPage
 
-      if (workspaceCollection.breadcrumbList.length > 0) {
-        appendedBreadcrumbsList.value = workspaceCollection.breadcrumbList.map(item => ({
-          key: `${item.type}-${item.workspaceNodeId}`,
-          name: item.name
-        }))
-      }
+      appendedBreadcrumbsList.value = workspaceCollection.breadcrumbList.map(item => ({
+        key: `${item.type}-${item.workspaceNodeId}`,
+        name: item.name
+      }))
 
       if (workspaceCollection.childCollectionList.length > 0) {
         workspaceCollection.childCollectionList.forEach(collection => {
@@ -274,7 +298,7 @@ export default {
       }
     }
 
-    const clearSelect = () => (selectedNodeKeyList.value.length = 0)
+    const clearSelect = () => (selectedValue.value.multiple.length = 0)
 
     const openModalCreateCollectionSimple = () => {
       store.dispatch('helper/pushModal', {
@@ -292,26 +316,30 @@ export default {
     }
 
     const innerActionCallback = async () => {
-      await props.actionCallback(selectedNodeKeyList.value)
-      store.dispatch('helper/closeModal')
+      const params = props.isMultiSelect ? selectedValue.value.multiple : selectedValue.value.single
+      await props.actionCallback(params)
     }
 
-    if (routeLocation.value === 'group') {
-      const { groupId, workspaceNodeId } = store.getters['group/group']
-      setRootId(groupId)
-      queryParams.workspaceNodeId = workspaceNodeId
-      queryParams.type = NODE_LOCATION.GROUP
-      getWorkspaceForModal()
+    if (!props.canCrossLocation) {
+      goTo(breadcrumbsList.value[0].key)
+
+      if (routeLocation.value === 'org') {
+        const { orgId } = store.getters['organization/organization']
+        setRootId(orgId)
+      } else if (routeLocation.value === 'group') {
+        const { groupId } = store.getters['group/group']
+        setRootId(groupId)
+      }
     }
 
     return {
       queryParams,
       orgAndGroupList,
-      selectedNodeKeyList,
+      selectedValue,
       infiniteScroll,
       breadcrumbsList,
       goTo,
-      isInOrgRoot,
+      isInRoot,
       isOnlyShowCollection,
       isSearching,
       NODE_TYPE,
@@ -325,7 +353,8 @@ export default {
       getWorkspaceForModal,
       sort,
       isInKeywordSearch,
-      innerActionCallback
+      innerActionCallback,
+      actionButtonDisabled
     }
   }
 }

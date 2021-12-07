@@ -9,7 +9,7 @@ div(class='grid grid-rows-4 grid-cols-2 gap-x-14')
       div(class='text-body1 font-bold text-primary') {{block.title}}
       btn-functional(@click='handleEdit(block)') {{$t('UU0027')}}
     div(class='grid gap-3')
-      div(v-for='item in block.column' class='text-body2 line-clamp-1') {{item.name}} : {{item.value}}
+      div(v-for='item in block.column' class='text-body2 line-clamp-1') {{item.name}}: {{item.value}}
 </template>
 
 <script>

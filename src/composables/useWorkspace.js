@@ -1,11 +1,13 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { inject } from 'vue'
+import { inject, computed } from 'vue'
 
 export default function useWorkspace () {
   const { t } = useI18n()
   const store = useStore()
   const reloadRootRoute = inject('reloadRootRoute')
+
+  const routeLocation = computed(() => store.getters['helper/routeLocation'])
 
   const FUNCTION_ID = {
     EDIT_COLLECTION: 0,
@@ -40,6 +42,7 @@ export default function useWorkspace () {
         component: 'modal-workspace-node-list',
         properties: {
           modalTitle: t('FF.duplicate.workspace'),
+          canCrossLocation: routeLocation.value === 'org',
           actionText: t('FF.duplicate.to'),
           actionCallback: async (selectedNodeKeyList) => {
             const result = await new Promise((resolve) => {
@@ -73,8 +76,38 @@ export default function useWorkspace () {
   const moveNode = {
     functionId: FUNCTION_ID.MOVE_NODE,
     name: t('RR0077'),
-    func: () => {
-      console.log('here')
+    func: (workspaceNodeId) => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-workspace-node-list',
+        properties: {
+          modalTitle: t('FF.move.workspace'),
+          canCrossLocation: false,
+          isMultiSelect: false,
+          actionText: t('FF.move.to'),
+          actionCallback: async (selectedNodeKey) => {
+            const result = await new Promise((resolve) => {
+              store.dispatch('helper/pushModalConfirm', {
+                title: t('FF.permision.change'),
+                content: t('FF.The permissions of the collection will be changed to be consistent with the permissions of the collection being placed'),
+                primaryText: t('UU0001'),
+                primaryHandler: resolve.bind(undefined, 'confirm'),
+                secondaryText: t('UU0002'),
+                secondaryHandler: resolve.bind(undefined, 'cancel')
+              })
+            })
+            if (result === 'confirm') {
+              store.dispatch('helper/openModalLoading')
+              const targetWorkspaceNodeId = selectedNodeKey.split('-')[1]
+              await store.dispatch('workspace/moveNode', {
+                workspaceNodeId,
+                targetWorkspaceNodeId
+              })
+              store.dispatch('helper/closeModalLoading')
+              reloadRootRoute()
+            }
+          }
+        }
+      })
     }
   }
 

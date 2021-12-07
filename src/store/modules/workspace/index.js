@@ -91,6 +91,11 @@ const actions = {
     rootGetters['helper/routeLocation'] === 'org'
       ? await workspaceApi.org.duplicateNode({ orgId: rootGetters['organization/orgId'], workspaceNodeId, targetWorkspaceNodeIdList })
       : await workspaceApi.group.duplicateNode({ groupId: rootGetters['group/groupId'], workspaceNodeId, targetWorkspaceNodeIdList })
+  },
+  async moveNode ({ rootGetters }, { workspaceNodeId, targetWorkspaceNodeId }) {
+    rootGetters['helper/routeLocation'] === 'org'
+      ? await workspaceApi.org.moveNode({ orgId: rootGetters['organization/orgId'], workspaceNodeId, targetWorkspaceNodeId })
+      : await workspaceApi.group.moveNode({ groupId: rootGetters['group/groupId'], workspaceNodeId, targetWorkspaceNodeId })
   }
 }
 
