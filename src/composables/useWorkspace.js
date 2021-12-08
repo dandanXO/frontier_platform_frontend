@@ -41,14 +41,14 @@ export default function useWorkspace () {
       store.dispatch('helper/openModal', {
         component: 'modal-workspace-node-list',
         properties: {
-          modalTitle: t('FF.duplicate.workspace'),
+          modalTitle: t('FF0043'),
           canCrossLocation: routeLocation.value === 'org',
-          actionText: t('FF.duplicate.to'),
+          actionText: t('UU0062'),
           actionCallback: async (selectedNodeKeyList) => {
             const result = await new Promise((resolve) => {
               store.dispatch('helper/pushModalConfirm', {
-                title: t('FF.permision.change'),
-                content: t('FF.The permissions of the collection will be changed to be consistent with the permissions of the collection being placed'),
+                title: t('FF0040'),
+                content: t('FF0048'),
                 primaryText: t('UU0001'),
                 primaryHandler: resolve.bind(undefined, 'confirm'),
                 secondaryText: t('UU0002'),
@@ -80,15 +80,15 @@ export default function useWorkspace () {
       store.dispatch('helper/openModal', {
         component: 'modal-workspace-node-list',
         properties: {
-          modalTitle: t('FF.move.workspace'),
+          modalTitle: t('FF0036'),
           canCrossLocation: false,
           isMultiSelect: false,
-          actionText: t('FF.move.to'),
+          actionText: t('UU0061'),
           actionCallback: async (selectedNodeKey) => {
             const result = await new Promise((resolve) => {
               store.dispatch('helper/pushModalConfirm', {
-                title: t('FF.permision.change'),
-                content: t('FF.The permissions of the collection will be changed to be consistent with the permissions of the collection being placed'),
+                title: t('FF0040'),
+                content: t('FF0041'),
                 primaryText: t('UU0001'),
                 primaryHandler: resolve.bind(undefined, 'confirm'),
                 secondaryText: t('UU0002'),

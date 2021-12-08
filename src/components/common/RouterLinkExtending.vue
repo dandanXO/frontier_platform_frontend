@@ -1,5 +1,5 @@
 <template lang="pug">
-a(v-if="isExternalLink" v-bind="$attrs" :href="to" targer="_blank")
+a(v-if="isExternalLink" v-bind="$attrs" :href="to" target="_blank")
   slot
 router-link(v-else v-bind="$attrs" :to="to")
   slot

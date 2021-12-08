@@ -5,7 +5,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
     input-text(
       v-model:textValue="keyword"
       prependIcon="search"
-      :placeholder="$t('EE0059')"
+      :placeholder="$t('RR0118')"
       :disabled="isInRoot"
       @enter="search"
     )
@@ -88,7 +88,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
         svg-icon(iconName="loading" size="54" class="text-brand")
   div(v-if="!isInRoot" class="w-full h-8.5 mt-3.5 px-2.5 bg-black-50 flex items-center gap-x-1")
     svg-icon(iconName="error_outline" size="14" class="text-primary")
-    p(class="text-caption text-primary") {{isOnlyShowCollection ? $t('EE0061'): $t('EE0060')}}
+    p(class="text-caption text-primary") {{isOnlyShowCollection ? $t('RR0119'): $t('UU0037')}}
     p(class="text-caption text-assist-blue cursor-pointer" @click="isOnlyShowCollection = !isOnlyShowCollection") {{isOnlyShowCollection ? $t('UU0037') : $t('UU0036')}}
   btn-group(
     class="h-25"
@@ -194,7 +194,7 @@ export default {
       }
 
       list.unshift({
-        name: t('EE0058'),
+        name: t('RR0009'),
         key
       })
       return list
