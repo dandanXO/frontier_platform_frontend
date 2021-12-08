@@ -3,7 +3,7 @@ template(v-if="modalPipeline.length > 0")
   template(v-for="modal in modalPipeline")
     template(v-if="modal.type === MODAL_TYPE.MODAL")
       suspense
-        modal(v-bind="modal.options")
+        modal(v-bind="modal.options" :key="modal.options.component")
         template(#fallback)
           modal-loading
     template(v-else-if="modal.type === MODAL_TYPE.CONFIRM")

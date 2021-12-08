@@ -16,7 +16,7 @@ div(class="w-full h-full")
             template(#number) {{pagination.totalCount}}
           span )
     template(#header-right)
-      btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3") {{$t('UU0057')}}
+      btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
       btn(size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{$t('UU0055')}}
     template(v-if="!isFirstLayer" #sub-header)
       p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('FF0002')}}: {{unixToDate(workspaceCollection.createDate)}}
@@ -210,6 +210,13 @@ export default {
       })
     }
 
+    const openModalCollectionDetail = () => {
+      store.dispatch('helper/openModal', {
+        header: t('FF0006'),
+        component: 'modal-collection-detail'
+      })
+    }
+
     const addMaterialFromAssetsList = () => {
       store.dispatch('helper/openModal', {
         component: 'modal-assets-list',
@@ -268,7 +275,8 @@ export default {
       unixToDate,
       handleSelectAll,
       addMaterialFromAssetsList,
-      openModalCreateCollection
+      openModalCreateCollection,
+      openModalCollectionDetail
     }
   }
 }
