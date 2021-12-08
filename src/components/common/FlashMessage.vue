@@ -45,7 +45,7 @@ export default {
     }
 
     const setTimer = () => {
-      timeoutID = setTimeout(() => { close() }, 1000)
+      timeoutID = setTimeout(() => { close() }, 2000)
     }
 
     watch(

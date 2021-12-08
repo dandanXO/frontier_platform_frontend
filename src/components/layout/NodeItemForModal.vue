@@ -9,33 +9,33 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
           img(v-if="node.coverImgList[1]" :src="node.coverImgList[1]" class="w-full h-full")
         div(class="bg-black-50")
           img(v-if="node.coverImgList[2]" :src="node.coverImgList[2]" class="w-full h-full")
-      div(class="w-full h-7.5 absolute top-0 left-0")
-        div(class="bg-linear w-full h-full rounded-t-md")
-        template(v-if="isMultiSelect")
-          input-checkbox(
-            v-model:inputValue="multipleSelectedValue"
-            :value="`${node.type}-${node.workspaceNodeId}`"
-            size="20"
-            class="absolute top-1 left-1 cursor-pointer"
-            iconColor="text-black-0"
-            uncheckColor="text-black-0"
-            @click.stop
-          )
-        template(v-else)
-          input-radio(
-            v-model:inputValue="singleSelectedValue"
-            :value="`${node.type}-${node.workspaceNodeId}`"
-            size="20"
-            class="absolute top-1 left-1 cursor-pointer"
-            checkColor="text-black-0"
-            uncheckColor="text-black-0"
-            @click.stop
-          )
       div(v-if="node.hasChildCollection" class="w-full h-7.5 absolute bottom-0 left-0")
         div(class="bg-linear w-full h-full rounded-t-md transform rotate-180")
         svg-icon(iconName="folder" class="text-black-0" size="14" class="absolute right-2 bottom-2")
     template(v-if="nodeType === NODE_TYPE.MATERIAL")
       img(:src="node.coverImg" class="w-full h-full")
+    div(v-if="isSelectable" class="w-full h-7.5 absolute top-0 left-0")
+      div(class="bg-linear w-full h-full rounded-t-md")
+      template(v-if="isMultiSelect")
+        input-checkbox(
+          v-model:inputValue="innerSelectedValue"
+          :value="nodeKey"
+          size="20"
+          class="absolute top-1 left-1 cursor-pointer"
+          iconColor="text-black-0"
+          uncheckColor="text-black-0"
+          @click.stop
+        )
+      template(v-else)
+        input-radio(
+          v-model:inputValue="innerSelectedValue"
+          :value="nodeKey"
+          size="20"
+          class="absolute top-1 left-1 cursor-pointer"
+          checkColor="text-black-0"
+          uncheckColor="text-black-0"
+          @click.stop
+        )
   div(class="text-caption font-bold mt-0.5 flex items-center justify-between" :class="[isHover ? 'text-brand' : 'text-primary']")
     p(class="line-clamp-1") {{displayName}}
     tooltip-location(v-if="isShowLocation" :location="node.location")
@@ -56,6 +56,10 @@ export default {
       type: Number,
       required: true
     },
+    nodeKey: {
+      type: [String, Number],
+      required: true
+    },
     node: {
       type: Object,
       required: true
@@ -69,39 +73,29 @@ export default {
       default: true
     },
     selectedValue: {
-      type: Object
+      type: [Array, String]
     },
     isShowLocation: {
       type: Boolean,
       default: false
+    },
+    isSelectable: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['update:selectedValue'],
   setup (props, { emit }) {
     const isHover = ref(false)
 
-    const multipleSelectedValue = computed({
-      get: () => props.selectedValue.multiple,
-      set: (v) => {
-        const selectedValue = props.selectedValue
-        selectedValue.multiple = v
-        emit('update:selectedValue', selectedValue)
-      }
-    })
-
-    const singleSelectedValue = computed({
-      get: () => props.selectedValue.single,
-      set: (v) => {
-        const selectedValue = props.selectedValue
-        selectedValue.single = v
-        emit('update:selectedValue', selectedValue)
-      }
+    const innerSelectedValue = computed({
+      get: () => props.selectedValue,
+      set: (v) => emit('update:selectedValue', v)
     })
 
     return {
       isHover,
-      multipleSelectedValue,
-      singleSelectedValue,
+      innerSelectedValue,
       NODE_TYPE
     }
   }
