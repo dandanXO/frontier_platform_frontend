@@ -8,15 +8,20 @@ div(class="flex h-full")
         template(#fallback)
           div(class="h-full flex justify-center items-center")
             svg-icon(iconName="loading" size="92" class="text-brand-dark")
+  modal-pipeline
 </template>
 
 <script>
 import { useStore } from 'vuex'
 import { ref, nextTick, provide } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
+import ModalPipeline from '@/components/modal/ModalPipeline.vue'
 
 export default {
   name: 'InnerAppLayout',
+  components: {
+    ModalPipeline
+  },
   setup () {
     const store = useStore()
 

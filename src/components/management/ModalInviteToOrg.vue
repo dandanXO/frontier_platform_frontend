@@ -6,7 +6,7 @@ div(class="w-118.5")
       v-model:textValue="email"
       prependIcon="search"
       :placeholder="$t('BB0065')"
-      :diabledIcon="email === ''"
+      :disabledIcon="email === ''"
       :customErrorMsg="errorMsg"
       @click:icon="addToInviteList"
     )
@@ -25,7 +25,7 @@ div(class="w-118.5")
       input-text-btn(
         class="w-full"
         size="sm"
-        diabledInput
+        disabledInput
         :textValue="inviteLink"
         :clearable="false"
         :buttonLabel="$t('UU0015')"

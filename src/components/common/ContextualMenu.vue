@@ -2,7 +2,7 @@
 list(class="min-w-57.5" @mouseleave="indexOfOnHover = -1")
   list-item(
     v-for="(option ,index) in optionList"
-    class="justify-between relative cursor-pointer"
+    class="justify-between gap-x-2 relative cursor-pointer"
     :class="{ 'bg-black-200': multiSelect ? innerSelectValue.includes(option.value) : innerSelectValue === option.value }"
     @mouseenter="indexOfOnHover = index"
     @click.stop="select(option)"

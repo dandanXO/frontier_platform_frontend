@@ -1,10 +1,10 @@
 <template lang="pug">
-input-text(:label="label" :required="required" :size="size" :disabled="diabledInput")
+input-text(:label="label" :required="required" :size="size" :disabled="disabledInput")
   template(#appendItem)
     div(class="-mr-4 pl-4 h-full flex items-center")
       button(
         class="h-full rounded-r transform translate-x-0.5 flex justify-center items-center"
-        :disabled="diabledIcon"
+        :disabled="disabledIcon"
         :class="[bgType, size === 'lg' ? 'w-11 h-11' : 'w-9 h-9']"
         @click="$emit('click:icon')")
         svg-icon(:size="iconSize" :iconName="iconName" :class="[iconColor]")
@@ -31,11 +31,11 @@ export default {
       type: String,
       default: 'primary'
     },
-    diabledInput: {
+    disabledInput: {
       type: Boolean,
       default: false
     },
-    diabledIcon: {
+    disabledIcon: {
       type: Boolean,
       default: false
     },
