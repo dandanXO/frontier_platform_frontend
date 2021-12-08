@@ -21,8 +21,14 @@ export default function useWorkspace () {
   const editCollection = {
     id: FUNCTION_ID.EDIT_COLLECTION,
     name: t('RR0054'),
-    func: () => {
-      console.log('here')
+    func: (workspaceNodeId) => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-create-or-edit-collection',
+        properties: {
+          mode: 2,
+          workspaceNodeId
+        }
+      })
     }
   }
 

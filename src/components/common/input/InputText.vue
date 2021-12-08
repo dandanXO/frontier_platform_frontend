@@ -32,7 +32,7 @@ input-container(:label="label" :required="required")
         )
     slot(name="appendItem")
   template(#hint)
-    p(v-if="!!errorMsg" class="text-caption text-warn absolute pt-1") {{$t(errorMsg)}}
+    p(v-if="!!errorMsg" class="text-caption text-warn absolute pt-1") {{errorMsg}}
     slot(v-else name="errorMsg")
 </template>
 
@@ -92,7 +92,7 @@ export default {
       default: false
     }
   },
-  emits: ['update:textValue', 'blur', 'enter'],
+  emits: ['update:textValue', 'blur', 'enter', 'clear'],
   setup (props, context) {
     const { inputType, textValue, disabled, rules, required, customErrorMsg } = toRefs(props)
     const { isFocus, isError, onFocus, onBlur, clear, typing, isEmpty, classBorder, errorMsg, classPrependIcon } = useInput({ context, inputType, textValue, disabled, rules, required, customErrorMsg })

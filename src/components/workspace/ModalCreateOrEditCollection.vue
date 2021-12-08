@@ -1,6 +1,7 @@
 <template lang="pug">
 div(class="w-101 px-8")
-  h6(class="text-h6 font-bold text-primary text-center mb-7.5") {{$t('FF0022')}}
+  h6(class="text-h6 font-bold text-primary text-center") {{$t('FF0022')}}
+  p(class="text-right pt-4 pb-0.5 text-caption text-black-600") *{{$t('FF0013')}}
   input-text(
     v-model:textValue="formData.collectionName"
     required
@@ -19,6 +20,7 @@ div(class="w-101 px-8")
         v-model:textValue="uploadTrendBoardName"
         :buttonLabel="$t('UU0025')"
         @click:button="chooseFile"
+        @clear="removeTrendBoard"
       )
     p(class='text-primary text-caption line-height-1.6') {{$t('FF0014')}}
     p(class='text-primary text-caption line-height-1.6') {{$t('FF0015')}}
@@ -26,12 +28,13 @@ div(class="w-101 px-8")
     v-model:textValue="formData.description"
     :label="$t('FF0012')"
     height="120"
+    :customErrorMsg="formData.description.length > 1000 ? $t('WW0073') : ''"
   )
   btn-group(
     class="h-25"
-    :primaryText="$t('UU0020')"
+    :primaryText="mode === MODE.EDIT ? $t('UU0018') : $t('UU0020')"
     :primaryButtonDisabled="actionBtnDisabled"
-    @click:primary="createCollection"
+    @click:primary="actionHandler"
     :secondaryButton="false"
   )
 </template>
@@ -42,24 +45,33 @@ import { useStore } from 'vuex'
 import { FileOperator } from '@/utils/fileOperator'
 import { useI18n } from 'vue-i18n'
 
+const MODE = {
+  CREATE: 1,
+  EDIT: 2
+}
+
 export default {
-  name: 'ModalCreateCollection',
+  name: 'ModalCreateOrEditCollection',
   props: {
+    mode: {
+      type: Number,
+      default: MODE.CREATE
+    },
     workspaceNodeId: {
       type: [Number, String],
       required: true
     }
   },
-  setup (props) {
+  async setup (props) {
     const { t } = useI18n()
     const store = useStore()
     const reloadRootRoute = inject('reloadRootRoute')
     const fileOperator = new FileOperator(['pdf'], 20)
 
     const uploadTrendBoardName = ref('')
+    const collectionId = ref(null) // only use when MODE is equal to EDIT
     const errorMsg = ref('')
     const formData = reactive({
-      workspaceNodeId: props.workspaceNodeId,
       collectionName: '',
       trendBoard: null,
       description: ''
@@ -100,18 +112,31 @@ export default {
       const a = document.createElement('A')
       a.hidden = true
       a.target = '_blank'
-      a.href = URL.createObjectURL(formData.trendBoard)
+      // A File object is a Blob object with a name attribute, which is a string
+      a.href = typeof formData.trendBoard.name === 'string' ? URL.createObjectURL(formData.trendBoard) : formData.trendBoard
       a.click()
       a.remove()
     }
 
-    const createCollection = async () => {
+    const actionHandler = async () => {
       if (uploadTrendBoardName.value === '') {
         formData.trendBoard = null
       }
       try {
         store.dispatch('helper/pushModalLoading')
-        await store.dispatch('workspace/createCollection', formData)
+        if (props.mode === MODE.EDIT) {
+          await store.dispatch('workspace/updateCollection', {
+            collectionId: collectionId.value,
+            ...formData
+          })
+          store.commit('helper/PUSH_message', t('FF0035'))
+        } else {
+          await store.dispatch('workspace/createCollection', {
+            workspaceNodeId: props.workspaceNodeId,
+            ...formData
+          })
+          store.commit('helper/PUSH_message', t('FF0027'))
+        }
         store.dispatch('helper/clearModalPipeline')
         reloadRootRoute()
       } catch (error) {
@@ -120,19 +145,36 @@ export default {
       }
     }
 
+    const removeTrendBoard = () => {
+      props.mode === MODE.EDIT && store.dispatch('workspace/removeTrendBoard', { collectionId: collectionId.value })
+    }
+
     watch(
       () => formData.collectionName,
       () => (errorMsg.value = '')
     )
 
+    if (props.mode === MODE.EDIT) {
+      const { collectionId: cId, name, description, trendBoardUrl, trendBoardDisplayFileName } = await store.dispatch('workspace/getCollection', { workspaceNodeId: props.workspaceNodeId })
+      Object.assign(formData, {
+        collectionName: name,
+        description: description || '',
+        trendBoard: trendBoardUrl
+      })
+      collectionId.value = cId
+      uploadTrendBoardName.value = trendBoardDisplayFileName
+    }
+
     return {
       formData,
-      createCollection,
+      actionHandler,
       chooseFile,
       uploadTrendBoardName,
       previewPdf,
       actionBtnDisabled,
-      errorMsg
+      errorMsg,
+      MODE,
+      removeTrendBoard
     }
   }
 }

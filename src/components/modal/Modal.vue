@@ -38,7 +38,7 @@ export default {
     ModalError: defineAsyncComponent(() => import('@/components/modal/ModalError')),
     ModalUploadAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalUploadAttachment.vue')),
     ModalWorkspaceNodeList: defineAsyncComponent(() => import('@/components/workspace/ModalWorkspaceNodeList.vue')),
-    ModalCreateCollection: defineAsyncComponent(() => import('@/components/workspace/ModalCreateCollection.vue')),
+    ModalCreateOrEditCollection: defineAsyncComponent(() => import('@/components/workspace/ModalCreateOrEditCollection.vue')),
     ModalCreateCollectionSimple: defineAsyncComponent(() => import('@/components/workspace/ModalCreateCollectionSimple.vue')),
     ModalAddToWorkspaceFail: defineAsyncComponent(() => import('@/components/assets/material/ModalAddToWorkspaceFail.vue')),
     ModalPreviewAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalPreviewAttachment')),

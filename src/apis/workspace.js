@@ -10,6 +10,10 @@ export default {
       method: 'POST',
       data: { orgId, pagination, search, workspaceNodeId, type }
     }),
+    getCollection: ({ orgId, workspaceNodeId }) => axios('/org/workspace/get', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId, search: null, filter: null, pagination: { perPageCount: 40, targetPage: 1 } }
+    }),
     createCollection: ({ orgId, workspaceNodeId, collectionName, trendBoard = null, description = null }) => {
       const formData = new FormData()
       formData.append('orgId', orgId)
@@ -24,6 +28,24 @@ export default {
         data: formData
       })
     },
+    updateCollection: ({ orgId, collectionId, collectionName, trendBoard = null, description = null }) => {
+      const formData = new FormData()
+      formData.append('orgId', orgId)
+      formData.append('collectionId', collectionId)
+      formData.append('collectionName', collectionName)
+      !!trendBoard && formData.append('trendBoard', trendBoard)
+      !!description && formData.append('description', description)
+
+      return axios('/org/workspace/collection/update', {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        method: 'POST',
+        data: formData
+      })
+    },
+    removeTrendBoard: ({ orgId, collectionId }) => axios('/org/workspace/collection/remove-trend-board', {
+      method: 'POST',
+      data: { orgId, collectionId }
+    }),
     duplicateNode: ({ orgId, workspaceNodeId, targetWorkspaceNodeIdList }) => axios('/org/workspace/node/duplicate', {
       method: 'POST',
       data: { orgId, workspaceNodeId, targetWorkspaceNodeIdList }
@@ -42,6 +64,10 @@ export default {
       method: 'POST',
       data: { groupId, pagination, search, workspaceNodeId, type }
     }),
+    getCollection: ({ groupId, workspaceNodeId }) => axios('/org/group/workspace/get', {
+      method: 'POST',
+      data: { groupId, workspaceNodeId, search: null, filter: null, pagination: { perPageCount: 40, targetPage: 1 } }
+    }),
     createCollection: ({ groupId, workspaceNodeId, collectionName, trendBoard = null, description = null }) => {
       const formData = new FormData()
       formData.append('groupId', groupId)
@@ -56,6 +82,24 @@ export default {
         data: formData
       })
     },
+    updateCollection: ({ groupId, collectionId, collectionName, trendBoard = null, description = null }) => {
+      const formData = new FormData()
+      formData.append('groupId', groupId)
+      formData.append('collectionId', collectionId)
+      formData.append('collectionName', collectionName)
+      !!trendBoard && formData.append('trendBoard', trendBoard)
+      !!description && formData.append('description', description)
+
+      return axios('/org/group/workspace/collection/update', {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        method: 'POST',
+        data: formData
+      })
+    },
+    removeTrendBoard: ({ groupId, collectionId }) => axios('/org/group/workspace/collection/remove-trend-board', {
+      method: 'POST',
+      data: { groupId, collectionId }
+    }),
     duplicateNode: ({ groupId, workspaceNodeId, targetWorkspaceNodeIdList }) => axios('/org/group/workspace/node/duplicate', {
       method: 'POST',
       data: { groupId, workspaceNodeId, targetWorkspaceNodeIdList }

@@ -1,5 +1,5 @@
 <template lang="pug">
-input-text(:size="size" :disabled="disabledInput")
+input-text(:size="size" :disabled="disabledInput" @clear="$emit('clear')")
   template(#appendItem)
     div(class="-mr-4 pl-4 h-full flex items-center")
       button(:disabled="disabledBtn" :class="[btnSize, btnType]" class="rounded-r transform translate-x-0.5" @click="$emit('click:button')")
@@ -32,7 +32,7 @@ export default {
       default: ''
     }
   },
-  emits: ['click:button'],
+  emits: ['click:button', 'clear'],
   setup (props) {
     const btnSize = computed(() => {
       switch (props.size) {
