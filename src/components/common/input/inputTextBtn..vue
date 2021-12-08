@@ -1,8 +1,8 @@
 <template lang="pug">
-input-text(:size="size" :disabled="diabledInput")
+input-text(:size="size" :disabled="disabledInput")
   template(#appendItem)
     div(class="-mr-4 pl-4 h-full flex items-center")
-      button(:disabled="diabledBtn" :class="[btnSize, btnType]" class="rounded-r transform translate-x-0.5" @click="$emit('click:button')")
+      button(:disabled="disabledBtn" :class="[btnSize, btnType]" class="rounded-r transform translate-x-0.5" @click="$emit('click:button')")
         span {{buttonLabel}}
 </template>
 
@@ -19,11 +19,11 @@ export default {
       type: String,
       default: 'primary'
     },
-    diabledInput: {
+    disabledInput: {
       type: Boolean,
       default: false
     },
-    diabledBtn: {
+    disabledBtn: {
       type: Boolean,
       default: false
     },

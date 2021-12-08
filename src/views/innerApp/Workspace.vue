@@ -22,7 +22,7 @@ div(class="w-full h-full")
       p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('FF0002')}}: {{unixToDate(workspaceCollection.createDate)}}
     template(#default="{ inSearch }")
       div(class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
-        div(class="aspect-ratio border border-black-400 border-dashed rounded-md flex justify-center items-center")
+        div(class="aspect-ratio border border-black-400 border-dashed rounded-md flex justify-center items-center cursor-pointer" @click="openModalCreateCollection")
           div(class="grid justify-items-center gap-y-3.5")
             svg-icon(iconName="add" size="24" class="text-primary")
             span(class="text-body1 text-primary") {{$t('FF0003')}}
@@ -200,6 +200,15 @@ export default {
       selectedNodeKeyList.value = [...new Set(duplicateArr)]
     }
 
+    const openModalCreateCollection = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-create-collection',
+        properties: {
+          workspaceNodeId: workspaceNodeId.value
+        }
+      })
+    }
+
     const addMaterialFromAssetsList = () => {
       store.dispatch('helper/openModal', {
         component: 'modal-assets-list',
@@ -257,7 +266,8 @@ export default {
       workspaceCollection,
       unixToDate,
       handleSelectAll,
-      addMaterialFromAssetsList
+      addMaterialFromAssetsList,
+      openModalCreateCollection
     }
   }
 }

@@ -1,11 +1,11 @@
 <template lang="pug">
 div(class='w-115 px-7.5')
-  div(class='h6 text-primary text-center font-bold') {{$t('DD0054')}}
+  div(class='text-h6 text-primary text-center font-bold') {{$t('DD0054')}}
   p(class="text-caption text-black-600 text-right mb-1.5") *{{$t('AA0031')}}
   div(class='mb-7.5')
     input-text-btn(
       class="w-full"
-      diabledInput
+      disabledInput
       :label="$t('DD0038')"
       :textValue="originalFileName"
       :clearable="false"

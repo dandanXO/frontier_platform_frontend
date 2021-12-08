@@ -1,17 +1,12 @@
 <template lang="pug">
 router-view
-modal-pipeline
 flash-message
 </template>
 
 <script>
-import ModalPipeline from '@/components/modal/ModalPipeline.vue'
 
 export default {
-  name: 'App',
-  components: {
-    ModalPipeline
-  }
+  name: 'App'
 }
 </script>
 

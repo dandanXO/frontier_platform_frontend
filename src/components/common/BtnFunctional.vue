@@ -1,6 +1,6 @@
 <template lang="pug">
 button(
-  class='text-primary bg-black-200 rounded-xl hover:bg-brand-light hover:text-brand disabled:text-black-500'
+  class="text-primary bg-black-200 rounded-xl hover:bg-brand-light hover:text-brand disabled:text-black-500 flex items-center"
   :class="[btnSize, active ? activeClass : '']"
 )
   slot
