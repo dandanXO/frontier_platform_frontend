@@ -10,7 +10,7 @@ div(class="w-screen h-screen flex justify-center items-center  bg-black-100")
         button(id="google-sign-up" class="w-85 h-11 rounded border text-body2 font-bold text-black-800 mt-5 mb-3 flex justify-center items-center")
           div(class="grid grid-flow-col gap-x-2.5 items-center")
             svg-icon(iconName="google" size="24")
-            span(class="w-40.5 text-center text-body2") {{$t('AA0061')}}
+            span(class="w-40.5 text-center text-body2") {{$t('UU0047')}}
         div(class="grid grid-flow-col gap-x-3 items-center justify-center")
           div(class="w-19 h-px border-b border-black-400")
           span(class="w-30.5 text-black-500 text-body2 text-center") {{$t('AA0005')}}
@@ -40,7 +40,7 @@ div(class="w-screen h-screen flex justify-center items-center  bg-black-100")
               span(class="text-primary") {{$t('AA0012')}}
             template(#privacy)
               span(class="text-primary") {{$t('AA0029')}}
-      i18n-t(keypath="AA0022" tag="p" class="text-black-800 text-body2 font-normal text-center pt-3")
+      i18n-t(keypath="UU0048" tag="p" class="text-black-800 text-body2 font-normal text-center pt-3")
         template(#signIn)
           router-link-extending(class="text-primary font-bold" to="/sign-in") {{$t('AA0001')}}
 div(v-if="isSignUpSuccessfully" class="fixed inset-0 w-full h-full bg-black-100 flex justify-center items-center")
@@ -49,7 +49,7 @@ div(v-if="isSignUpSuccessfully" class="fixed inset-0 w-full h-full bg-black-100 
       template(#name) {{`${formData.lastName} ${formData.firstName}`}}
     h4(class="text-primary text-h4 mb-9") {{$t('AA0026')}}
     p(class="text-black-650 text-body2 text-center mb-10 line-height-1.4") {{$t('AA0027')}}
-    btn(size="special" class="w-35 h-10.5" @click="nextAfterSignIn") {{$t('AA0028')}}
+    btn(size="special" class="w-35 h-10.5" @click="nextAfterSignIn") {{$t('UU0021')}}
 </template>
 
 <script>
@@ -92,6 +92,8 @@ export default {
         isEmailExist.value = false
         errorMsg.value = ''
 
+        if (formData.email === '') { return }
+
         if (formData.email !== '' && !isEmailValid.value) {
           throw t('WW0019')
         }
@@ -133,7 +135,7 @@ export default {
         successHandler: googleSignUp,
         failHandler (error) {
           if (error.error === 'popup_closed_by_user') { return }
-          errorMsg.value = t('AA0065')
+          errorMsg.value = t('WW0065')
         }
       })
     })

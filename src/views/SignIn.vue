@@ -10,7 +10,7 @@ div(class="w-screen h-screen flex justify-center items-center bg-black-100")
         form(class="grid gap-y-3 mt-5 mb-1.5")
           input-text(v-model:textValue="formData.email" :placeholder="$t('AA0002')" prependIcon="mail")
           input-password(v-model:textValue="formData.password" :placeholder="$t('AA0003')")
-        span(class="self-end text-caption text-black-800 mb-4 cursor-pointer" @click="openModalForgotPasswordEmail") {{$t('AA0004')}}?
+        span(class="self-end text-caption text-black-800 mb-4 cursor-pointer" @click="openModalForgotPasswordEmail") {{$t('UU0043')}}
         btn(size="lg" class="w-full font-bold self-center" @click="generalSignIn") {{$t('AA0001')}}
         div(class="flex-grow text-caption mt-1.5")
           p(v-if="errorMsgSignIn !== ''" class="text-warn text-center") {{errorMsgSignIn}}
@@ -21,8 +21,8 @@ div(class="w-screen h-screen flex justify-center items-center bg-black-100")
         button(id="google-sign-in" class="w-85 h-11 rounded border text-body2 font-bold text-black-800 flex justify-center items-center")
           div(class="grid grid-flow-col gap-x-2.5 items-center")
             svg-icon(iconName="google" size="24")
-            span(class="w-40.5 text-center text-body2") {{$t('AA0006')}}
-      i18n-t(keypath="AA0007" tag="p" class="text-black-800 text-body2 font-normal text-center pt-3")
+            span(class="w-40.5 text-center text-body2") {{$t('UU0044')}}
+      i18n-t(keypath="UU0045" tag="p" class="text-black-800 text-body2 font-normal text-center pt-3")
         template(#signUp)
           router-link-extending(class="text-primary font-bold ml-3" :to="{ path: '/sign-up', query: $route.query }") {{$t('AA0016')}}
 </template>
@@ -61,9 +61,9 @@ export default {
       try {
         errorMsgSignIn.value = ''
         if (!inputValidator.required(formData.email)) {
-          throw t('AA0066')
+          throw t('WW0062')
         } else if (!inputValidator.required(formData.password)) {
-          throw t('AA0067')
+          throw t('WW0063')
         } else if (!inputValidator.emailFormat(formData.email)) {
           throw t('WW0019')
         }
