@@ -202,8 +202,9 @@ export default {
 
     const openModalCreateCollection = () => {
       store.dispatch('helper/openModal', {
-        component: 'modal-create-collection',
+        component: 'modal-create-or-edit-collection',
         properties: {
+          mode: 1,
           workspaceNodeId: workspaceNodeId.value
         }
       })

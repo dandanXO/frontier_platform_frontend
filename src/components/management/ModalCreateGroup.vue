@@ -8,9 +8,9 @@ div(class="px-8")
     :placeholder="$t('BB0089')"
     :customErrorMsg="isGroupNameExist ? $t('WW0001') : ''"
     required
-    class="w-85 relative z-11 mb-7.5"
+    class="relative z-11 mb-7.5"
   )
-  input-textarea(v-model:textValue="description" :label="$t('BB0087')" :placeholder="$t('BB0088')" class="w-85 mb-1" height="160")
+  input-textarea(v-model:textValue="description" :label="$t('BB0087')" :placeholder="$t('BB0088')" class="mb-1" height="160")
   div(class="flex items-center pb-0.5")
     svg-icon(size="14" iconName="error_outline" class="text-primary")
     p(class="pl-1.5 text-caption text-primary") {{$t('BB0091')}}

@@ -1,7 +1,8 @@
 import inputValidator from '@/utils/input-validator'
+import i18n from '@/utils/i18n'
 
 // format: fail case && error msg
 
 export default {
-  required: (msg = 'WW0002') => (v) => !inputValidator.required(v) && msg
+  required: (msg = i18n.global.t('WW0002')) => (v) => !inputValidator.required(v) && msg
 }
