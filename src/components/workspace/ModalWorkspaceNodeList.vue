@@ -13,10 +13,10 @@ div(class="w-161 h-138 px-8 flex flex-col")
     div(class="relative z-20 flex justify-between items-center py-4")
       breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="goTo($event.key)")
       div(class="flex items-center")
-        div(v-if="isMultiSelect && selectedValue.multiple.length > 0" class="flex items-center")
+        div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
           svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
           i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption")
-            template(#number) {{selectedValue.multiple.length}}
+            template(#number) {{selectedValue.length}}
         tooltip(
           v-if="!isInRoot"
           placement="bottom-end"
@@ -40,14 +40,14 @@ div(class="w-161 h-138 px-8 flex flex-col")
         template(v-if="isInRoot")
           div(v-for="item in orgAndGroupList"
             class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden"
-            :class="[isMultiSelect && selectedValue.multiple.includes(item.key) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
+            :class="[isMultiSelect && selectedValue.includes(item.key) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
             @click="goTo(item.key), setRootId(item.id)"
           )
             p(class="text-caption text-center line-height-1.6 font-bold line-clamp-3") {{item.name}}
             div(class="w-full h-7.5 absolute top-0 left-0")
               div(class="bg-linear w-full h-full rounded-t-md")
               input-checkbox(
-                v-model:inputValue="selectedValue.multiple"
+                v-model:inputValue="selectedValue"
                 :value="item.key"
                 size="20"
                 class="cursor-pointer absolute top-1 left-1 -z-1"
@@ -67,6 +67,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
                 class="w-25 cursor-pointer"
                 v-model:selectedValue="selectedValue"
                 :nodeType="node.nodeType"
+                :nodeKey="node.key"
                 :node="node.data"
                 :displayName="node.data.name"
                 :isShowLocation="isInKeywordSearch"
@@ -77,9 +78,11 @@ div(class="w-161 h-138 px-8 flex flex-col")
               node-item-for-modal(
                 class="w-25"
                 :nodeType="node.nodeType"
+                :nodeKey="node.key"
                 :node="node.data"
                 :displayName="node.data.materialNo"
                 :isShowLocation="isInKeywordSearch"
+                :isSelectable="false"
               )
       div(v-if="isSearching && nodeList.length > 0" class="flex justify-center items-center")
         svg-icon(iconName="loading" size="54" class="text-brand")
@@ -142,10 +145,7 @@ export default {
     const isSearching = ref(false)
     const isOnlyShowCollection = ref(false)
     const pureNodeList = ref([])
-    const selectedValue = ref({
-      multiple: [],
-      single: ''
-    })
+    const selectedValue = ref(props.isMultiSelect ? [] : '')
     const appendedBreadcrumbsList = ref([])
     const keyword = ref('')
     const queryParams = reactive({
@@ -212,8 +212,8 @@ export default {
     })
     const actionButtonDisabled = computed(() => {
       return props.isMultiSelect
-        ? selectedValue.value.multiple.length === 0
-        : !selectedValue.value.single
+        ? selectedValue.value.length === 0
+        : !selectedValue.value
     })
 
     const setRootId = (id) => (rootId.value = id)
@@ -300,7 +300,7 @@ export default {
       }
     }
 
-    const clearSelect = () => (selectedValue.value.multiple.length = 0)
+    const clearSelect = () => (selectedValue.value.length = 0)
 
     const openModalCreateCollectionSimple = () => {
       store.dispatch('helper/pushModal', {
@@ -318,8 +318,7 @@ export default {
     }
 
     const innerActionCallback = async () => {
-      const params = props.isMultiSelect ? selectedValue.value.multiple : selectedValue.value.single
-      await props.actionCallback(params)
+      await props.actionCallback(selectedValue.value)
     }
 
     if (!props.canCrossLocation) {

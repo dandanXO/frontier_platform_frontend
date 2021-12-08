@@ -62,6 +62,30 @@ const actions = {
 
     dispatch('handleResponseData', { data }, { root: true })
   },
+  async getMaterialListForModal ({ rootGetters }, { keyword, targetPage = 1, sort }) {
+    const params = {
+      search: {
+        keyword,
+        tagList: []
+      },
+      pagination: {
+        perPageCount: 40,
+        isShowMatch: false,
+        sort: Number(sort),
+        targetPage: Number(targetPage)
+      }
+    }
+
+    if (!keyword) {
+      params.search = null
+    }
+
+    const { data } = rootGetters['helper/routeLocation'] === 'org'
+      ? await assetsApi.org.getMaterialList({ orgId: rootGetters['organization/orgId'], ...params })
+      : await assetsApi.group.getMaterialList({ groupId: rootGetters['group/groupId'], ...params })
+
+    return data.result
+  },
   async mergeMaterial ({ rootGetters, dispatch }, { mergedList }) {
     const { data } = rootGetters['helper/routeLocation'] === 'org'
       ? await assetsApi.org.mergeMaterial({ orgId: rootGetters['organization/orgId'], mergedList })
