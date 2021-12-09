@@ -74,7 +74,7 @@ export default {
     const router = useRouter()
     const route = useRoute()
     const reloadRootRoute = inject('reloadRootRoute')
-    const { editCollection, editMaterial, duplicateNode, moveNode, deleteNode, shareNode } = useWorkspace()
+    const { editCollection, editMaterial, duplicateNode, moveNode, deleteCollection, deleteMaterial, deleteMultipleNode, shareNode } = useWorkspace()
 
     const optionSort = {
       base: [
@@ -89,7 +89,7 @@ export default {
       ]
     }
 
-    const optionMultiSelect = [deleteNode]
+    const optionMultiSelect = [deleteMultipleNode]
 
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const workspaceCollection = computed(() => store.getters['workspace/workspaceCollection'])
@@ -141,7 +141,7 @@ export default {
           moveNode
         ],
         [
-          deleteNode
+          deleteCollection
         ]
       ]
 
@@ -160,7 +160,7 @@ export default {
           moveNode
         ],
         [
-          deleteNode
+          deleteMaterial
         ]
       ]
 

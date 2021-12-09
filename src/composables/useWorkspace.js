@@ -117,12 +117,46 @@ export default function useWorkspace () {
     }
   }
 
-  const deleteNode = {
+  const deleteNodeList = async (workspaceNodeIdList, title, content) => {
+    const result = await new Promise((resolve) => {
+      store.dispatch('helper/pushModalConfirm', {
+        title,
+        content,
+        primaryText: t('UU0002'),
+        primaryHandler: resolve.bind(undefined, 'cancel'),
+        secondaryText: t('UU0001'),
+        secondaryHandler: resolve.bind(undefined, 'confirm')
+      })
+    })
+    if (result === 'confirm') {
+      store.dispatch('helper/openModalLoading')
+      await store.dispatch('workspace/deleteNode', { workspaceNodeIdList })
+      store.dispatch('helper/closeModalLoading')
+      reloadRootRoute()
+    }
+  }
+
+  const deleteCollection = {
     id: FUNCTION_ID.DELETE_NODE,
     name: t('RR0063'),
-    func: (v) => {
-      const workspaceNodeIdList = Array.isArray(v) ? v : [v]
-      console.log('here', workspaceNodeIdList)
+    func: (workspaceNodeId) => {
+      deleteNodeList([workspaceNodeId], t('FF0044'), t('FF0045'))
+    }
+  }
+
+  const deleteMaterial = {
+    id: FUNCTION_ID.DELETE_NODE,
+    name: t('RR0063'),
+    func: (workspaceNodeId) => {
+      deleteNodeList([workspaceNodeId], t('FF0046'), t('FF0045'))
+    }
+  }
+
+  const deleteMultipleNode = {
+    id: FUNCTION_ID.DELETE_NODE,
+    name: t('RR0063'),
+    func: (workspaceNodeIdList) => {
+      deleteNodeList(workspaceNodeIdList, t('FF0004'), t('FF0005'))
     }
   }
 
@@ -139,7 +173,9 @@ export default function useWorkspace () {
     editMaterial,
     duplicateNode,
     moveNode,
-    deleteNode,
-    shareNode
+    shareNode,
+    deleteMultipleNode,
+    deleteCollection,
+    deleteMaterial
   }
 }
