@@ -89,6 +89,12 @@ const actions = {
   async resetPassword ({ dispatch }, params) {
     const { data } = await userApi.resetPassword(params)
     dispatch('handleResponseData', { data }, { root: true })
+  },
+  async resendVerifyEmail () {
+    await userApi.resendVerifyEmail()
+  },
+  async verifyUser (_, { verifyCode }) {
+    await userApi.verifyUser({ verifyCode })
   }
 }
 

@@ -14,14 +14,25 @@ export default function useNavigation () {
     if (route.query.inviteCode !== undefined) {
       return router.push({ path: '/invite-link', query: route.query })
     }
-    await store.dispatch('user/getUser')
-    const organizationList = store.getters['user/organizationList']
 
+    if (route.query.verifyCode !== undefined) {
+      return router.push({ path: '/verify-user', query: route.query })
+    }
+
+    await store.dispatch('user/getUser')
+
+    const user = store.getters['user/user']
+
+    if (!user.isVerify) {
+      return goToLobby()
+    }
+
+    const organizationList = user.organizationList
     if (organizationList.length === 1) {
       return router.push({ name: 'PublicLibrary', params: { orgNo: organizationList[0].orgNo } })
     }
 
-    router.push('/')
+    goToLobby()
   }
 
   const parsePath = (path) => {
@@ -33,6 +44,8 @@ export default function useNavigation () {
     temp = temp.replace(/\(\\d\+\)/, '')
     return temp
   }
+
+  const goToLobby = () => { router.push('/') }
 
   const goToAssets = async () => {
     await router.push(parsePath(`${prefixPath.value}/assets`))

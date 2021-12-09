@@ -65,7 +65,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import DropdownLocale from '@/components/DropdownLocale'
 import InputCallingCode from '@/components/InputCallingCode'
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 
 export default {
   name: 'Lobby',
@@ -76,25 +76,32 @@ export default {
   async setup () {
     const store = useStore()
     const router = useRouter()
+    const user = computed(() => store.getters['user/user'])
     const orgList = computed(() => store.getters['user/organizationList'])
 
     const goToPublicLibrary = (orgNo) => {
+      if (!user.value.isVerify) {
+        return store.dispatch('helper/openModal', {
+          component: 'modal-verify-notification'
+        })
+      }
+
       router.push({ name: 'PublicLibrary', params: { orgNo } })
     }
 
     const openModalCreateOrg = (closable = true) => {
+      if (!user.value.isVerify) {
+        return store.dispatch('helper/openModal', {
+          component: 'modal-verify-notification'
+        })
+      }
+
       store.dispatch('organization/resetCreateForm')
       store.dispatch('helper/openModal', {
         component: 'modal-create-org',
         closable
       })
     }
-
-    onMounted(() => {
-      if (orgList.value.length === 0) {
-        openModalCreateOrg(false)
-      }
-    })
 
     await store.dispatch('code/getOrgCategoryList')
 
