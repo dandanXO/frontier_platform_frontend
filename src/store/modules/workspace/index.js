@@ -82,7 +82,7 @@ const actions = {
     return data.result.workspaceCollection
   },
   async createCollectionForModal (_, { id, type, workspaceNodeId, collectionName }) {
-    if (type === NODE_LOCATION.ORG) {
+    if (Number(type) === NODE_LOCATION.ORG) {
       await workspaceApi.org.createCollection({ orgId: id, workspaceNodeId, collectionName })
     } else {
       await workspaceApi.group.createCollection({ groupId: id, workspaceNodeId, collectionName })

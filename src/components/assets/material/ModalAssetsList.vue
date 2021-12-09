@@ -6,31 +6,47 @@ div(class="w-161 h-131 px-8 flex flex-col")
       v-model:textValue="keyword"
       prependIcon="search"
       :placeholder="$t('FF0017')"
+      :disabled="isInRoot"
       @enter="search"
     )
   div(class="flex-grow flex flex-col")
-    div(class="w-full py-4 flex items-center justify-end")
-      tooltip(
-        placement="bottom-end"
-        :manual="true"
-        :showArrow="false"
-        :offset="[0, 8]"
-      )
-        template(#trigger="{ isActive }")
-          svg-icon(
-            iconName="swap_horiz"
-            size="20"
-            class="transform rotate-90 cursor-pointer text-black-700 hover:text-brand"
-            :class="{ 'text-brand': isActive }"
-          )
-        template(#content)
-          contextual-menu(v-model:selectValue="queryParams.sort" :optionList="sortOptionList" @update:selectValue="sort")
+    div(class="relative z-20 flex justify-between items-center py-4")
+      breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="goTo($event)")
+      div(class="flex items-center")
+        div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
+          svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
+          i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption")
+            template(#number) {{selectedValue.length}}
+        tooltip(
+          v-if="!isInRoot"
+          placement="bottom-end"
+          :manual="true"
+          :showArrow="false"
+          :offset="[0, 8]"
+        )
+          template(#trigger="{ isActive }")
+            svg-icon(
+              iconName="swap_horiz"
+              size="20"
+              class="transform rotate-90 cursor-pointer text-black-700 hover:text-brand"
+              :class="{ 'text-brand': isActive }"
+            )
+          template(#content)
+            contextual-menu(v-model:selectValue="queryParams.sort" :optionList="sortOptionList" @update:selectValue="sort")
     div(v-show="isSearching && materialList.length === 0" class="flex-grow flex items-center justify-center")
       svg-icon(iconName="loading" size="92" class="text-brand")
-    overlay-scrollbar-container(class="flex-grow -mx-8" @reachBottom="infiniteScroll")
+    overlay-scrollbar-container(v-if="!isSearching || materialList.length > 0" class="flex-grow -mx-8" @reachBottom="infiniteScroll")
       div(class="grid grid-flow-row grid-cols-5 auto-rows-auto gap-5 px-8")
-        template(v-for="material in materialList")
+        template(v-if="isInRoot")
+          div(
+            v-for="item in orgAndGroupList"
+            class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden border-black-400 bg-black-100 text-primary"
+            @click="goTo(item)"
+          )
+            p(class="text-caption text-center line-height-1.6 font-bold line-clamp-3") {{item.name}}
+        template(v-else)
           node-item-for-modal(
+            v-for="material in materialList"
             class="w-25"
             v-model:selectedValue="selectedValue"
             :nodeType="NODE_TYPE.MATERIAL"
@@ -52,10 +68,11 @@ div(class="w-161 h-131 px-8 flex flex-col")
 
 <script>
 import { ref, reactive, computed } from 'vue'
-import { SORT_BY, NODE_TYPE } from '@/utils/constants'
+import { SORT_BY, NODE_TYPE, NODE_LOCATION } from '@/utils/constants'
 import NodeItemForModal from '@/components/layout/NodeItemForModal.vue'
 import { useStore } from 'vuex'
 import useMaterial from '@/composables/useMaterial'
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'ModalAssetsList',
@@ -81,6 +98,7 @@ export default {
     }
   },
   setup (props) {
+    const { t } = useI18n()
     const store = useStore()
     const sortOptionList = [
       SORT_BY.CREATE_DATE,
@@ -94,15 +112,40 @@ export default {
     const queryParams = reactive({
       keyword: '',
       targetPage: 1,
-      sort: sortOptionList[0].value
+      sort: sortOptionList[0].value,
+      id: null,
+      nodeLocation: null
     })
     const totalPage = ref(1)
     const selectedValue = ref(props.isMultiSelect ? [] : '')
+    const breadcrumbsList = ref([
+      {
+        name: t('FF0016'),
+        key: 'root'
+      }
+    ])
 
+    const routeLocation = computed(() => store.getters['helper/routeLocation'])
+    const isInRoot = computed(() => routeLocation.value === 'group' && breadcrumbsList.value.length === 1)
     const actionButtonDisabled = computed(() => {
       return props.isMultiSelect
         ? selectedValue.value.length === 0
         : !selectedValue.value
+    })
+    const orgAndGroupList = computed(() => {
+      const organization = store.getters['organization/organization']
+      const list = []
+      list.push({
+        key: `${NODE_LOCATION.ORG}-${organization.orgId}`,
+        name: organization.orgName
+      })
+      organization.groupList.forEach(group => {
+        list.push({
+          key: `${NODE_LOCATION.GROUP}-${group.groupId}`,
+          name: group.groupName
+        })
+      })
+      return list
     })
 
     const innerActionCallback = async () => {
@@ -154,7 +197,26 @@ export default {
       getMaterialListForModal()
     }
 
-    getMaterialListForModal()
+    const goTo = (option) => {
+      if (option.key === 'root') {
+        breadcrumbsList.value.length = 1
+      } else if (!breadcrumbsList.value.some(item => item.key === option.key)) {
+        breadcrumbsList.value.push(option)
+        const [nodeLocation, id] = option.key.split('-')
+        queryParams.nodeLocation = nodeLocation
+        queryParams.id = id
+        reset()
+        getMaterialListForModal()
+      }
+    }
+
+    const clearSelect = () => (selectedValue.value.length = 0)
+
+    if (routeLocation.value === 'org') {
+      queryParams.nodeLocation = NODE_LOCATION.ORG
+      queryParams.id = store.getters['organization/organization'].orgId
+      getMaterialListForModal()
+    }
 
     return {
       keyword,
@@ -169,7 +231,12 @@ export default {
       sort,
       search,
       selectedValue,
-      actionButtonDisabled
+      actionButtonDisabled,
+      orgAndGroupList,
+      isInRoot,
+      breadcrumbsList,
+      clearSelect,
+      goTo
     }
   }
 }

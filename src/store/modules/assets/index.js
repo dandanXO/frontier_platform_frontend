@@ -1,6 +1,7 @@
 import setVuexState from '@/utils/set-vuex-state'
 import assetsApi from '@/apis/assets'
 import { downloadBase64File } from '@/utils/fileOperator'
+import { NODE_LOCATION } from '@/utils/constants'
 
 const getMergeRowState = () => ({
   faceSide: {},
@@ -62,7 +63,7 @@ const actions = {
 
     dispatch('handleResponseData', { data }, { root: true })
   },
-  async getMaterialListForModal ({ rootGetters }, { keyword, targetPage = 1, sort }) {
+  async getMaterialListForModal (_, { nodeLocation, id, keyword, targetPage = 1, sort }) {
     const params = {
       search: {
         keyword,
@@ -80,9 +81,9 @@ const actions = {
       params.search = null
     }
 
-    const { data } = rootGetters['helper/routeLocation'] === 'org'
-      ? await assetsApi.org.getMaterialList({ orgId: rootGetters['organization/orgId'], ...params })
-      : await assetsApi.group.getMaterialList({ groupId: rootGetters['group/groupId'], ...params })
+    const { data } = NODE_LOCATION.ORG === Number(nodeLocation)
+      ? await assetsApi.org.getMaterialList({ orgId: id, ...params })
+      : await assetsApi.group.getMaterialList({ groupId: id, ...params })
 
     return data.result
   },
