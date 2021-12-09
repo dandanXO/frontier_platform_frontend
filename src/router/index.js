@@ -3,6 +3,17 @@ import store from '@/store'
 import { ROLE_ID } from '@/utils/constants'
 import Sidebar from '@/components/layout/Sidebar.vue'
 
+const checkUserIsVerify = (to, from, next) => {
+  const user = store.getters['user/user']
+  if (!user.isVerify) {
+    store.dispatch('helper/openModal', {
+      component: 'modal-verify-notification'
+    })
+    return next('/')
+  }
+  next()
+}
+
 const reuseRoutes = (prefix) => ([
   {
     path: 'management/:tab(about|members|history)',
@@ -107,10 +118,19 @@ const routes = [
   {
     path: '/logout',
     name: 'Logout',
-    beforeEnter: (to, from, next) => {
+    beforeEnter: () => {
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
       window.location.replace('https://frontier.cool/')
+    }
+  },
+  {
+    path: '/verify-user',
+    name: 'VerifyUser',
+    beforeEnter: async (to, from, next) => {
+      const { verifyCode } = to.query
+      await store.dispatch('user/verifyUser', { verifyCode })
+      next('/')
     }
   },
   {
@@ -159,7 +179,7 @@ const routes = [
           default: () => import('@/views/PassThrough.vue'),
           sidebar: Sidebar
         },
-        beforeEnter: async (to, from, next) => {
+        beforeEnter: [checkUserIsVerify, async (to, from, next) => {
           store.commit('helper/SET_routeLocation', 'org')
           await store.dispatch('user/orgUser/getOrgUser', { orgNo: to.params.orgNo })
           await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
@@ -175,7 +195,7 @@ const routes = [
             })
           }
           next()
-        },
+        }],
         children: [
           {
             path: 'public-library',
@@ -203,12 +223,12 @@ const routes = [
           default: () => import('@/views/PassThrough.vue'),
           sidebar: Sidebar
         },
-        beforeEnter: async (to, from, next) => {
+        beforeEnter: [checkUserIsVerify, async (to, from, next) => {
           store.commit('helper/SET_routeLocation', 'group')
           await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
           await store.dispatch('group/getGroup', { groupId: to.params.groupId })
           next()
-        },
+        }],
         children: reuseRoutes('Group')
       }
     ]

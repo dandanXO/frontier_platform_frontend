@@ -16,12 +16,12 @@ div(class="relative z-index:sidebar min-w-60 w-60 h-full bg-black-100 sidebar-sh
       svg-icon(iconName="notification" class="text-black-700")
   div(class="border-t border-primary-thin px-1 py-1.5 flex flex-col")
     div(class="grid gap-y-1.5")
-      sidebar-item(v-for="menu in menuGlobal.slice(0, 3)" v-bind="menu")
+      sidebar-item(v-for="menu in menuGlobal.slice(0,1)" v-bind="menu")
   div(class="flex-grow px-1 flex flex-col")
     div(class="w-auto h-px bg-primary-thin mx-1.5 my-1.5")
     overlay-scrollbar-container(class="flex-grow")
       div(class="grid gap-y-1.5")
-        sidebar-item(v-bind="menuGlobal[3]")
+        sidebar-item(v-bind="menuGlobal[1]")
         dropdown(v-for="item in menuOrgOrGroup" :options="item.menuList" :closeAfterSelect="false" :closeAfterOutsideClick="false")
           template(#displayItem="{ isExpand }")
             div(class="flex items-center h-9 pl-4 pr-5 hover:bg-black-400")
@@ -67,18 +67,18 @@ export default {
         icon: 'logo',
         path: `/${organization.value.orgNo}/public-library`
       },
-      {
-        id: 'globalSearch',
-        title: 'RR0005',
-        icon: 'search_all',
-        path: `/${organization.value.orgNo}/global-search`
-      },
-      {
-        id: 'favorites',
-        title: 'RR0006',
-        icon: 'favorite_border',
-        path: `/${organization.value.orgNo}/favorites`
-      },
+      // {
+      //   id: 'globalSearch',
+      //   title: 'RR0005',
+      //   icon: 'search_all',
+      //   path: `/${organization.value.orgNo}/global-search`
+      // },
+      // {
+      //   id: 'favorites',
+      //   title: 'RR0006',
+      //   icon: 'favorite_border',
+      //   path: `/${organization.value.orgNo}/favorites`
+      // },
       {
         id: 'management',
         title: 'RR0004',

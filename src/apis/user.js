@@ -32,6 +32,14 @@ export default {
     method: 'POST',
     data: { password }
   }),
+  verifyUser: ({ verifyCode }) => axios('/user/verify', {
+    method: 'POST',
+    data: { verifyCode }
+  }),
+  resendVerifyEmail: () => axios('/user/resend-verify-email', {
+    method: 'POST',
+    data: {}
+  }),
   sendForgotPasswordEmail: ({ email }) => axios('/user/forgot-password/send-email', {
     method: 'POST',
     data: { email }
