@@ -53,6 +53,10 @@ export default {
     moveNode: ({ orgId, workspaceNodeId, targetWorkspaceNodeId }) => axios('/org/workspace/node/move', {
       method: 'POST',
       data: { orgId, workspaceNodeId, targetWorkspaceNodeId }
+    }),
+    deleteNode: ({ orgId, workspaceNodeIdList }) => axios('/org/workspace/node/delete', {
+      method: 'POST',
+      data: { orgId, workspaceNodeIdList }
     })
   },
   group: {
@@ -107,6 +111,10 @@ export default {
     moveNode: ({ groupId, workspaceNodeId, targetWorkspaceNodeId }) => axios('/org/group/workspace/node/move', {
       method: 'POST',
       data: { groupId, workspaceNodeId, targetWorkspaceNodeId }
+    }),
+    deleteNode: ({ groupId, workspaceNodeIdList }) => axios('/org/group/workspace/node/delete', {
+      method: 'POST',
+      data: { groupId, workspaceNodeIdList }
     })
   }
 }

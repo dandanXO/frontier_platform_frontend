@@ -124,6 +124,11 @@ const actions = {
     rootGetters['helper/routeLocation'] === 'org'
       ? await workspaceApi.org.moveNode({ orgId: rootGetters['organization/orgId'], workspaceNodeId, targetWorkspaceNodeId })
       : await workspaceApi.group.moveNode({ groupId: rootGetters['group/groupId'], workspaceNodeId, targetWorkspaceNodeId })
+  },
+  async deleteNode ({ rootGetters }, { workspaceNodeIdList }) {
+    rootGetters['helper/routeLocation'] === 'org'
+      ? await workspaceApi.org.deleteNode({ orgId: rootGetters['organization/orgId'], workspaceNodeIdList })
+      : await workspaceApi.group.deleteNode({ groupId: rootGetters['group/groupId'], workspaceNodeIdList })
   }
 }
 
