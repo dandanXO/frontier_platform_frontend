@@ -2,7 +2,13 @@
 div(class="pb-15 border-b border-black-400")
   div(class="h-16 flex items-center justify-between")
     h5(class="text-h5 text-primary font-bold") {{$t('DD0013')}}
-    btn(v-if="isEditMode" size="sm" type="secondary" @click="isOpenSampleCard = !isOpenSampleCard") {{isOpenSampleCard ? $t('UU0026') : $t('UU0033')}}
+    btn(
+      v-if="isEditMode"
+      size="sm"
+      type="secondary"
+      :disabled="!getSampleCardImage"
+      @click="isOpenSampleCard = !isOpenSampleCard"
+    ) {{isOpenSampleCard ? $t('UU0026') : $t('UU0033')}}
   div
     div(class="flex")
       div(class="grid gap-y-7.5 flex-grow" :class="{ 'px-15': !isOpenSampleCard }")
@@ -139,7 +145,22 @@ div(class="pb-15 border-b border-black-400")
           :placeholder="$t('DD0018')"
           class="relative z-9"
         )
-      div(v-if="isOpenSampleCard" class="w-75 h-75 bg-black-200 ml-8 sticky top-0")
+      div(v-if="isOpenSampleCard" class="flex-shrink-0 w-75 h-75 ml-8 sticky top-0")
+        div(class="w-full h-full overflow-hidden mb-7.5 rounded")
+          img(:src="getSampleCardImage" :style="rotateStyle")
+        input-range(
+          v-model:range="rotationAngle"
+          :min="-180"
+          :max="180"
+          :height="2"
+          :width="166"
+          :startAtCenter="true"
+          class="w-fit m-auto"
+        )
+          template(#min-end="{min}")
+            div(class="text-primary text-body2") {{min}}°
+          template(#max-end="{max}")
+            div(class="text-primary text-body2") {{max}}°
     div(class="bg-black-100 px-15 py-12.5 mt-7.5 grid gap-y-7.5")
       h6(class="text-h6 text-black-600 font-bold") {{$t('DD0019')}}
       input-chips(
@@ -172,8 +193,10 @@ export default {
   setup () {
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
+    const { isDoubleSideMaterial, sideType, faceSideImg, backSideImg } = material.value
     const isEditMode = computed(() => material.value.materialId !== null)
     const isOpenSampleCard = ref(false)
+    const rotationAngle = ref(0)
 
     const {
       specOptions,
@@ -184,6 +207,22 @@ export default {
       addDescriptionOption,
       addFinishOption
     } = useMaterialEdit(material.value)
+
+    const getSampleCardImage = computed(() => {
+      if (isDoubleSideMaterial) {
+        return faceSideImg.original
+      } else if (sideType === SIDE_TYPE.FACE) {
+        return faceSideImg.original
+      } else {
+        return backSideImg.original
+      }
+    })
+
+    const rotateStyle = computed(() => {
+      return {
+        transform: `rotate(${rotationAngle.value}deg)`
+      }
+    })
 
     watch(
       () => material.value,
@@ -206,7 +245,10 @@ export default {
       addDescriptionOption,
       addFinishOption,
       isEditMode,
-      isOpenSampleCard
+      isOpenSampleCard,
+      getSampleCardImage,
+      rotationAngle,
+      rotateStyle
     }
   }
 }
