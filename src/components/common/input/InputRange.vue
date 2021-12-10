@@ -1,14 +1,24 @@
 <template lang="pug">
 div(class="px-1")
-  div(v-if="startAtCenter" class="grid grid-cols-12 gap-1 justify-center items-center")
-    div(class="col-span-2")
+  div(
+    v-if="startAtCenter"
+    class="grid gap-1 justify-center items-center"
+    :class="[isVertical ? 'grid-rows-12' : 'grid-cols-12']"
+  )
+    div(class="m-auto" :class="[isVertical ? 'row-span-2' : 'col-span-2']")
       slot(name="min-end" :min="min")
-    vue-slider(v-model="innerRange" v-bind="optionForCentered" class="col-span-8" :disabled="disabled")
+    vue-slider(
+      v-model="innerRange"
+      v-bind="optionForCentered"
+      class="m-auto"
+      :class="[isVertical ? 'row-span-8' : 'col-span-8']"
+      :disabled="disabled"
+    )
       template(#dot)
         div(class="w-3 h-3 bg-brand rounded-full")
       template(#tooltip="{ value }")
         div(class="text-black-700 text-body2 mt-1") {{ value }}
-    div(class="col-span-2")
+    div(class="m-auto" :class="[isVertical ? 'row-span-2' : 'col-span-2']")
       slot(name="max-end" :max="max")
   vue-slider(v-else v-model="innerRange" v-bind="optionForNormal")
     template(#dot)
@@ -54,16 +64,32 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    width: {
+      type: [Number, String],
+      default: 'auto'
+    },
+    height: {
+      type: [Number, String],
+      default: 4
+    },
+    interval: {
+      type: Number,
+      default: 1
     }
   },
   emits: ['update:range'],
   setup (props, { emit }) {
     const fakeMaxValue = props.max + 1
+    const isVertical = computed(() => ['ttb', 'btt'].includes(props.direction))
 
     const common = {
       contained: true,
       tooltipPlacement: 'bottom',
       direction: props.direction,
+      width: props.width,
+      height: props.height,
+      interval: props.interval,
       processStyle: {
         'background-color': '#21b1866e'
       },
@@ -76,7 +102,6 @@ export default {
       ...common,
       tooltip: 'always',
       dotSize: 8,
-      height: 4,
       min: props.min,
       max: fakeMaxValue
     }
@@ -85,23 +110,20 @@ export default {
       ...common,
       tooltip: 'none',
       dotSize: 12,
-      height: 2,
       min: props.min,
       max: props.max,
       process: false,
       hideLabel: true,
-      marks: {
-        0: {
-          style: {
-            width: '2px',
-            height: '10px',
-            display: 'block',
-            borderRadius: '2px',
-            backgroundColor: '#e0e0e0',
-            transform: 'translate(0, -4px)'
-          }
+      marks: val => val === Math.floor(((props.min + props.max) / 2) * 10) / 10 ? ({
+        style: {
+          width: isVertical.value ? '10px' : '2px',
+          height: isVertical.value ? '2px' : '10px',
+          display: 'block',
+          borderRadius: '2px',
+          backgroundColor: '#e0e0e0',
+          transform: isVertical.value ? 'translate(-4px, 0)' : 'translate(0, -4px)'
         }
-      }
+      }) : false
     }
 
     const innerRange = computed({
@@ -126,6 +148,7 @@ export default {
       optionForCentered,
       innerRange,
       fakeMaxValue,
+      isVertical,
       reset
     }
   }

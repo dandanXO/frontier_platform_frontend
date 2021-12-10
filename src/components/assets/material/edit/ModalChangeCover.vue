@@ -84,11 +84,11 @@ export default {
           properties: {
             image,
             cropRectSize: 200,
-            afterCropHandler: async (cropedImage, file) => {
+            afterCropHandler: async (croppedImage, file) => {
               await store.dispatch('material/changeCoverImg', {
                 coverMode: COVER_MODE.SUP,
                 materialAttachmentId,
-                attachmentCropImg: cropedImage
+                attachmentCropImg: croppedImage
               })
               closeModal()
             }

@@ -44,6 +44,7 @@ export default {
     ModalAddToWorkspaceFail: defineAsyncComponent(() => import('@/components/assets/material/ModalAddToWorkspaceFail.vue')),
     ModalPreviewAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalPreviewAttachment')),
     ModalCropImage: defineAsyncComponent(() => import('@/components/imageCropper/ModalCropImage')),
+    ModalEditScannedImage: defineAsyncComponent(() => import('@/components/imageCropper/scannedImageCropper/ModalEditScannedImage')),
     ModalAssetsList: defineAsyncComponent(() => import('@/components/assets/material/ModalAssetsList.vue')),
     ModalVerifyNotification: defineAsyncComponent(() => import('@/components/lobby/ModalVerifyNotification.vue'))
   },

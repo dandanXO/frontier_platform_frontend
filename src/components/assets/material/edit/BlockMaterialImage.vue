@@ -27,7 +27,11 @@ div(class="pb-15 mb-5 border-b border-black-400")
                 class="text-caption line-height-1.6 text-center"
                 :class="{ 'font-bold': index === currentDisplayIndex }"
               ) {{text}}
-          p(class="text-body2 text-assist-blue underline cursor-pointer pb-3") {{$t('UU0011')}}
+          p(
+            v-if="canEditScannedImg"
+            class="text-body2 text-assist-blue underline cursor-pointer pb-3"
+            @click="pushModalEditImage"
+          ) {{$t('UU0011')}}
           p(class="text-body2 text-assist-blue underline cursor-pointer" @click="pushModalChangeCover") {{$t('UU0012')}}
         div(class="w-52.5")
           h5(class="text-h5 font-bold text-primary pb-5") {{$t('EE0015')}}
@@ -91,7 +95,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
 import { useStore } from 'vuex'
 import { computed, ref, watch } from 'vue'
 import useMaterial from '@/composables/useMaterial'
-import { U3M_STATUS } from '@/utils/constants'
+import { SIDE_TYPE, U3M_STATUS } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 
 export default {
@@ -144,6 +148,38 @@ export default {
       })
     }
 
+    const pushModalEditImage = async () => {
+      store.dispatch('helper/pushModal', {
+        header: t('EE0050'),
+        component: 'modal-edit-scanned-image',
+        properties: {
+          afterCropHandler: async ({ faceSideCropImg, backSideCropImg, isExchange }) => {
+            await store.dispatch('material/updateScannedImage', {
+              faceSideCropImg,
+              backSideCropImg,
+              isExchange
+            })
+          }
+        }
+      })
+    }
+
+    const canEditScannedImg = computed(() => {
+      const { isDoubleSideMaterial, sideType, faceSideImg, backSideImg } = material.value
+      const isFaceSideExist = !!faceSideImg.original
+      const isBackSideExist = !!backSideImg.original
+
+      if (isDoubleSideMaterial) {
+        return isFaceSideExist || isBackSideExist
+      } else if (sideType === SIDE_TYPE.FACE) {
+        return isFaceSideExist
+      } else if (sideType === SIDE_TYPE.BACK) {
+        return isBackSideExist
+      } else {
+        return false
+      }
+    })
+
     watch(
       () => pantoneName.value,
       () => {
@@ -163,7 +199,9 @@ export default {
       U3M_STATUS,
       pushModalHowToScan,
       pushModalChangeCover,
-      statusIconName
+      pushModalEditImage,
+      statusIconName,
+      canEditScannedImg
     }
   }
 }

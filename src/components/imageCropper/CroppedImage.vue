@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="croped-image")
+div(class="cropped-image ")
   div(:style="styles")
     div(:style="transformRotate")
       img(
@@ -330,7 +330,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.croped-image {
+.cropped-image  {
   position: relative;
   width: 100%;
   height: 100%;

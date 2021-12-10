@@ -349,6 +349,19 @@ const actions = {
       : await materialApi.group.updateAttachment.remove({ groupId: rootGetters['group/groupId'], ...params })
 
     dispatch('handleResponseData', { data }, { root: true })
+  },
+  async updateScannedImage ({ rootGetters, getters, dispatch }, { isExchange, faceSideCropImg, backSideCropImg }) {
+    const params = {
+      materialId: getters.material.materialId,
+      isExchange,
+      faceSideCropImg,
+      backSideCropImg
+    }
+    const { data } = rootGetters['helper/routeLocation'] === 'org'
+      ? await materialApi.org.updateScannedImage({ orgId: rootGetters['organization/orgId'], ...params })
+      : await materialApi.group.updateScannedImage({ groupId: rootGetters['group/groupId'], ...params })
+
+    dispatch('handleResponseData', { data }, { root: true })
   }
 }
 
