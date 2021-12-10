@@ -362,6 +362,19 @@ const actions = {
       : await materialApi.group.updateScannedImage({ groupId: rootGetters['group/groupId'], ...params })
 
     dispatch('handleResponseData', { data }, { root: true })
+  },
+  async generateU3m ({ rootGetters, getters, dispatch }, { isAutoRepeat = true, faceSideCropImg = null, backSideCropImg = null }) {
+    const params = {
+      materialId: getters.material.materialId,
+      isAutoRepeat,
+      faceSideCropImg,
+      backSideCropImg
+    }
+    const { data } = rootGetters['helper/routeLocation'] === 'org'
+      ? await materialApi.org.generateU3m({ orgId: rootGetters['organization/orgId'], ...params })
+      : await materialApi.group.generateU3m({ groupId: rootGetters['group/groupId'], ...params })
+
+    dispatch('handleResponseData', { data }, { root: true })
   }
 }
 

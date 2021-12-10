@@ -46,7 +46,9 @@ export default {
     ModalCropImage: defineAsyncComponent(() => import('@/components/imageCropper/ModalCropImage')),
     ModalEditScannedImage: defineAsyncComponent(() => import('@/components/imageCropper/scannedImageCropper/ModalEditScannedImage')),
     ModalAssetsList: defineAsyncComponent(() => import('@/components/assets/material/ModalAssetsList.vue')),
-    ModalVerifyNotification: defineAsyncComponent(() => import('@/components/lobby/ModalVerifyNotification.vue'))
+    ModalVerifyNotification: defineAsyncComponent(() => import('@/components/lobby/ModalVerifyNotification.vue')),
+    ModalU3mInstruction: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mInstruction')),
+    ModalU3mPriview: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mPriview'))
   },
   props: {
     component: {
