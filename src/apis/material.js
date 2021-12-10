@@ -77,6 +77,20 @@ export default {
         method: 'POST',
         data: { orgId, materialId, materialAttachmentId }
       })
+    },
+    updateScannedImage: ({ orgId, materialId, isExchange, faceSideCropImg = null, backSideCropImg = null }) => {
+      const formData = new FormData()
+      formData.append('orgId', orgId)
+      formData.append('materialId', materialId)
+      formData.append('isExchange', isExchange)
+      formData.append('faceSideCropImg', faceSideCropImg)
+      formData.append('backSideCropImg', backSideCropImg)
+
+      return axios('/org/assets/material/update/scan-image', {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        method: 'POST',
+        data: formData
+      })
     }
   },
   group: {
@@ -154,6 +168,20 @@ export default {
       remove: ({ groupId, materialId, materialAttachmentId }) => axios('/org/group/assets/material/update/remove-attachment', {
         method: 'POST',
         data: { groupId, materialId, materialAttachmentId }
+      })
+    },
+    updateScannedImage: ({ groupId, materialId, isExchange, faceSideCropImg = null, backSideCropImg = null }) => {
+      const formData = new FormData()
+      formData.append('groupId', groupId)
+      formData.append('materialId', materialId)
+      formData.append('isExchange', isExchange)
+      formData.append('faceSideCropImg', faceSideCropImg)
+      formData.append('backSideCropImg', backSideCropImg)
+
+      return axios('/org/group/assets/material/update/scan-image', {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        method: 'POST',
+        data: formData
       })
     }
   }
