@@ -116,7 +116,12 @@ export default function useAssets () {
   const create3DMaterial = {
     id: 'create3DMaterial',
     name: t('RR0058'),
-    func: () => { console.log('create3DMaterial') }
+    func: (v) => {
+      store.commit('material/UPDATE_material', v)
+      store.dispatch('helper/openModal', {
+        component: 'modal-u3m-instruction'
+      })
+    }
   }
 
   const downloadU3M = {

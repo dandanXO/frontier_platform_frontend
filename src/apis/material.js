@@ -91,6 +91,20 @@ export default {
         method: 'POST',
         data: formData
       })
+    },
+    generateU3m: ({ orgId, materialId, isAutoRepeat, faceSideCropImg, backSideCropImg }) => {
+      const formData = new FormData()
+      formData.append('orgId', orgId)
+      formData.append('materialId', materialId)
+      formData.append('isAutoRepeat', isAutoRepeat)
+      formData.append('faceSideCropImg', faceSideCropImg)
+      formData.append('backSideCropImg', backSideCropImg)
+
+      return axios('/org/assets/material/update/generate-u3m', {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        method: 'POST',
+        data: formData
+      })
     }
   },
   group: {
@@ -179,6 +193,20 @@ export default {
       formData.append('backSideCropImg', backSideCropImg)
 
       return axios('/org/group/assets/material/update/scan-image', {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        method: 'POST',
+        data: formData
+      })
+    },
+    generateU3m: ({ groupId, materialId, isAutoRepeat, faceSideCropImg, backSideCropImg }) => {
+      const formData = new FormData()
+      formData.append('groupId', groupId)
+      formData.append('materialId', materialId)
+      formData.append('isAutoRepeat', isAutoRepeat)
+      formData.append('faceSideCropImg', faceSideCropImg)
+      formData.append('backSideCropImg', backSideCropImg)
+
+      return axios('/org/group/assets/material/update/generate-u3m', {
         headers: { 'Content-Type': 'multipart/form-data' },
         method: 'POST',
         data: formData
