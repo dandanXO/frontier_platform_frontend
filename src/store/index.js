@@ -7,6 +7,7 @@ import material from '@/store/modules/material'
 import helper from '@/store/modules/helper'
 import assets from '@/store/modules/assets'
 import workspace from '@/store/modules/workspace'
+import publicLibrary from '@/store/modules/publicLibrary'
 
 export default createStore({
   actions: {
@@ -34,6 +35,9 @@ export default createStore({
         if (Object.prototype.hasOwnProperty.call(result, 'workspaceCollection')) {
           dispatch('workspace/setWorkspace', result.workspaceCollection, { root: true })
         }
+        if (Object.prototype.hasOwnProperty.call(result, 'publicCollection')) {
+          dispatch('publicLibrary/setPublicLibrary', result.publicCollection, { root: true })
+        }
       }
 
       if (!success) {
@@ -49,6 +53,7 @@ export default createStore({
     helper,
     material,
     assets,
-    workspace
+    workspace,
+    publicLibrary
   }
 })

@@ -22,7 +22,7 @@ export default {
       type: Number,
       required: true
     },
-    type: {
+    workspaceNodeLocation: {
       type: Number,
       required: true
     },
@@ -43,7 +43,7 @@ export default {
     const createCollectionForModal = async () => {
       await store.dispatch('workspace/createCollectionForModal', {
         id: props.id,
-        type: props.type,
+        workspaceNodeLocation: props.workspaceNodeLocation,
         workspaceNodeId: props.workspaceNodeId,
         collectionName: collectionName.value
       })

@@ -1,6 +1,6 @@
 <template lang="pug">
 input-container(:required="required")
-  div(class="flex justify-between gap-x-3")
+  div(class="flex gap-x-3")
     input-radio(v-for="option in optionList"
       v-model:inputValue="innerInputValue"
       :name="option[keyOptionName]"
@@ -23,7 +23,7 @@ export default {
       required: true
     },
     inputValue: {
-      type: [String, Number],
+      type: [String, Number, Boolean],
       required: true
     },
     keyOptionName: {

@@ -25,6 +25,11 @@ const defaultFilterState = () => ({
     max: null,
     isInfinity: false
   },
+  price: {
+    min: null,
+    max: null,
+    isInfinity: false
+  },
   inventory: {
     unit: null,
     quantity: {
@@ -65,7 +70,8 @@ const getters = {
     hasU3M: state.filter.hasU3M !== null,
     yarnAndDensity: !!state.filter.wovenWarpYarnCount || !!state.filter.wovenWeftYarnCount || !!state.filter.warpDensity || !!state.filter.weftDensity || !!state.filter.knitYarnCount,
     widthAndWeightGsm: !!state.filter.width.min || !!state.filter.width.max || !!state.filter.weightGsm.min || !!state.filter.weightGsm.max,
-    inventory: !!state.filter.inventory.quantity.min || !!state.filter.inventory.quantity.max
+    inventory: !!state.filter.inventory.quantity.min || !!state.filter.inventory.quantity.max,
+    price: !!state.filter.price.min || !!state.filter.price.max
   }),
   filterOptions: (state, getters, rootState, rootGetters) => {
     const filterOptionList = rootGetters['code/filterOptionList']
@@ -107,7 +113,8 @@ const getters = {
       ],
       width: { min: 0, max: 200 },
       weightGsm: { min: 0, max: 600 },
-      inventory: { min: 0, max: 10000 }
+      inventory: { min: 0, max: 10000 },
+      price: { min: 0, max: 100 }
     }
   },
   isFilterDirty: (state, getters) => Object.keys(getters.filterDirty).some(key => getters.filterDirty[key]),
@@ -147,6 +154,9 @@ const getters = {
       }
       if (filter.inventory.quantity.min === null && filter.inventory.quantity.max === null) {
         filter.inventory = null
+      }
+      if (filter.price.min === null && filter.price.max === null) {
+        filter.price = null
       }
     }
 

@@ -2,6 +2,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation'
 import { inject, computed } from 'vue'
+import { TARGET_LOCATION } from '@/utils/constants.js'
 
 export default function useAssets () {
   const { t } = useI18n()
@@ -34,10 +35,38 @@ export default function useAssets () {
     name: t('RR0056'),
     func: (v) => {
       const materialIdList = Array.isArray(v) ? v.map(material => JSON.parse(material).materialId) : [v.materialId]
+      const organization = store.getters['organization/organization']
+      const currentGroupId = store.getters['group/groupId'] || null
+      const locationList = []
+      const groupList = routeLocation.value === 'org'
+        ? organization.groupList
+        : organization.groupList.filter(group => group.groupId !== currentGroupId)
+
+      if (routeLocation.value === 'group') {
+        locationList.push({
+          id: organization.orgId,
+          name: organization.orgName,
+          location: TARGET_LOCATION.ORG
+        })
+      }
+
+      groupList.forEach(group => {
+        locationList.push({
+          id: group.groupId,
+          name: group.groupName,
+          location: TARGET_LOCATION.GROUP
+        })
+      })
+
       store.dispatch('helper/openModal', {
         component: 'modal-clone-to',
         properties: {
-          materialIdList: materialIdList
+          locationList,
+          cloneHandler: async (targetLocationList) => {
+            store.dispatch('helper/openModalLoading')
+            await store.dispatch('assets/cloneMaterial', { targetLocationList, materialIdList })
+            store.dispatch('helper/closeModalLoading')
+          }
         }
       })
     }
@@ -58,9 +87,9 @@ export default function useAssets () {
 
             const failMaterialList = await store.dispatch('assets/addToWorkspace', {
               materialIdList,
-              targetWorkspaceNodeIdList: selectedNodeKeyList.map(nodeKey => {
-                const [type, id] = nodeKey.split('-')
-                return { id, type }
+              targetWorkspaceNodeList: selectedNodeKeyList.map(nodeKey => {
+                const [location, id] = nodeKey.split('-')
+                return { id, location }
               })
             })
 
