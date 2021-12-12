@@ -6,9 +6,9 @@ export default {
       method: 'POST',
       data: { orgId, workspaceNodeId, pagination, search, filter }
     }),
-    getWorkspaceForModal: ({ orgId, pagination, search = null, workspaceNodeId, type }) => axios('/org/workspace/get-for-modal', {
+    getWorkspaceForModal: ({ orgId, pagination, search = null, workspaceNodeId, workspaceNodeLocation }) => axios('/org/workspace/get-for-modal', {
       method: 'POST',
-      data: { orgId, pagination, search, workspaceNodeId, type }
+      data: { orgId, pagination, search, workspaceNodeId, workspaceNodeLocation }
     }),
     getCollection: ({ orgId, workspaceNodeId }) => axios('/org/workspace/get', {
       method: 'POST',
@@ -46,9 +46,9 @@ export default {
       method: 'POST',
       data: { orgId, collectionId }
     }),
-    duplicateNode: ({ orgId, workspaceNodeId, targetWorkspaceNodeIdList }) => axios('/org/workspace/node/duplicate', {
+    duplicateNode: ({ orgId, workspaceNodeId, targetWorkspaceNodeList }) => axios('/org/workspace/node/duplicate', {
       method: 'POST',
-      data: { orgId, workspaceNodeId, targetWorkspaceNodeIdList }
+      data: { orgId, workspaceNodeId, targetWorkspaceNodeList }
     }),
     moveNode: ({ orgId, workspaceNodeId, targetWorkspaceNodeId }) => axios('/org/workspace/node/move', {
       method: 'POST',
@@ -57,6 +57,10 @@ export default {
     deleteNode: ({ orgId, workspaceNodeIdList }) => axios('/org/workspace/node/delete', {
       method: 'POST',
       data: { orgId, workspaceNodeIdList }
+    }),
+    publishNode: ({ orgId, workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }) => axios('/org/workspace/node/publish', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }
     })
   },
   group: {
@@ -64,9 +68,9 @@ export default {
       method: 'POST',
       data: { groupId, workspaceNodeId, pagination, search, filter }
     }),
-    getWorkspaceForModal: ({ groupId, pagination, search = null, workspaceNodeId, type }) => axios('/org/group/workspace/get-for-modal', {
+    getWorkspaceForModal: ({ groupId, pagination, search = null, workspaceNodeId }) => axios('/org/group/workspace/get-for-modal', {
       method: 'POST',
-      data: { groupId, pagination, search, workspaceNodeId, type }
+      data: { groupId, pagination, search, workspaceNodeId }
     }),
     getCollection: ({ groupId, workspaceNodeId }) => axios('/org/group/workspace/get', {
       method: 'POST',
@@ -104,9 +108,9 @@ export default {
       method: 'POST',
       data: { groupId, collectionId }
     }),
-    duplicateNode: ({ groupId, workspaceNodeId, targetWorkspaceNodeIdList }) => axios('/org/group/workspace/node/duplicate', {
+    duplicateNode: ({ groupId, workspaceNodeId, targetWorkspaceNodeList }) => axios('/org/group/workspace/node/duplicate', {
       method: 'POST',
-      data: { groupId, workspaceNodeId, targetWorkspaceNodeIdList }
+      data: { groupId, workspaceNodeId, targetWorkspaceNodeList }
     }),
     moveNode: ({ groupId, workspaceNodeId, targetWorkspaceNodeId }) => axios('/org/group/workspace/node/move', {
       method: 'POST',
@@ -115,6 +119,10 @@ export default {
     deleteNode: ({ groupId, workspaceNodeIdList }) => axios('/org/group/workspace/node/delete', {
       method: 'POST',
       data: { groupId, workspaceNodeIdList }
+    }),
+    publishNode: ({ groupId, workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }) => axios('/org/group/workspace/node/publish', {
+      method: 'POST',
+      data: { groupId, workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }
     })
   }
 }

@@ -112,15 +112,15 @@ const actions = {
     const { extension, file, fileName } = data?.result
     downloadBase64File(file, extension, fileName)
   },
-  async cloneMaterial ({ rootGetters }, { targetIdList, materialIdList }) {
+  async cloneMaterial ({ rootGetters }, { targetLocationList, materialIdList }) {
     rootGetters['helper/routeLocation'] === 'org'
-      ? await assetsApi.org.cloneMaterial({ orgId: rootGetters['organization/orgId'], targetIdList, materialIdList })
-      : await assetsApi.group.cloneMaterial({ groupId: rootGetters['group/groupId'], targetIdList, materialIdList })
+      ? await assetsApi.org.cloneMaterial({ orgId: rootGetters['organization/orgId'], targetLocationList, materialIdList })
+      : await assetsApi.group.cloneMaterial({ groupId: rootGetters['group/groupId'], targetLocationList, materialIdList })
   },
-  async addToWorkspace ({ rootGetters }, { targetWorkspaceNodeIdList, materialIdList }) {
+  async addToWorkspace ({ rootGetters }, { targetWorkspaceNodeList, materialIdList }) {
     const { data } = rootGetters['helper/routeLocation'] === 'org'
-      ? await assetsApi.org.addToWorkspace({ orgId: rootGetters['organization/orgId'], targetWorkspaceNodeIdList, materialIdList })
-      : await assetsApi.group.addToWorkspace({ groupId: rootGetters['group/groupId'], targetWorkspaceNodeIdList, materialIdList })
+      ? await assetsApi.org.addToWorkspace({ orgId: rootGetters['organization/orgId'], targetWorkspaceNodeList, materialIdList })
+      : await assetsApi.group.addToWorkspace({ groupId: rootGetters['group/groupId'], targetWorkspaceNodeList, materialIdList })
 
     return data.result.failMaterialList
   }

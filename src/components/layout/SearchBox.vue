@@ -54,8 +54,9 @@ div(class="grid" :class="{ 'border-b border-primary-thin': !isOpenFilterPanel }"
         filter-width-weight
         filter-yarn-density
         filter-finish
-        filter-inventory
+        filter-inventory(:searchType="searchType")
         filter-has-price(v-if="[SEARCH_TYPE.ASSETS, SEARCH_TYPE.WORKSPACE].includes(searchType)")
+        filter-price(v-if="[SEARCH_TYPE.PUBLIC_LIBRARY].includes(searchType)")
         filter-complete(v-if="searchType === SEARCH_TYPE.ASSETS")
         filter-has-u3m(v-if="searchType !== SEARCH_TYPE.ASSETS")
 </template>
@@ -73,6 +74,7 @@ import FilterFinish from '@/components/layout/filter/FilterFinish'
 import FilterHasPrice from '@/components/layout/filter/FilterHasPrice'
 import FilterHasU3m from '@/components/layout/filter/FilterHasU3m'
 import FilterComplete from '@/components/layout/filter/FilterComplete'
+import FilterPrice from '@/components/layout/filter/FilterPrice'
 import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { SEARCH_TYPE } from '@/utils/constants'
@@ -91,7 +93,8 @@ export default {
     FilterHasPrice,
     FilterComplete,
     FilterContent,
-    FilterHasU3m
+    FilterHasU3m,
+    FilterPrice
   },
   props: {
     searchType: {

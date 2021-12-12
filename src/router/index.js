@@ -203,6 +203,11 @@ const routes = [
             component: () => import('@/views/innerApp/PublicLibrary.vue')
           },
           {
+            path: 'public-library/:nodeKey',
+            name: 'PublicLibraryMaterialDetail',
+            component: () => import('@/views/innerApp/PublicLibraryMaterialDetail.vue')
+          },
+          {
             path: 'global-search',
             name: 'GlobalSearch',
             component: () => import('@/views/innerApp/GlobalSearch.vue')

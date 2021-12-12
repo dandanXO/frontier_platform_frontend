@@ -4,7 +4,7 @@ import { NODE_LOCATION } from '@/utils/constants'
 
 const getWorkspaceCollectionState = () => ({
   workspaceNodeId: null,
-  type: NODE_LOCATION.ORG,
+  workspaceNodeLocation: NODE_LOCATION.ORG,
   collectionId: null,
   name: '',
   description: '',
@@ -30,6 +30,11 @@ const getters = {
       ? rootGetters['organization/organization'].workspaceNodeId
       : rootGetters['group/group'].workspaceNodeId
   },
+  defaultWorkspaceNodeLocation: (state, getters, rootState, rootGetters) => {
+    return rootGetters['helper/routeLocation'] === 'org'
+      ? NODE_LOCATION.ORG
+      : NODE_LOCATION.GROUP
+  },
   workspaceCollection: state => state
 }
 
@@ -50,10 +55,10 @@ const actions = {
 
     dispatch('handleResponseData', { data }, { root: true })
   },
-  async getWorkspaceForModal ({ rootGetters }, { keyword, sort, targetPage = 1, workspaceNodeId, type }) {
+  async getWorkspaceForModal ({ rootGetters }, { keyword, sort, targetPage = 1, workspaceNodeId, workspaceNodeLocation }) {
     const params = {
       workspaceNodeId,
-      type,
+      workspaceNodeLocation,
       search: {
         keyword,
         tagList: []
@@ -81,8 +86,8 @@ const actions = {
       : await workspaceApi.group.getCollection({ groupId: rootGetters['group/groupId'], workspaceNodeId })
     return data.result.workspaceCollection
   },
-  async createCollectionForModal (_, { id, type, workspaceNodeId, collectionName }) {
-    if (Number(type) === NODE_LOCATION.ORG) {
+  async createCollectionForModal (_, { id, workspaceNodeLocation, workspaceNodeId, collectionName }) {
+    if (Number(workspaceNodeLocation) === NODE_LOCATION.ORG) {
       await workspaceApi.org.createCollection({ orgId: id, workspaceNodeId, collectionName })
     } else {
       await workspaceApi.group.createCollection({ groupId: id, workspaceNodeId, collectionName })
@@ -115,10 +120,10 @@ const actions = {
       ? await workspaceApi.org.removeTrendBoard({ orgId: rootGetters['organization/orgId'], collectionId })
       : await workspaceApi.group.removeTrendBoard({ groupId: rootGetters['group/groupId'], collectionId })
   },
-  async duplicateNode ({ rootGetters }, { workspaceNodeId, targetWorkspaceNodeIdList }) {
+  async duplicateNode ({ rootGetters }, { workspaceNodeId, targetWorkspaceNodeList }) {
     rootGetters['helper/routeLocation'] === 'org'
-      ? await workspaceApi.org.duplicateNode({ orgId: rootGetters['organization/orgId'], workspaceNodeId, targetWorkspaceNodeIdList })
-      : await workspaceApi.group.duplicateNode({ groupId: rootGetters['group/groupId'], workspaceNodeId, targetWorkspaceNodeIdList })
+      ? await workspaceApi.org.duplicateNode({ orgId: rootGetters['organization/orgId'], workspaceNodeId, targetWorkspaceNodeList })
+      : await workspaceApi.group.duplicateNode({ groupId: rootGetters['group/groupId'], workspaceNodeId, targetWorkspaceNodeList })
   },
   async moveNode ({ rootGetters }, { workspaceNodeId, targetWorkspaceNodeId }) {
     rootGetters['helper/routeLocation'] === 'org'
@@ -129,6 +134,11 @@ const actions = {
     rootGetters['helper/routeLocation'] === 'org'
       ? await workspaceApi.org.deleteNode({ orgId: rootGetters['organization/orgId'], workspaceNodeIdList })
       : await workspaceApi.group.deleteNode({ groupId: rootGetters['group/groupId'], workspaceNodeIdList })
+  },
+  async publishNode ({ rootGetters }, { workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }) {
+    rootGetters['helper/routeLocation'] === 'org'
+      ? await workspaceApi.org.publishNode({ orgId: rootGetters['organization/orgId'], workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M })
+      : await workspaceApi.group.publishNode({ groupId: rootGetters['group/groupId'], workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M })
   }
 }
 

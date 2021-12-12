@@ -153,7 +153,7 @@ export default {
       targetPage: 1,
       sort: sortOptionList[0].value,
       workspaceNodeId: null,
-      type: null
+      workspaceNodeLocation: null
     })
     const totalPage = ref(1)
     const rootId = ref(0)
@@ -225,14 +225,14 @@ export default {
       totalPage.value = pagination.totalPage
 
       appendedBreadcrumbsList.value = workspaceCollection.breadcrumbList.map(item => ({
-        key: `${item.type}-${item.workspaceNodeId}`,
+        key: `${item.workspaceNodeLocation}-${item.workspaceNodeId}`,
         name: item.name
       }))
 
       if (workspaceCollection.childCollectionList.length > 0) {
         workspaceCollection.childCollectionList.forEach(collection => {
           pureNodeList.value.push({
-            key: `${collection.type}-${collection.workspaceNodeId}`,
+            key: `${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`,
             nodeType: NODE_TYPE.COLLECTION,
             data: collection
           })
@@ -242,7 +242,7 @@ export default {
       if (workspaceCollection.childMaterialList.length > 0) {
         workspaceCollection.childMaterialList.forEach(material => {
           pureNodeList.value.push({
-            key: `${material.type}-${material.workspaceNodeId}`,
+            key: `${material.workspaceNodeLocation}-${material.workspaceNodeId}`,
             nodeType: NODE_TYPE.MATERIAL,
             data: material
           })
@@ -253,8 +253,8 @@ export default {
     }
 
     const parseAndSetKey = (key) => {
-      const [type, workspaceNodeId] = key.split('-')
-      queryParams.type = type
+      const [workspaceNodeLocation, workspaceNodeId] = key.split('-')
+      queryParams.workspaceNodeLocation = workspaceNodeLocation
       queryParams.workspaceNodeId = workspaceNodeId
     }
 
@@ -307,7 +307,7 @@ export default {
         component: 'modal-create-collection-simple',
         properties: {
           id: rootId.value,
-          type: Number(queryParams.type),
+          workspaceNodeLocation: Number(queryParams.workspaceNodeLocation),
           workspaceNodeId: Number(queryParams.workspaceNodeId),
           callback: () => {
             clearNodeList()

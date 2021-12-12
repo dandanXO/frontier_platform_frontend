@@ -13,7 +13,7 @@ div(class="w-full h-full flex flex-col")
         binary
         size="20"
       )
-      btn-functional(v-if="selectAll" size='lg' @click="$emit('selectAll')") {{$t('RR0052')}}
+      btn-functional(v-if="canSelectAll" size='lg' @click="$emit('selectAll')") {{$t('RR0052')}}
       tooltip(
         placement='bottom-end'
         :manual='true'
@@ -59,7 +59,7 @@ export default {
       type: Number,
       default: SEARCH_TYPE.ASSETS
     },
-    selectAll: {
+    canSelectAll: {
       type: Boolean,
       default: true
     },
@@ -116,10 +116,12 @@ export default {
        * and when first time searching without keyword (with keyword -> no keyword),
        * sort value will automatically change to props.optionSort.base[0].value
        */
-      if (!keywordDirty.value && !!keyword.value) {
-        store.dispatch('helper/search/setPagination', { sort: props.optionSort.keywordSearch[0].value })
-      } else if (keywordDirty.value && !keyword.value) {
-        store.dispatch('helper/search/setPagination', { sort: props.optionSort.base[0].value })
+      if (props.optionSort.keywordSearch.length > 0) {
+        if (!keywordDirty.value && !!keyword.value) {
+          store.dispatch('helper/search/setPagination', { sort: props.optionSort.keywordSearch[0].value })
+        } else if (keywordDirty.value && !keyword.value) {
+          store.dispatch('helper/search/setPagination', { sort: props.optionSort.base[0].value })
+        }
       }
 
       keywordDirty.value = !!keyword.value

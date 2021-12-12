@@ -21,7 +21,8 @@ export default function useWorkspace () {
   const editCollection = {
     id: FUNCTION_ID.EDIT_COLLECTION,
     name: t('RR0054'),
-    func: (workspaceNodeId) => {
+    func: (workspaceNodeKey) => {
+      const workspaceNodeId = workspaceNodeKey.split('-')[1]
       store.dispatch('helper/openModal', {
         component: 'modal-create-or-edit-collection',
         properties: {
@@ -43,7 +44,8 @@ export default function useWorkspace () {
   const duplicateNode = {
     id: FUNCTION_ID.DUPLICATE_NODE,
     name: t('RR0076'),
-    func: (workspaceNodeId) => {
+    func: (workspaceNodeKey) => {
+      const workspaceNodeId = workspaceNodeKey.split('-')[1]
       store.dispatch('helper/openModal', {
         component: 'modal-workspace-node-list',
         properties: {
@@ -65,9 +67,9 @@ export default function useWorkspace () {
               store.dispatch('helper/openModalLoading')
               await store.dispatch('workspace/duplicateNode', {
                 workspaceNodeId,
-                targetWorkspaceNodeIdList: selectedNodeKeyList.map(nodeKey => {
-                  const [type, id] = nodeKey.split('-')
-                  return { id, type }
+                targetWorkspaceNodeList: selectedNodeKeyList.map(nodeKey => {
+                  const [location, id] = nodeKey.split('-')
+                  return { id, location }
                 })
               })
               store.dispatch('helper/closeModalLoading')
@@ -82,7 +84,8 @@ export default function useWorkspace () {
   const moveNode = {
     id: FUNCTION_ID.MOVE_NODE,
     name: t('RR0077'),
-    func: (workspaceNodeId) => {
+    func: (workspaceNodeKey) => {
+      const workspaceNodeId = workspaceNodeKey.split('-')[1]
       store.dispatch('helper/openModal', {
         component: 'modal-workspace-node-list',
         properties: {
@@ -139,7 +142,8 @@ export default function useWorkspace () {
   const deleteCollection = {
     id: FUNCTION_ID.DELETE_NODE,
     name: t('RR0063'),
-    func: (workspaceNodeId) => {
+    func: (workspaceNodeKey) => {
+      const workspaceNodeId = workspaceNodeKey.split('-')[1]
       deleteNodeList([workspaceNodeId], t('FF0044'), t('FF0045'))
     }
   }
@@ -147,7 +151,8 @@ export default function useWorkspace () {
   const deleteMaterial = {
     id: FUNCTION_ID.DELETE_NODE,
     name: t('RR0063'),
-    func: (workspaceNodeId) => {
+    func: (workspaceNodeKey) => {
+      const workspaceNodeId = workspaceNodeKey.split('-')[1]
       deleteNodeList([workspaceNodeId], t('FF0046'), t('FF0045'))
     }
   }
@@ -155,7 +160,8 @@ export default function useWorkspace () {
   const deleteMultipleNode = {
     id: FUNCTION_ID.DELETE_NODE,
     name: t('RR0063'),
-    func: (workspaceNodeIdList) => {
+    func: (workspaceNodeKeyList) => {
+      const workspaceNodeIdList = workspaceNodeKeyList.map(key => (key.split('-')[1]))
       deleteNodeList(workspaceNodeIdList, t('FF0004'), t('FF0005'))
     }
   }

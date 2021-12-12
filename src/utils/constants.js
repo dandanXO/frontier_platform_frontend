@@ -161,6 +161,11 @@ export const SORT_BY = {
   }
 }
 
+export const TARGET_LOCATION = {
+  ORG: 1,
+  GROUP: 2
+}
+
 export const NODE_LOCATION = {
   ORG: 1,
   GROUP: 2
@@ -173,5 +178,6 @@ export const NODE_TYPE = {
 
 export const SEARCH_TYPE = {
   ASSETS: 1,
-  WORKSPACE: 2
+  WORKSPACE: 2,
+  PUBLIC_LIBRARY: 3
 }

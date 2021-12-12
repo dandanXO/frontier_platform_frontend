@@ -75,6 +75,10 @@ export default function useNavigation () {
     router.push(parsePath(`${prefixPath.value}/assets/merge/preview`))
   }
 
+  const goToPublicLibraryMaterialDetail = (nodeKey) => {
+    router.push(parsePath(`${prefixPath.value}/public-library/${nodeKey}`))
+  }
+
   return {
     nextAfterSignIn,
     parsePath,
@@ -84,6 +88,7 @@ export default function useNavigation () {
     goToAssetsMaterialCreate,
     goToAssetMaterialEdit,
     goToAssetsMaterialMerge,
-    goToAssetsMaterialMergePreview
+    goToAssetsMaterialMergePreview,
+    goToPublicLibraryMaterialDetail
   }
 }
