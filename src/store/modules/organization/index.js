@@ -21,6 +21,9 @@ const state = () => ({
   memberList: [],
   groupList: [],
   historyList: [],
+  totalMemberQty: 0,
+  totalMaterialQty: 0,
+  totalU3MQty: 0,
 
   /** LOCAL VAR */
   createForm: {

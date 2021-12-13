@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import { ROLE_ID } from '@/utils/constants'
-import Sidebar from '@/components/layout/Sidebar.vue'
+import Sidebar from '@/components/layout/sidebar/Sidebar.vue'
 
 const checkUserIsVerify = (to, from, next) => {
   const user = store.getters['user/user']
@@ -114,6 +114,11 @@ const routes = [
       }
       next()
     }
+  },
+  {
+    path: '/plan',
+    name: 'Plan',
+    component: () => import('@/views/Plan.vue')
   },
   {
     path: '/logout',
