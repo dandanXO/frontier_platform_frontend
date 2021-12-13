@@ -5,11 +5,11 @@ div(class="fixed inset-0 z-index:modal pt-16 w-screen h-screen bg-black-0")
     :primaryText ="hasNext ? $t('UU0021') : $t('UU0020')"
     :secondaryText="isAtSecondStep ? $t('UU0004') : $t('UU0002')"
     @click:primary="hasNext ? getNext() : confirm()"
-    @click:secondary="hasNext ? goBack() : goToAssets()"
+    @click:secondary="isAtSecondStep ? goBack() : goToAssets()"
   )
   div(class="flex h-full justify-center items-center")
     div
-      div(class="mb-4.5 text-center text-primary text-body2 font-bold") {{$t("EE0051")}}
+      div(class="mb-4.5 text-center text-primary text-body2 font-bold") {{isFaceSideMaterial || (isDoubleSideMaterial && hasNext) ? $t("EE0051") : $t("EE0052")}}
       layout-edit(
         :image="currentImage"
         :cropRectSize="cropRectSize"
@@ -19,7 +19,18 @@ div(class="fixed inset-0 z-index:modal pt-16 w-screen h-screen bg-black-0")
       )
         template(#imageCropArea="{image, rotationAngle, croppedScaleRatio, scaleSize, cropRectSize}")
           image-crop-area(
+            v-if="isFaceSideMaterial || (isDoubleSideMaterial && hasNext)"
             ref="faceSideImageCropper"
+            :image="image"
+            :rotationAngle="rotationAngle"
+            :croppedScaleRatio="croppedScaleRatio"
+            :scaleSize="scaleSize"
+            :cropRectSize="cropRectSize"
+            @update:externalOptions="Object.assign(externalOptions, $event)"
+          )
+          image-crop-area(
+            v-else
+            ref="backSideImageCropper"
             :image="image"
             :rotationAngle="rotationAngle"
             :croppedScaleRatio="croppedScaleRatio"
@@ -65,6 +76,8 @@ export default {
     const previewScaleRatio = ref(1)
     const cropRectSize = 208
     const { goToAssets } = useNavigation()
+    const faceSideImageCropper = ref(null)
+    const backSideImageCropper = ref(null)
 
     // 為了取得 child component 的資料
     const externalOptions = reactive({
@@ -91,36 +104,52 @@ export default {
     const {
       isDoubleSideMaterial,
       isFaceSideMaterial,
-      isBackSideMaterial,
       faceSideObj,
       backSideObj
     } = await useMaterialImage(material.value, 'u3m')
 
     const hasNext = ref(isDoubleSideMaterial && faceSideObj && backSideObj)
 
-    const getNext = () => {
+    const currentImage = ref(
+      isFaceSideMaterial || (isDoubleSideMaterial && hasNext.value)
+        ? faceSideObj
+        : backSideObj
+    )
+
+    let faceSideCropImg
+    let backSideCropImg
+
+    const getNext = async () => {
+      store.dispatch('helper/pushModalLoading')
+      faceSideCropImg = faceSideObj ? await faceSideImageCropper.value?.cropImage() : null
       hasNext.value = false
       isAtSecondStep.value = true
+      currentImage.value = backSideObj
+      store.dispatch('helper/closeModalLoading')
     }
 
     const goBack = () => {
       hasNext.value = true
       isAtSecondStep.value = false
+      currentImage.value = faceSideObj
     }
 
-    const confirm = () => {
-      console.log('submit!')
-    }
+    const confirm = async () => {
+      store.dispatch('helper/pushModalLoading')
+      if (isFaceSideMaterial || (isDoubleSideMaterial && hasNext.value)) {
+        faceSideCropImg = faceSideObj ? await faceSideImageCropper.value?.cropImage() : null
+      }
 
-    let currentImage = reactive({})
-    const getCurrentImage = () => {
-      if (isFaceSideMaterial) currentImage = faceSideObj
-      else if (isBackSideMaterial) currentImage = backSideObj
-      else if (isDoubleSideMaterial && hasNext.value) currentImage = faceSideObj
-      else currentImage = backSideObj
-    }
+      backSideCropImg = backSideObj ? await backSideImageCropper.value?.cropImage() : null
+      await store.dispatch('material/generateU3m', {
+        faceSideCropImg,
+        backSideCropImg,
+        isAutoRepeat: false
+      })
 
-    getCurrentImage()
+      store.dispatch('helper/closeModalLoading')
+      goToAssets()
+    }
 
     return {
       cropRectSize,
@@ -137,7 +166,11 @@ export default {
       currentImage,
       externalOptions,
       externalRotationAngle,
-      externalCroppedScaleRatio
+      externalCroppedScaleRatio,
+      faceSideImageCropper,
+      backSideImageCropper,
+      isDoubleSideMaterial,
+      isFaceSideMaterial
     }
   }
 }
