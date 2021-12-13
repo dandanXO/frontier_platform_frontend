@@ -2,24 +2,20 @@
 div(class="px-1")
   div(
     v-if="startAtCenter"
-    class="grid gap-1 justify-center items-center"
-    :class="[isVertical ? 'grid-rows-12' : 'grid-cols-12']"
+    class="flex justify-center items-center"
+    :class="[isVertical ? 'flex-col' : '']"
   )
-    div(class="m-auto" :class="[isVertical ? 'row-span-2' : 'col-span-2']")
-      slot(name="min-end" :min="min")
+    slot(name="min-end" :min="min")
     vue-slider(
       v-model="innerRange"
       v-bind="optionForCentered"
-      class="m-auto"
-      :class="[isVertical ? 'row-span-8' : 'col-span-8']"
       :disabled="disabled"
     )
       template(#dot)
         div(class="w-3 h-3 bg-brand rounded-full")
       template(#tooltip="{ value }")
         div(class="text-black-700 text-body2 mt-1") {{ value }}
-    div(class="m-auto" :class="[isVertical ? 'row-span-2' : 'col-span-2']")
-      slot(name="max-end" :max="max")
+    slot(name="max-end" :max="max")
   vue-slider(v-else v-model="innerRange" v-bind="optionForNormal")
     template(#dot)
       div(class='w-2 h-5 bg-brand transform -translate-y-1')
