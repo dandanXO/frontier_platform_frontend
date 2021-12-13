@@ -79,6 +79,10 @@ export default function useNavigation () {
     router.push(parsePath(`${prefixPath.value}/public-library/${nodeKey}`))
   }
 
+  const goToAssetsMaterialRecutImage = () => {
+    router.push(parsePath(`${prefixPath.value}/assets/recut-image`))
+  }
+
   return {
     nextAfterSignIn,
     parsePath,
@@ -89,6 +93,7 @@ export default function useNavigation () {
     goToAssetMaterialEdit,
     goToAssetsMaterialMerge,
     goToAssetsMaterialMergePreview,
-    goToPublicLibraryMaterialDetail
+    goToPublicLibraryMaterialDetail,
+    goToAssetsMaterialRecutImage
   }
 }
