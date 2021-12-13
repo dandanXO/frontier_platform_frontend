@@ -19,7 +19,8 @@ div(class="w-full h-full")
     template(#header-right)
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
     template(v-if="!isFirstLayer" #sub-header)
-      p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('II.Publish by')}} {{publishBy}}
+      i18n-t(keypath="II0002" tag="p" class="mx-7.5 mb-7.5 text-caption text-black-700")
+        template(#displayName) {{publishBy}}
     template(#default)
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
         template(v-for="node in nodeList")
@@ -48,7 +49,7 @@ div(class="w-full h-full")
               @click.stop="goToPublicLibraryMaterialDetail(node.key)"
             )
       div(v-else class="flex h-full justify-center items-end")
-        p(class="text-body1 text-primary") {{$t('II.No piece of cloth has been created')}}
+        p(class="text-body1 text-primary") {{$t('II0007')}}
   multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeKeyList")
 </template>
 
@@ -93,7 +94,7 @@ export default {
     const breadcrumbList = computed(() => {
       const list = [
         {
-          name: t('II.Public Library'),
+          name: t('II0001'),
           key: null
         }
       ]

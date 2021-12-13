@@ -11,7 +11,8 @@ div(class="w-full h-full flex justify-center")
           div(class="flex items-center pb-2")
             h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{`${material.materialNo} ${material.description}`}}
             svg-icon(iconName="clone" class="text-black-700 cursor-pointer" size="24")
-          p(class="text-caption text-black-700") {{$t('II.Publish by')}} {{publish.displayName}}
+          i18n-t(keypath="II0002" tag="p" class="text-caption text-black-700")
+            template(#displayName) {{publish.displayName}}
         div(class="flex gap-x-10")
           //- Cover Img
           div(class="w-125")
