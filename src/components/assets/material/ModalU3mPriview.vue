@@ -2,14 +2,14 @@
 div(:class="{'w-86': !isDoubleSideMaterial, 'w-168':isDoubleSideMaterial}")
   div(class="border-t-2 border-b-2 px-8 py-5")
     div(class="flex justify-between items-center gap-12")
-      div(v-if="isDoubleSideMaterial || isFaceSide" class="w-70")
+      div(v-if="isDoubleSideMaterial || isFaceSideMaterial" class="w-70")
         div(class="text-center text-primary text-body2 font-bold mb-3.5") {{$t("EE0051")}}
-        div(class="rounded overflow-hidden h-70" :class="[!faceSideImg.u3mCrop ? 'border border-dashed border-black-400' : '']")
-          img(v-if="!!faceSideImg.u3mCrop" :src="faceSideImg.u3mCrop" class="w-full")
-      div(v-if="isDoubleSideMaterial || isBackSide" class="w-70")
+        div(class="rounded overflow-hidden h-70" :class="[!isFaceSideU3mCropExist ? 'border border-dashed border-black-400' : '']")
+          img(v-if="isFaceSideU3mCropExist" :src="faceSideImg.u3mCrop" class="w-full")
+      div(v-if="isDoubleSideMaterial || isBackSideMaterial" class="w-70")
         div(class="text-center text-primary text-body2 font-bold mb-3.5") {{$t("EE0052")}}
-        div(class="rounded overflow-hidden h-70" :class="[!backSideImg.u3mCrop ? 'border border-dashed border-black-400' : '']")
-          img(v-if="!!backSideImg.u3mCrop" :src="backSideImg.u3mCrop" class="w-full")
+        div(class="rounded overflow-hidden h-70" :class="[!isBackSideU3mCropExist ? 'border border-dashed border-black-400' : '']")
+          img(v-if="isBackSideU3mCropExist" :src="backSideImg.u3mCrop" class="w-full")
     div(class="mt-3.5 text-primary text-body2 line-height-1.6") {{$t("EE0068")}}
   btn-group(
     class="h-25"
@@ -25,21 +25,28 @@ div(:class="{'w-86': !isDoubleSideMaterial, 'w-168':isDoubleSideMaterial}")
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import { SIDE_TYPE } from '@/utils/constants'
+import useNavigation from '@/composables/useNavigation'
+import useMaterialImage from '@/composables/useMaterialImage'
 
 export default {
   name: 'ModalU3mPriview',
-  setup () {
+  async setup () {
     const { t } = useI18n()
     const store = useStore()
+    const { goToAssetsMaterialRecutImage } = useNavigation()
     const material = computed(() => store.getters['material/material'])
-    const { isDoubleSideMaterial, sideType, faceSideImg, backSideImg } = material.value
-
-    const isFaceSide = !isDoubleSideMaterial && sideType === SIDE_TYPE.FACE
-    const isBackSide = !isDoubleSideMaterial && sideType === SIDE_TYPE.BACK
+    const { faceSideImg, backSideImg } = material.value
+    const {
+      isDoubleSideMaterial,
+      isFaceSideMaterial,
+      isBackSideMaterial,
+      isFaceSideU3mCropExist,
+      isBackSideU3mCropExist
+    } = await useMaterialImage(material.value)
 
     const handleRecutMaterial = () => {
-      // route change
+      goToAssetsMaterialRecutImage()
+      store.dispatch('helper/closeModal')
     }
 
     const handleCreateU3mAuto = async () => {
@@ -53,10 +60,12 @@ export default {
 
     return {
       isDoubleSideMaterial,
-      isFaceSide,
-      isBackSide,
+      isFaceSideMaterial,
+      isBackSideMaterial,
       faceSideImg,
       backSideImg,
+      isFaceSideU3mCropExist,
+      isBackSideU3mCropExist,
       handleRecutMaterial,
       handleCreateU3mAuto
     }
