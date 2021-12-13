@@ -16,19 +16,13 @@ input-container(:label="label" :required="required" v-click-away="onBlur")
     )
     list(v-if="options.length !== 0 && isFocus" class="absolute z-10 top-full left-0 w-full transform translate-y-2 bg-black-0")
       overlay-scrollbar-container(v-if="filteredOptions.length > 0" class="max-h-72")
-        recycle-scroller(
-          :items="filteredOptions"
-          :itemSize="36"
-          :key-Field="returnObject ? keyOptionDisplay : 'name'"
-          v-slot="{ item, index }"
-          :prerender="filteredOptions.length >= 8 ? 8 : filteredOptions.length"
+        list-item(
+          v-for="option in filteredOptions"
+          class="cursor-pointer"
+          :class="[{ 'bg-black-200': option.checked }]"
+          @click="option.checked ? removeChipFromOptions(option) : addChipFromOptions(option)"
         )
-          list-item(
-            class="cursor-pointer"
-            :class="[{ 'bg-black-200': item.checked }]"
-            @click="item.checked ? removeChipFromOptions(item) : addChipFromOptions(item)"
-          )
-            p(class="text-black-600") {{returnObject ? item[keyOptionDisplay]: item.name}}
+          p(class="text-black-600") {{returnObject ? option[keyOptionDisplay]: option.name}}
       list-item(v-else @click.stop="addChip")
         p(class="text-primary") {{inputValue}}
 </template>
@@ -37,16 +31,11 @@ input-container(:label="label" :required="required" v-click-away="onBlur")
 import useInput from '@/composables/useInput'
 import { directive } from 'vue3-click-away'
 import { ref, computed, nextTick } from 'vue'
-import { RecycleScroller } from 'vue-virtual-scroller'
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 export default {
   name: 'InputChips',
   directives: {
     ClickAway: directive
-  },
-  components: {
-    RecycleScroller
   },
   props: {
     required: {

@@ -33,18 +33,12 @@ input-container(:required="required")
           input-text(v-model:textValue="searchInput" size="sm" prependIcon="search" class="px-3.5")
           div(class="mx-2 border-b border-black-400 pt-2")
         overlay-scrollbar-container(v-if="searchedOptions.length > 0" :class="[classMaxHeight]")
-          recycle-scroller(
-            :items="searchedOptions"
-            :itemSize="36"
-            :key-Field="keyOptionValue"
-            v-slot="{ item, index }"
-            :prerender="searchedOptions.length >= 8 ? 8 : searchedOptions.length"
+          list-item(
+            v-for="(option, index) in searchedOptions"
+            :class="[ index === currentIndex ? 'bg-black-200' : '']"
+            @click="select($event, option), $emit('select', option[keyOptionValue])"
           )
-            list-item(
-              :class="[ index === currentIndex ? 'bg-black-200' : '']"
-              @click="select($event, item), $emit('select', item[keyOptionValue])"
-            )
-              p(class="text-black-600") {{item[keyOptionDisplay]}}
+            p(class="text-black-600") {{option[keyOptionDisplay]}}
         div(v-if="canAddNewOption && !isOptionExist")
           list-item(v-if="searchInput !== ''" @click="addNewOption") {{searchInput}}
         p(v-if="!canAddNewOption && searchedOptions.length === 0" class="h-9 pl-7.5 text-primary text-body2 flex items-center") No search result
@@ -54,14 +48,9 @@ input-container(:required="required")
 import { ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
 import { nextTick } from 'vue'
-import { RecycleScroller } from 'vue-virtual-scroller'
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 export default {
   name: 'InputSelect',
-  components: {
-    RecycleScroller
-  },
   props: {
     selectValue: {
       required: true,

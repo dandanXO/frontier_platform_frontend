@@ -2,7 +2,7 @@
 div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
     div(class="pt-12 pb-9 flex justify-between")
-      breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="$router.push($event.path)")
+      breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
     div
       div
         //- Title
@@ -28,12 +28,12 @@ div(class="w-full h-full flex justify-center")
           div(class="flex flex-col gap-y-7.5")
             //- Fabric Spec
             div
-              h5(class="text-h5 font-bold text-primary pb-3") {{$t('EE0002')}}
+              h5(class="text-h5 font-bold text-primary pb-3") {{$t('RR0130')}}
               div(class="grid gap-y-2")
                 p(v-for='item in materialBasicInfo' class='text-body2 text-primary line-clamp-1') {{item.name}}: {{item.value}}
             //- Colors
             div
-              h5(class="text-h5 font-bold text-primary pb-3") {{$t('EE0015')}}
+              h5(class="text-h5 font-bold text-primary pb-3") {{$t('RR0130')}}
               div(class="flex items-center gap-x-2")
                 div(v-for="pantone in material.pantoneList")
                   tooltip(placement="right")
@@ -47,7 +47,7 @@ div(class="w-full h-full flex justify-center")
                           div {{pantone.majorColorName}}
             //- U3M
             div
-              h5(class="text-h5 font-bold text-primary pb-3") {{$t('EE0016')}}
+              h5(class="text-h5 font-bold text-primary pb-3") {{$t('RR0131')}}
               template(v-if="material.u3m.status === U3M_STATUS.UNQUALIFIED")
                 p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0020')}}
                   tooltip(placement="top" class="pl-1" :manual='true')
@@ -175,19 +175,19 @@ export default {
     }
     const tabList = [
       {
-        name: t('EE0005'),
+        name: t('RR0133'),
         id: TAB.TAGS
       },
       {
-        name: t('EE0004'),
+        name: t('RR0134'),
         id: TAB.PRICING
       },
       {
-        name: t('EE0003'),
+        name: t('RR0135'),
         id: TAB.INVENTORY
       },
       {
-        name: t('EE0025'),
+        name: t('RR0136'),
         id: TAB.SUP
       }
     ]
@@ -197,7 +197,7 @@ export default {
     const { materialInfo, materialBasicInfo, materialInventoryInfo, materialPublicPriceInfo, materialPrivatePriceInfo, imageList, defaultCoverImgIndex } = useMaterial(material.value)
     const currentDisplayIndex = ref(defaultCoverImgIndex.value)
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
-    const breadcrumbsList = computed(() => {
+    const breadcrumbList = computed(() => {
       const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
       return [
         {
@@ -235,7 +235,7 @@ export default {
     return {
       material,
       attachmentList,
-      breadcrumbsList,
+      breadcrumbList,
       goToAssetMaterialEdit,
       currentDisplayIndex,
       imageList,

@@ -135,7 +135,7 @@ const routes = [
   },
   {
     path: '/',
-    name: 'Root',
+    name: 'AppRoot',
     component: () => import('@/views/innerApp/InnerAppLayout.vue'),
     beforeEnter: async (to, from, next) => {
       store.dispatch('code/getRoleList')
@@ -174,13 +174,12 @@ const routes = [
       {
         path: ':orgNo',
         redirect: to => `/${to.params.orgNo}/public-library`,
-        name: 'OrgRoot',
+        name: 'InnerAppRoot',
         components: {
           default: () => import('@/views/PassThrough.vue'),
           sidebar: Sidebar
         },
         beforeEnter: [checkUserIsVerify, async (to, from, next) => {
-          store.commit('helper/SET_routeLocation', 'org')
           await store.dispatch('user/orgUser/getOrgUser', { orgNo: to.params.orgNo })
           await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
           const org = store.getters['organization/organization']
@@ -197,6 +196,28 @@ const routes = [
           next()
         }],
         children: [
+          {
+            path: '',
+            name: 'OrgRoot',
+            component: () => import('@/views/PassThrough'),
+            beforeEnter: (to, from, next) => {
+              store.commit('helper/SET_routeLocation', 'org')
+              next()
+            },
+            children: reuseRoutes('Org')
+          },
+          {
+            path: ':groupId(\\d+)',
+            name: 'GroupRoot',
+            redirect: to => `/${to.params.orgNo}/${to.params.groupId}/assets`,
+            component: () => import('@/views/PassThrough.vue'),
+            beforeEnter: async (to, from, next) => {
+              store.commit('helper/SET_routeLocation', 'group')
+              await store.dispatch('group/getGroup', { groupId: to.params.groupId })
+              next()
+            },
+            children: reuseRoutes('Group')
+          },
           {
             path: 'public-library',
             name: 'PublicLibrary',
@@ -216,25 +237,8 @@ const routes = [
             path: 'favorites',
             name: 'Favorites',
             component: () => import('@/views/innerApp/Favorites.vue')
-          },
-          ...reuseRoutes('Org')
+          }
         ]
-      },
-      {
-        path: ':orgNo/:groupId(\\d+)',
-        name: 'GroupRoot',
-        redirect: to => `/${to.params.orgNo}/${to.params.groupId}/assets`,
-        components: {
-          default: () => import('@/views/PassThrough.vue'),
-          sidebar: Sidebar
-        },
-        beforeEnter: [checkUserIsVerify, async (to, from, next) => {
-          store.commit('helper/SET_routeLocation', 'group')
-          await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
-          await store.dispatch('group/getGroup', { groupId: to.params.groupId })
-          next()
-        }],
-        children: reuseRoutes('Group')
       }
     ]
   }

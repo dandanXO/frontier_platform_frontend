@@ -148,7 +148,7 @@ export const SORT_BY = {
     value: 9
   },
   NEW_ARRIVED: {
-    text: i18n.global.t('NEW_ARRIVED'),
+    text: i18n.global.t('RR0129'),
     value: 10
   },
   LAST_UPDATE: {
@@ -156,7 +156,7 @@ export const SORT_BY = {
     value: 11
   },
   RANDOM: {
-    text: i18n.global.t('RANDOM'),
+    text: i18n.global.t('RR0128'),
     value: 12
   }
 }

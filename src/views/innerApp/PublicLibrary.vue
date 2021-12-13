@@ -10,7 +10,7 @@ div(class="w-full h-full")
   )
     template(#header-left)
       div(class="flex items-end")
-        breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="goTo($event.key)" fontSize="text-h6")
+        breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)" fontSize="text-h6")
         p(class="flex text-caption text-black-700 pl-1")
           span (
           i18n-t(keypath="RR0068" tag="span")
@@ -19,7 +19,8 @@ div(class="w-full h-full")
     template(#header-right)
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
     template(v-if="!isFirstLayer" #sub-header)
-      p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('II.Publish by')}} {{publishBy}}
+      i18n-t(keypath="II0002" tag="p" class="mx-7.5 mb-7.5 text-caption text-black-700")
+        template(#displayName) {{publishBy}}
     template(#default)
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
         template(v-for="node in nodeList")
@@ -48,7 +49,7 @@ div(class="w-full h-full")
               @click.stop="goToPublicLibraryMaterialDetail(node.key)"
             )
       div(v-else class="flex h-full justify-center items-end")
-        p(class="text-body1 text-primary") {{$t('II.No piece of cloth has been created')}}
+        p(class="text-body1 text-primary") {{$t('II0007')}}
   multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeKeyList")
 </template>
 
@@ -90,10 +91,10 @@ export default {
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const workspaceCollection = computed(() => store.getters['publicLibrary/workspaceCollection'])
     const publishBy = computed(() => store.getters['publicLibrary/publishBy'])
-    const breadcrumbsList = computed(() => {
+    const breadcrumbList = computed(() => {
       const list = [
         {
-          name: t('II.Public Library'),
+          name: t('II0001'),
           key: null
         }
       ]
@@ -106,7 +107,7 @@ export default {
 
       return list
     })
-    const isFirstLayer = computed(() => breadcrumbsList.value.length === 1)
+    const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
     const nodeList = computed(() => {
       const { childCollectionList, childMaterialList } = workspaceCollection.value
       const list = []
@@ -198,7 +199,7 @@ export default {
       NODE_TYPE,
       nodeList,
       goTo,
-      breadcrumbsList,
+      breadcrumbList,
       optionNode,
       isFirstLayer,
       workspaceCollection,
