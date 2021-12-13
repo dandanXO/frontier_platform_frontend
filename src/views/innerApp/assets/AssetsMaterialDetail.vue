@@ -2,7 +2,7 @@
 div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
     div(class="pt-12 pb-9 flex justify-between")
-      breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="$router.push($event.path)")
+      breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
     div
       div
         //- Title
@@ -197,7 +197,7 @@ export default {
     const { materialInfo, materialBasicInfo, materialInventoryInfo, materialPublicPriceInfo, materialPrivatePriceInfo, imageList, defaultCoverImgIndex } = useMaterial(material.value)
     const currentDisplayIndex = ref(defaultCoverImgIndex.value)
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
-    const breadcrumbsList = computed(() => {
+    const breadcrumbList = computed(() => {
       const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
       return [
         {
@@ -235,7 +235,7 @@ export default {
     return {
       material,
       attachmentList,
-      breadcrumbsList,
+      breadcrumbList,
       goToAssetMaterialEdit,
       currentDisplayIndex,
       imageList,

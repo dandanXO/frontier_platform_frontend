@@ -2,7 +2,7 @@
 div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
     div(class="pt-12 pb-9 flex justify-between")
-      breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="$router.push($event.path)")
+      breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
     div
       //- Upper part
       div
@@ -96,7 +96,7 @@ export default {
     const { publish } = await store.dispatch('publicLibrary/getPublicMaterial', { workspaceNodeId, workspaceNodeLocation })
 
     const material = computed(() => store.getters['material/material'])
-    const breadcrumbsList = computed(() => {
+    const breadcrumbList = computed(() => {
       return [
         {
           name: t('DD0044'),
@@ -133,7 +133,7 @@ export default {
     }
 
     return {
-      breadcrumbsList,
+      breadcrumbList,
       material,
       publish,
       materialInfo,

@@ -10,7 +10,7 @@ div(class="w-full h-full")
   )
     template(#header-left)
       div(class="flex items-end")
-        breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="goTo($event.key)" fontSize="text-h6")
+        breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)" fontSize="text-h6")
         p(class="flex text-caption text-black-700 pl-1")
           span (
           i18n-t(keypath="RR0068" tag="span")
@@ -90,7 +90,7 @@ export default {
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const workspaceCollection = computed(() => store.getters['publicLibrary/workspaceCollection'])
     const publishBy = computed(() => store.getters['publicLibrary/publishBy'])
-    const breadcrumbsList = computed(() => {
+    const breadcrumbList = computed(() => {
       const list = [
         {
           name: t('II.Public Library'),
@@ -106,7 +106,7 @@ export default {
 
       return list
     })
-    const isFirstLayer = computed(() => breadcrumbsList.value.length === 1)
+    const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
     const nodeList = computed(() => {
       const { childCollectionList, childMaterialList } = workspaceCollection.value
       const list = []
@@ -198,7 +198,7 @@ export default {
       NODE_TYPE,
       nodeList,
       goTo,
-      breadcrumbsList,
+      breadcrumbList,
       optionNode,
       isFirstLayer,
       workspaceCollection,
