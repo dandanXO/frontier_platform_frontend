@@ -9,7 +9,7 @@ div(class="w-full h-full")
   )
     template(#header-left)
       div(class="flex items-end")
-        breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="goTo($event.key)" fontSize="text-h6")
+        breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)" fontSize="text-h6")
         p(class="flex text-caption text-black-700 pl-1")
           span (
           i18n-t(keypath="RR0068" tag="span")
@@ -111,7 +111,7 @@ export default {
     const workspaceCollection = computed(() => store.getters['workspace/workspaceCollection'])
     const defaultWorkspaceNodeId = computed(() => store.getters['workspace/defaultWorkspaceNodeId'])
     const defaultWorkspaceNodeLocation = computed(() => store.getters['workspace/defaultWorkspaceNodeLocation'])
-    const breadcrumbsList = computed(() => {
+    const breadcrumbList = computed(() => {
       return [
         {
           name: t('FF0001'),
@@ -123,7 +123,7 @@ export default {
         }))
       ]
     })
-    const isFirstLayer = computed(() => breadcrumbsList.value.length === 1)
+    const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
     const nodeList = computed(() => {
       const { childCollectionList, childMaterialList } = workspaceCollection.value
       const list = []
@@ -295,7 +295,7 @@ export default {
       nodeList,
       selectedNodeKeyList,
       goTo,
-      breadcrumbsList,
+      breadcrumbList,
       optionNodeCollection,
       optionNodeMaterial,
       isFirstLayer,

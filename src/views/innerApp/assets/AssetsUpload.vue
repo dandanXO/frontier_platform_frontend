@@ -2,7 +2,7 @@
 div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
     div(class="pt-12 pb-9 flex justify-between")
-      breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="$router.push($event.path)")
+      breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
     div(class="pt-30 pb-30 grid grid-cols-11")
       div(class="col-span-4")
         h3(class="text-h3 text-primary pb-5") {{$t('DD0001')}}
@@ -74,7 +74,7 @@ export default {
     const store = useStore()
     const { parsePath, goToAssetsMaterialCreate } = useNavigation()
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
-    const breadcrumbsList = computed(() => {
+    const breadcrumbList = computed(() => {
       const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
       return [
         {
@@ -96,7 +96,7 @@ export default {
 
     return {
       locale,
-      breadcrumbsList,
+      breadcrumbList,
       uploadMaterialEmail,
       goToAssetsMaterialCreate
     }

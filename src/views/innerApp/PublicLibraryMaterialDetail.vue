@@ -2,7 +2,7 @@
 div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
     div(class="pt-12 pb-9 flex justify-between")
-      breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="$router.push($event.path)")
+      breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
     div
       //- Upper part
       div
@@ -11,7 +11,8 @@ div(class="w-full h-full flex justify-center")
           div(class="flex items-center pb-2")
             h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{`${material.materialNo} ${material.description}`}}
             svg-icon(iconName="clone" class="text-black-700 cursor-pointer" size="24")
-          p(class="text-caption text-black-700") {{$t('II.Publish by')}} {{publish.displayName}}
+          i18n-t(keypath="II0002" tag="p" class="text-caption text-black-700")
+            template(#displayName) {{publish.displayName}}
         div(class="flex gap-x-10")
           //- Cover Img
           div(class="w-125")
@@ -96,7 +97,7 @@ export default {
     const { publish } = await store.dispatch('publicLibrary/getPublicMaterial', { workspaceNodeId, workspaceNodeLocation })
 
     const material = computed(() => store.getters['material/material'])
-    const breadcrumbsList = computed(() => {
+    const breadcrumbList = computed(() => {
       return [
         {
           name: t('DD0044'),
@@ -133,7 +134,7 @@ export default {
     }
 
     return {
-      breadcrumbsList,
+      breadcrumbList,
       material,
       publish,
       materialInfo,

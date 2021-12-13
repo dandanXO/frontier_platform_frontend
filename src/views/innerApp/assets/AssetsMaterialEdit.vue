@@ -2,7 +2,7 @@
 div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
     div(class="pt-12 pb-9 flex justify-between")
-      breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="$router.push($event.path)")
+      breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
     div
       block-material-image
       block-material-information(:validations="validations")
@@ -48,7 +48,7 @@ export default {
     await store.dispatch('material/getMaterial', { materialId: route.params.materialId })
 
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
-    const breadcrumbsList = computed(() => {
+    const breadcrumbList = computed(() => {
       const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
       return [
         {
@@ -86,7 +86,7 @@ export default {
       validations,
       updateMaterial,
       cancel,
-      breadcrumbsList
+      breadcrumbList
     }
   }
 }
