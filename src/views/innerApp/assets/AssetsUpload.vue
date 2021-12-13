@@ -22,7 +22,7 @@ div(class="w-full h-full flex justify-center")
                   svg-icon(iconName="info_outline" size="14" class="text-primary")
                 template(#content)
                   div(class='w-75 p-5')
-                    img(:src='require("@/assets/images/print-back-side.png")')
+                    img(:src='require("@/assets/images/qrcode.png")')
                     p(class='mt-5 text-primary text-body2 line-height-1.6') {{$t('DD0010')}}
         div(class="flex gap-x-7.5 text-primary")
           h5(class="text-h5 font-bold whitespace-nowrap") {{$t('DD0005')}}

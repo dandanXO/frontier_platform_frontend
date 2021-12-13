@@ -1,27 +1,30 @@
 <template lang="pug">
-div(class="pt-28.5 fixed inset-0 z-index:modal w-screen h-screen bg-black-0")
-  fullscreen-header(
-    :title="$t('EE0006')"
-    :primaryText="$t('UU0001')"
-    @click:primary="primaryHandler"
-    :secondaryText="$t('UU0004')"
-    @click:secondary="goToAssetsMaterialMerge"
-  )
-  div(class='max-w-286 pl-17 pr-7 mx-auto')
-    div(class='mb-10')
-      div(class='text-primary font-bold text-h5 mb-5') {{$t('EE0010')}}
-      div(class='text-primary text-body2 line-height-1.6') {{$t('EE0011')}}
-    div(v-if="notEmptyList.length < 1") {{$t('EE0013')}}
-    div(v-else)
-      div(class='text-primary font-bold text-body1 mb-5') {{notEmptyList.length}} {{$t('EE0012')}}
-      div(v-for="item in notEmptyList" :key="item.id" class="flex my-7.5")
-        div(class="relative mr-11")
-          div(class="w-47.5 h-47.5 rounded border-2 border-solid border-black-400 bg-cover" :class="{'border-none': item.faceSide.exist}" :style="getBgImg(item, 'faceSide')")
-        div(class="relative mr-11")
-          div(class="w-47.5 h-47.5 rounded border-2 border-solid border-black-400 bg-cover" :class="{'border-none': item.backSide.exist}" :style="getBgImg(item, 'backSide')")
-        div(class="relative w-full")
-          div(class="h-47.5 rounded" class="border-2 border-solid border-black-400")
-            material-merge-row-detail(v-if='item.detail.exist' :material='item.detail')
+fullscreen-header
+  template(#left)
+    h5(class="text-h5 text-primary font-bold") {{$t('EE0006')}}
+  template(#right)
+    btn-group(
+      :primaryText="$t('UU0001')"
+      @click:primary="primaryHandler"
+      :secondaryText="$t('UU0004')"
+      @click:secondary="goToAssetsMaterialMerge"
+    )
+  template(#content)
+    div(class='max-w-286 pl-17 pr-7 mx-auto')
+      div(class='mb-10')
+        div(class='text-primary font-bold text-h5 mb-5') {{$t('EE0010')}}
+        div(class='text-primary text-body2 line-height-1.6') {{$t('EE0011')}}
+      div(v-if="notEmptyList.length < 1") {{$t('EE0013')}}
+      div(v-else)
+        div(class='text-primary font-bold text-body1 mb-5') {{notEmptyList.length}} {{$t('EE0012')}}
+        div(v-for="item in notEmptyList" :key="item.id" class="flex my-7.5")
+          div(class="relative mr-11")
+            div(class="w-47.5 h-47.5 rounded border-2 border-solid border-black-400 bg-cover" :class="{'border-none': item.faceSide.exist}" :style="getBgImg(item, 'faceSide')")
+          div(class="relative mr-11")
+            div(class="w-47.5 h-47.5 rounded border-2 border-solid border-black-400 bg-cover" :class="{'border-none': item.backSide.exist}" :style="getBgImg(item, 'backSide')")
+          div(class="relative w-full")
+            div(class="h-47.5 rounded" class="border-2 border-solid border-black-400")
+              material-merge-row-detail(v-if='item.detail.exist' :material='item.detail')
 </template>
 
 <script>

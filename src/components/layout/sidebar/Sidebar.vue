@@ -7,13 +7,7 @@
 
 <template lang="pug">
 div(class="relative z-index:sidebar min-w-60 w-60 h-full bg-black-100 sidebar-shadow flex flex-col")
-  div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
-    div(class="flex items-center")
-      img(:src="organization.logo" class="rounded-full w-9 h-9 mr-2")
-      div(class="flex items-center flex-grow")
-        span(class="text-body1 text-primary font-bold max-w-27.5 truncate line-height-1.4") {{organization.orgName}}
-        svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-600")
-      svg-icon(iconName="notification" class="text-black-700")
+  menu-org
   div(class="border-t border-primary-thin px-1 py-1.5 flex flex-col")
     div(class="grid gap-y-1.5")
       sidebar-item(v-for="menu in menuGlobal.slice(0,1)" v-bind="menu")
@@ -47,12 +41,14 @@ div(class="relative z-index:sidebar min-w-60 w-60 h-full bg-black-100 sidebar-sh
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import SidebarItem from '@/components/layout/SidebarItem.vue'
+import SidebarItem from '@/components/layout/sidebar/SidebarItem.vue'
+import MenuOrg from '@/components/layout/sidebar/MenuOrg.vue'
 
 export default {
   name: 'Sidebar',
   components: {
-    SidebarItem
+    SidebarItem,
+    MenuOrg
   },
   setup () {
     const store = useStore()
@@ -153,7 +149,6 @@ export default {
 
     return {
       menuGlobal,
-      organization,
       menuOrgOrGroup,
       orgUser
     }
