@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-44 h-44 relative")
+div(class="relative")
   div(class="absolute" :style="cropRectStyles")
     cropped-image(
       :imageSrc="image.src"
@@ -30,7 +30,7 @@ div(class="w-44 h-44 relative")
 
 <script>
 import CroppedImage from '@/components/imageCropper/scannedImageCropper/CroppedImage'
-import { ref, computed, reactive } from 'vue'
+import { ref, watch, computed, reactive } from 'vue'
 import domtoimage from 'dom-to-image'
 
 export default {
@@ -56,9 +56,13 @@ export default {
     image: {
       type: Object,
       required: true
+    },
+    externalOptions: {
+      type: Object
     }
   },
-  async setup (props) {
+  emits: ['update:externalOptions'],
+  async setup (props, { emit }) {
     const cropRect = ref(null)
     const options = reactive({
       x: 0,
@@ -96,6 +100,16 @@ export default {
           .catch(error => reject(error))
       })
     }
+
+    watch(
+      () => options,
+      (v) => {
+        emit('update:externalOptions', v)
+      },
+      {
+        deep: true
+      }
+    )
 
     return {
       cropRectStyles,

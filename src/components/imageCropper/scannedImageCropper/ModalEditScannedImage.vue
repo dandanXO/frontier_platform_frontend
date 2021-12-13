@@ -10,6 +10,7 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
       :showScale="isFaceSide"
       :image="faceSideObj"
       :scaleSizeDoubleSide="scaleSize"
+      class="w-70"
     )
       template(#imageCropArea="{image, rotationAngle, croppedScaleRatio, scaleSize, cropRectSize}")
         image-crop-area(
@@ -44,6 +45,7 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
       :showScale="isBackSide"
       :image="backSideObj"
       :scaleSizeDoubleSide="scaleSize"
+      class="w-70"
     )
       template(#imageCropArea="{image, rotationAngle, croppedScaleRatio, scaleSize, cropRectSize}")
         image-crop-area(
