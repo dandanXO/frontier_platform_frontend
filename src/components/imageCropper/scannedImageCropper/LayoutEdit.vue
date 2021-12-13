@@ -1,10 +1,10 @@
 <template lang="pug">
 div(class="mb-5")
   div(class="w-full flex justify-center items-center overflow-hidden")
-    div(class="relative w-70 h-70 bg-black-0 flex justify-center items-center")
+    div(class="relative w-full aspect-ratio bg-black-0 flex justify-center items-center")
       slot(
         name="imageCropArea"
-        :cropRectSize="176"
+        :cropRectSize="cropRectSize"
         :image="image"
         :rotationAngle="rotationAngle"
         :croppedScaleRatio="croppedScaleRatio"
@@ -39,7 +39,7 @@ div(class="mb-5")
 
 <script>
 import ImageCropArea from '@/components/imageCropper/scannedImageCropper/ImageCropArea'
-import { ref, reactive, computed } from 'vue'
+import { ref, watch, reactive, computed } from 'vue'
 
 export default {
   name: 'LayoutEdit',
@@ -54,9 +54,14 @@ export default {
     },
     scaleSizeDoubleSide: {
       type: Number
+    },
+    cropRectSize: {
+      type: Number,
+      default: 176
     }
   },
-  setup (props) {
+  emits: ['update:externalRotationAngle', 'update:externalCroppedScaleRatio'],
+  setup (props, { emit }) {
     const rotationAngle = ref(0)
     const innerScale = ref(4)
     const image = reactive(props.image)
@@ -83,6 +88,7 @@ export default {
     })
 
     const croppedScaleRatio = computed(() => width2Cm / scaleSize.value)
+    emit('update:externalCroppedScaleRatio', croppedScaleRatio.value)
 
     const formattedRotateDeg = computed({
       get () {
@@ -119,6 +125,18 @@ export default {
       }
       rotationAngle.value = parseFloat(rotationAngle.value.toFixed(2))
     }
+
+    watch(
+      () =>
+        [rotationAngle.value, croppedScaleRatio.value],
+      ([v0, v1]) => {
+        emit('update:externalRotationAngle', v0)
+        emit('update:externalCroppedScaleRatio', v1)
+      },
+      {
+        deep: true
+      }
+    )
 
     return {
       croppedScaleRatio,
