@@ -60,6 +60,7 @@ export default {
       default: 176
     }
   },
+  // Let parent component get internal variable
   emits: ['update:externalRotationAngle', 'update:externalCroppedScaleRatio'],
   setup (props, { emit }) {
     const rotationAngle = ref(0)
@@ -126,15 +127,13 @@ export default {
       rotationAngle.value = parseFloat(rotationAngle.value.toFixed(2))
     }
 
+    // Let parent component get internal variable
     watch(
       () =>
         [rotationAngle.value, croppedScaleRatio.value],
       ([v0, v1]) => {
         emit('update:externalRotationAngle', v0)
         emit('update:externalCroppedScaleRatio', v1)
-      },
-      {
-        deep: true
       }
     )
 
