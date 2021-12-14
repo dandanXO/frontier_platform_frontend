@@ -109,47 +109,14 @@ export default {
 
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const workspaceCollection = computed(() => store.getters['workspace/workspaceCollection'])
+    const breadcrumbList = computed(() => store.getters['workspace/breadcrumbList']({
+      name: t('FF0001'),
+      key: `${defaultWorkspaceNodeLocation.value}-${defaultWorkspaceNodeId.value}`
+    }))
+    const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
+    const nodeList = computed(() => store.getters['workspace/nodeList'])
     const defaultWorkspaceNodeId = computed(() => store.getters['workspace/defaultWorkspaceNodeId'])
     const defaultWorkspaceNodeLocation = computed(() => store.getters['workspace/defaultWorkspaceNodeLocation'])
-    const breadcrumbList = computed(() => {
-      return [
-        {
-          name: t('FF0001'),
-          key: `${defaultWorkspaceNodeLocation.value}-${defaultWorkspaceNodeId.value}`
-        },
-        ...workspaceCollection.value.breadcrumbList.map(({ name, workspaceNodeId, workspaceNodeLocation }) => ({
-          name,
-          key: `${workspaceNodeLocation}-${workspaceNodeId}`
-        }))
-      ]
-    })
-    const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
-    const nodeList = computed(() => {
-      const { childCollectionList, childMaterialList } = workspaceCollection.value
-      const list = []
-
-      if (childCollectionList.length > 0) {
-        childCollectionList.forEach(collection => {
-          list.push({
-            key: `${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`,
-            nodeType: NODE_TYPE.COLLECTION,
-            data: collection
-          })
-        })
-      }
-
-      if (childMaterialList.length > 0) {
-        childMaterialList.forEach(material => {
-          list.push({
-            key: `${material.workspaceNodeLocation}-${material.workspaceNodeId}`,
-            nodeType: NODE_TYPE.MATERIAL,
-            data: material
-          })
-        })
-      }
-
-      return list
-    })
     const optionNodeCollection = computed(() => {
       const optionList = [
         [
@@ -267,7 +234,7 @@ export default {
             reloadRootRoute()
 
             if (!failMaterialList || (failMaterialList.length !== materialIdList.length)) {
-              store.commit('helper/PUSH_message', t('FF0018dsdsadsadsds'))
+              store.commit('helper/PUSH_message', t('FF0018'))
             }
           }
         }

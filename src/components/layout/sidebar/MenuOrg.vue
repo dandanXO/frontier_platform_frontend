@@ -22,11 +22,11 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
             p(class="text-caption pb-2") {{$t('LL0001', { number: org.totalMemberQty })}}
             p(class="text-caption line-height-1.6 pb-2") {{$t('LL0002', { number: org.totalMaterialQty })}}
             p(class="text-caption line-height-1.6 pb-4") {{$t('LL0003', { number: org.totalU3MQty })}}
-            router-link-extending(to="/plan" target="_blank")
-              button(class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark") {{$t('UU0064')}}
+            button(class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark")
+              router-link-extending(to="/plan" target="_blank") {{$t('UU0064')}}
           div(class="mx-2 my-1 h-px bg-black-400")
-          list-item
-            router-link-extending(to="/" class="pl-4.5") {{$t('RR0127')}}
+          list-item(@click="$router.push('/')" class="cursor-pointer")
+            p(class="pl-4.5") {{$t('RR0127')}}
     svg-icon(iconName="notification" class="text-black-700")
 </template>
 
