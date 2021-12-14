@@ -100,12 +100,12 @@ export default {
     const breadcrumbList = computed(() => {
       return [
         {
-          name: t('DD0044'),
+          name: t('II0001'),
           path: parsePath('/:orgNo/public-library')
         },
         {
           name: material.value.materialNo,
-          path: parsePath('/:orgNo/public-library/:materialId')
+          path: parsePath('/:orgNo/public-library/:nodeKey')
         }
       ]
     })

@@ -87,53 +87,15 @@ export default {
     }
 
     const optionMultiSelect = [cloneNode]
-
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const workspaceCollection = computed(() => store.getters['publicLibrary/workspaceCollection'])
-    const publishBy = computed(() => store.getters['publicLibrary/publishBy'])
-    const breadcrumbList = computed(() => {
-      const list = [
-        {
-          name: t('II0001'),
-          key: null
-        }
-      ]
-
-      if (workspaceCollection.value.breadcrumbList) {
-        workspaceCollection.value.breadcrumbList.forEach(({ name, workspaceNodeId, workspaceNodeLocation }) => {
-          list.push({ name, key: `${workspaceNodeLocation}-${workspaceNodeId}` })
-        })
-      }
-
-      return list
-    })
+    const breadcrumbList = computed(() => store.getters['publicLibrary/breadcrumbList']({
+      name: t('II0001'),
+      key: null
+    }))
     const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
-    const nodeList = computed(() => {
-      const { childCollectionList, childMaterialList } = workspaceCollection.value
-      const list = []
-
-      if (childCollectionList.length > 0) {
-        childCollectionList.forEach(collection => {
-          list.push({
-            key: `${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`,
-            nodeType: NODE_TYPE.COLLECTION,
-            data: collection
-          })
-        })
-      }
-
-      if (childMaterialList.length > 0) {
-        childMaterialList.forEach(material => {
-          list.push({
-            key: `${material.workspaceNodeLocation}-${material.workspaceNodeId}`,
-            nodeType: NODE_TYPE.MATERIAL,
-            data: material
-          })
-        })
-      }
-
-      return list
-    })
+    const nodeList = computed(() => store.getters['publicLibrary/nodeList'])
+    const publishBy = computed(() => store.getters['publicLibrary/publishBy'])
     const optionNode = computed(() => ([
       [
         cloneNode,
