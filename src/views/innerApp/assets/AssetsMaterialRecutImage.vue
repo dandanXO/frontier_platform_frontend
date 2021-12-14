@@ -41,8 +41,9 @@ div(class="fixed inset-0 z-index:modal pt-16 w-screen h-screen bg-black-0")
 </template>
 
 <script>
-import { ref, computed, reactive, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { ref, computed, reactive, onMounted } from 'vue'
 import useMaterialImage from '@/composables/useMaterialImage'
 import useNavigation from '@/composables/useNavigation'
 import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
@@ -59,6 +60,7 @@ export default {
     CroppedImage
   },
   async setup () {
+    const { t } = useI18n()
     const store = useStore()
     const imageCropper = ref(null)
     const previewRect = ref(null)
@@ -138,6 +140,12 @@ export default {
 
       store.dispatch('helper/closeModalLoading')
       goToAssets()
+
+      store.dispatch('helper/openModalConfirm', {
+        title: t('EE0016'),
+        content: t('EE0070'),
+        primaryText: t('UU0031')
+      })
     }
 
     const resetData = () => {
