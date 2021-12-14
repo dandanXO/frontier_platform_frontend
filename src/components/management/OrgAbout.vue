@@ -8,7 +8,7 @@ div(class="l:pt-16 pt-17.5")
           div(class="absolute flex justify-center items-center right-2 bottom-2 w-8 h-8 rounded-full bg-black-0 border-4 border-black-200 cursor-pointer"
             @click="openModalUploadLogo"
           )
-            svg-icon(iconName="camera" size="20" class="text-black-700")
+            svg-icon(iconName="camera" size="20" class="text-black-500 hover:text-brand")
         div(class="flex items-center pt-4")
           p(class="text-caption text-primary") ID: {{organization.orgNo}}
           svg-icon(iconName="content_copy" size="14" class="text-black-700")
