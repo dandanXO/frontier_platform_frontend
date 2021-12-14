@@ -13,11 +13,7 @@ div(class="relative")
       div(class="h-2 flex items-center border-r-2 border-l-2 border-primary")
         div(class="h-0.5 bg-primary w-full")
       div(class="text-caption text-primary font-bold text-center") {{`${scaleSize} cm`}}
-  div(
-    ref="cropRect"
-    class="overflow-hidden bg-black-400 relative"
-    :style="cropRectStyles"
-  )
+  div(ref="cropRect" class="overflow-hidden bg-black-400 relative" :style="cropRectStyles")
     div(class="cursor-move" :style="cropRectStyles")
       cropped-image(
         :imageSrc="image.src"
@@ -61,6 +57,7 @@ export default {
       type: Object
     }
   },
+  // Let parent component get internal variable
   emits: ['update:externalOptions'],
   async setup (props, { emit }) {
     const cropRect = ref(null)
@@ -101,6 +98,7 @@ export default {
       })
     }
 
+    // Let parent component get internal variable
     watch(
       () => options,
       (v) => {

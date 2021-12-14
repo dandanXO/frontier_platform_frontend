@@ -9,28 +9,18 @@ div(class="fixed inset-0 z-index:modal pt-16 w-screen h-screen bg-black-0")
   )
   div(class="flex h-full justify-center items-center")
     div
-      div(class="mb-4.5 text-center text-primary text-body2 font-bold") {{isFaceSideMaterial || (isDoubleSideMaterial && hasNext) ? $t("EE0051") : $t("EE0052")}}
+      div(class="mb-4.5 text-center text-primary text-body2 font-bold") {{isFaceSideNow ? $t("EE0051") : $t("EE0052")}}
       layout-edit(
         :image="currentImage"
         :cropRectSize="cropRectSize"
+        :key="currentImage"
         class="w-82.5"
         @update:externalRotationAngle="externalRotationAngle = $event"
         @update:externalCroppedScaleRatio="externalCroppedScaleRatio = $event"
       )
         template(#imageCropArea="{image, rotationAngle, croppedScaleRatio, scaleSize, cropRectSize}")
           image-crop-area(
-            v-if="isFaceSideMaterial || (isDoubleSideMaterial && hasNext)"
-            ref="faceSideImageCropper"
-            :image="image"
-            :rotationAngle="rotationAngle"
-            :croppedScaleRatio="croppedScaleRatio"
-            :scaleSize="scaleSize"
-            :cropRectSize="cropRectSize"
-            @update:externalOptions="Object.assign(externalOptions, $event)"
-          )
-          image-crop-area(
-            v-else
-            ref="backSideImageCropper"
+            ref="imageCropper"
             :image="image"
             :rotationAngle="rotationAngle"
             :croppedScaleRatio="croppedScaleRatio"
@@ -51,12 +41,12 @@ div(class="fixed inset-0 z-index:modal pt-16 w-screen h-screen bg-black-0")
 </template>
 
 <script>
-import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
-import LayoutEdit from '@/components/imageCropper/scannedImageCropper/LayoutEdit'
-import { useStore } from 'vuex'
 import { ref, computed, reactive, onMounted } from 'vue'
+import { useStore } from 'vuex'
 import useMaterialImage from '@/composables/useMaterialImage'
 import useNavigation from '@/composables/useNavigation'
+import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
+import LayoutEdit from '@/components/imageCropper/scannedImageCropper/LayoutEdit'
 import ImageCropArea from '@/components/imageCropper/scannedImageCropper/ImageCropArea'
 import CroppedImage from '@/components/imageCropper/scannedImageCropper/CroppedImage'
 
@@ -70,30 +60,32 @@ export default {
   },
   async setup () {
     const store = useStore()
-    const material = computed(() => store.getters['material/material'])
-    const isAtSecondStep = ref(false)
+    const imageCropper = ref(null)
     const previewRect = ref(null)
     const previewScaleRatio = ref(1)
-    const cropRectSize = 208
     const { goToAssets } = useNavigation()
-    const faceSideImageCropper = ref(null)
-    const backSideImageCropper = ref(null)
+    const material = computed(() => store.getters['material/material'])
+    const cropRectSize = 208
 
-    // 為了取得 child component 的資料
-    const externalOptions = reactive({
-      x: 0,
-      y: 0,
-      scale: 1,
-      scaleX: 0,
-      scaleY: 0,
-      rotate: 0,
-      width: cropRectSize,
-      height: cropRectSize,
-      initWidth: cropRectSize,
-      initHeight: cropRectSize,
-      imgWidth: cropRectSize,
-      imgHeight: cropRectSize
-    })
+    const defaultOptions = () => {
+      return {
+        x: 0,
+        y: 0,
+        scale: 1,
+        scaleX: 0,
+        scaleY: 0,
+        rotate: 0,
+        width: cropRectSize,
+        height: cropRectSize,
+        initWidth: cropRectSize,
+        initHeight: cropRectSize,
+        imgWidth: cropRectSize,
+        imgHeight: cropRectSize
+      }
+    }
+
+    // These 3 variable are set for getting child component property ('previewRect' will use it)
+    const externalOptions = reactive(defaultOptions())
     const externalRotationAngle = ref(0)
     const externalCroppedScaleRatio = ref(1)
 
@@ -109,38 +101,35 @@ export default {
     } = await useMaterialImage(material.value, 'u3m')
 
     const hasNext = ref(isDoubleSideMaterial && faceSideObj && backSideObj)
+    const isAtSecondStep = ref(false)
+    const isFaceSideNow = computed(() => isFaceSideMaterial || (isDoubleSideMaterial && !isAtSecondStep.value))
+    const currentImage = computed(() => isFaceSideNow.value ? faceSideObj : backSideObj)
 
-    const currentImage = ref(
-      isFaceSideMaterial || (isDoubleSideMaterial && hasNext.value)
-        ? faceSideObj
-        : backSideObj
-    )
-
-    let faceSideCropImg
-    let backSideCropImg
+    let faceSideCropImg = null
+    let backSideCropImg = null
 
     const getNext = async () => {
       store.dispatch('helper/pushModalLoading')
-      faceSideCropImg = faceSideObj ? await faceSideImageCropper.value?.cropImage() : null
+      faceSideCropImg = await imageCropper.value?.cropImage()
       hasNext.value = false
       isAtSecondStep.value = true
-      currentImage.value = backSideObj
+      resetData()
       store.dispatch('helper/closeModalLoading')
     }
 
     const goBack = () => {
       hasNext.value = true
       isAtSecondStep.value = false
-      currentImage.value = faceSideObj
     }
 
     const confirm = async () => {
       store.dispatch('helper/pushModalLoading')
-      if (isFaceSideMaterial || (isDoubleSideMaterial && hasNext.value)) {
-        faceSideCropImg = faceSideObj ? await faceSideImageCropper.value?.cropImage() : null
+      if (isFaceSideNow.value) {
+        faceSideCropImg = await imageCropper.value?.cropImage()
+      } else {
+        backSideCropImg = await imageCropper.value?.cropImage()
       }
 
-      backSideCropImg = backSideObj ? await backSideImageCropper.value?.cropImage() : null
       await store.dispatch('material/generateU3m', {
         faceSideCropImg,
         backSideCropImg,
@@ -151,14 +140,20 @@ export default {
       goToAssets()
     }
 
+    const resetData = () => {
+      Object.assign(externalOptions, defaultOptions())
+      externalRotationAngle.value = 0
+      externalCroppedScaleRatio.value = 1
+    }
+
     return {
       cropRectSize,
+      imageCropper,
       previewRect,
       previewScaleRatio,
-      faceSideObj,
-      backSideObj,
       hasNext,
       isAtSecondStep,
+      isFaceSideNow,
       getNext,
       goBack,
       confirm,
@@ -166,11 +161,7 @@ export default {
       currentImage,
       externalOptions,
       externalRotationAngle,
-      externalCroppedScaleRatio,
-      faceSideImageCropper,
-      backSideImageCropper,
-      isDoubleSideMaterial,
-      isFaceSideMaterial
+      externalCroppedScaleRatio
     }
   }
 }
