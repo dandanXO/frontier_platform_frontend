@@ -34,7 +34,7 @@ div(
     p(v-else class="ml-4 w-4 border-t border-primary")
   div(v-if="isHover" class="l:pr-5 pr-7 2xl:pr-26")
     p(v-if="member.orgRoleId === null" class="text-body2 text-black-600 cursor-pointer" @click="confirmToCancelInvitation") {{$t('UU0002')}}
-    p(v-else-if="member.orgRoleId !== ROLE_ID.OWNER && member.orgRoleId !== ROLE_ID.ADMIN" class="text-body2 text-black-600 cursor-pointer" @click="confirmToRemoveMember") {{$t('UU0016')}}
+    p(v-else-if="![ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(member.orgRoleId)" class="text-body2 text-black-600 cursor-pointer" @click="confirmToRemoveMember") {{$t('UU0016')}}
 </template>
 
 <script>
