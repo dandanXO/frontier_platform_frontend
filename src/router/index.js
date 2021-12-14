@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import { ROLE_ID } from '@/utils/constants'
 import Sidebar from '@/components/layout/sidebar/Sidebar.vue'
+import i18n from '@/utils/i18n'
 
 const checkUserIsVerify = (to, from, next) => {
   const user = store.getters['user/user']
@@ -135,7 +136,8 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       const { verifyCode } = to.query
       await store.dispatch('user/verifyUser', { verifyCode })
-      next('/')
+      await next('/')
+      store.commit('helper/PUSH_message', i18n.global.t('AA0086'))
     }
   },
   {
@@ -185,8 +187,9 @@ const routes = [
           sidebar: Sidebar
         },
         beforeEnter: [checkUserIsVerify, async (to, from, next) => {
-          await store.dispatch('user/orgUser/getOrgUser', { orgNo: to.params.orgNo })
+          await store.dispatch('user/getUser')
           await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
+          await store.dispatch('user/orgUser/getOrgUser')
           const org = store.getters['organization/organization']
           const orgUser = store.getters['user/orgUser/orgUser']
           if (orgUser.orgRoleId === ROLE_ID.OWNER && !org.uploadMaterialEmail) {

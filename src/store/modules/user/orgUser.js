@@ -21,9 +21,8 @@ const actions = {
   setOrgUser ({ state }, data) {
     setVuexState(state, data)
   },
-  async getOrgUser ({ rootGetters, dispatch }, { orgNo }) {
-    const orgId = rootGetters['user/organizationList'].find(org => org.orgNo === orgNo)?.orgId || null
-    const { data } = await userApi.getOrgUser({ orgId })
+  async getOrgUser ({ rootGetters, dispatch }) {
+    const { data } = await userApi.getOrgUser({ orgId: rootGetters['organization/orgId'] })
     dispatch('handleResponseData', { data }, { root: true })
   },
   async updateDisplayName ({ rootGetters, dispatch }, { displayName }) {
