@@ -13,7 +13,7 @@ div
       class="w-85 relative z-11 mb-7.5"
     )
     input-textarea(v-model:textValue="groupFormData.description" :label="$t('BB0087')" :placeholder="$t('BB0088')" class="w-85 mb-7.5" height="160")
-    btn(size="md" class="mx-auto" :disabled="!avaliableToCreateGroup" @click="updateGroup") {{$t('UU0018')}}
+    btn(size="md" class="mx-auto" :disabled="!availableToCreateGroup" @click="updateGroup") {{$t('UU0018')}}
 </template>
 
 <script>
@@ -31,7 +31,7 @@ export default {
     const { groupName, labelColor, description, groupId } = group.value
     const groupFormData = reactive({ groupName, labelColor, description })
     const isGroupNameExist = computed(() => store.getters['organization/groupList'].some(group => (group.groupId !== groupId) && (group.groupName === groupFormData.groupName)))
-    const avaliableToCreateGroup = computed(() => groupFormData.groupName !== '' && !isGroupNameExist.value)
+    const availableToCreateGroup = computed(() => groupFormData.groupName !== '' && !isGroupNameExist.value)
 
     const updateGroup = async () => {
       await store.dispatch('group/updateGroup', toRaw(groupFormData))
@@ -46,7 +46,7 @@ export default {
     return {
       groupFormData,
       isGroupNameExist,
-      avaliableToCreateGroup,
+      availableToCreateGroup,
       updateGroup,
       openModalDelete
     }

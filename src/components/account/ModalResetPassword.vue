@@ -8,7 +8,7 @@ div(class="w-105 px-8 flex flex-col items-center")
     password-validator(v-model:isValid="isPasswordValid" :password="password" class="mt-1 mb-7")
     input-password(v-model:textValue="confirmPassword" :placeholder="$t('AA0056')" :customErrorMsg="errorMsg")
   div(class="h-25 flex items-center")
-    btn(size="lg" class="w-85" :disabled="!avaliableToChangePassword" @click="changeHandler") {{$t('AA0054')}}
+    btn(size="lg" class="w-85" :disabled="!availableToChangePassword" @click="changeHandler") {{$t('AA0054')}}
 </template>
 
 <script>
@@ -58,7 +58,7 @@ export default {
         ? t('AA0003NotMatch')
         : ''
     })
-    const avaliableToChangePassword = computed(() => password.value !== '' && confirmPassword.value !== '' && isPasswordValid.value && password.value === confirmPassword.value)
+    const availableToChangePassword = computed(() => password.value !== '' && confirmPassword.value !== '' && isPasswordValid.value && password.value === confirmPassword.value)
 
     const changeHandler = async () => {
       switch (props.mode) {
@@ -80,7 +80,7 @@ export default {
       confirmPassword,
       isPasswordValid,
       errorMsg,
-      avaliableToChangePassword,
+      availableToChangePassword,
       changeHandler
     }
   }

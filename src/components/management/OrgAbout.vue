@@ -58,7 +58,7 @@ div(class="l:pt-16 pt-17.5")
           :label="$t('BB0080')"
           :placeholder="$t('BB0081')"
         )
-      btn(size="md" class="justify-self-end" :disabled="!avaliableToUpdateOrg" @click="updateOrg") {{$t('UU0018')}}
+      btn(size="md" class="justify-self-end" :disabled="!availableToUpdateOrg" @click="updateOrg") {{$t('UU0018')}}
 </template>
 
 <script>
@@ -85,7 +85,7 @@ export default {
     const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
     const orgFormData = reactive({ orgName, labelColor, orgCategoryId, address, countryCode, fax, faxCountryCode, phone, phoneCountryCode })
     const isOrgNameExist = ref(false)
-    const avaliableToUpdateOrg = computed(() => orgFormData.orgName !== '' && !isOrgNameExist.value)
+    const availableToUpdateOrg = computed(() => orgFormData.orgName !== '' && !isOrgNameExist.value)
     const checkOrgNameExist = async () => {
       isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: orgFormData.orgName, orgId: organization.value.orgId })
     }
@@ -161,7 +161,7 @@ export default {
       openModalUploadLogo,
       openModalDelete,
       isOrgNameExist,
-      avaliableToUpdateOrg,
+      availableToUpdateOrg,
       organization,
       logo
     }
