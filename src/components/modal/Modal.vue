@@ -34,7 +34,7 @@ export default {
     ModalChangeCover: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalChangeCover')),
     ModalEditSimpleInfo: defineAsyncComponent(() => import('@/components/assets/material/list/ModalEditSimpleInfo')),
     ModalViewer: defineAsyncComponent(() => import('@/components/assets/material/ModalViewer')),
-    ModalCloneTo: defineAsyncComponent(() => import('@/components/assets/material/ModalCloneTo')),
+    ModalCloneTo: defineAsyncComponent(() => import('@/components/ModalCloneTo')),
     ModalError: defineAsyncComponent(() => import('@/components/modal/ModalError')),
     ModalUploadAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalUploadAttachment.vue')),
     ModalWorkspaceNodeList: defineAsyncComponent(() => import('@/components/workspace/ModalWorkspaceNodeList.vue')),
@@ -48,7 +48,10 @@ export default {
     ModalAssetsList: defineAsyncComponent(() => import('@/components/assets/material/ModalAssetsList.vue')),
     ModalVerifyNotification: defineAsyncComponent(() => import('@/components/lobby/ModalVerifyNotification.vue')),
     ModalU3mInstruction: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mInstruction')),
-    ModalU3mPriview: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mPriview'))
+    ModalU3mPriview: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mPriview')),
+    ModalPublish: defineAsyncComponent(() => import('@/components/workspace/ModalPublish.vue')),
+    ModalPublicLibraryCollectionDetail: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryCollectionDetail.vue')),
+    ModalPersonalProfile: defineAsyncComponent(() => import('@/components/account/ModalPersonalProfile.vue'))
   },
   props: {
     component: {

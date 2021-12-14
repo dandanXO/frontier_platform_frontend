@@ -14,20 +14,20 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
         img(:src="node.coverImg" class="w-full h-full")
     div(v-if="isHover || checked" class="absolute top-0 left-0 z-10 w-full h-11")
       div(class="bg-linear w-full h-full rounded-t-md")
-      input-checkbox(
-        v-if="isHover || checked"
-        v-model:inputValue="innerSelectedList"
-        :value="node.workspaceNodeId"
-        size="24"
-        class="absolute top-3 left-3 cursor-pointer"
-        iconColor="text-black-0"
-        uncheckColor="text-black-0"
-        @click.stop
-      )
+      template(v-if="isSelectable")
+        input-checkbox(
+          v-if="isHover || checked"
+          v-model:inputValue="innerSelectedList"
+          :value="nodeKey"
+          size="24"
+          class="absolute top-3 left-3 cursor-pointer"
+          iconColor="text-black-0"
+          uncheckColor="text-black-0"
+          @click.stop
+        )
     div(v-if="isHover" class="absolute inset-0 z-9 w-full h-full bg-opacity-70 bg-black-900 rounded-md flex justify-center items-center")
       template(v-if="nodeType === NODE_TYPE.COLLECTION")
-        i18n-t(keypath="RR0068" tag="p" class="text-body1 font-bold line-height-1.6 text-black-0")
-          template(#number) {{node.itemCounts}}
+        p(class="text-body1 font-bold line-height-1.6 text-black-0") {{$t('RR0068', { number: node.itemCounts})}}
       template(v-else-if="nodeType === NODE_TYPE.MATERIAL")
         div(class="text-black-0 px-7.5 py-10 h-full flex flex-col items-center justify-center text-center")
           div(class="text-body2 font-bold line-clamp-2") {{node.description}}
@@ -38,7 +38,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
             div {{nodeHoverInfo.width}}
           div(class="text-caption line-clamp-2") {{node.finish}}
           div(class="text-caption line-clamp-1") {{nodeHoverInfo.weight}}
-      svg-icon(iconName="lock_outline" size="20" class="absolute bottom-3 left-3 cursor-pointer text-black-500")
+      slot(name="cover-overlay")
       tooltip(
         class='absolute bottom-3 right-3 cursor-pointer'
         placement="right-start"
@@ -78,6 +78,10 @@ export default {
       type: Number,
       required: true
     },
+    nodeKey: {
+      type: [String, Number],
+      required: true
+    },
     displayName: {
       type: String,
       default: ''
@@ -92,6 +96,10 @@ export default {
     optionList: {
       type: Array,
       default: () => []
+    },
+    isSelectable: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['update:selectedList', 'click:option'],
@@ -132,7 +140,7 @@ export default {
       set: (v) => emit('update:selectedList', v)
     })
 
-    const checked = computed(() => props.selectedList.includes(props.node.workspaceNodeId))
+    const checked = computed(() => props.selectedList && props.selectedList.includes(props.nodeKey))
 
     return {
       isHover,

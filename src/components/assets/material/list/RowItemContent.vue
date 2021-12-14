@@ -36,25 +36,25 @@ export default {
       return [
         {
           id: 'spec',
-          title: t('EE0002'),
+          title: t('RR0130'),
           column: materialBasicInfo.value,
           class: 'row-span-4'
         },
         {
           id: 'inventory',
-          title: t('EE0003'),
+          title: t('RR0135'),
           column: [materialInfo.totalInventoryQty],
           class: 'row-span-1'
         },
         {
           id: 'price',
-          title: t('EE0004'),
+          title: t('RR0134'),
           column: [materialInfo.publicPrice.pricing],
           class: 'row-span-1'
         },
         {
           id: 'tag',
-          title: t('EE0005'),
+          title: t('RR0133'),
           column: [
             { name: t('RR0027'), value: publicTagList.join(',') },
             { name: t('RR0071'), value: aiTagList.join(',') },

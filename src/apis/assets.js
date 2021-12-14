@@ -22,13 +22,13 @@ export default {
       method: 'POST',
       data: { orgId, materialIdList }
     }),
-    cloneMaterial: ({ orgId, materialIdList, targetIdList }) => axios('/org/assets/material/clone', {
+    cloneMaterial: ({ orgId, materialIdList, targetLocationList }) => axios('/org/assets/material/clone', {
       method: 'POST',
-      data: { orgId, materialIdList, targetIdList }
+      data: { orgId, materialIdList, targetLocationList }
     }),
-    addToWorkspace: ({ orgId, materialIdList, targetWorkspaceNodeIdList }) => axios('/org/assets/material/add-to-workspace', {
+    addToWorkspace: ({ orgId, materialIdList, targetWorkspaceNodeList }) => axios('/org/assets/material/add-to-workspace', {
       method: 'POST',
-      data: { orgId, materialIdList, targetWorkspaceNodeIdList }
+      data: { orgId, materialIdList, targetWorkspaceNodeList }
     })
   },
   group: {
@@ -52,13 +52,13 @@ export default {
       method: 'POST',
       data: { groupId, materialIdList }
     }),
-    cloneMaterial: ({ groupId, materialIdList, targetIdList }) => axios('/org/group/assets/material/clone', {
+    cloneMaterial: ({ groupId, materialIdList, targetLocationList }) => axios('/org/group/assets/material/clone', {
       method: 'POST',
-      data: { groupId, materialIdList, targetIdList }
+      data: { groupId, materialIdList, targetLocationList }
     }),
-    addToWorkspace: ({ groupId, materialIdList, targetWorkspaceNodeIdList }) => axios('/org/group/assets/material/add-to-workspace', {
+    addToWorkspace: ({ groupId, materialIdList, targetWorkspaceNodeList }) => axios('/org/group/assets/material/add-to-workspace', {
       method: 'POST',
-      data: { groupId, materialIdList, targetWorkspaceNodeIdList }
+      data: { groupId, materialIdList, targetWorkspaceNodeList }
     })
   }
 }

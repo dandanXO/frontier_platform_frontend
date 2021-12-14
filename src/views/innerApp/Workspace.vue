@@ -9,7 +9,7 @@ div(class="w-full h-full")
   )
     template(#header-left)
       div(class="flex items-end")
-        breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="goTo($event.workspaceNodeId)" fontSize="text-h6")
+        breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)" fontSize="text-h6")
         p(class="flex text-caption text-black-700 pl-1")
           span (
           i18n-t(keypath="RR0068" tag="span")
@@ -31,23 +31,39 @@ div(class="w-full h-full")
             node-item(
               v-model:selectedList="selectedNodeKeyList"
               :nodeType="node.nodeType"
+              :nodeKey="node.key"
               :node="node.data"
               :displayName="node.data.name"
               :optionList="optionNodeCollection"
               :isShowLocation="inSearch"
-              @click="goTo(node.data.workspaceNodeId)"
-              @click:option="$event.func(node.data.workspaceNodeId)"
+              @click="goTo(node.key)"
+              @click:option="$event.func(node.key)"
             )
+              template(#cover-overlay v-if="isFirstLayer")
+                svg-icon(
+                  iconName="lock_outline"
+                  size="20"
+                  class="absolute bottom-3 left-3 cursor-pointer text-black-500"
+                  @click.stop="openModalPublish(node.data)"
+                )
           template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
             node-item(
               v-model:selectedList="selectedNodeKeyList"
               :nodeType="node.nodeType"
+              :nodeKey="node.key"
               :node="node.data"
               :displayName="node.data.materialNo"
               :optionList="optionNodeMaterial"
               :isShowLocation="inSearch"
-              @click:option="$event.func(node.data.workspaceNodeId)"
+              @click:option="$event.func(node.key)"
             )
+              template(#cover-overlay v-if="isFirstLayer")
+                svg-icon(
+                  iconName="lock_outline"
+                  size="20"
+                  class="absolute bottom-3 left-3 cursor-pointer text-black-500"
+                  @click.stop="openModalPublish(node.data)"
+                )
   multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeKeyList")
 </template>
 
@@ -93,44 +109,14 @@ export default {
 
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const workspaceCollection = computed(() => store.getters['workspace/workspaceCollection'])
+    const breadcrumbList = computed(() => store.getters['workspace/breadcrumbList']({
+      name: t('FF0001'),
+      key: `${defaultWorkspaceNodeLocation.value}-${defaultWorkspaceNodeId.value}`
+    }))
+    const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
+    const nodeList = computed(() => store.getters['workspace/nodeList'])
     const defaultWorkspaceNodeId = computed(() => store.getters['workspace/defaultWorkspaceNodeId'])
-    const breadcrumbsList = computed(() => {
-      return [
-        {
-          name: t('FF0001'),
-          workspaceNodeId: defaultWorkspaceNodeId.value
-        },
-        ...workspaceCollection.value.breadcrumbList.map(({ name, workspaceNodeId }) => ({
-          name,
-          workspaceNodeId
-        }))
-      ]
-    })
-    const isFirstLayer = computed(() => breadcrumbsList.value.length === 1)
-    const nodeList = computed(() => {
-      const { childCollectionList, childMaterialList } = workspaceCollection.value
-      const list = []
-
-      if (childCollectionList.length > 0) {
-        childCollectionList.forEach(collection => {
-          list.push({
-            nodeType: NODE_TYPE.COLLECTION,
-            data: collection
-          })
-        })
-      }
-
-      if (childMaterialList.length > 0) {
-        childMaterialList.forEach(material => {
-          list.push({
-            nodeType: NODE_TYPE.MATERIAL,
-            data: material
-          })
-        })
-      }
-
-      return list
-    })
+    const defaultWorkspaceNodeLocation = computed(() => store.getters['workspace/defaultWorkspaceNodeLocation'])
     const optionNodeCollection = computed(() => {
       const optionList = [
         [
@@ -188,14 +174,14 @@ export default {
 
     const search = () => refSearchTable.value.search(pagination.value.currentPage)
 
-    const goTo = (nodeId) => {
-      workspaceNodeId.value = nodeId
+    const goTo = (key) => {
+      workspaceNodeId.value = key.split('-')[1]
       store.dispatch('helper/search/setPagination', { currentPage: 1 })
       search()
     }
 
     const handleSelectAll = () => {
-      const stringifyArr = nodeList.value.map(node => node.value.workspaceNodeId)
+      const stringifyArr = nodeList.value.map(node => node.key)
       const duplicateArr = selectedNodeKeyList.value.concat(stringifyArr)
       selectedNodeKeyList.value = [...new Set(duplicateArr)]
     }
@@ -226,10 +212,10 @@ export default {
           actionCallback: async (materialIdList) => {
             const failMaterialList = await store.dispatch('assets/addToWorkspace', {
               materialIdList,
-              targetWorkspaceNodeIdList: [
+              targetWorkspaceNodeList: [
                 {
                   id: workspaceCollection.value.workspaceNodeId,
-                  type: workspaceCollection.value.type
+                  location: workspaceCollection.value.workspaceNodeLocation
                 }
               ]
             })
@@ -248,9 +234,18 @@ export default {
             reloadRootRoute()
 
             if (!failMaterialList || (failMaterialList.length !== materialIdList.length)) {
-              store.commit('helper/PUSH_message', t('FF0018dsdsadsadsds'))
+              store.commit('helper/PUSH_message', t('FF0018'))
             }
           }
+        }
+      })
+    }
+
+    const openModalPublish = (workspaceNode) => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-publish',
+        properties: {
+          workspaceNode
         }
       })
     }
@@ -267,7 +262,7 @@ export default {
       nodeList,
       selectedNodeKeyList,
       goTo,
-      breadcrumbsList,
+      breadcrumbList,
       optionNodeCollection,
       optionNodeMaterial,
       isFirstLayer,
@@ -276,7 +271,8 @@ export default {
       handleSelectAll,
       addMaterialFromAssetsList,
       openModalCreateCollection,
-      openModalCollectionDetail
+      openModalCollectionDetail,
+      openModalPublish
     }
   }
 }

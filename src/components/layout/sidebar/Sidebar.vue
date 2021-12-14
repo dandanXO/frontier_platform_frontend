@@ -7,13 +7,7 @@
 
 <template lang="pug">
 div(class="relative z-index:sidebar min-w-60 w-60 h-full bg-black-100 sidebar-shadow flex flex-col")
-  div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
-    div(class="flex items-center")
-      img(:src="organization.logo" class="rounded-full w-9 h-9 mr-2")
-      div(class="flex items-center flex-grow")
-        span(class="text-body1 text-primary font-bold max-w-27.5 truncate line-height-1.4") {{organization.orgName}}
-        svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-600")
-      svg-icon(iconName="notification" class="text-black-700")
+  menu-org
   div(class="border-t border-primary-thin px-1 py-1.5 flex flex-col")
     div(class="grid gap-y-1.5")
       sidebar-item(v-for="menu in menuGlobal.slice(0,1)" v-bind="menu")
@@ -36,30 +30,29 @@ div(class="relative z-index:sidebar min-w-60 w-60 h-full bg-black-100 sidebar-sh
                   div(class="absolute right-3 top-1/2 transform -translate-y-1/2 flex justify-center items-center w-6 h-6 rounded bg-primary-thin" @click.stop="$router.push(menu.path + '/upload')")
                     svg-icon(:iconName="menu.icon" size="20" class="text-black-800")
       div(class="w-auto h-px bg-primary-thin mx-1.5 my-1.5")
-  div(class="h-13 bg-black-200 py-2.5 pl-4 pr-6")
-    div(class="flex items-center")
-      img(:src="orgUser.avatar" class="rounded-full w-8 h-8 mr-2")
-      span(class="flex-grow text-body2 text-primary truncate line-height-1.4") {{orgUser.displayName}}
-      svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650")
+  menu-personal
 </template>
 
 <script>
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import SidebarItem from '@/components/layout/SidebarItem.vue'
+import SidebarItem from '@/components/layout/sidebar/SidebarItem.vue'
+import MenuOrg from '@/components/layout/sidebar/MenuOrg.vue'
+import MenuPersonal from '@/components/layout/sidebar/MenuPersonal.vue'
 
 export default {
   name: 'Sidebar',
   components: {
-    SidebarItem
+    SidebarItem,
+    MenuOrg,
+    MenuPersonal
   },
   setup () {
     const store = useStore()
     const { t } = useI18n()
 
     const organization = computed(() => store.getters['organization/organization'])
-    const orgUser = computed(() => store.getters['user/orgUser/orgUser'])
     const menuGlobal = computed(() => ([
       {
         id: 'publicLibrary',
@@ -153,9 +146,7 @@ export default {
 
     return {
       menuGlobal,
-      organization,
-      menuOrgOrGroup,
-      orgUser
+      menuOrgOrGroup
     }
   }
 }

@@ -11,7 +11,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
     )
   div(class="flex-grow flex flex-col")
     div(class="relative z-20 flex justify-between items-center py-4")
-      breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="goTo($event.key)")
+      breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)")
       div(class="flex items-center")
         div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
           svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
@@ -146,14 +146,14 @@ export default {
     const isOnlyShowCollection = ref(false)
     const pureNodeList = ref([])
     const selectedValue = ref(props.isMultiSelect ? [] : '')
-    const appendedBreadcrumbsList = ref([])
+    const appendedBreadcrumbList = ref([])
     const keyword = ref('')
     const queryParams = reactive({
       keyword: '',
       targetPage: 1,
       sort: sortOptionList[0].value,
       workspaceNodeId: null,
-      type: null
+      workspaceNodeLocation: null
     })
     const totalPage = ref(1)
     const rootId = ref(0)
@@ -176,8 +176,8 @@ export default {
       })
       return list
     })
-    const breadcrumbsList = computed(() => {
-      const list = [...appendedBreadcrumbsList.value]
+    const breadcrumbList = computed(() => {
+      const list = [...appendedBreadcrumbList.value]
       let key
 
       if (props.canCrossLocation) {
@@ -200,7 +200,7 @@ export default {
       return list
     })
     const isInKeywordSearch = computed(() => !!queryParams.keyword)
-    const isInRoot = computed(() => props.canCrossLocation && breadcrumbsList.value.length === 1)
+    const isInRoot = computed(() => props.canCrossLocation && breadcrumbList.value.length === 1)
     const nodeList = computed(() => {
       if (isOnlyShowCollection.value) {
         return pureNodeList.value.filter(node => node.nodeType === NODE_TYPE.COLLECTION)
@@ -224,15 +224,15 @@ export default {
       const { pagination, workspaceCollection } = await store.dispatch('workspace/getWorkspaceForModal', queryParams)
       totalPage.value = pagination.totalPage
 
-      appendedBreadcrumbsList.value = workspaceCollection.breadcrumbList.map(item => ({
-        key: `${item.type}-${item.workspaceNodeId}`,
+      appendedBreadcrumbList.value = workspaceCollection.breadcrumbList.map(item => ({
+        key: `${item.workspaceNodeLocation}-${item.workspaceNodeId}`,
         name: item.name
       }))
 
       if (workspaceCollection.childCollectionList.length > 0) {
         workspaceCollection.childCollectionList.forEach(collection => {
           pureNodeList.value.push({
-            key: `${collection.type}-${collection.workspaceNodeId}`,
+            key: `${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`,
             nodeType: NODE_TYPE.COLLECTION,
             data: collection
           })
@@ -242,7 +242,7 @@ export default {
       if (workspaceCollection.childMaterialList.length > 0) {
         workspaceCollection.childMaterialList.forEach(material => {
           pureNodeList.value.push({
-            key: `${material.type}-${material.workspaceNodeId}`,
+            key: `${material.workspaceNodeLocation}-${material.workspaceNodeId}`,
             nodeType: NODE_TYPE.MATERIAL,
             data: material
           })
@@ -253,8 +253,8 @@ export default {
     }
 
     const parseAndSetKey = (key) => {
-      const [type, workspaceNodeId] = key.split('-')
-      queryParams.type = type
+      const [workspaceNodeLocation, workspaceNodeId] = key.split('-')
+      queryParams.workspaceNodeLocation = workspaceNodeLocation
       queryParams.workspaceNodeId = workspaceNodeId
     }
 
@@ -272,7 +272,7 @@ export default {
       clearKeyword()
       clearNodeList()
       if (key === 'root') {
-        appendedBreadcrumbsList.value.length = 0
+        appendedBreadcrumbList.value.length = 0
       } else {
         parseAndSetKey(key)
         getWorkspaceForModal()
@@ -307,7 +307,7 @@ export default {
         component: 'modal-create-collection-simple',
         properties: {
           id: rootId.value,
-          type: Number(queryParams.type),
+          workspaceNodeLocation: Number(queryParams.workspaceNodeLocation),
           workspaceNodeId: Number(queryParams.workspaceNodeId),
           callback: () => {
             clearNodeList()
@@ -322,7 +322,7 @@ export default {
     }
 
     if (!props.canCrossLocation) {
-      goTo(breadcrumbsList.value[0].key)
+      goTo(breadcrumbList.value[0].key)
 
       if (routeLocation.value === 'org') {
         const { orgId } = store.getters['organization/organization']
@@ -338,7 +338,7 @@ export default {
       orgAndGroupList,
       selectedValue,
       infiniteScroll,
-      breadcrumbsList,
+      breadcrumbList,
       goTo,
       isInRoot,
       isOnlyShowCollection,

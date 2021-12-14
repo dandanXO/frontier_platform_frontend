@@ -11,7 +11,7 @@ div(class="w-161 h-131 px-8 flex flex-col")
     )
   div(class="flex-grow flex flex-col")
     div(class="relative z-20 flex justify-between items-center py-4")
-      breadcrumbs(:breadcrumbsList="breadcrumbsList" @click:item="goTo($event)")
+      breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event)")
       div(class="flex items-center")
         div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
           svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
@@ -118,7 +118,7 @@ export default {
     })
     const totalPage = ref(1)
     const selectedValue = ref(props.isMultiSelect ? [] : '')
-    const breadcrumbsList = ref([
+    const breadcrumbList = ref([
       {
         name: t('FF0016'),
         key: 'root'
@@ -126,7 +126,7 @@ export default {
     ])
 
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
-    const isInRoot = computed(() => routeLocation.value === 'group' && breadcrumbsList.value.length === 1)
+    const isInRoot = computed(() => routeLocation.value === 'group' && breadcrumbList.value.length === 1)
     const actionButtonDisabled = computed(() => {
       return props.isMultiSelect
         ? selectedValue.value.length === 0
@@ -199,9 +199,9 @@ export default {
 
     const goTo = (option) => {
       if (option.key === 'root') {
-        breadcrumbsList.value.length = 1
-      } else if (!breadcrumbsList.value.some(item => item.key === option.key)) {
-        breadcrumbsList.value.push(option)
+        breadcrumbList.value.length = 1
+      } else if (!breadcrumbList.value.some(item => item.key === option.key)) {
+        breadcrumbList.value.push(option)
         const [nodeLocation, id] = option.key.split('-')
         queryParams.nodeLocation = nodeLocation
         queryParams.id = id
@@ -234,7 +234,7 @@ export default {
       actionButtonDisabled,
       orgAndGroupList,
       isInRoot,
-      breadcrumbsList,
+      breadcrumbList,
       clearSelect,
       goTo
     }

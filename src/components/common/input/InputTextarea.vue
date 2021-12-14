@@ -30,7 +30,6 @@ export default {
       default: false
     },
     textValue: {
-      type: String,
       required: true
     },
     placeholder: {

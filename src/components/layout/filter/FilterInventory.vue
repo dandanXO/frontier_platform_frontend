@@ -12,7 +12,7 @@ filter-wrapper(
       :max="filterOptions.inventory.max"
       :label="$t('RR0109')"
     )
-      template(#right)
+      template(v-if="[SEARCH_TYPE.ASSETS, SEARCH_TYPE.WORKSPACE].includes(searchType)" #right)
         input-radio-group(
           v-model:inputValue="inventoryUnit"
           :optionList="inventoryOptionList"
@@ -25,13 +25,18 @@ import FilterWrapper from '@/components/layout/filter/FilterWrapper'
 import FilterRange from '@/components/layout/filter/FilterRange'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
-import { INVENTORY_UNIT } from '@/utils/constants.js'
+import { INVENTORY_UNIT, SEARCH_TYPE } from '@/utils/constants.js'
 
 export default {
   name: 'FilterInventory',
   components: {
     FilterWrapper,
     FilterRange
+  },
+  props: {
+    searchType: {
+      type: Number
+    }
   },
   setup () {
     const store = useStore()
@@ -76,7 +81,8 @@ export default {
       init,
       update,
       inventoryUnit,
-      inventoryOptionList
+      inventoryOptionList,
+      SEARCH_TYPE
     }
   }
 }

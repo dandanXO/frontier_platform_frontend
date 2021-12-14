@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import { ROLE_ID } from '@/utils/constants'
-import Sidebar from '@/components/layout/Sidebar.vue'
+import Sidebar from '@/components/layout/sidebar/Sidebar.vue'
+import i18n from '@/utils/i18n'
 
 const checkUserIsVerify = (to, from, next) => {
   const user = store.getters['user/user']
@@ -129,6 +130,11 @@ const routes = [
     }
   },
   {
+    path: '/plan',
+    name: 'Plan',
+    component: () => import('@/views/Plan.vue')
+  },
+  {
     path: '/logout',
     name: 'Logout',
     beforeEnter: () => {
@@ -143,12 +149,13 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       const { verifyCode } = to.query
       await store.dispatch('user/verifyUser', { verifyCode })
-      next('/')
+      await next('/')
+      store.commit('helper/PUSH_message', i18n.global.t('AA0086'))
     }
   },
   {
     path: '/',
-    name: 'Root',
+    name: 'AppRoot',
     component: () => import('@/views/innerApp/InnerAppLayout.vue'),
     beforeEnter: async (to, from, next) => {
       store.dispatch('code/getRoleList')
@@ -187,15 +194,15 @@ const routes = [
       {
         path: ':orgNo',
         redirect: to => `/${to.params.orgNo}/public-library`,
-        name: 'OrgRoot',
+        name: 'InnerAppRoot',
         components: {
           default: () => import('@/views/PassThrough.vue'),
           sidebar: Sidebar
         },
         beforeEnter: [checkUserIsVerify, async (to, from, next) => {
-          store.commit('helper/SET_routeLocation', 'org')
-          await store.dispatch('user/orgUser/getOrgUser', { orgNo: to.params.orgNo })
+          await store.dispatch('user/getUser')
           await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
+          await store.dispatch('user/orgUser/getOrgUser')
           const org = store.getters['organization/organization']
           const orgUser = store.getters['user/orgUser/orgUser']
           if (orgUser.orgRoleId === ROLE_ID.OWNER && !org.uploadMaterialEmail) {
@@ -211,9 +218,36 @@ const routes = [
         }],
         children: [
           {
+            path: '',
+            name: 'OrgRoot',
+            component: () => import('@/views/PassThrough'),
+            beforeEnter: (to, from, next) => {
+              store.commit('helper/SET_routeLocation', 'org')
+              next()
+            },
+            children: reuseRoutes('Org')
+          },
+          {
+            path: ':groupId(\\d+)',
+            name: 'GroupRoot',
+            redirect: to => `/${to.params.orgNo}/${to.params.groupId}/assets`,
+            component: () => import('@/views/PassThrough.vue'),
+            beforeEnter: async (to, from, next) => {
+              store.commit('helper/SET_routeLocation', 'group')
+              await store.dispatch('group/getGroup', { groupId: to.params.groupId })
+              next()
+            },
+            children: reuseRoutes('Group')
+          },
+          {
             path: 'public-library',
             name: 'PublicLibrary',
             component: () => import('@/views/innerApp/PublicLibrary.vue')
+          },
+          {
+            path: 'public-library/:nodeKey',
+            name: 'PublicLibraryMaterialDetail',
+            component: () => import('@/views/innerApp/PublicLibraryMaterialDetail.vue')
           },
           {
             path: 'global-search',
@@ -224,25 +258,8 @@ const routes = [
             path: 'favorites',
             name: 'Favorites',
             component: () => import('@/views/innerApp/Favorites.vue')
-          },
-          ...reuseRoutes('Org')
+          }
         ]
-      },
-      {
-        path: ':orgNo/:groupId(\\d+)',
-        name: 'GroupRoot',
-        redirect: to => `/${to.params.orgNo}/${to.params.groupId}/assets`,
-        components: {
-          default: () => import('@/views/PassThrough.vue'),
-          sidebar: Sidebar
-        },
-        beforeEnter: [checkUserIsVerify, async (to, from, next) => {
-          store.commit('helper/SET_routeLocation', 'group')
-          await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
-          await store.dispatch('group/getGroup', { groupId: to.params.groupId })
-          next()
-        }],
-        children: reuseRoutes('Group')
       }
     ]
   }

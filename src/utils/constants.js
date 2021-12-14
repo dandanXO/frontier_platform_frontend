@@ -148,7 +148,7 @@ export const SORT_BY = {
     value: 9
   },
   NEW_ARRIVED: {
-    text: i18n.global.t('NEW_ARRIVED'),
+    text: i18n.global.t('RR0129'),
     value: 10
   },
   LAST_UPDATE: {
@@ -156,9 +156,14 @@ export const SORT_BY = {
     value: 11
   },
   RANDOM: {
-    text: i18n.global.t('RANDOM'),
+    text: i18n.global.t('RR0128'),
     value: 12
   }
+}
+
+export const TARGET_LOCATION = {
+  ORG: 1,
+  GROUP: 2
 }
 
 export const NODE_LOCATION = {
@@ -173,5 +178,6 @@ export const NODE_TYPE = {
 
 export const SEARCH_TYPE = {
   ASSETS: 1,
-  WORKSPACE: 2
+  WORKSPACE: 2,
+  PUBLIC_LIBRARY: 3
 }

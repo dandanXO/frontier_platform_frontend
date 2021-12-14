@@ -1,7 +1,8 @@
 <template lang="pug">
 div(class="w-118.5")
   div(class="px-8")
-    h6(class="text-h6 text-primary font-bold pb-7.5 text-center") {{$t('BB0020')}}
+    i18n-t(keypath="BB0020" tag="h6" class="text-h6 text-primary font-bold pb-7.5 text-center")
+      template(#orgName) {{orgName}}
     input-text-icon(
       v-model:textValue="email"
       prependIcon="search"
@@ -62,9 +63,9 @@ export default {
 
       return `${origin}/invite-link?orgNo=${orgNo}&from=${props.from}&inviteCode=${inviteCode}`
     })
-    /**
-     * @todo: need to design invite link and redirect process
-     */
+
+    const orgName = computed(() => store.getters['organization/organization'].orgName)
+
     const emailList = reactive([])
 
     const addToInviteList = async () => {
@@ -125,7 +126,8 @@ export default {
       errorMsg,
       resetData,
       inviteToOrg,
-      copyText
+      copyText,
+      orgName
     }
   }
 }

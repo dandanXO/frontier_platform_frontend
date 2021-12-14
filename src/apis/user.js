@@ -60,19 +60,24 @@ export default {
     method: 'POST',
     data: { orgId }
   }),
-  updateDisplayName: ({ orgId, displayName }) => axios('/org/user//org/user/update-display-name', {
+  updateDisplayName: ({ orgId, displayName }) => axios('/org/user/update-display-name', {
     method: 'POST',
     data: { orgId, displayName }
   }),
-  /**
-   * @param {formData} formData
-   * @param {number} formData.orgId
-   * @param {binary} formData.avatar
-   * @param {binary} formData.originalAvatar
-   */
-  updateAvatar: (formData) => axios('/org/user/update-avatar', {
-    headers: { 'Content-Type': 'multipart/form-data' },
+  updateAvatar: ({ orgId, avatar, originalAvatar }) => {
+    const formData = new FormData()
+    formData.append('orgId', orgId)
+    formData.append('avatar', avatar)
+    formData.append('originalAvatar', originalAvatar)
+
+    return axios('/org/user/update-avatar', {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      method: 'POST',
+      data: formData
+    })
+  },
+  removeAvatar: ({ orgId }) => axios('/org/user/remove-avatar', {
     method: 'POST',
-    data: formData
+    data: { orgId }
   })
 }

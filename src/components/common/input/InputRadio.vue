@@ -17,11 +17,11 @@ export default {
   name: 'InputRadio',
   props: {
     inputValue: {
-      type: [String, Number],
+      type: [String, Number, Boolean],
       required: true
     },
     value: {
-      type: [String, Number],
+      type: [String, Number, Boolean],
       required: true
     },
     name: {
@@ -47,6 +47,9 @@ export default {
       let value = e.target.value
       if (typeof props.value === 'number') {
         value = Number(value)
+      }
+      if (typeof props.value === 'boolean') {
+        value = value === 'true'
       }
       emit('update:inputValue', value)
     }
