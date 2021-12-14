@@ -83,7 +83,7 @@ export default {
     }
 
     const checkOrgNameExist = async () => {
-      isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: formData.orgName })
+      isOrgNameExist.value = formData.orgName !== '' && await store.dispatch('organization/checkOrgNameExist', { orgName: formData.orgName })
     }
 
     return {

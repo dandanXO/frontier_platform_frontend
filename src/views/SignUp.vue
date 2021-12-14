@@ -3,7 +3,7 @@ div(class="w-screen h-screen flex justify-center items-center  bg-black-100")
   div(class="fixed top-7.5 right-9")
     dropdown-locale
   div(class="flex gap-x-23 items-start")
-    div(class="w-97.5 h-125 bg-contain" :style="{ 'background-image': `url(${require('@/assets/images/cover.png')})`}")
+    div(class="w-97.5 h-126 bg-contain" :style="{ 'background-image': `url(${require('@/assets/images/cover.png')})`}")
     div(class="w-105")
       div(class="w-full h-127.5 rounded-lg card-shadow px-10 pt-10 pb-9.5 flex flex-col")
         p(class="text-primary text-h6 font-bold text-center pb-5.5 border-b border-black-400") {{$t('AA0016')}}
@@ -23,8 +23,8 @@ div(class="w-screen h-screen flex justify-center items-center  bg-black-100")
             input-text(v-model:textValue="formData.email" :placeholder="$t('AA0002')+'*'" prependIcon="mail" class="col-span-2" @blur="validateEmailFormat")
             input-password(v-model:textValue="formData.password" :placeholder="$t('AA0003')+'*'" class="col-span-2")
           password-validator(v-model:isValid="isPasswordValid" :password="formData.password" class="mt-1 mb-2")
-        div(class="flex-grow text-caption")
-          i18n-t(v-if="isEmailExist" keypath="AA0002AlreadyExist" tag="p" class="text-warn")
+        div(class="flex-grow text-caption pb-1")
+          i18n-t(v-if="isEmailExist" keypath="WW0066" tag="p" class="text-warn")
             template(#signIn)
               router-link-extending(class="text-primary" to="/sign-in") {{$t('AA0001')}}
           p(v-else-if="errorMsg !== '' && !isEmailExist" class="text-warn") {{errorMsg}}

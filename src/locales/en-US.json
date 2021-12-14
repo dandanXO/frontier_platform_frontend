@@ -266,7 +266,7 @@
   "WW0063": "Enter a password",
   "WW0064": "Unable to locate your Google account",
   "WW0065": "Google Error",
-  "WW0066": "A Frontier account associated with this email address already exists {LOG IN}",
+  "WW0066": "A Frontier account associated with this email address already exists {signIn}",
   "WW0067": "The password format is incorrect",
   "WW0068": "Invalid verification code",
   "WW0069": "Expired verification code",
