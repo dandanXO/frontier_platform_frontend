@@ -1,16 +1,17 @@
 <template lang="pug">
 div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
   div(class="flex items-center")
-    img(:src="orgLogo" class="rounded-full w-9 h-9 mr-2")
     tooltip(
+      class="flex-grow"
       placement='bottom-start'
       :manual='true'
       :showArrow='false'
-      :offset='[0, 8]'
+      :offset='[30, 8]'
     )
       template(#trigger="{ isActive }")
-        div(class="flex items-center flex-grow cursor-pointer")
-          span(class="text-body1 text-primary font-bold max-w-27.5 truncate line-height-1.4") {{org.orgName}}
+        div(class="flex items-center cursor-pointer")
+          img(:src="orgLogo" class="rounded-full w-9 h-9 mr-2")
+          p(class="text-body1 text-primary font-bold max-w-27.5 truncate line-height-1.4") {{org.orgName}}
           svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-600")
       template(#content)
         list(class="w-70")
