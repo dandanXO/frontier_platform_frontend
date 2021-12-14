@@ -10,7 +10,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
         p(class="text-body1 text-primary font-bold") {{uploadMaterialEmail}}
         span(class="flex items-center gap-x-1 cursor-pointer")
           svg-icon(iconName="info_outline" size="20" class="text-primary")
-          span(class="text-body2 text-primary underline font-normal" @click="pushModalHowToScan") {{$t('UU0032')}}
+          span(class="text-body2 text-primary underline font-normal" @click="openModalHowToScan") {{$t('UU0032')}}
       div(class="pt-10.5 flex gap-x-15")
         div(class="w-75")
           div(class="w-full h-75 rounded overflow-hidden")
@@ -30,9 +30,9 @@ div(class="pb-15 mb-5 border-b border-black-400")
           p(
             v-if="canEditScannedImg"
             class="text-body2 text-assist-blue underline cursor-pointer pb-3"
-            @click="pushModalEditImage"
+            @click="openModalEditImage"
           ) {{$t('UU0011')}}
-          p(class="text-body2 text-assist-blue underline cursor-pointer" @click="pushModalChangeCover") {{$t('UU0012')}}
+          p(class="text-body2 text-assist-blue underline cursor-pointer" @click="openModalChangeCover") {{$t('UU0012')}}
         div(class="w-52.5")
           h5(class="text-h5 font-bold text-primary pb-5") {{$t('RR0130')}}
           input-text-icon(
@@ -66,11 +66,11 @@ div(class="pb-15 mb-5 border-b border-black-400")
                 template(#content)
                   div(class="p-5 w-68.5")
                     span(class="line-height-1.6") {{$t('EE0021')}}
-                    span(class="text-body2 text-assist-blue underline line-height-1.6") {{$t('UU0029')}}
+                    span(class="text-body2 text-assist-blue underline line-height-1.6 cursor-pointer" @click="openModalCreate3DMaterial") {{$t('UU0029')}}
             btn(size="md" disabled) {{$t('UU0020')}}
           template(v-if="material.u3m.status === U3M_STATUS.INITIAL")
             p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0019')}}
-            btn(size="md") {{$t('UU0020')}}
+            btn(size="md" @click="openModalCreate3DMaterial") {{$t('UU0020')}}
           template(v-if="material.u3m.status === U3M_STATUS.PROCESSING")
             p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0022')}}
             btn(size="md" disabled) {{$t('UU0020')}}
@@ -97,6 +97,7 @@ import { computed, ref, watch } from 'vue'
 import useMaterial from '@/composables/useMaterial'
 import { SIDE_TYPE, U3M_STATUS } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
+import useAssets from '@/composables/useAssets'
 
 export default {
   name: 'BlockMaterialImage',
@@ -104,7 +105,7 @@ export default {
     const { t } = useI18n()
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
-
+    const { create3DMaterial } = useAssets()
     const { statusIconName, imageList, defaultCoverImgIndex } = useMaterial(material.value)
 
     const uploadMaterialEmail = computed(() => {
@@ -135,20 +136,20 @@ export default {
       store.dispatch('material/removePantone', { materialPantoneId })
     }
 
-    const pushModalHowToScan = () => {
+    const openModalHowToScan = () => {
       store.dispatch('helper/pushModal', {
         header: t('DD0043'),
         component: 'modal-how-to-scan'
       })
     }
 
-    const pushModalChangeCover = () => {
+    const openModalChangeCover = () => {
       store.dispatch('helper/pushModal', {
         component: 'modal-change-cover'
       })
     }
 
-    const pushModalEditImage = async () => {
+    const openModalEditImage = async () => {
       store.dispatch('helper/pushModal', {
         header: t('EE0050'),
         component: 'modal-edit-scanned-image',
@@ -180,6 +181,10 @@ export default {
       }
     })
 
+    const openModalCreate3DMaterial = () => {
+      create3DMaterial.func(material.value)
+    }
+
     watch(
       () => pantoneName.value,
       () => {
@@ -197,11 +202,13 @@ export default {
       pantoneErrorMsg,
       removePantone,
       U3M_STATUS,
-      pushModalHowToScan,
-      pushModalChangeCover,
-      pushModalEditImage,
+      openModalHowToScan,
+      openModalChangeCover,
+      openModalEditImage,
+      openModalCreate3DMaterial,
       statusIconName,
-      canEditScannedImg
+      canEditScannedImg,
+      create3DMaterial
     }
   }
 }

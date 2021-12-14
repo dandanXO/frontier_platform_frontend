@@ -29,7 +29,9 @@ div(class='text-black-700 flex flex-col gap-3.5')
               v-else
               class='text-body2 text-primary px-7'
               @click="handleClick(option)"
-            ) {{option.name}}
+            )
+              template(v-if="option.id !== 'create3DMaterial'") {{option.name}}
+              template(v-else) {{getOptionName(option)}}
           div(class="mx-2 my-1" :class='{"border-b": index !== options.length-1}')
 </template>
 
@@ -37,6 +39,7 @@ div(class='text-black-700 flex flex-col gap-3.5')
 import useAssets from '@/composables/useAssets'
 import QrCodeA4 from '@/components/qrcode/QrCodeA4'
 import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral'
+import { U3M_STATUS } from '@/utils/constants'
 import { ref } from 'vue'
 
 export default {
@@ -92,13 +95,21 @@ export default {
       option.func && option.func(props.material)
     }
 
+    const getOptionName = (option) => {
+      const status = props.material.u3m.status
+      return status === U3M_STATUS.FAIL || status === U3M_STATUS.COMPLETED
+        ? option.excName
+        : option.name
+    }
+
     return {
       iconList,
       options,
       handleClick,
       isShowOverlay,
       openOverlay,
-      closeOverlay
+      closeOverlay,
+      getOptionName
     }
   }
 }

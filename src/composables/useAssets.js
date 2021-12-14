@@ -2,7 +2,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation'
 import { inject, computed } from 'vue'
-import { TARGET_LOCATION } from '@/utils/constants.js'
+import { TARGET_LOCATION, U3M_STATUS } from '@/utils/constants.js'
 
 export default function useAssets () {
   const { t } = useI18n()
@@ -116,11 +116,37 @@ export default function useAssets () {
   const create3DMaterial = {
     id: 'create3DMaterial',
     name: t('RR0058'),
+    excName: t('RR0074'),
     func: (v) => {
+      const status = v.u3m.status
       store.commit('material/UPDATE_material', v)
-      store.dispatch('helper/openModal', {
-        component: 'modal-u3m-instruction'
-      })
+      switch (status) {
+        case U3M_STATUS.INITIAL:
+        case U3M_STATUS.UNQUALIFIED:
+          store.dispatch('helper/openModal', {
+            component: 'modal-u3m-instruction'
+          })
+          break
+        case U3M_STATUS.PROCESSING:
+          store.dispatch('helper/openModalConfirm', {
+            title: t('EE0071'),
+            content: t('EE0072'),
+            primaryText: t('UU0031')
+          })
+          break
+        case U3M_STATUS.FAIL:
+          store.dispatch('helper/openModalConfirm', {
+            title: t('EE0073'),
+            content: t('EE0074'),
+            primaryText: t('UU0031')
+          })
+          break
+        default:
+          store.dispatch('helper/openModal', {
+            component: 'modal-u3m-priview',
+            header: t('EE0067')
+          })
+      }
     }
   }
 

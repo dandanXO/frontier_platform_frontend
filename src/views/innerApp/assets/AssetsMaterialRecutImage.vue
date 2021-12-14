@@ -5,7 +5,7 @@ div(class="fixed inset-0 z-index:modal pt-16 w-screen h-screen bg-black-0")
     :primaryText ="hasNext ? $t('UU0021') : $t('UU0020')"
     :secondaryText="isAtSecondStep ? $t('UU0004') : $t('UU0002')"
     @click:primary="hasNext ? getNext() : confirm()"
-    @click:secondary="isAtSecondStep ? goBack() : goToAssets()"
+    @click:secondary="isAtSecondStep ? goBack() : leavePage()"
   )
   div(class="flex h-full justify-center items-center")
     div
@@ -42,10 +42,10 @@ div(class="fixed inset-0 z-index:modal pt-16 w-screen h-screen bg-black-0")
 
 <script>
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive, onMounted } from 'vue'
 import useMaterialImage from '@/composables/useMaterialImage'
-import useNavigation from '@/composables/useNavigation'
 import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
 import LayoutEdit from '@/components/imageCropper/scannedImageCropper/LayoutEdit'
 import ImageCropArea from '@/components/imageCropper/scannedImageCropper/ImageCropArea'
@@ -62,10 +62,10 @@ export default {
   async setup () {
     const { t } = useI18n()
     const store = useStore()
+    const router = useRouter()
     const imageCropper = ref(null)
     const previewRect = ref(null)
     const previewScaleRatio = ref(1)
-    const { goToAssets } = useNavigation()
     const material = computed(() => store.getters['material/material'])
     const cropRectSize = 208
 
@@ -139,13 +139,17 @@ export default {
       })
 
       store.dispatch('helper/closeModalLoading')
-      goToAssets()
+      leavePage()
 
       store.dispatch('helper/openModalConfirm', {
         title: t('EE0016'),
         content: t('EE0070'),
         primaryText: t('UU0031')
       })
+    }
+
+    const leavePage = () => {
+      router.go(-1)
     }
 
     const resetData = () => {
@@ -165,7 +169,7 @@ export default {
       getNext,
       goBack,
       confirm,
-      goToAssets,
+      leavePage,
       currentImage,
       externalOptions,
       externalRotationAngle,
