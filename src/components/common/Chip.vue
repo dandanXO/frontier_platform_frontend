@@ -16,15 +16,26 @@ export default {
     text: {
       type: String,
       default: ''
+    },
+    active: {
+      type: Boolean,
+      default: false
     }
   },
   setup (props) {
     const classes = computed(() => {
       const base = ['flex', 'items-center', 'rounded-full', 'whitespace-nowrap', 'cursor-pointer']
 
-      return props.size === 'lg'
-        ? [...base, 'h-8.5', 'px-5', 'bg-black-600', 'hover:bg-primary', 'text-black-0']
-        : [...base, '']
+      if (props.size === 'lg') {
+        base.push('h-8.5', 'px-5', 'hover:bg-primary', 'hover:text-black-0')
+        if (props.active) {
+          base.push('bg-primary', 'text-black-0')
+        } else {
+          base.push('bg-black-100', 'border', 'border-black-400')
+        }
+      }
+
+      return base
     })
 
     return {

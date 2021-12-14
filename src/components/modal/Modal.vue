@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="fixed inset-0 z-index:modal w-screen h-screen bg-black-900 bg-opacity-70 flex justify-center items-center")
+div(class="fixed inset-0 z-index:modal w-screen h-screen bg-black-900 bg-opacity-30 flex justify-center items-center")
   div(class="w-screen h-screen" @click="closable && close()")
   div(class="absolute bg-black-0 rounded card-shadow")
     div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
