@@ -13,7 +13,15 @@ const app = createApp(App)
 
 app.config.errorHandler = (err, vm, info) => {
   store.dispatch('helper/openModalError')
-  console.log(err, vm)
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(err, vm)
+  }
+}
+
+app.config.warnHandler = (msg, vm, trace) => {
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn('warn', msg, vm, trace)
+  }
 }
 
 const commonComponents = require.context('@/components/common', true, /.vue/)

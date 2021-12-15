@@ -39,7 +39,7 @@ div(class="grid" :class="{ 'border-b border-primary-thin': !isOpenFilterPanel }"
         size="lg"
         :text="tag.name"
         @click="selectTag(tag)"
-        :class="{ 'bg-primary': tag.isSelected }"
+        :active="tag.isSelected"
       )
   div(v-show="isOpenFilterPanel" class="px-7.5")
     div(class="bg-black-50 p-5 rounded")

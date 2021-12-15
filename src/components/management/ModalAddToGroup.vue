@@ -2,8 +2,8 @@
 div(class="w-118.5")
   div(class="px-8")
     h6(class="text-h6 text-primary font-bold pb-7.5 text-center") {{$t('BB0095', { groupName: group.groupName })}}
-    input-text(v-model:textValue="searchInput" size="sm" class="pb-7" prependIcon="search" :placeholder="$t('BB0012')")
-  overlay-scrollbar-container(class="h-89.5 mx-2 border-t border-b border-primary-thin")
+    input-text(v-model:textValue="searchInput" size="lg" class="pb-7" prependIcon="search" :placeholder="$t('BB0012')")
+  overlay-scrollbar-container(class="h-75 mx-2 border-t border-b border-primary-thin")
     div(v-if="memberList.length > 0" class="grid gap-y-2 py-3.5" @mouseleave="indexOfOnHover = -1")
       label(v-for="(member, index) in memberList" class="px-6 h-12 flex items-center hover:bg-black-200" :for="member.orgUserId" @mouseenter="indexOfOnHover = index")
         div

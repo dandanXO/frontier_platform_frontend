@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-227")
-  overlay-scrollbar-container(class="max-h-142 border-t border-b border-black-400 px-8 py-7.5")
+  overlay-scrollbar-container(class="max-h-113 border-t border-b border-black-400 px-8 py-7.5")
     component(:is="blockId" :validations='validations')
   div(class="h-25 flex justify-center items-center")
     div(class="grid grid-cols-2 gap-x-3")
