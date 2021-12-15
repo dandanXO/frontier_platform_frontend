@@ -28,9 +28,13 @@ export default {
     method: 'POST',
     data: { email }
   }),
-  changePassword: ({ password }) => axios('/user/change-password', {
+  oldUserResetPassword: ({ password }) => axios('/user/old-user/reset-password', {
     method: 'POST',
     data: { password }
+  }),
+  changePassword: ({ currentPassword, newPassword }) => axios('/user/change-password', {
+    method: 'POST',
+    data: { currentPassword, newPassword }
   }),
   verifyUser: ({ verifyCode }) => axios('/user/verify', {
     method: 'POST',
@@ -56,6 +60,7 @@ export default {
     method: 'POST',
     data: { locale }
   }),
+
   getOrgUser: ({ orgId }) => axios('/org/user/get', {
     method: 'POST',
     data: { orgId }

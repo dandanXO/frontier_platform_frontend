@@ -17,7 +17,7 @@ div(class="w-full h-full")
           span )
     template(#header-right)
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
-      btn(size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{$t('UU0055')}}
+      btn(size="sm" prependIcon="add" @click="$store.dispatch('helper/reloadInnerApp')") {{$t('UU0055')}}
     template(v-if="!isFirstLayer" #sub-header)
       p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('FF0002')}}: {{unixToDate(workspaceCollection.createDate)}}
     template(#default="{ inSearch }")
@@ -72,7 +72,7 @@ import SearchTable from '@/components/layout/SearchTable'
 import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { ref, computed, inject } from 'vue'
+import { ref, computed } from 'vue'
 import NodeItem from '@/components/layout/NodeItem'
 import { useRoute, useRouter } from 'vue-router'
 import { unixToDate } from '@/utils/time-formatting'
@@ -89,7 +89,6 @@ export default {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
-    const reloadRootRoute = inject('reloadRootRoute')
     const { editCollection, editMaterial, duplicateNode, moveNode, deleteCollection, deleteMaterial, deleteMultipleNode, shareNode } = useWorkspace()
 
     const optionSort = {
@@ -231,7 +230,7 @@ export default {
               store.dispatch('helper/closeModal')
             }
 
-            reloadRootRoute()
+            store.dispatch('helper/reloadInnerApp')
 
             if (!failMaterialList || (failMaterialList.length !== materialIdList.length)) {
               store.commit('helper/PUSH_message', t('FF0018'))

@@ -11,7 +11,7 @@ div(class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-black-400 cursor-poi
 <script>
 import { computed } from '@vue/runtime-core'
 import { useRoute, useRouter } from 'vue-router'
-import { inject } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   name: 'SidebarItem',
@@ -33,12 +33,12 @@ export default {
     }
   },
   setup (props) {
+    const store = useStore()
     const route = useRoute()
     const router = useRouter()
-    const reloadRootRoute = inject('reloadRootRoute')
 
     const isActive = computed(() => {
-      // Speacial case
+      // Special case
       if (props.id === 'management' && ['OrgManagement', 'GroupManagement'].includes(route.name)) {
         return true
       }
@@ -59,7 +59,7 @@ export default {
     const goTo = async () => {
       if (props.path === route.path) {
         await router.push(props.path)
-        reloadRootRoute()
+        store.dispatch('helper/reloadInnerApp')
       } else {
         router.push(props.path)
       }
@@ -67,8 +67,7 @@ export default {
 
     return {
       goTo,
-      isActive,
-      reloadRootRoute
+      isActive
     }
   }
 }

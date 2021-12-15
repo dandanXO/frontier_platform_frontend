@@ -71,7 +71,7 @@ export default {
       ctx.json(response)
     )
   },
-  changePassword: (req, res, ctx) => {
+  oldUserResetPassword: (req, res, ctx) => {
     const response = deepClone(successState)
     return res(
       ctx.status(200),
