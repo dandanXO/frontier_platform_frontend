@@ -38,6 +38,7 @@ export default {
       const isToGroup = 'groupId' in to.params
       if (isFromGroup && isToGroup && (from.params.groupId !== to.params.groupId)) {
         await store.dispatch('group/getGroup', { groupId: to.params.groupId })
+        await store.dispatch('user/groupUser/getGroupUser')
       }
     })
 

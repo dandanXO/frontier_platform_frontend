@@ -60,6 +60,10 @@ export default {
     method: 'POST',
     data: { orgId }
   }),
+  getGroupUser: ({ groupId }) => axios('/org/group/user/get', {
+    method: 'POST',
+    data: { groupId }
+  }),
   updateDisplayName: ({ orgId, displayName }) => axios('/org/user/update-display-name', {
     method: 'POST',
     data: { orgId, displayName }

@@ -6,34 +6,42 @@ div(
   @mouseleave="isHover = false"
 )
   div(class="l:w-21 w-25 2xl:w-35 pr-6 flex justify-end")
-    img(v-if="member.avatar !== null" :src="member.avatar" class="w-10 h-10 rounded-full")
-    div(v-else class="w-10 h-10 rounded-full border border-primary border-dashed")
+    div(v-if="member.isPending" class="w-10 h-10 rounded-full border border-primary border-dashed")
+    img(v-else :src="member.avatar" class="w-10 h-10 rounded-full")
   div(class="l:w-46.5 w-61.5 2xl:w-74")
-    p(v-if="member.displayName !== null") {{member.displayName}}
-    div(v-else class="w-min px-2 py-1.5 text-caption text-primary border rounded border-primary") {{$t('BB0024')}}
+    div(v-if="member.isPending" class="w-min px-2 py-1.5 text-caption text-primary border rounded border-primary") {{$t('BB0024')}}
+    p(v-else) {{member.displayName}}
   div(class="l:w-65 w-83.5 2xl:w-105") {{member.email}}
   div(class="l:w-41 w-54.5 2xl:w-82.5")
-    template(v-if="member.orgRoleId !== null")
+    p(v-if="member.isPending" class="ml-4 w-4 border-t border-primary")
+    template(v-else)
       p(v-if="member.orgRoleId === ROLE_ID.OWNER") {{getRoleName(member.orgRoleId)}}
       p(v-else-if="roleLimitList.length === 1") {{getRoleName(member.orgRoleId)}}
       template(v-else)
-        dropdown(
-          :value="currentRoleId"
-          :options="roleLimitList"
-          keyOptionDisplay="name"
-          keyOptionValue="roleId"
-          @select="changeMemberRole($event.roleId)"
+        tooltip(
+          class="flex-grow"
+          placement='bottom-start'
+          :manual="true"
+          :showArrow="false"
+          :offset="[0, 8]"
         )
-          template(#displayItem="{ isExpand, option }")
-            div(class="flex items-center")
-              p {{option.name}}
-              svg-icon(iconName="arrow-down" size="20" class="ml-4 text-black-600 transform" :class="[ isExpand ? '-rotate-90' : 'rotate-90' ]")
-    p(v-else class="ml-4 w-4 border-t border-primary")
+          template(#trigger="{ isActive }")
+            div(class="flex items-center cursor-pointer")
+              p {{getRoleName(currentRoleId)}}
+              svg-icon(iconName="arrow-down" size="20" class="ml-4 text-black-600 transform" :class="[ isActive ? '-rotate-90' : 'rotate-90' ]")
+          template(#content)
+            list
+              list-item(
+                v-for="option in roleLimitList"
+                class="cursor-pointer"
+                :class="{'bg-primary-thin': option.roleId === currentRoleId }"
+                @click="changeMemberRole(option.roleId)"
+              ) {{getRoleName(option.roleId)}}
   div(class="flex-grow")
-    p(v-if="member.lastSignInTime !== null") {{member.lastSignInTime}}
-    p(v-else class="ml-4 w-4 border-t border-primary")
+    p(v-if="member.isPending" class="ml-4 w-4 border-t border-primary")
+    p(v-else) {{member.lastSignInTime}}
   div(v-if="isHover" class="l:pr-5 pr-7 2xl:pr-26")
-    p(v-if="member.orgRoleId === null" class="text-body2 text-black-600 cursor-pointer" @click="confirmToCancelInvitation") {{$t('UU0002')}}
+    p(v-if="member.isPending" class="text-body2 text-black-600 cursor-pointer" @click="confirmToCancelInvitation") {{$t('UU0002')}}
     p(v-else-if="![ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(member.orgRoleId)" class="text-body2 text-black-600 cursor-pointer" @click="confirmToRemoveMember") {{$t('UU0016')}}
 </template>
 

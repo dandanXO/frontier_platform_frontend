@@ -117,14 +117,8 @@ export default {
     onBeforeMount(async () => {
       try {
         isLoading.value = true
-        if (routeLocation.value === 'org' && currentTab.value === 'about') {
-          await store.dispatch('code/getOrgCategoryList')
-        }
         if (routeLocation.value === 'group' && currentTab.value === 'about') {
           await store.dispatch('group/getGroup', { groupId: route.params.groupId })
-        }
-        if (currentTab.value === 'members') {
-          await store.dispatch('code/getRoleLimitTable')
         }
       } finally {
         isLoading.value = false
