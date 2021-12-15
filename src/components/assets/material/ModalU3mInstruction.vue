@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-168 px-8")
-  div(class="text-primary text-h6 font-bold text-center mb-7.5") {{$t("EE0016")}}
+  div(class="text-primary text-h6 font-bold text-center mb-7.5") {{$t("RR0132")}}
   div(class="text-primary text-body2 text-center mb-7.5") {{$t("EE0083")}}
   div(class="grid grid-cols-2 gap-12 mb-5")
     div(class="col-span-1")

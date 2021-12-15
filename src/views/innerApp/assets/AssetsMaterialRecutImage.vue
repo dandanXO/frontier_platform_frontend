@@ -1,43 +1,46 @@
 <template lang="pug">
-div(class="fixed inset-0 z-index:modal pt-16 w-screen h-screen bg-black-0")
-  fullscreen-header(
-    :title="$t('EE0069')"
-    :primaryText ="hasNext ? $t('UU0021') : $t('UU0020')"
-    :secondaryText="isAtSecondStep ? $t('UU0004') : $t('UU0002')"
-    @click:primary="hasNext ? getNext() : confirm()"
-    @click:secondary="isAtSecondStep ? goBack() : leavePage()"
-  )
-  div(class="flex h-full justify-center items-center")
-    div
-      div(class="mb-4.5 text-center text-primary text-body2 font-bold") {{isFaceSideNow ? $t("EE0051") : $t("EE0052")}}
-      layout-edit(
-        :image="currentImage"
-        :cropRectSize="cropRectSize"
-        :key="currentImage"
-        class="w-82.5"
-        @update:externalRotationAngle="externalRotationAngle = $event"
-        @update:externalCroppedScaleRatio="externalCroppedScaleRatio = $event"
-      )
-        template(#imageCropArea="{image, rotationAngle, croppedScaleRatio, scaleSize, cropRectSize}")
-          image-crop-area(
-            ref="imageCropper"
-            :image="image"
-            :rotationAngle="rotationAngle"
-            :croppedScaleRatio="croppedScaleRatio"
-            :scaleSize="scaleSize"
-            :cropRectSize="cropRectSize"
-            @update:externalOptions="Object.assign(externalOptions, $event)"
-          )
-    div(class="w-125 h-125 bg-black-400 ml-21 grid grid-cols-3 grid-rows-3")
-      div(v-for="i in 9" ref="previewRect" class="overflow-hidden")
-        cropped-image(
-          :imageSrc="currentImage.src"
-          :options="externalOptions"
-          :movable="false"
-          :previewScaleRatio="previewScaleRatio"
-          :scaleRatio="externalCroppedScaleRatio"
-          :rotationAngle="externalRotationAngle"
+fullscreen-header
+  template(#left)
+    h5(class="text-h5 text-primary font-bold") {{$t('EE0069')}}
+  template(#right)
+    btn-group(
+      :primaryText="hasNext ? $t('UU0021') : $t('UU0020')"
+      @click:primary="hasNext ? getNext() : confirm()"
+      :secondaryText="isAtSecondStep ? $t('UU0004') : $t('UU0002')"
+      @click:secondary="isAtSecondStep ? goBack() : leavePage()"
+    )
+  template(#content)
+    div(class="flex h-full justify-center items-center")
+      div
+        div(class="mb-4.5 text-center text-primary text-body2 font-bold") {{isFaceSideNow ? $t("EE0051") : $t("EE0052")}}
+        layout-edit(
+          :image="currentImage"
+          :cropRectSize="cropRectSize"
+          :key="currentImage"
+          class="w-82.5"
+          @update:externalRotationAngle="externalRotationAngle = $event"
+          @update:externalCroppedScaleRatio="externalCroppedScaleRatio = $event"
         )
+          template(#imageCropArea="{image, rotationAngle, croppedScaleRatio, scaleSize, cropRectSize}")
+            image-crop-area(
+              ref="imageCropper"
+              :image="image"
+              :rotationAngle="rotationAngle"
+              :croppedScaleRatio="croppedScaleRatio"
+              :scaleSize="scaleSize"
+              :cropRectSize="cropRectSize"
+              @update:externalOptions="Object.assign(externalOptions, $event)"
+            )
+      div(class="w-125 h-125 bg-black-400 ml-21 grid grid-cols-3 grid-rows-3")
+        div(v-for="i in 9" ref="previewRect" class="overflow-hidden")
+          cropped-image(
+            :imageSrc="currentImage.src"
+            :options="externalOptions"
+            :movable="false"
+            :previewScaleRatio="previewScaleRatio"
+            :scaleRatio="externalCroppedScaleRatio"
+            :rotationAngle="externalRotationAngle"
+          )
 </template>
 
 <script>
@@ -142,7 +145,7 @@ export default {
       leavePage()
 
       store.dispatch('helper/openModalConfirm', {
-        title: t('EE0016'),
+        title: t('RR0132'),
         content: t('EE0070'),
         primaryText: t('UU0031')
       })

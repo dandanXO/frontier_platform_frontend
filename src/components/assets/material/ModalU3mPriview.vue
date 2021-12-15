@@ -10,7 +10,11 @@ div(:class="{'w-86': !isDoubleSideMaterial, 'w-168':isDoubleSideMaterial}")
         div(class="text-center text-primary text-body2 font-bold mb-3.5") {{$t("EE0052")}}
         div(class="rounded overflow-hidden h-70" :class="[!isBackSideU3mCropExist ? 'border border-dashed border-black-400' : '']")
           img(v-if="isBackSideU3mCropExist" :src="backSideImg.u3mCrop" class="w-full")
-    div(class="mt-3.5 text-primary text-body2 line-height-1.6") {{$t("EE0068")}}
+    i18n-t(keypath="EE0068" tag="div" class="mt-3.5 text-primary text-body2 line-height-1.6")
+      template(#auto)
+        strong {{$t("EE0085")}}
+      template(#reCut)
+        strong {{$t("EE0086")}}
   btn-group(
     class="h-25"
     :secondaryButton="true"
@@ -52,7 +56,7 @@ export default {
     const handleCreateU3mAuto = async () => {
       await store.dispatch('material/generateU3m', {})
       store.dispatch('helper/openModalConfirm', {
-        title: t('EE0016'),
+        title: t('RR0132'),
         content: t('EE0070'),
         primaryText: t('UU0031')
       })
