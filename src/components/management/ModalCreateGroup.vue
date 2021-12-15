@@ -15,7 +15,7 @@ div(class="px-8")
     svg-icon(size="14" iconName="error_outline" class="text-primary")
     p(class="pl-1.5 text-caption text-primary") {{$t('BB0091')}}
   div(class="w-full h-25 flex items-center justify-center")
-    btn(size="md" :disabled="!avaliableToNextStep" @click="openModalCreateMailGroup") {{$t('UU0021')}}
+    btn(size="md" :disabled="!availableToNextStep" @click="openModalCreateMailGroup") {{$t('UU0021')}}
 </template>
 
 <script>
@@ -42,7 +42,7 @@ export default {
       set: (v) => store.commit('group/SET_createForm_description', v)
     })
     const isGroupNameExist = computed(() => store.getters['organization/groupList'].some(group => group.groupName === groupName.value))
-    const avaliableToNextStep = computed(() => groupName.value !== '' && !isGroupNameExist.value)
+    const availableToNextStep = computed(() => groupName.value !== '' && !isGroupNameExist.value)
 
     const openModalCreateMailGroup = () => {
       store.dispatch('helper/openModal', {
@@ -54,7 +54,7 @@ export default {
       labelColor,
       description,
       openModalCreateMailGroup,
-      avaliableToNextStep,
+      availableToNextStep,
       isGroupNameExist
     }
   }

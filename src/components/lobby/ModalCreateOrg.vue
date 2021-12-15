@@ -48,7 +48,7 @@ div(class="w-193.5 px-8")
   btn-group(
     class="h-25"
     :primaryText="$t('UU0021')"
-    :primaryButtonDisabled="!avaliableToCreateOrg"
+    :primaryButtonDisabled="!availableToCreateOrg"
     @click:primary="openModalCreateMailOrg"
     :secondaryButton="false"
   )
@@ -70,7 +70,7 @@ export default {
     const formData = reactive({ ...store.getters['organization/createForm'] })
     const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
     const countryList = computed(() => store.getters['code/countryList'])
-    const avaliableToCreateOrg = computed(() => formData.countryCode !== '' && formData.orgName !== '' && !isOrgNameExist.value)
+    const availableToCreateOrg = computed(() => formData.countryCode !== '' && formData.orgName !== '' && !isOrgNameExist.value)
 
     watch(
       () => formData.orgName,
@@ -95,7 +95,7 @@ export default {
       orgCategoryList,
       formData,
       countryList,
-      avaliableToCreateOrg,
+      availableToCreateOrg,
       checkOrgNameExist,
       isOrgNameExist,
       openModalCreateMailOrg

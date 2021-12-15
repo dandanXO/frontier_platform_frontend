@@ -101,12 +101,13 @@ export default {
     }
 
     const inviteToOrg = async () => {
+      store.dispatch('helper/pushModalLoading')
       if (props.from === 'org') {
         await store.dispatch('organization/inviteToOrg', { emailList: toRaw(emailList) })
       } else {
         await store.dispatch('group/inviteToOrgFromGroup', { emailList: toRaw(emailList) })
       }
-      store.dispatch('helper/closeModal')
+      store.dispatch('helper/clearModalPipeline')
     }
 
     watch(

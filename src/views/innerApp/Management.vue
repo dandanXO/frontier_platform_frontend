@@ -5,7 +5,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
       div(class="w-75 relative z-10")
         input-select(:selectValue="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup")
       div(class="flex gap-x-6 items-center")
-        div(class="flex gap-x-1 items-center cursor-pointer" @click="openModalCreateGroup")
+        div(v-if="[ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(orgUser.orgRoleId)" class="flex gap-x-1 items-center cursor-pointer" @click="openModalCreateGroup")
           svg-icon(iconName="add_box" size="20" class="text-brand")
           p(class="text-body2 text-primary") {{$t('UU0017')}}
         btn(size="sm" prependIcon="person_add" @click="routeLocation === 'org' ? openModalInviteToOrg() : openModalAddToGroup()") {{$t('UU0014')}}
@@ -30,6 +30,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import OrgAbout from '@/components/management/OrgAbout.vue'
 import { useI18n } from 'vue-i18n'
+import { ROLE_ID } from '@/utils/constants'
 
 export default {
   name: 'Management',
@@ -46,6 +47,7 @@ export default {
     const store = useStore()
     const isLoading = ref(false)
 
+    const orgUser = computed(() => store.getters['user/orgUser/orgUser'])
     const routeLocation = computed(() => route.name === 'OrgManagement' ? 'org' : 'group')
     const organization = computed(() => store.getters['organization/organization'])
     const menuOrgOrGroup = computed(() => {
@@ -115,14 +117,8 @@ export default {
     onBeforeMount(async () => {
       try {
         isLoading.value = true
-        if (routeLocation.value === 'org' && currentTab.value === 'about') {
-          await store.dispatch('code/getOrgCategoryList')
-        }
         if (routeLocation.value === 'group' && currentTab.value === 'about') {
           await store.dispatch('group/getGroup', { groupId: route.params.groupId })
-        }
-        if (currentTab.value === 'members') {
-          await store.dispatch('code/getRoleLimitTable')
         }
       } finally {
         isLoading.value = false
@@ -140,7 +136,9 @@ export default {
       openModalCreateGroup,
       openModalInviteToOrg,
       openModalAddToGroup,
-      isLoading
+      isLoading,
+      ROLE_ID,
+      orgUser
     }
   }
 }

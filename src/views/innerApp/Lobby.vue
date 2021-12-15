@@ -74,7 +74,7 @@ export default {
     DropdownLocale,
     InputCallingCode
   },
-  async setup () {
+  setup () {
     const store = useStore()
     const router = useRouter()
     const user = computed(() => store.getters['user/user'])
@@ -103,8 +103,6 @@ export default {
         closable
       })
     }
-
-    await store.dispatch('code/getOrgCategoryList')
 
     return {
       orgList,

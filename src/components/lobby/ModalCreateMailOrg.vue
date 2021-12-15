@@ -46,18 +46,22 @@ export default {
     }
     const createOrg = async () => {
       try {
+        store.dispatch('helper/pushModalLoading')
         await store.dispatch('organization/createOrg')
-        store.dispatch('helper/closeModal')
+        store.dispatch('helper/clearModalPipeline')
         router.push({ name: 'PublicLibrary', params: { orgNo: store.getters['organization/organization'].orgNo } })
       } catch (availableEmailList) {
+        store.dispatch('helper/closeModalLoading')
         suggestEmailList.value = availableEmailList
       }
     }
     const setOrgUploadMail = async () => {
       try {
+        store.dispatch('helper/pushModalLoading')
         await store.dispatch('organization/setOrgUploadMail', { uploadMaterialEmail: uploadMaterialEmail.value })
-        store.dispatch('helper/closeModal')
+        store.dispatch('helper/clearModalPipeline')
       } catch (availableEmailList) {
+        store.dispatch('helper/closeModalLoading')
         suggestEmailList.value = availableEmailList
       }
     }
