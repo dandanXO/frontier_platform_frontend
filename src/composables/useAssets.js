@@ -122,6 +122,18 @@ export default function useAssets () {
       store.commit('material/UPDATE_material', v)
       switch (status) {
         case U3M_STATUS.INITIAL:
+          if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
+            store.dispatch('helper/openModal', {
+              component: 'modal-u3m-priview',
+              header: t('EE0067')
+            })
+          } else {
+            localStorage.setItem('haveReadU3mInstruction', 'y')
+            store.dispatch('helper/openModal', {
+              component: 'modal-u3m-instruction'
+            })
+          }
+          break
         case U3M_STATUS.UNQUALIFIED:
           store.dispatch('helper/openModal', {
             component: 'modal-u3m-instruction'

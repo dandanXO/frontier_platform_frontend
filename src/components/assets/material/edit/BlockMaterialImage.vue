@@ -56,59 +56,24 @@ div(class="pb-15 mb-5 border-b border-black-400")
                       div {{pantone.majorColorName}}
               p(class="text-body2 text-primary") {{pantone.name}}
               svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removePantone(pantone.materialPantoneId)")
-        div
-          h5(class="text-h5 font-bold text-primary pb-3") {{$t('RR0132')}}
-          template(v-if="material.u3m.status === U3M_STATUS.UNQUALIFIED")
-            p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0020')}}
-              tooltip(placement="top" class="pl-1" :manual='true')
-                template(#trigger)
-                  svg-icon(iconName="info_outline" class='cursor-pointer' size="14")
-                template(#content)
-                  div(class="p-5 w-68.5")
-                    span(class="line-height-1.6") {{$t('EE0021')}}
-                    span(class="text-body2 text-assist-blue underline line-height-1.6 cursor-pointer" @click="openModalCreate3DMaterial") {{$t('UU0029')}}
-            btn(size="md" disabled) {{$t('UU0020')}}
-          template(v-if="material.u3m.status === U3M_STATUS.INITIAL")
-            p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0019')}}
-            btn(size="md" @click="openModalCreate3DMaterial") {{$t('UU0020')}}
-          template(v-if="material.u3m.status === U3M_STATUS.PROCESSING")
-            p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0022')}}
-            btn(size="md" disabled) {{$t('UU0020')}}
-          template(v-if="material.u3m.status === U3M_STATUS.COMPLETED")
-            p(class="text-body2 text-primary line-height-1.6 pb-2 flex flex-wrap items-center gap-2") {{$t('EE0017')}} : {{$t('EE0018')}}
-              a(:href="material.u3m.zipUrl" class="flex items-center text-assist-blue underline cursor-pointer" download) {{$t('EE0081')}}
-                svg-icon(iconName="u3m_download" size="20")
-              a(:href="material.u3m.u3maUrl" target="_blank" class="flex items-center text-assist-blue underline cursor-pointer" download) {{$t('EE0082')}}
-                svg-icon(iconName="u3m_download" size="20")
-            btn(size="md") {{$t('UU0006')}}
-          template(v-if="material.u3m.status === U3M_STATUS.FAIL")
-            p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0024')}}
-              tooltip(placement="top" class="pl-1")
-                template(#trigger)
-                  svg-icon(iconName="info_outline" size="14")
-                template(#content)
-                  div(class="p-5 w-71")
-                    i18n-t(keypath="EE0023" tag="p")
-                      template(#email)
-                        span(class="text-assist-blue") support@frontier.cool
-            btn(size="md") {{$t('UU0030')}}
+        assets-material-u3m-status
 </template>
 
 <script>
 import { useStore } from 'vuex'
 import { computed, ref, watch } from 'vue'
 import useMaterial from '@/composables/useMaterial'
-import { SIDE_TYPE, U3M_STATUS } from '@/utils/constants'
+import { SIDE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import useAssets from '@/composables/useAssets'
+import AssetsMaterialU3mStatus from '@/components/AssetsMaterialU3mStatus'
 
 export default {
   name: 'BlockMaterialImage',
+  components: { AssetsMaterialU3mStatus },
   setup () {
     const { t } = useI18n()
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
-    const { create3DMaterial } = useAssets()
     const { statusIconName, imageList, defaultCoverImgIndex } = useMaterial(material.value)
 
     const uploadMaterialEmail = computed(() => {
@@ -184,10 +149,6 @@ export default {
       }
     })
 
-    const openModalCreate3DMaterial = () => {
-      create3DMaterial.func(material.value)
-    }
-
     watch(
       () => pantoneName.value,
       () => {
@@ -204,14 +165,11 @@ export default {
       addPantone,
       pantoneErrorMsg,
       removePantone,
-      U3M_STATUS,
       openModalHowToScan,
       openModalChangeCover,
       openModalEditImage,
-      openModalCreate3DMaterial,
       statusIconName,
-      canEditScannedImg,
-      create3DMaterial
+      canEditScannedImg
     }
   }
 }
