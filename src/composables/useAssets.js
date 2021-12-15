@@ -154,7 +154,14 @@ export default function useAssets () {
     id: 'downloadU3M',
     icon: 'u3m',
     name: t('RR0059'),
-    func: () => { console.log('downloadU3M') }
+    func: (v) => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-u3m-select-file-format',
+        properties: {
+          material: v
+        }
+      })
+    }
   }
 
   const exportExcel = {
