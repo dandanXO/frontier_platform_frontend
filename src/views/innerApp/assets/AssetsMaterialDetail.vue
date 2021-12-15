@@ -62,8 +62,11 @@ div(class="w-full h-full flex justify-center")
               template(v-if="material.u3m.status === U3M_STATUS.PROCESSING")
                 p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}}: {{$t('EE0022')}}
               template(v-else-if="material.u3m.status === U3M_STATUS.COMPLETED")
-                p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}}: {{$t('EE0018')}} &nbsp
-                  span(class="text-assist-blue underline cursor-pointer") {{$t('UU0005')}}
+                p(class="text-body2 text-primary line-height-1.6 pb-2 flex flex-wrap items-center gap-2") {{$t('EE0017')}}: {{$t('EE0018')}} &nbsp
+                  a(:href="material.u3m.zipUrl" class="flex items-center text-assist-blue underline cursor-pointer" download) {{$t('EE0081')}}
+                    svg-icon(iconName="u3m_download" size="20")
+                  a(:href="material.u3m.u3maUrl" target="_blank" class="flex items-center text-assist-blue underline cursor-pointer" download) {{$t('EE0082')}}
+                    svg-icon(iconName="u3m_download" size="20")
               template(v-else-if="material.u3m.status === U3M_STATUS.FAIL")
                 p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}}: {{$t('EE0024')}}
                   tooltip(placement="top" class="pl-1")

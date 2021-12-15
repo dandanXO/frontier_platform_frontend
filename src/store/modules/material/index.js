@@ -99,6 +99,7 @@ const getDefaultState = () => ({
   u3m: {
     status: 0,
     zipUrl: '',
+    u3maUrl: '',
     baseImgUrl: '',
     normalImgUrl: ''
   },

@@ -11,7 +11,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
         span(class="flex items-center gap-x-1 cursor-pointer")
           svg-icon(iconName="info_outline" size="20" class="text-primary")
           span(class="text-body2 text-primary underline font-normal" @click="openModalHowToScan") {{$t('UU0032')}}
-      div(class="pt-10.5 flex gap-x-15")
+      div(class="pt-10.5 flex gap-x-10")
         div(class="w-75")
           div(class="w-full h-75 rounded overflow-hidden")
             template(v-if="!!imageList[currentDisplayIndex].src")
@@ -34,7 +34,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
           ) {{$t('UU0011')}}
           p(class="text-body2 text-assist-blue underline cursor-pointer" @click="openModalChangeCover") {{$t('UU0012')}}
         div(class="w-52.5")
-          h5(class="text-h5 font-bold text-primary pb-5") {{$t('RR0130')}}
+          h5(class="text-h5 font-bold text-primary pb-5") {{$t('RR0131')}}
           input-text-icon(
             v-model:textValue="pantoneName"
             :label="$t('EE0040')"
@@ -57,7 +57,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
               p(class="text-body2 text-primary") {{pantone.name}}
               svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removePantone(pantone.materialPantoneId)")
         div
-          h5(class="text-h5 font-bold text-primary pb-3") {{$t('RR0131')}}
+          h5(class="text-h5 font-bold text-primary pb-3") {{$t('RR0132')}}
           template(v-if="material.u3m.status === U3M_STATUS.UNQUALIFIED")
             p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0020')}}
               tooltip(placement="top" class="pl-1" :manual='true')
@@ -75,8 +75,11 @@ div(class="pb-15 mb-5 border-b border-black-400")
             p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0022')}}
             btn(size="md" disabled) {{$t('UU0020')}}
           template(v-if="material.u3m.status === U3M_STATUS.COMPLETED")
-            p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0018')}} &nbsp
-              span(class="text-assist-blue underline cursor-pointer") {{$t('UU0005')}}
+            p(class="text-body2 text-primary line-height-1.6 pb-2 flex flex-wrap items-center gap-2") {{$t('EE0017')}} : {{$t('EE0018')}}
+              a(:href="material.u3m.zipUrl" class="flex items-center text-assist-blue underline cursor-pointer" download) {{$t('EE0081')}}
+                svg-icon(iconName="u3m_download" size="20")
+              a(:href="material.u3m.u3maUrl" target="_blank" class="flex items-center text-assist-blue underline cursor-pointer" download) {{$t('EE0082')}}
+                svg-icon(iconName="u3m_download" size="20")
             btn(size="md") {{$t('UU0006')}}
           template(v-if="material.u3m.status === U3M_STATUS.FAIL")
             p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0024')}}

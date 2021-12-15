@@ -39,6 +39,7 @@ const downloadDataURLFile = (dataURL, fileName = 'file') => {
   link.download = fileName
   link.href = dataURL
   link.text = 'downloading...'
+  link.target = '_blank'
 
   document.body.appendChild(link)
   link.click()
