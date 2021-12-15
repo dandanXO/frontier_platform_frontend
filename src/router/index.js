@@ -145,14 +145,12 @@ const routes = [
     name: 'AppRoot',
     component: () => import('@/views/innerApp/InnerAppLayout.vue'),
     beforeEnter: async (to, from, next) => {
-      store.dispatch('helper/openModalLoading')
       store.dispatch('code/getRoleList')
       store.dispatch('code/getOrgCategoryList')
       store.dispatch('code/getRoleLimitTable')
       store.dispatch('code/getCountryList')
       store.dispatch('code/getFilterOptions')
       await store.dispatch('user/getUser')
-      store.dispatch('helper/closeModalLoading')
       next()
     },
     children: [

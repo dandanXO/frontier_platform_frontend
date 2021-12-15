@@ -30,7 +30,7 @@ div(class="relative z-index:sidebar min-w-60 w-60 h-full bg-black-100 sidebar-sh
                   div(class="absolute right-3 top-1/2 transform -translate-y-1/2 flex justify-center items-center w-6 h-6 rounded bg-primary-thin" @click.stop="$router.push(menu.path + '/upload')")
                     svg-icon(:iconName="menu.icon" size="20" class="text-black-800")
       div(class="w-auto h-px bg-primary-thin mx-1.5 my-1.5")
-  menu-personal
+  menu-org-user
 </template>
 
 <script>
@@ -39,14 +39,14 @@ import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import SidebarItem from '@/components/layout/sidebar/SidebarItem.vue'
 import MenuOrg from '@/components/layout/sidebar/MenuOrg.vue'
-import MenuPersonal from '@/components/layout/sidebar/MenuPersonal.vue'
+import MenuOrgUser from '@/components/layout/sidebar/MenuOrgUser.vue'
 
 export default {
   name: 'Sidebar',
   components: {
     SidebarItem,
     MenuOrg,
-    MenuPersonal
+    MenuOrgUser
   },
   setup () {
     const store = useStore()

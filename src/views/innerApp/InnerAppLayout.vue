@@ -2,36 +2,25 @@
 div(class="flex h-full")
   router-view(name="sidebar")
   main(class="flex-grow")
-    router-view(v-if="isRouterAlive" :key="$route.path" v-slot="{ Component }" class="overflow-y-auto")
+    router-view(v-if="isReloadInnerApp" :key="$route.path" v-slot="{ Component }" class="overflow-y-auto")
       suspense
         component(:is="Component")
         template(#fallback)
           div(class="h-full flex justify-center items-center")
             svg-icon(iconName="loading" size="92" class="text-brand-dark")
-  modal-pipeline
 </template>
 
 <script>
 import { useStore } from 'vuex'
-import { ref, nextTick, provide } from 'vue'
+import { computed } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
-import ModalPipeline from '@/components/modal/ModalPipeline.vue'
 
 export default {
   name: 'InnerAppLayout',
-  components: {
-    ModalPipeline
-  },
   setup () {
     const store = useStore()
 
-    const isRouterAlive = ref(true)
-    const reloadRootRoute = async () => {
-      isRouterAlive.value = false
-      await nextTick()
-      isRouterAlive.value = true
-    }
-    provide('reloadRootRoute', reloadRootRoute)
+    const isReloadInnerApp = computed(() => store.getters['helper/isReloadInnerApp'])
 
     onBeforeRouteUpdate(async (to, from) => {
       const isFromGroup = 'groupId' in from.params
@@ -43,7 +32,7 @@ export default {
     })
 
     return {
-      isRouterAlive
+      isReloadInnerApp
     }
   }
 }

@@ -40,7 +40,7 @@ div(class="w-101 px-8")
 </template>
 
 <script>
-import { ref, reactive, computed, watch, inject } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { FileOperator } from '@/utils/fileOperator'
 import { useI18n } from 'vue-i18n'
@@ -65,7 +65,6 @@ export default {
   async setup (props) {
     const { t } = useI18n()
     const store = useStore()
-    const reloadRootRoute = inject('reloadRootRoute')
     const fileOperator = new FileOperator(['pdf'], 20)
 
     const uploadTrendBoardName = ref('')
@@ -138,7 +137,7 @@ export default {
           store.commit('helper/PUSH_message', t('FF0027'))
         }
         store.dispatch('helper/clearModalPipeline')
-        reloadRootRoute()
+        store.dispatch('helper/reloadInnerApp')
       } catch (error) {
         store.dispatch('helper/closeModalLoading')
         errorMsg.value = error

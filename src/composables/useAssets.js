@@ -1,14 +1,13 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation'
-import { inject, computed } from 'vue'
+import { computed } from 'vue'
 import { TARGET_LOCATION } from '@/utils/constants.js'
 
 export default function useAssets () {
   const { t } = useI18n()
   const { goToAssetMaterialEdit, goToAssetsMaterialMerge } = useNavigation()
   const store = useStore()
-  const reloadRootRoute = inject('reloadRootRoute')
 
   const routeLocation = computed(() => store.getters['helper/routeLocation'])
 
@@ -26,7 +25,7 @@ export default function useAssets () {
       store.dispatch('helper/openModalLoading')
       await store.dispatch('assets/carbonCopyMaterial', { materialId: v.materialId })
       store.dispatch('helper/closeModalLoading')
-      reloadRootRoute()
+      store.dispatch('helper/reloadInnerApp')
     }
   }
 
@@ -172,7 +171,7 @@ export default function useAssets () {
           store.dispatch('helper/openModalLoading')
           await store.dispatch('assets/deleteMaterial', { materialIdList })
           store.dispatch('helper/closeModalLoading')
-          reloadRootRoute()
+          store.dispatch('helper/reloadInnerApp')
         }
       })
     }

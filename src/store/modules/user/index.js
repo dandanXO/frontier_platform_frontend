@@ -87,8 +87,16 @@ const actions = {
       throw message.content
     }
   },
-  async changePassword (_, params) {
-    await userApi.changePassword(params)
+  async oldUserResetPassword (_, params) {
+    await userApi.oldUserResetPassword(params)
+  },
+  async changePassword (_, { currentPassword, newPassword }) {
+    const { data } = await userApi.changePassword({ currentPassword, newPassword })
+    const { success, message } = data
+
+    if (!success) {
+      throw message.content
+    }
   },
   async sendForgotPasswordEmail (_, params) {
     await userApi.sendForgotPasswordEmail(params)
