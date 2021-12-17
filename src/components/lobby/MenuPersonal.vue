@@ -59,7 +59,8 @@ export default {
       ],
       [
         {
-          name: t('RR0125')
+          name: t('RR0125'),
+          func: openModal.bind(undefined, 'modal-privacy-policy')
         }
       ],
       [
