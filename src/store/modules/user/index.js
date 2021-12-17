@@ -115,6 +115,10 @@ const actions = {
   },
   async verifyUser (_, { verifyCode }) {
     await userApi.verifyUser({ verifyCode })
+  },
+  async updateUserProfile ({ dispatch }, { firstName, lastName }) {
+    const { data } = await userApi.updateUserProfile({ firstName, lastName })
+    dispatch('handleResponseData', { data }, { root: true })
   }
 }
 

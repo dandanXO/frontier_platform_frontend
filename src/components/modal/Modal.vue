@@ -49,8 +49,9 @@ export default {
     ModalVerifyNotification: defineAsyncComponent(() => import('@/components/lobby/ModalVerifyNotification.vue')),
     ModalPublish: defineAsyncComponent(() => import('@/components/workspace/ModalPublish.vue')),
     ModalPublicLibraryCollectionDetail: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryCollectionDetail.vue')),
-    ModalPersonalProfile: defineAsyncComponent(() => import('@/components/account/ModalPersonalProfile.vue')),
-    ModalChangePassword: defineAsyncComponent(() => import('@/components/account/ModalChangePassword.vue'))
+    ModalOrgUserProfile: defineAsyncComponent(() => import('@/components/account/ModalOrgUserProfile.vue')),
+    ModalChangePassword: defineAsyncComponent(() => import('@/components/account/ModalChangePassword.vue')),
+    ModalPersonalProfile: defineAsyncComponent(() => import('@/components/lobby/ModalPersonalProfile.vue'))
   },
   props: {
     component: {

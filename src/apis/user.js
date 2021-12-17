@@ -20,7 +20,7 @@ export default {
   getUser: () => axios('/user', {
     method: 'GET'
   }),
-  updateUser: ({ firstName, lastName }) => axios('/user/update', {
+  updateUserProfile: ({ firstName, lastName }) => axios('/user/update', {
     method: 'POST',
     data: { firstName, lastName }
   }),
