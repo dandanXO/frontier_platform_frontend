@@ -38,7 +38,8 @@ export default {
     const optionList = [
       [
         {
-          name: t('RR0120')
+          name: t('RR0120'),
+          func: openModal.bind(undefined, 'modal-personal-profile')
         },
         {
           name: t('RR0138'),
