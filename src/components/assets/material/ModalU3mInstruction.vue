@@ -5,7 +5,7 @@ div(class="w-168 px-8")
   div(class="grid grid-cols-2 gap-12 mb-5")
     div(class="col-span-1")
       img(src="@/assets/images/u3m.png")
-    div(class="col-span-1 text-primary text-body2") {{$t("EE0066")}}
+    div(class="col-span-1 text-primary text-body2 line-height-1.6") {{$t("EE0066")}}
   btn-group(
     class="h-25"
     :secondaryButton="false"

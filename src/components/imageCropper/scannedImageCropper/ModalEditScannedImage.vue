@@ -1,13 +1,13 @@
 <template lang="pug">
 div(class="min-w-86 max-w-196 px-8 pt-5")
   div(class="flex")
-    div(v-if="isDoubleSideMaterial || isFaceSide" class="w-70 text-primary text-body2 font-bold text-center mb-3.5") {{$t('EE0051')}}
+    div(v-if="isDoubleSideMaterial || isFaceSideMaterial" class="w-70 text-primary text-body2 font-bold text-center mb-3.5") {{$t('EE0051')}}
     div(v-if="isDoubleSideMaterial" class="w-32")
-    div(v-if="isDoubleSideMaterial || isBackSide" class="w-70 text-primary text-body2 font-bold text-center mb-3.5") {{$t('EE0052')}}
+    div(v-if="isDoubleSideMaterial || !isFaceSideMaterial" class="w-70 text-primary text-body2 font-bold text-center mb-3.5") {{$t('EE0052')}}
   div(class="flex" :class="[isExchange ? 'flex-row-reverse' : '']")
     layout-edit(
-      v-if="isDoubleSideMaterial || isFaceSide"
-      :showScale="isFaceSide"
+      v-if="isDoubleSideMaterial || isFaceSideMaterial"
+      :showScale="isFaceSideMaterial"
       :image="faceSideObj"
       :scaleSizeDoubleSide="scaleSize"
       class="w-70"
@@ -41,8 +41,8 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
         svg-icon(iconName="swap_horiz" size="24" class="text-primary cursor-pointer m-auto")
       div(class="mt-3.5 text-center text-primary text-caption") {{$t('EE0053')}}
     layout-edit(
-      v-if="isDoubleSideMaterial || isBackSide"
-      :showScale="isBackSide"
+      v-if="isDoubleSideMaterial || !isFaceSideMaterial"
+      :showScale="!isFaceSideMaterial"
       :image="backSideObj"
       :scaleSizeDoubleSide="scaleSize"
       class="w-70"
@@ -70,7 +70,7 @@ import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import ImageCropArea from '@/components/imageCropper/scannedImageCropper/ImageCropArea'
 import LayoutEdit from '@/components/imageCropper/scannedImageCropper/LayoutEdit'
-import { SIDE_TYPE } from '@/utils/constants'
+import useMaterialImage from '@/composables/useMaterialImage'
 
 export default {
   name: 'ModalEditScannedImage',
@@ -84,30 +84,17 @@ export default {
   async setup (props) {
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
-    const { isDoubleSideMaterial, sideType, faceSideImg, backSideImg } = material.value
     const scaleSize = ref(4)
     const isExchange = ref(false)
     const faceSideImageCropper = ref(null)
     const backSideImageCropper = ref(null)
 
-    const isFaceSide = !isDoubleSideMaterial && sideType === SIDE_TYPE.FACE
-    const isBackSide = !isDoubleSideMaterial && sideType === SIDE_TYPE.BACK
-
-    const getImage = (url) => {
-      return new Promise((resolve, reject) => {
-        const img = new Image()
-
-        img.onload = () => {
-          const { width, height, src } = img
-          resolve({ width, height, src })
-        }
-
-        img.src = url
-      })
-    }
-
-    const faceSideObj = !!faceSideImg.original && await getImage(faceSideImg.original)
-    const backSideObj = !!backSideImg.original && await getImage(backSideImg.original)
+    const {
+      isDoubleSideMaterial,
+      isFaceSideMaterial,
+      faceSideObj,
+      backSideObj
+    } = useMaterialImage(material.value)
 
     const getMaxRatio = computed(() => {
       const dpi = 300
@@ -143,8 +130,7 @@ export default {
     return {
       faceSideImageCropper,
       backSideImageCropper,
-      isFaceSide,
-      isBackSide,
+      isFaceSideMaterial,
       isDoubleSideMaterial,
       faceSideObj,
       backSideObj,

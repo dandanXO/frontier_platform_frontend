@@ -24,14 +24,14 @@ fullscreen-header
                 :scaleSize="scaleSize"
                 :cropRectSize="cropRectSize"
               )
-                template(#croppedImage="{imageSrc, options, scaleRatio, rotationAngle}")
+                template(#croppedImage="{imageSrc, options, croppedScaleRatio, rotationAngle}")
                   teleport(:to="`.${cropper.ref}`")
                     div(class="w-125 h-125 bg-black-400 ml-21 grid grid-cols-3 grid-rows-3")
                       div(v-for="i in 9" ref="previewRect" class="overflow-hidden")
                         cropped-image(
                           :options="options"
                           :imageSrc="imageSrc"
-                          :scaleRatio="scaleRatio"
+                          :scaleRatio="croppedScaleRatio"
                           :rotationAngle="rotationAngle"
                           :previewScaleRatio="previewScaleRatio"
                           :movable="false"
@@ -42,7 +42,7 @@ fullscreen-header
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import useMaterialImage from '@/composables/useMaterialImage'
 import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
 import LayoutEdit from '@/components/imageCropper/scannedImageCropper/LayoutEdit'
@@ -62,7 +62,6 @@ export default {
     const store = useStore()
     const router = useRouter()
     const previewRect = ref(null)
-    const previewScaleRatio = ref(1)
     const faceSide = ref(null)
     const backSide = ref(null)
     const material = computed(() => store.getters['material/material'])
@@ -87,8 +86,12 @@ export default {
       }
     ]
 
-    onMounted(() => {
-      previewScaleRatio.value = previewRect.value.clientWidth / cropRectSize
+    const previewScaleRatio = computed(() => {
+      if (previewRect.value !== null) {
+        return previewRect.value.clientWidth / cropRectSize
+      } else {
+        return 1
+      }
     })
 
     const hasNext = ref(isDoubleSideMaterial && faceSideObj && backSideObj)
@@ -104,7 +107,7 @@ export default {
 
     const getNext = async () => {
       store.dispatch('helper/pushModalLoading')
-      faceSideCropImg = await faceSide.value?.cropImage()
+      faceSideCropImg = await faceSide.value?.cropImage() // 測試換頁時把這個註解掉
       hasNext.value = false
       isAtSecondStep.value = true
       store.dispatch('helper/closeModalLoading')

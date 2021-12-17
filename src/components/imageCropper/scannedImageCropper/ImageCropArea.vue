@@ -4,7 +4,7 @@ div(class="relative")
     name="croppedImage"
     :imageSrc="image.src"
     :options="options"
-    :scaleRatio="croppedScaleRatio"
+    :croppedScaleRatio="croppedScaleRatio"
     :rotationAngle="rotationAngle"
   )
   div(class="absolute" :style="cropRectStyles")
