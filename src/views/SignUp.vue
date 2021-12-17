@@ -37,9 +37,9 @@ div(class="w-screen h-screen flex justify-center items-center  bg-black-100")
             svg-icon(v-if="agreeTermsAndPrivacy" iconName="tick" size="10" class="text-primary")
           i18n-t(keypath="AA0021" tag="p" class="text-caption text-black-600 ml-1")
             template(#terms)
-              span(class="text-primary") {{$t('AA0012')}}
+              span(class="text-primary cursor-pointer" @click="openModalTermsOfUse") {{$t('AA0012')}}
             template(#privacy)
-              span(class="text-primary") {{$t('AA0029')}}
+              span(class="text-primary cursor-pointer" @click="openModalPrivacyPolicy") {{$t('AA0029')}}
       i18n-t(keypath="UU0048" tag="p" class="text-black-800 text-body2 font-normal text-center pt-3")
         template(#signIn)
           router-link-extending(class="text-primary font-bold" to="/sign-in") {{$t('AA0001')}}
@@ -128,6 +128,9 @@ export default {
       }
     }
 
+    const openModalTermsOfUse = () => store.dispatch('helper/openModal', { component: 'modal-terms-of-use' })
+    const openModalPrivacyPolicy = () => store.dispatch('helper/openModal', { component: 'modal-privacy-policy' })
+
     onMounted(async () => {
       await googleSignInApi.init()
       googleSignInApi.attachClickHandler({
@@ -150,7 +153,9 @@ export default {
       isSignUpSuccessfully,
       nextAfterSignIn,
       isEmailExist,
-      isPasswordValid
+      isPasswordValid,
+      openModalTermsOfUse,
+      openModalPrivacyPolicy
     }
   }
 }
