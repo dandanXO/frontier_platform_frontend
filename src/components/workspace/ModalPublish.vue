@@ -29,7 +29,7 @@ div(class="w-101 px-8")
 
 <script>
 import { useI18n } from 'vue-i18n'
-import { reactive, toRefs, inject } from 'vue'
+import { reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -44,7 +44,6 @@ export default {
     const { t } = useI18n()
     const store = useStore()
     const { workspaceNode } = toRefs(props)
-    const reloadRootRoute = inject('reloadRootRoute')
     const optionIsPublic = [
       {
         name: t('FF0030'),
@@ -66,7 +65,7 @@ export default {
       store.dispatch('helper/openModalLoading')
       await store.dispatch('workspace/publishNode', { workspaceNodeId: workspaceNode.value.workspaceNodeId, ...params })
       store.dispatch('helper/closeModalLoading')
-      reloadRootRoute()
+      store.dispatch('helper/reloadInnerApp')
       store.commit('helper/PUSH_message', t('FF0035'))
     }
 

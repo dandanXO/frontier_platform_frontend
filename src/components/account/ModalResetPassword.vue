@@ -8,7 +8,7 @@ div(class="w-105 px-8 flex flex-col items-center")
     password-validator(v-model:isValid="isPasswordValid" :password="password" class="mt-1 mb-7")
     input-password(v-model:textValue="confirmPassword" :placeholder="$t('AA0056')" :customErrorMsg="errorMsg")
   div(class="h-25 flex items-center")
-    btn(size="lg" class="w-85" :disabled="!avaliableToChangePassword" @click="changeHandler") {{$t('AA0054')}}
+    btn(size="lg" class="w-85" :disabled="!availableToChangePassword" @click="changeHandler") {{$t('UU0054')}}
 </template>
 
 <script>
@@ -39,8 +39,7 @@ export default {
   setup (props) {
     const MODE = {
       FORGOT: 0,
-      OLD_RESET: 1,
-      CHANGE: 2
+      OLD_RESET: 1
     }
     const { t } = useI18n()
     const store = useStore()
@@ -55,10 +54,10 @@ export default {
       }
 
       return (password.value !== confirmPassword.value)
-        ? t('AA0003NotMatch')
+        ? t('WW0070')
         : ''
     })
-    const avaliableToChangePassword = computed(() => password.value !== '' && confirmPassword.value !== '' && isPasswordValid.value && password.value === confirmPassword.value)
+    const availableToChangePassword = computed(() => password.value !== '' && confirmPassword.value !== '' && isPasswordValid.value && password.value === confirmPassword.value)
 
     const changeHandler = async () => {
       switch (props.mode) {
@@ -66,9 +65,7 @@ export default {
           await store.dispatch('user/resetPassword', { password: password.value, verifyToken: props.verifyToken })
           break
         case MODE.OLD_RESET:
-          await store.dispatch('user/changePassword', { password: password.value })
-          break
-        case MODE.CHANGE:
+          await store.dispatch('user/oldUserResetPassword', { password: password.value })
           break
       }
       await nextAfterSignIn()
@@ -80,7 +77,7 @@ export default {
       confirmPassword,
       isPasswordValid,
       errorMsg,
-      avaliableToChangePassword,
+      availableToChangePassword,
       changeHandler
     }
   }

@@ -41,10 +41,12 @@ export default {
     }
     const createGroup = async () => {
       try {
+        store.dispatch('helper/pushModalLoading')
         await store.dispatch('group/createGroup')
-        store.dispatch('helper/closeModal')
+        store.dispatch('helper/clearModalPipeline')
         router.push(`/${orgNo.value}/${groupId.value}/management/about`)
       } catch (availableEmailList) {
+        store.dispatch('helper/closeModalLoading')
         suggestEmailList.value = availableEmailList
       }
     }

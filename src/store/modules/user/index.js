@@ -1,5 +1,6 @@
 import userApi from '@/apis/user'
 import orgUser from '@/store/modules/user/orgUser'
+import groupUser from '@/store/modules/user/groupUser'
 import setVuexState from '@/utils/set-vuex-state'
 import i18n from '@/utils/i18n'
 
@@ -15,7 +16,18 @@ const state = () => ({
 const getters = {
   user: (state) => state,
   email: (state) => state.email,
-  organizationList: (state) => state.organizationList
+  organizationList: (state) => {
+    return state.organizationList.map(org => {
+      return {
+        ...org,
+        logo: org.logo ? org.logo : require('@/assets/images/logo-default.png'),
+        memberList: org.memberList.map(member => ({
+          ...member,
+          avatar: member.avatar ? member.avatar : require('@/assets/images/default_user.png')
+        }))
+      }
+    })
+  }
 }
 
 const actions = {
@@ -75,8 +87,16 @@ const actions = {
       throw message.content
     }
   },
-  async changePassword (_, params) {
-    await userApi.changePassword(params)
+  async oldUserResetPassword (_, params) {
+    await userApi.oldUserResetPassword(params)
+  },
+  async changePassword (_, { currentPassword, newPassword }) {
+    const { data } = await userApi.changePassword({ currentPassword, newPassword })
+    const { success, message } = data
+
+    if (!success) {
+      throw message.content
+    }
   },
   async sendForgotPasswordEmail (_, params) {
     await userApi.sendForgotPasswordEmail(params)
@@ -104,6 +124,7 @@ export default {
   getters,
   actions,
   modules: {
-    orgUser
+    orgUser,
+    groupUser
   }
 }
