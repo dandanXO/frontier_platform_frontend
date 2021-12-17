@@ -10,11 +10,11 @@ div(:class="{'w-86': !isDoubleSideMaterial, 'w-168':isDoubleSideMaterial}")
         div(class="text-center text-primary text-body2 font-bold mb-3.5") {{$t("EE0052")}}
         div(class="rounded overflow-hidden h-70" :class="[!isBackSideU3mCropExist ? 'border border-dashed border-black-400' : '']")
           img(v-if="isBackSideU3mCropExist" :src="backSideImg.u3mCrop" class="w-full")
-    i18n-t(keypath="EE0068" tag="div" class="mt-3.5 text-primary text-body2 line-height-1.6")
-      template(#auto)
-        strong {{$t("EE0085")}}
-      template(#reCut)
-        strong {{$t("EE0086")}}
+    //- i18n-t(keypath="EE0068" tag="div" class="mt-3.5 text-primary text-body2 line-height-1.6")
+    //-   template(#auto)
+    //-     strong {{$t("EE0085")}}
+    //-   template(#reCut)
+    //-     strong {{$t("EE0086")}}
   btn-group(
     class="h-25"
     :secondaryButton="true"
@@ -34,7 +34,7 @@ import useMaterialImage from '@/composables/useMaterialImage'
 
 export default {
   name: 'ModalU3mPriview',
-  async setup () {
+  setup () {
     const { t } = useI18n()
     const store = useStore()
     const { goToAssetsMaterialRecutImage } = useNavigation()
@@ -46,7 +46,7 @@ export default {
       isBackSideMaterial,
       isFaceSideU3mCropExist,
       isBackSideU3mCropExist
-    } = await useMaterialImage(material.value)
+    } = useMaterialImage(material.value)
 
     const handleRecutMaterial = () => {
       goToAssetsMaterialRecutImage()

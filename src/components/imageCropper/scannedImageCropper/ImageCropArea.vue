@@ -1,5 +1,12 @@
 <template lang="pug">
 div(class="relative")
+  slot(
+    name="croppedImage"
+    :imageSrc="image.src"
+    :options="options"
+    :scaleRatio="croppedScaleRatio"
+    :rotationAngle="rotationAngle"
+  )
   div(class="absolute" :style="cropRectStyles")
     cropped-image(
       :imageSrc="image.src"
@@ -26,7 +33,7 @@ div(class="relative")
 
 <script>
 import CroppedImage from '@/components/imageCropper/scannedImageCropper/CroppedImage'
-import { ref, watch, computed, reactive } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import domtoimage from 'dom-to-image'
 
 export default {
@@ -52,14 +59,9 @@ export default {
     image: {
       type: Object,
       required: true
-    },
-    externalOptions: {
-      type: Object
     }
   },
-  // Let parent component get internal variable
-  emits: ['update:externalOptions'],
-  async setup (props, { emit }) {
+  async setup (props) {
     const cropRect = ref(null)
     const options = reactive({
       x: 0,
@@ -97,17 +99,6 @@ export default {
           .catch(error => reject(error))
       })
     }
-
-    // Let parent component get internal variable
-    watch(
-      () => options,
-      (v) => {
-        emit('update:externalOptions', v)
-      },
-      {
-        deep: true
-      }
-    )
 
     return {
       cropRectStyles,

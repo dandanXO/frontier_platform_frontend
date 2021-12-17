@@ -1,6 +1,6 @@
 import { SIDE_TYPE } from '@/utils/constants.js'
 
-export default async function useMaterialImage (material, type = 'general') {
+export default function useMaterialImage (material, type = 'general') {
   const { isDoubleSideMaterial, sideType, faceSideImg, backSideImg } = material
 
   const isFaceSideMaterial = !isDoubleSideMaterial && sideType === SIDE_TYPE.FACE
@@ -15,26 +15,13 @@ export default async function useMaterialImage (material, type = 'general') {
   const isFaceSideU3mCropExist = !!faceSideImg.u3mCrop
   const isBackSideU3mCropExist = !!backSideImg.u3mCrop
 
-  const getImage = (url) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image()
-
-      img.onload = () => {
-        const { width, height, src } = img
-        resolve({ width, height, src })
-      }
-
-      img.src = url
-    })
-  }
-
   const faceSideObj = type === 'general'
-    ? isFaceSideOriginalExist && await getImage(faceSideImg.original)
-    : isFaceSideU3mOriginalExist && await getImage(faceSideImg.u3mOriginal)
+    ? isFaceSideOriginalExist && faceSideImg.original
+    : isFaceSideU3mOriginalExist && faceSideImg.u3mOriginal
 
   const backSideObj = type === 'general'
-    ? isBackSideOriginalExist && await getImage(backSideImg.original)
-    : isBackSideU3mOriginalExist && await getImage(backSideImg.u3mOriginal)
+    ? isBackSideOriginalExist && backSideImg.original
+    : isBackSideU3mOriginalExist && backSideImg.u3mOriginal
 
   return {
     isDoubleSideMaterial,
