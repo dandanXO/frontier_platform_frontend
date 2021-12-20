@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-101 px-8")
-  h6(class="text-h6 font-bold text-primary text-center") {{$t('FF0022')}}
+  h6(class="text-h6 font-bold text-primary text-center") {{mode === MODE.EDIT ? $t('FF0009') : $t('FF0022')}}
   p(class="text-right pt-4 pb-0.5 text-caption text-black-600") *{{$t('FF0013')}}
   input-text(
     v-model:textValue="formData.collectionName"
