@@ -26,7 +26,7 @@ import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import useMaterialValidation from '@/composables/useMaterialValidation'
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
 
 export default {
   name: 'AssetsMaterialEdit',
@@ -43,9 +43,6 @@ export default {
     const route = useRoute()
     const { parsePath, goToAssets } = useNavigation()
     const { validations, validate } = useMaterialValidation()
-
-    await store.dispatch('material/getMaterialOptions')
-    await store.dispatch('material/getMaterial', { materialId: route.params.materialId })
 
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const breadcrumbList = computed(() => {
@@ -81,6 +78,24 @@ export default {
         primaryText: t('UU0002')
       })
     }
+
+    onBeforeRouteLeave(async () => {
+      const result = await new Promise((resolve) => {
+        store.dispatch('helper/openModalConfirm', {
+          title: t('EE0045'),
+          content: t('EE0046'),
+          secondaryText: t('UU0001'),
+          secondaryHandler: resolve.bind(undefined, 'confirm'),
+          primaryText: t('UU0002'),
+          primaryHandler: resolve.bind(undefined, 'cancel')
+        })
+      })
+
+      return result === 'confirm'
+    })
+
+    await store.dispatch('material/getMaterialOptions')
+    await store.dispatch('material/getMaterial', { materialId: route.params.materialId })
 
     return {
       validations,

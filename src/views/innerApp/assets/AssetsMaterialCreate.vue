@@ -48,6 +48,7 @@ import { useI18n } from 'vue-i18n'
 import { v4 as uuidv4 } from 'uuid'
 import { SIDE_TYPE } from '@/utils/constants'
 import { computed } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
 
 export default {
   name: 'AssetsMaterialCreate',
@@ -129,6 +130,21 @@ export default {
         primaryText: t('UU0002')
       })
     }
+
+    onBeforeRouteLeave(async () => {
+      const result = await new Promise((resolve) => {
+        store.dispatch('helper/openModalConfirm', {
+          title: t('EE0045'),
+          content: t('EE0046'),
+          secondaryText: t('UU0001'),
+          secondaryHandler: resolve.bind(undefined, 'confirm'),
+          primaryText: t('UU0002'),
+          primaryHandler: resolve.bind(undefined, 'cancel')
+        })
+      })
+
+      return result === 'confirm'
+    })
 
     store.dispatch('material/resetMaterial')
     await store.dispatch('material/getMaterialOptions')
