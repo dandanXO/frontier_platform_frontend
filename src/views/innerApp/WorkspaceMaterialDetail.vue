@@ -28,23 +28,35 @@ export default {
     const store = useStore()
     const route = useRoute()
     const { parsePath, goToAssetMaterialEdit } = useNavigation()
+    const [workspaceNodeLocation, workspaceNodeId] = route.params.nodeKey.split('-')
 
-    await store.dispatch('material/getMaterial', { materialId: route.params.materialId })
+    const { breadcrumbList: tempBreadCrumbList } = await store.dispatch('workspace/getWorkspaceMaterial', { workspaceNodeId, workspaceNodeLocation })
 
     const material = computed(() => store.getters['material/material'])
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const breadcrumbList = computed(() => {
       const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
-      return [
+      const list = [
         {
-          name: t('DD0044'),
-          path: parsePath(`${prefix}/assets`)
-        },
-        {
-          name: material.value.materialNo,
-          path: parsePath(`${prefix}/assets/:materialId`)
+          name: t('FF0001'),
+          path: parsePath(`${prefix}/workspace`)
         }
       ]
+      for (let i = 0; i <= tempBreadCrumbList.length - 1; i++) {
+        const { name, workspaceNodeId } = tempBreadCrumbList[i]
+        if (i !== tempBreadCrumbList.length - 1) {
+          list.push({
+            name,
+            path: parsePath(`${prefix}/workspace?workspaceNodeId=${workspaceNodeId}`)
+          })
+        } else {
+          list.push({
+            name: material.value.materialNo,
+            path: parsePath(`${prefix}/workspace/:nodeKey`)
+          })
+        }
+      }
+      return list
     })
 
     return {
