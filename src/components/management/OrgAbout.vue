@@ -9,9 +9,13 @@ div(class="l:pt-16 pt-17.5")
             @click="openModalUploadLogo"
           )
             svg-icon(iconName="camera" size="20" class="text-black-500 hover:text-brand")
-        div(class="flex items-center pt-4")
+        div(class="flex items-center pt-4 cursor-pointer" @click="copyText(organization.orgNo)")
           p(class="text-caption text-primary") ID: {{organization.orgNo}}
-          svg-icon(iconName="content_copy" size="14" class="text-black-700")
+          tooltip(placement="bottom")
+            template(#trigger)
+              svg-icon(iconName="content_copy" size="14" class="text-black-700")
+            template(#content)
+              p(class="text-caption text-primary px-3 py-1") {{$t('BB0056')}}
         p(class="pt-2.5 text-caption text-black-500 cursor-pointer" @click="openModalDelete") {{$t('UU0013')}}
     div(class="grid gap-y-8.5 relative")
       p(class="absolute text-caption text-black-500 right-0 -top-7 transform -translate-y-full") *{{$t('BB0073')}}
@@ -67,6 +71,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import InputCallingCode from '@/components/InputCallingCode'
 import InputLabelColor from '@/components/InputLabelColor'
+import copyText from '@/utils/copy-text'
 
 export default {
   name: 'OrgAbout',
@@ -163,7 +168,8 @@ export default {
       isOrgNameExist,
       availableToUpdateOrg,
       organization,
-      logo
+      logo,
+      copyText
     }
   }
 }
