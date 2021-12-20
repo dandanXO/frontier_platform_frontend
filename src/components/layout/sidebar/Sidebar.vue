@@ -28,7 +28,11 @@ div(class="relative z-index:sidebar min-w-60 w-60 h-full bg-black-100 sidebar-sh
                 p(class="pl-7 text-body2 text-primary") {{$t(menu.title)}}
                 template(v-if="menu.id === 'assets'")
                   div(class="absolute right-3 top-1/2 transform -translate-y-1/2 flex justify-center items-center w-6 h-6 rounded bg-primary-thin" @click.stop="$router.push(menu.path + '/upload')")
-                    svg-icon(:iconName="menu.icon" size="20" class="text-black-800")
+                    tooltip(placement="bottom")
+                      template(#trigger)
+                        svg-icon(:iconName="menu.icon" size="20" class="text-black-800")
+                      template(#content)
+                        p(class="text-caption text-primary px-3 py-1") {{$t('RR0012')}}
       div(class="w-auto h-px bg-primary-thin mx-1.5 my-1.5")
   menu-org-user
 </template>
