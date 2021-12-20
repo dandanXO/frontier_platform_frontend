@@ -159,6 +159,8 @@ const routes = [
     component: () => import('@/views/innerApp/InnerAppLayout.vue'),
     beforeEnter: async (to, from, next) => {
       store.dispatch('code/getRoleList')
+      store.dispatch('code/getOrgCategoryList')
+      store.dispatch('code/getRoleLimitTable')
       store.dispatch('code/getCountryList')
       store.dispatch('code/getFilterOptions')
       await store.dispatch('user/getUser')
@@ -235,6 +237,7 @@ const routes = [
             beforeEnter: async (to, from, next) => {
               store.commit('helper/SET_routeLocation', 'group')
               await store.dispatch('group/getGroup', { groupId: to.params.groupId })
+              await store.dispatch('user/groupUser/getGroupUser')
               next()
             },
             children: reuseRoutes('Group')

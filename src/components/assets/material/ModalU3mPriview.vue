@@ -34,7 +34,7 @@ import useMaterialImage from '@/composables/useMaterialImage'
 
 export default {
   name: 'ModalU3mPriview',
-  async setup () {
+  setup () {
     const { t } = useI18n()
     const store = useStore()
     const { goToAssetsMaterialRecutImage } = useNavigation()
@@ -46,7 +46,7 @@ export default {
       isBackSideMaterial,
       isFaceSideU3mCropExist,
       isBackSideU3mCropExist
-    } = await useMaterialImage(material.value)
+    } = useMaterialImage(material.value)
 
     const handleRecutMaterial = () => {
       goToAssetsMaterialRecutImage()

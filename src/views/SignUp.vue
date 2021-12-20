@@ -28,7 +28,7 @@ div(class="w-screen h-screen flex justify-center items-center  bg-black-100")
             template(#signIn)
               router-link-extending(class="text-primary" to="/sign-in") {{$t('AA0001')}}
           p(v-else-if="errorMsg !== '' && !isEmailExist" class="text-warn") {{errorMsg}}
-        btn(size="lg" class="font-bold w-85" :disabled="!avaliableToSignUp" @click="signUp") {{$t('AA0016')}}
+        btn(size="lg" class="font-bold w-85" :disabled="!availableToSignUp" @click="signUp") {{$t('AA0016')}}
         div(class="flex items-center mt-1.5")
           div(class="w-3 h-3 border  flex justify-center items-center"
             :class="[agreeTermsAndPrivacy ? 'border-primary' : 'border-black-400']"
@@ -85,7 +85,7 @@ export default {
     const { nextAfterSignIn } = useNavigation()
 
     const isEmailValid = computed(() => (/.+@.+/ig).test(formData.email))
-    const avaliableToSignUp = computed(() => formData.firstName !== '' && formData.lastName !== '' && isEmailValid.value && isPasswordValid.value && agreeTermsAndPrivacy.value)
+    const availableToSignUp = computed(() => formData.firstName !== '' && formData.lastName !== '' && isEmailValid.value && isPasswordValid.value && agreeTermsAndPrivacy.value)
 
     const validateEmailFormat = async () => {
       try {
@@ -146,7 +146,7 @@ export default {
       errorMsg,
       validateEmailFormat,
       signUp,
-      avaliableToSignUp,
+      availableToSignUp,
       isSignUpSuccessfully,
       nextAfterSignIn,
       isEmailExist,

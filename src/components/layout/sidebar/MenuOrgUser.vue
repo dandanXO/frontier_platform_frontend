@@ -26,7 +26,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 export default {
-  name: 'MenuPersonal',
+  name: 'MenuOrgUser',
   setup () {
     const { t } = useI18n()
     const store = useStore()
@@ -48,12 +48,13 @@ export default {
           func: openModal.bind(undefined, 'modal-personal-profile')
         },
         {
-          name: t('RR0121')
+          name: t('RR0138'),
+          func: openModal.bind(undefined, 'modal-change-password')
         }
       ],
       [
         {
-          name: t('RR0122')
+          name: t('RR0137')
         },
         {
           name: t('RR0123')

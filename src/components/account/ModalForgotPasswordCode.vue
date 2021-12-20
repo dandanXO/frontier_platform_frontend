@@ -7,8 +7,8 @@ div(class="w-100 px-8")
     input-text(v-model:textValue="verifyCode" class="w-72" size="lg" :placeholder="$t('AA0076')" :customErrorMsg="errorMsg")
   div(class="h-25 flex justify-center items-center")
     div(class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" class="h-10" @click="sendForgotPasswordEmail") {{$t('AA0049')}}
-      btn(size="md" class="h-10" @click="verifyForgotPasswordCode") {{$t('AA0062')}}
+      btn(size="md" type="secondary" class="h-10" @click="sendForgotPasswordEmail") {{$t('UU0051')}}
+      btn(size="md" class="h-10" @click="verifyForgotPasswordCode") {{$t('UU0052')}}
 </template>
 
 <script>

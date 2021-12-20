@@ -10,7 +10,7 @@ div(class="pt-2.5 h-full flex flex-col relative")
   div(class="py-6 flex-grow")
     overlay-scrollbar-container(class="h-full")
       div(class="grid gap-y-2.5")
-        member-row(v-for="(member, index) in filteredmemberList" :member="member" class="relative" :class="`z-${100-index}`")
+        member-row(v-for="(member, index) in filteredMemberList" :member="member")
 </template>
 
 <script>
@@ -20,7 +20,7 @@ import { useStore } from 'vuex'
 import { ROLE_ID } from '@/utils/constants'
 
 export default {
-  name: 'MemeberList',
+  name: 'MemberList',
   components: {
     MemberRow
   },
@@ -43,10 +43,10 @@ export default {
         }))
         .concat(store.getters['group/memberList'])
     })
-    const filteredmemberList = computed(() => memberList.value.filter(member => member.displayName?.includes(searchInput.value) || member.email.includes(searchInput.value)))
+    const filteredMemberList = computed(() => memberList.value.filter(member => member.displayName?.includes(searchInput.value) || member.email.includes(searchInput.value)))
 
     return {
-      filteredmemberList,
+      filteredMemberList,
       searchInput
     }
   }

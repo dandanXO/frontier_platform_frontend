@@ -10,16 +10,11 @@
 
 <template lang="pug">
 div(class="w-full")
-  header(class="w-full h-14.5 pt-8 pl-10 pr-9 fixed inset-0")
-    div(class="flex justify-between")
+  header(class="w-full h-15.5 pt-7.5 pl-10 pr-9 fixed inset-0")
+    div(class="flex justify-between items-center")
       svg-icon(iconName="frontier-logo" size="special" class="w-34 h-6.5")
-      ul(class="grid grid-flow-col gap-x-5.5")
-        li
-          dropdown-locale
-        li(class="flex items-center")
-          router-link-extending(class="text-primary font-bold text-caption" to="/logout") {{$t('AA0013')}}
-          svg-icon(iconName="arrow-right" size="24" class="text-black-650")
-  div(class="w-full pt-14.5")
+      menu-personal
+  div(class="w-full pt-15.5")
     div(v-if="orgList.length === 0" class="w-full flex flex-col items-center pt-with-header-empty")
       h3(class="text-primary font-bold text-h3 mb-6") {{$t('AA0014')}}
       p(class="text-primary text-body1 line-height-1.6 w-160 text-center mb-7.5") {{$t('AA0015')}}
@@ -64,17 +59,17 @@ div(class="w-full")
 <script>
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import DropdownLocale from '@/components/DropdownLocale'
 import InputCallingCode from '@/components/InputCallingCode'
+import MenuPersonal from '@/components/lobby/MenuPersonal.vue'
 import { computed } from 'vue'
 
 export default {
   name: 'Lobby',
   components: {
-    DropdownLocale,
-    InputCallingCode
+    InputCallingCode,
+    MenuPersonal
   },
-  async setup () {
+  setup () {
     const store = useStore()
     const router = useRouter()
     const user = computed(() => store.getters['user/user'])
@@ -103,8 +98,6 @@ export default {
         closable
       })
     }
-
-    await store.dispatch('code/getOrgCategoryList')
 
     return {
       orgList,

@@ -1,5 +1,6 @@
 import search from './search'
 import { MODAL_TYPE } from '@/utils/constants'
+import { nextTick } from 'vue'
 
 const state = () => ({
   /**
@@ -9,13 +10,17 @@ const state = () => ({
    */
   routeLocation: 'org',
   modalPipeline: [],
-  message: ''
+  isShowModalError: false,
+  message: '',
+  isReloadInnerApp: true
 })
 
 const getters = {
   modalPipeline: (state) => state.modalPipeline,
   message: (state) => state.message,
-  routeLocation: (state) => state.routeLocation
+  routeLocation: (state) => state.routeLocation,
+  isShowModalError: state => state.isShowModalError,
+  isReloadInnerApp: state => state.isReloadInnerApp
 }
 
 const mutations = {
@@ -40,6 +45,12 @@ const mutations = {
   },
   SET_routeLocation (state, routeLocation) {
     state.routeLocation = routeLocation
+  },
+  SET_isShowModalError (state, bool) {
+    state.isShowModalError = bool
+  },
+  SET_isReloadInnerApp (state, bool) {
+    state.isReloadInnerApp = bool
   }
 }
 
@@ -80,11 +91,17 @@ const actions = {
   closeModalLoading ({ commit }) {
     commit('CLOSE_modalPipeline')
   },
-  openModalError ({ state, commit }) {
-    const isExist = state.modalPipeline.some(modal => modal.options.component === 'modal-error')
-    if (!isExist) {
-      commit('PUSH_modalPipeline', { type: MODAL_TYPE.MODAL, options: { component: 'modal-error' } })
-    }
+  openModalError ({ commit, dispatch }) {
+    commit('SET_isShowModalError', true)
+    dispatch('clearModalPipeline')
+  },
+  closeModalError ({ commit }) {
+    commit('SET_isShowModalError', false)
+  },
+  async reloadInnerApp ({ commit }) {
+    commit('SET_isReloadInnerApp', false)
+    await nextTick()
+    commit('SET_isReloadInnerApp', true)
   }
 }
 

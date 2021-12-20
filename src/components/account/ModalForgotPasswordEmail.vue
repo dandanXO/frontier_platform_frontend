@@ -30,7 +30,6 @@ export default {
     const errorMsg = ref('')
     const isEmailExist = ref(true)
 
-    const sendForgotPasswordEmail = () => store.dispatch('user/sendForgotPasswordEmail', { email: email.value })
     const sendEmail = async () => {
       try {
         if (!inputValidator.emailFormat(email.value)) {
@@ -41,7 +40,7 @@ export default {
 
         if (!isEmailExist.value) { return }
 
-        await sendForgotPasswordEmail({ email: email.value })
+        store.dispatch('user/sendForgotPasswordEmail', { email: email.value })
 
         store.dispatch('helper/openModal', {
           component: 'modal-forgot-password-code',

@@ -72,8 +72,9 @@ export default {
       })
     }
     const addMemberToGroup = async () => {
+      store.dispatch('helper/pushModalLoading')
       await store.dispatch('group/addMemberToGroup', { orgUserIdList: addedMemberList.value })
-      store.dispatch('helper/closeModal')
+      store.dispatch('helper/clearModalPipeline')
     }
 
     return {

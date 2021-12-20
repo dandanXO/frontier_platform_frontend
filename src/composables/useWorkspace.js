@@ -1,11 +1,10 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { inject, computed } from 'vue'
+import { computed } from 'vue'
 
 export default function useWorkspace () {
   const { t } = useI18n()
   const store = useStore()
-  const reloadRootRoute = inject('reloadRootRoute')
 
   const routeLocation = computed(() => store.getters['helper/routeLocation'])
 
@@ -73,7 +72,7 @@ export default function useWorkspace () {
                 })
               })
               store.dispatch('helper/closeModalLoading')
-              reloadRootRoute()
+              store.dispatch('helper/reloadInnerApp')
             }
           }
         }
@@ -112,7 +111,7 @@ export default function useWorkspace () {
                 targetWorkspaceNodeId
               })
               store.dispatch('helper/closeModalLoading')
-              reloadRootRoute()
+              store.dispatch('helper/reloadInnerApp')
             }
           }
         }
@@ -135,7 +134,7 @@ export default function useWorkspace () {
       store.dispatch('helper/openModalLoading')
       await store.dispatch('workspace/deleteNode', { workspaceNodeIdList })
       store.dispatch('helper/closeModalLoading')
-      reloadRootRoute()
+      store.dispatch('helper/reloadInnerApp')
     }
   }
 

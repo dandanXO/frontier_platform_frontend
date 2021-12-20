@@ -1,5 +1,12 @@
 <template lang="pug">
 div(class="relative")
+  slot(
+    name="croppedImage"
+    :imageSrc="image.src"
+    :options="options"
+    :croppedScaleRatio="croppedScaleRatio"
+    :rotationAngle="rotationAngle"
+  )
   div(class="absolute" :style="cropRectStyles")
     cropped-image(
       :imageSrc="image.src"
