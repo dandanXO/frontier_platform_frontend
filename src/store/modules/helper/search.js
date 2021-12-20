@@ -172,10 +172,10 @@ const mutations = {
     state.keyword = keyword
   },
   SET_tagList (state, tagList) {
-    Object.assign(state.tagList, tagList)
+    state.tagList = tagList
   },
   SET_selectedTagList (state, selectedTagList) {
-    Object.assign(state.selectedTagList, selectedTagList)
+    state.selectedTagList = selectedTagList
   },
   SET_pagination (state, pagination) {
     Object.assign(state.pagination, pagination)
