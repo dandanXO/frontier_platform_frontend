@@ -47,7 +47,7 @@ export default {
   setup (props) {
     const cropRect = ref(null)
     const image = reactive(props.image)
-    const { width, height, file } = image
+    const { width, height } = image
     const aspectRatio = width / height
     const resizeRatio = aspectRatio > 1 ? height / props.cropRectSize : width / props.cropRectSize
     const scaledWidth = aspectRatio > 1 ? width / resizeRatio : props.cropRectSize
@@ -87,7 +87,7 @@ export default {
           height: cropRect.value.clientHeight
         })
           .then(blob => {
-            resolve(new File([blob], file.name, { type: 'image/jpeg' }))
+            resolve(new File([blob], 'file.name', { type: 'image/jpeg' }))
           })
           .catch(error => reject(error))
       })

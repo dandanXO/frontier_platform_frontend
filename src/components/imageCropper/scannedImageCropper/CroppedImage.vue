@@ -1,13 +1,14 @@
 <template lang="pug">
-div(class="cropped-image " :style="rotateStyles")
-  div(:style="styles")
-    div(:style="scaleStyles")
-      img(
-        draggable="false"
-        :class="[{'opacity-30': isTransparent}]"
-        :src="imageSrc"
-        @mousedown.left.stop="moveStart"
-      )
+div(class="cropped-image" :style="rotateStyles")
+  div(:style="previewScaleStyles")
+    div(:style="styles")
+      div(:style="scaleStyles")
+        img(
+          draggable="false"
+          :class="{'opacity-30': isTransparent}"
+          :src="imageSrc"
+          @mousedown.left.stop="moveStart"
+        )
 </template>
 
 <script>
@@ -33,6 +34,14 @@ export default {
     options: {
       type: Object,
       required: true
+    },
+    movable: {
+      default: true,
+      type: Boolean
+    },
+    previewScaleRatio: {
+      default: 1,
+      type: Number
     }
   },
   setup (props, { emit }) {
@@ -72,10 +81,12 @@ export default {
     }
 
     const moveStart = (event) => {
-      Object.assign(initialPos, getMouseAbsPoint(event))
-      Object.assign(initImgPos, { x: options.x, y: options.y })
-      document.documentElement.addEventListener('mouseup', moveEnd)
-      window.addEventListener('mousemove', moving)
+      if (props.movable) {
+        Object.assign(initialPos, getMouseAbsPoint(event))
+        Object.assign(initImgPos, { x: options.x, y: options.y })
+        document.documentElement.addEventListener('mouseup', moveEnd)
+        window.addEventListener('mousemove', moving)
+      }
     }
 
     const moving = (event) => {
@@ -102,6 +113,13 @@ export default {
       }
     }
 
+    const previewScaleStyles = computed(() => {
+      return {
+        transform: `
+          scale(${props.previewScaleRatio}`
+      }
+    })
+
     const cos = (angle) => {
       const angleInRad = angle / 180 * Math.PI
       return Math.cos(angleInRad)
@@ -116,6 +134,7 @@ export default {
       styles,
       rotateStyles,
       scaleStyles,
+      previewScaleStyles,
       moveStart
     }
   }

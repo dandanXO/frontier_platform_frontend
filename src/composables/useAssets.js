@@ -2,7 +2,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation'
 import { computed } from 'vue'
-import { TARGET_LOCATION } from '@/utils/constants.js'
+import { TARGET_LOCATION, U3M_STATUS } from '@/utils/constants'
 
 export default function useAssets () {
   const { t } = useI18n()
@@ -115,14 +115,64 @@ export default function useAssets () {
   const create3DMaterial = {
     id: 'create3DMaterial',
     name: t('RR0058'),
-    func: () => { console.log('create3DMaterial') }
+    excName: t('RR0074'),
+    func: (v) => {
+      const status = v.u3m.status
+      store.commit('material/UPDATE_material', v)
+      switch (status) {
+        case U3M_STATUS.INITIAL:
+          if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
+            store.dispatch('helper/openModal', {
+              component: 'modal-u3m-priview',
+              header: t('EE0067')
+            })
+          } else {
+            localStorage.setItem('haveReadU3mInstruction', 'y')
+            store.dispatch('helper/openModal', {
+              component: 'modal-u3m-instruction'
+            })
+          }
+          break
+        case U3M_STATUS.UNQUALIFIED:
+          store.dispatch('helper/openModal', {
+            component: 'modal-u3m-instruction'
+          })
+          break
+        case U3M_STATUS.PROCESSING:
+          store.dispatch('helper/openModalConfirm', {
+            title: t('EE0071'),
+            content: t('EE0072'),
+            primaryText: t('UU0031')
+          })
+          break
+        case U3M_STATUS.FAIL:
+          store.dispatch('helper/openModalConfirm', {
+            title: t('EE0073'),
+            content: t('EE0074'),
+            primaryText: t('UU0031')
+          })
+          break
+        default:
+          store.dispatch('helper/openModal', {
+            component: 'modal-u3m-priview',
+            header: t('EE0067')
+          })
+      }
+    }
   }
 
   const downloadU3M = {
     id: 'downloadU3M',
     icon: 'u3m',
     name: t('RR0059'),
-    func: () => { console.log('downloadU3M') }
+    func: (v) => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-u3m-select-file-format',
+        properties: {
+          material: v
+        }
+      })
+    }
   }
 
   const exportExcel = {

@@ -45,36 +45,7 @@ div(class="w-full h-full flex justify-center")
                         div(class="p-2 text-primary text-caption font-bold")
                           div(class="pb-1") {{pantone.name}}
                           div {{pantone.majorColorName}}
-            //- U3M
-            div
-              h5(class="text-h5 font-bold text-primary pb-3") {{$t('RR0131')}}
-              template(v-if="material.u3m.status === U3M_STATUS.UNQUALIFIED")
-                p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0020')}}
-                  tooltip(placement="top" class="pl-1" :manual='true')
-                    template(#trigger)
-                      svg-icon(iconName="info_outline" class='cursor-pointer' size="14")
-                    template(#content)
-                      div(class="p-5 w-68.5")
-                        span(class="line-height-1.6") {{$t('EE0021')}}
-                        span(class="text-body2 text-assist-blue underline line-height-1.6") {{$t('UU0029')}}
-              template(v-else-if="material.u3m.status === U3M_STATUS.INITIAL")
-                p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}}: {{$t('EE0019')}}
-              template(v-if="material.u3m.status === U3M_STATUS.PROCESSING")
-                p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}}: {{$t('EE0022')}}
-              template(v-else-if="material.u3m.status === U3M_STATUS.COMPLETED")
-                p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}}: {{$t('EE0018')}} &nbsp
-                  span(class="text-assist-blue underline cursor-pointer") {{$t('UU0005')}}
-              template(v-else-if="material.u3m.status === U3M_STATUS.FAIL")
-                p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}}: {{$t('EE0024')}}
-                  tooltip(placement="top" class="pl-1")
-                    template(#trigger)
-                      svg-icon(iconName="info_outline" size="14")
-                    template(#content)
-                      div(class="p-5 w-71")
-                        i18n-t(keypath="EE0023" tag="p")
-                          template(#email)
-                            span(class="text-assist-blue") support@frontier.cool
-              btn(size="md" @click="openModalViewer") {{$t('UU0006')}}
+            assets-material-u3m-status
       div(class="pt-20 flex flex-col gap-y-10")
         div(class="w-full grid grid-flow-col gap-x-5 justify-start border-b border-black-400")
           div(v-for="tab in tabList" class="cursor-pointer" @click="currentTab = tab.id")
@@ -155,10 +126,11 @@ import { U3M_STATUS } from '@/utils/constants'
 import useMaterial from '@/composables/useMaterial'
 import { useRoute } from 'vue-router'
 import AttachmentItem from '@/components/assets/material/edit/AttachmentItem'
+import AssetsMaterialU3mStatus from '@/components/AssetsMaterialU3mStatus'
 
 export default {
   name: 'AssetsMaterialDetail',
-  components: { AttachmentItem },
+  components: { AttachmentItem, AssetsMaterialU3mStatus },
   async setup () {
     const { t } = useI18n()
     const store = useStore()
@@ -247,7 +219,6 @@ export default {
       materialInventoryInfo,
       materialPublicPriceInfo,
       materialPrivatePriceInfo,
-      U3M_STATUS,
       openModalViewer
     }
   }

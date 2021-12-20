@@ -1,5 +1,12 @@
 <template lang="pug">
-div(class="w-44 h-44 relative")
+div(class="relative")
+  slot(
+    name="croppedImage"
+    :imageSrc="image.src"
+    :options="options"
+    :croppedScaleRatio="croppedScaleRatio"
+    :rotationAngle="rotationAngle"
+  )
   div(class="absolute" :style="cropRectStyles")
     cropped-image(
       :imageSrc="image.src"
@@ -13,11 +20,7 @@ div(class="w-44 h-44 relative")
       div(class="h-2 flex items-center border-r-2 border-l-2 border-primary")
         div(class="h-0.5 bg-primary w-full")
       div(class="text-caption text-primary font-bold text-center") {{`${scaleSize} cm`}}
-  div(
-    ref="cropRect"
-    class="overflow-hidden bg-black-400 relative"
-    :style="cropRectStyles"
-  )
+  div(ref="cropRect" class="overflow-hidden bg-black-400 relative" :style="cropRectStyles")
     div(class="cursor-move" :style="cropRectStyles")
       cropped-image(
         :imageSrc="image.src"

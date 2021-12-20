@@ -1,11 +1,11 @@
 <template lang="pug">
-div(class="mb-5")
+div(v-if="innerImage !== null" class="mb-5")
   div(class="w-full flex justify-center items-center overflow-hidden")
-    div(class="relative w-70 h-70 bg-black-0 flex justify-center items-center")
+    div(class="relative w-full aspect-ratio bg-black-0 flex justify-center items-center")
       slot(
         name="imageCropArea"
-        :cropRectSize="176"
-        :image="image"
+        :cropRectSize="cropRectSize"
+        :image="innerImage"
         :rotationAngle="rotationAngle"
         :croppedScaleRatio="croppedScaleRatio"
         :scaleSize="scaleSize"
@@ -39,14 +39,14 @@ div(class="mb-5")
 
 <script>
 import ImageCropArea from '@/components/imageCropper/scannedImageCropper/ImageCropArea'
-import { ref, reactive, computed } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
 export default {
   name: 'LayoutEdit',
   components: { ImageCropArea },
   props: {
     image: {
-      type: Object
+      type: String
     },
     showScale: {
       type: Boolean,
@@ -54,18 +54,19 @@ export default {
     },
     scaleSizeDoubleSide: {
       type: Number
+    },
+    cropRectSize: {
+      type: Number,
+      default: 176
     }
   },
   setup (props) {
     const rotationAngle = ref(0)
     const innerScale = ref(4)
-    const image = reactive(props.image)
-    const { width } = image
-    const dpi = 300
-    const cmPerPixel = 2.54 / dpi
-    const width2Cm = width * cmPerPixel
+    const innerImage = ref(null)
 
-    const getMaxRatio = computed(() => Math.min(10, Math.floor(width2Cm * 10) / 10))
+    const width2Cm = computed(() => innerImage.value?.width * (2.54 / 300))
+    const getMaxRatio = computed(() => Math.min(10, Math.floor(width2Cm.value * 10) / 10))
 
     const scaleSize = computed({
       get: () => {
@@ -82,7 +83,7 @@ export default {
       }
     })
 
-    const croppedScaleRatio = computed(() => width2Cm / scaleSize.value)
+    const croppedScaleRatio = computed(() => width2Cm.value / scaleSize.value)
 
     const formattedRotateDeg = computed({
       get () {
@@ -97,6 +98,19 @@ export default {
         rotationAngle.value = val % 360
       }
     })
+
+    const getImage = (url) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image()
+
+        img.onload = () => {
+          const { width, height, src } = img
+          resolve({ width, height, src })
+        }
+
+        img.src = url
+      })
+    }
 
     const onBlur = () => {
       if (rotationAngle.value.toString().length === 0) {
@@ -120,6 +134,10 @@ export default {
       rotationAngle.value = parseFloat(rotationAngle.value.toFixed(2))
     }
 
+    onMounted(async () => {
+      innerImage.value = await getImage(props.image)
+    })
+
     return {
       croppedScaleRatio,
       rotationAngle,
@@ -128,7 +146,8 @@ export default {
       onBlur,
       scaleSize,
       formattedRotateDeg,
-      getMaxRatio
+      getMaxRatio,
+      innerImage
     }
   }
 }

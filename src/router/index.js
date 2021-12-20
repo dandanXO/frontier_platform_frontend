@@ -65,6 +65,19 @@ const reuseRoutes = (prefix) => ([
         }
       },
       {
+        path: 'recut-image',
+        name: `${prefix}AssetsMaterialRecutImage`,
+        component: () => import('@/views/innerApp/assets/AssetsMaterialRecutImage.vue'),
+        beforeEnter: (to, from, next) => {
+          const material = store.getters['material/material']
+          if (material.materialId !== null) {
+            next()
+          } else {
+            next(to.path.replace('/recut-image', ''))
+          }
+        }
+      },
+      {
         path: ':materialId',
         name: `${prefix}AssetsMaterialDetail`,
         component: () => import('@/views/innerApp/assets/AssetsMaterialDetail.vue')

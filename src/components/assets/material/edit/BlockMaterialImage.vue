@@ -10,8 +10,8 @@ div(class="pb-15 mb-5 border-b border-black-400")
         p(class="text-body1 text-primary font-bold") {{uploadMaterialEmail}}
         span(class="flex items-center gap-x-1 cursor-pointer")
           svg-icon(iconName="info_outline" size="20" class="text-primary")
-          span(class="text-body2 text-primary underline font-normal" @click="pushModalHowToScan") {{$t('UU0032')}}
-      div(class="pt-10.5 flex gap-x-15")
+          span(class="text-body2 text-primary underline font-normal" @click="openModalHowToScan") {{$t('UU0032')}}
+      div(class="pt-10.5 flex gap-x-10")
         div(class="w-75")
           div(class="w-full h-75 rounded overflow-hidden")
             template(v-if="!!imageList[currentDisplayIndex].src")
@@ -30,11 +30,11 @@ div(class="pb-15 mb-5 border-b border-black-400")
           p(
             v-if="canEditScannedImg"
             class="text-body2 text-assist-blue underline cursor-pointer pb-3"
-            @click="pushModalEditImage"
+            @click="openModalEditImage"
           ) {{$t('UU0011')}}
-          p(class="text-body2 text-assist-blue underline cursor-pointer" @click="pushModalChangeCover") {{$t('UU0012')}}
+          p(class="text-body2 text-assist-blue underline cursor-pointer" @click="openModalChangeCover") {{$t('UU0012')}}
         div(class="w-52.5")
-          h5(class="text-h5 font-bold text-primary pb-5") {{$t('RR0130')}}
+          h5(class="text-h5 font-bold text-primary pb-5") {{$t('RR0131')}}
           input-text-icon(
             v-model:textValue="pantoneName"
             :label="$t('EE0040')"
@@ -56,55 +56,24 @@ div(class="pb-15 mb-5 border-b border-black-400")
                       div {{pantone.majorColorName}}
               p(class="text-body2 text-primary") {{pantone.name}}
               svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removePantone(pantone.materialPantoneId)")
-        div
-          h5(class="text-h5 font-bold text-primary pb-3") {{$t('RR0131')}}
-          template(v-if="material.u3m.status === U3M_STATUS.UNQUALIFIED")
-            p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0020')}}
-              tooltip(placement="top" class="pl-1" :manual='true')
-                template(#trigger)
-                  svg-icon(iconName="info_outline" class='cursor-pointer' size="14")
-                template(#content)
-                  div(class="p-5 w-68.5")
-                    span(class="line-height-1.6") {{$t('EE0021')}}
-                    span(class="text-body2 text-assist-blue underline line-height-1.6") {{$t('UU0029')}}
-            btn(size="md" disabled) {{$t('UU0020')}}
-          template(v-if="material.u3m.status === U3M_STATUS.INITIAL")
-            p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0019')}}
-            btn(size="md") {{$t('UU0020')}}
-          template(v-if="material.u3m.status === U3M_STATUS.PROCESSING")
-            p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0022')}}
-            btn(size="md" disabled) {{$t('UU0020')}}
-          template(v-if="material.u3m.status === U3M_STATUS.COMPLETED")
-            p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0018')}} &nbsp
-              span(class="text-assist-blue underline cursor-pointer") {{$t('UU0005')}}
-            btn(size="md") {{$t('UU0006')}}
-          template(v-if="material.u3m.status === U3M_STATUS.FAIL")
-            p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0024')}}
-              tooltip(placement="top" class="pl-1")
-                template(#trigger)
-                  svg-icon(iconName="info_outline" size="14")
-                template(#content)
-                  div(class="p-5 w-71")
-                    i18n-t(keypath="EE0023" tag="p")
-                      template(#email)
-                        span(class="text-assist-blue") support@frontier.cool
-            btn(size="md") {{$t('UU0030')}}
+        assets-material-u3m-status
 </template>
 
 <script>
 import { useStore } from 'vuex'
 import { computed, ref, watch } from 'vue'
 import useMaterial from '@/composables/useMaterial'
-import { SIDE_TYPE, U3M_STATUS } from '@/utils/constants'
+import { SIDE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
+import AssetsMaterialU3mStatus from '@/components/AssetsMaterialU3mStatus'
 
 export default {
   name: 'BlockMaterialImage',
+  components: { AssetsMaterialU3mStatus },
   setup () {
     const { t } = useI18n()
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
-
     const { statusIconName, imageList, defaultCoverImgIndex } = useMaterial(material.value)
 
     const uploadMaterialEmail = computed(() => {
@@ -135,20 +104,20 @@ export default {
       store.dispatch('material/removePantone', { materialPantoneId })
     }
 
-    const pushModalHowToScan = () => {
+    const openModalHowToScan = () => {
       store.dispatch('helper/pushModal', {
         header: t('DD0043'),
         component: 'modal-how-to-scan'
       })
     }
 
-    const pushModalChangeCover = () => {
+    const openModalChangeCover = () => {
       store.dispatch('helper/pushModal', {
         component: 'modal-change-cover'
       })
     }
 
-    const pushModalEditImage = async () => {
+    const openModalEditImage = async () => {
       store.dispatch('helper/pushModal', {
         header: t('EE0050'),
         component: 'modal-edit-scanned-image',
@@ -196,10 +165,9 @@ export default {
       addPantone,
       pantoneErrorMsg,
       removePantone,
-      U3M_STATUS,
-      pushModalHowToScan,
-      pushModalChangeCover,
-      pushModalEditImage,
+      openModalHowToScan,
+      openModalChangeCover,
+      openModalEditImage,
       statusIconName,
       canEditScannedImg
     }
