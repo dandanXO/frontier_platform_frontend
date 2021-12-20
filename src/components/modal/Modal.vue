@@ -52,8 +52,11 @@ export default {
     ModalU3mSelectFileFormat: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mSelectFileFormat')),
     ModalPublish: defineAsyncComponent(() => import('@/components/workspace/ModalPublish.vue')),
     ModalPublicLibraryCollectionDetail: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryCollectionDetail.vue')),
-    ModalPersonalProfile: defineAsyncComponent(() => import('@/components/account/ModalPersonalProfile.vue')),
-    ModalChangePassword: defineAsyncComponent(() => import('@/components/account/ModalChangePassword.vue'))
+    ModalOrgUserProfile: defineAsyncComponent(() => import('@/components/account/ModalOrgUserProfile.vue')),
+    ModalChangePassword: defineAsyncComponent(() => import('@/components/account/ModalChangePassword.vue')),
+    ModalPersonalProfile: defineAsyncComponent(() => import('@/components/lobby/ModalPersonalProfile.vue')),
+    ModalPrivacyPolicy: defineAsyncComponent(() => import('@/components/ModalPrivacyPolicy.vue')),
+    ModalTermsOfUse: defineAsyncComponent(() => import('@/components/ModalTermsOfUse.vue'))
   },
   props: {
     component: {

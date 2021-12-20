@@ -45,7 +45,7 @@ export default {
       [
         {
           name: t('RR0120'),
-          func: openModal.bind(undefined, 'modal-personal-profile')
+          func: openModal.bind(undefined, 'modal-org-user-profile')
         },
         {
           name: t('RR0138'),
@@ -65,7 +65,8 @@ export default {
       ],
       [
         {
-          name: t('RR0125')
+          name: t('RR0125'),
+          func: openModal.bind(undefined, 'modal-privacy-policy')
         }
       ],
       [

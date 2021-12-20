@@ -2,7 +2,7 @@
 div(class="relative")
   slot(name="label")
     div(v-if="label !== ''" class="flex pb-2 text-body2 font-bold")
-      i(v-if="required" class="text-warn") *
+      i(v-if="required" class="text-warn pr-0.5") *
       p(class="text-primary") {{label}}
   slot
   slot(name="hint")

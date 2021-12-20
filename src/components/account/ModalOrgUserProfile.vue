@@ -34,7 +34,7 @@ import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 
 export default {
-  name: 'ModalPersonalProfile',
+  name: 'ModalOrgUserProfile',
   setup () {
     const store = useStore()
     const orgUser = computed(() => store.getters['user/orgUser/orgUser'])
