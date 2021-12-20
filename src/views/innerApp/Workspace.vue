@@ -37,7 +37,7 @@ div(class="w-full h-full")
               :optionList="optionNodeCollection"
               :isShowLocation="inSearch"
               @click="goTo(node.key)"
-              @click:option="$event.func(node.key)"
+              @click:option="$event.func(node.data)"
             )
               template(#cover-overlay v-if="isFirstLayer")
                 svg-icon(
@@ -55,7 +55,7 @@ div(class="w-full h-full")
               :displayName="node.data.materialNo"
               :optionList="optionNodeMaterial"
               :isShowLocation="inSearch"
-              @click:option="$event.func(node.key)"
+              @click:option="$event.func(node.data)"
               @click.stop="goToWorkspaceMaterialDetail(node.key)"
             )
               template(#cover-overlay v-if="isFirstLayer")

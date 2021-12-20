@@ -1,10 +1,16 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
+import { SOURCE_ASSET_LOCATION } from '@/utils/constants.js'
+import useNavigation from '@/composables/useNavigation.js'
 
 export default function useWorkspace () {
   const { t } = useI18n()
   const store = useStore()
+  const {
+    goToOrgAssetMaterialEdit,
+    goToGroupAssetMaterialEdit
+  } = useNavigation()
 
   const routeLocation = computed(() => store.getters['helper/routeLocation'])
 
@@ -20,8 +26,8 @@ export default function useWorkspace () {
   const editCollection = {
     id: FUNCTION_ID.EDIT_COLLECTION,
     name: t('RR0054'),
-    func: (workspaceNodeKey) => {
-      const workspaceNodeId = workspaceNodeKey.split('-')[1]
+    func: (node) => {
+      const workspaceNodeId = node.workspaceNodeId
       store.dispatch('helper/openModal', {
         component: 'modal-create-or-edit-collection',
         properties: {
@@ -35,16 +41,21 @@ export default function useWorkspace () {
   const editMaterial = {
     id: FUNCTION_ID.EDIT_MATERIAL,
     name: t('RR0054'),
-    func: () => {
-      console.log('here')
+    func: (node) => {
+      const { sourceAssetLocation } = node
+      if (sourceAssetLocation === SOURCE_ASSET_LOCATION.ORG) {
+        goToOrgAssetMaterialEdit(node.materialId)
+      } else {
+        goToGroupAssetMaterialEdit(node.materialId)
+      }
     }
   }
 
   const duplicateNode = {
     id: FUNCTION_ID.DUPLICATE_NODE,
     name: t('RR0076'),
-    func: (workspaceNodeKey) => {
-      const workspaceNodeId = workspaceNodeKey.split('-')[1]
+    func: (node) => {
+      const workspaceNodeId = node.workspaceNodeId
       store.dispatch('helper/openModal', {
         component: 'modal-workspace-node-list',
         properties: {
@@ -83,8 +94,8 @@ export default function useWorkspace () {
   const moveNode = {
     id: FUNCTION_ID.MOVE_NODE,
     name: t('RR0077'),
-    func: (workspaceNodeKey) => {
-      const workspaceNodeId = workspaceNodeKey.split('-')[1]
+    func: (node) => {
+      const workspaceNodeId = node.workspaceNodeId
       store.dispatch('helper/openModal', {
         component: 'modal-workspace-node-list',
         properties: {
@@ -141,8 +152,8 @@ export default function useWorkspace () {
   const deleteCollection = {
     id: FUNCTION_ID.DELETE_NODE,
     name: t('RR0063'),
-    func: (workspaceNodeKey) => {
-      const workspaceNodeId = workspaceNodeKey.split('-')[1]
+    func: (node) => {
+      const workspaceNodeId = node.workspaceNodeId
       deleteNodeList([workspaceNodeId], t('FF0044'), t('FF0045'))
     }
   }
@@ -150,8 +161,8 @@ export default function useWorkspace () {
   const deleteMaterial = {
     id: FUNCTION_ID.DELETE_NODE,
     name: t('RR0063'),
-    func: (workspaceNodeKey) => {
-      const workspaceNodeId = workspaceNodeKey.split('-')[1]
+    func: (node) => {
+      const workspaceNodeId = node.workspaceNodeId
       deleteNodeList([workspaceNodeId], t('FF0046'), t('FF0045'))
     }
   }
