@@ -14,6 +14,10 @@ export default {
       method: 'POST',
       data: { orgId, workspaceNodeId, search: null, filter: null, pagination: { perPageCount: 40, targetPage: 1 } }
     }),
+    getWorkspaceMaterial: ({ orgId, workspaceNodeId }) => axios('/org/workspace/get-material', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId }
+    }),
     createCollection: ({ orgId, workspaceNodeId, collectionName, trendBoard = null, description = null }) => {
       const formData = new FormData()
       formData.append('orgId', orgId)
@@ -75,6 +79,10 @@ export default {
     getCollection: ({ groupId, workspaceNodeId }) => axios('/org/group/workspace/get', {
       method: 'POST',
       data: { groupId, workspaceNodeId, search: null, filter: null, pagination: { perPageCount: 40, targetPage: 1 } }
+    }),
+    getWorkspaceMaterial: ({ groupId, workspaceNodeId }) => axios('/org/group/workspace/get-material', {
+      method: 'POST',
+      data: { groupId, workspaceNodeId }
     }),
     createCollection: ({ groupId, workspaceNodeId, collectionName, trendBoard = null, description = null }) => {
       const formData = new FormData()

@@ -56,7 +56,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
                       div {{pantone.majorColorName}}
               p(class="text-body2 text-primary") {{pantone.name}}
               svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removePantone(pantone.materialPantoneId)")
-        assets-material-u3m-status
+        block-material-u3m-status
 </template>
 
 <script>
@@ -65,11 +65,11 @@ import { computed, ref, watch } from 'vue'
 import useMaterial from '@/composables/useMaterial'
 import { SIDE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import AssetsMaterialU3mStatus from '@/components/AssetsMaterialU3mStatus'
+import BlockMaterialU3mStatus from '@/components/layout/materialDetail/BlockMaterialU3mStatus.vue'
 
 export default {
   name: 'BlockMaterialImage',
-  components: { AssetsMaterialU3mStatus },
+  components: { BlockMaterialU3mStatus },
   setup () {
     const { t } = useI18n()
     const store = useStore()

@@ -55,6 +55,13 @@ export default {
         : await workspaceApi.group.getCollection({ groupId: rootGetters['group/groupId'], workspaceNodeId })
       return data.result.workspaceCollection
     },
+    async getWorkspaceMaterial ({ rootGetters, dispatch }, { workspaceNodeId }) {
+      const { data } = rootGetters['helper/routeLocation'] === 'org'
+        ? await workspaceApi.org.getWorkspaceMaterial({ orgId: rootGetters['organization/orgId'], workspaceNodeId })
+        : await workspaceApi.group.getWorkspaceMaterial({ groupId: rootGetters['group/groupId'], workspaceNodeId })
+      dispatch('handleResponseData', { data }, { root: true })
+      return data.result
+    },
     async createCollectionForModal (_, { id, workspaceNodeLocation, workspaceNodeId, collectionName }) {
       if (Number(workspaceNodeLocation) === NODE_LOCATION.ORG) {
         await workspaceApi.org.createCollection({ orgId: id, workspaceNodeId, collectionName })

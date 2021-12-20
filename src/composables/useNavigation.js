@@ -79,8 +79,12 @@ export default function useNavigation () {
     router.push(parsePath(`${prefixPath.value}/assets/recut-image`))
   }
 
+  const goToWorkspaceMaterialDetail = (nodeKey) => {
+    router.push(parsePath(`${prefixPath.value}/workspace/${nodeKey}`))
+  }
+
   const goToPublicLibraryMaterialDetail = (nodeKey) => {
-    router.push(parsePath(`${prefixPath.value}/public-library/${nodeKey}`))
+    router.push(parsePath(`/:orgNo/public-library/${nodeKey}`))
   }
 
   return {
@@ -94,6 +98,7 @@ export default function useNavigation () {
     goToAssetsMaterialMerge,
     goToAssetsMaterialMergePreview,
     goToAssetsMaterialRecutImage,
+    goToWorkspaceMaterialDetail,
     goToPublicLibraryMaterialDetail
   }
 }

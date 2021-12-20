@@ -85,7 +85,8 @@ const reuseRoutes = (prefix) => ([
       {
         path: ':materialId/edit',
         name: `${prefix}AssetsMaterialEdit`,
-        component: () => import('@/views/innerApp/assets/AssetsMaterialEdit.vue')
+        component: () => import('@/views/innerApp/assets/AssetsMaterialEdit.vue'),
+        props: true
       }
     ]
   },
@@ -93,6 +94,11 @@ const reuseRoutes = (prefix) => ([
     path: 'workspace',
     name: `${prefix}Workspace`,
     component: () => import('@/views/innerApp/Workspace.vue')
+  },
+  {
+    path: 'workspace/:nodeKey',
+    name: `${prefix}WorkspaceMaterialDetail`,
+    component: () => import('@/views/innerApp/WorkspaceMaterialDetail.vue')
   },
   {
     path: 'share-to-me',
