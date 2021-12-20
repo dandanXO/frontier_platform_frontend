@@ -63,6 +63,13 @@ export default function useNavigation () {
     router.push(parsePath(`${prefixPath.value}/assets/${material.materialId}/edit`))
   }
 
+  const goToOrgAssetMaterialEdit = (materialId) => {
+    router.push(parsePath(`/:orgNo/assets/${materialId}/edit`))
+  }
+  const goToGroupAssetMaterialEdit = (materialId) => {
+    router.push(parsePath(`/:orgNo/:groupId/assets/${materialId}/edit`))
+  }
+
   const goToAssetsMaterialCreate = () => {
     router.push(parsePath(`${prefixPath.value}/assets/upload/manual`))
   }
@@ -99,6 +106,8 @@ export default function useNavigation () {
     goToAssetsMaterialMergePreview,
     goToAssetsMaterialRecutImage,
     goToWorkspaceMaterialDetail,
-    goToPublicLibraryMaterialDetail
+    goToPublicLibraryMaterialDetail,
+    goToOrgAssetMaterialEdit,
+    goToGroupAssetMaterialEdit
   }
 }

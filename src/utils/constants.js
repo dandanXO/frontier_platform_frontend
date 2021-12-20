@@ -171,6 +171,11 @@ export const NODE_LOCATION = {
   GROUP: 2
 }
 
+export const SOURCE_ASSET_LOCATION = {
+  ORG: 1,
+  GROUP: 2
+}
+
 export const NODE_TYPE = {
   MATERIAL: 1,
   COLLECTION: 2
