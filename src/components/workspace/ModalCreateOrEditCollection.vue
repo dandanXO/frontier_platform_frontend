@@ -28,7 +28,7 @@ div(class="w-101 px-8")
     v-model:textValue="formData.description"
     :label="$t('FF0012')"
     height="120"
-    :customErrorMsg="formData.description.length > 1000 ? $t('WW0073') : ''"
+    :customErrorMsg="formData.description.length > DESCRIPTION_LIMIT ? $t('WW0073') : ''"
   )
   btn-group(
     class="h-25"
@@ -75,8 +75,9 @@ export default {
       trendBoard: null,
       description: ''
     })
+    const DESCRIPTION_LIMIT = 1000
 
-    const actionBtnDisabled = computed(() => !!errorMsg.value || !formData.collectionName)
+    const actionBtnDisabled = computed(() => !!errorMsg.value || !formData.collectionName || formData.description.length > DESCRIPTION_LIMIT)
 
     fileOperator.on('finish', (file) => {
       formData.trendBoard = file
@@ -173,7 +174,8 @@ export default {
       actionBtnDisabled,
       errorMsg,
       MODE,
-      removeTrendBoard
+      removeTrendBoard,
+      DESCRIPTION_LIMIT
     }
   }
 }
