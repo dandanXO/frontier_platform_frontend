@@ -5,7 +5,7 @@ div(class="w-screen h-screen flex justify-center items-center  bg-black-100")
   div(class="flex gap-x-23 items-start")
     div(class="w-97.5 h-126 bg-contain" :style="{ 'background-image': `url(${require('@/assets/images/cover.png')})`}")
     div(class="w-105")
-      div(class="w-full h-127.5 rounded-lg card-shadow px-10 pt-10 pb-9.5 flex flex-col")
+      div(class="w-full h-133.5 rounded-lg card-shadow px-10 pt-10 pb-9.5 flex flex-col")
         p(class="text-primary text-h6 font-bold text-center pb-5.5 border-b border-black-400") {{$t('AA0016')}}
         button(id="google-sign-up" class="w-85 h-11 rounded border text-body2 font-bold text-black-800 mt-5 mb-3 flex justify-center items-center")
           div(class="grid grid-flow-col gap-x-2.5 items-center")
@@ -24,9 +24,9 @@ div(class="w-screen h-screen flex justify-center items-center  bg-black-100")
             input-password(v-model:textValue="formData.password" :placeholder="$t('AA0003')+'*'" class="col-span-2")
           password-validator(v-model:isValid="isPasswordValid" :password="formData.password" class="mt-1 mb-2")
         div(class="flex-grow text-caption pb-1")
-          i18n-t(v-if="isEmailExist" keypath="WW0066" tag="p" class="text-warn")
+          i18n-t(v-if="isEmailExist" keypath="WW0066" tag="p" class="text-warn text-caption")
             template(#signIn)
-              router-link-extending(class="text-primary" to="/sign-in") {{$t('AA0001')}}
+              router-link-extending(class="text-assist-blue pl-1 text-caption" to="/sign-in") {{$t('AA0001')}}
           p(v-else-if="errorMsg !== '' && !isEmailExist" class="text-warn") {{errorMsg}}
         btn(size="lg" class="font-bold w-85" :disabled="!availableToSignUp" @click="signUp") {{$t('AA0016')}}
         div(class="flex items-center mt-1.5")
@@ -54,7 +54,7 @@ div(v-if="isSignUpSuccessfully" class="fixed inset-0 w-full h-full bg-black-100 
 
 <script>
 import { reactive, ref } from '@vue/reactivity'
-import { computed, onMounted, toRaw } from '@vue/runtime-core'
+import { computed, onMounted, toRaw, watch } from '@vue/runtime-core'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import googleSignInApi from '@/utils/google-sign-in-api'
@@ -109,8 +109,9 @@ export default {
         /**
          * @todo 透過 ip 判斷 locale 預設值
          */
-        await store.dispatch('user/generalSignUp', Object.assign({ locale: 'en-US' }, toRaw(formData)))
-        isSignUpSuccessfully.value = true
+        isEmailExist.value = await store.dispatch('user/generalSignUp', Object.assign({ locale: 'en-US' }, toRaw(formData)))
+
+        !isEmailExist.value && (isSignUpSuccessfully.value = true)
       } catch (error) {
         errorMsg.value = error
       }
@@ -121,8 +122,9 @@ export default {
         /**
          * @todo 透過 ip 判斷 locale 預設值
          */
-        await store.dispatch('user/googleSignUp', { idToken: googleUser.getAuthResponse().id_token, locale: 'en-US' })
-        nextAfterSignIn()
+        isEmailExist.value = await store.dispatch('user/googleSignUp', { idToken: googleUser.getAuthResponse().id_token, locale: 'en-US' })
+
+        !isEmailExist.value && nextAfterSignIn()
       } catch (error) {
         errorMsg.value = error
       }
@@ -130,6 +132,13 @@ export default {
 
     const openModalTermsOfUse = () => store.dispatch('helper/openModal', { component: 'modal-terms-of-use' })
     const openModalPrivacyPolicy = () => store.dispatch('helper/openModal', { component: 'modal-privacy-policy' })
+
+    watch(
+      () => formData.email,
+      () => {
+        isEmailExist.value = false
+      }
+    )
 
     onMounted(async () => {
       await googleSignInApi.init()
