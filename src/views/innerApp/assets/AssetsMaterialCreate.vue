@@ -47,7 +47,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { v4 as uuidv4 } from 'uuid'
 import { SIDE_TYPE } from '@/utils/constants'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 
 export default {
@@ -86,6 +86,8 @@ export default {
       }
     ]
 
+    const isConfirmedToLeave = ref(false)
+
     const material = computed(() => store.getters['material/material'])
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const breadcrumbList = computed(() => {
@@ -114,6 +116,7 @@ export default {
       store.dispatch('helper/pushModalLoading')
       await store.dispatch('material/createMaterial', { tempMaterialId })
       store.dispatch('helper/closeModalLoading')
+      isConfirmedToLeave.value = true
       goToAssets()
       store.dispatch('helper/pushModal', {
         header: t('DD0029'),
@@ -126,12 +129,18 @@ export default {
         title: t('DD0033'),
         content: t('DD0034'),
         secondaryText: t('UU0001'),
-        secondaryHandler: goToMaterialUpload,
+        secondaryHandler: () => {
+          isConfirmedToLeave.value = true
+          goToMaterialUpload()
+        },
         primaryText: t('UU0002')
       })
     }
 
     onBeforeRouteLeave(async () => {
+      if (isConfirmedToLeave.value) {
+        return true
+      }
       const result = await new Promise((resolve) => {
         store.dispatch('helper/openModalConfirm', {
           title: t('EE0045'),
