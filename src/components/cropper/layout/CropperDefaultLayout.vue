@@ -2,19 +2,11 @@
 div(class="mb-5")
   div(class="w-full flex justify-center items-center overflow-hidden")
     div(class="relative w-full aspect-ratio bg-black-0 flex justify-center items-center")
-      image-crop-area(
-        :ref="refName"
-        :config="config"
-        :scaleControl="scaleControl"
-        :cropRectSize="cropRectSize"
-        :scaleSize="scaleSize"
-        @update:options="handleOptionsChange"
-      )
-        template(#ruler)
-          div(class="mt-1 absolute w-full")
-            div(class="h-2 flex items-center border-r-2 border-l-2 border-primary")
-              div(class="h-0.5 bg-primary w-full")
-            div(class="text-caption text-primary font-bold text-center") {{`${scaleSize} cm`}}
+      slot
+        div(class="mt-1 absolute w-full")
+          div(class="h-2 flex items-center border-r-2 border-l-2 border-primary")
+            div(class="h-0.5 bg-primary w-full")
+          div(class="text-caption text-primary font-bold text-center") {{`${scaleSize} cm`}}
   input-range(
     v-if="showScale"
     v-model:range="scaleSize"
@@ -50,20 +42,9 @@ export default {
   name: 'CropperDefaultLayout',
   components: { ImageCropArea },
   props: {
-    refName: {
-      type: String
-    },
     config: {
       type: Object,
       required: true
-    },
-    scaleControl: {
-      type: Boolean,
-      default: false
-    },
-    cropRectSize: {
-      type: Number,
-      default: 0
     },
     showScale: {
       type: Boolean,
@@ -77,7 +58,7 @@ export default {
      * scaleRatio 是實際放大倍率，最後要在 CroppedImage 組成 transform: scale(scaleRatio)
      */
     const scaleSize = ref(4)
-    const width2Cm = computed(() => props.config.image.width * (2.54 / 300))
+    const width2Cm = computed(() => props.config.image?.width * (2.54 / 300))
 
     emit('update:scaleRatio', width2Cm.value / scaleSize.value)
 
@@ -128,10 +109,6 @@ export default {
       innerRotateDeg.value = parseFloat(innerRotateDeg.value.toFixed(2))
     }
 
-    const handleOptionsChange = (v) => {
-      emit('update:options', v)
-    }
-
     watch(
       () => scaleSize.value,
       () => {
@@ -144,8 +121,7 @@ export default {
       plus,
       minus,
       onBlur,
-      formattedRotateDeg,
-      handleOptionsChange
+      formattedRotateDeg
     }
   }
 }

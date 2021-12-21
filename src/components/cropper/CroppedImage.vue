@@ -130,13 +130,11 @@ export default {
      * Move Handler: moveStart、moving、moveEnd
      */
     const moveStart = (event) => {
-      if (props.movable) {
-        console.log('moveStart')
-        Object.assign(initialPos, getMouseAbsPoint(event))
-        Object.assign(initImgPos, { x: options.x, y: options.y })
-        document.documentElement.addEventListener('mouseup', moveEnd)
-        window.addEventListener('mousemove', moving)
-      }
+      if (!props.movable) return
+      Object.assign(initialPos, getMouseAbsPoint(event))
+      Object.assign(initImgPos, { x: options.x, y: options.y })
+      document.documentElement.addEventListener('mouseup', moveEnd)
+      window.addEventListener('mousemove', moving)
     }
 
     const moving = (event) => {

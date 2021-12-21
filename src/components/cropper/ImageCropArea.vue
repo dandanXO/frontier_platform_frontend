@@ -2,7 +2,7 @@
 div(class="w-50 h-50 relative")
   div(class="absolute" :style="cropRectStyle")
     cropped-image(:config="config" isTransparent @update="updateOptions")
-    slot(name="ruler")
+    slot
   div(ref="cropRect" class="overflow-hidden bg-black-0" :style="cropRectStyle")
     div(class="cursor-move" :style="cropRectStyle")
       cropped-image(:config="config" @update="updateOptions")
@@ -51,6 +51,8 @@ export default {
           const controllers = cropRect.value.querySelectorAll('.controller-point')
           controllers.forEach(node => node.remove())
         }
+
+        console.log(11111, cropRect.value)
 
         domtoimage.toBlob(cropRect.value, {
           width: cropRect.value.clientWidth,
