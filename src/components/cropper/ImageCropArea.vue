@@ -45,7 +45,7 @@ export default {
       emit('update:options', option)
     }
 
-    const cropImage = () => {
+    const cropImage = (file) => {
       return new Promise((resolve, reject) => {
         if (props.scaleControl) {
           const controllers = cropRect.value.querySelectorAll('.controller-point')
@@ -57,7 +57,8 @@ export default {
           height: cropRect.value.clientHeight
         })
           .then(blob => {
-            resolve(new File([blob], 'file.name', { type: 'image/jpeg' }))
+            const fileName = file?.name.length > 0 ? file.name : 'file name'
+            resolve(new File([blob], fileName, { type: 'image/jpeg' }))
           })
           .catch(error => reject(error))
       })

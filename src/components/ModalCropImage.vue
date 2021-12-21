@@ -63,7 +63,7 @@ export default {
 
     const confirm = async () => {
       isCropping.value = true
-      const croppedImage = await imageCropper.value?.cropImage()
+      const croppedImage = await imageCropper.value?.cropImage(props.image?.file)
       await props.afterCropHandler(croppedImage, props.image?.file)
       closeModal()
     }
