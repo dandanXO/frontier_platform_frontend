@@ -63,6 +63,13 @@ export default function useNavigation () {
     router.push(parsePath(`${prefixPath.value}/assets/${material.materialId}/edit`))
   }
 
+  const goToOrgAssetMaterialEdit = (materialId) => {
+    router.push(parsePath(`/:orgNo/assets/${materialId}/edit`))
+  }
+  const goToGroupAssetMaterialEdit = (materialId) => {
+    router.push(parsePath(`/:orgNo/:groupId/assets/${materialId}/edit`))
+  }
+
   const goToAssetsMaterialCreate = () => {
     router.push(parsePath(`${prefixPath.value}/assets/upload/manual`))
   }
@@ -79,8 +86,12 @@ export default function useNavigation () {
     router.push(parsePath(`${prefixPath.value}/assets/recut-image`))
   }
 
+  const goToWorkspaceMaterialDetail = (nodeKey) => {
+    router.push(parsePath(`${prefixPath.value}/workspace/${nodeKey}`))
+  }
+
   const goToPublicLibraryMaterialDetail = (nodeKey) => {
-    router.push(parsePath(`${prefixPath.value}/public-library/${nodeKey}`))
+    router.push(parsePath(`/:orgNo/public-library/${nodeKey}`))
   }
 
   return {
@@ -94,6 +105,9 @@ export default function useNavigation () {
     goToAssetsMaterialMerge,
     goToAssetsMaterialMergePreview,
     goToAssetsMaterialRecutImage,
-    goToPublicLibraryMaterialDetail
+    goToWorkspaceMaterialDetail,
+    goToPublicLibraryMaterialDetail,
+    goToOrgAssetMaterialEdit,
+    goToGroupAssetMaterialEdit
   }
 }

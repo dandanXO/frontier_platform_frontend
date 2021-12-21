@@ -17,7 +17,7 @@ div(class="w-full h-full")
           span )
     template(#header-right)
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
-      btn(size="sm" prependIcon="add" @click="$store.dispatch('helper/reloadInnerApp')") {{$t('UU0055')}}
+      btn(size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{$t('UU0055')}}
     template(v-if="!isFirstLayer" #sub-header)
       p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('FF0002')}}: {{unixToDate(workspaceCollection.createDate)}}
     template(#default="{ inSearch }")
@@ -37,7 +37,7 @@ div(class="w-full h-full")
               :optionList="optionNodeCollection"
               :isShowLocation="inSearch"
               @click="goTo(node.key)"
-              @click:option="$event.func(node.key)"
+              @click:option="$event.func(node.data)"
             )
               template(#cover-overlay v-if="isFirstLayer")
                 svg-icon(
@@ -55,7 +55,8 @@ div(class="w-full h-full")
               :displayName="node.data.materialNo"
               :optionList="optionNodeMaterial"
               :isShowLocation="inSearch"
-              @click:option="$event.func(node.key)"
+              @click:option="$event.func(node.data)"
+              @click.stop="goToWorkspaceMaterialDetail(node.key)"
             )
               template(#cover-overlay v-if="isFirstLayer")
                 svg-icon(
@@ -77,6 +78,7 @@ import NodeItem from '@/components/layout/NodeItem'
 import { useRoute, useRouter } from 'vue-router'
 import { unixToDate } from '@/utils/time-formatting'
 import useWorkspace from '@/composables/useWorkspace'
+import useNavigation from '@/composables/useNavigation.js'
 
 export default {
   name: 'Workspace',
@@ -89,6 +91,7 @@ export default {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
+    const { goToWorkspaceMaterialDetail } = useNavigation()
     const { editCollection, editMaterial, duplicateNode, moveNode, deleteCollection, deleteMaterial, deleteMultipleNode, shareNode } = useWorkspace()
 
     const optionSort = {
@@ -271,7 +274,8 @@ export default {
       addMaterialFromAssetsList,
       openModalCreateCollection,
       openModalCollectionDetail,
-      openModalPublish
+      openModalPublish,
+      goToWorkspaceMaterialDetail
     }
   }
 }

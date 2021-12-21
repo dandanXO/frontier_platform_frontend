@@ -5,7 +5,7 @@ div(class="w-full h-full flex justify-center")
     div(class="pb-7.5")
       div(class="flex items-center pb-2")
         h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{`${material.materialNo} ${material.description}`}}
-        svg-icon(iconName="create" class="text-black-700 cursor-pointer" size="24" @click="goToAssetMaterialEdit(material)")
+        svg-icon(iconName="create" class="text-black-700 cursor-pointer" size="24" @click="editMaterial.func(material)")
       p(class="text-caption text-black-700") {{$t('EE0014')}} : {{new Date(material.updateDate).toLocaleString().replace(', ', ' at ')}}
     material-detail-internal(:material="material")
 </template>
@@ -16,6 +16,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
+import useWorkspace from '@/composables/useWorkspace'
 import MaterialDetailInternal from '@/components/layout/materialDetail/MaterialDetailInternal.vue'
 
 export default {
@@ -27,30 +28,43 @@ export default {
     const { t } = useI18n()
     const store = useStore()
     const route = useRoute()
-    const { parsePath, goToAssetMaterialEdit } = useNavigation()
+    const { editMaterial } = useWorkspace()
+    const { parsePath } = useNavigation()
+    const [workspaceNodeLocation, workspaceNodeId] = route.params.nodeKey.split('-')
 
-    await store.dispatch('material/getMaterial', { materialId: route.params.materialId })
+    const { breadcrumbList: tempBreadCrumbList } = await store.dispatch('workspace/getWorkspaceMaterial', { workspaceNodeId, workspaceNodeLocation })
 
     const material = computed(() => store.getters['material/material'])
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const breadcrumbList = computed(() => {
       const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
-      return [
+      const list = [
         {
-          name: t('DD0044'),
-          path: parsePath(`${prefix}/assets`)
-        },
-        {
-          name: material.value.materialNo,
-          path: parsePath(`${prefix}/assets/:materialId`)
+          name: t('FF0001'),
+          path: parsePath(`${prefix}/workspace`)
         }
       ]
+      for (let i = 0; i <= tempBreadCrumbList.length - 1; i++) {
+        const { name, workspaceNodeId } = tempBreadCrumbList[i]
+        if (i !== tempBreadCrumbList.length - 1) {
+          list.push({
+            name,
+            path: parsePath(`${prefix}/workspace?workspaceNodeId=${workspaceNodeId}`)
+          })
+        } else {
+          list.push({
+            name: material.value.materialNo,
+            path: parsePath(`${prefix}/workspace/:nodeKey`)
+          })
+        }
+      }
+      return list
     })
 
     return {
       material,
-      breadcrumbList,
-      goToAssetMaterialEdit
+      editMaterial,
+      breadcrumbList
     }
   }
 }

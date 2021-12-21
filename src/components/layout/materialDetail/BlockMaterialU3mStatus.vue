@@ -55,7 +55,7 @@ import { U3M_STATUS } from '@/utils/constants'
 import useAssets from '@/composables/useAssets'
 
 export default {
-  name: 'BlockMaterialImage',
+  name: 'BlockMaterialU3mStatus',
   setup () {
     const route = useRoute()
     const store = useStore()

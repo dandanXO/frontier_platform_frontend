@@ -1,6 +1,6 @@
 import setVuexState from '@/utils/set-vuex-state'
 import materialApi from '@/apis/material'
-import { SIDE_TYPE, WEIGHT_UNIT, INVENTORY_UNIT, MATERIAL_PRICING_CURRENCY } from '@/utils/constants'
+import { SIDE_TYPE, WEIGHT_UNIT, INVENTORY_UNIT, MATERIAL_PRICING_CURRENCY, SOURCE_ASSET_LOCATION } from '@/utils/constants'
 
 const getDefaultState = () => ({
   materialId: null,
@@ -8,6 +8,7 @@ const getDefaultState = () => ({
   frontierNo: null,
   materialNo: null,
   materialSeq: null,
+  sourceAssetLocation: SOURCE_ASSET_LOCATION.ORG,
   coverMode: 0,
   coverImg: null,
   isDoubleSideMaterial: true,

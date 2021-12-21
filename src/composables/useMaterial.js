@@ -32,7 +32,8 @@ export default function useMaterial (material) {
     hangersRemainingQty,
     hangersLocation,
     publicPrice,
-    privatePrice
+    privatePrice,
+    attachmentList
   } = material
 
   const scanFaceSide = !!faceSideImg?.crop
@@ -222,6 +223,21 @@ export default function useMaterial (material) {
   const materialPublicPriceInfo = computed(() => Object.values(materialInfo.publicPrice))
   const materialPrivatePriceInfo = computed(() => Object.values(materialInfo.privatePrice))
 
+  const attachmentSortedList = computed(() => {
+    const extensionOrder = {
+      '.png': 5,
+      '.jpg': 5,
+      '.gif': 4,
+      '.mov': 3,
+      '.mp4': 3,
+      '.pdf': 2,
+      '.zip': 1
+    }
+    const list = JSON.parse(JSON.stringify(attachmentList))
+    list.sort((a, b) => extensionOrder[b.extension] - extensionOrder[a.extension])
+    return list
+  })
+
   return {
     currentCoverImg,
     neverScanBefore,
@@ -232,6 +248,7 @@ export default function useMaterial (material) {
     materialBasicInfo,
     materialInventoryInfo,
     materialPublicPriceInfo,
-    materialPrivatePriceInfo
+    materialPrivatePriceInfo,
+    attachmentSortedList
   }
 }
