@@ -100,12 +100,12 @@ export default {
           removeHandler: async () => {
             await store.dispatch('organization/removeOrgLogo')
           },
-          afterUploadHandler: (image, cropRectSize) => {
+          afterUploadHandler: (imageObj, cropRectSize) => {
             store.dispatch('helper/replaceModal', {
               component: 'modal-crop-image',
               header: t('BB0032'),
               properties: {
-                image,
+                image: imageObj,
                 cropRectSize,
                 afterCropHandler: async (cropImage, originalImage) => {
                   const formData = new FormData()

@@ -97,6 +97,7 @@ export default {
       } else {
         coverMode = coverImageIndex.value + 1
         store.dispatch('material/changeCoverImg', { coverMode })
+        closeModal()
       }
     }
 
