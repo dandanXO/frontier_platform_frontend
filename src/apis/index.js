@@ -9,7 +9,7 @@ const options = {
   headers: {
     'Content-Type': 'application/json'
   },
-  timeout: 10000
+  timeout: 30000
 }
 
 const instance = Axios.create(options)
