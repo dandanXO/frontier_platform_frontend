@@ -56,7 +56,8 @@ export default {
     ModalChangePassword: defineAsyncComponent(() => import('@/components/account/ModalChangePassword.vue')),
     ModalPersonalProfile: defineAsyncComponent(() => import('@/components/lobby/ModalPersonalProfile.vue')),
     ModalPrivacyPolicy: defineAsyncComponent(() => import('@/components/ModalPrivacyPolicy.vue')),
-    ModalTermsOfUse: defineAsyncComponent(() => import('@/components/ModalTermsOfUse.vue'))
+    ModalTermsOfUse: defineAsyncComponent(() => import('@/components/ModalTermsOfUse.vue')),
+    ModalU3mCreateSuccess: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mCreateSuccess'))
   },
   props: {
     component: {

@@ -153,10 +153,8 @@ export default {
       store.dispatch('helper/closeModalLoading')
       leavePage()
 
-      store.dispatch('helper/openModalConfirm', {
-        title: t('RR0132'),
-        content: t('EE0070'),
-        primaryText: t('UU0031')
+      store.dispatch('helper/openModal', {
+        component: 'modal-u3m-create-success'
       })
     }
 

@@ -7,7 +7,7 @@ div
         svg-icon(iconName="info_outline" class='cursor-pointer' size="14")
       template(#content)
         div(class="p-5")
-          span(class="text-body2 text-assist-blue underline line-height-1.6 cursor-pointer" @click="openModalCreate3DMaterial") {{$t('UU0029')}}
+          span(class="text-body2 text-assist-blue underline line-height-1.6 cursor-pointer" @click="openModalU3mInstruction") {{$t('UU0029')}}
 
   template(v-if="status === U3M_STATUS.UNQUALIFIED")
     p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0020')}}
@@ -68,6 +68,12 @@ export default {
       create3DMaterial.func(material.value)
     }
 
+    const openModalU3mInstruction = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-u3m-instruction'
+      })
+    }
+
     return {
       material,
       status,
@@ -75,7 +81,8 @@ export default {
       u3maUrl,
       U3M_STATUS,
       isEditPage,
-      openModalCreate3DMaterial
+      openModalCreate3DMaterial,
+      openModalU3mInstruction
     }
   }
 }
