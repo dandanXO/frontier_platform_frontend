@@ -2,11 +2,7 @@
 div(class="mb-5")
   div(class="w-full flex justify-center items-center overflow-hidden")
     div(class="relative w-full aspect-ratio bg-black-0 flex justify-center items-center")
-      slot
-        div(class="mt-1 absolute w-full")
-          div(class="h-2 flex items-center border-r-2 border-l-2 border-primary")
-            div(class="h-0.5 bg-primary w-full")
-          div(class="text-caption text-primary font-bold text-center") {{`${scaleSize} cm`}}
+      slot(name="imageCropArea" :innerScaleSize="scaleSize" :innerShowScale="showScale")
   input-range(
     v-if="showScale"
     v-model:range="scaleSize"

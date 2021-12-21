@@ -1,11 +1,11 @@
 <template lang="pug">
-div(class="w-50 h-50 relative")
+div(class="relative")
   div(class="absolute" :style="cropRectStyle")
-    cropped-image(:config="config" isTransparent @update="updateOptions")
+    cropped-image(:config="config" :scaleControl="scaleControl" isTransparent @update="updateOptions")
     slot
   div(ref="cropRect" class="overflow-hidden bg-black-0" :style="cropRectStyle")
     div(class="cursor-move" :style="cropRectStyle")
-      cropped-image(:config="config" @update="updateOptions")
+      cropped-image(:config="config" :scaleControl="scaleControl" @update="updateOptions")
 </template>
 
 <script>
@@ -51,8 +51,6 @@ export default {
           const controllers = cropRect.value.querySelectorAll('.controller-point')
           controllers.forEach(node => node.remove())
         }
-
-        console.log(11111, cropRect.value)
 
         domtoimage.toBlob(cropRect.value, {
           width: cropRect.value.clientWidth,
