@@ -14,50 +14,50 @@ fullscreen-header
       div(v-show="cropper.ref === currentSide" class="flex h-full justify-center items-center" :class="[cropper.ref]")
         div
           div(class="mb-4.5 text-center text-primary text-body2 font-bold") {{cropper.title}}
-          layout-edit(:image="cropper.image" :cropRectSize="cropRectSize" class="w-82.5")
-            template(#imageCropArea="{image, rotationAngle, croppedScaleRatio, scaleSize, cropRectSize}")
-              image-crop-area(
-                :ref="cropper.ref"
-                :image="image"
-                :rotationAngle="rotationAngle"
-                :croppedScaleRatio="croppedScaleRatio"
-                :scaleSize="scaleSize"
-                :cropRectSize="cropRectSize"
-              )
-                template(#croppedImage="{imageSrc, options, croppedScaleRatio, rotationAngle}")
-                  teleport(:to="`.${cropper.ref}`")
-                    div(class="w-125 h-125 bg-black-400 ml-21 grid grid-cols-3 grid-rows-3")
-                      div(v-for="i in 9" ref="previewRect" class="overflow-hidden")
-                        cropped-image(
-                          :options="options"
-                          :imageSrc="imageSrc"
-                          :scaleRatio="croppedScaleRatio"
-                          :rotationAngle="rotationAngle"
-                          :previewScaleRatio="previewScaleRatio"
-                          :movable="false"
-                        )
+          cropper-default-layout(
+            class="w-82.5"
+            :config="cropper.config"
+            @update:rotateDeg="cropper.config.rotateDeg = $event"
+            @update:scaleRatio="cropper.config.scaleRatio = $event"
+          )
+            image-crop-area(
+              :ref="cropper.ref"
+              :config="cropper.config"
+              :cropRectSize="cropRectSize"
+              @update:options="Object.assign(cropper.config.options, $event)"
+            )
+        div(class="w-125 h-125 bg-black-400 ml-21 grid grid-cols-3 grid-rows-3")
+          div(v-for="i in 9" class="overflow-hidden")
+            cropped-image(
+              :config="cropper.config"
+              :previewScaleRatio="previewScaleRatio"
+              :movable="false"
+            )
+    div(class="absolute invisible w-125 h-125 grid grid-cols-3 grid-rows-3")
+      div(ref="previewRect")
 </template>
 
 <script>
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import useMaterialImage from '@/composables/useMaterialImage'
 import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
-import LayoutEdit from '@/components/imageCropper/scannedImageCropper/LayoutEdit'
-import ImageCropArea from '@/components/imageCropper/scannedImageCropper/ImageCropArea'
-import CroppedImage from '@/components/imageCropper/scannedImageCropper/CroppedImage'
+import CropperDefaultLayout from '@/components/cropper/layout/CropperDefaultLayout'
+import CroppedImage from '@/components/cropper/CroppedImage'
+import ImageCropArea from '@/components/cropper/ImageCropArea'
+import { Cropper } from '@/utils/cropper'
 
 export default {
   name: 'AssetsMaterialRecutImage',
   components: {
     FullscreenHeader,
-    LayoutEdit,
+    CropperDefaultLayout,
     ImageCropArea,
     CroppedImage
   },
-  setup () {
+  async setup () {
     const { t } = useI18n()
     const store = useStore()
     const router = useRouter()
@@ -66,27 +66,41 @@ export default {
     const backSide = ref(null)
     const material = computed(() => store.getters['material/material'])
     const cropRectSize = 208
+    const croppers = []
+    let faceSideConfig
+    let backSideConfig
+
     const {
       isDoubleSideMaterial,
       isFaceSideMaterial,
       faceSideObj,
       backSideObj
     } = useMaterialImage(material.value, 'u3m')
-    const croppers = [
-      {
+
+    if (faceSideObj) {
+      const faceSideCropper = new Cropper(faceSideObj, cropRectSize, true)
+      await faceSideCropper.formatImage()
+      faceSideConfig = reactive({
+        ref: 'faceSide',
         title: t('EE0051'),
-        image: faceSideObj,
-        ref: 'faceSide'
-      },
-      {
+        config: faceSideCropper.config
+      })
+      croppers.push(faceSideConfig)
+    }
+
+    if (backSideObj) {
+      const backSideCropper = new Cropper(backSideObj, cropRectSize, true)
+      await backSideCropper.formatImage()
+      backSideConfig = reactive({
+        ref: 'backSide',
         title: t('EE0052'),
-        image: backSideObj,
-        ref: 'backSide'
-      }
-    ]
+        config: backSideCropper.config
+      })
+      croppers.push(backSideConfig)
+    }
 
     const previewScaleRatio = computed(() => {
-      if (previewRect.value !== null) {
+      if (previewRect.value) {
         return previewRect.value.clientWidth / cropRectSize
       } else {
         return 1
