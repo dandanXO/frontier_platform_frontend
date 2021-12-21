@@ -79,9 +79,10 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
             class="w-50"
           )
           input-select(
-            v-model:selectValue="material.inventoryUnit"
+            v-model:selectValue="inventory.unit"
             :label="index === 0 ? $t('RR0038') :''"
             :options="inventoryUnitList"
+            @update:selectValue="updateInventoryListUnit"
             keyOptionDisplay="unit"
             keyOptionValue="unit"
             class="w-25"
@@ -113,7 +114,8 @@ export default {
       inventoryUnitList,
       addNewInventory,
       removeInventory,
-      totalInventory
+      totalInventory,
+      updateInventoryListUnit
     } = useMaterialEdit(material.value)
 
     watch(
@@ -132,7 +134,8 @@ export default {
       addNewInventory,
       removeInventory,
       totalInventory,
-      INVENTORY_UNIT
+      INVENTORY_UNIT,
+      updateInventoryListUnit
     }
   }
 }
