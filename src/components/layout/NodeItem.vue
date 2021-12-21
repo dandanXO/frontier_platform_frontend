@@ -12,11 +12,10 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
     template(v-if="nodeType === NODE_TYPE.MATERIAL")
       div(class="w-full h-full rounded-md overflow-hidden")
         img(:src="node.coverImg" class="w-full h-full")
-    div(v-if="isHover || checked" class="absolute top-0 left-0 z-10 w-full h-11")
+    div(v-if="isHover || haveSelectedMoreThanOne" class="absolute top-0 left-0 z-10 w-full h-11")
       div(class="bg-linear w-full h-full rounded-t-md")
       template(v-if="isSelectable")
         input-checkbox(
-          v-if="isHover || checked"
           v-model:inputValue="innerSelectedList"
           :value="nodeKey"
           size="24"
@@ -140,12 +139,12 @@ export default {
       set: (v) => emit('update:selectedList', v)
     })
 
-    const checked = computed(() => props.selectedList && props.selectedList.includes(props.nodeKey))
+    const haveSelectedMoreThanOne = computed(() => props.selectedList.length > 0)
 
     return {
       isHover,
       innerSelectedList,
-      checked,
+      haveSelectedMoreThanOne,
       NODE_TYPE,
       nodeHoverInfo
     }
