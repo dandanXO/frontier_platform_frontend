@@ -35,10 +35,18 @@ class Cropper {
         imgHeight: 0
       }
     }
+
+    if (typeof src !== 'string') {
+      this.config.image = src
+    }
   }
 
   async formatImage () {
     this.config.image = await image2Object(this.src)
+    this.getConfig()
+  }
+
+  getConfig () {
     const { width, height } = this.config.image
     const aspectRatio = width / height
     const resizeRatio = aspectRatio > 1 ? height / this.cropRectSize : width / this.cropRectSize

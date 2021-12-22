@@ -9,8 +9,8 @@ div(class="w-168 px-8")
   btn-group(
     class="h-25"
     :secondaryButton="false"
-    :primaryText="isAllowCreate ? $t('UU0020') : $t('UU0032')"
-    @click:primary="isAllowCreate ? openModalU3mPriview() : openModalHowToScan()"
+    :primaryText="btnText"
+    @click:primary="btnClickHandler()"
   )
 </template>
 
@@ -26,7 +26,27 @@ export default {
     const { t } = useI18n()
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
-    const isAllowCreate = computed(() => material.value.u3m.status === U3M_STATUS.INITIAL)
+    const { u3m: { status } } = material.value
+
+    const btnText = computed(() => {
+      if (status === U3M_STATUS.UNQUALIFIED) {
+        return t('UU0032')
+      } else if (status === U3M_STATUS.INITIAL) {
+        return t('UU0020')
+      } else {
+        return t('UU0031')
+      }
+    })
+
+    const btnClickHandler = computed(() => {
+      if (status === U3M_STATUS.UNQUALIFIED) {
+        return openModalHowToScan
+      } else if (status === U3M_STATUS.INITIAL) {
+        return openModalU3mPriview
+      } else {
+        return closeModal
+      }
+    })
 
     const openModalHowToScan = () => {
       store.dispatch('helper/replaceModal', {
@@ -42,8 +62,11 @@ export default {
       })
     }
 
+    const closeModal = () => store.dispatch('helper/closeModal')
+
     return {
-      isAllowCreate,
+      btnText,
+      btnClickHandler,
       openModalHowToScan,
       openModalU3mPriview
     }

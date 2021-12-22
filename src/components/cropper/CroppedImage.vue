@@ -4,6 +4,7 @@ div(class="cropped-image" :style="rotateStyle")
     div(:style="styleObject")
       div(:style="scaleStyle")
         img(
+          ref="body"
           draggable="false"
           :class="{'opacity-30': isTransparent}"
           :src="config.image.src"
