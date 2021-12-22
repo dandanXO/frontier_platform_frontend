@@ -9,7 +9,7 @@ div(class="l:pt-16 pt-17.5")
             @click="openModalUploadLogo"
           )
             svg-icon(iconName="camera" size="20" class="text-black-500 hover:text-brand")
-        div(class="flex items-center pt-4 cursor-pointer" @click="copyText(organization.orgNo)")
+        div(class="flex items-center pt-4 cursor-pointer" @click="copyText(organization.orgNo), $store.commit('helper/PUSH_message', $t('BB0038'))")
           p(class="text-caption text-primary") ID: {{organization.orgNo}}
           tooltip(placement="bottom")
             template(#trigger)
