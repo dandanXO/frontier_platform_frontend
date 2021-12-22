@@ -96,6 +96,7 @@ export default {
                 attachmentCropImg: croppedImage
               })
               closeModal()
+              store.dispatch('helper/reloadInnerApp')
             }
           }
         })
@@ -103,6 +104,7 @@ export default {
         coverMode = coverImageIndex.value + 1
         store.dispatch('material/changeCoverImg', { coverMode })
         closeModal()
+        store.dispatch('helper/reloadInnerApp')
       }
     }
 

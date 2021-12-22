@@ -9,7 +9,7 @@ label(class="flex items-center")
     @input="check($event)"
     :disabled="disabled"
   )
-  div(v-if="label !== ''" class="text-body2 text-primary pl-1") {{label}}
+  div(v-if="label !== ''" class="text-body2 pl-1" :class="[disabled ? 'text-black-500' : 'text-primary']") {{label}}
 </template>
 
 <script>
