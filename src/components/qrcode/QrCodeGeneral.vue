@@ -8,16 +8,16 @@ div
           template(v-for="(item, index) in list")
             template(v-for='type in pdfType')
               div(v-if="(currExecOptionIndex === index) && printType(item).includes(type)" class="relative flex w-113 h-56.5 bg-black-0 pr-4 py-3")
-                div(class='absolute top-3 left-3.5')
-                  img(:src="logo" class='w-8.5 h-8.5 rounded-sm')
-                div(class='flex justify-center w-full')
-                  div(class='flex flex-col items-center justify-center w-31' :class='{"ml-16": type === "FACE SIDE"}')
-                    div(v-if='type === "BACK SIDE"' class="whitespace-nowrap mb-4 text-black-900 font-bold text-body1") {{item.materialNo}}
-                    qr-code(:value="type === 'FACE SIDE' ? item.frontierNo : item.relationFrontierNo" :size="100")
+                div(class="absolute top-3 left-3.5")
+                  img(:src="logo" class="w-8.5 h-8.5 rounded-sm")
+                div(class="flex justify-center w-full")
+                  div(class="flex flex-col items-center justify-center w-31" :class="{'ml-16': type === pdfType[0]}")
+                    div(v-if="type === pdfType[1]" class="whitespace-nowrap mb-4 text-black-900 font-bold text-body1") {{item.materialNo}}
+                    qr-code(:value="type === pdfType[0] ? item.frontierNo : item.relationFrontierNo" :size="100")
                     div(class="whitespace-nowrap text-black-900 text-body2 mt-4 mb-2") {{type}}
-                    div(class="whitespace-nowrap text-black-600 text-body2") {{type === 'FACE SIDE' ? item.frontierNo : item.relationFrontierNo}}
-                  template(v-if='type === "FACE SIDE"')
-                    div(class='flex-none border border-black-400 mx-6 my-5')
+                    div(class="whitespace-nowrap text-black-600 text-body2") {{type === pdfType[0] ? item.frontierNo : item.relationFrontierNo}}
+                  template(v-if="type === pdfType[0]")
+                    div(class="flex-none border border-black-400 mx-6 my-5")
                     div(class="flex flex-col justify-center text-black-900 w-56")
                       div(class="mb-2 font-bold text-body2") {{item.materialNo}}
                       div(class="line-clamp-2 text-body2 line-height-1.5") {{item.description}}
@@ -64,7 +64,15 @@ export default {
     const generatePdf = async (materialList) => {
       store.dispatch('helper/pushModalLoading')
       list.length = 0
-      list.push(...JSON.parse(JSON.stringify(materialList)))
+
+      materialList.forEach(material => {
+        if (typeof material === 'string') {
+          list.push(JSON.parse(material))
+        } else {
+          list.push(material)
+        }
+      })
+
       isShown.value = true
       currExecOptionIndex.value = 0
 

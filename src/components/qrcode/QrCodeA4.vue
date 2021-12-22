@@ -6,10 +6,10 @@ div
       div(class="fixed right-0 transform translate-x-full")
         div(class="flex flex-col" ref="pdfTarget")
           template(v-for="(item, index) in list")
-            template(v-for='type in pdfType')
-              div(v-if='currExecOptionIndex === index && printType(item).includes(type)' class="relative flex flex-col justify-between items-center w-148.5 h-210.5 bg-black-0 px-10 py-10")
+            template(v-for="type in pdfType")
+              div(v-if="currExecOptionIndex === index && printType(item).includes(type)" class="relative flex flex-col justify-between items-center w-148.5 h-210.5 bg-black-0 px-10 py-10")
                 div(class="flex w-full")
-                  img(:src="logo" class="mr-7 w-12.5 h-12.5")
+                  img(:src="logo" class="mr-7 w-12.5 h-12.5 flex-shrink-0")
                   div(class="text-caption text-primary w-full grid gap-y-3")
                     div(class="text-body1 font-bold") {{item.materialNo}}
                     div {{$t('RR0014')}} : {{item.description}}
@@ -22,14 +22,14 @@ div
                     div {{$t('RR0019')}} : {{item.materialWidth}}
                     div {{$t('RR0022')}} : {{item.finish}}
                   div(class="flex flex-col flex-shrink-0 items-center text-primary")
-                    span(class="whitespace-nowrap text-caption mb-2.5 font-bold" :class='[type === "FACE SIDE" ? "" : backSideClass]') {{type}}
-                    qr-code(:value="type === 'FACE SIDE' ? item.frontierNo : item.relationFrontierNo" :size="60")
-                    span(class="whitespace-nowrap text-caption mt-2.5 scale-90") {{type === 'FACE SIDE' ? item.frontierNo : item.relationFrontierNo}}
+                    span(class="whitespace-nowrap text-caption mb-2.5 font-bold" :class="[type === pdfType[0] ? '' : backSideClass]") {{type}}
+                    qr-code(:value="type === pdfType[0] ? item.frontierNo : item.relationFrontierNo" :size="60")
+                    span(class="whitespace-nowrap text-caption mt-2.5 scale-90") {{type === pdfType[0] ? item.frontierNo : item.relationFrontierNo}}
                 div(
                   class="text-black-600 relative flex flex-col items-center justify-center w-full h-97 bg-cover"
                   :style="{'background-image': 'url('+ require('@/assets/images/pdf-outline.png') +')'}"
                 )
-                  span(class="whitespace-nowrap text-caption mb-2.5") {{type === 'FACE SIDE' ? $t('DD0046') : $t('DD0047') }}
+                  span(class="whitespace-nowrap text-caption mb-2.5") {{type === pdfType[0] ? $t('DD0046') : $t('DD0047') }}
                   span(class="whitespace-nowrap text-caption") {{$t('DD0050')}}
                 div(class="flex flex-col justify-start items-start w-full")
                   span(class="mb-2 font-bold text-caption") {{org.orgName}}
@@ -75,7 +75,15 @@ export default {
     const generatePdf = async (materialList) => {
       store.dispatch('helper/pushModalLoading')
       list.length = 0
-      list.push(...JSON.parse(JSON.stringify(materialList)))
+
+      materialList.forEach(material => {
+        if (typeof material === 'string') {
+          list.push(JSON.parse(material))
+        } else {
+          list.push(material)
+        }
+      })
+
       isShown.value = true
       currExecOptionIndex.value = 0
 
