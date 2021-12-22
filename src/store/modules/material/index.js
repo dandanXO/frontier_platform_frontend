@@ -6,6 +6,7 @@ const getDefaultState = () => ({
   materialId: null,
   relationMaterialId: null,
   frontierNo: null,
+  relationFrontierNo: null,
   materialNo: null,
   materialSeq: null,
   sourceAssetLocation: SOURCE_ASSET_LOCATION.ORG,

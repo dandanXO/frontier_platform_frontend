@@ -23,8 +23,8 @@ div
                     div {{$t('RR0022')}} : {{item.finish}}
                   div(class="flex flex-col flex-shrink-0 items-center text-primary")
                     span(class="whitespace-nowrap text-caption mb-2.5 font-bold" :class='[type === "FACE SIDE" ? "" : backSideClass]') {{type}}
-                    qr-code(:value="item.frontierNo" :size="60")
-                    span(class="whitespace-nowrap text-caption mt-2.5 scale-90") {{item.frontierNo}}
+                    qr-code(:value="type === 'FACE SIDE' ? item.frontierNo : item.relationFrontierNo" :size="60")
+                    span(class="whitespace-nowrap text-caption mt-2.5 scale-90") {{type === 'FACE SIDE' ? item.frontierNo : item.relationFrontierNo}}
                 div(
                   class="text-black-600 relative flex flex-col items-center justify-center w-full h-97 bg-cover"
                   :style="{'background-image': 'url('+ require('@/assets/images/pdf-outline.png') +')'}"

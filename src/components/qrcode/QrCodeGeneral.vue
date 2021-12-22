@@ -13,9 +13,9 @@ div
                 div(class='flex justify-center w-full')
                   div(class='flex flex-col items-center justify-center w-31' :class='{"ml-16": type === "FACE SIDE"}')
                     div(v-if='type === "BACK SIDE"' class="whitespace-nowrap mb-4 text-black-900 font-bold text-body1") {{item.materialNo}}
-                    qr-code(:value="item.frontierNo" :size="100")
+                    qr-code(:value="type === 'FACE SIDE' ? item.frontierNo : item.relationFrontierNo" :size="100")
                     div(class="whitespace-nowrap text-black-900 text-body2 mt-4 mb-2") {{type}}
-                    div(class="whitespace-nowrap text-black-600 text-body2") {{item.frontierNo}}
+                    div(class="whitespace-nowrap text-black-600 text-body2") {{type === 'FACE SIDE' ? item.frontierNo : item.relationFrontierNo}}
                   template(v-if='type === "FACE SIDE"')
                     div(class='flex-none border border-black-400 mx-6 my-5')
                     div(class="flex flex-col justify-center text-black-900 w-56")
