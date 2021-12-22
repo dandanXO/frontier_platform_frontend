@@ -42,6 +42,7 @@ export default {
       store.dispatch('helper/pushModalLoading')
       await store.dispatch('material/updateMaterial')
       store.dispatch('helper/clearModalPipeline')
+      store.dispatch('helper/reloadInnerApp')
     }
 
     await store.dispatch('material/getMaterialOptions')

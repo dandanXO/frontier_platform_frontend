@@ -11,7 +11,7 @@ div
             div(class="w-30 h-30 absolute -top-29 rounded-t" :style="{ 'background-color': `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }")
             div(class="p-2 text-primary text-caption font-bold")
               div(class="pb-1") {{pantone.name}}
-              div {{pantone.majorColorName}}
+              div {{pantone.colorName}}
 </template>
 
 <script>

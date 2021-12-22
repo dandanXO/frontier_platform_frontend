@@ -1,7 +1,7 @@
 import setVuexState from '@/utils/set-vuex-state'
 import assetsApi from '@/apis/assets'
 import { downloadBase64File } from '@/utils/fileOperator'
-import { NODE_LOCATION } from '@/utils/constants'
+import { NODE_LOCATION, DISPLAY_NODE } from '@/utils/constants'
 
 const getMergeRowState = () => ({
   faceSide: {},
@@ -10,6 +10,7 @@ const getMergeRowState = () => ({
 })
 
 const state = () => ({
+  displayMode: DISPLAY_NODE.LIST,
   materialList: [],
   preMergeList: [],
   mergedList: [getMergeRowState()]
@@ -17,6 +18,7 @@ const state = () => ({
 
 const getters = {
   materialList: state => state.materialList,
+  displayMode: state => state.displayMode,
   preMergeList: state => state.preMergeList
     .map(material => {
       const temp = {}
@@ -47,6 +49,9 @@ const mutations = {
   },
   CLEAR_mergedList_row_block (state, { index, blockType }) {
     state.mergedList[index][blockType] = {}
+  },
+  UPDATE_displayMode (state, mode) {
+    state.displayMode = mode
   }
 }
 
@@ -123,6 +128,9 @@ const actions = {
       : await assetsApi.group.addToWorkspace({ groupId: rootGetters['group/groupId'], targetWorkspaceNodeList, materialIdList })
 
     return data.result.failMaterialList
+  },
+  updateDisplayMode ({ commit }, mode) {
+    commit('UPDATE_displayMode', mode)
   }
 }
 

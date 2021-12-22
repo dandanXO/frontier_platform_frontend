@@ -13,11 +13,13 @@ div(class="w-101 px-8")
         binary
         v-model:inputValue="params.isCanDownloadU3M"
         :label="$t('FF0033')"
+        :disabled="!params.isPublic"
       )
       input-checkbox(
         binary
         v-model:inputValue="params.isCanClone"
         :label="$t('FF0034')"
+        :disabled="!params.isPublic"
       )
   btn-group(
     class="h-25"
