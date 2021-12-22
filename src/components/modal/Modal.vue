@@ -43,8 +43,8 @@ export default {
     ModalCollectionDetail: defineAsyncComponent(() => import('@/components/workspace/ModalCollectionDetail.vue')),
     ModalAddToWorkspaceFail: defineAsyncComponent(() => import('@/components/assets/material/ModalAddToWorkspaceFail.vue')),
     ModalPreviewAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalPreviewAttachment')),
-    ModalCropImage: defineAsyncComponent(() => import('@/components/imageCropper/ModalCropImage')),
-    ModalEditScannedImage: defineAsyncComponent(() => import('@/components/imageCropper/scannedImageCropper/ModalEditScannedImage')),
+    ModalCropImage: defineAsyncComponent(() => import('@/components/ModalCropImage')),
+    ModalEditScannedImage: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalEditScannedImage.vue')),
     ModalAssetsList: defineAsyncComponent(() => import('@/components/assets/material/ModalAssetsList.vue')),
     ModalVerifyNotification: defineAsyncComponent(() => import('@/components/lobby/ModalVerifyNotification.vue')),
     ModalU3mInstruction: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mInstruction')),
@@ -56,7 +56,8 @@ export default {
     ModalChangePassword: defineAsyncComponent(() => import('@/components/account/ModalChangePassword.vue')),
     ModalPersonalProfile: defineAsyncComponent(() => import('@/components/lobby/ModalPersonalProfile.vue')),
     ModalPrivacyPolicy: defineAsyncComponent(() => import('@/components/ModalPrivacyPolicy.vue')),
-    ModalTermsOfUse: defineAsyncComponent(() => import('@/components/ModalTermsOfUse.vue'))
+    ModalTermsOfUse: defineAsyncComponent(() => import('@/components/ModalTermsOfUse.vue')),
+    ModalU3mCreateSuccess: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mCreateSuccess'))
   },
   props: {
     component: {

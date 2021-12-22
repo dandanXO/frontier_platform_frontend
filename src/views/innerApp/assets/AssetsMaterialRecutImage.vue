@@ -20,12 +20,17 @@ fullscreen-header
             @update:rotateDeg="cropper.config.rotateDeg = $event"
             @update:scaleRatio="cropper.config.scaleRatio = $event"
           )
-            image-crop-area(
-              :ref="cropper.ref"
-              :config="cropper.config"
-              :cropRectSize="cropRectSize"
-              @update:options="Object.assign(cropper.config.options, $event)"
-            )
+            template(#imageCropArea="{innerScaleSize}")
+              image-crop-area(
+                :ref="cropper.ref"
+                :config="cropper.config"
+                :cropRectSize="cropRectSize"
+                @update:options="Object.assign(cropper.config.options, $event)"
+              )
+                div(class="mt-1 absolute w-full")
+                  div(class="h-2 flex items-center border-r-2 border-l-2 border-primary")
+                    div(class="h-0.5 bg-primary w-full")
+                  div(class="text-caption text-primary font-bold text-center") {{`${innerScaleSize} cm`}}
         div(class="w-125 h-125 bg-black-400 ml-21 grid grid-cols-3 grid-rows-3")
           div(v-for="i in 9" class="overflow-hidden")
             cropped-image(
@@ -148,10 +153,8 @@ export default {
       store.dispatch('helper/closeModalLoading')
       leavePage()
 
-      store.dispatch('helper/openModalConfirm', {
-        title: t('RR0132'),
-        content: t('EE0070'),
-        primaryText: t('UU0031')
+      store.dispatch('helper/openModal', {
+        component: 'modal-u3m-create-success'
       })
     }
 
