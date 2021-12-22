@@ -55,11 +55,13 @@ const actions = {
   },
   async generalSignUp (_, params) {
     const { data } = await userApi.generalSignUp(params)
-    const { success, message } = data
+    const { success, message, result } = data
 
     if (!success) {
       throw message.content
     }
+
+    return result.isExist
   },
   async generalSignIn (_, params) {
     const { data } = await userApi.generalSignIn(params)
@@ -73,11 +75,13 @@ const actions = {
   },
   async googleSignUp (_, params) {
     const { data } = await userApi.googleSignUp(params)
-    const { success, message } = data
+    const { success, message, result } = data
 
     if (!success) {
       throw message.content
     }
+
+    return result.isExist
   },
   async googleSignIn (_, params) {
     const { data } = await userApi.googleSignIn(params)

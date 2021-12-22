@@ -67,12 +67,21 @@ export default function useMaterialEdit (material) {
     store.commit('material/REMOVE_inventory_item', index)
   }
 
+  const updateInventoryListUnit = (unit) => {
+    store.commit('material/UPDATE_inventoryList_unit', unit)
+  }
+
   const totalInventory = computed(() => {
     const total = material.inventoryList.reduce((prev, current) => {
-      const { inventoryUnit, weightUnit, weight, width } = material
+      const { weightUnit, weight, width } = material
       const quantity = current.quantity
+      const unit = current.unit
 
-      switch (inventoryUnit) {
+      if (weight === 0 || width === 0) {
+        return 0
+      }
+
+      switch (unit) {
         case INVENTORY_UNIT.Y: {
           return prev + Number(quantity)
         }
@@ -86,7 +95,7 @@ export default function useMaterialEdit (material) {
           } else if (weightUnit === WEIGHT_UNIT.OZ) {
             gsm = weight / 0.9114
           }
-          return prev + Number(quantity) / (gsm * 0.02323 * width) / 1000
+          return prev + Number(quantity) / gsm / (width * 2.54 / 100)
         }
         default:
           return prev + Number(quantity)
@@ -108,6 +117,7 @@ export default function useMaterialEdit (material) {
     addFinishOption,
     addNewInventory,
     removeInventory,
-    totalInventory
+    totalInventory,
+    updateInventoryListUnit
   }
 }

@@ -604,7 +604,7 @@
   "FF0039": "Upload Failed",
   "FF0040": "Inherited Permissions",
   "FF0041": "When you move the material or collection, it always inherits the permission level of the parent collection. ",
-  "FF0042": "Move to \"{collection name}\" successfully completed!",
+  "FF0042": "Move to \"{collectionName}\" successfully completed!",
   "FF0043": "Duplicate to Workspace",
   "FF0044": "Delete this collection?",
   "FF0045": "Deleting this collection will remove it from the library. All shares of this collection will also be deleted.",

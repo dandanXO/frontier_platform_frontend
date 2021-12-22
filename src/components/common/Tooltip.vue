@@ -44,6 +44,7 @@ div[role="tooltip"] {
   width: 14px;
   height: 14px;
   background: inherit;
+  z-index: -1;
 }
 
 #arrow {

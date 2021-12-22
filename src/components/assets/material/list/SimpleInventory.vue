@@ -25,10 +25,10 @@ div(class="bg-black-100 px-7.5 py-7.5 grid gap-y-7.5")
       )
       svg-icon(iconName="slash" size="20" class="text-primary")
       input-text(
-            v-model:textValue="material.hangersLocation"
-            :customErrorMsg="validations.hangersLocation"
-            class="w-50"
-          )
+        v-model:textValue="material.hangersLocation"
+        :customErrorMsg="validations.hangersLocation"
+        class="w-50"
+      )
   h6(class="text-h6 text-black-600 font-bold") {{$t('DD0023')}}
   input-container(:label="$t('RR0034')")
     div(class="flex items-center gap-x-3")
@@ -58,14 +58,15 @@ div(class="bg-black-100 px-7.5 py-7.5 grid gap-y-7.5")
       )
       input-text(
         v-model:textValue="inventory.quantity"
-            inputType="number"
+        inputType="number"
         :label="index === 0 ? $t('RR0037') :''"
         class="w-50"
       )
       input-select(
-        v-model:selectValue="material.inventoryUnit"
+        v-model:selectValue="inventory.unit"
         :label="index === 0 ? $t('RR0038') :''"
         :options="inventoryUnitList"
+        @update:selectValue="updateInventoryListUnit"
         keyOptionDisplay="unit"
         keyOptionValue="unit"
         class="w-25"
@@ -97,7 +98,8 @@ export default {
       inventoryUnitList,
       addNewInventory,
       removeInventory,
-      totalInventory
+      totalInventory,
+      updateInventoryListUnit
     } = useMaterialEdit(material.value)
 
     watch(
@@ -116,7 +118,8 @@ export default {
       addNewInventory,
       removeInventory,
       totalInventory,
-      INVENTORY_UNIT
+      INVENTORY_UNIT,
+      updateInventoryListUnit
     }
   }
 }

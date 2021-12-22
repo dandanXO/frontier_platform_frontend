@@ -1,4 +1,4 @@
-import { NODE_LOCATION, NODE_TYPE } from '@/utils/constants'
+import { NODE_LOCATION, NODE_TYPE, SORT_BY } from '@/utils/constants'
 
 const WorkspaceNode = {
   state: () => ({
@@ -32,28 +32,41 @@ const WorkspaceNode = {
         : NODE_LOCATION.GROUP
     },
     workspaceCollection: state => state,
-    nodeList: state => {
-      const { childCollectionList, childMaterialList } = state
-      const list = []
-
-      if (childCollectionList.length > 0) {
-        childCollectionList.forEach(collection => {
-          list.push({
-            key: `${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`,
-            nodeType: NODE_TYPE.COLLECTION,
-            data: collection
+    nodeList: (state, getters, rootState, rootGetters) => {
+      const pushCollectionToList = () => {
+        if (childCollectionList.length > 0) {
+          childCollectionList.forEach(collection => {
+            list.push({
+              key: `${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`,
+              nodeType: NODE_TYPE.COLLECTION,
+              data: collection
+            })
           })
-        })
+        }
       }
-
-      if (childMaterialList.length > 0) {
-        childMaterialList.forEach(material => {
-          list.push({
-            key: `${material.workspaceNodeLocation}-${material.workspaceNodeId}`,
-            nodeType: NODE_TYPE.MATERIAL,
-            data: material
+      const pushMaterialToList = () => {
+        if (childMaterialList.length > 0) {
+          childMaterialList.forEach(material => {
+            list.push({
+              key: `${material.workspaceNodeLocation}-${material.workspaceNodeId}`,
+              nodeType: NODE_TYPE.MATERIAL,
+              data: material
+            })
           })
-        })
+        }
+      }
+      const list = []
+      const { childCollectionList, childMaterialList } = state
+      const sortBy = rootGetters['helper/search/pagination'].sort
+      const { RELEVANCE_M_C, MATERIAL_NO_A_Z_M_C, CREATE_DATE_M_C } = SORT_BY
+      const reverseList = [RELEVANCE_M_C.value, MATERIAL_NO_A_Z_M_C.value, CREATE_DATE_M_C.value]
+
+      if (reverseList.includes(sortBy)) {
+        pushMaterialToList()
+        pushCollectionToList()
+      } else {
+        pushCollectionToList()
+        pushMaterialToList()
       }
 
       return list

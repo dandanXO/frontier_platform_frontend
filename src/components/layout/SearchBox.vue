@@ -75,7 +75,7 @@ import FilterHasPrice from '@/components/layout/filter/FilterHasPrice'
 import FilterHasU3m from '@/components/layout/filter/FilterHasU3m'
 import FilterComplete from '@/components/layout/filter/FilterComplete'
 import FilterPrice from '@/components/layout/filter/FilterPrice'
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { SEARCH_TYPE } from '@/utils/constants'
 
@@ -123,7 +123,15 @@ export default {
 
     const selectTag = (tag) => {
       delete tag.isSelected
-      const tempTagList = multipleSelect(selectedTagList.value, tag)
+      const tempTagList = [...selectedTagList.value]
+      const index = tempTagList.findIndex(item => JSON.stringify(item) === JSON.stringify(tag))
+
+      if (!~index) {
+        tempTagList.push(tag)
+      } else {
+        tempTagList.splice(index, 1)
+      }
+
       store.dispatch('helper/search/setSelectedTagList', tempTagList)
       context.emit('search')
     }
@@ -133,18 +141,6 @@ export default {
     }
 
     const resetFilter = () => { store.dispatch('helper/search/resetFilter') }
-
-    const multipleSelect = (arr, value) => {
-      const tempArr = [...arr]
-      const index = tempArr.findIndex(item => JSON.stringify(item) === JSON.stringify(value))
-
-      if (!~index) {
-        tempArr.push(value)
-      } else {
-        tempArr.splice(index, 1)
-      }
-      return tempArr
-    }
 
     watch(
       () => filter.value,
@@ -174,6 +170,11 @@ export default {
         immediate: true
       }
     )
+
+    onBeforeUnmount(() => {
+      store.dispatch('helper/search/resetTagList')
+      store.dispatch('helper/search/resetSelectedTagList')
+    })
 
     return {
       keyword,
