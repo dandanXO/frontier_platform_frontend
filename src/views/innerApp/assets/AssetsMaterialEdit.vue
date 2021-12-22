@@ -25,8 +25,8 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import useMaterialValidation from '@/composables/useMaterialValidation'
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, ref } from 'vue'
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
 
 export default {
   name: 'AssetsMaterialEdit',
@@ -44,8 +44,7 @@ export default {
     const { parsePath, goToAssets } = useNavigation()
     const { validations, validate } = useMaterialValidation()
 
-    await store.dispatch('material/getMaterialOptions')
-    await store.dispatch('material/getMaterial', { materialId: route.params.materialId })
+    const isConfirmedToLeave = ref(false)
 
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const breadcrumbList = computed(() => {
@@ -69,6 +68,7 @@ export default {
       store.dispatch('helper/pushModalLoading')
       await store.dispatch('material/updateMaterial')
       store.dispatch('helper/closeModalLoading')
+      isConfirmedToLeave.value = true
       goToAssets()
     }
 
@@ -77,10 +77,35 @@ export default {
         title: t('EE0045'),
         content: t('EE0046'),
         secondaryText: t('UU0001'),
-        secondaryHandler: goToAssets,
+        secondaryHandler: () => {
+          isConfirmedToLeave.value = true
+          goToAssets()
+        },
         primaryText: t('UU0002')
       })
     }
+
+    onBeforeRouteLeave(async () => {
+      if (isConfirmedToLeave.value) {
+        return true
+      }
+
+      const result = await new Promise((resolve) => {
+        store.dispatch('helper/openModalConfirm', {
+          title: t('EE0045'),
+          content: t('EE0046'),
+          secondaryText: t('UU0001'),
+          secondaryHandler: resolve.bind(undefined, 'confirm'),
+          primaryText: t('UU0002'),
+          primaryHandler: resolve.bind(undefined, 'cancel')
+        })
+      })
+
+      return result === 'confirm'
+    })
+
+    await store.dispatch('material/getMaterialOptions')
+    await store.dispatch('material/getMaterial', { materialId: route.params.materialId })
 
     return {
       validations,

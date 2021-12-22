@@ -46,7 +46,7 @@ export default {
     const { t } = useI18n()
     const fileName = ref('')
     const originalFileName = ref('')
-    const acceptType = ['pdf', 'jpg', 'png', 'zip', 'gif', 'mov', 'mp4']
+    const acceptType = ['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mov', 'mp4']
     const fileOperator = new FileOperator(acceptType, 20)
     let binaryFile
 

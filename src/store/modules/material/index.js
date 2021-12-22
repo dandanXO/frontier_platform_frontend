@@ -159,6 +159,9 @@ const mutations = {
   REMOVE_inventory_item (state, index) {
     state.inventoryList.splice(index, 1)
   },
+  UPDATE_inventoryList_unit (state, unit) {
+    state.inventoryList.forEach(inventory => (inventory.unit = unit))
+  },
   UPDATE_attachmentList (state, attachmentList) {
     state.attachmentList = attachmentList
   }

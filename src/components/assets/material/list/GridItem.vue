@@ -1,20 +1,22 @@
 <template lang="pug">
 div(class="w-full")
   div(
-    class="relative aspect-ratio rounded bg-black-200 border-block-400 border bg-cover mb-2"
-    :class="{'border': neverScanBefore }"
+    class="relative aspect-ratio"
     @mouseenter="handleMouseEnter"
-    @mouseleave="active = false"
+    @mouseleave="isHover = false"
   )
-    img(:src="currentCoverImg" class="w-full h-full rounded")
-    input-checkbox(
-      v-if="active || checked"
-      v-model:inputValue="innerSelectedList"
-      :value="JSON.stringify(material)"
-      class="absolute z-10 top-3 left-3 cursor-pointer"
-      iconColor="text-black-0"
-    )
-    div(v-show="active" class="absolute z-9 inset-0 w-full h-full rounded bg-opacity-70 bg-black-900")
+    div(class="w-full h-full rounded overflow-hidden bg-cover" :class="{'border': neverScanBefore }")
+      img(:src="currentCoverImg" class="w-full h-full")
+    div(v-if="isHover || haveSelectedMoreThanOne" class="absolute z-10 inset-0 w-full h-12")
+      div(class="bg-linear w-full h-full rounded-t-md")
+      input-checkbox(
+        v-model:inputValue="innerSelectedList"
+        :value="JSON.stringify(material)"
+        class="absolute top-3 left-3 cursor-pointer"
+        iconColor="text-black-0"
+        uncheckColor="text-black-0"
+      )
+    div(v-show="isHover" class="absolute z-9 inset-0 w-full h-full rounded bg-opacity-70 bg-black-900")
       div(class="text-black-0 px-7.5 py-10 h-full flex flex-col items-center justify-center text-center" @click.stop="goToAssetMaterialDetail(material)")
         div(class="line-height-1.6 text-body2 font-bold line-clamp-2") {{material.description}}
         div(class="line-height-1.6 text-caption line-clamp-2") {{material.content}}
@@ -50,7 +52,7 @@ div(class="w-full")
                   @click="handleClick(option)"
                 ) {{option.name}}
               div(class="mx-2 my-1" :class="{'border-b': index !== options.length - 1}")
-  div(class="text-primary font-bold text-body1 line-clamp-1 line-height-1.6") {{material.materialNo}}
+  div(class="text-primary font-bold text-body1 line-clamp-1 line-height-1.6 mt-2") {{material.materialNo}}
 </template>
 
 <script>
@@ -112,20 +114,21 @@ export default {
     ]
 
     const randomKey = ref(0)
-    const active = ref(false)
+    const isHover = ref(false)
 
     const innerSelectedList = computed({
       get: () => props.selectedList,
       set: (v) => emit('update:selectedList', v)
     })
 
-    const checked = computed(() => props.selectedList.includes(JSON.stringify(props.material)))
+    const haveSelectedMoreThanOne = computed(() => props.selectedList.length > 0)
 
     const handleClick = (option) => {
       option.func && option.func(props.material)
     }
+
     const handleMouseEnter = () => {
-      active.value = true
+      isHover.value = true
       randomKey.value++
     }
 
@@ -137,8 +140,8 @@ export default {
       handleMouseEnter,
       currentCoverImg,
       neverScanBefore,
-      active,
-      checked,
+      isHover,
+      haveSelectedMoreThanOne,
       materialInfo,
       goToAssetMaterialDetail
     }
