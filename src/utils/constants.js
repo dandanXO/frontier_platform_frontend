@@ -186,3 +186,8 @@ export const SEARCH_TYPE = {
   WORKSPACE: 2,
   PUBLIC_LIBRARY: 3
 }
+
+export const DISPLAY_NODE = {
+  LIST: 1,
+  GRID: 2
+}
