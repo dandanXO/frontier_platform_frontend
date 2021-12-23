@@ -9,11 +9,11 @@ div(class="w-120 border-t border-black-400")
         @dragover.prevent
         @dragenter.prevent
       )
-        btn(size="md" type="secondary" class="h-10 mb-2" @click="uploadImg") {{$t('BB0035') }}
-        span(class="text-body2 font-bold mb-2 text-black-500") {{$t('BB0033')}}
-        span(class="text-body2 mb-2 text-black-500") {{$t('BB0034')}}
-        span(class="text-body2 mb-2 text-black-500") {{$t('BB0059')}}
-        span(class="text-body2 mb-2 text-black-500") {{$t('BB0060')}}
+        btn(size="md" type="secondary" class="h-10 mb-2" @click="uploadImg") {{$t("MM0020") }}
+        span(class="text-body2 font-bold mb-2 text-black-500") {{$t("MM0021")}}
+        span(class="text-body2 mb-2 text-black-500") {{$t("MM0022")}}
+        span(class="text-body2 mb-2 text-black-500") {{$t("MM0023")}}
+        span(class="text-body2 mb-2 text-black-500") {{$t("MM0024")}}
       svg-icon(
         v-else-if="isUploading"
         iconName="loading"
@@ -35,7 +35,7 @@ import { ImageOperator } from '@/utils/fileOperator.js'
 import { useI18n } from 'vue-i18n'
 
 export default {
-  name: 'ModalUploadLogo',
+  name: 'ModalChangeAvatar',
   props: {
     image: {
       type: String,
