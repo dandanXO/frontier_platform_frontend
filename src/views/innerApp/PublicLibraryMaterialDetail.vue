@@ -8,7 +8,7 @@ div(class="w-full h-full flex justify-center")
         svg-icon(iconName="clone" class="text-black-700 cursor-pointer" size="24" @click="clone")
       i18n-t(keypath="II0002" tag="p" class="text-caption text-black-700")
         template(#displayName) {{publish.displayName}}
-    material-detail-external(:material="material")
+    material-detail-external(:material="material" :publish="publish")
 </template>
 
 <script>

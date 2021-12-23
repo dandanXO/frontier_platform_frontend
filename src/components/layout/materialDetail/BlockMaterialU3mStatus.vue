@@ -2,86 +2,160 @@
 div
   div(class="flex items-center pb-3 text-primary")
     h5(class="text-h5 font-bold") {{$t('RR0132')}}
-    tooltip(placement="top" class="pl-1" :manual='true')
+    tooltip(v-if="!isExternal" placement="top" class="pl-1" :manual='true')
       template(#trigger)
         svg-icon(iconName="info_outline" class='cursor-pointer' size="14")
       template(#content)
         div(class="p-5")
           span(class="text-body2 text-assist-blue underline line-height-1.6 cursor-pointer" @click="openModalU3mInstruction") {{$t('UU0029')}}
-
-  template(v-if="status === U3M_STATUS.UNQUALIFIED")
-    p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0020')}}
-      tooltip(placement="top" class="pl-1" :manual='true')
-        template(#trigger)
-          svg-icon(iconName="info_outline" class='cursor-pointer' size="14")
-        template(#content)
-          div(class="p-5 text-body2 line-height-1.6") {{$t('EE0021')}}
-    btn(v-if="isEditPage" size="md" disabled) {{$t('UU0020')}}
-
-  template(v-if="status === U3M_STATUS.INITIAL")
-    p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0019')}}
-    btn(v-if="isEditPage" size="md" @click="openModalCreate3DMaterial") {{$t('UU0020')}}
-
-  template(v-if="status === U3M_STATUS.PROCESSING")
-    p(class="text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0022')}}
-    btn(v-if="isEditPage" size="md" disabled) {{$t('UU0020')}}
-
-  template(v-if="status === U3M_STATUS.COMPLETED")
-    p(class="text-body2 text-primary line-height-1.6 pb-2 flex flex-wrap items-center gap-2") {{$t('EE0017')}} : {{$t('EE0018')}}
-      a(:href="zipUrl" class="flex items-center text-assist-blue underline cursor-pointer" download) {{$t('EE0081')}}
-        svg-icon(iconName="u3m_download" size="20")
-      a(:href="u3maUrl" target="_blank" class="flex items-center text-assist-blue underline cursor-pointer" download) {{$t('EE0082')}}
-        svg-icon(iconName="u3m_download" size="20")
-    btn(v-if="isEditPage" size="md") {{$t('UU0006')}}
-
-  template(v-if="status === U3M_STATUS.FAIL")
-    p(class="flex items-center text-body2 text-primary line-height-1.6 pb-2") {{$t('EE0017')}} : {{$t('EE0024')}}
-      tooltip(placement="top" class="pl-1")
-        template(#trigger)
-          svg-icon(iconName="info_outline" size="14")
-        template(#content)
-          div(class="p-5 w-71")
-            i18n-t(keypath="EE0023" tag="p")
-              template(#email)
-                span(class="text-assist-blue") support@frontier.cool
-    btn(v-if="isEditPage" size="md" @click="openModalCreate3DMaterial") {{$t('UU0030')}}
+  p(v-if="!isExternal" class="inline-flex items-center text-body2 text-primary line-height-1.6 mr-2.5") {{$t('EE0017')}} : {{u3mStatus}}
+    tooltip(v-if="status === U3M_STATUS.UNQUALIFIED" placement="top" class="pl-1" :manual='true')
+      template(#trigger)
+        svg-icon(iconName="info_outline" class='cursor-pointer' size="14")
+      template(#content)
+        div( class="p-5 line-height-1.6") {{$t('EE0021')}}
+    tooltip(v-if="status === U3M_STATUS.FAIL" placement="top" class="pl-1" :manual='true')
+      template(#trigger)
+        svg-icon(iconName="info_outline" class='cursor-pointer' size="14")
+      template(#content)
+        div( class="text-body2 p-5 whitespace-nowrap")
+          i18n-t(keypath="EE0023" tag="p")
+            template(#email)
+              span(class="text-assist-blue") {{$t("RR0139")}}
+  div(v-if="status === U3M_STATUS.COMPLETED" class="inline-flex text-body2 text-assist-blue gap-2")
+    span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(zipUrl)") {{$t('EE0081')}}
+      svg-icon(iconName="u3m_download" size="20")
+    span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(u3maUrl)") {{$t('EE0082')}}
+      svg-icon(iconName="u3m_download" size="20")
+  btn(size="md" class="mt-2.5" :disabled="disabledCreate" @click="handleClick") {{btnText}}
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { computed, toRefs } from 'vue'
 import { U3M_STATUS } from '@/utils/constants'
 import useAssets from '@/composables/useAssets'
+import { downloadDataURLFile } from '@/utils/fileOperator'
 
 export default {
   name: 'BlockMaterialU3mStatus',
-  setup () {
-    const route = useRoute()
+  props: {
+    locationId: {
+      type: String,
+      validator: (value) => {
+        return [
+          'MaterialDetailInternal',
+          'MaterialDetailExternal',
+          'AssetsMaterialEdit'
+        ].includes(value)
+      },
+      required: true
+    },
+    material: {
+      type: Object,
+      required: true
+    },
+    isCanDownloadU3M: {
+      type: Boolean,
+      default: false
+    }
+  },
+  setup (props) {
+    const { t } = useI18n()
     const store = useStore()
-    const material = computed(() => store.getters['material/material'])
-    const { u3m: { status, zipUrl, u3maUrl } } = material.value
-    const isEditPage = computed(() => route.path.includes('edit'))
     const { create3DMaterial } = useAssets()
+    const { status, zipUrl, u3maUrl, baseImgUrl, normalImgUrl } = toRefs(props.material.u3m)
+    const { UNQUALIFIED, INITIAL, PROCESSING, COMPLETED, FAIL } = U3M_STATUS
+    const showCreateBtn = props.locationId === 'AssetsMaterialEdit'
+    const isExternal = props.locationId === 'MaterialDetailExternal'
 
-    const openModalCreate3DMaterial = () => {
-      create3DMaterial.func(material.value)
+    const u3mStatus = computed(() => {
+      const statusTextPair = {
+        [UNQUALIFIED]: t('EE0020'),
+        [INITIAL]: t('EE0019'),
+        [PROCESSING]: t('EE0022'),
+        [COMPLETED]: t('EE0018'),
+        [FAIL]: t('EE0024')
+      }
+
+      return statusTextPair[status.value]
+    })
+
+    const btnText = computed(() => {
+      const reCreateList = [COMPLETED, FAIL]
+      if (showCreateBtn) {
+        return reCreateList.includes(status.value) ? t('UU0030') : t('UU0020')
+      } else {
+        return t('UU0006')
+      }
+    })
+
+    const disabledCreate = computed(() => {
+      const disableCreateList = [UNQUALIFIED, PROCESSING, FAIL]
+      if (showCreateBtn) {
+        return disableCreateList.includes(status.value)
+      } else {
+        return false
+      }
+    })
+
+    const downloadU3m = (url) => {
+      if (isExternal && !props.isCanDownloadU3M) {
+        store.dispatch('helper/openModalConfirm', {
+          title: t('II0003'),
+          content: t('II0004'),
+          primaryText: t('UU0031')
+        })
+      } else {
+        downloadDataURLFile(url)
+      }
+    }
+
+    const handleClick = () => {
+      if (showCreateBtn) {
+        create3DMaterial.func(props.material)
+      } else {
+        status.value === COMPLETED
+          ? openModalViewer()
+          : store.dispatch('helper/openModalConfirm', {
+            title: isExternal ? t('II0005') : t('EE0029'),
+            content: isExternal ? t('II0006') : t('EE0030'),
+            primaryText: t('UU0031')
+          })
+      }
     }
 
     const openModalU3mInstruction = () => {
       store.dispatch('helper/openModal', {
-        component: 'modal-u3m-instruction'
+        component: 'modal-u3m-instruction',
+        properties: {
+          isAllowCreate: props.locationId === 'AssetsMaterialEdit'
+        }
+      })
+    }
+
+    const openModalViewer = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-viewer',
+        properties: {
+          baseImgUrl: baseImgUrl.value,
+          normalImgUrl: normalImgUrl.value
+        }
       })
     }
 
     return {
-      material,
       status,
+      U3M_STATUS,
+      isExternal,
+      btnText,
+      u3mStatus,
       zipUrl,
       u3maUrl,
-      U3M_STATUS,
-      isEditPage,
-      openModalCreate3DMaterial,
+      disabledCreate,
+      downloadU3m,
+      handleClick,
       openModalU3mInstruction
     }
   }

@@ -10,9 +10,12 @@ div(class="w-213.5 px-8")
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n'
+
 export default {
   name: 'ModalTermsOfUse',
   setup () {
+    const { t } = useI18n()
     const title = 'Frontier Terms of Use'
     const introduction = 'Frontier is a collaborative digital platform for the textile industry. Frontier allows members to search for or upload digital content and seek matching opportunities with other members.The Terms of Use (hereinafter referred to as "Terms") apply to all websites located on and linked to the Frontier.cool domain (hereinafter referred to as "Frontier"  "We"  "Our") and Frontier is the property of Frontier.cool Inc., its subsidiaries and its affiliates (hereinafter referred to as "Frontier Service Group").'
     const sectionList = [
@@ -154,11 +157,11 @@ export default {
       },
       {
         title: 'Report',
-        content: 'If you find any violation of these Terms, please notify Frontier by emailing support@frontier.cool'
+        content: `If you find any violation of these Terms, please notify Frontier by emailing ${t('RR0139')}`
       },
       {
         title: 'Contact Us',
-        content: 'If you have any questions about these Terms of Service or our information handling practices, please contact us by email at support@frontier.cool'
+        content: `If you have any questions about these Terms of Service or our information handling practices, please contact us by email at ${t('RR0139')}`
       }
     ]
     return {
