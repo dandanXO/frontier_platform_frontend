@@ -88,5 +88,9 @@ export default {
   removeAvatar: ({ orgId }) => axios('/org/user/remove-avatar', {
     method: 'POST',
     data: { orgId }
+  }),
+  readNotification: ({ orgId }) => axios('/org/user/read-notification', {
+    method: 'POST',
+    data: { orgId }
   })
 }

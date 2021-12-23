@@ -56,7 +56,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
                       div {{pantone.majorColorName}}
               p(class="text-body2 text-primary") {{pantone.name}}
               svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removePantone(pantone.materialPantoneId)")
-        block-material-u3m-status
+        block-material-u3m-status(locationId="AssetsMaterialEdit" :material="material")
 </template>
 
 <script>

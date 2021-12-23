@@ -12,14 +12,22 @@ div(class="w-100 px-8 text-center")
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 export default {
   name: 'ModalVerifyNotification',
   setup () {
+    const { t } = useI18n()
     const store = useStore()
 
-    const resendVerifyEmail = () => store.dispatch('user/resendVerifyEmail')
-    const closeModal = () => store.dispatch('helper/closeModal')
+    const resendVerifyEmail = () => {
+      store.dispatch('user/resendVerifyEmail')
+      closeModal()
+    }
+    const closeModal = () => {
+      store.dispatch('helper/closeModal')
+      store.commit('helper/PUSH_message', t('AA0087'))
+    }
 
     return {
       resendVerifyEmail,

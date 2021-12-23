@@ -124,7 +124,7 @@ export default function useAssets () {
         case U3M_STATUS.INITIAL:
           if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
             store.dispatch('helper/openModal', {
-              component: 'modal-u3m-priview',
+              component: 'modal-u3m-preview',
               header: t('EE0067')
             })
           } else {
@@ -147,15 +147,13 @@ export default function useAssets () {
           })
           break
         case U3M_STATUS.FAIL:
-          store.dispatch('helper/openModalConfirm', {
-            title: t('EE0073'),
-            content: t('EE0074'),
-            primaryText: t('UU0031')
+          store.dispatch('helper/openModal', {
+            component: 'modal-u3m-create-fail'
           })
           break
         default:
           store.dispatch('helper/openModal', {
-            component: 'modal-u3m-priview',
+            component: 'modal-u3m-preview',
             header: t('EE0067')
           })
       }

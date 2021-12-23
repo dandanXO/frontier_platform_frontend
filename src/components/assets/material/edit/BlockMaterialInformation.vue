@@ -6,12 +6,20 @@ div(class="pb-15 border-b border-black-400")
       v-if="isEditMode"
       size="sm"
       type="secondary"
-      :disabled="!getSampleCardImage"
+      :disabled="hideSampleCard"
       @click="isOpenSampleCard = !isOpenSampleCard"
     ) {{isOpenSampleCard ? $t('UU0026') : $t('UU0033')}}
   div
     div(class="flex")
       div(class="grid gap-y-7.5 flex-grow" :class="{ 'px-15': !isOpenSampleCard }")
+        input-text(
+          v-if="isEditMode"
+          :textValue="material.frontierNo"
+          :label="$t('RR0084')"
+          disabled
+          :clearable="false"
+          class="w-50"
+        )
         input-text(
           v-model:textValue="material.materialNo"
           :placeholder="$t('DD0015')"
@@ -146,21 +154,18 @@ div(class="pb-15 border-b border-black-400")
           class="relative z-9"
         )
       div(v-if="isOpenSampleCard" class="flex-shrink-0 w-75 h-75 ml-8 sticky top-0")
-        div(class="w-full h-full overflow-hidden mb-7.5 rounded")
-          img(:src="getSampleCardImage" :style="rotateStyle")
-        input-range(
-          v-model:range="rotationAngle"
-          :min="-180"
-          :max="180"
-          :height="2"
-          :width="166"
-          :startAtCenter="true"
-          class="w-fit m-auto"
+        cropper-default-layout(
+          :showScale="true"
+          :config="config"
+          @update:rotateDeg="config.rotateDeg = $event"
+          @update:scaleRatio="config.scaleRatio = $event"
         )
-          template(#min-end="{min}")
-            div(class="text-primary text-body2") {{min}}°
-          template(#max-end="{max}")
-            div(class="text-primary text-body2") {{max}}°
+          template(#imageCropArea)
+            image-crop-area(
+              :config="config"
+              :cropRectSize="cropRectSize"
+              @update:options="Object.assign(config.options, $event)"
+            )
     div(class="bg-black-100 px-15 py-12.5 mt-7.5 grid gap-y-7.5")
       h6(class="text-h6 text-black-600 font-bold") {{$t('DD0019')}}
       input-chips(
@@ -177,13 +182,18 @@ div(class="pb-15 border-b border-black-400")
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, reactive } from 'vue'
 import { SIDE_TYPE } from '@/utils/constants'
 import { useStore } from 'vuex'
 import useMaterialEdit from '@/composables/useMaterialEdit'
+import useMaterialImage from '@/composables/useMaterialImage'
+import ImageCropArea from '@/components/cropper/ImageCropArea'
+import CropperDefaultLayout from '@/components/cropper/layout/CropperDefaultLayout'
+import { Cropper } from '@/utils/cropper'
 
 export default {
   name: 'BlockMaterialInformation',
+  components: { CropperDefaultLayout, ImageCropArea },
   props: {
     validations: {
       type: Object,
@@ -193,10 +203,11 @@ export default {
   setup () {
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
-    const { isDoubleSideMaterial, sideType, faceSideImg, backSideImg } = material.value
     const isEditMode = computed(() => material.value.materialId !== null)
+    const { isBackSideMaterial, faceSideObj, backSideObj } = useMaterialImage(material.value)
     const isOpenSampleCard = ref(false)
-    const rotationAngle = ref(0)
+    const config = reactive({})
+    const cropRectSize = 300
 
     const {
       specOptions,
@@ -208,21 +219,26 @@ export default {
       addFinishOption
     } = useMaterialEdit(material.value)
 
-    const getSampleCardImage = computed(() => {
-      if (isDoubleSideMaterial) {
-        return faceSideImg.original
-      } else if (sideType === SIDE_TYPE.FACE) {
-        return faceSideImg.original
+    const hideSampleCard = computed(() => {
+      if (faceSideObj) {
+        return false
+      } else if (isBackSideMaterial && backSideObj) {
+        return false
       } else {
-        return backSideImg.original
+        return true
       }
     })
 
-    const rotateStyle = computed(() => {
-      return {
-        transform: `rotate(${rotationAngle.value}deg)`
+    const getCropperConfig = async () => {
+      if (!hideSampleCard.value) {
+        const image = faceSideObj || backSideObj
+        const cropper = new Cropper(image, cropRectSize)
+        await cropper.formatImage()
+        Object.assign(config, cropper.config)
       }
-    })
+    }
+
+    getCropperConfig()
 
     watch(
       () => material.value,
@@ -246,9 +262,9 @@ export default {
       addFinishOption,
       isEditMode,
       isOpenSampleCard,
-      getSampleCardImage,
-      rotationAngle,
-      rotateStyle
+      hideSampleCard,
+      config,
+      cropRectSize
     }
   }
 }
