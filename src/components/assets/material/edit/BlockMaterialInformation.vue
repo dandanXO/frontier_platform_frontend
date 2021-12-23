@@ -13,6 +13,14 @@ div(class="pb-15 border-b border-black-400")
     div(class="flex")
       div(class="grid gap-y-7.5 flex-grow" :class="{ 'px-15': !isOpenSampleCard }")
         input-text(
+          v-if="isEditMode"
+          :textValue="material.frontierNo"
+          :label="$t('RR0084')"
+          disabled
+          :clearable="false"
+          class="w-50"
+        )
+        input-text(
           v-model:textValue="material.materialNo"
           :placeholder="$t('DD0015')"
           :label="$t('RR0013')"
