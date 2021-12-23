@@ -77,7 +77,7 @@ export default {
     const { statusIconName, imageList, defaultCoverImgIndex } = useMaterial(material.value)
 
     const uploadMaterialEmail = computed(() => {
-      return store.getters['helper/routeLocation']
+      return store.getters['helper/routeLocation'] === 'org'
         ? store.getters['organization/uploadMaterialEmail']
         : store.getters['group/uploadMaterialEmail']
     })
