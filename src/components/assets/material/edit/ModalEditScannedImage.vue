@@ -29,7 +29,7 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
       input-range(
         v-model:range="scaleSize"
         :min="1"
-        :max="getMaxRatio"
+        :max="21"
         :width="2"
         :height="166"
         :startAtCenter="true"
@@ -73,11 +73,13 @@ export default {
   async setup (props) {
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
+    const { faceSideImg, backSideImg } = material.value
     const scaleSize = ref(4)
     const isExchange = ref(false)
     const faceSide = ref(null)
     const backSide = ref(null)
     const cropRectSize = 176
+    const pxPerCm = 2.54 // 1 dpi = 0.393701 pixel/cm; 1 pixel/cm = 2.54 dpi
     const croppers = []
     let faceSideConfig
     let backSideConfig
@@ -85,19 +87,24 @@ export default {
     const {
       isDoubleSideMaterial,
       isFaceSideMaterial,
-      faceSideObj,
-      backSideObj
+      faceSideUrl,
+      backSideUrl
     } = useMaterialImage(material.value)
 
     watch(
       () => scaleSize.value,
       () => {
-        faceSideConfig.config.scaleRatio = width2Cm(faceSideConfig) / scaleSize.value
-        backSideConfig.config.scaleRatio = width2Cm(backSideConfig) / scaleSize.value
+        faceSideConfig.config.scaleRatio = faceSideConfig.config.image.width * (pxPerCm / faceSideImg.dpi) / scaleSize.value
+        backSideConfig.config.scaleRatio = backSideConfig.config.image.width * (pxPerCm / backSideImg.dpi) / scaleSize.value
       })
 
-    if (faceSideObj) {
-      const faceSideCropper = new Cropper(faceSideObj, cropRectSize, true)
+    if (faceSideUrl) {
+      const faceSideCropper = new Cropper({
+        src: faceSideUrl,
+        dpi: faceSideImg.dpi,
+        cropRectSize,
+        isScannedImage: true
+      })
       await faceSideCropper.formatImage()
       faceSideConfig = reactive({
         ref: 'faceSide',
@@ -106,8 +113,13 @@ export default {
       croppers.push(faceSideConfig)
     }
 
-    if (backSideObj) {
-      const backSideCropper = new Cropper(backSideObj, cropRectSize, true)
+    if (backSideUrl) {
+      const backSideCropper = new Cropper({
+        src: backSideUrl,
+        dpi: backSideImg.dpi,
+        cropRectSize,
+        isScannedImage: true
+      })
       await backSideCropper.formatImage()
       backSideConfig = reactive({
         ref: 'backSide',
@@ -116,36 +128,18 @@ export default {
       croppers.push(backSideConfig)
     }
 
-    const getMaxRatio = computed(() => {
-      // 如果 faceSideObj 或 backSideObj 不存在（值會是 false），那麼這邊寬度一定是 0
-      const faceSideWidth = Math.floor(width2Cm(faceSideConfig) * 10) / 10
-      const backSideWidth = Math.floor(width2Cm(backSideConfig) * 10) / 10
-
-      if (faceSideWidth === 0) {
-        return Math.min(10, backSideWidth)
-      } else if (backSideWidth === 0) {
-        return Math.min(10, faceSideWidth)
-      } else {
-        return Math.min(10, Math.min(faceSideWidth, backSideWidth))
-      }
-    })
-
     const closeModal = () => { store.dispatch('helper/closeModal') }
 
     const confirm = async () => {
       store.dispatch('helper/pushModalLoading')
 
-      const faceSideCropImg = faceSideObj ? await faceSide.value?.cropImage() : null
-      const backSideCropImg = backSideObj ? await backSide.value?.cropImage() : null
+      const faceSideCropImg = faceSideUrl ? await faceSide.value?.cropImage() : null
+      const backSideCropImg = backSideUrl ? await backSide.value?.cropImage() : null
 
       await props.afterCropHandler({ faceSideCropImg, backSideCropImg, isExchange: isExchange.value })
 
       store.dispatch('helper/closeModalLoading')
       closeModal()
-    }
-
-    const width2Cm = (obj) => {
-      return obj.config.image.width * (2.54 / 300)
     }
 
     return {
@@ -156,7 +150,6 @@ export default {
       isDoubleSideMaterial,
       closeModal,
       scaleSize,
-      getMaxRatio,
       confirm,
       isExchange,
       croppers

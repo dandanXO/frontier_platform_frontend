@@ -68,6 +68,7 @@ export default {
     const faceSide = ref(null)
     const backSide = ref(null)
     const material = computed(() => store.getters['material/material'])
+    const { faceSideImg, backSideImg } = material.value
     const cropRectSize = 208
     const croppers = []
     let faceSideConfig
@@ -76,12 +77,18 @@ export default {
     const {
       isDoubleSideMaterial,
       isFaceSideMaterial,
-      faceSideObj,
-      backSideObj
+      faceSideUrl,
+      backSideUrl
     } = useMaterialImage(material.value, 'u3m')
 
-    if (faceSideObj) {
-      const faceSideCropper = new Cropper(faceSideObj, cropRectSize, true)
+    if (faceSideUrl) {
+      const faceSideCropper = new Cropper({
+        src: faceSideUrl,
+        dpi: faceSideImg.dpi,
+        cropRectSize,
+        isScannedImage: true
+      })
+
       await faceSideCropper.formatImage()
       faceSideConfig = reactive({
         ref: 'faceSide',
@@ -91,8 +98,14 @@ export default {
       croppers.push(faceSideConfig)
     }
 
-    if (backSideObj) {
-      const backSideCropper = new Cropper(backSideObj, cropRectSize, true)
+    if (backSideUrl) {
+      const backSideCropper = new Cropper({
+        src: backSideUrl,
+        dpi: backSideImg.dpi,
+        cropRectSize,
+        isScannedImage: true
+      })
+
       await backSideCropper.formatImage()
       backSideConfig = reactive({
         ref: 'backSide',
@@ -110,7 +123,7 @@ export default {
       }
     })
 
-    const hasNext = ref(isDoubleSideMaterial && faceSideObj && backSideObj)
+    const hasNext = ref(isDoubleSideMaterial && faceSideUrl && backSideUrl)
     const isAtSecondStep = ref(false)
     const currentSide = computed(() => {
       return isFaceSideMaterial || (isDoubleSideMaterial && !isAtSecondStep.value)

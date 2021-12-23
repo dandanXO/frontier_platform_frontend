@@ -12,7 +12,7 @@ const image2Object = (url) => {
 }
 
 class Cropper {
-  constructor (src, cropRectSize, isScannedImage = false) {
+  constructor ({ src, dpi, cropRectSize, isScannedImage = false }) {
     this.src = src
     this.cropRectSize = cropRectSize
     this.isScannedImage = isScannedImage
@@ -22,6 +22,7 @@ class Cropper {
         height: 0,
         src: ''
       },
+      dpi: dpi,
       rotateDeg: 0,
       scaleRatio: 1,
       options: {
