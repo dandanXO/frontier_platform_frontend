@@ -20,7 +20,7 @@ import useWorkspace from '@/composables/useWorkspace'
 import MaterialDetailInternal from '@/components/layout/materialDetail/MaterialDetailInternal.vue'
 
 export default {
-  name: 'AssetsMaterialDetail',
+  name: 'WorkspaceMaterialDetail',
   components: {
     MaterialDetailInternal
   },

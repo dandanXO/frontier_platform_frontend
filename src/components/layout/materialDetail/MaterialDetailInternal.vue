@@ -5,7 +5,7 @@ div
     div(class="flex flex-col gap-y-7.5")
       block-material-specification(:material="material")
       block-material-pantone(:pantoneList="material.pantoneList")
-      block-material-u3m-status
+      block-material-u3m-status(locationId="MaterialDetailInternal" :material="material")
   div(class="pt-20 flex flex-col gap-y-10")
     div(class="w-full grid grid-flow-col gap-x-5 justify-start border-b border-black-400")
       div(v-for="tab in tabList" class="cursor-pointer" @click="currentTab = tab.id")

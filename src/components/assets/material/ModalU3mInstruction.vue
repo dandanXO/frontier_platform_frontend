@@ -5,7 +5,9 @@ div(class="w-168 px-8")
   div(class="grid grid-cols-2 gap-12 mb-5")
     div(class="col-span-1")
       img(src="@/assets/images/u3m.png")
-    div(class="col-span-1 text-primary text-body2 line-height-1.6") {{$t("EE0066")}}
+    i18n-t(keypath="EE0066" tag="p" class="col-span-1 text-primary text-body2 line-height-1.6")
+      template(#newline)
+        br
   btn-group(
     class="h-25"
     :secondaryButton="false"
@@ -22,27 +24,41 @@ import { computed } from '@vue/runtime-core'
 
 export default {
   name: 'ModalU3mInstruction',
-  setup () {
+  props: {
+    isAllowCreate: {
+      type: Boolean,
+      default: true
+    }
+  },
+  setup (props) {
     const { t } = useI18n()
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
     const { u3m: { status } } = material.value
 
     const btnText = computed(() => {
-      if (status === U3M_STATUS.UNQUALIFIED) {
-        return t('UU0032')
-      } else if (status === U3M_STATUS.INITIAL) {
-        return t('UU0020')
+      if (props.isAllowCreate) {
+        if (status === U3M_STATUS.UNQUALIFIED) {
+          return t('UU0032')
+        } else if (status === U3M_STATUS.INITIAL) {
+          return t('UU0020')
+        } else {
+          return t('UU0031')
+        }
       } else {
         return t('UU0031')
       }
     })
 
     const btnClickHandler = computed(() => {
-      if (status === U3M_STATUS.UNQUALIFIED) {
-        return openModalHowToScan
-      } else if (status === U3M_STATUS.INITIAL) {
-        return openModalU3mPriview
+      if (props.isAllowCreate) {
+        if (status === U3M_STATUS.UNQUALIFIED) {
+          return openModalHowToScan
+        } else if (status === U3M_STATUS.INITIAL) {
+          return openModalU3mPreview
+        } else {
+          return closeModal
+        }
       } else {
         return closeModal
       }
@@ -55,9 +71,9 @@ export default {
       })
     }
 
-    const openModalU3mPriview = () => {
+    const openModalU3mPreview = () => {
       store.dispatch('helper/replaceModal', {
-        component: 'modal-u3m-priview',
+        component: 'modal-u3m-preview',
         header: t('EE0067')
       })
     }
@@ -68,7 +84,7 @@ export default {
       btnText,
       btnClickHandler,
       openModalHowToScan,
-      openModalU3mPriview
+      openModalU3mPreview
     }
   }
 }

@@ -7,7 +7,7 @@ fullscreen-header
       :primaryText="hasNext ? $t('UU0021') : $t('UU0020')"
       @click:primary="hasNext ? getNext() : confirm()"
       :secondaryText="isAtSecondStep ? $t('UU0004') : $t('UU0002')"
-      @click:secondary="isAtSecondStep ? goBack() : leavePage()"
+      @click:secondary="isAtSecondStep ? goBack() : closeModal()"
     )
   template(#content)
     template(v-for="cropper in croppers")
@@ -44,7 +44,6 @@ fullscreen-header
 
 <script>
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive } from 'vue'
 import useMaterialImage from '@/composables/useMaterialImage'
@@ -55,7 +54,7 @@ import ImageCropArea from '@/components/cropper/ImageCropArea'
 import { Cropper } from '@/utils/cropper'
 
 export default {
-  name: 'AssetsMaterialRecutImage',
+  name: 'ModalU3mRecut',
   components: {
     FullscreenHeader,
     CropperDefaultLayout,
@@ -65,7 +64,6 @@ export default {
   async setup () {
     const { t } = useI18n()
     const store = useStore()
-    const router = useRouter()
     const previewRect = ref(null)
     const faceSide = ref(null)
     const backSide = ref(null)
@@ -151,15 +149,15 @@ export default {
       })
 
       store.dispatch('helper/closeModalLoading')
-      leavePage()
+      closeModal()
 
       store.dispatch('helper/openModal', {
         component: 'modal-u3m-create-success'
       })
     }
 
-    const leavePage = () => {
-      router.go(-1)
+    const closeModal = () => {
+      store.dispatch('helper/closeModal')
     }
 
     return {
@@ -174,7 +172,7 @@ export default {
       getNext,
       goBack,
       confirm,
-      leavePage,
+      closeModal,
       croppers
     }
   }

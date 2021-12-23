@@ -8,7 +8,7 @@ fullscreen-header
       p(class="text-body2 text-primary pl-1") +886-2-27528855
     div(class="flex items-center pl-5")
       svg-icon(iconName="email" size="20" class="text-primary")
-      p(class="text-body2 text-primary pl-1") support@frontier.cool
+      p(class="text-body2 text-primary pl-1") {{$t("RR0139")}}
   template(#content)
     div(class="w-260 mx-auto pb-25")
       div(class="text-center pt-22.5 pb-11")
