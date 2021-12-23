@@ -26,6 +26,7 @@ export default function useAssets () {
       await store.dispatch('assets/carbonCopyMaterial', { materialId: v.materialId })
       store.dispatch('helper/closeModalLoading')
       store.dispatch('helper/reloadInnerApp')
+      store.commit('helper/PUSH_message', t('EE0084'))
     }
   }
 
