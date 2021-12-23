@@ -8,7 +8,7 @@ div(class="w-44 rounded bg-black-100")
     img(v-if="['.png', '.jpg', '.gif'].includes(attachment.extension)" :src="attachment.url" class="max-h-full max-w-full")
     video(v-else-if="['.mov', '.mp4'].includes(attachment.extension)")
       source(:src="attachment.url" type="video/mp4")
-    svg-icon(v-else iconName="folder" size="50" class="text-black-100")
+    svg-icon(v-else iconName="file" size="50" class="text-black-100")
   div(class="h-11 flex justify-between items-center px-3 py-4")
     div(class="text-primary text-caption line-clamp-1") {{attachment.displayFileName}}
     svg-icon(
