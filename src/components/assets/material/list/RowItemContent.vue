@@ -1,15 +1,15 @@
 <template lang="pug">
-div(class='grid grid-rows-4 grid-cols-2 gap-x-14')
+div(class="grid grid-rows-4 grid-cols-2 gap-x-14")
   div(
-    v-for='block in structure'
-    class='w-full min-w-75 max-w-115'
-    :class='[block.class]'
+    v-for="block in structure"
+    class="w-full min-w-75 max-w-115"
+    :class="[block.class]"
   )
-    div(class='flex justify-between pb-2 border-b-2 mb-3')
-      div(class='text-body1 font-bold text-primary') {{block.title}}
-      btn-functional(@click='handleEdit(block)') {{$t('UU0027')}}
-    div(class='grid gap-3')
-      div(v-for='item in block.column' class='text-body2 line-clamp-1') {{item.name}}: {{item.value}}
+    div(class="flex justify-between pb-2 border-b-2 mb-3")
+      div(class="text-body1 font-bold text-primary") {{block.title}}
+      btn-functional(@click="handleEdit(block)") {{$t("UU0027")}}
+    div(class="grid gap-3")
+      div(v-for="(item, key) in block.column" class="text-body2 line-clamp-1" :class="{ 'text-black-700': key === 'frontierNo' }") {{item.name}}: {{item.value}}
 </template>
 
 <script>

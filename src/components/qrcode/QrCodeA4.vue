@@ -6,34 +6,33 @@ div
       div(class="fixed right-0 transform translate-x-full")
         div(class="flex flex-col" ref="pdfTarget")
           template(v-for="(item, index) in list")
-            template(v-for="type in pdfType")
-              div(v-if="currExecOptionIndex === index && printType(item).includes(type)" class="relative flex flex-col justify-between items-center w-148.5 h-210.5 bg-black-0 px-10 py-10")
-                div(class="flex w-full")
-                  img(:src="logo" class="mr-7 w-12.5 h-12.5 flex-shrink-0")
-                  div(class="text-caption text-primary w-full grid gap-y-3")
-                    div(class="text-body1 font-bold") {{item.materialNo}}
-                    div {{$t('RR0014')}} : {{item.description}}
-                    div {{$t('RR0021')}} : {{item.content}}
-                    div {{$t('RR0023')}} : {{item.materialYarnCount}}
-                    div {{$t('RR0024')}} : {{item.materialDensity}}
-                    div {{$t('RR0025')}} : {{item.pattern}}
-                    div {{$t('RR0026')}} : {{item.color}}
-                    div {{$t('RR0015')}} : {{item.materialWeight}}
-                    div {{$t('RR0019')}} : {{item.materialWidth}}
-                    div {{$t('RR0022')}} : {{item.finish}}
-                  div(class="flex flex-col flex-shrink-0 items-center text-primary")
-                    span(class="whitespace-nowrap text-caption mb-2.5 font-bold" :class="[type === pdfType[0] ? '' : backSideClass]") {{type}}
-                    qr-code(:value="type === pdfType[0] ? item.frontierNo : item.relationFrontierNo" :size="60")
-                    span(class="whitespace-nowrap text-caption mt-2.5 scale-90") {{type === pdfType[0] ? item.frontierNo : item.relationFrontierNo}}
-                div(
-                  class="text-black-600 relative flex flex-col items-center justify-center w-full h-97 bg-cover"
-                  :style="{'background-image': 'url('+ require('@/assets/images/pdf-outline.png') +')'}"
-                )
-                  span(class="whitespace-nowrap text-caption mb-2.5") {{type === pdfType[0] ? $t('DD0046') : $t('DD0047') }}
-                  span(class="whitespace-nowrap text-caption") {{$t('DD0050')}}
-                div(class="flex flex-col justify-start items-start w-full")
-                  span(class="mb-2 font-bold text-caption") {{org.orgName}}
-                  span(class="text-caption") {{org.address}}
+            div(v-if="currExecOptionIndex === index" class="relative flex flex-col justify-between items-center w-148.5 h-210.5 bg-black-0 px-10 py-10")
+              div(class="flex w-full")
+                img(:src="logo" class="mr-7 w-12.5 h-12.5 rounded-sm flex-shrink-0")
+                div(class="text-caption text-primary w-full grid gap-y-3")
+                  div(class="text-body1 font-bold") {{item.materialNo}}
+                  div {{$t('RR0014')}} : {{item.description}}
+                  div {{$t('RR0021')}} : {{item.content}}
+                  div {{$t('RR0023')}} : {{item.materialYarnCount}}
+                  div {{$t('RR0024')}} : {{item.materialDensity}}
+                  div {{$t('RR0025')}} : {{item.pattern}}
+                  div {{$t('RR0026')}} : {{item.color}}
+                  div {{$t('RR0015')}} : {{item.materialWeight}}
+                  div {{$t('RR0019')}} : {{item.materialWidth}}
+                  div {{$t('RR0022')}} : {{item.finish}}
+                div(class="flex flex-col flex-shrink-0 items-center text-primary")
+                  span(class="whitespace-nowrap text-caption mb-2.5 font-bold" :class="[item.sideType === SIDE_TYPE.FACE ? '' : backSideClass]") {{item.sideType === SIDE_TYPE.FACE ? $t('DD0046') : $t('DD0047') }}
+                  qr-code(:value="item.frontierNo" :size="60")
+                  span(class="whitespace-nowrap text-caption mt-2.5 scale-90") {{item.frontierNo}}
+              div(
+                class="text-black-600 relative flex flex-col items-center justify-center w-full h-97 bg-cover"
+                :style="{'background-image': 'url('+ require('@/assets/images/pdf-outline.png') +')'}"
+              )
+                span(class="whitespace-nowrap text-caption mb-2.5") {{item.sideType === SIDE_TYPE.FACE ? $t('DD0046') : $t('DD0047') }}
+                span(class="whitespace-nowrap text-caption") {{$t('DD0050')}}
+              div(class="flex flex-col justify-start items-start w-full")
+                span(class="mb-2 font-bold text-caption") {{org.orgName}}
+                span(class="text-caption") {{org.address}}
 </template>
 
 <script>
@@ -53,39 +52,37 @@ export default {
     const isShown = ref(false)
     const currExecOptionIndex = ref(0)
     const pdfTarget = ref(null)
-    const pdfType = ['FACE SIDE', 'BACK SIDE']
     const backSideClass = 'text-black-0 py-1.5 px-2 bg-primary rounded-sm'
 
     const org = computed(() => store.getters['organization/organization'])
     const logo = computed(() => store.getters['organization/orgLogo'])
     const list = reactive([])
 
-    const printType = (material) => {
-      const arr = []
-      if (material.isDoubleSideMaterial) {
-        arr.push(...pdfType)
-      } else if (material.sideType === SIDE_TYPE.FACE) {
-        arr.push(pdfType[0])
-      } else if (material.sideType === SIDE_TYPE.BACK) {
-        arr.push(pdfType[1])
-      }
-      return arr
-    }
-
     const generatePdf = async (materialList) => {
       store.dispatch('helper/pushModalLoading')
       list.length = 0
-
-      materialList.forEach(material => {
-        if (typeof material === 'string') {
-          list.push(JSON.parse(material))
-        } else {
-          list.push(material)
-        }
-      })
-
       isShown.value = true
       currExecOptionIndex.value = 0
+
+      materialList.forEach(material => {
+        const tempMaterial = typeof material === 'string' ? JSON.parse(material) : material
+        const { isDoubleSideMaterial, frontierNo, relationFrontierNo } = tempMaterial
+
+        if (isDoubleSideMaterial) {
+          list.push({
+            ...tempMaterial,
+            frontierNo,
+            sideType: SIDE_TYPE.FACE
+          })
+          list.push({
+            ...tempMaterial,
+            frontierNo: relationFrontierNo,
+            sideType: SIDE_TYPE.BACK
+          })
+        } else {
+          list.push(tempMaterial)
+        }
+      })
 
       list.forEach((item) => {
         const { materialInfo } = useMaterial(item)
@@ -151,13 +148,12 @@ export default {
       list,
       org,
       logo,
-      pdfType,
       backSideClass,
       generatePdf,
       isShown,
       pdfTarget,
-      printType,
-      currExecOptionIndex
+      currExecOptionIndex,
+      SIDE_TYPE
     }
   }
 }

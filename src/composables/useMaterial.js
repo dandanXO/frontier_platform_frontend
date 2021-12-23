@@ -33,7 +33,8 @@ export default function useMaterial (material) {
     hangersLocation,
     publicPrice,
     privatePrice,
-    attachmentList
+    attachmentList,
+    frontierNo
   } = material
 
   const scanFaceSide = !!faceSideImg?.crop
@@ -179,6 +180,7 @@ export default function useMaterial (material) {
   }
 
   const materialInfo = reactive({
+    frontierNo: { name: i18n.global.t('RR0084'), value: frontierNo },
     content: { name: i18n.global.t('RR0021'), value: content },
     yarn: { name: i18n.global.t('RR0023'), value: warpYarnCount > 0 && weftYarnCount > 0 ? `${warpYarnCount} X ${weftYarnCount}` : '' },
     density: { name: i18n.global.t('RR0024'), value: warpDensity > 0 && weftDensity > 0 ? `${warpDensity} X ${weftDensity}` : '' },
@@ -199,6 +201,7 @@ export default function useMaterial (material) {
     return Object.fromEntries(
       Object.entries(materialInfo)
         .filter(([key]) => [
+          'frontierNo',
           'content',
           'yarn',
           'density',
