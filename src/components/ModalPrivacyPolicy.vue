@@ -10,9 +10,12 @@ div(class="w-213.5 px-8")
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n'
+
 export default {
   name: 'ModalPrivacyPolicy',
   setup () {
+    const { t } = useI18n()
     const title = 'FRONTIER PRIVACY POLICY'
     const introduction = 'On Frontier\'s website, Frontier.cool (hereinafter referred to as "Frontier", "We", "Our"), we value your privacy rights sincerely, and this privacy policy describes how we collect your personal data, how it is processed and used, as well as how you can manage and control the related information about you collected through Frontier. We recommend that you read this Privacy Policy and our User’s Terms of Use carefully before using our website, services and transact with us. By continuing to use Frontier, you are accepting the practices described in this Privacy Policy and agreeing to our collection, processing and use of your personal data.'
     const sectionList = [
@@ -159,7 +162,7 @@ export default {
       {
         title: 'Third-Party Links',
         content: `
-          If you have any question about this privacy policy, please feel free to contact us by email at: support@frontier.cool
+          If you have any question about this privacy policy, please feel free to contact us by email at: ${t('RR0139')}
         `
       }
     ]

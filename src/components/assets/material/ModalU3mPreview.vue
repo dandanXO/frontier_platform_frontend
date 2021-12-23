@@ -21,7 +21,7 @@ div(:class="{'w-86': !isDoubleSideMaterial, 'w-168':isDoubleSideMaterial}")
     :primaryText="$t('UU0038')"
     @click:primary="handleCreateU3mAuto()"
     :secondaryText="$t('UU0039')"
-    @click:secondary="handleRecutMaterial()"
+    @click:secondary="handleRecutImage()"
   )
 </template>
 
@@ -29,15 +29,13 @@ div(:class="{'w-86': !isDoubleSideMaterial, 'w-168':isDoubleSideMaterial}")
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import useNavigation from '@/composables/useNavigation'
 import useMaterialImage from '@/composables/useMaterialImage'
 
 export default {
-  name: 'ModalU3mPriview',
+  name: 'ModalU3mPreview',
   setup () {
     const { t } = useI18n()
     const store = useStore()
-    const { goToAssetsMaterialRecutImage } = useNavigation()
     const material = computed(() => store.getters['material/material'])
     const { faceSideImg, backSideImg } = material.value
     const {
@@ -48,9 +46,10 @@ export default {
       isBackSideU3mCropExist
     } = useMaterialImage(material.value)
 
-    const handleRecutMaterial = () => {
-      goToAssetsMaterialRecutImage()
-      store.dispatch('helper/closeModal')
+    const handleRecutImage = () => {
+      store.dispatch('helper/replaceModal', {
+        component: 'modal-u3m-recut'
+      })
     }
 
     const handleCreateU3mAuto = async () => {
@@ -70,7 +69,7 @@ export default {
       backSideImg,
       isFaceSideU3mCropExist,
       isBackSideU3mCropExist,
-      handleRecutMaterial,
+      handleRecutImage,
       handleCreateU3mAuto
     }
   }

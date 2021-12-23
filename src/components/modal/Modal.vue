@@ -48,16 +48,18 @@ export default {
     ModalAssetsList: defineAsyncComponent(() => import('@/components/assets/material/ModalAssetsList.vue')),
     ModalVerifyNotification: defineAsyncComponent(() => import('@/components/lobby/ModalVerifyNotification.vue')),
     ModalU3mInstruction: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mInstruction')),
-    ModalU3mPriview: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mPriview')),
+    ModalU3mPreview: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mPreview')),
     ModalU3mSelectFileFormat: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mSelectFileFormat')),
+    ModalU3mCreateSuccess: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mCreateSuccess')),
+    ModalU3mCreateFail: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mCreateFail')),
+    ModalU3mRecut: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mRecut')),
     ModalPublish: defineAsyncComponent(() => import('@/components/workspace/ModalPublish.vue')),
     ModalPublicLibraryCollectionDetail: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryCollectionDetail.vue')),
     ModalOrgUserProfile: defineAsyncComponent(() => import('@/components/account/ModalOrgUserProfile.vue')),
     ModalChangePassword: defineAsyncComponent(() => import('@/components/account/ModalChangePassword.vue')),
     ModalPersonalProfile: defineAsyncComponent(() => import('@/components/lobby/ModalPersonalProfile.vue')),
     ModalPrivacyPolicy: defineAsyncComponent(() => import('@/components/ModalPrivacyPolicy.vue')),
-    ModalTermsOfUse: defineAsyncComponent(() => import('@/components/ModalTermsOfUse.vue')),
-    ModalU3mCreateSuccess: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mCreateSuccess'))
+    ModalTermsOfUse: defineAsyncComponent(() => import('@/components/ModalTermsOfUse.vue'))
   },
   props: {
     component: {
