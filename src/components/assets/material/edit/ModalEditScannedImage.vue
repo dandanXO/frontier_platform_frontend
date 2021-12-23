@@ -102,8 +102,7 @@ export default {
       const faceSideCropper = new Cropper({
         src: faceSideUrl,
         dpi: faceSideImg.dpi,
-        cropRectSize,
-        isScannedImage: true
+        cropRectSize
       })
       await faceSideCropper.formatImage()
       faceSideConfig = reactive({
@@ -117,8 +116,7 @@ export default {
       const backSideCropper = new Cropper({
         src: backSideUrl,
         dpi: backSideImg.dpi,
-        cropRectSize,
-        isScannedImage: true
+        cropRectSize
       })
       await backSideCropper.formatImage()
       backSideConfig = reactive({
