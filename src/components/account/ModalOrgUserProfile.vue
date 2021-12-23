@@ -6,7 +6,7 @@ div(class="w-101 px-8")
       img(:src="avatar" class="w-30 h-30 rounded-full bg-black-500")
       div(
         class="absolute flex justify-center items-center right-0 bottom-0 w-8 h-8 rounded-full bg-black-0 border-4 border-black-200 cursor-pointer"
-        @click=""
+        @click="openModalChangeAvatar"
       )
         svg-icon(iconName="camera" size="20" class="text-black-500 hover:text-brand")
     p(class="text-body2 text-primary pb-3") {{orgUser.email}}
@@ -30,12 +30,14 @@ div(class="w-101 px-8")
 </template>
 
 <script>
+import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 
 export default {
   name: 'ModalOrgUserProfile',
   setup () {
+    const { t } = useI18n()
     const store = useStore()
     const orgUser = computed(() => store.getters['user/orgUser/orgUser'])
     const avatar = computed(() => store.getters['user/orgUser/avatar'])
@@ -47,11 +49,42 @@ export default {
       store.dispatch('helper/clearModalPipeline')
     }
 
+    const openModalChangeAvatar = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-change-avatar',
+        header: t('MM0019'),
+        properties: {
+          // pure logo no preprocessing
+          image: orgUser.value.avatar,
+          removeHandler: async () => {
+            await store.dispatch('user/orgUser/removeAvatar')
+          },
+          afterUploadHandler: (imageObj, cropRectSize) => {
+            store.dispatch('helper/replaceModal', {
+              component: 'modal-crop-image',
+              header: t('BB0032'),
+              properties: {
+                image: imageObj,
+                cropRectSize,
+                afterCropHandler: async (cropImage, originalImage) => {
+                  await store.dispatch('user/orgUser/updateAvatar', {
+                    avatar: cropImage,
+                    originalAvatar: originalImage
+                  })
+                }
+              }
+            })
+          }
+        }
+      })
+    }
+
     return {
       displayName,
       orgUser,
       avatar,
-      updateDisplayName
+      updateDisplayName,
+      openModalChangeAvatar
     }
   }
 }
