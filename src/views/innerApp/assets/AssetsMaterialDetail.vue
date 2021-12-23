@@ -3,14 +3,14 @@ div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
     breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)" class="pt-12 pb-9")
     div(class="pb-7.5")
-      div(class="flex items-center pb-2")
-        h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{`${material.materialNo} ${material.description}`}}
+      div(class="flex items-start pb-2")
+        h5(class="text-h5 text-primary font-bold line-height-1.6 pr-3 break-all") {{`${material.materialNo} ${material.description}`}}
         tooltip(placement="bottom")
           template(#trigger)
             svg-icon(iconName="create" class="text-black-700 hover:text-brand cursor-pointer" size="24" @click="goToAssetMaterialEdit(material)")
           template(#content)
             p(class="text-caption text-primary px-3 py-1") {{$t('RR0054')}}
-      p(class="text-caption text-black-700") {{$t('EE0014')}} : {{new Date(material.updateDate).toLocaleString().replace(', ', ' at ')}}
+      p(class="text-caption text-black-700") {{$t('EE0014')}} : {{new Date(material.updateDate * 1000).toLocaleString().replace(', ', ' at ')}}
     material-detail-internal(:material="material")
 </template>
 

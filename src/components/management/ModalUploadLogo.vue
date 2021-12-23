@@ -87,14 +87,14 @@ export default {
           store.dispatch('helper/pushModalConfirm', {
             title: t('BB0063'),
             content: t('WW0017'),
-            primaryText: t('UU0001')
+            primaryText: t('UU0031')
           })
           break
         case ERROR_CODE.TOO_SMALL:
           store.dispatch('helper/pushModalConfirm', {
             title: t('BB0063'),
             content: t('WW0018'),
-            primaryText: t('UU0001')
+            primaryText: t('UU0031')
           })
           break
       }

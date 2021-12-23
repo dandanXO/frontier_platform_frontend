@@ -59,8 +59,8 @@ export default {
 
     const params = reactive({
       isPublic: workspaceNode.value.isPublic,
-      isCanDownloadU3M: workspaceNode.value.isCanClone,
-      isCanClone: workspaceNode.value.isCanDownloadU3M
+      isCanDownloadU3M: workspaceNode.value.isCanDownloadU3M,
+      isCanClone: workspaceNode.value.isCanClone
     })
 
     const publishNode = async () => {

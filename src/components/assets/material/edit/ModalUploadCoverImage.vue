@@ -1,25 +1,25 @@
 <template lang="pug">
-div(class='w-115 px-7.5')
-  div(class='text-h6 text-primary text-center font-bold') {{$t('DD0054')}}
-  p(class="text-caption text-black-600 text-right mb-1.5") *{{$t('AA0031')}}
-  div(class='mb-7.5')
+div(class="w-115 px-7.5")
+  div(class="text-h6 text-primary text-center font-bold") {{$t("EE0087")}}
+  p(class="text-caption text-black-600 text-right mb-1.5") *{{$t("AA0031")}}
+  div(class="mb-7.5")
     input-text-btn(
       class="w-full"
       disabledInput
-      :label="$t('DD0038')"
+      :label="$t('EE0088')"
       :textValue="originalFileName"
       :clearable="false"
       :buttonLabel="$t('UU0025')"
       @click:button="chooseFile"
       required
     )
-    p(class='text-primary text-caption line-height-1.6') {{$t('DD0055')}}
-    p(class='text-primary text-caption line-height-1.6') {{$t('DD0056')}}
+    p(class="text-primary text-caption line-height-1.6") {{$t("EE0089")}}
+    p(class="text-primary text-caption line-height-1.6") {{$t("EE0090")}}
   div
     input-text(
       v-model:textValue="fileName"
-      :label="$t('DD0057')"
-      :placeholder="$t('DD0058')"
+      :label="$t('EE0091')"
+      :placeholder="$t('EE0092')"
       required
     )
   div(class="h-25 flex justify-center items-center")
@@ -35,7 +35,7 @@ import { useI18n } from 'vue-i18n'
 import { FileOperator } from '@/utils/fileOperator'
 
 export default {
-  name: 'ModalUploadAttachment',
+  name: 'ModalUploadCoverImage',
   props: {
     uploadHandler: {
       type: Function
@@ -46,7 +46,7 @@ export default {
     const { t } = useI18n()
     const fileName = ref('')
     const originalFileName = ref('')
-    const acceptType = ['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mov', 'mp4']
+    const acceptType = ['jpg', 'jpeg', 'png']
     const fileOperator = new FileOperator(acceptType, 6)
     let binaryFile
 
@@ -65,15 +65,15 @@ export default {
       switch (errorCode) {
         case ERROR_CODE.INVALID_TYPE:
           store.dispatch('helper/pushModalConfirm', {
-            title: t('BB0063'),
-            content: t('DD0065'),
+            title: t('EE0093'),
+            content: t('EE0094'),
             primaryText: t('UU0031')
           })
           break
         case ERROR_CODE.EXCEED_LIMIT:
           store.dispatch('helper/pushModalConfirm', {
-            title: t('BB0063'),
-            content: t('DD0066'),
+            title: t('EE0093'),
+            content: t('EE0095'),
             primaryText: t('UU0031')
           })
           break

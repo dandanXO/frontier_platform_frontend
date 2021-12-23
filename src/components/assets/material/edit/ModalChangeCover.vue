@@ -6,7 +6,7 @@ div(class="w-131 px-8")
       p(class="text-body2 font-bold text-primary pb-4.5") {{$t('EE0048')}}
       overlay-scrollbar-container(class="min-h-31" :class="{ 'h-66': imageList.length > 3 }")
         div(class="grid grid-cols-4 gap-x-5 gap-y-4.5")
-          div(class="h-25 rounded border border-dashed border-black-500 flex justify-center items-center cursor-pointer" @click="openModalUploadAttachment")
+          div(class="h-25 rounded border border-dashed border-black-500 flex justify-center items-center cursor-pointer" @click="openModalUploadCoverImage")
             svg-icon(iconName="add" size="24" class="text-primary")
           template(v-for="(image, index) in imageList")
             label(v-if="!hideNotExistSide(index)" class="h-30.5")
@@ -28,7 +28,7 @@ div(class="w-131 px-8")
 
 <script>
 import { useStore } from 'vuex'
-import { computed, ref } from 'vue'
+import { computed, ref, toRefs } from 'vue'
 import { COVER_MODE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { image2Object } from '@/utils/cropper'
@@ -41,20 +41,23 @@ export default {
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
     const coverImageIndex = ref(0)
-    const { coverMode, attachmentList } = material.value
+    const { coverMode, attachmentList } = toRefs(material.value)
     const { isFaceSideMaterial, isBackSideMaterial } = useMaterialImage(material.value)
-    const attachmentImageList = attachmentList.filter(attachment => {
-      const splitedUrl = attachment.url.split('.')
-      const fileType = splitedUrl[splitedUrl.length - 1]
-      return ['jpg', 'jpeg', 'png'].includes(fileType)
+
+    const attachmentImageList = computed(() => {
+      return attachmentList.value.filter(attachment => {
+        const splitedUrl = attachment.url.split('.')
+        const fileType = splitedUrl[splitedUrl.length - 1]
+        return ['jpg', 'jpeg', 'png'].includes(fileType)
+      })
     })
 
-    if (coverMode === COVER_MODE.FACE) {
+    if (coverMode.value === COVER_MODE.FACE) {
       coverImageIndex.value = 0
-    } else if (coverMode === COVER_MODE.BACK) {
+    } else if (coverMode.value === COVER_MODE.BACK) {
       coverImageIndex.value = 1
-    } else if (coverMode === COVER_MODE.SUP) {
-      coverImageIndex.value = attachmentImageList.findIndex(attachment => attachment.isCover) + 2
+    } else if (coverMode.value === COVER_MODE.SUP) {
+      coverImageIndex.value = attachmentImageList.value.findIndex(attachment => attachment.isCover) + 2
     }
 
     const imageList = computed(() => {
@@ -63,8 +66,8 @@ export default {
 
       list.push({ name: t('RR0075'), imgSrc: faceSideImg.crop }, { name: t('RR0078'), imgSrc: backSideImg.crop })
 
-      for (let i = 0; i < attachmentImageList.length; i++) {
-        const { materialAttachmentId, displayFileName, url } = attachmentImageList[i]
+      for (let i = 0; i < attachmentImageList.value.length; i++) {
+        const { materialAttachmentId, displayFileName, url } = attachmentImageList.value[i]
 
         list.push({
           materialAttachmentId,
@@ -108,9 +111,9 @@ export default {
       }
     }
 
-    const openModalUploadAttachment = () => {
+    const openModalUploadCoverImage = () => {
       store.dispatch('helper/pushModal', {
-        component: 'modal-upload-attachment',
+        component: 'modal-upload-cover-image',
         properties: {
           uploadHandler: (file, fileName) => {
             store.dispatch('material/uploadAttachmentWhenUpdate', {
@@ -137,7 +140,7 @@ export default {
     return {
       choose,
       closeModal,
-      openModalUploadAttachment,
+      openModalUploadCoverImage,
       imageList,
       coverImageIndex,
       hideNotExistSide
