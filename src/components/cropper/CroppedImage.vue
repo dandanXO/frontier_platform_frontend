@@ -6,6 +6,7 @@ div(class="cropped-image" :style="rotateStyle")
         img(
           ref="body"
           draggable="false"
+          class="w-full h-full"
           :class="{'opacity-30': isTransparent}"
           :src="config.image.src"
           @mousedown.left.stop="moveStart"
@@ -141,13 +142,42 @@ export default {
     const moving = (event) => {
       event.preventDefault()
 
-      const offsetPos = getMouseRelPoint(event, initialPos)
-      const rotatedOffset = getRotatedOffset(offsetPos)
+      if (props.scaleControl) {
+        const width = options.width
+        const height = options.height
 
-      rotatedOffset.x += initImgPos.x
-      rotatedOffset.y += initImgPos.y
+        const baseLine = {
+          x: -width / 2 + 200 / 2,
+          y: -height / 2 + 200 / 2
+        }
+        const translateLimit = {
+          width: (width - 200) / 2,
+          height: (height - 200) / 2
+        }
 
-      emit('update', rotatedOffset)
+        const offsetPos = getMouseRelPoint(event, initialPos)
+        const rotatedOffset = getRotatedOffset(offsetPos)
+
+        rotatedOffset.x += initImgPos.x
+        rotatedOffset.y += initImgPos.y
+
+        if (Math.abs(rotatedOffset.x - baseLine.x) > translateLimit.width) {
+          rotatedOffset.x = rotatedOffset.x - baseLine.x > 0 ? 0 : 200 - width
+        }
+        if (Math.abs(rotatedOffset.y - baseLine.y) > translateLimit.height) {
+          rotatedOffset.y = rotatedOffset.y - baseLine.y > 0 ? 0 : 200 - height
+        }
+
+        emit('update', rotatedOffset)
+      } else {
+        const offsetPos = getMouseRelPoint(event, initialPos)
+        const rotatedOffset = getRotatedOffset(offsetPos)
+
+        rotatedOffset.x += initImgPos.x
+        rotatedOffset.y += initImgPos.y
+
+        emit('update', rotatedOffset)
+      }
     }
 
     const moveEnd = () => {
