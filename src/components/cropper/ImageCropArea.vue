@@ -6,6 +6,10 @@ div(class="relative")
   div(ref="cropRect" class="overflow-hidden bg-black-0" :style="cropRectStyle")
     div(class="cursor-move" :style="cropRectStyle")
       cropped-image(:config="config" :scaleControl="scaleControl" @update="updateOptions")
+  div(class="corner absolute w-4.5 h-4.5 border-t-2 border-l-2 top-0 left-0 border-primary")
+  div(class="corner absolute w-4.5 h-4.5 border-t-2 border-r-2 top-0 right-0 border-primary")
+  div(class="corner absolute w-4.5 h-4.5 border-b-2 border-l-2 bottom-0 left-0 border-primary")
+  div(class="corner absolute w-4.5 h-4.5 border-b-2 border-r-2 bottom-0 right-0 border-primary")
 </template>
 
 <script>
