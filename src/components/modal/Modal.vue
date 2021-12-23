@@ -37,6 +37,7 @@ export default {
     ModalCloneTo: defineAsyncComponent(() => import('@/components/ModalCloneTo')),
     ModalError: defineAsyncComponent(() => import('@/components/modal/ModalError')),
     ModalUploadAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalUploadAttachment.vue')),
+    ModalUploadCoverImage: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalUploadCoverImage.vue')),
     ModalWorkspaceNodeList: defineAsyncComponent(() => import('@/components/workspace/ModalWorkspaceNodeList.vue')),
     ModalCreateOrEditCollection: defineAsyncComponent(() => import('@/components/workspace/ModalCreateOrEditCollection.vue')),
     ModalCreateCollectionSimple: defineAsyncComponent(() => import('@/components/workspace/ModalCreateCollectionSimple.vue')),
