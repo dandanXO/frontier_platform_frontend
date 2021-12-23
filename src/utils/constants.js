@@ -39,8 +39,14 @@ export const SIDE_TYPE = {
 }
 
 export const WEIGHT_UNIT = {
-  GSM: 1,
-  OZ: 2
+  GSM: {
+    text: i18n.global.t('RR0016'),
+    value: 1
+  },
+  OZ: {
+    text: i18n.global.t('RR0017'),
+    value: 2
+  }
 }
 
 export const INVENTORY_UNIT = {

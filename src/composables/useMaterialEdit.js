@@ -17,8 +17,8 @@ export default function useMaterialEdit (material) {
     weightUnitList: computed(() => {
       return Object.keys(WEIGHT_UNIT)
         .map(key => ({
-          weightUnit: WEIGHT_UNIT[key],
-          name: key.toLowerCase()
+          weightUnit: WEIGHT_UNIT[key].value,
+          name: WEIGHT_UNIT[key].text
         }))
     }),
     descriptionList: computed(() => store.getters['material/code'].descriptionList.concat(newDescriptionList)),
@@ -90,9 +90,9 @@ export default function useMaterialEdit (material) {
         }
         case INVENTORY_UNIT.KG: {
           let gsm
-          if (weightUnit === WEIGHT_UNIT.GSM) {
+          if (weightUnit === WEIGHT_UNIT.GSM.value) {
             gsm = weight
-          } else if (weightUnit === WEIGHT_UNIT.OZ) {
+          } else if (weightUnit === WEIGHT_UNIT.OZ.value) {
             gsm = weight / 0.9114
           }
           return prev + Number(quantity) / gsm / (width * 2.54 / 100)

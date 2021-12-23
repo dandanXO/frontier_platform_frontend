@@ -94,7 +94,6 @@ class FileOperator {
   }
 
   checkFileFormat (file) {
-    console.log('file type: ', file.type)
     const mb = file.size / (1024 ** 2)
     if (!this.validType.includes(file.type)) {
       return this.event.emit('error', this.errorCode.INVALID_TYPE)
