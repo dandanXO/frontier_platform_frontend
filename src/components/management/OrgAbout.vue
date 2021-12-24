@@ -141,9 +141,7 @@ export default {
 
         await store.dispatch('organization/updateOrg', toRaw(orgFormData))
 
-        /**
-         * @todo successful flash message
-         */
+        store.commit('helper/PUSH_message', t('BB0107'))
       } catch (error) {
         console.log(error)
       }
