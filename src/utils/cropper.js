@@ -12,16 +12,17 @@ const image2Object = (url) => {
 }
 
 class Cropper {
-  constructor ({ src, dpi, cropRectSize }) {
+  constructor ({ src, dpi = 0, cropRectSize = 200 }) {
     this.src = src
     this.cropRectSize = cropRectSize
+    this.dpi = dpi
     this.config = {
       image: {
         width: 0,
         height: 0,
         src: ''
       },
-      dpi: dpi,
+      dpi: this.dpi,
       rotateDeg: 0,
       scaleRatio: 1,
       options: {

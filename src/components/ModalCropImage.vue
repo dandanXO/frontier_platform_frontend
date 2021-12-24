@@ -57,7 +57,11 @@ export default {
     const imageCropper = ref(null)
     const isCropping = ref(false)
 
-    const cropper = new Cropper(props.image, props.cropRectSize)
+    const cropper = new Cropper({
+      src: props.image,
+      cropRectSize: props.cropRectSize
+    })
+
     cropper.getConfig()
     const config = reactive(cropper.config)
 
