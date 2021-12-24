@@ -92,5 +92,24 @@ export default {
   readNotification: ({ orgId }) => axios('/org/user/read-notification', {
     method: 'POST',
     data: { orgId }
+  }),
+  sendFeedback: ({ tempFeedbackId, category, comment }) => axios('/user/feedback/send', {
+    method: 'POST',
+    data: { tempFeedbackId, category, comment }
+  }),
+  sendFeedbackAttachment: ({ tempFeedbackId, file }) => {
+    const formData = new FormData()
+    formData.append('tempFeedbackId', tempFeedbackId)
+    formData.append('file', file)
+
+    return axios('/user/feedback/upload-attachment', {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      method: 'POST',
+      data: formData
+    })
+  },
+  removeFeedbackAttachment: ({ tempFeedbackId, feedbackAttachmentId }) => axios('/user/feedback/remove-attachment', {
+    method: 'POST',
+    data: { tempFeedbackId, feedbackAttachmentId }
   })
 }

@@ -197,3 +197,18 @@ export const DISPLAY_NODE = {
   LIST: 1,
   GRID: 2
 }
+
+export const FEEDBACK_CATEGORY = {
+  BUG: {
+    text: i18n.global.t('MM0010'),
+    value: 1
+  },
+  SUGGESTION: {
+    text: i18n.global.t('MM0011'),
+    value: 2
+  },
+  OTHER: {
+    text: i18n.global.t('MM0012'),
+    value: 3
+  }
+}
