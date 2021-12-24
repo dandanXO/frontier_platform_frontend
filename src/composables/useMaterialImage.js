@@ -15,11 +15,11 @@ export default function useMaterialImage (material, type = 'general') {
   const isFaceSideU3mCropExist = !!faceSideImg.u3mCrop
   const isBackSideU3mCropExist = !!backSideImg.u3mCrop
 
-  const faceSideObj = type === 'general'
+  const faceSideUrl = type === 'general'
     ? isFaceSideOriginalExist && faceSideImg.original
     : isFaceSideU3mOriginalExist && faceSideImg.u3mOriginal
 
-  const backSideObj = type === 'general'
+  const backSideUrl = type === 'general'
     ? isBackSideOriginalExist && backSideImg.original
     : isBackSideU3mOriginalExist && backSideImg.u3mOriginal
 
@@ -27,8 +27,8 @@ export default function useMaterialImage (material, type = 'general') {
     isDoubleSideMaterial,
     isFaceSideMaterial,
     isBackSideMaterial,
-    faceSideObj,
-    backSideObj,
+    faceSideUrl,
+    backSideUrl,
     isFaceSideU3mCropExist,
     isBackSideU3mCropExist
   }

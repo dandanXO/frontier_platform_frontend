@@ -6,7 +6,7 @@ import { EventEmitter } from 'events'
 const extension2MimeType = {
   xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   pdf: 'application/pdf',
-  zip: 'application/zip',
+  zip: 'application/zip,application/octet-stream,application/x-zip-compressed,multipart/x-zip',
   jpeg: 'image/jpeg',
   jpg: 'image/jpg',
   png: 'image/png',

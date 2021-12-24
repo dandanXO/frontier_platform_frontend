@@ -7,7 +7,7 @@ div(class="mb-5")
     v-if="showScale"
     v-model:range="scaleSize"
     :min="1"
-    :max="getMaxRatio"
+    :max="21"
     :height="2"
     :width="166"
     :startAtCenter="true"
@@ -54,11 +54,9 @@ export default {
      * scaleRatio 是實際放大倍率，最後要在 CroppedImage 組成 transform: scale(scaleRatio)
      */
     const scaleSize = ref(4)
-    const width2Cm = computed(() => props.config.image?.width * (2.54 / 300))
+    const width2Cm = computed(() => props.config.image?.width * (2.54 / props.config.dpi))
 
     emit('update:scaleRatio', width2Cm.value / scaleSize.value)
-
-    const getMaxRatio = computed(() => Math.min(10, Math.floor(width2Cm.value * 10) / 10))
 
     const innerRotateDeg = computed({
       get () {
@@ -113,7 +111,6 @@ export default {
 
     return {
       scaleSize,
-      getMaxRatio,
       plus,
       minus,
       onBlur,

@@ -12,16 +12,16 @@ const image2Object = (url) => {
 }
 
 class Cropper {
-  constructor (src, cropRectSize, isScannedImage = false) {
+  constructor ({ src, dpi, cropRectSize }) {
     this.src = src
     this.cropRectSize = cropRectSize
-    this.isScannedImage = isScannedImage
     this.config = {
       image: {
         width: 0,
         height: 0,
         src: ''
       },
+      dpi: dpi,
       rotateDeg: 0,
       scaleRatio: 1,
       options: {
@@ -53,28 +53,15 @@ class Cropper {
     const scaledWidth = aspectRatio > 1 ? width / resizeRatio : this.cropRectSize
     const scaledHeight = aspectRatio > 1 ? this.cropRectSize : height / (resizeRatio)
 
-    if (this.isScannedImage) {
-      this.config.options = {
-        x: 0,
-        y: 0,
-        width: this.cropRectSize,
-        height: this.cropRectSize,
-        initWidth: this.cropRectSize,
-        initHeight: this.cropRectSize,
-        imgWidth: this.cropRectSize,
-        imgHeight: this.cropRectSize
-      }
-    } else {
-      this.config.options = {
-        x: this.cropRectSize / 2 - scaledWidth / 2,
-        y: this.cropRectSize / 2 - scaledHeight / 2,
-        width: scaledWidth,
-        height: scaledHeight,
-        initWidth: scaledWidth,
-        initHeight: scaledHeight,
-        imgWidth: scaledWidth,
-        imgHeight: scaledHeight
-      }
+    this.config.options = {
+      x: this.cropRectSize / 2 - scaledWidth / 2,
+      y: this.cropRectSize / 2 - scaledHeight / 2,
+      width: scaledWidth,
+      height: scaledHeight,
+      initWidth: scaledWidth,
+      initHeight: scaledHeight,
+      imgWidth: scaledWidth,
+      imgHeight: scaledHeight
     }
   }
 }

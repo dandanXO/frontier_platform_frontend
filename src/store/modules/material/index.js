@@ -19,7 +19,7 @@ const getDefaultState = () => ({
   description: null,
   descriptionList: [],
   weight: null, // LOCAL VAR
-  weightUnit: WEIGHT_UNIT.GSM,
+  weightUnit: WEIGHT_UNIT.GSM.value,
   weightGsm: 0,
   weightOz: 0,
   weightGy: null,
@@ -179,7 +179,7 @@ const actions = {
       commit('ADD_inventory_item')
     }
     if (data.weightUnit) {
-      state.weight = data.weightUnit === WEIGHT_UNIT.GSM ? data.weightGsm : data.weightOz
+      state.weight = data.weightUnit === WEIGHT_UNIT.GSM.value ? data.weightGsm : data.weightOz
     }
   },
   resetMaterial ({ commit }) {

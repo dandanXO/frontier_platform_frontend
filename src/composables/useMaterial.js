@@ -167,9 +167,9 @@ export default function useMaterial (material) {
   const getWeight = () => {
     const square = String.fromCodePoint(0xB2)
     let html = ''
-    if (weightUnit === WEIGHT_UNIT.GSM) {
+    if (weightUnit === WEIGHT_UNIT.GSM.value) {
       html = weightGsm ? `${weightGsm} g/m${square}(${weightOz} oz/y${square})` : ''
-    } else if (weightUnit === WEIGHT_UNIT.OZ) {
+    } else if (weightUnit === WEIGHT_UNIT.OZ.value) {
       html = weightOz ? `${weightOz} oz/y${square}(${weightGsm} g/m${square})` : ''
     }
 
