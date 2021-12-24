@@ -66,6 +66,7 @@ export default function useAssets () {
             store.dispatch('helper/openModalLoading')
             await store.dispatch('assets/cloneMaterial', { targetLocationList, materialIdList })
             store.dispatch('helper/closeModalLoading')
+            store.commit('helper/PUSH_message', t('EE0056'))
           }
         }
       })
