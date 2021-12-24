@@ -205,6 +205,7 @@ export default {
     const material = computed(() => store.getters['material/material'])
     const isEditMode = computed(() => material.value.materialId !== null)
     const { isBackSideMaterial, faceSideUrl, backSideUrl } = useMaterialImage(material.value)
+    const { faceSideImg, backSideImg } = material.value
     const isOpenSampleCard = ref(false)
     const config = reactive({})
     const cropRectSize = 300
@@ -231,8 +232,12 @@ export default {
 
     const getCropperConfig = async () => {
       if (!hideSampleCard.value) {
-        const image = faceSideUrl || backSideUrl
-        const cropper = new Cropper(image, cropRectSize)
+        const imageObj = faceSideUrl ? faceSideImg : backSideImg
+        const cropper = new Cropper({
+          src: imageObj.original,
+          dpi: imageObj.dpi,
+          cropRectSize
+        })
         await cropper.formatImage()
         Object.assign(config, cropper.config)
       }
