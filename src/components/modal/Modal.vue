@@ -63,7 +63,8 @@ export default {
     ModalPrivacyPolicy: defineAsyncComponent(() => import('@/components/ModalPrivacyPolicy.vue')),
     ModalTermsOfUse: defineAsyncComponent(() => import('@/components/ModalTermsOfUse.vue')),
     ModalMassUpload: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUpload')),
-    ModalMassUploadErrorList: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUploadErrorList'))
+    ModalMassUploadErrorList: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUploadErrorList')),
+    ModalSendFeedback: defineAsyncComponent(() => import('@/components/ModalSendFeedback.vue'))
   },
   props: {
     component: {
