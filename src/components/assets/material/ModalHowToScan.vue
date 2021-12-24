@@ -28,7 +28,7 @@ div(class="w-245")
             template(#activator="{ generatePdf }")
               span(class="cursor-pointer text-body2 text-assist-blue underline line-height-1.6" @click="generatePdf") {{$t('UU0007')}}
   div(class="h-25 flex justify-center items-center")
-    btn(size="md" @click="close") {{$t('EE0018')}}
+    btn(size="md" @click="handleClick") {{btnText ? btnText : $t('EE0018')}}
 </template>
 
 <script>
@@ -45,7 +45,15 @@ export default {
     QrCodeGeneral,
     QrCodeBacksideGeneral
   },
-  setup () {
+  props: {
+    btnText: {
+      type: String
+    },
+    clickHandler: {
+      type: Function
+    }
+  },
+  setup (props) {
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
     const uploadMaterialEmail = computed(() => {
@@ -53,6 +61,15 @@ export default {
         ? store.getters['organization/uploadMaterialEmail']
         : store.getters['group/uploadMaterialEmail']
     })
+    const hasDefineClickHandler = computed(() => typeof props.clickHandler === 'function')
+
+    const handleClick = () => {
+      if (hasDefineClickHandler.value) {
+        props.clickHandler()
+      } else {
+        close()
+      }
+    }
 
     const close = () => {
       store.dispatch('helper/closeModal')
@@ -60,6 +77,7 @@ export default {
 
     return {
       close,
+      handleClick,
       material,
       uploadMaterialEmail
     }
