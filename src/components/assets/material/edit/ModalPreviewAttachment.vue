@@ -1,13 +1,21 @@
 <template lang="pug">
 div(class="w-200")
   div(
-    class="relative h-113 flex justify-center items-center"
+    class="relative h-113 flex flex-col justify-center items-center"
     :class="[extensionInfo[currentAttachment.extension].display === 'video' ? 'bg-black-900' : 'bg-primary-thin']"
   )
     img(v-if="extensionInfo[currentAttachment.extension].display === 'image'" :src="currentAttachment.url" class="max-h-full max-w-full")
     video(v-else-if="extensionInfo[currentAttachment.extension].display === 'video'" class="max-h-113" controls)
       source(:src="currentAttachment.url" type="video/mp4")
     svg-icon(v-else :iconName="extensionInfo[currentAttachment.extension].placeholder" size="110" class="text-primary")
+    a(
+      v-if="extensionInfo[currentAttachment.extension].display === 'open-new-tab'"
+      class="flex items-center"
+      :href="currentAttachment.url"
+      target="_blank"
+    )
+      svg-icon(iconName="open_in_new" size="20" class="text-primary")
+      p(class="text-body2 line-height-1.6 text-primary pl-1.5") {{$t('DD0070')}}
   div(class="h-25 bg-black-0 flex justify-between items-center px-8")
     div(class="text-primary flex")
       span(class="text-h6 mr-5") {{currentAttachment.displayFileName}}
@@ -34,11 +42,12 @@ export default {
     const extensionInfo = {
       '.png': { placeholder: null, display: 'image' },
       '.jpg': { placeholder: null, display: 'image' },
+      '.jpeg': { placeholder: null, display: 'image' },
       '.gif': { placeholder: 'gif_folder', display: 'image' },
       '.mov': { placeholder: 'mov_folder', display: 'video' },
       '.mp4': { placeholder: 'mp4_folder', display: 'video' },
-      '.pdf': { placeholder: 'pdf_folder', display: 'no-priview' },
-      '.zip': { placeholder: 'zip_folder', display: 'no-priview' }
+      '.pdf': { placeholder: 'pdf_folder', display: 'open-new-tab' },
+      '.zip': { placeholder: 'zip_folder', display: 'no-preview' }
     }
     const store = useStore()
     const attachmentList = computed(() => store.getters['material/attachmentList'])

@@ -228,8 +228,9 @@ export default function useMaterial (material) {
 
   const attachmentSortedList = computed(() => {
     const extensionOrder = {
-      '.png': 5,
-      '.jpg': 5,
+      '.png': 7,
+      '.jpg': 6,
+      '.jpeg': 5,
       '.gif': 4,
       '.mov': 3,
       '.mp4': 3,
