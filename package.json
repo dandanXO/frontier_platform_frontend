@@ -15,7 +15,6 @@
     "@popperjs/core": "^2.10.2",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "countries-list": "^2.6.1",
     "dom-to-image": "^2.6.0",
     "html2pdf.js": "^0.10.1",
     "overlayscrollbars": "^1.13.1",
