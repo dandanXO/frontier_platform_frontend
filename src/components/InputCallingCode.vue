@@ -12,7 +12,7 @@ input-text(v-model:textValue="innerTextValue" :class="[classWidth]" :size="size"
       )
         template(#displayItem="{ option }")
           div(class="w-full pl-4 pr-3 border-r rounded-l flex justify-between items-center" :class="[size === 'lg' ? 'h-11' : 'h-9']")
-            i(class="text-h4") {{getEmojiFlag(option.countryCode)}}
+            img(class="w-6 h-6 rounded" :alt="option.countryCode" :src="`http://purecatamphetamine.github.io/country-flag-icons/3x2/${option.countryCode}.svg`")
             svg-icon(
               iconName="arrow-down"
               size="20"
@@ -28,7 +28,7 @@ input-text(v-model:textValue="innerTextValue" :class="[classWidth]" :size="size"
                 :class="[ index === currentIndex ? 'bg-black-200' : '']"
                 @click="select($event, country)"
               )
-                i(class="text-h4 mr-1.5") {{getEmojiFlag(country.countryCode)}}
+                img(class="w-6 h-6 rounded mr-1.5" :alt="country.countryCode" :src="`http://purecatamphetamine.github.io/country-flag-icons/3x2/${country.countryCode}.svg`")
                 span(class="text-body2 text-primary mr-2") {{country.name}}
                 span(class="text-body2 text-black-650") +{{country.phone}}
     span(v-if="innerTextValue !== ''" class="text-primary text-body1 pr-1") {{`(+${callingCode}) `}}
@@ -37,7 +37,6 @@ input-text(v-model:textValue="innerTextValue" :class="[classWidth]" :size="size"
 <script>
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
-import { getEmojiFlag } from 'countries-list'
 
 export default {
   name: 'InputCallingCode',
@@ -89,7 +88,6 @@ export default {
       isExpand,
       inputCountryCode,
       callingCode,
-      getEmojiFlag,
       innerTextValue
     }
   }
