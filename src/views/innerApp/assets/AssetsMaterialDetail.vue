@@ -4,7 +4,7 @@ div(class="w-full h-full flex justify-center")
     breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)" class="pt-12 pb-9")
     div(class="pb-7.5")
       div(class="flex items-start pb-2")
-        h5(class="text-h5 text-primary font-bold line-height-1.6 pr-3 break-all") {{`${material.materialNo} ${material.description}`}}
+        h5(class="text-h5 text-primary font-bold line-height-1.6 pr-3 break-words") {{`${material.materialNo} ${material.description}`}}
         tooltip(placement="bottom")
           template(#trigger)
             svg-icon(iconName="create" class="text-black-700 hover:text-brand cursor-pointer" size="24" @click="goToAssetMaterialEdit(material)")

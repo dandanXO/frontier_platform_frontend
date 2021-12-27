@@ -131,6 +131,13 @@ const actions = {
   },
   updateDisplayMode ({ commit }, mode) {
     commit('UPDATE_displayMode', mode)
+  },
+  async batchUpload ({ rootGetters }, { xlsxFile }) {
+    const { data } = rootGetters['helper/routeLocation'] === 'org'
+      ? await assetsApi.org.batchUpload({ orgId: rootGetters['organization/orgId'], xlsxFile })
+      : await assetsApi.group.batchUpload({ groupId: rootGetters['group/groupId'], xlsxFile })
+
+    return data
   }
 }
 

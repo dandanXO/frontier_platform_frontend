@@ -57,7 +57,8 @@ export default {
           name: t('RR0137')
         },
         {
-          name: t('RR0123')
+          name: t('RR0123'),
+          func: openModal.bind(undefined, 'modal-send-feedback')
         },
         {
           name: t('RR0124')

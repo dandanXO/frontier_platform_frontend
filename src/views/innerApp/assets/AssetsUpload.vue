@@ -36,7 +36,7 @@ div(class="w-full h-full flex justify-center")
         div
           btn(size="md" @click="goToAssetsMaterialCreate") {{$t('UU0008')}}
         div(class="flex gap-x-7.5")
-          btn(size='md' type="secondary") {{$t('UU0009')}}
+          btn(size='md' type="secondary" @click="openModalMassUpload") {{$t('UU0009')}}
           div
             p(class="text-body2 text-black-900") {{$t('DD0009')}}
             div(class="flex items-center gap-x-1")
@@ -94,11 +94,18 @@ export default {
         : store.getters['group/uploadMaterialEmail']
     })
 
+    const openModalMassUpload = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-mass-upload'
+      })
+    }
+
     return {
       locale,
       breadcrumbList,
       uploadMaterialEmail,
-      goToAssetsMaterialCreate
+      goToAssetsMaterialCreate,
+      openModalMassUpload
     }
   }
 }

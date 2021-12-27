@@ -61,7 +61,10 @@ export default {
     ModalChangeAvatar: defineAsyncComponent(() => import('@/components/account/ModalChangeAvatar.vue')),
     ModalPersonalProfile: defineAsyncComponent(() => import('@/components/lobby/ModalPersonalProfile.vue')),
     ModalPrivacyPolicy: defineAsyncComponent(() => import('@/components/ModalPrivacyPolicy.vue')),
-    ModalTermsOfUse: defineAsyncComponent(() => import('@/components/ModalTermsOfUse.vue'))
+    ModalTermsOfUse: defineAsyncComponent(() => import('@/components/ModalTermsOfUse.vue')),
+    ModalMassUpload: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUpload')),
+    ModalMassUploadErrorList: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUploadErrorList')),
+    ModalSendFeedback: defineAsyncComponent(() => import('@/components/ModalSendFeedback.vue'))
   },
   props: {
     component: {

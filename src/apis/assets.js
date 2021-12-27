@@ -29,7 +29,18 @@ export default {
     addToWorkspace: ({ orgId, materialIdList, targetWorkspaceNodeList }) => axios('/org/assets/material/add-to-workspace', {
       method: 'POST',
       data: { orgId, materialIdList, targetWorkspaceNodeList }
-    })
+    }),
+    batchUpload: ({ orgId, xlsxFile }) => {
+      const formData = new FormData()
+      formData.append('orgId', orgId)
+      formData.append('xlsxFile', xlsxFile)
+
+      return axios('/org/assets/material/batch-upload', {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        method: 'POST',
+        data: formData
+      })
+    }
   },
   group: {
     getMaterialList: ({ groupId, pagination, search = null, filter = null }) => axios('/org/group/assets/material/get-list', {
@@ -59,6 +70,17 @@ export default {
     addToWorkspace: ({ groupId, materialIdList, targetWorkspaceNodeList }) => axios('/org/group/assets/material/add-to-workspace', {
       method: 'POST',
       data: { groupId, materialIdList, targetWorkspaceNodeList }
-    })
+    }),
+    batchUpload: ({ groupId, xlsxFile }) => {
+      const formData = new FormData()
+      formData.append('groupId', groupId)
+      formData.append('xlsxFile', xlsxFile)
+
+      return axios('/org/group/assets/material/batch-upload', {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        method: 'POST',
+        data: formData
+      })
+    }
   }
 }
