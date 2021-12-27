@@ -20,7 +20,7 @@ div(class="w-118.5")
     div(class="py-5 px-8 flex items-start gap-x-2")
       svg-icon(iconName="error_outline" class="text-primary")
       p(class="flex-grow text-caption text-primary line-height-1.6") {{$t('BB0021')}}
-      btn(size="sm" :disabled="emailList.length === 0" @click="inviteToOrg(close)") {{$t('UU0014')}}
+      btn(size="sm" :disabled="emailList.length === 0" @click="inviteToOrg") {{$t('UU0014')}}
     div(class="bg-black-100 py-5.5 px-8 flex items-center gap-x-3")
       svg-icon(iconName="link" size="36")
       input-text-btn(
@@ -30,7 +30,7 @@ div(class="w-118.5")
         :textValue="inviteLink"
         :clearable="false"
         :buttonLabel="$t('UU0015')"
-        @click:button="copyText(inviteLink)"
+        @click:button="copyText(inviteLink), $store.commit('helper/PUSH_message', $t('BB0108'))"
       )
 </template>
 
