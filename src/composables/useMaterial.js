@@ -179,11 +179,35 @@ export default function useMaterial (material) {
     return html
   }
 
+  const getYarn = () => {
+    if (warpYarnCount.length > 0 && weftYarnCount.length > 0) {
+      return `${warpYarnCount} X ${weftYarnCount}`
+    } else if (warpYarnCount.length > 0) {
+      return warpYarnCount
+    } else if (weftYarnCount.length > 0) {
+      return weftYarnCount
+    } else {
+      return ''
+    }
+  }
+
+  const getDensity = () => {
+    if (warpDensity > 0 && weftDensity > 0) {
+      return `${warpDensity} X ${weftDensity}`
+    } else if (warpDensity > 0) {
+      return warpDensity
+    } else if (weftDensity > 0) {
+      return weftDensity
+    } else {
+      return ''
+    }
+  }
+
   const materialInfo = reactive({
     frontierNo: { name: i18n.global.t('RR0084'), value: frontierNo },
     content: { name: i18n.global.t('RR0021'), value: content },
-    yarn: { name: i18n.global.t('RR0023'), value: warpYarnCount > 0 && weftYarnCount > 0 ? `${warpYarnCount} X ${weftYarnCount}` : '' },
-    density: { name: i18n.global.t('RR0024'), value: warpDensity > 0 && weftDensity > 0 ? `${warpDensity} X ${weftDensity}` : '' },
+    yarn: { name: i18n.global.t('RR0023'), value: getYarn() },
+    density: { name: i18n.global.t('RR0024'), value: getDensity() },
     pattern: { name: i18n.global.t('RR0025'), value: pattern },
     color: { name: i18n.global.t('RR0026'), value: color },
     weight: { name: i18n.global.t('RR0015'), value: getWeight() },
