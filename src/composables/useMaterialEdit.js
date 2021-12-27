@@ -95,14 +95,14 @@ export default function useMaterialEdit (material) {
           } else if (weightUnit === WEIGHT_UNIT.OZ.value) {
             gsm = weight / 0.9114
           }
-          return prev + Number(quantity) / gsm / (width * 2.54 / 100)
+          return prev + Number(quantity) / (gsm * 0.02323 * width) * 1000
         }
         default:
           return prev + Number(quantity)
       }
     }, 0)
 
-    return Math.floor(total)
+    return Math.round(total)
   })
 
   return {
