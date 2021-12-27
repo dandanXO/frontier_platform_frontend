@@ -4,7 +4,18 @@ div(class="w-116")
     div(class="text-primary text-h6 font-bold mb-7.5 text-center") {{$t("DD0035")}}
     i18n-t(keypath="DD0036" tag="p" class="text-center text-black-900 text-body2 line-height-1.6")
       template(#UU0065)
-        span(class="text-assist-blue") {{$t("UU0065")}}
+        a(
+          v-if="locale === 'en-US'"
+          target="_blank"
+          class='text-assist-blue cursor-pointer'
+          href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(英文版).xlsx"
+        )  {{$t("UU0065")}}
+        a(
+          v-else
+          target="_blank"
+          class='text-assist-blue cursor-pointer'
+          href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(中文版).xlsx"
+        )  {{$t("UU0065")}}
     div(class="text-center text-primary text-body2 line-height-1.6") {{$t("DD0037")}}
     input-text-btn(
       class="w-full mt-7.5"
@@ -44,7 +55,7 @@ import useNavigation from '@/composables/useNavigation'
 export default {
   name: 'ModalMassUpload',
   setup () {
-    const { t } = useI18n()
+    const { t, locale } = useI18n()
     const store = useStore()
     const fileName = ref('')
     const errorMsg = ref('')
@@ -131,6 +142,7 @@ export default {
     const closeModal = () => { store.dispatch('helper/closeModal') }
 
     return {
+      locale,
       errorMsg,
       fileName,
       showErrorList,
