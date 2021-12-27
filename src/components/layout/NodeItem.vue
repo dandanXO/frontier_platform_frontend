@@ -39,6 +39,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
           div(class="text-caption line-clamp-1") {{nodeHoverInfo.weight}}
       slot(name="cover-overlay")
       tooltip(
+        v-if="optionList.length > 0"
         class='absolute bottom-3 right-3 cursor-pointer'
         placement="right-start"
         :showArrow="false"
