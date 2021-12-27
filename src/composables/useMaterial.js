@@ -47,7 +47,7 @@ export default function useMaterial (material) {
   if (coverMode === COVER_MODE.FACE && scanFaceSide) {
     currentCoverImg.value = faceSideImg.crop
     neverScanBefore.value = false
-  } else if (coverMode === COVER_MODE.BACK && scanFaceSide) {
+  } else if (coverMode === COVER_MODE.BACK && scanBackSide) {
     currentCoverImg.value = backSideImg.crop
     neverScanBefore.value = false
   } else if (coverMode === COVER_MODE.SUP) {
