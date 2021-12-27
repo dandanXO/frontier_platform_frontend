@@ -1,18 +1,18 @@
 <template lang="pug">
 div(
-  class="h-15 flex items-center text-body2 text-primary"
+  class="h-15 flex gap-x-3 items-center text-body2 text-primary"
   :class="[{ 'bg-black-200': isHover }]"
   @mouseover="isHover = true"
   @mouseleave="isHover = false"
 )
-  div(class="l:w-21 w-25 2xl:w-35 pr-6 flex justify-end")
+  div(class="w-1/12 flex justify-end")
     div(v-if="member.isPending" class="w-10 h-10 rounded-full border border-primary border-dashed")
     img(v-else :src="member.avatar" class="w-10 h-10 rounded-full")
-  div(class="l:w-46.5 w-61.5 2xl:w-74")
+  div(class="w-2/12")
     div(v-if="member.isPending" class="w-min px-2 py-1.5 text-caption text-primary border rounded border-primary") {{$t('BB0024')}}
     p(v-else) {{member.displayName}}
-  div(class="l:w-65 w-83.5 2xl:w-105") {{member.email}}
-  div(class="l:w-41 w-54.5 2xl:w-82.5")
+  div(class="w-4/12") {{member.email}}
+  div(class="w-2/12")
     p(v-if="member.isPending" class="ml-4 w-4 border-t border-primary")
     template(v-else)
       p(v-if="member.orgRoleId === ROLE_ID.OWNER") {{getRoleName(member.orgRoleId)}}
@@ -37,12 +37,13 @@ div(
                 :class="{'bg-primary-thin': option.roleId === currentRoleId }"
                 @click="changeMemberRole(option.roleId)"
               ) {{getRoleName(option.roleId)}}
-  div(class="flex-grow")
+  div(class="w-2/12")
     p(v-if="member.isPending" class="ml-4 w-4 border-t border-primary")
     p(v-else) {{member.lastSignInTime}}
-  div(v-if="isHover" class="l:pr-5 pr-7 2xl:pr-26")
-    p(v-if="member.isPending" class="text-body2 text-black-600 cursor-pointer" @click="confirmToCancelInvitation") {{$t('UU0002')}}
-    p(v-else-if="![ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(member.orgRoleId)" class="text-body2 text-black-600 cursor-pointer" @click="confirmToRemoveMember") {{$t('UU0016')}}
+  div(class="w-1/12")
+    template(v-if="isHover")
+      p(v-if="member.isPending" class="text-body2 text-black-600 cursor-pointer" @click="confirmToCancelInvitation") {{$t('UU0002')}}
+      p(v-else-if="![ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(member.orgRoleId)" class="text-body2 text-black-600 cursor-pointer" @click="confirmToRemoveMember") {{$t('UU0016')}}
 </template>
 
 <script>
