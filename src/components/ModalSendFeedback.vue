@@ -85,7 +85,7 @@ export default {
         case ERROR_CODE.EXCEED_LIMIT:
           store.dispatch('helper/pushModalConfirm', {
             title: t('MM0017'),
-            content: t('MM0031'),
+            content: t('MM0032'),
             primaryText: t('UU0031')
           })
           break
