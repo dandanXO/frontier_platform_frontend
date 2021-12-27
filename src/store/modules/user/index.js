@@ -124,15 +124,15 @@ const actions = {
     const { data } = await userApi.updateUserProfile({ firstName, lastName })
     dispatch('handleResponseData', { data }, { root: true })
   },
-  sendFeedback ({ tempFeedbackId, category, comment }) {
+  sendFeedback (_, { tempFeedbackId, category, comment }) {
     userApi.sendFeedback({ tempFeedbackId, category, comment })
   },
   async sendFeedbackAttachment (_, { tempFeedbackId, file }) {
     const { data } = await userApi.sendFeedbackAttachment({ tempFeedbackId, file })
     return data.result.feedbackAttachmentList
   },
-  async removeFeedbackAttachment (_, { tempFeedbackId, feedbackAttachmentId }) {
-    const { data } = await userApi.removeFeedbackAttachment({ tempFeedbackId, feedbackAttachmentId })
+  async removeFeedbackAttachment (_, { tempFeedbackId, tempFeedbackAttachmentId }) {
+    const { data } = await userApi.removeFeedbackAttachment({ tempFeedbackId, tempFeedbackAttachmentId })
     return data.result.feedbackAttachmentList
   }
 }

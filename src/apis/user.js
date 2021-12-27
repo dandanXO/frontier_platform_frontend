@@ -108,8 +108,8 @@ export default {
       data: formData
     })
   },
-  removeFeedbackAttachment: ({ tempFeedbackId, feedbackAttachmentId }) => axios('/user/feedback/remove-attachment', {
+  removeFeedbackAttachment: ({ tempFeedbackId, tempFeedbackAttachmentId }) => axios('/user/feedback/remove-attachment', {
     method: 'POST',
-    data: { tempFeedbackId, feedbackAttachmentId }
+    data: { tempFeedbackId, tempFeedbackAttachmentId }
   })
 }
