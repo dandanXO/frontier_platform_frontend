@@ -192,11 +192,11 @@ export default function useMaterial (material) {
   }
 
   const getDensity = () => {
-    if (warpDensity > 0 && weftDensity > 0) {
+    if (warpDensity?.length > 0 && weftDensity?.length > 0) {
       return `${warpDensity} X ${weftDensity}`
-    } else if (warpDensity > 0) {
+    } else if (warpDensity?.length > 0) {
       return warpDensity
-    } else if (weftDensity > 0) {
+    } else if (weftDensity?.length > 0) {
       return weftDensity
     } else {
       return ''
