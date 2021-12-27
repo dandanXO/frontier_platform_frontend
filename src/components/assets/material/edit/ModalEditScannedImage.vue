@@ -7,9 +7,8 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
   div(class="flex justify-between" :class="[isExchange ? 'flex-row-reverse' : '']")
     template(v-for="cropper in croppers")
       cropper-default-layout(
-        v-if="isDoubleSideMaterial || isFaceSideMaterial"
         class="w-70 z-100"
-        :showScale="isFaceSideMaterial"
+        :showScale="!isDoubleSideMaterial"
         :config="cropper.config"
         @update:rotateDeg="cropper.config.rotateDeg = $event"
         @update:scaleRatio="cropper.config.scaleRatio = $event"
@@ -25,6 +24,12 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
               div(class="h-2 flex items-center border-r-2 border-l-2 border-primary")
                 div(class="h-0.5 bg-primary w-full")
               div(class="text-caption text-primary font-bold text-center") {{`${innerShowScale? innerScaleSize : scaleSize} cm`}}
+      div(
+        v-if="isDoubleSideMaterial && croppers.length < 2"
+        class="w-70 h-70 flex justify-center items-center"
+        style="background-color: #F1F2F5"
+      )
+        div(class="bg-black-500" :style="{width: cropRectSize + 'px', height: cropRectSize + 'px'}")
     div(v-if="isDoubleSideMaterial" class="absolute inset-x-0 w-full mx-auto")
       input-range(
         v-model:range="scaleSize"
@@ -94,8 +99,12 @@ export default {
     watch(
       () => scaleSize.value,
       () => {
-        faceSideConfig.config.scaleRatio = faceSideConfig.config.image.width * (pxPerCm / faceSideImg.dpi) / scaleSize.value
-        backSideConfig.config.scaleRatio = backSideConfig.config.image.width * (pxPerCm / backSideImg.dpi) / scaleSize.value
+        if (faceSideConfig?.config) {
+          faceSideConfig.config.scaleRatio = faceSideConfig.config.image.width * (pxPerCm / faceSideImg.dpi) / scaleSize.value
+        }
+        if (backSideConfig?.config) {
+          backSideConfig.config.scaleRatio = backSideConfig.config.image.width * (pxPerCm / backSideImg.dpi) / scaleSize.value
+        }
       })
 
     if (faceSideUrl) {
