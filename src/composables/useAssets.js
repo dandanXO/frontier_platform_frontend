@@ -77,9 +77,8 @@ export default function useAssets () {
     id: 'addToWorkspace',
     name: t('RR0057'),
     func: (v) => {
-      const materialIdList = Array.isArray(v) ? v.map(material => JSON.parse(material).materialId) : [v.materialId]
-
-      if (materialIdList.length === 1 && !v.isComplete) {
+      const materialList = Array.isArray(v) ? v.map(material => JSON.parse(material)) : [v]
+      if (materialList.length === 1 && !materialList[0].isComplete) {
         return store.dispatch('helper/openModalConfirm', {
           title: t('EE0096'),
           content: t('EE0097'),
@@ -94,6 +93,7 @@ export default function useAssets () {
           canCrossLocation: routeLocation.value === 'org',
           actionText: t('UU0035'),
           actionCallback: async (selectedNodeKeyList) => {
+            const materialIdList = materialList.map(material => material.materialId)
             const failMaterialList = await store.dispatch('assets/addToWorkspace', {
               materialIdList,
               targetWorkspaceNodeList: selectedNodeKeyList.map(nodeKey => {
