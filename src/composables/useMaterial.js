@@ -180,11 +180,11 @@ export default function useMaterial (material) {
   }
 
   const getYarn = () => {
-    if (warpYarnCount.length > 0 && weftYarnCount.length > 0) {
+    if (warpYarnCount?.length > 0 && weftYarnCount?.length > 0) {
       return `${warpYarnCount} X ${weftYarnCount}`
-    } else if (warpYarnCount.length > 0) {
+    } else if (warpYarnCount?.length > 0) {
       return warpYarnCount
-    } else if (weftYarnCount.length > 0) {
+    } else if (weftYarnCount?.length > 0) {
       return weftYarnCount
     } else {
       return ''
