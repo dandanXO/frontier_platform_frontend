@@ -61,11 +61,10 @@ const actions = {
       ...state.createForm,
       orgId: rootGetters['organization/orgId']
     })
-    const { success, result } = data
-    if (success) {
+    if (data.success) {
       dispatch('handleResponseData', { data }, { root: true })
     } else {
-      throw result.availableEmailList
+      return data
     }
   },
   async getGroup ({ dispatch }, params) {

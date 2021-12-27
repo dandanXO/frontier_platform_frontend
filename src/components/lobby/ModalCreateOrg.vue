@@ -80,7 +80,11 @@ export default {
         }
       }
     )
-    const openModalCreateMailOrg = () => {
+    const openModalCreateMailOrg = async () => {
+      await checkOrgNameExist()
+
+      if (isOrgNameExist.value) { return }
+
       store.commit('organization/SET_createForm', formData)
       store.dispatch('helper/openModal', {
         component: 'modal-create-mail-org'
