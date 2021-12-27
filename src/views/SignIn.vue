@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="w-screen h-screen flex justify-center items-center bg-black-100")
-  div(class="fixed top-7.5 right-9")
-    dropdown-locale
+  //- div(class="fixed top-7.5 right-9")
+  //-   dropdown-locale
   div(class="h-125 flex gap-x-23 items-start")
     div(class="w-97.5 h-125 bg-contain" :style="{ 'background-image': `url(${require('@/assets/images/cover.png')})`}")
     div(class="w-105")
