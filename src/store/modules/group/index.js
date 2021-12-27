@@ -63,9 +63,8 @@ const actions = {
     })
     if (data.success) {
       dispatch('handleResponseData', { data }, { root: true })
-    } else {
-      return data
     }
+    return data
   },
   async getGroup ({ dispatch }, params) {
     const { data } = await groupApi.getGroup(params)
