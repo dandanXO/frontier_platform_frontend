@@ -60,7 +60,7 @@ div(class="w-full h-full")
             )
               template(#cover-overlay v-if="isFirstLayer")
                 svg-icon(
-                  iconName="lock_outline"
+                  :iconName="node.data.isPublic ? 'public' : 'lock_outline'"
                   size="20"
                   class="absolute bottom-3 left-3 cursor-pointer text-black-500"
                   @click.stop="openModalPublish(node.data)"

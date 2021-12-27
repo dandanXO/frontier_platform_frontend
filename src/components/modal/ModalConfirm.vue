@@ -5,7 +5,7 @@ div(class="fixed inset-0  z-index:modal-confirm  w-screen h-screen bg-black-900 
       p(v-if="header !== ''" class="text-body1 text-primary") {{header}}
       svg-icon(iconName="close" size="24" class="justify-self-end cursor-pointer text-black-700" @click="closeModalConfirm")
     div(class="px-8 flex flex-col items-center")
-      h6(class="text-h6 text-primary font-bold pb-4") {{title}}
+      h6(class="text-h6 text-primary font-bold pb-4 text-center") {{title}}
       p(class="text-body2 text-primary text-center line-height-1.6") {{content}}
     div(class="h-25 flex justify-center items-center")
       div(v-if="secondaryText !== ''" class="grid grid-cols-2 gap-x-3")

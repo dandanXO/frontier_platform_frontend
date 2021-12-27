@@ -84,24 +84,20 @@ const actions = {
     }
 
     const { data } = await organizationApi.createOrg(temp)
-    const { success, result } = data
-    if (success) {
+    if (data.success) {
       dispatch('handleResponseData', { data }, { root: true })
-    } else {
-      throw result.availableEmailList
     }
+    return data
   },
   async setOrgUploadMail ({ state, dispatch }, params) {
     const { data } = await organizationApi.setOrgUploadMail({
       orgId: state.orgId,
       ...params
     })
-    const { success, result } = data
-    if (success) {
+    if (data.success) {
       dispatch('handleResponseData', { data }, { root: true })
-    } else {
-      throw result.availableEmailList
     }
+    return data
   },
   async getOrg ({ rootGetters, dispatch }, { orgNo }) {
     const orgId = rootGetters['user/organizationList'].find(org => org.orgNo === orgNo)?.orgId || null

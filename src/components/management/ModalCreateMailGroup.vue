@@ -3,10 +3,12 @@ div(class="w-100 px-8")
   h6(class="text-h6 text-primary font-bold text-center pb-4") {{$t('BB0092')}}
   p(class="text-body2 text-primary line-height-1.6 text-center pb-4") {{$t('BB0093')}}
   div(class="flex justify-between items-center")
-    input-text(v-model:textValue="uploadMaterialEmail" required class="w-58.5" :customErrorMsg="suggestEmailList.length > 0 ? $t('WW0029') : ''")
+    input-text(v-model:textValue="uploadMaterialEmail" required class="w-58.5" :customErrorMsg="errorMsg")
+      template(#errorMsg v-if="suggestEmailList.length > 0")
+        p(v-if="suggestEmailList.length > 0" class="text-caption text-warn absolute pt-1 whitespace-nowrap") {{$t('WW0029')}}
     p(class="text-body2 text-primary") {{$t('BB0094')}}
   div(v-if="suggestEmailList.length > 0" class="pt-7.5 flex")
-    p(class="text-body2 text-primary pr-2") {{$t('BB0106')}}:
+    p(class="text-body2 text-primary pr-2") {{$t('BB0106')}}
     div
       p(v-for="email in suggestEmailList" class="text-body2 text-assist-blue pb-2.5") {{email}}
   div(class="h-25 flex justify-center items-center")
@@ -25,6 +27,7 @@ export default {
   setup () {
     const store = useStore()
     const router = useRouter()
+    const errorMsg = ref('')
     const suggestEmailList = ref([])
     const uploadMaterialEmail = computed({
       get: () => store.getters['group/createForm'].uploadMaterialEmail,
@@ -40,21 +43,25 @@ export default {
       })
     }
     const createGroup = async () => {
-      try {
-        store.dispatch('helper/pushModalLoading')
-        await store.dispatch('group/createGroup')
+      store.dispatch('helper/pushModalLoading')
+      const { success, message, result } = await store.dispatch('group/createGroup')
+
+      if (success) {
         store.dispatch('helper/clearModalPipeline')
         router.push(`/${orgNo.value}/${groupId.value}/management/about`)
-      } catch (availableEmailList) {
-        store.dispatch('helper/closeModalLoading')
-        suggestEmailList.value = availableEmailList
+      } else if (result.availableEmailList?.length > 0) {
+        suggestEmailList.value = result.availableEmailList
+      } else {
+        errorMsg.value = message.content
       }
+      store.dispatch('helper/closeModalLoading')
     }
 
     watch(
       () => uploadMaterialEmail.value,
       () => {
         suggestEmailList.value.length = 0
+        errorMsg.value = ''
       }
     )
 
@@ -63,7 +70,8 @@ export default {
       openModalCreateGroup,
       createGroup,
       suggestEmailList,
-      availableToCreateGroup
+      availableToCreateGroup,
+      errorMsg
     }
   }
 }

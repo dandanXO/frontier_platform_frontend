@@ -24,7 +24,7 @@ div(class="w-101 px-8")
         div(class="flex items-center gap-x-1")
           p(class="text-body2 font-bold text-primary line-clamp-1 max") {{attachment.fileName}}
           p(class="text-body2 font-normal text-primary flex-shrink-0") ({{bytesToSize(attachment.fileSize)}})
-        svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeAttachment(attachment.feedbackAttachmentId)")
+        svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeAttachment(attachment.tempFeedbackAttachmentId)")
   btn(size="sm" type="secondary" prependIcon="add" @click="chooseFile") {{$t('UU0063')}}
   div(class="text-caption text-primary pt-1")
     p(class="pb-2") {{$t('MM0015')}}
@@ -94,13 +94,15 @@ export default {
 
     const chooseFile = () => (fileOperator.upload())
 
-    const removeAttachment = (feedbackAttachmentId) => {
-      feedbackAttachmentList.value = feedbackAttachmentList.value.filter(attachment => attachment.feedbackAttachmentId !== feedbackAttachmentId)
-      store.dispatch('user/removeFeedbackAttachment', { tempFeedbackId, feedbackAttachmentId })
+    const removeAttachment = (tempFeedbackAttachmentId) => {
+      feedbackAttachmentList.value = feedbackAttachmentList.value.filter(attachment => attachment.tempFeedbackAttachmentId !== tempFeedbackAttachmentId)
+      store.dispatch('user/removeFeedbackAttachment', { tempFeedbackId, tempFeedbackAttachmentId })
     }
 
     const actionHandler = () => {
       store.dispatch('user/sendFeedback', { tempFeedbackId, ...formData })
+      store.dispatch('helper/closeModal')
+      store.commit('helper/PUSH_message', t('MM0018'))
     }
 
     const bytesToSize = (bytes) => {

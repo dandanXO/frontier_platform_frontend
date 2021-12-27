@@ -20,11 +20,11 @@
 </style>
 
 <template lang='pug'>
-transition(name='slide-fade')
-  div(v-if='message' class='fixed bottom-5 left-0 right-0 ml-auto mr-auto flash-message rounded p-4 flex justify-center items-center w-min whitespace-nowrap')
-    svg-icon(iconName='check_circle_outline' size='24' class='text-brand mr-2.5')
-    div(class='text-primary') {{message}}
-    svg-icon(iconName='clear' size='24' class='text-black-500 ml-2.5 cursor-pointer' @click='close')
+transition(name="slide-fade")
+  div(v-if="message" class="fixed z-index:flash-msg bottom-5 left-0 right-0 ml-auto mr-auto flash-message rounded p-4 flex justify-center items-center w-min whitespace-nowrap")
+    svg-icon(iconName="check_circle_outline" size="24" class="text-brand mr-2.5")
+    div(class="text-primary") {{message}}
+    svg-icon(iconName="clear" size="24" class="text-black-500 ml-2.5 cursor-pointer" @click="close")
 </template>
 
 <script>
