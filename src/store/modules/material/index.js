@@ -343,7 +343,7 @@ const actions = {
       ? await materialApi.org.updateAttachment.upload({ orgId: rootGetters['organization/orgId'], ...params })
       : await materialApi.group.updateAttachment.upload({ groupId: rootGetters['group/groupId'], ...params })
 
-    dispatch('handleResponseData', { data }, { root: true })
+    dispatch('handleResponseData', { data: { ...data, result: { material: { attachmentList: data.result.material.attachmentList } } } }, { root: true })
   },
   async removeAttachmentWhenUpdate ({ rootGetters, getters, dispatch }, { materialAttachmentId }) {
     const params = {
@@ -355,7 +355,7 @@ const actions = {
       ? await materialApi.org.updateAttachment.remove({ orgId: rootGetters['organization/orgId'], ...params })
       : await materialApi.group.updateAttachment.remove({ groupId: rootGetters['group/groupId'], ...params })
 
-    dispatch('handleResponseData', { data }, { root: true })
+    dispatch('handleResponseData', { data: { ...data, result: { material: { attachmentList: data.result.material.attachmentList } } } }, { root: true })
   },
   async updateScannedImage ({ rootGetters, getters, dispatch }, { isExchange, faceSideCropImg, backSideCropImg }) {
     const params = {
@@ -380,8 +380,17 @@ const actions = {
     const { data } = rootGetters['helper/routeLocation'] === 'org'
       ? await materialApi.org.generateU3m({ orgId: rootGetters['organization/orgId'], ...params })
       : await materialApi.group.generateU3m({ groupId: rootGetters['group/groupId'], ...params })
-
-    dispatch('handleResponseData', { data }, { root: true })
+    const { u3m } = data.result.material
+    dispatch('handleResponseData', {
+      data: {
+        ...data,
+        result: {
+          material: {
+            u3m
+          }
+        }
+      }
+    }, { root: true })
   }
 }
 
