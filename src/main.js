@@ -4,12 +4,17 @@ import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'
 import i18n from '@/utils/i18n'
+import dayjs from 'dayjs'
 
 const requireAll = requireContext => requireContext.keys().map(requireContext)
 const req = require.context('@/assets/icons', true, /\.svg$/)
 requireAll(req)
 
 const app = createApp(App)
+
+dayjs.extend(require('dayjs/plugin/isToday'))
+dayjs.extend(require('dayjs/plugin/isYesterday'))
+app.config.globalProperties.$dayjs = dayjs
 
 app.config.errorHandler = (err, vm, info) => {
   store.dispatch('helper/openModalError')

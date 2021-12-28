@@ -6,7 +6,7 @@ div(class="w-full h-full flex justify-center")
       div(class="flex items-center pb-2")
         h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{`${material.materialNo} ${material.description}`}}
         svg-icon(iconName="create" class="text-black-700 cursor-pointer" size="24" @click="editMaterial.func(material)")
-      p(class="text-caption text-black-700") {{$t('EE0014')}} : {{new Date(material.updateDate * 1000).toLocaleString().replace(', ', ' at ')}}
+      p(class="text-caption text-black-700") {{$t('EE0014')}} : {{lastUpdateDate}}
     material-detail-internal(:material="material")
 </template>
 
@@ -18,6 +18,7 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import useWorkspace from '@/composables/useWorkspace'
 import MaterialDetailInternal from '@/components/layout/materialDetail/MaterialDetailInternal.vue'
+import dayjs from 'dayjs'
 
 export default {
   name: 'WorkspaceMaterialDetail',
@@ -61,10 +62,16 @@ export default {
       return list
     })
 
+    const lastUpdateDate = computed(() => {
+      const tempUpdateDate = dayjs.unix(material.value.updateDate).format('MM/DD/YYYY hh:mm A')
+      return tempUpdateDate.slice(0, 10) + ' at ' + tempUpdateDate.slice(10)
+    })
+
     return {
       material,
       editMaterial,
-      breadcrumbList
+      breadcrumbList,
+      lastUpdateDate
     }
   }
 }
