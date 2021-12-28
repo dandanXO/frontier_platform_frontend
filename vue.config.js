@@ -32,8 +32,9 @@ module.exports = {
   css: {
     loaderOptions: {
       scss: {
-        prependData: '@import "~@/assets/scss/abstracts/_functions.scss";'
+        additionalData: '@import "~@/assets/scss/abstracts/_functions.scss";'
       }
     }
-  }
+  },
+  productionSourceMap: false
 }

@@ -1,6 +1,7 @@
 import userApi from '@/apis/user'
 import setVuexState from '@/utils/set-vuex-state'
 import i18n from '@/utils/i18n'
+import dayjs from 'dayjs'
 
 const state = () => ({
   orgUserId: 0,
@@ -33,27 +34,17 @@ const getters = {
         }
       }
 
-      const todayTimestamp = new Date(Date.now()).setHours(0, 0, 0, 0)
-      const yesterdayTimestamp = new Date(Date.now() - 24 * 60 * 60 * 1000).setHours(0, 0, 0, 0)
-      const targetDate = new Date(createDate * 1000) // createDate is unix timestamp, and one millisecond = 1/1000 in UNIX time
-      const targetTimestamp = new Date(targetDate).setHours(0, 0, 0, 0)
-      let hours = targetDate.getHours()
-      let minutes = targetDate.getMinutes()
-      const amOrPm = hours >= 12 ? 'pm' : 'am'
-      hours = hours % 12
-      hours = hours !== 0 ? hours : 12 // the hour '0' should be '12'
-      minutes = minutes < 10 ? '0' + minutes : minutes
-      let formattedDate = hours + ':' + minutes + ' ' + amOrPm
+      let formattedDate
 
-      if (todayTimestamp === targetTimestamp) {
-        formattedDate = `${i18n.global.t('NN0002')} ${i18n.global.t('NN0004')} ${formattedDate}`
-      } else if (yesterdayTimestamp === targetTimestamp) {
-        formattedDate = `${i18n.global.t('NN0003')} ${i18n.global.t('NN0004')} ${formattedDate}`
+      if (dayjs.unix(createDate).isToday()) {
+        const tempCreateDate = dayjs.unix(createDate).format('hh:mm A')
+        formattedDate = `${i18n.global.t('NN0002')} ${i18n.global.t('NN0004')} ${tempCreateDate}`
+      } else if (dayjs.unix(createDate).isYesterday()) {
+        const tempCreateDate = dayjs.unix(createDate).format('hh:mm A')
+        formattedDate = `${i18n.global.t('NN0003')} ${i18n.global.t('NN0004')} ${tempCreateDate}`
       } else {
-        const monthName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        const month = monthName[targetDate.getMonth()]
-        const date = targetDate.getDate()
-        formattedDate = `${month} ${date} ${i18n.global.t('NN0004')} ${formattedDate}`
+        const tempCreateDate = dayjs.unix(createDate).format('MMM DD hh:mm A')
+        formattedDate = tempCreateDate.slice(0, 6) + ` ${i18n.global.t('NN0004')} ` + tempCreateDate.slice(7)
       }
 
       return {

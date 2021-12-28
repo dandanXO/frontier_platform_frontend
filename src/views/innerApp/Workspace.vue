@@ -19,7 +19,7 @@ div(class="w-full h-full")
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
       btn(size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{$t('UU0055')}}
     template(v-if="!isFirstLayer" #sub-header)
-      p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('FF0002')}}: {{unixToDate(workspaceCollection.createDate)}}
+      p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('FF0002')}}: {{$dayjs.unix(workspaceCollection.createDate).format('YYYY/MM/DD')}}
     template(#default="{ inSearch }")
       div(class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
         div(class="aspect-ratio border border-black-400 border-dashed rounded-md flex justify-center items-center cursor-pointer" @click="openModalCreateCollection")
@@ -76,7 +76,6 @@ import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import NodeItem from '@/components/layout/NodeItem'
 import { useRoute, useRouter } from 'vue-router'
-import { unixToDate } from '@/utils/time-formatting'
 import useWorkspace from '@/composables/useWorkspace'
 import useNavigation from '@/composables/useNavigation.js'
 
@@ -269,7 +268,6 @@ export default {
       optionNodeMaterial,
       isFirstLayer,
       workspaceCollection,
-      unixToDate,
       handleSelectAll,
       addMaterialFromAssetsList,
       openModalCreateCollection,

@@ -10,7 +10,7 @@ div(class="w-full h-full flex justify-center")
             svg-icon(iconName="create" class="text-black-700 hover:text-brand cursor-pointer" size="24" @click="goToAssetMaterialEdit(material)")
           template(#content)
             p(class="text-caption text-primary px-3 py-1") {{$t('RR0054')}}
-      p(class="text-caption text-black-700") {{$t('EE0014')}} : {{new Date(material.updateDate * 1000).toLocaleString().replace(', ', ' at ')}}
+      p(class="text-caption text-black-700") {{$t('EE0014')}} : {{lastUpdateDate}}
     material-detail-internal(:material="material")
 </template>
 
@@ -21,6 +21,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import MaterialDetailInternal from '@/components/layout/materialDetail/MaterialDetailInternal.vue'
+import dayjs from 'dayjs'
 
 export default {
   name: 'AssetsMaterialDetail',
@@ -50,11 +51,16 @@ export default {
         }
       ]
     })
+    const lastUpdateDate = computed(() => {
+      const tempUpdateDate = dayjs.unix(material.value.updateDate).format('MM/DD/YYYY hh:mm A')
+      return tempUpdateDate.slice(0, 10) + ' at ' + tempUpdateDate.slice(10)
+    })
 
     return {
       material,
       breadcrumbList,
-      goToAssetMaterialEdit
+      goToAssetMaterialEdit,
+      lastUpdateDate
     }
   }
 }
