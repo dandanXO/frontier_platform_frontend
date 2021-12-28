@@ -128,6 +128,7 @@ export default {
               backSideCropImg,
               isExchange
             })
+            store.dispatch('helper/reloadInnerApp')
           }
         }
       })
