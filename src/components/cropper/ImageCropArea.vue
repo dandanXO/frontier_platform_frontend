@@ -3,19 +3,24 @@ div(class="relative")
   div(class="absolute" :style="cropRectStyle")
     cropped-image(:config="config" :scaleControl="scaleControl" isTransparent @update="updateOptions")
     slot
-  div(ref="cropRect" class="overflow-hidden bg-black-0" :style="cropRectStyle")
+  div(ref="cropRectGeneral" class="overflow-hidden bg-black-0" :style="cropRectStyle")
     div(class="cursor-move" :style="cropRectStyle")
       cropped-image(:config="config" :scaleControl="scaleControl" @update="updateOptions")
   div(class="corner absolute w-4.5 h-4.5 border-t-2 border-l-2 top-0 left-0 border-primary")
   div(class="corner absolute w-4.5 h-4.5 border-t-2 border-r-2 top-0 right-0 border-primary")
   div(class="corner absolute w-4.5 h-4.5 border-b-2 border-l-2 bottom-0 left-0 border-primary")
   div(class="corner absolute w-4.5 h-4.5 border-b-2 border-r-2 bottom-0 right-0 border-primary")
+  teleport(to="body")
+    div(v-if="!scaleControl" ref="cropRectExact" class="w-0 h-0 overflow-hidden bg-black-0")
+      div(:style="styleSize")
+        cropped-image(:config="config" :movable="false" :previewScaleRatio="realSize/cropRectSize")
 </template>
 
 <script>
 import { ref, computed } from 'vue'
 import domtoimage from 'dom-to-image'
 import CroppedImage from '@/components/cropper/CroppedImage'
+import { dataUrltoBlob } from '@/utils/fileOperator'
 
 export default {
   name: 'ImageCropArea',
@@ -36,12 +41,22 @@ export default {
   },
   emits: ['update:options'],
   setup (props, { emit }) {
-    const cropRect = ref(null)
+    const cropRectGeneral = ref(null)
+    const cropRectExact = ref(null)
 
     const cropRectStyle = computed(() => {
       return {
         width: `${props.cropRectSize}px`,
         height: `${props.cropRectSize}px`
+      }
+    })
+
+    const realSize = computed(() => props.config.image.width / props.config.scaleRatio)
+
+    const styleSize = computed(() => {
+      return {
+        width: `${realSize.value}px`,
+        height: `${realSize.value}px`
       }
     })
 
@@ -52,16 +67,19 @@ export default {
     const cropImage = (file) => {
       return new Promise((resolve, reject) => {
         if (props.scaleControl) {
-          const controllers = cropRect.value.querySelectorAll('.controller-point')
+          const controllers = cropRectGeneral.value.querySelectorAll('.controller-point')
           controllers.forEach(node => node.remove())
         }
 
-        domtoimage.toBlob(cropRect.value, {
-          width: cropRect.value.clientWidth,
-          height: cropRect.value.clientHeight
+        const cropRect = props.scaleControl ? cropRectGeneral.value : cropRectExact.value
+
+        domtoimage.toJpeg(cropRect, {
+          width: props.scaleControl ? cropRect.clientWidth : realSize.value,
+          height: props.scaleControl ? cropRect.clientHeight : realSize.value
         })
-          .then(blob => {
+          .then(dataUrl => {
             const fileName = file?.name.length > 0 ? file.name : 'file name'
+            const blob = dataUrltoBlob(dataUrl)
             resolve(new File([blob], fileName, { type: 'image/jpeg' }))
           })
           .catch(error => reject(error))
@@ -69,8 +87,11 @@ export default {
     }
 
     return {
+      realSize,
+      styleSize,
       cropRectStyle,
-      cropRect,
+      cropRectGeneral,
+      cropRectExact,
       updateOptions,
       cropImage
     }

@@ -28,6 +28,19 @@ const downloadBase64File = (base64Data, extension, fileName = 'file') => {
   downloadDataURLFile(dataURL, fileName)
 }
 
+const dataUrltoBlob = (dataUrl) => {
+  const byteString = atob(dataUrl.split(',')[1])
+
+  const mimeString = dataUrl.split(',')[0].split(':')[1].split(';')[0]
+
+  const ab = new ArrayBuffer(byteString.length)
+  const ia = new Uint8Array(ab)
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i)
+  }
+  return new Blob([ab], { type: mimeString })
+}
+
 /**
  * @param {string} dataURL
  * @param {string} fileName
@@ -95,6 +108,7 @@ class FileOperator {
 
   checkFileFormat (file) {
     const mb = file.size / (1024 ** 2)
+
     if (!this.validType.includes(file.type)) {
       return this.event.emit('error', this.errorCode.INVALID_TYPE)
     } else if (mb > this.fileSizeMaxLimit) {
@@ -141,4 +155,4 @@ class ImageOperator extends FileOperator {
   }
 }
 
-export { downloadDataURLFile, downloadBase64File, FileOperator, ImageOperator }
+export { dataUrltoBlob, downloadDataURLFile, downloadBase64File, FileOperator, ImageOperator }

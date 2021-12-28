@@ -4,7 +4,7 @@ div(class="w-131 px-8")
     h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{$t('EE0047')}}
     div
       p(class="text-body2 font-bold text-primary pb-4.5") {{$t('EE0048')}}
-      overlay-scrollbar-container(class="min-h-31" :class="{ 'h-66': imageList.length > 3 }")
+      overlay-scrollbar-container(class="h-66")
         div(class="grid grid-cols-4 gap-x-5 gap-y-4.5")
           div(class="h-25 rounded border border-dashed border-black-500 flex justify-center items-center cursor-pointer" @click="openModalUploadCoverImage")
             svg-icon(iconName="add" size="24" class="text-primary")

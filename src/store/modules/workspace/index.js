@@ -63,10 +63,14 @@ export default {
       return data.result
     },
     async createCollectionForModal (_, { id, workspaceNodeLocation, workspaceNodeId, collectionName }) {
-      if (Number(workspaceNodeLocation) === NODE_LOCATION.ORG) {
-        await workspaceApi.org.createCollection({ orgId: id, workspaceNodeId, collectionName })
-      } else {
-        await workspaceApi.group.createCollection({ groupId: id, workspaceNodeId, collectionName })
+      const { data } = Number(workspaceNodeLocation) === NODE_LOCATION.ORG
+        ? await workspaceApi.org.createCollection({ orgId: id, workspaceNodeId, collectionName })
+        : await workspaceApi.group.createCollection({ groupId: id, workspaceNodeId, collectionName })
+
+      const { success, message } = data
+
+      if (!success) {
+        throw message.content
       }
     },
     async createCollection ({ rootGetters }, { workspaceNodeId, collectionName, trendBoard = null, description = null }) {

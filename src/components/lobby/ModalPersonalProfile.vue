@@ -14,6 +14,7 @@ div(class="w-101 px-8")
     class="h-25"
     :primaryText="$t('UU0018')"
     @click:primary="updateUserProfile"
+    :primaryButtonDisabled="!firstName || !lastName"
     :secondaryButton="false"
   )
 </template>

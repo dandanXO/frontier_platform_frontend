@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="pt-2.5 h-full flex flex-col relative")
-  div(class="absolute right-0 -top-3.5 transform -translate-y-full")
+  div(class="absolute z-20 right-0 -top-3.5 transform -translate-y-full")
     input-text(v-model:textValue="searchInput" size="sm" class="w-67.5" prependIcon="search" :placeholder="$t('BB0012')")
   div(class="w-full h-12 bg-black-200 flex gap-x-3 items-center text-body1 text-primary")
     p(class="w-1/12")

@@ -72,16 +72,17 @@ export default function useMaterialEdit (material) {
   }
 
   const totalInventory = computed(() => {
+    let inventoryUnit
     const total = material.inventoryList.reduce((prev, current) => {
       const { weightUnit, weight, width } = material
       const quantity = current.quantity
-      const unit = current.unit
+      inventoryUnit = current.unit
 
-      if (weight === 0 || width === 0) {
+      if (!weight || !width) {
         return 0
       }
 
-      switch (unit) {
+      switch (inventoryUnit) {
         case INVENTORY_UNIT.Y: {
           return prev + Number(quantity)
         }
@@ -102,7 +103,10 @@ export default function useMaterialEdit (material) {
       }
     }, 0)
 
-    return Math.round(total)
+    if ([INVENTORY_UNIT.M, INVENTORY_UNIT.KG].includes(inventoryUnit)) {
+      return Math.round(total)
+    }
+    return total
   })
 
   return {
