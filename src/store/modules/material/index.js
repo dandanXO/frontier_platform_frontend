@@ -181,6 +181,8 @@ const actions = {
     }
     if (data.weightUnit) {
       state.weight = data.weightUnit === WEIGHT_UNIT.GSM.value ? data.weightGsm : data.weightOz
+    } else {
+      state.weightUnit = WEIGHT_UNIT.GSM.value
     }
   },
   resetMaterial ({ commit }) {
