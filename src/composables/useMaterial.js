@@ -132,7 +132,7 @@ export default function useMaterial (material) {
       } else if (coverMode === COVER_MODE.BACK) {
         return 2
       } else if (coverMode === COVER_MODE.SUP) {
-        return 4
+        return 0
       }
     } else {
       return 0
