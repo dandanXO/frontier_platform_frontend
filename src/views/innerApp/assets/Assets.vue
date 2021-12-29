@@ -141,7 +141,14 @@ export default {
     }
 
     const resize = () => {
-      currentItemSize.value = document.querySelector('.vue-recycle-scroller__item-view').clientHeight
+      /**
+       * @Todo figure out what happen in Safari
+       */
+      if (document.querySelector('.vue-recycle-scroller__item-view')) {
+        currentItemSize.value = document?.querySelector('.vue-recycle-scroller__item-view')?.clientHeight
+      } else {
+        currentItemSize.value = 379
+      }
     }
 
     return {
