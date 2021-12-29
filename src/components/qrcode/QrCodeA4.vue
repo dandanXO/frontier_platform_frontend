@@ -21,7 +21,7 @@ div
                   div {{$t('RR0019')}} : {{item.materialWidth}}
                   div {{$t('RR0022')}} : {{item.finish}}
                 div(class="flex flex-col flex-shrink-0 items-center text-primary")
-                  span(class="whitespace-nowrap text-caption mb-2.5 font-bold" :class="[item.sideType === SIDE_TYPE.FACE ? '' : backSideClass]") {{item.sideType === SIDE_TYPE.FACE ? $t('DD0046') : $t('DD0047') }}
+                  span(class="whitespace-nowrap text-caption mb-2.5 font-bold" :class="[item.sideType === SIDE_TYPE.FACE ? '' : backSideClass]") {{item.sideType === SIDE_TYPE.FACE ? $t('DD0046') : $t('DD0051') }}
                   qr-code(:value="item.frontierNo" :size="60")
                   span(class="whitespace-nowrap text-caption mt-2.5 scale-90") {{item.frontierNo}}
               div(

@@ -47,11 +47,22 @@ div(class="w-161 h-138 px-8 flex flex-col")
             div(class="w-full h-7.5 absolute top-0 left-0")
               div(class="bg-linear w-full h-full rounded-t-md")
               input-checkbox(
+                v-if="isMultiSelect"
                 v-model:inputValue="selectedValue"
                 :value="item.key"
                 size="20"
                 class="cursor-pointer absolute top-1 left-1 -z-1"
                 iconColor="text-black-0"
+                uncheckColor="text-black-0"
+                @click.stop
+              )
+              input-radio(
+                v-else
+                v-model:inputValue="selectedValue"
+                :value="item.key"
+                size="20"
+                class="cursor-pointer absolute top-1 left-1 -z-1"
+                checkColor="text-black-0"
                 uncheckColor="text-black-0"
                 @click.stop
               )
@@ -124,13 +135,22 @@ export default {
       type: Function,
       required: true
     },
-    canCrossLocation: {
-      type: Boolean,
-      default: false
-    },
     isMultiSelect: {
       type: Boolean,
       default: true
+    },
+    canCrossLocation: {
+      type: Boolean,
+      default: true
+    },
+    canSelectSelf: {
+      type: Boolean,
+      default: true
+    },
+    // only have value when canSelectSelf is false
+    selfNodeKey: {
+      type: String,
+      default: ''
     }
   },
   setup (props) {
@@ -160,55 +180,55 @@ export default {
 
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const orgAndGroupList = computed(() => {
-      const organization = store.getters['organization/organization']
       const list = []
-      list.push({
-        id: organization.orgId,
-        key: `${NODE_LOCATION.ORG}-${organization.workspaceNodeId}`,
-        name: organization.orgName
-      })
-      organization.groupList.forEach(group => {
+      if (routeLocation.value === 'org') {
+        const organization = store.getters['organization/organization']
         list.push({
-          id: group.groupId,
-          key: `${NODE_LOCATION.GROUP}-${group.workspaceNodeId}`,
-          name: group.groupName
+          id: organization.orgId,
+          key: `${NODE_LOCATION.ORG}-${organization.workspaceNodeId}`,
+          name: organization.orgName
         })
-      })
+        if (props.canCrossLocation) {
+          organization.groupList.forEach(group => {
+            list.push({
+              id: group.groupId,
+              key: `${NODE_LOCATION.GROUP}-${group.workspaceNodeId}`,
+              name: group.groupName
+            })
+          })
+        }
+      } else {
+        const { groupId, workspaceNodeId, groupName } = store.getters['group/group']
+        list.push({
+          id: groupId,
+          key: `${NODE_LOCATION.GROUP}-${workspaceNodeId}`,
+          name: groupName
+        })
+      }
       return list
     })
     const breadcrumbList = computed(() => {
       const list = [...appendedBreadcrumbList.value]
-      let key
-
-      if (props.canCrossLocation) {
-        key = 'root'
-      } else {
-        if (routeLocation.value === 'org') {
-          const { workspaceNodeId } = store.getters['organization/organization']
-          key = `${NODE_LOCATION.ORG}-${workspaceNodeId}`
-        }
-        if (routeLocation.value === 'group') {
-          const { workspaceNodeId } = store.getters['group/group']
-          key = `${NODE_LOCATION.GROUP}-${workspaceNodeId}`
-        }
-      }
-
       list.unshift({
-        name: t('RR0009'),
-        key
+        name: t('RR0142'),
+        key: 'root'
       })
       return list
     })
     const isInKeywordSearch = computed(() => !!queryParams.keyword)
-    const isInRoot = computed(() => props.canCrossLocation && breadcrumbList.value.length === 1)
+    const isInRoot = computed(() => breadcrumbList.value.length === 1)
     const nodeList = computed(() => {
+      let temp = pureNodeList.value
       if (isOnlyShowCollection.value) {
-        return pureNodeList.value.filter(node => node.nodeType === NODE_TYPE.COLLECTION)
+        temp = temp.filter(node => node.nodeType === NODE_TYPE.COLLECTION)
       }
       if (isInKeywordSearch.value) {
-        return pureNodeList.value.filter(node => node.nodeType === NODE_TYPE.COLLECTION)
+        temp = temp.filter(node => node.nodeType === NODE_TYPE.COLLECTION)
       }
-      return pureNodeList.value
+      if (!props.canSelectSelf) {
+        temp = temp.filter(node => node.key !== props.selfNodeKey)
+      }
+      return temp
     })
     const actionButtonDisabled = computed(() => {
       return props.isMultiSelect
@@ -319,18 +339,6 @@ export default {
 
     const innerActionCallback = async () => {
       await props.actionCallback(selectedValue.value)
-    }
-
-    if (!props.canCrossLocation) {
-      goTo(breadcrumbList.value[0].key)
-
-      if (routeLocation.value === 'org') {
-        const { orgId } = store.getters['organization/organization']
-        setRootId(orgId)
-      } else if (routeLocation.value === 'group') {
-        const { groupId } = store.getters['group/group']
-        setRootId(groupId)
-      }
     }
 
     return {

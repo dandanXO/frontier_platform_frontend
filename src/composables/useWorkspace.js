@@ -1,7 +1,7 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import { SOURCE_ASSET_LOCATION } from '@/utils/constants.js'
+import { SOURCE_ASSET_LOCATION, NODE_LOCATION } from '@/utils/constants.js'
 import useNavigation from '@/composables/useNavigation.js'
 
 export default function useWorkspace () {
@@ -60,7 +60,6 @@ export default function useWorkspace () {
         component: 'modal-workspace-node-list',
         properties: {
           modalTitle: t('FF0043'),
-          canCrossLocation: routeLocation.value === 'org',
           actionText: t('UU0062'),
           actionCallback: async (selectedNodeKeyList) => {
             const result = await new Promise((resolve) => {
@@ -103,6 +102,8 @@ export default function useWorkspace () {
           modalTitle: t('FF0036'),
           canCrossLocation: false,
           isMultiSelect: false,
+          canSelectSelf: false,
+          selfNodeKey: `${routeLocation.value === 'org' ? NODE_LOCATION.ORG : NODE_LOCATION.GROUP}-${workspaceNodeId}`,
           actionText: t('UU0061'),
           actionCallback: async (selectedNodeKey) => {
             const result = await new Promise((resolve) => {
