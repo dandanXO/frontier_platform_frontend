@@ -17,7 +17,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
         list(class="w-70")
           div(class="h-18 px-7.5 flex items-center")
             img(:src="orgLogo" class="rounded-md w-12 h-12 mr-3.5")
-            span(class="text-body1 text-primary font-bold") {{org.orgName}}
+            span(class="text-body1 text-primary font-bold line-clamp-2") {{org.orgName}}
           div(class="mx-2 my-1 h-px bg-black-400")
           div(class="h-31.5 py-3 px-7.5")
             p(class="text-caption pb-2") {{$t('LL0001', { number: org.totalMemberQty })}}
