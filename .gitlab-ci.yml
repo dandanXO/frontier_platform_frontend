@@ -6,7 +6,7 @@ build-stg:
   stage: build
   image: node:14.17.5
   only:
-    - master
+    - main
   script:
     - npm ci
     - echo NODE_ENV=staging >> .env.local
@@ -21,7 +21,7 @@ deploy-stg:
   stage: deploy
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   only:
-    - master
+    - main
   script:
     - aws s3 sync dist/ s3://"$STG_S3_BUCKET" --delete
     - aws cloudfront create-invalidation --distribution-id $STG_DISTRIBUTION_ID --paths "/*"

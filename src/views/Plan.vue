@@ -12,10 +12,12 @@ fullscreen-header
   template(#content)
     div(class="w-260 mx-auto pb-25")
       div(class="text-center pt-22.5 pb-11")
-        h2(class="text-h2 font-bold text-brand") {{$t('LL0004')}}
-        h2(class="text-h2 font-bold text-brand") {{$t('LL0005')}}
-        p(class="text-body2 text-primary line-height-1.6") {{$t('LL0006')}}
-        p(class="text-body2 text-primary line-height-1.6") {{$t('LL0007')}}
+        div
+          h2(class="text-h2 font-bold text-brand") {{$t('LL0004')}}
+          h2(class="text-h2 font-bold text-brand") {{$t('LL0005')}}
+        div(class="pt-4")
+          p(class="text-body2 text-primary line-height-1.6") {{$t('LL0006')}}
+          p(class="text-body2 text-primary line-height-1.6") {{$t('LL0007')}}
       img(:src="require('@/assets/images/price_list.png')")
 </template>
 
