@@ -45,7 +45,9 @@ export default {
     const selectedFormat = ref(formatOptions[0].value)
 
     const downloadU3m = () => {
-      downloadDataURLFile(selectedFormat.value, props.material.materialId)
+      const url = selectedFormat.value
+      const fileName = url.split('/')[url.split('/').length - 1]
+      downloadDataURLFile(url, fileName)
     }
 
     const closeModal = () => {

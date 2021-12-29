@@ -108,7 +108,8 @@ export default {
           primaryText: t('UU0031')
         })
       } else {
-        downloadDataURLFile(url)
+        const fileName = url.split('/')[url.split('/').length - 1]
+        downloadDataURLFile(url, fileName)
       }
     }
 
