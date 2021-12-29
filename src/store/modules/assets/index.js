@@ -3,53 +3,17 @@ import assetsApi from '@/apis/assets'
 import { downloadBase64File } from '@/utils/fileOperator'
 import { NODE_LOCATION, DISPLAY_NODE } from '@/utils/constants'
 
-const getMergeRowState = () => ({
-  faceSide: {},
-  backSide: {},
-  detail: {}
-})
-
 const state = () => ({
   displayMode: DISPLAY_NODE.LIST,
-  materialList: [],
-  preMergeList: [],
-  mergedList: [getMergeRowState()]
+  materialList: []
 })
 
 const getters = {
   materialList: state => state.materialList,
-  displayMode: state => state.displayMode,
-  preMergeList: state => state.preMergeList
-    .map(material => {
-      const temp = {}
-      Object.keys(getMergeRowState()).forEach(key => {
-        temp[key] = material
-      })
-      return temp
-    }),
-  mergedList: state => state.mergedList
+  displayMode: state => state.displayMode
 }
 
 const mutations = {
-  SET_preMergeList (state, preMergeList) {
-    Object.assign(state.preMergeList, [...preMergeList])
-  },
-  RESET_mergedList (state) {
-    state.mergedList.length = 0
-    state.mergedList.push(getMergeRowState())
-  },
-  ADD_mergedList_row (state) {
-    state.mergedList.push(getMergeRowState())
-  },
-  UPDATE_mergedList_row (state, { index, item }) {
-    Object.assign(state.mergedList[index], item)
-  },
-  REMOVE_mergedList_row (state, index) {
-    state.mergedList.splice(index, 1)
-  },
-  CLEAR_mergedList_row_block (state, { index, blockType }) {
-    state.mergedList[index][blockType] = {}
-  },
   UPDATE_displayMode (state, mode) {
     state.displayMode = mode
   }
