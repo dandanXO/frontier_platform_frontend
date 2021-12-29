@@ -17,7 +17,18 @@ const state = () => ({
 })
 
 const getters = {
-  countryList: (state) => state.countryList,
+  countryList: (state) => {
+    const countryList = state.countryList
+    countryList.sort((a, b) => {
+      if (a.name > b.name) {
+        return 1
+      } else if (a.name < b.name) {
+        return -1
+      }
+      return 0
+    })
+    return countryList
+  },
   roleList: (state) => state.roleList,
   getRoleName: (state) => (roleId) => state.roleList.find(role => role.roleId === roleId).name,
   roleLimit: (state) => state.roleLimit,

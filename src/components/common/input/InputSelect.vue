@@ -109,7 +109,7 @@ export default {
   setup (props, { emit }) {
     const classMaxHeight = ref(`max-h-${9 * props.maxLength}`) // 9: each option height
     const searchInput = ref('')
-    const searchedOptions = computed(() => props.options.filter(option => option[props.keyOptionDisplay].includes(searchInput.value)))
+    const searchedOptions = computed(() => props.options.filter(option => option[props.keyOptionDisplay].toLocaleLowerCase().includes(searchInput.value.toLocaleLowerCase())))
 
     const innerSelectValue = computed({
       get: () => props.selectValue,

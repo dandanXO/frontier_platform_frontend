@@ -5,7 +5,7 @@ div(class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-black-400 cursor-poi
 )
   slot
     svg-icon(:iconName="icon" class="text-black-700")
-    span(class="text-body2 text-primary") {{$t(title)}}
+    span(class="text-body2 text-primary line-clamp-1") {{$t(title)}}
 </template>
 
 <script>

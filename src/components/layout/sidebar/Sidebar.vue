@@ -20,14 +20,14 @@ div(class="relative z-index:sidebar min-w-60 w-60 h-full bg-black-100 sidebar-sh
           template(#displayItem="{ isExpand }")
             div(class="flex items-center h-9 pl-4 pr-5 hover:bg-black-400")
               label(class="w-3 h-3 rounded-sm mr-3" :style="{ 'background-color': item.labelColor }")
-              span(class="flex-grow text-body2 text-primary truncate line-height-1.4") {{item.name}}
+              span(class="flex-grow text-body2 text-primary line-clamp-1") {{item.name}}
               svg-icon(iconName="keyboard_arrow_right" size="24" class="text-black-650 transform" :class="[ isExpand ? 'rotate-90' : 'rotate-0' ]")
           template(#dropdownList="{ options }")
             div(class="flex flex-col gap-y-0.5")
-              sidebar-item(v-for="(menu,  index) in options" v-bind="menu" class="relative" :class="`z-${20-index}`")
-                p(class="pl-7 text-body2 text-primary") {{$t(menu.title)}}
+              sidebar-item(v-for="(menu,  index) in options" v-bind="menu" class="relative flex justify-between" :class="`z-${20-index}`")
+                p(class="pl-7 text-body2 text-primary line-clamp-1") {{$t(menu.title)}}
                 template(v-if="menu.id === 'assets'")
-                  div(class="absolute right-5 top-1/2 transform -translate-y-1/2 flex justify-center items-center w-6 h-6 rounded bg-primary-thin" @click.stop="$router.push(menu.path + '/upload')")
+                  div(class="mr-3 flex justify-center items-center w-6 h-6 rounded bg-primary-thin" @click.stop="$router.push(menu.path + '/upload')")
                     tooltip(placement="bottom")
                       template(#trigger)
                         svg-icon(:iconName="menu.icon" size="20" class="text-black-800")
