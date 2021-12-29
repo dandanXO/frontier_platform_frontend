@@ -90,7 +90,6 @@ export default function useAssets () {
         component: 'modal-workspace-node-list',
         properties: {
           modalTitle: t('EE0057'),
-          canCrossLocation: routeLocation.value === 'org',
           actionText: t('UU0035'),
           actionCallback: async (selectedNodeKeyList) => {
             const materialIdList = materialList.map(material => material.materialId)
