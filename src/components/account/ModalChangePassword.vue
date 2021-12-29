@@ -40,7 +40,7 @@ export default {
 
     const changePassword = async () => {
       try {
-        await store.dispatch('user/changePassword', { currentPassword, newPassword })
+        await store.dispatch('user/changePassword', { currentPassword: currentPassword.value, newPassword: newPassword.value })
         closeModal()
         store.commit('helper/PUSH_message', t('MM0030'))
       } catch (error) {
