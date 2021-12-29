@@ -6,7 +6,7 @@ import { TARGET_LOCATION, U3M_STATUS } from '@/utils/constants'
 
 export default function useAssets () {
   const { t } = useI18n()
-  const { goToAssetMaterialEdit, goToAssetsMaterialMerge } = useNavigation()
+  const { goToAssetMaterialEdit } = useNavigation()
   const store = useStore()
 
   const routeLocation = computed(() => store.getters['helper/routeLocation'])
@@ -210,9 +210,10 @@ export default function useAssets () {
     name: t('RR0072'),
     func: (v) => {
       const materialList = v.map(material => JSON.parse(material))
-      store.commit('assets/SET_preMergeList', materialList)
-      store.commit('assets/RESET_mergedList')
-      goToAssetsMaterialMerge()
+      store.dispatch('helper/openModal', {
+        component: 'modal-material-merge',
+        properties: { materialList }
+      })
     }
   }
 

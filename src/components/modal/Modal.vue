@@ -64,7 +64,9 @@ export default {
     ModalTermsOfUse: defineAsyncComponent(() => import('@/components/ModalTermsOfUse.vue')),
     ModalMassUpload: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUpload')),
     ModalMassUploadErrorList: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUploadErrorList')),
-    ModalSendFeedback: defineAsyncComponent(() => import('@/components/ModalSendFeedback.vue'))
+    ModalSendFeedback: defineAsyncComponent(() => import('@/components/ModalSendFeedback.vue')),
+    ModalMaterialMerge: defineAsyncComponent(() => import('@/components/assets/merge/ModalMaterialMerge.vue')),
+    ModalMaterialMergePreview: defineAsyncComponent(() => import('@/components/assets/merge/ModalMaterialMergePreview.vue'))
   },
   props: {
     component: {

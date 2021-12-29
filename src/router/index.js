@@ -41,30 +41,6 @@ const reuseRoutes = (prefix) => ([
         component: () => import('@/views/innerApp/assets/AssetsMaterialCreate.vue')
       },
       {
-        path: 'merge',
-        name: `${prefix}AssetsMaterialMerge`,
-        component: () => import('@/views/innerApp/assets/AssetsMaterialMerge.vue'),
-        beforeEnter: (to, from, next) => {
-          if ([`${prefix}Assets`, `${prefix}AssetsMaterialMergePreview`].includes(from.name)) {
-            next()
-          } else {
-            next(to.path.replace('/merge', ''))
-          }
-        }
-      },
-      {
-        path: 'merge/preview',
-        name: `${prefix}AssetsMaterialMergePreview`,
-        component: () => import('@/views/innerApp/assets/AssetsMaterialMergePreview.vue'),
-        beforeEnter: (to, from, next) => {
-          if ([`${prefix}AssetsMaterialMerge`].includes(from.name)) {
-            next()
-          } else {
-            next(to.path.replace('/merge/preview', ''))
-          }
-        }
-      },
-      {
         path: ':materialId',
         name: `${prefix}AssetsMaterialDetail`,
         component: () => import('@/views/innerApp/assets/AssetsMaterialDetail.vue')
