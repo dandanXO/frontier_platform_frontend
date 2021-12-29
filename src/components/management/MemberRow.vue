@@ -10,8 +10,8 @@ div(
     img(v-else :src="member.avatar" class="w-10 h-10 rounded-full")
   div(class="w-2/12")
     div(v-if="member.isPending" class="w-min px-2 py-1.5 text-caption text-primary border rounded border-primary") {{$t('BB0024')}}
-    p(v-else) {{member.displayName}}
-  div(class="w-4/12") {{member.email}}
+    p(v-else class="line-clamp-1") {{member.displayName}}
+  div(class="w-4/12 line-clamp-1") {{member.email}}
   div(class="w-2/12")
     p(v-if="member.isPending" class="ml-4 w-4 border-t border-primary")
     template(v-else)
