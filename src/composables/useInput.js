@@ -45,7 +45,8 @@ export default function useInput ({ context: { emit, slots }, inputType = ref('t
   }
 
   const clear = () => {
-    emit('update:textValue', '')
+    const initValue = typeof textValue.value === 'number' ? 0 : ''
+    emit('update:textValue', initValue)
     emit('clear')
   }
 
