@@ -51,7 +51,13 @@ export default {
       }
     })
 
-    const realSize = computed(() => props.config.image.width / props.config.scaleRatio)
+    const realSize = computed(() => {
+      if (props.config.image.width > props.config.image.height) {
+        return props.config.image.height / props.config.scaleRatio
+      } else {
+        return props.config.image.width / props.config.scaleRatio
+      }
+    })
 
     const styleSize = computed(() => {
       return {
@@ -76,7 +82,7 @@ export default {
         domtoimage.toJpeg(cropRect, {
           width: props.scaleControl ? cropRect.clientWidth : realSize.value,
           height: props.scaleControl ? cropRect.clientHeight : realSize.value,
-          quality: 0.6
+          quality: 0.5
         })
           .then(dataUrl => {
             const fileName = file?.name.length > 0 ? file.name : 'file name'
