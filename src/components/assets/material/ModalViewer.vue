@@ -128,6 +128,7 @@ export default {
     }
   },
   setup (props) {
+    const baseUrl = window.location.origin + '/static-data/material'
     const settings = { itemsToShow: 3, snapAlign: 'start' }
     const type = ['tshirt', 'dress', 'shoe', 'bra', 'backpack', 'pants']
     const showLoding = ref(true)
@@ -154,8 +155,7 @@ export default {
       renderer.outputEncoding = THREE.sRGBEncoding
 
       // 載入地板
-      const groundImgPath = require('../../../../public/material/retina_wood.png')
-      const groundTexture = new THREE.TextureLoader().load(groundImgPath)
+      const groundTexture = new THREE.TextureLoader().load(`${baseUrl}/retina_wood.png`)
       groundTexture.wrapS = THREE.RepeatWrapping
       groundTexture.wrapT = THREE.RepeatWrapping
       groundTexture.repeat.set(25, 25)
@@ -287,7 +287,7 @@ export default {
         backpack: 'large_camping_backpack_freegameready'
       }
 
-      const modelPath = `/material/${fileName[type]}/scene.gltf`
+      const modelPath = `${baseUrl}/${fileName[type]}/scene.gltf`
 
       const loader = new GLTFLoader(manager)
       loader.load(modelPath, (gltf) => {

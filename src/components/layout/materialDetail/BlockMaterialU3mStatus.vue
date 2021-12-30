@@ -139,6 +139,7 @@ export default {
     const openModalViewer = () => {
       store.dispatch('helper/openModal', {
         component: 'modal-viewer',
+        header: t('UU0006'),
         properties: {
           baseImgUrl: baseImgUrl.value,
           normalImgUrl: normalImgUrl.value
