@@ -1,0 +1,51 @@
+stages:
+  - build
+  - deploy
+
+build-stg:
+  stage: build
+  image: node:14.17.5
+  only:
+    - main
+  script:
+    - npm ci
+    - echo NODE_ENV=staging >> .env.local
+    - echo VUE_APP_API_ENDPOINT=$STG_API_ENDPOINT >> .env.local
+    - echo VUE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+
+deploy-stg:
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  only:
+    - main
+  script:
+    - aws s3 sync dist/ s3://"$STG_S3_BUCKET" --delete
+    - aws cloudfront create-invalidation --distribution-id $STG_DISTRIBUTION_ID --paths "/*"
+
+build-prod:
+  stage: build
+  image: node:14.17.5
+  only:
+    - production
+  script:
+    - npm ci
+    - echo NODE_ENV=production >> .env.local
+    - echo VUE_APP_API_ENDPOINT=$PROD_API_ENDPOINT >> .env.local
+    - echo VUE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+
+deploy-prod:
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  only:
+    - production
+  script:
+    - aws s3 sync dist/ s3://"$PROD_S3_BUCKET" --delete
+    - aws cloudfront create-invalidation --distribution-id $PROD_DISTRIBUTION_ID --paths "/*"
