@@ -55,8 +55,10 @@ export default {
      */
     const scaleSize = ref(4)
     const width2Cm = computed(() => props.config.image?.width * (2.54 / props.config.dpi))
+    const height2Cm = computed(() => props.config.image?.height * (2.54 / props.config.dpi))
 
-    emit('update:scaleRatio', width2Cm.value / scaleSize.value)
+    const mainRuler = width2Cm.value > height2Cm.value ? height2Cm.value : width2Cm.value
+    emit('update:scaleRatio', mainRuler / scaleSize.value)
 
     const innerRotateDeg = computed({
       get () {
@@ -106,7 +108,7 @@ export default {
     watch(
       () => scaleSize.value,
       () => {
-        emit('update:scaleRatio', width2Cm.value / scaleSize.value)
+        emit('update:scaleRatio', mainRuler / scaleSize.value)
       })
 
     return {
