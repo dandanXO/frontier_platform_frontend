@@ -5,7 +5,7 @@ div(class="w-200")
     :class="[extensionInfo[currentAttachment.extension].display === 'video' ? 'bg-black-900' : 'bg-primary-thin']"
   )
     img(v-if="extensionInfo[currentAttachment.extension].display === 'image'" :src="currentAttachment.url" class="max-h-full max-w-full")
-    video(v-else-if="extensionInfo[currentAttachment.extension].display === 'video'" class="max-h-113" controls)
+    video(v-else-if="extensionInfo[currentAttachment.extension].display === 'video'" class="max-h-113" :key="currentAttachment.url" controls)
       source(:src="currentAttachment.url" type="video/mp4")
     svg-icon(v-else :iconName="extensionInfo[currentAttachment.extension].placeholder" size="110" class="text-primary")
     a(
