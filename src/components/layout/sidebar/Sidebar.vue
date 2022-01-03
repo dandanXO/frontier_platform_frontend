@@ -39,7 +39,6 @@ div(class="relative z-index:sidebar min-w-60 w-60 h-full bg-black-100 sidebar-sh
 
 <script>
 import { useStore } from 'vuex'
-import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import SidebarItem from '@/components/layout/sidebar/SidebarItem.vue'
 import MenuOrg from '@/components/layout/sidebar/MenuOrg.vue'
@@ -54,8 +53,6 @@ export default {
   },
   setup () {
     const store = useStore()
-    const { t } = useI18n()
-
     const organization = computed(() => store.getters['organization/organization'])
     const menuGlobal = computed(() => ([
       {
@@ -84,11 +81,11 @@ export default {
       }
     ]))
     const menuOrgOrGroup = computed(() => {
-      const { orgId, orgNo, labelColor } = organization.value
+      const { orgId, orgNo, orgName, labelColor } = organization.value
       return [
         {
           id: orgId,
-          name: t('RR0007'),
+          name: orgName,
           labelColor: labelColor,
           menuList: [
             {

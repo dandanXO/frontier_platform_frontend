@@ -46,7 +46,7 @@ div(class="w-screen h-screen flex justify-center items-center  bg-black-100")
 div(v-if="isSignUpSuccessfully" class="fixed inset-0 w-full h-full bg-black-100 flex justify-center items-center")
   div(class="w-112 h-92 rounded-md bg-black-0 card-shadow pt-22.5 px-14 pb-15 flex flex-col items-center")
     i18n-t(keypath="AA0025" tag="h4" class="text-primary text-h4 mb-3")
-      template(#name) {{`${formData.lastName} ${formData.firstName}`}}
+      template(#name) {{formData.firstName}}
     h4(class="text-primary text-h4 mb-9") {{$t('AA0026')}}
     p(class="text-black-650 text-body2 text-center mb-10 line-height-1.4") {{$t('AA0027')}}
     btn(size="special" class="w-35 h-10.5" @click="nextAfterSignIn") {{$t('UU0021')}}
