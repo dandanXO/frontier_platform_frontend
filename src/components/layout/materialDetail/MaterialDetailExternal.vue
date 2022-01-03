@@ -6,7 +6,7 @@ div
       block-material-specification(:material="material")
       block-material-pantone(:pantoneList="material.pantoneList")
       //- Inventory
-      div
+      div(v-if="material.isPublicInventory")
         h5(class="text-h5 font-bold text-primary pb-3") {{$t('RR0135')}}
         p(class='text-body2 text-primary line-clamp-1') {{materialInfo.totalInventoryQty.name}}: {{materialInfo.totalInventoryQty.value}}
       //- Pricing
