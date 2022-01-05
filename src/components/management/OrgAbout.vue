@@ -98,31 +98,7 @@ export default {
     const openModalUploadLogo = () => {
       store.dispatch('helper/openModal', {
         component: 'modal-upload-logo',
-        header: t('BB0032'),
-        properties: {
-          // pure logo no preprocessing
-          image: organization.value.logo,
-          removeHandler: async () => {
-            await store.dispatch('organization/removeOrgLogo')
-          },
-          afterUploadHandler: (imageObj, cropRectSize) => {
-            store.dispatch('helper/replaceModal', {
-              component: 'modal-crop-image',
-              header: t('BB0032'),
-              properties: {
-                image: imageObj,
-                cropRectSize,
-                afterCropHandler: async (cropImage, originalImage) => {
-                  const formData = new FormData()
-                  formData.append('orgId', store.getters['organization/orgId'])
-                  formData.append('logo', cropImage)
-                  formData.append('originalLogo', originalImage)
-                  await store.dispatch('organization/updateOrgLogo', formData)
-                }
-              }
-            })
-          }
-        }
+        header: t('BB0032')
       })
     }
 

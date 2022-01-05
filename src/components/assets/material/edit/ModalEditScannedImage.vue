@@ -2,12 +2,14 @@
 div(class="min-w-86 max-w-196 px-8 pt-5")
   div(class="flex")
     div(v-if="isDoubleSideMaterial || isFaceSideMaterial" class="w-70 text-primary text-body2 font-bold text-center mb-3.5") {{$t('EE0051')}}
-    div(v-if="isDoubleSideMaterial" class="w-32")
+    div(v-if="isDoubleSideMaterial" class="w-40")
     div(v-if="isDoubleSideMaterial || !isFaceSideMaterial" class="w-70 text-primary text-body2 font-bold text-center mb-3.5") {{$t('EE0052')}}
   div(class="flex justify-between" :class="[isExchange ? 'flex-row-reverse' : '']")
     template(v-for="cropper in croppers")
       cropper-default-layout(
         class="w-70 z-100"
+        scaleUnit="cm"
+        :scaleRange="[1, 21]"
         :showScale="!isDoubleSideMaterial"
         :config="cropper.config"
         @update:rotateDeg="cropper.config.rotateDeg = $event"
@@ -18,6 +20,7 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
             :ref="cropper.ref"
             :config="cropper.config"
             :cropRectSize="cropRectSize"
+            :lowResolution="false"
             @update:options="Object.assign(cropper.config.options, $event)"
           )
             div(class="mt-1 absolute w-full")
@@ -30,27 +33,30 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
         style="background-color: #F1F2F5"
       )
         div(class="bg-black-500" :style="{width: cropRectSize + 'px', height: cropRectSize + 'px'}")
-    div(v-if="isDoubleSideMaterial" class="absolute inset-x-0 w-full mx-auto")
+    div(v-if="isDoubleSideMaterial" class="absolute inset-x-0 w-full flex flex-col items-center")
+      div(class="text-primary text-body2 flex justify-center items-center mb-3.5 gap-1")
+        div {{$t('Scale')}}
+        div(class="w-15 flex justify-center items-center")
+          input(
+            v-model.number="formattedScaleSize"
+            type="number"
+            class="w-full text-right py-1 pr-6 border border-black-500 rounded"
+            step="0.1"
+            min="1"
+            max="21"
+          )
+          span(class="inline-block -ml-6 w-5 text-left") cm
       input-range(
         v-model:range="scaleSize"
-        :min="1"
-        :max="21"
-        :width="2"
-        :height="166"
-        :startAtCenter="true"
-        :interval="0.1"
-        class="h-54 mt-7"
-        direction="ttb"
+        :setting="setting"
+        :circleDot="true"
       )
-        template(#min-end)
-          svg-icon(iconName="zoom_in" size="20")
-        template(#max-end)
-          svg-icon(iconName="zoom_out" size="20")
-      div(class="mt-5" @click="isExchange = !isExchange")
-        svg-icon(iconName="swap_horiz" size="24" class="text-primary cursor-pointer m-auto")
-      div(class="mt-3.5 text-center text-primary text-caption") {{$t('EE0053')}}
+      div(class="mt-3 cursor-pointer text-primary" @click="isExchange = !isExchange")
+        svg-icon(iconName="swap_horiz" size="24" class="m-auto")
+        div(class="mt-2 text-center text-caption") {{$t('EE0053')}}
   btn-group(
     class="h-25"
+    :class="{'mt-6': isDoubleSideMaterial}"
     :primaryText="$t('UU0018')"
     @click:primary="confirm"
     :secondaryButton="true"
@@ -76,6 +82,19 @@ export default {
     }
   },
   async setup (props) {
+    const setting = {
+      min: 1,
+      max: 21,
+      width: 2,
+      height: 240,
+      interval: 0.1,
+      tooltip: 'none',
+      dotSize: 12,
+      process: false,
+      hideLabel: true,
+      direction: 'btt'
+    }
+
     const store = useStore()
     const material = computed(() => store.getters['material/material'])
     const { faceSideImg, backSideImg } = material.value
@@ -106,6 +125,18 @@ export default {
           backSideConfig.config.scaleRatio = backSideConfig.config.image.width * (pxPerCm / backSideImg.dpi) / scaleSize.value
         }
       })
+
+    const formattedScaleSize = computed({
+      get () {
+        return scaleSize.value
+      },
+      set (val) {
+        if (val > setting.max || val < setting.min) {
+          return
+        }
+        scaleSize.value = val
+      }
+    })
 
     if (faceSideUrl) {
       const faceSideCropper = new Cropper({
@@ -150,6 +181,8 @@ export default {
     }
 
     return {
+      setting,
+      formattedScaleSize,
       cropRectSize,
       faceSide,
       backSide,
@@ -164,3 +197,20 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+  &:focus {
+    outline: 0;
+  }
+}
+</style>
