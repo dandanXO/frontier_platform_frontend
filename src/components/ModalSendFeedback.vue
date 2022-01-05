@@ -72,26 +72,6 @@ export default {
       store.dispatch('helper/closeModalLoading')
     })
 
-    fileOperator.on('error', (errorCode) => {
-      const ERROR_CODE = fileOperator.errorCode
-      switch (errorCode) {
-        case ERROR_CODE.INVALID_TYPE:
-          store.dispatch('helper/pushModalConfirm', {
-            title: t('MM0017'),
-            content: t('MM0031'),
-            primaryText: t('UU0031')
-          })
-          break
-        case ERROR_CODE.EXCEED_LIMIT:
-          store.dispatch('helper/pushModalConfirm', {
-            title: t('MM0017'),
-            content: t('MM0032'),
-            primaryText: t('UU0031')
-          })
-          break
-      }
-    })
-
     const chooseFile = () => (fileOperator.upload())
 
     const removeAttachment = (tempFeedbackAttachmentId) => {
