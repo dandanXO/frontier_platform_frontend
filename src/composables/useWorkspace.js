@@ -180,7 +180,20 @@ export default function useWorkspace () {
     }
   }
 
-  const shareNode = {
+  const shareCollection = {
+    id: FUNCTION_ID.SHARE_NODE,
+    name: t('RR0079'),
+    func: (node) => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-share',
+        properties: {
+          workspaceNodeId: node.workspaceNodeId
+        }
+      })
+    }
+  }
+
+  const shareMaterial = {
     id: FUNCTION_ID.SHARE_NODE,
     name: t('RR0079'),
     func: () => {
@@ -193,7 +206,8 @@ export default function useWorkspace () {
     editMaterial,
     duplicateNode,
     moveNode,
-    shareNode,
+    shareCollection,
+    shareMaterial,
     deleteMultipleNode,
     deleteCollection,
     deleteMaterial

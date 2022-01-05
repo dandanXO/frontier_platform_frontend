@@ -30,26 +30,7 @@ div(class="w-full")
             img(:src="org.logo" class="rounded-full")
           span(class="text-body1 text-primary font-bold mb-3") {{org.orgName}}
           span(class="text-black-650 text-caption mb-7.5") {{`${org.memberList.length} ${$t('AA0010')}`}}
-          div(class="flex flex-row-reverse transform -translate-x-1.5")
-            template(v-if="org.memberList.length <= 6")
-              img(v-for="(member, index) in org.memberList"
-                class="w-7.5 h-7.5 border border-black-0 rounded-full relative"
-                :src="member.avatar"
-                :class="`z-${org.memberList.length - index}`"
-                :style="{ 'margin-right': org.memberList.length === 1 ? '0px' : '-12px' }"
-              )
-            template(v-else)
-              template(v-for="(member, index) in org.memberList.slice(0, 6)")
-                img(v-if="index < 5" :src="member.avatar"
-                  class="w-7.5 h-7.5 border border-black-0 rounded-full relative"
-                  :class="`z-${org.memberList.length - index}`"
-                  :style="{ 'margin-right': '-12px' }"
-                )
-                div(v-else class="w-7.5 h-7.5 rounded-full relative bg-primary-middle flex items-center justify-center"
-                  :class="`z-${org.memberList.length - index}`"
-                  :style="{ 'margin-right': '-12px' }"
-                )
-                  svg-icon(iconName="more" size="24" class="text-black-600")
+          avatar-group(:avatarList="org.memberList.map(member => member.avatar)" direction="rtl")
         div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg(true)")
           div(class="grid justify-items-center gap-y-3.5")
             svg-icon(iconName="old-add" size="24")
@@ -62,12 +43,14 @@ import { useRouter } from 'vue-router'
 import InputCallingCode from '@/components/InputCallingCode'
 import MenuPersonal from '@/components/lobby/MenuPersonal.vue'
 import { computed } from 'vue'
+import AvatarGroup from '@/components/AvatarGroup.vue'
 
 export default {
   name: 'Lobby',
   components: {
     InputCallingCode,
-    MenuPersonal
+    MenuPersonal,
+    AvatarGroup
   },
   setup () {
     const store = useStore()

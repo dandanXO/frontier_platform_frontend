@@ -65,6 +65,26 @@ export default {
     publishNode: ({ orgId, workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }) => axios('/org/workspace/node/publish', {
       method: 'POST',
       data: { orgId, workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }
+    }),
+    getShareInfo: ({ orgId, workspaceNodeId }) => axios('/org/workspace/node/share/get', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId }
+    }),
+    getShareTarget: ({ orgId, workspaceNodeId, target }) => axios('/org/workspace/node/share/assigned/get-target', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId, target }
+    }),
+    assignedShare: ({ orgId, workspaceNodeId, targetList, isCanClone, isCanDownloadU3M, messages }) => axios('/org/workspace/node/share/assigned', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId, targetList, isCanClone, isCanDownloadU3M, messages }
+    }),
+    updatedAssignedShare: ({ orgId, workspaceNodeId, type, id, isCanClone, isCanDownloadU3M }) => axios('/org/workspace/node/share/assigned/update', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId, type, id, isCanClone, isCanDownloadU3M }
+    }),
+    removeAssignedShare: ({ orgId, workspaceNodeId, type, id }) => axios('/org/workspace/node/share/assigned/remove', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId, type, id }
     })
   },
   group: {
@@ -131,6 +151,26 @@ export default {
     publishNode: ({ groupId, workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }) => axios('/org/group/workspace/node/publish', {
       method: 'POST',
       data: { groupId, workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }
+    }),
+    getShareInfo: ({ groupId, workspaceNodeId }) => axios('/org/group/workspace/node/share/get', {
+      method: 'POST',
+      data: { groupId, workspaceNodeId }
+    }),
+    getShareTarget: ({ groupId, workspaceNodeId, target }) => axios('/org/group/workspace/node/share/assigned/get-target', {
+      method: 'POST',
+      data: { groupId, workspaceNodeId, target }
+    }),
+    assignedShare: ({ groupId, workspaceNodeId, targetList, isCanClone, isCanDownloadU3M, messages }) => axios('/org/group/workspace/node/share/assigned', {
+      method: 'POST',
+      data: { groupId, workspaceNodeId, targetList, isCanClone, isCanDownloadU3M, messages }
+    }),
+    updatedAssignedShare: ({ groupId, workspaceNodeId, type, id, isCanClone, isCanDownloadU3M }) => axios('/org/group/workspace/node/share/assigned/update', {
+      method: 'POST',
+      data: { groupId, workspaceNodeId, type, id, isCanClone, isCanDownloadU3M }
+    }),
+    removeAssignedShare: ({ groupId, workspaceNodeId, type, id }) => axios('/org/group/workspace/node/share/assigned/remove', {
+      method: 'POST',
+      data: { groupId, workspaceNodeId, type, id }
     })
   }
 }
