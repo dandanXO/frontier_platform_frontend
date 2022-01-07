@@ -19,6 +19,10 @@ export default function useNavigation () {
       return router.push({ path: '/verify-user', query: route.query })
     }
 
+    if (route.query.sharingKey !== undefined) {
+      return router.push({ path: '/share-page', query: route.query })
+    }
+
     await store.dispatch('user/getUser')
 
     const user = store.getters['user/user']

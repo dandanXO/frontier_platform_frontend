@@ -183,14 +183,15 @@ export const SOURCE_ASSET_LOCATION = {
 }
 
 export const NODE_TYPE = {
-  MATERIAL: 1,
-  COLLECTION: 2
+  COLLECTION: 1,
+  MATERIAL: 2
 }
 
 export const SEARCH_TYPE = {
   ASSETS: 1,
   WORKSPACE: 2,
-  PUBLIC_LIBRARY: 3
+  PUBLIC_LIBRARY: 3,
+  SHARE: 4
 }
 
 export const DISPLAY_NODE = {
@@ -211,4 +212,9 @@ export const FEEDBACK_CATEGORY = {
     text: i18n.global.t('MM0012'),
     value: 3
   }
+}
+
+export const SHARING_FROM = {
+  WORKSPACE: 1,
+  PUBLIC_LIBRARY: 2
 }
