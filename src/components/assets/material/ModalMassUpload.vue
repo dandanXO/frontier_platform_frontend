@@ -77,6 +77,26 @@ export default {
       showErrorList.value = false
     })
 
+    fileOperator.on('error', (errorCode) => {
+      const ERROR_CODE = fileOperator.errorCode
+      switch (errorCode) {
+        case ERROR_CODE.INVALID_TYPE:
+          store.dispatch('helper/pushModalConfirm', {
+            title: t('DD0067'),
+            content: t('DD0065'),
+            primaryText: t('UU0031')
+          })
+          break
+        case ERROR_CODE.EXCEED_LIMIT:
+          store.dispatch('helper/pushModalConfirm', {
+            title: t('DD0067'),
+            content: t('DD0066'),
+            primaryText: t('UU0031')
+          })
+          break
+      }
+    })
+
     const handleUpload = async () => {
       try {
         store.dispatch('helper/pushModalLoading')

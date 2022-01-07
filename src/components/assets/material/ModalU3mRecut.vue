@@ -16,8 +16,6 @@ fullscreen-header
           div(class="mb-4.5 text-center text-primary text-body2 font-bold") {{cropper.title}}
           cropper-default-layout(
             class="w-82.5"
-            scaleUnit="cm"
-            :scaleRange="[1, 21]"
             :config="cropper.config"
             @update:rotateDeg="cropper.config.rotateDeg = $event"
             @update:scaleRatio="cropper.config.scaleRatio = $event"
@@ -27,7 +25,6 @@ fullscreen-header
                 :ref="cropper.ref"
                 :config="cropper.config"
                 :cropRectSize="cropRectSize"
-                :lowResolution="false"
                 @update:options="Object.assign(cropper.config.options, $event)"
               )
                 div(class="mt-1 absolute w-full")

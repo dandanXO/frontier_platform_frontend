@@ -84,6 +84,26 @@ export default {
       uploadTrendBoardName.value = file.name
     })
 
+    fileOperator.on('error', (errorCode) => {
+      const ERROR_CODE = fileOperator.errorCode
+      switch (errorCode) {
+        case ERROR_CODE.INVALID_TYPE:
+          store.dispatch('helper/pushModalConfirm', {
+            title: t('FF0024'),
+            content: t('FF0025'),
+            primaryText: t('UU0031')
+          })
+          break
+        case ERROR_CODE.EXCEED_LIMIT:
+          store.dispatch('helper/pushModalConfirm', {
+            title: t('FF0024'),
+            content: t('FF0026'),
+            primaryText: t('UU0031')
+          })
+          break
+      }
+    })
+
     const chooseFile = () => {
       fileOperator.upload()
     }

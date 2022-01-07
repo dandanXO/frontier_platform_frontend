@@ -20,7 +20,7 @@ div(class="w-120 border-t border-black-400")
         size="100"
         class="justify-self-end cursor-pointer text-brand-dark"
       )
-      img(v-else class="w-50 h-50" :src="avatar")
+      img(v-else class="w-50 h-50" :src="image")
   div(class="h-25 flex justify-center items-center")
     div(v-if="!isUploading && haveUploadedImage" class="grid grid-cols-2 gap-x-3")
       btn(size="md" type="secondary" @click="innerRemoveHandler") {{$t('UU0016') }}
@@ -36,34 +36,70 @@ import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'ModalChangeAvatar',
-  setup () {
+  props: {
+    image: {
+      type: String,
+      default: ''
+    },
+    removeHandler: {
+      type: Function,
+      required: true
+    },
+    afterUploadHandler: {
+      type: Function,
+      required: true
+    }
+  },
+  setup (props) {
     const { t } = useI18n()
     const store = useStore()
-    const cropRectSize = 200
+    const cropRectSize = ref(200)
     const isUploading = ref(false)
-    const avatar = computed(() => store.getters['user/orgUser/orgUser'].avatar)
-    const haveUploadedImage = computed(() => !!avatar.value)
+    const haveUploadedImage = computed(() => !!props.image)
 
-    const imageOperator = new ImageOperator(['jpeg', 'png'], 5, cropRectSize)
+    const closeModal = () => {
+      store.dispatch('helper/closeModal')
+    }
 
-    imageOperator.on('uploading', () => (isUploading.value = true))
-    imageOperator.on('customError', () => (isUploading.value = false))
+    const imageOperator = new ImageOperator(['jpeg', 'png'], 5, cropRectSize.value)
+
+    imageOperator.on('uploading', () => {
+      isUploading.value = true
+    })
+
     imageOperator.on('finish', (image) => {
-      store.dispatch('helper/replaceModal', {
-        component: 'modal-crop-image',
-        header: t('MM0019'),
-        properties: {
-          image,
-          cropRectSize,
-          afterCropHandler: async (cropImage, originalImage) => {
-            await store.dispatch('user/orgUser/updateAvatar', {
-              avatar: cropImage,
-              originalAvatar: originalImage
-            })
-            await fetchMemberList()
-          }
-        }
-      })
+      if (typeof props.afterUploadHandler === 'function') {
+        props.afterUploadHandler(image, cropRectSize.value)
+      }
+    })
+
+    imageOperator.on('error', (errorCode) => {
+      const ERROR_CODE = imageOperator.errorCode
+      switch (errorCode) {
+        case ERROR_CODE.INVALID_TYPE:
+          store.dispatch('helper/pushModalConfirm', {
+            title: t('BB0063'),
+            content: t(t('WW0016')),
+            primaryText: t('UU0001')
+          })
+          break
+        case ERROR_CODE.EXCEED_LIMIT:
+          store.dispatch('helper/pushModalConfirm', {
+            title: t('BB0063'),
+            content: t('WW0017'),
+            primaryText: t('UU0001')
+          })
+          break
+        case ERROR_CODE.TOO_SMALL:
+          store.dispatch('helper/pushModalConfirm', {
+            title: t('BB0063'),
+            content: t('WW0018'),
+            primaryText: t('UU0001')
+          })
+          break
+      }
+
+      isUploading.value = false
     })
 
     const uploadImg = () => {
@@ -75,32 +111,17 @@ export default {
     }
 
     const innerRemoveHandler = async () => {
-      store.dispatch('helper/pushModalLoading')
-      await store.dispatch('user/orgUser/removeAvatar')
-      await fetchMemberList()
-      store.dispatch('helper/closeModalLoading')
-      store.dispatch('helper/closeModal')
-    }
-
-    const fetchMemberList = async () => {
-      const routeLocation = store.getters['helper/routeLocation']
-
-      if (routeLocation === 'org') {
-        const orgNo = store.getters['organization/orgNo']
-        await store.dispatch('organization/getOrg', { orgNo })
-      } else {
-        const groupId = store.getters['group/groupId']
-        await store.dispatch('group/getGroup', { groupId })
-      }
+      await props.removeHandler()
+      closeModal()
     }
 
     return {
       isUploading,
+      closeModal,
       confirm,
       uploadImg,
       innerRemoveHandler,
       onDrop,
-      avatar,
       haveUploadedImage
     }
   }

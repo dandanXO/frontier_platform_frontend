@@ -6,12 +6,7 @@ div
       btn-functional(size="sm" @click="reset") {{$t('UU0040')}}
     div
       slot(name="right")
-  input-range(
-    ref="inputRange"
-    v-model:range="innerRange"
-    :setting="setting"
-    :nonMaxLimit="true"
-  )
+  input-range(ref="inputRange" v-model:range="innerRange" :min="min" :max="max")
 </template>
 
 <script>
@@ -38,10 +33,6 @@ export default {
   },
   emits: ['update:range'],
   setup (props, { emit }) {
-    const setting = {
-      min: props.min,
-      max: props.max
-    }
     const inputRange = ref(null)
     const innerRange = computed({
       get: () => props.range,
@@ -60,8 +51,7 @@ export default {
     return {
       innerRange,
       inputRange,
-      reset,
-      setting
+      reset
     }
   }
 }
