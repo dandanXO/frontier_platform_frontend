@@ -1,46 +1,33 @@
 <template lang="pug">
-div
+div(class="mb-5")
   div(class="w-full flex justify-center items-center overflow-hidden")
-    div(class="relative w-full aspect-ratio flex justify-center items-center" style="background-color: #F1F2F5")
+    div(class="relative w-full aspect-ratio bg-black-0 flex justify-center items-center")
       slot(name="imageCropArea" :innerScaleSize="scaleSize" :innerShowScale="showScale")
-  div(v-if="showScale" class="mt-2.5")
-    div(class="text-primary text-body2 flex justify-between items-center mb-1")
-      div {{$t('EE0098')}}
-      div(class="w-15 flex justify-center items-center")
-        input(
-          v-model.number="formattedScaleValue"
-          type="number"
-          class="w-full text-right py-1 pr-6 border border-black-500 rounded"
-          :step="useCentimeter ? 0.1 : 1"
-          :min="scaleRange[0]"
-          :max="scaleRange[1]"
-          @change="handleScaleChange"
-        )
-        span(class="inline-block -ml-6 w-5 text-left") {{scaleUnit}}
-    input-range(
-      v-model:range="formattedScaleValue"
-      :setting="scaleSetting"
-      :circleDot="true"
-    )
-  div(class="mt-2.5")
-    div(class="text-primary text-body2 flex justify-between items-center mb-1")
-      div {{$t("EE0049")}}
-      div(class="w-15 flex justify-center items-center")
-        input(
-          v-model.number="formattedRotateDeg"
-          type="number"
-          class="w-full text-right py-1 pr-3 border border-black-500 rounded"
-          step="0.1"
-          min="0"
-          max="360"
-          @change="handleRotateChange"
-        )
-        span(class="inline-block -ml-3 w-3 text-left") °
-    input-range(
-      v-model:range="formattedRotateDeg"
-      :setting="rotateSetting"
-      :circleDot="true"
-    )
+  input-range(
+    v-if="showScale"
+    v-model:range="scaleSize"
+    :min="1"
+    :max="21"
+    :height="2"
+    :width="166"
+    :startAtCenter="true"
+    :interval="0.1"
+    class="mt-4"
+    direction="rtl"
+  )
+    template(#min-end)
+      svg-icon(iconName="zoom_out" size="20" class="ml-auto")
+    template(#max-end)
+      svg-icon(iconName="zoom_in" size="20" class="mr-auto")
+  div(class="mt-5 w-37 flex justify-between items-center m-auto")
+    span(class="text-primary text-body2") {{$t("EE0049")}}
+    div(class="w-20 flex justify-between items-center border border-primary rounded")
+      input(type="number" class="w-full text-primary text-body2 pl-2.5" min="0" max="360" v-model.number="formattedRotateDeg" @blur="onBlur")
+      div(class="bg-primary w-fit")
+        div(class="cursor-pointer pt-1.5 px-1.5 pb-0.5 text-black-0" @click="plus")
+          svg-icon(iconName="chevron-up" size="8")
+        div(class="cursor-pointer pb-1.5 px-1.5 pt-0.5 text-black-0" @click="minus")
+          svg-icon(iconName="chevron-down" size="8")
 </template>
 
 <script>
@@ -58,58 +45,20 @@ export default {
     showScale: {
       type: Boolean,
       default: true
-    },
-    scaleUnit: {
-      type: String,
-      default: '%'
-    },
-    scaleRange: {
-      type: Array,
-      default: () => {
-        return [100, 800]
-      }
     }
   },
   emits: ['update:rotateDeg', 'update:scaleRatio', 'update:options'],
   setup (props, { emit }) {
-    const useCentimeter = props.scaleUnit === 'cm'
-    const commonSetting = {
-      height: 2,
-      interval: useCentimeter ? 0.1 : 1,
-      tooltip: 'none',
-      dotSize: 12,
-      process: false,
-      hideLabel: true
-    }
-
-    const scaleSetting = {
-      ...commonSetting,
-      min: props.scaleRange[0],
-      max: props.scaleRange[1]
-    }
-
-    const rotateSetting = {
-      ...commonSetting,
-      min: 0,
-      max: 360
-    }
-
     /**
-     * scaleValue 是用於畫面表現的值
-     * scaleSize 是以某單位為準放大，用於 InputRange，目前有公分跟百分比
+     * scaleSize 是以某單位為準放大(目前是公分)，用於 InputRange
      * scaleRatio 是實際放大倍率，最後要在 CroppedImage 組成 transform: scale(scaleRatio)
      */
-    const scaleValue = ref(props.scaleRange[0])
-    const scaleSize = computed(() => useCentimeter ? scaleValue.value : scaleValue.value / 100)
-
-    /**
-     * [width2Cm, height2Cm, mainRuler] only use when 'dpi' isn't undefined, useCentimeter is true.
-     */
+    const scaleSize = ref(4)
     const width2Cm = computed(() => props.config.image?.width * (2.54 / props.config.dpi))
     const height2Cm = computed(() => props.config.image?.height * (2.54 / props.config.dpi))
-    const mainRuler = width2Cm.value > height2Cm.value ? height2Cm.value : width2Cm.value
 
-    emit('update:scaleRatio', useCentimeter ? (mainRuler / scaleSize.value) : scaleSize.value)
+    const mainRuler = width2Cm.value > height2Cm.value ? height2Cm.value : width2Cm.value
+    emit('update:scaleRatio', mainRuler / scaleSize.value)
 
     const innerRotateDeg = computed({
       get () {
@@ -117,18 +66,6 @@ export default {
       },
       set (val) {
         emit('update:rotateDeg', val)
-      }
-    })
-
-    const formattedScaleValue = computed({
-      get () {
-        return scaleValue.value
-      },
-      set (val) {
-        if (val > props.scaleRange[1] || val < props.scaleRange[0]) {
-          return
-        }
-        scaleValue.value = val
       }
     })
 
@@ -146,50 +83,40 @@ export default {
       }
     })
 
-    const handleScaleChange = (e) => {
-      if (e.target.value > props.scaleRange[1]) {
-        e.target.value = props.scaleRange[1]
-        scaleValue.value = props.scaleRange[1]
-      } else if (e.target.value < props.scaleRange[0]) {
-        e.target.value = props.scaleRange[0]
-        scaleValue.value = props.scaleRange[0]
+    const onBlur = () => {
+      if (innerRotateDeg.value.toString().length === 0) {
+        innerRotateDeg.value = 0
       }
     }
 
-    const handleRotateChange = (e) => {
-      const min = 0
-      const max = 360
-      if (e.target.value > max) {
-        e.target.value = max
-        innerRotateDeg.value = max
-      } else if (e.target.value < min) {
-        e.target.value = min
-        innerRotateDeg.value = min
+    const plus = () => {
+      innerRotateDeg.value = innerRotateDeg.value + 0.1
+      if (innerRotateDeg.value >= 360) {
+        innerRotateDeg.value = 0
       }
+      innerRotateDeg.value = parseFloat(innerRotateDeg.value.toFixed(2))
     }
 
-    if (useCentimeter) {
-      scaleValue.value = 4
-      emit('update:scaleRatio', width2Cm.value / scaleSize.value)
-    } else {
-      emit('update:scaleRatio', scaleSize.value)
+    const minus = () => {
+      innerRotateDeg.value -= 0.1
+      if (innerRotateDeg.value <= 0) {
+        innerRotateDeg.value = 360
+      }
+      innerRotateDeg.value = parseFloat(innerRotateDeg.value.toFixed(2))
     }
 
     watch(
       () => scaleSize.value,
       () => {
-        emit('update:scaleRatio', useCentimeter ? (mainRuler / scaleSize.value) : scaleSize.value)
+        emit('update:scaleRatio', mainRuler / scaleSize.value)
       })
 
     return {
-      useCentimeter,
-      scaleSetting,
-      rotateSetting,
       scaleSize,
-      formattedScaleValue,
-      formattedRotateDeg,
-      handleRotateChange,
-      handleScaleChange
+      plus,
+      minus,
+      onBlur,
+      formattedRotateDeg
     }
   }
 }

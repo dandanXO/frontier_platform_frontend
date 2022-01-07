@@ -1,8 +1,4 @@
 import { EventEmitter } from 'events'
-import i18n from '@/utils/i18n'
-import store from '@/store'
-
-const t = i18n.global.t
 
 /**
  * Common MIME types: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
@@ -32,7 +28,7 @@ const downloadBase64File = (base64Data, extension, fileName = 'file') => {
   downloadDataURLFile(dataURL, fileName)
 }
 
-const dataUrlToBlob = (dataUrl) => {
+const dataUrltoBlob = (dataUrl) => {
   const byteString = atob(dataUrl.split(',')[1])
 
   const mimeString = dataUrl.split(',')[0].split(':')[1].split(';')[0]
@@ -65,16 +61,16 @@ const downloadDataURLFile = (dataURL, fileName = 'file') => {
 class FileOperator {
   /**
    * @param {string[]} validType
-   * @param {number} fileSizeMaxLimit // mb
+   * @param {number} fileSizeMaxLimit
    */
 
   constructor (validType = generalImageType, fileSizeMaxLimit = 5) {
     this.validType = validType.map(type => extension2MimeType[type]).join(',')
-    this.fileSizeMaxLimit = fileSizeMaxLimit
+    this.fileSizeMaxLimit = fileSizeMaxLimit // mb
 
     this.event = new EventEmitter()
     this.eventHash = {}
-    this.ERROR_CODE = {
+    this.errorCode = {
       INVALID_TYPE: 0,
       EXCEED_LIMIT: 1,
       TOO_SMALL: 2
@@ -114,9 +110,9 @@ class FileOperator {
     const mb = file.size / (1024 ** 2)
 
     if (!this.validType.includes(file.type)) {
-      return this.errorHandler(this.ERROR_CODE.INVALID_TYPE)
+      return this.event.emit('error', this.errorCode.INVALID_TYPE)
     } else if (mb > this.fileSizeMaxLimit) {
-      return this.errorHandler(this.ERROR_CODE.EXCEED_LIMIT)
+      return this.event.emit('error', this.errorCode.EXCEED_LIMIT)
     } else {
       this.uploadHandler(file)
     }
@@ -124,34 +120,6 @@ class FileOperator {
 
   uploadHandler (file) {
     this.event.emit('finish', file)
-  }
-
-  errorHandler (code) {
-    const { INVALID_TYPE, EXCEED_LIMIT, TOO_SMALL } = this.ERROR_CODE
-    this.event.emit('customError', code)
-    switch (code) {
-      case INVALID_TYPE:
-        store.dispatch('helper/pushModalConfirm', {
-          title: t('RR0143'),
-          content: t(t('RR0144')),
-          primaryText: t('UU0031')
-        })
-        break
-      case EXCEED_LIMIT:
-        store.dispatch('helper/pushModalConfirm', {
-          title: t('RR0143'),
-          content: t('RR0145', { size: this.fileSizeMaxLimit }),
-          primaryText: t('UU0031')
-        })
-        break
-      case TOO_SMALL:
-        store.dispatch('helper/pushModalConfirm', {
-          title: t('RR0143'),
-          content: t('WW0018'),
-          primaryText: t('UU0031')
-        })
-        break
-    }
   }
 }
 
@@ -173,7 +141,7 @@ class ImageOperator extends FileOperator {
       img.onload = () => {
         const { width, height, src } = img
         if (width < this.cropRectSize || height < this.cropRectSize) {
-          return this.errorHandler(this.ERROR_CODE.TOO_SMALL)
+          return this.event.emit('error', this.errorCode.TOO_SMALL)
         }
         this.event.emit('finish', {
           width,
@@ -187,4 +155,4 @@ class ImageOperator extends FileOperator {
   }
 }
 
-export { dataUrlToBlob, downloadDataURLFile, downloadBase64File, FileOperator, ImageOperator }
+export { dataUrltoBlob, downloadDataURLFile, downloadBase64File, FileOperator, ImageOperator }
