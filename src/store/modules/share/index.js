@@ -24,6 +24,7 @@ export default {
     }
   }),
   getters: {
+    material: state => state.material,
     share: state => state.share,
     logo: state => state.share.logo ? state.share.logo : require('@/assets/images/logo-default.png')
   },
@@ -32,7 +33,7 @@ export default {
       state.collection = collection
     },
     SET_material (state, material) {
-      state.collection = material
+      state.material = material
     },
     SET_share (state, share) {
       state.share = share
@@ -67,7 +68,6 @@ export default {
     async getShareReceivedMaterial ({ dispatch }, { sharingKey, workspaceNodeId }) {
       const { data } = await shareApi.getShareReceivedMaterial({ sharingKey, workspaceNodeId })
       dispatch('setShareModule', data.result)
-      return data.result
     }
   }
 }

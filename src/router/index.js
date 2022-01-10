@@ -129,8 +129,11 @@ const routes = [
       const { sharingKey } = to.query
       store.dispatch('code/getFilterOptions')
       await store.dispatch('share/getShareReceivedInfo', { sharingKey })
-      if (store.getters['share/share'].workspaceNodeType === NODE_TYPE.COLLECTION) {
+      const share = store.getters['share/share']
+      if (share.workspaceNodeType === NODE_TYPE.COLLECTION) {
         next({ path: '/received-share/collection', query: to.query })
+      } else {
+        next({ path: '/received-share/material', query: to.query })
       }
     }
   },
@@ -138,11 +141,26 @@ const routes = [
     path: '/received-share',
     name: 'ReceivedShare',
     component: () => import('@/views/receivedShare/ReceivedShareContainer.vue'),
+    beforeEnter: async (to, from, next) => {
+      const share = store.getters['share/share']
+      const { sharingKey } = to.query
+      if (sharingKey === share.sharingKey) {
+        next()
+      } else {
+        await store.dispatch('share/getShareReceivedInfo', { sharingKey })
+        next()
+      }
+    },
     children: [
       {
         path: 'collection',
         name: 'ReceivedShareCollection',
         component: () => import('@/views/receivedShare/ReceivedShareCollection.vue')
+      },
+      {
+        path: 'material',
+        name: 'ReceivedShareMaterial',
+        component: () => import('@/views/receivedShare/ReceivedShareMaterial.vue')
       }
     ]
   },

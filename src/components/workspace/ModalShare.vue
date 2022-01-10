@@ -31,6 +31,7 @@ import { useI18n } from 'vue-i18n'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import AvatarGroup from '@/components/AvatarGroup.vue'
+import { NODE_TYPE } from '@/utils/constants.js'
 
 export default {
   name: 'ModalShare',
@@ -40,6 +41,10 @@ export default {
   props: {
     workspaceNodeId: {
       type: [String, Number],
+      required: true
+    },
+    nodeType: {
+      type: Number,
       required: true
     }
   },
@@ -53,27 +58,31 @@ export default {
       SOCIAL_MEDIA: 2,
       EMBED: 3
     }
-    const tabList = [
-      {
-        id: TAB.ASSIGNED,
-        name: t('FF0051')
-      },
-      {
-        id: TAB.COPY_LINK,
-        name: t('FF0052')
-      },
-      {
-        id: TAB.SOCIAL_MEDIA,
-        name: t('FF0053')
-      },
-      {
-        id: TAB.EMBED,
-        name: t('FF0054')
-      }
-    ]
-
-    const currentTab = ref(tabList[0].id)
     const shareInfo = computed(() => store.getters['workspace/shareInfo'])
+    const tabList = computed(() => {
+      const list = [
+        {
+          id: TAB.ASSIGNED,
+          name: t('FF0051')
+        },
+        {
+          id: TAB.COPY_LINK,
+          name: t('FF0052')
+        },
+        {
+          id: TAB.SOCIAL_MEDIA,
+          name: t('FF0053')
+        }
+      ]
+      if (props.nodeType === NODE_TYPE.COLLECTION) {
+        list.push({
+          id: TAB.EMBED,
+          name: t('FF0054')
+        })
+      }
+      return list
+    })
+    const currentTab = ref(tabList.value[0].id)
 
     const openModalShareAssigned = () => {
       store.dispatch('helper/pushModal', {

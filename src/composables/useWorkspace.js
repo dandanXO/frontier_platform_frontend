@@ -1,7 +1,7 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import { SOURCE_ASSET_LOCATION, NODE_LOCATION } from '@/utils/constants.js'
+import { SOURCE_ASSET_LOCATION, NODE_LOCATION, NODE_TYPE } from '@/utils/constants.js'
 import useNavigation from '@/composables/useNavigation.js'
 
 export default function useWorkspace () {
@@ -187,7 +187,8 @@ export default function useWorkspace () {
       store.dispatch('helper/openModal', {
         component: 'modal-share',
         properties: {
-          workspaceNodeId: node.workspaceNodeId
+          workspaceNodeId: node.workspaceNodeId,
+          nodeType: NODE_TYPE.COLLECTION
         }
       })
     }
@@ -196,8 +197,14 @@ export default function useWorkspace () {
   const shareMaterial = {
     id: FUNCTION_ID.SHARE_NODE,
     name: t('RR0079'),
-    func: () => {
-      console.log('here')
+    func: (node) => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-share',
+        properties: {
+          workspaceNodeId: node.workspaceNodeId,
+          nodeType: NODE_TYPE.MATERIAL
+        }
+      })
     }
   }
 

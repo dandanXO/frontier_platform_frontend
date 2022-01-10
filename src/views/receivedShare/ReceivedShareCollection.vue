@@ -56,8 +56,6 @@ div(class="w-315 h-full mx-auto")
               :displayName="node.data.materialNo"
               @click:option="$event.func(node.key)"
             )
-div(class="fixed z-index:footer bottom-0 w-full h-13 bg-black-100 px-36 flex items-center justify-end card-shadow")
-  p(class="text-body2 text-primary") {{$t('GG0004')}}
 </template>
 
 <script>
@@ -70,7 +68,7 @@ import { useRoute, useRouter } from 'vue-router'
 import NodeItem from '@/components/layout/NodeItem'
 
 export default {
-  name: 'ReceivedShare',
+  name: 'ReceivedShareCollection',
   components: {
     FullscreenHeader,
     SearchTable,
@@ -97,7 +95,6 @@ export default {
     const breadcrumbList = computed(() => store.getters['share/breadcrumbList']())
     const workspaceCollection = computed(() => store.getters['share/workspaceCollection'])
     const selectedNodeKeyList = ref([])
-    const sharingKey = ref(route.query.sharingKey)
     const workspaceNodeId = ref(route.query.workspaceNodeId || share.value.workspaceNodeId)
     const isCollectionDetailExpand = ref(true)
     const refSearchTable = ref(null)
@@ -106,14 +103,14 @@ export default {
       await router.push({
         name: route.name,
         query: {
-          sharingKey: sharingKey.value,
+          sharingKey: share.value.sharingKey,
           workspaceNodeId: workspaceNodeId.value,
           ...route.query
         }
       })
       await store.dispatch('share/getShareReceivedList', {
         targetPage,
-        sharingKey: sharingKey.value,
+        sharingKey: share.value.sharingKey,
         workspaceNodeId: workspaceNodeId.value
       })
     }

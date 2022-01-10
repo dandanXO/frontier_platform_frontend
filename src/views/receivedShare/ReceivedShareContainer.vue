@@ -11,6 +11,8 @@ fullscreen-header
     btn(size="md") {{$t('UU0018')}}
   template(#content)
     router-view
+    div(class="fixed z-index:footer bottom-0 w-full h-13 bg-black-100 px-36 flex items-center justify-end card-shadow")
+      p(class="text-body2 text-primary") {{$t('GG0004')}}
 </template>
 
 <script>
@@ -25,7 +27,6 @@ export default {
   },
   setup () {
     const store = useStore()
-
     const share = computed(() => store.getters['share/share'])
     const logo = computed(() => store.getters['share/logo'])
 
