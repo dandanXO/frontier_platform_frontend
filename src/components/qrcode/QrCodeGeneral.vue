@@ -13,7 +13,7 @@ div
                 div(class="flex flex-col items-center justify-center w-31" :class="{'ml-16': item.sideType === SIDE_TYPE.FACE}")
                   div(v-if="item.sideType === SIDE_TYPE.BACK" class="whitespace-nowrap mb-4 text-black-900 font-bold text-body1") {{item.materialNo}}
                   qr-code(:value="item.frontierNo" :size="100")
-                  div(class="whitespace-nowrap text-black-900 text-body2 mt-4 mb-2") {{item.sideType === SIDE_TYPE.FACE ? $t('DD0046') : $t('DD0078') }}
+                  div(class="whitespace-nowrap text-black-900 text-body2 mt-4 mb-2") {{item.sideType === SIDE_TYPE.FACE ? $t('DD0046') : $t('DD0051') }}
                   div(class="whitespace-nowrap text-black-600 text-body2") {{item.frontierNo}}
                 template(v-if="item.sideType === SIDE_TYPE.FACE")
                   div(class="flex-none border border-black-400 mx-6 my-5")
