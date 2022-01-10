@@ -1,4 +1,8 @@
 import { EventEmitter } from 'events'
+import i18n from '@/utils/i18n'
+import store from '@/store'
+
+const t = i18n.global.t
 
 /**
  * Common MIME types: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
@@ -28,7 +32,7 @@ const downloadBase64File = (base64Data, extension, fileName = 'file') => {
   downloadDataURLFile(dataURL, fileName)
 }
 
-const dataUrltoBlob = (dataUrl) => {
+const dataUrlToBlob = (dataUrl) => {
   const byteString = atob(dataUrl.split(',')[1])
 
   const mimeString = dataUrl.split(',')[0].split(':')[1].split(';')[0]
@@ -61,16 +65,18 @@ const downloadDataURLFile = (dataURL, fileName = 'file') => {
 class FileOperator {
   /**
    * @param {string[]} validType
-   * @param {number} fileSizeMaxLimit
+   * @param {number} fileSizeMaxLimit // mb
    */
 
   constructor (validType = generalImageType, fileSizeMaxLimit = 5) {
-    this.validType = validType.map(type => extension2MimeType[type]).join(',')
-    this.fileSizeMaxLimit = fileSizeMaxLimit // mb
+    this.validType = validType
+    this.acceptedExtension = validType.map(type => `.${type}`).join(',')
+    this.acceptedFormat = validType.map(type => extension2MimeType[type]).join(',')
+    this.fileSizeMaxLimit = fileSizeMaxLimit
 
     this.event = new EventEmitter()
     this.eventHash = {}
-    this.errorCode = {
+    this.ERROR_CODE = {
       INVALID_TYPE: 0,
       EXCEED_LIMIT: 1,
       TOO_SMALL: 2
@@ -92,7 +98,7 @@ class FileOperator {
     // It will be remove by JS garbage collection system sooner or later
     const inputNode = document.createElement('input')
     inputNode.setAttribute('type', 'file')
-    inputNode.setAttribute('accept', this.validType)
+    inputNode.setAttribute('accept', this.acceptedExtension)
 
     inputNode.click()
     inputNode.addEventListener('change', (evt) => {
@@ -109,10 +115,10 @@ class FileOperator {
   checkFileFormat (file) {
     const mb = file.size / (1024 ** 2)
 
-    if (!this.validType.includes(file.type)) {
-      return this.event.emit('error', this.errorCode.INVALID_TYPE)
+    if (!this.acceptedFormat.includes(file.type)) {
+      return this.errorHandler(this.ERROR_CODE.INVALID_TYPE)
     } else if (mb > this.fileSizeMaxLimit) {
-      return this.event.emit('error', this.errorCode.EXCEED_LIMIT)
+      return this.errorHandler(this.ERROR_CODE.EXCEED_LIMIT)
     } else {
       this.uploadHandler(file)
     }
@@ -121,12 +127,39 @@ class FileOperator {
   uploadHandler (file) {
     this.event.emit('finish', file)
   }
+
+  errorHandler (code) {
+    const { INVALID_TYPE, EXCEED_LIMIT, TOO_SMALL } = this.ERROR_CODE
+    this.event.emit('customError', code)
+    switch (code) {
+      case INVALID_TYPE:
+        store.dispatch('helper/pushModalConfirm', {
+          title: t('RR0143'),
+          content: t(t('RR0144')),
+          primaryText: t('UU0031')
+        })
+        break
+      case EXCEED_LIMIT:
+        store.dispatch('helper/pushModalConfirm', {
+          title: t('RR0143'),
+          content: t('RR0145', { size: this.fileSizeMaxLimit }),
+          primaryText: t('UU0031')
+        })
+        break
+      case TOO_SMALL:
+        store.dispatch('helper/pushModalConfirm', {
+          title: t('RR0143'),
+          content: t('WW0018'),
+          primaryText: t('UU0031')
+        })
+        break
+    }
+  }
 }
 
 class ImageOperator extends FileOperator {
   constructor (validType, fileSizeMaxLimit, cropRectSize = 200) {
     super(validType, fileSizeMaxLimit)
-
     this.cropRectSize = cropRectSize
   }
 
@@ -141,7 +174,7 @@ class ImageOperator extends FileOperator {
       img.onload = () => {
         const { width, height, src } = img
         if (width < this.cropRectSize || height < this.cropRectSize) {
-          return this.event.emit('error', this.errorCode.TOO_SMALL)
+          return this.errorHandler(this.ERROR_CODE.TOO_SMALL)
         }
         this.event.emit('finish', {
           width,
@@ -155,4 +188,4 @@ class ImageOperator extends FileOperator {
   }
 }
 
-export { dataUrltoBlob, downloadDataURLFile, downloadBase64File, FileOperator, ImageOperator }
+export { dataUrlToBlob, downloadDataURLFile, downloadBase64File, FileOperator, ImageOperator }

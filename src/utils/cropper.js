@@ -39,6 +39,7 @@ class Cropper {
 
     if (typeof src !== 'string') {
       this.config.image = src
+      this.getConfig()
     }
   }
 

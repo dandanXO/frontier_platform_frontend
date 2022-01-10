@@ -52,47 +52,8 @@ export default {
     const openModalChangeAvatar = () => {
       store.dispatch('helper/pushModal', {
         component: 'modal-change-avatar',
-        header: t('MM0019'),
-        properties: {
-          // pure logo no preprocessing
-          image: orgUser.value.avatar,
-          removeHandler: async () => {
-            store.dispatch('helper/pushModalLoading')
-            await store.dispatch('user/orgUser/removeAvatar')
-            await fetchMemberList()
-            store.dispatch('helper/closeModalLoading')
-          },
-          afterUploadHandler: (imageObj, cropRectSize) => {
-            store.dispatch('helper/replaceModal', {
-              component: 'modal-crop-image',
-              header: t('BB0032'),
-              properties: {
-                image: imageObj,
-                cropRectSize,
-                afterCropHandler: async (cropImage, originalImage) => {
-                  await store.dispatch('user/orgUser/updateAvatar', {
-                    avatar: cropImage,
-                    originalAvatar: originalImage
-                  })
-                  await fetchMemberList()
-                }
-              }
-            })
-          }
-        }
+        header: t('MM0019')
       })
-    }
-
-    const fetchMemberList = async () => {
-      const routeLocation = store.getters['helper/routeLocation']
-
-      if (routeLocation === 'org') {
-        const orgNo = store.getters['organization/orgNo']
-        await store.dispatch('organization/getOrg', { orgNo })
-      } else {
-        const groupId = store.getters['group/groupId']
-        await store.dispatch('group/getGroup', { groupId })
-      }
     }
 
     return {

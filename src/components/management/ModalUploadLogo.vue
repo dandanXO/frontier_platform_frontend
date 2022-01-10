@@ -5,7 +5,7 @@ div(class="w-120 border-t border-black-400")
       div(
         v-if="!isUploading && !haveUploadedImage"
         class="flex flex-col"
-        @drop.stop.prevent="onDrop($event)"
+        @drop.stop.prevent="imageOperator.onDrop($event)"
         @dragover.prevent
         @dragenter.prevent
       )
@@ -20,10 +20,10 @@ div(class="w-120 border-t border-black-400")
         size="100"
         class="justify-self-end cursor-pointer text-brand-dark"
       )
-      img(v-else class="w-50 h-50" :src="image")
+      img(v-else class="w-50 h-50" :src="orgLogo")
   div(class="h-25 flex justify-center items-center")
     div(v-if="!isUploading && haveUploadedImage" class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" @click="innerRemoveHandler") {{$t('UU0016') }}
+      btn(size="md" type="secondary" @click="removeLogo") {{$t('UU0016') }}
       btn(size="md" @click="uploadImg") {{$t('UU0019')}}
     btn(v-else size="md" :disabled="true") {{$t('UU0001')}}
 </template>
@@ -36,70 +36,29 @@ import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'ModalUploadLogo',
-  props: {
-    image: {
-      type: String,
-      default: ''
-    },
-    removeHandler: {
-      type: Function,
-      required: true
-    },
-    afterUploadHandler: {
-      type: Function,
-      required: true
-    }
-  },
-  setup (props) {
+  setup () {
     const { t } = useI18n()
     const store = useStore()
-    const cropRectSize = ref(200)
+    const cropRectSize = 200
     const isUploading = ref(false)
-    const haveUploadedImage = computed(() => !!props.image)
+    const orgLogo = computed(() => store.getters['organization/organization'].logo)
+    const haveUploadedImage = computed(() => !!orgLogo.value)
+    const imageOperator = new ImageOperator(['jpeg', 'png'], 5, cropRectSize)
 
-    const closeModal = () => {
-      store.dispatch('helper/closeModal')
-    }
-
-    const imageOperator = new ImageOperator(['jpeg', 'png'], 5, cropRectSize.value)
-
-    imageOperator.on('uploading', () => {
-      isUploading.value = true
-    })
-
+    imageOperator.on('uploading', () => (isUploading.value = true))
+    imageOperator.on('customError', () => (isUploading.value = false))
     imageOperator.on('finish', (image) => {
-      if (typeof props.afterUploadHandler === 'function') {
-        props.afterUploadHandler(image, cropRectSize.value)
-      }
-    })
-
-    imageOperator.on('error', (errorCode) => {
-      const ERROR_CODE = imageOperator.errorCode
-      switch (errorCode) {
-        case ERROR_CODE.INVALID_TYPE:
-          store.dispatch('helper/pushModalConfirm', {
-            title: t('BB0063'),
-            content: t(t('WW0016')),
-            primaryText: t('UU0001')
-          })
-          break
-        case ERROR_CODE.EXCEED_LIMIT:
-          store.dispatch('helper/pushModalConfirm', {
-            title: t('BB0063'),
-            content: t('WW0017'),
-            primaryText: t('UU0031')
-          })
-          break
-        case ERROR_CODE.TOO_SMALL:
-          store.dispatch('helper/pushModalConfirm', {
-            title: t('BB0063'),
-            content: t('WW0018'),
-            primaryText: t('UU0031')
-          })
-          break
-      }
-
-      isUploading.value = false
+      store.dispatch('helper/replaceModal', {
+        component: 'modal-crop-image',
+        header: t('BB0032'),
+        properties: {
+          image,
+          cropRectSize,
+          afterCropHandler: async (cropImage, originalImage) => {
+            await store.dispatch('organization/updateOrgLogo', { logo: cropImage, originalLogo: originalImage })
+          }
+        }
+      })
     })
 
     const uploadImg = () => {
@@ -110,18 +69,19 @@ export default {
       imageOperator.onDrop(evt)
     }
 
-    const innerRemoveHandler = async () => {
-      await props.removeHandler()
-      closeModal()
+    const removeLogo = async () => {
+      await store.dispatch('organization/removeOrgLogo')
+      store.dispatch('helper/closeModal')
     }
 
     return {
       isUploading,
-      closeModal,
       confirm,
       uploadImg,
-      innerRemoveHandler,
+      removeLogo,
       onDrop,
+      orgLogo,
+      imageOperator,
       haveUploadedImage
     }
   }
