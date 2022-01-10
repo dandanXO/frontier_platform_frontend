@@ -108,6 +108,35 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
 // https://github.com/ismail9k/vue3-carousel
+import { image2Object } from '@/utils/cropper'
+
+// size is magic number
+const MODEL_INFO = {
+  tshirt: {
+    filePath: 'tshirtsmall',
+    size: 108
+  },
+  dress: {
+    filePath: 'demo_dress',
+    size: 40
+  },
+  shoe: {
+    filePath: 'shoe',
+    size: 50
+  },
+  bra: {
+    filePath: 'sports_bra_and_leggings_for_nike',
+    size: 75
+  },
+  backpack: {
+    filePath: 'large_camping_backpack_freegameready',
+    size: 115
+  },
+  pants: {
+    filePath: 'black_pants',
+    size: 130
+  }
+}
 
 export default {
   name: 'ModalViewer',
@@ -118,6 +147,10 @@ export default {
     Navigation
   },
   props: {
+    dpi: {
+      type: Number,
+      default: 600
+    },
     baseImgUrl: {
       type: String,
       default: ''
@@ -130,7 +163,7 @@ export default {
   setup (props) {
     const baseUrl = window.location.origin + '/static-data/material'
     const settings = { itemsToShow: 3, snapAlign: 'start' }
-    const type = ['tshirt', 'dress', 'shoe', 'bra', 'backpack', 'pants']
+    const type = Object.keys(MODEL_INFO)
     const showLoding = ref(true)
     const canvas = ref(null)
     const outputWidth = 700
@@ -235,7 +268,11 @@ export default {
       animate()
     }
 
-    const initModel = (type) => {
+    const initModel = async (type) => {
+      const { width } = await image2Object(props.baseImgUrl)
+      const cm = width * (2.54 / props.dpi)
+      const repeatTimes = MODEL_INFO[type].size / cm
+
       scene.children.forEach((item) => {
         if (item.type === 'Group') {
           scene.remove(item)
@@ -246,14 +283,16 @@ export default {
       baseTexture.flipY = false
       baseTexture.wrapS = THREE.RepeatWrapping
       baseTexture.wrapT = THREE.RepeatWrapping
-      baseTexture.repeat.set(20, 20)
+      baseTexture.repeat.set(repeatTimes, repeatTimes)
+
       baseTexture.needsUpdate = true
 
       const normalTexture = new THREE.TextureLoader().load(props.normalImgUrl)
       normalTexture.flipY = false
       normalTexture.wrapS = THREE.RepeatWrapping
       normalTexture.wrapT = THREE.RepeatWrapping
-      normalTexture.repeat.set(20, 20)
+      normalTexture.repeat.set(repeatTimes, repeatTimes)
+
       normalTexture.needsUpdate = true
 
       const manager = new THREE.LoadingManager()
@@ -277,17 +316,7 @@ export default {
         showLoding.value = false
       }
 
-      // 加入模型
-      const fileName = {
-        tshirt: 'tshirtsmall',
-        dress: 'demo_dress',
-        pants: 'black_pants',
-        bra: 'sports_bra_and_leggings_for_nike',
-        shoe: 'shoe',
-        backpack: 'large_camping_backpack_freegameready'
-      }
-
-      const modelPath = `${baseUrl}/${fileName[type]}/scene.gltf`
+      const modelPath = `${baseUrl}/${MODEL_INFO[type].filePath}/scene.gltf`
 
       const loader = new GLTFLoader(manager)
       loader.load(modelPath, (gltf) => {

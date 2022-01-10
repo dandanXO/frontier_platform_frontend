@@ -65,7 +65,7 @@ export default {
     const { t } = useI18n()
     const store = useStore()
     const { create3DMaterial } = useAssets()
-    const { status, zipUrl, u3maUrl, baseImgUrl, normalImgUrl } = toRefs(props.material.u3m)
+    const { status, zipUrl, u3maUrl, baseImgUrl, normalImgUrl, dpi } = toRefs(props.material.u3m)
     const { UNQUALIFIED, INITIAL, PROCESSING, COMPLETED, FAIL } = U3M_STATUS
     const showCreateBtn = props.locationId === 'AssetsMaterialEdit'
     const isExternal = props.locationId === 'MaterialDetailExternal'
@@ -141,8 +141,9 @@ export default {
         component: 'modal-viewer',
         header: t('UU0006'),
         properties: {
-          baseImgUrl: baseImgUrl.value,
-          normalImgUrl: normalImgUrl.value
+          dpi: dpi?.value,
+          baseImgUrl: baseImgUrl?.value,
+          normalImgUrl: normalImgUrl?.value
         }
       })
     }
