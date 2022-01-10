@@ -19,11 +19,18 @@ export default {
    * @param {binary} formData.logo
    * @param {binary} formData.originalLogo
    */
-  updateOrgLogo: (formData) => axios('/org/update-logo', {
-    headers: { 'Content-Type': 'multipart/form-data' },
-    method: 'POST',
-    data: formData
-  }),
+  updateOrgLogo: ({ orgId, logo, originalLogo }) => {
+    const formData = new FormData()
+    formData.append('orgId', orgId)
+    formData.append('logo', logo)
+    formData.append('originalLogo', originalLogo)
+
+    return axios('/org/update-logo', {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      method: 'POST',
+      data: formData
+    })
+  },
   removeOrgLogo: ({ orgId }) => axios('/org/remove-logo', {
     method: 'POST',
     data: { orgId }

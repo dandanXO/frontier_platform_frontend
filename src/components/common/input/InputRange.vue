@@ -1,28 +1,12 @@
 <template lang="pug">
-div(class="px-1")
-  div(
-    v-if="startAtCenter"
-    class="flex justify-center items-center"
-    :class="[isVertical ? 'flex-col' : '']"
-  )
-    slot(name="min-end" :min="min")
-    vue-slider(
-      v-model="innerRange"
-      v-bind="optionForCentered"
-      :disabled="disabled"
-    )
-      template(#dot)
-        div(class="w-3 h-3 bg-brand rounded-full")
-      template(#tooltip="{ value }")
-        div(class="text-black-700 text-body2 mt-1") {{ value }}
-    slot(name="max-end" :max="max")
-  vue-slider(v-else v-model="innerRange" v-bind="optionForNormal")
-    template(#dot)
-      div(class='w-2 h-5 bg-brand transform -translate-y-1')
-    template(#tooltip="{ value }")
-      div(class='text-black-700 text-body2 mt-1')
-        template(v-if='value === fakeMaxValue') {{max}}+
-        template(v-else) {{ value }}
+vue-slider(v-model="innerRange" v-bind="options")
+  template(#dot)
+    div(v-if="circleDot" class="w-3 h-3 bg-brand rounded-full")
+    div(v-else class='w-2 h-5 bg-brand transform -translate-y-1')
+  template(#tooltip="{ value }")
+    div(class='text-black-700 text-body2 mt-1')
+      template(v-if='value === fakeMaxValue && nonMaxLimit') {{setting.max}}+
+      template(v-else) {{ value }}
 </template>
 
 <script>
@@ -35,57 +19,38 @@ export default {
   name: 'InputRange',
   components: { VueSlider },
   props: {
-    min: {
-      type: Number,
-      default: 0
-    },
-    max: {
-      type: Number,
-      default: 100
-    },
     range: {
-      type: [Number, Array]
+      type: [Number, Array],
+      required: true
     },
-    direction: {
-      type: String,
-      default: 'ltr',
-      validator: (v) => {
-        return ['ltr', 'rtl', 'ttb', 'btt'].indexOf(v) !== -1
-      }
-    },
-    startAtCenter: {
-      type: Boolean,
-      default: false
+    setting: {
+      type: Object
     },
     disabled: {
       type: Boolean,
       default: false
     },
-    width: {
-      type: [Number, String],
-      default: 'auto'
+    nonMaxLimit: {
+      type: Boolean,
+      default: false
     },
-    height: {
-      type: [Number, String],
-      default: 4
-    },
-    interval: {
-      type: Number,
-      default: 1
+    circleDot: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['update:range'],
   setup (props, { emit }) {
-    const fakeMaxValue = props.max + 1
-    const isVertical = computed(() => ['ttb', 'btt'].includes(props.direction))
-
     const common = {
-      contained: true,
+      tooltip: 'always',
+      dotSize: 8,
+      min: 1,
+      max: 100,
       tooltipPlacement: 'bottom',
-      direction: props.direction,
-      width: props.width,
-      height: props.height,
-      interval: props.interval,
+      direction: 'ltr',
+      width: '100%',
+      height: 4,
+      interval: 1,
       processStyle: {
         'background-color': '#21b1866e'
       },
@@ -94,42 +59,26 @@ export default {
       }
     }
 
-    const optionForNormal = {
-      ...common,
-      tooltip: 'always',
-      dotSize: 8,
-      min: props.min,
-      max: fakeMaxValue
-    }
+    const fakeMaxValue = props.setting.max + 1
 
-    const optionForCentered = {
-      ...common,
-      tooltip: 'none',
-      dotSize: 12,
-      min: props.min,
-      max: props.max,
-      process: false,
-      hideLabel: true,
-      marks: val => val === Math.floor(((props.min + props.max) / 2) * 10) / 10 ? ({
-        style: {
-          width: isVertical.value ? '10px' : '2px',
-          height: isVertical.value ? '2px' : '10px',
-          display: 'block',
-          borderRadius: '2px',
-          backgroundColor: '#e0e0e0',
-          transform: isVertical.value ? 'translate(-4px, 0)' : 'translate(0, -4px)'
-        }
-      }) : false
-    }
+    const options = computed(() => {
+      return {
+        ...common,
+        ...props.setting,
+        max: props.nonMaxLimit ? fakeMaxValue : props.setting.max
+      }
+    })
+
+    const isVertical = computed(() => ['ttb', 'btt'].includes(options.value.direction))
 
     const innerRange = computed({
       get: () => {
-        if (props.startAtCenter) {
-          return props.range
-        } else {
-          const inputMin = props.range[0] === null ? props.min : props.range[0]
+        if (props.nonMaxLimit) {
+          const inputMin = props.range[0] === null ? options.value.min : props.range[0]
           const inputMax = props.range[1] === null ? fakeMaxValue : props.range[1]
           return [inputMin, inputMax]
+        } else {
+          return props.range
         }
       },
       set: (v) => emit('update:range', v)
@@ -140,8 +89,7 @@ export default {
     }
 
     return {
-      optionForNormal,
-      optionForCentered,
+      options,
       innerRange,
       fakeMaxValue,
       isVertical,
