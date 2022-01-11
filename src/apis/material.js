@@ -26,20 +26,6 @@ export default {
       method: 'POST',
       data: { orgId, materialId, materialPantoneId }
     }),
-    changeCoverImg: ({ orgId, materialId, coverMode, materialAttachmentId = null, attachmentCropImg = null }) => {
-      const formData = new FormData()
-      formData.append('orgId', orgId)
-      formData.append('materialId', materialId)
-      formData.append('coverMode', coverMode)
-      !!materialAttachmentId && formData.append('materialAttachmentId', materialAttachmentId)
-      !!attachmentCropImg && formData.append('attachmentCropImg', attachmentCropImg)
-
-      return axios('/org/assets/material/update/cover-img', {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        method: 'POST',
-        data: formData
-      })
-    },
     createAttachment: {
       upload: ({ orgId, tempMaterialId, file, fileName }) => {
         const formData = new FormData()
@@ -78,32 +64,34 @@ export default {
         data: { orgId, materialId, materialAttachmentId }
       })
     },
-    updateScannedImage: ({ orgId, materialId, isExchange, faceSideCropImg = null, backSideCropImg = null }) => {
-      const formData = new FormData()
-      formData.append('orgId', orgId)
-      formData.append('materialId', materialId)
-      formData.append('isExchange', isExchange)
-      formData.append('faceSideCropImg', faceSideCropImg)
-      formData.append('backSideCropImg', backSideCropImg)
-
-      return axios('/org/assets/material/update/scan-image', {
-        headers: { 'Content-Type': 'multipart/form-data' },
+    changeCoverImg: {
+      do: ({ orgId, materialId, coverMode, materialAttachmentId = null, tempUploadId = null, attachmentCropImgFileName = null }) => axios('/org/assets/material/update/cover-img', {
         method: 'POST',
-        data: formData
+        data: { orgId, materialId, coverMode, materialAttachmentId, tempUploadId, attachmentCropImgFileName }
+      }),
+      getUploadUrl: ({ attachmentCropImgFileName }) => axios('/org/assets/material/update/cover-img/get-upload-url', {
+        method: 'POST',
+        data: { attachmentCropImgFileName }
       })
     },
-    generateU3m: ({ orgId, materialId, isAutoRepeat, faceSideCropImg, backSideCropImg }) => {
-      const formData = new FormData()
-      formData.append('orgId', orgId)
-      formData.append('materialId', materialId)
-      formData.append('isAutoRepeat', isAutoRepeat)
-      formData.append('faceSideCropImg', faceSideCropImg)
-      formData.append('backSideCropImg', backSideCropImg)
-
-      return axios('/org/assets/material/update/generate-u3m', {
-        headers: { 'Content-Type': 'multipart/form-data' },
+    updateScannedImage: {
+      do: ({ orgId, materialId, isExchange, tempUploadId = null, faceSideCropImgFileName = null, backSideCropImgFileName = null }) => axios('/org/assets/material/update/scan-image', {
         method: 'POST',
-        data: formData
+        data: { orgId, materialId, isExchange, tempUploadId, faceSideCropImgFileName, backSideCropImgFileName }
+      }),
+      getUploadUrl: ({ faceSideCropImgFileName, backSideCropImgFileName }) => axios('/org/assets/material/update/scan-image/get-upload-url', {
+        method: 'POST',
+        data: { faceSideCropImgFileName, backSideCropImgFileName }
+      })
+    },
+    generateU3m: {
+      do: ({ orgId, materialId, isAutoRepeat, tempUploadId = null, faceSideCropImgFileName = null, backSideCropImgFileName = null }) => axios('/org/assets/material/update/generate-u3m', {
+        method: 'POST',
+        data: { orgId, materialId, isAutoRepeat, tempUploadId, faceSideCropImgFileName, backSideCropImgFileName }
+      }),
+      getUploadUrl: ({ faceSideCropImgFileName, backSideCropImgFileName }) => axios('/org/assets/material/update/generate-u3m/get-upload-url', {
+        method: 'POST',
+        data: { faceSideCropImgFileName, backSideCropImgFileName }
       })
     }
   },
@@ -132,20 +120,6 @@ export default {
       method: 'POST',
       data: { groupId, materialId, materialPantoneId }
     }),
-    changeCoverImg: ({ groupId, materialId, coverMode, materialAttachmentId = null, attachmentCropImg = null }) => {
-      const formData = new FormData()
-      formData.append('groupId', groupId)
-      formData.append('materialId', materialId)
-      formData.append('coverMode', coverMode)
-      !!materialAttachmentId && formData.append('materialAttachmentId', materialAttachmentId)
-      !!attachmentCropImg && formData.append('attachmentCropImg', attachmentCropImg)
-
-      return axios('/org/group/assets/material/update/cover-img', {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        method: 'POST',
-        data: formData
-      })
-    },
     createAttachment: {
       upload: ({ groupId, tempMaterialId, file, fileName }) => {
         const formData = new FormData()
@@ -184,32 +158,34 @@ export default {
         data: { groupId, materialId, materialAttachmentId }
       })
     },
-    updateScannedImage: ({ groupId, materialId, isExchange, faceSideCropImg = null, backSideCropImg = null }) => {
-      const formData = new FormData()
-      formData.append('groupId', groupId)
-      formData.append('materialId', materialId)
-      formData.append('isExchange', isExchange)
-      formData.append('faceSideCropImg', faceSideCropImg)
-      formData.append('backSideCropImg', backSideCropImg)
-
-      return axios('/org/group/assets/material/update/scan-image', {
-        headers: { 'Content-Type': 'multipart/form-data' },
+    changeCoverImg: {
+      do: ({ groupId, materialId, coverMode, materialAttachmentId = null, tempUploadId = null, attachmentCropImgFileName = null }) => axios('/org/group/assets/material/update/cover-img', {
         method: 'POST',
-        data: formData
+        data: { groupId, materialId, coverMode, materialAttachmentId, tempUploadId, attachmentCropImgFileName }
+      }),
+      getUploadUrl: ({ attachmentCropImgFileName }) => axios('/org/group/assets/material/update/cover-img/get-upload-url', {
+        method: 'POST',
+        data: { attachmentCropImgFileName }
       })
     },
-    generateU3m: ({ groupId, materialId, isAutoRepeat, faceSideCropImg, backSideCropImg }) => {
-      const formData = new FormData()
-      formData.append('groupId', groupId)
-      formData.append('materialId', materialId)
-      formData.append('isAutoRepeat', isAutoRepeat)
-      formData.append('faceSideCropImg', faceSideCropImg)
-      formData.append('backSideCropImg', backSideCropImg)
-
-      return axios('/org/group/assets/material/update/generate-u3m', {
-        headers: { 'Content-Type': 'multipart/form-data' },
+    updateScannedImage: {
+      do: ({ groupId, materialId, isExchange, tempUploadId = null, faceSideCropImgFileName = null, backSideCropImgFileName = null }) => axios('/org/group/assets/material/update/scan-image', {
         method: 'POST',
-        data: formData
+        data: { groupId, materialId, isExchange, tempUploadId, faceSideCropImgFileName, backSideCropImgFileName }
+      }),
+      getUploadUrl: ({ faceSideCropImgFileName, backSideCropImgFileName }) => axios('/org/group/assets/material/update/scan-image/get-upload-url', {
+        method: 'POST',
+        data: { faceSideCropImgFileName, backSideCropImgFileName }
+      })
+    },
+    generateU3m: {
+      do: ({ groupId, materialId, isAutoRepeat, tempUploadId = null, faceSideCropImgFileName = null, backSideCropImgFileName = null }) => axios('/org/group/assets/material/update/generate-u3m', {
+        method: 'POST',
+        data: { groupId, materialId, isAutoRepeat, tempUploadId, faceSideCropImgFileName, backSideCropImgFileName }
+      }),
+      getUploadUrl: ({ faceSideCropImgFileName, backSideCropImgFileName }) => axios('/org/group/assets/material/update/generate-u3m/get-upload-url', {
+        method: 'POST',
+        data: { faceSideCropImgFileName, backSideCropImgFileName }
       })
     }
   }
