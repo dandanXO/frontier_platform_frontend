@@ -49,5 +49,3 @@ function prepare () {
 prepare().then(() => {
   app.use(store).use(router).use(i18n).mount('#app')
 })
-
-console.log('cd test')

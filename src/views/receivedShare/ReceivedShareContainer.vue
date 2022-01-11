@@ -10,7 +10,9 @@ fullscreen-header
       svg-icon(iconName="chat" size="24" class="text-black-700")
     btn(size="md") {{$t('UU0018')}}
   template(#content)
-    router-view
+    div(v-if="share.isClosed" class="w-full h-full flex items-center justify-center")
+      p(class="text-body1 text-primary") {{$t('GG0026')}}
+    router-view(v-else)
     div(class="fixed z-index:footer bottom-0 w-full h-13 bg-black-100 px-36 flex items-center justify-end card-shadow")
       p(class="text-body2 text-primary") {{$t('GG0004')}}
 </template>
