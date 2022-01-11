@@ -311,7 +311,7 @@
   "AA0019": "Must be between 6-18 characters",
   "AA0020": "Must contain at least one letter",
   "AA0021": "I agree to the {terms} and the {privacy}.",
-  "AA0025": "Hi {first name}",
+  "AA0025": "Hi {name}",
   "AA0026": "Ｗelcome to Frontier! ",
   "AA0027": "Your account was successfully created! We have sent an activation link to your email address.",
   "AA0028": "Next",
