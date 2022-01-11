@@ -43,7 +43,7 @@ export default {
     const isUploading = ref(false)
     const orgLogo = computed(() => store.getters['organization/organization'].logo)
     const haveUploadedImage = computed(() => !!orgLogo.value)
-    const imageOperator = new ImageOperator(['jpeg', 'png'], 5, cropRectSize)
+    const imageOperator = new ImageOperator(['jpeg', 'jpg', 'png'], 5, cropRectSize)
 
     imageOperator.on('uploading', () => (isUploading.value = true))
     imageOperator.on('customError', () => (isUploading.value = false))

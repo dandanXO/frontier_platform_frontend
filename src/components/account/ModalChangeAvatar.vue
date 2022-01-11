@@ -44,7 +44,7 @@ export default {
     const avatar = computed(() => store.getters['user/orgUser/orgUser'].avatar)
     const haveUploadedImage = computed(() => !!avatar.value)
 
-    const imageOperator = new ImageOperator(['jpeg', 'png'], 5, cropRectSize)
+    const imageOperator = new ImageOperator(['jpeg', 'jpg', 'png'], 5, cropRectSize)
 
     imageOperator.on('uploading', () => (isUploading.value = true))
     imageOperator.on('customError', () => (isUploading.value = false))
