@@ -68,6 +68,20 @@ export default {
     async getShareReceivedMaterial ({ dispatch }, { sharingKey, workspaceNodeId }) {
       const { data } = await shareApi.getShareReceivedMaterial({ sharingKey, workspaceNodeId })
       dispatch('setShareModule', data.result)
+    },
+    async checkShareReceivedPermission ({ getters }, { type }) {
+      const { data } = await shareApi.checkShareReceivedPermission({ sharingKey: getters.share.sharingKey, type })
+      const { status, result } = data
+
+      if (status) {
+        return result.allow
+      }
+    },
+    async saveShareReceived ({ getters }, { orgId, groupId }) {
+      await shareApi.saveShareReceived({ sharingKey: getters.share.sharingKey, orgId, groupId })
+    },
+    async cloneShareReceived ({ getters }, { orgId, groupId, workspaceNodeIdList }) {
+      await shareApi.cloneShareReceived({ sharingKey: getters.share.sharingKey, orgId, groupId, workspaceNodeIdList })
     }
   }
 }

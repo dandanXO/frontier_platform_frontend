@@ -12,5 +12,17 @@ export default {
   getShareReceivedMaterial: ({ sharingKey, workspaceNodeId }) => axios('/share/get-received/get-material', {
     method: 'POST',
     data: { sharingKey, workspaceNodeId }
+  }),
+  checkShareReceivedPermission: ({ sharingKey, type }) => axios('/share/get-received/check-permission', {
+    method: 'POST',
+    data: { sharingKey, type }
+  }),
+  saveShareReceived: ({ sharingKey, orgId, groupId }) => axios('/share/get-received/save', {
+    method: 'POST',
+    data: { sharingKey, orgId, groupId }
+  }),
+  cloneShareReceived: ({ sharingKey, orgId, groupId, workspaceNodeIdList }) => axios('/share/get-received/clone', {
+    method: 'POST',
+    data: { sharingKey, orgId, groupId, workspaceNodeIdList }
   })
 }

@@ -218,3 +218,9 @@ export const SHARING_FROM = {
   WORKSPACE: 1,
   PUBLIC_LIBRARY: 2
 }
+
+export const RECEIVED_SHARE_ACTION_TYPE = {
+  SAVE: 1,
+  CLONE: 2,
+  DOWNLOAD: 3
+}

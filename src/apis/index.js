@@ -39,6 +39,7 @@ instance.interceptors.response.use(response => {
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
     router.push(`/sign-in/${window.location.search}`)
+    return Promise.reject(new Error('access-token-expire'))
   }
 
   if ([400, 404, 500].includes(status)) {

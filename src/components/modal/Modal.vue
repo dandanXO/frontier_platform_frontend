@@ -69,7 +69,8 @@ export default {
     ModalMaterialMergePreview: defineAsyncComponent(() => import('@/components/assets/merge/ModalMaterialMergePreview.vue')),
     ModalShare: defineAsyncComponent(() => import('@/components/workspace/ModalShare.vue')),
     ModalShareAssigned: defineAsyncComponent(() => import('@/components/workspace/ModalShareAssigned.vue')),
-    ModalShareAssignedList: defineAsyncComponent(() => import('@/components/workspace/ModalShareAssignedList.vue'))
+    ModalShareAssignedList: defineAsyncComponent(() => import('@/components/workspace/ModalShareAssignedList.vue')),
+    ModalSaveReceivedShare: defineAsyncComponent(() => import('@/components/receivedShare/ModalSaveReceivedShare.vue'))
   },
   props: {
     component: {
