@@ -8,7 +8,7 @@ fullscreen-header
   template(#right)
     div(class="relative pr-4")
       svg-icon(iconName="chat" size="24" class="text-black-700")
-    btn(size="md" @click="openModalSaveReceivedShare") {{$t('UU0018')}}
+    btn(size="md" @click="saveReceivedShare") {{$t('UU0018')}}
   template(#content)
     div(v-if="share.isClosed" class="w-full h-full flex items-center justify-center")
       p(class="text-body1 text-primary") {{$t('GG0026')}}
@@ -21,8 +21,7 @@ fullscreen-header
 import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { RECEIVED_SHARE_ACTION_TYPE } from '@/utils/constants'
+import useReceivedShare from '@/composables/useReceivedShare.js'
 
 export default {
   name: 'ReceivedShareContainer',
@@ -31,34 +30,15 @@ export default {
   },
   setup () {
     const store = useStore()
-    const { t } = useI18n()
+    const { saveReceivedShare } = useReceivedShare()
 
     const share = computed(() => store.getters['share/share'])
     const logo = computed(() => store.getters['share/logo'])
 
-    const openModalSaveReceivedShare = async () => {
-      store.dispatch('helper/openModalLoading')
-      await store.dispatch('user/getUser')
-
-      const isAllow = store.dispatch('share/checkShareReceivedPermission', { type: RECEIVED_SHARE_ACTION_TYPE.SAVE })
-
-      if (isAllow) {
-        store.dispatch('helper/openModal', {
-          component: 'modal-save-received-share'
-        })
-      } else {
-        store.dispatch('helper/openModalConfirm', {
-          title: t('GG0014'),
-          content: t('GG0015'),
-          primaryText: t('UU0031')
-        })
-      }
-    }
-
     return {
       share,
       logo,
-      openModalSaveReceivedShare
+      saveReceivedShare
     }
   }
 }

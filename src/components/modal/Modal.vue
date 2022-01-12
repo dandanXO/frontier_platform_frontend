@@ -70,7 +70,7 @@ export default {
     ModalShare: defineAsyncComponent(() => import('@/components/workspace/ModalShare.vue')),
     ModalShareAssigned: defineAsyncComponent(() => import('@/components/workspace/ModalShareAssigned.vue')),
     ModalShareAssignedList: defineAsyncComponent(() => import('@/components/workspace/ModalShareAssignedList.vue')),
-    ModalSaveReceivedShare: defineAsyncComponent(() => import('@/components/receivedShare/ModalSaveReceivedShare.vue'))
+    ModalReceivedShareChooseStorage: defineAsyncComponent(() => import('@/components/receivedShare/ModalReceivedShareChooseStorage.vue'))
   },
   props: {
     component: {

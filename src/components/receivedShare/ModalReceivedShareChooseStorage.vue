@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-101 px-8")
-  h6(class="text-h6 font-bold text-primary pb-7.5 text-center") {{$t('GG0005')}}
+  h6(class="text-h6 font-bold text-primary pb-7.5 text-center") {{title}}
   input-select(
     v-model:selectValue="selectedOrgId"
     :options="optionOrgList"
@@ -20,7 +20,7 @@ div(class="w-101 px-8")
     class="h-25"
     :primaryText="$t('UU0018')"
     :secondaryButton="false"
-    @click:primary="saveShareReceived"
+    @click:primary="innerActionHandler"
   )
 </template>
 
@@ -29,8 +29,18 @@ import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
-  name: 'ModalSaveReceiveShare.vue',
-  setup () {
+  name: 'ModalReceivedShareChooseStorage',
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    actionHandler: {
+      type: Function,
+      required: true
+    }
+  },
+  setup (props) {
     const store = useStore()
     const SAVE_PLACE_TYPE = {
       ORG: 1,
@@ -55,12 +65,11 @@ export default {
       ]
     })
 
-    const saveShareReceived = async () => {
+    const innerActionHandler = async () => {
       const [savePlaceType, id] = selectedSavePlace.value.split('-')
-      store.dispatch('share/saveShareReceived', {
-        orgId: selectedOrgId.value,
-        groupId: Number(savePlaceType) === SAVE_PLACE_TYPE.GROUP ? id : null
-      })
+      const orgId = selectedOrgId.value
+      const groupId = Number(savePlaceType) === SAVE_PLACE_TYPE.GROUP ? Number(id) : null
+      await props.actionHandler({ orgId, groupId })
       store.dispatch('helper/closeModal')
     }
 
@@ -81,7 +90,7 @@ export default {
       optionOrgList,
       optionSavePlaceList,
       selectedSavePlace,
-      saveShareReceived
+      innerActionHandler
     }
   }
 }

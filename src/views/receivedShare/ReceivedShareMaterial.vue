@@ -4,7 +4,7 @@ div(class="pt-13 w-full h-full flex justify-center")
     div(class="pb-7.5")
       div(class="flex items-center pb-2")
         h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{`${material.materialNo} ${material.description}`}}
-        //- svg-icon(iconName="clone" class="text-black-700 cursor-pointer" size="24")
+        svg-icon(iconName="clone" class="text-black-700 cursor-pointer" size="24" @click="cloneReceivedShare([share.workspaceNodeId])")
     material-detail-external(:material="material" :isCanDownloadU3M="share.isCanDownloadU3M")
   div(v-else class="h-full flex justify-center items-center")
     svg-icon(iconName="loading" size="92" class="text-brand-dark")
@@ -14,6 +14,7 @@ div(class="pt-13 w-full h-full flex justify-center")
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import MaterialDetailExternal from '@/components/layout/materialDetail/MaterialDetailExternal.vue'
+import useReceivedShare from '@/composables/useReceivedShare.js'
 
 export default {
   name: 'ReceivedShareMaterial',
@@ -22,6 +23,8 @@ export default {
   },
   setup () {
     const store = useStore()
+    const { cloneReceivedShare } = useReceivedShare()
+
     const isLoading = ref(true)
     const share = computed(() => store.getters['share/share'])
     const material = computed(() => store.getters['share/material'])
@@ -34,7 +37,8 @@ export default {
     return {
       isLoading,
       material,
-      share
+      share,
+      cloneReceivedShare
     }
   }
 }

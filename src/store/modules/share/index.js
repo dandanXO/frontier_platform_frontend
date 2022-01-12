@@ -71,9 +71,9 @@ export default {
     },
     async checkShareReceivedPermission ({ getters }, { type }) {
       const { data } = await shareApi.checkShareReceivedPermission({ sharingKey: getters.share.sharingKey, type })
-      const { status, result } = data
+      const { success, result } = data
 
-      if (status) {
+      if (success) {
         return result.allow
       }
     },

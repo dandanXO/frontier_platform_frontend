@@ -15,13 +15,15 @@ div(class="w-315 h-full mx-auto")
     template(#header-above)
       div(class="mx-7.5 pt-5 -mb-7")
         div(class="flex justify-between items-center pb-5")
-          div(class="flex items-end")
-            breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)" fontSize="text-h5")
-            p(class="flex text-caption text-black-700 pl-1")
-              span (
-              i18n-t(keypath="RR0068" tag="span")
-                template(#number) {{pagination.totalCount}}
-              span )
+          div(class="flex items-start")
+            div(class="flex items-end pr-3")
+              breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)" fontSize="text-h5")
+              p(class="flex text-caption text-black-700 pl-1")
+                span (
+                i18n-t(keypath="RR0068" tag="span")
+                  template(#number) {{pagination.totalCount}}
+                span )
+            svg-icon(iconName="clone" class="text-black-700 cursor-pointer" size="24" @click="cloneReceivedShare([workspaceNodeId])")
           btn(size="sm" type="secondary" @click="isCollectionDetailExpand = !isCollectionDetailExpand") {{isCollectionDetailExpand ? $t('UU0026') : $t('UU0071')}}
         div(v-if="isCollectionDetailExpand" class="flex items-start gap-x-9")
           div(class="relative w-97.5 h-69 bg-black-200 flex items-center justify-center flex-shrink-0")
@@ -47,6 +49,13 @@ div(class="w-315 h-full mx-auto")
               @click="goTo(node.key)"
               @click:option="$event.func(node.key)"
             )
+              template(#cover-overlay)
+                svg-icon(
+                  iconName="clone"
+                  size="20"
+                  class="absolute bottom-3 right-3 cursor-pointer text-black-500"
+                  @click="cloneReceivedShare([node.data.workspaceNodeId])"
+                )
           template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
             node-item(
               v-model:selectedList="selectedNodeKeyList"
@@ -56,6 +65,14 @@ div(class="w-315 h-full mx-auto")
               :displayName="node.data.materialNo"
               @click:option="$event.func(node.key)"
             )
+              template(#cover-overlay)
+                svg-icon(
+                  iconName="clone"
+                  size="20"
+                  class="absolute bottom-3 right-3 cursor-pointer text-black-500"
+                  @click="cloneReceivedShare([node.data.workspaceNodeId])"
+                )
+  multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeKeyList")
 </template>
 
 <script>
@@ -66,6 +83,8 @@ import { computed, ref } from 'vue'
 import { SEARCH_TYPE, SORT_BY, NODE_TYPE } from '@/utils/constants.js'
 import { useRoute, useRouter } from 'vue-router'
 import NodeItem from '@/components/layout/NodeItem'
+import useReceivedShare from '@/composables/useReceivedShare.js'
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'ReceivedShareCollection',
@@ -75,9 +94,11 @@ export default {
     NodeItem
   },
   setup () {
+    const { t } = useI18n()
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
+    const { cloneReceivedShare, multipleCloneReceivedShare } = useReceivedShare()
 
     const optionSort = {
       base: [
@@ -88,6 +109,12 @@ export default {
         SORT_BY.RELEVANCE_M_C
       ]
     }
+    const optionMultiSelect = [
+      {
+        name: t('RR0056'),
+        func: multipleCloneReceivedShare
+      }
+    ]
 
     const share = computed(() => store.getters['share/share'])
     const pagination = computed(() => store.getters['helper/search/pagination'])
@@ -136,7 +163,10 @@ export default {
       workspaceCollection,
       isCollectionDetailExpand,
       goTo,
-      refSearchTable
+      refSearchTable,
+      cloneReceivedShare,
+      workspaceNodeId,
+      optionMultiSelect
     }
   }
 }
