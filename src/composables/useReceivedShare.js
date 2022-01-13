@@ -7,17 +7,21 @@ export default function useReceivedShare () {
   const store = useStore()
 
   const checkPermission = async (type) => {
-    store.dispatch('helper/openModalLoading')
-    await store.dispatch('user/getUser')
-    const isAllow = await store.dispatch('share/checkShareReceivedPermission', { type })
-    if (!isAllow) {
-      store.dispatch('helper/openModalConfirm', {
-        title: t('GG0014'),
-        content: t('GG0015'),
-        primaryText: t('UU0031')
-      })
+    try {
+      store.dispatch('helper/openModalLoading')
+      await store.dispatch('user/getUser')
+      const isAllow = await store.dispatch('share/checkShareReceivedPermission', { type })
+      if (!isAllow) {
+        store.dispatch('helper/openModalConfirm', {
+          title: t('GG0014'),
+          content: t('GG0015'),
+          primaryText: t('UU0031')
+        })
+      }
+      return isAllow
+    } catch (error) {
+      store.dispatch('helper/closeModalLoading')
     }
-    return isAllow
   }
 
   const saveReceivedShare = async () => {

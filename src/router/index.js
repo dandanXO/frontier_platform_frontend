@@ -133,7 +133,7 @@ const routes = [
       if (share.workspaceNodeType === NODE_TYPE.COLLECTION) {
         next({ path: '/received-share/collection', query: to.query })
       } else {
-        next({ path: '/received-share/material', query: to.query })
+        next({ path: `/received-share/material/${share.workspaceNodeId}`, query: to.query })
       }
     }
   },
@@ -158,8 +158,9 @@ const routes = [
         component: () => import('@/views/receivedShare/ReceivedShareCollection.vue')
       },
       {
-        path: 'material',
+        path: 'material/:workspaceNodeId',
         name: 'ReceivedShareMaterial',
+        props: true,
         component: () => import('@/views/receivedShare/ReceivedShareMaterial.vue')
       }
     ]

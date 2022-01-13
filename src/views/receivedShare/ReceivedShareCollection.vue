@@ -47,7 +47,6 @@ div(class="w-315 h-full mx-auto")
               :node="node.data"
               :displayName="node.data.name"
               @click="goTo(node.key)"
-              @click:option="$event.func(node.key)"
             )
               template(#cover-overlay)
                 svg-icon(
@@ -63,7 +62,7 @@ div(class="w-315 h-full mx-auto")
               :nodeKey="node.key"
               :node="node.data"
               :displayName="node.data.materialNo"
-              @click:option="$event.func(node.key)"
+              @click="goToReceivedShareMaterial({workspaceNodeId: node.data.workspaceNodeId, sharingKey: share.sharingKey })"
             )
               template(#cover-overlay)
                 svg-icon(
@@ -85,6 +84,7 @@ import { useRoute, useRouter } from 'vue-router'
 import NodeItem from '@/components/layout/NodeItem'
 import useReceivedShare from '@/composables/useReceivedShare.js'
 import { useI18n } from 'vue-i18n'
+import useNavigation from '@/composables/useNavigation.js'
 
 export default {
   name: 'ReceivedShareCollection',
@@ -99,6 +99,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const { cloneReceivedShare, multipleCloneReceivedShare } = useReceivedShare()
+    const { goToReceivedShareMaterial } = useNavigation()
 
     const optionSort = {
       base: [
@@ -166,7 +167,8 @@ export default {
       refSearchTable,
       cloneReceivedShare,
       workspaceNodeId,
-      optionMultiSelect
+      optionMultiSelect,
+      goToReceivedShareMaterial
     }
   }
 }

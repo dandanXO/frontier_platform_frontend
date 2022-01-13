@@ -9,6 +9,7 @@ export default {
   },
   state: () => ({
     material: {},
+    breadcrumbList: [],
     share: {
       sharingId: null,
       sharingFrom: SHARING_FROM.WORKSPACE,
@@ -25,6 +26,7 @@ export default {
   }),
   getters: {
     material: state => state.material,
+    materialBreadcrumbList: state => state.breadcrumbList,
     share: state => state.share,
     logo: state => state.share.logo ? state.share.logo : require('@/assets/images/logo-default.png')
   },
@@ -35,16 +37,20 @@ export default {
     SET_material (state, material) {
       state.material = material
     },
+    SET_breadcrumbList (state, breadcrumbList) {
+      state.breadcrumbList = breadcrumbList
+    },
     SET_share (state, share) {
       state.share = share
     }
   },
   actions: {
     setShareModule ({ commit, dispatch }, data) {
-      const { workspaceCollection, material, share, pagination } = data
+      const { workspaceCollection, material, share, pagination, breadcrumbList } = data
 
       !!workspaceCollection && commit('SET_collection', workspaceCollection)
       !!material && commit('SET_material', material)
+      !!breadcrumbList && commit('SET_breadcrumbList', breadcrumbList)
       !!share && commit('SET_share', share)
       !!pagination && dispatch('helper/search/setPagination', pagination, { root: true })
     },

@@ -86,6 +86,10 @@ export default function useNavigation () {
     router.push(parsePath(`/:orgNo/public-library/${nodeKey}`))
   }
 
+  const goToReceivedShareMaterial = ({ workspaceNodeId, sharingKey }) => {
+    router.push(`/received-share/material/${workspaceNodeId}?sharingKey=${sharingKey}`)
+  }
+
   return {
     nextAfterSignIn,
     parsePath,
@@ -97,6 +101,7 @@ export default function useNavigation () {
     goToWorkspaceMaterialDetail,
     goToPublicLibraryMaterialDetail,
     goToOrgAssetMaterialEdit,
-    goToGroupAssetMaterialEdit
+    goToGroupAssetMaterialEdit,
+    goToReceivedShareMaterial
   }
 }

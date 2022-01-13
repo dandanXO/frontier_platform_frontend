@@ -48,8 +48,8 @@ export default {
     }
 
     const optionOrgList = computed(() => store.getters['user/organizationList'])
-    const selectedOrgId = ref(optionOrgList.value[0].orgId)
-    const selectedOrgNo = computed(() => optionOrgList.value.find(org => org.orgId === selectedOrgId.value).orgNo)
+    const selectedOrgId = ref(optionOrgList.value[0]?.orgId || null)
+    const selectedOrgNo = computed(() => optionOrgList.value.find(org => org.orgId === selectedOrgId.value)?.orgNo)
     const selectedSavePlace = ref(null)
     const optionSavePlaceList = computed(() => {
       const { orgName, orgId } = store.getters['organization/organization']
@@ -69,15 +69,17 @@ export default {
       const [savePlaceType, id] = selectedSavePlace.value.split('-')
       const orgId = selectedOrgId.value
       const groupId = Number(savePlaceType) === SAVE_PLACE_TYPE.GROUP ? Number(id) : null
+      store.dispatch('helper/openModalLoading')
       await props.actionHandler({ orgId, groupId })
+      store.dispatch('helper/closeModalLoading')
       store.dispatch('helper/closeModal')
     }
 
     watch(
       () => selectedOrgNo.value,
       async () => {
-        await store.dispatch('organization/getOrg', { orgNo: selectedOrgNo.value })
-        selectedSavePlace.value = optionSavePlaceList.value[0].key
+        !!selectedOrgNo.value && await store.dispatch('organization/getOrg', { orgNo: selectedOrgNo.value })
+        selectedSavePlace.value = optionSavePlaceList.value[0]?.key || null
       },
       {
         immediate: true,
