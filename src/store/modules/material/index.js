@@ -460,9 +460,7 @@ export default {
 }
 
 async function putBinaryData (url = '', data) {
-  const crossOrigin = 'https://cors-anywhere.herokuapp.com/'
-
-  return await fetch(crossOrigin + url, {
+  return await fetch(url, {
     method: 'PUT',
     cache: 'no-cache',
     headers: {
