@@ -1,6 +1,6 @@
 <template lang="pug">
-div(class="w-125")
-  div(class="w-full h-125")
+div
+  div(class="aspect-ratio")
     img(v-if="!!imageList[currentDisplayIndex].src" class="w-full h-full" :src="imageList[currentDisplayIndex].src")
     div(v-else class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-h4 font-bold text-black-400") {{$t('RR0103')}}
   div(class="flex pt-3 pb-4")
