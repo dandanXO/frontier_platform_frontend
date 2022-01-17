@@ -93,6 +93,7 @@ export default function useNavigation () {
   return {
     nextAfterSignIn,
     parsePath,
+    goToLobby,
     goToAssets,
     goToMaterialUpload,
     goToAssetMaterialDetail,

@@ -1,66 +1,81 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { RECEIVED_SHARE_ACTION_TYPE } from '@/utils/constants.js'
+import useNavigation from '@/composables/useNavigation.js'
 
 export default function useReceivedShare () {
   const { t } = useI18n()
   const store = useStore()
+  const { goToLobby } = useNavigation()
 
-  const checkPermission = async (type) => {
+  const saveReceivedShare = async () => {
     try {
       store.dispatch('helper/openModalLoading')
       await store.dispatch('user/getUser')
 
-      let isAllow = true
-      const { isCanSave, isCanClone } = store.getters['share/share']
-      if (type === RECEIVED_SHARE_ACTION_TYPE.SAVE) {
-        isAllow = isCanSave
-      } else if (type === RECEIVED_SHARE_ACTION_TYPE.CLONE) {
-        isAllow = isCanClone
-      }
+      const { isCanSave } = store.getters['share/share']
+      const organizationList = store.getters['user/organizationList']
 
-      if (!isAllow) {
+      if (isCanSave && organizationList.length >= 1) {
+        store.dispatch('helper/openModal', {
+          component: 'modal-received-share-choose-storage',
+          properties: {
+            title: t('GG0005'),
+            actionHandler: ({ orgId, groupId }) => store.dispatch('share/saveShareReceived', { orgId, groupId })
+          }
+        })
+      } else if (isCanSave && organizationList.length === 0) {
+        store.dispatch('helper/openModalConfirm', {
+          title: t('GG0010'),
+          content: t('GG0033'),
+          primaryText: t('UU0072'),
+          primaryHandler: goToLobby
+        })
+      } else {
         store.dispatch('helper/openModalConfirm', {
           title: t('GG0014'),
           content: t('GG0015'),
           primaryText: t('UU0031')
         })
       }
-      return isAllow
     } catch (error) {
       store.dispatch('helper/closeModalLoading')
     }
   }
 
-  const saveReceivedShare = async () => {
-    await checkPermission(RECEIVED_SHARE_ACTION_TYPE.SAVE) && store.dispatch('helper/openModal', {
-      component: 'modal-received-share-choose-storage',
-      properties: {
-        title: t('GG0005'),
-        actionHandler: ({ orgId, groupId }) => store.dispatch('share/saveShareReceived', { orgId, groupId })
-      }
-    })
-  }
-
   const cloneReceivedShare = async (workspaceNodeIdList) => {
-    await checkPermission(RECEIVED_SHARE_ACTION_TYPE.CLONE) && store.dispatch('helper/openModal', {
-      component: 'modal-received-share-choose-storage',
-      properties: {
-        title: t('GG0019'),
-        actionHandler: ({ orgId, groupId }) => store.dispatch('share/cloneShareReceived', { orgId, groupId, workspaceNodeIdList })
-      }
-    })
+    store.dispatch('helper/openModalLoading')
+    await store.dispatch('user/getUser')
+
+    const { isCanClone } = store.getters['share/share']
+    const organizationList = store.getters['user/organizationList']
+
+    if (isCanClone && organizationList.length >= 1) {
+      store.dispatch('helper/openModal', {
+        component: 'modal-received-share-choose-storage',
+        properties: {
+          title: t('GG0019'),
+          actionHandler: ({ orgId, groupId }) => store.dispatch('share/cloneShareReceived', { orgId, groupId, workspaceNodeIdList })
+        }
+      })
+    } else if (isCanClone && organizationList.length === 0) {
+      store.dispatch('helper/openModalConfirm', {
+        title: t('GG0017'),
+        content: t('GG0034'),
+        primaryText: t('UU0072'),
+        primaryHandler: goToLobby
+      })
+    } else {
+      store.dispatch('helper/openModalConfirm', {
+        title: t('GG0016'),
+        content: t('GG0020'),
+        primaryText: t('UU0031')
+      })
+    }
   }
 
   const multipleCloneReceivedShare = async (workspaceNodeKeyList) => {
     const workspaceNodeIdList = workspaceNodeKeyList.map(nodeKey => nodeKey.split('-')[1])
-    await checkPermission(RECEIVED_SHARE_ACTION_TYPE.CLONE) && store.dispatch('helper/openModal', {
-      component: 'modal-received-share-choose-storage',
-      properties: {
-        title: t('GG0019'),
-        actionHandler: ({ orgId, groupId }) => store.dispatch('share/cloneShareReceived', { orgId, groupId, workspaceNodeIdList })
-      }
-    })
+    cloneReceivedShare(workspaceNodeIdList)
   }
 
   return {

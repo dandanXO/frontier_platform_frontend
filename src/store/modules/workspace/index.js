@@ -172,6 +172,17 @@ export default {
         ? await workspaceApi.org.removeAssignedShare({ orgId: rootGetters['organization/orgId'], workspaceNodeId, type, id })
         : await workspaceApi.group.removeAssignedShare({ groupId: rootGetters['group/groupId'], workspaceNodeId, type, id })
       await dispatch('getShareInfo', { workspaceNodeId })
+    },
+    async toggleCopyLink ({ rootGetters }, { workspaceNodeId, isCanShared }) {
+      rootGetters['helper/routeLocation'] === 'org'
+        ? await workspaceApi.org.toggleCopyLink({ orgId: rootGetters['organization/orgId'], workspaceNodeId, isCanShared })
+        : await workspaceApi.group.toggleCopyLink({ groupId: rootGetters['group/groupId'], workspaceNodeId, isCanShared })
+    },
+    async generateCopyLink ({ rootGetters }, { workspaceNodeId }) {
+      const { data } = rootGetters['helper/routeLocation'] === 'org'
+        ? await workspaceApi.org.generateCopyLink({ orgId: rootGetters['organization/orgId'], workspaceNodeId })
+        : await workspaceApi.group.generateCopyLink({ groupId: rootGetters['group/groupId'], workspaceNodeId })
+      return data.result.key
     }
   }
 }

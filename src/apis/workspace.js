@@ -85,6 +85,14 @@ export default {
     removeAssignedShare: ({ orgId, workspaceNodeId, type, id }) => axios('/org/workspace/node/share/assigned/remove', {
       method: 'POST',
       data: { orgId, workspaceNodeId, type, id }
+    }),
+    toggleCopyLink: ({ orgId, workspaceNodeId, isCanShared }) => axios('/org/workspace/node/share/copy-link/update-setting', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId, isCanShared }
+    }),
+    generateCopyLink: ({ orgId, workspaceNodeId }) => axios('/org/workspace/node/share/copy-link/generate', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId }
     })
   },
   group: {
@@ -171,6 +179,14 @@ export default {
     removeAssignedShare: ({ groupId, workspaceNodeId, type, id }) => axios('/org/group/workspace/node/share/assigned/remove', {
       method: 'POST',
       data: { groupId, workspaceNodeId, type, id }
+    }),
+    toggleCopyLink: ({ group, workspaceNodeId, isCanShared }) => axios('/org/group/workspace/node/share/copy-link/update-setting', {
+      method: 'POST',
+      data: { group, workspaceNodeId, isCanShared }
+    }),
+    generateCopyLink: ({ group, workspaceNodeId }) => axios('/org/group/workspace/node/share/copy-link/generate', {
+      method: 'POST',
+      data: { group, workspaceNodeId }
     })
   }
 }

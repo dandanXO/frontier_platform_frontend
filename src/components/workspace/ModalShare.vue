@@ -24,6 +24,15 @@ div(class="w-113.5 px-8")
               )
               p {{$t('FF0058', { number: shareInfo.shareList.length })}}
             btn(size="sm" type="secondary" :disabled="shareInfo.shareList.length === 0" @click="openModalShareAssignedList") {{$t('UU0027')}}
+    template(v-else-if="currentTab === TAB.COPY_LINK")
+      div(class="py-7.5 h-full flex flex-col justify-between")
+        div(class="flex items-center justify-between")
+          input-container(:label="$t('FF0063')")
+            input-switch(size="30" :name="$t('FF0064')" v-model:inputValue="shareInfo.isCanShared" @update:inputValue="toggleCopyLink")
+          btn(size="sm" :disabled="!shareInfo.isCanShared" @click="generateCopyLink") {{$t('UU0068')}}
+        div(class="bg-black-100 h-15 flex px-5 py-3 gap-x-2")
+          svg-icon(iconName="error_outline" class="text-primary")
+          p(class="text-caption line-height-1.6 text-primary") {{$t('FF0062')}}
 </template>
 
 <script>
@@ -32,6 +41,7 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import AvatarGroup from '@/components/AvatarGroup.vue'
 import { NODE_TYPE } from '@/utils/constants.js'
+import copyText from '@/utils/copy-text'
 
 export default {
   name: 'ModalShare',
@@ -102,6 +112,16 @@ export default {
       })
     }
 
+    const toggleCopyLink = () => store.dispatch('workspace/toggleCopyLink', { workspaceNodeId: props.workspaceNodeId, isCanShared: shareInfo.value.isCanShared })
+
+    const generateCopyLink = async () => {
+      store.dispatch('helper/pushModalLoading')
+      const key = await store.dispatch('workspace/generateCopyLink', { workspaceNodeId: props.workspaceNodeId })
+      copyText(`${window.location.origin}/share-page?sharingKey=${key}`)
+      store.dispatch('helper/closeModalLoading')
+      store.commit('helper/PUSH_message', t('FF0066'))
+    }
+
     await store.dispatch('workspace/getShareInfo', { workspaceNodeId: props.workspaceNodeId })
 
     return {
@@ -110,7 +130,9 @@ export default {
       TAB,
       openModalShareAssigned,
       shareInfo,
-      openModalShareAssignedList
+      openModalShareAssignedList,
+      toggleCopyLink,
+      generateCopyLink
     }
   }
 }
