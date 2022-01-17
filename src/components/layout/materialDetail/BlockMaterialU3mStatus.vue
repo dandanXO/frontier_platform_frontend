@@ -100,7 +100,8 @@ export default {
       }
     })
 
-    const downloadU3m = (url) => {
+    const downloadU3m = async (url) => {
+      await store.dispatch('user/getUser')
       if (isExternal && !props.isCanDownloadU3M) {
         store.dispatch('helper/openModalConfirm', {
           title: t('II0003'),

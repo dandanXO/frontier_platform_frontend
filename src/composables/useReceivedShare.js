@@ -10,7 +10,15 @@ export default function useReceivedShare () {
     try {
       store.dispatch('helper/openModalLoading')
       await store.dispatch('user/getUser')
-      const isAllow = await store.dispatch('share/checkShareReceivedPermission', { type })
+
+      let isAllow = true
+      const { isCanSave, isCanClone } = store.getters['share/share']
+      if (type === RECEIVED_SHARE_ACTION_TYPE.SAVE) {
+        isAllow = isCanSave
+      } else if (type === RECEIVED_SHARE_ACTION_TYPE.CLONE) {
+        isAllow = isCanClone
+      }
+
       if (!isAllow) {
         store.dispatch('helper/openModalConfirm', {
           title: t('GG0014'),

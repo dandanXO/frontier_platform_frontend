@@ -21,7 +21,8 @@ export default {
       shareDate: null,
       isCanClone: false,
       isCanDownloadU3M: false,
-      isClosed: false
+      isClosed: false,
+      isCanSave: false
     }
   }),
   getters: {
