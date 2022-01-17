@@ -1,20 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap");
 
-@import 'abstracts/variables';
-@import 'abstracts/functions';
+@import "abstracts/variables";
+@import "abstracts/functions";
 
-@import 'utilities/opacity';
-@import 'utilities/color';
-@import 'utilities/font-size';
-@import 'utilities/spacing';
-@import 'utilities/z-index';
-@import 'utilities/overflow';
-@import 'utilities/line-clamp';
+@import "utilities/opacity";
+@import "utilities/color";
+@import "utilities/font-size";
+@import "utilities/spacing";
+@import "utilities/z-index";
+@import "utilities/overflow";
+@import "utilities/line-clamp";
 
 html,
 body,
 #app {
-  font-family: 'Noto Sans TC', '微軟正黑體', sans-serif;
+  font-family: "Noto Sans TC", "微軟正黑體", sans-serif;
   height: 100%;
 }
 
@@ -40,4 +40,15 @@ body,
 
 .aspect-ratio {
   aspect-ratio: 1;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-width: none !important; /* Firefox */
 }

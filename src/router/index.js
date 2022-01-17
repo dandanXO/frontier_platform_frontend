@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
-import { ROLE_ID } from '@/utils/constants'
+import { ROLE_ID, NODE_TYPE } from '@/utils/constants'
 import Sidebar from '@/components/layout/sidebar/Sidebar.vue'
 import i18n from '@/utils/i18n'
 
@@ -121,6 +121,49 @@ const routes = [
       await next('/')
       store.commit('helper/PUSH_message', i18n.global.t('AA0086'))
     }
+  },
+  {
+    path: '/share-page',
+    name: 'SharePage',
+    beforeEnter: async (to, from, next) => {
+      const { sharingKey } = to.query
+      store.dispatch('code/getFilterOptions')
+      await store.dispatch('share/getShareReceivedInfo', { sharingKey })
+      const share = store.getters['share/share']
+      if (share.workspaceNodeType === NODE_TYPE.COLLECTION) {
+        next({ path: '/received-share/collection', query: to.query })
+      } else {
+        next({ path: `/received-share/material/${share.workspaceNodeId}`, query: to.query })
+      }
+    }
+  },
+  {
+    path: '/received-share',
+    name: 'ReceivedShare',
+    component: () => import('@/views/receivedShare/ReceivedShareContainer.vue'),
+    beforeEnter: async (to, from, next) => {
+      const share = store.getters['share/share']
+      const { sharingKey } = to.query
+      if (sharingKey === share.sharingKey) {
+        next()
+      } else {
+        await store.dispatch('share/getShareReceivedInfo', { sharingKey })
+        next()
+      }
+    },
+    children: [
+      {
+        path: 'collection',
+        name: 'ReceivedShareCollection',
+        component: () => import('@/views/receivedShare/ReceivedShareCollection.vue')
+      },
+      {
+        path: 'material/:workspaceNodeId',
+        name: 'ReceivedShareMaterial',
+        props: true,
+        component: () => import('@/views/receivedShare/ReceivedShareMaterial.vue')
+      }
+    ]
   },
   {
     path: '/',

@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="grid" :class="{ 'border-b border-primary-thin': !isOpenFilterPanel }")
+div(class="grid")
   div(class="justify-self-center my-3.5 w-200 h-11 bg-black-100 rounded-full px-7.5 flex items-center gap-x-4.5")
     div(class="flex-grow flex items-center")
       svg-icon(
@@ -56,7 +56,7 @@ div(class="grid" :class="{ 'border-b border-primary-thin': !isOpenFilterPanel }"
         filter-finish
         filter-inventory(:searchType="searchType")
         filter-has-price(v-if="[SEARCH_TYPE.ASSETS, SEARCH_TYPE.WORKSPACE].includes(searchType)")
-        filter-price(v-if="[SEARCH_TYPE.PUBLIC_LIBRARY].includes(searchType)")
+        filter-price(v-if="[SEARCH_TYPE.PUBLIC_LIBRARY, SEARCH_TYPE.SHARE].includes(searchType)")
         filter-complete(v-if="searchType === SEARCH_TYPE.ASSETS")
         filter-has-u3m(v-if="searchType !== SEARCH_TYPE.ASSETS")
 </template>

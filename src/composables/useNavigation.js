@@ -19,6 +19,10 @@ export default function useNavigation () {
       return router.push({ path: '/verify-user', query: route.query })
     }
 
+    if (route.query.sharingKey !== undefined) {
+      return router.push({ path: '/share-page', query: route.query })
+    }
+
     await store.dispatch('user/getUser')
 
     const user = store.getters['user/user']
@@ -82,9 +86,14 @@ export default function useNavigation () {
     router.push(parsePath(`/:orgNo/public-library/${nodeKey}`))
   }
 
+  const goToReceivedShareMaterial = ({ workspaceNodeId, sharingKey }) => {
+    router.push(`/received-share/material/${workspaceNodeId}?sharingKey=${sharingKey}`)
+  }
+
   return {
     nextAfterSignIn,
     parsePath,
+    goToLobby,
     goToAssets,
     goToMaterialUpload,
     goToAssetMaterialDetail,
@@ -93,6 +102,7 @@ export default function useNavigation () {
     goToWorkspaceMaterialDetail,
     goToPublicLibraryMaterialDetail,
     goToOrgAssetMaterialEdit,
-    goToGroupAssetMaterialEdit
+    goToGroupAssetMaterialEdit,
+    goToReceivedShareMaterial
   }
 }

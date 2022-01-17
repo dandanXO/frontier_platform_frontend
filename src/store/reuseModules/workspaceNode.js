@@ -72,8 +72,12 @@ const WorkspaceNode = {
       return list
     },
     breadcrumbList: (state) => (rootItem) => {
-      const list = [rootItem]
+      const list = []
       const { breadcrumbList } = state
+
+      if (rootItem) {
+        list.push(rootItem)
+      }
 
       if (breadcrumbList) {
         breadcrumbList.forEach(({ name, workspaceNodeId, workspaceNodeLocation }) => {

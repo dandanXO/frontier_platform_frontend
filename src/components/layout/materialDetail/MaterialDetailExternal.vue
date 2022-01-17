@@ -15,7 +15,7 @@ div
         div(class="grid gap-y-2")
           p(v-for='item in materialPublicPriceInfo' class='text-body2 text-primary line-clamp-1') {{item.name}}: {{item.value}}
       //- U3m
-      block-material-u3m-status(locationId="MaterialDetailExternal" :material="material" :isCanDownloadU3M="publish.isCanDownloadU3M")
+      block-material-u3m-status(locationId="MaterialDetailExternal" :material="material" :isCanDownloadU3M="isCanDownloadU3M")
   div(class="pt-5 grid gap-y-10")
     div
       h5(class="text-h5 font-bold text-primary pb-7.5") {{$t('RR0133')}}
@@ -49,12 +49,12 @@ export default {
       type: Object,
       required: true
     },
-    publish: {
-      type: Object,
+    isCanDownloadU3M: {
+      type: Boolean,
       required: true
     }
   },
-  async setup (props) {
+  setup (props) {
     const {
       materialInfo,
       materialBasicInfo,

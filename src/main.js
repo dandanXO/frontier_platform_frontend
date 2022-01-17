@@ -17,9 +17,11 @@ dayjs.extend(require('dayjs/plugin/isYesterday'))
 app.config.globalProperties.$dayjs = dayjs
 
 app.config.errorHandler = (err, vm, info) => {
-  store.dispatch('helper/openModalError')
-  if (process.env.NODE_ENV !== 'production') {
-    console.error(err, vm)
+  if (err.message !== 'access-token-expire') {
+    store.dispatch('helper/openModalError')
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(err, vm)
+    }
   }
 }
 
@@ -49,5 +51,3 @@ function prepare () {
 prepare().then(() => {
   app.use(store).use(router).use(i18n).mount('#app')
 })
-
-console.log('cd test')

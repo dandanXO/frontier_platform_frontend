@@ -34,7 +34,7 @@ div(class="w-full h-full")
               :nodeKey="node.key"
               :node="node.data"
               :displayName="node.data.name"
-              :optionList="optionNodeCollection"
+              :optionList="optionNodeCollection(inSearch)"
               :isShowLocation="inSearch"
               @click="goTo(node.key)"
               @click:option="$event.func(node.data)"
@@ -53,7 +53,7 @@ div(class="w-full h-full")
               :nodeKey="node.key"
               :node="node.data"
               :displayName="node.data.materialNo"
-              :optionList="optionNodeMaterial"
+              :optionList="optionNodeMaterial(inSearch)"
               :isShowLocation="inSearch"
               @click:option="$event.func(node.data)"
               @click.stop="goToWorkspaceMaterialDetail(node.key)"
@@ -91,7 +91,7 @@ export default {
     const router = useRouter()
     const route = useRoute()
     const { goToWorkspaceMaterialDetail } = useNavigation()
-    const { editCollection, editMaterial, duplicateNode, moveNode, deleteCollection, deleteMaterial, deleteMultipleNode } = useWorkspace()
+    const { editCollection, editMaterial, duplicateNode, moveNode, shareCollection, shareMaterial, deleteCollection, deleteMaterial, deleteMultipleNode } = useWorkspace()
 
     const optionSort = {
       base: [
@@ -118,7 +118,7 @@ export default {
     const nodeList = computed(() => store.getters['workspace/nodeList'])
     const defaultWorkspaceNodeId = computed(() => store.getters['workspace/defaultWorkspaceNodeId'])
     const defaultWorkspaceNodeLocation = computed(() => store.getters['workspace/defaultWorkspaceNodeLocation'])
-    const optionNodeCollection = computed(() => {
+    const optionNodeCollection = (inSearch) => {
       const optionList = [
         [
           editCollection
@@ -132,13 +132,13 @@ export default {
         ]
       ]
 
-      // if (isFirstLayer.value) {
-      //   optionList[1].push(shareNode)
-      // }
+      if (isFirstLayer.value && !inSearch) {
+        optionList[1].push(shareCollection)
+      }
 
       return optionList
-    })
-    const optionNodeMaterial = computed(() => {
+    }
+    const optionNodeMaterial = (inSearch) => {
       const optionList = [
         [
           editMaterial
@@ -151,12 +151,12 @@ export default {
         ]
       ]
 
-      // if (isFirstLayer.value) {
-      //   optionList[1].push(shareNode)
-      // }
+      if (isFirstLayer.value && !inSearch) {
+        optionList[1].push(shareMaterial)
+      }
 
       return optionList
-    })
+    }
 
     const workspaceNodeId = ref(route.query.workspaceNodeId || defaultWorkspaceNodeId.value)
     const refSearchTable = ref(null)
