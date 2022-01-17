@@ -1,8 +1,8 @@
 <template lang="pug">
 div
   div(class="flex gap-x-10")
-    block-material-previewImg(:material="material")
-    div(class="flex flex-col gap-y-7.5")
+    block-material-preview-img(:material="material" class="w-112.5 flex-shrink-0")
+    div(class="flex flex-col gap-y-7.5 flex-grow")
       block-material-specification(:material="material")
       block-material-pantone(:pantoneList="material.pantoneList")
       //- Inventory

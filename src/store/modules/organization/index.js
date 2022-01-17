@@ -132,8 +132,8 @@ const actions = {
     })
     dispatch('handleResponseData', { data }, { root: true })
   },
-  async updateOrgLogo ({ state, dispatch }, formData) {
-    const { data } = await organizationApi.updateOrgLogo(formData)
+  async updateOrgLogo ({ state, dispatch }, { logo, originalLogo }) {
+    const { data } = await organizationApi.updateOrgLogo({ orgId: state.orgId, logo, originalLogo })
     dispatch('handleResponseData', { data }, { root: true })
   },
   async removeOrgLogo ({ state, dispatch }) {

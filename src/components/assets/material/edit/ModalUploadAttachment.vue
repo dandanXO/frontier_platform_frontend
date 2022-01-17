@@ -31,7 +31,6 @@ div(class='w-115 px-7.5')
 <script>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import { useI18n } from 'vue-i18n'
 import { FileOperator } from '@/utils/fileOperator'
 
 export default {
@@ -43,7 +42,6 @@ export default {
   },
   setup (props) {
     const store = useStore()
-    const { t } = useI18n()
     const fileName = ref('')
     const originalFileName = ref('')
     const acceptType = ['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mov', 'mp4']
@@ -58,26 +56,6 @@ export default {
       binaryFile = file
       fileName.value = file.name
       originalFileName.value = file.name
-    })
-
-    fileOperator.on('error', (errorCode) => {
-      const ERROR_CODE = fileOperator.errorCode
-      switch (errorCode) {
-        case ERROR_CODE.INVALID_TYPE:
-          store.dispatch('helper/pushModalConfirm', {
-            title: t('BB0063'),
-            content: t('DD0065'),
-            primaryText: t('UU0031')
-          })
-          break
-        case ERROR_CODE.EXCEED_LIMIT:
-          store.dispatch('helper/pushModalConfirm', {
-            title: t('BB0063'),
-            content: t('DD0066'),
-            primaryText: t('UU0031')
-          })
-          break
-      }
     })
 
     const upload = async () => {
