@@ -75,8 +75,8 @@ export default {
         const cropRect = props.lowResolution ? cropRectGeneral.value : cropRectExact.value
 
         domtoimage.toJpeg(cropRect, {
-          width: props.scaleControl ? cropRect.clientWidth : realSize.value,
-          height: props.scaleControl ? cropRect.clientHeight : realSize.value
+          width: props.lowResolution ? cropRect.clientWidth : realSize.value,
+          height: props.lowResolution ? cropRect.clientHeight : realSize.value
         })
           .then(dataUrl => {
             const fileName = file?.name.length > 0 ? file.name : 'file name'
