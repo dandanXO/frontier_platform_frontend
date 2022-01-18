@@ -8,7 +8,7 @@ div(class="flex my-5 mx-auto pl-17 pr-7 relative max-w-286")
         div(v-if="material.exist" class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-black-0 bg-opacity-70 cursor-pointer" @click="clearBlock(blockType)")
           svg-icon(iconName="clear" size="14" class="text-black-700")
         div(class="w-47.5 h-47.5 rounded bg-cover" :style="getBgImg(blockType)" :class="[!material.exist ? emptyBoxClass : '']" :data-type="blockType" @drop="onDrop($event)" @dragover.prevent)
-          p(v-if="!material.exist" class="px-4 line-height-1.6 text-center pointer-events-none" ) {{$t('EE0007')}}
+          p(v-if="!material.exist" class="px-4 line-height-1.6 text-center pointer-events-none" ) {{blockType === BLOCK_TYPE.FACE ? $t("EE0007") : $t("EE0008")}}
       div(v-else class="relative w-full")
         div(v-if="material.exist" class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-black-0 bg-opacity-70 cursor-pointer" @click="clearBlock(blockType)")
           svg-icon(iconName="clear" size="14" class="text-black-700")
