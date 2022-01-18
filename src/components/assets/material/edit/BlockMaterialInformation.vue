@@ -151,7 +151,7 @@ div(class="pb-15 border-b border-black-400")
             v-model:chips="material.aiTagList"
             :placeholder="$t('DD0018')"
           )
-          p(class="absolute right-0 top-0 text-caption") {{$t('EE0036')}}
+          p(class="absolute right-0 top-0 text-caption text-primary") {{$t('EE0036')}}
       div(v-if="isOpenSampleCard" class="flex-shrink-0 w-75 h-75 ml-8 sticky top-0")
         cropper-default-layout(
           :showScale="true"

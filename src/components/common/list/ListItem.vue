@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="h-9 flex items-center px-3 text-body2 text-primary hover:bg-black-200")
+div(class="flex items-center px-3 py-2.5 text-body2 text-primary hover:bg-black-200 break-words")
   slot
 </template>
 
