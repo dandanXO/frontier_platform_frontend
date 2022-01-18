@@ -70,6 +70,7 @@ export default {
       const fromType = e.target.dataset.type
       const item = { ...props.rowData, fromType, exist: true }
       e.dataTransfer.setData('item', JSON.stringify(item))
+      e.dataTransfer.setDragImage(e.target, 95, 95)
     }
 
     const onDrop = (e) => {
