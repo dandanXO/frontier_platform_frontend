@@ -12,7 +12,7 @@ div(class="dropdown relative cursor-pointer" v-click-away="clickAway")
     :options="options"
     :currentIndex="currentIndex"
   )
-    list(class="absolute top-full -left-1 transform translate-y-2.5 min-w-24")
+    list(class="absolute top-full -left-1 transform translate-y-2.5 min-w-24 z-10")
       list-item(
         v-for="(option, index) in options"
         :class="{'bg-primary-thin': index === currentIndex }"
