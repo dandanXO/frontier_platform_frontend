@@ -6,12 +6,12 @@ div(class='grid gap-y-7.5 px-8 mb-7.5')
     :placeholder="$t('DD0018')"
     class="relative z-9"
   )
-  input-chips(
-    v-model:chips="material.aiTagList"
-    :label="$t('RR0071')"
-    :placeholder="$t('DD0018')"
-    class="relative z-9"
-  )
+  input-container(:label="$t('RR0071')" class="relative z-9")
+    input-chips(
+      v-model:chips="material.aiTagList"
+      :placeholder="$t('DD0018')"
+    )
+    p(class="absolute right-0 top-0 text-caption text-primary") {{$t('EE0036')}}
 div(class="bg-black-100 px-7.5 py-7.5")
   h6(class="text-h6 text-black-600 font-bold mb-7.5") {{$t('DD0019')}}
   input-chips(
