@@ -12,7 +12,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
           svg-icon(iconName="info_outline" size="20" class="text-primary")
           span(class="text-body2 text-primary underline font-normal" @click="openModalHowToScan") {{$t('UU0032')}}
       div(class="pt-7.5 flex gap-x-10")
-        div(class="w-112.5")
+        div(class="w-112.5 flex-shrink-0")
           div(class="aspect-ratio rounded overflow-hidden")
             template(v-if="!!imageList[currentDisplayIndex].src")
               img(class="w-full h-full" :src="imageList[currentDisplayIndex].src")
