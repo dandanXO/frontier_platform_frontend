@@ -27,6 +27,7 @@ div(class="w-full")
         div(class="line-height-1.6 text-caption line-clamp-2") {{material.finish}}
         div(class="line-height-1.6 text-caption line-clamp-1") {{materialInfo.weight.value}}
       tooltip(
+        v-if="innerSelectedList.length === 0"
         class="absolute bottom-3 right-3 cursor-pointer"
         placement="right-start"
         :showArrow="false"
