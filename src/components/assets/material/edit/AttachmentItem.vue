@@ -2,7 +2,7 @@
 div(class="w-44 rounded bg-black-100")
   div(
     class="relative cursor-pointer h-33 rounded-t bg-black-400 flex justify-center items-center"
-    @click="openModalPreview(attachment)"
+    @click="openModalPreviewAttachment"
   )
     svg-icon(iconName='open_in_full' size="20" class='absolute top-1.5 left-1.5 text-black-0')
     img(v-if="['.png', '.jpg', '.jpeg', '.gif'].includes(attachment.extension)" :src="attachment.url" class="max-h-full max-w-full")
@@ -27,30 +27,40 @@ import { useI18n } from 'vue-i18n'
 export default {
   name: 'AttachmentItem',
   props: {
+    attachmentList: {
+      type: Array,
+      required: true
+    },
     attachment: {
-      type: Object
+      type: Object,
+      required: true
+    },
+    index: {
+      type: Number,
+      required: true
     },
     isReadOnly: {
       type: Boolean,
       default: false
     }
   },
-  setup () {
+  setup (props) {
     const { t } = useI18n()
     const store = useStore()
 
-    const openModalPreview = (attachment) => {
+    const openModalPreviewAttachment = () => {
       store.dispatch('helper/openModal', {
         component: 'modal-preview-attachment',
         header: t('DD0060'),
         properties: {
-          targetItem: attachment
+          attachmentList: props.attachmentList,
+          index: props.index
         }
       })
     }
 
     return {
-      openModalPreview
+      openModalPreviewAttachment
     }
   }
 }

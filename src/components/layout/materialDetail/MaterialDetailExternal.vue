@@ -24,7 +24,13 @@ div
     div
       h5(class="text-h5 font-bold text-primary pb-7.5") {{$t('RR0136')}}
       div(class="flex flex-wrap gap-5")
-        attachment-item(v-for="attachment in attachmentSortedList" :attachment="attachment" :isReadOnly="true")
+        attachment-item(
+          v-for="(attachment, index) in attachmentSortedList"
+          :attachmentList="attachmentSortedList"
+          :attachment="attachment"
+          :index="index"
+          isReadOnly
+        )
 </template>
 
 <script>
