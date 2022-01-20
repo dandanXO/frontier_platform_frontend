@@ -8,9 +8,11 @@ div
       btn(size="md" @click="openModalUpload") {{$t("UU0022")}}
     div(class="flex flex-wrap gap-5")
       attachment-item(
-        v-for="attachment in attachmentList"
+        v-for="(attachment, index) in attachmentList"
         :key="attachment.url"
+        :attachmentList="attachmentList"
         :attachment="attachment"
+        :index="index"
         @handleRemove="handleRemove"
       )
 </template>
@@ -77,15 +79,10 @@ export default {
       })
     }
 
-    const openModalPreview = () => {
-      console.log('openModalPreview')
-    }
-
     return {
       attachmentList,
       openModalUpload,
-      handleRemove,
-      openModalPreview
+      handleRemove
     }
   }
 }
