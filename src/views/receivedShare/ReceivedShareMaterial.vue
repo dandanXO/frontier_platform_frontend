@@ -33,10 +33,10 @@ export default {
     const { cloneReceivedShare } = useReceivedShare()
 
     const isLoading = ref(true)
-    const share = computed(() => store.getters['share/share'])
-    const material = computed(() => store.getters['share/material'])
+    const share = computed(() => store.getters['receivedShare/share'])
+    const material = computed(() => store.getters['receivedShare/material'])
     const breadcrumbList = computed(() => {
-      const tempBreadCrumbList = store.getters['share/materialBreadcrumbList']
+      const tempBreadCrumbList = store.getters['receivedShare/materialBreadcrumbList']
       const list = []
       for (let i = 0; i <= tempBreadCrumbList.length - 1; i++) {
         const { name, workspaceNodeId } = tempBreadCrumbList[i]
@@ -56,7 +56,7 @@ export default {
     })
 
     onMounted(async () => {
-      await store.dispatch('share/getShareReceivedMaterial', { sharingKey: share.value.sharingKey, workspaceNodeId: props.workspaceNodeId })
+      await store.dispatch('receivedShare/getShareReceivedMaterial', { sharingKey: share.value.sharingKey, workspaceNodeId: props.workspaceNodeId })
       isLoading.value = false
     })
 

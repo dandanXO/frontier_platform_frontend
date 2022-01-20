@@ -12,7 +12,7 @@ export default function useReceivedShare () {
       store.dispatch('helper/openModalLoading')
       await store.dispatch('user/getUser')
 
-      const { isCanSave } = store.getters['share/share']
+      const { isCanSave } = store.getters['receivedShare/share']
       const organizationList = store.getters['user/organizationList']
 
       if (isCanSave && organizationList.length >= 1) {
@@ -20,7 +20,7 @@ export default function useReceivedShare () {
           component: 'modal-received-share-choose-storage',
           properties: {
             title: t('GG0005'),
-            actionHandler: ({ orgId, groupId }) => store.dispatch('share/saveShareReceived', { orgId, groupId })
+            actionHandler: ({ orgId, groupId }) => store.dispatch('receivedShare/saveShareReceived', { orgId, groupId })
           }
         })
       } else if (isCanSave && organizationList.length === 0) {
@@ -46,7 +46,7 @@ export default function useReceivedShare () {
     store.dispatch('helper/openModalLoading')
     await store.dispatch('user/getUser')
 
-    const { isCanClone } = store.getters['share/share']
+    const { isCanClone } = store.getters['receivedShare/share']
     const organizationList = store.getters['user/organizationList']
 
     if (isCanClone && organizationList.length >= 1) {
@@ -54,7 +54,7 @@ export default function useReceivedShare () {
         component: 'modal-received-share-choose-storage',
         properties: {
           title: t('GG0019'),
-          actionHandler: ({ orgId, groupId }) => store.dispatch('share/cloneShareReceived', { orgId, groupId, workspaceNodeIdList })
+          actionHandler: ({ orgId, groupId }) => store.dispatch('receivedShare/cloneShareReceived', { orgId, groupId, workspaceNodeIdList })
         }
       })
     } else if (isCanClone && organizationList.length === 0) {

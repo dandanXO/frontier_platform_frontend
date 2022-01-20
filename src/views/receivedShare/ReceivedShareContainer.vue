@@ -38,8 +38,8 @@ export default {
     const store = useStore()
     const { saveReceivedShare } = useReceivedShare()
 
-    const share = computed(() => store.getters['share/share'])
-    const logo = computed(() => store.getters['share/logo'])
+    const share = computed(() => store.getters['receivedShare/share'])
+    const logo = computed(() => store.getters['receivedShare/logo'])
 
     return {
       share,

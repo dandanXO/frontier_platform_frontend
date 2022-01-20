@@ -8,7 +8,7 @@ import helper from '@/store/modules/helper'
 import assets from '@/store/modules/assets'
 import workspace from '@/store/modules/workspace'
 import publicLibrary from '@/store/modules/publicLibrary'
-import share from '@/store/modules/share'
+import receivedShare from '@/store/modules/receivedShare'
 
 export default createStore({
   actions: {
@@ -59,6 +59,6 @@ export default createStore({
     assets,
     workspace,
     publicLibrary,
-    share
+    receivedShare
   }
 })

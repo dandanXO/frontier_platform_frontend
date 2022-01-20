@@ -117,11 +117,11 @@ export default {
       }
     ]
 
-    const share = computed(() => store.getters['share/share'])
+    const share = computed(() => store.getters['receivedShare/share'])
     const pagination = computed(() => store.getters['helper/search/pagination'])
-    const nodeList = computed(() => store.getters['share/nodeList'])
-    const breadcrumbList = computed(() => store.getters['share/breadcrumbList']())
-    const workspaceCollection = computed(() => store.getters['share/workspaceCollection'])
+    const nodeList = computed(() => store.getters['receivedShare/nodeList'])
+    const breadcrumbList = computed(() => store.getters['receivedShare/breadcrumbList']())
+    const workspaceCollection = computed(() => store.getters['receivedShare/workspaceCollection'])
     const selectedNodeKeyList = ref([])
     const workspaceNodeId = ref(route.query.workspaceNodeId || share.value.workspaceNodeId)
     const isCollectionDetailExpand = ref(true)
@@ -136,7 +136,7 @@ export default {
           ...route.query
         }
       })
-      await store.dispatch('share/getShareReceivedList', {
+      await store.dispatch('receivedShare/getShareReceivedList', {
         targetPage,
         sharingKey: share.value.sharingKey,
         workspaceNodeId: workspaceNodeId.value
