@@ -19,8 +19,8 @@ export default function usePublicLibrary () {
       const workspaceNodeList = workspaceNodeKeyList.map(key => {
         const [location, id] = key.split('-')
         return {
-          id,
-          location
+          id: Number(id),
+          location: Number(location)
         }
       })
       const organization = store.getters['organization/organization']
@@ -57,7 +57,15 @@ export default function usePublicLibrary () {
   const shareNode = {
     id: FUNCTION_ID.SHARE_NODE,
     name: t('RR0079'),
-    func: (workspaceNodeId) => {
+    func: (workspaceNodeKey) => {
+      const [workspaceNodeLocation, workspaceNodeId] = workspaceNodeKey.split('-')
+      store.dispatch('helper/openModal', {
+        component: 'modal-public-library-share',
+        properties: {
+          workspaceNodeId: Number(workspaceNodeId),
+          workspaceNodeLocation: Number(workspaceNodeLocation)
+        }
+      })
     }
   }
 

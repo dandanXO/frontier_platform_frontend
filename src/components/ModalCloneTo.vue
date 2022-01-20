@@ -37,8 +37,8 @@ export default {
       const targetLocationList = selectedLocationList.value.map(item => {
         const [location, id] = item.split('-')
         return {
-          id,
-          location
+          id: Number(id),
+          location: Number(location)
         }
       })
       await props.cloneHandler(targetLocationList)
