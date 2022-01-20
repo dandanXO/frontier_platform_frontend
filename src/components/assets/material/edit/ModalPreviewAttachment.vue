@@ -29,11 +29,18 @@ div(class="w-200")
 
 <script>
 import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
 
 export default {
   name: 'ModalPreviewAttachment',
   props: {
+    attachmentList: {
+      type: Array,
+      required: true
+    },
+    index: {
+      type: Number,
+      required: true
+    },
     targetItem: {
       type: Object
     }
@@ -49,24 +56,12 @@ export default {
       '.pdf': { placeholder: 'pdf_folder', display: 'open-new-tab' },
       '.zip': { placeholder: 'zip_folder', display: 'no-preview' }
     }
-    const store = useStore()
-    const attachmentList = computed(() => store.getters['material/attachmentList'])
-    const isEditMode = computed(() => store.getters['material/material'].materialId !== null)
 
-    const currentIndex = ref(
-      attachmentList.value.findIndex(item => {
-        if (isEditMode.value) {
-          return item.materialAttachmentId === props.targetItem.materialAttachmentId
-        } else {
-          return item.tempMaterialAttachmentId === props.targetItem.tempMaterialAttachmentId
-        }
-      })
-    )
-
-    const currentAttachment = computed(() => attachmentList.value[currentIndex.value])
+    const currentIndex = ref(props.index)
+    const currentAttachment = computed(() => props.attachmentList[currentIndex.value])
 
     const getNext = () => {
-      if (currentIndex.value < attachmentList.value.length - 1) {
+      if (currentIndex.value < props.attachmentList.length - 1) {
         currentIndex.value++
       } else {
         currentIndex.value = 0
@@ -77,12 +72,11 @@ export default {
       if (currentIndex.value > 0) {
         currentIndex.value--
       } else {
-        currentIndex.value = attachmentList.value.length - 1
+        currentIndex.value = props.attachmentList.length - 1
       }
     }
 
     return {
-      attachmentList,
       currentAttachment,
       extensionInfo,
       currentIndex,

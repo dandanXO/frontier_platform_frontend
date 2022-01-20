@@ -74,7 +74,13 @@ div
                     p {{inventory.unit}}
       template(v-else-if="currentTab === TAB.SUP")
         div(class="flex flex-wrap gap-5")
-          attachment-item(v-for="attachment in attachmentSortedList" :attachment="attachment" :isReadOnly="true")
+          attachment-item(
+            v-for="(attachment, index) in attachmentSortedList"
+            :attachmentList="attachmentSortedList"
+            :attachment="attachment"
+            :index="index"
+            isReadOnly
+          )
 </template>
 
 <script>
