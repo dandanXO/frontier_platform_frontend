@@ -56,6 +56,7 @@ div(class="w-213.5 px-8")
 import { ref, watch, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
+import { SHARE_TARGET_TYPE } from '@/utils/constants.js'
 
 export default {
   name: 'ModalShareAssigned',
@@ -84,11 +85,11 @@ export default {
         const existedTarget = targetList.value.find(({ name, number }) => name === frozenTargetValue || number === frozenTargetValue)
         if (existedTarget) {
           switch (existedTarget.type) {
-            case 1:
+            case SHARE_TARGET_TYPE.ORG:
               throw t('WW0058')
-            case 2:
+            case SHARE_TARGET_TYPE.GROUP:
               throw t('WW0059')
-            case 3:
+            case SHARE_TARGET_TYPE.EMAIL:
               throw t('WW0057')
           }
         }
