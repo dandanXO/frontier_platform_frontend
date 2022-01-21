@@ -1,6 +1,6 @@
 import WorkspaceNode from '@/store/reuseModules/workspaceNode'
 import workspaceApi from '@/apis/workspace'
-import { NODE_LOCATION } from '@/utils/constants'
+import { NODE_LOCATION, SHARE_TARGET_TYPE } from '@/utils/constants'
 
 export default {
   namespaced: true,
@@ -21,6 +21,24 @@ export default {
   },
   mutations: {
     SET_shareInfo (state, shareInfo) {
+      const { shareList } = shareInfo
+      if (shareList) {
+        shareInfo.shareList = shareList.map(target => {
+          let logo
+          if (!target.logo) {
+            if (target.type === SHARE_TARGET_TYPE.EMAIL) {
+              logo = require('@/assets/images/default_user.png')
+            } else {
+              logo = require('@/assets/images/logo-default.png')
+            }
+          }
+          return {
+            ...target,
+            logo
+          }
+        })
+      }
+
       Object.assign(state.shareInfo, shareInfo)
     }
   },

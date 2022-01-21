@@ -8,6 +8,7 @@
 div(class="w-315 h-full mx-auto")
   search-table(
     ref="refSearchTable"
+    @selectAll="handleSelectAll"
     :searchType="SEARCH_TYPE.SHARE"
     :optionSort="optionSort"
     :searchCallback="getShareReceivedList"
@@ -151,6 +152,12 @@ export default {
       search()
     }
 
+    const handleSelectAll = () => {
+      const stringifyArr = nodeList.value.map(node => node.key)
+      const duplicateArr = selectedNodeKeyList.value.concat(stringifyArr)
+      selectedNodeKeyList.value = [...new Set(duplicateArr)]
+    }
+
     return {
       share,
       SEARCH_TYPE,
@@ -168,7 +175,8 @@ export default {
       cloneReceivedShare,
       workspaceNodeId,
       optionMultiSelect,
-      goToReceivedShareMaterial
+      goToReceivedShareMaterial,
+      handleSelectAll
     }
   }
 }

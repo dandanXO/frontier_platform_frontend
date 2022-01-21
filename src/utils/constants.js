@@ -224,3 +224,9 @@ export const RECEIVED_SHARE_ACTION_TYPE = {
   CLONE: 2,
   DOWNLOAD: 3
 }
+
+export const SHARE_TARGET_TYPE = {
+  ORG: 1,
+  GROUP: 2,
+  EMAIL: 3
+}

@@ -11,8 +11,9 @@ fullscreen-header
       img(:src="logo" class="w-10 h-10 rounded-full")
       p(class="text-body1 font-bold text-primary pl-2.5") {{share.displayName}}
   template(#right)
-    div(class="relative pr-4")
+    div(class="relative cursor-pointer mr-4" @click="openModalReceivedShareMessage")
       svg-icon(iconName="chat" size="24" class="text-black-700")
+      div(v-if="haveMsgAndFirstRead" class="absolute -top-px -right-px w-2 h-2 rounded-full border border-black-0 bg-warn")
     btn(size="md" @click="saveReceivedShare") {{$t('UU0018')}}
   template(#content)
     div(v-if="share.isClosed" class="w-full h-full flex items-center justify-center")
@@ -25,9 +26,10 @@ fullscreen-header
 <script>
 import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
 import { useStore } from 'vuex'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'
 import { SHARING_FROM } from '@/utils/constants.js'
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'ReceivedShareContainer',
@@ -36,16 +38,29 @@ export default {
   },
   setup () {
     const store = useStore()
+    const { t } = useI18n()
     const { saveReceivedShare } = useReceivedShare()
 
-    const share = computed(() => store.getters['receivedShare/share'])
-    const logo = computed(() => store.getters['receivedShare/logo'])
+    const share = computed(() => store.getters['share/share'])
+    const logo = computed(() => store.getters['share/logo'])
+    const isFirstTime = ref(true)
+    const haveMsgAndFirstRead = computed(() => !!share.value.message && isFirstTime.value)
+
+    const openModalReceivedShareMessage = () => {
+      isFirstTime.value = false
+      store.dispatch('helper/openModal', {
+        component: 'modal-received-share-message',
+        header: t('RR0146')
+      })
+    }
 
     return {
       share,
       logo,
       saveReceivedShare,
-      SHARING_FROM
+      SHARING_FROM,
+      haveMsgAndFirstRead,
+      openModalReceivedShareMessage
     }
   }
 }

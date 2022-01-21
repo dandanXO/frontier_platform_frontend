@@ -1,5 +1,5 @@
 <template lang="pug">
-filter-wrapper(iconName="price" :displayName="$t('RR0106')" :dirty="filterDirty.hasU3M")
+filter-wrapper(iconName="cube" :displayName="$t('RR0106')" :dirty="filterDirty.hasU3M")
   contextual-menu(
     v-model:selectValue="hasU3M"
     :optionList="filterOptions.hasU3M"
