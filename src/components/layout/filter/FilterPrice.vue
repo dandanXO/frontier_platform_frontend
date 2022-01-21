@@ -1,6 +1,6 @@
 <template lang="pug">
 filter-wrapper(
-  iconName="stock"
+  iconName="price"
   :displayName="$t('RR0094')"
   :dirty="filterDirty.price"
   @show="init"
