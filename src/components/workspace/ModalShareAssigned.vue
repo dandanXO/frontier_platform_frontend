@@ -1,13 +1,13 @@
 <template lang="pug">
 div(class="w-213.5 px-8")
-  h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{$t('FF0059')}}
+  h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{$t('RR0155')}}
   div(class="h-72.5 mb-4.5 grid grid-cols-2 gap-x-7.5")
     div
       input-text-icon(
         v-model:textValue="target"
         prependIcon="search"
-        :label="$t('FF0055')"
-        :placeholder="$t('FF0056')"
+        :label="$t('RR0156')"
+        :placeholder="$t('RR0150')"
         :disabledIcon="target === ''"
         :customErrorMsg="errorMsg"
         @click:icon="addToTargetList"
@@ -39,7 +39,7 @@ div(class="w-213.5 px-8")
         )
       input-textarea(
         v-model:textValue="formData.messages"
-        :label="$t('FF0050')"
+        :label="$t('RR0146')"
         height="174"
         :customErrorMsg="formData.messages.length > 1000 ? $t('WW0073') : ''"
       )
@@ -56,6 +56,7 @@ div(class="w-213.5 px-8")
 import { ref, watch, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
+import { SHARE_TARGET_TYPE } from '@/utils/constants.js'
 
 export default {
   name: 'ModalShareAssigned',
@@ -84,11 +85,11 @@ export default {
         const existedTarget = targetList.value.find(({ name, number }) => name === frozenTargetValue || number === frozenTargetValue)
         if (existedTarget) {
           switch (existedTarget.type) {
-            case 1:
+            case SHARE_TARGET_TYPE.ORG:
               throw t('WW0058')
-            case 2:
+            case SHARE_TARGET_TYPE.GROUP:
               throw t('WW0059')
-            case 3:
+            case SHARE_TARGET_TYPE.EMAIL:
               throw t('WW0057')
           }
         }
@@ -110,7 +111,7 @@ export default {
       })
       store.dispatch('helper/closeModalLoading')
       store.dispatch('helper/closeModal')
-      store.commit('helper/PUSH_message', t('FF0061'))
+      store.commit('helper/PUSH_message', t('RR0157'))
     }
 
     const removeTarget = (index) => targetList.value.splice(index, 1)

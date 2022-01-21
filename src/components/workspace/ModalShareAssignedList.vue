@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-fix px-8")
+div(class="w-130 px-8")
   h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{$t('FF0057')}}
   overlay-scrollbar-container(class="max-h-100.5 mb-7.5 -mx-8 px-8")
     div(class="grid gap-y-7.5")

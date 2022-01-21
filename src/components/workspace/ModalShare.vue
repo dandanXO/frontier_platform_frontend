@@ -10,8 +10,8 @@ div(class="w-113.5 px-8")
       div(class="pt-7.5 pb-10")
         div(class="flex items-end justify-between pb-7.5")
           div(class="text-body2 text-primary flex flex-col justify-between")
-            p(class="font-bold pb-2") {{$t('FF0055')}}
-            p {{$t('FF0056')}}
+            p(class="font-bold pb-2") {{$t('RR0156')}}
+            p {{$t('RR0150')}}
           btn(size="sm" @click="openModalShareAssigned") {{$t('UU0067')}}
         div(class="text-body2 text-primary")
           p(class="font-bold pb-2") {{$t('FF0057')}}
@@ -77,7 +77,7 @@ export default {
         },
         {
           id: TAB.COPY_LINK,
-          name: t('FF0052')
+          name: t('RR0154')
         },
         {
           id: TAB.SOCIAL_MEDIA,
@@ -119,7 +119,7 @@ export default {
       const key = await store.dispatch('workspace/generateCopyLink', { workspaceNodeId: props.workspaceNodeId })
       copyText(`${window.location.origin}/share-page?sharingKey=${key}`)
       store.dispatch('helper/closeModalLoading')
-      store.commit('helper/PUSH_message', t('FF0066'))
+      store.commit('helper/PUSH_message', t('RR0149'))
     }
 
     await store.dispatch('workspace/getShareInfo', { workspaceNodeId: props.workspaceNodeId })
