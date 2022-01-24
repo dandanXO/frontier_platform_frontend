@@ -6,8 +6,8 @@ div(class="w-130 px-8")
       div(v-for="item in shareList" class="flex items-center h-10.5 gap-x-2.5")
         img(v-if="item.logo" :src="item.logo" class="w-10 h-10 rounded-full")
         div(v-else class="w-10 h-10 rounded-full border-black-500 border border-dashed")
-        div(class="flex-grow")
-          p(class="text-body2 text-primary font-bold line-clamp-1") {{item.name}}
+        div(class="w-86")
+          p(class="text-body2 text-primary font-bold w-86 truncate break-all line-height-1.4") {{item.name}}
           div(class="flex items-center gap-x-3")
             input-checkbox(
               binary

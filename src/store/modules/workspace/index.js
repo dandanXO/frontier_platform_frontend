@@ -24,8 +24,8 @@ export default {
       const { shareList } = shareInfo
       if (shareList) {
         shareInfo.shareList = shareList.map(target => {
-          let logo
-          if (!target.logo) {
+          let logo = target.logo
+          if (!logo) {
             if (target.type === SHARE_TARGET_TYPE.EMAIL) {
               logo = require('@/assets/images/default_user.png')
             } else {
