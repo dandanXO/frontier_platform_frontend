@@ -11,7 +11,12 @@ div(class="relative")
   div(class="corner absolute w-4.5 h-4.5 border-b-2 border-l-2 bottom-0 left-0 border-primary")
   div(class="corner absolute w-4.5 h-4.5 border-b-2 border-r-2 bottom-0 right-0 border-primary")
   teleport(to="body")
-    div(v-if="!lowResolution" ref="cropRectExact" class="w-0 h-0 overflow-hidden bg-black-0")
+    div(
+      v-if="!lowResolution"
+      ref="cropRectExact"
+      class="w-0 h-0 overflow-hidden bg-black-0 box-content border-transparent"
+      :style="{ 'border-width': isU3m ? borderPixelWidth + 'px' : 0 }"
+    )
       div(:style="styleSize")
         cropped-image(:config="config" :movable="false" :previewScaleRatio="realSize/cropRectSize")
 </template>
@@ -37,12 +42,22 @@ export default {
     lowResolution: {
       type: Boolean,
       default: true
+    },
+    isU3m: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['update:options'],
   setup (props, { emit }) {
     const cropRectGeneral = ref(null)
     const cropRectExact = ref(null)
+
+    const borderPixelWidth = computed(() => {
+      // 為了讓後端製作更精準的3D模型，裁切布片時要額外在每一邊增加0.2公分的寬度
+      // 也就是原本使用者裁切5公分的布片，真正送到後端是5.4公分，但後端回傳會提供已經去掉0.4公分邊界的圖片
+      return props.lowResolution ? 0 : 0.2 / (2.54 / props.config.dpi)
+    })
 
     const cropRectStyle = computed(() => {
       return {
@@ -73,11 +88,18 @@ export default {
     const cropImage = (file) => {
       return new Promise((resolve, reject) => {
         const cropRect = props.lowResolution ? cropRectGeneral.value : cropRectExact.value
+        let width = cropRect.clientWidth
+        let height = cropRect.clientHeight
 
-        domtoimage.toJpeg(cropRect, {
-          width: props.lowResolution ? cropRect.clientWidth : realSize.value,
-          height: props.lowResolution ? cropRect.clientHeight : realSize.value
-        })
+        if (props.isU3m) {
+          width = realSize.value + borderPixelWidth.value * 2
+          height = realSize.value + borderPixelWidth.value * 2
+        } else if (!props.lowResolution) {
+          width = realSize.value
+          height = realSize.value
+        }
+
+        domtoimage.toJpeg(cropRect, { width, height, style: { overflow: 'visible' } })
           .then(dataUrl => {
             const fileName = file?.name.length > 0 ? file.name : 'file name'
             const blob = dataUrlToBlob(dataUrl)
@@ -90,6 +112,7 @@ export default {
     return {
       realSize,
       styleSize,
+      borderPixelWidth,
       cropRectStyle,
       cropRectGeneral,
       cropRectExact,
