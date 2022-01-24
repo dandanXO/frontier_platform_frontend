@@ -173,11 +173,10 @@ export default function useAssets () {
     icon: 'u3m',
     name: t('RR0059'),
     func: (v) => {
+      const materialList = Array.isArray(v) ? v.map(material => JSON.parse(material)) : [v]
       store.dispatch('helper/openModal', {
         component: 'modal-u3m-select-file-format',
-        properties: {
-          material: v
-        }
+        properties: { materialList }
       })
     }
   }

@@ -21,12 +21,13 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { downloadDataURLFile } from '@/utils/fileOperator'
 import { ref } from '@vue/reactivity'
+import { U3M_STATUS } from '@/utils/constants'
 
 export default {
   name: 'ModalU3mSelectFileFormat',
   props: {
-    material: {
-      type: Object
+    materialList: {
+      type: Array
     }
   },
   setup (props) {
@@ -35,19 +36,39 @@ export default {
     const formatOptions = [
       {
         name: t('EE0081'),
-        value: props.material.u3m.zipUrl
+        value: 'zipUrl'
       },
       {
         name: t('EE0082'),
-        value: props.material.u3m.u3maUrl
+        value: 'u3maUrl'
       }
     ]
     const selectedFormat = ref(formatOptions[0].value)
 
     const downloadU3m = () => {
-      const url = selectedFormat.value
-      const fileName = url.split('/')[url.split('/').length - 1]
-      downloadDataURLFile(url, fileName)
+      store.dispatch('helper/openModalLoading')
+      const allowedList = props.materialList.filter(material => material.u3m.status === U3M_STATUS.COMPLETED)
+      const failedList = props.materialList.filter(material => material.u3m.status !== U3M_STATUS.COMPLETED)
+
+      if (failedList.length > 0) {
+        store.dispatch('helper/openModal', {
+          component: 'modal-u3m-download-confirm',
+          properties: {
+            allowedList,
+            failedList,
+            selectedFormat: selectedFormat.value
+          }
+        })
+      } else {
+        props.materialList.forEach(material => {
+          setTimeout(() => {
+            const url = material.u3m[selectedFormat.value]
+            const fileName = url.split('/')[url.split('/').length - 1]
+            downloadDataURLFile(url, fileName)
+          }, 0)
+        })
+        closeModal()
+      }
     }
 
     const closeModal = () => {

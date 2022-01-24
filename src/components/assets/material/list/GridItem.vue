@@ -28,7 +28,7 @@ div(class="w-full")
         div(class="line-height-1.6 text-caption line-clamp-1") {{materialInfo.weight.value}}
       tooltip(
         v-if="innerSelectedList.length === 0"
-        class="absolute bottom-3 right-3 cursor-pointer"
+        class="absolute bottom-3 right-3"
         placement="right-start"
         :showArrow="false"
         :manual="true"
@@ -36,23 +36,24 @@ div(class="w-full")
         :key="randomKey"
       )
         template(#trigger)
-          svg-icon(iconName="more_vert" size="20" class="text-black-500 hover:text-black-200" )
+          svg-icon(iconName="more_vert" size="20" class="cursor-pointer text-black-500 hover:text-black-200" )
         template(#content)
           div(class="w-55 py-2.5")
-            div(v-for="(block, index) in options" class="text-black-400")
+            div(v-for="(block, index) in options")
               template(v-for="option in block")
                 qr-code-general(v-if="option.id === 'printQRCode'")
                   template(#activator="{ generatePdf }")
-                    list-item(class="text-body2 text-primary px-7" @click="generatePdf([material])") {{option.name}}
+                    list-item(class="px-7" @click="generatePdf([material])") {{option.name}}
                 qr-code-a4(v-else-if="option.id === 'printCard'")
                   template(#activator="{ generatePdf }")
-                    list-item(class="text-body2 text-primary px-7" @click="generatePdf([material])") {{option.name}}
+                    list-item(class="px-7" @click="generatePdf([material])") {{option.name}}
                 list-item(
                   v-else
-                  class="text-body2 text-primary px-7"
+                  class="px-7"
+                  :disabled="option.disabled"
                   @click="handleClick(option)"
                 ) {{option.name}}
-              div(class="mx-2 my-1" :class="{'border-b': index !== options.length - 1}")
+              div(class="mx-2 my-1 border-black-400" :class="{'border-b': index !== options.length - 1}")
   div(class="text-primary font-bold text-body1 line-clamp-1 line-height-1.6 mt-2") {{material.materialNo}}
 </template>
 
@@ -63,6 +64,7 @@ import useMaterial from '@/composables/useMaterial'
 import QrCodeA4 from '@/components/qrcode/QrCodeA4'
 import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral'
 import useNavigation from '@/composables/useNavigation'
+import { U3M_STATUS } from '@/utils/constants'
 
 export default {
   name: 'GridItem',
@@ -91,6 +93,9 @@ export default {
       deleteMaterial
     } = useAssets()
     const { currentCoverImg, neverScanBefore, materialInfo } = useMaterial(props.material)
+
+    downloadU3M.disabled = props.material.u3m.status !== U3M_STATUS.COMPLETED
+
     const options = [
       [
         editMaterial
@@ -125,6 +130,8 @@ export default {
     const haveSelectedMoreThanOne = computed(() => props.selectedList.length > 0)
 
     const handleClick = (option) => {
+      if (option.disabled) return
+
       option.func && option.func(props.material)
     }
 
