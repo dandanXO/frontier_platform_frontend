@@ -51,6 +51,7 @@ export default {
     ModalU3mInstruction: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mInstruction')),
     ModalU3mPreview: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mPreview')),
     ModalU3mSelectFileFormat: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mSelectFileFormat')),
+    ModalU3mDownloadConfirm: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mDownloadConfirm')),
     ModalU3mCreateSuccess: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mCreateSuccess')),
     ModalU3mCreateFail: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mCreateFail')),
     ModalU3mRecut: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mRecut')),

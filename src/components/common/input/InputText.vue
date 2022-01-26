@@ -18,7 +18,7 @@ input-container(:label="label" :required="required")
       @focus="onFocus"
       @blur="onBlur"
       @keydown.enter="$emit('enter')"
-      class="flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 placeholder-black-400 placeholder-text-body2 placeholder-overflow-visible disabled:text-black-600"
+      class="w-full flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 placeholder-black-400 placeholder-text-body2 placeholder-overflow-visible disabled:text-black-600"
       autocomplete
     )
     div(v-if="appendIcon !== '' || clearable" class="pl-1")
