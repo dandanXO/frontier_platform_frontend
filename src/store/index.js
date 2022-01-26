@@ -9,6 +9,7 @@ import assets from '@/store/modules/assets'
 import workspace from '@/store/modules/workspace'
 import publicLibrary from '@/store/modules/publicLibrary'
 import receivedShare from '@/store/modules/receivedShare'
+import shareToMe from '@/store/modules/shareToMe'
 
 export default createStore({
   actions: {
@@ -59,6 +60,7 @@ export default createStore({
     assets,
     workspace,
     publicLibrary,
-    receivedShare
+    receivedShare,
+    shareToMe
   }
 })
