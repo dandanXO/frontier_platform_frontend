@@ -2,17 +2,6 @@ import setVuexState from '@/utils/set-vuex-state'
 import materialApi from '@/apis/material'
 import { SIDE_TYPE, WEIGHT_UNIT, INVENTORY_UNIT, MATERIAL_PRICING_CURRENCY, SOURCE_ASSET_LOCATION } from '@/utils/constants'
 
-const generateTempFileName = () => {
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  let text = ''
-
-  for (let i = 0; i < 10; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length))
-  }
-
-  return text
-}
-
 const getDefaultState = () => ({
   materialId: null,
   relationMaterialId: null,
@@ -358,84 +347,41 @@ const actions = {
     dispatch('handleResponseData', { data: { ...data, result: { material: { attachmentList: data.result.material.attachmentList } } } }, { root: true })
   },
   async changeCoverImg ({ rootGetters, getters, dispatch }, { coverMode, materialAttachmentId = null, attachmentCropImg = null }) {
-    const attachmentCropImgFileName = attachmentCropImg ? generateTempFileName() : null
-    let id = null
-
-    if (attachmentCropImg) {
-      const { data: { result: { tempUploadId, attachmentCropImgUploadUrl } } } = rootGetters['helper/routeLocation'] === 'org'
-        ? await materialApi.org.changeCoverImg.getUploadUrl({ attachmentCropImgFileName })
-        : await materialApi.group.changeCoverImg.getUploadUrl({ attachmentCropImgFileName })
-
-      id = tempUploadId
-      await putBinaryData(attachmentCropImgUploadUrl, attachmentCropImg)
-    }
-
     const params = {
       materialId: getters.material.materialId,
       coverMode,
       materialAttachmentId,
-      tempUploadId: id,
-      attachmentCropImgFileName
+      attachmentCropImg
     }
     const { data } = rootGetters['helper/routeLocation'] === 'org'
-      ? await materialApi.org.changeCoverImg.do({ orgId: rootGetters['organization/orgId'], ...params })
-      : await materialApi.group.changeCoverImg.do({ groupId: rootGetters['group/groupId'], ...params })
+      ? await materialApi.org.changeCoverImg({ orgId: rootGetters['organization/orgId'], ...params })
+      : await materialApi.group.changeCoverImg({ groupId: rootGetters['group/groupId'], ...params })
 
     dispatch('handleResponseData', { data }, { root: true })
   },
   async updateScannedImage ({ rootGetters, getters, dispatch }, { isExchange, faceSideCropImg, backSideCropImg }) {
-    const faceSideCropImgFileName = faceSideCropImg ? generateTempFileName() : null
-    const backSideCropImgFileName = backSideCropImg ? generateTempFileName() : null
-    let id = null
-
-    if (faceSideCropImg || backSideCropImg) {
-      const { data: { result: { tempUploadId, faceSideCropImgUploadUrl, backSideCropImgUploadUrl } } } = rootGetters['helper/routeLocation'] === 'org'
-        ? await materialApi.org.updateScannedImage.getUploadUrl({ faceSideCropImgFileName, backSideCropImgFileName })
-        : await materialApi.group.updateScannedImage.getUploadUrl({ faceSideCropImgFileName, backSideCropImgFileName })
-
-      id = tempUploadId
-      await putBinaryData(faceSideCropImgUploadUrl, faceSideCropImg)
-      await putBinaryData(backSideCropImgUploadUrl, backSideCropImg)
-    }
-
     const params = {
       materialId: getters.material.materialId,
       isExchange,
-      tempUploadId: id,
-      faceSideCropImgFileName,
-      backSideCropImgFileName
+      faceSideCropImg,
+      backSideCropImg
     }
     const { data } = rootGetters['helper/routeLocation'] === 'org'
-      ? await materialApi.org.updateScannedImage.do({ orgId: rootGetters['organization/orgId'], ...params })
-      : await materialApi.group.updateScannedImage.do({ groupId: rootGetters['group/groupId'], ...params })
+      ? await materialApi.org.updateScannedImage({ orgId: rootGetters['organization/orgId'], ...params })
+      : await materialApi.group.updateScannedImage({ groupId: rootGetters['group/groupId'], ...params })
 
     dispatch('handleResponseData', { data }, { root: true })
   },
   async generateU3m ({ rootGetters, getters, dispatch }, { isAutoRepeat = true, faceSideCropImg = null, backSideCropImg = null }) {
-    const faceSideCropImgFileName = faceSideCropImg ? generateTempFileName() : null
-    const backSideCropImgFileName = backSideCropImg ? generateTempFileName() : null
-    let id = null
-
-    if (faceSideCropImg || backSideCropImg) {
-      const { data: { result: { tempUploadId, faceSideCropImgUploadUrl, backSideCropImgUploadUrl } } } = rootGetters['helper/routeLocation'] === 'org'
-        ? await materialApi.org.generateU3m.getUploadUrl({ faceSideCropImgFileName, backSideCropImgFileName })
-        : await materialApi.group.generateU3m.getUploadUrl({ faceSideCropImgFileName, backSideCropImgFileName })
-
-      id = tempUploadId
-      await putBinaryData(faceSideCropImgUploadUrl, faceSideCropImg)
-      await putBinaryData(backSideCropImgUploadUrl, backSideCropImg)
-    }
-
     const params = {
       materialId: getters.material.materialId,
       isAutoRepeat,
-      tempUploadId: id,
-      faceSideCropImgFileName,
-      backSideCropImgFileName
+      faceSideCropImg,
+      backSideCropImg
     }
     const { data } = rootGetters['helper/routeLocation'] === 'org'
-      ? await materialApi.org.generateU3m.do({ orgId: rootGetters['organization/orgId'], ...params })
-      : await materialApi.group.generateU3m.do({ groupId: rootGetters['group/groupId'], ...params })
+      ? await materialApi.org.generateU3m({ orgId: rootGetters['organization/orgId'], ...params })
+      : await materialApi.group.generateU3m({ groupId: rootGetters['group/groupId'], ...params })
 
     const { u3m } = data.result.material
     dispatch('handleResponseData', {
@@ -457,15 +403,4 @@ export default {
   getters,
   mutations,
   actions
-}
-
-async function putBinaryData (url = '', data) {
-  return await fetch(url, {
-    method: 'PUT',
-    cache: 'no-cache',
-    headers: {
-      'Content-Type': 'application/octet-stream'
-    },
-    body: data
-  })
 }
