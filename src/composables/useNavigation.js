@@ -90,6 +90,10 @@ export default function useNavigation () {
     router.push(`/received-share/material/${workspaceNodeId}?sharingKey=${sharingKey}`)
   }
 
+  const goToShareToMeMaterial = ({ workspaceNodeId, sharingId }) => {
+    router.push(parsePath(`${prefixPath.value}/share-to-me/${workspaceNodeId}?sharingId=${sharingId}`))
+  }
+
   return {
     nextAfterSignIn,
     parsePath,
@@ -103,6 +107,8 @@ export default function useNavigation () {
     goToPublicLibraryMaterialDetail,
     goToOrgAssetMaterialEdit,
     goToGroupAssetMaterialEdit,
-    goToReceivedShareMaterial
+    goToReceivedShareMaterial,
+    goToShareToMeMaterial,
+    prefixPath
   }
 }

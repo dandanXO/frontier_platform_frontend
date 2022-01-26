@@ -53,7 +53,7 @@ div(class="w-full h-full")
               :optionList="optionNode"
               :isShowLocation="inSearch"
               @click:option="$event.func(node.key, node.data.share.sharingId)"
-              @click.stop="goToPublicLibraryMaterialDetail(node.key)"
+              @click.stop="goToShareToMeMaterial({ workspaceNodeId: node.data.workspaceNodeId, sharingId: node.data.share.sharingId })"
             )
               template(#node-caption v-if="isFirstLayer")
                 div(class="mt-1.5 h-6 flex items-center")
@@ -90,7 +90,7 @@ export default {
     const router = useRouter()
     const route = useRoute()
     const { cloneNode, shareNode } = usePublicLibrary()
-    const { goToPublicLibraryMaterialDetail } = useNavigation()
+    const { goToShareToMeMaterial } = useNavigation()
 
     const optionSort = {
       base: [
@@ -188,7 +188,7 @@ export default {
       workspaceCollection,
       openModalCollectionDetail,
       publishBy,
-      goToPublicLibraryMaterialDetail,
+      goToShareToMeMaterial,
       selectedNodeKeyList,
       handleSelectAll,
       optionMultiSelect
