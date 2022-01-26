@@ -166,7 +166,10 @@ export default {
     const openModalCollectionDetail = () => {
       store.dispatch('helper/openModal', {
         header: t('FF0006'),
-        component: 'modal-public-library-collection-detail'
+        component: 'modal-collection-detail',
+        properties: {
+          ...workspaceCollection.value
+        }
       })
     }
 
