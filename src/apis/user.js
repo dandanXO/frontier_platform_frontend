@@ -1,4 +1,5 @@
 import axios from '@/apis'
+import putBinaryData from '@/utils/put-binary-data'
 
 export default {
   generalSignUp: ({ email, lastName, firstName, password, locale }) => axios('/sign-up/general', {
@@ -97,15 +98,18 @@ export default {
     method: 'POST',
     data: { tempFeedbackId, category, comment }
   }),
-  sendFeedbackAttachment: ({ tempFeedbackId, file }) => {
-    const formData = new FormData()
-    formData.append('tempFeedbackId', tempFeedbackId)
-    formData.append('file', file)
+  sendFeedbackAttachment: async ({ tempFeedbackId, file }) => {
+    const attachmentFileName = file.name
+
+    const { data: { result: { tempUploadId, attachmentUploadUrl } } } = await axios('/user/feedback/upload-attachment/get-upload-url', {
+      method: 'POST',
+      data: { attachmentFileName }
+    })
+    await putBinaryData(attachmentUploadUrl, file)
 
     return axios('/user/feedback/upload-attachment', {
-      headers: { 'Content-Type': 'multipart/form-data' },
       method: 'POST',
-      data: formData
+      data: { tempFeedbackId, tempUploadId, attachmentFileName }
     })
   },
   removeFeedbackAttachment: ({ tempFeedbackId, tempFeedbackAttachmentId }) => axios('/user/feedback/remove-attachment', {
