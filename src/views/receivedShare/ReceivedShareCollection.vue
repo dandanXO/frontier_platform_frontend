@@ -24,7 +24,11 @@ div(class="w-315 h-full mx-auto")
                 i18n-t(keypath="RR0068" tag="span")
                   template(#number) {{pagination.totalCount}}
                 span )
-            svg-icon(iconName="clone" class="text-black-700 cursor-pointer" size="24" @click="cloneReceivedShare([workspaceNodeId])")
+            tooltip(placement="bottom")
+              template(#trigger)
+                svg-icon(iconName="clone" class="text-black-700 hover:text-brand cursor-pointer" size="24" @click="cloneReceivedShare([workspaceNodeId])")
+              template(#content)
+                p(class="text-caption text-primary px-3 py-1") {{$t('RR0056')}}
           btn(size="sm" type="secondary" @click="isCollectionDetailExpand = !isCollectionDetailExpand") {{isCollectionDetailExpand ? $t('UU0026') : $t('UU0071')}}
         div(v-if="isCollectionDetailExpand" class="flex items-start gap-x-9")
           div(class="relative w-97.5 h-69 bg-black-200 flex items-center justify-center flex-shrink-0")
@@ -63,7 +67,7 @@ div(class="w-315 h-full mx-auto")
               :nodeKey="node.key"
               :node="node.data"
               :displayName="node.data.materialNo"
-              @click="goToReceivedShareMaterial({workspaceNodeId: node.data.workspaceNodeId, sharingKey: share.sharingKey })"
+              @click="goToReceivedShareMaterial(node.data.workspaceNodeId, share.sharingKey)"
             )
               template(#cover-overlay)
                 svg-icon(

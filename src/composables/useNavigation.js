@@ -86,12 +86,12 @@ export default function useNavigation () {
     router.push(parsePath(`/:orgNo/public-library/${nodeKey}`))
   }
 
-  const goToReceivedShareMaterial = ({ workspaceNodeId, sharingKey }) => {
+  const goToReceivedShareMaterial = (workspaceNodeId, sharingKey) => {
     router.push(`/received-share/material/${workspaceNodeId}?sharingKey=${sharingKey}`)
   }
 
-  const goToShareToMeMaterial = ({ workspaceNodeId, sharingId }) => {
-    router.push(parsePath(`${prefixPath.value}/share-to-me/${workspaceNodeId}?sharingId=${sharingId}`))
+  const goToShareToMeMaterial = (nodeKey, sharingId) => {
+    router.push(parsePath(`${prefixPath.value}/share-to-me/${nodeKey}?sharingId=${sharingId}`))
   }
 
   return {

@@ -10,9 +10,9 @@ export default {
       method: 'POST',
       data: { orgId, sharingId, workspaceNodeId }
     }),
-    cloneShareToMe: ({ orgId, workspaceNodeIdList, targetLocationList }) => axios('/org/share-to-me/clone', {
+    cloneShareToMe: ({ orgId, workspaceNodeList, targetLocationList }) => axios('/org/share-to-me/clone', {
       method: 'POST',
-      data: { orgId, workspaceNodeIdList, targetLocationList }
+      data: { orgId, workspaceNodeList, targetLocationList }
     }),
     deleteShareToMe: ({ orgId, sharingIdList }) => axios('/org/share-to-me/delete', {
       method: 'POST',
@@ -28,9 +28,9 @@ export default {
       method: 'POST',
       data: { groupId, sharingId, workspaceNodeId }
     }),
-    cloneShareToMe: ({ groupId, workspaceNodeIdList, targetLocationList }) => axios('/org/group/share-to-me/clone', {
+    cloneShareToMe: ({ groupId, workspaceNodeList, targetLocationList }) => axios('/org/group/share-to-me/clone', {
       method: 'POST',
-      data: { groupId, workspaceNodeIdList, targetLocationList }
+      data: { groupId, workspaceNodeList, targetLocationList }
     }),
     deleteShareToMe: ({ groupId, sharingIdList }) => axios('/org/group/share-to-me/delete', {
       method: 'POST',

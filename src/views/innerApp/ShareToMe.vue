@@ -8,13 +8,24 @@ div(class="w-full h-full")
     @selectAll="handleSelectAll"
   )
     template(#header-left)
-      div(class="flex items-end")
-        breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)" fontSize="text-h6")
-        p(class="flex text-caption text-black-700 pl-1")
-          span (
-          i18n-t(keypath="RR0068" tag="span")
-            template(#number) {{pagination.totalCount}}
-          span )
+      div(class="flex items-center")
+        div(class="flex items-end")
+          breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)" fontSize="text-h6")
+          p(class="flex text-caption text-black-700 pl-1")
+            span (
+            i18n-t(keypath="RR0068" tag="span")
+              template(#number) {{pagination.totalCount}}
+            span )
+        tooltip(v-if="!isFirstLayer" placement="bottom")
+          template(#trigger)
+            svg-icon(
+              iconName="clone"
+              class="text-black-700 cursor-pointer hover:text-brand ml-1"
+              size="24"
+              @click="cloneNode.func(`${workspaceCollection.workspaceNodeLocation}-${workspaceCollection.workspaceNodeId}`, workspaceCollection.share.isCanClone)"
+            )
+          template(#content)
+            p(class="text-caption text-primary px-3 py-1") {{$t('RR0056')}}
     template(#header-right)
       div(class="relative cursor-pointer" @click="openModalShareMessage")
         svg-icon(iconName="chat" size="24" class="text-black-700")
@@ -55,8 +66,8 @@ div(class="w-full h-full")
               :displayName="node.data.materialNo"
               :optionList="optionNode"
               :isShowLocation="inSearch"
-              @click:option="$event.func(node.key, node.data.share.sharingId)"
-              @click.stop="goToShareToMeMaterial({ workspaceNodeId: node.data.workspaceNodeId, sharingId: node.data.share.sharingId })"
+              @click:option="$event.func(node.key, node.data.share.isCanClone)"
+              @click.stop="goToShareToMeMaterial(node.key, node.data.share.sharingId)"
             )
               template(#node-caption v-if="isFirstLayer")
                 div(class="mt-1.5 h-6 flex items-center")
@@ -68,6 +79,13 @@ div(class="w-full h-full")
       div(v-else class="flex h-full justify-center items-end")
         p(class="text-body1 text-primary") {{$t('HH0001')}}
   multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeKeyList")
+    template(#default="{ option }")
+      div(
+        v-if="option.id === 'clone'"
+        class="whitespace-nowrap px-5 cursor-pointer hover:text-brand"
+        @click="option.func(selectedNodeKeyList, workspaceCollection.share.isCanClone)"
+      ) {{option.name}}
+
 </template>
 
 <script>
@@ -75,10 +93,10 @@ import SearchTable from '@/components/layout/SearchTable'
 import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import NodeItem from '@/components/layout/NodeItem'
 import { useRoute, useRouter } from 'vue-router'
-import usePublicLibrary from '@/composables/usePublicLibrary'
+import useShareToMe from '@/composables/useShareToMe'
 import useNavigation from '@/composables/useNavigation'
 
 export default {
@@ -92,7 +110,8 @@ export default {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
-    const { cloneNode, shareNode } = usePublicLibrary()
+    const workspaceCollection = computed(() => store.getters['shareToMe/workspaceCollection'])
+    const { cloneNode, deleteNode } = useShareToMe()
     const { goToShareToMeMaterial } = useNavigation()
     const optionSort = {
       base: [
@@ -103,9 +122,14 @@ export default {
         SORT_BY.RELEVANCE_C_M
       ]
     }
-    const optionMultiSelect = [cloneNode]
+    const optionMultiSelect = computed(() => {
+      const optionList = [deleteNode]
+      if (!isFirstLayer.value) {
+        optionList.unshift(cloneNode)
+      }
+      return optionList
+    })
     const pagination = computed(() => store.getters['helper/search/pagination'])
-    const workspaceCollection = computed(() => store.getters['shareToMe/workspaceCollection'])
     const breadcrumbList = computed(() => store.getters['shareToMe/breadcrumbList']({
       name: t('RR0010'),
       key: null
@@ -115,7 +139,7 @@ export default {
     const optionNode = computed(() => ([
       [
         cloneNode,
-        shareNode
+        deleteNode
       ]
     ]))
     const workspaceNodeId = ref(route.query.workspaceNodeId || null)
@@ -185,6 +209,11 @@ export default {
       })
     }
 
+    watch(
+      () => isFirstLayer.value,
+      () => (selectedNodeKeyList.value.length = 0)
+    )
+
     return {
       getShareToMeList,
       optionSort,
@@ -204,7 +233,8 @@ export default {
       handleSelectAll,
       optionMultiSelect,
       haveMsgAndFirstRead,
-      openModalShareMessage
+      openModalShareMessage,
+      cloneNode
     }
   }
 }

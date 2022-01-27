@@ -69,7 +69,7 @@ const reuseRoutes = (prefix) => ([
     component: () => import('@/views/innerApp/ShareToMe.vue')
   },
   {
-    path: 'share-to-me/:workspaceNodeId',
+    path: 'share-to-me/:nodeKey',
     name: `${prefix}ShareToMeMaterial`,
     props: true,
     component: () => import('@/views/innerApp/ShareToMeMaterialDetail.vue')

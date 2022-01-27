@@ -5,7 +5,11 @@ div(class="w-full h-full flex justify-center")
     div(class="pb-7.5")
       div(class="flex items-center pb-2")
         h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{`${material.materialNo} ${material.description}`}}
-        svg-icon(iconName="clone" class="text-black-700 cursor-pointer" size="24" @click="clone")
+        tooltip(placement="bottom")
+          template(#trigger)
+            svg-icon(iconName="clone" class="text-black-700 cursor-pointer hover:text-brand" size="24" @click="cloneNode.func(nodeKey, share.value.isCanClone)")
+          template(#content)
+            p(class="text-caption text-primary px-3 py-1") {{$t('RR0056')}}
         div(class="relative cursor-pointer ml-3" @click="openModalShareMessage")
           svg-icon(iconName="chat" size="24" class="text-black-700")
           div(v-if="haveMsgAndFirstRead" class="absolute -top-px -right-px w-2 h-2 rounded-full border border-black-0 bg-warn")
@@ -21,7 +25,7 @@ import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import usePublicLibrary from '@/composables/usePublicLibrary'
+import useShareToMe from '@/composables/useShareToMe'
 import MaterialDetailExternal from '@/components/layout/materialDetail/MaterialDetailExternal.vue'
 
 export default {
@@ -30,7 +34,7 @@ export default {
     MaterialDetailExternal
   },
   props: {
-    workspaceNodeId: {
+    nodeKey: {
       type: [Number, String],
       required: true
     }
@@ -40,10 +44,10 @@ export default {
     const store = useStore()
     const route = useRoute()
     const { parsePath, prefixPath } = useNavigation()
-    const { cloneNode } = usePublicLibrary()
+    const { cloneNode } = useShareToMe()
     const sharingId = ref(route.query.sharingId)
 
-    await store.dispatch('shareToMe/getShareToMeMaterial', { workspaceNodeId: props.workspaceNodeId, sharingId: sharingId.value })
+    await store.dispatch('shareToMe/getShareToMeMaterial', { workspaceNodeId: props.nodeKey.split('-')[1], sharingId: sharingId.value })
 
     const material = computed(() => store.getters['shareToMe/material'])
     const share = computed(() => store.getters['shareToMe/materialShare'])
@@ -74,8 +78,6 @@ export default {
     const isFirstTime = ref(true)
     const haveMsgAndFirstRead = computed(() => !!share.value?.message && isFirstTime.value)
 
-    const clone = () => cloneNode.func(route.params.nodeKey)
-
     const openModalShareMessage = () => {
       isFirstTime.value = false
       store.dispatch('helper/openModal', {
@@ -91,7 +93,7 @@ export default {
       breadcrumbList,
       material,
       share,
-      clone,
+      cloneNode,
       haveMsgAndFirstRead,
       openModalShareMessage
     }

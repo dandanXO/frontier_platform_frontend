@@ -5,7 +5,11 @@ div(class="w-full h-full flex justify-center" :class="{ 'pt-13': breadcrumbList.
     div(class="pb-7.5")
       div(class="flex items-center pb-2")
         h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{`${material.materialNo} ${material.description}`}}
-        svg-icon(iconName="clone" class="text-black-700 cursor-pointer" size="24" @click="cloneReceivedShare([workspaceNodeId])")
+        tooltip(placement="bottom")
+          template(#trigger)
+            svg-icon(iconName="clone" class="text-black-700 cursor-pointer hover:text-brand" size="24" @click="cloneReceivedShare([workspaceNodeId])")
+          template(#content)
+            p(class="text-caption text-primary px-3 py-1") {{$t('RR0056')}}
     material-detail-external(:material="material" :isCanDownloadU3M="share.isCanDownloadU3M")
   div(v-else class="h-full flex justify-center items-center")
     svg-icon(iconName="loading" size="92" class="text-brand-dark")

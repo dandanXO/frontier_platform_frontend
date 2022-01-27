@@ -96,10 +96,10 @@ export default {
         : await shareToMeApi.group.getShareToMeMaterial({ groupId: rootGetters['group/groupId'], sharingId, workspaceNodeId })
       dispatch('setShareModule', data.result)
     },
-    async cloneShareToMe ({ rootGetters }, { workspaceNodeIdList, targetLocationList }) {
+    async cloneShareToMe ({ rootGetters }, { workspaceNodeList, targetLocationList }) {
       rootGetters['helper/routeLocation'] === 'org'
-        ? await shareToMeApi.org.cloneShareToMe({ orgId: rootGetters['organization/orgId'], workspaceNodeIdList, targetLocationList })
-        : await shareToMeApi.group.cloneShareToMe({ groupId: rootGetters['group/groupId'], workspaceNodeIdList, targetLocationList })
+        ? await shareToMeApi.org.cloneShareToMe({ orgId: rootGetters['organization/orgId'], workspaceNodeList, targetLocationList })
+        : await shareToMeApi.group.cloneShareToMe({ groupId: rootGetters['group/groupId'], workspaceNodeList, targetLocationList })
     },
     async deleteShareToMe ({ rootGetters }, { sharingIdList }) {
       rootGetters['helper/routeLocation'] === 'org'
