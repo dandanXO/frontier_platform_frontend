@@ -16,6 +16,9 @@ div(class="w-full h-full")
             template(#number) {{pagination.totalCount}}
           span )
     template(#header-right)
+      div(class="relative cursor-pointer" @click="openModalShareMessage")
+        svg-icon(iconName="chat" size="24" class="text-black-700")
+        div(v-if="haveMsgAndFirstRead" class="absolute -top-px -right-px w-2 h-2 rounded-full border border-black-0 bg-warn")
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
     template(v-if="!isFirstLayer" #sub-header)
       div(class="mx-7.5 mb-7.5 text-caption text-black-700 flex items-center")
@@ -91,7 +94,6 @@ export default {
     const route = useRoute()
     const { cloneNode, shareNode } = usePublicLibrary()
     const { goToShareToMeMaterial } = useNavigation()
-
     const optionSort = {
       base: [
         SORT_BY.MATERIAL_NO_A_Z_C_M,
@@ -101,7 +103,6 @@ export default {
         SORT_BY.RELEVANCE_C_M
       ]
     }
-
     const optionMultiSelect = [cloneNode]
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const workspaceCollection = computed(() => store.getters['shareToMe/workspaceCollection'])
@@ -111,18 +112,18 @@ export default {
     }))
     const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
     const nodeList = computed(() => store.getters['shareToMe/nodeList'])
-    const publishBy = computed(() => store.getters['shareToMe/publishBy'])
     const optionNode = computed(() => ([
       [
         cloneNode,
         shareNode
       ]
     ]))
-
     const workspaceNodeId = ref(route.query.workspaceNodeId || null)
     const sharingId = ref(route.query.sharingId || null)
     const refSearchTable = ref(null)
     const selectedNodeKeyList = ref([])
+    const isFirstTime = ref(true)
+    const haveMsgAndFirstRead = computed(() => !!workspaceCollection.value?.share?.message && isFirstTime.value)
 
     const getShareToMeList = async (targetPage = 1) => {
       await router.push({
@@ -173,6 +174,17 @@ export default {
       })
     }
 
+    const openModalShareMessage = () => {
+      isFirstTime.value = false
+      store.dispatch('helper/openModal', {
+        component: 'modal-share-message',
+        header: t('RR0146'),
+        properties: {
+          message: workspaceCollection.value.share.message
+        }
+      })
+    }
+
     return {
       getShareToMeList,
       optionSort,
@@ -187,11 +199,12 @@ export default {
       isFirstLayer,
       workspaceCollection,
       openModalCollectionDetail,
-      publishBy,
       goToShareToMeMaterial,
       selectedNodeKeyList,
       handleSelectAll,
-      optionMultiSelect
+      optionMultiSelect,
+      haveMsgAndFirstRead,
+      openModalShareMessage
     }
   }
 }

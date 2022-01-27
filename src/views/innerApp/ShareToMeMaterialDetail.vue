@@ -5,8 +5,10 @@ div(class="w-full h-full flex justify-center")
     div(class="pb-7.5")
       div(class="flex items-center pb-2")
         h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{`${material.materialNo} ${material.description}`}}
-        //- svg-icon(iconName="clone" class="text-black-700 cursor-pointer" size="24" @click="clone")
-              div(class="mx-7.5 mb-7.5 text-caption text-black-700 flex items-center")
+        svg-icon(iconName="clone" class="text-black-700 cursor-pointer" size="24" @click="clone")
+        div(class="relative cursor-pointer ml-3" @click="openModalShareMessage")
+          svg-icon(iconName="chat" size="24" class="text-black-700")
+          div(v-if="haveMsgAndFirstRead" class="absolute -top-px -right-px w-2 h-2 rounded-full border border-black-0 bg-warn")
       div(class="text-caption text-black-700 flex items-center")
         p(class="pr-2.5") {{share.displayName}}
         p {{$t('RR0148')}} {{$dayjs.unix(share.shareDate).format('MM/DD/YYYY')}}
@@ -69,13 +71,29 @@ export default {
       }
       return list
     })
+    const isFirstTime = ref(true)
+    const haveMsgAndFirstRead = computed(() => !!share.value?.message && isFirstTime.value)
+
     const clone = () => cloneNode.func(route.params.nodeKey)
+
+    const openModalShareMessage = () => {
+      isFirstTime.value = false
+      store.dispatch('helper/openModal', {
+        component: 'modal-share-message',
+        header: t('RR0146'),
+        properties: {
+          message: share.value.message
+        }
+      })
+    }
 
     return {
       breadcrumbList,
       material,
       share,
-      clone
+      clone,
+      haveMsgAndFirstRead,
+      openModalShareMessage
     }
   }
 }

@@ -11,7 +11,7 @@ fullscreen-header
       img(:src="logo" class="w-10 h-10 rounded-full")
       p(class="text-body1 font-bold text-primary pl-2.5") {{share.displayName}}
   template(#right)
-    div(class="relative cursor-pointer mr-4" @click="openModalReceivedShareMessage")
+    div(class="relative cursor-pointer mr-4" @click="openModalShareMessage")
       svg-icon(iconName="chat" size="24" class="text-black-700")
       div(v-if="haveMsgAndFirstRead" class="absolute -top-px -right-px w-2 h-2 rounded-full border border-black-0 bg-warn")
     btn(size="md" @click="saveReceivedShare") {{$t('UU0018')}}
@@ -41,16 +41,19 @@ export default {
     const { t } = useI18n()
     const { saveReceivedShare } = useReceivedShare()
 
-    const share = computed(() => store.getters['share/share'])
-    const logo = computed(() => store.getters['share/logo'])
+    const share = computed(() => store.getters['receivedShare/share'])
+    const logo = computed(() => store.getters['receivedShare/logo'])
     const isFirstTime = ref(true)
     const haveMsgAndFirstRead = computed(() => !!share.value.message && isFirstTime.value)
 
-    const openModalReceivedShareMessage = () => {
+    const openModalShareMessage = () => {
       isFirstTime.value = false
       store.dispatch('helper/openModal', {
-        component: 'modal-received-share-message',
-        header: t('RR0146')
+        component: 'modal-share-message',
+        header: t('RR0146'),
+        properties: {
+          message: share.value.message
+        }
       })
     }
 
@@ -60,7 +63,7 @@ export default {
       saveReceivedShare,
       SHARING_FROM,
       haveMsgAndFirstRead,
-      openModalReceivedShareMessage
+      openModalShareMessage
     }
   }
 }

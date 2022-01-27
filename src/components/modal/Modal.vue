@@ -73,7 +73,7 @@ export default {
     ModalReceivedShareChooseStorage: defineAsyncComponent(() => import('@/components/receivedShare/ModalReceivedShareChooseStorage.vue')),
     ModalPublicLibraryShare: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryShare.vue')),
     ModalPublicLibraryShareAssigned: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryShareAssigned.vue')),
-    ModalReceivedShareMessage: defineAsyncComponent(() => import('@/components/receivedShare/ModalReceivedShareMessage.vue'))
+    ModalShareMessage: defineAsyncComponent(() => import('@/components/ModalShareMessage.vue'))
   },
   props: {
     component: {
