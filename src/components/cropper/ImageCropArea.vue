@@ -86,7 +86,7 @@ export default {
       emit('update:options', option)
     }
 
-    const cropImage = (file) => {
+    const cropImage = () => {
       return new Promise((resolve, reject) => {
         const cropRect = props.lowResolution ? cropRectGeneral.value : cropRectExact.value
         let width = cropRect.clientWidth
@@ -102,7 +102,7 @@ export default {
 
         domtoimage.toJpeg(cropRect, { width, height, style: { overflow: 'visible' } })
           .then(dataUrl => {
-            const fileName = file?.name.length > 0 ? file.name : `${tempFilenameGenerator()}.jpeg`
+            const fileName = `${tempFilenameGenerator()}.jpeg`
             const blob = dataUrlToBlob(dataUrl)
             resolve(new File([blob], fileName, { type: 'image/jpeg' }))
           })
