@@ -74,16 +74,20 @@ export default {
     method: 'POST',
     data: { orgId, displayName }
   }),
-  updateAvatar: ({ orgId, avatar, originalAvatar }) => {
-    const formData = new FormData()
-    formData.append('orgId', orgId)
-    formData.append('avatar', avatar)
-    formData.append('originalAvatar', originalAvatar)
+  updateAvatar: async ({ orgId, avatar, originalAvatar }) => {
+    const avatarFileName = avatar.name
+    const originalAvatarFileName = originalAvatar.name
+
+    const { data: { result: { tempUploadId, avatarUploadUrl, originalAvatarUploadUrl } } } = await axios('/org/user/update-avatar/get-upload-url', {
+      method: 'POST',
+      data: { avatarFileName, originalAvatarFileName }
+    })
+    await putBinaryData(avatarUploadUrl, avatar)
+    await putBinaryData(originalAvatarUploadUrl, originalAvatar)
 
     return axios('/org/user/update-avatar', {
-      headers: { 'Content-Type': 'multipart/form-data' },
       method: 'POST',
-      data: formData
+      data: { orgId, tempUploadId, avatarFileName, originalAvatarFileName }
     })
   },
   removeAvatar: ({ orgId }) => axios('/org/user/remove-avatar', {
