@@ -1,4 +1,5 @@
 import axios from '@/apis'
+import putBinaryData from '@/utils/put-binary-data'
 
 export default {
   org: {
@@ -18,32 +19,42 @@ export default {
       method: 'POST',
       data: { orgId, workspaceNodeId }
     }),
-    createCollection: ({ orgId, workspaceNodeId, collectionName, trendBoard = null, description = null }) => {
-      const formData = new FormData()
-      formData.append('orgId', orgId)
-      formData.append('workspaceNodeId', workspaceNodeId)
-      formData.append('collectionName', collectionName)
-      !!trendBoard && formData.append('trendBoard', trendBoard)
-      !!description && formData.append('description', description)
+    createCollection: async ({ orgId, workspaceNodeId, collectionName, trendBoard = null, description = null }) => {
+      const trendBoardFileName = trendBoard?.name || null
+      let id
+
+      if (trendBoardFileName) {
+        const { data: { result: { tempUploadId, trendBoardUploadUrl } } } = await axios('/org/workspace/collection/create/get-upload-url', {
+          method: 'POST',
+          data: { trendBoardFileName }
+        })
+
+        id = tempUploadId
+        await putBinaryData(trendBoardUploadUrl, trendBoard)
+      }
 
       return axios('/org/workspace/collection/create', {
-        headers: { 'Content-Type': 'multipart/form-data' },
         method: 'POST',
-        data: formData
+        data: { orgId, workspaceNodeId, collectionName, tempUploadId: id, trendBoardFileName, description }
       })
     },
-    updateCollection: ({ orgId, collectionId, collectionName, trendBoard = null, description = null }) => {
-      const formData = new FormData()
-      formData.append('orgId', orgId)
-      formData.append('collectionId', collectionId)
-      formData.append('collectionName', collectionName)
-      !!trendBoard && formData.append('trendBoard', trendBoard)
-      !!description && formData.append('description', description)
+    updateCollection: async ({ orgId, collectionId, collectionName, trendBoard = null, description = null }) => {
+      const trendBoardFileName = trendBoard?.name || null
+      let id
+
+      if (trendBoardFileName) {
+        const { data: { result: { tempUploadId, trendBoardUploadUrl } } } = await axios('/org/workspace/collection/update/get-upload-url', {
+          method: 'POST',
+          data: { trendBoardFileName }
+        })
+
+        id = tempUploadId
+        await putBinaryData(trendBoardUploadUrl, trendBoard)
+      }
 
       return axios('/org/workspace/collection/update', {
-        headers: { 'Content-Type': 'multipart/form-data' },
         method: 'POST',
-        data: formData
+        data: { orgId, collectionId, collectionName, tempUploadId: id, trendBoardFileName, description }
       })
     },
     removeTrendBoard: ({ orgId, collectionId }) => axios('/org/workspace/collection/remove-trend-board', {
@@ -112,32 +123,42 @@ export default {
       method: 'POST',
       data: { groupId, workspaceNodeId }
     }),
-    createCollection: ({ groupId, workspaceNodeId, collectionName, trendBoard = null, description = null }) => {
-      const formData = new FormData()
-      formData.append('groupId', groupId)
-      formData.append('workspaceNodeId', workspaceNodeId)
-      formData.append('collectionName', collectionName)
-      !!trendBoard && formData.append('trendBoard', trendBoard)
-      !!description && formData.append('description', description)
+    createCollection: async ({ groupId, workspaceNodeId, collectionName, trendBoard = null, description = null }) => {
+      const trendBoardFileName = trendBoard?.name || null
+      let id
+
+      if (trendBoardFileName) {
+        const { data: { result: { tempUploadId, trendBoardUploadUrl } } } = await axios('/org/group/workspace/collection/create/get-upload-url', {
+          method: 'POST',
+          data: { trendBoardFileName }
+        })
+
+        id = tempUploadId
+        await putBinaryData(trendBoardUploadUrl, trendBoard)
+      }
 
       return axios('/org/group/workspace/collection/create', {
-        headers: { 'Content-Type': 'multipart/form-data' },
         method: 'POST',
-        data: formData
+        data: { groupId, workspaceNodeId, collectionName, tempUploadId: id, trendBoardFileName, description }
       })
     },
-    updateCollection: ({ groupId, collectionId, collectionName, trendBoard = null, description = null }) => {
-      const formData = new FormData()
-      formData.append('groupId', groupId)
-      formData.append('collectionId', collectionId)
-      formData.append('collectionName', collectionName)
-      !!trendBoard && formData.append('trendBoard', trendBoard)
-      !!description && formData.append('description', description)
+    updateCollection: async ({ groupId, collectionId, collectionName, trendBoard = null, description = null }) => {
+      const trendBoardFileName = trendBoard?.name || null
+      let id
+
+      if (trendBoardFileName) {
+        const { data: { result: { tempUploadId, trendBoardUploadUrl } } } = await axios('/org/group/workspace/collection/update/get-upload-url', {
+          method: 'POST',
+          data: { trendBoardFileName }
+        })
+
+        id = tempUploadId
+        await putBinaryData(trendBoardUploadUrl, trendBoard)
+      }
 
       return axios('/org/group/workspace/collection/update', {
-        headers: { 'Content-Type': 'multipart/form-data' },
         method: 'POST',
-        data: formData
+        data: { groupId, collectionId, collectionName, tempUploadId: id, trendBoardFileName, description }
       })
     },
     removeTrendBoard: ({ groupId, collectionId }) => axios('/org/group/workspace/collection/remove-trend-board', {
