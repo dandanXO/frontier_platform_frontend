@@ -307,10 +307,10 @@ const actions = {
 
     dispatch('handleResponseData', { data }, { root: true })
   },
-  async uploadAttachmentWhenCreate ({ rootGetters, commit }, { tempMaterialId, file, fileName }) {
+  async uploadAttachmentWhenCreate ({ rootGetters, commit }, { tempMaterialId, file, displayFileName }) {
     const { data } = rootGetters['helper/routeLocation'] === 'org'
-      ? await materialApi.org.createAttachment.upload({ orgId: rootGetters['organization/orgId'], tempMaterialId, file, fileName })
-      : await materialApi.group.createAttachment.upload({ groupId: rootGetters['group/groupId'], tempMaterialId, file, fileName })
+      ? await materialApi.org.createAttachment.upload({ orgId: rootGetters['organization/orgId'], tempMaterialId, file, displayFileName })
+      : await materialApi.group.createAttachment.upload({ groupId: rootGetters['group/groupId'], tempMaterialId, file, displayFileName })
 
     commit('UPDATE_attachmentList', data.result.attachmentList)
   },
@@ -321,11 +321,11 @@ const actions = {
 
     commit('UPDATE_attachmentList', data.result.attachmentList)
   },
-  async uploadAttachmentWhenUpdate ({ rootGetters, getters, dispatch }, { file, fileName }) {
+  async uploadAttachmentWhenUpdate ({ rootGetters, getters, dispatch }, { file, displayFileName }) {
     const params = {
       materialId: getters.material.materialId,
       file,
-      fileName
+      displayFileName
     }
 
     const { data } = rootGetters['helper/routeLocation'] === 'org'

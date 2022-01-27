@@ -28,17 +28,18 @@ export default {
       data: { orgId, materialId, materialPantoneId }
     }),
     createAttachment: {
-      upload: ({ orgId, tempMaterialId, file, fileName }) => {
-        const formData = new FormData()
-        formData.append('orgId', orgId)
-        formData.append('tempMaterialId', tempMaterialId)
-        formData.append('file', file)
-        formData.append('fileName', fileName)
+      upload: async ({ orgId, tempMaterialId, file, displayFileName }) => {
+        const attachmentFileName = file.name
+
+        const { data: { result: { tempUploadId, attachmentUploadUrl } } } = await axios('/org/assets/material/create/upload-attachment/get-upload-url', {
+          method: 'POST',
+          data: { attachmentFileName }
+        })
+        await putBinaryData(attachmentUploadUrl, file)
 
         return axios('/org/assets/material/create/upload-attachment', {
-          headers: { 'Content-Type': 'multipart/form-data' },
           method: 'POST',
-          data: formData
+          data: { orgId, tempMaterialId, tempUploadId, attachmentFileName, displayFileName }
         })
       },
       remove: ({ orgId, tempMaterialId, tempMaterialAttachmentId }) => axios('/org/assets/material/create/remove-attachment', {
@@ -47,17 +48,18 @@ export default {
       })
     },
     updateAttachment: {
-      upload: ({ orgId, materialId, file, fileName }) => {
-        const formData = new FormData()
-        formData.append('orgId', orgId)
-        formData.append('materialId', materialId)
-        formData.append('file', file)
-        formData.append('fileName', fileName)
+      upload: async ({ orgId, materialId, file, displayFileName }) => {
+        const attachmentFileName = file.name
+
+        const { data: { result: { tempUploadId, attachmentUploadUrl } } } = await axios('/org/assets/material/update/upload-attachment/get-upload-url', {
+          method: 'POST',
+          data: { attachmentFileName }
+        })
+        await putBinaryData(attachmentUploadUrl, file)
 
         return axios('/org/assets/material/update/upload-attachment', {
-          headers: { 'Content-Type': 'multipart/form-data' },
           method: 'POST',
-          data: formData
+          data: { orgId, materialId, tempUploadId, attachmentFileName, displayFileName }
         })
       },
       remove: ({ orgId, materialId, materialAttachmentId }) => axios('/org/assets/material/update/remove-attachment', {
@@ -153,17 +155,18 @@ export default {
       data: { groupId, materialId, materialPantoneId }
     }),
     createAttachment: {
-      upload: ({ groupId, tempMaterialId, file, fileName }) => {
-        const formData = new FormData()
-        formData.append('groupId', groupId)
-        formData.append('tempMaterialId', tempMaterialId)
-        formData.append('file', file)
-        formData.append('fileName', fileName)
+      upload: async ({ orgId, tempMaterialId, file, displayFileName }) => {
+        const attachmentFileName = file.name
+
+        const { data: { result: { tempUploadId, attachmentUploadUrl } } } = await axios('/org/group/assets/material/create/upload-attachment/get-upload-url', {
+          method: 'POST',
+          data: { attachmentFileName }
+        })
+        await putBinaryData(attachmentUploadUrl, file)
 
         return axios('/org/group/assets/material/create/upload-attachment', {
-          headers: { 'Content-Type': 'multipart/form-data' },
           method: 'POST',
-          data: formData
+          data: { orgId, tempMaterialId, tempUploadId, attachmentFileName, displayFileName }
         })
       },
       remove: ({ groupId, tempMaterialId, tempMaterialAttachmentId }) => axios('/org/group/assets/material/create/remove-attachment', {
@@ -172,17 +175,18 @@ export default {
       })
     },
     updateAttachment: {
-      upload: ({ groupId, materialId, file, fileName }) => {
-        const formData = new FormData()
-        formData.append('groupId', groupId)
-        formData.append('materialId', materialId)
-        formData.append('file', file)
-        formData.append('fileName', fileName)
+      upload: async ({ orgId, materialId, file, displayFileName }) => {
+        const attachmentFileName = file.name
+
+        const { data: { result: { tempUploadId, attachmentUploadUrl } } } = await axios('/org/group/assets/material/update/upload-attachment/get-upload-url', {
+          method: 'POST',
+          data: { attachmentFileName }
+        })
+        await putBinaryData(attachmentUploadUrl, file)
 
         return axios('/org/group/assets/material/update/upload-attachment', {
-          headers: { 'Content-Type': 'multipart/form-data' },
           method: 'POST',
-          data: formData
+          data: { orgId, materialId, tempUploadId, attachmentFileName, displayFileName }
         })
       },
       remove: ({ groupId, materialId, materialAttachmentId }) => axios('/org/group/assets/material/update/remove-attachment', {
