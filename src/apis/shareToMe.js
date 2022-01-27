@@ -14,9 +14,9 @@ export default {
       method: 'POST',
       data: { orgId, workspaceNodeList, targetLocationList }
     }),
-    deleteShareToMe: ({ orgId, sharingIdList }) => axios('/org/share-to-me/delete', {
+    deleteShareToMe: ({ orgId, workspaceNodeList }) => axios('/org/share-to-me/delete', {
       method: 'POST',
-      data: { orgId, sharingIdList }
+      data: { orgId, workspaceNodeList }
     })
   },
   group: {
@@ -32,9 +32,9 @@ export default {
       method: 'POST',
       data: { groupId, workspaceNodeList, targetLocationList }
     }),
-    deleteShareToMe: ({ groupId, sharingIdList }) => axios('/org/group/share-to-me/delete', {
+    deleteShareToMe: ({ groupId, workspaceNodeList }) => axios('/org/group/share-to-me/delete', {
       method: 'POST',
-      data: { groupId, sharingIdList }
+      data: { groupId, workspaceNodeList }
     })
   }
 }

@@ -64,7 +64,27 @@ export default function useShareToMe () {
   const deleteNode = {
     id: 'delete',
     name: t('RR0063'),
-    func: () => { }
+    func: (v) => {
+      const workspaceNodeKeyList = Array.isArray(v) ? v : [v]
+      const workspaceNodeList = workspaceNodeKeyList.map(key => {
+        const [location, id] = key.split('-')
+        return {
+          id: Number(id),
+          location: Number(location)
+        }
+      })
+      store.dispatch('helper/openModalConfirm', {
+        title: t('HH0004'),
+        content: t('HH0005'),
+        primaryText: t('UU0002'),
+        secondaryText: t('UU0001'),
+        secondaryHandler: async () => {
+          store.dispatch('helper/openModalLoading')
+          await store.dispatch('shareToMe/deleteShareToMe', { workspaceNodeList })
+          store.dispatch('helper/closeModalLoading')
+        }
+      })
+    }
   }
 
   return {

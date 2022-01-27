@@ -101,10 +101,10 @@ export default {
         ? await shareToMeApi.org.cloneShareToMe({ orgId: rootGetters['organization/orgId'], workspaceNodeList, targetLocationList })
         : await shareToMeApi.group.cloneShareToMe({ groupId: rootGetters['group/groupId'], workspaceNodeList, targetLocationList })
     },
-    async deleteShareToMe ({ rootGetters }, { sharingIdList }) {
+    async deleteShareToMe ({ rootGetters }, { workspaceNodeList }) {
       rootGetters['helper/routeLocation'] === 'org'
-        ? await shareToMeApi.org.deleteShareToMe({ orgId: rootGetters['organization/orgId'], sharingIdList })
-        : await shareToMeApi.group.deleteShareToMe({ groupId: rootGetters['group/groupId'], sharingIdList })
+        ? await shareToMeApi.org.deleteShareToMe({ orgId: rootGetters['organization/orgId'], workspaceNodeList })
+        : await shareToMeApi.group.deleteShareToMe({ groupId: rootGetters['group/groupId'], workspaceNodeList })
     }
   }
 }

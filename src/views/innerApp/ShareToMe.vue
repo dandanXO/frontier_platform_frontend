@@ -122,13 +122,7 @@ export default {
         SORT_BY.RELEVANCE_C_M
       ]
     }
-    const optionMultiSelect = computed(() => {
-      const optionList = [deleteNode]
-      if (!isFirstLayer.value) {
-        optionList.unshift(cloneNode)
-      }
-      return optionList
-    })
+    const optionMultiSelect = computed(() => isFirstLayer.value ? [deleteNode] : [cloneNode])
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const breadcrumbList = computed(() => store.getters['shareToMe/breadcrumbList']({
       name: t('RR0010'),
@@ -136,12 +130,17 @@ export default {
     }))
     const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
     const nodeList = computed(() => store.getters['shareToMe/nodeList'])
-    const optionNode = computed(() => ([
-      [
-        cloneNode,
-        deleteNode
+    const optionNode = computed(() => {
+      const optionList = [
+        [
+          cloneNode
+        ]
       ]
-    ]))
+      if (isFirstLayer.value) {
+        optionList[0].push(deleteNode)
+      }
+      return optionList
+    })
     const workspaceNodeId = ref(route.query.workspaceNodeId || null)
     const sharingId = ref(route.query.sharingId || null)
     const refSearchTable = ref(null)
