@@ -27,7 +27,7 @@ div(class="w-full h-full")
           template(#content)
             p(class="text-caption text-primary px-3 py-1") {{$t('RR0056')}}
     template(#header-right)
-      div(class="relative cursor-pointer" @click="openModalShareMessage")
+      div(v-if="!isFirstLayer" class="relative cursor-pointer" @click="openModalShareMessage")
         svg-icon(iconName="chat" size="24" class="text-black-700")
         div(v-if="haveMsgAndFirstRead" class="absolute -top-px -right-px w-2 h-2 rounded-full border border-black-0 bg-warn")
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
@@ -53,7 +53,7 @@ div(class="w-full h-full")
               template(#node-caption v-if="isFirstLayer")
                 div(class="mt-1.5 h-6 flex items-center")
                   img(
-                    :src="node.data.share.logo ? node.data.share.log : require('@/assets/images/logo-default.png')"
+                    :src="node.data.share.logo ? node.data.share.logo : require('@/assets/images/logo-default.png')"
                     class="aspect-ratio h-full rounded-full"
                   )
                   p(class="pl-1 font-bold text-caption text-primary") {{node.data.share.displayName}}

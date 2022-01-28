@@ -20,7 +20,20 @@ export default function useReceivedShare () {
           component: 'modal-received-share-choose-storage',
           properties: {
             title: t('GG0005'),
-            actionHandler: ({ orgId, groupId }) => store.dispatch('receivedShare/saveShareReceived', { orgId, groupId })
+            actionHandler: async ({ orgId, groupId }) => {
+              store.dispatch('helper/pushModalLoading')
+              await store.dispatch('receivedShare/saveShareReceived', { orgId, groupId })
+              store.dispatch('helper/closeModalLoading')
+
+              const orgNo = store.getters['user/organizationList'].find(org => org.orgId === orgId).orgNo
+              let prefixUrl
+              if (groupId) {
+                prefixUrl = `${orgNo}/${groupId}`
+              } else {
+                prefixUrl = `${orgNo}`
+              }
+              window.open(`${window.location.origin}/${prefixUrl}/assets`, '_blank')
+            }
           }
         })
       } else if (isCanSave && organizationList.length === 0) {
@@ -56,7 +69,7 @@ export default function useReceivedShare () {
           title: t('GG0019'),
           actionHandler: async ({ orgId, groupId }) => {
             store.dispatch('helper/pushModalLoading')
-            await store.dispatch('share/cloneShareReceived', { orgId, groupId, workspaceNodeIdList })
+            await store.dispatch('receivedShare/cloneShareReceived', { orgId, groupId, workspaceNodeIdList })
             store.dispatch('helper/closeModalLoading')
 
             const orgNo = store.getters['user/organizationList'].find(org => org.orgId === orgId).orgNo

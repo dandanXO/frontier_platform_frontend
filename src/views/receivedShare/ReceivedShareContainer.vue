@@ -14,7 +14,7 @@ fullscreen-header
     div(class="relative cursor-pointer mr-4" @click="openModalShareMessage")
       svg-icon(iconName="chat" size="24" class="text-black-700")
       div(v-if="haveMsgAndFirstRead" class="absolute -top-px -right-px w-2 h-2 rounded-full border border-black-0 bg-warn")
-    btn(size="md" @click="saveReceivedShare") {{$t('UU0018')}}
+    btn(size="md" :disabled="share.isClosed" @click="saveReceivedShare") {{$t('UU0018')}}
   template(#content)
     div(v-if="share.isClosed" class="w-full h-full flex items-center justify-center")
       p(class="text-body1 text-primary") {{$t('GG0026')}}
