@@ -64,7 +64,7 @@ export default {
 
     const actionBtnDisabled = computed(() => !formData.category || !formData.comment)
 
-    const fileOperator = new FileOperator(['jpg', 'jpeg', 'png', 'mp4'], 6)
+    const fileOperator = new FileOperator(['jpg', 'jpeg', 'png', 'mp4'], 20)
 
     fileOperator.on('finish', async (file) => {
       store.dispatch('helper/pushModalLoading')
