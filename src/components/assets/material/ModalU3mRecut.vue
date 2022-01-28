@@ -11,7 +11,7 @@ fullscreen-header
     )
   template(#content)
     template(v-for="cropper in croppers")
-      div(v-show="cropper.ref === currentSide" class="flex h-full justify-center items-center")
+      div(v-show="cropper.ref === currentSide" class="flex h-full justify-center items-center" :class="[cropper.ref]")
         div
           div(class="mb-4.5 text-center text-primary text-body2 font-bold") {{cropper.title}}
           cropper-default-layout(
@@ -28,7 +28,6 @@ fullscreen-header
                 :config="cropper.config"
                 :cropRectSize="cropRectSize"
                 :lowResolution="false"
-                :isU3m="true"
                 @update:options="Object.assign(cropper.config.options, $event)"
               )
                 div(class="mt-1 absolute w-full")
@@ -42,6 +41,8 @@ fullscreen-header
               :previewScaleRatio="previewScaleRatio"
               :movable="false"
             )
+    div(class="absolute invisible w-125 h-125 grid grid-cols-3 grid-rows-3")
+      div(ref="previewRect")
 </template>
 
 <script>
