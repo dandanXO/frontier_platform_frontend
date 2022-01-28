@@ -58,7 +58,7 @@ export default {
 
     const confirm = async () => {
       store.dispatch('helper/pushModalLoading')
-      const croppedImage = await imageCropper.value?.cropImage(props.image?.file)
+      const croppedImage = await imageCropper.value?.cropImage()
       await props.afterCropHandler(croppedImage, props.image?.file)
       store.dispatch('helper/closeModalLoading')
       closeModal()

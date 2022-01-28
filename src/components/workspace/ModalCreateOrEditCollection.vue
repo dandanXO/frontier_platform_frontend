@@ -65,7 +65,7 @@ export default {
   async setup (props) {
     const { t } = useI18n()
     const store = useStore()
-    const fileOperator = new FileOperator(['pdf'], 6)
+    const fileOperator = new FileOperator(['pdf'], 20)
 
     const uploadTrendBoardName = ref('')
     const collectionId = ref(null) // only use when MODE is equal to EDIT

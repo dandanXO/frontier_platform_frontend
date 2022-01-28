@@ -1,4 +1,5 @@
 import axios from '@/apis'
+import putBinaryData from '@/utils/put-binary-data'
 
 export default {
   createOrg: ({ orgName, orgCategoryId, countryCode, address, phone, phoneCountryCode, fax, faxCountryCode, uploadMaterialEmail }) => axios('/org/create', {
@@ -19,16 +20,20 @@ export default {
    * @param {binary} formData.logo
    * @param {binary} formData.originalLogo
    */
-  updateOrgLogo: ({ orgId, logo, originalLogo }) => {
-    const formData = new FormData()
-    formData.append('orgId', orgId)
-    formData.append('logo', logo)
-    formData.append('originalLogo', originalLogo)
+  updateOrgLogo: async ({ orgId, logo, originalLogo }) => {
+    const logoFileName = logo.name
+    const originalLogoFileName = originalLogo.name
+
+    const { data: { result: { tempUploadId, logoUploadUrl, originalLogoUploadUrl } } } = await axios('/org/update-logo/get-upload-url', {
+      method: 'POST',
+      data: { logoFileName, originalLogoFileName }
+    })
+    await putBinaryData(logoUploadUrl, logo)
+    await putBinaryData(originalLogoUploadUrl, originalLogo)
 
     return axios('/org/update-logo', {
-      headers: { 'Content-Type': 'multipart/form-data' },
       method: 'POST',
-      data: formData
+      data: { orgId, tempUploadId, logoFileName, originalLogoFileName }
     })
   },
   removeOrgLogo: ({ orgId }) => axios('/org/remove-logo', {

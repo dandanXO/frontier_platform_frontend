@@ -21,6 +21,7 @@ import { ref, computed } from 'vue'
 import domtoimage from 'dom-to-image'
 import CroppedImage from '@/components/cropper/CroppedImage'
 import { dataUrlToBlob } from '@/utils/fileOperator'
+import tempFilenameGenerator from '@/utils/temp-filename-generator'
 
 export default {
   name: 'ImageCropArea',
@@ -70,7 +71,7 @@ export default {
       emit('update:options', option)
     }
 
-    const cropImage = (file) => {
+    const cropImage = () => {
       return new Promise((resolve, reject) => {
         const cropRect = props.lowResolution ? cropRectGeneral.value : cropRectExact.value
 
@@ -79,7 +80,7 @@ export default {
           height: props.lowResolution ? cropRect.clientHeight : realSize.value
         })
           .then(dataUrl => {
-            const fileName = file?.name.length > 0 ? file.name : 'file name'
+            const fileName = `${tempFilenameGenerator()}.jpeg`
             const blob = dataUrlToBlob(dataUrl)
             resolve(new File([blob], fileName, { type: 'image/jpeg' }))
           })

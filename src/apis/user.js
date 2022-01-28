@@ -1,4 +1,5 @@
 import axios from '@/apis'
+import putBinaryData from '@/utils/put-binary-data'
 
 export default {
   generalSignUp: ({ email, lastName, firstName, password, locale }) => axios('/sign-up/general', {
@@ -73,16 +74,20 @@ export default {
     method: 'POST',
     data: { orgId, displayName }
   }),
-  updateAvatar: ({ orgId, avatar, originalAvatar }) => {
-    const formData = new FormData()
-    formData.append('orgId', orgId)
-    formData.append('avatar', avatar)
-    formData.append('originalAvatar', originalAvatar)
+  updateAvatar: async ({ orgId, avatar, originalAvatar }) => {
+    const avatarFileName = avatar.name
+    const originalAvatarFileName = originalAvatar.name
+
+    const { data: { result: { tempUploadId, avatarUploadUrl, originalAvatarUploadUrl } } } = await axios('/org/user/update-avatar/get-upload-url', {
+      method: 'POST',
+      data: { avatarFileName, originalAvatarFileName }
+    })
+    await putBinaryData(avatarUploadUrl, avatar)
+    await putBinaryData(originalAvatarUploadUrl, originalAvatar)
 
     return axios('/org/user/update-avatar', {
-      headers: { 'Content-Type': 'multipart/form-data' },
       method: 'POST',
-      data: formData
+      data: { orgId, tempUploadId, avatarFileName, originalAvatarFileName }
     })
   },
   removeAvatar: ({ orgId }) => axios('/org/user/remove-avatar', {
@@ -97,15 +102,18 @@ export default {
     method: 'POST',
     data: { tempFeedbackId, category, comment }
   }),
-  sendFeedbackAttachment: ({ tempFeedbackId, file }) => {
-    const formData = new FormData()
-    formData.append('tempFeedbackId', tempFeedbackId)
-    formData.append('file', file)
+  sendFeedbackAttachment: async ({ tempFeedbackId, file }) => {
+    const attachmentFileName = file.name
+
+    const { data: { result: { tempUploadId, attachmentUploadUrl } } } = await axios('/user/feedback/upload-attachment/get-upload-url', {
+      method: 'POST',
+      data: { attachmentFileName }
+    })
+    await putBinaryData(attachmentUploadUrl, file)
 
     return axios('/user/feedback/upload-attachment', {
-      headers: { 'Content-Type': 'multipart/form-data' },
       method: 'POST',
-      data: formData
+      data: { tempFeedbackId, tempUploadId, attachmentFileName }
     })
   },
   removeFeedbackAttachment: ({ tempFeedbackId, tempFeedbackAttachmentId }) => axios('/user/feedback/remove-attachment', {
