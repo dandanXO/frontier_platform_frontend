@@ -57,6 +57,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
   div(class="text-caption font-bold mt-2 flex items-center justify-between text-primary")
     p(class="line-clamp-1") {{displayName}}
     tooltip-location(v-if="isShowLocation" :location="node.location")
+  slot(name="node-caption")
 </template>
 
 <script>

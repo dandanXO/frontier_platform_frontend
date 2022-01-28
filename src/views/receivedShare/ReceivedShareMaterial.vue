@@ -5,7 +5,11 @@ div(class="w-full h-full flex justify-center" :class="{ 'pt-13': breadcrumbList.
     div(class="pb-7.5")
       div(class="flex items-center pb-2")
         h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{`${material.materialNo} ${material.description}`}}
-        svg-icon(iconName="clone" class="text-black-700 cursor-pointer" size="24" @click="cloneReceivedShare([workspaceNodeId])")
+        tooltip(placement="bottom")
+          template(#trigger)
+            svg-icon(iconName="clone" class="text-black-700 cursor-pointer hover:text-brand" size="24" @click="cloneReceivedShare([workspaceNodeId])")
+          template(#content)
+            p(class="text-caption text-primary px-3 py-1") {{$t('RR0056')}}
     material-detail-external(:material="material" :isCanDownloadU3M="share.isCanDownloadU3M")
   div(v-else class="h-full flex justify-center items-center")
     svg-icon(iconName="loading" size="92" class="text-brand-dark")
@@ -33,10 +37,10 @@ export default {
     const { cloneReceivedShare } = useReceivedShare()
 
     const isLoading = ref(true)
-    const share = computed(() => store.getters['share/share'])
-    const material = computed(() => store.getters['share/material'])
+    const share = computed(() => store.getters['receivedShare/share'])
+    const material = computed(() => store.getters['receivedShare/material'])
     const breadcrumbList = computed(() => {
-      const tempBreadCrumbList = store.getters['share/materialBreadcrumbList']
+      const tempBreadCrumbList = store.getters['receivedShare/materialBreadcrumbList']
       const list = []
       for (let i = 0; i <= tempBreadCrumbList.length - 1; i++) {
         const { name, workspaceNodeId } = tempBreadCrumbList[i]
@@ -56,7 +60,7 @@ export default {
     })
 
     onMounted(async () => {
-      await store.dispatch('share/getShareReceivedMaterial', { sharingKey: share.value.sharingKey, workspaceNodeId: props.workspaceNodeId })
+      await store.dispatch('receivedShare/getShareReceivedMaterial', { sharingKey: share.value.sharingKey, workspaceNodeId: props.workspaceNodeId })
       isLoading.value = false
     })
 

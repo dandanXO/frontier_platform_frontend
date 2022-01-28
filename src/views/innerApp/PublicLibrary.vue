@@ -5,7 +5,7 @@ div(class="w-full h-full")
     :searchType="SEARCH_TYPE.PUBLIC_LIBRARY"
     :searchCallback="getPublicList"
     :optionSort="optionSort"
-    :canSelectAll="false"
+    :canSelectAll="!isFirstLayer"
     @selectAll="handleSelectAll"
   )
     template(#header-left)
@@ -31,7 +31,8 @@ div(class="w-full h-full")
               :nodeKey="node.key"
               :node="node.data"
               :displayName="node.data.name"
-              :isSelectable="false"
+              :isSelectable="!isFirstLayer"
+              :optionList="optionNode"
               @click="goTo(node.key)"
               @click:option="$event.func(node.key)"
             )
@@ -42,13 +43,14 @@ div(class="w-full h-full")
               :nodeKey="node.key"
               :node="node.data"
               :displayName="node.data.materialNo"
-              :isSelectable="false"
+              :isSelectable="!isFirstLayer"
+              :optionList="optionNode"
               @click:option="$event.func(node.key)"
               @click.stop="goToPublicLibraryMaterialDetail(node.key)"
             )
       div(v-else class="flex h-full justify-center items-end")
         p(class="text-body1 text-primary") {{$t('II0007')}}
-  //- multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeKeyList")
+  multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeKeyList")
 </template>
 
 <script>
@@ -146,7 +148,10 @@ export default {
     const openModalCollectionDetail = () => {
       store.dispatch('helper/openModal', {
         header: t('FF0006'),
-        component: 'modal-public-library-collection-detail'
+        component: 'modal-collection-detail',
+        properties: {
+          ...workspaceCollection.value
+        }
       })
     }
 

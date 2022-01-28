@@ -1,5 +1,5 @@
 import WorkspaceNode from '@/store/reuseModules/workspaceNode'
-import shareApi from '@/apis/share'
+import receivedShareApi from '@/apis/receivedShare'
 import { SHARING_FROM, NODE_TYPE } from '@/utils/constants'
 
 export default {
@@ -12,6 +12,7 @@ export default {
     breadcrumbList: [],
     share: {
       sharingId: null,
+      sharingKey: null,
       sharingFrom: SHARING_FROM.WORKSPACE,
       workspaceNodeId: '',
       workspaceNodeType: NODE_TYPE.COLLECTION,
@@ -46,7 +47,7 @@ export default {
     }
   },
   actions: {
-    setShareModule ({ commit, dispatch }, data) {
+    setReceivedShareModule ({ commit, dispatch }, data) {
       const { workspaceCollection, material, share, pagination, breadcrumbList } = data
 
       !!workspaceCollection && commit('SET_collection', workspaceCollection)
@@ -56,9 +57,9 @@ export default {
       !!pagination && dispatch('helper/search/setPagination', pagination, { root: true })
     },
     async getShareReceivedInfo ({ dispatch }, { sharingKey }) {
-      const { data } = await shareApi.getShareReceivedInfo({ sharingKey })
+      const { data } = await receivedShareApi.getShareReceivedInfo({ sharingKey })
 
-      dispatch('setShareModule', data.result)
+      dispatch('setReceivedShareModule', data.result)
     },
     async getShareReceivedList ({ rootGetters, dispatch }, { targetPage = 1, sharingKey, workspaceNodeId }) {
       const searchParams = rootGetters['helper/search/getSearchParams'](targetPage)
@@ -68,16 +69,16 @@ export default {
         ...searchParams
       }
 
-      const { data } = await shareApi.getShareReceivedList(params)
+      const { data } = await receivedShareApi.getShareReceivedList(params)
 
-      dispatch('setShareModule', data.result)
+      dispatch('setReceivedShareModule', data.result)
     },
     async getShareReceivedMaterial ({ dispatch }, { sharingKey, workspaceNodeId }) {
-      const { data } = await shareApi.getShareReceivedMaterial({ sharingKey, workspaceNodeId })
-      dispatch('setShareModule', data.result)
+      const { data } = await receivedShareApi.getShareReceivedMaterial({ sharingKey, workspaceNodeId })
+      dispatch('setReceivedShareModule', data.result)
     },
     async checkShareReceivedPermission ({ getters }, { type }) {
-      const { data } = await shareApi.checkShareReceivedPermission({ sharingKey: getters.share.sharingKey, type })
+      const { data } = await receivedShareApi.checkShareReceivedPermission({ sharingKey: getters.share.sharingKey, type })
       const { success, result } = data
 
       if (success) {
@@ -85,10 +86,10 @@ export default {
       }
     },
     async saveShareReceived ({ getters }, { orgId, groupId }) {
-      await shareApi.saveShareReceived({ sharingKey: getters.share.sharingKey, orgId, groupId })
+      await receivedShareApi.saveShareReceived({ sharingKey: getters.share.sharingKey, orgId, groupId })
     },
     async cloneShareReceived ({ getters }, { orgId, groupId, workspaceNodeIdList }) {
-      await shareApi.cloneShareReceived({ sharingKey: getters.share.sharingKey, orgId, groupId, workspaceNodeIdList })
+      await receivedShareApi.cloneShareReceived({ sharingKey: getters.share.sharingKey, orgId, groupId, workspaceNodeIdList })
     }
   }
 }

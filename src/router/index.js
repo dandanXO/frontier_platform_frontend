@@ -69,6 +69,12 @@ const reuseRoutes = (prefix) => ([
     component: () => import('@/views/innerApp/ShareToMe.vue')
   },
   {
+    path: 'share-to-me/:nodeKey',
+    name: `${prefix}ShareToMeMaterial`,
+    props: true,
+    component: () => import('@/views/innerApp/ShareToMeMaterialDetail.vue')
+  },
+  {
     path: 'sticker',
     name: `${prefix}Sticker`,
     component: () => import('@/views/innerApp/Sticker.vue')
@@ -128,8 +134,8 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       const { sharingKey } = to.query
       store.dispatch('code/getFilterOptions')
-      await store.dispatch('share/getShareReceivedInfo', { sharingKey })
-      const share = store.getters['share/share']
+      await store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey })
+      const share = store.getters['receivedShare/share']
       if (share.workspaceNodeType === NODE_TYPE.COLLECTION) {
         next({ path: '/received-share/collection', query: to.query })
       } else {
@@ -142,12 +148,12 @@ const routes = [
     name: 'ReceivedShare',
     component: () => import('@/views/receivedShare/ReceivedShareContainer.vue'),
     beforeEnter: async (to, from, next) => {
-      const share = store.getters['share/share']
+      const share = store.getters['receivedShare/share']
       const { sharingKey } = to.query
       if (sharingKey === share.sharingKey) {
         next()
       } else {
-        await store.dispatch('share/getShareReceivedInfo', { sharingKey })
+        await store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey })
         next()
       }
     },
