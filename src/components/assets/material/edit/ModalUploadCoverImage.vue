@@ -45,7 +45,7 @@ export default {
     const fileName = ref('')
     const originalFileName = ref('')
     const acceptType = ['jpg', 'jpeg', 'png']
-    const fileOperator = new FileOperator(acceptType, 6)
+    const fileOperator = new FileOperator(acceptType, 20)
     let binaryFile
 
     const chooseFile = () => {

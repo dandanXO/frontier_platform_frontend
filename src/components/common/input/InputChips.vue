@@ -12,7 +12,7 @@ input-container(:label="label" :required="required" v-click-away="onBlur")
       @focus="onFocus"
       @keydown="onKeydown($event)"
       :placeholder="chips.length === 0 ? placeholder :''"
-      class="h-8 flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 placeholder-black-400 placeholder-text-body2 placeholder-overflow-visible disabled:text-black-600"
+      class="line-clamp-1 h-8 flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 placeholder-black-400 placeholder-text-body2 placeholder-overflow-visible disabled:text-black-600"
     )
     list(v-if="options.length !== 0 && isFocus" class="absolute z-10 top-full left-0 w-full transform translate-y-2 bg-black-0")
       overlay-scrollbar-container(v-if="filteredOptions.length > 0" class="max-h-72")
