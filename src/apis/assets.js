@@ -1,4 +1,5 @@
 import axios from '@/apis'
+import putBinaryData from '@/utils/put-binary-data'
 
 export default {
   org: {
@@ -30,15 +31,17 @@ export default {
       method: 'POST',
       data: { orgId, materialIdList, targetWorkspaceNodeList }
     }),
-    batchUpload: ({ orgId, xlsxFile }) => {
-      const formData = new FormData()
-      formData.append('orgId', orgId)
-      formData.append('xlsxFile', xlsxFile)
+    batchUpload: async ({ orgId, xlsxFile }) => {
+      const xlsxFileName = xlsxFile.name
+      const { data: { result: { tempUploadId, xlsxFileUploadUrl } } } = await axios('/org/assets/material/batch-upload/get-upload-url', {
+        method: 'POST',
+        data: { xlsxFileName }
+      })
+      await putBinaryData(xlsxFileUploadUrl, xlsxFile)
 
       return axios('/org/assets/material/batch-upload', {
-        headers: { 'Content-Type': 'multipart/form-data' },
         method: 'POST',
-        data: formData
+        data: { orgId, xlsxFileName, tempUploadId }
       })
     }
   },
@@ -71,15 +74,17 @@ export default {
       method: 'POST',
       data: { groupId, materialIdList, targetWorkspaceNodeList }
     }),
-    batchUpload: ({ groupId, xlsxFile }) => {
-      const formData = new FormData()
-      formData.append('groupId', groupId)
-      formData.append('xlsxFile', xlsxFile)
+    batchUpload: async ({ groupId, xlsxFile }) => {
+      const xlsxFileName = xlsxFile.name
+      const { data: { result: { tempUploadId, xlsxFileUploadUrl } } } = await axios('/org/group/assets/material/batch-upload/get-upload-url', {
+        method: 'POST',
+        data: { xlsxFileName }
+      })
+      await putBinaryData(xlsxFileUploadUrl, xlsxFile)
 
       return axios('/org/group/assets/material/batch-upload', {
-        headers: { 'Content-Type': 'multipart/form-data' },
         method: 'POST',
-        data: formData
+        data: { groupId, xlsxFileName, tempUploadId }
       })
     }
   }

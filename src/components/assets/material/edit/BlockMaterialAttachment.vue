@@ -41,17 +41,17 @@ export default {
       store.dispatch('helper/openModal', {
         component: 'modal-upload-attachment',
         properties: {
-          uploadHandler: async (file, fileName) => {
+          uploadHandler: async (file, displayFileName) => {
             if (isEditMode.value) {
               await store.dispatch('material/uploadAttachmentWhenUpdate', {
                 file,
-                fileName
+                displayFileName
               })
             } else {
               await store.dispatch('material/uploadAttachmentWhenCreate', {
                 tempMaterialId: props.tempMaterialId,
                 file,
-                fileName
+                displayFileName
               })
             }
           }
