@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-101 text-primary")
-  div(class="mb-7.5 text-center text-h6 font-bold") {{$t("EE0054")}}
+  div(class="mb-7.5 text-center text-h6 font-bold") {{$t("RR0158")}}
   div(class="mx-8 mb-4 text-center text-body2 line-height-1.6") {{$t("EE0055")}}
   overlay-scrollbar-container(class="max-h-65")
     div(class="px-12 flex flex-col gap-4")
@@ -37,8 +37,8 @@ export default {
       const targetLocationList = selectedLocationList.value.map(item => {
         const [location, id] = item.split('-')
         return {
-          id,
-          location
+          id: Number(id),
+          location: Number(location)
         }
       })
       await props.cloneHandler(targetLocationList)

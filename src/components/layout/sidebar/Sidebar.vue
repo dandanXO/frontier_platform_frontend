@@ -98,12 +98,12 @@ export default {
               id: 'workspace',
               title: 'RR0009',
               path: `/${orgNo}/workspace`
+            },
+            {
+              id: 'shareToMe',
+              title: 'RR0010',
+              path: `/${orgNo}/share-to-me`
             }
-            // {
-            //   id: 'shareToMe',
-            //   title: 'RR0010',
-            //   path: `/${orgNo}/share-to-me`
-            // },
             // {
             //   id: 'sticker',
             //   title: 'RR0011',
@@ -128,12 +128,12 @@ export default {
                 id: 'workspace',
                 title: 'RR0009',
                 path: `/${orgNo}/${groupId}/workspace`
+              },
+              {
+                id: 'shareToMe',
+                title: 'RR0010',
+                path: `/${orgNo}/${groupId}/share-to-me`
               }
-              // {
-              //   id: 'shareToMe',
-              //   title: 'RR0010',
-              //   path: `/${orgNo}/${groupId}/share-to-me`
-              // },
               // {
               //   id: 'sticker',
               //   title: 'RR0011',

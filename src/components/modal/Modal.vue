@@ -41,7 +41,7 @@ export default {
     ModalWorkspaceNodeList: defineAsyncComponent(() => import('@/components/workspace/ModalWorkspaceNodeList.vue')),
     ModalCreateOrEditCollection: defineAsyncComponent(() => import('@/components/workspace/ModalCreateOrEditCollection.vue')),
     ModalCreateCollectionSimple: defineAsyncComponent(() => import('@/components/workspace/ModalCreateCollectionSimple.vue')),
-    ModalCollectionDetail: defineAsyncComponent(() => import('@/components/workspace/ModalCollectionDetail.vue')),
+    ModalCollectionDetail: defineAsyncComponent(() => import('@/components/ModalCollectionDetail.vue')),
     ModalAddToWorkspaceFail: defineAsyncComponent(() => import('@/components/assets/material/ModalAddToWorkspaceFail.vue')),
     ModalPreviewAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalPreviewAttachment')),
     ModalCropImage: defineAsyncComponent(() => import('@/components/ModalCropImage')),
@@ -56,7 +56,6 @@ export default {
     ModalU3mCreateFail: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mCreateFail')),
     ModalU3mRecut: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mRecut')),
     ModalPublish: defineAsyncComponent(() => import('@/components/workspace/ModalPublish.vue')),
-    ModalPublicLibraryCollectionDetail: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryCollectionDetail.vue')),
     ModalOrgUserProfile: defineAsyncComponent(() => import('@/components/account/ModalOrgUserProfile.vue')),
     ModalChangePassword: defineAsyncComponent(() => import('@/components/account/ModalChangePassword.vue')),
     ModalChangeAvatar: defineAsyncComponent(() => import('@/components/account/ModalChangeAvatar.vue')),
@@ -72,7 +71,9 @@ export default {
     ModalShareAssigned: defineAsyncComponent(() => import('@/components/workspace/ModalShareAssigned.vue')),
     ModalShareAssignedList: defineAsyncComponent(() => import('@/components/workspace/ModalShareAssignedList.vue')),
     ModalReceivedShareChooseStorage: defineAsyncComponent(() => import('@/components/receivedShare/ModalReceivedShareChooseStorage.vue')),
-    ModalReceivedShareMessage: defineAsyncComponent(() => import('@/components/receivedShare/ModalReceivedShareMessage.vue'))
+    ModalPublicLibraryShare: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryShare.vue')),
+    ModalPublicLibraryShareAssigned: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryShareAssigned.vue')),
+    ModalShareMessage: defineAsyncComponent(() => import('@/components/ModalShareMessage.vue'))
   },
   props: {
     component: {

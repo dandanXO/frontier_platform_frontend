@@ -44,6 +44,22 @@ export default {
     },
     async cloneNode (_, { workspaceNodeList, targetLocationList }) {
       await publicLibraryApi.cloneNode({ workspaceNodeList, targetLocationList })
+    },
+    async getShareTarget (_, { workspaceNodeLocation, workspaceNodeId, target }) {
+      const { data } = await publicLibraryApi.getShareTarget({ workspaceNodeLocation, workspaceNodeId, target })
+
+      const { success, result, message } = data
+      if (!success) {
+        throw message.content
+      }
+      return result.target
+    },
+    async assignedShare ({ rootGetters }, { workspaceNodeLocation, workspaceNodeId, targetList }) {
+      await publicLibraryApi.assignedShare({ orgId: rootGetters['organization/orgId'], workspaceNodeLocation, workspaceNodeId, targetList })
+    },
+    async generateCopyLink (_, { workspaceNodeLocation, workspaceNodeId }) {
+      const { data } = await publicLibraryApi.generateCopyLink({ workspaceNodeLocation, workspaceNodeId })
+      return data.result.key
     }
   }
 }

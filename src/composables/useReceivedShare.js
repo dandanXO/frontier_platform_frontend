@@ -12,7 +12,7 @@ export default function useReceivedShare () {
       store.dispatch('helper/openModalLoading')
       await store.dispatch('user/getUser')
 
-      const { isCanSave } = store.getters['share/share']
+      const { isCanSave } = store.getters['receivedShare/share']
       const organizationList = store.getters['user/organizationList']
 
       if (isCanSave && organizationList.length >= 1) {
@@ -20,7 +20,20 @@ export default function useReceivedShare () {
           component: 'modal-received-share-choose-storage',
           properties: {
             title: t('GG0005'),
-            actionHandler: ({ orgId, groupId }) => store.dispatch('share/saveShareReceived', { orgId, groupId })
+            actionHandler: async ({ orgId, groupId }) => {
+              store.dispatch('helper/pushModalLoading')
+              await store.dispatch('receivedShare/saveShareReceived', { orgId, groupId })
+              store.dispatch('helper/closeModalLoading')
+
+              const orgNo = store.getters['user/organizationList'].find(org => org.orgId === orgId).orgNo
+              let prefixUrl
+              if (groupId) {
+                prefixUrl = `${orgNo}/${groupId}`
+              } else {
+                prefixUrl = `${orgNo}`
+              }
+              window.open(`${window.location.origin}/${prefixUrl}/assets`, '_blank')
+            }
           }
         })
       } else if (isCanSave && organizationList.length === 0) {
@@ -46,7 +59,7 @@ export default function useReceivedShare () {
     store.dispatch('helper/openModalLoading')
     await store.dispatch('user/getUser')
 
-    const { isCanClone } = store.getters['share/share']
+    const { isCanClone } = store.getters['receivedShare/share']
     const organizationList = store.getters['user/organizationList']
 
     if (isCanClone && organizationList.length >= 1) {
@@ -56,7 +69,7 @@ export default function useReceivedShare () {
           title: t('GG0019'),
           actionHandler: async ({ orgId, groupId }) => {
             store.dispatch('helper/pushModalLoading')
-            await store.dispatch('share/cloneShareReceived', { orgId, groupId, workspaceNodeIdList })
+            await store.dispatch('receivedShare/cloneShareReceived', { orgId, groupId, workspaceNodeIdList })
             store.dispatch('helper/closeModalLoading')
 
             const orgNo = store.getters['user/organizationList'].find(org => org.orgId === orgId).orgNo
