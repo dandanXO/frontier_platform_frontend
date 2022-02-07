@@ -64,7 +64,7 @@ export default {
     let errorList
     let binaryFile
 
-    const fileOperator = new FileOperator(['xlsx'], 6)
+    const fileOperator = new FileOperator(['xlsx'], 20)
 
     const chooseFile = () => {
       fileOperator.upload()
