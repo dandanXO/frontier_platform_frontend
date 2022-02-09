@@ -115,10 +115,10 @@ export default {
       store.dispatch('helper/pushModal', {
         component: 'modal-upload-cover-image',
         properties: {
-          uploadHandler: (file, fileName) => {
+          uploadHandler: (file, displayFileName) => {
             store.dispatch('material/uploadAttachmentWhenUpdate', {
               file,
-              fileName
+              displayFileName
             })
           }
         }
