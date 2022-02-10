@@ -40,7 +40,7 @@ import { useI18n } from 'vue-i18n'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import AvatarGroup from '@/components/AvatarGroup.vue'
-import { NODE_TYPE } from '@/utils/constants.js'
+// import { NODE_TYPE } from '@/utils/constants.js'
 import copyText from '@/utils/copy-text'
 
 export default {
@@ -78,18 +78,18 @@ export default {
         {
           id: TAB.COPY_LINK,
           name: t('RR0154')
-        },
-        {
-          id: TAB.SOCIAL_MEDIA,
-          name: t('FF0053')
         }
+        // {
+        //   id: TAB.SOCIAL_MEDIA,
+        //   name: t('FF0053')
+        // }
       ]
-      if (props.nodeType === NODE_TYPE.COLLECTION) {
-        list.push({
-          id: TAB.EMBED,
-          name: t('FF0054')
-        })
-      }
+      // if (props.nodeType === NODE_TYPE.COLLECTION) {
+      //   list.push({
+      //     id: TAB.EMBED,
+      //     name: t('FF0054')
+      //   })
+      // }
       return list
     })
     const currentTab = ref(tabList.value[0].id)

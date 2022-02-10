@@ -7,16 +7,16 @@ div(class="w-113.5")
         p(class="font-bold pb-2") {{$t('RR0156')}}
         p {{$t('RR0150')}}
       btn(size="sm" @click="openModalPublicLibraryShareAssigned") {{$t('UU0067')}}
-  div(class="bg-black-100 py-5 flex justify-center gap-x-10")
-    div
-      img(:src="require('@/assets/images/linkedin.png')")
-      p(class="text-caption text-center pt-3") {{$t('RR0151')}}
-    div
-      img(:src="require('@/assets/images/facebook.png')")
-      p(class="text-caption text-center pt-3") {{$t('RR0152')}}
-    div
-      img(:src="require('@/assets/images/twitter.png')")
-      p(class="text-caption text-center pt-3") {{$t('RR0153')}}
+  div(class="bg-black-100 py-5 flex justify-end pr-6")
+    //- div
+    //-   img(:src="require('@/assets/images/linkedin.png')")
+    //-   p(class="text-caption text-center pt-3") {{$t('RR0151')}}
+    //- div
+    //-   img(:src="require('@/assets/images/facebook.png')")
+    //-   p(class="text-caption text-center pt-3") {{$t('RR0152')}}
+    //- div
+    //-   img(:src="require('@/assets/images/twitter.png')")
+    //-   p(class="text-caption text-center pt-3") {{$t('RR0153')}}
     div(class="cursor-pointer" @click="generateCopyLink")
       div(class="w-14 h-14 flex justify-center items-center bg-primary-thin rounded-full")
         svg-icon(iconName="link_1" size="30" class="text-primary transform -rotate-45")
