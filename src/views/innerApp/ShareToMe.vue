@@ -22,7 +22,7 @@ div(class="w-full h-full")
               iconName="clone"
               class="text-black-700 cursor-pointer hover:text-brand ml-1"
               size="24"
-              @click="cloneNode.func(`${workspaceCollection.workspaceNodeLocation}-${workspaceCollection.workspaceNodeId}`, workspaceCollection.share.isCanClone)"
+              @click="cloneNode.func(`${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`, collection.share.isCanClone)"
             )
           template(#content)
             p(class="text-caption text-primary px-3 py-1") {{$t('RR0056')}}
@@ -33,8 +33,8 @@ div(class="w-full h-full")
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
     template(v-if="!isFirstLayer" #sub-header)
       div(class="mx-7.5 mb-7.5 text-caption text-black-700 flex items-center")
-        p(class="pr-2.5") {{workspaceCollection.share.displayName}}
-        p {{$t('RR0148')}} {{$dayjs.unix(workspaceCollection.share.shareDate).format('MM/DD/YYYY')}}
+        p(class="pr-2.5") {{collection.share.displayName}}
+        p {{$t('RR0148')}} {{$dayjs.unix(collection.share.shareDate).format('MM/DD/YYYY')}}
     template(#default="{ inSearch }")
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
         template(v-for="node in nodeList")
@@ -83,7 +83,7 @@ div(class="w-full h-full")
       div(
         v-if="option.id === 'clone'"
         class="whitespace-nowrap px-5 cursor-pointer hover:text-brand"
-        @click="option.func(selectedNodeKeyList, workspaceCollection.share.isCanClone)"
+        @click="option.func(selectedNodeKeyList, collection.share.isCanClone)"
       ) {{option.name}}
 
 </template>
@@ -110,7 +110,6 @@ export default {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
-    const workspaceCollection = computed(() => store.getters['shareToMe/workspaceCollection'])
     const { cloneNode, deleteNode } = useShareToMe()
     const { goToShareToMeMaterial } = useNavigation()
     const optionSort = {
@@ -124,7 +123,8 @@ export default {
     }
     const optionMultiSelect = computed(() => isFirstLayer.value ? [deleteNode] : [cloneNode])
     const pagination = computed(() => store.getters['helper/search/pagination'])
-    const breadcrumbList = computed(() => store.getters['shareToMe/breadcrumbList']({
+    const collection = computed(() => store.getters['shareToMe/collection'])
+    const breadcrumbList = computed(() => store.getters['shareToMe/collectionBreadcrumbList']({
       name: t('RR0010'),
       key: null
     }))
@@ -146,7 +146,7 @@ export default {
     const refSearchTable = ref(null)
     const selectedNodeKeyList = ref([])
     const isFirstTime = ref(true)
-    const haveMsgAndFirstRead = computed(() => !!workspaceCollection.value?.share?.message && isFirstTime.value)
+    const haveMsgAndFirstRead = computed(() => !!collection.value?.share?.message && isFirstTime.value)
 
     const getShareToMeList = async (targetPage = 1) => {
       await router.push({
@@ -192,7 +192,7 @@ export default {
         header: t('FF0006'),
         component: 'modal-collection-detail',
         properties: {
-          ...workspaceCollection.value
+          ...collection.value
         }
       })
     }
@@ -203,7 +203,7 @@ export default {
         component: 'modal-share-message',
         header: t('RR0146'),
         properties: {
-          message: workspaceCollection.value.share.message
+          message: collection.value.share.message
         }
       })
     }
@@ -225,7 +225,7 @@ export default {
       breadcrumbList,
       optionNode,
       isFirstLayer,
-      workspaceCollection,
+      collection,
       openModalCollectionDetail,
       goToShareToMeMaterial,
       selectedNodeKeyList,

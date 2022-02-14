@@ -1,46 +1,26 @@
-import WorkspaceNode from '@/store/reuseModules/workspaceNode'
+import { WorkspaceCollection } from '@/store/reuseModules/collection'
+import NodeShareState from '@/store/reuseStates/nodeShareState.js'
+import Material from '@/store/reuseModules/material.js'
 import receivedShareApi from '@/apis/receivedShare'
-import { SHARING_FROM, NODE_TYPE } from '@/utils/constants'
 
 export default {
   namespaced: true,
   modules: {
-    collection: WorkspaceNode
+    collection: WorkspaceCollection,
+    material: Material
   },
   state: () => ({
-    material: {},
-    breadcrumbList: [],
-    share: {
-      sharingId: null,
-      sharingKey: null,
-      sharingFrom: SHARING_FROM.WORKSPACE,
-      workspaceNodeId: '',
-      workspaceNodeType: NODE_TYPE.COLLECTION,
-      message: '',
-      logo: '',
-      displayName: '',
-      shareDate: null,
-      isCanClone: false,
-      isCanDownloadU3M: false,
-      isClosed: false,
-      isCanSave: false
-    }
+    materialBreadcrumbList: [],
+    share: NodeShareState()
   }),
   getters: {
-    material: state => state.material,
-    materialBreadcrumbList: state => state.breadcrumbList,
+    materialBreadcrumbList: state => state.materialBreadcrumbList,
     share: state => state.share,
     logo: state => state.share.logo ? state.share.logo : require('@/assets/images/logo-default.png')
   },
   mutations: {
-    SET_collection (state, collection) {
-      state.collection = collection
-    },
-    SET_material (state, material) {
-      state.material = material
-    },
-    SET_breadcrumbList (state, breadcrumbList) {
-      state.breadcrumbList = breadcrumbList
+    SET_materialBreadcrumbList (state, materialBreadcrumbList) {
+      state.materialBreadcrumbList = materialBreadcrumbList
     },
     SET_share (state, share) {
       state.share = share
@@ -52,7 +32,7 @@ export default {
 
       !!workspaceCollection && commit('SET_collection', workspaceCollection)
       !!material && commit('SET_material', material)
-      !!breadcrumbList && commit('SET_breadcrumbList', breadcrumbList)
+      !!breadcrumbList && commit('SET_materialBreadcrumbList', breadcrumbList)
       !!share && commit('SET_share', share)
       !!pagination && dispatch('helper/search/setPagination', pagination, { root: true })
     },
