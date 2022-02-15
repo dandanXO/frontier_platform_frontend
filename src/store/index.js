@@ -40,9 +40,6 @@ export default createStore({
         if (Object.prototype.hasOwnProperty.call(result, 'workspaceCollection')) {
           dispatch('workspace/setWorkspace', result.workspaceCollection, { root: true })
         }
-        if (Object.prototype.hasOwnProperty.call(result, 'publicCollection')) {
-          dispatch('publicLibrary/setPublicLibrary', result.publicCollection, { root: true })
-        }
       }
 
       if (!success) {

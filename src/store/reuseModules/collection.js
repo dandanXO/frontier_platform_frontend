@@ -1,4 +1,5 @@
 import NodeShareState from '@/store/reuseStates/nodeShareState.js'
+import NodePublishState from '@/store/reuseStates/nodePublishState.js'
 import { NODE_LOCATION, NODE_TYPE, SORT_BY } from '@/utils/constants'
 
 const Collection = {
@@ -99,15 +100,7 @@ const ShareCollection = {
 const PublicCollection = {
   state: () => ({
     ...Collection.state(),
-    publish: {
-      workspaceNodeId: null,
-      workspaceNodeLocation: NODE_LOCATION.ORG,
-      logo: '',
-      displayName: '',
-      publicDate: null,
-      isCanClone: false,
-      isCanDownloadU3M: false
-    }
+    publish: NodePublishState()
   }),
   ...Collection
 }
