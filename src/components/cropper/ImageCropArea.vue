@@ -75,16 +75,23 @@ export default {
       return new Promise((resolve, reject) => {
         const cropRect = props.lowResolution ? cropRectGeneral.value : cropRectExact.value
 
-        domtoimage.toJpeg(cropRect, {
-          width: props.lowResolution ? cropRect.clientWidth : realSize.value,
-          height: props.lowResolution ? cropRect.clientHeight : realSize.value
-        })
-          .then(dataUrl => {
-            const fileName = `${tempFilenameGenerator()}.jpeg`
-            const blob = dataUrlToBlob(dataUrl)
-            resolve(new File([blob], fileName, { type: 'image/jpeg' }))
+        /**
+         * Because image is often missing on first render on Safari iOS,
+         * so we need to run domtoimage.toJpeg() twice.
+         * Source: https://github.com/tsayen/dom-to-image/issues/343
+         */
+        domtoimage.toJpeg(cropRect, {}).then(() => {
+          domtoimage.toJpeg(cropRect, {
+            width: props.lowResolution ? cropRect.clientWidth : realSize.value,
+            height: props.lowResolution ? cropRect.clientHeight : realSize.value
           })
-          .catch(error => reject(error))
+            .then(dataUrl => {
+              const fileName = `${tempFilenameGenerator()}.jpeg`
+              const blob = dataUrlToBlob(dataUrl)
+              resolve(new File([blob], fileName, { type: 'image/jpeg' }))
+            })
+            .catch(error => reject(error))
+        })
       })
     }
 
