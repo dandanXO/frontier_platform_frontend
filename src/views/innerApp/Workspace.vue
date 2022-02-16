@@ -19,7 +19,7 @@ div(class="w-full h-full")
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
       btn(size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{$t('UU0055')}}
     template(v-if="!isFirstLayer" #sub-header)
-      p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('FF0002')}}: {{$dayjs.unix(workspaceCollection.createDate).format('YYYY/MM/DD')}}
+      p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('FF0002')}}: {{$dayjs.unix(collection.createDate).format('YYYY/MM/DD')}}
     template(#default="{ inSearch }")
       div(class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
         div(class="aspect-ratio border border-black-400 border-dashed rounded-md flex justify-center items-center cursor-pointer" @click="openModalCreateCollection")
@@ -109,15 +109,14 @@ export default {
     const optionMultiSelect = [deleteMultipleNode]
 
     const pagination = computed(() => store.getters['helper/search/pagination'])
-    const workspaceCollection = computed(() => store.getters['workspace/workspaceCollection'])
-    const breadcrumbList = computed(() => store.getters['workspace/breadcrumbList']({
+    const collection = computed(() => store.getters['workspace/collection'])
+    const defaultWorkspaceNodeKey = computed(() => store.getters['workspace/defaultWorkspaceNodeKey'])
+    const breadcrumbList = computed(() => store.getters['workspace/collectionBreadcrumbList']({
       name: t('FF0001'),
-      key: `${defaultWorkspaceNodeLocation.value}-${defaultWorkspaceNodeId.value}`
+      key: defaultWorkspaceNodeKey.value
     }))
     const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
     const nodeList = computed(() => store.getters['workspace/nodeList'])
-    const defaultWorkspaceNodeId = computed(() => store.getters['workspace/defaultWorkspaceNodeId'])
-    const defaultWorkspaceNodeLocation = computed(() => store.getters['workspace/defaultWorkspaceNodeLocation'])
     const optionNodeCollection = (inSearch) => {
       const optionList = [
         [
@@ -158,7 +157,7 @@ export default {
       return optionList
     }
 
-    const workspaceNodeId = ref(route.query.workspaceNodeId || defaultWorkspaceNodeId.value)
+    const workspaceNodeId = ref(route.query.workspaceNodeId || defaultWorkspaceNodeKey.value.split('-')[1])
     const refSearchTable = ref(null)
     const selectedNodeKeyList = ref([])
 
@@ -202,7 +201,7 @@ export default {
         header: t('FF0006'),
         component: 'modal-collection-detail',
         properties: {
-          ...workspaceCollection.value,
+          ...collection.value,
           canEdit: true
         }
       })
@@ -219,8 +218,8 @@ export default {
               materialIdList,
               targetWorkspaceNodeList: [
                 {
-                  id: workspaceCollection.value.workspaceNodeId,
-                  location: workspaceCollection.value.workspaceNodeLocation
+                  id: collection.value.workspaceNodeId,
+                  location: collection.value.workspaceNodeLocation
                 }
               ]
             })
@@ -271,7 +270,7 @@ export default {
       optionNodeCollection,
       optionNodeMaterial,
       isFirstLayer,
-      workspaceCollection,
+      collection,
       handleSelectAll,
       addMaterialFromAssetsList,
       openModalCreateCollection,

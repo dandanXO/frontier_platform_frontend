@@ -1,11 +1,16 @@
-import WorkspaceNode from '@/store/reuseModules/workspaceNode'
+import { WorkspaceCollection } from '@/store/reuseModules/collection'
+import Material from '@/store/reuseModules/material.js'
 import workspaceApi from '@/apis/workspace'
 import { NODE_LOCATION, SHARE_TARGET_TYPE } from '@/utils/constants'
 
 export default {
   namespaced: true,
+  modules: {
+    collection: WorkspaceCollection,
+    material: Material
+  },
   state: {
-    ...WorkspaceNode.state(),
+    materialBreadcrumbList: [],
     shareInfo: {
       shareList: [],
       isCanShared: false,
@@ -16,10 +21,18 @@ export default {
     }
   },
   getters: {
-    ...WorkspaceNode.getters,
-    shareInfo: state => state.shareInfo
+    materialBreadcrumbList: state => state.materialBreadcrumbList,
+    shareInfo: state => state.shareInfo,
+    defaultWorkspaceNodeKey: (state, getters, rootState, rootGetters) => {
+      return rootGetters['helper/routeLocation'] === 'org'
+        ? `${NODE_LOCATION.ORG}-${rootGetters['organization/organization'].workspaceNodeId}`
+        : `${NODE_LOCATION.GROUP}-${rootGetters['group/group'].workspaceNodeId}`
+    }
   },
   mutations: {
+    SET_materialBreadcrumbList (state, materialBreadcrumbList) {
+      state.materialBreadcrumbList = materialBreadcrumbList
+    },
     SET_shareInfo (state, shareInfo) {
       const { shareList } = shareInfo
       if (shareList) {
@@ -43,9 +56,14 @@ export default {
     }
   },
   actions: {
-    ...WorkspaceNode.actions,
-    setWorkspace ({ state }, data) {
-      Object.assign(state, data)
+    setWorkspaceModule ({ commit, dispatch }, data) {
+      const { workspaceCollection, material, shareInfo, pagination, breadcrumbList } = data
+
+      !!workspaceCollection && commit('SET_collection', workspaceCollection)
+      !!material && commit('SET_material', material)
+      !!breadcrumbList && commit('SET_materialBreadcrumbList', breadcrumbList)
+      !!shareInfo && commit('SET_shareInfo', shareInfo)
+      !!pagination && dispatch('helper/search/setPagination', pagination, { root: true })
     },
     async getWorkspace ({ rootGetters, dispatch }, { targetPage = 1, workspaceNodeId }) {
       const searchParams = rootGetters['helper/search/getSearchParams'](targetPage)
@@ -58,7 +76,7 @@ export default {
         ? await workspaceApi.org.getWorkspace({ orgId: rootGetters['organization/orgId'], ...params })
         : await workspaceApi.group.getWorkspace({ groupId: rootGetters['group/groupId'], ...params })
 
-      dispatch('handleResponseData', { data }, { root: true })
+      dispatch('setWorkspaceModule', data.result)
     },
     async getWorkspaceForModal ({ rootGetters }, { keyword, sort, targetPage = 1, workspaceNodeId, workspaceNodeLocation }) {
       const params = {
@@ -95,8 +113,7 @@ export default {
       const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await workspaceApi.org.getWorkspaceMaterial({ orgId: rootGetters['organization/orgId'], workspaceNodeId })
         : await workspaceApi.group.getWorkspaceMaterial({ groupId: rootGetters['group/groupId'], workspaceNodeId })
-      dispatch('handleResponseData', { data }, { root: true })
-      return data.result
+      dispatch('setWorkspaceModule', data.result)
     },
     async createCollectionForModal (_, { id, workspaceNodeLocation, workspaceNodeId, collectionName }) {
       const { data } = Number(workspaceNodeLocation) === NODE_LOCATION.ORG
