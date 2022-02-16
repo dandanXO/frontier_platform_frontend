@@ -39,7 +39,7 @@ export default {
   setup () {
     const { t } = useI18n()
     const store = useStore()
-    const material = computed(() => store.getters['material/material'])
+    const material = computed(() => store.getters['assets/material'])
     const coverImageIndex = ref(0)
     const { coverMode, attachmentList } = toRefs(material.value)
     const { isFaceSideMaterial, isBackSideMaterial } = useMaterialImage(material.value)
@@ -93,7 +93,7 @@ export default {
             image,
             cropRectSize: 200,
             afterCropHandler: async (croppedImage) => {
-              await store.dispatch('material/changeCoverImg', {
+              await store.dispatch('assets/changeCoverImg', {
                 coverMode: COVER_MODE.SUP,
                 materialAttachmentId,
                 attachmentCropImg: croppedImage
@@ -105,7 +105,7 @@ export default {
         })
       } else {
         coverMode = coverImageIndex.value + 1
-        store.dispatch('material/changeCoverImg', { coverMode })
+        store.dispatch('assets/changeCoverImg', { coverMode })
         closeModal()
         store.dispatch('helper/reloadInnerApp')
       }
@@ -116,7 +116,7 @@ export default {
         component: 'modal-upload-cover-image',
         properties: {
           uploadHandler: async (file, displayFileName) => {
-            await store.dispatch('material/uploadAttachmentWhenUpdate', {
+            await store.dispatch('assets/uploadAttachmentWhenUpdate', {
               file,
               displayFileName
             })

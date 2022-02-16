@@ -66,7 +66,7 @@ export default {
         return
       }
       store.dispatch('helper/pushModalLoading')
-      await store.dispatch('material/updateMaterial')
+      await store.dispatch('assets/updateMaterial')
       store.dispatch('helper/closeModalLoading')
       isConfirmedToLeave.value = true
       goToAssets()
@@ -104,8 +104,8 @@ export default {
       return result === 'confirm'
     })
 
-    await store.dispatch('material/getMaterialOptions')
-    await store.dispatch('material/getMaterial', { materialId: route.params.materialId })
+    await store.dispatch('assets/getMaterialOptions')
+    await store.dispatch('assets/getMaterial', { materialId: route.params.materialId })
 
     return {
       validations,

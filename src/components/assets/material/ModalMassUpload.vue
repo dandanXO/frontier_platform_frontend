@@ -95,7 +95,8 @@ export default {
               clickHandler: () => {
                 closeModal()
                 goToAssets()
-              }
+              },
+              materialList: result.materialList
             }
           })
         } else {

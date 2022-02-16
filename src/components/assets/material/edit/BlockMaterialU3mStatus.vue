@@ -86,7 +86,10 @@ export default {
         btnClickHandler = () => {
           store.dispatch('helper/replaceModal', {
             component: 'modal-how-to-scan',
-            header: t('DD0043')
+            header: t('DD0043'),
+            properties: {
+              materialList: [props.material]
+            }
           })
         }
       } else if (status === U3M_STATUS.INITIAL) {

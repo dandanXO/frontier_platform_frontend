@@ -96,7 +96,7 @@ export default {
     }
 
     const store = useStore()
-    const material = computed(() => store.getters['material/material'])
+    const material = computed(() => store.getters['assets/material'])
     const { faceSideImg, backSideImg } = material.value
     const scaleSize = ref(4)
     const isExchange = ref(false)

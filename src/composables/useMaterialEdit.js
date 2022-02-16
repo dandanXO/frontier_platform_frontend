@@ -13,7 +13,7 @@ export default function useMaterialEdit (material) {
   const newFinishList = reactive([])
 
   const specOptions = reactive({
-    contentList: computed(() => store.getters['material/code'].contentList.concat(newContentList)),
+    contentList: computed(() => store.getters['assets/code'].contentList.concat(newContentList)),
     weightUnitList: computed(() => {
       return Object.keys(WEIGHT_UNIT)
         .map(key => ({
@@ -21,8 +21,8 @@ export default function useMaterialEdit (material) {
           name: WEIGHT_UNIT[key].text
         }))
     }),
-    descriptionList: computed(() => store.getters['material/code'].descriptionList.concat(newDescriptionList)),
-    finishList: computed(() => store.getters['material/code'].finishList.concat(newFinishList))
+    descriptionList: computed(() => store.getters['assets/code'].descriptionList.concat(newDescriptionList)),
+    finishList: computed(() => store.getters['assets/code'].finishList.concat(newFinishList))
   })
 
   const addDescriptionOption = (descriptionName) => {
@@ -48,27 +48,27 @@ export default function useMaterialEdit (material) {
 
   const selectContent = (contentName, contentItemIndex) => {
     const content = specOptions.contentList.find(content => content.name === contentName)
-    store.commit('material/UPDATE_content_item', { index: contentItemIndex, content })
+    store.commit('assets/UPDATE_content_item', { index: contentItemIndex, content })
   }
 
   const addNewContent = () => {
-    store.commit('material/ADD_content_item')
+    store.commit('assets/ADD_content_item')
   }
 
   const removeContent = (contentItemIndex) => {
-    store.commit('material/REMOVE_content_item', contentItemIndex)
+    store.commit('assets/REMOVE_content_item', contentItemIndex)
   }
 
   const addNewInventory = () => {
-    store.commit('material/ADD_inventory_item')
+    store.commit('assets/ADD_inventory_item')
   }
 
   const removeInventory = (index) => {
-    store.commit('material/REMOVE_inventory_item', index)
+    store.commit('assets/REMOVE_inventory_item', index)
   }
 
   const updateInventoryListUnit = (unit) => {
-    store.commit('material/UPDATE_inventoryList_unit', unit)
+    store.commit('assets/UPDATE_inventoryList_unit', unit)
   }
 
   const totalInventory = computed(() => {
