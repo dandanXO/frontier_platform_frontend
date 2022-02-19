@@ -7,7 +7,7 @@ filter-wrapper(iconName="cube" :displayName="$t('RR0106')" :dirty="filterDirty.h
 </template>
 
 <script>
-import FilterWrapper from '@/components/layout/filter/FilterWrapper'
+import FilterWrapper from '@/components/layout/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 

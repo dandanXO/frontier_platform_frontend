@@ -83,20 +83,20 @@
 </style>
 
 <template lang="pug">
-div(class='w-175 h-141 relative' :style='{width: outputWidth, height: outputHeight}')
-  canvas(ref='canvas' class='w-full h-full')
-  div(class='absolute top-4 right-4 border cursor-pointer' @click='screenshotClick')
-    img(src='@/assets/images/material/camera.png' class='w-12.5')
-  div(class='absolute w-6/12 m-auto bottom-5 inset-x-0')
+div(class="w-175 h-141 relative" :style="{width: outputWidth, height: outputHeight}")
+  canvas(ref="canvas" class="w-full h-full")
+  div(class="absolute top-4 right-4 border cursor-pointer" @click="screenshotClick")
+    img(src="@/assets/images/material/camera.png" class="w-12.5")
+  div(class="absolute w-6/12 m-auto bottom-5 inset-x-0")
     carousel(:settings="settings")
-      slide(v-for="item in type" :key='item')
-        div(class='cursor-pointer mx-1' @click='initModel(item)')
-          img(:src='require(`@/assets/images/material/${item}.jpg`)' class='rounded')
+      slide(v-for="item in type" :key="item")
+        div(class="cursor-pointer mx-1" @click="initModel(item)")
+          img(:src="getModelCoverImg(item)" class="rounded")
       template(#addons)
         navigation
         pagination
-  div(v-if='showLoding' class='absolute inset-0 bg-black bg-opacity-60 h-full w-full z-10')
-    div(class='loader')
+  div(v-if="showLoading" class="absolute inset-0 bg-black bg-opacity-60 h-full w-full z-10")
+    div(class="loader")
 </template>
 
 <script>
@@ -164,11 +164,17 @@ export default {
     const baseUrl = window.location.origin + '/static-data/material'
     const settings = { itemsToShow: 3, snapAlign: 'start' }
     const type = Object.keys(MODEL_INFO)
-    const showLoding = ref(true)
+    const showLoading = ref(true)
     const canvas = ref(null)
     const outputWidth = 700
     const outputHeight = 564
     let scene, renderer, camera, animationReq
+
+    const getModelCoverImg = (modelName) => {
+      const path = `/src/assets/images/material/${modelName}.jpg`
+      const modules = import.meta.globEager('/src/assets/images/material/*.jpg')
+      return modules[path].default
+    }
 
     const initScene = () => {
       // 建立場景
@@ -299,12 +305,12 @@ export default {
 
       manager.onStart = (url, itemsLoaded, itemsTotal) => {
         // console.log('Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.')
-        showLoding.value = true
+        showLoading.value = true
       }
 
       manager.onLoad = () => {
         // console.log('Loading complete!')
-        showLoding.value = false
+        showLoading.value = false
       }
 
       manager.onProgress = (url, itemsLoaded, itemsTotal) => {
@@ -313,7 +319,7 @@ export default {
 
       manager.onError = (url) => {
         // console.log('There was an error loading ' + url)
-        showLoding.value = false
+        showLoading.value = false
       }
 
       const modelPath = `${baseUrl}/${MODEL_INFO[type].filePath}/scene.gltf`
@@ -381,9 +387,10 @@ export default {
       type,
       settings,
       canvas,
-      showLoding,
+      showLoading,
       initModel,
-      screenshotClick
+      screenshotClick,
+      getModelCoverImg
     }
   }
 }

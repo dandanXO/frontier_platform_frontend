@@ -7,7 +7,7 @@ filter-wrapper(iconName="paper" :displayName="$t('RR0098')" :dirty="filterDirty.
 </template>
 
 <script>
-import FilterWrapper from '@/components/layout/filter/FilterWrapper'
+import FilterWrapper from '@/components/layout/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 

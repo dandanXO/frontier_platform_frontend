@@ -7,9 +7,10 @@ div
     div
       slot(name="right")
   input-range(
+    class="double-handles"
     ref="inputRange"
-    v-model:range="innerRange"
-    :setting="setting"
+    v-model:start="innerRange"
+    :options="options"
     :nonMaxLimit="true"
   )
 </template>
@@ -38,10 +39,6 @@ export default {
   },
   emits: ['update:range'],
   setup (props, { emit }) {
-    const setting = {
-      min: props.min,
-      max: props.max
-    }
     const inputRange = ref(null)
     const innerRange = computed({
       get: () => props.range,
@@ -53,6 +50,15 @@ export default {
         }
       }
     })
+
+    const options = {
+      start: innerRange.value,
+      range: {
+        min: props.min,
+        max: props.max,
+      }
+    }
+
     const reset = () => {
       inputRange.value.reset()
     }
@@ -61,7 +67,7 @@ export default {
       innerRange,
       inputRange,
       reset,
-      setting
+      options
     }
   }
 }

@@ -42,8 +42,8 @@ div(class="text-black-700 flex flex-col gap-3.5")
 
 <script>
 import useAssets from '@/composables/useAssets'
-import QrCodeA4 from '@/components/qrcode/QrCodeA4'
-import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral'
+import QrCodeA4 from '@/components/qrcode/QrCodeA4.vue'
+import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral.vue'
 import { U3M_STATUS } from '@/utils/constants'
 import { ref } from 'vue'
 

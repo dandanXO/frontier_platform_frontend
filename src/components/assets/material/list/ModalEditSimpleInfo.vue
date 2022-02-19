@@ -11,10 +11,10 @@ div(class="w-227")
 <script>
 import { useStore } from 'vuex'
 import useMaterialValidation from '@/composables/useMaterialValidation'
-import SimpleInventory from '@/components/assets/material/list/SimpleInventory'
-import SimplePrice from '@/components/assets/material/list/SimplePrice'
-import SimpleSpec from '@/components/assets/material/list/SimpleSpec'
-import SimpleTag from '@/components/assets/material/list/SimpleTag'
+import SimpleInventory from '@/components/assets/material/list/SimpleInventory.vue'
+import SimplePrice from '@/components/assets/material/list/SimplePrice.vue'
+import SimpleSpec from '@/components/assets/material/list/SimpleSpec.vue'
+import SimpleTag from '@/components/assets/material/list/SimpleTag.vue'
 
 export default {
   name: 'ModalEditSimpleInfo',

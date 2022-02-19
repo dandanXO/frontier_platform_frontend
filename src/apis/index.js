@@ -2,10 +2,10 @@ import Axios from 'axios'
 import router from '@/router'
 import store from '@/store'
 
-const { VUE_APP_API_ENDPOINT } = process.env
+const { VITE_APP_API_ENDPOINT } = import.meta.env
 
 const options = {
-  baseURL: `${VUE_APP_API_ENDPOINT}`,
+  baseURL: `${VITE_APP_API_ENDPOINT}`,
   headers: {
     'Content-Type': 'application/json'
   },

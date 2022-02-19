@@ -5,7 +5,7 @@ import mockGroup from '@/mocks/resolvers/mockGroup'
 import mockCode from '@/mocks/resolvers/mockCode'
 import deserializeUser from './middleware/deserialize-user'
 
-const BASE_URL = process.env.VUE_APP_API_ENDPOINT
+const BASE_URL = import.meta.env.VITE_APP_API_ENDPOINT
 
 export const handlers = [
   rest.get(BASE_URL + '/code/country', mockCode.getCountryList),

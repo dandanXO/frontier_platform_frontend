@@ -16,7 +16,7 @@ export default {
   getters: {
     materialBreadcrumbList: state => state.materialBreadcrumbList,
     share: state => state.share,
-    logo: state => state.share.logo ? state.share.logo : require('@/assets/images/logo-default.png')
+    logo: state => state.share.logo
   },
   mutations: {
     SET_materialBreadcrumbList (state, materialBreadcrumbList) {

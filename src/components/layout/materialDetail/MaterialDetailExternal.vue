@@ -35,7 +35,7 @@ div
 
 <script>
 import useMaterial from '@/composables/useMaterial'
-import AttachmentItem from '@/components/assets/material/edit/AttachmentItem'
+import AttachmentItem from '@/components/assets/material/edit/AttachmentItem.vue'
 import BlockMaterialPreviewImg from '@/components/layout/materialDetail/BlockMaterialPreviewImg.vue'
 import BlockMaterialPantone from '@/components/layout/materialDetail/BlockMaterialPantone.vue'
 import BlockMaterialSpecification from '@/components/layout/materialDetail/BlockMaterialSpecification.vue'

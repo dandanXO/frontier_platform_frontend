@@ -51,9 +51,9 @@ import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive } from 'vue'
 import useMaterialImage from '@/composables/useMaterialImage'
 import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
-import CropperDefaultLayout from '@/components/cropper/layout/CropperDefaultLayout'
-import CroppedImage from '@/components/cropper/CroppedImage'
-import ImageCropArea from '@/components/cropper/ImageCropArea'
+import CropperDefaultLayout from '@/components/cropper/layout/CropperDefaultLayout.vue'
+import CroppedImage from '@/components/cropper/CroppedImage.vue'
+import ImageCropArea from '@/components/cropper/ImageCropArea.vue'
 import { Cropper } from '@/utils/cropper'
 
 export default {

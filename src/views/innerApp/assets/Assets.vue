@@ -1,6 +1,6 @@
-<style lang="scss" scoped>
+<style lang="scss">
 .vue-recycle-scroller__item-view {
-  :deep(&[data-last-hover="true"]) {
+  &[data-last-hover="true"] {
     z-index: 99;
   }
 }
@@ -61,12 +61,12 @@ div(class="w-full h-full")
 </template>
 
 <script>
-import SearchTable from '@/components/layout/SearchTable'
-import RowItem from '@/components/assets/material/list/RowItem'
-import GridItem from '@/components/assets/material/list/GridItem'
-import GridOrRow from '@/components/assets/material/list/GridOrRow'
-import QrCodeA4 from '@/components/qrcode/QrCodeA4'
-import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral'
+import SearchTable from '@/components/layout/SearchTable.vue'
+import RowItem from '@/components/assets/material/list/RowItem.vue'
+import GridItem from '@/components/assets/material/list/GridItem.vue'
+import GridOrRow from '@/components/assets/material/list/GridOrRow.vue'
+import QrCodeA4 from '@/components/qrcode/QrCodeA4.vue'
+import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'

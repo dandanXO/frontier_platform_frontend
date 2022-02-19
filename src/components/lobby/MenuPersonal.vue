@@ -7,7 +7,7 @@ tooltip(
 )
   template(#trigger="{ isActive }")
     div(class="flex items-center cursor-pointer")
-      img(:src="require('@/assets/images/default_user.png')" class="rounded-full w-8 h-8 mr-1")
+      img(src="@/assets/images/default_user.png" class="rounded-full w-8 h-8 mr-1")
       svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650 transform" :class="[ isActive ? 'rotate-180' : 'rotate-0' ]")
   template(#content)
     list(class="w-55")

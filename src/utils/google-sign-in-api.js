@@ -5,7 +5,7 @@ class GoogleSignInApi {
     this.gapi = window.gapi
     this.googleAuth = null // gapi.auth2.GoogleAuth
     this.googleUser = null // gapi.auth2.GoogleUser
-    this.client_id = process.env.VUE_APP_GOOGLE_CLIENT_ID
+    this.client_id = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID
   }
 
   async init () {

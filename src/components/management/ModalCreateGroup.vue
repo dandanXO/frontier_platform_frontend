@@ -21,7 +21,7 @@ div(class="px-8")
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import InputLabelColor from '@/components/InputLabelColor'
+import InputLabelColor from '@/components/InputLabelColor.vue'
 export default {
   name: 'ModalCreateGroup',
   components: {

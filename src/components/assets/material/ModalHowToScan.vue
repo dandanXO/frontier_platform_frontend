@@ -4,23 +4,23 @@ div(class="w-245")
     div(class="flex gap-x-12")
       div(class="w-100 flex flex-col gap-y-5")
         h6(class="text-h6 text-primary font-bold text-center") {{$t('DD0030')}}
-        img(:src="require('@/assets/images/how_to_scan_left.png')")
+        img(src="@/assets/images/how_to_scan_left.png")
         i18n-t(keypath="DD0032" tag="p" class="text-body2 text-primary line-height-1.6 inline-block")
           template(#RR0062)
             qr-code-a4(class='inline-block')
               template(#activator="{ generatePdf }")
-                span(class="cursor-pointer text-assist-blue underline" @click="generatePdf(materialList)") {{$t('RR0062')}}
+                span(class="cursor-pointer text-assist-blue underline" @click="generatePdf([material])") {{$t('RR0062')}}
           template(#RR0061)
             qr-code-general(class='inline-block')
               template(#activator="{ generatePdf }")
-                span(class="cursor-pointer text-assist-blue underline" @click="generatePdf(materialList)") {{$t('RR0061')}}
+                span(class="cursor-pointer text-assist-blue underline" @click="generatePdf([material])") {{$t('RR0061')}}
         div(class="flex flex-col gap-y-2")
           p(class="text-body2 text-primary line-height-1.6") {{$t('DD0004')}}
           p(class="text-body1 text-primary font-bold") {{uploadMaterialEmail}}
       p(class="text-h6 text-primary font-bold pt-34") or
       div(class="w-100 flex flex-col gap-y-5")
         h6(class="text-h6 text-primary font-bold text-center") {{$t('DD0031')}}
-        img(:src="require('@/assets/images/how_to_scan_right.png')")
+        img(src="@/assets/images/how_to_scan_right.png")
         div(class="flex flex-col gap-y-2")
           p(class="text-body2 text-primary line-height-1.6") {{$t('DD0004')}}
           p(class="text-body1 text-primary font-bold") {{uploadMaterialEmail}}
@@ -32,9 +32,9 @@ div(class="w-245")
 </template>
 
 <script>
-import QrCodeA4 from '@/components/qrcode/QrCodeA4'
-import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral'
-import QrCodeBacksideGeneral from '@/components/qrcode/QrCodeBacksideGeneral'
+import QrCodeA4 from '@/components/qrcode/QrCodeA4.vue'
+import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral.vue'
+import QrCodeBacksideGeneral from '@/components/qrcode/QrCodeBacksideGeneral.vue'
 import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
 

@@ -17,7 +17,7 @@ import { computed } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 import Modal from '@/components/modal/Modal.vue'
 import ModalConfirm from '@/components/modal/ModalConfirm.vue'
-import ModalLoading from '@/components/modal/ModalLoading'
+import ModalLoading from '@/components/modal/ModalLoading.vue'
 import { MODAL_TYPE } from '@/utils/constants'
 
 export default {

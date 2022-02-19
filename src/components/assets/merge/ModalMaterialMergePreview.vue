@@ -29,7 +29,7 @@ fullscreen-header
 
 <script>
 import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
-import MaterialMergeRowDetail from '@/components/assets/merge/MaterialMergeRowDetail'
+import MaterialMergeRowDetail from '@/components/assets/merge/MaterialMergeRowDetail.vue'
 import { computed } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'

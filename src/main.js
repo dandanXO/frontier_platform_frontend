@@ -5,42 +5,42 @@ import router from '@/router'
 import store from '@/store'
 import i18n from '@/utils/i18n'
 import dayjs from 'dayjs'
-
-const requireAll = requireContext => requireContext.keys().map(requireContext)
-const req = require.context('@/assets/icons', true, /\.svg$/)
-requireAll(req)
+import isToday from 'dayjs/plugin/isToday'
+import isYesterday from 'dayjs/plugin/isYesterday'
 
 const app = createApp(App)
 
-dayjs.extend(require('dayjs/plugin/isToday'))
-dayjs.extend(require('dayjs/plugin/isYesterday'))
+dayjs.extend(isToday)
+dayjs.extend(isYesterday)
 app.config.globalProperties.$dayjs = dayjs
 
 app.config.errorHandler = (err, vm, info) => {
   store.dispatch('helper/clearModalPipeline')
   if (err.message !== 'access-token-expire') {
     store.dispatch('helper/openModalError')
-    if (process.env.NODE_ENV !== 'production') {
+    if (import.meta.MODE !== 'production') {
       console.error(err, vm)
     }
   }
 }
 
 app.config.warnHandler = (msg, vm, trace) => {
-  if (process.env.NODE_ENV !== 'production') {
+  if (import.meta.MODE !== 'production') {
     console.warn('warn', msg, vm, trace)
   }
 }
 
-const commonComponents = require.context('@/components/common', true, /.vue/)
+const svgs = import.meta.globEager('/src/assets/icons/**/*.svg')
 
-commonComponents.keys().forEach(key => {
-  const component = commonComponents(key).default
+const commonComponents = import.meta.globEager('/src/components/common/**/*.vue')
+
+for (const path in commonComponents) {
+  const component = commonComponents[path].default
   app.component(component.name, component)
-})
+}
 
 function prepare () {
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.MODE === 'development') {
     // const { worker } = require('@/mocks/browser')
     // return worker.start({
     //   onUnhandledRequest: 'bypass'

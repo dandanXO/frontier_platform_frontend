@@ -17,7 +17,7 @@ div(class="pt-2.5 h-full flex flex-col relative")
 
 <script>
 import { computed, ref } from 'vue'
-import MemberRow from '@/components/management/MemberRow'
+import MemberRow from '@/components/management/MemberRow.vue'
 import { useStore } from 'vuex'
 import { ROLE_ID } from '@/utils/constants'
 

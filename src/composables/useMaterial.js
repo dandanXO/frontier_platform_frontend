@@ -3,6 +3,7 @@ import { computed } from '@vue/runtime-core'
 import { ref, reactive } from 'vue'
 import i18n from '@/utils/i18n'
 import store from '@/store'
+import imgDefaultMaterial from '@/assets/images/default_material.png'
 
 export default function useMaterial (material) {
   const {
@@ -40,7 +41,7 @@ export default function useMaterial (material) {
   const scanFaceSide = !!faceSideImg?.crop
   const scanBackSide = !!backSideImg?.crop
 
-  const currentCoverImg = ref(require('@/assets/images/default_material.png'))
+  const currentCoverImg = ref(imgDefaultMaterial)
   const neverScanBefore = ref(true)
   const statusIconName = ref('front')
 

@@ -19,7 +19,7 @@ div(class="relative")
 <script>
 import { ref, computed } from 'vue'
 import domtoimage from 'dom-to-image'
-import CroppedImage from '@/components/cropper/CroppedImage'
+import CroppedImage from '@/components/cropper/CroppedImage.vue'
 import { dataUrlToBlob } from '@/utils/fileOperator'
 import tempFilenameGenerator from '@/utils/temp-filename-generator'
 

@@ -41,16 +41,11 @@ const state = () => ({
 
 const getters = {
   organization: state => state,
-  orgLogo: state => state.logo ? state.logo : require('@/assets/images/logo-default.png'),
+  orgLogo: state => state.logo,
   orgId: state => state.orgId,
   orgNo: state => state.orgNo,
   uploadMaterialEmail: state => state.uploadMaterialEmail,
-  memberList: state => {
-    return state.memberList.map(member => ({
-      ...member,
-      avatar: member.avatar ? member.avatar : require('@/assets/images/default_user.png')
-    }))
-  },
+  memberList: state => state.memberList,
   groupList: state => state.groupList,
   historyList: state => state.historyList,
   createForm: state => state.createForm

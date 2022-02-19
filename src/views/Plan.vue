@@ -1,7 +1,7 @@
 <template lang="pug">
 fullscreen-header
   template(#left)
-    svg-icon(iconName="frontier-logo" size="special" class="w-34 h-6.5")
+    img(src="@/assets/images/frontier_logo.png" class="w-34 h-6.5")
   template(#right)
     div(class="flex items-center")
       svg-icon(iconName="phone_in_talk" size="20" class="text-primary")
@@ -18,7 +18,7 @@ fullscreen-header
         div(class="pt-4")
           p(class="text-body2 text-primary line-height-1.6") {{$t('LL0006')}}
           p(class="text-body2 text-primary line-height-1.6") {{$t('LL0007')}}
-      img(:src="require('@/assets/images/price_list.png')")
+      img(src="@/assets/images/price_list.png")
 </template>
 
 <script>

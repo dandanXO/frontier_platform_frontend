@@ -30,7 +30,7 @@ div(class="flex my-5 mx-auto pl-17 pr-7 relative max-w-286")
 </template>
 
 <script>
-import MaterialMergeRowDetail from '@/components/assets/merge/MaterialMergeRowDetail'
+import MaterialMergeRowDetail from '@/components/assets/merge/MaterialMergeRowDetail.vue'
 
 export default {
   name: 'MaterialMergeRow',
