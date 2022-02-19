@@ -15,7 +15,7 @@ div
         div(class="grid gap-y-2")
           p(v-for='item in materialPublicPriceInfo' class='text-body2 text-primary line-clamp-1') {{item.name}}: {{item.value}}
       //- U3m
-      block-material-u3m-status(locationId="MaterialDetailExternal" :material="material" :isCanDownloadU3M="isCanDownloadU3M")
+      block-material-external-u3m-status(:material="material" :isCanDownloadU3M="isCanDownloadU3M")
   div(class="pt-5 grid gap-y-10")
     div
       h5(class="text-h5 font-bold text-primary pb-7.5") {{$t('RR0133')}}
@@ -39,7 +39,7 @@ import AttachmentItem from '@/components/assets/material/edit/AttachmentItem'
 import BlockMaterialPreviewImg from '@/components/layout/materialDetail/BlockMaterialPreviewImg.vue'
 import BlockMaterialPantone from '@/components/layout/materialDetail/BlockMaterialPantone.vue'
 import BlockMaterialSpecification from '@/components/layout/materialDetail/BlockMaterialSpecification.vue'
-import BlockMaterialU3mStatus from '@/components/layout/materialDetail/BlockMaterialU3mStatus.vue'
+import BlockMaterialExternalU3mStatus from '@/components/layout/materialDetail/BlockMaterialExternalU3mStatus.vue'
 
 export default {
   name: 'MaterialDetailExternal',
@@ -48,7 +48,7 @@ export default {
     BlockMaterialPreviewImg,
     BlockMaterialSpecification,
     BlockMaterialPantone,
-    BlockMaterialU3mStatus
+    BlockMaterialExternalU3mStatus
   },
   props: {
     material: {
@@ -63,20 +63,14 @@ export default {
   setup (props) {
     const {
       materialInfo,
-      materialBasicInfo,
-      materialInventoryInfo,
       materialPublicPriceInfo,
-      materialPrivatePriceInfo,
       attachmentSortedList
     } = useMaterial(props.material)
 
     return {
-      attachmentSortedList,
       materialInfo,
-      materialBasicInfo,
-      materialInventoryInfo,
       materialPublicPriceInfo,
-      materialPrivatePriceInfo
+      attachmentSortedList
     }
   }
 }

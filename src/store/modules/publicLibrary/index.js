@@ -1,29 +1,40 @@
-import WorkspaceNode from '@/store/reuseModules/workspaceNode'
+import { PublicCollection } from '@/store/reuseModules/collection'
+import Material from '@/store/reuseModules/material.js'
+import NodePublishState from '@/store/reuseStates/nodePublishState.js'
 import publicLibraryApi from '@/apis/publicLibrary'
-import { NODE_LOCATION } from '@/utils/constants'
 
 export default {
   namespaced: true,
+  modules: {
+    collection: PublicCollection,
+    material: Material
+  },
   state: () => ({
-    ...WorkspaceNode.state(),
-    publish: {
-      workspaceNodeId: null,
-      workspaceNodeLocation: NODE_LOCATION.ORG,
-      logo: '',
-      displayName: '',
-      publicDate: null,
-      isCanClone: false,
-      isCanDownloadU3M: false
-    }
+    materialBreadcrumbList: [],
+    materialPublish: NodePublishState()
   }),
   getters: {
-    ...WorkspaceNode.getters,
-    publishBy: state => state.publish?.displayName || ''
+    materialBreadcrumbList: state => state.materialBreadcrumbList,
+    materialPublish: state => state.materialPublish,
+    publishBy: state => state.materialPublish?.displayName || ''
+  },
+  mutations: {
+    SET_materialBreadcrumbList (state, materialBreadcrumbList) {
+      state.materialBreadcrumbList = materialBreadcrumbList
+    },
+    SET_materialPublish (state, materialPublish) {
+      state.materialPublish = materialPublish
+    }
   },
   actions: {
-    ...WorkspaceNode.actions,
-    setPublicLibrary ({ state }, data) {
-      Object.assign(state, data)
+    setPublicLibraryModule ({ commit, dispatch }, data) {
+      const { publicCollection, material, publish, pagination, breadcrumbList } = data
+
+      !!publicCollection && commit('SET_collection', publicCollection)
+      !!material && commit('SET_material', material)
+      !!breadcrumbList && commit('SET_materialBreadcrumbList', breadcrumbList)
+      !!publish && commit('SET_materialPublish', publish)
+      !!pagination && dispatch('helper/search/setPagination', pagination, { root: true })
     },
     async getPublicList ({ rootGetters, dispatch }, { targetPage = 1, workspaceNodeId, workspaceNodeLocation }) {
       const searchParams = rootGetters['helper/search/getSearchParams'](targetPage)
@@ -35,12 +46,11 @@ export default {
 
       const { data } = await publicLibraryApi.getPublicList(params)
 
-      dispatch('handleResponseData', { data }, { root: true })
+      dispatch('setPublicLibraryModule', data.result)
     },
     async getPublicMaterial ({ dispatch }, { workspaceNodeId, workspaceNodeLocation }) {
       const { data } = await publicLibraryApi.getPublicMaterial({ workspaceNodeId, workspaceNodeLocation })
-      dispatch('handleResponseData', { data }, { root: true })
-      return data.result
+      dispatch('setPublicLibraryModule', data.result)
     },
     async cloneNode (_, { workspaceNodeList, targetLocationList }) {
       await publicLibraryApi.cloneNode({ workspaceNodeList, targetLocationList })

@@ -127,7 +127,6 @@ export default function useAssets () {
     excName: t('RR0074'),
     func: (v) => {
       const status = v.u3m.status
-      store.commit('material/UPDATE_material', v)
       switch (status) {
         case U3M_STATUS.INITIAL:
           if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
@@ -138,13 +137,34 @@ export default function useAssets () {
           } else {
             localStorage.setItem('haveReadU3mInstruction', 'y')
             store.dispatch('helper/openModal', {
-              component: 'modal-u3m-instruction'
+              component: 'modal-u3m-instruction',
+              properties: {
+                btnText: t('UU0020'),
+                btnClickHandler: () => {
+                  store.dispatch('helper/replaceModal', {
+                    component: 'modal-u3m-preview',
+                    header: t('EE0067')
+                  })
+                }
+              }
             })
           }
           break
         case U3M_STATUS.UNQUALIFIED:
           store.dispatch('helper/openModal', {
-            component: 'modal-u3m-instruction'
+            component: 'modal-u3m-instruction',
+            properties: {
+              btnText: t('UU0032'),
+              btnClickHandler: () => {
+                store.dispatch('helper/replaceModal', {
+                  component: 'modal-how-to-scan',
+                  header: t('DD0043'),
+                  properties: {
+                    materialList: [v]
+                  }
+                })
+              }
+            }
           })
           break
         case U3M_STATUS.PROCESSING:

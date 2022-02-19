@@ -9,11 +9,11 @@ div(class="w-245")
           template(#RR0062)
             qr-code-a4(class='inline-block')
               template(#activator="{ generatePdf }")
-                span(class="cursor-pointer text-assist-blue underline" @click="generatePdf([material])") {{$t('RR0062')}}
+                span(class="cursor-pointer text-assist-blue underline" @click="generatePdf(materialList)") {{$t('RR0062')}}
           template(#RR0061)
             qr-code-general(class='inline-block')
               template(#activator="{ generatePdf }")
-                span(class="cursor-pointer text-assist-blue underline" @click="generatePdf([material])") {{$t('RR0061')}}
+                span(class="cursor-pointer text-assist-blue underline" @click="generatePdf(materialList)") {{$t('RR0061')}}
         div(class="flex flex-col gap-y-2")
           p(class="text-body2 text-primary line-height-1.6") {{$t('DD0004')}}
           p(class="text-body1 text-primary font-bold") {{uploadMaterialEmail}}
@@ -51,34 +51,28 @@ export default {
     },
     clickHandler: {
       type: Function
+    },
+    materialList: {
+      type: Array,
+      required: true
     }
   },
   setup (props) {
     const store = useStore()
-    const material = computed(() => store.getters['material/material'])
     const uploadMaterialEmail = computed(() => {
       return store.getters['helper/routeLocation'] === 'org'
         ? store.getters['organization/uploadMaterialEmail']
         : store.getters['group/uploadMaterialEmail']
     })
-    const hasDefineClickHandler = computed(() => typeof props.clickHandler === 'function')
 
     const handleClick = () => {
-      if (hasDefineClickHandler.value) {
-        props.clickHandler()
-      } else {
-        close()
-      }
-    }
-
-    const close = () => {
-      store.dispatch('helper/closeModal')
+      typeof props.clickHandler === 'function'
+        ? props.clickHandler()
+        : store.dispatch('helper/closeModal')
     }
 
     return {
-      close,
       handleClick,
-      material,
       uploadMaterialEmail
     }
   }

@@ -69,7 +69,7 @@ export default {
         } else {
           list.push({
             name: material.value.materialNo,
-            path: parsePath(`${prefixPath.value}/share-to-me/${workspaceNodeId}?sharingId=${sharingId.value}`)
+            path: parsePath(`${prefixPath.value}/share-to-me/${props.nodeKey}?sharingId=${sharingId.value}`)
           })
         }
       }

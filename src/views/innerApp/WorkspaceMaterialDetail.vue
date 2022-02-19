@@ -33,11 +33,12 @@ export default {
     const { parsePath } = useNavigation()
     const [workspaceNodeLocation, workspaceNodeId] = route.params.nodeKey.split('-')
 
-    const { breadcrumbList: tempBreadCrumbList } = await store.dispatch('workspace/getWorkspaceMaterial', { workspaceNodeId, workspaceNodeLocation })
+    await store.dispatch('workspace/getWorkspaceMaterial', { workspaceNodeId, workspaceNodeLocation })
 
-    const material = computed(() => store.getters['material/material'])
+    const material = computed(() => store.getters['workspace/material'])
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const breadcrumbList = computed(() => {
+      const tempBreadCrumbList = store.getters['workspace/materialBreadcrumbList']
       const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
       const list = [
         {

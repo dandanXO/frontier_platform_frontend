@@ -5,7 +5,7 @@ div
     div(class="flex flex-col gap-y-7.5 flex-grow")
       block-material-specification(:material="material")
       block-material-pantone(:pantoneList="material.pantoneList")
-      block-material-u3m-status(locationId="MaterialDetailInternal" :material="material")
+      block-material-internal-u3m-status(:material="material")
   div(class="pt-20 flex flex-col gap-y-10")
     div(class="w-full grid grid-flow-col gap-x-5 justify-start border-b border-black-400")
       div(v-for="tab in tabList" class="cursor-pointer" @click="currentTab = tab.id")
@@ -91,7 +91,7 @@ import AttachmentItem from '@/components/assets/material/edit/AttachmentItem'
 import BlockMaterialPreviewImg from '@/components/layout/materialDetail/BlockMaterialPreviewImg.vue'
 import BlockMaterialPantone from '@/components/layout/materialDetail/BlockMaterialPantone.vue'
 import BlockMaterialSpecification from '@/components/layout/materialDetail/BlockMaterialSpecification.vue'
-import BlockMaterialU3mStatus from '@/components/layout/materialDetail/BlockMaterialU3mStatus.vue'
+import BlockMaterialInternalU3mStatus from '@/components/layout/materialDetail/BlockMaterialInternalU3mStatus.vue'
 
 export default {
   name: 'MaterialDetailInternal',
@@ -100,7 +100,7 @@ export default {
     BlockMaterialPreviewImg,
     BlockMaterialSpecification,
     BlockMaterialPantone,
-    BlockMaterialU3mStatus
+    BlockMaterialInternalU3mStatus
   },
   props: {
     material: {
@@ -138,7 +138,6 @@ export default {
     const currentTab = ref(tabList[0].id)
     const {
       materialInfo,
-      materialBasicInfo,
       materialInventoryInfo,
       materialPublicPriceInfo,
       materialPrivatePriceInfo,
@@ -151,7 +150,6 @@ export default {
       TAB,
       currentTab,
       materialInfo,
-      materialBasicInfo,
       materialInventoryInfo,
       materialPublicPriceInfo,
       materialPrivatePriceInfo

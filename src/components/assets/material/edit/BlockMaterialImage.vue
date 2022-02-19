@@ -56,7 +56,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
                       div {{pantone.majorColorName}}
               p(class="text-body2 text-primary") {{pantone.name}}
               svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removePantone(pantone.materialPantoneId)")
-        block-material-u3m-status(locationId="AssetsMaterialEdit" :material="material")
+        block-material-u3m-status(:material="material")
 </template>
 
 <script>
@@ -65,7 +65,7 @@ import { computed, ref, watch } from 'vue'
 import useMaterial from '@/composables/useMaterial'
 import { SIDE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import BlockMaterialU3mStatus from '@/components/layout/materialDetail/BlockMaterialU3mStatus.vue'
+import BlockMaterialU3mStatus from '@/components/assets/material/edit/BlockMaterialU3mStatus.vue'
 
 export default {
   name: 'BlockMaterialImage',
@@ -73,7 +73,7 @@ export default {
   setup () {
     const { t } = useI18n()
     const store = useStore()
-    const material = computed(() => store.getters['material/material'])
+    const material = computed(() => store.getters['assets/material'])
     const { statusIconName, imageList, defaultCoverImgIndex } = useMaterial(material.value)
 
     const uploadMaterialEmail = computed(() => {
@@ -93,7 +93,7 @@ export default {
           return
         }
 
-        await store.dispatch('material/addPantone', { name: pantoneName.value })
+        await store.dispatch('assets/addPantone', { name: pantoneName.value })
         pantoneName.value = ''
       } catch (error) {
         pantoneErrorMsg.value = error
@@ -101,13 +101,16 @@ export default {
     }
 
     const removePantone = (materialPantoneId) => {
-      store.dispatch('material/removePantone', { materialPantoneId })
+      store.dispatch('assets/removePantone', { materialPantoneId })
     }
 
     const openModalHowToScan = () => {
       store.dispatch('helper/pushModal', {
         header: t('DD0043'),
-        component: 'modal-how-to-scan'
+        component: 'modal-how-to-scan',
+        properties: {
+          materialList: [material.value]
+        }
       })
     }
 
@@ -123,7 +126,7 @@ export default {
         component: 'modal-edit-scanned-image',
         properties: {
           afterCropHandler: async ({ faceSideCropImg, backSideCropImg, isExchange }) => {
-            await store.dispatch('material/updateScannedImage', {
+            await store.dispatch('assets/updateScannedImage', {
               faceSideCropImg,
               backSideCropImg,
               isExchange

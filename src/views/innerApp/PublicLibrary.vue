@@ -88,8 +88,8 @@ export default {
 
     const optionMultiSelect = [cloneNode]
     const pagination = computed(() => store.getters['helper/search/pagination'])
-    const workspaceCollection = computed(() => store.getters['publicLibrary/workspaceCollection'])
-    const breadcrumbList = computed(() => store.getters['publicLibrary/breadcrumbList']({
+    const collection = computed(() => store.getters['publicLibrary/collection'])
+    const breadcrumbList = computed(() => store.getters['publicLibrary/collectionBreadcrumbList']({
       name: t('II0001'),
       key: null
     }))
@@ -150,7 +150,7 @@ export default {
         header: t('FF0006'),
         component: 'modal-collection-detail',
         properties: {
-          ...workspaceCollection.value
+          ...collection.value
         }
       })
     }
@@ -167,7 +167,6 @@ export default {
       breadcrumbList,
       optionNode,
       isFirstLayer,
-      workspaceCollection,
       openModalCollectionDetail,
       publishBy,
       goToPublicLibraryMaterialDetail,

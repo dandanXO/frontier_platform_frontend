@@ -17,7 +17,7 @@ import SimpleSpec from '@/components/assets/material/list/SimpleSpec'
 import SimpleTag from '@/components/assets/material/list/SimpleTag'
 
 export default {
-  name: 'ModalEditInventory',
+  name: 'ModalEditSimpleInfo',
   components: {
     SimpleInventory,
     SimplePrice,
@@ -40,12 +40,12 @@ export default {
         return
       }
       store.dispatch('helper/pushModalLoading')
-      await store.dispatch('material/updateMaterial')
+      await store.dispatch('assets/updateMaterial')
       store.dispatch('helper/clearModalPipeline')
       store.dispatch('helper/reloadInnerApp')
     }
 
-    await store.dispatch('material/getMaterialOptions')
+    await store.dispatch('assets/getMaterialOptions')
 
     return {
       validations,

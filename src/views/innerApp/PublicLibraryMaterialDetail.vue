@@ -33,10 +33,12 @@ export default {
     const { cloneNode } = usePublicLibrary()
     const [workspaceNodeLocation, workspaceNodeId] = route.params.nodeKey.split('-')
 
-    const { publish, breadcrumbList: tempBreadCrumbList } = await store.dispatch('publicLibrary/getPublicMaterial', { workspaceNodeId, workspaceNodeLocation })
+    await store.dispatch('publicLibrary/getPublicMaterial', { workspaceNodeId, workspaceNodeLocation })
 
-    const material = computed(() => store.getters['material/material'])
+    const material = computed(() => store.getters['publicLibrary/material'])
+    const publish = computed(() => store.getters['publicLibrary/materialPublish'])
     const breadcrumbList = computed(() => {
+      const tempBreadCrumbList = store.getters['publicLibrary/materialBreadcrumbList']
       const list = [
         {
           name: t('II0001'),

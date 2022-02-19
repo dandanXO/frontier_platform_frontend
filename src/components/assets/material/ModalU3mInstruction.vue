@@ -11,13 +11,12 @@ div(class="w-168 px-8")
   btn-group(
     class="h-25"
     :secondaryButton="false"
-    :primaryText="btnText"
-    @click:primary="btnClickHandler()"
+    :primaryText="innerBtnText"
+    @click:primary="innerBtnClickHandler"
   )
 </template>
 
 <script>
-import { U3M_STATUS } from '@/utils/constants'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { computed } from '@vue/runtime-core'
@@ -25,6 +24,12 @@ import { computed } from '@vue/runtime-core'
 export default {
   name: 'ModalU3mInstruction',
   props: {
+    btnText: {
+      type: String
+    },
+    btnClickHandler: {
+      type: Function
+    },
     isAllowCreate: {
       type: Boolean,
       default: true
@@ -33,58 +38,15 @@ export default {
   setup (props) {
     const { t } = useI18n()
     const store = useStore()
-    const material = computed(() => store.getters['material/material'])
-    const { u3m: { status } } = material.value
 
-    const btnText = computed(() => {
-      if (props.isAllowCreate) {
-        if (status === U3M_STATUS.UNQUALIFIED) {
-          return t('UU0032')
-        } else if (status === U3M_STATUS.INITIAL) {
-          return t('UU0020')
-        } else {
-          return t('UU0031')
-        }
-      } else {
-        return t('UU0031')
-      }
-    })
-
-    const btnClickHandler = computed(() => {
-      if (props.isAllowCreate) {
-        if (status === U3M_STATUS.UNQUALIFIED) {
-          return openModalHowToScan
-        } else if (status === U3M_STATUS.INITIAL) {
-          return openModalU3mPreview
-        } else {
-          return closeModal
-        }
-      } else {
-        return closeModal
-      }
-    })
-
-    const openModalHowToScan = () => {
-      store.dispatch('helper/replaceModal', {
-        component: 'modal-how-to-scan',
-        header: t('DD0043')
-      })
-    }
-
-    const openModalU3mPreview = () => {
-      store.dispatch('helper/replaceModal', {
-        component: 'modal-u3m-preview',
-        header: t('EE0067')
-      })
-    }
+    const innerBtnText = computed(() => props.btnText !== undefined ? props.btnText : t('UU0031'))
+    const innerBtnClickHandler = computed(() => props.btnClickHandler !== undefined ? props.btnClickHandler : closeModal)
 
     const closeModal = () => store.dispatch('helper/closeModal')
 
     return {
-      btnText,
-      btnClickHandler,
-      openModalHowToScan,
-      openModalU3mPreview
+      innerBtnText,
+      innerBtnClickHandler
     }
   }
 }

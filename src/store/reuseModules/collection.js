@@ -1,6 +1,8 @@
+import NodeShareState from '@/store/reuseStates/nodeShareState.js'
+import NodePublishState from '@/store/reuseStates/nodePublishState.js'
 import { NODE_LOCATION, NODE_TYPE, SORT_BY } from '@/utils/constants'
 
-const WorkspaceNode = {
+const Collection = {
   state: () => ({
     workspaceNodeId: null,
     workspaceNodeLocation: NODE_LOCATION.ORG,
@@ -21,17 +23,7 @@ const WorkspaceNode = {
     childMaterialList: []
   }),
   getters: {
-    defaultWorkspaceNodeId: (state, getters, rootState, rootGetters) => {
-      return rootGetters['helper/routeLocation'] === 'org'
-        ? rootGetters['organization/organization'].workspaceNodeId
-        : rootGetters['group/group'].workspaceNodeId
-    },
-    defaultWorkspaceNodeLocation: (state, getters, rootState, rootGetters) => {
-      return rootGetters['helper/routeLocation'] === 'org'
-        ? NODE_LOCATION.ORG
-        : NODE_LOCATION.GROUP
-    },
-    workspaceCollection: state => state,
+    collection: state => state,
     nodeList: (state, getters, rootState, rootGetters) => {
       const pushCollectionToList = () => {
         if (childCollectionList.length > 0) {
@@ -71,7 +63,7 @@ const WorkspaceNode = {
 
       return list
     },
-    breadcrumbList: (state) => (rootItem) => {
+    collectionBreadcrumbList: (state) => (rootItem) => {
       const list = []
       const { breadcrumbList } = state
 
@@ -87,8 +79,34 @@ const WorkspaceNode = {
       return list
     }
   },
-  mutations: {},
+  mutations: {
+    SET_collection (state, collection) {
+      Object.assign(state, collection)
+    }
+  },
   actions: {}
 }
 
-export default WorkspaceNode
+const WorkspaceCollection = Collection
+
+const ShareCollection = {
+  state: () => ({
+    ...Collection.state(),
+    share: NodeShareState()
+  }),
+  ...Collection
+}
+
+const PublicCollection = {
+  state: () => ({
+    ...Collection.state(),
+    publish: NodePublishState()
+  }),
+  ...Collection
+}
+
+export {
+  WorkspaceCollection,
+  ShareCollection,
+  PublicCollection
+}

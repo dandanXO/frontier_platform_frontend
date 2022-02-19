@@ -32,13 +32,13 @@ div(class="w-315 h-full mx-auto")
           btn(size="sm" type="secondary" @click="isCollectionDetailExpand = !isCollectionDetailExpand") {{isCollectionDetailExpand ? $t('UU0026') : $t('UU0071')}}
         div(v-if="isCollectionDetailExpand" class="flex items-start gap-x-9")
           div(class="relative w-97.5 h-69 bg-black-200 flex items-center justify-center flex-shrink-0")
-            div(v-if="workspaceCollection.trendBoardCoverImg" class="w-full h-full")
-              img(:src="workspaceCollection.trendBoardCoverImg" class="w-full h-full object-contain")
-              a(:href="workspaceCollection.trendBoardUrl" target="_blank" class="absolute right-3.5 bottom-3.5 card-shadow w-7 h-7 rounded-sm bg-black-0 flex items-center justify-center")
+            div(v-if="collection.trendBoardCoverImg" class="w-full h-full")
+              img(:src="collection.trendBoardCoverImg" class="w-full h-full object-contain")
+              a(:href="collection.trendBoardUrl" target="_blank" class="absolute right-3.5 bottom-3.5 card-shadow w-7 h-7 rounded-sm bg-black-0 flex items-center justify-center")
                 svg-icon(iconName="search" class="text-black-700" size="24")
             p(v-else class="text-body2 text-black-400") {{$t('FF0007')}}
           overlay-scrollbar-container(class="flex-grow h-61.5 max-w-193.5")
-            p(v-if="workspaceCollection.description" class="text-body2 text-primary line-height-1.5") {{workspaceCollection.description}}
+            p(v-if="collection.description" class="text-body2 text-primary line-height-1.5") {{collection.description}}
             div(v-else class="w-full h-full flex items-center justify-center")
               p(class="text-body2 text-primary") {{$t('GG0028')}}
     template(#default)
@@ -125,8 +125,8 @@ export default {
     const share = computed(() => store.getters['receivedShare/share'])
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const nodeList = computed(() => store.getters['receivedShare/nodeList'])
-    const breadcrumbList = computed(() => store.getters['receivedShare/breadcrumbList']())
-    const workspaceCollection = computed(() => store.getters['receivedShare/workspaceCollection'])
+    const breadcrumbList = computed(() => store.getters['receivedShare/collectionBreadcrumbList']())
+    const collection = computed(() => store.getters['receivedShare/collection'])
     const selectedNodeKeyList = ref([])
     const workspaceNodeId = ref(route.query.workspaceNodeId || share.value.workspaceNodeId)
     const isCollectionDetailExpand = ref(true)
@@ -172,7 +172,7 @@ export default {
       NODE_TYPE,
       breadcrumbList,
       pagination,
-      workspaceCollection,
+      collection,
       isCollectionDetailExpand,
       goTo,
       refSearchTable,
