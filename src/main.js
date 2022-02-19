@@ -8,6 +8,16 @@ import dayjs from 'dayjs'
 import isToday from 'dayjs/plugin/isToday'
 import isYesterday from 'dayjs/plugin/isYesterday'
 
+const svgs = import.meta.globEager('/src/assets/icons/**/*.svg')
+
+const commonComponents = import.meta.globEager('/src/components/common/**/*.vue')
+
+for (const path in commonComponents) {
+  const component = commonComponents[path].default
+  app.component(component.name, component)
+}
+
+
 const app = createApp(App)
 
 dayjs.extend(isToday)
@@ -30,25 +40,4 @@ app.config.warnHandler = (msg, vm, trace) => {
   }
 }
 
-const svgs = import.meta.globEager('/src/assets/icons/**/*.svg')
-
-const commonComponents = import.meta.globEager('/src/components/common/**/*.vue')
-
-for (const path in commonComponents) {
-  const component = commonComponents[path].default
-  app.component(component.name, component)
-}
-
-function prepare () {
-  if (import.meta.MODE === 'development') {
-    // const { worker } = require('@/mocks/browser')
-    // return worker.start({
-    //   onUnhandledRequest: 'bypass'
-    // })
-  }
-  return Promise.resolve()
-}
-
-prepare().then(() => {
-  app.use(store).use(router).use(i18n).mount('#app')
-})
+app.use(store).use(router).use(i18n).mount('#app')
