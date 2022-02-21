@@ -10,15 +10,14 @@ import isYesterday from 'dayjs/plugin/isYesterday'
 
 const svgs = import.meta.globEager('/src/assets/icons/**/*.svg')
 
+const app = createApp(App)
+
 const commonComponents = import.meta.globEager('/src/components/common/**/*.vue')
 
 for (const path in commonComponents) {
   const component = commonComponents[path].default
   app.component(component.name, component)
 }
-
-
-const app = createApp(App)
 
 dayjs.extend(isToday)
 dayjs.extend(isYesterday)
@@ -28,14 +27,14 @@ app.config.errorHandler = (err, vm, info) => {
   store.dispatch('helper/clearModalPipeline')
   if (err.message !== 'access-token-expire') {
     store.dispatch('helper/openModalError')
-    if (import.meta.MODE !== 'production') {
+    if (import.meta.env.PROD !== 'production') {
       console.error(err, vm)
     }
   }
 }
 
 app.config.warnHandler = (msg, vm, trace) => {
-  if (import.meta.MODE !== 'production') {
+  if (import.meta.env.PROD !== 'production') {
     console.warn('warn', msg, vm, trace)
   }
 }
