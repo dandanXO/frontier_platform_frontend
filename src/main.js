@@ -5,50 +5,38 @@ import router from '@/router'
 import store from '@/store'
 import i18n from '@/utils/i18n'
 import dayjs from 'dayjs'
+import isToday from 'dayjs/plugin/isToday'
+import isYesterday from 'dayjs/plugin/isYesterday'
 
-const requireAll = requireContext => requireContext.keys().map(requireContext)
-const req = require.context('@/assets/icons', true, /\.svg$/)
-requireAll(req)
+const svgs = import.meta.globEager('/src/assets/icons/**/*.svg')
 
 const app = createApp(App)
 
-dayjs.extend(require('dayjs/plugin/isToday'))
-dayjs.extend(require('dayjs/plugin/isYesterday'))
+const commonComponents = import.meta.globEager('/src/components/common/**/*.vue')
+
+for (const path in commonComponents) {
+  const component = commonComponents[path].default
+  app.component(component.name, component)
+}
+
+dayjs.extend(isToday)
+dayjs.extend(isYesterday)
 app.config.globalProperties.$dayjs = dayjs
 
 app.config.errorHandler = (err, vm, info) => {
   store.dispatch('helper/clearModalPipeline')
   if (err.message !== 'access-token-expire') {
     store.dispatch('helper/openModalError')
-    if (process.env.NODE_ENV !== 'production') {
+    if (import.meta.env.PROD !== 'production') {
       console.error(err, vm)
     }
   }
 }
 
 app.config.warnHandler = (msg, vm, trace) => {
-  if (process.env.NODE_ENV !== 'production') {
+  if (import.meta.env.PROD !== 'production') {
     console.warn('warn', msg, vm, trace)
   }
 }
 
-const commonComponents = require.context('@/components/common', true, /.vue/)
-
-commonComponents.keys().forEach(key => {
-  const component = commonComponents(key).default
-  app.component(component.name, component)
-})
-
-function prepare () {
-  if (process.env.NODE_ENV === 'development') {
-    // const { worker } = require('@/mocks/browser')
-    // return worker.start({
-    //   onUnhandledRequest: 'bypass'
-    // })
-  }
-  return Promise.resolve()
-}
-
-prepare().then(() => {
-  app.use(store).use(router).use(i18n).mount('#app')
-})
+app.use(store).use(router).use(i18n).mount('#app')

@@ -33,7 +33,7 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
         style="background-color: #F1F2F5"
       )
         div(class="bg-black-500" :style="{width: cropRectSize + 'px', height: cropRectSize + 'px'}")
-    div(v-if="isDoubleSideMaterial" class="absolute inset-x-0 w-full flex flex-col items-center")
+    div(v-if="isDoubleSideMaterial" class="absolute inset-x-0 w-full flex flex-col items-center transform -translate-y-1.5")
       div(class="text-primary text-body2 flex justify-center items-center mb-3.5 gap-1")
         div {{$t('Scale')}}
         div(class="w-15 flex justify-center items-center")
@@ -47,9 +47,9 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
           )
           span(class="inline-block -ml-6 w-5 text-left") cm
       input-range(
-        v-model:range="scaleSize"
-        :setting="setting"
-        :circleDot="true"
+        v-model:start="scaleSize"
+        :options="options"
+        :oneHandle="true"
       )
       div(class="mt-3 cursor-pointer text-primary" @click="isExchange = !isExchange")
         svg-icon(iconName="swap_horiz" size="24" class="m-auto")
@@ -67,8 +67,8 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
 <script>
 import { useStore } from 'vuex'
 import { ref, computed, reactive, watch } from 'vue'
-import ImageCropArea from '@/components/cropper/ImageCropArea'
-import CropperDefaultLayout from '@/components/cropper/layout/CropperDefaultLayout'
+import ImageCropArea from '@/components/cropper/ImageCropArea.vue'
+import CropperDefaultLayout from '@/components/cropper/layout/CropperDefaultLayout.vue'
 import useMaterialImage from '@/composables/useMaterialImage'
 import { Cropper } from '@/utils/cropper'
 
@@ -82,23 +82,20 @@ export default {
     }
   },
   async setup (props) {
-    const setting = {
-      min: 1,
-      max: 21,
-      width: 2,
-      height: 240,
-      interval: 0.1,
-      tooltip: 'none',
-      dotSize: 12,
-      process: false,
-      hideLabel: true,
-      direction: 'btt'
-    }
-
     const store = useStore()
     const material = computed(() => store.getters['assets/material'])
     const { faceSideImg, backSideImg } = material.value
     const scaleSize = ref(4)
+    const options = {
+      start: scaleSize.value,
+      range: {
+        min: 1,
+        max: 21,
+      },
+      step: 0.1,
+      tooltips: false,
+      orientation: 'vertical'
+    }
     const isExchange = ref(false)
     const faceSide = ref(null)
     const backSide = ref(null)
@@ -131,7 +128,7 @@ export default {
         return scaleSize.value
       },
       set (val) {
-        if (val > setting.max || val < setting.min) {
+        if (val > options.range.max || val < options.range.min) {
           return
         }
         scaleSize.value = val
@@ -181,7 +178,7 @@ export default {
     }
 
     return {
-      setting,
+      options,
       formattedScaleSize,
       cropRectSize,
       faceSide,

@@ -13,7 +13,7 @@ div(class="w-105 px-8 flex flex-col items-center")
 
 <script>
 import { computed, ref } from 'vue'
-import PasswordValidator from '@/components/account/PasswordValidator'
+import PasswordValidator from '@/components/account/PasswordValidator.vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation'

@@ -27,7 +27,7 @@ div(class="w-118.5")
 </template>
 
 <script>
-import ModalInviteToOrg from '@/components/management/ModalInviteToOrg'
+import ModalInviteToOrg from '@/components/management/ModalInviteToOrg.vue'
 import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
 import { ref } from 'vue'

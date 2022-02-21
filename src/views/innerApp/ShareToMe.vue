@@ -50,10 +50,7 @@ div(class="w-full h-full")
             )
               template(#node-caption v-if="isFirstLayer")
                 div(class="mt-1.5 h-6 flex items-center")
-                  img(
-                    :src="node.share.logo ? node.share.logo : require('@/assets/images/logo-default.png')"
-                    class="aspect-ratio h-full rounded-full"
-                  )
+                  img(:src="node.share.logo" class="aspect-ratio h-full rounded-full")
                   p(class="pl-1 font-bold text-caption text-primary") {{node.share.displayName}}
           template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
             node-item(
@@ -67,10 +64,7 @@ div(class="w-full h-full")
             )
               template(#node-caption v-if="isFirstLayer")
                 div(class="mt-1.5 h-6 flex items-center")
-                  img(
-                    :src="node.share.logo ? node.share.log : require('@/assets/images/logo-default.png')"
-                    class="aspect-ratio h-full rounded-full"
-                  )
+                  img(:src="node.share.logo" class="aspect-ratio h-full rounded-full")
                   p(class="pl-1 font-bold text-caption text-primary") {{node.share.displayName}}
       div(v-else class="flex h-full justify-center items-end")
         p(class="text-body1 text-primary") {{$t('HH0001')}}
@@ -85,12 +79,12 @@ div(class="w-full h-full")
 </template>
 
 <script>
-import SearchTable from '@/components/layout/SearchTable'
+import SearchTable from '@/components/layout/SearchTable.vue'
 import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { ref, computed, watch } from 'vue'
-import NodeItem from '@/components/layout/NodeItem'
+import NodeItem from '@/components/layout/NodeItem.vue'
 import { useRoute, useRouter } from 'vue-router'
 import useShareToMe from '@/composables/useShareToMe'
 import useNavigation from '@/composables/useNavigation'

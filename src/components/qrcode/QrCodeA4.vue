@@ -26,7 +26,7 @@ div
                   span(class="whitespace-nowrap text-caption mt-2.5 scale-90") {{item.frontierNo}}
               div(
                 class="text-black-600 relative flex flex-col items-center justify-center w-full h-97 bg-cover"
-                :style="{'background-image': 'url('+ require('@/assets/images/pdf-outline.png') +')'}"
+                :style="{'background-image': `url(${imgPdfOutLine})`}"
               )
                 span(class="whitespace-nowrap text-caption mb-2.5") {{item.sideType === SIDE_TYPE.FACE ? $t('DD0046') : $t('DD0047') }}
                 span(class="whitespace-nowrap text-caption") {{$t('DD0050')}}
@@ -36,13 +36,14 @@ div
 </template>
 
 <script>
-import QrCode from '@/components/common/QrCode'
+import QrCode from '@/components/common/QrCode.vue'
 import domtoimage from 'dom-to-image'
 import { ref, computed, nextTick, reactive } from 'vue'
 import { jsPDF as JsPDF } from 'jspdf'
 import { useStore } from 'vuex'
 import useMaterial from '@/composables/useMaterial'
 import { SIDE_TYPE } from '@/utils/constants.js'
+import imgPdfOutLine from '@/assets/images/pdf-outline.png'
 
 export default {
   name: 'QrCodeA4',
@@ -153,7 +154,8 @@ export default {
       isShown,
       pdfTarget,
       currExecOptionIndex,
-      SIDE_TYPE
+      SIDE_TYPE,
+      imgPdfOutLine
     }
   }
 }

@@ -8,7 +8,7 @@ filter-wrapper(iconName="deal" :displayName="$t('RR0022')" :dirty="filterDirty.f
 </template>
 
 <script>
-import FilterWrapper from '@/components/layout/filter/FilterWrapper'
+import FilterWrapper from '@/components/layout/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 

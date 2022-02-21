@@ -57,7 +57,7 @@ div(class="w-193.5 px-8")
 <script>
 import { useStore } from 'vuex'
 import { computed, reactive, ref, watch } from 'vue'
-import InputCallingCode from '@/components/InputCallingCode'
+import InputCallingCode from '@/components/InputCallingCode.vue'
 
 export default {
   name: 'ModalCreateOrg',

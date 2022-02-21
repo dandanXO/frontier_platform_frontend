@@ -21,8 +21,8 @@ filter-wrapper(
 </template>
 
 <script>
-import FilterWrapper from '@/components/layout/filter/FilterWrapper'
-import FilterRange from '@/components/layout/filter/FilterRange'
+import FilterWrapper from '@/components/layout/filter/FilterWrapper.vue'
+import FilterRange from '@/components/layout/filter/FilterRange.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import { INVENTORY_UNIT, SEARCH_TYPE } from '@/utils/constants.js'

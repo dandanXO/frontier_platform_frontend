@@ -69,8 +69,8 @@ div(class="l:pt-16 pt-17.5")
 import { computed, reactive, toRaw, watch, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import InputCallingCode from '@/components/InputCallingCode'
-import InputLabelColor from '@/components/InputLabelColor'
+import InputCallingCode from '@/components/InputCallingCode.vue'
+import InputLabelColor from '@/components/InputLabelColor.vue'
 import copyText from '@/utils/copy-text'
 
 export default {

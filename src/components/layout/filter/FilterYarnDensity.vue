@@ -60,7 +60,7 @@ filter-wrapper(
 </template>
 
 <script>
-import FilterWrapper from '@/components/layout/filter/FilterWrapper'
+import FilterWrapper from '@/components/layout/filter/FilterWrapper.vue'
 import { computed, ref, watch, reactive } from 'vue'
 import { useStore } from 'vuex'
 

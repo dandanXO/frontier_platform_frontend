@@ -4,15 +4,15 @@ stages:
 
 build-stg:
   stage: build
-  image: node:14.17.5
+  image: node:16.13.2
   only:
     - main
   script:
     - npm ci
-    - echo NODE_ENV=staging >> .env.local
-    - echo VUE_APP_API_ENDPOINT=$STG_API_ENDPOINT >> .env.local
-    - echo VUE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
-    - npm run build
+    - echo NODE_ENV=production >> .env.local
+    - echo VITE_APP_API_ENDPOINT=$STG_API_ENDPOINT >> .env.local
+    - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
+    - npm run build --mode=staging
   artifacts:
     paths:
       - dist/
@@ -28,15 +28,15 @@ deploy-stg:
 
 build-prod:
   stage: build
-  image: node:14.17.5
+  image: node:16.13.2
   only:
     - production
   script:
     - npm ci
     - echo NODE_ENV=production >> .env.local
-    - echo VUE_APP_API_ENDPOINT=$PROD_API_ENDPOINT >> .env.local
-    - echo VUE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
-    - npm run build
+    - echo VITE_APP_API_ENDPOINT=$PROD_API_ENDPOINT >> .env.local
+    - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
+    - npm run build --mode=production
   artifacts:
     paths:
       - dist/

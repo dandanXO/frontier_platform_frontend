@@ -15,7 +15,7 @@ const state = () => ({
 
 const getters = {
   groupUser: state => state,
-  avatar: state => state.avatar ? state.avatar : require('@/assets/images/default_user.png')
+  avatar: state => state.avatar
 }
 
 const actions = {

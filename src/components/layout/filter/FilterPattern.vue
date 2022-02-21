@@ -15,7 +15,7 @@ filter-wrapper(iconName="pattern" :displayName="$t('RR0025')" :dirty="filterDirt
 </template>
 
 <script>
-import FilterWrapper from '@/components/layout/filter/FilterWrapper'
+import FilterWrapper from '@/components/layout/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 

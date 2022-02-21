@@ -7,9 +7,9 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-blac
 
 <script>
 import { computed } from 'vue'
-import RowItemContent from '@/components/assets/material/list/RowItemContent'
-import RowItemImg from '@/components/assets/material/list/RowItemImg'
-import RowItemSidebar from '@/components/assets/material/list/RowItemSidebar'
+import RowItemContent from '@/components/assets/material/list/RowItemContent.vue'
+import RowItemImg from '@/components/assets/material/list/RowItemImg.vue'
+import RowItemSidebar from '@/components/assets/material/list/RowItemSidebar.vue'
 
 export default {
   name: 'RowItem',

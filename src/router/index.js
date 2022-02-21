@@ -23,7 +23,7 @@ const reuseRoutes = (prefix) => ([
   },
   {
     path: 'assets',
-    component: () => import('@/views/PassThrough'),
+    component: () => import('@/views/PassThrough.vue'),
     children: [
       {
         path: '',
@@ -193,7 +193,7 @@ const routes = [
       {
         path: 'invite-link',
         name: 'InviteLink',
-        component: () => import('@/views/PassThrough'),
+        component: () => import('@/views/PassThrough.vue'),
         beforeEnter: async (to, from, next) => {
           const { from: fromWhere, inviteCode, orgNo } = to.query
 
@@ -240,7 +240,7 @@ const routes = [
           {
             path: '',
             name: 'OrgRoot',
-            component: () => import('@/views/PassThrough'),
+            component: () => import('@/views/PassThrough.vue'),
             beforeEnter: (to, from, next) => {
               store.commit('helper/SET_routeLocation', 'org')
               next()
@@ -287,7 +287,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   sensitive: true
 })

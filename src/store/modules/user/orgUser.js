@@ -17,7 +17,7 @@ const state = () => ({
 
 const getters = {
   orgUser: state => state,
-  avatar: state => state.avatar ? state.avatar : require('@/assets/images/default_user.png'),
+  avatar: state => state.avatar,
   notificationList: state => {
     return state.notificationList.map(({ isRead, content, contentValue, createDate }) => {
       const re = new RegExp(/\{\d+\}/, 'g')

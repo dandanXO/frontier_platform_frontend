@@ -3,13 +3,13 @@ div(class="w-screen h-screen flex justify-center items-center  bg-black-100")
   //- div(class="fixed top-7.5 right-9")
   //-   dropdown-locale
   div(class="flex gap-x-23 items-start")
-    div(class="w-97.5 h-126 bg-contain" :style="{ 'background-image': `url(${require('@/assets/images/cover.png')})`}")
+    div(class="w-97.5 h-126 bg-contain" :style="{ 'background-image': `url(${imgCover}`}")
     div(class="w-105")
       div(class="w-full h-133.5 rounded-lg card-shadow px-10 pt-10 pb-9.5 flex flex-col")
         p(class="text-primary text-h6 font-bold text-center pb-5.5 border-b border-black-400") {{$t('AA0016')}}
         button(id="google-sign-up" class="w-85 h-11 rounded border text-body2 font-bold text-black-800 mt-5 mb-3 flex justify-center items-center")
           div(class="grid grid-flow-col gap-x-2.5 items-center")
-            svg-icon(iconName="google" size="24")
+            img(src="@/assets/images/google.png")
             span(class="w-40.5 text-center text-body2") {{$t('UU0047')}}
         div(class="grid grid-flow-col gap-x-3 items-center justify-center")
           div(class="w-19 h-px border-b border-black-400")
@@ -58,14 +58,15 @@ import { computed, onMounted, toRaw, watch } from '@vue/runtime-core'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import googleSignInApi from '@/utils/google-sign-in-api'
-import DropdownLocale from '@/components/DropdownLocale'
+// import DropdownLocale from '@/components/DropdownLocale.vue'
 import useNavigation from '@/composables/useNavigation'
-import PasswordValidator from '@/components/account/PasswordValidator'
+import PasswordValidator from '@/components/account/PasswordValidator.vue'
+import imgCover from '@/assets/images/cover.png'
 
 export default {
   name: 'SignUp',
   components: {
-    DropdownLocale,
+    // DropdownLocale,
     PasswordValidator
   },
   setup () {
@@ -164,7 +165,8 @@ export default {
       isEmailExist,
       isPasswordValid,
       openModalTermsOfUse,
-      openModalPrivacyPolicy
+      openModalPrivacyPolicy,
+      imgCover
     }
   }
 }

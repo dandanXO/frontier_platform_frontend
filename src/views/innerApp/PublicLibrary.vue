@@ -50,12 +50,12 @@ div(class="w-full h-full")
 </template>
 
 <script>
-import SearchTable from '@/components/layout/SearchTable'
+import SearchTable from '@/components/layout/SearchTable.vue'
 import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { ref, computed, watch } from 'vue'
-import NodeItem from '@/components/layout/NodeItem'
+import { ref, computed } from 'vue'
+import NodeItem from '@/components/layout/NodeItem.vue'
 import { useRoute, useRouter } from 'vue-router'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import useNavigation from '@/composables/useNavigation'

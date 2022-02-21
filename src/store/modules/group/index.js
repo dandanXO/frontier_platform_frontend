@@ -27,12 +27,7 @@ const getters = {
   group: state => state,
   groupId: state => state.groupId,
   uploadMaterialEmail: state => state.uploadMaterialEmail,
-  memberList: state => {
-    return state.memberList.map(member => ({
-      ...member,
-      avatar: member.avatar ? member.avatar : require('@/assets/images/default_user.png')
-    }))
-  },
+  memberList: state => state.memberList,
   historyList: state => state.historyList,
   createForm: state => state.createForm
 }

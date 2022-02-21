@@ -14,7 +14,7 @@ div
 </template>
 
 <script>
-import QrCode from '@/components/common/QrCode'
+import QrCode from '@/components/common/QrCode.vue'
 import domtoimage from 'dom-to-image'
 import { ref } from '@vue/reactivity'
 import { jsPDF as JsPDF } from 'jspdf'

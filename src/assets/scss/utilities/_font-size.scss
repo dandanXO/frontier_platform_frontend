@@ -10,7 +10,7 @@
 }
 
 @for $i from 0 through 10 {
-  $value: 1 + $i/10;
+  $value: 1 + calc($i/10);
 
   $mode10: $i%10;
   $className: 0;

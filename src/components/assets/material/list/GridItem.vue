@@ -61,8 +61,8 @@ div(class="w-full")
 import { ref, computed } from '@vue/runtime-core'
 import useAssets from '@/composables/useAssets'
 import useMaterial from '@/composables/useMaterial'
-import QrCodeA4 from '@/components/qrcode/QrCodeA4'
-import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral'
+import QrCodeA4 from '@/components/qrcode/QrCodeA4.vue'
+import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral.vue'
 import useNavigation from '@/composables/useNavigation'
 import { U3M_STATUS } from '@/utils/constants'
 

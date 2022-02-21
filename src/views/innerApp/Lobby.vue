@@ -12,7 +12,7 @@
 div(class="w-full")
   header(class="w-full h-15.5 pt-7.5 pl-10 pr-9 fixed inset-0")
     div(class="flex justify-between items-center")
-      svg-icon(iconName="frontier-logo" size="special" class="w-34 h-6.5")
+      img(src="@/assets/images/frontier_logo.png" class="w-34 h-6.5")
       menu-personal
   div(class="w-full pt-15.5")
     div(v-if="orgList.length === 0" class="w-full flex flex-col items-center pt-with-header-empty")
@@ -40,7 +40,6 @@ div(class="w-full")
 <script>
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import InputCallingCode from '@/components/InputCallingCode'
 import MenuPersonal from '@/components/lobby/MenuPersonal.vue'
 import { computed } from 'vue'
 import AvatarGroup from '@/components/AvatarGroup.vue'
@@ -48,7 +47,6 @@ import AvatarGroup from '@/components/AvatarGroup.vue'
 export default {
   name: 'Lobby',
   components: {
-    InputCallingCode,
     MenuPersonal,
     AvatarGroup
   },

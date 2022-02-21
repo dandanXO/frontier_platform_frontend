@@ -34,24 +34,6 @@ export default {
       state.materialBreadcrumbList = materialBreadcrumbList
     },
     SET_shareInfo (state, shareInfo) {
-      const { shareList } = shareInfo
-      if (shareList) {
-        shareInfo.shareList = shareList.map(target => {
-          let logo = target.logo
-          if (!logo) {
-            if (target.type === SHARE_TARGET_TYPE.EMAIL) {
-              logo = require('@/assets/images/default_user.png')
-            } else {
-              logo = require('@/assets/images/logo-default.png')
-            }
-          }
-          return {
-            ...target,
-            logo
-          }
-        })
-      }
-
       Object.assign(state.shareInfo, shareInfo)
     }
   },

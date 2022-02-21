@@ -16,18 +16,7 @@ const state = () => ({
 const getters = {
   user: (state) => state,
   email: (state) => state.email,
-  organizationList: (state) => {
-    return state.organizationList.map(org => {
-      return {
-        ...org,
-        logo: org.logo ? org.logo : require('@/assets/images/logo-default.png'),
-        memberList: org.memberList.map(member => ({
-          ...member,
-          avatar: member.avatar ? member.avatar : require('@/assets/images/default_user.png')
-        }))
-      }
-    })
-  }
+  organizationList: state => state.organizationList
 }
 
 const actions = {

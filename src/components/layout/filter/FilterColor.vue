@@ -12,7 +12,7 @@ filter-wrapper(iconName="color-circle" :displayName="$t('RR0026')" :dirty="filte
 </template>
 
 <script>
-import FilterWrapper from '@/components/layout/filter/FilterWrapper'
+import FilterWrapper from '@/components/layout/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 

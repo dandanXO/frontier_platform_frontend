@@ -18,9 +18,9 @@ div
         )
         span(class="inline-block -ml-6 w-5 text-left") {{scaleUnit}}
     input-range(
-      v-model:range="formattedScaleValue"
-      :setting="scaleSetting"
-      :circleDot="true"
+      v-model:start="formattedScaleValue"
+      :options="scaleSetting"
+      :oneHandle="true"
     )
   div(class="mt-2.5")
     div(class="text-primary text-body2 flex justify-between items-center mb-1")
@@ -37,15 +37,15 @@ div
         )
         span(class="inline-block -ml-3 w-3 text-left") °
     input-range(
-      v-model:range="formattedRotateDeg"
-      :setting="rotateSetting"
-      :circleDot="true"
+      v-model:start="formattedRotateDeg"
+      :options="rotateSetting"
+      :oneHandle="true"
     )
 </template>
 
 <script>
 import { ref, computed, watch } from 'vue'
-import ImageCropArea from '@/components/cropper/ImageCropArea'
+import ImageCropArea from '@/components/cropper/ImageCropArea.vue'
 
 export default {
   name: 'CropperDefaultLayout',
@@ -74,25 +74,10 @@ export default {
   setup (props, { emit }) {
     const useCentimeter = props.scaleUnit === 'cm'
     const commonSetting = {
-      height: 2,
-      interval: useCentimeter ? 0.1 : 1,
-      tooltip: 'none',
-      dotSize: 12,
-      process: false,
-      hideLabel: true
+      step: useCentimeter ? 0.1 : 1,
+      tooltips: false
     }
 
-    const scaleSetting = {
-      ...commonSetting,
-      min: props.scaleRange[0],
-      max: props.scaleRange[1]
-    }
-
-    const rotateSetting = {
-      ...commonSetting,
-      min: 0,
-      max: 360
-    }
 
     /**
      * scaleValue 是用於畫面表現的值
@@ -145,6 +130,24 @@ export default {
         innerRotateDeg.value = val % 360
       }
     })
+
+    const scaleSetting = {
+      ...commonSetting,
+      start: formattedScaleValue.value,
+      range: {
+        min: props.scaleRange[0],
+        max: props.scaleRange[1]
+      }
+    }
+
+    const rotateSetting = {
+      ...commonSetting,
+      start: formattedRotateDeg.value,
+      range: {
+        min: 0,
+        max: 360
+      }
+    }
 
     const handleScaleChange = (e) => {
       if (e.target.value > props.scaleRange[1]) {
