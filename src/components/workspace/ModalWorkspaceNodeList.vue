@@ -40,8 +40,8 @@ div(class="w-161 h-138 px-8 flex flex-col")
         template(v-if="isInRoot")
           div(v-for="item in orgAndGroupList"
             class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden"
-            :class="[isMultiSelect && selectedValue.includes(item.key) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
-            @click="goTo(item.key), setRootId(item.id)"
+            :class="[isMultiSelect && selectedValue.includes(JSON.stringify(item)) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
+            @click="goTo(item.nodeKey), setRootId(item.id)"
           )
             p(class="text-caption text-center line-height-1.6 font-bold line-clamp-3") {{item.name}}
             div(class="w-full h-7.5 absolute top-0 left-0")
@@ -49,7 +49,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
               input-checkbox(
                 v-if="isMultiSelect"
                 v-model:inputValue="selectedValue"
-                :value="item.key"
+                :value="JSON.stringify(item)"
                 size="20"
                 class="cursor-pointer absolute top-1 left-1 -z-1"
                 iconColor="text-black-0"
@@ -59,7 +59,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
               input-radio(
                 v-else
                 v-model:inputValue="selectedValue"
-                :value="item.key"
+                :value="JSON.stringify(item)"
                 size="20"
                 class="cursor-pointer absolute top-1 left-1 -z-1"
                 checkColor="text-black-0"
@@ -77,21 +77,17 @@ div(class="w-161 h-138 px-8 flex flex-col")
               node-item-for-modal(
                 class="w-25 cursor-pointer"
                 v-model:selectedValue="selectedValue"
-                :nodeType="node.nodeType"
-                :nodeKey="node.key"
-                :node="node.data"
-                :displayName="node.data.name"
+                :node="node"
+                :displayName="node.name"
                 :isShowLocation="isInKeywordSearch"
                 :isMultiSelect="isMultiSelect"
-                @click="goTo(node.key)"
+                @click="goTo(node.nodeKey)"
               )
             template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
               node-item-for-modal(
                 class="w-25"
-                :nodeType="node.nodeType"
-                :nodeKey="node.key"
-                :node="node.data"
-                :displayName="node.data.materialNo"
+                :node="node"
+                :displayName="node.materialNo"
                 :isShowLocation="isInKeywordSearch"
                 :isSelectable="false"
               )
@@ -185,14 +181,14 @@ export default {
         const organization = store.getters['organization/organization']
         list.push({
           id: organization.orgId,
-          key: `${NODE_LOCATION.ORG}-${organization.workspaceNodeId}`,
+          nodeKey: `${NODE_LOCATION.ORG}-${organization.workspaceNodeId}`,
           name: organization.orgName
         })
         if (props.canCrossLocation) {
           organization.groupList.forEach(group => {
             list.push({
               id: group.groupId,
-              key: `${NODE_LOCATION.GROUP}-${group.workspaceNodeId}`,
+              nodeKey: `${NODE_LOCATION.GROUP}-${group.workspaceNodeId}`,
               name: group.groupName
             })
           })
@@ -201,7 +197,7 @@ export default {
         const { groupId, workspaceNodeId, groupName } = store.getters['group/group']
         list.push({
           id: groupId,
-          key: `${NODE_LOCATION.GROUP}-${workspaceNodeId}`,
+          nodeKey: `${NODE_LOCATION.GROUP}-${workspaceNodeId}`,
           name: groupName
         })
       }
@@ -226,7 +222,7 @@ export default {
         temp = temp.filter(node => node.nodeType === NODE_TYPE.COLLECTION)
       }
       if (!props.canSelectSelf) {
-        temp = temp.filter(node => node.key !== props.selfNodeKey)
+        temp = temp.filter(node => node.nodeKey !== props.selfNodeKey)
       }
       return temp
     })
@@ -252,9 +248,9 @@ export default {
       if (workspaceCollection.childCollectionList.length > 0) {
         workspaceCollection.childCollectionList.forEach(collection => {
           pureNodeList.value.push({
-            key: `${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`,
-            nodeType: NODE_TYPE.COLLECTION,
-            data: collection
+            ...collection,
+            nodeKey: `${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`,
+            nodeType: NODE_TYPE.COLLECTION
           })
         })
       }
@@ -262,9 +258,9 @@ export default {
       if (workspaceCollection.childMaterialList.length > 0) {
         workspaceCollection.childMaterialList.forEach(material => {
           pureNodeList.value.push({
-            key: `${material.workspaceNodeLocation}-${material.workspaceNodeId}`,
-            nodeType: NODE_TYPE.MATERIAL,
-            data: material
+            ...material,
+            nodeKey: `${material.workspaceNodeLocation}-${material.workspaceNodeId}`,
+            nodeType: NODE_TYPE.MATERIAL
           })
         })
       }
@@ -338,7 +334,10 @@ export default {
     }
 
     const innerActionCallback = async () => {
-      await props.actionCallback(selectedValue.value)
+      const tempSelectValue = props.isMultiSelect
+        ? selectedValue.value.map(v => JSON.parse(v))
+        : JSON.parse(selectedValue.value)
+      await props.actionCallback(tempSelectValue)
     }
 
     return {

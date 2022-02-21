@@ -99,8 +99,8 @@ export default function useReceivedShare () {
     }
   }
 
-  const multipleCloneReceivedShare = async (workspaceNodeKeyList) => {
-    const workspaceNodeIdList = workspaceNodeKeyList.map(nodeKey => nodeKey.split('-')[1])
+  const multipleCloneReceivedShare = async (nodeList) => {
+    const workspaceNodeIdList = nodeList.map(node => JSON.parse(node).workspaceNodeId)
     cloneReceivedShare(workspaceNodeIdList)
   }
 

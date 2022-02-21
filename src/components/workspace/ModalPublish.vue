@@ -15,12 +15,12 @@ div(class="w-101 px-8")
         :label="$t('FF0033')"
         :disabled="!params.isPublic"
       )
-      //- input-checkbox(
-      //-   binary
-      //-   v-model:inputValue="params.isCanClone"
-      //-   :label="$t('FF0034')"
-      //-   :disabled="!params.isPublic"
-      //- )
+      input-checkbox(
+        binary
+        v-model:inputValue="params.isCanClone"
+        :label="$t('FF0034')"
+        :disabled="!params.isPublic"
+      )
   btn-group(
     class="h-25"
     :primaryText="$t('UU0018')"

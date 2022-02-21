@@ -40,50 +40,46 @@ div(class="w-full h-full")
         template(v-for="node in nodeList")
           template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
             node-item(
-              v-model:selectedList="selectedNodeKeyList"
-              :nodeType="node.nodeType"
-              :nodeKey="node.key"
-              :node="node.data"
-              :displayName="node.data.name"
+              v-model:selectedList="selectedNodeList"
+              :node="node"
+              :displayName="node.name"
               :optionList="optionNode"
               :isShowLocation="inSearch"
-              @click="goTo(node.key, node.data.share.sharingId)"
-              @click:option="$event.func(node.key)"
+              @click="goTo(node.nodeKey, node.share.sharingId)"
+              @click:option="$event.func(node)"
             )
               template(#node-caption v-if="isFirstLayer")
                 div(class="mt-1.5 h-6 flex items-center")
                   img(
-                    :src="node.data.share.logo ? node.data.share.logo : require('@/assets/images/logo-default.png')"
+                    :src="node.share.logo ? node.share.logo : require('@/assets/images/logo-default.png')"
                     class="aspect-ratio h-full rounded-full"
                   )
-                  p(class="pl-1 font-bold text-caption text-primary") {{node.data.share.displayName}}
+                  p(class="pl-1 font-bold text-caption text-primary") {{node.share.displayName}}
           template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
             node-item(
-              v-model:selectedList="selectedNodeKeyList"
-              :nodeType="node.nodeType"
-              :nodeKey="node.key"
-              :node="node.data"
-              :displayName="node.data.materialNo"
+              v-model:selectedList="selectedNodeList"
+              :node="node"
+              :displayName="node.materialNo"
               :optionList="optionNode"
               :isShowLocation="inSearch"
-              @click:option="$event.func(node.key, node.data.share.isCanClone)"
-              @click.stop="goToShareToMeMaterial(node.key, node.data.share.sharingId)"
+              @click:option="$event.func(node)"
+              @click.stop="goToShareToMeMaterial(node.nodeKey, node.share.sharingId)"
             )
               template(#node-caption v-if="isFirstLayer")
                 div(class="mt-1.5 h-6 flex items-center")
                   img(
-                    :src="node.data.share.logo ? node.data.share.log : require('@/assets/images/logo-default.png')"
+                    :src="node.share.logo ? node.share.log : require('@/assets/images/logo-default.png')"
                     class="aspect-ratio h-full rounded-full"
                   )
-                  p(class="pl-1 font-bold text-caption text-primary") {{node.data.share.displayName}}
+                  p(class="pl-1 font-bold text-caption text-primary") {{node.share.displayName}}
       div(v-else class="flex h-full justify-center items-end")
         p(class="text-body1 text-primary") {{$t('HH0001')}}
-  multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeKeyList")
+  multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeList")
     template(#default="{ option }")
       div(
         v-if="option.id === 'clone'"
         class="whitespace-nowrap px-5 cursor-pointer hover:text-brand"
-        @click="option.func(selectedNodeKeyList, collection.share.isCanClone)"
+        @click="option.func(selectedNodeList, collection.share.isCanClone)"
       ) {{option.name}}
 
 </template>
@@ -144,7 +140,7 @@ export default {
     const workspaceNodeId = ref(route.query.workspaceNodeId || null)
     const sharingId = ref(route.query.sharingId || null)
     const refSearchTable = ref(null)
-    const selectedNodeKeyList = ref([])
+    const selectedNodeList = ref([])
     const isFirstTime = ref(true)
     const haveMsgAndFirstRead = computed(() => !!collection.value?.share?.message && isFirstTime.value)
 
@@ -182,9 +178,9 @@ export default {
     }
 
     const handleSelectAll = () => {
-      const stringifyArr = nodeList.value.map(node => node.key)
-      const duplicateArr = selectedNodeKeyList.value.concat(stringifyArr)
-      selectedNodeKeyList.value = [...new Set(duplicateArr)]
+      const stringifyArr = nodeList.value.map(node => JSON.stringify(node))
+      const duplicateArr = selectedNodeList.value.concat(stringifyArr)
+      selectedNodeList.value = [...new Set(duplicateArr)]
     }
 
     const openModalCollectionDetail = () => {
@@ -210,7 +206,7 @@ export default {
 
     watch(
       () => isFirstLayer.value,
-      () => (selectedNodeKeyList.value.length = 0)
+      () => (selectedNodeList.value.length = 0)
     )
 
     return {
@@ -228,7 +224,7 @@ export default {
       collection,
       openModalCollectionDetail,
       goToShareToMeMaterial,
-      selectedNodeKeyList,
+      selectedNodeList,
       handleSelectAll,
       optionMultiSelect,
       haveMsgAndFirstRead,

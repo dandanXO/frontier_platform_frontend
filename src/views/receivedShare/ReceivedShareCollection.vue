@@ -46,37 +46,33 @@ div(class="w-315 h-full mx-auto")
         template(v-for="node in nodeList")
           template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
             node-item(
-              v-model:selectedList="selectedNodeKeyList"
-              :nodeType="node.nodeType"
-              :nodeKey="node.key"
-              :node="node.data"
-              :displayName="node.data.name"
-              @click="goTo(node.key)"
+              v-model:selectedList="selectedNodeList"
+              :node="node"
+              :displayName="node.name"
+              @click="goTo(node.nodeKey)"
             )
               template(#cover-overlay)
                 svg-icon(
                   iconName="clone"
                   size="20"
                   class="absolute bottom-3 right-3 cursor-pointer text-black-500"
-                  @click="cloneReceivedShare([node.data.workspaceNodeId])"
+                  @click="cloneReceivedShare([node.workspaceNodeId])"
                 )
           template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
             node-item(
-              v-model:selectedList="selectedNodeKeyList"
-              :nodeType="node.nodeType"
-              :nodeKey="node.key"
-              :node="node.data"
-              :displayName="node.data.materialNo"
-              @click="goToReceivedShareMaterial(node.data.workspaceNodeId, share.sharingKey)"
+              v-model:selectedList="selectedNodeList"
+              :node="node"
+              :displayName="node.materialNo"
+              @click="goToReceivedShareMaterial(node.workspaceNodeId, share.sharingKey)"
             )
               template(#cover-overlay)
                 svg-icon(
                   iconName="clone"
                   size="20"
                   class="absolute bottom-3 right-3 cursor-pointer text-black-500"
-                  @click="cloneReceivedShare([node.data.workspaceNodeId])"
+                  @click="cloneReceivedShare([node.workspaceNodeId])"
                 )
-  multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeKeyList")
+  multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeList")
 </template>
 
 <script>
@@ -127,7 +123,7 @@ export default {
     const nodeList = computed(() => store.getters['receivedShare/nodeList'])
     const breadcrumbList = computed(() => store.getters['receivedShare/collectionBreadcrumbList']())
     const collection = computed(() => store.getters['receivedShare/collection'])
-    const selectedNodeKeyList = ref([])
+    const selectedNodeList = ref([])
     const workspaceNodeId = ref(route.query.workspaceNodeId || share.value.workspaceNodeId)
     const isCollectionDetailExpand = ref(true)
     const refSearchTable = ref(null)
@@ -157,9 +153,9 @@ export default {
     }
 
     const handleSelectAll = () => {
-      const stringifyArr = nodeList.value.map(node => node.key)
-      const duplicateArr = selectedNodeKeyList.value.concat(stringifyArr)
-      selectedNodeKeyList.value = [...new Set(duplicateArr)]
+      const stringifyArr = nodeList.value.map(node => JSON.stringify(node))
+      const duplicateArr = selectedNodeList.value.concat(stringifyArr)
+      selectedNodeList.value = [...new Set(duplicateArr)]
     }
 
     return {
@@ -168,7 +164,7 @@ export default {
       optionSort,
       getShareReceivedList,
       nodeList,
-      selectedNodeKeyList,
+      selectedNodeList,
       NODE_TYPE,
       breadcrumbList,
       pagination,

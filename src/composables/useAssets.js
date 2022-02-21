@@ -91,11 +91,11 @@ export default function useAssets () {
         properties: {
           modalTitle: t('EE0057'),
           actionText: t('UU0035'),
-          actionCallback: async (selectedNodeKeyList) => {
+          actionCallback: async (nodeList) => {
             const materialIdList = materialList.map(material => material.materialId)
             const failMaterialList = await store.dispatch('assets/addToWorkspace', {
               materialIdList,
-              targetWorkspaceNodeList: selectedNodeKeyList.map(nodeKey => {
+              targetWorkspaceNodeList: nodeList.map(({ nodeKey }) => {
                 const [location, id] = nodeKey.split('-')
                 return { id, location }
               })

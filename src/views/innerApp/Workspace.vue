@@ -29,43 +29,39 @@ div(class="w-full h-full")
         template(v-for="node in nodeList")
           template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
             node-item(
-              v-model:selectedList="selectedNodeKeyList"
-              :nodeType="node.nodeType"
-              :nodeKey="node.key"
-              :node="node.data"
-              :displayName="node.data.name"
+              v-model:selectedList="selectedNodeList"
+              :node="node"
+              :displayName="node.name"
               :optionList="optionNodeCollection(inSearch)"
               :isShowLocation="inSearch"
-              @click="goTo(node.key)"
-              @click:option="$event.func(node.data)"
+              @click="goTo(node.nodeKey)"
+              @click:option="$event.func(node)"
             )
               template(#cover-overlay v-if="isFirstLayer")
                 svg-icon(
-                  :iconName="node.data.isPublic ? 'public' : 'lock_outline'"
+                  :iconName="node.isPublic ? 'public' : 'lock_outline'"
                   size="20"
                   class="absolute bottom-3 left-3 cursor-pointer text-black-500"
-                  @click.stop="openModalPublish(node.data)"
+                  @click.stop="openModalPublish(node)"
                 )
           template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
             node-item(
-              v-model:selectedList="selectedNodeKeyList"
-              :nodeType="node.nodeType"
-              :nodeKey="node.key"
-              :node="node.data"
-              :displayName="node.data.materialNo"
+              v-model:selectedList="selectedNodeList"
+              :node="node"
+              :displayName="node.materialNo"
               :optionList="optionNodeMaterial(inSearch)"
               :isShowLocation="inSearch"
-              @click:option="$event.func(node.data)"
-              @click.stop="goToWorkspaceMaterialDetail(node.key)"
+              @click:option="$event.func(node)"
+              @click.stop="goToWorkspaceMaterialDetail(node.nodeKey)"
             )
               template(#cover-overlay v-if="isFirstLayer")
                 svg-icon(
-                  :iconName="node.data.isPublic ? 'public' : 'lock_outline'"
+                  :iconName="node.isPublic ? 'public' : 'lock_outline'"
                   size="20"
                   class="absolute bottom-3 left-3 cursor-pointer text-black-500"
-                  @click.stop="openModalPublish(node.data)"
+                  @click.stop="openModalPublish(node)"
                 )
-  multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeKeyList")
+  multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeList")
 </template>
 
 <script>
@@ -159,7 +155,7 @@ export default {
 
     const workspaceNodeId = ref(route.query.workspaceNodeId || defaultWorkspaceNodeKey.value.split('-')[1])
     const refSearchTable = ref(null)
-    const selectedNodeKeyList = ref([])
+    const selectedNodeList = ref([])
 
     const getWorkspace = async (targetPage = 1) => {
       await router.push({
@@ -181,9 +177,9 @@ export default {
     }
 
     const handleSelectAll = () => {
-      const stringifyArr = nodeList.value.map(node => node.key)
-      const duplicateArr = selectedNodeKeyList.value.concat(stringifyArr)
-      selectedNodeKeyList.value = [...new Set(duplicateArr)]
+      const stringifyArr = nodeList.value.map(node => JSON.stringify(node))
+      const duplicateArr = selectedNodeList.value.concat(stringifyArr)
+      selectedNodeList.value = [...new Set(duplicateArr)]
     }
 
     const openModalCreateCollection = () => {
@@ -213,7 +209,8 @@ export default {
         properties: {
           modalTitle: t('FF0016'),
           actionText: t('UU0035'),
-          actionCallback: async (materialIdList) => {
+          actionCallback: async (materialList) => {
+            const materialIdList = materialList.map(({ materialId }) => materialId)
             const failMaterialList = await store.dispatch('assets/addToWorkspace', {
               materialIdList,
               targetWorkspaceNodeList: [
@@ -264,7 +261,7 @@ export default {
       search,
       NODE_TYPE,
       nodeList,
-      selectedNodeKeyList,
+      selectedNodeList,
       goTo,
       breadcrumbList,
       optionNodeCollection,

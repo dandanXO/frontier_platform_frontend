@@ -61,7 +61,7 @@ export default function useWorkspace () {
         properties: {
           modalTitle: t('FF0043'),
           actionText: t('UU0062'),
-          actionCallback: async (selectedNodeKeyList) => {
+          actionCallback: async (nodeList) => {
             const result = await new Promise((resolve) => {
               store.dispatch('helper/pushModalConfirm', {
                 title: t('FF0040'),
@@ -76,7 +76,7 @@ export default function useWorkspace () {
               store.dispatch('helper/openModalLoading')
               await store.dispatch('workspace/duplicateNode', {
                 workspaceNodeId,
-                targetWorkspaceNodeList: selectedNodeKeyList.map(nodeKey => {
+                targetWorkspaceNodeList: nodeList.map(({ nodeKey }) => {
                   const [location, id] = nodeKey.split('-')
                   return { id, location }
                 })
@@ -105,7 +105,7 @@ export default function useWorkspace () {
           canSelectSelf: false,
           selfNodeKey: `${routeLocation.value === 'org' ? NODE_LOCATION.ORG : NODE_LOCATION.GROUP}-${workspaceNodeId}`,
           actionText: t('UU0061'),
-          actionCallback: async (selectedNodeKey) => {
+          actionCallback: async (node) => {
             const result = await new Promise((resolve) => {
               store.dispatch('helper/pushModalConfirm', {
                 title: t('FF0040'),
@@ -118,7 +118,7 @@ export default function useWorkspace () {
             })
             if (result === 'confirm') {
               store.dispatch('helper/openModalLoading')
-              const targetWorkspaceNodeId = selectedNodeKey.split('-')[1]
+              const targetWorkspaceNodeId = node.nodeKey.split('-')[1]
               await store.dispatch('workspace/moveNode', {
                 workspaceNodeId,
                 targetWorkspaceNodeId
@@ -174,8 +174,8 @@ export default function useWorkspace () {
   const deleteMultipleNode = {
     id: FUNCTION_ID.DELETE_NODE,
     name: t('RR0063'),
-    func: (workspaceNodeKeyList) => {
-      const workspaceNodeIdList = workspaceNodeKeyList.map(key => (key.split('-')[1]))
+    func: (nodeList) => {
+      const workspaceNodeIdList = nodeList.map(node => node.workspaceNodeId)
       deleteNodeList(workspaceNodeIdList, t('FF0004'), t('FF0005'))
     }
   }
