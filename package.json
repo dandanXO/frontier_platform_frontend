@@ -1,5 +1,5 @@
 {
-  "name": "mia-test",
+  "name": "platform-frontend",
   "version": "0.0.0",
   "scripts": {
     "serve": "vite --mode $npm_config_mode",
