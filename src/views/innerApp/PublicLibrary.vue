@@ -26,31 +26,27 @@ div(class="w-full h-full")
         template(v-for="node in nodeList")
           template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
             node-item(
-              v-model:selectedList="selectedNodeKeyList"
-              :nodeType="node.nodeType"
-              :nodeKey="node.key"
-              :node="node.data"
-              :displayName="node.data.name"
+              v-model:selectedList="selectedNodeList"
+              :node="node"
+              :displayName="node.name"
               :isSelectable="!isFirstLayer"
               :optionList="optionNode"
-              @click="goTo(node.key)"
-              @click:option="$event.func(node.key)"
+              @click="goTo(node.nodeKey)"
+              @click:option="$event.func(node)"
             )
           template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
             node-item(
-              v-model:selectedList="selectedNodeKeyList"
-              :nodeType="node.nodeType"
-              :nodeKey="node.key"
-              :node="node.data"
-              :displayName="node.data.materialNo"
+              v-model:selectedList="selectedNodeList"
+              :node="node"
+              :displayName="node.materialNo"
               :isSelectable="!isFirstLayer"
               :optionList="optionNode"
-              @click:option="$event.func(node.key)"
-              @click.stop="goToPublicLibraryMaterialDetail(node.key)"
+              @click:option="$event.func(node)"
+              @click.stop="goToPublicLibraryMaterialDetail(node.nodeKey)"
             )
       div(v-else class="flex h-full justify-center items-end")
         p(class="text-body1 text-primary") {{$t('II0007')}}
-  multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeKeyList")
+  multi-select-menu(v-if="!isFirstLayer" :options="optionMultiSelect" v-model:selectedList="selectedNodeList")
 </template>
 
 <script>
@@ -96,17 +92,22 @@ export default {
     const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
     const nodeList = computed(() => store.getters['publicLibrary/nodeList'])
     const publishBy = computed(() => store.getters['publicLibrary/publishBy'])
-    const optionNode = computed(() => ([
-      [
-        cloneNode,
-        shareNode
+    const optionNode = computed(() => {
+      const optionList = [
+        [
+          cloneNode
+        ]
       ]
-    ]))
+      if (isFirstLayer.value) {
+        optionList[0].push(shareNode)
+      }
+      return optionList
+    })
 
     const workspaceNodeId = ref(route.query.workspaceNodeId || null)
     const workspaceNodeLocation = ref(route.query.workspaceNodeLocation || null)
     const refSearchTable = ref(null)
-    const selectedNodeKeyList = ref([])
+    const selectedNodeList = ref([])
 
     const getPublicList = async (targetPage = 1) => {
       await router.push({
@@ -140,9 +141,9 @@ export default {
     }
 
     const handleSelectAll = () => {
-      const stringifyArr = nodeList.value.map(node => node.key)
-      const duplicateArr = selectedNodeKeyList.value.concat(stringifyArr)
-      selectedNodeKeyList.value = [...new Set(duplicateArr)]
+      const stringifyArr = nodeList.value.map(node => JSON.stringify(node))
+      const duplicateArr = selectedNodeList.value.concat(stringifyArr)
+      selectedNodeList.value = [...new Set(duplicateArr)]
     }
 
     const openModalCollectionDetail = () => {
@@ -154,6 +155,11 @@ export default {
         }
       })
     }
+
+    watch(
+      () => isFirstLayer.value,
+      () => (selectedNodeList.value.length = 0)
+    )
 
     return {
       getPublicList,
@@ -170,7 +176,7 @@ export default {
       openModalCollectionDetail,
       publishBy,
       goToPublicLibraryMaterialDetail,
-      selectedNodeKeyList,
+      selectedNodeList,
       handleSelectAll,
       optionMultiSelect
     }

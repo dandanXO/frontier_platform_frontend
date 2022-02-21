@@ -201,13 +201,13 @@ export default {
       method: 'POST',
       data: { groupId, workspaceNodeId, type, id }
     }),
-    toggleCopyLink: ({ group, workspaceNodeId, isCanShared }) => axios('/org/group/workspace/node/share/copy-link/update-setting', {
+    toggleCopyLink: ({ groupId, workspaceNodeId, isCanShared }) => axios('/org/group/workspace/node/share/copy-link/update-setting', {
       method: 'POST',
-      data: { group, workspaceNodeId, isCanShared }
+      data: { groupId, workspaceNodeId, isCanShared }
     }),
-    generateCopyLink: ({ group, workspaceNodeId }) => axios('/org/group/workspace/node/share/copy-link/generate', {
+    generateCopyLink: ({ groupId, workspaceNodeId }) => axios('/org/group/workspace/node/share/copy-link/generate', {
       method: 'POST',
-      data: { group, workspaceNodeId }
+      data: { groupId, workspaceNodeId }
     })
   }
 }

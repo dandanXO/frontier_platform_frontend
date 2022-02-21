@@ -49,8 +49,6 @@ div(class="w-161 h-131 px-8 flex flex-col")
             v-for="material in materialList"
             class="w-25"
             v-model:selectedValue="selectedValue"
-            :nodeType="NODE_TYPE.MATERIAL"
-            :nodeKey="material.materialId"
             :node="material"
             :displayName="material.materialNo"
             :isMultiSelect="isMultiSelect"
@@ -149,7 +147,10 @@ export default {
     })
 
     const innerActionCallback = async () => {
-      await props.actionCallback(selectedValue.value)
+      const tempSelectValue = props.isMultiSelect
+        ? selectedValue.value.map(v => JSON.parse(v))
+        : JSON.parse(selectedValue.value)
+      await props.actionCallback(tempSelectValue)
     }
 
     const getMaterialListForModal = async () => {
