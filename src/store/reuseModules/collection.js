@@ -29,9 +29,9 @@ const Collection = {
         if (childCollectionList.length > 0) {
           childCollectionList.forEach(collection => {
             list.push({
-              key: `${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`,
-              nodeType: NODE_TYPE.COLLECTION,
-              data: collection
+              ...collection,
+              nodeKey: `${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`,
+              nodeType: NODE_TYPE.COLLECTION
             })
           })
         }
@@ -40,9 +40,9 @@ const Collection = {
         if (childMaterialList.length > 0) {
           childMaterialList.forEach(material => {
             list.push({
-              key: `${material.workspaceNodeLocation}-${material.workspaceNodeId}`,
-              nodeType: NODE_TYPE.MATERIAL,
-              data: material
+              ...material,
+              nodeKey: `${material.workspaceNodeLocation}-${material.workspaceNodeId}`,
+              nodeType: NODE_TYPE.MATERIAL
             })
           })
         }

@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { TARGET_LOCATION } from '@/utils/constants.js'
+import { TARGET_LOCATION, NODE_TYPE } from '@/utils/constants.js'
 
 export default function useShareToMe () {
   const { t } = useI18n()
@@ -9,7 +9,10 @@ export default function useShareToMe () {
   const cloneNode = {
     id: 'clone',
     name: t('RR0056'),
-    func: (v, isCanClone) => {
+    func: (v) => {
+      const nodeList = Array.isArray(v) ? v.map(node => JSON.parse(node)) : [v]
+      const isCanClone = nodeList.every(node => node.share.isCanClone)
+
       if (!isCanClone) {
         return store.dispatch('helper/openModalConfirm', {
           title: t('GG0016'),
@@ -17,15 +20,6 @@ export default function useShareToMe () {
           primaryText: t('UU0031')
         })
       }
-
-      const workspaceNodeKeyList = Array.isArray(v) ? v : [v]
-      const workspaceNodeList = workspaceNodeKeyList.map(key => {
-        const [location, id] = key.split('-')
-        return {
-          id: Number(id),
-          location: Number(location)
-        }
-      })
 
       const organization = store.getters['organization/organization']
       const locationList = []
@@ -49,12 +43,23 @@ export default function useShareToMe () {
         properties: {
           locationList,
           cloneHandler: async (targetLocationList) => {
+            const workspaceNodeList = nodeList.map(({ workspaceNodeId, workspaceNodeLocation }) => {
+              return {
+                id: Number(workspaceNodeId),
+                location: Number(workspaceNodeLocation)
+              }
+            })
+
             store.dispatch('helper/openModalLoading')
             await store.dispatch('shareToMe/cloneShareToMe', {
               workspaceNodeList,
               targetLocationList
             })
             store.dispatch('helper/closeModalLoading')
+
+            const isContainCollection = nodeList.some(node => node.nodeType === NODE_TYPE.COLLECTION)
+            const message = isContainCollection ? t('HH0011') : t('HH0012')
+            store.commit('helper/PUSH_message', message)
           }
         }
       })
@@ -65,12 +70,11 @@ export default function useShareToMe () {
     id: 'delete',
     name: t('RR0063'),
     func: (v) => {
-      const workspaceNodeKeyList = Array.isArray(v) ? v : [v]
-      const workspaceNodeList = workspaceNodeKeyList.map(key => {
-        const [location, id] = key.split('-')
+      const nodeList = Array.isArray(v) ? v.map(node => JSON.parse(node)) : [v]
+      const workspaceNodeList = nodeList.map(({ workspaceNodeId, workspaceNodeLocation }) => {
         return {
-          id: Number(id),
-          location: Number(location)
+          id: Number(workspaceNodeId),
+          location: Number(workspaceNodeLocation)
         }
       })
       store.dispatch('helper/openModalConfirm', {
