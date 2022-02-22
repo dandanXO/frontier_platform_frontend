@@ -79,5 +79,9 @@ export default {
   setOrgUploadMail: ({ orgId, uploadMaterialEmail }) => axios('/org/create-upload-material-email', {
     method: 'POST',
     data: { orgId, uploadMaterialEmail }
+  }),
+  getPricing: () => axios('/org/payment/get-pricing', {
+    method: 'POST',
+    data: {}
   })
 }

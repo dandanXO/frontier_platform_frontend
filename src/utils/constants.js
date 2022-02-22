@@ -230,3 +230,14 @@ export const SHARE_TARGET_TYPE = {
   GROUP: 2,
   EMAIL: 3
 }
+
+export const PLAN_TYPE = {
+  BASIC: 1,
+  RRO: 2,
+  ENT: 3
+}
+
+export const PLAN_STATUS = {
+  INACTIVE: 0,
+  ACTIVE: 1
+}

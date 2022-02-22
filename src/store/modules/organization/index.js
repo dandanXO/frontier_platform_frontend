@@ -1,5 +1,7 @@
 import organizationApi from '@/apis/organization'
 import setVuexState from '@/utils/set-vuex-state'
+import { PLAN_TYPE, PLAN_STATUS } from '@/utils/constants.js'
+import i18n from '@/utils/i18n'
 
 const state = () => ({
   orgId: 1,
@@ -21,9 +23,62 @@ const state = () => ({
   memberList: [],
   groupList: [],
   historyList: [],
-  totalMemberQty: 0,
-  totalMaterialQty: 0,
-  totalU3MQty: 0,
+  plan: {
+    planType: PLAN_TYPE.BASIC,
+    activatedStatus: PLAN_STATUS.ACTIVE,
+    renewDate: '',
+    quota: {
+      material: {
+        used: 0,
+        max: ''
+      },
+      u3m: {
+        used: '',
+        max: ''
+      },
+      member: {
+        used: '',
+        max: ''
+      }
+    },
+  },
+  paymentDetail: {
+    cardInfo: {
+      lastFour: '',
+      expiredDate: '',
+      cardHolderName: ''
+    },
+    billingInfo: {
+      recipient: '',
+      email: '',
+      countryCode: '',
+      zipCode: '',
+      city: '',
+      address: ''
+    }
+  },
+  pricing: {
+    basic: {
+      planPrice: 0,
+      materialUnit: 100,
+      materialPrice: 20,
+      materialUpgradeAlert: 2000,
+      materialFreeQuota: 50,
+      u3mUnit: 100,
+      u3mPrice: 20,
+      u3mFreeQty: 10
+    },
+    pro: {
+      planPrice: 0,
+      memberPrice: 0,
+      materialUnit: 100,
+      materialPrice: 20,
+      materialFreeQuota: 50,
+      u3mUnit: 100,
+      u3mPrice: 20,
+      u3mMonthFreeQty: 10
+    }
+  },
 
   /** LOCAL VAR */
   createForm: {
@@ -48,7 +103,18 @@ const getters = {
   memberList: state => state.memberList,
   groupList: state => state.groupList,
   historyList: state => state.historyList,
-  createForm: state => state.createForm
+  createForm: state => state.createForm,
+  plan: state => state.plan,
+  planName: (state, getters) => {
+    const { BASIC, PRO, ENT } = PLAN_TYPE
+    const obj = {
+      [BASIC]: i18n.global.t('Basic Plan'),
+      [PRO]: i18n.global.t('Pro Plan'),
+      [ENT]: i18n.global.t('Ent Plan')
+    }
+    return obj[getters.plan.planType]
+  },
+  pricing: state => state.pricing
 }
 
 const mutations = {
@@ -57,6 +123,9 @@ const mutations = {
   },
   SET_createForm_uploadMaterialEmail (state, uploadMaterialEmail) {
     state.createForm.uploadMaterialEmail = uploadMaterialEmail
+  },
+  SET_pricing (state, pricing) {
+    state.pricing = pricing
   }
 }
 
@@ -175,6 +244,10 @@ const actions = {
       faxCountryCode: 'TW',
       uploadMaterialEmail: ''
     })
+  },
+  async getPricing ({ commit }) {
+    const { data } = await organizationApi.getPricing()
+    commit('SET_pricing', data.result.pricing)
   }
 }
 

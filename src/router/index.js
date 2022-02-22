@@ -245,7 +245,15 @@ const routes = [
               store.commit('helper/SET_routeLocation', 'org')
               next()
             },
-            children: reuseRoutes('Org')
+            children: [
+              ...reuseRoutes('Org'),
+              {
+                path: 'billings/:tab(plan|payment|history)',
+                name: 'Billings',
+                props: true,
+                component: () => import('@/views/innerApp/Billings.vue')
+              }
+            ]
           },
           {
             path: ':groupId(\\d+)',

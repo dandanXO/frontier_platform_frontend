@@ -51,6 +51,10 @@ export default function useNavigation () {
 
   const goToLobby = () => { router.push('/') }
 
+  const goToBillings = () => {
+    router.push(parsePath('/:orgNo/billings/plan'))
+  }
+
   const goToAssets = async () => {
     await router.push(parsePath(`${prefixPath.value}/assets`))
   }
@@ -109,6 +113,7 @@ export default function useNavigation () {
     goToGroupAssetMaterialEdit,
     goToReceivedShareMaterial,
     goToShareToMeMaterial,
+    goToBillings,
     prefixPath
   }
 }

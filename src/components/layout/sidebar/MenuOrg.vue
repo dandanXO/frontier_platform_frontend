@@ -19,14 +19,21 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
             img(:src="orgLogo" class="rounded-md w-12 h-12 mr-3.5")
             span(class="text-body1 text-primary font-bold line-clamp-2") {{org.orgName}}
           div(class="mx-2 my-1 h-px bg-black-400")
-          div(class="h-31.5 py-3 px-7.5")
-            p(class="text-caption pb-2") {{$t('LL0001', { number: org.totalMemberQty })}}
-            p(class="text-caption line-height-1.6 pb-2") {{$t('LL0002', { number: org.totalMaterialQty })}}
-            p(class="text-caption line-height-1.6 pb-4") {{$t('LL0003', { number: org.totalU3MQty })}}
-            button(class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark")
-              router-link-extending(to="/plan" target="_blank") {{$t('UU0064')}}
+          list-item
+            p(class="pl-4.5 font-bold text-body1 text-primary") {{planName}}
           div(class="mx-2 my-1 h-px bg-black-400")
-          list-item(@click="$router.push('/')" class="cursor-pointer")
+          list-item
+            div(class="pl-4.5 w-full flex justify-between items-center")
+              p(class="text-primary text-caption") {{$t('OO0002')}}: {{org.plan.quota.material.used}}/{{org.plan.quota.material.max}}
+              button(class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark") {{$t('UU0073')}}
+          list-item
+            div(class="pl-4.5 w-full flex justify-between items-center")
+              p(class="text-primary text-caption") {{$t('OO0003')}}: {{org.plan.quota.u3m.used}}/{{org.plan.quota.u3m.max}}
+              button(class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark") {{$t('UU0074')}}
+          div(class="mx-2 my-1 h-px bg-black-400")
+          list-item(@click="goToBillings" class="cursor-pointer")
+            p(class="pl-4.5") {{$t('OO0004')}}
+          list-item(@click="goToLobby" class="cursor-pointer")
             p(class="pl-4.5") {{$t('RR0127')}}
     tooltip(placement="bottom-start" manual :showArrow="false" @show="readNotification" @hide="isExpand = false")
       template(#trigger)
@@ -54,16 +61,19 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
 <script>
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
+import useNavigation from '@/composables/useNavigation.js'
 
 export default {
   name: 'MenuOrg',
   setup () {
     const store = useStore()
+    const { goToBillings, goToLobby } = useNavigation()
 
     const isExpand = ref(false)
 
     const org = computed(() => store.getters['organization/organization'])
     const orgLogo = computed(() => store.getters['organization/orgLogo'])
+    const planName = computed(() => store.getters['organization/planName'])
     const notificationList = computed(() => {
       return isExpand.value
         ? store.getters['user/orgUser/notificationList']
@@ -83,7 +93,10 @@ export default {
       haveUnreadNotification,
       moreThan4Notification,
       readNotification,
-      isExpand
+      isExpand,
+      goToBillings,
+      goToLobby,
+      planName
     }
   }
 }
