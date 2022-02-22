@@ -114,6 +114,8 @@ const getters = {
     }
     return obj[getters.plan.planType]
   },
+  paymentDetail: state => state.paymentDetail,
+  noBindingPayment: (state, getters) => !getters.paymentDetail.cardInfo,
   pricing: state => state.pricing
 }
 
@@ -248,6 +250,13 @@ const actions = {
   async getPricing ({ commit }) {
     const { data } = await organizationApi.getPricing()
     commit('SET_pricing', data.result.pricing)
+  },
+  async updateBillingInfo ({ state, dispatch }, params) {
+    const { data } = await organizationApi.updateBillingInfo({
+      orgId: state.orgId,
+      ...params
+    })
+    dispatch('handleResponseData', { data }, { root: true })
   }
 }
 

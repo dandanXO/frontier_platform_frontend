@@ -10,7 +10,8 @@ div(class="w-193.5 px-8")
       :label="$t('AA0038')"
       :placeholder="$t('AA0039')"
       :customErrorMsg="isOrgNameExist ? $t('WW0001') : ''"
-      @blur="checkOrgNameExist")
+      @blur="checkOrgNameExist"
+    )
     input-radio-group(
       v-model:inputValue="formData.orgCategoryId"
       :label="$t('AA0069')"

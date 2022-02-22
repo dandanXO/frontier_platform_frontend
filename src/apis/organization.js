@@ -83,5 +83,9 @@ export default {
   getPricing: () => axios('/org/payment/get-pricing', {
     method: 'POST',
     data: {}
+  }),
+  updateBillingInfo: ({ orgId, recipient, email, countryCode, city, zipCode, address }) => axios('/org/payment/billing-info/update', {
+    method: 'POST',
+    data: { orgId, recipient, email, countryCode, city, zipCode, address }
   })
 }

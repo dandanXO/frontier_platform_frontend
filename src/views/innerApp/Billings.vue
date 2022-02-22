@@ -7,6 +7,7 @@ div(class="px-7.5 pt-7.5 w-full h-full")
         p(class="pb-2 text-body1" :class="[tab.path === currentTab ? 'border-b-4 border-brand text-primary font-bold' : 'text-black-600' ]" ) {{tab.name}}
   div(class="w-full flex justify-center")
     plan(v-if="currentTab === 'plan'")
+    payment-detail(v-else-if="currentTab === 'payment'")
 </template>
 
 <script>
@@ -19,7 +20,8 @@ import { ROLE_ID } from '@/utils/constants'
 export default {
   name: 'Billings',
   components: {
-    Plan: defineAsyncComponent(() => import('@/components/billings/Plan.vue'))
+    Plan: defineAsyncComponent(() => import('@/components/billings/Plan.vue')),
+    PaymentDetail: defineAsyncComponent(() => import('@/components/billings/PaymentDetail.vue'))
   },
   props: {
     tab: {
