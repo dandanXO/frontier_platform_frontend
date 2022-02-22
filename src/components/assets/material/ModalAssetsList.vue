@@ -166,6 +166,7 @@ export default {
          */
         const { currentCoverImg } = useMaterial(material)
         material.coverImg = currentCoverImg
+        material.nodeType = NODE_TYPE.MATERIAL
         materialList.value.push(material)
       })
 
