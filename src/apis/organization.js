@@ -87,5 +87,13 @@ export default {
   updateBillingInfo: ({ orgId, recipient, email, countryCode, city, zipCode, address }) => axios('/org/payment/billing-info/update', {
     method: 'POST',
     data: { orgId, recipient, email, countryCode, city, zipCode, address }
+  }),
+  getStripeClientSecret: ({ orgId }) => axios('/org/payment/card-info/create-setup', {
+    method: 'POST',
+    data: { orgId }
+  }),
+  setCardHolderName: ({ orgId, clientSecret, cardHolderName }) => axios('/org/payment/card-info/setup-customer', {
+    method: 'POST',
+    data: { orgId, clientSecret, cardHolderName }
   })
 }

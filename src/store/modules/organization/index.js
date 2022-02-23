@@ -108,9 +108,9 @@ const getters = {
   planName: (state, getters) => {
     const { BASIC, PRO, ENT } = PLAN_TYPE
     const obj = {
-      [BASIC]: i18n.global.t('Basic Plan'),
-      [PRO]: i18n.global.t('Pro Plan'),
-      [ENT]: i18n.global.t('Ent Plan')
+      [BASIC]: i18n.global.t('RR0159'),
+      [PRO]: i18n.global.t('RR0160'),
+      [ENT]: i18n.global.t('RR0161')
     }
     return obj[getters.plan.planType]
   },
@@ -257,6 +257,16 @@ const actions = {
       ...params
     })
     dispatch('handleResponseData', { data }, { root: true })
+  },
+  async getStripeClientSecret ({ state }) {
+    const { data } = await organizationApi.getStripeClientSecret({ orgId: state.orgId })
+    return data.result.clientSecret
+  },
+  async setCardHolderName ({ state }, params) {
+    await organizationApi.setCardHolderName({
+      orgId: state.orgId,
+      ...params
+    })
   }
 }
 
