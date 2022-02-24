@@ -70,7 +70,7 @@ export default {
     const previewRect = ref(null)
     const faceSide = ref(null)
     const backSide = ref(null)
-    const material = computed(() => store.getters['assets/material'])
+    const material = computed(() => store.getters['material/material'])
     const { faceSideImg, backSideImg } = material.value
     const cropRectSize = 208
     const croppers = []
@@ -156,7 +156,7 @@ export default {
         backSideCropImg = await backSide.value?.cropImage()
       }
 
-      await store.dispatch('assets/generateU3m', {
+      await store.dispatch('material/generateU3m', {
         faceSideCropImg,
         backSideCropImg,
         isAutoRepeat: false

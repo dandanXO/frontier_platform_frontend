@@ -7,7 +7,7 @@ export default function useMaterialValidation () {
   const { t } = useI18n()
 
   const hasValidate = ref(false)
-  const material = computed(() => store.getters['assets/material'])
+  const material = computed(() => store.getters['material/material'])
 
   const required = (v) => !v && t('WW0002')
   const maxLength = (v, max) => v?.length > max && t('WW0003')

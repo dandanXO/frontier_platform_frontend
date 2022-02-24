@@ -66,9 +66,9 @@ export default {
     })
 
     const handleEdit = (block) => {
-      store.dispatch('assets/setMaterial', JSON.parse(JSON.stringify(props.material)))
+      store.dispatch('material/setMaterial', JSON.parse(JSON.stringify(props.material)))
       store.dispatch('helper/openModal', {
-        component: 'modal-edit-simple-info',
+        component: 'ModalEditSimpleInfo',
         header: block.title,
         properties: {
           blockId: `simple-${block.id}`

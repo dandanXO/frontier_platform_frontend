@@ -88,7 +88,7 @@ export default {
 
     const isConfirmedToLeave = ref(false)
 
-    const material = computed(() => store.getters['assets/material'])
+    const material = computed(() => store.getters['material/material'])
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const breadcrumbList = computed(() => {
       const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
@@ -114,7 +114,7 @@ export default {
       }
 
       store.dispatch('helper/pushModalLoading')
-      await store.dispatch('assets/createMaterial', { tempMaterialId })
+      await store.dispatch('material/createMaterial', { tempMaterialId })
       store.dispatch('helper/closeModalLoading')
       isConfirmedToLeave.value = true
       goToAssets()
@@ -158,8 +158,8 @@ export default {
       return result === 'confirm'
     })
 
-    store.dispatch('assets/resetMaterial')
-    await store.dispatch('assets/getMaterialOptions')
+    store.dispatch('material/resetMaterial')
+    await store.dispatch('material/getMaterialOptions')
 
     return {
       validations,

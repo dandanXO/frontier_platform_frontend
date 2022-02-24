@@ -108,7 +108,7 @@ export default {
   },
   setup () {
     const store = useStore()
-    const material = computed(() => store.getters['assets/material'])
+    const material = computed(() => store.getters['material/material'])
 
     const {
       inventoryUnitList,
@@ -121,7 +121,7 @@ export default {
     watch(
       () => material.value,
       () => {
-        store.commit('assets/UPDATE_material', material.value)
+        store.commit('material/UPDATE_material', material.value)
       },
       {
         deep: true

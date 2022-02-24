@@ -201,7 +201,7 @@ export default {
   },
   setup () {
     const store = useStore()
-    const material = computed(() => store.getters['assets/material'])
+    const material = computed(() => store.getters['material/material'])
     const isEditMode = computed(() => material.value.materialId !== null)
     const { isBackSideMaterial, faceSideUrl, backSideUrl } = useMaterialImage(material.value)
     const { faceSideImg, backSideImg } = material.value
@@ -247,7 +247,7 @@ export default {
     watch(
       () => material.value,
       () => {
-        store.commit('assets/UPDATE_material', material.value)
+        store.commit('material/UPDATE_material', material.value)
       },
       {
         deep: true

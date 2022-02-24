@@ -73,7 +73,7 @@ export default {
   setup () {
     const { t } = useI18n()
     const store = useStore()
-    const material = computed(() => store.getters['assets/material'])
+    const material = computed(() => store.getters['material/material'])
     const { statusIconName, imageList, defaultCoverImgIndex } = useMaterial(material.value)
 
     const uploadMaterialEmail = computed(() => {
@@ -93,7 +93,7 @@ export default {
           return
         }
 
-        await store.dispatch('assets/addPantone', { name: pantoneName.value })
+        await store.dispatch('material/addPantone', { name: pantoneName.value })
         pantoneName.value = ''
       } catch (error) {
         pantoneErrorMsg.value = error
@@ -101,7 +101,7 @@ export default {
     }
 
     const removePantone = (materialPantoneId) => {
-      store.dispatch('assets/removePantone', { materialPantoneId })
+      store.dispatch('material/removePantone', { materialPantoneId })
     }
 
     const openModalHowToScan = () => {
@@ -126,7 +126,7 @@ export default {
         component: 'modal-edit-scanned-image',
         properties: {
           afterCropHandler: async ({ faceSideCropImg, backSideCropImg, isExchange }) => {
-            await store.dispatch('assets/updateScannedImage', {
+            await store.dispatch('material/updateScannedImage', {
               faceSideCropImg,
               backSideCropImg,
               isExchange
