@@ -133,36 +133,10 @@ const Material = {
       } else {
         state.weightUnit = WEIGHT_UNIT.GSM.value
       }
-    },
-    RESET_material (state) {
-      Object.assign(state, Material.state())
-    },
-    UPDATE_material (state, material) {
-      Object.assign(state, material)
-    },
-    UPDATE_content_item (state, { index, content }) {
-      Object.assign(state.contentList[index], content)
-    },
-    ADD_content_item (state) {
-      state.contentList.push(Material.state().contentList[0])
-    },
-    REMOVE_content_item (state, index) {
-      state.contentList.splice(index, 1)
-    },
-    ADD_inventory_item (state) {
-      state.inventoryList.push(Material.state().inventoryList[0])
-    },
-    REMOVE_inventory_item (state, index) {
-      state.inventoryList.splice(index, 1)
-    },
-    UPDATE_inventoryList_unit (state, unit) {
-      state.inventoryList.forEach(inventory => (inventory.unit = unit))
-    },
-    UPDATE_attachmentList (state, attachmentList) {
-      state.attachmentList = attachmentList
     }
   },
-  actions: {}
+  actions: {
+  }
 }
 
 export default Material

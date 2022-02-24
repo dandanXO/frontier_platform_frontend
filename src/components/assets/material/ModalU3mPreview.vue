@@ -36,7 +36,7 @@ export default {
   setup () {
     const { t } = useI18n()
     const store = useStore()
-    const material = computed(() => store.getters['assets/material'])
+    const material = computed(() => store.getters['material/material'])
     const { faceSideImg, backSideImg } = material.value
     const {
       isDoubleSideMaterial,
@@ -53,7 +53,7 @@ export default {
     }
 
     const handleCreateU3mAuto = async () => {
-      await store.dispatch('assets/generateU3m', {})
+      await store.dispatch('material/generateU3m', {})
       store.dispatch('helper/openModalConfirm', {
         title: t('RR0132'),
         content: t('EE0070'),

@@ -127,6 +127,7 @@ export default function useAssets () {
     excName: t('RR0074'),
     func: (v) => {
       const status = v.u3m.status
+      store.commit('material/UPDATE_material', v)
       switch (status) {
         case U3M_STATUS.INITIAL:
           if (localStorage.getItem('haveReadU3mInstruction') === 'y') {

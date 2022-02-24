@@ -83,7 +83,7 @@ export default {
   },
   async setup (props) {
     const store = useStore()
-    const material = computed(() => store.getters['assets/material'])
+    const material = computed(() => store.getters['material/material'])
     const { faceSideImg, backSideImg } = material.value
     const scaleSize = ref(4)
     const options = {
