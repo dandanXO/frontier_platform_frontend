@@ -34,7 +34,7 @@ export default function useAssets () {
     id: 'cloneTo',
     name: t('RR0056'),
     func: (v) => {
-      const materialIdList = Array.isArray(v) ? v.map(material => JSON.parse(material).materialId) : [v.materialId]
+      const materialIdList = Array.isArray(v) ? v.map(({ materialId }) => materialId) : [v.materialId]
       const organization = store.getters['organization/organization']
       const currentGroupId = store.getters['group/groupId'] || null
       const locationList = []
@@ -77,7 +77,7 @@ export default function useAssets () {
     id: 'addToWorkspace',
     name: t('RR0057'),
     func: (v) => {
-      const materialList = Array.isArray(v) ? v.map(material => JSON.parse(material)) : [v]
+      const materialList = Array.isArray(v) ? v : [v]
       if (materialList.length === 1 && !materialList[0].isComplete) {
         return store.dispatch('helper/openModalConfirm', {
           title: t('EE0096'),
@@ -194,7 +194,7 @@ export default function useAssets () {
     icon: 'u3m',
     name: t('RR0059'),
     func: (v) => {
-      const materialList = Array.isArray(v) ? v.map(material => JSON.parse(material)) : [v]
+      const materialList = Array.isArray(v) ? v : [v]
       store.dispatch('helper/openModal', {
         component: 'modal-u3m-select-file-format',
         properties: { materialList }
@@ -206,7 +206,7 @@ export default function useAssets () {
     id: 'exportExcel',
     name: t('RR0060'),
     func: async (v) => {
-      const materialIdList = Array.isArray(v) ? v.map(material => JSON.parse(material).materialId) : [v.materialId]
+      const materialIdList = Array.isArray(v) ? v.map(({ materialId }) => materialId) : [v.materialId]
       store.dispatch('helper/openModalLoading')
       await store.dispatch('assets/exportMaterial', { materialIdList })
       store.dispatch('helper/closeModalLoading')
@@ -227,8 +227,7 @@ export default function useAssets () {
   const mergeCard = {
     id: 'mergeCard',
     name: t('RR0072'),
-    func: (v) => {
-      const materialList = v.map(material => JSON.parse(material))
+    func: (materialList) => {
       store.dispatch('helper/openModal', {
         component: 'modal-material-merge',
         properties: { materialList }
@@ -240,7 +239,7 @@ export default function useAssets () {
     id: 'deleteMaterial',
     name: t('RR0063'),
     func: (v) => {
-      const materialIdList = Array.isArray(v) ? v.map(material => JSON.parse(material).materialId) : [v.materialId]
+      const materialIdList = Array.isArray(v) ? v.map(({ materialId }) => materialId) : [v.materialId]
       store.dispatch('helper/openModalConfirm', {
         title: t('EE0075'),
         content: t('EE0076'),

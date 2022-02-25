@@ -10,7 +10,7 @@ export default function useShareToMe () {
     id: 'clone',
     name: t('RR0056'),
     func: (v) => {
-      const nodeList = Array.isArray(v) ? v.map(node => JSON.parse(node)) : [v]
+      const nodeList = Array.isArray(v) ? v : [v]
       const isCanClone = nodeList.every(node => node.share.isCanClone)
 
       if (!isCanClone) {
@@ -70,7 +70,7 @@ export default function useShareToMe () {
     id: 'delete',
     name: t('RR0063'),
     func: (v) => {
-      const nodeList = Array.isArray(v) ? v.map(node => JSON.parse(node)) : [v]
+      const nodeList = Array.isArray(v) ? v : [v]
       const workspaceNodeList = nodeList.map(({ workspaceNodeId, workspaceNodeLocation }) => {
         return {
           id: Number(workspaceNodeId),

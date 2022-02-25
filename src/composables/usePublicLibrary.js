@@ -10,7 +10,7 @@ export default function usePublicLibrary () {
     id: 'clone',
     name: t('UU0034'),
     func: (v) => {
-      const nodeList = Array.isArray(v) ? v.map(node => JSON.parse(node)) : [v]
+      const nodeList = Array.isArray(v) ? v : [v]
       const isCanClone = nodeList.every(node => node.publish.isCanClone)
 
       if (!isCanClone) {
