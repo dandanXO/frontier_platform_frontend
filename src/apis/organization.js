@@ -103,5 +103,13 @@ export default {
   requestUpgradeToEnterprise: ({ orgId, name, email, phone, phoneCountryCode, description }) => axios('/org/plan/upgrade-request', {
     method: 'POST',
     data: { orgId, name, email, phone, phoneCountryCode, description }
+  }),
+  purchaseMaterial: ({ orgId, setQty }) => axios('/org/plan/purchase/material', {
+    method: 'POST',
+    data: { orgId, setQty }
+  }),
+  cancelMaterial: ({ orgId, setQty }) => axios('/org/plan/cancel/material', {
+    method: 'POST',
+    data: { orgId, setQty }
   })
 }

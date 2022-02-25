@@ -10,13 +10,13 @@ div(class="w-195 mt-18.5")
         p(v-if="plan.renewDate" class="absolute top-full text-body2 font-normal text-black-600") {{$t('OO0044')}} {{plan.renewDate}}
     div(class="border border-black-400 rounded pl-7.5 flex items-center gap-x-3")
       circle-progress-bar(:size="60" :current="plan.quota.material.used" :max="plan.quota.material.max")
-        div(class="text-caption font-normal text-primary")
+        div(class="text-caption font-normal text-primary text-center")
           p {{((plan.quota.material.used/plan.quota.material.max) * 100).toFixed(0)}}%
           p {{$t('OO0005')}}
       div
         p(class="text-body2 text-primary pb-1.5") {{$t('OO0002')}}:
         p(class="text-body2 text-black-700 pb-2.5") {{plan.quota.material.used}}/{{plan.quota.material.max}} {{$t('OO0006')}}
-        button(v-if="!isPlanEnterprise" class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-body2 hover:bg-brand-dark") {{$t('UU0073')}}
+        button(v-if="!isPlanEnterprise" class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-body2 hover:bg-brand-dark" @click="openModalManageMaterialQuota") {{$t('UU0073')}}
     div(class="border border-black-400 rounded pl-7.5 flex items-center gap-x-3")
       circle-progress-bar(:size="60" :current="plan.quota.u3m.used" :max="plan.quota.u3m.max")
         div(class="text-caption font-normal text-primary text-center")
@@ -49,11 +49,21 @@ export default {
       })
     }
 
+    const openModalManageMaterialQuota = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-manage-material-quota',
+        properties: {
+          defaultTab: 0
+        }
+      })
+    }
+
     return {
       plan,
       planName,
       isPlanEnterprise,
-      openModalChoosePlan
+      openModalChoosePlan,
+      openModalManageMaterialQuota
     }
   }
 }

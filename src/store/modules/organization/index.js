@@ -62,8 +62,8 @@ const state = () => ({
       planPrice: 0,
       materialUnit: 100,
       materialPrice: 20,
-      materialUpgradeAlert: 2000,
       materialFreeQuota: 50,
+      materialUpgradeAlert: 2000,
       u3mUnit: 100,
       u3mPrice: 20,
       u3mFreeQty: 10
@@ -272,6 +272,14 @@ const actions = {
   },
   async requestUpgradeToEnterprise ({ state }, params) {
     await organizationApi.requestUpgradeToEnterprise({ orgId: state.orgId, ...params })
+  },
+  async purchaseMaterial ({ state, dispatch }, { setQty }) {
+    const { data } = await organizationApi.purchaseMaterial({ orgId: state.orgId, setQty })
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async cancelMaterial ({ state, dispatch }, { setQty }) {
+    const { data } = await organizationApi.cancelMaterial({ orgId: state.orgId, setQty })
+    dispatch('handleResponseData', { data }, { root: true })
   }
 }
 

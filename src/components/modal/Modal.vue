@@ -79,7 +79,8 @@ export default {
     ModalChoosePlan: defineAsyncComponent(() => import('@/components/billings/ModalChoosePlan.vue')),
     ModalPaymentSuccess: defineAsyncComponent(() => import('@/components/billings/ModalPaymentSuccess.vue')),
     ModalPlanIntroduction: defineAsyncComponent(() => import('@/components/billings/ModalPlanIntroduction.vue')),
-    ModalUpgradeEnterprise: defineAsyncComponent(() => import('@/components/billings/ModalUpgradeEnterprise.vue'))
+    ModalUpgradeEnterprise: defineAsyncComponent(() => import('@/components/billings/ModalUpgradeEnterprise.vue')),
+    ModalManageMaterialQuota: defineAsyncComponent(() => import('@/components/billings/ModalManageMaterialQuota.vue'))
   },
   props: {
     component: {

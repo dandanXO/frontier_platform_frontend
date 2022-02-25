@@ -16,7 +16,7 @@ div(class="relative")
       :r="size/2 - 2.5"
       fill="transparent"
       class="stroke-brand stroke-5"
-      transform="rotate(-90) translate(-60, 0)"
+      :transform="`rotate(-90) translate(${-size}, 0)`"
       :stroke-dasharray="strokeDasharray"
       :stroke-dashoffset="strokeDashoffset"
     )
