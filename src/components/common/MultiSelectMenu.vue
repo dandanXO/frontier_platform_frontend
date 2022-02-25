@@ -46,7 +46,13 @@ export default {
     })
 
     const clearList = () => emit('update:selectedList', [])
-    const handleClick = (option) => option.func && !option.disabled && option.func(innerSelectedList.value)
+    const handleClick = (option) => {
+      if (!option.func || option.disabled) {
+        return
+      }
+      const tempList = innerSelectedList.value.map(item => JSON.parse(item)) // will JSON.stringify at NodeItem and selectAll
+      option.func(tempList)
+    }
 
     return {
       innerSelectedList,

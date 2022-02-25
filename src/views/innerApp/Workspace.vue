@@ -87,7 +87,7 @@ export default {
     const router = useRouter()
     const route = useRoute()
     const { goToWorkspaceMaterialDetail } = useNavigation()
-    const { editCollection, editMaterial, duplicateNode, moveNode, shareCollection, shareMaterial, deleteCollection, deleteMaterial, deleteMultipleNode } = useWorkspace()
+    const { editCollection, editMaterial, duplicateNode, moveNode, shareNode, deleteCollection, deleteMaterial, deleteMultipleNode } = useWorkspace()
 
     const optionSort = {
       base: [
@@ -128,7 +128,7 @@ export default {
       ]
 
       if (isFirstLayer.value && !inSearch) {
-        optionList[1].push(shareCollection)
+        optionList[1].push(shareNode)
       }
 
       return optionList
@@ -147,7 +147,7 @@ export default {
       ]
 
       if (isFirstLayer.value && !inSearch) {
-        optionList[1].push(shareMaterial)
+        optionList[1].push(shareNode)
       }
 
       return optionList
