@@ -252,10 +252,7 @@ const actions = {
     commit('SET_pricing', data.result.pricing)
   },
   async updateBillingInfo ({ state, dispatch }, params) {
-    const { data } = await organizationApi.updateBillingInfo({
-      orgId: state.orgId,
-      ...params
-    })
+    const { data } = await organizationApi.updateBillingInfo({ orgId: state.orgId, ...params })
     dispatch('handleResponseData', { data }, { root: true })
   },
   async getStripeClientSecret ({ state }) {
@@ -267,6 +264,14 @@ const actions = {
       orgId: state.orgId,
       ...params
     })
+  },
+  async upgradePlan ({ state, dispatch }) {
+    const { data } = await organizationApi.upgradePlan({ orgId: state.orgId })
+    dispatch('handleResponseData', { data }, { root: true })
+    return data
+  },
+  async requestUpgradeToEnterprise ({ state }, params) {
+    await organizationApi.requestUpgradeToEnterprise({ orgId: state.orgId, ...params })
   }
 }
 

@@ -105,11 +105,6 @@ const routes = [
     }
   },
   {
-    path: '/plan',
-    name: 'Plan',
-    component: () => import('@/views/Plan.vue')
-  },
-  {
     path: '/logout',
     name: 'Logout',
     beforeEnter: () => {
@@ -251,7 +246,11 @@ const routes = [
                 path: 'billings/:tab(plan|payment|history)',
                 name: 'Billings',
                 props: true,
-                component: () => import('@/views/innerApp/Billings.vue')
+                component: () => import('@/views/innerApp/Billings.vue'),
+                beforeEnter: async (to, from, next) => {
+                  await store.dispatch('organization/getPricing')
+                  next()
+                }
               }
             ]
           },

@@ -233,7 +233,7 @@ export const SHARE_TARGET_TYPE = {
 
 export const PLAN_TYPE = {
   BASIC: 1,
-  RRO: 2,
+  PRO: 2,
   ENT: 3
 }
 

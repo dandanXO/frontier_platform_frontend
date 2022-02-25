@@ -51,7 +51,7 @@ export default {
       ]
     })
 
-    const stripe = Stripe('pk_test_mVKwEYxeyS5eAHYgr40lo5WG007jQL4Cee')
+    const stripe = Stripe(import.meta.env.VITE_APP_STRIPE_KEY)
     const { setup_intent_client_secret: setupIntentClientSecret } = route.query
     !!setupIntentClientSecret && stripe.retrieveSetupIntent(setupIntentClientSecret).then(({ setupIntent }) => {
       router.push({ name: route.name }) // remove query string

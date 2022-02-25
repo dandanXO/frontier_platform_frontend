@@ -95,5 +95,13 @@ export default {
   setCardHolderName: ({ orgId, clientSecret, cardHolderName }) => axios('/org/payment/card-info/setup-customer', {
     method: 'POST',
     data: { orgId, clientSecret, cardHolderName }
+  }),
+  upgradePlan: ({ orgId }) => axios('/org/plan/upgrade', {
+    method: 'POST',
+    data: { orgId }
+  }),
+  requestUpgradeToEnterprise: ({ orgId, name, email, phone, phoneCountryCode, description }) => axios('/org/plan/upgrade-request', {
+    method: 'POST',
+    data: { orgId, name, email, phone, phoneCountryCode, description }
   })
 }

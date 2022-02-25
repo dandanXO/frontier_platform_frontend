@@ -75,7 +75,11 @@ export default {
     ModalPublicLibraryShareAssigned: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryShareAssigned.vue')),
     ModalShareMessage: defineAsyncComponent(() => import('@/components/ModalShareMessage.vue')),
     ModalEditBillingInfo: defineAsyncComponent(() => import('@/components/billings/ModalEditBillingInfo.vue')),
-    ModalSetupCard: defineAsyncComponent(() => import('@/components/billings/ModalSetupCard.vue'))
+    ModalSetupCard: defineAsyncComponent(() => import('@/components/billings/ModalSetupCard.vue')),
+    ModalChoosePlan: defineAsyncComponent(() => import('@/components/billings/ModalChoosePlan.vue')),
+    ModalPaymentSuccess: defineAsyncComponent(() => import('@/components/billings/ModalPaymentSuccess.vue')),
+    ModalPlanIntroduction: defineAsyncComponent(() => import('@/components/billings/ModalPlanIntroduction.vue')),
+    ModalUpgradeEnterprise: defineAsyncComponent(() => import('@/components/billings/ModalUpgradeEnterprise.vue'))
   },
   props: {
     component: {

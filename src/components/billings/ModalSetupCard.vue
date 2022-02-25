@@ -32,7 +32,7 @@ export default {
   setup () {
     const { t } = useI18n()
     const store = useStore()
-    const stripe = Stripe('pk_test_mVKwEYxeyS5eAHYgr40lo5WG007jQL4Cee')
+    const stripe = Stripe(import.meta.env.VITE_APP_STRIPE_KEY)
     const cardHolderName = ref('')
     const clientSecret = ref('')
     const elements = ref(null)
