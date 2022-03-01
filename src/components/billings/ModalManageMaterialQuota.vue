@@ -18,21 +18,28 @@ div(class="w-133.5 px-8")
           p(class="text-body2 text-primary pt-5 pb-1.5") {{$t('OO0002')}}:
           p(class="text-body2 text-primary pb-3") {{plan.quota.material.used}}/{{plan.quota.material.max}} {{$t('OO0006')}}
           label(class="bg-brand opacity-70 w-full h-5.5 flex items-center justify-center rounded text-body2 text-black-0") {{planName}}
-        div
-          template(v-if="currentTab === TAB.ADD")
-            p(class="text-body2 text-primary pt-2.5 pb-5") {{$t('OO0047')}}:
-            div(class="flex")
-              div(
-                class="w-30 h-12 border  rounded flex items-center justify-center text-body1 text-primary"
-                :class="[isHitUpgradeAlert ? 'border-warn' : 'border-black-400']"
-              ) {{previewAmount}}
-              div(class="cursor-pointer")
-                svg-icon(iconName="keyboard_arrow_up" size="24" @click="add")
-                svg-icon(iconName="keyboard_arrow_down" size="24" :class="{ 'text-primary-middle': setQty === 0 }" @click="reduce")
-            p(class="text-body2 text-primary pt-0.5") {{`${pricing.materialUnit}${$t('OO0035')} / ${$t('RR0044')} $${pricing.materialPrice}`}}
-            template(v-if="isHitUpgradeAlert")
-              p(class="text-caption text-warn line-height-1.6 pt-2.5") *{{$t('WW0081')}}
-              p(class="text-caption text-assist-blue line-height-1.6 underline cursor-pointer" @click="openModalChoosePlan") {{$t('OO0115')}}
+        div(class="flex flex-col")
+          p(class="text-body2 text-primary pt-2.5 pb-5") {{currentTab === TAB.ADD ? $t('OO0047') : $t('OO0061')}}:
+          div(class="flex")
+            div(
+              class="w-30 h-12 border  rounded flex items-center justify-center text-body1 text-primary"
+              :class="[isHitUpgradeAlert || !!cancelErrorMsg ? 'border-warn' : 'border-black-400']"
+            ) {{previewAmount}}
+            div(class="cursor-pointer")
+              svg-icon(iconName="keyboard_arrow_up" size="24" @click="add")
+              svg-icon(iconName="keyboard_arrow_down" size="24" :class="{ 'text-primary-middle': setQty === 0 }" @click="reduce")
+          p(class="text-body2 text-primary pt-0.5")
+            template(v-if="currentTab === TAB.ADD") {{`${pricing.materialUnit}${$t('OO0035')} / ${$t('RR0044')} $${pricing.materialPrice}`}}
+            template(v-else) {{`${pricing.materialUnit}${$t('OO0035')} / ${$t('OO0104')}`}}
+          template(v-if="currentTab === TAB.ADD && isHitUpgradeAlert")
+            p(class="text-caption text-warn line-height-1.6 pt-1") *{{$t('WW0081')}}
+            p(class="text-caption text-assist-blue line-height-1.6 underline cursor-pointer" @click="openModalChoosePlan") {{$t('OO0115')}}
+          template(v-if="currentTab === TAB.REMOVE")
+            div(class="flex-grow")
+              p(v-if="!!cancelErrorMsg" class="text-caption text-warn line-height-1.6 pt-1") {{cancelErrorMsg}}
+            div(class="flex items-start text-black-600")
+              svg-icon(iconName="error_outline" size="14" class="mt-1")
+              p(class="text-caption line-height-1.6 pl-0.5") {{$t('OO0062')}}
       div(v-if="currentTab === TAB.ADD" class="border-t border-black-400 pt-3")
         p(class="text-body1 font-bold text-primary text-right") {{`${$t('OO0034')}: ${$t('RR0044')} $${totalPrice}`}}
   btn-group(
@@ -88,14 +95,27 @@ export default {
         : store.getters['organization/pricing'].pro
     })
     const setQty = ref(0)
-    const previewAmount = computed(() => setQty.value * pricing.value.materialUnit)
+    const previewAmount = computed(() => {
+      return currentTab.value === TAB.ADD
+        ? setQty.value * pricing.value.materialUnit
+        : setQty.value * pricing.value.materialUnit * -1
+    })
     const isHitUpgradeAlert = computed(() => isPlanBasic.value && (previewAmount.value + plan.value.quota.material.max) > pricing.value.materialUpgradeAlert)
+    const cancelErrorMsg = computed(() => {
+      const { used, max } = plan.value.quota.material
+      const { materialUnit, materialFreeQuota } = pricing.value
+      if (materialFreeQuota > max - (setQty.value * materialUnit)) {
+        return t('WW0084')
+      } else if (used > max - (setQty.value * materialUnit)) {
+        return t('WW0083')
+      }
+    })
     const totalPrice = computed(() => setQty.value * pricing.value.materialPrice)
     const availableToConfirm = computed(() => {
       if (currentTab.value === TAB.ADD) {
         return setQty.value !== 0 && !isHitUpgradeAlert.value
       } else {
-        return true
+        return setQty.value !== 0 && !cancelErrorMsg.value
       }
     })
 
@@ -124,6 +144,9 @@ export default {
       if (currentTab.value === TAB.ADD) {
         await store.dispatch('organization/purchaseMaterial', { setQty: setQty.value })
         content = t('OO0051')
+      } else {
+        await store.dispatch('organization/cancelMaterial', { setQty: setQty.value })
+        content = t('OO0063')
       }
       store.dispatch('helper/closeModalLoading')
       store.dispatch('helper/openModal', {
@@ -131,7 +154,7 @@ export default {
         properties: {
           title: t('OO0050'),
           content,
-          nextPayInfo: t('OO0052', { date: plan.value.renewDate })
+          nextPayInfo: t('OO0064', { date: plan.value.renewDate })
         }
       })
     }
@@ -153,7 +176,8 @@ export default {
       totalPrice,
       availableToConfirm,
       closeModal,
-      primaryHandler
+      primaryHandler,
+      cancelErrorMsg
     }
   }
 }
