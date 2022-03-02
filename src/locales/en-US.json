@@ -324,6 +324,7 @@
   "WW0082": "No U3M data available for this Fabric",
   "WW0083": "Exceed the cancelable quantity",
   "WW0084": "The number of pieces that can be canceled has been reached.",
+  "WW0085": "Exceeds the number of members that the organization can join",
   "AA0001": "LOG IN",
   "AA0002": "Email",
   "AA0003": "Password",
@@ -848,6 +849,7 @@
   "OO0034": "Total",
   "OO0035": "pcs",
   "OO0036": "Purchased 3D material {number} pcs",
+  "OO0037": "Checkout",
   "OO0038": "Please confirm your information, the invoce can’t be changed once issued. {newline} By clicking on Comfirm, you agree to Frontier’s <{OO0116}>",
   "OO0039": "Payment successful",
   "OO0040": "Thank you for your Purchase!",
@@ -864,7 +866,7 @@
   "OO0051": "Successfully upgrade fabric storage",
   "OO0052": "Payment will automatically charged on {date}",
   "OO0053": "Your phone number",
-  "OO0054": "Deactivate?  ",
+  "OO0054": "Expired",
   "OO0055": "Cardholder name",
   "OO0056": "Deactivate?  ",
   "OO0057": "Checkout",
@@ -915,7 +917,7 @@
   "OO0102": "Delete Organization",
   "OO0103": "Enterprise customers, please contact your digital consultant or Email to {support@frontier.cool}. Our digital consultants will consult for you.",
   "OO0104": "Unit Price",
-  "OO0105": "Add-on 3D material {}pcs",
+  "OO0105": "Add-on 3D material {quantities} pcs",
   "OO0106": "Add-on extra storage {quantities} pcs",
   "OO0107": "Invited {number of member} members",
   "OO0108": "Upgrade to Professional Plan  ",
@@ -925,5 +927,6 @@
   "OO0112": "Anything you want to talk to us?",
   "OO0113": "Your require has been sent successfully! Thank you!",
   "OO0114": "Member",
-  "OO0115": "Upgrade"
+  "OO0115": "Upgrade",
+  "OO0116": "Terms of Subscription"
 }

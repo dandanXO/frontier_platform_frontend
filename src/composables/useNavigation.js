@@ -55,6 +55,10 @@ export default function useNavigation () {
     router.push(parsePath('/:orgNo/billings/plan'))
   }
 
+  const goToPaymentDetail = () => {
+    router.push(parsePath('/:orgNo/billings/payment'))
+  }
+
   const goToAssets = async () => {
     await router.push(parsePath(`${prefixPath.value}/assets`))
   }
@@ -114,6 +118,7 @@ export default function useNavigation () {
     goToReceivedShareMaterial,
     goToShareToMeMaterial,
     goToBillings,
+    goToPaymentDetail,
     prefixPath
   }
 }

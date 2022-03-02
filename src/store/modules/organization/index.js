@@ -280,6 +280,11 @@ const actions = {
   async cancelMaterial ({ state, dispatch }, { setQty }) {
     const { data } = await organizationApi.cancelMaterial({ orgId: state.orgId, setQty })
     dispatch('handleResponseData', { data }, { root: true })
+  },
+  async purchaseU3m ({ state, dispatch }, { setQty }) {
+    const { data } = await organizationApi.purchaseU3m({ orgId: state.orgId, setQty })
+    dispatch('handleResponseData', { data }, { root: true })
+    return data
   }
 }
 

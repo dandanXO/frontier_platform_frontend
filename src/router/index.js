@@ -215,6 +215,7 @@ const routes = [
           sidebar: Sidebar
         },
         beforeEnter: [checkUserIsVerify, async (to, from, next) => {
+          store.dispatch('organization/getPricing')
           await store.dispatch('user/getUser')
           await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
           await store.dispatch('user/orgUser/getOrgUser')
@@ -246,11 +247,7 @@ const routes = [
                 path: 'billings/:tab(plan|payment|history)',
                 name: 'Billings',
                 props: true,
-                component: () => import('@/views/innerApp/Billings.vue'),
-                beforeEnter: async (to, from, next) => {
-                  await store.dispatch('organization/getPricing')
-                  next()
-                }
+                component: () => import('@/views/innerApp/Billings.vue')
               }
             ]
           },

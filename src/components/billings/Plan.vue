@@ -16,7 +16,11 @@ div(class="w-195 mt-18.5")
       div
         p(class="text-body2 text-primary pb-1.5") {{$t('OO0002')}}:
         p(class="text-body2 text-black-700 pb-2.5") {{plan.quota.material.used}}/{{plan.quota.material.max}} {{$t('OO0006')}}
-        button(v-if="!isPlanEnterprise" class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-body2 hover:bg-brand-dark" @click="openModalManageMaterialQuota") {{$t('UU0073')}}
+        button(
+          v-if="!isPlanEnterprise"
+          class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-body2 hover:bg-brand-dark"
+          @click="openModalManageMaterialQuota"
+        ) {{$t('UU0073')}}
     div(class="border border-black-400 rounded pl-7.5 flex items-center gap-x-3")
       circle-progress-bar(:size="60" :current="plan.quota.u3m.used" :max="plan.quota.u3m.max")
         div(class="text-caption font-normal text-primary text-center")
@@ -25,7 +29,11 @@ div(class="w-195 mt-18.5")
       div
         p(class="text-body2 text-primary pb-1.5") {{$t('OO0003')}}:
         p(class="text-body2 text-black-700 pb-2.5") {{plan.quota.u3m.used}}/{{plan.quota.u3m.max}} {{$t('OO0006')}}
-        button(v-if="!isPlanEnterprise" class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-body2 hover:bg-brand-dark") {{$t('UU0074')}}
+        button(
+          v-if="!isPlanEnterprise"
+          class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-body2 hover:bg-brand-dark"
+          @click="openModalPurchaseU3mQuota"
+        ) {{$t('UU0074')}}
     div(class="border border-black-400 rounded flex justify-center items-center")
       p(class="text-body2 font-bold text-primary") {{$t('OO0031', { number: isPlanEnterprise ? `${plan.quota.member.used}/${plan.quota.member.max}` : plan.quota.member.used })}}
 </template>
@@ -51,19 +59,24 @@ export default {
 
     const openModalManageMaterialQuota = () => {
       store.dispatch('helper/openModal', {
-        component: 'modal-manage-material-quota',
-        properties: {
-          defaultTab: 0
-        }
+        component: 'modal-manage-material-quota'
       })
     }
+
+    const openModalPurchaseU3mQuota = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-purchase-u3m-quota'
+      })
+    }
+
 
     return {
       plan,
       planName,
       isPlanEnterprise,
       openModalChoosePlan,
-      openModalManageMaterialQuota
+      openModalManageMaterialQuota,
+      openModalPurchaseU3mQuota
     }
   }
 }

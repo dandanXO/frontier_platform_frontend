@@ -111,5 +111,9 @@ export default {
   cancelMaterial: ({ orgId, setQty }) => axios('/org/plan/cancel/material', {
     method: 'POST',
     data: { orgId, setQty }
+  }),
+  purchaseU3m: ({ orgId, setQty }) => axios('/org/plan/purchase/u3m', {
+    method: 'POST',
+    data: { orgId, setQty }
   })
 }

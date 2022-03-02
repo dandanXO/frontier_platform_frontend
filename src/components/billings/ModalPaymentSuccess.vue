@@ -26,8 +26,7 @@ export default {
       required: true
     },
     nextPayInfo: {
-      type: String,
-      required: true
+      type: String
     }
   },
   setup () {

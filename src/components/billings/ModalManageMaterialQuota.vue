@@ -57,23 +57,16 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { PLAN_TYPE } from '@/utils/constants.js'
 
-const TAB = {
-  ADD: 0,
-  REMOVE: 1
-}
 
 export default {
   name: 'ModalManageMaterialQuota',
-  props: {
-    defaultTab: {
-      type: Number,
-      required: true,
-      validator: (v) => [TAB.ADD, TAB.REMOVE].includes(v)
-    }
-  },
   setup (props) {
     const { t } = useI18n()
     const store = useStore()
+    const TAB = {
+      ADD: 0,
+      REMOVE: 1
+    }
     const tabList = [
       {
         id: TAB.ADD,
@@ -85,7 +78,7 @@ export default {
       }
     ]
 
-    const currentTab = ref(props.defaultTab)
+    const currentTab = ref(TAB.ADD)
     const plan = computed(() => store.getters['organization/plan'])
     const planName = computed(() => store.getters['organization/planName'])
     const isPlanBasic = computed(() => plan.value.planType === PLAN_TYPE.BASIC)
@@ -102,6 +95,10 @@ export default {
     })
     const isHitUpgradeAlert = computed(() => isPlanBasic.value && (previewAmount.value + plan.value.quota.material.max) > pricing.value.materialUpgradeAlert)
     const cancelErrorMsg = computed(() => {
+      if (currentTab.value === TAB.ADD) {
+        return ''
+      }
+
       const { used, max } = plan.value.quota.material
       const { materialUnit, materialFreeQuota } = pricing.value
       if (materialFreeQuota > max - (setQty.value * materialUnit)) {
@@ -109,6 +106,8 @@ export default {
       } else if (used > max - (setQty.value * materialUnit)) {
         return t('WW0083')
       }
+
+      return ''
     })
     const totalPrice = computed(() => setQty.value * pricing.value.materialPrice)
     const availableToConfirm = computed(() => {

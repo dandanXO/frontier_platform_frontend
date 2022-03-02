@@ -25,11 +25,11 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
           list-item
             div(class="pl-4.5 w-full flex justify-between items-center")
               p(class="text-primary text-caption") {{$t('OO0002')}}: {{org.plan.quota.material.used}}/{{org.plan.quota.material.max}}
-              button(class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark") {{$t('UU0073')}}
+              button(class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark" @click="openModalManageMaterialQuota") {{$t('UU0073')}}
           list-item
             div(class="pl-4.5 w-full flex justify-between items-center")
               p(class="text-primary text-caption") {{$t('OO0003')}}: {{org.plan.quota.u3m.used}}/{{org.plan.quota.u3m.max}}
-              button(class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark") {{$t('UU0074')}}
+              button(class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark" @click="openModalPurchaseU3mQuota") {{$t('UU0074')}}
           div(class="mx-2 my-1 h-px bg-black-400")
           list-item(@click="goToBillings" class="cursor-pointer")
             p(class="pl-4.5") {{$t('OO0004')}}
@@ -86,6 +86,18 @@ export default {
       haveUnreadNotification.value && store.dispatch('user/orgUser/readNotification')
     }
 
+    const openModalManageMaterialQuota = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-manage-material-quota'
+      })
+    }
+
+    const openModalPurchaseU3mQuota = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-purchase-u3m-quota'
+      })
+    }
+
     return {
       org,
       orgLogo,
@@ -96,7 +108,9 @@ export default {
       isExpand,
       goToBillings,
       goToLobby,
-      planName
+      planName,
+      openModalManageMaterialQuota,
+      openModalPurchaseU3mQuota
     }
   }
 }
