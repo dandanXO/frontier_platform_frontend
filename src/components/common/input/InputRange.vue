@@ -70,11 +70,11 @@
 </style>
 
 <template lang="pug">
-div(ref="slider" )
+div(ref="refSlider")
 </template>
 
 <script>
-import { ref, computed, onMounted } from '@vue/runtime-core'
+import { ref, onMounted, toRefs } from '@vue/runtime-core'
 import noUiSlider from 'nouislider'
 import 'nouislider/dist/nouislider.css'
 // https://refreshless.com/nouislider/
@@ -82,100 +82,84 @@ import 'nouislider/dist/nouislider.css'
 export default {
   name: 'InputRange',
   props: {
-    options: {
-      type: Object,
-      default: () => {
-        return {
-          start: [0, 100],
-          connect: true,
-          range: {
-            min: 0,
-            max: 100,
-          },
-          tooltips: true,
-          step: 1,
-          format: {
-            from: (value) => value,
-            to: (value) => Number.parseFloat(value).toFixed(0)
-          },
-          orientation: 'horizontal'
-        }
-      }
+    range: {
+      type: Array,
+      required: true
+    },
+    min: {
+      type: Number,
+      default: 0
+    },
+    max: {
+      type: Number,
+      default: 200
+    },
+    step: {
+      type: Number,
+      default: 1
+    },
+    tooltips: {
+      type: [Boolean, Array],
+      default: false
+    },
+    orientation: {
+      type: String,
+      validator: (v) => ['horizontal', 'vertical'].includes(v)
     },
     nonMaxLimit: {
       type: Boolean,
       default: false
-    },
-    oneHandle: {
-      type: Boolean,
-      default: false
     }
   },
-  emits: ['update:start'],
+  emits: ['update:range'],
   setup (props, { emit }) {
-    const slider = ref(null)
-    const common = {
-      connect: true,
-      tooltips: [
-        {
-          from: (v) => v,
-          to: (v) => customFormatter(v)
-        }, {
-          from: (v) => v,
-          to: (v) => customFormatter(v)
-        }
-      ],
-      step: 1,
-      format: {
-        from: (v) => v,
-        to: (v) => Number.parseFloat(v).toFixed(0) // By default, noUiSlider will format output with 2 decimals.
-      }
-    }
-
-    const customFormatter = (v) => {
-      if (v <= props.options.range.max) {
-        return Number.parseFloat(v).toFixed(0)
-      } else {
-        // e.g. When max is 200, 201 -> 200+
-        return `${props.options.range.max}+`
-      }
-    }
-
+    const refSlider = ref(null)
+    const { min, max, range } = toRefs(props)
     // In order to show 'plus' marks when nonMaxLimit is true.
-    const fakeMaxValue = props.options.range.max + 1
-    const innerStart = computed(() => {
-      if (props.nonMaxLimit) {
-        const inputMin = props.options.start[0] === null ? props.options.range.min : props.options.start[0]
-        const inputMax = props.options.start[1] === null ? fakeMaxValue : props.options.start[1]
-        return [inputMin, inputMax]
-      } else {
-        return props.options.start
-      }
-    })
+    const fakeMaxValue = max.value + 1
 
     const reset = () => {
-      emit('update:start', [null, null])
+      // after set slider, it will trigger `update` event
+      if (props.nonMaxLimit) {
+        refSlider.value.noUiSlider.set([min.value, fakeMaxValue])
+      } else {
+        refSlider.value.noUiSlider.set([min.value, max.value])
+      }
     }
 
     onMounted(() => {
-      noUiSlider.create(slider.value, {
-        ...common,
-        ...props.options,
-        start: innerStart.value,
+      let start = range.value
+
+      if (props.nonMaxLimit) {
+        const inputMin = range.value[0] === null ? min.value : range.value[0]
+        const inputMax = range.value[1] === null ? fakeMaxValue : range.value[1]
+        start = [inputMin, inputMax]
+      }
+
+      noUiSlider.create(refSlider.value, {
+        connect: true,
+        format: {
+          from: (v) => v,
+          to: (v) => Number.parseFloat(v).toFixed(0) // By default, noUiSlider will format output with 2 decimals.
+        },
+        tooltips: props.tooltips,
+        step: props.step,
+        orientation: props.orientation,
+        start,
         range: {
-          min: props.options.range.min,
-          max: props.nonMaxLimit ? fakeMaxValue : props.options.range.max
+          min: min.value,
+          max: props.nonMaxLimit ? fakeMaxValue : max.value
         }
       })
 
-      slider.value.noUiSlider.on('update', (v) => {
-        emit('update:start', v)
+      refSlider.value.noUiSlider.on('update', (v) => {
+        emit('update:range', v)
       })
     })
 
     return {
       reset,
-      slider
+      refSlider
     }
   }
 }

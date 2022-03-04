@@ -139,7 +139,7 @@ const getters = {
     if (!(keyword === '' && selectedTagList.length === 0)) {
       params.search = {
         keyword,
-        selectedTagList
+        tagList: selectedTagList
       }
     }
 
