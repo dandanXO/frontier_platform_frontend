@@ -18,9 +18,8 @@ div
         )
         span(class="inline-block -ml-6 w-5 text-left") {{scaleUnit}}
     input-range(
-      v-model:start="formattedScaleValue"
-      :options="scaleSetting"
-      :oneHandle="true"
+      v-model:range="formattedScaleValue"
+      v-bind="scaleSetting"
     )
   div(class="mt-2.5")
     div(class="text-primary text-body2 flex justify-between items-center mb-1")
@@ -37,9 +36,8 @@ div
         )
         span(class="inline-block -ml-3 w-3 text-left") °
     input-range(
-      v-model:start="formattedRotateDeg"
-      :options="rotateSetting"
-      :oneHandle="true"
+      v-model:range="formattedRotateDeg"
+      v-bind="rotateSetting"
     )
 </template>
 
@@ -133,20 +131,14 @@ export default {
 
     const scaleSetting = {
       ...commonSetting,
-      start: formattedScaleValue.value,
-      range: {
-        min: props.scaleRange[0],
-        max: props.scaleRange[1]
-      }
+      min: props.scaleRange[0],
+      max: props.scaleRange[1]
     }
 
     const rotateSetting = {
       ...commonSetting,
-      start: formattedRotateDeg.value,
-      range: {
-        min: 0,
-        max: 360
-      }
+      min: 0,
+      max: 360
     }
 
     const handleScaleChange = (e) => {

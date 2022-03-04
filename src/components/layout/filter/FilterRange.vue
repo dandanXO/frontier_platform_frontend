@@ -8,10 +8,10 @@ div
       slot(name="right")
   input-range(
     class="double-handles"
-    ref="inputRange"
-    v-model:start="innerRange"
-    :options="options"
-    :nonMaxLimit="true"
+    ref="refInputRange"
+    v-model:range="innerRange"
+    v-bind="options"
+    nonMaxLimit
   )
 </template>
 
@@ -39,33 +39,48 @@ export default {
   },
   emits: ['update:range'],
   setup (props, { emit }) {
-    const inputRange = ref(null)
+    const refInputRange = ref(null)
     const innerRange = computed({
       get: () => props.range,
-      set: (v) => {
-        if (props.min === v[0] && props.max === v[1] - 1) {
+      set: ([min, max]) => {
+        if (props.min === Number(min) && props.max === Number(max) - 1) {
           emit('update:range', [null, null])
         } else {
-          emit('update:range', v)
+          emit('update:range', [min, max])
         }
       }
     })
 
-    const options = {
-      start: innerRange.value,
-      range: {
-        min: props.min,
-        max: props.max,
+    const customFormatter = (v) => {
+      if (v <= props.max) {
+        return Number.parseFloat(v).toFixed(0)
+      } else {
+        // e.g. When max is 200, 201 -> 200+
+        return `${props.max}+`
       }
     }
 
+    const options = {
+      tooltips: [
+        {
+          from: (v) => v,
+          to: (v) => customFormatter(v)
+        }, {
+          from: (v) => v,
+          to: (v) => customFormatter(v)
+        }
+      ],
+      min: props.min,
+      max: props.max
+    }
+
     const reset = () => {
-      inputRange.value.reset()
+      refInputRange.value.reset()
     }
 
     return {
       innerRange,
-      inputRange,
+      refInputRange,
       reset,
       options
     }

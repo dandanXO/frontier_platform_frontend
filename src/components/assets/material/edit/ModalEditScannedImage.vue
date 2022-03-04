@@ -47,9 +47,8 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
           )
           span(class="inline-block -ml-6 w-5 text-left") cm
       input-range(
-        v-model:start="scaleSize"
-        :options="options"
-        :oneHandle="true"
+        v-model:range="scaleSize"
+        v-bind="options"
       )
       div(class="mt-3 cursor-pointer text-primary" @click="isExchange = !isExchange")
         svg-icon(iconName="swap_horiz" size="24" class="m-auto")
@@ -87,11 +86,8 @@ export default {
     const { faceSideImg, backSideImg } = material.value
     const scaleSize = ref(4)
     const options = {
-      start: scaleSize.value,
-      range: {
-        min: 1,
-        max: 21,
-      },
+      min: 1,
+      max: 21,
       step: 0.1,
       tooltips: false,
       orientation: 'vertical'
@@ -128,7 +124,7 @@ export default {
         return scaleSize.value
       },
       set (val) {
-        if (val > options.range.max || val < options.range.min) {
+        if (val > options.max || val < options.min) {
           return
         }
         scaleSize.value = val
