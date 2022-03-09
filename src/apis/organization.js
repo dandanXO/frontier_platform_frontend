@@ -115,5 +115,9 @@ export default {
   purchaseU3m: ({ orgId, setQty }) => axios('/org/plan/purchase/u3m', {
     method: 'POST',
     data: { orgId, setQty }
+  }),
+  getInvoiceList: ({ orgId, startDate, endDate, category, keyword, pagination }) => axios('/org/payment/invoice/get-list', {
+    method: 'POST',
+    data: { orgId, startDate, endDate, category, keyword, pagination }
   })
 }

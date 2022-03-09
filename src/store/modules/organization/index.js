@@ -2,6 +2,7 @@ import organizationApi from '@/apis/organization'
 import setVuexState from '@/utils/set-vuex-state'
 import { PLAN_TYPE, PLAN_STATUS } from '@/utils/constants.js'
 import i18n from '@/utils/i18n'
+import dayjs from 'dayjs'
 
 const state = () => ({
   orgId: 1,
@@ -285,6 +286,19 @@ const actions = {
     const { data } = await organizationApi.purchaseU3m({ orgId: state.orgId, setQty })
     dispatch('handleResponseData', { data }, { root: true })
     return data
+  },
+  async getInvoiceList ({ state, dispatch }, params) {
+    if (params.startDate?.length > 0) {
+      params.startDate = dayjs(params.startDate).format('YYYY/MM/DD')
+    }
+
+    if (params.endDate?.length > 0) {
+      params.endDate = dayjs(params.endDate).format('YYYY/MM/DD')
+    }
+
+    const { data } = await organizationApi.getInvoiceList({ orgId: state.orgId, ...params })
+    dispatch('handleResponseData', { data }, { root: true })
+    return data.result
   }
 }
 

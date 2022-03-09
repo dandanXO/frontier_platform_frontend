@@ -1,13 +1,14 @@
 <template lang="pug">
-div(class="px-7.5 pt-7.5 w-full h-full")
+div(class="px-7.5 pt-7.5 w-full")
   p(class="text-body1 font-bold text-primary mb-12.5") {{$t('OO0004')}}
-  div(class="border-b border-black-400")
+  div(class="border-b border-black-400 flex justify-between")
     div(class="flex gap-x-5")
       div(v-for="tab in tabList" class="cursor-pointer" @click="toggleTab(tab.path)")
         p(class="pb-2 text-body1" :class="[tab.path === currentTab ? 'border-b-4 border-brand text-primary font-bold' : 'text-black-600' ]" ) {{tab.name}}
-  div(class="w-full flex justify-center")
+  div(class="relative w-full flex justify-center")
     plan(v-if="currentTab === 'plan'")
     payment-detail(v-else-if="currentTab === 'payment'")
+    billing-history(v-else-if="currentTab === 'history'")
 </template>
 
 <script>
@@ -21,7 +22,8 @@ export default {
   name: 'Billings',
   components: {
     Plan: defineAsyncComponent(() => import('@/components/billings/Plan.vue')),
-    PaymentDetail: defineAsyncComponent(() => import('@/components/billings/PaymentDetail.vue'))
+    PaymentDetail: defineAsyncComponent(() => import('@/components/billings/PaymentDetail.vue')),
+    BillingHistory: defineAsyncComponent(() => import('@/components/billings/BillingHistory.vue'))
   },
   props: {
     tab: {

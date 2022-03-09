@@ -241,3 +241,14 @@ export const PLAN_STATUS = {
   INACTIVE: 0,
   ACTIVE: 1
 }
+
+export const BILLING_CATEGORY = {
+  ALL: 0,
+  SUBSCRIPTION: 1,
+  U3M: 2
+}
+
+export const BILLING_SORT = {
+  NEWEST_FIRST: 1,
+  OLDEST_FIRST: 2
+}
