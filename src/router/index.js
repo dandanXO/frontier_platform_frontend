@@ -114,16 +114,6 @@ const routes = [
     }
   },
   {
-    path: '/verify-user',
-    name: 'VerifyUser',
-    beforeEnter: async (to, from, next) => {
-      const { verifyCode } = to.query
-      await store.dispatch('user/verifyUser', { verifyCode })
-      await next('/')
-      store.commit('helper/PUSH_message', i18n.global.t('AA0086'))
-    }
-  },
-  {
     path: '/share-page',
     name: 'SharePage',
     beforeEnter: async (to, from, next) => {
@@ -204,6 +194,16 @@ const routes = [
           }
           await store.dispatch('user/getUser')
           return next(`/${orgNo}`)
+        }
+      },
+      {
+        path: 'verify-user',
+        name: 'VerifyUser',
+        beforeEnter: async (to, from, next) => {
+          const { verifyCode } = to.query
+          await store.dispatch('user/verifyUser', { verifyCode })
+          await next('/')
+          store.commit('helper/PUSH_message', i18n.global.t('AA0086'))
         }
       },
       {

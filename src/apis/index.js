@@ -38,7 +38,11 @@ instance.interceptors.response.use(response => {
   if (status === 401) {
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
-    router.push(`/sign-in/${window.location.search}`)
+    const query = {}
+    if (window.location.pathname !== '/') {
+      query.redirect = `${window.location.pathname}${window.location.search}`
+    }
+    router.push({ name: 'SignIn', query })
     return Promise.reject(new Error('access-token-expire'))
   }
 
