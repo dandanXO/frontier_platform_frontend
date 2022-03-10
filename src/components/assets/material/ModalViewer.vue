@@ -286,7 +286,6 @@ export default {
       })
 
       const baseTexture = new THREE.TextureLoader().load(props.baseImgUrl)
-      baseTexture.flipY = false
       baseTexture.wrapS = THREE.RepeatWrapping
       baseTexture.wrapT = THREE.RepeatWrapping
       baseTexture.repeat.set(repeatTimes, repeatTimes)
@@ -294,7 +293,6 @@ export default {
       baseTexture.needsUpdate = true
 
       const normalTexture = new THREE.TextureLoader().load(props.normalImgUrl)
-      normalTexture.flipY = false
       normalTexture.wrapS = THREE.RepeatWrapping
       normalTexture.wrapT = THREE.RepeatWrapping
       normalTexture.repeat.set(repeatTimes, repeatTimes)
