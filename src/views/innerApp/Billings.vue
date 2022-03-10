@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="px-7.5 pt-7.5 w-full")
+div(class="px-7.5 pt-7.5 w-full h-full relative")
   p(class="text-body1 font-bold text-primary mb-12.5") {{$t('OO0004')}}
   div(class="border-b border-black-400 flex justify-between")
     div(class="flex gap-x-5")
@@ -9,6 +9,7 @@ div(class="px-7.5 pt-7.5 w-full")
     plan(v-if="currentTab === 'plan'")
     payment-detail(v-else-if="currentTab === 'payment'")
     billing-history(v-else-if="currentTab === 'history'")
+  inactive-hint(v-if="!planStatus.ACTIVE" class="absolute bottom-0 left-0")
 </template>
 
 <script>
@@ -23,7 +24,8 @@ export default {
   components: {
     Plan: defineAsyncComponent(() => import('@/components/billings/Plan.vue')),
     PaymentDetail: defineAsyncComponent(() => import('@/components/billings/PaymentDetail.vue')),
-    BillingHistory: defineAsyncComponent(() => import('@/components/billings/BillingHistory.vue'))
+    BillingHistory: defineAsyncComponent(() => import('@/components/billings/BillingHistory.vue')),
+    InactiveHint: defineAsyncComponent(() => import('@/components/billings/InactiveHint.vue'))
   },
   props: {
     tab: {
@@ -37,7 +39,8 @@ export default {
     const router = useRouter()
     const store = useStore()
     const isLoading = ref(false)
-
+    const isShowInactiveHint = ref(true)
+    const planStatus = computed(() => store.getters['organization/planStatus'])
     const currentTab = computed(() => props.tab)
     const tabList = reactive([
       {
@@ -63,7 +66,9 @@ export default {
       tabList,
       toggleTab,
       isLoading,
-      ROLE_ID
+      ROLE_ID,
+      planStatus,
+      isShowInactiveHint
     }
   }
 }

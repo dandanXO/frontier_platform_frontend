@@ -70,10 +70,10 @@ export default {
           checkoutItemList: [
             {
               title: t('OO0036', { number: previewAmount.value }),
-              price: totalPrice.value
+              price: `$${totalPrice.value}`
             }
           ],
-          totalPrice: totalPrice.value,
+          totalPrice: `$${totalPrice.value}`,
           payHandler: async () => {
             store.dispatch('helper/openModalLoading')
             const { success } = await store.dispatch('organization/purchaseU3m', { setQty: setQty.value })
@@ -93,13 +93,13 @@ export default {
                 properties: {
                   title: t('OO0041'),
                   content: t('OO0042'),
-                  primaryButtonText: t('UU0026'),
-                  primaryHandler: closeModal,
-                  secondaryButtonText: t('UU0076'),
-                  secondaryHandler: () => {
+                  primaryButtonText: t('UU0076'),
+                  primaryHandler: () => {
                     store.dispatch('helper/closeModal')
                     goToPaymentDetail()
-                  }
+                  },
+                  secondaryButtonText: t('UU0026'),
+                  secondaryHandler: closeModal
                 }
               })
             }

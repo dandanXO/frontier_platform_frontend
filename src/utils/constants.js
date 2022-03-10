@@ -239,7 +239,14 @@ export const PLAN_TYPE = {
 
 export const PLAN_STATUS = {
   INACTIVE: 0,
-  ACTIVE: 1
+  ACTIVE: 1,
+  TRANSITION: 2
+  /**
+   * 停用申請停用後到正式停用的過度期，舉例來說：
+   * 使用者於 3/4 14:00 pm 申請停用，但這時還是訂閱中，其功能還是都可以操作，
+   * 等到 3/5 00:00 am 後系統才會正式的停止訂閱，限制其功能，
+   * 那麼 3/4 14:00 ~ 3/5: 00:00 am 就是所謂的過渡期。
+   */
 }
 
 export const BILLING_CATEGORY = {

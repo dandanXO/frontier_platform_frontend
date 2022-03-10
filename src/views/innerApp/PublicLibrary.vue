@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-full h-full")
+div(class="w-full h-full relative")
   search-table(
     ref="refSearchTable"
     :searchType="SEARCH_TYPE.PUBLIC_LIBRARY"
@@ -47,6 +47,8 @@ div(class="w-full h-full")
       div(v-else class="flex h-full justify-center items-end")
         p(class="text-body1 text-primary") {{$t('II0007')}}
   multi-select-menu(v-if="!isFirstLayer" :options="optionMultiSelect" v-model:selectedList="selectedNodeList")
+  div(v-if="planStatus.INACTIVE" class="absolute inset-0 z-99 opacity-30 bg-black-0")
+  inactive-hint(v-if="!planStatus.ACTIVE" class="absolute bottom-0 left-0 z-100")
 </template>
 
 <script>
@@ -59,12 +61,14 @@ import NodeItem from '@/components/layout/NodeItem.vue'
 import { useRoute, useRouter } from 'vue-router'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import useNavigation from '@/composables/useNavigation'
+import InactiveHint from '@/components/billings/InactiveHint.vue'
 
 export default {
   name: 'PublicLibrary',
   components: {
     SearchTable,
-    NodeItem
+    NodeItem,
+    InactiveHint
   },
   setup () {
     const { t } = useI18n()
@@ -83,6 +87,7 @@ export default {
     }
 
     const optionMultiSelect = [cloneNode]
+    const planStatus = computed(() => store.getters['organization/planStatus'])
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const collection = computed(() => store.getters['publicLibrary/collection'])
     const breadcrumbList = computed(() => store.getters['publicLibrary/collectionBreadcrumbList']({
@@ -179,7 +184,8 @@ export default {
       goToPublicLibraryMaterialDetail,
       selectedNodeList,
       handleSelectAll,
-      optionMultiSelect
+      optionMultiSelect,
+      planStatus
     }
   }
 }

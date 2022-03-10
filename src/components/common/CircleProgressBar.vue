@@ -6,7 +6,8 @@ div(class="relative")
       :cy="size/2"
       :r="size/2 - 2.5"
       fill="transparent"
-      class="stroke-black-400 stroke-5"
+      class="stroke-5"
+      :class="`stroke-${secondaryColor}`"
       stroke-dashoffset="0"
       :stroke-dasharray="strokeDasharray"
     )
@@ -15,7 +16,8 @@ div(class="relative")
       :cy="size/2"
       :r="size/2 - 2.5"
       fill="transparent"
-      class="stroke-brand stroke-5"
+      class="stroke-5"
+      :class="`stroke-${primaryColor}`"
       :transform="`rotate(-90) translate(${-size}, 0)`"
       :stroke-dasharray="strokeDasharray"
       :stroke-dashoffset="strokeDashoffset"
@@ -40,6 +42,14 @@ export default {
     current: {
       type: Number,
       required: true
+    },
+    primaryColor: {
+      type: String,
+      default: 'brand'
+    },
+    secondaryColor: {
+      type: String,
+      default: 'primary-middle'
     }
   },
   setup (props) {

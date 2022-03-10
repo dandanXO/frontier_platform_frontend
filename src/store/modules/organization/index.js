@@ -28,6 +28,7 @@ const state = () => ({
     planType: PLAN_TYPE.BASIC,
     activatedStatus: PLAN_STATUS.ACTIVE,
     renewDate: '',
+    deactivatedDate: '',
     quota: {
       material: {
         used: 0,
@@ -114,6 +115,15 @@ const getters = {
       [ENT]: i18n.global.t('RR0161')
     }
     return obj[getters.plan.planType]
+  },
+  planStatus: (state, getters) => {
+    const { activatedStatus, deactivatedDate } = getters.plan
+    const planStatus = {
+      INACTIVE: activatedStatus === PLAN_STATUS.INACTIVE,
+      ACTIVE: activatedStatus === PLAN_STATUS.ACTIVE && !deactivatedDate,
+      TRANSITION: activatedStatus === PLAN_STATUS.ACTIVE && !!deactivatedDate
+    }
+    return planStatus
   },
   paymentDetail: state => state.paymentDetail,
   noBindingPayment: (state, getters) => !getters.paymentDetail.cardInfo,
@@ -287,7 +297,7 @@ const actions = {
     dispatch('handleResponseData', { data }, { root: true })
     return data
   },
-  async getInvoiceList ({ state, dispatch }, params) {
+  async getInvoiceList ({ state }, params) {
     if (params.startDate?.length > 0) {
       params.startDate = dayjs(params.startDate).format('YYYY/MM/DD')
     }
@@ -297,7 +307,6 @@ const actions = {
     }
 
     const { data } = await organizationApi.getInvoiceList({ orgId: state.orgId, ...params })
-    dispatch('handleResponseData', { data }, { root: true })
     return data.result
   },
   async getInvoiceDetail ({ state, dispatch }, { invoiceId }) {
@@ -309,6 +318,19 @@ const actions = {
     const { data } = await organizationApi.updateInvoiceBillingInfo({ orgId: state.orgId, ...params })
     return data.result
   },
+  async getUnbilledInfo ({ state }) {
+    const { data } = await organizationApi.getUnbilledInfo({ orgId: state.orgId })
+    return data
+  },
+  async deactivateOrg ({ state, dispatch }) {
+    const { data } = await organizationApi.deactivateOrg({ orgId: state.orgId })
+    dispatch('handleResponseData', { data }, { root: true })
+    return data
+  },
+  async activateOrg ({ state, dispatch }) {
+    const { data } = await organizationApi.activateOrg({ orgId: state.orgId })
+    dispatch('handleResponseData', { data }, { root: true })
+  }
 }
 
 export default {

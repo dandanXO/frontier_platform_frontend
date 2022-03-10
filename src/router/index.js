@@ -15,6 +15,20 @@ const checkUserIsVerify = (to, from, next) => {
   next()
 }
 
+const checkOrgIsInactive = (to, from, next) => {
+  if (to.name === 'Billings') {
+    return next()
+  }
+
+  const planStatus = store.getters['organization/planStatus']
+
+  if (planStatus.INACTIVE) {
+    return next(`/${to.params.orgNo}/billings/plan`)
+  } else {
+    next()
+  }
+}
+
 const reuseRoutes = (prefix) => ([
   {
     path: 'management/:tab(about|members|history)',
@@ -237,10 +251,10 @@ const routes = [
             path: '',
             name: 'OrgRoot',
             component: () => import('@/views/PassThrough.vue'),
-            beforeEnter: (to, from, next) => {
+            beforeEnter: [checkOrgIsInactive, (to, from, next) => {
               store.commit('helper/SET_routeLocation', 'org')
               next()
-            },
+            }],
             children: [
               ...reuseRoutes('Org'),
               {
@@ -256,12 +270,12 @@ const routes = [
             name: 'GroupRoot',
             redirect: to => `/${to.params.orgNo}/${to.params.groupId}/assets`,
             component: () => import('@/views/PassThrough.vue'),
-            beforeEnter: async (to, from, next) => {
+            beforeEnter: [checkOrgIsInactive, async (to, from, next) => {
               store.commit('helper/SET_routeLocation', 'group')
               await store.dispatch('group/getGroup', { groupId: to.params.groupId })
               await store.dispatch('user/groupUser/getGroupUser')
               next()
-            },
+            }],
             children: reuseRoutes('Group')
           },
           {
@@ -272,17 +286,8 @@ const routes = [
           {
             path: 'public-library/:nodeKey',
             name: 'PublicLibraryMaterialDetail',
-            component: () => import('@/views/innerApp/PublicLibraryMaterialDetail.vue')
-          },
-          {
-            path: 'global-search',
-            name: 'GlobalSearch',
-            component: () => import('@/views/innerApp/GlobalSearch.vue')
-          },
-          {
-            path: 'favorites',
-            name: 'Favorites',
-            component: () => import('@/views/innerApp/Favorites.vue')
+            component: () => import('@/views/innerApp/PublicLibraryMaterialDetail.vue'),
+            beforeEnter: checkOrgIsInactive
           }
         ]
       }

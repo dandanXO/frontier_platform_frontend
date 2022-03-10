@@ -85,7 +85,9 @@ export default {
     ModalCheckoutList: defineAsyncComponent(() => import('@/components/billings/ModalCheckoutList.vue')),
     ModalTermsOfSubscription: defineAsyncComponent(() => import('@/components/ModalTermsOfSubscription.vue')),
     ModalPaymentFail: defineAsyncComponent(() => import('@/components/billings/ModalPaymentFail.vue')),
-    ModalPreviewInvoice: defineAsyncComponent(() => import('@/components/billings/ModalPreviewInvoice.vue'))
+    ModalPreviewInvoice: defineAsyncComponent(() => import('@/components/billings/ModalPreviewInvoice.vue')),
+    ModalDeactivate: defineAsyncComponent(() => import('@/components/billings/ModalDeactivate.vue')),
+    ModalDeactivateSuccess: defineAsyncComponent(() => import('@/components/billings/ModalDeactivateSuccess.vue'))
   },
   props: {
     component: {

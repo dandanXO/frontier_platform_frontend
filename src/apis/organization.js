@@ -127,5 +127,17 @@ export default {
   updateInvoiceBillingInfo: ({ orgId, invoiceId, recipient, email, countryCode, city, zipCode, address }) => axios('/org/payment/invoice/update-billing-info', {
     method: 'POST',
     data: { orgId, invoiceId, recipient, email, countryCode, city, zipCode, address }
+  }),
+  getUnbilledInfo: ({ orgId }) => axios('/org/payment/get-unbilled-info', {
+    method: 'POST',
+    data: { orgId }
+  }),
+  deactivateOrg: ({ orgId }) => axios('/org/plan/deactivate', {
+    method: 'POST',
+    data: { orgId }
+  }),
+  activateOrg: ({ orgId }) => axios('/org/plan/activate', {
+    method: 'POST',
+    data: { orgId }
   })
 }
