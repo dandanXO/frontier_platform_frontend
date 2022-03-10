@@ -84,7 +84,8 @@ export default {
     ModalPurchaseU3mQuota: defineAsyncComponent(() => import('@/components/billings/ModalPurchaseU3mQuota.vue')),
     ModalCheckoutList: defineAsyncComponent(() => import('@/components/billings/ModalCheckoutList.vue')),
     ModalTermsOfSubscription: defineAsyncComponent(() => import('@/components/ModalTermsOfSubscription.vue')),
-    ModalPaymentFail: defineAsyncComponent(() => import('@/components/billings/ModalPaymentFail.vue'))
+    ModalPaymentFail: defineAsyncComponent(() => import('@/components/billings/ModalPaymentFail.vue')),
+    ModalPreviewInvoice: defineAsyncComponent(() => import('@/components/billings/ModalPreviewInvoice.vue'))
   },
   props: {
     component: {

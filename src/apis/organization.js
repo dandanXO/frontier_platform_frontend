@@ -119,5 +119,13 @@ export default {
   getInvoiceList: ({ orgId, startDate, endDate, category, keyword, pagination }) => axios('/org/payment/invoice/get-list', {
     method: 'POST',
     data: { orgId, startDate, endDate, category, keyword, pagination }
+  }),
+  getInvoiceDetail: ({ orgId, invoiceId }) => axios('/org/payment/invoice/get', {
+    method: 'POST',
+    data: { orgId, invoiceId }
+  }),
+  updateInvoiceBillingInfo: ({ orgId, invoiceId, recipient, email, countryCode, city, zipCode, address }) => axios('/org/payment/invoice/update-billing-info', {
+    method: 'POST',
+    data: { orgId, invoiceId, recipient, email, countryCode, city, zipCode, address }
   })
 }

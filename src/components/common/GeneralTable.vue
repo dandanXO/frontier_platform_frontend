@@ -20,8 +20,8 @@ div
           svg-icon(iconName="keyboard_arrow_down" class="text-black-500 transform" :class="{'rotate-180' : isActive}")
       template(#content)
         slot(name="filter")
-  div(v-if="showHeader" class="flex text-center justify-center items-center bg-black-200 text-body1 text-primary py-4 my-2.5")
-    div(v-for="header in headers" :style="{'width': header.width}" class="flex items-center justify-center")
+  div(v-if="showHeader" class="flex gap-6 items-center bg-black-200 text-body1 text-primary py-4 my-2.5 px-15")
+    div(v-for="header in headers" :class="[`w-${header.width}`]" class="flex items-center")
       div {{header.label}}
       svg-icon(
         v-if="header.sortBy?.length > 0"
@@ -35,11 +35,11 @@ div
     div(v-if="items.length > 0" class="grid gap-y-2.5")
       div(
         v-for="(item, index) in items"
-        class="flex items-center text-center h-15 text-body1 text-black-700 hover:text-black-900 hover:bg-black-50"
+        class="flex gap-6 items-center h-15 px-15 text-body1 text-black-700 hover:text-black-900 hover:bg-black-50"
         @mouseenter="indexOfHover = index"
         @mouseleave="indexOfHover = null"
       )
-        div(v-for="header in headers" :style="{'width': header.width}")
+        div(v-for="header in headers" :class="[`w-${header.width}`]")
           div(v-if="item[header.prop]") {{item[header.prop]}}
           div(v-else)
             slot(

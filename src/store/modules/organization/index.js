@@ -299,7 +299,16 @@ const actions = {
     const { data } = await organizationApi.getInvoiceList({ orgId: state.orgId, ...params })
     dispatch('handleResponseData', { data }, { root: true })
     return data.result
-  }
+  },
+  async getInvoiceDetail ({ state, dispatch }, { invoiceId }) {
+    const { data } = await organizationApi.getInvoiceDetail({ orgId: state.orgId, invoiceId })
+    dispatch('handleResponseData', { data }, { root: true })
+    return data.result
+  },
+  async updateInvoiceBillingInfo ({ state }, params) {
+    const { data } = await organizationApi.updateInvoiceBillingInfo({ orgId: state.orgId, ...params })
+    return data.result
+  },
 }
 
 export default {

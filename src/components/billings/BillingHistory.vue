@@ -47,9 +47,10 @@ div(class="w-full mt-4")
           ) {{category.label}}
             div(v-if="index !== categoryOptions.length - 1" class="border-r border-primary-middle h-full mx-4")
     template(v-slot="{item, prop, isHover}")
-      div(v-if="prop === 'download'" class="flex justify-center items-center")
-        svg-icon(iconName="picture_as_pdf" class="text-assist-blue cursor-pointer" @click="generatePdf(item.invoiceId)")
-      div(v-if="prop === 'view'" class="flex justify-center items-center")
+      invoice-pdf-generator(v-if="prop === 'download'")
+        template(#activator="{ generatePdf }")
+          svg-icon(iconName="picture_as_pdf" class="text-assist-blue cursor-pointer" @click="generatePdf(item.invoiceId)")
+      div(v-if="prop === 'view'")
         svg-icon(v-show="isHover" iconName="visibility" class="cursor-pointer text-black-600"  @click="openModalViewInvoice(item.invoiceId)")
 </template>
 
@@ -58,9 +59,11 @@ import { BILLING_CATEGORY, BILLING_SORT } from '@/utils/constants'
 import { reactive, ref } from '@vue/reactivity'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import InvoicePdfGenerator from '@/components/billings/InvoicePdfGenerator.vue'
 
 export default {
   name: 'BillingHistory',
+  components: { InvoicePdfGenerator },
   async setup () {
     const { t } = useI18n()
     const store = useStore()
@@ -92,28 +95,28 @@ export default {
       {
         prop: 'invoiceNumber',
         label: t("OO0081"),
-        width: '20%'
+        width: '3/12'
       },
       {
         prop: 'date',
         label: t("OO0082"),
-        width: '20%',
+        width: '2/12',
         sortBy: [BILLING_SORT.NEWEST_FIRST, BILLING_SORT.OLDEST_FIRST]
       },
       {
         prop: 'title',
         label: t("OO0083"),
-        width: '30%'
+        width: '4/12'
       },
       {
         prop: 'download',
         label: t("OO0084"),
-        width: '14%'
+        width: '2/12'
       },
       {
         prop: 'view',
         label: '',
-        width: '16%'
+        width: '1/12'
       }
     ]
     const getList = async (targetPage = 1) => {
@@ -141,8 +144,14 @@ export default {
       getList()
     }
 
-    const openModalViewInvoice = (id) => {
-      console.log(id)
+    const openModalViewInvoice = async (invoiceId) => {
+      const { invoiceInfo } = await store.dispatch('organization/getInvoiceDetail', { invoiceId })
+      store.dispatch('helper/openModal', {
+        component: 'modal-preview-invoice',
+        properties: {
+          invoiceInfo
+        }
+      })
     }
 
     const generatePdf = (id) => {
