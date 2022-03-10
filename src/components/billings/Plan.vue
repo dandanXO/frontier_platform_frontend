@@ -43,7 +43,7 @@ div(class="w-195")
     div
       h6(class="text-h6 text-primary font-bold") {{$t('OO0007')}}
       p(class="text-body2 text-black-600 pt-2") {{$t('OO0059')}}
-    btn(size="md") {{$t('OO0129')}}
+    btn(size="md" @click="activateOrg") {{$t('OO0129')}}
 </template>
 
 <script>
@@ -84,6 +84,12 @@ export default {
       })
     }
 
+    const activateOrg = async () => {
+      store.dispatch('helper/openModalLoading')
+      await store.dispatch('organization/activateOrg')
+      store.dispatch('helper/closeModalLoading')
+    }
+
     return {
       plan,
       planName,
@@ -92,7 +98,8 @@ export default {
       openModalChoosePlan,
       openModalManageMaterialQuota,
       openModalPurchaseU3mQuota,
-      openModalDeactivate
+      openModalDeactivate,
+      activateOrg
     }
   }
 }
