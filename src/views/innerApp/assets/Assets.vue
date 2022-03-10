@@ -74,6 +74,7 @@ import useAssets from '@/composables/useAssets'
 import { SORT_BY, SEARCH_TYPE, DISPLAY_NODE } from '@/utils/constants.js'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+import { useRoute, useRouter } from 'vue-router'
 // https://github.com/Akryum/vue-virtual-scroller/tree/next/packages/vue-virtual-scroller
 
 export default {
@@ -88,6 +89,8 @@ export default {
     QrCodeGeneral
   },
   setup () {
+    const router = useRouter()
+    const route = useRoute()
     const store = useStore()
     const { goToMaterialUpload } = useNavigation()
     const currentItemSize = ref(379)
@@ -125,7 +128,13 @@ export default {
       selectedMaterialList.value = [...new Set(duplicateArr)]
     }
 
-    const getMaterialList = async (targetPage = 1) => await store.dispatch('assets/getMaterialList', { targetPage })
+    const getMaterialList = async (targetPage = 1, query) => {
+      await router.push({
+        name: route.name,
+        query
+      })
+      await store.dispatch('assets/getMaterialList', { targetPage })
+    }
 
     const onMouseEnter = (e) => {
       /**

@@ -138,13 +138,13 @@ export default {
     const isFirstTime = ref(true)
     const haveMsgAndFirstRead = computed(() => !!collection.value?.share?.message && isFirstTime.value)
 
-    const getShareToMeList = async (targetPage = 1) => {
+    const getShareToMeList = async (targetPage = 1, query) => {
       await router.push({
         name: route.name,
         query: {
           sharingId: sharingId.value,
           workspaceNodeId: workspaceNodeId.value,
-          ...route.query
+          ...query
         }
       })
       await store.dispatch('shareToMe/getShareToMeList', { targetPage, sharingId: sharingId.value, workspaceNodeId: workspaceNodeId.value })
@@ -161,6 +161,7 @@ export default {
     }
 
     const goTo = (key, targetSharingId = null) => {
+      store.dispatch('helper/search/reset', { sort: optionSort.base[0].value })
       store.dispatch('helper/search/setPagination', { currentPage: 1 })
       parseAndSetKey(key)
       if (targetSharingId && isFirstLayer.value) {

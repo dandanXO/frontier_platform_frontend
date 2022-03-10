@@ -128,13 +128,13 @@ export default {
     const isCollectionDetailExpand = ref(true)
     const refSearchTable = ref(null)
 
-    const getShareReceivedList = async (targetPage = 1) => {
+    const getShareReceivedList = async (targetPage = 1, query) => {
       await router.push({
         name: route.name,
         query: {
           sharingKey: share.value.sharingKey,
           workspaceNodeId: workspaceNodeId.value,
-          ...route.query
+          ...query
         }
       })
       await store.dispatch('receivedShare/getShareReceivedList', {
@@ -148,6 +148,7 @@ export default {
 
     const goTo = (key) => {
       workspaceNodeId.value = key.split('-')[1]
+      store.dispatch('helper/search/reset', { sort: optionSort.base[0].value })
       store.dispatch('helper/search/setPagination', { currentPage: 1 })
       search()
     }
