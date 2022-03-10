@@ -19,7 +19,7 @@ div(class="w-86 h-136 border-t border-black-400 flex flex-col")
       size="100"
       class="justify-self-end cursor-pointer text-brand-dark"
     )
-    img(v-else class="w-50 h-50" :src="orgLogo")
+    img(v-else class="w-50 h-50 rounded-full" :src="orgLogo")
   div(class="h-25 flex justify-center items-center")
     div(v-if="!isUploading && haveUploadedImage" class="grid grid-cols-2 gap-x-3")
       btn(size="md" type="secondary" @click="removeLogo") {{$t('UU0016') }}
@@ -41,7 +41,8 @@ export default {
     const cropRectSize = 200
     const isUploading = ref(false)
     const orgLogo = computed(() => store.getters['organization/organization'].logo)
-    const haveUploadedImage = computed(() => !!orgLogo.value)
+    const defaultLogo = 'logo-default.png' // This file name is static
+    const haveUploadedImage = computed(() => !orgLogo.value.includes(defaultLogo))
     const imageOperator = new ImageOperator(['jpeg', 'jpg', 'png'], 5, cropRectSize)
 
     imageOperator.on('uploading', () => (isUploading.value = true))
