@@ -3,7 +3,7 @@ div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
     div(class="pt-12 pb-9 flex justify-between")
       breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
-      btn(size="sm" type="secondary" class="ml-5") {{$t('UU0009')}}
+      btn(size="sm" type="secondary" class="ml-5" @click="openModalMassUpload") {{$t('UU0009')}}
     div
       div(class="pb-15 mb-5 border-b border-black-400")
         div(class="h-16 flex items-center")
@@ -140,6 +140,12 @@ export default {
       })
     }
 
+    const openModalMassUpload = () => {
+      store.dispatch('helper/openModal', {
+        component: 'modal-mass-upload'
+      })
+    }
+
     onBeforeRouteLeave(async () => {
       if (isConfirmedToLeave.value) {
         return true
@@ -169,7 +175,8 @@ export default {
       optionSingleOrDouble,
       material,
       breadcrumbList,
-      tempMaterialId
+      tempMaterialId,
+      openModalMassUpload
     }
   }
 }
