@@ -91,7 +91,7 @@ export default {
     }))
     const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
     const nodeList = computed(() => store.getters['publicLibrary/nodeList'])
-    const publishBy = computed(() => store.getters['publicLibrary/publishBy'])
+    const publishBy = computed(() => collection.value.publish.displayName)
     const optionNode = computed(() => {
       const optionList = [
         [
@@ -109,13 +109,13 @@ export default {
     const refSearchTable = ref(null)
     const selectedNodeList = ref([])
 
-    const getPublicList = async (targetPage = 1) => {
+    const getPublicList = async (targetPage = 1, query) => {
       await router.push({
         name: route.name,
         query: {
           workspaceNodeId: workspaceNodeId.value,
           workspaceNodeLocation: workspaceNodeLocation.value,
-          ...route.query
+          ...query
         }
       })
       await store.dispatch('publicLibrary/getPublicList', { targetPage, workspaceNodeId: workspaceNodeId.value, workspaceNodeLocation: workspaceNodeLocation.value })
@@ -135,6 +135,7 @@ export default {
     }
 
     const goTo = (key) => {
+      store.dispatch('helper/search/reset', { sort: optionSort.base[0].value })
       store.dispatch('helper/search/setPagination', { currentPage: 1 })
       parseAndSetKey(key)
       search()

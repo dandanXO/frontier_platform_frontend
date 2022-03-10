@@ -15,8 +15,7 @@ export default {
   }),
   getters: {
     materialBreadcrumbList: state => state.materialBreadcrumbList,
-    materialPublish: state => state.materialPublish,
-    publishBy: state => state.materialPublish?.displayName || ''
+    materialPublish: state => state.materialPublish
   },
   mutations: {
     SET_materialBreadcrumbList (state, materialBreadcrumbList) {

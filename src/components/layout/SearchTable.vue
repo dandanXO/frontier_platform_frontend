@@ -130,9 +130,9 @@ export default {
       // only when searchDirty is true, it's considered a search mode
       inSearch.value = searchDirty.value
 
-      await router.push({
-        name: route.name,
-        query: {
+      await props.searchCallback(
+        targetPage,
+        {
           currentPage: targetPage,
           sort: pagination.value.sort,
           isShowMatch: pagination.value.isShowMatch,
@@ -140,8 +140,7 @@ export default {
           tagList: encodeURI(JSON.stringify(selectedTagList.value)),
           filter: encodeURI(JSON.stringify(filter.value))
         }
-      })
-      await props.searchCallback(targetPage)
+      )
 
       isSearching.value = false
     }

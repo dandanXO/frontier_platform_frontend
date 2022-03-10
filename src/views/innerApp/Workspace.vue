@@ -157,12 +157,12 @@ export default {
     const refSearchTable = ref(null)
     const selectedNodeList = ref([])
 
-    const getWorkspace = async (targetPage = 1) => {
+    const getWorkspace = async (targetPage = 1, query) => {
       await router.push({
         name: route.name,
         query: {
           workspaceNodeId: workspaceNodeId.value,
-          ...route.query
+          ...query
         }
       })
       await store.dispatch('workspace/getWorkspace', { targetPage, workspaceNodeId: workspaceNodeId.value })
@@ -172,6 +172,7 @@ export default {
 
     const goTo = (key) => {
       workspaceNodeId.value = key.split('-')[1]
+      store.dispatch('helper/search/reset', { sort: optionSort.base[0].value })
       store.dispatch('helper/search/setPagination', { currentPage: 1 })
       search()
     }
