@@ -89,9 +89,9 @@ div(class="w-175 h-141 relative" :style="{width: outputWidth, height: outputHeig
     img(src="@/assets/images/material/camera.png" class="w-12.5")
   div(class="absolute w-6/12 m-auto bottom-5 inset-x-0")
     carousel(:settings="settings")
-      slide(v-for="item in type" :key="item")
-        div(class="cursor-pointer mx-1" @click="initModel(item)")
-          img(:src="getModelCoverImg(item)" class="rounded")
+      slide(v-for="type in modelTypes" :key="type")
+        div(class="cursor-pointer mx-1" @click="initModel(type)")
+          img(:src="getModelCoverImg(type)" class="rounded")
       template(#addons)
         navigation
         pagination
@@ -110,31 +110,37 @@ import 'vue3-carousel/dist/carousel.css'
 // https://github.com/ismail9k/vue3-carousel
 import { image2Object } from '@/utils/cropper'
 
-// size is magic number
+// Size and flipY properties are magic. Don't touch.
 const MODEL_INFO = {
   tshirt: {
     filePath: 'tshirtsmall',
-    size: 108
+    size: 108,
+    flipY: true
   },
   dress: {
     filePath: 'demo_dress',
-    size: 40
+    size: 40,
+    flipY: true
   },
   shoe: {
     filePath: 'shoe',
-    size: 50
+    size: 50,
+    flipY: false
   },
   bra: {
     filePath: 'sports_bra_and_leggings_for_nike',
-    size: 75
+    size: 75,
+    flipY: true
   },
   backpack: {
     filePath: 'large_camping_backpack_freegameready',
-    size: 115
+    size: 115,
+    flipY: true
   },
   pants: {
     filePath: 'black_pants',
-    size: 130
+    size: 130,
+    flipY: true
   }
 }
 
@@ -163,7 +169,7 @@ export default {
   setup (props) {
     const baseUrl = window.location.origin + '/static-data/material'
     const settings = { itemsToShow: 3, snapAlign: 'start' }
-    const type = Object.keys(MODEL_INFO)
+    const modelTypes = Object.keys(MODEL_INFO)
     const showLoading = ref(true)
     const canvas = ref(null)
     const outputWidth = 700
@@ -289,6 +295,7 @@ export default {
       baseTexture.wrapS = THREE.RepeatWrapping
       baseTexture.wrapT = THREE.RepeatWrapping
       baseTexture.repeat.set(repeatTimes, repeatTimes)
+      baseTexture.flipY = MODEL_INFO[type].flipY
 
       baseTexture.needsUpdate = true
 
@@ -296,6 +303,7 @@ export default {
       normalTexture.wrapS = THREE.RepeatWrapping
       normalTexture.wrapT = THREE.RepeatWrapping
       normalTexture.repeat.set(repeatTimes, repeatTimes)
+      normalTexture.flipY = MODEL_INFO[type].flipY
 
       normalTexture.needsUpdate = true
 
@@ -369,7 +377,7 @@ export default {
 
     onMounted(() => {
       initScene()
-      initModel(type[0])
+      initModel(modelTypes[0])
     })
 
     onUnmounted(() => {
@@ -382,7 +390,7 @@ export default {
     return {
       outputWidth,
       outputHeight,
-      type,
+      modelTypes,
       settings,
       canvas,
       showLoading,
