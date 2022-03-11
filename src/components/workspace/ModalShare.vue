@@ -5,14 +5,14 @@ div(class="w-113.5 px-8")
     div(class="flex gap-x-5")
       div(v-for="tab in tabList" class="cursor-pointer" @click="currentTab = tab.id")
         p(class="pb-2 text-body1 whitespace-nowrap" :class="[tab.id === currentTab ? 'border-b-4 border-brand text-primary font-bold' : 'text-black-600' ]" ) {{tab.name}}
-  div(class="h-48")
+  div(class="h-50.5")
     template(v-if="currentTab === TAB.ASSIGNED")
-      div(class="pt-7.5 pb-10")
-        div(class="flex items-end justify-between pb-7.5")
+      div(class="py-7.5")
+        div(class="flex items-end justify-between pb-6 gap-7")
           div(class="text-body2 text-primary flex flex-col justify-between")
             p(class="font-bold pb-2") {{$t('RR0156')}}
-            p {{$t('RR0150')}}
-          btn(size="sm" @click="openModalShareAssigned") {{$t('UU0067')}}
+            p(class="leading-normal") {{$t('RR0150')}}
+          btn(size="sm" class="flex-shrink-0" @click="openModalShareAssigned") {{$t('UU0067')}}
         div(class="text-body2 text-primary")
           p(class="font-bold pb-2") {{$t('FF0057')}}
           div(class="flex items-center justify-between")

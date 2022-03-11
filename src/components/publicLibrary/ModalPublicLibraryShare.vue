@@ -2,11 +2,11 @@
 div(class="w-113.5")
   div(class="px-8")
     h6(class="text-h6 font-bold text-primary pb-7.5 text-center") {{$t('RR0079')}}
-    div(class="flex items-end justify-between pb-7.5")
+    div(class="flex items-end justify-between pb-7.5 gap-7")
       div(class="text-body2 text-primary flex flex-col justify-between")
         p(class="font-bold pb-2") {{$t('RR0156')}}
-        p {{$t('RR0150')}}
-      btn(size="sm" @click="openModalPublicLibraryShareAssigned") {{$t('UU0067')}}
+        p(class="leading-normal") {{$t('RR0150')}}
+      btn(size="sm" class="flex-shrink-0" @click="openModalPublicLibraryShareAssigned") {{$t('UU0067')}}
   div(class="bg-black-100 py-5 flex justify-end pr-6")
     //- div
     //-   img(src="@/assets/images/linkedin.png")
