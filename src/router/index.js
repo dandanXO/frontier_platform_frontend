@@ -222,7 +222,6 @@ const routes = [
       },
       {
         path: ':orgNo',
-        redirect: to => `/${to.params.orgNo}/public-library`,
         name: 'InnerAppRoot',
         components: {
           default: () => import('@/views/PassThrough.vue'),
@@ -261,14 +260,21 @@ const routes = [
                 path: 'billings/:tab(plan|payment|history)',
                 name: 'Billings',
                 props: true,
-                component: () => import('@/views/innerApp/Billings.vue')
+                component: () => import('@/views/innerApp/Billings.vue'),
+                beforeEnter: (to, from, next) => {
+                  const roleId = store.getters['user/orgUser/orgUser'].orgRoleId
+                  if ([ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(roleId)) {
+                    return next()
+                  } else {
+                    return next(`/${to.params.orgNo}/public-library`)
+                  }
+                }
               }
             ]
           },
           {
             path: ':groupId(\\d+)',
             name: 'GroupRoot',
-            redirect: to => `/${to.params.orgNo}/${to.params.groupId}/assets`,
             component: () => import('@/views/PassThrough.vue'),
             beforeEnter: [checkOrgIsInactive, async (to, from, next) => {
               store.commit('helper/SET_routeLocation', 'group')

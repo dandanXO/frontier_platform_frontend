@@ -38,12 +38,13 @@ div(class="w-195")
         ) {{$t('UU0074')}}
     div(class="border border-black-400 rounded flex justify-center items-center")
       p(class="text-body2 font-bold text-primary") {{$t('OO0031', { number: isPlanEnterprise ? `${plan.quota.member.used}/${plan.quota.member.max}` : plan.quota.member.used })}}
-  p(v-if="planStatus.ACTIVE" class="text-body2 text-assist-blue underline text-right pt-2 cursor-pointer" @click="openModalDeactivate") {{$t('OO0007')}}
-  div(v-else class="w-full h-24 bg-black-200 flex justify-between items-center pl-7.5 pr-10 rounded mt-6")
-    div
-      h6(class="text-h6 text-primary font-bold") {{$t('OO0007')}}
-      p(class="text-body2 text-black-600 pt-2") {{$t('OO0059')}}
-    btn(size="md" @click="activateOrg") {{$t('OO0129')}}
+  template(v-if="!isPlanEnterprise")
+    p(v-if="planStatus.ACTIVE" class="text-body2 text-assist-blue underline text-right pt-2 cursor-pointer" @click="openModalDeactivate") {{$t('OO0007')}}
+    div(v-else class="w-full h-24 bg-black-200 flex justify-between items-center pl-7.5 pr-10 rounded mt-6")
+      div
+        h6(class="text-h6 text-primary font-bold") {{$t('OO0007')}}
+        p(class="text-body2 text-black-600 pt-2") {{$t('OO0059')}}
+      btn(size="md" @click="activateOrg") {{$t('OO0129')}}
 </template>
 
 <script>

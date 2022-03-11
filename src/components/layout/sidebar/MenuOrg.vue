@@ -22,24 +22,26 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
           list-item
             p(class="pl-4.5 font-bold text-body1 text-primary") {{planName}}
           div(class="mx-2 my-1 h-px bg-black-400")
-          list-item
+          list-item(class="h-10")
             div(class="pl-4.5 w-full flex justify-between items-center")
               p(class="text-primary text-caption") {{$t('OO0002')}}: {{org.plan.quota.material.used}}/{{org.plan.quota.material.max}}
               button(
+                v-permission="FUNC_ID.OPEN_MANAGE_MATERIAL_QUOTA"
                 v-if="planStatus.ACTIVE && !isPlanEnterprise"
                 class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark"
                 @click="openModalManageMaterialQuota"
               ) {{$t('UU0073')}}
-          list-item
+          list-item(class="h-10")
             div(class="pl-4.5 w-full flex justify-between items-center")
               p(class="text-primary text-caption") {{$t('OO0003')}}: {{org.plan.quota.u3m.used}}/{{org.plan.quota.u3m.max}}
               button(
+                v-permission="FUNC_ID.OPEN_PURCHASE_U3M"
                 v-if="planStatus.ACTIVE && !isPlanEnterprise"
                 class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark"
                 @click="openModalPurchaseU3mQuota"
               ) {{$t('UU0074')}}
           div(class="mx-2 my-1 h-px bg-black-400")
-          list-item(@click="goToBillings" class="cursor-pointer")
+          list-item(v-permission="FUNC_ID.VISIT_BILLING_PAGE" @click="goToBillings" class="cursor-pointer")
             div(class="w-full flex justify-between items-center")
               p(class="pl-4.5") {{$t('OO0004')}}
               div(v-if="!planStatus.ACTIVE" class="flex items-center")
@@ -74,7 +76,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import useNavigation from '@/composables/useNavigation.js'
-import { PLAN_TYPE } from '@/utils/constants.js'
+import { PLAN_TYPE, FUNC_ID } from '@/utils/constants.js'
 
 export default {
   name: 'MenuOrg',
@@ -127,7 +129,8 @@ export default {
       openModalManageMaterialQuota,
       openModalPurchaseU3mQuota,
       isPlanEnterprise,
-      planStatus
+      planStatus,
+      FUNC_ID
     }
   }
 }
