@@ -6,7 +6,7 @@ div(class="w-195")
       div(class="relative w-full flex justify-between items-center")
         h6(class="font-bold text-h6 text-primary") {{planName}}
           span(class="text-body2 font-normal text-black-600 pl-3") ({{$t('UU0081')}})
-        btn(v-if="!isPlanEnterprise" size="lg" :disabled="!planStatus.ACTIVE" @click="openModalChoosePlan") {{$t('UU0075')}}
+        btn(v-if="!planType.ENT" size="lg" :disabled="!planStatus.ACTIVE" @click="openModalChoosePlan") {{$t('UU0075')}}
         p(v-if="plan.renewDate" class="absolute top-full text-body2 font-normal text-black-600") {{$t('OO0044')}} {{plan.renewDate}}
     div(class="border border-black-400 rounded pl-7.5 flex items-center gap-x-3")
       circle-progress-bar(:size="60" :current="plan.quota.material.used" :max="plan.quota.material.max" :primaryColor="planStatus.ACTIVE ? 'brand' : 'black-500'")
@@ -17,7 +17,7 @@ div(class="w-195")
         p(class="text-body2 text-primary pb-1.5") {{$t('OO0002')}}:
         p(class="text-body2 text-black-700 pb-2.5") {{plan.quota.material.used}}/{{plan.quota.material.max}} {{$t('OO0006')}}
         button(
-          v-if="!isPlanEnterprise"
+          v-if="!planType.ENT"
           class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-body2 hover:bg-brand-dark disabled:bg-black-200 disabled:text-black-500"
           :disabled="!planStatus.ACTIVE"
           @click="openModalManageMaterialQuota"
@@ -31,14 +31,14 @@ div(class="w-195")
         p(class="text-body2 text-primary pb-1.5") {{$t('OO0003')}}:
         p(class="text-body2 text-black-700 pb-2.5") {{plan.quota.u3m.used}}/{{plan.quota.u3m.max}} {{$t('OO0006')}}
         button(
-          v-if="!isPlanEnterprise"
+          v-if="!planType.ENT"
           class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-body2 hover:bg-brand-dark disabled:bg-black-200 disabled:text-black-500"
           :disabled="!planStatus.ACTIVE"
           @click="openModalPurchaseU3mQuota"
         ) {{$t('UU0074')}}
     div(class="border border-black-400 rounded flex justify-center items-center")
-      p(class="text-body2 font-bold text-primary") {{$t('OO0031', { number: isPlanEnterprise ? `${plan.quota.member.used}/${plan.quota.member.max}` : plan.quota.member.used })}}
-  template(v-if="!isPlanEnterprise")
+      p(class="text-body2 font-bold text-primary") {{$t('OO0031', { number: planType.ENT ? `${plan.quota.member.used}/${plan.quota.member.max}` : plan.quota.member.used })}}
+  template(v-if="!planType.ENT")
     p(v-if="planStatus.ACTIVE" class="text-body2 text-assist-blue underline text-right pt-2 cursor-pointer" @click="openModalDeactivate") {{$t('OO0007')}}
     div(v-else class="w-full h-24 bg-black-200 flex justify-between items-center pl-7.5 pr-10 rounded mt-6")
       div
@@ -50,52 +50,30 @@ div(class="w-195")
 <script>
 import { computed } from '@vue/runtime-core'
 import { useStore } from 'vuex'
-import { PLAN_TYPE } from '@/utils/constants.js'
+import usePlan from '@/composables/usePlan.js'
 
 export default {
   name: 'Plan',
   setup () {
     const store = useStore()
+    const {
+      openModalChoosePlan,
+      openModalManageMaterialQuota,
+      openModalPurchaseU3mQuota,
+      openModalDeactivate,
+      activateOrg
+    } = usePlan()
+
     const plan = computed(() => store.getters['organization/plan'])
     const planName = computed(() => store.getters['organization/planName'])
     const planStatus = computed(() => store.getters['organization/planStatus'])
-    const isPlanEnterprise = computed(() => plan.value.planType === PLAN_TYPE.ENT)
-
-    const openModalChoosePlan = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-choose-plan'
-      })
-    }
-
-    const openModalManageMaterialQuota = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-manage-material-quota'
-      })
-    }
-
-    const openModalPurchaseU3mQuota = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-purchase-u3m-quota'
-      })
-    }
-
-    const openModalDeactivate = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-deactivate'
-      })
-    }
-
-    const activateOrg = async () => {
-      store.dispatch('helper/openModalLoading')
-      await store.dispatch('organization/activateOrg')
-      store.dispatch('helper/closeModalLoading')
-    }
+    const planType = computed(() => store.getters['organization/planType'])
 
     return {
       plan,
       planName,
       planStatus,
-      isPlanEnterprise,
+      planType,
       openModalChoosePlan,
       openModalManageMaterialQuota,
       openModalPurchaseU3mQuota,

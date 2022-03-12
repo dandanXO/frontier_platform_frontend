@@ -325,6 +325,7 @@
   "WW0083": "Exceed the cancelable quantity",
   "WW0084": "The number of pieces that can be canceled has been reached.",
   "WW0085": "Exceeds the number of members that the organization can join",
+  "WW0086": "Exceeds the number of materials that the organization can create",
   "AA0001": "LOG IN",
   "AA0002": "Email",
   "AA0003": "Password",
@@ -944,5 +945,6 @@
   "OO0129": "Activate it",
   "OO0130": "Go Activate",
   "OO0131": "Your organization is currently {OO0132}",
-  "OO0132": "deactive"
+  "OO0132": "deactive",
+  "OO0133": "Maximum number of members"
 }

@@ -18,14 +18,14 @@ div(class="w-100 px-8")
 <script>
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import useNavigation from '@/composables/useNavigation.js'
+import usePlan from '@/composables/usePlan.js'
 
 export default {
   name: 'ModalDeactivate',
   setup () {
     const { t } = useI18n()
     const store = useStore()
-    const { goToPaymentDetail } = useNavigation()
+    const { openModalPaymentFail } = usePlan()
 
     const functionList = [
       t('OO0123'),
@@ -65,20 +65,7 @@ export default {
                 component: 'modal-deactivate-success'
               })
             } else {
-              store.dispatch('helper/openModal', {
-                component: 'modal-payment-fail',
-                properties: {
-                  title: t('OO0041'),
-                  content: t('OO0042'),
-                  primaryButtonText: t('UU0076'),
-                  primaryHandler: () => {
-                    store.dispatch('helper/closeModal')
-                    goToPaymentDetail()
-                  },
-                  secondaryButtonText: t('UU0026'),
-                  secondaryHandler: closeModal
-                }
-              })
+              openModalPaymentFail()
             }
           }
         }

@@ -55,14 +55,14 @@ div(class="w-133.5 px-8")
 import { ref, computed } from '@vue/reactivity'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { PLAN_TYPE } from '@/utils/constants.js'
-
+import usePlan from '@/composables/usePlan.js'
 
 export default {
   name: 'ModalManageMaterialQuota',
   setup (props) {
     const { t } = useI18n()
     const store = useStore()
+    const { openModalChoosePlan } = usePlan()
     const TAB = {
       ADD: 0,
       REMOVE: 1
@@ -81,9 +81,9 @@ export default {
     const currentTab = ref(TAB.ADD)
     const plan = computed(() => store.getters['organization/plan'])
     const planName = computed(() => store.getters['organization/planName'])
-    const isPlanBasic = computed(() => plan.value.planType === PLAN_TYPE.BASIC)
+    const planType = computed(() => store.getters['organization/planType'])
     const pricing = computed(() => {
-      return isPlanBasic.value
+      return planType.value.BASIC
         ? store.getters['organization/pricing'].basic
         : store.getters['organization/pricing'].pro
     })
@@ -93,7 +93,7 @@ export default {
         ? setQty.value * pricing.value.materialUnit
         : setQty.value * pricing.value.materialUnit * -1
     })
-    const isHitUpgradeAlert = computed(() => isPlanBasic.value && (previewAmount.value + plan.value.quota.material.max) > pricing.value.materialUpgradeAlert)
+    const isHitUpgradeAlert = computed(() => planType.value.BASIC && (previewAmount.value + plan.value.quota.material.max) > pricing.value.materialUpgradeAlert)
     const cancelErrorMsg = computed(() => {
       if (currentTab.value === TAB.ADD) {
         return ''
@@ -126,12 +126,6 @@ export default {
 
     const reduce = () => {
       setQty.value > 0 && setQty.value--
-    }
-
-    const openModalChoosePlan = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-choose-plan'
-      })
     }
 
     const closeModal = () => store.dispatch('helper/closeModal')

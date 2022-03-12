@@ -8,7 +8,7 @@ div(v-if="isShowInactiveHint" class="w-full h-14 flex justify-between items-cent
     h6(v-else-if="planStatus.TRANSITION" class="text-h6 ml-3") {{$t('OO0058')}}
       span(class="font-bold pl-1") {{deactivatedDate}}
   div(class="flex items-center")
-    chip(v-if="$route.name !== 'Billings'" size="lg" :text="$t('OO0130')" @click="goToBillings" class="mr-4")
+    chip(v-permission="FUNC_ID.VISIT_BILLING_PAGE" v-if="$route.name !== 'Billings'" size="lg" :text="$t('OO0130')" @click="goToBillings" class="mr-4")
     svg-icon(iconName="clear" size="24" class="text-black-0 cursor-pointer" @click="isShowInactiveHint = false")
 </template>
 
@@ -16,6 +16,7 @@ div(v-if="isShowInactiveHint" class="w-full h-14 flex justify-between items-cent
 import { useStore } from 'vuex'
 import { computed, ref } from '@vue/runtime-core'
 import useNavigation from '@/composables/useNavigation.js'
+import { FUNC_ID } from '@/utils/constants.js'
 
 export default {
   name: 'InactiveHint',
@@ -31,7 +32,8 @@ export default {
       planStatus,
       deactivatedDate,
       goToBillings,
-      isShowInactiveHint
+      isShowInactiveHint,
+      FUNC_ID
     }
   }
 }

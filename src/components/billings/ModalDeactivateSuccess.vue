@@ -18,20 +18,17 @@ div(class="w-100 px-8 flex flex-col items-center")
 <script>
 import { computed } from '@vue/reactivity'
 import { useStore } from 'vuex'
+import usePlan from '@/composables/usePlan.js'
+
 export default {
   name: 'ModalDeactivateSuccess',
   setup () {
     const store = useStore()
+    const { activateOrg } = usePlan()
 
     const plan = computed(() => store.getters['organization/plan'])
 
     const closeModal = () => store.dispatch('helper/closeModal')
-
-    const activateOrg = async () => {
-      store.dispatch('helper/openModalLoading')
-      await store.dispatch('organization/activateOrg')
-      store.dispatch('helper/closeModalLoading')
-    }
 
     return {
       plan,

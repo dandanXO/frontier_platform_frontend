@@ -34,20 +34,19 @@ import { ref, computed } from '@vue/reactivity'
 import { useStore } from 'vuex'
 import { PLAN_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
-import useNavigation from '@/composables/useNavigation.js'
+import usePlan from '@/composables/usePlan.js'
 
 export default {
   name: 'ModalPurchaseU3mQuota',
   setup () {
     const store = useStore()
     const { t } = useI18n()
-    const { goToPaymentDetail } = useNavigation()
+    const { openModalPaymentFail } = usePlan()
 
     const plan = computed(() => store.getters['organization/plan'])
     const planName = computed(() => store.getters['organization/planName'])
-    const isPlanBasic = computed(() => plan.value.planType === PLAN_TYPE.BASIC)
     const pricing = computed(() => {
-      return isPlanBasic.value
+      return store.getters['organization/planType'].BASIC
         ? store.getters['organization/pricing'].basic
         : store.getters['organization/pricing'].pro
     })
@@ -88,20 +87,7 @@ export default {
                 }
               })
             } else {
-              store.dispatch('helper/openModal', {
-                component: 'modal-payment-fail',
-                properties: {
-                  title: t('OO0041'),
-                  content: t('OO0042'),
-                  primaryButtonText: t('UU0076'),
-                  primaryHandler: () => {
-                    store.dispatch('helper/closeModal')
-                    goToPaymentDetail()
-                  },
-                  secondaryButtonText: t('UU0026'),
-                  secondaryHandler: closeModal
-                }
-              })
+              openModalPaymentFail()
             }
           }
         }

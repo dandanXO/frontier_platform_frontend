@@ -125,6 +125,15 @@ const getters = {
     }
     return planStatus
   },
+  planType: (state, getters) => {
+    const planType = getters.plan.planType
+    const { BASIC, PRO, ENT } = PLAN_TYPE
+    return {
+      BASIC: BASIC === planType,
+      PRO: PRO === planType,
+      ENT: ENT === planType
+    }
+  },
   paymentDetail: state => state.paymentDetail,
   noBindingPayment: (state, getters) => !getters.paymentDetail.cardInfo,
   pricing: state => state.pricing

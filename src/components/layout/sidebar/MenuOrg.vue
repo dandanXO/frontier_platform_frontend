@@ -27,7 +27,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
               p(class="text-primary text-caption") {{$t('OO0002')}}: {{org.plan.quota.material.used}}/{{org.plan.quota.material.max}}
               button(
                 v-permission="FUNC_ID.OPEN_MANAGE_MATERIAL_QUOTA"
-                v-if="planStatus.ACTIVE && !isPlanEnterprise"
+                v-if="planStatus.ACTIVE && !planType.ENT"
                 class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark"
                 @click="openModalManageMaterialQuota"
               ) {{$t('UU0073')}}
@@ -36,7 +36,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
               p(class="text-primary text-caption") {{$t('OO0003')}}: {{org.plan.quota.u3m.used}}/{{org.plan.quota.u3m.max}}
               button(
                 v-permission="FUNC_ID.OPEN_PURCHASE_U3M"
-                v-if="planStatus.ACTIVE && !isPlanEnterprise"
+                v-if="planStatus.ACTIVE && !planType.ENT"
                 class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark"
                 @click="openModalPurchaseU3mQuota"
               ) {{$t('UU0074')}}
@@ -76,13 +76,15 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import useNavigation from '@/composables/useNavigation.js'
-import { PLAN_TYPE, FUNC_ID } from '@/utils/constants.js'
+import usePlan from '@/composables/usePlan.js'
+import { FUNC_ID } from '@/utils/constants.js'
 
 export default {
   name: 'MenuOrg',
   setup () {
     const store = useStore()
     const { goToBillings, goToLobby } = useNavigation()
+    const { openModalManageMaterialQuota, openModalPurchaseU3mQuota } = usePlan()
 
     const isExpand = ref(false)
 
@@ -90,7 +92,7 @@ export default {
     const orgLogo = computed(() => store.getters['organization/orgLogo'])
     const planName = computed(() => store.getters['organization/planName'])
     const planStatus = computed(() => store.getters['organization/planStatus'])
-    const isPlanEnterprise = computed(() => store.getters['organization/plan'].planType === PLAN_TYPE.ENT)
+    const planType = computed(() => store.getters['organization/planType'])
     const notificationList = computed(() => {
       return isExpand.value
         ? store.getters['user/orgUser/notificationList']
@@ -101,18 +103,6 @@ export default {
 
     const readNotification = () => {
       haveUnreadNotification.value && store.dispatch('user/orgUser/readNotification')
-    }
-
-    const openModalManageMaterialQuota = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-manage-material-quota'
-      })
-    }
-
-    const openModalPurchaseU3mQuota = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-purchase-u3m-quota'
-      })
     }
 
     return {
@@ -128,7 +118,7 @@ export default {
       planName,
       openModalManageMaterialQuota,
       openModalPurchaseU3mQuota,
-      isPlanEnterprise,
+      planType,
       planStatus,
       FUNC_ID
     }

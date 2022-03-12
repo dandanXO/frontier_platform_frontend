@@ -22,7 +22,7 @@ fullscreen-header
               p(class="text-caption text-black-700 self-start mb-2") {{$t('OO0072')}}
               h3(class="text-h3 font-medium text-primary mb-3") {{$t('RR0044')}} ${{pricing.basic.planPrice}}
               p(class="text-caption text-primary self-center") {{$t('OO0073')}}
-            btn(size="md" disabled class="w-50 mt-7") {{isPlanBasic ? $t('UU0081') : $t('UU0080')}}
+            btn(size="md" disabled class="w-50 mt-7") {{planType.BASIC ? $t('UU0081') : $t('UU0080')}}
         div(class="border border-primary-middle rounded card-shadow overflow-hidden flex flex-col")
           div(class="h-1.5 bg-brand")
           div(class="flex-grow h-auto pt-9 pb-7.5 flex flex-col items-center")
@@ -32,7 +32,7 @@ fullscreen-header
               p(class="text-caption text-black-700 self-start mb-2") {{$t('OO0072')}}
               h3(class="text-h3 font-medium text-primary mb-3") {{$t('RR0044')}} ${{pricing.pro.planPrice}}
               p(class="text-caption text-primary self-center") {{$t('OO0073')}}
-            btn(size="md" :disabled="isPlanPro" class="w-50 mt-7" @click="upgradePlan") {{isPlanPro ? $t('UU0081') : $t('UU0079')}}
+            btn(size="md" :disabled="planType.PRO" class="w-50 mt-7" @click="upgradePlan") {{planType.PRO ? $t('UU0081') : $t('UU0079')}}
         div(class="border border-primary-middle rounded card-shadow overflow-hidden flex flex-col")
           div(class="h-1.5 bg-assist-blue")
           div(class="flex-grow h-auto pt-9 pb-7.5 flex flex-col items-center")
@@ -50,7 +50,7 @@ import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
 import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
 import { useI18n } from 'vue-i18n'
-import { PLAN_TYPE } from '@/utils/constants.js'
+import usePlan from '@/composables/usePlan.js'
 
 export default {
   name: 'ModalChoosePlan',
@@ -60,14 +60,18 @@ export default {
   setup () {
     const { t } = useI18n()
     const store = useStore()
+    const { checkHaveBindPayment } = usePlan()
 
     const pricing = computed(() => store.getters['organization/pricing'])
     const plan = computed(() => store.getters['organization/plan'])
-    const isPlanBasic = computed(() => plan.value.planType === PLAN_TYPE.BASIC)
-    const isPlanPro = computed(() => plan.value.planType === PLAN_TYPE.PRO)
+    const planType = computed(() => store.getters['organization/planType'])
 
     const closeModal = () => store.dispatch('helper/closeModal')
     const upgradePlan = async () => {
+      if (!checkHaveBindPayment()) {
+        return
+      }
+
       store.dispatch('helper/pushModalLoading')
       const { success, message } = await store.dispatch('organization/upgradePlan')
       store.dispatch('helper/closeModalLoading')
@@ -104,8 +108,7 @@ export default {
       pricing,
       closeModal,
       upgradePlan,
-      isPlanBasic,
-      isPlanPro,
+      planType,
       openModalPlanIntroduction,
       openModalUpgradeEnterprise
     }

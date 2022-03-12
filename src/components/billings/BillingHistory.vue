@@ -154,10 +154,6 @@ export default {
       })
     }
 
-    const generatePdf = (id) => {
-      console.log(id)
-    }
-
     await getList()
 
     return {
@@ -171,7 +167,6 @@ export default {
       categoryOptions,
       queryParams,
       openModalViewInvoice,
-      generatePdf,
       changeCategory
     }
   }
