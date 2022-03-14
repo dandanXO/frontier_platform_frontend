@@ -10,15 +10,15 @@ div(class="l:pt-16 pt-17.5")
           )
             svg-icon(iconName="camera" size="20" class="text-black-500 hover:text-brand")
         div(class="flex items-center pt-4 cursor-pointer" @click="copyText(organization.orgNo), $store.commit('helper/PUSH_message', $t('BB0038'))")
-          p(class="text-caption text-primary") ID: {{organization.orgNo}}
+          p(class="text-caption text-primary") ID: {{ organization.orgNo }}
           tooltip(placement="bottom")
             template(#trigger)
               svg-icon(iconName="content_copy" size="14" class="text-black-700")
             template(#content)
-              p(class="text-caption text-primary px-3 py-1") {{$t('BB0056')}}
-        p(class="pt-2.5 text-caption text-black-500 cursor-pointer" @click="openModalDelete") {{$t('UU0013')}}
+              p(class="text-caption text-primary px-3 py-1") {{ $t('BB0056') }}
+        p(v-permission="FUNC_ID.DELETE_ORG" v-if="!planType.ENT" class="pt-2.5 text-caption text-black-500 cursor-pointer" @click="openModalTypeTextToConfirm") {{ $t('UU0013') }}
     div(class="grid gap-y-8.5 relative")
-      p(class="absolute text-caption text-black-500 right-0 -top-7 transform -translate-y-full") *{{$t('BB0073')}}
+      p(class="absolute text-caption text-black-500 right-0 -top-7 transform -translate-y-full") *{{ $t('RR0163') }}
       div(class="grid grid-cols-2 grid-rows-3 gap-y-7.5 l:gap-x-8 gap-x-15")
         input-label-color(
           v-model:labelColor="orgFormData.labelColor"
@@ -62,7 +62,7 @@ div(class="l:pt-16 pt-17.5")
           :label="$t('BB0080')"
           :placeholder="$t('BB0081')"
         )
-      btn(size="md" class="justify-self-end" :disabled="!availableToUpdateOrg" @click="updateOrg") {{$t('UU0018')}}
+      btn(size="md" class="justify-self-end" :disabled="!availableToUpdateOrg" @click="updateOrg") {{ $t('UU0018') }}
 </template>
 
 <script>
@@ -72,6 +72,9 @@ import { useI18n } from 'vue-i18n'
 import InputCallingCode from '@/components/InputCallingCode.vue'
 import InputLabelColor from '@/components/InputLabelColor.vue'
 import copyText from '@/utils/copy-text'
+import { useRouter } from 'vue-router'
+import usePlan from '@/composables/usePlan.js'
+import { FUNC_ID } from '@/utils/constants.js'
 
 export default {
   name: 'OrgAbout',
@@ -82,8 +85,11 @@ export default {
   setup () {
     const store = useStore()
     const { t } = useI18n()
+    const router = useRouter()
+    const { openModalPaymentFail } = usePlan()
 
     const organization = computed(() => store.getters['organization/organization'])
+    const planType = computed(() => store.getters['organization/planType'])
     const logo = computed(() => store.getters['organization/orgLogo'])
     const { orgName, labelColor, orgCategoryId, address, countryCode, fax, faxCountryCode, phone, phoneCountryCode } = organization.value
     const countryList = computed(() => store.getters['code/countryList'])
@@ -102,9 +108,62 @@ export default {
       })
     }
 
-    const openModalDelete = () => {
+    const openModalTypeTextToConfirm = () => {
       store.dispatch('helper/openModal', {
-        component: 'modal-delete-org-or-group'
+        component: 'modal-type-text-to-confirm',
+        properties: {
+          title: t('BB0028'),
+          keypath: 'BB0064',
+          slotName: 'orgName',
+          slotValue: organization.value.orgName,
+          errorMsg: t('WW0015'),
+          confirmHandler: () => {
+            store.dispatch('helper/openModalConfirm', {
+              title: t('BB0029'),
+              content: t('BB0030'),
+              secondaryText: t('UU0001'),
+              afterSecondaryHandler: async () => {
+                const deleteOrg = async () => {
+                  store.dispatch('helper/openModalLoading')
+                  const { success } = await store.dispatch('organization/deleteOrg')
+                  store.dispatch('helper/closeModalLoading')
+
+                  if (success) {
+                    await router.replace('/')
+                  } else {
+                    openModalPaymentFail()
+                  }
+
+                  return success
+                }
+
+                const { result: { totalPrice, checkoutItemList } } = await store.dispatch('organization/getUnbilledInfo')
+
+                if (checkoutItemList.length === 0) {
+                  await deleteOrg() && store.commit('helper/PUSH_message', t('OO0101'))
+                  return
+                }
+
+                store.dispatch('helper/openModal', {
+                  component: 'modal-checkout-list',
+                  properties: {
+                    checkoutItemList,
+                    totalPrice,
+                    payHandler: async () => {
+                      await deleteOrg() && store.dispatch('helper/openModal', {
+                        component: 'modal-payment-success',
+                        properties: {
+                          title: t('OO0039'),
+                          content: t('OO0101')
+                        }
+                      })
+                    }
+                  }
+                })
+              }
+            })
+          }
+        }
       })
     }
 
@@ -138,12 +197,14 @@ export default {
       countryList,
       updateOrg,
       openModalUploadLogo,
-      openModalDelete,
+      openModalTypeTextToConfirm,
       isOrgNameExist,
       availableToUpdateOrg,
       organization,
       logo,
-      copyText
+      planType,
+      copyText,
+      FUNC_ID
     }
   }
 }

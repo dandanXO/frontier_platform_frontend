@@ -13,7 +13,7 @@ export default function usePlan () {
   const closeModal = () => store.dispatch('helper/closeModal')
 
   const checkHaveBindPayment = () => {
-    if (!noBindingPayment) {
+    if (!noBindingPayment.value) {
       return true
     }
 
