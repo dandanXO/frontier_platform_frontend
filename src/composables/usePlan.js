@@ -9,6 +9,8 @@ export default function usePlan () {
   const { goToPaymentDetail } = useNavigation()
 
   const noBindingPayment = computed(() => store.getters['organization/noBindingPayment'])
+  const planType = computed(() => store.getters['organization/planType'])
+  const planStatus = computed(() => store.getters['organization/planStatus'])
 
   const closeModal = () => store.dispatch('helper/closeModal')
 
@@ -28,8 +30,7 @@ export default function usePlan () {
   }
 
   const checkCanInvitedPeople = () => {
-    const planType = store.getters['organization/planType']
-    if (planType.BASIC) {
+    if (planType.value.BASIC) {
       store.dispatch('helper/openModalConfirm', {
         title: t('OO0099'),
         content: t('OO0100'),
@@ -38,7 +39,7 @@ export default function usePlan () {
         secondaryText: t('UU0002')
       })
       return false
-    } else if (planType.ENT) {
+    } else if (planType.value.ENT) {
       const memberQuota = store.getters['organization/plan'].quota.member
       if (memberQuota.max === 0) {
         store.dispatch('helper/openModalConfirm', {
@@ -66,13 +67,13 @@ export default function usePlan () {
   }
 
   const openModalManageMaterialQuota = () => {
-    checkHaveBindPayment() && store.dispatch('helper/openModal', {
+    !planType.value.ENT && planStatus.value.ACTIVE && checkHaveBindPayment() && store.dispatch('helper/openModal', {
       component: 'modal-manage-material-quota'
     })
   }
 
   const openModalPurchaseU3mQuota = () => {
-    checkHaveBindPayment() && store.dispatch('helper/openModal', {
+    !planType.value.ENT && planStatus.value.ACTIVE && checkHaveBindPayment() && store.dispatch('helper/openModal', {
       component: 'modal-purchase-u3m-quota'
     })
   }

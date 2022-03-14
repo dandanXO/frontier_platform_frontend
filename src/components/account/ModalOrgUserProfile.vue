@@ -13,7 +13,7 @@ div(class="w-101 px-8")
     //- button(class="flex items-center border rounded-full border-assist-blue text-assist-blue py-1 px-5")
     //-   p(class="text-caption") {{$t('MM.Advanced settings')}}
     //-   svg-icon(iconName="keyboard_arrow_right" size="14")
-    p(class="text-caption text-black-600 self-end pt-3.5 pb-1") *{{$t('MM0003')}}
+    p(class="text-caption text-black-600 self-end pt-3.5 pb-1") *{{$t('RR0163')}}
     input-text(
       class="w-full pb-4"
       v-model:textValue="displayName"
