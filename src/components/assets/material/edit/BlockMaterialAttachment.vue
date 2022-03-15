@@ -34,8 +34,8 @@ export default {
   setup (props) {
     const { t } = useI18n()
     const store = useStore()
-    const attachmentList = computed(() => store.getters['material/attachmentList'])
-    const isEditMode = computed(() => store.getters['material/material'].materialId !== null)
+    const attachmentList = computed(() => store.getters['assets/attachmentList'])
+    const isEditMode = computed(() => store.getters['assets/material'].materialId !== null)
 
     const openModalUpload = () => {
       store.dispatch('helper/openModal', {
@@ -43,12 +43,12 @@ export default {
         properties: {
           uploadHandler: async (file, displayFileName) => {
             if (isEditMode.value) {
-              await store.dispatch('material/uploadAttachmentWhenUpdate', {
+              await store.dispatch('assets/uploadAttachmentWhenUpdate', {
                 file,
                 displayFileName
               })
             } else {
-              await store.dispatch('material/uploadAttachmentWhenCreate', {
+              await store.dispatch('assets/uploadAttachmentWhenCreate', {
                 tempMaterialId: props.tempMaterialId,
                 file,
                 displayFileName
@@ -66,11 +66,11 @@ export default {
         secondaryText: t('UU0001'),
         secondaryHandler: async () => {
           if (isEditMode.value) {
-            store.dispatch('material/removeAttachmentWhenUpdate', {
+            store.dispatch('assets/removeAttachmentWhenUpdate', {
               materialAttachmentId: attachment.materialAttachmentId
             })
           } else {
-            store.dispatch('material/removeAttachmentWhenCreate', {
+            store.dispatch('assets/removeAttachmentWhenCreate', {
               tempMaterialId: props.tempMaterialId,
               tempMaterialAttachmentId: attachment.tempMaterialAttachmentId
             })

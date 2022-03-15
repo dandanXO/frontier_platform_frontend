@@ -17,14 +17,16 @@ fullscreen-header
           cropper-default-layout(
             class="w-82.5"
             scaleUnit="cm"
+            :scaleInputStep="0.1"
+            :scaleStart="4"
             :scaleRange="[1, 21]"
             :config="cropper.config"
             @update:rotateDeg="cropper.config.rotateDeg = $event"
-            @update:scaleRatio="cropper.config.scaleRatio = $event"
+            @update:scaleRatio="handleUpdateScaleRatio(cropper, $event)"
           )
             template(#imageCropArea="{innerScaleSize}")
               image-crop-area(
-                :ref="cropper.ref"
+                :ref="(el => handleRefUpdate(cropper.ref, el))"
                 :config="cropper.config"
                 :cropRectSize="cropRectSize"
                 :lowResolution="false"
@@ -68,14 +70,19 @@ export default {
     const { t } = useI18n()
     const store = useStore()
     const previewRect = ref(null)
-    const faceSide = ref(null)
-    const backSide = ref(null)
-    const material = computed(() => store.getters['material/material'])
+    const refFaceSide = ref(null)
+    const refBackSide = ref(null)
+    const material = computed(() => store.getters['assets/material'])
     const { faceSideImg, backSideImg } = material.value
     const cropRectSize = 208
+    const pxPerCm = 2.54 // 1 dpi = 0.393701 pixel/cm; 1 pixel/cm = 2.54 dpi
     const croppers = []
-    let faceSideConfig
-    let backSideConfig
+    const faceSideConfig = reactive({})
+    const backSideConfig = reactive({})
+    const previewScaleRatio = computed(() => previewRect.value ? previewRect.value.clientWidth / cropRectSize : 1)
+
+    let faceSideCropImg = null
+    let backSideCropImg = null
 
     const {
       isDoubleSideMaterial,
@@ -92,8 +99,8 @@ export default {
       })
 
       await faceSideCropper.formatImage()
-      faceSideConfig = reactive({
-        ref: 'faceSide',
+      Object.assign(faceSideConfig, {
+        ref: 'refFaceSide',
         title: t('EE0051'),
         config: faceSideCropper.config
       })
@@ -108,36 +115,25 @@ export default {
       })
 
       await backSideCropper.formatImage()
-      backSideConfig = reactive({
-        ref: 'backSide',
+      Object.assign(backSideConfig, {
+        ref: 'refBackSide',
         title: t('EE0052'),
         config: backSideCropper.config
       })
       croppers.push(backSideConfig)
     }
 
-    const previewScaleRatio = computed(() => {
-      if (previewRect.value) {
-        return previewRect.value.clientWidth / cropRectSize
-      } else {
-        return 1
-      }
-    })
-
     const hasNext = ref(isDoubleSideMaterial && faceSideUrl && backSideUrl)
     const isAtSecondStep = ref(false)
     const currentSide = computed(() => {
       return isFaceSideMaterial || (isDoubleSideMaterial && !isAtSecondStep.value)
-        ? 'faceSide'
-        : 'backSide'
+        ? 'refFaceSide'
+        : 'refBackSide'
     })
-
-    let faceSideCropImg = null
-    let backSideCropImg = null
 
     const getNext = async () => {
       store.dispatch('helper/pushModalLoading')
-      faceSideCropImg = await faceSide.value?.cropImage() // 測試換頁時把這個註解掉
+      faceSideCropImg = await refFaceSide.value?.cropImage()
       hasNext.value = false
       isAtSecondStep.value = true
       store.dispatch('helper/closeModalLoading')
@@ -148,15 +144,22 @@ export default {
       isAtSecondStep.value = false
     }
 
+    const handleUpdateScaleRatio = (cropper, event) => {
+      const width2Cm = cropper.config.image?.width * (pxPerCm / cropper.config.dpi)
+      const height2Cm = cropper.config.image?.height * (pxPerCm / cropper.config.dpi)
+      const mainRuler = width2Cm > height2Cm ? height2Cm : width2Cm
+      cropper.config.scaleRatio = mainRuler / event
+    }
+
     const confirm = async () => {
       store.dispatch('helper/pushModalLoading')
-      if (currentSide.value === 'faceSide') {
-        faceSideCropImg = await faceSide.value?.cropImage()
+      if (currentSide.value === 'refFaceSide') {
+        faceSideCropImg = await refFaceSide.value?.cropImage()
       } else {
-        backSideCropImg = await backSide.value?.cropImage()
+        backSideCropImg = await refBackSide.value?.cropImage()
       }
 
-      await store.dispatch('material/generateU3m', {
+      await store.dispatch('assets/generateU3m', {
         faceSideCropImg,
         backSideCropImg,
         isAutoRepeat: false
@@ -170,19 +173,28 @@ export default {
       })
     }
 
-    const closeModal = () => {
-      store.dispatch('helper/closeModal')
+    const handleRefUpdate = (ref, el) => {
+      if (ref === 'refFaceSide') {
+        refFaceSide.value = el
+      }
+      if (ref === 'refBackSide') {
+        refBackSide.value = el
+      }
     }
+
+    const closeModal = () => store.dispatch('helper/closeModal')
 
     return {
       cropRectSize,
-      faceSide,
-      backSide,
+      refFaceSide,
+      refBackSide,
       previewRect,
       previewScaleRatio,
       hasNext,
       isAtSecondStep,
       currentSide,
+      handleUpdateScaleRatio,
+      handleRefUpdate,
       getNext,
       goBack,
       confirm,

@@ -11,7 +11,6 @@ div
     ref="refInputRange"
     v-model:range="innerRange"
     v-bind="options"
-    nonMaxLimit
   )
 </template>
 
@@ -39,9 +38,14 @@ export default {
   },
   emits: ['update:range'],
   setup (props, { emit }) {
+    const fakeMaxValue = props.max + 1
     const refInputRange = ref(null)
     const innerRange = computed({
-      get: () => props.range,
+      get: () => {
+        const inputMin = props.range[0] === null ? props.min : props.range[0]
+        const inputMax = props.range[1] === null ? fakeMaxValue : props.range[1]
+        return [inputMin, inputMax]
+      },
       set: ([min, max]) => {
         if (props.min === Number(min) && props.max === Number(max) - 1) {
           emit('update:range', [null, null])
@@ -71,11 +75,11 @@ export default {
         }
       ],
       min: props.min,
-      max: props.max
+      max: fakeMaxValue
     }
 
     const reset = () => {
-      refInputRange.value.reset()
+      refInputRange.value.setValue([props.min, fakeMaxValue])
     }
 
     return {

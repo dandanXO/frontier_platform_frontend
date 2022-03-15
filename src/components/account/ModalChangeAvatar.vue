@@ -41,8 +41,10 @@ export default {
     const cropRectSize = 200
     const isUploading = ref(false)
     const avatar = computed(() => store.getters['user/orgUser/orgUser'].avatar)
-    const defaultAvatar = 'default_user.png' // This file name is static
-    const haveUploadedImage = computed(() => !avatar.value.includes(defaultAvatar))
+    const haveUploadedImage = computed(() => {
+      const defaultAvatar = 'default_user.png' // This file name is static
+      return !avatar.value.includes(defaultAvatar)
+    })
 
     const imageOperator = new ImageOperator(['jpeg', 'jpg', 'png'], 5, cropRectSize)
 

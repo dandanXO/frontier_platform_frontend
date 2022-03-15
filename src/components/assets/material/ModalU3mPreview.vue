@@ -36,7 +36,7 @@ export default {
   setup () {
     const { t } = useI18n()
     const store = useStore()
-    const material = computed(() => store.getters['material/material'])
+    const material = computed(() => store.getters['assets/material'])
     const { faceSideImg, backSideImg } = material.value
     const {
       isDoubleSideMaterial,
@@ -44,7 +44,7 @@ export default {
       isBackSideMaterial,
       isFaceSideU3mCropExist,
       isBackSideU3mCropExist
-    } = useMaterialImage(material.value)
+    } = useMaterialImage(material.value, 'u3m')
 
     const handleRecutImage = () => {
       store.dispatch('helper/replaceModal', {
@@ -53,7 +53,7 @@ export default {
     }
 
     const handleCreateU3mAuto = async () => {
-      await store.dispatch('material/generateU3m', {})
+      await store.dispatch('assets/generateU3m', {})
       store.dispatch('helper/openModalConfirm', {
         title: t('RR0132'),
         content: t('EE0070'),

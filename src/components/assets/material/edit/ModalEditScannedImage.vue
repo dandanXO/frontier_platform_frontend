@@ -9,15 +9,17 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
       cropper-default-layout(
         class="w-70 z-100"
         scaleUnit="cm"
+        :scaleInputStep="0.1"
+        :scaleStart="4"
         :scaleRange="[1, 21]"
         :showScale="!isDoubleSideMaterial"
         :config="cropper.config"
         @update:rotateDeg="cropper.config.rotateDeg = $event"
-        @update:scaleRatio="cropper.config.scaleRatio = $event"
+        @update:scaleRatio="handleUpdateScaleRatio(cropper, $event)"
       )
         template(#imageCropArea="{innerScaleSize, innerShowScale}")
           image-crop-area(
-            :ref="cropper.ref"
+            :ref="(el => handleRefUpdate(cropper.ref, el))"
             :config="cropper.config"
             :cropRectSize="cropRectSize"
             :lowResolution="false"
@@ -26,7 +28,7 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
             div(class="mt-1 absolute w-full")
               div(class="h-2 flex items-center border-r-2 border-l-2 border-primary")
                 div(class="h-0.5 bg-primary w-full")
-              div(class="text-caption text-primary font-bold text-center") {{`${innerShowScale? innerScaleSize : scaleSize} cm`}}
+              div(class="text-caption text-primary font-bold text-center") {{innerShowScale ? innerScaleSize : formattedScaleSize}}cm
       div(
         v-if="isDoubleSideMaterial && croppers.length < 2"
         class="w-70 h-70 flex justify-center items-center"
@@ -35,7 +37,7 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
         div(class="bg-black-500" :style="{width: cropRectSize + 'px', height: cropRectSize + 'px'}")
     div(v-if="isDoubleSideMaterial" class="absolute inset-x-0 w-full flex flex-col items-center transform -translate-y-1.5")
       div(class="text-primary text-body2 flex justify-center items-center mb-3.5 gap-1")
-        div {{$t('Scale')}}
+        div {{$t('EE0098')}}
         div(class="w-15 flex justify-center items-center")
           input(
             v-model.number="formattedScaleSize"
@@ -44,10 +46,12 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
             step="0.1"
             min="1"
             max="21"
+            @change="handleDoubleSideScaleChange"
           )
           span(class="inline-block -ml-6 w-5 text-left") cm
       input-range(
-        v-model:range="scaleSize"
+        ref="refDoubleSideScale"
+        v-model:range="formattedScaleSize"
         v-bind="options"
       )
       div(class="mt-3 cursor-pointer text-primary" @click="isExchange = !isExchange")
@@ -81,8 +85,9 @@ export default {
     }
   },
   async setup (props) {
+    const refDoubleSideScale = ref(null)
     const store = useStore()
-    const material = computed(() => store.getters['material/material'])
+    const material = computed(() => store.getters['assets/material'])
     const { faceSideImg, backSideImg } = material.value
     const scaleSize = ref(4)
     const options = {
@@ -93,13 +98,13 @@ export default {
       orientation: 'vertical'
     }
     const isExchange = ref(false)
-    const faceSide = ref(null)
-    const backSide = ref(null)
+    const refFaceSide = ref(null)
+    const refBackSide = ref(null)
     const cropRectSize = 176
     const pxPerCm = 2.54 // 1 dpi = 0.393701 pixel/cm; 1 pixel/cm = 2.54 dpi
-    const croppers = []
-    let faceSideConfig
-    let backSideConfig
+    const croppers = reactive([])
+    const faceSideConfig = reactive({})
+    const backSideConfig = reactive({})
 
     const {
       isDoubleSideMaterial,
@@ -117,16 +122,13 @@ export default {
         if (backSideConfig?.config) {
           backSideConfig.config.scaleRatio = backSideConfig.config.image.width * (pxPerCm / backSideImg.dpi) / scaleSize.value
         }
-      })
+      }
+    )
 
     const formattedScaleSize = computed({
-      get () {
-        return scaleSize.value
-      },
-      set (val) {
-        if (val > options.max || val < options.min) {
-          return
-        }
+      get: () => scaleSize.value,
+      set: (val) => {
+        if (val > options.max || val < options.min) return
         scaleSize.value = val
       }
     })
@@ -138,9 +140,12 @@ export default {
         cropRectSize
       })
       await faceSideCropper.formatImage()
-      faceSideConfig = reactive({
-        ref: 'faceSide',
-        config: faceSideCropper.config
+      Object.assign(faceSideConfig, {
+        ref: 'refFaceSide',
+        config: {
+          ...faceSideCropper.config,
+          scaleRatio: faceSideCropper.config.image.width * (pxPerCm / faceSideImg.dpi) / scaleSize.value
+        }
       })
       croppers.push(faceSideConfig)
     }
@@ -152,20 +157,35 @@ export default {
         cropRectSize
       })
       await backSideCropper.formatImage()
-      backSideConfig = reactive({
-        ref: 'backSide',
-        config: backSideCropper.config
+      Object.assign(backSideConfig, {
+        ref: 'refFaceSide',
+        config: {
+          ...backSideCropper.config,
+          scaleRatio: backSideCropper.config.image.width * (pxPerCm / backSideImg.dpi) / scaleSize.value
+        }
       })
       croppers.push(backSideConfig)
     }
 
-    const closeModal = () => { store.dispatch('helper/closeModal') }
+    const handleUpdateScaleRatio = (cropper, event) => {
+      if (faceSideUrl && backSideUrl) {
+        return
+      }
+      const width2Cm = cropper.config.image?.width * (pxPerCm / cropper.config.dpi)
+      const height2Cm = cropper.config.image?.height * (pxPerCm / cropper.config.dpi)
+      const mainRuler = width2Cm > height2Cm ? height2Cm : width2Cm
+      cropper.config.scaleRatio = mainRuler / event
+    }
+
+    const handleDoubleSideScaleChange = (event) => {
+      refDoubleSideScale.value.setValue(event.target.value)
+    }
 
     const confirm = async () => {
       store.dispatch('helper/pushModalLoading')
 
-      const faceSideCropImg = faceSideUrl ? await faceSide.value?.cropImage() : null
-      const backSideCropImg = backSideUrl ? await backSide.value?.cropImage() : null
+      const faceSideCropImg = faceSideUrl ? await refFaceSide.value?.cropImage() : null
+      const backSideCropImg = backSideUrl ? await refBackSide.value?.cropImage() : null
 
       await props.afterCropHandler({ faceSideCropImg, backSideCropImg, isExchange: isExchange.value })
 
@@ -173,19 +193,34 @@ export default {
       closeModal()
     }
 
+    const handleRefUpdate = (ref, el) => {
+      if (ref === 'refFaceSide') {
+        refFaceSide.value = el
+      }
+      if (ref === 'refBackSide') {
+        refBackSide.value = el
+      }
+    }
+
+    const closeModal = () => store.dispatch('helper/closeModal')
+
     return {
       options,
       formattedScaleSize,
       cropRectSize,
-      faceSide,
-      backSide,
+      refFaceSide,
+      refBackSide,
       isFaceSideMaterial,
       isDoubleSideMaterial,
       closeModal,
       scaleSize,
+      handleUpdateScaleRatio,
       confirm,
       isExchange,
-      croppers
+      croppers,
+      handleRefUpdate,
+      refDoubleSideScale,
+      handleDoubleSideScaleChange
     }
   }
 }
