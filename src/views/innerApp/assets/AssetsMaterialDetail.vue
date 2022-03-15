@@ -34,9 +34,9 @@ export default {
     const route = useRoute()
     const { parsePath, goToAssetMaterialEdit } = useNavigation()
 
-    await store.dispatch('material/getMaterial', { materialId: route.params.materialId })
+    await store.dispatch('assets/getMaterial', { materialId: route.params.materialId })
 
-    const material = computed(() => store.getters['material/material'])
+    const material = computed(() => store.getters['assets/material'])
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const breadcrumbList = computed(() => {
       const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'

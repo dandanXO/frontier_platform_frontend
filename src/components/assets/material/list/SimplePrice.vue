@@ -85,13 +85,13 @@ export default {
   setup () {
     const store = useStore()
     const countryList = computed(() => store.getters['code/countryList'])
-    const material = computed(() => store.getters['material/material'])
+    const material = computed(() => store.getters['assets/material'])
     const { inventoryUnitList } = useMaterialEdit(material.value)
 
     watch(
       () => material.value,
       () => {
-        store.commit('material/UPDATE_material', material.value)
+        store.commit('assets/UPDATE_material', material.value)
       },
       {
         deep: true

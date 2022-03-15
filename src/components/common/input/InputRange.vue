@@ -83,7 +83,7 @@ export default {
   name: 'InputRange',
   props: {
     range: {
-      type: Array,
+      type: [Number, Array],
       required: true
     },
     min: {
@@ -105,37 +105,18 @@ export default {
     orientation: {
       type: String,
       validator: (v) => ['horizontal', 'vertical'].includes(v)
-    },
-    nonMaxLimit: {
-      type: Boolean,
-      default: false
     }
   },
   emits: ['update:range'],
   setup (props, { emit }) {
     const refSlider = ref(null)
     const { min, max, range } = toRefs(props)
-    // In order to show 'plus' marks when nonMaxLimit is true.
-    const fakeMaxValue = max.value + 1
 
-    const reset = () => {
-      // after set slider, it will trigger `update` event
-      if (props.nonMaxLimit) {
-        refSlider.value.noUiSlider.set([min.value, fakeMaxValue])
-      } else {
-        refSlider.value.noUiSlider.set([min.value, max.value])
-      }
+    const setValue = (v) => {
+      refSlider.value.noUiSlider.set(v)
     }
 
     onMounted(() => {
-      let start = range.value
-
-      if (props.nonMaxLimit) {
-        const inputMin = range.value[0] === null ? min.value : range.value[0]
-        const inputMax = range.value[1] === null ? fakeMaxValue : range.value[1]
-        start = [inputMin, inputMax]
-      }
-
       noUiSlider.create(refSlider.value, {
         connect: true,
         format: {
@@ -145,21 +126,35 @@ export default {
         tooltips: props.tooltips,
         step: props.step,
         orientation: props.orientation,
-        start,
+        start: range.value,
         range: {
           min: min.value,
-          max: props.nonMaxLimit ? fakeMaxValue : max.value
+          max: max.value
         }
       })
 
-      refSlider.value.noUiSlider.on('update', (v) => {
-        emit('update:range', v)
+      refSlider.value.noUiSlider.on('update', () => {
+        let values = refSlider.value.noUiSlider.get()
+
+        if (Array.isArray(values)) {
+          values = values.map(v => Number(v))
+        } else {
+          values = Number(values)
+        }
+
+        if (props.step === 1) {
+          emit('update:range', values)
+        } else {
+          // Use .get(true) to get the slider values without formatting applied
+          const valuesWithoutFormat = refSlider.value.noUiSlider.get(true)
+          emit('update:range', valuesWithoutFormat)
+        }
       })
     })
 
     return {
-      reset,
-      refSlider
+      refSlider,
+      setValue
     }
   }
 }

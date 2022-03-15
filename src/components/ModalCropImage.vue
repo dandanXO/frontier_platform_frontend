@@ -5,7 +5,7 @@ div(class="w-86 border-t border-black-400 pt-12")
       class="w-70"
       :config="config"
       @update:rotateDeg="config.rotateDeg = $event"
-      @update:scaleRatio="config.scaleRatio = $event"
+      @update:scaleRatio="config.scaleRatio = $event / 100"
     )
       template(#imageCropArea)
         image-crop-area(

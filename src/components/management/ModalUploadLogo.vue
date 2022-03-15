@@ -41,8 +41,10 @@ export default {
     const cropRectSize = 200
     const isUploading = ref(false)
     const orgLogo = computed(() => store.getters['organization/organization'].logo)
-    const defaultLogo = 'logo-default.png' // This file name is static
-    const haveUploadedImage = computed(() => !orgLogo.value.includes(defaultLogo))
+    const haveUploadedImage = computed(() => {
+      const defaultLogo = 'logo-default.png' // This file name is static
+      return !orgLogo.value.includes(defaultLogo)
+    })
     const imageOperator = new ImageOperator(['jpeg', 'jpg', 'png'], 5, cropRectSize)
 
     imageOperator.on('uploading', () => (isUploading.value = true))

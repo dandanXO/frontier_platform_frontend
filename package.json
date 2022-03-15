@@ -25,7 +25,7 @@
     "qrcode.vue": "^3.3.3",
     "three": "^0.137.5",
     "uuid": "^8.3.2",
-    "vue": "^3.2.24",
+    "vue": "^3.2.31",
     "vue-i18n": "^9.1.9",
     "vue-router": "^4.0.12",
     "vue-virtual-scroller": "^2.0.0-alpha.1",
