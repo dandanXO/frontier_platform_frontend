@@ -42,6 +42,11 @@ export default function useMaterialValidation () {
       }
 
       const contentList = material.value.contentList
+
+      if (new Set(contentList.map(({ name }) => name)).length !== contentList.length) {
+        return t('WW0089')
+      }
+
       let total = 0
       for (let i = 0; i < contentList.length; i++) {
         const { name, percentage } = contentList[i]
