@@ -9,9 +9,9 @@ export default {
     method: 'POST',
     data: { workspaceNodeId, workspaceNodeLocation }
   }),
-  cloneNode: ({ workspaceNodeList, targetLocationList }) => axios('/public/clone', {
+  cloneNode: ({ orgId, workspaceNodeList, targetLocationList }) => axios('/public/clone', {
     method: 'POST',
-    data: { workspaceNodeList, targetLocationList }
+    data: { orgId, workspaceNodeList, targetLocationList }
   }),
   getShareTarget: ({ workspaceNodeLocation, workspaceNodeId, target }) => axios('/public/share/assigned/get-target', {
     method: 'POST',
