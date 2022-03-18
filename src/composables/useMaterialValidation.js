@@ -43,7 +43,7 @@ export default function useMaterialValidation () {
 
       const contentList = material.value.contentList
 
-      if (new Set(contentList.map(({ name }) => name)).length !== contentList.length) {
+      if (new Set(contentList.map(({ name }) => name)).size !== contentList.length) {
         return t('WW0089')
       }
 
