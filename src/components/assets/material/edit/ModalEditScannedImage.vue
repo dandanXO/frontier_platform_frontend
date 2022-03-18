@@ -158,7 +158,7 @@ export default {
       })
       await backSideCropper.formatImage()
       Object.assign(backSideConfig, {
-        ref: 'refFaceSide',
+        ref: 'refBackSide',
         config: {
           ...backSideCropper.config,
           scaleRatio: backSideCropper.config.image.width * (pxPerCm / backSideImg.dpi) / scaleSize.value
