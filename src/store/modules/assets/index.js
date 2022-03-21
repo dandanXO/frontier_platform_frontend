@@ -38,7 +38,7 @@ export default {
       const { assets, material, pagination } = data
 
       !!assets?.materialList && commit('SET_materialList', assets.materialList)
-      !!material && commit('SET_material', material)
+      !!material && dispatch('setMaterial', material)
       !!pagination && dispatch('helper/search/setPagination', pagination, { root: true })
     },
     setMaterial ({ commit }, material) {
