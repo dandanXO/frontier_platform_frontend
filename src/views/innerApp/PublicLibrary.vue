@@ -14,13 +14,13 @@ div(class="w-full h-full relative")
         p(class="flex text-caption text-black-700 pl-1")
           span (
           i18n-t(keypath="RR0068" tag="span")
-            template(#number) {{pagination.totalCount}}
+            template(#number) {{ pagination.totalCount }}
           span )
     template(#header-right)
-      btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
+      btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t('UU0057') }}
     template(v-if="!isFirstLayer" #sub-header)
       i18n-t(keypath="II0002" tag="p" class="mx-7.5 mb-7.5 text-caption text-black-700")
-        template(#displayName) {{publishBy}}
+        template(#displayName) {{ publishBy }}
     template(#default)
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
         template(v-for="node in nodeList")
@@ -45,10 +45,10 @@ div(class="w-full h-full relative")
               @click.stop="goToPublicLibraryMaterialDetail(node.nodeKey)"
             )
       div(v-else class="flex h-full justify-center items-end")
-        p(class="text-body1 text-primary") {{$t('II0007')}}
+        p(class="text-body1 text-primary") {{ $t('II0007') }}
   multi-select-menu(v-if="!isFirstLayer" :options="optionMultiSelect" v-model:selectedList="selectedNodeList")
   div(v-if="planStatus.INACTIVE" class="absolute inset-0 z-99 opacity-30 bg-black-0")
-  inactive-hint(v-if="!planStatus.ACTIVE" class="absolute bottom-0 left-0 z-100")
+  notify-bar-inactive(v-if="planStatus.INACTIVE || planStatus.TRANSITION" class="absolute bottom-0 left-0 z-100")
 </template>
 
 <script>
@@ -61,14 +61,14 @@ import NodeItem from '@/components/layout/NodeItem.vue'
 import { useRoute, useRouter } from 'vue-router'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import useNavigation from '@/composables/useNavigation'
-import InactiveHint from '@/components/billings/InactiveHint.vue'
+import NotifyBarInactive from '@/components/billings/NotifyBarInactive.vue'
 
 export default {
   name: 'PublicLibrary',
   components: {
     SearchTable,
     NodeItem,
-    InactiveHint
+    NotifyBarInactive
   },
   setup () {
     const { t } = useI18n()

@@ -132,6 +132,14 @@ export default {
     method: 'POST',
     data: { orgId }
   }),
+  getLastMonthUnbilledInfo: ({ orgId }) => axios('/org/payment/get-last-month-unbilled-info', {
+    method: 'POST',
+    data: { orgId }
+  }),
+  payLastMonthUnbilledInfo: ({ orgId }) => axios('/org/payment/pay-last-month-unbilled-info', {
+    method: 'POST',
+    data: { orgId }
+  }),
   deactivateOrg: ({ orgId }) => axios('/org/plan/deactivate', {
     method: 'POST',
     data: { orgId }

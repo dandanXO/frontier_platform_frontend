@@ -2,6 +2,7 @@ import userApi from '@/apis/user'
 import setVuexState from '@/utils/set-vuex-state'
 import i18n from '@/utils/i18n'
 import dayjs from 'dayjs'
+import { ROLE_ID } from '@/utils/constants'
 
 const state = () => ({
   orgUserId: 0,
@@ -53,6 +54,13 @@ const getters = {
         content: replacedContent
       }
     })
+  },
+  orgUserRole: state => {
+    const roles = {}
+    Object.keys(ROLE_ID).forEach(roleName => {
+      roles[roleName] = state.orgRoleId === ROLE_ID[roleName]
+    })
+    return roles
   }
 }
 

@@ -1,6 +1,11 @@
 <template lang="pug">
 div(class="w-195")
-  p(class="text-body1 text-primary mt-18.5 mb-5") {{ $t('OO0008') }}
+  p(class="text-body1 text-primary mt-18.5 mb-5 flex") {{ $t('OO0008') }}
+    span(v-if="!planType.ENT && planStatus.BUFFER" class="flex items-center pl-5")
+      svg-icon(iconName="warning_amber_round" size="20" class="text-warn")
+      i18n-t(keypath="WW0088" tag="span" class="text-caption text-warn pl-1")
+        template(#UU0082)
+          span(class="text-assist-blue cursor-pointer" @click="payLastMonthUnbilledInfo") {{ $t('UU0082') }}
   div(class="grid grid-cols-3 grid-rows-2 gap-3 h-78")
     div(class="col-span-3 border border-black-400 rounded px-7.5 flex justify-between items-center")
       div
@@ -55,8 +60,8 @@ div(class="w-195")
         p(class="text-body1 font-bold text-brand-dark line-height-1.6") {{ planType.ENT ? `${memberQuota.used}/${memberQuota.max}` : memberQuota.used }}
           span(class="text-caption font-normal pl-1") {{ $t('OO0031') }}
   template(v-if="!planType.ENT")
-    p(v-if="planStatus.ACTIVE" class="text-body2 text-assist-blue text-right pt-3 cursor-pointer" @click="openModalDeactivate") {{ $t('OO0007') }}
-    div(v-else class="w-full h-24 bg-black-200 flex justify-between items-center pl-7.5 pr-10 rounded mt-6")
+    p(v-if="planStatus.ACTIVE || planStatus.BUFFER" class="text-body2 text-assist-blue text-right pt-3 cursor-pointer" @click="openModalDeactivate") {{ $t('OO0007') }}
+    div(v-else-if="planStatus.INACTIVE" class="w-full h-24 bg-black-200 flex justify-between items-center pl-7.5 pr-10 rounded mt-6")
       div
         h6(class="text-h6 text-primary font-bold") {{ $t('OO0007') }}
         p(class="text-body2 text-black-600 pt-2") {{ $t('OO0059') }}
@@ -77,7 +82,8 @@ export default {
       openModalManageMaterialQuota,
       openModalPurchaseU3mQuota,
       openModalDeactivate,
-      activateOrg
+      activateOrg,
+      payLastMonthUnbilledInfo
     } = usePlan()
 
     const plan = computed(() => store.getters['organization/plan'])
@@ -110,7 +116,8 @@ export default {
       isMaterialFull,
       u3mQuota,
       isU3mFull,
-      memberQuota
+      memberQuota,
+      payLastMonthUnbilledInfo
     }
   }
 }

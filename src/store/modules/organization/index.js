@@ -26,9 +26,10 @@ const state = () => ({
   historyList: [],
   plan: {
     planType: PLAN_TYPE.BASIC,
-    activatedStatus: PLAN_STATUS.ACTIVE,
-    renewDate: '',
-    deactivatedDate: '',
+    status: PLAN_STATUS.ACTIVE,
+    renewDate: null,
+    deactivatedDate: null,
+    bufferDeactivatedDate: null,
     quota: {
       material: {
         used: 0,
@@ -117,12 +118,11 @@ const getters = {
     return obj[getters.plan.planType]
   },
   planStatus: (state, getters) => {
-    const { activatedStatus, deactivatedDate } = getters.plan
-    const planStatus = {
-      INACTIVE: activatedStatus === PLAN_STATUS.INACTIVE,
-      ACTIVE: activatedStatus === PLAN_STATUS.ACTIVE && !deactivatedDate,
-      TRANSITION: activatedStatus === PLAN_STATUS.ACTIVE && !!deactivatedDate
-    }
+    const planStatus = {}
+    Object.keys(PLAN_STATUS).forEach(status => {
+      planStatus[status] = getters.plan.status === PLAN_STATUS[status]
+    })
+
     return planStatus
   },
   planType: (state, getters) => {
@@ -328,6 +328,15 @@ const actions = {
   },
   async getUnbilledInfo ({ state }) {
     const { data } = await organizationApi.getUnbilledInfo({ orgId: state.orgId })
+    return data
+  },
+  async getLastMonthUnbilledInfo ({ state }) {
+    const { data } = await organizationApi.getLastMonthUnbilledInfo({ orgId: state.orgId })
+    return data
+  },
+  async payLastMonthUnbilledInfo ({ state, dispatch }) {
+    const { data } = await organizationApi.payLastMonthUnbilledInfo({ orgId: state.orgId })
+    dispatch('handleResponseData', { data }, { root: true })
     return data
   },
   async deactivateOrg ({ state, dispatch }) {

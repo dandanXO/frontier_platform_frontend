@@ -246,7 +246,8 @@ export const PLAN_STATUS = {
    * 使用者於 3/4 14:00 pm 申請停用，但這時還是訂閱中，其功能還是都可以操作，
    * 等到 3/5 00:00 am 後系統才會正式的停止訂閱，限制其功能，
    * 那麼 3/4 14:00 ~ 3/5: 00:00 am 就是所謂的過渡期。
-   */
+   */,
+  BUFFER: 4
 }
 
 export const BILLING_CATEGORY = {

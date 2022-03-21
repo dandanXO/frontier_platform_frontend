@@ -3,7 +3,7 @@ div(class="fixed inset-0 z-index:modal w-screen h-screen bg-black-900 bg-opacity
   div(class="w-screen h-screen" @click="closable && close()")
   div(class="absolute bg-black-0 rounded card-shadow")
     div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
-      p(v-if="header !== ''" class="text-h6 font-bold text-primary") {{header}}
+      p(v-if="header !== ''" class="text-h6 font-bold text-primary") {{ header }}
       svg-icon(v-if="closable" iconName="close" size="24" class="justify-self-end cursor-pointer text-black-700" @click="close")
     component(:is="component" v-bind="properties")
 </template>
@@ -87,7 +87,8 @@ export default {
     ModalPaymentFail: defineAsyncComponent(() => import('@/components/billings/ModalPaymentFail.vue')),
     ModalPreviewInvoice: defineAsyncComponent(() => import('@/components/billings/ModalPreviewInvoice.vue')),
     ModalDeactivate: defineAsyncComponent(() => import('@/components/billings/ModalDeactivate.vue')),
-    ModalDeactivateSuccess: defineAsyncComponent(() => import('@/components/billings/ModalDeactivateSuccess.vue'))
+    ModalDeactivateSuccess: defineAsyncComponent(() => import('@/components/billings/ModalDeactivateSuccess.vue')),
+    ModalPaymentLastMonthFail: defineAsyncComponent(() => import('@/components/billings/ModalPaymentLastMonthFail.vue'))
   },
   props: {
     component: {

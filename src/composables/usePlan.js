@@ -107,6 +107,37 @@ export default function usePlan () {
     store.dispatch('helper/closeModalLoading')
   }
 
+  const payLastMonthUnbilledInfo = async () => {
+    store.dispatch('helper/openModalLoading')
+    const { result: { totalPrice, checkoutItemList } } = await store.dispatch('organization/getLastMonthUnbilledInfo')
+    store.dispatch('helper/closeModalLoading')
+
+    store.dispatch('helper/openModal', {
+      component: 'modal-checkout-list',
+      properties: {
+        checkoutItemList,
+        totalPrice,
+        payHandler: async () => {
+          store.dispatch('helper/openModalLoading')
+          const { success } = await store.dispatch('organization/payLastMonthUnbilledInfo')
+          store.dispatch('helper/closeModalLoading')
+
+          if (success) {
+            store.dispatch('helper/openModal', {
+              component: 'modal-payment-success',
+              properties: {
+                title: t('OO0039'),
+                content: t('OO0145')
+              }
+            })
+          } else {
+            openModalPaymentFail()
+          }
+        }
+      }
+    })
+  }
+
   return {
     checkHaveBindPayment,
     openModalChoosePlan,
@@ -115,6 +146,7 @@ export default function usePlan () {
     openModalDeactivate,
     activateOrg,
     openModalPaymentFail,
-    checkCanInvitedPeople
+    checkCanInvitedPeople,
+    payLastMonthUnbilledInfo
   }
 }
