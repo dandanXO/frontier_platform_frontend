@@ -2,16 +2,42 @@ stages:
   - build
   - deploy
 
+build-dev:
+  stage: build
+  image: node:16.13.2
+  only:
+    - develop
+  script:
+    - npm ci
+    - echo NODE_ENV=development >> .env.local
+    - echo VITE_APP_API_ENDPOINT=$DEV_API_ENDPOINT >> .env.local
+    - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
+    - echo VITE_APP_STRIPE_KEY=$STRIPE_KEY_TEST >> .env.local
+    - npm run build --mode=development
+  artifacts:
+    paths:
+      - dist/
+
+deploy-dev:
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  only:
+    - develop
+  script:
+    - aws s3 sync dist/ s3://"$DEV_S3_BUCKET" --delete
+    - aws cloudfront create-invalidation --distribution-id $DEV_DISTRIBUTION_ID --paths "/*"
+
 build-stg:
   stage: build
   image: node:16.13.2
   only:
-    - main
+    - /^release\/.*$/
   script:
     - npm ci
     - echo NODE_ENV=production >> .env.local
     - echo VITE_APP_API_ENDPOINT=$STG_API_ENDPOINT >> .env.local
     - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
+    - echo VITE_APP_STRIPE_KEY=$STRIPE_KEY_TEST >> .env.local
     - npm run build --mode=staging
   artifacts:
     paths:
@@ -21,21 +47,47 @@ deploy-stg:
   stage: deploy
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   only:
-    - main
+    - /^release\/.*$/
   script:
     - aws s3 sync dist/ s3://"$STG_S3_BUCKET" --delete
     - aws cloudfront create-invalidation --distribution-id $STG_DISTRIBUTION_ID --paths "/*"
+
+build-pre-prod:
+  stage: build
+  image: node:16.13.2
+  only:
+    - /^hotfix\/.*$/
+  script:
+    - npm ci
+    - echo NODE_ENV=production >> .env.local
+    - echo VITE_APP_API_ENDPOINT=$PRE_PROD_API_ENDPOINT >> .env.local
+    - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
+    - echo VITE_APP_STRIPE_KEY=$STRIPE_KEY_PROD >> .env.local
+    - npm run build --mode=pre-production
+  artifacts:
+    paths:
+      - dist/
+
+deploy-pre-prod:
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  only:
+    - /^hotfix\/.*$/
+  script:
+    - aws s3 sync dist/ s3://"$PRE_PROD_S3_BUCKET" --delete
+    - aws cloudfront create-invalidation --distribution-id $PRE_PROD_DISTRIBUTION_ID --paths "/*"
 
 build-prod:
   stage: build
   image: node:16.13.2
   only:
-    - production
+    - main
   script:
     - npm ci
     - echo NODE_ENV=production >> .env.local
     - echo VITE_APP_API_ENDPOINT=$PROD_API_ENDPOINT >> .env.local
     - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
+    - echo VITE_APP_STRIPE_KEY=$STRIPE_KEY_PROD >> .env.local
     - npm run build --mode=production
   artifacts:
     paths:
@@ -45,7 +97,7 @@ deploy-prod:
   stage: deploy
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   only:
-    - production
+    - main
   script:
     - aws s3 sync dist/ s3://"$PROD_S3_BUCKET" --delete
     - aws cloudfront create-invalidation --distribution-id $PROD_DISTRIBUTION_ID --paths "/*"
