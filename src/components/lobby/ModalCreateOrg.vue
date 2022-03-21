@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="w-193.5 px-8")
   h6(class="text-primary font-bold text-h6 pb-7.5 text-center") {{$t('AA0011')}}
-  p(class="text-caption text-black-600 text-right mb-1") *{{$t('AA0031')}}
+  p(class="text-caption text-black-600 text-right mb-1") *{{$t('RR0163')}}
   form(class="grid grid-cols-2 grid-rows-3 gap-7.5 pb-4")
     input-text(
       v-model:textValue="formData.orgName"
@@ -10,7 +10,8 @@ div(class="w-193.5 px-8")
       :label="$t('AA0038')"
       :placeholder="$t('AA0039')"
       :customErrorMsg="isOrgNameExist ? $t('WW0001') : ''"
-      @blur="checkOrgNameExist")
+      @blur="checkOrgNameExist"
+    )
     input-radio-group(
       v-model:inputValue="formData.orgCategoryId"
       :label="$t('AA0069')"

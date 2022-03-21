@@ -7,6 +7,7 @@ import i18n from '@/utils/i18n'
 import dayjs from 'dayjs'
 import isToday from 'dayjs/plugin/isToday'
 import isYesterday from 'dayjs/plugin/isYesterday'
+import permission from '@/directives/permission.js'
 
 const svgs = import.meta.globEager('/src/assets/icons/**/*.svg')
 
@@ -38,5 +39,7 @@ app.config.warnHandler = (msg, vm, trace) => {
     console.warn('warn', msg, vm, trace)
   }
 }
+
+app.directive('permission', permission)
 
 app.use(store).use(router).use(i18n).mount('#app')

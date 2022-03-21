@@ -13,7 +13,7 @@ import shareToMe from '@/store/modules/shareToMe'
 export default createStore({
   actions: {
     handleResponseData ({ dispatch }, { data }) {
-      const { success, message, result } = JSON.parse(JSON.stringify(data))
+      const { result } = JSON.parse(JSON.stringify(data))
 
       const namespacedParentModuleList = ['user', 'organization', 'code', 'group']
 
@@ -35,10 +35,6 @@ export default createStore({
         if (Object.prototype.hasOwnProperty.call(result, 'pagination')) {
           dispatch('helper/search/setPagination', result.pagination, { root: true })
         }
-      }
-
-      if (!success) {
-        throw message.content
       }
     }
   },

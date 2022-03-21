@@ -11,26 +11,13 @@ export default function useNavigation () {
   const prefixPath = computed(() => routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId')
 
   const nextAfterSignIn = async () => {
-    if (route.query.inviteCode !== undefined) {
-      return router.push({ path: '/invite-link', query: route.query })
-    }
-
-    if (route.query.verifyCode !== undefined) {
-      return router.push({ path: '/verify-user', query: route.query })
-    }
-
-    if (route.query.sharingKey !== undefined) {
-      return router.push({ path: '/share-page', query: route.query })
+    if (route.query.redirect !== undefined) {
+      return router.push(route.query.redirect)
     }
 
     await store.dispatch('user/getUser')
 
     const user = store.getters['user/user']
-
-    if (!user.isVerify) {
-      return goToLobby()
-    }
-
     const organizationList = user.organizationList
     if (organizationList.length === 1) {
       return router.push({ name: 'PublicLibrary', params: { orgNo: organizationList[0].orgNo } })
@@ -50,6 +37,14 @@ export default function useNavigation () {
   }
 
   const goToLobby = () => { router.push('/') }
+
+  const goToBillings = () => {
+    router.push(parsePath('/:orgNo/billings/plan'))
+  }
+
+  const goToPaymentDetail = () => {
+    router.push(parsePath('/:orgNo/billings/payment'))
+  }
 
   const goToAssets = async () => {
     await router.push(parsePath(`${prefixPath.value}/assets`))
@@ -109,6 +104,8 @@ export default function useNavigation () {
     goToGroupAssetMaterialEdit,
     goToReceivedShareMaterial,
     goToShareToMeMaterial,
+    goToBillings,
+    goToPaymentDetail,
     prefixPath
   }
 }

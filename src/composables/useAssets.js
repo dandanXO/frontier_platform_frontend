@@ -170,7 +170,7 @@ export default function useAssets () {
           break
         case U3M_STATUS.PROCESSING:
           store.dispatch('helper/openModalConfirm', {
-            title: t('EE0071'),
+            title: t('RR0162'),
             content: t('EE0072'),
             primaryText: t('UU0031')
           })

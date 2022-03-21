@@ -1,3 +1,16 @@
+<style lang="scss" scoped>
+input[type="date"] {
+  &::-webkit-calendar-picker-indicator {
+    background-size: contain;
+    background-image: url("@/assets/images/calendar.png");
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    margin: 0;
+  }
+}
+</style>
+
 <template lang="pug">
 input-container(:label="label" :required="required")
   div(class="h-full px-4 border rounded flex items-center" :class="[classBorder, { 'bg-black-200': disabled }, size === 'lg' ? 'h-11' : 'h-9']")
@@ -17,6 +30,7 @@ input-container(:label="label" :required="required")
       @input="typing"
       @focus="onFocus"
       @blur="onBlur"
+      @change="$emit('change')"
       @keydown.enter="$emit('enter')"
       class="w-full flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 placeholder-black-400 placeholder-text-body2 placeholder-overflow-visible disabled:text-black-600"
       autocomplete
@@ -92,7 +106,7 @@ export default {
       default: false
     }
   },
-  emits: ['update:textValue', 'blur', 'enter', 'clear'],
+  emits: ['update:textValue', 'blur', 'enter', 'clear', 'change'],
   setup (props, context) {
     const { inputType, textValue, disabled, rules, required, customErrorMsg } = toRefs(props)
     const { isFocus, isError, onFocus, onBlur, clear, typing, isEmpty, classBorder, errorMsg, classPrependIcon } = useInput({ context, inputType, textValue, disabled, rules, required, customErrorMsg })

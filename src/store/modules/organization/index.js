@@ -1,5 +1,8 @@
 import organizationApi from '@/apis/organization'
 import setVuexState from '@/utils/set-vuex-state'
+import { PLAN_TYPE, PLAN_STATUS } from '@/utils/constants.js'
+import i18n from '@/utils/i18n'
+import dayjs from 'dayjs'
 
 const state = () => ({
   orgId: 1,
@@ -21,9 +24,64 @@ const state = () => ({
   memberList: [],
   groupList: [],
   historyList: [],
-  totalMemberQty: 0,
-  totalMaterialQty: 0,
-  totalU3MQty: 0,
+  plan: {
+    planType: PLAN_TYPE.BASIC,
+    status: PLAN_STATUS.ACTIVE,
+    renewDate: null,
+    deactivatedDate: null,
+    bufferDeactivatedDate: null,
+    quota: {
+      material: {
+        used: 0,
+        max: ''
+      },
+      u3m: {
+        used: '',
+        max: ''
+      },
+      member: {
+        used: '',
+        max: ''
+      }
+    },
+  },
+  paymentDetail: {
+    cardInfo: {
+      lastFour: '',
+      expiredDate: '',
+      cardHolderName: ''
+    },
+    billingInfo: {
+      recipient: '',
+      email: '',
+      countryCode: '',
+      zipCode: '',
+      city: '',
+      address: ''
+    }
+  },
+  pricing: {
+    basic: {
+      planPrice: 0,
+      materialUnit: 100,
+      materialPrice: 20,
+      materialFreeQuota: 50,
+      materialUpgradeAlert: 2000,
+      u3mUnit: 100,
+      u3mPrice: 20,
+      u3mFreeQty: 10
+    },
+    pro: {
+      planPrice: 0,
+      memberPrice: 0,
+      materialUnit: 100,
+      materialPrice: 20,
+      materialFreeQuota: 50,
+      u3mUnit: 100,
+      u3mPrice: 20,
+      u3mMonthFreeQty: 10
+    }
+  },
 
   /** LOCAL VAR */
   createForm: {
@@ -48,7 +106,37 @@ const getters = {
   memberList: state => state.memberList,
   groupList: state => state.groupList,
   historyList: state => state.historyList,
-  createForm: state => state.createForm
+  createForm: state => state.createForm,
+  plan: state => state.plan,
+  planName: (state, getters) => {
+    const { BASIC, PRO, ENT } = PLAN_TYPE
+    const obj = {
+      [BASIC]: i18n.global.t('RR0159'),
+      [PRO]: i18n.global.t('RR0160'),
+      [ENT]: i18n.global.t('RR0161')
+    }
+    return obj[getters.plan.planType]
+  },
+  planStatus: (state, getters) => {
+    const planStatus = {}
+    Object.keys(PLAN_STATUS).forEach(status => {
+      planStatus[status] = getters.plan.status === PLAN_STATUS[status]
+    })
+
+    return planStatus
+  },
+  planType: (state, getters) => {
+    const planType = getters.plan.planType
+    const { BASIC, PRO, ENT } = PLAN_TYPE
+    return {
+      BASIC: BASIC === planType,
+      PRO: PRO === planType,
+      ENT: ENT === planType
+    }
+  },
+  paymentDetail: state => state.paymentDetail,
+  noBindingPayment: (state, getters) => !getters.paymentDetail.cardInfo,
+  pricing: state => state.pricing
 }
 
 const mutations = {
@@ -57,6 +145,9 @@ const mutations = {
   },
   SET_createForm_uploadMaterialEmail (state, uploadMaterialEmail) {
     state.createForm.uploadMaterialEmail = uploadMaterialEmail
+  },
+  SET_pricing (state, pricing) {
+    state.pricing = pricing
   }
 }
 
@@ -122,10 +213,9 @@ const actions = {
     dispatch('handleResponseData', { data }, { root: true })
   },
   async deleteOrg ({ state, dispatch }) {
-    const { data } = await organizationApi.deleteOrg({
-      orgId: state.orgId
-    })
+    const { data } = await organizationApi.deleteOrg({ orgId: state.orgId })
     dispatch('handleResponseData', { data }, { root: true })
+    return data
   },
   async updateOrgLogo ({ state, dispatch }, { logo, originalLogo }) {
     const { data } = await organizationApi.updateOrgLogo({ orgId: state.orgId, logo, originalLogo })
@@ -175,6 +265,88 @@ const actions = {
       faxCountryCode: 'TW',
       uploadMaterialEmail: ''
     })
+  },
+  async getPricing ({ commit }) {
+    const { data } = await organizationApi.getPricing()
+    commit('SET_pricing', data.result.pricing)
+  },
+  async updateBillingInfo ({ state, dispatch }, params) {
+    const { data } = await organizationApi.updateBillingInfo({ orgId: state.orgId, ...params })
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async getStripeClientSecret ({ state }) {
+    const { data } = await organizationApi.getStripeClientSecret({ orgId: state.orgId })
+    return data.result.clientSecret
+  },
+  async setCardHolderName ({ state }, params) {
+    await organizationApi.setCardHolderName({
+      orgId: state.orgId,
+      ...params
+    })
+  },
+  async upgradePlan ({ state, dispatch }) {
+    const { data } = await organizationApi.upgradePlan({ orgId: state.orgId })
+    dispatch('handleResponseData', { data }, { root: true })
+    return data
+  },
+  async requestUpgradeToEnterprise ({ state }, params) {
+    await organizationApi.requestUpgradeToEnterprise({ orgId: state.orgId, ...params })
+  },
+  async purchaseMaterial ({ state, dispatch }, { setQty }) {
+    const { data } = await organizationApi.purchaseMaterial({ orgId: state.orgId, setQty })
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async cancelMaterial ({ state, dispatch }, { setQty }) {
+    const { data } = await organizationApi.cancelMaterial({ orgId: state.orgId, setQty })
+    dispatch('handleResponseData', { data }, { root: true })
+  },
+  async purchaseU3m ({ state, dispatch }, { setQty }) {
+    const { data } = await organizationApi.purchaseU3m({ orgId: state.orgId, setQty })
+    dispatch('handleResponseData', { data }, { root: true })
+    return data
+  },
+  async getInvoiceList ({ state }, params) {
+    if (params.startDate?.length > 0) {
+      params.startDate = dayjs(params.startDate).format('YYYY/MM/DD')
+    }
+
+    if (params.endDate?.length > 0) {
+      params.endDate = dayjs(params.endDate).format('YYYY/MM/DD')
+    }
+
+    const { data } = await organizationApi.getInvoiceList({ orgId: state.orgId, ...params })
+    return data.result
+  },
+  async getInvoiceDetail ({ state, dispatch }, { invoiceId }) {
+    const { data } = await organizationApi.getInvoiceDetail({ orgId: state.orgId, invoiceId })
+    dispatch('handleResponseData', { data }, { root: true })
+    return data.result
+  },
+  async updateInvoiceBillingInfo ({ state }, params) {
+    const { data } = await organizationApi.updateInvoiceBillingInfo({ orgId: state.orgId, ...params })
+    return data.result
+  },
+  async getUnbilledInfo ({ state }) {
+    const { data } = await organizationApi.getUnbilledInfo({ orgId: state.orgId })
+    return data
+  },
+  async getLastMonthUnbilledInfo ({ state }) {
+    const { data } = await organizationApi.getLastMonthUnbilledInfo({ orgId: state.orgId })
+    return data
+  },
+  async payLastMonthUnbilledInfo ({ state, dispatch }) {
+    const { data } = await organizationApi.payLastMonthUnbilledInfo({ orgId: state.orgId })
+    dispatch('handleResponseData', { data }, { root: true })
+    return data
+  },
+  async deactivateOrg ({ state, dispatch }) {
+    const { data } = await organizationApi.deactivateOrg({ orgId: state.orgId })
+    dispatch('handleResponseData', { data }, { root: true })
+    return data
+  },
+  async activateOrg ({ state, dispatch }) {
+    const { data } = await organizationApi.activateOrg({ orgId: state.orgId })
+    dispatch('handleResponseData', { data }, { root: true })
   }
 }
 

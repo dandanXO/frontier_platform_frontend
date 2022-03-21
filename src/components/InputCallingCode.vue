@@ -50,7 +50,7 @@ export default {
       required: true
     },
     textValue: {
-      type: String,
+      validator: (v) => true,
       required: true
     },
     width: {

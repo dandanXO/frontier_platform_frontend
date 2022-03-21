@@ -5,10 +5,10 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
       div(class="w-75 relative z-10")
         input-select(:selectValue="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup")
       div(class="flex gap-x-6 items-center")
-        div(v-if="[ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(orgUser.orgRoleId)" class="flex gap-x-1 items-center cursor-pointer" @click="openModalCreateGroup")
+        div(v-permission="FUNC_ID.OPEN_CREATE_GROUP" class="flex gap-x-1 items-center cursor-pointer" @click="openModalCreateGroup")
           svg-icon(iconName="add_box" size="20" class="text-brand")
           p(class="text-body2 text-primary") {{$t('UU0017')}}
-        btn(size="sm" prependIcon="person_add" @click="routeLocation === 'org' ? openModalInviteToOrg() : openModalAddToGroup()") {{$t('UU0014')}}
+        btn(size="sm" prependIcon="person_add" @click="inviteHandler") {{$t('UU0014')}}
     div(class="border-b border-black-400")
       div(class="flex gap-x-5 pl-3")
         div(v-for="tab in tabList" class="cursor-pointer" @click="toggleTab(tab.path)")
@@ -30,7 +30,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import OrgAbout from '@/components/management/OrgAbout.vue'
 import { useI18n } from 'vue-i18n'
-import { ROLE_ID } from '@/utils/constants'
+import { FUNC_ID } from '@/utils/constants'
+import usePlan from '@/composables/usePlan.js'
 
 export default {
   name: 'Management',
@@ -45,6 +46,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const store = useStore()
+    const { checkCanInvitedPeople } = usePlan()
     const isLoading = ref(false)
 
     const orgUser = computed(() => store.getters['user/orgUser/orgUser'])
@@ -100,6 +102,14 @@ export default {
         component: 'modal-create-group'
       })
     }
+
+    const inviteHandler = () => {
+      if (routeLocation.value === 'org') {
+        checkCanInvitedPeople() && openModalInviteToOrg()
+      } else {
+        openModalAddToGroup()
+      }
+    }
     const openModalInviteToOrg = () => {
       store.dispatch('helper/openModal', {
         component: 'modal-invite-to-org',
@@ -133,11 +143,10 @@ export default {
       toggleTab,
       toggleOrgOrGroup,
       routeLocation,
+      inviteHandler,
       openModalCreateGroup,
-      openModalInviteToOrg,
-      openModalAddToGroup,
       isLoading,
-      ROLE_ID,
+      FUNC_ID,
       orgUser
     }
   }

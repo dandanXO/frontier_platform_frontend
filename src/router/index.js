@@ -15,6 +15,20 @@ const checkUserIsVerify = (to, from, next) => {
   next()
 }
 
+const checkOrgIsInactive = (to, from, next) => {
+  if (to.name === 'Billings') {
+    return next()
+  }
+
+  const planStatus = store.getters['organization/planStatus']
+
+  if (planStatus.INACTIVE) {
+    return next(`/${to.params.orgNo}/billings/plan`)
+  } else {
+    next()
+  }
+}
+
 const reuseRoutes = (prefix) => ([
   {
     path: 'management/:tab(about|members|history)',
@@ -105,27 +119,12 @@ const routes = [
     }
   },
   {
-    path: '/plan',
-    name: 'Plan',
-    component: () => import('@/views/Plan.vue')
-  },
-  {
     path: '/logout',
     name: 'Logout',
     beforeEnter: () => {
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
       window.location.replace('https://frontier.cool/')
-    }
-  },
-  {
-    path: '/verify-user',
-    name: 'VerifyUser',
-    beforeEnter: async (to, from, next) => {
-      const { verifyCode } = to.query
-      await store.dispatch('user/verifyUser', { verifyCode })
-      await next('/')
-      store.commit('helper/PUSH_message', i18n.global.t('AA0086'))
     }
   },
   {
@@ -188,7 +187,11 @@ const routes = [
       {
         path: '',
         name: 'Lobby',
-        component: () => import('@/views/innerApp/Lobby.vue')
+        component: () => import('@/views/innerApp/Lobby.vue'),
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('user/getUser')
+          next()
+        }
       },
       {
         path: 'invite-link',
@@ -212,14 +215,24 @@ const routes = [
         }
       },
       {
+        path: 'verify-user',
+        name: 'VerifyUser',
+        beforeEnter: async (to, from, next) => {
+          const { verifyCode } = to.query
+          await store.dispatch('user/verifyUser', { verifyCode })
+          await next('/')
+          store.commit('helper/PUSH_message', i18n.global.t('AA0086'))
+        }
+      },
+      {
         path: ':orgNo',
-        redirect: to => `/${to.params.orgNo}/public-library`,
         name: 'InnerAppRoot',
         components: {
           default: () => import('@/views/PassThrough.vue'),
           sidebar: Sidebar
         },
         beforeEnter: [checkUserIsVerify, async (to, from, next) => {
+          store.dispatch('organization/getPricing')
           await store.dispatch('user/getUser')
           await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
           await store.dispatch('user/orgUser/getOrgUser')
@@ -241,23 +254,38 @@ const routes = [
             path: '',
             name: 'OrgRoot',
             component: () => import('@/views/PassThrough.vue'),
-            beforeEnter: (to, from, next) => {
+            beforeEnter: [checkOrgIsInactive, (to, from, next) => {
               store.commit('helper/SET_routeLocation', 'org')
               next()
-            },
-            children: reuseRoutes('Org')
+            }],
+            children: [
+              ...reuseRoutes('Org'),
+              {
+                path: 'billings/:tab(plan|payment|history)',
+                name: 'Billings',
+                props: true,
+                component: () => import('@/views/innerApp/Billings.vue'),
+                beforeEnter: (to, from, next) => {
+                  const roleId = store.getters['user/orgUser/orgUser'].orgRoleId
+                  if ([ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(roleId)) {
+                    return next()
+                  } else {
+                    return next(`/${to.params.orgNo}/public-library`)
+                  }
+                }
+              }
+            ]
           },
           {
             path: ':groupId(\\d+)',
             name: 'GroupRoot',
-            redirect: to => `/${to.params.orgNo}/${to.params.groupId}/assets`,
             component: () => import('@/views/PassThrough.vue'),
-            beforeEnter: async (to, from, next) => {
+            beforeEnter: [checkOrgIsInactive, async (to, from, next) => {
               store.commit('helper/SET_routeLocation', 'group')
               await store.dispatch('group/getGroup', { groupId: to.params.groupId })
               await store.dispatch('user/groupUser/getGroupUser')
               next()
-            },
+            }],
             children: reuseRoutes('Group')
           },
           {
@@ -268,17 +296,8 @@ const routes = [
           {
             path: 'public-library/:nodeKey',
             name: 'PublicLibraryMaterialDetail',
-            component: () => import('@/views/innerApp/PublicLibraryMaterialDetail.vue')
-          },
-          {
-            path: 'global-search',
-            name: 'GlobalSearch',
-            component: () => import('@/views/innerApp/GlobalSearch.vue')
-          },
-          {
-            path: 'favorites',
-            name: 'Favorites',
-            component: () => import('@/views/innerApp/Favorites.vue')
+            component: () => import('@/views/innerApp/PublicLibraryMaterialDetail.vue'),
+            beforeEnter: checkOrgIsInactive
           }
         ]
       }
