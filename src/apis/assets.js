@@ -257,7 +257,7 @@ export default {
       })
     },
     updateAttachment: {
-      upload: async ({ orgId, materialId, file, displayFileName }) => {
+      upload: async ({ groupId, materialId, file, displayFileName }) => {
         const attachmentFileName = file.name
 
         const { data: { result: { tempUploadId, attachmentUploadUrl } } } = await axios('/org/group/assets/material/update/upload-attachment/get-upload-url', {
@@ -268,7 +268,7 @@ export default {
 
         return axios('/org/group/assets/material/update/upload-attachment', {
           method: 'POST',
-          data: { orgId, materialId, tempUploadId, attachmentFileName, displayFileName }
+          data: { groupId, materialId, tempUploadId, attachmentFileName, displayFileName }
         })
       },
       remove: ({ groupId, materialId, materialAttachmentId }) => axios('/org/group/assets/material/update/remove-attachment', {
