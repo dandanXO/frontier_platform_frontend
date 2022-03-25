@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="w-101 px-8")
   div(class="flex flex-col items-center")
-    h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{$t('MM0001')}}
+    h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{ $t("MM0001") }}
     div(class="relative pb-3")
       img(:src="avatar" class="w-30 h-30 rounded-full bg-black-500")
       div(
@@ -9,11 +9,11 @@ div(class="w-101 px-8")
         @click="openModalChangeAvatar"
       )
         svg-icon(iconName="camera" size="20" class="text-black-500 hover:text-brand")
-    p(class="text-body2 text-primary pb-3") {{orgUser.email}}
+    p(class="text-body2 text-primary pb-3") {{ orgUser.email }}
     //- button(class="flex items-center border rounded-full border-assist-blue text-assist-blue py-1 px-5")
-    //-   p(class="text-caption") {{$t('MM.Advanced settings')}}
+    //-   p(class="text-caption") {{$t("MM.Advanced settings")}}
     //-   svg-icon(iconName="keyboard_arrow_right" size="14")
-    p(class="text-caption text-black-600 self-end pt-3.5 pb-1") *{{$t('RR0163')}}
+    p(class="text-caption text-black-600 self-end pt-3.5 pb-1") *{{ $t("RR0163") }}
     input-text(
       class="w-full pb-4"
       v-model:textValue="displayName"

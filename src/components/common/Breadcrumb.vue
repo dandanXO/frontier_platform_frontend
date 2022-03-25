@@ -2,16 +2,16 @@
 div(class="flex items-center gap-x-1")
   template(v-if="length < 4")
     template(v-for="(item, index) in breadcrumbList")
-      p(:class="[...classes, { 'font-bold': index === length - 1 }]" @click="$emit('click:item', item)") {{item.name}}
+      p(:class="[...classes, { 'font-bold': index === length - 1 }]" @click="$emit('click:item', item)") {{ item.name }}
       svg-icon(v-if="index !== length - 1" size="20" iconName="slash" class="text-black-500")
   template(v-else)
-    p(:class="classes" @click="$emit('click:item', breadcrumbList[0])") {{breadcrumbList[0].name}}
+    p(:class="classes" @click="$emit('click:item', breadcrumbList[0])") {{ breadcrumbList[0].name }}
     svg-icon(size="20" iconName="slash" class="text-black-500")
-    dropdown(:options="breadcrumbList.slice(1, length -1)" @select="$emit('click:item', $event)")
+    dropdown(:options="breadcrumbList.slice(1, length - 1)" @select="$emit('click:item', $event)")
       template(#displayItem="{ isExpand }")
         svg-icon(size="20" iconName="more_horiz" class="text-primary hover:bg-black-200 rounded-sm" :class="{ 'bg-black-200': isExpand }")
     svg-icon(size="20" iconName="slash" class="text-black-500")
-    p(:class="classes" class="font-bold") {{breadcrumbList[length - 1].name}}
+    p(:class="classes" class="font-bold") {{ breadcrumbList[length - 1].name }}
 </template>
 
 <script>

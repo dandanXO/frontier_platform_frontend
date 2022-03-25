@@ -1,5 +1,5 @@
 <template lang="pug">
-h1 I'm {{$route.name}} Page
+h1 I'm {{ $route.name }} Page
 btn(@click="showMessage") show message
 </template>
 

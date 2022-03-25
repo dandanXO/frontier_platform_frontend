@@ -1,7 +1,7 @@
 <template lang="pug">
 modal-loading(v-if="isLoading")
 div(v-show="!isLoading" class="w-107 px-8")
-  h6(class="text-primary font-bold text-h6 pb-7.5 text-center") {{$t('OO0014')}}
+  h6(class="text-primary font-bold text-h6 pb-7.5 text-center") {{ $t('OO0014') }}
   form
     div(id="stripe-container")
     input-text(

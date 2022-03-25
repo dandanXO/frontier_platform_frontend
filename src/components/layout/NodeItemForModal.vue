@@ -1,6 +1,6 @@
 <template lang="pug">
 div(@mouseenter="isHover = true" @mouseleave="isHover = false")
-  div(class="w-full aspect-ratio border border-black-400 rounded-md overflow-hidden relative")
+  div(class="w-full aspect-square border border-black-400 rounded-md overflow-hidden relative")
     template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
       div(class="grid grid-rows-2 grid-cols-2 grid-flow-col h-full")
         div(class="row-span-2 bg-primary-thin")
@@ -37,7 +37,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
           @click.stop
         )
   div(class="text-caption font-bold mt-0.5 flex items-center justify-between" :class="[isHover ? 'text-brand' : 'text-primary']")
-    p(class="line-clamp-1") {{displayName}}
+    p(class="line-clamp-1") {{ displayName }}
     tooltip-location(v-if="isShowLocation" :location="node.location")
 </template>
 

@@ -9,8 +9,8 @@ filter-wrapper(
     div(class="px-8 pt-7.5")
       div(class="flex justify-between items-center")
         div(class="flex items-center gap-x-2")
-          p(class="text-body2 text-primary font-bold") {{$t('RR0021')}}
-          btn-functional(v-if="contentList.length > 0" size="sm" @click.stop="reset") {{$t('UU0040')}}
+          p(class="text-body2 text-primary font-bold") {{ $t("RR0021") }}
+          btn-functional(v-if="contentList.length > 0" size="sm" @click.stop="reset") {{ $t("UU0040") }}
         svg-icon(size="20" iconName="add_box" class="text-black-700" @click="addItem")
       div(v-if="contentList.length > 0" class="grid gap-y-5 relative py-2")
         div(v-for="(content, contentItemIndex) in contentList" class="flex items-center")
@@ -22,20 +22,20 @@ filter-wrapper(
             keyOptionValue="value"
             searchBox
             class="w-64 mr-3"
-            :class="`z-${contentList.length - contentItemIndex}`"
+            :style="{ zIndex: contentList.length - contentItemIndex }"
           )
           input-text(v-model:textValue="content.percentage" inputType="number" class="w-30 mr-3")
           p(class="text-body2 text-primary pr-2") %
           svg-icon(size="20" iconName="delete" class="text-black-700" @click.stop="removeItem(contentItemIndex)")
-        p(v-if="errorMsg" class="text-caption text-warn absolute bottom-0 transform translate-y-full") {{errorMsg}}
+        p(v-if="errorMsg" class="text-caption text-warn absolute bottom-0 transform translate-y-full") {{ errorMsg }}
       div(class="flex pt-4")
         svg-icon(iconName="error_outline" size="14" class="text-primary mt-1 mr-2")
-        div(class="text-caption text-primary line-height-1.6")
-          p {{$t('JJ0002')}}:
-          p {{$t('JJ0003')}}
-          p {{$t('JJ0004')}}
+        div(class="text-caption text-primary leading-1.6")
+          p {{ $t("JJ0002") }}:
+          p {{ $t("JJ0003") }}
+          p {{ $t("JJ0004") }}
     div(class="h-25 flex items-center justify-center")
-      btn(size="sm" :disabled="errorMsg" class="justify-self-center" @click="update") {{$t('UU0001')}}
+      btn(size="sm" :disabled="errorMsg" class="justify-self-center" @click="update") {{ $t("UU0001") }}
 </template>
 
 <script>

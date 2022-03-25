@@ -12,7 +12,7 @@ filter-wrapper(
       :max="filterOptions.price.max"
       :label="$t('RR0095')"
     )
-    btn(size="sm" class="justify-self-center" @click="update") {{$t('UU0001')}}
+    btn(size="sm" class="justify-self-center" @click="update") {{ $t('UU0001') }}
 </template>
 
 <script>

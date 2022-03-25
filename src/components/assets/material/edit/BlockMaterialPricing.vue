@@ -2,12 +2,12 @@
 dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border-b border-black-400")
   template(#displayItem="{ isExpand }")
     div(class="h-15 flex items-center justify-between")
-      h5(class="text-h5 text-primary font-bold") {{$t('DD0025')}}
+      h5(class="text-h5 text-primary font-bold") {{ $t("DD0025") }}
       svg-icon(
         iconName="arrow-down"
         size="20"
         class="transform text-primary"
-        :class="[ isExpand ? '-rotate-90' :'rotate-90']"
+        :class="[isExpand ? '-rotate-90' : 'rotate-90']"
       )
   template(#dropdownList)
     div(class="px-15 pt-5 mb-15 grid gap-y-7.5")
@@ -23,14 +23,14 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
       )
       input-container(:label="$t('RR0043')")
         div(class="flex items-center gap-x-3")
-          p(class="text-body2 text-primary font-bold") {{$t('RR0044')}}
+          p(class="text-body2 text-primary font-bold") {{ $t("RR0044") }}
           input-text(
             v-model:textValue="material.publicPrice.price"
             inputType="number"
             class="w-50"
             :customErrorMsg="validations.publicPricePrice"
           )
-          p(class="text-body2 text-primary font-bold") {{INVENTORY_UNIT.Y}}
+          p(class="text-body2 text-primary font-bold") {{ INVENTORY_UNIT.Y }}
       input-container(:label="$t('RR0047')" class="relative z-19")
         div(class="flex items-center gap-x-3")
           input-text(
@@ -68,7 +68,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
             class="w-50"
             :customErrorMsg="validations.publicPriceProductionLeadTime"
           )
-          p(class="text-body2 text-primary font-bold") {{$t('RR0050')}}
+          p(class="text-body2 text-primary font-bold") {{ $t("RR0050") }}
       input-container(:label="$t('RR0051')")
         div(class="flex items-center gap-x-3")
           input-text(
@@ -76,9 +76,9 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
             class="w-50"
             :customErrorMsg="validations.publicPriceSampleLeadTime"
           )
-          p(class="text-body2 text-primary font-bold") {{$t('RR0050')}}
+          p(class="text-body2 text-primary font-bold") {{ $t("RR0050") }}
       div(class="-mx-15 bg-black-100 px-15 py-12.5 grid gap-y-7.5")
-        h6(class="text-h6 text-black-600 font-bold") {{$t('DD0019')}}
+        h6(class="text-h6 text-black-600 font-bold") {{ $t("DD0019") }}
         input-select(
           v-model:selectValue="material.privatePrice.countryCode"
           :options="countryList"
@@ -148,7 +148,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
               class="w-50"
               :customErrorMsg="validations.privatePriceProductionLeadTime"
             )
-            p(class="text-body2 text-primary font-bold") {{$t('RR0050')}}
+            p(class="text-body2 text-primary font-bold") {{ $t("RR0050") }}
         input-container(:label="$t('RR0051')")
           div(class="flex items-center gap-x-3")
             input-text(
@@ -156,7 +156,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
               class="w-50"
               :customErrorMsg="validations.privatePriceSampleLeadTime"
             )
-            p(class="text-body2 text-primary font-bold") {{$t('RR0050')}}
+            p(class="text-body2 text-primary font-bold") {{ $t("RR0050") }}
 </template>
 
 <script>

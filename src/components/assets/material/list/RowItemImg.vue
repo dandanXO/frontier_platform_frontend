@@ -1,12 +1,12 @@
 <template lang="pug">
 div(class="w-full min-w-42.5 max-w-67.5")
   div(class="pb-2.5 flex justify-between")
-    div(class="font-bold text-primary line-clamp-1") {{material.materialNo}}
+    div(class="font-bold text-primary line-clamp-1") {{ material.materialNo }}
     svg-icon(:iconName="statusIconName" size="24" class="text-primary")
-  div(class="w-full relative aspect-ratio" @mouseenter="isHover = true" @mouseleave="isHover = false")
-    div(class="w-full h-full rounded-md overflow-hidden bg-cover" :class="{'border': neverScanBefore }")
+  div(class="w-full relative aspect-square" @mouseenter="isHover = true" @mouseleave="isHover = false")
+    div(class="w-full h-full rounded-md overflow-hidden bg-cover" :class="{ 'border': neverScanBefore }")
       img(:src="currentCoverImg" class="w-full h-full")
-    div(v-if="isHover" class="absolute z-9 inset-0 w-full h-full rounded bg-opacity-70 bg-black-900" @click.stop="goToAssetMaterialDetail(material)")
+    div(v-if="isHover" class="absolute z-9 inset-0 w-full h-full rounded bg-black-900/70" @click.stop="goToAssetMaterialDetail(material)")
     div(v-if="isHover || haveSelectedMoreThanOne" class="absolute z-10 inset-0 w-full h-12")
       div(class="bg-linear w-full h-full rounded-t-md")
       input-checkbox(
@@ -16,7 +16,7 @@ div(class="w-full min-w-42.5 max-w-67.5")
         iconColor="text-black-0"
         uncheckColor="text-black-0"
       )
-  div(class="h-6.5 text-primary text-body1 line-clamp-1 line-height-1.6 mt-2.5") {{material.description}}
+  div(class="h-6.5 text-primary text-body1 line-clamp-1 mt-2.5") {{ material.description }}
 </template>
 
 <script>

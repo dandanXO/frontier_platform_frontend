@@ -14,7 +14,7 @@ div(class="w-full h-full")
           p(class="flex text-caption text-black-700 pl-1")
             span (
             i18n-t(keypath="RR0068" tag="span")
-              template(#number) {{pagination.totalCount}}
+              template(#number) {{ pagination.totalCount }}
             span )
         tooltip(v-if="!isFirstLayer" placement="bottom")
           template(#trigger)
@@ -25,16 +25,16 @@ div(class="w-full h-full")
               @click="cloneNode.func(`${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`, collection.share.isCanClone)"
             )
           template(#content)
-            p(class="text-caption text-primary px-3 py-1") {{$t('RR0056')}}
+            p(class="text-caption text-primary px-3 py-1") {{ $t("RR0056") }}
     template(#header-right)
       div(v-if="!isFirstLayer" class="relative cursor-pointer" @click="openModalShareMessage")
         svg-icon(iconName="chat" size="24" class="text-black-700")
         div(v-if="haveMsgAndFirstRead" class="absolute -top-px -right-px w-2 h-2 rounded-full border border-black-0 bg-warn")
-      btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
+      btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
     template(v-if="!isFirstLayer" #sub-header)
       div(class="mx-7.5 mb-7.5 text-caption text-black-700 flex items-center")
-        p(class="pr-2.5") {{collection.share.displayName}}
-        p {{$t('RR0148')}} {{$dayjs.unix(collection.share.shareDate).format('MM/DD/YYYY')}}
+        p(class="pr-2.5") {{ collection.share.displayName }}
+        p {{ $t("RR0148") }} {{ $dayjs.unix(collection.share.shareDate).format("MM/DD/YYYY") }}
     template(#default="{ inSearch }")
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
         template(v-for="node in nodeList")
@@ -50,8 +50,8 @@ div(class="w-full h-full")
             )
               template(#node-caption v-if="isFirstLayer")
                 div(class="mt-1.5 h-6 flex items-center")
-                  img(:src="node.share.logo" class="aspect-ratio h-full rounded-full")
-                  p(class="pl-1 font-bold text-caption text-primary") {{node.share.displayName}}
+                  img(:src="node.share.logo" class="aspect-square h-full rounded-full")
+                  p(class="pl-1 font-bold text-caption text-primary") {{ node.share.displayName }}
           template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
             node-item(
               v-model:selectedList="selectedNodeList"
@@ -64,17 +64,17 @@ div(class="w-full h-full")
             )
               template(#node-caption v-if="isFirstLayer")
                 div(class="mt-1.5 h-6 flex items-center")
-                  img(:src="node.share.logo" class="aspect-ratio h-full rounded-full")
-                  p(class="pl-1 font-bold text-caption text-primary") {{node.share.displayName}}
+                  img(:src="node.share.logo" class="aspect-square h-full rounded-full")
+                  p(class="pl-1 font-bold text-caption text-primary") {{ node.share.displayName }}
       div(v-else class="flex h-full justify-center items-end")
-        p(class="text-body1 text-primary") {{$t('HH0001')}}
+        p(class="text-body1 text-primary") {{ $t("HH0001") }}
   multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeList")
     template(#default="{ option }")
       div(
         v-if="option.id === 'clone'"
         class="whitespace-nowrap px-5 cursor-pointer hover:text-brand"
         @click="option.func(selectedNodeList, collection.share.isCanClone)"
-      ) {{option.name}}
+      ) {{ option.name }}
 
 </template>
 

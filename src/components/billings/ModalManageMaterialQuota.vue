@@ -32,14 +32,14 @@ div(class="w-133.5 px-8")
             template(v-if="currentTab === TAB.ADD") {{ `${pricing.materialUnit}${$t('OO0035')} / ${$t('RR0044')} $${pricing.materialPrice}` }}
             template(v-else) {{ `${pricing.materialUnit}${$t('OO0035')} / ${$t('OO0104')}` }}
           template(v-if="currentTab === TAB.ADD && isHitUpgradeAlert")
-            p(class="text-caption text-warn line-height-1.6 pt-1") *{{ $t('WW0081') }}
-            p(class="text-caption text-assist-blue line-height-1.6 underline cursor-pointer" @click="openModalChoosePlan") {{ $t('OO0115') }}
+            p(class="text-caption text-warn leading-1.6 pt-1") *{{ $t('WW0081') }}
+            p(class="text-caption text-assist-blue leading-1.6 underline cursor-pointer" @click="openModalChoosePlan") {{ $t('OO0115') }}
           template(v-if="currentTab === TAB.REMOVE")
             div(class="flex-grow")
-              p(v-if="!!cancelErrorMsg" class="text-caption text-warn line-height-1.6 pt-1") {{ cancelErrorMsg }}
+              p(v-if="!!cancelErrorMsg" class="text-caption text-warn leading-1.6 pt-1") {{ cancelErrorMsg }}
             div(class="flex items-start text-black-600")
               svg-icon(iconName="error_outline" size="14" class="mt-1")
-              p(class="text-caption line-height-1.6 pl-0.5") {{ $t('OO0062') }}
+              p(class="text-caption leading-1.6 pl-0.5") {{ $t('OO0062') }}
       div(v-if="currentTab === TAB.ADD" class="border-t border-black-400 pt-3")
         p(class="text-body1 font-bold text-primary text-right") {{ `${$t('OO0034')}: ${$t('RR0044')} $${totalPrice}` }}
   btn-group(
@@ -59,7 +59,7 @@ import usePlan from '@/composables/usePlan.js'
 
 export default {
   name: 'ModalManageMaterialQuota',
-  setup (props) {
+  setup () {
     const { t } = useI18n()
     const store = useStore()
     const { openModalChoosePlan } = usePlan()

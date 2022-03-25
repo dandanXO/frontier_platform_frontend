@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="w-115 px-7.5")
-  div(class="text-h6 text-primary text-center font-bold") {{$t("EE0087")}}
-  p(class="text-caption text-black-600 text-right mb-1.5") *{{$t("RR0163")}}
+  div(class="text-h6 text-primary text-center font-bold") {{ $t("EE0087") }}
+  p(class="text-caption text-black-600 text-right mb-1.5") *{{ $t("RR0163") }}
   div(class="mb-7.5")
     input-text-btn(
       class="w-full"
@@ -13,8 +13,8 @@ div(class="w-115 px-7.5")
       @click:button="chooseFile"
       required
     )
-    p(class="text-primary text-caption line-height-1.6") {{$t("EE0089")}}
-    p(class="text-primary text-caption line-height-1.6") {{$t("EE0090")}}
+    p(class="text-primary text-caption leading-1.6") {{ $t("EE0089") }}
+    p(class="text-primary text-caption leading-1.6") {{ $t("EE0090") }}
   div
     input-text(
       v-model:textValue="fileName"
@@ -24,8 +24,8 @@ div(class="w-115 px-7.5")
     )
   div(class="h-25 flex justify-center items-center")
     div(class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" @click="closeModal") {{$t('UU0002') }}
-      btn(size="md" :disabled='disabled' @click="upload") {{$t('UU0022')}}
+      btn(size="md" type="secondary" @click="closeModal") {{ $t("UU0002") }}
+      btn(size="md" :disabled="disabled" @click="upload") {{ $t("UU0022") }}
 </template>
 
 <script>

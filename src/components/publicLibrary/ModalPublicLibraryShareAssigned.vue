@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-120.5 px-8")
-  h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{$t('RR0155')}}
+  h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{ $t("RR0155") }}
   input-text-icon(
     v-model:textValue="target"
     prependIcon="search"
@@ -17,9 +17,9 @@ div(class="w-120.5 px-8")
         img(v-if="item.logo" :src="item.logo" class="w-9 h-9 rounded-full")
         div(v-else class="w-9 h-9 rounded-full border-black-500 border border-dashed")
         div(class="text-body2 flex-grow")
-          p(class="text-primary line-clamp-1") {{item.name}}
-          p(v-if="item.number" class="text-black-500") {{item.number}}
-        p(class="text-body2 text-black-500 pr-2.5 cursor-pointer" @click="removeTarget(index)") {{$t('FF0060')}}
+          p(class="text-primary line-clamp-1") {{ item.name }}
+          p(v-if="item.number" class="text-black-500") {{ item.number }}
+        p(class="text-body2 text-black-500 pr-2.5 cursor-pointer" @click="removeTarget(index)") {{ $t("FF0060") }}
   btn-group(
     class="h-25"
     :primaryText="$t('RR0079')"

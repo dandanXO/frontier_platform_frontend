@@ -22,27 +22,27 @@ div(class="w-315 h-full mx-auto")
               p(class="flex text-caption text-black-700 pl-1")
                 span (
                 i18n-t(keypath="RR0068" tag="span")
-                  template(#number) {{pagination.totalCount}}
+                  template(#number) {{ pagination.totalCount }}
                 span )
             tooltip(placement="bottom")
               template(#trigger)
                 svg-icon(iconName="clone" class="text-black-700 hover:text-brand cursor-pointer" size="24" @click="cloneReceivedShare([workspaceNodeId])")
               template(#content)
-                p(class="text-caption text-primary px-3 py-1") {{$t('RR0056')}}
-          btn(size="sm" type="secondary" @click="isCollectionDetailExpand = !isCollectionDetailExpand") {{isCollectionDetailExpand ? $t('UU0026') : $t('UU0071')}}
+                p(class="text-caption text-primary px-3 py-1") {{ $t("RR0056") }}
+          btn(size="sm" type="secondary" @click="isCollectionDetailExpand = !isCollectionDetailExpand") {{ isCollectionDetailExpand ? $t("UU0026") : $t("UU0071") }}
         div(v-if="isCollectionDetailExpand" class="flex items-start gap-x-9")
           div(class="relative w-97.5 h-69 bg-black-200 flex items-center justify-center flex-shrink-0")
             div(v-if="collection.trendBoardCoverImg" class="w-full h-full")
               img(:src="collection.trendBoardCoverImg" class="w-full h-full object-contain")
               a(:href="collection.trendBoardUrl" target="_blank" class="absolute right-3.5 bottom-3.5 card-shadow w-7 h-7 rounded-sm bg-black-0 flex items-center justify-center")
                 svg-icon(iconName="search" class="text-black-700" size="24")
-            p(v-else class="text-body2 text-black-400") {{$t('FF0007')}}
+            p(v-else class="text-body2 text-black-400") {{ $t("FF0007") }}
           overlay-scrollbar-container(class="flex-grow h-61.5 max-w-193.5")
-            p(v-if="collection.description" class="text-body2 text-primary line-height-1.5") {{collection.description}}
+            p(v-if="collection.description" class="text-body2 text-primary leading-1.5") {{ collection.description }}
             div(v-else class="w-full h-full flex items-center justify-center")
-              p(class="text-body2 text-primary") {{$t('GG0028')}}
+              p(class="text-body2 text-primary") {{ $t("GG0028") }}
     template(#default)
-      div(v-if="nodeList.length > 0" class="mx-7.5 grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
+      div(v-if="nodeList.length > 0" class="mx-7.5 grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start")
         template(v-for="node in nodeList")
           template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
             node-item(

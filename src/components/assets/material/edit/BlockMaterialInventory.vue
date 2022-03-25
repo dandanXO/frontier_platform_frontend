@@ -2,16 +2,16 @@
 dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border-b border-black-400")
   template(#displayItem="{ isExpand }")
     div(class="h-15 flex items-center justify-between")
-      h5(class="text-h5 text-primary font-bold") {{$t('DD0021')}}
+      h5(class="text-h5 text-primary font-bold") {{ $t("DD0021") }}
       svg-icon(
         iconName="arrow-down"
         size="20"
         class="transform text-primary"
-        :class="[ isExpand ? '-rotate-90' :'rotate-90']"
+        :class="[isExpand ? '-rotate-90' : 'rotate-90']"
       )
   template(#dropdownList)
     div(class="bg-black-100 px-15 py-12.5 mb-15 grid gap-y-7.5")
-      h6(class="text-h6 text-black-600 font-bold") {{$t('DD0019')}}
+      h6(class="text-h6 text-black-600 font-bold") {{ $t("DD0019") }}
       input-text(
         v-model:textValue="material.materialSeq"
         :label="$t('RR0030')"
@@ -45,7 +45,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
             :customErrorMsg="validations.hangersLocation"
             class="w-50"
           )
-      h6(class="text-h6 text-black-600 font-bold") {{$t('DD0023')}}
+      h6(class="text-h6 text-black-600 font-bold") {{ $t("DD0023") }}
       input-container(:label="$t('RR0034')")
         div(class="flex items-center gap-x-3")
           input-text(
@@ -61,26 +61,26 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
             size="20"
           )
       div(class="grid gap-y-3 relative")
-        div(v-for="(inventory, index) in material.inventoryList" class="flex items-center gap-x-3 relative" :class="`z-${material.inventoryList.length - index}`")
+        div(v-for="(inventory, index) in material.inventoryList" class="flex items-center gap-x-3 relative" :style="{ zIndex: material.inventoryList.length - index }")
           input-text(
             v-model:textValue="inventory.section"
-            :label="index === 0 ? $t('RR0035') :''"
+            :label="index === 0 ? $t('RR0035') : ''"
             class="w-50"
           )
           input-text(
             v-model:textValue="inventory.shelf"
-            :label="index === 0 ? $t('RR0036') :''"
+            :label="index === 0 ? $t('RR0036') : ''"
             class="w-50"
           )
           input-text(
             v-model:textValue="inventory.quantity"
             inputType="number"
-            :label="index === 0 ? $t('RR0037') :''"
+            :label="index === 0 ? $t('RR0037') : ''"
             class="w-50"
           )
           input-select(
             v-model:selectValue="inventory.unit"
-            :label="index === 0 ? $t('RR0038') :''"
+            :label="index === 0 ? $t('RR0038') : ''"
             :options="inventoryUnitList"
             @update:selectValue="updateInventoryListUnit"
             keyOptionDisplay="unit"
@@ -89,7 +89,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
           )
           svg-icon(v-if="index === 0" size="20" iconName="add_box" class="text-black-700 ml-4.5 mt-5.5" @click="addNewInventory")
           svg-icon(v-else size="20" iconName="delete" class="text-black-700 ml-4.5" @click="removeInventory(index)")
-        p(v-if="validations.inventoryList" class="bottom-0 transform translate-y-full text-caption text-warn absolute pt-1") {{validations.inventoryList}}
+        p(v-if="validations.inventoryList" class="bottom-0 transform translate-y-full text-caption text-warn absolute pt-1") {{ validations.inventoryList }}
 </template>
 
 <script>

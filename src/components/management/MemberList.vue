@@ -4,10 +4,10 @@ div(class="pt-2.5 h-full flex flex-col relative")
     input-text(v-model:textValue="searchInput" size="sm" class="w-67.5" prependIcon="search" :placeholder="$t('BB0012')")
   div(class="w-full h-12 bg-black-200 flex gap-x-3 items-center text-body1 text-primary")
     p(class="w-1/12")
-    p(class="w-2/12") {{$t('BB0013')}}
-    p(class="w-4/12") {{$t('BB0014')}}
-    p(class="w-2/12") {{$t('BB0015')}}
-    p(class="w-2/12") {{$t('BB0016')}}
+    p(class="w-2/12") {{ $t("BB0013") }}
+    p(class="w-4/12") {{ $t("BB0014") }}
+    p(class="w-2/12") {{ $t("BB0015") }}
+    p(class="w-2/12") {{ $t("BB0016") }}
     p(class="w-1/12")
   div(class="py-6 flex-grow")
     overlay-scrollbar-container(class="h-full")

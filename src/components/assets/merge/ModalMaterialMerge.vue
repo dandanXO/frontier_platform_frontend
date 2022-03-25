@@ -1,7 +1,7 @@
 <template lang="pug">
 fullscreen-header
   template(#left)
-    h5(class="text-h5 text-primary font-bold") {{$t('EE0006')}}
+    h5(class="text-h5 text-primary font-bold") {{ $t("EE0006") }}
   template(#right)
     btn-group(
       :primaryText="$t('UU0003')"
@@ -13,23 +13,20 @@ fullscreen-header
       div(class="min-h-71.5 bg-black-0")
         overlay-scrollbar-container(class="h-full")
           material-merge-row(
-              v-for="(rowData, index) in mergedList"
-              :rowData="rowData"
-              droppable
-              :length="mergedList.length"
-              @deleteRow="deleteRow(index)"
-              @setRow="setRow(index, $event)"
-              @clearBlock="clearBlock(index, $event)"
-            )
-          div(class="flex items-center justify-center pb-5")
-            div(class="inline-block flex items-center justify-center text-body2 text-primary cursor-pointer" @click="addNewRow")
-              svg-icon(iconName="add_box" size="24" class="text-black-700")
-              span(class="pl-2") {{$t('EE0010')}}
+            v-for="(rowData, index) in mergedList"
+            :rowData="rowData"
+            droppable
+            :length="mergedList.length"
+            @deleteRow="deleteRow(index)"
+            @setRow="setRow(index, $event)"
+            @clearBlock="clearBlock(index, $event)"
+          )
+  div(class="flex items-center justify-center pb-5")
+    div(class="flex items-center justify-center text-body2 text-primary cursor-pointer" @click="addNewRow")
+      svg-icon(iconName="add_box" size="24" class="text-black-700")
+      span(class="pl-2") {{ $t("EE0010") }}
       overlay-scrollbar-container(class="h-full bg-black-200")
-        material-merge-row(
-          v-for="rowData in rowList"
-          :rowData="rowData"
-        )
+        material-merge-row(v-for="rowData in rowList" :rowData="rowData")
 </template>
 
 <script>

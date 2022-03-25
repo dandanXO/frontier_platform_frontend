@@ -1,11 +1,11 @@
 <template lang="pug">
 div
   div(class="h-15 flex items-center")
-    h5(class="text-h5 text-primary font-bold") {{$t('DD0026')}}
+    h5(class="text-h5 text-primary font-bold") {{ $t("DD0026") }}
   div(class="px-15")
     div(class="mt-5 mb-10")
-      div(class="mb-4.5 text-body2") {{$t("DD0027")}}
-      btn(size="md" @click="openModalUpload") {{$t("UU0022")}}
+      div(class="mb-4.5 text-body2") {{ $t("DD0027") }}
+      btn(size="md" @click="openModalUpload") {{ $t("UU0022") }}
     div(class="flex flex-wrap gap-5")
       attachment-item(
         v-for="(attachment, index) in attachmentList"

@@ -16,8 +16,8 @@ div(class="w-86 border-t border-black-400 pt-12")
         )
   div(class="h-25 flex justify-center items-center")
     div(class="flex justify-center gap-3")
-      btn(size="md" type="secondary" @click="closeModal") {{ isAllowGoBack ? $t('UU0004') : $t('UU0002') }}
-      btn(size="md" @click="confirm") {{$t('UU0018')}}
+      btn(size="md" type="secondary" @click="closeModal") {{ isAllowGoBack ? $t("UU0004") : $t("UU0002") }}
+      btn(size="md" @click="confirm") {{ $t("UU0018") }}
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-105 px-8 flex flex-col items-center")
-  h6(class="text-h6 font-bold text-primary pb-7.5") {{$t('MM0025')}}
+  h6(class="text-h6 font-bold text-primary pb-7.5") {{ $t("MM0025") }}
   form(class="w-full")
     input-password(v-model:textValue="currentPassword" :placeholder="$t('MM0026')" :customErrorMsg="errorMsg" class="mb-7.5")
     input-password(v-model:textValue="newPassword" :placeholder="$t('MM0027')")

@@ -1,7 +1,7 @@
 <template lang="pug">
 fullscreen-header
   template(#left)
-    h5(class="text-h5 text-primary font-bold") {{$t('EE0069')}}
+    h5(class="text-h5 text-primary font-bold") {{ $t("EE0069") }}
   template(#right)
     btn-group(
       :primaryText="hasNext ? $t('UU0021') : $t('UU0020')"
@@ -13,7 +13,7 @@ fullscreen-header
     template(v-for="cropper in croppers")
       div(v-show="cropper.ref === currentSide" class="flex h-full justify-center items-center" :class="[cropper.ref]")
         div
-          div(class="mb-4.5 text-center text-primary text-body2 font-bold") {{cropper.title}}
+          div(class="mb-4.5 text-center text-primary text-body2 font-bold") {{ cropper.title }}
           cropper-default-layout(
             class="w-82.5"
             scaleUnit="cm"
@@ -24,7 +24,7 @@ fullscreen-header
             @update:rotateDeg="cropper.config.rotateDeg = $event"
             @update:scaleRatio="handleUpdateScaleRatio(cropper, $event)"
           )
-            template(#imageCropArea="{innerScaleSize}")
+            template(#imageCropArea="{ innerScaleSize }")
               image-crop-area(
                 :ref="(el => handleRefUpdate(cropper.ref, el))"
                 :config="cropper.config"
@@ -35,7 +35,7 @@ fullscreen-header
                 div(class="mt-1 absolute w-full")
                   div(class="h-2 flex items-center border-r-2 border-l-2 border-primary")
                     div(class="h-0.5 bg-primary w-full")
-                  div(class="text-caption text-primary font-bold text-center") {{`${innerScaleSize} cm`}}
+                  div(class="text-caption text-primary font-bold text-center") {{ `${innerScaleSize} cm` }}
         div(class="w-125 h-125 bg-black-400 ml-21 grid grid-cols-3 grid-rows-3")
           div(v-for="i in 9" class="overflow-hidden")
             cropped-image(

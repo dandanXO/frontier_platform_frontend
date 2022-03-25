@@ -8,8 +8,8 @@ dropdown(
 )
   template(#displayItem="{ isExpand, option }")
     div(class="flex items-center")
-      span(class="text-primary font-bold text-caption") {{option.abbr}}
-      svg-icon(iconName="arrow-down" size="24" class="text-black-650 transform" :class="[ isExpand ? '-rotate-90' : 'rotate-90' ]")
+      span(class="text-primary font-bold text-caption") {{ option.abbr }}
+      svg-icon(iconName="arrow-down" size="24" class="text-black-650 transform" :class="[isExpand ? '-rotate-90' : 'rotate-90']")
 </template>
 
 <script>

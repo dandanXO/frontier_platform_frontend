@@ -32,7 +32,7 @@ input-container(:label="label" :required="required")
       @blur="onBlur"
       @change="$emit('change')"
       @keydown.enter="$emit('enter')"
-      class="w-full flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 placeholder-black-400 placeholder-text-body2 placeholder-overflow-visible disabled:text-black-600"
+      class="w-full flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 disabled:text-black-600 placeholder:text-black-400 placeholder:overflow-visible"
       autocomplete
     )
     div(v-if="appendIcon !== '' || clearable" class="pl-1")
@@ -46,7 +46,7 @@ input-container(:label="label" :required="required")
         )
     slot(name="appendItem")
   template(#hint)
-    p(v-if="!!errorMsg" class="text-caption text-warn absolute pt-1") {{errorMsg}}
+    p(v-if="!!errorMsg" class="text-caption text-warn absolute pt-1") {{ errorMsg }}
     slot(v-else name="errorMsg")
 </template>
 

@@ -13,7 +13,7 @@ div(class="relative")
   teleport(to="body")
     div(v-if="!lowResolution" ref="cropRectExact" class="w-0 h-0 overflow-hidden bg-black-0")
       div(:style="styleSize")
-        cropped-image(:config="config" :movable="false" :previewScaleRatio="realSize/cropRectSize")
+        cropped-image(:config="config" :movable="false" :previewScaleRatio="realSize / cropRectSize")
 </template>
 
 <script>

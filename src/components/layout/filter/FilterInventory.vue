@@ -17,7 +17,7 @@ filter-wrapper(
           v-model:inputValue="inventoryUnit"
           :optionList="inventoryOptionList"
         )
-    btn(size="sm" class="justify-self-center" @click="update") {{$t('UU0001')}}
+    btn(size="sm" class="justify-self-center" @click="update") {{ $t("UU0001") }}
 </template>
 
 <script>

@@ -32,7 +32,7 @@ div(class="w-113.5 px-8")
           btn(size="sm" :disabled="!shareInfo.isCanShared" @click="generateCopyLink") {{$t('UU0068')}}
         div(class="bg-black-100 h-15 flex px-5 py-3 gap-x-2")
           svg-icon(iconName="error_outline" class="text-primary")
-          p(class="text-caption line-height-1.6 text-primary") {{$t('FF0062')}}
+          p(class="text-caption leading-1.6 text-primary") {{$t('FF0062')}}
 </template>
 
 <script>

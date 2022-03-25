@@ -1,6 +1,6 @@
 <template lang="pug">
 div(@mouseenter="isHover = true" @mouseleave="isHover = false")
-  div(class="w-full aspect-ratio relative")
+  div(class="w-full aspect-square relative")
     template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
       div(class="grid grid-rows-2 grid-cols-2 grid-flow-col h-full rounded-md overflow-hidden")
         div(class="row-span-2 bg-primary-thin")
@@ -24,23 +24,23 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
           uncheckColor="text-black-0"
           @click.stop
         )
-    div(v-if="isHover" class="absolute inset-0 z-9 w-full h-full bg-opacity-70 bg-black-900 rounded-md flex justify-center items-center")
+    div(v-if="isHover" class="absolute inset-0 z-9 w-full h-full bg-black-900/70 rounded-md flex justify-center items-center")
       template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
-        p(class="text-body1 font-bold line-height-1.6 text-black-0") {{$t('RR0068', { number: node.itemCounts})}}
+        p(class="text-body1 font-bold leading-1.6 text-black-0") {{ $t("RR0068", { number: node.itemCounts }) }}
       template(v-else-if="node.nodeType === NODE_TYPE.MATERIAL")
         div(class="text-black-0 px-7.5 py-10 h-full flex flex-col items-center justify-center text-center")
-          div(class="text-body2 font-bold line-clamp-2") {{node.description}}
-          div(class="text-caption line-clamp-2") {{node.content}}
+          div(class="text-body2 font-bold line-clamp-2") {{ node.description }}
+          div(class="text-caption line-clamp-2") {{ node.content }}
           div(class="text-caption flex gap-1")
-            div {{nodeHoverInfo.yarn}}
-            div {{nodeHoverInfo.density}}
-            div {{nodeHoverInfo.width}}
-          div(class="text-caption line-clamp-2") {{node.finish}}
-          div(class="text-caption line-clamp-1") {{nodeHoverInfo.weight}}
+            div {{ nodeHoverInfo.yarn }}
+            div {{ nodeHoverInfo.density }}
+            div {{ nodeHoverInfo.width }}
+          div(class="text-caption line-clamp-2") {{ node.finish }}
+          div(class="text-caption line-clamp-1") {{ nodeHoverInfo.weight }}
       slot(name="cover-overlay")
       tooltip(
         v-if="optionList.length > 0 && innerSelectedList.length === 0"
-        class='absolute bottom-3 right-3 cursor-pointer'
+        class="absolute bottom-3 right-3 cursor-pointer"
         placement="right-start"
         :showArrow="false"
         :manual="true"
@@ -52,10 +52,10 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
         template(#content)
           list(class="w-55")
             template(v-for="(block, index) in optionList")
-              list-item(v-for="option in block" @click.stop="$emit('click:option', option)") {{option.name}}
+              list-item(v-for="option in block" @click.stop="$emit('click:option', option)") {{ option.name }}
               div(v-if="index !== optionList.length - 1" class="mx-2 my-1 h-px bg-black-400")
   div(class="text-caption font-bold mt-2 flex items-center justify-between text-primary")
-    p(class="line-clamp-1") {{displayName}}
+    p(class="line-clamp-1") {{ displayName }}
     tooltip-location(v-if="isShowLocation" :location="node.location")
   slot(name="node-caption")
 </template>

@@ -9,7 +9,7 @@ label(class="flex items-center" :for="value")
     :value="value"
     @input="check"
   )
-  div(v-if="name !== ''" class="pl-1 text-body2 text-primary") {{name}}
+  div(v-if="name !== ''" class="pl-1 text-body2 text-primary") {{ name }}
 </template>
 
 <script>

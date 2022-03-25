@@ -1,9 +1,9 @@
 <template lang="pug">
 div(class="w-131 px-8")
   div
-    h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{$t('EE0047')}}
+    h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{ $t("EE0047") }}
     div
-      p(class="text-body2 font-bold text-primary pb-4.5") {{$t('EE0048')}}
+      p(class="text-body2 font-bold text-primary pb-4.5") {{ $t("EE0048") }}
       overlay-scrollbar-container(class="h-66")
         div(class="grid grid-cols-4 gap-x-5 gap-y-4.5")
           div(class="h-25 rounded border border-dashed border-black-500 flex justify-center items-center cursor-pointer" @click="openModalUploadCoverImage")
@@ -11,19 +11,19 @@ div(class="w-131 px-8")
           template(v-for="(image, index) in imageList")
             label(v-if="!hideNotExistSide(index)" class="h-30.5")
               div(class="h-25 rounded border relative flex justify-center items-center")
-                img(v-if="!!image.imgSrc" :src="image.imgSrc" class='max-w-full max-h-full')
-                div(v-else class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-body2 font-bold text-black-400") {{$t('RR0103')}}
+                img(v-if="!!image.imgSrc" :src="image.imgSrc" class="max-w-full max-h-full")
+                div(v-else class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-body2 font-bold text-black-400") {{ $t("RR0103") }}
                 input-radio(
                   v-model:inputValue="coverImageIndex"
                   :value="index"
                   size="20"
                   class="absolute top-1 left-1"
                 )
-              p(class="text-body2 font-bold text-primary pt-1.5 line-clamp-1") {{image.name}}
+              p(class="text-body2 font-bold text-primary pt-1.5 line-clamp-1") {{ image.name }}
   div(class="h-25 flex justify-center items-center")
     div(class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" @click="closeModal") {{$t('UU0002') }}
-      btn(size="md" @click="choose") {{$t('UU0018')}}
+      btn(size="md" type="secondary" @click="closeModal") {{ $t("UU0002") }}
+      btn(size="md" @click="choose") {{ $t("UU0018") }}
 </template>
 
 <script>

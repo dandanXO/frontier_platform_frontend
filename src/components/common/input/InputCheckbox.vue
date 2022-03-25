@@ -2,14 +2,15 @@
 label(class="flex items-center")
   svg-icon(v-if="checked" iconName="check_box" :size="size" :class="[disabled ? 'text-black-400' : iconColor]")
   svg-icon(v-else iconName="check_box_outline_blank" :size="size" :class="[uncheckColor]")
-  input(type="checkbox"
+  input(
+    type="checkbox"
     class="hidden"
     :checked="checked"
     :value="value"
     @input="check($event)"
     :disabled="disabled"
   )
-  div(v-if="label !== ''" class="text-body2 pl-1" :class="[disabled ? 'text-black-500' : 'text-primary']") {{label}}
+  div(v-if="label !== ''" class="text-body2 pl-1" :class="[disabled ? 'text-black-500' : 'text-primary']") {{ label }}
 </template>
 
 <script>

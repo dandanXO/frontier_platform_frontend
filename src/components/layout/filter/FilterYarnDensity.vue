@@ -14,7 +14,7 @@ filter-wrapper(
           :value="YARN_TYPE.WOVEN"
           size="20"
         )
-        btn-functional(size="sm" @click="clearYarnWoven") {{$t('UU0040')}}
+        btn-functional(size="sm" @click="clearYarnWoven") {{ $t("UU0040") }}
       input-container(:label="$t('RR0023')")
         div(class="flex items-center gap-x-3")
           input-text(
@@ -49,14 +49,14 @@ filter-wrapper(
           :value="YARN_TYPE.KNIT"
           size="20"
         )
-        btn-functional(size="sm" @click="clearYarnKnit") {{$t('UU0040')}}
+        btn-functional(size="sm" @click="clearYarnKnit") {{ $t("UU0040") }}
       input-text(
         v-model:textValue="formYarnAndDensity.knitYarnCount"
         :label="$t('RR0023')"
         :disabled="currentYarnType !== YARN_TYPE.KNIT"
         class="w-50"
       )
-    btn(size="sm" class="justify-self-center" @click="updateYarnAndDensity") {{$t('UU0001')}}
+    btn(size="sm" class="justify-self-center" @click="updateYarnAndDensity") {{ $t("UU0001") }}
 </template>
 
 <script>

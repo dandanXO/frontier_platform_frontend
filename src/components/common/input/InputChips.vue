@@ -3,7 +3,7 @@ input-container(:label="label" :required="required" v-click-away="onBlur")
   label(class="relative px-4 py-1.5 border rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11" :class="[classBorder]")
     div(v-for="(chip, index) in chips" class="flex")
       div(class="px-3 h-8 flex items-center gap-x-1 bg-primary-thin rounded")
-        p(class="text-body2 text-primary") {{returnObject ? chip[keyOptionDisplay]: chip}}
+        p(class="text-body2 text-primary") {{ returnObject ? chip[keyOptionDisplay] : chip }}
         svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removeChip(index)")
     input(
       ref="inputElement"
@@ -11,8 +11,8 @@ input-container(:label="label" :required="required" v-click-away="onBlur")
       v-model="inputValue"
       @focus="onFocus"
       @keydown="onKeydown($event)"
-      :placeholder="chips.length === 0 ? placeholder :''"
-      class="line-clamp-1 h-8 flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 placeholder-black-400 placeholder-text-body2 placeholder-overflow-visible disabled:text-black-600"
+      :placeholder="chips.length === 0 ? placeholder : ''"
+      class="line-clamp-1 h-8 flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 disabled:text-black-600 placeholder:text-black-400 placeholder:overflow-visible"
     )
     list(v-if="options.length !== 0 && isFocus" class="absolute z-10 top-full left-0 w-full transform translate-y-2 bg-black-0")
       overlay-scrollbar-container(v-if="filteredOptions.length > 0" class="max-h-72")
@@ -22,9 +22,9 @@ input-container(:label="label" :required="required" v-click-away="onBlur")
           :class="[{ 'bg-black-200': option.checked }]"
           @click="option.checked ? removeChipFromOptions(option) : addChipFromOptions(option)"
         )
-          p(class="text-black-600") {{returnObject ? option[keyOptionDisplay]: option.name}}
+          p(class="text-black-600") {{ returnObject ? option[keyOptionDisplay] : option.name }}
       list-item(v-else @click.stop="addChip")
-        p(class="text-primary") {{inputValue}}
+        p(class="text-primary") {{ inputValue }}
 </template>
 
 <script>

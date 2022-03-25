@@ -1,26 +1,26 @@
 <template lang="pug">
 div(class="w-113.5")
   div(class="px-8")
-    h6(class="text-h6 font-bold text-primary pb-7.5 text-center") {{$t('RR0079')}}
+    h6(class="text-h6 font-bold text-primary pb-7.5 text-center") {{ $t("RR0079") }}
     div(class="flex items-end justify-between pb-7.5 gap-7")
       div(class="text-body2 text-primary flex flex-col justify-between")
-        p(class="font-bold pb-2") {{$t('RR0156')}}
-        p(class="leading-normal") {{$t('RR0150')}}
-      btn(size="sm" class="flex-shrink-0" @click="openModalPublicLibraryShareAssigned") {{$t('UU0067')}}
+        p(class="font-bold pb-2") {{ $t("RR0156") }}
+        p(class="leading-normal") {{ $t("RR0150") }}
+      btn(size="sm" class="flex-shrink-0" @click="openModalPublicLibraryShareAssigned") {{ $t("UU0067") }}
   div(class="bg-black-100 py-5 flex justify-end pr-6")
     //- div
     //-   img(src="@/assets/images/linkedin.png")
-    //-   p(class="text-caption text-center pt-3") {{$t('RR0151')}}
+    //-   p(class="text-caption text-center pt-3") {{$t("RR0151")}}
     //- div
     //-   img(src="@/assets/images/facebook.png")
-    //-   p(class="text-caption text-center pt-3") {{$t('RR0152')}}
+    //-   p(class="text-caption text-center pt-3") {{$t("RR0152")}}
     //- div
     //-   img(src="@/assets/images/twitter.png")
-    //-   p(class="text-caption text-center pt-3") {{$t('RR0153')}}
+    //-   p(class="text-caption text-center pt-3") {{$t("RR0153")}}
     div(class="cursor-pointer" @click="generateCopyLink")
       div(class="w-14 h-14 flex justify-center items-center bg-primary-thin rounded-full")
         svg-icon(iconName="link_1" size="30" class="text-primary transform -rotate-45")
-      p(class="text-caption text-center pt-3") {{$t('RR0154')}}
+      p(class="text-caption text-center pt-3") {{ $t("RR0154") }}
 </template>
 
 <script>

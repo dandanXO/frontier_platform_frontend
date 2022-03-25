@@ -5,7 +5,7 @@ tooltip(placement="bottom")
   template(#content)
     div(class="px-3 py-1 flex items-center max-w-85 flex-wrap")
       template(v-for="(path, index) in location")
-        p(class="text-primary" :class="[ index === location.length - 1 ? 'font-bold' :'font-normal']") {{path}}
+        p(class="text-primary" :class="[index === location.length - 1 ? 'font-bold' : 'font-normal']") {{ path }}
         svg-icon(v-if="index !== location.length - 1" size="20" iconName="slash" class="text-black-500")
 </template>
 

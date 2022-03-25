@@ -27,7 +27,7 @@ export default {
     ...RouterLink.props,
     inactiveClass: String
   },
-  setup (props, context) {
+  setup (props) {
     const isExternalLink = computed(() => typeof props.to === 'string' && (/(http(s?)):\/\//i).test(props.to))
 
     return {
