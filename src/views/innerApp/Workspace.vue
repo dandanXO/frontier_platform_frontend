@@ -13,19 +13,19 @@ div(class="w-full h-full")
         p(class="flex text-caption text-black-700 pl-1")
           span (
           i18n-t(keypath="RR0068" tag="span")
-            template(#number) {{pagination.totalCount}}
+            template(#number) {{ pagination.totalCount }}
           span )
     template(#header-right)
-      btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
-      btn(size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{$t('UU0055')}}
+      btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
+      btn(size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{ $t("UU0055") }}
     template(v-if="!isFirstLayer" #sub-header)
-      p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{$t('FF0002')}}: {{$dayjs.unix(collection.createDate).format('YYYY/MM/DD')}}
+      p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{ $t("FF0002") }}: {{ $dayjs.unix(collection.createDate).format("YYYY/MM/DD") }}
     template(#default="{ inSearch }")
       div(class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
-        div(class="aspect-ratio border border-black-400 border-dashed rounded-md flex justify-center items-center cursor-pointer" @click="openModalCreateCollection")
-          div(class="grid justify-items-center gap-y-3.5")
-            svg-icon(iconName="add" size="24" class="text-primary")
-            span(class="text-body1 text-primary") {{$t('FF0003')}}
+        div(class="aspect-square border border-black-400 border-dashed rounded-md flex justify-center items-center cursor-pointer" @click="openModalCreateCollection")
+          div(class="flex flex-col justify-center items-center")
+            svg-icon(iconName="add" size="24" class="text-primary mb-3.5")
+            span(class="text-body1 text-primary") {{ $t("FF0003") }}
         template(v-for="node in nodeList")
           template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
             node-item(

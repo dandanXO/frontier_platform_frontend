@@ -7,7 +7,7 @@ div(class="w-130 px-8")
         img(v-if="item.logo" :src="item.logo" class="w-10 h-10 rounded-full")
         div(v-else class="w-10 h-10 rounded-full border-black-500 border border-dashed")
         div(class="w-86")
-          p(class="text-body2 text-primary font-bold w-86 truncate break-all line-height-1.4") {{item.name}}
+          p(class="text-body2 text-primary font-bold w-86 truncate break-all leading-1.4") {{item.name}}
           div(class="flex items-center gap-x-3")
             input-checkbox(
               binary

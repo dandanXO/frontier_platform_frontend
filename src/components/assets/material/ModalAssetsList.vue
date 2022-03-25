@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="w-161 h-131 px-8 flex flex-col")
   div
-    h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{modalTitle}}
+    h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{ modalTitle }}
     input-text(
       v-model:textValue="keyword"
       prependIcon="search"
@@ -16,7 +16,7 @@ div(class="w-161 h-131 px-8 flex flex-col")
         div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
           svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
           i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption")
-            template(#number) {{selectedValue.length}}
+            template(#number) {{ selectedValue.length }}
         tooltip(
           v-if="!isInRoot"
           placement="bottom-end"
@@ -43,7 +43,7 @@ div(class="w-161 h-131 px-8 flex flex-col")
             class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden border-black-400 bg-black-100 text-primary"
             @click="goTo(item)"
           )
-            p(class="text-caption text-center line-height-1.6 font-bold line-clamp-3") {{item.name}}
+            p(class="text-caption text-center font-bold line-clamp-3") {{ item.name }}
         template(v-else)
           node-item-for-modal(
             v-for="material in materialList"

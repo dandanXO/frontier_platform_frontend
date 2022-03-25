@@ -1,14 +1,14 @@
 <template lang="pug">
 div(class="pb-15 border-b border-black-400")
   div(class="h-16 flex items-center justify-between")
-    h5(class="text-h5 text-primary font-bold") {{$t('DD0013')}}
+    h5(class="text-h5 text-primary font-bold") {{ $t("DD0013") }}
     btn(
       v-if="isEditMode"
       size="sm"
       type="secondary"
       :disabled="hideSampleCard"
       @click="isOpenSampleCard = !isOpenSampleCard"
-    ) {{isOpenSampleCard ? $t('UU0026') : $t('UU0033')}}
+    ) {{ isOpenSampleCard ? $t("UU0026") : $t("UU0033") }}
   div
     div(class="flex")
       div(class="grid gap-y-7.5 flex-grow" :class="{ 'px-15': !isOpenSampleCard }")
@@ -58,7 +58,7 @@ div(class="pb-15 border-b border-black-400")
               :placeholder="$t('DD0017')"
               class="w-50"
             )
-            p(class="text-body2 text-primary font-bold") {{$t('RR0018')}}
+            p(class="text-body2 text-primary font-bold") {{ $t("RR0018") }}
         input-container(:label="$t('RR0019')" required class="relative z-11")
           div(class="flex items-center gap-x-3")
             input-text(
@@ -67,7 +67,7 @@ div(class="pb-15 border-b border-black-400")
               inputType="number"
               class="w-50"
             )
-            p(class="text-body2 text-primary font-bold") {{$t('RR0020')}}
+            p(class="text-body2 text-primary font-bold") {{ $t("RR0020") }}
         input-container(:label="$t('RR0021')" required class="relative z-10")
           div(class="grid gap-y-3")
             div(v-for="(content, contentItemIndex) in material.contentList" class="flex items-center")
@@ -83,14 +83,14 @@ div(class="pb-15 border-b border-black-400")
                 canAddNewOption
                 required
                 class="w-100 mr-3"
-                :class="`z-${material.contentList.length - contentItemIndex}`"
+                :style="{ zIndex: material.contentList.length - contentItemIndex }"
               )
               input-text(v-model:textValue="content.percentage" inputType="number" class="w-25 mr-3")
               p(class="text-body2 text-primary pr-7.5") %
               svg-icon(v-if="contentItemIndex === 0" size="20" iconName="add_box" class="text-black-700" @click="addNewContent")
               svg-icon(v-else size="20" iconName="delete" class="text-black-700" @click="removeContent(contentItemIndex)")
           template(#hint)
-            p(v-if="validations.contentList" class="text-caption text-warn absolute pt-1") {{validations.contentList}}
+            p(v-if="validations.contentList" class="text-caption text-warn absolute pt-1") {{ validations.contentList }}
         input-chips(
           v-model:chips="material.finishList"
           :label="$t('RR0022')"
@@ -151,7 +151,7 @@ div(class="pb-15 border-b border-black-400")
             v-model:chips="material.aiTagList"
             :placeholder="$t('DD0018')"
           )
-          p(class="absolute right-0 top-0 text-caption text-primary") {{$t('EE0036')}}
+          p(class="absolute right-0 top-0 text-caption text-primary") {{ $t("EE0036") }}
       div(v-if="isOpenSampleCard" class="flex-shrink-0 w-75 h-fit ml-8 sticky top-0")
         cropper-default-layout(
           :showScale="true"
@@ -166,7 +166,7 @@ div(class="pb-15 border-b border-black-400")
               @update:options="Object.assign(config.options, $event)"
             )
     div(class="bg-black-100 px-15 py-12.5 mt-7.5 grid gap-y-7.5")
-      h6(class="text-h6 text-black-600 font-bold") {{$t('DD0019')}}
+      h6(class="text-h6 text-black-600 font-bold") {{ $t("DD0019") }}
       input-chips(
         v-model:chips="material.privateTagList"
         :label="$t('RR0028')"

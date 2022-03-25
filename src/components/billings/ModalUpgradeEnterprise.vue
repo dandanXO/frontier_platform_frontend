@@ -1,8 +1,8 @@
 <template lang="pug">
 div(class="w-193.5 px-8 flex flex-col items-center")
-  h6(class="font-bold text-h6 text-primary mb-3") {{$t('RR0161')}}
-  p(class="w-84 text-body2 text-primary text-center line-height-1.6") {{$t('OO0043')}}
-  p(class="text-caption text-black-600 self-end") *{{$t('RR0163')}}
+  h6(class="font-bold text-h6 text-primary mb-3") {{ $t('RR0161') }}
+  p(class="w-84 text-body2 text-primary text-center leading-1.6") {{ $t('OO0043') }}
+  p(class="text-caption text-black-600 self-end") *{{ $t('RR0163') }}
   form(class="w-full h-66 grid grid-cols-2 grid-rows-3 grid-flow-col gap-7.5")
     input-text(
       ref="refInputRecipient"

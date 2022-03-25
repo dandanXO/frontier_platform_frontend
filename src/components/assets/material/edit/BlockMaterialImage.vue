@@ -1,22 +1,22 @@
 <template lang="pug">
 div(class="pb-15 mb-5 border-b border-black-400")
   div(class="h-16 flex items-center")
-    h5(class="text-h5 text-primary font-bold pr-1.5") {{$t('EE0038')}}
+    h5(class="text-h5 text-primary font-bold pr-1.5") {{ $t("EE0038") }}
     svg-icon(:iconName="statusIconName" size="24" class="text-primary")
   div
     div(class="flex flex-col gap-y-2")
-      p(class="text-body2 text-primary line-height-1.6") {{$t('EE0039')}}
+      p(class="text-body2 text-primary leading-1.6") {{ $t("EE0039") }}
       div(class="flex items-center gap-x-5")
-        p(class="text-body1 text-primary font-bold") {{uploadMaterialEmail}}
+        p(class="text-body1 text-primary font-bold") {{ uploadMaterialEmail }}
         span(class="flex items-center gap-x-1 cursor-pointer")
           svg-icon(iconName="info_outline" size="20" class="text-primary")
-          span(class="text-body2 text-primary underline font-normal" @click="openModalHowToScan") {{$t('UU0032')}}
+          span(class="text-body2 text-primary underline font-normal" @click="openModalHowToScan") {{ $t("UU0032") }}
       div(class="pt-7.5 flex gap-x-10")
         div(class="w-112.5 flex-shrink-0")
-          div(class="aspect-ratio rounded overflow-hidden")
+          div(class="aspect-square rounded overflow-hidden")
             template(v-if="!!imageList[currentDisplayIndex].src")
               img(class="w-full h-full" :src="imageList[currentDisplayIndex].src")
-            div(class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-h4 font-bold text-black-400") {{$t('RR0103')}}
+            div(class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-h4 font-bold text-black-400") {{ $t("RR0103") }}
           div(class="grid grid-flow-col gap-x-2 justify-start pt-2 pb-6")
             div(v-for="(image, index) in imageList" @click="currentDisplayIndex = index")
               div(class="w-13 h-13 rounded overflow-hidden border border-black-400 bg-black-200")
@@ -24,17 +24,17 @@ div(class="pb-15 mb-5 border-b border-black-400")
                   img(class="w-full h-full" :src="image.src")
               p(
                 v-for="text in image.text"
-                class="text-caption line-height-1.6 text-center"
+                class="text-caption leading-1.6 text-center"
                 :class="{ 'font-bold': index === currentDisplayIndex }"
-              ) {{text}}
+              ) {{ text }}
           p(
             v-if="canEditScannedImg"
             class="text-body2 text-assist-blue underline cursor-pointer pb-3"
             @click="openModalEditImage"
-          ) {{$t('UU0011')}}
-          p(class="text-body2 text-assist-blue underline cursor-pointer" @click="openModalChangeCover") {{$t('UU0012')}}
+          ) {{ $t("UU0011") }}
+          p(class="text-body2 text-assist-blue underline cursor-pointer" @click="openModalChangeCover") {{ $t("UU0012") }}
         div(class="w-52.5")
-          h5(class="text-h5 font-bold text-primary pb-5") {{$t('RR0131')}}
+          h5(class="text-h5 font-bold text-primary pb-5") {{ $t("RR0131") }}
           input-text-icon(
             v-model:textValue="pantoneName"
             :label="$t('EE0040')"
@@ -47,14 +47,14 @@ div(class="pb-15 mb-5 border-b border-black-400")
             div(v-for="pantone in material.pantoneList" class="flex items-center gap-x-3")
               tooltip(placement="right")
                 template(#trigger)
-                  div(class="rounded w-5.5 h-5.5" :style="{ 'background-color': `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }")
+                  div(class="rounded w-5.5 h-5.5" :style="{ backgroundColor: `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }")
                 template(#content)
                   div(class="w-30 h-11 relative")
-                    div(class="w-30 h-30 absolute -top-29 rounded-t" :style="{ 'background-color': `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }")
+                    div(class="w-30 h-30 absolute -top-29 rounded-t" :style="{ backgroundColor: `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }")
                     div(class="p-2 text-primary text-caption font-bold")
-                      div(class="pb-1") {{pantone.name}}
-                      div {{pantone.majorColorName}}
-              p(class="text-body2 text-primary") {{pantone.name}}
+                      div(class="pb-1") {{ pantone.name }}
+                      div {{ pantone.majorColorName }}
+              p(class="text-body2 text-primary") {{ pantone.name }}
               svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removePantone(pantone.materialPantoneId)")
         block-material-u3m-status(:material="material")
 </template>

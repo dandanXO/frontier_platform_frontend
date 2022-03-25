@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="px-8")
-  h6(class="text-h6 text-primary font-bold text-center pb-7.5") {{$t('BB0090')}}
+  h6(class="text-h6 text-primary font-bold text-center pb-7.5") {{ $t("BB0090") }}
   input-label-color(
     v-model:labelColor="labelColor"
     v-model:textValue="groupName"
@@ -13,9 +13,9 @@ div(class="px-8")
   input-textarea(v-model:textValue="description" :label="$t('BB0087')" :placeholder="$t('BB0088')" class="mb-1" height="160")
   div(class="flex items-center pb-0.5")
     svg-icon(size="14" iconName="error_outline" class="text-primary")
-    p(class="pl-1.5 text-caption text-primary") {{$t('BB0091')}}
+    p(class="pl-1.5 text-caption text-primary") {{ $t("BB0091") }}
   div(class="w-full h-25 flex items-center justify-center")
-    btn(size="md" :disabled="!availableToNextStep" @click="openModalCreateMailGroup") {{$t('UU0021')}}
+    btn(size="md" :disabled="!availableToNextStep" @click="openModalCreateMailGroup") {{ $t("UU0021") }}
 </template>
 
 <script>

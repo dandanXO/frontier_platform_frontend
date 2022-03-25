@@ -5,21 +5,21 @@ div(class="mt-25 w-125 grid gap-y-4")
       div(class="w-full h-full border border-black-500 border-dashed rounded flex items-center pl-10 cursor-pointer" @click="openModalSetupCard")
         div(class="flex items-center text-black-500")
           svg-icon(iconName="add" size="24")
-          p(class="font-bold text-body2 pl-2") {{$t('OO0012')}} 
+          p(class="font-bold text-body2 pl-2") {{ $t('OO0012') }} 
     template(v-else)
       div(class="w-full h-full border border-black-500 rounded pl-10 pt-6 pr-6 flex justify-between items-start")
         div(class="grid gap-y-4.5 text-body2 text-primary text-primary")
-          p(class="font-bold text-body1") **** **** **** {{cardInfo.lastFour}}
-          p(class="text-body2") {{$t('OO0054')}} {{cardInfo.expiredDate}}
-          p(class="text-body2") {{$t('OO0055')}} {{cardInfo.cardHolderName}}
-        btn-functional(size="sm" @click="openModalSetupCard") {{$t('OO0021')}}
+          p(class="font-bold text-body1") **** **** **** {{ cardInfo.lastFour }}
+          p(class="text-body2") {{ $t('OO0054') }} {{ cardInfo.expiredDate }}
+          p(class="text-body2") {{ $t('OO0055') }} {{ cardInfo.cardHolderName }}
+        btn-functional(size="sm" @click="openModalSetupCard") {{ $t('OO0021') }}
   div(class="w-full h-53.5 border border-black-500 rounded pl-10 pt-6 pr-6 flex justify-between items-start")
     div
-      p(class="font-bold text-body1 text-primary pb-5") {{$t('OO0013')}}
+      p(class="font-bold text-body1 text-primary pb-5") {{ $t('OO0013') }}
       div(class="grid gap-y-3 text-body2 text-primary")
         template(v-for="item in billingInfoItemList")
-          p(v-if="item") {{item}}
-    btn-functional(size="sm" @click="openModalEditBillingInfo") {{$t('RR0054')}}
+          p(v-if="item") {{ item }}
+    btn-functional(size="sm" @click="openModalEditBillingInfo") {{ $t('RR0054') }}
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="px-7.5 pt-7.5 w-full h-full relative")
-  p(class="text-body1 font-bold text-primary mb-12.5") {{ $t('OO0004') }}
+  p(class="text-body1 font-bold text-primary mb-12.5") {{ $t("OO0004") }}
   div(class="border-b border-black-400 flex justify-between")
     div(class="flex gap-x-5")
       div(v-for="tab in tabList" class="cursor-pointer" @click="toggleTab(tab.path)")

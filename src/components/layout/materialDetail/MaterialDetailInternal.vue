@@ -9,50 +9,50 @@ div
   div(class="pt-20 flex flex-col gap-y-10")
     div(class="w-full grid grid-flow-col gap-x-5 justify-start border-b border-black-400")
       div(v-for="tab in tabList" class="cursor-pointer" @click="currentTab = tab.id")
-        p(class="pb-2 text-body1" :class="[tab.id === currentTab ? 'border-b-4 border-brand text-primary font-bold' : 'text-black-600' ]" ) {{tab.name}}
+        p(class="pb-2 text-body1" :class="[tab.id === currentTab ? 'border-b-4 border-brand text-primary font-bold' : 'text-black-600']" ) {{ tab.name }}
     div
       template(v-if="currentTab === TAB.TAGS")
         div
-          p(class="pb-3 text-body2 font-bold text-primary") {{$t('RR0027')}}
+          p(class="pb-3 text-body2 font-bold text-primary") {{ $t("RR0027") }}
           div(class="flex flex-wrap gap-x-2 gap-y-3")
-            div(v-for="tag in material.publicTagList" class="px-3 h-8 flex items-center bg-primary-thin rounded text-body2 text-primary") {{tag}}
+            div(v-for="tag in material.publicTagList" class="px-3 h-8 flex items-center bg-primary-thin rounded text-body2 text-primary") {{ tag }}
         div(class="pt-7")
-          p(class="pb-3 text-body2 font-bold text-primary") {{$t('RR0071')}}
+          p(class="pb-3 text-body2 font-bold text-primary") {{ $t("RR0071") }}
           div(class="flex flex-wrap gap-x-2 gap-y-3")
-            div(v-for="tag in material.aiTagList" class="px-3 h-8 flex items-center bg-primary-thin rounded text-body2 text-primary") {{tag}}
+            div(v-for="tag in material.aiTagList" class="px-3 h-8 flex items-center bg-primary-thin rounded text-body2 text-primary") {{ tag }}
         div(class="mt-10 rounded-md bg-black-100 px-5 py-7.5")
-          h6(class="text-h6 font-bold text-black-600") {{$t('EE0026')}}
+          h6(class="text-h6 font-bold text-black-600") {{ $t("EE0026") }}
           div(class="pt-7.5")
-            p(class="pb-3 text-body2 font-bold text-primary") {{$t('RR0028')}}
+            p(class="pb-3 text-body2 font-bold text-primary") {{ $t("RR0028") }}
             div(class="flex flex-wrap gap-x-2 gap-y-3")
-              div(v-for="tag in material.privateTagList" class="px-3 h-8 flex items-center bg-primary-thin rounded text-body2 text-primary") {{tag}}
+              div(v-for="tag in material.privateTagList" class="px-3 h-8 flex items-center bg-primary-thin rounded text-body2 text-primary") {{ tag }}
       template(v-else-if="currentTab === TAB.PRICING")
         div(class="grid gap-y-5")
           div(v-for="item in materialPublicPriceInfo" class="text-body2 text-primary grid grid-cols-8")
-            p(class="col-span-3") {{item.name}}
-            p(class="col-span-5") {{item.value}}
+            p(class="col-span-3") {{ item.name }}
+            p(class="col-span-5") {{ item.value }}
         div(class="mt-10 rounded-md bg-black-100 p-7.5")
-          h6(class="text-h6 font-bold text-black-600") {{$t('EE0026')}}
+          h6(class="text-h6 font-bold text-black-600") {{ $t("EE0026") }}
           div(class="pt-7.5")
             div(class="grid gap-y-5")
               div(v-for="item in materialPrivatePriceInfo" class="text-body2 text-primary grid grid-cols-8")
-                p(class="col-span-3") {{item.name}}
-                p(class="col-span-5") {{item.value}}
+                p(class="col-span-3") {{ item.name }}
+                p(class="col-span-5") {{ item.value }}
       template(v-else-if="currentTab === TAB.INVENTORY")
         div(class="rounded-md bg-black-100 p-7.5 flex flex-col gap-y-17.5")
           div
-            h6(class="text-h6 font-bold text-black-600") {{$t('EE0026')}}
+            h6(class="text-h6 font-bold text-black-600") {{ $t("EE0026") }}
             div(class="pt-7.5")
               div(class="grid gap-y-5")
                 div(v-for="item in materialInventoryInfo" class="text-body2 text-primary grid grid-cols-8")
-                  p(class="col-span-3") {{item.name}}
-                  p(class="col-span-5") {{item.value}}
+                  p(class="col-span-3") {{ item.name }}
+                  p(class="col-span-5") {{ item.value }}
           div
-            h6(class="text-h6 font-bold text-black-600") {{$t('EE0027')}}
+            h6(class="text-h6 font-bold text-black-600") {{ $t("EE0027") }}
             div(class="pt-7.5 flex flex-col gap-y-7.5")
               div(class="flex items-center gap-x-11 text-body2 text-primary")
-                p {{materialInfo.totalInventoryQty.name}}
-                p {{materialInfo.totalInventoryQty.value}}
+                p {{ materialInfo.totalInventoryQty.name }}
+                p {{ materialInfo.totalInventoryQty.value }}
                 input-checkbox(
                   v-model:inputValue="material.isPublicInventory"
                   :label="$t('EE0028')"
@@ -62,16 +62,16 @@ div
                 )
               div(class="w-117.5 text-body2 text-primary")
                 div(class="bg-primary-thin w-full h-7.5 grid grid-cols-4 justify-items-center content-center")
-                  p {{$t('RR0035')}}
-                  p {{$t('RR0036')}}
-                  p {{$t('RR0037')}}
-                  p {{$t('RR0038')}}
+                  p {{ $t("RR0035") }}
+                  p {{ $t("RR0036") }}
+                  p {{ $t("RR0037") }}
+                  p {{ $t("RR0038") }}
                 div(class="divide-y divide-solid divide-primary-thin")
                   div(v-for="inventory in material.inventoryList" class="h-10.5 grid grid-cols-4 justify-items-center content-center")
-                    p {{inventory.section}}
-                    p {{inventory.shelf}}
-                    p {{inventory.quantity}}
-                    p {{inventory.unit}}
+                    p {{ inventory.section }}
+                    p {{ inventory.shelf }}
+                    p {{ inventory.quantity }}
+                    p {{ inventory.unit }}
       template(v-else-if="currentTab === TAB.SUP")
         div(class="flex flex-wrap gap-5")
           attachment-item(

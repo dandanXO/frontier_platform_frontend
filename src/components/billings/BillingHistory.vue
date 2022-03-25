@@ -15,8 +15,8 @@ div(class="w-full mt-4")
     template(#filter)
       div(class="pt-4 pb-3 px-5")
         div(class="flex items-center mb-2")
-          p(class="text-black-700 text-body2 mr-1.5") {{$t("OO0117")}}
-          btn-functional(@click="clearDate") {{$t("UU0040")}}
+          p(class="text-black-700 text-body2 mr-1.5") {{ $t("OO0117") }}
+          btn-functional(@click="clearDate") {{ $t("UU0040") }}
         div(class="mr-4 flex items-center")
           input-text(
             v-model:textValue="queryParams.startDate"
@@ -36,17 +36,17 @@ div(class="w-full mt-4")
       div(class="border-t border-black-200")
       div(class="pt-4 pb-6 px-5")
         div(class="flex items-center mb-2")
-          p(class="text-black-700 text-body2 mr-1.5") {{$t("OO0118")}}
-          btn-functional(@click="changeCategory(BILLING_CATEGORY.ALL)") {{$t("UU0040")}}
+          p(class="text-black-700 text-body2 mr-1.5") {{ $t("OO0118") }}
+          btn-functional(@click="changeCategory(BILLING_CATEGORY.ALL)") {{ $t("UU0040") }}
         div(class="flex")
           div(
             v-for="(category, index) in categoryOptions"
             class="text-primary text-body2 cursor-pointer flex"
-            :class="{'text-brand': queryParams.category === category.value}"
+            :class="{ 'text-brand': queryParams.category === category.value }"
             @click="changeCategory(category.value)"
-          ) {{category.label}}
+          ) {{ category.label }}
             div(v-if="index !== categoryOptions.length - 1" class="border-r border-primary-middle h-full mx-4")
-    template(v-slot="{item, prop, isHover}")
+    template(v-slot="{ item, prop, isHover }")
       invoice-pdf-generator(v-if="prop === 'download'")
         template(#activator="{ generatePdf }")
           svg-icon(iconName="picture_as_pdf" class="text-assist-blue cursor-pointer" @click="generatePdf(item.invoiceId)")
@@ -95,28 +95,28 @@ export default {
       {
         prop: 'invoiceNumber',
         label: t("OO0081"),
-        width: '3/12'
+        width: 'w-3/12'
       },
       {
         prop: 'date',
         label: t("OO0082"),
-        width: '2/12',
+        width: 'w-2/12',
         sortBy: [BILLING_SORT.NEWEST_FIRST, BILLING_SORT.OLDEST_FIRST]
       },
       {
         prop: 'title',
         label: t("OO0083"),
-        width: '4/12'
+        width: 'w-4/12'
       },
       {
         prop: 'download',
         label: t("OO0084"),
-        width: '2/12'
+        width: 'w-2/12'
       },
       {
         prop: 'view',
         label: '',
-        width: '1/12'
+        width: 'w-1/12'
       }
     ]
     const getList = async (targetPage = 1) => {

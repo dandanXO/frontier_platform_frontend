@@ -2,8 +2,8 @@
 div(class="w-100 px-8 flex flex-col items-center")
   svg-icon(iconName="check_circle_outline" size="80" class="text-brand mt-7")
   h6(class="text-h6 font-bold text-primary mt-5") {{ $t('OO0039') }}
-  p(class="text-body2 line-height-1.6 text-brand-dark font-bold mt-6.5") {{ $t('OO0058') }}
-  p(class="text-body2 line-height-1.6 text-brand-dark font-bold mt-1") {{ plan.deactivatedDate }}
+  p(class="text-body2 leading-1.6 text-brand-dark font-bold mt-6.5") {{ $t('OO0058') }}
+  p(class="text-body2 leading-1.6 text-brand-dark font-bold mt-1") {{ plan.deactivatedDate }}
   btn-group(
     class="h-25"
     :primaryText="$t('UU0026')"

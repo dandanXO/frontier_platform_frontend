@@ -1,15 +1,15 @@
 <template lang="pug">
 div(class="w-100")
   div(class="px-8")
-    h6(class="text-h6 text-primary font-bold pb-4 text-center") {{title}}
+    h6(class="text-h6 text-primary font-bold pb-4 text-center") {{ title }}
     i18n-t(:keypath="keypath" tag="p" class="text-primary text-center pb-4")
       template(v-slot:[slotName])
         br
-        strong {{slotValue}}
+        strong {{ slotValue }}
     div(class="pb-6 flex justify-center")
       input-text(v-model:textValue="confirmText" class="w-80" size="lg" :placeholder="slotValue")
         template(#errorMsg v-if="isError")
-          p(class="text-caption text-warn absolute pt-1 whitespace-nowrap") {{errorMsg}}
+          p(class="text-caption text-warn absolute pt-1 whitespace-nowrap") {{ errorMsg }}
     btn-group(
       class="h-25"
       :primaryText="$t('UU0002')"

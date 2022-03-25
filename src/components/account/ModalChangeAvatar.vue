@@ -8,11 +8,11 @@ div(class="w-86 h-136 border-t border-black-400 flex flex-col")
       @dragover.prevent
       @dragenter.prevent
     )
-      btn(size="md" type="secondary" class="h-10 mb-4" @click="uploadImg") {{$t("MM0020") }}
-      span(class="text-body2 font-bold mb-2 text-black-500") {{$t("MM0021")}}
-      span(class="text-body2 mb-2 text-black-500") {{$t("MM0022")}}
-      span(class="text-body2 mb-2 text-black-500") {{$t("MM0023")}}
-      span(class="text-body2 mb-2 text-black-500") {{$t("MM0024")}}
+      btn(size="md" type="secondary" class="h-10 mb-4" @click="uploadImg") {{ $t("MM0020") }}
+      span(class="text-body2 font-bold mb-2 text-black-500") {{ $t("MM0021") }}
+      span(class="text-body2 mb-2 text-black-500") {{ $t("MM0022") }}
+      span(class="text-body2 mb-2 text-black-500") {{ $t("MM0023") }}
+      span(class="text-body2 mb-2 text-black-500") {{ $t("MM0024") }}
     svg-icon(
       v-else-if="isUploading"
       iconName="loading"
@@ -22,9 +22,9 @@ div(class="w-86 h-136 border-t border-black-400 flex flex-col")
     img(v-else class="w-50 h-50 rounded-full" :src="avatar")
   div(class="h-25 flex justify-center items-center")
     div(v-if="!isUploading && haveUploadedImage" class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" @click="innerRemoveHandler") {{$t('UU0016') }}
-      btn(size="md" @click="uploadImg") {{$t('UU0019')}}
-    btn(v-else size="md" :disabled="true") {{$t('UU0001')}}
+      btn(size="md" type="secondary" @click="innerRemoveHandler") {{ $t("UU0016") }}
+      btn(size="md" @click="uploadImg") {{ $t("UU0019") }}
+    btn(v-else size="md" :disabled="true") {{ $t("UU0001") }}
 </template>
 
 <script>

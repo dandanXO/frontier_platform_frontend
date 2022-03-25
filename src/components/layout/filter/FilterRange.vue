@@ -2,8 +2,8 @@
 div
   div(class="flex justify-between pb-5")
     div(class="flex items-center gap-x-2")
-      p(class="text-body2 text-primary font-bold") {{label}}
-      btn-functional(size="sm" @click="reset") {{$t('UU0040')}}
+      p(class="text-body2 text-primary font-bold") {{ label }}
+      btn-functional(size="sm" @click="reset") {{ $t('UU0040') }}
     div
       slot(name="right")
   input-range(

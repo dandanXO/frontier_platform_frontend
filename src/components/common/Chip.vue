@@ -1,5 +1,5 @@
 <template lang="pug">
-div(:class="classes") {{text}}
+div(:class="classes") {{ text }}
 </template>
 
 <script>

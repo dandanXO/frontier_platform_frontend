@@ -12,26 +12,26 @@ div
       @clear="$emit('search')"
     )
     tooltip(v-if="filterable" :showArrow="false" :manual="true" placement="bottom-end" :offset="[0, 8]" class="justify-self-end")
-      template(#trigger="{isActive}")
-        div(class="cursor-pointer w-43 h-9 px-1.5 flex justify-between items-center border border-black-400 rounded" :class="{'border-primary': isActive}")
+      template(#trigger="{ isActive }")
+        div(class="cursor-pointer w-43 h-9 px-1.5 flex justify-between items-center border border-black-400 rounded" :class="{ 'border-primary': isActive }")
           div(class="flex justify-between items-center")
             svg-icon(iconName="filter" class="text-black-700 mr-1" size="20")
-            span(class="text-primary") {{$t("RR0085")}}
-          svg-icon(iconName="keyboard_arrow_down" class="text-black-500 transform" :class="{'rotate-180' : isActive}")
+            span(class="text-primary") {{ $t("RR0085") }}
+          svg-icon(iconName="keyboard_arrow_down" class="text-black-500 transform" :class="{ 'rotate-180': isActive }")
       template(#content)
         slot(name="filter")
   div(v-if="showHeader" class="flex gap-6 items-center bg-black-200 text-body1 text-primary py-4 my-2.5 px-15")
-    div(v-for="header in headers" :class="[`w-${header.width}`]" class="flex items-center")
-      div {{header.label}}
+    div(v-for="header in headers" :class="[header.width]" class="flex items-center")
+      div {{ header.label }}
       svg-icon(
         v-if="header.sortBy?.length > 0"
         iconName="keyboard_arrow_down"
         size="20"
         class="cursor-pointer transform"
-        :class="{'text-brand': header.sortBy.includes(innerPagination.sort), 'rotate-180': header.sortBy[1] === innerPagination.sort}"
+        :class="{ 'text-brand': header.sortBy.includes(innerPagination.sort), 'rotate-180': header.sortBy[1] === innerPagination.sort }"
         @click="handleSort(header.sortBy)"
       )
-  overlay-scrollbar-container(:class="[tableContentHeight]")
+  overlay-scrollbar-container(:style="tableContentStyles")
     div(v-if="items.length > 0" class="grid gap-y-2.5")
       div(
         v-for="(item, index) in items"
@@ -39,8 +39,8 @@ div
         @mouseenter="indexOfHover = index"
         @mouseleave="indexOfHover = null"
       )
-        div(v-for="header in headers" :class="[`w-${header.width}`]")
-          div(v-if="item[header.prop]") {{item[header.prop]}}
+        div(v-for="header in headers" :class="[header.width]")
+          div(v-if="item[header.prop]") {{ item[header.prop] }}
           div(v-else)
             slot(
               :item="item"
@@ -48,7 +48,7 @@ div
               :isHover="indexOfHover === index"
               :index="index"
             )
-    div(v-else class="text-body1 text-black-600 mt-10 text-center") {{emptyText}}
+    div(v-else class="text-body1 text-black-600 mt-10 text-center") {{ emptyText }}
   div(v-if="innerPagination.totalPage !== 1" class="pt-14 pb-9.5 flex justify-center")
     pagination(v-model:currentPage="innerPagination.currentPage" :totalPage="innerPagination.totalPage" @goTo="$emit('goTo', $event)")
 </template>
@@ -100,9 +100,10 @@ export default {
   },
   emits: ['search', 'sort', 'goTo', 'update:pagination'],
   setup (props, { emit }) {
-    const tableContentHeight = computed(() => {
-      const h = props.pagination.perPageCount * 15 + (props.pagination.perPageCount - 1) * 2.5
-      return `h-${h}`
+    const tableContentStyles = computed(() => {
+      return {
+        height: `${props.pagination.perPageCount * 60 + (props.pagination.perPageCount - 1) * 10}px`
+      }
     })
     const indexOfHover = ref(null)
     const innerPagination = computed({
@@ -133,7 +134,7 @@ export default {
       innerPagination,
       innerKeyword,
       handleSort,
-      tableContentHeight
+      tableContentStyles
     }
   }
 }

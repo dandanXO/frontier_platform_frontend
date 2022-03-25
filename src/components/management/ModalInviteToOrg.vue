@@ -2,7 +2,7 @@
 div(class="w-118.5")
   div(class="px-8")
     i18n-t(keypath="BB0020" tag="h6" class="text-h6 text-primary font-bold pb-7.5 text-center")
-      template(#orgName) {{orgName}}
+      template(#orgName) {{ orgName }}
     input-text-icon(
       v-model:textValue="email"
       prependIcon="search"
@@ -14,13 +14,13 @@ div(class="w-118.5")
     overlay-scrollbar-container(v-if="emailList.length > 0" class="max-h-52 mt-4 -mx-8")
       div(class="grid gap-y-0.5 mx-7.5")
         div(v-for="(email, index) in emailList" class="h-10 flex items-center justify-between hover:bg-black-200 px-2.5")
-          p(class="text-body2 text-primary") {{email}}
+          p(class="text-body2 text-primary") {{ email }}
           svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removeInvite(index)")
   div(class="border-t border-primary-thin mt-7.5")
     div(class="py-5 px-8 flex items-start gap-x-2")
       svg-icon(iconName="error_outline" class="text-primary")
-      p(class="flex-grow text-caption text-primary line-height-1.6") {{$t('BB0021')}}
-      btn(size="sm" :disabled="emailList.length === 0" @click="inviteToOrg") {{$t('UU0014')}}
+      p(class="flex-grow text-caption text-primary leading-1.6") {{ $t("BB0021") }}
+      btn(size="sm" :disabled="emailList.length === 0" @click="inviteToOrg") {{ $t("UU0014") }}
     div(class="bg-black-100 py-5.5 px-8 flex items-center gap-x-3")
       svg-icon(iconName="link" size="36")
       input-text-btn(

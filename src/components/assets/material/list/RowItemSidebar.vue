@@ -12,7 +12,7 @@ div(class="text-black-700 flex flex-col gap-3.5")
     @hide="item.icon === 'more_horiz' && closeOverlay()"
   )
     template(#trigger)
-      qr-code-a4(v-if="item.id === 'printCard'" class="w-7.5 h-7.5 hover:bg-brand hover:text-brand flex justify-center items-center rounded-full bg-opacity-10")
+      qr-code-a4(v-if="item.id === 'printCard'" class="w-7.5 h-7.5 hover:bg-brand/10 hover:text-brand flex justify-center items-center rounded-full")
         template(#activator="{ generatePdf }")
           svg-icon(:iconName="item.icon" size="24" @click="generatePdf([material])")
       div(
@@ -20,24 +20,24 @@ div(class="text-black-700 flex flex-col gap-3.5")
         class="w-7.5 h-7.5 flex justify-center items-center text-black-500"
       )
         svg-icon(:iconName="item.icon" size="24")
-      div(v-else class="w-7.5 h-7.5 hover:bg-brand hover:text-brand flex justify-center items-center rounded-full bg-opacity-10" @click="handleClick(item)")
+      div(v-else class="w-7.5 h-7.5 hover:bg-brand/10 hover:text-brand flex justify-center items-center rounded-full" @click="handleClick(item)")
         svg-icon(:iconName="item.icon" size="24")
     template(#content)
-      div(v-if="item.icon !== 'more_horiz'" class="py-3 px-3 text-primary text-caption whitespace-nowrap") {{item.name}}
+      div(v-if="item.icon !== 'more_horiz'" class="py-3 px-3 text-primary text-caption whitespace-nowrap") {{ item.name }}
       div(v-else class="w-55 py-2.5")
         div(v-for="(block, index) in options" class="text-black-400")
           template(v-for="option in block")
             qr-code-general(v-if="option.id === 'printQRCode'")
               template(#activator="{ generatePdf }")
-                list-item(class="text-body2 text-primary px-7" @click="generatePdf([material])") {{option.name}}
+                list-item(class="text-body2 text-primary px-7" @click="generatePdf([material])") {{ option.name }}
             list-item(
               v-else
               class="text-body2 text-primary px-7"
               @click="handleClick(option)"
             )
-              template(v-if="option.id !== 'create3DMaterial'") {{option.name}}
-              template(v-else) {{getOptionName(option)}}
-          div(class="mx-2 my-1" :class="{'border-b': index !== options.length-1}")
+              template(v-if="option.id !== 'create3DMaterial'") {{ option.name }}
+              template(v-else) {{ getOptionName(option) }}
+          div(class="mx-2 my-1" :class="{ 'border-b': index !== options.length - 1 }")
 </template>
 
 <script>

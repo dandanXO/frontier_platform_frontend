@@ -7,12 +7,12 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
       div(class="flex gap-x-6 items-center")
         div(v-permission="FUNC_ID.OPEN_CREATE_GROUP" class="flex gap-x-1 items-center cursor-pointer" @click="openModalCreateGroup")
           svg-icon(iconName="add_box" size="20" class="text-brand")
-          p(class="text-body2 text-primary") {{$t('UU0017')}}
-        btn(size="sm" prependIcon="person_add" @click="inviteHandler") {{$t('UU0014')}}
+          p(class="text-body2 text-primary") {{ $t("UU0017") }}
+        btn(size="sm" prependIcon="person_add" @click="inviteHandler") {{ $t("UU0014") }}
     div(class="border-b border-black-400")
       div(class="flex gap-x-5 pl-3")
         div(v-for="tab in tabList" class="cursor-pointer" @click="toggleTab(tab.path)")
-          p(class="pb-2 text-body1" :class="[tab.path === currentTab ? 'border-b-4 border-brand text-primary font-bold' : 'text-black-600' ]" ) {{tab.name}}
+          p(class="pb-2 text-body1" :class="[tab.path === currentTab ? 'border-b-4 border-brand text-primary font-bold' : 'text-black-600']" ) {{ tab.name }}
   div(class="flex-grow")
     div(v-if="isLoading" class="w-full h-full flex justify-center items-center")
       svg-icon(iconName="loading" size="92" class="text-brand")

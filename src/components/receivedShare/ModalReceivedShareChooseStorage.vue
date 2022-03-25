@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-101 px-8")
-  h6(class="text-h6 font-bold text-primary pb-7.5 text-center") {{title}}
+  h6(class="text-h6 font-bold text-primary pb-7.5 text-center") {{ title }}
   input-select(
     v-model:selectValue="selectedOrgId"
     :options="optionOrgList"

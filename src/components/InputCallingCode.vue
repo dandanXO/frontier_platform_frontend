@@ -1,5 +1,5 @@
 <template lang="pug">
-input-text(v-model:textValue="innerTextValue" :class="[classWidth]" :size="size")
+input-text(v-model:textValue="innerTextValue" :style="styleWidth" :size="size")
   template(#prependItem)
     div(class="h-full -ml-4 pr-3 flex")
       dropdown(
@@ -17,21 +17,21 @@ input-text(v-model:textValue="innerTextValue" :class="[classWidth]" :size="size"
               iconName="arrow-down"
               size="20"
               class="transform"
-              :class="[ isExpand ? '-rotate-90 text-black-500' :'rotate-90 text-black-650']"
+              :class="[isExpand ? '-rotate-90 text-black-500' : 'rotate-90 text-black-650']"
             )
         template(#dropdownList="{ select, options, currentIndex }")
-          div(class="absolute top-full transform translate-y-2 py-2 bg-black-0 border rounded border-primary-middle card-shadow" :class="[classWidth]")
-            overlay-scrollbar-container(:class="[classMaxHeight]")
+          div(class="absolute top-full transform translate-y-2 py-2 bg-black-0 border rounded border-primary-middle card-shadow" :style="styleWidth")
+            overlay-scrollbar-container(:style="styleMaxHeight")
               div(
                 v-for="(country, index) in options"
                 class="h-9 pl-3 flex items-center"
-                :class="[ index === currentIndex ? 'bg-black-200' : '']"
+                :class="[index === currentIndex ? 'bg-black-200' : '']"
                 @click="select($event, country)"
               )
                 img(class="w-6 h-6 rounded mr-1.5" :alt="country.countryCode" :src="`http://purecatamphetamine.github.io/country-flag-icons/3x2/${country.countryCode}.svg`")
-                span(class="text-body2 text-primary mr-2") {{country.name}}
-                span(class="text-body2 text-black-650") +{{country.phone}}
-    span(v-if="innerTextValue !== ''" class="text-primary text-body1 pr-1") {{`(+${callingCode}) `}}
+                span(class="text-body2 text-primary mr-2") {{ country.name }}
+                span(class="text-body2 text-black-650") +{{ country.phone }}
+    span(v-if="innerTextValue !== ''" class="text-primary text-body1 pr-1") {{ `(+${callingCode}) ` }}
 </template>
 
 <script>
@@ -66,9 +66,16 @@ export default {
   setup (props, { emit }) {
     const store = useStore()
     const isExpand = ref(false)
-    const classWidth = ref(`w-${Number(props.width) / 4}`)
-    const classMaxHeight = ref(`max-h-${9 * props.maxLength}`)
-
+    const styleWidth = computed(() => {
+      return {
+        'width': `${props.width}px`
+      }
+    })
+    const styleMaxHeight = computed(() => {
+      return {
+        'max-height': `${36 * props.maxLength}px`
+      }
+    })
     const countryList = computed(() => store.getters['code/countryList'])
     const inputCountryCode = computed({
       get: () => props.countryCode || countryList.value[0].countryCode,
@@ -83,8 +90,8 @@ export default {
 
     return {
       countryList,
-      classWidth,
-      classMaxHeight,
+      styleWidth,
+      styleMaxHeight,
       isExpand,
       inputCountryCode,
       callingCode,

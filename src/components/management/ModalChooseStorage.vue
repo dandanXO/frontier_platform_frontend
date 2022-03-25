@@ -1,13 +1,13 @@
 <template lang="pug">
 div(class="w-100")
   div(class="px-8")
-    h6(class="text-h6 text-primary font-bold pb-4 text-center") {{$t('BB0102')}}
-    p(class="text-body2 text-primary line-height-1.6 text-center pb-4") {{$t('BB0103')}}
+    h6(class="text-h6 text-primary font-bold pb-4 text-center") {{ $t("BB0102") }}
+    p(class="text-body2 text-primary leading-1.6 text-center pb-4") {{ $t("BB0103") }}
     div(class="w-full px-4")
-      p(class="text-body2 text-primary font-bold pb-1.5") {{$t('BB0104')}}
+      p(class="text-body2 text-primary font-bold pb-1.5") {{ $t("BB0104") }}
       input-select(v-model:selectValue="currentStorage" :options="storageOrgOrGroup" keyOptionDisplay="name" keyOptionValue="index")
     div(class="h-25 flex justify-center items-center")
-      btn(size="md" @click="deleteGroup") {{$t('UU0001')}}
+      btn(size="md" @click="deleteGroup") {{ $t("UU0001") }}
 </template>
 <script>
 import { ref, computed } from 'vue'

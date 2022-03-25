@@ -2,22 +2,22 @@
 div(class="relative")
   svg(:width="size" :height="size")
     circle(
-      :cx="size/2"
-      :cy="size/2"
-      :r="size/2 - 2.5"
+      :cx="size / 2"
+      :cy="size / 2"
+      :r="size / 2 - 2.5"
       fill="transparent"
       class="stroke-5"
-      :class="`stroke-${secondaryColor}`"
+      :class="secondaryColor"
       stroke-dashoffset="0"
       :stroke-dasharray="strokeDasharray"
     )
     circle(
-      :cx="size/2"
-      :cy="size/2"
-      :r="size/2 - 2.5"
+      :cx="size / 2"
+      :cy="size / 2"
+      :r="size / 2 - 2.5"
       fill="transparent"
       class="stroke-5"
-      :class="`stroke-${primaryColor}`"
+      :class="primaryColor"
       :transform="`rotate(-90) translate(${-size}, 0)`"
       :stroke-dasharray="strokeDasharray"
       :stroke-dashoffset="strokeDashoffset"
@@ -45,11 +45,11 @@ export default {
     },
     primaryColor: {
       type: String,
-      default: 'brand'
+      default: 'stroke-brand'
     },
     secondaryColor: {
       type: String,
-      default: 'primary-middle'
+      default: 'stroke-primary-middle'
     }
   },
   setup (props) {

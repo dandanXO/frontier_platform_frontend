@@ -6,10 +6,10 @@ div(class="grid grid-rows-4 grid-cols-2 gap-x-14")
     :class="[block.class]"
   )
     div(class="flex justify-between pb-2 border-b-2 mb-3")
-      div(class="text-body1 font-bold text-primary") {{block.title}}
-      btn-functional(@click="handleEdit(block)") {{$t("UU0027")}}
+      div(class="text-body1 font-bold text-primary") {{ block.title }}
+      btn-functional(@click="handleEdit(block)") {{ $t("UU0027") }}
     div(class="grid gap-3")
-      div(v-for="(item, key) in block.column" class="text-body2 line-clamp-1" :class="{ 'text-black-700': key === 'frontierNo' }") {{item.name}}: {{item.value}}
+      div(v-for="(item, key) in block.column" class="text-body2 line-clamp-1" :class="{ 'text-black-700': key === 'frontierNo' }") {{ item.name }}: {{ item.value }}
 </template>
 
 <script>

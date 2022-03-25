@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-68.5")
-  div(class="mb-7.5 text-center text-primary text-h6 font-bold") {{$t('EE0080')}}
+  div(class="mb-7.5 text-center text-primary text-h6 font-bold") {{ $t("EE0080") }}
   input-radio-group(
     v-model:inputValue="selectedFormat"
     :optionList="formatOptions"

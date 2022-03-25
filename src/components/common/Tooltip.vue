@@ -68,8 +68,8 @@ div(class="w-fit" v-click-away="clickAway")
     @mouseleave="manual ? '' : hideTooltip()"
     @click="handleClick"
   )
-    slot(name='trigger' :isActive="isActive")
-  div(ref="tooltip" role="tooltip" class="z-100 rounded bg-black-0" :class="{'hidden': !isActive}")
+    slot(name="trigger" :isActive="isActive")
+  div(ref="tooltip" role="tooltip" class="z-100 rounded bg-black-0" :class="{ 'hidden': !isActive }")
     slot(v-if="isActive" name="content" :isActive="isActive")
     div(v-if="showArrow" id="arrow" data-popper-arrow)
 </template>

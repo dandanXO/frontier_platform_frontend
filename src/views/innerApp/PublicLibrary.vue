@@ -17,7 +17,7 @@ div(class="w-full h-full relative")
             template(#number) {{ pagination.totalCount }}
           span )
     template(#header-right)
-      btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t('UU0057') }}
+      btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
     template(v-if="!isFirstLayer" #sub-header)
       i18n-t(keypath="II0002" tag="p" class="mx-7.5 mb-7.5 text-caption text-black-700")
         template(#displayName) {{ publishBy }}
@@ -45,7 +45,7 @@ div(class="w-full h-full relative")
               @click.stop="goToPublicLibraryMaterialDetail(node.nodeKey)"
             )
       div(v-else class="flex h-full justify-center items-end")
-        p(class="text-body1 text-primary") {{ $t('II0007') }}
+        p(class="text-body1 text-primary") {{ $t("II0007") }}
   multi-select-menu(v-if="!isFirstLayer" :options="optionMultiSelect" v-model:selectedList="selectedNodeList")
   div(v-if="planStatus.INACTIVE" class="absolute inset-0 z-99 opacity-30 bg-black-0")
   notify-bar-inactive(v-if="planStatus.INACTIVE || planStatus.TRANSITION" class="absolute bottom-0 left-0 z-100")

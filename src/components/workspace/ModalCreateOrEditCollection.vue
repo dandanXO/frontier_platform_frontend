@@ -22,8 +22,8 @@ div(class="w-101 px-8")
         @click:button="chooseFile"
         @clear="removeTrendBoard"
       )
-    p(class='text-primary text-caption line-height-1.6') {{$t('FF0014')}}
-    p(class='text-primary text-caption line-height-1.6') {{$t('FF0015')}}
+    p(class='text-primary text-caption leading-1.6') {{$t('FF0014')}}
+    p(class='text-primary text-caption leading-1.6') {{$t('FF0015')}}
   input-textarea(
     v-model:textValue="formData.description"
     :label="$t('FF0012')"

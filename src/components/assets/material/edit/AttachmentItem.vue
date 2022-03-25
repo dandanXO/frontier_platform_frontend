@@ -10,7 +10,7 @@ div(class="w-44 rounded bg-black-100")
       source(:src="attachment.url" type="video/mp4")
     svg-icon(v-else iconName="file" size="50" class="text-black-100")
   div(class="h-11 flex justify-between items-center px-3 py-4")
-    div(class="text-primary text-caption line-clamp-1") {{attachment.displayFileName}}
+    div(class="text-primary text-caption line-clamp-1") {{ attachment.displayFileName }}
     svg-icon(
       v-if="!isReadOnly"
       iconName="delete"

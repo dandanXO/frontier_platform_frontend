@@ -43,7 +43,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
             :class="[isMultiSelect && selectedValue.includes(JSON.stringify(item)) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
             @click="goTo(item.nodeKey), setRootId(item.id)"
           )
-            p(class="text-caption text-center line-height-1.6 font-bold line-clamp-3") {{item.name}}
+            p(class="text-caption text-center font-bold line-clamp-3 leading-1.6") {{item.name}}
             div(class="w-full h-7.5 absolute top-0 left-0")
               div(class="bg-linear w-full h-full rounded-t-md")
               input-checkbox(

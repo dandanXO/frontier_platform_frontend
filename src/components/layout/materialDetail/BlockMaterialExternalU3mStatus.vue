@@ -1,13 +1,13 @@
 <template lang="pug">
 div
   div(class="flex items-center pb-3 text-primary")
-    h5(class="text-h5 font-bold") {{$t('RR0132')}}
+    h5(class="text-h5 font-bold") {{ $t("RR0132") }}
   div(v-if="status === U3M_STATUS.COMPLETED" class="inline-flex text-body2 text-assist-blue gap-2")
-    span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(zipUrl)") {{$t('EE0081')}}
+    span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(zipUrl)") {{ $t("EE0081") }}
       svg-icon(iconName="u3m_download" size="20")
-    span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(u3maUrl)") {{$t('EE0082')}}
+    span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(u3maUrl)") {{ $t("EE0082") }}
       svg-icon(iconName="u3m_download" size="20")
-  btn(size="md" class="mt-2" @click="handleClick") {{$t('UU0006')}}
+  btn(size="md" class="mt-2" @click="handleClick") {{ $t("UU0006") }}
 </template>
 
 <script>

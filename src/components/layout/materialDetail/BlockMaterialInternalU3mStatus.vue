@@ -1,33 +1,33 @@
 <template lang="pug">
 div
   div(class="flex items-center pb-3 text-primary")
-    h5(class="text-h5 font-bold") {{$t('RR0132')}}
-    tooltip(placement="top" class="pl-1" :manual='true')
+    h5(class="text-h5 font-bold") {{ $t("RR0132") }}
+    tooltip(placement="top" class="pl-1" :manual="true")
       template(#trigger)
-        svg-icon(iconName="info_outline" class='cursor-pointer' size="14")
+        svg-icon(iconName="info_outline" class="cursor-pointer" size="14")
       template(#content)
         div(class="p-5")
-          span(class="text-body2 text-assist-blue underline line-height-1.6 cursor-pointer" @click="openModalU3mInstruction") {{$t('UU0029')}}
-  p(class="inline-flex items-center text-body2 text-primary line-height-1.6 mr-2.5") {{$t('EE0017')}} : {{u3mStatus}}
-    tooltip(v-if="status === U3M_STATUS.UNQUALIFIED" placement="top" class="pl-1" :manual='true')
+          span(class="text-body2 text-assist-blue underline leading-1.6 cursor-pointer" @click="openModalU3mInstruction") {{ $t("UU0029") }}
+  p(class="inline-flex items-center text-body2 text-primary leading-1.6 mr-2.5") {{ $t("EE0017") }} : {{ u3mStatus }}
+    tooltip(v-if="status === U3M_STATUS.UNQUALIFIED" placement="top" class="pl-1" :manual="true")
       template(#trigger)
-        svg-icon(iconName="info_outline" class='cursor-pointer' size="14")
+        svg-icon(iconName="info_outline" class="cursor-pointer" size="14")
       template(#content)
-        div( class="p-5 line-height-1.6") {{$t('EE0021')}}
-    tooltip(v-if="status === U3M_STATUS.FAIL" placement="top" class="pl-1" :manual='true')
+        div( class="p-5 leading-1.6") {{ $t("EE0021") }}
+    tooltip(v-if="status === U3M_STATUS.FAIL" placement="top" class="pl-1" :manual="true")
       template(#trigger)
-        svg-icon(iconName="info_outline" class='cursor-pointer' size="14")
+        svg-icon(iconName="info_outline" class="cursor-pointer" size="14")
       template(#content)
         div( class="text-body2 p-5 whitespace-nowrap")
           i18n-t(keypath="EE0023" tag="p")
             template(#email)
-              span(class="text-assist-blue") {{$t("RR0139")}}
+              span(class="text-assist-blue") {{ $t("RR0139") }}
   div(v-if="status === U3M_STATUS.COMPLETED" class="inline-flex text-body2 text-assist-blue gap-2")
-    span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(zipUrl)") {{$t('EE0081')}}
+    span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(zipUrl)") {{ $t("EE0081") }}
       svg-icon(iconName="u3m_download" size="20")
-    span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(u3maUrl)") {{$t('EE0082')}}
+    span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(u3maUrl)") {{ $t("EE0082") }}
       svg-icon(iconName="u3m_download" size="20")
-  btn(size="md" class="mt-2.5" @click="handleClick") {{$t('UU0006')}}
+  btn(size="md" class="mt-2.5" @click="handleClick") {{ $t("UU0006") }}
 </template>
 
 <script>

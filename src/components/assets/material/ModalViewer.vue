@@ -83,7 +83,7 @@
 </style>
 
 <template lang="pug">
-div(class="w-175 h-141 relative" :style="{width: outputWidth, height: outputHeight}")
+div(class="w-175 h-141 relative" :style="{ width: outputWidth, height: outputHeight }")
   canvas(ref="canvas" class="w-full h-full")
   div(class="absolute top-4 right-4 border cursor-pointer" @click="screenshotClick")
     img(src="@/assets/images/material/camera.png" class="w-12.5")
@@ -95,7 +95,7 @@ div(class="w-175 h-141 relative" :style="{width: outputWidth, height: outputHeig
       template(#addons)
         navigation
         pagination
-  div(v-if="showLoading" class="absolute inset-0 bg-black bg-opacity-60 h-full w-full z-10")
+  div(v-if="showLoading" class="absolute inset-0 bg-black/60 h-full w-full z-10")
     div(class="loader")
 </template>
 

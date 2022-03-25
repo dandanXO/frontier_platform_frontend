@@ -32,14 +32,14 @@ div(class="grid gap-y-7.5")
           canAddNewOption
           required
           class="w-100 mr-3"
-          :class="`z-${material.contentList.length - contentItemIndex}`"
+          :style="{ zIndex: material.contentList.length - contentItemIndex }"
         )
         input-text(v-model:textValue="content.percentage" inputType="number" class="w-25 mr-3")
         p(class="text-body2 text-primary pr-7.5") %
         svg-icon(v-if="contentItemIndex === 0" size="20" iconName="add_box" class="text-black-700" @click="addNewContent")
         svg-icon(v-else size="20" iconName="delete" class="text-black-700" @click="removeContent(contentItemIndex)")
     template(#hint)
-      p(v-if="validations.contentList" class="text-caption text-warn absolute pt-1") {{validations.contentList}}
+      p(v-if="validations.contentList" class="text-caption text-warn absolute pt-1") {{ validations.contentList }}
   input-container(:label="$t('RR0023')")
     div(class="flex items-center gap-x-3")
       input-text(
@@ -100,7 +100,7 @@ div(class="grid gap-y-7.5")
         :placeholder="$t('DD0017')"
         class="w-50"
       )
-      p(class="text-body2 text-primary font-bold") {{$t('RR0018')}}
+      p(class="text-body2 text-primary font-bold") {{ $t("RR0018") }}
   input-container(:label="$t('RR0019')" required class="relative z-11")
     div(class="flex items-center gap-x-3")
       input-text(
@@ -109,7 +109,7 @@ div(class="grid gap-y-7.5")
         inputType="number"
         class="w-50"
       )
-      p(class="text-body2 text-primary font-bold") {{$t('RR0020')}}
+      p(class="text-body2 text-primary font-bold") {{ $t("RR0020") }}
   input-chips(
     v-model:chips="material.finishList"
     :label="$t('RR0022')"

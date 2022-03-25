@@ -5,7 +5,7 @@ filter-wrapper(iconName="color-circle" :displayName="$t('RR0026')" :dirty="filte
       v-for="color in filterOptions.colorList"
       class="w-15 h-12.5 rounded flex items-center justify-center"
       :class="{ 'border border-black-400': color.value === 'White' }"
-      :style="{ 'background-color': `${color.hex}`}"
+      :style="{ backgroundColor: `${color.hex}` }"
       @click="select(color.value)"
     )
       svg-icon(v-if="filter.color === color.value" iconName="done" size="24" class="text-black-0")

@@ -15,15 +15,15 @@ div(class="w-full h-full")
     :optionSort="optionSort"
   )
     template(#header-left)
-      h5(class="text-h5 font-bold text-primary") {{$t('EE0001')}}
-        span(class='text-caption text-black-700 pl-1')
+      h5(class="text-h5 font-bold text-primary") {{ $t("EE0001") }}
+        span(class="text-caption text-black-700 pl-1")
           span (
-          i18n-t(keypath="RR0068" tag='span')
-            template(#number) {{pagination.totalCount}}
+          i18n-t(keypath="RR0068" tag="span")
+            template(#number) {{ pagination.totalCount }}
           span )
     template(#header-right)
       grid-or-row(class="justify-self-end")
-      btn(size="sm" prependIcon="add" @click="goToMaterialUpload") {{$t('UU0020')}}
+      btn(size="sm" prependIcon="add" @click="goToMaterialUpload") {{ $t("UU0020") }}
     template(#default)
       template(v-if="materialList.length > 0")
         recycle-scroller(
@@ -43,7 +43,7 @@ div(class="w-full h-full")
       div(v-else class="flex flex-col justify-center items-center")
         div(class="border border-black-400 rounded-md border-dashed p-2 mt-40 cursor-pointer" @click="goToMaterialUpload")
           svg-icon(iconName="add" size="24" class="text-primary")
-        p(class="text-body2 text-primary pt-3") {{$t('EE0079')}}
+        p(class="text-body2 text-primary pt-3") {{ $t("EE0079") }}
   multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedMaterialList")
     template(#default="{ option }")
       qr-code-general(v-if="option.id === 'printQRCode'")
@@ -51,13 +51,13 @@ div(class="w-full h-full")
           div(
             class="whitespace-nowrap cursor-pointer hover:text-brand px-5"
             @click="generatePdf(selectedMaterialList)"
-          ) {{option.name}}
+          ) {{ option.name }}
       qr-code-a4(v-else-if="option.id === 'printCard'")
         template(#activator="{ generatePdf }")
           div(
             class="whitespace-nowrap cursor-pointer hover:text-brand px-5"
             @click="generatePdf(selectedMaterialList)"
-          ) {{option.name}}
+          ) {{ option.name }}
 </template>
 
 <script>
