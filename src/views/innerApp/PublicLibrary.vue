@@ -34,6 +34,10 @@ div(class="w-full h-full relative")
               @click="goTo(node.nodeKey)"
               @click:option="$event.func(node)"
             )
+              template(#node-caption v-if="isFirstLayer")
+                div(class="mt-1.5 h-6 flex items-center")
+                  img(:src="node.publish.logo" class="aspect-square h-full rounded-full")
+                  p(class="pl-1 font-bold text-caption text-primary") {{ node.publish.displayName }}
           template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
             node-item(
               v-model:selectedList="selectedNodeList"
@@ -44,6 +48,10 @@ div(class="w-full h-full relative")
               @click:option="$event.func(node)"
               @click.stop="goToPublicLibraryMaterialDetail(node.nodeKey)"
             )
+              template(#node-caption v-if="isFirstLayer")
+                div(class="mt-1.5 h-6 flex items-center")
+                  img(:src="node.publish.logo" class="aspect-square h-full rounded-full")
+                  p(class="pl-1 font-bold text-caption text-primary") {{ node.publish.displayName }}
       div(v-else class="flex h-full justify-center items-end")
         p(class="text-body1 text-primary") {{ $t("II0007") }}
   multi-select-menu(v-if="!isFirstLayer" :options="optionMultiSelect" v-model:selectedList="selectedNodeList")
