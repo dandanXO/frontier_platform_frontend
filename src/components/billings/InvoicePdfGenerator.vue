@@ -12,57 +12,57 @@ div
                   img(src="@/assets/images/frontier_logo.png" class="w-35 h-6 mb-4")
                   div(class="min-w-87")
                     div(class="flex justify-between items-center mb-1 h-5")
-                      p {{$t("OO0090")}}:
+                      p {{ $t("OO0090") }}:
                     div(class="py-2.5")
-                      div(class="font-bold mb-2") {{invoiceInfo.recipient}}
+                      div(class="font-bold mb-2") {{ invoiceInfo.recipient }}
                       div(class="grid gap-1.5")
-                        div {{invoiceInfo.address}}
-                        div {{addressDetail}}
-                        div {{invoiceInfo.email}}
+                        div {{ invoiceInfo.address }}
+                        div {{ addressDetail }}
+                        div {{ invoiceInfo.email }}
                 div(class="text-right")
                   div(class="text-h6 mb-3") INVOICE
-                  div(class="text-caption mb-2") {{$t("OO0081")}} {{invoiceInfo.invoiceNumber}}
-                  div(class="text-caption") {{$t("OO0082")}}: {{invoiceInfo.invoiceDate}}
-                  div(class="text-body2 text-primary font-bold mt-19.5") {{$t("OO0128")}} {{index+1}}/{{serviceItemListByPage.length}}
+                  div(class="text-caption mb-2") {{ $t("OO0081") }} {{ invoiceInfo.invoiceNumber }}
+                  div(class="text-caption") {{ $t("OO0082") }}: {{ invoiceInfo.invoiceDate }}
+                  div(class="text-body2 text-primary font-bold mt-19.5") {{ $t("OO0128") }} {{ index + 1 }}/{{ serviceItemListByPage.length }}
               div(class="relative")
                 div(class="flex bg-brand-light px-8 py-2 text-caption font-bold text-primary")
-                  div(style="width: 50%") {{$t("RR0014")}}
-                  div(class="text-center" style="width: 30%") {{$t("OO0091")}}
-                  div(class="text-center" style="width: 20%") {{$t("OO0093")}}
+                  div(style="width: 50%") {{ $t("RR0014") }}
+                  div(class="text-center" style="width: 30%") {{ $t("OO0091") }}
+                  div(class="text-center" style="width: 20%") {{ $t("OO0093") }}
                 div(class="h-77.5 px-8 my-5")
                   div(class="flex flex-col gap-2.5")
                     div(v-for="item in serviceItemList" class="flex text-caption text-primary")
                       div(style="width: 50%")
-                        div(class="mb-1.5") {{item.title}}
-                        div(class="text-black-600") {{item.periodDate}}
-                      div(class="text-center" style="width: 30%") {{item.listPrice}}
-                      div(class="text-center" style="width: 20%") {{item.price}}
+                        div(class="mb-1.5") {{ item.title }}
+                        div(class="text-black-600") {{ item.periodDate }}
+                      div(class="text-center" style="width: 30%") {{ item.listPrice }}
+                      div(class="text-center" style="width: 20%") {{ invoiceInfo.currency }} ${{ item.price.toFixed(2) }}
                 div(class="border-t border-black-500 mx-8")
               div(class="px-8 mt-3 flex justify-between")
                 div
-                  div(class="mb-3 text-primary text-caption") {{$t("OO0094")}}:
+                  div(class="mb-3 text-primary text-caption") {{ $t("OO0094") }}:
                   div(class="grid grid-cols-2 grid-rows-3 w-fit gap-y-2 gap-x-4.5 leading-none text-black-700 text-caption")
-                    div {{$t("OO0095")}}
-                    div **** **** **** {{invoiceInfo.cardInfo.lastFour}}
-                    div {{$t("OO0054")}}
-                    div {{invoiceInfo.cardInfo.expiredDate}}
-                    div {{$t("OO0055")}}
-                    div {{invoiceInfo.cardInfo.cardHolderName}}
+                    div {{ $t("OO0095") }}
+                    div **** **** **** {{ invoiceInfo.cardInfo.lastFour }}
+                    div {{ $t("OO0054") }}
+                    div {{ invoiceInfo.cardInfo.expiredDate }}
+                    div {{ $t("OO0055") }}
+                    div {{ invoiceInfo.cardInfo.cardHolderName }}
                 div(class="relative h-full")
                   div(class="text-caption text-primary text-right pr-5")
-                    span(class="font-bold mr-3") {{$t("OO0096")}}
-                    span {{invoiceInfo.currency}}${{calcSubtotal(serviceItemList)}}
-                  div(v-if="index+1 === serviceItemListByPage.length" class="absolute -right-8 top-14.5 w-60 py-2 px-10 bg-brand-light text-primary text-body2")
-                    span(class="font-bold mr-5") {{$t("OO0034")}} 
-                    span {{invoiceInfo.totalPrice}}
+                    span(class="font-bold mr-3") {{ $t("OO0096") }}
+                    span {{ invoiceInfo.currency }}${{ calcSubtotal(serviceItemList) }}
+                  div(v-if="index + 1 === serviceItemListByPage.length" class="absolute -right-8 top-14.5 w-60 py-2 px-10 bg-brand-light text-primary text-body2")
+                    span(class="font-bold mr-5") {{ $t("OO0034") }} 
+                    span {{ invoiceInfo.totalPrice }}
               div(class="px-8 text-caption w-fit ml-auto mt-13.5 mb-7.5")
                 div(class="inline-block mr-6")
-                  span(class="font-bold text-black-700 mr-1") {{$t("OO0097")}}:
-                  span(class="text-black-600") +886-2-27528855
+                  span(class="font-bold text-black-700 mr-1") {{ $t("OO0097") }}:
+                  span(class="text-black-600 whitespace-nowrap") +886-2-27528855
                 div(class="inline-block")
-                  span(class="font-bold text-black-700 mr-1") {{$t("OO0098")}}:
-                  span(class="text-black-600") info@frontier.cool
-                div(class="text-black-600 mt-3") Fuxing N. Rd., Suite 7-3, Taipei City, Taiwan
+                  span(class="font-bold text-black-700 mr-1") {{ $t("OO0098") }}:
+                  span(class="text-black-600 whitespace-nowrap") info@frontier.cool
+                div(class="text-black-600 mt-3 whitespace-nowrap") Fuxing N. Rd., Suite 7-3, Taipei City, Taiwan
 </template>
 
 <script>
