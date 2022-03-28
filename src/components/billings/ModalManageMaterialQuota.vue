@@ -30,7 +30,7 @@ div(class="w-133.5 px-8")
               svg-icon(iconName="keyboard_arrow_down" size="24" :class="{ 'text-primary-middle': setQty === 0 }" @click="reduce")
           p(class="text-body2 text-primary pt-0.5")
             template(v-if="currentTab === TAB.ADD") {{ `${pricing.materialUnit}${$t('OO0035')} / ${$t('RR0044')} $${pricing.materialPrice}` }}
-            template(v-else) {{ `${pricing.materialUnit}${$t('OO0035')} / ${$t('OO0104')}` }}
+            template(v-else) {{ `${pricing.materialUnit}${$t('OO0035')} / ${$t('OO0156')}` }}
           template(v-if="currentTab === TAB.ADD && isHitUpgradeAlert")
             p(class="text-caption text-warn line-height-1.6 pt-1") *{{ $t('WW0081') }}
             p(class="text-caption text-assist-blue line-height-1.6 underline cursor-pointer" @click="openModalChoosePlan") {{ $t('OO0115') }}
@@ -147,7 +147,8 @@ export default {
         properties: {
           title: t('OO0050'),
           content,
-          nextPayInfo: t('OO0064', { date: plan.value.renewDate })
+          nextPayInfo: t('OO0052', { date: plan.value.renewDate }),
+          buttonText: t('UU0026')
         }
       })
     }
