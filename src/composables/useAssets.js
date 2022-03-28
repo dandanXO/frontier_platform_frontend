@@ -23,10 +23,19 @@ export default function useAssets () {
     name: t('RR0055'),
     func: async (v) => {
       store.dispatch('helper/openModalLoading')
-      await store.dispatch('assets/carbonCopyMaterial', { materialId: v.materialId })
+      const { message, success } = await store.dispatch('assets/carbonCopyMaterial', { materialId: v.materialId })
       store.dispatch('helper/closeModalLoading')
-      store.dispatch('helper/reloadInnerApp')
-      store.commit('helper/PUSH_message', t('EE0084'))
+
+      if (success) {
+        store.dispatch('helper/reloadInnerApp')
+        store.commit('helper/PUSH_message', t('EE0084'))
+      } else {
+        store.dispatch('helper/pushModalConfirm', {
+          title: message.title,
+          content: message.content,
+          primaryText: t('UU0031'),
+        })
+      }
     }
   }
 
@@ -64,9 +73,18 @@ export default function useAssets () {
           locationList,
           cloneHandler: async (targetLocationList) => {
             store.dispatch('helper/openModalLoading')
-            await store.dispatch('assets/cloneMaterial', { targetLocationList, materialIdList })
+            const { message, success } = await store.dispatch('assets/cloneMaterial', { targetLocationList, materialIdList })
             store.dispatch('helper/closeModalLoading')
-            store.commit('helper/PUSH_message', t('EE0056'))
+
+            if (success) {
+              store.commit('helper/PUSH_message', t('EE0056'))
+            } else {
+              store.dispatch('helper/pushModalConfirm', {
+                title: message.title,
+                content: message.content,
+                primaryText: t('UU0031'),
+              })
+            }
           }
         }
       })
