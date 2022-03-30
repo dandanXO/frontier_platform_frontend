@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="w-161 h-138 px-8 flex flex-col")
   div
-    h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{modalTitle}}
+    h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{ modalTitle }}
     input-text(
       v-model:textValue="keyword"
       prependIcon="search"
@@ -16,7 +16,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
         div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
           svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
           i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption")
-            template(#number) {{selectedValue.length}}
+            template(#number) {{ selectedValue.length }}
         tooltip(
           v-if="!isInRoot"
           placement="bottom-end"
@@ -43,7 +43,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
             :class="[isMultiSelect && selectedValue.includes(JSON.stringify(item)) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
             @click="goTo(item.nodeKey), setRootId(item.id)"
           )
-            p(class="text-caption text-center font-bold line-clamp-3 leading-1.6") {{item.name}}
+            p(class="text-caption text-center font-bold line-clamp-3 leading-1.6") {{ item.name }}
             div(class="w-full h-7.5 absolute top-0 left-0")
               div(class="bg-linear w-full h-full rounded-t-md")
               input-checkbox(
@@ -51,7 +51,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
                 v-model:inputValue="selectedValue"
                 :value="JSON.stringify(item)"
                 size="20"
-                class="cursor-pointer absolute top-1 left-1 -z-1"
+                class="cursor-pointer absolute top-1 left-1"
                 iconColor="text-black-0"
                 uncheckColor="text-black-0"
                 @click.stop
@@ -61,7 +61,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
                 v-model:inputValue="selectedValue"
                 :value="JSON.stringify(item)"
                 size="20"
-                class="cursor-pointer absolute top-1 left-1 -z-1"
+                class="cursor-pointer absolute top-1 left-1"
                 checkColor="text-black-0"
                 uncheckColor="text-black-0"
                 @click.stop
@@ -95,8 +95,8 @@ div(class="w-161 h-138 px-8 flex flex-col")
         svg-icon(iconName="loading" size="54" class="text-brand")
   div(v-if="!isInRoot" class="w-full h-8.5 mt-3.5 px-2.5 bg-black-50 flex items-center gap-x-1")
     svg-icon(iconName="error_outline" size="14" class="text-primary")
-    p(class="text-caption text-primary") {{isOnlyShowCollection ? $t('RR0119'): $t('UU0037')}}
-    p(class="text-caption text-assist-blue cursor-pointer" @click="isOnlyShowCollection = !isOnlyShowCollection") {{isOnlyShowCollection ? $t('UU0037') : $t('UU0036')}}
+    p(class="text-caption text-primary") {{ isOnlyShowCollection ? $t('RR0119') : $t('UU0037') }}
+    p(class="text-caption text-assist-blue cursor-pointer" @click="isOnlyShowCollection = !isOnlyShowCollection") {{ isOnlyShowCollection ? $t('UU0037') : $t('UU0036') }}
   btn-group(
     class="h-25"
     :primaryText="actionText"

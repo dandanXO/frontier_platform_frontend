@@ -87,9 +87,10 @@ export default {
         })
       } else {
         store.dispatch('helper/openModalConfirm', {
-          title: message.title,
+          type: 3,
+          header: message.title,
           content: message.content,
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
       }
     }

@@ -53,6 +53,8 @@ module.exports = {
         },
         assist: {
           blue: '#268cc8',
+          'light-blue': '#52c9d7',
+          'light-yellow': '#fed402'
         },
         warn: {
           DEFAULT: '#b40000',
@@ -82,6 +84,7 @@ module.exports = {
       spacing: spacing,
       maxWidth: spacing,
       minWidth: spacing,
+      maxHeight: spacing,
       minHeight: spacing,
       lineHeight: lineHeight,
       screens: {

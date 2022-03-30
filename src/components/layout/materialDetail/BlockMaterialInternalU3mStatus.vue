@@ -72,9 +72,10 @@ export default {
       status.value === U3M_STATUS.COMPLETED
         ? openModalViewer()
         : store.dispatch('helper/openModalConfirm', {
-          title: t('EE0029'),
+          type: 1,
+          header: t('EE0029'),
           content: t('EE0030'),
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
     }
 

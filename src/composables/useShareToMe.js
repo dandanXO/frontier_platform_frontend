@@ -15,9 +15,10 @@ export default function useShareToMe () {
 
       if (!isCanClone) {
         return store.dispatch('helper/openModalConfirm', {
-          title: t('GG0016'),
+          type: 1,
+          header: t('GG0016'),
           content: t('GG0020'),
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
       }
 
@@ -80,13 +81,13 @@ export default function useShareToMe () {
       store.dispatch('helper/openModalConfirm', {
         title: t('HH0004'),
         content: t('HH0005'),
-        primaryText: t('UU0002'),
-        secondaryText: t('UU0001'),
-        secondaryHandler: async () => {
+        primaryBtnText: t('UU0001'),
+        primaryBtnHandler: async () => {
           store.dispatch('helper/openModalLoading')
           await store.dispatch('shareToMe/deleteShareToMe', { workspaceNodeList })
           store.dispatch('helper/closeModalLoading')
-        }
+        },
+        secondaryBtnText: t('UU0002')
       })
     }
   }

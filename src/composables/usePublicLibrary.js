@@ -15,9 +15,10 @@ export default function usePublicLibrary () {
 
       if (!isCanClone) {
         return store.dispatch('helper/openModalConfirm', {
-          title: t('II0013'),
+          type: 1,
+          header: t('II0013'),
           content: t('II0014'),
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
       }
       const organization = store.getters['organization/organization']

@@ -40,6 +40,8 @@ export default {
           return ['bg-brand', 'text-black-0', 'disabled:bg-primary-middle', 'hover:bg-brand-dark']
         case 'secondary':
           return ['bg-black-0', 'text-brand', 'disabled:text-black-500', 'border', 'border-primary-middle', 'hover:text-brand-dark']
+        case 'text':
+          return ['bg-black-0', 'text-primary', 'disabled:text-black-500', 'hover:text-brand-dark']
       }
     })
     return {

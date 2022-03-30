@@ -80,9 +80,10 @@ export default function useAssets () {
       const materialList = Array.isArray(v) ? v : [v]
       if (materialList.length === 1 && !materialList[0].isComplete) {
         return store.dispatch('helper/openModalConfirm', {
-          title: t('EE0096'),
+          type: 1,
+          header: t('EE0096'),
           content: t('EE0097'),
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
       }
 
@@ -170,9 +171,10 @@ export default function useAssets () {
           break
         case U3M_STATUS.PROCESSING:
           store.dispatch('helper/openModalConfirm', {
-            title: t('RR0162'),
+            type: 0,
+            header: t('RR0162'),
             content: t('EE0072'),
-            primaryText: t('UU0031')
+            primaryBtnText: t('UU0031')
           })
           break
         case U3M_STATUS.FAIL:
@@ -241,15 +243,17 @@ export default function useAssets () {
     func: (v) => {
       const materialIdList = Array.isArray(v) ? v.map(({ materialId }) => materialId) : [v.materialId]
       store.dispatch('helper/openModalConfirm', {
-        title: t('EE0075'),
+        type: 1,
+        header: t('EE0075'),
         content: t('EE0076'),
-        secondaryText: t('UU0001'),
-        secondaryHandler: async () => {
+        primaryBtnText: t('UU0001'),
+        primaryBtnHandler: async () => {
           store.dispatch('helper/openModalLoading')
           await store.dispatch('assets/deleteMaterial', { materialIdList })
           store.dispatch('helper/closeModalLoading')
           store.dispatch('helper/reloadInnerApp')
-        }
+        },
+        secondaryBtnText: t('UU0002')
       })
     }
   }
