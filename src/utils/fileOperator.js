@@ -134,23 +134,26 @@ class FileOperator {
     switch (code) {
       case INVALID_TYPE:
         store.dispatch('helper/pushModalConfirm', {
-          title: t('RR0143'),
+          type: 3,
+          header: t('RR0143'),
           content: t(t('RR0144')),
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
         break
       case EXCEED_LIMIT:
         store.dispatch('helper/pushModalConfirm', {
-          title: t('RR0143'),
+          type: 3,
+          header: t('RR0143'),
           content: t('RR0145', { size: this.fileSizeMaxLimit }),
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
         break
       case TOO_SMALL:
         store.dispatch('helper/pushModalConfirm', {
-          title: t('RR0143'),
+          type: 3,
+          header: t('RR0143'),
           content: t('WW0018'),
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
         break
     }

@@ -38,16 +38,19 @@ export default function useReceivedShare () {
         })
       } else if (isCanSave && organizationList.length === 0) {
         store.dispatch('helper/openModalConfirm', {
-          title: t('GG0010'),
+          type: 3,
+          header: t('GG0010'),
           content: t('GG0033'),
-          primaryText: t('UU0072'),
-          primaryHandler: goToLobby
+          primaryBtnText: t('UU0072'),
+          primaryBtnHandler: goToLobby,
+          secondaryBtnText: t('UU0002')
         })
       } else {
         store.dispatch('helper/openModalConfirm', {
-          title: t('GG0014'),
+          type: 1,
+          header: t('GG0014'),
           content: t('GG0015'),
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
       }
     } catch (error) {
@@ -85,16 +88,19 @@ export default function useReceivedShare () {
       })
     } else if (isCanClone && organizationList.length === 0) {
       store.dispatch('helper/openModalConfirm', {
-        title: t('GG0017'),
+        type: 3,
+        header: t('GG0017'),
         content: t('GG0034'),
-        primaryText: t('UU0072'),
-        primaryHandler: goToLobby
+        primaryBtnText: t('UU0072'),
+        primaryBtnHandler: goToLobby,
+        secondaryBtnText: t('UU0002')
       })
     } else {
       store.dispatch('helper/openModalConfirm', {
-        title: t('GG0016'),
+        type: 1,
+        header: t('GG0016'),
         content: t('GG0020'),
-        primaryText: t('UU0031')
+        primaryBtnText: t('UU0031')
       })
     }
   }

@@ -20,11 +20,12 @@ export default function usePlan () {
     }
 
     store.dispatch('helper/openModalConfirm', {
-      title: t('OO0012'),
+      type: 1,
+      header: t('OO0012'),
       content: t('OO0079'),
-      primaryText: t('UU0001'),
-      primaryHandler: goToPaymentDetail,
-      secondaryText: t('UU0002')
+      primaryBtnText: t('UU0001'),
+      primaryBtnHandler: goToPaymentDetail,
+      secondaryBtnText: t('UU0002')
     })
     return false
   }
@@ -32,27 +33,30 @@ export default function usePlan () {
   const checkCanInvitedPeople = () => {
     if (planType.value.BASIC) {
       store.dispatch('helper/openModalConfirm', {
-        title: t('OO0099'),
+        type: 0,
+        header: t('OO0099'),
         content: t('OO0100'),
-        primaryText: t('UU0021'),
-        afterPrimaryHandler: openModalChoosePlan,
-        secondaryText: t('UU0002')
+        primaryBtnText: t('UU0021'),
+        afterPrimaryBtnHandler: openModalChoosePlan,
+        secondaryBtnText: t('UU0002')
       })
       return false
     } else if (planType.value.ENT) {
       const memberQuota = store.getters['organization/plan'].quota.member
       if (memberQuota.max === 0) {
         store.dispatch('helper/openModalConfirm', {
-          title: t('OO0109'),
+          type: 1,
+          header: t('OO0109'),
           content: t('OO0110'),
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
         return false
       } else if (memberQuota.max === memberQuota.used) {
         store.dispatch('helper/openModalConfirm', {
-          title: t('OO0133'),
+          type: 1,
+          header: t('OO0133'),
           content: t('WW0086'),
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
         return false
       }

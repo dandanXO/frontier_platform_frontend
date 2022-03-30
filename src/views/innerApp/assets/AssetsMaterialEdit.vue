@@ -74,14 +74,15 @@ export default {
 
     const cancel = async () => {
       store.dispatch('helper/pushModalConfirm', {
-        title: t('EE0045'),
+        type: 1,
+        header: t('EE0045'),
         content: t('EE0046'),
-        secondaryText: t('UU0001'),
-        secondaryHandler: () => {
+        primaryBtnText: t('UU0001'),
+        primaryBtnHandler: () => {
           isConfirmedToLeave.value = true
           goToAssets()
         },
-        primaryText: t('UU0002')
+        secondaryBtnText: t('UU0002')
       })
     }
 
@@ -92,12 +93,13 @@ export default {
 
       const result = await new Promise((resolve) => {
         store.dispatch('helper/openModalConfirm', {
-          title: t('EE0045'),
+          type: 3,
+          header: t('EE0045'),
           content: t('EE0046'),
-          secondaryText: t('UU0001'),
-          secondaryHandler: resolve.bind(undefined, 'confirm'),
-          primaryText: t('UU0002'),
-          primaryHandler: resolve.bind(undefined, 'cancel')
+          primaryBtnText: t('UU0001'),
+          primaryBtnHandler: resolve.bind(undefined, 'confirm'),
+          secondaryBtnText: t('UU0002'),
+          secondaryBtnHandler: resolve.bind(undefined, 'cancel')
         })
       })
 

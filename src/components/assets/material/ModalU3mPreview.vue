@@ -19,9 +19,9 @@ div(:class="{ 'w-86': !isDoubleSideMaterial, 'w-168': isDoubleSideMaterial }")
     class="h-25"
     :secondaryButton="true"
     :primaryText="$t('UU0038')"
-    @click:primary="handleCreateU3mAuto()"
+    @click:primary="handleCreateU3mAuto"
     :secondaryText="$t('UU0039')"
-    @click:secondary="handleRecutImage()"
+    @click:secondary="handleRecutImage"
   )
 </template>
 
@@ -55,9 +55,10 @@ export default {
     const handleCreateU3mAuto = async () => {
       await store.dispatch('assets/generateU3m', {})
       store.dispatch('helper/openModalConfirm', {
-        title: t('RR0132'),
+        type: 0,
+        header: t('RR0132'),
         content: t('EE0070'),
-        primaryText: t('UU0031')
+        primaryBtnText: t('UU0031')
       })
     }
 

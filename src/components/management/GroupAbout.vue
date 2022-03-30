@@ -64,14 +64,16 @@ export default {
           errorMsg: t('WW0026'),
           confirmHandler: () => {
             store.dispatch('helper/openModalConfirm', {
-              title: t('BB0100'),
+              type: 1,
+              header: t('BB0100'),
               content: t('BB0101'),
-              secondaryText: t('UU0001'),
-              afterSecondaryHandler: async () => {
+              primaryBtnText: t('UU0001'),
+              afterPrimaryBtnHandler: async () => {
                 await store.dispatch('helper/openModal', {
                   component: 'modal-choose-storage'
                 })
-              }
+              },
+              secondaryBtnText: t('UU0002')
             })
           }
         }

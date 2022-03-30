@@ -58,9 +58,10 @@ export default {
       switch (setupIntent.status) {
         case 'succeeded': {
           store.dispatch('helper/openModalConfirm', {
-            title: t('OO0017'),
+            type: 2,
+            header: t('OO0017'),
             content: t('OO0018'),
-            primaryText: t('UU0031')
+            primaryBtnText: t('UU0031')
           })
           break
         }

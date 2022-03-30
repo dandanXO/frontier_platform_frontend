@@ -119,10 +119,11 @@ export default {
           errorMsg: t('WW0015'),
           confirmHandler: () => {
             store.dispatch('helper/openModalConfirm', {
-              title: t('BB0029'),
+              type: 1,
+              header: t('BB0029'),
               content: t('BB0030'),
-              secondaryText: t('UU0001'),
-              afterSecondaryHandler: async () => {
+              primaryBtnText: t('UU0001'),
+              afterPrimaryBtnHandler: async () => {
                 const deleteOrg = async () => {
                   store.dispatch('helper/openModalLoading')
                   const { success } = await store.dispatch('organization/deleteOrg')
@@ -160,7 +161,8 @@ export default {
                     }
                   }
                 })
-              }
+              },
+              secondaryBtnText: t('UU0002')
             })
           }
         }

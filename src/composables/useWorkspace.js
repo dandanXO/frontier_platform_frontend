@@ -64,12 +64,13 @@ export default function useWorkspace () {
           actionCallback: async (nodeList) => {
             const result = await new Promise((resolve) => {
               store.dispatch('helper/pushModalConfirm', {
-                title: t('FF0040'),
+                type: 1,
+                header: t('FF0040'),
                 content: t('FF0048'),
-                primaryText: t('UU0001'),
-                primaryHandler: resolve.bind(undefined, 'confirm'),
-                secondaryText: t('UU0002'),
-                secondaryHandler: resolve.bind(undefined, 'cancel')
+                primaryBtnText: t('UU0001'),
+                primaryBtnHandler: resolve.bind(undefined, 'confirm'),
+                secondaryBtnText: t('UU0002'),
+                secondaryBtnHandler: resolve.bind(undefined, 'cancel')
               })
             })
             if (result === 'confirm') {
@@ -108,12 +109,13 @@ export default function useWorkspace () {
           actionCallback: async (node) => {
             const result = await new Promise((resolve) => {
               store.dispatch('helper/pushModalConfirm', {
-                title: t('FF0040'),
+                type: 1,
+                header: t('FF0040'),
                 content: t('FF0041'),
-                primaryText: t('UU0001'),
-                primaryHandler: resolve.bind(undefined, 'confirm'),
-                secondaryText: t('UU0002'),
-                secondaryHandler: resolve.bind(undefined, 'cancel')
+                primaryBtnText: t('UU0001'),
+                primaryBtnHandler: resolve.bind(undefined, 'confirm'),
+                secondaryBtnText: t('UU0002'),
+                secondaryBtnHandler: resolve.bind(undefined, 'cancel')
               })
             })
             if (result === 'confirm') {
@@ -134,15 +136,16 @@ export default function useWorkspace () {
     }
   }
 
-  const deleteNodeList = async (workspaceNodeIdList, title, content) => {
+  const deleteNodeList = async (workspaceNodeIdList, header, content) => {
     const result = await new Promise((resolve) => {
       store.dispatch('helper/pushModalConfirm', {
-        title,
+        type: 1,
+        header,
         content,
-        primaryText: t('UU0002'),
-        primaryHandler: resolve.bind(undefined, 'cancel'),
-        secondaryText: t('UU0001'),
-        secondaryHandler: resolve.bind(undefined, 'confirm')
+        primaryBtnText: t('UU0001'),
+        primaryBtnHandler: resolve.bind(undefined, 'confirm'),
+        secondaryBtnText: t('UU0002'),
+        secondaryBtnHandler: resolve.bind(undefined, 'cancel')
       })
     })
     if (result === 'confirm') {

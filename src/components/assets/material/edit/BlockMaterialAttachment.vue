@@ -61,10 +61,11 @@ export default {
 
     const handleRemove = (attachment) => {
       store.dispatch('helper/openModalConfirm', {
-        title: t('DD0068'),
+        type: 0,
+        header: t('DD0068'),
         content: t('DD0069'),
-        secondaryText: t('UU0001'),
-        secondaryHandler: async () => {
+        primaryBtnText: t('UU0001'),
+        primaryBtnHandler: async () => {
           if (isEditMode.value) {
             store.dispatch('assets/removeAttachmentWhenUpdate', {
               materialAttachmentId: attachment.materialAttachmentId
@@ -75,7 +76,8 @@ export default {
               tempMaterialAttachmentId: attachment.tempMaterialAttachmentId
             })
           }
-        }
+        },
+        secondaryBtnText: t('UU0002')
       })
     }
 

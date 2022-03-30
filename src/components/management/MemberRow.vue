@@ -81,27 +81,31 @@ export default {
 
     const confirmToRemoveMember = () => {
       store.dispatch('helper/openModalConfirm', {
-        title: t('BB0058'),
+        type: 1,
+        header: t('BB0058'),
         content: t('BB0062', { name: props.member.displayName }),
-        secondaryText: t('UU0001'),
-        secondaryHandler: async () => {
+        primaryBtnText: t('UU0001'),
+        primaryBtnHandler: async () => {
           routeLocation.value === 'org'
             ? await store.dispatch('organization/removeOrgMember', { orgUserId: props.member.orgUserId })
             : await store.dispatch('group/removeGroupMember', { groupUserId: props.member.groupUserId })
-        }
+        },
+        secondaryBtnText: t('UU0002')
       })
     }
 
     const confirmToCancelInvitation = () => {
       store.dispatch('helper/openModalConfirm', {
-        title: t('BB0057'),
+        type: 1,
+        header: t('BB0057'),
         content: t('BB0061'),
-        secondaryText: t('UU0001'),
-        secondaryHandler: async () => {
+        primaryBtnText: t('UU0001'),
+        primaryBtnHandler: async () => {
           routeLocation.value === 'org'
             ? await store.dispatch('organization/cancelOrgInvitation', { email: props.member.email })
             : await store.dispatch('group/cancelGroupInvitation', { email: props.member.email })
-        }
+        },
+        secondaryBtnText: t('UU0002')
       })
     }
 

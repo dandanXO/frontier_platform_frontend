@@ -39,9 +39,10 @@ export default {
       await store.dispatch('user/getUser')
       if (!props.isCanDownloadU3M) {
         store.dispatch('helper/openModalConfirm', {
-          title: t('II0003'),
+          type: 1,
+          header: t('II0003'),
           content: t('II0004'),
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
       } else {
         const fileName = url.split('/')[url.split('/').length - 1]
@@ -53,9 +54,10 @@ export default {
       status.value === COMPLETED
         ? openModalViewer()
         : store.dispatch('helper/openModalConfirm', {
-          title: t('II0005'),
+          type: 1,
+          header: t('II0005'),
           content: t('II0006'),
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
     }
 
