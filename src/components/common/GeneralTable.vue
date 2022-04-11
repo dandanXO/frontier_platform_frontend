@@ -21,7 +21,7 @@ div
       template(#content)
         slot(name="filter")
   div(v-if="showHeader" class="flex gap-6 items-center bg-black-200 text-body1 text-primary py-4 my-2.5 px-15")
-    div(v-for="header in headers" :class="[header.width]" class="flex items-center")
+    div(v-for="header in headers" :class="[`w-${header.width}`]" class="flex items-center")
       div {{ header.label }}
       svg-icon(
         v-if="header.sortBy?.length > 0"
@@ -39,7 +39,7 @@ div
         @mouseenter="indexOfHover = index"
         @mouseleave="indexOfHover = null"
       )
-        div(v-for="header in headers" :class="[header.width]")
+        div(v-for="header in headers" :class="[`w-${header.width}`]")
           div(v-if="item[header.prop]") {{ item[header.prop] }}
           div(v-else)
             slot(

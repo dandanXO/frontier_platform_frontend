@@ -9,7 +9,7 @@ div(class="w-116")
           target="_blank"
           class="marker:text-assist-blue cursor-pointer"marker:
           href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(英文版).xlsx"
-        )  {{$t("UU0065")}}
+        )  {{ $t("UU0065") }}
         a(
           v-else
           target="_blank"
@@ -30,8 +30,8 @@ div(class="w-116")
     )
       template(#errorMsg v-if="showErrorList")
         p(class="absolute pt-11 text-caption text-warn")
-          span(class="pr-0.5") {{$t("WW0037")}}
-          span(class="underline cursor-pointer" @click="openModalErrorList") {{$t("UU0066")}}
+          span(class="pr-0.5") {{ $t("WW0037") }}
+          span(class="underline cursor-pointer" @click="openModalErrorList") {{ $t("UU0066") }}
       template(#errorMsg v-else)
         p(class="absolute pt-11 text-caption text-warn") {{errorMsg}}
     p(class="text-primary text-caption leading-1.6") {{$t("DD0071")}}
@@ -104,7 +104,11 @@ export default {
             showErrorList.value = true
             errorList = result.errorList
           } else {
-            errorMsg.value = message.content
+            store.dispatch('helper/pushModalConfirm', {
+              title: message.title,
+              content: message.content,
+              primaryText: t('UU0031'),
+            })
           }
         }
       } catch (error) {

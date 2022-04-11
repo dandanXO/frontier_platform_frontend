@@ -82,7 +82,8 @@ export default {
                 component: 'modal-payment-success',
                 properties: {
                   title: t('OO0039'),
-                  content: t('OO0040')
+                  content: t('OO0040'),
+                  buttonText: t('UU0026')
                 }
               })
             } else {

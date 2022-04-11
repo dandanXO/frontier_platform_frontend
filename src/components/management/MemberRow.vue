@@ -14,29 +14,30 @@ div(
   div(class="w-4/12 line-clamp-1") {{ member.email }}
   div(class="w-2/12")
     p(v-if="member.isPending" class="ml-4 w-4 border-t border-primary")
-    template(v-else)
-      p(v-if="member.orgRoleId === ROLE_ID.OWNER") {{ getRoleName(member.orgRoleId) }}
-      p(v-else-if="roleLimitList.length === 1") {{ getRoleName(member.orgRoleId) }}
-      template(v-else)
-        tooltip(
-          class="flex-grow"
-          placement="bottom-start"
-          :manual="true"
-          :showArrow="false"
-          :offset="[0, 8]"
-        )
-          template(#trigger="{ isActive }")
-            div(class="flex items-center cursor-pointer")
-              p {{ getRoleName(currentRoleId) }}
-              svg-icon(iconName="arrow-down" size="20" class="ml-4 text-black-600 transform" :class="[isActive ? '-rotate-90' : 'rotate-90']")
-          template(#content)
-            list
-              list-item(
-                v-for="option in roleLimitList"
-                class="cursor-pointer"
-                :class="{ 'bg-primary-thin': option.roleId === currentRoleId }"
-                @click="changeMemberRole(option.roleId)"
-              ) {{ getRoleName(option.roleId) }}
+    p(v-else) {{ getRoleName(member.orgRoleId) }}
+    //- template(v-else)
+    //-   p(v-if="member.orgRoleId === ROLE_ID.OWNER") {{getRoleName(member.orgRoleId)}}
+    //-   p(v-else-if="roleLimitList.length === 1") {{getRoleName(member.orgRoleId)}}
+    //-   template(v-else)
+    //-     tooltip(
+    //-       class="flex-grow"
+    //-       placement='bottom-start'
+    //-       :manual="true"
+    //-       :showArrow="false"
+    //-       :offset="[0, 8]"
+    //-     )
+    //-       template(#trigger="{ isActive }")
+    //-         div(class="flex items-center cursor-pointer")
+    //-           p {{ getRoleName(currentRoleId) }}
+    //-           svg-icon(iconName="arrow-down" size="20" class="ml-4 text-black-600 transform" :class="[isActive ? '-rotate-90' : 'rotate-90']")
+    //-       template(#content)
+    //-         list
+    //-           list-item(
+    //-             v-for="option in roleLimitList"
+    //-             class="cursor-pointer"
+    //-             :class="{ 'bg-primary-thin': option.roleId === currentRoleId }"
+    //-             @click="changeMemberRole(option.roleId)"
+    //-           ) {{ getRoleName(option.roleId) }}
   div(class="w-2/12")
     p(v-if="member.isPending" class="ml-4 w-4 border-t border-primary")
     p(v-else) {{ member.lastSignInTime }}

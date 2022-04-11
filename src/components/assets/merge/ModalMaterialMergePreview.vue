@@ -58,11 +58,20 @@ export default {
         }
       })
       store.dispatch('helper/pushModalLoading')
-      await store.dispatch('assets/mergeMaterial', { mergedList: apiInput })
+      const { message, success } = await store.dispatch('assets/mergeMaterial', { mergedList: apiInput })
       store.dispatch('helper/closeModalLoading')
-      store.dispatch('helper/clearModalPipeline')
-      store.dispatch('helper/reloadInnerApp')
-      store.commit('helper/PUSH_message', t('EE0077'))
+
+      if (success) {
+        store.dispatch('helper/clearModalPipeline')
+        store.dispatch('helper/reloadInnerApp')
+        store.commit('helper/PUSH_message', t('EE0077'))
+      } else {
+        store.dispatch('helper/pushModalConfirm', {
+          title: message.title,
+          content: message.content,
+          primaryText: t('UU0031'),
+        })
+      }
     }
 
     const getBgImg = (target, blockType) => {

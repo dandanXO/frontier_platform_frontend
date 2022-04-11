@@ -148,7 +148,8 @@ export default {
         properties: {
           title: t('OO0050'),
           content,
-          nextPayInfo: t('OO0064', { date: plan.value.renewDate })
+          nextPayInfo: t('OO0052', { date: plan.value.renewDate }),
+          buttonText: t('UU0026')
         }
       })
     }

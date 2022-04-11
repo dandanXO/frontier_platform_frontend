@@ -216,10 +216,14 @@ export const FEEDBACK_CATEGORY = {
     text: i18n.global.t('MM0011'),
     value: 2
   },
+  PAYMENT: {
+    text: i18n.global.t('OO0065'),
+    value: 4
+  },
   OTHER: {
     text: i18n.global.t('MM0012'),
     value: 3
-  }
+  },
 }
 
 export const SHARING_FROM = {

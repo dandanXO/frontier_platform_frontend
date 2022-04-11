@@ -35,7 +35,7 @@ div( class="w-149 h-194")
             div(class="mb-1.5") {{ item.title }}
             div(class="text-black-600") {{ item.periodDate }}
           div(class="text-center" style="width: 30%") {{ item.listPrice }}
-          div(class="text-center" style="width: 20%") {{ innerInvoice.currency }}${{ item.price }}
+          div(class="text-center" style="width: 20%") {{ innerInvoice.currency }} ${{ item.price.toFixed(2) }}
     div(class="border-t border-black-500 mx-8")
   div(class="px-8 mt-3 flex justify-between")
     div

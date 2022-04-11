@@ -111,12 +111,12 @@ export default {
       {
         prop: 'download',
         label: t("OO0084"),
-        width: 'w-2/12'
+        width: '1/12'
       },
       {
         prop: 'view',
-        label: '',
-        width: 'w-1/12'
+        label: t('OO0085'),
+        width: '2/12'
       }
     ]
     const getList = async (targetPage = 1) => {

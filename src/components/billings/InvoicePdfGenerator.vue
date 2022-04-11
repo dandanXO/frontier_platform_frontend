@@ -36,7 +36,7 @@ div
                         div(class="mb-1.5") {{ item.title }}
                         div(class="text-black-600") {{ item.periodDate }}
                       div(class="text-center" style="width: 30%") {{ item.listPrice }}
-                      div(class="text-center" style="width: 20%") {{ invoiceInfo.currency }} ${{ item.price }}
+                      div(class="text-center" style="width: 20%") {{ invoiceInfo.currency }} ${{ item.price.toFixed(2) }}
                 div(class="border-t border-black-500 mx-8")
               div(class="px-8 mt-3 flex justify-between")
                 div
@@ -51,18 +51,18 @@ div
                 div(class="relative h-full")
                   div(class="text-caption text-primary text-right pr-5")
                     span(class="font-bold mr-3") {{ $t("OO0096") }}
-                    span {{ invoiceInfo.currency }} ${{ calcSubtotal(serviceItemList) }}
+                    span {{ invoiceInfo.currency }}${{ calcSubtotal(serviceItemList) }}
                   div(v-if="index + 1 === serviceItemListByPage.length" class="absolute -right-8 top-14.5 w-60 py-2 px-10 bg-brand-light text-primary text-body2")
                     span(class="font-bold mr-5") {{ $t("OO0034") }} 
                     span {{ invoiceInfo.totalPrice }}
               div(class="px-8 text-caption w-fit ml-auto mt-13.5 mb-7.5")
                 div(class="inline-block mr-6")
                   span(class="font-bold text-black-700 mr-1") {{ $t("OO0097") }}:
-                  span(class="text-black-600") +886-2-27528855
+                  span(class="text-black-600 whitespace-nowrap") +886-2-27528855
                 div(class="inline-block")
                   span(class="font-bold text-black-700 mr-1") {{ $t("OO0098") }}:
-                  span(class="text-black-600") info@frontier.cool
-                div(class="text-black-600 mt-3") Fuxing N. Rd., Suite 7-3, Taipei City, Taiwan
+                  span(class="text-black-600 whitespace-nowrap") info@frontier.cool
+                div(class="text-black-600 mt-3 whitespace-nowrap") Fuxing N. Rd., Suite 7-3, Taipei City, Taiwan
 </template>
 
 <script>

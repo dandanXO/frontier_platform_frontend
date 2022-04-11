@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="w-155 px-8")
   div(class="w-full h-101.5 border border-black-400 rounded px-7.5 pt-5 pb-3")
-    p(class="text-body2 font-bold text-primary text-left pb-4 border-b border-black-400") {{ $t('OO0037') }}
+    p(class="text-body2 font-bold text-primary text-left pb-4 border-b border-black-400") {{ $t('OO0057') }}
     overlay-scrollbar-container(class="h-60 -mx-6 px-6")
       div(class="grid gap-y-3 py-5")
         div(v-for="item in checkoutItemList")
