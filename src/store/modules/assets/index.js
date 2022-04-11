@@ -118,9 +118,9 @@ export default {
 
       if (data.success) {
         dispatch('setAssetsModule', data.result)
-      } else {
-        return data
       }
+
+      return data
     },
     async updateMaterial ({ rootGetters, getters }) {
       const materialId = getters.material.materialId
