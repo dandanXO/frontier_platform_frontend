@@ -71,7 +71,7 @@ export default function usePlan () {
   }
 
   const openModalManageMaterialQuota = () => {
-    !planType.value.ENT && planStatus.value.ACTIVE && checkHaveBindPayment() && store.dispatch('helper/openModal', {
+    !planType.value.ENT && planStatus.value.ACTIVE && checkHaveBindPayment() && store.dispatch('helper/openModalBehavior', {
       component: 'modal-manage-material-quota'
     })
   }

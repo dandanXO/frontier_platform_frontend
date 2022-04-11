@@ -78,6 +78,16 @@ const actions = {
   closeModal ({ commit }) {
     commit('CLOSE_modalPipeline')
   },
+  openModalBehavior ({ commit }, options) {
+    commit('CLEAR_modalPipeline')
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.BEHAVIOR, options })
+  },
+  pushModalBehavior ({ commit }, options) {
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.BEHAVIOR, options })
+  },
+  closeModalBehavior ({ commit }) {
+    commit('CLOSE_modalPipeline')
+  },
   clearModalPipeline ({ commit }) {
     commit('CLEAR_modalPipeline')
   },

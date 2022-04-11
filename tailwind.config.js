@@ -1,7 +1,10 @@
 const spacing = {}
+const marginSpacing = {}
 for (let i = 1; i <= 720; i++) {
   const index = i * 0.5
   spacing[index] = (i * 0.125) + 'rem'
+  marginSpacing[index] = (i * 0.125) + 'rem'
+  marginSpacing[`-${index}`] = -(i * 0.125) + 'rem'
 }
 
 const lineHeight = {}
@@ -93,7 +96,8 @@ module.exports = {
       gridTemplateColumns: {
         'lobby': 'repeat(auto-fill, 232px)'
       },
-      strokeWidth: strokeWidth
+      strokeWidth: strokeWidth,
+      margin: marginSpacing
     }
   },
   plugins: [
