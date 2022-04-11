@@ -30,7 +30,8 @@ export const MODAL_TYPE = {
   MODAL: 0,
   FULLSCREEN: 1,
   LOADING: 2,
-  CONFIRM: 3
+  CONFIRM: 3,
+  BEHAVIOR: 4
 }
 
 export const MODAL_CONFIRM_TYPE = {

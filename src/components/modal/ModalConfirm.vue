@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="fixed inset-0 z-modal-confirm  w-screen h-screen bg-black-900/30 flex justify-center items-center" @click="closeModalConfirmNew")
+div(class="fixed inset-0 z-modal-confirm  w-screen h-screen bg-black-900/30 flex justify-center items-center" @click="closeModalConfirm")
   div(class="w-104 max-h-125 min-h-54 px-8 py-6 bg-black-0 rounded flex flex-col" @click.stop)
     div(class="h-9 pb-3.5 flex items-center")
       svg-icon(:iconName="getIconName" :class="[getIconColor]" size="22")
@@ -125,21 +125,21 @@ const innerNote = props.noteReplaceValue.length > 0
   ? makeLinkInterpolation(props.note, props.noteReplaceValue)
   : props.note
 
-const closeModalConfirmNew = () => store.dispatch('helper/closeModalConfirmNew')
+const closeModalConfirm = () => store.dispatch('helper/closeModalConfirm')
 
 const primaryHandler = async () => {
   !!props.primaryBtnHandler && await props.primaryBtnHandler()
-  closeModalConfirmNew()
+  closeModalConfirm()
   !!props.afterPrimaryBtnHandler && await props.afterPrimaryBtnHandler()
 }
 const secondaryHandler = async () => {
   !!props.secondaryBtnHandler && await props.secondaryBtnHandler()
-  closeModalConfirmNew()
+  closeModalConfirm()
   !!props.afterSecondaryBtnHandler && await props.afterSecondaryBtnHandler()
 }
 const textHandler = async () => {
   !!props.textBtnHandler && await props.textBtnHandler()
-  closeModalConfirmNew()
+  closeModalConfirm()
   !!props.afterTextBtnHandler && await props.afterTextBtnHandler()
 }
 
