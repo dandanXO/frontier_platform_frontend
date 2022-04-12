@@ -1,22 +1,22 @@
 <template lang="pug">
 div(class="w-116")
   div(class="px-8 relative")
-    div(class="text-primary text-h6 font-bold mb-7.5 text-center") {{$t("DD0035")}}
+    div(class="text-primary text-h6 font-bold mb-7.5 text-center") {{ $t("DD0035") }}
     i18n-t(keypath="DD0036" tag="p" class="text-center text-black-900 text-body2 leading-1.6")
       template(#UU0065)
         a(
           v-if="locale === 'en-US'"
           target="_blank"
-          class="marker:text-assist-blue cursor-pointer"marker:
+          class="text-assist-blue cursor-pointer"
           href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(英文版).xlsx"
         )  {{ $t("UU0065") }}
         a(
           v-else
           target="_blank"
-          class="marker:text-assist-blue cursor-pointer"marker:
+          class="text-assist-blue cursor-pointer"
           href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(中文版).xlsx"
-        )  {{$t("UU0065")}}
-    div(class="text-center text-primary text-body2 leading-1.6") {{$t("DD0037")}}
+        )  {{ $t("UU0065") }}
+    div(class="text-center text-primary text-body2 leading-1.6") {{ $t("DD0037") }}
     input-text-btn(
       class="w-full mt-7.5"
       disabledInput
@@ -34,8 +34,8 @@ div(class="w-116")
           span(class="underline cursor-pointer" @click="openModalErrorList") {{ $t("UU0066") }}
       template(#errorMsg v-else)
         p(class="absolute pt-11 text-caption text-warn") {{errorMsg}}
-    p(class="text-primary text-caption leading-1.6") {{$t("DD0071")}}
-    p(class="text-primary text-caption leading-1.6") {{$t("DD0056")}}
+    p(class="text-primary text-caption leading-1.6") {{ $t("DD0071") }}
+    p(class="text-primary text-caption leading-1.6") {{ $t("DD0056") }}
   btn-group(
     class="h-25 mt-5"
     :secondaryButton="false"
