@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="px-6 pt-6.5 h-full flex flex-col")
-  div(class="h-37 flex flex-col justify-between relative z-20")
-    div(class="h-11 flex justify-between items-center")
+  div(class="relative z-20")
+    div(class="h-11 flex justify-between items-center mb-12.5")
       div(class="w-75 relative z-10")
         input-select(:selectValue="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup")
       div(class="flex gap-x-6 items-center")

@@ -6,6 +6,7 @@ div(class="w-full mt-4")
     :headers="headers"
     :items="tableData"
     :emptyText="$t('RR0105')"
+    :searchPlaceholder="$t('RR0053')"
     @search="getList()"
     @sort="getList()"
     @goTo="getList($event)"
@@ -111,12 +112,12 @@ export default {
       {
         prop: 'download',
         label: t("OO0084"),
-        width: '1/12'
+        width: 'w-1/12'
       },
       {
         prop: 'view',
         label: t('OO0085'),
-        width: '2/12'
+        width: 'w-2/12'
       }
     ]
     const getList = async (targetPage = 1) => {
