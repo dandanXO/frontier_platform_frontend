@@ -10,29 +10,29 @@ div
               div(class="flex w-full")
                 img(:src="logo" class="mr-7 w-12.5 h-12.5 rounded-sm flex-shrink-0")
                 div(class="text-caption text-primary w-full grid gap-y-3")
-                  div(class="text-body1 font-bold") {{item.materialNo}}
-                  div {{$t('RR0014')}} : {{item.description}}
-                  div {{$t('RR0021')}} : {{item.content}}
-                  div {{$t('RR0023')}} : {{item.materialYarnCount}}
-                  div {{$t('RR0024')}} : {{item.materialDensity}}
-                  div {{$t('RR0025')}} : {{item.pattern}}
-                  div {{$t('RR0026')}} : {{item.color}}
-                  div {{$t('RR0015')}} : {{item.materialWeight}}
-                  div {{$t('RR0019')}} : {{item.materialWidth}}
-                  div {{$t('RR0022')}} : {{item.finish}}
+                  div(class="text-body1 font-bold") {{ item.materialNo }}
+                  div {{ $t('RR0014') }} : {{ item.description }}
+                  div {{ $t('RR0021') }} : {{ item.content }}
+                  div {{ $t('RR0023') }} : {{ item.materialYarnCount }}
+                  div {{ $t('RR0024') }} : {{ item.materialDensity }}
+                  div {{ $t('RR0025') }} : {{ item.pattern }}
+                  div {{ $t('RR0026') }} : {{ item.color }}
+                  div {{ $t('RR0015') }} : {{ item.materialWeight }}
+                  div {{ $t('RR0019') }} : {{ item.materialWidth }}
+                  div {{ $t('RR0022') }} : {{ item.finish }}
                 div(class="flex flex-col flex-shrink-0 items-center text-primary")
-                  span(class="whitespace-nowrap text-caption mb-2.5 font-bold" :class="[item.sideType === SIDE_TYPE.FACE ? '' : backSideClass]") {{item.sideType === SIDE_TYPE.FACE ? $t('DD0046') : $t('DD0051') }}
+                  span(class="whitespace-nowrap text-caption mb-2.5 font-bold" :class="[item.sideType === SIDE_TYPE.FACE ? '' : backSideClass]") {{ item.sideType === SIDE_TYPE.FACE ? $t('DD0046') : $t('DD0051') }}
                   qr-code(:value="item.frontierNo" :size="60")
-                  span(class="whitespace-nowrap text-caption mt-2.5 scale-90") {{item.frontierNo}}
+                  span(class="whitespace-nowrap text-caption mt-2.5 scale-90") {{ item.frontierNo }}
               div(
                 class="text-black-600 relative flex flex-col items-center justify-center w-full h-97 bg-cover"
-                :style="{'background-image': `url(${imgPdfOutLine})`}"
+                :style="{ 'background-image': `url(${imgPdfOutLine})` }"
               )
-                span(class="whitespace-nowrap text-caption mb-2.5") {{item.sideType === SIDE_TYPE.FACE ? $t('DD0046') : $t('DD0047') }}
-                span(class="whitespace-nowrap text-caption") {{$t('DD0050')}}
+                span(class="whitespace-nowrap text-caption mb-2.5") {{ item.sideType === SIDE_TYPE.FACE ? $t('DD0046') : $t('DD0047') }}
+                span(class="whitespace-nowrap text-caption") {{ $t('DD0050') }}
               div(class="flex flex-col justify-start items-start w-full")
-                span(class="mb-2 font-bold text-caption") {{org.orgName}}
-                span(class="text-caption") {{org.address}}
+                span(class="mb-2 font-bold text-caption") {{ org.orgName }}
+                span(class="text-caption") {{ org.address }}
 </template>
 
 <script>
@@ -91,6 +91,13 @@ export default {
         item.materialYarnCount = materialInfo.yarn.value
         item.materialDensity = materialInfo.density.value
         item.materialWidth = materialInfo.width.value
+
+        // 此處將「%」符號由半形改為全形，是因為某些字串組合如「100%BCI」會導致渲染錯誤
+        Object.keys(item).forEach(key => {
+          if (typeof item[key] === 'string') {
+            item[key] = item[key].split('%').join('％')
+          }
+        })
       })
 
       const scale = 3

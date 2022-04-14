@@ -1,11 +1,11 @@
 <template lang="pug">
 div(class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-black-400 cursor-pointer"
-  :class="[{ 'bg-black-500': isActive }]"
+  :class="[{ 'bg-black-500': isActive }, { 'pointer-events-none': disabled }]"
   @click="goTo"
 )
   slot
-    svg-icon(:iconName="icon" class="text-black-700")
-    span(class="text-body2 text-primary line-clamp-1") {{$t(title)}}
+    svg-icon(:iconName="icon" size="20" :class="[ disabled ? 'text-black-500' : 'text-black-700' ]")
+    span(class="text-body2 line-clamp-1" :class="[ disabled ? 'text-black-500' : 'text-primary' ]") {{title}}
 </template>
 
 <script>
@@ -18,10 +18,11 @@ export default {
   props: {
     title: {
       type: String,
-      required: true
+      default: ''
     },
     icon: {
-      type: String
+      type: String,
+      default: ''
     },
     path: {
       type: String,
@@ -30,6 +31,10 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   setup (props) {
@@ -57,6 +62,10 @@ export default {
     })
 
     const goTo = async () => {
+      if (props.disabled) {
+        return
+      }
+
       if (props.path === route.path) {
         await router.push(props.path)
         store.dispatch('helper/reloadInnerApp')

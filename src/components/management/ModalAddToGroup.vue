@@ -21,7 +21,7 @@ div(class="w-118.5")
     p(v-else class="text-body1 text-primary text-center pt-9.5") {{$t('BB0031')}}
   div(class="py-3 flex justify-center items-center")
     btn(size="sm" :disabled="addedMemberList.length === 0" @click="addMemberToGroup") {{$t('UU0014')}}
-  div(class="bg-black-100 h-15 pl-8 flex items-center" @click="openModalInviteToOrg")
+  div(class="bg-black-100 h-15 pl-8 flex items-center cursor-pointer" @click="openModalInviteToOrg")
     svg-icon(iconName="add_box" size="20" class="text-brand")
     p(class="pl-2.5 text-body1 text-primary") {{$t('BB0096')}}
 </template>
@@ -32,6 +32,7 @@ import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
 import { ref } from 'vue'
 import { ROLE_ID } from '@/utils/constants'
+import usePlan from '@/composables/usePlan.js'
 
 export default {
   name: 'ModalAddToGroup',
@@ -40,6 +41,7 @@ export default {
   },
   setup () {
     const store = useStore()
+    const { checkCanInvitedPeople } = usePlan()
     const searchInput = ref('')
     const orgMemberList = computed(() => store.getters['organization/memberList'])
     const groupMemberList = computed(() => store.getters['group/memberList'])
@@ -64,7 +66,7 @@ export default {
     const indexOfOnHover = ref(-1)
 
     const openModalInviteToOrg = () => {
-      store.dispatch('helper/openModal', {
+      checkCanInvitedPeople() && store.dispatch('helper/openModal', {
         component: 'modal-invite-to-org',
         properties: {
           from: 'group'

@@ -208,10 +208,14 @@ export const FEEDBACK_CATEGORY = {
     text: i18n.global.t('MM0011'),
     value: 2
   },
+  PAYMENT: {
+    text: i18n.global.t('OO0065'),
+    value: 4
+  },
   OTHER: {
     text: i18n.global.t('MM0012'),
     value: 3
-  }
+  },
 }
 
 export const SHARING_FROM = {
@@ -229,4 +233,74 @@ export const SHARE_TARGET_TYPE = {
   ORG: 1,
   GROUP: 2,
   EMAIL: 3
+}
+
+export const PLAN_TYPE = {
+  BASIC: 1,
+  PRO: 2,
+  ENT: 3
+}
+
+export const PLAN_STATUS = {
+  INACTIVE: 0,
+  ACTIVE: 1,
+  TRANSITION: 2
+  /**
+   * 停用申請停用後到正式停用的過度期，舉例來說：
+   * 使用者於 3/4 14:00 pm 申請停用，但這時還是訂閱中，其功能還是都可以操作，
+   * 等到 3/5 00:00 am 後系統才會正式的停止訂閱，限制其功能，
+   * 那麼 3/4 14:00 ~ 3/5: 00:00 am 就是所謂的過渡期。
+   */,
+  BUFFER: 4
+}
+
+export const BILLING_CATEGORY = {
+  ALL: 0,
+  SUBSCRIPTION: 1,
+  U3M: 2
+}
+
+export const BILLING_SORT = {
+  NEWEST_FIRST: 1,
+  OLDEST_FIRST: 2
+}
+
+
+export const FUNC_ID = {
+  OPEN_MANAGE_MATERIAL_QUOTA: 1,
+  OPEN_PURCHASE_U3M: 2,
+  VISIT_BILLING_PAGE: 3,
+  OPEN_CREATE_GROUP: 4,
+  DELETE_ORG: 5
+}
+
+const MEMBER3_PERMISSION_LIST = [
+]
+const MEMBER2_PERMISSION_LIST = [
+]
+const MEMBER1_PERMISSION_LIST = [
+]
+const MANAGER_PERMISSION_LIST = [
+]
+
+const ADMIN_PERMISSION_LIST = [
+  ...MANAGER_PERMISSION_LIST,
+  FUNC_ID.OPEN_MANAGE_MATERIAL_QUOTA,
+  FUNC_ID.OPEN_PURCHASE_U3M,
+  FUNC_ID.VISIT_BILLING_PAGE,
+  FUNC_ID.OPEN_CREATE_GROUP
+]
+
+const OWNER_PERMISSION_LIST = [
+  ...ADMIN_PERMISSION_LIST,
+  FUNC_ID.DELETE_ORG
+]
+
+export const PERMISSION_MAP = {
+  [ROLE_ID.OWNER]: OWNER_PERMISSION_LIST,
+  [ROLE_ID.ADMIN]: ADMIN_PERMISSION_LIST,
+  [ROLE_ID.MANAGER]: MANAGER_PERMISSION_LIST,
+  [ROLE_ID.MEMBER1]: MEMBER1_PERMISSION_LIST,
+  [ROLE_ID.MEMBER2]: MEMBER2_PERMISSION_LIST,
+  [ROLE_ID.MEMBER3]: MEMBER3_PERMISSION_LIST
 }

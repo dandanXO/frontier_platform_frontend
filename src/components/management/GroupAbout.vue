@@ -1,13 +1,13 @@
 <template lang="pug">
 div
   div(class="w-85 mx-auto relative")
-    p(class="text-right pt-4.5 pb-5 text-caption text-black-600") *{{$t('BB0073')}}
+    p(class="text-right pt-4.5 pb-5 text-caption text-black-600") *{{$t('RR0163')}}
     div
       div(class="flex items-center justify-between pb-2")
         div(class="flex text-body2 font-bold items-end")
           i(class="text-warn pr-0.5") *
           p(class="text-primary") {{$t('BB0086')}}
-          p(class="font-normal text-caption text-black-500 cursor-pointer pl-1" @click="openModalDelete") {{$t('UU0013')}}
+          p(class="font-normal text-caption text-black-500 cursor-pointer pl-1" @click="openModalTypeTextToConfirm") {{$t('UU0013')}}
         div(class="flex items-center cursor-pointer" @click="copyText(groupNo), $store.commit('helper/PUSH_message', $t('BB0038'))")
           p(class="text-caption text-primary") ID: {{groupNo}}
           tooltip(placement="bottom")
@@ -53,9 +53,28 @@ export default {
       store.commit('helper/PUSH_message', t('BB0107'))
     }
 
-    const openModalDelete = () => {
+    const openModalTypeTextToConfirm = () => {
       store.dispatch('helper/openModal', {
-        component: 'modal-delete-org-or-group'
+        component: 'modal-type-text-to-confirm',
+        properties: {
+          title: t('BB0028'),
+          keypath: 'BB0099',
+          slotName: 'groupName',
+          slotValue: group.value.groupName,
+          errorMsg: t('WW0026'),
+          confirmHandler: () => {
+            store.dispatch('helper/openModalConfirm', {
+              title: t('BB0100'),
+              content: t('BB0101'),
+              secondaryText: t('UU0001'),
+              afterSecondaryHandler: async () => {
+                await store.dispatch('helper/openModal', {
+                  component: 'modal-choose-storage'
+                })
+              }
+            })
+          }
+        }
       })
     }
 
@@ -64,7 +83,7 @@ export default {
       isGroupNameExist,
       availableToCreateGroup,
       updateGroup,
-      openModalDelete,
+      openModalTypeTextToConfirm,
       copyText,
       groupNo
     }

@@ -54,9 +54,11 @@ export default {
       dispatch('setShareToMeModule', data.result)
     },
     async cloneShareToMe ({ rootGetters }, { workspaceNodeList, targetLocationList }) {
-      rootGetters['helper/routeLocation'] === 'org'
+      const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await shareToMeApi.org.cloneShareToMe({ orgId: rootGetters['organization/orgId'], workspaceNodeList, targetLocationList })
         : await shareToMeApi.group.cloneShareToMe({ groupId: rootGetters['group/groupId'], workspaceNodeList, targetLocationList })
+
+      return data
     },
     async deleteShareToMe ({ rootGetters }, { workspaceNodeList }) {
       rootGetters['helper/routeLocation'] === 'org'

@@ -27,7 +27,7 @@ export default {
       const base = ['flex', 'items-center', 'rounded-full', 'whitespace-nowrap', 'cursor-pointer']
 
       if (props.size === 'lg') {
-        base.push('h-8.5', 'px-5', 'hover:bg-primary', 'hover:text-black-0')
+        base.push('h-8.5', 'px-5', 'hover:bg-primary', 'hover:text-black-0', 'font-bold')
         if (props.active) {
           base.push('bg-primary', 'text-black-0')
         } else {

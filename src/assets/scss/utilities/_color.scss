@@ -30,6 +30,9 @@
   .divide-#{$className} {
     border-color: $color;
   }
+  .stroke-#{$className} {
+    stroke: $color;
+  }
 }
 
 @each $name, $colorMap in $colors {

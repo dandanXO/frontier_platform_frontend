@@ -4,8 +4,8 @@ div(class="w-213.5 px-8")
   overlay-scrollbar-container(class="h-123 pb-4 -mx-8 px-8 mb-4")
     p(class="text-body2 text-primary line-height-1.6 pb-10") {{introduction}}
     div(class="grid gap-y-12.5")
-      div(v-for="section in sectionList")
-        p(class="text-body1 font-bold text-primary pb-5 border-b border-black-400 mb-4") {{section.title}}
+      div(v-for="(section, index) in sectionList")
+        p(class="text-body1 font-bold text-primary pb-5 border-b border-black-400 mb-4") {{index+1}}. {{section.title}}
         p(v-html="section.content" class="text-body2 text-primary line-height-1.6")
 </template>
 

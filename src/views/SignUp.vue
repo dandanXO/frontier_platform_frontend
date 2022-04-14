@@ -15,7 +15,7 @@ div(class="w-screen h-screen flex justify-center items-center  bg-black-100")
           div(class="w-19 h-px border-b border-black-400")
           span(class="w-30.5 text-black-500 text-body2 text-center") {{$t('AA0005')}}
           div(class="w-19 h-px border-b border-black-400")
-        span(class="self-end text-black-500 text-caption my-1.5") *{{$t('AA0031')}}
+        span(class="self-end text-black-500 text-caption my-1.5") *{{$t('RR0163')}}
         form
           div(class="grid grid-cols-2 gap-3")
             input-text(v-model:textValue="formData.firstName" :placeholder="$t('AA0017')+'*'")
