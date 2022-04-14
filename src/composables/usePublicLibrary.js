@@ -51,23 +51,15 @@ export default function usePublicLibrary () {
             })
 
             store.dispatch('helper/openModalLoading')
-            const { message, success } = await store.dispatch('publicLibrary/cloneNode', {
+            await store.dispatch('publicLibrary/cloneNode', {
               workspaceNodeList,
               targetLocationList
             })
             store.dispatch('helper/closeModalLoading')
 
-            if (success) {
-              const isContainCollection = nodeList.some(node => node.nodeType === NODE_TYPE.COLLECTION)
-              const successMessage = isContainCollection ? t('II0009') : t('II0008')
-              store.commit('helper/PUSH_message', successMessage)
-            } else {
-              store.dispatch('helper/pushModalConfirm', {
-                title: message.title,
-                content: message.content,
-                primaryText: t('UU0031'),
-              })
-            }
+            const isContainCollection = nodeList.some(node => node.nodeType === NODE_TYPE.COLLECTION)
+            const message = isContainCollection ? t('II0009') : t('II0008')
+            store.commit('helper/PUSH_message', message)
           }
         }
       })

@@ -28,12 +28,6 @@ div(class="w-116")
       @click:button="chooseFile"
       required
     )
-      template(#errorMsg v-if="showErrorList")
-        p(class="absolute pt-11 text-caption text-warn")
-          span(class="pr-0.5") {{ $t("WW0037") }}
-          span(class="underline cursor-pointer" @click="openModalErrorList") {{ $t("UU0066") }}
-      template(#errorMsg v-else)
-        p(class="absolute pt-11 text-caption text-warn") {{errorMsg}}
     p(class="text-primary text-caption leading-1.6") {{ $t("DD0071") }}
     p(class="text-primary text-caption leading-1.6") {{ $t("DD0056") }}
   btn-group(
@@ -58,8 +52,6 @@ export default {
     const { t, locale } = useI18n()
     const store = useStore()
     const fileName = ref('')
-    const errorMsg = ref('')
-    const showErrorList = ref(false)
     const { goToAssets } = useNavigation()
     let errorList
     let binaryFile
@@ -73,48 +65,25 @@ export default {
     fileOperator.on('finish', (file) => {
       binaryFile = file
       fileName.value = file.name
-      errorMsg.value = ''
-      showErrorList.value = false
     })
 
     const handleUpload = async () => {
-      try {
-        store.dispatch('helper/pushModalLoading')
-
-        const { message, result, success } = await store.dispatch('assets/batchUpload', { xlsxFile: binaryFile })
-
-        store.dispatch('helper/closeModalLoading')
-
-        if (success) {
-          store.commit('helper/PUSH_message', t('DD0041', { number: result.successAmount }))
-          store.dispatch('helper/replaceModal', {
-            header: t('DD0043'),
-            component: 'modal-how-to-scan',
-            properties: {
-              btnText: t('UU0023'),
-              clickHandler: () => {
-                closeModal()
-                goToAssets()
-              },
-              materialList: result.materialList
-            }
-          })
-        } else {
-          if (result.errorList?.length > 0) {
-            showErrorList.value = true
-            errorList = result.errorList
-          } else {
-            store.dispatch('helper/pushModalConfirm', {
-              title: message.title,
-              content: message.content,
-              primaryText: t('UU0031'),
-            })
-          }
+      store.dispatch('helper/pushModalLoading')
+      const { result } = await store.dispatch('assets/batchUpload', { xlsxFile: binaryFile })
+      store.dispatch('helper/closeModalLoading')
+      store.commit('helper/PUSH_message', t('DD0041', { number: result.successAmount }))
+      store.dispatch('helper/replaceModal', {
+        header: t('DD0043'),
+        component: 'modal-how-to-scan',
+        properties: {
+          btnText: t('UU0023'),
+          clickHandler: () => {
+            closeModal()
+            goToAssets()
+          },
+          materialList: result.materialList
         }
-      } catch (error) {
-        errorMsg.value = error
-        store.dispatch('helper/closeModalLoading')
-      }
+      })
     }
 
     const openModalErrorList = () => {
@@ -128,9 +97,7 @@ export default {
 
     return {
       locale,
-      errorMsg,
       fileName,
-      showErrorList,
       chooseFile,
       handleUpload,
       openModalErrorList

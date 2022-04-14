@@ -1,6 +1,7 @@
 import Axios from 'axios'
 import router from '@/router'
 import store from '@/store'
+import i18n from '@/utils/i18n'
 
 const { VITE_APP_API_ENDPOINT } = import.meta.env
 
@@ -21,8 +22,8 @@ instance.interceptors.request.use(request => {
 })
 
 instance.interceptors.response.use(response => {
-  const { data } = response
-  const { result } = data
+  const { data, status } = response
+  const { success, result, message } = data
 
   if (result && Object.prototype.hasOwnProperty.call(data.result, 'accessToken')) {
     localStorage.setItem('accessToken', result.accessToken)
@@ -30,10 +31,23 @@ instance.interceptors.response.use(response => {
   if (result && Object.prototype.hasOwnProperty.call(data.result, 'refreshToken')) {
     localStorage.setItem('refreshToken', result.refreshToken)
   }
+
+  if (status === 200 && !success && !!message) {
+    const { type, title, content } = message
+    store.dispatch('helper/openModalConfirm', {
+      type: type || 3,
+      header: title || 'Something went wrong!',
+      content: content,
+      primaryBtnText: i18n.global.t('UU0031'),
+      primaryBtnHandler: () => window.location.reload()
+    })
+    return Promise.reject({ status, message })
+  }
+
   return response
 }, error => {
   const { response } = error
-  const { status } = response
+  const { status, data: { message } } = response
 
   if (status === 401) {
     localStorage.removeItem('accessToken')
@@ -43,14 +57,17 @@ instance.interceptors.response.use(response => {
       query.redirect = `${window.location.pathname}${window.location.search}`
     }
     router.push({ name: 'SignIn', query })
-    return Promise.reject(new Error('access-token-expire'))
+  } else if ([400, 404, 500].includes(status)) {
+    store.dispatch('helper/openModalConfirm', {
+      type: 3,
+      header: i18n.global.t('RR0107'),
+      content: i18n.global.t('RR0108'),
+      primaryBtnText: i18n.global.t('UU0031'),
+      primaryBtnHandler: () => window.location.reload()
+    })
   }
 
-  if ([400, 404, 500].includes(status)) {
-    store.dispatch('helper/openModalError')
-  }
-
-  return Promise.reject(error)
+  return Promise.reject({ status, message })
 })
 
 export default instance

@@ -1,19 +1,18 @@
 <template lang="pug">
 div(class="w-101 px-8")
-  h6(class="text-h6 font-bold text-primary text-center") {{mode === MODE.EDIT ? $t('FF0009') : $t('FF0022')}}
-  p(class="text-right pt-4 pb-0.5 text-caption text-black-600") *{{$t('RR0163')}}
+  h6(class="text-h6 font-bold text-primary text-center") {{ mode === MODE.EDIT ? $t('FF0009') : $t('FF0022') }}
+  p(class="text-right pt-4 pb-0.5 text-caption text-black-600") *{{ $t('RR0163') }}
   input-text(
     v-model:textValue="formData.collectionName"
     required
     :label="$t('FF0010')"
     class="mb-7.5"
-    :customErrorMsg="errorMsg"
   )
   div(class="mb-9")
     div
       div(class="h-5.5 flex items-center pb-1")
-        p(class="text-body2 text-primary font-bold") {{$t('FF0011')}}
-        btn-functional(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewPdf") {{$t('UU0060')}}
+        p(class="text-body2 text-primary font-bold") {{ $t('FF0011') }}
+        btn-functional(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewPdf") {{ $t('UU0060') }}
       input-text-btn(
         class="w-full"
         disabledInput
@@ -22,8 +21,8 @@ div(class="w-101 px-8")
         @click:button="chooseFile"
         @clear="removeTrendBoard"
       )
-    p(class='text-primary text-caption leading-1.6') {{$t('FF0014')}}
-    p(class='text-primary text-caption leading-1.6') {{$t('FF0015')}}
+    p(class='text-primary text-caption leading-1.6') {{ $t('FF0014') }}
+    p(class='text-primary text-caption leading-1.6') {{ $t('FF0015') }}
   input-textarea(
     v-model:textValue="formData.description"
     :label="$t('FF0012')"
@@ -69,7 +68,6 @@ export default {
 
     const uploadTrendBoardName = ref('')
     const collectionId = ref(null) // only use when MODE is equal to EDIT
-    const errorMsg = ref('')
     const formData = reactive({
       collectionName: '',
       trendBoard: null,
@@ -77,7 +75,7 @@ export default {
     })
     const DESCRIPTION_LIMIT = 1000
 
-    const actionBtnDisabled = computed(() => !!errorMsg.value || !formData.collectionName || formData.description.length > DESCRIPTION_LIMIT)
+    const actionBtnDisabled = computed(() => !formData.collectionName || formData.description.length > DESCRIPTION_LIMIT)
 
     fileOperator.on('finish', (file) => {
       formData.trendBoard = file
@@ -102,37 +100,27 @@ export default {
       if (uploadTrendBoardName.value === '') {
         formData.trendBoard = null
       }
-      try {
-        store.dispatch('helper/pushModalLoading')
-        if (props.mode === MODE.EDIT) {
-          await store.dispatch('workspace/updateCollection', {
-            collectionId: collectionId.value,
-            ...formData
-          })
-          store.commit('helper/PUSH_message', t('FF0035'))
-        } else {
-          await store.dispatch('workspace/createCollection', {
-            workspaceNodeId: props.workspaceNodeId,
-            ...formData
-          })
-          store.commit('helper/PUSH_message', t('FF0027'))
-        }
-        store.dispatch('helper/clearModalPipeline')
-        store.dispatch('helper/reloadInnerApp')
-      } catch (error) {
-        store.dispatch('helper/closeModalLoading')
-        errorMsg.value = error
+      store.dispatch('helper/pushModalLoading')
+      if (props.mode === MODE.EDIT) {
+        await store.dispatch('workspace/updateCollection', {
+          collectionId: collectionId.value,
+          ...formData
+        })
+        store.commit('helper/PUSH_message', t('FF0035'))
+      } else {
+        await store.dispatch('workspace/createCollection', {
+          workspaceNodeId: props.workspaceNodeId,
+          ...formData
+        })
+        store.commit('helper/PUSH_message', t('FF0027'))
       }
+      store.dispatch('helper/clearModalPipeline')
+      store.dispatch('helper/reloadInnerApp')
     }
 
     const removeTrendBoard = () => {
       props.mode === MODE.EDIT && store.dispatch('workspace/removeTrendBoard', { collectionId: collectionId.value })
     }
-
-    watch(
-      () => formData.collectionName,
-      () => (errorMsg.value = '')
-    )
 
     if (props.mode === MODE.EDIT) {
       const { collectionId: cId, name, description, trendBoardUrl, trendBoardDisplayFileName } = await store.dispatch('workspace/getCollection', { workspaceNodeId: props.workspaceNodeId })
@@ -152,7 +140,6 @@ export default {
       uploadTrendBoardName,
       previewPdf,
       actionBtnDisabled,
-      errorMsg,
       MODE,
       removeTrendBoard,
       DESCRIPTION_LIMIT

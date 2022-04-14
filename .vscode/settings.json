@@ -1,16 +1,22 @@
 {
-  "vetur.format.defaultFormatter.pug": "none",
   "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
   "javascript.format.insertSpaceAfterConstructor": true,
   "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": true,
   "javascript.format.insertSpaceAfterSemicolonInForStatements": true,
   "javascript.format.semicolons": "remove",
+  "[vue]": {
+    "editor.defaultFormatter": "johnsoncodehk.volar"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
   "files.insertFinalNewline": true,
-  "i18n-ally.localesPaths": [
-    "src/locales"
-  ],
+  "i18n-ally.localesPaths": ["src/locales"],
   "i18n-ally.sourceLanguage": "en-US",
   "i18n-ally.keystyle": "nested"
 }

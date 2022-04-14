@@ -113,27 +113,18 @@ export default {
         return
       }
 
-      store.dispatch('helper/openModalLoading')
-      const { message, success } = await store.dispatch('assets/createMaterial', { tempMaterialId })
+      store.dispatch('helper/pushModalLoading')
+      await store.dispatch('assets/createMaterial', { tempMaterialId })
       store.dispatch('helper/closeModalLoading')
-
-      if (success) {
-        isConfirmedToLeave.value = true
-        goToAssets()
-        store.dispatch('helper/pushModal', {
-          header: t('DD0029'),
-          component: 'modal-how-to-scan',
-          properties: {
-            materialList: [material.value]
-          }
-        })
-      } else {
-        store.dispatch('helper/openModalConfirm', {
-          title: message.title,
-          content: message.content,
-          primaryText: t('UU0031'),
-        })
-      }
+      isConfirmedToLeave.value = true
+      goToAssets()
+      store.dispatch('helper/pushModal', {
+        header: t('DD0029'),
+        component: 'modal-how-to-scan',
+        properties: {
+          materialList: [material.value]
+        }
+      })
     }
 
     const cancel = async () => {

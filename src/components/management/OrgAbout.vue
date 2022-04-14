@@ -97,9 +97,6 @@ export default {
     const orgFormData = reactive({ orgName, labelColor, orgCategoryId, address, countryCode, fax, faxCountryCode, phone, phoneCountryCode })
     const isOrgNameExist = ref(false)
     const availableToUpdateOrg = computed(() => orgFormData.orgName !== '' && !isOrgNameExist.value)
-    const checkOrgNameExist = async () => {
-      isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: orgFormData.orgName, orgId: organization.value.orgId })
-    }
 
     const openModalUploadLogo = () => {
       store.dispatch('helper/openModal', {
@@ -170,18 +167,14 @@ export default {
     }
 
     const updateOrg = async () => {
-      try {
-        if (orgFormData.orgName !== organization.value.orgName) {
-          await checkOrgNameExist()
-          if (isOrgNameExist.value) { return }
-        }
-
-        await store.dispatch('organization/updateOrg', toRaw(orgFormData))
-
-        store.commit('helper/PUSH_message', t('BB0107'))
-      } catch (error) {
-        console.log(error)
+      if (orgFormData.orgName !== organization.value.orgName) {
+        isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: orgFormData.orgName, orgId: organization.value.orgId })
+        if (isOrgNameExist.value) { return }
       }
+
+      await store.dispatch('organization/updateOrg', toRaw(orgFormData))
+
+      store.commit('helper/PUSH_message', t('BB0107'))
     }
 
     watch(

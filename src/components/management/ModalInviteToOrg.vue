@@ -69,26 +69,21 @@ export default {
     const emailList = reactive([])
 
     const addToInviteList = async () => {
-      try {
-        if (!inputValidator.emailFormat(email.value)) {
-          throw t('WW0019')
-        }
-
-        if (await store.dispatch('organization/checkOrgMemberExist', { email: toRaw(email.value) })) {
-          throw t('WW0013')
-        }
-
-        emailList.unshift(email.value)
-        clearEmail()
-      } catch (error) {
-        errorMsg.value = error
+      if (!inputValidator.emailFormat(email.value)) {
+        return (errorMsg.value = t('WW0019'))
       }
+
+      if (await store.dispatch('organization/checkOrgMemberExist', { email: toRaw(email.value) })) {
+        return (errorMsg.value = t('WW0013'))
+      }
+
+      emailList.unshift(email.value)
+      clearEmail()
     }
 
     const removeInvite = (index) => {
       emailList.splice(index, 1)
     }
-
     const clearEmail = () => {
       email.value = ''
     }

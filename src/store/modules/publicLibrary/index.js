@@ -52,8 +52,7 @@ export default {
       dispatch('setPublicLibraryModule', data.result)
     },
     async cloneNode ({ rootGetters }, { workspaceNodeList, targetLocationList }) {
-      const { data } = await publicLibraryApi.cloneNode({ orgId: rootGetters['organization/orgId'], workspaceNodeList, targetLocationList })
-      return data
+      await publicLibraryApi.cloneNode({ orgId: rootGetters['organization/orgId'], workspaceNodeList, targetLocationList })
     },
     async getShareTarget (_, { workspaceNodeLocation, workspaceNodeId, target }) {
       const { data } = await publicLibraryApi.getShareTarget({ workspaceNodeLocation, workspaceNodeId, target })

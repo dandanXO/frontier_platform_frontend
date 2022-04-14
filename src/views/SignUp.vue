@@ -89,46 +89,28 @@ export default {
     const availableToSignUp = computed(() => formData.firstName !== '' && formData.lastName !== '' && isEmailValid.value && isPasswordValid.value && agreeTermsAndPrivacy.value)
 
     const validateEmailFormat = async () => {
-      try {
-        isEmailExist.value = false
-        errorMsg.value = ''
+      isEmailExist.value = false
+      errorMsg.value = ''
 
-        if (formData.email === '') { return }
+      if (formData.email === '') { return }
 
-        if (formData.email !== '' && !isEmailValid.value) {
-          throw t('WW0019')
-        }
-
-        isEmailExist.value = await store.dispatch('user/checkEmailExist', { email: formData.email })
-      } catch (error) {
-        errorMsg.value = error
+      if (formData.email !== '' && !isEmailValid.value) {
+        return (errorMsg.value = t('WW0019'))
       }
+
+      isEmailExist.value = await store.dispatch('user/checkEmailExist', { email: formData.email })
     }
 
     const signUp = async () => {
-      try {
-        /**
-         * @todo 透過 ip 判斷 locale 預設值
-         */
-        isEmailExist.value = await store.dispatch('user/generalSignUp', Object.assign({ locale: 'en-US' }, toRaw(formData)))
+      isEmailExist.value = await store.dispatch('user/generalSignUp', Object.assign({ locale: 'en-US' }, toRaw(formData)))
 
-        !isEmailExist.value && (isSignUpSuccessfully.value = true)
-      } catch (error) {
-        errorMsg.value = error
-      }
+      !isEmailExist.value && (isSignUpSuccessfully.value = true)
     }
 
     const googleSignUp = async (googleUser) => {
-      try {
-        /**
-         * @todo 透過 ip 判斷 locale 預設值
-         */
-        isEmailExist.value = await store.dispatch('user/googleSignUp', { idToken: googleUser.getAuthResponse().id_token, locale: 'en-US' })
+      isEmailExist.value = await store.dispatch('user/googleSignUp', { idToken: googleUser.getAuthResponse().id_token, locale: 'en-US' })
 
-        !isEmailExist.value && nextAfterSignIn()
-      } catch (error) {
-        errorMsg.value = error
-      }
+      !isEmailExist.value && nextAfterSignIn()
     }
 
     const openModalTermsOfUse = () => store.dispatch('helper/openModal', { component: 'modal-terms-of-use' })
