@@ -31,26 +31,22 @@ export default {
     const isEmailExist = ref(true)
 
     const sendEmail = async () => {
-      try {
-        if (!inputValidator.emailFormat(email.value)) {
-          throw t('WW0019')
-        }
-
-        isEmailExist.value = await store.dispatch('user/checkEmailExist', { email: email.value })
-
-        if (!isEmailExist.value) { return }
-
-        store.dispatch('user/sendForgotPasswordEmail', { email: email.value })
-
-        store.dispatch('helper/openModal', {
-          component: 'modal-forgot-password-code',
-          properties: {
-            email: email.value
-          }
-        })
-      } catch (error) {
-        errorMsg.value = error
+      if (!inputValidator.emailFormat(email.value)) {
+        return (errorMsg.value = t('WW0019'))
       }
+
+      isEmailExist.value = await store.dispatch('user/checkEmailExist', { email: email.value })
+
+      if (!isEmailExist.value) { return }
+
+      store.dispatch('user/sendForgotPasswordEmail', { email: email.value })
+
+      store.dispatch('helper/openModal', {
+        component: 'modal-forgot-password-code',
+        properties: {
+          email: email.value
+        }
+      })
     }
 
     const goToSignup = () => {

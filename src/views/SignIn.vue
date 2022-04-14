@@ -59,40 +59,32 @@ export default {
     }
 
     const generalSignIn = async () => {
-      try {
-        errorMsgSignIn.value = ''
-        if (!inputValidator.required(formData.email)) {
-          throw t('WW0062')
-        } else if (!inputValidator.required(formData.password)) {
-          throw t('WW0063')
-        } else if (!inputValidator.emailFormat(formData.email)) {
-          throw t('WW0019')
-        }
+      errorMsgSignIn.value = ''
+      if (!inputValidator.required(formData.email)) {
+        return (errorMsgSignIn.value = t('WW0062'))
+      } else if (!inputValidator.required(formData.password)) {
+        return (errorMsgSignIn.value = t('WW0063'))
+      } else if (!inputValidator.emailFormat(formData.email)) {
+        return (errorMsgSignIn.value = t('WW0019'))
+      }
 
-        const isOldUser = await store.dispatch('user/generalSignIn', toRaw(formData))
+      const isOldUser = await store.dispatch('user/generalSignIn', toRaw(formData))
 
-        if (!isOldUser) {
-          nextAfterSignIn()
-        } else {
-          store.dispatch('helper/openModal', {
-            component: 'modal-ask-reset-password',
-            properties: {
-              email: formData.email
-            }
-          })
-        }
-      } catch (error) {
-        errorMsgSignIn.value = error
+      if (!isOldUser) {
+        nextAfterSignIn()
+      } else {
+        store.dispatch('helper/openModal', {
+          component: 'modal-ask-reset-password',
+          properties: {
+            email: formData.email
+          }
+        })
       }
     }
 
     const googleSignIn = async (googleUser) => {
-      try {
-        await store.dispatch('user/googleSignIn', { idToken: googleUser.getAuthResponse().id_token })
-        nextAfterSignIn()
-      } catch (error) {
-        errorMsgSignIn.value = error
-      }
+      await store.dispatch('user/googleSignIn', { idToken: googleUser.getAuthResponse().id_token })
+      nextAfterSignIn()
     }
 
     onMounted(async () => {

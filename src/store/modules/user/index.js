@@ -34,51 +34,22 @@ const actions = {
   },
   async checkEmailExist (_, params) {
     const { data } = await userApi.checkEmailExist(params)
-    const { success, message, result } = data
-
-    if (!success) {
-      throw message.content
-    }
-
-    return result.isExist
+    return data.result.isExist
   },
   async generalSignUp (_, params) {
     const { data } = await userApi.generalSignUp(params)
-    const { success, message, result } = data
-
-    if (!success) {
-      throw message.content
-    }
-
-    return result.isExist
+    return data.result.isExist
   },
   async generalSignIn (_, params) {
     const { data } = await userApi.generalSignIn(params)
-    const { success, message, result } = data
-
-    if (!success) {
-      throw message.content
-    }
-
-    return result.isOldUser
+    return data.result.isOldUser
   },
   async googleSignUp (_, params) {
     const { data } = await userApi.googleSignUp(params)
-    const { success, message, result } = data
-
-    if (!success) {
-      throw message.content
-    }
-
-    return result.isExist
+    return data.result.isExist
   },
   async googleSignIn (_, params) {
-    const { data } = await userApi.googleSignIn(params)
-    const { success, message } = data
-
-    if (!success) {
-      throw message.content
-    }
+    await userApi.googleSignIn(params)
   },
   async oldUserResetPassword (_, params) {
     await userApi.oldUserResetPassword(params)

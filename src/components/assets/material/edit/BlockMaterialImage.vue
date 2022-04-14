@@ -39,7 +39,6 @@ div(class="pb-15 mb-5 border-b border-black-400")
             v-model:textValue="pantoneName"
             :label="$t('EE0040')"
             :placeholder="$t('EE0078')"
-            :customErrorMsg="pantoneErrorMsg"
             @click:icon="addPantone"
             class="pb-5"
           )
@@ -61,7 +60,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
 
 <script>
 import { useStore } from 'vuex'
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import useMaterial from '@/composables/useMaterial'
 import { SIDE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
@@ -85,19 +84,14 @@ export default {
     const currentDisplayIndex = ref(defaultCoverImgIndex.value)
 
     const pantoneName = ref('')
-    const pantoneErrorMsg = ref('')
 
     const addPantone = async () => {
-      try {
-        if (pantoneName.value === '') {
-          return
-        }
-
-        await store.dispatch('assets/addPantone', { name: pantoneName.value })
-        pantoneName.value = ''
-      } catch (error) {
-        pantoneErrorMsg.value = error
+      if (pantoneName.value === '') {
+        return
       }
+
+      await store.dispatch('assets/addPantone', { name: pantoneName.value })
+      pantoneName.value = ''
     }
 
     const removePantone = (materialPantoneId) => {
@@ -153,13 +147,6 @@ export default {
       }
     })
 
-    watch(
-      () => pantoneName.value,
-      () => {
-        pantoneErrorMsg.value = ''
-      }
-    )
-
     return {
       uploadMaterialEmail,
       material,
@@ -167,7 +154,6 @@ export default {
       imageList,
       pantoneName,
       addPantone,
-      pantoneErrorMsg,
       removePantone,
       openModalHowToScan,
       openModalChangeCover,

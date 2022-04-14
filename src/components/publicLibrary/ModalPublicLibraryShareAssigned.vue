@@ -53,30 +53,26 @@ export default {
     const errorMsg = ref('')
 
     const addToTargetList = async () => {
-      try {
-        const frozenTargetValue = target.value.trim()
-        const existedTarget = targetList.value.find(({ name, number }) => name === frozenTargetValue || number === frozenTargetValue)
-        if (existedTarget) {
-          switch (existedTarget.type) {
-            case 1:
-              throw t('WW0058')
-            case 2:
-              throw t('WW0059')
-            case 3:
-              throw t('WW0057')
-          }
+      const frozenTargetValue = target.value.trim()
+      const existedTarget = targetList.value.find(({ name, number }) => name === frozenTargetValue || number === frozenTargetValue)
+      if (existedTarget) {
+        switch (existedTarget.type) {
+          case 1:
+            return (errorMsg.value = t('WW0058'))
+          case 2:
+            return (errorMsg.value = t('WW0059'))
+          case 3:
+            return (errorMsg.value = t('WW0057'))
         }
-
-        const temp = await store.dispatch('publicLibrary/getShareTarget', {
-          workspaceNodeId: props.workspaceNodeId,
-          workspaceNodeLocation: props.workspaceNodeLocation,
-          target: frozenTargetValue
-        })
-        targetList.value.push(temp)
-        target.value = ''
-      } catch (error) {
-        errorMsg.value = error
       }
+
+      const temp = await store.dispatch('publicLibrary/getShareTarget', {
+        workspaceNodeId: props.workspaceNodeId,
+        workspaceNodeLocation: props.workspaceNodeLocation,
+        target: frozenTargetValue
+      })
+      targetList.value.push(temp)
+      target.value = ''
     }
 
     const assignedShare = async () => {

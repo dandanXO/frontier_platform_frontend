@@ -52,22 +52,15 @@ export default function useShareToMe () {
             })
 
             store.dispatch('helper/openModalLoading')
-            const { message, success } = await store.dispatch('shareToMe/cloneShareToMe', {
+            await store.dispatch('shareToMe/cloneShareToMe', {
               workspaceNodeList,
               targetLocationList
             })
             store.dispatch('helper/closeModalLoading')
-            if (success) {
-              const isContainCollection = nodeList.some(node => node.nodeType === NODE_TYPE.COLLECTION)
-              const successMessage = isContainCollection ? t('HH0011') : t('HH0012')
-              store.commit('helper/PUSH_message', successMessage)
-            } else {
-              store.dispatch('helper/pushModalConfirm', {
-                title: message.title,
-                content: message.content,
-                primaryText: t('UU0031'),
-              })
-            }
+
+            const isContainCollection = nodeList.some(node => node.nodeType === NODE_TYPE.COLLECTION)
+            const message = isContainCollection ? t('HH0011') : t('HH0012')
+            store.commit('helper/PUSH_message', message)
           }
         }
       })

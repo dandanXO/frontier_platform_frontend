@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="w-100 px-8")
-  h6(class="text-h6 font-bold text-primary text-center mb-7.5") {{$t('EE0065')}}
-  input-text(v-model:textValue="collectionName" required :customErrorMsg="errorMsg")
+  h6(class="text-h6 font-bold text-primary text-center mb-7.5") {{ $t('EE0065') }}
+  input-text(v-model:textValue="collectionName" required)
   btn-group(
     class="h-25"
     :primaryText="$t('UU0020')"
@@ -12,7 +12,7 @@ div(class="w-100 px-8")
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -39,30 +39,19 @@ export default {
     const store = useStore()
 
     const collectionName = ref('')
-    const errorMsg = ref('')
 
     const createCollectionForModal = async () => {
-      try {
-        await store.dispatch('workspace/createCollectionForModal', {
-          id: props.id,
-          workspaceNodeLocation: props.workspaceNodeLocation,
-          workspaceNodeId: props.workspaceNodeId,
-          collectionName: collectionName.value
-        })
-        store.dispatch('helper/closeModal')
-        props.callback()
-      } catch (error) {
-        errorMsg.value = error
-      }
+      await store.dispatch('workspace/createCollectionForModal', {
+        id: props.id,
+        workspaceNodeLocation: props.workspaceNodeLocation,
+        workspaceNodeId: props.workspaceNodeId,
+        collectionName: collectionName.value
+      })
+      store.dispatch('helper/closeModal')
+      props.callback()
     }
 
-    watch(
-      () => collectionName.value,
-      () => (errorMsg.value = '')
-    )
-
     return {
-      errorMsg,
       collectionName,
       createCollectionForModal
     }
