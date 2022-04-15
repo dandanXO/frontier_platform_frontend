@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="flex my-5 mx-auto pl-17 pr-7 relative max-w-286")
+div(class="flex mb-5 mx-auto pl-17 pr-7 relative max-w-286")
   template(v-if="droppable")
     template(v-for="(material, blockType) in rowData")
       div(v-if="blockType !== BLOCK_TYPE.DETAIL" class="relative mr-11")

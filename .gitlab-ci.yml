@@ -11,8 +11,10 @@ build-dev:
     - npm ci
     - echo NODE_ENV=development >> .env.local
     - echo VITE_APP_API_ENDPOINT=$DEV_API_ENDPOINT >> .env.local
+    - echo VITE_APP_WEB_URL=$DEV_WEB_URL >> .env.local
     - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
     - echo VITE_APP_STRIPE_KEY=$STRIPE_KEY_TEST >> .env.local
+    - echo VITE_APP_FACEBOOK_APP_ID=$FACEBOOK_APP_ID >> .env.local
     - npm run build --mode=development
   artifacts:
     paths:
@@ -36,8 +38,10 @@ build-stg:
     - npm ci
     - echo NODE_ENV=production >> .env.local
     - echo VITE_APP_API_ENDPOINT=$STG_API_ENDPOINT >> .env.local
+    - echo VITE_APP_WEB_URL=$STG_WEB_URL >> .env.local
     - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
     - echo VITE_APP_STRIPE_KEY=$STRIPE_KEY_TEST >> .env.local
+    - echo VITE_APP_FACEBOOK_APP_ID=$FACEBOOK_APP_ID >> .env.local
     - npm run build --mode=staging
   artifacts:
     paths:
@@ -61,8 +65,10 @@ build-pre-prod:
     - npm ci
     - echo NODE_ENV=production >> .env.local
     - echo VITE_APP_API_ENDPOINT=$PRE_PROD_API_ENDPOINT >> .env.local
+    - echo VITE_APP_WEB_URL=$PRE_PROD_WEB_URL >> .env.local
     - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
-    - echo VITE_APP_STRIPE_KEY=$STRIPE_KEY_PROD >> .env.local
+    - echo VITE_APP_STRIPE_KEY=$STRIPE_KEY_TEST >> .env.local
+    - echo VITE_APP_FACEBOOK_APP_ID=$FACEBOOK_APP_ID >> .env.local
     - npm run build --mode=pre-production
   artifacts:
     paths:
@@ -86,8 +92,10 @@ build-prod:
     - npm ci
     - echo NODE_ENV=production >> .env.local
     - echo VITE_APP_API_ENDPOINT=$PROD_API_ENDPOINT >> .env.local
+    - echo VITE_APP_WEB_URL=$PROD_WEB_URL >> .env.local
     - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
     - echo VITE_APP_STRIPE_KEY=$STRIPE_KEY_PROD >> .env.local
+    - echo VITE_APP_FACEBOOK_APP_ID=$FACEBOOK_APP_ID >> .env.local
     - npm run build --mode=production
   artifacts:
     paths:

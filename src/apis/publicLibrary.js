@@ -24,5 +24,9 @@ export default {
   generateCopyLink: ({ workspaceNodeLocation, workspaceNodeId }) => axios('/public/share/copy-link/generate', {
     method: 'POST',
     data: { workspaceNodeLocation, workspaceNodeId }
+  }),
+  generateSocialMedia: ({ workspaceNodeLocation, workspaceNodeId, type }) => axios('/public/share/social/generate', {
+    method: 'POST',
+    data: { workspaceNodeLocation, workspaceNodeId, type }
   })
 }

@@ -74,7 +74,8 @@ export default function usePublicLibrary () {
         component: 'modal-public-library-share',
         properties: {
           workspaceNodeId: Number(node.workspaceNodeId),
-          workspaceNodeLocation: Number(node.workspaceNodeLocation)
+          workspaceNodeLocation: Number(node.workspaceNodeLocation),
+          isCanShared: node.isCanShared
         }
       })
     }

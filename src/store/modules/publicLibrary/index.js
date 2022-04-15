@@ -69,6 +69,10 @@ export default {
     async generateCopyLink (_, { workspaceNodeLocation, workspaceNodeId }) {
       const { data } = await publicLibraryApi.generateCopyLink({ workspaceNodeLocation, workspaceNodeId })
       return data.result.key
+    },
+    async generateSocialMedia (_, { workspaceNodeLocation, workspaceNodeId, type }) {
+      const { data } = await publicLibraryApi.generateSocialMedia({ workspaceNodeLocation, workspaceNodeId, type })
+      return data.result.key
     }
   }
 }

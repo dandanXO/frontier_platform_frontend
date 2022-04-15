@@ -200,6 +200,12 @@ export default {
         ? await workspaceApi.org.generateCopyLink({ orgId: rootGetters['organization/orgId'], workspaceNodeId })
         : await workspaceApi.group.generateCopyLink({ groupId: rootGetters['group/groupId'], workspaceNodeId })
       return data.result.key
+    },
+    async generateSocialMedia ({ rootGetters }, { workspaceNodeId, type }) {
+      const { data } = rootGetters['helper/routeLocation'] === 'org'
+        ? await workspaceApi.org.generateSocialMedia({ orgId: rootGetters['organization/orgId'], workspaceNodeId, type })
+        : await workspaceApi.group.generateSocialMedia({ groupId: rootGetters['group/groupId'], workspaceNodeId, type })
+      return data.result.key
     }
   }
 }
