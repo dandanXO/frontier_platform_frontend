@@ -10,7 +10,7 @@ div(class="w-full h-full")
     template(#header-left)
       div(class="flex items-center")
         div(class="flex items-end")
-          breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)" fontSize="text-h6")
+          breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.nodeKey)" fontSize="text-h6")
           p(class="flex text-caption text-black-700 pl-1")
             span (
             i18n-t(keypath="RR0068" tag="span")
@@ -22,7 +22,7 @@ div(class="w-full h-full")
               iconName="clone"
               class="text-black-700 cursor-pointer hover:text-brand ml-1"
               size="24"
-              @click="cloneNode.func(`${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`, collection.share.isCanClone)"
+              @click="shareToMeCloneByCollection(currentNodeKey, collection.isCanClone)"
             )
           template(#content)
             p(class="text-caption text-primary px-3 py-1") {{ $t("RR0056") }}
@@ -100,7 +100,7 @@ export default {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
-    const { cloneNode, deleteNode } = useShareToMe()
+    const { shareToMeCloneByNode, shareToMeCloneByNodeList, shareToMeCloneByCollection, shareToMeDeleteByNode, shareToMeDeleteByNodeList } = useShareToMe()
     const { goToShareToMeMaterial } = useNavigation()
     const optionSort = {
       base: [
@@ -111,27 +111,31 @@ export default {
         SORT_BY.RELEVANCE_C_M
       ]
     }
-    const optionMultiSelect = computed(() => isFirstLayer.value ? [deleteNode] : [cloneNode])
+    const optionMultiSelect = computed(() => {
+      return isFirstLayer.value
+        ? [{ name: t('RR0063'), func: shareToMeDeleteByNodeList }]
+        : [{ name: t('RR0167'), func: shareToMeCloneByNodeList }]
+    })
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const collection = computed(() => store.getters['shareToMe/collection'])
     const breadcrumbList = computed(() => store.getters['shareToMe/collectionBreadcrumbList']({
       name: t('RR0010'),
-      key: null
+      nodeKey: null
     }))
     const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
     const nodeList = computed(() => store.getters['shareToMe/nodeList'])
     const optionNode = computed(() => {
       const optionList = [
         [
-          cloneNode
+          { name: t('RR0167'), func: shareToMeCloneByNode }
         ]
       ]
       if (isFirstLayer.value) {
-        optionList[0].push(deleteNode)
+        optionList[0].push({ name: t('RR0063'), func: shareToMeDeleteByNode })
       }
       return optionList
     })
-    const workspaceNodeId = ref(route.query.workspaceNodeId || null)
+    const currentNodeKey = ref(route.query.nodeKey)
     const sharingId = ref(route.query.sharingId || null)
     const refSearchTable = ref(null)
     const selectedNodeList = ref([])
@@ -143,30 +147,22 @@ export default {
         name: route.name,
         query: {
           sharingId: sharingId.value,
-          workspaceNodeId: workspaceNodeId.value,
+          nodeKey: currentNodeKey.value,
           ...query
         }
       })
-      await store.dispatch('shareToMe/getShareToMeList', { targetPage, sharingId: sharingId.value, workspaceNodeId: workspaceNodeId.value })
+      await store.dispatch('shareToMe/getShareToMeList', { targetPage, sharingId: sharingId.value, nodeKey: currentNodeKey.value })
     }
 
     const search = () => refSearchTable.value.search(pagination.value.currentPage)
 
-    const parseAndSetKey = (key) => {
-      if (key === null) {
-        workspaceNodeId.value = null
-      } else {
-        workspaceNodeId.value = key.split('-')[1]
-      }
-    }
-
-    const goTo = (key, targetSharingId = null) => {
+    const goTo = (nodeKey, targetSharingId = null) => {
+      currentNodeKey.value = nodeKey
       store.dispatch('helper/search/reset', { sort: optionSort.base[0].value })
       store.dispatch('helper/search/setPagination', { currentPage: 1 })
-      parseAndSetKey(key)
       if (targetSharingId && isFirstLayer.value) {
         sharingId.value = targetSharingId
-      } else if (key === null && targetSharingId === null) {
+      } else if (nodeKey === null && targetSharingId === null) {
         sharingId.value = null
       }
       search()
@@ -224,7 +220,8 @@ export default {
       optionMultiSelect,
       haveMsgAndFirstRead,
       openModalShareMessage,
-      cloneNode
+      shareToMeCloneByCollection,
+      currentNodeKey
     }
   }
 }

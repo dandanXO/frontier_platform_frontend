@@ -75,6 +75,7 @@ const reuseRoutes = (prefix) => ([
   {
     path: 'workspace/:nodeKey',
     name: `${prefix}WorkspaceMaterialDetail`,
+    props: true,
     component: () => import('@/views/innerApp/WorkspaceMaterialDetail.vue')
   },
   {
@@ -135,10 +136,11 @@ const routes = [
       store.dispatch('code/getFilterOptions')
       await store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey })
       const share = store.getters['receivedShare/share']
+      const nodeKey = `${share.workspaceNodeLocation}-${share.workspaceNodeId}`
       if (share.workspaceNodeType === NODE_TYPE.COLLECTION) {
-        next({ path: '/received-share/collection', query: to.query })
+        next({ path: '/received-share/collection', query: { ...to.query, nodeKey } })
       } else {
-        next({ path: `/received-share/material/${share.workspaceNodeId}`, query: to.query })
+        next({ path: `/received-share/material/${nodeKey}`, query: to.query })
       }
     }
   },
@@ -163,7 +165,7 @@ const routes = [
         component: () => import('@/views/receivedShare/ReceivedShareCollection.vue')
       },
       {
-        path: 'material/:workspaceNodeId',
+        path: 'material/:nodeKey',
         name: 'ReceivedShareMaterial',
         props: true,
         component: () => import('@/views/receivedShare/ReceivedShareMaterial.vue')
@@ -296,6 +298,7 @@ const routes = [
           {
             path: 'public-library/:nodeKey',
             name: 'PublicLibraryMaterialDetail',
+            props: true,
             component: () => import('@/views/innerApp/PublicLibraryMaterialDetail.vue'),
             beforeEnter: checkOrgIsInactive
           }

@@ -32,12 +32,8 @@ import { shareViaCopyLink, shareViaSocialMedia } from '@/utils/share.js'
 export default {
   name: 'ModalPublicLibraryShare',
   props: {
-    workspaceNodeId: {
-      type: Number,
-      required: true
-    },
-    workspaceNodeLocation: {
-      type: Number,
+    nodeKey: {
+      type: String,
       required: true
     },
     isCanShared: {
@@ -50,7 +46,7 @@ export default {
     const store = useStore()
 
     const shareToSocialMedia = async (type) => {
-      const sharingKey = await store.dispatch('publicLibrary/generateSocialMedia', { workspaceNodeId: props.workspaceNodeId, workspaceNodeLocation: props.workspaceNodeLocation, type })
+      const sharingKey = await store.dispatch('publicLibrary/generateSocialMedia', { nodeKey: props.nodeKey, type })
       shareViaSocialMedia(sharingKey, type)
     }
 
@@ -60,7 +56,7 @@ export default {
       }
 
       store.dispatch('helper/pushModalLoading')
-      const sharingKey = await store.dispatch('publicLibrary/generateCopyLink', { workspaceNodeId: props.workspaceNodeId, workspaceNodeLocation: props.workspaceNodeLocation })
+      const sharingKey = await store.dispatch('publicLibrary/generateCopyLink', { nodeKey: props.nodeKey })
       shareViaCopyLink(sharingKey)
       store.dispatch('helper/closeModalLoading')
       store.commit('helper/PUSH_message', t('RR0149'))
@@ -70,8 +66,7 @@ export default {
       store.dispatch('helper/pushModal', {
         component: 'modal-public-library-share-assigned',
         properties: {
-          workspaceNodeId: props.workspaceNodeId,
-          workspaceNodeLocation: props.workspaceNodeLocation
+          nodeKey: props.nodeKey
         }
       })
     }

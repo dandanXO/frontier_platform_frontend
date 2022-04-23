@@ -84,7 +84,6 @@ export default {
       editMaterial,
       printCard,
       downloadU3M,
-      carbonCopy,
       cloneTo,
       addToWorkspace,
       create3DMaterial,
@@ -101,7 +100,6 @@ export default {
         editMaterial
       ],
       [
-        carbonCopy,
         cloneTo,
         addToWorkspace
       ],

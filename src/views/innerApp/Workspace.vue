@@ -9,7 +9,7 @@ div(class="w-full h-full")
   )
     template(#header-left)
       div(class="flex items-end")
-        breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)" fontSize="text-h6")
+        breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.nodeKey)" fontSize="text-h6")
         p(class="flex text-caption text-black-700 pl-1")
           span (
           i18n-t(keypath="RR0068" tag="span")
@@ -109,7 +109,7 @@ export default {
     const defaultWorkspaceNodeKey = computed(() => store.getters['workspace/defaultWorkspaceNodeKey'])
     const breadcrumbList = computed(() => store.getters['workspace/collectionBreadcrumbList']({
       name: t('FF0001'),
-      key: defaultWorkspaceNodeKey.value
+      nodeKey: defaultWorkspaceNodeKey.value
     }))
     const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
     const nodeList = computed(() => store.getters['workspace/nodeList'])
@@ -153,7 +153,7 @@ export default {
       return optionList
     }
 
-    const workspaceNodeId = ref(route.query.workspaceNodeId || defaultWorkspaceNodeKey.value.split('-')[1])
+    const currentNodeKey = ref(route.query.nodeKey || defaultWorkspaceNodeKey.value)
     const refSearchTable = ref(null)
     const selectedNodeList = ref([])
 
@@ -161,17 +161,17 @@ export default {
       await router.push({
         name: route.name,
         query: {
-          workspaceNodeId: workspaceNodeId.value,
+          nodeKey: currentNodeKey.value,
           ...query
         }
       })
-      await store.dispatch('workspace/getWorkspace', { targetPage, workspaceNodeId: workspaceNodeId.value })
+      await store.dispatch('workspace/getWorkspace', { targetPage, nodeKey: currentNodeKey.value })
     }
 
     const search = () => refSearchTable.value.search(pagination.value.currentPage)
 
-    const goTo = (key) => {
-      workspaceNodeId.value = key.split('-')[1]
+    const goTo = (nodeKey) => {
+      currentNodeKey.value = nodeKey
       store.dispatch('helper/search/reset', { sort: optionSort.base[0].value })
       store.dispatch('helper/search/setPagination', { currentPage: 1 })
       search()
@@ -188,7 +188,7 @@ export default {
         component: 'modal-create-or-edit-collection',
         properties: {
           mode: 1,
-          workspaceNodeId: workspaceNodeId.value
+          workspaceNodeId: currentNodeKey.value.split('-')[1]
         }
       })
     }

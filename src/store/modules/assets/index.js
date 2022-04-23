@@ -287,15 +287,10 @@ export default {
 
       return data.result
     },
-    async mergeMaterial ({ rootGetters, dispatch }, { mergedList }) {
+    async mergeMaterial ({ rootGetters }, { mergedList }) {
       rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.mergeMaterial({ orgId: rootGetters['organization/orgId'], mergedList })
         : await assetsApi.group.mergeMaterial({ groupId: rootGetters['group/groupId'], mergedList })
-    },
-    async carbonCopyMaterial ({ rootGetters }, { materialId }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.carbonCopyMaterial({ orgId: rootGetters['organization/orgId'], materialId })
-        : await assetsApi.group.carbonCopyMaterial({ groupId: rootGetters['group/groupId'], materialId })
     },
     async deleteMaterial ({ rootGetters }, { materialIdList }) {
       rootGetters['helper/routeLocation'] === 'org'
@@ -310,10 +305,17 @@ export default {
       const { extension, file, fileName } = data?.result
       downloadBase64File(file, extension, fileName)
     },
-    async cloneMaterial ({ rootGetters }, { targetLocationList, materialIdList }) {
+    async cloneCheck ({ rootGetters }, { materialIdList }) {
+      const { data } = rootGetters['helper/routeLocation'] === 'org'
+        ? await assetsApi.org.cloneCheck({ orgId: rootGetters['organization/orgId'], materialIdList })
+        : await assetsApi.group.cloneCheck({ groupId: rootGetters['group/groupId'], materialIdList })
+
+      return data.result.estimatedQuota
+    },
+    async cloneMaterial ({ rootGetters }, { targetLocationList, materialIdList, optional }) {
       rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.cloneMaterial({ orgId: rootGetters['organization/orgId'], targetLocationList, materialIdList })
-        : await assetsApi.group.cloneMaterial({ groupId: rootGetters['group/groupId'], targetLocationList, materialIdList })
+        ? await assetsApi.org.cloneMaterial({ orgId: rootGetters['organization/orgId'], targetLocationList, materialIdList, optional })
+        : await assetsApi.group.cloneMaterial({ groupId: rootGetters['group/groupId'], targetLocationList, materialIdList, optional })
     },
     async addToWorkspace ({ rootGetters }, { targetWorkspaceNodeList, materialIdList }) {
       const { data } = rootGetters['helper/routeLocation'] === 'org'

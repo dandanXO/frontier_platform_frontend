@@ -23,7 +23,7 @@ instance.interceptors.request.use(request => {
 
 instance.interceptors.response.use(response => {
   const { data, status } = response
-  const { success, result, message } = data
+  const { success, result, code, message } = data
 
   if (result && Object.prototype.hasOwnProperty.call(data.result, 'accessToken')) {
     localStorage.setItem('accessToken', result.accessToken)
@@ -32,22 +32,24 @@ instance.interceptors.response.use(response => {
     localStorage.setItem('refreshToken', result.refreshToken)
   }
 
-  if (status === 200 && !success && !!message) {
-    const { type, title, content } = message
-    store.dispatch('helper/openModalConfirm', {
-      type: type || 3,
-      header: title || 'Something went wrong!',
-      content: content,
-      primaryBtnText: i18n.global.t('UU0031'),
-      primaryBtnHandler: () => window.location.reload()
-    })
-    return Promise.reject({ status, message })
+  if (status === 200 && !success) {
+    if (!!message) {
+      const { type, title, content } = message
+      store.dispatch('helper/openModalConfirm', {
+        type: type || 3,
+        header: title || 'Something went wrong!',
+        content: content,
+        primaryBtnText: i18n.global.t('UU0031'),
+        primaryBtnHandler: () => window.location.reload()
+      })
+    }
+    return Promise.reject({ status, code, message })
   }
 
   return response
 }, error => {
   const { response } = error
-  const { status, data: { message } } = response
+  const { status, data: { code, message } } = response
 
   if (status === 401) {
     localStorage.removeItem('accessToken')
@@ -56,6 +58,7 @@ instance.interceptors.response.use(response => {
     if (window.location.pathname !== '/') {
       query.redirect = `${window.location.pathname}${window.location.search}`
     }
+    store.dispatch('helper/clearModalPipeline')
     router.push({ name: 'SignIn', query })
   } else if ([400, 404, 500].includes(status)) {
     store.dispatch('helper/openModalConfirm', {
@@ -67,7 +70,7 @@ instance.interceptors.response.use(response => {
     })
   }
 
-  return Promise.reject({ status, message })
+  return Promise.reject({ status, code, message })
 })
 
 export default instance
