@@ -21,8 +21,12 @@ export default {
     method: 'POST',
     data: { sharingKey, orgId, groupId }
   }),
-  cloneShareReceived: ({ sharingKey, orgId, groupId, workspaceNodeIdList }) => axios('/share/get-received/clone', {
+  cloneCheckShareReceived: ({ orgId, workspaceNodeList }) => axios('/share/get-received/clone-check', {
     method: 'POST',
-    data: { sharingKey, orgId, groupId, workspaceNodeIdList }
+    data: { orgId, workspaceNodeList }
+  }),
+  cloneShareReceived: ({ sharingKey, orgId, workspaceNodeList, targetLocationList, optional }) => axios('/share/get-received/clone', {
+    method: 'POST',
+    data: { sharingKey, orgId, workspaceNodeList, targetLocationList, optional }
   })
 }

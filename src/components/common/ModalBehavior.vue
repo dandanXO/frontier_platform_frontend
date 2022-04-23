@@ -1,6 +1,7 @@
 <template lang="pug">
-div(class="fixed inset-0 z-modal w-screen h-screen bg-black-900/30 flex justify-center items-center" @click="closable && closeModalBehavior()")
-  div(class="w-fit bg-black-0 rounded card-show py-5" @click.stop)
+div(class="fixed inset-0 z-modal w-screen h-screen bg-black-900/30 flex justify-center items-center")
+  div(class="w-screen h-screen" @click="closable && closeModalBehavior()")
+  div(class="absolute w-fit bg-black-0 rounded card-show py-5")
     div(class="px-5 pb-5 flex justify-between border-b border-black-200")
       p(class="text-body2 font-bold text-primary") {{ header }}
       svg-icon(v-if="closable" iconName="close" size="20" class="cursor-pointer text-black-700" @click="closeModalBehavior")

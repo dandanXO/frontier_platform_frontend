@@ -7,7 +7,7 @@ div(class="w-full h-full flex justify-center")
         h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{ `${material.materialNo} ${material.description}` }}
         tooltip(placement="bottom")
           template(#trigger)
-            svg-icon(iconName="clone" class="text-black-700 cursor-pointer hover:text-brand" size="24" @click="cloneNode.func(nodeKey, share.value.isCanClone)")
+            svg-icon(iconName="clone" class="text-black-700 cursor-pointer hover:text-brand" size="24" @click="shareToMeCloneByMaterial(nodeKey, share.isCanClone)")
           template(#content)
             p(class="text-caption text-primary px-3 py-1") {{ $t("RR0056") }}
         div(class="relative cursor-pointer ml-3" @click="openModalShareMessage")
@@ -44,32 +44,32 @@ export default {
     const store = useStore()
     const route = useRoute()
     const { parsePath, prefixPath } = useNavigation()
-    const { cloneNode } = useShareToMe()
+    const { shareToMeCloneByMaterial } = useShareToMe()
     const sharingId = ref(route.query.sharingId)
 
-    await store.dispatch('shareToMe/getShareToMeMaterial', { workspaceNodeId: props.nodeKey.split('-')[1], sharingId: sharingId.value })
+    await store.dispatch('shareToMe/getShareToMeMaterial', { nodeKey: props.nodeKey, sharingId: sharingId.value })
 
     const material = computed(() => store.getters['shareToMe/material'])
     const share = computed(() => store.getters['shareToMe/materialShare'])
     const breadcrumbList = computed(() => {
-      const tempBreadCrumbList = store.getters['shareToMe/materialBreadcrumbList']
+      const materialBreadcrumbList = store.getters['shareToMe/materialBreadcrumbList']
       const list = [
         {
           name: t('RR0010'),
           path: parsePath(`${prefixPath.value}/share-to-me`)
         }
       ]
-      for (let i = 0; i <= tempBreadCrumbList.length - 1; i++) {
-        const { name, workspaceNodeId } = tempBreadCrumbList[i]
-        if (i !== tempBreadCrumbList.length - 1) {
+      for (let i = 0; i <= materialBreadcrumbList.length - 1; i++) {
+        const { name, nodeKey } = materialBreadcrumbList[i]
+        if (i !== materialBreadcrumbList.length - 1) {
           list.push({
             name,
-            path: parsePath(`${prefixPath.value}/share-to-me?workspaceNodeId=${workspaceNodeId}&sharingId=${sharingId.value}`)
+            path: parsePath(`${prefixPath.value}/share-to-me?nodeKey=${nodeKey}&sharingId=${sharingId.value}`)
           })
         } else {
           list.push({
             name: material.value.materialNo,
-            path: parsePath(`${prefixPath.value}/share-to-me/${props.nodeKey}?sharingId=${sharingId.value}`)
+            path: parsePath(`${prefixPath.value}/share-to-me/${nodeKey}?sharingId=${sharingId.value}`)
           })
         }
       }
@@ -93,7 +93,7 @@ export default {
       breadcrumbList,
       material,
       share,
-      cloneNode,
+      shareToMeCloneByMaterial,
       haveMsgAndFirstRead,
       openModalShareMessage
     }

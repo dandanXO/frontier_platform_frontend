@@ -15,7 +15,6 @@ import useNavigation from '@/composables/useNavigation'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
 import useWorkspace from '@/composables/useWorkspace'
 import MaterialDetailInternal from '@/components/layout/materialDetail/MaterialDetailInternal.vue'
 import dayjs from 'dayjs'
@@ -25,20 +24,24 @@ export default {
   components: {
     MaterialDetailInternal
   },
-  async setup () {
+  props: {
+    nodeKey: {
+      type: String,
+      required: true
+    }
+  },
+  async setup (props) {
     const { t } = useI18n()
     const store = useStore()
-    const route = useRoute()
     const { editMaterial } = useWorkspace()
     const { parsePath } = useNavigation()
-    const [workspaceNodeLocation, workspaceNodeId] = route.params.nodeKey.split('-')
 
-    await store.dispatch('workspace/getWorkspaceMaterial', { workspaceNodeId, workspaceNodeLocation })
+    await store.dispatch('workspace/getWorkspaceMaterial', { nodeKey: props.nodeKey })
 
     const material = computed(() => store.getters['workspace/material'])
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const breadcrumbList = computed(() => {
-      const tempBreadCrumbList = store.getters['workspace/materialBreadcrumbList']
+      const materialBreadcrumbList = store.getters['workspace/materialBreadcrumbList']
       const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
       const list = [
         {
@@ -46,12 +49,12 @@ export default {
           path: parsePath(`${prefix}/workspace`)
         }
       ]
-      for (let i = 0; i <= tempBreadCrumbList.length - 1; i++) {
-        const { name, workspaceNodeId } = tempBreadCrumbList[i]
-        if (i !== tempBreadCrumbList.length - 1) {
+      for (let i = 0; i <= materialBreadcrumbList.length - 1; i++) {
+        const { name, nodeKey } = materialBreadcrumbList[i]
+        if (i !== materialBreadcrumbList.length - 1) {
           list.push({
             name,
-            path: parsePath(`${prefix}/workspace?workspaceNodeId=${workspaceNodeId}`)
+            path: parsePath(`${prefix}/workspace?nodeKey=${nodeKey}`)
           })
         } else {
           list.push({

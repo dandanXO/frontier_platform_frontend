@@ -18,7 +18,7 @@ div(class="w-315 h-full mx-auto")
         div(class="flex justify-between items-center pb-5")
           div(class="flex items-start")
             div(class="flex items-end pr-3")
-              breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)" fontSize="text-h5")
+              breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.nodeKey)" fontSize="text-h5")
               p(class="flex text-caption text-black-700 pl-1")
                 span (
                 i18n-t(keypath="RR0068" tag="span")
@@ -26,7 +26,7 @@ div(class="w-315 h-full mx-auto")
                 span )
             tooltip(placement="bottom")
               template(#trigger)
-                svg-icon(iconName="clone" class="text-black-700 hover:text-brand cursor-pointer" size="24" @click="cloneReceivedShare([workspaceNodeId])")
+                svg-icon(iconName="clone" class="text-black-700 hover:text-brand cursor-pointer" size="24" @click="receivedShareCloneByNodeKey(currentNodeKey)")
               template(#content)
                 p(class="text-caption text-primary px-3 py-1") {{ $t("RR0056") }}
           btn(size="sm" type="secondary" @click="isCollectionDetailExpand = !isCollectionDetailExpand") {{ isCollectionDetailExpand ? $t("UU0026") : $t("UU0071") }}
@@ -56,21 +56,21 @@ div(class="w-315 h-full mx-auto")
                   iconName="clone"
                   size="20"
                   class="absolute bottom-3 right-3 cursor-pointer text-black-500"
-                  @click="cloneReceivedShare([node.workspaceNodeId])"
+                  @click.stop="receivedShareCloneByNodeKey(node.nodeKey)"
                 )
           template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
             node-item(
               v-model:selectedList="selectedNodeList"
               :node="node"
               :displayName="node.materialNo"
-              @click="goToReceivedShareMaterial(node.workspaceNodeId, share.sharingKey)"
+              @click="goToReceivedShareMaterial(node.nodeKey, share.sharingKey)"
             )
               template(#cover-overlay)
                 svg-icon(
                   iconName="clone"
                   size="20"
                   class="absolute bottom-3 right-3 cursor-pointer text-black-500"
-                  @click="cloneReceivedShare([node.workspaceNodeId])"
+                  @click.stop="receivedShareCloneByNodeKey(node.nodeKey)"
                 )
   multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeList")
 </template>
@@ -99,7 +99,7 @@ export default {
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
-    const { cloneReceivedShare, multipleCloneReceivedShare } = useReceivedShare()
+    const { receivedShareCloneByNodeKey, receivedShareCloneByNodeList } = useReceivedShare()
     const { goToReceivedShareMaterial } = useNavigation()
 
     const optionSort = {
@@ -113,8 +113,8 @@ export default {
     }
     const optionMultiSelect = [
       {
-        name: t('RR0056'),
-        func: multipleCloneReceivedShare
+        name: t('RR0167'),
+        func: receivedShareCloneByNodeList
       }
     ]
 
@@ -123,8 +123,8 @@ export default {
     const nodeList = computed(() => store.getters['receivedShare/nodeList'])
     const breadcrumbList = computed(() => store.getters['receivedShare/collectionBreadcrumbList']())
     const collection = computed(() => store.getters['receivedShare/collection'])
+    const currentNodeKey = ref(route.query.nodeKey)
     const selectedNodeList = ref([])
-    const workspaceNodeId = ref(route.query.workspaceNodeId || share.value.workspaceNodeId)
     const isCollectionDetailExpand = ref(true)
     const refSearchTable = ref(null)
 
@@ -133,21 +133,21 @@ export default {
         name: route.name,
         query: {
           sharingKey: share.value.sharingKey,
-          workspaceNodeId: workspaceNodeId.value,
+          nodeKey: currentNodeKey.value,
           ...query
         }
       })
       await store.dispatch('receivedShare/getShareReceivedList', {
         targetPage,
         sharingKey: share.value.sharingKey,
-        workspaceNodeId: workspaceNodeId.value
+        nodeKey: currentNodeKey.value
       })
     }
 
     const search = () => refSearchTable.value.search(pagination.value.currentPage)
 
-    const goTo = (key) => {
-      workspaceNodeId.value = key.split('-')[1]
+    const goTo = (nodeKey) => {
+      currentNodeKey.value = nodeKey
       store.dispatch('helper/search/reset', { sort: optionSort.base[0].value })
       store.dispatch('helper/search/setPagination', { currentPage: 1 })
       search()
@@ -172,9 +172,9 @@ export default {
       collection,
       isCollectionDetailExpand,
       goTo,
+      currentNodeKey,
       refSearchTable,
-      cloneReceivedShare,
-      workspaceNodeId,
+      receivedShareCloneByNodeKey,
       optionMultiSelect,
       goToReceivedShareMaterial,
       handleSelectAll

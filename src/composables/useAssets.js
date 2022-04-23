@@ -1,15 +1,12 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation'
-import { computed } from 'vue'
-import { TARGET_LOCATION, U3M_STATUS } from '@/utils/constants'
+import { U3M_STATUS } from '@/utils/constants'
 
 export default function useAssets () {
   const { t } = useI18n()
   const { goToAssetMaterialEdit } = useNavigation()
   const store = useStore()
-
-  const routeLocation = computed(() => store.getters['helper/routeLocation'])
 
   const editMaterial = {
     id: 'editMaterial',
@@ -18,54 +15,21 @@ export default function useAssets () {
     func: goToAssetMaterialEdit
   }
 
-  const carbonCopy = {
-    id: 'carbonCopy',
-    name: t('RR0055'),
-    func: async (v) => {
-      store.dispatch('helper/openModalLoading')
-      await store.dispatch('assets/carbonCopyMaterial', { materialId: v.materialId })
-      store.dispatch('helper/closeModalLoading')
-      store.dispatch('helper/reloadInnerApp')
-      store.commit('helper/PUSH_message', t('EE0084'))
-    }
-  }
-
   const cloneTo = {
     id: 'cloneTo',
-    name: t('RR0056'),
+    name: t('RR0167'),
     func: (v) => {
       const materialIdList = Array.isArray(v) ? v.map(({ materialId }) => materialId) : [v.materialId]
-      const organization = store.getters['organization/organization']
-      const currentGroupId = store.getters['group/groupId'] || null
-      const locationList = []
-      const groupList = routeLocation.value === 'org'
-        ? organization.groupList
-        : organization.groupList.filter(group => group.groupId !== currentGroupId)
 
-      if (routeLocation.value === 'group') {
-        locationList.push({
-          id: organization.orgId,
-          name: organization.orgName,
-          location: TARGET_LOCATION.ORG
-        })
-      }
-
-      groupList.forEach(group => {
-        locationList.push({
-          id: group.groupId,
-          name: group.groupName,
-          location: TARGET_LOCATION.GROUP
-        })
-      })
-
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-clone-to',
         properties: {
-          locationList,
-          cloneHandler: async (targetLocationList) => {
-            store.dispatch('helper/openModalLoading')
-            await store.dispatch('assets/cloneMaterial', { targetLocationList, materialIdList })
-            store.dispatch('helper/closeModalLoading')
+          checkHandler: async () => {
+            return store.dispatch('assets/cloneCheck', { materialIdList })
+          },
+          cloneHandler: async (targetLocationList, optional) => {
+            await store.dispatch('assets/cloneMaterial', { targetLocationList, materialIdList, optional })
+            store.dispatch('helper/reloadInnerApp')
             store.commit('helper/PUSH_message', t('EE0056'))
           }
         }
@@ -260,7 +224,6 @@ export default function useAssets () {
 
   return {
     editMaterial,
-    carbonCopy,
     cloneTo,
     addToWorkspace,
     create3DMaterial,

@@ -65,6 +65,10 @@ export default {
     keyOptionValue: {
       type: String,
       default: 'id'
+    },
+    canAddNewOption: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['update:chips', 'blur', 'addNewOption'],
@@ -117,7 +121,7 @@ export default {
           ? option[props.keyOptionValue] === inputValue.value
           : option === inputValue.value
       })
-      if (!isOptionExist) {
+      if (!isOptionExist && props.canAddNewOption) {
         context.emit('addNewOption', inputValue.value)
         await nextTick()
       }
@@ -132,11 +136,14 @@ export default {
           ? chip[props.keyOptionValue] === inputValue.value
           : chip === inputValue.value
       })
+
       if (!isChipExist) {
         const newChip = returnObject.value
           ? props.options.find(option => option[props.keyOptionValue] === inputValue.value)
           : inputValue.value
-        context.emit('update:chips', [...props.chips, newChip])
+        if ((!isOptionExist && props.canAddNewOption) || isOptionExist) {
+          context.emit('update:chips', [...props.chips, newChip])
+        }
       }
 
       inputValue.value = ''

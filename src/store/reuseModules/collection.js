@@ -73,7 +73,7 @@ const Collection = {
 
       if (breadcrumbList) {
         breadcrumbList.forEach(({ name, workspaceNodeId, workspaceNodeLocation }) => {
-          list.push({ name, key: `${workspaceNodeLocation}-${workspaceNodeId}` })
+          list.push({ name, nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}` })
         })
       }
       return list

@@ -9,13 +9,24 @@ div(class="w-full h-full relative")
     @selectAll="handleSelectAll"
   )
     template(#header-left)
-      div(class="flex items-end")
-        breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)" fontSize="text-h6")
-        p(class="flex text-caption text-black-700 pl-1")
-          span (
-          i18n-t(keypath="RR0068" tag="span")
-            template(#number) {{ pagination.totalCount }}
-          span )
+      div(class="flex items-center")
+        div(class="flex items-end")
+          breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.nodeKey)" fontSize="text-h6")
+          p(class="flex text-caption text-black-700 pl-1")
+            span (
+            i18n-t(keypath="RR0068" tag="span")
+              template(#number) {{ pagination.totalCount }}
+            span )
+        tooltip(v-if="!isFirstLayer" placement="bottom")
+          template(#trigger)
+            svg-icon(
+              iconName="clone"
+              class="text-black-700 cursor-pointer hover:text-brand ml-1"
+              size="24"
+              @click="publicCloneByCollection(currentNodeKey, collection.publish.isCanClone)"
+            )
+          template(#content)
+            p(class="text-caption text-primary px-3 py-1") {{ $t("RR0167") }}
     template(#header-right)
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
     template(v-if="!isFirstLayer" #sub-header)
@@ -83,7 +94,7 @@ export default {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
-    const { cloneNode, shareNode } = usePublicLibrary()
+    const { publicCloneByNode, publicCloneByNodeList, publicCloneByCollection, optionShareNode } = usePublicLibrary()
     const { goToPublicLibraryMaterialDetail } = useNavigation()
 
     const optionSort = {
@@ -94,13 +105,18 @@ export default {
       keywordSearch: []
     }
 
-    const optionMultiSelect = [cloneNode]
+    const optionMultiSelect = [
+      {
+        name: t('RR0167'),
+        func: publicCloneByNodeList
+      }
+    ]
     const planStatus = computed(() => store.getters['organization/planStatus'])
     const pagination = computed(() => store.getters['helper/search/pagination'])
     const collection = computed(() => store.getters['publicLibrary/collection'])
     const breadcrumbList = computed(() => store.getters['publicLibrary/collectionBreadcrumbList']({
       name: t('II0001'),
-      key: null
+      nodeKey: null
     }))
     const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
     const nodeList = computed(() => store.getters['publicLibrary/nodeList'])
@@ -108,17 +124,19 @@ export default {
     const optionNode = computed(() => {
       const optionList = [
         [
-          cloneNode
+          {
+            name: t('RR0167'),
+            func: publicCloneByNode
+          }
         ]
       ]
       if (isFirstLayer.value) {
-        optionList[0].push(shareNode)
+        optionList[0].push(optionShareNode)
       }
       return optionList
     })
 
-    const workspaceNodeId = ref(route.query.workspaceNodeId || null)
-    const workspaceNodeLocation = ref(route.query.workspaceNodeLocation || null)
+    const currentNodeKey = ref(route.query.nodeKey)
     const refSearchTable = ref(null)
     const selectedNodeList = ref([])
 
@@ -126,31 +144,19 @@ export default {
       await router.push({
         name: route.name,
         query: {
-          workspaceNodeId: workspaceNodeId.value,
-          workspaceNodeLocation: workspaceNodeLocation.value,
+          nodeKey: currentNodeKey.value,
           ...query
         }
       })
-      await store.dispatch('publicLibrary/getPublicList', { targetPage, workspaceNodeId: workspaceNodeId.value, workspaceNodeLocation: workspaceNodeLocation.value })
+      await store.dispatch('publicLibrary/getPublicList', { targetPage, nodeKey: currentNodeKey.value, })
     }
 
     const search = () => refSearchTable.value.search(pagination.value.currentPage)
 
-    const parseAndSetKey = (key) => {
-      if (key === null) {
-        workspaceNodeLocation.value = null
-        workspaceNodeId.value = null
-      } else {
-        const [location, id] = key.split('-')
-        workspaceNodeLocation.value = location
-        workspaceNodeId.value = id
-      }
-    }
-
-    const goTo = (key) => {
+    const goTo = (nodeKey) => {
+      currentNodeKey.value = nodeKey
       store.dispatch('helper/search/reset', { sort: optionSort.base[0].value })
       store.dispatch('helper/search/setPagination', { currentPage: 1 })
-      parseAndSetKey(key)
       search()
     }
 
@@ -192,7 +198,10 @@ export default {
       goToPublicLibraryMaterialDetail,
       selectedNodeList,
       handleSelectAll,
+      publicCloneByCollection,
+      collection,
       optionMultiSelect,
+      currentNodeKey,
       planStatus
     }
   }

@@ -54,7 +54,16 @@ export default function useReceivedShare () {
     }
   }
 
-  const cloneReceivedShare = async (workspaceNodeIdList) => {
+  const receivedShareCloneByNodeKey = (nodeKey) => {
+    receivedShareClone([nodeKey])
+  }
+
+  const receivedShareCloneByNodeList = (nodeList) => {
+    const nodeKeyList = nodeList.map(({ nodeKey }) => nodeKey)
+    receivedShareClone(nodeKeyList)
+  }
+
+  const receivedShareClone = async (nodeKeyList) => {
     store.dispatch('helper/openModalLoading')
     await store.dispatch('user/getUser')
 
@@ -62,23 +71,17 @@ export default function useReceivedShare () {
     const organizationList = store.getters['user/organizationList']
 
     if (isCanClone && organizationList.length >= 1) {
-      store.dispatch('helper/openModal', {
-        component: 'modal-received-share-choose-storage',
+      store.dispatch('helper/openModalBehavior', {
+        component: 'modal-clone-to',
         properties: {
-          title: t('GG0019'),
-          actionHandler: async ({ orgId, groupId }) => {
-            store.dispatch('helper/pushModalLoading')
-            await store.dispatch('receivedShare/cloneShareReceived', { orgId, groupId, workspaceNodeIdList })
-            store.dispatch('helper/closeModalLoading')
-
+          crossOrg: true,
+          checkHandler: async (orgId) => {
+            return store.dispatch('receivedShare/cloneCheckShareReceived', { orgId, nodeKeyList })
+          },
+          cloneHandler: async (targetLocationList, optional, orgId) => {
+            await store.dispatch('receivedShare/cloneShareReceived', { orgId, nodeKeyList, targetLocationList, optional })
             const orgNo = store.getters['user/organizationList'].find(org => org.orgId === orgId).orgNo
-            let prefixUrl
-            if (groupId) {
-              prefixUrl = `${orgNo}/${groupId}`
-            } else {
-              prefixUrl = `${orgNo}`
-            }
-            window.open(`${window.location.origin}/${prefixUrl}/assets`, '_blank')
+            window.open(`${window.location.origin}/${orgNo}/assets`, '_blank')
           }
         }
       })
@@ -101,14 +104,9 @@ export default function useReceivedShare () {
     }
   }
 
-  const multipleCloneReceivedShare = async (nodeList) => {
-    const workspaceNodeIdList = nodeList.map(({ workspaceNodeId }) => workspaceNodeId)
-    cloneReceivedShare(workspaceNodeIdList)
-  }
-
   return {
     saveReceivedShare,
-    cloneReceivedShare,
-    multipleCloneReceivedShare
+    receivedShareCloneByNodeKey,
+    receivedShareCloneByNodeList
   }
 }

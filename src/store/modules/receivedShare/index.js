@@ -14,7 +14,8 @@ export default {
     share: NodeShareState()
   }),
   getters: {
-    materialBreadcrumbList: state => state.materialBreadcrumbList,
+    materialBreadcrumbList: state => state.materialBreadcrumbList
+      .map(({ name, workspaceNodeId, workspaceNodeLocation }) => ({ name, nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}` })),
     share: state => state.share,
     logo: state => state.share.logo
   },
@@ -41,11 +42,11 @@ export default {
 
       dispatch('setReceivedShareModule', data.result)
     },
-    async getShareReceivedList ({ rootGetters, dispatch }, { targetPage = 1, sharingKey, workspaceNodeId }) {
+    async getShareReceivedList ({ rootGetters, dispatch }, { targetPage = 1, sharingKey, nodeKey }) {
       const searchParams = rootGetters['helper/search/getSearchParams'](targetPage)
       const params = {
         sharingKey,
-        workspaceNodeId,
+        workspaceNodeId: nodeKey?.split('-')[1] || null,
         ...searchParams
       }
 
@@ -53,8 +54,8 @@ export default {
 
       dispatch('setReceivedShareModule', data.result)
     },
-    async getShareReceivedMaterial ({ dispatch }, { sharingKey, workspaceNodeId }) {
-      const { data } = await receivedShareApi.getShareReceivedMaterial({ sharingKey, workspaceNodeId })
+    async getShareReceivedMaterial ({ dispatch }, { sharingKey, nodeKey }) {
+      const { data } = await receivedShareApi.getShareReceivedMaterial({ sharingKey, workspaceNodeId: nodeKey.split('-')[1] })
       dispatch('setReceivedShareModule', data.result)
     },
     async checkShareReceivedPermission ({ getters }, { type }) {
@@ -68,8 +69,26 @@ export default {
     async saveShareReceived ({ getters }, { orgId, groupId }) {
       await receivedShareApi.saveShareReceived({ sharingKey: getters.share.sharingKey, orgId, groupId })
     },
-    async cloneShareReceived ({ getters }, { orgId, groupId, workspaceNodeIdList }) {
-      await receivedShareApi.cloneShareReceived({ sharingKey: getters.share.sharingKey, orgId, groupId, workspaceNodeIdList })
+    async cloneCheckShareReceived (_, { orgId, nodeKeyList }) {
+      const workspaceNodeList = nodeKeyList.map(nodeKey => {
+        const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
+        return {
+          id: Number(workspaceNodeId),
+          location: Number(workspaceNodeLocation)
+        }
+      })
+      const { data } = await receivedShareApi.cloneCheckShareReceived({ orgId, workspaceNodeList })
+      return data.result.estimatedQuota
+    },
+    async cloneShareReceived ({ getters }, { orgId, nodeKeyList, targetLocationList, optional }) {
+      const workspaceNodeList = nodeKeyList.map(nodeKey => {
+        const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
+        return {
+          id: Number(workspaceNodeId),
+          location: Number(workspaceNodeLocation)
+        }
+      })
+      await receivedShareApi.cloneShareReceived({ sharingKey: getters.share.sharingKey, orgId, workspaceNodeList, targetLocationList, optional })
     }
   }
 }

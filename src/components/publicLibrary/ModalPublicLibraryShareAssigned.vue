@@ -36,14 +36,10 @@ import { useI18n } from 'vue-i18n'
 export default {
   name: 'ModalPublicLibraryShareAssigned',
   props: {
-    workspaceNodeId: {
-      type: [String, Number],
+    nodeKey: {
+      type: String,
       required: true
     },
-    workspaceNodeLocation: {
-      type: [String, Number],
-      required: true
-    }
   },
   setup (props) {
     const { t } = useI18n()
@@ -67,8 +63,7 @@ export default {
       }
 
       const temp = await store.dispatch('publicLibrary/getShareTarget', {
-        workspaceNodeId: props.workspaceNodeId,
-        workspaceNodeLocation: props.workspaceNodeLocation,
+        nodeKey: props.nodeKey,
         target: frozenTargetValue
       })
       targetList.value.push(temp)
@@ -78,8 +73,7 @@ export default {
     const assignedShare = async () => {
       store.dispatch('helper/pushModalLoading')
       await store.dispatch('publicLibrary/assignedShare', {
-        workspaceNodeId: props.workspaceNodeId,
-        workspaceNodeLocation: props.workspaceNodeLocation,
+        nodeKey: props.nodeKey,
         targetList: targetList.value
       })
       store.dispatch('helper/closeModalLoading')

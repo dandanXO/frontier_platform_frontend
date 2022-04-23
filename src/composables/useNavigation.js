@@ -81,8 +81,8 @@ export default function useNavigation () {
     router.push(parsePath(`/:orgNo/public-library/${nodeKey}`))
   }
 
-  const goToReceivedShareMaterial = (workspaceNodeId, sharingKey) => {
-    router.push(`/received-share/material/${workspaceNodeId}?sharingKey=${sharingKey}`)
+  const goToReceivedShareMaterial = (nodeKey, sharingKey) => {
+    router.push(`/received-share/material/${nodeKey}?sharingKey=${sharingKey}`)
   }
 
   const goToShareToMeMaterial = (nodeKey, sharingId) => {

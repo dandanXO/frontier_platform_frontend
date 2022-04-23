@@ -32,7 +32,8 @@ export default {
     Modal,
     ModalConfirm,
     ModalLoading,
-    ModalManageMaterialQuota: defineAsyncComponent(() => import('@/components/billings/ModalManageMaterialQuota.vue'))
+    ModalManageMaterialQuota: defineAsyncComponent(() => import('@/components/billings/ModalManageMaterialQuota.vue')),
+    ModalCloneTo: defineAsyncComponent(() => import('@/components/ModalCloneTo.vue'))
   },
   setup () {
     const store = useStore()
