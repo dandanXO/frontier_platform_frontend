@@ -22,7 +22,6 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
             :ref="(el => handleRefUpdate(cropper.ref, el))"
             :config="cropper.config"
             :cropRectSize="cropRectSize"
-            :lowResolution="false"
             @update:options="Object.assign(cropper.config.options, $event)"
           )
             div(class="mt-1 absolute w-full")
@@ -55,7 +54,7 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
       )
       div(class="mt-3 cursor-pointer text-primary" @click="isExchange = !isExchange")
         svg-icon(iconName="swap_horiz" size="24" class="m-auto")
-        div(class="mt-2 text-center text-caption") {{ $t("EE0053") }}
+  div(class="mt-2 text-center text-caption") {{ $t("EE0053") }}
   btn-group(
     class="h-25"
     :class="{ 'mt-6': isDoubleSideMaterial }"
@@ -236,6 +235,7 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+
   &:focus {
     outline: 0;
   }

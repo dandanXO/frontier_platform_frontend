@@ -29,7 +29,6 @@ fullscreen-header
                 :ref="(el => handleRefUpdate(cropper.ref, el))"
                 :config="cropper.config"
                 :cropRectSize="cropRectSize"
-                :lowResolution="false"
                 @update:options="Object.assign(cropper.config.options, $event)"
               )
                 div(class="mt-1 absolute w-full")

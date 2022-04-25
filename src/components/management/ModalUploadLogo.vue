@@ -56,8 +56,8 @@ export default {
         properties: {
           image,
           cropRectSize,
-          afterCropHandler: async (cropImage, originalImage) => {
-            await store.dispatch('organization/updateOrgLogo', { logo: cropImage, originalLogo: originalImage })
+          afterCropHandler: async (croppedImage, originalImage) => {
+            await store.dispatch('organization/updateOrgLogo', { logo: croppedImage, originalLogo: originalImage })
           }
         }
       })

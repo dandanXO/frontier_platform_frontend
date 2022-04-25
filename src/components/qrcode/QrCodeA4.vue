@@ -91,6 +91,13 @@ export default {
         item.materialYarnCount = materialInfo.yarn.value
         item.materialDensity = materialInfo.density.value
         item.materialWidth = materialInfo.width.value
+
+        // 此處將「%」符號由半形改為全形，是因為某些字串組合如「100%BCI」會導致渲染錯誤
+        Object.keys(item).forEach(key => {
+          if (typeof item[key] === 'string') {
+            item[key] = item[key].split('%').join('％')
+          }
+        })
       })
 
       const scale = 3

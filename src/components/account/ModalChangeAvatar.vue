@@ -57,9 +57,9 @@ export default {
         properties: {
           image,
           cropRectSize,
-          afterCropHandler: async (cropImage, originalImage) => {
+          afterCropHandler: async (croppedImage, originalImage) => {
             await store.dispatch('user/orgUser/updateAvatar', {
-              avatar: cropImage,
+              avatar: croppedImage,
               originalAvatar: originalImage
             })
             await fetchMemberList()
