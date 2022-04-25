@@ -11,7 +11,7 @@ div(class="w-full h-full flex justify-center")
     material-detail-external(:material="material" :isCanDownloadU3M="publish.isCanDownloadU3M")
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
@@ -19,59 +19,41 @@ import { useStore } from 'vuex'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import MaterialDetailExternal from '@/components/layout/materialDetail/MaterialDetailExternal.vue'
 
-export default {
-  name: 'PublicLibraryMaterialDetail',
-  components: {
-    MaterialDetailExternal
-  },
-  props: {
-    nodeKey: {
-      type: [Number, String],
-      required: true
-    }
-  },
-  async setup () {
-    const { t } = useI18n()
-    const store = useStore()
-    const { parsePath } = useNavigation()
-    const { publicCloneByMaterial } = usePublicLibrary()
+const props = defineProps({
+  nodeKey: {
+    type: String,
+    required: true
+  }
+})
 
-    await store.dispatch('publicLibrary/getPublicMaterial', { nodeKey: props.nodeKey })
+const { t } = useI18n()
+const store = useStore()
+const { parsePath } = useNavigation()
+const { publicCloneByMaterial } = usePublicLibrary()
 
-    const material = computed(() => store.getters['publicLibrary/material'])
-    const publish = computed(() => store.getters['publicLibrary/materialPublish'])
-    const breadcrumbList = computed(() => {
-      const materialBreadcrumbList = store.getters['publicLibrary/materialBreadcrumbList']
-      const list = [
-        {
-          name: t('II0001'),
-          path: parsePath('/:orgNo/public-library')
+await store.dispatch('publicLibrary/getPublicMaterial', { nodeKey: props.nodeKey })
+
+const material = computed(() => store.getters['publicLibrary/material'])
+const publish = computed(() => store.getters['publicLibrary/materialPublish'])
+const breadcrumbList = computed(() => {
+  return [
+    {
+      name: t('II0001'),
+      path: parsePath('/:orgNo/public-library')
+    },
+    ...store.getters['publicLibrary/materialBreadcrumbList'].map(({ name, nodeKey }, index, array) => {
+      if (index !== array.length - 1) {
+        return {
+          name,
+          path: parsePath(`/:orgNo/public-library/${nodeKey}`)
         }
-      ]
-      for (let i = 0; i <= materialBreadcrumbList.length - 1; i++) {
-        const { name, nodeKey } = materialBreadcrumbList[i]
-        if (i !== materialBreadcrumbList.length - 1) {
-          list.push({
-            name,
-            path: parsePath(`/:orgNo/public-library?nodeKey=${nodeKey}`)
-          })
-        } else {
-          list.push({
-            name: material.value.materialNo,
-            path: parsePath('/:orgNo/public-library/:nodeKey')
-          })
+      } else {
+        return {
+          name: material.value.materialNo,
+          path: parsePath('/:orgNo/public-library/material/:nodeKey')
         }
       }
-      return list
     })
-
-    return {
-      breadcrumbList,
-      material,
-      publish,
-      publicCloneByMaterial
-    }
-  }
-}
-
+  ]
+})
 </script>

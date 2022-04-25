@@ -8,6 +8,7 @@ import assets from '@/store/modules/assets'
 import workspace from '@/store/modules/workspace'
 import publicLibrary from '@/store/modules/publicLibrary'
 import receivedShare from '@/store/modules/receivedShare'
+import embed from '@/store/modules/embed'
 import shareToMe from '@/store/modules/shareToMe'
 
 export default createStore({
@@ -48,6 +49,7 @@ export default createStore({
     workspace,
     publicLibrary,
     receivedShare,
-    shareToMe
+    shareToMe,
+    embed
   }
 })

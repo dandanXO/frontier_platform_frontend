@@ -74,19 +74,23 @@ export default function useNavigation () {
   }
 
   const goToWorkspaceMaterialDetail = (nodeKey) => {
-    router.push(parsePath(`${prefixPath.value}/workspace/${nodeKey}`))
+    router.push(parsePath(`${prefixPath.value}/workspace/material/${nodeKey}`))
   }
 
   const goToPublicLibraryMaterialDetail = (nodeKey) => {
-    router.push(parsePath(`/:orgNo/public-library/${nodeKey}`))
+    router.push(parsePath(`/:orgNo/public-library/material/${nodeKey}`))
   }
 
   const goToReceivedShareMaterial = (nodeKey, sharingKey) => {
-    router.push(`/received-share/material/${nodeKey}?sharingKey=${sharingKey}`)
+    router.push(`/received-share/${sharingKey}/material/${nodeKey}`)
+  }
+
+  const goToEmbedMaterialDetail = (nodeKey, sharingKey) => {
+    router.push(`/embed/${sharingKey}/material/${nodeKey}`)
   }
 
   const goToShareToMeMaterial = (nodeKey, sharingId) => {
-    router.push(parsePath(`${prefixPath.value}/share-to-me/${nodeKey}?sharingId=${sharingId}`))
+    router.push(parsePath(`${prefixPath.value}/share-to-me/material/${nodeKey}?sharingId=${sharingId}`))
   }
 
   return {
@@ -106,6 +110,7 @@ export default function useNavigation () {
     goToShareToMeMaterial,
     goToBillings,
     goToPaymentDetail,
+    goToEmbedMaterialDetail,
     prefixPath
   }
 }

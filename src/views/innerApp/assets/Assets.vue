@@ -9,10 +9,12 @@
 <template lang="pug">
 div(class="w-full h-full")
   search-table(
-    @selectAll="handleSelectAll"
     :searchType="SEARCH_TYPE.ASSETS"
     :searchCallback="getMaterialList"
     :optionSort="optionSort"
+    :optionMultiSelect="optionMultiSelect"
+    :itemList="materialList"
+    v-model:selectedItemList="selectedMaterialList"
   )
     template(#header-left)
       h5(class="text-h5 font-bold text-primary") {{ $t("EE0001") }}
@@ -32,7 +34,7 @@ div(class="w-full h-full")
           :itemSize="currentItemSize"
           key-field="materialId"
           pageMode
-          v-slot="{ item, index, active }"
+          v-slot="{ item, index }"
           @resize="resize"
           :buffer="currentItemSize * 3"
         )
@@ -44,8 +46,7 @@ div(class="w-full h-full")
         div(class="border border-black-400 rounded-md border-dashed p-2 mt-40 cursor-pointer" @click="goToMaterialUpload")
           svg-icon(iconName="add" size="24" class="text-primary")
         p(class="text-body2 text-primary pt-3") {{ $t("EE0079") }}
-  multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedMaterialList")
-    template(#default="{ option }")
+    template(#menu-option="{ option }")
       qr-code-general(v-if="option.id === 'printQRCode'")
         template(#activator="{ generatePdf }")
           div(
@@ -60,7 +61,7 @@ div(class="w-full h-full")
           ) {{ option.name }}
 </template>
 
-<script>
+<script setup>
 import SearchTable from '@/components/layout/SearchTable.vue'
 import RowItem from '@/components/assets/material/list/RowItem.vue'
 import GridItem from '@/components/assets/material/list/GridItem.vue'
@@ -77,105 +78,68 @@ import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useRoute, useRouter } from 'vue-router'
 // https://github.com/Akryum/vue-virtual-scroller/tree/next/packages/vue-virtual-scroller
 
-export default {
-  name: 'Assets',
-  components: {
-    SearchTable,
-    RecycleScroller,
-    RowItem,
-    GridItem,
-    GridOrRow,
-    QrCodeA4,
-    QrCodeGeneral
-  },
-  setup () {
-    const router = useRouter()
-    const route = useRoute()
-    const store = useStore()
-    const { goToMaterialUpload } = useNavigation()
-    const currentItemSize = ref(379)
-    const { printCard, downloadU3M, cloneTo, addToWorkspace, exportExcel, printQRCode, mergeCard, deleteMaterial } = useAssets()
+const router = useRouter()
+const route = useRoute()
+const store = useStore()
+const { goToMaterialUpload } = useNavigation()
+const currentItemSize = ref(379)
+const { printCard, downloadU3M, cloneTo, addToWorkspace, exportExcel, printQRCode, mergeCard, deleteMaterial } = useAssets()
 
-    const selectedMaterialList = ref([])
-    const displayMode = computed(() => store.getters['assets/displayMode'])
-    const materialList = computed(() => store.getters['assets/materialList'])
-    const pagination = computed(() => store.getters['helper/search/pagination'])
-    const optionSort = computed(() => ({
-      base: [
-        SORT_BY.CREATE_DATE,
-        SORT_BY.LAST_UPDATE,
-        SORT_BY.MATERIAL_NO_A_Z
-      ],
-      keywordSearch: [
-        SORT_BY.RELEVANCE
-      ]
-    }))
+const selectedMaterialList = ref([])
+const displayMode = computed(() => store.getters['assets/displayMode'])
+const materialList = computed(() => store.getters['assets/materialList'])
+const pagination = computed(() => store.getters['helper/search/pagination'])
+const optionSort = computed(() => ({
+  base: [
+    SORT_BY.CREATE_DATE,
+    SORT_BY.LAST_UPDATE,
+    SORT_BY.MATERIAL_NO_A_Z
+  ],
+  keywordSearch: [
+    SORT_BY.RELEVANCE
+  ]
+}))
 
-    const optionMultiSelect = computed(() => [
-      cloneTo,
-      addToWorkspace,
-      printCard,
-      printQRCode,
-      downloadU3M,
-      exportExcel,
-      { ...mergeCard, disabled: selectedMaterialList.value.length < 2 },
-      deleteMaterial
-    ])
+const optionMultiSelect = computed(() => [
+  cloneTo,
+  addToWorkspace,
+  printCard,
+  printQRCode,
+  downloadU3M,
+  exportExcel,
+  { ...mergeCard, disabled: selectedMaterialList.value.length < 2 },
+  deleteMaterial
+])
 
-    const handleSelectAll = () => {
-      const stringifyArr = materialList.value.map(item => JSON.stringify(item))
-      const duplicateArr = selectedMaterialList.value.concat(stringifyArr)
-      selectedMaterialList.value = [...new Set(duplicateArr)]
-    }
+const getMaterialList = async (targetPage = 1, query) => {
+  await router.push({
+    name: route.name,
+    query
+  })
+  await store.dispatch('assets/getMaterialList', { targetPage })
+}
 
-    const getMaterialList = async (targetPage = 1, query) => {
-      await router.push({
-        name: route.name,
-        query
-      })
-      await store.dispatch('assets/getMaterialList', { targetPage })
-    }
+const onMouseEnter = (e) => {
+  /**
+   * Choose to set the state in the dataset instead of setting it in class
+   * is because DynamicScroller will re-overwrite class when hovered on.
+   */
+  document
+    .querySelectorAll('[data-last-hover="true"]')
+    .forEach(element => {
+      element.dataset.lastHover = false
+    })
+  e.target.parentElement.dataset.lastHover = true
+}
 
-    const onMouseEnter = (e) => {
-      /**
-       * Choose to set the state in the dataset instead of setting it in class
-       * is because DynamicScroller will re-overwrite class when hovered on.
-       */
-      document
-        .querySelectorAll('[data-last-hover="true"]')
-        .forEach(element => {
-          element.dataset.lastHover = false
-        })
-      e.target.parentElement.dataset.lastHover = true
-    }
-
-    const resize = () => {
-      /**
-       * @Todo figure out what happen in Safari
-       */
-      if (document.querySelector('.vue-recycle-scroller__item-view')) {
-        currentItemSize.value = document?.querySelector('.vue-recycle-scroller__item-view')?.clientHeight
-      } else {
-        currentItemSize.value = 379
-      }
-    }
-
-    return {
-      materialList,
-      displayMode,
-      pagination,
-      handleSelectAll,
-      optionSort,
-      optionMultiSelect,
-      goToMaterialUpload,
-      onMouseEnter,
-      currentItemSize,
-      resize,
-      getMaterialList,
-      SEARCH_TYPE,
-      selectedMaterialList,
-      DISPLAY_NODE
-    }
+const resize = () => {
+  /**
+   * @Todo figure out what happen in Safari
+   */
+  if (document.querySelector('.vue-recycle-scroller__item-view')) {
+    currentItemSize.value = document?.querySelector('.vue-recycle-scroller__item-view')?.clientHeight
+  } else {
+    currentItemSize.value = 379
   }
 }
 </script>

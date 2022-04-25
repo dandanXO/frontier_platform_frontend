@@ -6,27 +6,27 @@ export default function useShareToMe () {
   const { t } = useI18n()
   const store = useStore()
 
-  const shareToMeCloneByMaterial = (nodeKey, isCanClone) => {
-    shareToMeClone([nodeKey], isCanClone, t('II0008'))
+  const shareToMeCloneByMaterial = (nodeKey, sharingId, isCanClone) => {
+    shareToMeClone(sharingId, [nodeKey], isCanClone, t('II0008'))
   }
 
-  const shareToMeCloneByCollection = (nodeKey, isCanClone) => {
-    shareToMeClone([nodeKey], isCanClone, t('II0009'))
+  const shareToMeCloneByCollection = (nodeKey, sharingId, isCanClone) => {
+    shareToMeClone(sharingId, [nodeKey], isCanClone, t('II0009'))
   }
 
-  const shareToMeCloneByNode = (node) => {
-    shareToMeCloneByNodeList([node])
+  const shareToMeCloneByNode = (node, sharingId) => {
+    shareToMeCloneByNodeList([node], sharingId)
   }
 
-  const shareToMeCloneByNodeList = (nodeList) => {
+  const shareToMeCloneByNodeList = (nodeList, sharingId) => {
     const nodeKeyList = nodeList.map(({ nodeKey }) => nodeKey)
     const isCanClone = nodeList.every(node => node.share.isCanClone)
     const isContainCollection = nodeList.some(node => node.nodeType === NODE_TYPE.COLLECTION)
     const msg = isContainCollection ? t('II0009') : t('II0008')
-    shareToMeClone(nodeKeyList, isCanClone, msg)
+    shareToMeClone(sharingId, nodeKeyList, isCanClone, msg)
   }
 
-  const shareToMeClone = (nodeKeyList, isCanClone, msg) => {
+  const shareToMeClone = (sharingId, nodeKeyList, isCanClone, msg) => {
     if (!isCanClone) {
       return store.dispatch('helper/openModalConfirm', {
         type: 1,
@@ -43,7 +43,7 @@ export default function useShareToMe () {
           return store.dispatch('shareToMe/cloneCheckShareToMe', { nodeKeyList })
         },
         cloneHandler: async (targetLocationList, optional) => {
-          await store.dispatch('shareToMe/cloneShareToMe', { nodeKeyList, targetLocationList, optional })
+          await store.dispatch('shareToMe/cloneShareToMe', { sharingId, nodeKeyList, targetLocationList, optional })
           store.commit('helper/PUSH_message', msg)
         }
       }

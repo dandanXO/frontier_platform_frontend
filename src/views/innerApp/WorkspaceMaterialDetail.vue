@@ -10,7 +10,7 @@ div(class="w-full h-full flex justify-center")
     material-detail-internal(:material="material")
 </template>
 
-<script>
+<script setup>
 import useNavigation from '@/composables/useNavigation'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -19,64 +19,46 @@ import useWorkspace from '@/composables/useWorkspace'
 import MaterialDetailInternal from '@/components/layout/materialDetail/MaterialDetailInternal.vue'
 import dayjs from 'dayjs'
 
-export default {
-  name: 'WorkspaceMaterialDetail',
-  components: {
-    MaterialDetailInternal
-  },
-  props: {
-    nodeKey: {
-      type: String,
-      required: true
-    }
-  },
-  async setup (props) {
-    const { t } = useI18n()
-    const store = useStore()
-    const { editMaterial } = useWorkspace()
-    const { parsePath } = useNavigation()
+const props = defineProps({
+  nodeKey: {
+    type: String,
+    required: true
+  }
+})
 
-    await store.dispatch('workspace/getWorkspaceMaterial', { nodeKey: props.nodeKey })
+const { t } = useI18n()
+const store = useStore()
+const { editMaterial } = useWorkspace()
+const { parsePath, prefixPath } = useNavigation()
 
-    const material = computed(() => store.getters['workspace/material'])
-    const routeLocation = computed(() => store.getters['helper/routeLocation'])
-    const breadcrumbList = computed(() => {
-      const materialBreadcrumbList = store.getters['workspace/materialBreadcrumbList']
-      const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
-      const list = [
-        {
-          name: t('FF0001'),
-          path: parsePath(`${prefix}/workspace`)
+await store.dispatch('workspace/getWorkspaceMaterial', { nodeKey: props.nodeKey })
+
+const material = computed(() => store.getters['workspace/material'])
+const breadcrumbList = computed(() => {
+  const defaultWorkspaceNodeKey = store.getters['workspace/defaultWorkspaceNodeKey']
+  return [
+    {
+      name: t('FF0001'),
+      path: parsePath(`${prefixPath.value}/workspace/${defaultWorkspaceNodeKey}`)
+    },
+    ...store.getters['workspace/materialBreadcrumbList'].map(({ name, nodeKey }, index, array) => {
+      if (index !== array.length - 1) {
+        return {
+          name,
+          path: parsePath(`${prefixPath.value}/workspace/${nodeKey}`)
         }
-      ]
-      for (let i = 0; i <= materialBreadcrumbList.length - 1; i++) {
-        const { name, nodeKey } = materialBreadcrumbList[i]
-        if (i !== materialBreadcrumbList.length - 1) {
-          list.push({
-            name,
-            path: parsePath(`${prefix}/workspace?nodeKey=${nodeKey}`)
-          })
-        } else {
-          list.push({
-            name: material.value.materialNo,
-            path: parsePath(`${prefix}/workspace/:nodeKey`)
-          })
+      } else {
+        return {
+          name: material.value.materialNo,
+          path: parsePath(`${prefixPath.value}/workspace/material/:nodeKey`)
         }
       }
-      return list
     })
+  ]
+})
 
-    const lastUpdateDate = computed(() => {
-      const tempUpdateDate = dayjs.unix(material.value.updateDate).format('MM/DD/YYYY hh:mm A')
-      return tempUpdateDate.slice(0, 10) + ' at ' + tempUpdateDate.slice(10)
-    })
-
-    return {
-      material,
-      editMaterial,
-      breadcrumbList,
-      lastUpdateDate
-    }
-  }
-}
+const lastUpdateDate = computed(() => {
+  const tempUpdateDate = dayjs.unix(material.value.updateDate).format('MM/DD/YYYY hh:mm A')
+  return tempUpdateDate.slice(0, 10) + ' at ' + tempUpdateDate.slice(10)
+})
 </script>

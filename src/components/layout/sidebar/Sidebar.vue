@@ -52,6 +52,7 @@ import SidebarItem from '@/components/layout/sidebar/SidebarItem.vue'
 import MenuOrg from '@/components/layout/sidebar/MenuOrg.vue'
 import MenuOrgUser from '@/components/layout/sidebar/MenuOrgUser.vue'
 import { useI18n } from 'vue-i18n'
+import { NODE_LOCATION } from '@/utils/constants'
 
 export default {
   name: 'Sidebar',
@@ -67,7 +68,7 @@ export default {
     const organization = computed(() => store.getters['organization/organization'])
     const planStatus = computed(() => store.getters['organization/planStatus'])
     const menuOrgOrGroup = computed(() => {
-      const { orgId, orgNo, orgName, labelColor } = organization.value
+      const { orgId, orgNo, orgName, labelColor, workspaceNodeId } = organization.value
       return [
         {
           id: orgId,
@@ -84,7 +85,7 @@ export default {
             {
               id: 'workspace',
               title: t('RR0009'),
-              path: `/${orgNo}/workspace`
+              path: `/${orgNo}/workspace/${NODE_LOCATION.ORG}-${workspaceNodeId}`
             },
             {
               id: 'shareToMe',
@@ -94,7 +95,7 @@ export default {
           ]
         },
         ...store.getters['organization/groupList'].map(group => {
-          const { groupId, groupName, labelColor } = group
+          const { groupId, groupName, labelColor, workspaceNodeId } = group
           return {
             id: groupId,
             name: groupName,
@@ -110,7 +111,7 @@ export default {
               {
                 id: 'workspace',
                 title: t('RR0009'),
-                path: `/${orgNo}/${groupId}/workspace`
+                path: `/${orgNo}/${groupId}/workspace/${NODE_LOCATION.GROUP}-${workspaceNodeId}`
               },
               {
                 id: 'shareToMe',

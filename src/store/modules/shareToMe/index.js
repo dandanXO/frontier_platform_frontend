@@ -69,7 +69,7 @@ export default {
 
       return data.result.estimatedQuota
     },
-    async cloneShareToMe ({ rootGetters }, { nodeKeyList, targetLocationList, optional }) {
+    async cloneShareToMe ({ rootGetters }, { sharingId, nodeKeyList, targetLocationList, optional }) {
       const workspaceNodeList = nodeKeyList.map(nodeKey => {
         const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
         return {
@@ -78,8 +78,8 @@ export default {
         }
       })
       rootGetters['helper/routeLocation'] === 'org'
-        ? await shareToMeApi.org.cloneShareToMe({ orgId: rootGetters['organization/orgId'], workspaceNodeList, targetLocationList, optional })
-        : await shareToMeApi.group.cloneShareToMe({ groupId: rootGetters['group/groupId'], workspaceNodeList, targetLocationList, optional })
+        ? await shareToMeApi.org.cloneShareToMe({ orgId: rootGetters['organization/orgId'], sharingId, workspaceNodeList, targetLocationList, optional })
+        : await shareToMeApi.group.cloneShareToMe({ groupId: rootGetters['group/groupId'], sharingId, workspaceNodeList, targetLocationList, optional })
     },
     async deleteShareToMe ({ rootGetters }, { nodeKeyList }) {
       const workspaceNodeList = nodeKeyList.map(nodeKey => {

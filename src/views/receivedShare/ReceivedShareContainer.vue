@@ -20,6 +20,7 @@ fullscreen-header
       p(class="text-body1 text-primary") {{ $t("GG0026") }}
     router-view(v-else)
     div(class="fixed z-footer bottom-0 w-full h-13 bg-black-100 px-36 flex items-center justify-end card-shadow")
+      img(src="@/assets/images/frontier_logo.png" class="w-20.5 h-4 mr-2")
       p(class="text-body2 text-primary") {{ $t("GG0004") }}
 </template>
 

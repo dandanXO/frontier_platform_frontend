@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-113.5 px-8 relative")
+div(class="w-113.5 px-8")
   h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{ $t("RR0079") }}
   div(class="border-b border-black-400")
     div(class="flex gap-x-5")
@@ -45,6 +45,15 @@ div(class="w-113.5 px-8 relative")
           div(class="cursor-pointer" @click="shareToSocialMedia(SOCIAL_MEDIA_TYPE.TWITTER)")
             img(src="@/assets/images/twitter.png")
             p(class="text-caption text-center pt-3") {{ $t("RR0153") }}
+    template(v-else-if="currentTab === TAB.EMBED")
+      div(class="py-7.5 h-full flex flex-col justify-between")
+        div(class="flex items-center justify-between")
+          input-container(:label="$t('FF0067')")
+            input-switch(size="30" :name="$t('FF0033')" v-model:inputValue="shareInfo.embed.isCanDownloadU3M" @update:inputValue="updateEmbedDownloadPermission")
+          btn(size="sm" @click="copyEmbedIFrameCode") {{ $t("UU0068") }}
+        div(class="bg-black-100 h-15 flex px-5 py-3 gap-x-2")
+          svg-icon(iconName="error_outline" class="text-primary")
+          p(class="text-caption line-height-1.6 text-primary") {{ $t("FF0071") }}
 </template>
 
 <script>
@@ -54,6 +63,8 @@ import { useStore } from 'vuex'
 import AvatarGroup from '@/components/AvatarGroup.vue'
 import { SOCIAL_MEDIA_TYPE } from '@/utils/constants.js'
 import { shareViaCopyLink, shareViaSocialMedia } from '@/utils/share.js'
+import { NODE_TYPE } from '@/utils/constants.js'
+import copyText from '@/utils/copy-text'
 
 export default {
   name: 'ModalShare',
@@ -63,6 +74,10 @@ export default {
   props: {
     workspaceNodeId: {
       type: [String, Number],
+      required: true
+    },
+    nodeKey: {
+      type: String,
       required: true
     },
     nodeType: {
@@ -96,12 +111,12 @@ export default {
           name: t('FF0053')
         }
       ]
-      // if (props.nodeType === NODE_TYPE.COLLECTION) {
-      //   list.push({
-      //     id: TAB.EMBED,
-      //     name: t('FF0054')
-      //   })
-      // }
+      if (props.nodeType === NODE_TYPE.COLLECTION) {
+        list.push({
+          id: TAB.EMBED,
+          name: t('FF0054')
+        })
+      }
       return list
     })
     const currentTab = ref(tabList.value[0].id)
@@ -139,6 +154,13 @@ export default {
       store.commit('helper/PUSH_message', t('RR0149'))
     }
 
+    const updateEmbedDownloadPermission = () => store.dispatch('workspace/updateEmbedDownloadPermission', { embedKey: shareInfo.value.embed.key, isCanDownloadU3M: shareInfo.value.embed.isCanDownloadU3M })
+
+    const copyEmbedIFrameCode = () => {
+      copyText(`<iframe width="100%" height="100%" src="${window.location.origin}/embed/${shareInfo.value.embed.key}/${props.nodeKey}" title="Frontier.cool" frameborder="0"></iframe>`)
+      store.commit('helper/PUSH_message', t('RR0149'))
+    }
+
     await store.dispatch('workspace/getShareInfo', { workspaceNodeId: props.workspaceNodeId })
 
     return {
@@ -151,7 +173,9 @@ export default {
       shareToSocialMedia,
       toggleCopyLink,
       generateCopyLink,
-      SOCIAL_MEDIA_TYPE
+      SOCIAL_MEDIA_TYPE,
+      updateEmbedDownloadPermission,
+      copyEmbedIFrameCode
     }
   }
 }

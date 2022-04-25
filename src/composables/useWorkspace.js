@@ -190,6 +190,7 @@ export default function useWorkspace () {
       store.dispatch('helper/openModal', {
         component: 'modal-share',
         properties: {
+          nodeKey: node.nodeKey,
           workspaceNodeId: node.workspaceNodeId,
           nodeType: node.nodeType
         }

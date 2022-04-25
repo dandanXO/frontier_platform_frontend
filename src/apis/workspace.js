@@ -109,6 +109,10 @@ export default {
       method: 'POST',
       data: { orgId, workspaceNodeId, type }
     }),
+    updateEmbedDownloadPermission: ({ orgId, embedKey, isCanDownloadU3M }) => axios('/org/workspace/node/share/embed/update-setting', {
+      method: 'POST',
+      data: { orgId, embedKey, isCanDownloadU3M }
+    })
   },
   group: {
     getWorkspace: ({ groupId, workspaceNodeId, pagination, search = null, filter = null }) => axios('/org/group/workspace/get', {
@@ -217,5 +221,9 @@ export default {
       method: 'POST',
       data: { groupId, workspaceNodeId, type }
     }),
+    updateEmbedDownloadPermission: ({ groupId, embedKey, isCanDownloadU3M }) => axios('/org/group/workspace/node/share/embed/update-setting', {
+      method: 'POST',
+      data: { groupId, embedKey, isCanDownloadU3M }
+    })
   }
 }
