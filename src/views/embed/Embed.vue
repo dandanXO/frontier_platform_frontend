@@ -1,35 +1,24 @@
-<style lang="scss">
-#pagination-container {
-  padding-bottom: 152px;
-}
-</style>
-
 <template lang="pug">
-div(class="w-315 h-full mx-auto")
+div(class="w-315 h-full mx-auto pt-10")
   search-table(
     :searchType="SEARCH_TYPE.SHARE"
+    :canSelectAll="false"
     :optionSort="optionSort"
-    :optionMultiSelect="optionMultiSelect"
-    :searchCallback="getShareReceivedList"
+    :searchCallback="getEmbedList"
     :itemList="nodeList"
-    v-model:selectedItemList="selectedNodeList"
   )
     template(#header-above="{ goTo }")
       div(class="mx-7.5 pt-5 -mb-7")
         div(class="flex justify-between items-center pb-5")
-          div(class="flex items-start")
-            div(class="flex items-end pr-3")
+          div(class="flex items-center")
+            img(:src="logo" class="w-10 h-10 rounded-full")
+            div(class="flex items-end pl-2.5")
               breadcrumb(:breadcrumbList="breadcrumbList" @click:item="(currentNodeKey = $event.nodeKey); goTo()" fontSize="text-h5")
               p(class="flex text-caption text-black-700 pl-1")
                 span (
                 i18n-t(keypath="RR0068" tag="span")
                   template(#number) {{ pagination.totalCount }}
                 span )
-            tooltip(placement="bottom")
-              template(#trigger)
-                svg-icon(iconName="clone" class="text-black-700 hover:text-brand cursor-pointer" size="24" @click="receivedShareCloneByNodeKey(currentNodeKey)")
-              template(#content)
-                p(class="text-caption text-primary px-3 py-1") {{ $t("RR0056") }}
           btn(size="sm" type="secondary" @click="isCollectionDetailExpand = !isCollectionDetailExpand") {{ isCollectionDetailExpand ? $t("UU0026") : $t("UU0071") }}
         div(v-if="isCollectionDetailExpand" class="flex items-start gap-x-9")
           div(class="relative w-97.5 h-69 bg-black-200 flex items-center justify-center flex-shrink-0")
@@ -47,58 +36,47 @@ div(class="w-315 h-full mx-auto")
         template(v-for="node in nodeList")
           template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
             node-item(
-              v-model:selectedList="selectedNodeList"
+              :isSelectable="false"
               :node="node"
               :displayName="node.name"
               @click="(currentNodeKey = node.nodeKey); goTo(node.nodeKey)"
             )
-              template(#cover-overlay)
-                svg-icon(
-                  iconName="clone"
-                  size="20"
-                  class="absolute bottom-3 right-3 cursor-pointer text-black-500"
-                  @click.stop="receivedShareCloneByNodeKey(node.nodeKey)"
-                )
           template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
             node-item(
-              v-model:selectedList="selectedNodeList"
+              :isSelectable="false"
               :node="node"
               :displayName="node.materialNo"
-              @click="goToReceivedShareMaterial(node.nodeKey, share.sharingKey)"
+              @click="goToEmbedMaterialDetail(node.nodeKey, share.sharingKey)"
             )
-              template(#cover-overlay)
-                svg-icon(
-                  iconName="clone"
-                  size="20"
-                  class="absolute bottom-3 right-3 cursor-pointer text-black-500"
-                  @click.stop="receivedShareCloneByNodeKey(node.nodeKey)"
-                )
+div(class="fixed z-footer bottom-0 w-full h-13 bg-black-100 px-36 flex items-center justify-end card-shadow")
+  img(src="@/assets/images/frontier_logo.png" class="w-20.5 h-4 mr-2")
+  p(class="text-body2 text-primary") {{ $t("GG0004") }}
 </template>
 
 <script setup>
 import SearchTable from '@/components/layout/SearchTable.vue'
+import NodeItem from '@/components/layout/NodeItem.vue'
+import { SEARCH_TYPE, SORT_BY, NODE_TYPE } from '@/utils/constants.js'
+import useNavigation from '@/composables/useNavigation.js'
+import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
-import { SEARCH_TYPE, SORT_BY, NODE_TYPE } from '@/utils/constants.js'
-import { useRoute, useRouter } from 'vue-router'
-import NodeItem from '@/components/layout/NodeItem.vue'
-import useReceivedShare from '@/composables/useReceivedShare.js'
-import { useI18n } from 'vue-i18n'
-import useNavigation from '@/composables/useNavigation.js'
 
-const { t } = useI18n()
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
+const { goToEmbedMaterialDetail } = useNavigation()
+
 const props = defineProps({
+  sharingKey: {
+    type: String,
+    required: true
+  },
   nodeKey: {
     type: String,
     required: true
   }
 })
-
-const { receivedShareCloneByNodeKey, receivedShareCloneByNodeList } = useReceivedShare()
-const { goToReceivedShareMaterial } = useNavigation()
 
 const optionSort = {
   base: [
@@ -109,23 +87,17 @@ const optionSort = {
     SORT_BY.RELEVANCE_M_C
   ]
 }
-const optionMultiSelect = [
-  {
-    name: t('RR0167'),
-    func: receivedShareCloneByNodeList
-  }
-]
 
-const share = computed(() => store.getters['receivedShare/share'])
+const share = computed(() => store.getters['embed/share'])
+const logo = computed(() => store.getters['embed/logo'])
 const pagination = computed(() => store.getters['helper/search/pagination'])
-const nodeList = computed(() => store.getters['receivedShare/nodeList'])
-const breadcrumbList = computed(() => store.getters['receivedShare/collectionBreadcrumbList']())
-const collection = computed(() => store.getters['receivedShare/collection'])
+const nodeList = computed(() => store.getters['embed/nodeList'])
+const breadcrumbList = computed(() => store.getters['embed/collectionBreadcrumbList']())
+const collection = computed(() => store.getters['embed/collection'])
 const currentNodeKey = ref(props.nodeKey)
-const selectedNodeList = ref([])
 const isCollectionDetailExpand = ref(true)
 
-const getShareReceivedList = async (targetPage = 1, query) => {
+const getEmbedList = async (targetPage = 1, query) => {
   await router.push({
     name: route.name,
     params: {
@@ -133,10 +105,11 @@ const getShareReceivedList = async (targetPage = 1, query) => {
     },
     query
   })
-  await store.dispatch('receivedShare/getShareReceivedList', {
+  await store.dispatch('embed/getEmbedList', {
     targetPage,
     sharingKey: share.value.sharingKey,
     nodeKey: currentNodeKey.value
   })
 }
+
 </script>

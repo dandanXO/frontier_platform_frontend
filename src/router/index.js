@@ -68,23 +68,25 @@ const reuseRoutes = (prefix) => ([
     ]
   },
   {
-    path: 'workspace',
+    path: 'workspace/:nodeKey',
     name: `${prefix}Workspace`,
+    props: true,
     component: () => import('@/views/innerApp/Workspace.vue')
   },
   {
-    path: 'workspace/:nodeKey',
+    path: 'workspace/material/:nodeKey',
     name: `${prefix}WorkspaceMaterialDetail`,
     props: true,
     component: () => import('@/views/innerApp/WorkspaceMaterialDetail.vue')
   },
   {
-    path: 'share-to-me',
+    path: 'share-to-me/:nodeKey?',
     name: `${prefix}ShareToMe`,
+    props: true,
     component: () => import('@/views/innerApp/ShareToMe.vue')
   },
   {
-    path: 'share-to-me/:nodeKey',
+    path: 'share-to-me/material/:nodeKey',
     name: `${prefix}ShareToMeMaterial`,
     props: true,
     component: () => import('@/views/innerApp/ShareToMeMaterialDetail.vue')
@@ -138,30 +140,26 @@ const routes = [
       const share = store.getters['receivedShare/share']
       const nodeKey = `${share.workspaceNodeLocation}-${share.workspaceNodeId}`
       if (share.workspaceNodeType === NODE_TYPE.COLLECTION) {
-        next({ path: '/received-share/collection', query: { ...to.query, nodeKey } })
+        next(`/received-share/${sharingKey}/${nodeKey}`)
       } else {
-        next({ path: `/received-share/material/${nodeKey}`, query: to.query })
+        next(`/received-share/${sharingKey}/material/${nodeKey}`)
       }
     }
   },
   {
-    path: '/received-share',
+    path: '/received-share/:sharingKey',
     name: 'ReceivedShare',
     component: () => import('@/views/receivedShare/ReceivedShareContainer.vue'),
     beforeEnter: async (to, from, next) => {
-      const share = store.getters['receivedShare/share']
-      const { sharingKey } = to.query
-      if (sharingKey === share.sharingKey) {
-        next()
-      } else {
-        await store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey })
-        next()
-      }
+      const sharingKey = to.params.sharingKey
+      await store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey })
+      next()
     },
     children: [
       {
-        path: 'collection',
+        path: ':nodeKey',
         name: 'ReceivedShareCollection',
+        props: true,
         component: () => import('@/views/receivedShare/ReceivedShareCollection.vue')
       },
       {
@@ -173,15 +171,32 @@ const routes = [
     ]
   },
   {
+    path: '/embed/:sharingKey/:nodeKey',
+    name: 'Embed',
+    props: true,
+    component: () => import('@/views/embed/Embed.vue'),
+    beforeEnter: async (to, from, next) => {
+      const sharingKey = to.params.sharingKey
+      await store.dispatch('embed/getEmbedInfo', { sharingKey })
+      next()
+    }
+  },
+  {
+    path: '/embed/:sharingKey/material/:nodeKey',
+    name: 'EmbedMaterialDetail',
+    props: true,
+    component: () => import('@/views/embed/EmbedMaterialDetail.vue'),
+    beforeEnter: async (to, from, next) => {
+      const sharingKey = to.params.sharingKey
+      await store.dispatch('embed/getEmbedInfo', { sharingKey })
+      next()
+    }
+  },
+  {
     path: '/',
     name: 'AppRoot',
     component: () => import('@/views/innerApp/InnerAppLayout.vue'),
     beforeEnter: async (to, from, next) => {
-      store.dispatch('code/getRoleList')
-      store.dispatch('code/getOrgCategoryList')
-      store.dispatch('code/getRoleLimitTable')
-      store.dispatch('code/getCountryList')
-      store.dispatch('code/getFilterOptions')
       await store.dispatch('user/getUser')
       next()
     },
@@ -291,12 +306,13 @@ const routes = [
             children: reuseRoutes('Group')
           },
           {
-            path: 'public-library',
+            path: 'public-library/:nodeKey?',
             name: 'PublicLibrary',
+            props: true,
             component: () => import('@/views/innerApp/PublicLibrary.vue')
           },
           {
-            path: 'public-library/:nodeKey',
+            path: 'public-library/material/:nodeKey',
             name: 'PublicLibraryMaterialDetail',
             props: true,
             component: () => import('@/views/innerApp/PublicLibraryMaterialDetail.vue'),

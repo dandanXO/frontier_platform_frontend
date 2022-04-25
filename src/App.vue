@@ -4,17 +4,16 @@ flash-message
 modal-pipeline
 </template>
 
-<script>
-import Modal from '@/components/modal/Modal.vue'
+<script setup>
 import ModalPipeline from '@/components/modal/ModalPipeline.vue'
+import { useStore } from 'vuex'
 
-export default {
-  name: 'App',
-  components: {
-    Modal,
-    ModalPipeline
-  }
-}
+const store = useStore()
+store.dispatch('code/getRoleList')
+store.dispatch('code/getOrgCategoryList')
+store.dispatch('code/getRoleLimitTable')
+store.dispatch('code/getCountryList')
+store.dispatch('code/getFilterOptions')
 </script>
 
 <style lang="scss">

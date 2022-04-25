@@ -3,10 +3,10 @@ div(class="grid")
   div(class="justify-self-center my-3.5 w-200 h-11 bg-black-100 rounded-full px-7.5 flex items-center gap-x-4.5")
     div(class="flex-grow flex items-center")
       svg-icon(
-        v-if="!keyword" class="pr-1"
+        v-if="!keyword"
+        class="pr-1 text-black-400"
         size="24"
         iconName="search"
-        class="text-black-400"
       )
       input(
         type="text"

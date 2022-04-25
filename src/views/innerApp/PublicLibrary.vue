@@ -1,17 +1,18 @@
 <template lang="pug">
 div(class="w-full h-full relative")
   search-table(
-    ref="refSearchTable"
     :searchType="SEARCH_TYPE.PUBLIC_LIBRARY"
     :searchCallback="getPublicList"
     :optionSort="optionSort"
+    :optionMultiSelect="optionMultiSelect"
     :canSelectAll="!isFirstLayer"
-    @selectAll="handleSelectAll"
+    :itemList="nodeList"
+    v-model:selectedItemList="selectedNodeList"
   )
-    template(#header-left)
+    template(#header-left="{ goTo }")
       div(class="flex items-center")
         div(class="flex items-end")
-          breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.nodeKey)" fontSize="text-h6")
+          breadcrumb(:breadcrumbList="breadcrumbList" @click:item="(currentNodeKey = $event.nodeKey); goTo()" fontSize="text-h6")
           p(class="flex text-caption text-black-700 pl-1")
             span (
             i18n-t(keypath="RR0068" tag="span")
@@ -32,7 +33,7 @@ div(class="w-full h-full relative")
     template(v-if="!isFirstLayer" #sub-header)
       i18n-t(keypath="II0002" tag="p" class="mx-7.5 mb-7.5 text-caption text-black-700")
         template(#displayName) {{ publishBy }}
-    template(#default)
+    template(#default="{ goTo }")
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
         template(v-for="node in nodeList")
           template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
@@ -42,7 +43,7 @@ div(class="w-full h-full relative")
               :displayName="node.name"
               :isSelectable="!isFirstLayer"
               :optionList="optionNode"
-              @click="goTo(node.nodeKey)"
+              @click="(currentNodeKey = node.nodeKey); goTo()"
               @click:option="$event.func(node)"
             )
               template(#node-caption v-if="isFirstLayer")
@@ -65,12 +66,11 @@ div(class="w-full h-full relative")
                   p(class="pl-1 font-bold text-caption text-primary") {{ node.publish.displayName }}
       div(v-else class="flex h-full justify-center items-end")
         p(class="text-body1 text-primary") {{ $t("II0007") }}
-  multi-select-menu(v-if="!isFirstLayer" :options="optionMultiSelect" v-model:selectedList="selectedNodeList")
   div(v-if="planStatus.INACTIVE" class="absolute inset-0 z-99 opacity-30 bg-black-0")
   notify-bar-inactive(v-if="planStatus.INACTIVE || planStatus.TRANSITION" class="absolute bottom-0 left-0 z-100")
 </template>
 
-<script>
+<script setup>
 import SearchTable from '@/components/layout/SearchTable.vue'
 import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
@@ -82,129 +82,85 @@ import usePublicLibrary from '@/composables/usePublicLibrary'
 import useNavigation from '@/composables/useNavigation'
 import NotifyBarInactive from '@/components/billings/NotifyBarInactive.vue'
 
-export default {
-  name: 'PublicLibrary',
-  components: {
-    SearchTable,
-    NodeItem,
-    NotifyBarInactive
-  },
-  setup () {
-    const { t } = useI18n()
-    const store = useStore()
-    const router = useRouter()
-    const route = useRoute()
-    const { publicCloneByNode, publicCloneByNodeList, publicCloneByCollection, optionShareNode } = usePublicLibrary()
-    const { goToPublicLibraryMaterialDetail } = useNavigation()
+const { t } = useI18n()
+const store = useStore()
+const router = useRouter()
+const route = useRoute()
+const { publicCloneByNode, publicCloneByNodeList, publicCloneByCollection, optionShareNode } = usePublicLibrary()
+const { goToPublicLibraryMaterialDetail } = useNavigation()
 
-    const optionSort = {
-      base: [
-        SORT_BY.RANDOM,
-        SORT_BY.NEW_ARRIVED
-      ],
-      keywordSearch: []
-    }
-
-    const optionMultiSelect = [
-      {
-        name: t('RR0167'),
-        func: publicCloneByNodeList
-      }
-    ]
-    const planStatus = computed(() => store.getters['organization/planStatus'])
-    const pagination = computed(() => store.getters['helper/search/pagination'])
-    const collection = computed(() => store.getters['publicLibrary/collection'])
-    const breadcrumbList = computed(() => store.getters['publicLibrary/collectionBreadcrumbList']({
-      name: t('II0001'),
-      nodeKey: null
-    }))
-    const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
-    const nodeList = computed(() => store.getters['publicLibrary/nodeList'])
-    const publishBy = computed(() => collection.value.publish.displayName)
-    const optionNode = computed(() => {
-      const optionList = [
-        [
-          {
-            name: t('RR0167'),
-            func: publicCloneByNode
-          }
-        ]
-      ]
-      if (isFirstLayer.value) {
-        optionList[0].push(optionShareNode)
-      }
-      return optionList
-    })
-
-    const currentNodeKey = ref(route.query.nodeKey)
-    const refSearchTable = ref(null)
-    const selectedNodeList = ref([])
-
-    const getPublicList = async (targetPage = 1, query) => {
-      await router.push({
-        name: route.name,
-        query: {
-          nodeKey: currentNodeKey.value,
-          ...query
-        }
-      })
-      await store.dispatch('publicLibrary/getPublicList', { targetPage, nodeKey: currentNodeKey.value, })
-    }
-
-    const search = () => refSearchTable.value.search(pagination.value.currentPage)
-
-    const goTo = (nodeKey) => {
-      currentNodeKey.value = nodeKey
-      store.dispatch('helper/search/reset', { sort: optionSort.base[0].value })
-      store.dispatch('helper/search/setPagination', { currentPage: 1 })
-      search()
-    }
-
-    const handleSelectAll = () => {
-      const stringifyArr = nodeList.value.map(node => JSON.stringify(node))
-      const duplicateArr = selectedNodeList.value.concat(stringifyArr)
-      selectedNodeList.value = [...new Set(duplicateArr)]
-    }
-
-    const openModalCollectionDetail = () => {
-      store.dispatch('helper/openModal', {
-        header: t('FF0006'),
-        component: 'modal-collection-detail',
-        properties: {
-          ...collection.value
-        }
-      })
-    }
-
-    watch(
-      () => isFirstLayer.value,
-      () => (selectedNodeList.value.length = 0)
-    )
-
-    return {
-      getPublicList,
-      optionSort,
-      pagination,
-      refSearchTable,
-      SEARCH_TYPE,
-      NODE_TYPE,
-      nodeList,
-      goTo,
-      breadcrumbList,
-      optionNode,
-      isFirstLayer,
-      openModalCollectionDetail,
-      publishBy,
-      goToPublicLibraryMaterialDetail,
-      selectedNodeList,
-      handleSelectAll,
-      publicCloneByCollection,
-      collection,
-      optionMultiSelect,
-      currentNodeKey,
-      planStatus
-    }
+const props = defineProps({
+  nodeKey: {
+    type: String,
+    default: null
   }
+})
+
+const optionSort = {
+  base: [
+    SORT_BY.RANDOM,
+    SORT_BY.NEW_ARRIVED
+  ],
+  keywordSearch: []
 }
 
+const optionMultiSelect = [
+  {
+    name: t('RR0167'),
+    func: publicCloneByNodeList
+  }
+]
+const planStatus = computed(() => store.getters['organization/planStatus'])
+const pagination = computed(() => store.getters['helper/search/pagination'])
+const collection = computed(() => store.getters['publicLibrary/collection'])
+const breadcrumbList = computed(() => store.getters['publicLibrary/collectionBreadcrumbList']({
+  name: t('II0001'),
+  nodeKey: null
+}))
+const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
+const nodeList = computed(() => store.getters['publicLibrary/nodeList'])
+const publishBy = computed(() => collection.value.publish.displayName)
+const optionNode = computed(() => {
+  const optionList = [
+    [
+      {
+        name: t('RR0167'),
+        func: publicCloneByNode
+      }
+    ]
+  ]
+  if (isFirstLayer.value) {
+    optionList[0].push(optionShareNode)
+  }
+  return optionList
+})
+
+const currentNodeKey = ref(props.nodeKey)
+const selectedNodeList = ref([])
+
+const getPublicList = async (targetPage = 1, query) => {
+  await router.push({
+    name: route.name,
+    params: {
+      nodeKey: currentNodeKey.value
+    },
+    query
+  })
+  await store.dispatch('publicLibrary/getPublicList', { targetPage, nodeKey: currentNodeKey.value === '' ? null : currentNodeKey.value })
+}
+
+const openModalCollectionDetail = () => {
+  store.dispatch('helper/openModal', {
+    header: t('FF0006'),
+    component: 'modal-collection-detail',
+    properties: {
+      ...collection.value
+    }
+  })
+}
+
+watch(
+  () => isFirstLayer.value,
+  () => (selectedNodeList.value.length = 0)
+)
 </script>

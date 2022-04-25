@@ -66,12 +66,8 @@ export default {
         return
       }
 
-      if (props.path === route.path) {
-        await router.push(props.path)
-        store.dispatch('helper/reloadInnerApp')
-      } else {
-        router.push(props.path)
-      }
+      await router.push(props.path)
+      store.dispatch('helper/reloadInnerApp')
     }
 
     return {

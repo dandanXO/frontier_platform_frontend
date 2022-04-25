@@ -208,6 +208,11 @@ export default {
         ? await workspaceApi.org.generateSocialMedia({ orgId: rootGetters['organization/orgId'], workspaceNodeId, type })
         : await workspaceApi.group.generateSocialMedia({ groupId: rootGetters['group/groupId'], workspaceNodeId, type })
       return data.result.key
+    },
+    async updateEmbedDownloadPermission ({ rootGetters }, { embedKey, isCanDownloadU3M }) {
+      rootGetters['helper/routeLocation'] === 'org'
+        ? await workspaceApi.org.updateEmbedDownloadPermission({ orgId: rootGetters['organization/orgId'], embedKey, isCanDownloadU3M })
+        : await workspaceApi.group.updateEmbedDownloadPermission({ groupId: rootGetters['group/groupId'], embedKey, isCanDownloadU3M })
     }
   }
 }

@@ -133,7 +133,7 @@ export default {
       set: (v) => emit('update:selectedList', v)
     })
 
-    const haveSelectedMoreThanOne = computed(() => props.selectedList.length > 0)
+    const haveSelectedMoreThanOne = computed(() => props.isSelectable && props.selectedList.length > 0)
 
     return {
       isHover,

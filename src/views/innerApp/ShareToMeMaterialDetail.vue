@@ -7,7 +7,7 @@ div(class="w-full h-full flex justify-center")
         h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{ `${material.materialNo} ${material.description}` }}
         tooltip(placement="bottom")
           template(#trigger)
-            svg-icon(iconName="clone" class="text-black-700 cursor-pointer hover:text-brand" size="24" @click="shareToMeCloneByMaterial(nodeKey, share.isCanClone)")
+            svg-icon(iconName="clone" class="text-black-700 cursor-pointer hover:text-brand" size="24" @click="shareToMeCloneByMaterial(nodeKey, sharingId, share.isCanClone)")
           template(#content)
             p(class="text-caption text-primary px-3 py-1") {{ $t("RR0056") }}
         div(class="relative cursor-pointer ml-3" @click="openModalShareMessage")
@@ -19,7 +19,7 @@ div(class="w-full h-full flex justify-center")
     material-detail-external(:material="material" :isCanDownloadU3M="share.isCanDownloadU3M")
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
@@ -28,76 +28,56 @@ import { useRoute } from 'vue-router'
 import useShareToMe from '@/composables/useShareToMe'
 import MaterialDetailExternal from '@/components/layout/materialDetail/MaterialDetailExternal.vue'
 
-export default {
-  name: 'ShareToMeMaterialDetail',
-  components: {
-    MaterialDetailExternal
-  },
-  props: {
-    nodeKey: {
-      type: [Number, String],
-      required: true
-    }
-  },
-  async setup (props) {
-    const { t } = useI18n()
-    const store = useStore()
-    const route = useRoute()
-    const { parsePath, prefixPath } = useNavigation()
-    const { shareToMeCloneByMaterial } = useShareToMe()
-    const sharingId = ref(route.query.sharingId)
+const props = defineProps({
+  nodeKey: {
+    type: String,
+    required: true
+  }
+})
 
-    await store.dispatch('shareToMe/getShareToMeMaterial', { nodeKey: props.nodeKey, sharingId: sharingId.value })
+const { t } = useI18n()
+const store = useStore()
+const route = useRoute()
+const { parsePath, prefixPath } = useNavigation()
+const { shareToMeCloneByMaterial } = useShareToMe()
+const sharingId = ref(route.query.sharingId)
 
-    const material = computed(() => store.getters['shareToMe/material'])
-    const share = computed(() => store.getters['shareToMe/materialShare'])
-    const breadcrumbList = computed(() => {
-      const materialBreadcrumbList = store.getters['shareToMe/materialBreadcrumbList']
-      const list = [
-        {
-          name: t('RR0010'),
-          path: parsePath(`${prefixPath.value}/share-to-me`)
+await store.dispatch('shareToMe/getShareToMeMaterial', { nodeKey: props.nodeKey, sharingId: sharingId.value })
+
+const material = computed(() => store.getters['shareToMe/material'])
+const share = computed(() => store.getters['shareToMe/materialShare'])
+const breadcrumbList = computed(() => {
+  return [
+    {
+      name: t('RR0010'),
+      path: parsePath(`${prefixPath.value}/share-to-me`)
+    },
+    ...store.getters['shareToMe/materialBreadcrumbList'].map(({ name, nodeKey }, index, array) => {
+      if (index !== array.length - 1) {
+        return {
+          name,
+          path: parsePath(`${prefixPath.value}/share-to-me/${nodeKey}?sharingId=${sharingId.value}`)
         }
-      ]
-      for (let i = 0; i <= materialBreadcrumbList.length - 1; i++) {
-        const { name, nodeKey } = materialBreadcrumbList[i]
-        if (i !== materialBreadcrumbList.length - 1) {
-          list.push({
-            name,
-            path: parsePath(`${prefixPath.value}/share-to-me?nodeKey=${nodeKey}&sharingId=${sharingId.value}`)
-          })
-        } else {
-          list.push({
-            name: material.value.materialNo,
-            path: parsePath(`${prefixPath.value}/share-to-me/${nodeKey}?sharingId=${sharingId.value}`)
-          })
+      } else {
+        return {
+          name: material.value.materialNo,
+          path: parsePath(`${prefixPath.value}/share-to-me/material/${nodeKey}?sharingId=${sharingId.value}`)
         }
       }
-      return list
     })
-    const isFirstTime = ref(true)
-    const haveMsgAndFirstRead = computed(() => !!share.value?.message && isFirstTime.value)
+  ]
+})
+const isFirstTime = ref(true)
+const haveMsgAndFirstRead = computed(() => !!share.value?.message && isFirstTime.value)
 
-    const openModalShareMessage = () => {
-      isFirstTime.value = false
-      store.dispatch('helper/openModal', {
-        component: 'modal-share-message',
-        header: t('RR0146'),
-        properties: {
-          message: share.value.message
-        }
-      })
+const openModalShareMessage = () => {
+  isFirstTime.value = false
+  store.dispatch('helper/openModal', {
+    component: 'modal-share-message',
+    header: t('RR0146'),
+    properties: {
+      message: share.value.message
     }
-
-    return {
-      breadcrumbList,
-      material,
-      share,
-      shareToMeCloneByMaterial,
-      haveMsgAndFirstRead,
-      openModalShareMessage
-    }
-  }
+  })
 }
-
 </script>
