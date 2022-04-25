@@ -28,8 +28,8 @@ div(class="w-full")
         div(v-for="org in orgList" class="w-58 h-55 rounded-md border border-black-400 bg-black-100 flex flex-col items-center py-5 cursor-pointer" @click="goToPublicLibrary(org.orgNo)")
           div(class="w-15 h-15 mb-5")
             img(:src="org.logo" class="rounded-full")
-          span(class="text-body1 text-primary font-bold mb-3") {{ org.orgName }}
-          span(class="text-black-650 text-caption mb-7.5") {{ `${org.memberList.length} ${$t("AA0010")}` }}
+          p(class="text-body1 text-primary text-center font-bold mb-1 w-50 truncate break-all leading-1.4") {{ org.orgName }}
+          p(class="text-black-650 text-caption mb-7.5") {{ `${org.memberList.length} ${$t("AA0010")}` }}
           avatar-group(:avatarList="org.memberList.map(member => member.avatar)" direction="rtl")
         div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg(true)")
           div(class="grid justify-items-center gap-y-3.5")
