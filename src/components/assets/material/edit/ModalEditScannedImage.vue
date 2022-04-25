@@ -1,9 +1,9 @@
 <template lang="pug">
 div(class="min-w-86 max-w-196 px-8 pt-5")
   div(class="flex")
-    div(v-if="isDoubleSideMaterial || isFaceSideMaterial" class="w-70 text-primary text-body2 font-bold text-center mb-3.5") {{$t('EE0051')}}
+    div(v-if="isDoubleSideMaterial || isFaceSideMaterial" class="w-70 text-primary text-body2 font-bold text-center mb-3.5") {{ $t('EE0051') }}
     div(v-if="isDoubleSideMaterial" class="w-40")
-    div(v-if="isDoubleSideMaterial || !isFaceSideMaterial" class="w-70 text-primary text-body2 font-bold text-center mb-3.5") {{$t('EE0052')}}
+    div(v-if="isDoubleSideMaterial || !isFaceSideMaterial" class="w-70 text-primary text-body2 font-bold text-center mb-3.5") {{ $t('EE0052') }}
   div(class="flex justify-between" :class="[isExchange ? 'flex-row-reverse' : '']")
     template(v-for="cropper in croppers")
       cropper-default-layout(
@@ -17,27 +17,26 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
         @update:rotateDeg="cropper.config.rotateDeg = $event"
         @update:scaleRatio="handleUpdateScaleRatio(cropper, $event)"
       )
-        template(#imageCropArea="{innerScaleSize, innerShowScale}")
+        template(#imageCropArea="{ innerScaleSize, innerShowScale }")
           image-crop-area(
             :ref="(el => handleRefUpdate(cropper.ref, el))"
             :config="cropper.config"
             :cropRectSize="cropRectSize"
-            :lowResolution="false"
             @update:options="Object.assign(cropper.config.options, $event)"
           )
             div(class="mt-1 absolute w-full")
               div(class="h-2 flex items-center border-r-2 border-l-2 border-primary")
                 div(class="h-0.5 bg-primary w-full")
-              div(class="text-caption text-primary font-bold text-center") {{innerShowScale ? innerScaleSize : formattedScaleSize}}cm
+              div(class="text-caption text-primary font-bold text-center") {{ innerShowScale ? innerScaleSize : formattedScaleSize }}cm
       div(
         v-if="isDoubleSideMaterial && croppers.length < 2"
         class="w-70 h-70 flex justify-center items-center"
         style="background-color: #F1F2F5"
       )
-        div(class="bg-black-500" :style="{width: cropRectSize + 'px', height: cropRectSize + 'px'}")
+        div(class="bg-black-500" :style="{ width: cropRectSize + 'px', height: cropRectSize + 'px' }")
     div(v-if="isDoubleSideMaterial" class="absolute inset-x-0 w-full flex flex-col items-center transform -translate-y-1.5")
       div(class="text-primary text-body2 flex justify-center items-center mb-3.5 gap-1")
-        div {{$t('EE0098')}}
+        div {{ $t('EE0098') }}
         div(class="w-15 flex justify-center items-center")
           input(
             v-model.number="formattedScaleSize"
@@ -56,10 +55,10 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
       )
       div(class="mt-3 cursor-pointer text-primary" @click="isExchange = !isExchange")
         svg-icon(iconName="swap_horiz" size="24" class="m-auto")
-        div(class="mt-2 text-center text-caption") {{$t('EE0053')}}
+        div(class="mt-2 text-center text-caption") {{ $t('EE0053') }}
   btn-group(
     class="h-25"
-    :class="{'mt-6': isDoubleSideMaterial}"
+    :class="{ 'mt-6': isDoubleSideMaterial }"
     :primaryText="$t('UU0018')"
     @click:primary="confirm"
     :secondaryButton="true"
@@ -237,6 +236,7 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+
   &:focus {
     outline: 0;
   }
