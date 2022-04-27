@@ -305,6 +305,11 @@ export default {
       const { extension, file, fileName } = data?.result
       downloadBase64File(file, extension, fileName)
     },
+    async massExportMaterial ({ rootGetters }, { materialIdList }) {
+      rootGetters['helper/routeLocation'] === 'org'
+        ? await assetsApi.org.massExportMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
+        : await assetsApi.group.massExportMaterial({ groupId: rootGetters['group/groupId'], materialIdList })
+    },
     async cloneCheck ({ rootGetters }, { materialIdList }) {
       const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.cloneCheck({ orgId: rootGetters['organization/orgId'], materialIdList })
