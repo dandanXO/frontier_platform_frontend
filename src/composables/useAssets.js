@@ -5,7 +5,7 @@ import { U3M_STATUS } from '@/utils/constants'
 
 export default function useAssets () {
   const { t } = useI18n()
-  const { goToAssetMaterialEdit } = useNavigation()
+  const { goToAssetMaterialEdit, goToMaterialUpload } = useNavigation()
   const store = useStore()
 
   const editMaterial = {
@@ -122,10 +122,21 @@ export default function useAssets () {
             properties: {
               btnText: t('UU0032'),
               btnClickHandler: () => {
-                store.dispatch('helper/replaceModal', {
+                store.dispatch('helper/openModalBehavior', {
                   component: 'modal-how-to-scan',
-                  header: t('DD0043'),
                   properties: {
+                    header: t('UU0032'),
+                    title: t('EE0109'),
+                    description: t('EE0110'),
+                    primaryBtnText: t('UU0094'),
+                    secondaryBtnText: t('UU0092'),
+                    primaryHandler: () => {
+                      store.dispatch('helper/closeModalBehavior')
+                    },
+                    secondaryHandler: () => {
+                      goToMaterialUpload()
+                      store.dispatch('helper/closeModalBehavior')
+                    },
                     materialList: [v]
                   }
                 })

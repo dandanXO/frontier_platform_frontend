@@ -17,75 +17,64 @@ div
       )
 </template>
 
-<script>
+<script setup>
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import AttachmentItem from '@/components/assets/material/edit/AttachmentItem.vue'
 
-export default {
-  name: 'BlockMaterialAttachment',
-  props: {
-    tempMaterialId: {
-      type: String
-    }
-  },
-  components: { AttachmentItem },
-  setup (props) {
-    const { t } = useI18n()
-    const store = useStore()
-    const attachmentList = computed(() => store.getters['assets/attachmentList'])
-    const isEditMode = computed(() => store.getters['assets/material'].materialId !== null)
-
-    const openModalUpload = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-upload-attachment',
-        properties: {
-          uploadHandler: async (file, displayFileName) => {
-            if (isEditMode.value) {
-              await store.dispatch('assets/uploadAttachmentWhenUpdate', {
-                file,
-                displayFileName
-              })
-            } else {
-              await store.dispatch('assets/uploadAttachmentWhenCreate', {
-                tempMaterialId: props.tempMaterialId,
-                file,
-                displayFileName
-              })
-            }
-          }
-        }
-      })
-    }
-
-    const handleRemove = (attachment) => {
-      store.dispatch('helper/openModalConfirm', {
-        type: 0,
-        header: t('DD0068'),
-        content: t('DD0069'),
-        primaryBtnText: t('UU0001'),
-        primaryBtnHandler: async () => {
-          if (isEditMode.value) {
-            store.dispatch('assets/removeAttachmentWhenUpdate', {
-              materialAttachmentId: attachment.materialAttachmentId
-            })
-          } else {
-            store.dispatch('assets/removeAttachmentWhenCreate', {
-              tempMaterialId: props.tempMaterialId,
-              tempMaterialAttachmentId: attachment.tempMaterialAttachmentId
-            })
-          }
-        },
-        secondaryBtnText: t('UU0002')
-      })
-    }
-
-    return {
-      attachmentList,
-      openModalUpload,
-      handleRemove
-    }
+const props = defineProps({
+  tempMaterialId: {
+    type: String
   }
+})
+
+const { t } = useI18n()
+const store = useStore()
+const attachmentList = computed(() => store.getters['assets/attachmentList'])
+const isEditMode = computed(() => store.getters['assets/material'].materialId !== null)
+
+const openModalUpload = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-upload-attachment',
+    properties: {
+      uploadHandler: async (file, displayFileName) => {
+        if (isEditMode.value) {
+          await store.dispatch('assets/uploadAttachmentWhenUpdate', {
+            file,
+            displayFileName
+          })
+        } else {
+          await store.dispatch('assets/uploadAttachmentWhenCreate', {
+            tempMaterialId: props.tempMaterialId,
+            file,
+            displayFileName
+          })
+        }
+      }
+    }
+  })
+}
+
+const handleRemove = (attachment) => {
+  store.dispatch('helper/openModalConfirm', {
+    type: 0,
+    header: t('DD0068'),
+    content: t('DD0069'),
+    primaryBtnText: t('UU0001'),
+    primaryBtnHandler: async () => {
+      if (isEditMode.value) {
+        store.dispatch('assets/removeAttachmentWhenUpdate', {
+          materialAttachmentId: attachment.materialAttachmentId
+        })
+      } else {
+        store.dispatch('assets/removeAttachmentWhenCreate', {
+          tempMaterialId: props.tempMaterialId,
+          tempMaterialAttachmentId: attachment.tempMaterialAttachmentId
+        })
+      }
+    },
+    secondaryBtnText: t('UU0002')
+  })
 }
 </script>

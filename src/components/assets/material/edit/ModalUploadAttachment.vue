@@ -1,84 +1,76 @@
 <template lang="pug">
-div(class="w-115 px-7.5")
-  div(class="text-h6 text-primary text-center font-bold") {{ $t("DD0054") }}
-  p(class="text-caption text-black-600 text-right mb-1.5") *{{ $t("RR0163") }}
-  div(class="mb-7.5")
-    input-text-btn(
-      class="w-full"
-      disabledInput
-      :label="$t('DD0038')"
-      :textValue="originalFileName"
-      :clearable="false"
-      :buttonLabel="$t('UU0025')"
-      @click:button="chooseFile"
-      required
-    )
-    p(class="text-primary text-caption leading-1.6") {{ $t("DD0055") }}
-    p(class="text-primary text-caption leading-1.6") {{ $t("DD0056") }}
-  div
-    input-text(
-      v-model:textValue="fileName"
-      :label="$t('DD0057')"
-      :placeholder="$t('DD0058')"
-      required
-    )
-  div(class="h-25 flex justify-center items-center")
-    div(class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" @click="closeModal") {{ $t("UU0002") }}
-      btn(size="md" :disabled="disabled" @click="upload") {{ $t("UU0022") }}
+modal-behavior(
+  :header="$t('DD0054')"
+  :primaryBtnText="$t('UU0022')"
+  :secondaryBtnText="$t('UU0002')"
+  :primaryBtnDisabled="disabledUpload"
+  @click:primary="handleUpload"
+  @click:secondary="closeModalBehavior"
+)
+  div(class="w-94")
+    p(class="text-caption text-black-600 text-right mb-1.5") 
+      span(class="text-warn") *
+      span {{ $t("RR0163") }}
+    div(class="mb-7.5")
+      input-text-btn(
+        class="w-full mb-1.5"
+        disabledInput
+        :label="$t('DD0038')"
+        :textValue="originalFileName"
+        :clearable="false"
+        :buttonLabel="$t('UU0025')"
+        @click:button="chooseFile"
+        required
+      )
+      p(class="text-black-800 text-caption leading-1.6") {{ $t("DD0055") }}
+      p(class="text-black-800 text-caption leading-1.6") {{ $t("DD0056") }}
+    div
+      input-text(
+        v-model:textValue="fileName"
+        :label="$t('DD0057')"
+        :placeholder="$t('DD0058')"
+        required
+      )
 </template>
 
-<script>
+<script setup>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { FileOperator } from '@/utils/fileOperator'
 
-export default {
-  name: 'ModalUploadAttachment',
-  props: {
-    uploadHandler: {
-      type: Function
-    }
-  },
-  setup (props) {
-    const store = useStore()
-    const fileName = ref('')
-    const originalFileName = ref('')
-    const acceptType = ['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mov', 'mp4']
-    const fileOperator = new FileOperator(acceptType, 20)
-    let binaryFile
+const props = defineProps({
+  uploadHandler: {
+    type: Function
+  }
+})
 
-    const chooseFile = () => {
-      fileOperator.upload()
-    }
+const store = useStore()
+const fileName = ref('')
+const originalFileName = ref('')
+const disabledUpload = computed(() => !fileName.value || !originalFileName.value)
 
-    fileOperator.on('finish', (file) => {
-      binaryFile = file
-      fileName.value = file.name
-      originalFileName.value = file.name
-    })
+const acceptType = ['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mov', 'mp4']
+const fileOperator = new FileOperator(acceptType, 20)
+let binaryFile
 
-    const upload = async () => {
-      if (typeof props.uploadHandler === 'function') {
-        store.dispatch('helper/pushModalLoading')
-        await props.uploadHandler(binaryFile, fileName.value)
-        store.dispatch('helper/closeModalLoading')
-        closeModal()
-      }
-    }
+const chooseFile = () => {
+  fileOperator.upload()
+}
 
-    const disabled = computed(() => !fileName.value || !originalFileName.value)
+fileOperator.on('finish', (file) => {
+  binaryFile = file
+  fileName.value = file.name
+  originalFileName.value = file.name
+})
 
-    const closeModal = () => { store.dispatch('helper/closeModal') }
-
-    return {
-      originalFileName,
-      fileName,
-      chooseFile,
-      upload,
-      disabled,
-      closeModal
-    }
+const handleUpload = async () => {
+  if (typeof props.uploadHandler === 'function') {
+    store.dispatch('helper/pushModalLoading')
+    await props.uploadHandler(binaryFile, fileName.value)
+    store.dispatch('helper/closeModalLoading')
+    closeModalBehavior()
   }
 }
+
+const closeModalBehavior = () => store.dispatch('helper/closeModalBehavior')
 </script>

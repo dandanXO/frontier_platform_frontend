@@ -36,7 +36,7 @@ div(class="w-full h-full flex justify-center")
           btn(size="md" class="h-10" @click="createMaterial") {{ $t("UU0020") }}
 </template>
 
-<script>
+<script setup>
 import BlockMaterialInformation from '@/components/assets/material/edit/BlockMaterialInformation.vue'
 import BlockMaterialInventory from '@/components/assets/material/edit/BlockMaterialInventory.vue'
 import BlockMaterialPricing from '@/components/assets/material/edit/BlockMaterialPricing.vue'
@@ -50,136 +50,124 @@ import { SIDE_TYPE } from '@/utils/constants'
 import { computed, ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 
-export default {
-  name: 'AssetsMaterialCreate',
-  components: {
-    BlockMaterialInformation,
-    BlockMaterialInventory,
-    BlockMaterialPricing,
-    BlockMaterialAttachment
+const { t } = useI18n()
+const store = useStore()
+const { validations, validate } = useMaterialValidation()
+const { parsePath, goToMaterialUpload, goToAssets } = useNavigation()
+const tempMaterialId = uuidv4()
+const optionSideType = [
+  {
+    name: t('DD0048'),
+    value: SIDE_TYPE.FACE
   },
-  async setup () {
-    const { t } = useI18n()
-    const store = useStore()
-    const { validations, validate } = useMaterialValidation()
-    const { parsePath, goToMaterialUpload, goToAssets } = useNavigation()
-    const tempMaterialId = uuidv4()
-    const optionSideType = [
-      {
-        name: t('DD0048'),
-        value: SIDE_TYPE.FACE
-      },
-      {
-        name: t('DD0049'),
-        value: SIDE_TYPE.BACK
-      }
-    ]
-
-    const optionSingleOrDouble = [
-      {
-        name: t('DD0014'),
-        value: true
-      },
-      {
-        name: t('DD0061'),
-        value: false
-      }
-    ]
-
-    const isConfirmedToLeave = ref(false)
-
-    const material = computed(() => store.getters['assets/material'])
-    const routeLocation = computed(() => store.getters['helper/routeLocation'])
-    const breadcrumbList = computed(() => {
-      const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
-      return [
-        {
-          name: t('DD0044'),
-          path: parsePath(`${prefix}/assets`)
-        },
-        {
-          name: t('DD0045'),
-          path: parsePath(`${prefix}/assets/upload`)
-        },
-        {
-          name: t('DD0012'),
-          path: parsePath(`${prefix}/assets/upload/manual`)
-        }
-      ]
-    })
-
-    const createMaterial = async () => {
-      if (validate()) {
-        return
-      }
-
-      store.dispatch('helper/pushModalLoading')
-      await store.dispatch('assets/createMaterial', { tempMaterialId })
-      store.dispatch('helper/closeModalLoading')
-      isConfirmedToLeave.value = true
-      goToAssets()
-      store.dispatch('helper/pushModal', {
-        header: t('DD0029'),
-        component: 'modal-how-to-scan',
-        properties: {
-          materialList: [material.value]
-        }
-      })
-    }
-
-    const cancel = async () => {
-      store.dispatch('helper/pushModalConfirm', {
-        type: 1,
-        header: t('DD0033'),
-        content: t('DD0034'),
-        primaryBtnText: t('UU0001'),
-        primaryBtnHandler: () => {
-          isConfirmedToLeave.value = true
-          goToMaterialUpload()
-        },
-        secondaryBtnText: t('UU0002')
-      })
-    }
-
-    const openModalMassUpload = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-mass-upload'
-      })
-    }
-
-    onBeforeRouteLeave(async () => {
-      if (isConfirmedToLeave.value) {
-        return true
-      }
-      const result = await new Promise((resolve) => {
-        store.dispatch('helper/openModalConfirm', {
-          type: 3,
-          header: t('EE0045'),
-          content: t('EE0046'),
-          primaryBtnText: t('UU0001'),
-          primaryBtnHandler: resolve.bind(undefined, 'confirm'),
-          secondaryBtnText: t('UU0002'),
-          secondaryBtnHandler: resolve.bind(undefined, 'cancel')
-        })
-      })
-
-      return result === 'confirm'
-    })
-
-    store.dispatch('assets/resetMaterial')
-    await store.dispatch('assets/getMaterialOptions')
-
-    return {
-      validations,
-      createMaterial,
-      cancel,
-      optionSideType,
-      optionSingleOrDouble,
-      material,
-      breadcrumbList,
-      tempMaterialId,
-      openModalMassUpload
-    }
+  {
+    name: t('DD0049'),
+    value: SIDE_TYPE.BACK
   }
+]
+
+const optionSingleOrDouble = [
+  {
+    name: t('DD0014'),
+    value: true
+  },
+  {
+    name: t('DD0061'),
+    value: false
+  }
+]
+
+const isConfirmedToLeave = ref(false)
+
+const material = computed(() => store.getters['assets/material'])
+const routeLocation = computed(() => store.getters['helper/routeLocation'])
+const breadcrumbList = computed(() => {
+  const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
+  return [
+    {
+      name: t('DD0044'),
+      path: parsePath(`${prefix}/assets`)
+    },
+    {
+      name: t('DD0045'),
+      path: parsePath(`${prefix}/assets/upload`)
+    },
+    {
+      name: t('DD0012'),
+      path: parsePath(`${prefix}/assets/upload/manual`)
+    }
+  ]
+})
+
+const createMaterial = async () => {
+  if (validate()) {
+    return
+  }
+
+  store.dispatch('helper/openModalLoading')
+  await store.dispatch('assets/createMaterial', { tempMaterialId })
+  store.dispatch('helper/closeModalLoading')
+
+  isConfirmedToLeave.value = true
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-how-to-scan',
+    properties: {
+      header: t('DD0096'),
+      title: t('DD0028'),
+      primaryBtnText: t('UU0093'),
+      secondaryBtnText: t('UU0092'),
+      primaryHandler: () => {
+        goToAssets()
+        store.dispatch('helper/closeModalBehavior')
+      },
+      secondaryHandler: () => {
+        goToMaterialUpload()
+        store.dispatch('helper/closeModalBehavior')
+      },
+      materialList: [material.value]
+    }
+  })
 }
+
+const cancel = async () => {
+  store.dispatch('helper/pushModalConfirm', {
+    type: 1,
+    header: t('DD0033'),
+    content: t('DD0034'),
+    primaryBtnText: t('UU0001'),
+    primaryBtnHandler: () => {
+      isConfirmedToLeave.value = true
+      goToMaterialUpload()
+    },
+    secondaryBtnText: t('UU0002')
+  })
+}
+
+const openModalMassUpload = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-mass-upload'
+  })
+}
+
+onBeforeRouteLeave(async () => {
+  if (isConfirmedToLeave.value) {
+    return true
+  }
+  const result = await new Promise((resolve) => {
+    store.dispatch('helper/openModalConfirm', {
+      type: 1,
+      header: t('EE0045'),
+      content: t('EE0046'),
+      primaryBtnText: t('UU0001'),
+      primaryBtnHandler: resolve.bind(undefined, 'confirm'),
+      secondaryBtnText: t('UU0002'),
+      secondaryBtnHandler: resolve.bind(undefined, 'cancel')
+    })
+  })
+
+  return result === 'confirm'
+})
+
+store.dispatch('assets/resetMaterial')
+await store.dispatch('assets/getMaterialOptions')
 </script>

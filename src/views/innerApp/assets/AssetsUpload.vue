@@ -1,112 +1,130 @@
 <template lang="pug">
-div(class="w-full h-full flex justify-center")
-  div(class="w-230 h-fit pb-25")
-    div(class="pt-12 pb-9 flex justify-between")
-      breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
-    div(class="pt-30 pb-30 grid grid-cols-11")
-      div(class="col-span-4")
-        h3(class="text-h3 text-primary pb-5") {{ $t("DD0001") }}
-        p(class="text-body1 text-primary leading-1.6") {{ $t("DD0002") }}
-      div(class="col-start-6 col-span-6 flex flex-col gap-y-7.5")
-        div(class="flex gap-x-7.5")
-          h5(class="text-h5 text-primary font-bold whitespace-nowrap") {{ $t("DD0003") }}
-          div(class="flex flex-col gap-y-2 text-primary")
-            p(class="text-body2 leading-1.6") {{ $t("DD0004") }}
-            p(class="text-body1 font-bold") {{ uploadMaterialEmail }}
-            div(class="flex items-center gap-x-1")
-              qr-code-backside-general
-                template(#activator="{ generatePdf }")
-                  span(class="text-assist-blue underline cursor-pointer" @click="generatePdf") {{ $t("UU0007") }}
-              tooltip(placement="right")
-                template(#trigger)
-                  svg-icon(iconName="info_outline" size="14" class="text-primary")
-                template(#content)
-                  div(class="w-75 p-5")
-                    img(src="@/assets/images/back_side.png")
-                    p(class="mt-5 text-primary text-body2 leading-1.6") {{ $t("DD0010") }}
-        div(class="flex gap-x-7.5 text-primary")
-          h5(class="text-h5 font-bold whitespace-nowrap") {{ $t("DD0005") }}
-          p(class="text-body2 leading-1.6") {{ $t("DD0006") }}
-    div(class="w-full h-px bg-black-400")
-    div(class="pt-30 grid grid-cols-11")
-      div(class="col-span-4")
-        h3(class="text-h3 text-primary pb-5") {{ $t("DD0007") }}
-        p(class="text-body1 text-primary leading-1.6") {{ $t("DD0008") }}
-      div(class="col-start-6 col-span-6 flex flex-col gap-y-8")
-        div
-          btn(size="md" @click="goToAssetsMaterialCreate") {{ $t("UU0008") }}
-        div(class="flex gap-x-7.5")
-          btn(size="md" type="secondary" @click="openModalMassUpload") {{ $t("UU0009") }}
+overlay-scrollbar-container(class="w-full h-full")
+  div(class="ml-7.5 mt-7.5")
+    breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
+  div(class="w-full h-full flex justify-center")
+    div(class="w-240")
+      div(class="ml-5 mt-15.5")
+        h3(class="text-h3 text-primary pb-5 font-medium") {{ $t("DD0001") }}
+        div(class="flex justify-between items-end")
+          div(class="text-primary text-body1 leading-1.6")
+            p {{ $t("DD0079") }}
+            p {{ $t("DD0080") }}
+          div(class="flex items-center text-black-700 cursor-pointer hover:text-primary" @click="openModalBackSideQrcode")
+            svg-icon(iconName="info_outline" size="20" class=" mr-1.5")
+            p(class="text-body2 font-bold") {{ $t("DD0081") }}
+      div(class="mt-8")
+        div(class="grid grid-cols-3 gap-7.5")
           div
-            p(class="text-body2 text-black-900") {{ $t("DD0009") }}
-            div(class="flex items-center gap-x-1")
-              a(v-if="locale === 'en-US'"
-                target="_blank"
-                class="text-assist-blue underline cursor-pointer"
-                href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(英文版).xlsx"
-              ) {{ $t("UU0010") }}
-              a(v-else
-                target="_blank"
-                class="text-assist-blue underline cursor-pointer"
-                href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(中文版).xlsx"
-              ) {{ $t("UU0010") }}
-              tooltip(placement="bottom")
-                template(#trigger)
-                  svg-icon(iconName="info_outline" size="14" class="text-primary")
-                template(#content)
-                  p(class="w-75 p-5 text-primary text-body2 leading-1.6") {{ $t("DD0011") }}
+            div(class="border border-black-400 card-shadow rounded-md")
+              div(class="h-64 flex items-end justify-center")
+                img(src="@/assets/images/upload_step1.png" class="w-60")
+              div(class="flex min-h-20 bg-black-200 rounded-b-md p-4")
+                div(class="mr-2 flex-shrink-0 bg-black-0 text-black-500 rounded-full w-6 h-6 flex items-center justify-center") 1
+                div(class="text-primary text-body1 font-bold leading-1.6") {{ $t("DD0082") }}
+            div(class="text-primary pl-5 pt-6")
+              p(class="text-body2 font-bold leading-1.6 mb-1.5") {{ $t("DD0072") }}
+              ul(class="text-caption leading-1.6")
+                li 1. {{ $t("DD0073") }}
+                li 2. {{ $t("DD0074") }}
+                li 3. {{ $t("DD0075") }}
+          div
+            div(class="border border-black-400 card-shadow rounded-md")
+              div(class="h-64 flex items-end justify-center")
+                img(src="@/assets/images/upload_step2.png" class="w-60")
+              div(class="flex min-h-20 bg-black-200 rounded-b-md p-4")
+                div(class="mr-2 flex-shrink-0 bg-black-0 text-black-500 rounded-full w-6 h-6 flex items-center justify-center") 2
+                div(class="text-primary text-body1 font-bold leading-1.6") {{ $t("DD0083") }}
+            div(class="pl-5 pt-6 font-bold leading-1.6 text-body2")
+              p(class="text-primary mb-1.5") {{ $t("DD0086") }}:
+              p(class="text-brand") {{ uploadMaterialEmail }}
+          div
+            div(class="border border-black-400 card-shadow rounded-md")
+              div(class="h-64 flex items-end justify-center")
+                img(src="@/assets/images/upload_step3.png" class="w-60")
+              div(class="flex min-h-20 bg-black-200 rounded-b-md p-4")
+                div(class="mr-2 flex-shrink-0 bg-black-0 text-black-500 rounded-full w-6 h-6 flex items-center justify-center") 3
+                div(class="text-primary text-body1 font-bold leading-1.6")
+                  div {{ $t("DD0084") }}
+                  i18n-t(keypath="DD0085" tag="div")
+                    template(#RR0008)
+                      span(class="text-assist-blue underline cursor-pointer" @click="goToAssets") {{ $t("RR0008") }}
+        div(class="pt-26 pb-18")
+          div(class="text-h6 font-bold text-black-600 pb-5") {{ $t("DD0087") }}
+          div(class="grid gap-3")
+            div(v-for="option in alternativeUploadOptions" class="flex py-6 px-7.5 cursor-pointer border rounded" @click="option.action")
+              svg-icon(:iconName="option.icon" size="32" class="text-brand")
+              div(class="grid gap-3 pl-7.5")
+                div(class="text-body1 font-bold text-primary") {{ option.title }}
+                div(class="text-caption text-black-600") {{ option.content }}
 </template>
 
-<script>
+<script setup>
 import useNavigation from '@/composables/useNavigation'
-import QrCodeBacksideGeneral from '@/components/qrcode/QrCodeBacksideGeneral.vue'
 import { computed } from '@vue/runtime-core'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 
-export default {
-  name: 'AssetsUpload',
-  components: {
-    QrCodeBacksideGeneral
+const { t } = useI18n()
+const store = useStore()
+const { prefixPath, parsePath, goToAssets, goToAssetsMaterialCreate } = useNavigation()
+const alternativeUploadOptions = [
+  {
+    icon: 'image_file',
+    title: t('DD0088'),
+    content: t('DD0089'),
+    action: () => openModalUploadMaterialImage()
   },
-  setup () {
-    const { t, locale } = useI18n()
-    const store = useStore()
-    const { parsePath, goToAssetsMaterialCreate } = useNavigation()
-    const routeLocation = computed(() => store.getters['helper/routeLocation'])
-    const breadcrumbList = computed(() => {
-      const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
-      return [
-        {
-          name: t('DD0044'),
-          path: parsePath(`${prefix}/assets`)
-        },
-        {
-          name: t('DD0045'),
-          path: parsePath(`${prefix}/assets/upload`)
-        }
-      ]
-    })
-
-    const uploadMaterialEmail = computed(() => {
-      return routeLocation.value === 'org'
-        ? store.getters['organization/uploadMaterialEmail']
-        : store.getters['group/uploadMaterialEmail']
-    })
-
-    const openModalMassUpload = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-mass-upload'
-      })
-    }
-
-    return {
-      locale,
-      breadcrumbList,
-      uploadMaterialEmail,
-      goToAssetsMaterialCreate,
-      openModalMassUpload
-    }
+  {
+    icon: 'add_box_outline',
+    title: t('DD0090'),
+    content: t('DD0091'),
+    action: () => goToAssetsMaterialCreate()
+  },
+  {
+    icon: 'multiple_file',
+    title: t('DD0092'),
+    content: t('DD0093'),
+    action: () => openModalMassUpload()
   }
+]
+
+const routeLocation = computed(() => store.getters['helper/routeLocation'])
+const breadcrumbList = computed(() => {
+  return [
+    {
+      name: t('DD0044'),
+      path: parsePath(`${prefixPath.value}/assets`)
+    },
+    {
+      name: t('DD0045'),
+      path: parsePath(`${prefixPath.value}/assets/upload`)
+    }
+  ]
+})
+
+const uploadMaterialEmail = computed(() => {
+  return routeLocation.value === 'org'
+    ? store.getters['organization/uploadMaterialEmail']
+    : store.getters['group/uploadMaterialEmail']
+})
+
+const openModalUploadMaterialImage = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-smart-upload'
+  })
 }
+
+const openModalBackSideQrcode = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-back-side-qrcode'
+  })
+}
+
+const openModalMassUpload = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-mass-upload'
+  })
+}
+
 </script>
