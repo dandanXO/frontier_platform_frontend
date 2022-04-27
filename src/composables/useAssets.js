@@ -173,9 +173,24 @@ export default function useAssets () {
     name: t('RR0060'),
     func: async (v) => {
       const materialIdList = Array.isArray(v) ? v.map(({ materialId }) => materialId) : [v.materialId]
-      store.dispatch('helper/openModalLoading')
-      await store.dispatch('assets/exportMaterial', { materialIdList })
-      store.dispatch('helper/closeModalLoading')
+
+      if (materialIdList.length >= 100) {
+        await store.dispatch('assets/massExportMaterial', { materialIdList })
+        store.dispatch('helper/openModalConfirm', {
+          type: 2,
+          header: t('PP0030'),
+          content: t('PP0031'),
+          primaryBtnText: t('UU0031'),
+          // secondaryBtnText: t('UU0090'),
+          // secondaryBtnHandler: () => {
+          //   // go to progress page 
+          // }
+        })
+      } else {
+        store.dispatch('helper/openModalLoading')
+        await store.dispatch('assets/exportMaterial', { materialIdList })
+        store.dispatch('helper/closeModalLoading')
+      }
     }
   }
 

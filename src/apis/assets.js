@@ -19,6 +19,10 @@ export default {
       method: 'POST',
       data: { orgId, materialIdList }
     }),
+    massExportMaterial: ({ orgId, materialIdList }) => axios('/org/assets/material/mass-export', {
+      method: 'POST',
+      data: { orgId, materialIdList }
+    }),
     cloneCheck: ({ orgId, materialIdList }) => axios('/org/assets/material/clone-check', {
       method: 'POST',
       data: { orgId, materialIdList }
@@ -184,6 +188,10 @@ export default {
       data: { groupId, materialIdList }
     }),
     exportMaterial: ({ groupId, materialIdList }) => axios('/org/group/assets/material/export', {
+      method: 'POST',
+      data: { groupId, materialIdList }
+    }),
+    massExportMaterial: ({ groupId, materialIdList }) => axios('/org/group/assets/material/mass-export', {
       method: 'POST',
       data: { groupId, materialIdList }
     }),
