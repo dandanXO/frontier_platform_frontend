@@ -338,6 +338,20 @@ export default {
         : await assetsApi.group.batchUpload({ groupId: rootGetters['group/groupId'], xlsxFile })
 
       return data
+    },
+    async smartUpload ({ rootGetters }, { fileList }) {
+      const { data } = rootGetters['helper/routeLocation'] === 'org'
+        ? await assetsApi.org.smartUpload({ orgId: rootGetters['organization/orgId'], fileList })
+        : await assetsApi.group.smartUpload({ groupId: rootGetters['group/groupId'], fileList })
+
+      return data
+    },
+    async getSmartUploadUrl ({ rootGetters }, { fileName }) {
+      const { data } = rootGetters['helper/routeLocation'] === 'org'
+        ? await assetsApi.org.getSmartUploadUrl({ fileName })
+        : await assetsApi.group.getSmartUploadUrl({ fileName })
+
+      return data
     }
   }
 }

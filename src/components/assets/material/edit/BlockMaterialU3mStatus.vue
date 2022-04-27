@@ -30,99 +30,95 @@ div
   btn(size="md" class="mt-2.5" :disabled="disabledCreate" @click="handleClick") {{ btnText }}
 </template>
 
-<script>
+<script setup>
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed, toRefs } from 'vue'
 import { U3M_STATUS } from '@/utils/constants'
 import useAssets from '@/composables/useAssets'
 import { downloadDataURLFile } from '@/utils/fileOperator'
+import useNavigation from '@/composables/useNavigation'
 
-export default {
-  name: 'BlockMaterialInternalU3mStatus',
-  props: {
-    material: {
-      type: Object,
-      required: true
-    }
-  },
-  setup (props) {
-    const { t } = useI18n()
-    const store = useStore()
-    const { create3DMaterial } = useAssets()
-    const { status, zipUrl, u3maUrl } = toRefs(props.material.u3m)
-    const { UNQUALIFIED, INITIAL, PROCESSING, COMPLETED, FAIL } = U3M_STATUS
+const props = defineProps({
+  material: {
+    type: Object,
+    required: true
+  }
+})
 
-    const u3mStatus = computed(() => {
-      const statusTextPair = {
-        [UNQUALIFIED]: t('EE0020'),
-        [INITIAL]: t('EE0019'),
-        [PROCESSING]: t('EE0022'),
-        [COMPLETED]: t('EE0018'),
-        [FAIL]: t('EE0024')
-      }
+const { t } = useI18n()
+const store = useStore()
+const { create3DMaterial } = useAssets()
+const { goToMaterialUpload } = useNavigation()
+const { status, zipUrl, u3maUrl } = toRefs(props.material.u3m)
+const { UNQUALIFIED, INITIAL, PROCESSING, COMPLETED, FAIL } = U3M_STATUS
 
-      return statusTextPair[status.value]
-    })
+const u3mStatus = computed(() => {
+  const statusTextPair = {
+    [UNQUALIFIED]: t('EE0020'),
+    [INITIAL]: t('EE0019'),
+    [PROCESSING]: t('EE0022'),
+    [COMPLETED]: t('EE0018'),
+    [FAIL]: t('EE0024')
+  }
 
-    const btnText = computed(() => [COMPLETED, FAIL].includes(status.value) ? t('UU0030') : t('UU0020'))
-    const disabledCreate = computed(() => [UNQUALIFIED, PROCESSING, FAIL].includes(status.value))
+  return statusTextPair[status.value]
+})
 
-    const downloadU3m = async (url) => {
-      const fileName = url.split('/')[url.split('/').length - 1]
-      downloadDataURLFile(url, fileName)
-    }
+const btnText = computed(() => [COMPLETED, FAIL].includes(status.value) ? t('UU0030') : t('UU0020'))
+const disabledCreate = computed(() => [UNQUALIFIED, PROCESSING, FAIL].includes(status.value))
 
-    const handleClick = () => {
-      create3DMaterial.func(props.material)
-    }
+const downloadU3m = async (url) => {
+  const fileName = url.split('/')[url.split('/').length - 1]
+  downloadDataURLFile(url, fileName)
+}
 
-    const openModalU3mInstruction = () => {
-      const status = props.material.u3m.status
-      let btnText = t('UU0031')
-      let btnClickHandler
-      if (status === U3M_STATUS.UNQUALIFIED) {
-        btnText = t('UU0032')
-        btnClickHandler = () => {
-          store.dispatch('helper/replaceModal', {
-            component: 'modal-how-to-scan',
-            header: t('DD0043'),
-            properties: {
-              materialList: [props.material]
-            }
-          })
-        }
-      } else if (status === U3M_STATUS.INITIAL) {
-        btnText = t('UU0020')
-        btnClickHandler = () => {
-          store.dispatch('helper/replaceModal', {
-            component: 'modal-u3m-preview',
-            header: t('EE0067')
-          })
-        }
-      }
+const handleClick = () => {
+  create3DMaterial.func(props.material)
+}
 
-      store.dispatch('helper/openModal', {
-        component: 'modal-u3m-instruction',
+const openModalU3mInstruction = () => {
+  const status = props.material.u3m.status
+  let btnText = t('UU0031')
+  let btnClickHandler
+  if (status === U3M_STATUS.UNQUALIFIED) {
+    btnText = t('UU0032')
+    btnClickHandler = () => {
+      store.dispatch('helper/openModalBehavior', {
+        component: 'modal-how-to-scan',
         properties: {
-          btnText,
-          btnClickHandler
+          header: t('UU0032'),
+          title: t('EE0109'),
+          description: t('EE0110'),
+          primaryBtnText: t('UU0094'),
+          secondaryBtnText: t('UU0092'),
+          primaryHandler: () => {
+            store.dispatch('helper/closeModalBehavior')
+          },
+          secondaryHandler: () => {
+            store.dispatch('helper/closeModalBehavior')
+            goToMaterialUpload()
+          },
+          materialList: [props.material]
         }
       })
     }
-
-    return {
-      status,
-      U3M_STATUS,
-      btnText,
-      u3mStatus,
-      zipUrl,
-      u3maUrl,
-      disabledCreate,
-      downloadU3m,
-      handleClick,
-      openModalU3mInstruction
+  } else if (status === U3M_STATUS.INITIAL) {
+    btnText = t('UU0020')
+    btnClickHandler = () => {
+      store.dispatch('helper/replaceModal', {
+        component: 'modal-u3m-preview',
+        header: t('EE0067')
+      })
     }
   }
+
+  store.dispatch('helper/openModal', {
+    component: 'modal-u3m-instruction',
+    properties: {
+      btnText,
+      btnClickHandler
+    }
+  })
 }
 </script>

@@ -18,7 +18,7 @@ div(class="pt-16 xl:pt-17.5")
               p(class="text-caption text-primary px-3 py-1") {{ $t("BB0056") }}
         p(v-permission="FUNC_ID.DELETE_ORG" v-if="!planType.ENT" class="pt-2.5 text-caption text-black-500 cursor-pointer" @click="openModalTypeTextToConfirm") {{ $t("UU0013") }}
     div(class="grid gap-y-8.5 relative")
-      p(class="absolute text-caption text-black-500 right-0 -top-7 transform -translate-y-full") *{{ $t("BB0073") }}
+      p(class="absolute text-caption text-black-500 right-0 -top-7 transform -translate-y-full") *{{ $t("RR0163") }}
       div(class="grid grid-cols-2 grid-rows-3 gap-y-7.5 gap-x-8 xl:gap-x-15")
         input-label-color(
           v-model:labelColor="orgFormData.labelColor"

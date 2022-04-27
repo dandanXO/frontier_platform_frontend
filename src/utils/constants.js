@@ -318,3 +318,9 @@ export const SOCIAL_MEDIA_TYPE = {
   FACEBOOK: 2,
   TWITTER: 3
 }
+
+export const UPLOAD_ERROR_CODE = {
+  INVALID_TYPE: 1,
+  EXCEED_LIMIT: 2,
+  TOO_SMALL: 3
+}

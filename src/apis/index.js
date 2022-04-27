@@ -43,7 +43,7 @@ instance.interceptors.response.use(response => {
         primaryBtnHandler: () => window.location.reload()
       })
     }
-    return Promise.reject({ status, code, message })
+    return Promise.reject({ status, code, message, result })
   }
 
   return response

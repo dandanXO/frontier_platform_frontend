@@ -58,109 +58,101 @@ div(class="pb-15 mb-5 border-b border-black-400")
         block-material-u3m-status(:material="material")
 </template>
 
-<script>
+<script setup>
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import useMaterial from '@/composables/useMaterial'
 import { SIDE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import BlockMaterialU3mStatus from '@/components/assets/material/edit/BlockMaterialU3mStatus.vue'
+import useNavigation from '@/composables/useNavigation'
 
-export default {
-  name: 'BlockMaterialImage',
-  components: { BlockMaterialU3mStatus },
-  setup () {
-    const { t } = useI18n()
-    const store = useStore()
-    const material = computed(() => store.getters['assets/material'])
-    const { statusIconName, imageList, defaultCoverImgIndex } = useMaterial(material.value)
+const { t } = useI18n()
+const store = useStore()
+const material = computed(() => store.getters['assets/material'])
+const { statusIconName, imageList, defaultCoverImgIndex } = useMaterial(material.value)
+const { goToMaterialUpload } = useNavigation()
 
-    const uploadMaterialEmail = computed(() => {
-      return store.getters['helper/routeLocation'] === 'org'
-        ? store.getters['organization/uploadMaterialEmail']
-        : store.getters['group/uploadMaterialEmail']
-    })
+const uploadMaterialEmail = computed(() => {
+  return store.getters['helper/routeLocation'] === 'org'
+    ? store.getters['organization/uploadMaterialEmail']
+    : store.getters['group/uploadMaterialEmail']
+})
 
-    const currentDisplayIndex = ref(defaultCoverImgIndex.value)
+const currentDisplayIndex = ref(defaultCoverImgIndex.value)
 
-    const pantoneName = ref('')
+const pantoneName = ref('')
 
-    const addPantone = async () => {
-      if (pantoneName.value === '') {
-        return
-      }
-
-      await store.dispatch('assets/addPantone', { name: pantoneName.value })
-      pantoneName.value = ''
-    }
-
-    const removePantone = (materialPantoneId) => {
-      store.dispatch('assets/removePantone', { materialPantoneId })
-    }
-
-    const openModalHowToScan = () => {
-      store.dispatch('helper/pushModal', {
-        header: t('DD0043'),
-        component: 'modal-how-to-scan',
-        properties: {
-          materialList: [material.value]
-        }
-      })
-    }
-
-    const openModalChangeCover = () => {
-      store.dispatch('helper/pushModal', {
-        component: 'modal-change-cover'
-      })
-    }
-
-    const openModalEditImage = async () => {
-      store.dispatch('helper/pushModal', {
-        header: t('EE0050'),
-        component: 'modal-edit-scanned-image',
-        properties: {
-          afterCropHandler: async ({ faceSideCropImg, backSideCropImg, isExchange }) => {
-            await store.dispatch('assets/updateScannedImage', {
-              faceSideCropImg,
-              backSideCropImg,
-              isExchange
-            })
-            store.dispatch('helper/reloadInnerApp')
-          }
-        }
-      })
-    }
-
-    const canEditScannedImg = computed(() => {
-      const { isDoubleSideMaterial, sideType, faceSideImg, backSideImg } = material.value
-      const isFaceSideExist = !!faceSideImg.original
-      const isBackSideExist = !!backSideImg.original
-
-      if (isDoubleSideMaterial) {
-        return isFaceSideExist || isBackSideExist
-      } else if (sideType === SIDE_TYPE.FACE) {
-        return isFaceSideExist
-      } else if (sideType === SIDE_TYPE.BACK) {
-        return isBackSideExist
-      } else {
-        return false
-      }
-    })
-
-    return {
-      uploadMaterialEmail,
-      material,
-      currentDisplayIndex,
-      imageList,
-      pantoneName,
-      addPantone,
-      removePantone,
-      openModalHowToScan,
-      openModalChangeCover,
-      openModalEditImage,
-      statusIconName,
-      canEditScannedImg
-    }
+const addPantone = async () => {
+  if (pantoneName.value === '') {
+    return
   }
+
+  await store.dispatch('assets/addPantone', { name: pantoneName.value })
+  pantoneName.value = ''
 }
+
+const removePantone = (materialPantoneId) => {
+  store.dispatch('assets/removePantone', { materialPantoneId })
+}
+
+const openModalHowToScan = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-how-to-scan',
+    properties: {
+      header: t('UU0032'),
+      title: t('EE0109'),
+      description: t('EE0110'),
+      primaryBtnText: t('UU0094'),
+      secondaryBtnText: t('UU0092'),
+      primaryHandler: () => {
+        store.dispatch('helper/closeModalBehavior')
+      },
+      secondaryHandler: () => {
+        store.dispatch('helper/closeModalBehavior')
+        goToMaterialUpload()
+      },
+      materialList: [material.value]
+    }
+  })
+}
+
+const openModalChangeCover = () => {
+  store.dispatch('helper/pushModal', {
+    component: 'modal-change-cover'
+  })
+}
+
+const openModalEditImage = async () => {
+  store.dispatch('helper/pushModal', {
+    header: t('EE0050'),
+    component: 'modal-edit-scanned-image',
+    properties: {
+      afterCropHandler: async ({ faceSideCropImg, backSideCropImg, isExchange }) => {
+        await store.dispatch('assets/updateScannedImage', {
+          faceSideCropImg,
+          backSideCropImg,
+          isExchange
+        })
+        store.dispatch('helper/reloadInnerApp')
+      }
+    }
+  })
+}
+
+const canEditScannedImg = computed(() => {
+  const { isDoubleSideMaterial, sideType, faceSideImg, backSideImg } = material.value
+  const isFaceSideExist = !!faceSideImg.original
+  const isBackSideExist = !!backSideImg.original
+
+  if (isDoubleSideMaterial) {
+    return isFaceSideExist || isBackSideExist
+  } else if (sideType === SIDE_TYPE.FACE) {
+    return isFaceSideExist
+  } else if (sideType === SIDE_TYPE.BACK) {
+    return isBackSideExist
+  } else {
+    return false
+  }
+})
 </script>

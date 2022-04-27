@@ -48,6 +48,14 @@ export default {
         data: { orgId, xlsxFileName, tempUploadId }
       })
     },
+    smartUpload: ({ orgId, fileList }) => axios('/org/assets/material/smart-upload', {
+      method: 'POST',
+      data: { orgId, fileList }
+    }),
+    getSmartUploadUrl: async ({ fileName }) => axios('/org/assets/material/smart-upload/get-upload-url', {
+      method: 'POST',
+      data: { fileName }
+    }),
     getMaterialOptions: ({ orgId }) => axios('/org/assets/material/options', {
       method: 'POST',
       data: { orgId }
@@ -220,6 +228,14 @@ export default {
         data: { groupId, xlsxFileName, tempUploadId }
       })
     },
+    smartUpload: ({ groupId, fileList }) => axios('/org/group/assets/material/smart-upload', {
+      method: 'POST',
+      data: { groupId, fileList }
+    }),
+    getSmartUploadUrl: async ({ fileName }) => axios('/org/group/assets/material/smart-upload/get-upload-url', {
+      method: 'POST',
+      data: { fileName }
+    }),
     getMaterialOptions: ({ groupId }) => axios('/org/group/assets/material/options', {
       method: 'POST',
       data: { groupId }
