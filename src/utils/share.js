@@ -3,8 +3,7 @@ import copyText from '@/utils/copy-text'
 
 const { VITE_APP_FACEBOOK_APP_ID } = import.meta.env
 const SHARE_BASE_URL = `${window.location.origin}/share-page/index.html`
-// %3D is '=', query parameters not supported in URL of LinkedIn share
-const getSharedUrl = (sharingKey) => `${SHARE_BASE_URL}?sharingKey%3D${sharingKey}`
+const getSharedUrl = (sharingKey) => `${SHARE_BASE_URL}?sharingKey=${sharingKey}`
 
 const shareViaSocialMedia = (sharingKey, type) => {
   const sharedUrl = getSharedUrl(sharingKey)
@@ -12,7 +11,8 @@ const shareViaSocialMedia = (sharingKey, type) => {
 
   switch (type) {
     case SOCIAL_MEDIA_TYPE.LINKEDIN:
-      openedUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${sharedUrl}`
+      // %3D is '=', query parameters not supported in URL of LinkedIn share
+      openedUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${SHARE_BASE_URL}?sharingKey%3D${sharingKey}`
       break
     case SOCIAL_MEDIA_TYPE.FACEBOOK:
       openedUrl = `https://www.facebook.com/dialog/feed?display=page&app_id=${VITE_APP_FACEBOOK_APP_ID}&link=${sharedUrl}`
