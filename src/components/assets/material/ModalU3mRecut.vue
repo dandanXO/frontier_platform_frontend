@@ -30,6 +30,7 @@ fullscreen-header
                 :config="cropper.config"
                 :cropRectSize="cropRectSize"
                 @update:options="Object.assign(cropper.config.options, $event)"
+                isU3m
               )
                 div(class="mt-1 absolute w-full")
                   div(class="h-2 flex items-center border-r-2 border-l-2 border-primary")
