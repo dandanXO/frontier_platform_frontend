@@ -11,7 +11,7 @@ div(class="relative")
   div(class="corner absolute w-4.5 h-4.5 border-b-2 border-l-2 bottom-0 left-0 border-primary")
   div(class="corner absolute w-4.5 h-4.5 border-b-2 border-r-2 bottom-0 right-0 border-primary")
   teleport(to="body")
-    div(ref="cropRect" class="w-0 h-0 overflow-hidden bg-black-0")
+    div(ref="cropRect" class="w-0 h-0 overflow-hidden")
       div(:style="styleSize")
         cropped-image(:config="config" :movable="false" :previewScaleRatio="realSize / cropRectSize")
 </template>
@@ -31,6 +31,10 @@ const props = defineProps({
   cropRectSize: {
     type: Number,
     default: 0
+  },
+  isU3m: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -45,6 +49,10 @@ const cropRectStyle = computed(() => {
   }
 })
 
+// 為了讓後端製作更精準的3D模型，裁切布片時要額外在每一邊增加0.2公分的寬度
+// 也就是原本使用者裁切5公分的布片，真正送到後端是5.4公分，但後端回傳會提供已經去掉0.4公分邊界的圖片
+const borderPixelWidth = computed(() => props.isU3m ? 0.2 / (2.54 / props.config.dpi) : 0)
+
 const realSize = computed(() => {
   if (props.config.image.width > props.config.image.height) {
     return props.config.image.height / props.config.scaleRatio
@@ -56,7 +64,8 @@ const realSize = computed(() => {
 const styleSize = computed(() => {
   return {
     width: `${realSize.value}px`,
-    height: `${realSize.value}px`
+    height: `${realSize.value}px`,
+    padding: `${borderPixelWidth.value}px`
   }
 })
 
@@ -73,8 +82,8 @@ const cropImage = () => {
      */
     domtoimage.toJpeg(cropRect.value, {}).then(() => {
       domtoimage.toJpeg(cropRect.value, {
-        width: realSize.value,
-        height: realSize.value
+        width: realSize.value + (borderPixelWidth.value * 2),
+        height: realSize.value + (borderPixelWidth.value * 2)
       })
         .then(dataUrl => {
           const fileName = `${tempFilenameGenerator()}.jpeg`
