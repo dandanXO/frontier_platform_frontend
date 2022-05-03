@@ -101,7 +101,7 @@ export default function useReceivedShare () {
 
   const multipleCloneReceivedShare = async (nodeList) => {
     const workspaceNodeIdList = nodeList.map(({ workspaceNodeId }) => workspaceNodeId)
-    cloneReceivedShare(workspaceNodeIdList)
+    await cloneReceivedShare(workspaceNodeIdList)
   }
 
   return {
