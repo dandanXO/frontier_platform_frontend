@@ -25,8 +25,8 @@ export default {
     const { goToBillings } = useNavigation()
 
     const isShowInactiveNotifyBar = ref(true)
-    const planStatus = computed(() => store.getters['organization/planStatus'])
-    const deactivatedDate = computed(() => store.getters['organization/plan'].deactivatedDate)
+    const planStatus = computed(() => store.getters['polling/planStatus'])
+    const deactivatedDate = computed(() => store.getters['polling/plan'].deactivatedDate)
 
     return {
       planStatus,

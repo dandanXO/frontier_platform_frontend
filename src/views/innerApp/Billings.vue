@@ -39,7 +39,7 @@ export default {
     const store = useStore()
     const isLoading = ref(false)
     const isShowInactiveHint = ref(true)
-    const planStatus = computed(() => store.getters['organization/planStatus'])
+    const planStatus = computed(() => store.getters['polling/planStatus'])
     const currentTab = computed(() => props.tab)
     const tabList = reactive([
       {

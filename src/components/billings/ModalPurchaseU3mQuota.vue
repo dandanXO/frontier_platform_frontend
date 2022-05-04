@@ -42,10 +42,10 @@ export default {
     const { t } = useI18n()
     const { openModalPaymentFail } = usePlan()
 
-    const plan = computed(() => store.getters['organization/plan'])
-    const planName = computed(() => store.getters['organization/planName'])
+    const plan = computed(() => store.getters['polling/plan'])
+    const planName = computed(() => store.getters['polling/planName'])
     const pricing = computed(() => {
-      return store.getters['organization/planType'].BASIC
+      return store.getters['polling/planType'].BASIC
         ? store.getters['organization/pricing'].basic
         : store.getters['organization/pricing'].pro
     })

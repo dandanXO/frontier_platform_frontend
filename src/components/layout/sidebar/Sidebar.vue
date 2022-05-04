@@ -24,6 +24,14 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-black-100 sidebar-shadow f
           icon="member_setting"
           :disabled="planStatus.INACTIVE"
         )
+        sidebar-item(
+          id="progress"
+          :path="`/${organization.orgNo}/progress/material`"
+        )
+          svg-icon(iconName="progress" size="20" :class="[planStatus.INACTIVE ? 'text-black-500' : 'text-black-700']")
+          span(class="text-body2 line-clamp-1 flex-grow" :class="[planStatus.INACTIVE ? 'text-black-500' : 'text-primary']") {{ $t('PP0001') }}
+          div(v-if="isProcessing" class="h-6 w-6.5 flex justify-center items-center rounded mr-2")
+            svg-icon(iconName="loading" size="20" class="text-brand")
         dropdown(v-for="item in menuOrgOrGroup" :options="item.menuList" :closeAfterSelect="false" :closeAfterOutsideClick="false" :class="[{ 'pointer-events-none': item.disabled }]")
           template(#displayItem="{ isExpand }")
             div(class="flex items-center h-9 pl-4 pr-5 hover:bg-black-400")
@@ -47,7 +55,7 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-black-100 sidebar-shadow f
 
 <script>
 import { useStore } from 'vuex'
-import { computed } from 'vue'
+import { computed, onUnmounted } from 'vue'
 import SidebarItem from '@/components/layout/sidebar/SidebarItem.vue'
 import MenuOrg from '@/components/layout/sidebar/MenuOrg.vue'
 import MenuOrgUser from '@/components/layout/sidebar/MenuOrgUser.vue'
@@ -66,7 +74,8 @@ export default {
     const store = useStore()
 
     const organization = computed(() => store.getters['organization/organization'])
-    const planStatus = computed(() => store.getters['organization/planStatus'])
+    const isProcessing = computed(() => store.getters['polling/isProcessing'])
+    const planStatus = computed(() => store.getters['polling/planStatus'])
     const menuOrgOrGroup = computed(() => {
       const { orgId, orgNo, orgName, labelColor, workspaceNodeId } = organization.value
       return [
@@ -124,7 +133,12 @@ export default {
       ]
     })
 
+    onUnmounted(() => {
+      store.dispatch('polling/stopPollingSidebar')
+    })
+
     return {
+      isProcessing,
       organization,
       menuOrgOrGroup,
       planStatus

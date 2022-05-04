@@ -8,7 +8,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
       :showArrow="false"
       :offset="[30, 8]"
     )
-      template(#trigger="{ isActive }")
+      template(#trigger)
         div(class="flex items-center cursor-pointer")
           img(:src="orgLogo" class="rounded-full w-9 h-9 mr-2")
           p(class="text-body1 text-primary font-bold max-w-27.5 truncate leading-1.4") {{ org.orgName }}
@@ -24,7 +24,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
           div(class="mx-2 my-1 h-px bg-black-400")
           list-item(class="h-10")
             div(class="pl-4.5 w-full flex justify-between items-center")
-              p(class="text-primary text-caption") {{ $t("OO0002") }}: {{ org.plan.quota.material.used }}/{{ org.plan.quota.material.max }}
+              p(class="text-primary text-caption") {{ $t("OO0002") }}: {{ plan.quota.material.used }}/{{ plan.quota.material.max }}
               button(
                 v-permission="FUNC_ID.OPEN_MANAGE_MATERIAL_QUOTA"
                 v-if="planStatus.ACTIVE && !planType.ENT"
@@ -33,7 +33,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
               ) {{ $t("UU0073") }}
           list-item(class="h-10")
             div(class="pl-4.5 w-full flex justify-between items-center")
-              p(class="text-primary text-caption") {{ $t("OO0003") }}: {{ org.plan.quota.u3m.used }}/{{ org.plan.quota.u3m.max }}
+              p(class="text-primary text-caption") {{ $t("OO0003") }}: {{ plan.quota.u3m.used }}/{{ plan.quota.u3m.max }}
               button(
                 v-permission="FUNC_ID.OPEN_PURCHASE_U3M"
                 v-if="planStatus.ACTIVE && !planType.ENT"
@@ -72,56 +72,36 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
             p(v-else class="px-10.5") {{ $t("NN0005") }}
 </template>
 
-<script>
+<script setup>
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import useNavigation from '@/composables/useNavigation.js'
 import usePlan from '@/composables/usePlan.js'
 import { FUNC_ID } from '@/utils/constants.js'
 
-export default {
-  name: 'MenuOrg',
-  setup () {
-    const store = useStore()
-    const { goToBillings, goToLobby } = useNavigation()
-    const { openModalManageMaterialQuota, openModalPurchaseU3mQuota } = usePlan()
 
-    const isExpand = ref(false)
+const store = useStore()
+const { goToBillings, goToLobby } = useNavigation()
+const { openModalManageMaterialQuota, openModalPurchaseU3mQuota } = usePlan()
 
-    const org = computed(() => store.getters['organization/organization'])
-    const orgLogo = computed(() => store.getters['organization/orgLogo'])
-    const planName = computed(() => store.getters['organization/planName'])
-    const planStatus = computed(() => store.getters['organization/planStatus'])
-    const planType = computed(() => store.getters['organization/planType'])
-    const notificationList = computed(() => {
-      return isExpand.value
-        ? store.getters['user/orgUser/notificationList']
-        : store.getters['user/orgUser/notificationList'].slice(0, 4)
-    })
-    const moreThan4Notification = computed(() => store.getters['user/orgUser/notificationList'].length > 4)
-    const haveUnreadNotification = computed(() => notificationList.value.some(({ isRead }) => !isRead))
+const isExpand = ref(false)
 
-    const readNotification = () => {
-      haveUnreadNotification.value && store.dispatch('user/orgUser/readNotification')
-    }
+const org = computed(() => store.getters['organization/organization'])
+const orgLogo = computed(() => store.getters['organization/orgLogo'])
+const plan = computed(() => store.getters['polling/plan'])
+const planName = computed(() => store.getters['polling/planName'])
+const planStatus = computed(() => store.getters['polling/planStatus'])
+const planType = computed(() => store.getters['polling/planType'])
+const notificationList = computed(() => {
+  return isExpand.value
+    ? store.getters['polling/notificationList']
+    : store.getters['polling/notificationList'].slice(0, 4)
+})
+const moreThan4Notification = computed(() => store.getters['polling/notificationList'].length > 4)
+const haveUnreadNotification = computed(() => notificationList.value.some(({ isRead }) => !isRead))
 
-    return {
-      org,
-      orgLogo,
-      notificationList,
-      haveUnreadNotification,
-      moreThan4Notification,
-      readNotification,
-      isExpand,
-      goToBillings,
-      goToLobby,
-      planName,
-      openModalManageMaterialQuota,
-      openModalPurchaseU3mQuota,
-      planType,
-      planStatus,
-      FUNC_ID
-    }
-  }
+const readNotification = () => {
+  haveUnreadNotification.value && store.dispatch('user/orgUser/readNotification')
 }
+
 </script>
