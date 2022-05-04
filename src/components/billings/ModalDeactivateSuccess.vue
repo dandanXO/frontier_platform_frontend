@@ -21,7 +21,7 @@ export default {
   setup () {
     const store = useStore()
 
-    const plan = computed(() => store.getters['organization/plan'])
+    const plan = computed(() => store.getters['polling/plan'])
 
     const closeModal = () => store.dispatch('helper/closeModal')
 

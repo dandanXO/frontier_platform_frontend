@@ -31,9 +31,9 @@ export default {
 
     const isShowBufferNotifyBar = ref(true)
     const orgUserRole = computed(() => store.getters['user/orgUser/orgUserRole'])
-    const planType = computed(() => store.getters['organization/planType'])
-    const planStatus = computed(() => store.getters['organization/planStatus'])
-    const bufferDeactivatedDate = computed(() => store.getters['organization/plan'].bufferDeactivatedDate)
+    const planType = computed(() => store.getters['polling/planType'])
+    const planStatus = computed(() => store.getters['polling/planStatus'])
+    const bufferDeactivatedDate = computed(() => store.getters['polling/plan'].bufferDeactivatedDate)
 
     const openModalPaymentLastMonthFail = () => {
       store.dispatch('helper/openModal', {

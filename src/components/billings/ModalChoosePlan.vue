@@ -63,8 +63,8 @@ export default {
     const { checkHaveBindPayment } = usePlan()
 
     const pricing = computed(() => store.getters['organization/pricing'])
-    const plan = computed(() => store.getters['organization/plan'])
-    const planType = computed(() => store.getters['organization/planType'])
+    const plan = computed(() => store.getters['polling/plan'])
+    const planType = computed(() => store.getters['polling/planType'])
 
     const closeModal = () => store.dispatch('helper/closeModal')
     const upgradePlan = async () => {

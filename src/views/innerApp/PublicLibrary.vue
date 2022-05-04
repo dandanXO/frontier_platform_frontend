@@ -110,7 +110,7 @@ const optionMultiSelect = [
     func: publicCloneByNodeList
   }
 ]
-const planStatus = computed(() => store.getters['organization/planStatus'])
+const planStatus = computed(() => store.getters['polling/planStatus'])
 const pagination = computed(() => store.getters['helper/search/pagination'])
 const collection = computed(() => store.getters['publicLibrary/collection'])
 const breadcrumbList = computed(() => store.getters['publicLibrary/collectionBreadcrumbList']({

@@ -21,8 +21,38 @@ instance.interceptors.request.use(request => {
   return request
 })
 
-instance.interceptors.response.use(response => {
-  const { data, status } = response
+const needPollingApiList = [
+  '/org/assets/material/merge',
+  '/org/assets/material/delete',
+  '/org/assets/material/mass-export',
+  '/org/assets/material/clone',
+  '/org/assets/material/batch-upload',
+  '/org/assets/material/smart-upload',
+  '/org/assets/material/create',
+  '/org/assets/material/update/generate-u3m',
+  '/org/group/assets/material/merge',
+  '/org/group/assets/material/delete',
+  '/org/group/assets/material/mass-export',
+  '/org/group/assets/material/clone',
+  '/org/group/assets/material/batch-upload',
+  '/org/group/assets/material/smart-upload',
+  '/org/group/assets/material/create',
+  '/org/group/assets/material/update/generate-u3m',
+  '/org/member/delete',
+  '/org/member/invite-via-email',
+  '/org/plan/upgrade',
+  '/org/plan/upgrade-request',
+  '/org/plan/purchase/material',
+  '/org/plan/cancel/material',
+  '/org/plan/purchase/u3m',
+  '/org/share-to-me/clone',
+  '/org/group/share-to-me/clone',
+  '/share/get-received/clone',
+  '/public/clone'
+]
+
+instance.interceptors.response.use(async response => {
+  const { data, status, config } = response
   const { success, result, code, message } = data
 
   if (result && Object.prototype.hasOwnProperty.call(data.result, 'accessToken')) {
@@ -44,6 +74,10 @@ instance.interceptors.response.use(response => {
       })
     }
     return Promise.reject({ status, code, message, result })
+  }
+
+  if (status === 200 && success && needPollingApiList.includes(config.url)) {
+    await store.dispatch('polling/getPollingSidebar')
   }
 
   return response

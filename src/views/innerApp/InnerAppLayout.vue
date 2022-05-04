@@ -26,7 +26,7 @@ export default {
     const route = useRoute()
 
     const isReloadInnerApp = computed(() => store.getters['helper/isReloadInnerApp'])
-    const planStatus = computed(() => store.getters['organization/planStatus'])
+    const planStatus = computed(() => store.getters['polling/planStatus'])
     const isInInnerApp = computed(() => route.matched.some(r => r.name === 'InnerAppRoot'))
 
     onBeforeRouteUpdate(async (to, from) => {

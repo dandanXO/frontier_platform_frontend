@@ -116,7 +116,7 @@ const locationList = computed(() => {
     }))
   ]
 })
-const remainingQuota = computed(() => store.getters['organization/plan'].quota)
+const remainingQuota = computed(() => store.getters['polling/plan'].quota)
 const selectedOrgId = ref(props.crossOrg ? orgList.value[0]?.orgId || null : store.getters['organization/orgId'])
 const selectedOrgNo = computed(() => orgList.value.find(org => org.orgId === selectedOrgId.value)?.orgNo)
 const selectedLocationList = ref([])
