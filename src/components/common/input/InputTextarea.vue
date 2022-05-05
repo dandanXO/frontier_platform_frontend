@@ -1,6 +1,6 @@
 <template lang="pug">
 input-container(:label="label" :required="required")
-  div(class="p-4 rounded border" :class="[classBorder, textareaHeight, { 'bg-primary-thin': disabled }]")
+  div(class="p-4 rounded border" :class="[classBorder, { 'bg-primary-thin': disabled }]" :style="{ height: height + 'px' }")
     textarea(
       :value="textValue"
       :placeholder="placeholder"
@@ -8,15 +8,15 @@ input-container(:label="label" :required="required")
       @input="typing"
       @focus="onFocus"
       @blur="onBlur"
-      class="w-full h-full resize-none line-height-1.6 placeholder-line-height-1.6 outline-none bg-transparent text-primary text-body2 placeholder-black-400 placeholder-text-body2 disabled:text-black-600"
+      class="w-full h-full resize-none leading-1.6 placeholder:text-black-400 placeholder:overflow-visible outline-none bg-transparent text-primary text-body2 disabled:text-black-600"
     )
   template(#hint)
-    p(v-if="errorMsg !== ''" class="absolute text-caption text-warn pt-1") {{errorMsg}}
+    p(v-if="errorMsg !== ''" class="absolute text-caption text-warn pt-1") {{ errorMsg }}
 </template>
 
 <script>
 import useInput from '@/composables/useInput'
-import { toRefs, computed } from 'vue'
+import { toRefs } from 'vue'
 
 export default {
   name: 'InputTextarea',
@@ -53,7 +53,6 @@ export default {
   setup (props, context) {
     const { textValue, disabled, required, customErrorMsg } = toRefs(props)
     const { isFocus, isError, onFocus, onBlur, typing, isEmpty, classBorder, errorMsg } = useInput({ context, textValue, disabled, required, customErrorMsg })
-    const textareaHeight = computed(() => `h-${props.height / 4}`)
 
     return {
       isFocus,
@@ -63,7 +62,6 @@ export default {
       onBlur,
       isError,
       classBorder,
-      textareaHeight,
       errorMsg
     }
   }

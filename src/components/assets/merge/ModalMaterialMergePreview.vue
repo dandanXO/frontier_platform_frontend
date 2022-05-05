@@ -1,7 +1,7 @@
 <template lang="pug">
 fullscreen-header
   template(#left)
-    h5(class="text-h5 text-primary font-bold") {{ $t('EE0006') }}
+    h5(class="text-h5 text-primary font-bold") {{ $t("EE0006") }}
   template(#right)
     btn-group(
       :primaryText="$t('UU0001')"
@@ -10,13 +10,13 @@ fullscreen-header
       @click:secondary="closeModal"
     )
   template(#content)
-    div(class='max-w-286 pl-17 pr-7 mx-auto mt-13')
-      div(class='mb-10')
-        div(class='text-primary font-bold text-h5 mb-5') {{ $t('EE0010') }}
-        div(class='text-primary text-body2 line-height-1.6') {{ $t('EE0011') }}
-      div(v-if="nonEmptyRowList.length < 1") {{ $t('EE0013') }}
+    div(class="max-w-286 pl-17 pr-7 mx-auto mt-13")
+      div(class="mb-10")
+        div(class="text-primary font-bold text-h5 mb-5") {{ $t("EE0010") }}
+        div(class="text-primary text-body2 leading-1.6") {{ $t("EE0011") }}
+      div(v-if="nonEmptyRowList.length < 1") {{ $t("EE0013") }}
       div(v-else)
-        div(class='text-primary font-bold text-body1 mb-5') {{ nonEmptyRowList.length }} {{ $t('EE0012') }}
+        div(class="text-primary font-bold text-body1 mb-5") {{ nonEmptyRowList.length }} {{ $t("EE0012") }}
         div(v-for="row in nonEmptyRowList" :key="row.id" class="flex my-7.5")
           div(class="relative mr-11")
             div(class="w-47.5 h-47.5 rounded border-2 border-solid border-black-400 bg-cover" :class="{ 'border-none': row.faceSide.exist }" :style="getBgImg(row, 'faceSide')")
@@ -24,7 +24,7 @@ fullscreen-header
             div(class="w-47.5 h-47.5 rounded border-2 border-solid border-black-400 bg-cover" :class="{ 'border-none': row.backSide.exist }" :style="getBgImg(row, 'backSide')")
           div(class="relative w-full")
             div(class="h-47.5 rounded" class="border-2 border-solid border-black-400")
-              material-merge-row-detail(v-if='row.detail.exist' :material='row.detail')
+              material-merge-row-detail(v-if="row.detail.exist" :material="row.detail")
 </template>
 
 <script>
@@ -58,20 +58,11 @@ export default {
         }
       })
       store.dispatch('helper/pushModalLoading')
-      const { message, success } = await store.dispatch('assets/mergeMaterial', { mergedList: apiInput })
+      await store.dispatch('assets/mergeMaterial', { mergedList: apiInput })
       store.dispatch('helper/closeModalLoading')
-
-      if (success) {
-        store.dispatch('helper/clearModalPipeline')
-        store.dispatch('helper/reloadInnerApp')
-        store.commit('helper/PUSH_message', t('EE0077'))
-      } else {
-        store.dispatch('helper/pushModalConfirm', {
-          title: message.title,
-          content: message.content,
-          primaryText: t('UU0031'),
-        })
-      }
+      store.dispatch('helper/clearModalPipeline')
+      store.dispatch('helper/reloadInnerApp')
+      store.commit('helper/PUSH_message', t('EE0077'))
     }
 
     const getBgImg = (target, blockType) => {

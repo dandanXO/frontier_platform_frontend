@@ -14,7 +14,7 @@ div(v-if="innerSelectedList.length > 0" class="menu-position menu-shadow w-fit p
   i18n-t(keypath="RR0073" tag="div" class="mr-7.5")
     template(#number) {{ innerSelectedList.length }}
   div(class="flex flex-wrap gap-y-5 divide-x w-fit max-w-127")
-    template(v-for="option in options")
+    template(v-for="option in optionMultiSelect")
       slot(:option="option")
         div(
           class="whitespace-nowrap px-5"
@@ -23,42 +23,37 @@ div(v-if="innerSelectedList.length > 0" class="menu-position menu-shadow w-fit p
         ) {{ option.name }}
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 
-export default {
-  name: 'MultiSelectMenu',
-  props: {
-    options: {
-      type: Array,
-      required: true
-    },
-    selectedList: {
-      type: Array,
-      required: true
-    }
-  },
-  emits: ['update:selectedList'],
-  setup (props, { emit }) {
-    const innerSelectedList = computed({
-      get: () => props.selectedList,
-      set: (v) => emit('update:selectedList', v)
+const props = defineProps({
+  optionMultiSelect: {
+    type: Array,
+    required: true,
+    default: () => ({
+      name: '',
+      disabled: false,
+      func: () => { }
     })
-
-    const clearList = () => emit('update:selectedList', [])
-    const handleClick = async (option) => {
-      if (!option.func || option.disabled) {
-        return
-      }
-      const tempList = innerSelectedList.value.map(item => JSON.parse(item)) // will JSON.stringify at NodeItem and selectAll
-      await option.func(tempList)
-    }
-
-    return {
-      innerSelectedList,
-      clearList,
-      handleClick
-    }
+  },
+  selectedList: {
+    type: Array,
+    required: true
   }
+})
+const emit = defineEmits(['update:selectedList'])
+
+const innerSelectedList = computed({
+  get: () => props.selectedList,
+  set: (v) => emit('update:selectedList', v)
+})
+
+const clearList = () => emit('update:selectedList', [])
+const handleClick = (option) => {
+  if (!option.func || option.disabled) {
+    return
+  }
+  const tempList = innerSelectedList.value.map(item => JSON.parse(item)) // will JSON.stringify at NodeItem and selectAll
+  option.func(tempList)
 }
 </script>

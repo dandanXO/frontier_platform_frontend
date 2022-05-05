@@ -2,7 +2,7 @@
 div(class="flex h-full")
   router-view(name="sidebar")
   main(class="flex-grow relative")
-    router-view(v-if="isReloadInnerApp" :key="$route.path" v-slot="{ Component }" class="overflow-y-auto")
+    router-view(v-if="isReloadInnerApp" :key="$route.name" v-slot="{ Component }" class="overflow-y-auto")
       suspense
         component(:is="Component")
         template(#fallback)

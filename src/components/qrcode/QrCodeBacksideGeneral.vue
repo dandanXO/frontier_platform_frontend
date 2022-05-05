@@ -8,9 +8,9 @@ div
           div(class="relative flex items-center w-113 h-56.5 bg-black-0 px-8 py-8 ")
             qr-code(class="mr-8" :value="'Scan Back Side'" :size="100")
             div(class="flex flex-col bg-black-0")
-              span(class="mb-2 text-black-900 font-bold text-h5") {{$t('DD0051')}}
-              span(class="text-body2 line-height-1.5") {{$t('DD0052')}}
-            div(class="absolute bottom-2.5 right-2.5 text-black-500 font-bold") {{$t('DD0053')}}
+              span(class="mb-2 text-black-900 font-bold text-h5") {{ $t("DD0051") }}
+              span(class="text-body2 leading-1.5") {{ $t("DD0052") }}
+            div(class="absolute bottom-2.5 right-2.5 text-black-500 font-bold") {{ $t("DD0053") }}
 </template>
 
 <script>

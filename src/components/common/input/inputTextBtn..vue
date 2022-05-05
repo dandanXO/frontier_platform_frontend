@@ -3,7 +3,7 @@ input-text(:size="size" :disabled="disabledInput" @clear="$emit('clear')")
   template(#appendItem)
     div(class="-mr-4 pl-4 h-full flex items-center")
       button(:disabled="disabledBtn" :class="[btnSize, btnType]" class="rounded-r transform translate-x-0.5" @click="$emit('click:button')")
-        span {{buttonLabel}}
+        span {{ buttonLabel }}
   template(#errorMsg)
     slot(name="errorMsg")
 </template>

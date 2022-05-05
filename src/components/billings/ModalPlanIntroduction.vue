@@ -1,7 +1,7 @@
 <template lang="pug">
 fullscreen-header
   template(#left)
-    h5(class="text-h5 text-primary font-bold") {{$t('OO0066')}}
+    h5(class="text-h5 text-primary font-bold") {{ $t('OO0066') }}
   template(#right)
     btn-group(
       :primaryText="$t('UU0026')"

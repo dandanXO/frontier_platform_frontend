@@ -13,7 +13,7 @@ div(class="w-155 px-8")
     div(class="h-16 bg-black-200 flex gap-x-12.5 items-center justify-center")
       p(class="text-body1 text-primary") **** **** **** {{ cardInfo.lastFour }}
       p(class="text-body2 text-black-700") {{ $t('OO0054') }} {{ cardInfo.expiredDate }}
-  i18n-t(keypath="OO0038" tag="p" class="pt-2 text-center text-black-700 text-caption line-height-1.6")
+  i18n-t(keypath="OO0038" tag="p" class="pt-2 text-center text-black-700 text-caption leading-1.6")
     template(#newline)
       br
     template(#OO0116)

@@ -19,10 +19,6 @@ export default {
       type: Number,
       default: 200
     }
-  },
-  setup (props) {
-    return {
-    }
   }
 }
 </script>

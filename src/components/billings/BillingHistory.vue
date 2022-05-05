@@ -6,6 +6,7 @@ div(class="w-full mt-4")
     :headers="headers"
     :items="tableData"
     :emptyText="$t('RR0105')"
+    :searchPlaceholder="$t('RR0053')"
     @search="getList()"
     @sort="getList()"
     @goTo="getList($event)"
@@ -95,28 +96,28 @@ export default {
       {
         prop: 'invoiceNumber',
         label: t("OO0081"),
-        width: '3/12'
+        width: 'w-3/12'
       },
       {
         prop: 'date',
         label: t("OO0082"),
-        width: '2/12',
+        width: 'w-2/12',
         sortBy: [BILLING_SORT.NEWEST_FIRST, BILLING_SORT.OLDEST_FIRST]
       },
       {
         prop: 'title',
         label: t("OO0083"),
-        width: '4/12'
+        width: 'w-4/12'
       },
       {
         prop: 'download',
         label: t("OO0084"),
-        width: '1/12'
+        width: 'w-1/12'
       },
       {
         prop: 'view',
         label: t('OO0085'),
-        width: '2/12'
+        width: 'w-2/12'
       }
     ]
     const getList = async (targetPage = 1) => {

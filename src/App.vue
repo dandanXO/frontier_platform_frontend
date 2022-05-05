@@ -1,31 +1,19 @@
 <template lang="pug">
 router-view
 flash-message
-modal(v-if="isShowModalError" component="modal-error" :closable="false")
 modal-pipeline
 </template>
 
-<script>
-import Modal from '@/components/modal/Modal.vue'
+<script setup>
 import ModalPipeline from '@/components/modal/ModalPipeline.vue'
 import { useStore } from 'vuex'
-import { computed } from 'vue'
 
-export default {
-  name: 'App',
-  components: {
-    Modal,
-    ModalPipeline
-  },
-  setup () {
-    const store = useStore()
-    const isShowModalError = computed(() => store.getters['helper/isShowModalError'])
-
-    return {
-      isShowModalError
-    }
-  }
-}
+const store = useStore()
+store.dispatch('code/getRoleList')
+store.dispatch('code/getOrgCategoryList')
+store.dispatch('code/getRoleLimitTable')
+store.dispatch('code/getCountryList')
+store.dispatch('code/getFilterOptions')
 </script>
 
 <style lang="scss">

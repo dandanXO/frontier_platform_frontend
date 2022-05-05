@@ -1,7 +1,7 @@
 import { WorkspaceCollection } from '@/store/reuseModules/collection'
 import Material from '@/store/reuseModules/material.js'
 import workspaceApi from '@/apis/workspace'
-import { NODE_LOCATION, SHARE_TARGET_TYPE } from '@/utils/constants'
+import { NODE_LOCATION } from '@/utils/constants'
 
 export default {
   namespaced: true,
@@ -21,7 +21,8 @@ export default {
     }
   },
   getters: {
-    materialBreadcrumbList: state => state.materialBreadcrumbList,
+    materialBreadcrumbList: state => state.materialBreadcrumbList
+      .map(({ name, workspaceNodeId, workspaceNodeLocation }) => ({ name, nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}` })),
     shareInfo: state => state.shareInfo,
     defaultWorkspaceNodeKey: (state, getters, rootState, rootGetters) => {
       return rootGetters['helper/routeLocation'] === 'org'
@@ -47,10 +48,10 @@ export default {
       !!shareInfo && commit('SET_shareInfo', shareInfo)
       !!pagination && dispatch('helper/search/setPagination', pagination, { root: true })
     },
-    async getWorkspace ({ rootGetters, dispatch }, { targetPage = 1, workspaceNodeId }) {
+    async getWorkspace ({ rootGetters, dispatch }, { targetPage = 1, nodeKey }) {
       const searchParams = rootGetters['helper/search/getSearchParams'](targetPage)
       const params = {
-        workspaceNodeId,
+        workspaceNodeId: nodeKey.split('-')[1],
         ...searchParams
       }
 
@@ -91,7 +92,8 @@ export default {
         : await workspaceApi.group.getCollection({ groupId: rootGetters['group/groupId'], workspaceNodeId })
       return data.result.workspaceCollection
     },
-    async getWorkspaceMaterial ({ rootGetters, dispatch }, { workspaceNodeId }) {
+    async getWorkspaceMaterial ({ rootGetters, dispatch }, { nodeKey }) {
+      const workspaceNodeId = nodeKey.split('-')[1]
       const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await workspaceApi.org.getWorkspaceMaterial({ orgId: rootGetters['organization/orgId'], workspaceNodeId })
         : await workspaceApi.group.getWorkspaceMaterial({ groupId: rootGetters['group/groupId'], workspaceNodeId })
@@ -200,6 +202,17 @@ export default {
         ? await workspaceApi.org.generateCopyLink({ orgId: rootGetters['organization/orgId'], workspaceNodeId })
         : await workspaceApi.group.generateCopyLink({ groupId: rootGetters['group/groupId'], workspaceNodeId })
       return data.result.key
+    },
+    async generateSocialMedia ({ rootGetters }, { workspaceNodeId, type }) {
+      const { data } = rootGetters['helper/routeLocation'] === 'org'
+        ? await workspaceApi.org.generateSocialMedia({ orgId: rootGetters['organization/orgId'], workspaceNodeId, type })
+        : await workspaceApi.group.generateSocialMedia({ groupId: rootGetters['group/groupId'], workspaceNodeId, type })
+      return data.result.key
+    },
+    async updateEmbedDownloadPermission ({ rootGetters }, { embedKey, isCanDownloadU3M }) {
+      rootGetters['helper/routeLocation'] === 'org'
+        ? await workspaceApi.org.updateEmbedDownloadPermission({ orgId: rootGetters['organization/orgId'], embedKey, isCanDownloadU3M })
+        : await workspaceApi.group.updateEmbedDownloadPermission({ groupId: rootGetters['group/groupId'], embedKey, isCanDownloadU3M })
     }
   }
 }

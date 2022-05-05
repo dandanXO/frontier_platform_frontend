@@ -1,22 +1,53 @@
 <template lang="pug">
-div(class="pt-2.5 h-full")
-  overlay-scrollbar-container(class="h-full")
-    div(v-for="history in historyList" class="pl-5 py-5 flex items-center gap-x-10 border-b border-black-400 text-body2 text-primary")
-      p {{$dayjs.unix(history.createDate).format('YYYY/MM/DD')}}
-      p {{history.content}}
+general-table(
+  v-model:pagination="pagination"
+  :headers="headers"
+  :items="currentList"
+  class="mt-2.5"
+)
+  template(v-slot="{ item, prop }")
+    template(v-if="prop === 'date'") 
+      div {{ $dayjs.unix(item.createDate).format("YYYY/MM/DD") }}
 </template>
 
 <script>
 import { useStore } from 'vuex'
-import { computed } from 'vue'
+import { computed, reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'HistoryList',
   setup () {
+    const { t } = useI18n()
     const store = useStore()
+    const pagination = reactive({
+      currentPage: 1,
+      totalPage: computed(() => Math.ceil(historyList.value.length / pagination.perPageCount)),
+      perPageCount: 8
+    })
     const historyList = computed(() => store.getters['helper/routeLocation'] === 'org' ? store.getters['organization/historyList'] : store.getters['group/historyList'])
+    const currentList = computed(() => {
+      const { currentPage, perPageCount } = pagination
+      return historyList.value.slice((currentPage - 1) * perPageCount, currentPage * perPageCount)
+    })
+
+    const headers = [
+      {
+        prop: 'date',
+        label: t('BB0109'),
+        width: 'w-2/12'
+      },
+      {
+        prop: 'content',
+        label: t('BB0110'),
+        width: 'w-10/12'
+      }
+    ]
+
     return {
-      historyList
+      headers,
+      currentList,
+      pagination
     }
   }
 }

@@ -1,11 +1,11 @@
 <template lang="pug">
 div(class="w-100 px-8")
-  h6(class="text-h6 font-bold text-primary text-center pb-4") {{$t('OO0056')}}
-  div(class="text-body2  line-height-1.6 grid gap-y-2")
-    p(class="text-primary") {{$t('OO0121')}}
-    p(class="text-primary") {{$t('OO0122')}}
+  h6(class="text-h6 font-bold text-primary text-center pb-4") {{ $t('OO0056') }}
+  div(class="text-body2 leading-1.6 grid gap-y-2")
+    p(class="text-primary") {{ $t('OO0121') }}
+    p(class="text-primary") {{ $t('OO0122') }}
     p(class="text-black-700")
-      span(v-for="func in functionList") ·{{func}}
+      span(v-for="func in functionList") ·{{ func }}
   btn-group(
     class="h-25"
     :primaryText="$t('UU0002')"

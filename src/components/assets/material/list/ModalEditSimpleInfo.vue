@@ -1,11 +1,11 @@
 <template lang="pug">
 div(class="w-227")
   overlay-scrollbar-container(class="max-h-113 border-t border-b border-black-400 px-8 py-7.5")
-    component(:is="blockId" :validations='validations')
+    component(:is="blockId" :validations="validations")
   div(class="h-25 flex justify-center items-center")
     div(class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" @click="closeModal") {{$t('UU0002') }}
-      btn(size="md" @click="updateMaterial") {{$t('UU0018')}}
+      btn(size="md" type="secondary" @click="closeModal") {{ $t("UU0002") }}
+      btn(size="md" @click="updateMaterial") {{ $t("UU0018") }}
 </template>
 
 <script>

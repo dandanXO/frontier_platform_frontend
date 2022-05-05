@@ -104,6 +104,14 @@ export default {
     generateCopyLink: ({ orgId, workspaceNodeId }) => axios('/org/workspace/node/share/copy-link/generate', {
       method: 'POST',
       data: { orgId, workspaceNodeId }
+    }),
+    generateSocialMedia: ({ orgId, workspaceNodeId, type }) => axios('/org/workspace/node/share/social/generate', {
+      method: 'POST',
+      data: { orgId, workspaceNodeId, type }
+    }),
+    updateEmbedDownloadPermission: ({ orgId, embedKey, isCanDownloadU3M }) => axios('/org/workspace/node/share/embed/update-setting', {
+      method: 'POST',
+      data: { orgId, embedKey, isCanDownloadU3M }
     })
   },
   group: {
@@ -208,6 +216,14 @@ export default {
     generateCopyLink: ({ groupId, workspaceNodeId }) => axios('/org/group/workspace/node/share/copy-link/generate', {
       method: 'POST',
       data: { groupId, workspaceNodeId }
+    }),
+    generateSocialMedia: ({ groupId, workspaceNodeId, type }) => axios('/org/group/workspace/node/share/social/generate', {
+      method: 'POST',
+      data: { groupId, workspaceNodeId, type }
+    }),
+    updateEmbedDownloadPermission: ({ groupId, embedKey, isCanDownloadU3M }) => axios('/org/group/workspace/node/share/embed/update-setting', {
+      method: 'POST',
+      data: { groupId, embedKey, isCanDownloadU3M }
     })
   }
 }

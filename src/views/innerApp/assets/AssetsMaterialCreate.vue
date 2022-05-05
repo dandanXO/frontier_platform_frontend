@@ -3,11 +3,11 @@ div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
     div(class="pt-12 pb-9 flex justify-between")
       breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
-      btn(size="sm" type="secondary" class="ml-5" @click="openModalMassUpload") {{$t('UU0009')}}
+      btn(size="sm" type="secondary" class="ml-5" @click="openModalMassUpload") {{ $t("UU0009") }}
     div
       div(class="pb-15 mb-5 border-b border-black-400")
         div(class="h-16 flex items-center")
-          h5(class="text-h5 text-primary font-bold pr-1.5") {{$t('DD0063')}}
+          h5(class="text-h5 text-primary font-bold pr-1.5") {{ $t("DD0063") }}
         div(class="pl-15")
           input-container(:label="$t('DD0062')" class="relative z-12")
             div(class="flex items-center gap-x-3")
@@ -32,8 +32,8 @@ div(class="w-full h-full flex justify-center")
       block-material-attachment(:tempMaterialId="tempMaterialId")
       div(class="flex justify-center items-center pt-17.5")
         div(class="grid grid-cols-2 gap-x-2")
-          btn(size="md" type="secondary" class="h-10" @click="cancel") {{$t('UU0002')}}
-          btn(size="md" class="h-10" @click="createMaterial") {{$t('UU0020')}}
+          btn(size="md" type="secondary" class="h-10" @click="cancel") {{ $t("UU0002") }}
+          btn(size="md" class="h-10" @click="createMaterial") {{ $t("UU0020") }}
 </template>
 
 <script>
@@ -113,39 +113,31 @@ export default {
         return
       }
 
-      store.dispatch('helper/openModalLoading')
-      const { message, success } = await store.dispatch('assets/createMaterial', { tempMaterialId })
+      store.dispatch('helper/pushModalLoading')
+      await store.dispatch('assets/createMaterial', { tempMaterialId })
       store.dispatch('helper/closeModalLoading')
-
-      if (success) {
-        isConfirmedToLeave.value = true
-        goToAssets()
-        store.dispatch('helper/pushModal', {
-          header: t('DD0029'),
-          component: 'modal-how-to-scan',
-          properties: {
-            materialList: [material.value]
-          }
-        })
-      } else {
-        store.dispatch('helper/openModalConfirm', {
-          title: message.title,
-          content: message.content,
-          primaryText: t('UU0031'),
-        })
-      }
+      isConfirmedToLeave.value = true
+      goToAssets()
+      store.dispatch('helper/pushModal', {
+        header: t('DD0029'),
+        component: 'modal-how-to-scan',
+        properties: {
+          materialList: [material.value]
+        }
+      })
     }
 
     const cancel = async () => {
       store.dispatch('helper/pushModalConfirm', {
-        title: t('DD0033'),
+        type: 1,
+        header: t('DD0033'),
         content: t('DD0034'),
-        secondaryText: t('UU0001'),
-        secondaryHandler: () => {
+        primaryBtnText: t('UU0001'),
+        primaryBtnHandler: () => {
           isConfirmedToLeave.value = true
           goToMaterialUpload()
         },
-        primaryText: t('UU0002')
+        secondaryBtnText: t('UU0002')
       })
     }
 
@@ -161,12 +153,13 @@ export default {
       }
       const result = await new Promise((resolve) => {
         store.dispatch('helper/openModalConfirm', {
-          title: t('EE0045'),
+          type: 3,
+          header: t('EE0045'),
           content: t('EE0046'),
-          secondaryText: t('UU0001'),
-          secondaryHandler: resolve.bind(undefined, 'confirm'),
-          primaryText: t('UU0002'),
-          primaryHandler: resolve.bind(undefined, 'cancel')
+          primaryBtnText: t('UU0001'),
+          primaryBtnHandler: resolve.bind(undefined, 'confirm'),
+          secondaryBtnText: t('UU0002'),
+          secondaryBtnHandler: resolve.bind(undefined, 'cancel')
         })
       })
 

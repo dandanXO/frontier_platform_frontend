@@ -2,12 +2,13 @@
 label(class="flex items-center")
   svg-icon(v-if="inputValue" iconName="toggle_on" :size="size" class="text-brand")
   svg-icon(v-else iconName="toggle_off" :size="size" class="text-black-700")
-  input(type="checkbox"
+  input(
+    type="checkbox"
     class="hidden"
     :checked="inputValue"
     @input="check"
   )
-  div(v-if="name !== ''" class="pl-1 text-body2 text-primary") {{name}}
+  div(v-if="name !== ''" class="pl-1 text-body2 text-primary") {{ name }}
 </template>
 
 <script>

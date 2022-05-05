@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="fixed inset-0 z-index:modal w-screen h-screen bg-black-900 bg-opacity-30 flex justify-center items-center")
+div(class="fixed inset-0 z-modal w-screen h-screen bg-black-900/30 flex justify-center items-center")
   div(class="w-screen h-screen" @click="closable && close()")
   div(class="absolute bg-black-0 rounded card-shadow")
     div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
@@ -35,7 +35,6 @@ export default {
     ModalEditSimpleInfo: defineAsyncComponent(() => import('@/components/assets/material/list/ModalEditSimpleInfo.vue')),
     ModalViewer: defineAsyncComponent(() => import('@/components/assets/material/ModalViewer.vue')),
     ModalCloneTo: defineAsyncComponent(() => import('@/components/ModalCloneTo.vue')),
-    ModalError: defineAsyncComponent(() => import('@/components/modal/ModalError.vue')),
     ModalUploadAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalUploadAttachment.vue')),
     ModalUploadCoverImage: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalUploadCoverImage.vue')),
     ModalWorkspaceNodeList: defineAsyncComponent(() => import('@/components/workspace/ModalWorkspaceNodeList.vue')),

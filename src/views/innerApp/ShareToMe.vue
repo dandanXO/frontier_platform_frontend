@@ -1,20 +1,21 @@
 <template lang="pug">
 div(class="w-full h-full")
   search-table(
-    ref="refSearchTable"
-    :searchType="SEARCH_TYPE.PUBLIC_LIBRARY"
+    :searchType="SEARCH_TYPE.SHARE"
     :searchCallback="getShareToMeList"
     :optionSort="optionSort"
-    @selectAll="handleSelectAll"
+    :optionMultiSelect="optionMultiSelect"
+    :itemList="nodeList"
+    v-model:selectedItemList="selectedNodeList"
   )
-    template(#header-left)
+    template(#header-left="{ goTo }")
       div(class="flex items-center")
         div(class="flex items-end")
-          breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)" fontSize="text-h6")
+          breadcrumb(:breadcrumbList="breadcrumbList" @click:item="setSharingIdAndNodeKey($event.nodeKey); goTo()" fontSize="text-h6")
           p(class="flex text-caption text-black-700 pl-1")
             span (
             i18n-t(keypath="RR0068" tag="span")
-              template(#number) {{pagination.totalCount}}
+              template(#number) {{ pagination.totalCount }}
             span )
         tooltip(v-if="!isFirstLayer" placement="bottom")
           template(#trigger)
@@ -22,20 +23,20 @@ div(class="w-full h-full")
               iconName="clone"
               class="text-black-700 cursor-pointer hover:text-brand ml-1"
               size="24"
-              @click="cloneNode.func(`${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`, collection.share.isCanClone)"
+              @click="shareToMeCloneByCollection(currentNodeKey, collection.share.sharingId, collection.isCanClone)"
             )
           template(#content)
-            p(class="text-caption text-primary px-3 py-1") {{$t('RR0056')}}
+            p(class="text-caption text-primary px-3 py-1") {{ $t("RR0056") }}
     template(#header-right)
       div(v-if="!isFirstLayer" class="relative cursor-pointer" @click="openModalShareMessage")
         svg-icon(iconName="chat" size="24" class="text-black-700")
         div(v-if="haveMsgAndFirstRead" class="absolute -top-px -right-px w-2 h-2 rounded-full border border-black-0 bg-warn")
-      btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{$t('UU0057')}}
+      btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
     template(v-if="!isFirstLayer" #sub-header)
       div(class="mx-7.5 mb-7.5 text-caption text-black-700 flex items-center")
-        p(class="pr-2.5") {{collection.share.displayName}}
-        p {{$t('RR0148')}} {{$dayjs.unix(collection.share.shareDate).format('MM/DD/YYYY')}}
-    template(#default="{ inSearch }")
+        p(class="pr-2.5") {{ collection.share.displayName }}
+        p {{ $t("RR0148") }} {{ $dayjs.unix(collection.share.shareDate).format("MM/DD/YYYY") }}
+    template(#default="{ inSearch, goTo }")
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
         template(v-for="node in nodeList")
           template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
@@ -45,13 +46,13 @@ div(class="w-full h-full")
               :displayName="node.name"
               :optionList="optionNode"
               :isShowLocation="inSearch"
-              @click="goTo(node.nodeKey, node.share.sharingId)"
-              @click:option="$event.func(node)"
+              @click="setSharingIdAndNodeKey(node.nodeKey, node.share.sharingId); goTo()"
+              @click:option="$event.func(node, node.share.sharingId)"
             )
               template(#node-caption v-if="isFirstLayer")
                 div(class="mt-1.5 h-6 flex items-center")
-                  img(:src="node.share.logo" class="aspect-ratio h-full rounded-full")
-                  p(class="pl-1 font-bold text-caption text-primary") {{node.share.displayName}}
+                  img(:src="node.share.logo" class="aspect-square h-full rounded-full")
+                  p(class="pl-1 font-bold text-caption text-primary") {{ node.share.displayName }}
           template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
             node-item(
               v-model:selectedList="selectedNodeList"
@@ -59,26 +60,24 @@ div(class="w-full h-full")
               :displayName="node.materialNo"
               :optionList="optionNode"
               :isShowLocation="inSearch"
-              @click:option="$event.func(node)"
+              @click:option="$event.func(node, node.share.sharingId)"
               @click.stop="goToShareToMeMaterial(node.nodeKey, node.share.sharingId)"
             )
               template(#node-caption v-if="isFirstLayer")
                 div(class="mt-1.5 h-6 flex items-center")
-                  img(:src="node.share.logo" class="aspect-ratio h-full rounded-full")
-                  p(class="pl-1 font-bold text-caption text-primary") {{node.share.displayName}}
+                  img(:src="node.share.logo" class="aspect-square h-full rounded-full")
+                  p(class="pl-1 font-bold text-caption text-primary") {{ node.share.displayName }}
       div(v-else class="flex h-full justify-center items-end")
-        p(class="text-body1 text-primary") {{$t('HH0001')}}
-  multi-select-menu(:options="optionMultiSelect" v-model:selectedList="selectedNodeList")
-    template(#default="{ option }")
+        p(class="text-body1 text-primary") {{ $t("HH0001") }}
+    template(#menu-option="{ option }")
       div(
-        v-if="option.id === 'clone'"
-        class="whitespace-nowrap px-5 cursor-pointer hover:text-brand"
-        @click="option.func(selectedNodeList, collection.share.isCanClone)"
-      ) {{option.name}}
-
+        v-if="option.name === $t('RR0167')"
+        class="whitespace-nowrap cursor-pointer hover:text-brand px-5"
+        @click="shareToMeCloneByNodeList(selectedNodeList.map(item => JSON.parse(item)), collection.share.sharingId)"
+      ) {{ option.name }}
 </template>
 
-<script>
+<script setup>
 import SearchTable from '@/components/layout/SearchTable.vue'
 import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
@@ -89,144 +88,104 @@ import { useRoute, useRouter } from 'vue-router'
 import useShareToMe from '@/composables/useShareToMe'
 import useNavigation from '@/composables/useNavigation'
 
-export default {
-  name: 'ShareToMe',
-  components: {
-    SearchTable,
-    NodeItem
-  },
-  setup () {
-    const { t } = useI18n()
-    const store = useStore()
-    const router = useRouter()
-    const route = useRoute()
-    const { cloneNode, deleteNode } = useShareToMe()
-    const { goToShareToMeMaterial } = useNavigation()
-    const optionSort = {
-      base: [
-        SORT_BY.MATERIAL_NO_A_Z_C_M,
-        SORT_BY.LAST_UPDATE
-      ],
-      keywordSearch: [
-        SORT_BY.RELEVANCE_C_M
-      ]
+const props = defineProps({
+  nodeKey: {
+    type: String,
+    default: null
+  }
+})
+
+const { t } = useI18n()
+const store = useStore()
+const router = useRouter()
+const route = useRoute()
+const { shareToMeCloneByNode, shareToMeCloneByNodeList, shareToMeCloneByCollection, shareToMeDeleteByNode, shareToMeDeleteByNodeList } = useShareToMe()
+const { goToShareToMeMaterial } = useNavigation()
+const optionSort = {
+  base: [
+    SORT_BY.MATERIAL_NO_A_Z_C_M,
+    SORT_BY.LAST_UPDATE
+  ],
+  keywordSearch: [
+    SORT_BY.RELEVANCE_C_M
+  ]
+}
+const optionMultiSelect = computed(() => {
+  return isFirstLayer.value
+    ? [{ name: t('RR0063'), func: shareToMeDeleteByNodeList }]
+    : [{ name: t('RR0167'), func: shareToMeCloneByNodeList }]
+})
+const pagination = computed(() => store.getters['helper/search/pagination'])
+const collection = computed(() => store.getters['shareToMe/collection'])
+const breadcrumbList = computed(() => store.getters['shareToMe/collectionBreadcrumbList']({
+  name: t('RR0010'),
+  nodeKey: null
+}))
+const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
+const nodeList = computed(() => store.getters['shareToMe/nodeList'])
+const optionNode = computed(() => {
+  const optionList = [
+    [
+      { name: t('RR0167'), func: shareToMeCloneByNode }
+    ]
+  ]
+  if (isFirstLayer.value) {
+    optionList[0].push({ name: t('RR0063'), func: shareToMeDeleteByNode })
+  }
+  return optionList
+})
+const currentNodeKey = ref(props.nodeKey)
+const sharingId = ref(route.query.sharingId || null)
+const selectedNodeList = ref([])
+const isFirstTime = ref(true)
+const haveMsgAndFirstRead = computed(() => !!collection.value?.share?.message && isFirstTime.value)
+
+const getShareToMeList = async (targetPage = 1, query) => {
+  await router.push({
+    name: route.name,
+    params: {
+      nodeKey: currentNodeKey.value
+    },
+    query: {
+      sharingId: sharingId.value,
+      ...query
     }
-    const optionMultiSelect = computed(() => isFirstLayer.value ? [deleteNode] : [cloneNode])
-    const pagination = computed(() => store.getters['helper/search/pagination'])
-    const collection = computed(() => store.getters['shareToMe/collection'])
-    const breadcrumbList = computed(() => store.getters['shareToMe/collectionBreadcrumbList']({
-      name: t('RR0010'),
-      key: null
-    }))
-    const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
-    const nodeList = computed(() => store.getters['shareToMe/nodeList'])
-    const optionNode = computed(() => {
-      const optionList = [
-        [
-          cloneNode
-        ]
-      ]
-      if (isFirstLayer.value) {
-        optionList[0].push(deleteNode)
-      }
-      return optionList
-    })
-    const workspaceNodeId = ref(route.query.workspaceNodeId || null)
-    const sharingId = ref(route.query.sharingId || null)
-    const refSearchTable = ref(null)
-    const selectedNodeList = ref([])
-    const isFirstTime = ref(true)
-    const haveMsgAndFirstRead = computed(() => !!collection.value?.share?.message && isFirstTime.value)
+  })
+  await store.dispatch('shareToMe/getShareToMeList', { targetPage, sharingId: sharingId.value, nodeKey: currentNodeKey.value })
+}
 
-    const getShareToMeList = async (targetPage = 1, query) => {
-      await router.push({
-        name: route.name,
-        query: {
-          sharingId: sharingId.value,
-          workspaceNodeId: workspaceNodeId.value,
-          ...query
-        }
-      })
-      await store.dispatch('shareToMe/getShareToMeList', { targetPage, sharingId: sharingId.value, workspaceNodeId: workspaceNodeId.value })
-    }
-
-    const search = () => refSearchTable.value.search(pagination.value.currentPage)
-
-    const parseAndSetKey = (key) => {
-      if (key === null) {
-        workspaceNodeId.value = null
-      } else {
-        workspaceNodeId.value = key.split('-')[1]
-      }
-    }
-
-    const goTo = (key, targetSharingId = null) => {
-      store.dispatch('helper/search/reset', { sort: optionSort.base[0].value })
-      store.dispatch('helper/search/setPagination', { currentPage: 1 })
-      parseAndSetKey(key)
-      if (targetSharingId && isFirstLayer.value) {
-        sharingId.value = targetSharingId
-      } else if (key === null && targetSharingId === null) {
-        sharingId.value = null
-      }
-      search()
-    }
-
-    const handleSelectAll = () => {
-      const stringifyArr = nodeList.value.map(node => JSON.stringify(node))
-      const duplicateArr = selectedNodeList.value.concat(stringifyArr)
-      selectedNodeList.value = [...new Set(duplicateArr)]
-    }
-
-    const openModalCollectionDetail = () => {
-      store.dispatch('helper/openModal', {
-        header: t('FF0006'),
-        component: 'modal-collection-detail',
-        properties: {
-          ...collection.value
-        }
-      })
-    }
-
-    const openModalShareMessage = () => {
-      isFirstTime.value = false
-      store.dispatch('helper/openModal', {
-        component: 'modal-share-message',
-        header: t('RR0146'),
-        properties: {
-          message: collection.value.share.message
-        }
-      })
-    }
-
-    watch(
-      () => isFirstLayer.value,
-      () => (selectedNodeList.value.length = 0)
-    )
-
-    return {
-      getShareToMeList,
-      optionSort,
-      pagination,
-      refSearchTable,
-      SEARCH_TYPE,
-      NODE_TYPE,
-      nodeList,
-      goTo,
-      breadcrumbList,
-      optionNode,
-      isFirstLayer,
-      collection,
-      openModalCollectionDetail,
-      goToShareToMeMaterial,
-      selectedNodeList,
-      handleSelectAll,
-      optionMultiSelect,
-      haveMsgAndFirstRead,
-      openModalShareMessage,
-      cloneNode
-    }
+const setSharingIdAndNodeKey = (nodeKey, targetSharingId = null) => {
+  currentNodeKey.value = nodeKey
+  if (targetSharingId && isFirstLayer.value) {
+    sharingId.value = targetSharingId
+  } else if (nodeKey === null && targetSharingId === null) {
+    sharingId.value = null
   }
 }
 
+const openModalCollectionDetail = () => {
+  store.dispatch('helper/openModal', {
+    header: t('FF0006'),
+    component: 'modal-collection-detail',
+    properties: {
+      ...collection.value
+    }
+  })
+}
+
+const openModalShareMessage = () => {
+  isFirstTime.value = false
+  store.dispatch('helper/openModal', {
+    component: 'modal-share-message',
+    header: t('RR0146'),
+    properties: {
+      message: collection.value.share.message
+    }
+  })
+}
+
+watch(
+  () => isFirstLayer.value,
+  () => (selectedNodeList.value.length = 0)
+)
 </script>

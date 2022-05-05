@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-101 px-8")
-  h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{$t('MM0006')}}
+  h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{ $t("MM0006") }}
   input-select(
     v-model:selectValue="formData.category"
     :options="feedbackOptionList"
@@ -22,13 +22,13 @@ div(class="w-101 px-8")
     div(class="grid gap-y-2")
       div(v-for="attachment in feedbackAttachmentList" class="h-8 flex justify-between items-center px-4 bg-black-100")
         div(class="flex items-center gap-x-1")
-          p(class="text-body2 font-bold text-primary line-clamp-1 max") {{attachment.fileName}}
-          p(class="text-body2 font-normal text-primary flex-shrink-0") ({{bytesToSize(attachment.fileSize)}})
+          p(class="text-body2 font-bold text-primary line-clamp-1") {{ attachment.fileName }}
+          p(class="text-body2 font-normal text-primary flex-shrink-0") ({{ bytesToSize(attachment.fileSize) }})
         svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeAttachment(attachment.tempFeedbackAttachmentId)")
-  btn(size="sm" type="secondary" prependIcon="add" @click="chooseFile") {{$t('UU0063')}}
+  btn(size="sm" type="secondary" prependIcon="add" @click="chooseFile") {{ $t("UU0063") }}
   div(class="text-caption text-primary pt-1")
-    p(class="pb-2") {{$t('MM0015')}}
-    p {{$t('MM0016')}}
+    p(class="pb-2") {{ $t("MM0015") }}
+    p {{ $t("MM0016") }}
   btn-group(
     class="h-25"
     :primaryText="$t('UU0049')"

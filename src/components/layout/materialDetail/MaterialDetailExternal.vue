@@ -7,22 +7,22 @@ div
       block-material-pantone(:pantoneList="material.pantoneList")
       //- Inventory
       div(v-if="material.isPublicInventory")
-        h5(class="text-h5 font-bold text-primary pb-3") {{$t('RR0135')}}
-        p(class='text-body2 text-primary line-clamp-1') {{materialInfo.totalInventoryQty.name}}: {{materialInfo.totalInventoryQty.value}}
+        h5(class="text-h5 font-bold text-primary pb-3") {{ $t("RR0135") }}
+        p(class="text-body2 text-primary line-clamp-1") {{ materialInfo.totalInventoryQty.name }}: {{ materialInfo.totalInventoryQty.value }}
       //- Pricing
       div
-        h5(class="text-h5 font-bold text-primary pb-3") {{$t('RR0043')}}
+        h5(class="text-h5 font-bold text-primary pb-3") {{ $t("RR0043") }}
         div(class="grid gap-y-2")
-          p(v-for='item in materialPublicPriceInfo' class='text-body2 text-primary line-clamp-1') {{item.name}}: {{item.value}}
+          p(v-for="item in materialPublicPriceInfo" class="text-body2 text-primary line-clamp-1") {{ item.name }}: {{ item.value }}
       //- U3m
       block-material-external-u3m-status(:material="material" :isCanDownloadU3M="isCanDownloadU3M")
   div(class="pt-5 grid gap-y-10")
     div
-      h5(class="text-h5 font-bold text-primary pb-7.5") {{$t('RR0133')}}
+      h5(class="text-h5 font-bold text-primary pb-7.5") {{ $t("RR0133") }}
       div(class="flex flex-wrap gap-x-2 gap-y-3")
-        div(v-for="tag in [...material.publicTagList, ...material.aiTagList]" class="px-3 h-8 flex items-center bg-primary-thin rounded text-body2 text-primary") {{tag}}
+        div(v-for="tag in [...material.publicTagList, ...material.aiTagList]" class="px-3 h-8 flex items-center bg-primary-thin rounded text-body2 text-primary") {{ tag }}
     div
-      h5(class="text-h5 font-bold text-primary pb-7.5") {{$t('RR0136')}}
+      h5(class="text-h5 font-bold text-primary pb-7.5") {{ $t("RR0136") }}
       div(class="flex flex-wrap gap-5")
         attachment-item(
           v-for="(attachment, index) in attachmentSortedList"

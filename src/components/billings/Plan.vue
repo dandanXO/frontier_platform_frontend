@@ -20,15 +20,15 @@ div(class="w-195")
     )
       div
         p(class="text-body1 font-bold text-primary mb-1") {{ $t('OO0002') }}
-        p(class="text-caption text-black-700 line-height-1.6 mb-5") {{ $t('OO0137') }}
-        p(class="text-body1 font-bold line-height-1.6" :class="[isMaterialFull ? 'text-warn' : 'text-brand-dark']") {{ materialQuota.used }}/{{ materialQuota.max }} 
+        p(class="text-caption text-black-700 leading-1.6 mb-5") {{ $t('OO0137') }}
+        p(class="text-body1 font-bold leading-1.6" :class="[isMaterialFull ? 'text-warn' : 'text-brand-dark']") {{ materialQuota.used }}/{{ materialQuota.max }} 
           span(class="text-caption font-normal pl-1") {{ $t('OO0035') }}
       circle-progress-bar(
         class="self-end"
         :size="60"
         :current="materialQuota.used"
         :max="materialQuota.max"
-        :primaryColor="planStatus.ACTIVE ? isMaterialFull ? 'warn' : 'brand' : 'black-500'"
+        :primaryColor="planStatus.ACTIVE ? isMaterialFull ? 'stroke-warn' : 'stroke-brand' : 'stroke-black-500'"
       )
         div(class="text-caption font-normal text-primary text-center")
           p(:class="{ 'text-warn': isMaterialFull }") {{ ((materialQuota.used / materialQuota.max) * 100).toFixed(0) }}%
@@ -40,15 +40,15 @@ div(class="w-195")
     )
       div
         p(class="text-body1 font-bold text-primary mb-1") {{ $t('OO0003') }}
-        p(class="text-caption text-black-700 line-height-1.6 mb-5") {{ $t('OO0137') }}
-        p(class="text-body1 font-bold line-height-1.6" :class="[isU3mFull ? 'text-warn' : 'text-brand-dark']") {{ u3mQuota.used }}/{{ u3mQuota.max }}
+        p(class="text-caption text-black-700 leading-1.6 mb-5") {{ $t('OO0137') }}
+        p(class="text-body1 font-bold leading-1.6" :class="[isU3mFull ? 'text-warn' : 'text-brand-dark']") {{ u3mQuota.used }}/{{ u3mQuota.max }}
           span(class="text-caption font-normal pl-1") {{ $t('OO0035') }}
       circle-progress-bar(
         class="self-end"
         :size="60"
         :current="u3mQuota.used"
         :max="u3mQuota.max"
-        :primaryColor="planStatus.ACTIVE ? isU3mFull ? 'warn' : 'brand' : 'black-500'"
+        :primaryColor="planStatus.ACTIVE ? isU3mFull ? 'stroke-warn' : 'stroke-brand' : 'stroke-black-500'"
       )
         div(class="text-caption font-normal text-primary text-center")
           p(:class="{ 'text-warn': isU3mFull }") {{ ((u3mQuota.used / u3mQuota.max) * 100).toFixed(0) }}%
@@ -56,8 +56,8 @@ div(class="w-195")
     div(class="border border-black-400 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between")
       div
         p(class="text-body1 font-bold text-primary mb-1") {{ $t('OO0114') }}
-        p(class="text-caption text-black-700 line-height-1.6 mb-5") {{ $t('OO0137') }}
-        p(class="text-body1 font-bold text-brand-dark line-height-1.6") {{ planType.ENT ? `${memberQuota.used}/${memberQuota.max}` : memberQuota.used }}
+        p(class="text-caption text-black-700 leading-1.6 mb-5") {{ $t('OO0137') }}
+        p(class="text-body1 font-bold text-brand-dark leading-1.6") {{ planType.ENT ? `${memberQuota.used}/${memberQuota.max}` : memberQuota.used }}
           span(class="text-caption font-normal pl-1") {{ $t('OO0031') }}
   template(v-if="!planType.ENT")
     p(v-if="planStatus.ACTIVE || planStatus.BUFFER" class="text-body2 text-assist-blue text-right pt-3 cursor-pointer" @click="openModalDeactivate") {{ $t('OO0007') }}

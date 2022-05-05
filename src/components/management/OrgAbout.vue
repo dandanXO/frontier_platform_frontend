@@ -1,7 +1,7 @@
 <template lang="pug">
-div(class="l:pt-16 pt-17.5")
+div(class="pt-16 xl:pt-17.5")
   div(class="flex justify-center")
-    div(class="w-40 l:mr-11 mr-15")
+    div(class="w-40 mr-11 xl:mr-15")
       div(class="flex flex-col items-center")
         div(class="relative")
           img(:src="logo" class="w-40 h-40 rounded-full bg-black-500")
@@ -15,11 +15,11 @@ div(class="l:pt-16 pt-17.5")
             template(#trigger)
               svg-icon(iconName="content_copy" size="14" class="text-black-700")
             template(#content)
-              p(class="text-caption text-primary px-3 py-1") {{ $t('BB0056') }}
-        p(v-permission="FUNC_ID.DELETE_ORG" v-if="!planType.ENT" class="pt-2.5 text-caption text-black-500 cursor-pointer" @click="openModalTypeTextToConfirm") {{ $t('UU0013') }}
+              p(class="text-caption text-primary px-3 py-1") {{ $t("BB0056") }}
+        p(v-permission="FUNC_ID.DELETE_ORG" v-if="!planType.ENT" class="pt-2.5 text-caption text-black-500 cursor-pointer" @click="openModalTypeTextToConfirm") {{ $t("UU0013") }}
     div(class="grid gap-y-8.5 relative")
-      p(class="absolute text-caption text-black-500 right-0 -top-7 transform -translate-y-full") *{{ $t('RR0163') }}
-      div(class="grid grid-cols-2 grid-rows-3 gap-y-7.5 l:gap-x-8 gap-x-15")
+      p(class="absolute text-caption text-black-500 right-0 -top-7 transform -translate-y-full") *{{ $t("RR0163") }}
+      div(class="grid grid-cols-2 grid-rows-3 gap-y-7.5 gap-x-8 xl:gap-x-15")
         input-label-color(
           v-model:labelColor="orgFormData.labelColor"
           v-model:textValue="orgFormData.orgName"
@@ -62,7 +62,7 @@ div(class="l:pt-16 pt-17.5")
           :label="$t('BB0080')"
           :placeholder="$t('BB0081')"
         )
-      btn(size="md" class="justify-self-end" :disabled="!availableToUpdateOrg" @click="updateOrg") {{ $t('UU0018') }}
+      btn(size="md" class="justify-self-end" :disabled="!availableToUpdateOrg" @click="updateOrg") {{ $t("UU0018") }}
 </template>
 
 <script>
@@ -97,9 +97,6 @@ export default {
     const orgFormData = reactive({ orgName, labelColor, orgCategoryId, address, countryCode, fax, faxCountryCode, phone, phoneCountryCode })
     const isOrgNameExist = ref(false)
     const availableToUpdateOrg = computed(() => orgFormData.orgName !== '' && !isOrgNameExist.value)
-    const checkOrgNameExist = async () => {
-      isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: orgFormData.orgName, orgId: organization.value.orgId })
-    }
 
     const openModalUploadLogo = () => {
       store.dispatch('helper/openModal', {
@@ -119,10 +116,11 @@ export default {
           errorMsg: t('WW0015'),
           confirmHandler: () => {
             store.dispatch('helper/openModalConfirm', {
-              title: t('BB0029'),
+              type: 1,
+              header: t('BB0029'),
               content: t('BB0030'),
-              secondaryText: t('UU0001'),
-              afterSecondaryHandler: async () => {
+              primaryBtnText: t('UU0001'),
+              afterPrimaryBtnHandler: async () => {
                 const deleteOrg = async () => {
                   store.dispatch('helper/openModalLoading')
                   const { success } = await store.dispatch('organization/deleteOrg')
@@ -160,7 +158,8 @@ export default {
                     }
                   }
                 })
-              }
+              },
+              secondaryBtnText: t('UU0002')
             })
           }
         }
@@ -168,18 +167,14 @@ export default {
     }
 
     const updateOrg = async () => {
-      try {
-        if (orgFormData.orgName !== organization.value.orgName) {
-          await checkOrgNameExist()
-          if (isOrgNameExist.value) { return }
-        }
-
-        await store.dispatch('organization/updateOrg', toRaw(orgFormData))
-
-        store.commit('helper/PUSH_message', t('BB0107'))
-      } catch (error) {
-        console.log(error)
+      if (orgFormData.orgName !== organization.value.orgName) {
+        isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: orgFormData.orgName, orgId: organization.value.orgId })
+        if (isOrgNameExist.value) { return }
       }
+
+      await store.dispatch('organization/updateOrg', toRaw(orgFormData))
+
+      store.commit('helper/PUSH_message', t('BB0107'))
     }
 
     watch(

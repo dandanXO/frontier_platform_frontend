@@ -10,12 +10,12 @@ div(class="h-13 bg-black-200 py-2.5 pl-4 pr-6")
     template(#trigger)
       div(class="w-50 flex items-center cursor-pointer")
         img(:src="avatar" class="rounded-full w-8 h-8 mr-2")
-        p(class="flex-grow text-body2 text-primary line-clamp-1") {{orgUser.displayName}}
+        p(class="flex-grow text-body2 text-primary line-clamp-1") {{ orgUser.displayName }}
         svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650")
     template(#content)
       list(class="w-55")
         template(v-for="(block, index) in optionList")
-          list-item(v-for="option in block" class="cursor-pointer" @click.stop="option.func && option.func()") {{option.name}}
+          list-item(v-for="option in block" class="cursor-pointer" @click.stop="option.func && option.func()") {{ option.name }}
           div(v-if="index !== optionList.length - 1" class="mx-2 my-1 h-px bg-black-400")
 </template>
 

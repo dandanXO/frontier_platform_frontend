@@ -1,11 +1,11 @@
 <template lang="pug">
 div(class="w-full")
   div(
-    class="relative aspect-ratio"
+    class="relative aspect-square"
     @mouseenter="handleMouseEnter"
     @mouseleave="isHover = false"
   )
-    div(class="w-full h-full rounded overflow-hidden bg-cover" :class="{'border': neverScanBefore }")
+    div(class="w-full h-full rounded overflow-hidden bg-cover" :class="{ 'border': neverScanBefore }")
       img(:src="currentCoverImg" class="w-full h-full")
     div(v-if="isHover || haveSelectedMoreThanOne" class="absolute z-10 inset-0 w-full h-12")
       div(class="bg-linear w-full h-full rounded-t-md")
@@ -16,16 +16,16 @@ div(class="w-full")
         iconColor="text-black-0"
         uncheckColor="text-black-0"
       )
-    div(v-show="isHover" class="absolute z-9 inset-0 w-full h-full rounded bg-opacity-70 bg-black-900")
+    div(v-show="isHover" class="absolute z-9 inset-0 w-full h-full rounded bg-black-900/70")
       div(class="text-black-0 px-7.5 py-10 h-full flex flex-col items-center justify-center text-center" @click.stop="goToAssetMaterialDetail(material)")
-        div(class="line-height-1.6 text-body2 font-bold line-clamp-2") {{material.description}}
-        div(class="line-height-1.6 text-caption line-clamp-2") {{material.content}}
-        div(class="line-height-1.6 text-caption flex gap-1")
-          div {{materialInfo.yarn.value}}
-          div {{materialInfo.density.value}}
-          div {{materialInfo.width.value}}
-        div(class="line-height-1.6 text-caption line-clamp-2") {{material.finish}}
-        div(class="line-height-1.6 text-caption line-clamp-1") {{materialInfo.weight.value}}
+        div(class="text-body2 font-bold line-clamp-2 leading-1.6") {{ material.description }}
+        div(class="text-caption line-clamp-2 leading-1.6") {{ material.content }}
+        div(class="text-caption flex gap-1 leading-1.6")
+          div {{ materialInfo.yarn.value }}
+          div {{ materialInfo.density.value }}
+          div {{ materialInfo.width.value }}
+        div(class="text-caption line-clamp-2 leading-1.6") {{ material.finish }}
+        div(class="text-caption line-clamp-1 leading-1.6") {{ materialInfo.weight.value }}
       tooltip(
         v-if="innerSelectedList.length === 0"
         class="absolute bottom-3 right-3"
@@ -43,18 +43,18 @@ div(class="w-full")
               template(v-for="option in block")
                 qr-code-general(v-if="option.id === 'printQRCode'")
                   template(#activator="{ generatePdf }")
-                    list-item(class="px-7" @click="generatePdf([material])") {{option.name}}
+                    list-item(class="px-7" @click="generatePdf([material])") {{ option.name }}
                 qr-code-a4(v-else-if="option.id === 'printCard'")
                   template(#activator="{ generatePdf }")
-                    list-item(class="px-7" @click="generatePdf([material])") {{option.name}}
+                    list-item(class="px-7" @click="generatePdf([material])") {{ option.name }}
                 list-item(
                   v-else
                   class="px-7"
                   :disabled="option.disabled"
                   @click="handleClick(option)"
-                ) {{option.name}}
-              div(class="mx-2 my-1 border-black-400" :class="{'border-b': index !== options.length - 1}")
-  div(class="text-primary font-bold text-body1 line-clamp-1 line-height-1.6 mt-2") {{material.materialNo}}
+                ) {{ option.name }}
+              div(class="mx-2 my-1 border-black-400" :class="{ 'border-b': index !== options.length - 1 }")
+  div(class="text-primary font-bold text-body1 line-clamp-1 mt-2") {{ material.materialNo }}
 </template>
 
 <script>
@@ -84,7 +84,6 @@ export default {
       editMaterial,
       printCard,
       downloadU3M,
-      carbonCopy,
       cloneTo,
       addToWorkspace,
       create3DMaterial,
@@ -101,7 +100,6 @@ export default {
         editMaterial
       ],
       [
-        carbonCopy,
         cloneTo,
         addToWorkspace
       ],

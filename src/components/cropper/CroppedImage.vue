@@ -7,7 +7,7 @@ div(class="cropped-image" :style="rotateStyle")
           ref="body"
           draggable="false"
           class="w-full h-full"
-          :class="{'opacity-30': isTransparent}"
+          :class="{ 'opacity-30': isTransparent }"
           :src="config.image.src"
           @dragstart.prevent
           @mousedown.left.stop="moveStart"

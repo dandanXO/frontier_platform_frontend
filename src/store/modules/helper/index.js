@@ -10,7 +10,6 @@ const state = () => ({
    */
   routeLocation: 'org',
   modalPipeline: [],
-  isShowModalError: false,
   message: '',
   isReloadInnerApp: true
 })
@@ -19,7 +18,6 @@ const getters = {
   modalPipeline: (state) => state.modalPipeline,
   message: (state) => state.message,
   routeLocation: (state) => state.routeLocation,
-  isShowModalError: state => state.isShowModalError,
   isReloadInnerApp: state => state.isReloadInnerApp
 }
 
@@ -45,9 +43,6 @@ const mutations = {
   },
   SET_routeLocation (state, routeLocation) {
     state.routeLocation = routeLocation
-  },
-  SET_isShowModalError (state, bool) {
-    state.isShowModalError = bool
   },
   SET_isReloadInnerApp (state, bool) {
     state.isReloadInnerApp = bool
@@ -78,6 +73,16 @@ const actions = {
   closeModal ({ commit }) {
     commit('CLOSE_modalPipeline')
   },
+  openModalBehavior ({ commit }, options) {
+    commit('CLEAR_modalPipeline')
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.BEHAVIOR, options })
+  },
+  pushModalBehavior ({ commit }, options) {
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.BEHAVIOR, options })
+  },
+  closeModalBehavior ({ commit }) {
+    commit('CLOSE_modalPipeline')
+  },
   clearModalPipeline ({ commit }) {
     commit('CLEAR_modalPipeline')
   },
@@ -90,13 +95,6 @@ const actions = {
   },
   closeModalLoading ({ commit }) {
     commit('CLOSE_modalPipeline')
-  },
-  openModalError ({ commit, dispatch }) {
-    commit('SET_isShowModalError', true)
-    dispatch('clearModalPipeline')
-  },
-  closeModalError ({ commit }) {
-    commit('SET_isShowModalError', false)
   },
   async reloadInnerApp ({ commit }) {
     commit('SET_isReloadInnerApp', false)

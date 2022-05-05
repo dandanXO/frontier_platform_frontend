@@ -1,11 +1,11 @@
 <template lang="pug">
 div
   div(class="w-full flex justify-center items-center overflow-hidden")
-    div(class="relative w-full aspect-ratio flex justify-center items-center" style="background-color: #F1F2F5")
+    div(class="relative w-full aspect-square flex justify-center items-center bg-[#F1F2F5]")
       slot(name="imageCropArea" :innerScaleSize="scaleValue" :innerShowScale="showScale")
   div(class="mt-2.5")
     div(class="text-primary text-body2 flex justify-between items-center mb-1")
-      div {{$t("EE0049")}}
+      div {{ $t("EE0049") }}
       div(class="w-15 flex justify-center items-center")
         input(
           v-model.number="formattedRotateDeg"
@@ -24,7 +24,7 @@ div
     )
   div(v-if="showScale" class="mt-2.5")
     div(class="text-primary text-body2 flex justify-between items-center mb-1")
-      div {{$t('EE0098')}}
+      div {{ $t("EE0098") }}
       div(class="w-15 flex justify-center items-center")
         input(
           v-model.number="formattedScaleValue"
@@ -35,7 +35,7 @@ div
           :max="scaleRange[1]"
           @change="handleScaleChange"
         )
-        span(class="inline-block -ml-6 w-5 text-left") {{scaleUnit}}
+        span(class="inline-block -ml-6 w-5 text-left") {{ scaleUnit }}
     input-range(
       ref="refScale"
       v-model:range="formattedScaleValue"

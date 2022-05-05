@@ -1,15 +1,12 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation'
-import { computed } from 'vue'
-import { TARGET_LOCATION, U3M_STATUS } from '@/utils/constants'
+import { U3M_STATUS } from '@/utils/constants'
 
 export default function useAssets () {
   const { t } = useI18n()
   const { goToAssetMaterialEdit } = useNavigation()
   const store = useStore()
-
-  const routeLocation = computed(() => store.getters['helper/routeLocation'])
 
   const editMaterial = {
     id: 'editMaterial',
@@ -18,73 +15,22 @@ export default function useAssets () {
     func: goToAssetMaterialEdit
   }
 
-  const carbonCopy = {
-    id: 'carbonCopy',
-    name: t('RR0055'),
-    func: async (v) => {
-      store.dispatch('helper/openModalLoading')
-      const { message, success } = await store.dispatch('assets/carbonCopyMaterial', { materialId: v.materialId })
-      store.dispatch('helper/closeModalLoading')
-
-      if (success) {
-        store.dispatch('helper/reloadInnerApp')
-        store.commit('helper/PUSH_message', t('EE0084'))
-      } else {
-        store.dispatch('helper/pushModalConfirm', {
-          title: message.title,
-          content: message.content,
-          primaryText: t('UU0031'),
-        })
-      }
-    }
-  }
-
   const cloneTo = {
     id: 'cloneTo',
-    name: t('RR0056'),
+    name: t('RR0167'),
     func: (v) => {
       const materialIdList = Array.isArray(v) ? v.map(({ materialId }) => materialId) : [v.materialId]
-      const organization = store.getters['organization/organization']
-      const currentGroupId = store.getters['group/groupId'] || null
-      const locationList = []
-      const groupList = routeLocation.value === 'org'
-        ? organization.groupList
-        : organization.groupList.filter(group => group.groupId !== currentGroupId)
 
-      if (routeLocation.value === 'group') {
-        locationList.push({
-          id: organization.orgId,
-          name: organization.orgName,
-          location: TARGET_LOCATION.ORG
-        })
-      }
-
-      groupList.forEach(group => {
-        locationList.push({
-          id: group.groupId,
-          name: group.groupName,
-          location: TARGET_LOCATION.GROUP
-        })
-      })
-
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-clone-to',
         properties: {
-          locationList,
-          cloneHandler: async (targetLocationList) => {
-            store.dispatch('helper/openModalLoading')
-            const { message, success } = await store.dispatch('assets/cloneMaterial', { targetLocationList, materialIdList })
-            store.dispatch('helper/closeModalLoading')
-
-            if (success) {
-              store.commit('helper/PUSH_message', t('EE0056'))
-            } else {
-              store.dispatch('helper/pushModalConfirm', {
-                title: message.title,
-                content: message.content,
-                primaryText: t('UU0031'),
-              })
-            }
+          checkHandler: async () => {
+            return store.dispatch('assets/cloneCheck', { materialIdList })
+          },
+          cloneHandler: async (targetLocationList, optional) => {
+            await store.dispatch('assets/cloneMaterial', { targetLocationList, materialIdList, optional })
+            store.dispatch('helper/reloadInnerApp')
+            store.commit('helper/PUSH_message', t('EE0056'))
           }
         }
       })
@@ -98,9 +44,10 @@ export default function useAssets () {
       const materialList = Array.isArray(v) ? v : [v]
       if (materialList.length === 1 && !materialList[0].isComplete) {
         return store.dispatch('helper/openModalConfirm', {
-          title: t('EE0096'),
+          type: 1,
+          header: t('EE0096'),
           content: t('EE0097'),
-          primaryText: t('UU0031')
+          primaryBtnText: t('UU0031')
         })
       }
 
@@ -188,9 +135,10 @@ export default function useAssets () {
           break
         case U3M_STATUS.PROCESSING:
           store.dispatch('helper/openModalConfirm', {
-            title: t('RR0162'),
+            type: 0,
+            header: t('RR0162'),
             content: t('EE0072'),
-            primaryText: t('UU0031')
+            primaryBtnText: t('UU0031')
           })
           break
         case U3M_STATUS.FAIL:
@@ -259,22 +207,23 @@ export default function useAssets () {
     func: (v) => {
       const materialIdList = Array.isArray(v) ? v.map(({ materialId }) => materialId) : [v.materialId]
       store.dispatch('helper/openModalConfirm', {
-        title: t('EE0075'),
+        type: 1,
+        header: t('EE0075'),
         content: t('EE0076'),
-        secondaryText: t('UU0001'),
-        secondaryHandler: async () => {
+        primaryBtnText: t('UU0001'),
+        primaryBtnHandler: async () => {
           store.dispatch('helper/openModalLoading')
           await store.dispatch('assets/deleteMaterial', { materialIdList })
           store.dispatch('helper/closeModalLoading')
           store.dispatch('helper/reloadInnerApp')
-        }
+        },
+        secondaryBtnText: t('UU0002')
       })
     }
   }
 
   return {
     editMaterial,
-    carbonCopy,
     cloneTo,
     addToWorkspace,
     create3DMaterial,

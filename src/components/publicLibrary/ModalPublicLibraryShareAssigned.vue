@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-120.5 px-8")
-  h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{$t('RR0155')}}
+  h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{ $t("RR0155") }}
   input-text-icon(
     v-model:textValue="target"
     prependIcon="search"
@@ -17,9 +17,9 @@ div(class="w-120.5 px-8")
         img(v-if="item.logo" :src="item.logo" class="w-9 h-9 rounded-full")
         div(v-else class="w-9 h-9 rounded-full border-black-500 border border-dashed")
         div(class="text-body2 flex-grow")
-          p(class="text-primary line-clamp-1") {{item.name}}
-          p(v-if="item.number" class="text-black-500") {{item.number}}
-        p(class="text-body2 text-black-500 pr-2.5 cursor-pointer" @click="removeTarget(index)") {{$t('FF0060')}}
+          p(class="text-primary line-clamp-1") {{ item.name }}
+          p(v-if="item.number" class="text-black-500") {{ item.number }}
+        p(class="text-body2 text-black-500 pr-2.5 cursor-pointer" @click="removeTarget(index)") {{ $t("FF0060") }}
   btn-group(
     class="h-25"
     :primaryText="$t('RR0079')"
@@ -36,14 +36,10 @@ import { useI18n } from 'vue-i18n'
 export default {
   name: 'ModalPublicLibraryShareAssigned',
   props: {
-    workspaceNodeId: {
-      type: [String, Number],
+    nodeKey: {
+      type: String,
       required: true
     },
-    workspaceNodeLocation: {
-      type: [String, Number],
-      required: true
-    }
   },
   setup (props) {
     const { t } = useI18n()
@@ -53,37 +49,31 @@ export default {
     const errorMsg = ref('')
 
     const addToTargetList = async () => {
-      try {
-        const frozenTargetValue = target.value.trim()
-        const existedTarget = targetList.value.find(({ name, number }) => name === frozenTargetValue || number === frozenTargetValue)
-        if (existedTarget) {
-          switch (existedTarget.type) {
-            case 1:
-              throw t('WW0058')
-            case 2:
-              throw t('WW0059')
-            case 3:
-              throw t('WW0057')
-          }
+      const frozenTargetValue = target.value.trim()
+      const existedTarget = targetList.value.find(({ name, number }) => name === frozenTargetValue || number === frozenTargetValue)
+      if (existedTarget) {
+        switch (existedTarget.type) {
+          case 1:
+            return (errorMsg.value = t('WW0058'))
+          case 2:
+            return (errorMsg.value = t('WW0059'))
+          case 3:
+            return (errorMsg.value = t('WW0057'))
         }
-
-        const temp = await store.dispatch('publicLibrary/getShareTarget', {
-          workspaceNodeId: props.workspaceNodeId,
-          workspaceNodeLocation: props.workspaceNodeLocation,
-          target: frozenTargetValue
-        })
-        targetList.value.push(temp)
-        target.value = ''
-      } catch (error) {
-        errorMsg.value = error
       }
+
+      const temp = await store.dispatch('publicLibrary/getShareTarget', {
+        nodeKey: props.nodeKey,
+        target: frozenTargetValue
+      })
+      targetList.value.push(temp)
+      target.value = ''
     }
 
     const assignedShare = async () => {
       store.dispatch('helper/pushModalLoading')
       await store.dispatch('publicLibrary/assignedShare', {
-        workspaceNodeId: props.workspaceNodeId,
-        workspaceNodeLocation: props.workspaceNodeLocation,
+        nodeKey: props.nodeKey,
         targetList: targetList.value
       })
       store.dispatch('helper/closeModalLoading')

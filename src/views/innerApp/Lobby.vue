@@ -16,25 +16,25 @@ div(class="w-full")
       menu-personal
   div(class="w-full pt-15.5")
     div(v-if="orgList.length === 0" class="w-full flex flex-col items-center pt-with-header-empty")
-      h3(class="text-primary font-bold text-h3 mb-6") {{$t('AA0014')}}
-      p(class="text-primary text-body1 line-height-1.6 w-160 text-center mb-7.5") {{$t('AA0015')}}
+      h3(class="text-primary font-bold text-h3 mb-6") {{ $t("AA0014") }}
+      p(class="text-primary text-body1 leading-1.6 w-160 text-center mb-7.5") {{ $t("AA0015") }}
       div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg(true)")
         div(class="grid justify-items-center gap-y-3.5")
           svg-icon(iconName="old-add" size="24")
-          span(class="text-primary-middle text-body2 font-bold") {{$t('AA0011')}}
+          span(class="text-primary-middle text-body2 font-bold") {{ $t("AA0011") }}
     div(v-else class="pt-with-header px-88")
-      p(class="text-black-800 font-bold text-body1 pb-3 border-b border-black-200") {{$t('AA0009')}}
-      div(class="flex gap-5 flex-wrap mt-7.5")
+      p(class="text-black-800 font-bold text-body1 pb-3 border-b border-black-200") {{ $t("AA0009") }}
+      div(class="grid grid-cols-lobby gap-5 mt-7.5")
         div(v-for="org in orgList" class="w-58 h-55 rounded-md border border-black-400 bg-black-100 flex flex-col items-center py-5 cursor-pointer" @click="goToPublicLibrary(org.orgNo)")
           div(class="w-15 h-15 mb-5")
             img(:src="org.logo" class="rounded-full")
-          span(class="text-body1 text-primary font-bold mb-3") {{org.orgName}}
-          span(class="text-black-650 text-caption mb-7.5") {{`${org.memberList.length} ${$t('AA0010')}`}}
+          p(class="text-body1 text-primary text-center font-bold mb-1 w-50 truncate break-all leading-1.4") {{ org.orgName }}
+          p(class="text-black-650 text-caption mb-7.5") {{ `${org.memberList.length} ${$t("AA0010")}` }}
           avatar-group(:avatarList="org.memberList.map(member => member.avatar)" direction="rtl")
         div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg(true)")
           div(class="grid justify-items-center gap-y-3.5")
             svg-icon(iconName="old-add" size="24")
-            span(class="text-primary-middle text-body2 font-bold") {{$t('AA0011')}}
+            span(class="text-primary-middle text-body2 font-bold") {{ $t("AA0011") }}
 </template>
 
 <script>

@@ -14,7 +14,8 @@ export default {
     materialPublish: NodePublishState()
   }),
   getters: {
-    materialBreadcrumbList: state => state.materialBreadcrumbList,
+    materialBreadcrumbList: state => state.materialBreadcrumbList
+      .map(({ name, workspaceNodeId, workspaceNodeLocation }) => ({ name, nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}` })),
     materialPublish: state => state.materialPublish
   },
   mutations: {
@@ -35,7 +36,8 @@ export default {
       !!publish && commit('SET_materialPublish', publish)
       !!pagination && dispatch('helper/search/setPagination', pagination, { root: true })
     },
-    async getPublicList ({ rootGetters, dispatch }, { targetPage = 1, workspaceNodeId, workspaceNodeLocation }) {
+    async getPublicList ({ rootGetters, dispatch }, { targetPage = 1, nodeKey }) {
+      const [workspaceNodeLocation, workspaceNodeId] = nodeKey?.split('-') || [null, null]
       const searchParams = rootGetters['helper/search/getSearchParams'](targetPage)
       const params = {
         workspaceNodeId,
@@ -47,15 +49,34 @@ export default {
 
       dispatch('setPublicLibraryModule', data.result)
     },
-    async getPublicMaterial ({ dispatch }, { workspaceNodeId, workspaceNodeLocation }) {
+    async getPublicMaterial ({ dispatch }, { nodeKey }) {
+      const [workspaceNodeLocation, workspaceNodeId] = nodeKey?.split('-') || [null, null]
       const { data } = await publicLibraryApi.getPublicMaterial({ workspaceNodeId, workspaceNodeLocation })
       dispatch('setPublicLibraryModule', data.result)
     },
-    async cloneNode ({ rootGetters }, { workspaceNodeList, targetLocationList }) {
-      const { data } = await publicLibraryApi.cloneNode({ orgId: rootGetters['organization/orgId'], workspaceNodeList, targetLocationList })
-      return data
+    async cloneCheck ({ rootGetters }, { nodeKeyList }) {
+      const workspaceNodeList = nodeKeyList.map(nodeKey => {
+        const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
+        return {
+          id: Number(workspaceNodeId),
+          location: Number(workspaceNodeLocation)
+        }
+      })
+      const { data } = await publicLibraryApi.cloneCheck({ orgId: rootGetters['organization/orgId'], workspaceNodeList })
+      return data.result.estimatedQuota
     },
-    async getShareTarget (_, { workspaceNodeLocation, workspaceNodeId, target }) {
+    async cloneNode ({ rootGetters }, { nodeKeyList, targetLocationList, optional }) {
+      const workspaceNodeList = nodeKeyList.map(nodeKey => {
+        const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
+        return {
+          id: Number(workspaceNodeId),
+          location: Number(workspaceNodeLocation)
+        }
+      })
+      await publicLibraryApi.cloneNode({ orgId: rootGetters['organization/orgId'], workspaceNodeList, targetLocationList, optional })
+    },
+    async getShareTarget (_, { nodeKey, target }) {
+      const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
       const { data } = await publicLibraryApi.getShareTarget({ workspaceNodeLocation, workspaceNodeId, target })
 
       const { success, result, message } = data
@@ -64,11 +85,18 @@ export default {
       }
       return result.target
     },
-    async assignedShare ({ rootGetters }, { workspaceNodeLocation, workspaceNodeId, targetList }) {
+    async assignedShare ({ rootGetters }, { nodeKey, targetList }) {
+      const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
       await publicLibraryApi.assignedShare({ orgId: rootGetters['organization/orgId'], workspaceNodeLocation, workspaceNodeId, targetList })
     },
-    async generateCopyLink (_, { workspaceNodeLocation, workspaceNodeId }) {
+    async generateCopyLink (_, { nodeKey }) {
+      const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
       const { data } = await publicLibraryApi.generateCopyLink({ workspaceNodeLocation, workspaceNodeId })
+      return data.result.key
+    },
+    async generateSocialMedia (_, { nodeKey, type }) {
+      const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
+      const { data } = await publicLibraryApi.generateSocialMedia({ workspaceNodeLocation, workspaceNodeId, type })
       return data.result.key
     }
   }

@@ -4,8 +4,8 @@ div(class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-black-400 cursor-poi
   @click="goTo"
 )
   slot
-    svg-icon(:iconName="icon" size="20" :class="[ disabled ? 'text-black-500' : 'text-black-700' ]")
-    span(class="text-body2 line-clamp-1" :class="[ disabled ? 'text-black-500' : 'text-primary' ]") {{title}}
+    svg-icon(:iconName="icon" size="20" :class="[disabled ? 'text-black-500' : 'text-black-700']")
+    span(class="text-body2 line-clamp-1" :class="[disabled ? 'text-black-500' : 'text-primary']") {{ title }}
 </template>
 
 <script>
@@ -66,12 +66,8 @@ export default {
         return
       }
 
-      if (props.path === route.path) {
-        await router.push(props.path)
-        store.dispatch('helper/reloadInnerApp')
-      } else {
-        router.push(props.path)
-      }
+      await router.push(props.path)
+      store.dispatch('helper/reloadInnerApp')
     }
 
     return {

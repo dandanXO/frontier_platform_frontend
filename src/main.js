@@ -1,4 +1,5 @@
 import 'overlayscrollbars/css/OverlayScrollbars.css'
+import './index.css'
 import { createApp } from 'vue'
 import App from '@/App.vue'
 import router from '@/router'
@@ -25,12 +26,32 @@ dayjs.extend(isYesterday)
 app.config.globalProperties.$dayjs = dayjs
 
 app.config.errorHandler = (err, vm, info) => {
-  store.dispatch('helper/clearModalPipeline')
-  if (err.message !== 'access-token-expire') {
-    store.dispatch('helper/openModalError')
-    if (import.meta.env.PROD !== 'production') {
-      console.error(err, vm)
-    }
+  const { status, message } = err
+
+  if (!status || [400, 404, 500].includes(status)) {
+    store.dispatch('helper/openModalConfirm', {
+      type: 3,
+      header: i18n.global.t('RR0107'),
+      content: i18n.global.t('RR0108'),
+      primaryBtnText: i18n.global.t('UU0031'),
+      primaryBtnHandler: () => window.location.reload()
+    })
+  } else if (status === 401) {
+    return
+  } else {
+    const { type, title, content } = message
+    store.dispatch('helper/openModalConfirm', {
+      type: type || 3,
+      header: title || 'Something went wrong!',
+      content: content,
+      primaryBtnText: i18n.global.t('UU0031'),
+      primaryBtnHandler: () => window.location.reload()
+    })
+  }
+
+  if (import.meta.env.PROD !== 'production') {
+    console.error('err', err)
+    console.error('vm', vm)
   }
 }
 

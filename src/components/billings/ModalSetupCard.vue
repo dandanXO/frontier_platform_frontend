@@ -1,7 +1,7 @@
 <template lang="pug">
 modal-loading(v-if="isLoading")
 div(v-show="!isLoading" class="w-107 px-8")
-  h6(class="text-primary font-bold text-h6 pb-7.5 text-center") {{$t('OO0014')}}
+  h6(class="text-primary font-bold text-h6 pb-7.5 text-center") {{ $t('OO0014') }}
   form
     div(id="stripe-container")
     input-text(
@@ -43,10 +43,11 @@ export default {
 
     const setupCard = () => {
       store.dispatch('helper/pushModalConfirm', {
-        title: t('OO0049'),
+        type: 0,
+        header: t('OO0049'),
         content: t('OO0048'),
-        primaryText: t('UU0031'),
-        afterPrimaryHandler: async () => {
+        primaryBtnText: t('UU0031'),
+        afterPrimaryBtnHandler: async () => {
           store.dispatch('helper/pushModalLoading')
           await store.dispatch('organization/setCardHolderName', { clientSecret: clientSecret.value, cardHolderName: cardHolderName.value })
           const orgNo = store.getters['organization/orgNo']
@@ -60,15 +61,16 @@ export default {
 
           if (error) {
             store.dispatch('helper/pushModalConfirm', {
-              title: t('OO0019'),
+              type: 3,
+              header: t('OO0019'),
               content: t('OO0020'),
-              primaryText: t('UU0031'),
-              primaryHandler: () => store.dispatch('helper/clearModalPipeline'),
-              secondaryText: t('UU0076')
+              primaryBtnText: t('UU0031'),
+              primaryBtnHandler: () => store.dispatch('helper/clearModalPipeline'),
+              secondaryBtnText: t('UU0076')
             })
           }
         },
-        secondaryText: t('UU0002')
+        secondaryBtnText: t('UU0002')
       })
     }
 

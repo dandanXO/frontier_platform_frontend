@@ -32,7 +32,6 @@ div(class="w-133.5 px-8")
 <script>
 import { ref, computed } from '@vue/reactivity'
 import { useStore } from 'vuex'
-import { PLAN_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import usePlan from '@/composables/usePlan.js'
 

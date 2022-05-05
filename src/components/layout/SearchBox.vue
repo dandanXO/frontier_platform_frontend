@@ -3,17 +3,17 @@ div(class="grid")
   div(class="justify-self-center my-3.5 w-200 h-11 bg-black-100 rounded-full px-7.5 flex items-center gap-x-4.5")
     div(class="flex-grow flex items-center")
       svg-icon(
-        v-if="!keyword" class="pr-1"
+        v-if="!keyword"
+        class="pr-1 text-black-400"
         size="24"
         iconName="search"
-        class="text-black-400"
       )
       input(
         type="text"
         v-model="keyword"
         :placeholder="$t('RR0053')"
         @keydown.enter="onEnter"
-        class="flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 placeholder-black-400 placeholder-text-body2 placeholder-overflow-visible disabled:text-black-600"
+        class="placeholder:text-black-500 placeholder:overflow-visible flex-grow outline-none bg-transparent overflow-hidden text-primary text-body1 disabled:text-black-600"
       )
       svg-icon(
         v-if="!!keyword"
@@ -30,8 +30,8 @@ div(class="grid")
       :class="[isOpenFilterPanel ? 'text-brand' : 'text-black-900']"
       @click="isOpenFilterPanel = !isOpenFilterPanel"
     )
-    div(class="w-0.5 h-4 bg-black-500")
-    svg-icon(size="24" iconName="camera_border" class="text-black-900 cursor-pointer")
+    //- div(class="w-0.5 h-4 bg-black-500")
+    //- svg-icon(size="24" iconName="camera_border" class="text-black-900 cursor-pointer")
   slider(v-if="innerTagList.length > 0")
     div(class="flex items-center gap-x-2 pb-5 pl-7.5 ")
       chip(
@@ -44,8 +44,8 @@ div(class="grid")
   div(v-show="isOpenFilterPanel" class="px-7.5")
     div(class="bg-black-50 p-5 rounded")
       div(class="flex items-end pb-4")
-        p(class="text-body1 text-primary") {{$t('RR0085')}}
-        p(class="text-caption text-black-500 pl-3 cursor-pointer" @click="resetFilter") {{$t('UU0041')}}
+        p(class="text-body1 text-primary") {{ $t("RR0085") }}
+        p(class="text-caption text-black-500 pl-3 cursor-pointer" @click="resetFilter") {{ $t("UU0041") }}
       div(class="flex flex-wrap gap-x-2 gap-y-4")
         filter-category
         filter-content

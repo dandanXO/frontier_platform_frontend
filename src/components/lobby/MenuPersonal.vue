@@ -8,11 +8,11 @@ tooltip(
   template(#trigger="{ isActive }")
     div(class="flex items-center cursor-pointer")
       img(src="@/assets/images/default_user.png" class="rounded-full w-8 h-8 mr-1")
-      svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650 transform" :class="[ isActive ? 'rotate-180' : 'rotate-0' ]")
+      svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650 transform" :class="[isActive ? 'rotate-180' : 'rotate-0']")
   template(#content)
     list(class="w-55")
       template(v-for="(block, index) in optionList")
-        list-item(v-for="option in block" class="cursor-pointer" @click.stop="option.func && option.func()") {{option.name}}
+        list-item(v-for="option in block" class="cursor-pointer" @click.stop="option.func && option.func()") {{ option.name }}
         div(v-if="index !== optionList.length - 1" class="mx-2 my-1 h-px bg-black-400")
 </template>
 

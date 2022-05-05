@@ -1,7 +1,7 @@
 <template lang="pug">
 fullscreen-header
   template(#left)
-    h5(class="text-h5 text-primary font-bold") {{ $t('EE0069') }}
+    h5(class="text-h5 text-primary font-bold") {{ $t("EE0069") }}
   template(#right)
     btn-group(
       :primaryText="hasNext ? $t('UU0021') : $t('UU0020')"

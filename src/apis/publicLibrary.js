@@ -9,9 +9,13 @@ export default {
     method: 'POST',
     data: { workspaceNodeId, workspaceNodeLocation }
   }),
-  cloneNode: ({ orgId, workspaceNodeList, targetLocationList }) => axios('/public/clone', {
+  cloneCheck: ({ orgId, workspaceNodeList }) => axios('/public/clone-check', {
     method: 'POST',
-    data: { orgId, workspaceNodeList, targetLocationList }
+    data: { orgId, workspaceNodeList }
+  }),
+  cloneNode: ({ orgId, workspaceNodeList, targetLocationList, optional }) => axios('/public/clone', {
+    method: 'POST',
+    data: { orgId, workspaceNodeList, targetLocationList, optional }
   }),
   getShareTarget: ({ workspaceNodeLocation, workspaceNodeId, target }) => axios('/public/share/assigned/get-target', {
     method: 'POST',
@@ -24,5 +28,9 @@ export default {
   generateCopyLink: ({ workspaceNodeLocation, workspaceNodeId }) => axios('/public/share/copy-link/generate', {
     method: 'POST',
     data: { workspaceNodeLocation, workspaceNodeId }
+  }),
+  generateSocialMedia: ({ workspaceNodeLocation, workspaceNodeId, type }) => axios('/public/share/social/generate', {
+    method: 'POST',
+    data: { workspaceNodeLocation, workspaceNodeId, type }
   })
 }

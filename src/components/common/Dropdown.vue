@@ -15,9 +15,9 @@ div(class="dropdown relative cursor-pointer" v-click-away="clickAway")
     list(class="absolute top-full -left-1 transform translate-y-2.5 min-w-24 z-10")
       list-item(
         v-for="(option, index) in options"
-        :class="{'bg-primary-thin': index === currentIndex }"
+        :class="{ 'bg-primary-thin': index === currentIndex }"
         @click="select($event, option)"
-      ) {{option[keyOptionDisplay]}}
+      ) {{ option[keyOptionDisplay] }}
 </template>
 
 <script>

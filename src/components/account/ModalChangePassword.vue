@@ -1,8 +1,8 @@
 <template lang="pug">
 div(class="w-105 px-8 flex flex-col items-center")
-  h6(class="text-h6 font-bold text-primary pb-7.5") {{$t('MM0025')}}
+  h6(class="text-h6 font-bold text-primary pb-7.5") {{ $t("MM0025") }}
   form(class="w-full")
-    input-password(v-model:textValue="currentPassword" :placeholder="$t('MM0026')" :customErrorMsg="errorMsg" class="mb-7.5")
+    input-password(v-model:textValue="currentPassword" :placeholder="$t('MM0026')" class="mb-7.5")
     input-password(v-model:textValue="newPassword" :placeholder="$t('MM0027')")
     password-validator(v-model:isValid="isPasswordValid" :password="newPassword" class="pt-1")
   btn-group(
@@ -32,27 +32,21 @@ export default {
     const currentPassword = ref('')
     const newPassword = ref('')
     const isPasswordValid = ref(false)
-    const errorMsg = ref('')
 
     const availableToChangePassword = computed(() => !!newPassword.value && !!currentPassword.value && isPasswordValid.value)
 
     const closeModal = () => store.dispatch('helper/closeModal')
 
     const changePassword = async () => {
-      try {
-        await store.dispatch('user/changePassword', { currentPassword: currentPassword.value, newPassword: newPassword.value })
-        closeModal()
-        store.commit('helper/PUSH_message', t('MM0030'))
-      } catch (error) {
-        errorMsg.value = error
-      }
+      await store.dispatch('user/changePassword', { currentPassword: currentPassword.value, newPassword: newPassword.value })
+      closeModal()
+      store.commit('helper/PUSH_message', t('MM0030'))
     }
 
     return {
       newPassword,
       currentPassword,
       isPasswordValid,
-      errorMsg,
       availableToChangePassword,
       changePassword,
       closeModal
