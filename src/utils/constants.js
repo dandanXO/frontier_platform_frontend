@@ -363,3 +363,8 @@ export const UPLOAD_PROGRESS_EXCEL_SORT_BY = {
   UPLOAD_FIRST: 5,
   EXPORT_FIRST: 6
 }
+
+export const MOODBOARD_TYPE = {
+  DEMANDER: 1,
+  PROVIDER: 2
+}
