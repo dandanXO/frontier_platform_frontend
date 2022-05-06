@@ -8,7 +8,8 @@ div(class="relative")
       class="w-67.5 justify-self-start"
       prependIcon="search"
       :placeholder="searchPlaceholder"
-      @enter="$emit('search')"
+      @input="$emit('search')"
+      @change="$emit('search')"
       @clear="$emit('search')"
     )
     tooltip(v-if="filterable" :showArrow="false" manual placement="bottom-end" :offset="[0, 8]" class="justify-self-end")
@@ -48,7 +49,7 @@ div(class="relative")
           @mouseleave="indexOfHover = null"
         )
           div(v-for="header in headers" :class="[header.colSpan, header.align, getItemCustomClass(header)]")
-            template(v-if="item[header.prop]") {{ item[header.prop] }}
+            div(v-if="item[header.prop]") {{ item[header.prop] }}
             slot(
               v-else
               :item="item"
