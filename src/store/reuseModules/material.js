@@ -102,7 +102,8 @@ const Material = {
       zipUrl: '',
       u3maUrl: '',
       baseImgUrl: '',
-      normalImgUrl: ''
+      normalImgUrl: '',
+      dpi: 300
     },
     createDate: '',
     updateDate: ''

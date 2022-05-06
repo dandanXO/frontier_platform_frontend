@@ -155,15 +155,15 @@ export default {
   props: {
     dpi: {
       type: Number,
-      default: 600
+      required: true
     },
     baseImgUrl: {
       type: String,
-      default: ''
+      required: true
     },
     normalImgUrl: {
       type: String,
-      default: ''
+      required: true
     }
   },
   setup (props) {
