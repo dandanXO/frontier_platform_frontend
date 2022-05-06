@@ -97,6 +97,23 @@ const reuseRoutes = (prefix) => ([
     component: () => import('@/views/innerApp/ShareToMeMaterialDetail.vue')
   },
   {
+    path: 'moodboard',
+    name: `${prefix}Moodboard`,
+    component: () => import('@/views/innerApp/moodboard/Moodboard.vue')
+  },
+  {
+    path: 'moodboard/:moodboardId',
+    name: `${prefix}MoodboardDetail`,
+    props: true,
+    component: () => import('@/views/innerApp/moodboard/MoodboardDetail.vue')
+  },
+  {
+    path: 'moodboard/:moodboardId/picked-list',
+    name: `${prefix}MoodboardPickedList`,
+    props: true,
+    component: () => import('@/views/innerApp/moodboard/MoodboardPickedList.vue')
+  },
+  {
     path: 'sticker',
     name: `${prefix}Sticker`,
     component: () => import('@/views/innerApp/Sticker.vue')

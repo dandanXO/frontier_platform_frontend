@@ -12,13 +12,13 @@ const apiWrapper = (path, type = 'org', id, params = {}) => {
 }
 
 export default {
-  getMoodboardList: (type, id) => apiWrapper('/org/moodboard/get-list', type, id),
+  getMoodboardList: (type, id) => apiWrapper('/moodboard/get-list', type, id),
 
   /**
    * @param {object} params
    * @param {number} params.moodboardId
    */
-  getMoodboard: (type, id, params) => apiWrapper('/org/moodboard/get', type, id, params),
+  getMoodboard: (type, id, params) => apiWrapper('/moodboard/get', type, id, params),
 
   /**
    * @param {object} params
@@ -27,7 +27,7 @@ export default {
    * @param {object?} params.trendBoard - {tempUploadId, fileName}
    * @param {object[]?} params.attachmentList - [{tempUploadId, fileName}]
    */
-  createMoodboard: (type, id, params) => apiWrapper('/org/moodboard/create', type, id, params),
+  createMoodboard: (type, id, params) => apiWrapper('/moodboard/create', type, id, params),
 
   /**
    * @param {object} params
@@ -39,13 +39,13 @@ export default {
    * @param {number[]?} params.deleteAttachmentIdList
    * @param {boolean} params.isDeleteTrendBoard
    */
-  updateMoodboard: (type, id, params) => apiWrapper('/org/moodboard/update', type, id, params),
+  updateMoodboard: (type, id, params) => apiWrapper('/moodboard/update', type, id, params),
 
   /**
    * @param {object} params 
    * @param {number} params.moodboardId
    */
-  deleteMoodboard: (type, id, params) => apiWrapper('/org/moodboard/delete', type, id, params),
+  deleteMoodboard: (type, id, params) => apiWrapper('/moodboard/delete', type, id, params),
 
   /**
    * @param {object} params 

@@ -97,6 +97,11 @@ export default {
               path: `/${orgNo}/workspace/${NODE_LOCATION.ORG}-${workspaceNodeId}`
             },
             {
+              id: 'moodboard',
+              title: t('QQ0001'),
+              path: `/${orgNo}/moodboard`
+            },
+            {
               id: 'shareToMe',
               title: t('RR0010'),
               path: `/${orgNo}/share-to-me`
@@ -121,6 +126,11 @@ export default {
                 id: 'workspace',
                 title: t('RR0009'),
                 path: `/${orgNo}/${groupId}/workspace/${NODE_LOCATION.GROUP}-${workspaceNodeId}`
+              },
+              {
+                id: 'moodboard',
+                title: t('QQ0001'),
+                path: `/${orgNo}/${groupId}/moodboard`
               },
               {
                 id: 'shareToMe',

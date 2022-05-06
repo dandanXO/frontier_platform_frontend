@@ -12,7 +12,7 @@ div(class="w-101 px-8")
     div
       div(class="h-5.5 flex items-center pb-1")
         p(class="text-body2 text-primary font-bold") {{ $t('FF0011') }}
-        btn-functional(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewPdf") {{ $t('UU0060') }}
+        btn-functional(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewFile(formData.trendBoard)") {{ $t('UU0060') }}
       input-text-btn(
         class="w-full"
         disabledInput
@@ -39,9 +39,9 @@ div(class="w-101 px-8")
 </template>
 
 <script>
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
-import { FileOperator } from '@/utils/fileOperator'
+import { FileOperator, previewFile } from '@/utils/fileOperator'
 import { useI18n } from 'vue-i18n'
 
 const MODE = {
@@ -86,16 +86,6 @@ export default {
       fileOperator.upload()
     }
 
-    const previewPdf = () => {
-      const a = document.createElement('A')
-      a.hidden = true
-      a.target = '_blank'
-      // A File object is a Blob object with a name attribute, which is a string
-      a.href = typeof formData.trendBoard.name === 'string' ? URL.createObjectURL(formData.trendBoard) : formData.trendBoard
-      a.click()
-      a.remove()
-    }
-
     const actionHandler = async () => {
       if (uploadTrendBoardName.value === '') {
         formData.trendBoard = null
@@ -138,7 +128,7 @@ export default {
       actionHandler,
       chooseFile,
       uploadTrendBoardName,
-      previewPdf,
+      previewFile,
       actionBtnDisabled,
       MODE,
       removeTrendBoard,

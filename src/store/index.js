@@ -18,7 +18,7 @@ import polling from '@/store/modules/polling'
 export default createStore({
   actions: {
     async uploadFileToS3 (_, { fileName, file }) {
-      const { result: { tempUploadId, fileUploadUrl } } = await axios('/general/get-upload-url', {
+      const { data: { result: { tempUploadId, fileUploadUrl } } } = await axios('/general/get-upload-url', {
         method: 'POST',
         data: { fileName }
       })

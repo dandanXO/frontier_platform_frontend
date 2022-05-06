@@ -41,7 +41,7 @@ div(class="w-101 px-8")
 <script>
 import { FEEDBACK_CATEGORY } from '@/utils/constants.js'
 import { ref, reactive, computed } from 'vue'
-import { FileOperator } from '@/utils/fileOperator'
+import { FileOperator, bytesToSize } from '@/utils/fileOperator'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
@@ -83,13 +83,6 @@ export default {
       store.dispatch('user/sendFeedback', { tempFeedbackId, ...formData })
       store.dispatch('helper/closeModal')
       store.commit('helper/PUSH_message', t('MM0018'))
-    }
-
-    const bytesToSize = (bytes) => {
-      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-      if (bytes === 0) return '0 Byte'
-      var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)))
-      return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i]
     }
 
     return {

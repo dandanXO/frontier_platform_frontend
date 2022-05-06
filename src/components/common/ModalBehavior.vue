@@ -5,7 +5,7 @@ div(class="fixed inset-0 z-modal w-screen h-screen bg-black-900/30 flex justify-
     div(class="px-5 pb-5 flex justify-between border-b border-black-200")
       p(class="text-body2 font-bold text-primary") {{ header }}
       svg-icon(v-if="closable" iconName="close" size="20" class="cursor-pointer text-black-700" @click="closeModalBehavior")
-    div(class="px-5 pt-5 pb-10")
+    div(class="px-5 pt-5 pb-10 max-h-118 overflow-y-auto")
       slot(name="default")
     div(class="px-5 h-13.5 border-t border-black-200 flex items-end")
       div(class="w-full flex justify-between")
