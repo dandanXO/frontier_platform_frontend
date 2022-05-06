@@ -36,6 +36,11 @@ const reuseRoutes = (prefix) => ([
     component: () => import('@/views/innerApp/Management.vue')
   },
   {
+    path: 'progress/:tab(material|u3m|excel)',
+    name: `${prefix}Progress`,
+    component: () => import('@/views/innerApp/Progress.vue')
+  },
+  {
     path: 'assets',
     component: () => import('@/views/PassThrough.vue'),
     children: [

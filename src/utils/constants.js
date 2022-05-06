@@ -324,3 +324,31 @@ export const UPLOAD_ERROR_CODE = {
   EXCEED_LIMIT: 2,
   TOO_SMALL: 3
 }
+
+export const UPLOAD_PROGRESS = {
+  ALL: 0,
+  IN_QUEUE: 1,
+  PROCESSING: 2,
+  UNSUCCESSFUL: 3,
+  COMPLETE: 4,
+  CANCELED: 5
+}
+
+/**
+ * 1. 建立時間：最晚建立的排前
+ * 2. 建立時間：最早建立的排前
+ * 3. status (In Queue > Processing > Unsuccessful > Complete)
+ * 4. status (Complete > Unsuccessful > Processing > In Queue)
+ */
+export const UPLOAD_PROGRESS_SORT_BY = {
+  NEWEST_FIRST: 1,
+  OLDEST_FIRST: 2,
+  IN_QUEUE_FIRST: 3,
+  COMPLETE_FIRST: 4
+}
+
+export const EXCEL_CATEGORY = {
+  ALL: 0,
+  UPLOAD: 1,
+  EXPORT: 2
+}

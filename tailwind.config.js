@@ -78,7 +78,7 @@ module.exports = {
       zIndex: {
         "sidebar": 100,
         "header": 100,
-        "modal": 150,
+        "modal": 200,
         "modal-confirm": 200,
         "flash-msg": 200,
         "footer": 200,

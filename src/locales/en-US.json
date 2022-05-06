@@ -770,7 +770,7 @@
   "EE0111": "The material is generating",
   "EE0112": "The material cannot be delete while processing the request.",
   "EE0113": "Delete while others are exporting? ",
-  "EE0114": "{#Item Name} is being exporting excel by others.",
+  "EE0114": "{materialNo} is being exporting excel by others.",
   "EE0115": "Some of the items are being exporting excel by others.",
   "EE0116": "Exporting items",
   "EE0117": "",

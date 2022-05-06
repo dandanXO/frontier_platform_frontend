@@ -20,40 +20,42 @@ div(class="relative")
           svg-icon(iconName="keyboard_arrow_down" class="text-black-500 transform" :class="{ 'rotate-180': isActive }")
       template(#content)
         slot(name="filter")
-  overlay-scrollbar-container(:style="tableContentStyles")
-    div(ref="refTable" class="overflow-x-auto h-full" :style="{ width: boxWidth + 'px' }")
-      div(v-if="showHeader" class="flex gap-6 items-center bg-black-200 text-body2 text-primary h-10 my-2.5 px-15 rounded" :style="{ width: tableWidth }")
-        div(v-for="header in headers" :class="[header.width, header.align, getHeaderCustomClass(header)]")
-          div(
-            class="group inline-flex items-center"
-            :class="{ 'cursor-pointer': !!header.sortBy }"
-            @click="handleSort(header.sortBy)"
+  div(ref="refTable" class="overflow-x-auto overflow-y-hidden" :style="{ width: boxWidth + 'px' }")
+    div(v-if="showHeader" class="grid grid-cols-12 gap-6 items-center bg-black-200 text-body2 text-primary h-10 my-2.5 px-15 rounded" :style="{ minWidth: tableWidth }")
+      div(v-for="header in headers" :class="[header.colSpan, header.align, getHeaderCustomClass(header)]")
+        div(
+          class="group inline-flex items-center"
+          :class="{ 'cursor-pointer': !!header.sortBy }"
+          @click="handleSort(header.sortBy)"
+        )
+          span(class="text-black-600 inline-block" :class="{ 'group-hover:text-primary': !!header.sortBy }") {{ header.label }}
+          svg-icon(
+            v-if="header.sortBy?.length > 0"
+            iconName="keyboard_arrow_down"
+            size="20"
+            class="transform text-black-600 group-hover:!text-brand inline-block"
+            :class="{ 'text-brand-dark': header.sortBy.includes(innerPagination.sort), 'rotate-180': header.sortBy[1] === innerPagination.sort }"
           )
-            span(class="text-black-600 inline-block" :class="{ 'group-hover:text-primary': !!header.sortBy }") {{ header.label }}
-            svg-icon(
-              v-if="header.sortBy?.length > 0"
-              iconName="keyboard_arrow_down"
-              size="20"
-              class="transform text-black-600 group-hover:!text-brand inline-block"
-              :class="{ 'text-brand-dark': header.sortBy.includes(innerPagination.sort), 'rotate-180': header.sortBy[1] === innerPagination.sort }"
-            )
-      div(v-if="items.length > 0" class="grid gap-y-2.5" :style="{ width: tableWidth }")
+    div(v-if="isLoading" class="w-full h-full flex justify-center items-center")
+      svg-icon(iconName="loading" size="92" class="text-brand")
+    template(v-else)
+      div(v-if="items.length > 0" class="grid gap-y-2.5" :style="{ minWidth: tableWidth }")
         div(
           v-for="(item, index) in items"
-          class="flex gap-6 items-center h-15 px-15 text-body2 text-primary hover:bg-black-50/50 rounded"
-          :style="{ width: tableWidth }"
+          class="grid grid-cols-12 gap-6 items-center px-15 text-body2 text-primary hover:bg-black-50/50 rounded"
+          :style="{ minWidth: tableWidth, height: rowHeight }"
           @mouseenter="indexOfHover = index"
           @mouseleave="indexOfHover = null"
         )
-          div(v-for="header in headers" :class="[header.width, header.align, getItemCustomClass(header)]")
-            span(v-if="item[header.prop]") {{ item[header.prop] }}
-            div(v-else)
-              slot(
-                :item="item"
-                :prop="header.prop"
-                :isHover="indexOfHover === index"
-                :index="index"
-              )
+          div(v-for="header in headers" :class="[header.colSpan, header.align, getItemCustomClass(header)]")
+            template(v-if="item[header.prop]") {{ item[header.prop] }}
+            slot(
+              v-else
+              :item="item"
+              :prop="header.prop"
+              :isHover="indexOfHover === index"
+              :index="index"
+            )
       div(v-else class="text-body1 text-black-600 mt-10 text-center") {{ emptyText }}
   div(v-if="innerPagination.totalPage > 1" class="py-6 flex justify-center")
     pagination(v-model:currentPage="innerPagination.currentPage" :totalPage="innerPagination.totalPage" @goTo="$emit('goTo', $event)")
@@ -123,17 +125,20 @@ export default {
     tableWidth: {
       type: String,
       default: '100%'
+    },
+    rowHeight: {
+      type: String,
+      default: '90px'
+    },
+    isLoading: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['search', 'sort', 'goTo', 'update:pagination', 'update:keyword'],
   setup (props, { emit }) {
     const refTable = ref(null)
     const boxWidth = ref(0)
-    const tableContentStyles = computed(() => {
-      return {
-        height: `${props.pagination.perPageCount * 60 + 60 + (props.pagination.perPageCount - 1) * 10}px`
-      }
-    })
     const indexOfHover = ref(null)
     const innerPagination = computed({
       get: () => props.pagination,
@@ -164,10 +169,10 @@ export default {
 
     onMounted(() => {
       const leftDis = refTable.value.getBoundingClientRect().left
-      // 30 is padding-right
-      boxWidth.value = document.body.clientWidth - leftDis - 30
+      // 24 is padding-right
+      boxWidth.value = document.body.clientWidth - leftDis - 24
       window.addEventListener('resize', () => {
-        boxWidth.value = document.body.clientWidth - leftDis - 30
+        boxWidth.value = document.body.clientWidth - leftDis - 24
       })
     })
 
@@ -178,7 +183,6 @@ export default {
       innerKeyword,
       boxWidth,
       handleSort,
-      tableContentStyles,
       getHeaderCustomClass,
       getItemCustomClass
     }

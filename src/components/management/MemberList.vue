@@ -7,6 +7,7 @@ general-table(
   :items="currentList"
   :emptyText="$t('BB0031')"
   :searchPlaceholder="$t('BB0012')"
+  rowHeight="60px"
   class="mt-2.5"
   searchable
 )
@@ -94,27 +95,27 @@ export default {
       {
         prop: 'name',
         label: t('BB0013'),
-        width: 'w-3/12'
+        colSpan: 'col-span-3'
       },
       {
         prop: 'email',
         label: t('BB0014'),
-        width: 'w-4/12',
+        colSpan: 'col-span-4',
       },
       {
         prop: 'role',
         label: t('BB0015'),
-        width: 'w-2/12'
+        colSpan: 'col-span-2'
       },
       {
         prop: 'lastSignInTime',
         label: t('BB0016'),
-        width: 'w-2/12'
+        colSpan: 'col-span-2'
       },
       {
         prop: 'remove',
         label: '',
-        width: 'w-1/12'
+        colSpan: 'col-span-1'
       }
     ]
 

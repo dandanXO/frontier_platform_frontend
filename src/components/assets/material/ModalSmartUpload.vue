@@ -9,7 +9,7 @@ modal-behavior(
 )
   template(#note)
     file-upload-error-note(v-if="errorCode" :errorCode="errorCode" :fileSizeMaxLimit="fileSizeMaxLimit")
-    div(v-if="isUploading" class="flex items-center text-black-600 leading-1.6")
+    div(v-else-if="isUploading" class="flex items-center text-black-600 leading-1.6")
       svg-icon(iconName="info_outline" size="14" class="mr-1.5")
       div(class="w-62.5") {{ $t("DD0106") }}
   div(class="w-94")
@@ -52,9 +52,11 @@ modal-behavior(
 import { computed, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { FileOperator } from '@/utils/fileOperator'
+import useNavigation from '@/composables/useNavigation'
 
 const store = useStore()
-const errorCode = ref(0)
+const errorCode = ref('')
+const { goToProgress } = useNavigation()
 const isUploading = ref(false)
 const isFinish = ref(false)
 const materialImageList = reactive([])
@@ -74,7 +76,7 @@ const onDrop = (evt) => {
 }
 
 fileOperator.on('finish', (file) => {
-  errorCode.value = 0
+  errorCode.value = ''
   materialImageList.push({ file, isRemoved: false, processing: 0 })
 })
 
@@ -121,7 +123,7 @@ const startUpload = () => {
 const confirmAndViewProgress = async () => {
   await store.dispatch('assets/smartUpload', { fileList: uploadedFiles })
   store.dispatch('helper/closeModalBehavior')
-  // router.push('/progress')
+  goToProgress()
 }
 
 const cancelUpload = () => {

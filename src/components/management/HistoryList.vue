@@ -3,6 +3,7 @@ general-table(
   v-model:pagination="pagination"
   :headers="headers"
   :items="currentList"
+  rowHeight="60px"
   class="mt-2.5"
 )
   template(v-slot="{ item, prop }")
@@ -35,12 +36,12 @@ export default {
       {
         prop: 'date',
         label: t('BB0109'),
-        width: 'w-2/12'
+        colSpan: 'col-span-2'
       },
       {
         prop: 'content',
         label: t('BB0110'),
-        width: 'w-10/12'
+        colSpan: 'col-span-10'
       }
     ]
 

@@ -52,7 +52,7 @@ export default {
       ]
     })
     const lastUpdateDate = computed(() => {
-      const tempUpdateDate = dayjs.unix(material.value.updateDate).format('MM/DD/YYYY hh:mm A')
+      const tempUpdateDate = dayjs.unix(material.value.updateDate).format('YYYY/MM/DD hh:mm A')
       return tempUpdateDate.slice(0, 10) + ' at ' + tempUpdateDate.slice(10)
     })
 
