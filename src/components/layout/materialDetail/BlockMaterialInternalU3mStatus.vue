@@ -30,86 +30,72 @@ div
   btn(size="md" class="mt-2.5" @click="handleClick") {{ $t("UU0006") }}
 </template>
 
-<script>
+<script setup>
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed, toRefs } from 'vue'
 import { U3M_STATUS } from '@/utils/constants'
 import { downloadDataURLFile } from '@/utils/fileOperator'
 
-export default {
-  name: 'BlockMaterialInternalU3mStatus',
-  props: {
-    material: {
-      type: Object,
-      required: true
-    }
-  },
-  setup (props) {
-    const { t } = useI18n()
-    const store = useStore()
-    const { status, zipUrl, u3maUrl, baseImgUrl, normalImgUrl, dpi } = toRefs(props.material.u3m)
-
-    const u3mStatus = computed(() => {
-      const { UNQUALIFIED, INITIAL, PROCESSING, COMPLETED, FAIL } = U3M_STATUS
-      const statusTextPair = {
-        [UNQUALIFIED]: t('EE0020'),
-        [INITIAL]: t('EE0019'),
-        [PROCESSING]: t('EE0022'),
-        [COMPLETED]: t('EE0018'),
-        [FAIL]: t('EE0024')
-      }
-
-      return statusTextPair[status.value]
-    })
-
-    const downloadU3m = (url) => {
-      const fileName = url.split('/')[url.split('/').length - 1]
-      downloadDataURLFile(url, fileName)
-    }
-
-    const handleClick = () => {
-      status.value === U3M_STATUS.COMPLETED
-        ? openModalViewer()
-        : store.dispatch('helper/openModalConfirm', {
-          type: 1,
-          header: t('EE0029'),
-          content: t('EE0030'),
-          primaryBtnText: t('UU0031')
-        })
-    }
-
-    const openModalU3mInstruction = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-u3m-instruction',
-        properties: {
-          btnText: t('UU0031')
-        }
-      })
-    }
-
-    const openModalViewer = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-viewer',
-        header: t('UU0006'),
-        properties: {
-          dpi: dpi?.value,
-          baseImgUrl: baseImgUrl?.value,
-          normalImgUrl: normalImgUrl?.value
-        }
-      })
-    }
-
-    return {
-      status,
-      U3M_STATUS,
-      u3mStatus,
-      zipUrl,
-      u3maUrl,
-      downloadU3m,
-      handleClick,
-      openModalU3mInstruction
-    }
+const props = defineProps({
+  material: {
+    type: Object,
+    required: true
   }
+})
+
+const { t } = useI18n()
+const store = useStore()
+const { status, zipUrl, u3maUrl, baseImgUrl, normalImgUrl, dpi } = toRefs(props.material.u3m)
+
+const u3mStatus = computed(() => {
+  const { UNQUALIFIED, INITIAL, IN_QUEUE, COMPLETED, PROCESSING, FAIL } = U3M_STATUS
+  const statusTextPair = {
+    [UNQUALIFIED]: t('EE0020'),
+    [INITIAL]: t('EE0019'),
+    [IN_QUEUE]: t('PP0004'),
+    [PROCESSING]: t('PP0005'),
+    [COMPLETED]: t('EE0018'),
+    [FAIL]: t('EE0024')
+  }
+
+  return statusTextPair[status.value]
+})
+
+const downloadU3m = (url) => {
+  const fileName = url.split('/')[url.split('/').length - 1]
+  downloadDataURLFile(url, fileName)
+}
+
+const handleClick = () => {
+  status.value === U3M_STATUS.COMPLETED
+    ? openModalViewer()
+    : store.dispatch('helper/openModalConfirm', {
+      type: 1,
+      header: t('EE0029'),
+      content: t('EE0030'),
+      primaryBtnText: t('UU0031')
+    })
+}
+
+const openModalU3mInstruction = () => {
+  store.dispatch('helper/openModal', {
+    component: 'modal-u3m-instruction',
+    properties: {
+      btnText: t('UU0031')
+    }
+  })
+}
+
+const openModalViewer = () => {
+  store.dispatch('helper/openModal', {
+    component: 'modal-viewer',
+    header: t('UU0006'),
+    properties: {
+      dpi: dpi?.value,
+      baseImgUrl: baseImgUrl?.value,
+      normalImgUrl: normalImgUrl?.value
+    }
+  })
 }
 </script>

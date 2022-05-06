@@ -27,7 +27,24 @@ div
       svg-icon(iconName="u3m_download" size="20")
     span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(u3maUrl)") {{ $t("EE0082") }}
       svg-icon(iconName="u3m_download" size="20")
-  btn(size="md" class="mt-2.5" :disabled="disabledCreate" @click="handleClick") {{ btnText }}
+  div(class="mt-2.5")
+    btn(
+      v-if="status === U3M_STATUS.COMPLETED || status === U3M_STATUS.FAIL"
+      size="md"
+      :disabled="disabled"
+      @click="handleClick"
+    ) {{ $t('UU0030') }}
+    btn(
+      v-else-if="status === U3M_STATUS.INITIAL || status === U3M_STATUS.UNQUALIFIED" 
+      size="md"
+      :disabled="disabled"
+      @click="handleClick"
+    ) {{ $t('UU0020') }}
+    btn(
+      v-else-if="status === U3M_STATUS.IN_QUEUE || status === U3M_STATUS.PROCESSING" 
+      size="md"
+      @click="goToProgress('u3m')"
+    ) {{ $t('UU0090') }}
 </template>
 
 <script setup>
@@ -49,14 +66,15 @@ const props = defineProps({
 const { t } = useI18n()
 const store = useStore()
 const { create3DMaterial } = useAssets()
-const { goToMaterialUpload } = useNavigation()
+const { goToProgress, goToMaterialUpload } = useNavigation()
 const { status, zipUrl, u3maUrl } = toRefs(props.material.u3m)
-const { UNQUALIFIED, INITIAL, PROCESSING, COMPLETED, FAIL } = U3M_STATUS
+const { UNQUALIFIED, INITIAL, IN_QUEUE, COMPLETED, PROCESSING, FAIL } = U3M_STATUS
 
 const u3mStatus = computed(() => {
   const statusTextPair = {
     [UNQUALIFIED]: t('EE0020'),
     [INITIAL]: t('EE0019'),
+    [IN_QUEUE]: t('PP0004'),
     [PROCESSING]: t('EE0022'),
     [COMPLETED]: t('EE0018'),
     [FAIL]: t('EE0024')
@@ -65,8 +83,7 @@ const u3mStatus = computed(() => {
   return statusTextPair[status.value]
 })
 
-const btnText = computed(() => [COMPLETED, FAIL].includes(status.value) ? t('UU0030') : t('UU0020'))
-const disabledCreate = computed(() => [UNQUALIFIED, PROCESSING, FAIL].includes(status.value))
+const disabled = computed(() => [UNQUALIFIED, FAIL].includes(status.value))
 
 const downloadU3m = async (url) => {
   const fileName = url.split('/')[url.split('/').length - 1]

@@ -78,8 +78,9 @@ export const COVER_MODE = {
 export const U3M_STATUS = {
   UNQUALIFIED: -1,
   INITIAL: 0,
-  PROCESSING: 1,
+  IN_QUEUE: 1,
   COMPLETED: 2,
+  PROCESSING: 3,
   FAIL: 99
 }
 

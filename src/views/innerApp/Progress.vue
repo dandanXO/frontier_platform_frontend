@@ -17,6 +17,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
       :active="selectedStatus === status.id"
     ) 
   progress-material(v-if="currentTab === 'material'" :currentStatus="selectedStatus")
+  progress-u3m(v-else-if="currentTab === 'u3m'" :currentStatus="selectedStatus")
 </template>
 
 <script setup>
@@ -27,6 +28,7 @@ import { useI18n } from 'vue-i18n'
 import { UPLOAD_PROGRESS } from '@/utils/constants'
 
 const ProgressMaterial = defineAsyncComponent(() => import('@/components/progress/ProgressMaterial.vue'))
+const ProgressU3m = defineAsyncComponent(() => import('@/components/progress/ProgressU3m.vue'))
 
 const { t } = useI18n()
 const route = useRoute()
@@ -110,5 +112,6 @@ const toggleOrgOrGroup = (path) => {
 
 const toggleTab = (tab) => {
   router.push({ name: route.name, params: { tab } })
+  selectedStatus.value = statusList[0].id
 }
 </script>

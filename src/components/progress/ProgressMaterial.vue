@@ -33,14 +33,11 @@ general-table(
           @change="getList()"
         )
   template(v-slot="{ item, prop, isHover }")
-    div(
-      v-if="prop === 'imagePreview'"
-      class="relative w-25 h-25 bg-cover bg-center rounded py-3"
-      :style="{ 'background-image': `url(${item.image})` }"
-    )
-      div(v-if="item.isMaterialDeleted" class="absolute inset-0 w-25 h-25 bg-black-0/40 text-body1 text-black-500 font-bold flex justify-center items-center") {{ $t("RR0063") }}
+    div(v-if="prop === 'imagePreview'" class="relative w-25 h-25 py-3 flex justify-center items-center")
+      div(class="absolute inset-0 w-25 h-25 bg-cover bg-center rounded" :class="{ 'opacity-20': item.isMaterialDeleted }" :style="{ 'background-image': `url(${item.image})` }")
+      div(v-if="item.isMaterialDeleted" class="text-body1 text-black-500 font-bold z-1") {{ $t("RR0063") }}
     div(v-if="prop === 'createdTime'")
-      div(v-for="string in $dayjs(item.createDate).format('YYYY/MM/DD-hh:mm:ss A').split('-')" class="leading-1.6") {{ string }}
+      div(v-for="string in $dayjs.unix(item.createDate).format('YYYY/MM/DD-hh:mm:ss A').split('-')" class="leading-1.6") {{ string }}
     table-status-label(v-if="prop === 'statusLabel'" :status="item.status")
     table-status-progress(v-if="prop === 'procedure'" :status="item.status")
       //- Unsuccessful
