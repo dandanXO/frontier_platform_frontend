@@ -44,7 +44,10 @@ export default {
 
     const isActive = computed(() => {
       // Special case
-      if (props.id === 'progress' && props.id === 'management' && ['OrgManagement', 'GroupManagement'].includes(route.name)) {
+      if (
+        props.id === 'management' && ['OrgManagement', 'GroupManagement'].includes(route.name)
+        || props.id === 'progress' && ['OrgProgress', 'GroupProgress'].includes(route.name)
+      ) {
         return true
       }
 

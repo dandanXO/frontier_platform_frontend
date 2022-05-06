@@ -96,28 +96,28 @@ export default {
       {
         prop: 'invoiceNumber',
         label: t("OO0081"),
-        width: 'w-3/12'
+        colSpan: 'col-span-3'
       },
       {
         prop: 'date',
         label: t("OO0082"),
-        width: 'w-2/12',
+        colSpan: 'col-span-2',
         sortBy: [BILLING_SORT.NEWEST_FIRST, BILLING_SORT.OLDEST_FIRST]
       },
       {
         prop: 'title',
         label: t("OO0083"),
-        width: 'w-4/12'
+        colSpan: 'col-span-4'
       },
       {
         prop: 'download',
         label: t("OO0084"),
-        width: 'w-1/12'
+        colSpan: 'col-span-1'
       },
       {
         prop: 'view',
         label: t('OO0085'),
-        width: 'w-2/12'
+        colSpan: 'col-span-2'
       }
     ]
     const getList = async (targetPage = 1) => {

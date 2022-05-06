@@ -54,16 +54,16 @@ import { UPLOAD_ERROR_CODE } from '@/utils/constants.js'
 const { t, locale } = useI18n()
 const store = useStore()
 const fileName = ref('')
-const errorCode = ref(0)
+const errorCode = ref('')
 const showErrorList = ref(false)
 const disabledUpload = computed(() => !fileName.value.length > 0 || showErrorList.value || errorCode.value.length !== 0)
-const { goToAssets } = useNavigation()
+const { goToProgress, goToAssets } = useNavigation()
 let errorList
 let binaryFile
 
 
 const fileSizeMaxLimit = 20
-const fileOperator = new FileOperator(['xlsx', 'jpg', 'jpeg', 'png'], fileSizeMaxLimit, true)
+const fileOperator = new FileOperator(['xlsx'], fileSizeMaxLimit, true)
 
 const chooseFile = () => {
   fileOperator.upload()
@@ -72,7 +72,7 @@ const chooseFile = () => {
 fileOperator.on('finish', (file) => {
   binaryFile = file
   fileName.value = file.name
-  errorCode.value = 0
+  errorCode.value = ''
   showErrorList.value = false
 })
 
@@ -94,7 +94,7 @@ const handleUpload = async () => {
         secondaryBtnText: t('UU0093'),
         primaryHandler: () => {
           store.dispatch('helper/closeModalBehavior')
-          // router.push('/progress')
+          goToProgress('excel')
         },
         secondaryHandler: () => {
           store.dispatch('helper/closeModalBehavior')

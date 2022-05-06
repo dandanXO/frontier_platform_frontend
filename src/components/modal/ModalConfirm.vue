@@ -56,6 +56,10 @@ const props = defineProps({
   primaryBtnHandler: {
     type: Function,
   },
+  closeAfterPrimaryBtnHandler: {
+    type: Boolean,
+    default: true
+  },
   afterPrimaryBtnHandler: {
     type: Function,
   },
@@ -66,6 +70,10 @@ const props = defineProps({
   secondaryBtnHandler: {
     type: Function,
   },
+  closeAfterSecondaryBtnHandler: {
+    type: Boolean,
+    default: true
+  },
   afterSecondaryBtnHandler: {
     type: Function,
   },
@@ -75,6 +83,10 @@ const props = defineProps({
   },
   textBtnHandler: {
     type: Function,
+  },
+  closeAfterTextBtnHandler: {
+    type: Boolean,
+    default: true
   },
   afterTextBtnHandler: {
     type: Function,
@@ -129,17 +141,17 @@ const closeModalConfirm = () => store.dispatch('helper/closeModalConfirm')
 
 const primaryHandler = async () => {
   !!props.primaryBtnHandler && await props.primaryBtnHandler()
-  closeModalConfirm()
+  props.closeAfterPrimaryBtnHandler && closeModalConfirm()
   !!props.afterPrimaryBtnHandler && await props.afterPrimaryBtnHandler()
 }
 const secondaryHandler = async () => {
   !!props.secondaryBtnHandler && await props.secondaryBtnHandler()
-  closeModalConfirm()
+  props.closeAfterSecondaryBtnHandler && closeModalConfirm()
   !!props.afterSecondaryBtnHandler && await props.afterSecondaryBtnHandler()
 }
 const textHandler = async () => {
   !!props.textBtnHandler && await props.textBtnHandler()
-  closeModalConfirm()
+  props.closeAfterTextBtnHandler && closeModalConfirm()
   !!props.afterTextBtnHandler && await props.afterTextBtnHandler()
 }
 

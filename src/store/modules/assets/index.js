@@ -2,11 +2,13 @@ import assetsApi from '@/apis/assets'
 import { downloadBase64File } from '@/utils/fileOperator'
 import { NODE_LOCATION, DISPLAY_NODE } from '@/utils/constants'
 import Material from '@/store/reuseModules/material.js'
+import progress from './progress'
 
 export default {
   namespaced: true,
   modules: {
-    material: Material
+    material: Material,
+    progress
   },
   state: {
     displayMode: DISPLAY_NODE.LIST,
@@ -296,6 +298,12 @@ export default {
       rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.deleteMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
         : await assetsApi.group.deleteMaterial({ groupId: rootGetters['group/groupId'], materialIdList })
+    },
+    async deleteCheckMaterial ({ rootGetters }, { materialIdList }) {
+      const { data } = rootGetters['helper/routeLocation'] === 'org'
+        ? await assetsApi.org.deleteCheckMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
+        : await assetsApi.group.deleteCheckMaterial({ groupId: rootGetters['group/groupId'], materialIdList })
+      return data.result
     },
     async exportMaterial ({ rootGetters }, { materialIdList }) {
       const { data } = rootGetters['helper/routeLocation'] === 'org'

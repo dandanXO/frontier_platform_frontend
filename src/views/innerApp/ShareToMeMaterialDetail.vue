@@ -15,7 +15,7 @@ div(class="w-full h-full flex justify-center")
           div(v-if="haveMsgAndFirstRead" class="absolute -top-px -right-px w-2 h-2 rounded-full border border-black-0 bg-warn")
       div(class="text-caption text-black-700 flex items-center")
         p(class="pr-2.5") {{ share.displayName }}
-        p {{ $t("RR0148") }} {{ $dayjs.unix(share.shareDate).format("MM/DD/YYYY") }}
+        p {{ $t("RR0148") }} {{ $dayjs.unix(share.shareDate).format("YYYY/MM/DD") }}
     material-detail-external(:material="material" :isCanDownloadU3M="share.isCanDownloadU3M")
 </template>
 

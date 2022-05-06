@@ -35,7 +35,7 @@ div(class="w-full h-full")
     template(v-if="!isFirstLayer" #sub-header)
       div(class="mx-7.5 mb-7.5 text-caption text-black-700 flex items-center")
         p(class="pr-2.5") {{ collection.share.displayName }}
-        p {{ $t("RR0148") }} {{ $dayjs.unix(collection.share.shareDate).format("MM/DD/YYYY") }}
+        p {{ $t("RR0148") }} {{ $dayjs.unix(collection.share.shareDate).format("YYYY/MM/DD") }}
     template(#default="{ inSearch, goTo }")
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
         template(v-for="node in nodeList")

@@ -39,7 +39,8 @@ export default {
     ModalHowToScan: defineAsyncComponent(() => import('@/components/assets/material/ModalHowToScan.vue')),
     ModalMassUpload: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUpload.vue')),
     ModalMassUploadErrorList: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUploadErrorList.vue')),
-    ModalUploadAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalUploadAttachment.vue'))
+    ModalUploadAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalUploadAttachment.vue')),
+    ModalMaterialNoList: defineAsyncComponent(() => import('@/components/ModalMaterialNoList.vue'))
   },
   setup () {
     const store = useStore()
