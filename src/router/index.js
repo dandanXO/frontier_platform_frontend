@@ -104,13 +104,25 @@ const reuseRoutes = (prefix) => ([
   {
     path: 'moodboard/:moodboardId',
     name: `${prefix}MoodboardDetail`,
-    props: true,
+    props: (route) => {
+      const moodboardId = Number.parseInt(route.params.moodboardId, 10)
+      if (Number.isNaN(moodboardId)) {
+        return 0
+      }
+      return { moodboardId }
+    },
     component: () => import('@/views/innerApp/moodboard/MoodboardDetail.vue')
   },
   {
     path: 'moodboard/:moodboardId/picked-list',
     name: `${prefix}MoodboardPickedList`,
-    props: true,
+    props: (route) => {
+      const moodboardId = Number.parseInt(route.params.moodboardId, 10)
+      if (Number.isNaN(moodboardId)) {
+        return 0
+      }
+      return { moodboardId }
+    },
     component: () => import('@/views/innerApp/moodboard/MoodboardPickedList.vue')
   },
   {

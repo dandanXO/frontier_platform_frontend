@@ -106,6 +106,8 @@ export default {
       return state.moodboardList.filter(moodboard => moodboard.moodboardType === moodboardType)
     },
     moodboard: state => state.moodboard,
+    moodboardId: state => state.moodboard.moodboardId,
+    moodboardShareList: state => state.moodboard.properties?.shareList || [],
     moodboardOfferNode: state => state.moodboardOfferNode,
     moodboardCommentList: state => state.moodboardCommentList,
     moodboardNodeMaterial: state => state.moodboardNodeMaterial
@@ -128,12 +130,15 @@ export default {
     }
   },
   actions: {
-    async getMoodboardList ({ rootGetters, commit }) {
-      const { data } = await moodboardApi.getMoodboardList(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'])
+    async callMoodboardApi ({ rootGetters }, { func, params = {} }) {
+      return await moodboardApi[func](rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    },
+    async getMoodboardList ({ dispatch, commit }) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'getMoodboardList' })
       commit('SET_moodboardList', data.result.moodboardList)
     },
-    async getMoodboard ({ rootGetters, commit }, params) {
-      const { data } = await moodboardApi.getMoodboard(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async getMoodboard ({ dispatch, commit }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'getMoodboard', params })
       commit('SET_moodboard', data.result.moodboard)
     },
 
@@ -145,16 +150,21 @@ export default {
      * @param {object} params.trendBoardFile - file object
      * @param {object[]} params.attachmentFileList - file object of array
      */
-    async createMoodboard ({ rootGetters, dispatch }, params) {
+    async createMoodboard ({ dispatch }, params) {
       const { trendBoardFile, attachmentFileList } = params
-      const trendBoard = !!trendBoardFile && await dispatch('uploadFileToS3', { fileName: trendBoardFile.name, file: trendBoardFile }, { root: true })
+
+      let trendBoard = null
+      if (!!trendBoardFile) {
+        trendBoard = await dispatch('uploadFileToS3', { fileName: trendBoardFile.name, file: trendBoardFile }, { root: true })
+      }
+
       const attachmentList = await Promise.all(attachmentFileList.map(attachment => dispatch('uploadFileToS3', { fileName: attachment.name, attachment }, { root: true })))
 
       const tempParams = { ...params, trendBoard, attachmentList }
       delete tempParams.trendBoardFile
       delete tempParams.attachmentFileList
 
-      await moodboardApi.createMoodboard(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], tempParams)
+      await dispatch('callMoodboardApi', { func: 'createMoodboard', params: tempParams })
     },
 
     /**
@@ -168,85 +178,90 @@ export default {
      * @param {number[]} params.deleteAttachmentIdList
      * @param {boolean} params.isDeleteTrendBoard
      */
-    async updateMoodboard ({ rootGetters, dispatch }, params) {
+    async updateMoodboard ({ dispatch }, params) {
       const { trendBoardFile, attachmentFileList } = params
-      const newTrendBoard = !!trendBoardFile && await dispatch('uploadFileToS3', { fileName: trendBoardFile.name, file: trendBoardFile }, { root: true })
+
+      let newTrendBoard = null
+      if (!!trendBoardFile) {
+        newTrendBoard = await dispatch('uploadFileToS3', { fileName: trendBoardFile.name, file: trendBoardFile }, { root: true })
+      }
+
       const newAttachmentList = await Promise.all(attachmentFileList.map(attachment => dispatch('uploadFileToS3', { fileName: attachment.name, attachment }, { root: true })))
 
       const tempParams = { ...params, newTrendBoard, newAttachmentList }
       delete tempParams.trendBoardFile
       delete tempParams.attachmentFileList
 
-      await moodboardApi.updateMoodboard(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], tempParams)
+      await dispatch('callMoodboardApi', { func: 'updateMoodboard', params: tempParams })
     },
-    async deleteMoodboard ({ rootGetters, commit }, params) {
-      const { data } = await moodboardApi.deleteMoodboard(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async deleteMoodboard ({ dispatch, commit }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'deleteMoodboard', params })
       commit('SET_moodboardList', data.result.moodboardList)
     },
-    async getMoodboardNode ({ rootGetters, commit }, params) {
-      const { data } = await moodboardApi.getMoodboardNode(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async getMoodboardNode ({ dispatch, commit }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'getMoodboardNode', params })
       commit('SET_moodboardOfferNode', data.result.moodboardOfferNode)
     },
-    async deleteMoodboardNode ({ rootGetters }, params) {
-      await moodboardApi.deleteMoodboardNode(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async deleteMoodboardNode ({ dispatch }, params) {
+      await dispatch('callMoodboardApi', { func: 'deleteMoodboardNode', params })
     },
-    async pickMoodboardNode ({ rootGetters }, params) {
-      await moodboardApi.pickMoodboardNode(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async pickMoodboardNode ({ dispatch }, params) {
+      await dispatch('callMoodboardApi', { func: 'pickMoodboardNode', params })
     },
-    async unpickMoodboardNode ({ rootGetters }, params) {
-      await moodboardApi.unpickMoodboardNode(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async unpickMoodboardNode ({ dispatch }, params) {
+      await dispatch('callMoodboardApi', { func: 'unpickMoodboardNode', params })
     },
-    async getPickedMoodboardNode ({ rootGetters, commit }, params) {
-      const { data } = await moodboardApi.getPickedMoodboardNode(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async getPickedMoodboardNode ({ dispatch, commit }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'getPickedMoodboardNode', params })
       commit('SET_moodboardOfferNode', data.result.moodboardOfferNode)
     },
-    async cloneCheckMoodboardNode ({ rootGetters }, params) {
-      const { data } = await moodboardApi.cloneCheckMoodboardNode(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async cloneCheckMoodboardNode ({ dispatch }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'cloneCheckMoodboardNode', params })
       return data.result.estimatedQuota
     },
-    async cloneMoodboardNode ({ rootGetters }, params) {
-      await moodboardApi.cloneMoodboardNode(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async cloneMoodboardNode ({ dispatch }, params) {
+      await dispatch('callMoodboardApi', { func: 'cloneMoodboardNode', params })
     },
-    async exportMoodboardNode ({ rootGetters }, params) {
-      const { data } = await moodboardApi.exportMoodboardNode(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async exportMoodboardNode ({ dispatch }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'exportMoodboardNode', params })
       const { extension, file, fileName } = data?.result
       downloadBase64File(file, extension, fileName)
     },
-    async massExportMoodboardNode ({ rootGetters }, params) {
-      await moodboardApi.massExportMoodboardNode(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async massExportMoodboardNode ({ dispatch }, params) {
+      await dispatch('callMoodboardApi', { func: 'massExportMoodboardNode', params })
     },
-    async getMoodboardComment ({ rootGetters, commit }, params) {
-      const { data } = await moodboardApi.getMoodboardComment(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async getMoodboardComment ({ dispatch, commit }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'getMoodboardComment', params })
       commit('SET_moodboardCommentList', data.result.moodboardCommentList)
     },
-    async createMoodboardComment ({ rootGetters, commit }, params) {
-      const { data } = await moodboardApi.createMoodboardComment(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async createMoodboardComment ({ dispatch, commit }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'createMoodboardComment', params })
       commit('SET_moodboardCommentList', data.result.moodboardCommentList)
     },
-    async getMoodboardShareTarget ({ rootGetters }, params) {
-      const { data } = await moodboardApi.getMoodboardShareTarget(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
-      return data.result.target
+    async getMoodboardShareTarget ({ dispatch, getters }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'getMoodboardShareTarget', params: { moodboardId: getters.moodboardId, ...params } })
+      return data.result?.target
     },
-    async shareMoodboard ({ rootGetters, commit }, params) {
-      const { data } = await moodboardApi.shareMoodboard(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async shareMoodboard ({ dispatch, commit, getters }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'shareMoodboard', params: { moodboardId: getters.moodboardId, ...params } })
       commit('SET_moodboard', data.result.moodboard)
     },
-    async removeMoodboardShare ({ rootGetters, commit }, params) {
-      const { data } = await moodboardApi.removeMoodboardShare(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async removeMoodboardShare ({ dispatch, commit }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'removeMoodboardShare', params })
       commit('SET_moodboard', data.result.moodboard)
     },
-    async getMoodboardNodeMaterial ({ rootGetters, commit }, params) {
-      const { data } = await moodboardApi.getMoodboardNodeMaterial(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async getMoodboardNodeMaterial ({ dispatch, commit }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'getMoodboardNodeMaterial', params })
       commit('SET_moodboardNodeMaterial', data.result.moodboardOfferNodeMaterial)
     },
-    async addMaterialToMoodboardNode ({ rootGetters }, params) {
-      await moodboardApi.addMaterialToMoodboardNode(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async addMaterialToMoodboardNode ({ dispatch }, params) {
+      await dispatch('callMoodboardApi', { func: 'addMaterialToMoodboardNode', params })
     },
-    async createMoodboardNodeCollection ({ rootGetters }, params) {
-      await moodboardApi.createMoodboardNodeCollection(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async createMoodboardNodeCollection ({ dispatch }, params) {
+      await dispatch('callMoodboardApi', { func: 'createMoodboardNodeCollection', params })
     },
-    async updateMoodboardNodeCollection ({ rootGetters }, params) {
-      await moodboardApi.updateMoodboardNodeCollection(rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async updateMoodboardNodeCollection ({ dispatch }, params) {
+      await dispatch('callMoodboardApi', { func: 'updateMoodboardNodeCollection', params })
     }
   }
 }

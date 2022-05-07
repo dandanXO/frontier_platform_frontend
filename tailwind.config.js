@@ -80,7 +80,7 @@ module.exports = {
         "header": 100,
         "modal": 200,
         "modal-confirm": 200,
-        "flash-msg": 200,
+        "flash-msg": 201,
         "footer": 200,
         ...zIndex
       },

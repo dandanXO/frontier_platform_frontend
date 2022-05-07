@@ -54,7 +54,7 @@ export default {
       default: () => []
     }
   },
-  emits: ['update:textValue', 'blur'],
+  emits: ['update:textValue', 'blur', 'enter', 'clear', 'change', 'input'],
   setup (props, context) {
     const { textValue, disabled, required, rules, customErrorMsg } = toRefs(props)
     const { isFocus, isError, onFocus, onBlur, typing, isEmpty, classBorder, errorMsg } = useInput({ context, textValue, disabled, required, customErrorMsg, rules })

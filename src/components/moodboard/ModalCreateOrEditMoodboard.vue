@@ -132,6 +132,7 @@ const createMoodboard = async () => {
   store.dispatch('helper/openModalLoading')
   await store.dispatch('moodboard/createMoodboard', formData)
   store.dispatch('helper/closeModalLoading')
+  store.dispatch('helper/reloadInnerApp')
 }
 
 </script>

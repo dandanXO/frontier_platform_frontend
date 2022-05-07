@@ -41,7 +41,9 @@ export default {
     ModalMassUploadErrorList: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUploadErrorList.vue')),
     ModalUploadAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalUploadAttachment.vue')),
     ModalMaterialNoList: defineAsyncComponent(() => import('@/components/ModalMaterialNoList.vue')),
-    ModalCreateOrEditMoodboard: defineAsyncComponent(() => import('@/components/moodboard/ModalCreateOrEditMoodboard.vue'))
+    ModalCreateOrEditMoodboard: defineAsyncComponent(() => import('@/components/moodboard/ModalCreateOrEditMoodboard.vue')),
+    ModalMoodboardShare: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardShare.vue')),
+    ModalMoodboardShareList: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardShareList.vue'))
   },
   setup () {
     const store = useStore()

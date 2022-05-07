@@ -141,7 +141,7 @@ export default {
 
   /**
    * @param {object} params 
-   * @param {number} params.nodeId
+   * @param {number} params.shareId
    */
   removeMoodboardShare: (type, id, params) => apiWrapper('/moodboard/share/remove', type, id, params),
 

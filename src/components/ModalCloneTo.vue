@@ -194,6 +194,7 @@ const submit = async () => {
       case 'ERR0021':
         isExceedU3mStorage.value = true
         optional.u3m = false
+        break
       default:
         throw error
     }

@@ -97,6 +97,10 @@ export default function useNavigation () {
     router.push(parsePath(`${prefixPath.value}/share-to-me/material/${nodeKey}?sharingId=${sharingId}`))
   }
 
+  const goToMoodboardDetail = (moodboardId) => {
+    router.push(parsePath(`${prefixPath.value}/moodboard/${moodboardId}`))
+  }
+
   return {
     nextAfterSignIn,
     parsePath,
@@ -116,6 +120,7 @@ export default function useNavigation () {
     goToProgress,
     goToPaymentDetail,
     goToEmbedMaterialDetail,
+    goToMoodboardDetail,
     prefixPath
   }
 }
