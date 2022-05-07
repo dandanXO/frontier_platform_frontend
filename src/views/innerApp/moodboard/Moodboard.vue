@@ -20,6 +20,9 @@ const moodboardList = computed(() => store.getters['moodboard/moodboardList'](1)
 const openCreateOrEditMoodboard = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-create-or-edit-moodboard',
+    properties: {
+      mode: 1
+    }
   })
 }
 

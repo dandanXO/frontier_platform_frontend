@@ -1,7 +1,7 @@
 <template lang="pug">
 modal-behavior(
   :header="mode === MODE.CREATE ? $t('QQ0003') : $t('QQ0022')"
-  :primaryBtnText="$t('UU0020')"
+  :primaryBtnText="mode === MODE.CREATE ? $t('UU0020') : $t('UU0018')"
   :primaryBtnDisabled="primaryBtnDisabled"
   @click:primary="createMoodboard"
   :secondaryBtnText="$t('UU0026')"
@@ -25,11 +25,11 @@ modal-behavior(
       div
         div(class="h-5.5 flex items-center pb-1")
           p(class="text-body2 text-primary font-bold") {{ $t('FF0011') }}
-          btn-functional(v-if="formData.trendBoardFile" size="sm" class="ml-1.5" @click="previewFile(formData.trendBoardFile)") {{ $t('UU0060') }}
+          btn-functional(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewTrendBoard") {{ $t('UU0060') }}
         input-text-btn(
           class="w-full"
           disabledInput
-          :textValue="formData.trendBoardFile?.name || ''"
+          :textValue="uploadTrendBoardName"
           :buttonLabel="$t('UU0025')"
           :placeholder="$t('QQ0009')"
           @click:button="chooseTrendBoard"
@@ -49,13 +49,18 @@ modal-behavior(
         :rules="[(v) => v.length > 1000 && $t('WW0073')]"
       )
     input-container(:label="$t('QQ0015')")
-      overlay-scrollbar-container(v-if="formData.attachmentFileList.length > 0" class="max-h-18 mb-2.5")
+      overlay-scrollbar-container(class="max-h-18 mb-2.5")
         div(class="grid gap-y-2")
           div(v-for="(attachment, index) in formData.attachmentFileList" class="h-8 flex justify-between items-center px-4 bg-black-100")
             div(class="flex items-center gap-x-1")
               p(class="text-body2 font-bold text-primary line-clamp-1") {{ attachment.name }}
               p(class="text-body2 font-normal text-primary flex-shrink-0") ({{ bytesToSize(attachment.size) }})
             svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeAttachment(index)")
+          div(v-for="attachment in originalAttachmentList" class="h-8 flex justify-between items-center px-4 bg-black-100")
+            div(class="flex items-center gap-x-1")
+              p(class="text-body2 font-bold text-primary line-clamp-1") {{ attachment.fileName }}
+              p(class="text-body2 font-normal text-primary flex-shrink-0") ({{ bytesToSize(attachment.fileSize) }})
+            svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeOriginalAttachment(attachment.attachmentId)")
       btn(size="sm" type="secondary" prependIcon="add" @click="chooseAttachment") {{ $t("UU0063") }}
       div(class="text-caption text-black-600 pt-2")
         p(class="pb-1") {{ $t("QQ0012") }}
@@ -69,10 +74,10 @@ import { FileOperator, bytesToSize, previewFile } from '@/utils/fileOperator'
 
 const store = useStore()
 
-defineProps({
+const props = defineProps({
   mode: {
     type: Number,
-    default: 1 // mode create
+    default: 1 // MODE.CREATE
   }
 })
 
@@ -85,8 +90,17 @@ const formData = reactive({
   moodboardName: '',
   description: '',
   trendBoardFile: null,
-  attachmentFileList: []
+  attachmentFileList: [],
+  // the below variables only use for edit mode
+  moodboardId: 0,
+  deleteAttachmentIdList: [],
+  isDeleteTrendBoard: false
 })
+const uploadTrendBoardName = ref('')
+
+// Use to EDIT mode
+const originalTrendBoard = ref(null)
+const originalAttachmentList = ref([])
 
 const orgLogo = computed(() => store.getters['organization/orgLogo'])
 const creator = computed(() => {
@@ -105,34 +119,61 @@ const trendBoardFileOperator = new FileOperator(['pdf'], fileSizeMaxLimit, true)
 const chooseTrendBoard = () => trendBoardFileOperator.upload()
 trendBoardFileOperator.on('finish', (file) => {
   formData.trendBoardFile = file
+  uploadTrendBoardName.value = file.name
   fileUploadErrorCode.value = 0
 })
 trendBoardFileOperator.on('selfDefinedError', (code) => {
   fileUploadErrorCode.value = code
 })
+const previewTrendBoard = () => {
+  if (props.mode === MODE.CREATE) {
+    previewFile(formData.trendBoardFile)
+  } else {
+    formData.isDeleteTrendBoard
+      ? previewFile(formData.trendBoardFile)
+      : previewFile(originalTrendBoard.value)
+  }
+}
 const removeTrendBoard = () => {
   formData.trendBoardFile = null
+  uploadTrendBoardName.value = ''
+  if (props.mode === MODE.EDIT) {
+    formData.isDeleteTrendBoard = true
+  }
 }
 
 const attachmentFileOperator = new FileOperator(['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mov', 'mp4'], fileSizeMaxLimit, true)
 const chooseAttachment = () => attachmentFileOperator.upload()
 attachmentFileOperator.on('finish', (file) => {
-  formData.attachmentFileList.push(file)
+  formData.attachmentFileList.unshift(file)
   fileUploadErrorCode.value = 0
 })
 attachmentFileOperator.on('selfDefinedError', (code) => {
   fileUploadErrorCode.value = code
 })
 
-const removeAttachment = (index) => {
-  formData.attachmentFileList.splice(index, 1)
-}
+const removeAttachment = (index) => formData.attachmentFileList.splice(index, 1)
+
+const removeOriginalAttachment = (attachmentId) => formData.deleteAttachmentIdList.push(attachmentId)
 
 const createMoodboard = async () => {
   store.dispatch('helper/openModalLoading')
-  await store.dispatch('moodboard/createMoodboard', formData)
+  if (props.mode === MODE.CREATE) {
+    const { moodboardName, description, trendBoardFile, attachmentFileList } = formData
+    await store.dispatch('moodboard/createMoodboard', { moodboardName, description, trendBoardFile, attachmentFileList })
+  } else {
+    await store.dispatch('moodboard/updateMoodboard', formData)
+  }
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/reloadInnerApp')
+}
+
+if (props.mode === MODE.EDIT) {
+  const { moodboardId, moodboardName, description, attachmentList, trendBoardUrl, trendBoardFileName } = JSON.parse(JSON.stringify(store.getters['moodboard/moodboard']))
+  Object.assign(formData, { moodboardId, moodboardName, description })
+  originalTrendBoard.value = trendBoardUrl
+  originalAttachmentList.value = attachmentList
+  uploadTrendBoardName.value = trendBoardFileName
 }
 
 </script>

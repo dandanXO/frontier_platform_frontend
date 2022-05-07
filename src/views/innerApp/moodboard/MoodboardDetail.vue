@@ -3,6 +3,7 @@ div(class="h-full")
   //- Upper Part
   div
     p {{ $route.name }}
+    btn(size="sm" @click="openCreateOrEditMoodboard") Edit
   //- Lower Part
   div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
     div(class="pl-31 pb-13.5")
@@ -25,6 +26,15 @@ const props = defineProps({
 })
 
 const store = useStore()
+
+const openCreateOrEditMoodboard = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-create-or-edit-moodboard',
+    properties: {
+      mode: 2
+    }
+  })
+}
 
 const openModalMoodboardShareList = () => {
   store.dispatch('helper/openModalBehavior', {
