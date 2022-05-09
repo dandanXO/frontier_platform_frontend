@@ -1131,7 +1131,7 @@
   "PP0023": "Export to XLSX file",
   "PP0025": "Mapping with the {fabricSide} of {materialNo}.",
   "PP0026": "Please wait while we export to Excel.",
-  "PP0027": "Please wait while {file name} is uploading.",
+  "PP0027": "Please wait while {fileName} is uploading.",
   "PP0028": "Preparing data for processing.",
   "PP0029": "The 3D material generation process will soon begin.",
   "PP0030": "Exporting to spreadsheet",

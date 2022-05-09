@@ -54,11 +54,11 @@ export default {
         : await assetsApi.group.cancelExcelUploadProgress({ groupId: rootGetters['group/groupId'], excelProgressId })
     },
     async getExcelUploadMaterialList ({ rootGetters }, { excelProgressId }) {
-      const data = rootGetters['helper/routeLocation'] === 'org'
+      const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.getExcelUploadMaterialList({ orgId: rootGetters['organization/orgId'], excelProgressId })
         : await assetsApi.group.getExcelUploadMaterialList({ groupId: rootGetters['group/groupId'], excelProgressId })
 
-      return data.result.materialList
+      return data.result
     }
   }
 }

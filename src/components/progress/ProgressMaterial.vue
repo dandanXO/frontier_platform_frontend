@@ -47,7 +47,7 @@ general-table(
         p(v-else-if="item.msgCode === ERROR_MSG.INACTIVE") {{ $t("WW0092") }}
         p(v-else-if="item.msgCode === ERROR_MSG.INCORRECT_DPI") {{ $t("WW0093") }}
         p(v-else-if="item.msgCode === ERROR_MSG.INSUFFICIENT_STORAGE") {{ $t("WW0097") }}
-          span(class="text-assist-blue ml-0.5 cursor-pointer" @click="goToBillings") {{ $t("RR0169") }}
+          span(class="text-assist-blue ml-0.5 cursor-pointer" @click="goToBillings") {{ $t("RR0210") }}
       //- Completed
       div(v-else-if="item.status === UPLOAD_PROGRESS.COMPLETE && item.isMapping" class="text-black-500 inline-flex")
         svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")

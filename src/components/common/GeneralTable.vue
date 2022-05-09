@@ -45,7 +45,7 @@ div(class="relative")
           v-for="(item, index) in items"
           class="grid grid-cols-12 gap-6 items-center px-15 text-body2 text-primary hover:bg-black-50/50 rounded"
           :style="{ minWidth: tableWidth, height: rowHeight }"
-          @mouseenter="indexOfHover = index"
+          @mouseenter="handleMouseEnter(index)"
           @mouseleave="indexOfHover = null"
         )
           div(v-for="header in headers" :class="[header.colSpan, header.align, getItemCustomClass(header)]")
@@ -136,7 +136,7 @@ export default {
       default: false
     }
   },
-  emits: ['search', 'sort', 'goTo', 'update:pagination', 'update:keyword'],
+  emits: ['search', 'sort', 'goTo', 'update:pagination', 'update:keyword', 'handleMouseEnter'],
   setup (props, { emit }) {
     const refTable = ref(null)
     const boxWidth = ref(0)
@@ -168,6 +168,11 @@ export default {
       emit('sort')
     }
 
+    const handleMouseEnter = (index) => {
+      indexOfHover.value = index
+      emit('handleMouseEnter', index)
+    }
+
     onMounted(() => {
       const leftDis = refTable.value.getBoundingClientRect().left
       // 24 is padding-right
@@ -184,6 +189,7 @@ export default {
       innerKeyword,
       boxWidth,
       handleSort,
+      handleMouseEnter,
       getHeaderCustomClass,
       getItemCustomClass
     }
