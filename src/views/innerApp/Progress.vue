@@ -18,6 +18,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
     ) 
   progress-material(v-if="currentTab === 'material'" :currentStatus="selectedStatus")
   progress-u3m(v-else-if="currentTab === 'u3m'" :currentStatus="selectedStatus")
+  progress-excel(v-else-if="currentTab === 'excel'" :currentStatus="selectedStatus")
 </template>
 
 <script setup>
@@ -29,6 +30,7 @@ import { UPLOAD_PROGRESS } from '@/utils/constants'
 
 const ProgressMaterial = defineAsyncComponent(() => import('@/components/progress/ProgressMaterial.vue'))
 const ProgressU3m = defineAsyncComponent(() => import('@/components/progress/ProgressU3m.vue'))
+const ProgressExcel = defineAsyncComponent(() => import('@/components/progress/ProgressExcel.vue'))
 
 const { t } = useI18n()
 const route = useRoute()

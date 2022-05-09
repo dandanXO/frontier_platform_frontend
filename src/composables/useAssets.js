@@ -5,7 +5,7 @@ import { U3M_STATUS } from '@/utils/constants'
 
 export default function useAssets () {
   const { t } = useI18n()
-  const { goToAssetMaterialEdit, goToMaterialUpload } = useNavigation()
+  const { goToAssetMaterialEdit, goToMaterialUpload, goToProgress } = useNavigation()
   const store = useStore()
 
   const editMaterial = {
@@ -192,10 +192,11 @@ export default function useAssets () {
           header: t('PP0030'),
           content: t('PP0031'),
           primaryBtnText: t('UU0031'),
-          // secondaryBtnText: t('UU0090'),
-          // secondaryBtnHandler: () => {
-          //   // go to progress page 
-          // }
+          secondaryBtnText: t('UU0090'),
+          secondaryBtnHandler: () => {
+            goToProgress('excel')
+            store.dispatch('helper/closeModalBehavior')
+          }
         })
       } else {
         store.dispatch('helper/openModalLoading')
