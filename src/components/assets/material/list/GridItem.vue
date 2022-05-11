@@ -40,117 +40,91 @@ div(class="w-full")
         template(#content)
           div(class="w-55 py-2.5")
             div(v-for="(block, index) in options")
-              template(v-for="option in block")
-                qr-code-general(v-if="option.id === 'printQRCode'")
-                  template(#activator="{ generatePdf }")
-                    list-item(class="px-7" @click="generatePdf([material])") {{ option.name }}
-                qr-code-a4(v-else-if="option.id === 'printCard'")
-                  template(#activator="{ generatePdf }")
-                    list-item(class="px-7" @click="generatePdf([material])") {{ option.name }}
-                list-item(
-                  v-else
-                  class="px-7"
-                  :disabled="option.disabled"
-                  @click="handleClick(option)"
-                ) {{ option.name }}
+              list-item(
+                v-for="option in block"
+                class="px-7"
+                :disabled="option.disabled"
+                @click="handleClick(option)"
+              ) {{ option.name }}
               div(class="mx-2 my-1 border-black-400" :class="{ 'border-b': index !== options.length - 1 }")
   div(class="text-primary font-bold text-body1 line-clamp-1 mt-2") {{ material.materialNo }}
 </template>
 
-<script>
+<script setup>
 import { ref, computed } from '@vue/runtime-core'
 import useAssets from '@/composables/useAssets'
 import useMaterial from '@/composables/useMaterial'
-import QrCodeA4 from '@/components/qrcode/QrCodeA4.vue'
-import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral.vue'
 import useNavigation from '@/composables/useNavigation'
 import { U3M_STATUS } from '@/utils/constants'
 
-export default {
-  name: 'GridItem',
-  components: { QrCodeA4, QrCodeGeneral },
-  props: {
-    material: {
-      type: Object
-    },
-    selectedList: {
-      type: Array,
-      required: true
-    }
+const props = defineProps({
+  material: {
+    type: Object
   },
-  setup (props, { emit }) {
-    const { goToAssetMaterialDetail } = useNavigation()
-    const {
-      editMaterial,
-      printCard,
-      downloadU3M,
-      cloneTo,
-      addToWorkspace,
-      create3DMaterial,
-      exportExcel,
-      printQRCode,
-      deleteMaterial
-    } = useAssets()
-    const { currentCoverImg, neverScanBefore, materialInfo } = useMaterial(props.material)
-
-    downloadU3M.disabled = props.material.u3m.status !== U3M_STATUS.COMPLETED
-
-    const options = [
-      [
-        editMaterial
-      ],
-      [
-        cloneTo,
-        addToWorkspace
-      ],
-      [
-        create3DMaterial,
-        downloadU3M,
-        exportExcel
-      ],
-      [
-        printQRCode,
-        printCard
-      ],
-      [
-        deleteMaterial
-      ]
-    ]
-
-    const randomKey = ref(0)
-    const isHover = ref(false)
-
-    const innerSelectedList = computed({
-      get: () => props.selectedList,
-      set: (v) => emit('update:selectedList', v)
-    })
-
-    const haveSelectedMoreThanOne = computed(() => props.selectedList.length > 0)
-
-    const handleClick = (option) => {
-      if (option.disabled) return
-
-      option.func && option.func(props.material)
-    }
-
-    const handleMouseEnter = () => {
-      isHover.value = true
-      randomKey.value++
-    }
-
-    return {
-      innerSelectedList,
-      options,
-      randomKey,
-      handleClick,
-      handleMouseEnter,
-      currentCoverImg,
-      neverScanBefore,
-      isHover,
-      haveSelectedMoreThanOne,
-      materialInfo,
-      goToAssetMaterialDetail
-    }
+  selectedList: {
+    type: Array,
+    required: true
   }
+})
+
+const emit = defineEmits(['update:selectedList'])
+
+const { goToAssetMaterialDetail } = useNavigation()
+const {
+  editMaterial,
+  printCard,
+  downloadU3M,
+  cloneTo,
+  addToWorkspace,
+  create3DMaterial,
+  exportExcel,
+  printQRCode,
+  deleteMaterial
+} = useAssets()
+const { currentCoverImg, neverScanBefore, materialInfo } = useMaterial(props.material)
+
+downloadU3M.disabled = props.material.u3m.status !== U3M_STATUS.COMPLETED
+
+const options = [
+  [
+    editMaterial
+  ],
+  [
+    cloneTo,
+    addToWorkspace
+  ],
+  [
+    create3DMaterial,
+    downloadU3M,
+    exportExcel
+  ],
+  [
+    printQRCode,
+    printCard
+  ],
+  [
+    deleteMaterial
+  ]
+]
+
+const randomKey = ref(0)
+const isHover = ref(false)
+
+const innerSelectedList = computed({
+  get: () => props.selectedList,
+  set: (v) => emit('update:selectedList', v)
+})
+
+const haveSelectedMoreThanOne = computed(() => props.selectedList.length > 0)
+
+const handleClick = (option) => {
+  if (option.disabled) return
+
+  option.func && option.func(props.material)
+}
+
+const handleMouseEnter = () => {
+  isHover.value = true
+  randomKey.value++
 }
 </script>

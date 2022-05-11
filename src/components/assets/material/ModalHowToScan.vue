@@ -11,15 +11,11 @@ modal-behavior(
       svg-icon(iconName="info_outline" size="14" class="mr-1.5")
       i18n-t(keypath="DD0032" tag="div" class="text-caption leading-1.6")
         template(#RR0062)
-          qr-code-a4(class="inline-flex")
-            template(#activator="{ generatePdf }")
-              div(class="inline-flex items-center text-assist-blue cursor-pointer" @click="generatePdf(materialList)") {{ $t("RR0062") }}
-                svg-icon(iconName="open_in_new" size="15")
+          div(class="inline-flex items-center text-assist-blue cursor-pointer" @click="printA4Card(materialList)") {{ $t("RR0062") }}
+            svg-icon(iconName="open_in_new" size="15")
         template(#RR0061)
-          qr-code-general(class="inline-flex")
-            template(#activator="{ generatePdf }")
-              div(class="inline-flex items-center text-assist-blue cursor-pointer" @click="generatePdf(materialList)") {{ $t("RR0061") }}
-                svg-icon(iconName="open_in_new" size="15")
+          div(class="inline-flex items-center text-assist-blue cursor-pointer" @click="printGeneralLabel(materialList)") {{ $t("RR0061") }}
+            svg-icon(iconName="open_in_new" size="15")
   div(class="w-230")
     div(class="text-h5 font-bold text-primary text-center mb-2.5") {{ title }}
     div(class="text-caption text-black-800 text-center leading-1.6 mb-6") {{ description || $t("DD0097") }}
@@ -49,9 +45,8 @@ modal-behavior(
 </template>
 
 <script setup>
-import QrCodeA4 from '@/components/qrcode/QrCodeA4.vue'
-import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral.vue'
 import useNavigation from '@/composables/useNavigation'
+import { printA4Card, printGeneralLabel } from '@/utils/print'
 
 defineProps({
   header: {

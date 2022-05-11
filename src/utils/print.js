@@ -1,0 +1,307 @@
+import QRCode from 'qrcode'
+import domtoimage from 'dom-to-image'
+import { jsPDF as JsPDF } from 'jspdf'
+import store from '@/store'
+import useMaterial from '@/composables/useMaterial'
+import { SIDE_TYPE } from '@/utils/constants.js'
+import i18n from '@/utils/i18n'
+import imgPdfOutLine from '@/assets/images/pdf-outline.png'
+
+const t = i18n.global.t
+const org = store?.getters['organization/organization']
+const logo = store?.getters['organization/orgLogo']
+
+const LABEL_WIDTH = 452
+const LABEL_HEIGHT = 226
+
+const A4_WIDTH = 594
+const A4_HEIGHT = 842
+
+const formatMaterialList = (materialList) => {
+  const list = []
+
+  materialList.forEach(material => {
+    const tempMaterial = typeof material === 'string' ? JSON.parse(material) : material
+    const { isDoubleSideMaterial, frontierNo, relationFrontierNo } = tempMaterial
+    if (isDoubleSideMaterial) {
+      list.push({
+        ...tempMaterial,
+        frontierNo,
+        sideType: SIDE_TYPE.FACE
+      })
+      list.push({
+        ...tempMaterial,
+        frontierNo: relationFrontierNo,
+        sideType: SIDE_TYPE.BACK
+      })
+    } else {
+      list.push(tempMaterial)
+    }
+  })
+
+  list.forEach((item) => {
+    const { materialInfo } = useMaterial(item)
+    item.materialWeight = materialInfo.weight.value
+    item.materialYarnCount = materialInfo.yarn.value
+    item.materialDensity = materialInfo.density.value
+    item.materialWidth = materialInfo.width.value
+
+    // 此處將「%」符號由半形改為全形，是因為某些字串組合如「100%BCI」會導致渲染錯誤
+    Object.keys(item).forEach(key => {
+      if (typeof item[key] === 'string') {
+        item[key] = item[key].split('%').join('％')
+      }
+    })
+  })
+
+  return list
+}
+
+const printPdf = async (dataUrls, config) => {
+  await asyncForEach(dataUrls, async (el, index, arr) => {
+    for (let i = 0; i < el.num; i++) {
+      config.doc.addImage(el.dataUrl, 'JPEG', 0, -i * config.height, config.width, config.height * el.num)
+      if (i !== (el.num - 1)) {
+        config.doc.addPage()
+      }
+    }
+    if (index !== (arr.length - 1)) {
+      config.doc.addPage()
+    }
+  })
+
+  config.doc.setProperties({ title: 'new Report' })
+  window.open(config.doc.output('bloburl').toString())
+}
+
+const printA4Card = async (materialList) => {
+  store.dispatch('helper/pushModalLoading')
+
+  const list = formatMaterialList(materialList)
+
+  const scale = 3
+  const dataUrls = []
+  const pdfTarget = document.createElement('div')
+  pdfTarget.classList.add('w-0', 'h-0', 'overflow-hidden')
+
+  const domGenerator = (material) => {
+    pdfTarget.innerHTML = `
+      <div class="relative flex flex-col justify-between items-center w-148.5 h-210.5 bg-black-0 px-10 py-10">
+        <div class="flex w-full">
+          <img src="${logo}" class="mr-7 w-12.5 h-12.5 rounded-sm flex-shrink-0" />
+          <div class="text-caption text-primary w-full grid gap-y-3">
+            <div class="text-body1 font-bold">${material.materialNo}</div>
+            <div> ${t("RR0014")} : ${material.description}</div>
+            <div> ${t("RR0021")} : ${material.content}</div>
+            <div> ${t("RR0023")} : ${material.materialYarnCount}</div>
+            <div> ${t("RR0024")} : ${material.materialDensity}</div>
+            <div> ${t("RR0025")} : ${material.pattern || ''}</div>
+            <div> ${t("RR0026")} : ${material.color || ''}</div>
+            <div> ${t("RR0015")} : ${material.materialWeight}</div>
+            <div> ${t("RR0019")} : ${material.materialWidth}</div>
+            <div> ${t("RR0022")} : ${material.finish}</div>
+          </div>
+          <div class="flex flex-col flex-shrink-0 items-center text-primary">
+            <span id="mark" class="whitespace-nowrap text-caption font-bold"></span>
+            <div id="container"></div>
+            <span class="whitespace-nowrap text-caption scale-90">${material.frontierNo}</span>
+          </div>
+        </div>
+        <div class="text-black-600 relative flex flex-col items-center justify-center w-full h-97 bg-cover" style="background-image: url(${imgPdfOutLine})">
+          <span class="whitespace-nowrap text-caption mb-2.5">${material.sideType === SIDE_TYPE.FACE ? t("DD0046") : t("DD0047")}</span>
+          <span class="whitespace-nowrap text-caption">${t("DD0050")}</span>
+        </div>
+        <div class="flex flex-col justify-start items-start w-full">
+          <span class="mb-2 font-bold text-caption">${org.orgName}</span>
+          <span class="text-caption">${org.address || ''}</span>
+        </div>
+      </div>
+    `
+    document.body.appendChild(pdfTarget)
+
+    const mark = document.getElementById('mark')
+    if (material.sideType === SIDE_TYPE.BACK) {
+      mark.innerText = t('DD0051')
+      mark.classList.add('text-black-0', 'py-1.5', 'px-2', 'bg-primary', 'rounded-sm')
+    } else {
+      mark.innerText = t('DD0046')
+    }
+
+    QRCode.toCanvas(material.frontierNo, { width: 72 }, (err, canvas) => {
+      if (err) throw err
+
+      const container = document.getElementById('container')
+      container.appendChild(canvas)
+    })
+  }
+
+  await asyncForEach(list, async (el, index, arr) => {
+    domGenerator(el)
+    const dataUrl = await domtoimage.toJpeg(pdfTarget, {
+      width: A4_WIDTH * scale,
+      height: A4_HEIGHT * scale,
+      style: {
+        transform: 'scale(' + scale + ')',
+        transformOrigin: 'top left'
+      }
+    })
+
+    dataUrls.push({
+      dataUrl,
+      num: pdfTarget.children.length
+    })
+    pdfTarget.remove()
+  })
+
+  await printPdf(dataUrls, {
+    width: 21,
+    height: 29.7,
+    doc: new JsPDF({ unit: 'cm', format: 'a4', orientation: 'p' })
+  })
+
+  store.dispatch('helper/closeModalLoading')
+}
+
+const printGeneralLabel = async (materialList) => {
+  store.dispatch('helper/pushModalLoading')
+
+  const list = formatMaterialList(materialList)
+
+  const scale = 3
+  const dataUrls = []
+  const pdfTarget = document.createElement('div')
+  pdfTarget.classList.add('w-0', 'h-0', 'overflow-hidden')
+
+  const domGenerator = (material) => {
+    if (material.sideType === SIDE_TYPE.FACE) {
+      pdfTarget.innerHTML = `
+        <div class="relative flex w-113 h-56.5 bg-black-0 pr-4 py-3">
+          <div class="absolute top-3 left-3.5">
+            <img src="${logo}" class="w-8.5 h-8.5 rounded-sm" />
+          </div>
+          <div class="flex justify-center w-full">
+            <div class="flex flex-col items-center justify-center w-31 ml-16">
+              <div id="container"></div>
+              <div class="whitespace-nowrap text-black-900 text-body2 mb-2">${t("DD0046")}</div>
+              <div class="whitespace-nowrap text-black-600 text-body2">${material.frontierNo}</div>
+            </div>
+            <div class="flex-none border border-black-400 mx-6 my-5"></div>
+            <div class="flex flex-col justify-center text-black-900 w-56">
+              <div class="mb-2 font-bold text-body2">${material.materialNo}</div>
+              <div class="line-clamp-2 text-body2">${material.description}</div>
+              <div class="line-clamp-2 text-body2">${material.content}</div>
+              <div class="line-clamp-1 text-body2">${material.materialYarnCount}</div>
+              <div class="line-clamp-2 text-body2">${material.finish}</div>
+              <div class="line-clamp-1 text-body2">${material.materialWeight}</div>
+            </div>
+          </div>
+        </div>
+      `
+    }
+
+    if (material.sideType === SIDE_TYPE.BACK) {
+      pdfTarget.innerHTML = `
+        <div class="relative flex w-113 h-56.5 bg-black-0 pr-4 py-3">
+          <div class="absolute top-3 left-3.5">
+            <img src="${logo}" class="w-8.5 h-8.5 rounded-sm" />
+          </div>
+          <div class="flex justify-center w-full">
+            <div class="flex flex-col items-center justify-center w-31">
+              <div class="whitespace-nowrap text-black-900 font-bold text-body1"></div>${material.materialNo}
+              <div id="container"></div>
+              <div class="whitespace-nowrap text-black-900 text-body2 mb-2">${t("DD0051")}</div>
+              <div class="whitespace-nowrap text-black-600 text-body2">${material.frontierNo}</div>
+            </div>
+          </div>
+        </div>
+      `
+    }
+
+    document.body.appendChild(pdfTarget)
+
+    QRCode.toCanvas(material.frontierNo, { width: 120 }, (err, canvas) => {
+      if (err) throw err
+
+      const container = document.getElementById('container')
+      container.appendChild(canvas)
+    })
+  }
+
+  await asyncForEach(list, async (el, index, arr) => {
+    domGenerator(el)
+    const dataUrl = await domtoimage.toJpeg(pdfTarget, {
+      width: LABEL_WIDTH * scale,
+      height: LABEL_HEIGHT * scale,
+      style: {
+        transform: 'scale(' + scale + ')',
+        transformOrigin: 'top left'
+      }
+    })
+
+    dataUrls.push({
+      dataUrl,
+      num: pdfTarget.children.length
+    })
+    pdfTarget.remove()
+  })
+
+  const PDF_WIDTH = 8
+  const PDF_HEIGHT = 4
+  await printPdf(dataUrls, {
+    width: PDF_WIDTH,
+    height: PDF_HEIGHT,
+    doc: new JsPDF({ unit: 'cm', format: [PDF_HEIGHT, PDF_WIDTH], orientation: 'l' })
+  })
+
+  store.dispatch('helper/closeModalLoading')
+}
+
+const printBackSideLabel = async () => {
+  store.dispatch('helper/pushModalLoading')
+
+  const pdfTarget = document.createElement('div')
+  pdfTarget.classList.add('w-0', 'h-0', 'overflow-hidden')
+  pdfTarget.innerHTML = `
+    <div class="relative flex items-center w-113 h-56.5 bg-black-0 px-8 py-8">
+      <div id="container" class="mr-5.5"></div>
+      <div class="flex flex-col">
+        <span class="mb-2 text-black-900 font-bold text-h5">${t('DD0051')}</span>
+        <span class="text-body2 leading-1.5">${t('DD0052')}</span>
+      </div>
+      <div class="absolute bottom-2.5 right-2.5 text-black-500 font-bold">${t('DD0053')}</div>
+    </div>
+  `
+
+  document.body.appendChild(pdfTarget)
+
+  QRCode.toCanvas('Scan Back Side', { width: 120 }, (err, canvas) => {
+    if (err) throw err
+
+    const container = document.getElementById('container')
+    container.appendChild(canvas)
+  })
+
+  const scale = 5
+  const dataUrl = await domtoimage.toJpeg(pdfTarget, {
+    width: LABEL_WIDTH * scale,
+    height: LABEL_HEIGHT * scale,
+    style: {
+      transform: 'scale(' + scale + ')',
+      transformOrigin: 'top left'
+    }
+  })
+  const doc = new JsPDF({ unit: 'cm', format: [4, 8], orientation: 'l' })
+  doc.addImage(dataUrl, 'JPEG', 0, 0, 8, 4)
+  pdfTarget.remove()
+
+  window.open(doc.output('bloburl').toString())
+  store.dispatch('helper/closeModalLoading')
+}
+
+const asyncForEach = async (array, callback) => {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array)
+  }
+}
+
+export { printA4Card, printBackSideLabel, printGeneralLabel }
