@@ -212,14 +212,14 @@ const openModalSendFeedback = () => {
 
 const openModalViewer = async (materialId) => {
   await store.dispatch('assets/getMaterial', { materialId })
-  const { baseImgUrl, normalImgUrl, dpi } = material.value
+  const { baseImgUrl, normalImgUrl, dpi } = material.value.u3m
   store.dispatch('helper/openModal', {
     component: 'modal-viewer',
     header: t('UU0006'),
     properties: {
-      dpi: dpi?.value,
-      baseImgUrl: baseImgUrl?.value,
-      normalImgUrl: normalImgUrl?.value
+      dpi,
+      baseImgUrl,
+      normalImgUrl
     }
   })
 }
