@@ -134,6 +134,7 @@ general-table(
 
 <script setup>
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive, watch } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
@@ -154,11 +155,15 @@ const ERROR_MSG = {
 const props = defineProps({
   currentStatus: {
     type: Number
+  },
+  path: {
+    type: String
   }
 })
 
 const { t } = useI18n()
 const store = useStore()
+const route = useRoute()
 const { goToAssets } = useNavigation()
 const { exportExcel } = useAssets()
 
@@ -258,7 +263,10 @@ const getList = async (targetPage = 1, showSpinner = true) => {
   })
   pagination.value = result.pagination
   isLoading.value = false
-  setTimer()
+
+  if (props.path === route.params.tab) {
+    setTimer()
+  }
 }
 
 const openModalMaterialNoList = (materialNoList) => {
@@ -334,8 +342,6 @@ const setTimer = () => {
     await getList(pagination.value.currentPage, false)
   }, 5000)
 }
-
-await getList()
 
 onBeforeRouteLeave(() => clearTimeout(timerId))
 onBeforeRouteUpdate(() => clearTimeout(timerId))

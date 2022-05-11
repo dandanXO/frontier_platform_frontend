@@ -96,6 +96,7 @@ import TableStatusProgress from '@/components/progress/TableStatusProgress.vue'
 import { UPLOAD_PROGRESS_SORT_BY, UPLOAD_PROGRESS } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { ref, computed, reactive, watch } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 
@@ -106,11 +107,15 @@ const ERROR_MSG = {
 const props = defineProps({
   currentStatus: {
     type: Number
+  },
+  path: {
+    type: String
   }
 })
 
 const { t } = useI18n()
 const store = useStore()
+const route = useRoute()
 const { goToAssetMaterialDetail } = useNavigation()
 
 const isLoading = ref(false)
@@ -192,7 +197,10 @@ const getList = async (targetPage = 1, showSpinner = true) => {
   })
   pagination.value = result.pagination
   isLoading.value = false
-  setTimer()
+
+  if (props.path === route.params.tab) {
+    setTimer()
+  }
 }
 
 const openModalSendFeedback = () => {
@@ -245,8 +253,6 @@ const setTimer = () => {
     await getList(pagination.value.currentPage, false)
   }, 5000)
 }
-
-await getList()
 
 onBeforeRouteLeave(() => clearTimeout(timerId))
 onBeforeRouteUpdate(() => clearTimeout(timerId))
