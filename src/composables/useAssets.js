@@ -2,6 +2,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation'
 import { U3M_STATUS } from '@/utils/constants'
+import { printA4Card, printGeneralLabel } from '@/utils/print'
 
 export default function useAssets () {
   const { t } = useI18n()
@@ -208,13 +209,21 @@ export default function useAssets () {
 
   const printQRCode = {
     id: 'printQRCode',
-    name: t('RR0061')
+    name: t('RR0061'),
+    func: (v) => {
+      const materialList = Array.isArray(v) ? v : [v]
+      printGeneralLabel(materialList)
+    }
   }
 
   const printCard = {
     id: 'printCard',
     icon: 'print',
-    name: t('RR0062')
+    name: t('RR0062'),
+    func: (v) => {
+      const materialList = Array.isArray(v) ? v : [v]
+      printA4Card(materialList)
+    }
   }
 
   const mergeCard = {

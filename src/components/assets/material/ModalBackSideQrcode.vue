@@ -7,16 +7,14 @@ modal-behavior(
   div(class="w-104")
     i18n-t(keypath="DD0010" tag="div" class="mb-7.5 text-body2 text-primary leading-1.6")
       template(#DD0098)
-        qr-code-backside-general(class="inline-flex")
-          template(#activator="{ generatePdf }")
-            div(class="inline-flex items-center text-assist-blue cursor-pointer" @click="generatePdf") {{ $t('DD0098') }}
-              svg-icon(iconName="open_in_new" size="15")
+        div(class="inline-flex items-center text-assist-blue cursor-pointer" @click="printBackSideLabel") {{ $t('DD0098') }}
+          svg-icon(iconName="open_in_new" size="15")
     img(src="@/assets/images/back_side.png")
 </template>
 
 <script setup>
 import { useStore } from 'vuex'
-import QrCodeBacksideGeneral from '@/components/qrcode/QrCodeBacksideGeneral.vue'
+import { printBackSideLabel } from '@/utils/print'
 
 const store = useStore()
 
