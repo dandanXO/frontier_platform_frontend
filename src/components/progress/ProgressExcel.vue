@@ -64,7 +64,7 @@ general-table(
           template(#content)
             p(class="text-caption text-primary py-1 px-3 leading-1.6") {{ $t("RR0190") }}
     template(v-if="prop === 'createdTime'")
-      div(v-for="string in $dayjs(item.createDate).format('MM/DD/YYYY-hh:mm:ss A').split('-')" class="leading-1.6") {{ string }}
+      div(v-for="string in $dayjs.unix(item.createDate).format('YYYY/MM/DD-hh:mm:ss A').split('-')" class="leading-1.6") {{ string }}
     table-status-label(v-if="prop === 'statusLabel'" :status="item.status")
     table-status-progress(v-if="prop === 'procedure'" :status="item.status")
       //- Unsuccessful
@@ -251,6 +251,7 @@ let timerId
 const getList = async (targetPage = 1, showSpinner = true) => {
   clearTimeout(timerId)
   isLoading.value = showSpinner
+
   const result = await store.dispatch('assets/progress/getExcelUploadProgress', {
     ...queryParams,
     keyword: keyword.value,

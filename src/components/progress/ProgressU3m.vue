@@ -185,6 +185,7 @@ let timerId
 const getList = async (targetPage = 1, showSpinner = true) => {
   clearTimeout(timerId)
   isLoading.value = showSpinner
+
   const result = await store.dispatch('assets/progress/getU3mUploadProgress', {
     ...queryParams,
     keyword: keyword.value,

@@ -15,6 +15,8 @@ export default {
   },
   actions: {
     async getMaterialUploadProgress ({ rootGetters, commit }, params) {
+      params.startDate = params.startDate.split('-').join('/')
+      params.endDate = params.endDate.split('-').join('/')
       const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.getMaterialUploadProgress({ orgId: rootGetters['organization/orgId'], ...params })
         : await assetsApi.group.getMaterialUploadProgress({ groupId: rootGetters['group/groupId'], ...params })
@@ -23,6 +25,8 @@ export default {
       return data.result
     },
     async getU3mUploadProgress ({ rootGetters, commit }, params) {
+      params.startDate = params.startDate.split('-').join('/')
+      params.endDate = params.endDate.split('-').join('/')
       const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.getU3mUploadProgress({ orgId: rootGetters['organization/orgId'], ...params })
         : await assetsApi.group.getU3mUploadProgress({ groupId: rootGetters['group/groupId'], ...params })
@@ -31,6 +35,8 @@ export default {
       return data.result
     },
     async getExcelUploadProgress ({ rootGetters, commit }, params) {
+      params.startDate = params.startDate.split('-').join('/')
+      params.endDate = params.endDate.split('-').join('/')
       const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.getExcelUploadProgress({ orgId: rootGetters['organization/orgId'], ...params })
         : await assetsApi.group.getExcelUploadProgress({ groupId: rootGetters['group/groupId'], ...params })
