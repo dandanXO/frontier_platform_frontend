@@ -182,7 +182,7 @@ const queryParams = reactive({
   category: EXCEL_CATEGORY.ALL
 })
 
-const tableData = computed(() => store.getters['assets/progress/progressList'])
+const tableData = computed(() => store.getters['assets/progress/excelProgressList'])
 
 const headers = [
   {

@@ -120,7 +120,7 @@ const queryParams = reactive({
   startDate: '',
   endDate: ''
 })
-const tableData = computed(() => store.getters['assets/progress/progressList'])
+const tableData = computed(() => store.getters['assets/progress/materialProgressList'])
 
 const headers = [
   {
