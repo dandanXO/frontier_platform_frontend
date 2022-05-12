@@ -10,6 +10,7 @@ import publicLibrary from '@/store/modules/publicLibrary'
 import receivedShare from '@/store/modules/receivedShare'
 import embed from '@/store/modules/embed'
 import shareToMe from '@/store/modules/shareToMe'
+import polling from '@/store/modules/polling'
 
 export default createStore({
   actions: {
@@ -50,6 +51,7 @@ export default createStore({
     publicLibrary,
     receivedShare,
     shareToMe,
-    embed
+    embed,
+    polling
   }
 })

@@ -9,8 +9,8 @@ export default function usePlan () {
   const { goToPaymentDetail } = useNavigation()
 
   const noBindingPayment = computed(() => store.getters['organization/noBindingPayment'])
-  const planType = computed(() => store.getters['organization/planType'])
-  const planStatus = computed(() => store.getters['organization/planStatus'])
+  const planType = computed(() => store.getters['polling/planType'])
+  const planStatus = computed(() => store.getters['polling/planStatus'])
 
   const closeModal = () => store.dispatch('helper/closeModal')
 
@@ -42,7 +42,7 @@ export default function usePlan () {
       })
       return false
     } else if (planType.value.ENT) {
-      const memberQuota = store.getters['organization/plan'].quota.member
+      const memberQuota = store.getters['polling/plan'].quota.member
       if (memberQuota.max === 0) {
         store.dispatch('helper/openModalConfirm', {
           type: 1,

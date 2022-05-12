@@ -106,7 +106,7 @@ export default {
       default: false
     }
   },
-  emits: ['update:textValue', 'blur', 'enter', 'clear', 'change'],
+  emits: ['update:textValue', 'blur', 'enter', 'clear', 'change', 'input'],
   setup (props, context) {
     const { inputType, textValue, disabled, rules, required, customErrorMsg } = toRefs(props)
     const { isFocus, isError, onFocus, onBlur, clear, typing, isEmpty, classBorder, errorMsg, classPrependIcon } = useInput({ context, inputType, textValue, disabled, rules, required, customErrorMsg })

@@ -42,6 +42,10 @@ export default function useNavigation () {
     router.push(parsePath('/:orgNo/billings/plan'))
   }
 
+  const goToProgress = (tabName = 'material') => {
+    router.push(parsePath(`${prefixPath.value}/progress/${tabName}`))
+  }
+
   const goToPaymentDetail = () => {
     router.push(parsePath('/:orgNo/billings/payment'))
   }
@@ -109,6 +113,7 @@ export default function useNavigation () {
     goToReceivedShareMaterial,
     goToShareToMeMaterial,
     goToBillings,
+    goToProgress,
     goToPaymentDetail,
     goToEmbedMaterialDetail,
     prefixPath

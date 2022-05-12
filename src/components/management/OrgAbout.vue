@@ -89,7 +89,7 @@ export default {
     const { openModalPaymentFail } = usePlan()
 
     const organization = computed(() => store.getters['organization/organization'])
-    const planType = computed(() => store.getters['organization/planType'])
+    const planType = computed(() => store.getters['polling/planType'])
     const logo = computed(() => store.getters['organization/orgLogo'])
     const { orgName, labelColor, orgCategoryId, address, countryCode, fax, faxCountryCode, phone, phoneCountryCode } = organization.value
     const countryList = computed(() => store.getters['code/countryList'])

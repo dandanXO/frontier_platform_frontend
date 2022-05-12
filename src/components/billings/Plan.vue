@@ -86,10 +86,10 @@ export default {
       payLastMonthUnbilledInfo
     } = usePlan()
 
-    const plan = computed(() => store.getters['organization/plan'])
-    const planName = computed(() => store.getters['organization/planName'])
-    const planStatus = computed(() => store.getters['organization/planStatus'])
-    const planType = computed(() => store.getters['organization/planType'])
+    const plan = computed(() => store.getters['polling/plan'])
+    const planName = computed(() => store.getters['polling/planName'])
+    const planStatus = computed(() => store.getters['polling/planStatus'])
+    const planType = computed(() => store.getters['polling/planType'])
     const materialQuota = computed(() => plan.value.quota.material)
     const u3mQuota = computed(() => plan.value.quota.u3m)
     const memberQuota = computed(() => plan.value.quota.member)

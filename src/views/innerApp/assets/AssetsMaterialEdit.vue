@@ -15,7 +15,7 @@ div(class="w-full h-full flex justify-center")
           btn(size="md" class="h-10" @click="updateMaterial") {{ $t("UU0018") }}
 </template>
 
-<script>
+<script setup>
 import BlockMaterialImage from '@/components/assets/material/edit/BlockMaterialImage.vue'
 import BlockMaterialInformation from '@/components/assets/material/edit/BlockMaterialInformation.vue'
 import BlockMaterialInventory from '@/components/assets/material/edit/BlockMaterialInventory.vue'
@@ -28,93 +28,74 @@ import useMaterialValidation from '@/composables/useMaterialValidation'
 import { computed, ref } from 'vue'
 import { onBeforeRouteLeave, useRoute } from 'vue-router'
 
-export default {
-  name: 'AssetsMaterialEdit',
-  components: {
-    BlockMaterialImage,
-    BlockMaterialInformation,
-    BlockMaterialInventory,
-    BlockMaterialPricing,
-    BlockMaterialAttachment
-  },
-  async setup () {
-    const { t } = useI18n()
-    const store = useStore()
-    const route = useRoute()
-    const { parsePath, goToAssets } = useNavigation()
-    const { validations, validate } = useMaterialValidation()
+const { t } = useI18n()
+const store = useStore()
+const route = useRoute()
+const { parsePath, goToAssets } = useNavigation()
+const { validations, validate } = useMaterialValidation()
 
-    const isConfirmedToLeave = ref(false)
+const isConfirmedToLeave = ref(false)
 
-    const routeLocation = computed(() => store.getters['helper/routeLocation'])
-    const breadcrumbList = computed(() => {
-      const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
-      return [
-        {
-          name: t('DD0044'),
-          path: parsePath(`${prefix}/assets`)
-        },
-        {
-          name: t('EE0037'),
-          path: parsePath(`${prefix}/assets/:materialId/edit`)
-        }
-      ]
-    })
+const routeLocation = computed(() => store.getters['helper/routeLocation'])
+const breadcrumbList = computed(() => {
+  const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
+  return [
+    {
+      name: t('DD0044'),
+      path: parsePath(`${prefix}/assets`)
+    },
+    {
+      name: t('EE0037'),
+      path: parsePath(`${prefix}/assets/:materialId/edit`)
+    }
+  ]
+})
 
-    const updateMaterial = async () => {
-      if (validate()) {
-        return
-      }
-      store.dispatch('helper/pushModalLoading')
-      await store.dispatch('assets/updateMaterial')
-      store.dispatch('helper/closeModalLoading')
+const updateMaterial = async () => {
+  if (validate()) {
+    return
+  }
+  store.dispatch('helper/pushModalLoading')
+  await store.dispatch('assets/updateMaterial')
+  store.dispatch('helper/closeModalLoading')
+  isConfirmedToLeave.value = true
+  goToAssets()
+}
+
+const cancel = async () => {
+  store.dispatch('helper/pushModalConfirm', {
+    type: 1,
+    header: t('EE0045'),
+    content: t('EE0046'),
+    primaryBtnText: t('UU0001'),
+    primaryBtnHandler: () => {
       isConfirmedToLeave.value = true
       goToAssets()
-    }
-
-    const cancel = async () => {
-      store.dispatch('helper/pushModalConfirm', {
-        type: 1,
-        header: t('EE0045'),
-        content: t('EE0046'),
-        primaryBtnText: t('UU0001'),
-        primaryBtnHandler: () => {
-          isConfirmedToLeave.value = true
-          goToAssets()
-        },
-        secondaryBtnText: t('UU0002')
-      })
-    }
-
-    onBeforeRouteLeave(async () => {
-      if (isConfirmedToLeave.value) {
-        return true
-      }
-
-      const result = await new Promise((resolve) => {
-        store.dispatch('helper/openModalConfirm', {
-          type: 3,
-          header: t('EE0045'),
-          content: t('EE0046'),
-          primaryBtnText: t('UU0001'),
-          primaryBtnHandler: resolve.bind(undefined, 'confirm'),
-          secondaryBtnText: t('UU0002'),
-          secondaryBtnHandler: resolve.bind(undefined, 'cancel')
-        })
-      })
-
-      return result === 'confirm'
-    })
-
-    await store.dispatch('assets/getMaterialOptions')
-    await store.dispatch('assets/getMaterial', { materialId: route.params.materialId })
-
-    return {
-      validations,
-      updateMaterial,
-      cancel,
-      breadcrumbList
-    }
-  }
+    },
+    secondaryBtnText: t('UU0002')
+  })
 }
+
+onBeforeRouteLeave(async () => {
+  if (isConfirmedToLeave.value) {
+    return true
+  }
+
+  const result = await new Promise((resolve) => {
+    store.dispatch('helper/openModalConfirm', {
+      type: 1,
+      header: t('EE0045'),
+      content: t('EE0046'),
+      primaryBtnText: t('UU0001'),
+      primaryBtnHandler: resolve.bind(undefined, 'confirm'),
+      secondaryBtnText: t('UU0002'),
+      secondaryBtnHandler: resolve.bind(undefined, 'cancel')
+    })
+  })
+
+  return result === 'confirm'
+})
+
+await store.dispatch('assets/getMaterialOptions')
+await store.dispatch('assets/getMaterial', { materialId: route.params.materialId })
 </script>

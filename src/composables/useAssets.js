@@ -5,7 +5,7 @@ import { U3M_STATUS } from '@/utils/constants'
 
 export default function useAssets () {
   const { t } = useI18n()
-  const { goToAssetMaterialEdit } = useNavigation()
+  const { goToAssetMaterialEdit, goToMaterialUpload, goToProgress } = useNavigation()
   const store = useStore()
 
   const editMaterial = {
@@ -122,10 +122,21 @@ export default function useAssets () {
             properties: {
               btnText: t('UU0032'),
               btnClickHandler: () => {
-                store.dispatch('helper/replaceModal', {
+                store.dispatch('helper/openModalBehavior', {
                   component: 'modal-how-to-scan',
-                  header: t('DD0043'),
                   properties: {
+                    header: t('UU0032'),
+                    title: t('EE0109'),
+                    description: t('EE0110'),
+                    primaryBtnText: t('UU0094'),
+                    secondaryBtnText: t('UU0092'),
+                    primaryHandler: () => {
+                      store.dispatch('helper/closeModalBehavior')
+                    },
+                    secondaryHandler: () => {
+                      goToMaterialUpload()
+                      store.dispatch('helper/closeModalBehavior')
+                    },
                     materialList: [v]
                   }
                 })
@@ -173,9 +184,25 @@ export default function useAssets () {
     name: t('RR0060'),
     func: async (v) => {
       const materialIdList = Array.isArray(v) ? v.map(({ materialId }) => materialId) : [v.materialId]
-      store.dispatch('helper/openModalLoading')
-      await store.dispatch('assets/exportMaterial', { materialIdList })
-      store.dispatch('helper/closeModalLoading')
+
+      if (materialIdList.length >= 100) {
+        await store.dispatch('assets/massExportMaterial', { materialIdList })
+        store.dispatch('helper/openModalConfirm', {
+          type: 2,
+          header: t('PP0030'),
+          content: t('PP0031'),
+          primaryBtnText: t('UU0031'),
+          secondaryBtnText: t('UU0090'),
+          secondaryBtnHandler: () => {
+            goToProgress('excel')
+            store.dispatch('helper/closeModalBehavior')
+          }
+        })
+      } else {
+        store.dispatch('helper/openModalLoading')
+        await store.dispatch('assets/exportMaterial', { materialIdList })
+        store.dispatch('helper/closeModalLoading')
+      }
     }
   }
 
@@ -204,21 +231,77 @@ export default function useAssets () {
   const deleteMaterial = {
     id: 'deleteMaterial',
     name: t('RR0063'),
-    func: (v) => {
+    func: async (v) => {
       const materialIdList = Array.isArray(v) ? v.map(({ materialId }) => materialId) : [v.materialId]
-      store.dispatch('helper/openModalConfirm', {
-        type: 1,
-        header: t('EE0075'),
-        content: t('EE0076'),
-        primaryBtnText: t('UU0001'),
-        primaryBtnHandler: async () => {
-          store.dispatch('helper/openModalLoading')
-          await store.dispatch('assets/deleteMaterial', { materialIdList })
-          store.dispatch('helper/closeModalLoading')
-          store.dispatch('helper/reloadInnerApp')
-        },
-        secondaryBtnText: t('UU0002')
-      })
+
+      const { isOnExportingExcel, isOnGeneratingU3m, materialNoList } = await store.dispatch('assets/deleteCheckMaterial', { materialIdList })
+      if (!isOnExportingExcel && !isOnGeneratingU3m) {
+        store.dispatch('helper/openModalConfirm', {
+          type: 1,
+          header: t('EE0075'),
+          content: t('EE0076'),
+          primaryBtnText: t('UU0001'),
+          primaryBtnHandler: async () => {
+            store.dispatch('helper/openModalLoading')
+            await store.dispatch('assets/deleteMaterial', { materialIdList })
+            store.dispatch('helper/closeModalLoading')
+            store.dispatch('helper/reloadInnerApp')
+          },
+          secondaryBtnText: t('UU0002')
+        })
+      } else if (isOnGeneratingU3m) {
+        store.dispatch('helper/openModalConfirm', {
+          type: 1,
+          header: t('EE0111'),
+          content: t('EE0112'),
+          secondaryBtnText: t('UU0094')
+        })
+      } else if (isOnExportingExcel) {
+        if (materialIdList.length > 1) {
+          store.dispatch('helper/openModalConfirm', {
+            type: 1,
+            header: t('EE0111'),
+            content: t('EE0112'),
+            primaryBtnText: t('UU0091'),
+            secondaryBtnText: t('UU0098'),
+            closeAfterSecondaryBtnHandler: false,
+            textBtnText: t('UU0002'),
+            primaryBtnHandler: async () => {
+              store.dispatch('helper/openModalLoading')
+              await store.dispatch('assets/deleteMaterial', { materialIdList })
+              store.dispatch('helper/closeModalLoading')
+              store.dispatch('helper/reloadInnerApp')
+            },
+            secondaryBtnHandler: () => {
+              store.dispatch('helper/pushModalBehavior', {
+                component: 'modal-material-no-list',
+                properties: {
+                  header: t('EE0116'),
+                  secondaryBtnText: t('UU0026'),
+                  secondaryBtnHandler: () => {
+                    store.dispatch('helper/closeModalBehavior')
+                  },
+                  materialNoList
+                }
+              })
+            }
+          })
+        } else {
+          store.dispatch('helper/openModalConfirm', {
+            type: 1,
+            header: t('EE0113'),
+            content: t('EE0114', { materialNo: materialIdList[0] }),
+            primaryBtnText: t('UU0091'),
+            secondaryBtnText: t('UU0002'),
+            primaryBtnHandler: async () => {
+              store.dispatch('helper/openModalLoading')
+              await store.dispatch('assets/deleteMaterial', { materialIdList })
+              store.dispatch('helper/closeModalLoading')
+              store.dispatch('helper/reloadInnerApp')
+            },
+          })
+        }
+      }
     }
   }
 

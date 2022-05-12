@@ -32,6 +32,8 @@ export default function useInput ({ context: { emit, slots }, inputType = ref('t
     if (inputType.value === 'number') {
       value = Number(value)
     }
+
+    emit('input')
     emit('update:textValue', value)
   }
 

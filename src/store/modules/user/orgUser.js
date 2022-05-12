@@ -12,49 +12,12 @@ const state = () => ({
   avatar: '',
   lastSignInTime: '',
   email: '',
-  isPending: false,
-  notificationList: []
+  isPending: false
 })
 
 const getters = {
   orgUser: state => state,
   avatar: state => state.avatar,
-  notificationList: state => {
-    return state.notificationList.map(({ isRead, content, contentValue, createDate }) => {
-      const re = new RegExp(/\{\d+\}/, 'g')
-      const matches = [...content.matchAll(re)]
-
-      let replacedContent = content
-
-      if (matches.length !== 0) {
-        for (const match of matches) {
-          const targetIndex = Number(match[0].slice(1, match[0].length - 1))
-          const { text, url } = contentValue[targetIndex]
-          const html = `<a href="${url}" target="_blank" class="text-caption text-assist-blue">${text}</a>`
-          replacedContent = replacedContent.replace(match[0], html)
-        }
-      }
-
-      let formattedDate
-
-      if (dayjs.unix(createDate).isToday()) {
-        const tempCreateDate = dayjs.unix(createDate).format('hh:mm A')
-        formattedDate = `${i18n.global.t('NN0002')} ${i18n.global.t('NN0004')} ${tempCreateDate}`
-      } else if (dayjs.unix(createDate).isYesterday()) {
-        const tempCreateDate = dayjs.unix(createDate).format('hh:mm A')
-        formattedDate = `${i18n.global.t('NN0003')} ${i18n.global.t('NN0004')} ${tempCreateDate}`
-      } else {
-        const tempCreateDate = dayjs.unix(createDate).format('MMM DD hh:mm A')
-        formattedDate = tempCreateDate.slice(0, 6) + ` ${i18n.global.t('NN0004')} ` + tempCreateDate.slice(7)
-      }
-
-      return {
-        isRead,
-        formattedDate,
-        content: replacedContent
-      }
-    })
-  },
   orgUserRole: state => {
     const roles = {}
     Object.keys(ROLE_ID).forEach(roleName => {

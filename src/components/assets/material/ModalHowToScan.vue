@@ -1,80 +1,93 @@
 <template lang="pug">
-div(class="w-245")
-  div(class="border-t border-b border-black-400 px-8 py-5")
-    div(class="flex gap-x-12")
-      div(class="w-100 flex flex-col gap-y-5")
-        h6(class="text-h6 text-primary font-bold text-center") {{ $t("DD0030") }}
-        img(src="@/assets/images/how_to_scan_left.png")
-        i18n-t(keypath="DD0032" tag="p" class="text-body2 text-primary leading-1.6 inline-block")
-          template(#RR0062)
-            qr-code-a4(class="inline-block")
-              template(#activator="{ generatePdf }")
-                span(class="cursor-pointer text-assist-blue underline" @click="generatePdf(materialList)") {{ $t("RR0062") }}
-          template(#RR0061)
-            qr-code-general(class="inline-block")
-              template(#activator="{ generatePdf }")
-                span(class="cursor-pointer text-assist-blue underline" @click="generatePdf(materialList)") {{ $t("RR0061") }}
-        div(class="flex flex-col gap-y-2")
-          p(class="text-body2 text-primary leading-1.6") {{ $t("DD0004") }}
-          p(class="text-body1 text-primary font-bold") {{ uploadMaterialEmail }}
-      p(class="text-h6 text-primary font-bold pt-34") or
-      div(class="w-100 flex flex-col gap-y-5")
-        h6(class="text-h6 text-primary font-bold text-center") {{ $t("DD0031") }}
-        img(src="@/assets/images/how_to_scan_right.png")
-        div(class="flex flex-col gap-y-2")
-          p(class="text-body2 text-primary leading-1.6") {{ $t("DD0004") }}
-          p(class="text-body1 text-primary font-bold") {{ uploadMaterialEmail }}
-          qr-code-backside-general
+modal-behavior(
+  :header="header"
+  :primaryBtnText="primaryBtnText"
+  :secondaryBtnText="secondaryBtnText"
+  @click:primary="primaryHandler"
+  @click:secondary="secondaryHandler"
+)
+  template(#note v-if="materialList.length > 0")
+    div(class="flex items-center text-black-800 w-170")
+      svg-icon(iconName="info_outline" size="14" class="mr-1.5")
+      i18n-t(keypath="DD0032" tag="div" class="text-caption leading-1.6")
+        template(#RR0062)
+          qr-code-a4(class="inline-flex")
             template(#activator="{ generatePdf }")
-              span(class="cursor-pointer text-body2 text-assist-blue underline leading-1.6" @click="generatePdf") {{ $t("UU0007") }}
-  div(class="h-25 flex justify-center items-center")
-    btn(size="md" @click="handleClick") {{ btnText ? btnText : $t("EE0018") }}
+              div(class="inline-flex items-center text-assist-blue cursor-pointer" @click="generatePdf(materialList)") {{ $t("RR0062") }}
+                svg-icon(iconName="open_in_new" size="15")
+        template(#RR0061)
+          qr-code-general(class="inline-flex")
+            template(#activator="{ generatePdf }")
+              div(class="inline-flex items-center text-assist-blue cursor-pointer" @click="generatePdf(materialList)") {{ $t("RR0061") }}
+                svg-icon(iconName="open_in_new" size="15")
+  div(class="w-230")
+    div(class="text-h5 font-bold text-primary text-center mb-2.5") {{ title }}
+    div(class="text-caption text-black-800 text-center leading-1.6 mb-6") {{ description || $t("DD0097") }}
+    div(class="grid grid-cols-3 gap-7.5")
+      div(class="border border-black-400 card-shadow rounded-md")
+        div(class="h-64 flex items-end justify-center")
+          img(src="@/assets/images/upload_step1.png" class="w-60")
+        div(class="flex min-h-20 bg-black-200 rounded-b-md p-4")
+          div(class="mr-2 flex-shrink-0 bg-black-0 text-black-500 rounded-full w-6 h-6 flex items-center justify-center") 1
+          div(class="text-primary text-body1 font-bold leading-1.6") {{ $t("DD0082") }}
+      div(class="border border-black-400 card-shadow rounded-md")
+        div(class="h-64 flex items-end justify-center")
+          img(src="@/assets/images/upload_step2.png" class="w-60")
+        div(class="flex min-h-20 bg-black-200 rounded-b-md p-4")
+          div(class="mr-2 flex-shrink-0 bg-black-0 text-black-500 rounded-full w-6 h-6 flex items-center justify-center") 2
+          div(class="text-primary text-body1 font-bold leading-1.6") {{ $t("DD0083") }}
+      div(class="border border-black-400 card-shadow rounded-md")
+        div(class="h-64 flex items-end justify-center")
+          img(src="@/assets/images/upload_step3.png" class="w-60")
+        div(class="flex min-h-20 bg-black-200 rounded-b-md p-4")
+          div(class="mr-2 flex-shrink-0 bg-black-0 text-black-500 rounded-full w-6 h-6 flex items-center justify-center") 3
+          div(class="text-primary text-body1 font-bold leading-1.6")
+            div {{ $t("DD0084") }}
+            i18n-t(keypath="DD0085" tag="div")
+              template(#RR0008)
+                span(class="text-assist-blue underline cursor-pointer" @click="goToAssets") {{ $t("RR0008") }}
 </template>
 
-<script>
+<script setup>
 import QrCodeA4 from '@/components/qrcode/QrCodeA4.vue'
 import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral.vue'
-import QrCodeBacksideGeneral from '@/components/qrcode/QrCodeBacksideGeneral.vue'
-import { useStore } from 'vuex'
-import { computed } from '@vue/runtime-core'
+import useNavigation from '@/composables/useNavigation'
 
-export default {
-  name: 'ModalHowToScan',
-  components: {
-    QrCodeA4,
-    QrCodeGeneral,
-    QrCodeBacksideGeneral
+defineProps({
+  header: {
+    type: String,
+    required: true
   },
-  props: {
-    btnText: {
-      type: String
-    },
-    clickHandler: {
-      type: Function
-    },
-    materialList: {
-      type: Array,
-      required: true
-    }
+  title: {
+    type: String,
+    required: true
   },
-  setup (props) {
-    const store = useStore()
-    const uploadMaterialEmail = computed(() => {
-      return store.getters['helper/routeLocation'] === 'org'
-        ? store.getters['organization/uploadMaterialEmail']
-        : store.getters['group/uploadMaterialEmail']
-    })
-
-    const handleClick = () => {
-      typeof props.clickHandler === 'function'
-        ? props.clickHandler()
-        : store.dispatch('helper/closeModal')
-    }
-
-    return {
-      handleClick,
-      uploadMaterialEmail
+  description: {
+    type: String
+  },
+  primaryBtnText: {
+    type: String,
+    required: true
+  },
+  secondaryBtnText: {
+    type: String,
+    required: true
+  },
+  primaryHandler: {
+    type: Function,
+    required: true
+  },
+  secondaryHandler: {
+    type: Function,
+    required: true
+  },
+  materialList: {
+    type: Array,
+    default: () => {
+      return []
     }
   }
-}
+})
+
+const { goToAssets } = useNavigation()
 </script>

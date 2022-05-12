@@ -15,7 +15,15 @@ export default {
       method: 'POST',
       data: { orgId, materialIdList }
     }),
+    deleteCheckMaterial: ({ orgId, materialIdList }) => axios('/org/assets/material/delete-check', {
+      method: 'POST',
+      data: { orgId, materialIdList }
+    }),
     exportMaterial: ({ orgId, materialIdList }) => axios('/org/assets/material/export', {
+      method: 'POST',
+      data: { orgId, materialIdList }
+    }),
+    massExportMaterial: ({ orgId, materialIdList }) => axios('/org/assets/material/mass-export', {
       method: 'POST',
       data: { orgId, materialIdList }
     }),
@@ -44,6 +52,14 @@ export default {
         data: { orgId, xlsxFileName, tempUploadId }
       })
     },
+    smartUpload: ({ orgId, fileList }) => axios('/org/assets/material/smart-upload', {
+      method: 'POST',
+      data: { orgId, fileList }
+    }),
+    getSmartUploadUrl: async ({ fileName }) => axios('/org/assets/material/smart-upload/get-upload-url', {
+      method: 'POST',
+      data: { fileName }
+    }),
     getMaterialOptions: ({ orgId }) => axios('/org/assets/material/options', {
       method: 'POST',
       data: { orgId }
@@ -168,7 +184,35 @@ export default {
         method: 'POST',
         data: { orgId, materialId, isAutoRepeat, tempUploadId: id, faceSideCropImgFileName, backSideCropImgFileName }
       })
-    }
+    },
+    getMaterialUploadProgress: ({ orgId, startDate, endDate, status, pagination }) => axios('/org/assets/upload-progress/material/get-list', {
+      method: 'POST',
+      data: { orgId, startDate, endDate, status, pagination }
+    }),
+    cancelMaterialUploadProgress: ({ orgId, materialProgressId }) => axios('/org/assets/upload-progress/material/cancel', {
+      method: 'POST',
+      data: { orgId, materialProgressId }
+    }),
+    getU3mUploadProgress: ({ orgId, startDate, endDate, status, keyword, pagination }) => axios('/org/assets/upload-progress/u3m/get-list', {
+      method: 'POST',
+      data: { orgId, startDate, endDate, status, keyword, pagination }
+    }),
+    cancelU3mUploadProgress: ({ orgId, u3mProgressId }) => axios('/org/assets/upload-progress/u3m/cancel', {
+      method: 'POST',
+      data: { orgId, u3mProgressId }
+    }),
+    getExcelUploadProgress: ({ orgId, startDate, endDate, status, category, keyword, pagination }) => axios('/org/assets/upload-progress/excel/get-list', {
+      method: 'POST',
+      data: { orgId, startDate, endDate, status, category, keyword, pagination }
+    }),
+    cancelExcelUploadProgress: ({ orgId, excelProgressId }) => axios('/org/assets/upload-progress/excel/cancel', {
+      method: 'POST',
+      data: { orgId, excelProgressId }
+    }),
+    getExcelUploadMaterialList: ({ orgId, excelProgressId }) => axios('/org/assets/upload-progress/excel/get-material-list', {
+      method: 'POST',
+      data: { orgId, excelProgressId }
+    })
   },
   group: {
     getMaterialList: ({ groupId, pagination, search = null, filter = null }) => axios('/org/group/assets/material/get-list', {
@@ -183,7 +227,15 @@ export default {
       method: 'POST',
       data: { groupId, materialIdList }
     }),
+    deleteCheckMaterial: ({ groupId, materialIdList }) => axios('/org/group/assets/material/delete-check', {
+      method: 'POST',
+      data: { groupId, materialIdList }
+    }),
     exportMaterial: ({ groupId, materialIdList }) => axios('/org/group/assets/material/export', {
+      method: 'POST',
+      data: { groupId, materialIdList }
+    }),
+    massExportMaterial: ({ groupId, materialIdList }) => axios('/org/group/assets/material/mass-export', {
       method: 'POST',
       data: { groupId, materialIdList }
     }),
@@ -212,6 +264,14 @@ export default {
         data: { groupId, xlsxFileName, tempUploadId }
       })
     },
+    smartUpload: ({ groupId, fileList }) => axios('/org/group/assets/material/smart-upload', {
+      method: 'POST',
+      data: { groupId, fileList }
+    }),
+    getSmartUploadUrl: async ({ fileName }) => axios('/org/group/assets/material/smart-upload/get-upload-url', {
+      method: 'POST',
+      data: { fileName }
+    }),
     getMaterialOptions: ({ groupId }) => axios('/org/group/assets/material/options', {
       method: 'POST',
       data: { groupId }
@@ -336,6 +396,34 @@ export default {
         method: 'POST',
         data: { groupId, materialId, isAutoRepeat, tempUploadId: id, faceSideCropImgFileName, backSideCropImgFileName }
       })
-    }
+    },
+    getMaterialUploadProgress: ({ groupId, startDate, endDate, status, pagination }) => axios('/org/group/assets/upload-progress/material/get-list', {
+      method: 'POST',
+      data: { groupId, startDate, endDate, status, pagination }
+    }),
+    cancelMaterialUploadProgress: ({ groupId, materialProgressId }) => axios('/org/group/assets/upload-progress/material/cancel', {
+      method: 'POST',
+      data: { groupId, materialProgressId }
+    }),
+    getU3mUploadProgress: ({ groupId, startDate, endDate, status, keyword, pagination }) => axios('/org/group/assets/upload-progress/u3m/get-list', {
+      method: 'POST',
+      data: { groupId, startDate, endDate, status, keyword, pagination }
+    }),
+    cancelU3mUploadProgress: ({ groupId, u3mProgressId }) => axios('/org/group/assets/upload-progress/u3m/cancel', {
+      method: 'POST',
+      data: { groupId, u3mProgressId }
+    }),
+    getExcelUploadProgress: ({ groupId, startDate, endDate, status, category, keyword, pagination }) => axios('/org/group/assets/upload-progress/excel/get-list', {
+      method: 'POST',
+      data: { groupId, startDate, endDate, status, category, keyword, pagination }
+    }),
+    cancelExcelUploadProgress: ({ groupId, excelProgressId }) => axios('/org/group/assets/upload-progress/excel/cancel', {
+      method: 'POST',
+      data: { groupId, excelProgressId }
+    }),
+    getExcelUploadMaterialList: ({ groupId, excelProgressId }) => axios('/org/group/assets/upload-progress/excel/get-material-list', {
+      method: 'POST',
+      data: { groupId, excelProgressId }
+    })
   }
 }

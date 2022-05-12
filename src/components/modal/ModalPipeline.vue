@@ -33,7 +33,14 @@ export default {
     ModalConfirm,
     ModalLoading,
     ModalManageMaterialQuota: defineAsyncComponent(() => import('@/components/billings/ModalManageMaterialQuota.vue')),
-    ModalCloneTo: defineAsyncComponent(() => import('@/components/ModalCloneTo.vue'))
+    ModalCloneTo: defineAsyncComponent(() => import('@/components/ModalCloneTo.vue')),
+    ModalBackSideQrcode: defineAsyncComponent(() => import('@/components/assets/material/ModalBackSideQrcode.vue')),
+    ModalSmartUpload: defineAsyncComponent(() => import('@/components/assets/material/ModalSmartUpload.vue')),
+    ModalHowToScan: defineAsyncComponent(() => import('@/components/assets/material/ModalHowToScan.vue')),
+    ModalMassUpload: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUpload.vue')),
+    ModalMassUploadErrorList: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUploadErrorList.vue')),
+    ModalUploadAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalUploadAttachment.vue')),
+    ModalMaterialNoList: defineAsyncComponent(() => import('@/components/ModalMaterialNoList.vue'))
   },
   setup () {
     const store = useStore()

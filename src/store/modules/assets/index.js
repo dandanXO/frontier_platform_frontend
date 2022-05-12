@@ -2,11 +2,13 @@ import assetsApi from '@/apis/assets'
 import { downloadBase64File } from '@/utils/fileOperator'
 import { NODE_LOCATION, DISPLAY_NODE } from '@/utils/constants'
 import Material from '@/store/reuseModules/material.js'
+import progress from './progress'
 
 export default {
   namespaced: true,
   modules: {
-    material: Material
+    material: Material,
+    progress
   },
   state: {
     displayMode: DISPLAY_NODE.LIST,
@@ -297,6 +299,12 @@ export default {
         ? await assetsApi.org.deleteMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
         : await assetsApi.group.deleteMaterial({ groupId: rootGetters['group/groupId'], materialIdList })
     },
+    async deleteCheckMaterial ({ rootGetters }, { materialIdList }) {
+      const { data } = rootGetters['helper/routeLocation'] === 'org'
+        ? await assetsApi.org.deleteCheckMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
+        : await assetsApi.group.deleteCheckMaterial({ groupId: rootGetters['group/groupId'], materialIdList })
+      return data.result
+    },
     async exportMaterial ({ rootGetters }, { materialIdList }) {
       const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.exportMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
@@ -304,6 +312,11 @@ export default {
 
       const { extension, file, fileName } = data?.result
       downloadBase64File(file, extension, fileName)
+    },
+    async massExportMaterial ({ rootGetters }, { materialIdList }) {
+      rootGetters['helper/routeLocation'] === 'org'
+        ? await assetsApi.org.massExportMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
+        : await assetsApi.group.massExportMaterial({ groupId: rootGetters['group/groupId'], materialIdList })
     },
     async cloneCheck ({ rootGetters }, { materialIdList }) {
       const { data } = rootGetters['helper/routeLocation'] === 'org'
@@ -331,6 +344,20 @@ export default {
       const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.batchUpload({ orgId: rootGetters['organization/orgId'], xlsxFile })
         : await assetsApi.group.batchUpload({ groupId: rootGetters['group/groupId'], xlsxFile })
+
+      return data
+    },
+    async smartUpload ({ rootGetters }, { fileList }) {
+      const { data } = rootGetters['helper/routeLocation'] === 'org'
+        ? await assetsApi.org.smartUpload({ orgId: rootGetters['organization/orgId'], fileList })
+        : await assetsApi.group.smartUpload({ groupId: rootGetters['group/groupId'], fileList })
+
+      return data
+    },
+    async getSmartUploadUrl ({ rootGetters }, { fileName }) {
+      const { data } = rootGetters['helper/routeLocation'] === 'org'
+        ? await assetsApi.org.getSmartUploadUrl({ fileName })
+        : await assetsApi.group.getSmartUploadUrl({ fileName })
 
       return data
     }

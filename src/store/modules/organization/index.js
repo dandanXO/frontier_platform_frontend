@@ -1,7 +1,6 @@
 import organizationApi from '@/apis/organization'
 import setVuexState from '@/utils/set-vuex-state'
-import { PLAN_TYPE, PLAN_STATUS } from '@/utils/constants.js'
-import i18n from '@/utils/i18n'
+
 import dayjs from 'dayjs'
 
 const state = () => ({
@@ -24,27 +23,6 @@ const state = () => ({
   memberList: [],
   groupList: [],
   historyList: [],
-  plan: {
-    planType: PLAN_TYPE.BASIC,
-    status: PLAN_STATUS.ACTIVE,
-    renewDate: null,
-    deactivatedDate: null,
-    bufferDeactivatedDate: null,
-    quota: {
-      material: {
-        used: 0,
-        max: ''
-      },
-      u3m: {
-        used: '',
-        max: ''
-      },
-      member: {
-        used: '',
-        max: ''
-      }
-    },
-  },
   paymentDetail: {
     cardInfo: {
       lastFour: '',
@@ -107,33 +85,6 @@ const getters = {
   groupList: state => state.groupList,
   historyList: state => state.historyList,
   createForm: state => state.createForm,
-  plan: state => state.plan,
-  planName: (state, getters) => {
-    const { BASIC, PRO, ENT } = PLAN_TYPE
-    const obj = {
-      [BASIC]: i18n.global.t('RR0159'),
-      [PRO]: i18n.global.t('RR0160'),
-      [ENT]: i18n.global.t('RR0161')
-    }
-    return obj[getters.plan.planType]
-  },
-  planStatus: (state, getters) => {
-    const planStatus = {}
-    Object.keys(PLAN_STATUS).forEach(status => {
-      planStatus[status] = getters.plan.status === PLAN_STATUS[status]
-    })
-
-    return planStatus
-  },
-  planType: (state, getters) => {
-    const planType = getters.plan.planType
-    const { BASIC, PRO, ENT } = PLAN_TYPE
-    return {
-      BASIC: BASIC === planType,
-      PRO: PRO === planType,
-      ENT: ENT === planType
-    }
-  },
   paymentDetail: state => state.paymentDetail,
   noBindingPayment: (state, getters) => !getters.paymentDetail.cardInfo,
   pricing: state => state.pricing

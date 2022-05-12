@@ -80,9 +80,9 @@ export default {
     ]
 
     const currentTab = ref(TAB.ADD)
-    const plan = computed(() => store.getters['organization/plan'])
-    const planName = computed(() => store.getters['organization/planName'])
-    const planType = computed(() => store.getters['organization/planType'])
+    const plan = computed(() => store.getters['polling/plan'])
+    const planName = computed(() => store.getters['polling/planName'])
+    const planType = computed(() => store.getters['polling/planType'])
     const pricing = computed(() => {
       return planType.value.BASIC
         ? store.getters['organization/pricing'].basic

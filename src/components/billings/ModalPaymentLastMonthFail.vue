@@ -26,7 +26,7 @@ export default {
     const { payLastMonthUnbilledInfo } = usePlan()
 
     const orgUserRole = computed(() => store.getters['user/orgUser/orgUserRole'])
-    const bufferDeactivatedDate = computed(() => store.getters['organization/plan'].bufferDeactivatedDate)
+    const bufferDeactivatedDate = computed(() => store.getters['polling/plan'].bufferDeactivatedDate)
 
 
     const closeModal = () => store.dispatch('helper/closeModal')

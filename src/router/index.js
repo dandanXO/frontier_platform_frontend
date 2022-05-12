@@ -20,7 +20,7 @@ const checkOrgIsInactive = (to, from, next) => {
     return next()
   }
 
-  const planStatus = store.getters['organization/planStatus']
+  const planStatus = store.getters['polling/planStatus']
 
   if (planStatus.INACTIVE) {
     return next(`/${to.params.orgNo}/billings/plan`)
@@ -34,6 +34,11 @@ const reuseRoutes = (prefix) => ([
     path: 'management/:tab(about|members|history)',
     name: `${prefix}Management`,
     component: () => import('@/views/innerApp/Management.vue')
+  },
+  {
+    path: 'progress/:tab(material|u3m|excel)',
+    name: `${prefix}Progress`,
+    component: () => import('@/views/innerApp/Progress.vue')
   },
   {
     path: 'assets',
@@ -264,6 +269,11 @@ const routes = [
               closable: false
             })
           }
+
+          if (to.params.orgNo && !from.params.orgNo) {
+            await store.dispatch('polling/getPollingSidebar')
+          }
+
           next()
         }],
         children: [
