@@ -15,7 +15,7 @@ import useNavigation from '@/composables/useNavigation.js'
 const store = useStore()
 const { goToMoodboardDetail } = useNavigation()
 
-const moodboardList = computed(() => store.getters['moodboard/moodboardList'](1))
+const moodboardList = computed(() => [...store.getters['moodboard/moodboardList'](1), ...store.getters['moodboard/moodboardList'](2)])
 
 const openCreateOrEditMoodboard = () => {
   store.dispatch('helper/openModalBehavior', {

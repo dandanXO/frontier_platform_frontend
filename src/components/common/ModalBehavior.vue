@@ -1,17 +1,17 @@
 <template lang="pug">
 div(class="fixed inset-0 z-modal w-screen h-screen bg-black-900/30 flex justify-center items-center")
   div(class="w-screen h-screen" @click="closable && closeModalBehavior()")
-  div(class="absolute w-fit bg-black-0 rounded card-show py-5")
+  div(class="absolute w-min bg-black-0 rounded card-show py-5")
     div(class="px-5 pb-5 flex justify-between border-b border-black-200")
       p(class="text-body2 font-bold text-primary") {{ header }}
       svg-icon(v-if="closable" iconName="close" size="20" class="cursor-pointer text-black-700" @click="closeModalBehavior")
-    div(class="px-5 pt-5 pb-10 max-h-118 overflow-y-auto")
+    div(class="px-5 pt-5 pb-10 w-fit max-h-118 overflow-y-auto")
       slot(name="default")
     div(class="px-5 h-13.5 border-t border-black-200 flex items-end")
       div(class="w-full flex justify-between")
         div(class="flex items-center text-caption leading-1.6")
-          slot(name="note") 
-        div(class="grid grid-flow-col gap-x-2.5")
+          slot(name="note")
+        div(class="flex items-center gap-x-2.5")
           btn(v-if="textBtnText !== ''" :size="btnSize" type="text" :disabled="textBtnDisabled" @click="$emit('click:text')") {{ textBtnText }}
           btn(v-if="secondaryBtnText !== ''" :size="btnSize" type="secondary" :disabled="secondaryBtnDisabled" @click="$emit('click:secondary')") {{ secondaryBtnText }}
           btn(v-if="primaryBtnText !== ''" :size="btnSize" type="primary" :disabled="primaryBtnDisabled" @click="$emit('click:primary')") {{ primaryBtnText }}

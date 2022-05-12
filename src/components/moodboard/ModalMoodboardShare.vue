@@ -89,6 +89,7 @@ const assignedShare = async () => {
   store.dispatch('helper/pushModalLoading')
   await store.dispatch('moodboard/shareMoodboard', { targetList: targetList.value, message: message.value })
   store.dispatch('helper/closeModalLoading')
+  store.dispatch('helper/closeModalBehavior')
   store.commit('helper/PUSH_message', t('RR0157'))
 }
 

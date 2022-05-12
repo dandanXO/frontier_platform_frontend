@@ -27,41 +27,25 @@ div(class="w-full h-full")
           div(class="flex flex-col justify-center items-center")
             svg-icon(iconName="add" size="24" class="text-primary mb-3.5")
             span(class="text-body1 text-primary") {{ $t("FF0003") }}
-        template(v-for="node in nodeList")
-          template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
-            node-item(
-              v-model:selectedList="selectedNodeList"
-              :node="node"
-              :displayName="node.name"
-              :optionList="optionNodeCollection(inSearch)"
-              :isShowLocation="inSearch"
-              @click="(currentNodeKey = node.nodeKey); goTo()"
-              @click:option="$event.func(node)"
+        child-node-item(
+          v-for="node in nodeList"
+          v-model:selectedList="selectedNodeList"
+          :nodeType="node.nodeType"
+          :properties="node"
+          :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.name : node.materialNo"
+          :optionList="optionNode(node.nodeType, inSearch)"
+          :isShowLocation="inSearch"
+          :locationList="node.location"
+          @click:option="$event.func(node)"
+          @click.stop="handleNodeClick(node, goTo)"
+        )
+          template(#cover-overlay v-if="isFirstLayer")
+            svg-icon(
+              :iconName="node.isPublic ? 'public' : 'lock_outline'"
+              size="20"
+              class="absolute bottom-3 left-3 cursor-pointer text-black-500"
+              @click.stop="openModalPublish(node)"
             )
-              template(#cover-overlay v-if="isFirstLayer")
-                svg-icon(
-                  :iconName="node.isPublic ? 'public' : 'lock_outline'"
-                  size="20"
-                  class="absolute bottom-3 left-3 cursor-pointer text-black-500"
-                  @click.stop="openModalPublish(node)"
-                )
-          template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
-            node-item(
-              v-model:selectedList="selectedNodeList"
-              :node="node"
-              :displayName="node.materialNo"
-              :optionList="optionNodeMaterial(inSearch)"
-              :isShowLocation="inSearch"
-              @click:option="$event.func(node)"
-              @click.stop="goToWorkspaceMaterialDetail(node.nodeKey)"
-            )
-              template(#cover-overlay v-if="isFirstLayer")
-                svg-icon(
-                  :iconName="node.isPublic ? 'public' : 'lock_outline'"
-                  size="20"
-                  class="absolute bottom-3 left-3 cursor-pointer text-black-500"
-                  @click.stop="openModalPublish(node)"
-                )
 </template>
 
 <script setup>
@@ -70,7 +54,7 @@ import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
-import NodeItem from '@/components/layout/NodeItem.vue'
+import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
 import { useRoute, useRouter } from 'vue-router'
 import useWorkspace from '@/composables/useWorkspace'
 import useNavigation from '@/composables/useNavigation.js'
@@ -113,46 +97,45 @@ const breadcrumbList = computed(() => store.getters['workspace/collectionBreadcr
 }))
 const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
 const nodeList = computed(() => store.getters['workspace/nodeList'])
-const optionNodeCollection = (inSearch) => {
-  const optionList = [
-    [
-      editCollection
-    ],
-    [
-      duplicateNode,
-      moveNode
-    ],
-    [
-      deleteCollection
+const optionNode = (nodeType, inSearch) => {
+  if (nodeType === NODE_TYPE.COLLECTION) {
+    const optionList = [
+      [
+        editCollection
+      ],
+      [
+        duplicateNode,
+        moveNode
+      ],
+      [
+        deleteCollection
+      ]
     ]
-  ]
 
-  if (isFirstLayer.value && !inSearch) {
-    optionList[1].push(shareNode)
-  }
-
-  return optionList
-}
-const optionNodeMaterial = (inSearch) => {
-  const optionList = [
-    [
-      editMaterial
-    ],
-    [
-      moveNode
-    ],
-    [
-      deleteMaterial
+    if (isFirstLayer.value && !inSearch) {
+      optionList[1].push(shareNode)
+    }
+    return optionList
+  } else {
+    const optionList = [
+      [
+        editMaterial
+      ],
+      [
+        moveNode
+      ],
+      [
+        deleteMaterial
+      ]
     ]
-  ]
 
-  if (isFirstLayer.value && !inSearch) {
-    optionList[1].push(shareNode)
+    if (isFirstLayer.value && !inSearch) {
+      optionList[1].push(shareNode)
+    }
+
+    return optionList
   }
-
-  return optionList
 }
-
 const currentNodeKey = ref(props.nodeKey)
 const selectedNodeList = ref([])
 
@@ -189,7 +172,7 @@ const openModalCollectionDetail = () => {
 }
 
 const addMaterialFromAssetsList = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-assets-list',
     properties: {
       modalTitle: t('FF0016'),
@@ -234,5 +217,14 @@ const openModalPublish = (workspaceNode) => {
       workspaceNode
     }
   })
+}
+
+const handleNodeClick = (node, goTo) => {
+  if (node.nodeType === NODE_TYPE.COLLECTION) {
+    currentNodeKey.value = node.nodeKey
+    goTo()
+  } else {
+    goToWorkspaceMaterialDetail(node.nodeKey)
+  }
 }
 </script>

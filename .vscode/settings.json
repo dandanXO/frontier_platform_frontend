@@ -5,7 +5,7 @@
   "javascript.format.insertSpaceAfterSemicolonInForStatements": true,
   "javascript.format.semicolons": "remove",
   "[vue]": {
-    "editor.defaultFormatter": "johnsoncodehk.volar"
+    "editor.defaultFormatter": "Vue.volar"
   },
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

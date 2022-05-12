@@ -70,7 +70,7 @@ export default {
       childNodeList: [
         {
           nodeId: 0,
-          nodeType: NODE_TYPE.COLLECTION,
+          nodeType: NODE_TYPE.MATERIAL,
           isPicked: false,
           creator: '',
           creatorLogo: '',
@@ -79,11 +79,13 @@ export default {
              * one of
              *  ->
              *    collectionId
+             *    collectionName
              *    coverImgList
              *    itemCounts,
              *  ->
              *    #Material
              */
+            ...Material.state()
           }
         }
       ]
@@ -254,8 +256,9 @@ export default {
       const { data } = await dispatch('callMoodboardApi', { func: 'getMoodboardNodeMaterial', params })
       commit('SET_moodboardNodeMaterial', data.result.moodboardOfferNodeMaterial)
     },
-    async addMaterialToMoodboardNode ({ dispatch }, params) {
-      await dispatch('callMoodboardApi', { func: 'addMaterialToMoodboardNode', params })
+    async addMaterialToMoodboardNode ({ dispatch, commit }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'addMaterialToMoodboardNode', params })
+      commit('SET_moodboardOfferNode', data.result.moodboardOfferNode)
     },
     async createMoodboardNodeCollection ({ dispatch }, params) {
       await dispatch('callMoodboardApi', { func: 'createMoodboardNodeCollection', params })

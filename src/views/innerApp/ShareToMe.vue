@@ -38,35 +38,22 @@ div(class="w-full h-full")
         p {{ $t("RR0148") }} {{ $dayjs.unix(collection.share.shareDate).format("YYYY/MM/DD") }}
     template(#default="{ inSearch, goTo }")
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
-        template(v-for="node in nodeList")
-          template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
-            node-item(
-              v-model:selectedList="selectedNodeList"
-              :node="node"
-              :displayName="node.name"
-              :optionList="optionNode"
-              :isShowLocation="inSearch"
-              @click="setSharingIdAndNodeKey(node.nodeKey, node.share.sharingId); goTo()"
-              @click:option="$event.func(node, node.share.sharingId)"
-            )
-              template(#node-caption v-if="isFirstLayer")
-                div(class="mt-1.5 h-6 flex items-center")
-                  img(:src="node.share.logo" class="aspect-square h-full rounded-full")
-                  p(class="pl-1 font-bold text-caption text-primary") {{ node.share.displayName }}
-          template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
-            node-item(
-              v-model:selectedList="selectedNodeList"
-              :node="node"
-              :displayName="node.materialNo"
-              :optionList="optionNode"
-              :isShowLocation="inSearch"
-              @click:option="$event.func(node, node.share.sharingId)"
-              @click.stop="goToShareToMeMaterial(node.nodeKey, node.share.sharingId)"
-            )
-              template(#node-caption v-if="isFirstLayer")
-                div(class="mt-1.5 h-6 flex items-center")
-                  img(:src="node.share.logo" class="aspect-square h-full rounded-full")
-                  p(class="pl-1 font-bold text-caption text-primary") {{ node.share.displayName }}
+        child-node-item(
+          v-for="node in nodeList"
+          v-model:selectedList="selectedNodeList"
+          :nodeType="node.nodeType"
+          :properties="node"
+          :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.name : node.materialNo"
+          :optionList="optionNode"
+          :isShowLocation="inSearch"
+          :locationList="node.location"
+          @click:option="$event.func(node, node.share.sharingId)"
+          @click.stop="handleNodeClick(node, goTo)"
+        )
+          template(#caption v-if="isFirstLayer")
+            div(class="mt-1.5 h-6 flex items-center")
+              img(:src="node.share.logo" class="aspect-square h-full rounded-full")
+              p(class="pl-1 font-bold text-caption text-primary") {{ node.share.displayName }}
       div(v-else class="flex h-full justify-center items-end")
         p(class="text-body1 text-primary") {{ $t("HH0001") }}
     template(#menu-option="{ option }")
@@ -83,7 +70,7 @@ import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { ref, computed, watch } from 'vue'
-import NodeItem from '@/components/layout/NodeItem.vue'
+import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
 import { useRoute, useRouter } from 'vue-router'
 import useShareToMe from '@/composables/useShareToMe'
 import useNavigation from '@/composables/useNavigation'
@@ -183,6 +170,16 @@ const openModalShareMessage = () => {
     }
   })
 }
+
+const handleNodeClick = (node, goTo) => {
+  if (node.nodeType === NODE_TYPE.COLLECTION) {
+    setSharingIdAndNodeKey(node.nodeKey, node.share.sharingId)
+    goTo()
+  } else {
+    goToShareToMeMaterial(node.nodeKey, node.share.sharingId)
+  }
+}
+
 
 watch(
   () => isFirstLayer.value,

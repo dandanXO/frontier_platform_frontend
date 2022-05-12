@@ -2,11 +2,11 @@ import { SIDE_TYPE, WEIGHT_UNIT, INVENTORY_UNIT, MATERIAL_PRICING_CURRENCY, SOUR
 
 const Material = {
   state: () => ({
-    materialId: null,
+    materialId: 0,
     relationMaterialId: null,
     frontierNo: null,
     relationFrontierNo: null,
-    materialNo: null,
+    materialNo: 'Material No',
     materialSeq: null,
     sourceAssetLocation: SOURCE_ASSET_LOCATION.ORG,
     coverMode: 0,
