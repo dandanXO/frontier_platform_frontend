@@ -29,11 +29,14 @@ const props = defineProps({
   keyField: {
     type: String,
     default: 'path'
+  },
+  initValue: {
+    type: [String, Number]
   }
 })
 const emit = defineEmits(['switch'])
 
-const currentTab = ref(props.tabList[0][props.keyField])
+const currentTab = ref(props.initValue || props.tabList[0][props.keyField])
 
 const switchTab = (tab) => {
   currentTab.value = tab[props.keyField]
