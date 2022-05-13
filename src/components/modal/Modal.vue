@@ -43,7 +43,6 @@ export default {
     ModalPreviewAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalPreviewAttachment.vue')),
     ModalCropImage: defineAsyncComponent(() => import('@/components/ModalCropImage.vue')),
     ModalEditScannedImage: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalEditScannedImage.vue')),
-    ModalAssetsList: defineAsyncComponent(() => import('@/components/assets/material/ModalAssetsList.vue')),
     ModalVerifyNotification: defineAsyncComponent(() => import('@/components/lobby/ModalVerifyNotification.vue')),
     ModalU3mInstruction: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mInstruction.vue')),
     ModalU3mPreview: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mPreview.vue')),

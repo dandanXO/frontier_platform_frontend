@@ -43,7 +43,9 @@ export default {
     ModalMaterialNoList: defineAsyncComponent(() => import('@/components/ModalMaterialNoList.vue')),
     ModalCreateOrEditMoodboard: defineAsyncComponent(() => import('@/components/moodboard/ModalCreateOrEditMoodboard.vue')),
     ModalMoodboardShare: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardShare.vue')),
-    ModalMoodboardShareList: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardShareList.vue'))
+    ModalMoodboardShareList: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardShareList.vue')),
+    ModalAssetsList: defineAsyncComponent(() => import('@/components/assets/material/ModalAssetsList.vue')),
+    ModalCreateOrEditMoodboardCollection: defineAsyncComponent(() => import('@/components/moodboard/ModalCreateOrEditMoodboardCollection.vue'))
   },
   setup () {
     const store = useStore()

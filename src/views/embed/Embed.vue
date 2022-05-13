@@ -35,7 +35,7 @@ div(class="w-315 h-full mx-auto pt-10")
       div(v-if="nodeList.length > 0" class="mx-7.5 grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start")
         child-node-item(
           v-for="node in nodeList"
-          :nodeType="node.nodeType"
+          :node="node"
           :properties="node"
           :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.name : node.materialNo"
           :isSelectable="false"
