@@ -21,8 +21,8 @@ div(class="text-black-700 flex flex-col gap-3.5")
       div(v-else class="w-55 py-2.5")
         div(v-for="(block, index) in options" class="text-black-400")
           list-item(v-for="option in block" class="text-body2 text-primary px-7" @click="handleClick(option)")
-            template(v-if="option.id !== 'create3DMaterial'") {{ option.name }}
-            template(v-else) {{ getOptionName(option) }}
+            template(v-if="option.id === 'create3DMaterial'") {{ material.u3m.status === U3M_STATUS.COMPLETED ? $t('RR0074') : option.name }}
+            template(v-else) {{ option.name }}
           div(class="mx-2 my-1" :class="{ 'border-b': index !== options.length - 1 }")
 </template>
 
@@ -77,12 +77,5 @@ const openOverlay = () => { isShowOverlay.value = true }
 const closeOverlay = () => { isShowOverlay.value = false }
 const handleClick = (option) => {
   option.func && option.func(props.material)
-}
-
-const getOptionName = (option) => {
-  const status = props.material.u3m.status
-  return status === U3M_STATUS.FAIL || status === U3M_STATUS.COMPLETED
-    ? option.excName
-    : option.name
 }
 </script>

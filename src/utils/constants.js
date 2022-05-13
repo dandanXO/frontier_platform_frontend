@@ -81,7 +81,7 @@ export const U3M_STATUS = {
   IN_QUEUE: 1,
   COMPLETED: 2,
   PROCESSING: 3,
-  FAIL: 99
+  UNSUCCESSFUL: 99
 }
 
 export const FILTER_COMPLETE = {
