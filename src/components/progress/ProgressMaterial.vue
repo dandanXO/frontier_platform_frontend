@@ -63,7 +63,7 @@ general-table(
       //- Processing
       div(v-else-if="item.status === UPLOAD_PROGRESS.PROCESSING" class="text-black-500 inline-flex")
         svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
-        p {{ $t("PP0014") }}
+        p {{ $t("PP0013") }}
     div(v-if="prop === 'action'" class="flex justify-end")
       btn(v-if="item.status === UPLOAD_PROGRESS.COMPLETE" type="secondary" size="sm" :disabled="item.isMaterialDeleted" @click="handleViewMaterial(item)") {{ $t("UU0086") }}
       div(v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE || item.status === UPLOAD_PROGRESS.UNSUCCESSFUL")

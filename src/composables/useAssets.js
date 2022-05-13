@@ -90,62 +90,42 @@ export default function useAssets () {
   const create3DMaterial = {
     id: 'create3DMaterial',
     name: t('RR0058'),
-    excName: t('RR0074'),
     func: (v) => {
       const status = v.u3m.status
       store.dispatch('assets/setMaterial', v)
       switch (status) {
-        case U3M_STATUS.INITIAL:
-          if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
-            store.dispatch('helper/openModal', {
-              component: 'modal-u3m-preview',
-              header: t('EE0067')
-            })
-          } else {
-            localStorage.setItem('haveReadU3mInstruction', 'y')
-            store.dispatch('helper/openModal', {
-              component: 'modal-u3m-instruction',
-              properties: {
-                btnText: t('UU0020'),
-                btnClickHandler: () => {
-                  store.dispatch('helper/replaceModal', {
-                    component: 'modal-u3m-preview',
-                    header: t('EE0067')
-                  })
-                }
-              }
-            })
-          }
-          break
         case U3M_STATUS.UNQUALIFIED:
-          store.dispatch('helper/openModal', {
-            component: 'modal-u3m-instruction',
-            properties: {
-              btnText: t('UU0032'),
-              btnClickHandler: () => {
-                store.dispatch('helper/openModalBehavior', {
-                  component: 'modal-how-to-scan',
-                  properties: {
-                    header: t('UU0032'),
-                    title: t('EE0109'),
-                    description: t('EE0110'),
-                    primaryBtnText: t('UU0094'),
-                    secondaryBtnText: t('UU0092'),
-                    primaryHandler: () => {
-                      store.dispatch('helper/closeModalBehavior')
-                    },
-                    secondaryHandler: () => {
-                      goToMaterialUpload()
-                      store.dispatch('helper/closeModalBehavior')
-                    },
-                    materialList: [v]
-                  }
-                })
-              }
+          store.dispatch('helper/openModalConfirm', {
+            type: 0,
+            header: t('EE0124'),
+            content: t('EE0125'),
+            secondaryBtnText: t('UU0031'),
+            textBtnText: t('UU0032'),
+            closeAfterTextBtnHandler: false,
+            textBtnHandler: () => {
+              store.dispatch('helper/openModalBehavior', {
+                component: 'modal-how-to-scan',
+                properties: {
+                  header: t('UU0032'),
+                  title: t('EE0109'),
+                  description: t('EE0110'),
+                  primaryBtnText: t('UU0094'),
+                  secondaryBtnText: t('UU0092'),
+                  primaryHandler: () => {
+                    store.dispatch('helper/closeModalBehavior')
+                  },
+                  secondaryHandler: () => {
+                    goToMaterialUpload()
+                    store.dispatch('helper/closeModalBehavior')
+                  },
+                  materialList: [v]
+                }
+              })
             }
           })
           break
         case U3M_STATUS.PROCESSING:
+        case U3M_STATUS.IN_QUEUE:
           store.dispatch('helper/openModalConfirm', {
             type: 0,
             header: t('RR0162'),
@@ -153,16 +133,31 @@ export default function useAssets () {
             primaryBtnText: t('UU0031')
           })
           break
-        case U3M_STATUS.FAIL:
-          store.dispatch('helper/openModal', {
-            component: 'modal-u3m-create-fail'
-          })
-          break
         default:
-          store.dispatch('helper/openModal', {
-            component: 'modal-u3m-preview',
-            header: t('EE0067')
-          })
+          if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
+            store.dispatch('helper/openModal', {
+              component: 'modal-u3m-preview',
+              header: t('EE0067')
+            })
+          } else {
+            localStorage.setItem('haveReadU3mInstruction', 'y')
+            store.dispatch('helper/openModalBehavior', {
+              component: 'modal-u3m-instruction',
+              properties: {
+                primaryBtnText: t('UU0095'),
+                primaryHandler: () => {
+                  store.dispatch('helper/replaceModal', {
+                    component: 'modal-u3m-preview',
+                    header: t('EE0067')
+                  })
+                },
+                secondaryBtnText: t('UU0026'),
+                secondaryHandler: () => {
+                  store.dispatch('helper/closeModalBehavior')
+                }
+              }
+            })
+          }
       }
     }
   }

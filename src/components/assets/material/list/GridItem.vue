@@ -45,7 +45,9 @@ div(class="w-full")
                 class="px-7"
                 :disabled="option.disabled"
                 @click="handleClick(option)"
-              ) {{ option.name }}
+              )
+                template(v-if="option.id === 'create3DMaterial'") {{ material.u3m.status === U3M_STATUS.COMPLETED ? $t('RR0074') : option.name }}
+                template(v-else) {{ option.name }}
               div(class="mx-2 my-1 border-black-400" :class="{ 'border-b': index !== options.length - 1 }")
   div(class="text-primary font-bold text-body1 line-clamp-1 mt-2") {{ material.materialNo }}
 </template>

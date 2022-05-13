@@ -61,20 +61,16 @@ defineProps({
     type: String
   },
   primaryBtnText: {
-    type: String,
-    required: true
+    type: String
   },
   secondaryBtnText: {
-    type: String,
-    required: true
+    type: String
   },
   primaryHandler: {
-    type: Function,
-    required: true
+    type: Function
   },
   secondaryHandler: {
-    type: Function,
-    required: true
+    type: Function
   },
   materialList: {
     type: Array,
