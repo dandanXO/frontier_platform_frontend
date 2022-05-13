@@ -1,6 +1,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
+import { MOODBOARD_TAB } from '@/utils/constants'
 
 export default function useNavigation () {
   const store = useStore()
@@ -98,7 +99,7 @@ export default function useNavigation () {
   }
 
   const goToMoodboardDetail = (moodboardId) => {
-    router.push(parsePath(`${prefixPath.value}/moodboard/${moodboardId}`))
+    router.push(parsePath(`${prefixPath.value}/moodboard/${moodboardId}?tab=${MOODBOARD_TAB.OFFER}`))
   }
 
   return {

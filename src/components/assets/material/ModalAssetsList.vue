@@ -1,7 +1,15 @@
 <template lang="pug">
-div(class="w-161 h-131 px-8 flex flex-col")
-  div
-    h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{ modalTitle }}
+modal-behavior(
+  :header="modalTitle"
+  :primaryBtnText="actionText"
+  :primaryBtnDisabled="actionButtonDisabled"
+  :secondaryBtnText="$t('UU0002')"
+  @click:primary="innerActionCallback"
+  @click:secondary="$store.dispatch('helper/closeModalBehavior')"
+) 
+  template(#note)
+    component(:is="noteComponent")
+  div(class="w-145 h-89 flex flex-col")
     input-text(
       v-model:textValue="keyword"
       prependIcon="search"
@@ -9,59 +17,52 @@ div(class="w-161 h-131 px-8 flex flex-col")
       :disabled="isInRoot"
       @enter="search"
     )
-  div(class="flex-grow flex flex-col")
-    div(class="relative z-20 flex justify-between items-center py-4")
-      breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event)")
-      div(class="flex items-center")
-        div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
-          svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
-          i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption")
-            template(#number) {{ selectedValue.length }}
-        tooltip(
-          v-if="!isInRoot"
-          placement="bottom-end"
-          :manual="true"
-          :showArrow="false"
-          :offset="[0, 8]"
-        )
-          template(#trigger="{ isActive }")
-            svg-icon(
-              iconName="swap_horiz"
-              size="20"
-              class="transform rotate-90 cursor-pointer text-black-700 hover:text-brand"
-              :class="{ 'text-brand': isActive }"
+    div(class="flex-grow flex flex-col")
+      div(class="relative z-20 flex justify-between items-center py-4")
+        breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event)")
+        div(class="flex items-center")
+          div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
+            svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
+            i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption")
+              template(#number) {{ selectedValue.length }}
+          tooltip(
+            v-if="!isInRoot"
+            placement="bottom-end"
+            :manual="true"
+            :showArrow="false"
+            :offset="[0, 8]"
+          )
+            template(#trigger="{ isActive }")
+              svg-icon(
+                iconName="swap_horiz"
+                size="20"
+                class="transform rotate-90 cursor-pointer text-black-700 hover:text-brand"
+                :class="{ 'text-brand': isActive }"
+              )
+            template(#content)
+              contextual-menu(v-model:selectValue="queryParams.sort" :optionList="sortOptionList" @update:selectValue="sort")
+      div(v-show="isSearching && materialList.length === 0" class="flex-grow flex items-center justify-center")
+        svg-icon(iconName="loading" size="92" class="text-brand")
+      overlay-scrollbar-container(v-if="!isSearching || materialList.length > 0" class="h-64.5 -mx-3" @reachBottom="infiniteScroll")
+        div(class="grid grid-flow-row grid-cols-5 auto-rows-auto gap-5 px-8")
+          template(v-if="isInRoot")
+            div(
+              v-for="item in orgAndGroupList"
+              class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden border-black-400 bg-black-100 text-primary"
+              @click="goTo(item)"
             )
-          template(#content)
-            contextual-menu(v-model:selectValue="queryParams.sort" :optionList="sortOptionList" @update:selectValue="sort")
-    div(v-show="isSearching && materialList.length === 0" class="flex-grow flex items-center justify-center")
-      svg-icon(iconName="loading" size="92" class="text-brand")
-    overlay-scrollbar-container(v-if="!isSearching || materialList.length > 0" class="flex-grow -mx-8" @reachBottom="infiniteScroll")
-      div(class="grid grid-flow-row grid-cols-5 auto-rows-auto gap-5 px-8")
-        template(v-if="isInRoot")
-          div(
-            v-for="item in orgAndGroupList"
-            class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden border-black-400 bg-black-100 text-primary"
-            @click="goTo(item)"
-          )
-            p(class="text-caption text-center font-bold line-clamp-3") {{ item.name }}
-        template(v-else)
-          node-item-for-modal(
-            v-for="material in materialList"
-            class="w-25"
-            v-model:selectedValue="selectedValue"
-            :node="material"
-            :displayName="material.materialNo"
-            :isMultiSelect="isMultiSelect"
-          )
-      div(v-if="isSearching && materialList.length > 0" class="flex justify-center items-center")
-        svg-icon(iconName="loading" size="54" class="text-brand")
-  btn-group(
-    class="h-25"
-    :primaryText="actionText"
-    :primaryButtonDisabled="actionButtonDisabled"
-    @click:primary="innerActionCallback"
-    :secondaryButton="false"
-  )
+              p(class="text-caption text-center font-bold line-clamp-3") {{ item.name }}
+          template(v-else)
+            node-item-for-modal(
+              v-for="material in materialList"
+              class="w-25"
+              v-model:selectedValue="selectedValue"
+              :node="material"
+              :displayName="material.materialNo"
+              :isMultiSelect="isMultiSelect"
+            )
+        div(v-if="isSearching && materialList.length > 0" class="flex justify-center items-center")
+          svg-icon(iconName="loading" size="54" class="text-brand")
 </template>
 
 <script>
@@ -93,6 +94,9 @@ export default {
     isMultiSelect: {
       type: Boolean,
       default: true
+    },
+    noteComponent: {
+      type: Object
     }
   },
   setup (props) {

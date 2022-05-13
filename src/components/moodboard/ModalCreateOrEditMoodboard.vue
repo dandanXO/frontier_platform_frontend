@@ -1,9 +1,9 @@
 <template lang="pug">
 modal-behavior(
-  :header="mode === MODE.CREATE ? $t('QQ0003') : $t('QQ0022')"
-  :primaryBtnText="mode === MODE.CREATE ? $t('UU0020') : $t('UU0018')"
+  :header="mode === CREATE_EDIT.CREATE ? $t('QQ0003') : $t('QQ0022')"
+  :primaryBtnText="mode === CREATE_EDIT.CREATE ? $t('UU0020') : $t('UU0018')"
   :primaryBtnDisabled="primaryBtnDisabled"
-  @click:primary="createMoodboard"
+  @click:primary="primaryHandler"
   :secondaryBtnText="$t('UU0026')"
 )
   template(#note)
@@ -71,20 +71,16 @@ modal-behavior(
 import { reactive, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { FileOperator, bytesToSize, previewFile } from '@/utils/fileOperator'
+import { CREATE_EDIT } from '@/utils/constants.js'
 
 const store = useStore()
 
 const props = defineProps({
   mode: {
     type: Number,
-    default: 1 // MODE.CREATE
+    default: CREATE_EDIT.CREATE
   }
 })
-
-const MODE = {
-  CREATE: 1,
-  EDIT: 2
-}
 
 const formData = reactive({
   moodboardName: '',
@@ -126,7 +122,7 @@ trendBoardFileOperator.on('selfDefinedError', (code) => {
   fileUploadErrorCode.value = code
 })
 const previewTrendBoard = () => {
-  if (props.mode === MODE.CREATE) {
+  if (props.mode === CREATE_EDIT.CREATE) {
     previewFile(formData.trendBoardFile)
   } else {
     formData.isDeleteTrendBoard
@@ -137,7 +133,7 @@ const previewTrendBoard = () => {
 const removeTrendBoard = () => {
   formData.trendBoardFile = null
   uploadTrendBoardName.value = ''
-  if (props.mode === MODE.EDIT) {
+  if (props.mode === CREATE_EDIT.EDIT) {
     formData.isDeleteTrendBoard = true
   }
 }
@@ -156,9 +152,9 @@ const removeAttachment = (index) => formData.attachmentFileList.splice(index, 1)
 
 const removeOriginalAttachment = (attachmentId) => formData.deleteAttachmentIdList.push(attachmentId)
 
-const createMoodboard = async () => {
+const primaryHandler = async () => {
   store.dispatch('helper/openModalLoading')
-  if (props.mode === MODE.CREATE) {
+  if (props.mode === CREATE_EDIT.CREATE) {
     const { moodboardName, description, trendBoardFile, attachmentFileList } = formData
     await store.dispatch('moodboard/createMoodboard', { moodboardName, description, trendBoardFile, attachmentFileList })
   } else {
@@ -168,7 +164,7 @@ const createMoodboard = async () => {
   store.dispatch('helper/reloadInnerApp')
 }
 
-if (props.mode === MODE.EDIT) {
+if (props.mode === CREATE_EDIT.EDIT) {
   const { moodboardId, moodboardName, description, attachmentList, trendBoardUrl, trendBoardFileName } = JSON.parse(JSON.stringify(store.getters['moodboard/moodboard']))
   Object.assign(formData, { moodboardId, moodboardName, description })
   originalTrendBoard.value = trendBoardUrl

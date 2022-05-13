@@ -38,7 +38,7 @@ div(class="w-full h-full relative")
         child-node-item(
           v-for="node in nodeList"
           v-model:selectedList="selectedNodeList"
-          :nodeType="node.nodeType"
+          :node="node"
           :properties="node"
           :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.name : node.materialNo"
           :isSelectable="!isFirstLayer"

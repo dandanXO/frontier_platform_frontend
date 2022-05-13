@@ -50,10 +50,10 @@ export default {
   /**
    * @param {object} params 
    * @param {number} params.moodboardId
-   * @param {number} params.offerId
+   * @param {number} params.nodeId
    * @param {string} params.keyword
    */
-  getMoodboardNode: (type, id, params) => apiWrapper('/moodboard/offer/node/get', type, id, params),
+  getMoodboardNodeCollection: (type, id, params) => apiWrapper('/moodboard/offer/node/collection/get', type, id, params),
 
   /**
    * @param {object} params 

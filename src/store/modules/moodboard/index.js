@@ -60,7 +60,7 @@ export default {
          */
       }
     },
-    moodboardOfferNode: {
+    moodboardOfferNodeCollection: {
       nodeId: 0,
       nodeType: NODE_TYPE.COLLECTION,
       locationList: [{
@@ -110,7 +110,7 @@ export default {
     moodboard: state => state.moodboard,
     moodboardId: state => state.moodboard.moodboardId,
     moodboardShareList: state => state.moodboard.properties?.shareList || [],
-    moodboardOfferNode: state => state.moodboardOfferNode,
+    moodboardOfferNodeCollection: state => state.moodboardOfferNodeCollection,
     moodboardCommentList: state => state.moodboardCommentList,
     moodboardNodeMaterial: state => state.moodboardNodeMaterial
   },
@@ -121,8 +121,8 @@ export default {
     SET_moodboard (state, moodboard) {
       state.moodboard = moodboard
     },
-    SET_moodboardOfferNode (state, moodboardOfferNode) {
-      state.moodboardOfferNode = moodboardOfferNode
+    SET_moodboardOfferNodeCollection (state, moodboardOfferNodeCollection) {
+      state.moodboardOfferNodeCollection = moodboardOfferNodeCollection
     },
     SET_moodboardCommentList (state, moodboardCommentList) {
       state.moodboardCommentList = moodboardCommentList
@@ -200,9 +200,9 @@ export default {
       const { data } = await dispatch('callMoodboardApi', { func: 'deleteMoodboard', params })
       commit('SET_moodboardList', data.result.moodboardList)
     },
-    async getMoodboardNode ({ dispatch, commit }, params) {
-      const { data } = await dispatch('callMoodboardApi', { func: 'getMoodboardNode', params })
-      commit('SET_moodboardOfferNode', data.result.moodboardOfferNode)
+    async getMoodboardNodeCollection ({ dispatch, commit }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'getMoodboardNodeCollection', params })
+      commit('SET_moodboardOfferNodeCollection', data.result.moodboardOfferNodeCollection)
     },
     async deleteMoodboardNode ({ dispatch }, params) {
       await dispatch('callMoodboardApi', { func: 'deleteMoodboardNode', params })
@@ -215,7 +215,7 @@ export default {
     },
     async getPickedMoodboardNode ({ dispatch, commit }, params) {
       const { data } = await dispatch('callMoodboardApi', { func: 'getPickedMoodboardNode', params })
-      commit('SET_moodboardOfferNode', data.result.moodboardOfferNode)
+      commit('SET_moodboardOfferNodeCollection', data.result.moodboardOfferNodeCollection)
     },
     async cloneCheckMoodboardNode ({ dispatch }, params) {
       const { data } = await dispatch('callMoodboardApi', { func: 'cloneCheckMoodboardNode', params })
@@ -258,10 +258,11 @@ export default {
     },
     async addMaterialToMoodboardNode ({ dispatch, commit }, params) {
       const { data } = await dispatch('callMoodboardApi', { func: 'addMaterialToMoodboardNode', params })
-      commit('SET_moodboardOfferNode', data.result.moodboardOfferNode)
+      commit('SET_moodboardOfferNodeCollection', data.result.moodboardOfferNodeCollection)
     },
-    async createMoodboardNodeCollection ({ dispatch }, params) {
-      await dispatch('callMoodboardApi', { func: 'createMoodboardNodeCollection', params })
+    async createMoodboardNodeCollection ({ dispatch, commit }, params) {
+      const { data } = await dispatch('callMoodboardApi', { func: 'createMoodboardNodeCollection', params })
+      commit('SET_moodboardOfferNodeCollection', data.result.moodboardOfferNodeCollection)
     },
     async updateMoodboardNodeCollection ({ dispatch }, params) {
       await dispatch('callMoodboardApi', { func: 'updateMoodboardNodeCollection', params })

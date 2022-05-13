@@ -1,7 +1,7 @@
 <template lang="pug">
 div(@mouseenter="isHover = true" @mouseleave="isHover = false")
   div(class="w-full aspect-square relative")
-    template(v-if="nodeType === NODE_TYPE.COLLECTION")
+    template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
       div(class="grid grid-rows-2 grid-cols-2 grid-flow-col h-full rounded-md overflow-hidden")
         div(class="row-span-2 bg-primary-thin")
           img(v-if="properties.coverImgList[0]" :src="properties.coverImgList[0]" class="w-full h-full object-cover")
@@ -9,7 +9,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
           img(v-if="properties.coverImgList[1]" :src="properties.coverImgList[1]" class="w-full h-full")
         div(class="bg-black-50")
           img(v-if="properties.coverImgList[2]" :src="properties.coverImgList[2]" class="w-full h-full")
-    template(v-if="nodeType === NODE_TYPE.MATERIAL")
+    template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
       div(class="w-full h-full rounded-md overflow-hidden")
         img(:src="properties.coverImg" class="w-full h-full")
     div(v-if="isHover || haveSelectedMoreThanOne" class="absolute top-0 left-0 z-10 w-full h-11")
@@ -17,7 +17,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
       template(v-if="isSelectable")
         input-checkbox(
           v-model:inputValue="innerSelectedList"
-          :value="JSON.stringify(properties)"
+          :value="JSON.stringify(node)"
           size="24"
           class="absolute top-3 left-3 cursor-pointer"
           iconColor="text-black-0"
@@ -25,9 +25,9 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
           @click.stop
         )
     div(v-if="isHover" class="absolute inset-0 z-9 w-full h-full bg-black-900/70 rounded-md flex justify-center items-center")
-      template(v-if="nodeType === NODE_TYPE.COLLECTION")
+      template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
         p(class="text-body1 font-bold leading-1.6 text-black-0") {{ $t("RR0068", { number: properties.itemCounts }) }}
-      template(v-else-if="nodeType === NODE_TYPE.MATERIAL")
+      template(v-else-if="node.nodeType === NODE_TYPE.MATERIAL")
         div(class="text-black-0 px-7.5 py-10 h-full flex flex-col items-center justify-center text-center")
           div(class="text-body2 font-bold line-clamp-2") {{ properties.description }}
           div(class="text-caption line-clamp-2") {{ properties.content }}
@@ -66,11 +66,11 @@ import TooltipLocation from '@/components/TooltipLocation.vue'
 import { ref, computed, toRefs } from 'vue'
 
 const props = defineProps({
-  nodeType: {
-    type: Number,
-    default: NODE_TYPE.COLLECTION
+  node: { // 主要用於選取時能整筆 Node 資料傳入 selectedList 以利後續 MultiMenu 使用。
+    type: Object,
+    required: true
   },
-  properties: {
+  properties: { // 為呈現所需資料，但因為 Node 資料結構不統一，故無法直接存取 Node。
     type: Object,
     required: true
   },
@@ -83,7 +83,8 @@ const props = defineProps({
     default: true
   },
   selectedList: {
-    type: Array
+    type: Array,
+    default: []
   },
   isShowLocation: {
     type: Boolean,
@@ -103,7 +104,7 @@ const emit = defineEmits(['update:selectedList', 'click:option'])
 const isHover = ref(false)
 const nodeHoverInfo = ref(null)
 
-if (props.nodeType === NODE_TYPE.MATERIAL) {
+if (props.node.nodeType === NODE_TYPE.MATERIAL) {
   const { properties } = toRefs(props)
   const { warpYarnCount, weftYarnCount, warpDensity, weftDensity, width, weightUnit, weightOz, weightGsm, weightGy } = properties.value
 

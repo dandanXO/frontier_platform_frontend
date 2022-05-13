@@ -24,7 +24,7 @@ export default {
           onScroll: () => {
             const scrollInfo = instance.scroll()
 
-            if (scrollInfo.ratio.y === 1) {
+            if (scrollInfo.ratio.y >= 0.9) {
               emit('reach-bottom')
             }
           }
