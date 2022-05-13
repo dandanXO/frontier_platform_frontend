@@ -64,7 +64,7 @@ general-table(
           template(#content)
             p(class="text-caption text-primary py-1 px-3 leading-1.6") {{ $t("RR0190") }}
     template(v-if="prop === 'createdTime'")
-      div(v-for="string in $dayjs(item.createDate).format('MM/DD/YYYY-hh:mm:ss A').split('-')" class="leading-1.6") {{ string }}
+      div(v-for="string in $dayjs.unix(item.createDate).format('YYYY/MM/DD-hh:mm:ss A').split('-')" class="leading-1.6") {{ string }}
     table-status-label(v-if="prop === 'statusLabel'" :status="item.status")
     table-status-progress(v-if="prop === 'procedure'" :status="item.status")
       //- Unsuccessful
@@ -130,6 +130,7 @@ general-table(
 
 <script setup>
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive, watch } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
@@ -154,11 +155,15 @@ const PRINT_TYPE = {
 const props = defineProps({
   currentStatus: {
     type: Number
+  },
+  path: {
+    type: String
   }
 })
 
 const { t } = useI18n()
 const store = useStore()
+const route = useRoute()
 const { goToAssets } = useNavigation()
 const { exportExcel } = useAssets()
 
@@ -177,7 +182,7 @@ const queryParams = reactive({
   category: EXCEL_CATEGORY.ALL
 })
 
-const tableData = computed(() => store.getters['assets/progress/progressList'])
+const tableData = computed(() => store.getters['assets/progress/excelProgressList'])
 
 const headers = [
   {
@@ -246,6 +251,7 @@ let timerId
 const getList = async (targetPage = 1, showSpinner = true) => {
   clearTimeout(timerId)
   isLoading.value = showSpinner
+
   const result = await store.dispatch('assets/progress/getExcelUploadProgress', {
     ...queryParams,
     keyword: keyword.value,
@@ -258,7 +264,10 @@ const getList = async (targetPage = 1, showSpinner = true) => {
   })
   pagination.value = result.pagination
   isLoading.value = false
-  setTimer()
+
+  if (props.path === route.params.tab) {
+    setTimer()
+  }
 }
 
 const openModalMaterialNoList = (materialNoList) => {
@@ -338,8 +347,6 @@ const setTimer = () => {
     await getList(pagination.value.currentPage, false)
   }, 5000)
 }
-
-await getList()
 
 onBeforeRouteLeave(() => clearTimeout(timerId))
 onBeforeRouteUpdate(() => clearTimeout(timerId))

@@ -30,6 +30,12 @@ const ProgressMaterial = defineAsyncComponent(() => import('@/components/progres
 const ProgressU3m = defineAsyncComponent(() => import('@/components/progress/ProgressU3m.vue'))
 const ProgressExcel = defineAsyncComponent(() => import('@/components/progress/ProgressExcel.vue'))
 
+const PROGRESS_PATH = {
+  MATERIAL: 'material',
+  U3M: 'u3m',
+  EXCEL: 'excel'
+}
+
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
@@ -64,15 +70,15 @@ const currentMenu = computed(() => {
 const tabList = reactive([
   {
     name: t('PP0002'),
-    path: 'material'
+    path: PROGRESS_PATH.MATERIAL
   },
   {
     name: t('RR0199'),
-    path: 'u3m'
+    path: PROGRESS_PATH.U3M
   },
   {
     name: t('PP0003'),
-    path: 'excel'
+    path: PROGRESS_PATH.EXCEL
   }
 ])
 
