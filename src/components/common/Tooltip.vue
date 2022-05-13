@@ -66,7 +66,7 @@ div(class="w-fit" v-click-away="clickAway")
     aria-describedby="tooltip"
     @mouseenter="manual ? '' : showTooltip()"
     @mouseleave="manual ? '' : hideTooltip()"
-    @click="handleClick"
+    @click.stop="handleClick"
   )
     slot(name="trigger" :isActive="isActive")
   div(ref="tooltip" role="tooltip" class="z-100 rounded bg-black-0" :class="{ 'hidden': !isActive }")
