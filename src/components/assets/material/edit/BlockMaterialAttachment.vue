@@ -21,7 +21,7 @@ div
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import AttachmentItem from '@/components/assets/material/edit/AttachmentItem.vue'
+import AttachmentItem from '@/components/AttachmentItem.vue'
 
 const props = defineProps({
   tempMaterialId: {

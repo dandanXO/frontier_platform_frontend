@@ -166,7 +166,8 @@ export default {
       delete tempParams.trendBoardFile
       delete tempParams.attachmentFileList
 
-      await dispatch('callMoodboardApi', { func: 'createMoodboard', params: tempParams })
+      const { data } = await dispatch('callMoodboardApi', { func: 'createMoodboard', params: tempParams })
+      return data.result
     },
 
     /**
@@ -180,7 +181,7 @@ export default {
      * @param {number[]} params.deleteAttachmentIdList
      * @param {boolean} params.isDeleteTrendBoard
      */
-    async updateMoodboard ({ dispatch }, params) {
+    async updateMoodboard ({ dispatch, commit }, params) {
       const { trendBoardFile, attachmentFileList } = params
 
       let newTrendBoard = null
@@ -194,7 +195,8 @@ export default {
       delete tempParams.trendBoardFile
       delete tempParams.attachmentFileList
 
-      await dispatch('callMoodboardApi', { func: 'updateMoodboard', params: tempParams })
+      const { data } = await dispatch('callMoodboardApi', { func: 'updateMoodboard', params: tempParams })
+      commit('SET_moodboard', data.result.moodboard)
     },
     async deleteMoodboard ({ dispatch, commit }, params) {
       const { data } = await dispatch('callMoodboardApi', { func: 'deleteMoodboard', params })

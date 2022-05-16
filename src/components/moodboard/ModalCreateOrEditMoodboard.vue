@@ -72,8 +72,10 @@ import { reactive, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { FileOperator, bytesToSize, previewFile } from '@/utils/fileOperator'
 import { CREATE_EDIT } from '@/utils/constants.js'
+import useNavigation from '@/composables/useNavigation.js'
 
 const store = useStore()
+const { goToMoodboardDetail } = useNavigation()
 
 const props = defineProps({
   mode: {
@@ -156,12 +158,12 @@ const primaryHandler = async () => {
   store.dispatch('helper/openModalLoading')
   if (props.mode === CREATE_EDIT.CREATE) {
     const { moodboardName, description, trendBoardFile, attachmentFileList } = formData
-    await store.dispatch('moodboard/createMoodboard', { moodboardName, description, trendBoardFile, attachmentFileList })
+    const { moodboard } = await store.dispatch('moodboard/createMoodboard', { moodboardName, description, trendBoardFile, attachmentFileList })
+    goToMoodboardDetail(moodboard.moodboardId)
   } else {
     await store.dispatch('moodboard/updateMoodboard', formData)
   }
   store.dispatch('helper/closeModalLoading')
-  store.dispatch('helper/reloadInnerApp')
 }
 
 if (props.mode === CREATE_EDIT.EDIT) {
