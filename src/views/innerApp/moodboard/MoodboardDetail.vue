@@ -1,10 +1,8 @@
 <template lang="pug">
 div(class="h-full")
-  //- Upper Part
-  div
-    p {{ $route.name }}
-    btn(size="sm" @click="openCreateOrEditMoodboard") Edit
-  //- Lower Part
+  div(class="ml-8 mt-12 mb-16")
+    breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
+  moodboard-detail-upper-block
   template(v-if="moodboard.moodboardType === MOODBOARD_TYPE.DEMANDER")
     moodboard-detail-lower-block-demander
   template(v-else-if="moodboard.moodboardType === MOODBOARD_TYPE.PROVIDER")
@@ -14,11 +12,12 @@ div(class="h-full")
 <script setup>
 import { computed } from '@vue/reactivity'
 import { useStore } from 'vuex'
-import { MOODBOARD_TYPE, CREATE_EDIT } from '@/utils/constants.js'
-import MoodboardDetailLowerBlockProvider from '@/views/innerApp/moodboard/MoodboardDetailLowerBlockProvider.vue'
-import MoodboardDetailLowerBlockDemander from '@/views/innerApp/moodboard/MoodboardDetailLowerBlockDemander.vue'
-
-const store = useStore()
+import { useI18n } from 'vue-i18n'
+import { MOODBOARD_TYPE, MOODBOARD_TAB } from '@/utils/constants.js'
+import MoodboardDetailLowerBlockDemander from '@/components/moodboard/MoodboardDetailLowerBlockDemander.vue'
+import MoodboardDetailLowerBlockProvider from '@/components/moodboard/MoodboardDetailLowerBlockProvider.vue'
+import MoodboardDetailUpperBlock from '@/components/moodboard/MoodboardDetailUpperBlock.vue'
+import useNavigation from '@/composables/useNavigation'
 
 const props = defineProps({
   moodboardId: {
@@ -27,16 +26,23 @@ const props = defineProps({
   }
 })
 
-const moodboard = computed(() => store.getters['moodboard/moodboard'])
+const { t } = useI18n()
+const store = useStore()
+const { prefixPath, parsePath } = useNavigation()
 
-const openCreateOrEditMoodboard = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-create-or-edit-moodboard',
-    properties: {
-      mode: CREATE_EDIT.EDIT
+const moodboard = computed(() => store.getters['moodboard/moodboard'])
+const breadcrumbList = computed(() => {
+  return [
+    {
+      name: t('QQ0001'),
+      path: parsePath(`${prefixPath.value}/moodboard`)
+    },
+    {
+      name: moodboard.value.moodboardName,
+      path: parsePath(`${prefixPath.value}/moodboard/${props.moodboardId}?tab=${MOODBOARD_TAB.OFFER}`)
     }
-  })
-}
+  ]
+})
 
 await store.dispatch('moodboard/getMoodboard', { moodboardId: props.moodboardId })
 </script>
