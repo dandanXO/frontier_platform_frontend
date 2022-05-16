@@ -27,7 +27,7 @@ div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
               svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
           template(#content)
             list
-              list-item(@click.stop="handleDelete(moodboard.moodboardId)") {{ $t("UU0002") }}
+              list-item(@click.stop="handleDelete(moodboard.moodboardId)") {{ $t("RR0063") }}
     p(v-else class="mt-29 text-body1 text-primary text-center") {{ $t("QQ0071") }}
 </template>
 
@@ -73,9 +73,18 @@ const openCreateOrEditMoodboard = () => {
 }
 
 const handleDelete = (moodboardId) => {
-  console.log('handleDelete', moodboardId)
+  store.dispatch('helper/openModalConfirm', {
+    type: 1,
+    header: t('QQ0075'),
+    content: t('QQ0076'),
+    primaryBtnText: t('UU0105'),
+    primaryBtnHandler: () => {
+      store.dispatch('moodboard/deleteMoodboard', { moodboardId })
+      store.commit('helper/PUSH_message', t('QQ0077'))
+    },
+    textBtnText: t('UU0002')
+  })
 }
-
 
 await store.dispatch('moodboard/getMoodboardList')
 </script>
