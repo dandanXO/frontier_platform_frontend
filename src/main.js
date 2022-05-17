@@ -6,6 +6,7 @@ import router from '@/router'
 import store from '@/store'
 import i18n from '@/utils/i18n'
 import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import isToday from 'dayjs/plugin/isToday'
 import isYesterday from 'dayjs/plugin/isYesterday'
 import permission from '@/directives/permission.js'
@@ -23,6 +24,7 @@ for (const path in commonComponents) {
 
 dayjs.extend(isToday)
 dayjs.extend(isYesterday)
+dayjs.extend(relativeTime)
 app.config.globalProperties.$dayjs = dayjs
 
 app.config.errorHandler = (err, vm, info) => {

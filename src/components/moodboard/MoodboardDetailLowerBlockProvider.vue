@@ -8,8 +8,8 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
       div(class="w-6 border-b border-black-400")
       tabs(:tabList="tabList" class="flex-grow" :initValue="currentTab" @switch="switchTab($event)")
       div(class="w-6 border-b border-black-400")
-    div(class="px-7 pt-4 flex-grow flex flex-col")
-      template(v-if="currentTab !== MOODBOARD_TAB.COMMENT")
+    div
+      div(v-if="currentTab === MOODBOARD_TAB.OFFER" class="px-7 pt-4 flex-grow flex flex-col")
         div(class="flex justify-between items-center")
           input-text(
             v-model:textValue="keyword"
@@ -51,6 +51,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
                     svg-icon(size="20" iconName="bookmark" class="text-brand group-hover:text-brand")
                 template(#content)
                   p(class="text-caption text-primary p-2.5 whitespace-nowrap") {{ $t('QQ0081') }}
+      mood-board-comment(v-if="currentTab === MOODBOARD_TAB.COMMENT")
 multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")
 </template>
 
@@ -65,6 +66,7 @@ import { useRoute, useRouter } from 'vue-router'
 import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
 import SvgIcon from '@/components/common/SvgIcon.vue'
 import MultiSelectMenu from '@/components/layout/MultiSelectMenu.vue'
+import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'
 
 const store = useStore()
 const { t } = useI18n()
