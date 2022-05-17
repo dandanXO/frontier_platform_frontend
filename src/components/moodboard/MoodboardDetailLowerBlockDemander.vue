@@ -34,7 +34,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
             div(class="w-6 border-b border-black-400")
             tabs(:tabList="tabList" :initValue="currentTab" class="flex-grow" @switch="switchTab($event)")
             div(class="w-6 border-b border-black-400")
-          template(v-if="currentTab === MOODBOARD_TAB.OFFER")
+          template(v-if="currentTab !== MOODBOARD_TAB.COMMENT")
             div(class="flex justify-between items-center pt-4")
               input-text(
                 v-model:textValue="keyword"
@@ -42,16 +42,19 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
                 class="w-67.5"
                 prependIcon="search"
                 :placeholder="$t('RR0053')"
-                @enter="getMoodboardNodeCollection"
-                @clear="getMoodboardNodeCollection"
+                @enter="search"
+                @clear="search"
               )
               btn(v-if="currentOfferId === 'all'" size="sm" type="secondary" prependIcon="bookmark") {{ $t("QQ0029") }}
-            div(class="pt-3 pb-3.5 flex items-center justify-between")
+            div(class="pt-3 pb-3.5 h-6 box-content flex items-center justify-between")
               breadcrumb(:breadcrumbList="moodboardOfferNodeCollection.locationList" fontSize="text-body2" @click:item="goTo($event.nodeId)")
-              btn-functional(v-if="currentOfferId !== 'all'" size="lg") {{ $t("RR0209") }}
+              btn-functional(v-if="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED" size="lg") {{ $t("RR0209") }}
             div(v-if="isLoading" class="flex-grow flex items-center justify-center")
               svg-icon(iconName="loading" size="92" class="text-brand")
-            div(v-else class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start flex-grow pb-2 overflow-y-auto hide-scrollbar")
+            div(v-else
+              class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start pb-2 overflow-y-auto hide-scrollbar"
+              :class="[currentOfferId === 'all' ? 'h-170' : 'h-156']"
+            )
               child-node-item(
                 v-for="node in moodboardOfferNodeCollection.childNodeList"
                 :node="node"
@@ -60,6 +63,18 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
                 :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.properties.name : node.properties.materialNo"
                 @click.stop="handleNodeClick(node)"
               )
+                template(#caption v-if="node.nodeType === NODE_TYPE.MATERIAL")
+                  tooltip(class="absolute right-0 -bottom-0.5" placement="top")
+                    template(#trigger)
+                      div(class="w-6.5 h-6.5 group cursor-pointer hover:bg-brand/10 rounded-full flex items-center justify-center" @click="togglePick(node)")
+                        svg-icon(
+                          size="20"
+                          :iconName="node.isPicked ? 'bookmark' : 'bookmark_border'"
+                          :class="[node.isPicked ? 'text-brand' : 'text-black-800']"
+                          class="group-hover:text-brand"
+                        )
+                    template(#content)
+                      p(class="text-caption text-primary p-2.5 whitespace-nowrap") {{ node.isPicked ? $t('QQ0081') : $t('QQ0082') }}
 </template>
 
 <script setup>
@@ -125,22 +140,42 @@ const handleNodeClick = (node) => {
   }
 }
 
-const getMoodboardNodeCollection = async () => {
+const togglePick = async (node) => {
+  if (node.isPicked) {
+    store.dispatch('moodboard/unpickMoodboardNode', { nodeId: node.nodeId })
+    if (currentTab.value === MOODBOARD_TAB.PICKED) {
+      const index = moodboardOfferNodeCollection.value.childNodeList.findIndex(cNode => cNode.nodeId === node.nodeId)
+      moodboardOfferNodeCollection.value.childNodeList.splice(index, 1)
+    }
+  } else {
+    store.dispatch('moodboard/pickMoodboardNode', { nodeId: node.nodeId })
+  }
+  node.isPicked = !node.isPicked
+}
+
+const search = async () => {
   isLoading.value = true
-  await store.dispatch('moodboard/getMoodboardNodeCollection', {
-    moodboardId: moodboard.value.moodboardId,
-    nodeId: currentNodeId.value,
-    keyword: keyword.value || null
-  })
+  if (currentTab.value === MOODBOARD_TAB.OFFER) {
+    await store.dispatch('moodboard/getMoodboardNodeCollection', {
+      moodboardId: moodboard.value.moodboardId,
+      nodeId: currentNodeId.value,
+      keyword: keyword.value || null
+    })
+  } else if (currentTab.value === MOODBOARD_TAB.PICKED) {
+    await store.dispatch('moodboard/getPickedMoodboardNode', {
+      moodboardId: moodboard.value.moodboardId,
+      offerId: currentOfferId.value,
+      keyword: keyword.value || null
+    })
+  }
   isLoading.value = false
 }
+
 
 watch(
   [() => currentOfferId.value, () => currentTab.value, () => currentNodeId.value],
   async () => {
-    if (currentTab.value === MOODBOARD_TAB.OFFER) {
-      await getMoodboardNodeCollection()
-    }
+    await search()
   },
   {
     immediate: true

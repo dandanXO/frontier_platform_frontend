@@ -6,10 +6,10 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
   div(class="bg-black-0 border-primary-middle border rounded flex-grow flex flex-col")
     div(class="flex pt-5")
       div(class="w-6 border-b border-black-400")
-      tabs(:tabList="tabList" class="flex-grow" @switch="switchTab($event)")
+      tabs(:tabList="tabList" class="flex-grow" :initValue="currentTab" @switch="switchTab($event)")
       div(class="w-6 border-b border-black-400")
     div(class="px-7 pt-4 flex-grow flex flex-col")
-      template(v-if="currentTab === MOODBOARD_TAB.OFFER")
+      template(v-if="currentTab !== MOODBOARD_TAB.COMMENT")
         div(class="flex justify-between items-center")
           input-text(
             v-model:textValue="keyword"
@@ -17,10 +17,10 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
             class="w-67.5"
             prependIcon="search"
             :placeholder="$t('RR0053')"
-            @enter="getMoodboardNodeCollection"
-            @clear="getMoodboardNodeCollection"
+            @enter="search"
+            @clear="search"
           )
-          btn(size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{ $t("UU0055") }}
+          btn(v-if="currentTab === MOODBOARD_TAB.OFFER" size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{ $t("UU0055") }}
         div(class="py-2 flex justify-between items-center")
           breadcrumb(:breadcrumbList="moodboardOfferNodeCollection.locationList" @click:item="goTo($event.nodeId)" fontSize="text-body2")
           btn-functional(size="lg") {{ $t("RR0209") }}
@@ -30,7 +30,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
         div(v-if="isLoading" class="flex-grow flex items-center justify-center")
           svg-icon(iconName="loading" size="92" class="text-brand")
         div(v-else class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start h-150 py-2 overflow-y-auto hide-scrollbar")
-          div(class="aspect-square border border-black-400 border-dashed rounded-md flex justify-center items-center cursor-pointer" @click="openModalCreateOrEditMoodboardCollection(CREATE_EDIT.CREATE, currentNodeId)")
+          div(v-if="currentTab === MOODBOARD_TAB.OFFER" class="aspect-square border border-black-400 border-dashed rounded-md flex justify-center items-center cursor-pointer" @click="openModalCreateOrEditMoodboardCollection(CREATE_EDIT.CREATE, currentNodeId)")
             div(class="flex flex-col justify-center items-center")
               svg-icon(iconName="add" size="24" class="text-primary mb-3.5")
               span(class="text-body1 text-primary") {{ $t("FF0003") }}
@@ -44,6 +44,13 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
             @click:option="$event.func(node)"
             @click.stop="handleNodeClick(node)"
           )
+            template(#caption v-if="currentTab === MOODBOARD_TAB.PICKED && node.nodeType === NODE_TYPE.MATERIAL")
+              tooltip(class="absolute right-0 -bottom-0.5" placement="top")
+                template(#trigger)
+                  div(class="w-6.5 h-6.5 group hover:bg-brand/10 rounded-full flex items-center justify-center")
+                    svg-icon(size="20" iconName="bookmark" class="text-brand group-hover:text-brand")
+                template(#content)
+                  p(class="text-caption text-primary p-2.5 whitespace-nowrap") {{ $t('QQ0081') }}
 multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")
 </template>
 
@@ -166,22 +173,29 @@ const goTo = (nodeId) => {
   router.push({ name: route.name, query: { tab: currentTab.value, nodeId } })
 }
 
-const getMoodboardNodeCollection = async () => {
+
+const search = async () => {
   isLoading.value = true
-  await store.dispatch('moodboard/getMoodboardNodeCollection', {
-    moodboardId: moodboard.value.moodboardId,
-    nodeId: currentNodeId.value,
-    keyword: keyword.value
-  })
+  if (currentTab.value === MOODBOARD_TAB.OFFER) {
+    await store.dispatch('moodboard/getMoodboardNodeCollection', {
+      moodboardId: moodboard.value.moodboardId,
+      nodeId: currentNodeId.value,
+      keyword: keyword.value || null
+    })
+  } else if (currentTab.value === MOODBOARD_TAB.PICKED) {
+    await store.dispatch('moodboard/getPickedMoodboardNode', {
+      moodboardId: moodboard.value.moodboardId,
+      offerId: moodboard.value.properties.myOfferId,
+      keyword: keyword.value || null
+    })
+  }
   isLoading.value = false
 }
 
 watch(
   [() => currentTab.value, () => currentNodeId.value],
   async () => {
-    if (currentTab.value === MOODBOARD_TAB.OFFER) {
-      await getMoodboardNodeCollection()
-    }
+    await search()
   },
   {
     immediate: true

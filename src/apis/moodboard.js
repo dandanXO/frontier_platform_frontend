@@ -79,7 +79,7 @@ export default {
    * @param {number} params.offerId
    * @param {string} params.keyword
    */
-  getPickedMoodboardNode: (type, id, params) => apiWrapper('/org/moodboard/picked/get', type, id, params),
+  getPickedMoodboardNode: (type, id, params) => apiWrapper('/moodboard/offer/picked/get', type, id, params),
 
   /**
    * @param {object} params
@@ -100,14 +100,14 @@ export default {
    * @param {number} params.moodboardId
    * @param {number[]} params.nodeIdList
    */
-  exportMoodboardNode: (type, id, params) => apiWrapper('/moodboard/picked/export', type, id, params),
+  exportMoodboardNode: (type, id, params) => apiWrapper('/moodboard/offer/picked/export', type, id, params),
 
   /**
    * @param {object} params
    * @param {number} params.moodboardId
    * @param {number[]} params.nodeIdList
    */
-  massExportMoodboardNode: (type, id, params) => apiWrapper('/moodboard/picked/mass-export', type, id, params),
+  massExportMoodboardNode: (type, id, params) => apiWrapper('/moodboard/offer/picked/mass-export', type, id, params),
 
   /**
    * @param {object} params 
