@@ -319,7 +319,7 @@
   "UU0102": "Creating",
   "UU0103": "Great!",
   "UU0104": "Send Invitation",
-  "UU0105": "",
+  "UU0105": "Yes, delete it.",
   "UU0106": "",
   "UU0107": "",
   "UU0108": "",
@@ -1240,5 +1240,14 @@
   "QQ0071": "There is no mood board available",
   "QQ0072": "Delete collection in this moodboard?",
   "QQ0073": "Once delete, the creator would not be able see this collection immediately. Also, deletion only valid in this moodboard.",
-  "QQ0074": ""
+  "QQ0074": "No trend boards available",
+  "QQ0075": "Delate this mood board?",
+  "QQ0076": "All items offered in the moodboard will be permanently removed.",
+  "QQ0077": "Mood board has been deleted",
+  "QQ0078": "Can i request sample card?",
+  "QQ0079": "Can i request sample?",
+  "QQ0080": "How much per yard",
+  "QQ0081": "Picked!",
+  "QQ0082": "Pick this item",
+  "QQ0083": ""
 }

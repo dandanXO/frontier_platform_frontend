@@ -1,5 +1,5 @@
 <template lang="pug">
-div(@mouseenter="isHover = true" @mouseleave="isHover = false")
+div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
   div(class="w-full aspect-square relative")
     template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
       div(class="grid grid-rows-2 grid-cols-2 grid-flow-col h-full rounded-md overflow-hidden")
