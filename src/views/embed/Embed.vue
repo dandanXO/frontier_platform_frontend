@@ -1,5 +1,11 @@
+<style lang="scss">
+#pagination-container {
+  padding-bottom: 152px;
+}
+</style>
+
 <template lang="pug">
-div(class="w-315 h-full mx-auto pt-10")
+div(class="max-w-315 h-full mx-auto pt-10")
   search-table(
     :searchType="SEARCH_TYPE.SHARE"
     :canSelectAll="false"
@@ -27,7 +33,7 @@ div(class="w-315 h-full mx-auto pt-10")
               a(:href="collection.trendBoardUrl" target="_blank" class="absolute right-3.5 bottom-3.5 card-shadow w-7 h-7 rounded-sm bg-black-0 flex items-center justify-center")
                 svg-icon(iconName="search" class="text-black-700" size="24")
             p(v-else class="text-body2 text-black-400") {{ $t("FF0007") }}
-          overlay-scrollbar-container(class="flex-grow h-61.5 max-w-193.5")
+          div(class="flex-grow h-61.5 overflow-y-auto")
             p(v-if="collection.description" class="text-body2 text-primary leading-1.5") {{ collection.description }}
             div(v-else class="w-full h-full flex items-center justify-center")
               p(class="text-body2 text-primary") {{ $t("GG0028") }}
