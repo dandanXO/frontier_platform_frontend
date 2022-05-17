@@ -17,6 +17,8 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
             class="w-67.5"
             prependIcon="search"
             :placeholder="$t('RR0053')"
+            @enter="getMoodboardNodeCollection"
+            @clear="getMoodboardNodeCollection"
           )
           btn(size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{ $t("UU0055") }}
         div(class="py-2 flex justify-between items-center")
@@ -50,9 +52,8 @@ import { computed, ref, shallowRef } from '@vue/reactivity'
 import { watch } from 'vue'
 import { h } from 'vue'
 import { useStore } from 'vuex'
-import { MOODBOARD_TAB, CREATE_EDIT } from '@/utils/constants.js'
+import { MOODBOARD_TAB, CREATE_EDIT, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
-import { NODE_TYPE } from '@/utils/constants.js'
 import { useRoute, useRouter } from 'vue-router'
 import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
 import SvgIcon from '@/components/common/SvgIcon.vue'
@@ -165,17 +166,21 @@ const goTo = (nodeId) => {
   router.push({ name: route.name, query: { tab: currentTab.value, nodeId } })
 }
 
+const getMoodboardNodeCollection = async () => {
+  isLoading.value = true
+  await store.dispatch('moodboard/getMoodboardNodeCollection', {
+    moodboardId: moodboard.value.moodboardId,
+    nodeId: currentNodeId.value,
+    keyword: keyword.value
+  })
+  isLoading.value = false
+}
+
 watch(
   [() => currentTab.value, () => currentNodeId.value],
   async () => {
     if (currentTab.value === MOODBOARD_TAB.OFFER) {
-      isLoading.value = true
-      await store.dispatch('moodboard/getMoodboardNodeCollection', {
-        moodboardId: moodboard.value.moodboardId,
-        nodeId: currentNodeId.value,
-        keyword: keyword.value
-      })
-      isLoading.value = false
+      await getMoodboardNodeCollection()
     }
   },
   {

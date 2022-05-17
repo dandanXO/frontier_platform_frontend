@@ -110,6 +110,7 @@ export default {
     moodboard: state => state.moodboard,
     moodboardId: state => state.moodboard.moodboardId,
     moodboardShareList: state => state.moodboard.properties?.shareList || [],
+    moodboardOfferList: state => state.moodboard.properties?.offerList || [],
     moodboardOfferNodeCollection: state => state.moodboardOfferNodeCollection,
     moodboardCommentList: state => state.moodboardCommentList,
     moodboardNodeMaterial: state => state.moodboardNodeMaterial
