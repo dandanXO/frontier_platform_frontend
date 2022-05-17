@@ -51,7 +51,11 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
                     svg-icon(size="20" iconName="bookmark" class="text-brand group-hover:text-brand")
                 template(#content)
                   p(class="text-caption text-primary p-2.5 whitespace-nowrap") {{ $t('QQ0081') }}
-      mood-board-comment(v-if="currentTab === MOODBOARD_TAB.COMMENT")
+      mood-board-comment(
+        v-if="currentTab === MOODBOARD_TAB.COMMENT"
+        :moodboardId="moodboard.moodboardId"
+        :offerId="moodboard.properties.myOfferId"  
+      )
 multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")
 </template>
 

@@ -29,12 +29,12 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
         h4(class="text-h4 text-primary pb-6") {{ $t('QQ0018') }}
         p(class="text-body2 text-black-700") {{ $t('QQ0019') }}
       template(v-else)
-        div(class="px-6 h-full flex flex-col")
-          div(v-if="currentOfferId !== 'all'" class="flex pt-5 -mx-6")
+        div(class="h-full flex flex-col")
+          div(v-if="currentOfferId !== 'all'" class="flex px-6 pt-5 -mx-6")
             div(class="w-6 border-b border-black-400")
             tabs(:tabList="tabList" :initValue="currentTab" class="flex-grow" @switch="switchTab($event)")
             div(class="w-6 border-b border-black-400")
-          template(v-if="currentTab !== MOODBOARD_TAB.COMMENT")
+          div(v-if="currentTab !== MOODBOARD_TAB.COMMENT" class="px-6")
             div(class="flex justify-between items-center pt-4")
               input-text(
                 v-model:textValue="keyword"
@@ -75,6 +75,11 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
                         )
                     template(#content)
                       p(class="text-caption text-primary p-2.5 whitespace-nowrap") {{ node.isPicked ? $t('QQ0081') : $t('QQ0082') }}
+          mood-board-comment(
+            v-if="currentTab === MOODBOARD_TAB.COMMENT"
+            :moodboardId="moodboard.moodboardId"
+            :offerId="Number(currentOfferId)"
+          )
 </template>
 
 <script setup>
@@ -85,6 +90,7 @@ import { MOODBOARD_TAB, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
+import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'
 
 const store = useStore()
 const route = useRoute()
