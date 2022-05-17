@@ -45,6 +45,8 @@ const needPollingApiList = [
   '/org/plan/purchase/material',
   '/org/plan/cancel/material',
   '/org/plan/purchase/u3m',
+  '/org/plan/deactivate',
+  '/org/plan/activate',
   '/org/share-to-me/clone',
   '/org/group/share-to-me/clone',
   '/share/get-received/clone',
