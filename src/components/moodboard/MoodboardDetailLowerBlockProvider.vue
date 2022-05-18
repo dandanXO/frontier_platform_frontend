@@ -22,7 +22,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
         btn(v-if="currentTab === MOODBOARD_TAB.OFFER" size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{ $t("UU0055") }}
       div(class="py-2 flex justify-between items-center")
         breadcrumb(:breadcrumbList="moodboardOfferNodeCollection.locationList" @click:item="goTo($event.nodeId)" fontSize="text-body2")
-        btn-functional(size="lg") {{ $t("RR0209") }}
+        btn-functional(size="lg" @click="selectAll") {{ $t("RR0209") }}
       div(class="bg-black-50 h-10 flex items-center gap-x-3 pl-4")
         svg-icon(iconName="public" size="20" class="text-black-600")
         p(class="text-caption text-black-800") {{ $t('QQ0053') }}
@@ -58,22 +58,32 @@ multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="s
 </template>
 
 <script setup>
-import { h, watch, computed, ref, shallowRef } from 'vue'
+import { h, computed, shallowRef } from 'vue'
 import { useStore } from 'vuex'
 import { MOODBOARD_TAB, CREATE_EDIT, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
-import { useRoute, useRouter } from 'vue-router'
 import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
 import SvgIcon from '@/components/common/SvgIcon.vue'
 import MultiSelectMenu from '@/components/layout/MultiSelectMenu.vue'
 import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'
+import useMoodboardDetail from '@/composables/useMoodboardDetail.js'
 
 const store = useStore()
 const { t } = useI18n()
-const route = useRoute()
-const router = useRouter()
 
 const moodboard = computed(() => store.getters['moodboard/moodboard'])
+const {
+  keyword,
+  currentTab,
+  currentNodeId,
+  isLoading,
+  selectedNodeList,
+  selectAll,
+  switchTab,
+  goTo,
+  search,
+  handleNodeClick
+} = useMoodboardDetail({ defaultOfferId: moodboard.value.properties.myOfferId, defaultNodeId: moodboard.value.properties.myRootNodeId })
 const moodboardOfferNodeCollection = computed(() => store.getters['moodboard/moodboardOfferNodeCollection'])
 
 const tabList = computed(() => [
@@ -127,17 +137,6 @@ const openModalCreateOrEditMoodboardCollection = (mode, nodeId) => {
   })
 }
 
-const switchTab = (tab) => {
-  router.push({ name: route.name, query: { tab: tab.path } })
-}
-
-const keyword = ref('')
-const currentTab = computed(() => route.query.tab)
-const currentNodeId = computed(() => Number(route.query.nodeId) || moodboard.value.properties.myRootNodeId)
-const currentOfferId = computed(() => Number(route.query.offerId) || moodboard.value.properties.myOfferId)
-const selectedNodeList = ref([])
-const isLoading = ref(false)
-
 const deleteMoodboardNode = (nodeType, nodeIdList) => {
   store.dispatch('helper/openModalConfirm', {
     type: 1,
@@ -172,54 +171,4 @@ const optionNode = (nodeType) => {
 const optionMultiSelect = [
   { name: t('UU0013'), func: (nodeList) => deleteMoodboardNode(NODE_TYPE.MATERIAL, nodeList.map(({ nodeId }) => nodeId)) }
 ]
-
-const handleNodeClick = (node) => {
-  if (node.nodeType === NODE_TYPE.COLLECTION) {
-    goTo(node.nodeId)
-  } else {
-    // go to detail page
-  }
-}
-
-const goTo = (nodeId) => {
-  keyword.value = ''
-  router.push({ name: route.name, query: { tab: currentTab.value, nodeId } })
-}
-
-
-const search = async () => {
-  isLoading.value = true
-  const moodboardId = moodboard.value.moodboardId
-  const offerId = currentOfferId.value
-  if (currentTab.value === MOODBOARD_TAB.OFFER) {
-    await store.dispatch('moodboard/getMoodboardNodeCollection', {
-      moodboardId,
-      nodeId: currentNodeId.value,
-      keyword: keyword.value || null
-    })
-  } else if (currentTab.value === MOODBOARD_TAB.PICKED) {
-    await store.dispatch('moodboard/getPickedMoodboardNode', {
-      moodboardId,
-      offerId,
-      keyword: keyword.value || null
-    })
-  } else if (currentTab.value === MOODBOARD_TAB.COMMENT) {
-    await store.dispatch('moodboard/getMoodboardComment', {
-      moodboardId,
-      offerId
-    })
-  }
-  isLoading.value = false
-}
-
-watch(
-  [() => currentTab.value, () => currentNodeId.value],
-  async () => {
-    await search()
-  },
-  {
-    immediate: true
-  }
-)
-
 </script>

@@ -36,13 +36,11 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed } from '@vue/reactivity'
-import { useRoute } from 'vue-router'
 import useNavigation from '@/composables/useNavigation.js'
-import { MOODBOARD_TYPE } from '@/utils/constants'
+import { MOODBOARD_TYPE, CREATE_EDIT } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
-const route = useRoute()
 const { goToMoodboardDetail } = useNavigation()
 
 const tabList = [
@@ -67,7 +65,7 @@ const openCreateOrEditMoodboard = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-create-or-edit-moodboard',
     properties: {
-      mode: 1
+      mode: CREATE_EDIT.CREATE
     }
   })
 }

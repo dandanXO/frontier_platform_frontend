@@ -50,7 +50,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
               btn(v-if="currentOfferId === 'all'" size="sm" type="secondary" prependIcon="bookmark") {{ $t("QQ0029") }}
             div(class="pt-3 pb-3.5 h-6 box-content flex items-center justify-between")
               breadcrumb(:breadcrumbList="moodboardOfferNodeCollection.locationList" fontSize="text-body2" @click:item="goTo($event.nodeId)")
-              btn-functional(v-if="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED" size="lg") {{ $t("RR0209") }}
+              btn-functional(v-if="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED" size="lg" @click="selectAll") {{ $t("RR0209") }}
             div(v-if="isLoading" class="flex-grow flex items-center justify-center")
               svg-icon(iconName="loading" size="92" class="text-brand")
             div(v-else
@@ -59,10 +59,13 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
             )
               child-node-item(
                 v-for="node in moodboardOfferNodeCollection.childNodeList"
+                v-model:selectedList="selectedNodeList"
                 :node="node"
                 :properties="node.properties"
-                :isSelectable="false"
+                :isSelectable="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED"
                 :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.properties.name : node.properties.materialNo"
+                :optionList="optionNode(node)"
+                @click:option="$event.func(node)"
                 @click.stop="handleNodeClick(node)"
               )
                 template(#caption v-if="node.nodeType === NODE_TYPE.MATERIAL")
@@ -81,21 +84,34 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
             div(v-if="isLoading" class="flex-grow flex items-center justify-center")
               svg-icon(iconName="loading" size="92" class="text-brand")
             mood-board-comment(v-else :moodboardId="moodboard.moodboardId" :offerId="Number(currentOfferId)")
+multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { MOODBOARD_TAB, NODE_TYPE } from '@/utils/constants.js'
+import { MOODBOARD_TAB, NODE_TYPE, U3M_STATUS } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
-import { useRoute, useRouter } from 'vue-router'
 import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
 import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'
+import MultiSelectMenu from '@/components/layout/MultiSelectMenu.vue'
+import useMoodboardDetail from '@/composables/useMoodboardDetail.js'
 
 const store = useStore()
-const route = useRoute()
-const router = useRouter()
 const { t } = useI18n()
+const {
+  keyword,
+  currentTab,
+  currentOfferId,
+  isLoading,
+  selectedNodeList,
+  selectAll,
+  switchOffer,
+  switchTab,
+  goTo,
+  search,
+  handleNodeClick
+} = useMoodboardDetail({ defaultOfferId: 'all', defaultNodeId: null })
 
 const openModalMoodboardShareList = () => {
   store.dispatch('helper/openModalBehavior', {
@@ -107,12 +123,6 @@ const moodboard = computed(() => store.getters['moodboard/moodboard'])
 const moodboardOfferList = computed(() => store.getters['moodboard/moodboardOfferList'])
 const totalOfferItemCounts = computed(() => moodboardOfferList.value.reduce((prev, current) => prev + current.itemCounts, 0))
 const moodboardOfferNodeCollection = computed(() => store.getters['moodboard/moodboardOfferNodeCollection'])
-
-const keyword = ref('')
-const currentTab = computed(() => route.query.tab || MOODBOARD_TAB.OFFER)
-const currentOfferId = computed(() => Number(route.query.offerId) || 'all')
-const currentNodeId = computed(() => Number(route.query.nodeId) || null)
-const isLoading = ref(false)
 
 const tabList = computed(() => {
   const currentOffer = moodboardOfferList.value.find(offer => offer.offerId === Number(currentOfferId.value))
@@ -133,31 +143,76 @@ const tabList = computed(() => {
   ]
 })
 
-const switchOffer = (offerId, nodeId) => {
-  keyword.value = ''
-  const query = offerId === 'all'
-    ? { tab: MOODBOARD_TAB.OFFER, offerId: 'all', nodeId: null }
-    : { tab: MOODBOARD_TAB.OFFER, offerId, nodeId }
-  router.push({ name: route.name, query })
+const cloneMoodboardNode = (nodeList) => {
+  const isContainCollection = nodeList.some(node => node.nodeType === NODE_TYPE.COLLECTION)
+  const msg = isContainCollection ? t('II0009') : t('II0008')
+  const nodeIdList = nodeList.map(({ nodeId }) => nodeId)
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-clone-to',
+    properties: {
+      checkHandler: async () => {
+        return store.dispatch('moodboard/cloneCheckMoodboardNode', { nodeIdList })
+      },
+      cloneHandler: async (targetLocationList, optional) => {
+        await store.dispatch('moodboard/cloneMoodboardNode', { nodeIdList, targetLocationList, optional })
+        store.commit('helper/PUSH_message', msg)
+      }
+    }
+  })
 }
 
-const switchTab = (tab) => {
-  keyword.value = ''
-  router.push({ name: route.name, query: { tab: tab.path, offerId: currentOfferId.value, nodeId: moodboardOfferNodeCollection.value.locationList[0].nodeId } })
-}
-
-const goTo = (nodeId) => {
-  keyword.value = ''
-  router.push({ name: route.name, query: { tab: currentTab.value, offerId: currentOfferId.value, nodeId } })
-}
-
-const handleNodeClick = (node) => {
+const optionNode = (node) => {
   if (node.nodeType === NODE_TYPE.COLLECTION) {
-    goTo(node.nodeId)
+    return [
+      [
+        { name: t('UU0015'), func: (n) => cloneMoodboardNode([n]) },
+      ]
+    ]
   } else {
-    // go to detail page
+    return [
+      [
+        { name: t('UU0015'), func: (n) => cloneMoodboardNode([n]) },
+        {
+          name: t('RR0059'),
+          disabled: node.properties.u3m.status !== U3M_STATUS.COMPLETED,
+          func: (n) => {
+            store.dispatch('helper/openModal', {
+              component: 'modal-u3m-select-file-format',
+              properties: { materialList: [n.properties] }
+            })
+          }
+        }
+      ]
+    ]
   }
 }
+
+const optionMultiSelect = [
+  {
+    name: t('RR0060'),
+    func: async (nodeList) => {
+      const nodeIdList = nodeList.map(({ nodeId }) => nodeId)
+      if (nodeIdList.length >= 100) {
+        await store.dispatch('moodboard/massExportMoodboardNode', { moodboardId: moodboard.value.moodboardId, nodeIdList })
+        store.dispatch('helper/openModalConfirm', {
+          type: 2,
+          header: t('PP0030'),
+          content: t('PP0031'),
+          primaryBtnText: t('UU0031'),
+          secondaryBtnText: t('UU0090'),
+          secondaryBtnHandler: () => {
+            goToProgress('excel')
+            store.dispatch('helper/closeModalBehavior')
+          }
+        })
+      } else {
+        store.dispatch('helper/openModalLoading')
+        await store.dispatch('moodboard/exportMoodboardNode', { moodboardId: moodboard.value.moodboardId, nodeIdList })
+        store.dispatch('helper/closeModalLoading')
+      }
+    }
+  }
+]
 
 const togglePick = async (node) => {
   if (node.isPicked) {
@@ -171,40 +226,4 @@ const togglePick = async (node) => {
   }
   node.isPicked = !node.isPicked
 }
-
-const search = async () => {
-  isLoading.value = true
-  const moodboardId = moodboard.value.moodboardId
-  const offerId = currentOfferId.value
-  if (currentTab.value === MOODBOARD_TAB.OFFER) {
-    await store.dispatch('moodboard/getMoodboardNodeCollection', {
-      moodboardId,
-      nodeId: currentNodeId.value,
-      keyword: keyword.value || null
-    })
-  } else if (currentTab.value === MOODBOARD_TAB.PICKED) {
-    await store.dispatch('moodboard/getPickedMoodboardNode', {
-      moodboardId,
-      offerId,
-      keyword: keyword.value || null
-    })
-  } else if (currentTab.value === MOODBOARD_TAB.COMMENT) {
-    await store.dispatch('moodboard/getMoodboardComment', {
-      moodboardId,
-      offerId
-    })
-  }
-  isLoading.value = false
-}
-
-
-watch(
-  [() => currentOfferId.value, () => currentTab.value, () => currentNodeId.value],
-  async () => {
-    await search()
-  },
-  {
-    immediate: true
-  }
-)
 </script>
