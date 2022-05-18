@@ -7,7 +7,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
     div(class="w-52 shrink-0 h-full")
       btn(size="md" prependIcon="add" class="w-full" @click="openModalMoodboardShareList") {{ $t('UU0096') }}
       div(
-        class="w-full h-23 rounded flex flex-col justify-center pl-6 mt-6 hover:bg-black-200"
+        class="w-full h-23 rounded flex flex-col justify-center pl-6 mt-6 hover:bg-black-200 cursor-pointer"
         :class="[{ 'bg-black-400': currentOfferId === 'all' }]"
         @click="switchOffer('all', null)"
       )
@@ -16,11 +16,13 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
       div(class="border-t border-b border-primary-middle py-2 max-h-156 grid gap-y-2 overflow-y-scroll")
         div(
           v-for="offer in moodboardOfferList"
-          class="h-20 flex items-center gap-x-3 pl-3 rounded hover:bg-black-200"
+          class="h-20 flex items-center gap-x-3 pl-3 rounded hover:bg-black-200 cursor-pointer"
           :class="[{ 'bg-black-400': Number(currentOfferId) === offer.offerId }]"
           @click="switchOffer(offer.offerId, offer.rootNodeId)"
         )
-          img(:src="offer.logo" class="w-8 h-8 rounded-full")
+          div(class="relative")
+            img(:src="offer.logo" class="w-8 h-8 rounded-full")
+            div(v-if="offer.hasNewUpdate" class="absolute w-3 h-3 bg-brand border border-black-0 rounded-full top-0 -right-0.5")
           div
             p(class="text-body1 font-bold text-primary leading-1.6") {{ offer.name }}
             p(class="text-caption text-black-800 leading-1.6") {{ $t('RR0068', { number: offer.itemCounts }) }}・{{ offer.lastUpdateTime }}
@@ -83,8 +85,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
 </template>
 
 <script setup>
-import { computed, ref } from '@vue/reactivity'
-import { watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { MOODBOARD_TAB, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
@@ -96,12 +97,6 @@ const store = useStore()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
-
-const tabList = [
-  { name: t('QQ0051'), path: MOODBOARD_TAB.OFFER },
-  { name: t('QQ0052'), path: MOODBOARD_TAB.PICKED },
-  { name: t('QQ0031'), path: MOODBOARD_TAB.COMMENT }
-]
 
 const openModalMoodboardShareList = () => {
   store.dispatch('helper/openModalBehavior', {
@@ -119,6 +114,25 @@ const currentTab = computed(() => route.query.tab || MOODBOARD_TAB.OFFER)
 const currentOfferId = computed(() => route.query.offerId || 'all')
 const currentNodeId = computed(() => route.query.nodeId || null)
 const isLoading = ref(false)
+
+const tabList = computed(() => {
+  const currentOffer = moodboardOfferList.value.filter(offer => offer.offerId === Number(currentOfferId.value))
+  return [
+    {
+      name: t('QQ0051'),
+      path: MOODBOARD_TAB.OFFER
+    },
+    {
+      name: t('QQ0052'),
+      path: MOODBOARD_TAB.PICKED
+    },
+    {
+      name: t('QQ0031'),
+      path: MOODBOARD_TAB.COMMENT,
+      showNotification: currentOffer.length > 0 ? currentOffer[0].hasNewComment : false
+    }
+  ]
+})
 
 const switchOffer = (offerId, nodeId) => {
   keyword.value = ''

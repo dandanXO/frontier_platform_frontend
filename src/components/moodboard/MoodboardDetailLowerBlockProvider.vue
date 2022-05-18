@@ -60,9 +60,7 @@ multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="s
 </template>
 
 <script setup>
-import { computed, ref, shallowRef } from '@vue/reactivity'
-import { watch } from 'vue'
-import { h } from 'vue'
+import { h, watch, computed, ref, shallowRef } from 'vue'
 import { useStore } from 'vuex'
 import { MOODBOARD_TAB, CREATE_EDIT, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
@@ -77,14 +75,24 @@ const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
-const tabList = [
-  { name: t('QQ0051'), path: MOODBOARD_TAB.OFFER },
-  { name: t('QQ0052'), path: MOODBOARD_TAB.PICKED },
-  { name: t('QQ0031'), path: MOODBOARD_TAB.COMMENT }
-]
-
 const moodboard = computed(() => store.getters['moodboard/moodboard'])
 const moodboardOfferNodeCollection = computed(() => store.getters['moodboard/moodboardOfferNodeCollection'])
+
+const tabList = computed(() => [
+  {
+    name: t('QQ0051'),
+    path: MOODBOARD_TAB.OFFER
+  },
+  {
+    name: t('QQ0052'),
+    path: MOODBOARD_TAB.PICKED
+  },
+  {
+    name: t('QQ0031'),
+    path: MOODBOARD_TAB.COMMENT,
+    showNotification: moodboard.value.properties.hasNewComment
+  }
+])
 
 const addMaterialFromAssetsList = () => {
   store.dispatch('helper/openModalBehavior', {
