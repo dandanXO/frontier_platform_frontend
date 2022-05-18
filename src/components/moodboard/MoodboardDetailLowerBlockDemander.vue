@@ -34,9 +34,9 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
         div(class="h-full flex flex-col")
           div(v-if="currentOfferId !== 'all'" class="flex px-6 pt-5 -mx-6")
             div(class="w-6 border-b border-black-400")
-            tabs(:tabList="tabList" :initValue="currentTab" class="flex-grow" @switch="switchTab($event)")
+            tabs(:tabList="tabList" :initValue="currentTab" :key="currentOfferId" class="flex-grow" @switch="switchTab($event)")
             div(class="w-6 border-b border-black-400")
-          div(v-if="currentTab !== MOODBOARD_TAB.COMMENT" class="px-6")
+          div(v-if="currentTab !== MOODBOARD_TAB.COMMENT" class="px-6 flex-grow flex flex-col")
             div(class="flex justify-between items-center pt-4")
               input-text(
                 v-model:textValue="keyword"
@@ -77,11 +77,10 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
                         )
                     template(#content)
                       p(class="text-caption text-primary p-2.5 whitespace-nowrap") {{ node.isPicked ? $t('QQ0081') : $t('QQ0082') }}
-          mood-board-comment(
-            v-if="currentTab === MOODBOARD_TAB.COMMENT"
-            :moodboardId="moodboard.moodboardId"
-            :offerId="Number(currentOfferId)"
-          )
+          template(v-if="currentTab === MOODBOARD_TAB.COMMENT")
+            div(v-if="isLoading" class="flex-grow flex items-center justify-center")
+              svg-icon(iconName="loading" size="92" class="text-brand")
+            mood-board-comment(v-else :moodboardId="moodboard.moodboardId" :offerId="Number(currentOfferId)")
 </template>
 
 <script setup>
@@ -111,12 +110,12 @@ const moodboardOfferNodeCollection = computed(() => store.getters['moodboard/moo
 
 const keyword = ref('')
 const currentTab = computed(() => route.query.tab || MOODBOARD_TAB.OFFER)
-const currentOfferId = computed(() => route.query.offerId || 'all')
-const currentNodeId = computed(() => route.query.nodeId || null)
+const currentOfferId = computed(() => Number(route.query.offerId) || 'all')
+const currentNodeId = computed(() => Number(route.query.nodeId) || null)
 const isLoading = ref(false)
 
 const tabList = computed(() => {
-  const currentOffer = moodboardOfferList.value.filter(offer => offer.offerId === Number(currentOfferId.value))
+  const currentOffer = moodboardOfferList.value.find(offer => offer.offerId === Number(currentOfferId.value))
   return [
     {
       name: t('QQ0051'),
@@ -129,7 +128,7 @@ const tabList = computed(() => {
     {
       name: t('QQ0031'),
       path: MOODBOARD_TAB.COMMENT,
-      showNotification: currentOffer.length > 0 ? currentOffer[0].hasNewComment : false
+      hasNewUpdate: !!currentOffer ? currentOffer.hasNewComment : false
     }
   ]
 })
@@ -138,7 +137,7 @@ const switchOffer = (offerId, nodeId) => {
   keyword.value = ''
   const query = offerId === 'all'
     ? { tab: MOODBOARD_TAB.OFFER, offerId: 'all', nodeId: null }
-    : { tab: currentTab.value, offerId, nodeId }
+    : { tab: MOODBOARD_TAB.OFFER, offerId, nodeId }
   router.push({ name: route.name, query })
 }
 
@@ -175,17 +174,24 @@ const togglePick = async (node) => {
 
 const search = async () => {
   isLoading.value = true
+  const moodboardId = moodboard.value.moodboardId
+  const offerId = currentOfferId.value
   if (currentTab.value === MOODBOARD_TAB.OFFER) {
     await store.dispatch('moodboard/getMoodboardNodeCollection', {
-      moodboardId: moodboard.value.moodboardId,
+      moodboardId,
       nodeId: currentNodeId.value,
       keyword: keyword.value || null
     })
   } else if (currentTab.value === MOODBOARD_TAB.PICKED) {
     await store.dispatch('moodboard/getPickedMoodboardNode', {
-      moodboardId: moodboard.value.moodboardId,
-      offerId: currentOfferId.value,
+      moodboardId,
+      offerId,
       keyword: keyword.value || null
+    })
+  } else if (currentTab.value === MOODBOARD_TAB.COMMENT) {
+    await store.dispatch('moodboard/getMoodboardComment', {
+      moodboardId,
+      offerId
     })
   }
   isLoading.value = false

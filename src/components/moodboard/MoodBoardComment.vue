@@ -21,7 +21,7 @@ div(class="flex flex-col items-center")
           class="w-134 mr-2"
           height="82"
         )
-        btn(size="sm" @click="handleSubmit") {{ $t("UU0049") }}
+        btn(size="sm" :disabled="text === ''" @click="handleSubmit") {{ $t("UU0049") }}
   div(class="w-full border-t border-primary-thin")
   overlay-scrollbar-container(class="h-90 mt-11.5")
     div(v-if="moodboardCommentList.length > 0" class="flex flex-col gap-7.5")
@@ -30,7 +30,7 @@ div(class="flex flex-col items-center")
           img(:src="comment.logo" class="w-8 h-8 rounded-full mr-3")
           div
             p(class="text-body2 text-primary mb-1.5") {{ comment.name }}
-            p(class="text-caption text-black-600") {{ $dayjs.unix(comment.createDate).fromNow() }}
+            p(class="text-caption text-black-600") {{ comment.createDate }}
         div(class="pl-11 text-body2 text-primary leading-1.6 w-126") {{ comment.comment }}
     i18n-t(v-else keypath="QQ0042" tag="p" class="text-body1 text-black-600 leading-1.6 text-center")
       template(#newline)
@@ -111,8 +111,4 @@ const handleSubmit = async () => {
   text.value = ''
 }
 
-await store.dispatch('moodboard/getMoodboardComment', {
-  moodboardId: props.moodboardId,
-  offerId: props.offerId,
-})
 </script>
