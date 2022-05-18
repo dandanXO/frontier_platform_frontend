@@ -7,7 +7,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
     div(class="w-52 shrink-0 h-full")
       btn(size="md" prependIcon="add" class="w-full" @click="openModalMoodboardShareList") {{ $t('UU0096') }}
       div(
-        class="w-full h-23 rounded flex flex-col justify-center pl-6 mt-6 hover:bg-black-200"
+        class="w-full h-23 rounded flex flex-col justify-center pl-6 mt-6 hover:bg-black-200 cursor-pointer"
         :class="[{ 'bg-black-400': currentOfferId === 'all' }]"
         @click="switchOffer('all', null)"
       )
@@ -16,11 +16,13 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
       div(class="border-t border-b border-primary-middle py-2 max-h-156 grid gap-y-2 overflow-y-scroll")
         div(
           v-for="offer in moodboardOfferList"
-          class="h-20 flex items-center gap-x-3 pl-3 rounded hover:bg-black-200"
+          class="h-20 flex items-center gap-x-3 pl-3 rounded hover:bg-black-200 cursor-pointer"
           :class="[{ 'bg-black-400': Number(currentOfferId) === offer.offerId }]"
           @click="switchOffer(offer.offerId, offer.rootNodeId)"
         )
-          img(:src="offer.logo" class="w-8 h-8 rounded-full")
+          div(class="relative")
+            img(:src="offer.logo" class="w-8 h-8 rounded-full")
+            div(v-if="offer.hasNewUpdate" class="absolute w-3 h-3 bg-brand border border-black-0 rounded-full top-0 -right-0.5")
           div
             p(class="text-body1 font-bold text-primary leading-1.6") {{ offer.name }}
             p(class="text-caption text-black-800 leading-1.6") {{ $t('RR0068', { number: offer.itemCounts }) }}・{{ offer.lastUpdateTime }}
@@ -29,12 +31,12 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
         h4(class="text-h4 text-primary pb-6") {{ $t('QQ0018') }}
         p(class="text-body2 text-black-700") {{ $t('QQ0019') }}
       template(v-else)
-        div(class="px-6 h-full flex flex-col")
-          div(v-if="currentOfferId !== 'all'" class="flex pt-5 -mx-6")
+        div(class="h-full flex flex-col")
+          div(v-if="currentOfferId !== 'all'" class="flex px-6 pt-5 -mx-6")
             div(class="w-6 border-b border-black-400")
-            tabs(:tabList="tabList" :initValue="currentTab" class="flex-grow" @switch="switchTab($event)")
+            tabs(:tabList="tabList" :initValue="currentTab" :key="currentOfferId" class="flex-grow" @switch="switchTab($event)")
             div(class="w-6 border-b border-black-400")
-          template(v-if="currentTab !== MOODBOARD_TAB.COMMENT")
+          div(v-if="currentTab !== MOODBOARD_TAB.COMMENT" class="px-6 flex-grow flex flex-col")
             div(class="flex justify-between items-center pt-4")
               input-text(
                 v-model:textValue="keyword"
@@ -75,27 +77,25 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
                         )
                     template(#content)
                       p(class="text-caption text-primary p-2.5 whitespace-nowrap") {{ node.isPicked ? $t('QQ0081') : $t('QQ0082') }}
+          template(v-if="currentTab === MOODBOARD_TAB.COMMENT")
+            div(v-if="isLoading" class="flex-grow flex items-center justify-center")
+              svg-icon(iconName="loading" size="92" class="text-brand")
+            mood-board-comment(v-else :moodboardId="moodboard.moodboardId" :offerId="Number(currentOfferId)")
 </template>
 
 <script setup>
-import { computed, ref } from '@vue/reactivity'
-import { watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { MOODBOARD_TAB, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
+import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'
 
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
-
-const tabList = [
-  { name: t('QQ0051'), path: MOODBOARD_TAB.OFFER },
-  { name: t('QQ0052'), path: MOODBOARD_TAB.PICKED },
-  { name: t('QQ0031'), path: MOODBOARD_TAB.COMMENT }
-]
 
 const openModalMoodboardShareList = () => {
   store.dispatch('helper/openModalBehavior', {
@@ -110,15 +110,34 @@ const moodboardOfferNodeCollection = computed(() => store.getters['moodboard/moo
 
 const keyword = ref('')
 const currentTab = computed(() => route.query.tab || MOODBOARD_TAB.OFFER)
-const currentOfferId = computed(() => route.query.offerId || 'all')
-const currentNodeId = computed(() => route.query.nodeId || null)
+const currentOfferId = computed(() => Number(route.query.offerId) || 'all')
+const currentNodeId = computed(() => Number(route.query.nodeId) || null)
 const isLoading = ref(false)
+
+const tabList = computed(() => {
+  const currentOffer = moodboardOfferList.value.find(offer => offer.offerId === Number(currentOfferId.value))
+  return [
+    {
+      name: t('QQ0051'),
+      path: MOODBOARD_TAB.OFFER
+    },
+    {
+      name: t('QQ0052'),
+      path: MOODBOARD_TAB.PICKED
+    },
+    {
+      name: t('QQ0031'),
+      path: MOODBOARD_TAB.COMMENT,
+      hasNewUpdate: !!currentOffer ? currentOffer.hasNewComment : false
+    }
+  ]
+})
 
 const switchOffer = (offerId, nodeId) => {
   keyword.value = ''
   const query = offerId === 'all'
     ? { tab: MOODBOARD_TAB.OFFER, offerId: 'all', nodeId: null }
-    : { tab: currentTab.value, offerId, nodeId }
+    : { tab: MOODBOARD_TAB.OFFER, offerId, nodeId }
   router.push({ name: route.name, query })
 }
 
@@ -155,17 +174,24 @@ const togglePick = async (node) => {
 
 const search = async () => {
   isLoading.value = true
+  const moodboardId = moodboard.value.moodboardId
+  const offerId = currentOfferId.value
   if (currentTab.value === MOODBOARD_TAB.OFFER) {
     await store.dispatch('moodboard/getMoodboardNodeCollection', {
-      moodboardId: moodboard.value.moodboardId,
+      moodboardId,
       nodeId: currentNodeId.value,
       keyword: keyword.value || null
     })
   } else if (currentTab.value === MOODBOARD_TAB.PICKED) {
     await store.dispatch('moodboard/getPickedMoodboardNode', {
-      moodboardId: moodboard.value.moodboardId,
-      offerId: currentOfferId.value,
+      moodboardId,
+      offerId,
       keyword: keyword.value || null
+    })
+  } else if (currentTab.value === MOODBOARD_TAB.COMMENT) {
+    await store.dispatch('moodboard/getMoodboardComment', {
+      moodboardId,
+      offerId
     })
   }
   isLoading.value = false

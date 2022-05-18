@@ -114,7 +114,7 @@ export default {
    * @param {number} params.moodboardId
    * @param {number} params.offerId
    */
-  getMoodboardComment: (type, id, params) => apiWrapper('/moodboard/comment/get', type, id, params),
+  getMoodboardComment: (type, id, params) => apiWrapper('/moodboard/offer/comment/get', type, id, params),
 
   /**
    * @param {object} params 
@@ -122,7 +122,7 @@ export default {
    * @param {number} params.offerId
    * @param {string} params.comment
    */
-  createMoodboardComment: (type, id, params) => apiWrapper('/moodboard/comment/create', type, id, params),
+  createMoodboardComment: (type, id, params) => apiWrapper('/moodboard/offer/comment/create', type, id, params),
 
   /**
    * @param {object} params 
