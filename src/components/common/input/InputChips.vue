@@ -2,9 +2,8 @@
 input-container(:label="label" :required="required" v-click-away="onBlur")
   label(class="relative px-4 py-1.5 border rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11" :class="[classBorder]")
     div(v-for="(chip, index) in chips" class="flex")
-      div(class="px-3 h-8 flex items-center gap-x-1 bg-primary-thin rounded")
-        p(class="text-body2 text-primary") {{ returnObject ? chip[keyOptionDisplay] : chip }}
-        svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removeChip(index)")
+      tag {{ returnObject ? chip[keyOptionDisplay] : chip }}
+        svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer ml-1" @click="removeChip(index)")
     input(
       ref="inputElement"
       type="text"

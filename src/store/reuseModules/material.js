@@ -97,6 +97,7 @@ const Material = {
     },
     attachmentList: [],
     pantoneList: [],
+    certificateList: [],
     u3m: {
       status: 0,
       zipUrl: '',
