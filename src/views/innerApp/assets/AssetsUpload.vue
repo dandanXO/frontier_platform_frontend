@@ -68,24 +68,41 @@ import { useStore } from 'vuex'
 const { t } = useI18n()
 const store = useStore()
 const { prefixPath, parsePath, goToAssets, goToAssetsMaterialCreate } = useNavigation()
+const openModalUploadMaterialImage = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-smart-upload'
+  })
+}
+
+const openModalBackSideQrcode = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-back-side-qrcode'
+  })
+}
+
+const openModalMassUpload = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-mass-upload'
+  })
+}
 const alternativeUploadOptions = [
   {
     icon: 'image_file',
     title: t('DD0088'),
     content: t('DD0089'),
-    action: () => openModalUploadMaterialImage()
+    action: openModalUploadMaterialImage
   },
   {
     icon: 'add_box_outline',
     title: t('DD0090'),
     content: t('DD0091'),
-    action: () => goToAssetsMaterialCreate()
+    action: goToAssetsMaterialCreate
   },
   {
     icon: 'multiple_file',
     title: t('DD0092'),
     content: t('DD0093'),
-    action: () => openModalMassUpload()
+    action: openModalMassUpload
   }
 ]
 
@@ -108,23 +125,4 @@ const uploadMaterialEmail = computed(() => {
     ? store.getters['organization/uploadMaterialEmail']
     : store.getters['group/uploadMaterialEmail']
 })
-
-const openModalUploadMaterialImage = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-smart-upload'
-  })
-}
-
-const openModalBackSideQrcode = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-back-side-qrcode'
-  })
-}
-
-const openModalMassUpload = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-mass-upload'
-  })
-}
-
 </script>

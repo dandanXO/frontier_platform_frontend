@@ -2,25 +2,37 @@
 div
   div(class="h-15 flex items-center")
     h5(class="text-h5 text-primary font-bold") {{ $t("DD0026") }}
-  div(class="px-15")
-    div(class="mt-5 mb-10")
-      div(class="mb-4.5 text-body2") {{ $t("DD0027") }}
-      btn(size="md" @click="openModalUpload") {{ $t("UU0022") }}
-    div(class="flex flex-wrap gap-5")
-      attachment-item(
-        v-for="(attachment, index) in attachmentList"
-        :key="attachment.url"
-        :attachmentList="attachmentList"
-        :attachment="attachment"
-        :index="index"
-        @handleRemove="handleRemove"
-      )
+  div(class="px-15 grid gap-y-7.5 pt-5")
+    input-chips(
+      v-model:chips="material.certificateList"
+      :label="$t('EE0129')"
+      :options="specOptions.certificateList"
+      :canAddNewOption="false"
+      :placeholder="$t('EE0131')"
+      keyOptionDisplay="name"
+      keyOptionValue="name"
+    )
+    div
+      div(class="pb-10")
+        p(class="text-body2 font-bold text-primary") {{ $t('EE0130') }}
+        div(class="py-5 text-body2") {{ $t("DD0027") }}
+        btn(size="md" @click="openModalUpload") {{ $t("UU0022") }}
+      div(v-if="attachmentList.length > 0" class="flex flex-wrap gap-5")
+        attachment-item(
+          v-for="(attachment, index) in attachmentList"
+          :key="attachment.url"
+          :attachmentList="attachmentList"
+          :attachment="attachment"
+          :index="index"
+          @handleRemove="handleRemove"
+        )
 </template>
 
 <script setup>
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
+import useMaterialEdit from '@/composables/useMaterialEdit'
 import AttachmentItem from '@/components/assets/material/edit/AttachmentItem.vue'
 
 const props = defineProps({
@@ -31,6 +43,10 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
+const material = computed(() => store.getters['assets/material'])
+
+const { specOptions } = useMaterialEdit(material.value)
+
 const attachmentList = computed(() => store.getters['assets/attachmentList'])
 const isEditMode = computed(() => store.getters['assets/material'].materialId !== null)
 
