@@ -63,7 +63,7 @@ general-table(
       //- Processing
       div(v-else-if="item.status === UPLOAD_PROGRESS.PROCESSING" class="text-black-500 inline-flex")
         svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
-        p {{ $t("PP0014") }}
+        p {{ $t("PP0013") }}
     div(v-if="prop === 'action'" class="flex justify-end")
       btn(v-if="item.status === UPLOAD_PROGRESS.COMPLETE" type="secondary" size="sm" :disabled="item.isMaterialDeleted" @click="handleViewMaterial(item)") {{ $t("UU0086") }}
       div(v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE || item.status === UPLOAD_PROGRESS.UNSUCCESSFUL")
@@ -83,6 +83,7 @@ import TableStatusProgress from '@/components/progress/TableStatusProgress.vue'
 import { UPLOAD_PROGRESS_SORT_BY, UPLOAD_PROGRESS, SIDE_TYPE } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { ref, computed, reactive, watch } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 
@@ -90,6 +91,9 @@ const props = defineProps({
   currentStatus: {
     type: Number,
     required: true
+  },
+  path: {
+    type: String
   }
 })
 
@@ -102,6 +106,7 @@ const ERROR_MSG = {
 
 const { t } = useI18n()
 const store = useStore()
+const route = useRoute()
 const { goToBillings, goToAssetMaterialDetail } = useNavigation()
 
 const isLoading = ref(false)
@@ -115,7 +120,7 @@ const queryParams = reactive({
   startDate: '',
   endDate: ''
 })
-const tableData = computed(() => store.getters['assets/progress/progressList'])
+const tableData = computed(() => store.getters['assets/progress/materialProgressList'])
 
 const headers = [
   {
@@ -171,7 +176,10 @@ const getList = async (targetPage = 1, showSpinner = true) => {
   })
   pagination.value = result.pagination
   isLoading.value = false
-  setTimer()
+
+  if (props.path === route.params.tab) {
+    setTimer()
+  }
 }
 
 const handleViewMaterial = (material) => {
@@ -189,8 +197,6 @@ const setTimer = () => {
     await getList(pagination.value.currentPage, false)
   }, 5000)
 }
-
-await getList()
 
 onBeforeRouteLeave(() => clearTimeout(timerId))
 onBeforeRouteUpdate(() => clearTimeout(timerId))

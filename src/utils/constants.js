@@ -81,7 +81,7 @@ export const U3M_STATUS = {
   IN_QUEUE: 1,
   COMPLETED: 2,
   PROCESSING: 3,
-  FAIL: 99
+  UNSUCCESSFUL: 99
 }
 
 export const FILTER_COMPLETE = {
@@ -221,10 +221,14 @@ export const FEEDBACK_CATEGORY = {
     text: i18n.global.t('OO0065'),
     value: 4
   },
+  CARBON_EMISSION: {
+    text: i18n.global.t('MM0037'),
+    value: 5
+  },
   OTHER: {
     text: i18n.global.t('MM0012'),
     value: 3
-  },
+  }
 }
 
 export const SHARING_FROM = {

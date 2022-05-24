@@ -6,7 +6,7 @@ div(class="w-101 px-8")
     :options="optionOrgList"
     keyOptionDisplay="orgName"
     keyOptionValue="orgId"
-    :label="$t('GG0006')"
+    :label="$t('RR0212')"
     class="mb-7.5 z-10"
   )
   input-select(
@@ -14,7 +14,7 @@ div(class="w-101 px-8")
     :options="optionSavePlaceList"
     keyOptionDisplay="name"
     keyOptionValue="key"
-    :label="$t('GG0007')"
+    :label="$t('RR0174')"
   )
   btn-group(
     class="h-25"

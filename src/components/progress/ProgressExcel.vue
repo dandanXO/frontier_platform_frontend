@@ -64,7 +64,7 @@ general-table(
           template(#content)
             p(class="text-caption text-primary py-1 px-3 leading-1.6") {{ $t("RR0190") }}
     template(v-if="prop === 'createdTime'")
-      div(v-for="string in $dayjs(item.createDate).format('MM/DD/YYYY-hh:mm:ss A').split('-')" class="leading-1.6") {{ string }}
+      div(v-for="string in $dayjs.unix(item.createDate).format('YYYY/MM/DD-hh:mm:ss A').split('-')" class="leading-1.6") {{ string }}
     table-status-label(v-if="prop === 'statusLabel'" :status="item.status")
     table-status-progress(v-if="prop === 'procedure'" :status="item.status")
       //- Unsuccessful
@@ -104,13 +104,9 @@ general-table(
                   svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
               template(#content)
                 list(v-if="item.status === UPLOAD_PROGRESS.COMPLETE && item.category === EXCEL_CATEGORY.UPLOAD")
-                  //- qr-code-a4
-                  //-   template(#activator="{ generatePdf }")
-                  //-     list-item(@click="handleAction(generatePdf, item.excelProgressId)") {{ $t("RR0062") }}
-                  //- qr-code-general
-                  //-   template(#activator="{ generatePdf }")
-                  //-     list-item(@click="handleAction(generatePdf, item.excelProgressId)") {{ $t("RR0061") }}
-                  //- div(class="border-t border-black-400 my-1")
+                  list-item(@click="handleAction(PRINT_TYPE.CARD, item.excelProgressId)") {{ $t("RR0062") }}
+                  list-item(@click="handleAction(PRINT_TYPE.LABEL, item.excelProgressId)") {{ $t("RR0061") }}
+                  div(class="border-t border-black-400 my-1")
                   list-item(@click="handleAction(_, item.excelProgressId)") {{ $t("RR0060") }}
         //- Export Complete
         btn(
@@ -134,6 +130,7 @@ general-table(
 
 <script setup>
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive, watch } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
@@ -141,24 +138,32 @@ import { downloadDataURLFile } from '@/utils/fileOperator'
 import { UPLOAD_PROGRESS_EXCEL_SORT_BY, UPLOAD_PROGRESS, EXCEL_CATEGORY } from '@/utils/constants'
 import TableStatusLabel from '@/components/progress/TableStatusLabel.vue'
 import TableStatusProgress from '@/components/progress/TableStatusProgress.vue'
-import QrCodeA4 from '@/components/qrcode/QrCodeA4.vue'
-import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral.vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
+import { printGeneralLabel, printA4Card } from '@/utils/print'
 
 const ERROR_MSG = {
   INACTIVE: 1,
   INSUFFICIENT_STORAGE: 2
 }
 
+const PRINT_TYPE = {
+  CARD: 1,
+  LABEL: 2
+}
+
 const props = defineProps({
   currentStatus: {
     type: Number
+  },
+  path: {
+    type: String
   }
 })
 
 const { t } = useI18n()
 const store = useStore()
+const route = useRoute()
 const { goToAssets } = useNavigation()
 const { exportExcel } = useAssets()
 
@@ -177,7 +182,7 @@ const queryParams = reactive({
   category: EXCEL_CATEGORY.ALL
 })
 
-const tableData = computed(() => store.getters['assets/progress/progressList'])
+const tableData = computed(() => store.getters['assets/progress/excelProgressList'])
 
 const headers = [
   {
@@ -246,6 +251,7 @@ let timerId
 const getList = async (targetPage = 1, showSpinner = true) => {
   clearTimeout(timerId)
   isLoading.value = showSpinner
+
   const result = await store.dispatch('assets/progress/getExcelUploadProgress', {
     ...queryParams,
     keyword: keyword.value,
@@ -258,7 +264,10 @@ const getList = async (targetPage = 1, showSpinner = true) => {
   })
   pagination.value = result.pagination
   isLoading.value = false
-  setTimer()
+
+  if (props.path === route.params.tab) {
+    setTimer()
+  }
 }
 
 const openModalMaterialNoList = (materialNoList) => {
@@ -275,7 +284,7 @@ const openModalMaterialNoList = (materialNoList) => {
   })
 }
 
-const handleAction = async (generatePdf, excelProgressId) => {
+const handleAction = async (type, excelProgressId) => {
   const { materialList } = await store.dispatch('assets/progress/getExcelUploadMaterialList', { excelProgressId })
   const deletedMaterialList = materialList.filter(material => material.isDelete)
   const nonDeletedMaterialList = materialList.filter(material => !material.isDelete)
@@ -290,8 +299,10 @@ const handleAction = async (generatePdf, excelProgressId) => {
       closeAfterSecondaryBtnHandler: false,
       textBtnText: t('UU0002'),
       primaryBtnHandler: async () => {
-        if (typeof generatePdf === 'function') {
-          generatePdf(nonDeletedMaterialList)
+        if (type === PRINT_TYPE.CARD) {
+          printA4Card(nonDeletedMaterialList)
+        } else if (type === PRINT_TYPE.LABEL) {
+          printGeneralLabel(nonDeletedMaterialList)
         } else {
           exportExcel.func(materialList)
         }
@@ -311,8 +322,10 @@ const handleAction = async (generatePdf, excelProgressId) => {
       }
     })
   } else {
-    if (typeof generatePdf === 'function') {
-      generatePdf(materialList)
+    if (type === PRINT_TYPE.CARD) {
+      printA4Card(materialList)
+    } else if (type === PRINT_TYPE.LABEL) {
+      printGeneralLabel(materialList)
     } else {
       exportExcel.func(materialList)
     }
@@ -334,8 +347,6 @@ const setTimer = () => {
     await getList(pagination.value.currentPage, false)
   }, 5000)
 }
-
-await getList()
 
 onBeforeRouteLeave(() => clearTimeout(timerId))
 onBeforeRouteUpdate(() => clearTimeout(timerId))

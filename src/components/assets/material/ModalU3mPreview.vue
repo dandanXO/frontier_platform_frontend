@@ -25,54 +25,43 @@ div(:class="{ 'w-86': !isDoubleSideMaterial, 'w-168': isDoubleSideMaterial }")
   )
 </template>
 
-<script>
+<script setup>
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 import useMaterialImage from '@/composables/useMaterialImage'
+import useNavigation from '@/composables/useNavigation'
 
-export default {
-  name: 'ModalU3mPreview',
-  setup () {
-    const { t } = useI18n()
-    const store = useStore()
-    const material = computed(() => store.getters['assets/material'])
-    const { faceSideImg, backSideImg } = material.value
-    const {
-      isDoubleSideMaterial,
-      isFaceSideMaterial,
-      isBackSideMaterial,
-      isFaceSideU3mCropExist,
-      isBackSideU3mCropExist
-    } = useMaterialImage(material.value, 'u3m')
+const { t } = useI18n()
+const store = useStore()
+const { goToProgress } = useNavigation()
+const material = computed(() => store.getters['assets/material'])
+const { faceSideImg, backSideImg } = material.value
+const {
+  isDoubleSideMaterial,
+  isFaceSideMaterial,
+  isBackSideMaterial,
+  isFaceSideU3mCropExist,
+  isBackSideU3mCropExist
+} = useMaterialImage(material.value, 'u3m')
 
-    const handleRecutImage = () => {
-      store.dispatch('helper/replaceModal', {
-        component: 'modal-u3m-recut'
-      })
-    }
+const handleRecutImage = () => {
+  store.dispatch('helper/replaceModal', {
+    component: 'modal-u3m-recut'
+  })
+}
 
-    const handleCreateU3mAuto = async () => {
-      await store.dispatch('assets/generateU3m', {})
-      store.dispatch('helper/openModalConfirm', {
-        type: 0,
-        header: t('RR0132'),
-        content: t('EE0070'),
-        primaryBtnText: t('UU0031')
-      })
-    }
-
-    return {
-      isDoubleSideMaterial,
-      isFaceSideMaterial,
-      isBackSideMaterial,
-      faceSideImg,
-      backSideImg,
-      isFaceSideU3mCropExist,
-      isBackSideU3mCropExist,
-      handleRecutImage,
-      handleCreateU3mAuto
-    }
-  }
+const handleCreateU3mAuto = async () => {
+  store.dispatch('helper/pushModalLoading')
+  await store.dispatch('assets/generateU3m', {})
+  store.dispatch('helper/closeModalLoading')
+  store.dispatch('helper/openModalConfirm', {
+    type: 2,
+    header: t('EE0121'),
+    content: t('EE0122', { RR0008: t('RR0008') }),
+    primaryBtnText: t('UU0103'),
+    secondaryBtnText: t('UU0090'),
+    secondaryBtnHandler: () => goToProgress('u3m')
+  })
 }
 </script>

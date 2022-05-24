@@ -5,6 +5,8 @@ import i18n from '@/utils/i18n'
 import store from '@/store'
 import imgDefaultMaterial from '@/assets/images/default_material.png'
 
+const t = i18n.global.t
+
 export default function useMaterial (material) {
   const {
     isDoubleSideMaterial,
@@ -35,7 +37,8 @@ export default function useMaterial (material) {
     publicPrice,
     privatePrice,
     attachmentList,
-    frontierNo
+    frontierNo,
+    carbonEmission
   } = material
 
   const scanFaceSide = !!faceSideImg?.crop
@@ -70,33 +73,33 @@ export default function useMaterial (material) {
     const list = []
     const faceCrop = {
       src: faceSideImg.crop,
-      text: [i18n.global.t('RR0075')]
+      text: [t('RR0075')]
     }
     const faceRuler = {
       src: faceSideImg.ruler,
-      text: [i18n.global.t('RR0075'), `(${i18n.global.t('RR0080')})`]
+      text: [t('RR0075'), `(${t('RR0080')})`]
     }
     const backCrop = {
       src: backSideImg.crop,
-      text: [i18n.global.t('RR0078')]
+      text: [t('RR0078')]
     }
     const backRuler = {
       src: backSideImg.ruler,
-      text: [i18n.global.t('RR0078'), `(${i18n.global.t('RR0080')})`]
+      text: [t('RR0078'), `(${t('RR0080')})`]
     }
 
     if (isDoubleSideMaterial) {
       if (coverMode === COVER_MODE.SUP) {
         list.push({
           src: coverImg,
-          text: [i18n.global.t('RR0081')]
+          text: [t('RR0081')]
         })
         list.push(faceCrop, faceRuler, backCrop, backRuler)
       } else if (coverMode === COVER_MODE.FACE) {
-        faceCrop.text.push(`(${i18n.global.t('RR0081')})`)
+        faceCrop.text.push(`(${t('RR0081')})`)
         list.push(faceCrop, faceRuler, backCrop, backRuler)
       } else if (coverMode === COVER_MODE.BACK) {
-        backCrop.text.push(`(${i18n.global.t('RR0081')})`)
+        backCrop.text.push(`(${t('RR0081')})`)
         list.push(faceCrop, faceRuler, backCrop, backRuler)
       }
     } else {
@@ -104,20 +107,20 @@ export default function useMaterial (material) {
         if (coverMode === COVER_MODE.SUP) {
           list.push({
             src: coverImg,
-            text: [i18n.global.t('RR0081')]
+            text: [t('RR0081')]
           })
         } else {
-          faceCrop.text.push(`(${i18n.global.t('RR0081')})`)
+          faceCrop.text.push(`(${t('RR0081')})`)
         }
         list.push(faceCrop, faceRuler)
       } else if (sideType === SIDE_TYPE.BACK) {
         if (coverMode === COVER_MODE.SUP) {
           list.push({
             src: coverImg,
-            text: [i18n.global.t('RR0081')]
+            text: [t('RR0081')]
           })
         } else {
-          backCrop.text.push(`(${i18n.global.t('RR0081')})`)
+          backCrop.text.push(`(${t('RR0081')})`)
         }
         list.push(backCrop, backRuler)
       }
@@ -156,12 +159,12 @@ export default function useMaterial (material) {
     } = priceObj
 
     return {
-      coo: { name: i18n.global.t('RR0042'), value: countryList.find(country => country.countryCode === countryCode)?.name || '' },
-      pricing: { name: i18n.global.t('RR0043'), value: (price && currency && unit) ? `${price} ${currency} / ${unit}` : '' },
-      moq: { name: i18n.global.t('RR0047'), value: (minimumOrderQuantity && minimumOrderQuantityUnit) ? `${minimumOrderQuantity} / ${minimumOrderQuantityUnit}` : '' },
-      mcq: { name: i18n.global.t('RR0048'), value: (minimumContainerQuantity && minimumContainerQuantityUnit) ? `${minimumContainerQuantity} / ${minimumContainerQuantityUnit}` : '' },
-      productionLeadTime: { name: i18n.global.t('RR0049'), value: productionLeadTime ? i18n.global.t('RR0083', { number: productionLeadTime }) : '' },
-      sampleLeadTime: { name: i18n.global.t('RR0051'), value: sampleLeadTime ? i18n.global.t('RR0083', { number: sampleLeadTime }) : '' }
+      coo: { name: t('RR0042'), value: countryList.find(country => country.countryCode === countryCode)?.name || '' },
+      pricing: { name: t('RR0043'), value: (price && currency && unit) ? `${price} ${currency} / ${unit}` : '' },
+      moq: { name: t('RR0047'), value: (minimumOrderQuantity && minimumOrderQuantityUnit) ? `${minimumOrderQuantity} / ${minimumOrderQuantityUnit}` : '' },
+      mcq: { name: t('RR0048'), value: (minimumContainerQuantity && minimumContainerQuantityUnit) ? `${minimumContainerQuantity} / ${minimumContainerQuantityUnit}` : '' },
+      productionLeadTime: { name: t('RR0049'), value: productionLeadTime ? t('RR0083', { number: productionLeadTime }) : '' },
+      sampleLeadTime: { name: t('RR0051'), value: sampleLeadTime ? t('RR0083', { number: sampleLeadTime }) : '' }
     }
   }
 
@@ -205,19 +208,19 @@ export default function useMaterial (material) {
   }
 
   const materialInfo = reactive({
-    frontierNo: { name: i18n.global.t('RR0084'), value: frontierNo },
-    content: { name: i18n.global.t('RR0021'), value: content },
-    yarn: { name: i18n.global.t('RR0023'), value: getYarn() },
-    density: { name: i18n.global.t('RR0024'), value: getDensity() },
-    pattern: { name: i18n.global.t('RR0025'), value: pattern },
-    color: { name: i18n.global.t('RR0026'), value: color },
-    weight: { name: i18n.global.t('RR0015'), value: getWeight() },
-    width: { name: i18n.global.t('RR0019'), value: width > 0 ? `${width}"` : '' },
-    finish: { name: i18n.global.t('RR0022'), value: finish },
-    totalInventoryQty: { name: i18n.global.t('RR0034'), value: (typeof totalInventoryQty === 'number' ? totalInventoryQty : 0) + ' Y' },
-    materialSeq: { name: i18n.global.t('RR0030'), value: materialSeq ? `# ${materialSeq}` : '' },
-    sampleCard: { name: `${i18n.global.t('RR0031')}/${i18n.global.t('RR0032')}`, value: (sampleCardsRemainingQty && sampleCardsLocation) ? `${sampleCardsRemainingQty} / ${sampleCardsLocation}` : '' },
-    hangers: { name: `${i18n.global.t('RR0033')}/${i18n.global.t('RR0032')}`, value: (hangersRemainingQty && hangersLocation) ? `${hangersRemainingQty} / ${hangersLocation}` : '' },
+    frontierNo: { name: t('RR0084'), value: frontierNo },
+    content: { name: t('RR0021'), value: content },
+    yarn: { name: t('RR0023'), value: getYarn() },
+    density: { name: t('RR0024'), value: getDensity() },
+    pattern: { name: t('RR0025'), value: pattern },
+    color: { name: t('RR0026'), value: color },
+    weight: { name: t('RR0015'), value: getWeight() },
+    width: { name: t('RR0019'), value: width > 0 ? `${width}"` : '' },
+    finish: { name: t('RR0022'), value: finish },
+    totalInventoryQty: { name: t('RR0034'), value: (typeof totalInventoryQty === 'number' ? totalInventoryQty : 0) + ' Y' },
+    materialSeq: { name: t('RR0030'), value: materialSeq ? `# ${materialSeq}` : '' },
+    sampleCard: { name: `${t('RR0031')}/${t('RR0032')}`, value: (sampleCardsRemainingQty && sampleCardsLocation) ? `${sampleCardsRemainingQty} / ${sampleCardsLocation}` : '' },
+    hangers: { name: `${t('RR0033')}/${t('RR0032')}`, value: (hangersRemainingQty && hangersLocation) ? `${hangersRemainingQty} / ${hangersLocation}` : '' },
     publicPrice: getPriceInfo(publicPrice),
     privatePrice: getPriceInfo(privatePrice)
   })
@@ -267,6 +270,22 @@ export default function useMaterial (material) {
     return list
   })
 
+  const carbonEmissionInfo = computed(() => {
+    const extendField = (sourceProperty, icon, title, unitShort, unitLong, saveUnit) => {
+      sourceProperty['icon'] = icon
+      sourceProperty['title'] = title
+      sourceProperty['unitShort'] = unitShort
+      sourceProperty['unitLong'] = unitLong
+      sourceProperty['saveUnit'] = saveUnit
+    }
+    const { co2, water, land, energy } = JSON.parse(JSON.stringify(carbonEmission))
+    extendField(co2, 'co2', t('RR0221'), t('RR0215'), t('RR0225'), 'RR0230')
+    extendField(water, 'water', t('RR0222'), t('RR0216'), t('RR0226'), 'RR0231')
+    extendField(land, 'land', t('RR0223'), t('RR0217'), t('RR0227'), 'RR0232')
+    extendField(energy, 'energy', t('RR0224'), t('RR0218'), t('RR0228'), 'RR0233')
+    return { co2, water, land, energy }
+  })
+
   return {
     currentCoverImg,
     neverScanBefore,
@@ -278,6 +297,7 @@ export default function useMaterial (material) {
     materialInventoryInfo,
     materialPublicPriceInfo,
     materialPrivatePriceInfo,
-    attachmentSortedList
+    attachmentSortedList,
+    carbonEmissionInfo
   }
 }

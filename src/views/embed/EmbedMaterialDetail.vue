@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-full h-full flex justify-center" :class="{ 'pt-13': breadcrumbList.length === 1 }")
-  div(v-if="!isLoading" class="w-230 h-fit pb-25")
+  div(v-if="!isLoading" class="w-230 h-fit pb-25 px-4 box-content")
     div(class="flex items-center pt-12 pb-9")
       img(:src="logo" class="w-10 h-10 rounded-full mr-2.5")
       breadcrumb(v-if="breadcrumbList.length > 1" :breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")

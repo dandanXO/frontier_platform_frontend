@@ -16,7 +16,8 @@ export default {
     code: {
       contentList: [],
       descriptionList: [],
-      finishList: []
+      finishList: [],
+      certificateList: []
     }
   },
   getters: {
@@ -114,6 +115,7 @@ export default {
             'privatePrice'
           ].includes(key))
       )
+      material['certificateIdList'] = getters.material.certificateList.map(({ certificateId }) => certificateId)
       const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.createMaterial({ orgId: rootGetters['organization/orgId'], tempMaterialId, material })
         : await assetsApi.group.createMaterial({ groupId: rootGetters['group/groupId'], tempMaterialId, material })
@@ -156,6 +158,7 @@ export default {
             'privatePrice'
           ].includes(key))
       )
+      material['certificateIdList'] = getters.material.certificateList.map(({ certificateId }) => certificateId)
       rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.updateMaterial({ orgId: rootGetters['organization/orgId'], materialId, material })
         : await assetsApi.group.updateMaterial({ groupId: rootGetters['group/groupId'], materialId, material })

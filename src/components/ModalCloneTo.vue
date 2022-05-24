@@ -13,7 +13,7 @@ modal-behavior(
       :options="orgList"
       keyOptionDisplay="orgName"
       keyOptionValue="orgId"
-      :label="$t('GG0006')"
+      :label="$t('RR0212')"
       class="mb-3 z-10"
     )
     input-chips(
