@@ -18,7 +18,7 @@ export default function useReceivedShare () {
       store.dispatch('helper/openModal', {
         component: 'modal-received-share-choose-storage',
         properties: {
-          title: t('GG0005'),
+          title: t('RR0213'),
           actionHandler: async ({ orgId, groupId }) => {
             store.dispatch('helper/pushModalLoading')
             await store.dispatch('receivedShare/saveShareReceived', { orgId, groupId })
@@ -47,7 +47,7 @@ export default function useReceivedShare () {
     } else {
       store.dispatch('helper/openModalConfirm', {
         type: 1,
-        header: t('GG0014'),
+        header: t('RR0214'),
         content: t('GG0015'),
         primaryBtnText: t('UU0031')
       })

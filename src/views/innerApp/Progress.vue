@@ -4,21 +4,19 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
     div(class="text-h6 font-bold text-primary pl-1.5") {{ $t("PP0001") }}
     div(class="w-75 relative z-10")
       input-select(:selectValue="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup")
-  div(class="border-b border-black-400")
-    div(class="flex gap-x-5")
-      div(v-for="tab in tabList" class="cursor-pointer" @click="toggleTab(tab.path)")
-        p(class="pb-2 text-body1" :class="[tab.path === currentTab ? 'border-b-4 border-brand text-primary font-bold' : 'text-black-600']" ) {{ tab.name }}
-  div(class="flex items-center gap-x-2 pt-4 pb-3")
-    chip(
-      v-for="status in statusList"
-      size="lg"
-      :text="status.label"
-      @click="selectedStatus = status.id"
-      :active="selectedStatus === status.id"
-    ) 
-  progress-material(v-if="currentTab === 'material'" :currentStatus="selectedStatus")
-  progress-u3m(v-else-if="currentTab === 'u3m'" :currentStatus="selectedStatus")
-  progress-excel(v-else-if="currentTab === 'excel'" :currentStatus="selectedStatus")
+  tabs(:tabList="tabList" @switch="toggleTab($event.path)")
+    template(#default="{ currentTab }")
+      div(class="flex items-center gap-x-2 pt-4 pb-3")
+        chip(
+          v-for="status in statusList"
+          size="lg"
+          :text="status.label"
+          @click="selectedStatus = status.id"
+          :active="selectedStatus === status.id"
+        ) 
+      progress-material(v-if="currentTab === 'material'" :currentStatus="selectedStatus")
+      progress-u3m(v-else-if="currentTab === 'u3m'" :currentStatus="selectedStatus")
+      progress-excel(v-else-if="currentTab === 'excel'" :currentStatus="selectedStatus")
 </template>
 
 <script setup>
@@ -31,6 +29,12 @@ import { UPLOAD_PROGRESS } from '@/utils/constants'
 const ProgressMaterial = defineAsyncComponent(() => import('@/components/progress/ProgressMaterial.vue'))
 const ProgressU3m = defineAsyncComponent(() => import('@/components/progress/ProgressU3m.vue'))
 const ProgressExcel = defineAsyncComponent(() => import('@/components/progress/ProgressExcel.vue'))
+
+const PROGRESS_PATH = {
+  MATERIAL: 'material',
+  U3M: 'u3m',
+  EXCEL: 'excel'
+}
 
 const { t } = useI18n()
 const route = useRoute()
@@ -56,7 +60,6 @@ const menuOrgOrGroup = computed(() => {
     })
   ]
 })
-const currentTab = computed(() => route.params.tab)
 const currentMenu = computed(() => {
   const { orgNo } = organization.value
   return routeLocation.value === 'org'
@@ -67,15 +70,15 @@ const currentMenu = computed(() => {
 const tabList = reactive([
   {
     name: t('PP0002'),
-    path: 'material'
+    path: PROGRESS_PATH.MATERIAL
   },
   {
     name: t('RR0199'),
-    path: 'u3m'
+    path: PROGRESS_PATH.U3M
   },
   {
     name: t('PP0003'),
-    path: 'excel'
+    path: PROGRESS_PATH.EXCEL
   }
 ])
 

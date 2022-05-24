@@ -45,7 +45,10 @@ export default {
     ModalMoodboardShare: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardShare.vue')),
     ModalMoodboardShareList: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardShareList.vue')),
     ModalAssetsList: defineAsyncComponent(() => import('@/components/assets/material/ModalAssetsList.vue')),
-    ModalCreateOrEditMoodboardCollection: defineAsyncComponent(() => import('@/components/moodboard/ModalCreateOrEditMoodboardCollection.vue'))
+    ModalCreateOrEditMoodboardCollection: defineAsyncComponent(() => import('@/components/moodboard/ModalCreateOrEditMoodboardCollection.vue')),
+    ModalU3mInstruction: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mInstruction.vue')),
+    ModalIndicatorMethodology: defineAsyncComponent(() => import('@/components/assets/material/ModalIndicatorMethodology.vue')),
+    ModalSendFeedback: defineAsyncComponent(() => import('@/components/ModalSendFeedback.vue'))
   },
   setup () {
     const store = useStore()

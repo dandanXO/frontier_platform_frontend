@@ -96,6 +96,7 @@ import TableStatusProgress from '@/components/progress/TableStatusProgress.vue'
 import { UPLOAD_PROGRESS_SORT_BY, UPLOAD_PROGRESS } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { ref, computed, reactive, watch } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 
@@ -106,11 +107,15 @@ const ERROR_MSG = {
 const props = defineProps({
   currentStatus: {
     type: Number
+  },
+  path: {
+    type: String
   }
 })
 
 const { t } = useI18n()
 const store = useStore()
+const route = useRoute()
 const { goToAssetMaterialDetail } = useNavigation()
 
 const isLoading = ref(false)
@@ -125,7 +130,7 @@ const queryParams = reactive({
   startDate: '',
   endDate: ''
 })
-const tableData = computed(() => store.getters['assets/progress/progressList'])
+const tableData = computed(() => store.getters['assets/progress/u3mProgressList'])
 const material = computed(() => store.getters['assets/material'])
 
 const headers = [
@@ -180,6 +185,7 @@ let timerId
 const getList = async (targetPage = 1, showSpinner = true) => {
   clearTimeout(timerId)
   isLoading.value = showSpinner
+
   const result = await store.dispatch('assets/progress/getU3mUploadProgress', {
     ...queryParams,
     keyword: keyword.value,
@@ -192,25 +198,28 @@ const getList = async (targetPage = 1, showSpinner = true) => {
   })
   pagination.value = result.pagination
   isLoading.value = false
-  setTimer()
+
+  if (props.path === route.params.tab) {
+    setTimer()
+  }
 }
 
 const openModalSendFeedback = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-send-feedback'
   })
 }
 
 const openModalViewer = async (materialId) => {
   await store.dispatch('assets/getMaterial', { materialId })
-  const { baseImgUrl, normalImgUrl, dpi } = material.value
+  const { baseImgUrl, normalImgUrl, dpi } = material.value.u3m
   store.dispatch('helper/openModal', {
     component: 'modal-viewer',
     header: t('UU0006'),
     properties: {
-      dpi: dpi?.value,
-      baseImgUrl: baseImgUrl?.value,
-      normalImgUrl: normalImgUrl?.value
+      dpi,
+      baseImgUrl,
+      normalImgUrl
     }
   })
 }
@@ -245,8 +254,6 @@ const setTimer = () => {
     await getList(pagination.value.currentPage, false)
   }, 5000)
 }
-
-await getList()
 
 onBeforeRouteLeave(() => clearTimeout(timerId))
 onBeforeRouteUpdate(() => clearTimeout(timerId))

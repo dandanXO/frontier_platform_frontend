@@ -29,7 +29,7 @@ div(class="relative")
           :class="{ 'cursor-pointer': !!header.sortBy }"
           @click="handleSort(header.sortBy)"
         )
-          span(class="text-black-600 inline-block" :class="{ 'group-hover:text-primary': !!header.sortBy }") {{ header.label }}
+          span(class="text-black-600 inline-block whitespace-nowrap" :class="{ 'group-hover:text-primary': !!header.sortBy }") {{ header.label }}
           svg-icon(
             v-if="header.sortBy?.length > 0"
             iconName="keyboard_arrow_down"

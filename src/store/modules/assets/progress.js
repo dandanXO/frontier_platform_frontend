@@ -3,39 +3,55 @@ import assetsApi from '@/apis/assets'
 export default {
   namespaced: true,
   state: () => ({
-    progressList: []
+    materialProgressList: [],
+    u3mProgressList: [],
+    excelProgressList: []
   }),
   getters: {
-    progressList: state => state.progressList
+    materialProgressList: state => state.materialProgressList,
+    u3mProgressList: state => state.u3mProgressList,
+    excelProgressList: state => state.excelProgressList
   },
   mutations: {
-    SET_progressList (state, progressList) {
-      state.progressList = progressList
-    }
+    SET_materialProgressList (state, materialProgressList) {
+      state.materialProgressList = materialProgressList
+    },
+    SET_u3mProgressList (state, u3mProgressList) {
+      state.u3mProgressList = u3mProgressList
+    },
+    SET_excelProgressList (state, excelProgressList) {
+      state.excelProgressList = excelProgressList
+    },
   },
   actions: {
     async getMaterialUploadProgress ({ rootGetters, commit }, params) {
+      params.startDate = params.startDate.split('-').join('/')
+      params.endDate = params.endDate.split('-').join('/')
       const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.getMaterialUploadProgress({ orgId: rootGetters['organization/orgId'], ...params })
         : await assetsApi.group.getMaterialUploadProgress({ groupId: rootGetters['group/groupId'], ...params })
 
-      commit('SET_progressList', data.result.materialProgressList)
+      commit('SET_materialProgressList', data.result.materialProgressList)
       return data.result
     },
     async getU3mUploadProgress ({ rootGetters, commit }, params) {
+      params.startDate = params.startDate.split('-').join('/')
+      params.endDate = params.endDate.split('-').join('/')
       const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.getU3mUploadProgress({ orgId: rootGetters['organization/orgId'], ...params })
         : await assetsApi.group.getU3mUploadProgress({ groupId: rootGetters['group/groupId'], ...params })
 
-      commit('SET_progressList', data.result.u3mProgressList)
+      commit('SET_u3mProgressList', data.result.u3mProgressList)
       return data.result
     },
     async getExcelUploadProgress ({ rootGetters, commit }, params) {
+      params.startDate = params.startDate.split('-').join('/')
+      params.endDate = params.endDate.split('-').join('/')
       const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.getExcelUploadProgress({ orgId: rootGetters['organization/orgId'], ...params })
         : await assetsApi.group.getExcelUploadProgress({ groupId: rootGetters['group/groupId'], ...params })
 
-      commit('SET_progressList', data.result.excelProgressList)
+      commit('SET_excelProgressList', data.result.excelProgressList)
       return data.result
     },
     async cancelMaterialUploadProgress ({ rootGetters }, { materialProgressId }) {
