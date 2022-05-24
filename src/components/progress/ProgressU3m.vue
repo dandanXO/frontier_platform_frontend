@@ -205,7 +205,7 @@ const getList = async (targetPage = 1, showSpinner = true) => {
 }
 
 const openModalSendFeedback = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-send-feedback'
   })
 }

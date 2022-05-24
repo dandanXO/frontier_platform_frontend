@@ -118,7 +118,7 @@ const openModalU3mInstruction = () => {
 }
 
 const openModalSendFeedback = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-send-feedback'
   })
 }

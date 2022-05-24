@@ -56,7 +56,6 @@ export default {
     ModalPersonalProfile: defineAsyncComponent(() => import('@/components/lobby/ModalPersonalProfile.vue')),
     ModalPrivacyPolicy: defineAsyncComponent(() => import('@/components/ModalPrivacyPolicy.vue')),
     ModalTermsOfUse: defineAsyncComponent(() => import('@/components/ModalTermsOfUse.vue')),
-    ModalSendFeedback: defineAsyncComponent(() => import('@/components/ModalSendFeedback.vue')),
     ModalMaterialMerge: defineAsyncComponent(() => import('@/components/assets/merge/ModalMaterialMerge.vue')),
     ModalMaterialMergePreview: defineAsyncComponent(() => import('@/components/assets/merge/ModalMaterialMergePreview.vue')),
     ModalShare: defineAsyncComponent(() => import('@/components/workspace/ModalShare.vue')),

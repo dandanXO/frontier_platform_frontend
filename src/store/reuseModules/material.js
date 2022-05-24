@@ -98,6 +98,12 @@ const Material = {
     attachmentList: [],
     pantoneList: [],
     certificateList: [],
+    carbonEmission: {
+      co2: { personalized: 6.27, benchmark: null, differenceInPercent: 1, saving: null },
+      water: { personalized: 12.55, benchmark: null, differenceInPercent: null, saving: null },
+      land: { personalized: 18.7, benchmark: null, differenceInPercent: null, saving: null },
+      energy: { personalized: 34.2, benchmark: null, differenceInPercent: null, saving: null }
+    },
     u3m: {
       status: 0,
       zipUrl: '',

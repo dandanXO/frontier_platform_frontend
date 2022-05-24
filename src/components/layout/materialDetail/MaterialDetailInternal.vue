@@ -85,16 +85,33 @@ div
                 :index="index"
                 isReadOnly
               )
+        template(v-else-if="currentTab === TAB.INDICATOR")
+          div(class="-mt-10")
+            div(
+              v-if="!haveScannedImage || !material.isComplete || material.certificateList.length === 0"
+              class="h-15 bg-black-50 flex items-center mt-6 pl-4 gap-x-8"
+            )
+              div(class="flex items-center")
+                svg-icon(iconName="info_outline" size="20" class="text-black-600")
+                p(v-if="!haveScannedImage || !material.isComplete" class="pl-3 text-black-800 text-caption leading-1.6") {{ $t('EE0126') }}
+                p(v-else-if="material.certificateList.length === 0" class="pl-3 text-black-800 text-caption leading-1.6") {{ $t('EE0128') }}
+              div(class="flex items-center cursor-pointer" @click="goToAssetMaterialEdit(material)")
+                p(class="pr-1.5 text-assist-blue text-caption leading-1.6") {{ $t('EE0127') }}
+                svg-icon(iconName="arrow_forward" size="16" class="text-assist-blue")
+            environmental-indicator-panel(class="mt-3" :material="material")
 </template>
 
 <script setup>
+import { computed } from '@vue/reactivity'
 import { useI18n } from 'vue-i18n'
 import useMaterial from '@/composables/useMaterial'
+import useNavigation from '@/composables/useNavigation'
 import AttachmentItem from '@/components/assets/material/edit/AttachmentItem.vue'
 import BlockMaterialPreviewImg from '@/components/layout/materialDetail/BlockMaterialPreviewImg.vue'
 import BlockMaterialPantone from '@/components/layout/materialDetail/BlockMaterialPantone.vue'
 import BlockMaterialSpecification from '@/components/layout/materialDetail/BlockMaterialSpecification.vue'
 import BlockMaterialInternalU3mStatus from '@/components/layout/materialDetail/BlockMaterialInternalU3mStatus.vue'
+import EnvironmentalIndicatorPanel from '@/components/assets/material/EnvironmentalIndicatorPanel.vue'
 
 const props = defineProps({
   material: {
@@ -105,11 +122,14 @@ const props = defineProps({
 
 const { t } = useI18n()
 
+const { goToAssetMaterialEdit } = useNavigation()
+
 const TAB = {
   TAGS: 0,
   PRICING: 1,
   INVENTORY: 2,
-  SUP: 3
+  SUP: 3,
+  INDICATOR: 4
 }
 const tabList = [
   {
@@ -127,6 +147,10 @@ const tabList = [
   {
     name: t('RR0136'),
     id: TAB.SUP
+  },
+  {
+    name: t('RR0219'),
+    id: TAB.INDICATOR
   }
 ]
 const {
@@ -136,4 +160,9 @@ const {
   materialPrivatePriceInfo,
   attachmentSortedList
 } = useMaterial(props.material)
+
+const haveScannedImage = computed(() => {
+  const { faceSideImg, backSideImg } = props.material
+  return faceSideImg.original || backSideImg.original
+})
 </script>
