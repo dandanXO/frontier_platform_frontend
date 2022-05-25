@@ -41,12 +41,21 @@ export default function useMoodboardDetail ({ defaultOfferId, defaultNodeId }) {
     router.push({ name: route.name, query: { tab: currentTab.value, offerId: currentOfferId.value, nodeId } })
   }
 
+  const openModalMoodboardMaterialDetail = (nodeMaterial) => {
+    store.dispatch('helper/openModalBehavior', {
+      component: 'modal-moodboard-material-detail',
+      properties: {
+        nodeMaterial,
+        moodboardType: moodboard.value.moodboardType
+      }
+    })
+  }
+
   const handleNodeClick = (node) => {
     if (node.nodeType === NODE_TYPE.COLLECTION) {
       goTo(node.nodeId)
     } else {
-      // go to detail page
-      console.log('open material modal')
+      openModalMoodboardMaterialDetail(node)
     }
   }
 

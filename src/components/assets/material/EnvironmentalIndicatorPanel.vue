@@ -98,11 +98,11 @@ const isShowGraph = ref(false)
 const { carbonEmissionInfo } = useMaterial(props.material)
 
 const openModalIndicatorMethodology = () => {
-  store.dispatch('helper/openModalBehavior', { component: 'modal-indicator-methodology' })
+  store.dispatch('helper/pushModalBehavior', { component: 'modal-indicator-methodology' })
 }
 
 const openModalSendFeedback = () => {
-  store.dispatch('helper/openModalBehavior', {
+  store.dispatch('helper/pushModalBehavior', {
     component: 'modal-send-feedback'
   })
 }
