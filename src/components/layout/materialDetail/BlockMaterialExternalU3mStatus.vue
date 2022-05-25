@@ -56,7 +56,7 @@ const downloadU3m = async (url) => {
 }
 
 const openModalU3mInstruction = () => {
-  store.dispatch('helper/openModalBehavior', {
+  store.dispatch('helper/pushModalBehavior', {
     component: 'modal-u3m-instruction',
     properties: {
       primaryBtnText: t('UU0094'),
@@ -68,7 +68,7 @@ const openModalU3mInstruction = () => {
 }
 
 const openModalViewer = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/pushModal', {
     component: 'modal-viewer',
     header: t('UU0006'),
     properties: {

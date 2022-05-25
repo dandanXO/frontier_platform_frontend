@@ -49,7 +49,7 @@ export default {
     const store = useStore()
 
     const openModalPreviewAttachment = () => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/pushModal', {
         component: 'modal-preview-attachment',
         header: t('DD0060'),
         properties: {
