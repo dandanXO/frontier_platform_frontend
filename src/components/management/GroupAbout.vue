@@ -30,7 +30,7 @@ div
 <script>
 import { useStore } from 'vuex'
 import { computed, reactive, toRaw } from 'vue'
-import InputLabelColor from '@/components/InputLabelColor.vue'
+import InputLabelColor from '@/components/management/InputLabelColor.vue'
 import { useI18n } from 'vue-i18n'
 import copyText from '@/utils/copy-text'
 

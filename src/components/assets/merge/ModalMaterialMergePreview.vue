@@ -28,7 +28,7 @@ fullscreen-header
 </template>
 
 <script>
-import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
+import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import MaterialMergeRowDetail from '@/components/assets/merge/MaterialMergeRowDetail.vue'
 import { computed } from '@vue/runtime-core'
 import { useStore } from 'vuex'

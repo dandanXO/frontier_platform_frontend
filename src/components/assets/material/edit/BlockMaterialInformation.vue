@@ -186,8 +186,8 @@ import { SIDE_TYPE } from '@/utils/constants'
 import { useStore } from 'vuex'
 import useMaterialEdit from '@/composables/useMaterialEdit'
 import useMaterialImage from '@/composables/useMaterialImage'
-import ImageCropArea from '@/components/cropper/ImageCropArea.vue'
-import CropperDefaultLayout from '@/components/cropper/layout/CropperDefaultLayout.vue'
+import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
+import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import { Cropper } from '@/utils/cropper'
 
 export default {

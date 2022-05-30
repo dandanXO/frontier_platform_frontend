@@ -22,7 +22,7 @@ div(v-show="!isLoading" class="w-107 px-8")
 import { computed, onMounted, ref } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import ModalLoading from '@/components/modal/ModalLoading.vue'
+import ModalLoading from '@/components/common/modal/ModalLoading.vue'
 
 export default {
   name: 'ModalSetupCard',

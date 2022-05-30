@@ -16,7 +16,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useWorkspace from '@/composables/useWorkspace'
-import MaterialDetailInternal from '@/components/layout/material/detail/MaterialDetailInternal.vue'
+import MaterialDetailInternal from '@/components/common/material/detail/MaterialDetailInternal.vue'
 import dayjs from 'dayjs'
 
 const props = defineProps({

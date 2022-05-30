@@ -69,8 +69,7 @@ div(class="pt-16 xl:pt-17.5")
 import { computed, reactive, toRaw, watch, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import InputCallingCode from '@/components/InputCallingCode.vue'
-import InputLabelColor from '@/components/InputLabelColor.vue'
+import InputLabelColor from '@/components/management/InputLabelColor.vue'
 import copyText from '@/utils/copy-text'
 import { useRouter } from 'vue-router'
 import usePlan from '@/composables/usePlan.js'
@@ -79,7 +78,6 @@ import { FUNC_ID } from '@/utils/constants.js'
 export default {
   name: 'OrgAbout',
   components: {
-    InputCallingCode,
     InputLabelColor
   },
   setup () {

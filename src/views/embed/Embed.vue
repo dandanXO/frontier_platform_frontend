@@ -53,8 +53,8 @@ div(class="fixed z-footer bottom-0 w-full h-13 bg-black-100 px-36 flex items-cen
 </template>
 
 <script setup>
-import SearchTable from '@/components/layout/SearchTable.vue'
-import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
+import SearchTable from '@/components/common/SearchTable.vue'
+import ChildNodeItem from '@/components/common/ChildNodeItem.vue'
 import { SEARCH_TYPE, SORT_BY, NODE_TYPE } from '@/utils/constants.js'
 import useNavigation from '@/composables/useNavigation.js'
 import { useRoute, useRouter } from 'vue-router'

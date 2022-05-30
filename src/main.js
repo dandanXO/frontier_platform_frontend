@@ -14,10 +14,10 @@ const svgs = import.meta.globEager('/src/assets/icons/**/*.svg')
 
 const app = createApp(App)
 
-const commonComponents = import.meta.globEager('/src/components/common/**/*.vue')
+const globalComponents = import.meta.globEager('/src/components/global/**/*.vue')
 
-for (const path in commonComponents) {
-  const component = commonComponents[path].default
+for (const path in globalComponents) {
+  const component = globalComponents[path].default
   app.component(component.name, component)
 }
 

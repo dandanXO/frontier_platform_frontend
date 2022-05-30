@@ -49,10 +49,10 @@ div(class="w-full h-full")
 </template>
 
 <script setup>
-import SearchTable from '@/components/layout/SearchTable.vue'
+import SearchTable from '@/components/common/SearchTable.vue'
 import RowItem from '@/components/assets/material/list/RowItem.vue'
 import GridItem from '@/components/assets/material/list/GridItem.vue'
-import GridOrRow from '@/components/layout/GridOrRow.vue'
+import GridOrRow from '@/components/common/GridOrRow.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'

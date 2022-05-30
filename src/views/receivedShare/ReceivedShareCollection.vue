@@ -62,12 +62,12 @@ div(class="w-315 h-full mx-auto")
 </template>
 
 <script setup>
-import SearchTable from '@/components/layout/SearchTable.vue'
+import SearchTable from '@/components/common/SearchTable.vue'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import { SEARCH_TYPE, SORT_BY, NODE_TYPE } from '@/utils/constants.js'
 import { useRoute, useRouter } from 'vue-router'
-import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
+import ChildNodeItem from '@/components/common/ChildNodeItem.vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation.js'

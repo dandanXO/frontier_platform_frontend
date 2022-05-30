@@ -18,7 +18,7 @@ div(class="w-full h-full flex justify-center" :class="{ 'pt-13': breadcrumbList.
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import MaterialDetailExternal from '@/components/layout/material/detail/MaterialDetailExternal.vue'
+import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'
 
 const props = defineProps({

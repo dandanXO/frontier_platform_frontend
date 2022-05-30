@@ -68,7 +68,7 @@ modal-behavior(
 <script>
 import { ref, reactive, computed } from 'vue'
 import { SORT_BY, NODE_TYPE, NODE_LOCATION } from '@/utils/constants'
-import NodeItemForModal from '@/components/layout/NodeItemForModal.vue'
+import NodeItemForModal from '@/components/common/NodeItemForModal.vue'
 import { useStore } from 'vuex'
 import useMaterial from '@/composables/useMaterial'
 import { useI18n } from 'vue-i18n'

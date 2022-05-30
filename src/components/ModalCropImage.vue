@@ -23,8 +23,8 @@ div(class="w-86 border-t border-black-400 pt-12")
 <script>
 import { reactive, computed, ref } from 'vue'
 import { useStore } from 'vuex'
-import CropperDefaultLayout from '@/components/cropper/layout/CropperDefaultLayout.vue'
-import ImageCropArea from '@/components/cropper/ImageCropArea.vue'
+import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
+import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import { Cropper } from '@/utils/cropper'
 
 export default {

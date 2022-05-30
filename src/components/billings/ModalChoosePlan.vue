@@ -46,7 +46,7 @@ fullscreen-header
 </template>
 
 <script>
-import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
+import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
 import { useI18n } from 'vue-i18n'

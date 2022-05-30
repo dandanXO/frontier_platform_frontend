@@ -68,8 +68,8 @@ div(class="min-w-86 max-w-196 px-8 pt-5")
 <script>
 import { useStore } from 'vuex'
 import { ref, computed, reactive, watch } from 'vue'
-import ImageCropArea from '@/components/cropper/ImageCropArea.vue'
-import CropperDefaultLayout from '@/components/cropper/layout/CropperDefaultLayout.vue'
+import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
+import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import useMaterialImage from '@/composables/useMaterialImage'
 import { Cropper } from '@/utils/cropper'
 
