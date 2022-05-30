@@ -39,7 +39,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
           :node="node"
           :properties="node.properties"
           :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.properties.name : node.properties.materialNo"
-          :optionList="optionNode(node.nodeType)"
+          :optionList="optionNode(node)"
           @click:option="$event.func(node)"
           @click.stop="handleNodeClick(node)"
         )
@@ -67,24 +67,34 @@ import SvgIcon from '@/components/common/SvgIcon.vue'
 import MultiSelectMenu from '@/components/layout/MultiSelectMenu.vue'
 import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'
 import useMoodboardDetail from '@/composables/useMoodboardDetail.js'
+import useMoodboardNode from '@/composables/useMoodboardNode.js'
 
 const store = useStore()
 const { t } = useI18n()
-
 const moodboard = computed(() => store.getters['moodboard/moodboard'])
+const moodboardOfferNodeCollection = computed(() => store.getters['moodboard/moodboardOfferNodeCollection'])
+const {
+  selectedNodeList,
+  selectAll,
+  deleteMoodboardNode,
+  openModalMoodboardMaterialDetail
+} = useMoodboardNode(moodboard, moodboardOfferNodeCollection)
 const {
   keyword,
   currentTab,
   currentNodeId,
   isLoading,
-  selectedNodeList,
-  selectAll,
   switchTab,
   goTo,
-  search,
-  handleNodeClick
-} = useMoodboardDetail({ defaultOfferId: moodboard.value.properties.myOfferId, defaultNodeId: moodboard.value.properties.myRootNodeId })
-const moodboardOfferNodeCollection = computed(() => store.getters['moodboard/moodboardOfferNodeCollection'])
+  search
+} = useMoodboardDetail({ defaultOfferId: moodboard.value.properties.myOfferId, defaultNodeId: moodboard.value.properties.myRootNodeId, selectedNodeList })
+const handleNodeClick = (node) => {
+  if (node.nodeType === NODE_TYPE.COLLECTION) {
+    goTo(node.nodeId)
+  } else {
+    openModalMoodboardMaterialDetail(node)
+  }
+}
 
 const tabList = computed(() => [
   {
@@ -137,38 +147,24 @@ const openModalCreateOrEditMoodboardCollection = (mode, nodeId) => {
   })
 }
 
-const deleteMoodboardNode = (nodeType, nodeIdList) => {
-  store.dispatch('helper/openModalConfirm', {
-    type: 1,
-    header: nodeType === NODE_TYPE.COLLECTION ? t('QQ0072') : t('QQ0065'),
-    content: nodeType === NODE_TYPE.COLLECTION ? t('QQ0073') : t('QQ0066'),
-    primaryBtnText: t('UU0091'),
-    primaryBtnHandler: async () => {
-      await store.dispatch('moodboard/deleteMoodboardNode', { nodeIdList })
-      store.dispatch('helper/reloadInnerApp')
-    },
-    secondaryBtnText: t('UU0002')
-  })
-}
-
-const optionNode = (nodeType) => {
-  if (nodeType === NODE_TYPE.COLLECTION) {
+const optionNode = (node) => {
+  if (node.nodeType === NODE_TYPE.COLLECTION) {
     return [
       [
-        { name: t('UU0027'), func: (node) => openModalCreateOrEditMoodboardCollection(CREATE_EDIT.EDIT, node.nodeId) },
-        { name: t('UU0013'), func: (node) => deleteMoodboardNode(nodeType, [node.nodeId]) }
+        { name: t('UU0027'), func: (n) => openModalCreateOrEditMoodboardCollection(CREATE_EDIT.EDIT, n.nodeId) },
+        { name: t('UU0013'), func: (n) => deleteMoodboardNode([n]) }
       ]
     ]
   } else {
     return [
       [
-        { name: t('UU0013'), func: (node) => deleteMoodboardNode(nodeType, [node.nodeId]) }
+        { name: t('UU0013'), func: (n) => deleteMoodboardNode([n]) }
       ]
     ]
   }
 }
 
 const optionMultiSelect = [
-  { name: t('UU0013'), func: (nodeList) => deleteMoodboardNode(NODE_TYPE.MATERIAL, nodeList.map(({ nodeId }) => nodeId)) }
+  { name: t('UU0013'), func: deleteMoodboardNode }
 ]
 </script>

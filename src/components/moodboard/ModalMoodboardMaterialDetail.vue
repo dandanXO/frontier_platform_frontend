@@ -10,7 +10,7 @@ modal-behavior(
         p(class="text-body2 text-primary font-bold line-clamp-1 !break-all pr-6") {{ `${nodeMaterial.properties.materialNo} ${nodeMaterial.properties.description}` }}
         tooltip(placement="top")
           template(#trigger)
-            div(class="w-6.5 h-6.5 group cursor-pointer hover:bg-brand/10 rounded-full flex items-center justify-center" @click="moodboardType === MOODBOARD_TYPE.DEMANDER && togglePick(nodeMaterial)")
+            div(class="w-6.5 h-6.5 group cursor-pointer hover:bg-brand/10 rounded-full flex items-center justify-center" @click="moodboardType === MOODBOARD_TYPE.DEMANDER && pickHandler()")
               svg-icon(
                 size="20"
                 :iconName="nodeMaterial.isPicked ? 'bookmark' : 'bookmark_border'"
@@ -28,11 +28,9 @@ modal-behavior(
 
 <script setup>
 import MaterialDetailExternal from '@/components/layout/materialDetail/MaterialDetailExternal.vue'
-import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
-import { MOODBOARD_TAB, MOODBOARD_TYPE } from '@/utils/constants.js'
+import { MOODBOARD_TYPE } from '@/utils/constants.js'
 
-const props = defineProps({
+defineProps({
   nodeMaterial: {
     type: Object,
     required: true
@@ -40,26 +38,10 @@ const props = defineProps({
   moodboardType: {
     type: Number,
     default: MOODBOARD_TYPE.DEMANDER
+  },
+  pickHandler: {
+    type: Function
   }
 })
 
-const route = useRoute()
-const store = useStore()
-
-const togglePick = async (node) => {
-  const moodboardOfferNodeCollection = store.getters['moodboard/moodboardOfferNodeCollection']
-  if (node.isPicked) {
-    store.dispatch('moodboard/unpickMoodboardNode', { nodeId: node.nodeId })
-    if (route.query.tab === MOODBOARD_TAB.PICKED) {
-      const index = moodboardOfferNodeCollection.childNodeList.findIndex(cNode => cNode.nodeId === node.nodeId)
-      moodboardOfferNodeCollection.childNodeList.splice(index, 1)
-    }
-  } else {
-    store.dispatch('moodboard/pickMoodboardNode', { nodeId: node.nodeId })
-    if (route.query.tab === MOODBOARD_TAB.PICKED) {
-      moodboardOfferNodeCollection.childNodeList.push(node)
-    }
-  }
-  node.isPicked = !node.isPicked
-}
 </script>

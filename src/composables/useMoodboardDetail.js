@@ -1,9 +1,9 @@
 import { watch, ref, computed } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { useStore } from "vuex"
-import { MOODBOARD_TAB, NODE_TYPE } from '@/utils/constants.js'
+import { MOODBOARD_TAB } from '@/utils/constants.js'
 
-export default function useMoodboardDetail ({ defaultOfferId, defaultNodeId }) {
+export default function useMoodboardDetail ({ defaultOfferId, defaultNodeId, selectedNodeList }) {
   const route = useRoute()
   const router = useRouter()
   const store = useStore()
@@ -13,12 +13,6 @@ export default function useMoodboardDetail ({ defaultOfferId, defaultNodeId }) {
   const currentNodeId = computed(() => Number(route.query.nodeId) || defaultNodeId)
 
   const moodboardOfferNodeCollection = computed(() => store.getters['moodboard/moodboardOfferNodeCollection'])
-  const selectedNodeList = ref([])
-  const selectAll = () => {
-    const stringifyList = moodboardOfferNodeCollection.value.childNodeList.map(node => JSON.stringify(node))
-    const tempSelectedNodeList = [...selectedNodeList.value]
-    selectedNodeList.value = [...new Set(tempSelectedNodeList.concat(stringifyList))]
-  }
 
   const moodboard = computed(() => store.getters['moodboard/moodboard'])
   const keyword = ref('')
@@ -39,24 +33,6 @@ export default function useMoodboardDetail ({ defaultOfferId, defaultNodeId }) {
   const goTo = (nodeId) => {
     keyword.value = ''
     router.push({ name: route.name, query: { tab: currentTab.value, offerId: currentOfferId.value, nodeId } })
-  }
-
-  const openModalMoodboardMaterialDetail = (nodeMaterial) => {
-    store.dispatch('helper/openModalBehavior', {
-      component: 'modal-moodboard-material-detail',
-      properties: {
-        nodeMaterial,
-        moodboardType: moodboard.value.moodboardType
-      }
-    })
-  }
-
-  const handleNodeClick = (node) => {
-    if (node.nodeType === NODE_TYPE.COLLECTION) {
-      goTo(node.nodeId)
-    } else {
-      openModalMoodboardMaterialDetail(node)
-    }
   }
 
   const isLoading = ref(false)
@@ -107,12 +83,9 @@ export default function useMoodboardDetail ({ defaultOfferId, defaultNodeId }) {
     currentOfferId,
     currentNodeId,
     isLoading,
-    selectedNodeList,
-    selectAll,
     switchOffer,
     switchTab,
     goTo,
-    search,
-    handleNodeClick
+    search
   }
 }

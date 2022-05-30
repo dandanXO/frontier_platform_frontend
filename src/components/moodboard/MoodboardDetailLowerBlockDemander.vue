@@ -47,7 +47,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
                 @enter="search"
                 @clear="search"
               )
-              btn(v-if="currentOfferId === 'all'" size="sm" type="secondary" prependIcon="bookmark") {{ $t("QQ0029") }}
+              btn(v-if="currentOfferId === 'all'" size="sm" type="secondary" prependIcon="bookmark" @click="goToMoodboardPickedList(moodboard.moodboardId)") {{ $t("QQ0086") }}
             div(class="pt-3 pb-3.5 h-6 box-content flex items-center justify-between")
               breadcrumb(:breadcrumbList="moodboardOfferNodeCollection.locationList" fontSize="text-body2" @click:item="goTo($event.nodeId)")
               btn-functional(v-if="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED" size="lg" @click="selectAll") {{ $t("RR0209") }}
@@ -71,7 +71,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
                 template(#caption v-if="node.nodeType === NODE_TYPE.MATERIAL")
                   tooltip(class="absolute right-0 -bottom-0.5" placement="top")
                     template(#trigger)
-                      div(class="w-6.5 h-6.5 group cursor-pointer hover:bg-brand/10 rounded-full flex items-center justify-center" @click="togglePick(node)")
+                      div(class="w-6.5 h-6.5 group cursor-pointer hover:bg-brand/10 rounded-full flex items-center justify-center" @click="togglePick(node, currentTab === MOODBOARD_TAB.PICKED, false)")
                         svg-icon(
                           size="20"
                           :iconName="node.isPicked ? 'bookmark' : 'bookmark_border'"
@@ -96,33 +96,50 @@ import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
 import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'
 import MultiSelectMenu from '@/components/layout/MultiSelectMenu.vue'
 import useMoodboardDetail from '@/composables/useMoodboardDetail.js'
+import useMoodboardNode from '@/composables/useMoodboardNode.js'
+import useNavigation from '@/composables/useNavigation'
 
 const store = useStore()
 const { t } = useI18n()
+const { goToMoodboardPickedList } = useNavigation()
+const moodboard = computed(() => store.getters['moodboard/moodboard'])
+const moodboardOfferNodeCollection = computed(() => store.getters['moodboard/moodboardOfferNodeCollection'])
+const {
+  cloneMoodboardNode,
+  exportMoodboardNode,
+  openModalU3mSelectFileFormat,
+  openModalMoodboardMaterialDetail,
+  togglePick,
+  selectedNodeList,
+  selectAll
+} = useMoodboardNode(moodboard, moodboardOfferNodeCollection)
 const {
   keyword,
   currentTab,
   currentOfferId,
   isLoading,
-  selectedNodeList,
-  selectAll,
   switchOffer,
   switchTab,
   goTo,
-  search,
-  handleNodeClick
-} = useMoodboardDetail({ defaultOfferId: 'all', defaultNodeId: null })
-
+  search
+} = useMoodboardDetail({ defaultOfferId: 'all', defaultNodeId: null, selectedNodeList })
+const handleNodeClick = (node) => {
+  if (node.nodeType === NODE_TYPE.COLLECTION) {
+    goTo(node.nodeId)
+  } else {
+    const willRemove = currentTab.value === MOODBOARD_TAB.PICKED
+    const willRecovery = currentTab.value === MOODBOARD_TAB.PICKED
+    openModalMoodboardMaterialDetail(node, willRemove, willRecovery)
+  }
+}
 const openModalMoodboardShareList = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-moodboard-share-list',
   })
 }
 
-const moodboard = computed(() => store.getters['moodboard/moodboard'])
 const moodboardOfferList = computed(() => store.getters['moodboard/moodboardOfferList'])
 const totalOfferItemCounts = computed(() => moodboardOfferList.value.reduce((prev, current) => prev + current.itemCounts, 0))
-const moodboardOfferNodeCollection = computed(() => store.getters['moodboard/moodboardOfferNodeCollection'])
 
 const tabList = computed(() => {
   const currentOffer = moodboardOfferList.value.find(offer => offer.offerId === Number(currentOfferId.value))
@@ -143,24 +160,6 @@ const tabList = computed(() => {
   ]
 })
 
-const cloneMoodboardNode = (nodeList) => {
-  const isContainCollection = nodeList.some(node => node.nodeType === NODE_TYPE.COLLECTION)
-  const msg = isContainCollection ? t('II0009') : t('II0008')
-  const nodeIdList = nodeList.map(({ nodeId }) => nodeId)
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-clone-to',
-    properties: {
-      checkHandler: async () => {
-        return store.dispatch('moodboard/cloneCheckMoodboardNode', { nodeIdList })
-      },
-      cloneHandler: async (targetLocationList, optional) => {
-        await store.dispatch('moodboard/cloneMoodboardNode', { nodeIdList, targetLocationList, optional })
-        store.commit('helper/PUSH_message', msg)
-      }
-    }
-  })
-}
-
 const optionNode = (node) => {
   if (node.nodeType === NODE_TYPE.COLLECTION) {
     return [
@@ -175,12 +174,7 @@ const optionNode = (node) => {
         {
           name: t('RR0059'),
           disabled: node.properties.u3m.status !== U3M_STATUS.COMPLETED,
-          func: (n) => {
-            store.dispatch('helper/openModal', {
-              component: 'modal-u3m-select-file-format',
-              properties: { materialList: [n.properties] }
-            })
-          }
+          func: (n) => openModalU3mSelectFileFormat([n])
         }
       ]
     ]
@@ -190,40 +184,7 @@ const optionNode = (node) => {
 const optionMultiSelect = [
   {
     name: t('RR0060'),
-    func: async (nodeList) => {
-      const nodeIdList = nodeList.map(({ nodeId }) => nodeId)
-      if (nodeIdList.length >= 100) {
-        await store.dispatch('moodboard/massExportMoodboardNode', { moodboardId: moodboard.value.moodboardId, nodeIdList })
-        store.dispatch('helper/openModalConfirm', {
-          type: 2,
-          header: t('PP0030'),
-          content: t('PP0031'),
-          primaryBtnText: t('UU0031'),
-          secondaryBtnText: t('UU0090'),
-          secondaryBtnHandler: () => {
-            goToProgress('excel')
-            store.dispatch('helper/closeModalBehavior')
-          }
-        })
-      } else {
-        store.dispatch('helper/openModalLoading')
-        await store.dispatch('moodboard/exportMoodboardNode', { moodboardId: moodboard.value.moodboardId, nodeIdList })
-        store.dispatch('helper/closeModalLoading')
-      }
-    }
+    func: exportMoodboardNode
   }
 ]
-
-const togglePick = async (node) => {
-  if (node.isPicked) {
-    store.dispatch('moodboard/unpickMoodboardNode', { nodeId: node.nodeId })
-    if (currentTab.value === MOODBOARD_TAB.PICKED) {
-      const index = moodboardOfferNodeCollection.value.childNodeList.findIndex(cNode => cNode.nodeId === node.nodeId)
-      moodboardOfferNodeCollection.value.childNodeList.splice(index, 1)
-    }
-  } else {
-    store.dispatch('moodboard/pickMoodboardNode', { nodeId: node.nodeId })
-  }
-  node.isPicked = !node.isPicked
-}
 </script>

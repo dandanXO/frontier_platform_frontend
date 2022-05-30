@@ -102,6 +102,10 @@ export default function useNavigation () {
     router.push(parsePath(`${prefixPath.value}/moodboard/${moodboardId}?tab=${MOODBOARD_TAB.OFFER}`))
   }
 
+  const goToMoodboardPickedList = (moodboardId) => {
+    router.push(parsePath(`${prefixPath.value}/moodboard/${moodboardId}/picked-list`))
+  }
+
   return {
     nextAfterSignIn,
     parsePath,
@@ -122,6 +126,7 @@ export default function useNavigation () {
     goToPaymentDetail,
     goToEmbedMaterialDetail,
     goToMoodboardDetail,
+    goToMoodboardPickedList,
     prefixPath
   }
 }
