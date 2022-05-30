@@ -8,19 +8,20 @@ class GoogleSignInApi {
     this.client_id = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID
   }
 
-  async init () {
-    return new Promise((resolve, reject) => {
-      this.gapi.load('auth2', async () => {
-        this.googleAuth = await this.gapi.auth2.init({
-          client_id: this.client_id
+  async init ({ elementId, options = {}, successHandler = this.successHandler, failHandler = this.failHandler }) {
+    await new Promise((resolve, reject) => {
+      try {
+        this.gapi.load('auth2', async () => {
+          this.googleAuth = await this.gapi.auth2.init({
+            client_id: this.client_id
+          })
+          this.googleAuth.attachClickHandler(elementId, options, successHandler, failHandler)
+          resolve()
         })
-        resolve()
-      })
+      } catch (error) {
+        reject()
+      }
     })
-  }
-
-  attachClickHandler ({ elementId, options = {}, successHandler = this.successHandler, failHandler = this.failHandler }) {
-    this.googleAuth.attachClickHandler(elementId, options, successHandler, failHandler)
   }
 
   successHandler (googleUser) {
