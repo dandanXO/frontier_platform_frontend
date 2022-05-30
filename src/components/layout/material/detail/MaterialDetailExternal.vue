@@ -1,11 +1,11 @@
 <template lang="pug">
 div
   div(class="flex gap-x-10")
-    block-material-preview-img(:material="material" class="w-112.5 flex-shrink-0")
+    material-detail-preview-img(:material="material" class="w-112.5 flex-shrink-0")
     div(class="flex flex-col gap-y-7.5 flex-grow")
-      block-material-specification(:material="material")
-      block-material-pantone(:pantoneList="material.pantoneList")
-      block-material-external-u3m-status(:material="material" :isCanDownloadU3M="isCanDownloadU3M")
+      material-detail-specification(:material="material")
+      material-detail-pantone(:pantoneList="material.pantoneList")
+      material-detail-external-u3m-status(:material="material" :isCanDownloadU3M="isCanDownloadU3M")
   div(class="pt-16 grid gap-y-7.5")
     div
       h5(class="text-h5 font-bold text-primary pb-5") {{ $t("RR0133") }}
@@ -37,50 +37,32 @@ div
             )
     div
       h5(class="text-h5 font-bold text-primary pb-5") {{ $t("RR0219") }}
-      environmental-indicator-panel(:material="material")
+      material-detail-environmental-indicator(:material="material")
 </template>
 
-<script>
+<script setup>
 import useMaterial from '@/composables/useMaterial'
-import AttachmentItem from '@/components/AttachmentItem.vue'
-import BlockMaterialPreviewImg from '@/components/layout/materialDetail/BlockMaterialPreviewImg.vue'
-import BlockMaterialPantone from '@/components/layout/materialDetail/BlockMaterialPantone.vue'
-import BlockMaterialSpecification from '@/components/layout/materialDetail/BlockMaterialSpecification.vue'
-import BlockMaterialExternalU3mStatus from '@/components/layout/materialDetail/BlockMaterialExternalU3mStatus.vue'
-import EnvironmentalIndicatorPanel from '@/components/assets/material/EnvironmentalIndicatorPanel.vue'
+import AttachmentItem from '@/components/layout/material/attachment/AttachmentItem.vue'
+import MaterialDetailPreviewImg from '@/components/layout/material/detail/MaterialDetailPreviewImg.vue'
+import MaterialDetailPantone from '@/components/layout/material/detail/MaterialDetailPantone.vue'
+import MaterialDetailSpecification from '@/components/layout/material/detail/MaterialDetailSpecification.vue'
+import MaterialDetailExternalU3mStatus from '@/components/layout/material/detail/MaterialDetailExternalU3mStatus.vue'
+import MaterialDetailEnvironmentalIndicator from '@/components/layout/material/detail/MaterialDetailEnvironmentalIndicator.vue'
 
-export default {
-  name: 'MaterialDetailExternal',
-  components: {
-    AttachmentItem,
-    BlockMaterialPreviewImg,
-    BlockMaterialSpecification,
-    BlockMaterialPantone,
-    BlockMaterialExternalU3mStatus,
-    EnvironmentalIndicatorPanel
+const props = defineProps({
+  material: {
+    type: Object,
+    required: true
   },
-  props: {
-    material: {
-      type: Object,
-      required: true
-    },
-    isCanDownloadU3M: {
-      type: Boolean,
-      required: true
-    }
-  },
-  setup (props) {
-    const {
-      materialInfo,
-      materialPublicPriceInfo,
-      attachmentSortedList
-    } = useMaterial(props.material)
-
-    return {
-      materialInfo,
-      materialPublicPriceInfo,
-      attachmentSortedList
-    }
+  isCanDownloadU3M: {
+    type: Boolean,
+    required: true
   }
-}
+})
+
+const {
+  materialInfo,
+  materialPublicPriceInfo,
+  attachmentSortedList
+} = useMaterial(props.material)
 </script>

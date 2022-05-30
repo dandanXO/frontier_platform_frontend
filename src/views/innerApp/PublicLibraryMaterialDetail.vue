@@ -17,7 +17,7 @@ import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
 import usePublicLibrary from '@/composables/usePublicLibrary'
-import MaterialDetailExternal from '@/components/layout/materialDetail/MaterialDetailExternal.vue'
+import MaterialDetailExternal from '@/components/layout/material/detail/MaterialDetailExternal.vue'
 
 const props = defineProps({
   nodeKey: {

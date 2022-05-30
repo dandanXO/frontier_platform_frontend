@@ -32,7 +32,7 @@ div
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import AttachmentItem from '@/components/AttachmentItem.vue'
+import AttachmentItem from '@/components/layout/material/attachment/AttachmentItem.vue'
 import useMaterialEdit from '@/composables/useMaterialEdit'
 
 const props = defineProps({

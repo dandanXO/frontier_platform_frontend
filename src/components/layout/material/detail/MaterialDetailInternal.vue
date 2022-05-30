@@ -1,11 +1,11 @@
 <template lang="pug">
 div
   div(class="flex gap-x-10")
-    block-material-preview-img(:material="material" class="w-112.5 flex-shrink-0")
+    material-detail-preview-img(:material="material" class="w-112.5 flex-shrink-0")
     div(class="flex flex-col gap-y-7.5 flex-grow")
-      block-material-specification(:material="material")
-      block-material-pantone(:pantoneList="material.pantoneList")
-      block-material-internal-u3m-status(:material="material")
+      material-detail-specification(:material="material")
+      material-detail-pantone(:pantoneList="material.pantoneList")
+      material-detail-internal-u3m-status(:material="material")
   tabs(:tabList="tabList" keyField="id" class="pt-20")
     template(#default="{ currentTab }")
       div(class="pt-10")
@@ -98,7 +98,7 @@ div
               div(class="flex items-center cursor-pointer" @click="goToAssetMaterialEdit(material)")
                 p(class="pr-1.5 text-assist-blue text-caption leading-1.6") {{ $t('EE0127') }}
                 svg-icon(iconName="arrow_forward" size="16" class="text-assist-blue")
-            environmental-indicator-panel(class="mt-3" :material="material")
+            material-detail-environmental-indicator(class="mt-3" :material="material")
 </template>
 
 <script setup>
@@ -106,12 +106,12 @@ import { computed } from '@vue/reactivity'
 import { useI18n } from 'vue-i18n'
 import useMaterial from '@/composables/useMaterial'
 import useNavigation from '@/composables/useNavigation'
-import AttachmentItem from '@/components/AttachmentItem.vue'
-import BlockMaterialPreviewImg from '@/components/layout/materialDetail/BlockMaterialPreviewImg.vue'
-import BlockMaterialPantone from '@/components/layout/materialDetail/BlockMaterialPantone.vue'
-import BlockMaterialSpecification from '@/components/layout/materialDetail/BlockMaterialSpecification.vue'
-import BlockMaterialInternalU3mStatus from '@/components/layout/materialDetail/BlockMaterialInternalU3mStatus.vue'
-import EnvironmentalIndicatorPanel from '@/components/assets/material/EnvironmentalIndicatorPanel.vue'
+import AttachmentItem from '@/components/layout/material/attachment/AttachmentItem.vue'
+import MaterialDetailPreviewImg from '@/components/layout/material/detail/MaterialDetailPreviewImg.vue'
+import MaterialDetailPantone from '@/components/layout/material/detail/MaterialDetailPantone.vue'
+import MaterialDetailSpecification from '@/components/layout/material/detail/MaterialDetailSpecification.vue'
+import MaterialDetailInternalU3mStatus from '@/components/layout/material/detail/MaterialDetailInternalU3mStatus.vue'
+import MaterialDetailEnvironmentalIndicator from '@/components/layout/material/detail/MaterialDetailEnvironmentalIndicator.vue'
 
 const props = defineProps({
   material: {
