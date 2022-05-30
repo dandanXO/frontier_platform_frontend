@@ -116,14 +116,12 @@ const reuseRoutes = (prefix) => ([
   {
     path: 'moodboard/:moodboardId/picked-list',
     name: `${prefix}MoodboardPickedList`,
-    props: (route) => {
-      const moodboardId = Number.parseInt(route.params.moodboardId, 10)
-      if (Number.isNaN(moodboardId)) {
-        return 0
-      }
-      return { moodboardId }
-    },
-    component: () => import('@/views/innerApp/moodboard/MoodboardPickedList.vue')
+    component: () => import('@/views/innerApp/moodboard/MoodboardPickedList.vue'),
+    beforeEnter: async (to, from, next) => {
+      const moodboardId = Number.parseInt(to.params.moodboardId, 10)
+      await store.dispatch('moodboard/getMoodboard', { moodboardId })
+      next()
+    }
   },
   {
     path: 'sticker',
