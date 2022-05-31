@@ -17,7 +17,7 @@ div
     p(class="text-body2 text-primary") {{ label.text }}
   div(class="flex flex-nowrap flex-grow")
     div(class="flex-shrink-0")
-      btn(v-if="material.u3m.status === COMPLETED" size="md" type="secondary" @click="handleCreateU3m") {{ $t("UU0006") }}
+      btn(v-if="material.u3m.status === COMPLETED" size="md" type="secondary" @click="openModalViewer") {{ $t("UU0006") }}
       btn(
         v-else-if="material.u3m.status === UNSUCCESSFUL"
         size="md"
@@ -147,4 +147,17 @@ const label = computed(() => {
 
   return { text, color }
 })
+
+const openModalViewer = () => {
+  const { baseImgUrl, normalImgUrl, dpi } = props.material.u3m
+  store.dispatch('helper/openModal', {
+    component: 'modal-viewer',
+    header: t('UU0006'),
+    properties: {
+      dpi,
+      baseImgUrl,
+      normalImgUrl
+    }
+  })
+}
 </script>
