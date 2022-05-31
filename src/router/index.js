@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import { ROLE_ID, NODE_TYPE } from '@/utils/constants'
-import Sidebar from '@/components/common/sidebar/Sidebar.vue'
+import Sidebar from '@/components/sidebar/Sidebar.vue'
 import i18n from '@/utils/i18n'
 
 const checkUserIsVerify = (to, from, next) => {

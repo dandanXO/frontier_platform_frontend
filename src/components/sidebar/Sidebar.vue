@@ -56,9 +56,9 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-black-100 sidebar-shadow f
 <script>
 import { useStore } from 'vuex'
 import { computed, onUnmounted } from 'vue'
-import SidebarItem from '@/components/common/sidebar/SidebarItem.vue'
-import MenuOrg from '@/components/common/sidebar/MenuOrg.vue'
-import MenuOrgUser from '@/components/common/sidebar/MenuOrgUser.vue'
+import SidebarItem from '@/components/sidebar/SidebarItem.vue'
+import MenuOrg from '@/components/sidebar/MenuOrg.vue'
+import MenuOrgUser from '@/components/sidebar/MenuOrgUser.vue'
 import { useI18n } from 'vue-i18n'
 import { NODE_LOCATION } from '@/utils/constants'
 
