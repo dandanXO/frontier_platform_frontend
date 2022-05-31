@@ -26,9 +26,9 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { UPLOAD_PROGRESS } from '@/utils/constants'
 
-const ProgressMaterial = defineAsyncComponent(() => import('@/components/progress/ProgressMaterial.vue'))
-const ProgressU3m = defineAsyncComponent(() => import('@/components/progress/ProgressU3m.vue'))
-const ProgressExcel = defineAsyncComponent(() => import('@/components/progress/ProgressExcel.vue'))
+const ProgressMaterial = defineAsyncComponent(() => import('@/components/assets/progress/ProgressMaterial.vue'))
+const ProgressU3m = defineAsyncComponent(() => import('@/components/assets/progress/ProgressU3m.vue'))
+const ProgressExcel = defineAsyncComponent(() => import('@/components/assets/progress/ProgressExcel.vue'))
 
 const PROGRESS_PATH = {
   MATERIAL: 'material',

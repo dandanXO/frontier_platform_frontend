@@ -78,8 +78,8 @@ general-table(
 
 <script setup>
 import { useI18n } from 'vue-i18n'
-import TableStatusLabel from '@/components/progress/TableStatusLabel.vue'
-import TableStatusProgress from '@/components/progress/TableStatusProgress.vue'
+import TableStatusLabel from '@/components/assets/progress/TableStatusLabel.vue'
+import TableStatusProgress from '@/components/assets/progress/TableStatusProgress.vue'
 import { UPLOAD_PROGRESS_SORT_BY, UPLOAD_PROGRESS, SIDE_TYPE } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
