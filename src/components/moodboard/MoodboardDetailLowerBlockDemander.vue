@@ -47,7 +47,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
                 @enter="search"
                 @clear="search"
               )
-              btn(v-if="currentOfferId === 'all'" size="sm" type="secondary" prependIcon="bookmark" @click="goToMoodboardPickedList(moodboard.moodboardId)") {{ $t("QQ0086") }}
+              btn(v-if="currentOfferId === 'all'" size="sm" type="secondary" prependIcon="pinned" @click="goToMoodboardPickedList(moodboard.moodboardId)") {{ $t("QQ0086") }}
             div(class="pt-3 pb-3.5 h-6 box-content flex items-center justify-between")
               breadcrumb(:breadcrumbList="moodboardOfferNodeCollection.locationList" fontSize="text-body2" @click:item="goTo($event.nodeId)")
               btn-functional(v-if="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED" size="lg" @click="selectAll") {{ $t("RR0209") }}
@@ -69,17 +69,11 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
                 @click.stop="handleNodeClick(node)"
               )
                 template(#caption v-if="node.nodeType === NODE_TYPE.MATERIAL")
-                  tooltip(class="absolute right-0 -bottom-0.5" placement="top")
-                    template(#trigger)
-                      div(class="w-6.5 h-6.5 group cursor-pointer hover:bg-brand/10 rounded-full flex items-center justify-center" @click="togglePick(node, currentTab === MOODBOARD_TAB.PICKED, false)")
-                        svg-icon(
-                          size="20"
-                          :iconName="node.isPicked ? 'bookmark' : 'bookmark_border'"
-                          :class="[node.isPicked ? 'text-brand' : 'text-black-800']"
-                          class="group-hover:text-brand"
-                        )
-                    template(#content)
-                      p(class="text-caption text-primary p-2.5 whitespace-nowrap") {{ node.isPicked ? $t('QQ0081') : $t('QQ0082') }}
+                  btn-pick-tooltip(
+                    class="absolute right-0 -bottom-0.5"
+                    :isPicked="node.isPicked"
+                    @togglePick="togglePick(node, currentTab === MOODBOARD_TAB.PICKED, false)"
+                  )
           template(v-if="currentTab === MOODBOARD_TAB.COMMENT")
             div(v-if="isLoading" class="flex-grow flex items-center justify-center")
               svg-icon(iconName="loading" size="92" class="text-brand")
@@ -94,6 +88,7 @@ import { MOODBOARD_TAB, NODE_TYPE, U3M_STATUS } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
 import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'
+import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
 import MultiSelectMenu from '@/components/layout/MultiSelectMenu.vue'
 import useMoodboardDetail from '@/composables/useMoodboardDetail.js'
 import useMoodboardNode from '@/composables/useMoodboardNode.js'
