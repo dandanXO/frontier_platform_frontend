@@ -20,17 +20,11 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-blac
         )
     div(class="flex justify-between relative")
       div(class="h-6.5 text-primary text-body1 line-clamp-1 mt-2.5") {{ properties.description }}
-      tooltip(class="absolute right-0 bottom-0.5" placement="top")
-        template(#trigger)
-          div(class="w-6.5 h-6.5 group cursor-pointer hover:bg-brand/10 rounded-full flex items-center justify-center" @click.stop="togglePick(node, true, false)")
-            svg-icon(
-              size="20"
-              :iconName="node.isPicked ? 'bookmark' : 'bookmark_border'"
-              :class="[node.isPicked ? 'text-brand' : 'text-black-800']"
-              class="group-hover:text-brand"
-            )
-        template(#content)
-          p(class="text-caption text-primary p-2.5 whitespace-nowrap") {{ node.isPicked ? $t('QQ0081') : $t('QQ0082') }}
+      btn-pick-tooltip(
+        class="absolute right-0 -bottom-0.5"
+        :isPicked="node.isPicked"
+        @togglePick="togglePick(node, true, false)"
+      )
     div(class="mt-1.5 h-6 flex items-center")
       img(:src="node.creatorLogo" class="aspect-square h-full rounded-full")
       p(class="pl-1 font-bold text-caption text-primary") {{ node.creator }}
@@ -86,6 +80,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-blac
 
 <script setup>
 import { ref, computed } from '@vue/reactivity'
+import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
 import useMaterial from '@/composables/useMaterial'
 import { U3M_STATUS } from '@/utils/constants'
 import { useStore } from 'vuex'

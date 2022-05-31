@@ -45,17 +45,11 @@ div(class="h-full")
         isSelectable
       )
         template(#caption)
-          tooltip(class="absolute right-0 bottom-6" placement="top")
-            template(#trigger)
-              div(class="w-6.5 h-6.5 group cursor-pointer hover:bg-brand/10 rounded-full flex items-center justify-center" @click="togglePick(node, true, false)")
-                svg-icon(
-                  size="20"
-                  :iconName="node.isPicked ? 'bookmark' : 'bookmark_border'"
-                  :class="[node.isPicked ? 'text-brand' : 'text-black-800']"
-                  class="group-hover:text-brand"
-                )
-            template(#content)
-              p(class="text-caption text-primary p-2.5 whitespace-nowrap") {{ node.isPicked ? $t('QQ0081') : $t('QQ0082') }}
+          btn-pick-tooltip(
+            class="absolute right-0 bottom-6"
+            :isPicked="node.isPicked"
+            @togglePick="togglePick(node, true, false)"
+          )
           div(class="mt-1.5 h-6 flex items-center")
             img(:src="node.creatorLogo" class="aspect-square h-full rounded-full")
             p(class="pl-1 font-bold text-caption text-primary") {{ node.creator }}
@@ -75,6 +69,7 @@ import useNavigation from '@/composables/useNavigation'
 import { MOODBOARD_TAB, DISPLAY_NODE, U3M_STATUS } from '@/utils/constants.js'
 import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
 import MultiSelectMenu from '@/components/layout/MultiSelectMenu.vue'
+import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
 import GridOrRow from '@/components/layout/GridOrRow.vue'
 import MoodboardRowItem from '@/components/moodboard/MoodboardRowItem.vue'
 import useMoodboardNode from '@/composables/useMoodboardNode.js'

@@ -44,12 +44,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
           @click.stop="handleNodeClick(node)"
         )
           template(#caption v-if="currentTab === MOODBOARD_TAB.PICKED && node.nodeType === NODE_TYPE.MATERIAL")
-            tooltip(class="absolute right-0 -bottom-0.5" placement="top")
-              template(#trigger)
-                div(class="w-6.5 h-6.5 group hover:bg-brand/10 rounded-full flex items-center justify-center")
-                  svg-icon(size="20" iconName="bookmark" class="text-brand group-hover:text-brand")
-              template(#content)
-                p(class="text-caption text-primary p-2.5 whitespace-nowrap") {{ $t('QQ0081') }}
+            btn-pick-tooltip(class="absolute right-0 -bottom-0.5" :isPicked="node.isPicked")
     template(v-if="currentTab === MOODBOARD_TAB.COMMENT")
       div(v-if="isLoading" class="flex-grow flex items-center justify-center")
         svg-icon(iconName="loading" size="92" class="text-brand")
@@ -66,6 +61,7 @@ import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
 import SvgIcon from '@/components/common/SvgIcon.vue'
 import MultiSelectMenu from '@/components/layout/MultiSelectMenu.vue'
 import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'
+import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
 import useMoodboardDetail from '@/composables/useMoodboardDetail.js'
 import useMoodboardNode from '@/composables/useMoodboardNode.js'
 
