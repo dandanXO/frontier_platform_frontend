@@ -35,12 +35,14 @@ div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { computed } from '@vue/reactivity'
 import useNavigation from '@/composables/useNavigation.js'
 import { MOODBOARD_TYPE, CREATE_EDIT } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
+const route = useRoute()
 const { goToMoodboardDetail } = useNavigation()
 
 const tabList = [
@@ -54,7 +56,7 @@ const tabList = [
   }
 ]
 
-const currentTab = ref(tabList[0].path)
+const currentTab = ref(Number(route.query.tab) || tabList[0].path)
 const moodboardList = computed(() => store.getters['moodboard/moodboardList'](Number(currentTab.value)))
 
 const toggleTab = (tab) => {

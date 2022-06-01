@@ -173,4 +173,24 @@ export default {
    * @param {string} params.description
    */
   updateMoodboardNodeCollection: (type, id, params) => apiWrapper('/moodboard/offer/node/collection/update', type, id, params),
+
+  /**
+   * @param {object} params 
+   * @param {string} params.sharingKey
+   */
+  getMoodboardReceivedShare: (params) => axios('/share/moodboard/get-received', {
+    method: 'POST',
+    data: params
+  }),
+
+  /**
+   * @param {object} params 
+   * @param {string} params.sharingKey
+   * @param {number} params.orgId
+   * @param {number} params.groupId
+   */
+  saveMoodboardReceivedShare: (params) => axios('/share/moodboard/get-received/save', {
+    method: 'POST',
+    data: params
+  })
 }

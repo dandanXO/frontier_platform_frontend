@@ -269,6 +269,13 @@ export default {
     },
     async updateMoodboardNodeCollection ({ dispatch }, params) {
       await dispatch('callMoodboardApi', { func: 'updateMoodboardNodeCollection', params })
+    },
+    async getMoodboardReceivedShare (_, params) {
+      const { data } = await moodboardApi.getMoodboardReceivedShare(params)
+      return data.result
+    },
+    async saveMoodboardReceivedShare (_, params) {
+      await moodboardApi.saveMoodboardReceivedShare(params)
     }
   }
 }
