@@ -274,6 +274,12 @@ const routes = [
         }
       },
       {
+        path: 'moodboard/:sharingKey',
+        name: 'MoodboardReceivedShare',
+        component: () => import('@/views/MoodboardReceivedShare.vue'),
+        beforeEnter: checkUserIsVerify
+      },
+      {
         path: ':orgNo',
         name: 'InnerAppRoot',
         components: {

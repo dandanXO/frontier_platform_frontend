@@ -49,7 +49,8 @@ export default {
     ModalU3mInstruction: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mInstruction.vue')),
     ModalIndicatorMethodology: defineAsyncComponent(() => import('@/components/assets/material/ModalIndicatorMethodology.vue')),
     ModalSendFeedback: defineAsyncComponent(() => import('@/components/ModalSendFeedback.vue')),
-    ModalMoodboardMaterialDetail: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardMaterialDetail.vue'))
+    ModalMoodboardMaterialDetail: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardMaterialDetail.vue')),
+    ModalChooseSavePlace: defineAsyncComponent(() => import('@/components/ModalChooseSavePlace.vue'))
   },
   setup () {
     const store = useStore()

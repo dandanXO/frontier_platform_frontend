@@ -38,36 +38,16 @@ div(class="w-227 mx-auto")
           p(v-if="!moodboard.trendBoardCoverImg" class="text-body2 leading-1.6 text-black-400") {{ $t("QQ0074") }}
           a(v-else :href="moodboard.trendBoardUrl" target="_blank" class="absolute w-6 h-6 bg-black-0 rounded -bottom-2 -right-3.5 flex items-center justify-center cursor-pointer" style="box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15)")
             svg-icon(iconName="search" size="20" class="text-black-700")
-  div(class="mb-28 rounded border border-primary-middle") 
-    div(
-      class="h-12 pl-7 pr-4 flex items-center justify-between"
-      :class="[moodboard.attachmentList.length > 0 ? 'text-primary hover:bg-black-200 cursor-pointer' : 'text-black-500', { 'bg-black-200': isExpand }]"
-      @click="handleExpand"
-    )
-      p(class="text-caption font-bold") {{ $t("QQ0015") }} ({{ moodboard.attachmentList.length }})
-      svg-icon(v-if="!isExpand" iconName="keyboard_arrow_down" size="24")
-      svg-icon(v-else iconName="keyboard_arrow_up" size="24")
-    overlay-scrollbar-container(v-if="isExpand && moodboard.attachmentList.length > 0" class="max-h-105")
-      div(class="flex flex-wrap gap-5 p-6")
-        attachment-item(
-          v-for="(attachment, index) in moodboard.attachmentList"
-          :key="attachment.url"
-          :attachmentList="moodboard.attachmentList"
-          :attachment="attachment"
-          :index="index"
-          :isReadOnly="true"
-        )
+  block-attachment(class="mb-28" :attachmentList="moodboard.attachmentList")
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
-import AttachmentItem from '@/components/AttachmentItem.vue'
+import BlockAttachment from '@/components/moodboard/BlockAttachment.vue'
 import { MOODBOARD_TYPE, CREATE_EDIT } from '@/utils/constants.js'
 
 const store = useStore()
-const isExpand = ref(false)
-
 const moodboard = computed(() => store.getters['moodboard/moodboard'])
 
 const openCreateOrEditMoodboard = () => {
@@ -77,12 +57,6 @@ const openCreateOrEditMoodboard = () => {
       mode: CREATE_EDIT.EDIT
     }
   })
-}
-
-const handleExpand = () => {
-  if (moodboard.value.attachmentList.length > 0) {
-    isExpand.value = !isExpand.value
-  }
 }
 
 const handleDelete = () => {
