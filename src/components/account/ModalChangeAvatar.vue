@@ -37,7 +37,7 @@ const { t } = useI18n()
 const store = useStore()
 const cropRectSize = 200
 const isUploading = ref(false)
-const avatar = computed(() => store.getters['user/orgUser/orgUser'].avatar)
+const avatar = computed(() => store.getters['organization/orgUser/orgUser'].avatar)
 const haveUploadedImage = computed(() => {
   const defaultAvatar = 'default_user.png' // This file name is static
   return !avatar.value.includes(defaultAvatar)
@@ -55,7 +55,7 @@ imageOperator.on('finish', (image) => {
       image,
       cropRectSize,
       afterCropHandler: async (croppedImage, originalImage) => {
-        await store.dispatch('user/orgUser/updateAvatar', {
+        await store.dispatch('organization/orgUser/updateAvatar', {
           avatar: croppedImage,
           originalAvatar: originalImage
         })
@@ -71,7 +71,7 @@ const uploadImg = () => {
 
 const innerRemoveHandler = async () => {
   store.dispatch('helper/pushModalLoading')
-  await store.dispatch('user/orgUser/removeAvatar')
+  await store.dispatch('organization/orgUser/removeAvatar')
   await fetchMemberList()
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/closeModal')

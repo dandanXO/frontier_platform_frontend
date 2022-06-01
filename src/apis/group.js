@@ -17,6 +17,10 @@ export default {
     method: 'POST',
     data: { groupId, transferOrgId, transferGroupId }
   }),
+  getGroupUser: ({ groupId }) => axios('/org/group/user/get', {
+    method: 'POST',
+    data: { groupId }
+  }),
   cancelGroupInvitation: ({ groupId, email }) => axios('/org/group/member/cancel-invitation', {
     method: 'POST',
     data: { groupId, email }

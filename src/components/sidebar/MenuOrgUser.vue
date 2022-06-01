@@ -31,8 +31,8 @@ export default {
     const { t } = useI18n()
     const store = useStore()
     const router = useRouter()
-    const orgUser = computed(() => store.getters['user/orgUser/orgUser'])
-    const avatar = computed(() => store.getters['user/orgUser/avatar'])
+    const orgUser = computed(() => store.getters['organization/orgUser/orgUser'])
+    const avatar = computed(() => store.getters['organization/orgUser/avatar'])
 
     const openModal = (component, properties = {}) => {
       store.dispatch('helper/openModalBehavior', {

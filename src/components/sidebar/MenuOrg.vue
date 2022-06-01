@@ -101,7 +101,7 @@ const moreThan4Notification = computed(() => store.getters['polling/notification
 const haveUnreadNotification = computed(() => notificationList.value.some(({ isRead }) => !isRead))
 
 const readNotification = () => {
-  haveUnreadNotification.value && store.dispatch('user/orgUser/readNotification')
+  haveUnreadNotification.value && store.dispatch('organization/orgUser/readNotification')
 }
 
 </script>

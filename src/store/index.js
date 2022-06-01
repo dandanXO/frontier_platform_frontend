@@ -3,8 +3,8 @@ import axios from '@/apis'
 import putBinaryData from '@/utils/put-binary-data'
 import user from '@/store/modules/user'
 import code from '@/store/modules/code'
-import organization from '@/store/modules/organization'
-import group from '@/store/modules/group'
+import organization from '@/store/modules/management/organization'
+import group from '@/store/modules/management/group'
 import helper from '@/store/modules/helper'
 import assets from '@/store/modules/assets'
 import workspace from '@/store/modules/workspace'
@@ -37,14 +37,6 @@ export default createStore({
             dispatch(`${module}/set${capitalizedModule}`, result[module], { root: true })
           }
         })
-
-        if (Object.prototype.hasOwnProperty.call(result, 'orgUser')) {
-          dispatch('user/orgUser/setOrgUser', result.orgUser, { root: true })
-        }
-        if (Object.prototype.hasOwnProperty.call(result, 'groupUser')) {
-          dispatch('user/groupUser/setGroupUser', result.groupUser, { root: true })
-        }
-
         if (Object.prototype.hasOwnProperty.call(result, 'pagination')) {
           dispatch('helper/search/setPagination', result.pagination, { root: true })
         }

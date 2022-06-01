@@ -51,7 +51,7 @@ export default {
     const store = useStore()
 
     const refInputEmail = ref(null)
-    const orgUser = computed(() => store.getters['user/orgUser/orgUser'])
+    const orgUser = computed(() => store.getters['organization/orgUser/orgUser'])
     const formData = reactive({
       name: orgUser.value.displayName,
       email: orgUser.value.email,

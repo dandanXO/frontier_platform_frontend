@@ -61,43 +61,6 @@ export default {
     method: 'POST',
     data: { locale }
   }),
-
-  getOrgUser: ({ orgId }) => axios('/org/user/get', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  getGroupUser: ({ groupId }) => axios('/org/group/user/get', {
-    method: 'POST',
-    data: { groupId }
-  }),
-  updateDisplayName: ({ orgId, displayName }) => axios('/org/user/update-display-name', {
-    method: 'POST',
-    data: { orgId, displayName }
-  }),
-  updateAvatar: async ({ orgId, avatar, originalAvatar }) => {
-    const avatarFileName = avatar.name
-    const originalAvatarFileName = originalAvatar.name
-
-    const { data: { result: { tempUploadId, avatarUploadUrl, originalAvatarUploadUrl } } } = await axios('/org/user/update-avatar/get-upload-url', {
-      method: 'POST',
-      data: { avatarFileName, originalAvatarFileName }
-    })
-    await putBinaryData(avatarUploadUrl, avatar)
-    await putBinaryData(originalAvatarUploadUrl, originalAvatar)
-
-    return axios('/org/user/update-avatar', {
-      method: 'POST',
-      data: { orgId, tempUploadId, avatarFileName, originalAvatarFileName }
-    })
-  },
-  removeAvatar: ({ orgId }) => axios('/org/user/remove-avatar', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  readNotification: ({ orgId }) => axios('/org/user/read-notification', {
-    method: 'POST',
-    data: { orgId }
-  }),
   sendFeedback: ({ tempFeedbackId, category, comment }) => axios('/user/feedback/send', {
     method: 'POST',
     data: { tempFeedbackId, category, comment }

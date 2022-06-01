@@ -290,9 +290,9 @@ const routes = [
           store.dispatch('organization/getPricing')
           await store.dispatch('user/getUser')
           await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
-          await store.dispatch('user/orgUser/getOrgUser')
+          await store.dispatch('organization/orgUser/getOrgUser')
           const org = store.getters['organization/organization']
-          const orgUser = store.getters['user/orgUser/orgUser']
+          const orgUser = store.getters['organization/orgUser/orgUser']
           if (orgUser.orgRoleId === ROLE_ID.OWNER && !org.uploadMaterialEmail) {
             store.dispatch('helper/openModalBehavior', {
               component: 'modal-create-mail-org',
@@ -326,7 +326,7 @@ const routes = [
                 props: true,
                 component: () => import('@/views/innerApp/Billings.vue'),
                 beforeEnter: (to, from, next) => {
-                  const roleId = store.getters['user/orgUser/orgUser'].orgRoleId
+                  const roleId = store.getters['organization/orgUser/orgUser'].orgRoleId
                   if ([ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(roleId)) {
                     return next()
                   } else {
@@ -343,7 +343,7 @@ const routes = [
             beforeEnter: [checkOrgIsInactive, async (to, from, next) => {
               store.commit('helper/SET_routeLocation', 'group')
               await store.dispatch('group/getGroup', { groupId: to.params.groupId })
-              await store.dispatch('user/groupUser/getGroupUser')
+              await store.dispatch('group/groupUser/getGroupUser')
               next()
             }],
             children: reuseRoutes('Group')
