@@ -19,7 +19,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
           v-model:inputValue="innerSelectedList"
           :value="JSON.stringify(node)"
           size="24"
-          class="absolute top-3 left-3 cursor-pointer"
+          class="absolute top-3 left-3"
           iconColor="text-black-0"
           uncheckColor="text-black-0"
           @click.stop
