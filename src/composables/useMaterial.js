@@ -281,9 +281,9 @@ export default function useMaterial (material) {
     const { co2, water, land, energy } = JSON.parse(JSON.stringify(carbonEmission))
     extendField(co2, 'co2', t('RR0221'), t('RR0215'), t('RR0225'), 'RR0230')
     extendField(water, 'water', t('RR0222'), t('RR0216'), t('RR0226'), 'RR0231')
-    extendField(land, 'land', t('RR0223'), t('RR0217'), t('RR0227'), 'RR0232')
-    extendField(energy, 'energy', t('RR0224'), t('RR0218'), t('RR0228'), 'RR0233')
-    return { co2, water, land, energy }
+    extendField(land, 'land', t('RR0224'), t('RR0218'), t('RR0228'), 'RR0233')
+    extendField(energy, 'energy', t('RR0223'), t('RR0217'), t('RR0227'), 'RR0232')
+    return { co2, water, land }
   })
 
   return {

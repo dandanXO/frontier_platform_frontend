@@ -42,13 +42,13 @@ modal-behavior(
           input-checkbox(
             binary
             v-model:inputValue="optional.attachment"
-            :label="$t('RR0179')"
+            :label="$t('RR0136')"
             size="20"
           )
           input-checkbox(
             binary
             v-model:inputValue="optional.u3m"
-            :label="$t('RR0106')"
+            :label="$t('RR0132')"
             size="20"
             :disabled="isExceedU3mStorage"
           )

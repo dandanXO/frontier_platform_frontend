@@ -11,7 +11,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
           img(v-if="node.coverImgList[2]" :src="node.coverImgList[2]" class="w-full h-full")
       div(v-if="node.hasChildCollection" class="w-full h-7.5 absolute bottom-0 left-0")
         div(class="bg-linear w-full h-full rounded-t-md transform rotate-180")
-        svg-icon(iconName="folder" size="14" class="absolute right-2 bottom-2 text-black-0")
+        svg-icon(iconName="folder" size="14" class="text-black-0 absolute right-2 bottom-2")
     template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
       img(:src="node.coverImg" class="w-full h-full")
     div(v-if="isSelectable" class="w-full h-7.5 absolute top-0 left-0")
@@ -21,7 +21,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
           v-model:inputValue="innerSelectedValue"
           :value="JSON.stringify(node)"
           size="20"
-          class="absolute top-1 left-1 cursor-pointer"
+          class="absolute top-1 left-1"
           iconColor="text-black-0"
           uncheckColor="text-black-0"
           @click.stop
@@ -31,7 +31,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false")
           v-model:inputValue="innerSelectedValue"
           :value="JSON.stringify(node)"
           size="20"
-          class="absolute top-1 left-1 cursor-pointer"
+          class="absolute top-1 left-1"
           checkColor="text-black-0"
           uncheckColor="text-black-0"
           @click.stop

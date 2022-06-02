@@ -51,7 +51,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
                 v-model:inputValue="selectedValue"
                 :value="JSON.stringify(item)"
                 size="20"
-                class="cursor-pointer absolute top-1 left-1"
+                class="absolute top-1 left-1"
                 iconColor="text-black-0"
                 uncheckColor="text-black-0"
                 @click.stop
@@ -61,7 +61,7 @@ div(class="w-161 h-138 px-8 flex flex-col")
                 v-model:inputValue="selectedValue"
                 :value="JSON.stringify(item)"
                 size="20"
-                class="cursor-pointer absolute top-1 left-1"
+                class="absolute top-1 left-1"
                 checkColor="text-black-0"
                 uncheckColor="text-black-0"
                 @click.stop
