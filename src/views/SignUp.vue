@@ -1,20 +1,19 @@
 <template lang="pug">
-div(class="w-screen h-screen flex justify-center items-center  bg-black-100")
-  //- div(class="fixed top-7.5 right-9")
-  //-   dropdown-locale
-  div(class="flex gap-x-23 items-start")
+div(class="w-screen h-screen flex justify-center items-center bg-black-100")
+  div(class="flex gap-x-23 items-center")
     div(class="w-97.5 h-126 bg-contain" :style="{ backgroundImage: `url(${imgCover}` }")
     div(class="w-105")
       div(class="w-full rounded-lg card-shadow px-10 pt-10 pb-9.5 flex flex-col")
         p(class="text-primary text-h6 font-bold text-center pb-5.5 border-b border-black-400") {{ $t("AA0016") }}
-        button(id="google-sign-up" class="w-85 h-11 rounded border text-body2 font-bold text-black-800 mt-5 mb-3 flex justify-center items-center")
-          div(class="grid grid-flow-col gap-x-2.5 items-center")
-            img(src="@/assets/images/google.png")
-            span(class="w-40.5 text-center text-body2") {{ $t("UU0047") }}
-        div(class="grid grid-flow-col gap-x-3 items-center justify-center")
-          div(class="w-19 h-px border-b border-black-400")
-          span(class="w-30.5 text-black-500 text-body2 text-center") {{ $t("AA0005") }}
-          div(class="w-19 h-px border-b border-black-400")
+        template(v-if="!isGoogleLoadFail")
+          button(id="google-sign-up" class="w-85 h-11 rounded border text-body2 font-bold text-black-800 mt-5 mb-3 flex justify-center items-center")
+            div(class="grid grid-flow-col gap-x-2.5 items-center")
+              img(src="@/assets/images/google.png")
+              span(class="w-40.5 text-center text-body2") {{ $t("UU0047") }}
+          div(class="grid grid-flow-col gap-x-3 items-center justify-center")
+            div(class="w-19 h-px border-b border-black-400")
+            span(class="w-30.5 text-black-500 text-body2 text-center") {{ $t("AA0005") }}
+            div(class="w-19 h-px border-b border-black-400")
         span(class="self-end text-black-500 text-caption my-1.5") *{{ $t("RR0163") }}
         form
           div(class="grid grid-cols-2 gap-3")
@@ -52,104 +51,83 @@ div(v-if="isSignUpSuccessfully" class="fixed inset-0 w-full h-full bg-black-100 
     btn(size="special" class="w-35 h-10.5" @click="nextAfterSignIn") {{ $t("UU0021") }}
 </template>
 
-<script>
+<script setup>
 import { reactive, ref } from '@vue/reactivity'
 import { computed, onMounted, toRaw, watch } from '@vue/runtime-core'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import googleSignInApi from '@/utils/google-sign-in-api'
-// import DropdownLocale from '@/components/DropdownLocale.vue'
 import useNavigation from '@/composables/useNavigation'
 import PasswordValidator from '@/components/account/PasswordValidator.vue'
 import imgCover from '@/assets/images/cover.png'
 
-export default {
-  name: 'SignUp',
-  components: {
-    // DropdownLocale,
-    PasswordValidator
-  },
-  setup () {
-    const { t } = useI18n()
-    const store = useStore()
-    const formData = reactive({
-      lastName: '',
-      firstName: '',
-      email: '',
-      password: ''
-    })
-    const errorMsg = ref('')
-    const agreeTermsAndPrivacy = ref(false)
-    const isSignUpSuccessfully = ref(false)
-    const isEmailExist = ref(false)
-    const isPasswordValid = ref(false)
-    const { nextAfterSignIn } = useNavigation()
+const { t } = useI18n()
+const store = useStore()
+const formData = reactive({
+  lastName: '',
+  firstName: '',
+  email: '',
+  password: ''
+})
+const errorMsg = ref('')
+const agreeTermsAndPrivacy = ref(false)
+const isSignUpSuccessfully = ref(false)
+const isEmailExist = ref(false)
+const isPasswordValid = ref(false)
+const { nextAfterSignIn } = useNavigation()
 
-    const isEmailValid = computed(() => (/.+@.+/ig).test(formData.email))
-    const availableToSignUp = computed(() => formData.firstName !== '' && formData.lastName !== '' && isEmailValid.value && isPasswordValid.value && agreeTermsAndPrivacy.value)
+const isEmailValid = computed(() => (/.+@.+/ig).test(formData.email))
+const availableToSignUp = computed(() => formData.firstName !== '' && formData.lastName !== '' && isEmailValid.value && isPasswordValid.value && agreeTermsAndPrivacy.value)
 
-    const validateEmailFormat = async () => {
-      isEmailExist.value = false
-      errorMsg.value = ''
+const validateEmailFormat = async () => {
+  isEmailExist.value = false
+  errorMsg.value = ''
 
-      if (formData.email === '') { return }
+  if (formData.email === '') { return }
 
-      if (formData.email !== '' && !isEmailValid.value) {
-        return (errorMsg.value = t('WW0019'))
-      }
-
-      isEmailExist.value = await store.dispatch('user/checkEmailExist', { email: formData.email })
-    }
-
-    const signUp = async () => {
-      isEmailExist.value = await store.dispatch('user/generalSignUp', Object.assign({ locale: 'en-US' }, toRaw(formData)))
-
-      !isEmailExist.value && (isSignUpSuccessfully.value = true)
-    }
-
-    const googleSignUp = async (googleUser) => {
-      isEmailExist.value = await store.dispatch('user/googleSignUp', { idToken: googleUser.getAuthResponse().id_token, locale: 'en-US' })
-
-      !isEmailExist.value && nextAfterSignIn()
-    }
-
-    const openModalTermsOfUse = () => store.dispatch('helper/openModal', { component: 'modal-terms-of-use' })
-    const openModalPrivacyPolicy = () => store.dispatch('helper/openModal', { component: 'modal-privacy-policy' })
-
-    watch(
-      () => formData.email,
-      () => {
-        isEmailExist.value = false
-      }
-    )
-
-    onMounted(async () => {
-      await googleSignInApi.init()
-      googleSignInApi.attachClickHandler({
-        elementId: 'google-sign-up',
-        successHandler: googleSignUp,
-        failHandler (error) {
-          if (error.error === 'popup_closed_by_user') { return }
-          errorMsg.value = t('WW0065')
-        }
-      })
-    })
-
-    return {
-      formData,
-      agreeTermsAndPrivacy,
-      errorMsg,
-      validateEmailFormat,
-      signUp,
-      availableToSignUp,
-      isSignUpSuccessfully,
-      nextAfterSignIn,
-      isEmailExist,
-      isPasswordValid,
-      openModalTermsOfUse,
-      openModalPrivacyPolicy,
-      imgCover
-    }
+  if (formData.email !== '' && !isEmailValid.value) {
+    return (errorMsg.value = t('WW0019'))
   }
+
+  isEmailExist.value = await store.dispatch('user/checkEmailExist', { email: formData.email })
 }
+
+const signUp = async () => {
+  isEmailExist.value = await store.dispatch('user/generalSignUp', Object.assign({ locale: 'en-US' }, toRaw(formData)))
+
+  !isEmailExist.value && (isSignUpSuccessfully.value = true)
+}
+
+const googleSignUp = async (googleUser) => {
+  isEmailExist.value = await store.dispatch('user/googleSignUp', { idToken: googleUser.getAuthResponse().id_token, locale: 'en-US' })
+
+  !isEmailExist.value && nextAfterSignIn()
+}
+
+const openModalTermsOfUse = () => store.dispatch('helper/openModal', { component: 'modal-terms-of-use' })
+const openModalPrivacyPolicy = () => store.dispatch('helper/openModal', { component: 'modal-privacy-policy' })
+
+watch(
+  () => formData.email,
+  () => {
+    isEmailExist.value = false
+  }
+)
+
+const isGoogleLoadFail = ref(false)
+
+onMounted(async () => {
+  try {
+    await googleSignInApi.init({
+      elementId: 'google-sign-up',
+      successHandler: googleSignUp,
+      failHandler (error) {
+        if (error.error === 'popup_closed_by_user') { return }
+        errorMsg.value = t('WW0065')
+      }
+    })
+  } catch {
+    isGoogleLoadFail.value = true
+  }
+})
 </script>

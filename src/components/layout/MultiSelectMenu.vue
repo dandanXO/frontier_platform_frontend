@@ -30,11 +30,11 @@ const props = defineProps({
   optionMultiSelect: {
     type: Array,
     required: true,
-    default: () => ({
+    default: () => ([{
       name: '',
       disabled: false,
       func: () => { }
-    })
+    }])
   },
   selectedList: {
     type: Array,

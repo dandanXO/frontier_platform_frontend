@@ -1,4 +1,6 @@
 import { createStore } from 'vuex'
+import axios from '@/apis'
+import putBinaryData from '@/utils/put-binary-data'
 import user from '@/store/modules/user'
 import code from '@/store/modules/code'
 import organization from '@/store/modules/organization'
@@ -9,11 +11,20 @@ import workspace from '@/store/modules/workspace'
 import publicLibrary from '@/store/modules/publicLibrary'
 import receivedShare from '@/store/modules/receivedShare'
 import embed from '@/store/modules/embed'
+import moodboard from '@/store/modules/moodboard'
 import shareToMe from '@/store/modules/shareToMe'
 import polling from '@/store/modules/polling'
 
 export default createStore({
   actions: {
+    async uploadFileToS3 (_, { fileName, file }) {
+      const { data: { result: { tempUploadId, fileUploadUrl } } } = await axios('/general/get-upload-url', {
+        method: 'POST',
+        data: { fileName }
+      })
+      await putBinaryData(fileUploadUrl, file)
+      return { fileName, tempUploadId }
+    },
     handleResponseData ({ dispatch }, { data }) {
       const { result } = JSON.parse(JSON.stringify(data))
 
@@ -52,6 +63,7 @@ export default createStore({
     receivedShare,
     shareToMe,
     embed,
-    polling
+    polling,
+    moodboard
   }
 })

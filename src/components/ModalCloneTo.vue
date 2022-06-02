@@ -42,13 +42,13 @@ modal-behavior(
           input-checkbox(
             binary
             v-model:inputValue="optional.attachment"
-            :label="$t('RR0179')"
+            :label="$t('RR0136')"
             size="20"
           )
           input-checkbox(
             binary
             v-model:inputValue="optional.u3m"
-            :label="$t('RR0106')"
+            :label="$t('RR0132')"
             size="20"
             :disabled="isExceedU3mStorage"
           )
@@ -180,7 +180,12 @@ const submit = async () => {
   try {
     store.dispatch('helper/pushModalLoading')
     await props.cloneHandler(targetLocationList, optional, selectedOrgId.value)
-    store.dispatch('helper/clearModalPipeline')
+    store.dispatch('helper/openModalConfirm', {
+      type: 0,
+      header: t('RR0162'),
+      content: t('RR0242'),
+      secondaryBtnText: t('UU0094')
+    })
   } catch (error) {
     const { code } = error
     store.dispatch('helper/closeModalLoading')
@@ -194,6 +199,7 @@ const submit = async () => {
       case 'ERR0021':
         isExceedU3mStorage.value = true
         optional.u3m = false
+        break
       default:
         throw error
     }

@@ -12,6 +12,7 @@ input-container(:label="label" :required="required")
     )
   template(#hint)
     p(v-if="errorMsg !== ''" class="absolute text-caption text-warn pt-1") {{ errorMsg }}
+    slot(v-else name="errorMsg")
 </template>
 
 <script>
@@ -47,12 +48,16 @@ export default {
     customErrorMsg: {
       type: [String, Boolean],
       default: ''
+    },
+    rules: {
+      type: Array,
+      default: () => []
     }
   },
-  emits: ['update:textValue', 'blur'],
+  emits: ['update:textValue', 'blur', 'enter', 'clear', 'change', 'input'],
   setup (props, context) {
-    const { textValue, disabled, required, customErrorMsg } = toRefs(props)
-    const { isFocus, isError, onFocus, onBlur, typing, isEmpty, classBorder, errorMsg } = useInput({ context, textValue, disabled, required, customErrorMsg })
+    const { textValue, disabled, required, rules, customErrorMsg } = toRefs(props)
+    const { isFocus, isError, onFocus, onBlur, typing, isEmpty, classBorder, errorMsg } = useInput({ context, textValue, disabled, required, customErrorMsg, rules })
 
     return {
       isFocus,

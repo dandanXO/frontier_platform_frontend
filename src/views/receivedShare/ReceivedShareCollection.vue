@@ -44,35 +44,21 @@ div(class="w-315 h-full mx-auto")
               p(class="text-body2 text-primary") {{ $t("GG0028") }}
     template(#default="{ goTo }")
       div(v-if="nodeList.length > 0" class="mx-7.5 grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start")
-        template(v-for="node in nodeList")
-          template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
-            node-item(
-              v-model:selectedList="selectedNodeList"
-              :node="node"
-              :displayName="node.name"
-              @click="(currentNodeKey = node.nodeKey); goTo(node.nodeKey)"
+        child-node-item(
+          v-for="node in nodeList"
+          v-model:selectedList="selectedNodeList"
+          :node="node"
+          :properties="node"
+          :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.name : node.materialNo"
+          @click.stop="handleNodeClick(node, goTo)"
+        )
+          template(#cover-overlay)
+            svg-icon(
+              iconName="clone"
+              size="20"
+              class="absolute bottom-3 right-3 cursor-pointer text-black-500"
+              @click.stop="receivedShareCloneByNodeKey(node.nodeKey)"
             )
-              template(#cover-overlay)
-                svg-icon(
-                  iconName="clone"
-                  size="20"
-                  class="absolute bottom-3 right-3 cursor-pointer text-black-500"
-                  @click.stop="receivedShareCloneByNodeKey(node.nodeKey)"
-                )
-          template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
-            node-item(
-              v-model:selectedList="selectedNodeList"
-              :node="node"
-              :displayName="node.materialNo"
-              @click="goToReceivedShareMaterial(node.nodeKey, share.sharingKey)"
-            )
-              template(#cover-overlay)
-                svg-icon(
-                  iconName="clone"
-                  size="20"
-                  class="absolute bottom-3 right-3 cursor-pointer text-black-500"
-                  @click.stop="receivedShareCloneByNodeKey(node.nodeKey)"
-                )
 </template>
 
 <script setup>
@@ -81,7 +67,7 @@ import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import { SEARCH_TYPE, SORT_BY, NODE_TYPE } from '@/utils/constants.js'
 import { useRoute, useRouter } from 'vue-router'
-import NodeItem from '@/components/layout/NodeItem.vue'
+import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation.js'
@@ -139,4 +125,15 @@ const getShareReceivedList = async (targetPage = 1, query) => {
     nodeKey: currentNodeKey.value
   })
 }
+
+const handleNodeClick = (node, goTo) => {
+  if (node.nodeType === NODE_TYPE.COLLECTION) {
+    currentNodeKey.value = node.nodeKey
+    goTo()
+  } else {
+    goToReceivedShareMaterial(node.nodeKey, share.value.sharingKey)
+  }
+}
+
+
 </script>

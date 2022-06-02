@@ -15,8 +15,8 @@ export default function useReceivedShare () {
     const organizationList = store.getters['user/organizationList']
 
     if (isCanSave && organizationList.length >= 1) {
-      store.dispatch('helper/openModal', {
-        component: 'modal-received-share-choose-storage',
+      store.dispatch('helper/openModalBehavior', {
+        component: 'modal-choose-save-place',
         properties: {
           title: t('RR0213'),
           actionHandler: async ({ orgId, groupId }) => {
@@ -32,6 +32,7 @@ export default function useReceivedShare () {
               prefixUrl = `${orgNo}`
             }
             window.open(`${window.location.origin}/${prefixUrl}/assets`, '_blank')
+            store.dispatch('helper/clearModalPipeline')
           }
         }
       })

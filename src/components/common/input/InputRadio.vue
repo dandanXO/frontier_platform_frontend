@@ -1,7 +1,7 @@
 <template lang="pug">
 label(class="flex items-center" :for="value")
-  svg-icon(v-if="inputValue === value" iconName="radio_button_checked" :size="size" :class="[checkColor]")
-  svg-icon(v-else iconName="radio_button_unchecked" :size="size" :class="[uncheckColor]")
+  svg-icon(v-if="inputValue === value" iconName="radio_button_checked" :size="size" :class="[checkColor]" class="cursor-pointer")
+  svg-icon(v-else iconName="radio_button_unchecked" :size="size" :class="[uncheckColor]" class="cursor-pointer")
   input(type="radio"
     class="hidden"
     v-model="inputValue"
@@ -9,7 +9,7 @@ label(class="flex items-center" :for="value")
     :value="value"
     @input="check"
   )
-  div(v-if="name !== ''" class="pl-1 text-body2 text-primary") {{ name }}
+  div(v-if="name !== ''" class="pl-1 text-body2 text-primary whitespace-nowrap cursor-pointer") {{ name }}
 </template>
 
 <script>

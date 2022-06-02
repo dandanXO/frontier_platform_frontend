@@ -11,7 +11,6 @@ export default {
     progress
   },
   state: {
-    displayMode: DISPLAY_NODE.LIST,
     materialList: [],
     code: {
       contentList: [],
@@ -22,15 +21,11 @@ export default {
   },
   getters: {
     materialList: state => state.materialList,
-    displayMode: state => state.displayMode,
     code: (state) => state.code
   },
   mutations: {
     SET_materialList (state, materialList) {
       state.materialList = materialList
-    },
-    UPDATE_displayMode (state, mode) {
-      state.displayMode = mode
     },
     SET_code (state, code) {
       Object.assign(state.code, code)
@@ -339,9 +334,6 @@ export default {
         : await assetsApi.group.addToWorkspace({ groupId: rootGetters['group/groupId'], targetWorkspaceNodeList, materialIdList })
 
       return data.result.failMaterialList
-    },
-    updateDisplayMode ({ commit }, mode) {
-      commit('UPDATE_displayMode', mode)
     },
     async batchUpload ({ rootGetters }, { xlsxFile }) {
       const { data } = rootGetters['helper/routeLocation'] === 'org'

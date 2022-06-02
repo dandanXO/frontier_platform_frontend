@@ -36,7 +36,7 @@ div(class="flex flex-col")
             div(class="col-span-2 flex items-center")
               div(
                 v-if="property.differenceInPercent != null"
-                class="flex items-center justify-center gap-x-2 rounded px-2"
+                class="h-6 flex items-center justify-center gap-x-2 rounded px-2 whitespace-nowrap text-caption"
                 :class="[property.differenceInPercent > 0 ? 'bg-brand-light text-brand' : 'bg-black-50 text-black-500']"
               )
                 p(class="font-bold") {{ property.differenceInPercent }}% {{ $t('RR0229') }}
@@ -98,11 +98,11 @@ const isShowGraph = ref(false)
 const { carbonEmissionInfo } = useMaterial(props.material)
 
 const openModalIndicatorMethodology = () => {
-  store.dispatch('helper/openModalBehavior', { component: 'modal-indicator-methodology' })
+  store.dispatch('helper/pushModalBehavior', { component: 'modal-indicator-methodology' })
 }
 
 const openModalSendFeedback = () => {
-  store.dispatch('helper/openModalBehavior', {
+  store.dispatch('helper/pushModalBehavior', {
     component: 'modal-send-feedback'
   })
 }

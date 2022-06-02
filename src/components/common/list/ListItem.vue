@@ -16,7 +16,7 @@ export default {
   setup (props) {
     const classes = computed(() => {
       if (props.disabled) {
-        return ['text-black-500', 'cursor-default']
+        return ['text-black-500', 'cursor-default', 'pointer-events-none']
       } else {
         return ['hover:bg-black-200', 'text-primary', 'cursor-pointer']
       }

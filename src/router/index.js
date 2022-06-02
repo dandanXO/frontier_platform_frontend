@@ -97,6 +97,33 @@ const reuseRoutes = (prefix) => ([
     component: () => import('@/views/innerApp/ShareToMeMaterialDetail.vue')
   },
   {
+    path: 'moodboard',
+    name: `${prefix}Moodboard`,
+    component: () => import('@/views/innerApp/moodboard/Moodboard.vue')
+  },
+  {
+    path: 'moodboard/:moodboardId',
+    name: `${prefix}MoodboardDetail`,
+    props: (route) => {
+      const moodboardId = Number.parseInt(route.params.moodboardId, 10)
+      if (Number.isNaN(moodboardId)) {
+        return 0
+      }
+      return { moodboardId }
+    },
+    component: () => import('@/views/innerApp/moodboard/MoodboardDetail.vue')
+  },
+  {
+    path: 'moodboard/:moodboardId/picked-list',
+    name: `${prefix}MoodboardPickedList`,
+    component: () => import('@/views/innerApp/moodboard/MoodboardPickedList.vue'),
+    beforeEnter: async (to, from, next) => {
+      const moodboardId = Number.parseInt(to.params.moodboardId, 10)
+      await store.dispatch('moodboard/getMoodboard', { moodboardId })
+      next()
+    }
+  },
+  {
     path: 'sticker',
     name: `${prefix}Sticker`,
     component: () => import('@/views/innerApp/Sticker.vue')
@@ -245,6 +272,12 @@ const routes = [
           await next('/')
           store.commit('helper/PUSH_message', i18n.global.t('AA0086'))
         }
+      },
+      {
+        path: 'moodboard/:sharingKey',
+        name: 'MoodboardReceivedShare',
+        component: () => import('@/views/MoodboardReceivedShare.vue'),
+        beforeEnter: checkUserIsVerify
       },
       {
         path: ':orgNo',
