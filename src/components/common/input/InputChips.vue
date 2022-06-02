@@ -106,9 +106,7 @@ export default {
     })
 
     const addChip = async () => {
-      inputValue.value = inputValue.value.trim()
-
-      if (inputValue.value.length === 0) {
+      if (inputValue.value.trim().length === 0) {
         return
       }
       /**
