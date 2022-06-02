@@ -35,7 +35,7 @@ export default {
     const avatar = computed(() => store.getters['user/orgUser/avatar'])
 
     const openModal = (component, properties = {}) => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component,
         properties
       })
@@ -58,11 +58,7 @@ export default {
         // },
         {
           name: t('RR0123'),
-          func: () => {
-            store.dispatch('helper/openModalBehavior', {
-              component: 'modal-send-feedback'
-            })
-          }
+          func: openModal.bind(undefined, 'modal-send-feedback'),
         }
         // {
         //   name: t('RR0124')

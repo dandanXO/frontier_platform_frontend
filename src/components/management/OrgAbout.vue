@@ -106,7 +106,7 @@ export default {
     }
 
     const openModalTypeTextToConfirm = () => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-type-text-to-confirm',
         properties: {
           title: t('BB0028'),

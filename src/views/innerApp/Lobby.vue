@@ -58,7 +58,7 @@ export default {
 
     const goToPublicLibrary = (orgNo) => {
       if (!user.value.isVerify) {
-        return store.dispatch('helper/openModal', {
+        return store.dispatch('helper/openModalBehavior', {
           component: 'modal-verify-notification'
         })
       }
@@ -67,16 +67,18 @@ export default {
     }
 
     const openModalCreateOrg = (closable = true) => {
-      if (!user.value.isVerify) {
-        return store.dispatch('helper/openModal', {
-          component: 'modal-verify-notification'
-        })
-      }
+      // if (!user.value.isVerify) {
+      return store.dispatch('helper/openModalBehavior', {
+        component: 'modal-verify-notification'
+      })
+      // }
 
       store.dispatch('organization/resetCreateForm')
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-create-org',
-        closable
+        properties: {
+          closable
+        }
       })
     }
 
