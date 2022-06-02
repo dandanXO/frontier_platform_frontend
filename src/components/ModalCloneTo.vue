@@ -180,7 +180,12 @@ const submit = async () => {
   try {
     store.dispatch('helper/pushModalLoading')
     await props.cloneHandler(targetLocationList, optional, selectedOrgId.value)
-    store.dispatch('helper/clearModalPipeline')
+    store.dispatch('helper/openModalConfirm', {
+      type: 0,
+      header: t('RR0162'),
+      content: t('RR0242'),
+      secondaryBtnText: t('UU0094')
+    })
   } catch (error) {
     const { code } = error
     store.dispatch('helper/closeModalLoading')
