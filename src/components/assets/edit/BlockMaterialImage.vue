@@ -64,7 +64,7 @@ import { computed, ref } from 'vue'
 import useMaterial from '@/composables/useMaterial'
 import { SIDE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import BlockMaterialU3mStatus from '@/components/assets/material/edit/BlockMaterialU3mStatus.vue'
+import BlockMaterialU3mStatus from '@/components/assets/edit/BlockMaterialU3mStatus.vue'
 import useNavigation from '@/composables/useNavigation'
 
 const { t } = useI18n()

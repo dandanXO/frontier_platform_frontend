@@ -37,10 +37,10 @@ div(class="w-full h-full flex justify-center")
 </template>
 
 <script setup>
-import BlockMaterialInformation from '@/components/assets/material/edit/BlockMaterialInformation.vue'
-import BlockMaterialInventory from '@/components/assets/material/edit/BlockMaterialInventory.vue'
-import BlockMaterialPricing from '@/components/assets/material/edit/BlockMaterialPricing.vue'
-import BlockMaterialAdditionalInfo from '@/components/assets/material/edit/BlockMaterialAdditionalInfo.vue'
+import BlockMaterialInformation from '@/components/assets/edit/BlockMaterialInformation.vue'
+import BlockMaterialInventory from '@/components/assets/edit/BlockMaterialInventory.vue'
+import BlockMaterialPricing from '@/components/assets/edit/BlockMaterialPricing.vue'
+import BlockMaterialAdditionalInfo from '@/components/assets/edit/BlockMaterialAdditionalInfo.vue'
 import useMaterialValidation from '@/composables/useMaterialValidation'
 import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'

@@ -50,8 +50,8 @@ div(class="w-full h-full")
 
 <script setup>
 import SearchTable from '@/components/common/SearchTable.vue'
-import RowItem from '@/components/assets/material/list/RowItem.vue'
-import GridItem from '@/components/assets/material/list/GridItem.vue'
+import RowItem from '@/components/assets/RowItem.vue'
+import GridItem from '@/components/assets/GridItem.vue'
 import GridOrRow from '@/components/common/GridOrRow.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
