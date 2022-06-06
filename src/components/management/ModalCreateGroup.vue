@@ -17,7 +17,7 @@ modal-behavior(
     )
     input-textarea(v-model:textValue="description" :label="$t('BB0087')" :placeholder="$t('BB0088')" class="mb-1" height="160")
   template(#note) 
-    p(class="text-caption text-black-600") Next: Create Upload Email
+    p(class="text-caption text-black-600") {{$t("BB0114")}}
 </template>
 
 <script setup>

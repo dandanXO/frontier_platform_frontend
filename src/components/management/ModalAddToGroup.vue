@@ -1,14 +1,16 @@
 <template lang="pug">
 modal-behavior(
-  :header="$t('BB0095')"
+  :header="$t('BB0095', { groupName: group.groupName })"
   :primaryBtnText="$t('UU0014')"
   :primaryBtnDisabled="addedMemberList.length === 0"
   @click:primary="addMemberToGroup"
 )
   div(class="w-94")
     div(class="flex items-center mb-4")
-      span(class="text-body2 font-bold text-primary") {{ $t("BB0111") }}
-      span(class="text-black-600 font-bold text-caption ml-4") {{ groupMemberList.length }}/{{ orgMemberList.length }}
+      div(class="text-body2 font-bold text-primary") {{ $t("BB0111") }}
+      div(class="text-black-600 font-bold text-caption ml-4")
+        span(:class="{'text-brand': addedMemberList.length>0}") {{ addedMemberList.length }}
+        span /{{ orgMemberList.length }}
     input-text(v-model:textValue="searchInput" size="lg" class="mb-1.5" prependIcon="search" :placeholder="$t('BB0012')")
     overlay-scrollbar-container(class="h-75 mt-2 -mx-5")
       div(v-if="memberList.length > 0" class="grid gap-y-1 mx-5" @mouseleave="indexOfOnHover = -1")
@@ -48,6 +50,7 @@ import usePlan from '@/composables/usePlan.js'
 const store = useStore()
 const { checkCanInvitedPeople } = usePlan()
 const searchInput = ref('')
+const group = computed(() => store.getters['group/group'])
 const orgMemberList = computed(() => store.getters['organization/memberList'])
 const groupMemberList = computed(() => store.getters['group/memberList'])
 const memberList = computed(() => {

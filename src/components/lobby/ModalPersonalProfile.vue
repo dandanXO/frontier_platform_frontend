@@ -17,30 +17,19 @@ modal-behavior(
       input-text(v-model:textValue="lastName" required :label="$t('MM0035')")
 </template>
 
-<script>
+<script setup>
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 
-export default {
-  name: 'ModalPersonalProfile',
-  setup () {
-    const store = useStore()
-    const user = computed(() => store.getters['user/user'])
+const store = useStore()
+const user = computed(() => store.getters['user/user'])
 
-    const firstName = ref(user.value.firstName)
-    const lastName = ref(user.value.lastName)
+const firstName = ref(user.value.firstName)
+const lastName = ref(user.value.lastName)
 
-    const updateUserProfile = async () => {
-      store.dispatch('helper/openModalLoading')
-      await store.dispatch('user/updateUserProfile', { firstName: firstName.value, lastName: lastName.value })
-      store.dispatch('helper/clearModalPipeline')
-    }
-    return {
-      user,
-      firstName,
-      lastName,
-      updateUserProfile
-    }
-  }
+const updateUserProfile = async () => {
+  store.dispatch('helper/openModalLoading')
+  await store.dispatch('user/updateUserProfile', { firstName: firstName.value, lastName: lastName.value })
+  store.dispatch('helper/clearModalPipeline')
 }
 </script>

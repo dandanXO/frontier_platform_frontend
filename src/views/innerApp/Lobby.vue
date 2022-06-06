@@ -67,11 +67,11 @@ export default {
     }
 
     const openModalCreateOrg = (closable = true) => {
-      // if (!user.value.isVerify) {
-      return store.dispatch('helper/openModalBehavior', {
-        component: 'modal-verify-notification'
-      })
-      // }
+      if (!user.value.isVerify) {
+        return store.dispatch('helper/openModalBehavior', {
+          component: 'modal-verify-notification'
+        })
+      }
 
       store.dispatch('organization/resetCreateForm')
       store.dispatch('helper/openModalBehavior', {
