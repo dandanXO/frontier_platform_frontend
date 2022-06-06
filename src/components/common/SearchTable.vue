@@ -38,7 +38,7 @@ div(class="w-full h-full flex flex-col")
       p(v-else-if="inSearch && pagination.totalCount === 0" class="text-center text-body2 text-primary") {{ $t("RR0105") }}
     slot(v-else :inSearch="inSearch" :goTo="goTo")
     div(id="pagination-container" class="py-9.5 justify-self-center self-end")
-      pagination(v-if="!isSearching && pagination.totalCount > 0" v-model:currentPage="pagination.currentPage" :totalPage="pagination.totalPage" @goTo="search($event)")
+      paginator(v-if="!isSearching && pagination.totalCount > 0" v-model:currentPage="pagination.currentPage" :totalPage="pagination.totalPage" @goTo="search($event)")
 multi-select-menu(v-if="optionMultiSelect.length > 0" :optionMultiSelect="optionMultiSelect" v-model:selectedList="innerSelectedItemList")
   template(#default="{ option }")
     slot(name="menu-option" :option="option")
@@ -46,7 +46,6 @@ multi-select-menu(v-if="optionMultiSelect.length > 0" :optionMultiSelect="option
 
 <script setup>
 import SearchBox from '@/components/common/SearchBox.vue'
-import Pagination from '@/components/common/Pagination.vue'
 import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'

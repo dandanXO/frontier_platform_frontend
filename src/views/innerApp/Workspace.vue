@@ -18,7 +18,7 @@ div(class="w-full h-full")
           span )
     template(#header-right)
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
-      btn(size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{ $t("UU0055") }}
+      btn(size="sm" prependIcon="add" @click="openModalAssetsList") {{ $t("UU0055") }}
     template(v-if="!isFirstLayer" #sub-header)
       p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{ $t("FF0002") }}: {{ $dayjs.unix(collection.createDate).format("YYYY/MM/DD") }}
     template(#default="{ inSearch, goTo }")
@@ -171,7 +171,7 @@ const openModalCollectionDetail = () => {
   })
 }
 
-const addMaterialFromAssetsList = () => {
+const openModalAssetsList = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-assets-list',
     properties: {

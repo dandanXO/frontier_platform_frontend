@@ -59,17 +59,15 @@ div(class="relative")
             )
       div(v-else class="text-body1 text-black-600 mt-10 text-center") {{ emptyText }}
   div(v-if="innerPagination.totalPage > 1" class="py-6 flex justify-center")
-    pagination(v-model:currentPage="innerPagination.currentPage" :totalPage="innerPagination.totalPage" @goTo="$emit('goTo', $event)")
+    paginator(v-model:currentPage="innerPagination.currentPage" :totalPage="innerPagination.totalPage" @goTo="$emit('goTo', $event)")
 </template>
 
 <script>
-import Pagination from '@/components/common/Pagination.vue'
 import { computed, ref } from '@vue/reactivity'
 import { onMounted } from 'vue'
 
 export default {
   name: 'GeneralTable',
-  components: { Pagination },
   props: {
     items: {
       type: Array,

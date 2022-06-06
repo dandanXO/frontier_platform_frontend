@@ -19,7 +19,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
           @enter="search"
           @clear="search"
         )
-        btn(v-if="currentTab === MOODBOARD_TAB.OFFER" size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{ $t("UU0055") }}
+        btn(v-if="currentTab === MOODBOARD_TAB.OFFER" size="sm" prependIcon="add" @click="openModalAssetsList") {{ $t("UU0055") }}
       div(class="py-2 flex justify-between items-center")
         breadcrumb(:breadcrumbList="moodboardOfferNodeCollection.locationList" @click:item="goTo($event.nodeId)" fontSize="text-body2")
         btn-functional(size="lg" @click="selectAll") {{ $t("RR0209") }}
@@ -108,7 +108,7 @@ const tabList = computed(() => [
   }
 ])
 
-const addMaterialFromAssetsList = () => {
+const openModalAssetsList = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-assets-list',
     properties: {

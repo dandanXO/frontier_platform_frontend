@@ -5,6 +5,7 @@
     background-color: transparent !important;
     border: none !important;
   }
+
   :deep(.Page-active) {
     color: #222222;
   }
@@ -27,7 +28,7 @@ import '@hennge/vue3-pagination/dist/vue3-pagination.css'
 import { computed } from 'vue'
 
 export default {
-  name: 'Pagination',
+  name: 'Paginator',
   components: {
     VPagination
   },

@@ -42,13 +42,11 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import MenuPersonal from '@/components/lobby/MenuPersonal.vue'
 import { computed } from 'vue'
-import AvatarGroup from '@/components/common/AvatarGroup.vue'
 
 export default {
   name: 'Lobby',
   components: {
-    MenuPersonal,
-    AvatarGroup
+    MenuPersonal
   },
   setup () {
     const store = useStore()
