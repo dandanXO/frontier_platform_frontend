@@ -30,7 +30,7 @@ export default {
     const store = useStore()
 
     const isShowBufferNotifyBar = ref(true)
-    const orgUserRole = computed(() => store.getters['user/orgUser/orgUserRole'])
+    const orgUserRole = computed(() => store.getters['organization/orgUser/orgUserRole'])
     const planType = computed(() => store.getters['polling/planType'])
     const planStatus = computed(() => store.getters['polling/planStatus'])
     const bufferDeactivatedDate = computed(() => store.getters['polling/plan'].bufferDeactivatedDate)

@@ -5,7 +5,7 @@ modal-pipeline
 </template>
 
 <script setup>
-import ModalPipeline from '@/components/modal/ModalPipeline.vue'
+import ModalPipeline from '@/components/common/modal/ModalPipeline.vue'
 import { useStore } from 'vuex'
 
 const store = useStore()

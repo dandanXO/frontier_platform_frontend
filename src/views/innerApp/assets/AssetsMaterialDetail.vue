@@ -20,7 +20,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import MaterialDetailInternal from '@/components/layout/materialDetail/MaterialDetailInternal.vue'
+import MaterialDetailInternal from '@/components/common/material/detail/MaterialDetailInternal.vue'
 import dayjs from 'dayjs'
 
 export default {

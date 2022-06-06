@@ -1,6 +1,4 @@
 import userApi from '@/apis/user'
-import orgUser from '@/store/modules/user/orgUser'
-import groupUser from '@/store/modules/user/groupUser'
 import setVuexState from '@/utils/set-vuex-state'
 import i18n from '@/utils/i18n'
 
@@ -101,9 +99,5 @@ export default {
   namespaced: true,
   state,
   getters,
-  actions,
-  modules: {
-    orgUser,
-    groupUser
-  }
+  actions
 }

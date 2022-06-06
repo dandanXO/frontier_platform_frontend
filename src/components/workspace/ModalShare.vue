@@ -58,7 +58,6 @@ div(class="w-119.5 px-8")
 import { useI18n } from 'vue-i18n'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import AvatarGroup from '@/components/AvatarGroup.vue'
 import { SOCIAL_MEDIA_TYPE } from '@/utils/constants.js'
 import { shareViaCopyLink, shareViaSocialMedia } from '@/utils/share.js'
 import { NODE_TYPE } from '@/utils/constants.js'

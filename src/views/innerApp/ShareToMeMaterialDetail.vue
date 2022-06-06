@@ -26,7 +26,7 @@ import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import useShareToMe from '@/composables/useShareToMe'
-import MaterialDetailExternal from '@/components/layout/materialDetail/MaterialDetailExternal.vue'
+import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
 
 const props = defineProps({
   nodeKey: {

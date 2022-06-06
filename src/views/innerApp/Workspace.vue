@@ -18,7 +18,7 @@ div(class="w-full h-full")
           span )
     template(#header-right)
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
-      btn(size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{ $t("UU0055") }}
+      btn(size="sm" prependIcon="add" @click="openModalAssetsList") {{ $t("UU0055") }}
     template(v-if="!isFirstLayer" #sub-header)
       p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{ $t("FF0002") }}: {{ $dayjs.unix(collection.createDate).format("YYYY/MM/DD") }}
     template(#default="{ inSearch, goTo }")
@@ -49,12 +49,12 @@ div(class="w-full h-full")
 </template>
 
 <script setup>
-import SearchTable from '@/components/layout/SearchTable.vue'
+import SearchTable from '@/components/common/SearchTable.vue'
 import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
-import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
+import ChildNodeItem from '@/components/common/ChildNodeItem.vue'
 import { useRoute, useRouter } from 'vue-router'
 import useWorkspace from '@/composables/useWorkspace'
 import useNavigation from '@/composables/useNavigation.js'
@@ -171,7 +171,7 @@ const openModalCollectionDetail = () => {
   })
 }
 
-const addMaterialFromAssetsList = () => {
+const openModalAssetsList = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-assets-list',
     properties: {

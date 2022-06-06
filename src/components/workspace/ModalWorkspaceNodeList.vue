@@ -111,7 +111,7 @@ import { ref, computed, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { NODE_LOCATION, NODE_TYPE, SORT_BY } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import NodeItemForModal from '@/components/layout/NodeItemForModal.vue'
+import NodeItemForModal from '@/components/common/NodeItemForModal.vue'
 
 export default {
   name: 'ModalWorkspaceNodeList',

@@ -40,22 +40,18 @@ div(class="w-193.5 px-8 flex flex-col items-center")
 
 <script>
 import { computed, reactive, ref } from '@vue/reactivity'
-import InputCallingCode from '@/components/InputCallingCode.vue'
 import inputRules from '@/utils/input-rules.js'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'ModalUpgradeEnterprise',
-  components: {
-    InputCallingCode
-  },
   setup () {
     const { t } = useI18n()
     const store = useStore()
 
     const refInputEmail = ref(null)
-    const orgUser = computed(() => store.getters['user/orgUser/orgUser'])
+    const orgUser = computed(() => store.getters['organization/orgUser/orgUser'])
     const formData = reactive({
       name: orgUser.value.displayName,
       email: orgUser.value.email,

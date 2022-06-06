@@ -19,7 +19,7 @@ div(class="fixed z-footer bottom-0 w-full h-13 bg-black-100 px-36 flex items-cen
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import MaterialDetailExternal from '@/components/layout/materialDetail/MaterialDetailExternal.vue'
+import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
 
 const store = useStore()
 

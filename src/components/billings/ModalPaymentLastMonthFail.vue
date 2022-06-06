@@ -25,7 +25,7 @@ export default {
     const store = useStore()
     const { payLastMonthUnbilledInfo } = usePlan()
 
-    const orgUserRole = computed(() => store.getters['user/orgUser/orgUserRole'])
+    const orgUserRole = computed(() => store.getters['organization/orgUser/orgUserRole'])
     const bufferDeactivatedDate = computed(() => store.getters['polling/plan'].bufferDeactivatedDate)
 
 
