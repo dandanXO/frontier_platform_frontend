@@ -89,7 +89,7 @@ const toggleTab = (tab) => {
 }
 const openModalCreateGroup = () => {
   store.dispatch('group/resetCreateForm')
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-create-group'
   })
 }
@@ -102,7 +102,7 @@ const inviteHandler = () => {
   }
 }
 const openModalInviteToOrg = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-invite-to-org',
     properties: {
       from: 'org'
@@ -110,7 +110,7 @@ const openModalInviteToOrg = () => {
   })
 }
 const openModalAddToGroup = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-add-to-group'
   })
 }

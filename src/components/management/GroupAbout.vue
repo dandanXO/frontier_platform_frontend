@@ -54,7 +54,7 @@ export default {
     }
 
     const openModalTypeTextToConfirm = () => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-type-text-to-confirm',
         properties: {
           title: t('BB0028'),
@@ -69,7 +69,7 @@ export default {
               content: t('BB0101'),
               primaryBtnText: t('UU0001'),
               afterPrimaryBtnHandler: async () => {
-                await store.dispatch('helper/openModal', {
+                await store.dispatch('helper/openModalBehavior', {
                   component: 'modal-choose-storage'
                 })
               },

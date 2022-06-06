@@ -104,8 +104,8 @@ const googleSignUp = async (googleUser) => {
   !isEmailExist.value && nextAfterSignIn()
 }
 
-const openModalTermsOfUse = () => store.dispatch('helper/openModal', { component: 'modal-terms-of-use' })
-const openModalPrivacyPolicy = () => store.dispatch('helper/openModal', { component: 'modal-privacy-policy' })
+const openModalTermsOfUse = () => store.dispatch('helper/openModalBehavior', { component: 'modal-terms-of-use' })
+const openModalPrivacyPolicy = () => store.dispatch('helper/openModalBehavior', { component: 'modal-privacy-policy' })
 
 watch(
   () => formData.email,

@@ -45,7 +45,7 @@ const formData = reactive({
 const errorMsgSignIn = ref('')
 
 const openModalForgotPasswordEmail = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-forgot-password-email'
   })
 }

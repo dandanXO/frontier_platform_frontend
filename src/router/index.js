@@ -7,7 +7,7 @@ import i18n from '@/utils/i18n'
 const checkUserIsVerify = (to, from, next) => {
   const user = store.getters['user/user']
   if (!user.isVerify) {
-    store.dispatch('helper/openModal', {
+    store.dispatch('helper/openModalBehavior', {
       component: 'modal-verify-notification'
     })
     return next('/')
@@ -294,12 +294,12 @@ const routes = [
           const org = store.getters['organization/organization']
           const orgUser = store.getters['user/orgUser/orgUser']
           if (orgUser.orgRoleId === ROLE_ID.OWNER && !org.uploadMaterialEmail) {
-            store.dispatch('helper/openModal', {
+            store.dispatch('helper/openModalBehavior', {
               component: 'modal-create-mail-org',
               properties: {
-                isOldOrg: true
+                isOldOrg: true,
+                closable: false
               },
-              closable: false
             })
           }
 
