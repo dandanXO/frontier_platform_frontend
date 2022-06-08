@@ -63,7 +63,7 @@ export default {
     }
 
     const openModalPublicLibraryShareAssigned = () => {
-      store.dispatch('helper/pushModal', {
+      store.dispatch('helper/pushModalBehavior', {
         component: 'modal-public-library-share-assigned',
         properties: {
           nodeKey: props.nodeKey

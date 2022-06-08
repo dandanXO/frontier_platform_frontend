@@ -161,8 +161,7 @@ const openModalCreateCollection = () => {
 }
 
 const openModalCollectionDetail = () => {
-  store.dispatch('helper/openModal', {
-    header: t('FF0006'),
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-collection-detail',
     properties: {
       ...collection.value,
@@ -193,13 +192,13 @@ const openModalAssetsList = () => {
           store.dispatch('helper/openModalBehavior', {
             component: 'modal-material-no-list',
             properties: {
-            header: t('EE0063', { number: failMaterialList.length }),
-            primaryBtnText: t('UU0031'),
-            primaryBtnHandler: () => {
-              store.dispatch('helper/closeModalBehavior')
-            },
-            content: t('EE0064'),
-            materialNoList: failMaterialList
+              header: t('EE0063', { number: failMaterialList.length }),
+              primaryBtnText: t('UU0031'),
+              primaryBtnHandler: () => {
+                store.dispatch('helper/closeModalBehavior')
+              },
+              content: t('EE0064'),
+              materialNoList: failMaterialList
             }
           })
         } else {

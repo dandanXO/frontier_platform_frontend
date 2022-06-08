@@ -32,7 +32,6 @@ export default {
     Modal,
     ModalConfirm,
     ModalLoading,
-    ModalManageMaterialQuota: defineAsyncComponent(() => import('@/components/billings/ModalManageMaterialQuota.vue')),
     ModalCreateOrEditMoodboard: defineAsyncComponent(() => import('@/components/moodboard/ModalCreateOrEditMoodboard.vue')),
     ModalMoodboardShare: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardShare.vue')),
     ModalMoodboardShareList: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardShareList.vue')),
@@ -48,6 +47,7 @@ export default {
     ModalCropImage: defineAsyncComponent(() => import('@/components/common/cropper/ModalCropImage.vue')),
     ModalU3mSelectFileFormat: defineAsyncComponent(() => import('@/components/common/material/u3m/ModalU3mSelectFileFormat.vue')),
     ModalU3mDownloadConfirm: defineAsyncComponent(() => import('@/components/common/material/u3m/ModalU3mDownloadConfirm.vue')),
+    ModalCollectionDetail: defineAsyncComponent(() => import('@/components/common/ModalCollectionDetail.vue')),
     ModalCreateMailOrg: defineAsyncComponent(() => import('@/components/lobby/ModalCreateMailOrg.vue')),
     ModalCreateOrg: defineAsyncComponent(() => import('@/components/lobby/ModalCreateOrg.vue')),
     ModalPersonalProfile: defineAsyncComponent(() => import('@/components/lobby/ModalPersonalProfile.vue')),
@@ -84,7 +84,17 @@ export default {
     ModalShare: defineAsyncComponent(() => import('@/components/workspace/ModalShare.vue')),
     ModalPublish: defineAsyncComponent(() => import('@/components/workspace/ModalPublish.vue')),
     ModalShareAssigned: defineAsyncComponent(() => import('@/components/workspace/ModalShareAssigned.vue')),
-    ModalShareAssignedList: defineAsyncComponent(() => import('@/components/workspace/ModalShareAssignedList.vue'))
+    ModalShareAssignedList: defineAsyncComponent(() => import('@/components/workspace/ModalShareAssignedList.vue')),
+    ModalManageMaterialQuota: defineAsyncComponent(() => import('@/components/billings/ModalManageMaterialQuota.vue')),
+    ModalEditBillingInfo: defineAsyncComponent(() => import('@/components/billings/ModalEditBillingInfo.vue')),
+    ModalSetupCard: defineAsyncComponent(() => import('@/components/billings/ModalSetupCard.vue')),
+    ModalUpgradeEnterprise: defineAsyncComponent(() => import('@/components/billings/ModalUpgradeEnterprise.vue')),
+    ModalPurchaseU3mQuota: defineAsyncComponent(() => import('@/components/billings/ModalPurchaseU3mQuota.vue')),
+    ModalCheckoutList: defineAsyncComponent(() => import('@/components/billings/ModalCheckoutList.vue')),
+    ModalTermsOfSubscription: defineAsyncComponent(() => import('@/components/billings/ModalTermsOfSubscription.vue')),
+    ModalDeactivate: defineAsyncComponent(() => import('@/components/billings/ModalDeactivate.vue')),
+    ModalPaymentLastMonthFail: defineAsyncComponent(() => import('@/components/billings/ModalPaymentLastMonthFail.vue')),
+    ModalPublicLibraryShareAssigned: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryShareAssigned.vue'))
   },
   setup() {
     const store = useStore()

@@ -77,13 +77,13 @@ export default function usePlan () {
   }
 
   const openModalPurchaseU3mQuota = () => {
-    !planType.value.ENT && planStatus.value.ACTIVE && checkHaveBindPayment() && store.dispatch('helper/openModal', {
+    !planType.value.ENT && planStatus.value.ACTIVE && checkHaveBindPayment() && store.dispatch('helper/openModalBehavior', {
       component: 'modal-purchase-u3m-quota'
     })
   }
 
   const openModalDeactivate = () => {
-    store.dispatch('helper/openModal', {
+    store.dispatch('helper/openModalBehavior', {
       component: 'modal-deactivate'
     })
   }
@@ -116,7 +116,7 @@ export default function usePlan () {
     const { result: { totalPrice, checkoutItemList } } = await store.dispatch('organization/getLastMonthUnbilledInfo')
     store.dispatch('helper/closeModalLoading')
 
-    store.dispatch('helper/openModal', {
+    store.dispatch('helper/openModalBehavior', {
       component: 'modal-checkout-list',
       properties: {
         checkoutItemList,

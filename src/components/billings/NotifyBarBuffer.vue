@@ -36,7 +36,7 @@ export default {
     const bufferDeactivatedDate = computed(() => store.getters['polling/plan'].bufferDeactivatedDate)
 
     const openModalPaymentLastMonthFail = () => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-payment-last-month-fail'
       })
     }

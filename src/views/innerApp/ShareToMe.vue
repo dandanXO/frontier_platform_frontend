@@ -151,8 +151,7 @@ const setSharingIdAndNodeKey = (nodeKey, targetSharingId = null) => {
 }
 
 const openModalCollectionDetail = () => {
-  store.dispatch('helper/openModal', {
-    header: t('FF0006'),
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-collection-detail',
     properties: {
       ...collection.value
@@ -179,7 +178,6 @@ const handleNodeClick = (node, goTo) => {
     goToShareToMeMaterial(node.nodeKey, node.share.sharingId)
   }
 }
-
 
 watch(
   () => isFirstLayer.value,

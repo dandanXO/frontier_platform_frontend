@@ -141,7 +141,7 @@ export default {
                   return
                 }
 
-                store.dispatch('helper/openModal', {
+                store.dispatch('helper/openModalBehavior', {
                   component: 'modal-checkout-list',
                   properties: {
                     checkoutItemList,
