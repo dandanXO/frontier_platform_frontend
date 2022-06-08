@@ -36,8 +36,8 @@ modal-behavior(
           @clear="removeTrendBoard"
         )
       div(class="grid gap-y-2 pt-1.5")
-        p(class='text-black-600 text-caption') {{ $t('FF0014') }}
-        p(class='text-black-600 text-caption') {{ $t('FF0015') }}
+        p(class='text-black-600 text-caption') {{ $t('RR0243') }} {{trendBoardFileAcceptType.join(', ').toUpperCase()}}
+        p(class='text-black-600 text-caption') {{ $t('RR0145') }} {{fileSizeMaxLimit}} MB
     div
       input-textarea(
         ref="refInputDescription"
@@ -63,8 +63,8 @@ modal-behavior(
             svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeOriginalAttachment(attachment.attachmentId)")
       btn(size="sm" type="secondary" prependIcon="add" @click="chooseAttachment") {{ $t("UU0063") }}
       div(class="text-caption text-black-600 pt-2")
-        p(class="pb-1") {{ $t("QQ0012") }}
-        p {{ $t("QQ0011") }}
+        p(class="pb-1") {{ $t('RR0243') }} {{attachmentFileAcceptType.join(', ').toUpperCase()}}
+        p {{ $t('RR0145') }} {{fileSizeMaxLimit}} MB
 </template>
 
 <script setup>
@@ -102,18 +102,17 @@ const originalAttachmentList = ref([])
 
 const orgLogo = computed(() => store.getters['organization/orgLogo'])
 const creator = computed(() => {
-  return store.getters['helper/routeLocation'] === 'org'
-    ? store.getters['organization/organization'].orgName
-    : store.getters['group/group'].groupName
+  return store.getters['helper/routeLocation'] === 'org' ? store.getters['organization/organization'].orgName : store.getters['group/group'].groupName
 })
 
 const refInputName = ref(null)
 const refInputDescription = ref(null)
 const fileUploadErrorCode = ref(0)
 const fileSizeMaxLimit = 20
+const trendBoardFileAcceptType = ['pdf']
 const primaryBtnDisabled = computed(() => !formData.moodboardName || refInputName.value?.isError || !formData.description || refInputDescription.value?.isError)
 
-const trendBoardFileOperator = new FileOperator(['pdf'], fileSizeMaxLimit, true)
+const trendBoardFileOperator = new FileOperator(acceptType, fileSizeMaxLimit, true)
 const chooseTrendBoard = () => trendBoardFileOperator.upload()
 trendBoardFileOperator.on('finish', (file) => {
   formData.trendBoardFile = file
@@ -127,9 +126,7 @@ const previewTrendBoard = () => {
   if (props.mode === CREATE_EDIT.CREATE) {
     previewFile(formData.trendBoardFile)
   } else {
-    formData.isDeleteTrendBoard
-      ? previewFile(formData.trendBoardFile)
-      : previewFile(originalTrendBoard.value)
+    formData.isDeleteTrendBoard ? previewFile(formData.trendBoardFile) : previewFile(originalTrendBoard.value)
   }
 }
 const removeTrendBoard = () => {
@@ -140,7 +137,8 @@ const removeTrendBoard = () => {
   }
 }
 
-const attachmentFileOperator = new FileOperator(['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mov', 'mp4'], fileSizeMaxLimit, true)
+const attachmentFileAcceptType = ['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mov', 'mp4']
+const attachmentFileOperator = new FileOperator(attachmentFileAcceptType, fileSizeMaxLimit, true)
 const chooseAttachment = () => attachmentFileOperator.upload()
 attachmentFileOperator.on('finish', (file) => {
   formData.attachmentFileList.unshift(file)
@@ -173,5 +171,4 @@ if (props.mode === CREATE_EDIT.EDIT) {
   originalAttachmentList.value = attachmentList
   uploadTrendBoardName.value = trendBoardFileName
 }
-
 </script>

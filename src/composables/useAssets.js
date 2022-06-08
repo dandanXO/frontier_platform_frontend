@@ -52,7 +52,7 @@ export default function useAssets () {
         })
       }
 
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-workspace-node-list',
         properties: {
           modalTitle: t('EE0057'),
@@ -68,10 +68,16 @@ export default function useAssets () {
             })
 
             if (failMaterialList && failMaterialList.length > 0) {
-              store.dispatch('helper/openModal', {
-                component: 'modal-add-to-workspace-fail',
+              store.dispatch('helper/openModalBehavior', {
+                component: 'modal-material-no-list',
                 properties: {
-                  failMaterialList
+                  header: t('EE0063', { number: failMaterialList.length }),
+                  primaryBtnText: t('UU0031'),
+                  primaryBtnHandler: () => {
+                    store.dispatch('helper/closeModalBehavior')
+                  },
+                  content: t('EE0064'),
+                  materialNoList: failMaterialList
                 }
               })
             } else {
@@ -135,9 +141,8 @@ export default function useAssets () {
           break
         default:
           if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
-            store.dispatch('helper/openModal', {
-              component: 'modal-u3m-preview',
-              header: t('EE0067')
+            store.dispatch('helper/openModalBehavior', {
+              component: 'modal-u3m-preview'
             })
           } else {
             localStorage.setItem('haveReadU3mInstruction', 'y')
@@ -146,9 +151,8 @@ export default function useAssets () {
               properties: {
                 primaryBtnText: t('UU0095'),
                 primaryHandler: () => {
-                  store.dispatch('helper/replaceModal', {
-                    component: 'modal-u3m-preview',
-                    header: t('EE0067')
+                  store.dispatch('helper/replaceModalBehavior', {
+                    component: 'modal-u3m-preview'
                   })
                 },
                 secondaryBtnText: t('UU0026'),
@@ -168,7 +172,7 @@ export default function useAssets () {
     name: t('RR0059'),
     func: (v) => {
       const materialList = Array.isArray(v) ? v : [v]
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-u3m-select-file-format',
         properties: { materialList }
       })

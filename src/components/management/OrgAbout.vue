@@ -80,7 +80,7 @@ export default {
   components: {
     InputLabelColor
   },
-  setup () {
+  setup() {
     const store = useStore()
     const { t } = useI18n()
     const router = useRouter()
@@ -97,9 +97,8 @@ export default {
     const availableToUpdateOrg = computed(() => orgFormData.orgName !== '' && !isOrgNameExist.value)
 
     const openModalUploadLogo = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-upload-logo',
-        header: t('BB0032')
+      store.dispatch('helper/openModalBehavior', {
+        component: 'modal-upload-logo'
       })
     }
 
@@ -133,10 +132,12 @@ export default {
                   return success
                 }
 
-                const { result: { totalPrice, checkoutItemList } } = await store.dispatch('organization/getUnbilledInfo')
+                const {
+                  result: { totalPrice, checkoutItemList }
+                } = await store.dispatch('organization/getUnbilledInfo')
 
                 if (checkoutItemList.length === 0) {
-                  await deleteOrg() && store.commit('helper/PUSH_message', t('OO0101'))
+                  ;(await deleteOrg()) && store.commit('helper/PUSH_message', t('OO0101'))
                   return
                 }
 
@@ -146,13 +147,14 @@ export default {
                     checkoutItemList,
                     totalPrice,
                     payHandler: async () => {
-                      await deleteOrg() && store.dispatch('helper/openModal', {
-                        component: 'modal-payment-success',
-                        properties: {
-                          title: t('OO0039'),
-                          content: t('OO0101')
-                        }
-                      })
+                      ;(await deleteOrg()) &&
+                        store.dispatch('helper/openModal', {
+                          component: 'modal-payment-success',
+                          properties: {
+                            title: t('OO0039'),
+                            content: t('OO0101')
+                          }
+                        })
                     }
                   }
                 })
@@ -167,7 +169,9 @@ export default {
     const updateOrg = async () => {
       if (orgFormData.orgName !== organization.value.orgName) {
         isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: orgFormData.orgName, orgId: organization.value.orgId })
-        if (isOrgNameExist.value) { return }
+        if (isOrgNameExist.value) {
+          return
+        }
       }
 
       await store.dispatch('organization/updateOrg', toRaw(orgFormData))

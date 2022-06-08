@@ -1,11 +1,11 @@
 <template lang="pug">
 modal-behavior(
-  :header="$t('DD0054')"
+  :header="$t('EE0087')"
   :primaryBtnText="$t('UU0022')"
   :secondaryBtnText="$t('UU0002')"
-  :primaryBtnDisabled="disabledUpload"
-  @click:primary="handleUpload"
-  @click:secondary="closeModalBehavior"
+  :primaryBtnDisabled="disabled"
+  @click:primary="upload"
+  @click:secondary="closeModal"
 )
   div(class="w-94")
     p(class="text-caption text-black-600 text-right mb-1.5") 
@@ -13,24 +13,23 @@ modal-behavior(
       span {{ $t("RR0163") }}
     div(class="mb-7.5")
       input-text-btn(
-        class="w-full mb-1.5"
-        disabledInput
-        :label="$t('DD0038')"
+        class="w-full"
+        :label="$t('EE0088')"
         :textValue="originalFileName"
         :clearable="false"
         :buttonLabel="$t('UU0025')"
         @click:button="chooseFile"
-        required
+				disabledInput
+				required
       )
-      p(class="text-black-800 text-caption leading-1.6") {{ $t("DD0055") }}
-      p(class="text-black-800 text-caption leading-1.6") {{ $t("DD0056") }}
-    div
-      input-text(
-        v-model:textValue="fileName"
-        :label="$t('DD0057')"
-        :placeholder="$t('DD0058')"
-        required
-      )
+      p(class="text-primary text-caption leading-1.6") {{ $t("RR0243") }} {{acceptType.join(', ').toUpperCase()}}
+      p(class="text-primary text-caption leading-1.6") {{ $t("RR0145") }} {{fileSizeMaxLimit}} MB
+    input-text(
+      v-model:textValue="fileName"
+      :label="$t('EE0091')"
+      :placeholder="$t('EE0092')"
+      required
+    )
 </template>
 
 <script setup>
@@ -41,16 +40,18 @@ import { FileOperator } from '@/utils/fileOperator'
 const props = defineProps({
   uploadHandler: {
     type: Function
+  },
+  acceptType: {
+    type: Array
   }
 })
 
 const store = useStore()
 const fileName = ref('')
 const originalFileName = ref('')
-const disabledUpload = computed(() => !fileName.value || !originalFileName.value)
-
-const acceptType = ['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mov', 'mp4']
-const fileOperator = new FileOperator(acceptType, 20)
+const disabled = computed(() => !fileName.value || !originalFileName.value)
+const fileSizeMaxLimit = 20
+const fileOperator = new FileOperator(props.acceptType, fileSizeMaxLimit)
 let binaryFile
 
 const chooseFile = () => {
@@ -63,14 +64,16 @@ fileOperator.on('finish', (file) => {
   originalFileName.value = file.name
 })
 
-const handleUpload = async () => {
+const upload = async () => {
   if (typeof props.uploadHandler === 'function') {
     store.dispatch('helper/pushModalLoading')
     await props.uploadHandler(binaryFile, fileName.value)
     store.dispatch('helper/closeModalLoading')
-    closeModalBehavior()
+    closeModal()
   }
 }
 
-const closeModalBehavior = () => store.dispatch('helper/closeModalBehavior')
+const closeModal = () => {
+  store.dispatch('helper/closeModal')
+}
 </script>

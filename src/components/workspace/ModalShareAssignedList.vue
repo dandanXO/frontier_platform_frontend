@@ -1,7 +1,10 @@
 <template lang="pug">
-div(class="w-130 px-8")
-  h6(class="text-h6 font-bold text-primary text-center pb-7.5") {{$t('FF0057')}}
-  overlay-scrollbar-container(class="max-h-100.5 mb-7.5 -mx-8 px-8")
+modal-behavior(
+  :header="$t('FF0057')"
+  :primaryBtnText="$t('UU0002')"
+  @click:primary="closeModal"
+)
+  overlay-scrollbar-container(class="max-h-100.5 mb-7.5 -mx-5 px-5")
     div(class="grid gap-y-7.5")
       div(v-for="item in shareList" class="flex items-center h-10.5 gap-x-2.5")
         img(v-if="item.logo" :src="item.logo" class="w-10 h-10 rounded-full")
@@ -26,50 +29,43 @@ div(class="w-130 px-8")
         p(class="text-body2 text-black-500 cursor-pointer" @click="removeAssignedShare(item)") {{$t('FF0060')}}
 </template>
 
-<script>
+<script setup>
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 
-export default {
-  name: 'ModalShareAssignedList',
-  props: {
-    workspaceNodeId: {
-      type: [String, Number],
-      required: true
-    }
-  },
-  setup (props) {
-    const store = useStore()
-
-    const shareList = computed(() => store.getters['workspace/shareInfo'].shareList)
-
-    const updatedAssignedShare = async (item) => {
-      store.dispatch('helper/pushModalLoading')
-      await store.dispatch('workspace/updatedAssignedShare', {
-        workspaceNodeId: props.workspaceNodeId,
-        ...item
-      })
-      store.dispatch('helper/closeModalLoading')
-    }
-
-    const removeAssignedShare = async (item) => {
-      store.dispatch('helper/pushModalLoading')
-      await store.dispatch('workspace/removeAssignedShare', {
-        workspaceNodeId: props.workspaceNodeId,
-        ...item
-      })
-      store.dispatch('helper/closeModalLoading')
-
-      if (shareList.value.length === 0) {
-        store.dispatch('helper/closeModal')
-      }
-    }
-
-    return {
-      shareList,
-      updatedAssignedShare,
-      removeAssignedShare
-    }
+const props = defineProps({
+  workspaceNodeId: {
+    type: [String, Number],
+    required: true
   }
+})
+
+const store = useStore()
+const shareList = computed(() => store.getters['workspace/shareInfo'].shareList)
+
+const updatedAssignedShare = async (item) => {
+  store.dispatch('helper/pushModalLoading')
+  await store.dispatch('workspace/updatedAssignedShare', {
+    workspaceNodeId: props.workspaceNodeId,
+    ...item
+  })
+  store.dispatch('helper/closeModalLoading')
+}
+
+const removeAssignedShare = async (item) => {
+  store.dispatch('helper/pushModalLoading')
+  await store.dispatch('workspace/removeAssignedShare', {
+    workspaceNodeId: props.workspaceNodeId,
+    ...item
+  })
+  store.dispatch('helper/closeModalLoading')
+
+  if (shareList.value.length === 0) {
+    store.dispatch('helper/closeModal')
+  }
+}
+
+const closeModal = () => {
+  store.dispatch('helper/closeModal')
 }
 </script>

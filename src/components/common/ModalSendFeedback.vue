@@ -34,8 +34,8 @@ modal-behavior(
           svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeAttachment(attachment.tempFeedbackAttachmentId)")
     btn(size="sm" type="secondary" prependIcon="add" @click="chooseFile") {{ $t("UU0063") }}
     div(class="text-caption text-primary pt-1")
-      p(class="pb-2") {{ $t("MM0015") }}
-      p {{ $t("MM0016") }}
+      p(class="pb-2"){{ $t("RR0243") }} {{acceptType.join(', ').toUpperCase()}}
+      p {{$t("RR0145")}} {{fileSizeMaxLimit}} MB
 </template>
 
 <script setup>
@@ -49,7 +49,7 @@ import { v4 as uuidv4 } from 'uuid'
 const { t } = useI18n()
 const store = useStore()
 const tempFeedbackId = uuidv4()
-const feedbackOptionList = Object.keys(FEEDBACK_CATEGORY).map(category => ({
+const feedbackOptionList = Object.keys(FEEDBACK_CATEGORY).map((category) => ({
   text: FEEDBACK_CATEGORY[category].text,
   value: FEEDBACK_CATEGORY[category].value
 }))
@@ -61,7 +61,9 @@ const feedbackAttachmentList = ref([])
 
 const actionBtnDisabled = computed(() => !formData.category || !formData.comment)
 
-const fileOperator = new FileOperator(['jpg', 'jpeg', 'png', 'mp4'], 20)
+const fileSizeMaxLimit = 20
+const acceptType = ['jpg', 'jpeg', 'png', 'mp4']
+const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 
 fileOperator.on('finish', async (file) => {
   store.dispatch('helper/pushModalLoading')
@@ -69,10 +71,10 @@ fileOperator.on('finish', async (file) => {
   store.dispatch('helper/closeModalLoading')
 })
 
-const chooseFile = () => (fileOperator.upload())
+const chooseFile = () => fileOperator.upload()
 
 const removeAttachment = (tempFeedbackAttachmentId) => {
-  feedbackAttachmentList.value = feedbackAttachmentList.value.filter(attachment => attachment.tempFeedbackAttachmentId !== tempFeedbackAttachmentId)
+  feedbackAttachmentList.value = feedbackAttachmentList.value.filter((attachment) => attachment.tempFeedbackAttachmentId !== tempFeedbackAttachmentId)
   store.dispatch('user/removeFeedbackAttachment', { tempFeedbackId, tempFeedbackAttachmentId })
 }
 

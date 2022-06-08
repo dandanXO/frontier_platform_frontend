@@ -1,20 +1,21 @@
 <template lang="pug">
-div(class="text-primary w-112")
-  div(class="text-h6 font-bold max-w-84 mx-auto text-center mb-4") {{ $t("EE0107") }}
-  div(class="text-body2 max-w-84 mx-auto text-center mb-2.5 leading-1.6") {{ $t("EE0108") }}
-  overlay-scrollbar-container(class="max-h-70 px-14")
-    div(v-for="(material, index) in failedList" class="text-body2")
-      div(class="flex py-2.5")
-        div(class="font-bold w-29 text-center") {{ index + 1 }}
-        div {{ material.frontierNo }}
-      div(v-if="index !== failedList.length - 1" class="w-full border-b text-black-400")
-  btn-group(
-    class="h-25"
-    :secondaryButton="true"
-    :primaryText="$t('UU0059')"
-    @click:primary="downloadU3m"
-    @click:secondary="clearModalPipeline"
-  )
+modal-behavior(
+  :header="$t('EE0107')"
+  :primaryBtnText="$t('UU0059')"
+  :secondaryBtnText="$t('UU0002')"
+  @click:primary="downloadU3m"
+  @click:secondary="clearModalPipeline"
+)
+  div(class="w-94")
+    div(class="text-primary text-caption mb-2.5 leading-1.6") {{ $t("EE0108") }}
+    overlay-scrollbar-container(class="max-h-89.5 -mx-5 px-5")
+      div(
+          v-for="(material, index) in failedList"
+          class="flex gap-3 border-black-400 py-2.5 text-body2 text-primary leading-1.6"
+          :class="{ 'border-b': index !== failedList.length - 1 }"
+        )
+          div(class="w-31 pl-15 font-bold flex-shrink-0") {{ index + 1 }}
+          div {{ material.materialNo }}
 </template>
 
 <script>
@@ -34,10 +35,10 @@ export default {
       type: String
     }
   },
-  setup (props) {
+  setup(props) {
     const store = useStore()
     const downloadU3m = () => {
-      props.allowedList.forEach(material => {
+      props.allowedList.forEach((material) => {
         setTimeout(() => {
           const url = material.u3m[props.selectedFormat]
           const fileName = url.split('/')[url.split('/').length - 1]

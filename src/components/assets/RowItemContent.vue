@@ -50,13 +50,13 @@ const props = defineProps({
 const store = useStore()
 const { materialBasicInfo, materialInfo, carbonEmissionInfo } = useMaterial(props.material)
 
-const handleEdit = (title, id) => {
+const handleEdit = (title, blockId) => {
   store.dispatch('assets/setMaterial', JSON.parse(JSON.stringify(props.material)))
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-edit-simple-info',
-    header: title,
     properties: {
-      blockId: `simple-${id}`
+      title,
+      blockId
     }
   })
 }

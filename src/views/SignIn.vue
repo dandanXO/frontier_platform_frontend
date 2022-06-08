@@ -65,7 +65,7 @@ const generalSignIn = async () => {
   if (!isOldUser) {
     nextAfterSignIn()
   } else {
-    store.dispatch('helper/openModal', {
+    store.dispatch('helper/openModalBehavior', {
       component: 'modal-ask-reset-password',
       properties: {
         email: formData.email
@@ -86,8 +86,10 @@ onMounted(async () => {
     await googleSignInApi.init({
       elementId: 'google-sign-in',
       successHandler: googleSignIn,
-      failHandler (error) {
-        if (error.error === 'popup_closed_by_user') { return }
+      failHandler(error) {
+        if (error.error === 'popup_closed_by_user') {
+          return
+        }
         errorMsgSignIn.value = t('AA0065')
       }
     })

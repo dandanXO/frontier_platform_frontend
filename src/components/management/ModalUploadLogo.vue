@@ -1,30 +1,31 @@
 <template lang="pug">
-div(class="w-86 h-136 border-t border-black-400 flex flex-col")
-  div(class="w-full h-full flex justify-center items-center px-11")
-    div(
-      v-if="!isUploading && !haveUploadedImage"
-      class="flex flex-col"
-      @drop.stop.prevent="imageOperator.onDrop($event)"
-      @dragover.prevent
-      @dragenter.prevent
-    )
-      btn(size="md" type="secondary" class="h-10 mb-4" @click="uploadImg") {{ $t("BB0035") }}
-      span(class="text-body2 font-bold mb-2 text-black-500") {{ $t("BB0033") }}
-      span(class="text-body2 mb-2 text-black-500") {{ $t("BB0034") }}
-      span(class="text-body2 mb-2 text-black-500") {{ $t("BB0059") }}
-      span(class="text-body2 mb-2 text-black-500") {{ $t("BB0060") }}
+modal-behavior(
+  :header="$t('BB0032')"
+  :secondaryBtnText="$t('UU0002')"
+  @click:secondary="closeModal"
+)
+  template(#note)
+    file-upload-error-note(v-if="errorCode" :errorCode="errorCode" :fileSizeMaxLimit="fileSizeMaxLimit")
+  div(class="w-86 h-100 flex items-center")
+    div(v-if="!isUploading && !haveUploadedImage")
+      btn(size="md" class="mb-6" @click="uploadImg" prependIcon="upload") {{ $t("BB0035") }}
+      div(class="grid gap-0.5 text-caption leading-1.6 text-black-600")
+        div {{ $t("RR0243") }}
+          span(class="text-black-800 ml-1") {{acceptType.join(', ').toUpperCase()}}
+        div {{ $t("RR0244") }}
+          span(class="text-black-800 ml-1") 200 x 200 px
+        div {{ $t("RR0145") }}
+          span(class="text-black-800 ml-1") {{fileSizeMaxLimit}} MB
     svg-icon(
       v-else-if="isUploading"
       iconName="loading"
       size="100"
       class="justify-self-end cursor-pointer text-brand-dark"
     )
-    img(v-else class="w-50 h-50 rounded-full" :src="orgLogo")
-  div(class="h-25 flex justify-center items-center")
-    div(v-if="!isUploading && haveUploadedImage" class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" @click="removeLogo") {{ $t("UU0016") }}
-      btn(size="md" @click="uploadImg") {{ $t("UU0019") }}
-    btn(v-else size="md" :disabled="true") {{ $t("UU0001") }}
+    div(v-else class="w-full flex flex-col items-center")
+      img(class="w-50 h-50 rounded-full mb-9" :src="orgLogo")
+      btn(size="md" @click="uploadImg" prependIcon="tune" class="mb-2.5") {{$t("UU0019")}}
+      btn(size="md" type="text" @click="removeLogo") {{$t('UU0016')}}
 </template>
 
 <script setup>
@@ -37,20 +38,29 @@ const { t } = useI18n()
 const store = useStore()
 const cropRectSize = 200
 const isUploading = ref(false)
+const errorCode = ref('')
 const orgLogo = computed(() => store.getters['organization/organization'].logo)
 const haveUploadedImage = computed(() => {
   const defaultLogo = 'logo-default.png' // This file name is static
   return !orgLogo.value.includes(defaultLogo)
 })
-const imageOperator = new ImageOperator(['jpeg', 'jpg', 'png'], 5, cropRectSize)
+
+const fileSizeMaxLimit = 5
+const acceptType = ['jpeg', 'jpg', 'png']
+const imageOperator = new ImageOperator(acceptType, fileSizeMaxLimit, cropRectSize)
 
 imageOperator.on('uploading', () => (isUploading.value = true))
-imageOperator.on('selfDefinedError', () => (isUploading.value = false))
+imageOperator.on('selfDefinedError', () => {
+  isUploading.value = false
+  errorCode.value = code
+})
+
 imageOperator.on('finish', (image) => {
-  store.dispatch('helper/replaceModal', {
+  errorCode.value = ''
+  store.dispatch('helper/replaceModalBehavior', {
     component: 'modal-crop-image',
-    header: t('BB0032'),
     properties: {
+      title: t('BB0032'),
       image,
       cropRectSize,
       afterCropHandler: async (croppedImage, originalImage) => {
@@ -66,6 +76,9 @@ const uploadImg = () => {
 
 const removeLogo = async () => {
   await store.dispatch('organization/removeOrgLogo')
-  store.dispatch('helper/closeModal')
+}
+
+const closeModal = () => {
+  store.dispatch('helper/closeModalBehavior')
 }
 </script>

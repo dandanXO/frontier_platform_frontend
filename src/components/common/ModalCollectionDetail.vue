@@ -52,7 +52,7 @@ export default {
     const store = useStore()
 
     const goToEditCollection = () => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-create-or-edit-collection',
         properties: {
           mode: 2,

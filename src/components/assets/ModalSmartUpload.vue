@@ -15,9 +15,9 @@ modal-behavior(
   div(class="w-94")
     template(v-if="readyToUploadFile.length === 0")
       div(class="text-caption leading-1.6 grid grid-cols-2 grid-rows-3 pr-3 mb-3")
-        div(class="text-black-800") {{ $t("DD0098") }}
-        div(class="text-primary font-bold") {{ $t("DD0099") }}
-        div(class="text-black-800") {{ $t("DD0100") }}
+        div(class="text-black-800") {{ $t("RR0243") }}
+        div(class="text-primary font-bold") {{acceptType.join(', ').toUpperCase()}}
+        div(class="text-black-800") {{ $t("RR0145") }}
         div(class="text-primary font-bold") {{ $t("DD0101") }}
         div(class="text-black-800") {{ $t("DD0102") }}
         div(class="text-primary font-bold") {{ $t("DD0103") }}
@@ -65,7 +65,8 @@ const readyToUploadFile = computed(() => materialImageList.filter(image => !imag
 const disabledUpload = computed(() => readyToUploadFile.value.length === 0)
 
 const fileSizeMaxLimit = 20
-const fileOperator = new FileOperator(['jpg', 'jpeg', 'png'], fileSizeMaxLimit, true)
+const acceptType = ['jpg', 'jpeg', 'png']
+const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit, true)
 
 const chooseFile = () => {
   fileOperator.upload(true)

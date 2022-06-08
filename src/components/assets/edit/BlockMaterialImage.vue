@@ -118,14 +118,13 @@ const openModalHowToScan = () => {
 }
 
 const openModalChangeCover = () => {
-  store.dispatch('helper/pushModal', {
+  store.dispatch('helper/pushModalBehavior', {
     component: 'modal-change-cover'
   })
 }
 
 const openModalEditImage = async () => {
-  store.dispatch('helper/pushModal', {
-    header: t('EE0050'),
+  store.dispatch('helper/pushModalBehavior', {
     component: 'modal-edit-scanned-image',
     properties: {
       afterCropHandler: async ({ faceSideCropImg, backSideCropImg, isExchange }) => {
