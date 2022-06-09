@@ -34,8 +34,8 @@ modal-behavior(
           svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeAttachment(attachment.tempFeedbackAttachmentId)")
     btn(size="sm" type="secondary" prependIcon="add" @click="chooseFile") {{ $t("UU0063") }}
     div(class="text-caption text-primary pt-1")
-      p(class="pb-2"){{ $t("RR0243") }} {{acceptType.join(', ').toUpperCase()}}
-      p {{$t("RR0145")}} {{fileSizeMaxLimit}} MB
+      p(class="pb-2") {{ $t("RR0243") }} {{ acceptType.join(', ').toUpperCase() }}
+      p {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
 </template>
 
 <script setup>

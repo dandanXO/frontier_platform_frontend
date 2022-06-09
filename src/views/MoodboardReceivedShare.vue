@@ -56,9 +56,8 @@ const hasMsg = ref(moodboardShare.message.length > 0)
 
 const openModalShareMessage = () => {
   hasMsg.value = false
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-share-message',
-    header: t('RR0146'),
     properties: {
       message: moodboardShare.message
     }

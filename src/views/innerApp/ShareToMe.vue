@@ -161,9 +161,8 @@ const openModalCollectionDetail = () => {
 
 const openModalShareMessage = () => {
   isFirstTime.value = false
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-share-message',
-    header: t('RR0146'),
     properties: {
       message: collection.value.share.message
     }

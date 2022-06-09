@@ -36,7 +36,7 @@ export default function useShareToMe () {
       })
     }
 
-    store.dispatch('helper/openModal', {
+    store.dispatch('helper/openModalBehavior', {
       component: 'modal-clone-to',
       properties: {
         checkHandler: async () => {

@@ -48,6 +48,7 @@ export default {
     ModalU3mSelectFileFormat: defineAsyncComponent(() => import('@/components/common/material/u3m/ModalU3mSelectFileFormat.vue')),
     ModalU3mDownloadConfirm: defineAsyncComponent(() => import('@/components/common/material/u3m/ModalU3mDownloadConfirm.vue')),
     ModalCollectionDetail: defineAsyncComponent(() => import('@/components/common/ModalCollectionDetail.vue')),
+    ModalShareMessage: defineAsyncComponent(() => import('@/components/common/ModalShareMessage.vue')),
     ModalCreateMailOrg: defineAsyncComponent(() => import('@/components/lobby/ModalCreateMailOrg.vue')),
     ModalCreateOrg: defineAsyncComponent(() => import('@/components/lobby/ModalCreateOrg.vue')),
     ModalPersonalProfile: defineAsyncComponent(() => import('@/components/lobby/ModalPersonalProfile.vue')),
@@ -94,6 +95,7 @@ export default {
     ModalTermsOfSubscription: defineAsyncComponent(() => import('@/components/billings/ModalTermsOfSubscription.vue')),
     ModalDeactivate: defineAsyncComponent(() => import('@/components/billings/ModalDeactivate.vue')),
     ModalPaymentLastMonthFail: defineAsyncComponent(() => import('@/components/billings/ModalPaymentLastMonthFail.vue')),
+    ModalPublicLibraryShare: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryShare.vue')),
     ModalPublicLibraryShareAssigned: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryShareAssigned.vue'))
   },
   setup() {

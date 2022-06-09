@@ -24,7 +24,7 @@ fullscreen-header
       p(class="text-body2 text-primary") {{ $t("GG0004") }}
 </template>
 
-<script>
+<script setup>
 import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
@@ -32,40 +32,22 @@ import useReceivedShare from '@/composables/useReceivedShare.js'
 import { SHARING_FROM } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 
-export default {
-  name: 'ReceivedShareContainer',
-  components: {
-    FullscreenHeader
-  },
-  setup () {
-    const store = useStore()
-    const { t } = useI18n()
-    const { saveReceivedShare } = useReceivedShare()
+const store = useStore()
+const { t } = useI18n()
+const { saveReceivedShare } = useReceivedShare()
 
-    const share = computed(() => store.getters['receivedShare/share'])
-    const logo = computed(() => store.getters['receivedShare/logo'])
-    const isFirstTime = ref(true)
-    const haveMsgAndFirstRead = computed(() => !!share.value.message && isFirstTime.value)
+const share = computed(() => store.getters['receivedShare/share'])
+const logo = computed(() => store.getters['receivedShare/logo'])
+const isFirstTime = ref(true)
+const haveMsgAndFirstRead = computed(() => !!share.value.message && isFirstTime.value)
 
-    const openModalShareMessage = () => {
-      isFirstTime.value = false
-      store.dispatch('helper/openModal', {
-        component: 'modal-share-message',
-        header: t('RR0146'),
-        properties: {
-          message: share.value.message
-        }
-      })
+const openModalShareMessage = () => {
+  isFirstTime.value = false
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-share-message',
+    properties: {
+      message: share.value.message
     }
-
-    return {
-      share,
-      logo,
-      saveReceivedShare,
-      SHARING_FROM,
-      haveMsgAndFirstRead,
-      openModalShareMessage
-    }
-  }
+  })
 }
 </script>
