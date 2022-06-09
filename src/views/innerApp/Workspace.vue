@@ -151,7 +151,7 @@ const getWorkspace = async (targetPage = 1, query) => {
 }
 
 const openModalCreateCollection = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-create-or-edit-collection',
     properties: {
       mode: 1,
@@ -161,8 +161,7 @@ const openModalCreateCollection = () => {
 }
 
 const openModalCollectionDetail = () => {
-  store.dispatch('helper/openModal', {
-    header: t('FF0006'),
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-collection-detail',
     properties: {
       ...collection.value,
@@ -190,10 +189,16 @@ const openModalAssetsList = () => {
         })
 
         if (failMaterialList && failMaterialList.length > 0) {
-          store.dispatch('helper/openModal', {
-            component: 'modal-add-to-workspace-fail',
+          store.dispatch('helper/openModalBehavior', {
+            component: 'modal-material-no-list',
             properties: {
-              failMaterialList
+              header: t('EE0063', { number: failMaterialList.length }),
+              primaryBtnText: t('UU0031'),
+              primaryBtnHandler: () => {
+                store.dispatch('helper/closeModalBehavior')
+              },
+              content: t('EE0064'),
+              materialNoList: failMaterialList
             }
           })
         } else {
@@ -211,7 +216,7 @@ const openModalAssetsList = () => {
 }
 
 const openModalPublish = (workspaceNode) => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-publish',
     properties: {
       workspaceNode

@@ -136,8 +136,7 @@ const getPublicList = async (targetPage = 1, query) => {
 }
 
 const openModalCollectionDetail = () => {
-  store.dispatch('helper/openModal', {
-    header: t('FF0006'),
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-collection-detail',
     properties: {
       ...collection.value

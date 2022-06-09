@@ -53,56 +53,39 @@ modal-behavior(
         :placeholder="$t('AA0074')")
 </template>
 
-<script>
+<script setup>
 import { useStore } from 'vuex'
 import { computed, reactive, ref, watch } from 'vue'
-import InputCallingCode from '@/components/InputCallingCode.vue'
 
-export default {
-  name: 'ModalCreateOrg',
-  components: {
-    InputCallingCode
-  },
-  setup () {
-    const store = useStore()
-    const isOrgNameExist = ref(false)
-    const formData = reactive({ ...store.getters['organization/createForm'] })
-    const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
-    const countryList = computed(() => store.getters['code/countryList'])
-    const availableToCreateOrg = computed(() => formData.countryCode !== '' && formData.orgName !== '' && !isOrgNameExist.value)
+const store = useStore()
+const isOrgNameExist = ref(false)
+const formData = reactive({ ...store.getters['organization/createForm'] })
+const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
+const countryList = computed(() => store.getters['code/countryList'])
+const availableToCreateOrg = computed(() => formData.countryCode !== '' && formData.orgName !== '' && !isOrgNameExist.value)
 
-    watch(
-      () => formData.orgName,
-      () => {
-        if (isOrgNameExist.value) {
-          isOrgNameExist.value = false
-        }
-      }
-    )
-    const openModalCreateMailOrg = async () => {
-      await checkOrgNameExist()
-
-      if (isOrgNameExist.value) { return }
-
-      store.commit('organization/SET_createForm', formData)
-      store.dispatch('helper/openModalBehavior', {
-        component: 'modal-create-mail-org'
-      })
-    }
-
-    const checkOrgNameExist = async () => {
-      isOrgNameExist.value = formData.orgName !== '' && await store.dispatch('organization/checkOrgNameExist', { orgName: formData.orgName })
-    }
-
-    return {
-      orgCategoryList,
-      formData,
-      countryList,
-      availableToCreateOrg,
-      checkOrgNameExist,
-      isOrgNameExist,
-      openModalCreateMailOrg
+watch(
+  () => formData.orgName,
+  () => {
+    if (isOrgNameExist.value) {
+      isOrgNameExist.value = false
     }
   }
+)
+const openModalCreateMailOrg = async () => {
+  await checkOrgNameExist()
+
+  if (isOrgNameExist.value) {
+    return
+  }
+
+  store.commit('organization/SET_createForm', formData)
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-create-mail-org'
+  })
+}
+
+const checkOrgNameExist = async () => {
+  isOrgNameExist.value = formData.orgName !== '' && (await store.dispatch('organization/checkOrgNameExist', { orgName: formData.orgName }))
 }
 </script>

@@ -54,7 +54,7 @@ export default function usePublicLibrary () {
     id: 'share',
     name: t('RR0079'),
     func: (node) => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-public-library-share',
         properties: {
           nodeKey: node.nodeKey,

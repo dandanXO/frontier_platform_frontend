@@ -81,7 +81,7 @@ export default {
     })
 
     const openModalEditBillingInfo = () => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-edit-billing-info',
         properties: {
           billingInfo: paymentDetail.value.billingInfo,
@@ -96,7 +96,7 @@ export default {
     }
 
     const openModalSetupCard = () => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-setup-card',
         properties: {}
       })

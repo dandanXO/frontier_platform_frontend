@@ -1,7 +1,7 @@
 <template lang="pug">
 modal-behavior(
   :header="$t('BB0020')"
-  :primaryBtnText="$t('UU0014')"
+  :primaryBtnText="`${$t('UU0014')}(${emailList.length})`"
   :primaryBtnDisabled="emailList.length === 0"
   @click:primary="inviteToOrg"
 )
@@ -49,9 +49,7 @@ const errorMsg = ref('')
 const inviteLink = computed(() => {
   const origin = window.location.origin
   const orgNo = store.getters['organization/orgNo']
-  const inviteCode = props.from === 'org'
-    ? store.getters['organization/organization'].inviteCode
-    : store.getters['group/group'].inviteCode
+  const inviteCode = props.from === 'org' ? store.getters['organization/organization'].inviteCode : store.getters['group/group'].inviteCode
 
   return `${origin}/invite-link?orgNo=${orgNo}&from=${props.from}&inviteCode=${inviteCode}`
 })

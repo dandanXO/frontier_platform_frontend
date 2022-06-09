@@ -23,7 +23,7 @@ modal-behavior(
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import InputLabelColor from '@/components/InputLabelColor.vue'
+import InputLabelColor from '@/components/management/InputLabelColor.vue'
 
 const store = useStore()
 const groupName = computed({

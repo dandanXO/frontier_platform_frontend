@@ -28,7 +28,7 @@ export default function useWorkspace () {
     name: t('RR0054'),
     func: (node) => {
       const workspaceNodeId = node.workspaceNodeId
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-create-or-edit-collection',
         properties: {
           mode: 2,
@@ -56,7 +56,7 @@ export default function useWorkspace () {
     name: t('RR0076'),
     func: (node) => {
       const workspaceNodeId = node.workspaceNodeId
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-workspace-node-list',
         properties: {
           modalTitle: t('FF0043'),
@@ -97,7 +97,7 @@ export default function useWorkspace () {
     name: t('RR0077'),
     func: (node) => {
       const workspaceNodeId = node.workspaceNodeId
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-workspace-node-list',
         properties: {
           modalTitle: t('FF0036'),
@@ -187,7 +187,7 @@ export default function useWorkspace () {
     id: FUNCTION_ID.SHARE_NODE,
     name: t('RR0079'),
     func: (node) => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-share',
         properties: {
           nodeKey: node.nodeKey,

@@ -100,7 +100,7 @@ export default {
       })
     }
     const openModalUpgradeEnterprise = () => {
-      store.dispatch('helper/pushModal', {
+      store.dispatch('helper/pushModalBehavior', {
         component: 'modal-upgrade-enterprise'
       })
     }

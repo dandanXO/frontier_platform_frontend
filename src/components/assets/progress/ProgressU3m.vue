@@ -171,7 +171,7 @@ const headers = [
     prop: 'action',
     label: '',
     colSpan: 'col-span-2'
-  },
+  }
 ]
 
 const clearDate = () => {
@@ -226,7 +226,7 @@ const openModalViewer = async (materialId) => {
 
 const openModalDownloadU3M = async (materialId) => {
   await store.dispatch('assets/getMaterial', { materialId })
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-u3m-select-file-format',
     properties: { materialList: [material.value] }
   })
@@ -234,9 +234,8 @@ const openModalDownloadU3M = async (materialId) => {
 
 const openModalCreate3DMaterial = async (materialId) => {
   await store.dispatch('assets/getMaterial', { materialId })
-  store.dispatch('helper/openModal', {
-    component: 'modal-u3m-preview',
-    header: t('EE0067')
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-u3m-preview'
   })
 }
 

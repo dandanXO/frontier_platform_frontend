@@ -52,8 +52,9 @@ const isEditMode = computed(() => store.getters['assets/material'].materialId !=
 
 const openModalUpload = () => {
   store.dispatch('helper/openModalBehavior', {
-    component: 'modal-upload-attachment',
+    component: 'modal-upload-file-general',
     properties: {
+      acceptType: ['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mov', 'mp4'],
       uploadHandler: async (file, displayFileName) => {
         if (isEditMode.value) {
           await store.dispatch('assets/uploadAttachmentWhenUpdate', {
