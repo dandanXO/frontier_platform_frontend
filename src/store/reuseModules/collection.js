@@ -28,10 +28,44 @@ const Collection = {
       const pushCollectionToList = () => {
         if (childCollectionList.length > 0) {
           childCollectionList.forEach(collection => {
+            const {
+              workspaceNodeLocation,
+              workspaceNodeId,
+              isPublic,
+              isCanShared,
+              isCanClone,
+              isCanDownloadU3M,
+              location,
+              publicDate,
+              share,
+              publish,
+              /** collection property */
+              collectionId,
+              name,
+              coverImgList,
+              itemCounts,
+              hasChildCollection,
+            } = collection
             list.push({
-              ...collection,
-              nodeKey: `${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`,
-              nodeType: NODE_TYPE.COLLECTION
+              workspaceNodeId,
+              workspaceNodeLocation,
+              nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}`,
+              nodeType: NODE_TYPE.COLLECTION,
+              location,
+              isPublic,
+              isCanShared,
+              isCanClone,
+              isCanDownloadU3M,
+              publicDate,
+              share,
+              publish,
+              properties: {
+                collectionId,
+                name,
+                coverImgList,
+                itemCounts,
+                hasChildCollection
+              }
             })
           })
         }
@@ -39,10 +73,64 @@ const Collection = {
       const pushMaterialToList = () => {
         if (childMaterialList.length > 0) {
           childMaterialList.forEach(material => {
+            const {
+              workspaceNodeId,
+              workspaceNodeLocation,
+              isPublic,
+              isCanShared,
+              isCanClone,
+              isCanDownloadU3M,
+              location,
+              publicDate,
+              share,
+              publish,
+              /** material property */
+              materialId,
+              materialNo,
+              content,
+              description,
+              finish,
+              width,
+              weightUnit,
+              weightGsm,
+              weightOz,
+              weightOy,
+              warpDensity,
+              weftDensity,
+              warpYarnCount,
+              weftYarnCount,
+              coverImg
+            } = material
             list.push({
-              ...material,
-              nodeKey: `${material.workspaceNodeLocation}-${material.workspaceNodeId}`,
-              nodeType: NODE_TYPE.MATERIAL
+              workspaceNodeId,
+              workspaceNodeLocation,
+              nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}`,
+              nodeType: NODE_TYPE.MATERIAL,
+              location,
+              isPublic,
+              isCanShared,
+              isCanClone,
+              isCanDownloadU3M,
+              publicDate,
+              share,
+              publish,
+              properties: {
+                materialId,
+                materialNo,
+                content,
+                description,
+                finish,
+                width,
+                weightUnit,
+                weightGsm,
+                weightOz,
+                weightOy,
+                warpDensity,
+                weftDensity,
+                warpYarnCount,
+                weftYarnCount,
+                coverImg
+              }
             })
           })
         }

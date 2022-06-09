@@ -33,12 +33,10 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
           div(class="flex flex-col justify-center items-center")
             svg-icon(iconName="add" size="24" class="text-primary mb-3.5")
             span(class="text-body1 text-primary") {{ $t("FF0003") }}
-        child-node-item(
+        grid-item-node(
           v-for="node in moodboardOfferNodeCollection.childNodeList"
-          v-model:selectedList="selectedNodeList"
+          v-model:selectedValue="selectedNodeList"
           :node="node"
-          :properties="node.properties"
-          :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.properties.name : node.properties.materialNo"
           :optionList="optionNode(node)"
           @click:option="$event.func(node)"
           @click.stop="handleNodeClick(node)"
@@ -57,7 +55,7 @@ import { h, computed, shallowRef } from 'vue'
 import { useStore } from 'vuex'
 import { MOODBOARD_TAB, CREATE_EDIT, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
-import ChildNodeItem from '@/components/common/ChildNodeItem.vue'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import SvgIcon from '@/components/global/SvgIcon.vue'
 import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
 import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'

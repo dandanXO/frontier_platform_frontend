@@ -42,11 +42,11 @@ export default function useWorkspace () {
     id: FUNCTION_ID.EDIT_MATERIAL,
     name: t('RR0054'),
     func: (node) => {
-      const { sourceAssetLocation } = node
+      const { materialId, sourceAssetLocation } = node.properties
       if (sourceAssetLocation === SOURCE_ASSET_LOCATION.ORG) {
-        goToOrgAssetMaterialEdit(node.materialId)
+        goToOrgAssetMaterialEdit(materialId)
       } else {
-        goToGroupAssetMaterialEdit(node.materialId)
+        goToGroupAssetMaterialEdit(materialId)
       }
     }
   }

@@ -27,25 +27,23 @@ div(class="w-full h-full")
           div(class="flex flex-col justify-center items-center")
             svg-icon(iconName="add" size="24" class="text-primary mb-3.5")
             span(class="text-body1 text-primary") {{ $t("FF0003") }}
-        child-node-item(
+        grid-item-node(
           v-for="node in nodeList"
-          v-model:selectedList="selectedNodeList"
+          v-model:selectedValue="selectedNodeList"
           :node="node"
-          :properties="node"
-          :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.name : node.materialNo"
           :optionList="optionNode(node.nodeType, inSearch)"
-          :isShowLocation="inSearch"
-          :locationList="node.location"
           @click:option="$event.func(node)"
           @click.stop="handleNodeClick(node, goTo)"
         )
-          template(#cover-overlay v-if="isFirstLayer")
+          template(#hover-corner-bottom-right v-if="isFirstLayer")
             svg-icon(
               :iconName="node.isPublic ? 'public' : 'lock_outline'"
               size="20"
-              class="absolute bottom-3 left-3 cursor-pointer text-black-500"
+              class="cursor-pointer text-black-500"
               @click.stop="openModalPublish(node)"
             )
+          template(#title-right-icon)
+            tooltip-location(v-if="inSearch" :location="node.location")
 </template>
 
 <script setup>
@@ -54,7 +52,8 @@ import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
-import ChildNodeItem from '@/components/common/ChildNodeItem.vue'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
+import TooltipLocation from '@/components/common/TooltipLocation.vue'
 import { useRoute, useRouter } from 'vue-router'
 import useWorkspace from '@/composables/useWorkspace'
 import useNavigation from '@/composables/useNavigation.js'
