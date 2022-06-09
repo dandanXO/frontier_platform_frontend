@@ -9,6 +9,7 @@ import dayjs from 'dayjs'
 import isToday from 'dayjs/plugin/isToday'
 import isYesterday from 'dayjs/plugin/isYesterday'
 import permission from '@/directives/permission.js'
+import defaultImg from '@/directives/defaultImg.js'
 
 const svgs = import.meta.globEager('/src/assets/icons/**/*.svg')
 
@@ -62,5 +63,6 @@ app.config.warnHandler = (msg, vm, trace) => {
 }
 
 app.directive('permission', permission)
+app.directive('defaultImg', defaultImg)
 
 app.use(store).use(router).use(i18n).mount('#app')

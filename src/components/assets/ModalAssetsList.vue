@@ -41,9 +41,9 @@ modal-behavior(
               )
             template(#content)
               contextual-menu(v-model:selectValue="queryParams.sort" :optionList="sortOptionList" @update:selectValue="sort")
-      div(v-show="isSearching && materialList.length === 0" class="flex-grow flex items-center justify-center")
+      div(v-show="isSearching && nodeMaterialList.length === 0" class="flex-grow flex items-center justify-center")
         svg-icon(iconName="loading" size="92" class="text-brand")
-      overlay-scrollbar-container(v-if="!isSearching || materialList.length > 0" class="h-64.5 -mx-5" @reachBottom="infiniteScroll")
+      overlay-scrollbar-container(v-if="!isSearching || nodeMaterialList.length > 0" class="h-64.5 -mx-5" @reachBottom="infiniteScroll")
         div(class="grid grid-flow-row grid-cols-5 auto-rows-auto gap-5 px-5")
           template(v-if="isInRoot")
             div(
@@ -53,22 +53,21 @@ modal-behavior(
             )
               p(class="text-caption text-center font-bold line-clamp-3") {{ item.name }}
           template(v-else)
-            node-item-for-modal(
-              v-for="material in materialList"
+            grid-item-node-for-modal(
+              v-for="nodeMaterial in nodeMaterialList"
               class="w-25"
               v-model:selectedValue="selectedValue"
-              :node="material"
-              :displayName="material.materialNo"
+              :node="nodeMaterial"
               :isMultiSelect="isMultiSelect"
             )
-        div(v-if="isSearching && materialList.length > 0" class="flex justify-center items-center")
+        div(v-if="isSearching && nodeMaterialList.length > 0" class="flex justify-center items-center")
           svg-icon(iconName="loading" size="54" class="text-brand")
 </template>
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
 import { SORT_BY, NODE_TYPE, NODE_LOCATION } from '@/utils/constants'
-import NodeItemForModal from '@/components/common/NodeItemForModal.vue'
+import GridItemNodeForModal from '@/components/common/gridItem/GridItemNodeForModal.vue'
 import { useStore } from 'vuex'
 import useMaterial from '@/composables/useMaterial'
 import { useI18n } from 'vue-i18n'
@@ -101,7 +100,7 @@ const sortOptionList = [SORT_BY.CREATE_DATE, SORT_BY.LAST_UPDATE, SORT_BY.MATERI
 
 const keyword = ref('')
 const isSearching = ref(false)
-const materialList = ref([])
+const nodeMaterialList = ref([])
 const queryParams = reactive({
   keyword: '',
   targetPage: 1,
@@ -140,7 +139,7 @@ const orgAndGroupList = computed(() => {
 })
 
 const innerActionCallback = async () => {
-  const tempSelectValue = props.isMultiSelect ? selectedValue.value.map((v) => JSON.parse(v)) : JSON.parse(selectedValue.value)
+  const tempSelectValue = props.isMultiSelect ? selectedValue.value.map((v) => JSON.parse(v).properties) : JSON.parse(selectedValue.value).properties
   await props.actionCallback(tempSelectValue)
 }
 
@@ -151,14 +150,10 @@ const getMaterialListForModal = async () => {
   totalPage.value = pagination.totalPage
 
   assets.materialList.forEach((material) => {
-    /**
-     * 因爲 NodeItemForModal 的 img 是吃 node.coverImg，
-     * 所以才在此將 currentCoverImg 覆蓋 coverImg
-     */
-    const { currentCoverImg } = useMaterial(material)
-    material.coverImg = currentCoverImg
-    material.nodeType = NODE_TYPE.MATERIAL
-    materialList.value.push(material)
+    nodeMaterialList.value.push({
+      nodeType: NODE_TYPE.MATERIAL,
+      properties: material
+    })
   })
 
   isSearching.value = false
@@ -177,7 +172,7 @@ const infiniteScroll = () => {
 }
 
 const reset = () => {
-  materialList.value.length = 0
+  nodeMaterialList.value.length = 0
   queryParams.targetPage = 1
 }
 

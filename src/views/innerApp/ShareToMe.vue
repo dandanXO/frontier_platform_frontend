@@ -38,18 +38,16 @@ div(class="w-full h-full")
         p {{ $t("RR0148") }} {{ $dayjs.unix(collection.share.shareDate).format("YYYY/MM/DD") }}
     template(#default="{ inSearch, goTo }")
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
-        child-node-item(
+        grid-item-node(
           v-for="node in nodeList"
-          v-model:selectedList="selectedNodeList"
+          v-model:selectedValue="selectedNodeList"
           :node="node"
-          :properties="node"
-          :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.name : node.materialNo"
           :optionList="optionNode"
-          :isShowLocation="inSearch"
-          :locationList="node.location"
           @click:option="$event.func(node, node.share.sharingId)"
           @click.stop="handleNodeClick(node, goTo)"
         )
+          template(#title-right-icon)
+            tooltip-location(v-if="inSearch" :location="node.location")
           template(#caption v-if="isFirstLayer")
             div(class="mt-1.5 h-6 flex items-center")
               img(:src="node.share.logo" class="aspect-square h-full rounded-full")
@@ -70,7 +68,8 @@ import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { ref, computed, watch } from 'vue'
-import ChildNodeItem from '@/components/common/ChildNodeItem.vue'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
+import TooltipLocation from '@/components/common/TooltipLocation.vue'
 import { useRoute, useRouter } from 'vue-router'
 import useShareToMe from '@/composables/useShareToMe'
 import useNavigation from '@/composables/useNavigation'

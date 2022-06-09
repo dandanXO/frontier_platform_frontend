@@ -1,3 +1,11 @@
+<style lang="scss">
+// overwrite InputCheckbox and InputRadio which are in GridItemWrapper
+#input-checkbox,
+#input-radio {
+  @apply top-1 left-1;
+}
+</style>
+
 <template lang="pug">
 modal-behavior(
   :header="modalTitle"
@@ -42,34 +50,20 @@ modal-behavior(
       overlay-scrollbar-container(v-show="!isSearching || nodeList.length > 0" class="flex-grow -mx-5" @reachBottom="infiniteScroll")
         div(class="grid grid-flow-row grid-cols-5 auto-rows-auto gap-5 px-5")
           template(v-if="isInRoot")
-            div(v-for="item in orgAndGroupList"
-              class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden"
+            grid-item-wrapper(
+              v-for="item in orgAndGroupList"
+              v-model:selectedValue="selectedValue"
+              isSelectable
+              :selectOnHover="false"
+              :isMultiSelect="isMultiSelect"
+              :selectValue="item"
+              class="w-25 h-25 border rounded-md overflow-hidden"
               :class="[isMultiSelect && selectedValue.includes(JSON.stringify(item)) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
               @click="goTo(item.nodeKey), setRootId(item.id)"
             )
-              p(class="text-caption text-center font-bold line-clamp-3 leading-1.6") {{ item.name }}
-              div(class="w-full h-7.5 absolute top-0 left-0")
-                div(class="bg-linear w-full h-full rounded-t-md")
-                input-checkbox(
-                  v-if="isMultiSelect"
-                  v-model:inputValue="selectedValue"
-                  :value="JSON.stringify(item)"
-                  size="20"
-                  class="absolute top-1 left-1"
-                  iconColor="text-black-0"
-                  uncheckColor="text-black-0"
-                  @click.stop
-                )
-                input-radio(
-                  v-else
-                  v-model:inputValue="selectedValue"
-                  :value="JSON.stringify(item)"
-                  size="20"
-                  class="absolute top-1 left-1"
-                  checkColor="text-black-0"
-                  uncheckColor="text-black-0"
-                  @click.stop
-                )
+              template(#content)
+                div(class="h-full flex justify-center items-center")
+                  p(class="text-caption text-center font-bold line-clamp-3 leading-1.6") {{ item.name }}
           template(v-else)
             div(
               class="w-25 h-25 rounded-md border border-black-500 border-dashed flex items-center justify-center cursor-pointer"
@@ -77,24 +71,26 @@ modal-behavior(
             )
               svg-icon(iconName="add" size="24" class="text-primary")
             template(v-for="node in nodeList")
-              template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
-                node-item-for-modal(
-                  class="w-25 cursor-pointer"
-                  v-model:selectedValue="selectedValue"
-                  :node="node"
-                  :displayName="node.name"
-                  :isShowLocation="isInKeywordSearch"
-                  :isMultiSelect="isMultiSelect"
-                  @click="goTo(node.nodeKey)"
-                )
-              template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
-                node-item-for-modal(
-                  class="w-25"
-                  :node="node"
-                  :displayName="node.materialNo"
-                  :isShowLocation="isInKeywordSearch"
-                  :isSelectable="false"
-                )
+              grid-item-node-for-modal(
+                v-if="node.nodeType === NODE_TYPE.COLLECTION"
+                class="w-25 cursor-pointer"
+                v-model:selectedValue="selectedValue"
+                :node="node"
+                :selectOnHover="false"
+                :isMultiSelect="isMultiSelect"
+                @click="goTo(node.nodeKey)"
+              )
+                template(#title-right-icon)
+                  tooltip-location(v-if="isInKeywordSearch" :location="node.location")
+              grid-item-node-for-modal(
+                v-if="node.nodeType === NODE_TYPE.MATERIAL"
+                class="w-25"
+                :node="node"
+                :selectOnHover="false"
+                :isSelectable="false"
+              )
+                template(#title-right-icon)
+                  tooltip-location(v-if="isInKeywordSearch" :location="node.location")
         div(v-if="isSearching && nodeList.length > 0" class="flex justify-center items-center")
           svg-icon(iconName="loading" size="54" class="text-brand")
     div(v-if="!isInRoot" class="w-full h-8.5 mt-3.5 px-2.5 bg-black-50 flex items-center gap-x-1")
@@ -108,7 +104,9 @@ import { ref, computed, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { NODE_LOCATION, NODE_TYPE, SORT_BY } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import NodeItemForModal from '@/components/common/NodeItemForModal.vue'
+import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
+import GridItemNodeForModal from '@/components/common/gridItem/GridItemNodeForModal.vue'
+import TooltipLocation from '@/components/common/TooltipLocation.vue'
 
 const props = defineProps({
   modalTitle: {
@@ -234,20 +232,108 @@ const getWorkspaceForModal = async () => {
 
   if (workspaceCollection.childCollectionList.length > 0) {
     workspaceCollection.childCollectionList.forEach((collection) => {
+      const {
+        workspaceNodeLocation,
+        workspaceNodeId,
+        isPublic,
+        isCanShared,
+        isCanClone,
+        isCanDownloadU3M,
+        location,
+        publicDate,
+        share,
+        publish,
+        /** collection property */
+        collectionId,
+        name,
+        coverImgList,
+        itemCounts,
+        hasChildCollection,
+      } = collection
       pureNodeList.value.push({
-        ...collection,
-        nodeKey: `${collection.workspaceNodeLocation}-${collection.workspaceNodeId}`,
-        nodeType: NODE_TYPE.COLLECTION
+        workspaceNodeId,
+        workspaceNodeLocation,
+        nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}`,
+        nodeType: NODE_TYPE.COLLECTION,
+        location,
+        isPublic,
+        isCanShared,
+        isCanClone,
+        isCanDownloadU3M,
+        publicDate,
+        share,
+        publish,
+        properties: {
+          collectionId,
+          name,
+          coverImgList,
+          itemCounts,
+          hasChildCollection
+        }
       })
     })
   }
 
   if (workspaceCollection.childMaterialList.length > 0) {
     workspaceCollection.childMaterialList.forEach((material) => {
+      const {
+        workspaceNodeId,
+        workspaceNodeLocation,
+        isPublic,
+        isCanShared,
+        isCanClone,
+        isCanDownloadU3M,
+        location,
+        publicDate,
+        share,
+        publish,
+        /** material property */
+        materialId,
+        materialNo,
+        content,
+        description,
+        finish,
+        width,
+        weightUnit,
+        weightGsm,
+        weightOz,
+        weightOy,
+        warpDensity,
+        weftDensity,
+        warpYarnCount,
+        weftYarnCount,
+        coverImg
+      } = material
       pureNodeList.value.push({
-        ...material,
-        nodeKey: `${material.workspaceNodeLocation}-${material.workspaceNodeId}`,
-        nodeType: NODE_TYPE.MATERIAL
+        workspaceNodeId,
+        workspaceNodeLocation,
+        nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}`,
+        nodeType: NODE_TYPE.MATERIAL,
+        location,
+        isPublic,
+        isCanShared,
+        isCanClone,
+        isCanDownloadU3M,
+        publicDate,
+        share,
+        publish,
+        properties: {
+          materialId,
+          materialNo,
+          content,
+          description,
+          finish,
+          width,
+          weightUnit,
+          weightGsm,
+          weightOz,
+          weightOy,
+          warpDensity,
+          weftDensity,
+          warpYarnCount,
+          weftYarnCount,
+          coverImg
+        }
       })
     })
   }

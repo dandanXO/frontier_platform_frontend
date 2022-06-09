@@ -35,12 +35,10 @@ div(class="w-full h-full relative")
         template(#displayName) {{ publishBy }}
     template(#default="{ goTo }")
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
-        child-node-item(
+        grid-item-node(
           v-for="node in nodeList"
-          v-model:selectedList="selectedNodeList"
+          v-model:selectedValue="selectedNodeList"
           :node="node"
-          :properties="node"
-          :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.name : node.materialNo"
           :isSelectable="!isFirstLayer"
           :optionList="optionNode"
           @click:option="$event.func(node)"
@@ -62,7 +60,7 @@ import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { watch, ref, computed } from 'vue'
-import ChildNodeItem from '@/components/common/ChildNodeItem.vue'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import { useRoute, useRouter } from 'vue-router'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import useNavigation from '@/composables/useNavigation'

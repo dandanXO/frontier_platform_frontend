@@ -57,13 +57,11 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
               class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start pb-2 overflow-y-auto hide-scrollbar"
               :class="[currentOfferId === 'all' ? 'h-170' : 'h-156']"
             )
-              child-node-item(
+              grid-item-node(
                 v-for="node in moodboardOfferNodeCollection.childNodeList"
-                v-model:selectedList="selectedNodeList"
+                v-model:selectedValue="selectedNodeList"
                 :node="node"
-                :properties="node.properties"
                 :isSelectable="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED"
-                :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.properties.name : node.properties.materialNo"
                 :optionList="optionNode(node)"
                 @click:option="$event.func(node)"
                 @click.stop="handleNodeClick(node)"
@@ -78,7 +76,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
             div(v-if="isLoading" class="flex-grow flex items-center justify-center")
               svg-icon(iconName="loading" size="92" class="text-brand")
             mood-board-comment(v-else :moodboardId="moodboard.moodboardId" :offerId="Number(currentOfferId)")
-multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")
+multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedValue="selectedNodeList")
 </template>
 
 <script setup>
@@ -86,7 +84,7 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { MOODBOARD_TAB, NODE_TYPE, U3M_STATUS } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
-import ChildNodeItem from '@/components/common/ChildNodeItem.vue'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'
 import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
 import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'

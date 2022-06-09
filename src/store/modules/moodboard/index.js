@@ -79,7 +79,7 @@ export default {
              * one of
              *  ->
              *    collectionId
-             *    collectionName
+             *    name
              *    coverImgList
              *    itemCounts,
              *  ->

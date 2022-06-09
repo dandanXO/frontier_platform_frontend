@@ -39,11 +39,9 @@ div(class="max-w-315 h-full mx-auto pt-10")
               p(class="text-body2 text-primary") {{ $t("GG0028") }}
     template(#default="{ goTo }")
       div(v-if="nodeList.length > 0" class="mx-7.5 grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start")
-        child-node-item(
+        grid-item-node(
           v-for="node in nodeList"
           :node="node"
-          :properties="node"
-          :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.name : node.materialNo"
           :isSelectable="false"
           @click.stop="handleNodeClick(node, goTo)"
         )
@@ -54,7 +52,7 @@ div(class="fixed z-footer bottom-0 w-full h-13 bg-black-100 px-36 flex items-cen
 
 <script setup>
 import SearchTable from '@/components/common/SearchTable.vue'
-import ChildNodeItem from '@/components/common/ChildNodeItem.vue'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import { SEARCH_TYPE, SORT_BY, NODE_TYPE } from '@/utils/constants.js'
 import useNavigation from '@/composables/useNavigation.js'
 import { useRoute, useRouter } from 'vue-router'
