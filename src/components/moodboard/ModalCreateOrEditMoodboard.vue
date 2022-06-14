@@ -3,8 +3,9 @@ modal-behavior(
   :header="mode === CREATE_EDIT.CREATE ? $t('QQ0003') : $t('QQ0022')"
   :primaryBtnText="mode === CREATE_EDIT.CREATE ? $t('UU0020') : $t('UU0018')"
   :primaryBtnDisabled="primaryBtnDisabled"
-  @click:primary="primaryHandler"
   :secondaryBtnText="$t('UU0026')"
+  @click:primary="primaryHandler"
+  @click:secondary="closeModal"
 )
   template(#note)
     file-upload-error-note(v-if="fileUploadErrorCode" :errorCode="fileUploadErrorCode" :fileSizeMaxLimit="fileSizeMaxLimit")
@@ -171,6 +172,10 @@ const primaryHandler = async () => {
     await store.dispatch('moodboard/updateMoodboard', formData)
   }
   store.dispatch('helper/closeModalLoading')
+}
+
+const closeModal = () => {
+  store.dispatch('helper/closeModalBehavior')
 }
 
 if (props.mode === CREATE_EDIT.EDIT) {
