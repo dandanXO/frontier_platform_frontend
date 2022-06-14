@@ -60,7 +60,7 @@ modal-behavior(
             div(class="flex items-center gap-x-1")
               p(class="text-body2 font-bold text-primary line-clamp-1") {{ attachment.displayFileName }}
               p(class="text-body2 font-normal text-primary flex-shrink-0") ({{ bytesToSize(attachment.fileSize) }})
-            svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeOriginalAttachment(attachment.attachmentId)")
+            svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeOriginalAttachment(index,attachment.attachmentId)")
       btn(size="sm" type="secondary" prependIcon="add" @click="chooseAttachment") {{ $t("UU0063") }}
       div(class="text-caption text-black-600 pt-2")
         p(class="pb-1") {{ $t("QQ0012") }}
@@ -116,9 +116,11 @@ const primaryBtnDisabled = computed(() => !formData.moodboardName || refInputNam
 const trendBoardFileOperator = new FileOperator(['pdf'], fileSizeMaxLimit, true)
 const chooseTrendBoard = () => trendBoardFileOperator.upload()
 trendBoardFileOperator.on('finish', (file) => {
+  store.dispatch('helper/pushModalLoading')
   formData.trendBoardFile = file
   uploadTrendBoardName.value = file.name
   fileUploadErrorCode.value = 0
+  store.dispatch('helper/closeModalLoading')
 })
 trendBoardFileOperator.on('selfDefinedError', (code) => {
   fileUploadErrorCode.value = code
@@ -143,8 +145,10 @@ const removeTrendBoard = () => {
 const attachmentFileOperator = new FileOperator(['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mov', 'mp4'], fileSizeMaxLimit, true)
 const chooseAttachment = () => attachmentFileOperator.upload()
 attachmentFileOperator.on('finish', (file) => {
+  store.dispatch('helper/pushModalLoading')
   formData.attachmentFileList.unshift(file)
   fileUploadErrorCode.value = 0
+  store.dispatch('helper/closeModalLoading')
 })
 attachmentFileOperator.on('selfDefinedError', (code) => {
   fileUploadErrorCode.value = code
@@ -152,7 +156,10 @@ attachmentFileOperator.on('selfDefinedError', (code) => {
 
 const removeAttachment = (index) => formData.attachmentFileList.splice(index, 1)
 
-const removeOriginalAttachment = (attachmentId) => formData.deleteAttachmentIdList.push(attachmentId)
+const removeOriginalAttachment = (index, attachmentId) => {
+  originalAttachmentList.value.splice(index, 1)
+  formData.deleteAttachmentIdList.push(attachmentId)
+}
 
 const primaryHandler = async () => {
   store.dispatch('helper/openModalLoading')
