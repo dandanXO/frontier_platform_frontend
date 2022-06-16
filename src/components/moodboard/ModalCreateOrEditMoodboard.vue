@@ -51,7 +51,7 @@ modal-behavior(
       )
     input-container(:label="$t('QQ0015')")
       overlay-scrollbar-container(class="max-h-18 mb-2.5")
-        div(class="grid gap-y-2")
+        div(class="grid gap-y-2 max-w-121.5")
           div(v-for="(attachment, index) in formData.attachmentFileList" class="h-8 flex justify-between items-center px-4 bg-black-100")
             div(class="flex items-center gap-x-1")
               p(class="text-body2 font-bold text-primary line-clamp-1") {{ attachment.name }}
