@@ -44,10 +44,14 @@ div(class="w-227 mx-auto")
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import useNavigation from '@/composables/useNavigation.js'
 import BlockAttachment from '@/components/moodboard/BlockAttachment.vue'
 import { MOODBOARD_TYPE, CREATE_EDIT } from '@/utils/constants.js'
 
+const { t } = useI18n()
 const store = useStore()
+const { goToMoodboard } = useNavigation()
 const moodboard = computed(() => store.getters['moodboard/moodboard'])
 
 const openCreateOrEditMoodboard = () => {
@@ -66,7 +70,8 @@ const handleDelete = () => {
     content: t('QQ0076'),
     primaryBtnText: t('UU0105'),
     primaryBtnHandler: () => {
-      store.dispatch('moodboard/deleteMoodboard', { moodboardId: props.moodboardId })
+      store.dispatch('moodboard/deleteMoodboard', { moodboardId: moodboard.value.moodboardId })
+      goToMoodboard()
       store.commit('helper/PUSH_message', t('QQ0077'))
     },
     textBtnText: t('UU0002')
