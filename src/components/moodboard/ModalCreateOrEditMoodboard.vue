@@ -57,11 +57,11 @@ modal-behavior(
               p(class="text-body2 font-bold text-primary line-clamp-1") {{ attachment.name }}
               p(class="text-body2 font-normal text-primary flex-shrink-0") ({{ bytesToSize(attachment.size) }})
             svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeAttachment(index)")
-          div(v-for="attachment in originalAttachmentList" class="h-8 flex justify-between items-center px-4 bg-black-100")
+          div(v-for="(attachment, index) in originalAttachmentList" class="h-8 flex justify-between items-center px-4 bg-black-100")
             div(class="flex items-center gap-x-1")
               p(class="text-body2 font-bold text-primary line-clamp-1") {{ attachment.displayFileName }}
               p(class="text-body2 font-normal text-primary flex-shrink-0") ({{ bytesToSize(attachment.fileSize) }})
-            svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeOriginalAttachment(index,attachment.attachmentId)")
+            svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeOriginalAttachment(index, attachment.attachmentId)")
       btn(size="sm" type="secondary" prependIcon="add" @click="chooseAttachment") {{ $t("UU0063") }}
       div(class="text-caption text-black-600 pt-2")
         p(class="pb-1") {{ $t("QQ0012") }}
