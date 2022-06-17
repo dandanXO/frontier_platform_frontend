@@ -104,13 +104,9 @@ general-table(
                   svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
               template(#content)
                 list(v-if="item.status === UPLOAD_PROGRESS.COMPLETE && item.category === EXCEL_CATEGORY.UPLOAD")
-                  //- qr-code-a4
-                  //-   template(#activator="{ generatePdf }")
-                  //-     list-item(@click="handleAction(generatePdf, item.excelProgressId)") {{ $t("RR0062") }}
-                  //- qr-code-general
-                  //-   template(#activator="{ generatePdf }")
-                  //-     list-item(@click="handleAction(generatePdf, item.excelProgressId)") {{ $t("RR0061") }}
-                  //- div(class="border-t border-black-400 my-1")
+                  list-item(@click="handleAction(PRINT_TYPE.CARD, item.excelProgressId)") {{ $t("RR0062") }}
+                  list-item(@click="handleAction(PRINT_TYPE.LABEL, item.excelProgressId)") {{ $t("RR0061") }}
+                  div(class="border-t border-black-400 my-1")
                   list-item(@click="handleAction(_, item.excelProgressId)") {{ $t("RR0060") }}
         //- Export Complete
         btn(
@@ -142,14 +138,18 @@ import { downloadDataURLFile } from '@/utils/fileOperator'
 import { UPLOAD_PROGRESS_EXCEL_SORT_BY, UPLOAD_PROGRESS, EXCEL_CATEGORY } from '@/utils/constants'
 import TableStatusLabel from '@/components/progress/TableStatusLabel.vue'
 import TableStatusProgress from '@/components/progress/TableStatusProgress.vue'
-import QrCodeA4 from '@/components/qrcode/QrCodeA4.vue'
-import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral.vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
+import { printGeneralLabel, printA4Card } from '@/utils/print'
 
 const ERROR_MSG = {
   INACTIVE: 1,
   INSUFFICIENT_STORAGE: 2
+}
+
+const PRINT_TYPE = {
+  CARD: 1,
+  LABEL: 2
 }
 
 const props = defineProps({
@@ -284,7 +284,7 @@ const openModalMaterialNoList = (materialNoList) => {
   })
 }
 
-const handleAction = async (generatePdf, excelProgressId) => {
+const handleAction = async (type, excelProgressId) => {
   const { materialList } = await store.dispatch('assets/progress/getExcelUploadMaterialList', { excelProgressId })
   const deletedMaterialList = materialList.filter(material => material.isDelete)
   const nonDeletedMaterialList = materialList.filter(material => !material.isDelete)
@@ -299,8 +299,10 @@ const handleAction = async (generatePdf, excelProgressId) => {
       closeAfterSecondaryBtnHandler: false,
       textBtnText: t('UU0002'),
       primaryBtnHandler: async () => {
-        if (typeof generatePdf === 'function') {
-          generatePdf(nonDeletedMaterialList)
+        if (type === PRINT_TYPE.CARD) {
+          printA4Card(nonDeletedMaterialList)
+        } else if (type === PRINT_TYPE.LABEL) {
+          printGeneralLabel(nonDeletedMaterialList)
         } else {
           exportExcel.func(materialList)
         }
@@ -320,8 +322,10 @@ const handleAction = async (generatePdf, excelProgressId) => {
       }
     })
   } else {
-    if (typeof generatePdf === 'function') {
-      generatePdf(materialList)
+    if (type === PRINT_TYPE.CARD) {
+      printA4Card(materialList)
+    } else if (type === PRINT_TYPE.LABEL) {
+      printGeneralLabel(materialList)
     } else {
       exportExcel.func(materialList)
     }

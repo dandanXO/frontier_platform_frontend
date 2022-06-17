@@ -1,5 +1,5 @@
 <template lang="pug">
-input-text(:size="size" :disabled="disabledInput" @clear="$emit('clear')")
+input-text(:size="size" :disabled="disabledInput" :placeholder="placeholder" @clear="$emit('clear')")
   template(#appendItem)
     div(class="-mr-4 pl-4 h-full flex items-center")
       button(:disabled="disabledBtn" :class="[btnSize, btnType]" class="rounded-r transform translate-x-0.5" @click="$emit('click:button')")
@@ -30,6 +30,10 @@ export default {
       default: false
     },
     buttonLabel: {
+      type: String,
+      default: ''
+    },
+    placeholder: {
       type: String,
       default: ''
     }

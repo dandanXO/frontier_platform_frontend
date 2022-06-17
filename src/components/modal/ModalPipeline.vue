@@ -40,7 +40,17 @@ export default {
     ModalMassUpload: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUpload.vue')),
     ModalMassUploadErrorList: defineAsyncComponent(() => import('@/components/assets/material/ModalMassUploadErrorList.vue')),
     ModalUploadAttachment: defineAsyncComponent(() => import('@/components/assets/material/edit/ModalUploadAttachment.vue')),
-    ModalMaterialNoList: defineAsyncComponent(() => import('@/components/ModalMaterialNoList.vue'))
+    ModalMaterialNoList: defineAsyncComponent(() => import('@/components/ModalMaterialNoList.vue')),
+    ModalCreateOrEditMoodboard: defineAsyncComponent(() => import('@/components/moodboard/ModalCreateOrEditMoodboard.vue')),
+    ModalMoodboardShare: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardShare.vue')),
+    ModalMoodboardShareList: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardShareList.vue')),
+    ModalAssetsList: defineAsyncComponent(() => import('@/components/assets/material/ModalAssetsList.vue')),
+    ModalCreateOrEditMoodboardCollection: defineAsyncComponent(() => import('@/components/moodboard/ModalCreateOrEditMoodboardCollection.vue')),
+    ModalU3mInstruction: defineAsyncComponent(() => import('@/components/assets/material/ModalU3mInstruction.vue')),
+    ModalIndicatorMethodology: defineAsyncComponent(() => import('@/components/assets/material/ModalIndicatorMethodology.vue')),
+    ModalSendFeedback: defineAsyncComponent(() => import('@/components/ModalSendFeedback.vue')),
+    ModalMoodboardMaterialDetail: defineAsyncComponent(() => import('@/components/moodboard/ModalMoodboardMaterialDetail.vue')),
+    ModalChooseSavePlace: defineAsyncComponent(() => import('@/components/ModalChooseSavePlace.vue'))
   },
   setup () {
     const store = useStore()

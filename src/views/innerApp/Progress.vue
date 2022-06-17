@@ -4,21 +4,19 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
     div(class="text-h6 font-bold text-primary pl-1.5") {{ $t("PP0001") }}
     div(class="w-75 relative z-10")
       input-select(:selectValue="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup")
-  div(class="border-b border-black-400")
-    div(class="flex gap-x-5")
-      div(v-for="tab in tabList" class="cursor-pointer" @click="toggleTab(tab.path)")
-        p(class="pb-2 text-body1" :class="[tab.path === currentTab ? 'border-b-4 border-brand text-primary font-bold' : 'text-black-600']" ) {{ tab.name }}
-  div(class="flex items-center gap-x-2 pt-4 pb-3")
-    chip(
-      v-for="status in statusList"
-      size="lg"
-      :text="status.label"
-      @click="selectedStatus = status.id"
-      :active="selectedStatus === status.id"
-    ) 
-  progress-material(v-if="currentTab === 'material'" :currentStatus="selectedStatus" :path="PROGRESS_PATH.MATERIAL")
-  progress-u3m(v-else-if="currentTab === 'u3m'" :currentStatus="selectedStatus" :path="PROGRESS_PATH.U3M")
-  progress-excel(v-else-if="currentTab === 'excel'" :currentStatus="selectedStatus" :path="PROGRESS_PATH.EXCEL")
+  tabs(:tabList="tabList" :initValue="$route.params.tab" @switch="toggleTab($event.path)")
+    template(#default="{ currentTab }")
+      div(class="flex items-center gap-x-2 pt-4 pb-3")
+        chip(
+          v-for="status in statusList"
+          size="lg"
+          :text="status.label"
+          @click="selectedStatus = status.id"
+          :active="selectedStatus === status.id"
+        ) 
+      progress-material(v-if="currentTab === 'material'" :currentStatus="selectedStatus" :path="PROGRESS_PATH.MATERIAL")
+      progress-u3m(v-else-if="currentTab === 'u3m'" :currentStatus="selectedStatus" :path="PROGRESS_PATH.U3M")
+      progress-excel(v-else-if="currentTab === 'excel'" :currentStatus="selectedStatus" :path="PROGRESS_PATH.EXCEL")
 </template>
 
 <script setup>
@@ -62,7 +60,6 @@ const menuOrgOrGroup = computed(() => {
     })
   ]
 })
-const currentTab = computed(() => route.params.tab)
 const currentMenu = computed(() => {
   const { orgNo } = organization.value
   return routeLocation.value === 'org'

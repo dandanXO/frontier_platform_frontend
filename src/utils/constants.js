@@ -81,7 +81,7 @@ export const U3M_STATUS = {
   IN_QUEUE: 1,
   COMPLETED: 2,
   PROCESSING: 3,
-  FAIL: 99
+  UNSUCCESSFUL: 99
 }
 
 export const FILTER_COMPLETE = {
@@ -221,10 +221,14 @@ export const FEEDBACK_CATEGORY = {
     text: i18n.global.t('OO0065'),
     value: 4
   },
+  CARBON_EMISSION: {
+    text: i18n.global.t('MM0037'),
+    value: 5
+  },
   OTHER: {
     text: i18n.global.t('MM0012'),
     value: 3
-  },
+  }
 }
 
 export const SHARING_FROM = {
@@ -362,4 +366,21 @@ export const UPLOAD_PROGRESS_EXCEL_SORT_BY = {
   COMPLETE_FIRST: 4,
   UPLOAD_FIRST: 5,
   EXPORT_FIRST: 6
+}
+
+export const MOODBOARD_TYPE = {
+  DEMANDER: 1,
+  PROVIDER: 2
+}
+
+
+export const MOODBOARD_TAB = {
+  OFFER: 'offer',
+  PICKED: 'picked',
+  COMMENT: 'comment'
+}
+
+export const CREATE_EDIT = {
+  CREATE: 1,
+  EDIT: 2
 }

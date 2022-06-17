@@ -11,25 +11,21 @@ export default {
     progress
   },
   state: {
-    displayMode: DISPLAY_NODE.LIST,
     materialList: [],
     code: {
       contentList: [],
       descriptionList: [],
-      finishList: []
+      finishList: [],
+      certificateList: []
     }
   },
   getters: {
     materialList: state => state.materialList,
-    displayMode: state => state.displayMode,
     code: (state) => state.code
   },
   mutations: {
     SET_materialList (state, materialList) {
       state.materialList = materialList
-    },
-    UPDATE_displayMode (state, mode) {
-      state.displayMode = mode
     },
     SET_code (state, code) {
       Object.assign(state.code, code)
@@ -114,6 +110,7 @@ export default {
             'privatePrice'
           ].includes(key))
       )
+      material['certificateIdList'] = getters.material.certificateList.map(({ certificateId }) => certificateId)
       const { data } = rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.createMaterial({ orgId: rootGetters['organization/orgId'], tempMaterialId, material })
         : await assetsApi.group.createMaterial({ groupId: rootGetters['group/groupId'], tempMaterialId, material })
@@ -156,6 +153,7 @@ export default {
             'privatePrice'
           ].includes(key))
       )
+      material['certificateIdList'] = getters.material.certificateList.map(({ certificateId }) => certificateId)
       rootGetters['helper/routeLocation'] === 'org'
         ? await assetsApi.org.updateMaterial({ orgId: rootGetters['organization/orgId'], materialId, material })
         : await assetsApi.group.updateMaterial({ groupId: rootGetters['group/groupId'], materialId, material })
@@ -336,9 +334,6 @@ export default {
         : await assetsApi.group.addToWorkspace({ groupId: rootGetters['group/groupId'], targetWorkspaceNodeList, materialIdList })
 
       return data.result.failMaterialList
-    },
-    updateDisplayMode ({ commit }, mode) {
-      commit('UPDATE_displayMode', mode)
     },
     async batchUpload ({ rootGetters }, { xlsxFile }) {
       const { data } = rootGetters['helper/routeLocation'] === 'org'

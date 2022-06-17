@@ -27,7 +27,6 @@ const generalImageType = ['jpg', 'jpeg', 'png']
  * @param {string} extension
  * @param {string} fileName
  */
-
 const downloadBase64File = (base64Data, extension, fileName = 'file') => {
   const dataURL = `data:${extension2MimeType[extension]};base64,${base64Data}`
   downloadDataURLFile(dataURL, fileName)
@@ -50,7 +49,6 @@ const dataUrlToBlob = (dataUrl) => {
  * @param {string} dataURL
  * @param {string} fileName
  */
-
 const downloadDataURLFile = (dataURL, fileName = 'file') => {
   const link = document.createElement('a')
   link.hidden = true
@@ -63,6 +61,32 @@ const downloadDataURLFile = (dataURL, fileName = 'file') => {
   link.click()
   link.remove()
 }
+
+/**
+ * 
+ * @param {number} bytes 
+ * @returns {string} size
+ */
+const bytesToSize = (bytes) => {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+  if (bytes === 0) return '0 Byte'
+  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)))
+  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i]
+}
+
+/**
+ * @param {object | string} file 
+ */
+const previewFile = (file) => {
+  const a = document.createElement('A')
+  a.hidden = true
+  a.target = '_blank'
+  // A File object is a Blob object with a name attribute, which is a string
+  a.href = typeof file.name === 'string' ? URL.createObjectURL(file) : file
+  a.click()
+  a.remove()
+}
+
 class FileOperator {
   /**
    * @param {string[]} validType
@@ -202,4 +226,4 @@ class ImageOperator extends FileOperator {
   }
 }
 
-export { dataUrlToBlob, downloadDataURLFile, downloadBase64File, FileOperator, ImageOperator }
+export { dataUrlToBlob, downloadDataURLFile, downloadBase64File, FileOperator, ImageOperator, bytesToSize, previewFile }

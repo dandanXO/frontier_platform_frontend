@@ -24,9 +24,9 @@ export default {
     const btnSize = computed(() => {
       switch (props.size) {
         case 'lg':
-          return ['text-body2', 'py-1.5', 'px-2.5']
+          return ['text-body2', 'h-6', 'px-2.5']
         case 'sm':
-          return ['text-caption', 'py-1', 'px-2']
+          return ['text-caption', 'h-5', 'px-2']
       }
     })
 

@@ -22,7 +22,8 @@ export default function useMaterialEdit (material) {
         }))
     }),
     descriptionList: computed(() => store.getters['assets/code'].descriptionList.concat(newDescriptionList)),
-    finishList: computed(() => store.getters['assets/code'].finishList.concat(newFinishList))
+    finishList: computed(() => store.getters['assets/code'].finishList.concat(newFinishList)),
+    certificateList: store.getters['assets/code'].certificateList
   })
 
   const addDescriptionOption = (descriptionName) => {

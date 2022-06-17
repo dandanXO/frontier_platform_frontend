@@ -39,7 +39,7 @@ app.config.errorHandler = (err, vm, info) => {
   } else if (status === 401) {
     return
   } else {
-    const { type, title, content } = message
+    const { type, title, content } = message || {}
     store.dispatch('helper/openModalConfirm', {
       type: type || 3,
       header: title || 'Something went wrong!',

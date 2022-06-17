@@ -24,7 +24,7 @@ div(class="w-full h-full")
             template(#number) {{ pagination.totalCount }}
           span )
     template(#header-right)
-      grid-or-row(class="justify-self-end")
+      grid-or-row(v-model:displayMode="displayMode" class="justify-self-end")
       btn(size="sm" prependIcon="add" @click="goToMaterialUpload") {{ $t("UU0020") }}
     template(#default)
       template(v-if="materialList.length > 0")
@@ -46,28 +46,13 @@ div(class="w-full h-full")
         div(class="border border-black-400 rounded-md border-dashed p-2 mt-40 cursor-pointer" @click="goToMaterialUpload")
           svg-icon(iconName="add" size="24" class="text-primary")
         p(class="text-body2 text-primary pt-3") {{ $t("EE0079") }}
-    template(#menu-option="{ option }")
-      qr-code-general(v-if="option.id === 'printQRCode'")
-        template(#activator="{ generatePdf }")
-          div(
-            class="whitespace-nowrap cursor-pointer hover:text-brand px-5"
-            @click="generatePdf(selectedMaterialList)"
-          ) {{ option.name }}
-      qr-code-a4(v-else-if="option.id === 'printCard'")
-        template(#activator="{ generatePdf }")
-          div(
-            class="whitespace-nowrap cursor-pointer hover:text-brand px-5"
-            @click="generatePdf(selectedMaterialList)"
-          ) {{ option.name }}
 </template>
 
 <script setup>
 import SearchTable from '@/components/layout/SearchTable.vue'
 import RowItem from '@/components/assets/material/list/RowItem.vue'
 import GridItem from '@/components/assets/material/list/GridItem.vue'
-import GridOrRow from '@/components/assets/material/list/GridOrRow.vue'
-import QrCodeA4 from '@/components/qrcode/QrCodeA4.vue'
-import QrCodeGeneral from '@/components/qrcode/QrCodeGeneral.vue'
+import GridOrRow from '@/components/layout/GridOrRow.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
@@ -86,7 +71,7 @@ const currentItemSize = ref(379)
 const { printCard, downloadU3M, cloneTo, addToWorkspace, exportExcel, printQRCode, mergeCard, deleteMaterial } = useAssets()
 
 const selectedMaterialList = ref([])
-const displayMode = computed(() => store.getters['assets/displayMode'])
+const displayMode = ref(DISPLAY_NODE.LIST)
 const materialList = computed(() => store.getters['assets/materialList'])
 const pagination = computed(() => store.getters['helper/search/pagination'])
 const optionSort = computed(() => ({

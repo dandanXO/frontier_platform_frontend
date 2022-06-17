@@ -30,7 +30,6 @@ fullscreen-header
                 :config="cropper.config"
                 :cropRectSize="cropRectSize"
                 @update:options="Object.assign(cropper.config.options, $event)"
-                isU3m
               )
                 div(class="mt-1 absolute w-full")
                   div(class="h-2 flex items-center border-r-2 border-l-2 border-primary")
@@ -52,6 +51,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive } from 'vue'
 import useMaterialImage from '@/composables/useMaterialImage'
+import useNavigation from '@/composables/useNavigation'
 import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
 import CropperDefaultLayout from '@/components/cropper/layout/CropperDefaultLayout.vue'
 import CroppedImage from '@/components/cropper/CroppedImage.vue'
@@ -62,13 +62,14 @@ export default {
   name: 'ModalU3mRecut',
   components: {
     FullscreenHeader,
-    CropperDefaultLayout,
+    CroppedImage,
     ImageCropArea,
-    CroppedImage
+    CropperDefaultLayout
   },
   async setup () {
     const { t } = useI18n()
     const store = useStore()
+    const { goToProgress } = useNavigation()
     const previewRect = ref(null)
     const refFaceSide = ref(null)
     const refBackSide = ref(null)
@@ -97,7 +98,6 @@ export default {
         dpi: faceSideImg.dpi,
         cropRectSize
       })
-
       await faceSideCropper.formatImage()
       Object.assign(faceSideConfig, {
         ref: 'refFaceSide',
@@ -168,8 +168,13 @@ export default {
       store.dispatch('helper/closeModalLoading')
       closeModal()
 
-      store.dispatch('helper/openModal', {
-        component: 'modal-u3m-create-success'
+      store.dispatch('helper/openModalConfirm', {
+        type: 2,
+        header: t('EE0121'),
+        content: t('EE0122', { RR0008: t('RR0008') }),
+        primaryBtnText: t('UU0103'),
+        secondaryBtnText: t('UU0090'),
+        secondaryBtnHandler: () => goToProgress('u3m')
       })
     }
 
@@ -186,20 +191,18 @@ export default {
 
     return {
       cropRectSize,
-      refFaceSide,
-      refBackSide,
-      previewRect,
+      croppers,
       previewScaleRatio,
       hasNext,
       isAtSecondStep,
       currentSide,
-      handleUpdateScaleRatio,
-      handleRefUpdate,
+      previewRect,
       getNext,
       goBack,
+      handleUpdateScaleRatio,
       confirm,
-      closeModal,
-      croppers
+      handleRefUpdate,
+      closeModal
     }
   }
 }

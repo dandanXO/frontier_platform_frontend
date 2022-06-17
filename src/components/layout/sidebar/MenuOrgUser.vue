@@ -58,7 +58,11 @@ export default {
         // },
         {
           name: t('RR0123'),
-          func: openModal.bind(undefined, 'modal-send-feedback')
+          func: () => {
+            store.dispatch('helper/openModalBehavior', {
+              component: 'modal-send-feedback'
+            })
+          }
         }
         // {
         //   name: t('RR0124')

@@ -1,86 +1,81 @@
 <template lang="pug">
 div
-  div(class="flex items-center pb-3 text-primary")
+  div(class="flex items-center text-primary mb-6")
     h5(class="text-h5 font-bold") {{ $t("RR0132") }}
-  div(v-if="status === U3M_STATUS.COMPLETED" class="inline-flex text-body2 text-assist-blue gap-2")
-    span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(zipUrl)") {{ $t("EE0081") }}
-      svg-icon(iconName="u3m_download" size="20")
-    span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(u3maUrl)") {{ $t("EE0082") }}
-      svg-icon(iconName="u3m_download" size="20")
-  btn(size="md" class="mt-2" @click="handleClick") {{ $t("UU0006") }}
+    tooltip(placement="top" class="pl-1" :manual="true")
+      template(#trigger)
+        svg-icon(iconName="info_outline" class="cursor-pointer" size="14")
+      template(#content)
+        div(class="p-5")
+          span(class="text-body2 text-assist-blue underline leading-1.6 cursor-pointer" @click="openModalU3mInstruction") {{ $t("UU0029") }}
+  div(class="flex items-center")
+    btn(size="md" type="secondary" :disabled="status !== COMPLETED" @click="openModalViewer") {{ $t("UU0006") }}
+    div(v-if="status === U3M_STATUS.COMPLETED" class="inline-flex text-body2 text-assist-blue gap-2 ml-4")
+      span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(zipUrl)") {{ $t("EE0081") }}
+        svg-icon(iconName="u3m_download" size="20")
+      span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(u3maUrl)") {{ $t("EE0082") }}
+        svg-icon(iconName="u3m_download" size="20")
 </template>
 
-<script>
+<script setup>
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { toRefs } from 'vue'
 import { U3M_STATUS } from '@/utils/constants'
 import { downloadDataURLFile } from '@/utils/fileOperator'
 
-export default {
-  name: 'BlockMaterialExternalU3mStatus',
-  props: {
-    material: {
-      type: Object,
-      required: true
-    },
-    isCanDownloadU3M: {
-      type: Boolean,
-      default: false
-    }
+const props = defineProps({
+  material: {
+    type: Object,
+    required: true
   },
-  setup (props) {
-    const { t } = useI18n()
-    const store = useStore()
-    const { status, zipUrl, u3maUrl, baseImgUrl, normalImgUrl, dpi } = toRefs(props.material.u3m)
-    const { COMPLETED } = U3M_STATUS
+  isCanDownloadU3M: {
+    type: Boolean,
+    default: false
+  }
+})
 
-    const downloadU3m = async (url) => {
-      await store.dispatch('user/getUser')
-      if (!props.isCanDownloadU3M) {
-        store.dispatch('helper/openModalConfirm', {
-          type: 1,
-          header: t('II0003'),
-          content: t('II0004'),
-          primaryBtnText: t('UU0031')
-        })
-      } else {
-        const fileName = url.split('/')[url.split('/').length - 1]
-        downloadDataURLFile(url, fileName)
+const { t } = useI18n()
+const store = useStore()
+const { status, zipUrl, u3maUrl, baseImgUrl, normalImgUrl, dpi } = toRefs(props.material.u3m)
+const { COMPLETED } = U3M_STATUS
+
+const downloadU3m = async (url) => {
+  await store.dispatch('user/getUser')
+  if (!props.isCanDownloadU3M) {
+    store.dispatch('helper/openModalConfirm', {
+      type: 1,
+      header: t('II0003'),
+      content: t('II0004'),
+      primaryBtnText: t('UU0031')
+    })
+  } else {
+    const fileName = url.split('/')[url.split('/').length - 1]
+    downloadDataURLFile(url, fileName)
+  }
+}
+
+const openModalU3mInstruction = () => {
+  store.dispatch('helper/pushModalBehavior', {
+    component: 'modal-u3m-instruction',
+    properties: {
+      primaryBtnText: t('UU0094'),
+      primaryHandler: () => {
+        store.dispatch('helper/closeModalBehavior')
       }
     }
+  })
+}
 
-    const handleClick = () => {
-      status.value === COMPLETED
-        ? openModalViewer()
-        : store.dispatch('helper/openModalConfirm', {
-          type: 1,
-          header: t('II0005'),
-          content: t('II0006'),
-          primaryBtnText: t('UU0031')
-        })
+const openModalViewer = () => {
+  store.dispatch('helper/pushModal', {
+    component: 'modal-viewer',
+    header: t('UU0006'),
+    properties: {
+      dpi: dpi?.value,
+      baseImgUrl: baseImgUrl?.value,
+      normalImgUrl: normalImgUrl?.value
     }
-
-    const openModalViewer = () => {
-      store.dispatch('helper/openModal', {
-        component: 'modal-viewer',
-        header: t('UU0006'),
-        properties: {
-          dpi: dpi?.value,
-          baseImgUrl: baseImgUrl?.value,
-          normalImgUrl: normalImgUrl?.value
-        }
-      })
-    }
-
-    return {
-      status,
-      U3M_STATUS,
-      zipUrl,
-      u3maUrl,
-      downloadU3m,
-      handleClick
-    }
-  }
+  })
 }
 </script>

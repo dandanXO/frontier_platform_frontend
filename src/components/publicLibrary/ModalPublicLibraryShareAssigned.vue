@@ -5,7 +5,7 @@ div(class="w-120.5 px-8")
     v-model:textValue="target"
     prependIcon="search"
     :label="$t('RR0156')"
-    :placeholder="$t('RR0150')"
+    :placeholder="$t('RR0245')"
     :disabledIcon="target === ''"
     :customErrorMsg="errorMsg"
     @click:icon="addToTargetList"

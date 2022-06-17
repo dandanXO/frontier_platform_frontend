@@ -18,6 +18,11 @@ const getters = {
   modalPipeline: (state) => state.modalPipeline,
   message: (state) => state.message,
   routeLocation: (state) => state.routeLocation,
+  routeLocationId: (state, getters, rootState, rootGetters) => {
+    return getters.routeLocation === 'org'
+      ? rootGetters['organization/orgId']
+      : rootGetters['group/groupId']
+  },
   isReloadInnerApp: state => state.isReloadInnerApp
 }
 

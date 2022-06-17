@@ -35,35 +35,21 @@ div(class="w-full h-full relative")
         template(#displayName) {{ publishBy }}
     template(#default="{ goTo }")
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
-        template(v-for="node in nodeList")
-          template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
-            node-item(
-              v-model:selectedList="selectedNodeList"
-              :node="node"
-              :displayName="node.name"
-              :isSelectable="!isFirstLayer"
-              :optionList="optionNode"
-              @click="(currentNodeKey = node.nodeKey); goTo()"
-              @click:option="$event.func(node)"
-            )
-              template(#node-caption v-if="isFirstLayer")
-                div(class="mt-1.5 h-6 flex items-center")
-                  img(:src="node.publish.logo" class="aspect-square h-full rounded-full")
-                  p(class="pl-1 font-bold text-caption text-primary") {{ node.publish.displayName }}
-          template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
-            node-item(
-              v-model:selectedList="selectedNodeList"
-              :node="node"
-              :displayName="node.materialNo"
-              :isSelectable="!isFirstLayer"
-              :optionList="optionNode"
-              @click:option="$event.func(node)"
-              @click.stop="goToPublicLibraryMaterialDetail(node.nodeKey)"
-            )
-              template(#node-caption v-if="isFirstLayer")
-                div(class="mt-1.5 h-6 flex items-center")
-                  img(:src="node.publish.logo" class="aspect-square h-full rounded-full")
-                  p(class="pl-1 font-bold text-caption text-primary") {{ node.publish.displayName }}
+        child-node-item(
+          v-for="node in nodeList"
+          v-model:selectedList="selectedNodeList"
+          :node="node"
+          :properties="node"
+          :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.name : node.materialNo"
+          :isSelectable="!isFirstLayer"
+          :optionList="optionNode"
+          @click:option="$event.func(node)"
+          @click.stop="handleNodeClick(node, goTo)"
+        )
+          template(#caption v-if="isFirstLayer")
+            div(class="mt-1.5 h-6 flex items-center")
+              img(:src="node.publish.logo" class="aspect-square h-full rounded-full")
+              p(class="pl-1 font-bold text-caption text-primary") {{ node.publish.displayName }}
       div(v-else class="flex h-full justify-center items-end")
         p(class="text-body1 text-primary") {{ $t("II0007") }}
   div(v-if="planStatus.INACTIVE" class="absolute inset-0 z-99 opacity-30 bg-black-0")
@@ -76,7 +62,7 @@ import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { watch, ref, computed } from 'vue'
-import NodeItem from '@/components/layout/NodeItem.vue'
+import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
 import { useRoute, useRouter } from 'vue-router'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import useNavigation from '@/composables/useNavigation'
@@ -157,6 +143,15 @@ const openModalCollectionDetail = () => {
       ...collection.value
     }
   })
+}
+
+const handleNodeClick = (node, goTo) => {
+  if (node.nodeType === NODE_TYPE.COLLECTION) {
+    currentNodeKey.value = node.nodeKey
+    goTo()
+  } else {
+    goToPublicLibraryMaterialDetail(node.nodeKey)
+  }
 }
 
 watch(

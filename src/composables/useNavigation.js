@@ -1,6 +1,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
+import { MOODBOARD_TAB } from '@/utils/constants'
 
 export default function useNavigation () {
   const store = useStore()
@@ -97,6 +98,18 @@ export default function useNavigation () {
     router.push(parsePath(`${prefixPath.value}/share-to-me/material/${nodeKey}?sharingId=${sharingId}`))
   }
 
+  const goToMoodboard = () => {
+    router.push(parsePath(`${prefixPath.value}/moodboard`))
+  }
+
+  const goToMoodboardDetail = (moodboardId) => {
+    router.push(parsePath(`${prefixPath.value}/moodboard/${moodboardId}?tab=${MOODBOARD_TAB.OFFER}`))
+  }
+
+  const goToMoodboardPickedList = (moodboardId) => {
+    router.push(parsePath(`${prefixPath.value}/moodboard/${moodboardId}/picked-list`))
+  }
+
   return {
     nextAfterSignIn,
     parsePath,
@@ -116,6 +129,9 @@ export default function useNavigation () {
     goToProgress,
     goToPaymentDetail,
     goToEmbedMaterialDetail,
+    goToMoodboard,
+    goToMoodboardDetail,
+    goToMoodboardPickedList,
     prefixPath
   }
 }

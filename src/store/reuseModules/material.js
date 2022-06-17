@@ -2,11 +2,11 @@ import { SIDE_TYPE, WEIGHT_UNIT, INVENTORY_UNIT, MATERIAL_PRICING_CURRENCY, SOUR
 
 const Material = {
   state: () => ({
-    materialId: null,
+    materialId: 0,
     relationMaterialId: null,
     frontierNo: null,
     relationFrontierNo: null,
-    materialNo: null,
+    materialNo: 'Material No',
     materialSeq: null,
     sourceAssetLocation: SOURCE_ASSET_LOCATION.ORG,
     coverMode: 0,
@@ -97,6 +97,13 @@ const Material = {
     },
     attachmentList: [],
     pantoneList: [],
+    certificateList: [],
+    carbonEmission: {
+      co2: { personalized: 6.27, benchmark: null, differenceInPercent: 1, saving: null },
+      water: { personalized: 12.55, benchmark: null, differenceInPercent: null, saving: null },
+      land: { personalized: 18.7, benchmark: null, differenceInPercent: null, saving: null },
+      energy: { personalized: 34.2, benchmark: null, differenceInPercent: null, saving: null }
+    },
     u3m: {
       status: 0,
       zipUrl: '',

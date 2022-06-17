@@ -1,4 +1,3 @@
-
 <style lang="scss" scoped>
 .sidebar-shadow {
   filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25));
@@ -43,17 +42,17 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-black-100 sidebar-shadow f
               sidebar-item(v-for="(menu, index) in options" v-bind="menu" class="relative flex justify-between" :style="{ zIndex: 20 - index }")
                 p(class="pl-7 text-body2 text-primary line-clamp-1") {{ $t(menu.title) }}
                 template(v-if="menu.id === 'assets'")
-                  div(class="mr-3 flex justify-center items-center w-6 h-6 rounded bg-primary-thin" @click.stop="$router.push(menu.path + '/upload')")
-                    tooltip(placement="bottom")
-                      template(#trigger)
+                  tooltip(placement="bottom" class="mr-3")
+                    template(#trigger)
+                      div(class="flex justify-center items-center w-6 h-6 rounded bg-primary-thin" @click.stop="$router.push(menu.path + '/upload')")
                         svg-icon(:iconName="menu.icon" size="20" class="text-black-800")
-                      template(#content)
-                        p(class="text-caption text-primary px-3 py-1") {{ $t("RR0012") }}
+                    template(#content)
+                      p(class="text-caption text-primary px-3 py-1") {{ $t("RR0012") }}
       div(class="w-auto h-px bg-primary-thin mx-1.5 my-1.5")
   menu-org-user
 </template>
 
-<script>
+<script setup>
 import { useStore } from 'vuex'
 import { computed, onUnmounted } from 'vue'
 import SidebarItem from '@/components/layout/sidebar/SidebarItem.vue'
@@ -62,87 +61,80 @@ import MenuOrgUser from '@/components/layout/sidebar/MenuOrgUser.vue'
 import { useI18n } from 'vue-i18n'
 import { NODE_LOCATION } from '@/utils/constants'
 
-export default {
-  name: 'Sidebar',
-  components: {
-    SidebarItem,
-    MenuOrg,
-    MenuOrgUser
-  },
-  setup () {
-    const { t } = useI18n()
-    const store = useStore()
+const { t } = useI18n()
+const store = useStore()
 
-    const organization = computed(() => store.getters['organization/organization'])
-    const isProcessing = computed(() => store.getters['polling/isProcessing'])
-    const planStatus = computed(() => store.getters['polling/planStatus'])
-    const menuOrgOrGroup = computed(() => {
-      const { orgId, orgNo, orgName, labelColor, workspaceNodeId } = organization.value
-      return [
+const organization = computed(() => store.getters['organization/organization'])
+const isProcessing = computed(() => store.getters['polling/isProcessing'])
+const planStatus = computed(() => store.getters['polling/planStatus'])
+const menuOrgOrGroup = computed(() => {
+  const { orgId, orgNo, orgName, labelColor, workspaceNodeId } = organization.value
+  return [
+    {
+      id: orgId,
+      name: orgName,
+      labelColor: labelColor,
+      disabled: planStatus.value.INACTIVE,
+      menuList: [
         {
-          id: orgId,
-          name: orgName,
-          labelColor: labelColor,
-          disabled: planStatus.value.INACTIVE,
-          menuList: [
-            {
-              id: 'assets',
-              title: t('RR0008'),
-              path: `/${orgNo}/assets`,
-              icon: 'upload'
-            },
-            {
-              id: 'workspace',
-              title: t('RR0009'),
-              path: `/${orgNo}/workspace/${NODE_LOCATION.ORG}-${workspaceNodeId}`
-            },
-            {
-              id: 'shareToMe',
-              title: t('RR0010'),
-              path: `/${orgNo}/share-to-me`
-            }
-          ]
+          id: 'assets',
+          title: t('RR0008'),
+          path: `/${orgNo}/assets`,
+          icon: 'upload'
         },
-        ...store.getters['organization/groupList'].map(group => {
-          const { groupId, groupName, labelColor, workspaceNodeId } = group
-          return {
-            id: groupId,
-            name: groupName,
-            labelColor: labelColor,
-            disabled: planStatus.value.INACTIVE,
-            menuList: [
-              {
-                id: 'assets',
-                title: t('RR0008'),
-                path: `/${orgNo}/${groupId}/assets`,
-                icon: 'upload'
-              },
-              {
-                id: 'workspace',
-                title: t('RR0009'),
-                path: `/${orgNo}/${groupId}/workspace/${NODE_LOCATION.GROUP}-${workspaceNodeId}`
-              },
-              {
-                id: 'shareToMe',
-                title: t('RR0010'),
-                path: `/${orgNo}/${groupId}/share-to-me`
-              }
-            ]
-          }
-        })
+        {
+          id: 'workspace',
+          title: t('RR0009'),
+          path: `/${orgNo}/workspace/${NODE_LOCATION.ORG}-${workspaceNodeId}`
+        },
+        {
+          id: 'moodboard',
+          title: t('QQ0001'),
+          path: `/${orgNo}/moodboard`
+        },
+        {
+          id: 'shareToMe',
+          title: t('RR0010'),
+          path: `/${orgNo}/share-to-me`
+        }
       ]
+    },
+    ...store.getters['organization/groupList'].map((group) => {
+      const { groupId, groupName, labelColor, workspaceNodeId } = group
+      return {
+        id: groupId,
+        name: groupName,
+        labelColor: labelColor,
+        disabled: planStatus.value.INACTIVE,
+        menuList: [
+          {
+            id: 'assets',
+            title: t('RR0008'),
+            path: `/${orgNo}/${groupId}/assets`,
+            icon: 'upload'
+          },
+          {
+            id: 'workspace',
+            title: t('RR0009'),
+            path: `/${orgNo}/${groupId}/workspace/${NODE_LOCATION.GROUP}-${workspaceNodeId}`
+          },
+          {
+            id: 'moodboard',
+            title: t('QQ0001'),
+            path: `/${orgNo}/${groupId}/moodboard`
+          },
+          {
+            id: 'shareToMe',
+            title: t('RR0010'),
+            path: `/${orgNo}/${groupId}/share-to-me`
+          }
+        ]
+      }
     })
+  ]
+})
 
-    onUnmounted(() => {
-      store.dispatch('polling/stopPollingSidebar')
-    })
-
-    return {
-      isProcessing,
-      organization,
-      menuOrgOrGroup,
-      planStatus
-    }
-  }
-}
+onUnmounted(() => {
+  store.dispatch('polling/stopPollingSidebar')
+})
 </script>

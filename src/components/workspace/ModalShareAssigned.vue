@@ -7,7 +7,7 @@ div(class="w-213.5 px-8")
         v-model:textValue="target"
         prependIcon="search"
         :label="$t('RR0156')"
-        :placeholder="$t('RR0150')"
+        :placeholder="$t('RR0245')"
         :disabledIcon="target === ''"
         :customErrorMsg="errorMsg"
         @click:icon="addToTargetList"
@@ -40,6 +40,7 @@ div(class="w-213.5 px-8")
       input-textarea(
         v-model:textValue="formData.messages"
         :label="$t('RR0146')"
+        :placeholder="$t('RR0202')"
         height="174"
         :customErrorMsg="formData.messages.length > 1000 ? $t('WW0073') : ''"
       )
