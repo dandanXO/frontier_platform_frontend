@@ -3,8 +3,9 @@ modal-behavior(
   :header="mode === CREATE_EDIT.CREATE ? $t('QQ0003') : $t('QQ0022')"
   :primaryBtnText="mode === CREATE_EDIT.CREATE ? $t('UU0020') : $t('UU0018')"
   :primaryBtnDisabled="primaryBtnDisabled"
-  @click:primary="primaryHandler"
   :secondaryBtnText="$t('UU0026')"
+  @click:primary="primaryHandler"
+  @click:secondary="closeModal"
 )
   template(#note)
     file-upload-error-note(v-if="fileUploadErrorCode" :errorCode="fileUploadErrorCode" :fileSizeMaxLimit="fileSizeMaxLimit")
@@ -50,17 +51,17 @@ modal-behavior(
       )
     input-container(:label="$t('QQ0015')")
       overlay-scrollbar-container(class="max-h-18 mb-2.5")
-        div(class="grid gap-y-2")
+        div(class="grid gap-y-2 max-w-121.5")
           div(v-for="(attachment, index) in formData.attachmentFileList" class="h-8 flex justify-between items-center px-4 bg-black-100")
             div(class="flex items-center gap-x-1")
               p(class="text-body2 font-bold text-primary line-clamp-1") {{ attachment.name }}
               p(class="text-body2 font-normal text-primary flex-shrink-0") ({{ bytesToSize(attachment.size) }})
             svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeAttachment(index)")
-          div(v-for="attachment in originalAttachmentList" class="h-8 flex justify-between items-center px-4 bg-black-100")
+          div(v-for="(attachment, index) in originalAttachmentList" class="h-8 flex justify-between items-center px-4 bg-black-100")
             div(class="flex items-center gap-x-1")
               p(class="text-body2 font-bold text-primary line-clamp-1") {{ attachment.displayFileName }}
               p(class="text-body2 font-normal text-primary flex-shrink-0") ({{ bytesToSize(attachment.fileSize) }})
-            svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeOriginalAttachment(attachment.attachmentId)")
+            svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeOriginalAttachment(index, attachment.attachmentId)")
       btn(size="sm" type="secondary" prependIcon="add" @click="chooseAttachment") {{ $t("UU0063") }}
       div(class="text-caption text-black-600 pt-2")
         p(class="pb-1") {{ $t('RR0243') }} {{attachmentFileAcceptType.join(', ').toUpperCase()}}
@@ -115,9 +116,11 @@ const primaryBtnDisabled = computed(() => !formData.moodboardName || refInputNam
 const trendBoardFileOperator = new FileOperator(acceptType, fileSizeMaxLimit, true)
 const chooseTrendBoard = () => trendBoardFileOperator.upload()
 trendBoardFileOperator.on('finish', (file) => {
+  store.dispatch('helper/pushModalLoading')
   formData.trendBoardFile = file
   uploadTrendBoardName.value = file.name
   fileUploadErrorCode.value = 0
+  store.dispatch('helper/closeModalLoading')
 })
 trendBoardFileOperator.on('selfDefinedError', (code) => {
   fileUploadErrorCode.value = code
@@ -141,8 +144,10 @@ const attachmentFileAcceptType = ['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mo
 const attachmentFileOperator = new FileOperator(attachmentFileAcceptType, fileSizeMaxLimit, true)
 const chooseAttachment = () => attachmentFileOperator.upload()
 attachmentFileOperator.on('finish', (file) => {
+  store.dispatch('helper/pushModalLoading')
   formData.attachmentFileList.unshift(file)
   fileUploadErrorCode.value = 0
+  store.dispatch('helper/closeModalLoading')
 })
 attachmentFileOperator.on('selfDefinedError', (code) => {
   fileUploadErrorCode.value = code
@@ -150,7 +155,10 @@ attachmentFileOperator.on('selfDefinedError', (code) => {
 
 const removeAttachment = (index) => formData.attachmentFileList.splice(index, 1)
 
-const removeOriginalAttachment = (attachmentId) => formData.deleteAttachmentIdList.push(attachmentId)
+const removeOriginalAttachment = (index, attachmentId) => {
+  originalAttachmentList.value.splice(index, 1)
+  formData.deleteAttachmentIdList.push(attachmentId)
+}
 
 const primaryHandler = async () => {
   store.dispatch('helper/openModalLoading')
@@ -162,6 +170,10 @@ const primaryHandler = async () => {
     await store.dispatch('moodboard/updateMoodboard', formData)
   }
   store.dispatch('helper/closeModalLoading')
+}
+
+const closeModal = () => {
+  store.dispatch('helper/closeModalBehavior')
 }
 
 if (props.mode === CREATE_EDIT.EDIT) {

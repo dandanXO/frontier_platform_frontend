@@ -34,7 +34,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-blac
       div(class="grid gap-3")
         p(v-for="(item, key) in materialBasicInfo" class="text-body2 line-clamp-1 !break-all" :class="{ 'text-black-700': key === 'frontierNo' }") {{ item.name }}: {{ item.value }}
     div(class="flex flex-col gap-y-7 min-w-75 max-w-115")
-      div
+      div(v-if="properties.isPublicInventory")
         div(class="pb-2 border-b-2 mb-3 text-body1 font-bold text-primary") {{ $t('RR0135') }}
         p(class="text-body2 line-clamp-1 !break-all") {{ materialInfo.totalInventoryQty.name }}: {{ materialInfo.totalInventoryQty.value }}
       div

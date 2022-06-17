@@ -113,10 +113,12 @@ const openModalAssetsList = () => {
       modalTitle: t('FF0016'),
       actionText: t('UU0035'),
       actionCallback: async (materialList) => {
+        store.dispatch('helper/pushModalLoading')
         await store.dispatch('moodboard/addMaterialToMoodboardNode', {
           nodeId: currentNodeId.value,
           materialIdList: materialList.map(({ materialId }) => materialId)
         })
+        store.dispatch('helper/closeModalLoading')
         store.dispatch('helper/closeModalBehavior')
       },
       noteComponent: shallowRef({
