@@ -35,9 +35,9 @@ div
               :index="index"
               isReadOnly
             )
-    //- div
-    //-   h5(class="text-h5 font-bold text-primary pb-5") {{ $t("RR0219") }}
-    //-   environmental-indicator-panel(:material="material")
+    div
+      h5(class="text-h5 font-bold text-primary pb-5") {{ $t("RR0219") }}
+      environmental-indicator-panel(:material="material")
 </template>
 
 <script>

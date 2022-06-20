@@ -27,15 +27,15 @@ div(class="grid gap-x-14 grid-cols-2")
         p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0027') }}: {{ material.publicTagList.join(',') }}
         p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0071') }}: {{ material.aiTagList.join(',') }}
         p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0028') }}: {{ material.privateTagList.join(',') }}
-    //- div
-    //-   div(class="flex justify-between items-end pb-2 border-b-2 mb-3")
-    //-     div(class="text-body1 font-bold text-primary") {{ $t('RR0219') }}
-    //-     svg-icon(iconName="info_outline" size="14" class="text-primary cursor-pointer" @click="openModalIndicatorMethodology")
-    //-   div(class="flex items-center gap-x-1")
-    //-     div(v-for="property in carbonEmissionInfo" class="min-w-19.5 flex items-center gap-x-1")
-    //-       svg-icon(:iconName="property.icon" size="20" :class="[property.differenceInPercent > 0 ? 'text-brand' : 'text-primary']")
-    //-       p(v-if="property.personalized" class="text-body2 text-primary") {{ property.personalized }} {{ property.unitShort }}
-    //-       hr(v-else class="w-4 border-black-500")
+    div
+      div(class="flex justify-between items-end pb-2 border-b-2 mb-3")
+        div(class="text-body1 font-bold text-primary") {{ $t('RR0219') }}
+        svg-icon(iconName="info_outline" size="14" class="text-primary cursor-pointer" @click="openModalIndicatorMethodology")
+      div(class="flex items-center gap-x-1")
+        div(v-for="property in carbonEmissionInfo" class="min-w-19.5 flex items-center gap-x-1")
+          svg-icon(:iconName="property.icon" size="20" :class="[property.differenceInPercent > 0 ? 'text-brand' : 'text-primary']")
+          p(v-if="property.personalized" class="text-body2 text-primary") {{ property.personalized }} {{ property.unitShort }}
+          hr(v-else class="w-4 border-black-500")
 </template>
 
 <script setup>

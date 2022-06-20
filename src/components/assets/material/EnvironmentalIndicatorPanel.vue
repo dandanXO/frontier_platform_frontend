@@ -29,19 +29,19 @@ div(class="flex flex-col")
                 p(class="text-body2 text-primary") {{ property.personalized }} {{ property.unitLong }}
               hr(v-else class="w-4 border-black-500")
             div(class="col-span-2 flex items-center gap-x-2")
-              template(v-if="property.benchmark != null")
-                div(class="w-2 h-2 rounded-sm bg-black-500")
-                p(class="text-body2 text-primary") {{ property.benchmark }} {{ property.unitShort }}
-              hr(v-else class="w-4 border-black-500")
+              //- template(v-if="property.benchmark != null")
+              //-   div(class="w-2 h-2 rounded-sm bg-black-500")
+              //-   p(class="text-body2 text-primary") {{ property.benchmark }} {{ property.unitShort }}
+              hr(class="w-4 border-black-500")
             div(class="col-span-2 flex items-center")
-              div(
-                v-if="property.differenceInPercent != null"
-                class="h-6 flex items-center justify-center gap-x-2 rounded px-2 whitespace-nowrap text-caption"
-                :class="[property.differenceInPercent > 0 ? 'bg-brand-light text-brand' : 'bg-black-50 text-black-500']"
-              )
-                p(class="font-bold") {{ property.differenceInPercent }}% {{ $t('RR0229') }}
-                svg-icon(v-if="property.differenceInPercent > 0" iconName="done" size="16" class="text-brand")
-              hr(v-else class="w-4 border-black-500")
+              //- div(
+              //-   v-if="property.differenceInPercent != null"
+              //-   class="h-6 flex items-center justify-center gap-x-2 rounded px-2 whitespace-nowrap text-caption"
+              //-   :class="[property.differenceInPercent > 0 ? 'bg-brand-light text-brand' : 'bg-black-50 text-black-500']"
+              //- )
+              //-   p(class="font-bold") {{ property.differenceInPercent }}% {{ $t('RR0229') }}
+              //-   svg-icon(v-if="property.differenceInPercent > 0" iconName="done" size="16" class="text-brand")
+              hr(class="w-4 border-black-500")
           div(v-if="isShowGraph" class="pt-2")
             div(class="relative")
               div(class="grid grid-cols-5 h-10 divide-x divide-primary-thin bg-black-50 border border-primary-thin rounded mb-3.5")
@@ -50,15 +50,15 @@ div(class="flex flex-col")
                   span(class="absolute -bottom-0.5 translate-y-full right-0 text-caption text-black-400") {{ i * 10 }}
               div(class="border-0 absolute z-1 left-0 top-3 bg-brand h-1" :style="{ 'width': 100 * (property.personalized / 50) + '%' }")
               div(class="border-0 absolute z-2 right-1 top-1 text-brand-dark text-caption") {{ property.personalized }}
-              div(class="border-0 absolute z-1 left-0 bottom-3 bg-black-400 h-1" :style="{ 'width': 100 * (property.benchmark / 50) + '%' }")
-              div(class="border-0 absolute z-2 right-1 bottom-1 text-black-500 text-caption") {{ property.benchmark }}
+              //- div(class="border-0 absolute z-1 left-0 bottom-3 bg-black-400 h-1" :style="{ 'width': 100 * (property.benchmark / 50) + '%' }")
+              //- div(class="border-0 absolute z-2 right-1 bottom-1 text-black-500 text-caption") {{ property.benchmark }}
         div(class="col-span-2 h-9.5 flex items-center gap-x-1")
-          svg-icon(iconName="keyboard_arrow_right" size="24" class="text-black-400")
-          span(v-if="property.saving != null" class="whitespace-nowrap text-caption leading-1.6") {{ property.saving }}&nbsp
-            i18n-t(:keypath="property.saveUnit")
-              template(#newline)
-                br
-          hr(v-else class="w-4 border-black-500")
+          //- svg-icon(iconName="keyboard_arrow_right" size="24" class="text-black-400")
+          //- span(v-if="property.saving != null" class="whitespace-nowrap text-caption leading-1.6") {{ property.saving }}&nbsp
+          //-   i18n-t(:keypath="property.saveUnit")
+          //-     template(#newline)
+          //-       br
+          hr(class="w-4 border-black-500")
   div(v-if="showLogo || showMethodology || canSendFeedback" class="flex items-center gap-x-4")
     img(v-if="showLogo" src="@/assets/images/m2f_logo.png" class="w-16 h-4.5")
     div(class="flex items-center gap-x-1.5 text-black-600 cursor-pointer" @click="openModalIndicatorMethodology")
