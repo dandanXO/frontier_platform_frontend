@@ -16,6 +16,7 @@ modal-behavior(
 <script setup>
 import { ref } from 'vue'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
   email: {
@@ -24,9 +25,15 @@ const props = defineProps({
   }
 })
 
+const { t } = useI18n()
 const store = useStore()
 const verifyCode = ref('')
-const sendForgotPasswordEmail = () => store.dispatch('user/sendForgotPasswordEmail', { email: props.email })
+
+const sendForgotPasswordEmail = async () => {
+  await store.dispatch('user/sendForgotPasswordEmail', { email: props.email })
+  store.commit('helper/PUSH_message', t('AA0088'))
+}
+
 const verifyForgotPasswordCode = async () => {
   const verifyToken = await store.dispatch('user/verifyForgotPasswordCode', { verifyCode: verifyCode.value })
   store.dispatch('helper/openModalBehavior', {
