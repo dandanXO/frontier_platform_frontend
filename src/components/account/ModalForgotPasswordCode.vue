@@ -6,11 +6,14 @@ modal-behavior(
   @click:primary="verifyForgotPasswordCode"
   @click:secondary="sendForgotPasswordEmail"
 )
-  div(class="flex flex-col items-center")
+  div(class="w-80 flex flex-col items-center")
     svg-icon(iconName="send-mail" size="68" class="mb-4")
     p(class="text-h6 text-primary font-bold mb-4") {{ $t("AA0047") }}
-    p(class="max-w-58 text-body2 text-primary text-center leading-1.6 mb-4") {{ $t("AA0048", { email }) }}
-    input-text(v-model:textValue="verifyCode" class="w-72" size="lg" :placeholder="$t('AA0076')")
+    i18n-t(keypath="AA0048" tag="div" class="text-body2 text-primary text-center leading-1.6 mb-4")
+      template(#email)
+        br
+        div(class="font-bold line-clamp-1") {{ email }}
+    input-text(v-model:textValue="verifyCode" class="w-full pb-8" size="lg" :placeholder="$t('AA0076')")
 </template>
 
 <script setup>

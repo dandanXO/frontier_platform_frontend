@@ -5,12 +5,12 @@ modal-behavior(
   :primaryButtonDisabled="!availableToChangePassword"
   @click:primary="changeHandler"
 )
-  div(class="flex flex-col items-center")
-    span(class="text-body2 text-primary mb-3") {{ email }}
-    span(class="text-body2 text-black-600 mb-8") {{ $t("AA0053") }}
-    form(class="w-full pb-5.5")
+  div(class="w-80 flex flex-col items-center")
+    div(class="h-10 w-full text-caption text-black-800 font-bold bg-black-50 mb-2 flex items-center justify-center") {{ email }}
+    div(class="text-caption text-primary mb-4") {{ $t("AA0053") }}
+    form(class="w-full pb-4")
       input-password(v-model:textValue="password" :placeholder="$t('AA0055')")
-      password-validator(v-model:isValid="isPasswordValid" :password="password" class="mt-1 mb-7")
+      password-validator(v-model:isValid="isPasswordValid" :password="password" class="mt-1 mb-4")
       input-password(v-model:textValue="confirmPassword" :placeholder="$t('AA0056')" :customErrorMsg="errorMsg")
 </template>
 
