@@ -3,7 +3,7 @@ modal-behavior(
   :header="isUploading ? $t('RR0162') : isFinish ? $t('DD0107') : $t('DD0094')"
   :primaryBtnText="isUploading ? '' : isFinish ? $t('UU0087') : $t('UU0022')"
   :secondaryBtnText="$t('UU0002')"
-  :primaryBtnDisabled="disabledUpload"
+  :primaryBtnDisabled="disabledUpload || isLoading"
   @click:primary="isFinish ? confirmAndViewProgress() : startUpload()"
   @click:secondary="cancelUpload()"
 )
@@ -59,6 +59,8 @@ const errorCode = ref('')
 const { goToProgress } = useNavigation()
 const isUploading = ref(false)
 const isFinish = ref(false)
+const isLoading = ref(false)
+
 const materialImageList = reactive([])
 const uploadedFiles = reactive([])
 const readyToUploadFile = computed(() => materialImageList.filter(image => !image.isRemoved))
@@ -104,6 +106,7 @@ const startUpload = () => {
 
       xhr.addEventListener('loadend', () => {
         if (!image.isRemoved) {
+          console.log(new Date().getTime(),`${image.file.name} was upload to S3 successfully!`)
           uploadedFiles.push({ tempUploadId, fileName: image.file.name })
         }
         resolve()
@@ -122,12 +125,14 @@ const startUpload = () => {
 }
 
 const confirmAndViewProgress = async () => {
+  isLoading.value = true
   await store.dispatch('assets/smartUpload', { fileList: uploadedFiles })
   store.dispatch('helper/closeModalBehavior')
   goToProgress()
 }
 
 const cancelUpload = () => {
+  console.log(new Date().getTime() ,'Cancel upload!')
   materialImageList.forEach(image => image.isRemoved = true)
   store.dispatch('helper/closeModalBehavior')
 }
