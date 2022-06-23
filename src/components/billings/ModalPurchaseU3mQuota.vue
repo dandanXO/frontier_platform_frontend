@@ -29,83 +29,63 @@ modal-behavior(
       p(class="text-body1 font-bold text-primary text-right pt-3 mt-7.5 border-t border-black-400") {{ `${$t('OO0034')}: ${$t('RR0044')} $${totalPrice}` }}
 </template>
 
-<script>
+<script setup>
 import { ref, computed } from '@vue/reactivity'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import usePlan from '@/composables/usePlan.js'
 
-export default {
-  name: 'ModalPurchaseU3mQuota',
-  setup() {
-    const store = useStore()
-    const { t } = useI18n()
-    const { openModalPaymentFail } = usePlan()
+const store = useStore()
+const { t } = useI18n()
+const { openModalPaymentFail } = usePlan()
 
-    const plan = computed(() => store.getters['polling/plan'])
-    const planName = computed(() => store.getters['polling/planName'])
-    const pricing = computed(() => {
-      return store.getters['polling/planType'].BASIC ? store.getters['organization/pricing'].basic : store.getters['organization/pricing'].pro
-    })
-    const setQty = ref(0)
-    const previewAmount = computed(() => setQty.value * pricing.value.u3mUnit)
-    const totalPrice = computed(() => setQty.value * pricing.value.u3mPrice)
+const plan = computed(() => store.getters['polling/plan'])
+const planName = computed(() => store.getters['polling/planName'])
+const pricing = computed(() => {
+  return store.getters['polling/planType'].BASIC ? store.getters['organization/pricing'].basic : store.getters['organization/pricing'].pro
+})
+const setQty = ref(0)
+const previewAmount = computed(() => setQty.value * pricing.value.u3mUnit)
+const totalPrice = computed(() => setQty.value * pricing.value.u3mPrice)
 
-    const add = () => {
-      setQty.value++
-    }
-
-    const reduce = () => {
-      setQty.value > 0 && setQty.value--
-    }
-
-    const openModalCheckoutList = () => {
-      store.dispatch('helper/openModalBehavior', {
-        component: 'modal-checkout-list',
-        properties: {
-          checkoutItemList: [
-            {
-              title: t('OO0036', { number: previewAmount.value }),
-              price: `$${totalPrice.value}`
-            }
-          ],
-          totalPrice: `$${totalPrice.value}`,
-          payHandler: async () => {
-            store.dispatch('helper/openModalLoading')
-            const { success } = await store.dispatch('organization/purchaseU3m', { setQty: setQty.value })
-            store.dispatch('helper/closeModalLoading')
-
-            if (success) {
-              store.dispatch('helper/openModal', {
-                component: 'modal-payment-success',
-                properties: {
-                  title: t('OO0039'),
-                  content: t('OO0040'),
-                  buttonText: t('UU0026')
-                }
-              })
-            } else {
-              openModalPaymentFail()
-            }
-          }
-        }
-      })
-    }
-
-    const closeModal = () => store.dispatch('helper/closeModal')
-
-    return {
-      plan,
-      planName,
-      pricing,
-      add,
-      reduce,
-      previewAmount,
-      totalPrice,
-      setQty,
-      closeModal,
-      openModalCheckoutList
-    }
-  }
+const add = () => {
+  setQty.value++
 }
+
+const reduce = () => {
+  setQty.value > 0 && setQty.value--
+}
+
+const openModalCheckoutList = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-checkout-list',
+    properties: {
+      checkoutItemList: [
+        {
+          title: t('OO0036', { number: previewAmount.value }),
+          price: `$${totalPrice.value}`
+        }
+      ],
+      totalPrice: `$${totalPrice.value}`,
+      payHandler: async () => {
+        store.dispatch('helper/openModalLoading')
+        const { success } = await store.dispatch('organization/purchaseU3m', { setQty: setQty.value })
+        store.dispatch('helper/closeModalLoading')
+
+        if (success) {
+          store.dispatch('helper/openModalConfirm', {
+            type: 2,
+            header: t('OO0039'),
+            contentText: t('OO0040'),
+            primaryBtnText: t('UU0026')
+          })
+        } else {
+          openModalPaymentFail()
+        }
+      }
+    }
+  })
+}
+
+const closeModal = () => store.dispatch('helper/closeModal')
 </script>

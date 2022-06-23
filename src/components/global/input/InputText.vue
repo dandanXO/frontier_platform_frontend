@@ -15,7 +15,7 @@ input[type="date"] {
 input-container(:label="label" :required="required")
   div(class="px-4 border rounded flex items-center" :class="[classBorder, { 'bg-black-200': disabled }, size === 'lg' ? 'h-11' : 'h-9']")
     slot(name="prependItem")
-    div(v-if="prependIcon !== '' && isEmpty" class="pr-1")
+    div(v-if="prependIcon !== ''" class="pr-1")
       slot(name="prependIcon")
         svg-icon(
           size="20"

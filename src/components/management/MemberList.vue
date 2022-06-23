@@ -125,7 +125,7 @@ export default {
       store.dispatch('helper/openModalConfirm', {
         type: 1,
         header: t('BB0058'),
-        content: t('BB0062', { name: member.displayName }),
+        contentText: t('BB0062', { name: member.displayName }),
         primaryBtnText: t('UU0001'),
         primaryBtnHandler: async () => {
           routeLocation.value === 'org'
@@ -140,7 +140,7 @@ export default {
       store.dispatch('helper/openModalConfirm', {
         type: 1,
         header: t('BB0057'),
-        content: t('BB0061'),
+        contentText: t('BB0061'),
         primaryBtnText: t('UU0001'),
         primaryBtnHandler: async () => {
           routeLocation.value === 'org'

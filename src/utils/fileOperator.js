@@ -171,7 +171,7 @@ class FileOperator {
         store.dispatch('helper/pushModalConfirm', {
           type: 3,
           header: t('RR0143'),
-          content: t('RR0144'),
+          contentText: t('RR0144'),
           primaryBtnText: t('UU0031')
         })
         break
@@ -179,7 +179,7 @@ class FileOperator {
         store.dispatch('helper/pushModalConfirm', {
           type: 3,
           header: t('RR0143'),
-          content: t('RR0145', { size: this.fileSizeMaxLimit }),
+          contentText: t('RR0145', { size: this.fileSizeMaxLimit }),
           primaryBtnText: t('UU0031')
         })
         break
@@ -187,7 +187,7 @@ class FileOperator {
         store.dispatch('helper/pushModalConfirm', {
           type: 3,
           header: t('RR0143'),
-          content: t('WW0018'),
+          contentText: t('WW0018'),
           primaryBtnText: t('UU0031')
         })
         break

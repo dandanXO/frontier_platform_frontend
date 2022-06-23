@@ -5,10 +5,12 @@ div(class="fixed inset-0 z-modal-confirm  w-screen h-screen bg-black-900/30 flex
       svg-icon(:iconName="getIconName" :class="[getIconColor]" size="22")
       p(class="text-body1 font-bold pl-3") {{ header }}
     overlay-scrollbar-container(class="max-h-92.5 flex-grow pl-8.5")
-      p(class="text-body2 leading-1.6" v-html="innerContent")
+      p(v-if="!!contentText" class="text-body2 leading-1.6" v-html="contentText")
+      component(v-else :is="contentComponent")
     div(class="h-11.5 pt-3 flex justify-between")
-      div(class="flex items-center text-caption leading-1.6")
-        p(v-html="innerNote")
+      div
+        p(v-if="!!noteText" class="flex items-center text-caption leading-1.6" v-html="noteText")
+        component(v-else :is="noteComponent")
       div(class="grid grid-flow-col gap-x-2.5")
         btn(v-if="textBtnText !== ''" size="sm" type="text" @click="textHandler") {{ textBtnText }}
         btn(v-if="secondaryBtnText !== ''" size="sm" type="secondary" @click="secondaryHandler") {{ secondaryBtnText }}
@@ -33,21 +35,17 @@ const props = defineProps({
     default: MODAL_CONFIRM_TYPE.SUCCESS,
     validator: (v) => Object.keys(MODAL_CONFIRM_TYPE).map(key => MODAL_CONFIRM_TYPE[key]).includes(v)
   },
-  content: {
-    type: String,
-    default: ''
+  contentText: {
+    type: String
   },
-  contentReplaceValue: {
-    type: Array,
-    default: () => []
+  contentComponent: {
+    type: Object
   },
-  note: {
-    type: String,
-    default: ''
+  noteText: {
+    type: String
   },
-  noteReplaceValue: {
-    type: Array,
-    default: () => []
+  noteComponent: {
+    type: Object,
   },
   primaryBtnText: {
     type: String,
@@ -114,28 +112,6 @@ const getIconColor = computed(() => {
   }
   return map[props.type]
 })
-
-const makeLinkInterpolation = (str, replaceValueList) => {
-  const re = new RegExp(/\{\d+\}/, 'g')
-  const matches = [...str.matchAll(re)]
-  let tempStr = str
-
-  for (const match of matches) {
-    const targetIndex = Number(match[0].slice(1, match[0].length - 1))
-    const { text, url } = replaceValueList[targetIndex]
-    const html = `<a href="${parsePath(url)}" class="text-assist-blue">${text}</a>`
-    tempStr = tempStr.replace(match[0], html)
-  }
-  return tempStr
-}
-
-const innerContent = props.contentReplaceValue.length > 0
-  ? makeLinkInterpolation(props.content, props.contentReplaceValue)
-  : props.content
-
-const innerNote = props.noteReplaceValue.length > 0
-  ? makeLinkInterpolation(props.note, props.noteReplaceValue)
-  : props.note
 
 const closeModalConfirm = () => store.dispatch('helper/closeModalConfirm')
 

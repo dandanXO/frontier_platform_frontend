@@ -77,7 +77,7 @@ const handleRemove = (attachment) => {
   store.dispatch('helper/openModalConfirm', {
     type: 0,
     header: t('DD0068'),
-    content: t('DD0069'),
+    contentText: t('DD0069'),
     primaryBtnText: t('UU0001'),
     primaryBtnHandler: async () => {
       if (isEditMode.value) {

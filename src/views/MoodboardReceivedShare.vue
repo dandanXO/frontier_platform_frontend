@@ -69,7 +69,7 @@ const saveReceivedShare = async () => {
     store.dispatch('helper/openModalConfirm', {
       type: 3,
       header: t('RR0214'),
-      content: t('QQ0084'),
+      contentText: t('QQ0084'),
       primaryBtnText: t('UU0031'),
       secondaryBtnText: t('UU0106'),
       secondaryBtnHandler: () => {
@@ -89,7 +89,7 @@ const saveReceivedShare = async () => {
     store.dispatch('helper/openModalConfirm', {
       type: 3,
       header: t('GG0010'),
-      content: t('GG0033'),
+      contentText: t('GG0033'),
       primaryBtnText: t('UU0072'),
       primaryBtnHandler: goToLobby,
       secondaryBtnText: t('UU0002')

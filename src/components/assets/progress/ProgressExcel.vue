@@ -293,7 +293,7 @@ const handleAction = async (type, excelProgressId) => {
     store.dispatch('helper/pushModalConfirm', {
       type: 1,
       header: t('PP0035'),
-      content: t('PP0036'),
+      contentText: t('PP0036'),
       primaryBtnText: t('UU0100'),
       secondaryBtnText: t('UU0098'),
       closeAfterSecondaryBtnHandler: false,

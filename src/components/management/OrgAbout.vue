@@ -65,7 +65,7 @@ div(class="pt-16 xl:pt-17.5")
       btn(size="md" class="justify-self-end" :disabled="!availableToUpdateOrg" @click="updateOrg") {{ $t("UU0018") }}
 </template>
 
-<script>
+<script setup>
 import { computed, reactive, toRaw, watch, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
@@ -75,134 +75,109 @@ import { useRouter } from 'vue-router'
 import usePlan from '@/composables/usePlan.js'
 import { FUNC_ID } from '@/utils/constants.js'
 
-export default {
-  name: 'OrgAbout',
-  components: {
-    InputLabelColor
-  },
-  setup() {
-    const store = useStore()
-    const { t } = useI18n()
-    const router = useRouter()
-    const { openModalPaymentFail } = usePlan()
+const store = useStore()
+const { t } = useI18n()
+const router = useRouter()
+const { openModalPaymentFail } = usePlan()
 
-    const organization = computed(() => store.getters['organization/organization'])
-    const planType = computed(() => store.getters['polling/planType'])
-    const logo = computed(() => store.getters['organization/orgLogo'])
-    const { orgName, labelColor, orgCategoryId, address, countryCode, fax, faxCountryCode, phone, phoneCountryCode } = organization.value
-    const countryList = computed(() => store.getters['code/countryList'])
-    const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
-    const orgFormData = reactive({ orgName, labelColor, orgCategoryId, address, countryCode, fax, faxCountryCode, phone, phoneCountryCode })
-    const isOrgNameExist = ref(false)
-    const availableToUpdateOrg = computed(() => orgFormData.orgName !== '' && !isOrgNameExist.value)
+const organization = computed(() => store.getters['organization/organization'])
+const planType = computed(() => store.getters['polling/planType'])
+const logo = computed(() => store.getters['organization/orgLogo'])
+const { orgName, labelColor, orgCategoryId, address, countryCode, fax, faxCountryCode, phone, phoneCountryCode } = organization.value
+const countryList = computed(() => store.getters['code/countryList'])
+const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
+const orgFormData = reactive({ orgName, labelColor, orgCategoryId, address, countryCode, fax, faxCountryCode, phone, phoneCountryCode })
+const isOrgNameExist = ref(false)
+const availableToUpdateOrg = computed(() => orgFormData.orgName !== '' && !isOrgNameExist.value)
 
-    const openModalUploadLogo = () => {
-      store.dispatch('helper/openModalBehavior', {
-        component: 'modal-upload-logo'
-      })
-    }
+const openModalUploadLogo = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-upload-logo'
+  })
+}
 
-    const openModalTypeTextToConfirm = () => {
-      store.dispatch('helper/openModalBehavior', {
-        component: 'modal-type-text-to-confirm',
-        properties: {
-          title: t('BB0028'),
-          keypath: 'BB0064',
-          slotName: 'orgName',
-          slotValue: organization.value.orgName,
-          errorMsg: t('WW0015'),
-          confirmHandler: () => {
-            store.dispatch('helper/openModalConfirm', {
-              type: 1,
-              header: t('BB0029'),
-              content: t('BB0030'),
-              primaryBtnText: t('UU0001'),
-              afterPrimaryBtnHandler: async () => {
-                const deleteOrg = async () => {
-                  store.dispatch('helper/openModalLoading')
-                  const { success } = await store.dispatch('organization/deleteOrg')
-                  store.dispatch('helper/closeModalLoading')
+const openModalTypeTextToConfirm = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-type-text-to-confirm',
+    properties: {
+      title: t('BB0028'),
+      keypath: 'BB0064',
+      slotName: 'orgName',
+      slotValue: organization.value.orgName,
+      errorMsg: t('WW0015'),
+      confirmHandler: () => {
+        store.dispatch('helper/openModalConfirm', {
+          type: 1,
+          header: t('BB0029'),
+          contentText: t('BB0030'),
+          primaryBtnText: t('UU0001'),
+          afterPrimaryBtnHandler: async () => {
+            const deleteOrg = async () => {
+              store.dispatch('helper/openModalLoading')
+              const { success } = await store.dispatch('organization/deleteOrg')
+              store.dispatch('helper/closeModalLoading')
 
-                  if (success) {
-                    await router.replace('/')
-                  } else {
-                    openModalPaymentFail()
-                  }
+              if (success) {
+                await router.replace('/')
+              } else {
+                openModalPaymentFail()
+              }
 
-                  return success
+              return success
+            }
+
+            const {
+              result: { totalPrice, checkoutItemList }
+            } = await store.dispatch('organization/getUnbilledInfo')
+
+            if (checkoutItemList.length === 0) {
+              ;(await deleteOrg()) && store.commit('helper/PUSH_message', t('OO0101'))
+              return
+            }
+
+            store.dispatch('helper/openModalBehavior', {
+              component: 'modal-checkout-list',
+              properties: {
+                checkoutItemList,
+                totalPrice,
+                payHandler: async () => {
+                  ;(await deleteOrg()) &&
+                    store.dispatch('helper/openModalConfirm', {
+                      type: 2,
+                      header: t('OO0039'),
+                      contentText: t('OO0101'),
+                      primaryBtnText: t('UU0031')
+                    })
                 }
-
-                const {
-                  result: { totalPrice, checkoutItemList }
-                } = await store.dispatch('organization/getUnbilledInfo')
-
-                if (checkoutItemList.length === 0) {
-                  ;(await deleteOrg()) && store.commit('helper/PUSH_message', t('OO0101'))
-                  return
-                }
-
-                store.dispatch('helper/openModalBehavior', {
-                  component: 'modal-checkout-list',
-                  properties: {
-                    checkoutItemList,
-                    totalPrice,
-                    payHandler: async () => {
-                      ;(await deleteOrg()) &&
-                        store.dispatch('helper/openModal', {
-                          component: 'modal-payment-success',
-                          properties: {
-                            title: t('OO0039'),
-                            content: t('OO0101')
-                          }
-                        })
-                    }
-                  }
-                })
-              },
-              secondaryBtnText: t('UU0002')
+              }
             })
-          }
-        }
-      })
-    }
-
-    const updateOrg = async () => {
-      if (orgFormData.orgName !== organization.value.orgName) {
-        isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: orgFormData.orgName, orgId: organization.value.orgId })
-        if (isOrgNameExist.value) {
-          return
-        }
+          },
+          secondaryBtnText: t('UU0002')
+        })
       }
-
-      await store.dispatch('organization/updateOrg', toRaw(orgFormData))
-
-      store.commit('helper/PUSH_message', t('BB0107'))
     }
+  })
+}
 
-    watch(
-      () => orgFormData.orgName,
-      () => {
-        if (isOrgNameExist.value) {
-          isOrgNameExist.value = false
-        }
-      }
-    )
-
-    return {
-      orgFormData,
-      orgCategoryList,
-      countryList,
-      updateOrg,
-      openModalUploadLogo,
-      openModalTypeTextToConfirm,
-      isOrgNameExist,
-      availableToUpdateOrg,
-      organization,
-      logo,
-      planType,
-      copyText,
-      FUNC_ID
+const updateOrg = async () => {
+  if (orgFormData.orgName !== organization.value.orgName) {
+    isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: orgFormData.orgName, orgId: organization.value.orgId })
+    if (isOrgNameExist.value) {
+      return
     }
   }
+
+  await store.dispatch('organization/updateOrg', toRaw(orgFormData))
+
+  store.commit('helper/PUSH_message', t('BB0107'))
 }
+
+watch(
+  () => orgFormData.orgName,
+  () => {
+    if (isOrgNameExist.value) {
+      isOrgNameExist.value = false
+    }
+  }
+)
 </script>

@@ -60,7 +60,7 @@ export default {
           store.dispatch('helper/openModalConfirm', {
             type: 2,
             header: t('OO0017'),
-            content: t('OO0018'),
+            contentText: t('OO0018'),
             primaryBtnText: t('UU0031')
           })
           break

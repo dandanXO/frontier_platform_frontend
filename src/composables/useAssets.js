@@ -47,7 +47,7 @@ export default function useAssets () {
         return store.dispatch('helper/openModalConfirm', {
           type: 1,
           header: t('EE0096'),
-          content: t('EE0097'),
+          contentText: t('EE0097'),
           primaryBtnText: t('UU0031')
         })
       }
@@ -104,7 +104,7 @@ export default function useAssets () {
           store.dispatch('helper/openModalConfirm', {
             type: 0,
             header: t('EE0124'),
-            content: t('EE0125'),
+            contentText: t('EE0125'),
             secondaryBtnText: t('UU0031'),
             textBtnText: t('UU0032'),
             closeAfterTextBtnHandler: false,
@@ -135,7 +135,7 @@ export default function useAssets () {
           store.dispatch('helper/openModalConfirm', {
             type: 0,
             header: t('RR0162'),
-            content: t('EE0072'),
+            contentText: t('EE0072'),
             primaryBtnText: t('UU0031')
           })
           break
@@ -190,7 +190,7 @@ export default function useAssets () {
         store.dispatch('helper/openModalConfirm', {
           type: 2,
           header: t('PP0030'),
-          content: t('PP0031'),
+          contentText: t('PP0031'),
           primaryBtnText: t('UU0031'),
           secondaryBtnText: t('UU0090'),
           secondaryBtnHandler: () => {
@@ -247,7 +247,7 @@ export default function useAssets () {
         store.dispatch('helper/openModalConfirm', {
           type: 1,
           header: t('EE0075'),
-          content: t('EE0076'),
+          contentText: t('EE0076'),
           primaryBtnText: t('UU0001'),
           primaryBtnHandler: async () => {
             store.dispatch('helper/openModalLoading')
@@ -261,7 +261,7 @@ export default function useAssets () {
         store.dispatch('helper/openModalConfirm', {
           type: 1,
           header: t('EE0111'),
-          content: t('EE0112'),
+          contentText: t('EE0112'),
           secondaryBtnText: t('UU0094')
         })
       } else if (isOnExportingExcel) {
@@ -269,7 +269,7 @@ export default function useAssets () {
           store.dispatch('helper/openModalConfirm', {
             type: 1,
             header: t('EE0111'),
-            content: t('EE0112'),
+            contentText: t('EE0112'),
             primaryBtnText: t('UU0091'),
             secondaryBtnText: t('UU0098'),
             closeAfterSecondaryBtnHandler: false,
@@ -298,7 +298,7 @@ export default function useAssets () {
           store.dispatch('helper/openModalConfirm', {
             type: 1,
             header: t('EE0113'),
-            content: t('EE0114', { materialNo: materialIdList[0] }),
+            contentText: t('EE0114', { materialNo: materialIdList[0] }),
             primaryBtnText: t('UU0091'),
             secondaryBtnText: t('UU0002'),
             primaryBtnHandler: async () => {

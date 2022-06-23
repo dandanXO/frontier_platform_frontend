@@ -66,7 +66,7 @@ export default function useWorkspace () {
               store.dispatch('helper/pushModalConfirm', {
                 type: 1,
                 header: t('FF0040'),
-                content: t('FF0048'),
+                contentText: t('FF0048'),
                 primaryBtnText: t('UU0001'),
                 primaryBtnHandler: resolve.bind(undefined, 'confirm'),
                 secondaryBtnText: t('UU0002'),
@@ -111,7 +111,7 @@ export default function useWorkspace () {
               store.dispatch('helper/pushModalConfirm', {
                 type: 1,
                 header: t('FF0040'),
-                content: t('FF0041'),
+                contentText: t('FF0041'),
                 primaryBtnText: t('UU0001'),
                 primaryBtnHandler: resolve.bind(undefined, 'confirm'),
                 secondaryBtnText: t('UU0002'),
@@ -136,12 +136,12 @@ export default function useWorkspace () {
     }
   }
 
-  const deleteNodeList = async (workspaceNodeIdList, header, content) => {
+  const deleteNodeList = async (workspaceNodeIdList, header, contentText) => {
     const result = await new Promise((resolve) => {
       store.dispatch('helper/pushModalConfirm', {
         type: 1,
         header,
-        content,
+        contentText,
         primaryBtnText: t('UU0001'),
         primaryBtnHandler: resolve.bind(undefined, 'confirm'),
         secondaryBtnText: t('UU0002'),

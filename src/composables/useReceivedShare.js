@@ -40,7 +40,7 @@ export default function useReceivedShare () {
       store.dispatch('helper/openModalConfirm', {
         type: 3,
         header: t('GG0010'),
-        content: t('GG0033'),
+        contentText: t('GG0033'),
         primaryBtnText: t('UU0072'),
         primaryBtnHandler: goToLobby,
         secondaryBtnText: t('UU0002')
@@ -49,7 +49,7 @@ export default function useReceivedShare () {
       store.dispatch('helper/openModalConfirm', {
         type: 1,
         header: t('RR0214'),
-        content: t('GG0015'),
+        contentText: t('GG0015'),
         primaryBtnText: t('UU0031')
       })
     }
@@ -90,7 +90,7 @@ export default function useReceivedShare () {
       store.dispatch('helper/openModalConfirm', {
         type: 3,
         header: t('GG0017'),
-        content: t('GG0034'),
+        contentText: t('GG0034'),
         primaryBtnText: t('UU0072'),
         primaryBtnHandler: goToLobby,
         secondaryBtnText: t('UU0002')
@@ -99,7 +99,7 @@ export default function useReceivedShare () {
       store.dispatch('helper/openModalConfirm', {
         type: 1,
         header: t('GG0016'),
-        content: t('GG0020'),
+        contentText: t('GG0020'),
         primaryBtnText: t('UU0031')
       })
     }
