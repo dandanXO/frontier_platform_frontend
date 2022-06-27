@@ -29,7 +29,7 @@ div(class="w-full")
           div(class="w-15 h-15 mb-5")
             img(:src="org.logo" class="rounded-full")
           p(class="text-body1 text-primary text-center font-bold mb-1 w-50 truncate break-all leading-1.4") {{ org.orgName }}
-          p(class="text-black-650 text-caption mb-7.5") {{ `${org.memberList.length} ${$t("AA0010")}` }}
+          p(class="text-black-650 text-caption mb-7.5") {{ `${org.memberList.length} ${$t("AA0010", org.memberList.length)}` }}
           avatar-group(:avatarList="org.memberList.map(member => member.avatar)" direction="rtl")
         div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg(true)")
           div(class="grid justify-items-center gap-y-3.5")
