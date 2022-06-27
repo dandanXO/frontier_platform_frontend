@@ -98,7 +98,7 @@ const breadcrumbList = computed(() => {
       path: parsePath(`${prefixPath.value}/moodboard/${moodboard.value.moodboardId}?tab=${MOODBOARD_TAB.OFFER}`)
     },
     {
-      name: moodboardOfferNodeCollection.value.locationList[0].name,
+      name: t('QQ0033'),
       path: parsePath(`${prefixPath.value}/moodboard/${moodboard.value.moodboardId}/picked-list`)
     }
   ]
