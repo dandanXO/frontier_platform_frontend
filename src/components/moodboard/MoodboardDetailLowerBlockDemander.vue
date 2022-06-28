@@ -78,7 +78,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
             div(v-if="isLoading" class="flex-grow flex items-center justify-center")
               svg-icon(iconName="loading" size="92" class="text-brand")
             mood-board-comment(v-else :moodboardId="moodboard.moodboardId" :offerId="Number(currentOfferId)")
-multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedValue="selectedNodeList")
+multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")
 </template>
 
 <script setup>
