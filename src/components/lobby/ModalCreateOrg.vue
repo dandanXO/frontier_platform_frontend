@@ -5,9 +5,8 @@ modal-behavior(
   :primaryBtnDisabled="!availableToCreateOrg"
   @click:primary="openModalCreateMailOrg"
 )
-  div(class="w-183.5")
-    p(class="text-caption text-black-600 text-right mb-1") *{{ $t("RR0163") }}
-    form(class="grid grid-cols-2 grid-rows-3 gap-7.5 pb-4")
+  form(class="w-183.5")
+    div(class="grid grid-cols-2 grid-rows-2 gap-x-7.5 gap-y-6")
       input-text(
         v-model:textValue="formData.orgName"
         class="relative"
@@ -16,13 +15,6 @@ modal-behavior(
         :placeholder="$t('AA0039')"
         :customErrorMsg="isOrgNameExist ? $t('WW0001') : ''"
         @blur="checkOrgNameExist"
-      )
-      input-radio-group(
-        v-model:inputValue="formData.orgCategoryId"
-        :label="$t('AA0069')"
-        :optionList="orgCategoryList"
-        keyOptionValue="orgCategoryId"
-        required
       )
       input-select(
         v-model:selectValue="formData.countryCode"
@@ -34,7 +26,19 @@ modal-behavior(
         searchBox
         :placeholder="$t('AA0037')"
         required
+        @select="handleCountryCodeSelected"
       )
+      input-radio-group(
+        v-model:inputValue="formData.orgCategoryId"
+        :label="$t('AA0069')"
+        :optionList="orgCategoryList"
+        keyOptionValue="orgCategoryId"
+        required
+      )
+    div(class="flex items-center mb-5")
+      div(class="text-caption font-bold text-black-500 mr-4.5") {{$t("RR0177")}}
+      div(class="border-t border-black-200 w-full")
+    div(class="grid grid-cols-2 grid-rows-2 gap-x-7.5 gap-y-4")
       input-calling-code(
         v-model:textValue="formData.phone"
         v-model:countryCode="formData.phoneCountryCode"
@@ -53,56 +57,44 @@ modal-behavior(
         :placeholder="$t('AA0074')")
 </template>
 
-<script>
+<script setup>
 import { useStore } from 'vuex'
 import { computed, reactive, ref, watch } from 'vue'
-import InputCallingCode from '@/components/InputCallingCode.vue'
 
-export default {
-  name: 'ModalCreateOrg',
-  components: {
-    InputCallingCode
-  },
-  setup () {
-    const store = useStore()
-    const isOrgNameExist = ref(false)
-    const formData = reactive({ ...store.getters['organization/createForm'] })
-    const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
-    const countryList = computed(() => store.getters['code/countryList'])
-    const availableToCreateOrg = computed(() => formData.countryCode !== '' && formData.orgName !== '' && !isOrgNameExist.value)
+const store = useStore()
+const isOrgNameExist = ref(false)
+const formData = reactive({ ...store.getters['organization/createForm'] })
+const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
+const countryList = computed(() => store.getters['code/countryList'])
+const availableToCreateOrg = computed(() => formData.countryCode !== '' && formData.orgName !== '' && !isOrgNameExist.value)
 
-    watch(
-      () => formData.orgName,
-      () => {
-        if (isOrgNameExist.value) {
-          isOrgNameExist.value = false
-        }
-      }
-    )
-    const openModalCreateMailOrg = async () => {
-      await checkOrgNameExist()
-
-      if (isOrgNameExist.value) { return }
-
-      store.commit('organization/SET_createForm', formData)
-      store.dispatch('helper/openModalBehavior', {
-        component: 'modal-create-mail-org'
-      })
-    }
-
-    const checkOrgNameExist = async () => {
-      isOrgNameExist.value = formData.orgName !== '' && await store.dispatch('organization/checkOrgNameExist', { orgName: formData.orgName })
-    }
-
-    return {
-      orgCategoryList,
-      formData,
-      countryList,
-      availableToCreateOrg,
-      checkOrgNameExist,
-      isOrgNameExist,
-      openModalCreateMailOrg
+watch(
+  () => formData.orgName,
+  () => {
+    if (isOrgNameExist.value) {
+      isOrgNameExist.value = false
     }
   }
+)
+const openModalCreateMailOrg = async () => {
+  await checkOrgNameExist()
+
+  if (isOrgNameExist.value) {
+    return
+  }
+
+  store.commit('organization/SET_createForm', formData)
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-create-mail-org'
+  })
+}
+
+const handleCountryCodeSelected = (option) => {
+  formData.faxCountryCode = option
+  formData.phoneCountryCode = option
+}
+
+const checkOrgNameExist = async () => {
+  isOrgNameExist.value = formData.orgName !== '' && (await store.dispatch('organization/checkOrgNameExist', { orgName: formData.orgName }))
 }
 </script>

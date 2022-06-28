@@ -3,7 +3,7 @@ modal-behavior(
   :header="isUploading ? $t('RR0162') : isFinish ? $t('DD0107') : $t('DD0094')"
   :primaryBtnText="isUploading ? '' : isFinish ? $t('UU0087') : $t('UU0022')"
   :secondaryBtnText="$t('UU0002')"
-  :primaryBtnDisabled="disabledUpload"
+  :primaryBtnDisabled="disabledUpload || isLoading"
   @click:primary="isFinish ? confirmAndViewProgress() : startUpload()"
   @click:secondary="cancelUpload()"
 )
@@ -15,9 +15,9 @@ modal-behavior(
   div(class="w-94")
     template(v-if="readyToUploadFile.length === 0")
       div(class="text-caption leading-1.6 grid grid-cols-2 grid-rows-3 pr-3 mb-3")
-        div(class="text-black-800") {{ $t("DD0098") }}
-        div(class="text-primary font-bold") {{ $t("DD0099") }}
-        div(class="text-black-800") {{ $t("DD0100") }}
+        div(class="text-black-800") {{ $t("RR0243") }}
+        div(class="text-primary font-bold") {{acceptType.join(', ').toUpperCase()}}
+        div(class="text-black-800") {{ $t("RR0145") }}
         div(class="text-primary font-bold") {{ $t("DD0101") }}
         div(class="text-black-800") {{ $t("DD0102") }}
         div(class="text-primary font-bold") {{ $t("DD0103") }}
@@ -59,13 +59,16 @@ const errorCode = ref('')
 const { goToProgress } = useNavigation()
 const isUploading = ref(false)
 const isFinish = ref(false)
+const isLoading = ref(false)
+
 const materialImageList = reactive([])
 const uploadedFiles = reactive([])
 const readyToUploadFile = computed(() => materialImageList.filter(image => !image.isRemoved))
 const disabledUpload = computed(() => readyToUploadFile.value.length === 0)
 
 const fileSizeMaxLimit = 20
-const fileOperator = new FileOperator(['jpg', 'jpeg', 'png'], fileSizeMaxLimit, true)
+const acceptType = ['jpg', 'jpeg', 'png']
+const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit, true)
 
 const chooseFile = () => {
   fileOperator.upload(true)
@@ -103,6 +106,7 @@ const startUpload = () => {
 
       xhr.addEventListener('loadend', () => {
         if (!image.isRemoved) {
+          console.log(new Date().getTime(),`${image.file.name} was upload to S3 successfully!`)
           uploadedFiles.push({ tempUploadId, fileName: image.file.name })
         }
         resolve()
@@ -121,12 +125,14 @@ const startUpload = () => {
 }
 
 const confirmAndViewProgress = async () => {
+  isLoading.value = true
   await store.dispatch('assets/smartUpload', { fileList: uploadedFiles })
   store.dispatch('helper/closeModalBehavior')
   goToProgress()
 }
 
 const cancelUpload = () => {
+  console.log(new Date().getTime() ,'Cancel upload!')
   materialImageList.forEach(image => image.isRemoved = true)
   store.dispatch('helper/closeModalBehavior')
 }

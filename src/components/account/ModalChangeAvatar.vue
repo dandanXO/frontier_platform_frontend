@@ -1,30 +1,29 @@
 <template lang="pug">
-div(class="w-86 h-136 border-t border-black-400 flex flex-col")
-  div(class="w-full h-full flex justify-center items-center px-11")
-    div(
-      v-if="!isUploading && !haveUploadedImage"
-      class="flex flex-col"
-      @drop.stop.prevent="imageOperator.onDrop($event)"
-      @dragover.prevent
-      @dragenter.prevent
-    )
-      btn(size="md" type="secondary" class="h-10 mb-4" @click="uploadImg") {{ $t("MM0020") }}
-      span(class="text-body2 font-bold mb-2 text-black-500") {{ $t("MM0021") }}
-      span(class="text-body2 mb-2 text-black-500") {{ $t("MM0022") }}
-      span(class="text-body2 mb-2 text-black-500") {{ $t("MM0023") }}
-      span(class="text-body2 mb-2 text-black-500") {{ $t("MM0024") }}
+modal-behavior(
+  :header="$t('MM0019')"
+  :secondaryBtnText="$t('UU0002')"
+  @click:secondary="closeModal"
+)
+  div(class="w-86 h-100 flex items-center")
+    div(v-if="!isUploading && !haveUploadedImage")
+      btn(size="md" class="mb-6" @click="uploadImg" prependIcon="upload") {{ $t("BB0035") }}
+      div(class="grid gap-0.5 text-caption leading-1.6 text-black-600")
+        div {{ $t("RR0243") }}
+          span(class="text-black-800 ml-1") {{acceptType.join(', ').toUpperCase()}}
+        div {{ $t("RR0244") }}
+          span(class="text-black-800 ml-1") 200 x 200 px
+        div {{ $t("RR0145") }}
+          span(class="text-black-800 ml-1") {{fileSizeMaxLimit}} MB
     svg-icon(
       v-else-if="isUploading"
       iconName="loading"
       size="100"
       class="justify-self-end cursor-pointer text-brand-dark"
     )
-    img(v-else class="w-50 h-50 rounded-full" :src="avatar")
-  div(class="h-25 flex justify-center items-center")
-    div(v-if="!isUploading && haveUploadedImage" class="grid grid-cols-2 gap-x-3")
-      btn(size="md" type="secondary" @click="innerRemoveHandler") {{ $t("UU0016") }}
-      btn(size="md" @click="uploadImg") {{ $t("UU0019") }}
-    btn(v-else size="md" :disabled="true") {{ $t("UU0001") }}
+    div(v-else class="w-full flex flex-col items-center")
+      img(class="w-50 h-50 rounded-full mb-9" :src="avatar")
+      btn(size="sm" @click="uploadImg" prependIcon="tune" class="mb-2.5") {{$t("UU0019")}}
+      btn(size="sm" type="text" @click="innerRemoveHandler") {{$t('UU0016')}}
 </template>
 
 <script setup>
@@ -43,15 +42,17 @@ const haveUploadedImage = computed(() => {
   return !avatar.value.includes(defaultAvatar)
 })
 
-const imageOperator = new ImageOperator(['jpeg', 'jpg', 'png'], 5, cropRectSize)
+const fileSizeMaxLimit = 5
+const acceptType = ['jpeg', 'jpg', 'png']
+const imageOperator = new ImageOperator(acceptType, fileSizeMaxLimit, cropRectSize)
 
 imageOperator.on('uploading', () => (isUploading.value = true))
 imageOperator.on('selfDefinedError', () => (isUploading.value = false))
 imageOperator.on('finish', (image) => {
-  store.dispatch('helper/replaceModal', {
+  store.dispatch('helper/replaceModalBehavior', {
     component: 'modal-crop-image',
-    header: t('MM0019'),
     properties: {
+      title: t('MM0019'),
       image,
       cropRectSize,
       afterCropHandler: async (croppedImage, originalImage) => {
@@ -74,7 +75,7 @@ const innerRemoveHandler = async () => {
   await store.dispatch('organization/orgUser/removeAvatar')
   await fetchMemberList()
   store.dispatch('helper/closeModalLoading')
-  store.dispatch('helper/closeModal')
+  closeModal()
 }
 
 const fetchMemberList = async () => {
@@ -87,5 +88,9 @@ const fetchMemberList = async () => {
     const groupId = store.getters['group/groupId']
     await store.dispatch('group/getGroup', { groupId })
   }
+}
+
+const closeModal = () => {
+  store.dispatch('helper/closeModal')
 }
 </script>

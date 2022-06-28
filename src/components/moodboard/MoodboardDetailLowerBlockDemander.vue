@@ -13,19 +13,21 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
       )
         p(class="text-body1 font-bold text-primary leading-1.6") {{ $t('RR0052') }}
         p(class="text-caption text-black-800 leading-1.6") {{ $t('RR0201', { number: moodboardOfferList.length }) }}・{{ $t('RR0068', { number: totalOfferItemCounts }) }}
-      div(class="border-t border-b border-primary-middle py-2 max-h-156 grid gap-y-2 overflow-y-scroll")
-        div(
-          v-for="offer in moodboardOfferList"
-          class="h-20 flex items-center gap-x-3 pl-3 rounded hover:bg-black-200 cursor-pointer"
-          :class="[{ 'bg-black-400': Number(currentOfferId) === offer.offerId }]"
-          @click="switchOffer(offer.offerId, offer.rootNodeId)"
-        )
-          div(class="relative")
-            img(:src="offer.logo" class="w-8 h-8 rounded-full")
-            div(v-if="offer.hasNewUpdate" class="absolute w-3 h-3 bg-brand border border-black-0 rounded-full top-0 -right-0.5")
-          div
-            p(class="text-body1 font-bold text-primary leading-1.6") {{ offer.name }}
-            p(class="text-caption text-black-800 leading-1.6") {{ $t('RR0068', { number: offer.itemCounts }) }}・{{ offer.lastUpdateTime }}
+      div(class="border-t border-b border-primary-middle py-2")
+        overlay-scrollbar-container(class="max-h-156 -mx-5 px-5")
+          div(class="grid gap-y-2")
+            div(
+              v-for="offer in moodboardOfferList"
+              class="h-20 flex items-center gap-x-3 pl-3 rounded hover:bg-black-200 cursor-pointer"
+              :class="[{ 'bg-black-400': Number(currentOfferId) === offer.offerId }]"
+              @click="switchOffer(offer.offerId, offer.rootNodeId)"
+            )
+              div(class="relative flex-shrink-0")
+                img(:src="offer.logo" class="w-8 h-8 rounded-full")
+                div(v-if="offer.hasNewUpdate" class="absolute w-3 h-3 bg-brand border border-black-0 rounded-full top-0 -right-0.5")
+              div
+                p(class="text-body1 font-bold text-primary leading-1.6 line-clamp-1") {{ offer.name }}
+                p(class="text-caption text-black-800 leading-1.6") {{ $t('RR0068', { number: offer.itemCounts }) }}・{{ offer.lastUpdateTime }}
     div(class="flex-grow bg-black-0 border-primary-middle border rounded h-full")
       div(v-if="moodboardOfferList.length === 0" class="text-center pt-30")
         h4(class="text-h4 text-primary pb-6") {{ $t('QQ0018') }}
@@ -57,13 +59,11 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
               class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start pb-2 overflow-y-auto hide-scrollbar"
               :class="[currentOfferId === 'all' ? 'h-170' : 'h-156']"
             )
-              child-node-item(
+              grid-item-node(
                 v-for="node in moodboardOfferNodeCollection.childNodeList"
-                v-model:selectedList="selectedNodeList"
+                v-model:selectedValue="selectedNodeList"
                 :node="node"
-                :properties="node.properties"
                 :isSelectable="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED"
-                :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.properties.name : node.properties.materialNo"
                 :optionList="optionNode(node)"
                 @click:option="$event.func(node)"
                 @click.stop="handleNodeClick(node)"
@@ -78,7 +78,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
             div(v-if="isLoading" class="flex-grow flex items-center justify-center")
               svg-icon(iconName="loading" size="92" class="text-brand")
             mood-board-comment(v-else :moodboardId="moodboard.moodboardId" :offerId="Number(currentOfferId)")
-multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")
+multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedValue="selectedNodeList")
 </template>
 
 <script setup>
@@ -86,7 +86,7 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { MOODBOARD_TAB, NODE_TYPE, U3M_STATUS } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
-import ChildNodeItem from '@/components/common/ChildNodeItem.vue'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'
 import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
 import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'

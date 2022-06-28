@@ -33,16 +33,13 @@ div(class="h-full")
         )
         div(v-if="index !== moodboardOfferNodeCollection.childNodeList.length - 1" class="border-b mx-7.5 my-5")
     div(v-else-if="displayMode === DISPLAY_NODE.GRID" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5")
-      child-node-item(
+      grid-item-node(
         v-for="node in moodboardOfferNodeCollection.childNodeList"
-        v-model:selectedList="selectedNodeList"
+        v-model:selectedValue="selectedNodeList"
         :node="node"
-        :properties="node.properties"
-        :displayName="node.properties.materialNo"
         :optionList="optionMaterial(node)"
         @click:option="$event.func(node)"
         @click.stop="openModalMoodboardMaterialDetail(node, true, true)"
-        isSelectable
       )
         template(#caption)
           btn-pick-tooltip(
@@ -67,7 +64,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import { MOODBOARD_TAB, DISPLAY_NODE, U3M_STATUS } from '@/utils/constants.js'
-import ChildNodeItem from '@/components/common/ChildNodeItem.vue'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
 import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
 import GridOrRow from '@/components/common/GridOrRow.vue'
@@ -101,7 +98,7 @@ const breadcrumbList = computed(() => {
       path: parsePath(`${prefixPath.value}/moodboard/${moodboard.value.moodboardId}?tab=${MOODBOARD_TAB.OFFER}`)
     },
     {
-      name: moodboardOfferNodeCollection.value.locationList[0].name,
+      name: t('QQ0033'),
       path: parsePath(`${prefixPath.value}/moodboard/${moodboard.value.moodboardId}/picked-list`)
     }
   ]

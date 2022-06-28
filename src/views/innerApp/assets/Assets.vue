@@ -41,7 +41,16 @@ div(class="w-full h-full")
           row-item(:key="item.materialId" :material="item" v-model:selectedList="selectedMaterialList" @mouseenter="onMouseEnter")
           div(v-if="index !== materialList.length - 1" class="border-b mx-7.5 my-5")
         div(v-show="displayMode === DISPLAY_NODE.GRID" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5")
-          grid-item(v-for="material in materialList" :key="material.materialId" :material="material" v-model:selectedList="selectedMaterialList")
+          grid-item-material(
+            v-for="material in materialList"
+            :material="material"
+            v-model:selectedValue="selectedMaterialList"
+            isSelectable
+            :selectValue="material"
+            :optionList="optionList(material)"
+            @click:option="$event.func(material)"
+            @click.stop="goToAssetMaterialDetail(material)"
+          )
       div(v-else class="flex flex-col justify-center items-center")
         div(class="border border-black-400 rounded-md border-dashed p-2 mt-40 cursor-pointer" @click="goToMaterialUpload")
           svg-icon(iconName="add" size="24" class="text-primary")
@@ -51,13 +60,13 @@ div(class="w-full h-full")
 <script setup>
 import SearchTable from '@/components/common/SearchTable.vue'
 import RowItem from '@/components/assets/RowItem.vue'
-import GridItem from '@/components/assets/GridItem.vue'
+import GridItemMaterial from '@/components/common/gridItem/GridItemMaterial.vue'
 import GridOrRow from '@/components/common/GridOrRow.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
-import { SORT_BY, SEARCH_TYPE, DISPLAY_NODE } from '@/utils/constants.js'
+import { SORT_BY, SEARCH_TYPE, DISPLAY_NODE, U3M_STATUS } from '@/utils/constants.js'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useRoute, useRouter } from 'vue-router'
@@ -66,9 +75,7 @@ import { useRoute, useRouter } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 const store = useStore()
-const { goToMaterialUpload } = useNavigation()
-const currentItemSize = ref(379)
-const { printCard, downloadU3M, cloneTo, addToWorkspace, exportExcel, printQRCode, mergeCard, deleteMaterial } = useAssets()
+const { goToMaterialUpload, goToAssetMaterialDetail } = useNavigation()
 
 const selectedMaterialList = ref([])
 const displayMode = ref(DISPLAY_NODE.LIST)
@@ -84,6 +91,46 @@ const optionSort = computed(() => ({
     SORT_BY.RELEVANCE
   ]
 }))
+
+const {
+  editMaterial,
+  create3DMaterial,
+  printCard,
+  downloadU3M,
+  cloneTo,
+  addToWorkspace,
+  exportExcel,
+  printQRCode,
+  mergeCard,
+  deleteMaterial
+} = useAssets()
+
+const optionList = (material) => {
+  return [
+    [
+      editMaterial
+    ],
+    [
+      cloneTo,
+      addToWorkspace
+    ],
+    [
+      create3DMaterial,
+      {
+        ...downloadU3M,
+        disabled: material.u3m.status !== U3M_STATUS.COMPLETED
+      },
+      exportExcel
+    ],
+    [
+      printQRCode,
+      printCard
+    ],
+    [
+      deleteMaterial
+    ]
+  ]
+}
 
 const optionMultiSelect = computed(() => [
   cloneTo,
@@ -117,6 +164,7 @@ const onMouseEnter = (e) => {
   e.target.parentElement.dataset.lastHover = true
 }
 
+const currentItemSize = ref(379)
 const resize = () => {
   /**
    * @Todo figure out what happen in Safari

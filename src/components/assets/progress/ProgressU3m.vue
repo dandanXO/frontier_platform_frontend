@@ -62,7 +62,7 @@ general-table(
         p {{ $t("PP0013") }}
     div(v-if="prop === 'createBy'" class="flex items-center")
       img(:src="item.createAvatar" class="w-6 h-6 rounded-full")
-      p(class="text-body2 text-primary ml-2 line-clamp-2") {{ item.createUser }}
+      p(class="text-body2 text-primary ml-2 line-clamp-1") {{ item.createUser }}
     div(v-if="prop === 'action'" class="flex justify-end items-center")
       template(v-if="item.isMaterialDeleted && item.status === UPLOAD_PROGRESS.COMPLETE")
         btn(type="secondary" size="sm" class="mr-2.5" disabled) {{ $t("UU0006") }}
@@ -171,7 +171,7 @@ const headers = [
     prop: 'action',
     label: '',
     colSpan: 'col-span-2'
-  },
+  }
 ]
 
 const clearDate = () => {
@@ -226,7 +226,7 @@ const openModalViewer = async (materialId) => {
 
 const openModalDownloadU3M = async (materialId) => {
   await store.dispatch('assets/getMaterial', { materialId })
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-u3m-select-file-format',
     properties: { materialList: [material.value] }
   })
@@ -234,9 +234,8 @@ const openModalDownloadU3M = async (materialId) => {
 
 const openModalCreate3DMaterial = async (materialId) => {
   await store.dispatch('assets/getMaterial', { materialId })
-  store.dispatch('helper/openModal', {
-    component: 'modal-u3m-preview',
-    header: t('EE0067')
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-u3m-preview'
   })
 }
 

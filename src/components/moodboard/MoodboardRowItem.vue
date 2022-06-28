@@ -6,7 +6,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-blac
       svg-icon(:iconName="statusIconName" size="24" class="text-primary")
     div(class="w-full relative aspect-square" @mouseenter="isHover = true" @mouseleave="isHover = false")
       div(class="w-full h-full rounded-md overflow-hidden bg-cover" :class="{ 'border': neverScanBefore }")
-        img(:src="currentCoverImg" class="w-full h-full")
+        img(v-defaultImg :src="properties.coverImg" class="w-full h-full")
       div(v-if="isHover" class="absolute z-9 inset-0 w-full h-full rounded bg-black-900/70" @click.stop="openModalMoodboardMaterialDetail(node, true, true)")
       div(v-if="isHover || haveSelectedMoreThanOne" class="absolute z-10 inset-0 w-full h-12")
         div(class="bg-linear w-full h-full rounded-t-md")
@@ -34,7 +34,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-blac
       div(class="grid gap-3")
         p(v-for="(item, key) in materialBasicInfo" class="text-body2 line-clamp-1 !break-all" :class="{ 'text-black-700': key === 'frontierNo' }") {{ item.name }}: {{ item.value }}
     div(class="flex flex-col gap-y-7 min-w-75 max-w-115")
-      div
+      div(v-if="properties.isPublicInventory")
         div(class="pb-2 border-b-2 mb-3 text-body1 font-bold text-primary") {{ $t('RR0135') }}
         p(class="text-body2 line-clamp-1 !break-all") {{ materialInfo.totalInventoryQty.name }}: {{ materialInfo.totalInventoryQty.value }}
       div
@@ -110,7 +110,7 @@ const {
   openModalMoodboardMaterialDetail,
   togglePick
 } = useMoodboardNode(moodboard, moodboardOfferNodeCollection)
-const { materialBasicInfo, materialInfo, carbonEmissionInfo, currentCoverImg, neverScanBefore, statusIconName } = useMaterial(props.properties)
+const { materialBasicInfo, materialInfo, carbonEmissionInfo, neverScanBefore, statusIconName } = useMaterial(props.properties)
 
 const innerSelectedList = computed({
   get: () => props.selectedList,

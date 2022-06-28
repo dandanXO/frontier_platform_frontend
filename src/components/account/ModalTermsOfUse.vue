@@ -1,6 +1,6 @@
 <template lang="pug">
 modal-behavior(:header="title")
-  overlay-scrollbar-container(class="w-195 before:h-123 pb-4 -mx-8 px-8 mb-4")
+  overlay-scrollbar-container(class="w-195 h-123 pb-4 -mx-8 px-8 mb-4")
     p(class="text-body2 text-primary leading-1.6 pb-10") {{ introduction }}
     div(class="grid gap-y-12.5")
       div(v-for="section in sectionList")
@@ -13,7 +13,8 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const title = 'Frontier Terms of Use'
-const introduction = 'Frontier is a collaborative digital platform for the textile industry. Frontier allows members to search for or upload digital content and seek matching opportunities with other members.The Terms of Use (hereinafter referred to as "Terms") apply to all websites located on and linked to the Frontier.cool domain (hereinafter referred to as "Frontier"  "We"  "Our") and Frontier is the property of Frontier.cool Inc., its subsidiaries and its affiliates (hereinafter referred to as "Frontier Service Group").'
+const introduction =
+  'Frontier is a collaborative digital platform for the textile industry. Frontier allows members to search for or upload digital content and seek matching opportunities with other members.The Terms of Use (hereinafter referred to as "Terms") apply to all websites located on and linked to the Frontier.cool domain (hereinafter referred to as "Frontier"  "We"  "Our") and Frontier is the property of Frontier.cool Inc., its subsidiaries and its affiliates (hereinafter referred to as "Frontier Service Group").'
 const sectionList = [
   {
     title: 'Articles of Agreement',

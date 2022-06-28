@@ -72,9 +72,8 @@ const haveMsgAndFirstRead = computed(() => !!share.value?.message && isFirstTime
 
 const openModalShareMessage = () => {
   isFirstTime.value = false
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-share-message',
-    header: t('RR0146'),
     properties: {
       message: share.value.message
     }

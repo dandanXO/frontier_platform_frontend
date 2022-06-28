@@ -79,7 +79,7 @@ export default {
              * one of
              *  ->
              *    collectionId
-             *    collectionName
+             *    name
              *    coverImgList
              *    itemCounts,
              *  ->
@@ -161,7 +161,7 @@ export default {
         trendBoard = await dispatch('uploadFileToS3', { fileName: trendBoardFile.name, file: trendBoardFile }, { root: true })
       }
 
-      const attachmentList = await Promise.all(attachmentFileList.map(attachment => dispatch('uploadFileToS3', { fileName: attachment.name, attachment }, { root: true })))
+      const attachmentList = await Promise.all(attachmentFileList.map(attachment => dispatch('uploadFileToS3', { fileName: attachment.name, file: attachment }, { root: true })))
 
       const tempParams = { ...params, trendBoard, attachmentList }
       delete tempParams.trendBoardFile
@@ -190,7 +190,7 @@ export default {
         newTrendBoard = await dispatch('uploadFileToS3', { fileName: trendBoardFile.name, file: trendBoardFile }, { root: true })
       }
 
-      const newAttachmentList = await Promise.all(attachmentFileList.map(attachment => dispatch('uploadFileToS3', { fileName: attachment.name, attachment }, { root: true })))
+      const newAttachmentList = await Promise.all(attachmentFileList.map(attachment => dispatch('uploadFileToS3', { fileName: attachment.name, file: attachment }, { root: true })))
 
       const tempParams = { ...params, newTrendBoard, newAttachmentList }
       delete tempParams.trendBoardFile

@@ -97,7 +97,13 @@ module.exports = {
         'lobby': 'repeat(auto-fill, 232px)'
       },
       strokeWidth: strokeWidth,
-      margin: marginSpacing
+      margin: marginSpacing,
+      lineClamp: {
+        7: '7',
+        8: '8',
+        9: '9',
+        10: '10',
+      }
     }
   },
   plugins: [

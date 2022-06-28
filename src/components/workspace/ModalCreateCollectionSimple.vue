@@ -1,14 +1,13 @@
 <template lang="pug">
-div(class="w-100 px-8")
-  h6(class="text-h6 font-bold text-primary text-center mb-7.5") {{ $t('EE0065') }}
-  input-text(v-model:textValue="collectionName" required)
-  btn-group(
-    class="h-25"
-    :primaryText="$t('UU0020')"
-    :primaryButtonDisabled="collectionName === ''"
-    @click:primary="createCollectionForModal"
-    :secondaryButton="false"
-  )
+modal-behavior(
+  :header="$t('FF0022')"
+  :primaryBtnText="$t('UU0020')"
+  :primaryBtnDisabled="collectionName === ''"
+  @click:primary="createCollectionForModal"
+)
+  div(class="w-84")
+    h6(class="text-body2 font-bold text-primary mb-2") {{ $t('EE0065') }}
+    input-text(v-model:textValue="collectionName" required)
 </template>
 
 <script>
@@ -35,7 +34,7 @@ export default {
       required: true
     }
   },
-  setup (props) {
+  setup(props) {
     const store = useStore()
 
     const collectionName = ref('')

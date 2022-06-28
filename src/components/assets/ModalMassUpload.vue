@@ -23,8 +23,8 @@ modal-behavior(
         :customErrorMsg="false"
         @click:button="chooseFile"
       )
-      p(class="text-black-800 text-caption mb-2") {{ $t("DD0071") }}
-      p(class="text-black-800 text-caption") {{ $t("DD0056") }}
+      p(class="text-black-800 text-caption mb-2") {{ $t("RR0243") }} {{acceptType.join(', ').toUpperCase()}}
+      p(class="text-black-800 text-caption") {{$t("RR0145")}} {{fileSizeMaxLimit}} MB
     div(class="text-primary text-caption leading-1.6")
       i18n-t(keypath="DD0036" tag="p")
         template(#UU0065)
@@ -61,9 +61,9 @@ const { goToProgress, goToAssets } = useNavigation()
 let errorList
 let binaryFile
 
-
 const fileSizeMaxLimit = 20
-const fileOperator = new FileOperator(['xlsx'], fileSizeMaxLimit, true)
+const acceptType = ['xlsx']
+const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit, true)
 
 const chooseFile = () => {
   fileOperator.upload()

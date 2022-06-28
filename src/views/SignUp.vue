@@ -6,10 +6,7 @@ div(class="w-screen h-screen flex justify-center items-center bg-black-100")
       div(class="w-full rounded-lg card-shadow px-10 pt-10 pb-9.5 flex flex-col")
         p(class="text-primary text-h6 font-bold text-center pb-5.5 border-b border-black-400") {{ $t("AA0016") }}
         template(v-if="!isGoogleLoadFail")
-          button(id="google-sign-up" class="w-85 h-11 rounded border text-body2 font-bold text-black-800 mt-5 mb-3 flex justify-center items-center")
-            div(class="grid grid-flow-col gap-x-2.5 items-center")
-              img(src="@/assets/images/google.png")
-              span(class="w-40.5 text-center text-body2") {{ $t("UU0047") }}
+          button(id="google-sign-up" class="mt-5 mb-3")
           div(class="grid grid-flow-col gap-x-3 items-center justify-center")
             div(class="w-19 h-px border-b border-black-400")
             span(class="w-30.5 text-black-500 text-body2 text-center") {{ $t("AA0005") }}
@@ -56,7 +53,7 @@ import { reactive, ref } from '@vue/reactivity'
 import { computed, onMounted, toRaw, watch } from '@vue/runtime-core'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import googleSignInApi from '@/utils/google-sign-in-api'
+import SignInWithGoogle from '@/utils/signInWithGoogle.js'
 import useNavigation from '@/composables/useNavigation'
 import PasswordValidator from '@/components/account/PasswordValidator.vue'
 import imgCover from '@/assets/images/cover.png'
@@ -98,12 +95,6 @@ const signUp = async () => {
   !isEmailExist.value && (isSignUpSuccessfully.value = true)
 }
 
-const googleSignUp = async (googleUser) => {
-  isEmailExist.value = await store.dispatch('user/googleSignUp', { idToken: googleUser.getAuthResponse().id_token, locale: 'en-US' })
-
-  !isEmailExist.value && nextAfterSignIn()
-}
-
 const openModalTermsOfUse = () => store.dispatch('helper/openModalBehavior', { component: 'modal-terms-of-use' })
 const openModalPrivacyPolicy = () => store.dispatch('helper/openModalBehavior', { component: 'modal-privacy-policy' })
 
@@ -116,18 +107,14 @@ watch(
 
 const isGoogleLoadFail = ref(false)
 
-onMounted(async () => {
-  try {
-    await googleSignInApi.init({
-      elementId: 'google-sign-up',
-      successHandler: googleSignUp,
-      failHandler (error) {
-        if (error.error === 'popup_closed_by_user') { return }
-        errorMsg.value = t('WW0065')
-      }
-    })
-  } catch {
-    isGoogleLoadFail.value = true
-  }
+onMounted(() => {
+  const googleSignUp = new SignInWithGoogle({
+    elementId: 'google-sign-up',
+    callback: async (response) => {
+      isEmailExist.value = await store.dispatch('user/googleSignUp', { idToken: response.credential, locale: 'en-US' })
+      !isEmailExist.value && nextAfterSignIn()
+    }
+  })
+  isGoogleLoadFail.value = !googleSignUp.google
 })
 </script>

@@ -5,32 +5,36 @@ $shadow: rgba(0, 0, 0, 0.1);
 div[role="tooltip"] {
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
 
-  &[data-popper-placement^="top"] > #arrow {
+  &[data-popper-placement^="top"]>#arrow {
     bottom: -7px;
+
     &::before {
       box-shadow: 1px 1px 2px $shadow;
       border-radius: 0 0 $radius 0;
     }
   }
 
-  &[data-popper-placement^="bottom"] > #arrow {
+  &[data-popper-placement^="bottom"]>#arrow {
     top: -7px;
+
     &::before {
       box-shadow: -1px -1px 2px $shadow;
       border-radius: $radius 0 0 0;
     }
   }
 
-  &[data-popper-placement^="left"] > #arrow {
+  &[data-popper-placement^="left"]>#arrow {
     right: -7px;
+
     &::before {
       box-shadow: 1px -1px 2px $shadow;
       border-radius: 0 $radius 0 0;
     }
   }
 
-  &[data-popper-placement^="right"] > #arrow {
+  &[data-popper-placement^="right"]>#arrow {
     left: -7px;
+
     &::before {
       box-shadow: -1px 1px 2px $shadow;
       border-radius: 0 0 0 $radius;

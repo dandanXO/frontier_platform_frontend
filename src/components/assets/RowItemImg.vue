@@ -5,7 +5,7 @@ div(class="w-full min-w-42.5 max-w-67.5")
     svg-icon(:iconName="statusIconName" size="24" class="text-primary")
   div(class="w-full relative aspect-square" @mouseenter="isHover = true" @mouseleave="isHover = false")
     div(class="w-full h-full rounded-md overflow-hidden bg-cover" :class="{ 'border': neverScanBefore }")
-      img(:src="currentCoverImg" class="w-full h-full")
+      img(v-defaultImg :src="material.coverImg" class="w-full h-full")
     div(v-if="isHover" class="absolute z-9 inset-0 w-full h-full rounded bg-black-900/70" @click.stop="goToAssetMaterialDetail(material)")
     div(v-if="isHover || haveSelectedMoreThanOne" class="absolute z-10 inset-0 w-full h-12")
       div(class="bg-linear w-full h-full rounded-t-md")
@@ -38,7 +38,7 @@ export default {
   setup (props, { emit }) {
     const { goToAssetMaterialDetail } = useNavigation()
     const isHover = ref(false)
-    const { currentCoverImg, neverScanBefore, statusIconName } = useMaterial(props.material)
+    const { neverScanBefore, statusIconName } = useMaterial(props.material)
 
     const innerSelectedList = computed({
       get: () => props.selectedList,
@@ -50,7 +50,6 @@ export default {
     return {
       innerSelectedList,
       statusIconName,
-      currentCoverImg,
       neverScanBefore,
       isHover,
       haveSelectedMoreThanOne,

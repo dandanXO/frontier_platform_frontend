@@ -28,18 +28,18 @@ import { computed, ref } from 'vue'
 
 const { t } = useI18n()
 const store = useStore()
-const orgUser = computed(() => store.getters['user/orgUser/orgUser'])
-const avatar = computed(() => store.getters['user/orgUser/avatar'])
+const orgUser = computed(() => store.getters['organization/orgUser/orgUser'])
+const avatar = computed(() => store.getters['organization/orgUser/avatar'])
 const displayName = ref(orgUser.value.displayName)
 
 const updateDisplayName = async () => {
   store.dispatch('helper/openModalLoading')
-  await store.dispatch('user/orgUser/updateDisplayName', { displayName: displayName.value })
+  await store.dispatch('organization/orgUser/updateDisplayName', { displayName: displayName.value })
   store.dispatch('helper/clearModalPipeline')
 }
 
 const openModalChangeAvatar = () => {
-  store.dispatch('helper/pushModal', {
+  store.dispatch('helper/pushModalBehavior', {
     component: 'modal-change-avatar',
     header: t('MM0019')
   })

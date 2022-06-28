@@ -79,7 +79,7 @@ export default function useMoodboardNode (moodboard, moodboardOfferNodeCollectio
 
   const openModalU3mSelectFileFormat = (nodeList) => {
     const materialList = nodeList.map(({ properties }) => properties)
-    store.dispatch('helper/openModal', {
+    store.dispatch('helper/openModalBehavior', {
       component: 'modal-u3m-select-file-format',
       properties: { materialList }
     })

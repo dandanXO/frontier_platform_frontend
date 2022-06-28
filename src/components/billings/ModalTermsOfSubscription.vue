@@ -1,7 +1,6 @@
 <template lang="pug">
-div(class="w-213.5 px-8")
-  p(class="text-body1 text-primary font-bold text-center pb-7.5") {{ title }}
-  overlay-scrollbar-container(class="h-123 pb-4 -mx-8 px-8 mb-4")
+modal-behavior(:header="title")
+  overlay-scrollbar-container(class="w-195 h-123 pb-4 -mx-8 px-8 mb-4")
     p(class="text-body2 text-primary leading-1.6 pb-10" v-html="introduction")
     div(class="grid gap-y-12.5")
       div(v-for="(section, index) in sectionList")
@@ -14,7 +13,7 @@ import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'ModalTermsOfSubscription',
-  setup () {
+  setup() {
     const { t } = useI18n()
     const title = 'Frontier Subscription Service Agreement'
     const introduction = `

@@ -86,7 +86,7 @@ export default {
     const addressDetail = computed(() => [innerInvoice.value.zipCode, innerInvoice.value.city, countryName.value].filter(v => !!v).join(', '))
 
     const pushModalEditBillingInfo = () => {
-      store.dispatch('helper/pushModal', {
+      store.dispatch('helper/pushModalBehavior', {
         component: 'modal-edit-billing-info',
         properties: {
           billingInfo: innerInvoice.value,

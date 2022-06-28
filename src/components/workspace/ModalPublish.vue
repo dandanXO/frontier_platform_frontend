@@ -4,7 +4,7 @@ modal-behavior(
   :primaryBtnText="$t('UU0018')"
   :secondaryBtnText="$t('UU0002')"
   @click:primary="publishNode"
-  @click:secondary="closeModalBehavior"
+  @click:secondary="closeModal"
 )
   div(class="w-91")
     input-radio-group(
@@ -69,5 +69,5 @@ const publishNode = async () => {
   store.commit('helper/PUSH_message', t('FF0035'))
 }
 
-const closeModalBehavior = () => store.dispatch('helper/closeModalBehavior')
+const closeModal = () => store.dispatch('helper/closeModalBehavior')
 </script>
