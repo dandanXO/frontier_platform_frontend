@@ -2,21 +2,21 @@ import axios from '@/apis'
 import putBinaryData from '@/utils/put-binary-data'
 
 export default {
-  generalSignUp: ({ email, lastName, firstName, password, locale }) => axios('/sign-up/general', {
+  generalSignUp: ({ email, lastName, firstName, password }) => axios('/sign-up/general', {
     method: 'POST',
-    data: { email, lastName, firstName, password, locale }
+    data: { email, lastName, firstName, password, locale: 'en-US', platform: 1 }
   }),
   generalSignIn: ({ email, password }) => axios('/sign-in/general', {
     method: 'POST',
-    data: { email, password }
+    data: { email, password, platform: 1 }
   }),
-  googleSignUp: ({ idToken, locale }) => axios('/sign-up/google', {
+  googleSignUp: ({ idToken }) => axios('/sign-up/google', {
     method: 'POST',
-    data: { idToken, locale }
+    data: { idToken, locale: 'en-US', platform: 1 }
   }),
   googleSignIn: ({ idToken }) => axios('/sign-in/google', {
     method: 'POST',
-    data: { idToken }
+    data: { idToken, platform: 1 }
   }),
   getUser: () => axios('/user', {
     method: 'GET'
@@ -43,11 +43,11 @@ export default {
   }),
   resendVerifyEmail: () => axios('/user/resend-verify-email', {
     method: 'POST',
-    data: {}
+    data: { platform: 1 }
   }),
   sendForgotPasswordEmail: ({ email }) => axios('/user/forgot-password/send-email', {
     method: 'POST',
-    data: { email }
+    data: { email, platform: 1 }
   }),
   verifyForgotPasswordCode: ({ verifyCode }) => axios('/user/forgot-password/verify', {
     method: 'POST',
