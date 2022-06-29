@@ -31,7 +31,7 @@ export default function useShareToMe () {
       return store.dispatch('helper/openModalConfirm', {
         type: 1,
         header: t('GG0016'),
-        content: t('GG0020'),
+        contentText: t('GG0020'),
         primaryBtnText: t('UU0031')
       })
     }
@@ -58,7 +58,7 @@ export default function useShareToMe () {
     const nodeKeyList = nodeList.map(({ nodeKey }) => nodeKey)
     store.dispatch('helper/openModalConfirm', {
       header: t('HH0004'),
-      content: t('HH0005'),
+      contentText: t('HH0005'),
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: async () => {
         store.dispatch('helper/openModalLoading')

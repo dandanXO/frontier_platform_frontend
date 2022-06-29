@@ -46,7 +46,7 @@ const downloadU3m = async (url) => {
     store.dispatch('helper/openModalConfirm', {
       type: 1,
       header: t('II0003'),
-      content: t('II0004'),
+      contentText: t('II0004'),
       primaryBtnText: t('UU0031')
     })
   } else {

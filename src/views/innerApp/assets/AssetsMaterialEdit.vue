@@ -66,7 +66,7 @@ const cancel = async () => {
   store.dispatch('helper/pushModalConfirm', {
     type: 1,
     header: t('EE0045'),
-    content: t('EE0046'),
+    contentText: t('EE0046'),
     primaryBtnText: t('UU0001'),
     primaryBtnHandler: () => {
       isConfirmedToLeave.value = true
@@ -85,7 +85,7 @@ onBeforeRouteLeave(async () => {
     store.dispatch('helper/openModalConfirm', {
       type: 1,
       header: t('EE0045'),
-      content: t('EE0046'),
+      contentText: t('EE0046'),
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: resolve.bind(undefined, 'confirm'),
       secondaryBtnText: t('UU0002'),

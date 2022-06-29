@@ -171,7 +171,7 @@ export default {
       store.dispatch('helper/openModalConfirm', {
         type: 2,
         header: t('EE0121'),
-        content: t('EE0122', { RR0008: t('RR0008') }),
+        contentText: t('EE0122', { RR0008: t('RR0008') }),
         primaryBtnText: t('UU0103'),
         secondaryBtnText: t('UU0090'),
         secondaryBtnHandler: () => goToProgress('u3m')

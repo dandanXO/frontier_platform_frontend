@@ -46,7 +46,7 @@ export default function useMoodboardNode (moodboard, moodboardOfferNodeCollectio
       store.dispatch('helper/openModalConfirm', {
         type: 2,
         header: t('PP0030'),
-        content: t('PP0031'),
+        contentText: t('PP0031'),
         primaryBtnText: t('UU0031'),
         secondaryBtnText: t('UU0090'),
         secondaryBtnHandler: () => {
@@ -67,7 +67,7 @@ export default function useMoodboardNode (moodboard, moodboardOfferNodeCollectio
     store.dispatch('helper/openModalConfirm', {
       type: 1,
       header: isContainCollection ? t('QQ0072') : t('QQ0065'),
-      content: isContainCollection ? t('QQ0073') : t('QQ0066'),
+      contentText: isContainCollection ? t('QQ0073') : t('QQ0066'),
       primaryBtnText: t('UU0091'),
       primaryBtnHandler: async () => {
         await store.dispatch('moodboard/deleteMoodboardNode', { nodeIdList })

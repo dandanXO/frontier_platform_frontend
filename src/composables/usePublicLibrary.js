@@ -31,7 +31,7 @@ export default function usePublicLibrary () {
       return store.dispatch('helper/openModalConfirm', {
         type: 1,
         header: t('II0013'),
-        content: t('II0014'),
+        contentText: t('II0014'),
         primaryBtnText: t('UU0031')
       })
     }

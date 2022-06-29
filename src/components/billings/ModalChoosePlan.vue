@@ -45,74 +45,53 @@ fullscreen-header
       p(class="mt-25 text-assist-blue text-body2 cursor-pointer" @click="openModalPlanIntroduction") {{ $t('OO0068') }}
 </template>
 
-<script>
+<script setup>
 import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import { useStore } from 'vuex'
-import { computed } from '@vue/runtime-core'
+import { h, computed, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import usePlan from '@/composables/usePlan.js'
 
-export default {
-  name: 'ModalChoosePlan',
-  components: {
-    FullscreenHeader
-  },
-  setup () {
-    const { t } = useI18n()
-    const store = useStore()
-    const { checkHaveBindPayment } = usePlan()
+const { t } = useI18n()
+const store = useStore()
+const { checkHaveBindPayment } = usePlan()
 
-    const pricing = computed(() => store.getters['organization/pricing'])
-    const plan = computed(() => store.getters['polling/plan'])
-    const planType = computed(() => store.getters['polling/planType'])
+const pricing = computed(() => store.getters['organization/pricing'])
+const plan = computed(() => store.getters['polling/plan'])
+const planType = computed(() => store.getters['polling/planType'])
 
-    const closeModal = () => store.dispatch('helper/closeModal')
-    const upgradePlan = async () => {
-      if (!checkHaveBindPayment()) {
-        return
-      }
-
-      store.dispatch('helper/pushModalLoading')
-      const { success, message } = await store.dispatch('organization/upgradePlan')
-      store.dispatch('helper/closeModalLoading')
-
-      if (success) {
-        store.dispatch('helper/openModal', {
-          component: 'modal-payment-success',
-          properties: {
-            title: t('OO0050'),
-            content: t('OO0080'),
-            nextPayInfo: t('OO0052', { date: plan.value.renewDate })
-          }
-        })
-      } else {
-        store.dispatch('helper/openModalConfirm', {
-          type: 3,
-          header: message.title,
-          content: message.content,
-          primaryBtnText: t('UU0031')
-        })
-      }
-    }
-    const openModalPlanIntroduction = () => {
-      store.dispatch('helper/pushModal', {
-        component: 'modal-plan-introduction'
-      })
-    }
-    const openModalUpgradeEnterprise = () => {
-      store.dispatch('helper/pushModalBehavior', {
-        component: 'modal-upgrade-enterprise'
-      })
-    }
-
-    return {
-      pricing,
-      closeModal,
-      upgradePlan,
-      planType,
-      openModalPlanIntroduction,
-      openModalUpgradeEnterprise
-    }
+const closeModal = () => store.dispatch('helper/closeModal')
+const upgradePlan = async () => {
+  if (!checkHaveBindPayment()) {
+    return
   }
+
+  store.dispatch('helper/pushModalLoading')
+  await store.dispatch('organization/upgradePlan')
+  store.dispatch('helper/closeModalLoading')
+
+  store.dispatch('helper/openModalConfirm', {
+    type: 2,
+    header: t('OO0165'),
+    contentComponent: shallowRef({
+      render: () => {
+        return h('div', { class: 'text-body2 leading-1.6' }, [
+          h('p', {}, t('OO0052', { date: plan.value.renewDate })),
+          h('p', {}, t('OO0080'))
+        ])
+      }
+    }),
+    primaryBtnText: t('UU0031')
+  })
+}
+const openModalPlanIntroduction = () => {
+  store.dispatch('helper/pushModal', {
+    component: 'modal-plan-introduction'
+  })
+}
+const openModalUpgradeEnterprise = () => {
+  store.dispatch('helper/pushModalBehavior', {
+    component: 'modal-upgrade-enterprise'
+  })
 }
 </script>

@@ -14,6 +14,7 @@ modal-behavior(
 </template>
 
 <script setup>
+import { computed, shallowRef, h } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import usePlan from '@/composables/usePlan.js'
@@ -21,6 +22,7 @@ import usePlan from '@/composables/usePlan.js'
 const { t } = useI18n()
 const store = useStore()
 const { openModalPaymentFail } = usePlan()
+const plan = computed(() => store.getters['polling/plan'])
 
 const functionList = [
   t('OO0123'),
@@ -58,8 +60,22 @@ const confirmToDeactivate = async () => {
         store.dispatch('helper/closeModalLoading')
 
         if (success) {
-          store.dispatch('helper/openModal', {
-            component: 'modal-deactivate-success'
+          store.dispatch('helper/openModalConfirm', {
+            type: 2,
+            header: t('OO0039'),
+            contentComponent: shallowRef({
+              render: () => {
+                return h('div', { class: 'text-body2 leading-1.6' }, [
+                  h('p', {}, `${t('OO0058')} ${plan.value.deactivatedDate}`),
+                  h('i18n-t', { keypath: 'OO0126', tag: 'p' },
+                    h('template', { slot: 'OO0127' },
+                      h('span', { class: 'text-assist-blue' }, t('OO0127'))
+                    )
+                  )
+                ])
+              }
+            }),
+            primaryBtnText: t('UU0031')
           })
         } else {
           openModalPaymentFail()

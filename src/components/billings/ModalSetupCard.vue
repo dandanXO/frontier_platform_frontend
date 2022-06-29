@@ -37,7 +37,7 @@ const setupCard = () => {
   store.dispatch('helper/pushModalConfirm', {
     type: 0,
     header: t('OO0049'),
-    content: t('OO0048'),
+    contentText: t('OO0048'),
     primaryBtnText: t('UU0031'),
     afterPrimaryBtnHandler: async () => {
       store.dispatch('helper/pushModalLoading')
@@ -55,7 +55,7 @@ const setupCard = () => {
         store.dispatch('helper/pushModalConfirm', {
           type: 3,
           header: t('OO0019'),
-          content: t('OO0020'),
+          contentText: t('OO0020'),
           primaryBtnText: t('UU0031'),
           primaryBtnHandler: () => store.dispatch('helper/clearModalPipeline'),
           secondaryBtnText: t('UU0076')

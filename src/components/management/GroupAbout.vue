@@ -66,7 +66,7 @@ export default {
             store.dispatch('helper/openModalConfirm', {
               type: 1,
               header: t('BB0100'),
-              content: t('BB0101'),
+              contentText: t('BB0101'),
               primaryBtnText: t('UU0001'),
               afterPrimaryBtnHandler: async () => {
                 await store.dispatch('helper/openModalBehavior', {

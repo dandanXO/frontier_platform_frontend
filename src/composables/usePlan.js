@@ -22,7 +22,7 @@ export default function usePlan () {
     store.dispatch('helper/openModalConfirm', {
       type: 1,
       header: t('OO0012'),
-      content: t('OO0079'),
+      contentText: t('OO0079'),
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: goToPaymentDetail,
       secondaryBtnText: t('UU0002')
@@ -35,7 +35,7 @@ export default function usePlan () {
       store.dispatch('helper/openModalConfirm', {
         type: 0,
         header: t('OO0099'),
-        content: t('OO0100'),
+        contentText: t('OO0100'),
         primaryBtnText: t('UU0021'),
         afterPrimaryBtnHandler: openModalChoosePlan,
         secondaryBtnText: t('UU0002')
@@ -47,7 +47,7 @@ export default function usePlan () {
         store.dispatch('helper/openModalConfirm', {
           type: 1,
           header: t('OO0109'),
-          content: t('OO0110'),
+          contentText: t('OO0110'),
           primaryBtnText: t('UU0031')
         })
         return false
@@ -55,7 +55,7 @@ export default function usePlan () {
         store.dispatch('helper/openModalConfirm', {
           type: 1,
           header: t('OO0133'),
-          content: t('WW0086'),
+          contentText: t('WW0086'),
           primaryBtnText: t('UU0031')
         })
         return false
@@ -89,19 +89,17 @@ export default function usePlan () {
   }
 
   const openModalPaymentFail = () => {
-    store.dispatch('helper/openModal', {
-      component: 'modal-payment-fail',
-      properties: {
-        title: t('OO0041'),
-        content: t('OO0042'),
-        primaryButtonText: t('UU0076'),
-        primaryHandler: () => {
-          closeModal()
-          goToPaymentDetail()
-        },
-        secondaryButtonText: t('UU0026'),
-        secondaryHandler: closeModal
-      }
+    store.dispatch('helper/openModalConfirm', {
+      type: 3,
+      header: t('OO0041'),
+      contentText: t('OO0042'),
+      secondaryButtonText: t('UU0076'),
+      secondaryHandler: () => {
+        closeModal()
+        goToPaymentDetail()
+      },
+      textBtnText: t('UU0026'),
+      textHandler: closeModal
     })
   }
 
@@ -127,12 +125,11 @@ export default function usePlan () {
           store.dispatch('helper/closeModalLoading')
 
           if (success) {
-            store.dispatch('helper/openModal', {
-              component: 'modal-payment-success',
-              properties: {
-                title: t('OO0039'),
-                content: t('OO0145')
-              }
+            store.dispatch('helper/openModalConfirm', {
+              type: 2,
+              header: t('OO0039'),
+              contentText: t('OO0145'),
+              primaryBtnText: t('UU0031')
             })
           } else {
             openModalPaymentFail()

@@ -66,7 +66,7 @@ modal-behavior(
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed, watch, shallowRef, h } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { TARGET_LOCATION } from '@/utils/constants'
@@ -162,13 +162,7 @@ const openModalConfirmReachMaterialStorage = () => {
   store.dispatch('helper/openModalConfirm', {
     type: 3,
     header: t('RR0168'),
-    content: t('RR0183', { amount: remainingQuota.value.material.max }),
-    contentReplaceValue: [
-      {
-        text: t('RR0186'),
-        url: `${window.location.origin}/${selectedOrgNo.value}/billings/plan`
-      }
-    ],
+    contentText: t('RR0183', { amount: remainingQuota.value.material.max }),
     primaryBtnText: t('UU0082'),
     secondaryBtnText: t('UU0085'),
     secondaryBtnHandler: goToBillings
@@ -183,7 +177,7 @@ const submit = async () => {
     store.dispatch('helper/openModalConfirm', {
       type: 0,
       header: t('RR0162'),
-      content: t('RR0242'),
+      contentText: t('RR0242'),
       secondaryBtnText: t('UU0094')
     })
   } catch (error) {

@@ -76,7 +76,7 @@ const handleDelete = (moodboardId) => {
   store.dispatch('helper/openModalConfirm', {
     type: 1,
     header: t('QQ0075'),
-    content: t('QQ0076'),
+    contentText: t('QQ0076'),
     primaryBtnText: t('UU0105'),
     primaryBtnHandler: () => {
       store.dispatch('moodboard/deleteMoodboard', { moodboardId })
