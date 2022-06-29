@@ -90,7 +90,7 @@ const validateEmailFormat = async () => {
 }
 
 const signUp = async () => {
-  isEmailExist.value = await store.dispatch('user/generalSignUp', Object.assign({ locale: 'en-US' }, toRaw(formData)))
+  isEmailExist.value = await store.dispatch('user/generalSignUp', toRaw(formData))
 
   !isEmailExist.value && (isSignUpSuccessfully.value = true)
 }
@@ -111,7 +111,7 @@ onMounted(() => {
   const googleSignUp = new SignInWithGoogle({
     elementId: 'google-sign-up',
     callback: async (response) => {
-      isEmailExist.value = await store.dispatch('user/googleSignUp', { idToken: response.credential, locale: 'en-US' })
+      isEmailExist.value = await store.dispatch('user/googleSignUp', { idToken: response.credential })
       !isEmailExist.value && nextAfterSignIn()
     }
   })
