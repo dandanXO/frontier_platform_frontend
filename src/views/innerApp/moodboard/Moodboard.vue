@@ -1,8 +1,8 @@
 <template lang="pug">
 div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
   div(class="mb-8")
-    p(class="text-h5 font-bold text-black-900 mb-3") {{ $t("QQ0001") }}
-    p(class="text-body2 text-primary") {{ $t("QQ0002") }}
+    p(class="text-h5 font-bold text-primary mb-3") {{ $t("QQ0001") }}
+    p(class="text-body2 text-black-600") {{ $t("QQ0002") }}
   tabs(:tabList="tabList" :initValue="currentTab" @switch="toggleTab($event.path)")
   div(class="flex-grow overflow-y-scroll")
     div(v-if="currentTab === MOODBOARD_TYPE.DEMANDER" class="h-12 flex items-center justify-center text-primary mt-4 rounded-md border border-dashed border-black-400 cursor-pointer" @click="openCreateOrEditMoodboard")
