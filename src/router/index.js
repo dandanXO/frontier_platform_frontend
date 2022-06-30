@@ -203,26 +203,28 @@ const routes = [
     ]
   },
   {
-    path: '/embed/:sharingKey/:nodeKey',
+    path: '/embed/:sharingKey',
     name: 'Embed',
-    props: true,
-    component: () => import('@/views/embed/Embed.vue'),
+    component: () => import('@/views/embed/EmbedContainer.vue'),
     beforeEnter: async (to, from, next) => {
       const sharingKey = to.params.sharingKey
       await store.dispatch('embed/getEmbedInfo', { sharingKey })
       next()
-    }
-  },
-  {
-    path: '/embed/:sharingKey/material/:nodeKey',
-    name: 'EmbedMaterialDetail',
-    props: true,
-    component: () => import('@/views/embed/EmbedMaterialDetail.vue'),
-    beforeEnter: async (to, from, next) => {
-      const sharingKey = to.params.sharingKey
-      await store.dispatch('embed/getEmbedInfo', { sharingKey })
-      next()
-    }
+    },
+    children: [
+      {
+        path: ':nodeKey',
+        name: 'EmbedCollection',
+        props: true,
+        component: () => import('@/views/embed/Embed.vue')
+      },
+      {
+        path: 'material/:nodeKey',
+        name: 'EmbedMaterialDetail',
+        props: true,
+        component: () => import('@/views/embed/EmbedMaterialDetail.vue')
+      },
+    ]
   },
   {
     path: '/',
