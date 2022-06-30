@@ -5,7 +5,7 @@ div
     div(class="flex flex-col gap-y-7.5 flex-grow")
       material-detail-specification(:material="material")
       material-detail-pantone(:pantoneList="material.pantoneList")
-      material-detail-external-u3m-status(:material="material" :isCanDownloadU3M="isCanDownloadU3M")
+      material-detail-external-u3m-status(:isEmbed="isEmbed" :material="material" :isCanDownloadU3M="isCanDownloadU3M")
   div(class="pt-16 grid gap-y-7.5")
     div
       h5(class="text-h5 font-bold text-primary pb-5") {{ $t("RR0133") }}
@@ -50,6 +50,10 @@ import MaterialDetailExternalU3mStatus from '@/components/common/material/detail
 import MaterialDetailEnvironmentalIndicator from '@/components/common/material/detail/MaterialDetailEnvironmentalIndicator.vue'
 
 const props = defineProps({
+  isEmbed: {
+    type: Boolean,
+    required: false
+  },
   material: {
     type: Object,
     required: true

@@ -25,6 +25,13 @@ export default createStore({
       await putBinaryData(fileUploadUrl, file)
       return { fileName, tempUploadId }
     },
+    async checkTokenStatus (_, { accessToken }) {
+      const { data: { result: { status } } } = await axios('/general/check-token-status', {
+        method: 'POST',
+        data: { accessToken }
+      })
+      return status
+    },
     handleResponseData ({ dispatch }, { data }) {
       const { result } = JSON.parse(JSON.stringify(data))
 

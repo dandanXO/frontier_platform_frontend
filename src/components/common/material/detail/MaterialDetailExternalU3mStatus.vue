@@ -25,6 +25,10 @@ import { U3M_STATUS } from '@/utils/constants'
 import { downloadDataURLFile } from '@/utils/fileOperator'
 
 const props = defineProps({
+  isEmbed: {
+    type: Boolean,
+    default: false
+  },
   material: {
     type: Object,
     required: true
@@ -40,8 +44,27 @@ const store = useStore()
 const { status, zipUrl, u3maUrl, baseImgUrl, normalImgUrl, dpi } = toRefs(props.material.u3m)
 const { COMPLETED } = U3M_STATUS
 
+
 const downloadU3m = async (url) => {
-  await store.dispatch('user/getUser')
+  const needCheckTokenStatus = [
+    'metafabric.design', // 青望科技
+    'bluehope.4pt.tw', // 青望科技 Demo 網域
+  ].some(hostname => document.referrer.includes(hostname))
+
+  if (!props.isEmbed) {
+    await store.dispatch('user/getUser')
+  } else if (needCheckTokenStatus) {
+    const status = await store.dispatch('checkTokenStatus', { accessToken: localStorage.getItem('accessToken') })
+
+    if (status === 1) {
+      parent.postMessage({ error: 'Unauthorized' }, document.referrer)
+      return
+    } else if (status === 2) {
+      parent.postMessage({ error: 'Unverified' }, document.referrer)
+      return
+    }
+  }
+
   if (!props.isCanDownloadU3M) {
     store.dispatch('helper/openModalConfirm', {
       type: 1,
