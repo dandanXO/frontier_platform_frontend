@@ -30,6 +30,7 @@ import { ref } from 'vue'
 import { computed, watch } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 defineProps({
   isOldOrg: {
@@ -38,6 +39,7 @@ defineProps({
   }
 })
 
+const { t } = useI18n()
 const store = useStore()
 const router = useRouter()
 const suggestEmailList = ref([])
@@ -46,7 +48,7 @@ const uploadMaterialEmail = computed({
   get: () => store.getters['organization/createForm'].uploadMaterialEmail,
   set: (v) => store.commit('organization/SET_createForm_uploadMaterialEmail', v)
 })
-const availableToCreateOrg = computed(() => uploadMaterialEmail.value !== '' && suggestEmailList.value.length === 0)
+const availableToCreateOrg = computed(() => uploadMaterialEmail.value !== '' && suggestEmailList.value.length === 0 && errorMsg.value.length === 0)
 
 const openModalCreateOrg = () => {
   store.dispatch('helper/openModalBehavior', {
@@ -88,6 +90,12 @@ watch(
   () => {
     suggestEmailList.value.length = 0
     errorMsg.value = ''
+
+    const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w+)+$/
+    const emailAddress = `${uploadMaterialEmail.value}@textile.cloud`
+    if (emailAddress.length > 60 || !re.test(emailAddress)) {
+      errorMsg.value = t('WW0019')
+    }
   }
 )
 </script>
