@@ -65,13 +65,19 @@ export default function useMoodboardDetail ({ defaultOfferId, defaultNodeId, sel
     () => currentTab.value,
     () => {
       selectedNodeList.value.length = 0
-      search()
+      if (route.name === 'OrgMoodboardDetail' || route.name === 'GroupMoodboardDetail') {
+        search()
+      }
     }
   )
 
   watch(
     [() => currentOfferId.value, () => currentNodeId.value],
-    search,
+    () => {
+      if (route.name === 'OrgMoodboardDetail' || route.name === 'GroupMoodboardDetail') {
+        search()
+      }
+    },
     {
       immediate: true
     }
