@@ -26,7 +26,7 @@ div(class="pt-16 xl:pt-17.5")
           :label="$t('BB0068')"
           :customErrorMsg="isOrgNameExist ? $t('WW0001') : ''"
           required
-          class="w-85 relative z-11"
+          class="w-85"
         )
         input-radio-group(
           v-model:inputValue="orgFormData.orgCategoryId"
@@ -42,23 +42,21 @@ div(class="pt-16 xl:pt-17.5")
           keyOptionDisplay="name"
           keyOptionValue="countryCode"
           searchBox
-          class="relative z-10 w-85"
+          class="w-85"
           required
         )
         input-text(v-model:textValue="orgFormData.address" :label="$t('BB0078')" class="w-85" :placeholder="$t('BB0079')")
         input-calling-code(
           v-model:textValue="orgFormData.phone"
           v-model:countryCode="orgFormData.phoneCountryCode"
-          class="relative z-9"
-          width="340"
+          class="w-85"
           :label="$t('BB0070')"
           :placeholder="$t('BB0071')"
         )
         input-calling-code(
           v-model:textValue="orgFormData.fax"
           v-model:countryCode="orgFormData.faxCountryCode"
-          class="relative z-8"
-          width="340"
+          class="w-85"
           :label="$t('BB0080')"
           :placeholder="$t('BB0081')"
         )
@@ -131,7 +129,7 @@ const openModalTypeTextToConfirm = () => {
             } = await store.dispatch('organization/getUnbilledInfo')
 
             if (checkoutItemList.length === 0) {
-              ;(await deleteOrg()) && store.commit('helper/PUSH_message', t('OO0101'))
+              ; (await deleteOrg()) && store.commit('helper/PUSH_message', t('OO0101'))
               return
             }
 
@@ -141,7 +139,7 @@ const openModalTypeTextToConfirm = () => {
                 checkoutItemList,
                 totalPrice,
                 payHandler: async () => {
-                  ;(await deleteOrg()) &&
+                  ; (await deleteOrg()) &&
                     store.dispatch('helper/openModalConfirm', {
                       type: 2,
                       header: t('OO0039'),

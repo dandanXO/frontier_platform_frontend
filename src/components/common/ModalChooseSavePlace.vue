@@ -13,7 +13,7 @@ modal-behavior(
       keyOptionDisplay="orgName"
       keyOptionValue="orgId"
       :label="$t('RR0212')"
-      class="mb-7.5 z-10"
+      class="mb-7.5"
     )
     input-select(
       v-model:selectValue="selectedSavePlace"

@@ -1,6 +1,6 @@
 <template lang="pug">
-dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border-b border-black-400")
-  template(#displayItem="{ isExpand }")
+expansion-panel(class="border-b border-black-400")
+  template(#trigger="{ isExpand }")
     div(class="h-15 flex items-center justify-between")
       h5(class="text-h5 text-primary font-bold") {{ $t("DD0025") }}
       svg-icon(
@@ -9,7 +9,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
         class="transform text-primary"
         :class="[isExpand ? '-rotate-90' : 'rotate-90']"
       )
-  template(#dropdownList)
+  template(#content)
     div(class="px-15 pt-5 mb-15 grid gap-y-7.5")
       input-select(
         v-model:selectValue="material.publicPrice.countryCode"
@@ -19,7 +19,6 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
         keyOptionDisplay="name"
         keyOptionValue="countryCode"
         searchBox
-        class="relative z-20"
       )
       input-container(:label="$t('RR0043')")
         div(class="flex items-center gap-x-3")
@@ -31,7 +30,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
             :customErrorMsg="validations.publicPricePrice"
           )
           p(class="text-body2 text-primary font-bold") {{ INVENTORY_UNIT.Y }}
-      input-container(:label="$t('RR0047')" class="relative z-19")
+      input-container(:label="$t('RR0047')")
         div(class="flex items-center gap-x-3")
           input-text(
             v-model:textValue="material.publicPrice.minimumOrderQuantity"
@@ -46,7 +45,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
             keyOptionValue="unit"
             class="w-25"
           )
-      input-container(:label="$t('RR0048')" class="relative z-18")
+      input-container(:label="$t('RR0048')")
         div(class="flex items-center gap-x-3")
           input-text(
             v-model:textValue="material.publicPrice.minimumContainerQuantity"
@@ -87,7 +86,6 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
           keyOptionDisplay="name"
           keyOptionValue="countryCode"
           searchBox
-          class="relative z-17"
         )
         input-container(:label="$t('RR0043')")
           div(class="flex items-center gap-x-3")
@@ -96,7 +94,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
               :options="currencyList"
               keyOptionDisplay="currency"
               keyOptionValue="currency"
-              class="w-25 relative z-16"
+              class="w-25"
             )
             input-text(
               v-model:textValue="material.privatePrice.price"
@@ -109,9 +107,9 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
               :options="inventoryUnitList"
               keyOptionDisplay="unit"
               keyOptionValue="unit"
-              class="w-25 relative z-16"
+              class="w-25"
             )
-        input-container(:label="$t('RR0047')" class="relative z-15")
+        input-container(:label="$t('RR0047')")
           div(class="flex items-center gap-x-3")
             input-text(
               v-model:textValue="material.privatePrice.minimumOrderQuantity"
@@ -126,7 +124,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
               keyOptionValue="unit"
               class="w-25"
             )
-        input-container(:label="$t('RR0048')" class="relative z-14")
+        input-container(:label="$t('RR0048')")
           div(class="flex items-center gap-x-3")
             input-text(
               v-model:textValue="material.privatePrice.minimumContainerQuantity"

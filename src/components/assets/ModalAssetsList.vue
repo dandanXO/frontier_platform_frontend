@@ -25,19 +25,13 @@ modal-behavior(
             svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
             i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption")
               template(#number) {{ selectedValue.length }}
-          tooltip(
-            v-if="!isInRoot"
-            placement="bottom-end"
-            :manual="true"
-            :showArrow="false"
-            :offset="[0, 8]"
-          )
-            template(#trigger="{ isActive }")
+          popper(v-if="!isInRoot" placement="bottom-end")
+            template(#trigger="{ isExpand }")
               svg-icon(
                 iconName="swap_horiz"
                 size="20"
                 class="transform rotate-90 cursor-pointer text-black-700 hover:text-brand"
-                :class="{ 'text-brand': isActive }"
+                :class="{ 'text-brand': isExpand }"
               )
             template(#content)
               contextual-menu(v-model:selectValue="queryParams.sort" :optionList="sortOptionList" @update:selectValue="sort")

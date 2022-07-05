@@ -8,7 +8,6 @@ div(class="grid gap-y-7.5")
     keyOptionDisplay="name"
     keyOptionValue="countryCode"
     searchBox
-    class="relative z-20"
   )
   input-container(:label="$t('RR0043')")
     div(class="flex items-center gap-x-3")
@@ -20,7 +19,7 @@ div(class="grid gap-y-7.5")
         :customErrorMsg="validations.publicPricePrice"
       )
       p(class="text-body2 text-primary font-bold") {{ INVENTORY_UNIT.Y }}
-  input-container(:label="$t('RR0047')" class="relative z-19")
+  input-container(:label="$t('RR0047')")
     div(class="flex items-center gap-x-3")
       input-text(
         v-model:textValue="material.publicPrice.minimumOrderQuantity"
@@ -35,7 +34,7 @@ div(class="grid gap-y-7.5")
         keyOptionValue="unit"
         class="w-25"
       )
-  input-container(:label="$t('RR0048')" class="relative z-18")
+  input-container(:label="$t('RR0048')")
     div(class="flex items-center gap-x-3")
       input-text(
         v-model:textValue="material.publicPrice.minimumContainerQuantity"

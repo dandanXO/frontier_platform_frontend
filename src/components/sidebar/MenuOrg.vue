@@ -1,19 +1,13 @@
 <template lang="pug">
 div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
   div(class="flex items-center")
-    tooltip(
-      class="flex-grow"
-      placement="bottom-start"
-      manual
-      :showArrow="false"
-      :offset="[30, 8]"
-    )
+    popper(class="flex-grow" placement="bottom-start" :offset="[30, 8]")
       template(#trigger)
         div(class="flex items-center cursor-pointer")
           img(:src="orgLogo" class="rounded-full w-9 h-9 mr-2")
-          p(class="text-body1 text-primary font-bold max-w-27.5 truncate leading-1.4") {{ org.orgName }}
+          p(class="text-body1 text-primary font-bold max-w-27.5 truncate leading-1.4 cursor-pointer") {{ org.orgName }}
           svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-600")
-      template(#content)
+      template(#content="{ collapsePopper }")
         list(class="w-70")
           div(class="h-18 px-7.5 flex items-center")
             img(:src="orgLogo" class="rounded-md w-12 h-12 mr-3.5")
@@ -41,7 +35,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
                 @click="openModalPurchaseU3mQuota"
               ) {{ $t("UU0074") }}
           div(class="mx-2 my-1 h-px bg-black-400")
-          list-item(v-permission="FUNC_ID.VISIT_BILLING_PAGE" @click="goToBillings" class="cursor-pointer")
+          list-item(v-permission="FUNC_ID.VISIT_BILLING_PAGE" @click="goToBillings(); collapsePopper()" class="cursor-pointer")
             div(class="w-full flex justify-between items-center")
               p(class="pl-4.5") {{ $t("OO0004") }}
               div(v-if="planStatus.INACTIVE" class="flex items-center")
@@ -49,7 +43,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
                 svg-icon(iconName="arrow_forward" class="text-brand-dark" size="14")
           list-item(@click="goToLobby" class="cursor-pointer")
             p(class="pl-4.5") {{ $t("RR0127") }}
-    tooltip(placement="bottom-start" manual :showArrow="false" @show="readNotification" @hide="isExpand = false")
+    popper(placement="bottom-start" @expand="readNotification" @collapse="isExpand = false")
       template(#trigger)
         div(class="relative cursor-pointer")
           svg-icon(iconName="notification" class="text-black-700")

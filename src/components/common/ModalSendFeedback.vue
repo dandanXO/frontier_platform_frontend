@@ -15,7 +15,7 @@ modal-behavior(
       keyOptionValue="value"
       :label="$t('MM0007')"
       :placeholder="$t('MM0008')"
-      class="pb-5 relative z-10"
+      class="pb-5"
       required
     )
     input-textarea(

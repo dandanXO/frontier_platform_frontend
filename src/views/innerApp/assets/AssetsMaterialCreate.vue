@@ -9,7 +9,7 @@ div(class="w-full h-full flex justify-center")
         div(class="h-16 flex items-center")
           h5(class="text-h5 text-primary font-bold pr-1.5") {{ $t("DD0063") }}
         div(class="pl-15")
-          input-container(:label="$t('DD0062')" class="relative z-12")
+          input-container(:label="$t('DD0062')")
             div(class="flex items-center gap-x-3")
               input-select(
                 v-model:selectValue="material.isDoubleSideMaterial"

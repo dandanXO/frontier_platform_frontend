@@ -15,9 +15,8 @@ div(class="grid gap-y-7.5")
     keyOptionDisplay="name"
     keyOptionValue="name"
     @addNewOption="addDescriptionOption($event)"
-    class="relative z-13"
   )
-  input-container(:label="$t('RR0021')" required class="relative z-10")
+  input-container(:label="$t('RR0021')" required)
     div(class="grid gap-y-3")
       div(v-for="(content, contentItemIndex) in material.contentList" class="flex items-center")
         input-select(
@@ -79,7 +78,7 @@ div(class="grid gap-y-7.5")
         :customErrorMsg="validations.color"
         class="w-50"
       )
-  input-container(:label="$t('RR0015')" required class="relative z-12")
+  input-container(:label="$t('RR0015')" required)
     div(class="flex items-center gap-x-3")
       input-text(
         v-model:textValue="material.weight"
@@ -101,7 +100,7 @@ div(class="grid gap-y-7.5")
         class="w-50"
       )
       p(class="text-body2 text-primary font-bold") {{ $t("RR0018") }}
-  input-container(:label="$t('RR0019')" required class="relative z-11")
+  input-container(:label="$t('RR0019')" required)
     div(class="flex items-center gap-x-3")
       input-text(
         v-model:textValue="material.width"
@@ -118,7 +117,6 @@ div(class="grid gap-y-7.5")
     keyOptionDisplay="name"
     keyOptionValue="name"
     @addNewOption="addFinishOption($event)"
-    class="relative z-9"
   )
 </template>
 

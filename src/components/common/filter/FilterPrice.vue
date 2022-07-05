@@ -3,7 +3,7 @@ filter-wrapper(
   iconName="price"
   :displayName="$t('RR0094')"
   :dirty="filterDirty.price"
-  @show="init"
+  @expand="init"
 )
   div(class="w-131 h-50.5 px-8 py-7.5 rounded card-shadow grid gap-y-13")
     filter-range(

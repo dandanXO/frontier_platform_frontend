@@ -44,7 +44,7 @@ div(class="bg-black-100 px-7.5 py-7.5 grid gap-y-7.5")
         binary
         size="20"
       )
-  div(class="grid gap-y-3 relative")
+  div(class="grid gap-y-3")
     div(v-for="(inventory, index) in material.inventoryList" class="flex items-center gap-x-3 relative" :style="{ zIndex: material.inventoryList.length - index }")
       input-text(
         v-model:textValue="inventory.section"

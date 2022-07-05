@@ -9,7 +9,6 @@ modal-behavior(
     div(class="grid grid-cols-2 grid-rows-2 gap-x-7.5 gap-y-6")
       input-text(
         v-model:textValue="formData.orgName"
-        class="relative"
         required
         :label="$t('AA0038')"
         :placeholder="$t('AA0039')"
@@ -18,7 +17,6 @@ modal-behavior(
       )
       input-select(
         v-model:selectValue="formData.countryCode"
-        class="relative z-10"
         :options="countryList"
         :label="$t('AA0036')"
         keyOptionDisplay="name"
@@ -36,14 +34,13 @@ modal-behavior(
         required
       )
     div(class="flex items-center mb-5")
-      div(class="text-caption font-bold text-black-500 mr-4.5") {{$t("RR0177")}}
+      div(class="text-caption font-bold text-black-500 mr-4.5") {{ $t("RR0177") }}
       div(class="border-t border-black-200 w-full")
     div(class="grid grid-cols-2 grid-rows-2 gap-x-7.5 gap-y-4")
       input-calling-code(
         v-model:textValue="formData.phone"
         v-model:countryCode="formData.phoneCountryCode"
-        class="relative z-9"
-        width="340"
+        class="w-85"
         :label="$t('AA0071')"
         :placeholder="$t('AA0072')"
       )
@@ -51,8 +48,7 @@ modal-behavior(
       input-calling-code(
         v-model:textValue="formData.fax"
         v-model:countryCode="formData.faxCountryCode"
-        class="relative z-8"
-        width="340"
+        class="w-85"
         :label="$t('AA0073')"
         :placeholder="$t('AA0074')")
 </template>

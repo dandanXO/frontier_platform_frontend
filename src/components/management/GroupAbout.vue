@@ -21,7 +21,7 @@ div
         :placeholder="$t('BB0089')"
         :customErrorMsg="isGroupNameExist ? $t('WW0001') : ''"
         required
-        class="w-85 relative z-11 mb-7.5"
+        class="w-85 mb-7.5"
       )
     input-textarea(v-model:textValue="groupFormData.description" :label="$t('BB0087')" :placeholder="$t('BB0088')" class="w-85 mb-7.5" height="160")
     btn(size="md" class="mx-auto" :disabled="!availableToCreateGroup" @click="updateGroup") {{ $t("UU0018") }}

@@ -14,7 +14,7 @@ modal-behavior(
       keyOptionDisplay="orgName"
       keyOptionValue="orgId"
       :label="$t('RR0212')"
-      class="mb-3 z-10"
+      class="mb-3"
     )
     input-chips(
       v-model:chips="selectedLocationList"

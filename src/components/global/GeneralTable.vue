@@ -12,13 +12,13 @@ div(class="relative")
       @change="$emit('search')"
       @clear="$emit('search')"
     )
-    tooltip(v-if="filterable" :showArrow="false" manual placement="bottom-end" :offset="[0, 8]" class="justify-self-end")
-      template(#trigger="{ isActive }")
-        div(class="cursor-pointer w-43 h-9 px-1.5 flex justify-between items-center border border-black-400 rounded" :class="{ 'border-primary': isActive }")
+    popper(v-if="filterable" placement="bottom-end" class="justify-self-end")
+      template(#trigger="{ isExpand }")
+        div(class="cursor-pointer w-43 h-9 px-1.5 flex justify-between items-center border border-black-400 rounded" :class="{ 'border-primary': isExpand }")
           div(class="flex justify-between items-center")
             svg-icon(iconName="filter" class="text-black-700 mr-1" size="20")
             span(class="text-primary") {{ $t("RR0085") }}
-          svg-icon(iconName="keyboard_arrow_down" class="text-black-500 transform" :class="{ 'rotate-180': isActive }")
+          svg-icon(iconName="keyboard_arrow_down" class="text-black-500 transform" :class="{ 'rotate-180': isExpand }")
       template(#content)
         slot(name="filter")
   div(ref="refTable" class="overflow-x-auto overflow-y-hidden" :style="{ width: boxWidth + 'px' }")

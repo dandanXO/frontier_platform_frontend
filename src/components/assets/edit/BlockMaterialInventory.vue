@@ -1,6 +1,6 @@
 <template lang="pug">
-dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border-b border-black-400")
-  template(#displayItem="{ isExpand }")
+expansion-panel(class="border-b border-black-400")
+  template(#trigger="{ isExpand }")
     div(class="h-15 flex items-center justify-between")
       h5(class="text-h5 text-primary font-bold") {{ $t("DD0021") }}
       svg-icon(
@@ -9,7 +9,7 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
         class="transform text-primary"
         :class="[isExpand ? '-rotate-90' : 'rotate-90']"
       )
-  template(#dropdownList)
+  template(#content)
     div(class="bg-black-100 px-15 py-12.5 mb-15 grid gap-y-7.5")
       h6(class="text-h6 text-black-600 font-bold") {{ $t("DD0019") }}
       input-text(
@@ -60,8 +60,8 @@ dropdown(:closeAfterSelect="false" :closeAfterOutsideClick="false" class="border
             binary
             size="20"
           )
-      div(class="grid gap-y-3 relative")
-        div(v-for="(inventory, index) in material.inventoryList" class="flex items-center gap-x-3 relative" :style="{ zIndex: material.inventoryList.length - index }")
+      div(class="grid gap-y-3")
+        div(v-for="(inventory, index) in material.inventoryList" class="flex items-center gap-x-3" :style="{ zIndex: material.inventoryList.length - index }")
           input-text(
             v-model:textValue="inventory.section"
             :label="index === 0 ? $t('RR0035') : ''"

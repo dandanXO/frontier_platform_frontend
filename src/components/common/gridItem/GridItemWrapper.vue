@@ -29,21 +29,19 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
       slot(name="hover-corner-top-right")
     div(v-if="isHover" class="absolute z-10 bottom-3 left-3")
       slot(name="hover-corner-bottom-right")
-    tooltip(
-      v-if="isHover && optionList.length > 0 && !haveSelectedMoreThanOne"
-      class="absolute z-10 bottom-3 right-3 cursor-pointer"
+    popper(
+      v-if="optionList.length > 0 && !haveSelectedMoreThanOne"
       placement="right-start"
-      :showArrow="false"
-      :manual="true"
-      :offset="[0, 8]"
+      class="absolute z-10 bottom-3 right-3 cursor-pointer"
+      :class="[isHover ? 'visible' : 'invisible']"
       @click.stop
     )
       template(#trigger)
         svg-icon(iconName="more_vert" size="20" class="text-black-0 hover:text-black-200" )
-      template(#content)
+      template(#content="{ collapsePopper }")
         list(class="w-55")
           template(v-for="(block, index) in optionList")
-            list-item(v-for="option in block" :disabled="!!option.disabled" @click.stop="$emit('click:option', option)") {{ option.name }}
+            list-item(v-for="option in block" :disabled="!!option.disabled" @click.stop="$emit('click:option', option); collapsePopper()") {{ option.name }}
             div(v-if="index !== optionList.length - 1" class="mx-2 my-1 h-px bg-black-400")
     slot(name="content")
     div(v-if="isHover" class="absolute inset-0 w-full h-full bg-black-900/70 rounded-md flex justify-center items-center")
