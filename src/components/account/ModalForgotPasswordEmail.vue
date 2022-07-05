@@ -8,7 +8,7 @@ modal-behavior(
   div(class="w-80 grid justify-items-center content-start gap-y-4 mt-5")
     svg-icon(iconName="ic-forgot-key" size="68")
     p(class="max-w-57 text-body2 text-primary text-center leading-1.6") {{ $t("AA0043") }}
-    input-text(v-model:textValue="email" class="w-full pb-8" prependIcon="mail" size="lg" placeholder="example@gmail.com" :customErrorMsg="errorMsg")
+    input-text(v-model:textValue="email" class="w-80 pb-7.5" prependIcon="mail" size="lg" placeholder="example@gmail.com" :customErrorMsg="errorMsg")
       template(#errorMsg v-if="!isEmailExist")
         div(class="absolute pt-1 text-caption")
           p(class="text-warn whitespace-nowrap") {{ $t("WW0043") }}

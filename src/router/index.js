@@ -3,13 +3,12 @@ import store from '@/store'
 import { ROLE_ID, NODE_TYPE } from '@/utils/constants'
 import Sidebar from '@/components/sidebar/Sidebar.vue'
 import i18n from '@/utils/i18n'
+import remindVerifyEmail from '@/utils/remind-verify-email'
 
 const checkUserIsVerify = (to, from, next) => {
   const user = store.getters['user/user']
   if (!user.isVerify) {
-    store.dispatch('helper/openModalBehavior', {
-      component: 'modal-verify-notification'
-    })
+    remindVerifyEmail()
     return next('/')
   }
   next()
