@@ -3,7 +3,7 @@ filter-wrapper(
   iconName="measure"
   :displayName="`${$t('RR0088')}/${$t('RR0015')}`"
   :dirty="filterDirty.widthAndWeightGsm"
-  @show="initWidthAndWeight"
+  @expand="initWidthAndWeight"
 )
   div(class="w-131 h-76.5 px-8 py-7.5 rounded card-shadow grid gap-y-13")
     filter-range(

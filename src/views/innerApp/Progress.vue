@@ -2,8 +2,7 @@
 div(class="px-6 pt-6.5 h-full flex flex-col")
   div(class="mb-4 h-11 flex justify-between items-center")
     div(class="text-h6 font-bold text-primary pl-1.5") {{ $t("PP0001") }}
-    div(class="w-75 relative z-10")
-      input-select(:selectValue="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup")
+    input-select(:selectValue="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup" class="w-75")
   tabs(:tabList="tabList" :initValue="$route.params.tab" @switch="toggleTab($event.path)")
     template(#default="{ currentTab }")
       div(class="flex items-center gap-x-2 pt-4 pb-3")

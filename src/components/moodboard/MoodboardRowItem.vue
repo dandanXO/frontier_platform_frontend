@@ -61,15 +61,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-blac
           svg-icon(iconName="u3m" size="24")
       template(#content)
         div(class="py-3 px-3 text-primary text-caption whitespace-nowrap") {{ $t("RR0059") }}
-    div(v-if="isShowOverlay" class="fixed" style="width: 4000px; height: 3000px; top: -1500px; left: -2000px;")
-    tooltip(
-      placement="left-start"
-      :showArrow="false"
-      :offset="[0, 8]"
-      @show="openOverlay"
-      @hide="closeOverlay"
-      manual
-    )
+    popper(placement="left-start")
       template(#trigger)
         div(class="w-7.5 h-7.5 hover:bg-brand/10 hover:text-brand flex justify-center items-center rounded-full cursor-pointer")
           svg-icon(iconName="more_horiz" size="24")
@@ -123,8 +115,4 @@ const isHover = ref(false)
 const openModalIndicatorMethodology = () => {
   store.dispatch('helper/openModalBehavior', { component: 'modal-indicator-methodology' })
 }
-
-const isShowOverlay = ref(false)
-const openOverlay = () => { isShowOverlay.value = true }
-const closeOverlay = () => { isShowOverlay.value = false }
 </script>

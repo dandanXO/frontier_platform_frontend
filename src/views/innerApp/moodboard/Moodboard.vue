@@ -21,7 +21,7 @@ div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
           div
             span(class="text-caption text-black-700 leading-1.6 mr-2") {{ $t("RR0066") }}: {{ $dayjs.unix(moodboard.updateDate).format("YYYY/MM/DD・hh:mm:ss A") }}
             span(v-if="moodboard.hasNewUpdate" class="text-caption text-brand leading-1.6 font-bold") {{ $t("QQ0005") }}
-        tooltip(v-if="currentTab === MOODBOARD_TYPE.DEMANDER" placement="bottom-end" :manual="true" :showArrow="false" :offset="[0, 5]" class="my-auto mr-7 ml-auto")
+        popper(v-if="currentTab === MOODBOARD_TYPE.DEMANDER" placement="bottom-end" class="my-auto mr-7 ml-auto" @click.stop)
           template(#trigger)
             div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
               svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")

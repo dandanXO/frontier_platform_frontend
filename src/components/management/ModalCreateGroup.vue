@@ -13,7 +13,7 @@ modal-behavior(
       :placeholder="$t('BB0089')"
       :customErrorMsg="isGroupNameExist ? $t('WW0001') : ''"
       required
-      class="relative z-11 mb-7.5"
+      class="mb-7.5"
     )
     input-textarea(v-model:textValue="description" :label="$t('BB0087')" :placeholder="$t('BB0088')" class="mb-1" height="160")
   template(#note) 

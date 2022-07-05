@@ -82,6 +82,7 @@ module.exports = {
         "modal-confirm": 200,
         "flash-msg": 201,
         "footer": 200,
+        "popper": 999,
         ...zIndex
       },
       spacing: spacing,

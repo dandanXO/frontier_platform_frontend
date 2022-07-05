@@ -33,7 +33,6 @@ modal-behavior(
       )
       input-select(
         v-model:selectValue="formData.countryCode"
-        class="relative z-10"
         :options="countryList"
         :label="$t('OO0024')"
         keyOptionDisplay="name"

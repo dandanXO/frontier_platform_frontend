@@ -2,12 +2,12 @@
 div
   div(class="flex items-center mb-6 text-primary")
     h5(class="text-h5 font-bold") {{ $t('RR0132') }}
-    tooltip(placement="top" class="pl-1" :manual="true")
+    popper(placement="top" class="pl-1" showArrow)
       template(#trigger)
         svg-icon(iconName="info_outline" class="cursor-pointer" size="14")
-      template(#content)
+      template(#content="{ collapsePopper }")
         div(class="p-5")
-          span(class="text-body2 text-assist-blue underline leading-1.6 cursor-pointer" @click="openModalU3mInstruction") {{ $t("UU0029") }}
+          span(class="text-body2 text-assist-blue underline leading-1.6 cursor-pointer" @click="openModalU3mInstruction(); collapsePopper()") {{ $t("UU0029") }}
   p(class="text-caption text-black-800 font-bold leading-1.6 mb-1") {{ $t("EE0017") }}
     svg-icon(v-if="material.u3m.status === IN_QUEUE || material.u3m.status === PROCESSING" iconName="loading" size="16" class="text-brand inline-block ml-2")
   div(v-if="material.u3m.status === INITIAL || material.u3m.status === UNQUALIFIED" class="flex items-center bg-black-50 w-fit px-3.5 h-8.5 rounded mb-6")

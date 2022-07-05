@@ -35,9 +35,8 @@ div(class="pb-15 border-b border-black-400")
           keyOptionDisplay="name"
           keyOptionValue="name"
           @addNewOption="addDescriptionOption($event)"
-          class="relative z-13"
         )
-        input-container(:label="$t('RR0015')" required class="relative z-12")
+        input-container(:label="$t('RR0015')" required)
           div(class="flex items-center gap-x-3")
             input-text(
               v-model:textValue="material.weight"
@@ -59,7 +58,7 @@ div(class="pb-15 border-b border-black-400")
               class="w-50"
             )
             p(class="text-body2 text-primary font-bold") {{ $t("RR0018") }}
-        input-container(:label="$t('RR0019')" required class="relative z-11")
+        input-container(:label="$t('RR0019')" required)
           div(class="flex items-center gap-x-3")
             input-text(
               v-model:textValue="material.width"
@@ -68,7 +67,7 @@ div(class="pb-15 border-b border-black-400")
               class="w-50"
             )
             p(class="text-body2 text-primary font-bold") {{ $t("RR0020") }}
-        input-container(:label="$t('RR0021')" required class="relative z-10")
+        input-container(:label="$t('RR0021')" required)
           div(class="grid gap-y-3")
             div(v-for="(content, contentItemIndex) in material.contentList" class="flex items-center")
               input-select(
@@ -99,7 +98,6 @@ div(class="pb-15 border-b border-black-400")
           keyOptionDisplay="name"
           keyOptionValue="name"
           @addNewOption="addFinishOption($event)"
-          class="relative z-9"
         )
         input-container(:label="$t('RR0023')")
           div(class="flex items-center gap-x-3")
@@ -144,10 +142,10 @@ div(class="pb-15 border-b border-black-400")
           v-model:chips="material.publicTagList"
           :label="$t('RR0027')"
           :placeholder="$t('DD0018')"
-          class="relative z-9"
         )
-        input-container(v-if="isEditMode" :label="$t('RR0071')" class="relative z-9")
+        div(v-if="isEditMode" class="relative")
           input-chips(
+            :label="$t('RR0071')"
             v-model:chips="material.aiTagList"
             :placeholder="$t('DD0018')"
           )
@@ -171,7 +169,6 @@ div(class="pb-15 border-b border-black-400")
         v-model:chips="material.privateTagList"
         :label="$t('RR0028')"
         :placeholder="$t('DD0020')"
-        class="relative z-8"
       )
       input-textarea(
         v-model:textValue="material.remark"

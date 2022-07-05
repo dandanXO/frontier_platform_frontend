@@ -66,14 +66,17 @@ general-table(
         p {{ $t("PP0013") }}
     div(v-if="prop === 'action'" class="flex justify-end")
       btn(v-if="item.status === UPLOAD_PROGRESS.COMPLETE" type="secondary" size="sm" :disabled="item.isMaterialDeleted" @click="handleViewMaterial(item)") {{ $t("UU0086") }}
-      div(v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE || item.status === UPLOAD_PROGRESS.UNSUCCESSFUL")
-        tooltip(v-if="isHover" placement="bottom-end" :manual="true" :showArrow="false" :offset="[0, 5]")
-          template(#trigger)
-            div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
-              svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
-          template(#content)
-            list
-              list-item(@click="handleCancel(item.materialProgressId)") {{ $t("UU0002") }}
+      popper(
+        v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE || item.status === UPLOAD_PROGRESS.UNSUCCESSFUL"
+        placement="bottom-end"
+        :class="[isHover ? 'visible' : 'invisible']"
+      )
+        template(#trigger)
+          div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
+            svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
+        template(#content)
+          list
+            list-item(@click="handleCancel(item.materialProgressId)") {{ $t("UU0002") }}
 </template>
 
 <script setup>

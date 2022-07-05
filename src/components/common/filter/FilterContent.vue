@@ -3,7 +3,7 @@ filter-wrapper(
   iconName="ingredient"
   :displayName="$t('RR0021')"
   :dirty="filterDirty.contentList"
-  @show="init"
+  @expand="init"
 )
   div(class="w-126.5 min-h-54.5 rounded card-shadow")
     div(class="px-8 pt-7.5")

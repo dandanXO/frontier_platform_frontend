@@ -3,7 +3,7 @@ filter-wrapper(
   iconName="stock"
   :displayName="$t('RR0093')"
   :dirty="filterDirty.inventory"
-  @show="init"
+  @expand="init"
 )
   div(class="w-131 h-50.5 px-8 py-7.5 rounded card-shadow grid gap-y-13")
     filter-range(

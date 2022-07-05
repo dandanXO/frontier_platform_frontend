@@ -31,15 +31,15 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-black-100 sidebar-shadow f
           span(class="text-body2 line-clamp-1 flex-grow" :class="[planStatus.INACTIVE ? 'text-black-500' : 'text-primary']") {{ $t('PP0001') }}
           div(v-if="isProcessing" class="h-6 w-6.5 flex justify-center items-center rounded mr-2")
             svg-icon(iconName="loading" size="20" class="text-brand")
-        dropdown(v-for="item in menuOrgOrGroup" :options="item.menuList" :closeAfterSelect="false" :closeAfterOutsideClick="false" :class="[{ 'pointer-events-none': item.disabled }]")
-          template(#displayItem="{ isExpand }")
+        expansion-panel(v-for="item in menuOrgOrGroup" :class="[{ 'pointer-events-none': item.disabled }]")
+          template(#trigger="{ isExpand }")
             div(class="flex items-center h-9 pl-4 pr-5 hover:bg-black-400")
               label(class="w-3 h-3 rounded-sm mr-3" :style="{ backgroundColor: item.disabled ? '#c4c4c4' : item.labelColor }")
               span(class="flex-grow text-body2 line-clamp-1" :class="[item.disabled ? 'text-black-500' : 'text-primary']") {{ item.name }}
               svg-icon(iconName="keyboard_arrow_right" size="24" class=" transform" :class="[isExpand ? 'rotate-90' : 'rotate-0', item.disabled ? 'text-black-500' : 'text-black-650']")
-          template(#dropdownList="{ options }")
+          template(#content)
             div(class="flex flex-col gap-y-0.5")
-              sidebar-item(v-for="(menu, index) in options" v-bind="menu" class="relative flex justify-between" :style="{ zIndex: 20 - index }")
+              sidebar-item(v-for="(menu, index) in item.menuList" v-bind="menu" class="relative flex justify-between" :style="{ zIndex: 20 - index }")
                 p(class="pl-7 text-body2 text-primary line-clamp-1") {{ $t(menu.title) }}
                 template(v-if="menu.id === 'assets'")
                   tooltip(placement="bottom" class="mr-3")

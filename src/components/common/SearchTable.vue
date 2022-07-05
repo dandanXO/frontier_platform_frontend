@@ -15,18 +15,13 @@ div(class="w-full h-full flex flex-col")
         size="20"
       )
       btn-functional(v-if="canSelectAll" size="lg" @click="selectAll") {{ $t("RR0052") }}
-      tooltip(
-        placement="bottom-end"
-        :manual="true"
-        :showArrow="false"
-        :offset="[0, 8]"
-      )
-        template(#trigger="{ isActive }")
+      popper(placement="bottom-end")
+        template(#trigger="{ isExpand }")
           svg-icon(
             iconName="swap_horiz"
             size="24"
             class="transform rotate-90 cursor-pointer text-black-700 hover:text-brand"
-            :class="{ 'text-brand': isActive }"
+            :class="{ 'text-brand': isExpand }"
           )
         template(#content)
           contextual-menu(v-model:selectValue="sort" :optionList="innerOptionSort" @update:selectValue="search()")

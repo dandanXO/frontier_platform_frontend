@@ -23,7 +23,7 @@ const actions = {
   },
   async getUser ({ dispatch }) {
     const { data } = await userApi.getUser()
-    i18n.global.locale = data.result?.user.locale
+    i18n.global.locale.value = data.result?.user.locale
     dispatch('handleResponseData', { data }, { root: true })
   },
   async changeLocale ({ dispatch }, params) {

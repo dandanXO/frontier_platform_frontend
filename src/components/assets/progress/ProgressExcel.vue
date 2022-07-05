@@ -12,7 +12,6 @@ general-table(
   @search="getList()"
   @sort="getList()"
   @goTo="getList($event)"
-  @handleMouseEnter="handleMouseEnter"
   filterable
   searchable
 )
@@ -91,23 +90,16 @@ general-table(
         //- Upload Complete
         template(v-if="item.category === EXCEL_CATEGORY.UPLOAD")
           btn(type="secondary" size="sm" class="mr-2.5" @click="goToAssets") {{ $t("UU0088") }}
-          div(class="w-7.5")
-            tooltip(v-show="isHover"
-              placement="bottom-end"
-              :manual="true"
-              :showArrow="false"
-              :offset="[0, 5]"
-              :key="randomKey"
-            )
-              template(#trigger)
-                div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
-                  svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
-              template(#content)
-                list(v-if="item.status === UPLOAD_PROGRESS.COMPLETE && item.category === EXCEL_CATEGORY.UPLOAD")
-                  list-item(@click="handleAction(PRINT_TYPE.CARD, item.excelProgressId)") {{ $t("RR0062") }}
-                  list-item(@click="handleAction(PRINT_TYPE.LABEL, item.excelProgressId)") {{ $t("RR0061") }}
-                  div(class="border-t border-black-400 my-1")
-                  list-item(@click="handleAction(_, item.excelProgressId)") {{ $t("RR0060") }}
+          popper(placement="bottom-end" class="w-7.5" :class="[isHover ? 'visible' : 'invisible']")
+            template(#trigger)
+              div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
+                svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
+            template(#content)
+              list(v-if="item.status === UPLOAD_PROGRESS.COMPLETE && item.category === EXCEL_CATEGORY.UPLOAD")
+                list-item(@click="handleAction(PRINT_TYPE.CARD, item.excelProgressId)") {{ $t("RR0062") }}
+                list-item(@click="handleAction(PRINT_TYPE.LABEL, item.excelProgressId)") {{ $t("RR0061") }}
+                div(class="border-t border-black-400 my-1")
+                list-item(@click="handleAction(_, item.excelProgressId)") {{ $t("RR0060") }}
         //- Export Complete
         btn(
           v-else-if="item.category === EXCEL_CATEGORY.EXPORT"
@@ -117,15 +109,17 @@ general-table(
           @click="downloadDataURLFile(item.fileUrl, item.fileName)"
         ) {{ $t("UU0089") }}
       //- In queue & Unsuccessful
-      template(v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE")
-        div(class="w-7.5")
-          tooltip(v-if="isHover" placement="bottom-end" :manual="true" :showArrow="false" :offset="[0, 5]")
-            template(#trigger)
-              div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
-                svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
-            template(#content)
-              list()
-                list-item(@click="handleCancel(item.excelProgressId)") {{ $t("UU0002") }}
+      popper(
+        v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE" placement="bottom-end"
+        class="w-7.5"
+        :class="[isHover ? 'visible' : 'invisible']"
+      )
+        template(#trigger)
+          div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
+            svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
+        template(#content)
+          list
+            list-item(@click="handleCancel(item.excelProgressId)") {{ $t("UU0002") }}
 </template>
 
 <script setup>
@@ -167,7 +161,6 @@ const route = useRoute()
 const { goToAssets } = useNavigation()
 const { exportExcel } = useAssets()
 
-const randomKey = ref(0)
 const isLoading = ref(false)
 const keyword = ref('')
 const pagination = ref({
@@ -330,10 +323,6 @@ const handleAction = async (type, excelProgressId) => {
       exportExcel.func(materialList)
     }
   }
-}
-
-const handleMouseEnter = () => {
-  randomKey.value++
 }
 
 const handleCancel = async (excelProgressId) => {

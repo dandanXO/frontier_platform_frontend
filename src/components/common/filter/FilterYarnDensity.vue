@@ -3,7 +3,7 @@ filter-wrapper(
   iconName="fabric_2"
   :displayName="`${$t('RR0023')}/${$t('RR0024')}`"
   :dirty="filterDirty.yarnAndDensity"
-  @show="initFormYarnAndDensity"
+  @expand="initFormYarnAndDensity"
 )
   div(class="w-127 h-113 px-8 py-7.5 rounded card-shadow grid gap-y-7.5")
     div(class="flex flex-col gap-y-5")

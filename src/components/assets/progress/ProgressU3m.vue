@@ -70,20 +70,20 @@ general-table(
           svg-icon(iconName="more_horiz" size="24" class="text-primary-middle")
       template(v-else)
         btn(v-if="item.status === UPLOAD_PROGRESS.COMPLETE" type="secondary" size="sm" class="mr-2.5" @click="openModalViewer(item.materialId)") {{ $t("UU0006") }}
-        div(class="w-7.5")
-          tooltip(v-if="isHover && item.status === UPLOAD_PROGRESS.IN_QUEUE" placement="bottom-end" :manual="true" :showArrow="false" :offset="[0, 5]")
-            template(#trigger)
-              div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
-                svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
-            template(#content)
-              list
+        popper(
+          v-if="[UPLOAD_PROGRESS.IN_QUEUE, UPLOAD_PROGRESS.COMPLETE].includes(item.status)"
+          class="w-7.5"
+          placement="bottom-end"
+          :class="[isHover ? 'visible' : 'invisible']"
+        )
+          template(#trigger)
+            div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
+              svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
+          template(#content)
+            list
+              template(v-if="item.status === UPLOAD_PROGRESS.IN_QUEUE" )
                 list-item(@click="handleCancel(item.u3mProgressId)") {{ $t("UU0002") }}
-          tooltip(v-else-if="isHover && item.status === UPLOAD_PROGRESS.COMPLETE" placement="bottom-end" :manual="true" :showArrow="false" :offset="[0, 5]")
-            template(#trigger)
-              div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
-                svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
-            template(#content)
-              list
+              template(v-else-if="item.status === UPLOAD_PROGRESS.COMPLETE" )
                 list-item(@click="openModalDownloadU3M(item.materialId)") {{ $t("RR0059") }}
                 list-item(@click="openModalCreate3DMaterial(item.materialId)") {{ $t("PP0019") }}
                 list-item(@click="handleViewMaterial(item)") {{ $t("PP0016") }}

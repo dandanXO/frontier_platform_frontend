@@ -11,7 +11,7 @@ div(class="flex flex-col items-center")
         :placeholder="$t('QQ0036')"
         keyOptionDisplay="label"
         keyOptionValue="value"
-        class="w-82 mb-3 z-10"
+        class="w-82 mb-3"
         @select="handleSelect"
       )
       div(class="flex items-end")

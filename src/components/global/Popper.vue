@@ -2,7 +2,7 @@
 $radius: 3px;
 $shadow: rgba(0, 0, 0, 0.1);
 
-div[role="tooltip"] {
+div[role="popper"] {
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
 
   &[data-popper-placement^="top"]>#arrow {
@@ -63,32 +63,32 @@ div[role="tooltip"] {
 </style>
 
 <template lang="pug">
-div
-  div(
-    ref="refTrigger"
-    class="w-fit"
-    aria-describedby="tooltip"
-    @mouseenter="showTooltip"
-    @mouseleave="hideTooltip"
-  )
-    slot(name="trigger" :isActive="isActive")
-  div(ref="refTooltip" role="tooltip" class="z-100 rounded bg-black-0" :class="{ 'hidden': !isActive }")
-    slot(v-if="isActive" name="content" :isActive="isActive")
-    div(v-if="showArrow" id="arrow" data-popper-arrow)
+div(
+  ref="refTrigger"
+  aria-describedby="popper"
+  @click="expandPopper"
+  v-bind="$attrs"
+)
+  slot(name="trigger" :isExpand="isExpand")
+teleport(v-if="isExpand" to="body")
+  div(class="fixed z-popper w-screen h-screen top-0 left-0" @click="collapsePopper")
+    div(ref="refPopper" role="popper" class="relative rounded bg-black-0" @click.stop)
+      slot(v-if="isExpand" name="content" :isExpand="isExpand" :collapsePopper="collapsePopper")
+      div(v-if="showArrow" id="arrow" data-popper-arrow)
 </template>
 
 <script>
 export default {
-  name: 'Tooltip'
+  name: 'Popper'
 }
 </script>
 
 <script setup>
-import { ref, onMounted, reactive } from 'vue'
+import { ref, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core'
 // https://popper.js.org/docs/v2/
 
-const emit = defineEmits(['show', 'hide'])
+const emit = defineEmits(['expand', 'collapse'])
 const props = defineProps({
   placement: {
     type: String,
@@ -113,57 +113,47 @@ const props = defineProps({
   },
   offset: {
     type: Array,
-    default: () => [0, 13]
+    default: () => [0, 10]
   },
   showArrow: {
     type: Boolean,
-    default: true
+    default: false
   }
 })
 
-const isActive = ref(false)
+const isExpand = ref(false)
 const refTrigger = ref(null)
-const refTooltip = ref(null)
-let popperInstance = reactive({})
-const option = {
-  placement: props.placement,
-  modifiers: [
+const refPopper = ref(null)
+
+const expandPopper = async () => {
+  if (isExpand.value) {
+    return
+  }
+
+  isExpand.value = true
+
+  await nextTick()
+
+  createPopper(
+    refTrigger.value,
+    refPopper.value,
     {
-      name: 'offset',
-      options: {
-        offset: props.offset
-      }
+      placement: props.placement,
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: props.offset
+          }
+        }
+      ]
     }
-  ]
+  )
+  emit('expand')
 }
 
-const showTooltip = () => {
-  isActive.value = true
-
-  popperInstance.setOptions((options) => ({
-    ...options,
-    modifiers: [
-      ...options.modifiers,
-      { name: 'eventListeners', enabled: true }
-    ]
-  }))
-  emit('show')
+const collapsePopper = () => {
+  isExpand.value = false
+  emit('collapse')
 }
-
-const hideTooltip = () => {
-  isActive.value = false
-
-  popperInstance.setOptions((options) => ({
-    ...options,
-    modifiers: [
-      ...options.modifiers,
-      { name: 'eventListeners', enabled: false }
-    ]
-  }))
-  emit('hide')
-}
-
-onMounted(() => {
-  popperInstance = createPopper(refTrigger.value, refTooltip.value, option)
-})
 </script>
