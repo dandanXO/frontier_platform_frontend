@@ -137,11 +137,10 @@ const Material = {
     SET_material (state, material) {
       Object.assign(state, Material.state())
       Object.assign(state, material)
-      if (material.weightUnit) {
-        state.weight = material.weightUnit === WEIGHT_UNIT.GSM.value ? material.weightGsm : material.weightOz
-      } else {
+      if (!material.weightUnit) {
         state.weightUnit = WEIGHT_UNIT.GSM.value
       }
+      state.weight = material.weightUnit === WEIGHT_UNIT.GSM.value ? material.weightGsm : material.weightOz
     },
     RESET_material (state) {
       Object.assign(state, Material.state())
