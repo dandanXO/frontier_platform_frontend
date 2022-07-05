@@ -4,7 +4,7 @@ div(class="h-full")
     breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)" class="mt-12 mb-9")
     div(class="flex items-end mb-4")
       p(class="text-h4 font-bold text-primary mr-3.5") {{ $t("QQ0034") }}
-      i18n-t(keypath="RR0068" tag="p" class="text-caption text-black-500 pb-0.5")
+      i18n-t(keypath="RR0068" tag="p" class="text-caption text-black-500 pb-0.5" scope="global")
         template(#number) {{ moodboardOfferNodeCollection.childNodeList.length }}
     p(class="text-body2 text-black-800 mb-4") {{ $t("QQ0035") }}
     div(class="flex items-center justify-between mb-2")
@@ -52,7 +52,7 @@ div(class="h-full")
             p(class="pl-1 font-bold text-caption text-primary") {{ node.creator }}
   div(v-else class="flex flex-col justify-center items-center mt-16")
     p(class="text-h4 text-primary mb-6") {{ $t("QQ0018") }}
-    i18n-t(keypath="QQ0087" tag="p" class="text-body1 text-black-700")
+    i18n-t(keypath="QQ0087" tag="p" class="text-body1 text-black-700" scope="global")
       template(#number)
         span(class="text-assist-blue cursor-pointer" @click="goToMoodboardDetail(moodboard.moodboardId)") {{ $t("QQ0088") }}
   multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")

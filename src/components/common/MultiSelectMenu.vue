@@ -11,7 +11,7 @@
 <template lang="pug">
 div(v-if="innerSelectedList.length > 0" class="menu-position menu-shadow w-fit px-15 py-7.5 bg-black-0 rounded-full text-body2 text-primary flex justify-center items-center")
   svg-icon(iconName="cancel" size="24" class="text-black-400 mr-4 cursor-pointer" @click="clearList")
-  i18n-t(keypath="RR0073" tag="div" class="mr-7.5")
+  i18n-t(keypath="RR0073" tag="div" class="mr-7.5" scope="global")
     template(#number) {{ innerSelectedList.length }}
   div(class="flex flex-wrap gap-y-5 divide-x w-fit max-w-127")
     template(v-for="option in optionMultiSelect")

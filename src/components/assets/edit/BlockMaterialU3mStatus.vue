@@ -46,7 +46,7 @@ div
   div(v-if="material.u3m.status === COMPLETED" class="text-primary flex items-center cursor-pointer mt-5.5" @click="handleCreateU3m")
     svg-icon(iconName="rotate_right" size="20")
     p(class="text-body2 ml-1") {{ $t("UU0030") }}
-  i18n-t(v-else-if="material.u3m.status === UNSUCCESSFUL" keypath="EE0119" tag="p" class="leading-1.6 mt-2 text-caption text-warn-middle")
+  i18n-t(v-else-if="material.u3m.status === UNSUCCESSFUL" keypath="EE0119" tag="p" class="leading-1.6 mt-2 text-caption text-warn-middle" scope="global")
     template(#newline)
       br
     template(#EE0120)

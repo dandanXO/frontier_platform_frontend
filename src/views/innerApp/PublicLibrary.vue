@@ -15,7 +15,7 @@ div(class="w-full h-full relative")
           breadcrumb(:breadcrumbList="breadcrumbList" @click:item="(currentNodeKey = $event.nodeKey); goTo()" fontSize="text-h6")
           p(class="flex text-caption text-black-700 pl-1")
             span (
-            i18n-t(keypath="RR0068" tag="span")
+            i18n-t(keypath="RR0068" tag="span" scope="global")
               template(#number) {{ pagination.totalCount }}
             span )
         tooltip(v-if="!isFirstLayer" placement="bottom")
@@ -31,7 +31,7 @@ div(class="w-full h-full relative")
     template(#header-right)
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
     template(v-if="!isFirstLayer" #sub-header)
-      i18n-t(keypath="II0002" tag="p" class="mx-7.5 mb-7.5 text-caption text-black-700")
+      i18n-t(keypath="II0002" tag="p" class="mx-7.5 mb-7.5 text-caption text-black-700" scope="global")
         template(#displayName) {{ publishBy }}
     template(#default="{ goTo }")
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")

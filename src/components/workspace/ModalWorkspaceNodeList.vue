@@ -27,7 +27,7 @@ modal-behavior(
         div(class="flex items-center")
           div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
             svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
-            i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption")
+            i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption" scope="global")
               template(#number) {{ selectedValue.length }}
           popper(v-if="!isInRoot" placement="bottom-end")
             template(#trigger="{ isExpand }")

@@ -18,7 +18,7 @@ div(class="w-screen h-screen flex justify-center items-center bg-black-100")
             span(class="w-30.5 text-black-500 text-body2 text-center") {{ $t("AA0005") }}
             div(class="w-19 h-px border-b border-black-400")
           button(id="google-sign-in")
-      i18n-t(keypath="UU0045" tag="p" class="text-black-800 text-body2 font-normal text-center pt-3")
+      i18n-t(keypath="UU0045" tag="p" class="text-black-800 text-body2 font-normal text-center pt-3" scope="global")
         template(#signUp)
           router-link-extending(class="text-primary font-bold ml-3" :to="{ path: '/sign-up', query: $route.query }") {{ $t("AA0016") }}
 </template>

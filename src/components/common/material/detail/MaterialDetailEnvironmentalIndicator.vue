@@ -55,7 +55,7 @@ div(class="flex flex-col")
         div(class="col-span-2 h-9.5 flex items-center gap-x-1")
           svg-icon(iconName="keyboard_arrow_right" size="24" class="text-black-400")
           span(v-if="property.saving != null" class="whitespace-nowrap text-caption leading-1.6") {{ property.saving }}&nbsp
-            i18n-t(:keypath="property.saveUnit")
+            i18n-t(:keypath="property.saveUnit" scope="global")
               template(#newline)
                 br
           hr(v-else class="w-4 border-black-500")

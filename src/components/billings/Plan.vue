@@ -3,7 +3,7 @@ div(class="w-195")
   p(class="text-body1 text-primary mt-18.5 mb-5 flex") {{ $t('OO0008') }}
     span(v-if="!planType.ENT && planStatus.BUFFER" class="flex items-center pl-5")
       svg-icon(iconName="warning_amber_round" size="20" class="text-warn")
-      i18n-t(keypath="WW0088" tag="span" class="text-caption text-warn pl-1")
+      i18n-t(keypath="WW0088" tag="span" class="text-caption text-warn pl-1" scope="global")
         template(#UU0082)
           span(class="text-assist-blue cursor-pointer" @click="payLastMonthUnbilledInfo") {{ $t('UU0082') }}
   div(class="grid grid-cols-3 grid-rows-2 gap-3 h-78")

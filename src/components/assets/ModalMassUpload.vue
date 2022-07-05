@@ -26,7 +26,7 @@ modal-behavior(
       p(class="text-black-800 text-caption mb-2") {{ $t("RR0243") }} {{acceptType.join(', ').toUpperCase()}}
       p(class="text-black-800 text-caption") {{$t("RR0145")}} {{fileSizeMaxLimit}} MB
     div(class="text-primary text-caption leading-1.6")
-      i18n-t(keypath="DD0036" tag="p")
+      i18n-t(keypath="DD0036" tag="p" scope="global")
         template(#UU0065)
           a(
             v-if="locale === 'en-US'"

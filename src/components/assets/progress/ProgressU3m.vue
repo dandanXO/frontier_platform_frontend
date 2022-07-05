@@ -49,7 +49,7 @@ general-table(
       div(v-if="item.status === UPLOAD_PROGRESS.UNSUCCESSFUL" class="text-warn-middle inline-flex")
         svg-icon(iconName="warning_amber_round" size="16" class="mr-1.5 mt-0.5")
         p(v-if="item.msgCode === ERROR_MSG.SOURCE_DELETED") {{ $t("PP0034") }}
-        i18n-t(v-else keypath="PP0014" tag="p")
+        i18n-t(v-else keypath="PP0014" tag="p" scope="global")
           template(#RR0123)
             span(class="text-assist-blue ml-0.5 cursor-pointer" @click="openModalSendFeedback") {{ $t("RR0123") }}
       //- In Queue

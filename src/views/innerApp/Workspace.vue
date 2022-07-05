@@ -13,7 +13,7 @@ div(class="w-full h-full")
         breadcrumb(:breadcrumbList="breadcrumbList" @click:item="(currentNodeKey = $event.nodeKey); goTo()" fontSize="text-h6")
         p(class="flex text-caption text-black-700 pl-1")
           span (
-          i18n-t(keypath="RR0068" tag="span")
+          i18n-t(keypath="RR0068" tag="span" scope="global")
             template(#number) {{ pagination.totalCount }}
           span )
     template(#header-right)

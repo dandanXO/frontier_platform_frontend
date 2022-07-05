@@ -51,7 +51,7 @@ general-table(
       //- Completed
       div(v-else-if="item.status === UPLOAD_PROGRESS.COMPLETE && item.isMapping" class="text-black-500 inline-flex")
         svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
-        i18n-t(keypath="PP0025" tag="p")
+        i18n-t(keypath="PP0025" tag="p" scope="global")
           template(#fabricSide)
             span(v-if="item.sideType === SIDE_TYPE.FACE") {{ $t('PP0033') }}
             span(v-if="item.sideType === SIDE_TYPE.BACK") {{ $t('PP0032') }}

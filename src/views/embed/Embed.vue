@@ -22,7 +22,7 @@ div(class="max-w-315 h-full mx-auto pt-10")
               breadcrumb(:breadcrumbList="breadcrumbList" @click:item="(currentNodeKey = $event.nodeKey); goTo()" fontSize="text-h5")
               p(class="flex text-caption text-black-700 pl-1")
                 span (
-                i18n-t(keypath="RR0068" tag="span")
+                i18n-t(keypath="RR0068" tag="span" scope="global")
                   template(#number) {{ pagination.totalCount }}
                 span )
           btn(size="sm" type="secondary" @click="isCollectionDetailExpand = !isCollectionDetailExpand") {{ isCollectionDetailExpand ? $t("UU0026") : $t("UU0071") }}

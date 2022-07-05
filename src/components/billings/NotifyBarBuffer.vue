@@ -11,7 +11,7 @@ div(
       template(v-else) {{ $t('OO0149') }}
     div(v-if="planType.ENT" class="flex items-center text-h6 ml-3")
       h6 {{ $t('OO0147', { date: bufferDeactivatedDate }) }}
-      i18n-t(keypath="OO0148" tag="h6" class="pl-1")
+      i18n-t(keypath="OO0148" tag="h6" class="pl-1" scope="global")
         template(#RR0139)
           span(class="font-bold") {{ $t('RR0139') }}
   div(class="flex items-center")

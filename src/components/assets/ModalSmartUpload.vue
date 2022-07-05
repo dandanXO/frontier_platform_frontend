@@ -29,7 +29,7 @@ modal-behavior(
       )
         div(class="w-44 flex flex-col items-center")
           svg-icon(iconName="cloud_upload" size="68" class="text-brand")
-          i18n-t(keypath="DD0104" tag="div" class="text-center text-black-800 text-body2 font-bold leading-1.6")
+          i18n-t(keypath="DD0104" tag="div" class="text-center text-black-800 text-body2 font-bold leading-1.6" scope="global")
             template(#DD0108)
               span(class="text-brand inline-block") {{ $t("DD0108") }}
           div(class="text-caption text-black-600 leading-1.6 pt-2.5 pb-2") {{ $t("DD0105") }}
