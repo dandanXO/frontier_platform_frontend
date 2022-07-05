@@ -8,8 +8,8 @@ div(class="fixed inset-0 z-modal-confirm  w-screen h-screen bg-black-900/30 flex
       p(v-if="!!contentText" class="text-body2 leading-1.6" v-html="contentText")
       component(v-else :is="contentComponent")
     div(class="h-11.5 pt-3 flex justify-between")
-      div
-        p(v-if="!!noteText" class="flex items-center text-caption leading-1.6" v-html="noteText")
+      p(class="flex items-center text-caption leading-1.6")
+        span(v-if="!!noteText" v-html="noteText")
         component(v-else :is="noteComponent")
       div(class="grid grid-flow-col gap-x-2.5")
         btn(v-if="textBtnText !== ''" size="sm" type="text" @click="textHandler") {{ textBtnText }}

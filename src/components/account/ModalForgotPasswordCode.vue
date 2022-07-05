@@ -2,22 +2,25 @@
 modal-behavior(
   :header="$t('AA0047')"
   :primaryBtnText="$t('UU0052')"
-  :secondaryBtnText="$t('UU0051')"
   @click:primary="verifyForgotPasswordCode"
-  @click:secondary="sendForgotPasswordEmail"
 )
   div(class="w-80 flex flex-col items-center")
     svg-icon(iconName="send-mail" size="68" class="mb-4")
-    p(class="text-h6 text-primary font-bold mb-4") {{ $t("AA0047") }}
     i18n-t(keypath="AA0048" tag="div" class="text-body2 text-primary text-center leading-1.6 mb-4")
       template(#email)
         br
         div(class="font-bold line-clamp-1") {{ email }}
-    input-text(v-model:textValue="verifyCode" class="w-full pb-8" size="lg" :placeholder="$t('AA0076')")
+    input-text(v-model:textValue="verifyCode" class="w-80 mb-8" size="lg" :placeholder="$t('AA0076')")
+    p(
+      ref="refText"
+      class="text-body2 leading-1.6 w-fit"
+      :class="[secRemains > 0 ? 'text-black-400 cursor-not-allowed' : 'text-assist-blue cursor-pointer']"
+      @click="sendForgotPasswordEmail"
+    )
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 
@@ -31,10 +34,29 @@ const props = defineProps({
 const { t } = useI18n()
 const store = useStore()
 const verifyCode = ref('')
+const refText = ref(null)
+const secRemains = ref(0)
 
 const sendForgotPasswordEmail = async () => {
+  if (secRemains.value > 0) return
+  startCountDown()
   await store.dispatch('user/sendForgotPasswordEmail', { email: props.email })
   store.commit('helper/PUSH_message', t('AA0088'))
+}
+
+let timerId
+const startCountDown = () => {
+  secRemains.value = 30
+  refText.value.textContent = `${t('UU0051')}... (${secRemains.value})`
+
+  timerId = setInterval(() => {
+    secRemains.value--
+    refText.value.textContent = `${t('UU0051')}... (${secRemains.value})`
+    if (secRemains.value <= 0) {
+      refText.value.textContent = t('UU0051')
+      clearInterval(timerId)
+    }
+  }, 1000)
 }
 
 const verifyForgotPasswordCode = async () => {
@@ -48,4 +70,15 @@ const verifyForgotPasswordCode = async () => {
     }
   })
 }
+
+onMounted(() => {
+  if (refText.value) {
+    refText.value.textContent = t('UU0051')
+    startCountDown()
+  }
+})
+
+onUnmounted(() => {
+  clearInterval(timerId)
+})
 </script>

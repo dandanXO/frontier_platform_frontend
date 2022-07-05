@@ -37,54 +37,41 @@ div(class="w-full")
             span(class="text-primary-middle text-body2 font-bold") {{ $t("AA0011") }}
 </template>
 
-<script>
+<script setup>
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import MenuPersonal from '@/components/lobby/MenuPersonal.vue'
-import { computed } from 'vue'
+import { onUnmounted, computed, shallowRef, h } from 'vue'
+import { useI18n } from 'vue-i18n'
+import remindVerifyEmail from '@/utils/remind-verify-email'
 
-export default {
-  name: 'Lobby',
-  components: {
-    MenuPersonal
-  },
-  setup () {
-    const store = useStore()
-    const router = useRouter()
-    const user = computed(() => store.getters['user/user'])
-    const orgList = computed(() => store.getters['user/organizationList'])
+const { t } = useI18n()
+const store = useStore()
+const router = useRouter()
+const user = computed(() => store.getters['user/user'])
+const orgList = computed(() => store.getters['user/organizationList'])
 
-    const goToPublicLibrary = (orgNo) => {
-      if (!user.value.isVerify) {
-        return store.dispatch('helper/openModalBehavior', {
-          component: 'modal-verify-notification'
-        })
-      }
-
-      router.push({ name: 'PublicLibrary', params: { orgNo } })
-    }
-
-    const openModalCreateOrg = (closable = true) => {
-      if (!user.value.isVerify) {
-        return store.dispatch('helper/openModalBehavior', {
-          component: 'modal-verify-notification'
-        })
-      }
-
-      store.dispatch('organization/resetCreateForm')
-      store.dispatch('helper/openModalBehavior', {
-        component: 'modal-create-org',
-        properties: {
-          closable
-        }
-      })
-    }
-
-    return {
-      orgList,
-      goToPublicLibrary,
-      openModalCreateOrg
-    }
+const goToPublicLibrary = (orgNo) => {
+  if (!user.value.isVerify) {
+    remindVerifyEmail()
+    return
   }
+
+  router.push({ name: 'PublicLibrary', params: { orgNo } })
+}
+
+const openModalCreateOrg = (closable = true) => {
+  if (!user.value.isVerify) {
+    remindVerifyEmail()
+    return
+  }
+
+  store.dispatch('organization/resetCreateForm')
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-create-org',
+    properties: {
+      closable
+    }
+  })
 }
 </script>
