@@ -6,7 +6,7 @@ const Material = {
     relationMaterialId: null,
     frontierNo: null,
     relationFrontierNo: null,
-    materialNo: 'Material No',
+    materialNo: '',
     materialSeq: null,
     sourceAssetLocation: SOURCE_ASSET_LOCATION.ORG,
     coverMode: 0,
