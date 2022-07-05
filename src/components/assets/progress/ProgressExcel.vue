@@ -79,7 +79,7 @@ general-table(
       //- Processing
       div(v-else-if="item.status === UPLOAD_PROGRESS.PROCESSING" class="text-black-500 inline-flex")
         svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
-        i18n-t(v-if="item.category === EXCEL_CATEGORY.UPLOAD" keypath="PP0027" tag="p")
+        i18n-t(v-if="item.category === EXCEL_CATEGORY.UPLOAD" keypath="PP0027" tag="p" scope="global")
           template(#fileName) {{ item.fileName }}
         p(v-else-if="item.category === EXCEL_CATEGORY.EXPORT") {{ $t("PP0026") }}
     div(v-if="prop === 'createBy'" class="flex items-center")

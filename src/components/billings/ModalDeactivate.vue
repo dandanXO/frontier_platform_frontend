@@ -67,7 +67,7 @@ const confirmToDeactivate = async () => {
               render: () => {
                 return h('div', { class: 'text-body2 leading-1.6' }, [
                   h('p', {}, `${t('OO0058')} ${plan.value.deactivatedDate}`),
-                  h('i18n-t', { keypath: 'OO0126', tag: 'p' },
+                  h('i18n-t', { keypath: 'OO0126', tag: 'p', scope: 'global' },
                     h('template', { slot: 'OO0127' },
                       h('span', { class: 'text-assist-blue' }, t('OO0127'))
                     )

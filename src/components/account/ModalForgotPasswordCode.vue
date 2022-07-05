@@ -6,7 +6,7 @@ modal-behavior(
 )
   div(class="w-80 flex flex-col items-center")
     svg-icon(iconName="send-mail" size="68" class="mb-4")
-    i18n-t(keypath="AA0048" tag="div" class="text-body2 text-primary text-center leading-1.6 mb-4")
+    i18n-t(keypath="AA0048" tag="div" class="text-body2 text-primary text-center leading-1.6 mb-4" scope="global")
       template(#email)
         br
         div(class="font-bold line-clamp-1") {{ email }}

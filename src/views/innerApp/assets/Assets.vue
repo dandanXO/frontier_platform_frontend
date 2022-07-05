@@ -20,7 +20,7 @@ div(class="w-full h-full")
       h5(class="text-h5 font-bold text-primary") {{ $t("EE0001") }}
         span(class="text-caption text-black-700 pl-1")
           span (
-          i18n-t(keypath="RR0068" tag="span")
+          i18n-t(keypath="RR0068" tag="span" scope="global")
             template(#number) {{ pagination.totalCount }}
           span )
     template(#header-right)

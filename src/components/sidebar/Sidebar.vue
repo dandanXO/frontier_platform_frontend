@@ -40,7 +40,7 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-black-100 sidebar-shadow f
           template(#content)
             div(class="flex flex-col gap-y-0.5")
               sidebar-item(v-for="(menu, index) in item.menuList" v-bind="menu" class="relative flex justify-between" :style="{ zIndex: 20 - index }")
-                p(class="pl-7 text-body2 text-primary line-clamp-1") {{ $t(menu.title) }}
+                p(class="pl-7 text-body2 text-primary line-clamp-1") {{ menu.title }}
                 template(v-if="menu.id === 'assets'")
                   tooltip(placement="bottom" class="mr-3")
                     template(#trigger)

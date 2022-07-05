@@ -8,7 +8,7 @@ modal-behavior(
   @click:text="closeModal"
 )
   div(class="w-94")
-    i18n-t(:keypath="keypath" tag="p" class="text-primary mb-4 text-body2 leading-1.6")
+    i18n-t(:keypath="keypath" tag="p" class="text-primary mb-4 text-body2 leading-1.6" scope="global")
       template(v-slot:[slotName])
         br
         strong {{ slotValue }}

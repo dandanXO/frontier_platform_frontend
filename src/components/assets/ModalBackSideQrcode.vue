@@ -5,7 +5,7 @@ modal-behavior(
   @click:secondary="closeModalBehavior"
 )
   div(class="w-104")
-    i18n-t(keypath="DD0010" tag="div" class="mb-7.5 text-body2 text-primary leading-1.6")
+    i18n-t(keypath="DD0010" tag="div" class="mb-7.5 text-body2 text-primary leading-1.6" scope="global")
       template(#DD0111)
         div(class="inline-flex items-center text-assist-blue cursor-pointer" @click="printBackSideLabel") {{ $t("DD0111") }}
           svg-icon(iconName="open_in_new" size="15")

@@ -6,7 +6,7 @@ modal-behavior(
 )
   div(class="w-84")
     p(class="text-body2 leading-1.6 text-primary mb-5") {{ $t('OO0143', { date: bufferDeactivatedDate }) }}
-    i18n-t(v-if="orgUserRole.OWNER || orgUserRole.ADMIN" keypath="OO0144" tag="p" class="text-body2 leading-1.6 text-primary")
+    i18n-t(v-if="orgUserRole.OWNER || orgUserRole.ADMIN" keypath="OO0144" tag="p" class="text-body2 leading-1.6 text-primary" scope="global")
       template(#RR0139)
         span(class="text-assist-blue") {{ $t('RR0139') }}
     p(v-else class="text-body2 leading-1.6 text-primary") {{ $t('OO0150') }}

@@ -9,7 +9,7 @@ modal-behavior(
   template(#note v-if="materialList.length > 0")
     div(class="flex items-center text-black-800 w-170")
       svg-icon(iconName="info_outline" size="14" class="mr-1.5")
-      i18n-t(keypath="DD0032" tag="div" class="text-caption leading-1.6")
+      i18n-t(keypath="DD0032" tag="div" class="text-caption leading-1.6" scope="global")
         template(#RR0062)
           div(class="inline-flex items-center text-assist-blue cursor-pointer" @click="printA4Card(materialList)") {{ $t("RR0062") }}
             svg-icon(iconName="open_in_new" size="15")
@@ -39,7 +39,7 @@ modal-behavior(
           div(class="mr-2 flex-shrink-0 bg-black-0 text-black-500 rounded-full w-6 h-6 flex items-center justify-center") 3
           div(class="text-primary text-body1 font-bold leading-1.6")
             div {{ $t("DD0084") }}
-            i18n-t(keypath="DD0085" tag="div")
+            i18n-t(keypath="DD0085" tag="div" scope="global")
               template(#RR0008)
                 span(class="text-assist-blue underline cursor-pointer" @click="goToAssets") {{ $t("RR0008") }}
 </template>
