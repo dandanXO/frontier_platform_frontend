@@ -177,8 +177,8 @@ div(class="pb-15 border-b border-black-400")
       )
 </template>
 
-<script>
-import { ref, computed, watch, reactive } from 'vue'
+<script setup>
+import { ref, computed, watch, reactive, onMounted } from 'vue'
 import { SIDE_TYPE } from '@/utils/constants'
 import { useStore } from 'vuex'
 import useMaterialEdit from '@/composables/useMaterialEdit'
@@ -187,86 +187,66 @@ import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import { Cropper } from '@/utils/cropper'
 
-export default {
-  name: 'BlockMaterialInformation',
-  components: { CropperDefaultLayout, ImageCropArea },
-  props: {
-    validations: {
-      type: Object,
-      required: true
-    }
-  },
-  setup () {
-    const store = useStore()
-    const material = computed(() => store.getters['assets/material'])
-    const isEditMode = computed(() => material.value.materialId !== null)
-    const { isBackSideMaterial, faceSideUrl, backSideUrl } = useMaterialImage(material.value)
-    const { faceSideImg, backSideImg } = material.value
-    const isOpenSampleCard = ref(false)
-    const config = reactive({})
-    const cropRectSize = 300
+const props = defineProps({
+  validations: {
+    type: Object,
+    required: true
+  }
+})
 
-    const {
-      specOptions,
-      addContentOption,
-      selectContent,
-      addNewContent,
-      removeContent,
-      addDescriptionOption,
-      addFinishOption
-    } = useMaterialEdit(material.value)
+const store = useStore()
+const material = computed(() => store.getters['assets/material'])
+const isEditMode = computed(() => material.value.materialId !== null)
+const { isBackSideMaterial, faceSideUrl, backSideUrl } = useMaterialImage(material.value)
+const { faceSideImg, backSideImg } = material.value
+const isOpenSampleCard = ref(false)
+const config = reactive({})
+const cropRectSize = 300
 
-    const hideSampleCard = computed(() => {
-      if (faceSideUrl) {
-        return false
-      } else if (isBackSideMaterial && backSideUrl) {
-        return false
-      } else {
-        return true
-      }
-    })
+const {
+  specOptions,
+  addContentOption,
+  selectContent,
+  addNewContent,
+  removeContent,
+  addDescriptionOption,
+  addFinishOption
+} = useMaterialEdit(material.value)
 
-    const getCropperConfig = async () => {
-      if (!hideSampleCard.value) {
-        const imageObj = faceSideUrl ? faceSideImg : backSideImg
-        const cropper = new Cropper({
-          src: imageObj.original,
-          dpi: imageObj.dpi,
-          cropRectSize
-        })
-        await cropper.formatImage()
-        Object.assign(config, cropper.config)
-      }
-    }
+const hideSampleCard = computed(() => {
+  if (faceSideUrl) {
+    return false
+  } else if (isBackSideMaterial && backSideUrl) {
+    return false
+  } else {
+    return true
+  }
+})
 
-    getCropperConfig()
-
-    watch(
-      () => material.value,
-      () => {
-        store.commit('assets/UPDATE_material', material.value)
-      },
-      {
-        deep: true
-      }
-    )
-
-    return {
-      specOptions,
-      addContentOption,
-      selectContent,
-      addNewContent,
-      removeContent,
-      SIDE_TYPE,
-      material,
-      addDescriptionOption,
-      addFinishOption,
-      isEditMode,
-      isOpenSampleCard,
-      hideSampleCard,
-      config,
+const getCropperConfig = async () => {
+  if (!hideSampleCard.value) {
+    const imageObj = faceSideUrl ? faceSideImg : backSideImg
+    const cropper = new Cropper({
+      src: imageObj.original,
+      dpi: imageObj.dpi,
       cropRectSize
-    }
+    })
+    await cropper.formatImage()
+    Object.assign(config, cropper.config)
   }
 }
+
+onMounted(async () => {
+  await getCropperConfig()
+})
+
+watch(
+  () => material.value,
+  () => {
+    store.commit('assets/UPDATE_material', material.value)
+  },
+  {
+    deep: true
+  }
+)
 </script>
