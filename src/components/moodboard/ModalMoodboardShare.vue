@@ -91,7 +91,7 @@ const assignedShare = async () => {
   await store.dispatch('moodboard/shareMoodboard', { targetList: targetList.value, message: message.value })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/closeModalBehavior')
-  store.commit('helper/PUSH_message', t('RR0157'))
+  store.dispatch('helper/pushFlashMessage', t('RR0157'))
 }
 
 const removeTarget = (index) => targetList.value.splice(index, 1)

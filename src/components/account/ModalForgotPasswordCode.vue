@@ -41,7 +41,7 @@ const sendForgotPasswordEmail = async () => {
   if (secRemains.value > 0) return
   startCountDown()
   await store.dispatch('user/sendForgotPasswordEmail', { email: props.email })
-  store.commit('helper/PUSH_message', t('AA0088'))
+  store.dispatch('helper/pushFlashMessage', t('AA0088'))
 }
 
 let timerId

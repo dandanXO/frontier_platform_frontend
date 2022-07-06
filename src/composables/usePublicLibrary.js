@@ -44,7 +44,7 @@ export default function usePublicLibrary () {
         },
         cloneHandler: async (targetLocationList, optional) => {
           await store.dispatch('publicLibrary/cloneNode', { nodeKeyList, targetLocationList, optional })
-          store.commit('helper/PUSH_message', msg)
+          store.dispatch('helper/pushFlashMessage', msg)
         }
       }
     })

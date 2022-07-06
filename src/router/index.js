@@ -271,7 +271,7 @@ const routes = [
           const { verifyCode } = to.query
           await store.dispatch('user/verifyUser', { verifyCode })
           await next('/')
-          store.commit('helper/PUSH_message', i18n.global.t('AA0086'))
+          store.dispatch('helper/pushFlashMessage', i18n.global.t('AA0086'))
         }
       },
       {

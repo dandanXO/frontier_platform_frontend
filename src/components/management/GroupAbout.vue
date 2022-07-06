@@ -8,7 +8,7 @@ div
           i(class="text-warn pr-0.5") *
           p(class="text-primary") {{ $t('BB0086') }}
           p(class="font-normal text-caption text-black-500 cursor-pointer pl-1" @click="openModalTypeTextToConfirm") {{ $t("UU0013") }}
-        div(class="flex items-center cursor-pointer" @click="copyText(groupNo), $store.commit('helper/PUSH_message', $t('BB0038'))")
+        div(class="flex items-center cursor-pointer" @click="copyText(groupNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))")
           p(class="text-caption text-primary") ID: {{ groupNo }}
           tooltip(placement="bottom")
             template(#trigger)
@@ -50,7 +50,7 @@ export default {
 
     const updateGroup = async () => {
       await store.dispatch('group/updateGroup', toRaw(groupFormData))
-      store.commit('helper/PUSH_message', t('BB0107'))
+      store.dispatch('helper/pushFlashMessage', t('BB0107'))
     }
 
     const openModalTypeTextToConfirm = () => {

@@ -33,7 +33,7 @@ export default function useMoodboardNode (moodboard, moodboardOfferNodeCollectio
         },
         cloneHandler: async (targetLocationList, optional) => {
           await store.dispatch('moodboard/cloneMoodboardNode', { nodeIdList, targetLocationList, optional })
-          store.commit('helper/PUSH_message', msg)
+          store.dispatch('helper/pushFlashMessage', msg)
         }
       }
     })

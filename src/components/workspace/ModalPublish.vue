@@ -66,7 +66,7 @@ const publishNode = async () => {
   await store.dispatch('workspace/publishNode', { workspaceNodeId: workspaceNode.value.workspaceNodeId, ...params })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/reloadInnerApp')
-  store.commit('helper/PUSH_message', t('FF0035'))
+  store.dispatch('helper/pushFlashMessage', t('FF0035'))
 }
 
 const closeModal = () => store.dispatch('helper/closeModalBehavior')

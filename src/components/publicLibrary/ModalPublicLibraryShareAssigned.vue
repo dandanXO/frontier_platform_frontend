@@ -75,7 +75,7 @@ const assignedShare = async () => {
   })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/closeModal')
-  store.commit('helper/PUSH_message', t('RR0157'))
+  store.dispatch('helper/pushFlashMessage', t('RR0157'))
 }
 
 const removeTarget = (index) => targetList.value.splice(index, 1)

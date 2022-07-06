@@ -72,7 +72,7 @@ const handleDelete = () => {
     primaryBtnHandler: () => {
       store.dispatch('moodboard/deleteMoodboard', { moodboardId: moodboard.value.moodboardId })
       goToMoodboard()
-      store.commit('helper/PUSH_message', t('QQ0077'))
+      store.dispatch('helper/pushFlashMessage', t('QQ0077'))
     },
     textBtnText: t('UU0002')
   })

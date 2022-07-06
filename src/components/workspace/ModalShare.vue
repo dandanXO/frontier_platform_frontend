@@ -138,14 +138,14 @@ const generateCopyLink = async () => {
   const sharingKey = await store.dispatch('workspace/generateCopyLink', { workspaceNodeId: props.workspaceNodeId })
   shareViaCopyLink(sharingKey)
   store.dispatch('helper/closeModalLoading')
-  store.commit('helper/PUSH_message', t('RR0149'))
+  store.dispatch('helper/pushFlashMessage', t('RR0149'))
 }
 
 const updateEmbedDownloadPermission = () => store.dispatch('workspace/updateEmbedDownloadPermission', { embedKey: shareInfo.value.embed.key, isCanDownloadU3M: shareInfo.value.embed.isCanDownloadU3M })
 
 const copyEmbedIFrameCode = () => {
   copyText(`<iframe width="100%" height="100%" src="${window.location.origin}/embed/${shareInfo.value.embed.key}/${props.nodeKey}" title="Frontier.cool" frameborder="0"></iframe>`)
-  store.commit('helper/PUSH_message', t('RR0149'))
+  store.dispatch('helper/pushFlashMessage', t('RR0149'))
 }
 
 await store.dispatch('workspace/getShareInfo', { workspaceNodeId: props.workspaceNodeId })
