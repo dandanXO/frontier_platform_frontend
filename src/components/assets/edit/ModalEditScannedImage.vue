@@ -60,158 +60,136 @@ modal-behavior(
       div(class="mt-2 text-center text-caption") {{ $t("EE0053") }}
 </template>
 
-<script>
+<script setup>
 import { useStore } from 'vuex'
-import { ref, computed, reactive, watch } from 'vue'
+import { ref, computed, reactive, watch, onMounted } from 'vue'
 import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import useMaterialImage from '@/composables/useMaterialImage'
 import { Cropper } from '@/utils/cropper'
 
-export default {
-  name: 'ModalEditScannedImage',
-  components: { ImageCropArea, CropperDefaultLayout },
-  props: {
-    afterCropHandler: {
-      type: Function,
-      required: true
+const props = defineProps({
+  afterCropHandler: {
+    type: Function,
+    required: true
+  }
+})
+
+const refDoubleSideScale = ref(null)
+const store = useStore()
+const material = computed(() => store.getters['assets/material'])
+const { faceSideImg, backSideImg } = material.value
+const scaleSize = ref(4)
+const options = {
+  min: 1,
+  max: 21,
+  step: 0.1,
+  tooltips: false,
+  orientation: 'vertical'
+}
+const isExchange = ref(false)
+const refFaceSide = ref(null)
+const refBackSide = ref(null)
+const cropRectSize = 176
+const pxPerCm = 2.54 // 1 dpi = 0.393701 pixel/cm; 1 pixel/cm = 2.54 dpi
+const croppers = reactive([])
+const faceSideConfig = reactive({})
+const backSideConfig = reactive({})
+
+const { isDoubleSideMaterial, isFaceSideMaterial, faceSideUrl, backSideUrl } = useMaterialImage(material.value)
+
+watch(
+  () => scaleSize.value,
+  () => {
+    if (faceSideConfig?.config) {
+      faceSideConfig.config.scaleRatio = (faceSideConfig.config.image.width * (pxPerCm / faceSideImg.dpi)) / scaleSize.value
     }
-  },
-  async setup(props) {
-    const refDoubleSideScale = ref(null)
-    const store = useStore()
-    const material = computed(() => store.getters['assets/material'])
-    const { faceSideImg, backSideImg } = material.value
-    const scaleSize = ref(4)
-    const options = {
-      min: 1,
-      max: 21,
-      step: 0.1,
-      tooltips: false,
-      orientation: 'vertical'
-    }
-    const isExchange = ref(false)
-    const refFaceSide = ref(null)
-    const refBackSide = ref(null)
-    const cropRectSize = 176
-    const pxPerCm = 2.54 // 1 dpi = 0.393701 pixel/cm; 1 pixel/cm = 2.54 dpi
-    const croppers = reactive([])
-    const faceSideConfig = reactive({})
-    const backSideConfig = reactive({})
-
-    const { isDoubleSideMaterial, isFaceSideMaterial, faceSideUrl, backSideUrl } = useMaterialImage(material.value)
-
-    watch(
-      () => scaleSize.value,
-      () => {
-        if (faceSideConfig?.config) {
-          faceSideConfig.config.scaleRatio = (faceSideConfig.config.image.width * (pxPerCm / faceSideImg.dpi)) / scaleSize.value
-        }
-        if (backSideConfig?.config) {
-          backSideConfig.config.scaleRatio = (backSideConfig.config.image.width * (pxPerCm / backSideImg.dpi)) / scaleSize.value
-        }
-      }
-    )
-
-    const formattedScaleSize = computed({
-      get: () => scaleSize.value,
-      set: (val) => {
-        if (val > options.max || val < options.min) return
-        scaleSize.value = val
-      }
-    })
-
-    if (faceSideUrl) {
-      const faceSideCropper = new Cropper({
-        src: faceSideUrl,
-        dpi: faceSideImg.dpi,
-        cropRectSize
-      })
-      await faceSideCropper.formatImage()
-      Object.assign(faceSideConfig, {
-        ref: 'refFaceSide',
-        config: {
-          ...faceSideCropper.config,
-          scaleRatio: (faceSideCropper.config.image.width * (pxPerCm / faceSideImg.dpi)) / scaleSize.value
-        }
-      })
-      croppers.push(faceSideConfig)
-    }
-
-    if (backSideUrl) {
-      const backSideCropper = new Cropper({
-        src: backSideUrl,
-        dpi: backSideImg.dpi,
-        cropRectSize
-      })
-      await backSideCropper.formatImage()
-      Object.assign(backSideConfig, {
-        ref: 'refBackSide',
-        config: {
-          ...backSideCropper.config,
-          scaleRatio: (backSideCropper.config.image.width * (pxPerCm / backSideImg.dpi)) / scaleSize.value
-        }
-      })
-      croppers.push(backSideConfig)
-    }
-
-    const handleUpdateScaleRatio = (cropper, event) => {
-      if (faceSideUrl && backSideUrl) {
-        return
-      }
-      const width2Cm = cropper.config.image?.width * (pxPerCm / cropper.config.dpi)
-      const height2Cm = cropper.config.image?.height * (pxPerCm / cropper.config.dpi)
-      const mainRuler = width2Cm > height2Cm ? height2Cm : width2Cm
-      cropper.config.scaleRatio = mainRuler / event
-    }
-
-    const handleDoubleSideScaleChange = (event) => {
-      refDoubleSideScale.value.setValue(event.target.value)
-    }
-
-    const confirm = async () => {
-      store.dispatch('helper/pushModalLoading')
-
-      const faceSideCropImg = faceSideUrl ? await refFaceSide.value?.cropImage() : null
-      const backSideCropImg = backSideUrl ? await refBackSide.value?.cropImage() : null
-
-      await props.afterCropHandler({ faceSideCropImg, backSideCropImg, isExchange: isExchange.value })
-
-      store.dispatch('helper/closeModalLoading')
-      closeModal()
-    }
-
-    const handleRefUpdate = (ref, el) => {
-      if (ref === 'refFaceSide') {
-        refFaceSide.value = el
-      }
-      if (ref === 'refBackSide') {
-        refBackSide.value = el
-      }
-    }
-
-    const closeModal = () => store.dispatch('helper/closeModal')
-
-    return {
-      options,
-      formattedScaleSize,
-      cropRectSize,
-      refFaceSide,
-      refBackSide,
-      isFaceSideMaterial,
-      isDoubleSideMaterial,
-      closeModal,
-      scaleSize,
-      handleUpdateScaleRatio,
-      confirm,
-      isExchange,
-      croppers,
-      handleRefUpdate,
-      refDoubleSideScale,
-      handleDoubleSideScaleChange
+    if (backSideConfig?.config) {
+      backSideConfig.config.scaleRatio = (backSideConfig.config.image.width * (pxPerCm / backSideImg.dpi)) / scaleSize.value
     }
   }
+)
+
+const formattedScaleSize = computed({
+  get: () => scaleSize.value,
+  set: (val) => {
+    if (val > options.max || val < options.min) return
+    scaleSize.value = val
+  }
+})
+
+const handleUpdateScaleRatio = (cropper, event) => {
+  if (faceSideUrl && backSideUrl) {
+    return
+  }
+  const width2Cm = cropper.config.image?.width * (pxPerCm / cropper.config.dpi)
+  const height2Cm = cropper.config.image?.height * (pxPerCm / cropper.config.dpi)
+  const mainRuler = width2Cm > height2Cm ? height2Cm : width2Cm
+  cropper.config.scaleRatio = mainRuler / event
 }
+
+const handleDoubleSideScaleChange = (event) => {
+  refDoubleSideScale.value.setValue(event.target.value)
+}
+
+const confirm = async () => {
+  store.dispatch('helper/pushModalLoading')
+
+  const faceSideCropImg = faceSideUrl ? await refFaceSide.value?.cropImage() : null
+  const backSideCropImg = backSideUrl ? await refBackSide.value?.cropImage() : null
+
+  await props.afterCropHandler({ faceSideCropImg, backSideCropImg, isExchange: isExchange.value })
+
+  store.dispatch('helper/closeModalLoading')
+  closeModal()
+}
+
+const handleRefUpdate = (ref, el) => {
+  if (ref === 'refFaceSide') {
+    refFaceSide.value = el
+  }
+  if (ref === 'refBackSide') {
+    refBackSide.value = el
+  }
+}
+
+const closeModal = () => store.dispatch('helper/closeModal')
+
+onMounted(async () => {
+  if (faceSideUrl) {
+    const faceSideCropper = new Cropper({
+      src: faceSideUrl,
+      dpi: faceSideImg.dpi,
+      cropRectSize
+    })
+    await faceSideCropper.formatImage()
+    Object.assign(faceSideConfig, {
+      ref: 'refFaceSide',
+      config: {
+        ...faceSideCropper.config,
+        scaleRatio: (faceSideCropper.config.image.width * (pxPerCm / faceSideImg.dpi)) / scaleSize.value
+      }
+    })
+    croppers.push(faceSideConfig)
+  }
+
+  if (backSideUrl) {
+    const backSideCropper = new Cropper({
+      src: backSideUrl,
+      dpi: backSideImg.dpi,
+      cropRectSize
+    })
+    await backSideCropper.formatImage()
+    Object.assign(backSideConfig, {
+      ref: 'refBackSide',
+      config: {
+        ...backSideCropper.config,
+        scaleRatio: (backSideCropper.config.image.width * (pxPerCm / backSideImg.dpi)) / scaleSize.value
+      }
+    })
+    croppers.push(backSideConfig)
+  }
+})
 </script>
 
 <style lang="scss" scoped>
