@@ -207,7 +207,7 @@ const openModalAssetsList = () => {
         store.dispatch('helper/reloadInnerApp')
 
         if (!failMaterialList || (failMaterialList.length !== materialIdList.length)) {
-          store.commit('helper/PUSH_message', t('FF0018'))
+          store.dispatch('helper/pushFlashMessage', t('FF0018'))
         }
       }
     }

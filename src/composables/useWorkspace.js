@@ -84,7 +84,7 @@ export default function useWorkspace () {
               })
               store.dispatch('helper/closeModalLoading')
               store.dispatch('helper/reloadInnerApp')
-              store.commit('helper/PUSH_message', t('FF0047'))
+              store.dispatch('helper/pushFlashMessage', t('FF0047'))
             }
           }
         }
@@ -128,7 +128,7 @@ export default function useWorkspace () {
               const { name: collectionName } = await store.dispatch('workspace/getCollection', { workspaceNodeId: targetWorkspaceNodeId })
               store.dispatch('helper/closeModalLoading')
               store.dispatch('helper/reloadInnerApp')
-              store.commit('helper/PUSH_message', t('FF0042', { collectionName }))
+              store.dispatch('helper/pushFlashMessage', t('FF0042', { collectionName }))
             }
           }
         }

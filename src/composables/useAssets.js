@@ -31,7 +31,7 @@ export default function useAssets () {
           cloneHandler: async (targetLocationList, optional) => {
             await store.dispatch('assets/cloneMaterial', { targetLocationList, materialIdList, optional })
             store.dispatch('helper/reloadInnerApp')
-            store.commit('helper/PUSH_message', t('EE0056'))
+            store.dispatch('helper/pushFlashMessage', t('EE0056'))
           }
         }
       })
@@ -85,7 +85,7 @@ export default function useAssets () {
             }
 
             if (!failMaterialList || (failMaterialList.length !== materialIdList.length)) {
-              store.commit('helper/PUSH_message', t('EE0062'))
+              store.dispatch('helper/pushFlashMessage', t('EE0062'))
             }
           }
         }

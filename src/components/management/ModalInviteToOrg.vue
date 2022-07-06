@@ -23,7 +23,7 @@ modal-behavior(
           p(class="text-body2 text-primary") {{ email }}
           svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removeInvite(index)")
   template(#note)
-    div(class="text-assist-blue flex items-center cursor-pointer" @click="copyText(inviteLink), $store.commit('helper/PUSH_message', $t('BB0108'))")
+    div(class="text-assist-blue flex items-center cursor-pointer" @click="copyText(inviteLink), $store.dispatch('helper/pushFlashMessage', $t('BB0108'))")
       svg-icon(iconName="link_2" size="14" class="mr-1.5")
       span(class="text-caption") {{ $t("UU0015") }}
 </template>

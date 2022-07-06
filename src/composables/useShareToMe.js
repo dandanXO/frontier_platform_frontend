@@ -44,7 +44,7 @@ export default function useShareToMe () {
         },
         cloneHandler: async (targetLocationList, optional) => {
           await store.dispatch('shareToMe/cloneShareToMe', { sharingId, nodeKeyList, targetLocationList, optional })
-          store.commit('helper/PUSH_message', msg)
+          store.dispatch('helper/pushFlashMessage', msg)
         }
       }
     })

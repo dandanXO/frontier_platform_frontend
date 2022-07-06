@@ -62,7 +62,7 @@ export default {
       store.dispatch('helper/closeModalLoading')
       store.dispatch('helper/clearModalPipeline')
       store.dispatch('helper/reloadInnerApp')
-      store.commit('helper/PUSH_message', t('EE0077'))
+      store.dispatch('helper/pushFlashMessage', t('EE0077'))
     }
 
     const getBgImg = (target, blockType) => {

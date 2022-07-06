@@ -40,10 +40,10 @@ const mutations = {
   CLEAR_modalPipeline (state) {
     state.modalPipeline.length = 0
   },
-  PUSH_message (state, message) {
+  PUSH_flashMessage (state, message) {
     state.message = message
   },
-  REMOVE_message (state) {
+  REMOVE_flashMessage (state) {
     state.message = ''
   },
   SET_routeLocation (state, routeLocation) {
@@ -108,6 +108,12 @@ const actions = {
     commit('SET_isReloadInnerApp', false)
     await nextTick()
     commit('SET_isReloadInnerApp', true)
+  },
+  pushFlashMessage ({ commit }, message) {
+    commit('PUSH_flashMessage', message)
+  },
+  removeFlashMessage ({ commit }, message) {
+    commit('REMOVE_flashMessage', message)
   }
 }
 

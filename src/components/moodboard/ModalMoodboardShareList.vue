@@ -46,7 +46,7 @@ const removeMoodboardShare = (shareTarget) => {
       store.dispatch('helper/pushModalLoading')
       await store.dispatch('moodboard/removeMoodboardShare', { shareId: shareTarget.shareId })
       store.dispatch('helper/closeModalLoading')
-      store.commit('helper/PUSH_message', t('QQ0027', { orgName: shareTarget.name }))
+      store.dispatch('helper/pushFlashMessage', t('QQ0027', { orgName: shareTarget.name }))
     },
     textBtnText: t('UU0002')
   })

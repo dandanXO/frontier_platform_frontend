@@ -9,7 +9,7 @@ div(class="pt-16 xl:pt-17.5")
             @click="openModalUploadLogo"
           )
             svg-icon(iconName="camera" size="20" class="text-black-500 hover:text-brand")
-        div(class="flex items-center pt-4 cursor-pointer" @click="copyText(organization.orgNo), $store.commit('helper/PUSH_message', $t('BB0038'))")
+        div(class="flex items-center pt-4 cursor-pointer" @click="copyText(organization.orgNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))")
           p(class="text-caption text-primary") ID: {{ organization.orgNo }}
           tooltip(placement="bottom")
             template(#trigger)
@@ -129,7 +129,7 @@ const openModalTypeTextToConfirm = () => {
             } = await store.dispatch('organization/getUnbilledInfo')
 
             if (checkoutItemList.length === 0) {
-              ; (await deleteOrg()) && store.commit('helper/PUSH_message', t('OO0101'))
+              ; (await deleteOrg()) && store.dispatch('helper/pushFlashMessage', t('OO0101'))
               return
             }
 
@@ -167,7 +167,7 @@ const updateOrg = async () => {
 
   await store.dispatch('organization/updateOrg', toRaw(orgFormData))
 
-  store.commit('helper/PUSH_message', t('BB0107'))
+  store.dispatch('helper/pushFlashMessage', t('BB0107'))
 }
 
 watch(

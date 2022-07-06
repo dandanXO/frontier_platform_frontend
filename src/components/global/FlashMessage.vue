@@ -28,37 +28,33 @@ transition(name="slide-fade")
 </template>
 
 <script>
+export default {
+  name: 'FlashMessage'
+}
+</script>
+
+<script setup>
 import { useStore } from 'vuex'
 import { computed, watch } from 'vue'
 
-export default {
-  name: 'FlashMessage',
-  setup () {
-    const store = useStore()
-    const message = computed(() => store.getters['helper/message'])
-    let timeoutID
+const store = useStore()
+const message = computed(() => store.getters['helper/message'])
+let timeoutID
 
-    const close = () => {
-      clearTimeout(timeoutID)
-      timeoutID = undefined
-      store.commit('helper/REMOVE_message')
-    }
-
-    const setTimer = () => {
-      timeoutID = setTimeout(() => { close() }, 2000)
-    }
-
-    watch(
-      () => message.value,
-      () => {
-        !!message.value && setTimer()
-      }
-    )
-
-    return {
-      message,
-      close
-    }
-  }
+const close = () => {
+  clearTimeout(timeoutID)
+  timeoutID = undefined
+  store.dispatch('helper/removeFlashMessage')
 }
+
+const setTimer = () => {
+  timeoutID = setTimeout(() => { close() }, 2000)
+}
+
+watch(
+  () => message.value,
+  () => {
+    !!message.value && setTimer()
+  }
+)
 </script>

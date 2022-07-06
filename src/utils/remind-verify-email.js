@@ -35,7 +35,7 @@ export default function remindVerifyEmail () {
       if (secRemains > 0) return
       startCountDown()
       await store.dispatch('user/resendVerifyEmail')
-      store.commit('helper/PUSH_message', t('AA0087'))
+      store.dispatch('helper/pushFlashMessage', t('AA0087'))
     }
   }
 

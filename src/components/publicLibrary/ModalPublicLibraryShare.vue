@@ -60,7 +60,7 @@ const generateCopyLink = async () => {
   const sharingKey = await store.dispatch('publicLibrary/generateCopyLink', { nodeKey: props.nodeKey })
   shareViaCopyLink(sharingKey)
   store.dispatch('helper/closeModalLoading')
-  store.commit('helper/PUSH_message', t('RR0149'))
+  store.dispatch('helper/pushFlashMessage', t('RR0149'))
 }
 
 const openModalPublicLibraryShareAssigned = () => {

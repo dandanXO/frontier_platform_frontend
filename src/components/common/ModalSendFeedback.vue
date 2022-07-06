@@ -81,6 +81,6 @@ const removeAttachment = (tempFeedbackAttachmentId) => {
 const actionHandler = () => {
   store.dispatch('user/sendFeedback', { tempFeedbackId, ...formData })
   store.dispatch('helper/closeModal')
-  store.commit('helper/PUSH_message', t('MM0018'))
+  store.dispatch('helper/pushFlashMessage', t('MM0018'))
 }
 </script>

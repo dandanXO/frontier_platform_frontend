@@ -96,13 +96,13 @@ export default {
           collectionId: collectionId.value,
           ...formData
         })
-        store.commit('helper/PUSH_message', t('FF0035'))
+        store.dispatch('helper/pushFlashMessage', t('FF0035'))
       } else {
         await store.dispatch('workspace/createCollection', {
           workspaceNodeId: props.workspaceNodeId,
           ...formData
         })
-        store.commit('helper/PUSH_message', t('FF0027'))
+        store.dispatch('helper/pushFlashMessage', t('FF0027'))
       }
       store.dispatch('helper/clearModalPipeline')
       store.dispatch('helper/reloadInnerApp')

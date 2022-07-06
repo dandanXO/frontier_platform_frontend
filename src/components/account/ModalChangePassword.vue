@@ -32,6 +32,6 @@ const closeModal = () => store.dispatch('helper/closeModal')
 const changePassword = async () => {
   await store.dispatch('user/changePassword', { currentPassword: currentPassword.value, newPassword: newPassword.value })
   closeModal()
-  store.commit('helper/PUSH_message', t('MM0030'))
+  store.dispatch('helper/pushFlashMessage', t('MM0030'))
 }
 </script>

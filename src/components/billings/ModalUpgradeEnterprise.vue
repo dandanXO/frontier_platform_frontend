@@ -60,7 +60,6 @@ const requestUpgradeToEnterprise = async () => {
   store.dispatch('helper/openModalLoading')
   await store.dispatch('organization/requestUpgradeToEnterprise', formData)
   store.dispatch('helper/closeModalLoading')
-
-  store.commit('helper/PUSH_message', t('OO0113'))
+  store.dispatch('helper/pushFlashMessage', t('OO0113'))
 }
 </script>
