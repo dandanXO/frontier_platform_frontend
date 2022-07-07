@@ -113,6 +113,7 @@ const handleUpload = async () => {
       case 'ERR0017':
         showErrorList.value = true
         errorList = result.errorList
+        break
       default:
         throw error
     }
