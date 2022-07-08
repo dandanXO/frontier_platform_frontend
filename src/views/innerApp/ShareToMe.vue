@@ -58,7 +58,7 @@ div(class="w-full h-full")
       div(
         v-if="option.name === $t('RR0167')"
         class="whitespace-nowrap cursor-pointer hover:text-brand px-5"
-        @click="shareToMeCloneByNodeList(selectedNodeList.map(item => JSON.parse(item)), collection.share.sharingId)"
+        @click="shareToMeCloneByNodeList(selectedNodeList, collection.share.sharingId)"
       ) {{ option.name }}
 </template>
 

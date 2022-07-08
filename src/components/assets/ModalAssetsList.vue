@@ -133,7 +133,7 @@ const orgAndGroupList = computed(() => {
 })
 
 const innerActionCallback = async () => {
-  const tempSelectValue = props.isMultiSelect ? selectedValue.value.map((v) => JSON.parse(v).properties) : JSON.parse(selectedValue.value).properties
+  const tempSelectValue = props.isMultiSelect ? selectedValue.value.map((v) => v.properties) : selectedValue.value.properties
   await props.actionCallback(tempSelectValue)
 }
 

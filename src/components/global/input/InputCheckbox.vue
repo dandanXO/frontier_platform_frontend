@@ -23,7 +23,7 @@ export default {
       required: true
     },
     value: {
-      type: [String, Number]
+      type: [String, Number, Object]
     },
     label: {
       type: [String, Number],
@@ -52,7 +52,14 @@ export default {
   },
   emits: ['update:inputValue'],
   setup (props, { emit }) {
-    const checked = computed(() => props.binary ? props.inputValue : props.inputValue.includes(props.value))
+    const checked = computed(() => {
+      if (props.binary) {
+        return props.inputValue
+      } else {
+        const tempInputValueString = props.inputValue.map(v => JSON.stringify(v))
+        return tempInputValueString.includes(JSON.stringify(props.value))
+      }
+    })
     const check = (e) => {
       if (props.binary) {
         emit('update:inputValue', !props.inputValue)
@@ -60,7 +67,8 @@ export default {
       }
       const updatedInputValue = [...props.inputValue]
       if (!e.target.checked) {
-        updatedInputValue.splice(updatedInputValue.indexOf(props.value), 1)
+        const tempInputValueString = props.inputValue.map(v => JSON.stringify(v))
+        updatedInputValue.splice(tempInputValueString.indexOf(JSON.stringify(props.value)), 1)
       } else {
         updatedInputValue.push(props.value)
       }

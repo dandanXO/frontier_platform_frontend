@@ -6,7 +6,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
       input-checkbox(
         v-if="isMultiSelect"
         v-model:inputValue="innerSelectedValue"
-        :value="JSON.stringify(selectValue)"
+        :value="selectValue"
         size="24"
         id="input-checkbox"
         class="absolute top-3 left-3"

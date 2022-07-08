@@ -123,10 +123,10 @@ const innerSelectedItemList = computed({
 })
 
 const selectAll = () => {
-  const stringifyList = props.itemList.map(item => JSON.stringify(item))
-  const tempSelectedItemList = [...props.selectedItemList]
-  const duplicateList = tempSelectedItemList.concat(stringifyList)
-  emit('update:selectedItemList', [...new Set(duplicateList)])
+  const stringifyItemList = props.itemList.map(item => JSON.stringify(item))
+  const stringifySelectedItemList = props.selectedItemList.map(item => JSON.stringify(item))
+  const nonDuplicateList = [...new Set(stringifySelectedItemList.concat(stringifyItemList))].map(item => JSON.parse(item))
+  emit('update:selectedItemList', nonDuplicateList)
 }
 
 const search = async (targetPage = 1) => {

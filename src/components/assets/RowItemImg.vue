@@ -11,7 +11,7 @@ div(class="w-full min-w-42.5 max-w-67.5")
       div(class="bg-linear w-full h-full rounded-t-md")
       input-checkbox(
         v-model:inputValue="innerSelectedList"
-        :value="JSON.stringify(material)"
+        :value="material"
         class="absolute top-3 left-3"
         iconColor="text-black-0"
         uncheckColor="text-black-0"
