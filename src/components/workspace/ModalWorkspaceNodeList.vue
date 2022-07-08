@@ -56,7 +56,7 @@ modal-behavior(
               :selectOnHover="false"
               :isMultiSelect="isMultiSelect"
               :selectValue="item"
-              class="walle w-25 h-25 border rounded-md overflow-hidden"
+              class="w-25 h-25 border rounded-md overflow-hidden"
               :class="[isMultiSelect && selectedValue.map(v => JSON.stringify(v)).includes(JSON.stringify(item)) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
               @click="goTo(item.nodeKey), setRootId(item.id)"
             )
@@ -75,7 +75,6 @@ modal-behavior(
                 class="w-25 cursor-pointer"
                 v-model:selectedValue="selectedValue"
                 :node="node"
-                :selectOnHover="false"
                 :isMultiSelect="isMultiSelect"
                 @click="goTo(node.nodeKey)"
               )
@@ -85,7 +84,6 @@ modal-behavior(
                 v-if="node.nodeType === NODE_TYPE.MATERIAL"
                 class="w-25"
                 :node="node"
-                :selectOnHover="false"
                 :isSelectable="false"
               )
                 template(#title-right-icon)

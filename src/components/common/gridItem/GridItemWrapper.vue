@@ -17,7 +17,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
       input-radio(
         v-else
         v-model:inputValue="innerSelectedValue"
-        :value="JSON.stringify(selectValue)"
+        :value="selectValue"
         size="20"
         id="input-radio"
         class="absolute top-3 left-3"
@@ -67,7 +67,7 @@ const props = defineProps({
     default: true
   },
   selectedValue: { // 用於綁定在 input-checkbox 或 input radio 儲存 selectValue 的變數
-    type: [Array, String],
+    type: [Array, String, Object],
     default: []
   },
   selectValue: { // 選取時要儲存的值

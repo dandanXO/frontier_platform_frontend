@@ -10,7 +10,7 @@ filter-wrapper(
       div(class="flex gap-x-1.5")
         input-radio(
           v-model:inputValue="currentYarnType"
-          :name="$t('RR0091')"
+          :label="$t('RR0091')"
           :value="YARN_TYPE.WOVEN"
           size="20"
         )
@@ -45,7 +45,7 @@ filter-wrapper(
       div(class="flex gap-x-1.5")
         input-radio(
           v-model:inputValue="currentYarnType"
-          :name="$t('RR0092')"
+          :label="$t('RR0092')"
           :value="YARN_TYPE.KNIT"
           size="20"
         )

@@ -1,30 +1,31 @@
 <template lang="pug">
-label(class="flex items-center" :for="value")
-  svg-icon(v-if="inputValue === value" iconName="radio_button_checked" :size="size" :class="[checkColor]" class="cursor-pointer")
+label(class="flex items-center")
+  svg-icon(v-if="checked" iconName="radio_button_checked" :size="size" :class="[checkColor]" class="cursor-pointer")
   svg-icon(v-else iconName="radio_button_unchecked" :size="size" :class="[uncheckColor]" class="cursor-pointer")
-  input(type="radio"
+  input(
+    type="radio"
     class="hidden"
-    v-model="inputValue"
-    :id="value"
+    :checked="checked"
     :value="value"
     @input="check"
   )
-  div(v-if="name !== ''" class="pl-1 text-body2 text-primary whitespace-nowrap cursor-pointer") {{ name }}
+  div(v-if="label !== ''" class="pl-1 text-body2 text-primary whitespace-nowrap cursor-pointer") {{ label }}
 </template>
 
 <script>
+import { computed } from '@vue/reactivity'
 export default {
   name: 'InputRadio',
   props: {
     inputValue: {
-      type: [String, Number, Boolean],
+      type: [String, Number, Boolean, Object],
       required: true
     },
     value: {
-      type: [String, Number, Boolean],
+      type: [String, Number, Boolean, Object],
       required: true
     },
-    name: {
+    label: {
       type: [String, Number],
       default: ''
     },
@@ -43,17 +44,18 @@ export default {
   },
   emits: ['update:inputValue'],
   setup (props, { emit }) {
-    const check = (e) => {
-      let value = e.target.value
-      if (typeof props.value === 'number') {
-        value = Number(value)
+    const checked = computed(() => {
+      if (typeof props.value === 'object') {
+        return JSON.stringify(props.inputValue) === JSON.stringify(props.value)
+      } else {
+        return props.inputValue === props.value
       }
-      if (typeof props.value === 'boolean') {
-        value = value === 'true'
-      }
-      emit('update:inputValue', value)
+    })
+    const check = () => {
+      emit('update:inputValue', props.value)
     }
     return {
+      checked,
       check
     }
   }
