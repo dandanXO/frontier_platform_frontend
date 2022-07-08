@@ -1,85 +1,71 @@
 <template lang="pug">
 div(class="h-13 bg-black-200 py-2.5 pl-4 pr-6")
   popper(placement="right-start" :offset="[-40, -60]")
-    template(#trigger)
+    template(#trigger="{ isExpand }")
       div(class="w-50 flex items-center cursor-pointer")
         img(:src="avatar" class="rounded-full w-8 h-8 mr-2")
         p(class="flex-grow text-body2 text-primary line-clamp-1 cursor-pointer") {{ orgUser.displayName }}
-        svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650")
+        svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650 transform" :class="[isExpand ? 'rotate-180' : 'rotate-0']")
     template(#content="{ collapsePopper }")
-      list(class="w-55")
-        template(v-for="(block, index) in optionList")
-          list-item(v-for="option in block" class="cursor-pointer" @click.stop="option.func && option.func(); collapsePopper()") {{ option.name }}
-          div(v-if="index !== optionList.length - 1" class="mx-2 my-1 h-px bg-black-400")
+      contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
 </template>
 
-<script>
+<script setup>
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+const { t } = useI18n()
+const store = useStore()
+const router = useRouter()
+const orgUser = computed(() => store.getters['organization/orgUser/orgUser'])
+const avatar = computed(() => store.getters['organization/orgUser/avatar'])
 
-export default {
-  name: 'MenuOrgUser',
-  setup () {
-    const { t } = useI18n()
-    const store = useStore()
-    const router = useRouter()
-    const orgUser = computed(() => store.getters['organization/orgUser/orgUser'])
-    const avatar = computed(() => store.getters['organization/orgUser/avatar'])
+const openModal = (component, properties = {}) => {
+  store.dispatch('helper/openModalBehavior', {
+    component,
+    properties
+  })
+}
 
-    const openModal = (component, properties = {}) => {
-      store.dispatch('helper/openModalBehavior', {
-        component,
-        properties
-      })
-    }
-
-    const optionList = [
-      [
+const menuTree = {
+  blockList: [
+    {
+      menuList: [
         {
-          name: t('RR0120'),
-          func: openModal.bind(undefined, 'modal-org-user-profile')
+          title: t('RR0120'),
+          clickHandler: openModal.bind(undefined, 'modal-org-user-profile')
         },
         {
-          name: t('RR0138'),
-          func: openModal.bind(undefined, 'modal-change-password')
-        }
-      ],
-      [
-        // {
-        //   name: t('RR0137')
-        // },
-        {
-          name: t('RR0123'),
-          func: openModal.bind(undefined, 'modal-send-feedback'),
-        }
-        // {
-        //   name: t('RR0124')
-        // }
-      ],
-      [
-        {
-          name: t('RR0125'),
-          func: openModal.bind(undefined, 'modal-privacy-policy')
-        }
-      ],
-      [
-        {
-          name: t('RR0126'),
-          func: () => {
-            router.push('/logout')
-          }
+          title: t('RR0138'),
+          clickHandler: openModal.bind(undefined, 'modal-change-password')
         }
       ]
-    ]
-
-    return {
-      orgUser,
-      avatar,
-      optionList,
-      openModal
+    },
+    {
+      menuList: [
+        {
+          title: t('RR0123'),
+          clickHandler: openModal.bind(undefined, 'modal-send-feedback')
+        }
+      ]
+    },
+    {
+      menuList: [
+        {
+          title: t('RR0125'),
+          clickHandler: openModal.bind(undefined, 'modal-privacy-policy')
+        }
+      ]
+    },
+    {
+      menuList: [
+        {
+          title: t('RR0126'),
+          clickHandler: () => router.push('/logout')
+        }
+      ]
     }
-  }
+  ]
 }
 </script>

@@ -1,37 +1,41 @@
 <template lang="pug">
 filter-wrapper(iconName="price" :displayName="$t('RR0094')" :dirty="filterDirty.hasPrice")
   contextual-menu(
-    v-model:selectValue="hasPrice"
-    :optionList="filterOptions.hasPrice"
+    v-model:inputSelectValue="hasPrice"
+    :selectMode="1"
+    :menuTree="menuTree"
   )
 </template>
 
-<script>
+<script setup>
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-export default {
-  name: 'FilterHasPrice',
-  components: {
-    FilterWrapper
-  },
-  setup () {
-    const store = useStore()
+const { t } = useI18n()
+const store = useStore()
 
-    const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
-    const filterOptions = computed(() => store.getters['helper/search/filterOptions'])
-
-    const hasPrice = computed({
-      get: () => store.getters['helper/search/filter'].hasPrice,
-      set: (v) => store.dispatch('helper/search/setFilter', { hasPrice: v })
-    })
-
-    return {
-      hasPrice,
-      filterDirty,
-      filterOptions
+const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
+const menuTree = {
+  blockList: [
+    {
+      menuList: [
+        {
+          title: t('RR0096'),
+          selectValue: true
+        },
+        {
+          title: t('RR0097'),
+          selectValue: false
+        }
+      ]
     }
-  }
+  ]
 }
+
+const hasPrice = computed({
+  get: () => store.getters['helper/search/filter'].hasPrice,
+  set: (v) => store.dispatch('helper/search/setFilter', { hasPrice: v })
+})
 </script>

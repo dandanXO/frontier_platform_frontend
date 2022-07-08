@@ -35,7 +35,7 @@ div(class="w-full h-full")
           @click:option="$event.func(node)"
           @click.stop="handleNodeClick(node, goTo)"
         )
-          template(#hover-corner-bottom-right v-if="isFirstLayer")
+          template(#hover-corner-bottom-left v-if="isFirstLayer")
             svg-icon(
               :iconName="node.isPublic ? 'public' : 'lock_outline'"
               size="20"

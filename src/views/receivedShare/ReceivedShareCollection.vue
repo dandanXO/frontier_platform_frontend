@@ -50,7 +50,7 @@ div(class="w-315 h-full mx-auto")
           :node="node"
           @click.stop="handleNodeClick(node, goTo)"
         )
-          template(#hover-corner-bottom-right)
+          template(#hover-corner-bottom-left)
             svg-icon(
               iconName="clone"
               size="20"

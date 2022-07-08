@@ -1,37 +1,41 @@
 <template lang="pug">
 filter-wrapper(iconName="cube" :displayName="$t('RR0132')" :dirty="filterDirty.hasU3M")
   contextual-menu(
-    v-model:selectValue="hasU3M"
-    :optionList="filterOptions.hasU3M"
+    v-model:inputSelectValue="hasU3M"
+    :selectMode="1"
+    :menuTree="menuTree"
   )
 </template>
 
-<script>
+<script setup>
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-export default {
-  name: 'FilterHasU3m',
-  components: {
-    FilterWrapper
-  },
-  setup () {
-    const store = useStore()
+const { t } = useI18n()
+const store = useStore()
 
-    const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
-    const filterOptions = computed(() => store.getters['helper/search/filterOptions'])
-
-    const hasU3M = computed({
-      get: () => store.getters['helper/search/filter'].hasU3M,
-      set: (v) => store.dispatch('helper/search/setFilter', { hasU3M: v })
-    })
-
-    return {
-      hasU3M,
-      filterDirty,
-      filterOptions
+const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
+const menuTree = {
+  blockList: [
+    {
+      menuList: [
+        {
+          title: t('RR0100'),
+          selectValue: true
+        },
+        {
+          title: t('RR0101'),
+          selectValue: false
+        }
+      ]
     }
-  }
+  ]
 }
+
+const hasU3M = computed({
+  get: () => store.getters['helper/search/filter'].hasU3M,
+  set: (v) => store.dispatch('helper/search/setFilter', { hasU3M: v })
+})
 </script>

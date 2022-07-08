@@ -24,7 +24,12 @@ div(class="w-full h-full flex flex-col")
             :class="{ 'text-brand': isExpand }"
           )
         template(#content)
-          contextual-menu(v-model:selectValue="sort" :optionList="innerOptionSort" @update:selectValue="search()")
+          contextual-menu(
+            v-model:inputSelectValue="sort"
+            :selectMode="2"
+            :menuTree="sortMenuTree"
+            @click:menu="search()"
+          )
       slot(name="header-right")
   slot(name="sub-header")
   div(class="overflow-y-auto flex-grow grid")
@@ -86,13 +91,23 @@ const isSearching = ref(false)
 const inSearch = ref(false)
 const keywordDirty = ref(false)
 
-const innerOptionSort = computed(() => {
+const sortMenuTree = computed(() => {
   const { base, keywordSearch } = props.optionSort
   const temp = [...base]
   if (keywordDirty.value) {
     temp.unshift(...keywordSearch)
   }
-  return temp
+
+  return {
+    blockList: [
+      {
+        menuList: temp.map(({ text, value }) => ({
+          title: text,
+          selectValue: value
+        }))
+      }
+    ]
+  }
 })
 const keyword = computed(() => store.getters['helper/search/keyword'])
 const filter = computed(() => store.getters['helper/search/filter'])

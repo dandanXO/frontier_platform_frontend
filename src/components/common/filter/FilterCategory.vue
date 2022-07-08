@@ -1,37 +1,44 @@
 <template lang="pug">
 filter-wrapper(iconName="fabric" :displayName="$t('RR0087')" :dirty="filterDirty.category")
   contextual-menu(
-    v-model:selectValue="category"
-    :optionList="filterOptions.categoryList"
+    v-model:inputSelectValue="category"
+    :selectMode="1"
+    :menuTree="menuTree"
   )
 </template>
 
-<script>
+<script setup>
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 
-export default {
-  name: 'FilterCategory',
-  components: {
-    FilterWrapper
-  },
-  setup () {
-    const store = useStore()
+const store = useStore()
 
-    const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
-    const filterOptions = computed(() => store.getters['helper/search/filterOptions'])
+const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
 
-    const category = computed({
-      get: () => store.getters['helper/search/filter'].category,
-      set: (v) => store.dispatch('helper/search/setFilter', { category: v })
-    })
-
-    return {
-      category,
-      filterDirty,
-      filterOptions
-    }
+const menuTree = computed(() => {
+  const { categoryList } = store.getters['code/filterOptionList']
+  return {
+    blockList: [
+      {
+        menuList: categoryList.map(({ key, list }) => ({
+          title: key,
+          blockList: [
+            {
+              menuList: list.map(({ displayName, value }) => ({
+                title: displayName,
+                selectValue: value
+              }))
+            }
+          ]
+        }))
+      }
+    ]
   }
-}
+})
+
+const category = computed({
+  get: () => store.getters['helper/search/filter'].category,
+  set: (v) => store.dispatch('helper/search/setFilter', { category: v })
+})
 </script>

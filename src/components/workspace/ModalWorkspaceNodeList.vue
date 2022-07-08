@@ -38,7 +38,12 @@ modal-behavior(
                 :class="{ 'text-brand': isExpand }"
               )
             template(#content)
-              contextual-menu(v-model:selectValue="queryParams.sort" :optionList="sortOptionList" @update:selectValue="sort")
+              contextual-menu(
+                :menuTree="sortMenuTree"
+                v-model:inputSelectValue="queryParams.sort"
+                :selectMode="2"
+                @click:menu="sort"
+              )
       div(v-show="isSearching && nodeList.length === 0" class="flex-grow flex items-center justify-center")
         svg-icon(iconName="loading" size="92" class="text-brand")
       overlay-scrollbar-container(v-show="!isSearching || nodeList.length > 0" class="flex-grow -mx-5" @reachBottom="infiniteScroll")
@@ -137,7 +142,16 @@ const props = defineProps({
 const { t } = useI18n()
 const store = useStore()
 
-const sortOptionList = [SORT_BY.CREATE_DATE_C_M, SORT_BY.MATERIAL_NO_A_Z_C_M]
+const sortMenuTree = {
+  blockList: [
+    {
+      menuList: [SORT_BY.CREATE_DATE_C_M, SORT_BY.MATERIAL_NO_A_Z_C_M].map(({ text, value }) => ({
+        title: text,
+        selectValue: value
+      }))
+    }
+  ]
+}
 
 const isSearching = ref(false)
 const isOnlyShowCollection = ref(false)
@@ -148,7 +162,7 @@ const keyword = ref('')
 const queryParams = reactive({
   keyword: '',
   targetPage: 1,
-  sort: sortOptionList[0].value,
+  sort: SORT_BY.CREATE_DATE_C_M.value,
   workspaceNodeId: null,
   workspaceNodeLocation: null
 })

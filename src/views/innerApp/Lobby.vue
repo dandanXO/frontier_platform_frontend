@@ -41,7 +41,7 @@ div(class="w-full")
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import MenuPersonal from '@/components/lobby/MenuPersonal.vue'
-import { onUnmounted, computed, shallowRef, h } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import remindVerifyEmail from '@/utils/remind-verify-email'
 

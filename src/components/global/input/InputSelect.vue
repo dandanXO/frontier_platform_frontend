@@ -34,7 +34,6 @@ input-container(:required="required" ref="refContainer")
           list-item(
             v-for="(option, index) in searchedOptionList"
             :class="[index === currentIndex ? 'bg-black-200' : '']"
-            class="h-9"
             @click="select(option); collapsePopper()"
           )
             p(class="text-black-600") {{ option[keyOptionDisplay] }}
