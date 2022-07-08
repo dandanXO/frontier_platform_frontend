@@ -30,7 +30,7 @@ input-container(:label="label" :required="required" ref="refContainer")
           overlay-scrollbar-container(v-if="filteredOptionList.length > 0" class="max-h-72")
             list-item(
               v-for="option in filteredOptionList"
-              class="cursor-pointer h-9"
+              class="cursor-pointer"
               :class="[{ 'bg-black-200': option.checked }]"
               @click="option.checked ? removeChipFromOptions(option) : addChipFromOptions(option)"
             )

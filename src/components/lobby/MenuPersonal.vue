@@ -5,10 +5,7 @@ popper(placement="bottom-end")
       img(src="@/assets/images/default_user.png" class="rounded-full w-8 h-8 mr-1")
       svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650 transform" :class="[isExpand ? 'rotate-180' : 'rotate-0']")
   template(#content="{ collapsePopper }")
-    list(class="w-55")
-      template(v-for="(block, index) in optionList")
-        list-item(v-for="option in block" class="cursor-pointer" @click.stop="option.func && option.func(); collapsePopper()") {{ option.name }}
-        div(v-if="index !== optionList.length - 1" class="mx-2 my-1 h-px bg-black-400")
+    contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
 </template>
 
 <script setup>
@@ -27,42 +24,44 @@ const openModal = (component, properties = {}) => {
   })
 }
 
-const optionList = [
-  [
+const menuTree = {
+  blockList: [
     {
-      name: t('RR0120'),
-      func: openModal.bind(undefined, 'modal-personal-profile')
+      menuList: [
+        {
+          title: t('RR0120'),
+          clickHandler: openModal.bind(undefined, 'modal-personal-profile')
+        },
+        {
+          title: t('RR0138'),
+          clickHandler: openModal.bind(undefined, 'modal-change-password')
+        }
+      ]
     },
     {
-      name: t('RR0138'),
-      func: openModal.bind(undefined, 'modal-change-password')
-    }
-  ],
-  [
-    // {
-    //   name: t('RR0137')
-    // },
+      menuList: [
+        {
+          title: t('RR0123'),
+          clickHandler: openModal.bind(undefined, 'modal-send-feedback')
+        }
+      ]
+    },
     {
-      name: t('RR0123'),
-      func: openModal.bind(undefined, 'modal-send-feedback')
-    }
-    // {
-    //   name: t('RR0124')
-    // }
-  ],
-  [
+      menuList: [
+        {
+          title: t('RR0125'),
+          clickHandler: openModal.bind(undefined, 'modal-privacy-policy')
+        }
+      ]
+    },
     {
-      name: t('RR0125'),
-      func: openModal.bind(undefined, 'modal-privacy-policy')
-    }
-  ],
-  [
-    {
-      name: t('RR0126'),
-      func: () => {
-        router.push('/logout')
-      }
+      menuList: [
+        {
+          title: t('RR0126'),
+          clickHandler: () => router.push('/logout')
+        }
+      ]
     }
   ]
-]
+}
 </script>

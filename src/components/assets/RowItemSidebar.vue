@@ -4,7 +4,7 @@ div(class="text-black-700 flex flex-col gap-3.5")
     template(#trigger)
       div(v-if="item.id === 'downloadU3M' && material.u3m.status !== U3M_STATUS.COMPLETED" class="w-7.5 h-7.5 flex justify-center items-center text-black-500")
         svg-icon(:iconName="item.icon" size="24")
-      div(v-else class="w-7.5 h-7.5 hover:bg-brand/10 hover:text-brand flex justify-center items-center rounded-full" @click="handleClick(item)")
+      div(v-else class="w-7.5 h-7.5 hover:bg-brand/10 hover:text-brand flex justify-center items-center rounded-full" @click="item.func && item.func(material)")
         svg-icon(:iconName="item.icon" size="24")
     template(#content)
       div(class="py-3 px-3 text-primary text-caption whitespace-nowrap") {{ item.name }}
@@ -13,17 +13,15 @@ div(class="text-black-700 flex flex-col gap-3.5")
       div(class="w-7.5 h-7.5 hover:bg-brand/10 hover:text-brand flex justify-center items-center rounded-full")
         svg-icon(iconName="more_horiz" size="24")
     template(#content="{ collapsePopper }")
-      list(class="w-55")
-        div(v-for="(block, index) in optionList" class="text-black-400")
-          list-item(v-for="option in block" class="text-body2 text-primary px-7" @click="handleClick(option); collapsePopper()")
-            template(v-if="option.id === 'create3DMaterial'") {{ material.u3m.status === U3M_STATUS.COMPLETED ? $t('RR0074') : option.name }}
-            template(v-else) {{ option.name }}
-          div(class="mx-2 my-1" :class="{ 'border-b': index !== optionList.length - 1 }")
+      contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
 </template>
 
 <script setup>
 import useAssets from '@/composables/useAssets'
 import { U3M_STATUS } from '@/utils/constants'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   material: {
@@ -44,22 +42,44 @@ const {
   deleteMaterial
 } = useAssets()
 
-const optionList = [
-  [
-    cloneTo,
-    addToWorkspace
-  ],
-  [
-    create3DMaterial,
-    exportExcel,
-    printQRCode
-  ],
-  [
-    deleteMaterial
+const menuTree = {
+  blockList: [
+    {
+      menuList: [
+        {
+          title: cloneTo.name,
+          clickHandler: cloneTo.func.bind(undefined, props.material)
+        },
+        {
+          title: addToWorkspace.name,
+          clickHandler: addToWorkspace.func.bind(undefined, props.material)
+        }
+      ]
+    },
+    {
+      menuList: [
+        {
+          title: props.material.u3m.status === U3M_STATUS.COMPLETED ? t('RR0074') : create3DMaterial.name,
+          clickHandler: create3DMaterial.func.bind(undefined, props.material)
+        },
+        {
+          title: exportExcel.name,
+          clickHandler: exportExcel.func.bind(undefined, props.material)
+        },
+        {
+          title: printQRCode.name,
+          clickHandler: printQRCode.func.bind(undefined, props.material)
+        }
+      ]
+    },
+    {
+      menuList: [
+        {
+          title: deleteMaterial.name,
+          clickHandler: deleteMaterial.func.bind(undefined, props.material)
+        }
+      ]
+    }
   ]
-]
-
-const handleClick = (option) => {
-  option.func && option.func(props.material)
 }
 </script>

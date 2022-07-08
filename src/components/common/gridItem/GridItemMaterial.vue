@@ -22,8 +22,8 @@ grid-item-wrapper(
       div(class="text-caption line-clamp-1 leading-1.6") {{ materialInfo.weight.value }}
   template(#hover-corner-top-right)
     slot(name="hover-corner-top-right")
-  template(#hover-corner-bottom-right)
-    slot(name="hover-corner-bottom-right")
+  template(#hover-corner-bottom-left)
+    slot(name="hover-corner-bottom-left")
   template(#title-right-icon)
     slot(name="title-right-icon")
   template(#caption)
