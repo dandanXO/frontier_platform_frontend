@@ -53,7 +53,6 @@ const handleClick = (option) => {
   if (!option.func || option.disabled) {
     return
   }
-  const tempList = innerSelectedList.value.map(item => JSON.parse(item)) // will JSON.stringify at NodeItem and selectAll
-  option.func(tempList)
+  option.func(innerSelectedList.value)
 }
 </script>

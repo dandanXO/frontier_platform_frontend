@@ -15,10 +15,11 @@ export default function useMoodboardNode (moodboard, moodboardOfferNodeCollectio
   const { moodboardId, moodboardType } = moodboard.value
 
   const selectedNodeList = ref([])
+
   const selectAll = () => {
-    const stringifyList = moodboardOfferNodeCollection.value.childNodeList.map(node => JSON.stringify(node))
-    const tempSelectedNodeList = [...selectedNodeList.value]
-    selectedNodeList.value = [...new Set(tempSelectedNodeList.concat(stringifyList))]
+    const stringifyNodeList = moodboardOfferNodeCollection.value.childNodeList.map(node => JSON.stringify(node))
+    const stringifySelectedNodeList = selectedNodeList.value.map(node => JSON.stringify(node))
+    selectedNodeList.value = [...new Set(stringifySelectedNodeList.concat(stringifyNodeList))].map(node => JSON.parse(node))
   }
 
   const cloneMoodboardNode = (nodeList) => {

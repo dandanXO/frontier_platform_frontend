@@ -51,8 +51,8 @@ modal-behavior(
               :selectOnHover="false"
               :isMultiSelect="isMultiSelect"
               :selectValue="item"
-              class="w-25 h-25 border rounded-md overflow-hidden"
-              :class="[isMultiSelect && selectedValue.includes(JSON.stringify(item)) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
+              class="walle w-25 h-25 border rounded-md overflow-hidden"
+              :class="[isMultiSelect && selectedValue.map(v => JSON.stringify(v)).includes(JSON.stringify(item)) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
               @click="goTo(item.nodeKey), setRootId(item.id)"
             )
               template(#content)
@@ -403,7 +403,6 @@ const openModalCreateCollectionSimple = () => {
 }
 
 const innerActionCallback = async () => {
-  const tempSelectValue = props.isMultiSelect ? selectedValue.value.map((v) => JSON.parse(v)) : JSON.parse(selectedValue.value)
-  await props.actionCallback(tempSelectValue)
+  await props.actionCallback(selectedValue.value)
 }
 </script>

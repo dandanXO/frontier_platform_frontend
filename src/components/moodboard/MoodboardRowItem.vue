@@ -12,7 +12,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-blac
         div(class="bg-linear w-full h-full rounded-t-md")
         input-checkbox(
           v-model:inputValue="innerSelectedList"
-          :value="JSON.stringify(node)"
+          :value="node"
           class="absolute top-3 left-3 cursor-pointer"
           iconColor="text-black-0"
           uncheckColor="text-black-0"
