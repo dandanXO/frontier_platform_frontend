@@ -3,7 +3,7 @@ input-container(:required="required")
   div(class="flex gap-x-3")
     input-radio(v-for="option in optionList"
       v-model:inputValue="innerInputValue"
-      :name="option[keyOptionName]"
+      :label="option[keyOptionName]"
       :value="option[keyOptionValue]"
       :size="radioSize"
     )
@@ -23,7 +23,7 @@ export default {
       required: true
     },
     inputValue: {
-      type: [String, Number, Boolean],
+      type: [String, Number, Boolean, Object],
       required: true
     },
     keyOptionName: {

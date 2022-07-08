@@ -68,7 +68,6 @@ import { ref, reactive, computed } from 'vue'
 import { SORT_BY, NODE_TYPE, NODE_LOCATION } from '@/utils/constants'
 import GridItemNodeForModal from '@/components/common/gridItem/GridItemNodeForModal.vue'
 import { useStore } from 'vuex'
-import useMaterial from '@/composables/useMaterial'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps({

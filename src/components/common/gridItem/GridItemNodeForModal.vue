@@ -4,6 +4,7 @@ grid-item-wrapper(
   :isMultiSelect="isMultiSelect"
   v-model:selectedValue="innerSelectedValue"
   :selectValue="node"
+  :selectOnHover="false"
 )
   template(#title="{ isHover }")
     span(:class="{ 'text-brand': isHover }") {{ node.nodeType === NODE_TYPE.COLLECTION ? node.properties.name : node.properties.materialNo }}
@@ -45,7 +46,7 @@ const props = defineProps({
     default: true
   },
   selectedValue: {
-    type: [Array, String]
+    type: [Array, String, Object]
   }
 })
 
