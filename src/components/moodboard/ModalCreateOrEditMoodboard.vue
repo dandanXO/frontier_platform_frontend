@@ -113,7 +113,7 @@ const fileSizeMaxLimit = 20
 const trendBoardFileAcceptType = ['pdf']
 const primaryBtnDisabled = computed(() => !formData.moodboardName || refInputName.value?.isError || !formData.description || refInputDescription.value?.isError)
 
-const trendBoardFileOperator = new FileOperator(acceptType, fileSizeMaxLimit, true)
+const trendBoardFileOperator = new FileOperator(trendBoardFileAcceptType, fileSizeMaxLimit, true)
 const chooseTrendBoard = () => trendBoardFileOperator.upload()
 trendBoardFileOperator.on('finish', (file) => {
   store.dispatch('helper/pushModalLoading')

@@ -119,10 +119,7 @@ const openModalShareAssigned = () => {
 
 const openModalShareAssignedList = () => {
   store.dispatch('helper/pushModalBehavior', {
-    component: 'modal-share-assigned-list',
-    properties: {
-      workspaceNodeId: props.workspaceNodeId
-    }
+    component: 'modal-share-assigned-list'
   })
 }
 

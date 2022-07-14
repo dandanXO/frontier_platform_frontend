@@ -17,11 +17,15 @@ import polling from '@/store/modules/polling'
 
 export default createStore({
   actions: {
-    async uploadFileToS3 (_, { fileName, file }) {
-      const { data: { result: { tempUploadId, fileUploadUrl } } } = await axios('/general/get-upload-url', {
+    async getUploadUrl (_, { fileName }) {
+      const { data } = await axios('/general/get-upload-url', {
         method: 'POST',
         data: { fileName }
       })
+      return data.result
+    },
+    async uploadFileToS3 ({ dispatch }, { fileName, file }) {
+      const { tempUploadId, fileUploadUrl } = await dispatch('getUploadUrl', { fileName })
       await putBinaryData(fileUploadUrl, file)
       return { fileName, tempUploadId }
     },
@@ -31,23 +35,6 @@ export default createStore({
         data: { accessToken }
       })
       return status
-    },
-    handleResponseData ({ dispatch }, { data }) {
-      const { result } = JSON.parse(JSON.stringify(data))
-
-      const namespacedParentModuleList = ['user', 'organization', 'code', 'group']
-
-      if (result !== null) {
-        namespacedParentModuleList.forEach(module => {
-          if (Object.prototype.hasOwnProperty.call(result, module)) {
-            const capitalizedModule = module.charAt(0).toUpperCase() + module.slice(1)
-            dispatch(`${module}/set${capitalizedModule}`, result[module], { root: true })
-          }
-        })
-        if (Object.prototype.hasOwnProperty.call(result, 'pagination')) {
-          dispatch('helper/search/setPagination', result.pagination, { root: true })
-        }
-      }
     }
   },
   modules: {

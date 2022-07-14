@@ -1,6 +1,8 @@
+import axios from '@/apis'
 import assetsApi from '@/apis/assets'
 import { downloadBase64File } from '@/utils/fileOperator'
-import { NODE_LOCATION, DISPLAY_NODE } from '@/utils/constants'
+import { NODE_LOCATION } from '@/utils/constants'
+import putBinaryData from '@/utils/put-binary-data'
 import Material from '@/store/reuseModules/material.js'
 import progress from './progress'
 
@@ -32,6 +34,9 @@ export default {
     }
   },
   actions: {
+    async callAssetsApi ({ rootGetters }, { func, params = {} }) {
+      return await assetsApi[func](rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    },
     setAssetsModule ({ commit, dispatch }, data) {
       const { assets, material, pagination } = data
 
@@ -52,30 +57,20 @@ export default {
     resetMaterial ({ commit }) {
       commit('RESET_material')
     },
-    async getMaterialOptions ({ rootGetters, commit }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.getMaterialOptions({ orgId: rootGetters['organization/orgId'] })
-        : await assetsApi.group.getMaterialOptions({ groupId: rootGetters['group/groupId'] })
-
+    async getMaterialOptions ({ dispatch, commit }) {
+      const { data } = await dispatch('callAssetsApi', { func: 'getMaterialOptions' })
       commit('SET_code', data.result.code)
     },
-    async getMaterial ({ rootGetters, dispatch }, { materialId }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.getMaterial({ orgId: rootGetters['organization/orgId'], materialId })
-        : await assetsApi.group.getMaterial({ groupId: rootGetters['group/groupId'], materialId })
-
+    async getMaterial ({ dispatch }, params) {
+      const { data } = await dispatch('callAssetsApi', { func: 'getMaterial', params })
       dispatch('setAssetsModule', data.result)
     },
     async getMaterialList ({ rootGetters, dispatch }, { targetPage = 1 }) {
-      const searchParams = rootGetters['helper/search/getSearchParams'](targetPage)
-
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.getMaterialList({ orgId: rootGetters['organization/orgId'], ...searchParams })
-        : await assetsApi.group.getMaterialList({ groupId: rootGetters['group/groupId'], ...searchParams })
-
+      const params = rootGetters['helper/search/getSearchParams'](targetPage)
+      const { data } = await dispatch('callAssetsApi', { func: 'getMaterialList', params })
       dispatch('setAssetsModule', data.result)
     },
-    async createMaterial ({ rootGetters, getters, dispatch }, { tempMaterialId }) {
+    async createMaterial ({ getters, dispatch }, { tempMaterialId }) {
       const material = Object.fromEntries(
         Object.entries(getters.material)
           .filter(([key]) => [
@@ -111,13 +106,10 @@ export default {
           ].includes(key))
       )
       material['certificateIdList'] = getters.material.certificateList.map(({ certificateId }) => certificateId)
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.createMaterial({ orgId: rootGetters['organization/orgId'], tempMaterialId, material })
-        : await assetsApi.group.createMaterial({ groupId: rootGetters['group/groupId'], tempMaterialId, material })
-
+      const { data } = await dispatch('callAssetsApi', { func: 'createMaterial', params: { tempMaterialId, material } })
       dispatch('setAssetsModule', data.result)
     },
-    async updateMaterial ({ rootGetters, getters }) {
+    async updateMaterial ({ getters, dispatch }) {
       const materialId = getters.material.materialId
       const material = Object.fromEntries(
         Object.entries(getters.material)
@@ -154,108 +146,181 @@ export default {
           ].includes(key))
       )
       material['certificateIdList'] = getters.material.certificateList.map(({ certificateId }) => certificateId)
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.updateMaterial({ orgId: rootGetters['organization/orgId'], materialId, material })
-        : await assetsApi.group.updateMaterial({ groupId: rootGetters['group/groupId'], materialId, material })
+      await dispatch('callAssetsApi', { func: 'updateMaterial', params: { materialId, material } })
     },
-    async addPantone ({ rootGetters, getters, dispatch }, { name }) {
-      const params = {
-        name,
-        materialId: getters.material.materialId
-      }
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.addPantone({ orgId: rootGetters['organization/orgId'], ...params })
-        : await assetsApi.group.addPantone({ groupId: rootGetters['group/groupId'], ...params })
-
+    async addPantone ({ getters, dispatch }, params) {
+      const { data } = await dispatch('callAssetsApi', { func: 'addPantone', params: { ...params, materialId: getters.material.materialId } })
       dispatch('setAssetsModule', data.result)
     },
-    async removePantone ({ rootGetters, getters, dispatch }, { materialPantoneId }) {
+    async removePantone ({ getters, dispatch }, { materialPantoneId }) {
       const params = {
         materialPantoneId,
         materialId: getters.material.materialId
       }
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.removePantone({ orgId: rootGetters['organization/orgId'], ...params })
-        : await assetsApi.group.removePantone({ groupId: rootGetters['group/groupId'], ...params })
-
+      const { data } = await dispatch('callAssetsApi', { func: 'removePantone', params })
       dispatch('setAssetsModule', data.result)
     },
-    async uploadAttachmentWhenCreate ({ rootGetters, commit }, { tempMaterialId, file, displayFileName }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.createAttachment.upload({ orgId: rootGetters['organization/orgId'], tempMaterialId, file, displayFileName })
-        : await assetsApi.group.createAttachment.upload({ groupId: rootGetters['group/groupId'], tempMaterialId, file, displayFileName })
 
-      commit('UPDATE_attachmentList', data.result.attachmentList)
-    },
-    async removeAttachmentWhenCreate ({ rootGetters, commit }, { tempMaterialId, tempMaterialAttachmentId }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.createAttachment.remove({ orgId: rootGetters['organization/orgId'], tempMaterialId, tempMaterialAttachmentId })
-        : await assetsApi.group.createAttachment.remove({ groupId: rootGetters['group/groupId'], tempMaterialId, tempMaterialAttachmentId })
+    /**
+     * @param {object} context
+     * @param {object} params 
+     * @param {string} params.tempMaterialId
+     * @param {object} params.file - file object
+     * @param {string} params.displayFileName
+     */
+    async uploadAttachmentWhenCreate ({ commit, dispatch }, params) {
+      const { file } = params
 
-      commit('UPDATE_attachmentList', data.result.attachmentList)
-    },
-    async uploadAttachmentWhenUpdate ({ rootGetters, getters, commit }, { file, displayFileName }) {
-      const params = {
-        materialId: getters.material.materialId,
-        file,
-        displayFileName
+      let attachment = null
+      if (!!file) {
+        attachment = await dispatch('uploadFileToS3', { fileName: file.name, file }, { root: true })
       }
 
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.updateAttachment.upload({ orgId: rootGetters['organization/orgId'], ...params })
-        : await assetsApi.group.updateAttachment.upload({ groupId: rootGetters['group/groupId'], ...params })
+      const tempParams = { ...params, tempUploadId: attachment.tempUploadId, attachmentFileName: attachment.fileName }
+      delete tempParams.file
 
+      const { data } = await dispatch('callAssetsApi', { func: 'uploadAttachmentWhenCreate', params: tempParams })
+      commit('UPDATE_attachmentList', data.result.attachmentList)
+    },
+    async removeAttachmentWhenCreate ({ commit, dispatch }, params) {
+      const { data } = await dispatch('callAssetsApi', { func: 'removeAttachmentWhenCreate', params })
+      commit('UPDATE_attachmentList', data.result.attachmentList)
+    },
+
+    /**
+     * @param {object} context
+     * @param {object} params 
+     * @param {object} params.file - file object
+     * @param {string} params.displayFileName
+     */
+    async uploadAttachmentWhenUpdate ({ getters, dispatch, commit }, params) {
+      const { file } = params
+
+      let attachment = null
+      if (!!file) {
+        attachment = await dispatch('uploadFileToS3', { fileName: file.name, file }, { root: true })
+      }
+
+      const tempParams = {
+        ...params,
+        materialId: getters.material.materialId,
+        tempUploadId: attachment.tempUploadId,
+        attachmentFileName: attachment.fileName
+      }
+      delete tempParams.file
+
+      const { data } = await dispatch('callAssetsApi', { func: 'uploadAttachmentWhenUpdate', params: tempParams })
       commit('UPDATE_attachmentList', data.result.material.attachmentList)
     },
-    async removeAttachmentWhenUpdate ({ rootGetters, getters, commit }, { materialAttachmentId }) {
+    async removeAttachmentWhenUpdate ({ getters, dispatch, commit }, { materialAttachmentId }) {
       const params = {
         materialId: getters.material.materialId,
         materialAttachmentId
       }
-
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.updateAttachment.remove({ orgId: rootGetters['organization/orgId'], ...params })
-        : await assetsApi.group.updateAttachment.remove({ groupId: rootGetters['group/groupId'], ...params })
-
+      const { data } = await dispatch('callAssetsApi', { func: 'removeAttachmentWhenUpdate', params })
       commit('UPDATE_attachmentList', data.result.material.attachmentList)
     },
-    async changeCoverImg ({ rootGetters, getters, dispatch }, { coverMode, materialAttachmentId = null, attachmentCropImg = null }) {
-      const params = {
-        materialId: getters.material.materialId,
-        coverMode,
-        materialAttachmentId,
-        attachmentCropImg
-      }
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.changeCoverImg({ orgId: rootGetters['organization/orgId'], ...params })
-        : await assetsApi.group.changeCoverImg({ groupId: rootGetters['group/groupId'], ...params })
 
+    /**
+     * @param {object} context
+     * @param {object} params 
+     * @param {number} params.coverMode
+     * @param {number} params.materialAttachmentId
+     * @param {object} params.attachmentCropImg - file object
+     */
+    async changeCoverImg ({ getters, dispatch }, params) {
+      const { attachmentCropImg } = params
+
+      let coverImg = null
+      if (!!attachmentCropImg) {
+        coverImg = await dispatch('uploadFileToS3', { fileName: file.name, file: attachmentCropImg }, { root: true })
+      }
+
+      const tempParams = {
+        ...params,
+        materialId: getters.material.materialId,
+        tempUploadId: coverImg.tempUploadId,
+        attachmentCropImgFileName: coverImg.fileName
+      }
+      delete tempParams.attachmentCropImg
+
+      const { data } = await dispatch('callAssetsApi', { func: 'changeCoverImg', params: tempParams })
       dispatch('setAssetsModule', data.result)
     },
-    async updateScannedImage ({ rootGetters, getters, dispatch }, { isExchange, faceSideCropImg, backSideCropImg }) {
-      const params = {
-        materialId: getters.material.materialId,
-        isExchange,
-        faceSideCropImg,
-        backSideCropImg
-      }
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.updateScannedImage({ orgId: rootGetters['organization/orgId'], ...params })
-        : await assetsApi.group.updateScannedImage({ groupId: rootGetters['group/groupId'], ...params })
 
+    /**
+     * @param {object} context
+     * @param {object} params 
+     * @param {boolean} params.isExchange
+     * @param {object} params.faceSideCropImg - file object
+     * @param {object} params.backSideCropImg - file object
+     */
+    async updateScannedImage ({ getters, dispatch }, params) {
+      const { faceSideCropImg, backSideCropImg } = params
+      const faceSideCropImgFileName = faceSideCropImg?.name || null
+      const backSideCropImgFileName = backSideCropImg?.name || null
+      let id = null
+
+      if (faceSideCropImg || backSideCropImg) {
+        const { data: { result: { tempUploadId, faceSideCropImgUploadUrl, backSideCropImgUploadUrl } } } = await axios('/org/assets/material/update/scan-image/get-upload-url', {
+          method: 'POST',
+          data: { faceSideCropImgFileName, backSideCropImgFileName }
+        })
+
+        id = tempUploadId
+        !!faceSideCropImg && await putBinaryData(faceSideCropImgUploadUrl, faceSideCropImg)
+        !!backSideCropImg && await putBinaryData(backSideCropImgUploadUrl, backSideCropImg)
+      }
+
+      const tempParams = {
+        ...params,
+        materialId: getters.material.materialId,
+        tempUploadId: id,
+        faceSideCropImgFileName,
+        backSideCropImgFileName
+      }
+      delete tempParams.faceSideCropImg
+      delete tempParams.backSideCropImg
+
+      const { data } = await dispatch('callAssetsApi', { func: 'updateScannedImage', params: tempParams })
       dispatch('setAssetsModule', data.result)
     },
-    async generateU3m ({ rootGetters, getters, dispatch }, { isAutoRepeat = true, faceSideCropImg = null, backSideCropImg = null }) {
-      const params = {
-        materialId: getters.material.materialId,
-        isAutoRepeat,
-        faceSideCropImg,
-        backSideCropImg
-      }
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.generateU3m({ orgId: rootGetters['organization/orgId'], ...params })
-        : await assetsApi.group.generateU3m({ groupId: rootGetters['group/groupId'], ...params })
 
+    /**
+     * @param {object} context
+     * @param {object} params 
+     * @param {number} params.isAutoRepeat
+     * @param {object} params.faceSideCropImg - file object
+     * @param {object} params.backSideCropImg - file object
+     */
+    async generateU3m ({ getters, dispatch }, params) {
+      const { faceSideCropImg, backSideCropImg } = params
+      const faceSideCropImgFileName = faceSideCropImg?.name || null
+      const backSideCropImgFileName = backSideCropImg?.name || null
+      let id = null
+
+      if (faceSideCropImg || backSideCropImg) {
+        const { data: { result: { tempUploadId, faceSideCropImgUploadUrl, backSideCropImgUploadUrl } } } = await axios('/org/assets/material/update/generate-u3m/get-upload-url', {
+          method: 'POST',
+          data: { faceSideCropImgFileName, backSideCropImgFileName }
+        })
+
+        id = tempUploadId
+        !!faceSideCropImg && await putBinaryData(faceSideCropImgUploadUrl, faceSideCropImg)
+        !!backSideCropImg && await putBinaryData(backSideCropImgUploadUrl, backSideCropImg)
+      }
+
+      const tempParams = {
+        ...params,
+        materialId: getters.material.materialId,
+        tempUploadId: id,
+        faceSideCropImgFileName,
+        backSideCropImgFileName
+      }
+      delete tempParams.faceSideCropImg
+      delete tempParams.backSideCropImg
+
+      const { data } = await dispatch('callAssetsApi', { func: 'generateU3m', params: tempParams })
       const { u3m } = data.result.material
       dispatch('setAssetsModule', {
         material: {
@@ -263,8 +328,19 @@ export default {
         }
       })
     },
-    async getMaterialListForModal (_, { nodeLocation, id, keyword, targetPage = 1, sort }) {
-      const params = {
+
+    /**
+     * @param {object} context
+     * @param {object} params 
+     * @param {object} params.nodeLocation
+     * @param {string} params.id
+     * @param {string} params.keyword
+     * @param {string} params.targetPage
+     * @param {string} params.sort
+     */
+    async getMaterialListForModal (_, params) {
+      const { id, keyword, targetPage, sort } = params
+      const tempParams = {
         search: {
           keyword,
           tagList: []
@@ -278,82 +354,47 @@ export default {
       }
 
       if (!keyword) {
-        params.search = null
+        tempParams.search = null
       }
 
-      const { data } = NODE_LOCATION.ORG === Number(nodeLocation)
-        ? await assetsApi.org.getMaterialList({ orgId: id, ...params })
-        : await assetsApi.group.getMaterialList({ groupId: id, ...params })
-
+      const { data } = await assetsApi.getMaterialList(Number(nodeLocation) === NODE_LOCATION.ORG ? 'org' : 'group', id, tempParams)
       return data.result
     },
-    async mergeMaterial ({ rootGetters }, { mergedList }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.mergeMaterial({ orgId: rootGetters['organization/orgId'], mergedList })
-        : await assetsApi.group.mergeMaterial({ groupId: rootGetters['group/groupId'], mergedList })
+    async mergeMaterial ({ dispatch }, params) {
+      await dispatch('callAssetsApi', { func: 'mergeMaterial', params })
     },
-    async deleteMaterial ({ rootGetters }, { materialIdList }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.deleteMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
-        : await assetsApi.group.deleteMaterial({ groupId: rootGetters['group/groupId'], materialIdList })
+    async deleteMaterial ({ dispatch }, params) {
+      await dispatch('callAssetsApi', { func: 'deleteMaterial', params })
     },
-    async deleteCheckMaterial ({ rootGetters }, { materialIdList }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.deleteCheckMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
-        : await assetsApi.group.deleteCheckMaterial({ groupId: rootGetters['group/groupId'], materialIdList })
+    async deleteCheckMaterial ({ dispatch }, params) {
+      const { data } = await dispatch('callAssetsApi', { func: 'deleteCheckMaterial', params })
       return data.result
     },
-    async exportMaterial ({ rootGetters }, { materialIdList }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.exportMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
-        : await assetsApi.group.exportMaterial({ groupId: rootGetters['group/groupId'], materialIdList })
-
+    async exportMaterial ({ dispatch }, params) {
+      const { data } = await dispatch('callAssetsApi', { func: 'exportMaterial', params })
       const { extension, file, fileName } = data?.result
       downloadBase64File(file, extension, fileName)
     },
-    async massExportMaterial ({ rootGetters }, { materialIdList }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.massExportMaterial({ orgId: rootGetters['organization/orgId'], materialIdList })
-        : await assetsApi.group.massExportMaterial({ groupId: rootGetters['group/groupId'], materialIdList })
+    async massExportMaterial ({ dispatch }, params) {
+      await dispatch('callAssetsApi', { func: 'massExportMaterial', params })
     },
-    async cloneCheck ({ rootGetters }, { materialIdList }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.cloneCheck({ orgId: rootGetters['organization/orgId'], materialIdList })
-        : await assetsApi.group.cloneCheck({ groupId: rootGetters['group/groupId'], materialIdList })
-
+    async cloneCheck ({ dispatch }, params) {
+      const { data } = await dispatch('callAssetsApi', { func: 'cloneCheck', params })
       return data.result.estimatedQuota
     },
-    async cloneMaterial ({ rootGetters }, { targetLocationList, materialIdList, optional }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.cloneMaterial({ orgId: rootGetters['organization/orgId'], targetLocationList, materialIdList, optional })
-        : await assetsApi.group.cloneMaterial({ groupId: rootGetters['group/groupId'], targetLocationList, materialIdList, optional })
+    async cloneMaterial ({ dispatch }, params) {
+      await dispatch('callAssetsApi', { func: 'cloneMaterial', params })
     },
-    async addToWorkspace ({ rootGetters }, { targetWorkspaceNodeList, materialIdList }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.addToWorkspace({ orgId: rootGetters['organization/orgId'], targetWorkspaceNodeList, materialIdList })
-        : await assetsApi.group.addToWorkspace({ groupId: rootGetters['group/groupId'], targetWorkspaceNodeList, materialIdList })
-
+    async addToWorkspace ({ dispatch }, params) {
+      const { data } = await dispatch('callAssetsApi', { func: 'addToWorkspace', params })
       return data.result.failMaterialList
     },
-    async batchUpload ({ rootGetters }, { xlsxFile }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.batchUpload({ orgId: rootGetters['organization/orgId'], xlsxFile })
-        : await assetsApi.group.batchUpload({ groupId: rootGetters['group/groupId'], xlsxFile })
-
+    async batchUpload ({ dispatch }, params) {
+      const { data } = await dispatch('callAssetsApi', { func: 'batchUpload', params })
       return data
     },
-    async smartUpload ({ rootGetters }, { fileList }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.smartUpload({ orgId: rootGetters['organization/orgId'], fileList })
-        : await assetsApi.group.smartUpload({ groupId: rootGetters['group/groupId'], fileList })
-
-      return data
-    },
-    async getSmartUploadUrl ({ rootGetters }, { fileName }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.getSmartUploadUrl({ fileName })
-        : await assetsApi.group.getSmartUploadUrl({ fileName })
-
+    async smartUpload ({ dispatch }, params) {
+      const { data } = await dispatch('callAssetsApi', { func: 'smartUpload', params })
       return data
     }
   }

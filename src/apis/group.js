@@ -1,48 +1,68 @@
 import axios from '@/apis'
 
+const groupApiWrapper = (path, groupId = null, params = {}) => {
+  const data = {}
+  if (groupId) {
+    data['groupId'] = groupId
+  }
+  Object.assign(data, params)
+  return axios(path, { method: 'POST', data })
+}
+
 export default {
-  createGroup: ({ orgId, groupName, description = '', labelColor, uploadMaterialEmail }) => axios('/org/group/create', {
-    method: 'POST',
-    data: { orgId, groupName, description, labelColor, uploadMaterialEmail }
-  }),
-  getGroup: ({ groupId }) => axios('/org/group/get', {
-    method: 'POST',
-    data: { groupId: Number(groupId) }
-  }),
-  updateGroup: ({ groupId, groupName, description, labelColor }) => axios('/org/group/update', {
-    method: 'POST',
-    data: { groupId, groupName, description, labelColor }
-  }),
-  deleteGroup: ({ groupId, transferOrgId, transferGroupId }) => axios('/org/group/delete', {
-    method: 'POST',
-    data: { groupId, transferOrgId, transferGroupId }
-  }),
-  getGroupUser: ({ groupId }) => axios('/org/group/user/get', {
-    method: 'POST',
-    data: { groupId }
-  }),
-  cancelGroupInvitation: ({ groupId, email }) => axios('/org/group/member/cancel-invitation', {
-    method: 'POST',
-    data: { groupId, email }
-  }),
-  changeGroupMemberRole: ({ groupUserId, roleId }) => axios('/org/group/member/change-role', {
-    method: 'POST',
-    data: { groupUserId, roleId }
-  }),
-  removeGroupMember: ({ groupUserId }) => axios('/org/group/member/delete-member', {
-    method: 'POST',
-    data: { groupUserId }
-  }),
-  addMemberToGroup: ({ groupId, orgUserIdList }) => axios('/org/group/member/add-members', {
-    method: 'POST',
-    data: { groupId, orgUserIdList }
-  }),
-  inviteToOrgFromGroup: ({ groupId, emailList }) => axios('/org/group/member/invite-via-email', {
-    method: 'POST',
-    data: { groupId, emailList }
-  }),
-  joinGroupViaLink: ({ inviteCode }) => axios('/org/group/member/join-via-link', {
-    method: 'POST',
-    data: { inviteCode }
-  })
+  /**
+   * @param {object} params
+   * @param {number} params.orgId
+   * @param {string} params.groupName
+   * @param {string} params.description
+   * @param {string} params.labelColor
+   * @param {string} params.uploadMaterialEmail
+   */
+  createGroup: (_, params) => groupApiWrapper('/org/group/create', null, params),
+  getGroup: (groupId) => groupApiWrapper('/org/group/get', groupId),
+  /**
+   * @param {object} params
+   * @param {string} params.groupName
+   * @param {string} params.description
+   * @param {string} params.labelColor
+   */
+  updateGroup: (groupId, params) => groupApiWrapper('/org/group/update', groupId, params),
+  /**
+   * @param {object} params
+   * @param {number?} params.transferOrgId
+   * @param {number?} params.transferGroupId
+   */
+  deleteGroup: (groupId, params) => groupApiWrapper('/org/group/delete', groupId, params),
+  getGroupUser: (groupId) => groupApiWrapper('/org/group/user/get', groupId),
+  /**
+   * @param {object} params
+   * @param {number} params.email
+   */
+  cancelGroupInvitation: (groupId, params) => groupApiWrapper('/org/group/member/cancel-invitation', groupId, params),
+  /**
+   * @param {object} params
+   * @param {number} params.groupUserId
+   * @param {number} params.roleId
+   */
+  changeGroupMemberRole: (_, params) => groupApiWrapper('/org/group/member/change-role', null, params),
+  /**
+   * @param {object} params
+   * @param {number} params.groupUserId
+   */
+  removeGroupMember: (_, params) => groupApiWrapper('/org/group/member/delete-member', null, params),
+  /**
+   * @param {object} params
+   * @param {number[]} params.orgUserIdList
+   */
+  addMemberToGroup: (groupId, params) => groupApiWrapper('/org/group/member/add-members', groupId, params),
+  /**
+   * @param {object} params
+   * @param {string[]} params.emailList
+   */
+  inviteToOrgFromGroup: (groupId, params) => groupApiWrapper('/org/group/member/invite-via-email', groupId, params),
+  /**
+   * @param {object} params
+   * @param {string} params.inviteCode
+   */
+  joinGroupViaLink: (_, params) => groupApiWrapper('/org/group/member/join-via-link', null, params)
 }

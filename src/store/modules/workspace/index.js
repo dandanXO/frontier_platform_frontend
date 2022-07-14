@@ -39,6 +39,9 @@ export default {
     }
   },
   actions: {
+    async callWorkspaceApi ({ rootGetters }, { func, params = {} }) {
+      return await workspaceApi[func](rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    },
     setWorkspaceModule ({ commit, dispatch }, data) {
       const { workspaceCollection, material, shareInfo, pagination, breadcrumbList } = data
 
@@ -55,13 +58,10 @@ export default {
         ...searchParams
       }
 
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.getWorkspace({ orgId: rootGetters['organization/orgId'], ...params })
-        : await workspaceApi.group.getWorkspace({ groupId: rootGetters['group/groupId'], ...params })
-
+      const { data } = await dispatch('callWorkspaceApi', { func: 'getWorkspaceOrCollection', params })
       dispatch('setWorkspaceModule', data.result)
     },
-    async getWorkspaceForModal ({ rootGetters }, { keyword, sort, targetPage = 1, workspaceNodeId, workspaceNodeLocation }) {
+    async getWorkspaceForModal ({ dispatch }, { keyword, sort, targetPage = 1, workspaceNodeId, workspaceNodeLocation }) {
       const params = {
         workspaceNodeId,
         workspaceNodeLocation,
@@ -81,138 +81,130 @@ export default {
         params.search = null
       }
 
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.getWorkspaceForModal({ orgId: rootGetters['organization/orgId'], ...params })
-        : await workspaceApi.group.getWorkspaceForModal({ groupId: rootGetters['group/groupId'], ...params })
+      const { data } = await dispatch('callWorkspaceApi', { func: 'getWorkspaceForModal', params })
       return data.result
     },
-    async getCollection ({ rootGetters }, { workspaceNodeId }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.getCollection({ orgId: rootGetters['organization/orgId'], workspaceNodeId })
-        : await workspaceApi.group.getCollection({ groupId: rootGetters['group/groupId'], workspaceNodeId })
+    async getCollection ({ dispatch }, params) {
+      const tempParams = {
+        search: null,
+        filter: null,
+        pagination: {
+          perPageCount: 40, targetPage: 1
+        },
+        ...params
+      }
+      const { data } = await dispatch('callWorkspaceApi', { func: 'getWorkspaceOrCollection', params: tempParams })
       return data.result.workspaceCollection
     },
-    async getWorkspaceMaterial ({ rootGetters, dispatch }, { nodeKey }) {
+    async getWorkspaceMaterial ({ dispatch }, { nodeKey }) {
       const workspaceNodeId = nodeKey.split('-')[1]
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.getWorkspaceMaterial({ orgId: rootGetters['organization/orgId'], workspaceNodeId })
-        : await workspaceApi.group.getWorkspaceMaterial({ groupId: rootGetters['group/groupId'], workspaceNodeId })
+      const { data } = await dispatch('callWorkspaceApi', { func: 'getWorkspaceMaterial', params: { workspaceNodeId } })
       dispatch('setWorkspaceModule', data.result)
     },
-    async createCollectionForModal (_, { id, workspaceNodeLocation, workspaceNodeId, collectionName }) {
-      const { data } = Number(workspaceNodeLocation) === NODE_LOCATION.ORG
-        ? await workspaceApi.org.createCollection({ orgId: id, workspaceNodeId, collectionName })
-        : await workspaceApi.group.createCollection({ groupId: id, workspaceNodeId, collectionName })
+    async createCollectionForModal (_, params) {
+      const { id, workspaceNodeLocation } = params
+      delete params.id
+      await workspaceApi.createCollection(Number(workspaceNodeLocation) === NODE_LOCATION.ORG ? 'org' : 'group', id, params)
+    },
 
-      const { success, message } = data
+    /**
+     * @param {object} context
+     * @param {object} params 
+     * @param {number} params.workspaceNodeId
+     * @param {string} params.collectionName
+     * @param {object?} params.trendBoardFile - file object
+     * @param {string?} params.description
+     */
+    async createCollection ({ dispatch }, params) {
+      const { trendBoardFile } = params
 
-      if (!success) {
-        throw message.content
+      let trendBoard = null
+      if (!!trendBoardFile) {
+        trendBoard = await dispatch('uploadFileToS3', { fileName: trendBoardFile.name, file: trendBoardFile }, { root: true })
       }
+
+      const { fileName, tempUploadId } = trendBoard
+      const tempParams = { ...params, trendBoardFileName: fileName, tempUploadId }
+      delete tempParams.trendBoardFile
+
+      await dispatch('callWorkspaceApi', { func: 'createCollection', params: tempParams })
     },
-    async createCollection ({ rootGetters }, { workspaceNodeId, collectionName, trendBoard = null, description = null }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.createCollection({ orgId: rootGetters['organization/orgId'], workspaceNodeId, collectionName, trendBoard, description })
-        : await workspaceApi.group.createCollection({ groupId: rootGetters['group/groupId'], workspaceNodeId, collectionName, trendBoard, description })
 
-      const { success, message } = data
+    /**
+     * @param {object} context
+     * @param {object} params 
+     * @param {number} params.collectionId
+     * @param {string} params.collectionName
+     * @param {object?} params.trendBoardFile - file object
+     * @param {string?} params.description
+     */
+    async updateCollection ({ dispatch }, params) {
+      const { trendBoardFile } = params
 
-      if (!success) {
-        throw message.content
+      let trendBoard = null
+      if (!!trendBoardFile && typeof trendBoardFile === 'object') {
+        trendBoard = await dispatch('uploadFileToS3', { fileName: trendBoardFile.name, file: trendBoardFile }, { root: true })
       }
-    },
-    async updateCollection ({ rootGetters }, { collectionId, collectionName, trendBoard = null, description = null }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.updateCollection({ orgId: rootGetters['organization/orgId'], collectionId, collectionName, trendBoard, description })
-        : await workspaceApi.group.updateCollection({ groupId: rootGetters['group/groupId'], collectionId, collectionName, trendBoard, description })
 
-      const { success, message } = data
-
-      if (!success) {
-        throw message.content
+      const tempParams = {
+        ...params,
+        trendBoardFileName: trendBoard?.fileName || null,
+        tempUploadId: trendBoard?.tempUploadId || null
       }
+      delete tempParams.trendBoardFile
+
+      await dispatch('callWorkspaceApi', { func: 'updateCollection', params: tempParams })
     },
-    async removeTrendBoard ({ rootGetters }, { collectionId }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.removeTrendBoard({ orgId: rootGetters['organization/orgId'], collectionId })
-        : await workspaceApi.group.removeTrendBoard({ groupId: rootGetters['group/groupId'], collectionId })
+    async removeTrendBoard ({ dispatch }, params) {
+      await dispatch('callWorkspaceApi', { func: 'removeTrendBoard', params })
     },
-    async duplicateNode ({ rootGetters }, { workspaceNodeId, targetWorkspaceNodeList }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.duplicateNode({ orgId: rootGetters['organization/orgId'], workspaceNodeId, targetWorkspaceNodeList })
-        : await workspaceApi.group.duplicateNode({ groupId: rootGetters['group/groupId'], workspaceNodeId, targetWorkspaceNodeList })
+    async duplicateNode ({ dispatch }, params) {
+      await dispatch('callWorkspaceApi', { func: 'duplicateNode', params })
     },
-    async moveNode ({ rootGetters }, { workspaceNodeId, targetWorkspaceNodeId }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.moveNode({ orgId: rootGetters['organization/orgId'], workspaceNodeId, targetWorkspaceNodeId })
-        : await workspaceApi.group.moveNode({ groupId: rootGetters['group/groupId'], workspaceNodeId, targetWorkspaceNodeId })
+    async moveNode ({ dispatch }, params) {
+      await dispatch('callWorkspaceApi', { func: 'moveNode', params })
     },
-    async deleteNode ({ rootGetters }, { workspaceNodeIdList }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.deleteNode({ orgId: rootGetters['organization/orgId'], workspaceNodeIdList })
-        : await workspaceApi.group.deleteNode({ groupId: rootGetters['group/groupId'], workspaceNodeIdList })
+    async deleteNode ({ dispatch }, params) {
+      await dispatch('callWorkspaceApi', { func: 'deleteNode', params })
     },
-    async publishNode ({ rootGetters }, { workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.publishNode({ orgId: rootGetters['organization/orgId'], workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M })
-        : await workspaceApi.group.publishNode({ groupId: rootGetters['group/groupId'], workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M })
+    async publishNode ({ dispatch }, params) {
+      await dispatch('callWorkspaceApi', { func: 'publishNode', params })
     },
-    async getShareInfo ({ rootGetters, commit }, { workspaceNodeId }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.getShareInfo({ orgId: rootGetters['organization/orgId'], workspaceNodeId })
-        : await workspaceApi.group.getShareInfo({ groupId: rootGetters['group/groupId'], workspaceNodeId })
+    async getShareInfo ({ dispatch, commit }, params) {
+      const { data } = await dispatch('callWorkspaceApi', { func: 'getShareInfo', params })
       commit('SET_shareInfo', data.result)
     },
-    async getShareTarget ({ rootGetters }, { workspaceNodeId, target }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.getShareTarget({ orgId: rootGetters['organization/orgId'], workspaceNodeId, target })
-        : await workspaceApi.group.getShareTarget({ groupId: rootGetters['group/groupId'], workspaceNodeId, target })
-
-      const { success, result, message } = data
-      if (!success) {
-        throw message.content
-      }
-      return result.target
+    async getShareTarget ({ dispatch }, params) {
+      const { data } = await dispatch('callWorkspaceApi', { func: 'getShareTarget', params })
+      return data.result.target
     },
-    async assignedShare ({ rootGetters, commit }, { workspaceNodeId, targetList, isCanClone, isCanDownloadU3M, messages }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.assignedShare({ orgId: rootGetters['organization/orgId'], workspaceNodeId, targetList, isCanClone, isCanDownloadU3M, messages })
-        : await workspaceApi.group.assignedShare({ groupId: rootGetters['group/groupId'], workspaceNodeId, targetList, isCanClone, isCanDownloadU3M, messages })
+    async assignedShare ({ dispatch, commit }, params) {
+      const { data } = await dispatch('callWorkspaceApi', { func: 'assignedShare', params })
       commit('SET_shareInfo', { shareList: data.result.shareList })
     },
-    async updatedAssignedShare ({ rootGetters, dispatch }, { workspaceNodeId, type, id, isCanClone, isCanDownloadU3M }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.updatedAssignedShare({ orgId: rootGetters['organization/orgId'], workspaceNodeId, type, id, isCanClone, isCanDownloadU3M })
-        : await workspaceApi.group.updatedAssignedShare({ groupId: rootGetters['group/groupId'], workspaceNodeId, type, id, isCanClone, isCanDownloadU3M })
+    async updatedAssignedShare ({ dispatch }, params) {
+      const { workspaceNodeId } = params
+      await dispatch('callWorkspaceApi', { func: 'updatedAssignedShare', params })
       dispatch('getShareInfo', { workspaceNodeId })
     },
-    async removeAssignedShare ({ rootGetters, dispatch }, { workspaceNodeId, type, id }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.removeAssignedShare({ orgId: rootGetters['organization/orgId'], workspaceNodeId, type, id })
-        : await workspaceApi.group.removeAssignedShare({ groupId: rootGetters['group/groupId'], workspaceNodeId, type, id })
+    async removeAssignedShare ({ dispatch }, params) {
+      const { workspaceNodeId } = params
+      await dispatch('callWorkspaceApi', { func: 'removeAssignedShare', params })
       await dispatch('getShareInfo', { workspaceNodeId })
     },
-    async toggleCopyLink ({ rootGetters }, { workspaceNodeId, isCanShared }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.toggleCopyLink({ orgId: rootGetters['organization/orgId'], workspaceNodeId, isCanShared })
-        : await workspaceApi.group.toggleCopyLink({ groupId: rootGetters['group/groupId'], workspaceNodeId, isCanShared })
+    async toggleCopyLink ({ dispatch }, params) {
+      await dispatch('callWorkspaceApi', { func: 'toggleCopyLink', params })
     },
-    async generateCopyLink ({ rootGetters }, { workspaceNodeId }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.generateCopyLink({ orgId: rootGetters['organization/orgId'], workspaceNodeId })
-        : await workspaceApi.group.generateCopyLink({ groupId: rootGetters['group/groupId'], workspaceNodeId })
+    async generateCopyLink ({ dispatch }, params) {
+      const { data } = await dispatch('callWorkspaceApi', { func: 'generateCopyLink', params })
       return data.result.key
     },
-    async generateSocialMedia ({ rootGetters }, { workspaceNodeId, type }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.generateSocialMedia({ orgId: rootGetters['organization/orgId'], workspaceNodeId, type })
-        : await workspaceApi.group.generateSocialMedia({ groupId: rootGetters['group/groupId'], workspaceNodeId, type })
+    async generateSocialMedia ({ dispatch }, params) {
+      const { data } = await dispatch('callWorkspaceApi', { func: 'generateSocialMedia', params })
       return data.result.key
     },
-    async updateEmbedDownloadPermission ({ rootGetters }, { embedKey, isCanDownloadU3M }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await workspaceApi.org.updateEmbedDownloadPermission({ orgId: rootGetters['organization/orgId'], embedKey, isCanDownloadU3M })
-        : await workspaceApi.group.updateEmbedDownloadPermission({ groupId: rootGetters['group/groupId'], embedKey, isCanDownloadU3M })
+    async updateEmbedDownloadPermission ({ dispatch }, params) {
+      await dispatch('callWorkspaceApi', { func: 'updateEmbedDownloadPermission', params })
     }
   }
 }

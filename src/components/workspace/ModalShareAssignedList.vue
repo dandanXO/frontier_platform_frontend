@@ -10,7 +10,7 @@ modal-behavior(
         img(v-if="item.logo" :src="item.logo" class="w-10 h-10 rounded-full")
         div(v-else class="w-10 h-10 rounded-full border-black-500 border border-dashed")
         div(class="w-86")
-          p(class="text-body2 text-primary font-bold w-86 truncate break-all leading-1.4") {{item.name}}
+          p(class="text-body2 text-primary font-bold w-86 truncate break-all leading-1.4") {{ item.name }}
           div(class="flex items-center gap-x-3")
             input-checkbox(
               binary
@@ -26,38 +26,25 @@ modal-behavior(
               size="20"
               @update:inputValue="updatedAssignedShare(item)"
             )
-        p(class="text-body2 text-black-500 cursor-pointer" @click="removeAssignedShare(item)") {{$t('FF0060')}}
+        p(class="text-body2 text-black-500 cursor-pointer" @click="removeAssignedShare(item)") {{ $t('FF0060') }}
 </template>
 
 <script setup>
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 
-const props = defineProps({
-  workspaceNodeId: {
-    type: [String, Number],
-    required: true
-  }
-})
-
 const store = useStore()
 const shareList = computed(() => store.getters['workspace/shareInfo'].shareList)
 
 const updatedAssignedShare = async (item) => {
   store.dispatch('helper/pushModalLoading')
-  await store.dispatch('workspace/updatedAssignedShare', {
-    workspaceNodeId: props.workspaceNodeId,
-    ...item
-  })
+  await store.dispatch('workspace/updatedAssignedShare', item)
   store.dispatch('helper/closeModalLoading')
 }
 
 const removeAssignedShare = async (item) => {
   store.dispatch('helper/pushModalLoading')
-  await store.dispatch('workspace/removeAssignedShare', {
-    workspaceNodeId: props.workspaceNodeId,
-    ...item
-  })
+  await store.dispatch('workspace/removeAssignedShare', item)
   store.dispatch('helper/closeModalLoading')
 
   if (shareList.value.length === 0) {

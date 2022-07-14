@@ -1,183 +1,179 @@
 import axios from '@/apis'
-import putBinaryData from '@/utils/put-binary-data'
+
+const orgApiWrapper = (path, orgId = null, params = {}) => {
+  const data = {}
+  if (orgId) {
+    data['orgId'] = orgId
+  }
+  Object.assign(data, params)
+  return axios(path, { method: 'POST', data })
+}
 
 export default {
-  createOrg: ({ orgName, orgCategoryId, countryCode, address, phone, phoneCountryCode, fax, faxCountryCode, uploadMaterialEmail }) => axios('/org/create', {
-    method: 'POST',
-    data: { orgName, orgCategoryId, countryCode, address, phone, phoneCountryCode, fax, faxCountryCode, uploadMaterialEmail }
-  }),
-  getOrg: ({ orgId }) => axios('/org/get', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  updateOrg: ({ orgId, orgName, labelColor, orgCategoryId, countryCode, address, phone, phoneCountryCode, fax, faxCountryCode }) => axios('/org/update', {
-    method: 'POST',
-    data: { orgId, orgName, labelColor, orgCategoryId, countryCode, address, phone, phoneCountryCode, fax, faxCountryCode }
-  }),
   /**
-   * @param {formData} formData
-   * @param {number} formData.orgId
-   * @param {binary} formData.logo
-   * @param {binary} formData.originalLogo
+   * @param {object} params
+   * @param {string} params.orgName
+   * @param {number} params.orgCategoryId
+   * @param {string} params.countryCode
+   * @param {string} params.address
+   * @param {string} params.phone
+   * @param {string} params.phoneCountryCode
+   * @param {string} params.fax
+   * @param {string} params.faxCountryCode
+   * @param {string} params.uploadMaterialEmail
    */
-  updateOrgLogo: async ({ orgId, logo, originalLogo }) => {
-    const logoFileName = logo.name
-    const originalLogoFileName = originalLogo.name
-
-    const { data: { result: { tempUploadId, logoUploadUrl, originalLogoUploadUrl } } } = await axios('/org/update-logo/get-upload-url', {
-      method: 'POST',
-      data: { logoFileName, originalLogoFileName }
-    })
-    await putBinaryData(logoUploadUrl, logo)
-    await putBinaryData(originalLogoUploadUrl, originalLogo)
-
-    return axios('/org/update-logo', {
-      method: 'POST',
-      data: { orgId, tempUploadId, logoFileName, originalLogoFileName }
-    })
-  },
-  removeOrgLogo: ({ orgId }) => axios('/org/remove-logo', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  deleteOrg: ({ orgId }) => axios('/org/delete', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  checkOrgNameExist: ({ orgName, orgId = null }) => axios('/org/check-name-exist', {
-    method: 'POST',
-    data: { orgName, orgId }
-  }),
-  getOrgUser: ({ orgId }) => axios('/org/user/get', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  updateDisplayName: ({ orgId, displayName }) => axios('/org/user/update-display-name', {
-    method: 'POST',
-    data: { orgId, displayName }
-  }),
-  updateAvatar: async ({ orgId, avatar, originalAvatar }) => {
-    const avatarFileName = avatar.name
-    const originalAvatarFileName = originalAvatar.name
-
-    const { data: { result: { tempUploadId, avatarUploadUrl, originalAvatarUploadUrl } } } = await axios('/org/user/update-avatar/get-upload-url', {
-      method: 'POST',
-      data: { avatarFileName, originalAvatarFileName }
-    })
-    await putBinaryData(avatarUploadUrl, avatar)
-    await putBinaryData(originalAvatarUploadUrl, originalAvatar)
-
-    return axios('/org/user/update-avatar', {
-      method: 'POST',
-      data: { orgId, tempUploadId, avatarFileName, originalAvatarFileName }
-    })
-  },
-  removeAvatar: ({ orgId }) => axios('/org/user/remove-avatar', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  readNotification: ({ orgId }) => axios('/org/user/read-notification', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  orgInviteViaEmail: ({ orgId, emailList }) => axios('/org/member/invite-via-email', {
-    method: 'POST',
-    data: { orgId, emailList }
-  }),
-  cancelOrgInvitation: ({ orgId, email }) => axios('/org/member/cancel-invitation', {
-    method: 'POST',
-    data: { orgId, email }
-  }),
-  changeOrgMemberRole: ({ orgUserId, roleId }) => axios('/org/member/change-role', {
-    method: 'POST',
-    data: { orgUserId, roleId }
-  }),
-  removeOrgMember: ({ orgUserId }) => axios('/org/member/delete', {
-    method: 'POST',
-    data: { orgUserId }
-  }),
-  checkOrgMemberExist: ({ orgId, email }) => axios('/org/member/check-exist', {
-    method: 'POST',
-    data: { orgId, email }
-  }),
-  inviteToOrg: ({ orgId, emailList }) => axios('/org/member/invite-via-email', {
-    method: 'POST',
-    data: { orgId, emailList }
-  }),
-  joinOrgViaLink: ({ inviteCode }) => axios('/org/member/join-via-link', {
-    method: 'POST',
-    data: { inviteCode }
-  }),
-  setOrgUploadMail: ({ orgId, uploadMaterialEmail }) => axios('/org/create-upload-material-email', {
-    method: 'POST',
-    data: { orgId, uploadMaterialEmail }
-  }),
-  getPricing: () => axios('/org/payment/get-pricing', {
-    method: 'POST',
-    data: {}
-  }),
-  updateBillingInfo: ({ orgId, recipient, email, countryCode, city, zipCode, address }) => axios('/org/payment/billing-info/update', {
-    method: 'POST',
-    data: { orgId, recipient, email, countryCode, city, zipCode, address }
-  }),
-  getStripeClientSecret: ({ orgId }) => axios('/org/payment/card-info/create-setup', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  setCardHolderName: ({ orgId, clientSecret, cardHolderName }) => axios('/org/payment/card-info/setup-customer', {
-    method: 'POST',
-    data: { orgId, clientSecret, cardHolderName }
-  }),
-  upgradePlan: ({ orgId }) => axios('/org/plan/upgrade', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  requestUpgradeToEnterprise: ({ orgId, name, email, phone, phoneCountryCode, description }) => axios('/org/plan/upgrade-request', {
-    method: 'POST',
-    data: { orgId, name, email, phone, phoneCountryCode, description }
-  }),
-  purchaseMaterial: ({ orgId, setQty }) => axios('/org/plan/purchase/material', {
-    method: 'POST',
-    data: { orgId, setQty }
-  }),
-  cancelMaterial: ({ orgId, setQty }) => axios('/org/plan/cancel/material', {
-    method: 'POST',
-    data: { orgId, setQty }
-  }),
-  purchaseU3m: ({ orgId, setQty }) => axios('/org/plan/purchase/u3m', {
-    method: 'POST',
-    data: { orgId, setQty }
-  }),
-  getInvoiceList: ({ orgId, startDate, endDate, category, keyword, pagination }) => axios('/org/payment/invoice/get-list', {
-    method: 'POST',
-    data: { orgId, startDate, endDate, category, keyword, pagination }
-  }),
-  getInvoiceDetail: ({ orgId, invoiceId }) => axios('/org/payment/invoice/get', {
-    method: 'POST',
-    data: { orgId, invoiceId }
-  }),
-  updateInvoiceBillingInfo: ({ orgId, invoiceId, recipient, email, countryCode, city, zipCode, address }) => axios('/org/payment/invoice/update-billing-info', {
-    method: 'POST',
-    data: { orgId, invoiceId, recipient, email, countryCode, city, zipCode, address }
-  }),
-  getUnbilledInfo: ({ orgId }) => axios('/org/payment/get-unbilled-info', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  getLastMonthUnbilledInfo: ({ orgId }) => axios('/org/payment/get-last-month-unbilled-info', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  payLastMonthUnbilledInfo: ({ orgId }) => axios('/org/payment/pay-last-month-unbilled-info', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  deactivateOrg: ({ orgId }) => axios('/org/plan/deactivate', {
-    method: 'POST',
-    data: { orgId }
-  }),
-  activateOrg: ({ orgId }) => axios('/org/plan/activate', {
-    method: 'POST',
-    data: { orgId }
-  })
+  createOrg: (_, params) => orgApiWrapper('/org/create', null, params),
+  getOrg: (orgId) => orgApiWrapper('/org/get', orgId),
+  /**
+   * @param {object} params
+   * @param {string} params.orgName
+   * @param {string} params.labelColor
+   * @param {number} params.orgCategoryId
+   * @param {string} params.countryCode
+   * @param {string} params.address
+   * @param {string} params.phone
+   * @param {string} params.phoneCountryCode
+   * @param {string} params.fax
+   * @param {string} params.faxCountryCode
+   * @param {string} params.uploadMaterialEmail
+   */
+  updateOrg: (orgId, params) => orgApiWrapper('/org/update', orgId, params),
+  /**
+   * @param {object} params 
+   * @param {number} params.tempUploadId
+   * @param {string} params.logoFileName
+   * @param {string} params.originalLogoFileName
+   */
+  updateOrgLogo: (orgId, params) => orgApiWrapper('/org/update-logo', orgId, params),
+  removeOrgLogo: (orgId) => orgApiWrapper('/org/remove-logo', orgId),
+  deleteOrg: (orgId) => orgApiWrapper('/org/delete', orgId),
+  /**
+   * @param {object} params
+   * @param {string} params.orgName
+   */
+  checkOrgNameExist: (orgId = null, params) => orgApiWrapper('/org/check-name-exist', orgId, params),
+  getOrgUser: (orgId) => orgApiWrapper('/org/user/get', orgId),
+  /**
+   * @param {object} params
+   * @param {string} params.displayName
+   */
+  updateDisplayName: (orgId, params) => orgApiWrapper('/org/user/update-display-name', orgId, params),
+  /**
+   * @param {object} params 
+   * @param {number} params.tempUploadId
+   * @param {string} params.avatarFileName
+   * @param {string} params.originalAvatarFileName
+   */
+  updateAvatar: (orgId, params) => orgApiWrapper('/org/user/update-avatar', orgId, params),
+  removeAvatar: (orgId) => orgApiWrapper('/org/user/remove-avatar', orgId),
+  readNotification: (orgId) => orgApiWrapper('/org/user/read-notification', orgId),
+  /**
+   * @param {object} params
+   * @param {string[]} params.emailList
+   */
+  orgInviteViaEmail: (orgId, params) => orgApiWrapper('/org/member/invite-via-email', orgId, params),
+  /**
+   * @param {object} params
+   * @param {string} params.email
+   */
+  cancelOrgInvitation: (orgId, params) => orgApiWrapper('/org/member/cancel-invitation', orgId, params),
+  /**
+   * @param {object} params
+   * @param {number} params.orgUserId
+   * @param {number} params.roleId
+   */
+  changeOrgMemberRole: (_, params) => orgApiWrapper('/org/member/change-role', null, params),
+  /**
+   * @param {object} params
+   * @param {number} params.orgUserId
+   */
+  removeOrgMember: (_, params) => orgApiWrapper('/org/member/delete', null, params),
+  /**
+   * @param {object} params
+   * @param {string} params.email
+   */
+  checkOrgMemberExist: (orgId, params) => orgApiWrapper('/org/member/check-exist', orgId, params),
+  /**
+   * @param {object} params
+   * @param {string} params.inviteCode
+   */
+  joinOrgViaLink: (_, params) => orgApiWrapper('/org/member/join-via-link', null, params),
+  /**
+   * @param {object} params
+   * @param {string} params.uploadMaterialEmail
+   */
+  setOrgUploadMail: (orgId, params) => orgApiWrapper('/org/create-upload-material-email', orgId, params),
+  getPricing: () => orgApiWrapper('/org/payment/get-pricing'),
+  /**
+   * @param {object} params
+   * @param {string} params.recipient
+   * @param {string} params.email
+   * @param {string} params.countryCode
+   * @param {string} params.zipCode
+   * @param {string} params.city
+   * @param {string} params.address
+   */
+  updateBillingInfo: (orgId, params) => orgApiWrapper('/org/payment/billing-info/update', orgId, params),
+  getStripeClientSecret: (orgId) => orgApiWrapper('/org/payment/card-info/create-setup', orgId),
+  /**
+   * @param {object} params
+   * @param {string} params.clientSecret
+   * @param {string} params.cardHolderName
+   */
+  setCardHolderName: (orgId, params) => orgApiWrapper('/org/payment/card-info/setup-customer', orgId, params),
+  upgradePlan: (orgId) => orgApiWrapper('/org/plan/upgrade', orgId),
+  /**
+   * @param {object} params
+   * @param {string} params.name
+   * @param {string} params.email
+   * @param {string} params.phone
+   * @param {string} params.phoneCountryCode
+   * @param {string} params.description
+   */
+  requestUpgradeToEnterprise: (orgId, params) => orgApiWrapper('/org/plan/upgrade-request', orgId, params),
+  /**
+   * @param {object} params
+   * @param {number} params.setQty
+   */
+  purchaseMaterial: (orgId, params) => orgApiWrapper('/org/plan/purchase/material', orgId, params),
+  /**
+   * @param {object} params
+   * @param {number} params.setQty
+   */
+  cancelMaterial: (orgId, params) => orgApiWrapper('/org/plan/cancel/material', orgId, params),
+  /**
+   * @param {object} params
+   * @param {number} params.setQty
+   */
+  purchaseU3m: (orgId, params) => orgApiWrapper('/org/plan/purchase/u3m', orgId, params),
+  /**
+   * @param {object} params
+   * @param {string} params.startDate
+   * @param {string} params.endDate
+   * @param {number} params.category
+   * @param {string} params.keyword
+   * @param {object} params.pagination
+   */
+  getInvoiceList: (orgId, params) => orgApiWrapper('/org/payment/invoice/get-list', orgId, params),
+  /**
+   * @param {object} params
+   * @param {number} params.invoiceId
+   */
+  getInvoiceDetail: (orgId, params) => orgApiWrapper('/org/payment/invoice/get', orgId, params),
+  /**
+   * @param {object} params
+   * @param {number} params.invoiceId
+   * @param {string} params.recipient
+   * @param {string} params.email
+   * @param {string} params.countryCode
+   * @param {string} params.zipCode
+   * @param {string} params.city
+   * @param {string} params.address
+   */
+  updateInvoiceBillingInfo: (orgId, params) => orgApiWrapper('/org/payment/invoice/update-billing-info', orgId, params),
+  getUnbilledInfo: (orgId) => orgApiWrapper('/org/payment/get-unbilled-info', orgId),
+  getLastMonthUnbilledInfo: (orgId) => orgApiWrapper('/org/payment/get-last-month-unbilled-info', orgId),
+  payLastMonthUnbilledInfo: (orgId) => orgApiWrapper('/org/payment/pay-last-month-unbilled-info', orgId),
+  deactivateOrg: (orgId) => orgApiWrapper('/org/plan/deactivate', orgId),
+  activateOrg: (orgId) => orgApiWrapper('/org/plan/activate', orgId)
 }

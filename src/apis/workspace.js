@@ -1,229 +1,148 @@
-import axios from '@/apis'
-import putBinaryData from '@/utils/put-binary-data'
+import { apiWrapper } from '@/apis'
 
 export default {
-  org: {
-    getWorkspace: ({ orgId, workspaceNodeId, pagination, search = null, filter = null }) => axios('/org/workspace/get', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId, pagination, search, filter }
-    }),
-    getWorkspaceForModal: ({ orgId, pagination, search = null, workspaceNodeId, workspaceNodeLocation }) => axios('/org/workspace/get-for-modal', {
-      method: 'POST',
-      data: { orgId, pagination, search, workspaceNodeId, workspaceNodeLocation }
-    }),
-    getCollection: ({ orgId, workspaceNodeId }) => axios('/org/workspace/get', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId, search: null, filter: null, pagination: { perPageCount: 40, targetPage: 1 } }
-    }),
-    getWorkspaceMaterial: ({ orgId, workspaceNodeId }) => axios('/org/workspace/get-material', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId }
-    }),
-    createCollection: async ({ orgId, workspaceNodeId, collectionName, trendBoard = null, description = null }) => {
-      const trendBoardFileName = trendBoard?.name || null
-      let id
+  /**
+   * @param {object} params
+   * @param {number} params.workspaceNodeId
+   * @param {object} params.pagination
+   * @param {object?} params.search
+   * @param {object?} params.filter
+   */
+  getWorkspaceOrCollection: (type, id, params) => apiWrapper('/workspace/get', type, id, params),
 
-      if (trendBoardFileName) {
-        const { data: { result: { tempUploadId, trendBoardUploadUrl } } } = await axios('/org/workspace/collection/create/get-upload-url', {
-          method: 'POST',
-          data: { trendBoardFileName }
-        })
+  /**
+   * @param {object} params
+   * @param {number?} params.workspaceNodeId
+   * @param {number?} params.workspaceNodeLocation
+   * @param {object?} params.search
+   * @param {object} params.pagination
+   */
+  getWorkspaceForModal: (type, id, params) => apiWrapper('/workspace/get-for-modal', type, id, params),
 
-        id = tempUploadId
-        await putBinaryData(trendBoardUploadUrl, trendBoard)
-      }
+  /**
+   * @param {object} params
+   * @param {number} params.workspaceNodeId
+   */
+  getWorkspaceMaterial: (type, id, params) => apiWrapper('/workspace/get-material', type, id, params),
 
-      return axios('/org/workspace/collection/create', {
-        method: 'POST',
-        data: { orgId, workspaceNodeId, collectionName, tempUploadId: id, trendBoardFileName, description }
-      })
-    },
-    updateCollection: async ({ orgId, collectionId, collectionName, trendBoard = null, description = null }) => {
-      const trendBoardFileName = trendBoard?.name || null
-      let id
+  /**
+   * @param {object} params
+   * @param {number} params.workspaceNodeId
+   * @param {string} params.collectionName
+   * @param {string?} params.tempUploadId
+   * @param {string?} params.trendBoardFileName
+   * @param {string?} params.description
+   */
+  createCollection: (type, id, params) => apiWrapper('/workspace/collection/create', type, id, params),
 
-      if (trendBoardFileName) {
-        const { data: { result: { tempUploadId, trendBoardUploadUrl } } } = await axios('/org/workspace/collection/update/get-upload-url', {
-          method: 'POST',
-          data: { trendBoardFileName }
-        })
+  /**
+   * @param {object} params
+   * @param {number} params.collectionId
+   * @param {string} params.collectionName
+   * @param {string?} params.tempUploadId
+   * @param {string?} params.trendBoardFileName
+   * @param {string?} params.description
+   */
+  updateCollection: (type, id, params) => apiWrapper('/workspace/collection/update', type, id, params),
 
-        id = tempUploadId
-        await putBinaryData(trendBoardUploadUrl, trendBoard)
-      }
+  /**
+   * @param {object} params
+   * @param {number} params.collectionId
+   */
+  removeTrendBoard: (type, id, params) => apiWrapper('/workspace/collection/remove-trend-board', type, id, params),
 
-      return axios('/org/workspace/collection/update', {
-        method: 'POST',
-        data: { orgId, collectionId, collectionName, tempUploadId: id, trendBoardFileName, description }
-      })
-    },
-    removeTrendBoard: ({ orgId, collectionId }) => axios('/org/workspace/collection/remove-trend-board', {
-      method: 'POST',
-      data: { orgId, collectionId }
-    }),
-    duplicateNode: ({ orgId, workspaceNodeId, targetWorkspaceNodeList }) => axios('/org/workspace/node/duplicate', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId, targetWorkspaceNodeList }
-    }),
-    moveNode: ({ orgId, workspaceNodeId, targetWorkspaceNodeId }) => axios('/org/workspace/node/move', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId, targetWorkspaceNodeId }
-    }),
-    deleteNode: ({ orgId, workspaceNodeIdList }) => axios('/org/workspace/node/delete', {
-      method: 'POST',
-      data: { orgId, workspaceNodeIdList }
-    }),
-    publishNode: ({ orgId, workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }) => axios('/org/workspace/node/publish', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }
-    }),
-    getShareInfo: ({ orgId, workspaceNodeId }) => axios('/org/workspace/node/share/get', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId }
-    }),
-    getShareTarget: ({ orgId, workspaceNodeId, target }) => axios('/org/workspace/node/share/assigned/get-target', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId, target }
-    }),
-    assignedShare: ({ orgId, workspaceNodeId, targetList, isCanClone, isCanDownloadU3M, messages }) => axios('/org/workspace/node/share/assigned', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId, targetList, isCanClone, isCanDownloadU3M, messages }
-    }),
-    updatedAssignedShare: ({ orgId, workspaceNodeId, type, id, isCanClone, isCanDownloadU3M }) => axios('/org/workspace/node/share/assigned/update', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId, type, id, isCanClone, isCanDownloadU3M }
-    }),
-    removeAssignedShare: ({ orgId, workspaceNodeId, type, id }) => axios('/org/workspace/node/share/assigned/remove', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId, type, id }
-    }),
-    toggleCopyLink: ({ orgId, workspaceNodeId, isCanShared }) => axios('/org/workspace/node/share/copy-link/update-setting', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId, isCanShared }
-    }),
-    generateCopyLink: ({ orgId, workspaceNodeId }) => axios('/org/workspace/node/share/copy-link/generate', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId }
-    }),
-    generateSocialMedia: ({ orgId, workspaceNodeId, type }) => axios('/org/workspace/node/share/social/generate', {
-      method: 'POST',
-      data: { orgId, workspaceNodeId, type }
-    }),
-    updateEmbedDownloadPermission: ({ orgId, embedKey, isCanDownloadU3M }) => axios('/org/workspace/node/share/embed/update-setting', {
-      method: 'POST',
-      data: { orgId, embedKey, isCanDownloadU3M }
-    })
-  },
-  group: {
-    getWorkspace: ({ groupId, workspaceNodeId, pagination, search = null, filter = null }) => axios('/org/group/workspace/get', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId, pagination, search, filter }
-    }),
-    getWorkspaceForModal: ({ groupId, pagination, search = null, workspaceNodeId }) => axios('/org/group/workspace/get-for-modal', {
-      method: 'POST',
-      data: { groupId, pagination, search, workspaceNodeId }
-    }),
-    getCollection: ({ groupId, workspaceNodeId }) => axios('/org/group/workspace/get', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId, search: null, filter: null, pagination: { perPageCount: 40, targetPage: 1 } }
-    }),
-    getWorkspaceMaterial: ({ groupId, workspaceNodeId }) => axios('/org/group/workspace/get-material', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId }
-    }),
-    createCollection: async ({ groupId, workspaceNodeId, collectionName, trendBoard = null, description = null }) => {
-      const trendBoardFileName = trendBoard?.name || null
-      let id
+  /**
+   * @param {object} params
+   * @param {number} params.workspaceNodeId
+   * @param {object[]} params.targetWorkspaceNodeList - [{id, location}]
+   */
+  duplicateNode: (type, id, params) => apiWrapper('/workspace/node/duplicate', type, id, params),
 
-      if (trendBoardFileName) {
-        const { data: { result: { tempUploadId, trendBoardUploadUrl } } } = await axios('/org/group/workspace/collection/create/get-upload-url', {
-          method: 'POST',
-          data: { trendBoardFileName }
-        })
+  /**
+   * @param {object} params
+   * @param {number} params.workspaceNodeId
+   * @param {number} params.targetWorkspaceNodeId
+   */
+  moveNode: (type, id, params) => apiWrapper('/workspace/node/move', type, id, params),
 
-        id = tempUploadId
-        await putBinaryData(trendBoardUploadUrl, trendBoard)
-      }
+  /**
+   * @param {object} params
+   * @param {number[]} params.workspaceNodeIdList
+   */
+  deleteNode: (type, id, params) => apiWrapper('/workspace/node/delete', type, id, params),
 
-      return axios('/org/group/workspace/collection/create', {
-        method: 'POST',
-        data: { groupId, workspaceNodeId, collectionName, tempUploadId: id, trendBoardFileName, description }
-      })
-    },
-    updateCollection: async ({ groupId, collectionId, collectionName, trendBoard = null, description = null }) => {
-      const trendBoardFileName = trendBoard?.name || null
-      let id
+  /**
+   * @param {object} params
+   * @param {number} params.workspaceNodeId
+   * @param {boolean} params.isPublic
+   * @param {boolean} params.isCanClone
+   * @param {boolean} params.isCanDownloadU3M
+   */
+  publishNode: (type, id, params) => apiWrapper('/workspace/node/publish', type, id, params),
 
-      if (trendBoardFileName) {
-        const { data: { result: { tempUploadId, trendBoardUploadUrl } } } = await axios('/org/group/workspace/collection/update/get-upload-url', {
-          method: 'POST',
-          data: { trendBoardFileName }
-        })
+  /**
+   * @param {object} params
+   * @param {number} params.workspaceNodeId
+   */
+  getShareInfo: (type, id, params) => apiWrapper('/workspace/node/share/get', type, id, params),
 
-        id = tempUploadId
-        await putBinaryData(trendBoardUploadUrl, trendBoard)
-      }
+  /**
+   * @param {object} params
+   * @param {number} params.workspaceNodeId
+   * @param {string} params.target
+   */
+  getShareTarget: (type, id, params) => apiWrapper('/workspace/node/share/assigned/get-target', type, id, params),
 
-      return axios('/org/group/workspace/collection/update', {
-        method: 'POST',
-        data: { groupId, collectionId, collectionName, tempUploadId: id, trendBoardFileName, description }
-      })
-    },
-    removeTrendBoard: ({ groupId, collectionId }) => axios('/org/group/workspace/collection/remove-trend-board', {
-      method: 'POST',
-      data: { groupId, collectionId }
-    }),
-    duplicateNode: ({ groupId, workspaceNodeId, targetWorkspaceNodeList }) => axios('/org/group/workspace/node/duplicate', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId, targetWorkspaceNodeList }
-    }),
-    moveNode: ({ groupId, workspaceNodeId, targetWorkspaceNodeId }) => axios('/org/group/workspace/node/move', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId, targetWorkspaceNodeId }
-    }),
-    deleteNode: ({ groupId, workspaceNodeIdList }) => axios('/org/group/workspace/node/delete', {
-      method: 'POST',
-      data: { groupId, workspaceNodeIdList }
-    }),
-    publishNode: ({ groupId, workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }) => axios('/org/group/workspace/node/publish', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId, isPublic, isCanClone, isCanDownloadU3M }
-    }),
-    getShareInfo: ({ groupId, workspaceNodeId }) => axios('/org/group/workspace/node/share/get', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId }
-    }),
-    getShareTarget: ({ groupId, workspaceNodeId, target }) => axios('/org/group/workspace/node/share/assigned/get-target', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId, target }
-    }),
-    assignedShare: ({ groupId, workspaceNodeId, targetList, isCanClone, isCanDownloadU3M, messages }) => axios('/org/group/workspace/node/share/assigned', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId, targetList, isCanClone, isCanDownloadU3M, messages }
-    }),
-    updatedAssignedShare: ({ groupId, workspaceNodeId, type, id, isCanClone, isCanDownloadU3M }) => axios('/org/group/workspace/node/share/assigned/update', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId, type, id, isCanClone, isCanDownloadU3M }
-    }),
-    removeAssignedShare: ({ groupId, workspaceNodeId, type, id }) => axios('/org/group/workspace/node/share/assigned/remove', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId, type, id }
-    }),
-    toggleCopyLink: ({ groupId, workspaceNodeId, isCanShared }) => axios('/org/group/workspace/node/share/copy-link/update-setting', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId, isCanShared }
-    }),
-    generateCopyLink: ({ groupId, workspaceNodeId }) => axios('/org/group/workspace/node/share/copy-link/generate', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId }
-    }),
-    generateSocialMedia: ({ groupId, workspaceNodeId, type }) => axios('/org/group/workspace/node/share/social/generate', {
-      method: 'POST',
-      data: { groupId, workspaceNodeId, type }
-    }),
-    updateEmbedDownloadPermission: ({ groupId, embedKey, isCanDownloadU3M }) => axios('/org/group/workspace/node/share/embed/update-setting', {
-      method: 'POST',
-      data: { groupId, embedKey, isCanDownloadU3M }
-    })
-  }
+  /**
+   * @param {object} params
+   * @param {number} params.workspaceNodeId
+   * @param {object[]} params.targetList - [{type, name, logo, number}]
+   * @param {boolean} params.isCanClone
+   * @param {boolean} params.isCanDownloadU3M
+   * @param {string?} params.messages
+   */
+  assignedShare: (type, id, params) => apiWrapper('/workspace/node/share/assigned', type, id, params),
+
+  /**
+   * @param {object} params
+   * @param {number} params.type
+   * @param {number} params.id - SharingId Or OrgShareToMeId Or GroupShareToMeId
+   * @param {boolean} params.isCanClone
+   * @param {boolean} params.isCanDownloadU3M
+   */
+  updatedAssignedShare: (type, id, params) => apiWrapper('/workspace/node/share/assigned/update', type, id, params),
+
+  /**
+   * @param {object} params
+   * @param {number?} params.type
+   * @param {number} params.id - SharingId Or OrgShareToMeId Or GroupShareToMeId
+   */
+  removeAssignedShare: (type, id, params) => apiWrapper('/workspace/node/share/assigned/remove', type, id, params),
+
+  /**
+   * @param {object} params
+   * @param {number} params.workspaceNodeId
+   * @param {boolean} params.isCanShared
+   */
+  toggleCopyLink: (type, id, params) => apiWrapper('/workspace/node/share/copy-link/update-setting', type, id, params),
+
+  /**
+   * @param {object} params
+   * @param {number} params.workspaceNodeId
+   */
+  generateCopyLink: (type, id, params) => apiWrapper('/workspace/node/share/copy-link/generate', type, id, params),
+
+  /**
+   * @param {object} params
+   * @param {number} params.workspaceNodeId
+   * @param {number} params.type
+   */
+  generateSocialMedia: (type, id, params) => apiWrapper('/workspace/node/share/social/generate', type, id, params),
+
+  /**
+   * @param {object} params
+   * @param {string} params.embedKey
+   * @param {boolean} params.isCanDownloadU3M
+   */
+  updateEmbedDownloadPermission: (type, id, params) => apiWrapper('/workspace/node/share/embed/update-setting', type, id, params),
 }

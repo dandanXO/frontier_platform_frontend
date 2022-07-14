@@ -1,15 +1,5 @@
 import axios from '@/apis'
-
-const apiWrapper = (path, type = 'org', id, params = {}) => {
-  const data = { ...params }
-  if (type === 'org') {
-    data['orgId'] = id
-  } else {
-    data['groupId'] = id
-  }
-  const prefixPath = type === 'org' ? '/org' : '/org/group'
-  return axios(`${prefixPath}${path}`, { method: 'POST', data })
-}
+import { apiWrapper } from '@/apis'
 
 export default {
   getMoodboardList: (type, id) => apiWrapper('/moodboard/get-list', type, id),

@@ -39,7 +39,6 @@ const description = computed({
   set: (v) => store.commit('group/SET_createForm_description', v)
 })
 const isGroupNameExist = computed(() => store.getters['organization/groupList'].some(group => group.groupName === groupName.value))
-console.log(store.getters['organization/groupList'])
 const availableToNextStep = computed(() => groupName.value !== '' && !isGroupNameExist.value)
 
 const openModalCreateMailGroup = () => {

@@ -24,56 +24,41 @@ export default {
     },
   },
   actions: {
-    async getMaterialUploadProgress ({ rootGetters, commit }, params) {
+    async callAssetsApi ({ rootGetters }, { func, params = {} }) {
+      return await assetsApi[func](rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    },
+    async getMaterialUploadProgress ({ dispatch, commit }, params) {
       params.startDate = params.startDate.split('-').join('/')
       params.endDate = params.endDate.split('-').join('/')
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.getMaterialUploadProgress({ orgId: rootGetters['organization/orgId'], ...params })
-        : await assetsApi.group.getMaterialUploadProgress({ groupId: rootGetters['group/groupId'], ...params })
-
+      const { data } = await dispatch('callAssetsApi', { func: 'getMaterialUploadProgress', params })
       commit('SET_materialProgressList', data.result.materialProgressList)
       return data.result
     },
-    async getU3mUploadProgress ({ rootGetters, commit }, params) {
+    async getU3mUploadProgress ({ dispatch, commit }, params) {
       params.startDate = params.startDate.split('-').join('/')
       params.endDate = params.endDate.split('-').join('/')
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.getU3mUploadProgress({ orgId: rootGetters['organization/orgId'], ...params })
-        : await assetsApi.group.getU3mUploadProgress({ groupId: rootGetters['group/groupId'], ...params })
-
+      const { data } = await dispatch('callAssetsApi', { func: 'getU3mUploadProgress', params })
       commit('SET_u3mProgressList', data.result.u3mProgressList)
       return data.result
     },
-    async getExcelUploadProgress ({ rootGetters, commit }, params) {
+    async getExcelUploadProgress ({ dispatch, commit }, params) {
       params.startDate = params.startDate.split('-').join('/')
       params.endDate = params.endDate.split('-').join('/')
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.getExcelUploadProgress({ orgId: rootGetters['organization/orgId'], ...params })
-        : await assetsApi.group.getExcelUploadProgress({ groupId: rootGetters['group/groupId'], ...params })
-
+      const { data } = await dispatch('callAssetsApi', { func: 'getExcelUploadProgress', params })
       commit('SET_excelProgressList', data.result.excelProgressList)
       return data.result
     },
-    async cancelMaterialUploadProgress ({ rootGetters }, { materialProgressId }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.cancelMaterialUploadProgress({ orgId: rootGetters['organization/orgId'], materialProgressId })
-        : await assetsApi.group.cancelMaterialUploadProgress({ groupId: rootGetters['group/groupId'], materialProgressId })
+    async cancelMaterialUploadProgress ({ dispatch }, params) {
+      await dispatch('callAssetsApi', { func: 'cancelMaterialUploadProgress', params })
     },
-    async cancelU3mUploadProgress ({ rootGetters }, { u3mProgressId }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.cancelU3mUploadProgress({ orgId: rootGetters['organization/orgId'], u3mProgressId })
-        : await assetsApi.group.cancelU3mUploadProgress({ groupId: rootGetters['group/groupId'], u3mProgressId })
+    async cancelU3mUploadProgress ({ dispatch }, params) {
+      await dispatch('callAssetsApi', { func: 'cancelU3mUploadProgress', params })
     },
-    async cancelExcelUploadProgress ({ rootGetters }, { excelProgressId }) {
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.cancelExcelUploadProgress({ orgId: rootGetters['organization/orgId'], excelProgressId })
-        : await assetsApi.group.cancelExcelUploadProgress({ groupId: rootGetters['group/groupId'], excelProgressId })
+    async cancelExcelUploadProgress ({ dispatch }, params) {
+      await dispatch('callAssetsApi', { func: 'cancelExcelUploadProgress', params })
     },
-    async getExcelUploadMaterialList ({ rootGetters }, { excelProgressId }) {
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await assetsApi.org.getExcelUploadMaterialList({ orgId: rootGetters['organization/orgId'], excelProgressId })
-        : await assetsApi.group.getExcelUploadMaterialList({ groupId: rootGetters['group/groupId'], excelProgressId })
-
+    async getExcelUploadMaterialList ({ dispatch }, params) {
+      const { data } = await dispatch('callAssetsApi', { func: 'getExcelUploadMaterialList', params })
       return data.result
     }
   }

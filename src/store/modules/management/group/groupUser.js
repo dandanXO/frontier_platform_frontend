@@ -1,5 +1,3 @@
-import groupApi from '@/apis/group'
-
 export default {
   namespaced: true,
   state: () => ({
@@ -23,9 +21,9 @@ export default {
     }
   },
   actions: {
-    async getGroupUser ({ rootGetters, commit }) {
-      const { data: { result: { groupUser } } } = await groupApi.getGroupUser({ groupId: rootGetters['group/groupId'] })
-      commit('SET_groupUser', groupUser)
+    async getGroupUser ({ dispatch, commit }) {
+      const { data } = await dispatch('group/callGroupApi', { func: 'getGroupUser' }, { root: true })
+      commit('SET_groupUser', data.result.groupUser)
     }
   }
 }

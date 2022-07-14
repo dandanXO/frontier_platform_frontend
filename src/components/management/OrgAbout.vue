@@ -119,17 +119,15 @@ const openModalTypeTextToConfirm = () => {
                 await router.replace('/')
               } else {
                 openModalPaymentFail()
-              }
 
+              }
               return success
             }
 
-            const {
-              result: { totalPrice, checkoutItemList }
-            } = await store.dispatch('organization/getUnbilledInfo')
+            const { result: { totalPrice, checkoutItemList } } = await store.dispatch('organization/getUnbilledInfo')
 
             if (checkoutItemList.length === 0) {
-              ; (await deleteOrg()) && store.dispatch('helper/pushFlashMessage', t('OO0101'))
+              await deleteOrg() && store.dispatch('helper/pushFlashMessage', t('OO0101'))
               return
             }
 
@@ -139,13 +137,12 @@ const openModalTypeTextToConfirm = () => {
                 checkoutItemList,
                 totalPrice,
                 payHandler: async () => {
-                  ; (await deleteOrg()) &&
-                    store.dispatch('helper/openModalConfirm', {
-                      type: 2,
-                      header: t('OO0039'),
-                      contentText: t('OO0101'),
-                      primaryBtnText: t('UU0031')
-                    })
+                  await deleteOrg() && store.dispatch('helper/openModalConfirm', {
+                    type: 2,
+                    header: t('OO0039'),
+                    contentText: t('OO0101'),
+                    primaryBtnText: t('UU0031')
+                  })
                 }
               }
             })

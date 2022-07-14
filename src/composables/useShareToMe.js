@@ -57,6 +57,7 @@ export default function useShareToMe () {
   const shareToMeDeleteByNodeList = (nodeList) => {
     const nodeKeyList = nodeList.map(({ nodeKey }) => nodeKey)
     store.dispatch('helper/openModalConfirm', {
+      type: 1,
       header: t('HH0004'),
       contentText: t('HH0005'),
       primaryBtnText: t('UU0001'),
