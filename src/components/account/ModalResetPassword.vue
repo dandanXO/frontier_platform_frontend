@@ -68,8 +68,8 @@ export default {
           await store.dispatch('user/oldUserResetPassword', { password: password.value })
           break
       }
-      await nextAfterSignIn()
       store.dispatch('helper/closeModal')
+      nextAfterSignIn()
     }
 
     return {
