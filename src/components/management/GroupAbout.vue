@@ -8,13 +8,13 @@ div
           i(class="text-warn pr-0.5") *
           p(class="text-primary") {{ $t('BB0086') }}
           p(class="font-normal text-caption text-black-500 cursor-pointer pl-1" @click="openModalTypeTextToConfirm") {{ $t("UU0013") }}
-        div(class="flex items-center cursor-pointer" @click="copyText(groupNo), $store.commit('helper/PUSH_message', $t('BB0038'))")
-          p(class="text-caption text-primary") ID: {{ groupNo }}
-          tooltip(placement="bottom")
-            template(#trigger)
-              svg-icon(iconName="content_copy" size="14" class="text-black-700")
-            template(#content)
-              p(class="text-caption text-primary px-3 py-1") {{ $t("BB0056") }}
+        tooltip(placement="bottom")
+          template(#trigger)
+            div(class="flex items-center" @click="copyText(groupNo), $store.commit('helper/PUSH_message', $t('BB0038'))")
+              p(class="text-caption text-primary cursor-pointer pr-1.5") ID: {{ groupNo }}
+              svg-icon(iconName="content_copy" size="14" class="text-black-700 cursor-pointer")
+          template(#content)
+            p(class="text-caption text-primary px-3 py-1") {{ $t("BB0056") }}
       input-label-color(
         v-model:labelColor="groupFormData.labelColor"
         v-model:textValue="groupFormData.groupName"
