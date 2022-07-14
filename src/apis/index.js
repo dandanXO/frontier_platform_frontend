@@ -115,4 +115,18 @@ instance.interceptors.response.use(async response => {
   return Promise.reject({ status, code, message })
 })
 
-export default instance
+const apiWrapper = (path, type = 'org', id, params = {}) => {
+  const data = { ...params }
+  if (type === 'org') {
+    data['orgId'] = id
+  } else {
+    data['groupId'] = id
+  }
+  const prefixPath = type === 'org' ? '/org' : '/org/group'
+  return instance(`${prefixPath}${path}`, { method: 'POST', data })
+}
+
+export {
+  instance as default,
+  apiWrapper,
+}

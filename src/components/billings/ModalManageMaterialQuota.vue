@@ -145,6 +145,7 @@ const primaryHandler = async () => {
   store.dispatch('helper/closeModalLoading')
   
   store.dispatch('helper/openModalConfirm', {
+    type: 2,
     header: currentTab.value === TAB.ADD ? t('OO0165') : t('OO0162'),
     contentComponent:
       currentTab.value === TAB.ADD

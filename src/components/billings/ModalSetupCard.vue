@@ -1,6 +1,7 @@
 <template lang="pug">
 modal-loading(v-if="isLoading")
 modal-behavior(
+  v-show="!isLoading"
   :header="$t('OO0014')"
   :primaryBtnText="$t('UU0018')"
   :primaryBtnDisabled="!availableToSetup"

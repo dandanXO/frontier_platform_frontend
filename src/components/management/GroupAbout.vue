@@ -68,8 +68,8 @@ export default {
               header: t('BB0100'),
               contentText: t('BB0101'),
               primaryBtnText: t('UU0001'),
-              afterPrimaryBtnHandler: async () => {
-                await store.dispatch('helper/openModalBehavior', {
+              afterPrimaryBtnHandler: () => {
+                store.dispatch('helper/openModalBehavior', {
                   component: 'modal-choose-storage'
                 })
               },

@@ -17,7 +17,7 @@ modal-behavior(
       div
         div(class="h-5.5 flex items-center pb-1")
           p(class="text-body2 text-primary font-bold") {{ $t('FF0011') }}
-          btn-functional(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewFile(formData.trendBoard)") {{ $t('UU0060') }}
+          btn-functional(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewFile(formData.trendBoardFile)") {{ $t('UU0060') }}
         input-text-btn(
           class="w-full"
           disabledInput
@@ -70,7 +70,7 @@ export default {
     const collectionId = ref(null) // only use when MODE is equal to EDIT
     const formData = reactive({
       collectionName: '',
-      trendBoard: null,
+      trendBoardFile: null,
       description: ''
     })
     const DESCRIPTION_LIMIT = 1000
@@ -78,7 +78,7 @@ export default {
     const actionBtnDisabled = computed(() => !formData.collectionName || formData.description.length > DESCRIPTION_LIMIT)
 
     fileOperator.on('finish', (file) => {
-      formData.trendBoard = file
+      formData.trendBoardFile = file
       uploadTrendBoardName.value = file.name
     })
 
@@ -88,7 +88,7 @@ export default {
 
     const actionHandler = async () => {
       if (uploadTrendBoardName.value === '') {
-        formData.trendBoard = null
+        formData.trendBoardFile = null
       }
       store.dispatch('helper/pushModalLoading')
       if (props.mode === MODE.EDIT) {
@@ -117,7 +117,7 @@ export default {
       Object.assign(formData, {
         collectionName: name,
         description: description || '',
-        trendBoard: trendBoardUrl
+        trendBoardFile: trendBoardUrl
       })
       collectionId.value = cId
       uploadTrendBoardName.value = trendBoardDisplayFileName

@@ -1,4 +1,5 @@
-import organizationApi from '@/apis/organization'
+import putBinaryData from '@/utils/put-binary-data'
+import axios from '@/apis'
 import { ROLE_ID } from '@/utils/constants'
 
 export default {
@@ -30,25 +31,35 @@ export default {
     }
   },
   actions: {
-    async getOrgUser ({ rootGetters, commit }) {
-      const { data: { result: { orgUser } } } = await organizationApi.getOrgUser({ orgId: rootGetters['organization/orgId'] })
-      commit('SET_orgUser', orgUser)
+    async getOrgUser ({ commit, dispatch }) {
+      const { data } = await dispatch('organization/callOrgApi', { func: 'getOrgUser' }, { root: true })
+      commit('SET_orgUser', data.result.orgUser)
     },
-    async updateDisplayName ({ rootGetters, commit }, { displayName }) {
-      const { data: { result: { orgUser } } } = await organizationApi.updateDisplayName({ orgId: rootGetters['organization/orgId'], displayName })
-      commit('SET_orgUser', orgUser)
+    async updateDisplayName ({ commit, dispatch }, params) {
+      const { data } = await dispatch('organization/callOrgApi', { func: 'updateDisplayName', params }, { root: true })
+      commit('SET_orgUser', data.result.orgUser)
     },
-    async updateAvatar ({ rootGetters, commit }, { avatar, originalAvatar }) {
-      const { data: { result: { orgUser } } } = await organizationApi.updateAvatar({ orgId: rootGetters['organization/orgId'], avatar, originalAvatar })
-      commit('SET_orgUser', orgUser)
+    async updateAvatar ({ commit, dispatch }, { avatar, originalAvatar }) {
+      const avatarFileName = avatar.name
+      const originalAvatarFileName = originalAvatar.name
+
+      const { data: { result: { tempUploadId, avatarUploadUrl, originalAvatarUploadUrl } } } = await axios('/org/user/update-avatar/get-upload-url', {
+        method: 'POST',
+        data: { avatarFileName, originalAvatarFileName }
+      })
+      await putBinaryData(avatarUploadUrl, avatar)
+      await putBinaryData(originalAvatarUploadUrl, originalAvatar)
+
+      const { data } = await dispatch('organization/callOrgApi', { func: 'updateAvatar', params: { tempUploadId, avatarFileName, originalAvatarFileName } }, { root: true })
+      commit('SET_orgUser', data.result.orgUser)
     },
-    async removeAvatar ({ rootGetters, commit }) {
-      const { data: { result: { orgUser } } } = await organizationApi.removeAvatar({ orgId: rootGetters['organization/orgId'] })
-      commit('SET_orgUser', orgUser)
+    async removeAvatar ({ commit, dispatch }) {
+      const { data } = await dispatch('organization/callOrgApi', { func: 'removeAvatar' }, { root: true })
+      commit('SET_orgUser', data.result.orgUser)
     },
-    async readNotification ({ rootGetters, commit }) {
-      const { data: { result: { orgUser } } } = await organizationApi.readNotification({ orgId: rootGetters['organization/orgId'] })
-      commit('SET_orgUser', orgUser)
+    async readNotification ({ commit, dispatch }) {
+      const { data } = await dispatch('organization/callOrgApi', { func: 'readNotification' }, { root: true })
+      commit('SET_orgUser', data.result.orgUser)
     }
   }
 }

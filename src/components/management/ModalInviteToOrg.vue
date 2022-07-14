@@ -80,7 +80,7 @@ const clearEmail = () => {
 const inviteToOrg = async () => {
   store.dispatch('helper/pushModalLoading')
   if (props.from === 'org') {
-    await store.dispatch('organization/inviteToOrg', { emailList: toRaw(emailList) })
+    await store.dispatch('organization/orgInviteViaEmail', { emailList: toRaw(emailList) })
   } else {
     await store.dispatch('group/inviteToOrgFromGroup', { emailList: toRaw(emailList) })
   }

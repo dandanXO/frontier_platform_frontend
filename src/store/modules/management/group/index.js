@@ -1,5 +1,4 @@
 import groupApi from '@/apis/group'
-import setVuexState from '@/utils/set-vuex-state'
 import { COLOR } from '@/utils/constants'
 import groupUser from '@/store/modules/management/group/groupUser'
 
@@ -37,6 +36,9 @@ export default {
     createForm: state => state.createForm
   },
   mutations: {
+    SET_group (state, group) {
+      Object.assign(state, group)
+    },
     SET_createForm_groupName (state, groupName) {
       state.createForm.groupName = groupName
     },
@@ -51,69 +53,63 @@ export default {
     }
   },
   actions: {
-    setGroup ({ state }, data) {
-      setVuexState(state, data)
+    async callGroupApi ({ getters }, { func, params = {} }) {
+      return await groupApi[func](getters.groupId, params)
+    },
+    setGroup ({ commit }, data) {
+      commit('SET_group', data)
     },
     async createGroup ({ rootGetters, state, dispatch }) {
-      const { data } = await groupApi.createGroup({
-        ...state.createForm,
-        orgId: rootGetters['organization/orgId']
+      const { data } = await dispatch('callGroupApi', {
+        func: 'createGroup',
+        params: {
+          ...state.createForm,
+          orgId: rootGetters['organization/orgId']
+        }
       })
+
       if (data.success) {
-        dispatch('handleResponseData', { data }, { root: true })
+        dispatch('setGroup', data.result.group)
+        dispatch('organization/setOrganization', data.result.organization, { root: true })
       }
       return data
     },
-    async getGroup ({ dispatch }, params) {
-      const { data } = await groupApi.getGroup(params)
-      dispatch('handleResponseData', { data }, { root: true })
+    async getGroup ({ dispatch }, { groupId }) {
+      const { data } = await groupApi.getGroup(groupId)
+      dispatch('setGroup', data.result.group)
     },
-    async updateGroup ({ state, dispatch }, params) {
-      const { data } = await groupApi.updateGroup({
-        ...params,
-        groupId: state.groupId
-      })
-      dispatch('handleResponseData', { data }, { root: true })
+    async updateGroup ({ dispatch }, params) {
+      const { data } = await dispatch('callGroupApi', { func: 'updateGroup', params })
+      dispatch('setGroup', data.result.group)
+      dispatch('organization/setOrganization', data.result.organization, { root: true })
     },
-    async deleteGroup ({ state, dispatch }, params) {
-      const { data } = await groupApi.deleteGroup({
-        ...params,
-        groupId: state.groupId
-      })
-      dispatch('handleResponseData', { data }, { root: true })
+    async deleteGroup ({ dispatch }, params) {
+      const { data } = await dispatch('callGroupApi', { func: 'deleteGroup', params })
+      dispatch('organization/setOrganization', data.result.organization, { root: true })
     },
-    async cancelGroupInvitation ({ state, dispatch }, params) {
-      const { data } = await groupApi.cancelGroupInvitation({
-        ...params,
-        groupId: state.groupId
-      })
-      dispatch('handleResponseData', { data }, { root: true })
+    async cancelGroupInvitation ({ dispatch }, params) {
+      const { data } = await dispatch('callGroupApi', { func: 'cancelGroupInvitation', params })
+      dispatch('setGroup', data.result.group)
     },
     async changeGroupMemberRole ({ dispatch }, params) {
-      const { data } = await groupApi.changeGroupMemberRole(params)
-      dispatch('handleResponseData', { data }, { root: true })
+      const { data } = await dispatch('callGroupApi', { func: 'changeGroupMemberRole', params })
+      dispatch('setGroup', data.result.group)
     },
     async removeGroupMember ({ dispatch }, params) {
-      const { data } = await groupApi.removeGroupMember(params)
-      dispatch('handleResponseData', { data }, { root: true })
+      const { data } = await dispatch('callGroupApi', { func: 'removeGroupMember', params })
+      dispatch('setGroup', data.result.group)
     },
-    async addMemberToGroup ({ state, dispatch }, params) {
-      const { data } = await groupApi.addMemberToGroup({
-        groupId: state.groupId,
-        ...params
-      })
-      dispatch('handleResponseData', { data }, { root: true })
+    async addMemberToGroup ({ dispatch }, params) {
+      const { data } = await dispatch('callGroupApi', { func: 'addMemberToGroup', params })
+      dispatch('setGroup', data.result.group)
     },
-    async inviteToOrgFromGroup ({ state, dispatch }, params) {
-      const { data } = await groupApi.inviteToOrgFromGroup({
-        groupId: state.groupId,
-        ...params
-      })
-      dispatch('handleResponseData', { data }, { root: true })
+    async inviteToOrgFromGroup ({ dispatch }, params) {
+      const { data } = await dispatch('callGroupApi', { func: 'inviteToOrgFromGroup', params })
+      dispatch('setGroup', data.result.group)
     },
     async joinGroupViaLink ({ dispatch }, params) {
-      const { data } = await groupApi.joinGroupViaLink(params)
-      dispatch('handleResponseData', { data }, { root: true })
+      const { data } = await dispatch('callGroupApi', { func: 'joinGroupViaLink', params })
+      dispatch('setGroup', data.result.group)
     },
     resetCreateForm ({ commit }) {
       commit('SET_createForm_groupName', '')

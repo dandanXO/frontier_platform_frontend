@@ -1,5 +1,4 @@
 import codeApi from '@/apis/code'
-import i18n from '@/utils/i18n'
 
 const defaultFilterState = () => ({
   contentList: [],

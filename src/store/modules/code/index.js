@@ -1,5 +1,4 @@
 import codeApi from '@/apis/code'
-import setVuexState from '@/utils/set-vuex-state'
 import { ROLE_ID } from '@/utils/constants'
 
 const state = () => ({
@@ -48,29 +47,51 @@ const getters = {
   filterOptionList: (state) => state.filter
 }
 
+const mutations = {
+  SET_countryList (state, countryList) {
+    state.countryList = countryList
+  },
+  SET_orgCategoryList (state, orgCategoryList) {
+    state.orgCategoryList = orgCategoryList
+  },
+  SET_roleList (state, roleList) {
+    state.roleList = roleList
+  },
+  SET_roleLimit (state, roleLimit) {
+    state.roleLimit = roleLimit
+  },
+  SET_filter (state, filter) {
+    state.filter = filter
+  }
+}
+
 const actions = {
-  setCode ({ state }, data) {
-    setVuexState(state, data)
+  fetchCode ({ dispatch }) {
+    dispatch('getRoleList')
+    dispatch('getOrgCategoryList')
+    dispatch('getRoleLimitTable')
+    dispatch('getCountryList')
+    dispatch('getFilterOptions')
   },
-  async getCountryList ({ dispatch }) {
+  async getCountryList ({ commit }) {
     const { data } = await codeApi.getCountryList()
-    dispatch('handleResponseData', { data }, { root: true })
+    commit('SET_countryList', data.result.code.countryList)
   },
-  async getOrgCategoryList ({ dispatch }) {
+  async getOrgCategoryList ({ commit }) {
     const { data } = await codeApi.getOrgCategoryList()
-    dispatch('handleResponseData', { data }, { root: true })
+    commit('SET_orgCategoryList', data.result.code.orgCategoryList)
   },
-  async getRoleList ({ dispatch }) {
+  async getRoleList ({ commit }) {
     const { data } = await codeApi.getRoleList()
-    dispatch('handleResponseData', { data }, { root: true })
+    commit('SET_roleList', data.result.code.roleList)
   },
-  async getRoleLimitTable ({ dispatch }) {
+  async getRoleLimitTable ({ commit }) {
     const { data } = await codeApi.getRoleLimitTable()
-    dispatch('handleResponseData', { data }, { root: true })
+    commit('SET_roleList', data.result.code.roleLimit)
   },
-  async getFilterOptions ({ dispatch }) {
+  async getFilterOptions ({ commit }) {
     const { data } = await codeApi.getFilterOptions()
-    dispatch('handleResponseData', { data }, { root: true })
+    commit('SET_roleList', data.result.code.filter)
   }
 }
 
@@ -78,5 +99,6 @@ export default {
   namespaced: true,
   state,
   getters,
+  mutations,
   actions
 }

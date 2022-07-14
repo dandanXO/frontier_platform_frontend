@@ -63,11 +63,12 @@ const deleteGroup = async () => {
   const { id, storageLocation } = storageOrgOrGroup.value[currentStorage.value]
   const transferOrgId = storageLocation === STORAGE_LOCATION.ORG ? Number(id) : null
   const transferGroupId = storageLocation === STORAGE_LOCATION.GROUP ? Number(id) : null
+  store.dispatch('helper/openModalLoading')
   await store.dispatch('group/deleteGroup', {
     transferOrgId,
     transferGroupId
   })
-  store.dispatch('helper/clearModalPipeline')
+  store.dispatch('helper/closeModalLoading')
   router.push({ name: 'PublicLibrary', params: { orgNo } })
 }
 

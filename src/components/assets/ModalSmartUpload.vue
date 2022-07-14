@@ -92,7 +92,7 @@ const startUpload = () => {
 
   const uploadToAws = (image) => {
     return new Promise(async (resolve, reject) => {
-      const { result: { tempUploadId, fileUploadUrl } } = await store.dispatch('assets/getSmartUploadUrl', { fileName: image.file.name })
+      const { tempUploadId, fileUploadUrl }  = await store.dispatch('getUploadUrl', { fileName: image.file.name })
 
       const xhr = new XMLHttpRequest()
 
