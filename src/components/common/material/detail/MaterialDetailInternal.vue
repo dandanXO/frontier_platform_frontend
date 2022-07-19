@@ -24,6 +24,9 @@ div
               p(class="pb-3 text-body2 font-bold text-primary") {{ $t("RR0028") }}
               div(class="flex flex-wrap gap-x-2 gap-y-3")
                 tag(v-for="tag in material.privateTagList") {{ tag }}
+            div(class="pt-17.5")
+              p(class="pb-3 text-body2 font-bold text-primary") {{ $t("RR0029") }}
+              p(class="text-body2 text-primary leading-1.6") {{ material.remark }}
         template(v-else-if="currentTab === TAB.PRICING")
           div(class="grid gap-y-5")
             div(v-for="item in materialPublicPriceInfo" class="text-body2 text-primary grid grid-cols-8")
