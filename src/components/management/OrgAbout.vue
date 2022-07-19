@@ -9,13 +9,13 @@ div(class="pt-16 xl:pt-17.5")
             @click="openModalUploadLogo"
           )
             svg-icon(iconName="camera" size="20" class="text-black-500 hover:text-brand")
-        div(class="flex items-center pt-4 cursor-pointer" @click="copyText(organization.orgNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))")
-          p(class="text-caption text-primary") ID: {{ organization.orgNo }}
-          tooltip(placement="bottom")
-            template(#trigger)
-              svg-icon(iconName="content_copy" size="14" class="text-black-700")
-            template(#content)
-              p(class="text-caption text-primary px-3 py-1") {{ $t("BB0056") }}
+        tooltip(placement="bottom" class="pt-4")
+          template(#trigger)
+            div(class="flex items-center" @click="copyText(organization.orgNo), $store.commit('helper/PUSH_message', $t('BB0038'))")
+              p(class="text-caption text-primary pr-1.5 cursor-pointer") ID: {{ organization.orgNo }}
+              svg-icon(iconName="content_copy" size="14" class="text-black-700 cursor-pointer")
+          template(#content)
+            p(class="text-caption text-primary px-3 py-1") {{ $t("BB0056") }}
         p(v-permission="FUNC_ID.DELETE_ORG" v-if="!planType.ENT" class="pt-2.5 text-caption text-black-500 cursor-pointer" @click="openModalTypeTextToConfirm") {{ $t("UU0013") }}
     div(class="grid gap-y-8.5 relative")
       p(class="absolute text-caption text-black-500 right-0 -top-7 transform -translate-y-full") *{{ $t("RR0163") }}
