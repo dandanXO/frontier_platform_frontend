@@ -16,6 +16,12 @@ const options = {
 const instance = Axios.create(options)
 
 instance.interceptors.request.use(request => {
+  const { url, data } = request
+  if (url === '/org/assets/material/smart-upload' || url === '/org/group/assets/material/smart-upload') {
+    console.log(`=== Timestamp: ${new Date().getTime()} ===`)
+    console.log('File list:', JSON.parse(JSON.stringify(data.fileList)))
+  }
+
   const accessToken = localStorage.getItem('accessToken')
   request.headers.Authorization = `Bearer ${accessToken}`
   return request
