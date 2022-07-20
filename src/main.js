@@ -10,6 +10,7 @@ import isToday from 'dayjs/plugin/isToday'
 import isYesterday from 'dayjs/plugin/isYesterday'
 import permission from '@/directives/permission.js'
 import defaultImg from '@/directives/defaultImg.js'
+import VueGtag from 'vue-gtag'
 
 const svgs = import.meta.globEager('/src/assets/icons/**/*.svg')
 
@@ -65,4 +66,11 @@ app.config.warnHandler = (msg, vm, trace) => {
 app.directive('permission', permission)
 app.directive('defaultImg', defaultImg)
 
-app.use(store).use(router).use(i18n).mount('#app')
+app.use(router)
+app.use(VueGtag, {
+  bootstrap: false,
+  config: { id: import.meta.env.VITE_APP_GA_MEASUREMENT_ID }
+}, router)
+
+
+app.use(store).use(i18n).mount('#app')

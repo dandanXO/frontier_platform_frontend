@@ -12,6 +12,7 @@ div(class="flex h-full")
 </template>
 
 <script>
+import { setOptions, bootstrap } from 'vue-gtag'
 import { useStore } from 'vuex'
 import { computed, defineAsyncComponent } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
@@ -28,6 +29,7 @@ export default {
     const isReloadInnerApp = computed(() => store.getters['helper/isReloadInnerApp'])
     const planStatus = computed(() => store.getters['polling/planStatus'])
     const isInInnerApp = computed(() => route.matched.some(r => r.name === 'InnerAppRoot'))
+    const user = computed(() => store.getters['user/user'])
 
     onBeforeRouteUpdate(async (to, from) => {
       const isFromGroup = 'groupId' in from.params
@@ -37,6 +39,16 @@ export default {
         await store.dispatch('group/groupUser/getGroupUser')
       }
     })
+
+    setOptions({
+      config: {
+        id: import.meta.env.VITE_APP_GA_MEASUREMENT_ID,
+        params: {
+          'user_id': user.value.email
+        }
+      }
+    })
+    bootstrap()
 
     return {
       planStatus,
