@@ -42,7 +42,7 @@ fullscreen-header
               :previewScaleRatio="previewScaleRatio"
               :movable="false"
             )
-    div(class="absolute invisible w-125 h-125 grid grid-cols-3 grid-rows-3")
+    div(class="absolute invisible w-125 h-125 grid grid-cols-3 grid-rows-3 inset-0")
       div(ref="previewRect")
 </template>
 
