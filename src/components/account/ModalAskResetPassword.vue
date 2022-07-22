@@ -6,7 +6,9 @@ modal-behavior(
   @click:primary="openResetPassword"
   @click:text="closeModal"
 )
-  p(class="w-94 text-primary text-body1 leading-1.6") {{ $t("AA0059") }}
+  i18n-t(keypath="AA0059" tag="p" class="w-94 text-primary text-body1 leading-1.6" scope="global")
+    template(#newline)
+      br
 </template>
 
 <script setup>

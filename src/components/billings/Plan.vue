@@ -60,7 +60,7 @@ div(class="w-195")
         p(class="text-body1 font-bold text-brand-dark leading-1.6") {{ planType.ENT ? `${memberQuota.used}/${memberQuota.max}` : memberQuota.used }}
           span(class="text-caption font-normal pl-1") {{ $t('OO0031') }}
   template(v-if="!planType.ENT")
-    p(v-if="planStatus.ACTIVE || planStatus.BUFFER" class="text-body2 text-assist-blue text-right pt-3 cursor-pointer" @click="openModalDeactivate") {{ $t('OO0007') }}
+    p(v-if="planStatus.ACTIVE || planStatus.BUFFER" class="text-body2 text-assist-blue text-right pt-3 cursor-pointer" @click="deactivateOrg") {{ $t('OO0007') }}
     div(v-else-if="planStatus.INACTIVE" class="w-full h-24 bg-black-200 flex justify-between items-center pl-7.5 pr-10 rounded mt-6")
       div
         h6(class="text-h6 text-primary font-bold") {{ $t('OO0007') }}
@@ -81,7 +81,7 @@ export default {
       openModalChoosePlan,
       openModalManageMaterialQuota,
       openModalPurchaseU3mQuota,
-      openModalDeactivate,
+      deactivateOrg,
       activateOrg,
       payLastMonthUnbilledInfo
     } = usePlan()
@@ -110,7 +110,7 @@ export default {
       openModalChoosePlan,
       openModalManageMaterialQuota,
       openModalPurchaseU3mQuota,
-      openModalDeactivate,
+      deactivateOrg,
       activateOrg,
       materialQuota,
       isMaterialFull,

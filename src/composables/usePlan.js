@@ -1,7 +1,7 @@
 import { useStore } from "vuex"
-import { computed } from '@vue/runtime-core'
+import { computed, shallowRef, h } from 'vue'
 import useNavigation from '@/composables/useNavigation.js'
-import { useI18n } from "vue-i18n"
+import { useI18n, Translation } from "vue-i18n"
 
 export default function usePlan () {
   const store = useStore()
@@ -82,9 +82,63 @@ export default function usePlan () {
     })
   }
 
-  const openModalDeactivate = () => {
-    store.dispatch('helper/openModalBehavior', {
-      component: 'modal-deactivate'
+  const deactivateOrg = () => {
+    store.dispatch('helper/openModalConfirm', {
+      type: 1,
+      header: t('OO0007'),
+      secondaryBtnText: t('UU0083'),
+      afterSecondaryBtnHandler: async () => {
+        store.dispatch('helper/openModalLoading')
+        const { result: { totalPrice, checkoutItemList } } = await store.dispatch('organization/getUnbilledInfo')
+        store.dispatch('helper/closeModalLoading')
+
+        if (checkoutItemList.length === 0) {
+          store.dispatch('helper/openModalLoading')
+          await store.dispatch('organization/deactivateOrg')
+          store.dispatch('helper/closeModalLoading')
+          return
+        }
+
+        store.dispatch('helper/openModalBehavior', {
+          component: 'modal-checkout-list',
+          properties: {
+            checkoutItemList,
+            totalPrice,
+            payHandler: async () => {
+              store.dispatch('helper/openModalLoading')
+              const { success } = await store.dispatch('organization/deactivateOrg')
+              store.dispatch('helper/closeModalLoading')
+
+              if (success) {
+                store.dispatch('helper/openModalConfirm', {
+                  type: 2,
+                  header: t('OO0039'),
+                  contentComponent: shallowRef({
+                    render: () => {
+                      return h('div', { class: 'text-body2 leading-1.6' }, [
+                        h('p', {}, `${t('OO0058')} ${plan.value.deactivatedDate}`),
+                        h(Translation, { keypath: 'OO0126', tag: 'p', scope: 'global' }, { OO0127: () => h('span', { class: 'text-assist-blue' }, t('OO0127')) })
+                      ])
+                    }
+                  }),
+                  primaryBtnText: t('UU0031')
+                })
+              } else {
+                openModalPaymentFail()
+              }
+            }
+          }
+        })
+      },
+      textBtnText: t('UU0002'),
+      contentComponent: shallowRef({
+        render: () => {
+          return h(Translation,
+            { keypath: 'OO0121', tag: 'p', scope: 'global', class: 'text-primary text-body2 leading-1.6' },
+            { newline: () => h('br') }
+          )
+        }
+      })
     })
   }
 
@@ -144,7 +198,7 @@ export default function usePlan () {
     openModalChoosePlan,
     openModalManageMaterialQuota,
     openModalPurchaseU3mQuota,
-    openModalDeactivate,
+    deactivateOrg,
     activateOrg,
     openModalPaymentFail,
     checkCanInvitedPeople,

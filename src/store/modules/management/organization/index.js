@@ -235,12 +235,20 @@ export default {
       dispatch('setOrganization', data.result.organization)
       return data
     },
+    async getChargingOfUpgradePlan ({ dispatch }) {
+      const { data } = await dispatch('callOrgApi', { func: 'getChargingOfUpgradePlan' })
+      return data.result
+    },
     async requestUpgradeToEnterprise ({ dispatch }, params) {
       await dispatch('callOrgApi', { func: 'requestUpgradeToEnterprise', params })
     },
     async purchaseMaterial ({ dispatch }, params) {
       const { data } = await dispatch('callOrgApi', { func: 'purchaseMaterial', params })
       dispatch('setOrganization', data.result.organization)
+    },
+    async getChargingOfPurchaseMaterial ({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', { func: 'getChargingOfPurchaseMaterial', params })
+      return data.result
     },
     async cancelMaterial ({ dispatch }, params) {
       const { data } = await dispatch('callOrgApi', { func: 'cancelMaterial', params })

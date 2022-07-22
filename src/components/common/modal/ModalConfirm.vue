@@ -5,7 +5,7 @@ div(class="fixed inset-0 z-modal-confirm  w-screen h-screen bg-black-900/30 flex
       svg-icon(:iconName="getIconName" :class="[getIconColor]" size="22")
       p(class="text-body1 font-bold pl-3") {{ header }}
     overlay-scrollbar-container(class="max-h-92.5 flex-grow pl-8.5")
-      p(v-if="!!contentText" class="text-body2 leading-1.6" v-html="contentText")
+      p(v-if="!!contentText" class="text-body2 leading-1.6") {{ contentText }}
       component(v-else :is="contentComponent")
     div(class="h-11.5 pt-3 flex justify-between")
       p(class="flex items-center text-caption leading-1.6")
@@ -21,10 +21,8 @@ div(class="fixed inset-0 z-modal-confirm  w-screen h-screen bg-black-900/30 flex
 import { MODAL_CONFIRM_TYPE } from '@/utils/constants.js'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import useNavigation from '@/composables/useNavigation'
 
 const store = useStore()
-const { parsePath } = useNavigation()
 const props = defineProps({
   header: {
     type: String,
