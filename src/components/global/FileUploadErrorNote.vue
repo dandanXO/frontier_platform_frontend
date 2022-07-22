@@ -33,7 +33,7 @@ const errorMsg = computed(() => {
   if (props.errorCode === INVALID_TYPE) {
     return t('RR0144')
   } else if (props.errorCode === EXCEED_LIMIT) {
-    return t('RR0145', { size: props.fileSizeMaxLimit })
+    return t('RR0145') + props.fileSizeMaxLimit + 'MB'
   } else if (props.errorCode === TOO_SMALL) {
     return t('WW0018')
   } else {

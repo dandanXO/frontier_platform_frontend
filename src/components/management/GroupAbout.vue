@@ -10,7 +10,7 @@ div
           p(class="font-normal text-caption text-black-500 cursor-pointer pl-1" @click="openModalTypeTextToConfirm") {{ $t("UU0013") }}
         tooltip(placement="bottom")
           template(#trigger)
-            div(class="flex items-center" @click="copyText(groupNo), $store.commit('helper/PUSH_message', $t('BB0038'))")
+            div(class="flex items-center" @click="copyText(groupNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))")
               p(class="text-caption text-primary cursor-pointer pr-1.5") ID: {{ groupNo }}
               svg-icon(iconName="content_copy" size="14" class="text-black-700 cursor-pointer")
           template(#content)

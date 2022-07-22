@@ -25,14 +25,6 @@ export default defineConfig(({ mode }) => ({
   server: {
     port: 8080
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        charset: false,
-        additionalData: '@import "./src/assets/scss/abstracts/_functions.scss";'
-      }
-    }
-  },
   plugins: [
     htmlPlugin(loadEnv(mode, '.')),
     vue(),
