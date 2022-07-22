@@ -390,7 +390,13 @@ export default {
       return data.result.failMaterialList
     },
     async batchUpload ({ dispatch }, params) {
-      const { data } = await dispatch('callAssetsApi', { func: 'batchUpload', params })
+      const { xlsxFile } = params
+      const { tempUploadId, fileName } = await dispatch('uploadFileToS3', { fileName: xlsxFile.name, file: xlsxFile }, { root: true })
+      const tempParams = {
+        tempUploadId,
+        xlsxFileName: fileName
+      }
+      const { data } = await dispatch('callAssetsApi', { func: 'batchUpload', params: tempParams })
       return data
     },
     async smartUpload ({ dispatch }, params) {
