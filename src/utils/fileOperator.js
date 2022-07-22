@@ -179,7 +179,7 @@ class FileOperator {
         store.dispatch('helper/pushModalConfirm', {
           type: 3,
           header: t('RR0143'),
-          contentText: t('RR0145', { size: this.fileSizeMaxLimit }),
+          contentText: t('RR0145') + this.fileSizeMaxLimit + 'MB',
           primaryBtnText: t('UU0031')
         })
         break

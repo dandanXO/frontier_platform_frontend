@@ -11,7 +11,7 @@ div(class="pt-16 xl:pt-17.5")
             svg-icon(iconName="camera" size="20" class="text-black-500 hover:text-brand")
         tooltip(placement="bottom" class="pt-4")
           template(#trigger)
-            div(class="flex items-center" @click="copyText(organization.orgNo), $store.commit('helper/PUSH_message', $t('BB0038'))")
+            div(class="flex items-center" @click="copyText(organization.orgNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))")
               p(class="text-caption text-primary pr-1.5 cursor-pointer") ID: {{ organization.orgNo }}
               svg-icon(iconName="content_copy" size="14" class="text-black-700 cursor-pointer")
           template(#content)

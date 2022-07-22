@@ -52,7 +52,7 @@ div(class="pb-15 mb-5 border-b border-black-400")
                     div(class="w-30 h-30 absolute -top-29 rounded-t" :style="{ backgroundColor: `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }")
                     div(class="p-2 text-primary text-caption font-bold")
                       div(class="pb-1") {{ pantone.name }}
-                      div {{ pantone.majorColorName }}
+                      div {{ pantone.colorName }}
               p(class="text-body2 text-primary") {{ pantone.name }}
               svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removePantone(pantone.materialPantoneId)")
         block-material-u3m-status(:material="material")

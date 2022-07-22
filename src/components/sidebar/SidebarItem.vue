@@ -47,6 +47,7 @@ export default {
       if (
         props.id === 'management' && ['OrgManagement', 'GroupManagement'].includes(route.name)
         || props.id === 'progress' && ['OrgProgress', 'GroupProgress'].includes(route.name)
+        || props.id === 'workspace' && ['OrgWorkspace', 'GroupWorkspace'].includes(route.name)
       ) {
         return true
       }

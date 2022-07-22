@@ -34,7 +34,6 @@
     "vue-router": "^4.0.12",
     "vue-virtual-scroller": "^2.0.0-alpha.1",
     "vue3-carousel": "^0.1.36",
-    "vue3-click-away": "^1.2.1",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
