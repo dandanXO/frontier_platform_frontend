@@ -31,7 +31,7 @@ export default function usePublicLibrary () {
       return store.dispatch('helper/openModalConfirm', {
         type: 1,
         header: t('II0013'),
-        content: t('II0014'),
+        contentText: t('II0014'),
         primaryBtnText: t('UU0031')
       })
     }
@@ -44,7 +44,7 @@ export default function usePublicLibrary () {
         },
         cloneHandler: async (targetLocationList, optional) => {
           await store.dispatch('publicLibrary/cloneNode', { nodeKeyList, targetLocationList, optional })
-          store.commit('helper/PUSH_message', msg)
+          store.dispatch('helper/pushFlashMessage', msg)
         }
       }
     })
@@ -54,7 +54,7 @@ export default function usePublicLibrary () {
     id: 'share',
     name: t('RR0079'),
     func: (node) => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-public-library-share',
         properties: {
           nodeKey: node.nodeKey,

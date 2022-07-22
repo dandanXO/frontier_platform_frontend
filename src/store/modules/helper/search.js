@@ -1,6 +1,4 @@
 import codeApi from '@/apis/code'
-import { FILTER_COMPLETE } from '@/utils/constants'
-import i18n from '@/utils/i18n'
 
 const defaultFilterState = () => ({
   contentList: [],
@@ -75,42 +73,8 @@ const getters = {
   }),
   filterOptions: (state, getters, rootState, rootGetters) => {
     const filterOptionList = rootGetters['code/filterOptionList']
-    const { categoryList, finishList } = filterOptionList
     return {
       ...filterOptionList,
-      categoryList: categoryList.map(({ key, list }) => ({
-        text: key,
-        subList: list
-          .map(({ displayName, value }) => ({
-            text: displayName,
-            value
-          }))
-      })),
-      finishList: finishList.map(({ displayName, value }) => ({
-        text: displayName,
-        value
-      })),
-      completeList: Object.keys(FILTER_COMPLETE).map(key => ({ ...FILTER_COMPLETE[key] })),
-      hasPrice: [
-        {
-          text: i18n.global.t('RR0096'),
-          value: true
-        },
-        {
-          text: i18n.global.t('RR0097'),
-          value: false
-        }
-      ],
-      hasU3M: [
-        {
-          text: i18n.global.t('RR0100'),
-          value: true
-        },
-        {
-          text: i18n.global.t('RR0101'),
-          value: false
-        }
-      ],
       width: { min: 0, max: 200 },
       weightGsm: { min: 0, max: 600 },
       inventory: { min: 0, max: 10000 },

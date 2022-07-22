@@ -15,7 +15,7 @@ fullscreen-header
 
 <script>
 import { useStore } from 'vuex'
-import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
+import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 
 export default {
   name: 'Plan',

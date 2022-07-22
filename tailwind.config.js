@@ -82,6 +82,7 @@ module.exports = {
         "modal-confirm": 200,
         "flash-msg": 201,
         "footer": 200,
+        "popper": 999,
         ...zIndex
       },
       spacing: spacing,
@@ -97,7 +98,13 @@ module.exports = {
         'lobby': 'repeat(auto-fill, 232px)'
       },
       strokeWidth: strokeWidth,
-      margin: marginSpacing
+      margin: marginSpacing,
+      lineClamp: {
+        7: '7',
+        8: '8',
+        9: '9',
+        10: '10',
+      }
     }
   },
   plugins: [

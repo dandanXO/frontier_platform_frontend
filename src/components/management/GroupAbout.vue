@@ -8,20 +8,20 @@ div
           i(class="text-warn pr-0.5") *
           p(class="text-primary") {{ $t('BB0086') }}
           p(class="font-normal text-caption text-black-500 cursor-pointer pl-1" @click="openModalTypeTextToConfirm") {{ $t("UU0013") }}
-        div(class="flex items-center cursor-pointer" @click="copyText(groupNo), $store.commit('helper/PUSH_message', $t('BB0038'))")
-          p(class="text-caption text-primary") ID: {{ groupNo }}
-          tooltip(placement="bottom")
-            template(#trigger)
-              svg-icon(iconName="content_copy" size="14" class="text-black-700")
-            template(#content)
-              p(class="text-caption text-primary px-3 py-1") {{ $t("BB0056") }}
+        tooltip(placement="bottom")
+          template(#trigger)
+            div(class="flex items-center" @click="copyText(groupNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))")
+              p(class="text-caption text-primary cursor-pointer pr-1.5") ID: {{ groupNo }}
+              svg-icon(iconName="content_copy" size="14" class="text-black-700 cursor-pointer")
+          template(#content)
+            p(class="text-caption text-primary px-3 py-1") {{ $t("BB0056") }}
       input-label-color(
         v-model:labelColor="groupFormData.labelColor"
         v-model:textValue="groupFormData.groupName"
         :placeholder="$t('BB0089')"
         :customErrorMsg="isGroupNameExist ? $t('WW0001') : ''"
         required
-        class="w-85 relative z-11 mb-7.5"
+        class="w-85 mb-7.5"
       )
     input-textarea(v-model:textValue="groupFormData.description" :label="$t('BB0087')" :placeholder="$t('BB0088')" class="w-85 mb-7.5" height="160")
     btn(size="md" class="mx-auto" :disabled="!availableToCreateGroup" @click="updateGroup") {{ $t("UU0018") }}
@@ -30,7 +30,7 @@ div
 <script>
 import { useStore } from 'vuex'
 import { computed, reactive, toRaw } from 'vue'
-import InputLabelColor from '@/components/InputLabelColor.vue'
+import InputLabelColor from '@/components/management/InputLabelColor.vue'
 import { useI18n } from 'vue-i18n'
 import copyText from '@/utils/copy-text'
 
@@ -50,11 +50,11 @@ export default {
 
     const updateGroup = async () => {
       await store.dispatch('group/updateGroup', toRaw(groupFormData))
-      store.commit('helper/PUSH_message', t('BB0107'))
+      store.dispatch('helper/pushFlashMessage', t('BB0107'))
     }
 
     const openModalTypeTextToConfirm = () => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-type-text-to-confirm',
         properties: {
           title: t('BB0028'),
@@ -66,10 +66,10 @@ export default {
             store.dispatch('helper/openModalConfirm', {
               type: 1,
               header: t('BB0100'),
-              content: t('BB0101'),
+              contentText: t('BB0101'),
               primaryBtnText: t('UU0001'),
-              afterPrimaryBtnHandler: async () => {
-                await store.dispatch('helper/openModal', {
+              afterPrimaryBtnHandler: () => {
+                store.dispatch('helper/openModalBehavior', {
                   component: 'modal-choose-storage'
                 })
               },

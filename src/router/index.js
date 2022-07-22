@@ -1,15 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import { ROLE_ID, NODE_TYPE } from '@/utils/constants'
-import Sidebar from '@/components/layout/sidebar/Sidebar.vue'
+import Sidebar from '@/components/sidebar/Sidebar.vue'
 import i18n from '@/utils/i18n'
+import remindVerifyEmail from '@/utils/remind-verify-email'
 
 const checkUserIsVerify = (to, from, next) => {
   const user = store.getters['user/user']
   if (!user.isVerify) {
-    store.dispatch('helper/openModal', {
-      component: 'modal-verify-notification'
-    })
+    remindVerifyEmail()
     return next('/')
   }
   next()
@@ -203,26 +202,28 @@ const routes = [
     ]
   },
   {
-    path: '/embed/:sharingKey/:nodeKey',
+    path: '/embed/:sharingKey',
     name: 'Embed',
-    props: true,
-    component: () => import('@/views/embed/Embed.vue'),
+    component: () => import('@/views/embed/EmbedContainer.vue'),
     beforeEnter: async (to, from, next) => {
       const sharingKey = to.params.sharingKey
       await store.dispatch('embed/getEmbedInfo', { sharingKey })
       next()
-    }
-  },
-  {
-    path: '/embed/:sharingKey/material/:nodeKey',
-    name: 'EmbedMaterialDetail',
-    props: true,
-    component: () => import('@/views/embed/EmbedMaterialDetail.vue'),
-    beforeEnter: async (to, from, next) => {
-      const sharingKey = to.params.sharingKey
-      await store.dispatch('embed/getEmbedInfo', { sharingKey })
-      next()
-    }
+    },
+    children: [
+      {
+        path: ':nodeKey',
+        name: 'EmbedCollection',
+        props: true,
+        component: () => import('@/views/embed/Embed.vue')
+      },
+      {
+        path: 'material/:nodeKey',
+        name: 'EmbedMaterialDetail',
+        props: true,
+        component: () => import('@/views/embed/EmbedMaterialDetail.vue')
+      },
+    ]
   },
   {
     path: '/',
@@ -270,7 +271,7 @@ const routes = [
           const { verifyCode } = to.query
           await store.dispatch('user/verifyUser', { verifyCode })
           await next('/')
-          store.commit('helper/PUSH_message', i18n.global.t('AA0086'))
+          store.dispatch('helper/pushFlashMessage', i18n.global.t('AA0086'))
         }
       },
       {
@@ -290,16 +291,16 @@ const routes = [
           store.dispatch('organization/getPricing')
           await store.dispatch('user/getUser')
           await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
-          await store.dispatch('user/orgUser/getOrgUser')
+          await store.dispatch('organization/orgUser/getOrgUser')
           const org = store.getters['organization/organization']
-          const orgUser = store.getters['user/orgUser/orgUser']
+          const orgUser = store.getters['organization/orgUser/orgUser']
           if (orgUser.orgRoleId === ROLE_ID.OWNER && !org.uploadMaterialEmail) {
-            store.dispatch('helper/openModal', {
+            store.dispatch('helper/openModalBehavior', {
               component: 'modal-create-mail-org',
               properties: {
-                isOldOrg: true
+                isOldOrg: true,
+                closable: false
               },
-              closable: false
             })
           }
 
@@ -326,7 +327,7 @@ const routes = [
                 props: true,
                 component: () => import('@/views/innerApp/Billings.vue'),
                 beforeEnter: (to, from, next) => {
-                  const roleId = store.getters['user/orgUser/orgUser'].orgRoleId
+                  const roleId = store.getters['organization/orgUser/orgUser'].orgRoleId
                   if ([ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(roleId)) {
                     return next()
                   } else {
@@ -343,7 +344,7 @@ const routes = [
             beforeEnter: [checkOrgIsInactive, async (to, from, next) => {
               store.commit('helper/SET_routeLocation', 'group')
               await store.dispatch('group/getGroup', { groupId: to.params.groupId })
-              await store.dispatch('user/groupUser/getGroupUser')
+              await store.dispatch('group/groupUser/getGroupUser')
               next()
             }],
             children: reuseRoutes('Group')

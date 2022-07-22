@@ -11,7 +11,7 @@ export default {
   setup () {
     const store = useStore()
     const showMessage = () => {
-      store.commit('helper/PUSH_message', 'Notification message. Here will be information.')
+      store.dispatch('helper/pushFlashMessage', 'Notification message. Here will be information.')
     }
 
     return {

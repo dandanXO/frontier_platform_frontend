@@ -1,7 +1,4 @@
 import userApi from '@/apis/user'
-import orgUser from '@/store/modules/user/orgUser'
-import groupUser from '@/store/modules/user/groupUser'
-import setVuexState from '@/utils/set-vuex-state'
 import i18n from '@/utils/i18n'
 
 const state = () => ({
@@ -19,18 +16,24 @@ const getters = {
   organizationList: state => state.organizationList
 }
 
+const mutations = {
+  SET_user (state, user) {
+    Object.assign(state, user)
+  }
+}
+
 const actions = {
-  setUser ({ state }, data) {
-    setVuexState(state, data)
+  setUser ({ commit }, data) {
+    commit('SET_user', data)
   },
   async getUser ({ dispatch }) {
     const { data } = await userApi.getUser()
-    i18n.global.locale = data.result?.user.locale
-    dispatch('handleResponseData', { data }, { root: true })
+    i18n.global.locale.value = data.result?.user.locale
+    dispatch('setUser', data.result.user)
   },
   async changeLocale ({ dispatch }, params) {
     const { data } = await userApi.changeLocale(params)
-    dispatch('handleResponseData', { data }, { root: true })
+    dispatch('setUser', data.result.user)
   },
   async checkEmailExist (_, params) {
     const { data } = await userApi.checkEmailExist(params)
@@ -55,24 +58,17 @@ const actions = {
     await userApi.oldUserResetPassword(params)
   },
   async changePassword (_, { currentPassword, newPassword }) {
-    const { data } = await userApi.changePassword({ currentPassword, newPassword })
-    const { success, message } = data
-
-    if (!success) {
-      throw message.content
-    }
+    await userApi.changePassword({ currentPassword, newPassword })
   },
   async sendForgotPasswordEmail (_, params) {
     await userApi.sendForgotPasswordEmail(params)
   },
-  async verifyForgotPasswordCode ({ dispatch }, params) {
+  async verifyForgotPasswordCode (_, params) {
     const { data } = await userApi.verifyForgotPasswordCode(params)
-    dispatch('handleResponseData', { data }, { root: true })
     return data.result.verifyToken
   },
-  async resetPassword ({ dispatch }, params) {
-    const { data } = await userApi.resetPassword(params)
-    dispatch('handleResponseData', { data }, { root: true })
+  async resetPassword (_, params) {
+    await userApi.resetPassword(params)
   },
   async resendVerifyEmail () {
     await userApi.resendVerifyEmail()
@@ -82,10 +78,10 @@ const actions = {
   },
   async updateUserProfile ({ dispatch }, { firstName, lastName }) {
     const { data } = await userApi.updateUserProfile({ firstName, lastName })
-    dispatch('handleResponseData', { data }, { root: true })
+    dispatch('setUser', data.result.user)
   },
-  sendFeedback (_, { tempFeedbackId, category, comment }) {
-    userApi.sendFeedback({ tempFeedbackId, category, comment })
+  async sendFeedback (_, { tempFeedbackId, category, comment }) {
+    await userApi.sendFeedback({ tempFeedbackId, category, comment })
   },
   async sendFeedbackAttachment (_, { tempFeedbackId, file }) {
     const { data } = await userApi.sendFeedbackAttachment({ tempFeedbackId, file })
@@ -101,9 +97,6 @@ export default {
   namespaced: true,
   state,
   getters,
-  actions,
-  modules: {
-    orgUser,
-    groupUser
-  }
+  mutations,
+  actions
 }

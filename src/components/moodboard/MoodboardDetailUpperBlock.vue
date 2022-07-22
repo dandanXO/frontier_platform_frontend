@@ -10,7 +10,7 @@ div(class="w-227 mx-auto")
               svg-icon(iconName="create" class="text-primary group-hover:text-brand" size="24")
           template(#content)
             p(class="text-caption text-primary px-3 py-1 leading-1.6") {{ $t("RR0054") }}
-        tooltip(placement="bottom-start" :manual="true" :showArrow="false" :offset="[0, 5]")
+        popper(placement="bottom-start")
           template(#trigger)
             div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
               svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
@@ -44,10 +44,14 @@ div(class="w-227 mx-auto")
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import useNavigation from '@/composables/useNavigation.js'
 import BlockAttachment from '@/components/moodboard/BlockAttachment.vue'
 import { MOODBOARD_TYPE, CREATE_EDIT } from '@/utils/constants.js'
 
+const { t } = useI18n()
 const store = useStore()
+const { goToMoodboard } = useNavigation()
 const moodboard = computed(() => store.getters['moodboard/moodboard'])
 
 const openCreateOrEditMoodboard = () => {
@@ -63,11 +67,12 @@ const handleDelete = () => {
   store.dispatch('helper/openModalConfirm', {
     type: 1,
     header: t('QQ0075'),
-    content: t('QQ0076'),
+    contentText: t('QQ0076'),
     primaryBtnText: t('UU0105'),
     primaryBtnHandler: () => {
-      store.dispatch('moodboard/deleteMoodboard', { moodboardId: props.moodboardId })
-      store.commit('helper/PUSH_message', t('QQ0077'))
+      store.dispatch('moodboard/deleteMoodboard', { moodboardId: moodboard.value.moodboardId })
+      goToMoodboard()
+      store.dispatch('helper/pushFlashMessage', t('QQ0077'))
     },
     textBtnText: t('UU0002')
   })

@@ -1,48 +1,35 @@
 <template lang="pug">
-div(class="w-101 px-8")
-  h6(class="text-h6 font-bold text-primary pb-7.5 text-center") {{ $t("MM0001") }}
-  input-text(
-    v-model:textValue="user.email"
-    disabled
-    :clearable="false"
-  )
-  p(class="text-right text-caption text-black-600 pt-7.5 pb-1") *{{ $t("RR0163") }}
-  div(class="grid grid-cols-2 gap-x-3 pb-4")
-    input-text(v-model:textValue="firstName" required :label="$t('MM0034')")
-    input-text(v-model:textValue="lastName" required :label="$t('MM0035')")
-  btn-group(
-    class="h-25"
-    :primaryText="$t('UU0018')"
-    @click:primary="updateUserProfile"
-    :primaryButtonDisabled="!firstName || !lastName"
-    :secondaryButton="false"
-  )
+modal-behavior(
+  :header="$t('MM0001')"
+  :primaryBtnText="$t('UU0018')"
+  :primaryButtonDisabled="!firstName || !lastName"
+  @click:primary="updateUserProfile"
+)
+  div(class="w-90")
+    input-text(
+      v-model:textValue="user.email"
+      disabled
+      :clearable="false"
+    )
+    p(class="text-right text-caption text-black-600 pt-7.5 pb-1") *{{ $t("RR0163") }}
+    div(class="grid grid-cols-2 gap-x-3 pb-4")
+      input-text(v-model:textValue="firstName" required :label="$t('MM0034')")
+      input-text(v-model:textValue="lastName" required :label="$t('MM0035')")
 </template>
 
-<script>
+<script setup>
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 
-export default {
-  name: 'ModalPersonalProfile',
-  setup () {
-    const store = useStore()
-    const user = computed(() => store.getters['user/user'])
+const store = useStore()
+const user = computed(() => store.getters['user/user'])
 
-    const firstName = ref(user.value.firstName)
-    const lastName = ref(user.value.lastName)
+const firstName = ref(user.value.firstName)
+const lastName = ref(user.value.lastName)
 
-    const updateUserProfile = async () => {
-      store.dispatch('helper/openModalLoading')
-      await store.dispatch('user/updateUserProfile', { firstName: firstName.value, lastName: lastName.value })
-      store.dispatch('helper/clearModalPipeline')
-    }
-    return {
-      user,
-      firstName,
-      lastName,
-      updateUserProfile
-    }
-  }
+const updateUserProfile = async () => {
+  store.dispatch('helper/openModalLoading')
+  await store.dispatch('user/updateUserProfile', { firstName: firstName.value, lastName: lastName.value })
+  store.dispatch('helper/clearModalPipeline')
 }
 </script>

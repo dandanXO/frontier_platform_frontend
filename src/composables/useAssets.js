@@ -31,7 +31,7 @@ export default function useAssets () {
           cloneHandler: async (targetLocationList, optional) => {
             await store.dispatch('assets/cloneMaterial', { targetLocationList, materialIdList, optional })
             store.dispatch('helper/reloadInnerApp')
-            store.commit('helper/PUSH_message', t('EE0056'))
+            store.dispatch('helper/pushFlashMessage', t('EE0056'))
           }
         }
       })
@@ -47,12 +47,12 @@ export default function useAssets () {
         return store.dispatch('helper/openModalConfirm', {
           type: 1,
           header: t('EE0096'),
-          content: t('EE0097'),
+          contentText: t('EE0097'),
           primaryBtnText: t('UU0031')
         })
       }
 
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-workspace-node-list',
         properties: {
           modalTitle: t('EE0057'),
@@ -68,10 +68,16 @@ export default function useAssets () {
             })
 
             if (failMaterialList && failMaterialList.length > 0) {
-              store.dispatch('helper/openModal', {
-                component: 'modal-add-to-workspace-fail',
+              store.dispatch('helper/openModalBehavior', {
+                component: 'modal-material-no-list',
                 properties: {
-                  failMaterialList
+                  header: t('EE0063', { number: failMaterialList.length }),
+                  primaryBtnText: t('UU0031'),
+                  primaryBtnHandler: () => {
+                    store.dispatch('helper/closeModalBehavior')
+                  },
+                  content: t('EE0064'),
+                  materialNoList: failMaterialList
                 }
               })
             } else {
@@ -79,7 +85,7 @@ export default function useAssets () {
             }
 
             if (!failMaterialList || (failMaterialList.length !== materialIdList.length)) {
-              store.commit('helper/PUSH_message', t('EE0062'))
+              store.dispatch('helper/pushFlashMessage', t('EE0062'))
             }
           }
         }
@@ -98,7 +104,7 @@ export default function useAssets () {
           store.dispatch('helper/openModalConfirm', {
             type: 0,
             header: t('EE0124'),
-            content: t('EE0125'),
+            contentText: t('EE0125'),
             secondaryBtnText: t('UU0031'),
             textBtnText: t('UU0032'),
             closeAfterTextBtnHandler: false,
@@ -129,15 +135,14 @@ export default function useAssets () {
           store.dispatch('helper/openModalConfirm', {
             type: 0,
             header: t('RR0162'),
-            content: t('EE0072'),
+            contentText: t('EE0072'),
             primaryBtnText: t('UU0031')
           })
           break
         default:
           if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
-            store.dispatch('helper/openModal', {
-              component: 'modal-u3m-preview',
-              header: t('EE0067')
+            store.dispatch('helper/openModalBehavior', {
+              component: 'modal-u3m-preview'
             })
           } else {
             localStorage.setItem('haveReadU3mInstruction', 'y')
@@ -146,9 +151,8 @@ export default function useAssets () {
               properties: {
                 primaryBtnText: t('UU0095'),
                 primaryHandler: () => {
-                  store.dispatch('helper/replaceModal', {
-                    component: 'modal-u3m-preview',
-                    header: t('EE0067')
+                  store.dispatch('helper/replaceModalBehavior', {
+                    component: 'modal-u3m-preview'
                   })
                 },
                 secondaryBtnText: t('UU0026'),
@@ -168,7 +172,7 @@ export default function useAssets () {
     name: t('RR0059'),
     func: (v) => {
       const materialList = Array.isArray(v) ? v : [v]
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-u3m-select-file-format',
         properties: { materialList }
       })
@@ -186,7 +190,7 @@ export default function useAssets () {
         store.dispatch('helper/openModalConfirm', {
           type: 2,
           header: t('PP0030'),
-          content: t('PP0031'),
+          contentText: t('PP0031'),
           primaryBtnText: t('UU0031'),
           secondaryBtnText: t('UU0090'),
           secondaryBtnHandler: () => {
@@ -243,7 +247,7 @@ export default function useAssets () {
         store.dispatch('helper/openModalConfirm', {
           type: 1,
           header: t('EE0075'),
-          content: t('EE0076'),
+          contentText: t('EE0076'),
           primaryBtnText: t('UU0001'),
           primaryBtnHandler: async () => {
             store.dispatch('helper/openModalLoading')
@@ -257,7 +261,7 @@ export default function useAssets () {
         store.dispatch('helper/openModalConfirm', {
           type: 1,
           header: t('EE0111'),
-          content: t('EE0112'),
+          contentText: t('EE0112'),
           secondaryBtnText: t('UU0094')
         })
       } else if (isOnExportingExcel) {
@@ -265,7 +269,7 @@ export default function useAssets () {
           store.dispatch('helper/openModalConfirm', {
             type: 1,
             header: t('EE0111'),
-            content: t('EE0112'),
+            contentText: t('EE0112'),
             primaryBtnText: t('UU0091'),
             secondaryBtnText: t('UU0098'),
             closeAfterSecondaryBtnHandler: false,
@@ -294,7 +298,7 @@ export default function useAssets () {
           store.dispatch('helper/openModalConfirm', {
             type: 1,
             header: t('EE0113'),
-            content: t('EE0114', { materialNo: materialIdList[0] }),
+            contentText: t('EE0114', { materialNo: materialIdList[0] }),
             primaryBtnText: t('UU0091'),
             secondaryBtnText: t('UU0002'),
             primaryBtnHandler: async () => {

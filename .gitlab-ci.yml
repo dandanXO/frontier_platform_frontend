@@ -9,12 +9,6 @@ build-dev:
     - develop
   script:
     - npm ci
-    - echo NODE_ENV=development >> .env.local
-    - echo VITE_APP_API_ENDPOINT=$DEV_API_ENDPOINT >> .env.local
-    - echo VITE_APP_WEB_URL=$DEV_WEB_URL >> .env.local
-    - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
-    - echo VITE_APP_STRIPE_KEY=$STRIPE_KEY_TEST >> .env.local
-    - echo VITE_APP_FACEBOOK_APP_ID=$FACEBOOK_APP_ID >> .env.local
     - npm run build --mode=development
   artifacts:
     paths:
@@ -26,8 +20,7 @@ deploy-dev:
   only:
     - develop
   script:
-    - aws s3 sync dist/ s3://"$DEV_S3_BUCKET" --delete
-    - aws cloudfront create-invalidation --distribution-id $DEV_DISTRIBUTION_ID --paths "/*"
+    - npm run deploy --mode=development
 
 build-stg:
   stage: build
@@ -36,12 +29,6 @@ build-stg:
     - /^release\/.*$/
   script:
     - npm ci
-    - echo NODE_ENV=production >> .env.local
-    - echo VITE_APP_API_ENDPOINT=$STG_API_ENDPOINT >> .env.local
-    - echo VITE_APP_WEB_URL=$STG_WEB_URL >> .env.local
-    - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
-    - echo VITE_APP_STRIPE_KEY=$STRIPE_KEY_TEST >> .env.local
-    - echo VITE_APP_FACEBOOK_APP_ID=$FACEBOOK_APP_ID >> .env.local
     - npm run build --mode=staging
   artifacts:
     paths:
@@ -53,8 +40,7 @@ deploy-stg:
   only:
     - /^release\/.*$/
   script:
-    - aws s3 sync dist/ s3://"$STG_S3_BUCKET" --delete
-    - aws cloudfront create-invalidation --distribution-id $STG_DISTRIBUTION_ID --paths "/*"
+    - npm run deploy --mode=staging
 
 build-pre-prod:
   stage: build
@@ -63,12 +49,6 @@ build-pre-prod:
     - /^hotfix\/.*$/
   script:
     - npm ci
-    - echo NODE_ENV=production >> .env.local
-    - echo VITE_APP_API_ENDPOINT=$PRE_PROD_API_ENDPOINT >> .env.local
-    - echo VITE_APP_WEB_URL=$PRE_PROD_WEB_URL >> .env.local
-    - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
-    - echo VITE_APP_STRIPE_KEY=$STRIPE_KEY_TEST >> .env.local
-    - echo VITE_APP_FACEBOOK_APP_ID=$FACEBOOK_APP_ID >> .env.local
     - npm run build --mode=pre-production
   artifacts:
     paths:
@@ -80,8 +60,7 @@ deploy-pre-prod:
   only:
     - /^hotfix\/.*$/
   script:
-    - aws s3 sync dist/ s3://"$PRE_PROD_S3_BUCKET" --delete
-    - aws cloudfront create-invalidation --distribution-id $PRE_PROD_DISTRIBUTION_ID --paths "/*"
+    - npm run deploy --mode=pre-production
 
 build-prod:
   stage: build
@@ -90,12 +69,6 @@ build-prod:
     - main
   script:
     - npm ci
-    - echo NODE_ENV=production >> .env.local
-    - echo VITE_APP_API_ENDPOINT=$PROD_API_ENDPOINT >> .env.local
-    - echo VITE_APP_WEB_URL=$PROD_WEB_URL >> .env.local
-    - echo VITE_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID >> .env.local
-    - echo VITE_APP_STRIPE_KEY=$STRIPE_KEY_PROD >> .env.local
-    - echo VITE_APP_FACEBOOK_APP_ID=$FACEBOOK_APP_ID >> .env.local
     - npm run build --mode=production
   artifacts:
     paths:
@@ -107,5 +80,4 @@ deploy-prod:
   only:
     - main
   script:
-    - aws s3 sync dist/ s3://"$PROD_S3_BUCKET" --delete
-    - aws cloudfront create-invalidation --distribution-id $PROD_DISTRIBUTION_ID --paths "/*"
+    - npm run deploy --mode=production

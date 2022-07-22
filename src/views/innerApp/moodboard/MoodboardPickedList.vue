@@ -4,7 +4,7 @@ div(class="h-full")
     breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)" class="mt-12 mb-9")
     div(class="flex items-end mb-4")
       p(class="text-h4 font-bold text-primary mr-3.5") {{ $t("QQ0034") }}
-      i18n-t(keypath="RR0068" tag="p" class="text-caption text-black-500 pb-0.5")
+      i18n-t(keypath="RR0068" tag="p" class="text-caption text-black-500 pb-0.5" scope="global")
         template(#number) {{ moodboardOfferNodeCollection.childNodeList.length }}
     p(class="text-body2 text-black-800 mb-4") {{ $t("QQ0035") }}
     div(class="flex items-center justify-between mb-2")
@@ -33,16 +33,13 @@ div(class="h-full")
         )
         div(v-if="index !== moodboardOfferNodeCollection.childNodeList.length - 1" class="border-b mx-7.5 my-5")
     div(v-else-if="displayMode === DISPLAY_NODE.GRID" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5")
-      child-node-item(
+      grid-item-node(
         v-for="node in moodboardOfferNodeCollection.childNodeList"
-        v-model:selectedList="selectedNodeList"
+        v-model:selectedValue="selectedNodeList"
         :node="node"
-        :properties="node.properties"
-        :displayName="node.properties.materialNo"
         :optionList="optionMaterial(node)"
         @click:option="$event.func(node)"
         @click.stop="openModalMoodboardMaterialDetail(node, true, true)"
-        isSelectable
       )
         template(#caption)
           btn-pick-tooltip(
@@ -55,7 +52,7 @@ div(class="h-full")
             p(class="pl-1 font-bold text-caption text-primary") {{ node.creator }}
   div(v-else class="flex flex-col justify-center items-center mt-16")
     p(class="text-h4 text-primary mb-6") {{ $t("QQ0018") }}
-    i18n-t(keypath="QQ0087" tag="p" class="text-body1 text-black-700")
+    i18n-t(keypath="QQ0087" tag="p" class="text-body1 text-black-700" scope="global")
       template(#number)
         span(class="text-assist-blue cursor-pointer" @click="goToMoodboardDetail(moodboard.moodboardId)") {{ $t("QQ0088") }}
   multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")
@@ -67,10 +64,10 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import { MOODBOARD_TAB, DISPLAY_NODE, U3M_STATUS } from '@/utils/constants.js'
-import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
-import MultiSelectMenu from '@/components/layout/MultiSelectMenu.vue'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
+import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
 import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
-import GridOrRow from '@/components/layout/GridOrRow.vue'
+import GridOrRow from '@/components/common/GridOrRow.vue'
 import MoodboardRowItem from '@/components/moodboard/MoodboardRowItem.vue'
 import useMoodboardNode from '@/composables/useMoodboardNode.js'
 
@@ -101,7 +98,7 @@ const breadcrumbList = computed(() => {
       path: parsePath(`${prefixPath.value}/moodboard/${moodboard.value.moodboardId}?tab=${MOODBOARD_TAB.OFFER}`)
     },
     {
-      name: moodboardOfferNodeCollection.value.locationList[0].name,
+      name: t('QQ0033'),
       path: parsePath(`${prefixPath.value}/moodboard/${moodboard.value.moodboardId}/picked-list`)
     }
   ]

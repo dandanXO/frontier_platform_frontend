@@ -22,7 +22,7 @@ div(class="rounded border border-primary-middle")
 
 <script setup>
 import { ref } from 'vue'
-import AttachmentItem from '@/components/AttachmentItem.vue'
+import AttachmentItem from '@/components/common/material/attachment/AttachmentItem.vue'
 
 const props = defineProps({
   attachmentList: {

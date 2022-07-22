@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="px-6 pt-6.5 h-full flex flex-col")
-  div(class="relative z-20 h-11 flex justify-between items-center mb-12.5")
-    div(class="w-75 relative z-10")
+  div(class="h-11 flex justify-between items-center mb-12.5")
+    div(class="w-75")
       input-select(:selectValue="currentMenu" :options="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup")
     div(class="flex gap-x-6 items-center")
       div(v-permission="FUNC_ID.OPEN_CREATE_GROUP" class="flex gap-x-1 items-center cursor-pointer" @click="openModalCreateGroup")
@@ -89,7 +89,7 @@ const toggleTab = (tab) => {
 }
 const openModalCreateGroup = () => {
   store.dispatch('group/resetCreateForm')
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-create-group'
   })
 }
@@ -102,7 +102,7 @@ const inviteHandler = () => {
   }
 }
 const openModalInviteToOrg = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-invite-to-org',
     properties: {
       from: 'org'
@@ -110,7 +110,7 @@ const openModalInviteToOrg = () => {
   })
 }
 const openModalAddToGroup = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-add-to-group'
   })
 }

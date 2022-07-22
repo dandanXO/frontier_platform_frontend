@@ -12,7 +12,7 @@ modal-behavior(
       input-text-icon(
         v-model:textValue="target"
         :label="$t('RR0156')"
-        :placeholder="$t('RR0150')"
+        :placeholder="$t('RR0245')"
         :disabledIcon="target === ''"
         :customErrorMsg="errorMsg"
         @click:icon="addToTargetList"
@@ -31,6 +31,7 @@ modal-behavior(
       input-textarea(
         v-model:textValue="message"
         :label="$t('RR0146')"
+        :placeholder="$t('RR0202')"
         height="174"
         :customErrorMsg="message.length > 1000 ? $t('WW0073') : ''"
       )
@@ -90,7 +91,7 @@ const assignedShare = async () => {
   await store.dispatch('moodboard/shareMoodboard', { targetList: targetList.value, message: message.value })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/closeModalBehavior')
-  store.commit('helper/PUSH_message', t('RR0157'))
+  store.dispatch('helper/pushFlashMessage', t('RR0157'))
 }
 
 const removeTarget = (index) => targetList.value.splice(index, 1)

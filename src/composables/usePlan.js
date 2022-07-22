@@ -1,7 +1,7 @@
 import { useStore } from "vuex"
-import { computed } from '@vue/runtime-core'
+import { computed, shallowRef, h } from 'vue'
 import useNavigation from '@/composables/useNavigation.js'
-import { useI18n } from "vue-i18n"
+import { useI18n, Translation } from "vue-i18n"
 
 export default function usePlan () {
   const store = useStore()
@@ -22,7 +22,7 @@ export default function usePlan () {
     store.dispatch('helper/openModalConfirm', {
       type: 1,
       header: t('OO0012'),
-      content: t('OO0079'),
+      contentText: t('OO0079'),
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: goToPaymentDetail,
       secondaryBtnText: t('UU0002')
@@ -35,7 +35,7 @@ export default function usePlan () {
       store.dispatch('helper/openModalConfirm', {
         type: 0,
         header: t('OO0099'),
-        content: t('OO0100'),
+        contentText: t('OO0100'),
         primaryBtnText: t('UU0021'),
         afterPrimaryBtnHandler: openModalChoosePlan,
         secondaryBtnText: t('UU0002')
@@ -47,7 +47,7 @@ export default function usePlan () {
         store.dispatch('helper/openModalConfirm', {
           type: 1,
           header: t('OO0109'),
-          content: t('OO0110'),
+          contentText: t('OO0110'),
           primaryBtnText: t('UU0031')
         })
         return false
@@ -55,7 +55,7 @@ export default function usePlan () {
         store.dispatch('helper/openModalConfirm', {
           type: 1,
           header: t('OO0133'),
-          content: t('WW0086'),
+          contentText: t('WW0086'),
           primaryBtnText: t('UU0031')
         })
         return false
@@ -77,31 +77,83 @@ export default function usePlan () {
   }
 
   const openModalPurchaseU3mQuota = () => {
-    !planType.value.ENT && planStatus.value.ACTIVE && checkHaveBindPayment() && store.dispatch('helper/openModal', {
+    !planType.value.ENT && planStatus.value.ACTIVE && checkHaveBindPayment() && store.dispatch('helper/openModalBehavior', {
       component: 'modal-purchase-u3m-quota'
     })
   }
 
-  const openModalDeactivate = () => {
-    store.dispatch('helper/openModal', {
-      component: 'modal-deactivate'
+  const deactivateOrg = () => {
+    store.dispatch('helper/openModalConfirm', {
+      type: 1,
+      header: t('OO0007'),
+      secondaryBtnText: t('UU0083'),
+      afterSecondaryBtnHandler: async () => {
+        store.dispatch('helper/openModalLoading')
+        const { result: { totalPrice, checkoutItemList } } = await store.dispatch('organization/getUnbilledInfo')
+        store.dispatch('helper/closeModalLoading')
+
+        if (checkoutItemList.length === 0) {
+          store.dispatch('helper/openModalLoading')
+          await store.dispatch('organization/deactivateOrg')
+          store.dispatch('helper/closeModalLoading')
+          return
+        }
+
+        store.dispatch('helper/openModalBehavior', {
+          component: 'modal-checkout-list',
+          properties: {
+            checkoutItemList,
+            totalPrice,
+            payHandler: async () => {
+              store.dispatch('helper/openModalLoading')
+              const { success } = await store.dispatch('organization/deactivateOrg')
+              store.dispatch('helper/closeModalLoading')
+
+              if (success) {
+                store.dispatch('helper/openModalConfirm', {
+                  type: 2,
+                  header: t('OO0039'),
+                  contentComponent: shallowRef({
+                    render: () => {
+                      return h('div', { class: 'text-body2 leading-1.6' }, [
+                        h('p', {}, `${t('OO0058')} ${plan.value.deactivatedDate}`),
+                        h(Translation, { keypath: 'OO0126', tag: 'p', scope: 'global' }, { OO0127: () => h('span', { class: 'text-assist-blue' }, t('OO0127')) })
+                      ])
+                    }
+                  }),
+                  primaryBtnText: t('UU0031')
+                })
+              } else {
+                openModalPaymentFail()
+              }
+            }
+          }
+        })
+      },
+      textBtnText: t('UU0002'),
+      contentComponent: shallowRef({
+        render: () => {
+          return h(Translation,
+            { keypath: 'OO0121', tag: 'p', scope: 'global', class: 'text-primary text-body2 leading-1.6' },
+            { newline: () => h('br') }
+          )
+        }
+      })
     })
   }
 
   const openModalPaymentFail = () => {
-    store.dispatch('helper/openModal', {
-      component: 'modal-payment-fail',
-      properties: {
-        title: t('OO0041'),
-        content: t('OO0042'),
-        primaryButtonText: t('UU0076'),
-        primaryHandler: () => {
-          closeModal()
-          goToPaymentDetail()
-        },
-        secondaryButtonText: t('UU0026'),
-        secondaryHandler: closeModal
-      }
+    store.dispatch('helper/openModalConfirm', {
+      type: 3,
+      header: t('OO0041'),
+      contentText: t('OO0042'),
+      secondaryButtonText: t('UU0076'),
+      secondaryHandler: () => {
+        closeModal()
+        goToPaymentDetail()
+      },
+      textBtnText: t('UU0026'),
+      textHandler: closeModal
     })
   }
 
@@ -116,7 +168,7 @@ export default function usePlan () {
     const { result: { totalPrice, checkoutItemList } } = await store.dispatch('organization/getLastMonthUnbilledInfo')
     store.dispatch('helper/closeModalLoading')
 
-    store.dispatch('helper/openModal', {
+    store.dispatch('helper/openModalBehavior', {
       component: 'modal-checkout-list',
       properties: {
         checkoutItemList,
@@ -127,12 +179,11 @@ export default function usePlan () {
           store.dispatch('helper/closeModalLoading')
 
           if (success) {
-            store.dispatch('helper/openModal', {
-              component: 'modal-payment-success',
-              properties: {
-                title: t('OO0039'),
-                content: t('OO0145')
-              }
+            store.dispatch('helper/openModalConfirm', {
+              type: 2,
+              header: t('OO0039'),
+              contentText: t('OO0145'),
+              primaryBtnText: t('UU0031')
             })
           } else {
             openModalPaymentFail()
@@ -147,7 +198,7 @@ export default function usePlan () {
     openModalChoosePlan,
     openModalManageMaterialQuota,
     openModalPurchaseU3mQuota,
-    openModalDeactivate,
+    deactivateOrg,
     activateOrg,
     openModalPaymentFail,
     checkCanInvitedPeople,

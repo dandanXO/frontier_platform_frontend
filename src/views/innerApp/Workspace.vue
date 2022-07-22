@@ -13,12 +13,12 @@ div(class="w-full h-full")
         breadcrumb(:breadcrumbList="breadcrumbList" @click:item="(currentNodeKey = $event.nodeKey); goTo()" fontSize="text-h6")
         p(class="flex text-caption text-black-700 pl-1")
           span (
-          i18n-t(keypath="RR0068" tag="span")
+          i18n-t(keypath="RR0068" tag="span" scope="global")
             template(#number) {{ pagination.totalCount }}
           span )
     template(#header-right)
       btn(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
-      btn(size="sm" prependIcon="add" @click="addMaterialFromAssetsList") {{ $t("UU0055") }}
+      btn(size="sm" prependIcon="add" @click="openModalAssetsList") {{ $t("UU0055") }}
     template(v-if="!isFirstLayer" #sub-header)
       p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{ $t("FF0002") }}: {{ $dayjs.unix(collection.createDate).format("YYYY/MM/DD") }}
     template(#default="{ inSearch, goTo }")
@@ -27,34 +27,33 @@ div(class="w-full h-full")
           div(class="flex flex-col justify-center items-center")
             svg-icon(iconName="add" size="24" class="text-primary mb-3.5")
             span(class="text-body1 text-primary") {{ $t("FF0003") }}
-        child-node-item(
+        grid-item-node(
           v-for="node in nodeList"
-          v-model:selectedList="selectedNodeList"
+          v-model:selectedValue="selectedNodeList"
           :node="node"
-          :properties="node"
-          :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.name : node.materialNo"
           :optionList="optionNode(node.nodeType, inSearch)"
-          :isShowLocation="inSearch"
-          :locationList="node.location"
           @click:option="$event.func(node)"
           @click.stop="handleNodeClick(node, goTo)"
         )
-          template(#cover-overlay v-if="isFirstLayer")
+          template(#hover-corner-bottom-left v-if="isFirstLayer")
             svg-icon(
               :iconName="node.isPublic ? 'public' : 'lock_outline'"
               size="20"
-              class="absolute bottom-3 left-3 cursor-pointer text-black-500"
+              class="cursor-pointer text-black-500"
               @click.stop="openModalPublish(node)"
             )
+          template(#title-right-icon)
+            tooltip-location(v-if="inSearch" :location="node.location")
 </template>
 
 <script setup>
-import SearchTable from '@/components/layout/SearchTable.vue'
+import SearchTable from '@/components/common/SearchTable.vue'
 import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
-import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
+import TooltipLocation from '@/components/common/TooltipLocation.vue'
 import { useRoute, useRouter } from 'vue-router'
 import useWorkspace from '@/composables/useWorkspace'
 import useNavigation from '@/composables/useNavigation.js'
@@ -151,7 +150,7 @@ const getWorkspace = async (targetPage = 1, query) => {
 }
 
 const openModalCreateCollection = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-create-or-edit-collection',
     properties: {
       mode: 1,
@@ -161,8 +160,7 @@ const openModalCreateCollection = () => {
 }
 
 const openModalCollectionDetail = () => {
-  store.dispatch('helper/openModal', {
-    header: t('FF0006'),
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-collection-detail',
     properties: {
       ...collection.value,
@@ -171,7 +169,7 @@ const openModalCollectionDetail = () => {
   })
 }
 
-const addMaterialFromAssetsList = () => {
+const openModalAssetsList = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-assets-list',
     properties: {
@@ -190,10 +188,16 @@ const addMaterialFromAssetsList = () => {
         })
 
         if (failMaterialList && failMaterialList.length > 0) {
-          store.dispatch('helper/openModal', {
-            component: 'modal-add-to-workspace-fail',
+          store.dispatch('helper/openModalBehavior', {
+            component: 'modal-material-no-list',
             properties: {
-              failMaterialList
+              header: t('EE0063', { number: failMaterialList.length }),
+              primaryBtnText: t('UU0031'),
+              primaryBtnHandler: () => {
+                store.dispatch('helper/closeModalBehavior')
+              },
+              content: t('EE0064'),
+              materialNoList: failMaterialList
             }
           })
         } else {
@@ -203,7 +207,7 @@ const addMaterialFromAssetsList = () => {
         store.dispatch('helper/reloadInnerApp')
 
         if (!failMaterialList || (failMaterialList.length !== materialIdList.length)) {
-          store.commit('helper/PUSH_message', t('FF0018'))
+          store.dispatch('helper/pushFlashMessage', t('FF0018'))
         }
       }
     }
@@ -211,7 +215,7 @@ const addMaterialFromAssetsList = () => {
 }
 
 const openModalPublish = (workspaceNode) => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-publish',
     properties: {
       workspaceNode

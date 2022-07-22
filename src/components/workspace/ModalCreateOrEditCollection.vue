@@ -1,41 +1,39 @@
 <template lang="pug">
-div(class="w-101 px-8")
-  h6(class="text-h6 font-bold text-primary text-center") {{ mode === MODE.EDIT ? $t('FF0009') : $t('FF0022') }}
-  p(class="text-right pt-4 pb-0.5 text-caption text-black-600") *{{ $t('RR0163') }}
-  input-text(
-    v-model:textValue="formData.collectionName"
-    required
-    :label="$t('FF0010')"
-    class="mb-7.5"
-  )
-  div(class="mb-9")
-    div
-      div(class="h-5.5 flex items-center pb-1")
-        p(class="text-body2 text-primary font-bold") {{ $t('FF0011') }}
-        btn-functional(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewFile(formData.trendBoard)") {{ $t('UU0060') }}
-      input-text-btn(
-        class="w-full"
-        disabledInput
-        v-model:textValue="uploadTrendBoardName"
-        :buttonLabel="$t('UU0025')"
-        @click:button="chooseFile"
-        @clear="removeTrendBoard"
-      )
-    p(class='text-primary text-caption leading-1.6') {{ $t('FF0014') }}
-    p(class='text-primary text-caption leading-1.6') {{ $t('FF0015') }}
-  input-textarea(
-    v-model:textValue="formData.description"
-    :label="$t('FF0012')"
-    height="120"
-    :customErrorMsg="formData.description.length > DESCRIPTION_LIMIT ? $t('WW0073') : ''"
-  )
-  btn-group(
-    class="h-25"
-    :primaryText="mode === MODE.EDIT ? $t('UU0018') : $t('UU0020')"
-    :primaryButtonDisabled="actionBtnDisabled"
-    @click:primary="actionHandler"
-    :secondaryButton="false"
-  )
+modal-behavior(
+  :header="mode === MODE.EDIT ? $t('FF0009') : $t('FF0022')"
+  :primaryBtnText="mode === MODE.EDIT ? $t('UU0018') : $t('UU0020')"
+  :primaryBtnDisabled="actionBtnDisabled"
+  @click:primary="actionHandler"
+)
+  div(class="w-101")
+    p(class="text-right pb-0.5 text-caption text-black-600") *{{ $t('RR0163') }}
+    input-text(
+      v-model:textValue="formData.collectionName"
+      required
+      :label="$t('FF0010')"
+      class="mb-7.5"
+    )
+    div(class="mb-9")
+      div
+        div(class="h-5.5 flex items-center pb-1")
+          p(class="text-body2 text-primary font-bold") {{ $t('FF0011') }}
+          btn-functional(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewFile(formData.trendBoardFile)") {{ $t('UU0060') }}
+        input-text-btn(
+          class="w-full"
+          disabledInput
+          v-model:textValue="uploadTrendBoardName"
+          :buttonLabel="$t('UU0025')"
+          @click:button="chooseFile"
+          @clear="removeTrendBoard"
+        )
+      p(class='text-primary text-caption leading-1.6') {{ $t("RR0243") }} {{ acceptType.join(', ').toUpperCase() }}
+      p(class='text-primary text-caption leading-1.6') {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
+    input-textarea(
+      v-model:textValue="formData.description"
+      :label="$t('FF0012')"
+      height="120"
+      :customErrorMsg="formData.description.length > DESCRIPTION_LIMIT ? $t('WW0073') : ''"
+    )
 </template>
 
 <script>
@@ -61,16 +59,18 @@ export default {
       required: true
     }
   },
-  async setup (props) {
+  async setup(props) {
     const { t } = useI18n()
     const store = useStore()
-    const fileOperator = new FileOperator(['pdf'], 20)
+    const fileSizeMaxLimit = 20
+    const acceptType = ['pdf']
+    const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 
     const uploadTrendBoardName = ref('')
     const collectionId = ref(null) // only use when MODE is equal to EDIT
     const formData = reactive({
       collectionName: '',
-      trendBoard: null,
+      trendBoardFile: null,
       description: ''
     })
     const DESCRIPTION_LIMIT = 1000
@@ -78,7 +78,7 @@ export default {
     const actionBtnDisabled = computed(() => !formData.collectionName || formData.description.length > DESCRIPTION_LIMIT)
 
     fileOperator.on('finish', (file) => {
-      formData.trendBoard = file
+      formData.trendBoardFile = file
       uploadTrendBoardName.value = file.name
     })
 
@@ -88,7 +88,7 @@ export default {
 
     const actionHandler = async () => {
       if (uploadTrendBoardName.value === '') {
-        formData.trendBoard = null
+        formData.trendBoardFile = null
       }
       store.dispatch('helper/pushModalLoading')
       if (props.mode === MODE.EDIT) {
@@ -96,13 +96,13 @@ export default {
           collectionId: collectionId.value,
           ...formData
         })
-        store.commit('helper/PUSH_message', t('FF0035'))
+        store.dispatch('helper/pushFlashMessage', t('FF0035'))
       } else {
         await store.dispatch('workspace/createCollection', {
           workspaceNodeId: props.workspaceNodeId,
           ...formData
         })
-        store.commit('helper/PUSH_message', t('FF0027'))
+        store.dispatch('helper/pushFlashMessage', t('FF0027'))
       }
       store.dispatch('helper/clearModalPipeline')
       store.dispatch('helper/reloadInnerApp')
@@ -117,7 +117,7 @@ export default {
       Object.assign(formData, {
         collectionName: name,
         description: description || '',
-        trendBoard: trendBoardUrl
+        trendBoardFile: trendBoardUrl
       })
       collectionId.value = cId
       uploadTrendBoardName.value = trendBoardDisplayFileName
@@ -126,6 +126,8 @@ export default {
     return {
       formData,
       actionHandler,
+      acceptType,
+      fileSizeMaxLimit,
       chooseFile,
       uploadTrendBoardName,
       previewFile,

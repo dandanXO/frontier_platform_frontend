@@ -3,7 +3,7 @@ div(class="w-195")
   p(class="text-body1 text-primary mt-18.5 mb-5 flex") {{ $t('OO0008') }}
     span(v-if="!planType.ENT && planStatus.BUFFER" class="flex items-center pl-5")
       svg-icon(iconName="warning_amber_round" size="20" class="text-warn")
-      i18n-t(keypath="WW0088" tag="span" class="text-caption text-warn pl-1")
+      i18n-t(keypath="WW0088" tag="span" class="text-caption text-warn pl-1" scope="global")
         template(#UU0082)
           span(class="text-assist-blue cursor-pointer" @click="payLastMonthUnbilledInfo") {{ $t('UU0082') }}
   div(class="grid grid-cols-3 grid-rows-2 gap-3 h-78")
@@ -60,7 +60,7 @@ div(class="w-195")
         p(class="text-body1 font-bold text-brand-dark leading-1.6") {{ planType.ENT ? `${memberQuota.used}/${memberQuota.max}` : memberQuota.used }}
           span(class="text-caption font-normal pl-1") {{ $t('OO0031') }}
   template(v-if="!planType.ENT")
-    p(v-if="planStatus.ACTIVE || planStatus.BUFFER" class="text-body2 text-assist-blue text-right pt-3 cursor-pointer" @click="openModalDeactivate") {{ $t('OO0007') }}
+    p(v-if="planStatus.ACTIVE || planStatus.BUFFER" class="text-body2 text-assist-blue text-right pt-3 cursor-pointer" @click="deactivateOrg") {{ $t('OO0007') }}
     div(v-else-if="planStatus.INACTIVE" class="w-full h-24 bg-black-200 flex justify-between items-center pl-7.5 pr-10 rounded mt-6")
       div
         h6(class="text-h6 text-primary font-bold") {{ $t('OO0007') }}
@@ -81,7 +81,7 @@ export default {
       openModalChoosePlan,
       openModalManageMaterialQuota,
       openModalPurchaseU3mQuota,
-      openModalDeactivate,
+      deactivateOrg,
       activateOrg,
       payLastMonthUnbilledInfo
     } = usePlan()
@@ -110,7 +110,7 @@ export default {
       openModalChoosePlan,
       openModalManageMaterialQuota,
       openModalPurchaseU3mQuota,
-      openModalDeactivate,
+      deactivateOrg,
       activateOrg,
       materialQuota,
       isMaterialFull,

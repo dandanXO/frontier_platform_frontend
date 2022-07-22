@@ -27,6 +27,9 @@ export default {
     }
   },
   actions: {
+    async callShareToMeApi ({ rootGetters }, { func, params = {} }) {
+      return await shareToMeApi[func](rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    },
     setShareToMeModule ({ commit, dispatch }, data) {
       const { shareCollection, material, share, pagination, breadcrumbList } = data
 
@@ -43,19 +46,20 @@ export default {
         workspaceNodeId: nodeKey?.split('-')[1] || null,
         ...searchParams
       }
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await shareToMeApi.org.getShareToMeList({ orgId: rootGetters['organization/orgId'], ...params })
-        : await shareToMeApi.group.getShareToMeList({ groupId: rootGetters['group/groupId'], ...params })
+
+      const { data } = await dispatch('callShareToMeApi', { func: 'getShareToMeList', params })
       dispatch('setShareToMeModule', data.result)
     },
-    async getShareToMeMaterial ({ rootGetters, dispatch }, { sharingId, nodeKey }) {
+    async getShareToMeMaterial ({ dispatch }, { sharingId, nodeKey }) {
       const workspaceNodeId = nodeKey.split('-')[1]
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await shareToMeApi.org.getShareToMeMaterial({ orgId: rootGetters['organization/orgId'], sharingId, workspaceNodeId })
-        : await shareToMeApi.group.getShareToMeMaterial({ groupId: rootGetters['group/groupId'], sharingId, workspaceNodeId })
+      const params = {
+        sharingId,
+        workspaceNodeId
+      }
+      const { data } = await dispatch('callShareToMeApi', { func: 'getShareToMeMaterial', params })
       dispatch('setShareToMeModule', data.result)
     },
-    async cloneCheckShareToMe ({ rootGetters }, { nodeKeyList }) {
+    async cloneCheckShareToMe ({ dispatch }, { nodeKeyList }) {
       const workspaceNodeList = nodeKeyList.map(nodeKey => {
         const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
         return {
@@ -63,13 +67,11 @@ export default {
           location: Number(workspaceNodeLocation)
         }
       })
-      const { data } = rootGetters['helper/routeLocation'] === 'org'
-        ? await shareToMeApi.org.cloneCheckShareToMe({ orgId: rootGetters['organization/orgId'], workspaceNodeList })
-        : await shareToMeApi.group.cloneCheckShareToMe({ groupId: rootGetters['group/groupId'], workspaceNodeList })
-
+      const { data } = await dispatch('callShareToMeApi', { func: 'cloneCheckShareToMe', params: { workspaceNodeList } })
       return data.result.estimatedQuota
     },
-    async cloneShareToMe ({ rootGetters }, { sharingId, nodeKeyList, targetLocationList, optional }) {
+    async cloneShareToMe ({ dispatch }, params) {
+      const { nodeKeyList, sharingId, targetLocationList, optional } = params
       const workspaceNodeList = nodeKeyList.map(nodeKey => {
         const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
         return {
@@ -77,11 +79,10 @@ export default {
           location: Number(workspaceNodeLocation)
         }
       })
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await shareToMeApi.org.cloneShareToMe({ orgId: rootGetters['organization/orgId'], sharingId, workspaceNodeList, targetLocationList, optional })
-        : await shareToMeApi.group.cloneShareToMe({ groupId: rootGetters['group/groupId'], sharingId, workspaceNodeList, targetLocationList, optional })
+      const tempParams = { sharingId, workspaceNodeList, targetLocationList, optional }
+      await dispatch('callShareToMeApi', { func: 'cloneShareToMe', params: tempParams })
     },
-    async deleteShareToMe ({ rootGetters }, { nodeKeyList }) {
+    async deleteShareToMe ({ dispatch }, { nodeKeyList }) {
       const workspaceNodeList = nodeKeyList.map(nodeKey => {
         const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
         return {
@@ -89,9 +90,7 @@ export default {
           location: Number(workspaceNodeLocation)
         }
       })
-      rootGetters['helper/routeLocation'] === 'org'
-        ? await shareToMeApi.org.deleteShareToMe({ orgId: rootGetters['organization/orgId'], workspaceNodeList })
-        : await shareToMeApi.group.deleteShareToMe({ groupId: rootGetters['group/groupId'], workspaceNodeList })
+      await dispatch('callShareToMeApi', { func: 'deleteShareToMe', params: { workspaceNodeList } })
     }
   }
 }

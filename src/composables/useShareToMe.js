@@ -31,12 +31,12 @@ export default function useShareToMe () {
       return store.dispatch('helper/openModalConfirm', {
         type: 1,
         header: t('GG0016'),
-        content: t('GG0020'),
+        contentText: t('GG0020'),
         primaryBtnText: t('UU0031')
       })
     }
 
-    store.dispatch('helper/openModal', {
+    store.dispatch('helper/openModalBehavior', {
       component: 'modal-clone-to',
       properties: {
         checkHandler: async () => {
@@ -44,7 +44,7 @@ export default function useShareToMe () {
         },
         cloneHandler: async (targetLocationList, optional) => {
           await store.dispatch('shareToMe/cloneShareToMe', { sharingId, nodeKeyList, targetLocationList, optional })
-          store.commit('helper/PUSH_message', msg)
+          store.dispatch('helper/pushFlashMessage', msg)
         }
       }
     })
@@ -57,8 +57,9 @@ export default function useShareToMe () {
   const shareToMeDeleteByNodeList = (nodeList) => {
     const nodeKeyList = nodeList.map(({ nodeKey }) => nodeKey)
     store.dispatch('helper/openModalConfirm', {
+      type: 1,
       header: t('HH0004'),
-      content: t('HH0005'),
+      contentText: t('HH0005'),
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: async () => {
         store.dispatch('helper/openModalLoading')
