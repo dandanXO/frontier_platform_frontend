@@ -20,7 +20,7 @@ deploy-dev:
   only:
     - develop
   script:
-    - npm run deploy --mode=development
+    - bash ./scripts/deploy.sh development
 
 build-stg:
   stage: build
@@ -40,7 +40,7 @@ deploy-stg:
   only:
     - /^release\/.*$/
   script:
-    - npm run deploy --mode=staging
+    - bash ./scripts/deploy.sh staging
 
 build-pre-prod:
   stage: build
@@ -60,7 +60,7 @@ deploy-pre-prod:
   only:
     - /^hotfix\/.*$/
   script:
-    - npm run deploy --mode=pre-production
+    - bash ./scripts/deploy.sh pre-production
 
 build-prod:
   stage: build
@@ -80,4 +80,4 @@ deploy-prod:
   only:
     - main
   script:
-    - npm run deploy --mode=production
+    - bash ./scripts/deploy.sh production
