@@ -122,6 +122,7 @@ export default {
    */
   setCardHolderName: (orgId, params) => orgApiWrapper('/org/payment/card-info/setup-customer', orgId, params),
   upgradePlan: (orgId) => orgApiWrapper('/org/plan/upgrade', orgId),
+  getChargingOfUpgradePlan: (orgId) => orgApiWrapper('/org/plan/upgrade/get-estimate-charging', orgId),
   /**
    * @param {object} params
    * @param {string} params.name
@@ -136,6 +137,11 @@ export default {
    * @param {number} params.setQty
    */
   purchaseMaterial: (orgId, params) => orgApiWrapper('/org/plan/purchase/material', orgId, params),
+  /**
+   * @param {object} params
+   * @param {number} params.setQty
+   */
+  getChargingOfPurchaseMaterial: (orgId, params) => orgApiWrapper('/org/plan/purchase/material/get-estimate-charging', orgId, params),
   /**
    * @param {object} params
    * @param {number} params.setQty

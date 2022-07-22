@@ -66,22 +66,39 @@ const upgradePlan = async () => {
     return
   }
 
-  store.dispatch('helper/pushModalLoading')
-  await store.dispatch('organization/upgradePlan')
-  store.dispatch('helper/closeModalLoading')
+  const { estimateCharging, periodDate } = await store.dispatch('organization/getChargingOfUpgradePlan')
+  store.dispatch('helper/pushModalBehavior', {
+    component: 'modal-checkout-list',
+    properties: {
+      header: t('OO0047'),
+      isChargeNow: false,
+      checkoutItemList: [
+        {
+          title: t('RR0160'),
+          price: `$${estimateCharging}`,
+          periodDate
+        }
+      ],
+      payHandler: async () => {
+        store.dispatch('helper/pushModalLoading')
+        await store.dispatch('organization/upgradePlan')
+        store.dispatch('helper/closeModalLoading')
 
-  store.dispatch('helper/openModalConfirm', {
-    type: 2,
-    header: t('OO0165'),
-    contentComponent: shallowRef({
-      render: () => {
-        return h('div', { class: 'text-body2 leading-1.6' }, [
-          h('p', {}, t('OO0052', { date: plan.value.renewDate })),
-          h('p', {}, t('OO0080'))
-        ])
+        store.dispatch('helper/openModalConfirm', {
+          type: 2,
+          header: t('OO0165'),
+          primaryBtnText: t('UU0031'),
+          contentComponent: shallowRef({
+            render: () => {
+              return h('div', { class: 'text-body2 leading-1.6' }, [
+                h('p', {}, t('OO0052', { date: plan.value.renewDate })),
+                h('p', {}, t('OO0080'))
+              ])
+            }
+          })
+        })
       }
-    }),
-    primaryBtnText: t('UU0031')
+    }
   })
 }
 const openModalPlanIntroduction = () => {

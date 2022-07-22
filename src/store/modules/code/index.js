@@ -87,11 +87,11 @@ const actions = {
   },
   async getRoleLimitTable ({ commit }) {
     const { data } = await codeApi.getRoleLimitTable()
-    commit('SET_roleList', data.result.code.roleLimit)
+    commit('SET_roleLimit', data.result.code.roleLimit)
   },
   async getFilterOptions ({ commit }) {
     const { data } = await codeApi.getFilterOptions()
-    commit('SET_roleList', data.result.code.filter)
+    commit('SET_filter', data.result.code.filter)
   }
 }
 
