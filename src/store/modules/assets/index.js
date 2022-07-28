@@ -339,7 +339,7 @@ export default {
      * @param {string} params.sort
      */
     async getMaterialListForModal (_, params) {
-      const { id, keyword, targetPage, sort } = params
+      const { id, keyword, targetPage, sort, nodeLocation } = params
       const tempParams = {
         search: {
           keyword,
