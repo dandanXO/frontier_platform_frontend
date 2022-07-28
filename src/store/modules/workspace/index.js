@@ -123,11 +123,13 @@ export default {
         trendBoard = await dispatch('uploadFileToS3', { fileName: trendBoardFile.name, file: trendBoardFile }, { root: true })
       }
 
-      const { fileName, tempUploadId } = trendBoard
-      const tempParams = { ...params, trendBoardFileName: fileName, tempUploadId }
-      delete tempParams.trendBoardFile
+      if (!!trendBoard) {
+        params.trendBoardFileName = trendBoard.fileName
+        params.tempUploadId = trendBoard.tempUploadId
+      }
+      delete params.trendBoardFile
 
-      await dispatch('callWorkspaceApi', { func: 'createCollection', params: tempParams })
+      await dispatch('callWorkspaceApi', { func: 'createCollection', params })
     },
 
     /**
