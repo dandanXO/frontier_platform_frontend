@@ -152,7 +152,7 @@ export default {
       const { data } = await organizationApi.checkOrgNameExist(orgId, { orgName })
       return data.result.isExist
     },
-    async checkOrgMemberExist (_, params) {
+    async checkOrgMemberExist ({ dispatch }, params) {
       const { data } = await dispatch('callOrgApi', { func: 'checkOrgMemberExist', params })
       return data.result.isExist
     },
