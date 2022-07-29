@@ -1,12 +1,12 @@
 <style lang="scss" scoped>
 .magnifier {
   background: no-repeat #fff;
-  width: 280px;
-  height: 280px;
+  width: 300px;
+  height: 300px;
   box-shadow: 0 5px 10px -2px rgba(0, 0, 0, 0.3);
   pointer-events: none;
   position: absolute;
-  border: 2px solid #efefef;
+  border: 4px solid #efefef;
   z-index: 300;
   border-radius: 100%;
   display: block;
@@ -17,30 +17,34 @@
 
 <template lang="pug">
 div
-  div(class="aspect-square relative" ref="refContainer")
+  div(class="aspect-square relative")
     div(v-if="!!imageList[currentDisplayIndex].src" class="w-full h-full")
-      img(ref="refSourceImage" class="w-full h-full" :src="imageList[currentDisplayIndex].src")
+      img(class="w-full h-full" :src="imageList[currentDisplayIndex].src")
       div(class="absolute w-8 h-8 rounded-md bg-black-0 bottom-6 left-5 flex items-center justify-center cursor-pointer" @click="openMagnifyMode")
         svg-icon(iconName="search" size="28" class="text-black-700")
     div(v-else class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-h4 font-bold text-black-400") {{ $t("RR0103") }}
   div(class="flex pt-3 pb-4")
     p(v-for="text in imageList[currentDisplayIndex].text" class="text-caption text-center font-bold") {{ text }}
-  div(ref="refImageList" class="grid grid-flow-col gap-x-2 justify-start")
+  div(class="grid grid-flow-col gap-x-2 justify-start")
     div(v-for="(image, index) in imageList" @click="currentDisplayIndex = index")
       div(class="w-19.5 h-19.5 rounded overflow-hidden border-black-400 bg-black-200" :class="[currentDisplayIndex === index ? 'border-4' : 'border']")
         template(v-if="!!image.src")
           img(class="w-full h-full" :src="image.src")
-  div(v-if="isOpenMagnifierMode" class="fixed w-screen h-screen z-footer bg-black-900/60 left-0 top-0")
-    div(class="relative w-full h-full")
-      img(ref="refMagnifierSourceImage" class="absolute" :src="imageList[currentDisplayIndex].src" @mouseleave="isOpenMagnifier = false" @mousemove.stop="isOpenMagnifier ? moveMagnifier($event) : openMagnifier($event)")
-      div(ref="refMagnifierCloseBtn" class="absolute w-8 h-8 rounded-md bg-black-0 bottom-6 left-5 flex items-center justify-center cursor-pointer" @click="closeMagnifyMode")
-        svg-icon(iconName="close" size="28" class="text-black-700")
-      div(ref="refMagnifierImageList" class="absolute grid grid-flow-col gap-x-2 justify-start")
+  div(v-if="isOpenMagnifierMode" class="fixed w-screen h-screen z-popper bg-black-900/90 left-0 top-0 flex flex-col")
+    div(class="shrink-0 w-full h-27.5 bg-black-900 px-10 flex items-center justify-between")
+      div(class="flex items-center")
+        svg-icon(iconName="zoom_in" size="24" class="text-black-50")
+        p(class="text-black-50 text-body1 font-bold pl-4") Zoom Mode
+      div(class="grid grid-flow-col gap-x-2")
         div(v-for="(image, index) in imageList" @click="currentDisplayIndex = index")
           div(class="w-19.5 h-19.5 rounded overflow-hidden border-black-400 bg-black-200" :class="[currentDisplayIndex === index ? 'border-4' : 'border']")
             template(v-if="!!image.src")
               img(class="w-full h-full" :src="image.src")
-      div(v-show="isOpenMagnifier" ref="refMagnifierGlass" class="magnifier")
+      btn(size="md" @click="closeMagnifyMode") Exit
+    div(class="flex-grow h-full relative flex items-center justify-center")
+      div(class="p-10" @mouseleave="isOpenMagnifier = false" @mousemove.stop="moveMagnifier($event)")
+        img(ref="refMagnifierSourceImage" class="rounded overflow-hidden" :src="imageList[currentDisplayIndex].src" @mousemove="!isOpenMagnifier && openMagnifier($event)")
+        div(v-show="isOpenMagnifier" ref="refMagnifierGlass" class="magnifier")
 </template>
 
 <script setup>
@@ -59,37 +63,22 @@ const currentDisplayIndex = ref(defaultCoverImgIndex.value)
 
 const isOpenMagnifierMode = ref(false)
 const isOpenMagnifier = ref(false)
-const refContainer = ref()
-const refSourceImage = ref()
-const refImageList = ref()
 const refMagnifierSourceImage = ref()
-const refMagnifierCloseBtn = ref()
-const refMagnifierImageList = ref()
 const refMagnifierGlass = ref()
+const HEADER_HEIGHT = 110
 
 const openMagnifyMode = async () => {
   isOpenMagnifierMode.value = true
+  disableScroll()
+
   await nextTick()
 
-  {
-    const { left, top, width, height } = refSourceImage.value.getBoundingClientRect()
-    refMagnifierSourceImage.value.style.left = left + 'px'
-    refMagnifierSourceImage.value.style.top = top + 'px'
-    refMagnifierSourceImage.value.width = width
-    refMagnifierSourceImage.value.height = height
-
-    refMagnifierCloseBtn.value.style.top = top + 'px'
-    refMagnifierCloseBtn.value.style.left = left + width + 10 + 'px'
-  }
-
-  {
-    const { left, top } = refImageList.value.getBoundingClientRect()
-    refMagnifierImageList.value.style.left = left + 'px'
-    refMagnifierImageList.value.style.top = top + 'px'
-  }
+  refMagnifierSourceImage.value.width = (window.innerHeight - HEADER_HEIGHT) * 0.8
+  refMagnifierSourceImage.value.height = (window.innerHeight - HEADER_HEIGHT) * 0.8
 }
 
 const closeMagnifyMode = () => {
+  enableScroll()
   isOpenMagnifierMode.value = false
 }
 
@@ -133,7 +122,43 @@ const moveMagnifier = (e) => {
   refMagnifierGlass.value.style.backgroundPositionY = yperc - 9 + "%"
 
   // Move the magnifying glass with the mouse movement.
-  refMagnifierGlass.value.style.left = left + x - glassHalfWidth + "px"
-  refMagnifierGlass.value.style.top = top + y - glassHalfHeight + "px"
+  const leftMaxBoundary = window.innerWidth - glassHalfWidth * 2
+  const leftMintBoundary = 0
+  const tempLeft = left + x - glassHalfWidth
+  const newLeft = tempLeft < 0
+    ? leftMintBoundary
+    : tempLeft > leftMaxBoundary
+      ? leftMaxBoundary
+      : tempLeft
+  refMagnifierGlass.value.style.left = newLeft + "px"
+
+  const topMinBoundary = -HEADER_HEIGHT
+  const topMaxBoundary = window.innerHeight - HEADER_HEIGHT - glassHalfHeight * 2
+  const tempTop = top + y - glassHalfHeight - 150 // 150 is magic correction value
+  const newTop = tempTop < topMinBoundary
+    ? topMinBoundary
+    : tempTop > topMaxBoundary
+      ? topMaxBoundary
+      : tempTop
+  refMagnifierGlass.value.style.top = newTop + "px"
+}
+
+
+// Not sure why the content of the background can be scrolling in the embed iframe,
+// therefore, disabled scroll functionality when is on magnify mode
+// https://www.geeksforgeeks.org/how-to-disable-scrolling-temporarily-using-javascript/
+const disableScroll = () => {
+  // Get the current page scroll position
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+  const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft
+
+  // if any scroll is attempted, set this to the previous value
+  window.onscroll = function () {
+    window.scrollTo(scrollLeft, scrollTop)
+  }
+}
+
+const enableScroll = () => {
+  window.onscroll = function () { }
 }
 </script>
