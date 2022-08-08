@@ -17,7 +17,7 @@ modal-behavior(
 </template>
 
 <script setup>
-import MaterialDetailExternal from '@/components/layout/materialDetail/MaterialDetailExternal.vue'
+import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
 import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
 import { MOODBOARD_TYPE } from '@/utils/constants.js'
 

@@ -79,7 +79,7 @@ export default {
              * one of
              *  ->
              *    collectionId
-             *    collectionName
+             *    name
              *    coverImgList
              *    itemCounts,
              *  ->
@@ -177,9 +177,9 @@ export default {
      * @param {number} params.moodboardId
      * @param {string} params.moodboardName
      * @param {string} params.description
-     * @param {object} params.trendBoardFile - file object
-     * @param {object[]} params.attachmentFileList - file object of array
-     * @param {number[]} params.deleteAttachmentIdList
+     * @param {object?} params.trendBoardFile - file object
+     * @param {object[]?} params.attachmentFileList - file object of array
+     * @param {number[]?} params.deleteAttachmentIdList
      * @param {boolean} params.isDeleteTrendBoard
      */
     async updateMoodboard ({ dispatch, commit }, params) {

@@ -6,13 +6,13 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-blac
       svg-icon(:iconName="statusIconName" size="24" class="text-primary")
     div(class="w-full relative aspect-square" @mouseenter="isHover = true" @mouseleave="isHover = false")
       div(class="w-full h-full rounded-md overflow-hidden bg-cover" :class="{ 'border': neverScanBefore }")
-        img(:src="currentCoverImg" class="w-full h-full")
+        img(v-defaultImg :src="properties.coverImg" class="w-full h-full")
       div(v-if="isHover" class="absolute z-9 inset-0 w-full h-full rounded bg-black-900/70" @click.stop="openModalMoodboardMaterialDetail(node, true, true)")
       div(v-if="isHover || haveSelectedMoreThanOne" class="absolute z-10 inset-0 w-full h-12")
         div(class="bg-linear w-full h-full rounded-t-md")
         input-checkbox(
           v-model:inputValue="innerSelectedList"
-          :value="JSON.stringify(node)"
+          :value="node"
           class="absolute top-3 left-3 cursor-pointer"
           iconColor="text-black-0"
           uncheckColor="text-black-0"
@@ -61,15 +61,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-blac
           svg-icon(iconName="u3m" size="24")
       template(#content)
         div(class="py-3 px-3 text-primary text-caption whitespace-nowrap") {{ $t("RR0059") }}
-    div(v-if="isShowOverlay" class="fixed" style="width: 4000px; height: 3000px; top: -1500px; left: -2000px;")
-    tooltip(
-      placement="left-start"
-      :showArrow="false"
-      :offset="[0, 8]"
-      @show="openOverlay"
-      @hide="closeOverlay"
-      manual
-    )
+    popper(placement="left-start")
       template(#trigger)
         div(class="w-7.5 h-7.5 hover:bg-brand/10 hover:text-brand flex justify-center items-center rounded-full cursor-pointer")
           svg-icon(iconName="more_horiz" size="24")
@@ -110,7 +102,7 @@ const {
   openModalMoodboardMaterialDetail,
   togglePick
 } = useMoodboardNode(moodboard, moodboardOfferNodeCollection)
-const { materialBasicInfo, materialInfo, carbonEmissionInfo, currentCoverImg, neverScanBefore, statusIconName } = useMaterial(props.properties)
+const { materialBasicInfo, materialInfo, carbonEmissionInfo, neverScanBefore, statusIconName } = useMaterial(props.properties)
 
 const innerSelectedList = computed({
   get: () => props.selectedList,
@@ -123,8 +115,4 @@ const isHover = ref(false)
 const openModalIndicatorMethodology = () => {
   store.dispatch('helper/openModalBehavior', { component: 'modal-indicator-methodology' })
 }
-
-const isShowOverlay = ref(false)
-const openOverlay = () => { isShowOverlay.value = true }
-const closeOverlay = () => { isShowOverlay.value = false }
 </script>

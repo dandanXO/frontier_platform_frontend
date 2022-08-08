@@ -22,7 +22,7 @@ div(class="max-w-315 h-full mx-auto pt-10")
               breadcrumb(:breadcrumbList="breadcrumbList" @click:item="(currentNodeKey = $event.nodeKey); goTo()" fontSize="text-h5")
               p(class="flex text-caption text-black-700 pl-1")
                 span (
-                i18n-t(keypath="RR0068" tag="span")
+                i18n-t(keypath="RR0068" tag="span" scope="global")
                   template(#number) {{ pagination.totalCount }}
                 span )
           btn(size="sm" type="secondary" @click="isCollectionDetailExpand = !isCollectionDetailExpand") {{ isCollectionDetailExpand ? $t("UU0026") : $t("UU0071") }}
@@ -39,22 +39,17 @@ div(class="max-w-315 h-full mx-auto pt-10")
               p(class="text-body2 text-primary") {{ $t("GG0028") }}
     template(#default="{ goTo }")
       div(v-if="nodeList.length > 0" class="mx-7.5 grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start")
-        child-node-item(
+        grid-item-node(
           v-for="node in nodeList"
           :node="node"
-          :properties="node"
-          :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.name : node.materialNo"
           :isSelectable="false"
           @click.stop="handleNodeClick(node, goTo)"
         )
-div(class="fixed z-footer bottom-0 w-full h-13 bg-black-100 px-36 flex items-center justify-end card-shadow")
-  img(src="@/assets/images/frontier_logo.png" class="w-20.5 h-4 mr-2")
-  p(class="text-body2 text-primary") {{ $t("GG0004") }}
 </template>
 
 <script setup>
-import SearchTable from '@/components/layout/SearchTable.vue'
-import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
+import SearchTable from '@/components/common/SearchTable.vue'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import { SEARCH_TYPE, SORT_BY, NODE_TYPE } from '@/utils/constants.js'
 import useNavigation from '@/composables/useNavigation.js'
 import { useRoute, useRouter } from 'vue-router'

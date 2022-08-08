@@ -17,11 +17,8 @@ div(class="w-screen h-screen flex justify-center items-center bg-black-100")
             div(class="w-19 h-px border-b border-black-400")
             span(class="w-30.5 text-black-500 text-body2 text-center") {{ $t("AA0005") }}
             div(class="w-19 h-px border-b border-black-400")
-          button(id="google-sign-in" class="w-85 h-11 rounded border text-body2 font-bold text-black-800 flex justify-center items-center")
-            div(class="grid grid-flow-col gap-x-2.5 items-center")
-              img(src="@/assets/images/google.png")
-              span(class="w-40.5 text-center text-body2") {{ $t("UU0044") }}
-      i18n-t(keypath="UU0045" tag="p" class="text-black-800 text-body2 font-normal text-center pt-3")
+          button(id="google-sign-in")
+      i18n-t(keypath="UU0045" tag="p" class="text-black-800 text-body2 font-normal text-center pt-3" scope="global")
         template(#signUp)
           router-link-extending(class="text-primary font-bold ml-3" :to="{ path: '/sign-up', query: $route.query }") {{ $t("AA0016") }}
 </template>
@@ -30,11 +27,10 @@ div(class="w-screen h-screen flex justify-center items-center bg-black-100")
 import { reactive, ref, toRaw, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import googleSignInApi from '@/utils/google-sign-in-api'
+import SignInWithGoogle from '@/utils/signInWithGoogle.js'
 import inputValidator from '@/utils/input-validator'
 import useNavigation from '@/composables/useNavigation'
 import imgCover from '@/assets/images/cover.png'
-
 const { t } = useI18n()
 const store = useStore()
 const { nextAfterSignIn } = useNavigation()
@@ -45,7 +41,7 @@ const formData = reactive({
 const errorMsgSignIn = ref('')
 
 const openModalForgotPasswordEmail = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-forgot-password-email'
   })
 }
@@ -65,7 +61,7 @@ const generalSignIn = async () => {
   if (!isOldUser) {
     nextAfterSignIn()
   } else {
-    store.dispatch('helper/openModal', {
+    store.dispatch('helper/openModalBehavior', {
       component: 'modal-ask-reset-password',
       properties: {
         email: formData.email
@@ -74,25 +70,16 @@ const generalSignIn = async () => {
   }
 }
 
-const googleSignIn = async (googleUser) => {
-  await store.dispatch('user/googleSignIn', { idToken: googleUser.getAuthResponse().id_token })
-  nextAfterSignIn()
-}
-
 const isGoogleLoadFail = ref(false)
 
-onMounted(async () => {
-  try {
-    await googleSignInApi.init({
-      elementId: 'google-sign-in',
-      successHandler: googleSignIn,
-      failHandler (error) {
-        if (error.error === 'popup_closed_by_user') { return }
-        errorMsgSignIn.value = t('AA0065')
-      }
-    })
-  } catch {
-    isGoogleLoadFail.value = true
-  }
+onMounted(() => {
+  const googleSignIn = new SignInWithGoogle({
+    elementId: 'google-sign-in',
+    callback: async (response) => {
+      await store.dispatch('user/googleSignIn', { idToken: response.credential })
+      nextAfterSignIn()
+    }
+  })
+  isGoogleLoadFail.value = !googleSignIn.google
 })
 </script>

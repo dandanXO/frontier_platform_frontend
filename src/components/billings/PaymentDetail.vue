@@ -60,7 +60,7 @@ export default {
           store.dispatch('helper/openModalConfirm', {
             type: 2,
             header: t('OO0017'),
-            content: t('OO0018'),
+            contentText: t('OO0018'),
             primaryBtnText: t('UU0031')
           })
           break
@@ -81,7 +81,7 @@ export default {
     })
 
     const openModalEditBillingInfo = () => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-edit-billing-info',
         properties: {
           billingInfo: paymentDetail.value.billingInfo,
@@ -96,7 +96,7 @@ export default {
     }
 
     const openModalSetupCard = () => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-setup-card',
         properties: {}
       })

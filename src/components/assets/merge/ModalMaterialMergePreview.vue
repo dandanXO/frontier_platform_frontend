@@ -28,7 +28,7 @@ fullscreen-header
 </template>
 
 <script>
-import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
+import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import MaterialMergeRowDetail from '@/components/assets/merge/MaterialMergeRowDetail.vue'
 import { computed } from '@vue/runtime-core'
 import { useStore } from 'vuex'
@@ -62,7 +62,7 @@ export default {
       store.dispatch('helper/closeModalLoading')
       store.dispatch('helper/clearModalPipeline')
       store.dispatch('helper/reloadInnerApp')
-      store.commit('helper/PUSH_message', t('EE0077'))
+      store.dispatch('helper/pushFlashMessage', t('EE0077'))
     }
 
     const getBgImg = (target, blockType) => {

@@ -22,21 +22,20 @@ const formatMaterialList = (materialList) => {
   const list = []
 
   materialList.forEach(material => {
-    const tempMaterial = typeof material === 'string' ? JSON.parse(material) : material
-    const { isDoubleSideMaterial, frontierNo, relationFrontierNo } = tempMaterial
+    const { isDoubleSideMaterial, frontierNo, relationFrontierNo } = material
     if (isDoubleSideMaterial) {
       list.push({
-        ...tempMaterial,
+        ...material,
         frontierNo,
         sideType: SIDE_TYPE.FACE
       })
       list.push({
-        ...tempMaterial,
+        ...material,
         frontierNo: relationFrontierNo,
         sideType: SIDE_TYPE.BACK
       })
     } else {
-      list.push(tempMaterial)
+      list.push(material)
     }
   })
 

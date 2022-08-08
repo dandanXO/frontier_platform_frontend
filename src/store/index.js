@@ -3,8 +3,8 @@ import axios from '@/apis'
 import putBinaryData from '@/utils/put-binary-data'
 import user from '@/store/modules/user'
 import code from '@/store/modules/code'
-import organization from '@/store/modules/organization'
-import group from '@/store/modules/group'
+import organization from '@/store/modules/management/organization'
+import group from '@/store/modules/management/group'
 import helper from '@/store/modules/helper'
 import assets from '@/store/modules/assets'
 import workspace from '@/store/modules/workspace'
@@ -17,38 +17,24 @@ import polling from '@/store/modules/polling'
 
 export default createStore({
   actions: {
-    async uploadFileToS3 (_, { fileName, file }) {
-      const { data: { result: { tempUploadId, fileUploadUrl } } } = await axios('/general/get-upload-url', {
+    async getUploadUrl (_, { fileName }) {
+      const { data } = await axios('/general/get-upload-url', {
         method: 'POST',
         data: { fileName }
       })
+      return data.result
+    },
+    async uploadFileToS3 ({ dispatch }, { fileName, file }) {
+      const { tempUploadId, fileUploadUrl } = await dispatch('getUploadUrl', { fileName })
       await putBinaryData(fileUploadUrl, file)
       return { fileName, tempUploadId }
     },
-    handleResponseData ({ dispatch }, { data }) {
-      const { result } = JSON.parse(JSON.stringify(data))
-
-      const namespacedParentModuleList = ['user', 'organization', 'code', 'group']
-
-      if (result !== null) {
-        namespacedParentModuleList.forEach(module => {
-          if (Object.prototype.hasOwnProperty.call(result, module)) {
-            const capitalizedModule = module.charAt(0).toUpperCase() + module.slice(1)
-            dispatch(`${module}/set${capitalizedModule}`, result[module], { root: true })
-          }
-        })
-
-        if (Object.prototype.hasOwnProperty.call(result, 'orgUser')) {
-          dispatch('user/orgUser/setOrgUser', result.orgUser, { root: true })
-        }
-        if (Object.prototype.hasOwnProperty.call(result, 'groupUser')) {
-          dispatch('user/groupUser/setGroupUser', result.groupUser, { root: true })
-        }
-
-        if (Object.prototype.hasOwnProperty.call(result, 'pagination')) {
-          dispatch('helper/search/setPagination', result.pagination, { root: true })
-        }
-      }
+    async checkTokenStatus (_, { accessToken }) {
+      const { data: { result: { status } } } = await axios('/general/check-token-status', {
+        method: 'POST',
+        data: { accessToken }
+      })
+      return status
     }
   },
   modules: {

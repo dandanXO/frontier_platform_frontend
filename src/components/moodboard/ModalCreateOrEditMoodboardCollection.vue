@@ -72,11 +72,11 @@ const primaryHandler = async () => {
   store.dispatch('helper/pushModalLoading')
   if (props.mode === CREATE_EDIT.EDIT) {
     await store.dispatch('moodboard/updateMoodboardNodeCollection', formData)
-    store.commit('helper/PUSH_message', t('QQ0064'))
+    store.dispatch('helper/pushFlashMessage', t('QQ0064'))
     store.dispatch('helper/reloadInnerApp')
   } else {
     await store.dispatch('moodboard/createMoodboardNodeCollection', formData)
-    store.commit('helper/PUSH_message', t('QQ0063'))
+    store.dispatch('helper/pushFlashMessage', t('QQ0063'))
   }
   store.dispatch('helper/clearModalPipeline')
 }

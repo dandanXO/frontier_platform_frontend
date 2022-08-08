@@ -1,48 +1,41 @@
-import axios from '@/apis'
+import { apiWrapper } from '@/apis'
 
 export default {
-  org: {
-    getShareToMeList: ({ orgId, sharingId, workspaceNodeId, search = null, filter = null, pagination }) => axios('/org/share-to-me/get-list', {
-      method: 'POST',
-      data: { orgId, sharingId, workspaceNodeId, search, filter, pagination }
-    }),
-    getShareToMeMaterial: ({ orgId, sharingId, workspaceNodeId }) => axios('/org/share-to-me/get-material', {
-      method: 'POST',
-      data: { orgId, sharingId, workspaceNodeId }
-    }),
-    cloneCheckShareToMe: ({ orgId, workspaceNodeList }) => axios('/org/share-to-me/clone-check', {
-      method: 'POST',
-      data: { orgId, workspaceNodeList }
-    }),
-    cloneShareToMe: ({ orgId, sharingId, workspaceNodeList, targetLocationList, optional }) => axios('/org/share-to-me/clone', {
-      method: 'POST',
-      data: { orgId, sharingId, workspaceNodeList, targetLocationList, optional }
-    }),
-    deleteShareToMe: ({ orgId, workspaceNodeList }) => axios('/org/share-to-me/delete', {
-      method: 'POST',
-      data: { orgId, workspaceNodeList }
-    })
-  },
-  group: {
-    getShareToMeList: ({ groupId, sharingId, workspaceNodeId, search = null, filter = null, pagination }) => axios('/org/group/share-to-me/get-list', {
-      method: 'POST',
-      data: { groupId, sharingId, workspaceNodeId, search, filter, pagination }
-    }),
-    getShareToMeMaterial: ({ groupId, sharingId, workspaceNodeId }) => axios('/org/group/share-to-me/get-material', {
-      method: 'POST',
-      data: { groupId, sharingId, workspaceNodeId }
-    }),
-    cloneCheckShareToMe: ({ groupId, workspaceNodeList }) => axios('/org/group/share-to-me/clone-check', {
-      method: 'POST',
-      data: { groupId, workspaceNodeList }
-    }),
-    cloneShareToMe: ({ groupId, sharingId, workspaceNodeList, targetLocationList, optional }) => axios('/org/group/share-to-me/clone', {
-      method: 'POST',
-      data: { groupId, sharingId, workspaceNodeList, targetLocationList, optional }
-    }),
-    deleteShareToMe: ({ groupId, workspaceNodeList }) => axios('/org/group/share-to-me/delete', {
-      method: 'POST',
-      data: { groupId, workspaceNodeList }
-    })
-  }
+  /**
+   * @param {object} params
+   * @param {number} params.sharingId
+   * @param {number} params.workspaceNodeId
+   * @param {object} params.pagination
+   * @param {object?} params.search
+   * @param {object?} params.filter
+   */
+  getShareToMeList: (type, id, params) => apiWrapper('/share-to-me/get-list', type, id, params),
+
+  /**
+   * @param {object} params
+   * @param {number} params.sharingId
+   * @param {object[]} params.workspaceNodeId - [{id, location}]
+   */
+  getShareToMeMaterial: (type, id, params) => apiWrapper('/share-to-me/get-material', type, id, params),
+
+  /**
+   * @param {object} params
+   * @param {object[]} params.workspaceNodeList - [{id, location}]
+   */
+  cloneCheckShareToMe: (type, id, params) => apiWrapper('/share-to-me/clone-check', type, id, params),
+
+  /**
+   * @param {object} params
+   * @param {number} params.sharingId
+   * @param {object[]} params.workspaceNodeList - [{id, location}]
+   * @param {object[]} params.targetLocationList - [{id, location}]
+   * @param {object} params.optional - {u3m, attachment}
+   */
+  cloneShareToMe: (type, id, params) => apiWrapper('/share-to-me/clone', type, id, params),
+
+  /**
+   * @param {object} params
+   * @param {object[]} params.workspaceNodeList - [{id, location}]
+   */
+  deleteShareToMe: (type, id, params) => apiWrapper('/share-to-me/delete', type, id, params),
 }

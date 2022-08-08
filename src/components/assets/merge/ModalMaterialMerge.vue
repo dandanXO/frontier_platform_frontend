@@ -34,7 +34,7 @@ fullscreen-header
 <script>
 import { useStore } from 'vuex'
 import { computed, reactive } from 'vue'
-import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
+import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import MaterialMergeRow from '@/components/assets/merge/MaterialMergeRow.vue'
 import { SIDE_TYPE } from '@/utils/constants'
 

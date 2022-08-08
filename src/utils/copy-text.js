@@ -1,22 +1,26 @@
-// https://stackoverflow.com/a/33928558
+// https://stackoverflow.com/a/30810322
 
 export default function copyTex (text) {
-  if (window.clipboardData && window.clipboardData.setData) {
-    // Internet Explorer-specific code path to prevent textarea being shown while dialog is visible.
-    return window.clipboardData.setData('Text', text)
-  } else if (document.queryCommandSupported && document.queryCommandSupported('copy')) {
-    var textarea = document.createElement('textarea')
-    textarea.textContent = text
-    textarea.style.position = 'fixed' // Prevent scrolling to bottom of page in Microsoft Edge.
-    document.body.appendChild(textarea)
-    textarea.select()
-    try {
-      return document.execCommand('copy') // Security exception may be thrown by some browsers.
-    } catch (ex) {
-      console.warn('Copy to clipboard failed.', ex)
-      return false
-    } finally {
-      document.body.removeChild(textarea)
-    }
+  if (!navigator.clipboard) {
+    const textArea = document.createElement("textarea")
+    textArea.value = text
+
+    // Avoid scrolling to bottom
+    textArea.style.top = "0"
+    textArea.style.left = "0"
+    textArea.style.position = "fixed"
+
+    document.body.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
+
+    document.execCommand('copy')
+    document.body.removeChild(textArea)
+
+    return
   }
+  // In safari it is not possible to copy text asynchronously, but it works in setTimeout
+  setTimeout(() => {
+    navigator.clipboard.writeText(text)
+  }, 0)
 }

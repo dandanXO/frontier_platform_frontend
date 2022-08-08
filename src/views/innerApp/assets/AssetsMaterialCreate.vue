@@ -9,7 +9,7 @@ div(class="w-full h-full flex justify-center")
         div(class="h-16 flex items-center")
           h5(class="text-h5 text-primary font-bold pr-1.5") {{ $t("DD0063") }}
         div(class="pl-15")
-          input-container(:label="$t('DD0062')" class="relative z-12")
+          input-container(:label="$t('DD0062')")
             div(class="flex items-center gap-x-3")
               input-select(
                 v-model:selectValue="material.isDoubleSideMaterial"
@@ -37,10 +37,10 @@ div(class="w-full h-full flex justify-center")
 </template>
 
 <script setup>
-import BlockMaterialInformation from '@/components/assets/material/edit/BlockMaterialInformation.vue'
-import BlockMaterialInventory from '@/components/assets/material/edit/BlockMaterialInventory.vue'
-import BlockMaterialPricing from '@/components/assets/material/edit/BlockMaterialPricing.vue'
-import BlockMaterialAdditionalInfo from '@/components/assets/material/edit/BlockMaterialAdditionalInfo.vue'
+import BlockMaterialInformation from '@/components/assets/edit/BlockMaterialInformation.vue'
+import BlockMaterialInventory from '@/components/assets/edit/BlockMaterialInventory.vue'
+import BlockMaterialPricing from '@/components/assets/edit/BlockMaterialPricing.vue'
+import BlockMaterialAdditionalInfo from '@/components/assets/edit/BlockMaterialAdditionalInfo.vue'
 import useMaterialValidation from '@/composables/useMaterialValidation'
 import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
@@ -133,7 +133,7 @@ const cancel = async () => {
   store.dispatch('helper/pushModalConfirm', {
     type: 1,
     header: t('DD0033'),
-    content: t('DD0034'),
+    contentText: t('DD0034'),
     primaryBtnText: t('UU0001'),
     primaryBtnHandler: () => {
       isConfirmedToLeave.value = true
@@ -157,7 +157,7 @@ onBeforeRouteLeave(async () => {
     store.dispatch('helper/openModalConfirm', {
       type: 1,
       header: t('EE0045'),
-      content: t('EE0046'),
+      contentText: t('EE0046'),
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: resolve.bind(undefined, 'confirm'),
       secondaryBtnText: t('UU0002'),

@@ -33,6 +33,10 @@ export default function useInput ({ context: { emit, slots }, inputType = ref('t
       value = Number(value)
     }
 
+    if (typeof value === 'string') {
+      value = value.trim()
+    }
+
     emit('input')
     emit('update:textValue', value)
   }

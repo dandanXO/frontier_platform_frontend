@@ -2,7 +2,7 @@
 div(v-if="isShowInactiveNotifyBar" class="w-full h-14 flex justify-between items-center bg-brand pl-12.5 pr-7.5")
   div(class="flex items-center text-black-0")
     svg-icon(iconName="warning_amber_round" size="24")
-    i18n-t(v-if="planStatus.INACTIVE" keypath="OO0131" tag="h6" class="text-h6 ml-3")
+    i18n-t(v-if="planStatus.INACTIVE" keypath="OO0131" tag="h6" class="text-h6 ml-3" scope="global")
       template(#OO0132)
         span(class="font-bold") {{ $t('OO0132') }}
     h6(v-else-if="planStatus.TRANSITION" class="text-h6 ml-3") {{ $t('OO0058') }}

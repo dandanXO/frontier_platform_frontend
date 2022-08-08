@@ -28,58 +28,52 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
               div
                 p(class="text-body1 font-bold text-primary leading-1.6 line-clamp-1") {{ offer.name }}
                 p(class="text-caption text-black-800 leading-1.6") {{ $t('RR0068', { number: offer.itemCounts }) }}・{{ offer.lastUpdateTime }}
-    div(class="flex-grow bg-black-0 border-primary-middle border rounded h-full")
+    div(class="flex-grow bg-black-0 border-primary-middle border rounded px-6 pt-2")
       div(v-if="moodboardOfferList.length === 0" class="text-center pt-30")
         h4(class="text-h4 text-primary pb-6") {{ $t('QQ0018') }}
         p(class="text-body2 text-black-700") {{ $t('QQ0019') }}
       template(v-else)
-        div(class="h-full flex flex-col")
-          div(v-if="currentOfferId !== 'all'" class="flex px-6 pt-5 -mx-6")
-            div(class="w-6 border-b border-black-400")
-            tabs(:tabList="tabList" :initValue="currentTab" :key="currentOfferId" class="flex-grow" @switch="switchTab($event)")
-            div(class="w-6 border-b border-black-400")
-          div(v-if="currentTab !== MOODBOARD_TAB.COMMENT" class="px-6 flex-grow flex flex-col")
-            div(class="flex justify-between items-center pt-4")
-              input-text(
-                v-model:textValue="keyword"
-                size="sm"
-                class="w-67.5"
-                prependIcon="search"
-                :placeholder="$t('RR0053')"
-                @enter="search"
-                @clear="search"
-              )
-              btn(v-if="currentOfferId === 'all'" size="sm" type="secondary" prependIcon="pinned" @click="goToMoodboardPickedList(moodboard.moodboardId)") {{ $t("QQ0086") }}
-            div(class="pt-3 pb-3.5 h-6 box-content flex items-center justify-between")
-              breadcrumb(:breadcrumbList="moodboardOfferNodeCollection.locationList" fontSize="text-body2" @click:item="goTo($event.nodeId)")
-              btn-functional(v-if="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED" size="lg" @click="selectAll") {{ $t("RR0209") }}
-            div(v-if="isLoading" class="flex-grow flex items-center justify-center")
-              svg-icon(iconName="loading" size="92" class="text-brand")
-            div(v-else
-              class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start pb-2 overflow-y-auto hide-scrollbar"
-              :class="[currentOfferId === 'all' ? 'h-170' : 'h-156']"
+        tabs(v-if="currentOfferId !== 'all'"  :tabList="tabList" :initValue="currentTab" :key="currentOfferId" @switch="switchTab($event)")
+        div(v-if="currentTab !== MOODBOARD_TAB.COMMENT" class="pt-4")
+          div(class="flex justify-between items-center")
+            input-text(
+              v-model:textValue="keyword"
+              size="sm"
+              class="w-67.5"
+              prependIcon="search"
+              :placeholder="$t('RR0053')"
+              @enter="search"
+              @clear="search"
             )
-              child-node-item(
-                v-for="node in moodboardOfferNodeCollection.childNodeList"
-                v-model:selectedList="selectedNodeList"
-                :node="node"
-                :properties="node.properties"
-                :isSelectable="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED"
-                :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.properties.name : node.properties.materialNo"
-                :optionList="optionNode(node)"
-                @click:option="$event.func(node)"
-                @click.stop="handleNodeClick(node)"
-              )
-                template(#caption v-if="node.nodeType === NODE_TYPE.MATERIAL")
-                  btn-pick-tooltip(
-                    class="absolute right-0 -bottom-0.5"
-                    :isPicked="node.isPicked"
-                    @togglePick="togglePick(node, currentTab === MOODBOARD_TAB.PICKED, false)"
-                  )
-          template(v-if="currentTab === MOODBOARD_TAB.COMMENT")
-            div(v-if="isLoading" class="flex-grow flex items-center justify-center")
-              svg-icon(iconName="loading" size="92" class="text-brand")
-            mood-board-comment(v-else :moodboardId="moodboard.moodboardId" :offerId="Number(currentOfferId)")
+            btn(v-if="currentOfferId === 'all'" size="sm" type="secondary" prependIcon="pinned" @click="goToMoodboardPickedList(moodboard.moodboardId)") {{ $t("QQ0086") }}
+          div(class="pt-3 pb-3.5 h-6 box-content flex items-center justify-between")
+            breadcrumb(:breadcrumbList="moodboardOfferNodeCollection.locationList" fontSize="text-body2" @click:item="goTo($event.nodeId)")
+            btn-functional(v-if="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED" size="lg" @click="selectAll") {{ $t("RR0209") }}
+          div(v-if="isLoading" class="flex-grow flex items-center justify-center")
+            svg-icon(iconName="loading" size="92" class="text-brand")
+          div(v-else
+            class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start pb-2 overflow-y-auto hide-scrollbar"
+            :class="[currentOfferId === 'all' ? 'h-166' : 'h-156']"
+          )
+            grid-item-node(
+              v-for="node in moodboardOfferNodeCollection.childNodeList"
+              v-model:selectedValue="selectedNodeList"
+              :node="node"
+              :isSelectable="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED"
+              :optionList="optionNode(node)"
+              @click:option="$event.func(node)"
+              @click.stop="handleNodeClick(node)"
+            )
+              template(#caption v-if="node.nodeType === NODE_TYPE.MATERIAL")
+                btn-pick-tooltip(
+                  class="absolute right-0 -bottom-0.5"
+                  :isPicked="node.isPicked"
+                  @togglePick="togglePick(node, currentTab === MOODBOARD_TAB.PICKED, false)"
+                )
+        template(v-if="currentTab === MOODBOARD_TAB.COMMENT")
+          div(v-if="isLoading" class="flex-grow flex items-center justify-center")
+            svg-icon(iconName="loading" size="92" class="text-brand")
+          mood-board-comment(v-else :moodboardId="moodboard.moodboardId" :offerId="Number(currentOfferId)")
 multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")
 </template>
 
@@ -88,10 +82,10 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { MOODBOARD_TAB, NODE_TYPE, U3M_STATUS } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
-import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'
 import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
-import MultiSelectMenu from '@/components/layout/MultiSelectMenu.vue'
+import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
 import useMoodboardDetail from '@/composables/useMoodboardDetail.js'
 import useMoodboardNode from '@/composables/useMoodboardNode.js'
 import useNavigation from '@/composables/useNavigation'

@@ -13,11 +13,14 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
   "files.insertFinalNewline": true,
   "i18n-ally.localesPaths": ["src/locales"],
   "i18n-ally.sourceLanguage": "en-US",
   "i18n-ally.keystyle": "nested",
-  "cSpell.words": ["moodboard"]
+  "cSpell.words": ["moodboard", "Pantone", "Unbilled"]
 }

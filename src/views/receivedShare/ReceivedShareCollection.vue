@@ -22,7 +22,7 @@ div(class="w-315 h-full mx-auto")
               breadcrumb(:breadcrumbList="breadcrumbList" @click:item="(currentNodeKey = $event.nodeKey); goTo()" fontSize="text-h5")
               p(class="flex text-caption text-black-700 pl-1")
                 span (
-                i18n-t(keypath="RR0068" tag="span")
+                i18n-t(keypath="RR0068" tag="span" scope="global")
                   template(#number) {{ pagination.totalCount }}
                 span )
             tooltip(placement="bottom")
@@ -44,30 +44,28 @@ div(class="w-315 h-full mx-auto")
               p(class="text-body2 text-primary") {{ $t("GG0028") }}
     template(#default="{ goTo }")
       div(v-if="nodeList.length > 0" class="mx-7.5 grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start")
-        child-node-item(
+        grid-item-node(
           v-for="node in nodeList"
-          v-model:selectedList="selectedNodeList"
+          v-model:selectedValue="selectedNodeList"
           :node="node"
-          :properties="node"
-          :displayName="node.nodeType === NODE_TYPE.COLLECTION ? node.name : node.materialNo"
           @click.stop="handleNodeClick(node, goTo)"
         )
-          template(#cover-overlay)
+          template(#hover-corner-bottom-left)
             svg-icon(
               iconName="clone"
               size="20"
-              class="absolute bottom-3 right-3 cursor-pointer text-black-500"
+              class="cursor-pointer text-black-500"
               @click.stop="receivedShareCloneByNodeKey(node.nodeKey)"
             )
 </template>
 
 <script setup>
-import SearchTable from '@/components/layout/SearchTable.vue'
+import SearchTable from '@/components/common/SearchTable.vue'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import { SEARCH_TYPE, SORT_BY, NODE_TYPE } from '@/utils/constants.js'
 import { useRoute, useRouter } from 'vue-router'
-import ChildNodeItem from '@/components/layout/ChildNodeItem.vue'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation.js'

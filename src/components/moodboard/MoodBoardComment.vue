@@ -11,7 +11,7 @@ div(class="flex flex-col items-center")
         :placeholder="$t('QQ0036')"
         keyOptionDisplay="label"
         keyOptionValue="value"
-        class="w-82 mb-3 z-10"
+        class="w-82 mb-3"
         @select="handleSelect"
       )
       div(class="flex items-end")
@@ -32,7 +32,7 @@ div(class="flex flex-col items-center")
             p(class="text-body2 text-primary mb-1.5") {{ comment.name }}
             p(class="text-caption text-black-600") {{ comment.createDate }}
         div(class="pl-11 text-body2 text-primary leading-1.6") {{ comment.comment }}
-    i18n-t(v-else keypath="QQ0042" tag="p" class="text-body1 text-black-600 leading-1.6 text-center whitespace-nowrap")
+    i18n-t(v-else keypath="QQ0042" tag="p" class="text-body1 text-black-600 leading-1.6 text-center whitespace-nowrap" scope="global")
       template(#newline)
         br
 </template>

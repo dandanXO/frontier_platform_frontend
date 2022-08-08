@@ -76,7 +76,7 @@ instance.interceptors.response.use(async response => {
       store.dispatch('helper/openModalConfirm', {
         type: type || 3,
         header: title || 'Something went wrong!',
-        content: content,
+        contentText: content,
         primaryBtnText: i18n.global.t('UU0031'),
         primaryBtnHandler: () => window.location.reload()
       })
@@ -106,7 +106,7 @@ instance.interceptors.response.use(async response => {
     store.dispatch('helper/openModalConfirm', {
       type: 3,
       header: i18n.global.t('RR0107'),
-      content: i18n.global.t('RR0108'),
+      contentText: i18n.global.t('RR0108'),
       primaryBtnText: i18n.global.t('UU0031'),
       primaryBtnHandler: () => window.location.reload()
     })
@@ -115,4 +115,18 @@ instance.interceptors.response.use(async response => {
   return Promise.reject({ status, code, message })
 })
 
-export default instance
+const apiWrapper = (path, type = 'org', id, params = {}) => {
+  const data = { ...params }
+  if (type === 'org') {
+    data['orgId'] = id
+  } else {
+    data['groupId'] = id
+  }
+  const prefixPath = type === 'org' ? '/org' : '/org/group'
+  return instance(`${prefixPath}${path}`, { method: 'POST', data })
+}
+
+export {
+  instance as default,
+  apiWrapper,
+}

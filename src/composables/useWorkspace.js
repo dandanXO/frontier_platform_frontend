@@ -28,7 +28,7 @@ export default function useWorkspace () {
     name: t('RR0054'),
     func: (node) => {
       const workspaceNodeId = node.workspaceNodeId
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-create-or-edit-collection',
         properties: {
           mode: 2,
@@ -42,11 +42,11 @@ export default function useWorkspace () {
     id: FUNCTION_ID.EDIT_MATERIAL,
     name: t('RR0054'),
     func: (node) => {
-      const { sourceAssetLocation } = node
+      const { materialId, sourceAssetLocation } = node.properties
       if (sourceAssetLocation === SOURCE_ASSET_LOCATION.ORG) {
-        goToOrgAssetMaterialEdit(node.materialId)
+        goToOrgAssetMaterialEdit(materialId)
       } else {
-        goToGroupAssetMaterialEdit(node.materialId)
+        goToGroupAssetMaterialEdit(materialId)
       }
     }
   }
@@ -56,7 +56,7 @@ export default function useWorkspace () {
     name: t('RR0076'),
     func: (node) => {
       const workspaceNodeId = node.workspaceNodeId
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-workspace-node-list',
         properties: {
           modalTitle: t('FF0043'),
@@ -66,7 +66,7 @@ export default function useWorkspace () {
               store.dispatch('helper/pushModalConfirm', {
                 type: 1,
                 header: t('FF0040'),
-                content: t('FF0048'),
+                contentText: t('FF0048'),
                 primaryBtnText: t('UU0001'),
                 primaryBtnHandler: resolve.bind(undefined, 'confirm'),
                 secondaryBtnText: t('UU0002'),
@@ -84,7 +84,7 @@ export default function useWorkspace () {
               })
               store.dispatch('helper/closeModalLoading')
               store.dispatch('helper/reloadInnerApp')
-              store.commit('helper/PUSH_message', t('FF0047'))
+              store.dispatch('helper/pushFlashMessage', t('FF0047'))
             }
           }
         }
@@ -97,7 +97,7 @@ export default function useWorkspace () {
     name: t('RR0077'),
     func: (node) => {
       const workspaceNodeId = node.workspaceNodeId
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-workspace-node-list',
         properties: {
           modalTitle: t('FF0036'),
@@ -111,7 +111,7 @@ export default function useWorkspace () {
               store.dispatch('helper/pushModalConfirm', {
                 type: 1,
                 header: t('FF0040'),
-                content: t('FF0041'),
+                contentText: t('FF0041'),
                 primaryBtnText: t('UU0001'),
                 primaryBtnHandler: resolve.bind(undefined, 'confirm'),
                 secondaryBtnText: t('UU0002'),
@@ -128,7 +128,7 @@ export default function useWorkspace () {
               const { name: collectionName } = await store.dispatch('workspace/getCollection', { workspaceNodeId: targetWorkspaceNodeId })
               store.dispatch('helper/closeModalLoading')
               store.dispatch('helper/reloadInnerApp')
-              store.commit('helper/PUSH_message', t('FF0042', { collectionName }))
+              store.dispatch('helper/pushFlashMessage', t('FF0042', { collectionName }))
             }
           }
         }
@@ -136,12 +136,12 @@ export default function useWorkspace () {
     }
   }
 
-  const deleteNodeList = async (workspaceNodeIdList, header, content) => {
+  const deleteNodeList = async (workspaceNodeIdList, header, contentText) => {
     const result = await new Promise((resolve) => {
       store.dispatch('helper/pushModalConfirm', {
         type: 1,
         header,
-        content,
+        contentText,
         primaryBtnText: t('UU0001'),
         primaryBtnHandler: resolve.bind(undefined, 'confirm'),
         secondaryBtnText: t('UU0002'),
@@ -187,7 +187,7 @@ export default function useWorkspace () {
     id: FUNCTION_ID.SHARE_NODE,
     name: t('RR0079'),
     func: (node) => {
-      store.dispatch('helper/openModal', {
+      store.dispatch('helper/openModalBehavior', {
         component: 'modal-share',
         properties: {
           nodeKey: node.nodeKey,

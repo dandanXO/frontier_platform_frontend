@@ -17,7 +17,7 @@ modal-behavior(:header="$t('RR0155')")
             img(v-if="shareTarget.logo" :src="shareTarget.logo" class="w-8 h-8 rounded-full")
             div(v-else class="w-8 h-8 rounded-full border-black-500 border border-dashed")
             p(class="flex-grow text-body2 text-primary !break-all line-clamp-1") {{ shareTarget.name }} ({{ shareTarget.itemCounts }})
-            p(class="text-body2 text-warn-middle cursor-pointer invisible group-hover:visible" @click="removeMoodboardShare(shareTarget.shareId)") {{ $t('UU0016') }}
+            p(class="text-body2 text-warn-middle cursor-pointer invisible group-hover:visible" @click="removeMoodboardShare(shareTarget)") {{ $t('UU0016') }}
 </template>
 
 <script setup>
@@ -36,17 +36,17 @@ const openModalMoodboardShare = () => {
   })
 }
 
-const removeMoodboardShare = (shareId) => {
+const removeMoodboardShare = (shareTarget) => {
   store.dispatch('helper/pushModalConfirm', {
     type: 1,
-    header: t('QQ0025'),
-    content: t('QQ0026'),
+    header: t('QQ0025', { orgName: shareTarget.name }),
+    contentText: t('QQ0026', { orgName: shareTarget.name }),
     primaryBtnText: t('UU0097'),
     primaryBtnHandler: async () => {
       store.dispatch('helper/pushModalLoading')
-      await store.dispatch('moodboard/removeMoodboardShare', { shareId })
+      await store.dispatch('moodboard/removeMoodboardShare', { shareId: shareTarget.shareId })
       store.dispatch('helper/closeModalLoading')
-      store.commit('helper/PUSH_message', t('QQ0027'))
+      store.dispatch('helper/pushFlashMessage', t('QQ0027', { orgName: shareTarget.name }))
     },
     textBtnText: t('UU0002')
   })

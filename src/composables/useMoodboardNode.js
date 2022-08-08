@@ -15,10 +15,11 @@ export default function useMoodboardNode (moodboard, moodboardOfferNodeCollectio
   const { moodboardId, moodboardType } = moodboard.value
 
   const selectedNodeList = ref([])
+
   const selectAll = () => {
-    const stringifyList = moodboardOfferNodeCollection.value.childNodeList.map(node => JSON.stringify(node))
-    const tempSelectedNodeList = [...selectedNodeList.value]
-    selectedNodeList.value = [...new Set(tempSelectedNodeList.concat(stringifyList))]
+    const stringifyNodeList = moodboardOfferNodeCollection.value.childNodeList.map(node => JSON.stringify(node))
+    const stringifySelectedNodeList = selectedNodeList.value.map(node => JSON.stringify(node))
+    selectedNodeList.value = [...new Set(stringifySelectedNodeList.concat(stringifyNodeList))].map(node => JSON.parse(node))
   }
 
   const cloneMoodboardNode = (nodeList) => {
@@ -33,7 +34,7 @@ export default function useMoodboardNode (moodboard, moodboardOfferNodeCollectio
         },
         cloneHandler: async (targetLocationList, optional) => {
           await store.dispatch('moodboard/cloneMoodboardNode', { nodeIdList, targetLocationList, optional })
-          store.commit('helper/PUSH_message', msg)
+          store.dispatch('helper/pushFlashMessage', msg)
         }
       }
     })
@@ -46,7 +47,7 @@ export default function useMoodboardNode (moodboard, moodboardOfferNodeCollectio
       store.dispatch('helper/openModalConfirm', {
         type: 2,
         header: t('PP0030'),
-        content: t('PP0031'),
+        contentText: t('PP0031'),
         primaryBtnText: t('UU0031'),
         secondaryBtnText: t('UU0090'),
         secondaryBtnHandler: () => {
@@ -67,7 +68,7 @@ export default function useMoodboardNode (moodboard, moodboardOfferNodeCollectio
     store.dispatch('helper/openModalConfirm', {
       type: 1,
       header: isContainCollection ? t('QQ0072') : t('QQ0065'),
-      content: isContainCollection ? t('QQ0073') : t('QQ0066'),
+      contentText: isContainCollection ? t('QQ0073') : t('QQ0066'),
       primaryBtnText: t('UU0091'),
       primaryBtnHandler: async () => {
         await store.dispatch('moodboard/deleteMoodboardNode', { nodeIdList })
@@ -79,7 +80,7 @@ export default function useMoodboardNode (moodboard, moodboardOfferNodeCollectio
 
   const openModalU3mSelectFileFormat = (nodeList) => {
     const materialList = nodeList.map(({ properties }) => properties)
-    store.dispatch('helper/openModal', {
+    store.dispatch('helper/openModalBehavior', {
       component: 'modal-u3m-select-file-format',
       properties: { materialList }
     })

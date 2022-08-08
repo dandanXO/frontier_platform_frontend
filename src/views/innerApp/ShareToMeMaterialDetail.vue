@@ -26,7 +26,7 @@ import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import useShareToMe from '@/composables/useShareToMe'
-import MaterialDetailExternal from '@/components/layout/materialDetail/MaterialDetailExternal.vue'
+import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
 
 const props = defineProps({
   nodeKey: {
@@ -72,9 +72,8 @@ const haveMsgAndFirstRead = computed(() => !!share.value?.message && isFirstTime
 
 const openModalShareMessage = () => {
   isFirstTime.value = false
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-share-message',
-    header: t('RR0146'),
     properties: {
       message: share.value.message
     }

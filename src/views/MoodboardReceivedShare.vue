@@ -39,7 +39,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import useNavigation from '@/composables/useNavigation'
-import FullscreenHeader from '@/components/layout/FullScreenHeader.vue'
+import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import BlockAttachment from '@/components/moodboard/BlockAttachment.vue'
 import { MOODBOARD_TYPE } from '@/utils/constants'
 
@@ -56,9 +56,8 @@ const hasMsg = ref(moodboardShare.message.length > 0)
 
 const openModalShareMessage = () => {
   hasMsg.value = false
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-share-message',
-    header: t('RR0146'),
     properties: {
       message: moodboardShare.message
     }
@@ -70,7 +69,7 @@ const saveReceivedShare = async () => {
     store.dispatch('helper/openModalConfirm', {
       type: 3,
       header: t('RR0214'),
-      content: t('QQ0084'),
+      contentText: t('QQ0084'),
       primaryBtnText: t('UU0031'),
       secondaryBtnText: t('UU0106'),
       secondaryBtnHandler: () => {
@@ -90,7 +89,7 @@ const saveReceivedShare = async () => {
     store.dispatch('helper/openModalConfirm', {
       type: 3,
       header: t('GG0010'),
-      content: t('GG0033'),
+      contentText: t('GG0033'),
       primaryBtnText: t('UU0072'),
       primaryBtnHandler: goToLobby,
       secondaryBtnText: t('UU0002')

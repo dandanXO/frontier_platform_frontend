@@ -1,9 +1,9 @@
 <template lang="pug">
 modal-behavior(
   :header="$t('OO0002')"
-  :primaryBtnText="$t('UU0001')"
+  :primaryBtnText="$t('UU0021')"
   :primaryBtnDisabled="!availableToConfirm"
-  :secondaryBtnText="$t('UU0002')"
+  :secondaryBtnText="$t('UU0026')"
   @click:primary="primaryHandler"
   @click:secondary="closeModalBehavior"
 )
@@ -32,7 +32,7 @@ modal-behavior(
               div(
                 class="w-30 h-12 border  rounded flex items-center justify-center text-body1 text-primary"
                 :class="[isHitUpgradeAlert || !!cancelErrorMsg ? 'border-warn' : 'border-black-400']"
-              ) {{ previewAmount }}
+              ) {{ currentTab === TAB.ADD ? previewAmount : `-${previewAmount}` }}
               div(class="cursor-pointer")
                 svg-icon(iconName="keyboard_arrow_up" size="24" @click="add")
                 svg-icon(iconName="keyboard_arrow_down" size="24" :class="{ 'text-primary-middle': setQty === 0 }" @click="reduce")
@@ -52,128 +52,146 @@ modal-behavior(
           p(class="text-body1 font-bold text-primary text-right") {{ `${$t('OO0034')}: ${$t('RR0044')} $${totalPrice}` }}
 </template>
 
-<script>
-import { ref, computed } from '@vue/reactivity'
+<script setup>
+import { ref, computed, shallowRef, h } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import usePlan from '@/composables/usePlan.js'
 
-export default {
-  name: 'ModalManageMaterialQuota',
-  setup () {
-    const { t } = useI18n()
-    const store = useStore()
-    const { openModalChoosePlan } = usePlan()
-    const TAB = {
-      ADD: 0,
-      REMOVE: 1
-    }
-    const tabList = [
-      {
-        id: TAB.ADD,
-        name: t('OO0045')
-      },
-      {
-        id: TAB.REMOVE,
-        name: t('OO0046')
-      }
-    ]
+const { t } = useI18n()
+const store = useStore()
+const { openModalChoosePlan } = usePlan()
+const TAB = {
+  ADD: 0,
+  REMOVE: 1,
+}
+const tabList = [
+  {
+    id: TAB.ADD,
+    name: t('OO0045'),
+  },
+  {
+    id: TAB.REMOVE,
+    name: t('OO0046'),
+  },
+]
 
-    const currentTab = ref(TAB.ADD)
-    const plan = computed(() => store.getters['polling/plan'])
-    const planName = computed(() => store.getters['polling/planName'])
-    const planType = computed(() => store.getters['polling/planType'])
-    const pricing = computed(() => {
-      return planType.value.BASIC
-        ? store.getters['organization/pricing'].basic
-        : store.getters['organization/pricing'].pro
-    })
-    const setQty = ref(0)
-    const previewAmount = computed(() => {
-      return currentTab.value === TAB.ADD
-        ? setQty.value * pricing.value.materialUnit
-        : setQty.value * pricing.value.materialUnit * -1
-    })
-    const isHitUpgradeAlert = computed(() => planType.value.BASIC && (previewAmount.value + plan.value.quota.material.max) > pricing.value.materialUpgradeAlert)
-    const cancelErrorMsg = computed(() => {
-      if (currentTab.value === TAB.ADD) {
-        return ''
-      }
+const currentTab = ref(TAB.ADD)
+const plan = computed(() => store.getters['polling/plan'])
+const planName = computed(() => store.getters['polling/planName'])
+const planType = computed(() => store.getters['polling/planType'])
+const pricing = computed(() => {
+  return planType.value.BASIC
+    ? store.getters['organization/pricing'].basic
+    : store.getters['organization/pricing'].pro
+})
+const setQty = ref(0)
+const previewAmount = computed(() => setQty.value * pricing.value.materialUnit)
+const isHitUpgradeAlert = computed(
+  () =>
+    planType.value.BASIC &&
+    previewAmount.value + plan.value.quota.material.max >
+    pricing.value.materialUpgradeAlert
+)
+const cancelErrorMsg = computed(() => {
+  if (currentTab.value === TAB.ADD) {
+    return ''
+  }
 
-      const { used, max } = plan.value.quota.material
-      const { materialUnit, materialFreeQuota } = pricing.value
-      if (materialFreeQuota > max - (setQty.value * materialUnit)) {
-        return t('WW0084')
-      } else if (used > max - (setQty.value * materialUnit)) {
-        return t('WW0083')
-      }
+  const { used, max } = plan.value.quota.material
+  const { materialUnit, materialFreeQuota } = pricing.value
+  if (materialFreeQuota > max - setQty.value * materialUnit) {
+    return t('WW0084')
+  } else if (used > max - setQty.value * materialUnit) {
+    return t('WW0083')
+  }
 
-      return ''
-    })
-    const totalPrice = computed(() => setQty.value * pricing.value.materialPrice)
-    const availableToConfirm = computed(() => {
-      if (currentTab.value === TAB.ADD) {
-        return setQty.value !== 0 && !isHitUpgradeAlert.value
-      } else {
-        return setQty.value !== 0 && !cancelErrorMsg.value
-      }
-    })
+  return ''
+})
+const totalPrice = computed(() => setQty.value * pricing.value.materialPrice)
+const availableToConfirm = computed(() => {
+  if (currentTab.value === TAB.ADD) {
+    return setQty.value !== 0 && !isHitUpgradeAlert.value
+  } else {
+    return setQty.value !== 0 && !cancelErrorMsg.value
+  }
+})
 
-    const switchTab = (tadId) => currentTab.value = tadId
+const switchTab = (tadId) => {
+  currentTab.value = tadId
+  setQty.value = 0
+}
 
-    const add = () => {
-      setQty.value++
-    }
+const add = () => {
+  setQty.value++
+}
 
-    const reduce = () => {
-      setQty.value > 0 && setQty.value--
-    }
+const reduce = () => {
+  setQty.value > 0 && setQty.value--
+}
 
-    const closeModalBehavior = () => store.dispatch('helper/closeModalBehavior')
+const closeModalBehavior = () => store.dispatch('helper/closeModalBehavior')
 
-    const primaryHandler = async () => {
-      store.dispatch('helper/pushModalLoading')
-      let content
+const primaryHandler = async () => {
+  if (currentTab.value === TAB.ADD) {
+    const { estimateCharging, periodDate } = await store.dispatch('organization/getChargingOfPurchaseMaterial', { setQty: setQty.value })
+    store.dispatch('helper/openModalBehavior', {
+      component: 'modal-checkout-list',
+      properties: {
+        header: t('OO0047'),
+        isChargeNow: false,
+        checkoutItemList: [
+          {
+            title: `${previewAmount.value}${t('OO0035')}`,
+            price: `$${estimateCharging}`,
+            periodDate
+          }
+        ],
+        payHandler: async () => {
+          store.dispatch('helper/pushModalLoading')
+          await store.dispatch('organization/purchaseMaterial', { setQty: setQty.value })
+          store.dispatch('helper/closeModalLoading')
 
-      if (currentTab.value === TAB.ADD) {
-        await store.dispatch('organization/purchaseMaterial', { setQty: setQty.value })
-        content = t('OO0051')
-      } else {
-        await store.dispatch('organization/cancelMaterial', { setQty: setQty.value })
-        content = t('OO0063')
-      }
-      store.dispatch('helper/closeModalLoading')
-      store.dispatch('helper/openModal', {
-        component: 'modal-payment-success',
-        properties: {
-          title: t('OO0050'),
-          content,
-          nextPayInfo: t('OO0052', { date: plan.value.renewDate }),
-          buttonText: t('UU0026')
+          store.dispatch('helper/openModalConfirm', {
+            type: 2,
+            header: t('OO0165'),
+            primaryBtnText: t('UU0031'),
+            contentComponent: shallowRef({
+              render: () => {
+                return h('div', { class: 'text-body2 leading-1.6' }, [
+                  h('p', {}, t('OO0051')),
+                  h('p', {}, t('OO0052', { date: plan.value.renewDate })),
+                ])
+              },
+            }),
+          })
         }
-      })
-    }
+      }
+    })
+  } else {
+    store.dispatch('helper/openModalConfirm', {
+      type: 1,
+      header: t('OO0168'),
+      primaryBtnText: t('UU0001'),
+      textBtnText: t('UU0026'),
+      contentText: t('OO0169', { qty: previewAmount.value }),
+      afterPrimaryBtnHandler: async () => {
+        store.dispatch('helper/openModalLoading')
+        await store.dispatch('organization/cancelMaterial', { setQty: setQty.value })
+        store.dispatch('helper/closeModalLoading')
 
-    return {
-      tabList,
-      currentTab,
-      switchTab,
-      TAB,
-      plan,
-      planName,
-      pricing,
-      setQty,
-      previewAmount,
-      add,
-      reduce,
-      isHitUpgradeAlert,
-      openModalChoosePlan,
-      totalPrice,
-      availableToConfirm,
-      closeModalBehavior,
-      primaryHandler,
-      cancelErrorMsg
-    }
+        store.dispatch('helper/openModalConfirm', {
+          type: 2,
+          header: t('OO0162'),
+          primaryBtnText: t('UU0031'),
+          contentComponent: shallowRef({
+            render: () => {
+              return h('p', { class: 'text-body2 leading-1.6', style: 'white-space: pre-line;' }, t('OO0063', { newline: '\n', date: plan.value.renewDate }))
+            },
+          })
+        })
+      }
+    })
   }
 }
 </script>
