@@ -119,10 +119,6 @@ export default {
     onMounted(() => {
       noUiSlider.create(refSlider.value, {
         connect: true,
-        format: {
-          from: (v) => v,
-          to: (v) => Number.parseFloat(v).toFixed(0) // By default, noUiSlider will format output with 2 decimals.
-        },
         tooltips: props.tooltips,
         step: props.step,
         orientation: props.orientation,

@@ -11,9 +11,9 @@ div
           v-model.number="formattedRotateDeg"
           type="number"
           class="w-full text-right py-1 pr-3 border border-black-500 rounded"
-          step="0.1"
-          min="0"
-          max="360"
+          :step="rotateSetting.step"
+          :min="rotateSetting.min"
+          :max="rotateSetting.max"
           @change="handleRotateChange"
         )
         span(class="inline-block -ml-3 w-3 text-left") °
@@ -43,128 +43,109 @@ div
     )
 </template>
 
-<script>
+<script setup>
 import { ref, computed, watch } from 'vue'
 import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 
-export default {
-  name: 'CropperDefaultLayout',
-  components: { ImageCropArea },
-  props: {
-    config: {
-      type: Object,
-      required: true
-    },
-    showScale: {
-      type: Boolean,
-      default: true
-    },
-    scaleUnit: {
-      type: String,
-      default: '%'
-    },
-    scaleInputStep: {
-      type: Number,
-      default: 1
-    },
-    scaleRange: {
-      type: Array,
-      default: () => {
-        return [100, 800]
-      }
-    },
-    scaleStart: {
-      type: Number
+const props = defineProps({
+  config: {
+    type: Object,
+    required: true
+  },
+  showScale: {
+    type: Boolean,
+    default: true
+  },
+  scaleUnit: {
+    type: String,
+    default: '%'
+  },
+  scaleInputStep: {
+    type: Number,
+    default: 1
+  },
+  scaleRange: {
+    type: Array,
+    default: () => {
+      return [100, 800]
     }
   },
-  emits: ['update:rotateDeg', 'update:scaleRatio', 'update:options'],
-  setup (props, { emit }) {
-    const refScale = ref(null)
-    const refRotateDeg = ref(null)
-    const scaleSetting = {
-      step: props.scaleInputStep,
-      tooltips: false,
-      min: props.scaleRange[0],
-      max: props.scaleRange[1]
-    }
-
-    const rotateSetting = {
-      step: 0.1,
-      tooltips: false,
-      min: 0,
-      max: 360
-    }
-
-    const scaleValue = ref(props.scaleStart || props.scaleRange[0])
-
-    const innerRotateDeg = computed({
-      get: () => props.config.rotateDeg,
-      set: (val) => emit('update:rotateDeg', val)
-    })
-
-    const formattedScaleValue = computed({
-      get: () => scaleValue.value,
-      set: (val) => {
-        if (val > props.scaleRange[1] || val < props.scaleRange[0]) return
-        scaleValue.value = val
-      }
-    })
-
-    const formattedRotateDeg = computed({
-      get: () => parseFloat(innerRotateDeg.value.toFixed(2)),
-      set: (val) => {
-        if (val.length === 0) return
-        innerRotateDeg.value = val % 360
-      }
-    })
-
-    const handleScaleChange = (e) => {
-      if (e.target.value > props.scaleRange[1]) {
-        e.target.value = props.scaleRange[1]
-        scaleValue.value = props.scaleRange[1]
-      } else if (e.target.value < props.scaleRange[0]) {
-        e.target.value = props.scaleRange[0]
-        scaleValue.value = props.scaleRange[0]
-      }
-      refScale.value.setValue(Number(e.target.value))
-    }
-
-    const handleRotateChange = (e) => {
-      const min = 0
-      const max = 360
-      if (e.target.value > max) {
-        e.target.value = max
-        innerRotateDeg.value = max
-      } else if (e.target.value < min) {
-        e.target.value = min
-        innerRotateDeg.value = min
-      }
-      refRotateDeg.value.setValue(Number(e.target.value))
-    }
-
-    watch(
-      () => scaleValue.value,
-      () => {
-        emit('update:scaleRatio', scaleValue.value)
-      },
-      {
-        immediate: true
-      }
-    )
-
-    return {
-      scaleSetting,
-      rotateSetting,
-      scaleValue,
-      formattedScaleValue,
-      formattedRotateDeg,
-      handleRotateChange,
-      handleScaleChange,
-      refScale,
-      refRotateDeg
-    }
+  scaleStart: {
+    type: Number
   }
+})
+
+const emit = defineEmits(['update:rotateDeg', 'update:scaleRatio', 'update:options'])
+
+const refScale = ref(null)
+const refRotateDeg = ref(null)
+const scaleSetting = {
+  step: props.scaleInputStep,
+  tooltips: false,
+  min: props.scaleRange[0],
+  max: props.scaleRange[1]
 }
+const rotateSetting = {
+  step: 0.1,
+  tooltips: false,
+  min: -180,
+  max: 180
+}
+const scaleValue = ref(props.scaleStart || props.scaleRange[0])
+
+const innerRotateDeg = computed({
+  get: () => props.config.rotateDeg,
+  set: (val) => emit('update:rotateDeg', val)
+})
+
+const formattedScaleValue = computed({
+  get: () => scaleValue.value,
+  set: (val) => {
+    if (val > props.scaleRange[1] || val < props.scaleRange[0]) return
+    scaleValue.value = val
+  }
+})
+
+const formattedRotateDeg = computed({
+  get: () => parseFloat(innerRotateDeg.value.toFixed(2)),
+  set: (val) => {
+    if (val.length === 0) return
+    innerRotateDeg.value = val
+  }
+})
+
+const handleScaleChange = (e) => {
+  let scale = Number(e.target.value)
+  if (scale > props.scaleRange[1]) {
+    scale = props.scaleRange[1]
+    scaleValue.value = props.scaleRange[1]
+  } else if (scale < props.scaleRange[0]) {
+    scale = props.scaleRange[0]
+    scaleValue.value = props.scaleRange[0]
+  }
+  refScale.value.setValue(scale)
+}
+
+const handleRotateChange = (e) => {
+  let rotate = Number(e.target.value)
+  if (rotate > rotateSetting.max) {
+    rotate = rotateSetting.max
+  } else if (rotate < rotateSetting.min) {
+    rotate = rotateSetting.min
+  }
+  innerRotateDeg.value = rotate
+  refRotateDeg.value.setValue(rotate)
+}
+
+watch(
+  () => scaleValue.value,
+  () => {
+    emit('update:scaleRatio', scaleValue.value)
+  },
+  {
+    immediate: true
+  }
+)
 </script>
 
 <style lang="scss" scoped>
