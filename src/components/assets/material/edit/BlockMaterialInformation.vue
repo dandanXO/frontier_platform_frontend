@@ -199,7 +199,7 @@ export default {
       required: true
     }
   },
-  setup () {
+  async setup () {
     const store = useStore()
     const material = computed(() => store.getters['assets/material'])
     const isEditMode = computed(() => material.value.materialId !== null)
@@ -242,7 +242,7 @@ export default {
       }
     }
 
-    getCropperConfig()
+    await getCropperConfig()
 
     watch(
       () => material.value,
