@@ -32,13 +32,19 @@ export default function usePlan () {
 
   const checkCanInvitedPeople = () => {
     if (planType.value.BASIC) {
+      // store.dispatch('helper/openModalConfirm', {
+      //   type: 0,
+      //   header: t('OO0099'),
+      //   contentText: t('OO0100'),
+      //   primaryBtnText: t('UU0021'),
+      //   afterPrimaryBtnHandler: openModalChoosePlan,
+      //   secondaryBtnText: t('UU0002')
+      // })
       store.dispatch('helper/openModalConfirm', {
-        type: 0,
-        header: t('OO0099'),
-        contentText: t('OO0100'),
-        primaryBtnText: t('UU0021'),
-        afterPrimaryBtnHandler: openModalChoosePlan,
-        secondaryBtnText: t('UU0002')
+        type: 1,
+        header: t('OO0109'),
+        contentText: t('OO0110'),
+        primaryBtnText: t('UU0031')
       })
       return false
     } else if (planType.value.ENT) {
@@ -55,7 +61,7 @@ export default function usePlan () {
         store.dispatch('helper/openModalConfirm', {
           type: 1,
           header: t('OO0133'),
-          contentText: t('WW0086'),
+          contentText: t('WW0085'),
           primaryBtnText: t('UU0031')
         })
         return false

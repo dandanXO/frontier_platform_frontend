@@ -70,7 +70,7 @@ const store = useStore()
 const router = useRouter()
 const route = useRoute()
 const { goToWorkspaceMaterialDetail } = useNavigation()
-const { editCollection, editMaterial, duplicateNode, moveNode, shareNode, deleteCollection, deleteMaterial, deleteMultipleNode } = useWorkspace()
+const { editNodeCollection, editNodeMaterial, duplicateNode, moveNode, shareNode, deleteCollection, deleteMaterial, deleteMultipleNode } = useWorkspace()
 
 const optionSort = {
   base: [
@@ -100,7 +100,7 @@ const optionNode = (nodeType, inSearch) => {
   if (nodeType === NODE_TYPE.COLLECTION) {
     const optionList = [
       [
-        editCollection
+        editNodeCollection
       ],
       [
         duplicateNode,
@@ -118,7 +118,7 @@ const optionNode = (nodeType, inSearch) => {
   } else {
     const optionList = [
       [
-        editMaterial
+        editNodeMaterial
       ],
       [
         moveNode

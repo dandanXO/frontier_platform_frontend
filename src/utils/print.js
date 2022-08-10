@@ -92,15 +92,15 @@ const printA4Card = async (materialList) => {
           <div class="w-full">
             <p class="text-body1 font-bold mb-3.5">${material.materialNo}</p>
             <div class="text-caption text-primary grid gap-y-1">
-              <p class="line-clamp-1"> ${t("RR0014")} : ${material.description}</p>
-              <p class="line-clamp-1"> ${t("RR0021")} : ${material.content}</p>
-              <p class="line-clamp-1"> ${t("RR0023")} : ${material.materialYarnCount}</p>
-              <p class="line-clamp-1"> ${t("RR0024")} : ${material.materialDensity}</p>
-              <p class="line-clamp-1"> ${t("RR0025")} : ${material.pattern || ''}</p>
-              <p class="line-clamp-1"> ${t("RR0026")} : ${material.color || ''}</p>
-              <p class="line-clamp-1"> ${t("RR0015")} : ${material.materialWeight}</p>
-              <p class="line-clamp-1"> ${t("RR0019")} : ${material.materialWidth}</p>
-              <p class="line-clamp-1"> ${t("RR0022")} : ${material.finish}</p>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t("RR0014")}：</p><p class="flex-1 line-clamp-2">${material.description}</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t("RR0021")}：</p><p class="flex-1 line-clamp-2">${material.content}</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t("RR0023")}：</p><p class="flex-1 line-clamp-2">${material.materialYarnCount}</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t("RR0024")}：</p><p class="flex-1 line-clamp-1">${material.materialDensity}</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t("RR0025")}：</p><p class="flex-1 line-clamp-1">${material.pattern || ''}</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t("RR0026")}：</p><p class="flex-1 line-clamp-1">${material.color || ''}</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t("RR0015")}：</p><p class="flex-1 line-clamp-1">${material.materialWeight}</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t("RR0019")}：</p><p class="flex-1 line-clamp-1">${material.materialWidth}</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t("RR0022")}：</p><p class="flex-1 line-clamp-2">${material.finish}</p></div>
             </div>
           </div>
           <div class="flex flex-col flex-shrink-0 items-center text-primary">
