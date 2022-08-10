@@ -13,11 +13,7 @@ div(class="w-195")
         p(class="text-caption text-black-700") {{ $t('UU0081') }}
           span(v-if="plan.renewDate" class="text-black-700") ・{{ $t('OO0044') }} {{ plan.renewDate }}
       btn(v-if="!planType.ENT" size="lg" :disabled="!planStatus.ACTIVE" @click="openModalChoosePlan") {{ $t('UU0075') }}
-    div(
-      class="border border-black-400 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between"
-      :class="[{ 'hover:bg-black-100 cursor-pointer': !planType.ENT && planStatus.ACTIVE }]"
-      @click="openModalManageMaterialQuota"
-    )
+    div(class="border border-black-400 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between")
       div
         p(class="text-body1 font-bold text-primary mb-1") {{ $t('OO0002') }}
         p(class="text-caption text-black-700 leading-1.6 mb-5") {{ $t('OO0137') }}
@@ -33,11 +29,7 @@ div(class="w-195")
         div(class="text-caption font-normal text-primary text-center")
           p(:class="{ 'text-warn': isMaterialFull }") {{ ((materialQuota.used / materialQuota.max) * 100).toFixed(0) }}%
           p {{ $t('OO0005') }}
-    div(
-      class="border border-black-400 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between"
-      :class="[{ 'hover:bg-black-100 cursor-pointer': !planType.ENT && planStatus.ACTIVE }]"
-      @click="openModalPurchaseU3mQuota"
-    )
+    div(class="border border-black-400 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between")
       div
         p(class="text-body1 font-bold text-primary mb-1") {{ $t('OO0003') }}
         p(class="text-caption text-black-700 leading-1.6 mb-5") {{ $t('OO0137') }}
@@ -68,57 +60,34 @@ div(class="w-195")
       btn(size="md" @click="activateOrg") {{ $t('OO0129') }}
 </template>
 
-<script>
+<script setup>
 import { computed } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 import usePlan from '@/composables/usePlan.js'
 
-export default {
-  name: 'Plan',
-  setup () {
-    const store = useStore()
-    const {
-      openModalChoosePlan,
-      openModalManageMaterialQuota,
-      openModalPurchaseU3mQuota,
-      deactivateOrg,
-      activateOrg,
-      payLastMonthUnbilledInfo
-    } = usePlan()
+const store = useStore()
+const {
+  openModalChoosePlan,
+  // openModalManageMaterialQuota,
+  // openModalPurchaseU3mQuota,
+  deactivateOrg,
+  activateOrg,
+  payLastMonthUnbilledInfo
+} = usePlan()
 
-    const plan = computed(() => store.getters['polling/plan'])
-    const planName = computed(() => store.getters['polling/planName'])
-    const planStatus = computed(() => store.getters['polling/planStatus'])
-    const planType = computed(() => store.getters['polling/planType'])
-    const materialQuota = computed(() => plan.value.quota.material)
-    const u3mQuota = computed(() => plan.value.quota.u3m)
-    const memberQuota = computed(() => plan.value.quota.member)
-    const isMaterialFull = computed(() => {
-      const { used, max } = materialQuota.value
-      return used === max
-    })
-    const isU3mFull = computed(() => {
-      const { used, max } = u3mQuota.value
-      return used === max
-    })
-
-    return {
-      plan,
-      planName,
-      planStatus,
-      planType,
-      openModalChoosePlan,
-      openModalManageMaterialQuota,
-      openModalPurchaseU3mQuota,
-      deactivateOrg,
-      activateOrg,
-      materialQuota,
-      isMaterialFull,
-      u3mQuota,
-      isU3mFull,
-      memberQuota,
-      payLastMonthUnbilledInfo
-    }
-  }
-}
+const plan = computed(() => store.getters['polling/plan'])
+const planName = computed(() => store.getters['polling/planName'])
+const planStatus = computed(() => store.getters['polling/planStatus'])
+const planType = computed(() => store.getters['polling/planType'])
+const materialQuota = computed(() => plan.value.quota.material)
+const u3mQuota = computed(() => plan.value.quota.u3m)
+const memberQuota = computed(() => plan.value.quota.member)
+const isMaterialFull = computed(() => {
+  const { used, max } = materialQuota.value
+  return used === max
+})
+const isU3mFull = computed(() => {
+  const { used, max } = u3mQuota.value
+  return used === max
+})
 </script>

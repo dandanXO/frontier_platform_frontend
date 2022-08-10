@@ -35,7 +35,7 @@ const getters = {
   planName: (state, getters) => {
     const { BASIC, PRO, ENT } = PLAN_TYPE
     const obj = {
-      [BASIC]: i18n.global.t('RR0159'),
+      [BASIC]: i18n.global.t('OO0174'),
       [PRO]: i18n.global.t('RR0160'),
       [ENT]: i18n.global.t('RR0161')
     }

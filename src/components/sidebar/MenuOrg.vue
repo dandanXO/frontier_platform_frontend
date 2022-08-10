@@ -19,21 +19,21 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
           list-item(class="h-10")
             div(class="pl-4.5 w-full flex justify-between items-center")
               p(class="text-primary text-caption") {{ $t("OO0002") }}: {{ plan.quota.material.used }}/{{ plan.quota.material.max }}
-              button(
-                v-permission="FUNC_ID.OPEN_MANAGE_MATERIAL_QUOTA"
-                v-if="planStatus.ACTIVE && !planType.ENT"
-                class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark"
-                @click="openModalManageMaterialQuota"
-              ) {{ $t("UU0073") }}
+              //- button(
+              //-   v-permission="FUNC_ID.OPEN_MANAGE_MATERIAL_QUOTA"
+              //-   v-if="planStatus.ACTIVE && !planType.ENT"
+              //-   class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark"
+              //-   @click="openModalManageMaterialQuota"
+              //- ) {{ $t("UU0073") }}
           list-item(class="h-10")
             div(class="pl-4.5 w-full flex justify-between items-center")
               p(class="text-primary text-caption") {{ $t("OO0003") }}: {{ plan.quota.u3m.used }}/{{ plan.quota.u3m.max }}
-              button(
-                v-permission="FUNC_ID.OPEN_PURCHASE_U3M"
-                v-if="planStatus.ACTIVE && !planType.ENT"
-                class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark"
-                @click="openModalPurchaseU3mQuota"
-              ) {{ $t("UU0074") }}
+              //- button(
+              //-   v-permission="FUNC_ID.OPEN_PURCHASE_U3M"
+              //-   v-if="planStatus.ACTIVE && !planType.ENT"
+              //-   class="rounded-full flex items-center justify-center bg-brand text-black-0 px-3.5 py-1 text-caption hover:bg-brand-dark"
+              //-   @click="openModalPurchaseU3mQuota"
+              //- ) {{ $t("UU0074") }}
           div(class="mx-2 my-1 h-px bg-black-400")
           list-item(v-permission="FUNC_ID.VISIT_BILLING_PAGE" @click="goToBillings(); collapsePopper()" class="cursor-pointer")
             div(class="w-full flex justify-between items-center")
@@ -70,13 +70,13 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import useNavigation from '@/composables/useNavigation.js'
-import usePlan from '@/composables/usePlan.js'
+// import usePlan from '@/composables/usePlan.js'
 import { FUNC_ID } from '@/utils/constants.js'
 
 
 const store = useStore()
 const { goToBillings, goToLobby } = useNavigation()
-const { openModalManageMaterialQuota, openModalPurchaseU3mQuota } = usePlan()
+// const { openModalManageMaterialQuota, openModalPurchaseU3mQuota } = usePlan()
 
 const isExpand = ref(false)
 
@@ -85,7 +85,7 @@ const orgLogo = computed(() => store.getters['organization/orgLogo'])
 const plan = computed(() => store.getters['polling/plan'])
 const planName = computed(() => store.getters['polling/planName'])
 const planStatus = computed(() => store.getters['polling/planStatus'])
-const planType = computed(() => store.getters['polling/planType'])
+// const planType = computed(() => store.getters['polling/planType'])
 const notificationList = computed(() => {
   return isExpand.value
     ? store.getters['polling/notificationList']

@@ -85,7 +85,8 @@ const menuOrgOrGroup = computed(() => {
         {
           id: 'workspace',
           title: t('RR0009'),
-          path: `/${orgNo}/workspace/${NODE_LOCATION.ORG}-${workspaceNodeId}`
+          path: `/${orgNo}/workspace/${NODE_LOCATION.ORG}-${workspaceNodeId}`,
+          pathUseToMatch: `/${orgNo}/workspace`
         },
         {
           id: 'moodboard',
@@ -116,7 +117,8 @@ const menuOrgOrGroup = computed(() => {
           {
             id: 'workspace',
             title: t('RR0009'),
-            path: `/${orgNo}/${groupId}/workspace/${NODE_LOCATION.GROUP}-${workspaceNodeId}`
+            path: `/${orgNo}/${groupId}/workspace/${NODE_LOCATION.GROUP}-${workspaceNodeId}`,
+            pathUseToMatch: `/${orgNo}/${groupId}/workspace`
           },
           {
             id: 'moodboard',

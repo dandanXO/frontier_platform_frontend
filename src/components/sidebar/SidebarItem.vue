@@ -28,6 +28,10 @@ export default {
       type: String,
       required: true
     },
+    pathUseToMatch: {
+      type: String,
+      default: ''
+    },
     id: {
       type: String,
       required: true
@@ -47,7 +51,6 @@ export default {
       if (
         props.id === 'management' && ['OrgManagement', 'GroupManagement'].includes(route.name)
         || props.id === 'progress' && ['OrgProgress', 'GroupProgress'].includes(route.name)
-        || props.id === 'workspace' && ['OrgWorkspace', 'GroupWorkspace'].includes(route.name)
       ) {
         return true
       }
@@ -62,7 +65,8 @@ export default {
         path = path.replace(/\(\\d\+\)/, '')
         return path
       })
-      return matchedPathList.some(matchedPath => matchedPath.includes(props.path))
+
+      return matchedPathList.some(matchedPath => matchedPath.includes(props.pathUseToMatch !== '' ? props.pathUseToMatch : props.path))
     })
 
     const goTo = async () => {

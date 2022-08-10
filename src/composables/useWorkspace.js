@@ -23,7 +23,7 @@ export default function useWorkspace () {
     SHARE_NODE: 5
   }
 
-  const editCollection = {
+  const editNodeCollection = {
     id: FUNCTION_ID.EDIT_COLLECTION,
     name: t('RR0054'),
     func: (node) => {
@@ -38,16 +38,20 @@ export default function useWorkspace () {
     }
   }
 
-  const editMaterial = {
+  const editNodeMaterial = {
     id: FUNCTION_ID.EDIT_MATERIAL,
     name: t('RR0054'),
     func: (node) => {
       const { materialId, sourceAssetLocation } = node.properties
-      if (sourceAssetLocation === SOURCE_ASSET_LOCATION.ORG) {
-        goToOrgAssetMaterialEdit(materialId)
-      } else {
-        goToGroupAssetMaterialEdit(materialId)
-      }
+      editMaterial(materialId, sourceAssetLocation)
+    }
+  }
+
+  const editMaterial = (materialId, sourceAssetLocation) => {
+    if (sourceAssetLocation === SOURCE_ASSET_LOCATION.ORG) {
+      goToOrgAssetMaterialEdit(materialId)
+    } else {
+      goToGroupAssetMaterialEdit(materialId)
     }
   }
 
@@ -199,13 +203,14 @@ export default function useWorkspace () {
   }
 
   return {
-    editCollection,
-    editMaterial,
+    editNodeCollection,
+    editNodeMaterial,
     duplicateNode,
     moveNode,
     shareNode,
     deleteMultipleNode,
     deleteCollection,
-    deleteMaterial
+    deleteMaterial,
+    editMaterial
   }
 }

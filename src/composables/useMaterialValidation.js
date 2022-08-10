@@ -59,7 +59,7 @@ export default function useMaterialValidation () {
 
         total += percentage
       }
-      if (total !== 100) {
+      if (Number(total.toFixed(3)) !== 100) {
         return t('WW0005')
       }
 

@@ -233,7 +233,7 @@ export default {
 
       let coverImg = null
       if (!!attachmentCropImg) {
-        coverImg = await dispatch('uploadFileToS3', { fileName: file.name, file: attachmentCropImg }, { root: true })
+        coverImg = await dispatch('uploadFileToS3', { fileName: attachmentCropImg.name, file: attachmentCropImg }, { root: true })
       }
 
       const tempParams = {

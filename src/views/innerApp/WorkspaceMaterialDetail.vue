@@ -5,7 +5,7 @@ div(class="w-full h-full flex justify-center")
     div(class="pb-7.5")
       div(class="flex items-center pb-2")
         h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{ `${material.materialNo} ${material.description}` }}
-        svg-icon(iconName="create" class="text-black-700 cursor-pointer" size="24" @click="editMaterial.func(material)")
+        svg-icon(iconName="create" class="text-black-700 cursor-pointer" size="24" @click="editMaterial(material.materialId, material.sourceAssetLocation)")
       p(class="text-caption text-black-700") {{ $t("EE0014") }} : {{ lastUpdateDate }}
     material-detail-internal(:material="material")
 </template>

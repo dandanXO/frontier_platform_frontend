@@ -99,7 +99,8 @@ const Collection = {
               weftDensity,
               warpYarnCount,
               weftYarnCount,
-              coverImg
+              coverImg,
+              sourceAssetLocation
             } = material
             list.push({
               workspaceNodeId,
@@ -129,7 +130,8 @@ const Collection = {
                 weftDensity,
                 warpYarnCount,
                 weftYarnCount,
-                coverImg
+                coverImg,
+                sourceAssetLocation
               }
             })
           })

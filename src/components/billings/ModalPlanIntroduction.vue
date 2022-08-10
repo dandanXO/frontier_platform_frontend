@@ -10,7 +10,7 @@ fullscreen-header
     )
   template(#content)
     div(class="w-260 mx-auto py-25")
-      img(src="@/assets/images/price_list.png")
+      img(src="@/assets/images/price_list_new.jpg")
 </template>
 
 <script>
