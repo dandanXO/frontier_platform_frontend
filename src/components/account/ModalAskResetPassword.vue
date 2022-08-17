@@ -23,7 +23,7 @@ const props = defineProps({
 
 const store = useStore()
 const openResetPassword = () => {
-  store.dispatch('helper/openModal', {
+  store.dispatch('helper/openModalBehavior', {
     component: 'modal-reset-password',
     properties: {
       mode: 1,
