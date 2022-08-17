@@ -2,18 +2,18 @@
 modal-behavior(
   :header="$t('BB0092')"
   :primaryBtnText="$t('UU0020')"
-  :secondaryBtnText="$t('UU0004')"
+  :textBtnText="$t('UU0004')"
   :primaryButtonDisabled="!availableToCreateGroup"
   @click:primary="createGroup"
-  @click:secondary="openModalCreateGroup"
+  @click:text="openModalCreateGroup"
 )
-  div(class="w-84")
-    p(class="text-body2 text-primary leading-1.6 text-center pb-4") {{ $t("BB0093") }}
-    div(class="flex justify-between items-center")
+  div(class="w-94 h-31.5")
+    p(class="text-body2 text-primary leading-1.6 pb-4") {{ $t("BB0093") }}
+    div(class="flex items-center")
       input-text(
         v-model:textValue="uploadMaterialEmail"
         required
-        class="w-58.5"
+        class="w-68.5 mr-2"
         :customErrorMsg="errorMsg"
       )
         template(#errorMsg v-if="suggestEmailList.length > 0")
@@ -71,10 +71,15 @@ watch(
     suggestEmailList.value.length = 0
     errorMsg.value = ''
 
-    const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w+)+$/
-    const emailAddress = `${uploadMaterialEmail.value}@textile.cloud`
-    if (emailAddress.length > 60 || !re.test(emailAddress)) {
-      errorMsg.value = t('WW0019')
+    const allowed = /^[a-zA-Z0-9_.-]+$/
+    const order = /^[a-zA-Z0-9]+([_.-]?[a-zA-Z0-9]+)+$/
+
+    if (!allowed.test(uploadMaterialEmail.value)) {
+      errorMsg.value = t('WW0114')
+    } else if (!order.test(uploadMaterialEmail.value)) {
+      errorMsg.value = t('WW0115')
+    } else if (uploadMaterialEmail.value.length > 46) {
+      errorMsg.value = t('WW0116')
     }
   }
 )

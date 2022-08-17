@@ -73,7 +73,8 @@ const cropImage = () => {
       allowTaint: true,
       useCORS: true,
       width: realSize.value,
-      height: realSize.value
+      height: realSize.value,
+      scale: 1
     }).then((canvas) => {
       cropRect.value.style.width = 0
       cropRect.value.style.height = 0

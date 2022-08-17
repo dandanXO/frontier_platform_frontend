@@ -33,18 +33,27 @@ modal-behavior(
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 
+const props = defineProps({
+  workspaceNodeId: {
+    type: [String, Number],
+    required: true
+  }
+})
+
 const store = useStore()
 const shareList = computed(() => store.getters['workspace/shareInfo'].shareList)
 
 const updatedAssignedShare = async (item) => {
   store.dispatch('helper/pushModalLoading')
   await store.dispatch('workspace/updatedAssignedShare', item)
+  await store.dispatch('workspace/getShareInfo', { workspaceNodeId: props.workspaceNodeId })
   store.dispatch('helper/closeModalLoading')
 }
 
 const removeAssignedShare = async (item) => {
   store.dispatch('helper/pushModalLoading')
   await store.dispatch('workspace/removeAssignedShare', item)
+  await store.dispatch('workspace/getShareInfo', { workspaceNodeId: props.workspaceNodeId })
   store.dispatch('helper/closeModalLoading')
 
   if (shareList.value.length === 0) {

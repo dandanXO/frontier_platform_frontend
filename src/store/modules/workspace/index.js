@@ -185,14 +185,10 @@ export default {
       commit('SET_shareInfo', { shareList: data.result.shareList })
     },
     async updatedAssignedShare ({ dispatch }, params) {
-      const { workspaceNodeId } = params
       await dispatch('callWorkspaceApi', { func: 'updatedAssignedShare', params })
-      dispatch('getShareInfo', { workspaceNodeId })
     },
     async removeAssignedShare ({ dispatch }, params) {
-      const { workspaceNodeId } = params
       await dispatch('callWorkspaceApi', { func: 'removeAssignedShare', params })
-      await dispatch('getShareInfo', { workspaceNodeId })
     },
     async toggleCopyLink ({ dispatch }, params) {
       await dispatch('callWorkspaceApi', { func: 'toggleCopyLink', params })

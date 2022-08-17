@@ -50,7 +50,7 @@ const handleRecutImage = () => {
 
 const handleCreateU3mAuto = async () => {
   store.dispatch('helper/pushModalLoading')
-  await store.dispatch('assets/generateU3m', {})
+  await store.dispatch('assets/generateU3m', { isAutoRepeat: true })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/openModalConfirm', {
     type: 2,

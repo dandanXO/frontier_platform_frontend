@@ -136,10 +136,10 @@ const Material = {
   mutations: {
     SET_material (state, material) {
       Object.assign(state, material)
-      if (!material.weightUnit) {
+      if (!state.weightUnit) {
         state.weightUnit = WEIGHT_UNIT.GSM.value
       }
-      state.weight = material.weightUnit === WEIGHT_UNIT.GSM.value ? material.weightGsm : material.weightOz
+      state.weight = state.weightUnit === WEIGHT_UNIT.GSM.value ? state.weightGsm : state.weightOz
     },
     RESET_material (state) {
       Object.assign(state, Material.state())
