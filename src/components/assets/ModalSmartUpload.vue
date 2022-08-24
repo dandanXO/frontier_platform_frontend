@@ -1,11 +1,11 @@
 <template lang="pug">
 modal-behavior(
-  :header="isUploading ? $t('RR0162') : isFinish ? $t('DD0107') : $t('DD0094')"
+  :header="isUploading ? $t('DD0112') : isFinish ? $t('DD0113') : $t('DD0094')"
   :primaryBtnText="isUploading ? '' : isFinish ? $t('UU0087') : $t('UU0022')"
-  :secondaryBtnText="$t('UU0002')"
-  :primaryBtnDisabled="disabledUpload || isLoading"
+  :secondaryBtnText="isFinish ? $t('UU0026') : $t('UU0002')"
+  :primaryBtnDisabled="disabledUpload"
   @click:primary="isFinish ? confirmAndViewProgress() : startUpload()"
-  @click:secondary="cancelUpload()"
+  @click:secondary="isFinish ? closeModalBehavior() : cancelUpload()"
 )
   template(#note)
     file-upload-error-note(v-if="errorCode" :errorCode="errorCode" :fileSizeMaxLimit="fileSizeMaxLimit")
@@ -35,17 +35,29 @@ modal-behavior(
           div(class="text-caption text-black-600 leading-1.6 pt-2.5 pb-2") {{ $t("DD0105") }}
           btn(size="md" @click="chooseFile") {{ $t("UU0025") }}
     template(v-else)
-      overlay-scrollbar-container(class="h-75")
+      template(v-if="isFinish")
+        div(class="flex items-center bg-black-50 py-2.5 px-4 mb-1 h-14.5")
+          svg-icon(iconName="loading" size="20" class="text-brand mr-3")
+          p(class="text-caption text-black-800 leading-1.6") {{ $t("DD0114") }}
+        overlay-scrollbar-container(class="h-59.5")
+          div(class="grid divide-y divide-black-200")
+            div(v-for="image in readyToUploadFile" class="py-1 h-11 flex items-center")
+              div(class="group py-1 h-9 rounded flex items-center px-5 hover:bg-black-200")
+                div(class="w-34 text-body2 font-bold text-primary line-clamp-1 mr-2.5 flex-shrink-0") {{ image.file.name }}
+                div(class="w-40 mr-2.5 flex-shrink-0")
+                  div(class="w-full h-2 bg-black-400 rounded-lg")
+                    div(class="h-2 bg-brand rounded-lg w-full")
+                div(class="w-5 flex-shrink-0")
+      overlay-scrollbar-container(v-else class="h-75")
         div(class="grid divide-y divide-black-200")
           div(v-for="image in readyToUploadFile" class="py-1 h-11 flex items-center")
             div(class="group py-1 h-9 rounded flex items-center px-5 hover:bg-black-200")
               div(class="w-34 text-body2 font-bold text-primary line-clamp-1 mr-2.5 flex-shrink-0") {{ image.file.name }}
               div(class="w-40 mr-2.5 flex-shrink-0")
-                div(v-if="isUploading || isFinish" class="w-full h-2 bg-black-400 rounded-lg")
+                div(v-if="isUploading" class="w-full h-2 bg-black-400 rounded-lg")
                   div(class="h-2 bg-brand rounded-lg" :style="{ width: `${image.processing * 100}%` }")
               div(class="w-5 flex-shrink-0")
                 svg-icon(v-if="image.processing !== 1" iconName="clear" size="20" class="cursor-pointer text-black-600 invisible group-hover:visible" @click="image.isRemoved = true")
-                svg-icon(v-else iconName="done" size="20" class="text-brand")
 </template>
 
 <script setup>
@@ -59,7 +71,6 @@ const errorCode = ref('')
 const { goToProgress } = useNavigation()
 const isUploading = ref(false)
 const isFinish = ref(false)
-const isLoading = ref(false)
 
 const materialImageList = reactive([])
 const uploadedFiles = reactive([])
@@ -119,21 +130,31 @@ const startUpload = () => {
 
   Promise.all(readyToUploadFile.value.map(uploadToAws))
     .then(() => {
+      if (readyToUploadFile.value.length !== 0) {
+        store.dispatch('assets/smartUpload', { fileList: uploadedFiles })
+      }
+    })
+    .then(() => {
       isFinish.value = true
       isUploading.value = false
     })
 }
 
-const confirmAndViewProgress = async () => {
-  isLoading.value = true
-  await store.dispatch('assets/smartUpload', { fileList: uploadedFiles })
-  store.dispatch('helper/closeModalBehavior')
+const confirmAndViewProgress = () => {
+  closeModalBehavior()
   goToProgress()
 }
 
 const cancelUpload = () => {
-  console.log(new Date().getTime() ,'Cancel upload!')
-  materialImageList.forEach(image => image.isRemoved = true)
+  if (isUploading.value) {
+    console.log(new Date().getTime() ,'Cancel upload!')
+    materialImageList.forEach(image => image.isRemoved = true)
+  }
+
+  closeModalBehavior()
+}
+
+const closeModalBehavior = () => {
   store.dispatch('helper/closeModalBehavior')
 }
 </script>

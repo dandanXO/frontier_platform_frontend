@@ -74,9 +74,9 @@ general-table(
         template(#trigger)
           div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
             svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
-        template(#content)
+        template(#content="{ collapsePopper }")
           list
-            list-item(@click="handleCancel(item.materialProgressId)") {{ $t("UU0002") }}
+            list-item(@click="handleCancel(item.materialProgressId); collapsePopper()") {{ $t("UU0002") }}
 </template>
 
 <script setup>

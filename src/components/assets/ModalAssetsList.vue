@@ -136,12 +136,13 @@ const orgAndGroupList = computed(() => {
     key: `${NODE_LOCATION.ORG}-${organization.orgId}`,
     name: organization.orgName
   })
-  organization.groupList.forEach((group) => {
+  if (routeLocation.value === 'group') {
+    const { groupId, groupName } = store.getters['group/group']
     list.push({
-      key: `${NODE_LOCATION.GROUP}-${group.groupId}`,
-      name: group.groupName
+      key: `${NODE_LOCATION.GROUP}-${groupId}`,
+      name: groupName
     })
-  })
+  }
   return list
 })
 

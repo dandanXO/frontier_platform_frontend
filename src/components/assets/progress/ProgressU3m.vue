@@ -79,14 +79,14 @@ general-table(
           template(#trigger)
             div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
               svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
-          template(#content)
+          template(#content="{ collapsePopper }")
             list
               template(v-if="item.status === UPLOAD_PROGRESS.IN_QUEUE" )
-                list-item(@click="handleCancel(item.u3mProgressId)") {{ $t("UU0002") }}
+                list-item(@click="handleCancel(item.u3mProgressId); collapsePopper()") {{ $t("UU0002") }}
               template(v-else-if="item.status === UPLOAD_PROGRESS.COMPLETE" )
-                list-item(@click="openModalDownloadU3M(item.materialId)") {{ $t("RR0059") }}
-                list-item(@click="openModalCreate3DMaterial(item.materialId)") {{ $t("PP0019") }}
-                list-item(@click="handleViewMaterial(item)") {{ $t("PP0016") }}
+                list-item(@click="openModalDownloadU3M(item.materialId); collapsePopper()") {{ $t("RR0059") }}
+                list-item(@click="openModalCreate3DMaterial(item.materialId); collapsePopper()") {{ $t("PP0019") }}
+                list-item(@click="handleViewMaterial(item); collapsePopper()") {{ $t("PP0016") }}
 </template>
 
 <script setup>
@@ -243,8 +243,9 @@ const handleViewMaterial = (material) => {
   goToAssetMaterialDetail(material)
 }
 
-const handleCancel = (u3mProgressId) => {
-  store.dispatch('assets/progress/cancelU3mUploadProgress', { u3mProgressId })
+const handleCancel = async (u3mProgressId) => {
+  await store.dispatch('assets/progress/cancelU3mUploadProgress', { u3mProgressId })
+  await getList(pagination.value.currentPage)
 }
 
 // Polling

@@ -29,9 +29,9 @@ export default {
     method: 'POST',
     data: { email }
   }),
-  oldUserResetPassword: ({ password }) => axios('/user/old-user/reset-password', {
+  oldUserResetPassword: ({ password, oldUserVerifyToken }) => axios('/user/old-user/reset-password', {
     method: 'POST',
-    data: { password }
+    data: { password, oldUserVerifyToken }
   }),
   changePassword: ({ currentPassword, newPassword }) => axios('/user/change-password', {
     method: 'POST',

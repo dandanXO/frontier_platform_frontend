@@ -5,14 +5,14 @@ div(class="w-full h-full flex justify-center")
       breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
     div
       block-material-image
-      block-material-information(:validations="validations")
+      block-material-information(:id="SECTION_ID.BLOCK_MATERIAL_INFORMATION" :validations="validations")
       block-material-inventory(:validations="validations")
       block-material-pricing(:validations="validations")
       block-material-additional-info
       div(class="flex justify-center items-center pt-17.5")
         div(class="grid grid-cols-2 gap-x-2")
           btn(size="md" type="secondary" class="h-10" @click="cancel") {{ $t("UU0002") }}
-          btn(size="md" class="h-10" @click="updateMaterial") {{ $t("UU0018") }}
+          btn(size="md" class="h-10" :disabled="isInvalid" @click="updateMaterial") {{ $t("UU0018") }}
 </template>
 
 <script setup>
@@ -27,12 +27,14 @@ import useNavigation from '@/composables/useNavigation'
 import useMaterialValidation from '@/composables/useMaterialValidation'
 import { computed, ref } from 'vue'
 import { onBeforeRouteLeave, useRoute } from 'vue-router'
+import scrollTo from '@/utils/scrollTo'
+import { SECTION_ID } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
 const route = useRoute()
 const { parsePath, goToAssets } = useNavigation()
-const { validations, validate } = useMaterialValidation()
+const { validations, validate, isInvalid } = useMaterialValidation()
 
 const isConfirmedToLeave = ref(false)
 
@@ -53,6 +55,7 @@ const breadcrumbList = computed(() => {
 
 const updateMaterial = async () => {
   if (validate()) {
+    scrollTo(SECTION_ID.BLOCK_MATERIAL_INFORMATION)
     return
   }
   store.dispatch('helper/pushModalLoading')

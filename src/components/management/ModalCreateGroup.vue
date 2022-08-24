@@ -2,7 +2,7 @@
 modal-behavior(
   :header="$t('BB0090')"
   :primaryBtnText="$t('UU0021')"
-  :primaryButtonDisabled="!availableToNextStep"
+  :primaryBtnDisabled="!availableToNextStep"
   @click:primary="openModalCreateMailGroup"
 )
   div(class="w-94")

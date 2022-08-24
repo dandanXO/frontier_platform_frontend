@@ -1,7 +1,7 @@
 <template lang="pug">
 modal-behavior(
   :header="$t('FF0057')"
-  :primaryBtnText="$t('UU0002')"
+  :primaryBtnText="$t('UU0018')"
   @click:primary="closeModal"
 )
   overlay-scrollbar-container(class="max-h-100.5 mb-7.5 -mx-5 px-5")

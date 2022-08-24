@@ -384,3 +384,7 @@ export const CREATE_EDIT = {
   CREATE: 1,
   EDIT: 2
 }
+
+export const SECTION_ID = {
+  BLOCK_MATERIAL_INFORMATION: 'fabric-specifications'
+}
