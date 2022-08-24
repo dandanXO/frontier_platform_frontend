@@ -56,17 +56,18 @@ const generalSignIn = async () => {
     return (errorMsgSignIn.value = t('WW0019'))
   }
 
-  const isOldUser = await store.dispatch('user/generalSignIn', toRaw(formData))
+  const { isOldUser, oldUserVerifyToken } = await store.dispatch('user/generalSignIn', toRaw(formData))
 
-  if (!isOldUser) {
-    nextAfterSignIn()
-  } else {
+   if (isOldUser) {
     store.dispatch('helper/openModalBehavior', {
       component: 'modal-ask-reset-password',
       properties: {
-        email: formData.email
+        email: formData.email,
+        oldUserVerifyToken
       }
     })
+  } else {
+    nextAfterSignIn()
   }
 }
 

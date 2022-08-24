@@ -230,18 +230,17 @@ export default {
      */
     async changeCoverImg ({ getters, dispatch }, params) {
       const { attachmentCropImg } = params
-
-      let coverImg = null
-      if (!!attachmentCropImg) {
-        coverImg = await dispatch('uploadFileToS3', { fileName: attachmentCropImg.name, file: attachmentCropImg }, { root: true })
-      }
-
       const tempParams = {
         ...params,
-        materialId: getters.material.materialId,
-        tempUploadId: coverImg.tempUploadId,
-        attachmentCropImgFileName: coverImg.fileName
+        materialId: getters.material.materialId
       }
+
+      if (!!attachmentCropImg) {
+        const { tempUploadId, fileName } = await dispatch('uploadFileToS3', { fileName: attachmentCropImg.name, file: attachmentCropImg }, { root: true })
+        tempParams.tempUploadId = tempUploadId
+        tempParams.attachmentCropImgFileName = fileName
+      }
+
       delete tempParams.attachmentCropImg
 
       const { data } = await dispatch('callAssetsApi', { func: 'changeCoverImg', params: tempParams })

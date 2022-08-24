@@ -94,12 +94,12 @@ general-table(
             template(#trigger)
               div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
                 svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
-            template(#content)
+            template(#content="{ collapsePopper }")
               list(v-if="item.status === UPLOAD_PROGRESS.COMPLETE && item.category === EXCEL_CATEGORY.UPLOAD")
-                list-item(@click="handleAction(PRINT_TYPE.CARD, item.excelProgressId)") {{ $t("RR0062") }}
-                list-item(@click="handleAction(PRINT_TYPE.LABEL, item.excelProgressId)") {{ $t("RR0061") }}
+                list-item(@click="handleAction(PRINT_TYPE.CARD, item.excelProgressId); collapsePopper()") {{ $t("RR0062") }}
+                list-item(@click="handleAction(PRINT_TYPE.LABEL, item.excelProgressId); collapsePopper()") {{ $t("RR0061") }}
                 div(class="border-t border-black-400 my-1")
-                list-item(@click="handleAction(_, item.excelProgressId)") {{ $t("RR0060") }}
+                list-item(@click="handleAction(_, item.excelProgressId); collapsePopper()") {{ $t("RR0060") }}
         //- Export Complete
         btn(
           v-else-if="item.category === EXCEL_CATEGORY.EXPORT"
@@ -117,9 +117,9 @@ general-table(
         template(#trigger)
           div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
             svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
-        template(#content)
+        template(#content="{ collapsePopper }")
           list
-            list-item(@click="handleCancel(item.excelProgressId)") {{ $t("UU0002") }}
+            list-item(@click="handleCancel(item.excelProgressId); collapsePopper()") {{ $t("UU0002") }}
 </template>
 
 <script setup>

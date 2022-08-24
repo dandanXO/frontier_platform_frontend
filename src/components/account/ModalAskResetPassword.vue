@@ -18,6 +18,10 @@ const props = defineProps({
   email: {
     type: String,
     required: true
+  },
+  oldUserVerifyToken: {
+    type: String,
+    required: true
   }
 })
 
@@ -27,7 +31,8 @@ const openResetPassword = () => {
     component: 'modal-reset-password',
     properties: {
       mode: 1,
-      email: props.email
+      email: props.email,
+      oldUserVerifyToken: props.oldUserVerifyToken
     }
   })
 }

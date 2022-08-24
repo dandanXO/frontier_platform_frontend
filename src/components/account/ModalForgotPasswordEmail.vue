@@ -2,7 +2,7 @@
 modal-behavior(
   :header="$t('AA0004')"
   :primaryBtnText="$t('UU0049')"
-  :primaryButtonDisabled="!inputValidator.required(email)"
+  :primaryBtnDisabled="!inputValidator.required(email)"
   @click:primary="sendEmail"
 )
   div(class="w-80 grid justify-items-center content-start gap-y-4 mt-5")

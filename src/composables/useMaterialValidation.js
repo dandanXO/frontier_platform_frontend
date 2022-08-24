@@ -112,13 +112,11 @@ export default function useMaterialValidation () {
     return Object.keys(validations).some(key => !!validations[key])
   }
 
-  const reset = () => {
-    hasValidate.value = false
-  }
+  const isInvalid = computed(() => Object.keys(validations).some(key => !!validations[key]))
 
   return {
     validations,
     validate,
-    reset
+    isInvalid
   }
 }

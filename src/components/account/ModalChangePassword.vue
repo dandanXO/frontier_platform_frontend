@@ -3,7 +3,7 @@ modal-behavior(
   :header="$t('MM0025')"
   :primaryBtnText="$t('UU0001')"
   :secondaryBtnText="$t('UU0002')"
-  :primaryButtonDisabled="!availableToChangePassword"
+  :primaryBtnDisabled="!availableToChangePassword"
   @click:primary="changePassword"
   @click:secondary="closeModal"
 )

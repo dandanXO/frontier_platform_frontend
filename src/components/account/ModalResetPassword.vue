@@ -2,7 +2,7 @@
 modal-behavior(
   :header="$t('AA0060')"
   :primaryBtnText="$t('UU0054')"
-  :primaryButtonDisabled="!availableToChangePassword"
+  :primaryBtnDisabled="!availableToChangePassword"
   @click:primary="changeHandler"
 )
   div(class="w-80 flex flex-col items-center")
@@ -27,6 +27,9 @@ const props = defineProps({
     required: true
   },
   verifyToken: {
+    type: String
+  },
+  oldUserVerifyToken: {
     type: String
   },
   mode: {
@@ -63,7 +66,7 @@ const changeHandler = async () => {
       await store.dispatch('user/resetPassword', { password: password.value, verifyToken: props.verifyToken })
       break
     case MODE.OLD_RESET:
-      await store.dispatch('user/oldUserResetPassword', { password: password.value })
+      await store.dispatch('user/oldUserResetPassword', { password: password.value, oldUserVerifyToken: props.oldUserVerifyToken })
       break
   }
   await nextAfterSignIn()

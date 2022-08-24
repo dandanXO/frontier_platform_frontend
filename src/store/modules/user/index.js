@@ -45,7 +45,7 @@ const actions = {
   },
   async generalSignIn (_, params) {
     const { data } = await userApi.generalSignIn(params)
-    return data.result.isOldUser
+    return data.result
   },
   async googleSignUp (_, params) {
     const { data } = await userApi.googleSignUp(params)

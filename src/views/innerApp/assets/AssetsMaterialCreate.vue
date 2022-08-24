@@ -26,14 +26,14 @@ div(class="w-full h-full flex justify-center")
                 keyOptionValue="value"
                 class="w-25"
               )
-      block-material-information(:validations="validations")
+      block-material-information(:id="SECTION_ID.BLOCK_MATERIAL_INFORMATION" :validations="validations")
       block-material-inventory(:validations="validations")
       block-material-pricing(:validations="validations")
       block-material-additional-info(:tempMaterialId="tempMaterialId")
       div(class="flex justify-center items-center pt-17.5")
         div(class="grid grid-cols-2 gap-x-2")
           btn(size="md" type="secondary" class="h-10" @click="cancel") {{ $t("UU0002") }}
-          btn(size="md" class="h-10" @click="createMaterial") {{ $t("UU0020") }}
+          btn(size="md" class="h-10" :disabled="isInvalid" @click="createMaterial") {{ $t("UU0020") }}
 </template>
 
 <script setup>
@@ -46,13 +46,14 @@ import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { v4 as uuidv4 } from 'uuid'
-import { SIDE_TYPE } from '@/utils/constants'
+import { SIDE_TYPE, SECTION_ID } from '@/utils/constants'
 import { computed, ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
+import scrollTo from '@/utils/scrollTo'
 
 const { t } = useI18n()
 const store = useStore()
-const { validations, validate } = useMaterialValidation()
+const { validations, validate, isInvalid } = useMaterialValidation()
 const { parsePath, goToMaterialUpload, goToAssets } = useNavigation()
 const tempMaterialId = uuidv4()
 const optionSideType = [
@@ -101,6 +102,7 @@ const breadcrumbList = computed(() => {
 
 const createMaterial = async () => {
   if (validate()) {
+    scrollTo(SECTION_ID.BLOCK_MATERIAL_INFORMATION)
     return
   }
 

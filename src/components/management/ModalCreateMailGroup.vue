@@ -3,7 +3,7 @@ modal-behavior(
   :header="$t('BB0092')"
   :primaryBtnText="$t('UU0020')"
   :textBtnText="$t('UU0004')"
-  :primaryButtonDisabled="!availableToCreateGroup"
+  :primaryBtnDisabled="!availableToCreateGroup"
   @click:primary="createGroup"
   @click:text="openModalCreateGroup"
 )

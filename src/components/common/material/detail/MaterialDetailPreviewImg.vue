@@ -20,26 +20,33 @@ div
   div(class="aspect-square relative")
     div(v-if="!!imageList[currentDisplayIndex].src" class="w-full h-full")
       img(class="w-full h-full" :src="imageList[currentDisplayIndex].src")
-      div(class="absolute w-8 h-8 rounded-md bg-black-0 bottom-6 left-5 flex items-center justify-center cursor-pointer" @click="openMagnifyMode")
+      div(v-if="!hideMagnifier" class="absolute w-8 h-8 rounded-md bg-black-0 bottom-6 left-5 flex items-center justify-center cursor-pointer" @click="openMagnifyMode")
         svg-icon(iconName="search" size="28" class="text-black-700")
     div(v-else class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-h4 font-bold text-black-400") {{ $t("RR0103") }}
   div(class="flex pt-3 pb-4")
     p(v-for="text in imageList[currentDisplayIndex].text" class="text-caption text-center font-bold") {{ text }}
   div(class="grid grid-flow-col gap-x-2 justify-start")
-    div(v-for="(image, index) in imageList" @click="currentDisplayIndex = index")
-      div(class="w-19.5 h-19.5 rounded overflow-hidden border-black-400 bg-black-200" :class="[currentDisplayIndex === index ? 'border-4' : 'border']")
-        template(v-if="!!image.src")
-          img(class="w-full h-full" :src="image.src")
+    template(v-for="(image, index) in imageList")
+      div(
+        class="w-19.5 h-19.5 rounded overflow-hidden border-black-400 bg-black-200"
+        :class="[currentDisplayIndex === index ? 'border-4' : 'border']"
+        @click="currentDisplayIndex = index"
+      )
+        img(v-if="!!image.src" class="w-full h-full" :src="image.src")
   div(v-if="isOpenMagnifierMode" class="fixed w-screen h-screen z-popper bg-black-900/90 left-0 top-0 flex flex-col")
     div(class="shrink-0 w-full h-27.5 bg-black-900 px-10 flex items-center justify-between")
       div(class="flex items-center")
         svg-icon(iconName="zoom_in" size="24" class="text-black-50")
-        p(class="text-black-50 text-body1 font-bold pl-4") Zoom Mode
+        p(class="text-black-50 text-body1 font-bold pl-4") {{ $t("EE0132") }}
       div(class="grid grid-flow-col gap-x-2")
-        div(v-for="(image, index) in imageList" @click="currentDisplayIndex = index")
-          div(class="w-19.5 h-19.5 rounded overflow-hidden border-black-400 bg-black-200" :class="[currentDisplayIndex === index ? 'border-4' : 'border']")
-            template(v-if="!!image.src")
-              img(class="w-full h-full" :src="image.src")
+        template(v-for="(image, index) in imageList")
+          div(
+            v-if="!(props.material.coverMode === COVER_MODE.SUP && index === defaultCoverImgIndex)"
+            class="w-19.5 h-19.5 rounded overflow-hidden border-black-400 bg-black-200"
+            :class="[currentDisplayIndex === index ? 'border-4' : 'border']"
+            @click="currentDisplayIndex = index"
+          )
+            img(v-if="!!image.src" class="w-full h-full" :src="image.src")
       btn(size="md" @click="closeMagnifyMode") Exit
     div(class="flex-grow h-full relative flex items-center justify-center")
       div(class="p-10" @mouseleave="isOpenMagnifier = false" @mousemove.stop="moveMagnifier($event)")
@@ -49,7 +56,8 @@ div
 
 <script setup>
 import useMaterial from '@/composables/useMaterial'
-import { ref, nextTick } from 'vue'
+import { ref, computed, nextTick } from 'vue'
+import { COVER_MODE } from '@/utils/constants.js'
 
 const props = defineProps({
   material: {
@@ -60,6 +68,7 @@ const props = defineProps({
 
 const { imageList, defaultCoverImgIndex } = useMaterial(props.material)
 const currentDisplayIndex = ref(defaultCoverImgIndex.value)
+const hideMagnifier = computed(() => props.material.coverMode === COVER_MODE.SUP && currentDisplayIndex.value === defaultCoverImgIndex.value)
 
 const isOpenMagnifierMode = ref(false)
 const isOpenMagnifier = ref(false)

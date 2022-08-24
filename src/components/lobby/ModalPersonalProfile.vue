@@ -2,7 +2,7 @@
 modal-behavior(
   :header="$t('MM0001')"
   :primaryBtnText="$t('UU0018')"
-  :primaryButtonDisabled="!firstName || !lastName"
+  :primaryBtnDisabled="!firstName || !lastName"
   @click:primary="updateUserProfile"
 )
   div(class="w-90")
