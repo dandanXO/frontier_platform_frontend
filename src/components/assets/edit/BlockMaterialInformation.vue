@@ -41,9 +41,10 @@ div(class="pb-15 border-b border-black-400")
             input-text(
               v-model:textValue="material.weight"
               inputType="number"
-              :customErrorMsg="validations.weight"
               class="w-50"
             )
+              template(v-if="validations.weight" #errorMsg)
+                p(class="text-caption text-warn absolute pt-1 whitespace-nowrap") {{ validations.weight }}
             input-select(
               v-model:selectValue="material.weightUnit"
               :options="specOptions.weightUnitList"
@@ -57,15 +58,18 @@ div(class="pb-15 border-b border-black-400")
               :placeholder="$t('DD0017')"
               class="w-50"
             )
+              template(v-if="validations.weightGy" #errorMsg)
+                p(class="text-caption text-warn absolute pt-1 whitespace-nowrap") {{ validations.weightGy }}
             p(class="text-body2 text-primary font-bold") {{ $t("RR0018") }}
         input-container(:label="$t('RR0019')" required)
           div(class="flex items-center gap-x-3")
             input-text(
               v-model:textValue="material.width"
-              :customErrorMsg="validations.width"
               inputType="number"
               class="w-50"
             )
+              template(v-if="validations.width" #errorMsg)
+                p(class="text-caption text-warn absolute pt-1 whitespace-nowrap") {{ validations.width }}
             p(class="text-body2 text-primary font-bold") {{ $t("RR0020") }}
         input-container(:label="$t('RR0021')" required)
           div(class="grid gap-y-3")
