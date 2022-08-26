@@ -30,11 +30,15 @@ export default function useMaterialValidation () {
     }),
     width: computed(() => {
       const width = material.value.width
-      return hasValidate.value && (required(width) || integerOnly(width))
+      return hasValidate.value && (required(width) || maxI6D2(width))
     }),
     weight: computed(() => {
       const weight = material.value.weight
       return hasValidate.value && (required(weight) || maxI6D2(weight))
+    }),
+    weightGy: computed(() => {
+      const weightGy = material.value.weightGy
+      return hasValidate.value && maxI6D2(weightGy)
     }),
     contentList: computed(() => {
       if (!hasValidate.value) {

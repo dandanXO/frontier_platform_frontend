@@ -2,7 +2,7 @@
 modal-behavior(:header="$t('RR0079')")
   tabs(:tabList="tabList" keyField="id")
     template(#default="{ currentTab }")
-      div(class="h-43 pt-7.5")
+      div(class="w-101 h-43 pt-7.5")
         template(v-if="currentTab === TAB.ASSIGNED")
           div(class="flex items-end justify-between pb-6 gap-7")
             div(class="text-body2 text-primary flex flex-col justify-between")
