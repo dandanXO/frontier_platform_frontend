@@ -102,10 +102,12 @@ watch(
   () => scaleSize.value,
   () => {
     if (faceSideConfig?.config) {
-      faceSideConfig.config.scaleRatio = (faceSideConfig.config.image.width * (pxPerCm / faceSideImg.dpi)) / scaleSize.value
+      const baseWidth = Math.min(faceSideConfig.config.image.width, faceSideConfig.config.image.height)
+      faceSideConfig.config.scaleRatio = (baseWidth * (pxPerCm / faceSideImg.dpi)) / scaleSize.value
     }
     if (backSideConfig?.config) {
-      backSideConfig.config.scaleRatio = (backSideConfig.config.image.width * (pxPerCm / backSideImg.dpi)) / scaleSize.value
+      const baseWidth = Math.min(backSideConfig.config.image.width, backSideConfig.config.image.height)
+      backSideConfig.config.scaleRatio = (baseWidth * (pxPerCm / backSideImg.dpi)) / scaleSize.value
     }
   }
 )
