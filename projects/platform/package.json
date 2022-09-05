@@ -1,0 +1,32 @@
+{
+  "name": "@frontier/platform",
+  "version": "0.0.0",
+  "scripts": {
+    "serve": "bash ./scripts/fetchEnvVar.sh $npm_config_mode && vite --mode $npm_config_mode",
+    "serve:dev": "npm run serve --mode=development",
+    "build": "bash ./scripts/fetchEnvVar.sh $npm_config_mode && vite build --mode $npm_config_mode",
+    "build:dev": "npm run build --mode=development",
+    "deploy": "npm run build --mode=$npm_config_mode && bash ./scripts/deploy.sh $npm_config_mode",
+    "deploy:dev": "npm run deploy --mode=development",
+    "preview": "vite preview --port 8080 --mode=development",
+    "test:e2e": "npx playwright test",
+    "test:show-report": "npx playwright show-report"
+  },
+  "dependencies": {
+    "@hennge/vue3-pagination": "^1.0.17",
+    "dom-to-image": "^2.6.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
+    "qrcode": "^1.5.0",
+    "three": "^0.137.5",
+    "uuid": "^8.3.2",
+    "vue-gtag": "^2.0.1",
+    "vue-virtual-scroller": "^2.0.0-alpha.1",
+    "vue3-carousel": "^0.1.36",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.25.0",
+    "start-server-and-test": "^1.14.0"
+  }
+}
