@@ -20,7 +20,7 @@ div
   div(class="aspect-square relative")
     div(v-if="!!imageList[currentDisplayIndex].src" class="w-full h-full")
       img(class="w-full h-full" :src="imageList[currentDisplayIndex].src")
-      div(class="absolute w-8 h-8 rounded-md bg-black-0 bottom-6 left-5 flex items-center justify-center cursor-pointer" @click="openMagnifyMode")
+      div(v-if="!hideMagnifier" class="absolute w-8 h-8 rounded-md bg-black-0 bottom-6 left-5 flex items-center justify-center cursor-pointer" @click="openMagnifyMode")
         f-svg-icon(iconName="search" size="28" class="text-black-700")
     div(v-else class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-h4 font-bold text-black-400") {{ $t("RR0103") }}
   div(class="flex pt-3 pb-4")
