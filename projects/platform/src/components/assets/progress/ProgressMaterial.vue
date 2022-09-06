@@ -67,7 +67,7 @@ f-table(
     div(v-if="prop === 'action'" class="flex justify-end")
       f-button(v-if="item.status === UPLOAD_PROGRESS.COMPLETE" type="secondary" size="sm" :disabled="item.isMaterialDeleted" @click="handleViewMaterial(item)") {{ $t("UU0086") }}
       f-popper(
-        v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE || item.status === UPLOAD_PROGRESS.UNSUCCESSFUL"
+        v-else-if="isCanCancel(item)"
         placement="bottom-end"
         :class="[isHover ? 'visible' : 'invisible']"
       )
@@ -192,6 +192,17 @@ const handleViewMaterial = (material) => {
 const handleCancel = async (materialProgressId) => {
   await store.dispatch('assets/progress/cancelMaterialUploadProgress', { materialProgressId })
   await getList(pagination.value.currentPage)
+}
+
+const isCanCancel = (material) => {
+  const { status, msgCode } = material
+  if (status === UPLOAD_PROGRESS.IN_QUEUE) {
+    return true
+  } else if (status === UPLOAD_PROGRESS.UNSUCCESSFUL) {
+    return msgCode === ERROR_MSG.INACTIVE || msgCode === ERROR_MSG.INSUFFICIENT_STORAGE
+  } else {
+    return false
+  }
 }
 
 // Polling

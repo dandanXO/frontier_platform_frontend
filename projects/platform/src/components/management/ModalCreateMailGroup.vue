@@ -10,7 +10,7 @@ modal-behavior(
   div(class="w-94 h-31.5")
     p(class="text-body2 text-primary leading-1.6 pb-4") {{ $t("BB0093") }}
     div(class="flex items-center")
-      input-text(
+      f-input-text(
         v-model:textValue="uploadMaterialEmail"
         required
         class="w-68.5 mr-2"
