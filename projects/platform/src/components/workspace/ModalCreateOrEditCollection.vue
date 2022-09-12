@@ -5,6 +5,8 @@ modal-behavior(
   :primaryBtnDisabled="actionBtnDisabled"
   @click:primary="actionHandler"
 )
+  template(#note)
+    file-upload-error-note(v-if="errorCode" :errorCode="errorCode" :fileSizeMaxLimit="fileSizeMaxLimit" data-cy="modal-mass-upload_error")
   div(class="w-101")
     p(class="text-right pb-0.5 text-caption text-black-600") *{{ $t('RR0163') }}
     f-input-text(
@@ -66,6 +68,7 @@ export default {
     const fileSizeMaxLimit = 20
     const acceptType = ['pdf']
     const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
+    const errorCode = ref('')
 
     const uploadTrendBoardName = ref('')
     const collectionId = ref(null) // only use when MODE is equal to EDIT
@@ -78,7 +81,12 @@ export default {
 
     const actionBtnDisabled = computed(() => !formData.collectionName || formData.description.length > DESCRIPTION_LIMIT)
 
+    fileOperator.on('error', (code) => {
+      errorCode.value = code
+    })
+
     fileOperator.on('finish', (file) => {
+      errorCode.value = ''
       formData.trendBoardFile = file
       uploadTrendBoardName.value = file.name
     })
@@ -129,6 +137,7 @@ export default {
       actionHandler,
       acceptType,
       fileSizeMaxLimit,
+      errorCode,
       chooseFile,
       uploadTrendBoardName,
       previewFile,

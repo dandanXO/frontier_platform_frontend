@@ -33,6 +33,10 @@ export default {
     method: 'POST',
     data: { password, oldUserVerifyToken }
   }),
+  verifyPassword: ({ password }) => axios('/user/verify-password', {
+    method: 'POST',
+    data: { password }
+  }),
   changePassword: ({ currentPassword, newPassword }) => axios('/user/change-password', {
     method: 'POST',
     data: { currentPassword, newPassword }

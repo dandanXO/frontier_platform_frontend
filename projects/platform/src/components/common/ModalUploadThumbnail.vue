@@ -1,6 +1,6 @@
 <template lang="pug">
 modal-behavior(
-  :header="$t('BB0032')"
+  :header="header"
   :secondaryBtnText="$t('UU0002')"
   @click:secondary="closeModal"
 )
@@ -23,7 +23,7 @@ modal-behavior(
       class="justify-self-end cursor-pointer text-brand-dark"
     )
     div(v-else class="w-full flex flex-col items-center")
-      img(class="w-50 h-50 rounded-full mb-9" :src="orgLogo")
+      img(class="w-50 h-50 rounded-full mb-9" :src="thumbnail")
       f-button(size="md" @click="uploadImg" prependIcon="tune" class="mb-2.5") {{ $t("UU0019") }}
       f-button(size="md" type="text" @click="removeLogo") {{ $t('UU0016') }}
 </template>
@@ -34,23 +34,37 @@ import { useStore } from 'vuex'
 import { ImageOperator } from '@/utils/fileOperator.js'
 import { useI18n } from 'vue-i18n'
 
+const props = defineProps({
+	header: {
+    type: String
+  },
+  thumbnail: {
+    type: String
+  },
+  defaultImage: {
+    type: String
+  },
+  updateHandler: {
+    type: Function
+  },
+  removeHandler: {
+    type: Function
+  }
+})
+
 const { t } = useI18n()
 const store = useStore()
 const cropRectSize = 200
 const isUploading = ref(false)
 const errorCode = ref('')
-const orgLogo = computed(() => store.getters['organization/organization'].logo)
-const haveUploadedImage = computed(() => {
-  const defaultLogo = 'logo-default.png' // This file name is static
-  return !orgLogo.value.includes(defaultLogo)
-})
+const haveUploadedImage = computed(() => !props.thumbnail.includes(props.defaultImage))
 
 const fileSizeMaxLimit = 5
 const acceptType = ['jpeg', 'jpg', 'png']
 const imageOperator = new ImageOperator(acceptType, fileSizeMaxLimit, cropRectSize)
 
 imageOperator.on('uploading', () => (isUploading.value = true))
-imageOperator.on('selfDefinedError', () => {
+imageOperator.on('error', (code) => {
   isUploading.value = false
   errorCode.value = code
 })
@@ -60,11 +74,11 @@ imageOperator.on('finish', (image) => {
   store.dispatch('helper/replaceModalBehavior', {
     component: 'modal-crop-image',
     properties: {
-      title: t('BB0032'),
+      title: props.header,
       image,
       cropRectSize,
       afterCropHandler: async (croppedImage, originalImage) => {
-        await store.dispatch('organization/updateOrgLogo', { logo: croppedImage, originalLogo: originalImage })
+        await props.updateHandler(croppedImage, originalImage)
       }
     }
   })
@@ -75,7 +89,10 @@ const uploadImg = () => {
 }
 
 const removeLogo = async () => {
-  await store.dispatch('organization/removeOrgLogo')
+	store.dispatch('helper/pushModalLoading')
+  await props.removeHandler()
+	store.dispatch('helper/closeModalLoading')
+	closeModal()
 }
 
 const closeModal = () => {

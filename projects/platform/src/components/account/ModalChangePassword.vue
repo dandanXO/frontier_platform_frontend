@@ -8,7 +8,13 @@ modal-behavior(
   @click:secondary="closeModal"
 )
   form(class="w-85")
-    f-input-password(v-model:textValue="currentPassword" :placeholder="$t('MM0026')" class="mb-7.5")
+    f-input-password(
+      v-model:textValue="currentPassword"
+      :placeholder="$t('MM0026')"
+      class="mb-7.5"
+      :customErrorMsg="isPasswordCurrect ? '' : $t('WW0074')"
+      @blur="verifyPassword"
+    )
     f-input-password(v-model:textValue="newPassword" :placeholder="$t('MM0027')")
     password-validator(v-model:isValid="isPasswordValid" :password="newPassword" class="pt-1")
 </template>
@@ -24,10 +30,20 @@ const store = useStore()
 const currentPassword = ref('')
 const newPassword = ref('')
 const isPasswordValid = ref(false)
+const isPasswordCurrect = ref(true)
 
-const availableToChangePassword = computed(() => !!newPassword.value && !!currentPassword.value && isPasswordValid.value)
+const availableToChangePassword = computed(() => !!newPassword.value && !!currentPassword.value && isPasswordValid.value && isPasswordCurrect.value)
 
 const closeModal = () => store.dispatch('helper/closeModal')
+
+const verifyPassword = async () => {
+  if (currentPassword.value.length === 0) {
+    return
+  }
+
+  const isVerify = await store.dispatch('user/verifyPassword', { password: currentPassword.value })
+  isPasswordCurrect.value = isVerify
+}
 
 const changePassword = async () => {
   await store.dispatch('user/changePassword', { currentPassword: currentPassword.value, newPassword: newPassword.value })

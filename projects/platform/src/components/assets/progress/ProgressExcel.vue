@@ -280,7 +280,6 @@ const openModalMaterialNoList = (materialNoList) => {
 const handleAction = async (type, excelProgressId) => {
   const { materialList } = await store.dispatch('assets/progress/getExcelUploadMaterialList', { excelProgressId })
   const deletedMaterialList = materialList.filter(material => material.isDelete)
-  const nonDeletedMaterialList = materialList.filter(material => !material.isDelete)
 
   if (deletedMaterialList.length > 0) {
     store.dispatch('helper/pushModalConfirm', {
@@ -293,9 +292,9 @@ const handleAction = async (type, excelProgressId) => {
       textBtnText: t('UU0002'),
       primaryBtnHandler: async () => {
         if (type === PRINT_TYPE.CARD) {
-          printA4Card(nonDeletedMaterialList)
+          printA4Card(materialList)
         } else if (type === PRINT_TYPE.LABEL) {
-          printGeneralLabel(nonDeletedMaterialList)
+          printGeneralLabel(materialList)
         } else {
           exportExcel.func(materialList)
         }

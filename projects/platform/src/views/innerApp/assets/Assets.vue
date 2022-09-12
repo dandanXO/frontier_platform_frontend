@@ -132,16 +132,20 @@ const optionList = (material) => {
   ]
 }
 
-const optionMultiSelect = computed(() => [
-  cloneTo,
-  addToWorkspace,
-  printCard,
-  printQRCode,
-  downloadU3M,
-  exportExcel,
-  { ...mergeCard, disabled: selectedMaterialList.value.length < 2 },
-  deleteMaterial
-])
+const optionMultiSelect = computed(() => {
+  const nonU3MList = selectedMaterialList.value.filter((material) => material.u3m.status !== U3M_STATUS.COMPLETED)
+
+  return [
+    cloneTo,
+    addToWorkspace,
+    printCard,
+    printQRCode,
+    { ...downloadU3M, disabled: selectedMaterialList.value.length === nonU3MList.length },
+    exportExcel,
+    { ...mergeCard, disabled: selectedMaterialList.value.length < 2 },
+    deleteMaterial
+  ]
+})
 
 const getMaterialList = async (targetPage = 1, query) => {
   await router.push({

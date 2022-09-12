@@ -38,7 +38,7 @@ modal-behavior(
     template(v-else)
       template(v-if="isFinish")
         div(class="flex items-center bg-black-50 py-2.5 px-4 mb-1 h-14.5")
-          svg-icon(iconName="loading" size="20" class="text-brand mr-3")
+          f-svg-icon(iconName="loading" size="20" class="text-brand mr-3")
           p(class="text-caption text-black-800 leading-1.6") {{ $t("DD0114") }}
         f-scrollbar-container(class="h-59.5")
           div(class="grid divide-y divide-black-200")
@@ -81,7 +81,7 @@ const disabledUpload = computed(() => readyToUploadFile.value.length === 0)
 
 const fileSizeMaxLimit = 20
 const acceptType = ['jpg', 'jpeg', 'png']
-const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit, true)
+const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 
 const chooseFile = () => {
   fileOperator.upload(true)
@@ -96,7 +96,7 @@ fileOperator.on('finish', (file) => {
   materialImageList.push({ file, isRemoved: false, processing: 0 })
 })
 
-fileOperator.on('selfDefinedError', (code) => {
+fileOperator.on('error', (code) => {
   errorCode.value = code
 })
 

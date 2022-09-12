@@ -40,9 +40,37 @@ const updateDisplayName = async () => {
 }
 
 const openModalChangeAvatar = () => {
+  const avatar = computed(() => store.getters['organization/orgUser/orgUser'].avatar)
   store.dispatch('helper/pushModalBehavior', {
-    component: 'modal-change-avatar',
-    header: t('MM0019')
+    component: 'modal-upload-thumbnail',
+    properties: {
+      header: t('MM0019'),
+      thumbnail: avatar.value,
+      defaultImage: 'default_user.png', // This file name is static
+      updateHandler: async (croppedImage, originalImage) => {
+        await store.dispatch('organization/orgUser/updateAvatar', {
+          avatar: croppedImage,
+          originalAvatar: originalImage
+        })
+        await fetchMemberList()
+      },
+      removeHandler: async () => {
+        await store.dispatch('organization/orgUser/removeAvatar')
+        await fetchMemberList()
+      }
+    }
   })
+}
+
+const fetchMemberList = async () => {
+  const routeLocation = store.getters['helper/routeLocation']
+
+  if (routeLocation === 'org') {
+    const orgNo = store.getters['organization/orgNo']
+    await store.dispatch('organization/getOrg', { orgNo })
+  } else {
+    const groupId = store.getters['group/groupId']
+    await store.dispatch('group/getGroup', { groupId })
+  }
 }
 </script>

@@ -7,7 +7,7 @@ modal-behavior(
   @click:primary="createGroup"
   @click:text="openModalCreateGroup"
 )
-  div(class="w-94 h-31.5")
+  div(class="w-94 min-h-31.5")
     p(class="text-body2 text-primary leading-1.6 pb-4") {{ $t("BB0093") }}
     div(class="flex items-center")
       f-input-text(
@@ -23,8 +23,8 @@ modal-behavior(
       p(class="text-body2 text-primary") {{ $t("BB0094") }}
     div(v-if="suggestEmailList.length > 0" class="pt-7.5 flex")
       p(class="text-body2 text-primary pr-2") {{ $t("BB0106") }}
-      div
-        p(v-for="email in suggestEmailList" class="text-body2 text-assist-blue pb-2.5") {{ email }}
+      div(class="grid gap-y-2.5")
+        p(v-for="email in suggestEmailList" class="text-body2 text-assist-blue") {{ email }}
 </template>
 
 <script setup>
@@ -53,18 +53,22 @@ const openModalCreateGroup = () => {
   })
 }
 const createGroup = async () => {
-  store.dispatch('helper/pushModalLoading')
-  const { success, message, result } = await store.dispatch('group/createGroup')
-
-  if (success) {
+  try {
+    store.dispatch('helper/pushModalLoading')
+    await store.dispatch('group/createGroup')
     store.dispatch('helper/clearModalPipeline')
     router.push(`/${orgNo.value}/${groupId.value}/management/about`)
-  } else if (result.availableEmailList?.length > 0) {
-    suggestEmailList.value = result.availableEmailList
-  } else {
-    errorMsg.value = message.content
+  } catch (error) {
+    store.dispatch('helper/closeModalLoading')
+    const { code, result } = error
+    switch (code) {
+      case 'ERR0029':
+        suggestEmailList.value = result.availableEmailList
+        break
+      default:
+        throw error
+    }
   }
-  store.dispatch('helper/closeModalLoading')
 }
 
 watch(
@@ -74,7 +78,7 @@ watch(
     errorMsg.value = ''
 
     const allowed = /^[a-zA-Z0-9_.-]+$/
-    const order = /^[a-zA-Z0-9]+([_.-]?[a-zA-Z0-9]+)+$/
+    const order = /^[a-zA-Z0-9]+([_.-]?[a-zA-Z0-9]+)*$/
 
     if (!allowed.test(uploadMaterialEmail.value)) {
       errorMsg.value = t('WW0114')
