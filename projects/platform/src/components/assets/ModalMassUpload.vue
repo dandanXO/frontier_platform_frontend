@@ -62,7 +62,7 @@ let binaryFile
 
 const fileSizeMaxLimit = 20
 const acceptType = ['xlsx']
-const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit, true)
+const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 
 const chooseFile = () => {
   fileOperator.upload()
@@ -75,7 +75,7 @@ fileOperator.on('finish', (file) => {
   showErrorList.value = false
 })
 
-fileOperator.on('selfDefinedError', (code) => {
+fileOperator.on('error', (code) => {
   errorCode.value = code
 })
 

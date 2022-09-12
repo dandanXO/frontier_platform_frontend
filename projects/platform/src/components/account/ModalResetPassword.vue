@@ -69,7 +69,7 @@ const changeHandler = async () => {
       await store.dispatch('user/oldUserResetPassword', { password: password.value, oldUserVerifyToken: props.oldUserVerifyToken })
       break
   }
-  await nextAfterSignIn()
   store.dispatch('helper/closeModal')
+  await nextAfterSignIn()
 }
 </script>

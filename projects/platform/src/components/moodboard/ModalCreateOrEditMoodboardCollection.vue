@@ -18,7 +18,7 @@ modal-behavior(
       :placeholder="$t('QQ0058')"
       class="pb-6"
     )
-    div(class="mb-9")
+    div(class="h-35")
       div
         div(class="h-5.5 flex items-center pb-1")
           p(class="text-body2 text-primary font-bold") {{ $t('RR0249') }}
@@ -32,8 +32,9 @@ modal-behavior(
           @click:button="trendBoardFileOperator.upload()"
           @clear="removeTrendBoard"
         )
-      p(class='text-black-600 text-caption leading-1.6') {{ $t("RR0243") }} {{ trendBoardFileAcceptType.join(', ').toUpperCase() }}
-      p(class='text-black-600 text-caption leading-1.6') {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
+      p(v-if="!!customErrorMsg" class="text-warn text-caption leading-1.6") {{ customErrorMsg }}
+      p(class="text-black-600 text-caption leading-1.6") {{ $t("RR0243") }} {{ trendBoardFileAcceptType.join(', ').toUpperCase() }}
+      p(class="text-black-600 text-caption leading-1.6") {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
     f-input-textarea(
       v-model:textValue="formData.description"
       :label="$t('RR0014')"
@@ -47,7 +48,7 @@ import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { FileOperator, previewFile } from '@/utils/fileOperator'
-import { CREATE_EDIT } from '@/utils/constants.js'
+import { CREATE_EDIT, UPLOAD_ERROR_CODE } from '@/utils/constants.js'
 
 const props = defineProps({
   mode: {
@@ -73,11 +74,24 @@ const formData = reactive({
 })
 const isUploadNewTrendBoard = ref(false)
 const uploadTrendBoardName = ref('')
+const customErrorMsg = ref('')
 
 const fileSizeMaxLimit = 20
 const trendBoardFileAcceptType = ['pdf']
-const trendBoardFileOperator = new FileOperator(trendBoardFileAcceptType, fileSizeMaxLimit, true)
+const trendBoardFileOperator = new FileOperator(trendBoardFileAcceptType, fileSizeMaxLimit)
+
+trendBoardFileOperator.on('error', (code) => {
+  const { INVALID_TYPE, EXCEED_LIMIT } = UPLOAD_ERROR_CODE
+
+  if (code === INVALID_TYPE) {
+    customErrorMsg.value = t('RR0144')
+  } else if (code === EXCEED_LIMIT) {
+    customErrorMsg.value = t('RR0145') + fileSizeMaxLimit + 'MB'
+  }
+})
+
 trendBoardFileOperator.on('finish', (file) => {
+  customErrorMsg.value = ''
   store.dispatch('helper/pushModalLoading')
   formData.trendBoardFile = file
   uploadTrendBoardName.value = file.name

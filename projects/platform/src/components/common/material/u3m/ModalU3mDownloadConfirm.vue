@@ -14,8 +14,8 @@ modal-behavior(
         class="flex gap-3 border-black-400 py-2.5 text-body2 text-primary leading-1.6"
         :class="{ 'border-b': index !== failedList.length - 1 }"
 )
-  div(class="w-31 pl-15 font-bold flex-shrink-0") {{ index + 1 }}
-  div {{ material.materialNo }}
+        div(class="w-31 pl-15 font-bold flex-shrink-0") {{ index + 1 }}
+        div {{ material.materialNo }}
 </template>
 
 <script>
