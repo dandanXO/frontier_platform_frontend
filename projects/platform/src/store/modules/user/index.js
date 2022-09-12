@@ -57,6 +57,10 @@ const actions = {
   async oldUserResetPassword (_, params) {
     await userApi.oldUserResetPassword(params)
   },
+  async verifyPassword (_, { password }) {
+    const { data } = await userApi.verifyPassword({ password })
+    return data.result.isVerify
+  },
   async changePassword (_, { currentPassword, newPassword }) {
     await userApi.changePassword({ currentPassword, newPassword })
   },

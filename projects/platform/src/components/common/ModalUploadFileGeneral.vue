@@ -7,6 +7,8 @@ modal-behavior(
   @click:primary="upload"
   @click:secondary="closeModal"
 )
+  template(#note)
+    file-upload-error-note(v-if="errorCode" :errorCode="errorCode" :fileSizeMaxLimit="fileSizeMaxLimit" data-cy="modal-mass-upload_error")
   div(class="w-94")
     p(class="text-caption text-black-600 text-right mb-1.5") 
       span(class="text-warn") *
@@ -49,6 +51,7 @@ const props = defineProps({
 const store = useStore()
 const fileName = ref('')
 const originalFileName = ref('')
+const errorCode = ref('')
 const disabled = computed(() => !fileName.value || !originalFileName.value)
 const fileSizeMaxLimit = 20
 const fileOperator = new FileOperator(props.acceptType, fileSizeMaxLimit)
@@ -58,7 +61,12 @@ const chooseFile = () => {
   fileOperator.upload()
 }
 
+fileOperator.on('error', (code) => {
+  errorCode.value = code
+})
+
 fileOperator.on('finish', (file) => {
+  errorCode.value = ''
   binaryFile = file
   fileName.value = file.name
   originalFileName.value = file.name

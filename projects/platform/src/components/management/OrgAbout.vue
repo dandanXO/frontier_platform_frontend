@@ -94,7 +94,18 @@ const availableToUpdateOrg = computed(() => orgFormData.orgName !== '' && !isOrg
 
 const openModalUploadLogo = () => {
   store.dispatch('helper/openModalBehavior', {
-    component: 'modal-upload-logo'
+    component: 'modal-upload-thumbnail',
+    properties: {
+      header: t('BB0032'),
+      thumbnail: logo.value,
+      defaultImage: 'logo-default.png', // This file name is static
+      updateHandler: async (croppedImage, originalImage) => {
+        await store.dispatch('organization/updateOrgLogo', { logo: croppedImage, originalLogo: originalImage })
+      },
+      removeHandler: async () => {
+        await store.dispatch('organization/removeOrgLogo')
+      }
+    }
   })
 }
 

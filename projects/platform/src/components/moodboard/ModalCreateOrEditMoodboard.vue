@@ -112,7 +112,7 @@ const fileUploadErrorCode = ref(0)
 const fileSizeMaxLimit = 20
 const trendBoardFileAcceptType = ['pdf']
 
-const trendBoardFileOperator = new FileOperator(trendBoardFileAcceptType, fileSizeMaxLimit, true)
+const trendBoardFileOperator = new FileOperator(trendBoardFileAcceptType, fileSizeMaxLimit)
 trendBoardFileOperator.on('finish', (file) => {
   store.dispatch('helper/pushModalLoading')
   formData.trendBoardFile = file
@@ -121,7 +121,7 @@ trendBoardFileOperator.on('finish', (file) => {
   fileUploadErrorCode.value = 0
   store.dispatch('helper/closeModalLoading')
 })
-trendBoardFileOperator.on('selfDefinedError', (code) => {
+trendBoardFileOperator.on('error', (code) => {
   fileUploadErrorCode.value = code
 })
 const removeTrendBoard = () => {
@@ -141,7 +141,7 @@ attachmentFileOperator.on('finish', (file) => {
   fileUploadErrorCode.value = 0
   store.dispatch('helper/closeModalLoading')
 })
-attachmentFileOperator.on('selfDefinedError', (code) => {
+attachmentFileOperator.on('error', (code) => {
   fileUploadErrorCode.value = code
 })
 

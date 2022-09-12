@@ -7,6 +7,8 @@ modal-behavior(
   :textBtnText="$t('UU0026')"
   @click:text="$store.dispatch('helper/closeModalBehavior')"
 )
+  template(#note)
+    file-upload-error-note(v-if="errorCode" :errorCode="errorCode" :fileSizeMaxLimit="fileSizeMaxLimit")
   div(class="w-94")
     f-input-select(
       v-model:selectValue="formData.category"
@@ -59,6 +61,7 @@ const formData = reactive({
   comment: ''
 })
 const feedbackAttachmentList = ref([])
+const errorCode = ref('')
 
 const actionBtnDisabled = computed(() => !formData.category || !formData.comment)
 
@@ -66,7 +69,12 @@ const fileSizeMaxLimit = 20
 const acceptType = ['jpg', 'jpeg', 'png', 'mp4']
 const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 
+fileOperator.on('error', (code) => {
+  errorCode.value = code
+})
+
 fileOperator.on('finish', async (file) => {
+  errorCode.value = ''
   store.dispatch('helper/pushModalLoading')
   feedbackAttachmentList.value = await store.dispatch('user/sendFeedbackAttachment', { tempFeedbackId, file })
   store.dispatch('helper/closeModalLoading')

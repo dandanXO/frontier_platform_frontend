@@ -147,7 +147,7 @@ const filteredOptionList = computed(() => {
   props.optionList.forEach(option => {
     const comparedValue = returnObject.value ? option[props.keyOptionDisplay] : option
 
-    if (comparedValue.includes(inputValue.value.trim())) {
+    if (comparedValue.toUpperCase().includes(inputValue.value.trim().toUpperCase())) {
       const checked = props.chips.some(chip => JSON.stringify(chip) === JSON.stringify(option))
       list.push({
         checked,

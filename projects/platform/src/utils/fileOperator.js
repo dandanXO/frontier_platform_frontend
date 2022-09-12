@@ -1,6 +1,5 @@
 import { EventEmitter } from 'events'
 import i18n from '@/utils/i18n'
-import store from '@/store'
 import { UPLOAD_ERROR_CODE } from '@/utils/constants.js'
 
 const t = i18n.global.t
@@ -93,12 +92,11 @@ class FileOperator {
    * @param {number} fileSizeMaxLimit // mb
    */
 
-  constructor (validType = generalImageType, fileSizeMaxLimit = 5, useNewErrorHandler = false) {
+  constructor (validType = generalImageType, fileSizeMaxLimit = 5) {
     this.validType = validType
     this.acceptedExtension = validType.map(type => `.${type}`).join(',')
     this.acceptedFormat = validType.map(type => extension2MimeType[type]).join(',')
     this.fileSizeMaxLimit = fileSizeMaxLimit
-    this.useNewErrorHandler = useNewErrorHandler
 
     this.event = new EventEmitter()
     this.eventHash = {}
@@ -149,14 +147,10 @@ class FileOperator {
       const type = file.type
 
       if (!this.acceptedFormat.includes(type) || !type) {
-        this.useNewErrorHandler
-          ? this.event.emit('selfDefinedError', UPLOAD_ERROR_CODE.INVALID_TYPE)
-          : this.errorHandler(UPLOAD_ERROR_CODE.INVALID_TYPE)
+        this.event.emit('error', UPLOAD_ERROR_CODE.INVALID_TYPE)
         return
       } else if (mb > this.fileSizeMaxLimit) {
-        this.useNewErrorHandler
-          ? this.event.emit('selfDefinedError', UPLOAD_ERROR_CODE.EXCEED_LIMIT)
-          : this.errorHandler(UPLOAD_ERROR_CODE.EXCEED_LIMIT)
+        this.event.emit('error', UPLOAD_ERROR_CODE.EXCEED_LIMIT)
         return
       }
     }
@@ -166,37 +160,6 @@ class FileOperator {
 
   uploadHandler (file) {
     this.event.emit('finish', file)
-  }
-
-  errorHandler (code) {
-    const { INVALID_TYPE, EXCEED_LIMIT, TOO_SMALL } = UPLOAD_ERROR_CODE
-    this.event.emit('selfDefinedError', code)
-    switch (code) {
-      case INVALID_TYPE:
-        store.dispatch('helper/pushModalConfirm', {
-          type: 3,
-          header: t('RR0143'),
-          contentText: t('RR0144'),
-          primaryBtnText: t('UU0031')
-        })
-        break
-      case EXCEED_LIMIT:
-        store.dispatch('helper/pushModalConfirm', {
-          type: 3,
-          header: t('RR0143'),
-          contentText: t('RR0145') + this.fileSizeMaxLimit + 'MB',
-          primaryBtnText: t('UU0031')
-        })
-        break
-      case TOO_SMALL:
-        store.dispatch('helper/pushModalConfirm', {
-          type: 3,
-          header: t('RR0143'),
-          contentText: t('WW0018'),
-          primaryBtnText: t('UU0031')
-        })
-        break
-    }
   }
 }
 
@@ -217,7 +180,8 @@ class ImageOperator extends FileOperator {
       img.onload = () => {
         const { width, height, src } = img
         if (width < this.cropRectSize || height < this.cropRectSize) {
-          return this.errorHandler(UPLOAD_ERROR_CODE.TOO_SMALL)
+          this.event.emit('error', UPLOAD_ERROR_CODE.TOO_SMALL)
+          return
         }
         this.event.emit('finish', {
           width,
