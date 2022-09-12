@@ -2,82 +2,72 @@ stages:
   - build
   - deploy
 
-build-dev:
+.platform:
+  only:
+    refs:
+      - main
+      - /^hotfix\/.*$/
+      - /^release\/.*$/
+      - develop
+    changes:
+      - packages/**/*
+      - projects/platform/**/*
+  before_script:
+    - >
+      if [[ "$CI_COMMIT_REF_NAME" == "main" ]]; then
+        TARGET_ENV="production"
+      elif [[ "$CI_COMMIT_REF_NAME" =~ "hotfix/" ]]; then
+        TARGET_ENV="pre-production"
+      elif [[ "$CI_COMMIT_REF_NAME" =~ "release/" ]]; then
+        TARGET_ENV="staging"
+      elif [[ "$CI_COMMIT_REF_NAME" == "develop" ]]; then
+        TARGET_ENV="development"
+      fi
+
+platform-build:
+  extends: .platform
+  stage: build
+  image: node:16.13.2
+  script:
+    - echo $TARGET_ENV
+    - npm install -g pnpm
+    - pnpm i
+    - cd ./projects/platform
+    - npm run build --mode=$TARGET_ENV
+  artifacts:
+    paths:
+      - projects/platform/dist/
+
+platform-deploy:
+  extends: .platform
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  script:
+    - echo $TARGET_ENV
+    - cd ./projects/platform
+    - bash ./scripts/deploy.sh $TARGET_ENV
+
+storybook-build:
   stage: build
   image: node:16.13.2
   only:
-    - develop
+    changes:
+      - packages/ui-component/**/*
   script:
-    - npm ci
-    - npm run build --mode=development
+    - npm install -g pnpm
+    - pnpm i
+    - cd ./packages/ui-component
+    - npm run build
   artifacts:
     paths:
-      - dist/
+      - packages/ui-component/storybook-static/
 
-deploy-dev:
+storybook-deploy:
   stage: deploy
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   only:
-    - develop
+    changes:
+      - packages/ui-component/**/*
   script:
-    - npm run deploy --mode=development
-
-build-stg:
-  stage: build
-  image: node:16.13.2
-  only:
-    - /^release\/.*$/
-  script:
-    - npm ci
-    - npm run build --mode=staging
-  artifacts:
-    paths:
-      - dist/
-
-deploy-stg:
-  stage: deploy
-  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
-  only:
-    - /^release\/.*$/
-  script:
-    - npm run deploy --mode=staging
-
-build-pre-prod:
-  stage: build
-  image: node:16.13.2
-  only:
-    - /^hotfix\/.*$/
-  script:
-    - npm ci
-    - npm run build --mode=pre-production
-  artifacts:
-    paths:
-      - dist/
-
-deploy-pre-prod:
-  stage: deploy
-  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
-  only:
-    - /^hotfix\/.*$/
-  script:
-    - npm run deploy --mode=pre-production
-
-build-prod:
-  stage: build
-  image: node:16.13.2
-  only:
-    - main
-  script:
-    - npm ci
-    - npm run build --mode=production
-  artifacts:
-    paths:
-      - dist/
-
-deploy-prod:
-  stage: deploy
-  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
-  only:
-    - main
-  script:
-    - npm run deploy --mode=production
+    - cd ./packages/ui-component
+    - bash ./deploy.sh

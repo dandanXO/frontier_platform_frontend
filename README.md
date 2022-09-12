@@ -1,48 +1,27 @@
-# platform-frontend
+# Monorepo
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+### init package.json
+```
+pnpm init
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
+### config .npmrc
+```
+shamefully-hoist = true
 ```
 
-### Compile and Minify for Production
-
-```sh
-npm run build
+### config pnpm.workspace.yaml
+```
+packages:
+  - "packages/**"
+  - "projects/**"
 ```
 
-### Run Unit Tests with [Cypress Component Testing](https://docs.cypress.io/guides/component-testing/introduction)
-
-```sh
-npm run test:unit # or `npm run test:unit:ci` for headless testing
+### install package
 ```
+// install in all project
+pnpm add <package> -w
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run build
-npm run test:e2e # or `npm run test:e2e:ci` for headless testing
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
+// install in specific project
+pnpm add <package> --filter <project_name>
 ```

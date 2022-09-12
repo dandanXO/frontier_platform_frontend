@@ -1,0 +1,57 @@
+<template lang="pug">
+div(class="fixed inset-0 z-modal w-screen h-screen bg-black-900/30 flex justify-center items-center")
+  div(class="w-screen h-screen" @click="closable && close()")
+  div(class="absolute bg-black-0 rounded card-shadow")
+    div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
+      p(v-if="header !== ''" class="text-h6 font-bold text-primary") {{ header }}
+      f-svg-icon(v-if="closable" iconName="close" size="24" class="justify-self-end cursor-pointer text-black-700" @click="close")
+    component(:is="component" v-bind="properties")
+</template>
+
+<script>
+import { defineAsyncComponent } from 'vue'
+import { useStore } from 'vuex'
+import ModalLoading from '@/components/common/modal/ModalLoading.vue'
+
+export default {
+  name: 'Modal',
+  components: {
+    ModalLoading,
+    ModalViewer: defineAsyncComponent(() => import('@/components/common/material/u3m/ModalViewer.vue')),
+    ModalPreviewAttachment: defineAsyncComponent(() => import('@/components/common/material/attachment/ModalPreviewAttachment.vue')),
+    ModalU3mRecut: defineAsyncComponent(() => import('@/components/assets/ModalU3mRecut.vue')),
+    ModalMaterialMerge: defineAsyncComponent(() => import('@/components/assets/merge/ModalMaterialMerge.vue')),
+    ModalMaterialMergePreview: defineAsyncComponent(() => import('@/components/assets/merge/ModalMaterialMergePreview.vue')),
+    ModalChoosePlan: defineAsyncComponent(() => import('@/components/billings/ModalChoosePlan.vue')),
+    ModalPlanIntroduction: defineAsyncComponent(() => import('@/components/billings/ModalPlanIntroduction.vue')),
+    ModalPreviewInvoice: defineAsyncComponent(() => import('@/components/billings/ModalPreviewInvoice.vue'))
+  },
+  props: {
+    component: {
+      type: String,
+      required: true
+    },
+    header: {
+      type: String,
+      default: ''
+    },
+    properties: {
+      type: Object
+    },
+    closable: {
+      type: Boolean,
+      default: true
+    }
+  },
+  setup () {
+    const store = useStore()
+    const close = () => {
+      store.dispatch('helper/closeModal')
+    }
+
+    return {
+      close
+    }
+  }
+}
+</script>
