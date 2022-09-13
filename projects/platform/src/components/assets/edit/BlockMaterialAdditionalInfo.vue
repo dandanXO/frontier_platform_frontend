@@ -46,7 +46,7 @@ const material = computed(() => store.getters['assets/material'])
 const { specOptions } = useMaterialEdit(material.value)
 
 const attachmentList = computed(() => store.getters['assets/attachmentList'])
-const isEditMode = computed(() => store.getters['assets/material'].materialId !== null)
+const isEditMode = computed(() => !!store.getters['assets/material'].materialId)
 
 const openModalUpload = () => {
   store.dispatch('helper/openModalBehavior', {

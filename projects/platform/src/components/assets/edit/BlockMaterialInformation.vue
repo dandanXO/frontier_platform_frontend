@@ -211,7 +211,7 @@ const props = defineProps({
 
 const store = useStore()
 const material = computed(() => store.getters['assets/material'])
-const isEditMode = computed(() => material.value.materialId !== null)
+const isEditMode = computed(() => !!material.value.materialId)
 const { isBackSideMaterial, faceSideUrl, backSideUrl } = useMaterialImage(material.value)
 const { faceSideImg, backSideImg } = material.value
 const isOpenSampleCard = ref(false)
