@@ -286,7 +286,7 @@ const handleAction = async (type, excelProgressId) => {
       type: 1,
       header: t('PP0035'),
       contentText: t('PP0036'),
-      primaryBtnText: t('UU0100'),
+      primaryBtnText: t('UU0094'),
       secondaryBtnText: t('UU0098'),
       closeAfterSecondaryBtnHandler: false,
       textBtnText: t('UU0002'),
