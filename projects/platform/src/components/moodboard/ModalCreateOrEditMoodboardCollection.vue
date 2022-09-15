@@ -40,6 +40,7 @@ modal-behavior(
       :label="$t('RR0014')"
       :placeholder="$t('QQ0059')"
       height="120"
+      :customErrorMsg="formData.description.length > DESCRIPTION_LIMIT ? $t('WW0073') : ''"
     )
 </template>
 
@@ -72,6 +73,7 @@ const formData = reactive({
   // the below variables only use for edit mode
   isDeleteTrendBoard: false
 })
+const DESCRIPTION_LIMIT = 1000
 const isUploadNewTrendBoard = ref(false)
 const uploadTrendBoardName = ref('')
 const customErrorMsg = ref('')
@@ -106,7 +108,7 @@ const removeTrendBoard = () => {
   }
 }
 
-const primaryBtnDisabled = computed(() => !formData.name)
+const primaryBtnDisabled = computed(() => !formData.name || formData.description.length > DESCRIPTION_LIMIT)
 
 const primaryHandler = async () => {
   store.dispatch('helper/pushModalLoading')

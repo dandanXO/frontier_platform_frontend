@@ -90,7 +90,7 @@ export default function useMaterialValidation () {
       for (let i = 0; i < inventoryList.length; i++) {
         const { section, shelf, quantity } = inventoryList[i]
 
-        const result = maxLength(section, 20) || maxLength(shelf, 20) || maxI9D1(quantity)
+        const result = maxLength(section, 200) || maxLength(shelf, 200) || maxI9D1(quantity)
 
         if (result) {
           return result
