@@ -1,5 +1,14 @@
 <template lang="pug">
+f-tooltip(v-if="disabled")
+  template(#trigger)
+    div(class="flex items-center gap-x-1 p-1.5 border rounded-lg border-black-400")
+      f-svg-icon(:iconName="iconName" size="24" class="text-black-500")
+      span(class="text-black-500 text-body2") {{ displayName }}
+      f-svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-500")
+  template(#content)
+    p(class="w-72") {{ $t("VV0047") }}
 f-popper(
+  v-else
   placement="bottom-start"
   @expand="$emit('expand')"
   @collapse="$emit('collapse')"
@@ -26,6 +35,10 @@ export default {
       required: true
     },
     dirty: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     }

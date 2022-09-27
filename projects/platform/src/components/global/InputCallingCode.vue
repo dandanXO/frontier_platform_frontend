@@ -4,7 +4,7 @@ f-input-text(v-model:textValue="innerTextValue" :size="size" ref="refContainer")
     div(class="h-full -ml-4 pr-3 flex")
       f-popper(placement="bottom-start" @expand="expand")
         template(#trigger="{ isExpand }")
-          div(class="w-19 pl-4 pr-3 border-r rounded-l flex justify-between items-center" :class="[size === 'lg' ? 'h-11' : 'h-9']")
+          div(class="w-19 pl-4 pr-3 border-r border-black-400 rounded-l flex justify-between items-center" :class="[size === 'lg' ? 'h-11' : 'h-9']")
             img(class="w-6 h-6 rounded" :alt="innerCountryCode" :src="`http://purecatamphetamine.github.io/country-flag-icons/3x2/${innerCountryCode}.svg`")
             f-svg-icon(
               iconName="keyboard_arrow_right"

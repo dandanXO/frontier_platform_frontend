@@ -82,8 +82,11 @@ const props = defineProps({
 
 const optionSort = {
   base: [
-    SORT_BY.RANDOM,
-    SORT_BY.NEW_ARRIVED
+  SORT_BY.RANDOM,
+  SORT_BY.NEW_ARRIVED,
+  SORT_BY.GHG_RESULTS,
+  SORT_BY.WATER_DEPLETION_RESULTS,
+  SORT_BY.LAND_USE_RESULTS
   ],
   keywordSearch: []
 }

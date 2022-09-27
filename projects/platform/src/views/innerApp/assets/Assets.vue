@@ -39,7 +39,7 @@ div(class="w-full h-full")
           :buffer="currentItemSize * 3"
         )
           row-item(:key="item.materialId" :material="item" v-model:selectedList="selectedMaterialList" @mouseenter="onMouseEnter" data-cy="assets")
-          div(v-if="index !== materialList.length - 1" class="border-b mx-7.5 my-5")
+          div(v-if="index !== materialList.length - 1" class="border-b border-black-400 mx-7.5 my-5")
         div(v-show="displayMode === DISPLAY_NODE.GRID" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5")
           grid-item-material(
             v-for="material in materialList"
@@ -71,7 +71,9 @@ import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useRoute, useRouter } from 'vue-router'
 // https://github.com/Akryum/vue-virtual-scroller/tree/next/packages/vue-virtual-scroller
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const store = useStore()
@@ -81,16 +83,22 @@ const selectedMaterialList = ref([])
 const displayMode = ref(DISPLAY_NODE.LIST)
 const materialList = computed(() => store.getters['assets/materialList'])
 const pagination = computed(() => store.getters['helper/search/pagination'])
-const optionSort = computed(() => ({
-  base: [
-    SORT_BY.CREATE_DATE,
-    SORT_BY.LAST_UPDATE,
-    SORT_BY.MATERIAL_NO_A_Z
-  ],
-  keywordSearch: [
-    SORT_BY.RELEVANCE
-  ]
-}))
+const optionSort = computed(() => {
+  const valueAddedService = computed(() => store.getters['polling/valueAddedService'])
+  return {
+    base: [
+      SORT_BY.CREATE_DATE,
+      SORT_BY.LAST_UPDATE,
+      SORT_BY.MATERIAL_NO_A_Z,
+      { ...SORT_BY.GHG_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
+      { ...SORT_BY.WATER_DEPLETION_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
+      { ...SORT_BY.LAND_USE_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') }
+    ],
+    keywordSearch: [
+      SORT_BY.RELEVANCE
+    ]
+  }
+})
 
 const {
   editMaterial,

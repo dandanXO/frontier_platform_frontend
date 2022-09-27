@@ -58,6 +58,7 @@ div(class="grid")
         filter-price(v-if="[SEARCH_TYPE.PUBLIC_LIBRARY, SEARCH_TYPE.SHARE].includes(searchType)")
         filter-complete(v-if="searchType === SEARCH_TYPE.ASSETS")
         filter-has-u3m(v-if="searchType !== SEARCH_TYPE.ASSETS")
+        filter-made2flow(v-if="searchType === SEARCH_TYPE.WORKSPACE")
 </template>
 
 <script>
@@ -75,6 +76,7 @@ import FilterHasPrice from '@/components/common/filter/FilterHasPrice.vue'
 import FilterHasU3m from '@/components/common/filter/FilterHasU3m.vue'
 import FilterComplete from '@/components/common/filter/FilterComplete.vue'
 import FilterPrice from '@/components/common/filter/FilterPrice.vue'
+import FilterMade2flow from '@/components/common/filter/FilterMade2flow.vue'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { SEARCH_TYPE } from '@/utils/constants'
@@ -95,7 +97,8 @@ export default {
     FilterComplete,
     FilterContent,
     FilterHasU3m,
-    FilterPrice
+    FilterPrice,
+    FilterMade2flow
   },
   props: {
     searchType: {

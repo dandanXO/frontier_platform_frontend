@@ -2,7 +2,7 @@
 f-input-container(:label="label" :required="required" ref="refContainer")
   f-popper(placement="bottom-start" :offset="[0, -popperOffsetY]" @expand="expand" @collapse="collapse" data-cy="input-chips")
     template(#trigger)
-      label(class="px-4 py-1 border rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11")
+      label(class="px-4 py-1 border border-black-400 rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11")
         div(v-for="chip in chips" class="flex")
           f-label {{ returnObject ? chip[keyOptionDisplay] : chip }}
         input(
@@ -13,7 +13,7 @@ f-input-container(:label="label" :required="required" ref="refContainer")
         )
     template(#content)
       div(:style="{ width: contentWidth + 'px' }")
-        label(class="px-4 py-1 border rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11" :class="[classBorder]")
+        label(class="px-4 py-1 border border-black-400 rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11" :class="[classBorder]")
           div(v-for="(chip, index) in chips" class="flex")
             f-label {{ returnObject ? chip[keyOptionDisplay] : chip }}
               f-svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer ml-1" @click.stop="removeChip(index)")

@@ -2,7 +2,7 @@
 div
   div(
     ref="refTrigger"
-    class="w-fit"
+    :class="[isNotFitWidth ? 'w-full' : 'w-fit']"
     aria-describedby="tooltip"
     @mouseenter="showTooltip"
     @mouseleave="hideTooltip"
@@ -63,6 +63,10 @@ const props = defineProps({
   boundaryReference: {
     type: String,
     default: ''
+  },
+  isNotFitWidth: {
+    type: Boolean,
+    default: false
   }
 })
 

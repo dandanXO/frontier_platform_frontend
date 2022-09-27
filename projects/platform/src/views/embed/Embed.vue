@@ -65,7 +65,9 @@ import useNavigation from '@/composables/useNavigation.js'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
@@ -82,17 +84,21 @@ const props = defineProps({
   }
 })
 
-const optionSort = {
-  base: [
-    SORT_BY.MATERIAL_NO_A_Z_C_M,
-    SORT_BY.NEW_ARRIVED
-  ],
-  keywordSearch: [
-    SORT_BY.RELEVANCE_M_C
-  ]
-}
-
 const share = computed(() => store.getters['embed/share'])
+const optionSort = computed(() => {
+  return {
+    base: [
+      SORT_BY.MATERIAL_NO_A_Z_C_M,
+      SORT_BY.NEW_ARRIVED,
+      { ...SORT_BY.GHG_RESULTS, disabled: !share.value.isSourceOrgHasMade2FlowPlan, tooltip: t('VV0047') },
+      { ...SORT_BY.WATER_DEPLETION_RESULTS, disabled: !share.value.isSourceOrgHasMade2FlowPlan, tooltip: t('VV0047') },
+      { ...SORT_BY.LAND_USE_RESULTS, disabled: !share.value.isSourceOrgHasMade2FlowPlan, tooltip: t('VV0047') }
+    ],
+    keywordSearch: [
+      SORT_BY.RELEVANCE_M_C
+    ]
+  }
+})
 const logo = computed(() => store.getters['embed/logo'])
 const pagination = computed(() => store.getters['helper/search/pagination'])
 const nodeList = computed(() => store.getters['embed/nodeList'])

@@ -19,7 +19,7 @@ modal-behavior(
         data-cy="modal-create-mail-group_email"
       )
         template(#slot:errorMsg v-if="suggestEmailList.length > 0")
-          p(v-if="suggestEmailList.length > 0" class="text-caption text-warn absolute pt-1 whitespace-nowrap") {{ $t("WW0029") }}
+          p(class="text-caption text-warn absolute pt-1 whitespace-nowrap") {{ $t("WW0029") }}
       p(class="text-body2 text-primary") {{ $t("BB0094") }}
     div(v-if="suggestEmailList.length > 0" class="pt-7.5 flex")
       p(class="text-body2 text-primary pr-2") {{ $t("BB0106") }}

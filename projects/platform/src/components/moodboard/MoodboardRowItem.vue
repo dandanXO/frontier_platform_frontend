@@ -5,7 +5,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-blac
       div(class="font-bold text-primary line-clamp-1") {{ properties.materialNo }}
       f-svg-icon(:iconName="statusIconName" size="24" class="text-primary")
     div(class="w-full relative aspect-square" @mouseenter="isHover = true" @mouseleave="isHover = false")
-      div(class="w-full h-full rounded-md overflow-hidden bg-cover" :class="{ 'border': neverScanBefore }")
+      div(class="w-full h-full rounded-md overflow-hidden bg-cover")
         img(v-defaultImg :src="properties.coverImg" class="w-full h-full")
       div(v-if="isHover" class="absolute z-9 inset-0 w-full h-full rounded bg-black-900/70" @click.stop="openModalMoodboardMaterialDetail(node, true, true)")
       div(v-if="isHover || haveSelectedMoreThanOne" class="absolute z-10 inset-0 w-full h-12")
@@ -30,28 +30,34 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-blac
       p(class="pl-1 font-bold text-caption text-primary") {{ node.creator }}
   div(class="col-span-8 grid gap-x-14 grid-cols-2")
     div(class="min-w-75 max-w-115")
-      div(class="pb-2 border-b-2 mb-3 text-body1 font-bold text-primary") {{ $t('RR0130') }}
+      div(class="pb-2 border-b-2 border-black-400 mb-3 text-body1 font-bold text-primary") {{ $t('RR0130') }}
       div(class="grid gap-3")
         p(v-for="(item, key) in materialBasicInfo" class="text-body2 line-clamp-1 !break-all" :class="{ 'text-black-700': key === 'frontierNo' }") {{ item.name }}: {{ item.value }}
     div(class="flex flex-col gap-y-7 min-w-75 max-w-115")
       div(v-if="properties.isPublicInventory")
-        div(class="pb-2 border-b-2 mb-3 text-body1 font-bold text-primary") {{ $t('RR0135') }}
+        div(class="pb-2 border-b-2 border-black-400 mb-3 text-body1 font-bold text-primary") {{ $t('RR0135') }}
         p(class="text-body2 line-clamp-1 !break-all") {{ materialInfo.totalInventoryQty.name }}: {{ materialInfo.totalInventoryQty.value }}
       div
-        div(class="pb-2 border-b-2 mb-3 text-body1 font-bold text-primary") {{ $t('RR0134') }}
+        div(class="pb-2 border-b-2 border-black-400 mb-3 text-body1 font-bold text-primary") {{ $t('RR0134') }}
         p(class="text-body2 line-clamp-1 !break-all") {{ materialInfo.publicPrice.pricing.name }}: {{ materialInfo.publicPrice.pricing.value }}
       div
-        div(class="pb-2 border-b-2 mb-3 text-body1 font-bold text-primary") {{ $t('RR0133') }}
+        div(class="pb-2 border-b-2 border-black-400 mb-3 text-body1 font-bold text-primary") {{ $t('RR0133') }}
         p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0027') }}: {{ properties.publicTagList.join(',') }}
       div
-        div(class="flex justify-between items-end pb-2 border-b-2 mb-3")
-          div(class="text-body1 font-bold text-primary") {{ $t('RR0219') }}
+        div(class="flex justify-between items-end pb-2 border-b-2 border-black-400 mb-3")
+          div(class="text-body1 font-bold" :class="[made2flowSubscribed ? 'text-primary' : 'text-grey-200']") {{ $t('RR0219') }}
           f-svg-icon(iconName="info_outline" size="14" class="text-primary cursor-pointer" @click="openModalIndicatorMethodology")
-        div(class="flex items-center gap-x-1")
+        div(v-if="made2flowSubscribed" class="flex items-center gap-x-1")
           div(v-for="property in carbonEmissionInfo" class="min-w-19.5 flex items-center gap-x-1")
             f-svg-icon(:iconName="property.icon" size="20" :class="[property.differenceInPercent > 0 ? 'text-brand' : 'text-primary']")
             p(v-if="property.personalized" class="text-body2 text-primary") {{ property.personalized }} {{ property.unitShort }}
             hr(v-else class="w-4 border-black-500")
+        div(v-else class="flex items-center bg-no-repeat" :style="{ backgroundImage: `url(${listViewMask})` }")
+          f-svg-icon(iconName="info_outline" size="20" class="text-grey-600 mr-3")
+          p(class="text-caption leading-1.6")
+            span(class="text-grey-600 mr-6") {{ $t("VV0048") }}
+            span(class="inline-flex items-center text-cyan-400 text-right cursor-pointer" @click="viewTheProgram") {{ $t("UU0116") }}
+              f-svg-icon(iconName="arrow_forward" size="16" class="ml-1")
   div(class="col-span-1 text-black-700 flex flex-col gap-3.5")
     f-tooltip(boundaryReference="pick-list-header")
       template(#trigger)
@@ -76,7 +82,10 @@ import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
 import useMaterial from '@/composables/useMaterial'
 import { U3M_STATUS } from '@/utils/constants'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import useMoodboardNode from '@/composables/useMoodboardNode.js'
+import { VALUE_ADDED_SERVICE_ID, MADE2FLOW_PLAN_TYPE } from '@/utils/constants.js'
+import listViewMask from '@/assets/images/list_view_mask.png'
 
 const props = defineProps({
   node: {
@@ -94,6 +103,14 @@ const props = defineProps({
 const emit = defineEmits(['update:selectedList'])
 
 const store = useStore()
+const router = useRouter()
+
+const made2flowSubscribed = computed(() => {
+  const { carbonEmission: { materialOwnerMade2FlowPlanType, viewerMade2FlowPlanType } } = props.properties
+  const maxPlanType = Math.max(materialOwnerMade2FlowPlanType, viewerMade2FlowPlanType)
+
+  return maxPlanType >= MADE2FLOW_PLAN_TYPE.STANDARD
+})
 const moodboard = computed(() => store.getters['moodboard/moodboard'])
 const moodboardOfferNodeCollection = computed(() => store.getters['moodboard/moodboardOfferNodeCollection'])
 const {
@@ -102,7 +119,7 @@ const {
   openModalMoodboardMaterialDetail,
   togglePick
 } = useMoodboardNode(moodboard, moodboardOfferNodeCollection)
-const { materialBasicInfo, materialInfo, carbonEmissionInfo, neverScanBefore, statusIconName } = useMaterial(props.properties)
+const { materialBasicInfo, materialInfo, carbonEmissionInfo, statusIconName } = useMaterial(props.properties)
 
 const innerSelectedList = computed({
   get: () => props.selectedList,
@@ -114,5 +131,9 @@ const isHover = ref(false)
 
 const openModalIndicatorMethodology = () => {
   store.dispatch('helper/openModalBehavior', { component: 'modal-indicator-methodology' })
+}
+
+const viewTheProgram = () => {
+  router.push({ name: 'Billings', params: { tab: 'value-added-service' }, query: { service: VALUE_ADDED_SERVICE_ID.MADE2FLOW } })
 }
 </script>

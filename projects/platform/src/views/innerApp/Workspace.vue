@@ -72,18 +72,24 @@ const route = useRoute()
 const { goToWorkspaceMaterialDetail } = useNavigation()
 const { editNodeCollection, editNodeMaterial, duplicateNode, moveNode, shareNode, deleteCollection, deleteMaterial, deleteMultipleNode } = useWorkspace()
 
-const optionSort = {
-  base: [
-    SORT_BY.MATERIAL_NO_A_Z_C_M,
-    SORT_BY.MATERIAL_NO_A_Z_M_C,
-    SORT_BY.CREATE_DATE_C_M,
-    SORT_BY.CREATE_DATE_M_C
-  ],
-  keywordSearch: [
-    SORT_BY.RELEVANCE_C_M,
-    SORT_BY.RELEVANCE_M_C
-  ]
-}
+const optionSort = computed(() => {
+  const valueAddedService = computed(() => store.getters['polling/valueAddedService'])
+  return {
+    base: [
+      SORT_BY.MATERIAL_NO_A_Z_C_M,
+      SORT_BY.MATERIAL_NO_A_Z_M_C,
+      SORT_BY.CREATE_DATE_C_M,
+      SORT_BY.CREATE_DATE_M_C,
+      { ...SORT_BY.GHG_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
+      { ...SORT_BY.WATER_DEPLETION_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
+      { ...SORT_BY.LAND_USE_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') }
+    ],
+    keywordSearch: [
+      SORT_BY.RELEVANCE_C_M,
+      SORT_BY.RELEVANCE_M_C
+    ]
+  }
+})
 
 const optionMultiSelect = [deleteMultipleNode]
 
