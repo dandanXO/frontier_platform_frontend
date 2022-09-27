@@ -1,9 +1,9 @@
 <template lang="pug">
 filter-wrapper(
-	iconName="co2"
-	:displayName="$t('RR0254')"
-	:dirty="filterDirty.made2Flow"
-	:disabled="!valueAddedService.made2flow.planStatus.ACTIVATE"
+  iconName="co2"
+  :displayName="$t('RR0254')"
+  :dirty="filterDirty.made2Flow"
+  :disabled="!valueAddedService.made2flow.planStatus.ACTIVATE"
 )
   f-contextual-menu(
     v-model:inputSelectValue="made2Flow"

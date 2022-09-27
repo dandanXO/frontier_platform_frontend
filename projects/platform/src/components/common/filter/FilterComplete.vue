@@ -16,21 +16,17 @@ import { computed } from 'vue'
 const store = useStore()
 
 const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
-const optionList = computed(() => {
-  const valueAddedService = computed(() => store.getters['polling/valueAddedService'])
-  const copy = JSON.parse(JSON.stringify(FILTER_COMPLETE))
-  if (!valueAddedService.value.made2flow.planStatus.ACTIVATE) {
-    const index = Object.keys(FILTER_COMPLETE).findIndex(key => FILTER_COMPLETE[key].value === FILTER_COMPLETE.UNFILLED_CERTIFICATION.value)
-    delete copy.UNFILLED_CERTIFICATION
-  }
-  return copy
-})
 
 const menuTree = computed(() => {
+  const valueAddedService = store.getters['polling/valueAddedService']
+  const copyFilterComplete = JSON.parse(JSON.stringify(FILTER_COMPLETE))
+  if (!valueAddedService.made2flow.planStatus.ACTIVATE) {
+    delete copyFilterComplete.UNFILLED_CERTIFICATION
+  }
   return {
     blockList: [
       {
-        menuList: Object.keys(optionList.value).map(key => {
+        menuList: Object.keys(copyFilterComplete).map(key => {
           const { text, value } = FILTER_COMPLETE[key]
           return {
             title: text,

@@ -42,7 +42,7 @@ div(v-else class="w-full pt-3")
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { VALUE_ADDED_SERVICE_ID, VALUE_ADDED_SERVICE_STATUS } from '@/utils/constants'
@@ -67,6 +67,6 @@ const recommendService = computed(() => valueAddedServiceList.find(service => !!
 const isDetailPage = computed(() => !!route.query.service)
 
 const goTo = (pageId) => {
-	router.push({ name: 'Billings', params: { tab: 'value-added-service' }, query: { service: pageId }})
+  router.push({ name: 'Billings', params: { tab: 'value-added-service' }, query: { service: pageId } })
 }
 </script>

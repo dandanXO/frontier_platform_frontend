@@ -1,5 +1,5 @@
 <template lang="pug">
-f-tooltip(v-if="innerMenu.tooltip && innerMenu.disabled" :isNotFitWidth="true")
+f-tooltip(v-if="innerMenu.tooltip && innerMenu.disabled" isNotFitWidth)
   template(#trigger)
     f-list-item(:disabled="innerMenu.disabled") {{ innerMenu.title }}
   template(#content)

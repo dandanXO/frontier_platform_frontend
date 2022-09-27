@@ -14,7 +14,8 @@ const NodeShareState = () => ({
   isCanClone: false,
   isCanDownloadU3M: false,
   isClosed: false,
-  isCanSave: false
+  isCanSave: false,
+  isSourceOrgHasMade2FlowPlan: false
 })
 
 export default NodeShareState

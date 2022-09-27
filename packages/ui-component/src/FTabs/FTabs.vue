@@ -22,7 +22,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps({
   /**
@@ -60,7 +60,7 @@ const emit = defineEmits(['switch'])
 const currentTab = ref(props.initValue || props.tabList[0][props.keyField])
 
 const switchTab = (tab) => {
-    currentTab.value = tab[props.keyField]
-    emit('switch', tab)
+  currentTab.value = tab[props.keyField]
+  emit('switch', tab)
 }
 </script>

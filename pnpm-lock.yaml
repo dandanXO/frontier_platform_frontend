@@ -43,7 +43,7 @@ importers:
       postcss: 8.4.14
       pug: 3.0.2
       sass: 1.54.3
-      tailwindcss: 3.1.8_postcss@8.4.14
+      tailwindcss: 3.1.8
       vite: 3.0.9_sass@1.54.3
       vite-plugin-svg-sprite-component: 1.0.10
 
@@ -96,7 +96,7 @@ importers:
       uuid: ^8.3.2
       vue-gtag: ^2.0.1
       vue-virtual-scroller: ^2.0.0-alpha.1
-      vue3-carousel: ^0.1.36
+      vue3-carousel: ^0.1.46
       vuex: ^4.0.2
     dependencies:
       '@hennge/vue3-pagination': 1.0.17_vue@3.2.37
@@ -108,7 +108,7 @@ importers:
       uuid: 8.3.2
       vue-gtag: 2.0.1_vue@3.2.37
       vue-virtual-scroller: 2.0.0-alpha.1_vue@3.2.37
-      vue3-carousel: 0.1.40_vue@3.2.37
+      vue3-carousel: 0.1.47_vue@3.2.37
       vuex: 4.0.2_vue@3.2.37
     devDependencies:
       '@playwright/test': 1.25.0
@@ -3376,7 +3376,7 @@ packages:
     peerDependencies:
       tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
     dependencies:
-      tailwindcss: 3.1.8_postcss@8.4.14
+      tailwindcss: 3.1.8
     dev: true
 
   /@testing-library/dom/8.16.1:
@@ -9533,29 +9533,29 @@ packages:
       postcss: 7.0.39
     dev: true
 
-  /postcss-import/14.1.0_postcss@8.4.14:
+  /postcss-import/14.1.0_postcss@8.4.16:
     resolution: {integrity: sha512-flwI+Vgm4SElObFVPpTIT7SU7R3qk2L7PyduMcokiaVKuWv9d/U+Gm/QAd8NDLuykTWTkcrjOeD2Pp1rMeBTGw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       postcss: ^8.0.0
     dependencies:
-      postcss: 8.4.14
+      postcss: 8.4.16
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.1
     dev: true
 
-  /postcss-js/4.0.0_postcss@8.4.14:
+  /postcss-js/4.0.0_postcss@8.4.16:
     resolution: {integrity: sha512-77QESFBwgX4irogGVPgQ5s07vLvFqWr228qZY+w6lW599cRlK/HmnlivnnVUxkjHnCu4J16PDMHcH+e+2HbvTQ==}
     engines: {node: ^12 || ^14 || >= 16}
     peerDependencies:
       postcss: ^8.3.3
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.4.14
+      postcss: 8.4.16
     dev: true
 
-  /postcss-load-config/3.1.4_postcss@8.4.14:
+  /postcss-load-config/3.1.4_postcss@8.4.16:
     resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
     engines: {node: '>= 10'}
     peerDependencies:
@@ -9568,7 +9568,7 @@ packages:
         optional: true
     dependencies:
       lilconfig: 2.0.6
-      postcss: 8.4.14
+      postcss: 8.4.16
       yaml: 1.10.2
     dev: true
 
@@ -9636,13 +9636,13 @@ packages:
       postcss: 7.0.39
     dev: true
 
-  /postcss-nested/5.0.6_postcss@8.4.14:
+  /postcss-nested/5.0.6_postcss@8.4.16:
     resolution: {integrity: sha512-rKqm2Fk0KbA8Vt3AdGN0FB9OBOMDVajMG6ZCf/GoHgdxUJ4sBFp0A/uMIRm+MJUdo33YXEtjqIz8u7DAp8B7DA==}
     engines: {node: '>=12.0'}
     peerDependencies:
       postcss: ^8.2.14
     dependencies:
-      postcss: 8.4.14
+      postcss: 8.4.16
       postcss-selector-parser: 6.0.10
     dev: true
 
@@ -11209,12 +11209,10 @@ packages:
     resolution: {integrity: sha512-k8uzYIkIVwmT+TcglpdN50pS2y1BDcUnBPK9iJeGu0Pl1lOI8pD6wtzgw91Pjpe+RxtTncw32tLxs/R0yNL2Mg==}
     dev: true
 
-  /tailwindcss/3.1.8_postcss@8.4.14:
+  /tailwindcss/3.1.8:
     resolution: {integrity: sha512-YSneUCZSFDYMwk+TGq8qYFdCA3yfBRdBlS7txSq0LUmzyeqRe3a8fBQzbz9M3WS/iFT4BNf/nmw9mEzrnSaC0g==}
     engines: {node: '>=12.13.0'}
     hasBin: true
-    peerDependencies:
-      postcss: ^8.0.9
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3
@@ -11229,11 +11227,11 @@ packages:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.0.0
-      postcss: 8.4.14
-      postcss-import: 14.1.0_postcss@8.4.14
-      postcss-js: 4.0.0_postcss@8.4.14
-      postcss-load-config: 3.1.4_postcss@8.4.14
-      postcss-nested: 5.0.6_postcss@8.4.14
+      postcss: 8.4.16
+      postcss-import: 14.1.0_postcss@8.4.16
+      postcss-js: 4.0.0_postcss@8.4.16
+      postcss-load-config: 3.1.4_postcss@8.4.16
+      postcss-nested: 5.0.6_postcss@8.4.16
       postcss-selector-parser: 6.0.10
       postcss-value-parser: 4.2.0
       quick-lru: 5.1.1
@@ -12117,8 +12115,8 @@ packages:
       '@vue/server-renderer': 3.2.37_vue@3.2.37
       '@vue/shared': 3.2.37
 
-  /vue3-carousel/0.1.40_vue@3.2.37:
-    resolution: {integrity: sha512-rPIfBxFhsY6W6qKNGsjgzPJdngt07ov06/Ql1lKsTr8gBx73gUxCIIQo/7M3QCx3KU94CDGBbLugF5YGdEPefg==}
+  /vue3-carousel/0.1.47_vue@3.2.37:
+    resolution: {integrity: sha512-yPXKdW5Sw5AyATcKJEhWH4qYUlheV0/8q53itMQ2VL42O7gDTLtFEpBZUahWlmI/WzaWvPBGjfy1v5m10/Q5+g==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:
