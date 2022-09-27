@@ -181,5 +181,19 @@ export default {
   getLastMonthUnbilledInfo: (orgId) => orgApiWrapper('/org/payment/get-last-month-unbilled-info', orgId),
   payLastMonthUnbilledInfo: (orgId) => orgApiWrapper('/org/payment/pay-last-month-unbilled-info', orgId),
   deactivateOrg: (orgId) => orgApiWrapper('/org/plan/deactivate', orgId),
-  activateOrg: (orgId) => orgApiWrapper('/org/plan/activate', orgId)
+  activateOrg: (orgId) => orgApiWrapper('/org/plan/activate', orgId),
+
+  /**
+   * @param {object} params
+   * @param {string} params.orgName
+   * @param {number} params.orgCategoryId
+   * @param {string} params.name
+   * @param {string} params.jobTitle
+   * @param {number} params.phoneCountryCode
+   * @param {string} params.phone
+   * @param {string} params.email
+   * @param {string} params.message
+   * @param {array} params.attachmentList - [{tempUploadId, fileName}]
+   */
+  made2flowScheduleMeeting: (orgId, params) => orgApiWrapper('/org/value-added-service/made2flow/schedule-meeting', orgId, params)
 }

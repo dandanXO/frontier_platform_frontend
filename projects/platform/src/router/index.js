@@ -322,7 +322,7 @@ const routes = [
             children: [
               ...reuseRoutes('Org'),
               {
-                path: 'billings/:tab(plan|payment|history)',
+                path: 'billings/:tab(plan|value-added-service|payment|history)',
                 name: 'Billings',
                 props: true,
                 component: () => import('@/views/innerApp/Billings.vue'),

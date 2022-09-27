@@ -36,7 +36,9 @@ div
               isReadOnly
             )
     div
-      h5(class="text-h5 font-bold text-primary pb-5") {{ $t("RR0219") }}
+      div(class="flex items-center pb-5")
+        f-svg-icon(iconName="subscribe" size="20" class="text-grey-900 mr-2")
+        h5(class="text-h5 font-bold text-primary") {{ $t("RR0219") }}
       material-detail-environmental-indicator(:material="material")
 </template>
 

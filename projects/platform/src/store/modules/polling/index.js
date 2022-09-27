@@ -1,5 +1,5 @@
 import pollingApi from '@/apis/polling'
-import { PLAN_TYPE, PLAN_STATUS } from '@/utils/constants.js'
+import { PLAN_TYPE, PLAN_STATUS, MADE2FLOW_PLAN_TYPE, VALUE_ADDED_SERVICE_ID, VALUE_ADDED_SERVICE_STATUS } from '@/utils/constants.js'
 import i18n from '@/utils/i18n'
 import dayjs from 'dayjs'
 
@@ -27,11 +27,58 @@ const state = () => ({
         max: ''
       }
     },
+    hideCarbonEmissionUI: true
   },
+  valueAddedService: {
+    made2flow: {
+      renewDate: "2022/01/31",
+      status: VALUE_ADDED_SERVICE_STATUS.EXPIRED,
+      planType: MADE2FLOW_PLAN_TYPE.STANDARD,
+      completeQty: 2032,
+      totalQty: 3481,
+      unFilledCertificationQty: 1093,
+      subscribeDate: 1608905630674
+    }
+  }
 })
 
 const getters = {
   plan: state => state.plan,
+  valueAddedService: state => {
+    const formatServiceTable = {}
+    const { STANDARD, PERSONALIZED, PERSONALIZED_PRO } = MADE2FLOW_PLAN_TYPE
+    const obj = {
+      [STANDARD]: i18n.global.t('M2F033'),
+      [PERSONALIZED]: i18n.global.t('M2F034'),
+      [PERSONALIZED_PRO]: i18n.global.t('M2F035')
+    }
+
+    Object.keys(state.valueAddedService).forEach(serviceId => {
+      formatServiceTable[serviceId] = JSON.parse(JSON.stringify(state.valueAddedService[serviceId])) || {}
+      const planType = state.valueAddedService[serviceId]?.planType
+
+      if (serviceId === VALUE_ADDED_SERVICE_ID.MADE2FLOW) {
+        formatServiceTable[serviceId].planType = {
+          STANDARD: STANDARD === planType,
+          PERSONALIZED: PERSONALIZED === planType,
+          PERSONALIZED_PRO: PERSONALIZED_PRO === planType
+        }
+      }
+
+      const planStatus = {}
+      Object.keys(VALUE_ADDED_SERVICE_STATUS).forEach(status => {
+        planStatus[status] = state.valueAddedService[serviceId]?.status === VALUE_ADDED_SERVICE_STATUS[status]
+      })
+
+      formatServiceTable[serviceId].planStatus = planStatus
+      formatServiceTable[serviceId].planName = obj[state.valueAddedService[serviceId]?.planType]
+    })
+
+    return formatServiceTable
+  },
+  hasNoValueAddedService: state => {
+    return Object.keys(state.valueAddedService).findIndex(key => !state.valueAddedService[key])
+  },
   planName: (state, getters) => {
     const { BASIC, PRO, ENT } = PLAN_TYPE
     const obj = {
@@ -99,10 +146,11 @@ const getters = {
 
 const mutations = {
   SET_polling (state, polling) {
-    const { isProcessing, notificationList, plan } = polling
+    const { isProcessing, notificationList, plan, valueAddedService } = polling
     state.isProcessing = isProcessing
     state.notificationList = notificationList
     state.plan = plan
+    state.valueAddedService = valueAddedService
   },
   SET_timerId (state, timerId) {
     state.timerId = timerId

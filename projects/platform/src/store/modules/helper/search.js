@@ -36,7 +36,8 @@ const defaultFilterState = () => ({
       isInfinity: false
     }
   },
-  hasU3M: null
+  hasU3M: null,
+  made2Flow: null
 })
 
 const state = () => ({

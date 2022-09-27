@@ -1,5 +1,11 @@
 <template lang="pug">
+f-tooltip(v-if="innerMenu.tooltip && innerMenu.disabled" :isNotFitWidth="true")
+  template(#trigger)
+    f-list-item(:disabled="innerMenu.disabled") {{ innerMenu.title }}
+  template(#content)
+    p {{ innerMenu.tooltip }}
 f-list-item(
+  v-else
   class="min-w-57.5"
   :class="{ 'bg-black-200': isSelect }"
   :disabled="innerMenu.disabled"
@@ -49,6 +55,7 @@ const props = defineProps({
       selectValue: 'Menu',
       disabled: false,
       icon: 'icon',
+      tooltip: '',
       clickHandler: () => { },
       blockList: [
         {
@@ -81,6 +88,7 @@ const innerMenu = computed(() => {
     icon: '',
     blockList: [],
     clickHandler: null,
+    tooltip: ''
   }
 
   return Object.assign({}, defaultOption, props.menu)

@@ -49,9 +49,9 @@ export default {
 
       dispatch('setPublicLibraryModule', data.result)
     },
-    async getPublicMaterial ({ dispatch }, { nodeKey }) {
+    async getPublicMaterial ({ rootGetters, dispatch }, { nodeKey }) {
       const [workspaceNodeLocation, workspaceNodeId] = nodeKey?.split('-') || [null, null]
-      const { data } = await publicLibraryApi.getPublicMaterial({ workspaceNodeId, workspaceNodeLocation })
+      const { data } = await publicLibraryApi.getPublicMaterial({ orgId: rootGetters['organization/orgId'], workspaceNodeId, workspaceNodeLocation })
       dispatch('setPublicLibraryModule', data.result)
     },
     async cloneCheck ({ rootGetters }, { nodeKeyList }) {

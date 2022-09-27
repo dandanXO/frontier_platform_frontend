@@ -58,12 +58,14 @@ div(class="w-195")
         h6(class="text-h6 text-primary font-bold") {{ $t('OO0007') }}
         p(class="text-body2 text-black-600 pt-2") {{ $t('OO0059') }}
       f-button(size="md" @click="activateOrg") {{ $t('OO0129') }}
+  plan-value-added-service(v-if="hasNoValueAddedService")
 </template>
 
 <script setup>
 import { computed } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 import usePlan from '@/composables/usePlan.js'
+import PlanValueAddedService from '@/components/billings/PlanValueAddedService.vue'
 
 const store = useStore()
 const {
@@ -79,6 +81,7 @@ const plan = computed(() => store.getters['polling/plan'])
 const planName = computed(() => store.getters['polling/planName'])
 const planStatus = computed(() => store.getters['polling/planStatus'])
 const planType = computed(() => store.getters['polling/planType'])
+const hasNoValueAddedService = computed(() => store.getters['polling/hasNoValueAddedService'])
 const materialQuota = computed(() => plan.value.quota.material)
 const u3mQuota = computed(() => plan.value.quota.u3m)
 const memberQuota = computed(() => plan.value.quota.member)

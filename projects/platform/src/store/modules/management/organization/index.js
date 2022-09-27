@@ -301,6 +301,14 @@ export default {
     async activateOrg ({ dispatch }) {
       const { data } = await dispatch('callOrgApi', { func: 'activateOrg' })
       dispatch('setOrganization', data.result.organization)
+    },
+    async made2flowScheduleMeeting ({ dispatch }, params) {
+      const { attachmentFileList } = params
+      const attachmentList = await Promise.all(attachmentFileList.map(attachment => dispatch('uploadFileToS3', { fileName: attachment.name, file: attachment }, { root: true })))
+      const tempParams = { ...params, attachmentList }
+      delete tempParams.attachmentFileList
+
+      await dispatch('callOrgApi', { func: 'made2flowScheduleMeeting', params: tempParams })
     }
   }
 }

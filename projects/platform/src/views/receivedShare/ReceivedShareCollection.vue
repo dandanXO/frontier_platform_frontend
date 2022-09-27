@@ -94,15 +94,22 @@ const props = defineProps({
 const { receivedShareCloneByNodeKey, receivedShareCloneByNodeList } = useReceivedShare()
 const { goToReceivedShareMaterial } = useNavigation()
 
-const optionSort = {
-  base: [
-    SORT_BY.MATERIAL_NO_A_Z_C_M,
-    SORT_BY.NEW_ARRIVED
-  ],
-  keywordSearch: [
-    SORT_BY.RELEVANCE_M_C
-  ]
-}
+const share = computed(() => store.getters['receivedShare/share'])
+const optionSort = computed(() => {
+  return {
+    base: [
+      SORT_BY.MATERIAL_NO_A_Z_C_M,
+      SORT_BY.NEW_ARRIVED,
+      { ...SORT_BY.GHG_RESULTS, disabled: !share.value.isSourceOrgHasMade2FlowPlan, tooltip: t('VV0047') },
+      { ...SORT_BY.WATER_DEPLETION_RESULTS, disabled: !share.value.isSourceOrgHasMade2FlowPlan, tooltip: t('VV0047') },
+      { ...SORT_BY.LAND_USE_RESULTS, disabled: !share.value.isSourceOrgHasMade2FlowPlan, tooltip: t('VV0047') }
+    ],
+    keywordSearch: [
+      SORT_BY.RELEVANCE_M_C
+    ]
+  }
+})
+
 const optionMultiSelect = [
   {
     name: t('RR0167'),
@@ -110,7 +117,6 @@ const optionMultiSelect = [
   }
 ]
 
-const share = computed(() => store.getters['receivedShare/share'])
 const pagination = computed(() => store.getters['helper/search/pagination'])
 const nodeList = computed(() => store.getters['receivedShare/nodeList'])
 const breadcrumbList = computed(() => store.getters['receivedShare/collectionBreadcrumbList']())

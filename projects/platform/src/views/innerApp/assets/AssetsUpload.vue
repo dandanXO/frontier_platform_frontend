@@ -52,7 +52,7 @@ f-scrollbar-container(class="w-full h-full")
         div(class="pt-26 pb-18")
           div(class="text-h6 font-bold text-black-600 pb-5") {{ $t("DD0087") }}
           div(class="grid gap-3")
-            div(v-for="option in alternativeUploadOptions" class="flex py-6 px-7.5 cursor-pointer border rounded" :data-cy="option.testId" @click="option.action")
+            div(v-for="option in alternativeUploadOptions" class="flex py-6 px-7.5 cursor-pointer border border-black-400 rounded" :data-cy="option.testId" @click="option.action")
               f-svg-icon(:iconName="option.icon" size="32" class="text-brand")
               div(class="grid gap-3 pl-7.5")
                 div(class="text-body1 font-bold text-primary") {{ option.title }}
