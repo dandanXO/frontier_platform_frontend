@@ -39,6 +39,7 @@ const route = useRoute()
 const router = useRouter()
 const store = useStore()
 const planStatus = computed(() => store.getters['polling/planStatus'])
+const orgUserRole = computed(() => store.getters['organization/orgUser/orgUserRole'])
 
 const tabList = reactive([
   {
@@ -48,16 +49,21 @@ const tabList = reactive([
   {
     name: t('VV0001'),
     path: 'value-added-service'
-  },
-  {
-    name: t('OO0010'),
-    path: 'payment'
-  },
-  {
-    name: t('OO0011'),
-    path: 'history'
   }
 ])
+
+if (orgUserRole.value.OWNER || orgUserRole.value.ADMIN) {
+  tabList.push(
+    {
+      name: t('OO0010'),
+      path: 'payment'
+    },
+    {
+      name: t('OO0011'),
+      path: 'history'
+    }
+  )
+}
 
 const toggleTab = (tab) => {
   router.push({ name: route.name, params: { tab } })

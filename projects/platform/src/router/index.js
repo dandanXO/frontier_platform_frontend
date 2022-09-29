@@ -326,14 +326,14 @@ const routes = [
                 name: 'Billings',
                 props: true,
                 component: () => import('@/views/innerApp/Billings.vue'),
-                beforeEnter: (to, from, next) => {
-                  const roleId = store.getters['organization/orgUser/orgUser'].orgRoleId
-                  if ([ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(roleId)) {
-                    return next()
-                  } else {
-                    return next(`/${to.params.orgNo}/public-library`)
-                  }
-                }
+                // beforeEnter: (to, from, next) => {
+                //   const roleId = store.getters['organization/orgUser/orgUser'].orgRoleId
+                //   if ([ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(roleId)) {
+                //     return next()
+                //   } else {
+                //     return next(`/${to.params.orgNo}/public-library`)
+                //   }
+                // }
               }
             ]
           },
