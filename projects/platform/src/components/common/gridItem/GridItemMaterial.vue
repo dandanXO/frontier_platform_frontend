@@ -8,7 +8,7 @@ grid-item-wrapper(
 )
   template(#title) {{ material.materialNo }}
   template(#content)
-    div(class="w-full h-full rounded-md overflow-hidden bg-cover" :class="{ 'border': neverScanBefore }")
+    div(class="w-full h-full rounded-md border-black-400 overflow-hidden bg-cover" :class="{ 'border': hasNoCoverImage }")
       img(v-defaultImg :src="material.coverImg" class="w-full h-full")
   template(#hover-content)
     div(class="text-black-0 px-7.5 py-10 h-full flex flex-col items-center justify-center text-center")
@@ -58,7 +58,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:selectedValue', 'click:option'])
 
-const { neverScanBefore, materialInfo } = useMaterial(props.material)
+const { hasNoCoverImage, materialInfo } = useMaterial(props.material)
 
 const innerSelectedValue = computed({
   get: () => props.selectedValue,

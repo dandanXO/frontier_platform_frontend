@@ -14,9 +14,9 @@ modal-behavior(
           f-svg-icon(iconName="add" size="24" class="text-primary")
         template(v-for="(image, index) in imageList")
           label(v-if="!hideNotExistSide(index)" class="w-25 h-30.5")
-            div(class="h-25 rounded border relative flex justify-center items-center")
+            div(class="h-25 rounded border border-black-400 relative flex justify-center items-center")
               img(v-if="!!image.imgSrc" :src="image.imgSrc" class="max-w-full max-h-full")
-              div(v-else class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-body2 font-bold text-black-400") {{ $t("RR0103") }}
+              div(v-else class="rounded w-full h-full bg-black-200 flex items-center justify-center text-body2 font-bold text-black-400") {{ $t("RR0103") }}
               f-input-radio(
                 v-model:inputValue="coverImageIndex"
                 :value="index"

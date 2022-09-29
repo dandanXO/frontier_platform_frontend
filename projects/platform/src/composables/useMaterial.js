@@ -43,16 +43,8 @@ export default function useMaterial (material) {
   const scanFaceSide = !!faceSideImg?.crop
   const scanBackSide = !!backSideImg?.crop
 
-  const neverScanBefore = ref(true)
   const statusIconName = ref('front')
-
-  if (coverMode === COVER_MODE.FACE && scanFaceSide) {
-    neverScanBefore.value = false
-  } else if (coverMode === COVER_MODE.BACK && scanBackSide) {
-    neverScanBefore.value = false
-  } else if (coverMode === COVER_MODE.SUP) {
-    neverScanBefore.value = false
-  }
+  const hasNoCoverImage = computed(() => !coverImg)
 
   if (isDoubleSideMaterial) {
     if (scanFaceSide && scanBackSide) statusIconName.value = 'double'
@@ -286,7 +278,7 @@ export default function useMaterial (material) {
   })
 
   return {
-    neverScanBefore,
+    hasNoCoverImage,
     statusIconName,
     imageList,
     defaultCoverImgIndex,
