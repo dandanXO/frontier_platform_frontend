@@ -3,9 +3,11 @@ filter-wrapper(
   iconName="co2"
   :displayName="$t('RR0254')"
   :dirty="filterDirty.made2Flow"
-  :disabled="!valueAddedService.made2flow.planStatus.ACTIVATE"
+  :disabled="disabled"
 )
+  p(v-if="disabled" class="max-w-72") {{ $t("VV0047") }}
   f-contextual-menu(
+    v-else
     v-model:inputSelectValue="made2Flow"
     :selectMode="1"
     :menuTree="menuTree"
@@ -23,7 +25,7 @@ const store = useStore()
 
 const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
 const valueAddedService = computed(() => store.getters['polling/valueAddedService'])
-
+const disabled = computed(() => !valueAddedService.value.made2flow.planStatus.ACTIVATE)
 const menuTree = computed(() => ({
   blockList: [
     {

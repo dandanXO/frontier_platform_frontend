@@ -1,12 +1,12 @@
 <template lang="pug">
 f-tooltip(v-if="disabled")
   template(#trigger)
-    div(class="flex items-center gap-x-1 p-1.5 border rounded-lg border-black-400")
+    div(class="flex items-center gap-x-1 p-1.5 border rounded-lg border-black-400 cursor-default")
       f-svg-icon(:iconName="iconName" size="24" class="text-black-500")
       span(class="text-black-500 text-body2") {{ displayName }}
       f-svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-500")
   template(#content)
-    p(class="w-72") {{ $t("VV0047") }}
+    slot
 f-popper(
   v-else
   placement="bottom-start"
