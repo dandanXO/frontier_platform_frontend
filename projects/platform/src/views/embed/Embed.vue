@@ -24,7 +24,7 @@ div(class="max-w-315 h-full mx-auto pt-10")
               template(#number) {{ pagination.totalCount }}
             span )
     template(#sub-header)
-      f-expansion-panel(class="px-7.5 pb-8 pt-1.5")
+      f-expansion-panel(class="px-7.5 pb-8 pt-1.5" isExpand)
         template(#trigger="{ isExpand }")
           div(class="w-full h-12 border border-primary-middle bg-black-0 flex items-center justify-between pl-7 pr-4 cursor-pointer"  :class="[isExpand ? 'rounded-t bg-black-200' : 'rounded']")
             h5(class="text-caption text-primary font-bold") {{ $t("RR0246") }}
@@ -35,17 +35,17 @@ div(class="max-w-315 h-full mx-auto pt-10")
               :class="[isExpand ? '-rotate-90' : 'rotate-90']"
             )
         template(#content)
-          div(class="w-full h-81 border rounded-b !border-t-0 py-6 pl-7 pr-11 flex justify-between")
+          div(class="w-full h-81 border border-primary-middle rounded-b !border-t-0 py-6 pl-7 pr-11 flex justify-between")
             div(class="w-155.5 h-full")
-              f-scrollbar-container(:sizeAutoCapable="false" v-if="collection.description" class="h-full -ml-3 px-3 break-all text-body2 text-primary leading-1.6") {{ collection.description }}
+              f-scrollbar-container(v-if="collection.description" :sizeAutoCapable="false" class="h-full -ml-6.5 px-6.5 break-all text-body2 text-primary leading-1.6") {{ collection.description }}
               p(v-else class="text-body2 text-primary leading-1.6") {{ $t("FF0008") }}
-            div(class="relative w-97.5 h-69 bg-black-400 flex items-center justify-center flex-shrink-0")
-              a(v-if="collection.trendBoardCoverImg" :href="collection.trendBoardUrl" target="_blank" class="w-full h-full")
-                img(:src="collection.trendBoardCoverImg" class="w-full h-full object-contain")
-                div(class="absolute right-3.5 bottom-3.5 card-shadow w-7 h-7 rounded-sm bg-black-0 flex items-center justify-center")
+            div(class="relative w-97.5 h-69 rounded bg-black-400 flex items-center justify-center flex-shrink-0")
+              div(v-if="collection.trendBoardCoverImg" class="rounded w-full h-full px-7.5 py-6 bg-black-200")
+                div(class="w-full h-full bg-cover bg-center rounded" :style="{ backgroundImage: `url(${collection.trendBoardCoverImg})`}")
+                a(:href="collection.trendBoardUrl" target="_blank" class="absolute right-3.5 bottom-3.5 card-shadow w-7 h-7 rounded-sm bg-black-0 flex items-center justify-center")
                   f-svg-icon(iconName="open_in_new" class="text-black-700" size="24")
               div(v-else)
-                f-svg-icon(iconName="folder_Large" size="110" class="text-black-0 mx-auto")
+                f-svg-icon(iconName="file" size="110" class="text-black-0 mx-auto")
                 p(class="text-body1 font-bold text-black-50 pt-3") {{ $t("RR0247") }}
     template(#default="{ goTo }")
       div(v-if="nodeList.length > 0" class="mx-7.5 grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start")

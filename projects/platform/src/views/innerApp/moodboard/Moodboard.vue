@@ -10,8 +10,10 @@ div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
       p(class="text-body2 ml-2") {{ $t("QQ0003") }}
     div(v-if="moodboardList.length > 0" class="grid gap-3 mt-4")
       div(v-for="moodboard in moodboardList" class="flex h-37.5 rounded border border-black-400 cursor-pointer hover:bg-black-100" @click="goToMoodboardDetail(moodboard.moodboardId)")
-        div(class="w-53 bg-cover bg-center rounded-l bg-black-200 flex items-center justify-center" :style="{ backgroundImage: `url(${moodboard.trendBoardCoverImg})` }")
-          p(v-if="!moodboard.trendBoardCoverImg" class="text-body2 leading-1.6 text-black-400") {{ $t("RR0247") }}
+        div(class="w-53 bg-cover bg-center rounded-l bg-black-400 flex flex-col items-center justify-center" :style="{ backgroundImage: `url(${moodboard.trendBoardCoverImg})` }")
+          template(v-if="!moodboard.trendBoardCoverImg")
+            f-svg-icon(iconName="file" size="50" class="text-black-50 mb-4")
+            p(class="text-body2 leading-1.6 text-black-50") {{ $t("RR0247") }}
         div(class="px-5 pt-6 pb-5 flex flex-col justify-between")
           div
             p(class="leading-1.6 mb-2 font-bold text-body1 text-primary") {{ moodboard.moodboardName }}

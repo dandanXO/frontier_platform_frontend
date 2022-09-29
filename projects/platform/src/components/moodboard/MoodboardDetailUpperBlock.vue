@@ -32,12 +32,15 @@ div(class="w-227 mx-auto")
         p(class="font-bold text-caption mb-4")  {{ $t("RR0014") }}
         p(class="text-body2 leading-1.6 break-words") {{ moodboard.description }}
     div(class="w-97.5")
-      p(class="text-primary font-bold text-caption mb-4")  {{ $t("RR0249") }}
-      div(class="h-69 bg-black-200 rounded py-6 px-7.5")
-        div(class="relative h-full bg-cover bg-center rounded flex items-center justify-center" :style="{ backgroundImage: `url(${moodboard.trendBoardCoverImg})` }")
-          p(v-if="!moodboard.trendBoardCoverImg" class="text-body2 leading-1.6 text-black-400") {{ $t("RR0247") }}
-          a(v-else :href="moodboard.trendBoardUrl" target="_blank" class="absolute w-6 h-6 bg-black-0 rounded -bottom-2 -right-3.5 flex items-center justify-center cursor-pointer" style="box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15)")
-            f-svg-icon(iconName="search" size="20" class="text-black-700")
+      p(class="text-primary font-bold text-caption mb-4") {{ $t("RR0249") }}
+      div(class="relative h-69 rounded bg-black-400 flex items-center justify-center flex-shrink-0")
+        div(v-if="moodboard.trendBoardCoverImg" class="rounded w-full h-full px-7.5 py-6 bg-black-200")
+          div(class="w-full h-full bg-contain bg-no-repeat bg-center rounded bg-black-0" :style="{ backgroundImage: `url(${moodboard.trendBoardCoverImg})`}")
+          a(:href="moodboard.trendBoardUrl" target="_blank" class="absolute right-3.5 bottom-3.5 card-shadow w-7 h-7 rounded-sm bg-black-0 flex items-center justify-center")
+            f-svg-icon(iconName="open_in_new" class="text-black-700" size="24")
+        div(v-else)
+          f-svg-icon(iconName="file" size="110" class="text-black-0 mx-auto")
+          p(class="text-body1 font-bold text-black-50 pt-3") {{ $t("RR0247") }}
   block-attachment(class="mb-28" :attachmentList="moodboard.attachmentList")
 </template>
 

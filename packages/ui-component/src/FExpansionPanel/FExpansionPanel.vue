@@ -14,8 +14,15 @@ export default {
 <script setup>
 import { ref } from 'vue'
 
+const props = defineProps({
+  isExpand: {
+    type: Boolean,
+    default: false
+  }
+})
+
 const emit = defineEmits(['expand', 'collapse'])
-const isExpand = ref(false)
+const isExpand = ref(props.isExpand)
 
 const expand = () => {
   isExpand.value = true

@@ -9,9 +9,9 @@ modal-behavior(
   div(class="w-151.5 h-52.5 flex justify-between")
     div(class="w-94.5 flex flex-col")
       p(class="font-bold text-primary leading-1.6 pb-4") {{ $t('RR0014') }}
-      f-scrollbar-container(v-if="description" class="flex-grow -ml-3 px-3 break-all text-body2 text-primary leading-1.6") {{ description }}
+      f-scrollbar-container(v-if="description" class="flex-grow -ml-6.5 px-6.5 break-all text-body2 text-primary leading-1.6") {{ description }}
       p(v-else class="text-body2 text-primary leading-1.6") {{ $t("FF0008") }}
-    div(class="w-44.5 flex flex-col")
+    div(class="w-44 flex flex-col")
       p(class="font-bold text-primary leading-1.6 pb-4") {{ $t('RR0249') }}
       a(v-if="trendBoardCoverImg" :href="trendBoardUrl" target="_blank"  class="flex-grow flex flex-col bg-black-400 rounded overflow-hidden")
         div(class="h-32.5 relative")
@@ -21,7 +21,7 @@ modal-behavior(
           p(class="text-caption text-primary w-37.5 line-clamp-1 !break-all") {{ trendBoardDisplayFileName }}
       div(v-else class="flex-grow flex flex-col rounded overflow-hidden")
         div(class="h-32.5 bg-black-400 flex items-center justify-center")
-          f-svg-icon(iconName="folder_Large" size="50" class="text-black-0")
+          f-svg-icon(iconName="file" size="50" class="text-black-0")
         div(class="flex-grow bg-black-50 flex items-center justify-center")
           p(class="text-caption text-black-400") {{ $t("RR0247") }}
 </template>

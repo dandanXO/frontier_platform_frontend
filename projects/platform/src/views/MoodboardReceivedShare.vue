@@ -20,14 +20,17 @@ fullscreen-header
           span(class="mx-1") at
           span {{ $dayjs.unix(moodboard.updateDate).format("h:mm a") }}
       div(class="mb-6 flex")
-        div(class="w-97.5 h-69 bg-black-200 rounded py-6 px-7.5 flex-shrink-0 mr-9")
-          div(class="relative h-full bg-cover bg-center rounded flex items-center justify-center" :style="{ backgroundImage: `url(${moodboard.trendBoardCoverImg})` }")
-            p(v-if="!moodboard.trendBoardCoverImg" class="text-body2 leading-1.6 text-black-400") {{ $t("RR0247") }}
-            a(v-else :href="moodboard.trendBoardUrl" target="_blank" class="absolute w-6 h-6 bg-black-0 rounded -bottom-2 -right-3.5 flex items-center justify-center cursor-pointer" style="box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15)")
-              f-svg-icon(iconName="search" size="20" class="text-black-700")
+        div(class="relative w-97.5 h-69 rounded bg-black-400 flex items-center justify-center flex-shrink-0 mr-9")
+          div(v-if="moodboard.trendBoardCoverImg" class="rounded w-full h-full px-7.5 py-6 bg-black-200")
+            div(class="w-full h-full bg-contain bg-no-repeat bg-center rounded bg-black-0" :style="{ backgroundImage: `url(${moodboard.trendBoardCoverImg})`}")
+            a(:href="moodboard.trendBoardUrl" target="_blank" class="absolute right-3.5 bottom-3.5 card-shadow w-7 h-7 rounded-sm bg-black-0 flex items-center justify-center")
+              f-svg-icon(iconName="open_in_new" class="text-black-700" size="24")
+          div(v-else)
+            f-svg-icon(iconName="file" size="110" class="text-black-0 mx-auto")
+            p(class="text-body1 font-bold text-black-50 pt-3") {{ $t("RR0247") }}
         div(class="text-primary")
           p(class="text-caption font-bold mb-3") {{ $t("RR0014") }}
-          p(class="text-body2 leading-1.6") {{ moodboard.description }}
+          p(class="text-body2 break-all leading-1.6") {{ moodboard.description }}
       block-attachment(:attachmentList="moodboard.attachmentList")
     div(class="fixed z-footer bottom-0 w-full h-13 bg-black-100 px-36 flex items-center justify-end card-shadow")
       p(class="text-body2 text-primary") {{ $t("GG0004") }}
