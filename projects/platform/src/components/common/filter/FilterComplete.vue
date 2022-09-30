@@ -16,11 +16,17 @@ import { computed } from 'vue'
 const store = useStore()
 
 const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
+
 const menuTree = computed(() => {
+  const valueAddedService = store.getters['polling/valueAddedService']
+  const copyFilterComplete = JSON.parse(JSON.stringify(FILTER_COMPLETE))
+  if (!valueAddedService.made2flow.planStatus.ACTIVATE) {
+    delete copyFilterComplete.UNFILLED_CERTIFICATION
+  }
   return {
     blockList: [
       {
-        menuList: Object.keys(FILTER_COMPLETE).map(key => {
+        menuList: Object.keys(copyFilterComplete).map(key => {
           const { text, value } = FILTER_COMPLETE[key]
           return {
             title: text,

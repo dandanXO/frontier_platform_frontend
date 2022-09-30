@@ -31,7 +31,7 @@ div(class="h-full")
           :properties="node.properties"
           :key="node.properties.materialId"
         )
-        div(v-if="index !== moodboardOfferNodeCollection.childNodeList.length - 1" class="border-b mx-7.5 my-5")
+        div(v-if="index !== moodboardOfferNodeCollection.childNodeList.length - 1" class="border-b border-black-400 mx-7.5 my-5")
     div(v-else-if="displayMode === DISPLAY_NODE.GRID" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5")
       grid-item-node(
         v-for="node in moodboardOfferNodeCollection.childNodeList"

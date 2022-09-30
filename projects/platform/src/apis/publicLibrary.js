@@ -5,9 +5,9 @@ export default {
     method: 'POST',
     data: { workspaceNodeId, workspaceNodeLocation, search, filter, pagination }
   }),
-  getPublicMaterial: ({ workspaceNodeId, workspaceNodeLocation }) => axios('/public/get-material', {
+  getPublicMaterial: ({ orgId, workspaceNodeId, workspaceNodeLocation }) => axios('/public/get-material', {
     method: 'POST',
-    data: { workspaceNodeId, workspaceNodeLocation }
+    data: { orgId, workspaceNodeId, workspaceNodeLocation }
   }),
   cloneCheck: ({ orgId, workspaceNodeList }) => axios('/public/clone-check', {
     method: 'POST',

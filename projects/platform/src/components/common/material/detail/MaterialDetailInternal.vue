@@ -153,7 +153,8 @@ const tabList = [
   },
   {
     name: t('RR0219'),
-    id: TAB.INDICATOR
+    id: TAB.INDICATOR,
+    icon: 'subscribe'
   }
 ]
 const {

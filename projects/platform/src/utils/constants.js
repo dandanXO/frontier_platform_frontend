@@ -108,6 +108,10 @@ export const FILTER_COMPLETE = {
   WITH_REQUIRED_FIELDS: {
     text: i18n.global.t('RR0104'),
     value: 6
+  },
+  UNFILLED_CERTIFICATION: {
+    text: i18n.global.t('RR0250'),
+    value: 7
   }
 }
 
@@ -173,6 +177,18 @@ export const SORT_BY = {
   RANDOM: {
     text: i18n.global.t('RR0128'),
     value: 12
+  },
+  GHG_RESULTS: {
+    text: i18n.global.t('RR0251'),
+    value: 13
+  },
+  WATER_DEPLETION_RESULTS: {
+    text: i18n.global.t('RR0252'),
+    value: 14
+  },
+  LAND_USE_RESULTS: {
+    text: i18n.global.t('RR0253'),
+    value: 15
   }
 }
 
@@ -288,12 +304,16 @@ export const FUNC_ID = {
 }
 
 const MEMBER3_PERMISSION_LIST = [
+  FUNC_ID.VISIT_BILLING_PAGE,
 ]
 const MEMBER2_PERMISSION_LIST = [
+  FUNC_ID.VISIT_BILLING_PAGE,
 ]
 const MEMBER1_PERMISSION_LIST = [
+  FUNC_ID.VISIT_BILLING_PAGE,
 ]
 const MANAGER_PERMISSION_LIST = [
+  FUNC_ID.VISIT_BILLING_PAGE,
 ]
 
 const ADMIN_PERMISSION_LIST = [
@@ -387,4 +407,29 @@ export const CREATE_EDIT = {
 
 export const SECTION_ID = {
   BLOCK_MATERIAL_INFORMATION: 'fabric-specifications'
+}
+
+export const MADE2FLOW_PLAN_TYPE = {
+  STANDARD: 1,
+  PERSONALIZED: 2,
+  PERSONALIZED_PRO: 3
+}
+
+export const VALUE_ADDED_SERVICE_STATUS = {
+  ACTIVATE: 1,
+  EXPIRED: 2,
+  CANCELED: 3,
+  INVALID: 4
+}
+
+export const VALUE_ADDED_SERVICE_ID = {
+  MADE2FLOW: 'made2flow'
+}
+
+export const MADE2FLOW_TAG_LIST = {
+  INTRODUCTION: { id: 1, text: i18n.global.t('VV0022') },
+  METHODOLOGY: { id: 2, text: i18n.global.t('RR0234') },
+  FAQ: { id: 3, text: i18n.global.t('VV0024') },
+  PLAN_AND_PRICE: { id: 4, text: i18n.global.t('VV0025') },
+  APPOINTMENT: { id: 5, text: i18n.global.t('VV0026') }
 }

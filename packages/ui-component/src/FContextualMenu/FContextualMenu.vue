@@ -56,7 +56,8 @@ const props = defineProps({
    *          disabled: Boolean,
    *          icon: String,
    *          clickHandler: Function,
-   *          blockList: Array
+   *          blockList: Array,
+   *          tooltip: String
    *        }
    *      ]
    *    }

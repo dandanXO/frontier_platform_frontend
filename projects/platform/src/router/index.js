@@ -322,18 +322,18 @@ const routes = [
             children: [
               ...reuseRoutes('Org'),
               {
-                path: 'billings/:tab(plan|payment|history)',
+                path: 'billings/:tab(plan|value-added-service|payment|history)',
                 name: 'Billings',
                 props: true,
                 component: () => import('@/views/innerApp/Billings.vue'),
-                beforeEnter: (to, from, next) => {
-                  const roleId = store.getters['organization/orgUser/orgUser'].orgRoleId
-                  if ([ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(roleId)) {
-                    return next()
-                  } else {
-                    return next(`/${to.params.orgNo}/public-library`)
-                  }
-                }
+                // beforeEnter: (to, from, next) => {
+                //   const roleId = store.getters['organization/orgUser/orgUser'].orgRoleId
+                //   if ([ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(roleId)) {
+                //     return next()
+                //   } else {
+                //     return next(`/${to.params.orgNo}/public-library`)
+                //   }
+                // }
               }
             ]
           },

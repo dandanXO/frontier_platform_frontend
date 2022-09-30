@@ -101,9 +101,11 @@ const sortMenuTree = computed(() => {
   return {
     blockList: [
       {
-        menuList: temp.map(({ text, value }) => ({
+        menuList: temp.map(({ text, value, disabled = false, tooltip = '' }) => ({
           title: text,
-          selectValue: value
+          selectValue: value,
+          disabled,
+          tooltip
         }))
       }
     ]

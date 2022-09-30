@@ -8,7 +8,7 @@ div(class="mt-25 w-125 grid gap-y-4")
           p(class="font-bold text-body2 pl-2") {{ $t('OO0012') }} 
     template(v-else)
       div(class="w-full h-full border border-black-500 rounded pl-10 pt-6 pr-6 flex justify-between items-start")
-        div(class="grid gap-y-4.5 text-body2 text-primary text-primary")
+        div(class="grid gap-y-4.5 text-body2 text-primary")
           p(class="font-bold text-body1") **** **** **** {{ cardInfo.lastFour }}
           p(class="text-body2") {{ $t('OO0054') }} {{ cardInfo.expiredDate }}
           p(class="text-body2") {{ $t('OO0055') }} {{ cardInfo.cardHolderName }}
