@@ -53,7 +53,7 @@ div(class="w-full pt-3")
       div(v-for="faq in faqList")
         div(class="rounded border border-grey-200 mb-2") 
           div(class="h-12 pl-7 pr-4 flex items-center justify-between text-grey-900 hover:bg-grey-100 cursor-pointer" :class="{ 'bg-grey-100': faq.isExpand }" @click="faq.isExpand = !faq.isExpand")
-            p(class="text-caption font-bold") {{ faq.title }}
+            p(class="text-caption font-bold leading-1.6") {{ faq.title }}
             f-svg-icon(v-if="!faq.isExpand" iconName="keyboard_arrow_down" size="24")
             f-svg-icon(v-else iconName="keyboard_arrow_up" size="24")
           div(v-if="faq.isExpand" class="border-t border-grey-200 py-6 px-7 text-body2 text-grey-900 leading-1.6") {{ faq.answer }}
