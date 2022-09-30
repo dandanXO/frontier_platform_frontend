@@ -3,11 +3,11 @@ component(v-if="isDetailPage" :is="valueAddedServiceDetailPage")
 div(v-else class="w-full pt-3")
   div(class="w-195 mx-auto mt-8")
     div(class="mb-12")
-      div(class="text-body1 font-bold leading-1.6 text-grey-900 pb-5") {{ $t("VV0002") }}
+      div(class="text-body1 text-grey-900 pb-5") {{ $t("VV0002") }}
       div(class="flex border border-black-400 rounded h-62 cursor-pointer hover:bg-black-200" @click="goTo(recommendService.id)")
         div(class="w-63 flex-none pb-5 px-4.5 flex flex-col h-full justify-between")
           div
-            div(class="flex items-center py-2 h-11.5")
+            div(class="flex items-center my-2 h-11.5")
               img(:src="recommendService.logo" class="scale-50 origin-left")
             div(class="text-body1 text-grey-900 leading-1.6 font-bold") {{ recommendService.projectName }}
             i18n-t(keypath="VV0004" tag="div" class="text-caption leading-1.6 text-grey-600")
@@ -21,8 +21,8 @@ div(v-else class="w-full pt-3")
               span(class="text-grey-900") {{ $t("VV0006") }}
         div(class="w-132 flex-none bg-cover rounded-r" :style="{ backgroundImage: `url(${recommendService.bannerImage})` }")
     div(v-if="valueAddedServiceList.length > 1")
-      div(class="text-body1 text-grey-900 font-bold leading-1.6 pb-1") {{ $t("VV0007") }}
-      p(class="text-body2 text-grey-900 pb-7.5") {{ $t("VV0008") }}
+      div(class="text-body1 text-grey-900 pb-1") {{ $t("VV0007") }}
+      p(class="text-body2 text-grey-900 leading-1.6 pb-7.5") {{ $t("VV0008") }}
       div(class="grid")
         template(v-for="service in valueAddedServiceList")
           div(v-if="!service.bannerImage" class="max-w-63 min-h-62 flex flex-col rounded px-4.5 pb-5 justify-between border border-black-400 cursor-pointer hover:bg-black-200" @click="goTo(service.id)")

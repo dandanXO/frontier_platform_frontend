@@ -3,11 +3,11 @@ div(class="w-full pt-3")
   f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
   div(class="w-212.5 mx-auto pt-16.5")
     div(class="mb-16")
-      div(class="flex mb-6")
-        div(class="w-20.5 h-20.5 p-2 border border-grey-600/20 rounded-lg flex justify-center items-center")
+      div(class="flex mb-6 h-20.5")
+        div(class="w-20.5 p-2 border border-grey-600/20 rounded-lg flex justify-center items-center flex-shrink-0")
           img(:src="made2flow.logo" class="w-auto")
-        div(class="flex flex-col justify-center ml-4")
-          p(class="text-h4 text-grey-900 pb-3") {{ made2flow.projectName }}
+        div(class="flex flex-col justify-center ml-4.5")
+          p(class="text-h4 font-bold text-grey-900 pb-3") {{ made2flow.projectName }}
           p(class="text-caption text-grey-600") by 
             a(href="https://www.made2flow.com/" target="_blank" class="text-cyan-500") {{ made2flow.providerName }}
       div(class="flex gap-2")

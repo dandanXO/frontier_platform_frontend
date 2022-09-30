@@ -103,10 +103,10 @@ div(class="flex flex-col")
           hr(class="w-4 border-black-500")
   div(v-if="made2flowSubscribed" class="flex items-center gap-x-4")
     img(src="@/assets/images/m2f_logo.png" class="w-16 h-4.5")
-    div(class="flex items-center gap-x-1.5 text-black-600 cursor-pointer" @click="goToAppointment")
+    div(v-if="isInnerApp" class="flex items-center gap-x-1.5 text-black-600 cursor-pointer" @click="goToAppointment")
       f-svg-icon(iconName="info_outline" size="14")
       p(class="text-caption") {{ $t('UU0078') }}
-    p(class="text-caption text-black-600") {{ $t("RR0066") }}: {{ $dayjs.unix(material.carbonEmission.lastUpdateTime).format("YYYY/MM/DD [at] hh:mm:ss a") }}
+    p(class="text-caption text-black-600") {{ $t("RR0066") }}: {{ $dayjs.unix(material.carbonEmission.lastUpdateTime).format("MMM DD, YYYY [at] hh:mm:ss A") }}
 </template>
 
 <script setup>
