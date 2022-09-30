@@ -16,7 +16,7 @@ div(class="mt-11 mb-16.5")
         div(class="h-38 border border-grey-200 rounded flex justify-between px-7.5 mb-3" :class="[!service.planStatus.INVALID ? 'cursor-pointer hover:bg-grey-50' : '']" @click="goTo(service.id, MADE2FLOW_TAG_LIST.INTRODUCTION.id)")
           div(class="flex flex-col justify-between pb-5")
             div
-              div(class="flex items-center h-11.5 py-2")
+              div(class="flex items-center h-11.5 my-2")
                 img(:src="service.logo" class="scale-50 origin-left")
               div(class="text-body1 text-grey-900 font-bold pb-2" :class="{ 'text-grey-200': service.planStatus.INVALID }") {{ service.projectName }}｜{{ service.planName }}
               i18n-t(keypath="VV0004" tag="div" class="text-caption text-grey-600" :class="{ 'text-grey-200': service.planStatus.INVALID }")
