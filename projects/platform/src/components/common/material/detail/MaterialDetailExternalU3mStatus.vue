@@ -1,16 +1,16 @@
 <template lang="pug">
 div
-  div(class="flex items-center text-primary mb-6")
+  div(class="flex items-center text-grey-900 mb-6")
     h5(class="text-h5 font-bold") {{ $t("RR0132") }}
     f-popper(placement="top" class="pl-1" showArrow)
       template(#trigger)
         f-svg-icon(iconName="info_outline" class="cursor-pointer" size="14")
       template(#content="{ collapsePopper }")
         div(class="p-5")
-          span(class="text-body2 text-assist-blue underline leading-1.6 cursor-pointer" @click="openModalU3mInstruction(); collapsePopper()") {{ $t("UU0029") }}
+          span(class="text-body2 text-cyan-400 underline leading-1.6 cursor-pointer" @click="openModalU3mInstruction(); collapsePopper()") {{ $t("UU0029") }}
   div(class="flex items-center")
     f-button(size="md" type="secondary" :disabled="status !== COMPLETED" @click="openModalViewer") {{ $t("UU0006") }}
-    div(v-if="status === U3M_STATUS.COMPLETED" class="inline-flex text-body2 text-assist-blue gap-2 ml-4")
+    div(v-if="status === U3M_STATUS.COMPLETED" class="inline-flex text-body2 text-cyan-400 gap-2 ml-4")
       span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(zipUrl)") {{ $t("EE0081") }}
         f-svg-icon(iconName="u3m_download" size="20")
       span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(u3maUrl)") {{ $t("EE0082") }}

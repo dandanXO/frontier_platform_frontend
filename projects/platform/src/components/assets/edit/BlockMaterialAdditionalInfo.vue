@@ -1,7 +1,7 @@
 <template lang="pug">
 div
   div(class="h-15 flex items-center")
-    h5(class="text-h5 text-primary font-bold") {{ $t("DD0026") }}
+    h5(class="text-h5 text-grey-900 font-bold") {{ $t("DD0026") }}
   div(class="px-15 grid gap-y-7.5 pt-5")
     f-input-chips(
       v-model:chips="material.certificateList"
@@ -12,7 +12,7 @@ div
     )
     div
       div(class="pb-10")
-        p(class="text-body2 font-bold text-primary") {{ $t('EE0130') }}
+        p(class="text-body2 font-bold text-grey-900") {{ $t('EE0130') }}
         div(class="py-5 text-body2") {{ $t("DD0027") }}
         f-button(size="md" @click="openModalUpload") {{ $t("UU0022") }}
       div(v-if="attachmentList.length > 0" class="flex flex-wrap gap-5")

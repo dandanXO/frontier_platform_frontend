@@ -1,6 +1,6 @@
 <template lang="pug">
-div(class="fixed inset-0 z-modal-confirm  w-screen h-screen bg-black-900/30 flex justify-center items-center" @click="closeModalConfirm" data-cy="modal-confirm")
-  div(class="w-104 max-h-125 min-h-54 px-8 py-6 bg-black-0 rounded flex flex-col" @click.stop)
+div(class="fixed inset-0 z-modal-confirm  w-screen h-screen bg-grey-900/40 flex justify-center items-center" @click="closeModalConfirm" data-cy="modal-confirm")
+  div(class="w-104 max-h-125 min-h-54 px-8 py-6 bg-grey-0 rounded flex flex-col" @click.stop)
     div(class="h-9 pb-3.5 flex items-center")
       f-svg-icon(:iconName="getIconName" :class="[getIconColor]" size="22")
       p(class="text-body1 font-bold pl-3") {{ header }}
@@ -103,10 +103,10 @@ const getIconName = computed(() => {
 
 const getIconColor = computed(() => {
   const map = {
-    [INFO]: 'text-assist-light-blue',
-    [WARNING]: 'text-assist-light-yellow',
-    [SUCCESS]: 'text-brand',
-    [ALERT]: 'text-warn',
+    [INFO]: 'text-cyan-300',
+    [WARNING]: 'text-yellow-400',
+    [SUCCESS]: 'text-primary-400',
+    [ALERT]: 'text-red-400',
   }
   return map[props.type]
 })

@@ -22,11 +22,11 @@ modal-behavior(
           div(class="grid gap-y-5")
             div(v-for="(item, index) in targetList" class="flex items-center gap-x-3")
               img(v-if="item.logo" :src="item.logo" class="w-9 h-9 rounded-full")
-              div(v-else class="w-9 h-9 rounded-full border-black-500 border border-dashed")
+              div(v-else class="w-9 h-9 rounded-full border-grey-200 border border-dashed")
               div(class="text-body2 flex-grow")
-                p(class="text-primary line-clamp-1") {{ item.name }}
-                p(v-if="item.number" class="text-black-500") {{ item.number }}
-              p(class="text-body2 text-black-500 pr-2.5 cursor-pointer" @click="removeTarget(index)") {{ $t('FF0060') }}
+                p(class="text-grey-900 line-clamp-1") {{ item.name }}
+                p(v-if="item.number" class="text-grey-200") {{ item.number }}
+              p(class="text-body2 text-grey-200 pr-2.5 cursor-pointer" @click="removeTarget(index)") {{ $t('FF0060') }}
       div
         f-input-container(:label="$t('FF0032')" class="pb-5")
           f-input-checkbox(

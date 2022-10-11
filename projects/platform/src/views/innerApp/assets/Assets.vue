@@ -17,8 +17,8 @@ div(class="w-full h-full")
     v-model:selectedItemList="selectedMaterialList"
   )
     template(#header-left)
-      h5(class="text-h5 font-bold text-primary") {{ $t("EE0001") }}
-        span(class="text-caption text-black-700 pl-1")
+      h5(class="text-h5 font-bold text-grey-900") {{ $t("EE0001") }}
+        span(class="text-caption text-grey-600 pl-1")
           span (
           i18n-t(keypath="RR0068" tag="span" scope="global")
             template(#number) {{ pagination.totalCount }}
@@ -39,7 +39,7 @@ div(class="w-full h-full")
           :buffer="currentItemSize * 3"
         )
           row-item(:key="item.materialId" :material="item" v-model:selectedList="selectedMaterialList" @mouseenter="onMouseEnter" data-cy="assets")
-          div(v-if="index !== materialList.length - 1" class="border-b border-black-400 mx-7.5 my-5")
+          div(v-if="index !== materialList.length - 1" class="border-b border-grey-200 mx-7.5 my-5")
         div(v-show="displayMode === DISPLAY_NODE.GRID" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5")
           grid-item-material(
             v-for="material in materialList"
@@ -52,9 +52,9 @@ div(class="w-full h-full")
             @click.stop="goToAssetMaterialDetail(material)"
           )
       div(v-else class="flex flex-col justify-center items-center")
-        div(class="border border-black-400 rounded-md border-dashed p-2 mt-40 cursor-pointer" @click="goToMaterialUpload")
-          f-svg-icon(iconName="add" size="24" class="text-primary")
-        p(class="text-body2 text-primary pt-3") {{ $t("EE0079") }}
+        div(class="border border-grey-200 rounded-md border-dashed p-2 mt-40 cursor-pointer" @click="goToMaterialUpload")
+          f-svg-icon(iconName="add" size="24" class="text-grey-900")
+        p(class="text-body2 text-grey-900 pt-3") {{ $t("EE0079") }}
 </template>
 
 <script setup>
@@ -66,7 +66,7 @@ import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
-import { SORT_BY, SEARCH_TYPE, DISPLAY_NODE, U3M_STATUS } from '@/utils/constants.js'
+import { SEARCH_TYPE, DISPLAY_NODE, U3M_STATUS, useConstants } from '@/utils/constants.js'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useRoute, useRouter } from 'vue-router'
@@ -84,18 +84,20 @@ const displayMode = ref(DISPLAY_NODE.LIST)
 const materialList = computed(() => store.getters['assets/materialList'])
 const pagination = computed(() => store.getters['helper/search/pagination'])
 const optionSort = computed(() => {
+  const { SORT_BY } = useConstants()
+  const { CREATE_DATE, LAST_UPDATE, MATERIAL_NO_A_Z, GHG_RESULTS, WATER_DEPLETION_RESULTS, LAND_USE_RESULTS, RELEVANCE } = SORT_BY.value
   const valueAddedService = computed(() => store.getters['polling/valueAddedService'])
   return {
     base: [
-      SORT_BY.CREATE_DATE,
-      SORT_BY.LAST_UPDATE,
-      SORT_BY.MATERIAL_NO_A_Z,
-      { ...SORT_BY.GHG_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
-      { ...SORT_BY.WATER_DEPLETION_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
-      { ...SORT_BY.LAND_USE_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') }
+      CREATE_DATE,
+      LAST_UPDATE,
+      MATERIAL_NO_A_Z,
+      { ...GHG_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
+      { ...WATER_DEPLETION_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
+      { ...LAND_USE_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') }
     ],
     keywordSearch: [
-      SORT_BY.RELEVANCE
+      RELEVANCE
     ]
   }
 })

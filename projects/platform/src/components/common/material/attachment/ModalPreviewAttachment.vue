@@ -2,28 +2,28 @@
 div(class="w-200")
   div(
     class="relative h-113 flex flex-col justify-center items-center"
-    :class="[extensionInfo[currentAttachment.extension].display === 'video' ? 'bg-black-900' : 'bg-primary-thin']"
+    :class="[extensionInfo[currentAttachment.extension].display === 'video' ? 'bg-grey-900' : 'bg-grey-100']"
   )
     img(v-if="extensionInfo[currentAttachment.extension].display === 'image'" :src="currentAttachment.url" class="max-h-full max-w-full")
     video(v-else-if="extensionInfo[currentAttachment.extension].display === 'video'" class="max-h-113" :key="currentAttachment.url" controls)
       source(:src="currentAttachment.url" type="video/mp4")
-    f-svg-icon(v-else :iconName="extensionInfo[currentAttachment.extension].placeholder" size="110" class="text-primary")
+    f-svg-icon(v-else :iconName="extensionInfo[currentAttachment.extension].placeholder" size="110" class="text-grey-900")
     a(
       v-if="extensionInfo[currentAttachment.extension].display === 'open-new-tab'"
       class="flex items-center"
       :href="currentAttachment.url"
       target="_blank"
     )
-      f-svg-icon(iconName="open_in_new" size="20" class="text-primary")
-      p(class="text-body2 leading-1.6 text-primary pl-1.5") {{ $t("DD0070") }}
-  div(class="h-25 bg-black-0 flex justify-between items-center px-8")
-    div(class="text-primary flex items-center")
+      f-svg-icon(iconName="open_in_new" size="20" class="text-grey-900")
+      p(class="text-body2 leading-1.6 text-grey-900 pl-1.5") {{ $t("DD0070") }}
+  div(class="h-25 bg-grey-0 flex justify-between items-center px-8")
+    div(class="text-grey-900 flex items-center")
       span(class="text-h6 mr-5 line-clamp-1") {{ currentAttachment.displayFileName }}
       a(:href="currentAttachment.url" :download="currentAttachment.displayFileName" target="_blank")
-        f-svg-icon(iconName="download" size="24" class="text-primary cursor-pointer")
+        f-svg-icon(iconName="download" size="24" class="text-grey-900 cursor-pointer")
     div(class="flex justify-between items-center gap-5 flex-shrink-0")
       f-svg-icon(iconName="keyboard_arrow_left" size="24"  class="cursor-pointer" @click="getLast")
-      div(class="text-primary text-h6 font-bold") {{ currentIndex + 1 }} / {{ attachmentList.length }}
+      div(class="text-grey-900 text-h6 font-bold") {{ currentIndex + 1 }} / {{ attachmentList.length }}
       f-svg-icon(iconName="keyboard_arrow_right" size="24"  class="cursor-pointer" @click="getNext")
 </template>
 

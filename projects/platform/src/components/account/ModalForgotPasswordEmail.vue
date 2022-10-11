@@ -7,12 +7,12 @@ modal-behavior(
 )
   div(class="w-80 grid justify-items-center content-start gap-y-4 mt-5")
     f-svg-icon(iconName="ic_forgot_key" size="68")
-    p(class="max-w-57 text-body2 text-primary text-center leading-1.6") {{ $t("AA0043") }}
+    p(class="max-w-57 text-body2 text-grey-900 text-center leading-1.6") {{ $t("AA0043") }}
     f-input-text(v-model:textValue="email" class="w-80 pb-7.5" prependIcon="mail" size="lg" placeholder="example@gmail.com" :customErrorMsg="errorMsg")
       template(#slot:errorMsg v-if="!isEmailExist")
         div(class="absolute pt-1 text-caption")
-          p(class="text-warn whitespace-nowrap") {{ $t("WW0043") }}
-          p(class="text-assist-blue cursor-pointer pt-1" @click="goToSignup") {{ $t("UU0050") }}
+          p(class="text-red-400 whitespace-nowrap") {{ $t("WW0043") }}
+          p(class="text-cyan-400 cursor-pointer pt-1" @click="goToSignup") {{ $t("UU0050") }}
 </template>
 
 <script setup>

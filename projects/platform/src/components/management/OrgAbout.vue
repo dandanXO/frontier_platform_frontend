@@ -4,21 +4,21 @@ div(class="pt-16 xl:pt-17.5")
     div(class="w-40 mr-11 xl:mr-15")
       div(class="flex flex-col items-center")
         div(class="relative")
-          img(:src="logo" class="w-40 h-40 rounded-full bg-black-500")
-          div(class="absolute flex justify-center items-center right-2 bottom-2 w-8 h-8 rounded-full bg-black-0 border-4 border-black-200 cursor-pointer"
+          img(:src="logo" class="w-40 h-40 rounded-full bg-grey-200")
+          div(class="absolute flex justify-center items-center right-2 bottom-2 w-8 h-8 rounded-full bg-grey-0 border-4 border-grey-100 cursor-pointer"
             @click="openModalUploadLogo"
           )
-            f-svg-icon(iconName="camera" size="20" class="text-black-500 hover:text-brand")
+            f-svg-icon(iconName="camera" size="20" class="text-grey-200 hover:text-primary-400")
         f-tooltip(class="pt-4")
           template(#trigger)
             div(class="flex items-center" @click="copyText(organization.orgNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))")
-              p(class="text-caption text-primary pr-1.5 cursor-pointer") ID: {{ organization.orgNo }}
-              f-svg-icon(iconName="content_copy" size="14" class="text-black-700 cursor-pointer")
+              p(class="text-caption text-grey-900 pr-1.5 cursor-pointer") ID: {{ organization.orgNo }}
+              f-svg-icon(iconName="content_copy" size="14" class="text-grey-600 cursor-pointer")
           template(#content)
             p {{ $t("BB0056") }}
-        p(v-permission="FUNC_ID.DELETE_ORG" v-if="!planType.ENT" class="pt-2.5 text-caption text-black-500 cursor-pointer" @click="openModalTypeTextToConfirm" data-cy="org-about_delete") {{ $t("UU0013") }}
+        p(v-permission="FUNC_ID.DELETE_ORG" v-if="!planType.ENT" class="pt-2.5 text-caption text-grey-200 cursor-pointer" @click="openModalTypeTextToConfirm" data-cy="org-about_delete") {{ $t("UU0013") }}
     div(class="grid gap-y-8.5 relative")
-      p(class="absolute text-caption text-black-500 right-0 -top-7 transform -translate-y-full") *{{ $t("RR0163") }}
+      p(class="absolute text-caption text-grey-200 right-0 -top-7 transform -translate-y-full") *{{ $t("RR0163") }}
       div(class="grid grid-cols-2 grid-rows-3 gap-y-7.5 gap-x-8 xl:gap-x-15")
         input-label-color(
           v-model:labelColor="orgFormData.labelColor"

@@ -7,7 +7,7 @@ modal-behavior(
 )
   div(class="w-80 flex flex-col items-center")
     f-svg-icon(iconName="send_mail" size="68" class="mb-4")
-    i18n-t(keypath="AA0048" tag="div" class="text-body2 text-primary text-center leading-1.6 mb-4" scope="global")
+    i18n-t(keypath="AA0048" tag="div" class="text-body2 text-grey-900 text-center leading-1.6 mb-4" scope="global")
       template(#email)
         br
         div(class="font-bold line-clamp-1") {{ email }}
@@ -15,7 +15,7 @@ modal-behavior(
     p(
       ref="refText"
       class="text-body2 leading-1.6 w-fit"
-      :class="[secRemains > 0 ? 'text-black-400 cursor-not-allowed' : 'text-assist-blue cursor-pointer']"
+      :class="[secRemains > 0 ? 'text-grey-200 cursor-not-allowed' : 'text-cyan-400 cursor-pointer']"
       @click="sendForgotPasswordEmail"
     )
 </template>

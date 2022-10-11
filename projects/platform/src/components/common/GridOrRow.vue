@@ -1,13 +1,13 @@
 <template lang="pug">
-div(class="flex text-black-700 cursor-pointer")
+div(class="flex text-grey-600 cursor-pointer")
   div(
-    class="py-1 px-1.5 border-black-400 border-t-2 border-b-2 border-l-2 rounded-l"
+    class="py-1 px-1.5 border-grey-200 border-t-2 border-b-2 border-l-2 rounded-l"
     :class="[displayMode === DISPLAY_NODE.GRID ? `${activeClass} border-r-2` : '']"
     @click="$emit('update:displayMode', DISPLAY_NODE.GRID)"
   )
     f-svg-icon(iconName="apps" size="24")
   div(
-    class="py-1 px-1.5 border-black-400 border-t-2 border-b-2 border-r-2 rounded-r"
+    class="py-1 px-1.5 border-grey-200 border-t-2 border-b-2 border-r-2 rounded-r"
     :class="[displayMode === DISPLAY_NODE.LIST ? `${activeClass} border-l-2` : '']"
     @click="$emit('update:displayMode', DISPLAY_NODE.LIST)"
   )
@@ -26,5 +26,5 @@ defineProps({
 
 defineEmits(['update:displayMode'])
 
-const activeClass = 'text-brand border-brand bg-brand-light'
+const activeClass = 'text-primary-400 border-primary-400 bg-primary-0'
 </script>

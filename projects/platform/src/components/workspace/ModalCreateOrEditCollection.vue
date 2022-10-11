@@ -8,7 +8,7 @@ modal-behavior(
   template(#note)
     file-upload-error-note(v-if="errorCode" :errorCode="errorCode" :fileSizeMaxLimit="fileSizeMaxLimit" data-cy="modal-mass-upload_error")
   div(class="w-101")
-    p(class="text-right pb-0.5 text-caption text-black-600") *{{ $t('RR0163') }}
+    p(class="text-right pb-0.5 text-caption text-grey-600") *{{ $t('RR0163') }}
     f-input-text(
       v-model:textValue="formData.collectionName"
       required
@@ -19,7 +19,7 @@ modal-behavior(
     div(class="mb-9")
       div
         div(class="h-5.5 flex items-center pb-1")
-          p(class="text-body2 text-primary font-bold") {{ $t('RR0249') }}
+          p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
           f-button-label(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewFile(formData.trendBoardFile)") {{ $t('UU0060') }}
         f-input-text-button(
           class="w-full"
@@ -29,8 +29,8 @@ modal-behavior(
           @click:button="chooseFile"
           @clear="removeTrendBoard"
         )
-      p(class='text-primary text-caption leading-1.6') {{ $t("RR0243") }} {{ acceptType.join(', ').toUpperCase() }}
-      p(class='text-primary text-caption leading-1.6') {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
+      p(class='text-grey-900 text-caption leading-1.6') {{ $t("RR0243") }} {{ acceptType.join(', ').toUpperCase() }}
+      p(class='text-grey-900 text-caption leading-1.6') {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
     f-input-textarea(
       v-model:textValue="formData.description"
       :label="$t('RR0014')"

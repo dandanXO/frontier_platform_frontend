@@ -9,7 +9,7 @@ label(class="flex items-center")
     :value="value"
     @input="check"
   )
-  div(v-if="label !== ''" class="pl-1 text-body2 text-primary whitespace-nowrap cursor-pointer") {{ label }}
+  div(v-if="label !== ''" class="pl-1 text-body2 text-grey-900 whitespace-nowrap cursor-pointer") {{ label }}
 </template>
 
 <script>
@@ -41,11 +41,11 @@ export default {
     },
     checkColor: {
       type: String,
-      default: 'text-brand'
+      default: 'text-primary-400'
     },
     uncheckColor: {
       type: String,
-      default: 'text-black-400'
+      default: 'text-grey-200'
     }
   },
   emits: ['update:inputValue'],

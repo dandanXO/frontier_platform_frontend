@@ -5,7 +5,7 @@
 </style>
 
 <template lang="pug">
-div(class="bg-black-0 py-2 rounded card-shadow")
+div(class="bg-grey-0 py-2 rounded card-shadow")
   slot
 </template>
 

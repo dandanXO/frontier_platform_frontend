@@ -72,7 +72,7 @@ div(
   slot(name="trigger" :isExpand="isExpand")
 teleport(v-if="isExpand" to="body")
   div(class="fixed z-popper w-screen h-screen top-0 left-0" @click="collapsePopper")
-    div(ref="refPopper" role="popper" class="relative rounded bg-black-0" @click.stop)
+    div(ref="refPopper" role="popper" class="relative rounded bg-grey-0" @click.stop)
       slot(v-if="isExpand" name="content" :isExpand="isExpand" :collapsePopper="collapsePopper")
       div(v-if="showArrow" id="arrow" data-popper-arrow)
 </template>

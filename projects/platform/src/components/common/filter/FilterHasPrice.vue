@@ -17,7 +17,7 @@ const { t } = useI18n()
 const store = useStore()
 
 const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
-const menuTree = {
+const menuTree = computed(() => ({
   blockList: [
     {
       menuList: [
@@ -32,7 +32,7 @@ const menuTree = {
       ]
     }
   ]
-}
+}))
 
 const hasPrice = computed({
   get: () => store.getters['helper/search/filter'].hasPrice,

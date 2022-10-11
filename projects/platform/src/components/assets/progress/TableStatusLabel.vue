@@ -1,7 +1,7 @@
 <template lang="pug">
-div(class="flex items-center bg-black-50 w-fit px-3.5 h-8.5 rounded")
+div(class="flex items-center bg-grey-50 w-fit px-3.5 h-8.5 rounded")
   div(class="w-3 h-3 rounded-sm mr-2.5" :class="[label.color]")
-  p(class="text-body2 text-primary") {{ label.text }}
+  p(class="text-body2 text-grey-900") {{ label.text }}
 </template>
 
 <script setup>
@@ -24,27 +24,27 @@ const label = computed(() => {
   switch (props.status) {
     case UPLOAD_PROGRESS.IN_QUEUE:
       text = t('PP0004')
-      color = 'bg-assist-light-blue'
+      color = 'bg-cyan-300'
       break
     case UPLOAD_PROGRESS.PROCESSING:
       text = t('PP0005')
-      color = 'bg-assist-light-yellow'
+      color = 'bg-yellow-400'
       break
     case UPLOAD_PROGRESS.UNSUCCESSFUL:
       text = t('PP0007')
-      color = 'bg-warn-middle'
+      color = 'bg-red-400'
       break
     case UPLOAD_PROGRESS.COMPLETE:
       text = t('PP0006')
-      color = 'bg-brand'
+      color = 'bg-primary-400'
       break
     case UPLOAD_PROGRESS.CANCELED:
       text = t('UU0099')
-      color = 'bg-black-600'
+      color = 'bg-grey-600'
       break
     default:
       text = t('PP0004')
-      color = 'bg-assist-light-blue'
+      color = 'bg-cyan-300'
   }
 
   return { text, color }

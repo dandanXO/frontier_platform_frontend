@@ -1,8 +1,8 @@
 <template lang="pug">
-div(class="fixed inset-0 z-modal pt-16 w-screen h-screen bg-black-0 overflow-y-auto")
+div(class="fixed inset-0 z-modal pt-16 w-screen h-screen bg-grey-0 overflow-y-auto")
   div(
     ref="root"
-    class="fixed inset-0 z-header w-screen h-16 bg-black-0 px-36 flex justify-between items-center transition duration-300 ease-in"
+    class="fixed inset-0 z-header w-screen h-16 bg-grey-0 px-36 flex justify-between items-center transition duration-300 ease-in"
     :class="{ 'header-shadow': isScrolling }"
   )
     div(class="flex items-center")

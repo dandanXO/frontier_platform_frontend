@@ -3,10 +3,10 @@ div(class="h-full")
   div(data-tooltip-boundary-reference="pick-list-header" class="mx-8")
     f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)" class="mt-12 mb-9")
     div(class="flex items-end mb-4")
-      p(class="text-h4 font-bold text-primary mr-3.5") {{ $t("QQ0034") }}
-      i18n-t(keypath="RR0068" tag="p" class="text-caption text-black-500 pb-0.5" scope="global")
+      p(class="text-h4 font-bold text-grey-900 mr-3.5") {{ $t("QQ0034") }}
+      i18n-t(keypath="RR0068" tag="p" class="text-caption text-grey-200 pb-0.5" scope="global")
         template(#number) {{ moodboardOfferNodeCollection.childNodeList.length }}
-    p(class="text-body2 text-black-800 mb-4") {{ $t("QQ0035") }}
+    p(class="text-body2 text-grey-600 mb-4") {{ $t("QQ0035") }}
     div(class="flex items-center justify-between mb-2")
       f-input-text(
         v-model:textValue="keyword"
@@ -21,7 +21,7 @@ div(class="h-full")
         f-button-label(size="lg" @click="selectAll" class="mr-6") {{ $t("RR0052") }}
         grid-or-row(v-model:displayMode="displayMode")
   div(v-if="isLoading" class="flex-grow flex items-center justify-center")
-    f-svg-icon(iconName="loading" size="92" class="text-brand")
+    f-svg-icon(iconName="loading" size="92" class="text-primary-400")
   template(v-else-if="!isLoading && moodboardOfferNodeCollection.childNodeList.length > 0")
     template(v-if="displayMode === DISPLAY_NODE.LIST")
       div(v-for="(node, index) in moodboardOfferNodeCollection.childNodeList")
@@ -31,7 +31,7 @@ div(class="h-full")
           :properties="node.properties"
           :key="node.properties.materialId"
         )
-        div(v-if="index !== moodboardOfferNodeCollection.childNodeList.length - 1" class="border-b border-black-400 mx-7.5 my-5")
+        div(v-if="index !== moodboardOfferNodeCollection.childNodeList.length - 1" class="border-b border-grey-200 mx-7.5 my-5")
     div(v-else-if="displayMode === DISPLAY_NODE.GRID" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5")
       grid-item-node(
         v-for="node in moodboardOfferNodeCollection.childNodeList"
@@ -49,12 +49,12 @@ div(class="h-full")
           )
           div(class="mt-1.5 h-6 flex items-center")
             img(:src="node.creatorLogo" class="aspect-square h-full rounded-full")
-            p(class="pl-1 font-bold text-caption text-primary") {{ node.creator }}
+            p(class="pl-1 font-bold text-caption text-grey-900") {{ node.creator }}
   div(v-else class="flex flex-col justify-center items-center mt-16")
-    p(class="text-h4 text-primary mb-6") {{ $t("QQ0018") }}
-    i18n-t(keypath="QQ0087" tag="p" class="text-body1 text-black-700" scope="global")
+    p(class="text-h4 text-grey-900 mb-6") {{ $t("QQ0018") }}
+    i18n-t(keypath="QQ0087" tag="p" class="text-body1 text-grey-600" scope="global")
       template(#number)
-        span(class="text-assist-blue cursor-pointer" @click="goToMoodboardDetail(moodboard.moodboardId)") {{ $t("QQ0088") }}
+        span(class="text-cyan-400 cursor-pointer" @click="goToMoodboardDetail(moodboard.moodboardId)") {{ $t("QQ0088") }}
   multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")
 </template>
 

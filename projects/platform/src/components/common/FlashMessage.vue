@@ -22,9 +22,9 @@
 <template lang='pug'>
 transition(name="slide-fade")
   div(v-if="message" class="fixed z-flash-msg bottom-5 left-0 right-0 ml-auto mr-auto flash-message rounded p-4 flex justify-center items-center w-min whitespace-nowrap")
-    f-svg-icon(iconName="check_circle_outline" size="24" class="text-brand mr-2.5")
-    div(class="text-primary") {{ message }}
-    f-svg-icon(iconName="clear" size="24" class="text-black-500 ml-2.5 cursor-pointer" @click="close")
+    f-svg-icon(iconName="check_circle_outline" size="24" class="text-primary-400 mr-2.5")
+    div(class="text-grey-900") {{ message }}
+    f-svg-icon(iconName="clear" size="24" class="text-grey-200 ml-2.5 cursor-pointer" @click="close")
 </template>
 
 <script>

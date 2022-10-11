@@ -1,6 +1,6 @@
 import NodeShareState from '@/store/reuseStates/nodeShareState.js'
 import NodePublishState from '@/store/reuseStates/nodePublishState.js'
-import { NODE_LOCATION, NODE_TYPE, SORT_BY } from '@/utils/constants'
+import { NODE_LOCATION, NODE_TYPE, useConstants } from '@/utils/constants'
 
 const Collection = {
   state: () => ({
@@ -140,7 +140,8 @@ const Collection = {
       const list = []
       const { childCollectionList, childMaterialList } = state
       const sortBy = rootGetters['helper/search/pagination'].sort
-      const { RELEVANCE_M_C, MATERIAL_NO_A_Z_M_C, CREATE_DATE_M_C } = SORT_BY
+      const { SORT_BY  } = useConstants()
+      const { RELEVANCE_M_C, MATERIAL_NO_A_Z_M_C, CREATE_DATE_M_C } = SORT_BY.value
       const reverseList = [RELEVANCE_M_C.value, MATERIAL_NO_A_Z_M_C.value, CREATE_DATE_M_C.value]
 
       if (reverseList.includes(sortBy)) {

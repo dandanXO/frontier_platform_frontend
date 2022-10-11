@@ -1,9 +1,10 @@
 import { useStore } from 'vuex'
 import { reactive, computed } from '@vue/runtime-core'
-import { INVENTORY_UNIT, WEIGHT_UNIT, MATERIAL_PRICING_CURRENCY } from '@/utils/constants'
+import { INVENTORY_UNIT, MATERIAL_PRICING_CURRENCY, useConstants } from '@/utils/constants'
 
 export default function useMaterialEdit (material) {
   const store = useStore()
+  const { WEIGHT_UNIT } = useConstants()
 
   const inventoryUnitList = computed(() => Object.keys(INVENTORY_UNIT).map(key => ({ unit: INVENTORY_UNIT[key] })))
   const currencyList = computed(() => Object.keys(MATERIAL_PRICING_CURRENCY).map(key => ({ currency: MATERIAL_PRICING_CURRENCY[key] })))
@@ -15,10 +16,10 @@ export default function useMaterialEdit (material) {
   const specOptions = reactive({
     contentList: computed(() => store.getters['assets/code'].contentList.concat(newContentList)),
     weightUnitList: computed(() => {
-      return Object.keys(WEIGHT_UNIT)
+      return Object.keys(WEIGHT_UNIT.value)
         .map(key => ({
-          weightUnit: WEIGHT_UNIT[key].value,
-          name: WEIGHT_UNIT[key].text
+          weightUnit: WEIGHT_UNIT.value[key].value,
+          name: WEIGHT_UNIT.value[key].text
         }))
     }),
     descriptionList: computed(() => store.getters['assets/code'].descriptionList.concat(newDescriptionList)),
@@ -92,9 +93,9 @@ export default function useMaterialEdit (material) {
         }
         case INVENTORY_UNIT.KG: {
           let gsm
-          if (weightUnit === WEIGHT_UNIT.GSM.value) {
+          if (weightUnit === WEIGHT_UNIT.value.GSM.value) {
             gsm = weight
-          } else if (weightUnit === WEIGHT_UNIT.OZ.value) {
+          } else if (weightUnit === WEIGHT_UNIT.value.OZ.value) {
             gsm = weight / 0.9114
           }
           return prev + Number(quantity) / (gsm * 0.02323 * width) * 1000

@@ -22,7 +22,7 @@ modal-behavior(
         f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event)")
         div(class="flex items-center")
           div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
-            f-svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
+            f-svg-icon(iconName="cancel" size="14" class="text-grey-200 mr-1 cursor-pointer" @click="clearSelect")
             i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption" scope="global")
               template(#number) {{ selectedValue.length }}
           f-popper(v-if="!isInRoot" placement="bottom-end")
@@ -30,8 +30,8 @@ modal-behavior(
               f-svg-icon(
                 iconName="swap_horiz"
                 size="20"
-                class="transform rotate-90 cursor-pointer text-black-700 hover:text-brand"
-                :class="{ 'text-brand': isExpand }"
+                class="transform rotate-90 cursor-pointer text-grey-600 hover:text-primary-400"
+                :class="{ 'text-primary-400': isExpand }"
               )
             template(#content)
               f-contextual-menu(
@@ -41,13 +41,13 @@ modal-behavior(
                 @click:menu="sort"
               )
       div(v-show="isSearching && nodeMaterialList.length === 0" class="flex-grow flex items-center justify-center")
-        f-svg-icon(iconName="loading" size="92" class="text-brand")
+        f-svg-icon(iconName="loading" size="92" class="text-primary-400")
       f-scrollbar-container(v-if="!isSearching || nodeMaterialList.length > 0" class="h-64.5 -mx-5" @reachBottom="infiniteScroll")
         div(class="grid grid-flow-row grid-cols-5 auto-rows-auto gap-5 px-5")
           template(v-if="isInRoot")
             div(
               v-for="item in orgAndGroupList"
-              class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden border-black-400 bg-black-100 text-primary"
+              class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden border-grey-200 bg-grey-50 text-grey-900"
               @click="goTo(item)"
             )
               p(class="text-caption text-center font-bold line-clamp-3") {{ item.name }}
@@ -60,12 +60,12 @@ modal-behavior(
               :isMultiSelect="isMultiSelect"
             )
         div(v-if="isSearching && nodeMaterialList.length > 0" class="flex justify-center items-center")
-          f-svg-icon(iconName="loading" size="54" class="text-brand")
+          f-svg-icon(iconName="loading" size="54" class="text-primary-400")
 </template>
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
-import { SORT_BY, NODE_TYPE, NODE_LOCATION } from '@/utils/constants'
+import { NODE_TYPE, NODE_LOCATION, useConstants } from '@/utils/constants'
 import GridItemNodeForModal from '@/components/common/gridItem/GridItemNodeForModal.vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
@@ -94,24 +94,27 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
-const sortMenuTree = {
-  blockList: [
-    {
-      menuList: [SORT_BY.CREATE_DATE, SORT_BY.LAST_UPDATE, SORT_BY.MATERIAL_NO_A_Z].map(({ text, value }) => ({
-        title: text,
-        selectValue: value
-      }))
-    }
-  ]
-}
-
+const { SORT_BY } = useConstants()
+const sortMenuTree = computed(() => {
+  const { CREATE_DATE, LAST_UPDATE, MATERIAL_NO_A_Z } = SORT_BY.value
+  return {
+    blockList: [
+      {
+        menuList: [CREATE_DATE, LAST_UPDATE, MATERIAL_NO_A_Z].map(({ text, value }) => ({
+          title: text,
+          selectValue: value
+        }))
+      }
+    ]
+  }
+})
 const keyword = ref('')
 const isSearching = ref(false)
 const nodeMaterialList = ref([])
 const queryParams = reactive({
   keyword: '',
   targetPage: 1,
-  sort: SORT_BY.CREATE_DATE.value,
+  sort: SORT_BY.value.CREATE_DATE.value,
   id: null,
   nodeLocation: null
 })

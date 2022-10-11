@@ -6,7 +6,7 @@ modal-behavior(
   @click:primary="createCollectionForModal"
 )
   div(class="w-84")
-    h6(class="text-body2 font-bold text-primary mb-2") {{ $t('EE0065') }}
+    h6(class="text-body2 font-bold text-grey-900 mb-2") {{ $t('EE0065') }}
     f-input-text(v-model:textValue="collectionName" required :rules="[$inputRules.required()]")
 </template>
 

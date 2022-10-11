@@ -117,7 +117,7 @@ const getters = {
         for (const match of matches) {
           const targetIndex = Number(match[0].slice(1, match[0].length - 1))
           const { text, url } = contentValue[targetIndex]
-          const html = `<a href="${url}" target="_blank" class="text-caption text-assist-blue">${text}</a>`
+          const html = `<a href="${url}" target="_blank" class="text-caption text-cyan-400">${text}</a>`
           replacedContent = replacedContent.replace(match[0], html)
         }
       }

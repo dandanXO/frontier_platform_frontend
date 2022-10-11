@@ -14,7 +14,7 @@ export default function remindVerifyEmail () {
     }
     secRemains = 30
     const noteDom = document.getElementById('verify-email-note')
-    noteDom.classList.add('!text-black-500', '!cursor-not-allowed')
+    noteDom.classList.add('!text-grey-200', '!cursor-not-allowed')
     noteDom.textContent = `${t('UU0056')}... (${secRemains})`
 
     timerId = setInterval(() => {
@@ -22,7 +22,7 @@ export default function remindVerifyEmail () {
       noteDom.textContent = `${t('UU0056')}... (${secRemains})`
       if (secRemains <= 0) {
         noteDom.textContent = t('UU0056')
-        noteDom.classList.remove('!text-black-500', '!cursor-not-allowed')
+        noteDom.classList.remove('!text-grey-200', '!cursor-not-allowed')
         clearInterval(timerId)
       }
     }, 1000)
@@ -30,7 +30,7 @@ export default function remindVerifyEmail () {
 
   const noteAttr = {
     id: 'verify-email-note',
-    class: ['text-assist-blue cursor-pointer'],
+    class: ['text-cyan-400 cursor-pointer'],
     onClick: async () => {
       if (secRemains > 0) return
       startCountDown()
@@ -44,7 +44,7 @@ export default function remindVerifyEmail () {
     header: t('AA0030'),
     contentComponent: shallowRef({
       render: () => {
-        return h('span', { class: 'text-body2 leading-1.6 text-black-800' }, [
+        return h('span', { class: 'text-body2 leading-1.6 text-grey-600' }, [
           t('AA0052'),
           h('br'),
           h('strong', noteAttr, t('UU0056'))

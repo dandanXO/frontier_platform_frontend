@@ -22,7 +22,7 @@ filter-wrapper(
             :disabled="currentYarnType !== YARN_TYPE.WOVEN"
             class="w-50"
           )
-          f-svg-icon(iconName="clear" size="20" class="text-primary")
+          f-svg-icon(iconName="clear" size="20" class="text-grey-900")
           f-input-text(
             v-model:textValue="formYarnAndDensity.wovenWeftYarnCount"
             :disabled="currentYarnType !== YARN_TYPE.WOVEN"
@@ -35,7 +35,7 @@ filter-wrapper(
             :disabled="currentYarnType !== YARN_TYPE.WOVEN"
             class="w-50"
           )
-          f-svg-icon(iconName="clear" size="20" class="text-primary")
+          f-svg-icon(iconName="clear" size="20" class="text-grey-900")
           f-input-text(
             v-model:textValue="formYarnAndDensity.weftDensity"
             :disabled="currentYarnType !== YARN_TYPE.WOVEN"

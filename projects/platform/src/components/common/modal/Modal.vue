@@ -1,10 +1,10 @@
 <template lang="pug">
-div(class="fixed inset-0 z-modal w-screen h-screen bg-black-900/30 flex justify-center items-center")
+div(class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center")
   div(class="w-screen h-screen" @click="closable && close()")
-  div(class="absolute bg-black-0 rounded card-shadow")
+  div(class="absolute bg-grey-0 rounded card-shadow")
     div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
-      p(v-if="header !== ''" class="text-h6 font-bold text-primary") {{ header }}
-      f-svg-icon(v-if="closable" iconName="clear" size="24" class="justify-self-end cursor-pointer text-black-700" @click="close")
+      p(v-if="header !== ''" class="text-h6 font-bold text-grey-900") {{ header }}
+      f-svg-icon(v-if="closable" iconName="clear" size="24" class="justify-self-end cursor-pointer text-grey-600" @click="close")
     component(:is="component" v-bind="properties")
 </template>
 

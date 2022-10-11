@@ -1,9 +1,9 @@
 <template lang="pug">
-div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
+div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
   div(class="pl-31 pb-13.5")
-    h5(class="text-h5 font-bold text-primary pb-3") {{ $t('QQ0061') }}
-    p(class="text-body2 text-black-500") {{ $t('QQ0062') }}
-  div(class="bg-black-0 border-primary-middle border rounded flex-grow px-6 pt-2")
+    h5(class="text-h5 font-bold text-grey-900 pb-3") {{ $t('QQ0061') }}
+    p(class="text-body2 text-grey-200") {{ $t('QQ0062') }}
+  div(class="bg-grey-0 border-grey-150 border rounded flex-grow px-6 pt-2")
     f-tabs(:tabList="tabList" :initValue="currentTab" @switch="switchTab($event)")
       div(v-if="currentTab !== MOODBOARD_TAB.COMMENT" class="pt-4")
         div(class="flex justify-between items-center")
@@ -22,16 +22,16 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
         div(class="py-2 flex justify-between items-center")
           f-breadcrumb(:breadcrumbList="moodboardOfferNodeCollection.locationList" @click:item="goTo($event.nodeId)" fontSize="text-body2")
           f-button-label(size="lg" @click="selectAll") {{ $t("RR0209") }}
-        div(class="bg-black-50 h-10 flex items-center gap-x-3 pl-4")
-          f-svg-icon(iconName="public" size="20" class="text-black-600")
-          p(class="text-caption text-black-800") {{ $t('QQ0053') }}
+        div(class="bg-grey-50 h-10 flex items-center gap-x-3 pl-4")
+          f-svg-icon(iconName="public" size="20" class="text-grey-600")
+          p(class="text-caption text-grey-600") {{ $t('QQ0053') }}
         div(v-if="isLoading" class="flex-grow flex items-center justify-center")
-          f-svg-icon(iconName="loading" size="92" class="text-brand")
+          f-svg-icon(iconName="loading" size="92" class="text-primary-400")
         div(v-else class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start h-149 py-2 overflow-y-scroll")
-          div(v-if="currentTab === MOODBOARD_TAB.OFFER" class="aspect-square border border-black-400 border-dashed rounded-md flex justify-center items-center cursor-pointer" @click="openModalCreateOrEditMoodboardCollection(CREATE_EDIT.CREATE, currentNodeId)")
+          div(v-if="currentTab === MOODBOARD_TAB.OFFER" class="aspect-square border border-grey-200 border-dashed rounded-md flex justify-center items-center cursor-pointer" @click="openModalCreateOrEditMoodboardCollection(CREATE_EDIT.CREATE, currentNodeId)")
             div(class="flex flex-col justify-center items-center")
-              f-svg-icon(iconName="add" size="24" class="text-primary mb-3.5")
-              span(class="text-body1 text-primary") {{ $t("FF0003") }}
+              f-svg-icon(iconName="add" size="24" class="text-grey-900 mb-3.5")
+              span(class="text-body1 text-grey-900") {{ $t("FF0003") }}
           grid-item-node(
             v-for="node in moodboardOfferNodeCollection.childNodeList"
             v-model:selectedValue="selectedNodeList"
@@ -44,7 +44,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
               btn-pick-tooltip(class="absolute right-0 -bottom-0.5" :isPicked="node.isPicked")
       template(v-if="currentTab === MOODBOARD_TAB.COMMENT")
         div(v-if="isLoading" class="flex-grow flex items-center justify-center")
-          f-svg-icon(iconName="loading" size="92" class="text-brand")
+          f-svg-icon(iconName="loading" size="92" class="text-primary-400")
         mood-board-comment(v-else :moodboardId="moodboard.moodboardId" :offerId="moodboard.properties.myOfferId")
 multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")
 </template>
@@ -124,7 +124,7 @@ const openModalAssetsList = () => {
       },
       noteComponent: shallowRef({
         render: () => {
-          return h('div', { class: 'flex items-center text-black-600' }, [
+          return h('div', { class: 'flex items-center text-grey-600' }, [
             h(FSvgIcon, { iconName: 'info_outline', size: "20" }),
             h('p', { class: 'text-caption leading-1.6 pl-1.5', }, t('QQ0053'))
           ])

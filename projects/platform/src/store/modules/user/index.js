@@ -33,6 +33,7 @@ const actions = {
   },
   async changeLocale ({ dispatch }, params) {
     const { data } = await userApi.changeLocale(params)
+    i18n.global.locale.value = data.result?.user.locale
     dispatch('setUser', data.result.user)
   },
   async checkEmailExist (_, params) {

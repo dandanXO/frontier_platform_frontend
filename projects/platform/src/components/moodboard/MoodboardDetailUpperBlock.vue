@@ -2,45 +2,45 @@
 div(class="w-227 mx-auto")
   div(class="mb-7")
     div(class="flex items-center mb-4")
-      p(class="text-h4 text-primary font-bold mr-6") {{ moodboard.moodboardName }}
+      p(class="text-h4 text-grey-900 font-bold mr-6") {{ moodboard.moodboardName }}
       template(v-if="moodboard.moodboardType === MOODBOARD_TYPE.DEMANDER")
         f-tooltip(class="mr-2")
           template(#trigger)
-            div(class="w-7.5 h-7.5 group cursor-pointer hover:bg-brand/10 rounded-full flex items-center justify-center" @click="openCreateOrEditMoodboard")
-              f-svg-icon(iconName="create" class="text-primary group-hover:text-brand" size="24")
+            div(class="w-7.5 h-7.5 group cursor-pointer hover:bg-primary-400/10 rounded-full flex items-center justify-center" @click="openCreateOrEditMoodboard")
+              f-svg-icon(iconName="create" class="text-grey-900 group-hover:text-primary-400" size="24")
           template(#content)
             p {{ $t("RR0054") }}
         f-popper(placement="bottom-start")
           template(#trigger)
-            div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
-              f-svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
+            div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-primary-400/10")
+              f-svg-icon(iconName="more_horiz" size="24" class="text-grey-600 group-hover:text-primary-400")
           template(#content)
             f-list
               f-list-item(@click.stop="handleDelete") {{ $t("RR0063") }}
-    p(class="text-caption text-black-700")
+    p(class="text-caption text-grey-600")
       span {{ $t("RR0066") }}: {{ $dayjs.unix(moodboard.updateDate).format("YYYY/MM/DD") }}
       span(class="mx-1") at
       span {{ $dayjs.unix(moodboard.updateDate).format("h:mm a") }}
   div(class="flex justify-between mb-10")
     div(class="w-110.5")
       div(class="mb-6")
-        p(class="text-primary font-bold text-caption mb-4") {{ $t("QQ0007") }}
+        p(class="text-grey-900 font-bold text-caption mb-4") {{ $t("QQ0007") }}
         div(class="flex items-center")
           img(:src="moodboard.creatorLogo" class="w-6 h-6 rounded-full")
-          p(class="text-body2 text-primary ml-2") {{ moodboard.creator }}
-      div(class="text-primary")
+          p(class="text-body2 text-grey-900 ml-2") {{ moodboard.creator }}
+      div(class="text-grey-900")
         p(class="font-bold text-caption mb-4")  {{ $t("RR0014") }}
         p(class="text-body2 leading-1.6 break-words") {{ moodboard.description }}
     div(class="w-97.5")
-      p(class="text-primary font-bold text-caption mb-4") {{ $t("RR0249") }}
-      div(class="relative h-69 rounded bg-black-400 flex items-center justify-center flex-shrink-0")
-        div(v-if="moodboard.trendBoardCoverImg" class="rounded w-full h-full px-7.5 py-6 bg-black-200")
-          div(class="w-full h-full bg-contain bg-no-repeat bg-center rounded bg-black-0" :style="{ backgroundImage: `url(${moodboard.trendBoardCoverImg})`}")
-          a(:href="moodboard.trendBoardUrl" target="_blank" class="absolute right-3.5 bottom-3.5 card-shadow w-7 h-7 rounded-sm bg-black-0 flex items-center justify-center")
-            f-svg-icon(iconName="open_in_new" class="text-black-700" size="24")
+      p(class="text-grey-900 font-bold text-caption mb-4") {{ $t("RR0249") }}
+      div(class="relative h-69 rounded bg-grey-200 flex items-center justify-center flex-shrink-0")
+        div(v-if="moodboard.trendBoardCoverImg" class="rounded w-full h-full px-7.5 py-6 bg-grey-100")
+          div(class="w-full h-full bg-contain bg-no-repeat bg-center rounded bg-grey-0" :style="{ backgroundImage: `url(${moodboard.trendBoardCoverImg})`}")
+          a(:href="moodboard.trendBoardUrl" target="_blank" class="absolute right-3.5 bottom-3.5 card-shadow w-7 h-7 rounded-sm bg-grey-0 flex items-center justify-center")
+            f-svg-icon(iconName="open_in_new" class="text-grey-600" size="24")
         div(v-else)
-          f-svg-icon(iconName="file" size="110" class="text-black-0 mx-auto")
-          p(class="text-body1 font-bold text-black-50 pt-3") {{ $t("RR0247") }}
+          f-svg-icon(iconName="file" size="110" class="text-grey-0 mx-auto")
+          p(class="text-body1 font-bold text-grey-50 pt-3") {{ $t("RR0247") }}
   block-attachment(class="mb-28" :attachmentList="moodboard.attachmentList")
 </template>
 

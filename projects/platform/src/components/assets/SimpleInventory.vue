@@ -1,6 +1,6 @@
 <template lang="pug">
-div(class="bg-black-100 px-7.5 py-7.5 grid gap-y-7.5")
-  h6(class="text-h6 text-black-600 font-bold") {{ $t("DD0019") }}
+div(class="bg-grey-50 px-7.5 py-7.5 grid gap-y-7.5")
+  h6(class="text-h6 text-grey-600 font-bold") {{ $t("DD0019") }}
   f-input-container(:label="`${$t('RR0031')} / ${$t('RR0032')}`")
     div(class="flex items-center gap-x-3")
       f-input-text(
@@ -9,7 +9,7 @@ div(class="bg-black-100 px-7.5 py-7.5 grid gap-y-7.5")
         inputType="number"
         class="w-50"
       )
-      f-svg-icon(iconName="slash" size="20" class="text-primary")
+      f-svg-icon(iconName="slash" size="20" class="text-grey-900")
       f-input-text(
         v-model:textValue="material.sampleCardsLocation"
         :customErrorMsg="validations.sampleCardsLocation"
@@ -23,13 +23,13 @@ div(class="bg-black-100 px-7.5 py-7.5 grid gap-y-7.5")
         inputType="number"
         class="w-50"
       )
-      f-svg-icon(iconName="slash" size="20" class="text-primary")
+      f-svg-icon(iconName="slash" size="20" class="text-grey-900")
       f-input-text(
         v-model:textValue="material.hangersLocation"
         :customErrorMsg="validations.hangersLocation"
         class="w-50"
       )
-  h6(class="text-h6 text-black-600 font-bold") {{ $t("DD0023") }}
+  h6(class="text-h6 text-grey-600 font-bold") {{ $t("DD0023") }}
   f-input-container(:label="$t('RR0034')")
     div(class="flex items-center gap-x-3")
       f-input-text(
@@ -71,9 +71,9 @@ div(class="bg-black-100 px-7.5 py-7.5 grid gap-y-7.5")
         keyOptionValue="unit"
         class="w-25"
       )
-      f-svg-icon(v-if="index === 0" size="20" iconName="add_box" class="text-black-700 ml-4.5 mt-5.5" @click="addNewInventory")
-      f-svg-icon(v-else size="20" iconName="delete" class="text-black-700 ml-4.5" @click="removeInventory(index)")
-    p(v-if="validations.inventoryList" class="bottom-0 transform translate-y-full text-caption text-warn absolute pt-1") {{ validations.inventoryList }}
+      f-svg-icon(v-if="index === 0" size="20" iconName="add_box" class="text-grey-600 ml-4.5 mt-5.5" @click="addNewInventory")
+      f-svg-icon(v-else size="20" iconName="delete" class="text-grey-600 ml-4.5" @click="removeInventory(index)")
+    p(v-if="validations.inventoryList" class="bottom-0 transform translate-y-full text-caption text-red-400 absolute pt-1") {{ validations.inventoryList }}
 </template>
 
 <script>

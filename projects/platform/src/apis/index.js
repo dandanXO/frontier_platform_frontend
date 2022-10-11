@@ -75,7 +75,7 @@ instance.interceptors.response.use(async response => {
       const { type, title, content } = message
       store.dispatch('helper/openModalConfirm', {
         type: type || 3,
-        header: title || 'Something went wrong!',
+        header: title || i18n.global.t('WW0122'),
         contentText: content,
         primaryBtnText: i18n.global.t('UU0031'),
         primaryBtnHandler: () => window.location.reload()

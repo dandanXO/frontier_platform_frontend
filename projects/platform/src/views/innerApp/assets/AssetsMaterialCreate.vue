@@ -5,9 +5,9 @@ div(class="w-full h-full flex justify-center")
       f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
       f-button(size="sm" type="secondary" class="ml-5" @click="openModalMassUpload") {{ $t("UU0009") }}
     div
-      div(class="pb-15 mb-5 border-b border-black-400")
+      div(class="pb-15 mb-5 border-b border-grey-200")
         div(class="h-16 flex items-center")
-          h5(class="text-h5 text-primary font-bold pr-1.5") {{ $t("DD0063") }}
+          h5(class="text-h5 text-grey-900 font-bold pr-1.5") {{ $t("DD0063") }}
         div(class="pl-15")
           f-input-container(:label="$t('DD0062')")
             div(class="flex items-center gap-x-3")

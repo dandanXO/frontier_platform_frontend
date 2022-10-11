@@ -86,12 +86,12 @@ const printA4Card = async (materialList) => {
 
   const domGenerator = (material) => {
     pdfTarget.innerHTML = `
-      <div class="relative flex flex-col justify-between items-center w-148.5 h-210.5 bg-black-0 px-10 py-10">
+      <div class="relative flex flex-col justify-between items-center w-148.5 h-210.5 bg-grey-0 px-10 py-10">
         <div class="flex w-full">
           <img src="${logo}" class="mr-7 w-12.5 h-12.5 rounded-sm flex-shrink-0" />
           <div class="w-full">
             <p class="text-body1 font-bold mb-3.5">${material.materialNo}</p>
-            <div class="text-caption text-primary grid gap-y-1">
+            <div class="text-caption text-grey-900 grid gap-y-1">
               <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t("RR0014")}：</p><p class="flex-1 line-clamp-2">${material.description}</p></div>
               <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t("RR0021")}：</p><p class="flex-1 line-clamp-2">${material.content}</p></div>
               <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t("RR0023")}：</p><p class="flex-1 line-clamp-2">${material.materialYarnCount}</p></div>
@@ -103,13 +103,13 @@ const printA4Card = async (materialList) => {
               <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t("RR0022")}：</p><p class="flex-1 line-clamp-2">${material.finish}</p></div>
             </div>
           </div>
-          <div class="flex flex-col flex-shrink-0 items-center text-primary">
+          <div class="flex flex-col flex-shrink-0 items-center text-grey-900">
             <span id="mark" class="whitespace-nowrap text-caption font-bold"></span>
             <div id="container" class="mt-2.5 mb-2"></div>
             <span class="whitespace-nowrap text-caption scale-90">${material.frontierNo}</span>
           </div>
         </div>
-        <div class="text-black-600 relative flex flex-col items-center justify-center w-full h-97 bg-cover" style="background-image: url(${imgPdfOutLine})">
+        <div class="text-grey-600 relative flex flex-col items-center justify-center w-full h-97 bg-cover" style="background-image: url(${imgPdfOutLine})">
           <span class="whitespace-nowrap text-caption mb-2.5">${material.sideType === SIDE_TYPE.FACE ? t("DD0046") : t("DD0047")}</span>
           <span class="whitespace-nowrap text-caption">${t("DD0050")}</span>
         </div>
@@ -124,7 +124,7 @@ const printA4Card = async (materialList) => {
     const mark = document.getElementById('mark')
     if (material.sideType === SIDE_TYPE.BACK) {
       mark.innerText = t('DD0051')
-      mark.classList.add('text-black-0', 'py-1.5', 'px-2', 'bg-primary', 'rounded-sm')
+      mark.classList.add('text-grey-0', 'py-1.5', 'px-2', 'bg-grey-900', 'rounded-sm')
     } else {
       mark.innerText = t('DD0046')
     }
@@ -185,18 +185,18 @@ const printGeneralLabel = async (materialList) => {
 
     if (material.sideType === SIDE_TYPE.FACE) {
       pdfTarget.innerHTML = `
-        <div class="relative flex w-113 h-56.5 bg-black-0 pr-4 py-3">
+        <div class="relative flex w-113 h-56.5 bg-grey-0 pr-4 py-3">
           <div class="absolute top-3 left-3.5">
             <img src="${logo}" class="w-8.5 h-8.5 rounded-sm" />
           </div>
           <div class="flex justify-center w-full">
             <div class="flex flex-col items-center justify-center ml-16">
               <div id="container" class="mb-4"></div>
-              <div class="whitespace-nowrap text-black-900 text-body2 mb-2">${t("DD0046")}</div>
-              <div class="whitespace-nowrap text-black-600 text-body2">${material.frontierNo}</div>
+              <div class="whitespace-nowrap text-grey-900 text-body2 mb-2">${t("DD0046")}</div>
+              <div class="whitespace-nowrap text-grey-600 text-body2">${material.frontierNo}</div>
             </div>
-            <div class="flex-none border border-black-400 mx-6 my-5"></div>
-            <div class="flex flex-col justify-center text-black-900 w-56">
+            <div class="flex-none border border-grey-200 mx-6 my-5"></div>
+            <div class="flex flex-col justify-center text-grey-900 w-56">
               <p class="mb-2 font-bold text-body2">${material.materialNo}</p>
               <p class="text-body2 line-clamp-7 break-words leading-1.4">${getHtmlString()}</p>
             </div>
@@ -207,16 +207,16 @@ const printGeneralLabel = async (materialList) => {
 
     if (material.sideType === SIDE_TYPE.BACK) {
       pdfTarget.innerHTML = `
-        <div class="relative flex w-113 h-56.5 bg-black-0 pr-4 py-3">
+        <div class="relative flex w-113 h-56.5 bg-grey-0 pr-4 py-3">
           <div class="absolute top-3 left-3.5">
             <img src="${logo}" class="w-8.5 h-8.5 rounded-sm" />
           </div>
           <div class="flex justify-center w-full">
             <div class="flex flex-col items-center justify-center">
-              <div class="whitespace-nowrap text-black-900 font-bold text-body1">${material.materialNo}</div>
+              <div class="whitespace-nowrap text-grey-900 font-bold text-body1">${material.materialNo}</div>
               <div id="container" class="mt-4 mb-4"></div>
-              <div class="whitespace-nowrap text-black-900 text-body2 mb-2">${t("DD0051")}</div>
-              <div class="whitespace-nowrap text-black-600 text-body2">${material.frontierNo}</div>
+              <div class="whitespace-nowrap text-grey-900 text-body2 mb-2">${t("DD0051")}</div>
+              <div class="whitespace-nowrap text-grey-600 text-body2">${material.frontierNo}</div>
             </div>
           </div>
         </div>
@@ -268,13 +268,13 @@ const printBackSideLabel = async () => {
   const pdfTarget = document.createElement('div')
   pdfTarget.classList.add('w-0', 'h-0', 'overflow-hidden')
   pdfTarget.innerHTML = `
-    <div class="relative flex items-center w-113 h-56.5 bg-black-0 px-8 py-8">
+    <div class="relative flex items-center w-113 h-56.5 bg-grey-0 px-8 py-8">
       <div id="container" class="mr-5.5"></div>
       <div class="flex flex-col">
-        <span class="mb-2 text-black-900 font-bold text-h5">${t('DD0051')}</span>
+        <span class="mb-2 text-grey-900 font-bold text-h5">${t('DD0051')}</span>
         <span class="text-body2 leading-1.5">${t('DD0052')}</span>
       </div>
-      <div class="absolute bottom-2.5 right-2.5 text-black-500 font-bold">${t('DD0053')}</div>
+      <div class="absolute bottom-2.5 right-2.5 text-grey-200 font-bold">${t('DD0053')}</div>
     </div>
   `
 

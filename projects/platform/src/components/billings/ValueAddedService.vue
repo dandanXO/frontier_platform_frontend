@@ -4,13 +4,13 @@ div(v-else class="w-full pt-3")
   div(class="w-195 mx-auto mt-8")
     div(class="mb-12")
       div(class="text-body1 text-grey-900 pb-5") {{ $t("VV0002") }}
-      div(class="flex border border-black-400 rounded h-62 cursor-pointer hover:bg-black-200" @click="goTo(recommendService.id)")
+      div(class="flex border border-grey-200 rounded h-62 cursor-pointer hover:bg-grey-100" @click="goTo(recommendService.id)")
         div(class="w-63 flex-none pb-5 px-4.5 flex flex-col h-full justify-between")
           div
             div(class="flex items-center my-2 h-11.5")
               img(:src="recommendService.logo" class="scale-50 origin-left")
             div(class="text-body1 text-grey-900 leading-1.6 font-bold") {{ recommendService.projectName }}
-            i18n-t(keypath="VV0004" tag="div" class="text-caption leading-1.6 text-grey-600")
+            i18n-t(keypath="VV0004" scope="global" tag="div" class="text-caption leading-1.6 text-grey-600")
               template(#providerName) {{ recommendService.providerName }}
             div(class="text-caption text-grey-900 leading-1.3 pt-4") {{ recommendService.description }}
           div(class="flex items-center text-body2")
@@ -25,12 +25,12 @@ div(v-else class="w-full pt-3")
       p(class="text-body2 text-grey-900 leading-1.6 pb-7.5") {{ $t("VV0008") }}
       div(class="grid")
         template(v-for="service in valueAddedServiceList")
-          div(v-if="!service.bannerImage" class="max-w-63 min-h-62 flex flex-col rounded px-4.5 pb-5 justify-between border border-black-400 cursor-pointer hover:bg-black-200" @click="goTo(service.id)")
+          div(v-if="!service.bannerImage" class="max-w-63 min-h-62 flex flex-col rounded px-4.5 pb-5 justify-between border border-grey-200 cursor-pointer hover:bg-grey-100" @click="goTo(service.id)")
             div
               div(class="flex items-start my-2 h-11.5")
                 img(:src="service.logo" class="scale-50 origin-left")
               div(class="text-body1 text-grey-900 leading-1.6 font-bold") {{ service.projectName }}
-              i18n-t(keypath="VV0004" tag="div" class="text-caption leading-1.6 text-grey-600")
+              i18n-t(keypath="VV0004" scope="global" tag="div" class="text-caption leading-1.6 text-grey-600")
                 template(#providerName) {{ service.providerName }}
               div(class="text-caption text-grey-900 leading-1.3 pt-4") {{ service.description }}
             div(class="flex items-center text-body2")

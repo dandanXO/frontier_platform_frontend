@@ -1,37 +1,37 @@
 <template lang="pug">
-div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
+div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
   div(class="pl-31 pb-13.5")
-    h5(class="text-h5 font-bold text-primary pb-3") {{ $t('QQ0016') }}
-    p(class="text-body2 text-black-500") {{ $t('QQ0017') }}
+    h5(class="text-h5 font-bold text-grey-900 pb-3") {{ $t('QQ0016') }}
+    p(class="text-body2 text-grey-200") {{ $t('QQ0017') }}
   div(class="flex-grow flex gap-x-5.5")
     div(class="w-52 shrink-0 h-full")
       f-button(size="md" prependIcon="add" class="w-full" @click="openModalMoodboardShareList") {{ $t('UU0096') }}
       div(
-        class="w-full h-23 rounded flex flex-col justify-center pl-6 mt-6 hover:bg-black-200 cursor-pointer"
-        :class="[{ 'bg-black-400': currentOfferId === 'all' }]"
+        class="w-full h-23 rounded flex flex-col justify-center pl-6 mt-6 hover:bg-grey-100 cursor-pointer"
+        :class="[{ 'bg-grey-200': currentOfferId === 'all' }]"
         @click="switchOffer('all', null)"
       )
-        p(class="text-body1 font-bold text-primary leading-1.6") {{ $t('RR0052') }}
-        p(class="text-caption text-black-800 leading-1.6") {{ $t('RR0201', { number: moodboardOfferList.length }) }}・{{ $t('RR0068', { number: totalOfferItemCounts }) }}
-      div(class="border-t border-b border-primary-middle py-2")
+        p(class="text-body1 font-bold text-grey-900 leading-1.6") {{ $t('RR0052') }}
+        p(class="text-caption text-grey-600 leading-1.6") {{ $t('RR0201', { number: moodboardOfferList.length }) }}・{{ $t('RR0068', { number: totalOfferItemCounts }) }}
+      div(class="border-t border-b border-grey-150 py-2")
         f-scrollbar-container(class="max-h-156 -mx-5 px-5")
           div(class="grid gap-y-2")
             div(
               v-for="offer in moodboardOfferList"
-              class="h-20 flex items-center gap-x-3 pl-3 rounded hover:bg-black-200 cursor-pointer"
-              :class="[{ 'bg-black-400': Number(currentOfferId) === offer.offerId }]"
+              class="h-20 flex items-center gap-x-3 pl-3 rounded hover:bg-grey-100 cursor-pointer"
+              :class="[{ 'bg-grey-200': Number(currentOfferId) === offer.offerId }]"
               @click="switchOffer(offer.offerId, offer.rootNodeId)"
             )
               div(class="relative flex-shrink-0")
                 img(:src="offer.logo" class="w-8 h-8 rounded-full")
-                div(v-if="offer.hasNewUpdate" class="absolute w-3 h-3 bg-brand border border-black-0 rounded-full top-0 -right-0.5")
+                div(v-if="offer.hasNewUpdate" class="absolute w-3 h-3 bg-primary-400 border border-grey-0 rounded-full top-0 -right-0.5")
               div
-                p(class="text-body1 font-bold text-primary leading-1.6 line-clamp-1") {{ offer.name }}
-                p(class="text-caption text-black-800 leading-1.6") {{ $t('RR0068', { number: offer.itemCounts }) }}・{{ offer.lastUpdateTime }}
-    div(class="flex-grow bg-black-0 border-primary-middle border rounded px-6 pt-2")
+                p(class="text-body1 font-bold text-grey-900 leading-1.6 line-clamp-1") {{ offer.name }}
+                p(class="text-caption text-grey-600 leading-1.6") {{ $t('RR0068', { number: offer.itemCounts }) }}・{{ offer.lastUpdateTime }}
+    div(class="flex-grow bg-grey-0 border-grey-150 border rounded px-6 pt-2")
       div(v-if="moodboardOfferList.length === 0" class="text-center pt-30")
-        h4(class="text-h4 text-primary pb-6") {{ $t('QQ0018') }}
-        p(class="text-body2 text-black-700") {{ $t('QQ0019') }}
+        h4(class="text-h4 text-grey-900 pb-6") {{ $t('QQ0018') }}
+        p(class="text-body2 text-grey-600") {{ $t('QQ0019') }}
       template(v-else)
         f-tabs(v-if="currentOfferId !== 'all'"  :tabList="tabList" :initValue="currentTab" :key="currentOfferId" @switch="switchTab($event)")
         div(v-if="currentTab !== MOODBOARD_TAB.COMMENT" class="pt-4")
@@ -52,7 +52,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
             f-breadcrumb(:breadcrumbList="moodboardOfferNodeCollection.locationList" fontSize="text-body2" @click:item="goTo($event.nodeId)")
             f-button-label(v-if="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED" size="lg" @click="selectAll") {{ $t("RR0209") }}
           div(v-if="isLoading" class="flex-grow flex items-center justify-center")
-            f-svg-icon(iconName="loading" size="92" class="text-brand")
+            f-svg-icon(iconName="loading" size="92" class="text-primary-400")
           div(v-else
             class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start pb-2 overflow-y-auto hide-scrollbar"
             :class="[currentOfferId === 'all' ? 'h-166' : 'h-156']"
@@ -74,7 +74,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-black-50 flex flex-col")
                 )
         template(v-if="currentTab === MOODBOARD_TAB.COMMENT")
           div(v-if="isLoading" class="flex-grow flex items-center justify-center")
-            f-svg-icon(iconName="loading" size="92" class="text-brand")
+            f-svg-icon(iconName="loading" size="92" class="text-primary-400")
           mood-board-comment(v-else :moodboardId="moodboard.moodboardId" :offerId="Number(currentOfferId)")
 multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")
 </template>

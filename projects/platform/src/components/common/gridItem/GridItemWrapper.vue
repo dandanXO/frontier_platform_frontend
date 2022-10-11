@@ -10,8 +10,8 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
         iconSize="24"
         id="input-checkbox"
         class="absolute top-3 left-3"
-        iconColor="text-black-0"
-        uncheckColor="text-black-0"
+        iconColor="text-grey-0"
+        uncheckColor="text-grey-0"
         @click.stop
       )
       f-input-radio(
@@ -21,8 +21,8 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
         iconSize="20"
         id="input-radio"
         class="absolute top-3 left-3"
-        checkColor="text-black-0"
-        uncheckColor="text-black-0"
+        checkColor="text-grey-0"
+        uncheckColor="text-grey-0"
         @click.stop
       )
     div(v-if="isHover" class="absolute z-10 top-3 right-3")
@@ -37,13 +37,13 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
       @click.stop
     )
       template(#trigger)
-        f-svg-icon(iconName="more_vert" size="20" class="text-black-0 hover:text-black-200" )
+        f-svg-icon(iconName="more_vert" size="20" class="text-grey-0 hover:text-grey-100" )
       template(#content="{ collapsePopper }")
         f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
     slot(name="content")
-    div(v-if="isHover" class="absolute inset-0 w-full h-full bg-black-900/70 rounded-md flex justify-center items-center")
+    div(v-if="isHover" class="absolute inset-0 w-full h-full bg-grey-900/70 rounded-md flex justify-center items-center")
       slot(name="hover-content")
-  div(class="text-caption font-bold mt-2 flex items-center justify-between text-primary")
+  div(class="text-caption font-bold mt-2 flex items-center justify-between text-grey-900")
     p(class="line-clamp-1 !break-all")
       slot(name="title" :isHover="isHover")
     slot(name="title-right-icon")

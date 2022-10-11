@@ -85,7 +85,7 @@ export const SlotErrorMsg = (args) => ({
   template: `
     <f-input-text v-model:textValue="inputText" v-bind="args">
       <template #slot:errorMsg>
-        <p class="text-warn text-caption pt-1.5">This is <strong class="text-brand">slot</strong> error msg</p>
+        <p class="text-red-400 text-caption pt-1.5">This is <strong class="text-primary-400">slot</strong> error msg</p>
       </template>
     </f-input-text>`,
 })

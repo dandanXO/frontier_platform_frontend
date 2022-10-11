@@ -2,7 +2,7 @@
 div
   div(class="flex justify-between pb-5")
     div(class="flex items-center gap-x-2")
-      p(class="text-body2 text-primary font-bold") {{ label }}
+      p(class="text-body2 text-grey-900 font-bold") {{ label }}
       f-button-label(size="sm" @click="reset") {{ $t('UU0040') }}
     div
       slot(name="right")

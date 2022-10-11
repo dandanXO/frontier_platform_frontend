@@ -6,8 +6,8 @@ modal-behavior(
   @click:primary="changeHandler"
 )
   div(class="w-80 flex flex-col items-center")
-    div(class="h-10 w-full text-caption text-black-800 font-bold bg-black-50 mb-2 flex items-center justify-center") {{ email }}
-    div(class="text-caption text-primary mb-4") {{ $t("AA0053") }}
+    div(class="h-10 w-full text-caption text-grey-600 font-bold bg-grey-50 mb-2 flex items-center justify-center") {{ email }}
+    div(class="text-caption text-grey-900 mb-4") {{ $t("AA0053") }}
     form(class="w-full pb-4")
       f-input-password(v-model:textValue="password" :placeholder="$t('AA0055')")
       password-validator(v-model:isValid="isPasswordValid" :password="password" class="mt-1 mb-4")

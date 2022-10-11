@@ -8,25 +8,25 @@ div
       material-detail-external-u3m-status(:isEmbed="isEmbed" :material="material" :isCanDownloadU3M="isCanDownloadU3M")
   div(class="pt-16 grid gap-y-7.5")
     div
-      h5(class="text-h5 font-bold text-primary pb-5") {{ $t("RR0133") }}
+      h5(class="text-h5 font-bold text-grey-900 pb-5") {{ $t("RR0133") }}
       div(class="flex flex-wrap gap-x-2 gap-y-3")
         f-label(v-for="tag in [...material.publicTagList, ...material.aiTagList]") {{ tag }}
     div
-      h5(class="text-h5 font-bold text-primary pb-5") {{ $t("RR0043") }}
+      h5(class="text-h5 font-bold text-grey-900 pb-5") {{ $t("RR0043") }}
       div(class="grid gap-y-2")
-        p(v-for="item in materialPublicPriceInfo" class="text-body2 text-primary line-clamp-1") {{ item.name }}: {{ item.value }}
+        p(v-for="item in materialPublicPriceInfo" class="text-body2 text-grey-900 line-clamp-1") {{ item.name }}: {{ item.value }}
     div(v-if="material.isPublicInventory")
-      h5(class="text-h5 font-bold text-primary pb-5") {{ $t("RR0135") }}
-      p(class="text-body2 text-primary line-clamp-1") {{ materialInfo.totalInventoryQty.name }}: {{ materialInfo.totalInventoryQty.value }}
+      h5(class="text-h5 font-bold text-grey-900 pb-5") {{ $t("RR0135") }}
+      p(class="text-body2 text-grey-900 line-clamp-1") {{ materialInfo.totalInventoryQty.name }}: {{ materialInfo.totalInventoryQty.value }}
     div
-      h5(class="text-h5 font-bold text-primary pb-5") {{ $t("RR0136") }}
+      h5(class="text-h5 font-bold text-grey-900 pb-5") {{ $t("RR0136") }}
       div(class="grid gap-y-7.5")
         div
-          p(class="pb-3 text-body2 font-bold text-primary") {{ $t("EE0129") }}
+          p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t("EE0129") }}
           div(class="flex flex-wrap gap-x-2 gap-y-3")
             f-label(v-for="tag in material.certificateList") {{ tag.name }}
         div
-          p(class="pb-3 text-body2 font-bold text-primary") {{ $t("EE0130") }}
+          p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t("EE0130") }}
           div(v-if="attachmentSortedList.length > 0" class="flex flex-wrap gap-5")
             attachment-item(
               v-for="(attachment, index) in attachmentSortedList"
@@ -38,7 +38,7 @@ div
     div
       div(class="flex items-center pb-5")
         f-svg-icon(iconName="subscribe" size="20" class="text-grey-900 mr-2")
-        h5(class="text-h5 font-bold text-primary") {{ $t("RR0219") }}
+        h5(class="text-h5 font-bold text-grey-900") {{ $t("RR0219") }}
       material-detail-environmental-indicator(:material="material")
 </template>
 

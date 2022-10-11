@@ -4,14 +4,14 @@ div(class="flex mb-5 mx-auto pl-17 pr-7 relative max-w-286")
     template(v-for="(material, blockType) in rowData")
       div(v-if="blockType !== BLOCK_TYPE.DETAIL" class="relative mr-11")
         div(v-if="length > 1 && blockType === BLOCK_TYPE.FACE" class="absolute -left-8.5 top-20" @click="deleteRow")
-          f-svg-icon(iconName="delete" size="24" class="cursor-pointer text-black-700")
-        div(v-if="material.exist" class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-black-0/70 cursor-pointer" @click="clearBlock(blockType)")
-          f-svg-icon(iconName="clear" size="14" class="text-black-700")
+          f-svg-icon(iconName="delete" size="24" class="cursor-pointer text-grey-600")
+        div(v-if="material.exist" class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-grey-0/70 cursor-pointer" @click="clearBlock(blockType)")
+          f-svg-icon(iconName="clear" size="14" class="text-grey-600")
         div(class="w-47.5 h-47.5 rounded bg-cover" :style="getBgImg(blockType)" :class="[!material.exist ? emptyBoxClass : '']" :data-type="blockType" @drop="onDrop($event)" @dragover.prevent)
           p(v-if="!material.exist" class="px-4 leading-1.6 text-center pointer-events-none" ) {{ blockType === BLOCK_TYPE.FACE ? $t("EE0007") : $t("EE0008") }}
       div(v-else class="relative w-full")
-        div(v-if="material.exist" class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-black-0/70 cursor-pointer" @click="clearBlock(blockType)")
-          f-svg-icon(iconName="clear" size="14" class="text-black-700")
+        div(v-if="material.exist" class="flex justify-center items-center absolute right-3 top-3 w-5 h-5 rounded-full bg-grey-0/70 cursor-pointer" @click="clearBlock(blockType)")
+          f-svg-icon(iconName="clear" size="14" class="text-grey-600")
         div(class="h-47.5 rounded" :class="[!material.exist ? emptyBoxClass : filledTextBoxClass]" :data-type="blockType" @drop="onDrop($event)" @dragover.prevent)
           p(v-if="!material.exist" class="px-4 leading-1.6 text-center pointer-events-none") {{ $t("EE0009") }}
           material-merge-row-detail(v-else :material="material")
@@ -19,13 +19,13 @@ div(class="flex mb-5 mx-auto pl-17 pr-7 relative max-w-286")
     template(v-for="(material, blockType) in rowData")
       div(v-if="blockType !== BLOCK_TYPE.DETAIL" class="relative mr-11")
         div(v-if="material.imageInfo.crop" class="absolute -left-6 top-20")
-          f-svg-icon(iconName="drag_indicator" size="24" class="text-black-500")
-        div(class="w-47.5 h-47.5 rounded border-2 border-solid border-black-400" :class="{ 'border-none': material.imageInfo.crop }")
+          f-svg-icon(iconName="drag_indicator" size="24" class="text-grey-200")
+        div(class="w-47.5 h-47.5 rounded border-2 border-solid border-grey-200" :class="{ 'border-none': material.imageInfo.crop }")
           img(v-if="material.imageInfo.crop" :src="material.imageInfo.crop" class="w-full h-full cursor-move rounded" :data-type="blockType" draggable="true" @dragstart="startDrag($event)")
       div(v-else class="relative w-full")
         div(class="absolute -left-6 top-20")
-          f-svg-icon(iconName="drag_indicator" size="24" class="text-black-500")
-        div(class="h-47.5 rounded border-2 border-solid border-black-400 cursor-move" :data-type="blockType" draggable="true" @dragstart="startDrag($event)")
+          f-svg-icon(iconName="drag_indicator" size="24" class="text-grey-200")
+        div(class="h-47.5 rounded border-2 border-solid border-grey-200 cursor-move" :data-type="blockType" draggable="true" @dragstart="startDrag($event)")
           material-merge-row-detail(:material="material")
 </template>
 
@@ -50,8 +50,8 @@ export default {
   },
   emits: ['deleteRow', 'setRow', 'clearBlock'],
   setup (props, { emit }) {
-    const emptyBoxClass = 'flex justify-center items-center border-2 border-dashed border-black-600 text-primary text-caption'
-    const filledTextBoxClass = 'border-2 border-solid border-black-400'
+    const emptyBoxClass = 'flex justify-center items-center border-2 border-dashed border-grey-600 text-grey-900 text-caption'
+    const filledTextBoxClass = 'border-2 border-solid border-grey-200'
 
     const BLOCK_TYPE = {
       FACE: 'faceSide',

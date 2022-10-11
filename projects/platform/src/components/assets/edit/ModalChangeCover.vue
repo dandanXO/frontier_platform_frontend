@@ -7,23 +7,23 @@ modal-behavior(
   @click:secondary="closeModal"
 )
   div(class="w-fit")
-    p(class="text-body2 font-bold text-primary pb-4.5") {{ $t("EE0048") }}
+    p(class="text-body2 font-bold text-grey-900 pb-4.5") {{ $t("EE0048") }}
     f-scrollbar-container(class="h-70 -mx-5 px-5")
       div(class="grid grid-cols-4 gap-x-5 gap-y-4.5")
-        div(class="w-25 h-25 rounded border border-dashed border-black-500 flex justify-center items-center cursor-pointer" @click="openModalUploadCoverImage")
-          f-svg-icon(iconName="add" size="24" class="text-primary")
+        div(class="w-25 h-25 rounded border border-dashed border-grey-200 flex justify-center items-center cursor-pointer" @click="openModalUploadCoverImage")
+          f-svg-icon(iconName="add" size="24" class="text-grey-900")
         template(v-for="(image, index) in imageList")
           label(v-if="!hideNotExistSide(index)" class="w-25 h-30.5")
-            div(class="h-25 rounded border border-black-400 relative flex justify-center items-center")
+            div(class="h-25 rounded border border-grey-200 relative flex justify-center items-center")
               img(v-if="!!image.imgSrc" :src="image.imgSrc" class="max-w-full max-h-full")
-              div(v-else class="rounded w-full h-full bg-black-200 flex items-center justify-center text-body2 font-bold text-black-400") {{ $t("RR0103") }}
+              div(v-else class="rounded w-full h-full bg-grey-100 flex items-center justify-center text-body2 font-bold text-grey-200") {{ $t("RR0103") }}
               f-input-radio(
                 v-model:inputValue="coverImageIndex"
                 :value="index"
                 iconSize="20"
                 class="absolute top-1 left-1"
               )
-            p(class="text-body2 font-bold text-primary pt-1.5 word-break line-clamp-1") {{ image.name }}
+            p(class="text-body2 font-bold text-grey-900 pt-1.5 word-break line-clamp-1") {{ image.name }}
 </template>
 
 <script setup>

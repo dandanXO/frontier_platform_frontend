@@ -26,7 +26,7 @@ modal-behavior(
         f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)")
         div(class="flex items-center")
           div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
-            f-svg-icon(iconName="cancel" size="14" class="text-black-400 mr-1 cursor-pointer" @click="clearSelect")
+            f-svg-icon(iconName="cancel" size="14" class="text-grey-200 mr-1 cursor-pointer" @click="clearSelect")
             i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption" scope="global")
               template(#number) {{ selectedValue.length }}
           f-popper(v-if="!isInRoot" placement="bottom-end")
@@ -34,8 +34,8 @@ modal-behavior(
               f-svg-icon(
                 iconName="swap_horiz"
                 size="20"
-                class="transform rotate-90 cursor-pointer text-black-700 hover:text-brand"
-                :class="{ 'text-brand': isExpand }"
+                class="transform rotate-90 cursor-pointer text-grey-600 hover:text-primary-400"
+                :class="{ 'text-primary-400': isExpand }"
               )
             template(#content)
               f-contextual-menu(
@@ -45,7 +45,7 @@ modal-behavior(
                 @click:menu="sort"
               )
       div(v-show="isSearching && nodeList.length === 0" class="flex-grow flex items-center justify-center")
-        f-svg-icon(iconName="loading" size="92" class="text-brand")
+        f-svg-icon(iconName="loading" size="92" class="text-primary-400")
       f-scrollbar-container(v-show="!isSearching || nodeList.length > 0" class="flex-grow -mx-5" @reachBottom="infiniteScroll")
         div(class="grid grid-flow-row grid-cols-5 auto-rows-auto gap-5 px-5")
           template(v-if="isInRoot")
@@ -57,7 +57,7 @@ modal-behavior(
               :isMultiSelect="isMultiSelect"
               :selectValue="item"
               class="w-25 h-25 border rounded-md overflow-hidden"
-              :class="[isMultiSelect && selectedValue.map(v => JSON.stringify(v)).includes(JSON.stringify(item)) ? 'border-brand bg-brand-light text-brand' : 'border-black-400 bg-black-100 text-primary']"
+              :class="[isMultiSelect && selectedValue.map(v => JSON.stringify(v)).includes(JSON.stringify(item)) ? 'border-primary-400 bg-primary-0 text-primary-400' : 'border-grey-200 bg-grey-50 text-grey-900']"
               @click="goTo(item.nodeKey), setRootId(item.id)"
             )
               template(#content)
@@ -65,10 +65,10 @@ modal-behavior(
                   p(class="text-caption text-center font-bold line-clamp-3 leading-1.6") {{ item.name }}
           template(v-else)
             div(
-              class="w-25 h-25 rounded-md border border-black-500 border-dashed flex items-center justify-center cursor-pointer"
+              class="w-25 h-25 rounded-md border border-grey-200 border-dashed flex items-center justify-center cursor-pointer"
               @click="openModalCreateCollectionSimple"
             )
-              f-svg-icon(iconName="add" size="24" class="text-primary")
+              f-svg-icon(iconName="add" size="24" class="text-grey-900")
             template(v-for="node in nodeList")
               grid-item-node-for-modal(
                 v-if="node.nodeType === NODE_TYPE.COLLECTION"
@@ -89,17 +89,17 @@ modal-behavior(
                 template(#title-right-icon)
                   tooltip-location(v-if="isInKeywordSearch" :location="node.location")
         div(v-if="isSearching && nodeList.length > 0" class="flex justify-center items-center")
-          f-svg-icon(iconName="loading" size="54" class="text-brand")
-    div(v-if="!isInRoot" class="w-full h-8.5 mt-3.5 px-2.5 bg-black-50 flex items-center gap-x-1")
-      f-svg-icon(iconName="error_outline" size="14" class="text-primary")
-      p(class="text-caption text-primary") {{ isOnlyShowCollection ? $t('RR0119') : $t('UU0037') }}
-      p(class="text-caption text-assist-blue cursor-pointer" @click="isOnlyShowCollection = !isOnlyShowCollection") {{ isOnlyShowCollection ? $t('UU0037') : $t('UU0036') }}
+          f-svg-icon(iconName="loading" size="54" class="text-primary-400")
+    div(v-if="!isInRoot" class="w-full h-8.5 mt-3.5 px-2.5 bg-grey-50 flex items-center gap-x-1")
+      f-svg-icon(iconName="error_outline" size="14" class="text-grey-900")
+      p(class="text-caption text-grey-900") {{ isOnlyShowCollection ? $t('RR0119') : $t('UU0037') }}
+      p(class="text-caption text-cyan-400 cursor-pointer" @click="isOnlyShowCollection = !isOnlyShowCollection") {{ isOnlyShowCollection ? $t('UU0037') : $t('UU0036') }}
 </template>
 
 <script setup>
 import { ref, computed, reactive } from 'vue'
 import { useStore } from 'vuex'
-import { NODE_LOCATION, NODE_TYPE, SORT_BY } from '@/utils/constants'
+import { NODE_LOCATION, NODE_TYPE, useConstants } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
 import GridItemNodeForModal from '@/components/common/gridItem/GridItemNodeForModal.vue'
@@ -139,17 +139,20 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
-
-const sortMenuTree = {
-  blockList: [
-    {
-      menuList: [SORT_BY.CREATE_DATE_C_M, SORT_BY.MATERIAL_NO_A_Z_C_M].map(({ text, value }) => ({
-        title: text,
-        selectValue: value
-      }))
-    }
-  ]
-}
+const { SORT_BY } = useConstants()
+const sortMenuTree = computed(() => {
+  const { CREATE_DATE_C_M, MATERIAL_NO_A_Z_C_M } = SORT_BY.value
+  return {
+    blockList: [
+      {
+        menuList: [CREATE_DATE_C_M, MATERIAL_NO_A_Z_C_M].map(({ text, value }) => ({
+          title: text,
+          selectValue: value
+        }))
+      }
+    ]
+  }
+})
 
 const isSearching = ref(false)
 const isOnlyShowCollection = ref(false)
@@ -160,7 +163,7 @@ const keyword = ref('')
 const queryParams = reactive({
   keyword: '',
   targetPage: 1,
-  sort: SORT_BY.CREATE_DATE_C_M.value,
+  sort: SORT_BY.value.CREATE_DATE_C_M.value,
   workspaceNodeId: null,
   workspaceNodeLocation: null
 })

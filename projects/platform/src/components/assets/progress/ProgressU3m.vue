@@ -18,7 +18,7 @@ f-table(
   template(#filter)
     div(class="pt-4 pb-3 px-5")
       div(class="flex items-center mb-2")
-        p(class="text-black-700 text-body2 mr-1.5") {{ $t("OO0117") }}
+        p(class="text-grey-600 text-body2 mr-1.5") {{ $t("OO0117") }}
         f-button-label(@click="clearDate") {{ $t("UU0040") }}
       div(class="mr-4 flex items-center")
         f-input-text(
@@ -28,7 +28,7 @@ f-table(
           size="sm"
           @change="getList()"
         )
-        span(class="text-body1 text-primary mx-2") ~
+        span(class="text-body1 text-grey-900 mx-2") ~
         f-input-text(
           v-model:textValue="queryParams.endDate"
           inputType="date"
@@ -39,35 +39,35 @@ f-table(
   template(v-slot="{ item, prop, isHover }")
     div(v-if="prop === 'imagePreview'" class="relative w-25 h-25 py-3 flex justify-center items-center")
       div(class="absolute inset-0 w-25 h-25 bg-cover bg-center rounded" :class="{ 'opacity-20': item.isMaterialDeleted }" :style="{ 'background-image': `url(${item.image})` }")
-      div(v-if="item.isMaterialDeleted" class="text-body1 text-black-500 font-bold z-1") {{ $t("RR0063") }}
+      div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-200 font-bold z-1") {{ $t("RR0063") }}
     div(v-if="prop === 'itemNumber'" class="relative") {{ item.materialNo }}
     div(v-if="prop === 'createdTime'")
       div(v-for="string in $dayjs.unix(item.createDate).format('YYYY/MM/DD-hh:mm:ss A').split('-')" class="leading-1.6") {{ string }}
     table-status-label(v-if="prop === 'statusLabel'" :status="item.status")
     table-status-progress(v-if="prop === 'procedure'" :status="item.status")
       //- Unsuccessful
-      div(v-if="item.status === UPLOAD_PROGRESS.UNSUCCESSFUL" class="text-warn-middle inline-flex")
+      div(v-if="item.status === UPLOAD_PROGRESS.UNSUCCESSFUL" class="text-red-400 inline-flex")
         f-svg-icon(iconName="warning_amber_round" size="16" class="mr-1.5 mt-0.5")
         p(v-if="item.msgCode === ERROR_MSG.SOURCE_DELETED") {{ $t("PP0034") }}
         i18n-t(v-else keypath="PP0014" tag="p" scope="global")
           template(#RR0123)
-            span(class="text-assist-blue ml-0.5 cursor-pointer" @click="openModalSendFeedback") {{ $t("RR0123") }}
+            span(class="text-cyan-400 ml-0.5 cursor-pointer" @click="openModalSendFeedback") {{ $t("RR0123") }}
       //- In Queue
-      div(v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE" class="text-black-500 inline-flex")
+      div(v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE" class="text-grey-200 inline-flex")
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         p {{ $t("PP0029") }}
       //- Processing
-      div(v-else-if="item.status === UPLOAD_PROGRESS.PROCESSING" class="text-black-500 inline-flex")
+      div(v-else-if="item.status === UPLOAD_PROGRESS.PROCESSING" class="text-grey-200 inline-flex")
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         p {{ $t("PP0013") }}
     div(v-if="prop === 'createBy'" class="flex items-center")
       img(:src="item.createAvatar" class="w-6 h-6 rounded-full")
-      p(class="text-body2 text-primary ml-2 line-clamp-1") {{ item.createUser }}
+      p(class="text-body2 text-grey-900 ml-2 line-clamp-1") {{ item.createUser }}
     div(v-if="prop === 'action'" class="flex justify-end items-center")
       template(v-if="item.isMaterialDeleted && item.status === UPLOAD_PROGRESS.COMPLETE")
         f-button(type="secondary" size="sm" class="mr-2.5" disabled) {{ $t("UU0006") }}
         div(class="group w-7.5 h-7.5 flex items-center justify-center rounded-full")
-          f-svg-icon(iconName="more_horiz" size="24" class="text-primary-middle")
+          f-svg-icon(iconName="more_horiz" size="24" class="text-grey-150")
       template(v-else)
         f-button(v-if="item.status === UPLOAD_PROGRESS.COMPLETE" type="secondary" size="sm" class="mr-2.5" @click="openModalViewer(item.materialId)") {{ $t("UU0006") }}
         f-popper(
@@ -77,8 +77,8 @@ f-table(
           :class="[isHover ? 'visible' : 'invisible']"
         )
           template(#trigger)
-            div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
-              f-svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
+            div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-primary-400/10")
+              f-svg-icon(iconName="more_horiz" size="24" class="text-grey-600 group-hover:text-primary-400")
           template(#content="{ collapsePopper }")
             f-list
               template(v-if="item.status === UPLOAD_PROGRESS.IN_QUEUE" )

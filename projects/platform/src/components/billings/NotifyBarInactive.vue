@@ -1,6 +1,6 @@
 <template lang="pug">
-div(v-if="isShowInactiveNotifyBar" class="w-full h-14 flex justify-between items-center bg-brand pl-12.5 pr-7.5")
-  div(class="flex items-center text-black-0")
+div(v-if="isShowInactiveNotifyBar" class="w-full h-14 flex justify-between items-center bg-primary-400 pl-12.5 pr-7.5")
+  div(class="flex items-center text-grey-0")
     f-svg-icon(iconName="warning_amber_round" size="24")
     i18n-t(v-if="planStatus.INACTIVE" keypath="OO0131" tag="h6" class="text-h6 ml-3" scope="global")
       template(#OO0132)
@@ -9,7 +9,7 @@ div(v-if="isShowInactiveNotifyBar" class="w-full h-14 flex justify-between items
       span(class="font-bold pl-1") {{ deactivatedDate }}
   div(class="flex items-center")
     f-tag(v-permission="FUNC_ID.VISIT_BILLING_PAGE" v-if="planStatus.INACTIVE && $route.name !== 'Billings'" size="lg" @click="goToBillings" class="mr-4") {{ $t('OO0130') }}
-    f-svg-icon(iconName="clear" size="24" class="text-black-0 cursor-pointer" @click="isShowInactiveNotifyBar = false")
+    f-svg-icon(iconName="clear" size="24" class="text-grey-0 cursor-pointer" @click="isShowInactiveNotifyBar = false")
 </template>
 
 <script>

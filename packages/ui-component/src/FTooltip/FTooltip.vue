@@ -8,7 +8,7 @@ div
     @mouseleave="hideTooltip"
   )
     slot(name="trigger" :isActive="isActive")
-  div(ref="refTooltip" role="tooltip" class="z-100 rounded bg-black-900/80 px-2 py-1.5"  :class="{ 'hidden': !isActive }")
+  div(ref="refTooltip" role="tooltip" class="z-100 rounded bg-grey-900/80 px-2 py-1.5"  :class="{ 'hidden': !isActive }")
     slot(v-if="isActive" name="content"  :isActive="isActive")
 </template>
 
@@ -81,7 +81,7 @@ const showTooltip = () => {
     await nextTick()
     const children = refTooltip.value.children
     if (children.length === 1 && children[0].tagName === 'P') {
-      children[0].classList.add('text-black-50', 'text-caption', 'leading-1.3')
+      children[0].classList.add('text-grey-50', 'text-caption', 'leading-1.3')
     }
 
     popperInstance.setOptions((options) => ({

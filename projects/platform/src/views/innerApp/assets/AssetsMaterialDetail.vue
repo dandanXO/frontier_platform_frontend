@@ -4,13 +4,13 @@ div(class="w-full h-full flex justify-center")
     f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)" class="pt-12 pb-9")
     div(class="pb-7.5")
       div(class="flex items-start pb-2")
-        h5(class="text-h5 text-primary font-bold leading-1.6 pr-3 break-words") {{ `${material.materialNo} ${material.description}` }}
+        h5(class="text-h5 text-grey-900 font-bold leading-1.6 pr-3 break-words") {{ `${material.materialNo} ${material.description}` }}
         f-tooltip
           template(#trigger)
-            f-svg-icon(iconName="create" class="text-black-700 hover:text-brand cursor-pointer" size="24" @click="goToAssetMaterialEdit(material)")
+            f-svg-icon(iconName="create" class="text-grey-600 hover:text-primary-400 cursor-pointer" size="24" @click="goToAssetMaterialEdit(material)")
           template(#content)
             p {{ $t("RR0054") }}
-      p(class="text-caption text-black-700") {{ $t("EE0014") }} : {{ lastUpdateDate }}
+      p(class="text-caption text-grey-600") {{ $t("EE0014") }} : {{ lastUpdateDate }}
     material-detail-internal(:material="material")
 </template>
 

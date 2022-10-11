@@ -17,16 +17,16 @@ const Template = (args) => ({
   },
   template: `
     <div>
-      <div class="h-30 bg-black-400"> HEADER </div>
+      <div class="h-30 bg-grey-200"> HEADER </div>
       <f-expansion-panel v-bind="args">
         <template #trigger>
-          <div class="bg-brand"> Expansion Panel(click to expand or collapse) </div>
+          <div class="bg-primary-400"> Expansion Panel(click to expand or collapse) </div>
           </template>
         <template #content>
-          <div class="h-30 border border-black-400"> Content </div>
+          <div class="h-30 border border-grey-200"> Content </div>
         </template>
       </f-expansion-panel>
-      <div class="h-30 bg-black-400"> FOOTER </div>
+      <div class="h-30 bg-grey-200"> FOOTER </div>
     </div>
   `,
 })
