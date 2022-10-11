@@ -16,11 +16,14 @@ f-list-item(
     ref="refTrigger"
     aria-describedby="contextual-menu"
     @mouseenter="hasNextLevel && expandMenu()"
-    class="w-full flex justify-between items-center"
+    class="w-full flex items-center"
   )
-    span {{ innerMenu.title }}
-    f-svg-icon(v-if="hasNextLevel" iconName="keyboard_arrow_right" size="20" class="text-grey-600")
-    f-svg-icon(v-else-if="isSelect" iconName="done" size="20" class="text-primary-400")
+    f-svg-icon(v-if="innerMenu.icon" :iconName="innerMenu.icon" size="20" class="text-grey-600 mr-2")
+    img(v-if="innerMenu.thumbnail" :src="innerMenu.thumbnail" class="w-6 h-6 rounded-full mr-2")
+    span(class="flex-grow text-body2 pr-2 line-clamp-1") {{ innerMenu.title }}
+    div(class="shrink-0 w-5 h-5")
+      f-svg-icon(v-if="hasNextLevel" iconName="keyboard_arrow_right" size="20" class="text-grey-600")
+      f-svg-icon(v-else-if="isSelect" iconName="done" size="20" class="text-primary-400")
   div(ref="refContextMenu" role="contextual-menu" :class="{ 'hidden': !isExpand }" @click.stop)
     f-list(v-if="isExpand")
       template(v-for="(block, index) in innerMenu.blockList")
@@ -54,8 +57,9 @@ const props = defineProps({
       selectable: true,
       selectValue: 'Menu',
       disabled: false,
-      icon: 'icon',
+      icon: '',
       tooltip: '',
+      thumbnail: '',
       clickHandler: () => { },
       blockList: [
         {
@@ -86,6 +90,7 @@ const innerMenu = computed(() => {
     selectable: true,
     selectValue: props.menu.title,
     icon: '',
+    thumbnail: '',
     blockList: [],
     clickHandler: null,
     tooltip: ''
@@ -134,7 +139,7 @@ const expandMenu = async () => {
         {
           name: 'offset',
           options: {
-            offset: [-16, 12]
+            offset: [-16, 16]
           }
         },
         {

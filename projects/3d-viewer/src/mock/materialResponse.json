@@ -1,0 +1,263 @@
+{
+  "breadcrumbList": [
+    {
+      "workspaceNodeId": 1392,
+      "workspaceNodeLocation": 1,
+      "name": "EP09361"
+    }
+  ],
+  "material": {
+    "materialId": 1676,
+    "sourceAssetLocation": 1,
+    "frontierNo": "F031430288170",
+    "relationFrontierNo": null,
+    "materialNo": "EP09361",
+    "materialSeq": null,
+    "relationMaterialId": -1,
+    "content": "100% Cotton",
+    "contentList": [
+      {
+        "contentId": 1,
+        "name": "Cotton",
+        "percentage": 100
+      }
+    ],
+    "description": "Woven Printing Corduroy 21 wales",
+    "descriptionList": [
+      {
+        "descriptionId": 1081,
+        "name": "Woven Printing Corduroy 21 wales"
+      }
+    ],
+    "finish": "Regular Finish",
+    "finishList": [
+      {
+        "finishId": 3,
+        "name": "Regular Finish"
+      }
+    ],
+    "width": 55,
+    "weightUnit": 1,
+    "weightGsm": 145,
+    "weightOz": 4.28,
+    "weightGy": null,
+    "warpDensity": "11",
+    "weftDensity": null,
+    "warpYarnCount": null,
+    "weftYarnCount": null,
+    "pattern": "Bow-knot / Purple",
+    "color": null,
+    "sampleCardsRemainingQty": null,
+    "sampleCardsLocation": null,
+    "hangersRemainingQty": null,
+    "hangersLocation": null,
+    "publicTagList": ["stripe"],
+    "privateTagList": ["PrivateTags"],
+    "tagList": [
+      "100% Cotton",
+      "17-3313 TCX",
+      "19-2520 TCX",
+      "19-2524 TCX",
+      "19-2630 TCX",
+      "19-3215 TCX",
+      "19-4007 TCX",
+      "Anthracite",
+      "Bow-knot / Purple",
+      "Corduroy",
+      "Corduroy 21 wales",
+      "Dark Purple",
+      "Dusty Lavender",
+      "EP09361",
+      "F031430288170",
+      "Gray",
+      "Indigo",
+      "Light-Purple",
+      "motif",
+      "object",
+      "Pink",
+      "Potent Purple",
+      "Regular Finish",
+      "stripe",
+      "Wild Aster",
+      "woven",
+      "Woven Printing Corduroy 21 wales"
+    ],
+    "aiTagList": ["Corduroy", "Corduroy 21 wales", "motif", "object", "woven"],
+    "coverMode": 1,
+    "coverImg": "https://textile-dev.frontier.cool/Resource/MaterialCut/Thumbnail/F031430288170_202203180958322987.jpg",
+    "faceSideImg": {
+      "crop": "https://textile-dev.frontier.cool/Resource/MaterialCut/F031430288170_202203180958322987.jpg",
+      "ruler": "https://textile-dev.frontier.cool/Resource/MaterialRuler/F031430288170_202203180958322987.jpg",
+      "original": "https://textile-dev.frontier.cool/Resource/MaterialSampleCard/F031430288170_202203180958322987.jpg",
+      "dpi": 600,
+      "u3mCrop": "https://textile-dev.frontier.cool/Resource/MaterialU3M/Original/F031430288170_202203141707464206.jpg",
+      "u3mOriginal": "https://textile-dev.frontier.cool/Resource/OriginalMaterialSampleCard/F031430288170_202203180958322987.jpg"
+    },
+    "backSideImg": {
+      "crop": null,
+      "ruler": null,
+      "original": null,
+      "dpi": null,
+      "u3mCrop": null,
+      "u3mOriginal": null
+    },
+    "isDoubleSideMaterial": false,
+    "sideType": 1,
+    "remark": null,
+    "isDelete": false,
+    "isComplete": true,
+    "cloneFromMaterialId": 56,
+    "totalInventoryQty": 0,
+    "inventoryUnit": "Y",
+    "inventoryList": [
+      {
+        "section": "",
+        "shelf": "",
+        "quantity": 0,
+        "unit": "Y"
+      }
+    ],
+    "isPublicInventory": false,
+    "publicPrice": {
+      "countryCode": null,
+      "currency": "USD",
+      "price": null,
+      "unit": "Y",
+      "minimumOrderQuantity": null,
+      "minimumOrderQuantityUnit": null,
+      "minimumContainerQuantity": null,
+      "minimumContainerQuantityUnit": null,
+      "productionLeadTime": null,
+      "sampleLeadTime": null
+    },
+    "privatePrice": {
+      "countryCode": null,
+      "currency": null,
+      "price": null,
+      "unit": null,
+      "minimumOrderQuantity": null,
+      "minimumOrderQuantityUnit": null,
+      "minimumContainerQuantity": null,
+      "minimumContainerQuantityUnit": null,
+      "productionLeadTime": null,
+      "sampleLeadTime": null
+    },
+    "attachmentList": [],
+    "pantoneList": [
+      {
+        "materialPantoneId": 2015,
+        "pantoneId": 1850,
+        "name": "19-4007 TCX",
+        "majorColorName": "Gray",
+        "colorName": "Anthracite",
+        "r": 40,
+        "g": 40,
+        "b": 45
+      },
+      {
+        "materialPantoneId": 2016,
+        "pantoneId": 1770,
+        "name": "19-2524 TCX",
+        "majorColorName": "Pink",
+        "colorName": "Dark Purple",
+        "r": 88,
+        "g": 33,
+        "b": 71
+      },
+      {
+        "materialPantoneId": 2017,
+        "pantoneId": 1190,
+        "name": "17-3313 TCX",
+        "majorColorName": "Light-Purple",
+        "colorName": "Dusty Lavender",
+        "r": 161,
+        "g": 117,
+        "b": 156
+      },
+      {
+        "materialPantoneId": 2018,
+        "pantoneId": 1778,
+        "name": "19-3215 TCX",
+        "majorColorName": "Light-Purple",
+        "colorName": "Indigo",
+        "r": 76,
+        "g": 57,
+        "b": 87
+      },
+      {
+        "materialPantoneId": 2019,
+        "pantoneId": 1769,
+        "name": "19-2520 TCX",
+        "majorColorName": "Pink",
+        "colorName": "Potent Purple",
+        "r": 70,
+        "g": 38,
+        "b": 57
+      },
+      {
+        "materialPantoneId": 2020,
+        "pantoneId": 1771,
+        "name": "19-2630 TCX",
+        "majorColorName": "Pink",
+        "colorName": "Wild Aster",
+        "r": 146,
+        "g": 49,
+        "b": 111
+      }
+    ],
+    "u3m": {
+      "status": 2,
+      "zipUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/ZIP/F031430288170_202203141707464206.zip",
+      "u3maUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3MA/F031430288170_202203141707464206.u3ma",
+      "gltfUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/Gltf/F031430288170_202203141707464206/F031430288170_202203141707464206.gltf",
+      "baseImgUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3M/F031430288170_202203141707464206/textures/base.png",
+      "normalImgUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3M/F031430288170_202203141707464206/textures/nrm.png",
+      "dispImgUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3M/F031430288170_202203141707464206/textures/disp.png",
+      "roughImgUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3M/F031430288170_202203141707464206/textures/rough.png",
+      "dpi": 600,
+      "u3mSpecUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3M/F031430288170_202203141707464206/u3m_package.u3m",
+      "u3mPhysicSpecUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3M/F031430288170_202203141707464206/physics.json"
+    },
+    "carbonEmission": {
+      "co2": {
+        "benchmark": null,
+        "personalized": null,
+        "differenceInPercent": null,
+        "saving": null
+      },
+      "water": {
+        "benchmark": null,
+        "personalized": null,
+        "differenceInPercent": null,
+        "saving": null
+      },
+      "land": {
+        "benchmark": null,
+        "personalized": null,
+        "differenceInPercent": null,
+        "saving": null
+      },
+      "energy": {
+        "benchmark": null,
+        "personalized": null,
+        "differenceInPercent": null,
+        "saving": null
+      },
+      "lastUpdateTime": 1651458108,
+      "materialOwnerMade2FlowPlanType": null,
+      "viewerMade2FlowPlanType": null
+    },
+    "certificateList": [],
+    "createDate": 1647248864,
+    "updateDate": 1663579179
+  },
+  "publish": {
+    "workspaceNodeId": 1392,
+    "workspaceNodeLocation": 2,
+    "logo": "https://textile-dev.frontier.cool/Resource/OrgLogo/202202141000162682.jpeg",
+    "displayName": "Brian Corp",
+    "publicDate": 1647250042,
+    "isCanClone": true,
+    "isCanDownloadU3M": true
+  }
+}

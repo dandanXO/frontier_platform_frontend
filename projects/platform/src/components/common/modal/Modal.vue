@@ -17,7 +17,6 @@ export default {
   name: 'Modal',
   components: {
     ModalLoading,
-    ModalViewer: defineAsyncComponent(() => import('@/components/common/material/u3m/ModalViewer.vue')),
     ModalPreviewAttachment: defineAsyncComponent(() => import('@/components/common/material/attachment/ModalPreviewAttachment.vue')),
     ModalU3mRecut: defineAsyncComponent(() => import('@/components/assets/ModalU3mRecut.vue')),
     ModalMaterialMerge: defineAsyncComponent(() => import('@/components/assets/merge/ModalMaterialMerge.vue')),

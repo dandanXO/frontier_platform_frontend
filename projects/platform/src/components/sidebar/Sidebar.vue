@@ -49,22 +49,39 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 sidebar-shadow fle
                         f-svg-icon(:iconName="menu.icon" size="20" class="text-grey-600")
                     template(#content)
                       p {{ $t("RR0012") }}
-      div(class="w-auto h-px bg-grey-150 mx-1.5 my-1.5")
+      div(class="w-auto h-px bg-grey-100 mx-1.5 my-1.5")
+  div(v-if="isShowTitasCallout" class="py-4 px-3")
+    div(
+      class="rounded h-17 box-border p-3 bg-cover flex items-center relative drop-shadow-2 hover:drop-shadow-4 cursor-pointer"
+      :style="{ backgroundImage: `url(${ titasSidebarCallout })` }"
+      @click="goToTitasShowroom"
+    )
+      f-svg-icon(iconName="clear" size="16" class="absolute top-4 right-4 text-grey-50" @click="isShowTitasCallout = false")
+      lord-icon(
+        src="https://cdn.lordicon.com/lupuorrc.json"
+        trigger="loop"
+        colors="primary:#ffffff,secondary:#21b185"
+        stroke="65"
+        style="width:32px;height:32px"
+      )
+      p(class="w-30 pl-2 text-body2 font-bold text-grey-0 leading-1.6") {{$t('II0020')}}
   menu-org-user
 </template>
 
 <script setup>
 import { useStore } from 'vuex'
-import { computed, onUnmounted } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import SidebarItem from '@/components/sidebar/SidebarItem.vue'
 import MenuOrg from '@/components/sidebar/MenuOrg.vue'
 import MenuOrgUser from '@/components/sidebar/MenuOrgUser.vue'
 import { useI18n } from 'vue-i18n'
 import { NODE_LOCATION } from '@/utils/constants'
+import titasSidebarCallout from '@/assets/images/titas_sidebar_callout.png'
+import useNavigation from '@/composables/useNavigation'
 
 const { t } = useI18n()
 const store = useStore()
-
+const { goToTitasShowroom } = useNavigation()
 const organization = computed(() => store.getters['organization/organization'])
 const isProcessing = computed(() => store.getters['polling/isProcessing'])
 const planStatus = computed(() => store.getters['polling/planStatus'])
@@ -140,4 +157,7 @@ const menuOrgOrGroup = computed(() => {
 onUnmounted(() => {
   store.dispatch('polling/stopPollingSidebar')
 })
+
+/** Titas */
+const isShowTitasCallout = ref(true)
 </script>

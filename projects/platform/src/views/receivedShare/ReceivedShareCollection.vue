@@ -112,12 +112,12 @@ const optionSort = computed(() => {
   }
 })
 
-const optionMultiSelect = [
+const optionMultiSelect = computed(() => ([
   {
     name: t('RR0167'),
     func: receivedShareCloneByNodeList
   }
-]
+]))
 
 const pagination = computed(() => store.getters['helper/search/pagination'])
 const nodeList = computed(() => store.getters['receivedShare/nodeList'])

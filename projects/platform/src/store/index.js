@@ -14,6 +14,7 @@ import embed from '@/store/modules/embed'
 import moodboard from '@/store/modules/moodboard'
 import shareToMe from '@/store/modules/shareToMe'
 import polling from '@/store/modules/polling'
+import titas from '@/store/modules/titas'
 
 export default createStore({
   actions: {
@@ -50,6 +51,7 @@ export default createStore({
     shareToMe,
     embed,
     polling,
-    moodboard
+    moodboard,
+    titas
   }
 })

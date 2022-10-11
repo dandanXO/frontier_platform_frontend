@@ -307,7 +307,7 @@ const routes = [
           if (to.params.orgNo && !from.params.orgNo) {
             await store.dispatch('polling/getPollingSidebar')
           }
-
+          await store.dispatch('titas/getTitasInfo')
           next()
         }],
         children: [
@@ -360,6 +360,20 @@ const routes = [
             name: 'PublicLibraryMaterialDetail',
             props: true,
             component: () => import('@/views/innerApp/PublicLibraryMaterialDetail.vue'),
+            beforeEnter: checkOrgIsInactive
+          },
+          {
+            path: 'titas/:nodeKey?',
+            name: 'TitasShowroom',
+            props: true,
+            component: () => import('@/views/innerApp/TitasShowroom.vue'),
+            beforeEnter: checkOrgIsInactive
+          },
+          {
+            path: 'titas/material/:nodeKey',
+            name: 'TitasShowroomMaterialDetail',
+            props: true,
+            component: () => import('@/views/innerApp/TitasShowroomMaterialDetail.vue'),
             beforeEnter: checkOrgIsInactive
           }
         ]

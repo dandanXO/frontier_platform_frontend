@@ -62,12 +62,22 @@ div
       f-svg-icon(v-if="haveQuota" iconName="done" size="16")
       f-svg-icon(v-else iconName="clear" size="16")
       p(class="text-caption ml-1.5 leading-1.6") {{ $t("EE0118") }}
+  model-editor(
+    v-if="showModelEditor"
+    :dpi="material.u3m.status.dpi"
+    :u3mPath="material.u3m.status.u3mSpecUrl"
+    :baseImgUrl="material.u3m.status.baseImgUrl"
+    :normalImgUrl="material.u3m.status.normalImgUrl"
+    :roughImgUrl="material.u3m.status.roughImgUrl"
+    :dispImgUrl="material.u3m.status.dispImgUrl"
+    @close="closeModalViewer"
+  )
 </template>
-
+  
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { U3M_STATUS } from '@/utils/constants'
 import useAssets from '@/composables/useAssets'
 import { downloadDataURLFile } from '@/utils/fileOperator'
@@ -85,6 +95,7 @@ const store = useStore()
 const { create3DMaterial } = useAssets()
 const { goToProgress } = useNavigation()
 const { UNQUALIFIED, INITIAL, IN_QUEUE, COMPLETED, PROCESSING, UNSUCCESSFUL } = U3M_STATUS
+const showModelEditor = ref(false)
 
 const haveScannedImage = computed(() => {
   const { faceSideImg, backSideImg } = props.material
@@ -149,15 +160,11 @@ const label = computed(() => {
 })
 
 const openModalViewer = () => {
-  const { baseImgUrl, normalImgUrl, dpi } = props.material.u3m
-  store.dispatch('helper/openModal', {
-    component: 'modal-viewer',
-    header: t('UU0006'),
-    properties: {
-      dpi,
-      baseImgUrl,
-      normalImgUrl
-    }
-  })
+  showModelEditor.value = true
+}
+
+const closeModalViewer = () => {
+  showModelEditor.value = false
 }
 </script>
+  

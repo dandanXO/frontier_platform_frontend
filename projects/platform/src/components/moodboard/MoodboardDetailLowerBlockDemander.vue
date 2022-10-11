@@ -176,10 +176,10 @@ const optionNode = (node) => {
   }
 }
 
-const optionMultiSelect = [
+const optionMultiSelect = computed(() => ([
   {
     name: t('RR0060'),
     func: exportMoodboardNode
   }
-]
+]))
 </script>

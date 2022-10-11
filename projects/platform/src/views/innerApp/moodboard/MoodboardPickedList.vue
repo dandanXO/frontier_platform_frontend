@@ -117,12 +117,12 @@ const optionMaterial = (node) => {
   ]
 }
 
-const optionMultiSelect = [
+const optionMultiSelect = computed(() => ([
   {
     name: t('RR0060'),
     func: exportMoodboardNode
   }
-]
+]))
 
 const isLoading = ref(false)
 const keyword = ref('')

@@ -31,8 +31,8 @@ f-input-container(:label="label" :required="required")
       @input="typing"
       @focus="onFocus"
       @blur="onBlur"
-      @change="$emit('change')"
-      @keydown.enter="$emit('enter')"
+      @change="$emit('change', $event)"
+      @keydown.enter="$emit('enter', $event)"
       class="w-full flex-grow outline-none bg-transparent overflow-hidden text-grey-900 text-body2 disabled:text-grey-600 placeholder:text-grey-200 placeholder:overflow-visible"
       autocomplete
     )

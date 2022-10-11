@@ -161,7 +161,7 @@ const optionNode = (node) => {
   }
 }
 
-const optionMultiSelect = [
+const optionMultiSelect = computed(() => ([
   { name: t('UU0013'), func: deleteMoodboardNode }
-]
+]))
 </script>

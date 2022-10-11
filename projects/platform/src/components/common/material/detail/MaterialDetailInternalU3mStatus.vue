@@ -22,12 +22,22 @@ div
         f-svg-icon(iconName="u3m_download" size="20")
       span(class="inline-flex items-center underline cursor-pointer" @click="downloadU3m(u3maUrl)") {{ $t("EE0082") }}
         f-svg-icon(iconName="u3m_download" size="20")
+  model-editor(
+    v-if="showModelEditor"
+    :dpi="dpi"
+    :u3mPath="u3mSpecUrl"
+    :baseImgUrl="baseImgUrl"
+    :normalImgUrl="normalImgUrl"
+    :roughImgUrl="roughImgUrl"
+    :dispImgUrl="dispImgUrl"
+    @close="closeModalViewer"
+  )
 </template>
-
+  
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { computed, toRefs } from 'vue'
+import { computed, toRefs, ref, onMounted, onUnmounted } from 'vue'
 import { U3M_STATUS } from '@/utils/constants'
 import { downloadDataURLFile } from '@/utils/fileOperator'
 import useNavigation from '@/composables/useNavigation'
@@ -42,8 +52,19 @@ const props = defineProps({
 const { t } = useI18n()
 const store = useStore()
 const { goToProgress } = useNavigation()
-const { status, zipUrl, u3maUrl, baseImgUrl, normalImgUrl, dpi } = toRefs(props.material.u3m)
+const {
+  status,
+  zipUrl,
+  u3maUrl,
+  u3mSpecUrl,
+  baseImgUrl,
+  normalImgUrl,
+  roughImgUrl,
+  dispImgUrl,
+  dpi,
+} = toRefs(props.material.u3m)
 const { UNQUALIFIED, INITIAL, IN_QUEUE, COMPLETED, PROCESSING, UNSUCCESSFUL } = U3M_STATUS
+const showModelEditor = ref(false)
 
 const downloadU3m = (url) => {
   const fileName = url.split('/')[url.split('/').length - 1]
@@ -58,18 +79,6 @@ const openModalU3mInstruction = () => {
       primaryHandler: () => {
         store.dispatch('helper/closeModalBehavior')
       }
-    }
-  })
-}
-
-const openModalViewer = () => {
-  store.dispatch('helper/openModal', {
-    component: 'modal-viewer',
-    header: t('UU0006'),
-    properties: {
-      dpi: dpi?.value,
-      baseImgUrl: baseImgUrl?.value,
-      normalImgUrl: normalImgUrl?.value
     }
   })
 }
@@ -98,4 +107,24 @@ const label = computed(() => {
 
   return { text, color }
 })
+
+
+const openModalViewer = () => {
+  showModelEditor.value = true
+}
+
+const closeModalViewer = () => {
+  showModelEditor.value = false
+}
+
+const keyDownHandler = (e) => {
+  if (e.key === " ") {
+    showModelEditor.value = true
+    e.preventDefault()
+  }
+}
+
+onMounted(() => window.addEventListener("keydown", keyDownHandler))
+onUnmounted(() => window.removeEventListener("keydown", keyDownHandler))
 </script>
+  

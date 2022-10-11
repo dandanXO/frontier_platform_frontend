@@ -55,6 +55,7 @@ const props = defineProps({
    *          selectValue: null,
    *          disabled: Boolean,
    *          icon: String,
+   *          thumbnail: String (URL)
    *          clickHandler: Function,
    *          blockList: Array,
    *          tooltip: String

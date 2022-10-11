@@ -75,13 +75,11 @@ import { useRouter, useRoute } from 'vue-router'
 import { computed, reactive, ref, watch } from 'vue'
 import { FileOperator, bytesToSize } from '@/utils/fileOperator'
 import { UPLOAD_ERROR_CODE } from '@/utils/constants'
-import { v4 as uuidv4 } from 'uuid'
 
 const { t } = useI18n()
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
-const tempId = uuidv4()
 const emailFormatErrorMsg = ref('')
 const fileErrorMsg = ref('')
 
