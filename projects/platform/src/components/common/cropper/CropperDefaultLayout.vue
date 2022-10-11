@@ -4,13 +4,13 @@ div
     div(class="relative w-full aspect-square flex justify-center items-center bg-[#F1F2F5]")
       slot(name="imageCropArea" :innerScaleSize="scaleValue" :innerShowScale="showScale")
   div(class="mt-2.5")
-    div(class="text-primary text-body2 flex justify-between items-center mb-1")
+    div(class="text-grey-900 text-body2 flex justify-between items-center mb-1")
       div {{ $t("EE0049") }}
       div(class="w-15 flex justify-center items-center")
         input(
           v-model.number="formattedRotateDeg"
           type="number"
-          class="w-full text-right py-1 pr-3 border border-black-500 rounded"
+          class="w-full text-right py-1 pr-3 border border-grey-200 rounded"
           :step="rotateSetting.step"
           :min="rotateSetting.min"
           :max="rotateSetting.max"
@@ -23,13 +23,13 @@ div
       v-bind="rotateSetting"
     )
   div(v-if="showScale" class="mt-2.5")
-    div(class="text-primary text-body2 flex justify-between items-center mb-1")
+    div(class="text-grey-900 text-body2 flex justify-between items-center mb-1")
       div {{ $t("EE0098") }}
       div(class="w-15 flex justify-center items-center")
         input(
           v-model.number="formattedScaleValue"
           type="number"
-          class="w-full text-right py-1 pr-6 border border-black-500 rounded"
+          class="w-full text-right py-1 pr-6 border border-grey-200 rounded"
           :step="scaleInputStep"
           :min="scaleRange[0]"
           :max="scaleRange[1]"

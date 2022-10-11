@@ -14,36 +14,36 @@ div(class="relative")
     )
     f-popper(v-if="filterable" placement="bottom-end" class="justify-self-end")
       template(#trigger="{ isExpand }")
-        div(class="cursor-pointer w-43 h-9 px-1.5 flex justify-between items-center border border-black-400 rounded" :class="{ 'border-primary': isExpand }")
+        div(class="cursor-pointer w-43 h-9 px-1.5 flex justify-between items-center border border-grey-200 rounded" :class="{ 'border-grey-900': isExpand }")
           div(class="flex justify-between items-center")
-            f-svg-icon(iconName="filter" class="text-black-700 mr-1" size="20")
-            span(class="text-primary") Filter
-          f-svg-icon(iconName="keyboard_arrow_down" class="text-black-500 transform" :class="{ 'rotate-180': isExpand }")
+            f-svg-icon(iconName="filter" class="text-grey-600 mr-1" size="20")
+            span(class="text-grey-900") Filter
+          f-svg-icon(iconName="keyboard_arrow_down" class="text-grey-200 transform" :class="{ 'rotate-180': isExpand }")
       template(#content)
         slot(name="filter")
   div(ref="refTable" class="overflow-x-auto overflow-y-hidden" :style="{ width: boxWidth + 'px' }")
-    div(v-if="showHeader" class="grid grid-cols-12 gap-6 items-center bg-black-200 text-body2 text-primary h-10 my-2.5 px-15 rounded" :style="{ minWidth: tableWidth }")
+    div(v-if="showHeader" class="grid grid-cols-12 gap-6 items-center bg-grey-100 text-body2 text-grey-900 h-10 my-2.5 px-15 rounded" :style="{ minWidth: tableWidth }")
       div(v-for="header in headers" :class="[header.colSpan, header.align, getHeaderCustomClass(header)]")
         div(
           class="group inline-flex items-center"
           :class="{ 'cursor-pointer': !!header.sortBy }"
           @click="handleSort(header.sortBy)"
         )
-          span(class="text-black-600 inline-block whitespace-nowrap" :class="{ 'group-hover:text-primary': !!header.sortBy }") {{ header.label }}
+          span(class="text-grey-600 inline-block whitespace-nowrap" :class="{ 'group-hover:text-grey-900': !!header.sortBy }") {{ header.label }}
           f-svg-icon(
             v-if="header.sortBy?.length > 0"
             iconName="keyboard_arrow_down"
             size="20"
-            class="transform text-black-600 group-hover:!text-brand inline-block"
-            :class="{ 'text-brand-dark': header.sortBy.includes(innerPagination.sort), 'rotate-180': header.sortBy[1] === innerPagination.sort }"
+            class="transform text-grey-600 group-hover:!text-primary-400 inline-block"
+            :class="{ 'text-primary-500': header.sortBy.includes(innerPagination.sort), 'rotate-180': header.sortBy[1] === innerPagination.sort }"
           )
     div(v-if="isLoading" class="w-full h-full flex justify-center items-center")
-      f-svg-icon(iconName="loading" size="92" class="text-brand")
+      f-svg-icon(iconName="loading" size="92" class="text-primary-400")
     template(v-else)
       div(v-if="items.length > 0" class="grid gap-y-2.5" :style="{ minWidth: tableWidth }")
         div(
           v-for="(item, index) in items"
-          class="grid grid-cols-12 gap-6 items-center px-15 text-body2 text-primary hover:bg-black-50/50 rounded"
+          class="grid grid-cols-12 gap-6 items-center px-15 text-body2 text-grey-900 hover:bg-grey-50/50 rounded"
           :style="{ minWidth: tableWidth, height: rowHeight }"
           @mouseenter="handleMouseEnter(index)"
           @mouseleave="indexOfHover = null"
@@ -57,7 +57,7 @@ div(class="relative")
               :isHover="indexOfHover === index"
               :index="index"
             )
-      div(v-else class="text-body1 text-black-600 mt-10 text-center") {{ emptyText }}
+      div(v-else class="text-body1 text-grey-600 mt-10 text-center") {{ emptyText }}
   div(v-if="innerPagination.totalPage > 1" class="py-6 flex justify-center")
     f-paginator(v-model:currentPage="innerPagination.currentPage" :totalPage="innerPagination.totalPage" @goTo="$emit('goTo', $event)")
 </template>

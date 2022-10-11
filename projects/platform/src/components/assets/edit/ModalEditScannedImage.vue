@@ -7,9 +7,9 @@ modal-behavior(
   @click:secondary="closeModal"
 )
   div(class="flex")
-    div(v-if="isDoubleSideMaterial || isFaceSideMaterial" class="w-70 text-primary text-body2 font-bold text-center mb-3.5") {{ $t("EE0051") }}
+    div(v-if="isDoubleSideMaterial || isFaceSideMaterial" class="w-70 text-grey-900 text-body2 font-bold text-center mb-3.5") {{ $t("EE0051") }}
     div(v-if="isDoubleSideMaterial" class="w-40")
-    div(v-if="isDoubleSideMaterial || !isFaceSideMaterial" class="w-70 text-primary text-body2 font-bold text-center mb-3.5") {{ $t("EE0052") }}
+    div(v-if="isDoubleSideMaterial || !isFaceSideMaterial" class="w-70 text-grey-900 text-body2 font-bold text-center mb-3.5") {{ $t("EE0052") }}
   div(class="flex justify-between" :class="[isExchange ? 'flex-row-reverse' : '']")
     template(v-for="cropper in croppers")
       cropper-default-layout(
@@ -31,19 +31,19 @@ modal-behavior(
             @update:options="Object.assign(cropper.config.options, $event)"
           )
             div(class="mt-1 absolute w-full")
-              div(class="h-2 flex items-center border-r-2 border-l-2 border-primary")
-                div(class="h-0.5 bg-primary w-full")
-              div(class="text-caption text-primary font-bold text-center") {{ innerShowScale ? innerScaleSize : formattedScaleSize }}cm
+              div(class="h-2 flex items-center border-r-2 border-l-2 border-grey-900")
+                div(class="h-0.5 bg-grey-900 w-full")
+              div(class="text-caption text-grey-900 font-bold text-center") {{ innerShowScale ? innerScaleSize : formattedScaleSize }}cm
       div(v-if="isDoubleSideMaterial && croppers.length < 2" class="w-70 h-70 flex justify-center items-center bg-[#F1F2F5]")
-        div(class="bg-black-500" :style="{ width: cropRectSize + 'px', height: cropRectSize + 'px' }")
+        div(class="bg-grey-200" :style="{ width: cropRectSize + 'px', height: cropRectSize + 'px' }")
     div(v-if="isDoubleSideMaterial" class="absolute inset-x-0 w-full flex flex-col items-center transform -translate-y-1.5")
-      div(class="text-primary text-body2 flex justify-center items-center mb-3.5 gap-1")
+      div(class="text-grey-900 text-body2 flex justify-center items-center mb-3.5 gap-1")
         div {{ $t('EE0098') }}
         div(class="w-15 flex justify-center items-center")
           input(
             v-model.number="formattedScaleSize"
             type="number"
-            class="w-full text-right py-1 pr-6 border border-black-500 rounded"
+            class="w-full text-right py-1 pr-6 border border-grey-200 rounded"
             step="0.1"
             min="1"
             max="21"
@@ -55,7 +55,7 @@ modal-behavior(
         v-model:range="formattedScaleSize"
         v-bind="options"
       )
-      div(class="mt-3 cursor-pointer text-primary" @click="isExchange = !isExchange")
+      div(class="mt-3 cursor-pointer text-grey-900" @click="isExchange = !isExchange")
         f-svg-icon(iconName="swap_horiz" size="24" class="m-auto")
       div(class="mt-2 text-center text-caption") {{ $t("EE0053") }}
 </template>

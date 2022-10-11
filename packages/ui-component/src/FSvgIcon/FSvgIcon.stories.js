@@ -26,7 +26,7 @@ export const Color = (args) => ({
   },
   template: `
     <p>Set <strong>text-*</strong> class to change Icon color</p>
-    <f-svg-icon v-bind="args" class="text-brand" />
+    <f-svg-icon v-bind="args" class="text-primary-400" />
   `,
 })
 
@@ -46,7 +46,7 @@ export const IconList = (args) => ({
   },
   template: `
     <div>
-      <p class="font-bold text-warn">The controls panel is not working in the page</p>
+      <p class="font-bold text-red-400">The controls panel is not working in the page</p>
       <div v-for="iconName in iconNameList" class="flex">
         <f-svg-icon size="20" :iconName="iconName" />
         <p class="pl-2">{{ iconName }}</p>

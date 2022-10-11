@@ -6,7 +6,7 @@ modal-behavior(
   @click:primary="primaryHandler"
 )
   template(#note v-if="mode === CREATE_EDIT.CREATE")
-    div(class="flex items-center text-black-600")
+    div(class="flex items-center text-grey-600")
       f-svg-icon(iconName="info_outline" size="20")
       p(class="text-caption leading-1.6 pl-1.5") {{ $t('QQ0060') }}
   div(class="w-95")
@@ -21,7 +21,7 @@ modal-behavior(
     div(class="h-35")
       div
         div(class="h-5.5 flex items-center pb-1")
-          p(class="text-body2 text-primary font-bold") {{ $t('RR0249') }}
+          p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
           f-button-label(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewFile(formData.trendBoardFile)") {{ $t('UU0060') }}
         f-input-text-button(
           class="w-full"
@@ -32,9 +32,9 @@ modal-behavior(
           @click:button="trendBoardFileOperator.upload()"
           @clear="removeTrendBoard"
         )
-      p(v-if="!!customErrorMsg" class="text-warn text-caption leading-1.6") {{ customErrorMsg }}
-      p(class="text-black-600 text-caption leading-1.6") {{ $t("RR0243") }} {{ trendBoardFileAcceptType.join(', ').toUpperCase() }}
-      p(class="text-black-600 text-caption leading-1.6") {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
+      p(v-if="!!customErrorMsg" class="text-red-400 text-caption leading-1.6") {{ customErrorMsg }}
+      p(class="text-grey-600 text-caption leading-1.6") {{ $t("RR0243") }} {{ trendBoardFileAcceptType.join(', ').toUpperCase() }}
+      p(class="text-grey-600 text-caption leading-1.6") {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
     f-input-textarea(
       v-model:textValue="formData.description"
       :label="$t('RR0014')"

@@ -123,7 +123,7 @@ export default function usePlan () {
                     render: () => {
                       return h('div', { class: 'text-body2 leading-1.6' }, [
                         h('p', {}, `${t('OO0058')} ${plan.value.deactivatedDate}`),
-                        h(Translation, { keypath: 'OO0126', tag: 'p', scope: 'global' }, { OO0127: () => h('span', { class: 'text-assist-blue' }, t('OO0127')) })
+                        h(Translation, { keypath: 'OO0126', tag: 'p', scope: 'global' }, { OO0127: () => h('span', { class: 'text-cyan-400' }, t('OO0127')) })
                       ])
                     }
                   }),
@@ -140,7 +140,7 @@ export default function usePlan () {
       contentComponent: shallowRef({
         render: () => {
           return h(Translation,
-            { keypath: 'OO0121', tag: 'p', scope: 'global', class: 'text-primary text-body2 leading-1.6' },
+            { keypath: 'OO0121', tag: 'p', scope: 'global', class: 'text-grey-900 text-body2 leading-1.6' },
             { newline: () => h('br') }
           )
         }

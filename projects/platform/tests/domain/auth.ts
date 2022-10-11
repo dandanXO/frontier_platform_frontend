@@ -79,5 +79,5 @@ export class LoginPage {
   clickSignUpBtn = () => this.page.locator('[data-cy="sign-up"]').click()
   clickNextBtn = () => this.page.locator('[data-cy="next"]').click()
   confirmModel = () => this.page.locator('[data-cy="modal-confirm"]')
-  warningText = () => this.page.locator(".text-warn")
+  warningText = () => this.page.locator(".text-red-400")
 }

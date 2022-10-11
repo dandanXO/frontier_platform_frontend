@@ -11,19 +11,19 @@ export default function useInput ({ context: { emit, slots }, inputType = ref('t
       return 'border-transparent'
     }
     if (isError.value) {
-      return 'border-warn'
+      return 'border-red-400'
     }
     return isFocus.value
-      ? 'border-black-600'
-      : 'border-black-400'
+      ? 'border-grey-600'
+      : 'border-grey-200'
   })
   const classPrependIcon = computed(() => {
     if (disabled.value) {
-      return 'text-black-600'
+      return 'text-grey-600'
     }
     return isFocus.value || !isEmpty.value
-      ? 'text-primary'
-      : 'text-black-500'
+      ? 'text-grey-900'
+      : 'text-grey-200'
   })
 
   const typing = (e) => {

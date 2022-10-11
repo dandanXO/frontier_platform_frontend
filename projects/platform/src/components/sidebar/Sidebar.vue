@@ -5,15 +5,15 @@
 </style>
 
 <template lang="pug">
-div(class="relative z-sidebar min-w-60 w-60 h-full bg-black-100 sidebar-shadow flex flex-col")
+div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 sidebar-shadow flex flex-col")
   menu-org
-  div(class="border-t border-primary-thin px-1 py-1.5 flex flex-col")
+  div(class="border-t border-grey-150 px-1 py-1.5 flex flex-col")
     div(class="grid gap-y-1.5")
       sidebar-item( id="publicLibrary" :path="`/${organization.orgNo}/public-library`")
         img(src="@/assets/images/logo.png" class="w-5 h-5")
-        p(class="text-body2 text-primary line-clamp-1") {{ $t("RR0003") }}
+        p(class="text-body2 text-grey-900 line-clamp-1") {{ $t("RR0003") }}
   div(class="flex-grow px-1 flex flex-col")
-    div(class="w-auto h-px bg-primary-thin mx-1.5 my-1.5")
+    div(class="w-auto h-px bg-grey-150 mx-1.5 my-1.5")
     f-scrollbar-container(class="flex-grow")
       div(class="grid gap-y-1.5")
         sidebar-item(
@@ -28,28 +28,28 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-black-100 sidebar-shadow f
           id="progress"
           :path="`/${organization.orgNo}/progress/material`"
         )
-          f-svg-icon(iconName="progress" size="20" :class="[planStatus.INACTIVE ? 'text-black-500' : 'text-black-700']")
-          span(class="text-body2 line-clamp-1 flex-grow" :class="[planStatus.INACTIVE ? 'text-black-500' : 'text-primary']") {{ $t('PP0001') }}
+          f-svg-icon(iconName="progress" size="20" :class="[planStatus.INACTIVE ? 'text-grey-200' : 'text-grey-600']")
+          span(class="text-body2 line-clamp-1 flex-grow" :class="[planStatus.INACTIVE ? 'text-grey-200' : 'text-grey-900']") {{ $t('PP0001') }}
           div(v-if="isProcessing" class="h-6 w-6.5 flex justify-center items-center rounded mr-2")
-            f-svg-icon(iconName="loading" size="20" class="text-brand")
+            f-svg-icon(iconName="loading" size="20" class="text-primary-400")
         f-expansion-panel(v-for="item in menuOrgOrGroup" :class="[{ 'pointer-events-none': item.disabled }]" data-cy="sidebar_location")
           template(#trigger="{ isExpand }")
-            div(class="flex items-center h-9 pl-4 pr-5 hover:bg-black-400")
+            div(class="flex items-center h-9 pl-4 pr-5 hover:bg-grey-200")
               label(class="w-3 h-3 rounded-sm mr-3" :style="{ backgroundColor: item.disabled ? '#c4c4c4' : item.labelColor }")
-              span(class="flex-grow text-body2 line-clamp-1" :class="[item.disabled ? 'text-black-500' : 'text-primary']") {{ item.name }}
-              f-svg-icon(iconName="keyboard_arrow_right" size="24" class=" transform" :class="[isExpand ? 'rotate-90' : 'rotate-0', item.disabled ? 'text-black-500' : 'text-black-650']")
+              span(class="flex-grow text-body2 line-clamp-1" :class="[item.disabled ? 'text-grey-200' : 'text-grey-900']") {{ item.name }}
+              f-svg-icon(iconName="keyboard_arrow_right" size="24" class=" transform" :class="[isExpand ? 'rotate-90' : 'rotate-0', item.disabled ? 'text-grey-200' : 'text-grey-600']")
           template(#content)
             div(class="flex flex-col gap-y-0.5")
               sidebar-item(v-for="(menu, index) in item.menuList" v-bind="menu" class="relative flex justify-between" :style="{ zIndex: 20 - index }")
-                p(class="pl-7 text-body2 text-primary line-clamp-1") {{ menu.title }}
+                p(class="pl-7 text-body2 text-grey-900 line-clamp-1") {{ menu.title }}
                 template(v-if="menu.id === 'assets'")
                   f-tooltip(class="mr-3")
                     template(#trigger)
-                      div(class="flex justify-center items-center w-6 h-6 rounded bg-primary-thin" data-cy="upload-page" @click.stop="$router.push(menu.path + '/upload')")
-                        f-svg-icon(:iconName="menu.icon" size="20" class="text-black-800")
+                      div(class="flex justify-center items-center w-6 h-6 rounded bg-grey-100" data-cy="upload-page" @click.stop="$router.push(menu.path + '/upload')")
+                        f-svg-icon(:iconName="menu.icon" size="20" class="text-grey-600")
                     template(#content)
                       p {{ $t("RR0012") }}
-      div(class="w-auto h-px bg-primary-thin mx-1.5 my-1.5")
+      div(class="w-auto h-px bg-grey-150 mx-1.5 my-1.5")
   menu-org-user
 </template>
 

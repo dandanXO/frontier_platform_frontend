@@ -12,7 +12,7 @@ modal-behavior(
   div(class="w-94")
     f-input-select(
       v-model:selectValue="formData.category"
-      :optionList="feedbackOptionList"
+      :optionList="Object.values(FEEDBACK_CATEGORY)"
       keyOptionDisplay="text"
       keyOptionValue="value"
       :label="$t('MM0007')"
@@ -30,32 +30,29 @@ modal-behavior(
     )
     f-scrollbar-container(v-if="feedbackAttachmentList.length > 0" class="max-h-18 mb-2.5")
       div(class="grid gap-y-2")
-        div(v-for="attachment in feedbackAttachmentList" class="h-8 flex justify-between items-center px-4 bg-black-100")
+        div(v-for="attachment in feedbackAttachmentList" class="h-8 flex justify-between items-center px-4 bg-grey-50")
           div(class="flex items-center gap-x-1")
-            p(class="text-body2 font-bold text-primary line-clamp-1") {{ attachment.fileName }}
-            p(class="text-body2 font-normal text-primary flex-shrink-0") ({{ bytesToSize(attachment.fileSize) }})
-          f-svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeAttachment(attachment.tempFeedbackAttachmentId)")
+            p(class="text-body2 font-bold text-grey-900 line-clamp-1") {{ attachment.fileName }}
+            p(class="text-body2 font-normal text-grey-900 flex-shrink-0") ({{ bytesToSize(attachment.fileSize) }})
+          f-svg-icon(iconName="clear" size="14" class="text-grey-900 ml-1 cursor-pointer" @click="removeAttachment(attachment.tempFeedbackAttachmentId)")
     f-button(size="sm" type="secondary" prependIcon="add" @click="chooseFile") {{ $t("UU0063") }}
-    div(class="text-caption text-primary pt-1")
+    div(class="text-caption text-grey-900 pt-1")
       p(class="pb-2") {{ $t("RR0243") }} {{ acceptType.join(', ').toUpperCase() }}
       p {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
 </template>
 
 <script setup>
-import { FEEDBACK_CATEGORY } from '@/utils/constants.js'
+import { useConstants } from '@/utils/constants.js'
 import { ref, reactive, computed } from 'vue'
 import { FileOperator, bytesToSize } from '@/utils/fileOperator'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
 
+const { FEEDBACK_CATEGORY } = useConstants()
 const { t } = useI18n()
 const store = useStore()
 const tempFeedbackId = uuidv4()
-const feedbackOptionList = Object.keys(FEEDBACK_CATEGORY).map((category) => ({
-  text: FEEDBACK_CATEGORY[category].text,
-  value: FEEDBACK_CATEGORY[category].value
-}))
 const formData = reactive({
   category: null,
   comment: ''

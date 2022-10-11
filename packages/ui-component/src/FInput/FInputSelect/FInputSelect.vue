@@ -10,7 +10,7 @@ f-input-container(:required="required" :label="label" ref="refContainer")
     template(#trigger="{ isExpand }")
       div(
         class="px-4 border rounded flex items-center"
-        :class="[isExpand ? 'border-primary' : 'border-black-400', size === 'lg' ? 'h-11' : 'h-9'], { 'bg-black-200': disabled }"
+        :class="[isExpand ? 'border-grey-900' : 'border-grey-200', size === 'lg' ? 'h-11' : 'h-9'], { 'bg-grey-100': disabled }"
       )
         div(v-if="prependIcon || slots['slot:prependIcon']" class="pr-1")
           f-svg-icon(
@@ -21,7 +21,7 @@ f-input-container(:required="required" :label="label" ref="refContainer")
           slot(v-else name="slot:prependIcon")
         p(
           class="flex-grow text-body2"
-          :class="[{ 'text-black-600': disabled }, { 'text-primary': !disabled && currentIndex !== -1 }, { 'text-black-400': !disabled && currentIndex === -1 }]"
+          :class="[{ 'text-grey-600': disabled }, { 'text-grey-900': !disabled && currentIndex !== -1 }, { 'text-grey-200': !disabled && currentIndex === -1 }]"
         ) {{ currentIndex === -1 ? placeholder : optionList[currentIndex][keyOptionDisplay] }}
         div(class="pl-1")
           slot(v-if="slots['slot:appendIcon']" name="slot:appendIcon")
@@ -30,24 +30,24 @@ f-input-container(:required="required" :label="label" ref="refContainer")
             iconName="keyboard_arrow_right"
             size="20"
             class="transform"
-            :class="[isExpand ? '-rotate-90 text-black-500' : 'rotate-90 text-black-650']"
+            :class="[isExpand ? '-rotate-90 text-grey-200' : 'rotate-90 text-grey-600']"
           )
     template(#content="{ collapsePopper }")
-      f-list(class="border border-primary-middle" :style="{ width: contentWidth + 'px' }")
+      f-list(class="border border-grey-150" :style="{ width: contentWidth + 'px' }")
         div(v-if="searchBox" class="pt-1.5 pb-1")
           f-input-text(v-model:textValue="searchInput" size="sm" prependIcon="search" class="px-3.5")
-          div(class="mx-2 border-b border-black-400 pt-2")
+          div(class="mx-2 border-b border-grey-200 pt-2")
         f-scrollbar-container(v-if="searchedOptionList.length > 0" :style="{ 'max-height': 36 * maxLength + 'px' }")
           f-list-item(
             v-for="(option, index) in searchedOptionList"
-            :class="[index === currentIndex ? 'bg-black-200' : '']"
+            :class="[index === currentIndex ? 'bg-grey-100' : '']"
             @click="select(option); collapsePopper() "
             data-cy="list-item"
           )
-            p(class="text-black-600") {{ option[keyOptionDisplay] }}
+            p(class="text-grey-600") {{ option[keyOptionDisplay] }}
         div(v-if="canAddNewOption && !isOptionExist")
           f-list-item(v-if="searchInput !== ''" @click="addNewOption(); collapsePopper()" data-cy="list-item") {{ searchInput }}
-        p(v-if="!canAddNewOption && searchedOptionList.length === 0" class="h-9 pl-7.5 text-primary text-body2 flex items-center") No search result
+        p(v-if="!canAddNewOption && searchedOptionList.length === 0" class="h-9 pl-7.5 text-grey-900 text-body2 flex items-center") No search result
 </template>
 
 <script>

@@ -13,7 +13,7 @@ div(class="w-full h-full relative")
       div(class="flex items-center")
         div(class="flex items-end")
           f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="(currentNodeKey = $event.nodeKey); goTo()" fontSize="text-h6")
-          p(class="flex text-caption text-black-700 pl-1")
+          p(class="flex text-caption text-grey-600 pl-1")
             span (
             i18n-t(keypath="RR0068" tag="span" scope="global")
               template(#number) {{ pagination.totalCount }}
@@ -22,7 +22,7 @@ div(class="w-full h-full relative")
           template(#trigger)
             f-svg-icon(
               iconName="clone"
-              class="text-black-700 cursor-pointer hover:text-brand ml-1"
+              class="text-grey-600 cursor-pointer hover:text-primary-400 ml-1"
               size="24"
               @click="publicCloneByCollection(currentNodeKey, collection.publish.isCanClone)"
             )
@@ -31,7 +31,7 @@ div(class="w-full h-full relative")
     template(#header-right)
       f-button(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
     template(v-if="!isFirstLayer" #sub-header)
-      i18n-t(keypath="II0002" tag="p" class="mx-7.5 mb-7.5 text-caption text-black-700" scope="global")
+      i18n-t(keypath="II0002" tag="p" class="mx-7.5 mb-7.5 text-caption text-grey-600" scope="global")
         template(#displayName) {{ publishBy }}
     template(#default="{ goTo }")
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
@@ -47,16 +47,16 @@ div(class="w-full h-full relative")
           template(#caption v-if="isFirstLayer")
             div(class="mt-1.5 h-6 flex items-center")
               img(:src="node.publish.logo" class="aspect-square h-full rounded-full")
-              p(class="pl-1 font-bold text-caption text-primary") {{ node.publish.displayName }}
+              p(class="pl-1 font-bold text-caption text-grey-900") {{ node.publish.displayName }}
       div(v-else class="flex h-full justify-center items-end")
-        p(class="text-body1 text-primary") {{ $t("II0007") }}
-  div(v-if="planStatus.INACTIVE" class="absolute inset-0 z-99 opacity-30 bg-black-0")
+        p(class="text-body1 text-grey-900") {{ $t("II0007") }}
+  div(v-if="planStatus.INACTIVE" class="absolute inset-0 z-99 opacity-30 bg-grey-0")
   notify-bar-inactive(v-if="planStatus.INACTIVE || planStatus.TRANSITION" class="absolute bottom-0 left-0 z-100")
 </template>
 
 <script setup>
 import SearchTable from '@/components/common/SearchTable.vue'
-import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
+import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { watch, ref, computed } from 'vue'
@@ -80,16 +80,20 @@ const props = defineProps({
   }
 })
 
-const optionSort = {
-  base: [
-  SORT_BY.RANDOM,
-  SORT_BY.NEW_ARRIVED,
-  SORT_BY.GHG_RESULTS,
-  SORT_BY.WATER_DEPLETION_RESULTS,
-  SORT_BY.LAND_USE_RESULTS
-  ],
-  keywordSearch: []
-}
+const optionSort = computed(() => {
+  const { SORT_BY } = useConstants()
+  const { RANDOM, NEW_ARRIVED, GHG_RESULTS, WATER_DEPLETION_RESULTS, LAND_USE_RESULTS } = SORT_BY.value
+  return {
+    base: [
+      RANDOM,
+      NEW_ARRIVED,
+      GHG_RESULTS,
+      WATER_DEPLETION_RESULTS,
+      LAND_USE_RESULTS
+    ],
+    keywordSearch: []
+  }
+})
 
 const optionMultiSelect = [
   {

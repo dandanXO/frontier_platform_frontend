@@ -5,9 +5,9 @@ modal-behavior(
   @click:secondary="$store.dispatch('helper/closeModalBehavior')"
 )
   div(class="w-145")
-    p(class="text-body2 text-primary leading-1.6 pb-3") {{ $t('RR0235') }}
+    p(class="text-body2 text-grey-900 leading-1.6 pb-3") {{ $t('RR0235') }}
     img(src="@/assets/images/methodology_visual_1.png")
-    p(class="text-body2 text-primary leading-1.6 pt-8 pb-2") {{ $t('RR0236') }}
+    p(class="text-body2 text-grey-900 leading-1.6 pt-8 pb-2") {{ $t('RR0236') }}
     img(src="@/assets/images/methodology_visual_2.png")
 </template>
 

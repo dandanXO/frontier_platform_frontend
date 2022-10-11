@@ -1,6 +1,6 @@
 <template lang="pug">
 f-input-container(:label="label" :required="required")
-  div(class="p-4 rounded border" :class="[classBorder, { 'bg-primary-thin': disabled }]" :style="{ height: height + 'px' }")
+  div(class="p-4 rounded border" :class="[classBorder, { 'bg-grey-100': disabled }]" :style="{ height: height + 'px' }")
     textarea(
       :value="textValue"
       :placeholder="placeholder"
@@ -8,10 +8,10 @@ f-input-container(:label="label" :required="required")
       @input="typing"
       @focus="onFocus"
       @blur="onBlur"
-      class="w-full h-full resize-none leading-1.6 placeholder:text-black-400 placeholder:overflow-visible outline-none bg-transparent text-primary text-body2 disabled:text-black-600"
+      class="w-full h-full resize-none leading-1.6 placeholder:text-grey-200 placeholder:overflow-visible outline-none bg-transparent text-grey-900 text-body2 disabled:text-grey-600"
     )
   template(#slot:hint)
-    p(v-if="errorMsg !== ''" class="absolute text-caption text-warn pt-1") {{ errorMsg }}
+    p(v-if="errorMsg !== ''" class="absolute text-caption text-red-400 pt-1") {{ errorMsg }}
     slot(v-else name="slot:errorMsg")
 </template>
 

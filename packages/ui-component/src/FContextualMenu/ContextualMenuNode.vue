@@ -7,7 +7,7 @@ f-tooltip(v-if="innerMenu.tooltip && innerMenu.disabled" isNotFitWidth)
 f-list-item(
   v-else
   class="min-w-57.5"
-  :class="{ 'bg-black-200': isSelect }"
+  :class="{ 'bg-grey-100': isSelect }"
   :disabled="innerMenu.disabled"
   @mouseleave="hasNextLevel && collapseMenu()"
   @click.stop="clickMenuHandler"
@@ -19,12 +19,12 @@ f-list-item(
     class="w-full flex justify-between items-center"
   )
     span {{ innerMenu.title }}
-    f-svg-icon(v-if="hasNextLevel" iconName="keyboard_arrow_right" size="20" class="text-black-600")
-    f-svg-icon(v-else-if="isSelect" iconName="done" size="20" class="text-brand")
+    f-svg-icon(v-if="hasNextLevel" iconName="keyboard_arrow_right" size="20" class="text-grey-600")
+    f-svg-icon(v-else-if="isSelect" iconName="done" size="20" class="text-primary-400")
   div(ref="refContextMenu" role="contextual-menu" :class="{ 'hidden': !isExpand }" @click.stop)
     f-list(v-if="isExpand")
       template(v-for="(block, index) in innerMenu.blockList")
-        f-list-item(v-if="block.blockTitle" class="text-black-500" disabled) {{ block.blockTitle }}
+        f-list-item(v-if="block.blockTitle" class="text-grey-200" disabled) {{ block.blockTitle }}
         contextual-menu-node(
           v-for="childMenu in block.menuList"
           :menu="childMenu"
@@ -32,7 +32,7 @@ f-list-item(
           :selectMode="selectMode"
           :inputSelectValue="inputSelectValue"
         )
-        div(v-if="index !== innerMenu.blockList.length - 1" class="mx-2 my-1 h-px bg-black-400")
+        div(v-if="index !== innerMenu.blockList.length - 1" class="mx-2 my-1 h-px bg-grey-200")
 </template>
 
 <script>

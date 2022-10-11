@@ -8,13 +8,13 @@ modal-behavior(
   @click:text="closeModal"
 )
   div(class="w-94")
-    i18n-t(:keypath="keypath" tag="p" class="text-primary mb-4 text-body2 leading-1.6" scope="global")
+    i18n-t(:keypath="keypath" tag="p" class="text-grey-900 mb-4 text-body2 leading-1.6" scope="global")
       template(v-slot:[slotName])
         br
         strong {{ slotValue }}
     f-input-text(v-model:textValue="confirmText" class="w-full" size="lg" :placeholder="slotValue" data-cy="modal-type-text-to-confirm_input")
       template(#slot:errorMsg v-if="isError")
-        p(class="text-caption text-warn absolute pt-1 whitespace-nowrap") {{ errorMsg }}
+        p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ errorMsg }}
 </template>
 <script setup>
 import { ref } from 'vue'

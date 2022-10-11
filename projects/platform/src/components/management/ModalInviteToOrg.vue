@@ -6,9 +6,9 @@ modal-behavior(
   @click:primary="inviteToOrg"
 )
   div(class="w-94")
-    div(class="py-2.5 px-4 flex items-center gap-x-3 bg-black-50 rounded mb-4")
-      f-svg-icon(iconName="error_outline" class="text-black-600")
-      p(class="flex-grow text-caption text-black-800 leading-1.6") {{ $t("BB0021") }}
+    div(class="py-2.5 px-4 flex items-center gap-x-3 bg-grey-50 rounded mb-4")
+      f-svg-icon(iconName="error_outline" class="text-grey-600")
+      p(class="flex-grow text-caption text-grey-600 leading-1.6") {{ $t("BB0021") }}
     f-input-text-icon(
       v-model:textValue="email"
       prependIcon="search"
@@ -19,11 +19,11 @@ modal-behavior(
     )
     f-scrollbar-container(class="h-48 mt-2 -mx-5")
       div(class="grid gap-y-0.5 mx-5")
-        div(v-for="(email, index) in emailList" class="h-12 flex items-center justify-between hover:bg-black-200 px-2.5")
-          p(class="text-body2 text-primary") {{ email }}
-          f-svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer" @click="removeInvite(index)")
+        div(v-for="(email, index) in emailList" class="h-12 flex items-center justify-between hover:bg-grey-100 px-2.5")
+          p(class="text-body2 text-grey-900") {{ email }}
+          f-svg-icon(iconName="clear" size="20" class="text-grey-200 cursor-pointer" @click="removeInvite(index)")
   template(#note)
-    div(class="text-assist-blue flex items-center cursor-pointer" @click="copyText(inviteLink), $store.dispatch('helper/pushFlashMessage', $t('BB0108'))")
+    div(class="text-cyan-400 flex items-center cursor-pointer" @click="copyText(inviteLink), $store.dispatch('helper/pushFlashMessage', $t('BB0108'))")
       f-svg-icon(iconName="link_2" size="14" class="mr-1.5")
       span(class="text-caption") {{ $t("UU0015") }}
 </template>

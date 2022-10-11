@@ -12,7 +12,7 @@ div(class="w-full h-full")
       div(class="flex items-center")
         div(class="flex items-end")
           f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="setSharingIdAndNodeKey($event.nodeKey); goTo()" fontSize="text-h6")
-          p(class="flex text-caption text-black-700 pl-1")
+          p(class="flex text-caption text-grey-600 pl-1")
             span (
             i18n-t(keypath="RR0068" tag="span" scope="global")
               template(#number) {{ pagination.totalCount }}
@@ -21,7 +21,7 @@ div(class="w-full h-full")
           template(#trigger)
             f-svg-icon(
               iconName="clone"
-              class="text-black-700 cursor-pointer hover:text-brand ml-1"
+              class="text-grey-600 cursor-pointer hover:text-primary-400 ml-1"
               size="24"
               @click="shareToMeCloneByCollection(currentNodeKey, collection.share.sharingId, collection.isCanClone)"
             )
@@ -29,11 +29,11 @@ div(class="w-full h-full")
             p {{ $t("RR0056") }}
     template(#header-right)
       div(v-if="!isFirstLayer" class="relative cursor-pointer" @click="openModalShareMessage")
-        f-svg-icon(iconName="chat" size="24" class="text-black-700")
-        div(v-if="haveMsgAndFirstRead" class="absolute -top-px -right-px w-2 h-2 rounded-full border border-black-0 bg-warn")
+        f-svg-icon(iconName="chat" size="24" class="text-grey-600")
+        div(v-if="haveMsgAndFirstRead" class="absolute -top-px -right-px w-2 h-2 rounded-full border border-grey-0 bg-red-400")
       f-button(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
     template(v-if="!isFirstLayer" #sub-header)
-      div(class="mx-7.5 mb-7.5 text-caption text-black-700 flex items-center")
+      div(class="mx-7.5 mb-7.5 text-caption text-grey-600 flex items-center")
         p(class="pr-2.5") {{ collection.share.displayName }}
         p {{ $t("RR0148") }} {{ $dayjs.unix(collection.share.shareDate).format("YYYY/MM/DD") }}
     template(#default="{ inSearch, goTo }")
@@ -51,20 +51,20 @@ div(class="w-full h-full")
           template(#caption v-if="isFirstLayer")
             div(class="mt-1.5 h-6 flex items-center")
               img(:src="node.share.logo" class="aspect-square h-full rounded-full")
-              p(class="pl-1 font-bold text-caption text-primary") {{ node.share.displayName }}
+              p(class="pl-1 font-bold text-caption text-grey-900") {{ node.share.displayName }}
       div(v-else class="flex h-full justify-center items-end")
-        p(class="text-body1 text-primary") {{ $t("HH0001") }}
+        p(class="text-body1 text-grey-900") {{ $t("HH0001") }}
     template(#menu-option="{ option }")
       div(
         v-if="option.name === $t('RR0167')"
-        class="whitespace-nowrap cursor-pointer hover:text-brand px-5"
+        class="whitespace-nowrap cursor-pointer hover:text-primary-400 px-5"
         @click="shareToMeCloneByNodeList(selectedNodeList, collection.share.sharingId)"
       ) {{ option.name }}
 </template>
 
 <script setup>
 import SearchTable from '@/components/common/SearchTable.vue'
-import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
+import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { ref, computed, watch } from 'vue'
@@ -87,15 +87,19 @@ const router = useRouter()
 const route = useRoute()
 const { shareToMeCloneByNode, shareToMeCloneByNodeList, shareToMeCloneByCollection, shareToMeDeleteByNode, shareToMeDeleteByNodeList } = useShareToMe()
 const { goToShareToMeMaterial } = useNavigation()
-const optionSort = {
-  base: [
-    SORT_BY.MATERIAL_NO_A_Z_C_M,
-    SORT_BY.LAST_UPDATE
-  ],
-  keywordSearch: [
-    SORT_BY.RELEVANCE_C_M
-  ]
-}
+const optionSort = computed(() => {
+  const { SORT_BY } = useConstants()
+  const { MATERIAL_NO_A_Z_C_M, LAST_UPDATE, RELEVANCE_C_M } = SORT_BY.value
+  return {
+    base: [
+      MATERIAL_NO_A_Z_C_M,
+      LAST_UPDATE
+    ],
+    keywordSearch: [
+      RELEVANCE_C_M
+    ]
+  }
+})
 const optionMultiSelect = computed(() => {
   return isFirstLayer.value
     ? [{ name: t('RR0063'), func: shareToMeDeleteByNodeList }]

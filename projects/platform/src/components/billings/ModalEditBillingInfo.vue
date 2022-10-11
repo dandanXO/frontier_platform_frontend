@@ -6,7 +6,7 @@ modal-behavior(
   @click:primary="innerActionHandler"
 )
   div(class="w-180.5")
-    p(class="text-caption text-black-600 text-right mb-1") *{{ $t('RR0163') }}
+    p(class="text-caption text-grey-600 text-right mb-1") *{{ $t('RR0163') }}
     form(class="grid grid-cols-2 grid-rows-3 gap-7.5 pb-4")
       f-input-text(
         ref="refInputRecipient"

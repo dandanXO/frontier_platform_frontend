@@ -9,8 +9,8 @@
 </style>
 
 <template lang="pug">
-div(v-if="innerSelectedList.length > 0" class="menu-position menu-shadow w-fit px-15 py-7.5 bg-black-0 rounded-full text-body2 text-primary flex justify-center items-center")
-  f-svg-icon(iconName="cancel" size="24" class="text-black-400 mr-4 cursor-pointer" @click="clearList")
+div(v-if="innerSelectedList.length > 0" class="menu-position menu-shadow w-fit px-15 py-7.5 bg-grey-0 rounded-full text-body2 text-grey-900 flex justify-center items-center")
+  f-svg-icon(iconName="cancel" size="24" class="text-grey-200 mr-4 cursor-pointer" @click="clearList")
   i18n-t(keypath="RR0073" tag="div" class="mr-7.5" scope="global")
     template(#number) {{ innerSelectedList.length }}
   div(class="flex flex-wrap gap-y-5 divide-x w-fit max-w-127")
@@ -18,7 +18,7 @@ div(v-if="innerSelectedList.length > 0" class="menu-position menu-shadow w-fit p
       slot(:option="option")
         div(
           class="whitespace-nowrap px-5"
-          :class="[option.disabled ? 'text-black-500' : 'cursor-pointer hover:text-brand']"
+          :class="[option.disabled ? 'text-grey-200' : 'cursor-pointer hover:text-primary-400']"
           @click="handleClick(option)"
         ) {{ option.name }}
 </template>

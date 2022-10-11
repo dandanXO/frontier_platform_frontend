@@ -2,21 +2,21 @@
 f-input-container(:label="label" :required="required" ref="refContainer")
   f-popper(placement="bottom-start" :offset="[0, -popperOffsetY]" @expand="expand" @collapse="collapse" data-cy="input-chips")
     template(#trigger)
-      label(class="px-4 py-1 border border-black-400 rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11")
+      label(class="px-4 py-1 border border-grey-200 rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11")
         div(v-for="chip in chips" class="flex")
           f-label {{ returnObject ? chip[keyOptionDisplay] : chip }}
         input(
           v-if="chips.length === 0"
           type="text"
           :placeholder="placeholder"
-          class="line-clamp-1 h-8 flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 disabled:text-black-600 placeholder:text-black-400 placeholder:overflow-visible"
+          class="line-clamp-1 h-8 flex-grow outline-none bg-transparent overflow-hidden text-grey-900 text-body2 disabled:text-grey-600 placeholder:text-grey-200 placeholder:overflow-visible"
         )
     template(#content)
       div(:style="{ width: contentWidth + 'px' }")
-        label(class="px-4 py-1 border border-black-400 rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11" :class="[classBorder]")
+        label(class="px-4 py-1 border border-grey-200 rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11" :class="[classBorder]")
           div(v-for="(chip, index) in chips" class="flex")
             f-label {{ returnObject ? chip[keyOptionDisplay] : chip }}
-              f-svg-icon(iconName="clear" size="20" class="text-black-500 cursor-pointer ml-1" @click.stop="removeChip(index)")
+              f-svg-icon(iconName="clear" size="20" class="text-grey-200 cursor-pointer ml-1" @click.stop="removeChip(index)")
           input(
             ref="refInput"
             type="text"
@@ -24,20 +24,20 @@ f-input-container(:label="label" :required="required" ref="refContainer")
             @focus="onFocus"
             @keydown="onKeydown($event)"
             :placeholder="chips.length === 0 ? placeholder : ''"
-            class="line-clamp-1 h-8 flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 disabled:text-black-600 placeholder:text-black-400 placeholder:overflow-visible"
+            class="line-clamp-1 h-8 flex-grow outline-none bg-transparent overflow-hidden text-grey-900 text-body2 disabled:text-grey-600 placeholder:text-grey-200 placeholder:overflow-visible"
           )
         f-list(v-if="optionList.length !== 0")
           f-scrollbar-container(v-if="filteredOptionList.length > 0" class="max-h-72")
             f-list-item(
               v-for="option in filteredOptionList"
               class="cursor-pointer"
-              :class="[{ 'bg-black-200': option.checked }]"
+              :class="[{ 'bg-grey-100': option.checked }]"
               @click="option.checked ? removeChipFromOptionList(option) : addChipFromOptionList(option)"
               data-cy="list-item"
             )
-              p(class="text-black-600") {{ option.displayValue }}
+              p(class="text-grey-600") {{ option.displayValue }}
           f-list-item(v-else @click.stop="addChip" data-cy="list-item")
-            p(class="text-primary") {{ inputValue }}
+            p(class="text-grey-900") {{ inputValue }}
 </template>
 
 <script>

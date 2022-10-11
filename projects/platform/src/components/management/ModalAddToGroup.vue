@@ -6,32 +6,32 @@ modal-behavior(
   @click:primary="addMemberToGroup"
 )
   div(class="w-94")
-    div(class="text-body2 font-bold text-primary mb-4") {{ $t("BB0111") }}
+    div(class="text-body2 font-bold text-grey-900 mb-4") {{ $t("BB0111") }}
     f-input-text(v-model:textValue="searchInput" size="lg" class="mb-1.5" prependIcon="search" :placeholder="$t('BB0012')")
     f-scrollbar-container(class="h-75 mt-2 -mx-5")
       div(v-if="memberList.length > 0" class="grid gap-y-1 mx-5" @mouseleave="indexOfOnHover = -1")
-        label(v-for="(member, index) in memberList" class="pl-2 pr-4 h-12 flex items-center justify-between hover:bg-black-200" :for="member.orgUserId" @mouseenter="indexOfOnHover = index")
+        label(v-for="(member, index) in memberList" class="pl-2 pr-4 h-12 flex items-center justify-between hover:bg-grey-100" :for="member.orgUserId" @mouseenter="indexOfOnHover = index")
           div(class="flex items-center")
             div(class="w-9 h-9 rounded-full bg-cover bg-center" :class="{ 'opacity-30': member.isPending || member.joined }" :style="{ 'background-image': `url(${member.avatar})` }")
             template(v-if="member.isPending")
-              span(class="flex-grow pl-4 text-body2 text-black-500") {{ member.email }}
-              span(class="text-body2 text-black-500") ({{ $t("BB0024") }})
+              span(class="flex-grow pl-4 text-body2 text-grey-200") {{ member.email }}
+              span(class="text-body2 text-grey-200") ({{ $t("BB0024") }})
             template(v-else-if="member.joined")
-              span(class="flex-grow pl-4 text-body2 text-black-500") {{ member.displayName }}
-              span(class="text-body2 text-black-500") ({{ $t("BB0097") }})
+              span(class="flex-grow pl-4 text-body2 text-grey-200") {{ member.displayName }}
+              span(class="text-body2 text-grey-200") ({{ $t("BB0097") }})
             template(v-else)
-              span(class="flex-grow pl-4 text-body2 text-primary") {{ member.displayName }}
+              span(class="flex-grow pl-4 text-body2 text-grey-900") {{ member.displayName }}
           template(v-if="!member.isPending && !member.joined")
             f-input-checkbox(
               v-if="addedMemberList.includes(member.orgUserId) || index === indexOfOnHover"
               v-model:inputValue="addedMemberList"
               type="checkbox"
               :value="member.orgUserId"
-              uncheckColor="text-black-600"
+              uncheckColor="text-grey-600"
             )
-      p(v-else class="text-body1 text-primary text-center pt-9.5") {{ $t("BB0031") }}
+      p(v-else class="text-body1 text-grey-900 text-center pt-9.5") {{ $t("BB0031") }}
   template(#note)
-    div(class="flex items-center cursor-pointer text-assist-blue" @click="openModalInviteToOrg")
+    div(class="flex items-center cursor-pointer text-cyan-400" @click="openModalInviteToOrg")
       f-svg-icon(iconName="add_box_outline" size="14")
       p(class="pl-1.5 text-caption") {{ $t("BB0096") }}
 </template>

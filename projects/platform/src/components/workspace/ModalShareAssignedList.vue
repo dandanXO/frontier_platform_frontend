@@ -11,9 +11,9 @@ modal-behavior(
       div(v-for="item in copyShareList" class="flex items-center justify-between h-10.5")
         div(class="flex items-center gap-x-2.5")
           img(v-if="item.logo" :src="item.logo" class="w-10 h-10 rounded-full")
-          div(v-else class="w-10 h-10 rounded-full border-black-500 border border-dashed")
+          div(v-else class="w-10 h-10 rounded-full border-grey-200 border border-dashed")
           div(class="w-86")
-            p(class="text-body2 font-bold w-86 line-clamp-1 mb-2" :class="[item.isRemove ? 'text-black-500' : 'text-primary']") {{ item.name }}
+            p(class="text-body2 font-bold w-86 line-clamp-1 mb-2" :class="[item.isRemove ? 'text-grey-200' : 'text-grey-900']") {{ item.name }}
             div(class="flex items-center gap-x-3")
               f-input-checkbox(
                 binary
@@ -32,8 +32,8 @@ modal-behavior(
                 @update:inputValue="addToUpdateList(item)"
               )
         div
-          p(v-if="item.isRemove" class="text-body2 text-brand cursor-pointer" @click="item.isRemove = false") {{ $t('UU0113') }}
-          p(v-else class="text-body2 text-black-500 cursor-pointer" @click="item.isRemove = true") {{ $t('FF0060') }}
+          p(v-if="item.isRemove" class="text-body2 text-primary-400 cursor-pointer" @click="item.isRemove = false") {{ $t('UU0113') }}
+          p(v-else class="text-body2 text-grey-200 cursor-pointer" @click="item.isRemove = true") {{ $t('FF0060') }}
 </template>
 
 <script setup>

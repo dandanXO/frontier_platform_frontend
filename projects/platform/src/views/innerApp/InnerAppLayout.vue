@@ -7,7 +7,7 @@ div(class="flex h-full")
         component(:is="Component")
         template(#fallback)
           div(class="h-full flex justify-center items-center")
-            f-svg-icon(iconName="loading" size="92" class="text-brand-dark")
+            f-svg-icon(iconName="loading" size="92" class="text-primary-500")
     notify-bar-buffer(v-if="isInInnerApp && planStatus.BUFFER" :key="$route.params.orgNo" class="absolute bottom-0 left-0 z-100")
 </template>
 

@@ -18,7 +18,7 @@ f-table(
   template(#filter)
     div(class="pt-4 pb-3 px-5")
       div(class="flex items-center mb-2")
-        p(class="text-black-700 text-body2 mr-1.5") {{ $t("OO0117") }}
+        p(class="text-grey-600 text-body2 mr-1.5") {{ $t("OO0117") }}
         f-button-label(@click="clearDate") {{ $t("UU0040") }}
       div(class="mr-4 flex items-center")
         f-input-text(
@@ -28,7 +28,7 @@ f-table(
           size="sm"
           @change="getList()"
         )
-        span(class="text-body1 text-primary mx-2") ~
+        span(class="text-body1 text-grey-900 mx-2") ~
         f-input-text(
           v-model:textValue="queryParams.endDate"
           inputType="date"
@@ -36,19 +36,19 @@ f-table(
           size="sm"
           @change="getList()"
         )
-    div(class="border-t border-black-200")
+    div(class="border-t border-grey-100")
     div(class="pt-4 pb-6 px-5")
       div(class="flex items-center mb-2")
-        p(class="text-black-700 text-body2 mr-1.5") {{ $t("OO0118") }}
+        p(class="text-grey-600 text-body2 mr-1.5") {{ $t("OO0118") }}
         f-button-label(@click="changeCategory(EXCEL_CATEGORY.ALL)") {{ $t("UU0040") }}
       div(class="flex")
         div(
           v-for="(category, index) in categoryOptions"
-          class="text-primary text-body2 cursor-pointer flex"
-          :class="{ 'text-brand': queryParams.category === category.value }"
+          class="text-grey-900 text-body2 cursor-pointer flex"
+          :class="{ 'text-primary-400': queryParams.category === category.value }"
           @click="changeCategory(category.value)"
         ) {{ category.label }}
-          div(v-if="index !== categoryOptions.length - 1" class="border-r border-primary-middle h-full mx-4")
+          div(v-if="index !== categoryOptions.length - 1" class="border-r border-grey-150 h-full mx-4")
   template(v-slot="{ item, prop, isHover }")
     template(v-if="prop === 'type'")
       p(v-if="item.category === EXCEL_CATEGORY.UPLOAD") {{ $t("PP0022") }}
@@ -59,7 +59,7 @@ f-table(
         p(class="line-clamp-1") {{ item.fileName }}
         f-tooltip
           template(#trigger)
-            f-svg-icon(iconName="visibility" size="20" class="text-black-500 ml-3 w-5 flex-shrink-0 cursor-pointer" @click="openModalMaterialNoList(item.materialNoList)")
+            f-svg-icon(iconName="visibility" size="20" class="text-grey-200 ml-3 w-5 flex-shrink-0 cursor-pointer" @click="openModalMaterialNoList(item.materialNoList)")
           template(#content)
             p {{ $t("RR0190") }}
     template(v-if="prop === 'createdTime'")
@@ -67,24 +67,24 @@ f-table(
     table-status-label(v-if="prop === 'statusLabel'" :status="item.status")
     table-status-progress(v-if="prop === 'procedure'" :status="item.status")
       //- Unsuccessful
-      div(v-if="item.status === UPLOAD_PROGRESS.UNSUCCESSFUL" class="text-warn-middle inline-flex")
+      div(v-if="item.status === UPLOAD_PROGRESS.UNSUCCESSFUL" class="text-red-400 inline-flex")
         f-svg-icon(iconName="warning_amber_round" size="16" class="mr-1.5 mt-0.5")
         p(v-if="item.msgCode === ERROR_MSG.INACTIVE") {{ $t("WW0092") }}
         p(v-else-if="item.msgCode === ERROR_MSG.INSUFFICIENT_STORAGE") {{ $t("WW0090") }}
-          span(class="text-assist-blue ml-0.5 cursor-pointer" @click="goToBillings") {{ $t("RR0169") }}
+          span(class="text-cyan-400 ml-0.5 cursor-pointer" @click="goToBillings") {{ $t("RR0169") }}
       //- In Queue
-      div(v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE" class="text-black-500 inline-flex")
+      div(v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE" class="text-grey-200 inline-flex")
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         p {{ $t("PP0028") }}
       //- Processing
-      div(v-else-if="item.status === UPLOAD_PROGRESS.PROCESSING" class="text-black-500 inline-flex")
+      div(v-else-if="item.status === UPLOAD_PROGRESS.PROCESSING" class="text-grey-200 inline-flex")
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         i18n-t(v-if="item.category === EXCEL_CATEGORY.UPLOAD" keypath="PP0027" tag="p" scope="global")
           template(#fileName) {{ item.fileName }}
         p(v-else-if="item.category === EXCEL_CATEGORY.EXPORT") {{ $t("PP0026") }}
     div(v-if="prop === 'createBy'" class="flex items-center")
       img(:src="item.createAvatar" class="w-6 h-6 rounded-full")
-      p(class="text-body2 text-primary ml-2 line-clamp-1") {{ item.createUser }}
+      p(class="text-body2 text-grey-900 ml-2 line-clamp-1") {{ item.createUser }}
     div(v-if="prop === 'action'" class="flex justify-end items-center")
       template(v-if="item.status === UPLOAD_PROGRESS.COMPLETE")
         //- Upload Complete
@@ -92,13 +92,13 @@ f-table(
           f-button(type="secondary" size="sm" class="mr-2.5" @click="goToAssets") {{ $t("UU0088") }}
           f-popper(placement="bottom-end" class="w-7.5" :class="[isHover ? 'visible' : 'invisible']")
             template(#trigger)
-              div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
-                f-svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
+              div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-primary-400/10")
+                f-svg-icon(iconName="more_horiz" size="24" class="text-grey-600 group-hover:text-primary-400")
             template(#content="{ collapsePopper }")
               f-list(v-if="item.status === UPLOAD_PROGRESS.COMPLETE && item.category === EXCEL_CATEGORY.UPLOAD")
                 f-list-item(@click="handleAction(PRINT_TYPE.CARD, item.excelProgressId); collapsePopper()") {{ $t("RR0062") }}
                 f-list-item(@click="handleAction(PRINT_TYPE.LABEL, item.excelProgressId); collapsePopper()") {{ $t("RR0061") }}
-                div(class="border-t border-black-400 my-1")
+                div(class="border-t border-grey-200 my-1")
                 f-list-item(@click="handleAction(_, item.excelProgressId); collapsePopper()") {{ $t("RR0060") }}
         //- Export Complete
         f-button(
@@ -115,8 +115,8 @@ f-table(
         :class="[isHover ? 'visible' : 'invisible']"
       )
         template(#trigger)
-          div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-brand/10")
-            f-svg-icon(iconName="more_horiz" size="24" class="text-black-700 group-hover:text-brand")
+          div(class="group w-7.5 h-7.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-primary-400/10")
+            f-svg-icon(iconName="more_horiz" size="24" class="text-grey-600 group-hover:text-primary-400")
         template(#content="{ collapsePopper }")
           f-list
             f-list-item(@click="handleCancel(item.excelProgressId); collapsePopper()") {{ $t("UU0002") }}

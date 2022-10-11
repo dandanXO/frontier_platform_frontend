@@ -16,7 +16,7 @@ div(class="w-full mt-4")
     template(#filter)
       div(class="pt-4 pb-3 px-5")
         div(class="flex items-center mb-2")
-          p(class="text-black-700 text-body2 mr-1.5") {{ $t("OO0117") }}
+          p(class="text-grey-600 text-body2 mr-1.5") {{ $t("OO0117") }}
           f-button-label(@click="clearDate") {{ $t("UU0040") }}
         div(class="mr-4 flex items-center")
           f-input-text(
@@ -26,7 +26,7 @@ div(class="w-full mt-4")
             size="sm"
             @change="getList()"
           )
-          span(class="text-body1 text-primary mx-2") ~
+          span(class="text-body1 text-grey-900 mx-2") ~
           f-input-text(
             v-model:textValue="queryParams.endDate"
             inputType="date"
@@ -34,25 +34,25 @@ div(class="w-full mt-4")
             size="sm"
             @change="getList()"
           )
-      div(class="border-t border-black-200")
+      div(class="border-t border-grey-100")
       div(class="pt-4 pb-6 px-5")
         div(class="flex items-center mb-2")
-          p(class="text-black-700 text-body2 mr-1.5") {{ $t("OO0118") }}
+          p(class="text-grey-600 text-body2 mr-1.5") {{ $t("OO0118") }}
           f-button-label(@click="changeCategory(BILLING_CATEGORY.ALL)") {{ $t("UU0040") }}
         div(class="flex")
           div(
             v-for="(category, index) in categoryOptions"
-            class="text-primary text-body2 cursor-pointer flex"
-            :class="{ 'text-brand': queryParams.category === category.value }"
+            class="text-grey-900 text-body2 cursor-pointer flex"
+            :class="{ 'text-primary-400': queryParams.category === category.value }"
             @click="changeCategory(category.value)"
           ) {{ category.label }}
-            div(v-if="index !== categoryOptions.length - 1" class="border-r border-primary-middle h-full mx-4")
+            div(v-if="index !== categoryOptions.length - 1" class="border-r border-grey-150 h-full mx-4")
     template(v-slot="{ item, prop, isHover }")
       invoice-pdf-generator(v-if="prop === 'download'")
         template(#activator="{ generatePdf }")
-          f-svg-icon(iconName="picture_as_pdf" class="text-assist-blue cursor-pointer" @click="generatePdf(item.invoiceId)")
+          f-svg-icon(iconName="picture_as_pdf" class="text-cyan-400 cursor-pointer" @click="generatePdf(item.invoiceId)")
       div(v-if="prop === 'view'")
-        f-svg-icon(v-show="isHover" iconName="visibility" class="cursor-pointer text-black-600"  @click="openModalViewInvoice(item.invoiceId)")
+        f-svg-icon(v-show="isHover" iconName="visibility" class="cursor-pointer text-grey-600"  @click="openModalViewInvoice(item.invoiceId)")
 </template>
 
 <script>

@@ -25,15 +25,15 @@ export default {
 
       switch (props.size) {
         case 'lg':
-          baseClass.push('text-body2', 'h-8.5', 'px-5', 'py-2.5', 'bg-black-100', 'text-primary', 'hover:bg-primary', 'hover:text-black-0', 'font-bold', 'border', 'border-black-400')
+          baseClass.push('text-body2', 'h-8.5', 'px-5', 'py-2.5', 'bg-grey-50', 'text-grey-900', 'hover:bg-grey-900', 'hover:text-grey-0', 'font-bold', 'border', 'border-grey-200')
           if (props.active) {
-            baseClass.push('!bg-primary', '!text-black-0')
+            baseClass.push('!bg-grey-900', '!text-grey-0')
           }
           break
         case 'sm':
-          baseClass.push('text-caption', 'h-6', 'px-2.5', 'py-1', 'bg-primary-thin', 'text-black-700', 'hover:bg-primary-middle')
+          baseClass.push('text-caption', 'h-6', 'px-2.5', 'py-1', 'bg-grey-100', 'text-grey-600', 'hover:bg-grey-150')
           if (props.active) {
-            baseClass.push('!bg-primary-middle')
+            baseClass.push('!bg-grey-150')
           }
           break
       }

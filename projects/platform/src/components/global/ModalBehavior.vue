@@ -1,13 +1,13 @@
 <template lang="pug">
-div(class="fixed inset-0 z-modal w-screen h-screen bg-black-900/30 flex justify-center items-center")
+div(class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center")
   div(class="w-screen h-screen" @click="closable && closeModalBehavior()")
-  div(class="absolute w-min bg-black-0 rounded card-show py-5")
-    div(class="h-8.5 px-5 pb-5 flex justify-between items-start border-b border-black-200")
-      p(class="text-body2 font-bold text-primary") {{ header }}
-      f-svg-icon(v-if="closable" iconName="clear" size="20" class="cursor-pointer text-black-700" @click="closeModalBehavior")
+  div(class="absolute w-min bg-grey-0 rounded card-show py-5")
+    div(class="h-8.5 px-5 pb-5 flex justify-between items-start border-b border-grey-100")
+      p(class="text-body2 font-bold text-grey-900") {{ header }}
+      f-svg-icon(v-if="closable" iconName="clear" size="20" class="cursor-pointer text-grey-600" @click="closeModalBehavior")
     div(class="px-5 pt-5 pb-10 w-fit max-h-103 box-content overflow-y-auto")
       slot(name="default")
-    div(class="px-5 h-13.5 border-t border-black-200 flex items-end")
+    div(class="px-5 h-13.5 border-t border-grey-100 flex items-end")
       div(class="w-full flex justify-between")
         div(class="flex items-center text-caption leading-1.6")
           slot(name="note")

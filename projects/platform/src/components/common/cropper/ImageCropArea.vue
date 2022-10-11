@@ -3,13 +3,13 @@ div(class="relative")
   div(class="absolute" :style="cropRectStyle")
     cropped-image(:config="config" isTransparent @update="updateOptions")
     slot
-  div(class="overflow-hidden bg-black-0" :style="cropRectStyle")
+  div(class="overflow-hidden bg-grey-0" :style="cropRectStyle")
     div(class="cursor-move" :style="cropRectStyle")
       cropped-image(:config="config" @update="updateOptions")
-  div(class="corner absolute w-4.5 h-4.5 border-t-2 border-l-2 top-0 left-0 border-primary")
-  div(class="corner absolute w-4.5 h-4.5 border-t-2 border-r-2 top-0 right-0 border-primary")
-  div(class="corner absolute w-4.5 h-4.5 border-b-2 border-l-2 bottom-0 left-0 border-primary")
-  div(class="corner absolute w-4.5 h-4.5 border-b-2 border-r-2 bottom-0 right-0 border-primary")
+  div(class="corner absolute w-4.5 h-4.5 border-t-2 border-l-2 top-0 left-0 border-grey-900")
+  div(class="corner absolute w-4.5 h-4.5 border-t-2 border-r-2 top-0 right-0 border-grey-900")
+  div(class="corner absolute w-4.5 h-4.5 border-b-2 border-l-2 bottom-0 left-0 border-grey-900")
+  div(class="corner absolute w-4.5 h-4.5 border-b-2 border-r-2 bottom-0 right-0 border-grey-900")
   teleport(to="body")
     div(ref="cropRect" class="w-0 h-0 overflow-hidden -z-1")
       div(:style="styleSize")
@@ -68,7 +68,7 @@ const cropImage = () => {
   return new Promise((resolve, reject) => {
     cropRect.value.style.width = styleSize.value.width
     cropRect.value.style.height = styleSize.value.height
-    document.body.classList.add('overflow-hidden', 'bg-black-0')
+    document.body.classList.add('overflow-hidden', 'bg-grey-0')
     html2canvas(cropRect.value, {
       allowTaint: true,
       useCORS: true,
@@ -78,7 +78,7 @@ const cropImage = () => {
     }).then((canvas) => {
       cropRect.value.style.width = 0
       cropRect.value.style.height = 0
-      document.body.classList.remove('overflow-hidden', 'bg-black-0')
+      document.body.classList.remove('overflow-hidden', 'bg-grey-0')
       const dataUrl = canvas.toDataURL('image/jpeg')
       const fileName = `${tempFilenameGenerator()}.jpeg`
       const blob = dataUrlToBlob(dataUrl)

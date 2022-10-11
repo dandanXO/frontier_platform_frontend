@@ -4,7 +4,7 @@ f-input-text(v-bind="props" v-model:textValue="innerTextValue" :inputType="isVis
     div(class="h-full flex items-center")
       f-svg-icon(
         size="20"
-        :class="[isVisible ? 'text-primary' : 'text-black-400']"
+        :class="[isVisible ? 'text-grey-900' : 'text-grey-200']"
         :iconName="isVisible ? 'openeye' : 'hideeye'"
         @click="isVisible = !isVisible"
       )

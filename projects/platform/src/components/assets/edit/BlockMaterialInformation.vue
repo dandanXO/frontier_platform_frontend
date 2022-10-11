@@ -1,7 +1,7 @@
 <template lang="pug">
-div(class="pb-15 border-b border-black-400")
+div(class="pb-15 border-b border-grey-200")
   div(class="h-16 flex items-center justify-between")
-    h5(class="text-h5 text-primary font-bold") {{ $t("DD0013") }}
+    h5(class="text-h5 text-grey-900 font-bold") {{ $t("DD0013") }}
     f-button(
       v-if="isEditMode"
       size="sm"
@@ -48,7 +48,7 @@ div(class="pb-15 border-b border-black-400")
               data-cy="weight"
             )
               template(v-if="validations.weight" #slot:errorMsg)
-                p(class="text-caption text-warn absolute pt-1 whitespace-nowrap") {{ validations.weight }}
+                p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ validations.weight }}
             f-input-select(
               v-model:selectValue="material.weightUnit"
               :optionList="specOptions.weightUnitList"
@@ -63,8 +63,8 @@ div(class="pb-15 border-b border-black-400")
               class="w-50"
             )
               template(v-if="validations.weightGy" #slot:errorMsg)
-                p(class="text-caption text-warn absolute pt-1 whitespace-nowrap") {{ validations.weightGy }}
-            p(class="text-body2 text-primary font-bold") {{ $t("RR0018") }}
+                p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ validations.weightGy }}
+            p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0018") }}
         f-input-container(:label="$t('RR0019')" required)
           div(class="flex items-center gap-x-3")
             f-input-text(
@@ -74,8 +74,8 @@ div(class="pb-15 border-b border-black-400")
               data-cy="width"
             )
               template(v-if="validations.width" #slot:errorMsg)
-                p(class="text-caption text-warn absolute pt-1 whitespace-nowrap") {{ validations.width }}
-            p(class="text-body2 text-primary font-bold") {{ $t("RR0020") }}
+                p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ validations.width }}
+            p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0020") }}
         f-input-container(:label="$t('RR0021')" required)
           div(class="grid gap-y-3")
             div(v-for="(content, contentItemIndex) in material.contentList" class="flex items-center")
@@ -95,11 +95,11 @@ div(class="pb-15 border-b border-black-400")
                 data-cy="content"
               )
               f-input-text(v-model:textValue="content.percentage" inputType="number" class="w-25 mr-3" data-cy="percentage")
-              p(class="text-body2 text-primary pr-7.5") %
-              f-svg-icon(v-if="contentItemIndex === 0" size="20" iconName="add_box" class="text-black-700" @click="addNewContent" data-cy="add-content")
-              f-svg-icon(v-else size="20" iconName="delete" class="text-black-700" @click="removeContent(contentItemIndex)")
+              p(class="text-body2 text-grey-900 pr-7.5") %
+              f-svg-icon(v-if="contentItemIndex === 0" size="20" iconName="add_box" class="text-grey-600" @click="addNewContent" data-cy="add-content")
+              f-svg-icon(v-else size="20" iconName="delete" class="text-grey-600" @click="removeContent(contentItemIndex)")
           template(#slot:hint)
-            p(v-if="validations.contentList" class="text-caption text-warn absolute pt-1" data-cy="error-msg") {{ validations.contentList }}
+            p(v-if="validations.contentList" class="text-caption text-red-400 absolute pt-1" data-cy="error-msg") {{ validations.contentList }}
         f-input-chips(
           v-model:chips="material.finishList"
           :label="$t('RR0022')"
@@ -118,7 +118,7 @@ div(class="pb-15 border-b border-black-400")
               class="w-50"
                 data-cy="warpYarnCount"
             )
-            f-svg-icon(iconName="clear" size="20" class="text-primary")
+            f-svg-icon(iconName="clear" size="20" class="text-grey-900")
             f-input-text(
               v-model:textValue="material.weftYarnCount"
               :customErrorMsg="validations.weftYarnCount"
@@ -133,7 +133,7 @@ div(class="pb-15 border-b border-black-400")
               class="w-50"
               data-cy="warpDensity"
             )
-            f-svg-icon(iconName="clear" size="20" class="text-primary")
+            f-svg-icon(iconName="clear" size="20" class="text-grey-900")
             f-input-text(
               v-model:textValue="material.weftDensity"
               :customErrorMsg="validations.weftDensity"
@@ -147,7 +147,7 @@ div(class="pb-15 border-b border-black-400")
               :customErrorMsg="validations.pattern"
               class="w-50"
             )
-            f-svg-icon(iconName="slash" size="20" class="text-primary")
+            f-svg-icon(iconName="slash" size="20" class="text-grey-900")
             f-input-text(
               v-model:textValue="material.color"
               :customErrorMsg="validations.color"
@@ -164,7 +164,7 @@ div(class="pb-15 border-b border-black-400")
             v-model:chips="material.aiTagList"
             :placeholder="$t('DD0018')"
           )
-          p(class="absolute right-0 top-0 text-caption text-primary") {{ $t("EE0036") }}
+          p(class="absolute right-0 top-0 text-caption text-grey-900") {{ $t("EE0036") }}
       div(v-if="isOpenSampleCard" class="flex-shrink-0 w-75 h-fit ml-8 sticky top-0")
         cropper-default-layout(
           :showScale="true"
@@ -178,8 +178,8 @@ div(class="pb-15 border-b border-black-400")
               :cropRectSize="cropRectSize"
               @update:options="Object.assign(config.options, $event)"
             )
-    div(class="bg-black-100 px-15 py-12.5 mt-7.5 grid gap-y-7.5")
-      h6(class="text-h6 text-black-600 font-bold") {{ $t("DD0019") }}
+    div(class="bg-grey-50 px-15 py-12.5 mt-7.5 grid gap-y-7.5")
+      h6(class="text-h6 text-grey-600 font-bold") {{ $t("DD0019") }}
       f-input-chips(
         v-model:chips="material.privateTagList"
         :label="$t('RR0028')"

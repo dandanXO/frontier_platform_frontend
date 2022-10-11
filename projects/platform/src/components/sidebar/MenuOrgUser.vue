@@ -1,11 +1,11 @@
 <template lang="pug">
-div(class="h-13 bg-black-200 py-2.5 pl-4 pr-6")
+div(class="h-13 bg-grey-100 py-2.5 pl-4 pr-6")
   f-popper(placement="right-start" :offset="[-40, -60]")
     template(#trigger="{ isExpand }")
       div(class="w-50 flex items-center cursor-pointer")
         img(:src="avatar" class="rounded-full w-8 h-8 mr-2")
-        p(class="flex-grow text-body2 text-primary line-clamp-1 cursor-pointer") {{ orgUser.displayName }}
-        f-svg-icon(iconName="keyboard_arrow_down" size="24" class="text-black-650 transform" :class="[isExpand ? 'rotate-180' : 'rotate-0']")
+        p(class="flex-grow text-body2 text-grey-900 line-clamp-1 cursor-pointer") {{ orgUser.displayName }}
+        f-svg-icon(iconName="keyboard_arrow_down" size="24" class="text-grey-600 transform" :class="[isExpand ? 'rotate-180' : 'rotate-0']")
     template(#content="{ collapsePopper }")
       f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
 </template>
@@ -28,7 +28,7 @@ const openModal = (component, properties = {}) => {
   })
 }
 
-const menuTree = {
+const menuTree = computed(() => ({
   blockList: [
     {
       menuList: [
@@ -44,6 +44,10 @@ const menuTree = {
     },
     {
       menuList: [
+        {
+          title: t('RR0137'),
+          clickHandler: openModal.bind(undefined, 'modal-change-locale')
+        },
         {
           title: t('RR0123'),
           clickHandler: openModal.bind(undefined, 'modal-send-feedback')
@@ -67,5 +71,5 @@ const menuTree = {
       ]
     }
   ]
-}
+}))
 </script>

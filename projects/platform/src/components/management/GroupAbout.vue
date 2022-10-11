@@ -1,18 +1,18 @@
 <template lang="pug">
 div
   div(class="w-85 mx-auto relative")
-    p(class="text-right pt-4.5 pb-5 text-caption text-black-600") *{{ $t('RR0163') }}
+    p(class="text-right pt-4.5 pb-5 text-caption text-grey-600") *{{ $t('RR0163') }}
     div
       div(class="flex items-center justify-between pb-2")
         div(class="flex text-body2 font-bold items-end")
-          i(class="text-warn pr-0.5") *
-          p(class="text-primary") {{ $t('BB0086') }}
-          p(class="font-normal text-caption text-black-500 cursor-pointer pl-1" @click="openModalTypeTextToConfirm" data-cy="group-about_delete") {{ $t("UU0013") }}
+          i(class="text-red-400 pr-0.5") *
+          p(class="text-grey-900") {{ $t('BB0086') }}
+          p(class="font-normal text-caption text-grey-200 cursor-pointer pl-1" @click="openModalTypeTextToConfirm" data-cy="group-about_delete") {{ $t("UU0013") }}
         f-tooltip
           template(#trigger)
             div(class="flex items-center" @click="copyText(groupNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))")
-              p(class="text-caption text-primary cursor-pointer pr-1.5") ID: {{ groupNo }}
-              f-svg-icon(iconName="content_copy" size="14" class="text-black-700 cursor-pointer")
+              p(class="text-caption text-grey-900 cursor-pointer pr-1.5") ID: {{ groupNo }}
+              f-svg-icon(iconName="content_copy" size="14" class="text-grey-600 cursor-pointer")
           template(#content)
             p {{ $t("BB0056") }}
       input-label-color(

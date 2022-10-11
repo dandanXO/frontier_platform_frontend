@@ -94,7 +94,8 @@ export default {
     ModalTermsOfSubscription: defineAsyncComponent(() => import('@/components/billings/ModalTermsOfSubscription.vue')),
     ModalPaymentLastMonthFail: defineAsyncComponent(() => import('@/components/billings/ModalPaymentLastMonthFail.vue')),
     ModalPublicLibraryShare: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryShare.vue')),
-    ModalPublicLibraryShareAssigned: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryShareAssigned.vue'))
+    ModalPublicLibraryShareAssigned: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryShareAssigned.vue')),
+    ModalChangeLocale: defineAsyncComponent(() => import('@/components/common/ModalChangeLocale.vue'))
   },
   setup () {
     const store = useStore()

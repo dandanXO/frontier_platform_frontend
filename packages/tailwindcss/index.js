@@ -75,19 +75,6 @@ module.exports = plugin(
       },
       extend: {
         colors: {
-          black: {
-            900: '#222222',
-            800: '#666666',
-            700: '#757575',
-            650: '#878787',
-            600: '#919191',
-            500: '#c4c4c4',
-            400: '#dcdcdc',
-            200: '#f5f5f5',
-            100: '#f9f9f9',
-            50: '#fafafa',
-            0: '#ffffff'
-          },
           grey: {
             900: '#262626',
             800: '#3C3C3C',
@@ -103,9 +90,6 @@ module.exports = plugin(
             0: '#FFFFFF'
           },
           primary: {
-            DEFAULT: '#444444',
-            middle: '#e0e0e0',
-            thin: '#eeeded',
             900: '#03393E',
             800: '#074E54',
             700: '#0A6665',
@@ -116,20 +100,6 @@ module.exports = plugin(
             200: '#71DABB',
             100: '#CFF6EB',
             0: '#E9F8F3'
-          },
-          brand: {
-            DEFAULT: '#21b185',
-            dark: '#20a17a',
-            light: '#e9f8f3',
-          },
-          assist: {
-            blue: '#268cc8',
-            'light-blue': '#52c9d7',
-            'light-yellow': '#fed402'
-          },
-          warn: {
-            DEFAULT: '#b40000',
-            middle: '#E04A4A'
           },
           brown: {
             800: '#402816',

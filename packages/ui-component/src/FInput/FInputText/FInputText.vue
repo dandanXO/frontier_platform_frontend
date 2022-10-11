@@ -13,7 +13,7 @@ input[type="date"] {
 
 <template lang="pug">
 f-input-container(:label="label" :required="required")
-  div(class="px-4 border border-black-400 rounded flex items-center" :class="[classBorder, { 'bg-black-200': disabled }, size === 'lg' ? 'h-11' : 'h-9']")
+  div(class="px-4 border border-grey-200 rounded flex items-center" :class="[classBorder, { 'bg-grey-100': disabled }, size === 'lg' ? 'h-11' : 'h-9']")
     slot(name="slot:prependItem")
     div(v-if="prependIcon || slots['slot:prependIcon']" class="pr-1")
       f-svg-icon(
@@ -33,19 +33,19 @@ f-input-container(:label="label" :required="required")
       @blur="onBlur"
       @change="$emit('change')"
       @keydown.enter="$emit('enter')"
-      class="w-full flex-grow outline-none bg-transparent overflow-hidden text-primary text-body2 disabled:text-black-600 placeholder:text-black-400 placeholder:overflow-visible"
+      class="w-full flex-grow outline-none bg-transparent overflow-hidden text-grey-900 text-body2 disabled:text-grey-600 placeholder:text-grey-200 placeholder:overflow-visible"
       autocomplete
     )
     div(v-if="clearable && !!textValue" class="pl-1")
       f-svg-icon(
         size="20"
         iconName="clear"
-        class="text-black-500"
+        class="text-grey-200"
         @click.stop="clear"
       )
     slot(name="slot:appendItem")
   template(#slot:hint)
-    p(v-if="!!errorMsg" class="text-caption text-warn absolute pt-1" data-cy="error-msg") {{ errorMsg }}
+    p(v-if="!!errorMsg" class="text-caption text-red-400 absolute pt-1" data-cy="error-msg") {{ errorMsg }}
     slot(v-else name="slot:errorMsg" data-cy="error-msg")
 </template>
 

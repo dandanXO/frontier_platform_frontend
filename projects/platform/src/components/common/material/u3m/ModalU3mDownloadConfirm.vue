@@ -7,15 +7,15 @@ modal-behavior(
   @click:secondary="clearModalPipeline"
 )
   div(class="w-94")
-    div(class="text-primary text-caption mb-2.5 leading-1.6") {{ $t("EE0108") }}
+    div(class="text-grey-900 text-caption mb-2.5 leading-1.6") {{ $t("EE0108") }}
     f-scrollbar-container(class="max-h-89.5 -mx-5 px-5")
       div(
         v-for="(material, index) in failedList"
-        class="flex gap-3 border-black-400 py-2.5 text-body2 text-primary leading-1.6"
+        class="flex gap-3 border-grey-200 py-2.5 text-body2 text-grey-900 leading-1.6"
         :class="{ 'border-b': index !== failedList.length - 1 }"
 )
-        div(class="w-31 pl-15 font-bold flex-shrink-0") {{ index + 1 }}
-        div {{ material.materialNo }}
+  div(class="w-31 pl-15 font-bold flex-shrink-0") {{ index + 1 }}
+  div {{ material.materialNo }}
 </template>
 
 <script>

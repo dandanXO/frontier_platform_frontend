@@ -101,7 +101,7 @@ export default {
     },
     iconColor: {
       type: String,
-      default: 'text-black-0'
+      default: 'text-grey-0'
     }
   },
   emits: ['click:icon', 'update:textValue'],
@@ -109,9 +109,9 @@ export default {
     const bgType = computed(() => {
       switch (props.type) {
         case 'primary':
-          return ['bg-brand', 'text-black-0', 'disabled:bg-primary-middle', 'hover:bg-brand-dark']
+          return ['bg-primary-400', 'text-grey-0', 'disabled:bg-grey-150', 'hover:bg-primary-500']
         case 'secondary':
-          return ['bg-black-0', 'text-brand', 'disabled:text-black-500', 'border', 'border-primary-middle', 'hover:text-brand-dark']
+          return ['bg-grey-0', 'text-primary-400', 'disabled:text-grey-200', 'border', 'border-grey-150', 'hover:text-primary-500']
       }
     })
     const innerTextValue = computed({

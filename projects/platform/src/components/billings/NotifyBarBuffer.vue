@@ -2,9 +2,9 @@
 div(
   v-if="isShowBufferNotifyBar"
   class="w-full h-14 flex justify-between items-center pl-12.5 pr-7.5"
-  :class="[{ 'bg-warn-middle': planType.BASIC || planType.PRO }, { 'bg-brand': planType.ENT }]"
+  :class="[{ 'bg-red-400': planType.BASIC || planType.PRO }, { 'bg-primary-400': planType.ENT }]"
 )
-  div(class="flex items-center text-black-0")
+  div(class="flex items-center text-grey-0")
     f-svg-icon(iconName="warning_amber_round" size="24")
     h6(v-if="planType.BASIC || planType.PRO" class="text-h6 ml-3")
       template(v-if="orgUserRole.OWNER || orgUserRole.ADMIN") {{ $t('OO0139') }}
@@ -16,7 +16,7 @@ div(
           span(class="font-bold") {{ $t('RR0139') }}
   div(class="flex items-center")
     f-tag(v-if="planType.BASIC || planType.PRO" size="lg" @click="openModalPaymentLastMonthFail" class="mr-4") {{ $t('UU0066') }}
-    f-svg-icon(iconName="clear" size="24" class="text-black-0 cursor-pointer" @click="isShowBufferNotifyBar = false")
+    f-svg-icon(iconName="clear" size="24" class="text-grey-0 cursor-pointer" @click="isShowBufferNotifyBar = false")
 </template>
 
 <script>

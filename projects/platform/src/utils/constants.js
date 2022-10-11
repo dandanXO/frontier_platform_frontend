@@ -1,4 +1,5 @@
 import i18n from '@/utils/i18n'
+import { computed } from 'vue'
 
 export const ROLE_ID = {
   OWNER: 1,
@@ -10,20 +11,20 @@ export const ROLE_ID = {
 }
 
 export const COLOR = {
-  RED: '#D3242A',
-  LAVA: '#EE695E',
-  ORANGE: '#FAA62A',
-  YELLOW: '#FED402',
-  LIGHTGREEN: '#61C554',
-  DARKGREEN: '#139613',
-  CYAN: '#00CEB4',
-  LIGHTBLUE: '#18AAFD',
-  DARKBLUE: '#0369DA',
-  DARKPURPLE: '#7B61FF',
-  LIGHTPURPLE: '#CD9BFF',
-  PINK: '#FF79B9',
-  BROWN: '#964800',
-  GRAY: '#616161'
+  RED: '#E04A4B',
+  LAVA: '#F07D73',
+  ORANGE: '#F8A853',
+  YELLOW: '#F2C94C',
+  LIGHTGREEN: '#8BC34A',
+  DARKGREEN: '#48A148',
+  CYAN: '#2498A3',
+  LIGHTBLUE: '#57B4DF',
+  DARKBLUE: '#3B82F6',
+  DARKPURPLE: '#A855F7',
+  LIGHTPURPLE: '#D8B4FE',
+  PINK: '#F472B6',
+  BROWN: '#B48360',
+  GREY: '#939393'
 }
 
 export const MODAL_TYPE = {
@@ -44,17 +45,6 @@ export const MODAL_CONFIRM_TYPE = {
 export const SIDE_TYPE = {
   FACE: 1,
   BACK: 2
-}
-
-export const WEIGHT_UNIT = {
-  GSM: {
-    text: i18n.global.t('RR0016'),
-    value: 1
-  },
-  OZ: {
-    text: i18n.global.t('RR0017'),
-    value: 2
-  }
 }
 
 export const INVENTORY_UNIT = {
@@ -82,114 +72,6 @@ export const U3M_STATUS = {
   COMPLETED: 2,
   PROCESSING: 3,
   UNSUCCESSFUL: 99
-}
-
-export const FILTER_COMPLETE = {
-  NOT_IN_WORKSPACE: {
-    text: i18n.global.t('RR0099'),
-    value: 1
-  },
-  WITH_U3M: {
-    text: i18n.global.t('RR0100'),
-    value: 2
-  },
-  WITHOUT_U3M: {
-    text: i18n.global.t('RR0101'),
-    value: 3
-  },
-  NO_SCAN_IMG: {
-    text: i18n.global.t('RR0102'),
-    value: 4
-  },
-  NO_IMG: {
-    text: i18n.global.t('RR0103'),
-    value: 5
-  },
-  WITH_REQUIRED_FIELDS: {
-    text: i18n.global.t('RR0104'),
-    value: 6
-  },
-  UNFILLED_CERTIFICATION: {
-    text: i18n.global.t('RR0250'),
-    value: 7
-  }
-}
-
-/**
- * 1. 關聯度 Relevance：照分數高至低排名
- * 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名
- * 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名
- * 4. 字母順序 A to Z
- * 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z)
- * 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z)
- * 7. 建立時間：最新建立的排前
- * 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前
- * 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前
- * 10. 最新加入 (New arrived)：最新加入的排前
- * 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新
- * 12. 隨機排序 (Random)：隨機重新排序
- */
-export const SORT_BY = {
-  RELEVANCE: {
-    text: i18n.global.t('RR0070'),
-    value: 1
-  },
-  RELEVANCE_C_M: {
-    text: i18n.global.t('RR0114'),
-    value: 2
-  },
-  RELEVANCE_M_C: {
-    text: i18n.global.t('RR0115'),
-    value: 3
-  },
-  MATERIAL_NO_A_Z: {
-    text: i18n.global.t('RR0067'),
-    value: 4
-  },
-  MATERIAL_NO_A_Z_C_M: {
-    text: i18n.global.t('RR0110'),
-    value: 5
-  },
-  MATERIAL_NO_A_Z_M_C: {
-    text: i18n.global.t('RR0111'),
-    value: 6
-  },
-  CREATE_DATE: {
-    text: i18n.global.t('RR0065'),
-    value: 7
-  },
-  CREATE_DATE_C_M: {
-    text: i18n.global.t('RR0112'),
-    value: 8
-  },
-  CREATE_DATE_M_C: {
-    text: i18n.global.t('RR0113'),
-    value: 9
-  },
-  NEW_ARRIVED: {
-    text: i18n.global.t('RR0129'),
-    value: 10
-  },
-  LAST_UPDATE: {
-    text: i18n.global.t('RR0066'),
-    value: 11
-  },
-  RANDOM: {
-    text: i18n.global.t('RR0128'),
-    value: 12
-  },
-  GHG_RESULTS: {
-    text: i18n.global.t('RR0251'),
-    value: 13
-  },
-  WATER_DEPLETION_RESULTS: {
-    text: i18n.global.t('RR0252'),
-    value: 14
-  },
-  LAND_USE_RESULTS: {
-    text: i18n.global.t('RR0253'),
-    value: 15
-  }
 }
 
 export const TARGET_LOCATION = {
@@ -222,29 +104,6 @@ export const SEARCH_TYPE = {
 export const DISPLAY_NODE = {
   LIST: 1,
   GRID: 2
-}
-
-export const FEEDBACK_CATEGORY = {
-  BUG: {
-    text: i18n.global.t('MM0010'),
-    value: 1
-  },
-  SUGGESTION: {
-    text: i18n.global.t('MM0011'),
-    value: 2
-  },
-  PAYMENT: {
-    text: i18n.global.t('OO0065'),
-    value: 4
-  },
-  CARBON_EMISSION: {
-    text: i18n.global.t('MM0037'),
-    value: 5
-  },
-  OTHER: {
-    text: i18n.global.t('MM0012'),
-    value: 3
-  }
 }
 
 export const SHARING_FROM = {
@@ -426,10 +285,164 @@ export const VALUE_ADDED_SERVICE_ID = {
   MADE2FLOW: 'made2flow'
 }
 
-export const MADE2FLOW_TAG_LIST = {
-  INTRODUCTION: { id: 1, text: i18n.global.t('VV0022') },
-  METHODOLOGY: { id: 2, text: i18n.global.t('RR0234') },
-  FAQ: { id: 3, text: i18n.global.t('VV0024') },
-  PLAN_AND_PRICE: { id: 4, text: i18n.global.t('VV0025') },
-  APPOINTMENT: { id: 5, text: i18n.global.t('VV0026') }
+
+export const useConstants = () => {
+  const MADE2FLOW_TAG_LIST = computed(() => ({
+    INTRODUCTION: { id: 1, text: i18n.global.t('VV0022') },
+    METHODOLOGY: { id: 2, text: i18n.global.t('RR0234') },
+    FAQ: { id: 3, text: i18n.global.t('VV0024') },
+    PLAN_AND_PRICE: { id: 4, text: i18n.global.t('VV0025') },
+    APPOINTMENT: { id: 5, text: i18n.global.t('VV0026') }
+  }))
+
+  const FEEDBACK_CATEGORY = computed(() => ({
+    BUG: {
+      text: i18n.global.t('MM0010'),
+      value: 1
+    },
+    SUGGESTION: {
+      text: i18n.global.t('MM0011'),
+      value: 2
+    },
+    PAYMENT: {
+      text: i18n.global.t('OO0065'),
+      value: 4
+    },
+    CARBON_EMISSION: {
+      text: i18n.global.t('MM0037'),
+      value: 5
+    },
+    OTHER: {
+      text: i18n.global.t('MM0012'),
+      value: 3
+    }
+  }))
+
+  /**
+   * 1. 關聯度 Relevance：照分數高至低排名
+   * 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名
+   * 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名
+   * 4. 字母順序 A to Z
+   * 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z)
+   * 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z)
+   * 7. 建立時間：最新建立的排前
+   * 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前
+   * 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前
+   * 10. 最新加入 (New arrived)：最新加入的排前
+   * 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新
+   * 12. 隨機排序 (Random)：隨機重新排序
+   */
+  const SORT_BY = computed(() => ({
+    RELEVANCE: {
+      text: i18n.global.t('RR0070'),
+      value: 1
+    },
+    RELEVANCE_C_M: {
+      text: i18n.global.t('RR0114'),
+      value: 2
+    },
+    RELEVANCE_M_C: {
+      text: i18n.global.t('RR0115'),
+      value: 3
+    },
+    MATERIAL_NO_A_Z: {
+      text: i18n.global.t('RR0067'),
+      value: 4
+    },
+    MATERIAL_NO_A_Z_C_M: {
+      text: i18n.global.t('RR0110'),
+      value: 5
+    },
+    MATERIAL_NO_A_Z_M_C: {
+      text: i18n.global.t('RR0111'),
+      value: 6
+    },
+    CREATE_DATE: {
+      text: i18n.global.t('RR0065'),
+      value: 7
+    },
+    CREATE_DATE_C_M: {
+      text: i18n.global.t('RR0112'),
+      value: 8
+    },
+    CREATE_DATE_M_C: {
+      text: i18n.global.t('RR0113'),
+      value: 9
+    },
+    NEW_ARRIVED: {
+      text: i18n.global.t('RR0129'),
+      value: 10
+    },
+    LAST_UPDATE: {
+      text: i18n.global.t('RR0066'),
+      value: 11
+    },
+    RANDOM: {
+      text: i18n.global.t('RR0128'),
+      value: 12
+    },
+    GHG_RESULTS: {
+      text: i18n.global.t('RR0251'),
+      value: 13
+    },
+    WATER_DEPLETION_RESULTS: {
+      text: i18n.global.t('RR0252'),
+      value: 14
+    },
+    LAND_USE_RESULTS: {
+      text: i18n.global.t('RR0253'),
+      value: 15
+    }
+  }))
+
+  const FILTER_COMPLETE = computed(() => ({
+    NOT_IN_WORKSPACE: {
+      text: i18n.global.t('RR0099'),
+      value: 1
+    },
+    WITH_U3M: {
+      text: i18n.global.t('RR0100'),
+      value: 2
+    },
+    WITHOUT_U3M: {
+      text: i18n.global.t('RR0101'),
+      value: 3
+    },
+    NO_SCAN_IMG: {
+      text: i18n.global.t('RR0102'),
+      value: 4
+    },
+    NO_IMG: {
+      text: i18n.global.t('RR0103'),
+      value: 5
+    },
+    WITH_REQUIRED_FIELDS: {
+      text: i18n.global.t('RR0104'),
+      value: 6
+    },
+    UNFILLED_CERTIFICATION: {
+      text: i18n.global.t('RR0250'),
+      value: 7
+    }
+  }))
+
+
+  const WEIGHT_UNIT = computed(() => ({
+    GSM: {
+      text: i18n.global.t('RR0016'),
+      value: 1
+    },
+    OZ: {
+      text: i18n.global.t('RR0017'),
+      value: 2
+    }
+  }))
+
+  return {
+    MADE2FLOW_TAG_LIST,
+    FEEDBACK_CATEGORY,
+    SORT_BY,
+    FILTER_COMPLETE,
+    WEIGHT_UNIT
+  }
 }

@@ -1,17 +1,17 @@
 <template lang="pug">
-f-expansion-panel(class="border-b border-black-400")
+f-expansion-panel(class="border-b border-grey-200")
   template(#trigger="{ isExpand }")
     div(class="h-15 flex items-center justify-between")
-      h5(class="text-h5 text-primary font-bold") {{ $t("DD0021") }}
+      h5(class="text-h5 text-grey-900 font-bold") {{ $t("DD0021") }}
       f-svg-icon(
         iconName="keyboard_arrow_right"
         size="20"
-        class="transform text-primary"
+        class="transform text-grey-900"
         :class="[isExpand ? '-rotate-90' : 'rotate-90']"
       )
   template(#content)
-    div(class="bg-black-100 px-15 py-12.5 mb-15 grid gap-y-7.5")
-      h6(class="text-h6 text-black-600 font-bold") {{ $t("DD0019") }}
+    div(class="bg-grey-50 px-15 py-12.5 mb-15 grid gap-y-7.5")
+      h6(class="text-h6 text-grey-600 font-bold") {{ $t("DD0019") }}
       f-input-text(
         v-model:textValue="material.materialSeq"
         :label="$t('RR0030')"
@@ -25,7 +25,7 @@ f-expansion-panel(class="border-b border-black-400")
             inputType="number"
             class="w-50"
           )
-          f-svg-icon(iconName="slash" size="20" class="text-primary")
+          f-svg-icon(iconName="slash" size="20" class="text-grey-900")
           f-input-text(
             v-model:textValue="material.sampleCardsLocation"
             :customErrorMsg="validations.sampleCardsLocation"
@@ -39,13 +39,13 @@ f-expansion-panel(class="border-b border-black-400")
             inputType="number"
             class="w-50"
           )
-          f-svg-icon(iconName="slash" size="20" class="text-primary")
+          f-svg-icon(iconName="slash" size="20" class="text-grey-900")
           f-input-text(
             v-model:textValue="material.hangersLocation"
             :customErrorMsg="validations.hangersLocation"
             class="w-50"
           )
-      h6(class="text-h6 text-black-600 font-bold") {{ $t("DD0023") }}
+      h6(class="text-h6 text-grey-600 font-bold") {{ $t("DD0023") }}
       f-input-container(:label="$t('RR0034')")
         div(class="flex items-center gap-x-3")
           f-input-text(
@@ -87,9 +87,9 @@ f-expansion-panel(class="border-b border-black-400")
             keyOptionValue="unit"
             class="w-25"
           )
-          f-svg-icon(v-if="index === 0" size="20" iconName="add_box" class="text-black-700 ml-4.5 mt-5.5" @click="addNewInventory")
-          f-svg-icon(v-else size="20" iconName="delete" class="text-black-700 ml-4.5" @click="removeInventory(index)")
-        p(v-if="validations.inventoryList" class="bottom-0 transform translate-y-full text-caption text-warn absolute pt-1") {{ validations.inventoryList }}
+          f-svg-icon(v-if="index === 0" size="20" iconName="add_box" class="text-grey-600 ml-4.5 mt-5.5" @click="addNewInventory")
+          f-svg-icon(v-else size="20" iconName="delete" class="text-grey-600 ml-4.5" @click="removeInventory(index)")
+        p(v-if="validations.inventoryList" class="bottom-0 transform translate-y-full text-caption text-red-400 absolute pt-1") {{ validations.inventoryList }}
 </template>
 
 <script>

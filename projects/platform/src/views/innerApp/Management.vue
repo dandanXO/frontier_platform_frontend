@@ -5,13 +5,13 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
       f-input-select(:selectValue="currentMenu" :optionList="menuOrgOrGroup" keyOptionDisplay="name" keyOptionValue="path" @select="toggleOrgOrGroup" data-cy="management_select")
     div(class="flex gap-x-6 items-center")
       div(v-permission="FUNC_ID.OPEN_CREATE_GROUP" class="flex gap-x-1 items-center cursor-pointer" @click="openModalCreateGroup" data-cy="open-create-group-modal")
-        f-svg-icon(iconName="add_box" size="20" class="text-brand")
-        p(class="text-body2 text-primary") {{ $t("UU0017") }}
+        f-svg-icon(iconName="add_box" size="20" class="text-primary-400")
+        p(class="text-body2 text-grey-900") {{ $t("UU0017") }}
       f-button(size="sm" prependIcon="person_add" @click="inviteHandler" data-cy="open-invite-members-modal") {{ $t("UU0014") }}
   f-tabs(:tabList="tabList" :initValue="$route.params.tab" @switch="toggleTab($event.path)" :key="isLoading" class="flex-grow")
     template(#default="{ currentTab }")
       div(v-if="isLoading" class="w-full h-full flex justify-center items-center")
-        f-svg-icon(iconName="loading" size="92" class="text-brand")
+        f-svg-icon(iconName="loading" size="92" class="text-primary-400")
       template(v-else)
         template(v-if="currentTab === 'about'")
           org-about(v-if="routeLocation === 'org'")

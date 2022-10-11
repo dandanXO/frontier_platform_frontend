@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="flex items-center text-warn-middle leading-1.6")
+div(class="flex items-center text-red-400 leading-1.6")
   f-svg-icon(iconName="info_outline" size="14" class="mr-1.5")
   div {{ errorMsg }}
 </template>

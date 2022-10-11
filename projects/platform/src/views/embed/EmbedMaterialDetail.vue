@@ -6,10 +6,10 @@ div(class="w-full h-full flex justify-center" :class="{ 'pt-13': breadcrumbList.
       f-breadcrumb(v-if="breadcrumbList.length > 1" :breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
     div(class="pb-7.5")
       div(class="flex items-center pb-2")
-        h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{ `${material.materialNo} ${material.description}` }}
+        h5(class="text-h5 text-grey-900 font-bold line-clamp-1 pr-3") {{ `${material.materialNo} ${material.description}` }}
     material-detail-external(isEmbed :material="material" :isCanDownloadU3M="share.isCanDownloadU3M")
   div(v-else class="h-full flex justify-center items-center")
-    f-svg-icon(iconName="loading" size="92" class="text-brand-dark")
+    f-svg-icon(iconName="loading" size="92" class="text-primary-500")
 </template>
 
 <script setup>

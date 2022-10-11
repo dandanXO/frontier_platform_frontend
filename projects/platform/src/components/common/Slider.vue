@@ -11,11 +11,11 @@
 <template lang="pug">
 div(class="relative overflow-hidden")
   div(v-if="currentX < 0" class="z-1 prev absolute left-0 w-16 flex justify-center")
-    div(class="h-8.5 w-8.5 flex justify-center items-center bg-black-0 rounded-full cursor-pointer" @click="forward")
-      f-svg-icon(iconName="keyboard_arrow_left" size="24" class="text-black-600")
+    div(class="h-8.5 w-8.5 flex justify-center items-center bg-grey-0 rounded-full cursor-pointer" @click="forward")
+      f-svg-icon(iconName="keyboard_arrow_left" size="24" class="text-grey-600")
   div(v-if="widthLeft > 0" class="z-1 next absolute right-0 w-16 flex justify-center")
-    div(class="h-8.5 w-8.5 flex justify-center items-center bg-black-0 rounded-full cursor-pointer" @click="backward")
-      f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-black-600")
+    div(class="h-8.5 w-8.5 flex justify-center items-center bg-grey-0 rounded-full cursor-pointer" @click="backward")
+      f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-grey-600")
   div(ref="slider" class="transition-all duration-500" :style="translateX")
     slot
 </template>

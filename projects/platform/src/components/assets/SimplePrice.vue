@@ -11,14 +11,14 @@ div(class="grid gap-y-7.5")
   )
   f-input-container(:label="$t('RR0043')")
     div(class="flex items-center gap-x-3")
-      p(class="text-body2 text-primary font-bold") {{ $t("RR0044") }}
+      p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0044") }}
       f-input-text(
         v-model:textValue="material.publicPrice.price"
         inputType="number"
         class="w-50"
         :customErrorMsg="validations.publicPricePrice"
       )
-      p(class="text-body2 text-primary font-bold") {{ INVENTORY_UNIT.Y }}
+      p(class="text-body2 text-grey-900 font-bold") {{ INVENTORY_UNIT.Y }}
   f-input-container(:label="$t('RR0047')")
     div(class="flex items-center gap-x-3")
       f-input-text(
@@ -56,7 +56,7 @@ div(class="grid gap-y-7.5")
         class="w-50"
         :customErrorMsg="validations.publicPriceProductionLeadTime"
       )
-      p(class="text-body2 text-primary font-bold") {{ $t("RR0050") }}
+      p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0050") }}
   f-input-container(:label="$t('RR0051')")
     div(class="flex items-center gap-x-3")
       f-input-text(
@@ -64,7 +64,7 @@ div(class="grid gap-y-7.5")
         class="w-50"
         :customErrorMsg="validations.publicPriceSampleLeadTime"
       )
-      p(class="text-body2 text-primary font-bold") {{ $t("RR0050") }}
+      p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0050") }}
 </template>
 
 <script>

@@ -4,9 +4,9 @@ div(class="w-full h-full flex justify-center")
     f-breadcrumb(class="pt-12 pb-9" :breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
     div(class="pb-7.5")
       div(class="flex items-center pb-2")
-        h5(class="text-h5 text-primary font-bold line-clamp-1 pr-3") {{ `${material.materialNo} ${material.description}` }}
-        f-svg-icon(iconName="clone" class="text-black-700 cursor-pointer" size="24" @click="publicCloneByMaterial(nodeKey, publish.isCanClone)")
-      i18n-t(keypath="II0002" tag="p" class="text-caption text-black-700" scope="global")
+        h5(class="text-h5 text-grey-900 font-bold line-clamp-1 pr-3") {{ `${material.materialNo} ${material.description}` }}
+        f-svg-icon(iconName="clone" class="text-grey-600 cursor-pointer" size="24" @click="publicCloneByMaterial(nodeKey, publish.isCanClone)")
+      i18n-t(keypath="II0002" tag="p" class="text-caption text-grey-600" scope="global")
         template(#displayName) {{ publish.displayName }}
     material-detail-external(:material="material" :isCanDownloadU3M="publish.isCanDownloadU3M")
 </template>

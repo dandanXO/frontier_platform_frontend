@@ -1,8 +1,8 @@
 <template lang="pug">
 f-list(class="min-w-57.5")
-  f-list-item(v-if="menuTree.title" class="text-body2 !text-primary font-bold" disabled) {{ menuTree.title }}
+  f-list-item(v-if="menuTree.title" class="text-body2 !text-grey-900 font-bold" disabled) {{ menuTree.title }}
   template(v-for="(block, index) in menuTree.blockList")
-    f-list-item(v-if="block.blockTitle" class="text-black-500" disabled) {{ block.blockTitle }}
+    f-list-item(v-if="block.blockTitle" class="text-grey-200" disabled) {{ block.blockTitle }}
     contextual-menu-node(
       v-for="menu in block.menuList"
       :menu="menu"
@@ -10,7 +10,7 @@ f-list(class="min-w-57.5")
       :selectMode="selectMode"
       :inputSelectValue="inputSelectValue"
     )
-    div(v-if="index !== menuTree.blockList.length - 1" class="mx-2 my-1 h-px bg-black-400")
+    div(v-if="index !== menuTree.blockList.length - 1" class="mx-2 my-1 h-px bg-grey-200")
 </template>
 
 <script>

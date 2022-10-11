@@ -45,11 +45,11 @@ export default {
     },
     primaryColor: {
       type: String,
-      default: 'stroke-brand'
+      default: 'stroke-primary-400'
     },
     secondaryColor: {
       type: String,
-      default: 'stroke-primary-middle'
+      default: 'stroke-grey-150'
     }
   },
   setup (props) {

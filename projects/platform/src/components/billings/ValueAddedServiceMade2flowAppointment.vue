@@ -2,7 +2,7 @@
 div(class="w-178")
   p(class="text-body2 text-grey-900") {{ $t("VV0027") }}
   div(class="py-7")
-    p(class="text-caption text-black-500 text-right") *{{ $t("RR0163") }}
+    p(class="text-caption text-grey-200 text-right") *{{ $t("RR0163") }}
     div(class="grid grid-cols-2 gap-x-8 gap-y-7.5 mb-7.5")
       f-input-text(
         v-model:textValue="formData.orgName"
@@ -55,14 +55,14 @@ div(class="w-178")
     )
     f-scrollbar-container(v-if="formData.attachmentFileList.length > 0" class="max-h-18 mb-2.5")
       div(class="grid gap-y-2")
-        div(v-for="(attachment, index) in formData.attachmentFileList" class="h-8 flex justify-between items-center px-4 bg-black-100")
+        div(v-for="(attachment, index) in formData.attachmentFileList" class="h-8 flex justify-between items-center px-4 bg-grey-50")
           div(class="flex items-center gap-x-1")
-            p(class="text-body2 font-bold text-primary line-clamp-1") {{ attachment.name }}
-            p(class="text-body2 font-normal text-primary flex-shrink-0") ({{ bytesToSize(attachment.size) }})
-          f-svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeAttachment(index)")
+            p(class="text-body2 font-bold text-grey-900 line-clamp-1") {{ attachment.name }}
+            p(class="text-body2 font-normal text-grey-900 flex-shrink-0") ({{ bytesToSize(attachment.size) }})
+          f-svg-icon(iconName="clear" size="14" class="text-grey-900 ml-1 cursor-pointer" @click="removeAttachment(index)")
     f-button(size="sm" type="secondary" prependIcon="add" class="mb-1.5" @click="chooseFile") {{ $t("UU0063") }}
     p(v-if="fileErrorMsg" class="text-red-400 text-caption pb-1.5") {{ fileErrorMsg }}
-    div(class="text-caption text-primary")
+    div(class="text-caption text-grey-900")
       p(class="pb-2") {{ $t("RR0243") }} {{ acceptType.join(', ').toUpperCase() }}
       p {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
     div(class="flex justify-end mt-7")

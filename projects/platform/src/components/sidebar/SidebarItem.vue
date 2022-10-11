@@ -1,11 +1,11 @@
 <template lang="pug">
-div(class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-black-400 cursor-pointer"
-  :class="[{ 'bg-black-500': isActive }, { 'pointer-events-none': disabled }]"
+div(class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-grey-200 cursor-pointer"
+  :class="[{ 'bg-grey-200': isActive }, { 'pointer-events-none': disabled }]"
   @click="goTo"
 )
   slot
-    f-svg-icon(:iconName="icon" size="20" :class="[disabled ? 'text-black-500' : 'text-black-700']")
-    span(class="text-body2 line-clamp-1" :class="[disabled ? 'text-black-500' : 'text-primary']") {{ title }}
+    f-svg-icon(:iconName="icon" size="20" :class="[disabled ? 'text-grey-200' : 'text-grey-600']")
+    span(class="text-body2 line-clamp-1" :class="[disabled ? 'text-grey-200' : 'text-grey-900']") {{ title }}
 </template>
 
 <script>

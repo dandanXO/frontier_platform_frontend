@@ -7,8 +7,8 @@ modal-behavior(
   @click:text="closeModal"
 )
   div(class="w-94")
-    p(class="text-caption text-black-800 leading-1.6 pb-4") {{ $t("BB0103") }}
-    p(class="text-body2 text-primary font-bold pb-1.5") {{ $t("BB0104") }}
+    p(class="text-caption text-grey-600 leading-1.6 pb-4") {{ $t("BB0103") }}
+    p(class="text-body2 text-grey-900 font-bold pb-1.5") {{ $t("BB0104") }}
     f-input-select(v-model:selectValue="currentStorage" :optionList="storageOrgOrGroup" keyOptionDisplay="name" keyOptionValue="index" data-cy="modal-choose-storage_select")
 </template>
 

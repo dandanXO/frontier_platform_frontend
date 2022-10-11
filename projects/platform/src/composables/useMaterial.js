@@ -1,4 +1,4 @@
-import { COVER_MODE, SIDE_TYPE, WEIGHT_UNIT } from '@/utils/constants.js'
+import { COVER_MODE, SIDE_TYPE, useConstants } from '@/utils/constants.js'
 import { computed } from '@vue/runtime-core'
 import { ref, reactive } from 'vue'
 import i18n from '@/utils/i18n'
@@ -160,11 +160,12 @@ export default function useMaterial (material) {
   }
 
   const getWeight = () => {
+    const { WEIGHT_UNIT } = useConstants()
     const square = String.fromCodePoint(0xB2)
     let html = ''
-    if (weightUnit === WEIGHT_UNIT.GSM.value) {
+    if (weightUnit === WEIGHT_UNIT.value.GSM.value) {
       html = weightGsm ? `${weightGsm} g/m${square}(${weightOz} oz/y${square})` : ''
-    } else if (weightUnit === WEIGHT_UNIT.OZ.value) {
+    } else if (weightUnit === WEIGHT_UNIT.value.OZ.value) {
       html = weightOz ? `${weightOz} oz/y${square}(${weightGsm} g/m${square})` : ''
     }
 

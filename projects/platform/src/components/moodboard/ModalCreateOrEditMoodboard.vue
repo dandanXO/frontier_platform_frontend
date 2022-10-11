@@ -21,11 +21,11 @@ modal-behavior(
     f-input-container(:label="$t('QQ0007')")
       div(class="flex items-center")
         img(class="w-5 h-5 rounded-full" :src="orgLogo")
-        p(class="pl-2 text-body2 text-primary") {{ creator }}
+        p(class="pl-2 text-body2 text-grey-900") {{ creator }}
     div
       div
         div(class="h-5.5 flex items-center pb-1")
-          p(class="text-body2 text-primary font-bold") {{ $t('RR0249') }}
+          p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
           f-button-label(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewFile(formData.trendBoardFile)") {{ $t('UU0060') }}
         f-input-text-button(
           class="w-full"
@@ -37,8 +37,8 @@ modal-behavior(
           @clear="removeTrendBoard"
         )
       div(class="grid gap-y-2 pt-1.5")
-        p(class='text-black-600 text-caption') {{ $t('RR0243') }} {{ trendBoardFileAcceptType.join(', ').toUpperCase() }}
-        p(class='text-black-600 text-caption') {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
+        p(class='text-grey-600 text-caption') {{ $t('RR0243') }} {{ trendBoardFileAcceptType.join(', ').toUpperCase() }}
+        p(class='text-grey-600 text-caption') {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
     div
       f-input-textarea(
         ref="refInputDescription"
@@ -52,18 +52,18 @@ modal-behavior(
     f-input-container(:label="$t('QQ0015')")
       f-scrollbar-container(class="max-h-18 mb-2.5")
         div(class="grid gap-y-2 max-w-121.5")
-          div(v-for="(attachment, index) in formData.attachmentFileList" class="h-8 flex justify-between items-center px-4 bg-black-100")
+          div(v-for="(attachment, index) in formData.attachmentFileList" class="h-8 flex justify-between items-center px-4 bg-grey-50")
             div(class="flex items-center gap-x-1")
-              p(class="text-body2 font-bold text-primary line-clamp-1") {{ attachment.name }}
-              p(class="text-body2 font-normal text-primary flex-shrink-0") ({{ bytesToSize(attachment.size) }})
-            f-svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeAttachment(index)")
-          div(v-for="(attachment, index) in originalAttachmentList" class="h-8 flex justify-between items-center px-4 bg-black-100")
+              p(class="text-body2 font-bold text-grey-900 line-clamp-1") {{ attachment.name }}
+              p(class="text-body2 font-normal text-grey-900 flex-shrink-0") ({{ bytesToSize(attachment.size) }})
+            f-svg-icon(iconName="clear" size="14" class="text-grey-900 ml-1 cursor-pointer" @click="removeAttachment(index)")
+          div(v-for="(attachment, index) in originalAttachmentList" class="h-8 flex justify-between items-center px-4 bg-grey-50")
             div(class="flex items-center gap-x-1")
-              p(class="text-body2 font-bold text-primary line-clamp-1") {{ attachment.displayFileName }}
-              p(class="text-body2 font-normal text-primary flex-shrink-0") ({{ bytesToSize(attachment.fileSize) }})
-            f-svg-icon(iconName="clear" size="14" class="text-primary ml-1 cursor-pointer" @click="removeOriginalAttachment(index, attachment.attachmentId)")
+              p(class="text-body2 font-bold text-grey-900 line-clamp-1") {{ attachment.displayFileName }}
+              p(class="text-body2 font-normal text-grey-900 flex-shrink-0") ({{ bytesToSize(attachment.fileSize) }})
+            f-svg-icon(iconName="clear" size="14" class="text-grey-900 ml-1 cursor-pointer" @click="removeOriginalAttachment(index, attachment.attachmentId)")
       f-button(size="sm" type="secondary" prependIcon="add" @click="chooseAttachment") {{ $t("UU0063") }}
-      div(class="text-caption text-black-600 pt-2")
+      div(class="text-caption text-grey-600 pt-2")
         p(class="pb-1") {{ $t('RR0243') }} {{ attachmentFileAcceptType.join(', ').toUpperCase() }}
         p {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
 </template>

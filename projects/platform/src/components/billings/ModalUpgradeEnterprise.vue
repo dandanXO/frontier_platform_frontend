@@ -6,8 +6,8 @@ modal-behavior(
   @click:primary="requestUpgradeToEnterprise"
 )
   div(class="w-180.5 flex flex-col items-center")
-    p(class="w-100 text-body2 text-primary text-center leading-1.6 mb-3") {{ $t('OO0043') }}
-    p(class="text-caption text-black-600 self-end") *{{ $t('RR0163') }}
+    p(class="w-100 text-body2 text-grey-900 text-center leading-1.6 mb-3") {{ $t('OO0043') }}
+    p(class="text-caption text-grey-600 self-end") *{{ $t('RR0163') }}
     form(class="w-full h-66 grid grid-cols-2 grid-rows-3 grid-flow-col gap-7.5")
       f-input-text(
         ref="refInputRecipient"

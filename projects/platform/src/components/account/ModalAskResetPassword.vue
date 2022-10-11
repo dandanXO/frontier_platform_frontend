@@ -6,7 +6,7 @@ modal-behavior(
   @click:primary="openResetPassword"
   @click:text="closeModal"
 )
-  i18n-t(keypath="AA0059" tag="p" class="w-94 text-primary text-body1 leading-1.6" scope="global")
+  i18n-t(keypath="AA0059" tag="p" class="w-94 text-grey-900 text-body1 leading-1.6" scope="global")
     template(#newline)
       br
 </template>

@@ -6,30 +6,30 @@ div(class="w-full")
       menu-personal
   div(class="w-full pt-15.5")
     div(v-if="orgList.length === 0" class="w-full flex flex-col items-center pt-37")
-      h3(class="text-primary font-bold text-h3 mb-6") {{ $t("AA0014") }}
-      p(class="text-primary text-body1 leading-1.6 w-160 text-center mb-7.5") {{ $t("AA0015") }}
-      div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg(true)" data-cy="open-create-org-modal")
+      h3(class="text-grey-900 font-bold text-h3 mb-6") {{ $t("AA0014") }}
+      p(class="text-grey-900 text-body1 leading-1.6 w-160 text-center mb-7.5") {{ $t("AA0015") }}
+      div(class="w-58 h-55 rounded-md border border-grey-200 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg(true)" data-cy="open-create-org-modal")
         div(class="grid justify-items-center gap-y-3.5")
-          f-svg-icon(iconName="add" size="24")
-          span(class="text-primary-middle text-body2 font-bold") {{ $t("AA0011") }}
+          f-svg-icon(iconName="add" size="24" class="text-grey-150")
+          span(class="text-grey-150 text-body2 font-bold") {{ $t("AA0011") }}
     div(v-else class="pt-37 px-88")
-      p(class="text-black-800 font-bold text-body1 pb-3 border-b border-black-200") {{ $t("AA0009") }}
+      p(class="text-grey-600 font-bold text-body1 pb-3 border-b border-grey-100") {{ $t("AA0009") }}
       div(class="grid grid-cols-lobby gap-5 mt-7.5")
         div(
           v-for="org in orgList"
-          class="w-58 h-55 rounded-md border border-black-400 bg-black-100 flex flex-col items-center py-5 cursor-pointer"
+          class="w-58 h-55 rounded-md border border-grey-200 bg-grey-50 flex flex-col items-center py-5 cursor-pointer"
           @click="goToPublicLibrary(org.orgNo)"
           data-cy="org"
         )
           div(class="w-15 h-15 mb-5")
             img(:src="org.logo" class="rounded-full")
-          p(class="text-body1 text-primary text-center font-bold mb-1 w-50 truncate break-all leading-1.4") {{ org.orgName }}
-          p(class="text-black-650 text-caption mb-7.5") {{ `${org.memberList.length} ${$t("AA0010", org.memberList.length)}` }}
+          p(class="text-body1 text-grey-900 text-center font-bold mb-1 w-50 truncate break-all leading-1.4") {{ org.orgName }}
+          p(class="text-grey-600 text-caption mb-7.5") {{ `${org.memberList.length} ${$t("AA0010", org.memberList.length)}` }}
           f-avatar-group(:avatarList="org.memberList.map(member => member.avatar)" direction="rtl")
-        div(class="w-58 h-55 rounded-md border border-black-400 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg(true)" data-cy="open-create-org-modal")
+        div(class="w-58 h-55 rounded-md border border-grey-200 border-dashed flex justify-center items-center cursor-pointer" @click="openModalCreateOrg(true)" data-cy="open-create-org-modal")
           div(class="grid justify-items-center gap-y-3.5")
-            f-svg-icon(iconName="add" size="24")
-            span(class="text-primary-middle text-body2 font-bold") {{ $t("AA0011") }}
+            f-svg-icon(iconName="add" size="24" class="text-grey-150")
+            span(class="text-grey-150 text-body2 font-bold") {{ $t("AA0011") }}
 </template>
 
 <script setup>

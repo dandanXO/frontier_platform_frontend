@@ -1,14 +1,14 @@
 <template lang="pug">
 label(class="flex items-center")
-  f-svg-icon(v-if="inputValue" iconName="toggle_on" :size="iconSize" class="text-brand")
-  f-svg-icon(v-else iconName="toggle_off" :size="iconSize" class="text-black-700")
+  f-svg-icon(v-if="inputValue" iconName="toggle_on" :size="iconSize" class="text-primary-400")
+  f-svg-icon(v-else iconName="toggle_off" :size="iconSize" class="text-grey-600")
   input(
     type="checkbox"
     class="hidden"
     :checked="inputValue"
     @input="check"
   )
-  div(v-if="label !== ''" class="pl-1 text-body2 text-primary") {{ label }}
+  div(v-if="label !== ''" class="pl-1 text-body2 text-grey-900") {{ label }}
 </template>
 
 <script>

@@ -1,21 +1,21 @@
 <template lang="pug">
-div(class="w-44 rounded bg-black-100")
+div(class="w-44 rounded bg-grey-50")
   div(
-    class="relative cursor-pointer h-33 rounded-t bg-black-400 flex justify-center items-center"
+    class="relative cursor-pointer h-33 rounded-t bg-grey-200 flex justify-center items-center"
     @click="openModalPreviewAttachment"
   )
-    f-svg-icon(iconName='open_in_full' size="20" class='absolute top-1.5 left-1.5 text-black-0')
+    f-svg-icon(iconName='open_in_full' size="20" class='absolute top-1.5 left-1.5 text-grey-0')
     img(v-if="['.png', '.jpg', '.jpeg', '.gif'].includes(attachment.extension)" :src="attachment.url" class="max-h-full max-w-full")
     video(v-else-if="['.mov', '.mp4'].includes(attachment.extension)" class="max-h-full max-w-full")
       source(:src="attachment.url" type="video/mp4")
-    f-svg-icon(v-else iconName="file" size="50" class="text-black-100")
+    f-svg-icon(v-else iconName="file" size="50" class="text-grey-50")
   div(class="h-11 flex justify-between items-center px-3 py-4")
-    div(class="text-primary text-caption line-clamp-1") {{ attachment.displayFileName }}
+    div(class="text-grey-900 text-caption line-clamp-1") {{ attachment.displayFileName }}
     f-svg-icon(
       v-if="!isReadOnly"
       iconName="delete"
       size="20"
-      class="text-black-700 cursor-pointer"
+      class="text-grey-600 cursor-pointer"
       @click="$emit('handleRemove', attachment)"
     )
 </template>

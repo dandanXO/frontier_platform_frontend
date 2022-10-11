@@ -11,7 +11,7 @@ div(class="w-full h-full")
     template(#header-left="{ goTo }")
       div(class="flex items-end")
         f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="(currentNodeKey = $event.nodeKey); goTo()" fontSize="text-h6")
-        p(class="flex text-caption text-black-700 pl-1")
+        p(class="flex text-caption text-grey-600 pl-1")
           span (
           i18n-t(keypath="RR0068" tag="span" scope="global")
             template(#number) {{ pagination.totalCount }}
@@ -20,13 +20,13 @@ div(class="w-full h-full")
       f-button(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
       f-button(size="sm" prependIcon="add" @click="openModalAssetsList") {{ $t("UU0055") }}
     template(v-if="!isFirstLayer" #sub-header)
-      p(class="mx-7.5 mb-7.5 text-caption text-black-700") {{ $t("FF0002") }}: {{ $dayjs.unix(collection.createDate).format("YYYY/MM/DD") }}
+      p(class="mx-7.5 mb-7.5 text-caption text-grey-600") {{ $t("FF0002") }}: {{ $dayjs.unix(collection.createDate).format("YYYY/MM/DD") }}
     template(#default="{ inSearch, goTo }")
       div(class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
-        div(class="aspect-square border border-black-400 border-dashed rounded-md flex justify-center items-center cursor-pointer" @click="openModalCreateCollection")
+        div(class="aspect-square border border-grey-200 border-dashed rounded-md flex justify-center items-center cursor-pointer" @click="openModalCreateCollection")
           div(class="flex flex-col justify-center items-center")
-            f-svg-icon(iconName="add" size="24" class="text-primary mb-3.5")
-            span(class="text-body1 text-primary") {{ $t("FF0003") }}
+            f-svg-icon(iconName="add" size="24" class="text-grey-900 mb-3.5")
+            span(class="text-body1 text-grey-900") {{ $t("FF0003") }}
         grid-item-node(
           v-for="node in nodeList"
           v-model:selectedValue="selectedNodeList"
@@ -39,7 +39,7 @@ div(class="w-full h-full")
             f-svg-icon(
               :iconName="node.isPublic ? 'public' : 'lock_outline'"
               size="20"
-              class="cursor-pointer text-black-500"
+              class="cursor-pointer text-grey-200"
               @click.stop="openModalPublish(node)"
             )
           template(#title-right-icon)
@@ -48,7 +48,7 @@ div(class="w-full h-full")
 
 <script setup>
 import SearchTable from '@/components/common/SearchTable.vue'
-import { SORT_BY, SEARCH_TYPE, NODE_TYPE } from '@/utils/constants.js'
+import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
@@ -73,20 +73,22 @@ const { goToWorkspaceMaterialDetail } = useNavigation()
 const { editNodeCollection, editNodeMaterial, duplicateNode, moveNode, shareNode, deleteCollection, deleteMaterial, deleteMultipleNode } = useWorkspace()
 
 const optionSort = computed(() => {
+  const { SORT_BY } = useConstants()
+  const { MATERIAL_NO_A_Z_C_M, MATERIAL_NO_A_Z_M_C, CREATE_DATE_C_M, CREATE_DATE_M_C, GHG_RESULTS, WATER_DEPLETION_RESULTS, LAND_USE_RESULTS, RELEVANCE_C_M, RELEVANCE_M_C } = SORT_BY.value
   const valueAddedService = computed(() => store.getters['polling/valueAddedService'])
   return {
     base: [
-      SORT_BY.MATERIAL_NO_A_Z_C_M,
-      SORT_BY.MATERIAL_NO_A_Z_M_C,
-      SORT_BY.CREATE_DATE_C_M,
-      SORT_BY.CREATE_DATE_M_C,
-      { ...SORT_BY.GHG_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
-      { ...SORT_BY.WATER_DEPLETION_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
-      { ...SORT_BY.LAND_USE_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') }
+      MATERIAL_NO_A_Z_C_M,
+      MATERIAL_NO_A_Z_M_C,
+      CREATE_DATE_C_M,
+      CREATE_DATE_M_C,
+      { ...GHG_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
+      { ...WATER_DEPLETION_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
+      { ...LAND_USE_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') }
     ],
     keywordSearch: [
-      SORT_BY.RELEVANCE_C_M,
-      SORT_BY.RELEVANCE_M_C
+      RELEVANCE_C_M,
+      RELEVANCE_M_C
     ]
   }
 })

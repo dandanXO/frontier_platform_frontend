@@ -5,11 +5,11 @@ modal-behavior(:header="$t('RR0079')")
       div(class="w-101 h-43 pt-7.5")
         template(v-if="currentTab === TAB.ASSIGNED")
           div(class="flex items-end justify-between pb-6 gap-7")
-            div(class="text-body2 text-primary flex flex-col justify-between")
+            div(class="text-body2 text-grey-900 flex flex-col justify-between")
               p(class="font-bold pb-2") {{ $t("RR0156") }}
               p(class="leading-normal") {{ $t("RR0150") }}
             f-button(size="sm" class="flex-shrink-0" @click="openModalShareAssigned") {{ $t("UU0067") }}
-          div(class="text-body2 text-primary")
+          div(class="text-body2 text-grey-900")
             p(class="font-bold pb-2") {{ $t("FF0057") }}
             div(class="flex items-center justify-between")
               div(class="flex items-center")
@@ -26,11 +26,11 @@ modal-behavior(:header="$t('RR0079')")
               f-input-container(:label="$t('FF0063')")
                 f-input-switch(iconSize="30" :label="$t('FF0064')" v-model:inputValue="shareInfo.isCanShared" @update:inputValue="toggleCopyLink")
               f-button(size="sm" :disabled="!shareInfo.isCanShared" @click="generateCopyLink") {{ $t("UU0068") }}
-            div(class="bg-black-100 h-15 flex px-5 py-3 gap-x-2")
-              f-svg-icon(iconName="error_outline" class="text-primary")
-              p(class="text-caption leading-1.6 text-primary") {{ $t("FF0062") }}
+            div(class="bg-grey-50 h-15 flex px-5 py-3 gap-x-2")
+              f-svg-icon(iconName="error_outline" class="text-grey-900")
+              p(class="text-caption leading-1.6 text-grey-900") {{ $t("FF0062") }}
         template(v-else-if="currentTab === TAB.SOCIAL_MEDIA")
-          div(class="grid gap-8.5 grid-cols-4 bg-black-100 py-5 px-8 justify-items-center text-primary")
+          div(class="grid gap-8.5 grid-cols-4 bg-grey-50 py-5 px-8 justify-items-center text-grey-900")
             div(class="cursor-pointer" @click="shareToSocialMedia(SOCIAL_MEDIA_TYPE.LINKEDIN)")
               img(src="@/assets/images/linkedin.png")
               p(class="text-caption text-center pt-3") {{ $t("RR0151") }}
@@ -46,9 +46,9 @@ modal-behavior(:header="$t('RR0079')")
               f-input-container(:label="$t('FF0067')")
                 f-input-switch(iconSize="30" :label="$t('FF0033')" v-model:inputValue="shareInfo.embed.isCanDownloadU3M" @update:inputValue="updateEmbedDownloadPermission")
               f-button(size="sm" @click="copyEmbedIFrameCode") {{ $t("UU0068") }}
-            div(class="bg-black-100 h-15 flex px-5 py-3 gap-x-2")
-              f-svg-icon(iconName="error_outline" class="text-primary")
-              p(class="text-caption line-height-1.6 text-primary") {{ $t("FF0071") }}
+            div(class="bg-grey-50 h-15 flex px-5 py-3 gap-x-2")
+              f-svg-icon(iconName="error_outline" class="text-grey-900")
+              p(class="text-caption line-height-1.6 text-grey-900") {{ $t("FF0071") }}
 </template>
 
 <script setup>

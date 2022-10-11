@@ -9,18 +9,18 @@ modal-behavior(
   div(class="w-86 h-100 flex items-center")
     div(v-if="!isUploading && !haveUploadedImage")
       f-button(size="md" class="mb-6" @click="uploadImg" prependIcon="upload") {{ $t("BB0035") }}
-      div(class="grid gap-0.5 text-caption leading-1.6 text-black-600")
+      div(class="grid gap-0.5 text-caption leading-1.6 text-grey-600")
         div {{ $t("RR0243") }}
-          span(class="text-black-800 ml-1") {{ acceptType.join(', ').toUpperCase() }}
+          span(class="text-grey-600 ml-1") {{ acceptType.join(', ').toUpperCase() }}
         div {{ $t("RR0244") }}
-          span(class="text-black-800 ml-1") 200 x 200 px
+          span(class="text-grey-600 ml-1") 200 x 200 px
         div {{ $t("RR0145") }}
-          span(class="text-black-800 ml-1") {{ fileSizeMaxLimit }} MB
+          span(class="text-grey-600 ml-1") {{ fileSizeMaxLimit }} MB
     f-svg-icon(
       v-else-if="isUploading"
       iconName="loading"
       size="100"
-      class="justify-self-end cursor-pointer text-brand-dark"
+      class="justify-self-end cursor-pointer text-primary-500"
     )
     div(v-else class="w-full flex flex-col items-center")
       img(class="w-50 h-50 rounded-full mb-9" :src="thumbnail")
@@ -35,7 +35,7 @@ import { ImageOperator } from '@/utils/fileOperator.js'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
-	header: {
+  header: {
     type: String
   },
   thumbnail: {
@@ -89,10 +89,10 @@ const uploadImg = () => {
 }
 
 const removeLogo = async () => {
-	store.dispatch('helper/pushModalLoading')
+  store.dispatch('helper/pushModalLoading')
   await props.removeHandler()
-	store.dispatch('helper/closeModalLoading')
-	closeModal()
+  store.dispatch('helper/closeModalLoading')
+  closeModal()
 }
 
 const closeModal = () => {

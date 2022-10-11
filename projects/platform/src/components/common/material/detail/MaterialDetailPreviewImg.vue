@@ -20,29 +20,29 @@ div
   div(class="aspect-square relative")
     div(v-if="!!imageList[currentDisplayIndex].src" class="w-full h-full")
       img(class="w-full h-full" :src="imageList[currentDisplayIndex].src")
-      div(v-if="!hideMagnifier" class="absolute w-8 h-8 rounded-md bg-black-0 bottom-6 left-5 flex items-center justify-center cursor-pointer" @click="openMagnifyMode")
-        f-svg-icon(iconName="search" size="28" class="text-black-700")
-    div(v-else class="rounded w-full h-full border border-black-400 bg-black-200 flex items-center justify-center text-h4 font-bold text-black-400") {{ $t("RR0103") }}
+      div(v-if="!hideMagnifier" class="absolute w-8 h-8 rounded-md bg-grey-0 bottom-6 left-5 flex items-center justify-center cursor-pointer" @click="openMagnifyMode")
+        f-svg-icon(iconName="search" size="28" class="text-grey-600")
+    div(v-else class="rounded w-full h-full border border-grey-200 bg-grey-100 flex items-center justify-center text-h4 font-bold text-grey-200") {{ $t("RR0103") }}
   div(class="flex pt-3 pb-4")
     p(v-for="text in imageList[currentDisplayIndex].text" class="text-caption text-center font-bold") {{ text }}
   div(class="grid grid-flow-col gap-x-2 justify-start")
     template(v-for="(image, index) in imageList")
       div(
-        class="w-19.5 h-19.5 rounded overflow-hidden border-black-400 bg-black-200"
+        class="w-19.5 h-19.5 rounded overflow-hidden border-grey-200 bg-grey-100"
         :class="[currentDisplayIndex === index ? 'border-4' : 'border']"
         @click="currentDisplayIndex = index"
       )
         img(v-if="!!image.src" class="w-full h-full" :src="image.src")
-  div(v-if="isOpenMagnifierMode" class="fixed w-screen h-screen z-popper bg-black-900/90 left-0 top-0 flex flex-col")
-    div(class="shrink-0 w-full h-27.5 bg-black-900 px-10 flex items-center justify-between")
+  div(v-if="isOpenMagnifierMode" class="fixed w-screen h-screen z-popper bg-grey-900/90 left-0 top-0 flex flex-col")
+    div(class="shrink-0 w-full h-27.5 bg-grey-900 px-10 flex items-center justify-between")
       div(class="flex items-center")
-        f-svg-icon(iconName="zoom_in" size="24" class="text-black-50")
-        p(class="text-black-50 text-body1 font-bold pl-4") {{ $t("EE0132") }}
+        f-svg-icon(iconName="zoom_in" size="24" class="text-grey-50")
+        p(class="text-grey-50 text-body1 font-bold pl-4") {{ $t("EE0132") }}
       div(class="grid grid-flow-col gap-x-2")
         template(v-for="(image, index) in imageList")
           div(
             v-if="!(props.material.coverMode === COVER_MODE.SUP && index === defaultCoverImgIndex)"
-            class="w-19.5 h-19.5 rounded overflow-hidden border-black-400 bg-black-200"
+            class="w-19.5 h-19.5 rounded overflow-hidden border-grey-200 bg-grey-100"
             :class="[currentDisplayIndex === index ? 'border-4' : 'border']"
             @click="currentDisplayIndex = index"
           )

@@ -1,18 +1,19 @@
 <template lang="pug">
-f-popper(placement="bottom-start")
+f-popper(placement="bottom-end" :offset="[0, 3]")
   template(#trigger="{ isExpand }")
-    div(class="flex items-center")
-      span(class="text-primary font-bold text-caption") {{ currentLocaleAbbr($i18n.locale) }}
-      f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-black-650 transform" :class="[isExpand ? '-rotate-90' : 'rotate-90']")
+    div(class="flex items-center cursor-pointer")
+      span(class="text-grey-900 font-bold text-caption") {{ currentLocaleAbbr($i18n.locale) }}
+      f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-grey-600 transform" :class="[isExpand ? '-rotate-90' : 'rotate-90']")
   template(#content)
-    f-list
-      f-list-item(v-for="option in localeOptionList" @click="$i18n.locale = option.locale; changeLocale(option.locale)") {{ option.lang }}
+    f-list(class="px-1")
+      div(
+        v-for="option in localeOptionList"
+        class="rounded text-body2 text-grey-900 hover:bg-grey-100 w-18 h-6 flex justify-center items-center"
+        @click="$i18n.locale = option.locale"
+      ) {{ option.lang }}
 </template>
 
 <script setup>
-import { useStore } from 'vuex'
-
-const store = useStore()
 const localeOptionList = [
   {
     lang: 'English',
@@ -27,8 +28,4 @@ const localeOptionList = [
 ]
 
 const currentLocaleAbbr = (locale) => localeOptionList.find(option => option.locale === locale).abbr
-
-const changeLocale = (locale) => {
-  store.dispatch('user/changeLocale', { locale })
-}
 </script>

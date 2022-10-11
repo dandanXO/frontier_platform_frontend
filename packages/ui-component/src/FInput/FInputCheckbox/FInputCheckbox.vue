@@ -1,6 +1,6 @@
 <template lang="pug">
 label(class="flex items-center")
-  f-svg-icon(v-if="checked" iconName="check_box" :size="iconSize" :class="[disabled ? 'text-black-400' : iconColor, { 'cursor-pointer': !disabled }]")
+  f-svg-icon(v-if="checked" iconName="check_box" :size="iconSize" :class="[disabled ? 'text-grey-200' : iconColor, { 'cursor-pointer': !disabled }]")
   f-svg-icon(v-else iconName="check_box_outline_blank" :size="iconSize" :class="[uncheckColor, { 'cursor-pointer': !disabled }]")
   input(
     type="checkbox"
@@ -10,7 +10,7 @@ label(class="flex items-center")
     @input="check($event)"
     :disabled="disabled"
   )
-  div(v-if="label !== ''" class="text-body2 pl-1 whitespace-nowrap" :class="[disabled ? 'text-black-500' : 'text-primary cursor-pointer']") {{ label }}
+  div(v-if="label !== ''" class="text-body2 pl-1 whitespace-nowrap" :class="[disabled ? 'text-grey-200' : 'text-grey-900 cursor-pointer']") {{ label }}
 </template>
 
 <script>
@@ -50,11 +50,11 @@ export default {
     },
     iconColor: {
       type: String,
-      default: 'text-brand'
+      default: 'text-primary-400'
     },
     uncheckColor: {
       type: String,
-      default: 'text-black-400'
+      default: 'text-grey-200'
     },
     disabled: {
       type: Boolean,

@@ -1,6 +1,6 @@
 <template lang="pug">
 button(
-  class="text-primary bg-black-200 rounded-xl hover:bg-brand-light hover:text-brand disabled:text-black-500 flex items-center"
+  class="text-grey-900 bg-grey-100 rounded-xl hover:bg-primary-0 hover:text-primary-400 disabled:text-grey-200 flex items-center"
   :class="[btnSize, active ? activeClass : '']"
 )
   slot
@@ -30,7 +30,7 @@ export default {
       }
     })
 
-    const activeClass = 'bg-brand-light !text-brand'
+    const activeClass = 'bg-primary-0 !text-primary-400'
 
     return {
       btnSize,

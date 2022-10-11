@@ -14,13 +14,13 @@ f-table(
   template(v-slot="{ item, prop, isHover }")
     div(v-if="prop === 'name'" class="flex items-center")
       div(class="flex justify-end mr-6")
-        div(v-if="item.isPending" class="w-10 h-10 rounded-full border border-primary border-dashed")
+        div(v-if="item.isPending" class="w-10 h-10 rounded-full border border-grey-900 border-dashed")
         img(v-else :src="item.avatar" class="w-10 h-10 rounded-full")
       div
-        div(v-if="item.isPending" class="w-min px-2 py-1.5 text-caption text-primary border rounded border-primary") {{ $t("BB0024") }}
+        div(v-if="item.isPending" class="w-min px-2 py-1.5 text-caption text-grey-900 border rounded border-grey-900") {{ $t("BB0024") }}
         p(v-else class="line-clamp-1") {{ item.displayName }}
     template(v-if="prop === 'role'")
-      p(v-if="item.isPending" class="ml-4 w-4 border-t border-primary")
+      p(v-if="item.isPending" class="ml-4 w-4 border-t border-grey-900")
       template(v-else)
         p {{ getRoleName(item.orgRoleId) }}
         //- p(v-if="item.orgRoleId === ROLE_ID.OWNER") {{ getRoleName(item.orgRoleId) }}
@@ -36,18 +36,18 @@ f-table(
         //-     template(#trigger="{ isActive }")
         //-       div(class="flex items-center cursor-pointer")
         //-         p {{ getRoleName(currentRoleId(item)) }}
-        //-         f-svg-icon(iconName="keyboard_arrow_right" size="20" class="ml-4 text-black-600 transform" :class="[isActive ? '-rotate-90' : 'rotate-90']")
+        //-         f-svg-icon(iconName="keyboard_arrow_right" size="20" class="ml-4 text-grey-600 transform" :class="[isActive ? '-rotate-90' : 'rotate-90']")
         //-     template(#content)
         //-       f-list
         //-         f-list-item(
         //-           v-for="option in roleLimitList(item)"
         //-           class="cursor-pointer"
-        //-           :class="{ 'bg-primary-thin': option.roleId === currentRoleId(item) }"
+        //-           :class="{ 'bg-grey-100': option.roleId === currentRoleId(item) }"
         //-           @click="changeMemberRole(item, option.roleId)"
         //-         ) {{ getRoleName(option.roleId) }}
     template(v-if="prop === 'remove' && isHover")
-      p(v-if="item.isPending" class="text-body2 text-black-600 cursor-pointer" @click="confirmToCancelInvitation(item)") {{ $t("UU0002") }}
-      p(v-else-if="![ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(item.orgRoleId)" class="text-body2 text-black-600 cursor-pointer" @click="confirmToRemoveMember(item)") {{ $t("UU0016") }}
+      p(v-if="item.isPending" class="text-body2 text-grey-600 cursor-pointer" @click="confirmToCancelInvitation(item)") {{ $t("UU0002") }}
+      p(v-else-if="![ROLE_ID.OWNER, ROLE_ID.ADMIN].includes(item.orgRoleId)" class="text-body2 text-grey-600 cursor-pointer" @click="confirmToRemoveMember(item)") {{ $t("UU0016") }}
 </template>
 
 <script>

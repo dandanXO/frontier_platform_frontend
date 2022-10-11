@@ -20,7 +20,7 @@
 //       </template>
 //       <template #content>
 //         <div class="p-5">
-//           <span class="text-body2 text-assist-blue underline leading-1.6 cursor-pointer">
+//           <span class="text-body2 text-cyan-400 underline leading-1.6 cursor-pointer">
 //             dsdssd
 //           </span>
 //         </div>

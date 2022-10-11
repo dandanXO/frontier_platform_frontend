@@ -9,7 +9,7 @@ filter-wrapper(iconName="paper" :displayName="$t('RR0098')" :dirty="filterDirty.
 
 <script setup>
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
-import { FILTER_COMPLETE } from '@/utils/constants'
+import { useConstants } from '@/utils/constants'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 
@@ -18,8 +18,9 @@ const store = useStore()
 const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
 
 const menuTree = computed(() => {
+  const { FILTER_COMPLETE } = useConstants()
   const valueAddedService = store.getters['polling/valueAddedService']
-  const copyFilterComplete = JSON.parse(JSON.stringify(FILTER_COMPLETE))
+  const copyFilterComplete = JSON.parse(JSON.stringify(FILTER_COMPLETE.value))
   if (!valueAddedService.made2flow.planStatus.ACTIVATE) {
     delete copyFilterComplete.UNFILLED_CERTIFICATION
   }
@@ -27,7 +28,7 @@ const menuTree = computed(() => {
     blockList: [
       {
         menuList: Object.keys(copyFilterComplete).map(key => {
-          const { text, value } = FILTER_COMPLETE[key]
+          const { text, value } = FILTER_COMPLETE.value[key]
           return {
             title: text,
             selectValue: value

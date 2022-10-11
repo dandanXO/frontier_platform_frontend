@@ -19,7 +19,7 @@ div(class="mt-11 mb-16.5")
               div(class="flex items-center h-11.5 my-2")
                 img(:src="service.logo" class="scale-50 origin-left")
               div(class="text-body1 text-grey-900 font-bold pb-2" :class="{ 'text-grey-200': service.planStatus.INVALID }") {{ service.projectName }}｜{{ service.planName }}
-              i18n-t(keypath="VV0004" tag="div" class="text-caption text-grey-600" :class="{ 'text-grey-200': service.planStatus.INVALID }")
+              i18n-t(keypath="VV0004" scope="global" tag="div" class="text-caption text-grey-600" :class="{ 'text-grey-200': service.planStatus.INVALID }")
                 template(#providerName) {{ service.providerName }}
             div(class="text-caption" :class="{ 'text-grey-200': service.planStatus.INVALID }")
               span(v-if="!service.planStatus.INVALID") {{ STATUS_NAME[service.status] }}・
@@ -35,7 +35,7 @@ div(class="mt-11 mb-16.5")
                   template(#trigger)
                     f-svg-icon(iconName="info_outline" size="16")
                   template(#content)
-                    p(class="text-caption text-grey-50 leading-1.3 max-w-72") {{ $t("VV0047") }}
+                    p(class="text-caption text-grey-50 leading-1.3 max-w-72") {{ $t("VV0072") }}
               p(class="text-caption text-grey-600 mb-4" :class="{ 'text-grey-200': service.planStatus.INVALID }") {{ $t('M2F037') }}
               p(class="text-body1 font-bold text-primary-400 leading-1.6" :class="{ 'text-grey-200': service.planStatus.INVALID }") {{ service.completeQty }} / {{ service.totalQty }} 
                 span(class="text-caption font-normal pl-1 text-grey-900" :class="{ 'text-grey-200': service.planStatus.INVALID }") {{ $t('M2F038') }}
@@ -44,32 +44,32 @@ div(class="mt-11 mb-16.5")
               :size="60"
               :current="service.completeQty"
               :max="service.totalQty"
-              primaryColor="stroke-brand"
+              primaryColor="stroke-primary-400"
             )
               f-svg-icon(iconName="done" size="24" :class="{ 'text-grey-200': service.planStatus.INVALID }")
           div(class="h-full w-129" :style="{ backgroundImage: `url(${ Made2FlowData })` }")
         div(class="mb-3.5 bg-grey-50 rounded flex items-center text-grey-600 h-10 px-4" :class="{ 'text-grey-200': service.planStatus.INVALID }")
           f-svg-icon(iconName="info_outline" size="16")
-          i18n-t(keypath="M2F039" tag="div" class="text-caption pl-3")
+          i18n-t(keypath="M2F039" scope="global" tag="div" class="text-caption pl-3")
             template(#number) {{ service.unFilledCertificationQty }}
         div(v-if="!service.planStatus.INVALID" class="flex justify-end mb-5")
           p(class="text-cyan-400 text-right cursor-pointer" @click="goTo(service.id, MADE2FLOW_TAG_LIST.APPOINTMENT.id)") {{ $t("UU0078") }}
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import valueAddedServiceList from '@/components/billings/valueAddedServiceList.js'
-import { VALUE_ADDED_SERVICE_ID, VALUE_ADDED_SERVICE_STATUS, MADE2FLOW_TAG_LIST } from '@/utils/constants'
+import { VALUE_ADDED_SERVICE_ID, VALUE_ADDED_SERVICE_STATUS, useConstants } from '@/utils/constants'
 import Made2FlowData from '@/assets/images/Made2Flow_data.png'
 
 const store = useStore()
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
-
+const { MADE2FLOW_TAG_LIST } = useConstants()
 const { ACTIVATE, EXPIRED, CANCELED, INVALID } = VALUE_ADDED_SERVICE_STATUS
 const STATUS_NAME = {
   [ACTIVATE]: t('VV0013'),
@@ -91,7 +91,7 @@ const subscribedServiceList = computed(() => {
     }
   }
   list.sort((a, b) => b.subscribeDate - a.subscribeDate)
-  
+
   return list
 })
 

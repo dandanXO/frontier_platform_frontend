@@ -11,47 +11,47 @@ div
       div(class="pt-10")
         template(v-if="currentTab === TAB.TAGS")
           div
-            p(class="pb-3 text-body2 font-bold text-primary") {{ $t("RR0027") }}
+            p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t("RR0027") }}
             div(class="flex flex-wrap gap-x-2 gap-y-3")
               f-label(v-for="tag in material.publicTagList") {{ tag }}
           div(class="pt-7 pb-10")
-            p(class="pb-3 text-body2 font-bold text-primary") {{ $t("RR0071") }}
+            p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t("RR0071") }}
             div(class="flex flex-wrap gap-x-2 gap-y-3")
               f-label(v-for="tag in material.aiTagList") {{ tag }}
-          div(class="rounded-md bg-black-100 px-5 py-7.5")
-            h6(class="text-h6 font-bold text-black-600") {{ $t("EE0026") }}
+          div(class="rounded-md bg-grey-50 px-5 py-7.5")
+            h6(class="text-h6 font-bold text-grey-600") {{ $t("EE0026") }}
             div(class="pt-7.5")
-              p(class="pb-3 text-body2 font-bold text-primary") {{ $t("RR0028") }}
+              p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t("RR0028") }}
               div(class="flex flex-wrap gap-x-2 gap-y-3")
                 f-label(v-for="tag in material.privateTagList") {{ tag }}
             div(class="pt-17.5")
-              p(class="pb-3 text-body2 font-bold text-primary") {{ $t("RR0029") }}
-              p(class="text-body2 text-primary leading-1.6") {{ material.remark }}
+              p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t("RR0029") }}
+              p(class="text-body2 text-grey-900 leading-1.6") {{ material.remark }}
         template(v-else-if="currentTab === TAB.PRICING")
           div(class="grid gap-y-5")
-            div(v-for="item in materialPublicPriceInfo" class="text-body2 text-primary grid grid-cols-8")
+            div(v-for="item in materialPublicPriceInfo" class="text-body2 text-grey-900 grid grid-cols-8")
               p(class="col-span-3") {{ item.name }}
               p(class="col-span-5") {{ item.value }}
-          div(class="mt-10 rounded-md bg-black-100 p-7.5")
-            h6(class="text-h6 font-bold text-black-600") {{ $t("EE0026") }}
+          div(class="mt-10 rounded-md bg-grey-50 p-7.5")
+            h6(class="text-h6 font-bold text-grey-600") {{ $t("EE0026") }}
             div(class="pt-7.5")
               div(class="grid gap-y-5")
-                div(v-for="item in materialPrivatePriceInfo" class="text-body2 text-primary grid grid-cols-8")
+                div(v-for="item in materialPrivatePriceInfo" class="text-body2 text-grey-900 grid grid-cols-8")
                   p(class="col-span-3") {{ item.name }}
                   p(class="col-span-5") {{ item.value }}
         template(v-else-if="currentTab === TAB.INVENTORY")
-          div(class="rounded-md bg-black-100 p-7.5 flex flex-col gap-y-17.5")
+          div(class="rounded-md bg-grey-50 p-7.5 flex flex-col gap-y-17.5")
             div
-              h6(class="text-h6 font-bold text-black-600") {{ $t("EE0026") }}
+              h6(class="text-h6 font-bold text-grey-600") {{ $t("EE0026") }}
               div(class="pt-7.5")
                 div(class="grid gap-y-5")
-                  div(v-for="item in materialInventoryInfo" class="text-body2 text-primary grid grid-cols-8")
+                  div(v-for="item in materialInventoryInfo" class="text-body2 text-grey-900 grid grid-cols-8")
                     p(class="col-span-3") {{ item.name }}
                     p(class="col-span-5") {{ item.value }}
             div
-              h6(class="text-h6 font-bold text-black-600") {{ $t("EE0027") }}
+              h6(class="text-h6 font-bold text-grey-600") {{ $t("EE0027") }}
               div(class="pt-7.5 flex flex-col gap-y-7.5")
-                div(class="flex items-center gap-x-11 text-body2 text-primary")
+                div(class="flex items-center gap-x-11 text-body2 text-grey-900")
                   p {{ materialInfo.totalInventoryQty.name }}
                   p {{ materialInfo.totalInventoryQty.value }}
                   f-input-checkbox(
@@ -61,13 +61,13 @@ div
                     iconSize="20"
                     disabled
                   )
-                div(class="w-117.5 text-body2 text-primary")
-                  div(class="bg-primary-thin w-full h-7.5 grid grid-cols-4 justify-items-center content-center")
+                div(class="w-117.5 text-body2 text-grey-900")
+                  div(class="bg-grey-100 w-full h-7.5 grid grid-cols-4 justify-items-center content-center")
                     p {{ $t("RR0035") }}
                     p {{ $t("RR0036") }}
                     p {{ $t("RR0037") }}
                     p {{ $t("RR0038") }}
-                  div(class="divide-y divide-solid divide-primary-thin")
+                  div(class="divide-y divide-solid divide-grey-100")
                     div(v-for="inventory in material.inventoryList" class="h-10.5 grid grid-cols-4 justify-items-center content-center")
                       p {{ inventory.section }}
                       p {{ inventory.shelf }}
@@ -75,11 +75,11 @@ div
                       p {{ inventory.unit }}
         template(v-else-if="currentTab === TAB.SUP")
           div(class="pb-10")
-            p(class="pb-3 text-body2 font-bold text-primary") {{ $t("EE0129") }}
+            p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t("EE0129") }}
             div(class="flex flex-wrap gap-x-2 gap-y-3")
               f-label(v-for="tag in material.certificateList") {{ tag.name }}
           div
-            p(class="pb-3 text-body2 font-bold text-primary") {{ $t("EE0130") }}
+            p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t("EE0130") }}
             div(v-if="attachmentSortedList.length > 0" class="flex flex-wrap gap-5")
               attachment-item(
                 v-for="(attachment, index) in attachmentSortedList"
@@ -92,15 +92,15 @@ div
           div(class="-mt-10")
             div(
               v-if="!haveScannedImage || !material.isComplete || material.certificateList.length === 0"
-              class="h-15 bg-black-50 flex items-center mt-6 pl-4 gap-x-8"
+              class="h-15 bg-grey-50 flex items-center mt-6 pl-4 gap-x-8"
             )
               div(class="flex items-center")
-                f-svg-icon(iconName="info_outline" size="20" class="text-black-600")
-                p(v-if="!haveScannedImage || !material.isComplete" class="pl-3 text-black-800 text-caption leading-1.6") {{ $t('EE0126') }}
-                p(v-else-if="material.certificateList.length === 0" class="pl-3 text-black-800 text-caption leading-1.6") {{ $t('EE0128') }}
+                f-svg-icon(iconName="info_outline" size="20" class="text-grey-600")
+                p(v-if="!haveScannedImage || !material.isComplete" class="pl-3 text-grey-600 text-caption leading-1.6") {{ $t('EE0126') }}
+                p(v-else-if="material.certificateList.length === 0" class="pl-3 text-grey-600 text-caption leading-1.6") {{ $t('EE0128') }}
               div(class="flex items-center cursor-pointer" @click="goToAssetMaterialEdit(material)")
-                p(class="pr-1.5 text-assist-blue text-caption leading-1.6") {{ $t('EE0127') }}
-                f-svg-icon(iconName="arrow_forward" size="16" class="text-assist-blue")
+                p(class="pr-1.5 text-cyan-400 text-caption leading-1.6") {{ $t('EE0127') }}
+                f-svg-icon(iconName="arrow_forward" size="16" class="text-cyan-400")
             material-detail-environmental-indicator(class="mt-3" :material="material")
 </template>
 

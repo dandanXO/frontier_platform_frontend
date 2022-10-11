@@ -37,11 +37,11 @@ export default {
     const btnType = computed(() => {
       switch (props.type) {
         case 'primary':
-          return ['bg-brand', 'text-black-0', 'disabled:bg-primary-middle', 'hover:bg-brand-dark']
+          return ['bg-primary-400', 'text-grey-0', 'disabled:bg-grey-150', 'hover:bg-primary-500']
         case 'secondary':
-          return ['bg-black-0', 'text-brand', 'disabled:text-black-500', 'border', 'border-primary-middle', 'hover:text-brand-dark']
+          return ['bg-grey-0', 'text-primary-400', 'disabled:text-grey-200', 'border', 'border-grey-150', 'hover:text-primary-500']
         case 'text':
-          return ['bg-black-0', 'text-primary', 'disabled:text-black-500', 'hover:text-brand-dark']
+          return ['bg-grey-0', 'text-grey-900', 'disabled:text-grey-200', 'hover:text-primary-500']
       }
     })
     return {

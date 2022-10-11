@@ -6,7 +6,7 @@ modal-behavior(
   @click:primary="handleUpload"
 )
   template(#note)
-    div(v-if="showErrorList" class="text-caption text-warn flex items-center" data-cy="modal-mass-upload_failed")
+    div(v-if="showErrorList" class="text-caption text-red-400 flex items-center" data-cy="modal-mass-upload_failed")
       f-svg-icon(iconName="warning_amber_round" size="14" class="mr-1.5")
       span(class="pr-0.5") {{ $t("WW0037") }}
       span(class="underline cursor-pointer" @click="openModalErrorList") {{ $t("UU0066") }}
@@ -22,21 +22,21 @@ modal-behavior(
         :buttonLabel="$t('UU0025')"
         @click:button="chooseFile"
       )
-      p(class="text-black-800 text-caption mb-2") {{ $t("RR0243") }} {{ acceptType.join(', ').toUpperCase() }}
-      p(class="text-black-800 text-caption") {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
-    div(class="text-primary text-caption leading-1.6")
+      p(class="text-grey-600 text-caption mb-2") {{ $t("RR0243") }} {{ acceptType.join(', ').toUpperCase() }}
+      p(class="text-grey-600 text-caption") {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
+    div(class="text-grey-900 text-caption leading-1.6")
       i18n-t(keypath="DD0036" tag="p" scope="global")
         template(#UU0065)
           a(
             v-if="locale === 'en-US'"
             target="_blank"
-            class="text-assist-blue cursor-pointer"
+            class="text-cyan-400 cursor-pointer"
             href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(英文版).xlsx"
           )  {{ $t("UU0065") }}
           a(
             v-else
             target="_blank"
-            class="text-assist-blue cursor-pointer"
+            class="text-cyan-400 cursor-pointer"
             href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(中文版).xlsx"
           )  {{ $t("UU0065") }}
       p {{ $t("DD0037") }}

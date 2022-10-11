@@ -6,7 +6,7 @@ modal-behavior(
   @click:primary="submit"
 )
   div(class="w-94 relative z-20")
-    p(class="pb-3 text-black-800 text-body2 leading-1.6") {{ $t("RR0180") }}
+    p(class="pb-3 text-grey-600 text-body2 leading-1.6") {{ $t("RR0180") }}
     f-input-select(
       v-if="crossOrg"
       v-model:selectValue="selectedOrgId"
@@ -24,18 +24,18 @@ modal-behavior(
       keyOptionDisplay="name"
     )
     div(class="pt-5.5 grid gap-y-4")
-      p(class="font-bold text-caption text-primary") {{ $t("RR0175") }}
+      p(class="font-bold text-caption text-grey-900") {{ $t("RR0175") }}
       div(class="flex")
-        p(class="w-21 pt-1 font-bold text-caption text-black-600") {{ $t("RR0176") }}
+        p(class="w-21 pt-1 font-bold text-caption text-grey-600") {{ $t("RR0176") }}
         div(class="grid gap-y-1")
           div(class="flex items-center")
-            f-svg-icon(iconName="done" size="20" class="text-brand")
-            p(class="pl-1 text-caption text-primary") {{ $t("RR0185") }}
+            f-svg-icon(iconName="done" size="20" class="text-primary-400")
+            p(class="pl-1 text-caption text-grey-900") {{ $t("RR0185") }}
           div(class="flex items-center")
-            f-svg-icon(iconName="done" size="20" class="text-brand")
-            p(class="pl-1 text-caption text-primary") {{ $t("RR0184") }}
+            f-svg-icon(iconName="done" size="20" class="text-primary-400")
+            p(class="pl-1 text-caption text-grey-900") {{ $t("RR0184") }}
       div(class="flex")
-        p(class="w-21 pt-1 font-bold text-caption text-black-600") {{ $t("RR0177") }}
+        p(class="w-21 pt-1 font-bold text-caption text-grey-600") {{ $t("RR0177") }}
         div(class="grid gap-y-1")
           f-input-checkbox(
             binary
@@ -52,15 +52,15 @@ modal-behavior(
           )
   template(#note)
     div(v-if="isExceedMaterialStorage" class="flex items-center")
-      f-svg-icon(iconName="warning_amber_round" class="text-warn" size="14")
+      f-svg-icon(iconName="warning_amber_round" class="text-red-400" size="14")
       div(class="text-caption leading-1.6 pl-1.5")
-        p(class="text-warn") {{ $t("WW0090") }}
-        p(class="text-assist-blue" @click="goToBillings") {{ $t("RR0169") }}
+        p(class="text-red-400") {{ $t("WW0090") }}
+        p(class="text-cyan-400" @click="goToBillings") {{ $t("RR0169") }}
     div(v-else-if="isExceedU3mStorage" class="flex items-center")
-      f-svg-icon(iconName="error_outline" class="text-black-600" size="14")
+      f-svg-icon(iconName="error_outline" class="text-grey-600" size="14")
       div(class="text-caption leading-1.6 pl-1.5")
-        p(class="text-black-600") {{ $t("RR0170") }}
-        p(class="text-assist-blue" @click="goToBillings") {{ $t("RR0169") }}
+        p(class="text-grey-600") {{ $t("RR0170") }}
+        p(class="text-cyan-400" @click="goToBillings") {{ $t("RR0169") }}
 </template>
 
 <script setup>

@@ -8,10 +8,10 @@ grid-item-wrapper(
 )
   template(#title) {{ material.materialNo }}
   template(#content)
-    div(class="w-full h-full rounded-md border-black-400 overflow-hidden bg-cover" :class="{ 'border': hasNoCoverImage }")
+    div(class="w-full h-full rounded-md border-grey-200 overflow-hidden bg-cover" :class="{ 'border': hasNoCoverImage }")
       img(v-defaultImg :src="material.coverImg" class="w-full h-full")
   template(#hover-content)
-    div(class="text-black-0 px-7.5 py-10 h-full flex flex-col items-center justify-center text-center")
+    div(class="text-grey-0 px-7.5 py-10 h-full flex flex-col items-center justify-center text-center")
       div(class="text-body2 font-bold line-clamp-2 leading-1.6") {{ material.description }}
       div(class="text-caption line-clamp-2 leading-1.6") {{ material.content }}
       div(class="text-caption flex gap-1 leading-1.6")

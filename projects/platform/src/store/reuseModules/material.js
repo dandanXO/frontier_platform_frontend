@@ -1,4 +1,6 @@
-import { SIDE_TYPE, WEIGHT_UNIT, INVENTORY_UNIT, MATERIAL_PRICING_CURRENCY, SOURCE_ASSET_LOCATION } from '@/utils/constants'
+import { SIDE_TYPE, INVENTORY_UNIT, MATERIAL_PRICING_CURRENCY, SOURCE_ASSET_LOCATION, useConstants } from '@/utils/constants'
+
+const { WEIGHT_UNIT } = useConstants()
 
 const Material = {
   state: () => ({
@@ -18,7 +20,7 @@ const Material = {
     description: null,
     descriptionList: [],
     weight: null, // LOCAL VAR
-    weightUnit: WEIGHT_UNIT.GSM.value,
+    weightUnit: WEIGHT_UNIT.value.GSM.value,
     weightGsm: 0,
     weightOz: 0,
     weightGy: null,
@@ -137,9 +139,9 @@ const Material = {
     SET_material (state, material) {
       Object.assign(state, material)
       if (!state.weightUnit) {
-        state.weightUnit = WEIGHT_UNIT.GSM.value
+        state.weightUnit = WEIGHT_UNIT.value.GSM.value
       }
-      state.weight = state.weightUnit === WEIGHT_UNIT.GSM.value ? state.weightGsm : state.weightOz
+      state.weight = state.weightUnit === WEIGHT_UNIT.value.GSM.value ? state.weightGsm : state.weightOz
     },
     RESET_material (state) {
       Object.assign(state, Material.state())

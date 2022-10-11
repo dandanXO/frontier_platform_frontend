@@ -20,8 +20,8 @@ div(class="w-full h-full flex flex-col")
           f-svg-icon(
             iconName="swap_horiz"
             size="24"
-            class="transform rotate-90 cursor-pointer text-black-700 hover:text-brand"
-            :class="{ 'text-brand': isExpand }"
+            class="transform rotate-90 cursor-pointer text-grey-600 hover:text-primary-400"
+            :class="{ 'text-primary-400': isExpand }"
           )
         template(#content)
           f-contextual-menu(
@@ -34,8 +34,8 @@ div(class="w-full h-full flex flex-col")
   slot(name="sub-header")
   div(class="overflow-y-auto flex-grow grid")
     div(v-if="isSearching || inSearch && pagination.totalCount === 0" class="flex flex-col justify-center items-center")
-      f-svg-icon(v-if="isSearching" iconName="loading" size="92" class="text-brand")
-      p(v-else-if="inSearch && pagination.totalCount === 0" class="text-center text-body2 text-primary") {{ $t("RR0105") }}
+      f-svg-icon(v-if="isSearching" iconName="loading" size="92" class="text-primary-400")
+      p(v-else-if="inSearch && pagination.totalCount === 0" class="text-center text-body2 text-grey-900") {{ $t("RR0105") }}
     slot(v-else :inSearch="inSearch" :goTo="goTo")
     div(id="pagination-container" class="py-9.5 justify-self-center self-end")
       f-paginator(v-if="!isSearching && pagination.totalCount > 0" v-model:currentPage="pagination.currentPage" :totalPage="pagination.totalPage" @goTo="search($event)")
