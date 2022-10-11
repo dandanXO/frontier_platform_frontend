@@ -115,7 +115,7 @@ import { ref, computed } from 'vue'
 import useMaterial from '@/composables/useMaterial'
 import maskFull from '@/assets/images/mask_full.png'
 import maskHalf from '@/assets/images/mask_half.jpg'
-import { VALUE_ADDED_SERVICE_ID, MADE2FLOW_PLAN_TYPE } from '@/utils/constants.js'
+import { VALUE_ADDED_SERVICE_ID, MADE2FLOW_PLAN_TYPE, useConstants } from '@/utils/constants.js'
 import useReceivedShare from '@/composables/useReceivedShare'
 
 const router = useRouter()
