@@ -11,6 +11,7 @@ import permission from '@/directives/permission.js'
 import defaultImg from '@/directives/defaultImg.js'
 import VueGtag from 'vue-gtag'
 import uiComponents from '@frontier/ui-component'
+import modelViewerComponents from '@frontier/3d-viewer'
 import inputRules from '@/utils/inputRules'
 
 const app = createApp(App)
@@ -76,4 +77,5 @@ app
   .use(store)
   .use(i18n)
   .use(uiComponents)
+  .use(modelViewerComponents)
   .mount('#app')

@@ -15,7 +15,7 @@ fullscreen-header
         div
           div(class="mb-4.5 text-center text-grey-900 text-body2 font-bold") {{ cropper.title }}
           cropper-default-layout(
-            class="w-82.5"
+            class="w-70"
             scaleUnit="cm"
             :scaleInputStep="0.1"
             :scaleStart="4"
@@ -66,7 +66,7 @@ const refFaceSide = ref(null)
 const refBackSide = ref(null)
 const material = computed(() => store.getters['assets/material'])
 const { faceSideImg, backSideImg } = material.value
-const cropRectSize = 208
+const cropRectSize = 176
 const pxPerCm = 2.54 // 1 dpi = 0.393701 pixel/cm; 1 pixel/cm = 2.54 dpi
 const croppers = reactive([])
 const faceSideConfig = reactive({})

@@ -15,16 +15,21 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@frontier/3d-viewer": "workspace:^0.0.0",
     "@frontier/console": "workspace:^0.0.0",
     "@frontier/platform": "workspace:^0.0.0",
     "@frontier/tailwindcss": "workspace:^0.0.0",
     "@frontier/ui-component": "workspace:^0.0.0",
+    "@hennge/vue3-pagination": "^1.0.17",
     "@popperjs/core": "^2.11.2",
+    "@vue/reactivity": "3.2.37",
+    "axios": "^0.27.2",
     "dayjs": "^1.10.7",
     "events": "^3.3.0",
     "vue": "3.2.37",
     "vue-i18n": "^9.2.0-beta.35",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "vue3-carousel": "^0.1.46"
   },
   "devDependencies": {
     "@intlify/vite-plugin-vue-i18n": "^3.2.2",

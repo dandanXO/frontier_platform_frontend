@@ -1,36 +1,77 @@
 <style lang="scss">
 .noUi-target {
   position: relative;
-  height: 2px;
   border: none;
   box-shadow: none;
-  background-color: #e0e0e0;
-
-  &.noUi-horizontal {
-    margin: 9px 0;
-  }
+  background-color: #E9E9E9;
 }
 
 .noUi-connect {
-  background-color: #21b1866e;
+  background-color: #21B185;
 }
 
-.noUi-vertical {
-  height: 240px;
-  width: 2px;
-}
-
-.noUi-handle,
-.noUi-vertical .noUi-handle,
-.noUi-horizontal .noUi-handle {
-  border: none;
-  background-color: #21b185;
-  box-shadow: none;
-  width: 12px;
-  height: 12px;
+// handle base css
+.noUi-handle {
+  background-color: #FFFFFF;
+  border: 1px solid #E9E9E9;
   border-radius: 50%;
-  right: -5px;
-  top: -5px;
+  box-shadow: 0px 0.6px 1px rgba(0, 0, 0, 0.1), 0px 2px 4px rgba(103, 103, 103, 0.11);
+  &:active {
+    background-color: #F4F4F4;
+  }
+}
+
+// horizontal type
+.noUi-horizontal {
+  height: 4px;
+  padding: 0 9px;
+  .noUi-handle {
+    width: 18px;
+    height: 18px;
+    top: -8px;
+    right: -9px;
+  }
+  .noUi-connects {
+    left: -9px;
+  }
+}
+
+// vertical type
+.noUi-vertical {
+  width: 4px;
+  padding: 9px 0;
+  .noUi-handle {
+    width: 18px;
+    height: 18px;
+    right: -7px;
+    bottom: -9px;
+  }
+  .noUi-connects {
+    bottom: -9px;
+  }
+}
+
+// tooltip
+.noUi-handle {
+  &:hover, &:active {
+    .noUi-tooltip {
+      display: block;
+    }
+  }
+  .noUi-tooltip {
+    display: none;
+    border: none;
+    border-radius: 4px;
+    bottom: 150% !important;
+    padding: 6px 8px;
+    color: #F9F9F9;
+    background-color: rgb(34 34 34 / 0.8);
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 130%;
+  }
 }
 
 .noUi-handle::before,
@@ -38,43 +79,40 @@
   display: none;
 }
 
-.noUi-tooltip {
-  border: none;
-  border-radius: 0;
-  bottom: -25px !important;
-  padding: 0;
-  color: #757575;
-  font-weight: bold;
-  font-size: 14px;
-  background: none;
-}
-
 .noUi-vertical .noUi-origin {
-  top: 0;
+  bottom: 0;
 }
 
-// double-handles need to add manually outside, e.g. component: FilterRange
-.double-handles {
-  &.noUi-target {
-    height: 4px;
+// disabled status
+[disabled] {
+  .noUi-connect {
+    background-color: #A8A8A8;
   }
 
   .noUi-handle {
-    border-radius: 0;
-    width: 8px;
-    height: 20px;
-    right: -4px;
-    top: -8px;
+    background-color: #E9E9E9;
+    &:active {
+      background-color: #E9E9E9;
+    }
   }
 }
 </style>
 
 <template lang="pug">
-div(ref="refSlider")
+div(class="relative flex items-center justify-center" :class="[orientation === 'vertical' ? 'w-4.5' : 'h-4.5']")
+  div(ref="refSlider" :class="[orientation === 'horizontal' ? 'w-full' : 'h-full']")
+  template(v-if="orientation === 'horizontal'")
+    div(v-show="isDragging" class="absolute h-1 left-0 right-0" style="bottom: 1px; margin: 0 9px;")
+      div(class="absolute w-1 h-1 bg-grey-300 rounded-full" :style="absoluteLeft")
+      div(v-if="initPosition && initPosition.length > 1" class="absolute w-1 h-1 bg-grey-300 rounded-full" :style="absoluteRight")
+  template(v-else="orientation === 'vertical'")
+    div(v-show="isDragging" class="absolute w-1 top-0 bottom-0" style="right: 1px; margin: 9px 0;")
+      div(class="absolute w-1 h-1 bg-grey-300 rounded-full" :style="absoluteBottom")
+      div(v-if="initPosition && initPosition.length > 1" class="absolute w-1 h-1 bg-grey-300 rounded-full" :style="absoluteTop")
 </template>
 
 <script>
-import { ref, onMounted, toRefs } from '@vue/runtime-core'
+import { ref, computed, onMounted, toRefs } from '@vue/runtime-core'
 import noUiSlider from 'nouislider'
 import 'nouislider/dist/nouislider.css'
 // https://refreshless.com/nouislider/
@@ -120,23 +158,62 @@ export default {
       type: String,
       validator: (v) => ['horizontal', 'vertical'].includes(v),
       default: 'horizontal'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['update:range'],
   setup (props, { emit }) {
     const refSlider = ref(null)
     const { min, max, range } = toRefs(props)
+    const initPosition = ref(null)
+    const isDragging = ref(false)
 
     const setValue = (v) => {
       refSlider.value.noUiSlider.set(v)
     }
 
+    const absoluteLeft = computed(() => {
+      if (Array.isArray(initPosition.value)) {
+        return { left: `calc(${initPosition.value[0]}% - 2px)` }
+      } else {
+        return { left: '-2px' }
+      }
+    })
+
+    const absoluteRight = computed(() => {
+      if (Array.isArray(initPosition.value)) {
+        return { right: `calc(${initPosition.value[0]}% - 2px)` }
+      } else {
+        return { right: '-2px' }
+      }
+    })
+
+    const absoluteTop = computed(() => {
+      if (Array.isArray(initPosition.value)) {
+        return { top: `calc(${initPosition.value[0]}% - 2px)` }
+      } else {
+        return { top: '-2px' }
+      }
+    })
+
+    const absoluteBottom = computed(() => {
+      if (Array.isArray(initPosition.value)) {
+        return { bottom: `calc(${initPosition.value[0]}% - 2px)` }
+      } else {
+        return { bottom: '-2px' }
+      }
+    })
+
     onMounted(() => {
       noUiSlider.create(refSlider.value, {
-        connect: true,
+        connect: typeof range.value === 'number' ? 'lower' : true,
         tooltips: props.tooltips,
         step: props.step,
         orientation: props.orientation,
+        direction: props.orientation === 'vertical' ? 'rtl' : 'ltr',
         start: range.value,
         range: {
           min: min.value,
@@ -144,8 +221,24 @@ export default {
         }
       })
 
-      refSlider.value.noUiSlider.on('update', () => {
+      if (props.disabled) {
+        refSlider.value.setAttribute('disabled', true)
+
+        // two handles
+        const origins = refSlider.value.querySelectorAll('.noUi-origin')
+        origins[0].setAttribute('disabled', true)
+      }
+
+      refSlider.value.noUiSlider.on('start', () => {
+        isDragging.value = true
+      })
+
+      refSlider.value.noUiSlider.on('update', (v, handle, unencoded, tap, positions, noUiSlider) => {
         let values = refSlider.value.noUiSlider.get()
+
+        if (initPosition.value === null) {
+          initPosition.value = positions
+        }
 
         if (Array.isArray(values)) {
           values = values.map(v => Number(v))
@@ -161,11 +254,21 @@ export default {
           emit('update:range', valuesWithoutFormat)
         }
       })
+
+      refSlider.value.noUiSlider.on('end', () => {
+        isDragging.value = false
+      })
     })
 
     return {
       refSlider,
-      setValue
+      setValue,
+      absoluteLeft,
+      absoluteRight,
+      absoluteTop,
+      absoluteBottom,
+      isDragging,
+      initPosition
     }
   }
 }

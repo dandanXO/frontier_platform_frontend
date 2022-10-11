@@ -1,5 +1,5 @@
 <template lang="pug">
-button(class="rounded font-normal flex gap-x-1 items-center justify-center" :class="[btnSize, btnType]")
+button(class="rounded font-normal flex gap-x-1 items-center justify-center whitespace-nowrap" :class="[btnSize, btnType]")
   f-svg-icon(v-if="prependIcon !== ''" :iconName="prependIcon")
   slot
 </template>

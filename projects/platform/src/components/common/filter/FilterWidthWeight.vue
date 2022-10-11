@@ -5,20 +5,22 @@ filter-wrapper(
   :dirty="filterDirty.widthAndWeightGsm"
   @expand="initWidthAndWeight"
 )
-  div(class="w-131 h-76.5 px-8 py-7.5 rounded card-shadow grid gap-y-13")
+  div(class="w-95 h-100 rounded card-shadow pt-4")
     filter-range(
       v-model:range="inputRangeWidth"
       :min="filterOptions.width.min"
       :max="filterOptions.width.max"
       :label="$t('RR0086')"
     )
+    div(class="border-t border-grey-150 mt-4.5 mb-4")
     filter-range(
       v-model:range="inputRangeWeight"
       :min="filterOptions.weightGsm.min"
       :max="filterOptions.weightGsm.max"
       :label="$t('RR0090')"
     )
-    f-button(size="sm" class="justify-self-center" @click="updateWidthAndWeightGsm") {{ $t("UU0001") }}
+    div(class="flex justify-end px-5 mt-2")
+      f-button(size="sm" class="justify-self-center" :disabled="disabled" @click="updateWidthAndWeightGsm") {{ $t("UU0001") }}
 </template>
 
 <script>
@@ -39,6 +41,15 @@ export default {
     const filter = computed(() => store.getters['helper/search/filter'])
     const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
     const filterOptions = computed(() => store.getters['helper/search/filterOptions'])
+    const disabled = computed(() => {
+      const [widthMin, widthMax] = inputRangeWidth.value
+      const [weightMin, weightMax] = inputRangeWeight.value
+      return widthMin > widthMax
+      || widthMax < widthMin
+      || weightMin > weightMax
+      || weightMax < weightMin
+    })
+
 
     const inputRangeWidth = ref([null, null])
     const inputRangeWeight = ref([null, null])
@@ -67,6 +78,7 @@ export default {
     }
 
     return {
+      disabled,
       inputRangeWidth,
       inputRangeWeight,
       filterDirty,

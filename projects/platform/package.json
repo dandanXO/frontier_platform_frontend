@@ -13,16 +13,13 @@
     "test:show-report": "npx playwright show-report"
   },
   "dependencies": {
-    "@hennge/vue3-pagination": "^1.0.17",
     "dom-to-image": "^2.6.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "qrcode": "^1.5.0",
-    "three": "^0.137.5",
     "uuid": "^8.3.2",
     "vue-gtag": "^2.0.1",
     "vue-virtual-scroller": "^2.0.0-alpha.1",
-    "vue3-carousel": "^0.1.46",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

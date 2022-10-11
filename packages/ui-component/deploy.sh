@@ -7,5 +7,5 @@ function getVar() {
 	echo ${var##*|}
 }
 
-aws s3 sync dist/ s3://"$(getVar "STORYBOOK_S3_BUCKET")" --delete
+aws s3 sync storybook-static/ s3://"$(getVar "STORYBOOK_S3_BUCKET")" --delete
 aws cloudfront create-invalidation --distribution-id "$(getVar "STORYBOOK_DISTRIBUTION_ID")" --paths "/*"

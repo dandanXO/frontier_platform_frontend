@@ -93,7 +93,7 @@ const optionSort = computed(() => {
   }
 })
 
-const optionMultiSelect = [deleteMultipleNode]
+const optionMultiSelect = computed(() => ([deleteMultipleNode]))
 
 const pagination = computed(() => store.getters['helper/search/pagination'])
 const collection = computed(() => store.getters['workspace/collection'])

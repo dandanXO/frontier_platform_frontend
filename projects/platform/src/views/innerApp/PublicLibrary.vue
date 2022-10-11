@@ -30,8 +30,40 @@ div(class="w-full h-full relative")
             p {{ $t("RR0167") }}
     template(#header-right)
       f-button(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
-    template(v-if="!isFirstLayer" #sub-header)
-      i18n-t(keypath="II0002" tag="p" class="mx-7.5 mb-7.5 text-caption text-grey-600" scope="global")
+    template(#sub-header)
+      div(v-if="isFirstLayer" class="pb-3 px-7.5")
+        div(
+          class="rounded-md h-13.5 box-border pl-5 pr-8 bg-cover flex items-center justify-between drop-shadow-2 hover:drop-shadow-4 cursor-pointer"
+          :style="{ backgroundImage: `url(${ titasPublicBanner })` }"
+          @click="goToTitasShowroom"
+        )
+          div(class="flex items-center")
+            lord-icon(
+              src="https://cdn.lordicon.com/lupuorrc.json"
+              trigger="loop"
+              colors="primary:#ffffff,secondary:#21b185"
+              stroke="65"
+              style="width:32px;height:32px"
+            )
+            p(class="text-h6 font-bold text-grey-0 pl-4") {{$t('II0020')}}
+          div(class="flex items-center")
+            div(class="flex items-center")
+              p(class="text-caption text-grey-0 pr-2") {{$t('II0031')}}
+              div(class="flex items-center")
+                div(v-for="org in titasInfo.orgList" class="w-7 h-7 rounded-full border border-grey-0 overflow-hidden -mr-1.5")
+                  img(class="w-full h-full" :src="org.logo")
+            div(class="flex items-center pl-7.5")
+              p(class="text-caption text-grey-0 pr-2") {{$t('II0032')}}
+              div(class="flex items-center")
+                div(v-for="coverImgList in titasInfo.collectionCoverImgList" class="w-7 h-7 rounded-md border border-grey-0 overflow-hidden -mr-1.5")
+                  div(class="grid grid-rows-2 grid-cols-2 grid-flow-col h-full")
+                    div(class="row-span-2 bg-grey-100")
+                      img(v-if="coverImgList[0]" :src="coverImgList[0]" class="w-full h-full object-cover")
+                    div(class="bg-grey-100")
+                      img(v-if="coverImgList[1]" :src="coverImgList[1]" class="w-full h-full")
+                    div(class="bg-grey-50")
+                      img(v-if="coverImgList[2]" :src="coverImgList[2]" class="w-full h-full")
+      i18n-t(v-else keypath="II0002" tag="p" class="mx-7.5 mb-7.5 text-caption text-grey-600" scope="global")
         template(#displayName) {{ publishBy }}
     template(#default="{ goTo }")
       div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
@@ -65,13 +97,14 @@ import { useRoute, useRouter } from 'vue-router'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import useNavigation from '@/composables/useNavigation'
 import NotifyBarInactive from '@/components/billings/NotifyBarInactive.vue'
+import titasPublicBanner from '@/assets/images/titas_public_banner.png'
 
 const { t } = useI18n()
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
 const { publicCloneByNode, publicCloneByNodeList, publicCloneByCollection, optionShareNode } = usePublicLibrary()
-const { goToPublicLibraryMaterialDetail } = useNavigation()
+const { goToPublicLibraryMaterialDetail, goToTitasShowroom } = useNavigation()
 
 const props = defineProps({
   nodeKey: {
@@ -95,12 +128,12 @@ const optionSort = computed(() => {
   }
 })
 
-const optionMultiSelect = [
+const optionMultiSelect = computed(() => ([
   {
     name: t('RR0167'),
     func: publicCloneByNodeList
   }
-]
+]))
 const planStatus = computed(() => store.getters['polling/planStatus'])
 const pagination = computed(() => store.getters['helper/search/pagination'])
 const collection = computed(() => store.getters['publicLibrary/collection'])
@@ -162,4 +195,7 @@ watch(
   () => isFirstLayer.value,
   () => (selectedNodeList.value.length = 0)
 )
+
+/** Titas */
+const titasInfo = computed(() => store.getters['titas/titasInfo'])
 </script>

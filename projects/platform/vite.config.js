@@ -27,7 +27,13 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     htmlPlugin(loadEnv(mode, '.')),
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('lord-')
+        }
+      }
+    }),
     vueI18n({
       // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
       compositionOnly: false,

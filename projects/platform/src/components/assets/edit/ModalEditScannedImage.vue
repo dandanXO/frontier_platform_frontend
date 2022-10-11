@@ -35,29 +35,29 @@ modal-behavior(
                 div(class="h-0.5 bg-grey-900 w-full")
               div(class="text-caption text-grey-900 font-bold text-center") {{ innerShowScale ? innerScaleSize : formattedScaleSize }}cm
       div(v-if="isDoubleSideMaterial && croppers.length < 2" class="w-70 h-70 flex justify-center items-center bg-[#F1F2F5]")
-        div(class="bg-grey-200" :style="{ width: cropRectSize + 'px', height: cropRectSize + 'px' }")
-    div(v-if="isDoubleSideMaterial" class="absolute inset-x-0 w-full flex flex-col items-center transform -translate-y-1.5")
-      div(class="text-grey-900 text-body2 flex justify-center items-center mb-3.5 gap-1")
-        div {{ $t('EE0098') }}
-        div(class="w-15 flex justify-center items-center")
-          input(
-            v-model.number="formattedScaleSize"
-            type="number"
-            class="w-full text-right py-1 pr-6 border border-grey-200 rounded"
-            step="0.1"
-            min="1"
-            max="21"
-            @change="handleDoubleSideScaleChange"
-          )
-          span(class="inline-block -ml-6 w-5 text-left") cm
-      f-input-range(
-        ref="refDoubleSideScale"
-        v-model:range="formattedScaleSize"
-        v-bind="options"
-      )
-      div(class="mt-3 cursor-pointer text-grey-900" @click="isExchange = !isExchange")
-        f-svg-icon(iconName="swap_horiz" size="24" class="m-auto")
-      div(class="mt-2 text-center text-caption") {{ $t("EE0053") }}
+  div(class="bg-grey-200" :style="{ width: cropRectSize + 'px', height: cropRectSize + 'px' }")
+    div(v-if="isDoubleSideMaterial" class="absolute inset-x-0 w-full h-88.5 flex flex-col items-center")
+      div(class="text-grey-900 text-body2 flex justify-center items-center mb-3")
+        span {{ $t('EE0098') }}
+        f-svg-icon(iconName="open_in_full" size="16" class="ml-2")
+      f-button-label(size="sm" :disabled="!scaleDirty" class="mb-3" @click="resetScale") {{ $t("RR0255") }}
+  f-input-range(
+    ref="refDoubleSideScale"
+    v-model:range="formattedScaleSize"
+    v-bind="options"
+    class="h-43 mb-3"
+  )
+  div(class="w-22")
+    f-input-number(
+      v-model:value="formattedScaleSize"
+      :step="0.1"
+      :min="1"
+      :max="21"
+      unit="cm"
+      @change="handleDoubleSideScaleChange"
+    )
+  div(class="mt-7 cursor-pointer text-grey-900" @click="isExchange = !isExchange")
+    f-svg-icon(iconName="swap_horiz" size="32" class="m-auto")
 </template>
 
 <script setup>
@@ -79,7 +79,8 @@ const refDoubleSideScale = ref(null)
 const store = useStore()
 const material = computed(() => store.getters['assets/material'])
 const { faceSideImg, backSideImg } = material.value
-const scaleSize = ref(4)
+const initScale = 4
+const scaleSize = ref(initScale)
 const options = {
   min: 1,
   max: 21,
@@ -97,6 +98,8 @@ const faceSideConfig = reactive({})
 const backSideConfig = reactive({})
 
 const { isDoubleSideMaterial, isFaceSideMaterial, faceSideUrl, backSideUrl } = useMaterialImage(material.value)
+
+const scaleDirty = computed(() => scaleSize.value !== initScale)
 
 watch(
   () => scaleSize.value,
@@ -130,8 +133,12 @@ const handleUpdateScaleRatio = (cropper, event) => {
   cropper.config.scaleRatio = mainRuler / event
 }
 
-const handleDoubleSideScaleChange = (event) => {
-  refDoubleSideScale.value.setValue(event.target.value)
+const handleDoubleSideScaleChange = (v) => {
+  refDoubleSideScale.value.setValue(v)
+}
+
+const resetScale = () => {
+  refDoubleSideScale.value.setValue(initScale)
 }
 
 const confirm = async () => {

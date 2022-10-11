@@ -79,7 +79,11 @@ const showTooltip = () => {
     isActive.value = true
 
     await nextTick()
-    const children = refTooltip.value.children
+    const children = refTooltip.value?.children
+
+    // due to some reason, instance is not exist 
+    if (!children) { return }
+
     if (children.length === 1 && children[0].tagName === 'P') {
       children[0].classList.add('text-grey-50', 'text-caption', 'leading-1.3')
     }

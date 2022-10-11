@@ -3,44 +3,47 @@ div
   div(class="w-full flex justify-center items-center overflow-hidden")
     div(class="relative w-full aspect-square flex justify-center items-center bg-[#F1F2F5]")
       slot(name="imageCropArea" :innerScaleSize="scaleValue" :innerShowScale="showScale")
-  div(class="mt-2.5")
-    div(class="text-grey-900 text-body2 flex justify-between items-center mb-1")
-      div {{ $t("EE0049") }}
-      div(class="w-15 flex justify-center items-center")
-        input(
-          v-model.number="formattedRotateDeg"
-          type="number"
-          class="w-full text-right py-1 pr-3 border border-grey-200 rounded"
+  div(class="mt-4")
+    div(class="flex items-center")
+      p(class="text-grey-900 text-body2 mr-2") {{ $t("EE0049") }}
+      f-button-label(size="sm" :disabled="!rotateDirty" @click="resetRotate") {{ $t("RR0255") }}
+    div(class="flex items-center justify-between")
+      f-input-range(
+        ref="refRotateDeg"
+        v-model:range="formattedRotateDeg"
+        v-bind="rotateSetting"
+        class="w-full mr-3.5"
+      )
+      div(class="w-19.5 flex-shrink-0")
+        f-input-number(
+          v-model:value="formattedRotateDeg"
           :step="rotateSetting.step"
           :min="rotateSetting.min"
           :max="rotateSetting.max"
+          unit="°"
           @change="handleRotateChange"
         )
-        span(class="inline-block -ml-3 w-3 text-left") °
-    f-input-range(
-      ref="refRotateDeg"
-      v-model:range="formattedRotateDeg"
-      v-bind="rotateSetting"
-    )
-  div(v-if="showScale" class="mt-2.5")
-    div(class="text-grey-900 text-body2 flex justify-between items-center mb-1")
-      div {{ $t("EE0098") }}
-      div(class="w-15 flex justify-center items-center")
-        input(
-          v-model.number="formattedScaleValue"
-          type="number"
-          class="w-full text-right py-1 pr-6 border border-grey-200 rounded"
+  div(v-if="showScale" class="mt-3")
+    div(class="flex items-center")
+      p(class="text-grey-900 text-body2 mr-2") {{ $t("EE0098") }}
+      f-svg-icon(iconName="open_in_full" size="16" class="mr-2")
+      f-button-label(size="sm" :disabled="!scaleDirty" @click="resetScale") {{ $t("RR0255") }}
+    div(class="flex items-center justify-between")
+      f-input-range(
+        ref="refScale"
+        v-model:range="formattedScaleValue"
+        v-bind="scaleSetting"
+        class="w-full mr-3.5"
+      )
+      div(class="w-19.5 flex-shrink-0")
+        f-input-number(
+          v-model:value="formattedScaleValue"
           :step="scaleInputStep"
           :min="scaleRange[0]"
           :max="scaleRange[1]"
+          :unit="scaleUnit"
           @change="handleScaleChange"
         )
-        span(class="inline-block -ml-6 w-5 text-left") {{ scaleUnit }}
-    f-input-range(
-      ref="refScale"
-      v-model:range="formattedScaleValue"
-      v-bind="scaleSetting"
-    )
 </template>
 
 <script setup>
@@ -113,8 +116,10 @@ const formattedRotateDeg = computed({
   }
 })
 
-const handleScaleChange = (e) => {
-  let scale = Number(e.target.value)
+const rotateDirty = computed(() => innerRotateDeg.value !== 0)
+const scaleDirty = computed(() => props.scaleStart ? scaleValue.value !== props.scaleStart : scaleValue.value !== scaleSetting.min)
+
+const handleScaleChange = (scale) => {
   if (scale > props.scaleRange[1]) {
     scale = props.scaleRange[1]
     scaleValue.value = props.scaleRange[1]
@@ -125,8 +130,7 @@ const handleScaleChange = (e) => {
   refScale.value.setValue(scale)
 }
 
-const handleRotateChange = (e) => {
-  let rotate = Number(e.target.value)
+const handleRotateChange = (rotate) => {
   if (rotate > rotateSetting.max) {
     rotate = rotateSetting.max
   } else if (rotate < rotateSetting.min) {
@@ -134,6 +138,14 @@ const handleRotateChange = (e) => {
   }
   innerRotateDeg.value = rotate
   refRotateDeg.value.setValue(rotate)
+}
+
+const resetRotate = () => {
+  refRotateDeg.value.setValue(0)
+}
+
+const resetScale = () => {
+  refScale.value.setValue(props.scaleStart || props.scaleRange[0])
 }
 
 watch(
