@@ -5,58 +5,60 @@ filter-wrapper(
   :dirty="filterDirty.yarnAndDensity"
   @expand="initFormYarnAndDensity"
 )
-  div(class="w-127 h-113 px-8 py-7.5 rounded card-shadow grid gap-y-7.5")
-    div(class="flex flex-col gap-y-5")
-      div(class="flex gap-x-1.5")
-        f-input-radio(
-          v-model:inputValue="currentYarnType"
-          :label="$t('RR0091')"
-          :value="YARN_TYPE.WOVEN"
-          iconSize="20"
+  div(class="w-121 py-4 rounded card-shadow")
+    div(class="px-5 grid gap-y-7.5")
+      div(class="flex flex-col gap-y-5")
+        div(class="flex gap-x-1.5")
+          f-input-radio(
+            v-model:inputValue="currentYarnType"
+            :label="$t('RR0091')"
+            :value="YARN_TYPE.WOVEN"
+            iconSize="20"
+          )
+          f-button-label(size="sm" @click="clearYarnWoven") {{ $t("UU0040") }}
+        f-input-container(:label="$t('RR0023')")
+          div(class="flex items-center gap-x-3")
+            f-input-text(
+              v-model:textValue="formYarnAndDensity.wovenWarpYarnCount"
+              :disabled="currentYarnType !== YARN_TYPE.WOVEN"
+              class="w-50"
+            )
+            f-svg-icon(iconName="clear" size="20" class="text-grey-900")
+            f-input-text(
+              v-model:textValue="formYarnAndDensity.wovenWeftYarnCount"
+              :disabled="currentYarnType !== YARN_TYPE.WOVEN"
+              class="w-50"
+            )
+        f-input-container(:label="$t('RR0024')")
+          div(class="flex items-center gap-x-3")
+            f-input-text(
+              v-model:textValue="formYarnAndDensity.warpDensity"
+              :disabled="currentYarnType !== YARN_TYPE.WOVEN"
+              class="w-50"
+            )
+            f-svg-icon(iconName="clear" size="20" class="text-grey-900")
+            f-input-text(
+              v-model:textValue="formYarnAndDensity.weftDensity"
+              :disabled="currentYarnType !== YARN_TYPE.WOVEN"
+              class="w-50"
+            )
+      div(class="flex flex-col gap-y-5")
+        div(class="flex gap-x-1.5")
+          f-input-radio(
+            v-model:inputValue="currentYarnType"
+            :label="$t('RR0092')"
+            :value="YARN_TYPE.KNIT"
+            iconSize="20"
+          )
+          f-button-label(size="sm" @click="clearYarnKnit") {{ $t("UU0040") }}
+        f-input-text(
+          v-model:textValue="formYarnAndDensity.knitYarnCount"
+          :label="$t('RR0023')"
+          :disabled="currentYarnType !== YARN_TYPE.KNIT"
+          class="w-50"
         )
-        f-button-label(size="sm" @click="clearYarnWoven") {{ $t("UU0040") }}
-      f-input-container(:label="$t('RR0023')")
-        div(class="flex items-center gap-x-3")
-          f-input-text(
-            v-model:textValue="formYarnAndDensity.wovenWarpYarnCount"
-            :disabled="currentYarnType !== YARN_TYPE.WOVEN"
-            class="w-50"
-          )
-          f-svg-icon(iconName="clear" size="20" class="text-grey-900")
-          f-input-text(
-            v-model:textValue="formYarnAndDensity.wovenWeftYarnCount"
-            :disabled="currentYarnType !== YARN_TYPE.WOVEN"
-            class="w-50"
-          )
-      f-input-container(:label="$t('RR0024')")
-        div(class="flex items-center gap-x-3")
-          f-input-text(
-            v-model:textValue="formYarnAndDensity.warpDensity"
-            :disabled="currentYarnType !== YARN_TYPE.WOVEN"
-            class="w-50"
-          )
-          f-svg-icon(iconName="clear" size="20" class="text-grey-900")
-          f-input-text(
-            v-model:textValue="formYarnAndDensity.weftDensity"
-            :disabled="currentYarnType !== YARN_TYPE.WOVEN"
-            class="w-50"
-          )
-    div(class="flex flex-col gap-y-5")
-      div(class="flex gap-x-1.5")
-        f-input-radio(
-          v-model:inputValue="currentYarnType"
-          :label="$t('RR0092')"
-          :value="YARN_TYPE.KNIT"
-          iconSize="20"
-        )
-        f-button-label(size="sm" @click="clearYarnKnit") {{ $t("UU0040") }}
-      f-input-text(
-        v-model:textValue="formYarnAndDensity.knitYarnCount"
-        :label="$t('RR0023')"
-        :disabled="currentYarnType !== YARN_TYPE.KNIT"
-        class="w-50"
-      )
-    f-button(size="sm" class="justify-self-center" @click="updateYarnAndDensity") {{ $t("UU0001") }}
+    div(class="flex justify-end px-5 mt-2")
+      f-button(size="sm"  @click="updateYarnAndDensity") {{ $t("UU0001") }}
 </template>
 
 <script>

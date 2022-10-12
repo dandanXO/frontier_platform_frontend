@@ -5,8 +5,8 @@ filter-wrapper(
   :dirty="filterDirty.contentList"
   @expand="init"
 )
-  div(class="w-126.5 min-h-54.5 rounded card-shadow")
-    div(class="px-8 pt-7.5")
+  div(class="w-120.5 py-4 rounded card-shadow")
+    div(class="px-5")
       div(class="flex justify-between items-center")
         div(class="flex items-center gap-x-2")
           p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0021") }}
@@ -34,7 +34,7 @@ filter-wrapper(
           p {{ $t("JJ0002") }}:
           p {{ $t("JJ0003") }}
           p {{ $t("JJ0004") }}
-    div(class="h-25 flex items-center justify-center")
+    div(class="px-5 mt-2 flex items-center justify-end")
       f-button(size="sm" :disabled="errorMsg" class="justify-self-center" @click="update") {{ $t("UU0001") }}
 </template>
 

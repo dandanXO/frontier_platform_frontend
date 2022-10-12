@@ -5,19 +5,19 @@ filter-wrapper(
   :dirty="filterDirty.inventory"
   @expand="init"
 )
-  div(class="w-95 h-55 rounded card-shadow pt-4")
+  div(class="w-95 rounded card-shadow py-4")
     filter-range(
       v-model:range="inputRange"
       :min="filterOptions.inventory.min"
       :max="filterOptions.inventory.max"
       :label="$t('RR0109')"
     )
-      //- template(v-if="[SEARCH_TYPE.ASSETS, SEARCH_TYPE.WORKSPACE].includes(searchType)" #right)
-      //-   f-input-radio-group(
-      //-     v-model:inputValue="inventoryUnit"
-      //-     :optionList="inventoryOptionList"
-      //-   )
-    div(class="flex justify-end px-5 mt-6")
+      template(v-if="[SEARCH_TYPE.ASSETS, SEARCH_TYPE.WORKSPACE].includes(searchType)" #right)
+        f-input-radio-group(
+          v-model:inputValue="inventoryUnit"
+          :optionList="inventoryOptionList"
+        )
+    div(class="flex justify-end px-5 mt-2")
       f-button(size="sm" @click="update") {{ $t("UU0001") }}
 </template>
 

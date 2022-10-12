@@ -139,7 +139,7 @@ const expandMenu = async () => {
         {
           name: 'offset',
           options: {
-            offset: [-16, 16]
+            offset: [-16, 12]
           }
         },
         {

@@ -34,7 +34,7 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 sidebar-shadow fle
             f-svg-icon(iconName="loading" size="20" class="text-primary-400")
         f-expansion-panel(v-for="item in menuOrgOrGroup" :class="[{ 'pointer-events-none': item.disabled }]" data-cy="sidebar_location")
           template(#trigger="{ isExpand }")
-            div(class="flex items-center h-9 pl-4 pr-5 hover:bg-grey-200")
+            div(class="flex items-center h-9 pl-4 pr-5 hover:bg-grey-100")
               label(class="w-3 h-3 rounded-sm mr-3" :style="{ backgroundColor: item.disabled ? '#c4c4c4' : item.labelColor }")
               span(class="flex-grow text-body2 line-clamp-1" :class="[item.disabled ? 'text-grey-200' : 'text-grey-900']") {{ item.name }}
               f-svg-icon(iconName="keyboard_arrow_right" size="24" class=" transform" :class="[isExpand ? 'rotate-90' : 'rotate-0', item.disabled ? 'text-grey-200' : 'text-grey-600']")
@@ -64,7 +64,9 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 sidebar-shadow fle
         stroke="65"
         style="width:32px;height:32px"
       )
-      p(class="w-30 pl-2 text-body2 font-bold text-grey-0 leading-1.6") {{$t('II0020')}}
+      i18n-t(keypath="II0020" tag="p" class="w-30 pl-2 text-body2 font-bold text-grey-0 leading-1.6" scope="global")
+        template(#newline)
+          br
   menu-org-user
 </template>
 

@@ -1,6 +1,6 @@
 <template lang="pug">
 filter-wrapper(iconName="pattern" :displayName="$t('RR0025')" :dirty="filterDirty.pattern")
-  div(class="w-153 h-100.5 px-8 py-7.5 rounded card-shadow grid gap-y-2.5")
+  div(class="px-5 py-4 rounded card-shadow grid gap-y-2.5")
     div(v-for="pattenGroup in filterOptions.patternList")
       p(class="text-body1 font-bold text-grey-900 border-b border-grey-200 pb-2 mb-3") {{ pattenGroup.key }}
       div(class="grid grid-cols-5 gap-x-3 gap-y-5")

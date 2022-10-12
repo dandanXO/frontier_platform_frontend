@@ -1,6 +1,6 @@
 <template lang="pug">
 filter-wrapper(iconName="color_circle" :displayName="$t('RR0026')" :dirty="filterDirty.color")
-  div(class="w-82 h-56.5 px-8 py-7.5 rounded card-shadow grid grid-cols-4 grid-rows-3 gap-2")
+  div(class="px-5 py-4 rounded card-shadow grid grid-cols-4 grid-rows-3 gap-2")
     div(
       v-for="color in filterOptions.colorList"
       class="w-15 h-12.5 rounded flex items-center justify-center"

@@ -27,7 +27,7 @@ grid-item-wrapper(
   template(#title) {{ node.properties.name }}
   template(#content)
     div(class="grid grid-rows-2 grid-cols-2 grid-flow-col h-full rounded-md overflow-hidden")
-      div(class="row-span-2 bg-grey-100")
+      div(class="row-span-2 bg-grey-150")
         img(v-if="node.properties.coverImgList[0]" :src="node.properties.coverImgList[0]" class="w-full h-full object-cover")
       div(class="bg-grey-100")
         img(v-if="node.properties.coverImgList[1]" :src="node.properties.coverImgList[1]" class="w-full h-full")

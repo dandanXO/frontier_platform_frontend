@@ -5,7 +5,7 @@ filter-wrapper(
   :dirty="filterDirty.widthAndWeightGsm"
   @expand="initWidthAndWeight"
 )
-  div(class="w-95 h-100 rounded card-shadow pt-4")
+  div(class="w-95 rounded card-shadow py-4")
     filter-range(
       v-model:range="inputRangeWidth"
       :min="filterOptions.width.min"
@@ -45,9 +45,9 @@ export default {
       const [widthMin, widthMax] = inputRangeWidth.value
       const [weightMin, weightMax] = inputRangeWeight.value
       return widthMin > widthMax
-      || widthMax < widthMin
-      || weightMin > weightMax
-      || weightMax < weightMin
+        || widthMax < widthMin
+        || weightMin > weightMax
+        || weightMax < weightMin
     })
 
 

@@ -1,6 +1,6 @@
 <template lang="pug">
-div(class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-grey-200 cursor-pointer"
-  :class="[{ 'bg-grey-200': isActive }, { 'pointer-events-none': disabled }]"
+div(class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-grey-100 cursor-pointer"
+  :class="[{ 'bg-grey-150': isActive }, { 'pointer-events-none': disabled }]"
   @click="goTo"
 )
   slot

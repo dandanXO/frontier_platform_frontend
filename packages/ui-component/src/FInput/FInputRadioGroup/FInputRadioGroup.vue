@@ -1,7 +1,8 @@
 <template lang="pug">
 f-input-container(:required="required" :label="label")
   div(class="flex gap-x-3")
-    f-input-radio(v-for="option in optionList"
+    f-input-radio(
+      v-for="option in optionList"
       v-model:inputValue="innerInputValue"
       :label="option[keyOptionName]"
       :value="option[keyOptionValue]"
@@ -11,7 +12,7 @@ f-input-container(:required="required" :label="label")
 </template>
 
 <script>
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 export default {
   name: 'FInputRadioGroup',
   props: {
