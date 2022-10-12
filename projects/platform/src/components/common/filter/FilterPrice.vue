@@ -5,14 +5,15 @@ filter-wrapper(
   :dirty="filterDirty.price"
   @expand="init"
 )
-  div(class="w-131 h-50.5 px-8 py-7.5 rounded card-shadow grid gap-y-13")
+  div(class="w-131 py-4 rounded card-shadow")
     filter-range(
       v-model:range="inputRange"
       :min="filterOptions.price.min"
       :max="filterOptions.price.max"
       :label="$t('RR0095')"
     )
-    f-button(size="sm" class="justify-self-center" @click="update") {{ $t('UU0001') }}
+    div(class="flex justify-end px-5 mt-2")
+      f-button(size="sm" @click="update") {{ $t('UU0001') }}
 </template>
 
 <script>

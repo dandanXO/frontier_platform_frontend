@@ -10,7 +10,7 @@ modal-behavior(
     div(v-if="isDoubleSideMaterial || isFaceSideMaterial" class="w-70 text-grey-900 text-body2 font-bold text-center mb-3.5") {{ $t("EE0051") }}
     div(v-if="isDoubleSideMaterial" class="w-40")
     div(v-if="isDoubleSideMaterial || !isFaceSideMaterial" class="w-70 text-grey-900 text-body2 font-bold text-center mb-3.5") {{ $t("EE0052") }}
-  div(class="flex justify-between" :class="[isExchange ? 'flex-row-reverse' : '']")
+  div(class="flex justify-between min-h-88.5" :class="[isExchange ? 'flex-row-reverse' : '']")
     template(v-for="cropper in croppers")
       cropper-default-layout(
         class="w-70 z-100"
@@ -35,29 +35,29 @@ modal-behavior(
                 div(class="h-0.5 bg-grey-900 w-full")
               div(class="text-caption text-grey-900 font-bold text-center") {{ innerShowScale ? innerScaleSize : formattedScaleSize }}cm
       div(v-if="isDoubleSideMaterial && croppers.length < 2" class="w-70 h-70 flex justify-center items-center bg-[#F1F2F5]")
-  div(class="bg-grey-200" :style="{ width: cropRectSize + 'px', height: cropRectSize + 'px' }")
+        div(class="bg-black-500" :style="{ width: cropRectSize + 'px', height: cropRectSize + 'px' }")
     div(v-if="isDoubleSideMaterial" class="absolute inset-x-0 w-full h-88.5 flex flex-col items-center")
-      div(class="text-grey-900 text-body2 flex justify-center items-center mb-3")
+      div(class="text-primary text-body2 flex justify-center items-center mb-3")
         span {{ $t('EE0098') }}
         f-svg-icon(iconName="open_in_full" size="16" class="ml-2")
       f-button-label(size="sm" :disabled="!scaleDirty" class="mb-3" @click="resetScale") {{ $t("RR0255") }}
-  f-input-range(
-    ref="refDoubleSideScale"
-    v-model:range="formattedScaleSize"
-    v-bind="options"
-    class="h-43 mb-3"
-  )
-  div(class="w-22")
-    f-input-number(
-      v-model:value="formattedScaleSize"
-      :step="0.1"
-      :min="1"
-      :max="21"
-      unit="cm"
-      @change="handleDoubleSideScaleChange"
-    )
-  div(class="mt-7 cursor-pointer text-grey-900" @click="isExchange = !isExchange")
-    f-svg-icon(iconName="swap_horiz" size="32" class="m-auto")
+      f-input-range(
+        ref="refDoubleSideScale"
+        v-model:range="formattedScaleSize"
+        v-bind="options"
+        class="h-43 mb-3"
+      )
+      div(class="w-22")
+        f-input-number(
+          v-model:value="formattedScaleSize"
+          :step="0.1"
+          :min="1"
+          :max="21"
+          unit="cm"
+          @change="handleDoubleSideScaleChange"
+        )
+      div(class="mt-7 cursor-pointer text-primary" @click="isExchange = !isExchange")
+        f-svg-icon(iconName="swap_horiz" size="32" class="m-auto")
 </template>
 
 <script setup>
