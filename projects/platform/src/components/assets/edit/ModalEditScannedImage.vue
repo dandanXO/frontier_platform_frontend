@@ -2,9 +2,11 @@
 modal-behavior(
   :header="$t('EE0050')"
   :primaryBtnText="$t('UU0018')"
+  primaryBtnIcon="done"
   :secondaryBtnText="$t('UU0002')"
   @click:primary="confirm"
   @click:secondary="closeModal"
+  :closable="false"
 )
   div(class="flex")
     div(v-if="isDoubleSideMaterial || isFaceSideMaterial" class="w-70 text-grey-900 text-body2 font-bold text-center mb-3.5") {{ $t("EE0051") }}

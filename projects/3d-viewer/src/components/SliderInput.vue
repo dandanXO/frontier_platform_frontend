@@ -7,7 +7,7 @@ div(ref="rootDom" class="flex flex-col w-full justify-between py-1")
       size="sm"
       :disabled="!changed"
       @click="emit('reset')"
-    ) reset
+    ) {{ $t('EE0138') }}
   div(class="flex flex-row items-center justify-between")
     div(class="w-50 flex flex-row items-center")
       input(

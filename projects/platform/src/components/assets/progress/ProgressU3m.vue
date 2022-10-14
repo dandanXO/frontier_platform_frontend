@@ -87,6 +87,16 @@ f-table(
                 f-list-item(@click="openModalDownloadU3M(item.materialId); collapsePopper()") {{ $t("RR0059") }}
                 f-list-item(@click="openModalCreate3DMaterial(item.materialId); collapsePopper()") {{ $t("PP0019") }}
                 f-list-item(@click="handleViewMaterial(item); collapsePopper()") {{ $t("PP0016") }}
+model-editor(
+  v-if="showModelEditor"
+  :dpi="material.u3m.dpi"
+  :u3mPath="material.u3m.u3mSpecUrl"
+  :baseImgUrl="material.u3m.baseImgUrl"
+  :normalImgUrl="material.u3m.normalImgUrl"
+  :roughImgUrl="material.u3m.roughImgUrl"
+  :dispImgUrl="material.u3m.dispImgUrl"
+  @close="closeModalViewer"
+)
 </template>
 
 <script setup>
@@ -126,6 +136,7 @@ const pagination = ref({
   totalPage: 1,
   perPageCount: 8
 })
+const showModelEditor = ref(false)
 const queryParams = reactive({
   startDate: '',
   endDate: ''
@@ -212,16 +223,11 @@ const openModalSendFeedback = () => {
 
 const openModalViewer = async (materialId) => {
   await store.dispatch('assets/getMaterial', { materialId })
-  const { baseImgUrl, normalImgUrl, dpi } = material.value.u3m
-  store.dispatch('helper/openModal', {
-    component: 'modal-viewer',
-    header: t('UU0006'),
-    properties: {
-      dpi,
-      baseImgUrl,
-      normalImgUrl
-    }
-  })
+  showModelEditor.value = true
+}
+
+const closeModalViewer = () => {
+  showModelEditor.value = false
 }
 
 const openModalDownloadU3M = async (materialId) => {

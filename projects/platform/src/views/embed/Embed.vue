@@ -37,7 +37,8 @@ div(class="max-w-315 h-full mx-auto pt-10")
         template(#content)
           div(class="w-full h-81 border border-grey-150 rounded-b !border-t-0 py-6 pl-7 pr-11 flex justify-between")
             div(class="w-155.5 h-full")
-              f-scrollbar-container(v-if="collection.description" :sizeAutoCapable="false" class="h-full -ml-6.5 px-6.5 break-all text-body2 text-grey-900 leading-1.6") {{ collection.description }}
+              f-scrollbar-container(v-if="collection.description" :sizeAutoCapable="false" class="h-full -ml-6.5 px-6.5 break-all text-body2 text-grey-900 leading-1.6")
+                pre(class="whitespace-pre-wrap" :style="{ 'word-break': 'break-word', 'font-family': 'unset' }") {{ collection.description }}
               p(v-else class="text-body2 text-grey-900 leading-1.6") {{ $t("FF0008") }}
             div(class="relative w-97.5 h-69 rounded bg-grey-200 flex items-center justify-center flex-shrink-0")
               div(v-if="collection.trendBoardCoverImg" class="rounded w-full h-full px-7.5 py-6 bg-grey-100")
