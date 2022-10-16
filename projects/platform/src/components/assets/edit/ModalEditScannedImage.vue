@@ -37,9 +37,9 @@ modal-behavior(
                 div(class="h-0.5 bg-grey-900 w-full")
               div(class="text-caption text-grey-900 font-bold text-center") {{ innerShowScale ? innerScaleSize : formattedScaleSize }}cm
       div(v-if="isDoubleSideMaterial && croppers.length < 2" class="w-70 h-70 flex justify-center items-center bg-[#F1F2F5]")
-        div(class="bg-black-500" :style="{ width: cropRectSize + 'px', height: cropRectSize + 'px' }")
+        div(class="bg-grey-200" :style="{ width: cropRectSize + 'px', height: cropRectSize + 'px' }")
     div(v-if="isDoubleSideMaterial" class="absolute inset-x-0 w-full h-88.5 flex flex-col items-center")
-      div(class="text-primary text-body2 flex justify-center items-center mb-3")
+      div(class="text-grey-900 text-body2 flex justify-center items-center mb-3")
         span {{ $t('EE0098') }}
         f-svg-icon(iconName="open_in_full" size="16" class="ml-2")
       f-button-label(size="sm" :disabled="!scaleDirty" class="mb-3" @click="resetScale") {{ $t("RR0255") }}
@@ -58,7 +58,7 @@ modal-behavior(
           unit="cm"
           @change="handleDoubleSideScaleChange"
         )
-      div(class="mt-7 cursor-pointer text-primary" @click="isExchange = !isExchange")
+      div(class="mt-7 cursor-pointer text-grey-900" @click="isExchange = !isExchange")
         f-svg-icon(iconName="swap_horiz" size="32" class="m-auto")
 </template>
 
