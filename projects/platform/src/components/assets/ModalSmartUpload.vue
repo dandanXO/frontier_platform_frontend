@@ -18,7 +18,8 @@ modal-behavior(
         div(class="text-grey-600") {{ $t("RR0243") }}
         div(class="text-grey-900 font-bold") {{ acceptType.join(', ').toUpperCase() }}
         div(class="text-grey-600") {{ $t("RR0145") }}
-        div(class="text-grey-900 font-bold") {{ $t("DD0101") }}
+        i18n-t(keypath="DD0101" tag="div" class="text-grey-900 font-bold")
+          template(#number) {{ fileSizeMaxLimit }}
         div(class="text-grey-600") {{ $t("DD0102") }}
         div(class="text-grey-900 font-bold") {{ $t("DD0103") }}
       div(
@@ -79,7 +80,7 @@ const uploadedFiles = reactive([])
 const readyToUploadFile = computed(() => materialImageList.filter(image => !image.isRemoved))
 const disabledUpload = computed(() => readyToUploadFile.value.length === 0)
 
-const fileSizeMaxLimit = 20
+const fileSizeMaxLimit = 100
 const acceptType = ['jpg', 'jpeg', 'png']
 const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 
