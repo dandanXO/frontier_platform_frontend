@@ -38,10 +38,10 @@ export const loadU3m = async (u3mPath: string): Promise<U3M> => {
   let specular = specularConstantPath(u3m) as number
 
   /*
-   * 因後端給的預設 specular 為 0，不符合 u3m 規格預設的 0.5
-   * 前端幫忙塞預設值 0.5，等到後端重產完 u3m 後再拿掉這段 code。
+   * 因後端給的預設 specular 為 0,
+   * 前端幫忙塞布料預設值 0.1，等到後端重產完 u3m 後再拿掉這段 code。
    */
-  if (specular === 0) specular = 0.5
+  if (specular === 0) specular = 0.1
 
   return {
     u3m,

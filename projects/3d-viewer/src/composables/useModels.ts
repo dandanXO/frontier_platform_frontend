@@ -170,13 +170,16 @@ export default function useModels(
       const model = gltf.scene
       model.scale.set(0.5, 0.5, 0.5)
       model.traverse((obj) => {
-        if (!obj.isMesh) return
+        const mesh = obj as THREE.Mesh
+        if (!mesh.isMesh || !material.value) return
 
-        obj.receiveShadow = true
-        obj.castShadow = true
-        if (obj.name.includes('Mesh_')) obj.material = material.value
-        if (obj.name.includes('Ball_'))
-          obj.material = new THREE.MeshPhongMaterial({
+        mesh.receiveShadow = true
+        mesh.castShadow = true
+
+        // 我們透過 blender 先將希望覆蓋 u3m 圖層的 material 命名為 `Mesh_` prefix
+        if (mesh.name.includes('Mesh_')) mesh.material = material.value
+        if (mesh.name.includes('Ball_'))
+          mesh.material = new THREE.MeshPhongMaterial({
             color: 0xffffff,
             flatShading: true,
           })

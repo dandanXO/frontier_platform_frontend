@@ -64,7 +64,7 @@ export default function useScene(baseUrl: string) {
     hemiLight.position.set(0, 20, 0)
     scene.value.add(hemiLight)
 
-    const spotLight = new THREE.SpotLight(0xffffff, 1)
+    const spotLight = new THREE.SpotLight(0xffffff, 0.5)
     spotLight.position.set(0, 5, 0)
     spotLight.angle = Math.PI / 9
     spotLight.penumbra = 0.1
@@ -73,7 +73,7 @@ export default function useScene(baseUrl: string) {
     spotLight.castShadow = true
     spotLight.shadow.mapSize.width = 1024 * 2
     spotLight.shadow.mapSize.height = 1024 * 2
-    spotLight.shadow.bias = -0.00001
+    spotLight.shadow.bias = -0.001
     scene.value.add(spotLight)
 
     const controls = new OrbitControls(camera, renderer.domElement)
