@@ -13,7 +13,7 @@ export default {
 </script>
 
 <script setup>
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 
 const emit = defineEmits(['click:button', 'clear', 'update:textValue'])
 const props = defineProps({

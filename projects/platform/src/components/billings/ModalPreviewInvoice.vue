@@ -65,7 +65,7 @@ div( class="w-149 h-194")
 </template>
 
 <script>
-import { computed, ref } from '@vue/reactivity'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import InvoicePdfGenerator from '@/components/billings/InvoicePdfGenerator.vue'
 

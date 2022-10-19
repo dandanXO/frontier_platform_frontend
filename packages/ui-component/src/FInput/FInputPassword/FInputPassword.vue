@@ -18,7 +18,7 @@ export default {
 
 
 <script setup>
-import { ref, computed } from '@vue/reactivity'
+import { ref, computed } from 'vue'
 
 const props = defineProps({
   /**

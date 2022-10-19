@@ -18,7 +18,7 @@ template(v-if="modalPipeline.length > 0")
 </template>
 
 <script>
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import Modal from '@/components/common/modal/Modal.vue'
 import ModalConfirm from '@/components/common/modal/ModalConfirm.vue'

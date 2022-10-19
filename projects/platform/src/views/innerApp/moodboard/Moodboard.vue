@@ -38,7 +38,7 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import { computed } from '@vue/reactivity'
+import { computed } from 'vue'
 import useNavigation from '@/composables/useNavigation.js'
 import { MOODBOARD_TYPE, CREATE_EDIT } from '@/utils/constants'
 

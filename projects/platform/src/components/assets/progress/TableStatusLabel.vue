@@ -6,7 +6,7 @@ div(class="flex items-center bg-grey-50 w-fit px-3.5 h-8.5 rounded")
 
 <script setup>
 import { UPLOAD_PROGRESS } from '@/utils/constants'
-import { computed } from '@vue/reactivity'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps({

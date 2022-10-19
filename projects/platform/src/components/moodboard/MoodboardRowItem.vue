@@ -77,7 +77,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
 </template>
 
 <script setup>
-import { ref, computed } from '@vue/reactivity'
+import { ref, computed } from 'vue'
 import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
 import useMaterial from '@/composables/useMaterial'
 import { U3M_STATUS } from '@/utils/constants'

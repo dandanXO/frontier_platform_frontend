@@ -4,7 +4,7 @@ div(class="h-9 flex items-center px-3 text-body2 break-words bg-grey-0 hover:bg-
 </template>
 
 <script>
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 export default {
   name: 'FListItem',
   props: {

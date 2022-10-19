@@ -1,5 +1,5 @@
 import { useStore } from 'vuex'
-import { reactive, computed } from '@vue/runtime-core'
+import { reactive, computed } from 'vue'
 import { INVENTORY_UNIT, MATERIAL_PRICING_CURRENCY, useConstants } from '@/utils/constants'
 
 export default function useMaterialEdit (material) {

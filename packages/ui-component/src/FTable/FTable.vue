@@ -63,7 +63,7 @@ div(class="relative")
 </template>
 
 <script>
-import { computed, ref } from '@vue/reactivity'
+import { computed, ref } from 'vue'
 import { onMounted } from 'vue'
 
 export default {

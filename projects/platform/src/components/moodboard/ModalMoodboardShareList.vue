@@ -21,7 +21,7 @@ modal-behavior(:header="$t('RR0155')")
 </template>
 
 <script setup>
-import { computed } from '@vue/reactivity'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 

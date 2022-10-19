@@ -12,7 +12,7 @@ f-popper(placement="bottom-end")
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { computed } from '@vue/reactivity'
+import { computed } from 'vue'
 
 const { t } = useI18n()
 const store = useStore()

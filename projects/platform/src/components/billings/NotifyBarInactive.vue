@@ -14,7 +14,7 @@ div(v-if="isShowInactiveNotifyBar" class="w-full h-14 flex justify-between items
 
 <script>
 import { useStore } from 'vuex'
-import { computed, ref } from '@vue/runtime-core'
+import { computed, ref } from 'vue'
 import useNavigation from '@/composables/useNavigation.js'
 import { FUNC_ID } from '@/utils/constants.js'
 

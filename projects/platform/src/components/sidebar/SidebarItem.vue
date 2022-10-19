@@ -9,7 +9,7 @@ div(class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-grey-100 cursor-poin
 </template>
 
 <script>
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 

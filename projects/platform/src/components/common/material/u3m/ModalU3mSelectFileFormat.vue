@@ -18,7 +18,7 @@ modal-behavior(
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { downloadDataURLFile } from '@/utils/fileOperator'
-import { ref } from '@vue/reactivity'
+import { ref } from 'vue'
 import { U3M_STATUS } from '@/utils/constants'
 
 const props = defineProps({

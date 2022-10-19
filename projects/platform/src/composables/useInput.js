@@ -1,5 +1,5 @@
-import { ref } from '@vue/reactivity'
-import { computed, watch, onUpdated } from '@vue/runtime-core'
+import { ref } from 'vue'
+import { computed, watch, onUpdated } from 'vue'
 import inputRules from '@/utils/inputRules'
 
 export default function useInput ({ context: { emit, slots }, inputType = ref('text'), textValue, disabled = ref(false), rules = ref([]), required = ref(false), customErrorMsg = ref('') }) {

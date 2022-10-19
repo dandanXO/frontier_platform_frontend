@@ -11,7 +11,7 @@ f-input-text(v-bind="props" v-model:textValue="innerTextValue" :disabled="disabl
 </template>
 
 <script>
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 export default {
   name: 'FInputTextIcon',
   props: {

@@ -13,7 +13,7 @@ div(class="fixed inset-0 z-modal pt-16 w-screen h-screen bg-grey-0 overflow-y-au
 </template>
 
 <script>
-import { onMounted } from '@vue/runtime-core'
+import { onMounted } from 'vue'
 import { ref } from 'vue'
 
 export default {

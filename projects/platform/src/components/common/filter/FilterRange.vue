@@ -31,7 +31,7 @@ div(class="px-5")
 </template>
 
 <script>
-import { computed, ref } from '@vue/runtime-core'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 export default {

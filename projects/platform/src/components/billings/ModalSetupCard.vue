@@ -18,7 +18,7 @@ modal-behavior(
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from '@vue/runtime-core'
+import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import ModalLoading from '@/components/common/modal/ModalLoading.vue'

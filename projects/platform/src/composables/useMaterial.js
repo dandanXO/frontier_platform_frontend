@@ -1,5 +1,5 @@
 import { COVER_MODE, SIDE_TYPE, useConstants } from '@/utils/constants.js'
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 import { ref, reactive } from 'vue'
 import i18n from '@/utils/i18n'
 import store from '@/store'

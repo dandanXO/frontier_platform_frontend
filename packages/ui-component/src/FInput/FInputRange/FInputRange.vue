@@ -16,6 +16,7 @@
   border: 1px solid #E9E9E9;
   border-radius: 50%;
   box-shadow: 0px 0.6px 1px rgba(0, 0, 0, 0.1), 0px 2px 4px rgba(103, 103, 103, 0.11);
+
   &:active {
     background-color: #F4F4F4;
   }
@@ -25,12 +26,14 @@
 .noUi-horizontal {
   height: 4px;
   padding: 0 9px;
+
   .noUi-handle {
     width: 18px;
     height: 18px;
     top: -8px;
     right: -9px;
   }
+
   .noUi-connects {
     left: -9px;
   }
@@ -40,12 +43,14 @@
 .noUi-vertical {
   width: 4px;
   padding: 9px 0;
+
   .noUi-handle {
     width: 18px;
     height: 18px;
     right: -7px;
     bottom: -9px;
   }
+
   .noUi-connects {
     bottom: -9px;
   }
@@ -53,11 +58,14 @@
 
 // tooltip
 .noUi-handle {
-  &:hover, &:active {
+
+  &:hover,
+  &:active {
     .noUi-tooltip {
       display: block;
     }
   }
+
   .noUi-tooltip {
     display: none;
     border: none;
@@ -91,6 +99,7 @@
 
   .noUi-handle {
     background-color: #E9E9E9;
+
     &:active {
       background-color: #E9E9E9;
     }
@@ -112,7 +121,7 @@ div(class="relative flex items-center justify-center" :class="[orientation === '
 </template>
 
 <script>
-import { ref, computed, onMounted, toRefs } from '@vue/runtime-core'
+import { ref, computed, onMounted, toRefs } from 'vue'
 import noUiSlider from 'nouislider'
 import 'nouislider/dist/nouislider.css'
 // https://refreshless.com/nouislider/

@@ -21,7 +21,7 @@ div(
 
 <script>
 import { useStore } from 'vuex'
-import { computed, ref } from '@vue/runtime-core'
+import { computed, ref } from 'vue'
 import { FUNC_ID } from '@/utils/constants.js'
 
 export default {

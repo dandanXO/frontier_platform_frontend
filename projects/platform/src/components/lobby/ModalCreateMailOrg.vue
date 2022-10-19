@@ -29,7 +29,7 @@ modal-behavior(
 
 <script setup>
 import { ref } from 'vue'
-import { computed, watch } from '@vue/runtime-core'
+import { computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'

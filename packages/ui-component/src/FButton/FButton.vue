@@ -5,7 +5,7 @@ button(class="rounded font-normal flex gap-x-1 items-center justify-center white
 </template>
 
 <script>
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 export default {
   name: 'FButton',
   props: {

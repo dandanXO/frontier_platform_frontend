@@ -59,7 +59,7 @@ div(class="h-full")
 </template>
 
 <script setup>
-import { ref, computed } from '@vue/reactivity'
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'

@@ -57,7 +57,7 @@ div(class="w-full mt-4")
 
 <script>
 import { BILLING_CATEGORY, BILLING_SORT } from '@/utils/constants'
-import { reactive, ref } from '@vue/reactivity'
+import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import InvoicePdfGenerator from '@/components/billings/InvoicePdfGenerator.vue'

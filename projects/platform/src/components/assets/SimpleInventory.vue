@@ -78,7 +78,7 @@ div(class="bg-grey-50 px-7.5 py-7.5 grid gap-y-7.5")
 
 <script>
 import { useStore } from 'vuex'
-import { computed, watch } from '@vue/runtime-core'
+import { computed, watch } from 'vue'
 import { INVENTORY_UNIT } from '@/utils/constants'
 import useMaterialEdit from '@/composables/useMaterialEdit'
 

@@ -38,7 +38,7 @@ modal-behavior(
 
 <script setup>
 import { useStore } from 'vuex'
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 import { ref } from 'vue'
 import { ROLE_ID } from '@/utils/constants'
 import usePlan from '@/composables/usePlan.js'

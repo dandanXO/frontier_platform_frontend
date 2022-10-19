@@ -1,6 +1,6 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 import { MOODBOARD_TAB } from '@/utils/constants'
 
 export default function useNavigation () {

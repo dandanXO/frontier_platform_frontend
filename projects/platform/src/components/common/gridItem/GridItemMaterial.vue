@@ -32,7 +32,7 @@ grid-item-wrapper(
 
 <script setup>
 import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 import useMaterial from '@/composables/useMaterial'
 
 const props = defineProps({

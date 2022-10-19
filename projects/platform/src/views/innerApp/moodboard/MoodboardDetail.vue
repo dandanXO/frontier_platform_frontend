@@ -10,7 +10,7 @@ div(class="h-full")
 </template>
 
 <script setup>
-import { computed } from '@vue/reactivity'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { MOODBOARD_TYPE, MOODBOARD_TAB } from '@/utils/constants.js'

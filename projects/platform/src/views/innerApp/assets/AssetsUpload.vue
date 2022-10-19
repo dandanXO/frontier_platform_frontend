@@ -61,7 +61,7 @@ f-scrollbar-container(class="w-full h-full")
 
 <script setup>
 import useNavigation from '@/composables/useNavigation'
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 

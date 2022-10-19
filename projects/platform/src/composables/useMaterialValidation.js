@@ -1,5 +1,5 @@
 import { useStore } from 'vuex'
-import { ref, reactive, computed } from '@vue/runtime-core'
+import { ref, reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 export default function useMaterialValidation () {

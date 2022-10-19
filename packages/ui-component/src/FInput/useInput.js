@@ -1,5 +1,5 @@
-import { ref } from '@vue/reactivity'
-import { computed, watch, onUpdated, onMounted } from '@vue/runtime-core'
+import { ref } from 'vue'
+import { computed, watch, onUpdated, onMounted } from 'vue'
 
 export default function useInput ({ context: { emit, slots }, inputType = ref('text'), textValue, disabled = ref(false), rules = ref([]), customErrorMsg = ref('') }) {
   const isFocus = ref(false)

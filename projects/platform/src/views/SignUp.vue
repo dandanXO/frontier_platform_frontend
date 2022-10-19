@@ -52,8 +52,8 @@ div(v-if="isSignUpSuccessfully" class="fixed inset-0 w-full h-full bg-grey-50 fl
 </template>
 
 <script setup>
-import { reactive, ref } from '@vue/reactivity'
-import { computed, onMounted, toRaw, watch } from '@vue/runtime-core'
+import { reactive, ref } from 'vue'
+import { computed, onMounted, toRaw, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import SignInWithGoogle from '@/utils/signInWithGoogle.js'

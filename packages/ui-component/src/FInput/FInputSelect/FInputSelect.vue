@@ -57,8 +57,8 @@ export default {
 </script>
 
 <script setup>
-import { ref } from '@vue/reactivity'
-import { computed } from '@vue/runtime-core'
+import { ref } from 'vue'
+import { computed } from 'vue'
 import { nextTick, useSlots } from 'vue'
 
 const emit = defineEmits(['expand', 'collapse', 'select', 'update:selectValue', 'addNewOption'])

@@ -62,7 +62,7 @@ div(class="w-195")
 </template>
 
 <script setup>
-import { computed } from '@vue/runtime-core'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import usePlan from '@/composables/usePlan.js'
 import PlanValueAddedService from '@/components/billings/PlanValueAddedService.vue'

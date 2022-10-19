@@ -20,7 +20,7 @@ div(class="w-full min-w-42.5 max-w-67.5")
 </template>
 
 <script>
-import { ref, computed } from '@vue/runtime-core'
+import { ref, computed } from 'vue'
 import useMaterial from '@/composables/useMaterial'
 import useNavigation from '@/composables/useNavigation'
 

@@ -12,7 +12,7 @@ export default {
 
 <script setup>
 import { UPLOAD_ERROR_CODE } from '@/utils/constants.js'
-import { computed } from '@vue/reactivity'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
