@@ -50,11 +50,11 @@ export default {
       '.png': { placeholder: null, display: 'image' },
       '.jpg': { placeholder: null, display: 'image' },
       '.jpeg': { placeholder: null, display: 'image' },
-      '.gif': { placeholder: 'gif_folder', display: 'image' },
-      '.mov': { placeholder: 'mov_folder', display: 'video' },
-      '.mp4': { placeholder: 'mp4_folder', display: 'video' },
-      '.pdf': { placeholder: 'pdf_folder', display: 'open-new-tab' },
-      '.zip': { placeholder: 'zip_folder', display: 'no-preview' }
+      '.gif': { placeholder: 'file_gif', display: 'image' },
+      '.mov': { placeholder: 'file_mov', display: 'video' },
+      '.mp4': { placeholder: 'file_mp4', display: 'video' },
+      '.pdf': { placeholder: 'file_pdf', display: 'open-new-tab' },
+      '.zip': { placeholder: 'file_zip', display: 'no-preview' }
     }
 
     const currentIndex = ref(props.index)
