@@ -26,9 +26,9 @@ div(class="w-full h-full flex justify-center")
                 keyOptionValue="value"
                 class="w-25"
               )
-      block-material-information(:id="SECTION_ID.BLOCK_MATERIAL_INFORMATION" :validations="validations")
-      block-material-inventory(:validations="validations")
-      block-material-pricing(:validations="validations")
+      block-material-information(:invalidation="invalidation")
+      block-material-inventory(:invalidation="invalidation")
+      block-material-pricing(:invalidation="invalidation")
       block-material-additional-info(:tempMaterialId="tempMaterialId")
       div(class="flex justify-center items-center pt-17.5")
         div(class="grid grid-cols-2 gap-x-2")
@@ -46,14 +46,15 @@ import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { v4 as uuidv4 } from 'uuid'
-import { SIDE_TYPE, SECTION_ID } from '@/utils/constants'
+import { SIDE_TYPE } from '@/utils/constants'
 import { computed, ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import scrollTo from '@/utils/scrollTo'
 
 const { t } = useI18n()
 const store = useStore()
-const { validations, validate, isInvalid } = useMaterialValidation()
+const material = computed(() => store.getters['assets/material'])
+const { invalidation, validate, isInvalid } = useMaterialValidation(material)
 const { parsePath, goToMaterialUpload, goToAssets } = useNavigation()
 const tempMaterialId = uuidv4()
 const optionSideType = [
@@ -79,8 +80,6 @@ const optionSingleOrDouble = [
 ]
 
 const isConfirmedToLeave = ref(false)
-
-const material = computed(() => store.getters['assets/material'])
 const routeLocation = computed(() => store.getters['helper/routeLocation'])
 const breadcrumbList = computed(() => {
   const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
@@ -101,8 +100,8 @@ const breadcrumbList = computed(() => {
 })
 
 const createMaterial = async () => {
-  if (validate()) {
-    scrollTo(SECTION_ID.BLOCK_MATERIAL_INFORMATION)
+  if (!validate()) {
+    scrollTo('block-material-information')
     return
   }
 

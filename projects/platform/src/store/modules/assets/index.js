@@ -148,6 +148,66 @@ export default {
       material['certificateIdList'] = getters.material.certificateList.map(({ certificateId }) => certificateId)
       await dispatch('callAssetsApi', { func: 'updateMaterial', params: { materialId, material } })
     },
+    async updateMaterialSimpleSpec ({ getters, dispatch }) {
+      const materialId = getters.material.materialId
+      const material = Object.fromEntries(
+        Object.entries(getters.material)
+          .filter(([key]) => [
+            'materialNo',
+            'descriptionList',
+            'weight',
+            'weightUnit',
+            'weightGy',
+            'width',
+            'contentList',
+            'finishList',
+            'warpYarnCount',
+            'weftYarnCount',
+            'warpDensity',
+            'weftDensity',
+            'pattern',
+            'color'
+          ].includes(key))
+      )
+      await dispatch('callAssetsApi', { func: 'updateMaterialSimpleSpec', params: { materialId, material } })
+    },
+    async updateMaterialSimpleInventory ({ getters, dispatch }) {
+      const materialId = getters.material.materialId
+      const material = Object.fromEntries(
+        Object.entries(getters.material)
+          .filter(([key]) => [
+            'sampleCardsRemainingQty',
+            'sampleCardsLocation',
+            'hangersRemainingQty',
+            'hangersLocation',
+            'inventoryList',
+            'isPublicInventory'
+          ].includes(key))
+      )
+      await dispatch('callAssetsApi', { func: 'updateMaterialSimpleInventory', params: { materialId, material } })
+    },
+    async updateMaterialSimplePublicPrice ({ getters, dispatch }) {
+      const materialId = getters.material.materialId
+      const material = Object.fromEntries(
+        Object.entries(getters.material)
+          .filter(([key]) => [
+            'publicPrice'
+          ].includes(key))
+      )
+      await dispatch('callAssetsApi', { func: 'updateMaterialSimplePublicPrice', params: { materialId, material } })
+    },
+    async updateMaterialSimpleTag ({ getters, dispatch }) {
+      const materialId = getters.material.materialId
+      const material = Object.fromEntries(
+        Object.entries(getters.material)
+          .filter(([key]) => [
+            'publicTagList',
+            'privateTagList',
+            'aiTagList'
+          ].includes(key))
+      )
+      await dispatch('callAssetsApi', { func: 'updateMaterialSimpleTag', params: { materialId, material } })
+    },
     async addPantone ({ getters, dispatch }, params) {
       const { data } = await dispatch('callAssetsApi', { func: 'addPantone', params: { ...params, materialId: getters.material.materialId } })
       dispatch('setAssetsModule', data.result)

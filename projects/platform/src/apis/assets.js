@@ -96,6 +96,34 @@ export default {
   updateMaterial: (type, id, params) => apiWrapper('/assets/material/update', type, id, params),
 
   /**
+   * @param {object} params
+   * @param {number} params.materialId
+   * @param {object} params.material
+   */
+  updateMaterialSimpleSpec: (type, id, params) => apiWrapper('/assets/material/update/simple/spec', type, id, params),
+
+  /**
+   * @param {object} params
+   * @param {number} params.materialId
+   * @param {object} params.material
+   */
+  updateMaterialSimpleInventory: (type, id, params) => apiWrapper('/assets/material/update/simple/inventory', type, id, params),
+
+  /**
+   * @param {object} params
+   * @param {number} params.materialId
+   * @param {object} params.material
+   */
+  updateMaterialSimplePublicPrice: (type, id, params) => apiWrapper('/assets/material/update/simple/public-price', type, id, params),
+
+  /**
+   * @param {object} params
+   * @param {number} params.materialId
+   * @param {object} params.material
+   */
+  updateMaterialSimpleTag: (type, id, params) => apiWrapper('/assets/material/update/simple/tag', type, id, params),
+
+  /**
    * @param {object} params 
    * @param {number} params.materialId
    * @param {string} params.name

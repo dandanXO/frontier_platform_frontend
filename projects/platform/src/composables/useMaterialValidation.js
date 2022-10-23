@@ -1,13 +1,13 @@
-import { useStore } from 'vuex'
 import { ref, reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-export default function useMaterialValidation () {
-  const store = useStore()
+/**
+ * @param {ComputedRef} material
+ * @param {string[]} needValidatedFieldList
+ * @returns
+ */
+export default function useMaterialValidation (material, needValidatedFieldList) {
   const { t } = useI18n()
-
-  const hasValidate = ref(false)
-  const material = computed(() => store.getters['assets/material'])
 
   const required = (v) => !v && t('WW0002')
   const maxLength = (v, max) => v?.length > max && t('WW0003')
@@ -23,25 +23,25 @@ export default function useMaterialValidation () {
   const maxI9D1 = (v) => maxIntegerDecimal(9, 1, v) && t('WW0011')
   const maxI18D10 = (v) => maxIntegerDecimal(18, 10, v) && t('WW0012')
 
-  const validations = reactive({
+  const invalidation = reactive({
     materialNo: computed(() => {
       const materialNo = material.value.materialNo
-      return hasValidate.value && (required(materialNo) || maxLength(materialNo, 50))
+      return fieldHasValidatedMap.materialNo && (required(materialNo) || maxLength(materialNo, 50))
     }),
     width: computed(() => {
       const width = material.value.width
-      return hasValidate.value && (required(width) || maxI6D2(width))
+      return fieldHasValidatedMap.width && (required(width) || maxI6D2(width))
     }),
     weight: computed(() => {
       const weight = material.value.weight
-      return hasValidate.value && (required(weight) || maxI6D2(weight))
+      return fieldHasValidatedMap.weight && (required(weight) || maxI6D2(weight))
     }),
     weightGy: computed(() => {
       const weightGy = material.value.weightGy
-      return hasValidate.value && maxI6D2(weightGy)
+      return fieldHasValidatedMap.weightGy && maxI6D2(weightGy)
     }),
     contentList: computed(() => {
-      if (!hasValidate.value) {
+      if (!fieldHasValidatedMap.contentList) {
         return false
       }
 
@@ -69,19 +69,19 @@ export default function useMaterialValidation () {
 
       return false
     }),
-    warpYarnCount: computed(() => hasValidate.value && (maxLength(material.value.warpYarnCount, 100))),
-    weftYarnCount: computed(() => hasValidate.value && (maxLength(material.value.weftYarnCount, 100))),
-    warpDensity: computed(() => hasValidate.value && (maxLength(material.value.warpDensity, 100))),
-    weftDensity: computed(() => hasValidate.value && (maxLength(material.value.weftDensity, 100))),
-    pattern: computed(() => hasValidate.value && (maxLength(material.value.pattern, 100))),
-    color: computed(() => hasValidate.value && (maxLength(material.value.color, 100))),
-    materialSeq: computed(() => hasValidate.value && (maxLength(material.value.materialSeq, 50))),
+    warpYarnCount: computed(() => fieldHasValidatedMap.warpYarnCount && (maxLength(material.value.warpYarnCount, 100))),
+    weftYarnCount: computed(() => fieldHasValidatedMap.weftYarnCount && (maxLength(material.value.weftYarnCount, 100))),
+    warpDensity: computed(() => fieldHasValidatedMap.warpDensity && (maxLength(material.value.warpDensity, 100))),
+    weftDensity: computed(() => fieldHasValidatedMap.weftDensity && (maxLength(material.value.weftDensity, 100))),
+    pattern: computed(() => fieldHasValidatedMap.pattern && (maxLength(material.value.pattern, 100))),
+    color: computed(() => fieldHasValidatedMap.color && (maxLength(material.value.color, 100))),
+    materialSeq: computed(() => fieldHasValidatedMap.materialSeq && (maxLength(material.value.materialSeq, 50))),
     sampleCardsRemainingQty: computed(() => integerOnly(material.value.sampleCardsRemainingQty)),
-    sampleCardsLocation: computed(() => hasValidate.value && (maxLength(material.value.sampleCardsLocation, 256))),
+    sampleCardsLocation: computed(() => fieldHasValidatedMap.sampleCardsLocation && (maxLength(material.value.sampleCardsLocation, 256))),
     hangersRemainingQty: computed(() => integerOnly(material.value.hangersRemainingQty)),
-    hangersLocation: computed(() => hasValidate.value && (maxLength(material.value.hangersLocation, 256))),
+    hangersLocation: computed(() => fieldHasValidatedMap.hangersLocation && (maxLength(material.value.hangersLocation, 256))),
     inventoryList: computed(() => {
-      if (!hasValidate.value) {
+      if (!fieldHasValidatedMap.inventoryList) {
         return false
       }
 
@@ -99,27 +99,31 @@ export default function useMaterialValidation () {
 
       return false
     }),
-    publicPricePrice: computed(() => hasValidate.value && maxI18D10(material.value.publicPrice.price)),
+    publicPricePrice: computed(() => fieldHasValidatedMap.publicPricePrice && maxI18D10(material.value.publicPrice.price)),
     publicPriceMinimumOrderQuantity: computed(() => integerOnly(material.value.publicPrice.minimumOrderQuantity)),
     publicPriceMinimumContainerQuantity: computed(() => integerOnly(material.value.publicPrice.minimumContainerQuantity)),
-    publicPriceProductionLeadTime: computed(() => hasValidate.value && (maxLength(material.value.publicPrice.productionLeadTime, 20))),
-    publicPriceSampleLeadTime: computed(() => hasValidate.value && (maxLength(material.value.publicPrice.sampleLeadTime, 20))),
-    privatePricePrice: computed(() => hasValidate.value && maxI18D10(material.value.privatePrice.price)),
+    publicPriceProductionLeadTime: computed(() => fieldHasValidatedMap.publicPriceProductionLeadTime && (maxLength(material.value.publicPrice.productionLeadTime, 20))),
+    publicPriceSampleLeadTime: computed(() => fieldHasValidatedMap.publicPriceSampleLeadTime && (maxLength(material.value.publicPrice.sampleLeadTime, 20))),
+    privatePricePrice: computed(() => fieldHasValidatedMap.privatePricePrice && maxI18D10(material.value.privatePrice.price)),
     privatePriceMinimumOrderQuantity: computed(() => integerOnly(material.value.privatePrice.minimumOrderQuantity)),
     privatePriceMinimumContainerQuantity: computed(() => integerOnly(material.value.privatePrice.minimumContainerQuantity)),
-    privatePriceProductionLeadTime: computed(() => hasValidate.value && (maxLength(material.value.privatePrice.productionLeadTime, 20))),
-    privatePriceSampleLeadTime: computed(() => hasValidate.value && (maxLength(material.value.privatePrice.sampleLeadTime, 20)))
+    privatePriceProductionLeadTime: computed(() => fieldHasValidatedMap.privatePriceProductionLeadTime && (maxLength(material.value.privatePrice.productionLeadTime, 20))),
+    privatePriceSampleLeadTime: computed(() => fieldHasValidatedMap.privatePriceSampleLeadTime && (maxLength(material.value.privatePrice.sampleLeadTime, 20)))
   })
 
+  const fieldHasValidatedMap = reactive({})
+  Object.keys(invalidation).forEach(field => fieldHasValidatedMap[field] = false)
+  const innerNeedValidatedFieldList = !needValidatedFieldList ? Object.keys(invalidation) : needValidatedFieldList
+
+  const isInvalid = computed(() => innerNeedValidatedFieldList.some(field => !!invalidation[field]))
+
   const validate = () => {
-    hasValidate.value = true
-    return Object.keys(validations).some(key => !!validations[key])
+    innerNeedValidatedFieldList.forEach(field => fieldHasValidatedMap[field] = true)
+    return !isInvalid.value
   }
 
-  const isInvalid = computed(() => Object.keys(validations).some(key => !!validations[key]))
-
   return {
-    validations,
+    invalidation,
     validate,
     isInvalid
   }

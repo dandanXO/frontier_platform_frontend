@@ -3,26 +3,26 @@ div(class="grid gap-x-14 grid-cols-2")
   div(class="min-w-75 max-w-115")
     div(class="flex justify-between pb-2 border-grey-200 border-b mb-3")
       div(class="text-body1 font-bold text-grey-900") {{ $t('RR0130') }}
-      f-button-label(@click="handleEdit($t('RR0130'), 'spec')") {{ $t("UU0027") }}
+      f-button-label(@click="openModalMaterialEditSimple('spec')") {{ $t("UU0027") }}
     div(class="grid gap-3")
       p(v-for="(item, key) in materialBasicInfo" class="text-body2 line-clamp-1 !break-all" :class="{ 'text-grey-600': key === 'frontierNo' }") {{ item.name }}: {{ item.value }}
   div(class="flex flex-col gap-y-7 min-w-75 max-w-115")
     div
       div(class="flex justify-between pb-2 border-grey-200 border-b mb-3")
         div(class="text-body1 font-bold text-grey-900") {{ $t('RR0135') }}
-        f-button-label(@click="handleEdit($t('RR0135'), 'inventory')") {{ $t("UU0027") }}
+        f-button-label(@click="openModalMaterialEditSimple('inventory')") {{ $t("UU0027") }}
       div(class="grid gap-3")
         p(class="text-body2 line-clamp-1 !break-all") {{ materialInfo.totalInventoryQty.name }}: {{ materialInfo.totalInventoryQty.value }}
     div
       div(class="flex justify-between pb-2 border-grey-200 border-b mb-3")
         div(class="text-body1 font-bold text-grey-900") {{ $t('RR0134') }}
-        f-button-label(@click="handleEdit($t('RR0134'), 'price')") {{ $t("UU0027") }}
+        f-button-label(@click="openModalMaterialEditSimple('public-price')") {{ $t("UU0027") }}
       div(class="grid gap-3")
         p(class="text-body2 line-clamp-1 !break-all") {{ materialInfo.publicPrice.pricing.name }}: {{ materialInfo.publicPrice.pricing.value }}
     div
       div(class="flex justify-between pb-2 border-grey-200 border-b mb-3")
         div(class="text-body1 font-bold text-grey-900") {{ $t('RR0133') }}
-        f-button-label(@click="handleEdit($t('RR0133'), 'tag')") {{ $t("UU0027") }}
+        f-button-label(@click="openModalMaterialEditSimple('tag')") {{ $t("UU0027") }}
       div(class="grid gap-3")
         p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0027') }}: {{ material.publicTagList.join(',') }}
         p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0071') }}: {{ material.aiTagList.join(',') }}
@@ -63,14 +63,10 @@ const { materialBasicInfo, materialInfo, carbonEmissionInfo } = useMaterial(prop
 
 const made2flowSubscribed = computed(() => store.getters['polling/valueAddedService'].made2flow.planStatus.ACTIVATE)
 
-const handleEdit = (title, blockId) => {
+const openModalMaterialEditSimple = async (type) => {
   store.dispatch('assets/setMaterial', JSON.parse(JSON.stringify(props.material)))
   store.dispatch('helper/openModalBehavior', {
-    component: 'modal-edit-simple-info',
-    properties: {
-      title,
-      blockId
-    }
+    component: `modal-material-edit-simple-${type}`
   })
 }
 

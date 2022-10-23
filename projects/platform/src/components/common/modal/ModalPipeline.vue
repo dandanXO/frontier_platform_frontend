@@ -75,7 +75,6 @@ export default {
     ModalMaterialNoList: defineAsyncComponent(() => import('@/components/assets/progress/ModalMaterialNoList.vue')),
     ModalAssetsList: defineAsyncComponent(() => import('@/components/assets/ModalAssetsList.vue')),
     ModalChangeCover: defineAsyncComponent(() => import('@/components/assets/edit/ModalChangeCover.vue')),
-    ModalEditSimpleInfo: defineAsyncComponent(() => import('@/components/assets/ModalEditSimpleInfo.vue')),
     ModalEditScannedImage: defineAsyncComponent(() => import('@/components/assets/edit/ModalEditScannedImage.vue')),
     ModalU3mPreview: defineAsyncComponent(() => import('@/components/assets/ModalU3mPreview.vue')),
     ModalWorkspaceNodeList: defineAsyncComponent(() => import('@/components/workspace/ModalWorkspaceNodeList.vue')),
@@ -96,7 +95,11 @@ export default {
     ModalPublicLibraryShare: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryShare.vue')),
     ModalPublicLibraryShareAssigned: defineAsyncComponent(() => import('@/components/publicLibrary/ModalPublicLibraryShareAssigned.vue')),
     ModalTitasContactForm: defineAsyncComponent(() => import('@/components/titas/ModalTitasContactForm.vue')),
-    ModalChangeLocale: defineAsyncComponent(() => import('@/components/common/ModalChangeLocale.vue'))
+    ModalChangeLocale: defineAsyncComponent(() => import('@/components/common/ModalChangeLocale.vue')),
+    ModalMaterialEditSimpleSpec: defineAsyncComponent(() => import('@/components/assets/ModalMaterialEditSimpleSpec.vue')),
+    ModalMaterialEditSimpleInventory: defineAsyncComponent(() => import('@/components/assets/ModalMaterialEditSimpleInventory.vue')),
+    ModalMaterialEditSimplePublicPrice: defineAsyncComponent(() => import('@/components/assets/ModalMaterialEditSimplePublicPrice.vue')),
+    ModalMaterialEditSimpleTag: defineAsyncComponent(() => import('@/components/assets/ModalMaterialEditSimpleTag.vue'))
   },
   setup () {
     const store = useStore()

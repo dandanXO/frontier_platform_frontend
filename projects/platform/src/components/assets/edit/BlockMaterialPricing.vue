@@ -27,7 +27,7 @@ f-expansion-panel(class="border-b border-grey-200")
             v-model:textValue="material.publicPrice.price"
             inputType="number"
             class="w-50"
-            :customErrorMsg="validations.publicPricePrice"
+            :customErrorMsg="invalidation.publicPricePrice"
           )
           p(class="text-body2 text-grey-900 font-bold") {{ INVENTORY_UNIT.Y }}
       f-input-container(:label="$t('RR0047')")
@@ -36,7 +36,7 @@ f-expansion-panel(class="border-b border-grey-200")
             v-model:textValue="material.publicPrice.minimumOrderQuantity"
             inputType="number"
             class="w-50"
-            :customErrorMsg="validations.publicPriceMinimumOrderQuantity"
+            :customErrorMsg="invalidation.publicPriceMinimumOrderQuantity"
           )
           f-input-select(
             v-model:selectValue="material.publicPrice.minimumOrderQuantityUnit"
@@ -51,7 +51,7 @@ f-expansion-panel(class="border-b border-grey-200")
             v-model:textValue="material.publicPrice.minimumContainerQuantity"
             inputType="number"
             class="w-50"
-            :customErrorMsg="validations.publicPriceMinimumContainerQuantity"
+            :customErrorMsg="invalidation.publicPriceMinimumContainerQuantity"
           )
           f-input-select(
             v-model:selectValue="material.publicPrice.minimumContainerQuantityUnit"
@@ -65,7 +65,7 @@ f-expansion-panel(class="border-b border-grey-200")
           f-input-text(
             v-model:textValue="material.publicPrice.productionLeadTime"
             class="w-50"
-            :customErrorMsg="validations.publicPriceProductionLeadTime"
+            :customErrorMsg="invalidation.publicPriceProductionLeadTime"
           )
           p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0050") }}
       f-input-container(:label="$t('RR0051')")
@@ -73,7 +73,7 @@ f-expansion-panel(class="border-b border-grey-200")
           f-input-text(
             v-model:textValue="material.publicPrice.sampleLeadTime"
             class="w-50"
-            :customErrorMsg="validations.publicPriceSampleLeadTime"
+            :customErrorMsg="invalidation.publicPriceSampleLeadTime"
           )
           p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0050") }}
       div(class="-mx-15 bg-grey-50 px-15 py-12.5 grid gap-y-7.5")
@@ -100,7 +100,7 @@ f-expansion-panel(class="border-b border-grey-200")
               v-model:textValue="material.privatePrice.price"
               inputType="number"
               class="w-50"
-              :customErrorMsg="validations.privatePricePrice"
+              :customErrorMsg="invalidation.privatePricePrice"
             )
             f-input-select(
               v-model:selectValue="material.privatePrice.unit"
@@ -115,7 +115,7 @@ f-expansion-panel(class="border-b border-grey-200")
               v-model:textValue="material.privatePrice.minimumOrderQuantity"
               inputType="number"
               class="w-50"
-              :customErrorMsg="validations.privatePriceMinimumOrderQuantity"
+              :customErrorMsg="invalidation.privatePriceMinimumOrderQuantity"
             )
             f-input-select(
               v-model:selectValue="material.privatePrice.minimumOrderQuantityUnit"
@@ -130,7 +130,7 @@ f-expansion-panel(class="border-b border-grey-200")
               v-model:textValue="material.privatePrice.minimumContainerQuantity"
               inputType="number"
               class="w-50"
-              :customErrorMsg="validations.privatePriceMinimumContainerQuantity"
+              :customErrorMsg="invalidation.privatePriceMinimumContainerQuantity"
             )
             f-input-select(
               v-model:selectValue="material.privatePrice.minimumContainerQuantityUnit"
@@ -144,7 +144,7 @@ f-expansion-panel(class="border-b border-grey-200")
             f-input-text(
               v-model:textValue="material.privatePrice.productionLeadTime"
               class="w-50"
-              :customErrorMsg="validations.privatePriceProductionLeadTime"
+              :customErrorMsg="invalidation.privatePriceProductionLeadTime"
             )
             p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0050") }}
         f-input-container(:label="$t('RR0051')")
@@ -152,7 +152,7 @@ f-expansion-panel(class="border-b border-grey-200")
             f-input-text(
               v-model:textValue="material.privatePrice.sampleLeadTime"
               class="w-50"
-              :customErrorMsg="validations.privatePriceSampleLeadTime"
+              :customErrorMsg="invalidation.privatePriceSampleLeadTime"
             )
             p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0050") }}
 </template>
@@ -166,7 +166,7 @@ import useMaterialEdit from '@/composables/useMaterialEdit'
 export default {
   name: 'BlockMaterialPricing',
   props: {
-    validations: {
+    invalidation: {
       type: Object,
       required: true
     }

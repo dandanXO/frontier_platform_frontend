@@ -21,28 +21,28 @@ f-expansion-panel(class="border-b border-grey-200")
         div(class="flex items-center gap-x-3")
           f-input-text(
             v-model:textValue="material.sampleCardsRemainingQty"
-            :customErrorMsg="validations.sampleCardsRemainingQty"
+            :customErrorMsg="invalidation.sampleCardsRemainingQty"
             inputType="number"
             class="w-50"
           )
           f-svg-icon(iconName="slash" size="20" class="text-grey-900")
           f-input-text(
             v-model:textValue="material.sampleCardsLocation"
-            :customErrorMsg="validations.sampleCardsLocation"
+            :customErrorMsg="invalidation.sampleCardsLocation"
             class="w-50"
           )
       f-input-container(:label="`${$t('RR0033')} / ${$t('RR0032')}`")
         div(class="flex items-center gap-x-3")
           f-input-text(
             v-model:textValue="material.hangersRemainingQty"
-            :customErrorMsg="validations.hangersRemainingQty"
+            :customErrorMsg="invalidation.hangersRemainingQty"
             inputType="number"
             class="w-50"
           )
           f-svg-icon(iconName="slash" size="20" class="text-grey-900")
           f-input-text(
             v-model:textValue="material.hangersLocation"
-            :customErrorMsg="validations.hangersLocation"
+            :customErrorMsg="invalidation.hangersLocation"
             class="w-50"
           )
       h6(class="text-h6 text-grey-600 font-bold") {{ $t("DD0023") }}
@@ -89,7 +89,7 @@ f-expansion-panel(class="border-b border-grey-200")
           )
           f-svg-icon(v-if="index === 0" size="20" iconName="add_box" class="text-grey-600 ml-4.5 mt-5.5" @click="addNewInventory")
           f-svg-icon(v-else size="20" iconName="delete" class="text-grey-600 ml-4.5" @click="removeInventory(index)")
-        p(v-if="validations.inventoryList" class="bottom-0 transform translate-y-full text-caption text-red-400 absolute pt-1") {{ validations.inventoryList }}
+        p(v-if="invalidation.inventoryList" class="bottom-0 transform translate-y-full text-caption text-red-400 absolute pt-1") {{ invalidation.inventoryList }}
 </template>
 
 <script>
@@ -101,7 +101,7 @@ import useMaterialEdit from '@/composables/useMaterialEdit'
 export default {
   name: 'BlockMaterialInventory',
   props: {
-    validations: {
+    invalidation: {
       type: Object,
       required: true
     }

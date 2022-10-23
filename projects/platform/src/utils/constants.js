@@ -264,10 +264,6 @@ export const CREATE_EDIT = {
   EDIT: 2
 }
 
-export const SECTION_ID = {
-  BLOCK_MATERIAL_INFORMATION: 'fabric-specifications'
-}
-
 export const MADE2FLOW_PLAN_TYPE = {
   STANDARD: 1,
   PERSONALIZED: 2,

@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="pb-15 border-b border-grey-200")
+div(data-scroll-to="block-material-information" class="pb-15 border-b border-grey-200")
   div(class="h-16 flex items-center justify-between")
     h5(class="text-h5 text-grey-900 font-bold") {{ $t("DD0013") }}
     f-button(
@@ -24,7 +24,7 @@ div(class="pb-15 border-b border-grey-200")
           v-model:textValue="material.materialNo"
           :placeholder="$t('DD0015')"
           :label="$t('RR0013')"
-          :customErrorMsg="validations.materialNo"
+          :customErrorMsg="invalidation.materialNo"
           required
           :rules="[$inputRules.required()]"
           data-cy="materialNo"
@@ -47,8 +47,8 @@ div(class="pb-15 border-b border-grey-200")
               class="w-50"
               data-cy="weight"
             )
-              template(v-if="validations.weight" #slot:errorMsg)
-                p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ validations.weight }}
+              template(v-if="invalidation.weight" #slot:errorMsg)
+                p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ invalidation.weight }}
             f-input-select(
               v-model:selectValue="material.weightUnit"
               :optionList="specOptions.weightUnitList"
@@ -62,8 +62,8 @@ div(class="pb-15 border-b border-grey-200")
               :placeholder="$t('DD0017')"
               class="w-50"
             )
-              template(v-if="validations.weightGy" #slot:errorMsg)
-                p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ validations.weightGy }}
+              template(v-if="invalidation.weightGy" #slot:errorMsg)
+                p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ invalidation.weightGy }}
             p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0018") }}
         f-input-container(:label="$t('RR0019')" required)
           div(class="flex items-center gap-x-3")
@@ -73,8 +73,8 @@ div(class="pb-15 border-b border-grey-200")
               class="w-50"
               data-cy="width"
             )
-              template(v-if="validations.width" #slot:errorMsg)
-                p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ validations.width }}
+              template(v-if="invalidation.width" #slot:errorMsg)
+                p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ invalidation.width }}
             p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0020") }}
         f-input-container(:label="$t('RR0021')" required)
           div(class="grid gap-y-3")
@@ -99,7 +99,7 @@ div(class="pb-15 border-b border-grey-200")
               f-svg-icon(v-if="contentItemIndex === 0" size="20" iconName="add_box" class="text-grey-600" @click="addNewContent" data-cy="add-content")
               f-svg-icon(v-else size="20" iconName="delete" class="text-grey-600" @click="removeContent(contentItemIndex)")
           template(#slot:hint)
-            p(v-if="validations.contentList" class="text-caption text-red-400 absolute pt-1" data-cy="error-msg") {{ validations.contentList }}
+            p(v-if="invalidation.contentList" class="text-caption text-red-400 absolute pt-1" data-cy="error-msg") {{ invalidation.contentList }}
         f-input-chips(
           v-model:chips="material.finishList"
           :label="$t('RR0022')"
@@ -114,14 +114,14 @@ div(class="pb-15 border-b border-grey-200")
           div(class="flex items-center gap-x-3")
             f-input-text(
               v-model:textValue="material.warpYarnCount"
-              :customErrorMsg="validations.warpYarnCount"
+              :customErrorMsg="invalidation.warpYarnCount"
               class="w-50"
                 data-cy="warpYarnCount"
             )
             f-svg-icon(iconName="clear" size="20" class="text-grey-900")
             f-input-text(
               v-model:textValue="material.weftYarnCount"
-              :customErrorMsg="validations.weftYarnCount"
+              :customErrorMsg="invalidation.weftYarnCount"
               class="w-50"
                 data-cy="weftYarnCount"
             )
@@ -129,14 +129,14 @@ div(class="pb-15 border-b border-grey-200")
           div(class="flex items-center gap-x-3")
             f-input-text(
               v-model:textValue="material.warpDensity"
-              :customErrorMsg="validations.warpDensity"
+              :customErrorMsg="invalidation.warpDensity"
               class="w-50"
               data-cy="warpDensity"
             )
             f-svg-icon(iconName="clear" size="20" class="text-grey-900")
             f-input-text(
               v-model:textValue="material.weftDensity"
-              :customErrorMsg="validations.weftDensity"
+              :customErrorMsg="invalidation.weftDensity"
               class="w-50"
               data-cy="weftDensity"
             )
@@ -144,13 +144,13 @@ div(class="pb-15 border-b border-grey-200")
           div(class="flex items-center gap-x-3")
             f-input-text(
               v-model:textValue="material.pattern"
-              :customErrorMsg="validations.pattern"
+              :customErrorMsg="invalidation.pattern"
               class="w-50"
             )
             f-svg-icon(iconName="slash" size="20" class="text-grey-900")
             f-input-text(
               v-model:textValue="material.color"
-              :customErrorMsg="validations.color"
+              :customErrorMsg="invalidation.color"
               class="w-50"
             )
         f-input-chips(
@@ -194,7 +194,6 @@ div(class="pb-15 border-b border-grey-200")
 
 <script setup>
 import { ref, computed, watch, reactive, onMounted } from 'vue'
-import { SIDE_TYPE } from '@/utils/constants'
 import { useStore } from 'vuex'
 import useMaterialEdit from '@/composables/useMaterialEdit'
 import useMaterialImage from '@/composables/useMaterialImage'
@@ -203,7 +202,7 @@ import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayo
 import { Cropper } from '@/utils/cropper'
 
 const props = defineProps({
-  validations: {
+  invalidation: {
     type: Object,
     required: true
   }
