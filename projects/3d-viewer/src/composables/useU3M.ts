@@ -39,9 +39,9 @@ export const loadU3m = async (u3mPath: string): Promise<U3M> => {
 
   /*
    * 因後端給的預設 specular 為 0,
-   * 前端幫忙塞布料預設值 0.1，等到後端重產完 u3m 後再拿掉這段 code。
+   * 前端幫忙塞布料預設值 0.05，等到後端重產完 u3m 後再拿掉這段 code。
    */
-  if (specular === 0) specular = 0.1
+  if (specular === 0) specular = 0.05
 
   return {
     u3m,
