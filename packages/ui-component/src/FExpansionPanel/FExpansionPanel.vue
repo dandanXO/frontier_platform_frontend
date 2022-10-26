@@ -7,7 +7,7 @@ div
 
 <script>
 export default {
-  name: 'FExpansionPanel'
+  name: 'FExpansionPanel',
 }
 </script>
 
@@ -17,8 +17,8 @@ import { ref } from 'vue'
 const props = defineProps({
   isExpand: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const emit = defineEmits(['expand', 'collapse'])

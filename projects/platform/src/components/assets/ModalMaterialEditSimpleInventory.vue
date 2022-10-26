@@ -7,7 +7,7 @@ modal-behavior(
   @click:secondary="$store.dispatch('helper/closeModal')"
 )
   div(class="min-w-200 bg-grey-50 px-7.5 py-7.5 grid gap-y-7.5")
-    h6(class="text-h6 text-grey-600 font-bold") {{ $t("DD0019") }}
+    h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
     f-input-container(:label="`${$t('RR0031')} / ${$t('RR0032')}`")
       div(class="flex items-center gap-x-3")
         f-input-text(
@@ -36,7 +36,7 @@ modal-behavior(
           :customErrorMsg="invalidation.hangersLocation"
           class="w-50"
         )
-    h6(class="text-h6 text-grey-600 font-bold") {{ $t("DD0023") }}
+    h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0023') }}
     f-input-container(:label="$t('RR0034')")
       div(class="flex items-center gap-x-3")
         f-input-text(
@@ -52,7 +52,11 @@ modal-behavior(
           iconSize="20"
         )
     div(class="grid gap-y-3")
-      div(v-for="(inventory, index) in material.inventoryList" class="flex items-center gap-x-3 relative" :style="{ zIndex: material.inventoryList.length - index }")
+      div(
+        v-for="(inventory, index) in material.inventoryList"
+        class="flex items-center gap-x-3 relative"
+        :style="{ zIndex: material.inventoryList.length - index }"
+      )
         f-input-text(
           v-model:textValue="inventory.section"
           :label="index === 0 ? $t('RR0035') : ''"
@@ -78,9 +82,24 @@ modal-behavior(
           keyOptionValue="unit"
           class="w-25"
         )
-        f-svg-icon(v-if="index === 0" size="20" iconName="add_box" class="text-grey-600 ml-4.5 mt-5.5" @click="addNewInventory")
-        f-svg-icon(v-else size="20" iconName="delete" class="text-grey-600 ml-4.5" @click="removeInventory(index)")
-      p(v-if="invalidation.inventoryList" class="bottom-0 transform translate-y-full text-caption text-red-400 absolute pt-1") {{ invalidation.inventoryList }}
+        f-svg-icon(
+          v-if="index === 0"
+          size="20"
+          iconName="add_box"
+          class="text-grey-600 ml-4.5 mt-5.5"
+          @click="addNewInventory"
+        )
+        f-svg-icon(
+          v-else
+          size="20"
+          iconName="delete"
+          class="text-grey-600 ml-4.5"
+          @click="removeInventory(index)"
+        )
+      p(
+        v-if="invalidation.inventoryList"
+        class="bottom-0 transform translate-y-full text-caption text-red-400 absolute pt-1"
+      ) {{ invalidation.inventoryList }}
 </template>
 
 <script setup>
@@ -99,7 +118,7 @@ const {
   addNewInventory,
   removeInventory,
   totalInventory,
-  updateInventoryListUnit
+  updateInventoryListUnit,
 } = useMaterialEdit(material.value)
 
 watch(
@@ -108,7 +127,7 @@ watch(
     store.commit('assets/UPDATE_material', material.value)
   },
   {
-    deep: true
+    deep: true,
   }
 )
 

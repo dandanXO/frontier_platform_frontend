@@ -1,6 +1,10 @@
 <template lang="pug">
 div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey-50")
-  row-item-img(:material="material" v-model:selectedList="innerSelectedList" class="col-span-3")
+  row-item-img(
+    :material="material"
+    v-model:selectedList="innerSelectedList"
+    class="col-span-3"
+  )
   row-item-content(:material="material" class="col-span-8")
   row-item-sidebar(:material="material" class="col-span-1")
 </template>
@@ -16,27 +20,27 @@ export default {
   components: {
     RowItemImg,
     RowItemContent,
-    RowItemSidebar
+    RowItemSidebar,
   },
   props: {
     material: {
-      type: Object
+      type: Object,
     },
     selectedList: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   emits: ['update:selectedList'],
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const innerSelectedList = computed({
       get: () => props.selectedList,
-      set: (v) => emit('update:selectedList', v)
+      set: (v) => emit('update:selectedList', v),
     })
 
     return {
-      innerSelectedList
+      innerSelectedList,
     }
-  }
+  },
 }
 </script>

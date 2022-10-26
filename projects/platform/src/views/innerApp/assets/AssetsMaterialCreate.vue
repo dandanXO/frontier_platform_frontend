@@ -2,12 +2,15 @@
 div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
     div(class="pt-12 pb-9 flex justify-between")
-      f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
-      f-button(size="sm" type="secondary" class="ml-5" @click="openModalMassUpload") {{ $t("UU0009") }}
+      f-breadcrumb(
+        :breadcrumbList="breadcrumbList"
+        @click:item="$router.push($event.path)"
+      )
+      f-button(size="sm" type="secondary" class="ml-5" @click="openModalMassUpload") {{ $t('UU0009') }}
     div
       div(class="pb-15 mb-5 border-b border-grey-200")
         div(class="h-16 flex items-center")
-          h5(class="text-h5 text-grey-900 font-bold pr-1.5") {{ $t("DD0063") }}
+          h5(class="text-h5 text-grey-900 font-bold pr-1.5") {{ $t('DD0063') }}
         div(class="pl-15")
           f-input-container(:label="$t('DD0062')")
             div(class="flex items-center gap-x-3")
@@ -32,8 +35,14 @@ div(class="w-full h-full flex justify-center")
       block-material-additional-info(:tempMaterialId="tempMaterialId")
       div(class="flex justify-center items-center pt-17.5")
         div(class="grid grid-cols-2 gap-x-2")
-          f-button(size="md" type="secondary" class="h-10" @click="cancel") {{ $t("UU0002") }}
-          f-button(size="md" class="h-10" :disabled="isInvalid" @click="createMaterial" data-cy="create-material") {{ $t("UU0020") }}
+          f-button(size="md" type="secondary" class="h-10" @click="cancel") {{ $t('UU0002') }}
+          f-button(
+            size="md"
+            class="h-10"
+            :disabled="isInvalid"
+            @click="createMaterial"
+            data-cy="create-material"
+          ) {{ $t('UU0020') }}
 </template>
 
 <script setup>
@@ -60,23 +69,23 @@ const tempMaterialId = uuidv4()
 const optionSideType = [
   {
     name: t('DD0048'),
-    value: SIDE_TYPE.FACE
+    value: SIDE_TYPE.FACE,
   },
   {
     name: t('DD0049'),
-    value: SIDE_TYPE.BACK
-  }
+    value: SIDE_TYPE.BACK,
+  },
 ]
 
 const optionSingleOrDouble = [
   {
     name: t('DD0014'),
-    value: true
+    value: true,
   },
   {
     name: t('DD0061'),
-    value: false
-  }
+    value: false,
+  },
 ]
 
 const isConfirmedToLeave = ref(false)
@@ -86,16 +95,16 @@ const breadcrumbList = computed(() => {
   return [
     {
       name: t('DD0044'),
-      path: parsePath(`${prefix}/assets`)
+      path: parsePath(`${prefix}/assets`),
     },
     {
       name: t('DD0045'),
-      path: parsePath(`${prefix}/assets/upload`)
+      path: parsePath(`${prefix}/assets/upload`),
     },
     {
       name: t('DD0012'),
-      path: parsePath(`${prefix}/assets/upload/manual`)
-    }
+      path: parsePath(`${prefix}/assets/upload/manual`),
+    },
   ]
 })
 
@@ -125,8 +134,8 @@ const createMaterial = async () => {
         goToMaterialUpload()
         store.dispatch('helper/closeModalBehavior')
       },
-      materialList: [material.value]
-    }
+      materialList: [material.value],
+    },
   })
 }
 
@@ -140,13 +149,13 @@ const cancel = async () => {
       isConfirmedToLeave.value = true
       goToMaterialUpload()
     },
-    secondaryBtnText: t('UU0002')
+    secondaryBtnText: t('UU0002'),
   })
 }
 
 const openModalMassUpload = () => {
   store.dispatch('helper/openModalBehavior', {
-    component: 'modal-mass-upload'
+    component: 'modal-mass-upload',
   })
 }
 
@@ -162,7 +171,7 @@ onBeforeRouteLeave(async () => {
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: resolve.bind(undefined, 'confirm'),
       secondaryBtnText: t('UU0002'),
-      secondaryBtnHandler: resolve.bind(undefined, 'cancel')
+      secondaryBtnHandler: resolve.bind(undefined, 'cancel'),
     })
   })
 

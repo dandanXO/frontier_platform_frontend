@@ -1,6 +1,8 @@
 <template lang="pug">
 div(class="grid")
-  div(class="justify-self-center my-3.5 md:w-200 h-11 bg-grey-50 rounded-full px-7.5 flex items-center gap-x-4.5")
+  div(
+    class="justify-self-center my-3.5 md:w-200 h-11 bg-grey-50 rounded-full px-7.5 flex items-center gap-x-4.5"
+  )
     div(class="flex-grow flex items-center")
       f-svg-icon(
         v-if="!keyword"
@@ -33,7 +35,7 @@ div(class="grid")
     //- div(class="w-0.5 h-4 bg-grey-200")
     //- f-svg-icon(size="24" iconName="camera_border" class="text-grey-900 cursor-pointer")
   slider(v-if="innerTagList.length > 0")
-    div(class="flex items-center gap-x-2 pb-5 pl-7.5 ")
+    div(class="flex items-center gap-x-2 pb-5 pl-7.5")
       f-tag(
         v-for="tag in innerTagList"
         size="lg"
@@ -43,8 +45,8 @@ div(class="grid")
   div(v-show="isOpenFilterPanel" class="px-7.5")
     div(class="bg-grey-50 p-5 rounded")
       div(class="flex items-end pb-4")
-        p(class="text-body1 text-grey-900") {{ $t("RR0085") }}
-        p(class="text-caption text-grey-200 pl-3 cursor-pointer" @click="resetFilter") {{ $t("UU0041") }}
+        p(class="text-body1 text-grey-900") {{ $t('RR0085') }}
+        p(class="text-caption text-grey-200 pl-3 cursor-pointer" @click="resetFilter") {{ $t('UU0041') }}
       div(class="flex flex-wrap gap-x-2 gap-y-4")
         filter-category
         filter-content
@@ -54,8 +56,12 @@ div(class="grid")
         filter-yarn-density
         filter-finish
         filter-inventory(:searchType="searchType")
-        filter-has-price(v-if="[SEARCH_TYPE.ASSETS, SEARCH_TYPE.WORKSPACE].includes(searchType)")
-        filter-price(v-if="[SEARCH_TYPE.PUBLIC_LIBRARY, SEARCH_TYPE.SHARE].includes(searchType)")
+        filter-has-price(
+          v-if="[SEARCH_TYPE.ASSETS, SEARCH_TYPE.WORKSPACE].includes(searchType)"
+        )
+        filter-price(
+          v-if="[SEARCH_TYPE.PUBLIC_LIBRARY, SEARCH_TYPE.SHARE].includes(searchType)"
+        )
         filter-complete(v-if="searchType === SEARCH_TYPE.ASSETS")
         filter-has-u3m(v-if="searchType !== SEARCH_TYPE.ASSETS")
         filter-made2flow(v-if="searchType === SEARCH_TYPE.WORKSPACE")
@@ -98,37 +104,43 @@ export default {
     FilterContent,
     FilterHasU3m,
     FilterPrice,
-    FilterMade2flow
+    FilterMade2flow,
   },
   props: {
     searchType: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   emits: ['blur', 'search'],
-  setup (props, context) {
+  setup(props, context) {
     const store = useStore()
     const keyword = computed({
       get: () => store.getters['helper/search/keyword'],
-      set: (v) => store.dispatch('helper/search/setKeyword', v)
+      set: (v) => store.dispatch('helper/search/setKeyword', v),
     })
     let timer
     const isOpenFilterPanel = ref(false)
     const filter = computed(() => store.getters['helper/search/filter'])
     const tagList = computed(() => store.getters['helper/search/tagList'])
-    const selectedTagList = computed(() => store.getters['helper/search/selectedTagList'])
+    const selectedTagList = computed(
+      () => store.getters['helper/search/selectedTagList']
+    )
     const innerTagList = computed(() => {
-      return tagList.value.map(tag => ({
+      return tagList.value.map((tag) => ({
         ...tag,
-        isSelected: selectedTagList.value.some(selectedTag => selectedTag.name === tag.name)
+        isSelected: selectedTagList.value.some(
+          (selectedTag) => selectedTag.name === tag.name
+        ),
       }))
     })
 
     const selectTag = (tag) => {
       delete tag.isSelected
       const tempTagList = [...selectedTagList.value]
-      const index = tempTagList.findIndex(item => JSON.stringify(item) === JSON.stringify(tag))
+      const index = tempTagList.findIndex(
+        (item) => JSON.stringify(item) === JSON.stringify(tag)
+      )
 
       if (!~index) {
         tempTagList.push(tag)
@@ -144,7 +156,9 @@ export default {
       context.emit('search')
     }
 
-    const resetFilter = () => { store.dispatch('helper/search/resetFilter') }
+    const resetFilter = () => {
+      store.dispatch('helper/search/resetFilter')
+    }
 
     watch(
       () => filter.value,
@@ -152,7 +166,7 @@ export default {
         context.emit('search')
       },
       {
-        deep: true
+        deep: true,
       }
     )
 
@@ -163,7 +177,9 @@ export default {
         timer = undefined
         if (keyword.value !== '') {
           timer = setTimeout(() => {
-            store.dispatch('helper/search/getAITags', { searchKeyword: keyword.value })
+            store.dispatch('helper/search/getAITags', {
+              searchKeyword: keyword.value,
+            })
           }, 300)
         } else {
           store.dispatch('helper/search/resetTagList')
@@ -171,7 +187,7 @@ export default {
         }
       },
       {
-        immediate: true
+        immediate: true,
       }
     )
 
@@ -188,8 +204,8 @@ export default {
       isOpenFilterPanel,
       filter,
       resetFilter,
-      SEARCH_TYPE
+      SEARCH_TYPE,
     }
-  }
+  },
 }
 </script>

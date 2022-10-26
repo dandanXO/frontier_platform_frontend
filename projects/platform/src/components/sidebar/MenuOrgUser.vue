@@ -5,7 +5,12 @@ div(class="h-13 bg-grey-100 py-2.5 pl-4 pr-6")
       div(class="w-50 flex items-center cursor-pointer")
         img(:src="avatar" class="rounded-full w-8 h-8 mr-2")
         p(class="flex-grow text-body2 text-grey-900 line-clamp-1 cursor-pointer") {{ orgUser.displayName }}
-        f-svg-icon(iconName="keyboard_arrow_down" size="24" class="text-grey-600 transform" :class="[isExpand ? 'rotate-180' : 'rotate-0']")
+        f-svg-icon(
+          iconName="keyboard_arrow_down"
+          size="24"
+          class="text-grey-600 transform"
+          :class="[isExpand ? 'rotate-180' : 'rotate-0']"
+        )
     template(#content="{ collapsePopper }")
       f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
 </template>
@@ -24,7 +29,7 @@ const avatar = computed(() => store.getters['organization/orgUser/avatar'])
 const openModal = (component, properties = {}) => {
   store.dispatch('helper/openModalBehavior', {
     component,
-    properties
+    properties,
   })
 }
 
@@ -34,42 +39,42 @@ const menuTree = computed(() => ({
       menuList: [
         {
           title: t('RR0120'),
-          clickHandler: openModal.bind(undefined, 'modal-org-user-profile')
+          clickHandler: openModal.bind(undefined, 'modal-org-user-profile'),
         },
         {
           title: t('RR0138'),
-          clickHandler: openModal.bind(undefined, 'modal-change-password')
-        }
-      ]
+          clickHandler: openModal.bind(undefined, 'modal-change-password'),
+        },
+      ],
     },
     {
       menuList: [
         {
           title: t('RR0137'),
-          clickHandler: openModal.bind(undefined, 'modal-change-locale')
+          clickHandler: openModal.bind(undefined, 'modal-change-locale'),
         },
         {
           title: t('RR0123'),
-          clickHandler: openModal.bind(undefined, 'modal-send-feedback')
-        }
-      ]
+          clickHandler: openModal.bind(undefined, 'modal-send-feedback'),
+        },
+      ],
     },
     {
       menuList: [
         {
           title: t('RR0125'),
-          clickHandler: openModal.bind(undefined, 'modal-privacy-policy')
-        }
-      ]
+          clickHandler: openModal.bind(undefined, 'modal-privacy-policy'),
+        },
+      ],
     },
     {
       menuList: [
         {
           title: t('RR0126'),
-          clickHandler: () => router.push('/logout')
-        }
-      ]
-    }
-  ]
+          clickHandler: () => router.push('/logout'),
+        },
+      ],
+    },
+  ],
 }))
 </script>

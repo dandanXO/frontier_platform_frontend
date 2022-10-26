@@ -10,7 +10,7 @@ export default {
   component: FInputTextIcon,
   args: {
     size: 'lg',
-    type: 'primary'
+    type: 'primary',
   },
   argTypes: {
     ...FInputTextStories.argTypes,
@@ -19,14 +19,14 @@ export default {
       options: ['primary', 'secondary'],
     },
     iconColor: {
-      control: { type: 'text' }
-    }
-  }
+      control: { type: 'text' },
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FInputTextIcon },
-  setup () {
+  setup() {
     const inputText = ref('')
     return { args, inputText }
   },

@@ -26,15 +26,29 @@ grid-item-wrapper(
 )
   template(#title) {{ node.properties.name }}
   template(#content)
-    div(class="grid grid-rows-2 grid-cols-2 grid-flow-col h-full rounded-md overflow-hidden")
+    div(
+      class="grid grid-rows-2 grid-cols-2 grid-flow-col h-full rounded-md overflow-hidden"
+    )
       div(class="row-span-2 bg-grey-150")
-        img(v-if="node.properties.coverImgList[0]" :src="node.properties.coverImgList[0]" class="w-full h-full object-cover")
+        img(
+          v-if="node.properties.coverImgList[0]"
+          :src="node.properties.coverImgList[0]"
+          class="w-full h-full object-cover"
+        )
       div(class="bg-grey-100")
-        img(v-if="node.properties.coverImgList[1]" :src="node.properties.coverImgList[1]" class="w-full h-full")
+        img(
+          v-if="node.properties.coverImgList[1]"
+          :src="node.properties.coverImgList[1]"
+          class="w-full h-full"
+        )
       div(class="bg-grey-50")
-        img(v-if="node.properties.coverImgList[2]" :src="node.properties.coverImgList[2]" class="w-full h-full")
+        img(
+          v-if="node.properties.coverImgList[2]"
+          :src="node.properties.coverImgList[2]"
+          class="w-full h-full"
+        )
   template(#hover-content)
-    p(class="text-body1 font-bold leading-1.6 text-grey-0") {{ $t("RR0068", { number: node.properties.itemCounts }) }}
+    p(class="text-body1 font-bold leading-1.6 text-grey-0") {{ $t('RR0068', { number: node.properties.itemCounts }) }}
   template(#hover-corner-top-right)
     slot(name="hover-corner-top-right")
   template(#hover-corner-bottom-left)
@@ -54,25 +68,25 @@ import { computed } from 'vue'
 const props = defineProps({
   node: {
     type: Object,
-    required: true
+    required: true,
   },
   isSelectable: {
     type: Boolean,
-    default: true
+    default: true,
   },
   selectedValue: {
     type: Array,
-    default: []
+    default: [],
   },
   optionList: {
     type: Array,
-    default: () => [] // [[{ name: '', func: () => { }, disabled: false }]]
-  }
+    default: () => [], // [[{ name: '', func: () => { }, disabled: false }]]
+  },
 })
 const emit = defineEmits(['update:selectedValue', 'click:option'])
 
 const innerSelectedValue = computed({
   get: () => props.selectedValue,
-  set: (v) => emit('update:selectedValue', v)
+  set: (v) => emit('update:selectedValue', v),
 })
 </script>

@@ -4,7 +4,7 @@ import { ref } from 'vue'
 const baseArgs = {
   size: 'lg',
   inputType: 'text',
-  clearable: true
+  clearable: true,
 }
 
 export default {
@@ -13,38 +13,39 @@ export default {
   args: baseArgs,
   argTypes: {
     textValue: {
-      control: { type: null }
+      control: { type: null },
     },
     inputType: {
       control: { type: 'select' },
-      options: ['text', 'number', 'date']
+      options: ['text', 'number', 'date'],
     },
     size: {
       control: { type: 'radio' },
       options: ['lg', 'sm'],
     },
     clearable: {
-      control: { type: 'boolean' }
+      control: { type: 'boolean' },
     },
     required: {
-      control: { type: 'boolean' }
+      control: { type: 'boolean' },
     },
     customErrorMsg: {
-      control: { type: 'text' }
+      control: { type: 'text' },
     },
     'slot:errorMsg': {
-      description: 'It turn to error state when slot:errorMsg has value'
-    }
-  }
+      description: 'It turn to error state when slot:errorMsg has value',
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FInputText },
-  setup () {
+  setup() {
     const inputText = ref('')
     return { args, inputText }
   },
-  template: '<f-input-text v-model:textValue="inputText" v-bind="args"></f-input-text>',
+  template:
+    '<f-input-text v-model:textValue="inputText" v-bind="args"></f-input-text>',
 })
 
 export const Default = Template.bind({})
@@ -55,30 +56,27 @@ Default.args = {
 export const Label = Template.bind({})
 Label.args = {
   ...baseArgs,
-  label: 'Label'
+  label: 'Label',
 }
 
 export const RulesRequired = Template.bind({})
 RulesRequired.args = {
   ...baseArgs,
-  rules: [
-    (v) => !v && 'Required!!'
-  ],
-  label: 'Example of Required rule (Try to type something and delete it to see error message)',
-  required: true
+  rules: [(v) => !v && 'Required!!'],
+  label:
+    'Example of Required rule (Try to type something and delete it to see error message)',
+  required: true,
 }
-
 
 export const CustomErrorMsg = Template.bind({})
 CustomErrorMsg.args = {
   ...baseArgs,
-  customErrorMsg: 'This is custom error message'
+  customErrorMsg: 'This is custom error message',
 }
-
 
 export const SlotErrorMsg = (args) => ({
   components: { FInputText },
-  setup () {
+  setup() {
     const inputText = ref('')
     return { args, inputText }
   },

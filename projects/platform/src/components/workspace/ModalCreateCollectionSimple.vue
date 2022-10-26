@@ -7,7 +7,11 @@ modal-behavior(
 )
   div(class="w-84")
     h6(class="text-body2 font-bold text-grey-900 mb-2") {{ $t('EE0065') }}
-    f-input-text(v-model:textValue="collectionName" required :rules="[$inputRules.required()]")
+    f-input-text(
+      v-model:textValue="collectionName"
+      required
+      :rules="[$inputRules.required()]"
+    )
 </template>
 
 <script>
@@ -19,22 +23,22 @@ export default {
   props: {
     id: {
       type: Number,
-      required: true
+      required: true,
     },
     workspaceNodeLocation: {
       type: Number,
-      required: true
+      required: true,
     },
     workspaceNodeId: {
       type: Number,
-      required: true
+      required: true,
     },
     callback: {
       type: Function,
-      required: true
-    }
+      required: true,
+    },
   },
-  setup (props) {
+  setup(props) {
     const store = useStore()
 
     const collectionName = ref('')
@@ -44,7 +48,7 @@ export default {
         id: props.id,
         workspaceNodeLocation: props.workspaceNodeLocation,
         workspaceNodeId: props.workspaceNodeId,
-        collectionName: collectionName.value
+        collectionName: collectionName.value,
       })
       store.dispatch('helper/closeModal')
       props.callback()
@@ -52,8 +56,8 @@ export default {
 
     return {
       collectionName,
-      createCollectionForModal
+      createCollectionForModal,
     }
-  }
+  },
 }
 </script>

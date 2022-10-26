@@ -1,6 +1,13 @@
 <template lang="pug">
-div(class="fixed inset-0 z-modal-confirm  w-screen h-screen bg-grey-900/40 flex justify-center items-center" @click="closeModalConfirm" data-cy="modal-confirm")
-  div(class="w-104 max-h-125 min-h-54 px-8 py-6 bg-grey-0 rounded flex flex-col" @click.stop)
+div(
+  class="fixed inset-0 z-modal-confirm w-screen h-screen bg-grey-900/40 flex justify-center items-center"
+  @click="closeModalConfirm"
+  data-cy="modal-confirm"
+)
+  div(
+    class="w-104 max-h-125 min-h-54 px-8 py-6 bg-grey-0 rounded flex flex-col"
+    @click.stop
+  )
     div(class="h-9 pb-3.5 flex items-center")
       f-svg-icon(:iconName="getIconName" :class="[getIconColor]" size="22")
       p(class="text-body1 font-bold pl-3") {{ header }}
@@ -12,9 +19,25 @@ div(class="fixed inset-0 z-modal-confirm  w-screen h-screen bg-grey-900/40 flex 
         span(v-if="!!noteText" v-html="noteText")
         component(v-else :is="noteComponent")
       div(class="grid grid-flow-col gap-x-2.5")
-        f-button(v-if="textBtnText !== ''" size="sm" type="text" @click="textHandler") {{ textBtnText }}
-        f-button(v-if="secondaryBtnText !== ''" size="sm" type="secondary" @click="secondaryHandler") {{ secondaryBtnText }}
-        f-button(v-if="primaryBtnText !== ''" size="sm" type="primary" @click="primaryHandler" data-cy="modal-confirm_primary") {{ primaryBtnText }}
+        f-button(
+          v-if="textBtnText !== ''"
+          size="sm"
+          type="text"
+          @click="textHandler"
+        ) {{ textBtnText }}
+        f-button(
+          v-if="secondaryBtnText !== ''"
+          size="sm"
+          type="secondary"
+          @click="secondaryHandler"
+        ) {{ secondaryBtnText }}
+        f-button(
+          v-if="primaryBtnText !== ''"
+          size="sm"
+          type="primary"
+          @click="primaryHandler"
+          data-cy="modal-confirm_primary"
+        ) {{ primaryBtnText }}
 </template>
 
 <script setup>
@@ -26,67 +49,70 @@ const store = useStore()
 const props = defineProps({
   header: {
     type: String,
-    required: true
+    required: true,
   },
   type: {
     type: Number,
     default: MODAL_CONFIRM_TYPE.SUCCESS,
-    validator: (v) => Object.keys(MODAL_CONFIRM_TYPE).map(key => MODAL_CONFIRM_TYPE[key]).includes(v)
+    validator: (v) =>
+      Object.keys(MODAL_CONFIRM_TYPE)
+        .map((key) => MODAL_CONFIRM_TYPE[key])
+        .includes(v),
   },
   contentText: {
-    type: String
+    type: String,
   },
   contentComponent: {
-    type: Object
+    type: Object,
   },
   noteText: {
-    type: String
+    type: String,
   },
   noteComponent: {
     type: Object,
   },
   primaryBtnText: {
     type: String,
-    default: ''
+    default: '',
   },
   primaryBtnHandler: {
     type: Function,
   },
   closeAfterPrimaryBtnHandler: {
     type: Boolean,
-    default: true
+    default: true,
   },
   afterPrimaryBtnHandler: {
     type: Function,
   },
   secondaryBtnText: {
     type: String,
-    default: ''
+    default: '',
   },
   secondaryBtnHandler: {
     type: Function,
   },
   closeAfterSecondaryBtnHandler: {
     type: Boolean,
-    default: true
+    default: true,
   },
   afterSecondaryBtnHandler: {
     type: Function,
   },
   textBtnText: {
     type: String,
-    default: ''
+    default: '',
   },
   textBtnHandler: {
     type: Function,
   },
   closeAfterTextBtnHandler: {
     type: Boolean,
-    default: true
+    default: true,
   },
   afterTextBtnHandler: {
     type: Function,
-  }
+  },
 })
 
 const { INFO, WARNING, SUCCESS, ALERT } = MODAL_CONFIRM_TYPE
@@ -114,19 +140,18 @@ const getIconColor = computed(() => {
 const closeModalConfirm = () => store.dispatch('helper/closeModalConfirm')
 
 const primaryHandler = async () => {
-  !!props.primaryBtnHandler && await props.primaryBtnHandler()
+  !!props.primaryBtnHandler && (await props.primaryBtnHandler())
   props.closeAfterPrimaryBtnHandler && closeModalConfirm()
-  !!props.afterPrimaryBtnHandler && await props.afterPrimaryBtnHandler()
+  !!props.afterPrimaryBtnHandler && (await props.afterPrimaryBtnHandler())
 }
 const secondaryHandler = async () => {
-  !!props.secondaryBtnHandler && await props.secondaryBtnHandler()
+  !!props.secondaryBtnHandler && (await props.secondaryBtnHandler())
   props.closeAfterSecondaryBtnHandler && closeModalConfirm()
-  !!props.afterSecondaryBtnHandler && await props.afterSecondaryBtnHandler()
+  !!props.afterSecondaryBtnHandler && (await props.afterSecondaryBtnHandler())
 }
 const textHandler = async () => {
-  !!props.textBtnHandler && await props.textBtnHandler()
+  !!props.textBtnHandler && (await props.textBtnHandler())
   props.closeAfterTextBtnHandler && closeModalConfirm()
-  !!props.afterTextBtnHandler && await props.afterTextBtnHandler()
+  !!props.afterTextBtnHandler && (await props.afterTextBtnHandler())
 }
-
 </script>

@@ -3,7 +3,12 @@ f-popper(placement="bottom-end" :offset="[0, 3]")
   template(#trigger="{ isExpand }")
     div(class="flex items-center cursor-pointer")
       span(class="text-grey-900 font-bold text-caption") {{ currentLocaleAbbr($i18n.locale) }}
-      f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-grey-600 transform" :class="[isExpand ? '-rotate-90' : 'rotate-90']")
+      f-svg-icon(
+        iconName="keyboard_arrow_right"
+        size="24"
+        class="text-grey-600 transform"
+        :class="[isExpand ? '-rotate-90' : 'rotate-90']"
+      )
   template(#content)
     f-list(class="px-1")
       div(
@@ -18,14 +23,15 @@ const localeOptionList = [
   {
     lang: 'English',
     abbr: 'EN',
-    locale: 'en-US'
+    locale: 'en-US',
   },
   {
     lang: '繁體中文',
     abbr: '繁中',
-    locale: 'zh-TW'
-  }
+    locale: 'zh-TW',
+  },
 ]
 
-const currentLocaleAbbr = (locale) => localeOptionList.find(option => option.locale === locale).abbr
+const currentLocaleAbbr = (locale) =>
+  localeOptionList.find((option) => option.locale === locale).abbr
 </script>

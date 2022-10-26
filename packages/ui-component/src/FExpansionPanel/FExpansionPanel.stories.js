@@ -5,14 +5,14 @@ export default {
   component: FExpansionPanel,
   argTypes: {
     trigger: {
-      description: ``
-    }
-  }
+      description: ``,
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FExpansionPanel },
-  setup () {
+  setup() {
     return { args }
   },
   template: `

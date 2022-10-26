@@ -12,7 +12,11 @@ div(class="w-full h-full relative")
     template(#header-left="{ goTo }")
       div(class="flex items-center")
         div(class="flex items-end")
-          f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="(currentNodeKey = $event.nodeKey); goTo()" fontSize="text-h6")
+          f-breadcrumb(
+            :breadcrumbList="breadcrumbList"
+            @click:item="currentNodeKey = $event.nodeKey; goTo()"
+            fontSize="text-h6"
+          )
           p(class="flex text-caption text-grey-600 pl-1")
             span (
             i18n-t(keypath="RR0068" tag="span" scope="global")
@@ -27,14 +31,20 @@ div(class="w-full h-full relative")
               @click="publicCloneByCollection(currentNodeKey, collection.publish.isCanClone)"
             )
           template(#content)
-            p {{ $t("RR0167") }}
+            p {{ $t('RR0167') }}
     template(#header-right)
-      f-button(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
+      f-button(
+        v-if="!isFirstLayer"
+        size="sm"
+        type="secondary"
+        class="-mr-3"
+        @click="openModalCollectionDetail"
+      ) {{ $t('UU0057') }}
     template(#sub-header)
       div(v-if="isFirstLayer" class="pb-3 px-7.5")
         div(
           class="rounded-md h-13.5 box-border pl-5 pr-8 bg-cover flex items-center justify-between drop-shadow-2 hover:drop-shadow-4 cursor-pointer"
-          :style="{ backgroundImage: `url(${ titasPublicBanner })` }"
+          :style="{ backgroundImage: `url(${titasPublicBanner})` }"
           @click="goToTitasShowroom"
         )
           div(class="flex items-center")
@@ -43,30 +53,57 @@ div(class="w-full h-full relative")
               trigger="loop"
               colors="primary:#ffffff,secondary:#21b185"
               stroke="65"
-              style="width:32px;height:32px"
+              style="width: 32px; height: 32px"
             )
-            p(class="text-h6 font-bold text-grey-0 pl-4") {{$t('II0020')}}
+            p(class="text-h6 font-bold text-grey-0 pl-4") {{ $t('II0020') }}
           div(class="flex items-center")
             div(class="flex items-center")
-              p(class="text-caption text-grey-0 pr-2") {{$t('II0031')}}
+              p(class="text-caption text-grey-0 pr-2") {{ $t('II0031') }}
               div(class="flex items-center")
-                div(v-for="org in titasInfo.orgList" class="w-7 h-7 rounded-full border border-grey-0 overflow-hidden -mr-1.5")
+                div(
+                  v-for="org in titasInfo.orgList"
+                  class="w-7 h-7 rounded-full border border-grey-0 overflow-hidden -mr-1.5"
+                )
                   img(class="w-full h-full" :src="org.logo")
             div(class="flex items-center pl-7.5")
-              p(class="text-caption text-grey-0 pr-2") {{$t('II0032')}}
+              p(class="text-caption text-grey-0 pr-2") {{ $t('II0032') }}
               div(class="flex items-center")
-                div(v-for="coverImgList in titasInfo.collectionCoverImgList" class="w-7 h-7 rounded-md border border-grey-0 overflow-hidden -mr-1.5")
+                div(
+                  v-for="coverImgList in titasInfo.collectionCoverImgList"
+                  class="w-7 h-7 rounded-md border border-grey-0 overflow-hidden -mr-1.5"
+                )
                   div(class="grid grid-rows-2 grid-cols-2 grid-flow-col h-full")
                     div(class="row-span-2 bg-grey-100")
-                      img(v-if="coverImgList[0]" :src="coverImgList[0]" class="w-full h-full object-cover")
+                      img(
+                        v-if="coverImgList[0]"
+                        :src="coverImgList[0]"
+                        class="w-full h-full object-cover"
+                      )
                     div(class="bg-grey-100")
-                      img(v-if="coverImgList[1]" :src="coverImgList[1]" class="w-full h-full")
+                      img(
+                        v-if="coverImgList[1]"
+                        :src="coverImgList[1]"
+                        class="w-full h-full"
+                      )
                     div(class="bg-grey-50")
-                      img(v-if="coverImgList[2]" :src="coverImgList[2]" class="w-full h-full")
-      i18n-t(v-else keypath="II0002" tag="p" class="mx-7.5 mb-7.5 text-caption text-grey-600" scope="global")
+                      img(
+                        v-if="coverImgList[2]"
+                        :src="coverImgList[2]"
+                        class="w-full h-full"
+                      )
+      i18n-t(
+        v-else
+        keypath="II0002"
+        tag="p"
+        class="mx-7.5 mb-7.5 text-caption text-grey-600"
+        scope="global"
+      )
         template(#displayName) {{ publishBy }}
     template(#default="{ goTo }")
-      div(v-if="nodeList.length > 0" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
+      div(
+        v-if="nodeList.length > 0"
+        class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
+      )
         grid-item-node(
           v-for="node in nodeList"
           v-model:selectedValue="selectedNodeList"
@@ -81,9 +118,12 @@ div(class="w-full h-full relative")
               img(:src="node.publish.logo" class="aspect-square h-full rounded-full")
               p(class="pl-1 font-bold text-caption text-grey-900") {{ node.publish.displayName }}
       div(v-else class="flex h-full justify-center items-end")
-        p(class="text-body1 text-grey-900") {{ $t("II0007") }}
+        p(class="text-body1 text-grey-900") {{ $t('II0007') }}
   div(v-if="planStatus.INACTIVE" class="absolute inset-0 z-99 opacity-30 bg-grey-0")
-  notify-bar-inactive(v-if="planStatus.INACTIVE || planStatus.TRANSITION" class="absolute bottom-0 left-0 z-100")
+  notify-bar-inactive(
+    v-if="planStatus.INACTIVE || planStatus.TRANSITION"
+    class="absolute bottom-0 left-0 z-100"
+  )
 </template>
 
 <script setup>
@@ -103,44 +143,57 @@ const { t } = useI18n()
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
-const { publicCloneByNode, publicCloneByNodeList, publicCloneByCollection, optionShareNode } = usePublicLibrary()
+const {
+  publicCloneByNode,
+  publicCloneByNodeList,
+  publicCloneByCollection,
+  optionShareNode,
+} = usePublicLibrary()
 const { goToPublicLibraryMaterialDetail, goToTitasShowroom } = useNavigation()
 
 const props = defineProps({
   nodeKey: {
     type: String,
-    default: null
-  }
+    default: null,
+  },
 })
 
 const optionSort = computed(() => {
   const { SORT_BY } = useConstants()
-  const { RANDOM, NEW_ARRIVED, GHG_RESULTS, WATER_DEPLETION_RESULTS, LAND_USE_RESULTS } = SORT_BY.value
+  const {
+    RANDOM,
+    NEW_ARRIVED,
+    GHG_RESULTS,
+    WATER_DEPLETION_RESULTS,
+    LAND_USE_RESULTS,
+  } = SORT_BY.value
   return {
     base: [
       RANDOM,
       NEW_ARRIVED,
       GHG_RESULTS,
       WATER_DEPLETION_RESULTS,
-      LAND_USE_RESULTS
+      LAND_USE_RESULTS,
     ],
-    keywordSearch: []
+    keywordSearch: [],
   }
 })
 
-const optionMultiSelect = computed(() => ([
+const optionMultiSelect = computed(() => [
   {
     name: t('RR0167'),
-    func: publicCloneByNodeList
-  }
-]))
+    func: publicCloneByNodeList,
+  },
+])
 const planStatus = computed(() => store.getters['polling/planStatus'])
 const pagination = computed(() => store.getters['helper/search/pagination'])
 const collection = computed(() => store.getters['publicLibrary/collection'])
-const breadcrumbList = computed(() => store.getters['publicLibrary/collectionBreadcrumbList']({
-  name: t('II0001'),
-  nodeKey: null
-}))
+const breadcrumbList = computed(() =>
+  store.getters['publicLibrary/collectionBreadcrumbList']({
+    name: t('II0001'),
+    nodeKey: null,
+  })
+)
 const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
 const nodeList = computed(() => store.getters['publicLibrary/nodeList'])
 const publishBy = computed(() => collection.value.publish.displayName)
@@ -149,9 +202,9 @@ const optionNode = computed(() => {
     [
       {
         name: t('RR0167'),
-        func: publicCloneByNode
-      }
-    ]
+        func: publicCloneByNode,
+      },
+    ],
   ]
   if (isFirstLayer.value) {
     optionList[0].push(optionShareNode)
@@ -166,19 +219,22 @@ const getPublicList = async (targetPage = 1, query) => {
   await router.push({
     name: route.name,
     params: {
-      nodeKey: currentNodeKey.value
+      nodeKey: currentNodeKey.value,
     },
-    query
+    query,
   })
-  await store.dispatch('publicLibrary/getPublicList', { targetPage, nodeKey: currentNodeKey.value === '' ? null : currentNodeKey.value })
+  await store.dispatch('publicLibrary/getPublicList', {
+    targetPage,
+    nodeKey: currentNodeKey.value === '' ? null : currentNodeKey.value,
+  })
 }
 
 const openModalCollectionDetail = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-collection-detail',
     properties: {
-      ...collection.value
-    }
+      ...collection.value,
+    },
   })
 }
 

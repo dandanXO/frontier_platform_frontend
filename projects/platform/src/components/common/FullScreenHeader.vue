@@ -18,7 +18,7 @@ import { ref } from 'vue'
 
 export default {
   name: 'FullscreenHeader',
-  setup () {
+  setup() {
     const root = ref(null)
     const isScrolling = ref(false)
 
@@ -31,8 +31,8 @@ export default {
 
     return {
       root,
-      isScrolling
+      isScrolling,
     }
-  }
+  },
 }
 </script>

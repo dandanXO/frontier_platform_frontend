@@ -5,7 +5,7 @@ import { shallowRef, h } from 'vue'
 const t = i18n.global.t
 let timerId
 
-export default function remindVerifyEmail () {
+export default function remindVerifyEmail() {
   let secRemains = 0
 
   const startCountDown = () => {
@@ -36,7 +36,7 @@ export default function remindVerifyEmail () {
       startCountDown()
       await store.dispatch('user/resendVerifyEmail')
       store.dispatch('helper/pushFlashMessage', t('AA0087'))
-    }
+    },
   }
 
   store.dispatch('helper/openModalConfirm', {
@@ -47,9 +47,9 @@ export default function remindVerifyEmail () {
         return h('span', { class: 'text-body2 leading-1.6 text-grey-600' }, [
           t('AA0052'),
           h('br'),
-          h('strong', noteAttr, t('UU0056'))
+          h('strong', noteAttr, t('UU0056')),
         ])
-      }
+      },
     }),
     secondaryBtnText: t('UU0026'),
   })

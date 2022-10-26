@@ -13,14 +13,14 @@ export default {
   props: {
     size: {
       type: String,
-      default: 'sm'
+      default: 'sm',
     },
     active: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  setup (props) {
+  setup(props) {
     const btnSize = computed(() => {
       switch (props.size) {
         case 'lg':
@@ -34,8 +34,8 @@ export default {
 
     return {
       btnSize,
-      activeClass
+      activeClass,
     }
-  }
+  },
 }
 </script>

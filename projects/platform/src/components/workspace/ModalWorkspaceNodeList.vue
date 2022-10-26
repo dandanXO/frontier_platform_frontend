@@ -23,11 +23,24 @@ modal-behavior(
     )
     div(class="flex-grow flex flex-col")
       div(class="relative z-20 flex justify-between items-center py-4")
-        f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event.key)")
+        f-breadcrumb(
+          :breadcrumbList="breadcrumbList"
+          @click:item="goTo($event.key)"
+        )
         div(class="flex items-center")
           div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
-            f-svg-icon(iconName="cancel" size="14" class="text-grey-200 mr-1 cursor-pointer" @click="clearSelect")
-            i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption" scope="global")
+            f-svg-icon(
+              iconName="cancel"
+              size="14"
+              class="text-grey-200 mr-1 cursor-pointer"
+              @click="clearSelect"
+            )
+            i18n-t(
+              keypath="RR0073"
+              tag="div"
+              class="mr-1.5 text-caption"
+              scope="global"
+            )
               template(#number) {{ selectedValue.length }}
           f-popper(v-if="!isInRoot" placement="bottom-end")
             template(#trigger="{ isExpand }")
@@ -44,9 +57,16 @@ modal-behavior(
                 :selectMode="2"
                 @click:menu="sort"
               )
-      div(v-show="isSearching && nodeList.length === 0" class="flex-grow flex items-center justify-center")
+      div(
+        v-show="isSearching && nodeList.length === 0"
+        class="flex-grow flex items-center justify-center"
+      )
         f-svg-icon(iconName="loading" size="92" class="text-primary-400")
-      f-scrollbar-container(v-show="!isSearching || nodeList.length > 0" class="flex-grow -mx-5" @reachBottom="infiniteScroll")
+      f-scrollbar-container(
+        v-show="!isSearching || nodeList.length > 0"
+        class="flex-grow -mx-5"
+        @reachBottom="infiniteScroll"
+      )
         div(class="grid grid-flow-row grid-cols-5 auto-rows-auto gap-5 px-5")
           template(v-if="isInRoot")
             grid-item-wrapper(
@@ -57,7 +77,7 @@ modal-behavior(
               :isMultiSelect="isMultiSelect"
               :selectValue="item"
               class="w-25 h-25 border rounded-md overflow-hidden"
-              :class="[isMultiSelect && selectedValue.map(v => JSON.stringify(v)).includes(JSON.stringify(item)) ? 'border-primary-400 bg-primary-0 text-primary-400' : 'border-grey-200 bg-grey-50 text-grey-900']"
+              :class="[isMultiSelect && selectedValue.map((v) => JSON.stringify(v)).includes(JSON.stringify(item)) ? 'border-primary-400 bg-primary-0 text-primary-400' : 'border-grey-200 bg-grey-50 text-grey-900']"
               @click="goTo(item.nodeKey), setRootId(item.id)"
             )
               template(#content)
@@ -79,7 +99,10 @@ modal-behavior(
                 @click="goTo(node.nodeKey)"
               )
                 template(#title-right-icon)
-                  tooltip-location(v-if="isInKeywordSearch" :location="node.location")
+                  tooltip-location(
+                    v-if="isInKeywordSearch"
+                    :location="node.location"
+                  )
               grid-item-node-for-modal(
                 v-if="node.nodeType === NODE_TYPE.MATERIAL"
                 class="w-25"
@@ -87,13 +110,25 @@ modal-behavior(
                 :isSelectable="false"
               )
                 template(#title-right-icon)
-                  tooltip-location(v-if="isInKeywordSearch" :location="node.location")
-        div(v-if="isSearching && nodeList.length > 0" class="flex justify-center items-center")
+                  tooltip-location(
+                    v-if="isInKeywordSearch"
+                    :location="node.location"
+                  )
+        div(
+          v-if="isSearching && nodeList.length > 0"
+          class="flex justify-center items-center"
+        )
           f-svg-icon(iconName="loading" size="54" class="text-primary-400")
-    div(v-if="!isInRoot" class="w-full h-8.5 mt-3.5 px-2.5 bg-grey-50 flex items-center gap-x-1")
+    div(
+      v-if="!isInRoot"
+      class="w-full h-8.5 mt-3.5 px-2.5 bg-grey-50 flex items-center gap-x-1"
+    )
       f-svg-icon(iconName="error_outline" size="14" class="text-grey-900")
       p(class="text-caption text-grey-900") {{ isOnlyShowCollection ? $t('RR0119') : $t('UU0037') }}
-      p(class="text-caption text-cyan-400 cursor-pointer" @click="isOnlyShowCollection = !isOnlyShowCollection") {{ isOnlyShowCollection ? $t('UU0037') : $t('UU0036') }}
+      p(
+        class="text-caption text-cyan-400 cursor-pointer"
+        @click="isOnlyShowCollection = !isOnlyShowCollection"
+      ) {{ isOnlyShowCollection ? $t('UU0037') : $t('UU0036') }}
 </template>
 
 <script setup>
@@ -108,33 +143,33 @@ import TooltipLocation from '@/components/common/TooltipLocation.vue'
 const props = defineProps({
   modalTitle: {
     type: String,
-    required: true
+    required: true,
   },
   actionText: {
     type: String,
-    required: true
+    required: true,
   },
   actionCallback: {
     type: Function,
-    required: true
+    required: true,
   },
   isMultiSelect: {
     type: Boolean,
-    default: true
+    default: true,
   },
   canCrossLocation: {
     type: Boolean,
-    default: true
+    default: true,
   },
   canSelectSelf: {
     type: Boolean,
-    default: true
+    default: true,
   },
   // only have value when canSelectSelf is false
   selfNodeKey: {
     type: String,
-    default: ''
-  }
+    default: '',
+  },
 })
 
 const { t } = useI18n()
@@ -145,12 +180,14 @@ const sortMenuTree = computed(() => {
   return {
     blockList: [
       {
-        menuList: [CREATE_DATE_C_M, MATERIAL_NO_A_Z_C_M].map(({ text, value }) => ({
-          title: text,
-          selectValue: value
-        }))
-      }
-    ]
+        menuList: [CREATE_DATE_C_M, MATERIAL_NO_A_Z_C_M].map(
+          ({ text, value }) => ({
+            title: text,
+            selectValue: value,
+          })
+        ),
+      },
+    ],
   }
 })
 
@@ -165,7 +202,7 @@ const queryParams = reactive({
   targetPage: 1,
   sort: SORT_BY.value.CREATE_DATE_C_M.value,
   workspaceNodeId: null,
-  workspaceNodeLocation: null
+  workspaceNodeLocation: null,
 })
 const totalPage = ref(1)
 const rootId = ref(0)
@@ -178,14 +215,14 @@ const orgAndGroupList = computed(() => {
     list.push({
       id: organization.orgId,
       nodeKey: `${NODE_LOCATION.ORG}-${organization.workspaceNodeId}`,
-      name: organization.orgName
+      name: organization.orgName,
     })
     if (props.canCrossLocation) {
       organization.groupList.forEach((group) => {
         list.push({
           id: group.groupId,
           nodeKey: `${NODE_LOCATION.GROUP}-${group.workspaceNodeId}`,
-          name: group.groupName
+          name: group.groupName,
         })
       })
     }
@@ -194,7 +231,7 @@ const orgAndGroupList = computed(() => {
     list.push({
       id: groupId,
       nodeKey: `${NODE_LOCATION.GROUP}-${workspaceNodeId}`,
-      name: groupName
+      name: groupName,
     })
   }
   return list
@@ -203,7 +240,7 @@ const breadcrumbList = computed(() => {
   const list = [...appendedBreadcrumbList.value]
   list.unshift({
     name: t('RR0142'),
-    key: 'root'
+    key: 'root',
   })
   return list
 })
@@ -223,7 +260,9 @@ const nodeList = computed(() => {
   return temp
 })
 const actionButtonDisabled = computed(() => {
-  return props.isMultiSelect ? selectedValue.value.length === 0 : !selectedValue.value
+  return props.isMultiSelect
+    ? selectedValue.value.length === 0
+    : !selectedValue.value
 })
 
 const setRootId = (id) => (rootId.value = id)
@@ -231,13 +270,18 @@ const setRootId = (id) => (rootId.value = id)
 const getWorkspaceForModal = async () => {
   isSearching.value = true
 
-  const { pagination, workspaceCollection } = await store.dispatch('workspace/getWorkspaceForModal', queryParams)
+  const { pagination, workspaceCollection } = await store.dispatch(
+    'workspace/getWorkspaceForModal',
+    queryParams
+  )
   totalPage.value = pagination.totalPage
 
-  appendedBreadcrumbList.value = workspaceCollection.breadcrumbList.map((item) => ({
-    key: `${item.workspaceNodeLocation}-${item.workspaceNodeId}`,
-    name: item.name
-  }))
+  appendedBreadcrumbList.value = workspaceCollection.breadcrumbList.map(
+    (item) => ({
+      key: `${item.workspaceNodeLocation}-${item.workspaceNodeId}`,
+      name: item.name,
+    })
+  )
 
   if (workspaceCollection.childCollectionList.length > 0) {
     workspaceCollection.childCollectionList.forEach((collection) => {
@@ -277,8 +321,8 @@ const getWorkspaceForModal = async () => {
           name,
           coverImgList,
           itemCounts,
-          hasChildCollection
-        }
+          hasChildCollection,
+        },
       })
     })
   }
@@ -311,7 +355,7 @@ const getWorkspaceForModal = async () => {
         weftDensity,
         warpYarnCount,
         weftYarnCount,
-        coverImg
+        coverImg,
       } = material
       pureNodeList.value.push({
         workspaceNodeId,
@@ -341,8 +385,8 @@ const getWorkspaceForModal = async () => {
           weftDensity,
           warpYarnCount,
           weftYarnCount,
-          coverImg
-        }
+          coverImg,
+        },
       })
     })
   }
@@ -412,8 +456,8 @@ const openModalCreateCollectionSimple = () => {
       callback: () => {
         clearNodeList()
         getWorkspaceForModal()
-      }
-    }
+      },
+    },
   })
 }
 

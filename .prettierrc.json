@@ -1,0 +1,11 @@
+{
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": false,
+  "singleQuote": true,
+  "pugSingleQuote": false,
+  "pugAttributeSeparator": "none",
+  "pugClassNotation": "attribute",
+  "pugFramework": "vue",
+  "plugins": ["@prettier/plugin-pug"]
+}

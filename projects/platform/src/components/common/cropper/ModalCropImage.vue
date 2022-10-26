@@ -31,19 +31,19 @@ import { Cropper } from '@/utils/cropper'
 
 const props = defineProps({
   title: {
-    type: String
+    type: String,
   },
   image: {
-    type: [Object, String]
+    type: [Object, String],
   },
   cropRectSize: {
     type: Number,
-    required: true
+    required: true,
   },
   afterCropHandler: {
     type: Function,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const store = useStore()
@@ -51,7 +51,7 @@ const imageCropper = ref(null)
 
 const cropper = new Cropper({
   src: props.image,
-  cropRectSize: props.cropRectSize
+  cropRectSize: props.cropRectSize,
 })
 const config = reactive(cropper.config)
 
@@ -63,7 +63,9 @@ const confirm = async () => {
   closeModal()
 }
 
-const isAllowGoBack = computed(() => store.getters['helper/modalPipeline'].length > 1)
+const isAllowGoBack = computed(
+  () => store.getters['helper/modalPipeline'].length > 1
+)
 
 const closeModal = () => {
   store.dispatch('helper/closeModal')

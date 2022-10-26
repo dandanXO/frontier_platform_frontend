@@ -19,9 +19,9 @@ modal-behavior(
           :label="$t('RR0071')"
           :placeholder="$t('DD0018')"
         )
-        p(class="absolute right-0 top-0 text-caption text-grey-900") {{ $t("EE0036") }}
+        p(class="absolute right-0 top-0 text-caption text-grey-900") {{ $t('EE0036') }}
     div(class="bg-grey-50 px-7.5 py-7.5")
-      h6(class="text-h6 text-grey-600 font-bold mb-7.5") {{ $t("DD0019") }}
+      h6(class="text-h6 text-grey-600 font-bold mb-7.5") {{ $t('DD0019') }}
       f-input-chips(
         v-model:chips="material.privateTagList"
         :label="$t('RR0028')"
@@ -44,7 +44,7 @@ watch(
     store.commit('assets/UPDATE_material', material.value)
   },
   {
-    deep: true
+    deep: true,
   }
 )
 

@@ -1,8 +1,16 @@
 <template lang="pug">
 f-input-container(:label="label" :required="required" ref="refContainer")
-  f-popper(placement="bottom-start" :offset="[0, -popperOffsetY]" @expand="expand" @collapse="collapse" data-cy="input-chips")
+  f-popper(
+    placement="bottom-start"
+    :offset="[0, -popperOffsetY]"
+    @expand="expand"
+    @collapse="collapse"
+    data-cy="input-chips"
+  )
     template(#trigger)
-      label(class="px-4 py-1 border border-grey-200 rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11")
+      label(
+        class="px-4 py-1 border border-grey-200 rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11"
+      )
         div(v-for="chip in chips" class="flex")
           f-label {{ returnObject ? chip[keyOptionDisplay] : chip }}
         input(
@@ -13,10 +21,18 @@ f-input-container(:label="label" :required="required" ref="refContainer")
         )
     template(#content)
       div(:style="{ width: contentWidth + 'px' }")
-        label(class="px-4 py-1 border border-grey-200 rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11" :class="[classBorder]")
+        label(
+          class="px-4 py-1 border border-grey-200 rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11"
+          :class="[classBorder]"
+        )
           div(v-for="(chip, index) in chips" class="flex")
             f-label {{ returnObject ? chip[keyOptionDisplay] : chip }}
-              f-svg-icon(iconName="clear" size="20" class="text-grey-200 cursor-pointer ml-1" @click.stop="removeChip(index)")
+              f-svg-icon(
+                iconName="clear"
+                size="20"
+                class="text-grey-200 cursor-pointer ml-1"
+                @click.stop="removeChip(index)"
+              )
           input(
             ref="refInput"
             type="text"
@@ -42,7 +58,7 @@ f-input-container(:label="label" :required="required" ref="refContainer")
 
 <script>
 export default {
-  name: 'FInputChips'
+  name: 'FInputChips',
 }
 </script>
 
@@ -57,7 +73,7 @@ const props = defineProps({
    */
   label: {
     type: String,
-    default: ''
+    default: '',
   },
   /**
    * inherit from `FInputContainer.vue`
@@ -66,16 +82,16 @@ const props = defineProps({
    */
   required: {
     type: Boolean,
-    default: false
+    default: false,
   },
   /**
    * v-model:chips
-   * 
+   *
    * format: same as optionList
    */
   chips: {
     type: Array,
-    required: true
+    required: true,
   },
   /**
    * ```
@@ -87,35 +103,37 @@ const props = defineProps({
    * ]
    * ```
    * or
-   * 
+   *
    * ```
    * [ String ]
    * ```
    */
   optionList: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   placeholder: {
     type: String,
-    default: ''
+    default: '',
   },
   keyOptionDisplay: {
     type: String,
-    default: 'name'
+    default: 'name',
   },
   /**
    *  When `canAddNewOption` is true, the `addNewOption` event must also be handled
    */
   canAddNewOption: {
     type: Boolean,
-    default: (v) => !(typeof v.optionList[0] === 'object')
-  }
+    default: (v) => !(typeof v.optionList[0] === 'object'),
+  },
 })
 
 const refInput = ref(null)
 const inputValue = ref('')
-const { onFocus, onBlur, classBorder } = useInput({ context: { emit, slots: useSlots() } })
+const { onFocus, onBlur, classBorder } = useInput({
+  context: { emit, slots: useSlots() },
+})
 const returnObject = computed(() => typeof props.optionList[0] === 'object')
 
 const refContainer = ref(null)
@@ -125,9 +143,11 @@ const popperOffsetY = ref(44)
 
 const setPopperOffsetY = () => {
   if (props.label) {
-    popperOffsetY.value = refContainer.value.$el.children[1].getBoundingClientRect().height
+    popperOffsetY.value =
+      refContainer.value.$el.children[1].getBoundingClientRect().height
   } else {
-    popperOffsetY.value = refContainer.value.$el.children[0].getBoundingClientRect().height
+    popperOffsetY.value =
+      refContainer.value.$el.children[0].getBoundingClientRect().height
   }
 }
 
@@ -144,14 +164,22 @@ const collapse = () => {
 
 const filteredOptionList = computed(() => {
   const list = []
-  props.optionList.forEach(option => {
-    const comparedValue = returnObject.value ? option[props.keyOptionDisplay] : option
+  props.optionList.forEach((option) => {
+    const comparedValue = returnObject.value
+      ? option[props.keyOptionDisplay]
+      : option
 
-    if (comparedValue.toUpperCase().includes(inputValue.value.trim().toUpperCase())) {
-      const checked = props.chips.some(chip => JSON.stringify(chip) === JSON.stringify(option))
+    if (
+      comparedValue
+        .toUpperCase()
+        .includes(inputValue.value.trim().toUpperCase())
+    ) {
+      const checked = props.chips.some(
+        (chip) => JSON.stringify(chip) === JSON.stringify(option)
+      )
       list.push({
         checked,
-        displayValue: comparedValue
+        displayValue: comparedValue,
       })
     }
   })
@@ -166,7 +194,7 @@ const addChip = async () => {
    * if the chip to be added doesn't exist in option list,
    * emit "addNewOption" to outside to add an new option in option list
    */
-  const isOptionExist = props.optionList.some(option => {
+  const isOptionExist = props.optionList.some((option) => {
     return returnObject.value
       ? option[props.keyOptionDisplay] === inputValue.value
       : option === inputValue.value
@@ -181,7 +209,7 @@ const addChip = async () => {
    *  emit "update:chips" to outside to append an new chip,
    *  in the other way, do nothing just clear input text
    */
-  const isChipExist = props.chips.find(chip => {
+  const isChipExist = props.chips.find((chip) => {
     return returnObject.value
       ? chip[props.keyOptionDisplay] === inputValue.value
       : chip === inputValue.value
@@ -189,7 +217,9 @@ const addChip = async () => {
 
   if (!isChipExist) {
     const newChip = returnObject.value
-      ? props.optionList.find(option => option[props.keyOptionDisplay] === inputValue.value)
+      ? props.optionList.find(
+          (option) => option[props.keyOptionDisplay] === inputValue.value
+        )
       : inputValue.value
     if ((!isOptionExist && props.canAddNewOption) || isOptionExist) {
       emit('update:chips', [...props.chips, newChip])
@@ -223,7 +253,7 @@ const addChipFromOptionList = (option) => {
 }
 
 const removeChipFromOptionList = (option) => {
-  const index = props.chips.findIndex(chip => {
+  const index = props.chips.findIndex((chip) => {
     return returnObject.value
       ? chip[props.keyOptionDisplay] === option.displayValue
       : chip === option.displayValue

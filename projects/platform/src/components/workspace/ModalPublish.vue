@@ -37,8 +37,8 @@ import { useStore } from 'vuex'
 const props = defineProps({
   workspaceNode: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const { t } = useI18n()
@@ -47,23 +47,26 @@ const { workspaceNode } = toRefs(props)
 const optionIsPublic = [
   {
     name: t('FF0030'),
-    value: true
+    value: true,
   },
   {
     name: t('FF0031'),
-    value: false
-  }
+    value: false,
+  },
 ]
 
 const params = reactive({
   isPublic: workspaceNode.value.isPublic,
   isCanDownloadU3M: workspaceNode.value.isCanDownloadU3M,
-  isCanClone: workspaceNode.value.isCanClone
+  isCanClone: workspaceNode.value.isCanClone,
 })
 
 const publishNode = async () => {
   store.dispatch('helper/openModalLoading')
-  await store.dispatch('workspace/publishNode', { workspaceNodeId: workspaceNode.value.workspaceNodeId, ...params })
+  await store.dispatch('workspace/publishNode', {
+    workspaceNodeId: workspaceNode.value.workspaceNodeId,
+    ...params,
+  })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/reloadInnerApp')
   store.dispatch('helper/pushFlashMessage', t('FF0035'))

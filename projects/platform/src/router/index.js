@@ -28,16 +28,16 @@ const checkOrgIsInactive = (to, from, next) => {
   }
 }
 
-const reuseRoutes = (prefix) => ([
+const reuseRoutes = (prefix) => [
   {
     path: 'management/:tab(about|members|history)',
     name: `${prefix}Management`,
-    component: () => import('@/views/innerApp/Management.vue')
+    component: () => import('@/views/innerApp/Management.vue'),
   },
   {
     path: 'progress/:tab(material|u3m|excel)',
     name: `${prefix}Progress`,
-    component: () => import('@/views/innerApp/Progress.vue')
+    component: () => import('@/views/innerApp/Progress.vue'),
   },
   {
     path: 'assets',
@@ -46,59 +46,62 @@ const reuseRoutes = (prefix) => ([
       {
         path: '',
         name: `${prefix}Assets`,
-        component: () => import('@/views/innerApp/assets/Assets.vue')
+        component: () => import('@/views/innerApp/assets/Assets.vue'),
       },
       {
         path: 'upload',
         name: `${prefix}AssetsUpload`,
-        component: () => import('@/views/innerApp/assets/AssetsUpload.vue')
+        component: () => import('@/views/innerApp/assets/AssetsUpload.vue'),
       },
       {
         path: 'upload/manual',
         name: `${prefix}AssetsMaterialCreate`,
-        component: () => import('@/views/innerApp/assets/AssetsMaterialCreate.vue')
+        component: () =>
+          import('@/views/innerApp/assets/AssetsMaterialCreate.vue'),
       },
       {
         path: ':materialId',
         name: `${prefix}AssetsMaterialDetail`,
-        component: () => import('@/views/innerApp/assets/AssetsMaterialDetail.vue')
+        component: () =>
+          import('@/views/innerApp/assets/AssetsMaterialDetail.vue'),
       },
       {
         path: ':materialId/edit',
         name: `${prefix}AssetsMaterialEdit`,
-        component: () => import('@/views/innerApp/assets/AssetsMaterialEdit.vue'),
-        props: true
-      }
-    ]
+        component: () =>
+          import('@/views/innerApp/assets/AssetsMaterialEdit.vue'),
+        props: true,
+      },
+    ],
   },
   {
     path: 'workspace/:nodeKey',
     name: `${prefix}Workspace`,
     props: true,
-    component: () => import('@/views/innerApp/Workspace.vue')
+    component: () => import('@/views/innerApp/Workspace.vue'),
   },
   {
     path: 'workspace/material/:nodeKey',
     name: `${prefix}WorkspaceMaterialDetail`,
     props: true,
-    component: () => import('@/views/innerApp/WorkspaceMaterialDetail.vue')
+    component: () => import('@/views/innerApp/WorkspaceMaterialDetail.vue'),
   },
   {
     path: 'share-to-me/:nodeKey?',
     name: `${prefix}ShareToMe`,
     props: true,
-    component: () => import('@/views/innerApp/ShareToMe.vue')
+    component: () => import('@/views/innerApp/ShareToMe.vue'),
   },
   {
     path: 'share-to-me/material/:nodeKey',
     name: `${prefix}ShareToMeMaterial`,
     props: true,
-    component: () => import('@/views/innerApp/ShareToMeMaterialDetail.vue')
+    component: () => import('@/views/innerApp/ShareToMeMaterialDetail.vue'),
   },
   {
     path: 'moodboard',
     name: `${prefix}Moodboard`,
-    component: () => import('@/views/innerApp/moodboard/Moodboard.vue')
+    component: () => import('@/views/innerApp/moodboard/Moodboard.vue'),
   },
   {
     path: 'moodboard/:moodboardId',
@@ -110,24 +113,25 @@ const reuseRoutes = (prefix) => ([
       }
       return { moodboardId }
     },
-    component: () => import('@/views/innerApp/moodboard/MoodboardDetail.vue')
+    component: () => import('@/views/innerApp/moodboard/MoodboardDetail.vue'),
   },
   {
     path: 'moodboard/:moodboardId/picked-list',
     name: `${prefix}MoodboardPickedList`,
-    component: () => import('@/views/innerApp/moodboard/MoodboardPickedList.vue'),
+    component: () =>
+      import('@/views/innerApp/moodboard/MoodboardPickedList.vue'),
     beforeEnter: async (to, from, next) => {
       const moodboardId = Number.parseInt(to.params.moodboardId, 10)
       await store.dispatch('moodboard/getMoodboard', { moodboardId })
       next()
-    }
+    },
   },
   {
     path: 'sticker',
     name: `${prefix}Sticker`,
-    component: () => import('@/views/innerApp/Sticker.vue')
-  }
-])
+    component: () => import('@/views/innerApp/Sticker.vue'),
+  },
+]
 
 const routes = [
   {
@@ -139,7 +143,7 @@ const routes = [
         return next('/')
       }
       next()
-    }
+    },
   },
   {
     path: '/sign-in',
@@ -150,7 +154,7 @@ const routes = [
         return next('/')
       }
       next()
-    }
+    },
   },
   {
     path: '/logout',
@@ -159,7 +163,7 @@ const routes = [
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
       window.location.replace('https://frontier.cool/')
-    }
+    },
   },
   {
     path: '/share-page',
@@ -175,7 +179,7 @@ const routes = [
       } else {
         next(`/received-share/${sharingKey}/material/${nodeKey}`)
       }
-    }
+    },
   },
   {
     path: '/received-share/:sharingKey',
@@ -191,15 +195,17 @@ const routes = [
         path: ':nodeKey',
         name: 'ReceivedShareCollection',
         props: true,
-        component: () => import('@/views/receivedShare/ReceivedShareCollection.vue')
+        component: () =>
+          import('@/views/receivedShare/ReceivedShareCollection.vue'),
       },
       {
         path: 'material/:nodeKey',
         name: 'ReceivedShareMaterial',
         props: true,
-        component: () => import('@/views/receivedShare/ReceivedShareMaterial.vue')
-      }
-    ]
+        component: () =>
+          import('@/views/receivedShare/ReceivedShareMaterial.vue'),
+      },
+    ],
   },
   {
     path: '/embed/:sharingKey',
@@ -215,15 +221,15 @@ const routes = [
         path: ':nodeKey',
         name: 'EmbedCollection',
         props: true,
-        component: () => import('@/views/embed/Embed.vue')
+        component: () => import('@/views/embed/Embed.vue'),
       },
       {
         path: 'material/:nodeKey',
         name: 'EmbedMaterialDetail',
         props: true,
-        component: () => import('@/views/embed/EmbedMaterialDetail.vue')
+        component: () => import('@/views/embed/EmbedMaterialDetail.vue'),
       },
-    ]
+    ],
   },
   {
     path: '/',
@@ -241,7 +247,7 @@ const routes = [
         beforeEnter: async (to, from, next) => {
           await store.dispatch('user/getUser')
           next()
-        }
+        },
       },
       {
         path: 'invite-link',
@@ -251,7 +257,9 @@ const routes = [
           const { from: fromWhere, inviteCode, orgNo } = to.query
 
           const organizationList = store.getters['user/organizationList']
-          if (organizationList.some(org => Number(org.orgNo) === Number(orgNo))) {
+          if (
+            organizationList.some((org) => Number(org.orgNo) === Number(orgNo))
+          ) {
             return next(`/${orgNo}`)
           }
 
@@ -262,7 +270,7 @@ const routes = [
           }
           await store.dispatch('user/getUser')
           return next(`/${orgNo}`)
-        }
+        },
       },
       {
         path: 'verify-user',
@@ -272,53 +280,64 @@ const routes = [
           await store.dispatch('user/verifyUser', { verifyCode })
           await next('/')
           store.dispatch('helper/pushFlashMessage', i18n.global.t('AA0086'))
-        }
+        },
       },
       {
         path: 'moodboard/:sharingKey',
         name: 'MoodboardReceivedShare',
         component: () => import('@/views/MoodboardReceivedShare.vue'),
-        beforeEnter: checkUserIsVerify
+        beforeEnter: checkUserIsVerify,
       },
       {
         path: ':orgNo',
         name: 'InnerAppRoot',
         components: {
           default: () => import('@/views/PassThrough.vue'),
-          sidebar: Sidebar
+          sidebar: Sidebar,
         },
-        beforeEnter: [checkUserIsVerify, async (to, from, next) => {
-          store.dispatch('organization/getPricing')
-          await store.dispatch('user/getUser')
-          await store.dispatch('organization/getOrg', { orgNo: to.params.orgNo })
-          await store.dispatch('organization/orgUser/getOrgUser')
-          const org = store.getters['organization/organization']
-          const orgUser = store.getters['organization/orgUser/orgUser']
-          if (orgUser.orgRoleId === ROLE_ID.OWNER && !org.uploadMaterialEmail) {
-            store.dispatch('helper/openModalBehavior', {
-              component: 'modal-create-mail-org',
-              properties: {
-                isOldOrg: true,
-                closable: false
-              },
+        beforeEnter: [
+          checkUserIsVerify,
+          async (to, from, next) => {
+            store.dispatch('organization/getPricing')
+            await store.dispatch('user/getUser')
+            await store.dispatch('organization/getOrg', {
+              orgNo: to.params.orgNo,
             })
-          }
+            await store.dispatch('organization/orgUser/getOrgUser')
+            const org = store.getters['organization/organization']
+            const orgUser = store.getters['organization/orgUser/orgUser']
+            if (
+              orgUser.orgRoleId === ROLE_ID.OWNER &&
+              !org.uploadMaterialEmail
+            ) {
+              store.dispatch('helper/openModalBehavior', {
+                component: 'modal-create-mail-org',
+                properties: {
+                  isOldOrg: true,
+                  closable: false,
+                },
+              })
+            }
 
-          if (to.params.orgNo && !from.params.orgNo) {
-            await store.dispatch('polling/getPollingSidebar')
-          }
-          await store.dispatch('titas/getTitasInfo')
-          next()
-        }],
+            if (to.params.orgNo && !from.params.orgNo) {
+              await store.dispatch('polling/getPollingSidebar')
+            }
+            await store.dispatch('titas/getTitasInfo')
+            next()
+          },
+        ],
         children: [
           {
             path: '',
             name: 'OrgRoot',
             component: () => import('@/views/PassThrough.vue'),
-            beforeEnter: [checkOrgIsInactive, (to, from, next) => {
-              store.commit('helper/SET_routeLocation', 'org')
-              next()
-            }],
+            beforeEnter: [
+              checkOrgIsInactive,
+              (to, from, next) => {
+                store.commit('helper/SET_routeLocation', 'org')
+                next()
+              },
+            ],
             children: [
               ...reuseRoutes('Org'),
               {
@@ -334,58 +353,65 @@ const routes = [
                 //     return next(`/${to.params.orgNo}/public-library`)
                 //   }
                 // }
-              }
-            ]
+              },
+            ],
           },
           {
             path: ':groupId(\\d+)',
             name: 'GroupRoot',
             component: () => import('@/views/PassThrough.vue'),
-            beforeEnter: [checkOrgIsInactive, async (to, from, next) => {
-              store.commit('helper/SET_routeLocation', 'group')
-              await store.dispatch('group/getGroup', { groupId: to.params.groupId })
-              await store.dispatch('group/groupUser/getGroupUser')
-              next()
-            }],
-            children: reuseRoutes('Group')
+            beforeEnter: [
+              checkOrgIsInactive,
+              async (to, from, next) => {
+                store.commit('helper/SET_routeLocation', 'group')
+                await store.dispatch('group/getGroup', {
+                  groupId: to.params.groupId,
+                })
+                await store.dispatch('group/groupUser/getGroupUser')
+                next()
+              },
+            ],
+            children: reuseRoutes('Group'),
           },
           {
             path: 'public-library/:nodeKey?',
             name: 'PublicLibrary',
             props: true,
-            component: () => import('@/views/innerApp/PublicLibrary.vue')
+            component: () => import('@/views/innerApp/PublicLibrary.vue'),
           },
           {
             path: 'public-library/material/:nodeKey',
             name: 'PublicLibraryMaterialDetail',
             props: true,
-            component: () => import('@/views/innerApp/PublicLibraryMaterialDetail.vue'),
-            beforeEnter: checkOrgIsInactive
+            component: () =>
+              import('@/views/innerApp/PublicLibraryMaterialDetail.vue'),
+            beforeEnter: checkOrgIsInactive,
           },
           {
             path: 'titas/:nodeKey?',
             name: 'TitasShowroom',
             props: true,
             component: () => import('@/views/innerApp/TitasShowroom.vue'),
-            beforeEnter: checkOrgIsInactive
+            beforeEnter: checkOrgIsInactive,
           },
           {
             path: 'titas/material/:nodeKey',
             name: 'TitasShowroomMaterialDetail',
             props: true,
-            component: () => import('@/views/innerApp/TitasShowroomMaterialDetail.vue'),
-            beforeEnter: checkOrgIsInactive
-          }
-        ]
-      }
-    ]
-  }
+            component: () =>
+              import('@/views/innerApp/TitasShowroomMaterialDetail.vue'),
+            beforeEnter: checkOrgIsInactive,
+          },
+        ],
+      },
+    ],
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-  sensitive: true
+  sensitive: true,
 })
 
 export default router

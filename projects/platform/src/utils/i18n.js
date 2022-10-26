@@ -28,7 +28,7 @@ export default createI18n({
   fallbackLocale: 'en-US',
   messages: {
     'en-US': enUS,
-    'zh-TW': zhTW
+    'zh-TW': zhTW,
   },
-  globalInjection: true
+  globalInjection: true,
 })

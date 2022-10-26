@@ -6,11 +6,20 @@ modal-behavior(
   @click:primary="handleUpload"
 )
   template(#note)
-    div(v-if="showErrorList" class="text-caption text-red-400 flex items-center" data-cy="modal-mass-upload_failed")
+    div(
+      v-if="showErrorList"
+      class="text-caption text-red-400 flex items-center"
+      data-cy="modal-mass-upload_failed"
+    )
       f-svg-icon(iconName="warning_amber_round" size="14" class="mr-1.5")
-      span(class="pr-0.5") {{ $t("WW0037") }}
-      span(class="underline cursor-pointer" @click="openModalErrorList") {{ $t("UU0066") }}
-    file-upload-error-note(v-else-if="errorCode" :errorCode="errorCode" :fileSizeMaxLimit="fileSizeMaxLimit" data-cy="modal-mass-upload_error")
+      span(class="pr-0.5") {{ $t('WW0037') }}
+      span(class="underline cursor-pointer" @click="openModalErrorList") {{ $t('UU0066') }}
+    file-upload-error-note(
+      v-else-if="errorCode"
+      :errorCode="errorCode"
+      :fileSizeMaxLimit="fileSizeMaxLimit"
+      data-cy="modal-mass-upload_error"
+    )
   div(class="w-94")
     div(class="mb-5")
       f-input-text-button(
@@ -22,8 +31,8 @@ modal-behavior(
         :buttonLabel="$t('UU0025')"
         @click:button="chooseFile"
       )
-      p(class="text-grey-600 text-caption mb-2") {{ $t("RR0243") }} {{ acceptType.join(', ').toUpperCase() }}
-      p(class="text-grey-600 text-caption") {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
+      p(class="text-grey-600 text-caption mb-2") {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
+      p(class="text-grey-600 text-caption") {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
     div(class="text-grey-900 text-caption leading-1.6")
       i18n-t(keypath="DD0036" tag="p" scope="global")
         template(#UU0065)
@@ -32,14 +41,14 @@ modal-behavior(
             target="_blank"
             class="text-cyan-400 cursor-pointer"
             href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(英文版).xlsx"
-          )  {{ $t("UU0065") }}
+          ) {{ $t('UU0065') }}
           a(
             v-else
             target="_blank"
             class="text-cyan-400 cursor-pointer"
             href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(中文版).xlsx"
-          )  {{ $t("UU0065") }}
-      p {{ $t("DD0037") }}
+          ) {{ $t('UU0065') }}
+      p {{ $t('DD0037') }}
 </template>
 
 <script setup>
@@ -55,7 +64,12 @@ const store = useStore()
 const fileName = ref('')
 const errorCode = ref('')
 const showErrorList = ref(false)
-const disabledUpload = computed(() => !fileName.value.length > 0 || showErrorList.value || errorCode.value.length !== 0)
+const disabledUpload = computed(
+  () =>
+    !fileName.value.length > 0 ||
+    showErrorList.value ||
+    errorCode.value.length !== 0
+)
 const { goToProgress, goToAssets } = useNavigation()
 let errorList
 let binaryFile
@@ -98,8 +112,8 @@ const handleUpload = async () => {
         secondaryHandler: () => {
           store.dispatch('helper/closeModalBehavior')
           goToAssets()
-        }
-      }
+        },
+      },
     })
   } catch (error) {
     const { code, result } = error
@@ -122,7 +136,7 @@ const handleUpload = async () => {
 const openModalErrorList = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-mass-upload-error-list',
-    properties: { errorList }
+    properties: { errorList },
   })
 }
 </script>

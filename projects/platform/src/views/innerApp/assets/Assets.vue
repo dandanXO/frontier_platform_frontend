@@ -1,6 +1,6 @@
 <style lang="scss">
 .vue-recycle-scroller__item-view {
-  &[data-last-hover="true"] {
+  &[data-last-hover='true'] {
     z-index: 99;
   }
 }
@@ -17,7 +17,7 @@ div(class="w-full h-full")
     v-model:selectedItemList="selectedMaterialList"
   )
     template(#header-left)
-      h5(class="text-h5 font-bold text-grey-900") {{ $t("EE0001") }}
+      h5(class="text-h5 font-bold text-grey-900") {{ $t('EE0001') }}
         span(class="text-caption text-grey-600 pl-1")
           span (
           i18n-t(keypath="RR0068" tag="span" scope="global")
@@ -25,7 +25,7 @@ div(class="w-full h-full")
           span )
     template(#header-right)
       grid-or-row(v-model:displayMode="displayMode" class="justify-self-end")
-      f-button(size="sm" prependIcon="add" @click="goToMaterialUpload") {{ $t("UU0020") }}
+      f-button(size="sm" prependIcon="add" @click="goToMaterialUpload") {{ $t('UU0020') }}
     template(#default)
       template(v-if="materialList.length > 0")
         recycle-scroller(
@@ -38,9 +38,21 @@ div(class="w-full h-full")
           @resize="resize"
           :buffer="currentItemSize * 3"
         )
-          row-item(:key="item.materialId" :material="item" v-model:selectedList="selectedMaterialList" @mouseenter="onMouseEnter" data-cy="assets")
-          div(v-if="index !== materialList.length - 1" class="border-b border-grey-200 mx-7.5 my-5")
-        div(v-show="displayMode === DISPLAY_NODE.GRID" class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5")
+          row-item(
+            :key="item.materialId"
+            :material="item"
+            v-model:selectedList="selectedMaterialList"
+            @mouseenter="onMouseEnter"
+            data-cy="assets"
+          )
+          div(
+            v-if="index !== materialList.length - 1"
+            class="border-b border-grey-200 mx-7.5 my-5"
+          )
+        div(
+          v-show="displayMode === DISPLAY_NODE.GRID"
+          class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
+        )
           grid-item-material(
             v-for="material in materialList"
             :material="material"
@@ -52,9 +64,12 @@ div(class="w-full h-full")
             @click.stop="goToAssetMaterialDetail(material)"
           )
       div(v-else class="flex flex-col justify-center items-center")
-        div(class="border border-grey-200 rounded-md border-dashed p-2 mt-40 cursor-pointer" @click="goToMaterialUpload")
+        div(
+          class="border border-grey-200 rounded-md border-dashed p-2 mt-40 cursor-pointer"
+          @click="goToMaterialUpload"
+        )
           f-svg-icon(iconName="add" size="24" class="text-grey-900")
-        p(class="text-body2 text-grey-900 pt-3") {{ $t("EE0079") }}
+        p(class="text-body2 text-grey-900 pt-3") {{ $t('EE0079') }}
 </template>
 
 <script setup>
@@ -66,7 +81,12 @@ import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
-import { SEARCH_TYPE, DISPLAY_NODE, U3M_STATUS, useConstants } from '@/utils/constants.js'
+import {
+  SEARCH_TYPE,
+  DISPLAY_NODE,
+  U3M_STATUS,
+  useConstants,
+} from '@/utils/constants.js'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useRoute, useRouter } from 'vue-router'
@@ -85,20 +105,40 @@ const materialList = computed(() => store.getters['assets/materialList'])
 const pagination = computed(() => store.getters['helper/search/pagination'])
 const optionSort = computed(() => {
   const { SORT_BY } = useConstants()
-  const { CREATE_DATE, LAST_UPDATE, MATERIAL_NO_A_Z, GHG_RESULTS, WATER_DEPLETION_RESULTS, LAND_USE_RESULTS, RELEVANCE } = SORT_BY.value
-  const valueAddedService = computed(() => store.getters['polling/valueAddedService'])
+  const {
+    CREATE_DATE,
+    LAST_UPDATE,
+    MATERIAL_NO_A_Z,
+    GHG_RESULTS,
+    WATER_DEPLETION_RESULTS,
+    LAND_USE_RESULTS,
+    RELEVANCE,
+  } = SORT_BY.value
+  const valueAddedService = computed(
+    () => store.getters['polling/valueAddedService']
+  )
   return {
     base: [
       CREATE_DATE,
       LAST_UPDATE,
       MATERIAL_NO_A_Z,
-      { ...GHG_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
-      { ...WATER_DEPLETION_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
-      { ...LAND_USE_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') }
+      {
+        ...GHG_RESULTS,
+        disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
+        tooltip: t('VV0047'),
+      },
+      {
+        ...WATER_DEPLETION_RESULTS,
+        disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
+        tooltip: t('VV0047'),
+      },
+      {
+        ...LAND_USE_RESULTS,
+        disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
+        tooltip: t('VV0047'),
+      },
     ],
-    keywordSearch: [
-      RELEVANCE
-    ]
+    keywordSearch: [RELEVANCE],
   }
 })
 
@@ -112,55 +152,50 @@ const {
   exportExcel,
   printQRCode,
   mergeCard,
-  deleteMaterial
+  deleteMaterial,
 } = useAssets()
 
 const optionList = (material) => {
   return [
-    [
-      editMaterial
-    ],
-    [
-      cloneTo,
-      addToWorkspace
-    ],
+    [editMaterial],
+    [cloneTo, addToWorkspace],
     [
       create3DMaterial,
       {
         ...downloadU3M,
-        disabled: material.u3m.status !== U3M_STATUS.COMPLETED
+        disabled: material.u3m.status !== U3M_STATUS.COMPLETED,
       },
-      exportExcel
+      exportExcel,
     ],
-    [
-      printQRCode,
-      printCard
-    ],
-    [
-      deleteMaterial
-    ]
+    [printQRCode, printCard],
+    [deleteMaterial],
   ]
 }
 
 const optionMultiSelect = computed(() => {
-  const nonU3MList = selectedMaterialList.value.filter((material) => material.u3m.status !== U3M_STATUS.COMPLETED)
+  const nonU3MList = selectedMaterialList.value.filter(
+    (material) => material.u3m.status !== U3M_STATUS.COMPLETED
+  )
 
   return [
     cloneTo,
     addToWorkspace,
     printCard,
     printQRCode,
-    { ...downloadU3M, disabled: selectedMaterialList.value.length === nonU3MList.length },
+    {
+      ...downloadU3M,
+      disabled: selectedMaterialList.value.length === nonU3MList.length,
+    },
     exportExcel,
     { ...mergeCard, disabled: selectedMaterialList.value.length < 2 },
-    deleteMaterial
+    deleteMaterial,
   ]
 })
 
 const getMaterialList = async (targetPage = 1, query) => {
   await router.push({
     name: route.name,
-    query
+    query,
   })
   await store.dispatch('assets/getMaterialList', { targetPage })
 }
@@ -170,11 +205,9 @@ const onMouseEnter = (e) => {
    * Choose to set the state in the dataset instead of setting it in class
    * is because DynamicScroller will re-overwrite class when hovered on.
    */
-  document
-    .querySelectorAll('[data-last-hover="true"]')
-    .forEach(element => {
-      element.dataset.lastHover = false
-    })
+  document.querySelectorAll('[data-last-hover="true"]').forEach((element) => {
+    element.dataset.lastHover = false
+  })
   e.target.parentElement.dataset.lastHover = true
 }
 
@@ -184,7 +217,9 @@ const resize = () => {
    * @Todo figure out what happen in Safari
    */
   if (document.querySelector('.vue-recycle-scroller__item-view')) {
-    currentItemSize.value = document?.querySelector('.vue-recycle-scroller__item-view')?.clientHeight
+    currentItemSize.value = document?.querySelector(
+      '.vue-recycle-scroller__item-view'
+    )?.clientHeight
   } else {
     currentItemSize.value = 379
   }

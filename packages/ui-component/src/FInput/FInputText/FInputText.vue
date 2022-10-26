@@ -1,8 +1,8 @@
 <style lang="scss" scoped>
-input[type="date"] {
+input[type='date'] {
   &::-webkit-calendar-picker-indicator {
     background-size: contain;
-    background-image: url("./calendar.png");
+    background-image: url('./calendar.png');
     width: 20px;
     height: 20px;
     padding: 0;
@@ -13,7 +13,10 @@ input[type="date"] {
 
 <template lang="pug">
 f-input-container(:label="label" :required="required")
-  div(class="px-4 border border-grey-200 rounded flex items-center" :class="[classBorder, { 'bg-grey-100': disabled }, size === 'lg' ? 'h-11' : 'h-9']")
+  div(
+    class="px-4 border border-grey-200 rounded flex items-center"
+    :class="[classBorder, { 'bg-grey-100': disabled }, size === 'lg' ? 'h-11' : 'h-9']"
+  )
     slot(name="slot:prependItem")
     div(v-if="prependIcon || slots['slot:prependIcon']" class="pr-1")
       f-svg-icon(
@@ -37,15 +40,14 @@ f-input-container(:label="label" :required="required")
       autocomplete
     )
     div(v-if="clearable && !!textValue" class="pl-1")
-      f-svg-icon(
-        size="20"
-        iconName="clear"
-        class="text-grey-200"
-        @click.stop="clear"
-      )
+      f-svg-icon(size="20" iconName="clear" class="text-grey-200" @click.stop="clear")
     slot(name="slot:appendItem")
   template(#slot:hint)
-    p(v-if="!!errorMsg" class="text-caption text-red-400 absolute pt-1" data-cy="error-msg") {{ errorMsg }}
+    p(
+      v-if="!!errorMsg"
+      class="text-caption text-red-400 absolute pt-1"
+      data-cy="error-msg"
+    ) {{ errorMsg }}
     slot(v-else name="slot:errorMsg" data-cy="error-msg")
 </template>
 
@@ -60,34 +62,35 @@ export default {
      * v-model:textValue
      */
     textValue: {
-      validator: prop => typeof prop === 'number' || typeof prop === 'string' || prop === null,
-      required: true
+      validator: (prop) =>
+        typeof prop === 'number' || typeof prop === 'string' || prop === null,
+      required: true,
     },
     inputType: {
       type: String,
-      default: 'text'
+      default: 'text',
     },
     /**
      * only work when inputType is text or number
      */
     placeholder: {
       type: String,
-      default: ''
+      default: '',
     },
     prependIcon: {
       type: String,
-      default: ''
+      default: '',
     },
     clearable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * inherit from `FInputContainer.vue`
      */
     label: {
       type: String,
-      default: ''
+      default: '',
     },
     /**
      * inherit from `FInputContainer.vue`
@@ -96,35 +99,54 @@ export default {
      */
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
     size: {
       type: String,
-      default: 'lg'
+      default: 'lg',
     },
     /**
      * format: false case && error message
      */
     rules: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     /**
      * It turn to error state when customErrorMsg has value
      */
     customErrorMsg: {
       type: [String, Boolean],
-      default: ''
+      default: '',
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ['update:textValue', 'blur', 'enter', 'clear', 'change', 'input'],
-  setup (props, context) {
-    const { inputType, textValue, disabled, rules, customErrorMsg } = toRefs(props)
-    const { isFocus, isError, onFocus, onBlur, clear, typing, isEmpty, classBorder, errorMsg, classPrependIcon } = useInput({ context, inputType, textValue, disabled, rules, customErrorMsg })
+  setup(props, context) {
+    const { inputType, textValue, disabled, rules, customErrorMsg } =
+      toRefs(props)
+    const {
+      isFocus,
+      isError,
+      onFocus,
+      onBlur,
+      clear,
+      typing,
+      isEmpty,
+      classBorder,
+      errorMsg,
+      classPrependIcon,
+    } = useInput({
+      context,
+      inputType,
+      textValue,
+      disabled,
+      rules,
+      customErrorMsg,
+    })
 
     return {
       isFocus,
@@ -137,8 +159,8 @@ export default {
       isError,
       classBorder,
       classPrependIcon,
-      slots: context.slots
+      slots: context.slots,
     }
-  }
+  },
 }
 </script>

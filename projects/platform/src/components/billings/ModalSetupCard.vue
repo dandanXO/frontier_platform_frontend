@@ -8,7 +8,7 @@ modal-behavior(
   @click:primary="setupCard"
 )
   form(v-show="!isLoading" class="w-91")
-    div(id="stripe-container")
+    #stripe-container
     f-input-text(
       class="mt-4"
       v-model:textValue="cardHolderName"
@@ -32,7 +32,9 @@ const elements = ref(null)
 const paymentElement = ref(null)
 const isFilledAllCardFields = ref(false)
 const isLoading = ref(true)
-const availableToSetup = computed(() => isFilledAllCardFields.value && !!cardHolderName.value)
+const availableToSetup = computed(
+  () => isFilledAllCardFields.value && !!cardHolderName.value
+)
 
 const setupCard = () => {
   store.dispatch('helper/pushModalConfirm', {
@@ -42,13 +44,16 @@ const setupCard = () => {
     primaryBtnText: t('UU0031'),
     afterPrimaryBtnHandler: async () => {
       store.dispatch('helper/pushModalLoading')
-      await store.dispatch('organization/setCardHolderName', { clientSecret: clientSecret.value, cardHolderName: cardHolderName.value })
+      await store.dispatch('organization/setCardHolderName', {
+        clientSecret: clientSecret.value,
+        cardHolderName: cardHolderName.value,
+      })
       const orgNo = store.getters['organization/orgNo']
       const { error } = await stripe.confirmSetup({
         elements: elements.value,
         confirmParams: {
-          return_url: `${window.location.origin}/${orgNo}/billings/payment`
-        }
+          return_url: `${window.location.origin}/${orgNo}/billings/payment`,
+        },
       })
       store.dispatch('helper/closeModalLoading')
 
@@ -59,16 +64,18 @@ const setupCard = () => {
           contentText: t('OO0020'),
           primaryBtnText: t('UU0031'),
           primaryBtnHandler: () => store.dispatch('helper/clearModalPipeline'),
-          secondaryBtnText: t('UU0076')
+          secondaryBtnText: t('UU0076'),
         })
       }
     },
-    secondaryBtnText: t('UU0002')
+    secondaryBtnText: t('UU0002'),
   })
 }
 
 onMounted(async () => {
-  clientSecret.value = await store.dispatch('organization/getStripeClientSecret')
+  clientSecret.value = await store.dispatch(
+    'organization/getStripeClientSecret'
+  )
   const locale = store.getters['user/user'].locale
   const options = {
     // https://stripe.com/docs/js/elements_object/create
@@ -81,17 +88,17 @@ onMounted(async () => {
         '.Label': {
           fontWeight: 'bold',
           fontSize: '14px',
-          color: '#444444'
+          color: '#444444',
         },
         '.Input': {
-          borderColor: '#dcdcdc'
+          borderColor: '#dcdcdc',
         },
         '.Input:focus': {
           boxShadow: 'none',
-          borderColor: '#919191'
-        }
-      }
-    }
+          borderColor: '#919191',
+        },
+      },
+    },
   }
 
   elements.value = stripe.elements(options)
@@ -100,6 +107,9 @@ onMounted(async () => {
 
   paymentElement.value.on('ready', () => (isLoading.value = false))
 
-  paymentElement.value.on('change', ({ complete }) => (isFilledAllCardFields.value = complete))
+  paymentElement.value.on(
+    'change',
+    ({ complete }) => (isFilledAllCardFields.value = complete)
+  )
 })
 </script>

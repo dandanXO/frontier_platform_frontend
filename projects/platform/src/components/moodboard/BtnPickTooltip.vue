@@ -19,8 +19,8 @@ f-tooltip
 defineProps({
   isPicked: {
     type: Boolean,
-    required: true
-  }
+    required: true,
+  },
 })
 defineEmits(['togglePick'])
 </script>

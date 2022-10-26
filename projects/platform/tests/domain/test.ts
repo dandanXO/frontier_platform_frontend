@@ -1,4 +1,4 @@
-import { test as baseTest } from "@playwright/test"
+import { test as baseTest } from '@playwright/test'
 import { LoginPage, initialUser } from './auth'
 import { OrgPage } from './org'
 import { AssetPage } from './asset'
@@ -22,7 +22,7 @@ const test = baseTest.extend<FrontierFixtures>({
   assetPage: async ({ page }, use) => {
     const assetPage = new AssetPage(page)
     await use(assetPage)
-  }
+  },
 })
 
 export default test

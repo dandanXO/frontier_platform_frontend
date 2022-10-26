@@ -26,7 +26,10 @@ modal-behavior(
             div(class="text-body2 flex-grow")
               p(class="text-grey-900 line-clamp-1") {{ item.name }}
               p(v-if="item.number" class="text-grey-200") {{ item.number }}
-            p(class="text-body2 text-grey-200 pr-2.5 cursor-pointer" @click="removeTarget(index)") {{ $t('FF0060') }}
+            p(
+              class="text-body2 text-grey-200 pr-2.5 cursor-pointer"
+              @click="removeTarget(index)"
+            ) {{ $t('FF0060') }}
     div
       f-input-textarea(
         v-model:textValue="message"
@@ -53,7 +56,10 @@ const targetList = ref([])
 
 const addToTargetList = async () => {
   const frozenTargetValue = target.value.trim()
-  const existedTarget = targetList.value.find(({ name, number }) => name === frozenTargetValue || number === frozenTargetValue)
+  const existedTarget = targetList.value.find(
+    ({ name, number }) =>
+      name === frozenTargetValue || number === frozenTargetValue
+  )
   if (existedTarget) {
     switch (existedTarget.type) {
       case SHARE_TARGET_TYPE.ORG:
@@ -65,7 +71,9 @@ const addToTargetList = async () => {
     }
   }
   try {
-    const temp = await store.dispatch('moodboard/getMoodboardShareTarget', { target: frozenTargetValue })
+    const temp = await store.dispatch('moodboard/getMoodboardShareTarget', {
+      target: frozenTargetValue,
+    })
     targetList.value.push(temp)
     target.value = ''
   } catch (error) {
@@ -88,7 +96,10 @@ const addToTargetList = async () => {
 
 const assignedShare = async () => {
   store.dispatch('helper/pushModalLoading')
-  await store.dispatch('moodboard/shareMoodboard', { targetList: targetList.value, message: message.value })
+  await store.dispatch('moodboard/shareMoodboard', {
+    targetList: targetList.value,
+    message: message.value,
+  })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/closeModalBehavior')
   store.dispatch('helper/pushFlashMessage', t('RR0157'))

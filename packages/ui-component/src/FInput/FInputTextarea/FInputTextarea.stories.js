@@ -10,16 +10,16 @@ export default {
   title: 'Input/FInputTextarea',
   component: FInputTextarea,
   args: {
-    height: '120'
+    height: '120',
   },
   argTypes: {
-    ...FInputTextStories.argTypes
-  }
+    ...FInputTextStories.argTypes,
+  },
 }
 
 const Template = (args) => ({
   components: { FInputTextarea },
-  setup () {
+  setup() {
     const inputText = ref('')
     return { args, inputText }
   },

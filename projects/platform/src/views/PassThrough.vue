@@ -4,6 +4,6 @@ router-view
 
 <script>
 export default {
-  name: 'PassThrough'
+  name: 'PassThrough',
 }
 </script>

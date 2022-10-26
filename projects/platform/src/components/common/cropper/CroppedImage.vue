@@ -22,24 +22,24 @@ export default {
   props: {
     config: {
       type: Object,
-      required: true
+      required: true,
     },
     previewScaleRatio: {
       // only use in U3M
       type: Number,
-      default: 1
+      default: 1,
     },
     movable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     isTransparent: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ['update'],
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const body = ref(null)
     const { options } = reactive(props.config)
     const initialPos = { x: 0, y: 0 }
@@ -50,26 +50,26 @@ export default {
       return {
         transform: `translate(${x}px, ${y}px)`,
         width: `${width}px`,
-        height: `${height}px`
+        height: `${height}px`,
       }
     })
 
     const scaleStyle = computed(() => {
       return {
-        transform: `scale(${props.config.scaleRatio}`
+        transform: `scale(${props.config.scaleRatio}`,
       }
     })
 
     const rotateStyle = computed(() => {
       return {
-        transform: `rotate(${props.config.rotateDeg}deg)`
+        transform: `rotate(${props.config.rotateDeg}deg)`,
       }
     })
 
     const previewScaleStyles = computed(() => {
       return {
         transform: `
-          scale(${props.previewScaleRatio}`
+          scale(${props.previewScaleRatio}`,
       }
     })
 
@@ -85,18 +85,22 @@ export default {
 
     const getRotatedOffset = (offset) => {
       return {
-        x: offset.x * cos(-props.config.rotateDeg) - offset.y * sin(-props.config.rotateDeg),
-        y: offset.x * sin(-props.config.rotateDeg) + offset.y * cos(-props.config.rotateDeg)
+        x:
+          offset.x * cos(-props.config.rotateDeg) -
+          offset.y * sin(-props.config.rotateDeg),
+        y:
+          offset.x * sin(-props.config.rotateDeg) +
+          offset.y * cos(-props.config.rotateDeg),
       }
     }
 
     const cos = (angle) => {
-      const angleInRad = angle / 180 * Math.PI
+      const angleInRad = (angle / 180) * Math.PI
       return Math.cos(angleInRad)
     }
 
     const sin = (angle) => {
-      const angleInRad = angle / 180 * Math.PI
+      const angleInRad = (angle / 180) * Math.PI
       return Math.sin(angleInRad)
     }
 
@@ -134,9 +138,9 @@ export default {
       rotateStyle,
       scaleStyle,
       previewScaleStyles,
-      moveStart
+      moveStart,
     }
-  }
+  },
 }
 </script>
 <style lang="scss" scoped>

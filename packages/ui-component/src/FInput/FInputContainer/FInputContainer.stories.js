@@ -2,7 +2,7 @@ import FInputContainer from './FInputContainer.vue'
 
 const baseArgs = {
   label: 'Label',
-  required: true
+  required: true,
 }
 
 export default {
@@ -11,14 +11,14 @@ export default {
   args: baseArgs,
   argTypes: {
     required: {
-      control: { type: 'boolean' }
-    }
-  }
+      control: { type: 'boolean' },
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FInputContainer },
-  setup () {
+  setup() {
     return { args }
   },
   template: '<f-input-container v-bind="args"></f-input-container>',

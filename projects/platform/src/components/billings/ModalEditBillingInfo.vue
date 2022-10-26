@@ -55,12 +55,12 @@ import { useStore } from 'vuex'
 const props = defineProps({
   billingInfo: {
     type: Object,
-    required: true
+    required: true,
   },
   actionHandler: {
     type: Function,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const store = useStore()
@@ -69,7 +69,13 @@ const formData = reactive({ ...props.billingInfo })
 const refInputRecipient = ref(null)
 const refInputEmail = ref(null)
 const countryList = computed(() => store.getters['code/countryList'])
-const availableToSave = computed(() => !!formData.email && !refInputEmail.value?.isError && !!formData.recipient && !refInputRecipient?.value?.isError)
+const availableToSave = computed(
+  () =>
+    !!formData.email &&
+    !refInputEmail.value?.isError &&
+    !!formData.recipient &&
+    !refInputRecipient?.value?.isError
+)
 
 const innerActionHandler = () => {
   props.actionHandler({ ...formData })

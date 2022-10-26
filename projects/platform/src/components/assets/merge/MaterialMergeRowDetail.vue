@@ -17,14 +17,14 @@ export default {
   name: 'MaterialMergeRowDetail',
   props: {
     material: {
-      type: Object
-    }
+      type: Object,
+    },
   },
-  setup (props) {
+  setup(props) {
     const { materialBasicInfo } = useMaterial(props.material)
     return {
-      materialBasicInfo
+      materialBasicInfo,
     }
-  }
+  },
 }
 </script>

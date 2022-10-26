@@ -6,14 +6,26 @@ div(class="relative")
   div(class="overflow-hidden bg-grey-0" :style="cropRectStyle")
     div(class="cursor-move" :style="cropRectStyle")
       cropped-image(:config="config" @update="updateOptions")
-  div(class="corner absolute w-4.5 h-4.5 border-t-2 border-l-2 top-0 left-0 border-grey-900")
-  div(class="corner absolute w-4.5 h-4.5 border-t-2 border-r-2 top-0 right-0 border-grey-900")
-  div(class="corner absolute w-4.5 h-4.5 border-b-2 border-l-2 bottom-0 left-0 border-grey-900")
-  div(class="corner absolute w-4.5 h-4.5 border-b-2 border-r-2 bottom-0 right-0 border-grey-900")
+  div(
+    class="corner absolute w-4.5 h-4.5 border-t-2 border-l-2 top-0 left-0 border-grey-900"
+  )
+  div(
+    class="corner absolute w-4.5 h-4.5 border-t-2 border-r-2 top-0 right-0 border-grey-900"
+  )
+  div(
+    class="corner absolute w-4.5 h-4.5 border-b-2 border-l-2 bottom-0 left-0 border-grey-900"
+  )
+  div(
+    class="corner absolute w-4.5 h-4.5 border-b-2 border-r-2 bottom-0 right-0 border-grey-900"
+  )
   teleport(to="body")
     div(ref="cropRect" class="w-0 h-0 overflow-hidden -z-1")
       div(:style="styleSize")
-        cropped-image(:config="config" :movable="false" :previewScaleRatio="realSize / cropRectSize")
+        cropped-image(
+          :config="config"
+          :movable="false"
+          :previewScaleRatio="realSize / cropRectSize"
+        )
 </template>
 
 <script setup>
@@ -26,12 +38,12 @@ import tempFilenameGenerator from '@/utils/temp-filename-generator'
 const props = defineProps({
   config: {
     type: Object,
-    required: true
+    required: true,
   },
   cropRectSize: {
     type: Number,
-    default: 0
-  }
+    default: 0,
+  },
 })
 
 const emit = defineEmits(['update:options'])
@@ -41,7 +53,7 @@ const cropRect = ref(null)
 const cropRectStyle = computed(() => {
   return {
     width: `${props.cropRectSize}px`,
-    height: `${props.cropRectSize}px`
+    height: `${props.cropRectSize}px`,
   }
 })
 
@@ -56,7 +68,7 @@ const realSize = computed(() => {
 const styleSize = computed(() => {
   return {
     width: `${realSize.value}px`,
-    height: `${realSize.value}px`
+    height: `${realSize.value}px`,
   }
 })
 
@@ -74,7 +86,7 @@ const cropImage = () => {
       useCORS: true,
       width: realSize.value,
       height: realSize.value,
-      scale: 1
+      scale: 1,
     }).then((canvas) => {
       cropRect.value.style.width = 0
       cropRect.value.style.height = 0
@@ -88,6 +100,6 @@ const cropImage = () => {
 }
 
 defineExpose({
-  cropImage
+  cropImage,
 })
 </script>

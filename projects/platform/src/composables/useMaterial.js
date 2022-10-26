@@ -6,7 +6,7 @@ import store from '@/store'
 
 const t = i18n.global.t
 
-export default function useMaterial (material) {
+export default function useMaterial(material) {
   const {
     isDoubleSideMaterial,
     sideType,
@@ -37,7 +37,7 @@ export default function useMaterial (material) {
     privatePrice,
     attachmentList,
     frontierNo,
-    carbonEmission
+    carbonEmission,
   } = material
 
   const scanFaceSide = !!faceSideImg?.crop
@@ -48,38 +48,42 @@ export default function useMaterial (material) {
 
   if (isDoubleSideMaterial) {
     if (scanFaceSide && scanBackSide) statusIconName.value = 'double'
-    else if (scanFaceSide && !scanBackSide) statusIconName.value = 'double_front'
+    else if (scanFaceSide && !scanBackSide)
+      statusIconName.value = 'double_front'
     else if (!scanFaceSide && scanBackSide) statusIconName.value = 'double_back'
-    else if (!scanFaceSide && !scanBackSide) statusIconName.value = 'no_image_double'
+    else if (!scanFaceSide && !scanBackSide)
+      statusIconName.value = 'no_image_double'
   } else {
-    if (sideType === SIDE_TYPE.FACE) statusIconName.value = scanFaceSide ? 'front' : 'no_image_front'
-    else if (sideType === SIDE_TYPE.BACK) statusIconName.value = scanBackSide ? 'back' : 'no_image_back'
+    if (sideType === SIDE_TYPE.FACE)
+      statusIconName.value = scanFaceSide ? 'front' : 'no_image_front'
+    else if (sideType === SIDE_TYPE.BACK)
+      statusIconName.value = scanBackSide ? 'back' : 'no_image_back'
   }
 
   const imageList = computed(() => {
     const list = []
     const faceCrop = {
       src: faceSideImg.crop,
-      text: [t('RR0075')]
+      text: [t('RR0075')],
     }
     const faceRuler = {
       src: faceSideImg.ruler,
-      text: [t('RR0075'), `(${t('RR0080')})`]
+      text: [t('RR0075'), `(${t('RR0080')})`],
     }
     const backCrop = {
       src: backSideImg.crop,
-      text: [t('RR0078')]
+      text: [t('RR0078')],
     }
     const backRuler = {
       src: backSideImg.ruler,
-      text: [t('RR0078'), `(${t('RR0080')})`]
+      text: [t('RR0078'), `(${t('RR0080')})`],
     }
 
     if (isDoubleSideMaterial) {
       if (coverMode === COVER_MODE.SUP) {
         list.push({
           src: coverImg,
-          text: [t('RR0081')]
+          text: [t('RR0081')],
         })
         list.push(faceCrop, faceRuler, backCrop, backRuler)
       } else if (coverMode === COVER_MODE.FACE) {
@@ -94,7 +98,7 @@ export default function useMaterial (material) {
         if (coverMode === COVER_MODE.SUP) {
           list.push({
             src: coverImg,
-            text: [t('RR0081')]
+            text: [t('RR0081')],
           })
         } else {
           faceCrop.text.push(`(${t('RR0081')})`)
@@ -104,7 +108,7 @@ export default function useMaterial (material) {
         if (coverMode === COVER_MODE.SUP) {
           list.push({
             src: coverImg,
-            text: [t('RR0081')]
+            text: [t('RR0081')],
           })
         } else {
           backCrop.text.push(`(${t('RR0081')})`)
@@ -146,27 +150,60 @@ export default function useMaterial (material) {
       minimumContainerQuantity,
       minimumContainerQuantityUnit,
       productionLeadTime,
-      sampleLeadTime
+      sampleLeadTime,
     } = priceObj
 
     return {
-      coo: { name: t('RR0042'), value: countryList.find(country => country.countryCode === countryCode)?.name || '' },
-      pricing: { name: t('RR0043'), value: (price && currency && unit) ? `${price} ${currency} / ${unit}` : '' },
-      moq: { name: t('RR0047'), value: (minimumOrderQuantity && minimumOrderQuantityUnit) ? `${minimumOrderQuantity} / ${minimumOrderQuantityUnit}` : '' },
-      mcq: { name: t('RR0048'), value: (minimumContainerQuantity && minimumContainerQuantityUnit) ? `${minimumContainerQuantity} / ${minimumContainerQuantityUnit}` : '' },
-      productionLeadTime: { name: t('RR0049'), value: productionLeadTime ? t('RR0083', { number: productionLeadTime }) : '' },
-      sampleLeadTime: { name: t('RR0051'), value: sampleLeadTime ? t('RR0083', { number: sampleLeadTime }) : '' }
+      coo: {
+        name: t('RR0042'),
+        value:
+          countryList.find((country) => country.countryCode === countryCode)
+            ?.name || '',
+      },
+      pricing: {
+        name: t('RR0043'),
+        value:
+          price && currency && unit ? `${price} ${currency} / ${unit}` : '',
+      },
+      moq: {
+        name: t('RR0047'),
+        value:
+          minimumOrderQuantity && minimumOrderQuantityUnit
+            ? `${minimumOrderQuantity} / ${minimumOrderQuantityUnit}`
+            : '',
+      },
+      mcq: {
+        name: t('RR0048'),
+        value:
+          minimumContainerQuantity && minimumContainerQuantityUnit
+            ? `${minimumContainerQuantity} / ${minimumContainerQuantityUnit}`
+            : '',
+      },
+      productionLeadTime: {
+        name: t('RR0049'),
+        value: productionLeadTime
+          ? t('RR0083', { number: productionLeadTime })
+          : '',
+      },
+      sampleLeadTime: {
+        name: t('RR0051'),
+        value: sampleLeadTime ? t('RR0083', { number: sampleLeadTime }) : '',
+      },
     }
   }
 
   const getWeight = () => {
     const { WEIGHT_UNIT } = useConstants()
-    const square = String.fromCodePoint(0xB2)
+    const square = String.fromCodePoint(0xb2)
     let html = ''
     if (weightUnit === WEIGHT_UNIT.value.GSM.value) {
-      html = weightGsm ? `${weightGsm} g/m${square}(${weightOz} oz/y${square})` : ''
+      html = weightGsm
+        ? `${weightGsm} g/m${square}(${weightOz} oz/y${square})`
+        : ''
     } else if (weightUnit === WEIGHT_UNIT.value.OZ.value) {
-      html = weightOz ? `${weightOz} oz/y${square}(${weightGsm} g/m${square})` : ''
+      html = weightOz
+        ? `${weightOz} oz/y${square}(${weightGsm} g/m${square})`
+        : ''
     }
 
     if (weightGy) {
@@ -209,18 +246,37 @@ export default function useMaterial (material) {
     weight: { name: t('RR0015'), value: getWeight() },
     width: { name: t('RR0019'), value: width > 0 ? `${width}"` : '' },
     finish: { name: t('RR0022'), value: finish },
-    totalInventoryQty: { name: t('RR0034'), value: (typeof totalInventoryQty === 'number' ? totalInventoryQty : 0) + ' Y' },
-    materialSeq: { name: t('RR0030'), value: materialSeq ? `# ${materialSeq}` : '' },
-    sampleCard: { name: `${t('RR0031')}/${t('RR0032')}`, value: (sampleCardsRemainingQty && sampleCardsLocation) ? `${sampleCardsRemainingQty} / ${sampleCardsLocation}` : '' },
-    hangers: { name: `${t('RR0033')}/${t('RR0032')}`, value: (hangersRemainingQty && hangersLocation) ? `${hangersRemainingQty} / ${hangersLocation}` : '' },
+    totalInventoryQty: {
+      name: t('RR0034'),
+      value:
+        (typeof totalInventoryQty === 'number' ? totalInventoryQty : 0) + ' Y',
+    },
+    materialSeq: {
+      name: t('RR0030'),
+      value: materialSeq ? `# ${materialSeq}` : '',
+    },
+    sampleCard: {
+      name: `${t('RR0031')}/${t('RR0032')}`,
+      value:
+        sampleCardsRemainingQty && sampleCardsLocation
+          ? `${sampleCardsRemainingQty} / ${sampleCardsLocation}`
+          : '',
+    },
+    hangers: {
+      name: `${t('RR0033')}/${t('RR0032')}`,
+      value:
+        hangersRemainingQty && hangersLocation
+          ? `${hangersRemainingQty} / ${hangersLocation}`
+          : '',
+    },
     publicPrice: getPriceInfo(publicPrice),
-    privatePrice: getPriceInfo(privatePrice)
+    privatePrice: getPriceInfo(privatePrice),
   })
 
   const materialBasicInfo = computed(() => {
     return Object.fromEntries(
-      Object.entries(materialInfo)
-        .filter(([key]) => [
+      Object.entries(materialInfo).filter(([key]) =>
+        [
           'frontierNo',
           'content',
           'yarn',
@@ -229,22 +285,24 @@ export default function useMaterial (material) {
           'color',
           'weight',
           'width',
-          'finish'
-        ].includes(key))
+          'finish',
+        ].includes(key)
+      )
     )
   })
   const materialInventoryInfo = computed(() => {
     return Object.fromEntries(
-      Object.entries(materialInfo)
-        .filter(([key]) => [
-          'materialSeq',
-          'sampleCard',
-          'hangers'
-        ].includes(key))
+      Object.entries(materialInfo).filter(([key]) =>
+        ['materialSeq', 'sampleCard', 'hangers'].includes(key)
+      )
     )
   })
-  const materialPublicPriceInfo = computed(() => Object.values(materialInfo.publicPrice))
-  const materialPrivatePriceInfo = computed(() => Object.values(materialInfo.privatePrice))
+  const materialPublicPriceInfo = computed(() =>
+    Object.values(materialInfo.publicPrice)
+  )
+  const materialPrivatePriceInfo = computed(() =>
+    Object.values(materialInfo.privatePrice)
+  )
 
   const attachmentSortedList = computed(() => {
     const extensionOrder = {
@@ -255,26 +313,44 @@ export default function useMaterial (material) {
       '.mov': 3,
       '.mp4': 3,
       '.pdf': 2,
-      '.zip': 1
+      '.zip': 1,
     }
     const list = JSON.parse(JSON.stringify(attachmentList))
-    list.sort((a, b) => extensionOrder[b.extension] - extensionOrder[a.extension])
+    list.sort(
+      (a, b) => extensionOrder[b.extension] - extensionOrder[a.extension]
+    )
     return list
   })
 
   const carbonEmissionInfo = computed(() => {
-    const extendField = (sourceProperty, icon, title, unitShort, unitLong, saveUnit) => {
+    const extendField = (
+      sourceProperty,
+      icon,
+      title,
+      unitShort,
+      unitLong,
+      saveUnit
+    ) => {
       sourceProperty['icon'] = icon
       sourceProperty['title'] = title
       sourceProperty['unitShort'] = unitShort
       sourceProperty['unitLong'] = unitLong
       sourceProperty['saveUnit'] = saveUnit
     }
-    const { co2, water, land, energy } = JSON.parse(JSON.stringify(carbonEmission))
+    const { co2, water, land, energy } = JSON.parse(
+      JSON.stringify(carbonEmission)
+    )
     extendField(co2, 'co2', t('RR0221'), t('RR0215'), t('RR0225'), 'RR0230')
     extendField(water, 'water', t('RR0222'), t('RR0216'), t('RR0226'), 'RR0231')
     extendField(land, 'land', t('RR0224'), t('RR0218'), t('RR0228'), 'RR0233')
-    extendField(energy, 'energy', t('RR0223'), t('RR0217'), t('RR0227'), 'RR0232')
+    extendField(
+      energy,
+      'energy',
+      t('RR0223'),
+      t('RR0217'),
+      t('RR0227'),
+      'RR0232'
+    )
     return { co2, water, land }
   })
 
@@ -289,6 +365,6 @@ export default function useMaterial (material) {
     materialPublicPriceInfo,
     materialPrivatePriceInfo,
     attachmentSortedList,
-    carbonEmissionInfo
+    carbonEmissionInfo,
   }
 }

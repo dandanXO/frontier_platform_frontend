@@ -7,14 +7,25 @@ div
         div(class="flex text-body2 font-bold items-end")
           i(class="text-red-400 pr-0.5") *
           p(class="text-grey-900") {{ $t('BB0086') }}
-          p(class="font-normal text-caption text-grey-200 cursor-pointer pl-1" @click="openModalTypeTextToConfirm" data-cy="group-about_delete") {{ $t("UU0013") }}
+          p(
+            class="font-normal text-caption text-grey-200 cursor-pointer pl-1"
+            @click="openModalTypeTextToConfirm"
+            data-cy="group-about_delete"
+          ) {{ $t('UU0013') }}
         f-tooltip
           template(#trigger)
-            div(class="flex items-center" @click="copyText(groupNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))")
+            div(
+              class="flex items-center"
+              @click="copyText(groupNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))"
+            )
               p(class="text-caption text-grey-900 cursor-pointer pr-1.5") ID: {{ groupNo }}
-              f-svg-icon(iconName="content_copy" size="14" class="text-grey-600 cursor-pointer")
+              f-svg-icon(
+                iconName="content_copy"
+                size="14"
+                class="text-grey-600 cursor-pointer"
+              )
           template(#content)
-            p {{ $t("BB0056") }}
+            p {{ $t('BB0056') }}
       input-label-color(
         v-model:labelColor="groupFormData.labelColor"
         v-model:textValue="groupFormData.groupName"
@@ -24,8 +35,20 @@ div
         class="w-85 mb-7.5"
         data-cy="group-about_name"
       )
-    f-input-textarea(v-model:textValue="groupFormData.description" :label="$t('BB0087')" :placeholder="$t('BB0088')" class="w-85 mb-7.5" height="160")
-    f-button(size="md" class="mx-auto" :disabled="!availableToCreateGroup" @click="updateGroup" data-cy="group-about_save") {{ $t("UU0018") }}
+    f-input-textarea(
+      v-model:textValue="groupFormData.description"
+      :label="$t('BB0087')"
+      :placeholder="$t('BB0088')"
+      class="w-85 mb-7.5"
+      height="160"
+    )
+    f-button(
+      size="md"
+      class="mx-auto"
+      :disabled="!availableToCreateGroup"
+      @click="updateGroup"
+      data-cy="group-about_save"
+    ) {{ $t('UU0018') }}
 </template>
 
 <script>
@@ -38,16 +61,24 @@ import copyText from '@/utils/copy-text'
 export default {
   name: 'GroupAbout',
   components: {
-    InputLabelColor
+    InputLabelColor,
   },
-  setup () {
+  setup() {
     const { t } = useI18n()
     const store = useStore()
     const group = computed(() => store.getters['group/group'])
     const { groupName, labelColor, description, groupId, groupNo } = group.value
     const groupFormData = reactive({ groupName, labelColor, description })
-    const isGroupNameExist = computed(() => store.getters['organization/groupList'].some(group => (group.groupId !== groupId) && (group.groupName === groupFormData.groupName)))
-    const availableToCreateGroup = computed(() => groupFormData.groupName !== '' && !isGroupNameExist.value)
+    const isGroupNameExist = computed(() =>
+      store.getters['organization/groupList'].some(
+        (group) =>
+          group.groupId !== groupId &&
+          group.groupName === groupFormData.groupName
+      )
+    )
+    const availableToCreateGroup = computed(
+      () => groupFormData.groupName !== '' && !isGroupNameExist.value
+    )
 
     const updateGroup = async () => {
       await store.dispatch('group/updateGroup', toRaw(groupFormData))
@@ -71,13 +102,13 @@ export default {
               primaryBtnText: t('UU0001'),
               afterPrimaryBtnHandler: () => {
                 store.dispatch('helper/openModalBehavior', {
-                  component: 'modal-choose-storage'
+                  component: 'modal-choose-storage',
                 })
               },
-              secondaryBtnText: t('UU0002')
+              secondaryBtnText: t('UU0002'),
             })
-          }
-        }
+          },
+        },
       })
     }
 
@@ -88,8 +119,8 @@ export default {
       updateGroup,
       openModalTypeTextToConfirm,
       copyText,
-      groupNo
+      groupNo,
     }
-  }
+  },
 }
 </script>

@@ -17,13 +17,13 @@ export default {
     type: {
       control: { type: 'select' },
       options: ['primary', 'secondary'],
-    }
-  }
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FButton },
-  setup () {
+  setup() {
     return { args }
   },
   template: '<f-button v-bind="args"> Button </f-button>',
@@ -37,7 +37,7 @@ Primary.args = {
 export const Secondary = Template.bind({})
 Secondary.args = {
   ...baseArgs,
-  type: 'secondary'
+  type: 'secondary',
 }
 
 export const Icon = Template.bind({})
@@ -57,4 +57,3 @@ Small.args = {
   ...baseArgs,
   size: 'sm',
 }
-

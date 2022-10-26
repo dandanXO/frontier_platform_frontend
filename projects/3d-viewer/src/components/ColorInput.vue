@@ -4,13 +4,17 @@ div(class="flex flex-row justify-between items-center")
     div(class="relative w-5.5 h-5.5 overflow-hidden rounded cursor-pointer")
       //- 不使用 hidden 是因為在 safari 上 color picker 會連帶被隱藏
       input(
-        class="absolute left-1 bottom-0 w-1 h-1" 
+        class="absolute left-1 bottom-0 w-1 h-1"
         ref="colorInputDom"
         type="color"
         :value="color"
         @input="handleColorInput($event, index)"
       )
-      div(class="absolute w-full h-full" :style="{ backgroundColor: color }" @click="handleColorClick")
+      div(
+        class="absolute w-full h-full"
+        :style="{ backgroundColor: color }"
+        @click="handleColorClick"
+      )
     span(class="flex items-center text-body2 min-w-12 ml-3") {{ color.toUpperCase() }}
   div(class="px-4 border border-grey-200 rounded flex items-center h-11 w-40")
     input(
@@ -21,7 +25,7 @@ div(class="flex flex-row justify-between items-center")
       :placeholder="$t('EE0140')"
       @change="handlePantoneCodeChange"
     )
-  datalist(id="pantone-list")
+  datalist#pantone-list
     option(:key="pantoneItem.pantoneId" v-for="pantoneItem in pantoneList") {{ pantoneItem.display }}
 </template>
 

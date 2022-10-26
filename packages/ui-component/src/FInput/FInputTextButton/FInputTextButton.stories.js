@@ -11,20 +11,20 @@ export default {
   args: {
     size: 'lg',
     type: 'primary',
-    buttonLabel: 'Button'
+    buttonLabel: 'Button',
   },
   argTypes: {
     ...FInputTextStories.argTypes,
     type: {
       control: { type: 'radio' },
       options: ['primary', 'secondary'],
-    }
-  }
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FInputTextButton },
-  setup () {
+  setup() {
     const inputText = ref('')
     return { args, inputText }
   },

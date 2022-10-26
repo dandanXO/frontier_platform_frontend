@@ -27,19 +27,23 @@ export default {
   name: 'FilterPrice',
   components: {
     FilterWrapper,
-    FilterRange
+    FilterRange,
   },
   props: {
     searchType: {
-      type: Number
-    }
+      type: Number,
+    },
   },
-  setup () {
+  setup() {
     const store = useStore()
 
     const filter = computed(() => store.getters['helper/search/filter'])
-    const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
-    const filterOptions = computed(() => store.getters['helper/search/filterOptions'])
+    const filterDirty = computed(
+      () => store.getters['helper/search/filterDirty']
+    )
+    const filterOptions = computed(
+      () => store.getters['helper/search/filterOptions']
+    )
 
     const inputRange = ref([null, null])
 
@@ -54,8 +58,8 @@ export default {
         price: {
           min,
           max,
-          isInfinity: max > filterOptions.value.price.max
-        }
+          isInfinity: max > filterOptions.value.price.max,
+        },
       })
     }
 
@@ -65,8 +69,8 @@ export default {
       inputRange,
       init,
       update,
-      SEARCH_TYPE
+      SEARCH_TYPE,
     }
-  }
+  },
 }
 </script>

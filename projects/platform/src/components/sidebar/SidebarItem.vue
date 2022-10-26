@@ -1,11 +1,19 @@
 <template lang="pug">
-div(class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-grey-100 cursor-pointer"
+div(
+  class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-grey-100 cursor-pointer"
   :class="[{ 'bg-grey-150': isActive }, { 'pointer-events-none': disabled }]"
   @click="goTo"
 )
   slot
-    f-svg-icon(:iconName="icon" size="20" :class="[disabled ? 'text-grey-200' : 'text-grey-600']")
-    span(class="text-body2 line-clamp-1" :class="[disabled ? 'text-grey-200' : 'text-grey-900']") {{ title }}
+    f-svg-icon(
+      :iconName="icon"
+      size="20"
+      :class="[disabled ? 'text-grey-200' : 'text-grey-600']"
+    )
+    span(
+      class="text-body2 line-clamp-1"
+      :class="[disabled ? 'text-grey-200' : 'text-grey-900']"
+    ) {{ title }}
 </template>
 
 <script>
@@ -18,30 +26,30 @@ export default {
   props: {
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     icon: {
       type: String,
-      default: ''
+      default: '',
     },
     path: {
       type: String,
-      required: true
+      required: true,
     },
     pathUseToMatch: {
       type: String,
-      default: ''
+      default: '',
     },
     id: {
       type: String,
-      required: true
+      required: true,
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  setup (props) {
+  setup(props) {
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
@@ -49,16 +57,18 @@ export default {
     const isActive = computed(() => {
       // Special case
       if (
-        props.id === 'management' && ['OrgManagement', 'GroupManagement'].includes(route.name)
-        || props.id === 'progress' && ['OrgProgress', 'GroupProgress'].includes(route.name)
+        (props.id === 'management' &&
+          ['OrgManagement', 'GroupManagement'].includes(route.name)) ||
+        (props.id === 'progress' &&
+          ['OrgProgress', 'GroupProgress'].includes(route.name))
       ) {
         return true
       }
 
       const matched = route.matched
-      const matchedPathList = matched.map(item => {
+      const matchedPathList = matched.map((item) => {
         let path = item.path
-        Object.keys(route.params).forEach(key => {
+        Object.keys(route.params).forEach((key) => {
           const regex = new RegExp(':' + key)
           path = path.replace(regex, route.params[key])
         })
@@ -66,7 +76,11 @@ export default {
         return path
       })
 
-      return matchedPathList.some(matchedPath => matchedPath.includes(props.pathUseToMatch !== '' ? props.pathUseToMatch : props.path))
+      return matchedPathList.some((matchedPath) =>
+        matchedPath.includes(
+          props.pathUseToMatch !== '' ? props.pathUseToMatch : props.path
+        )
+      )
     })
 
     const goTo = async () => {
@@ -80,8 +94,8 @@ export default {
 
     return {
       goTo,
-      isActive
+      isActive,
     }
-  }
+  },
 }
 </script>

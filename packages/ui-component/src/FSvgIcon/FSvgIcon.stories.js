@@ -8,12 +8,12 @@ const baseArgs = {
 export default {
   title: 'FSvgIcon',
   component: FSvgIcon,
-  args: baseArgs
+  args: baseArgs,
 }
 
 export const Default = (args) => ({
   components: { FSvgIcon },
-  setup () {
+  setup() {
     return { args }
   },
   template: '<f-svg-icon v-bind="args" />',
@@ -21,7 +21,7 @@ export const Default = (args) => ({
 
 export const Color = (args) => ({
   components: { FSvgIcon },
-  setup () {
+  setup() {
     return { args }
   },
   template: `
@@ -32,7 +32,7 @@ export const Color = (args) => ({
 
 export const IconList = (args) => ({
   components: { FSvgIcon },
-  setup () {
+  setup() {
     const icons = import.meta.globEager('./icons/**/*.svg')
     const iconNameList = []
     for (const path in icons) {
@@ -41,7 +41,7 @@ export const IconList = (args) => ({
       iconNameList.push(path.slice(startIndex, endIndex))
     }
     return {
-      iconNameList
+      iconNameList,
     }
   },
   template: `

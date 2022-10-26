@@ -7,13 +7,13 @@ modal-behavior(
   @click:secondary="clearModalPipeline"
 )
   div(class="w-94")
-    div(class="text-grey-900 text-caption mb-2.5 leading-1.6") {{ $t("EE0108") }}
+    div(class="text-grey-900 text-caption mb-2.5 leading-1.6") {{ $t('EE0108') }}
     f-scrollbar-container(class="max-h-89.5 -mx-5 px-5")
       div(
         v-for="(material, index) in failedList"
         class="flex gap-3 border-grey-200 py-2.5 text-body2 text-grey-900 leading-1.6"
         :class="{ 'border-b': index !== failedList.length - 1 }"
-)
+      )
   div(class="w-31 pl-15 font-bold flex-shrink-0") {{ index + 1 }}
   div {{ material.materialNo }}
 </template>
@@ -26,16 +26,16 @@ export default {
   name: 'ModalU3mDownloadConfirm',
   props: {
     allowedList: {
-      type: Array
+      type: Array,
     },
     failedList: {
-      type: Array
+      type: Array,
     },
     selectedFormat: {
-      type: String
-    }
+      type: String,
+    },
   },
-  setup (props) {
+  setup(props) {
     const store = useStore()
     const downloadU3m = () => {
       props.allowedList.forEach((material) => {
@@ -53,8 +53,8 @@ export default {
 
     return {
       downloadU3m,
-      clearModalPipeline
+      clearModalPipeline,
     }
-  }
+  },
 }
 </script>

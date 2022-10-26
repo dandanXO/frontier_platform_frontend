@@ -1,14 +1,25 @@
 <template lang="pug">
-f-input-text(v-bind="props" v-model:textValue="innerTextValue" :disabled="disabledInput" @clear="$emit('clear')")
+f-input-text(
+  v-bind="props"
+  v-model:textValue="innerTextValue"
+  :disabled="disabledInput"
+  @clear="$emit('clear')"
+)
   template(#slot:appendItem)
     div(class="-mr-4 pl-4 h-full flex items-center")
-      button(:disabled="disabledBtn" :class="[btnSize, btnType]" class="rounded-r transform translate-x-0.5" @click="$emit('click:button')" data-cy="input-text-btn")
+      button(
+        :disabled="disabledBtn"
+        :class="[btnSize, btnType]"
+        class="rounded-r transform translate-x-0.5"
+        @click="$emit('click:button')"
+        data-cy="input-text-btn"
+      )
         span {{ buttonLabel }}
 </template>
 
 <script>
 export default {
-  name: 'FInputTextButton'
+  name: 'FInputTextButton',
 }
 </script>
 
@@ -23,80 +34,81 @@ const props = defineProps({
    * v-model:textValue
    */
   textValue: {
-    validator: prop => typeof prop === 'number' || typeof prop === 'string' || prop === null,
-    required: true
+    validator: (prop) =>
+      typeof prop === 'number' || typeof prop === 'string' || prop === null,
+    required: true,
   },
   /**
    * inherit from `FInputText.vue`
    */
   placeholder: {
     type: String,
-    default: ''
+    default: '',
   },
   /**
    * inherit from `FInputText.vue`
    */
   clearable: {
     type: Boolean,
-    default: true
+    default: true,
   },
   /**
    * inherit from `FInputText.vue`
    */
   label: {
     type: String,
-    default: ''
+    default: '',
   },
   /**
    * inherit from `FInputText.vue`
-   * 
+   *
    * only work when `label` has been setted
    */
   required: {
     type: Boolean,
-    default: false
+    default: false,
   },
   /**
    * inherit from `FInputText.vue`
    */
   size: {
     type: String,
-    default: 'lg'
+    default: 'lg',
   },
   /**
    * inherit from `FInputText.vue`
-   * 
+   *
    * format: false case && error message
    */
   rules: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   /**
    * inherit from `FInputText.vue`
-   * 
+   *
    * It turn to error state when customErrorMsg has value
    */
   customErrorMsg: {
     type: [String, Boolean],
-    default: ''
+    default: '',
   },
   type: {
     type: String,
-    default: 'primary'
+    default: 'primary',
   },
   disabledInput: {
     type: Boolean,
-    default: false
+    default: false,
   },
   disabledBtn: {
     type: Boolean,
-    default: false
+    default: false,
   },
   buttonLabel: {
     type: String,
-    default: ''
-  }
+    default: '',
+  },
 })
 const btnSize = computed(() => {
   switch (props.size) {
@@ -110,14 +122,26 @@ const btnSize = computed(() => {
 const btnType = computed(() => {
   switch (props.type) {
     case 'primary':
-      return ['bg-primary-400', 'text-grey-0', 'disabled:bg-grey-150', 'hover:bg-primary-500']
+      return [
+        'bg-primary-400',
+        'text-grey-0',
+        'disabled:bg-grey-150',
+        'hover:bg-primary-500',
+      ]
     case 'secondary':
-      return ['bg-grey-0', 'text-primary-400', 'disabled:text-grey-200', 'border', 'border-grey-150', 'hover:text-primary-500']
+      return [
+        'bg-grey-0',
+        'text-primary-400',
+        'disabled:text-grey-200',
+        'border',
+        'border-grey-150',
+        'hover:text-primary-500',
+      ]
   }
 })
 
 const innerTextValue = computed({
   get: () => props.textValue,
-  set: (v) => emit('update:textValue', v)
+  set: (v) => emit('update:textValue', v),
 })
 </script>

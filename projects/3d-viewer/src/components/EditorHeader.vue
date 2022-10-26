@@ -4,22 +4,37 @@ div(class="shrink-0 w-full h-20 bg-grey-900 px-10 flex items-center justify-betw
     f-svg-icon(iconName="3d_viewer" size="24")
     p(class="text-h5 font-bold pl-4") {{ $t('EE0029') }}
   div(class="flex flex-row")
-    model-texture-switch(:displayMode="displayMode" @update:displayMode="v => emit('displayModeChange', v)")
+    model-texture-switch(
+      :displayMode="displayMode"
+      @update:displayMode="(v) => emit('displayModeChange', v)"
+    )
     div(class="w-150 px-10")
       div(v-if="displayMode === DISPLAY_MODE.MODEL")
         carousel(:settings="settings")
           slide(v-for="modelType in modelTypes" :key="modelType")
             div(
-              class="cursor-pointer mx-1 hover:opacity-70 border border-grey-700 rounded" 
+              class="cursor-pointer mx-1 hover:opacity-70 border border-grey-700 rounded"
               :class="{ '!border-primary-400': activeModelType === modelType }"
               @click="emit('modelClick', modelType)"
             )
               img(:src="getModelCoverImg(modelType)" class="rounded")
       div(v-else class="flex flex-row gap-x-2")
-        dark-tag(@click="emit('textureClick', TEXTURE_TYPE.BASE)" :active="textureType === TEXTURE_TYPE.BASE") base
-        dark-tag(@click="emit('textureClick', TEXTURE_TYPE.NORMAL)" :active="textureType === TEXTURE_TYPE.NORMAL") normal
-        dark-tag(@click="emit('textureClick', TEXTURE_TYPE.ROUGHNESS)" :active="textureType === TEXTURE_TYPE.ROUGHNESS") roughness
-        dark-tag(@click="emit('textureClick', TEXTURE_TYPE.DISPLACEMENT)" :active="textureType === TEXTURE_TYPE.DISPLACEMENT") displacement
+        dark-tag(
+          @click="emit('textureClick', TEXTURE_TYPE.BASE)"
+          :active="textureType === TEXTURE_TYPE.BASE"
+        ) base
+        dark-tag(
+          @click="emit('textureClick', TEXTURE_TYPE.NORMAL)"
+          :active="textureType === TEXTURE_TYPE.NORMAL"
+        ) normal
+        dark-tag(
+          @click="emit('textureClick', TEXTURE_TYPE.ROUGHNESS)"
+          :active="textureType === TEXTURE_TYPE.ROUGHNESS"
+        ) roughness
+        dark-tag(
+          @click="emit('textureClick', TEXTURE_TYPE.DISPLACEMENT)"
+          :active="textureType === TEXTURE_TYPE.DISPLACEMENT"
+        ) displacement
   f-button(size="md" @click="emit('close')") {{ $t('UU0112') }}
 </template>
 

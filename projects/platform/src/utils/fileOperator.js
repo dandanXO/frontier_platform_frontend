@@ -16,7 +16,7 @@ const extension2MimeType = {
   png: 'image/png',
   gif: 'image/gif',
   mov: 'video/quicktime',
-  mp4: 'video/mp4'
+  mp4: 'video/mp4',
 }
 
 const generalImageType = ['jpg', 'jpeg', 'png']
@@ -62,8 +62,8 @@ const downloadDataURLFile = (dataURL, fileName = 'file') => {
 }
 
 /**
- * 
- * @param {number} bytes 
+ *
+ * @param {number} bytes
  * @returns {string} size
  */
 const bytesToSize = (bytes) => {
@@ -74,7 +74,7 @@ const bytesToSize = (bytes) => {
 }
 
 /**
- * @param {object | string} file 
+ * @param {object | string} file
  */
 const previewFile = (file) => {
   const a = document.createElement('A')
@@ -92,17 +92,19 @@ class FileOperator {
    * @param {number} fileSizeMaxLimit // mb
    */
 
-  constructor (validType = generalImageType, fileSizeMaxLimit = 5) {
+  constructor(validType = generalImageType, fileSizeMaxLimit = 5) {
     this.validType = validType
-    this.acceptedExtension = validType.map(type => `.${type}`).join(',')
-    this.acceptedFormat = validType.map(type => extension2MimeType[type]).join(',')
+    this.acceptedExtension = validType.map((type) => `.${type}`).join(',')
+    this.acceptedFormat = validType
+      .map((type) => extension2MimeType[type])
+      .join(',')
     this.fileSizeMaxLimit = fileSizeMaxLimit
 
     this.event = new EventEmitter()
     this.eventHash = {}
   }
 
-  on (type, callback) {
+  on(type, callback) {
     // replace origin event
     if (this.eventHash[type]) {
       this.event.off(type, this.eventHash[type])
@@ -112,7 +114,7 @@ class FileOperator {
     this.eventHash[type] = callback
   }
 
-  upload (multiple = false) {
+  upload(multiple = false) {
     // Because inputNode won't be appended to DOM, so we don't need to release it
     // It will be remove by JS garbage collection system sooner or later
     const inputNode = document.createElement('input')
@@ -128,22 +130,26 @@ class FileOperator {
     document.body.appendChild(inputNode)
 
     inputNode.click()
-    inputNode.addEventListener('change', (evt) => {
-      this.event.emit('uploading')
-      this.validateFiles(evt.target.files)
-      document.body.removeChild(inputNode)
-    }, false)
+    inputNode.addEventListener(
+      'change',
+      (evt) => {
+        this.event.emit('uploading')
+        this.validateFiles(evt.target.files)
+        document.body.removeChild(inputNode)
+      },
+      false
+    )
   }
 
-  onDrop (evt) {
+  onDrop(evt) {
     this.event.emit('uploading')
     this.validateFiles(evt.dataTransfer.files)
   }
 
-  validateFiles (files) {
+  validateFiles(files) {
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
-      const mb = file.size / (1024 ** 2)
+      const mb = file.size / 1024 ** 2
       const type = file.type
 
       if (!this.acceptedFormat.includes(type) || !type) {
@@ -155,21 +161,21 @@ class FileOperator {
       }
     }
 
-    Array.from(files).forEach(file => this.uploadHandler(file))
+    Array.from(files).forEach((file) => this.uploadHandler(file))
   }
 
-  uploadHandler (file) {
+  uploadHandler(file) {
     this.event.emit('finish', file)
   }
 }
 
 class ImageOperator extends FileOperator {
-  constructor (validType, fileSizeMaxLimit, cropRectSize = 200) {
+  constructor(validType, fileSizeMaxLimit, cropRectSize = 200) {
     super(validType, fileSizeMaxLimit)
     this.cropRectSize = cropRectSize
   }
 
-  uploadHandler (file) {
+  uploadHandler(file) {
     const reader = new FileReader()
 
     reader.onload = (evt) => {
@@ -187,7 +193,7 @@ class ImageOperator extends FileOperator {
           width,
           height,
           src,
-          file
+          file,
         })
       }
     }
@@ -195,4 +201,12 @@ class ImageOperator extends FileOperator {
   }
 }
 
-export { dataUrlToBlob, downloadDataURLFile, downloadBase64File, FileOperator, ImageOperator, bytesToSize, previewFile }
+export {
+  dataUrlToBlob,
+  downloadDataURLFile,
+  downloadBase64File,
+  FileOperator,
+  ImageOperator,
+  bytesToSize,
+  previewFile,
+}

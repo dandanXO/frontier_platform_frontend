@@ -22,7 +22,12 @@ modal-behavior(
       div
         div(class="h-5.5 flex items-center pb-1")
           p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
-          f-button-label(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewFile(formData.trendBoardFile)") {{ $t('UU0060') }}
+          f-button-label(
+            v-if="uploadTrendBoardName"
+            size="sm"
+            class="ml-1.5"
+            @click="previewFile(formData.trendBoardFile)"
+          ) {{ $t('UU0060') }}
         f-input-text-button(
           class="w-full"
           disabledInput
@@ -33,8 +38,8 @@ modal-behavior(
           @clear="removeTrendBoard"
         )
       p(v-if="!!customErrorMsg" class="text-red-400 text-caption leading-1.6") {{ customErrorMsg }}
-      p(class="text-grey-600 text-caption leading-1.6") {{ $t("RR0243") }} {{ trendBoardFileAcceptType.join(', ').toUpperCase() }}
-      p(class="text-grey-600 text-caption leading-1.6") {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
+      p(class="text-grey-600 text-caption leading-1.6") {{ $t('RR0243') }} {{ trendBoardFileAcceptType.join(', ').toUpperCase() }}
+      p(class="text-grey-600 text-caption leading-1.6") {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
     f-input-textarea(
       v-model:textValue="formData.description"
       :label="$t('RR0014')"
@@ -54,12 +59,13 @@ import { CREATE_EDIT, UPLOAD_ERROR_CODE } from '@/utils/constants.js'
 const props = defineProps({
   mode: {
     type: Number,
-    default: CREATE_EDIT.CREATE
+    default: CREATE_EDIT.CREATE,
   },
-  nodeId: { // if is create mode then nodeId is refer to parent nodeId, otherwise is refer to that node collection
+  nodeId: {
+    // if is create mode then nodeId is refer to parent nodeId, otherwise is refer to that node collection
     type: Number,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const { t } = useI18n()
@@ -71,7 +77,7 @@ const formData = reactive({
   description: '',
   trendBoardFile: null,
   // the below variables only use for edit mode
-  isDeleteTrendBoard: false
+  isDeleteTrendBoard: false,
 })
 const DESCRIPTION_LIMIT = 1000
 const isUploadNewTrendBoard = ref(false)
@@ -80,7 +86,10 @@ const customErrorMsg = ref('')
 
 const fileSizeMaxLimit = 20
 const trendBoardFileAcceptType = ['pdf']
-const trendBoardFileOperator = new FileOperator(trendBoardFileAcceptType, fileSizeMaxLimit)
+const trendBoardFileOperator = new FileOperator(
+  trendBoardFileAcceptType,
+  fileSizeMaxLimit
+)
 
 trendBoardFileOperator.on('error', (code) => {
   const { INVALID_TYPE, EXCEED_LIMIT } = UPLOAD_ERROR_CODE
@@ -108,7 +117,9 @@ const removeTrendBoard = () => {
   }
 }
 
-const primaryBtnDisabled = computed(() => !formData.name || formData.description.length > DESCRIPTION_LIMIT)
+const primaryBtnDisabled = computed(
+  () => !formData.name || formData.description.length > DESCRIPTION_LIMIT
+)
 
 const primaryHandler = async () => {
   store.dispatch('helper/pushModalLoading')
@@ -127,8 +138,16 @@ const primaryHandler = async () => {
 }
 
 if (props.mode === CREATE_EDIT.EDIT) {
-  const { nodeId, name, description, trendBoardUrl, trendBoardFileName } = await store.dispatch('moodboard/getMoodboardNodeCollectionForModal', { nodeId: props.nodeId })
-  Object.assign(formData, { nodeId, name, description, trendBoardFile: trendBoardUrl })
+  const { nodeId, name, description, trendBoardUrl, trendBoardFileName } =
+    await store.dispatch('moodboard/getMoodboardNodeCollectionForModal', {
+      nodeId: props.nodeId,
+    })
+  Object.assign(formData, {
+    nodeId,
+    name,
+    description,
+    trendBoardFile: trendBoardUrl,
+  })
   uploadTrendBoardName.value = trendBoardFileName
 }
 </script>

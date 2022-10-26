@@ -3,7 +3,8 @@ import copyText from '@/utils/copy-text'
 
 const { VITE_APP_FACEBOOK_APP_ID } = import.meta.env
 const SHARE_BASE_URL = `${window.location.origin}/share-page/index.html`
-const getSharedUrl = (sharingKey) => `${SHARE_BASE_URL}?sharingKey=${sharingKey}`
+const getSharedUrl = (sharingKey) =>
+  `${SHARE_BASE_URL}?sharingKey=${sharingKey}`
 
 const shareViaSocialMedia = (sharingKey, type) => {
   const sharedUrl = getSharedUrl(sharingKey)

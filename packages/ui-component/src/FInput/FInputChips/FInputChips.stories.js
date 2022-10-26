@@ -7,21 +7,21 @@ export default {
   args: {
     label: 'Input Chips',
     required: true,
-    placeholder: 'Placeholder'
+    placeholder: 'Placeholder',
   },
   argTypes: {
     chips: {
-      control: { type: null }
+      control: { type: null },
     },
     label: {
-      control: { type: 'text' }
-    }
-  }
+      control: { type: 'text' },
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FInputChips },
-  setup () {
+  setup() {
     const chips = ref([])
     return { args, chips }
   },
@@ -46,20 +46,19 @@ ArrayOfObject.args = {
     {
       name: 'Chip 3',
       id: 3,
-    }
-  ]
+    },
+  ],
 }
 
 export const ArrayOfString = Template.bind({})
 ArrayOfString.args = {
   ...ArrayOfString.args,
-  optionList: ['Chip 1', 'Chip 2', 'Chip 3']
+  optionList: ['Chip 1', 'Chip 2', 'Chip 3'],
 }
-
 
 export const AddNewOption = (args) => ({
   components: { FInputChips },
-  setup () {
+  setup() {
     const chips = ref([])
     const optionList = ref([
       {
@@ -73,12 +72,12 @@ export const AddNewOption = (args) => ({
       {
         name: 'Chip 3',
         id: 3,
-      }
+      },
     ])
     const addNewOption = (name) => {
       optionList.value.push({
         name,
-        id: optionList.value.length + 1
+        id: optionList.value.length + 1,
       })
     }
     return { args, chips, optionList, addNewOption }

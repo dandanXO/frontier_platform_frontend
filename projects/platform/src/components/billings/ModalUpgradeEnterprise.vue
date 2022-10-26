@@ -52,9 +52,11 @@ const formData = reactive({
   email: orgUser.value.email,
   phone: '',
   phoneCountryCode: 'TW',
-  description: ''
+  description: '',
 })
-const availableToSend = computed(() => !!formData.name && !!formData.email && !refInputEmail.value?.isError)
+const availableToSend = computed(
+  () => !!formData.name && !!formData.email && !refInputEmail.value?.isError
+)
 
 const requestUpgradeToEnterprise = async () => {
   store.dispatch('helper/openModalLoading')

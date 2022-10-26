@@ -1,6 +1,7 @@
 <template lang="pug">
 div(
-  class="absolute top-22 left-3 bottom-2 flex flex-col items-stretch w-75 overflow-y-scroll bg-grey-900/90 p-3 rounded-lg text-grey-100")
+  class="absolute top-22 left-3 bottom-2 flex flex-col items-stretch w-75 overflow-y-scroll bg-grey-900/90 p-3 rounded-lg text-grey-100"
+)
   h5(class="text-h5 font-bold mb-4") {{ $t('EE0137') }}
   slider-input(
     :name="$t('EE0133')"
@@ -9,7 +10,7 @@ div(
     :step="0.01"
     :range="alpha"
     :changed="isAlphaChanged"
-    @update:range="v => emit('alphaChange', v)"
+    @update:range="(v) => emit('alphaChange', v)"
     @reset="emit('alphaReset')"
   )
   slider-input(
@@ -19,7 +20,7 @@ div(
     :step="0.01"
     :range="roughness"
     :changed="isRoughnessChanged"
-    @update:range="v => emit('roughnessChange', v)"
+    @update:range="(v) => emit('roughnessChange', v)"
     @reset="emit('roughnessReset')"
   )
   slider-input(
@@ -29,7 +30,7 @@ div(
     :step="0.01"
     :range="specular"
     :changed="isSpecularChanged"
-    @update:range="v => emit('specularChange', v)"
+    @update:range="(v) => emit('specularChange', v)"
     @reset="emit('specularReset')"
   )
   slider-input(
@@ -41,7 +42,7 @@ div(
     :range="scale"
     :resetDisabled="false"
     :changed="scale !== 1"
-    @update:range="v => emit('scaleChange', v)"
+    @update:range="(v) => emit('scaleChange', v)"
     @reset="emit('scaleReset')"
   )
   div(class="w-full my-6")
@@ -60,17 +61,23 @@ div(
     div(class="flex flex-row justify-around items-center gap-x-2")
       f-button(
         class="bg-transparent text-grey-300 disabled:text-grey-700 border-none"
-        type="text" size="md"
+        type="text"
+        size="md"
         :disabled="!colorRemovable"
         @click="emit('colorRemove')"
-      ) {{ $t('UU0121')}}
-      f-button(size="md" prependIcon="add" :disabled="!colorAddable" @click="emit('colorAdd')") {{ $t('UU0120')}}
+      ) {{ $t('UU0121') }}
+      f-button(
+        size="md"
+        prependIcon="add"
+        :disabled="!colorAddable"
+        @click="emit('colorAdd')"
+      ) {{ $t('UU0120') }}
   div(class="mt-auto")
     div(class="w-full my-6")
       hr(class="w-full text-grey-600")
   div(class="flex flex-row items-center justify-center gap-x-2")
     //- f-button(size="sm" prependIcon="upload"  @click="emit('screenshot')") {{ $t('UU0124') }}
-    f-button(size="sm" prependIcon="camera"  @click="emit('screenshot')") {{ $t('UU0125')}}
+    f-button(size="sm" prependIcon="camera" @click="emit('screenshot')") {{ $t('UU0125') }}
   //- input(ref="fileInput" type="file" @change="handleUploadModel")
 </template>
 

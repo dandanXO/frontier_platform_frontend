@@ -11,29 +11,29 @@ export default {
       { name: 'Option 1', value: 1 },
       { name: 'Option 2', value: 2 },
       { name: 'Option 3', value: 3 },
-      { name: 'Option 4', value: 4 }
+      { name: 'Option 4', value: 4 },
     ],
     keyOptionDisplay: 'name',
     keyOptionValue: 'value',
-    placeholder: 'select'
+    placeholder: 'select',
   },
   argTypes: {
     selectValue: {
-      control: { type: null }
+      control: { type: null },
     },
     size: {
       control: { type: 'radio' },
       optionList: ['lg', 'sm'],
     },
     label: {
-      control: { type: 'text' }
-    }
-  }
+      control: { type: 'text' },
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FInputSelect },
-  setup () {
+  setup() {
     const selectValue = ref()
     return { args, selectValue }
   },
@@ -47,17 +47,17 @@ export const Default = Template.bind({})
 
 export const SearchBox = Template.bind({})
 SearchBox.args = {
-  searchBox: true
+  searchBox: true,
 }
 
 export const SearchBoxAddNewOption = (args) => ({
   components: { FInputSelect },
-  setup () {
+  setup() {
     const selectValue = ref()
     const addNewOption = (name) => {
       args.optionList.push({
         name,
-        value: args.optionList.length + 1
+        value: args.optionList.length + 1,
       })
     }
     return { args, selectValue, addNewOption }
@@ -82,6 +82,6 @@ SearchBoxAddNewOption.args = {
     {
       name: 'Chip 3',
       value: 3,
-    }
-  ]
+    },
+  ],
 }

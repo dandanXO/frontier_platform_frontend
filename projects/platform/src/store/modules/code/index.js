@@ -11,8 +11,8 @@ const state = () => ({
     contentList: [],
     patternList: [],
     colorList: [],
-    finishList: []
-  }
+    finishList: [],
+  },
 })
 
 const getters = {
@@ -29,70 +29,72 @@ const getters = {
     return countryList
   },
   roleList: (state) => state.roleList,
-  getRoleName: (state) => (roleId) => state.roleList.find(role => role.roleId === roleId).name,
+  getRoleName: (state) => (roleId) =>
+    state.roleList.find((role) => role.roleId === roleId).name,
   roleLimit: (state) => state.roleLimit,
-  orgRoleLimitList: (state) => state.roleList.filter(role => role.roleId !== ROLE_ID.OWNER),
+  orgRoleLimitList: (state) =>
+    state.roleList.filter((role) => role.roleId !== ROLE_ID.OWNER),
   getGroupRoleLimitList: (state, getters) => (orgRoleId) => {
     if (!orgRoleId) {
       return []
     }
     return state.roleLimit
-      .find(item => item.orgRoleId === orgRoleId).groupRoleIdList
-      .map(roleId => ({
+      .find((item) => item.orgRoleId === orgRoleId)
+      .groupRoleIdList.map((roleId) => ({
         name: getters.getRoleName(roleId),
-        roleId
+        roleId,
       }))
   },
   orgCategoryList: (state) => state.orgCategoryList,
-  filterOptionList: (state) => state.filter
+  filterOptionList: (state) => state.filter,
 }
 
 const mutations = {
-  SET_countryList (state, countryList) {
+  SET_countryList(state, countryList) {
     state.countryList = countryList
   },
-  SET_orgCategoryList (state, orgCategoryList) {
+  SET_orgCategoryList(state, orgCategoryList) {
     state.orgCategoryList = orgCategoryList
   },
-  SET_roleList (state, roleList) {
+  SET_roleList(state, roleList) {
     state.roleList = roleList
   },
-  SET_roleLimit (state, roleLimit) {
+  SET_roleLimit(state, roleLimit) {
     state.roleLimit = roleLimit
   },
-  SET_filter (state, filter) {
+  SET_filter(state, filter) {
     state.filter = filter
-  }
+  },
 }
 
 const actions = {
-  fetchCode ({ dispatch }) {
+  fetchCode({ dispatch }) {
     dispatch('getRoleList')
     dispatch('getOrgCategoryList')
     dispatch('getRoleLimitTable')
     dispatch('getCountryList')
     dispatch('getFilterOptions')
   },
-  async getCountryList ({ commit }) {
+  async getCountryList({ commit }) {
     const { data } = await codeApi.getCountryList()
     commit('SET_countryList', data.result.code.countryList)
   },
-  async getOrgCategoryList ({ commit }) {
+  async getOrgCategoryList({ commit }) {
     const { data } = await codeApi.getOrgCategoryList()
     commit('SET_orgCategoryList', data.result.code.orgCategoryList)
   },
-  async getRoleList ({ commit }) {
+  async getRoleList({ commit }) {
     const { data } = await codeApi.getRoleList()
     commit('SET_roleList', data.result.code.roleList)
   },
-  async getRoleLimitTable ({ commit }) {
+  async getRoleLimitTable({ commit }) {
     const { data } = await codeApi.getRoleLimitTable()
     commit('SET_roleLimit', data.result.code.roleLimit)
   },
-  async getFilterOptions ({ commit }) {
+  async getFilterOptions({ commit }) {
     const { data } = await codeApi.getFilterOptions()
     commit('SET_filter', data.result.code.filter)
-  }
+  },
 }
 
 export default {
@@ -100,5 +102,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 }

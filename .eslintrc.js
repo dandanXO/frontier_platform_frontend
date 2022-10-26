@@ -1,4 +1,3 @@
-/* eslint-env node */
 require('@rushstack/eslint-patch/modern-module-resolution')
 
 module.exports = {
@@ -13,4 +12,17 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
+  overrides: [
+    {
+      files: [
+        '*.cjs',
+        '.eslintrc.js',
+        'vite.config.js',
+        'tailwind.config.js',
+        'postcss.config.js',
+        'packages/tailwindcss/index.js',
+      ],
+      env: { node: true },
+    },
+  ],
 }

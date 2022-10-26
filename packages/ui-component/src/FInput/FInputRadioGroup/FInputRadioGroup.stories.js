@@ -10,32 +10,32 @@ export default {
     optionList: [
       {
         name: 'Label1',
-        value: 1
+        value: 1,
       },
       {
         name: 'Label2',
-        value: 2
+        value: 2,
       },
       {
         name: 'Label3',
-        value: 3
+        value: 3,
       },
       {
         name: 'Label4',
-        value: 4
-      }
-    ]
+        value: 4,
+      },
+    ],
   },
   argTypes: {
     inputValue: {
-      control: { type: null }
-    }
-  }
+      control: { type: null },
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FInputRadioGroup },
-  setup () {
+  setup() {
     const inputValue = ref(1)
     return { args, inputValue }
   },

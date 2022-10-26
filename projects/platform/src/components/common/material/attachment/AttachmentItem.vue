@@ -4,9 +4,20 @@ div(class="w-44 rounded bg-grey-50")
     class="relative cursor-pointer h-33 rounded-t bg-grey-200 flex justify-center items-center"
     @click="openModalPreviewAttachment"
   )
-    f-svg-icon(iconName='open_in_full' size="20" class='absolute top-1.5 left-1.5 text-grey-0')
-    img(v-if="['.png', '.jpg', '.jpeg', '.gif'].includes(attachment.extension)" :src="attachment.url" class="max-h-full max-w-full")
-    video(v-else-if="['.mov', '.mp4'].includes(attachment.extension)" class="max-h-full max-w-full")
+    f-svg-icon(
+      iconName="open_in_full"
+      size="20"
+      class="absolute top-1.5 left-1.5 text-grey-0"
+    )
+    img(
+      v-if="['.png', '.jpg', '.jpeg', '.gif'].includes(attachment.extension)"
+      :src="attachment.url"
+      class="max-h-full max-w-full"
+    )
+    video(
+      v-else-if="['.mov', '.mp4'].includes(attachment.extension)"
+      class="max-h-full max-w-full"
+    )
       source(:src="attachment.url" type="video/mp4")
     f-svg-icon(v-else iconName="file" size="50" class="text-grey-50")
   div(class="h-11 flex justify-between items-center px-3 py-4")
@@ -29,22 +40,22 @@ export default {
   props: {
     attachmentList: {
       type: Array,
-      required: true
+      required: true,
     },
     attachment: {
       type: Object,
-      required: true
+      required: true,
     },
     index: {
       type: Number,
-      required: true
+      required: true,
     },
     isReadOnly: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  setup (props) {
+  setup(props) {
     const { t } = useI18n()
     const store = useStore()
 
@@ -54,14 +65,14 @@ export default {
         header: t('DD0060'),
         properties: {
           attachmentList: props.attachmentList,
-          index: props.index
-        }
+          index: props.index,
+        },
       })
     }
 
     return {
-      openModalPreviewAttachment
+      openModalPreviewAttachment,
     }
-  }
+  },
 }
 </script>

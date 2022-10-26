@@ -8,7 +8,7 @@ modal-behavior(
   @click:text="openModalCreateOrg"
 )
   div(class="w-94 min-h-31.5")
-    p(class="text-body2 text-grey-900 leading-1.6 pb-4") {{ $t("AA0078") }}
+    p(class="text-body2 text-grey-900 leading-1.6 pb-4") {{ $t('AA0078') }}
     div(class="flex items-center")
       f-input-text(
         v-model:textValue="uploadMaterialEmail"
@@ -19,10 +19,13 @@ modal-behavior(
         data-cy="modal-create-mail-org_email"
       )
         template(#slot:errorMsg v-if="suggestEmailList.length > 0")
-          p(v-if="suggestEmailList.length > 0" class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ $t("WW0029") }}
-      p(class="text-body2 text-grey-900") {{ $t("AA0079") }}
+          p(
+            v-if="suggestEmailList.length > 0"
+            class="text-caption text-red-400 absolute pt-1 whitespace-nowrap"
+          ) {{ $t('WW0029') }}
+      p(class="text-body2 text-grey-900") {{ $t('AA0079') }}
     div(v-if="suggestEmailList.length > 0" class="pt-7.5 flex")
-      p(class="text-body2 text-grey-900 pr-2") {{ $t("AA0085") }}
+      p(class="text-body2 text-grey-900 pr-2") {{ $t('AA0085') }}
       div(class="grid gap-y-2.5")
         p(v-for="email in suggestEmailList" class="text-body2 text-cyan-400") {{ email }}
 </template>
@@ -37,8 +40,8 @@ import { useI18n } from 'vue-i18n'
 defineProps({
   isOldOrg: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const { t } = useI18n()
@@ -48,13 +51,19 @@ const suggestEmailList = ref([])
 const errorMsg = ref('')
 const uploadMaterialEmail = computed({
   get: () => store.getters['organization/createForm'].uploadMaterialEmail,
-  set: (v) => store.commit('organization/SET_createForm_uploadMaterialEmail', v)
+  set: (v) =>
+    store.commit('organization/SET_createForm_uploadMaterialEmail', v),
 })
-const availableToCreateOrg = computed(() => uploadMaterialEmail.value !== '' && suggestEmailList.value.length === 0 && errorMsg.value.length === 0)
+const availableToCreateOrg = computed(
+  () =>
+    uploadMaterialEmail.value !== '' &&
+    suggestEmailList.value.length === 0 &&
+    errorMsg.value.length === 0
+)
 
 const openModalCreateOrg = () => {
   store.dispatch('helper/openModalBehavior', {
-    component: 'modal-create-org'
+    component: 'modal-create-org',
   })
 }
 
@@ -63,7 +72,10 @@ const createOrg = async () => {
     store.dispatch('helper/pushModalLoading')
     await store.dispatch('organization/createOrg')
     store.dispatch('helper/clearModalPipeline')
-    router.push({ name: 'PublicLibrary', params: { orgNo: store.getters['organization/organization'].orgNo } })
+    router.push({
+      name: 'PublicLibrary',
+      params: { orgNo: store.getters['organization/organization'].orgNo },
+    })
   } catch (error) {
     store.dispatch('helper/closeModalLoading')
     const { code, result } = error
@@ -80,7 +92,9 @@ const createOrg = async () => {
 const setOrgUploadMail = async () => {
   try {
     store.dispatch('helper/pushModalLoading')
-    await store.dispatch('organization/setOrgUploadMail', { uploadMaterialEmail: uploadMaterialEmail.value })
+    await store.dispatch('organization/setOrgUploadMail', {
+      uploadMaterialEmail: uploadMaterialEmail.value,
+    })
     store.dispatch('helper/clearModalPipeline')
   } catch (error) {
     store.dispatch('helper/closeModalLoading')

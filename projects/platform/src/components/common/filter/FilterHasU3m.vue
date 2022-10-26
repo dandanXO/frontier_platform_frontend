@@ -1,5 +1,9 @@
 <template lang="pug">
-filter-wrapper(iconName="cube" :displayName="$t('RR0132')" :dirty="filterDirty.hasU3M")
+filter-wrapper(
+  iconName="cube"
+  :displayName="$t('RR0132')"
+  :dirty="filterDirty.hasU3M"
+)
   f-contextual-menu(
     v-model:inputSelectValue="hasU3M"
     :selectMode="1"
@@ -23,19 +27,19 @@ const menuTree = computed(() => ({
       menuList: [
         {
           title: t('RR0100'),
-          selectValue: true
+          selectValue: true,
         },
         {
           title: t('RR0101'),
-          selectValue: false
-        }
-      ]
-    }
-  ]
+          selectValue: false,
+        },
+      ],
+    },
+  ],
 }))
 
 const hasU3M = computed({
   get: () => store.getters['helper/search/filter'].hasU3M,
-  set: (v) => store.dispatch('helper/search/setFilter', { hasU3M: v })
+  set: (v) => store.dispatch('helper/search/setFilter', { hasU3M: v }),
 })
 </script>

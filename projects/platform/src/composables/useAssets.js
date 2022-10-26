@@ -4,23 +4,26 @@ import useNavigation from '@/composables/useNavigation'
 import { U3M_STATUS } from '@/utils/constants'
 import { printA4Card, printGeneralLabel } from '@/utils/print'
 
-export default function useAssets () {
+export default function useAssets() {
   const { t } = useI18n()
-  const { goToAssetMaterialEdit, goToMaterialUpload, goToProgress } = useNavigation()
+  const { goToAssetMaterialEdit, goToMaterialUpload, goToProgress } =
+    useNavigation()
   const store = useStore()
 
   const editMaterial = {
     id: 'editMaterial',
     icon: 'create',
     name: t('RR0054'),
-    func: goToAssetMaterialEdit
+    func: goToAssetMaterialEdit,
   }
 
   const cloneTo = {
     id: 'cloneTo',
     name: t('RR0167'),
     func: (v) => {
-      const materialIdList = Array.isArray(v) ? v.map(({ materialId }) => materialId) : [v.materialId]
+      const materialIdList = Array.isArray(v)
+        ? v.map(({ materialId }) => materialId)
+        : [v.materialId]
 
       store.dispatch('helper/openModalBehavior', {
         component: 'modal-clone-to',
@@ -29,13 +32,17 @@ export default function useAssets () {
             return store.dispatch('assets/cloneCheck', { materialIdList })
           },
           cloneHandler: async (targetLocationList, optional) => {
-            await store.dispatch('assets/cloneMaterial', { targetLocationList, materialIdList, optional })
+            await store.dispatch('assets/cloneMaterial', {
+              targetLocationList,
+              materialIdList,
+              optional,
+            })
             store.dispatch('helper/reloadInnerApp')
             store.dispatch('helper/pushFlashMessage', t('EE0056'))
-          }
-        }
+          },
+        },
       })
-    }
+    },
   }
 
   const addToWorkspace = {
@@ -48,7 +55,7 @@ export default function useAssets () {
           type: 1,
           header: t('EE0096'),
           contentText: t('EE0097'),
-          primaryBtnText: t('UU0031')
+          primaryBtnText: t('UU0031'),
         })
       }
 
@@ -58,14 +65,19 @@ export default function useAssets () {
           modalTitle: t('EE0057'),
           actionText: t('UU0035'),
           actionCallback: async (nodeList) => {
-            const materialIdList = materialList.map(material => material.materialId)
-            const failMaterialList = await store.dispatch('assets/addToWorkspace', {
-              materialIdList,
-              targetWorkspaceNodeList: nodeList.map(({ nodeKey }) => {
-                const [location, id] = nodeKey.split('-')
-                return { id, location }
-              })
-            })
+            const materialIdList = materialList.map(
+              (material) => material.materialId
+            )
+            const failMaterialList = await store.dispatch(
+              'assets/addToWorkspace',
+              {
+                materialIdList,
+                targetWorkspaceNodeList: nodeList.map(({ nodeKey }) => {
+                  const [location, id] = nodeKey.split('-')
+                  return { id, location }
+                }),
+              }
+            )
 
             if (failMaterialList && failMaterialList.length > 0) {
               store.dispatch('helper/openModalBehavior', {
@@ -77,20 +89,23 @@ export default function useAssets () {
                     store.dispatch('helper/closeModalBehavior')
                   },
                   content: t('EE0064'),
-                  materialNoList: failMaterialList
-                }
+                  materialNoList: failMaterialList,
+                },
               })
             } else {
               store.dispatch('helper/closeModal')
             }
 
-            if (!failMaterialList || (failMaterialList.length !== materialIdList.length)) {
+            if (
+              !failMaterialList ||
+              failMaterialList.length !== materialIdList.length
+            ) {
               store.dispatch('helper/pushFlashMessage', t('EE0062'))
             }
-          }
-        }
+          },
+        },
       })
-    }
+    },
   }
 
   const create3DMaterial = {
@@ -124,10 +139,10 @@ export default function useAssets () {
                     goToMaterialUpload()
                     store.dispatch('helper/closeModalBehavior')
                   },
-                  materialList: [v]
-                }
+                  materialList: [v],
+                },
               })
-            }
+            },
           })
           break
         case U3M_STATUS.PROCESSING:
@@ -136,13 +151,13 @@ export default function useAssets () {
             type: 0,
             header: t('RR0162'),
             contentText: t('EE0072'),
-            primaryBtnText: t('UU0031')
+            primaryBtnText: t('UU0031'),
           })
           break
         default:
           if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
             store.dispatch('helper/openModalBehavior', {
-              component: 'modal-u3m-preview'
+              component: 'modal-u3m-preview',
             })
           } else {
             localStorage.setItem('haveReadU3mInstruction', 'y')
@@ -152,18 +167,18 @@ export default function useAssets () {
                 primaryBtnText: t('UU0095'),
                 primaryHandler: () => {
                   store.dispatch('helper/replaceModalBehavior', {
-                    component: 'modal-u3m-preview'
+                    component: 'modal-u3m-preview',
                   })
                 },
                 secondaryBtnText: t('UU0026'),
                 secondaryHandler: () => {
                   store.dispatch('helper/closeModalBehavior')
-                }
-              }
+                },
+              },
             })
           }
       }
-    }
+    },
   }
 
   const downloadU3M = {
@@ -174,16 +189,18 @@ export default function useAssets () {
       const materialList = Array.isArray(v) ? v : [v]
       store.dispatch('helper/openModalBehavior', {
         component: 'modal-u3m-select-file-format',
-        properties: { materialList }
+        properties: { materialList },
       })
-    }
+    },
   }
 
   const exportExcel = {
     id: 'exportExcel',
     name: t('RR0060'),
     func: async (v) => {
-      const materialIdList = Array.isArray(v) ? v.map(({ materialId }) => materialId) : [v.materialId]
+      const materialIdList = Array.isArray(v)
+        ? v.map(({ materialId }) => materialId)
+        : [v.materialId]
 
       if (materialIdList.length >= 100) {
         await store.dispatch('assets/massExportMaterial', { materialIdList })
@@ -196,14 +213,14 @@ export default function useAssets () {
           secondaryBtnHandler: () => {
             goToProgress('excel')
             store.dispatch('helper/closeModalBehavior')
-          }
+          },
         })
       } else {
         store.dispatch('helper/openModalLoading')
         await store.dispatch('assets/exportMaterial', { materialIdList })
         store.dispatch('helper/closeModalLoading')
       }
-    }
+    },
   }
 
   const printQRCode = {
@@ -212,7 +229,7 @@ export default function useAssets () {
     func: (v) => {
       const materialList = Array.isArray(v) ? v : [v]
       printGeneralLabel(materialList)
-    }
+    },
   }
 
   const printCard = {
@@ -222,7 +239,7 @@ export default function useAssets () {
     func: (v) => {
       const materialList = Array.isArray(v) ? v : [v]
       printA4Card(materialList)
-    }
+    },
   }
 
   const mergeCard = {
@@ -231,18 +248,21 @@ export default function useAssets () {
     func: (materialList) => {
       store.dispatch('helper/openModal', {
         component: 'modal-material-merge',
-        properties: { materialList }
+        properties: { materialList },
       })
-    }
+    },
   }
 
   const deleteMaterial = {
     id: 'deleteMaterial',
     name: t('RR0063'),
     func: async (v) => {
-      const materialIdList = Array.isArray(v) ? v.map(({ materialId }) => materialId) : [v.materialId]
+      const materialIdList = Array.isArray(v)
+        ? v.map(({ materialId }) => materialId)
+        : [v.materialId]
 
-      const { isOnExportingExcel, isOnGeneratingU3m, materialNoList } = await store.dispatch('assets/deleteCheckMaterial', { materialIdList })
+      const { isOnExportingExcel, isOnGeneratingU3m, materialNoList } =
+        await store.dispatch('assets/deleteCheckMaterial', { materialIdList })
       if (!isOnExportingExcel && !isOnGeneratingU3m) {
         store.dispatch('helper/openModalConfirm', {
           type: 1,
@@ -255,14 +275,14 @@ export default function useAssets () {
             store.dispatch('helper/closeModalLoading')
             store.dispatch('helper/reloadInnerApp')
           },
-          secondaryBtnText: t('UU0002')
+          secondaryBtnText: t('UU0002'),
         })
       } else if (isOnGeneratingU3m) {
         store.dispatch('helper/openModalConfirm', {
           type: 1,
           header: t('EE0111'),
           contentText: t('EE0112'),
-          secondaryBtnText: t('UU0094')
+          secondaryBtnText: t('UU0094'),
         })
       } else if (isOnExportingExcel) {
         if (materialIdList.length > 1) {
@@ -289,10 +309,10 @@ export default function useAssets () {
                   secondaryBtnHandler: () => {
                     store.dispatch('helper/closeModalBehavior')
                   },
-                  materialNoList
-                }
+                  materialNoList,
+                },
               })
-            }
+            },
           })
         } else {
           store.dispatch('helper/openModalConfirm', {
@@ -310,7 +330,7 @@ export default function useAssets () {
           })
         }
       }
-    }
+    },
   }
 
   return {
@@ -323,6 +343,6 @@ export default function useAssets () {
     printQRCode,
     printCard,
     mergeCard,
-    deleteMaterial
+    deleteMaterial,
   }
 }

@@ -6,7 +6,7 @@ div(class="flex items-center text-red-400 leading-1.6")
 
 <script>
 export default {
-  name: 'FileUploadErrorNote'
+  name: 'FileUploadErrorNote',
 }
 </script>
 
@@ -18,11 +18,11 @@ import { useI18n } from 'vue-i18n'
 const props = defineProps({
   errorCode: {
     type: [Number, String],
-    default: ''
+    default: '',
   },
   fileSizeMaxLimit: {
-    type: Number
-  }
+    type: Number,
+  },
 })
 
 const { t } = useI18n()
@@ -40,6 +40,4 @@ const errorMsg = computed(() => {
     return ''
   }
 })
-
 </script>
-

@@ -12,8 +12,8 @@ import { useI18n } from 'vue-i18n'
 const props = defineProps({
   status: {
     type: Number,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const { t } = useI18n()

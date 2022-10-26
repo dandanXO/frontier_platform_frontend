@@ -21,7 +21,7 @@ export default {
      */
     label: {
       type: String,
-      default: ''
+      default: '',
     },
     /**
      * inherit from `FInputContainer.vue`
@@ -30,7 +30,7 @@ export default {
      */
     required: {
       type: Boolean,
-      required: false
+      required: false,
     },
     /**
      * ```
@@ -44,37 +44,37 @@ export default {
      */
     optionList: {
       type: Array,
-      required: true
+      required: true,
     },
     /**
      * v-model:inputValue
      */
     inputValue: {
       type: [String, Number, Boolean, Object],
-      required: true
+      required: true,
     },
     keyOptionName: {
       type: String,
-      default: 'name'
+      default: 'name',
     },
     keyOptionValue: {
       type: String,
-      default: 'value'
+      default: 'value',
     },
     radioSize: {
       type: String,
-      default: '24'
-    }
+      default: '24',
+    },
   },
   emits: ['update:inputValue'],
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const innerInputValue = computed({
       get: () => props.inputValue,
-      set: (v) => emit('update:inputValue', v)
+      set: (v) => emit('update:inputValue', v),
     })
     return {
-      innerInputValue
+      innerInputValue,
     }
-  }
+  },
 }
 </script>

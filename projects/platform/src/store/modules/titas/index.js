@@ -7,7 +7,7 @@ export default {
   namespaced: true,
   modules: {
     collection: PublicCollection,
-    material: Material
+    material: Material,
   },
   state: () => ({
     titasInfo: {
@@ -21,41 +21,53 @@ export default {
       ],
       collectionCoverImgList: [
         // ['http://logo',]
-      ]
+      ],
     },
     materialBreadcrumbList: [],
-    materialPublish: NodePublishState()
+    materialPublish: NodePublishState(),
   }),
   getters: {
-    titasInfo: state => state.titasInfo,
-    materialBreadcrumbList: state => state.materialBreadcrumbList
-      .map(({ name, workspaceNodeId, workspaceNodeLocation }) => ({ name, nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}` })),
-    materialPublish: state => state.materialPublish
+    titasInfo: (state) => state.titasInfo,
+    materialBreadcrumbList: (state) =>
+      state.materialBreadcrumbList.map(
+        ({ name, workspaceNodeId, workspaceNodeLocation }) => ({
+          name,
+          nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}`,
+        })
+      ),
+    materialPublish: (state) => state.materialPublish,
   },
   mutations: {
-    SET_titasInfo (state, titasInfo) {
+    SET_titasInfo(state, titasInfo) {
       state.titasInfo = titasInfo
     },
-    SET_materialBreadcrumbList (state, materialBreadcrumbList) {
+    SET_materialBreadcrumbList(state, materialBreadcrumbList) {
       state.materialBreadcrumbList = materialBreadcrumbList
     },
-    SET_materialPublish (state, materialPublish) {
+    SET_materialPublish(state, materialPublish) {
       state.materialPublish = materialPublish
-    }
+    },
   },
   actions: {
-    async getTitasInfo ({ commit }) {
+    async getTitasInfo({ commit }) {
       const { data } = await titasApi.getTitasInfo()
 
       commit('SET_titasInfo', data.result)
     },
-    async getTitasShowroomList ({ rootGetters, dispatch, commit }, { targetPage = 1, nodeKey }) {
-      const [workspaceNodeLocation, workspaceNodeId] = nodeKey?.split('-') || [null, null]
-      const searchParams = rootGetters['helper/search/getSearchParams'](targetPage)
+    async getTitasShowroomList(
+      { rootGetters, dispatch, commit },
+      { targetPage = 1, nodeKey }
+    ) {
+      const [workspaceNodeLocation, workspaceNodeId] = nodeKey?.split('-') || [
+        null,
+        null,
+      ]
+      const searchParams =
+        rootGetters['helper/search/getSearchParams'](targetPage)
       const params = {
         workspaceNodeId,
         workspaceNodeLocation,
-        ...searchParams
+        ...searchParams,
       }
 
       const { data } = await titasApi.getTitasShowroomList(params)
@@ -64,16 +76,23 @@ export default {
       commit('SET_collection', publicCollection)
       dispatch('helper/search/setPagination', pagination, { root: true })
     },
-    async getTitasMaterial ({ rootGetters, commit }, { nodeKey }) {
-      const [workspaceNodeLocation, workspaceNodeId] = nodeKey?.split('-') || [null, null]
-      const { data } = await titasApi.getTitasMaterial({ orgId: rootGetters['organization/orgId'], workspaceNodeId, workspaceNodeLocation })
+    async getTitasMaterial({ rootGetters, commit }, { nodeKey }) {
+      const [workspaceNodeLocation, workspaceNodeId] = nodeKey?.split('-') || [
+        null,
+        null,
+      ]
+      const { data } = await titasApi.getTitasMaterial({
+        orgId: rootGetters['organization/orgId'],
+        workspaceNodeId,
+        workspaceNodeLocation,
+      })
       const { breadcrumbList, material, publish } = data.result
       commit('SET_material', material)
       commit('SET_materialBreadcrumbList', breadcrumbList)
       commit('SET_materialPublish', publish)
     },
-    async contactTitasOrg (_, params) {
+    async contactTitasOrg(_, params) {
       await titasApi.contactTitasOrg(params)
-    }
-  }
+    },
+  },
 }

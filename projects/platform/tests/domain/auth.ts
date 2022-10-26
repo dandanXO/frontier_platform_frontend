@@ -1,23 +1,23 @@
-import { Page } from "@playwright/test"
-import { urls, apiUrl } from "./routes"
-import { makeId } from "./utils"
+import { Page } from '@playwright/test'
+import { urls, apiUrl } from './routes'
+import { makeId } from './utils'
 
 export const initialUser = {
-  email: "tester@test.com",
-  password: "ab1234",
-  lastName: "e2e",
-  firstName: "test",
-  locale: "en-US",
+  email: 'tester@test.com',
+  password: 'ab1234',
+  lastName: 'e2e',
+  firstName: 'test',
+  locale: 'en-US',
   platform: 1,
 }
 
 export const signUpReq = () => {
   const id = makeId()
   return {
-    firstName: "test",
+    firstName: 'test',
     lastName: `e2e_${id}`,
     email: `e2e_${id}@test.com`,
-    password: 'ab1234'
+    password: 'ab1234',
   }
 }
 
@@ -39,11 +39,7 @@ export class LoginPage {
     this.page.request.post(`${apiUrl}/sign-up/general`, { data: user })
   }
 
-  async signInApi(user: {
-    email: string
-    password: string
-    platform: number
-  }) {
+  async signInApi(user: { email: string; password: string; platform: number }) {
     const res = await this.page.request.post(`${apiUrl}/sign-in/general`, {
       data: user,
     })
@@ -53,13 +49,13 @@ export class LoginPage {
 
   setInitToken(accessToken: string) {
     return this.page.addInitScript((accessToken: string) => {
-      window.localStorage.setItem("accessToken", accessToken)
+      window.localStorage.setItem('accessToken', accessToken)
     }, accessToken)
   }
 
   getToken() {
     return this.page.evaluate(() => {
-      return window.localStorage.getItem("accessToken")
+      return window.localStorage.getItem('accessToken')
     })
   }
 
@@ -75,9 +71,10 @@ export class LoginPage {
     this.page.locator('[data-cy="password"] input').fill(text)
   clickLoginBtn = () => this.page.locator('[data-cy="login"]').click()
   clickAgreeBtn = () => this.page.locator('[data-cy="agree"]').click()
-  clickGotoSignUpBtn = () => this.page.locator('[data-cy="sign-up-page"]').click()
+  clickGotoSignUpBtn = () =>
+    this.page.locator('[data-cy="sign-up-page"]').click()
   clickSignUpBtn = () => this.page.locator('[data-cy="sign-up"]').click()
   clickNextBtn = () => this.page.locator('[data-cy="next"]').click()
   confirmModel = () => this.page.locator('[data-cy="modal-confirm"]')
-  warningText = () => this.page.locator(".text-red-400")
+  warningText = () => this.page.locator('.text-red-400')
 }

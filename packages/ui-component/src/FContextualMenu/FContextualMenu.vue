@@ -1,6 +1,10 @@
 <template lang="pug">
 f-list(class="min-w-57.5")
-  f-list-item(v-if="menuTree.title" class="text-body2 !text-grey-900 font-bold" disabled) {{ menuTree.title }}
+  f-list-item(
+    v-if="menuTree.title"
+    class="text-body2 !text-grey-900 font-bold"
+    disabled
+  ) {{ menuTree.title }}
   template(v-for="(block, index) in menuTree.blockList")
     f-list-item(v-if="block.blockTitle" class="text-grey-200" disabled) {{ block.blockTitle }}
     contextual-menu-node(
@@ -15,7 +19,7 @@ f-list(class="min-w-57.5")
 
 <script>
 export default {
-  name: 'FContextualMenu'
+  name: 'FContextualMenu',
 }
 </script>
 
@@ -25,11 +29,11 @@ const emit = defineEmits(['update:inputSelectValue', 'click:menu'])
 const props = defineProps({
   /**
    * v-model:inputSelectValue
-   * 
+   *
    * If `selectMode` is 3 (Multiple Select) then inputSelectValue must be an Array
    */
   inputSelectValue: {
-    validator: () => true
+    validator: () => true,
   },
   /**
    * * 0 - 不可選
@@ -39,7 +43,7 @@ const props = defineProps({
    */
   selectMode: {
     type: Number,
-    default: 0
+    default: 0,
   },
   /**
    * ```
@@ -69,14 +73,16 @@ const props = defineProps({
   menuTree: {
     type: Object,
     required: true,
-    default: () => ({})
-  }
+    default: () => ({}),
+  },
 })
 
 const clickMenuHandler = (menu) => {
   if (props.selectMode === 3) {
     const tempArr = [...props.inputSelectValue]
-    const index = tempArr.findIndex(selectValue => selectValue === menu.selectValue)
+    const index = tempArr.findIndex(
+      (selectValue) => selectValue === menu.selectValue
+    )
 
     if (!~index) {
       tempArr.push(menu.selectValue)
@@ -87,7 +93,6 @@ const clickMenuHandler = (menu) => {
   } else if ([1, 2].includes(props.selectMode)) {
     if (props.selectMode === 1 && props.inputSelectValue === menu.selectValue) {
       emit('update:inputSelectValue', null)
-
     } else {
       emit('update:inputSelectValue', menu.selectValue)
     }

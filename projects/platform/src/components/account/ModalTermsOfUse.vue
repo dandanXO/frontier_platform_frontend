@@ -24,13 +24,13 @@ const sectionList = [
           If you have any questions, please contact our Customer Service staff directly at any time. <br/>
           <br/>
           If you apply for registration as a member on behalf of your employer or other party and continue to use the services provided by Frontier, you declare and warrant that (i) you are fully authorized by law to bind your employer or applicable party to these Terms; (ii) you have read and understood the “User Terms of Use” and “Privacy Terms”; and (iii) you agree to the terms and conditions of this ‘Agreement” on behalf of the party you represent. If you do not have the legal rights to bind your employer or related entity, do not click on the [I Accept] button below. This "Agreement" governs the "User's" access to and use of the "Service"; the "Service" is governed by the relevant subscription plan.
-        `
+        `,
   },
   {
     title: 'Update of this Clause',
     content: `
           Frontier Service Group reserves the right to modify or adjust any of the terms of these Terms at any time to the extent permitted by law. If Frontier Service Group modifies or adjusts these Terms, Frontier will announce it by posting a notice. Any modifications or adjustments will be effective upon such announcement. If the User continues to use the services provided by Frontier after the revision notice, then you are giving your valid and irrevocable consent to these Terms as changed. Therefore, you must review these Terms of Use regularly to ensure that you are aware of all changes to these Terms of Use. If you do not agree with any changes to these Terms of Use, you should leave the Frontier Site and cease using the Frontier Services immediately, and you should notify Frontier to delete your profile and cancel your membership. Frontier Service Group also reserves the right to delete a member's profile and cancel membership in the event of a specific breach.
-        `
+        `,
   },
   {
     title: 'Member’s Account and Password Security',
@@ -42,13 +42,13 @@ const sectionList = [
           You are under an obligation to keep your account, password, and other relevant identification information, and to be responsible for all activities, actions, including, but not limited to, the associated costs incurred after logging into the system for this account. <br/>
           <br/>
           You agree to comply with all applicable laws in your use of Frontier and to use the Service only for lawful purposes. Any use of the Service or access to the System other than with Frontier's consent or direction is strictly prohibited, and Frontier reserves the right to discontinue providing the Service to such User, to freeze or withdraw the registration account, and to require you to indemnify Frontier for any losses incurred by Frontier.
-        `
+        `,
   },
   {
     title: 'Privacy Policy',
     content: `
           Personal information provided by the User and certain other information retained by Frontier Service Group in connection with the User will be governed by the laws of the Republic of China and Frontier's Privacy Policy.
-        `
+        `,
   },
   {
     title: 'Usage Specification and Accountability',
@@ -74,7 +74,7 @@ const sectionList = [
           Shall you be involved in one or more of the above behaviors during the use of Frontier Services, you shall be held liable for your actions. Liability may take the form of, but is not limited to, indemnification of the person who has been harmed and the payment of an equal amount of compensation to Frontier immediately after Frontier Service Group and its management, directors, employees, agents and contractors have first incurred administrative penalties or liability for tort damages (including court costs, attorneys' fees and other related legal proceedings) as a result of your actions. <br/>
           <br/>
           In addition, based on the specific circumstances of the violation, Frontier reserves the right to make an independent judgment and unconditionally take down or remove the illegal or non-compliant content, investigate and collect evidence depending on the current situation, and keep relevant records (or report to the relevant authorities), or immediately suspend or terminate part or all of the services provided to you, including measures such as locking, canceling or deleting accounts.
-        `
+        `,
   },
   {
     title: 'Third-Party Payment Financial Services',
@@ -82,7 +82,7 @@ const sectionList = [
           Frontier's service fees are collected through third-party payment flows, providing members with a variety of collection mechanisms to choose from. Each collection mechanism is independently operated by the third-party payment processors (including but not limited to Green World Fintech, Neweb Technologies and LINE Pay) and is not operated or controlled by the platform. Members should understand the service terms and conditions of the third-party payment processor when choosing its services, and operate following the specifications and procedures of the third-party payment processor, and bear the related handling fees. <br/>
           <br/>
           The services between the members and the third-party payment processor are contractual relationships between the members and the third-party service merchant and have nothing to do with the Platform. Unless there is intentional fault on the part of the Platform, any dispute, doubt or loss (e.g. system irregularity, fraudulent use, improper human operation, etc.) shall be resolved by coordination between the members and the third-party payment processor, and the Platform shall not be responsible for guarantee, coordination, recovery, assistance in litigation, performance, refund or compensation.
-        `
+        `,
   },
   {
     title: 'Uniform Invoice Issuance',
@@ -90,13 +90,13 @@ const sectionList = [
           Frontier will issue and provide invoices to Users after they subscribe to the service (not limited to the purchase of cloud storage space and membership access). <br/>
           <br/>
           In the event users subscribe to the service outside of Taiwan, Frontier are exempt from the issuance of uniform invoices under the tax laws of the Republic of China.
-        `
+        `,
   },
   {
     title: 'Third-Party Links',
     content: `
           Frontier may contain links to third-party websites other than Frontier. Since Frontier has no control over these websites and resources, Users are responsible for understanding the terms of use and privacy policies of each such third-party website before using such site.
-        `
+        `,
   },
   {
     title: 'Intellectual Property Rights',
@@ -120,13 +120,13 @@ const sectionList = [
           You confirm and agree to authorize the Frontier Service Group to independently, and autonomously, claim infringement of, and obtain full compensation for any infringement of the contents (including derivative works) that you upload, submit, store or post either on your behalf or on behalf of a professional third party. The form of the claim includes, but is not limited to, monitoring of infringements, sending of warning letters, filing of lawsuits or arbitration, mediation, settlement, and so forth. The Frontier Service Group reserves the right to make independent decisions on and implement the aforementioned measures. <br/>
           <br/>
           You agree that you will be fully liable for intellectual property rights infringement arising out of any content you uploaded and posted through Frontier and that you will indemnify Frontier Service Group in equal amounts for any damages arising from third-party claims of infringement of intellectual property rights.
-        `
+        `,
   },
   {
     title: 'Service Changes or Termination of Service',
     content: `
           The Frontier Service Group may delete a member's account and content after termination of the service, with or without notice, and may prevent such User from linking to or using Frontier in the future.
-        `
+        `,
   },
   {
     title: 'No Guarantee Disclaimer',
@@ -144,21 +144,25 @@ const sectionList = [
           3. The content, statements, opinions and comments posted by Users on the Platform may cause disputes between Users and each other or between Users and third parties. <br/>
           <br/>
           4. The account and password are used illegally by others due to inaccurate or non-updated User account information, or due to hackers, viruses, Trojan horses or members' negligence.
-        `
+        `,
   },
   {
     title: 'General Terms',
     content: `
           These Terms and the relationship between the User and Frontier shall be governed by the laws of the Republic of China. In the event of a dispute between you and Frontier concerning the Service, these Terms and Conditions, or any other matters, the court of first instance shall be the Taiwan Taipei District Court. If any part of these Terms is invalid due to conflict with the laws of the Republic of China, the other provisions of these Terms shall remain in full force and effect. The title of these Terms is for convenience only and shall have no legal or contractual effect.
-        `
+        `,
   },
   {
     title: 'Report',
-    content: `If you find any violation of these Terms, please notify Frontier by emailing ${t('RR0139')}`
+    content: `If you find any violation of these Terms, please notify Frontier by emailing ${t(
+      'RR0139'
+    )}`,
   },
   {
     title: 'Contact Us',
-    content: `If you have any questions about these Terms of Service or our information handling practices, please contact us by email at ${t('RR0139')}`
-  }
+    content: `If you have any questions about these Terms of Service or our information handling practices, please contact us by email at ${t(
+      'RR0139'
+    )}`,
+  },
 ]
 </script>

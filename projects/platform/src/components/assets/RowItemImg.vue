@@ -3,11 +3,22 @@ div(class="w-full min-w-42.5 max-w-67.5")
   div(class="pb-2.5 flex justify-between")
     div(class="font-bold text-grey-900 line-clamp-1") {{ material.materialNo }}
     f-svg-icon(:iconName="statusIconName" size="24" class="text-grey-900")
-  div(class="w-full relative aspect-square" @mouseenter="isHover = true" @mouseleave="isHover = false")
+  div(
+    class="w-full relative aspect-square"
+    @mouseenter="isHover = true"
+    @mouseleave="isHover = false"
+  )
     div(class="w-full h-full rounded-md overflow-hidden bg-cover")
       img(v-defaultImg :src="material.coverImg" class="w-full h-full")
-    div(v-if="isHover" class="absolute z-9 inset-0 w-full h-full rounded bg-grey-900/70" @click.stop="goToAssetMaterialDetail(material)")
-    div(v-if="isHover || haveSelectedMoreThanOne" class="absolute z-10 inset-0 w-full h-12")
+    div(
+      v-if="isHover"
+      class="absolute z-9 inset-0 w-full h-full rounded bg-grey-900/70"
+      @click.stop="goToAssetMaterialDetail(material)"
+    )
+    div(
+      v-if="isHover || haveSelectedMoreThanOne"
+      class="absolute z-10 inset-0 w-full h-12"
+    )
       div(class="bg-linear w-full h-full rounded-t-md")
       f-input-checkbox(
         v-model:inputValue="innerSelectedList"
@@ -28,32 +39,34 @@ export default {
   name: 'RowItemImg',
   props: {
     material: {
-      type: Object
+      type: Object,
     },
     selectedList: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const { goToAssetMaterialDetail } = useNavigation()
     const isHover = ref(false)
     const { statusIconName } = useMaterial(props.material)
 
     const innerSelectedList = computed({
       get: () => props.selectedList,
-      set: (v) => emit('update:selectedList', v)
+      set: (v) => emit('update:selectedList', v),
     })
 
-    const haveSelectedMoreThanOne = computed(() => props.selectedList.length > 0)
+    const haveSelectedMoreThanOne = computed(
+      () => props.selectedList.length > 0
+    )
 
     return {
       innerSelectedList,
       statusIconName,
       isHover,
       haveSelectedMoreThanOne,
-      goToAssetMaterialDetail
+      goToAssetMaterialDetail,
     }
-  }
+  },
 }
 </script>

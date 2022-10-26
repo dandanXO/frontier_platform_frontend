@@ -15,7 +15,7 @@ filter-wrapper(
             :value="YARN_TYPE.WOVEN"
             iconSize="20"
           )
-          f-button-label(size="sm" @click="clearYarnWoven") {{ $t("UU0040") }}
+          f-button-label(size="sm" @click="clearYarnWoven") {{ $t('UU0040') }}
         f-input-container(:label="$t('RR0023')")
           div(class="flex items-center gap-x-3")
             f-input-text(
@@ -50,7 +50,7 @@ filter-wrapper(
             :value="YARN_TYPE.KNIT"
             iconSize="20"
           )
-          f-button-label(size="sm" @click="clearYarnKnit") {{ $t("UU0040") }}
+          f-button-label(size="sm" @click="clearYarnKnit") {{ $t('UU0040') }}
         f-input-text(
           v-model:textValue="formYarnAndDensity.knitYarnCount"
           :label="$t('RR0023')"
@@ -58,7 +58,7 @@ filter-wrapper(
           class="w-50"
         )
     div(class="flex justify-end px-5 mt-2")
-      f-button(size="sm"  @click="updateYarnAndDensity") {{ $t("UU0001") }}
+      f-button(size="sm" @click="updateYarnAndDensity") {{ $t('UU0001') }}
 </template>
 
 <script>
@@ -69,30 +69,31 @@ import { useStore } from 'vuex'
 export default {
   name: 'FilterYarnDensity',
   components: {
-    FilterWrapper
+    FilterWrapper,
   },
-  setup () {
+  setup() {
     const YARN_TYPE = {
       WOVEN: 0,
-      KNIT: 1
+      KNIT: 1,
     }
     const store = useStore()
     const filter = computed(() => store.getters['helper/search/filter'])
-    const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
+    const filterDirty = computed(
+      () => store.getters['helper/search/filterDirty']
+    )
     const currentYarnType = ref(0)
     const formYarnAndDensity = reactive({
       wovenWarpYarnCount: null,
       wovenWeftYarnCount: null,
       knitYarnCount: null,
       warpDensity: null,
-      weftDensity: null
+      weftDensity: null,
     })
 
     const initFormYarnAndDensity = () => {
-      currentYarnType.value = filter.value.knitYarnCount === null
-        ? YARN_TYPE.WOVEN
-        : YARN_TYPE.KNIT
-      Object.keys(formYarnAndDensity).forEach(key => {
+      currentYarnType.value =
+        filter.value.knitYarnCount === null ? YARN_TYPE.WOVEN : YARN_TYPE.KNIT
+      Object.keys(formYarnAndDensity).forEach((key) => {
         formYarnAndDensity[key] = filter.value[key]
       })
     }
@@ -129,8 +130,8 @@ export default {
       initFormYarnAndDensity,
       updateYarnAndDensity,
       clearYarnWoven,
-      clearYarnKnit
+      clearYarnKnit,
     }
-  }
+  },
 }
 </script>

@@ -7,11 +7,21 @@ modal-behavior(
 )
   div(class="w-80 flex flex-col items-center")
     f-svg-icon(iconName="send_mail" size="68" class="mb-4")
-    i18n-t(keypath="AA0048" tag="div" class="text-body2 text-grey-900 text-center leading-1.6 mb-4" scope="global")
+    i18n-t(
+      keypath="AA0048"
+      tag="div"
+      class="text-body2 text-grey-900 text-center leading-1.6 mb-4"
+      scope="global"
+    )
       template(#email)
         br
         div(class="font-bold line-clamp-1") {{ email }}
-    f-input-text(v-model:textValue="verifyCode" class="w-80 mb-8" size="lg" :placeholder="$t('AA0076')")
+    f-input-text(
+      v-model:textValue="verifyCode"
+      class="w-80 mb-8"
+      size="lg"
+      :placeholder="$t('AA0076')"
+    )
     p(
       ref="refText"
       class="text-body2 leading-1.6 w-fit"
@@ -28,8 +38,8 @@ import { useI18n } from 'vue-i18n'
 const props = defineProps({
   email: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const { t } = useI18n()
@@ -61,14 +71,16 @@ const startCountDown = () => {
 }
 
 const verifyForgotPasswordCode = async () => {
-  const verifyToken = await store.dispatch('user/verifyForgotPasswordCode', { verifyCode: verifyCode.value })
+  const verifyToken = await store.dispatch('user/verifyForgotPasswordCode', {
+    verifyCode: verifyCode.value,
+  })
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-reset-password',
     properties: {
       mode: 0,
       email: props.email,
-      verifyToken
-    }
+      verifyToken,
+    },
   })
 }
 

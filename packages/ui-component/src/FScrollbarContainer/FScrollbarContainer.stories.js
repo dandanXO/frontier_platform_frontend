@@ -2,12 +2,12 @@ import FScrollbarContainer from './FScrollbarContainer.vue'
 
 export default {
   title: 'FScrollbarContainer',
-  component: FScrollbarContainer
+  component: FScrollbarContainer,
 }
 
 export const SpecificHeight = (args) => ({
   components: { FScrollbarContainer },
-  setup () {
+  setup() {
     return { args }
   },
   template: `
@@ -23,7 +23,7 @@ export const SpecificHeight = (args) => ({
 
 export const FlexGrow = (args) => ({
   components: { FScrollbarContainer },
-  setup () {
+  setup() {
     return { args }
   },
   template: `

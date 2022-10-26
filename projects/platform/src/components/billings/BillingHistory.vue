@@ -16,8 +16,8 @@ div(class="w-full mt-4")
     template(#filter)
       div(class="pt-4 pb-3 px-5")
         div(class="flex items-center mb-2")
-          p(class="text-grey-600 text-body2 mr-1.5") {{ $t("OO0117") }}
-          f-button-label(@click="clearDate") {{ $t("UU0040") }}
+          p(class="text-grey-600 text-body2 mr-1.5") {{ $t('OO0117') }}
+          f-button-label(@click="clearDate") {{ $t('UU0040') }}
         div(class="mr-4 flex items-center")
           f-input-text(
             v-model:textValue="queryParams.startDate"
@@ -37,8 +37,8 @@ div(class="w-full mt-4")
       div(class="border-t border-grey-100")
       div(class="pt-4 pb-6 px-5")
         div(class="flex items-center mb-2")
-          p(class="text-grey-600 text-body2 mr-1.5") {{ $t("OO0118") }}
-          f-button-label(@click="changeCategory(BILLING_CATEGORY.ALL)") {{ $t("UU0040") }}
+          p(class="text-grey-600 text-body2 mr-1.5") {{ $t('OO0118') }}
+          f-button-label(@click="changeCategory(BILLING_CATEGORY.ALL)") {{ $t('UU0040') }}
         div(class="flex")
           div(
             v-for="(category, index) in categoryOptions"
@@ -46,13 +46,25 @@ div(class="w-full mt-4")
             :class="{ 'text-primary-400': queryParams.category === category.value }"
             @click="changeCategory(category.value)"
           ) {{ category.label }}
-            div(v-if="index !== categoryOptions.length - 1" class="border-r border-grey-150 h-full mx-4")
+            div(
+              v-if="index !== categoryOptions.length - 1"
+              class="border-r border-grey-150 h-full mx-4"
+            )
     template(v-slot="{ item, prop, isHover }")
       invoice-pdf-generator(v-if="prop === 'download'")
         template(#activator="{ generatePdf }")
-          f-svg-icon(iconName="picture_as_pdf" class="text-cyan-400 cursor-pointer" @click="generatePdf(item.invoiceId)")
+          f-svg-icon(
+            iconName="picture_as_pdf"
+            class="text-cyan-400 cursor-pointer"
+            @click="generatePdf(item.invoiceId)"
+          )
       div(v-if="prop === 'view'")
-        f-svg-icon(v-show="isHover" iconName="visibility" class="cursor-pointer text-grey-600"  @click="openModalViewInvoice(item.invoiceId)")
+        f-svg-icon(
+          v-show="isHover"
+          iconName="visibility"
+          class="cursor-pointer text-grey-600"
+          @click="openModalViewInvoice(item.invoiceId)"
+        )
 </template>
 
 <script>
@@ -65,7 +77,7 @@ import InvoicePdfGenerator from '@/components/billings/InvoicePdfGenerator.vue'
 export default {
   name: 'BillingHistory',
   components: { InvoicePdfGenerator },
-  async setup () {
+  async setup() {
     const { t } = useI18n()
     const store = useStore()
     const tableData = ref([])
@@ -73,52 +85,53 @@ export default {
       sort: BILLING_SORT.NEWEST_FIRST,
       currentPage: 1,
       totalPage: 1,
-      perPageCount: 8
+      perPageCount: 8,
     })
     const keyword = ref('')
     const queryParams = reactive({
       category: BILLING_CATEGORY.ALL,
       startDate: '',
-      endDate: ''
+      endDate: '',
     })
 
     const categoryOptions = [
       {
         label: t('OO0086'),
-        value: BILLING_CATEGORY.SUBSCRIPTION
-      }, {
+        value: BILLING_CATEGORY.SUBSCRIPTION,
+      },
+      {
         label: t('OO0087'),
-        value: BILLING_CATEGORY.U3M
-      }
+        value: BILLING_CATEGORY.U3M,
+      },
     ]
 
     const headers = [
       {
         prop: 'invoiceNumber',
-        label: t("OO0081"),
-        colSpan: 'col-span-3'
+        label: t('OO0081'),
+        colSpan: 'col-span-3',
       },
       {
         prop: 'date',
-        label: t("OO0082"),
+        label: t('OO0082'),
         colSpan: 'col-span-2',
-        sortBy: [BILLING_SORT.NEWEST_FIRST, BILLING_SORT.OLDEST_FIRST]
+        sortBy: [BILLING_SORT.NEWEST_FIRST, BILLING_SORT.OLDEST_FIRST],
       },
       {
         prop: 'title',
-        label: t("OO0083"),
-        colSpan: 'col-span-4'
+        label: t('OO0083'),
+        colSpan: 'col-span-4',
       },
       {
         prop: 'download',
-        label: t("OO0084"),
-        colSpan: 'col-span-1'
+        label: t('OO0084'),
+        colSpan: 'col-span-1',
       },
       {
         prop: 'view',
         label: t('OO0085'),
-        colSpan: 'col-span-2'
-      }
+        colSpan: 'col-span-2',
+      },
     ]
     const getList = async (targetPage = 1) => {
       const result = await store.dispatch('organization/getInvoiceList', {
@@ -127,8 +140,8 @@ export default {
         pagination: {
           perPageCount: pagination.value.perPageCount,
           sort: pagination.value.sort,
-          targetPage
-        }
+          targetPage,
+        },
       })
       tableData.value = result.invoiceList
       pagination.value = result.pagination
@@ -146,12 +159,15 @@ export default {
     }
 
     const openModalViewInvoice = async (invoiceId) => {
-      const { invoiceInfo } = await store.dispatch('organization/getInvoiceDetail', { invoiceId })
+      const { invoiceInfo } = await store.dispatch(
+        'organization/getInvoiceDetail',
+        { invoiceId }
+      )
       store.dispatch('helper/openModal', {
         component: 'modal-preview-invoice',
         properties: {
-          invoiceInfo
-        }
+          invoiceInfo,
+        },
       })
     }
 
@@ -168,8 +184,8 @@ export default {
       categoryOptions,
       queryParams,
       openModalViewInvoice,
-      changeCategory
+      changeCategory,
     }
-  }
+  },
 }
 </script>

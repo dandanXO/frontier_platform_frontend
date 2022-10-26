@@ -1,4 +1,10 @@
-import { SIDE_TYPE, INVENTORY_UNIT, MATERIAL_PRICING_CURRENCY, SOURCE_ASSET_LOCATION, useConstants } from '@/utils/constants'
+import {
+  SIDE_TYPE,
+  INVENTORY_UNIT,
+  MATERIAL_PRICING_CURRENCY,
+  SOURCE_ASSET_LOCATION,
+  useConstants,
+} from '@/utils/constants'
 
 const { WEIGHT_UNIT } = useConstants()
 
@@ -26,11 +32,13 @@ const Material = {
     weightGy: null,
     width: null,
     content: '',
-    contentList: [{
-      contentId: -1,
-      name: '',
-      percentage: null
-    }],
+    contentList: [
+      {
+        contentId: -1,
+        name: '',
+        percentage: null,
+      },
+    ],
     finish: '',
     finishList: [],
     warpDensity: '',
@@ -51,12 +59,14 @@ const Material = {
     totalInventoryQty: 0,
     isPublicInventory: false,
     inventoryUnit: INVENTORY_UNIT.Y,
-    inventoryList: [{
-      section: '',
-      shelf: '',
-      quantity: 0,
-      unit: INVENTORY_UNIT.Y
-    }],
+    inventoryList: [
+      {
+        section: '',
+        shelf: '',
+        quantity: 0,
+        unit: INVENTORY_UNIT.Y,
+      },
+    ],
     publicPrice: {
       countryCode: '',
       currency: MATERIAL_PRICING_CURRENCY.USD,
@@ -67,7 +77,7 @@ const Material = {
       minimumContainerQuantity: null,
       minimumContainerQuantityUnit: INVENTORY_UNIT.Y,
       productionLeadTime: '',
-      sampleLeadTime: ''
+      sampleLeadTime: '',
     },
     privatePrice: {
       countryCode: '',
@@ -79,7 +89,7 @@ const Material = {
       minimumContainerQuantity: null,
       minimumContainerQuantityUnit: INVENTORY_UNIT.Y,
       productionLeadTime: '',
-      sampleLeadTime: ''
+      sampleLeadTime: '',
     },
     faceSideImg: {
       crop: '',
@@ -87,7 +97,7 @@ const Material = {
       original: '',
       dpi: 300,
       u3mCrop: '',
-      u3mOriginal: ''
+      u3mOriginal: '',
     },
     backSideImg: {
       crop: '',
@@ -95,16 +105,36 @@ const Material = {
       original: '',
       dpi: 300,
       u3mCrop: '',
-      u3mOriginal: ''
+      u3mOriginal: '',
     },
     attachmentList: [],
     pantoneList: [],
     certificateList: [],
     carbonEmission: {
-      co2: { personalized: 6.27, benchmark: null, differenceInPercent: 1, saving: null },
-      water: { personalized: 12.55, benchmark: null, differenceInPercent: null, saving: null },
-      land: { personalized: 18.7, benchmark: null, differenceInPercent: null, saving: null },
-      energy: { personalized: 34.2, benchmark: null, differenceInPercent: null, saving: null }
+      co2: {
+        personalized: 6.27,
+        benchmark: null,
+        differenceInPercent: 1,
+        saving: null,
+      },
+      water: {
+        personalized: 12.55,
+        benchmark: null,
+        differenceInPercent: null,
+        saving: null,
+      },
+      land: {
+        personalized: 18.7,
+        benchmark: null,
+        differenceInPercent: null,
+        saving: null,
+      },
+      energy: {
+        personalized: 34.2,
+        benchmark: null,
+        differenceInPercent: null,
+        saving: null,
+      },
     },
     u3m: {
       status: 0,
@@ -112,15 +142,17 @@ const Material = {
       u3maUrl: '',
       baseImgUrl: '',
       normalImgUrl: '',
-      dpi: 300
+      dpi: 300,
     },
     createDate: '',
-    updateDate: ''
+    updateDate: '',
   }),
   getters: {
     material: (state) => state,
     attachmentList: (state) => {
-      const sortedAttachmentList = JSON.parse(JSON.stringify(state.attachmentList))
+      const sortedAttachmentList = JSON.parse(
+        JSON.stringify(state.attachmentList)
+      )
       const extensionOrder = {
         '.png': 7,
         '.jpg': 6,
@@ -129,49 +161,54 @@ const Material = {
         '.mov': 3,
         '.mp4': 3,
         '.pdf': 2,
-        '.zip': 1
+        '.zip': 1,
       }
-      sortedAttachmentList.sort((a, b) => extensionOrder[b.extension] - extensionOrder[a.extension])
+      sortedAttachmentList.sort(
+        (a, b) => extensionOrder[b.extension] - extensionOrder[a.extension]
+      )
       return sortedAttachmentList
-    }
+    },
   },
   mutations: {
-    SET_material (state, material) {
+    SET_material(state, material) {
       Object.assign(state, material)
       if (!state.weightUnit) {
         state.weightUnit = WEIGHT_UNIT.value.GSM.value
       }
-      state.weight = state.weightUnit === WEIGHT_UNIT.value.GSM.value ? state.weightGsm : state.weightOz
+      state.weight =
+        state.weightUnit === WEIGHT_UNIT.value.GSM.value
+          ? state.weightGsm
+          : state.weightOz
     },
-    RESET_material (state) {
+    RESET_material(state) {
       Object.assign(state, Material.state())
     },
-    UPDATE_material (state, material) {
+    UPDATE_material(state, material) {
       Object.assign(state, material)
     },
-    UPDATE_content_item (state, { index, content }) {
+    UPDATE_content_item(state, { index, content }) {
       Object.assign(state.contentList[index], content)
     },
-    ADD_content_item (state) {
+    ADD_content_item(state) {
       state.contentList.push(Material.state().contentList[0])
     },
-    REMOVE_content_item (state, index) {
+    REMOVE_content_item(state, index) {
       state.contentList.splice(index, 1)
     },
-    ADD_inventory_item (state) {
+    ADD_inventory_item(state) {
       state.inventoryList.push(Material.state().inventoryList[0])
     },
-    REMOVE_inventory_item (state, index) {
+    REMOVE_inventory_item(state, index) {
       state.inventoryList.splice(index, 1)
     },
-    UPDATE_inventoryList_unit (state, unit) {
-      state.inventoryList.forEach(inventory => (inventory.unit = unit))
+    UPDATE_inventoryList_unit(state, unit) {
+      state.inventoryList.forEach((inventory) => (inventory.unit = unit))
     },
-    UPDATE_attachmentList (state, attachmentList) {
+    UPDATE_attachmentList(state, attachmentList) {
       state.attachmentList = attachmentList
-    }
+    },
   },
-  actions: {}
+  actions: {},
 }
 
 export default Material

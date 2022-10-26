@@ -1,5 +1,9 @@
 <template lang="pug">
-filter-wrapper(iconName="paper" :displayName="$t('RR0098')" :dirty="filterDirty.complete")
+filter-wrapper(
+  iconName="paper"
+  :displayName="$t('RR0098')"
+  :dirty="filterDirty.complete"
+)
   f-contextual-menu(
     v-model:inputSelectValue="complete"
     :selectMode="1"
@@ -27,20 +31,20 @@ const menuTree = computed(() => {
   return {
     blockList: [
       {
-        menuList: Object.keys(copyFilterComplete).map(key => {
+        menuList: Object.keys(copyFilterComplete).map((key) => {
           const { text, value } = FILTER_COMPLETE.value[key]
           return {
             title: text,
-            selectValue: value
+            selectValue: value,
           }
-        })
-      }
-    ]
+        }),
+      },
+    ],
   }
 })
 
 const complete = computed({
   get: () => store.getters['helper/search/filter'].complete,
-  set: (v) => store.dispatch('helper/search/setFilter', { complete: v })
+  set: (v) => store.dispatch('helper/search/setFilter', { complete: v }),
 })
 </script>

@@ -7,7 +7,7 @@ export const ROLE_ID = {
   MANAGER: 3,
   MEMBER1: 4,
   MEMBER2: 5,
-  MEMBER3: 6
+  MEMBER3: 6,
 }
 
 export const COLOR = {
@@ -24,7 +24,7 @@ export const COLOR = {
   LIGHTPURPLE: '#D8B4FE',
   PINK: '#F472B6',
   BROWN: '#B48360',
-  GREY: '#939393'
+  GREY: '#939393',
 }
 
 export const MODAL_TYPE = {
@@ -32,37 +32,37 @@ export const MODAL_TYPE = {
   FULLSCREEN: 1,
   LOADING: 2,
   CONFIRM: 3,
-  BEHAVIOR: 4
+  BEHAVIOR: 4,
 }
 
 export const MODAL_CONFIRM_TYPE = {
   INFO: 0,
   WARNING: 1,
   SUCCESS: 2,
-  ALERT: 3
+  ALERT: 3,
 }
 
 export const SIDE_TYPE = {
   FACE: 1,
-  BACK: 2
+  BACK: 2,
 }
 
 export const INVENTORY_UNIT = {
   Y: 'Y',
   M: 'M',
-  KG: 'KG'
+  KG: 'KG',
 }
 
 export const MATERIAL_PRICING_CURRENCY = {
   USD: 'USD',
   RMB: 'RMB',
-  TWD: 'TWD'
+  TWD: 'TWD',
 }
 
 export const COVER_MODE = {
   FACE: 1,
   BACK: 2,
-  SUP: 3
+  SUP: 3,
 }
 
 export const U3M_STATUS = {
@@ -71,122 +71,109 @@ export const U3M_STATUS = {
   IN_QUEUE: 1,
   COMPLETED: 2,
   PROCESSING: 3,
-  UNSUCCESSFUL: 99
+  UNSUCCESSFUL: 99,
 }
 
 export const TARGET_LOCATION = {
   ORG: 1,
-  GROUP: 2
+  GROUP: 2,
 }
 
 export const NODE_LOCATION = {
   ORG: 1,
-  GROUP: 2
+  GROUP: 2,
 }
 
 export const SOURCE_ASSET_LOCATION = {
   ORG: 1,
-  GROUP: 2
+  GROUP: 2,
 }
 
 export const NODE_TYPE = {
   COLLECTION: 1,
-  MATERIAL: 2
+  MATERIAL: 2,
 }
 
 export const SEARCH_TYPE = {
   ASSETS: 1,
   WORKSPACE: 2,
   PUBLIC_LIBRARY: 3,
-  SHARE: 4
+  SHARE: 4,
 }
 
 export const DISPLAY_NODE = {
   LIST: 1,
-  GRID: 2
+  GRID: 2,
 }
 
 export const SHARING_FROM = {
   WORKSPACE: 1,
-  PUBLIC_LIBRARY: 2
+  PUBLIC_LIBRARY: 2,
 }
 
 export const RECEIVED_SHARE_ACTION_TYPE = {
   SAVE: 1,
   CLONE: 2,
-  DOWNLOAD: 3
+  DOWNLOAD: 3,
 }
 
 export const SHARE_TARGET_TYPE = {
   ORG: 1,
   GROUP: 2,
-  EMAIL: 3
+  EMAIL: 3,
 }
 
 export const PLAN_TYPE = {
   BASIC: 1,
   PRO: 2,
-  ENT: 3
+  ENT: 3,
 }
 
 export const PLAN_STATUS = {
   INACTIVE: 0,
   ACTIVE: 1,
-  TRANSITION: 2
+  TRANSITION: 2,
   /**
    * 停用申請停用後到正式停用的過度期，舉例來說：
    * 使用者於 3/4 14:00 pm 申請停用，但這時還是訂閱中，其功能還是都可以操作，
    * 等到 3/5 00:00 am 後系統才會正式的停止訂閱，限制其功能，
    * 那麼 3/4 14:00 ~ 3/5: 00:00 am 就是所謂的過渡期。
-   */,
-  BUFFER: 4
+   */ BUFFER: 4,
 }
 
 export const BILLING_CATEGORY = {
   ALL: 0,
   SUBSCRIPTION: 1,
-  U3M: 2
+  U3M: 2,
 }
 
 export const BILLING_SORT = {
   NEWEST_FIRST: 1,
-  OLDEST_FIRST: 2
+  OLDEST_FIRST: 2,
 }
-
 
 export const FUNC_ID = {
   OPEN_MANAGE_MATERIAL_QUOTA: 1,
   OPEN_PURCHASE_U3M: 2,
   VISIT_BILLING_PAGE: 3,
   OPEN_CREATE_GROUP: 4,
-  DELETE_ORG: 5
+  DELETE_ORG: 5,
 }
 
-const MEMBER3_PERMISSION_LIST = [
-  FUNC_ID.VISIT_BILLING_PAGE,
-]
-const MEMBER2_PERMISSION_LIST = [
-  FUNC_ID.VISIT_BILLING_PAGE,
-]
-const MEMBER1_PERMISSION_LIST = [
-  FUNC_ID.VISIT_BILLING_PAGE,
-]
-const MANAGER_PERMISSION_LIST = [
-  FUNC_ID.VISIT_BILLING_PAGE,
-]
+const MEMBER3_PERMISSION_LIST = [FUNC_ID.VISIT_BILLING_PAGE]
+const MEMBER2_PERMISSION_LIST = [FUNC_ID.VISIT_BILLING_PAGE]
+const MEMBER1_PERMISSION_LIST = [FUNC_ID.VISIT_BILLING_PAGE]
+const MANAGER_PERMISSION_LIST = [FUNC_ID.VISIT_BILLING_PAGE]
 
 const ADMIN_PERMISSION_LIST = [
   ...MANAGER_PERMISSION_LIST,
   FUNC_ID.OPEN_MANAGE_MATERIAL_QUOTA,
   FUNC_ID.OPEN_PURCHASE_U3M,
   FUNC_ID.VISIT_BILLING_PAGE,
-  FUNC_ID.OPEN_CREATE_GROUP
+  FUNC_ID.OPEN_CREATE_GROUP,
 ]
 
-const OWNER_PERMISSION_LIST = [
-  ...ADMIN_PERMISSION_LIST,
-  FUNC_ID.DELETE_ORG
-]
+const OWNER_PERMISSION_LIST = [...ADMIN_PERMISSION_LIST, FUNC_ID.DELETE_ORG]
 
 export const PERMISSION_MAP = {
   [ROLE_ID.OWNER]: OWNER_PERMISSION_LIST,
@@ -194,19 +181,19 @@ export const PERMISSION_MAP = {
   [ROLE_ID.MANAGER]: MANAGER_PERMISSION_LIST,
   [ROLE_ID.MEMBER1]: MEMBER1_PERMISSION_LIST,
   [ROLE_ID.MEMBER2]: MEMBER2_PERMISSION_LIST,
-  [ROLE_ID.MEMBER3]: MEMBER3_PERMISSION_LIST
+  [ROLE_ID.MEMBER3]: MEMBER3_PERMISSION_LIST,
 }
 
 export const SOCIAL_MEDIA_TYPE = {
   LINKEDIN: 1,
   FACEBOOK: 2,
-  TWITTER: 3
+  TWITTER: 3,
 }
 
 export const UPLOAD_ERROR_CODE = {
   INVALID_TYPE: 1,
   EXCEED_LIMIT: 2,
-  TOO_SMALL: 3
+  TOO_SMALL: 3,
 }
 
 export const UPLOAD_PROGRESS = {
@@ -215,7 +202,7 @@ export const UPLOAD_PROGRESS = {
   PROCESSING: 2,
   UNSUCCESSFUL: 3,
   COMPLETE: 4,
-  CANCELED: 5
+  CANCELED: 5,
 }
 
 /**
@@ -228,14 +215,13 @@ export const UPLOAD_PROGRESS_SORT_BY = {
   NEWEST_FIRST: 1,
   OLDEST_FIRST: 2,
   IN_QUEUE_FIRST: 3,
-  COMPLETE_FIRST: 4
+  COMPLETE_FIRST: 4,
 }
-
 
 export const EXCEL_CATEGORY = {
   ALL: 0,
   UPLOAD: 1,
-  EXPORT: 2
+  EXPORT: 2,
 }
 
 export const UPLOAD_PROGRESS_EXCEL_SORT_BY = {
@@ -244,43 +230,41 @@ export const UPLOAD_PROGRESS_EXCEL_SORT_BY = {
   IN_QUEUE_FIRST: 3,
   COMPLETE_FIRST: 4,
   UPLOAD_FIRST: 5,
-  EXPORT_FIRST: 6
+  EXPORT_FIRST: 6,
 }
 
 export const MOODBOARD_TYPE = {
   DEMANDER: 1,
-  PROVIDER: 2
+  PROVIDER: 2,
 }
-
 
 export const MOODBOARD_TAB = {
   OFFER: 'offer',
   PICKED: 'picked',
-  COMMENT: 'comment'
+  COMMENT: 'comment',
 }
 
 export const CREATE_EDIT = {
   CREATE: 1,
-  EDIT: 2
+  EDIT: 2,
 }
 
 export const MADE2FLOW_PLAN_TYPE = {
   STANDARD: 1,
   PERSONALIZED: 2,
-  PERSONALIZED_PRO: 3
+  PERSONALIZED_PRO: 3,
 }
 
 export const VALUE_ADDED_SERVICE_STATUS = {
   ACTIVATE: 1,
   EXPIRED: 2,
   CANCELED: 3,
-  INVALID: 4
+  INVALID: 4,
 }
 
 export const VALUE_ADDED_SERVICE_ID = {
-  MADE2FLOW: 'made2flow'
+  MADE2FLOW: 'made2flow',
 }
-
 
 export const useConstants = () => {
   const MADE2FLOW_TAG_LIST = computed(() => ({
@@ -288,30 +272,30 @@ export const useConstants = () => {
     METHODOLOGY: { id: 2, text: i18n.global.t('RR0234') },
     FAQ: { id: 3, text: i18n.global.t('VV0024') },
     PLAN_AND_PRICE: { id: 4, text: i18n.global.t('VV0025') },
-    APPOINTMENT: { id: 5, text: i18n.global.t('VV0026') }
+    APPOINTMENT: { id: 5, text: i18n.global.t('VV0026') },
   }))
 
   const FEEDBACK_CATEGORY = computed(() => ({
     BUG: {
       text: i18n.global.t('MM0010'),
-      value: 1
+      value: 1,
     },
     SUGGESTION: {
       text: i18n.global.t('MM0011'),
-      value: 2
+      value: 2,
     },
     PAYMENT: {
       text: i18n.global.t('OO0065'),
-      value: 4
+      value: 4,
     },
     CARBON_EMISSION: {
       text: i18n.global.t('MM0037'),
-      value: 5
+      value: 5,
     },
     OTHER: {
       text: i18n.global.t('MM0012'),
-      value: 3
-    }
+      value: 3,
+    },
   }))
 
   /**
@@ -331,107 +315,106 @@ export const useConstants = () => {
   const SORT_BY = computed(() => ({
     RELEVANCE: {
       text: i18n.global.t('RR0070'),
-      value: 1
+      value: 1,
     },
     RELEVANCE_C_M: {
       text: i18n.global.t('RR0114'),
-      value: 2
+      value: 2,
     },
     RELEVANCE_M_C: {
       text: i18n.global.t('RR0115'),
-      value: 3
+      value: 3,
     },
     MATERIAL_NO_A_Z: {
       text: i18n.global.t('RR0067'),
-      value: 4
+      value: 4,
     },
     MATERIAL_NO_A_Z_C_M: {
       text: i18n.global.t('RR0110'),
-      value: 5
+      value: 5,
     },
     MATERIAL_NO_A_Z_M_C: {
       text: i18n.global.t('RR0111'),
-      value: 6
+      value: 6,
     },
     CREATE_DATE: {
       text: i18n.global.t('RR0065'),
-      value: 7
+      value: 7,
     },
     CREATE_DATE_C_M: {
       text: i18n.global.t('RR0112'),
-      value: 8
+      value: 8,
     },
     CREATE_DATE_M_C: {
       text: i18n.global.t('RR0113'),
-      value: 9
+      value: 9,
     },
     NEW_ARRIVED: {
       text: i18n.global.t('RR0129'),
-      value: 10
+      value: 10,
     },
     LAST_UPDATE: {
       text: i18n.global.t('RR0066'),
-      value: 11
+      value: 11,
     },
     RANDOM: {
       text: i18n.global.t('RR0128'),
-      value: 12
+      value: 12,
     },
     GHG_RESULTS: {
       text: i18n.global.t('RR0251'),
-      value: 13
+      value: 13,
     },
     WATER_DEPLETION_RESULTS: {
       text: i18n.global.t('RR0252'),
-      value: 14
+      value: 14,
     },
     LAND_USE_RESULTS: {
       text: i18n.global.t('RR0253'),
-      value: 15
-    }
+      value: 15,
+    },
   }))
 
   const FILTER_COMPLETE = computed(() => ({
     NOT_IN_WORKSPACE: {
       text: i18n.global.t('RR0099'),
-      value: 1
+      value: 1,
     },
     WITH_U3M: {
       text: i18n.global.t('RR0100'),
-      value: 2
+      value: 2,
     },
     WITHOUT_U3M: {
       text: i18n.global.t('RR0101'),
-      value: 3
+      value: 3,
     },
     NO_SCAN_IMG: {
       text: i18n.global.t('RR0102'),
-      value: 4
+      value: 4,
     },
     NO_IMG: {
       text: i18n.global.t('RR0103'),
-      value: 5
+      value: 5,
     },
     WITH_REQUIRED_FIELDS: {
       text: i18n.global.t('RR0104'),
-      value: 6
+      value: 6,
     },
     UNFILLED_CERTIFICATION: {
       text: i18n.global.t('RR0250'),
-      value: 7
-    }
+      value: 7,
+    },
   }))
-
 
   const WEIGHT_UNIT = computed(() => ({
     GSM: {
       text: i18n.global.t('RR0016'),
-      value: 1
+      value: 1,
     },
     OZ: {
       text: i18n.global.t('RR0017'),
-      value: 2
-    }
+      value: 2,
+    },
   }))
 
   return {
@@ -439,6 +422,6 @@ export const useConstants = () => {
     FEEDBACK_CATEGORY,
     SORT_BY,
     FILTER_COMPLETE,
-    WEIGHT_UNIT
+    WEIGHT_UNIT,
   }
 }

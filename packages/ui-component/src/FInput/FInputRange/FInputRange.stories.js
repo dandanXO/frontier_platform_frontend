@@ -6,22 +6,22 @@ export default {
   component: FInputRange,
   args: {
     step: 1,
-    orientation: 'horizontal'
+    orientation: 'horizontal',
   },
   argTypes: {
     range: {
-      control: { type: null }
+      control: { type: null },
     },
     orientation: {
       control: { type: 'radio' },
       options: ['horizontal', 'vertical'],
-    }
-  }
+    },
+  },
 }
 
 export const OneWay = (args) => ({
   components: { FInputRange },
-  setup () {
+  setup() {
     const range = ref(0)
     return { args, range }
   },
@@ -37,7 +37,7 @@ export const OneWay = (args) => ({
 
 export const TwoWay = (args) => ({
   components: { FInputRange },
-  setup () {
+  setup() {
     const range = ref([0, 100])
     return { args, range }
   },
@@ -53,24 +53,24 @@ export const TwoWay = (args) => ({
 
 export const Tooltips = TwoWay.bind({})
 Tooltips.args = {
-  tooltips: true
+  tooltips: true,
 }
 
 export const OneSideTooltips = TwoWay.bind({})
 OneSideTooltips.args = {
-  tooltips: [false, true]
+  tooltips: [false, true],
 }
-
 
 export const Formatter = TwoWay.bind({})
 Formatter.args = {
   tooltips: [
     {
       from: (v) => v,
-      to: (v) => Number.parseFloat(v).toFixed(0)
-    }, {
+      to: (v) => Number.parseFloat(v).toFixed(0),
+    },
+    {
       from: (v) => v,
-      to: (v) => Number.parseFloat(v).toFixed(0)
-    }
-  ]
+      to: (v) => Number.parseFloat(v).toFixed(0),
+    },
+  ],
 }

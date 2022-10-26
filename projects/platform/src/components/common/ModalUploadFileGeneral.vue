@@ -8,11 +8,16 @@ modal-behavior(
   @click:secondary="closeModal"
 )
   template(#note)
-    file-upload-error-note(v-if="errorCode" :errorCode="errorCode" :fileSizeMaxLimit="fileSizeMaxLimit" data-cy="modal-mass-upload_error")
+    file-upload-error-note(
+      v-if="errorCode"
+      :errorCode="errorCode"
+      :fileSizeMaxLimit="fileSizeMaxLimit"
+      data-cy="modal-mass-upload_error"
+    )
   div(class="w-94")
     p(class="text-caption text-grey-600 text-right mb-1.5") 
       span(class="text-red-400") *
-      span {{ $t("RR0163") }}
+      span {{ $t('RR0163') }}
     div(class="mb-7.5")
       f-input-text-button(
         class="w-full"
@@ -24,8 +29,8 @@ modal-behavior(
         disabledInput
         required
       )
-      p(class="text-grey-900 text-caption leading-1.6") {{ $t("RR0243") }} {{ acceptType.join(', ').toUpperCase() }}
-      p(class="text-grey-900 text-caption leading-1.6") {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
+      p(class="text-grey-900 text-caption leading-1.6") {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
+      p(class="text-grey-900 text-caption leading-1.6") {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
     f-input-text(
       v-model:textValue="fileName"
       :label="$t('EE0091')"
@@ -41,11 +46,11 @@ import { FileOperator } from '@/utils/fileOperator'
 
 const props = defineProps({
   uploadHandler: {
-    type: Function
+    type: Function,
   },
   acceptType: {
-    type: Array
-  }
+    type: Array,
+  },
 })
 
 const store = useStore()

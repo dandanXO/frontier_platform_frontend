@@ -1,7 +1,7 @@
 import FTag from './FTag.vue'
 
 const baseArgs = {
-  size: 'lg'
+  size: 'lg',
 }
 
 export default {
@@ -12,13 +12,13 @@ export default {
     size: {
       control: { type: 'select' },
       options: ['lg', 'sm'],
-    }
-  }
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FTag },
-  setup () {
+  setup() {
     return { args }
   },
   template: '<f-tag v-bind="args"> Tag </f-tag>',
@@ -34,4 +34,3 @@ Small.args = {
   ...baseArgs,
   size: 'sm',
 }
-

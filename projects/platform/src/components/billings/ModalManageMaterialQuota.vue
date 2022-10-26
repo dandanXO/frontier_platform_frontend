@@ -18,33 +18,52 @@ modal-behavior(
         ) {{ tab.name }}
       div(class="h-82 pt-7.5 px-7 pb-5 flex flex-col justify-between")
         div(class="grid grid-cols-2 gap-x-8")
-          div(class="border border-grey-200 rounded flex flex-col items-center pt-7.5 px-7 pb-5")
-            f-circle-progress-bar(:size="80" :current="plan.quota.material.used" :max="plan.quota.material.max")
+          div(
+            class="border border-grey-200 rounded flex flex-col items-center pt-7.5 px-7 pb-5"
+          )
+            f-circle-progress-bar(
+              :size="80"
+              :current="plan.quota.material.used"
+              :max="plan.quota.material.max"
+            )
               div(class="text-caption font-normal text-grey-900 text-center")
                 p {{ ((plan.quota.material.used / plan.quota.material.max) * 100).toFixed(0) }}%
                 p {{ $t('OO0005') }}
             p(class="text-body2 text-grey-900 pt-5 pb-1.5") {{ $t('OO0002') }}:
             p(class="text-body2 text-grey-900 pb-3") {{ plan.quota.material.used }}/{{ plan.quota.material.max }} {{ $t('OO0006') }}
-            label(class="bg-primary-400 opacity-70 w-full h-5.5 flex items-center justify-center rounded text-body2 text-grey-0") {{ planName }}
+            label(
+              class="bg-primary-400 opacity-70 w-full h-5.5 flex items-center justify-center rounded text-body2 text-grey-0"
+            ) {{ planName }}
           div(class="flex flex-col")
             p(class="text-body2 text-grey-900 pt-2.5 pb-5") {{ currentTab === TAB.ADD ? $t('OO0047') : $t('OO0061') }}:
             div(class="flex")
               div(
-                class="w-30 h-12 border  rounded flex items-center justify-center text-body1 text-grey-900"
+                class="w-30 h-12 border rounded flex items-center justify-center text-body1 text-grey-900"
                 :class="[isHitUpgradeAlert || !!cancelErrorMsg ? 'border-red-400' : 'border-grey-200']"
               ) {{ currentTab === TAB.ADD ? previewAmount : `-${previewAmount}` }}
               div(class="cursor-pointer")
                 f-svg-icon(iconName="keyboard_arrow_up" size="24" @click="add")
-                f-svg-icon(iconName="keyboard_arrow_down" size="24" :class="{ 'text-grey-150': setQty === 0 }" @click="reduce")
+                f-svg-icon(
+                  iconName="keyboard_arrow_down"
+                  size="24"
+                  :class="{ 'text-grey-150': setQty === 0 }"
+                  @click="reduce"
+                )
             p(class="text-body2 text-grey-900 pt-0.5")
               template(v-if="currentTab === TAB.ADD") {{ `${pricing.materialUnit}${$t('OO0035')} / ${$t('RR0044')} $${pricing.materialPrice}` }}
               template(v-else) {{ `${pricing.materialUnit}${$t('OO0035')} / ${$t('OO0104')}` }}
             template(v-if="currentTab === TAB.ADD && isHitUpgradeAlert")
               p(class="text-caption text-red-400 leading-1.6 pt-1") *{{ $t('WW0081') }}
-              p(class="text-caption text-cyan-400 leading-1.6 underline cursor-pointer" @click="openModalChoosePlan") {{ $t('OO0115') }}
+              p(
+                class="text-caption text-cyan-400 leading-1.6 underline cursor-pointer"
+                @click="openModalChoosePlan"
+              ) {{ $t('OO0115') }}
             template(v-if="currentTab === TAB.REMOVE")
               div(class="flex-grow")
-                p(v-if="!!cancelErrorMsg" class="text-caption text-red-400 leading-1.6 pt-1") {{ cancelErrorMsg }}
+                p(
+                  v-if="!!cancelErrorMsg"
+                  class="text-caption text-red-400 leading-1.6 pt-1"
+                ) {{ cancelErrorMsg }}
               div(class="flex items-start text-grey-600")
                 f-svg-icon(iconName="error_outline" size="14" class="mt-1")
                 p(class="text-caption leading-1.6 pl-0.5") {{ $t('OO0062') }}
@@ -91,7 +110,7 @@ const isHitUpgradeAlert = computed(
   () =>
     planType.value.BASIC &&
     previewAmount.value + plan.value.quota.material.max >
-    pricing.value.materialUpgradeAlert
+      pricing.value.materialUpgradeAlert
 )
 const cancelErrorMsg = computed(() => {
   if (currentTab.value === TAB.ADD) {
@@ -134,7 +153,10 @@ const closeModalBehavior = () => store.dispatch('helper/closeModalBehavior')
 
 const primaryHandler = async () => {
   if (currentTab.value === TAB.ADD) {
-    const { estimateCharging, periodDate } = await store.dispatch('organization/getChargingOfPurchaseMaterial', { setQty: setQty.value })
+    const { estimateCharging, periodDate } = await store.dispatch(
+      'organization/getChargingOfPurchaseMaterial',
+      { setQty: setQty.value }
+    )
     store.dispatch('helper/openModalBehavior', {
       component: 'modal-checkout-list',
       properties: {
@@ -144,12 +166,14 @@ const primaryHandler = async () => {
           {
             title: `${previewAmount.value}${t('OO0035')}`,
             price: `$${estimateCharging}`,
-            periodDate
-          }
+            periodDate,
+          },
         ],
         payHandler: async () => {
           store.dispatch('helper/pushModalLoading')
-          await store.dispatch('organization/purchaseMaterial', { setQty: setQty.value })
+          await store.dispatch('organization/purchaseMaterial', {
+            setQty: setQty.value,
+          })
           store.dispatch('helper/closeModalLoading')
 
           store.dispatch('helper/openModalConfirm', {
@@ -165,8 +189,8 @@ const primaryHandler = async () => {
               },
             }),
           })
-        }
-      }
+        },
+      },
     })
   } else {
     store.dispatch('helper/openModalConfirm', {
@@ -177,7 +201,9 @@ const primaryHandler = async () => {
       contentText: t('OO0169', { qty: previewAmount.value }),
       afterPrimaryBtnHandler: async () => {
         store.dispatch('helper/openModalLoading')
-        await store.dispatch('organization/cancelMaterial', { setQty: setQty.value })
+        await store.dispatch('organization/cancelMaterial', {
+          setQty: setQty.value,
+        })
         store.dispatch('helper/closeModalLoading')
 
         store.dispatch('helper/openModalConfirm', {
@@ -186,11 +212,18 @@ const primaryHandler = async () => {
           primaryBtnText: t('UU0031'),
           contentComponent: shallowRef({
             render: () => {
-              return h('p', { class: 'text-body2 leading-1.6', style: 'white-space: pre-line;' }, t('OO0063', { newline: '\n', date: plan.value.renewDate }))
+              return h(
+                'p',
+                {
+                  class: 'text-body2 leading-1.6',
+                  style: 'white-space: pre-line;',
+                },
+                t('OO0063', { newline: '\n', date: plan.value.renewDate })
+              )
             },
-          })
+          }),
         })
-      }
+      },
     })
   }
 }

@@ -7,16 +7,28 @@ modal-behavior(
   @click:secondary="closeModal"
 )
   div(class="w-fit")
-    p(class="text-body2 font-bold text-grey-900 pb-4.5") {{ $t("EE0048") }}
+    p(class="text-body2 font-bold text-grey-900 pb-4.5") {{ $t('EE0048') }}
     f-scrollbar-container(class="h-70 -mx-5 px-5")
       div(class="grid grid-cols-4 gap-x-5 gap-y-4.5")
-        div(class="w-25 h-25 rounded border border-dashed border-grey-200 flex justify-center items-center cursor-pointer" @click="openModalUploadCoverImage")
+        div(
+          class="w-25 h-25 rounded border border-dashed border-grey-200 flex justify-center items-center cursor-pointer"
+          @click="openModalUploadCoverImage"
+        )
           f-svg-icon(iconName="add" size="24" class="text-grey-900")
         template(v-for="(image, index) in imageList")
           label(v-if="!hideNotExistSide(index)" class="w-25 h-30.5")
-            div(class="h-25 rounded border border-grey-200 relative flex justify-center items-center")
-              img(v-if="!!image.imgSrc" :src="image.imgSrc" class="max-w-full max-h-full")
-              div(v-else class="rounded w-full h-full bg-grey-100 flex items-center justify-center text-body2 font-bold text-grey-200") {{ $t("RR0103") }}
+            div(
+              class="h-25 rounded border border-grey-200 relative flex justify-center items-center"
+            )
+              img(
+                v-if="!!image.imgSrc"
+                :src="image.imgSrc"
+                class="max-w-full max-h-full"
+              )
+              div(
+                v-else
+                class="rounded w-full h-full bg-grey-100 flex items-center justify-center text-body2 font-bold text-grey-200"
+              ) {{ $t('RR0103') }}
               f-input-radio(
                 v-model:inputValue="coverImageIndex"
                 :value="index"
@@ -39,7 +51,9 @@ const store = useStore()
 const material = computed(() => store.getters['assets/material'])
 const coverImageIndex = ref(0)
 const { coverMode, attachmentList } = toRefs(material.value)
-const { isFaceSideMaterial, isBackSideMaterial } = useMaterialImage(material.value)
+const { isFaceSideMaterial, isBackSideMaterial } = useMaterialImage(
+  material.value
+)
 
 const attachmentImageList = computed(() => {
   return attachmentList.value.filter((attachment) => {
@@ -54,22 +68,27 @@ if (coverMode.value === COVER_MODE.FACE) {
 } else if (coverMode.value === COVER_MODE.BACK) {
   coverImageIndex.value = 1
 } else if (coverMode.value === COVER_MODE.SUP) {
-  coverImageIndex.value = attachmentImageList.value.findIndex((attachment) => attachment.isCover) + 2
+  coverImageIndex.value =
+    attachmentImageList.value.findIndex((attachment) => attachment.isCover) + 2
 }
 
 const imageList = computed(() => {
   const { faceSideImg, backSideImg } = material.value
   const list = []
 
-  list.push({ name: t('RR0075'), imgSrc: faceSideImg.crop }, { name: t('RR0078'), imgSrc: backSideImg.crop })
+  list.push(
+    { name: t('RR0075'), imgSrc: faceSideImg.crop },
+    { name: t('RR0078'), imgSrc: backSideImg.crop }
+  )
 
   for (let i = 0; i < attachmentImageList.value.length; i++) {
-    const { materialAttachmentId, displayFileName, url } = attachmentImageList.value[i]
+    const { materialAttachmentId, displayFileName, url } =
+      attachmentImageList.value[i]
 
     list.push({
       materialAttachmentId,
       name: displayFileName,
-      imgSrc: url
+      imgSrc: url,
     })
   }
 
@@ -93,12 +112,12 @@ const choose = async () => {
           await store.dispatch('assets/changeCoverImg', {
             coverMode: COVER_MODE.SUP,
             materialAttachmentId,
-            attachmentCropImg: croppedImage
+            attachmentCropImg: croppedImage,
           })
           closeModal()
           store.dispatch('helper/reloadInnerApp')
-        }
-      }
+        },
+      },
     })
   } else {
     coverMode = coverImageIndex.value + 1
@@ -116,10 +135,10 @@ const openModalUploadCoverImage = () => {
       uploadHandler: async (file, displayFileName) => {
         await store.dispatch('assets/uploadAttachmentWhenUpdate', {
           file,
-          displayFileName
+          displayFileName,
         })
-      }
-    }
+      },
+    },
   })
 }
 

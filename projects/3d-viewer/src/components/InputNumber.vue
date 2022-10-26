@@ -17,19 +17,38 @@ div(class="relative")
     :disabled="disabled"
     @change="handleChange"
   )
-  div(class="absolute top-0 left-0.5 text-body2 p-2 h-full flex items-center pointer-events-none" :class="[disabled ? 'text-grey-200' : 'text-grey-900']")
+  div(
+    class="absolute top-0 left-0.5 text-body2 p-2 h-full flex items-center pointer-events-none"
+    :class="[disabled ? 'text-grey-200' : 'text-grey-900']"
+  )
     div(class="invisible") {{ innerValue }}
     div {{ unit }}
   div(class="absolute top-0 right-1 h-full flex items-center")
     div(class="grid grid-rows-2 h-7 gap-0.5")
-      div(class="w-4 h-3.5 bg-grey-150 flex justify-center items-center cursor-pointer" style="border-radius: 3px 3px 0 0" @click="plus")
-        f-svg-icon(iconName="keyboard_arrow_up" size="14" :class="[disabled ? 'text-grey-200' : 'text-grey-800']")
-      div(class="w-4 h-3.5 bg-grey-150 flex justify-center items-center cursor-pointer" style="border-radius: 0 0 3px 3px" @click="minus")
-        f-svg-icon(iconName="keyboard_arrow_down" size="14" :class="[disabled ? 'text-grey-200' : 'text-grey-800']")
+      div(
+        class="w-4 h-3.5 bg-grey-150 flex justify-center items-center cursor-pointer"
+        style="border-radius: 3px 3px 0 0"
+        @click="plus"
+      )
+        f-svg-icon(
+          iconName="keyboard_arrow_up"
+          size="14"
+          :class="[disabled ? 'text-grey-200' : 'text-grey-800']"
+        )
+      div(
+        class="w-4 h-3.5 bg-grey-150 flex justify-center items-center cursor-pointer"
+        style="border-radius: 0 0 3px 3px"
+        @click="minus"
+      )
+        f-svg-icon(
+          iconName="keyboard_arrow_down"
+          size="14"
+          :class="[disabled ? 'text-grey-200' : 'text-grey-800']"
+        )
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 
 export default {
   name: 'FInputNumber',
@@ -62,7 +81,7 @@ export default {
     },
   },
   emits: ['update:value', 'change'],
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const innerValue = computed({
       get: () => props.value,
       set: (v) => {

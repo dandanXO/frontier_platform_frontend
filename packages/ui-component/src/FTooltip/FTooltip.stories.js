@@ -19,19 +19,20 @@ export default {
         'right-end',
         'left',
         'left-start',
-        'left-end'
-      ]
+        'left-end',
+      ],
     },
     content: {
-      description: ' text-grey-50, text-caption and leading-1.3 are only automatically applied when using a single root of the P tag'
-    }
+      description:
+        ' text-grey-50, text-caption and leading-1.3 are only automatically applied when using a single root of the P tag',
+    },
   },
   decorators: [() => ({ template: '<div class="mt-6 ml-5"><story /></div>' })],
 }
 
 export const Default = (args) => ({
   components: { FTooltip },
-  setup () {
+  setup() {
     return { args }
   },
   template: `
@@ -49,7 +50,7 @@ export const Default = (args) => ({
 
 export const BoundaryReference = (args) => ({
   components: { FTooltip },
-  setup () {
+  setup() {
     return { args }
   },
   template: `
@@ -75,8 +76,5 @@ export const BoundaryReference = (args) => ({
 })
 
 BoundaryReference.args = {
-  boundaryReference: 'Reference1'
+  boundaryReference: 'Reference1',
 }
-
-
-

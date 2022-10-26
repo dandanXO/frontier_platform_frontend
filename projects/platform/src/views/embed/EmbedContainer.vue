@@ -1,8 +1,10 @@
 <template lang="pug">
 router-view
-div(class="fixed z-footer bottom-0 w-full h-13 bg-grey-50 px-36 flex items-center justify-end card-shadow")
+div(
+  class="fixed z-footer bottom-0 w-full h-13 bg-grey-50 px-36 flex items-center justify-end card-shadow"
+)
   img(src="@/assets/images/frontier_logo.png" class="w-20.5 h-4 mr-2")
-  p(class="text-body2 text-grey-900") {{ $t("GG0004") }}
+  p(class="text-body2 text-grey-900") {{ $t('GG0004') }}
 </template>
 
 <script setup>

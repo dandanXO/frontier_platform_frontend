@@ -21,7 +21,7 @@ modal-behavior(
           template(#trigger)
             div(class="h-9 rounded border border-grey-200 w-full flex px-4 items-center")
               img(:src="selectedOrg.logo" class="w-6 h-6 rounded-full")
-              p(class="flex-grow text-body2 px-2 line-clamp-1") {{selectedOrg.orgName}}
+              p(class="flex-grow text-body2 px-2 line-clamp-1") {{ selectedOrg.orgName }}
               f-svg-icon(
                 iconName="keyboard_arrow_right"
                 size="20"
@@ -49,7 +49,7 @@ modal-behavior(
       :rules="[$inputRules.required()]"
     )
 </template>
-  
+
 <script setup>
 import { useStore } from 'vuex'
 import { computed, reactive } from 'vue'
@@ -57,8 +57,8 @@ import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
   toEmail: {
-    type: String
-  }
+    type: String,
+  },
 })
 
 const store = useStore()
@@ -68,22 +68,28 @@ const formData = reactive({
   toEmail: props.toEmail,
   fromEmail: store.getters['user/email'],
   subject: '',
-  content: ''
+  content: '',
 })
-const primaryBtnDisabled = computed(() => !formData.fromEmail || !formData.subject || !formData.content)
+const primaryBtnDisabled = computed(
+  () => !formData.fromEmail || !formData.subject || !formData.content
+)
 const titasInfo = computed(() => store.getters['titas/titasInfo'])
 const orgMenuTree = {
   blockList: [
     {
-      menuList: titasInfo.value.orgList.map(({ orgName, logo, contactEmail }) => ({
-        title: orgName,
-        selectValue: contactEmail,
-        thumbnail: logo
-      }))
-    }
-  ]
+      menuList: titasInfo.value.orgList.map(
+        ({ orgName, logo, contactEmail }) => ({
+          title: orgName,
+          selectValue: contactEmail,
+          thumbnail: logo,
+        })
+      ),
+    },
+  ],
 }
-const selectedOrg = computed(() => titasInfo.value.orgList.find(org => org.contactEmail === formData.toEmail))
+const selectedOrg = computed(() =>
+  titasInfo.value.orgList.find((org) => org.contactEmail === formData.toEmail)
+)
 
 const contactTitasOrg = async () => {
   store.dispatch('helper/pushModalLoading')
@@ -92,9 +98,7 @@ const contactTitasOrg = async () => {
     type: 2,
     header: t('II0028'),
     contentText: t('II0033', { orgName: selectedOrg.value.orgName }),
-    primaryBtnText: t('UU0031')
+    primaryBtnText: t('UU0031'),
   })
 }
-
 </script>
-  

@@ -20,14 +20,14 @@ const Collection = {
     createDate: null,
     breadcrumbList: [],
     childCollectionList: [],
-    childMaterialList: []
+    childMaterialList: [],
   }),
   getters: {
-    collection: state => state,
+    collection: (state) => state,
     nodeList: (state, getters, rootState, rootGetters) => {
       const pushCollectionToList = () => {
         if (childCollectionList.length > 0) {
-          childCollectionList.forEach(collection => {
+          childCollectionList.forEach((collection) => {
             const {
               workspaceNodeLocation,
               workspaceNodeId,
@@ -64,15 +64,15 @@ const Collection = {
                 name,
                 coverImgList,
                 itemCounts,
-                hasChildCollection
-              }
+                hasChildCollection,
+              },
             })
           })
         }
       }
       const pushMaterialToList = () => {
         if (childMaterialList.length > 0) {
-          childMaterialList.forEach(material => {
+          childMaterialList.forEach((material) => {
             const {
               workspaceNodeId,
               workspaceNodeLocation,
@@ -100,7 +100,7 @@ const Collection = {
               warpYarnCount,
               weftYarnCount,
               coverImg,
-              sourceAssetLocation
+              sourceAssetLocation,
             } = material
             list.push({
               workspaceNodeId,
@@ -131,8 +131,8 @@ const Collection = {
                 warpYarnCount,
                 weftYarnCount,
                 coverImg,
-                sourceAssetLocation
-              }
+                sourceAssetLocation,
+              },
             })
           })
         }
@@ -140,9 +140,14 @@ const Collection = {
       const list = []
       const { childCollectionList, childMaterialList } = state
       const sortBy = rootGetters['helper/search/pagination'].sort
-      const { SORT_BY  } = useConstants()
-      const { RELEVANCE_M_C, MATERIAL_NO_A_Z_M_C, CREATE_DATE_M_C } = SORT_BY.value
-      const reverseList = [RELEVANCE_M_C.value, MATERIAL_NO_A_Z_M_C.value, CREATE_DATE_M_C.value]
+      const { SORT_BY } = useConstants()
+      const { RELEVANCE_M_C, MATERIAL_NO_A_Z_M_C, CREATE_DATE_M_C } =
+        SORT_BY.value
+      const reverseList = [
+        RELEVANCE_M_C.value,
+        MATERIAL_NO_A_Z_M_C.value,
+        CREATE_DATE_M_C.value,
+      ]
 
       if (reverseList.includes(sortBy)) {
         pushMaterialToList()
@@ -163,19 +168,24 @@ const Collection = {
       }
 
       if (breadcrumbList) {
-        breadcrumbList.forEach(({ name, workspaceNodeId, workspaceNodeLocation }) => {
-          list.push({ name, nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}` })
-        })
+        breadcrumbList.forEach(
+          ({ name, workspaceNodeId, workspaceNodeLocation }) => {
+            list.push({
+              name,
+              nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}`,
+            })
+          }
+        )
       }
       return list
-    }
+    },
   },
   mutations: {
-    SET_collection (state, collection) {
+    SET_collection(state, collection) {
       Object.assign(state, collection)
-    }
+    },
   },
-  actions: {}
+  actions: {},
 }
 
 const WorkspaceCollection = Collection
@@ -183,21 +193,17 @@ const WorkspaceCollection = Collection
 const ShareCollection = {
   state: () => ({
     ...Collection.state(),
-    share: NodeShareState()
+    share: NodeShareState(),
   }),
-  ...Collection
+  ...Collection,
 }
 
 const PublicCollection = {
   state: () => ({
     ...Collection.state(),
-    publish: NodePublishState()
+    publish: NodePublishState(),
   }),
-  ...Collection
+  ...Collection,
 }
 
-export {
-  WorkspaceCollection,
-  ShareCollection,
-  PublicCollection
-}
+export { WorkspaceCollection, ShareCollection, PublicCollection }

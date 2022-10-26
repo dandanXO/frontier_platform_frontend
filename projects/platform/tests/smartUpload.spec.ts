@@ -1,6 +1,6 @@
-import { expect, Page } from "@playwright/test"
-import test from "./domain/test"
-import { urls } from "./domain/routes"
+import { expect, Page } from '@playwright/test'
+import test from './domain/test'
+import { urls } from './domain/routes'
 
 /**
  *  Case 1: 上傳成功
@@ -25,14 +25,17 @@ const randomNumber = (min: number, max: number) => {
 const withFileFolder = (fileName: string) => 'tests/files/' + fileName
 
 const correctFileList = [
-  "image/demoImage1.jpeg",
-  "image/demoImage2.jpeg",
-  "image/demoImage3.png",
+  'image/demoImage1.jpeg',
+  'image/demoImage2.jpeg',
+  'image/demoImage3.png',
 ].map(withFileFolder)
-const oversizeFileList = ["image/demoImage1.jpeg", "image/over20mbImage.jpeg"].map(withFileFolder)
+const oversizeFileList = [
+  'image/demoImage1.jpeg',
+  'image/over20mbImage.jpeg',
+].map(withFileFolder)
 const formatNotSupportFileList = [
-  "image/demoImage1.jpeg",
-  "pdf/demoImage1.pdf",
+  'image/demoImage1.jpeg',
+  'pdf/demoImage1.pdf',
 ].map(withFileFolder)
 
 test.beforeEach(async ({ page, orgPage, assetPage }) => {
@@ -46,16 +49,15 @@ test.beforeEach(async ({ page, orgPage, assetPage }) => {
   await assetPage.clickSmartUploadBtn()
 })
 
-test.describe.configure({ mode: "parallel" })
+test.describe.configure({ mode: 'parallel' })
 
-test.describe("Upload Material Image ", () => {
+test.describe('Upload Material Image ', () => {
   test.setTimeout(60 * 1000)
 
-  test.describe("Case 1: Success", () => {
-    test("Case 1-1: Successfully upload material to server and reaching progress page", async ({
+  test.describe('Case 1: Success', () => {
+    test('Case 1-1: Successfully upload material to server and reaching progress page', async ({
       page,
     }) => {
-
       // Step1 點擊 Browse 按鈕，上傳任意大小符合規定的圖片
       await page.locator('[data-cy="modal-smart-upload_browse"]').click()
       await page
@@ -71,26 +73,30 @@ test.describe("Upload Material Image ", () => {
       const expectCount = correctFileList.length - 1
 
       // Step3 確定上傳總數正確，點擊 Upload 按鈕
-      await expect(page
-        .locator('[data-cy="modal-smart-upload_item"]')).toHaveCount(expectCount)
+      await expect(
+        page.locator('[data-cy="modal-smart-upload_item"]')
+      ).toHaveCount(expectCount)
       await page.locator('[data-cy="modal-behavior_primary"]').click()
-      await expect(page
-        .locator('[data-cy="modal-behavior_primary"]')).not.toBeVisible()
+      await expect(
+        page.locator('[data-cy="modal-behavior_primary"]')
+      ).not.toBeVisible()
 
       // Step4 所有檔案上傳到S3後，點擊 View Upload Progress 按鈕
       await expect(
         page.locator('[data-cy="modal-behavior_primary"]')
       ).toBeEnabled({ timeout: 30 * 1000 })
-      await expect(page.locator("[data-cy=modal-smart-upload_done]")).toHaveCount(expectCount)
+      await expect(
+        page.locator('[data-cy=modal-smart-upload_done]')
+      ).toHaveCount(expectCount)
 
       await page.locator('[data-cy="modal-behavior_primary"]').click()
-      await page.waitForNavigation({ waitUntil: "networkidle" })
+      await page.waitForNavigation({ waitUntil: 'networkidle' })
       await expect(page).toHaveURL(/\/progress\/material/)
     })
   })
 
-  test.describe("Case 2: Failed", () => {
-    test("Case 2-1: Click button and choose over limited size files", async ({
+  test.describe('Case 2: Failed', () => {
+    test('Case 2-1: Click button and choose over limited size files', async ({
       page,
     }) => {
       await page.locator('[data-cy="modal-smart-upload_browse"]').click()
@@ -105,7 +111,7 @@ test.describe("Upload Material Image ", () => {
       ).toBeDisabled()
     })
 
-    test("Case 2-2: Drag&Drop over limited size files", async ({ page }) => {
+    test('Case 2-2: Drag&Drop over limited size files', async ({ page }) => {
       await page.locator('[data-cy="modal-smart-upload_browse"]').click()
       await page
         .locator('[data-cy="upload-btn"]')
@@ -118,7 +124,7 @@ test.describe("Upload Material Image ", () => {
       ).toBeDisabled()
     })
 
-    test("Case 2-3: Drag&Drop files that format not support.", async ({
+    test('Case 2-3: Drag&Drop files that format not support.', async ({
       page,
     }) => {
       await page.locator('[data-cy="modal-smart-upload_browse"]').click()

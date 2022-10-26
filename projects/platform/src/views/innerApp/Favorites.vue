@@ -8,15 +8,18 @@ import { useStore } from 'vuex'
 
 export default {
   name: 'Favorite',
-  setup () {
+  setup() {
     const store = useStore()
     const showMessage = () => {
-      store.dispatch('helper/pushFlashMessage', 'Notification message. Here will be information.')
+      store.dispatch(
+        'helper/pushFlashMessage',
+        'Notification message. Here will be information.'
+      )
     }
 
     return {
-      showMessage
+      showMessage,
     }
-  }
+  },
 }
 </script>

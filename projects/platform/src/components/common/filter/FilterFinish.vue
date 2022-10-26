@@ -1,5 +1,9 @@
 <template lang="pug">
-filter-wrapper(iconName="deal" :displayName="$t('RR0022')" :dirty="filterDirty.finishList")
+filter-wrapper(
+  iconName="deal"
+  :displayName="$t('RR0022')"
+  :dirty="filterDirty.finishList"
+)
   f-contextual-menu(
     v-model:inputSelectValue="finishList"
     :selectMode="3"
@@ -22,15 +26,15 @@ const menuTree = computed(() => {
       {
         menuList: finishList.map(({ displayName, value }) => ({
           title: displayName,
-          selectValue: value
-        }))
-      }
-    ]
+          selectValue: value,
+        })),
+      },
+    ],
   }
 })
 
 const finishList = computed({
   get: () => store.getters['helper/search/filter'].finishList,
-  set: (v) => store.dispatch('helper/search/setFilter', { finishList: v })
+  set: (v) => store.dispatch('helper/search/setFilter', { finishList: v }),
 })
 </script>

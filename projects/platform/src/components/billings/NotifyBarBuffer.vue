@@ -15,8 +15,18 @@ div(
         template(#RR0139)
           span(class="font-bold") {{ $t('RR0139') }}
   div(class="flex items-center")
-    f-tag(v-if="planType.BASIC || planType.PRO" size="lg" @click="openModalPaymentLastMonthFail" class="mr-4") {{ $t('UU0066') }}
-    f-svg-icon(iconName="clear" size="24" class="text-grey-0 cursor-pointer" @click="isShowBufferNotifyBar = false")
+    f-tag(
+      v-if="planType.BASIC || planType.PRO"
+      size="lg"
+      @click="openModalPaymentLastMonthFail"
+      class="mr-4"
+    ) {{ $t('UU0066') }}
+    f-svg-icon(
+      iconName="clear"
+      size="24"
+      class="text-grey-0 cursor-pointer"
+      @click="isShowBufferNotifyBar = false"
+    )
 </template>
 
 <script>
@@ -26,18 +36,22 @@ import { FUNC_ID } from '@/utils/constants.js'
 
 export default {
   name: 'NotifyBarBuffer',
-  setup () {
+  setup() {
     const store = useStore()
 
     const isShowBufferNotifyBar = ref(true)
-    const orgUserRole = computed(() => store.getters['organization/orgUser/orgUserRole'])
+    const orgUserRole = computed(
+      () => store.getters['organization/orgUser/orgUserRole']
+    )
     const planType = computed(() => store.getters['polling/planType'])
     const planStatus = computed(() => store.getters['polling/planStatus'])
-    const bufferDeactivatedDate = computed(() => store.getters['polling/plan'].bufferDeactivatedDate)
+    const bufferDeactivatedDate = computed(
+      () => store.getters['polling/plan'].bufferDeactivatedDate
+    )
 
     const openModalPaymentLastMonthFail = () => {
       store.dispatch('helper/openModalBehavior', {
-        component: 'modal-payment-last-month-fail'
+        component: 'modal-payment-last-month-fail',
       })
     }
 
@@ -48,8 +62,8 @@ export default {
       FUNC_ID,
       planType,
       orgUserRole,
-      openModalPaymentLastMonthFail
+      openModalPaymentLastMonthFail,
     }
-  }
+  },
 }
 </script>

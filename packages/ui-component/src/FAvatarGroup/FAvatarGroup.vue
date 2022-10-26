@@ -1,5 +1,8 @@
 <template lang="pug">
-div(class="flex transform -translate-x-1.5" :class="{ 'flex-row-reverse': direction === 'rtl' }")
+div(
+  class="flex transform -translate-x-1.5"
+  :class="{ 'flex-row-reverse': direction === 'rtl' }"
+)
   template(v-if="avatarList.length <= 6")
     img(
       v-for="(avatar, index) in avatarList"
@@ -29,13 +32,13 @@ export default {
   props: {
     avatarList: {
       type: Array,
-      required: true
+      required: true,
     },
     direction: {
       type: String,
       default: 'ltr',
-      validator: (v) => ['ltr', 'rtl'].includes(v)
-    }
-  }
+      validator: (v) => ['ltr', 'rtl'].includes(v),
+    },
+  },
 }
 </script>

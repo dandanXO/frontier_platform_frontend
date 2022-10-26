@@ -16,28 +16,28 @@ const defaultFilterState = () => ({
   width: {
     min: null,
     max: null,
-    isInfinity: false
+    isInfinity: false,
   },
   weightGsm: {
     min: null,
     max: null,
-    isInfinity: false
+    isInfinity: false,
   },
   price: {
     min: null,
     max: null,
-    isInfinity: false
+    isInfinity: false,
   },
   inventory: {
     unit: null,
     quantity: {
       min: null,
       max: null,
-      isInfinity: false
-    }
+      isInfinity: false,
+    },
   },
   hasU3M: null,
-  made2Flow: null
+  made2Flow: null,
 })
 
 const state = () => ({
@@ -52,13 +52,13 @@ const state = () => ({
     perPageCount: 40,
     totalCount: 0,
     totalMatchCount: 0,
-    totalPage: 1
-  }
+    totalPage: 1,
+  },
 })
 
 const getters = {
-  filter: state => state.filter,
-  filterDirty: state => ({
+  filter: (state) => state.filter,
+  filterDirty: (state) => ({
     contentList: state.filter.contentList.length !== 0,
     finishList: state.filter.finishList.length !== 0,
     color: !!state.filter.color,
@@ -67,10 +67,21 @@ const getters = {
     category: !!state.filter.category,
     hasPrice: state.filter.hasPrice !== null,
     hasU3M: state.filter.hasU3M !== null,
-    yarnAndDensity: !!state.filter.wovenWarpYarnCount || !!state.filter.wovenWeftYarnCount || !!state.filter.warpDensity || !!state.filter.weftDensity || !!state.filter.knitYarnCount,
-    widthAndWeightGsm: !!state.filter.width.min || !!state.filter.width.max || !!state.filter.weightGsm.min || !!state.filter.weightGsm.max,
-    inventory: !!state.filter.inventory.quantity.min || !!state.filter.inventory.quantity.max,
-    price: !!state.filter.price.min || !!state.filter.price.max
+    yarnAndDensity:
+      !!state.filter.wovenWarpYarnCount ||
+      !!state.filter.wovenWeftYarnCount ||
+      !!state.filter.warpDensity ||
+      !!state.filter.weftDensity ||
+      !!state.filter.knitYarnCount,
+    widthAndWeightGsm:
+      !!state.filter.width.min ||
+      !!state.filter.width.max ||
+      !!state.filter.weightGsm.min ||
+      !!state.filter.weightGsm.max,
+    inventory:
+      !!state.filter.inventory.quantity.min ||
+      !!state.filter.inventory.quantity.max,
+    price: !!state.filter.price.min || !!state.filter.price.max,
   }),
   filterOptions: (state, getters, rootState, rootGetters) => {
     const filterOptionList = rootGetters['code/filterOptionList']
@@ -79,16 +90,19 @@ const getters = {
       width: { min: 0, max: 200 },
       weightGsm: { min: 0, max: 600 },
       inventory: { min: 0, max: 10000 },
-      price: { min: 0, max: 100 }
+      price: { min: 0, max: 100 },
     }
   },
-  isFilterDirty: (state, getters) => Object.keys(getters.filterDirty).some(key => getters.filterDirty[key]),
-  keyword: state => state.keyword,
-  tagList: state => state.tagList,
-  selectedTagList: state => state.selectedTagList,
-  pagination: state => state.pagination,
-  getSearchParams: (state, getters) => targetPage => {
-    const { keyword, selectedTagList, filter, pagination } = JSON.parse(JSON.stringify(state))
+  isFilterDirty: (state, getters) =>
+    Object.keys(getters.filterDirty).some((key) => getters.filterDirty[key]),
+  keyword: (state) => state.keyword,
+  tagList: (state) => state.tagList,
+  selectedTagList: (state) => state.selectedTagList,
+  pagination: (state) => state.pagination,
+  getSearchParams: (state, getters) => (targetPage) => {
+    const { keyword, selectedTagList, filter, pagination } = JSON.parse(
+      JSON.stringify(state)
+    )
     const { perPageCount, isShowMatch, sort } = pagination
     const params = {
       search: null,
@@ -97,14 +111,14 @@ const getters = {
         perPageCount: Number(perPageCount),
         isShowMatch: Boolean(isShowMatch),
         sort: Number(sort),
-        targetPage: Number(targetPage)
-      }
+        targetPage: Number(targetPage),
+      },
     }
 
     if (!(keyword === '' && selectedTagList.length === 0)) {
       params.search = {
         keyword,
-        tagList: selectedTagList
+        tagList: selectedTagList,
       }
     }
 
@@ -117,7 +131,10 @@ const getters = {
       if (filter.weightGsm.min === null && filter.weightGsm.max === null) {
         filter.weightGsm = null
       }
-      if (filter.inventory.quantity.min === null && filter.inventory.quantity.max === null) {
+      if (
+        filter.inventory.quantity.min === null &&
+        filter.inventory.quantity.max === null
+      ) {
         filter.inventory = null
       }
       if (filter.price.min === null && filter.price.max === null) {
@@ -126,69 +143,71 @@ const getters = {
     }
 
     return params
-  }
+  },
 }
 
 const mutations = {
-  SET_filter (state, filter) {
+  SET_filter(state, filter) {
     Object.assign(state.filter, filter)
   },
-  SET_keyword (state, keyword) {
+  SET_keyword(state, keyword) {
     state.keyword = keyword
   },
-  SET_tagList (state, tagList) {
+  SET_tagList(state, tagList) {
     state.tagList = tagList
   },
-  SET_selectedTagList (state, selectedTagList) {
+  SET_selectedTagList(state, selectedTagList) {
     state.selectedTagList = selectedTagList
   },
-  SET_pagination (state, pagination) {
+  SET_pagination(state, pagination) {
     Object.assign(state.pagination, pagination)
-  }
+  },
 }
 
 const actions = {
-  reset ({ dispatch }, { sort }) {
+  reset({ dispatch }, { sort }) {
     dispatch('resetKeyword')
     dispatch('resetTagList')
     dispatch('resetFilter')
     dispatch('resetSelectedTagList')
     dispatch('setPagination', { sort, isShowMatch: false })
   },
-  setFilter ({ commit }, filter) {
+  setFilter({ commit }, filter) {
     commit('SET_filter', filter)
   },
-  resetFilter ({ commit }) {
+  resetFilter({ commit }) {
     commit('SET_filter', defaultFilterState())
   },
-  setKeyword ({ commit }, keyword) {
+  setKeyword({ commit }, keyword) {
     commit('SET_keyword', keyword)
   },
-  resetKeyword ({ commit }) {
+  resetKeyword({ commit }) {
     commit('SET_keyword', '')
   },
-  setTagList ({ commit }, tagList) {
+  setTagList({ commit }, tagList) {
     commit('SET_tagList', tagList)
   },
-  resetTagList ({ commit }) {
+  resetTagList({ commit }) {
     commit('SET_tagList', [])
   },
-  setSelectedTagList ({ commit }, selectedTagList) {
+  setSelectedTagList({ commit }, selectedTagList) {
     commit('SET_selectedTagList', selectedTagList)
   },
-  resetSelectedTagList ({ commit }) {
+  resetSelectedTagList({ commit }) {
     commit('SET_selectedTagList', [])
   },
-  setPagination ({ commit }, pagination) {
+  setPagination({ commit }, pagination) {
     commit('SET_pagination', pagination)
   },
-  async getAITags ({ state, dispatch }, { searchKeyword }) {
+  async getAITags({ state, dispatch }, { searchKeyword }) {
     const { data } = await codeApi.getAITags({ searchKeyword })
     const tagList = data.result?.tagList
-    const selectedTagList = state.selectedTagList.filter(selectedTag => tagList.some(tag => tag.name === selectedTag.name))
+    const selectedTagList = state.selectedTagList.filter((selectedTag) =>
+      tagList.some((tag) => tag.name === selectedTag.name)
+    )
     dispatch('setTagList', tagList)
     dispatch('setSelectedTagList', selectedTagList)
-  }
+  },
 }
 
 export default {
@@ -196,5 +215,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 }

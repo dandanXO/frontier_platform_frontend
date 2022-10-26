@@ -11,7 +11,7 @@ const state = () => ({
   routeLocation: 'org',
   modalPipeline: [],
   message: '',
-  isReloadInnerApp: true
+  isReloadInnerApp: true,
 })
 
 const getters = {
@@ -23,98 +23,98 @@ const getters = {
       ? rootGetters['organization/orgId']
       : rootGetters['group/groupId']
   },
-  isReloadInnerApp: state => state.isReloadInnerApp
+  isReloadInnerApp: (state) => state.isReloadInnerApp,
 }
 
 const mutations = {
-  PUSH_modalPipeline (state, { type, options }) {
+  PUSH_modalPipeline(state, { type, options }) {
     state.modalPipeline.push({ type, options })
   },
-  REPLACE_modalPipeline (state, { type, options }) {
+  REPLACE_modalPipeline(state, { type, options }) {
     const length = state.modalPipeline.length
     state.modalPipeline[length - 1] = { type, options }
   },
-  CLOSE_modalPipeline (state) {
+  CLOSE_modalPipeline(state) {
     state.modalPipeline.pop()
   },
-  CLEAR_modalPipeline (state) {
+  CLEAR_modalPipeline(state) {
     state.modalPipeline.length = 0
   },
-  PUSH_flashMessage (state, message) {
+  PUSH_flashMessage(state, message) {
     state.message = message
   },
-  REMOVE_flashMessage (state) {
+  REMOVE_flashMessage(state) {
     state.message = ''
   },
-  SET_routeLocation (state, routeLocation) {
+  SET_routeLocation(state, routeLocation) {
     state.routeLocation = routeLocation
   },
-  SET_isReloadInnerApp (state, bool) {
+  SET_isReloadInnerApp(state, bool) {
     state.isReloadInnerApp = bool
-  }
+  },
 }
 
 const actions = {
-  openModalConfirm ({ commit }, options) {
+  openModalConfirm({ commit }, options) {
     commit('CLEAR_modalPipeline')
     commit('PUSH_modalPipeline', { type: MODAL_TYPE.CONFIRM, options })
   },
-  pushModalConfirm ({ commit }, options) {
+  pushModalConfirm({ commit }, options) {
     commit('PUSH_modalPipeline', { type: MODAL_TYPE.CONFIRM, options })
   },
-  closeModalConfirm ({ commit }) {
+  closeModalConfirm({ commit }) {
     commit('CLOSE_modalPipeline')
   },
-  openModal ({ commit }, options) {
+  openModal({ commit }, options) {
     commit('CLEAR_modalPipeline')
     commit('PUSH_modalPipeline', { type: MODAL_TYPE.MODAL, options })
   },
-  pushModal ({ commit }, options) {
+  pushModal({ commit }, options) {
     commit('PUSH_modalPipeline', { type: MODAL_TYPE.MODAL, options })
   },
-  replaceModal ({ commit }, options) {
+  replaceModal({ commit }, options) {
     commit('REPLACE_modalPipeline', { type: MODAL_TYPE.MODAL, options })
   },
-  closeModal ({ commit }) {
+  closeModal({ commit }) {
     commit('CLOSE_modalPipeline')
   },
-  openModalBehavior ({ commit }, options) {
+  openModalBehavior({ commit }, options) {
     commit('CLEAR_modalPipeline')
     commit('PUSH_modalPipeline', { type: MODAL_TYPE.BEHAVIOR, options })
   },
-  pushModalBehavior ({ commit }, options) {
+  pushModalBehavior({ commit }, options) {
     commit('PUSH_modalPipeline', { type: MODAL_TYPE.BEHAVIOR, options })
   },
-  replaceModalBehavior ({ commit }, options) {
+  replaceModalBehavior({ commit }, options) {
     commit('REPLACE_modalPipeline', { type: MODAL_TYPE.BEHAVIOR, options })
   },
-  closeModalBehavior ({ commit }) {
+  closeModalBehavior({ commit }) {
     commit('CLOSE_modalPipeline')
   },
-  clearModalPipeline ({ commit }) {
+  clearModalPipeline({ commit }) {
     commit('CLEAR_modalPipeline')
   },
-  openModalLoading ({ commit }) {
+  openModalLoading({ commit }) {
     commit('CLEAR_modalPipeline')
     commit('PUSH_modalPipeline', { type: MODAL_TYPE.LOADING })
   },
-  pushModalLoading ({ commit }) {
+  pushModalLoading({ commit }) {
     commit('PUSH_modalPipeline', { type: MODAL_TYPE.LOADING })
   },
-  closeModalLoading ({ commit }) {
+  closeModalLoading({ commit }) {
     commit('CLOSE_modalPipeline')
   },
-  async reloadInnerApp ({ commit }) {
+  async reloadInnerApp({ commit }) {
     commit('SET_isReloadInnerApp', false)
     await nextTick()
     commit('SET_isReloadInnerApp', true)
   },
-  pushFlashMessage ({ commit }, message) {
+  pushFlashMessage({ commit }, message) {
     commit('PUSH_flashMessage', message)
   },
-  removeFlashMessage ({ commit }, message) {
+  removeFlashMessage({ commit }, message) {
     commit('REMOVE_flashMessage', message)
-  }
+  },
 }
 
 export default {
@@ -124,6 +124,6 @@ export default {
   mutations,
   actions,
   modules: {
-    search
-  }
+    search,
+  },
 }

@@ -1,10 +1,18 @@
 <template lang="pug">
-div(class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center")
+div(
+  class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center"
+)
   div(class="w-screen h-screen" @click="closable && closeModalBehavior()")
   div(class="absolute w-min bg-grey-0 rounded card-show py-5")
     div(class="h-8.5 px-5 pb-5 flex justify-between items-start border-b border-grey-100")
       p(class="text-body2 font-bold text-grey-900") {{ header }}
-      f-svg-icon(v-if="closable" iconName="clear" size="20" class="cursor-pointer text-grey-600" @click="closeModalBehavior")
+      f-svg-icon(
+        v-if="closable"
+        iconName="clear"
+        size="20"
+        class="cursor-pointer text-grey-600"
+        @click="closeModalBehavior"
+      )
     f-scrollbar-container(class="px-5 pt-5 pb-10 w-fit max-h-103 box-content")
       slot(name="default")
     div(class="px-5 h-13.5 border-t border-grey-100 flex items-end")
@@ -43,7 +51,7 @@ div(class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-c
 
 <script>
 export default {
-  name: 'ModalBehavior'
+  name: 'ModalBehavior',
 }
 </script>
 
@@ -54,56 +62,55 @@ defineEmits(['click:primary', 'click:secondary', 'click:text'])
 defineProps({
   header: {
     type: String,
-    required: true
+    required: true,
   },
   closable: {
     type: Boolean,
-    default: true
+    default: true,
   },
   btnSize: {
     type: String,
     default: 'sm',
-    validator: (v) => ['sm', 'md'].includes(v)
+    validator: (v) => ['sm', 'md'].includes(v),
   },
   primaryBtnText: {
     type: String,
-    default: ''
+    default: '',
   },
   primaryBtnIcon: {
     type: String,
-    default: ''
+    default: '',
   },
   primaryBtnDisabled: {
     type: Boolean,
-    default: false
+    default: false,
   },
   secondaryBtnText: {
     type: String,
-    default: ''
+    default: '',
   },
   secondaryBtnIcon: {
     type: String,
-    default: ''
+    default: '',
   },
   secondaryBtnDisabled: {
     type: Boolean,
-    default: false
+    default: false,
   },
   textBtnText: {
     type: String,
-    default: ''
+    default: '',
   },
   textBtnIcon: {
     type: String,
-    default: ''
+    default: '',
   },
   textBtnDisabled: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const store = useStore()
 const closeModalBehavior = () => store.dispatch('helper/closeModalBehavior')
-
 </script>

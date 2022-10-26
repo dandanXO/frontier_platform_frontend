@@ -10,23 +10,38 @@ div(class="w-full h-full")
   )
     template(#header-left="{ goTo }")
       div(class="flex items-end")
-        f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="(currentNodeKey = $event.nodeKey); goTo()" fontSize="text-h6")
+        f-breadcrumb(
+          :breadcrumbList="breadcrumbList"
+          @click:item="currentNodeKey = $event.nodeKey; goTo()"
+          fontSize="text-h6"
+        )
         p(class="flex text-caption text-grey-600 pl-1")
           span (
           i18n-t(keypath="RR0068" tag="span" scope="global")
             template(#number) {{ pagination.totalCount }}
           span )
     template(#header-right)
-      f-button(v-if="!isFirstLayer" size="sm" type="secondary" class="-mr-3" @click="openModalCollectionDetail") {{ $t("UU0057") }}
-      f-button(size="sm" prependIcon="add" @click="openModalAssetsList") {{ $t("UU0055") }}
+      f-button(
+        v-if="!isFirstLayer"
+        size="sm"
+        type="secondary"
+        class="-mr-3"
+        @click="openModalCollectionDetail"
+      ) {{ $t('UU0057') }}
+      f-button(size="sm" prependIcon="add" @click="openModalAssetsList") {{ $t('UU0055') }}
     template(v-if="!isFirstLayer" #sub-header)
-      p(class="mx-7.5 mb-7.5 text-caption text-grey-600") {{ $t("FF0002") }}: {{ $dayjs.unix(collection.createDate).format("YYYY/MM/DD") }}
+      p(class="mx-7.5 mb-7.5 text-caption text-grey-600") {{ $t('FF0002') }}: {{ $dayjs.unix(collection.createDate).format('YYYY/MM/DD') }}
     template(#default="{ inSearch, goTo }")
-      div(class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start")
-        div(class="aspect-square border border-grey-200 border-dashed rounded-md flex justify-center items-center cursor-pointer" @click="openModalCreateCollection")
+      div(
+        class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
+      )
+        div(
+          class="aspect-square border border-grey-200 border-dashed rounded-md flex justify-center items-center cursor-pointer"
+          @click="openModalCreateCollection"
+        )
           div(class="flex flex-col justify-center items-center")
             f-svg-icon(iconName="add" size="24" class="text-grey-900 mb-3.5")
-            span(class="text-body1 text-grey-900") {{ $t("FF0003") }}
+            span(class="text-body1 text-grey-900") {{ $t('FF0003') }}
         grid-item-node(
           v-for="node in nodeList"
           v-model:selectedValue="selectedNodeList"
@@ -61,8 +76,8 @@ import useNavigation from '@/composables/useNavigation.js'
 const props = defineProps({
   nodeKey: {
     type: String,
-    default: null
-  }
+    default: null,
+  },
 })
 
 const { t } = useI18n()
@@ -70,54 +85,81 @@ const store = useStore()
 const router = useRouter()
 const route = useRoute()
 const { goToWorkspaceMaterialDetail } = useNavigation()
-const { editNodeCollection, editNodeMaterial, duplicateNode, moveNode, shareNode, deleteCollection, deleteMaterial, deleteMultipleNode } = useWorkspace()
+const {
+  editNodeCollection,
+  editNodeMaterial,
+  duplicateNode,
+  moveNode,
+  shareNode,
+  deleteCollection,
+  deleteMaterial,
+  deleteMultipleNode,
+} = useWorkspace()
 
 const optionSort = computed(() => {
   const { SORT_BY } = useConstants()
-  const { MATERIAL_NO_A_Z_C_M, MATERIAL_NO_A_Z_M_C, CREATE_DATE_C_M, CREATE_DATE_M_C, GHG_RESULTS, WATER_DEPLETION_RESULTS, LAND_USE_RESULTS, RELEVANCE_C_M, RELEVANCE_M_C } = SORT_BY.value
-  const valueAddedService = computed(() => store.getters['polling/valueAddedService'])
+  const {
+    MATERIAL_NO_A_Z_C_M,
+    MATERIAL_NO_A_Z_M_C,
+    CREATE_DATE_C_M,
+    CREATE_DATE_M_C,
+    GHG_RESULTS,
+    WATER_DEPLETION_RESULTS,
+    LAND_USE_RESULTS,
+    RELEVANCE_C_M,
+    RELEVANCE_M_C,
+  } = SORT_BY.value
+  const valueAddedService = computed(
+    () => store.getters['polling/valueAddedService']
+  )
   return {
     base: [
       MATERIAL_NO_A_Z_C_M,
       MATERIAL_NO_A_Z_M_C,
       CREATE_DATE_C_M,
       CREATE_DATE_M_C,
-      { ...GHG_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
-      { ...WATER_DEPLETION_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') },
-      { ...LAND_USE_RESULTS, disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE, tooltip: t('VV0047') }
+      {
+        ...GHG_RESULTS,
+        disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
+        tooltip: t('VV0047'),
+      },
+      {
+        ...WATER_DEPLETION_RESULTS,
+        disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
+        tooltip: t('VV0047'),
+      },
+      {
+        ...LAND_USE_RESULTS,
+        disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
+        tooltip: t('VV0047'),
+      },
     ],
-    keywordSearch: [
-      RELEVANCE_C_M,
-      RELEVANCE_M_C
-    ]
+    keywordSearch: [RELEVANCE_C_M, RELEVANCE_M_C],
   }
 })
 
-const optionMultiSelect = computed(() => ([deleteMultipleNode]))
+const optionMultiSelect = computed(() => [deleteMultipleNode])
 
 const pagination = computed(() => store.getters['helper/search/pagination'])
 const collection = computed(() => store.getters['workspace/collection'])
-const defaultWorkspaceNodeKey = computed(() => store.getters['workspace/defaultWorkspaceNodeKey'])
-const breadcrumbList = computed(() => store.getters['workspace/collectionBreadcrumbList']({
-  name: t('FF0001'),
-  nodeKey: defaultWorkspaceNodeKey.value
-}))
+const defaultWorkspaceNodeKey = computed(
+  () => store.getters['workspace/defaultWorkspaceNodeKey']
+)
+const breadcrumbList = computed(() =>
+  store.getters['workspace/collectionBreadcrumbList']({
+    name: t('FF0001'),
+    nodeKey: defaultWorkspaceNodeKey.value,
+  })
+)
 const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
 const nodeList = computed(() => store.getters['workspace/nodeList'])
 const optionNode = (node, inSearch) => {
   const { nodeType, location } = node
   if (nodeType === NODE_TYPE.COLLECTION) {
     const optionList = [
-      [
-        editNodeCollection
-      ],
-      [
-        duplicateNode,
-        moveNode
-      ],
-      [
-        deleteCollection
-      ]
+      [editNodeCollection],
+      [duplicateNode, moveNode],
+      [deleteCollection],
     ]
 
     if (isFirstLayer.value && location.length === 2) {
@@ -125,17 +167,7 @@ const optionNode = (node, inSearch) => {
     }
     return optionList
   } else {
-    const optionList = [
-      [
-        editNodeMaterial
-      ],
-      [
-        moveNode
-      ],
-      [
-        deleteMaterial
-      ]
-    ]
+    const optionList = [[editNodeMaterial], [moveNode], [deleteMaterial]]
 
     if (isFirstLayer.value && location.length === 2) {
       optionList[1].push(shareNode)
@@ -151,11 +183,14 @@ const getWorkspace = async (targetPage = 1, query) => {
   await router.push({
     name: route.name,
     params: {
-      nodeKey: currentNodeKey.value
+      nodeKey: currentNodeKey.value,
     },
-    query
+    query,
   })
-  await store.dispatch('workspace/getWorkspace', { targetPage, nodeKey: currentNodeKey.value })
+  await store.dispatch('workspace/getWorkspace', {
+    targetPage,
+    nodeKey: currentNodeKey.value,
+  })
 }
 
 const openModalCreateCollection = () => {
@@ -163,8 +198,8 @@ const openModalCreateCollection = () => {
     component: 'modal-create-or-edit-collection',
     properties: {
       mode: 1,
-      workspaceNodeId: currentNodeKey.value.split('-')[1]
-    }
+      workspaceNodeId: currentNodeKey.value.split('-')[1],
+    },
   })
 }
 
@@ -173,8 +208,8 @@ const openModalCollectionDetail = () => {
     component: 'modal-collection-detail',
     properties: {
       ...collection.value,
-      canEdit: true
-    }
+      canEdit: true,
+    },
   })
 }
 
@@ -191,9 +226,9 @@ const openModalAssetsList = () => {
           targetWorkspaceNodeList: [
             {
               id: collection.value.workspaceNodeId,
-              location: collection.value.workspaceNodeLocation
-            }
-          ]
+              location: collection.value.workspaceNodeLocation,
+            },
+          ],
         })
 
         if (failMaterialList && failMaterialList.length > 0) {
@@ -206,8 +241,8 @@ const openModalAssetsList = () => {
                 store.dispatch('helper/closeModalBehavior')
               },
               content: t('EE0064'),
-              materialNoList: failMaterialList
-            }
+              materialNoList: failMaterialList,
+            },
           })
         } else {
           store.dispatch('helper/closeModal')
@@ -215,11 +250,14 @@ const openModalAssetsList = () => {
 
         store.dispatch('helper/reloadInnerApp')
 
-        if (!failMaterialList || (failMaterialList.length !== materialIdList.length)) {
+        if (
+          !failMaterialList ||
+          failMaterialList.length !== materialIdList.length
+        ) {
           store.dispatch('helper/pushFlashMessage', t('FF0018'))
         }
-      }
-    }
+      },
+    },
   })
 }
 
@@ -227,8 +265,8 @@ const openModalPublish = (workspaceNode) => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-publish',
     properties: {
-      workspaceNode
-    }
+      workspaceNode,
+    },
   })
 }
 

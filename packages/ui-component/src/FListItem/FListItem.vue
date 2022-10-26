@@ -1,5 +1,8 @@
 <template lang="pug">
-div(class="h-9 flex items-center px-3 text-body2 break-words bg-grey-0 hover:bg-grey-100" :class="[classes]")
+div(
+  class="h-9 flex items-center px-3 text-body2 break-words bg-grey-0 hover:bg-grey-100"
+  :class="[classes]"
+)
   slot
 </template>
 
@@ -10,10 +13,10 @@ export default {
   props: {
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  setup (props) {
+  setup(props) {
     const classes = computed(() => {
       if (props.disabled) {
         return ['text-grey-200', 'cursor-default']
@@ -23,8 +26,8 @@ export default {
     })
 
     return {
-      classes
+      classes,
     }
-  }
+  },
 }
 </script>

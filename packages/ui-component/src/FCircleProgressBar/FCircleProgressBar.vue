@@ -33,26 +33,26 @@ export default {
   props: {
     size: {
       type: Number,
-      required: true
+      required: true,
     },
     max: {
       type: Number,
-      required: true
+      required: true,
     },
     current: {
       type: Number,
-      required: true
+      required: true,
     },
     primaryColor: {
       type: String,
-      default: 'stroke-primary-400'
+      default: 'stroke-primary-400',
     },
     secondaryColor: {
       type: String,
-      default: 'stroke-grey-150'
-    }
+      default: 'stroke-grey-150',
+    },
   },
-  setup (props) {
+  setup(props) {
     const strokeDasharray = computed(() => {
       const r = props.size / 2 - 2.5
       return 2 * r * Math.PI
@@ -65,14 +65,13 @@ export default {
       } else if (current >= max) {
         return 0
       } else {
-        return (max - current) / max * strokeDasharray.value
+        return ((max - current) / max) * strokeDasharray.value
       }
-
     })
     return {
       strokeDasharray,
-      strokeDashoffset
+      strokeDashoffset,
     }
-  }
+  },
 }
 </script>

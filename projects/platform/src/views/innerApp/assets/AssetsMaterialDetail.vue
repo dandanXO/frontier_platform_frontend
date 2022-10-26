@@ -1,16 +1,25 @@
 <template lang="pug">
 div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
-    f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)" class="pt-12 pb-9")
+    f-breadcrumb(
+      :breadcrumbList="breadcrumbList"
+      @click:item="$router.push($event.path)"
+      class="pt-12 pb-9"
+    )
     div(class="pb-7.5")
       div(class="flex items-start pb-2")
         h5(class="text-h5 text-grey-900 font-bold leading-1.6 pr-3 break-words") {{ `${material.materialNo} ${material.description}` }}
         f-tooltip
           template(#trigger)
-            f-svg-icon(iconName="create" class="text-grey-600 hover:text-primary-400 cursor-pointer" size="24" @click="goToAssetMaterialEdit(material)")
+            f-svg-icon(
+              iconName="create"
+              class="text-grey-600 hover:text-primary-400 cursor-pointer"
+              size="24"
+              @click="goToAssetMaterialEdit(material)"
+            )
           template(#content)
-            p {{ $t("RR0054") }}
-      p(class="text-caption text-grey-600") {{ $t("EE0014") }} : {{ lastUpdateDate }}
+            p {{ $t('RR0054') }}
+      p(class="text-caption text-grey-600") {{ $t('EE0014') }} : {{ lastUpdateDate }}
     material-detail-internal(:material="material")
 </template>
 
@@ -26,33 +35,38 @@ import dayjs from 'dayjs'
 export default {
   name: 'AssetsMaterialDetail',
   components: {
-    MaterialDetailInternal
+    MaterialDetailInternal,
   },
-  async setup () {
+  async setup() {
     const { t } = useI18n()
     const store = useStore()
     const route = useRoute()
     const { parsePath, goToAssetMaterialEdit } = useNavigation()
 
-    await store.dispatch('assets/getMaterial', { materialId: route.params.materialId })
+    await store.dispatch('assets/getMaterial', {
+      materialId: route.params.materialId,
+    })
 
     const material = computed(() => store.getters['assets/material'])
     const routeLocation = computed(() => store.getters['helper/routeLocation'])
     const breadcrumbList = computed(() => {
-      const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
+      const prefix =
+        routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
       return [
         {
           name: t('DD0044'),
-          path: parsePath(`${prefix}/assets`)
+          path: parsePath(`${prefix}/assets`),
         },
         {
           name: material.value.materialNo,
-          path: parsePath(`${prefix}/assets/:materialId`)
-        }
+          path: parsePath(`${prefix}/assets/:materialId`),
+        },
       ]
     })
     const lastUpdateDate = computed(() => {
-      const tempUpdateDate = dayjs.unix(material.value.updateDate).format('YYYY/MM/DD hh:mm A')
+      const tempUpdateDate = dayjs
+        .unix(material.value.updateDate)
+        .format('YYYY/MM/DD hh:mm A')
       return tempUpdateDate.slice(0, 10) + ' at ' + tempUpdateDate.slice(10)
     })
 
@@ -60,8 +74,8 @@ export default {
       material,
       breadcrumbList,
       goToAssetMaterialEdit,
-      lastUpdateDate
+      lastUpdateDate,
     }
-  }
+  },
 }
 </script>

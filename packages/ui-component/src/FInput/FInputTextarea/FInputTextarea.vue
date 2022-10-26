@@ -1,6 +1,10 @@
 <template lang="pug">
 f-input-container(:label="label" :required="required")
-  div(class="p-4 rounded border" :class="[classBorder, { 'bg-grey-100': disabled }]" :style="{ height: height + 'px' }")
+  div(
+    class="p-4 rounded border"
+    :class="[classBorder, { 'bg-grey-100': disabled }]"
+    :style="{ height: height + 'px' }"
+  )
     textarea(
       :value="textValue"
       :placeholder="placeholder"
@@ -27,43 +31,52 @@ export default {
      */
     label: {
       type: String,
-      default: ''
+      default: '',
     },
     /**
      * inherit from `FInputContainer.vue`
      */
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
     textValue: {
-      required: true
+      required: true,
     },
     placeholder: {
       type: String,
-      default: ''
+      default: '',
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     height: {
       type: String,
-      required: true
+      required: true,
     },
     customErrorMsg: {
       type: [String, Boolean],
-      default: ''
+      default: '',
     },
     rules: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   emits: ['update:textValue', 'blur', 'enter', 'clear', 'change', 'input'],
-  setup (props, context) {
+  setup(props, context) {
     const { textValue, disabled, rules, customErrorMsg } = toRefs(props)
-    const { isFocus, isError, onFocus, onBlur, typing, isEmpty, classBorder, errorMsg } = useInput({ context, textValue, disabled, customErrorMsg, rules })
+    const {
+      isFocus,
+      isError,
+      onFocus,
+      onBlur,
+      typing,
+      isEmpty,
+      classBorder,
+      errorMsg,
+    } = useInput({ context, textValue, disabled, customErrorMsg, rules })
 
     return {
       isFocus,
@@ -73,8 +86,8 @@ export default {
       onBlur,
       isError,
       classBorder,
-      errorMsg
+      errorMsg,
     }
-  }
+  },
 }
 </script>

@@ -2,7 +2,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { NODE_TYPE } from '@/utils/constants.js'
 
-export default function usePublicLibrary () {
+export default function usePublicLibrary() {
   const { t } = useI18n()
   const store = useStore()
 
@@ -20,8 +20,10 @@ export default function usePublicLibrary () {
 
   const publicCloneByNodeList = (nodeList) => {
     const nodeKeyList = nodeList.map(({ nodeKey }) => nodeKey)
-    const isCanClone = nodeList.every(node => node.publish.isCanClone)
-    const isContainCollection = nodeList.some(node => node.nodeType === NODE_TYPE.COLLECTION)
+    const isCanClone = nodeList.every((node) => node.publish.isCanClone)
+    const isContainCollection = nodeList.some(
+      (node) => node.nodeType === NODE_TYPE.COLLECTION
+    )
     const msg = isContainCollection ? t('II0009') : t('II0008')
     publicClone(nodeKeyList, isCanClone, msg)
   }
@@ -32,7 +34,7 @@ export default function usePublicLibrary () {
         type: 1,
         header: t('II0013'),
         contentText: t('II0014'),
-        primaryBtnText: t('UU0031')
+        primaryBtnText: t('UU0031'),
       })
     }
 
@@ -43,10 +45,14 @@ export default function usePublicLibrary () {
           return store.dispatch('publicLibrary/cloneCheck', { nodeKeyList })
         },
         cloneHandler: async (targetLocationList, optional) => {
-          await store.dispatch('publicLibrary/cloneNode', { nodeKeyList, targetLocationList, optional })
+          await store.dispatch('publicLibrary/cloneNode', {
+            nodeKeyList,
+            targetLocationList,
+            optional,
+          })
           store.dispatch('helper/pushFlashMessage', msg)
-        }
-      }
+        },
+      },
     })
   }
 
@@ -58,10 +64,10 @@ export default function usePublicLibrary () {
         component: 'modal-public-library-share',
         properties: {
           nodeKey: node.nodeKey,
-          isCanShared: node.isCanShared
-        }
+          isCanShared: node.isCanShared,
+        },
       })
-    }
+    },
   }
 
   return {
@@ -69,6 +75,6 @@ export default function usePublicLibrary () {
     publicCloneByCollection,
     publicCloneByNode,
     publicCloneByNodeList,
-    optionShareNode
+    optionShareNode,
   }
 }

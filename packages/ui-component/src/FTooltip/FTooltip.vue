@@ -8,13 +8,18 @@ div
     @mouseleave="hideTooltip"
   )
     slot(name="trigger" :isActive="isActive")
-  div(ref="refTooltip" role="tooltip" class="z-100 rounded bg-grey-900/80 px-2 py-1.5"  :class="{ 'hidden': !isActive }")
-    slot(v-if="isActive" name="content"  :isActive="isActive")
+  div(
+    ref="refTooltip"
+    role="tooltip"
+    class="z-100 rounded bg-grey-900/80 px-2 py-1.5"
+    :class="{ hidden: !isActive }"
+  )
+    slot(v-if="isActive" name="content" :isActive="isActive")
 </template>
 
 <script>
 export default {
-  name: 'FTooltip'
+  name: 'FTooltip',
 }
 </script>
 
@@ -42,17 +47,17 @@ const props = defineProps({
         'right-end',
         'left',
         'left-start',
-        'left-end'
+        'left-end',
       ].includes(value)
-    }
+    },
   },
   offset: {
     type: Array,
-    default: () => [0, 8]
+    default: () => [0, 8],
   },
   /**
    * attach the attribute `data-tooltip-boundary-reference="[key]"` on reference element first then set the `boundaryReference` on `FTooltip`
-   * 
+   *
    * ```
    * <div data-tooltip-boundary-reference="target"/>
    * ...
@@ -62,12 +67,12 @@ const props = defineProps({
    */
   boundaryReference: {
     type: String,
-    default: ''
+    default: '',
   },
   isNotFitWidth: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const isActive = ref(false)
@@ -81,8 +86,10 @@ const showTooltip = () => {
     await nextTick()
     const children = refTooltip.value?.children
 
-    // due to some reason, instance is not exist 
-    if (!children) { return }
+    // due to some reason, instance is not exist
+    if (!children) {
+      return
+    }
 
     if (children.length === 1 && children[0].tagName === 'P') {
       children[0].classList.add('text-grey-50', 'text-caption', 'leading-1.3')
@@ -92,7 +99,7 @@ const showTooltip = () => {
       ...options,
       modifiers: [
         ...options.modifiers,
-        { name: 'eventListeners', enabled: true }
+        { name: 'eventListeners', enabled: true },
       ],
     }))
     emit('show')
@@ -110,8 +117,8 @@ const hideTooltip = () => {
     ...options,
     modifiers: [
       ...options.modifiers,
-      { name: 'eventListeners', enabled: false }
-    ]
+      { name: 'eventListeners', enabled: false },
+    ],
   }))
   emit('hide')
 }
@@ -124,25 +131,25 @@ onMounted(() => {
     {
       name: 'offset',
       options: {
-        offset: props.offset
-      }
-    }
+        offset: props.offset,
+      },
+    },
   ]
 
   if (props.boundaryReference !== '') {
-    modifiers.push(
-      {
-        name: 'preventOverflow',
-        options: {
-          boundary: document.querySelector(`[data-tooltip-boundary-reference="${props.boundaryReference}"]`)
-        }
-      }
-    )
+    modifiers.push({
+      name: 'preventOverflow',
+      options: {
+        boundary: document.querySelector(
+          `[data-tooltip-boundary-reference="${props.boundaryReference}"]`
+        ),
+      },
+    })
   }
 
   const option = {
     placement: props.placement,
-    modifiers
+    modifiers,
   }
   popperInstance = createPopper(refTrigger.value, refTooltip.value, option)
 })

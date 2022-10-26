@@ -5,13 +5,13 @@ export default {
   title: 'FPaginator',
   component: FPaginator,
   args: {
-    totalPage: 10
-  }
+    totalPage: 10,
+  },
 }
 
 export const Default = (args) => ({
   components: { FPaginator },
-  setup () {
+  setup() {
     const currentPage = ref(1)
     return { args, currentPage }
   },
@@ -19,6 +19,3 @@ export const Default = (args) => ({
     <f-paginator v-bind="args" v-model:currentPage="currentPage"></f-paginator>
   `,
 })
-
-
-

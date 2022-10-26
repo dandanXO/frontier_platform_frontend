@@ -1,7 +1,7 @@
-import { test, Page, APIResponse } from "@playwright/test"
-import { makeId } from "./utils"
-import { LoginPage, initialUser } from "./auth"
-import { apiUrl, urls } from "./routes"
+import { test, Page, APIResponse } from '@playwright/test'
+import { makeId } from './utils'
+import { LoginPage, initialUser } from './auth'
+import { apiUrl, urls } from './routes'
 
 export interface OrgReq {
   orgName: string
@@ -27,7 +27,7 @@ export const createOrgReq = () => {
   return {
     orgName: `e2e_${id}`,
     orgCategoryId: 1,
-    countryCode: "TW",
+    countryCode: 'TW',
     uploadMaterialEmail: `e2e.org.${id}`,
   }
 }
@@ -37,8 +37,8 @@ export const createGroupReq = (orgId: number) => {
   return {
     orgId,
     groupName: `e2e_${id}`,
-    labelColor: "#139613",
-    description: "For E2E Test",
+    labelColor: '#139613',
+    description: 'For E2E Test',
     uploadMaterialEmail: `e2e.group.${id}`,
   }
 }
@@ -46,15 +46,15 @@ export const createGroupReq = (orgId: number) => {
 export const initialOrg = {
   orgName: 'e2e_initial_org',
   orgCategoryId: 1,
-  countryCode: "TW",
-  uploadMaterialEmail: "e2e.org.initial",
+  countryCode: 'TW',
+  uploadMaterialEmail: 'e2e.org.initial',
 }
 
 export const initialGroup = {
-  groupName: "e2e_initial_group",
-  labelColor: "#139613",
-  description: "For E2E Test",
-  uploadMaterialEmail: "e2e.group.initial",
+  groupName: 'e2e_initial_group',
+  labelColor: '#139613',
+  description: 'For E2E Test',
+  uploadMaterialEmail: 'e2e.group.initial',
 }
 
 const apiAnnotation = async (name: string, req: object, res: APIResponse) => {
@@ -62,12 +62,13 @@ const apiAnnotation = async (name: string, req: object, res: APIResponse) => {
   const status = res.status()
   const headers = res.headers()
   test.info().annotations.push({
-    type: name, description: JSON.stringify({
+    type: name,
+    description: JSON.stringify({
       request: req,
       status: status,
       headers,
-      body
-    })
+      body,
+    }),
   })
 }
 
@@ -84,10 +85,13 @@ export class OrgPage {
     const loginPage = new LoginPage(this.page)
     const accessToken = await loginPage.signInApi(initialUser)
     const { organizationList } = await this.getCurrentUserInfo(accessToken)
-    let org = organizationList.find(o => o.orgName === initialOrg.orgName)
+    let org = organizationList.find((o) => o.orgName === initialOrg.orgName)
     if (!org) {
       org = await this.createOrgApi(initialOrg, accessToken)
-      await this.createGroupApi({ orgId: org.orgId, ...initialGroup }, accessToken)
+      await this.createGroupApi(
+        { orgId: org.orgId, ...initialGroup },
+        accessToken
+      )
     }
   }
 
@@ -95,15 +99,18 @@ export class OrgPage {
     const loginPage = new LoginPage(this.page)
     const accessToken = await loginPage.signInApi(initialUser)
     const { organizationList } = await this.getCurrentUserInfo(accessToken)
-    let org = organizationList.find(o => o.orgName === initialOrg.orgName)
+    const org = organizationList.find((o) => o.orgName === initialOrg.orgName)
     if (!org) throw new Error('Initial Org Not Existed.')
 
     const group = { orgId: org.orgId, ...initialGroup }
     await this.loginPage.setInitToken(accessToken)
-    await this.page.addInitScript(({ org, group }: { org: Org, group: Group }) => {
-      window.localStorage.setItem("organization", JSON.stringify(org))
-      window.localStorage.setItem("group", JSON.stringify(group))
-    }, { org, group })
+    await this.page.addInitScript(
+      ({ org, group }: { org: Org; group: Group }) => {
+        window.localStorage.setItem('organization', JSON.stringify(org))
+        window.localStorage.setItem('group', JSON.stringify(group))
+      },
+      { org, group }
+    )
   }
 
   cleanUp = async () => {
@@ -112,7 +119,7 @@ export class OrgPage {
     if (!accessToken) return
 
     const { organizationList } = await this.getCurrentUserInfo(accessToken)
-    for (let o of organizationList) {
+    for (const o of organizationList) {
       if (o.orgName !== initialOrg.orgName)
         await this.deleteOrgApi(o.orgId, o.orgName, accessToken)
     }
@@ -120,13 +127,13 @@ export class OrgPage {
 
   getInitialOrg = async (): Promise<Org> =>
     this.page.evaluate(() => {
-      const orgStr = window.localStorage.getItem("organization")
+      const orgStr = window.localStorage.getItem('organization')
       return orgStr ? JSON.parse(orgStr) : null
     })
 
   getInitialGroup = async (): Promise<Group> =>
     this.page.evaluate(() => {
-      const groupStr = window.localStorage.getItem("group")
+      const groupStr = window.localStorage.getItem('group')
       return groupStr ? JSON.parse(groupStr) : null
     })
 
@@ -157,11 +164,7 @@ export class OrgPage {
     return body.result.organization
   }
 
-  deleteOrgApi = async (
-    orgId: number,
-    orgName: string,
-    token: string
-  ) => {
+  deleteOrgApi = async (orgId: number, orgName: string, token: string) => {
     return this.page.request.post(`${apiUrl}/org/delete`, {
       data: { orgId, orgName },
       headers: { Authorization: `Bearer ${token}` },
@@ -177,8 +180,7 @@ export class OrgPage {
     return res
   }
 
-  goto = () =>
-    this.page.goto(urls.index)
+  goto = () => this.page.goto(urls.index)
 
   modalPrimaryBtnElement = () =>
     this.page.locator('[data-cy="modal-behavior_primary"]')
@@ -190,7 +192,9 @@ export class OrgPage {
   fillOrgNameInput = (text: string) =>
     this.page.locator('[data-cy="modal-create-org_name"] input').type(text)
   fillOrgEmailInput = (text: string) =>
-    this.page.locator('[data-cy="modal-create-mail-org_email"] input').type(text)
+    this.page
+      .locator('[data-cy="modal-create-mail-org_email"] input')
+      .type(text)
   fillGroupNameInput = (text: string) =>
     this.page.locator('[data-cy="modal-create-group_name"] input').type(text)
   fillGroupEmailInput = (text: string) =>

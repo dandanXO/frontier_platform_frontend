@@ -12,13 +12,16 @@ filter-wrapper(
       :max="filterOptions.inventory.max"
       :label="$t('RR0109')"
     )
-      template(v-if="[SEARCH_TYPE.ASSETS, SEARCH_TYPE.WORKSPACE].includes(searchType)" #right)
+      template(
+        v-if="[SEARCH_TYPE.ASSETS, SEARCH_TYPE.WORKSPACE].includes(searchType)"
+        #right
+      )
         f-input-radio-group(
           v-model:inputValue="inventoryUnit"
           :optionList="inventoryOptionList"
         )
     div(class="flex justify-end px-5 mt-2")
-      f-button(size="sm" @click="update") {{ $t("UU0001") }}
+      f-button(size="sm" @click="update") {{ $t('UU0001') }}
 </template>
 
 <script>
@@ -32,31 +35,37 @@ export default {
   name: 'FilterInventory',
   components: {
     FilterWrapper,
-    FilterRange
+    FilterRange,
   },
   props: {
     searchType: {
-      type: Number
-    }
+      type: Number,
+    },
   },
-  setup () {
+  setup() {
     const store = useStore()
-    const inventoryOptionList = Object
-      .entries(INVENTORY_UNIT)
-      .map(([key, value]) => ({
+    const inventoryOptionList = Object.entries(INVENTORY_UNIT).map(
+      ([key, value]) => ({
         name: key,
-        value
-      }))
+        value,
+      })
+    )
 
     const filter = computed(() => store.getters['helper/search/filter'])
-    const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
-    const filterOptions = computed(() => store.getters['helper/search/filterOptions'])
+    const filterDirty = computed(
+      () => store.getters['helper/search/filterDirty']
+    )
+    const filterOptions = computed(
+      () => store.getters['helper/search/filterOptions']
+    )
 
     const inputRange = ref([null, null])
     const inventoryUnit = ref(inventoryOptionList[0].value)
 
     const init = () => {
-      const { inventory: { unit, quantity } } = filter.value
+      const {
+        inventory: { unit, quantity },
+      } = filter.value
       inventoryUnit.value = unit || inventoryOptionList[0].value
       inputRange.value = [quantity.min, quantity.max]
     }
@@ -69,9 +78,9 @@ export default {
           quantity: {
             min,
             max,
-            isInfinity: max > filterOptions.value.inventory.max
-          }
-        }
+            isInfinity: max > filterOptions.value.inventory.max,
+          },
+        },
       })
     }
 
@@ -83,8 +92,8 @@ export default {
       update,
       inventoryUnit,
       inventoryOptionList,
-      SEARCH_TYPE
+      SEARCH_TYPE,
     }
-  }
+  },
 }
 </script>

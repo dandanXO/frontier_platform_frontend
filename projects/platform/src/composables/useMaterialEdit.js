@@ -1,56 +1,76 @@
 import { useStore } from 'vuex'
 import { reactive, computed } from 'vue'
-import { INVENTORY_UNIT, MATERIAL_PRICING_CURRENCY, useConstants } from '@/utils/constants'
+import {
+  INVENTORY_UNIT,
+  MATERIAL_PRICING_CURRENCY,
+  useConstants,
+} from '@/utils/constants'
 
-export default function useMaterialEdit (material) {
+export default function useMaterialEdit(material) {
   const store = useStore()
   const { WEIGHT_UNIT } = useConstants()
 
-  const inventoryUnitList = computed(() => Object.keys(INVENTORY_UNIT).map(key => ({ unit: INVENTORY_UNIT[key] })))
-  const currencyList = computed(() => Object.keys(MATERIAL_PRICING_CURRENCY).map(key => ({ currency: MATERIAL_PRICING_CURRENCY[key] })))
+  const inventoryUnitList = computed(() =>
+    Object.keys(INVENTORY_UNIT).map((key) => ({ unit: INVENTORY_UNIT[key] }))
+  )
+  const currencyList = computed(() =>
+    Object.keys(MATERIAL_PRICING_CURRENCY).map((key) => ({
+      currency: MATERIAL_PRICING_CURRENCY[key],
+    }))
+  )
 
   const newContentList = reactive([])
   const newDescriptionList = reactive([])
   const newFinishList = reactive([])
 
   const specOptions = reactive({
-    contentList: computed(() => store.getters['assets/code'].contentList.concat(newContentList)),
+    contentList: computed(() =>
+      store.getters['assets/code'].contentList.concat(newContentList)
+    ),
     weightUnitList: computed(() => {
-      return Object.keys(WEIGHT_UNIT.value)
-        .map(key => ({
-          weightUnit: WEIGHT_UNIT.value[key].value,
-          name: WEIGHT_UNIT.value[key].text
-        }))
+      return Object.keys(WEIGHT_UNIT.value).map((key) => ({
+        weightUnit: WEIGHT_UNIT.value[key].value,
+        name: WEIGHT_UNIT.value[key].text,
+      }))
     }),
-    descriptionList: computed(() => store.getters['assets/code'].descriptionList.concat(newDescriptionList)),
-    finishList: computed(() => store.getters['assets/code'].finishList.concat(newFinishList)),
-    certificateList: store.getters['assets/code'].certificateList
+    descriptionList: computed(() =>
+      store.getters['assets/code'].descriptionList.concat(newDescriptionList)
+    ),
+    finishList: computed(() =>
+      store.getters['assets/code'].finishList.concat(newFinishList)
+    ),
+    certificateList: store.getters['assets/code'].certificateList,
   })
 
   const addDescriptionOption = (descriptionName) => {
     newDescriptionList.push({
       descriptionId: null,
-      name: descriptionName
+      name: descriptionName,
     })
   }
 
   const addFinishOption = (finishName) => {
     newFinishList.push({
       finishId: null,
-      name: finishName
+      name: finishName,
     })
   }
 
   const addContentOption = (contentName) => {
     newContentList.push({
       contentId: null,
-      name: contentName
+      name: contentName,
     })
   }
 
   const selectContent = (contentName, contentItemIndex) => {
-    const content = specOptions.contentList.find(content => content.name === contentName)
-    store.commit('assets/UPDATE_content_item', { index: contentItemIndex, content })
+    const content = specOptions.contentList.find(
+      (content) => content.name === contentName
+    )
+    store.commit('assets/UPDATE_content_item', {
+      index: contentItemIndex,
+      content,
+    })
   }
 
   const addNewContent = () => {
@@ -98,7 +118,7 @@ export default function useMaterialEdit (material) {
           } else if (weightUnit === WEIGHT_UNIT.value.OZ.value) {
             gsm = weight / 0.9114
           }
-          return prev + Number(quantity) / (gsm * 0.02323 * width) * 1000
+          return prev + (Number(quantity) / (gsm * 0.02323 * width)) * 1000
         }
         default:
           return prev + Number(quantity)
@@ -124,6 +144,6 @@ export default function useMaterialEdit (material) {
     addNewInventory,
     removeInventory,
     totalInventory,
-    updateInventoryListUnit
+    updateInventoryListUnit,
   }
 }

@@ -2,7 +2,15 @@ import { ref } from 'vue'
 import { computed, watch, onUpdated } from 'vue'
 import inputRules from '@/utils/inputRules'
 
-export default function useInput ({ context: { emit, slots }, inputType = ref('text'), textValue, disabled = ref(false), rules = ref([]), required = ref(false), customErrorMsg = ref('') }) {
+export default function useInput({
+  context: { emit, slots },
+  inputType = ref('text'),
+  textValue,
+  disabled = ref(false),
+  rules = ref([]),
+  required = ref(false),
+  customErrorMsg = ref(''),
+}) {
   const isFocus = ref(false)
 
   const isEmpty = computed(() => !textValue.value)
@@ -14,17 +22,13 @@ export default function useInput ({ context: { emit, slots }, inputType = ref('t
     if (isError.value) {
       return 'border-red-400'
     }
-    return isFocus.value
-      ? 'border-grey-600'
-      : 'border-grey-200'
+    return isFocus.value ? 'border-grey-600' : 'border-grey-200'
   })
   const classPrependIcon = computed(() => {
     if (disabled.value) {
       return 'text-grey-600'
     }
-    return isFocus.value || !isEmpty.value
-      ? 'text-grey-900'
-      : 'text-grey-200'
+    return isFocus.value || !isEmpty.value ? 'text-grey-900' : 'text-grey-200'
   })
 
   const typing = (e) => {
@@ -106,6 +110,6 @@ export default function useInput ({ context: { emit, slots }, inputType = ref('t
     typing,
     classBorder,
     classPrependIcon,
-    errorMsg
+    errorMsg,
   }
 }

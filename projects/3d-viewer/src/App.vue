@@ -13,5 +13,5 @@ model-editor(
   :normalImgUrl="u3m.normalImgUrl"
   :roughImgUrl="u3m.roughImgUrl"
   :dispImgUrl="u3m.dispImgUrl"
-  )
+)
 </template>

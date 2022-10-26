@@ -20,13 +20,13 @@ const props = defineProps({
   /**
    * Indicates whether the host element is capable of "auto" sizes such as: width: auto and height: auto. If set to false and the property width or height is "auto", the rendered width or height of the content will be zero.
    * If you are applying OverlayScrollbars to a flexbox-element set this option to false to ensure correct functionality.
-   * 
+   *
    * This option is ignored if the target-element is the body element, because in this case the size must be 100% (on both axis) to simulate the viewport correctly.
    */
   sizeAutoCapable: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 })
 
 const rootElement = ref(null)
@@ -36,7 +36,7 @@ onMounted(() => {
     sizeAutoCapable: props.sizeAutoCapable,
     overflowBehavior: {
       x: 'hidden',
-      y: 'scroll'
+      y: 'scroll',
     },
     callbacks: {
       onScroll: () => {
@@ -45,8 +45,8 @@ onMounted(() => {
         if (scrollInfo.ratio.y >= 0.9) {
           emit('reach-bottom')
         }
-      }
-    }
+      },
+    },
   })
 })
 </script>

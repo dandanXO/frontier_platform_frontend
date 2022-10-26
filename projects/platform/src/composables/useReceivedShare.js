@@ -2,7 +2,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation.js'
 
-export default function useReceivedShare () {
+export default function useReceivedShare() {
   const { t } = useI18n()
   const store = useStore()
   const { goToLobby } = useNavigation()
@@ -21,20 +21,28 @@ export default function useReceivedShare () {
           title: t('RR0213'),
           actionHandler: async ({ orgId, groupId }) => {
             store.dispatch('helper/pushModalLoading')
-            await store.dispatch('receivedShare/saveShareReceived', { orgId, groupId })
+            await store.dispatch('receivedShare/saveShareReceived', {
+              orgId,
+              groupId,
+            })
             store.dispatch('helper/closeModalLoading')
 
-            const orgNo = store.getters['user/organizationList'].find(org => org.orgId === orgId).orgNo
+            const orgNo = store.getters['user/organizationList'].find(
+              (org) => org.orgId === orgId
+            ).orgNo
             let prefixUrl
             if (groupId) {
               prefixUrl = `${orgNo}/${groupId}`
             } else {
               prefixUrl = `${orgNo}`
             }
-            window.open(`${window.location.origin}/${prefixUrl}/assets`, '_blank')
+            window.open(
+              `${window.location.origin}/${prefixUrl}/assets`,
+              '_blank'
+            )
             store.dispatch('helper/clearModalPipeline')
-          }
-        }
+          },
+        },
       })
     } else if (isCanSave && organizationList.length === 0) {
       store.dispatch('helper/openModalConfirm', {
@@ -43,14 +51,14 @@ export default function useReceivedShare () {
         contentText: t('GG0033'),
         primaryBtnText: t('UU0072'),
         primaryBtnHandler: goToLobby,
-        secondaryBtnText: t('UU0002')
+        secondaryBtnText: t('UU0002'),
       })
     } else {
       store.dispatch('helper/openModalConfirm', {
         type: 1,
         header: t('RR0214'),
         contentText: t('GG0015'),
-        primaryBtnText: t('UU0031')
+        primaryBtnText: t('UU0031'),
       })
     }
   }
@@ -77,14 +85,24 @@ export default function useReceivedShare () {
         properties: {
           crossOrg: true,
           checkHandler: async (orgId) => {
-            return store.dispatch('receivedShare/cloneCheckShareReceived', { orgId, nodeKeyList })
+            return store.dispatch('receivedShare/cloneCheckShareReceived', {
+              orgId,
+              nodeKeyList,
+            })
           },
           cloneHandler: async (targetLocationList, optional, orgId) => {
-            await store.dispatch('receivedShare/cloneShareReceived', { orgId, nodeKeyList, targetLocationList, optional })
-            const orgNo = store.getters['user/organizationList'].find(org => org.orgId === orgId).orgNo
+            await store.dispatch('receivedShare/cloneShareReceived', {
+              orgId,
+              nodeKeyList,
+              targetLocationList,
+              optional,
+            })
+            const orgNo = store.getters['user/organizationList'].find(
+              (org) => org.orgId === orgId
+            ).orgNo
             window.open(`${window.location.origin}/${orgNo}/assets`, '_blank')
-          }
-        }
+          },
+        },
       })
     } else if (isCanClone && organizationList.length === 0) {
       store.dispatch('helper/openModalConfirm', {
@@ -93,14 +111,14 @@ export default function useReceivedShare () {
         contentText: t('GG0034'),
         primaryBtnText: t('UU0072'),
         primaryBtnHandler: goToLobby,
-        secondaryBtnText: t('UU0002')
+        secondaryBtnText: t('UU0002'),
       })
     } else {
       store.dispatch('helper/openModalConfirm', {
         type: 1,
         header: t('GG0016'),
         contentText: t('GG0020'),
-        primaryBtnText: t('UU0031')
+        primaryBtnText: t('UU0031'),
       })
     }
   }
@@ -108,6 +126,6 @@ export default function useReceivedShare () {
   return {
     saveReceivedShare,
     receivedShareCloneByNodeKey,
-    receivedShareCloneByNodeList
+    receivedShareCloneByNodeList,
   }
 }

@@ -7,90 +7,125 @@ export default {
   namespaced: true,
   modules: {
     collection: ShareCollection,
-    material: Material
+    material: Material,
   },
   state: () => ({
     materialBreadcrumbList: [],
-    materialShare: NodeShareState()
+    materialShare: NodeShareState(),
   }),
   getters: {
-    materialBreadcrumbList: state => state.materialBreadcrumbList
-      .map(({ name, workspaceNodeId, workspaceNodeLocation }) => ({ name, nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}` })),
-    materialShare: state => state.materialShare
+    materialBreadcrumbList: (state) =>
+      state.materialBreadcrumbList.map(
+        ({ name, workspaceNodeId, workspaceNodeLocation }) => ({
+          name,
+          nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}`,
+        })
+      ),
+    materialShare: (state) => state.materialShare,
   },
   mutations: {
-    SET_materialBreadcrumbList (state, materialBreadcrumbList) {
+    SET_materialBreadcrumbList(state, materialBreadcrumbList) {
       state.materialBreadcrumbList = materialBreadcrumbList
     },
-    SET_materialShare (state, materialShare) {
+    SET_materialShare(state, materialShare) {
       state.materialShare = materialShare
-    }
+    },
   },
   actions: {
-    async callShareToMeApi ({ rootGetters }, { func, params = {} }) {
-      return await shareToMeApi[func](rootGetters['helper/routeLocation'], rootGetters['helper/routeLocationId'], params)
+    async callShareToMeApi({ rootGetters }, { func, params = {} }) {
+      return await shareToMeApi[func](
+        rootGetters['helper/routeLocation'],
+        rootGetters['helper/routeLocationId'],
+        params
+      )
     },
-    setShareToMeModule ({ commit, dispatch }, data) {
-      const { shareCollection, material, share, pagination, breadcrumbList } = data
+    setShareToMeModule({ commit, dispatch }, data) {
+      const { shareCollection, material, share, pagination, breadcrumbList } =
+        data
 
       !!shareCollection && commit('SET_collection', shareCollection)
       !!material && commit('SET_material', material)
       !!breadcrumbList && commit('SET_materialBreadcrumbList', breadcrumbList)
       !!share && commit('SET_materialShare', share)
-      !!pagination && dispatch('helper/search/setPagination', pagination, { root: true })
+      !!pagination &&
+        dispatch('helper/search/setPagination', pagination, { root: true })
     },
-    async getShareToMeList ({ rootGetters, dispatch }, { targetPage = 1, sharingId, nodeKey }) {
-      const searchParams = rootGetters['helper/search/getSearchParams'](targetPage)
+    async getShareToMeList(
+      { rootGetters, dispatch },
+      { targetPage = 1, sharingId, nodeKey }
+    ) {
+      const searchParams =
+        rootGetters['helper/search/getSearchParams'](targetPage)
       const params = {
         sharingId,
         workspaceNodeId: nodeKey?.split('-')[1] || null,
-        ...searchParams
+        ...searchParams,
       }
 
-      const { data } = await dispatch('callShareToMeApi', { func: 'getShareToMeList', params })
+      const { data } = await dispatch('callShareToMeApi', {
+        func: 'getShareToMeList',
+        params,
+      })
       dispatch('setShareToMeModule', data.result)
     },
-    async getShareToMeMaterial ({ dispatch }, { sharingId, nodeKey }) {
+    async getShareToMeMaterial({ dispatch }, { sharingId, nodeKey }) {
       const workspaceNodeId = nodeKey.split('-')[1]
       const params = {
         sharingId,
-        workspaceNodeId
+        workspaceNodeId,
       }
-      const { data } = await dispatch('callShareToMeApi', { func: 'getShareToMeMaterial', params })
+      const { data } = await dispatch('callShareToMeApi', {
+        func: 'getShareToMeMaterial',
+        params,
+      })
       dispatch('setShareToMeModule', data.result)
     },
-    async cloneCheckShareToMe ({ dispatch }, { nodeKeyList }) {
-      const workspaceNodeList = nodeKeyList.map(nodeKey => {
+    async cloneCheckShareToMe({ dispatch }, { nodeKeyList }) {
+      const workspaceNodeList = nodeKeyList.map((nodeKey) => {
         const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
         return {
           id: Number(workspaceNodeId),
-          location: Number(workspaceNodeLocation)
+          location: Number(workspaceNodeLocation),
         }
       })
-      const { data } = await dispatch('callShareToMeApi', { func: 'cloneCheckShareToMe', params: { workspaceNodeList } })
+      const { data } = await dispatch('callShareToMeApi', {
+        func: 'cloneCheckShareToMe',
+        params: { workspaceNodeList },
+      })
       return data.result.estimatedQuota
     },
-    async cloneShareToMe ({ dispatch }, params) {
+    async cloneShareToMe({ dispatch }, params) {
       const { nodeKeyList, sharingId, targetLocationList, optional } = params
-      const workspaceNodeList = nodeKeyList.map(nodeKey => {
+      const workspaceNodeList = nodeKeyList.map((nodeKey) => {
         const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
         return {
           id: Number(workspaceNodeId),
-          location: Number(workspaceNodeLocation)
+          location: Number(workspaceNodeLocation),
         }
       })
-      const tempParams = { sharingId, workspaceNodeList, targetLocationList, optional }
-      await dispatch('callShareToMeApi', { func: 'cloneShareToMe', params: tempParams })
+      const tempParams = {
+        sharingId,
+        workspaceNodeList,
+        targetLocationList,
+        optional,
+      }
+      await dispatch('callShareToMeApi', {
+        func: 'cloneShareToMe',
+        params: tempParams,
+      })
     },
-    async deleteShareToMe ({ dispatch }, { nodeKeyList }) {
-      const workspaceNodeList = nodeKeyList.map(nodeKey => {
+    async deleteShareToMe({ dispatch }, { nodeKeyList }) {
+      const workspaceNodeList = nodeKeyList.map((nodeKey) => {
         const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
         return {
           id: Number(workspaceNodeId),
-          location: Number(workspaceNodeLocation)
+          location: Number(workspaceNodeLocation),
         }
       })
-      await dispatch('callShareToMeApi', { func: 'deleteShareToMe', params: { workspaceNodeList } })
-    }
-  }
+      await dispatch('callShareToMeApi', {
+        func: 'deleteShareToMe',
+        params: { workspaceNodeList },
+      })
+    },
+  },
 }

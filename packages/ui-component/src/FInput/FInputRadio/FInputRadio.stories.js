@@ -8,24 +8,24 @@ export default {
     label: 'Label',
     iconSize: '24',
     inputValue: 0,
-    value: 1
+    value: 1,
   },
   argTypes: {
     inputValue: {
-      control: { type: null }
+      control: { type: null },
     },
     value: {
-      control: { type: null }
+      control: { type: null },
     },
     label: {
-      control: { type: 'text' }
-    }
-  }
+      control: { type: 'text' },
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FInputRadio },
-  setup () {
+  setup() {
     const inputValue = ref(false)
     return { args, inputValue }
   },
@@ -36,5 +36,5 @@ export const Default = Template.bind({})
 
 export const Selected = Template.bind({})
 Selected.args = {
-  value: 0
+  value: 0,
 }

@@ -1,5 +1,9 @@
 <template lang="pug">
-filter-wrapper(iconName="fabric" :displayName="$t('RR0087')" :dirty="filterDirty.category")
+filter-wrapper(
+  iconName="fabric"
+  :displayName="$t('RR0087')"
+  :dirty="filterDirty.category"
+)
   f-contextual-menu(
     v-model:inputSelectValue="category"
     :selectMode="1"
@@ -27,18 +31,18 @@ const menuTree = computed(() => {
             {
               menuList: list.map(({ displayName, value }) => ({
                 title: displayName,
-                selectValue: value
-              }))
-            }
-          ]
-        }))
-      }
-    ]
+                selectValue: value,
+              })),
+            },
+          ],
+        })),
+      },
+    ],
   }
 })
 
 const category = computed({
   get: () => store.getters['helper/search/filter'].category,
-  set: (v) => store.dispatch('helper/search/setFilter', { category: v })
+  set: (v) => store.dispatch('helper/search/setFilter', { category: v }),
 })
 </script>

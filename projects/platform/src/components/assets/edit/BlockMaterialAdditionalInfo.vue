@@ -1,7 +1,7 @@
 <template lang="pug">
 div
   div(class="h-15 flex items-center")
-    h5(class="text-h5 text-grey-900 font-bold") {{ $t("DD0026") }}
+    h5(class="text-h5 text-grey-900 font-bold") {{ $t('DD0026') }}
   div(class="px-15 grid gap-y-7.5 pt-5")
     f-input-chips(
       v-model:chips="material.certificateList"
@@ -13,8 +13,8 @@ div
     div
       div(class="pb-10")
         p(class="text-body2 font-bold text-grey-900") {{ $t('EE0130') }}
-        div(class="py-5 text-body2") {{ $t("DD0027") }}
-        f-button(size="md" @click="openModalUpload") {{ $t("UU0022") }}
+        div(class="py-5 text-body2") {{ $t('DD0027') }}
+        f-button(size="md" @click="openModalUpload") {{ $t('UU0022') }}
       div(v-if="attachmentList.length > 0" class="flex flex-wrap gap-5")
         attachment-item(
           v-for="(attachment, index) in attachmentList"
@@ -35,8 +35,8 @@ import useMaterialEdit from '@/composables/useMaterialEdit'
 
 const props = defineProps({
   tempMaterialId: {
-    type: String
-  }
+    type: String,
+  },
 })
 
 const { t } = useI18n()
@@ -57,17 +57,17 @@ const openModalUpload = () => {
         if (isEditMode.value) {
           await store.dispatch('assets/uploadAttachmentWhenUpdate', {
             file,
-            displayFileName
+            displayFileName,
           })
         } else {
           await store.dispatch('assets/uploadAttachmentWhenCreate', {
             tempMaterialId: props.tempMaterialId,
             file,
-            displayFileName
+            displayFileName,
           })
         }
-      }
-    }
+      },
+    },
   })
 }
 
@@ -80,16 +80,16 @@ const handleRemove = (attachment) => {
     primaryBtnHandler: async () => {
       if (isEditMode.value) {
         store.dispatch('assets/removeAttachmentWhenUpdate', {
-          materialAttachmentId: attachment.materialAttachmentId
+          materialAttachmentId: attachment.materialAttachmentId,
         })
       } else {
         store.dispatch('assets/removeAttachmentWhenCreate', {
           tempMaterialId: props.tempMaterialId,
-          tempMaterialAttachmentId: attachment.tempMaterialAttachmentId
+          tempMaterialAttachmentId: attachment.tempMaterialAttachmentId,
         })
       }
     },
-    secondaryBtnText: t('UU0002')
+    secondaryBtnText: t('UU0002'),
   })
 }
 </script>

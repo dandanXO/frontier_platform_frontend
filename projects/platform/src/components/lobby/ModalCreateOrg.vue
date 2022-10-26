@@ -38,7 +38,7 @@ modal-behavior(
         data-cy="modal-create-org_category"
       )
     div(class="flex items-center mb-5")
-      div(class="text-caption font-bold text-grey-200 mr-4.5") {{ $t("RR0177") }}
+      div(class="text-caption font-bold text-grey-200 mr-4.5") {{ $t('RR0177') }}
       div(class="border-t border-grey-100 w-full")
     div(class="grid grid-cols-2 grid-rows-2 gap-x-7.5 gap-y-4")
       input-calling-code(
@@ -48,13 +48,18 @@ modal-behavior(
         :label="$t('AA0071')"
         :placeholder="$t('AA0072')"
       )
-      f-input-text(v-model:textValue="formData.address" :label="$t('AA0040')" :placeholder="$t('AA0041')")
+      f-input-text(
+        v-model:textValue="formData.address"
+        :label="$t('AA0040')"
+        :placeholder="$t('AA0041')"
+      )
       input-calling-code(
         v-model:textValue="formData.fax"
         v-model:countryCode="formData.faxCountryCode"
         class="w-85"
         :label="$t('AA0073')"
-        :placeholder="$t('AA0074')")
+        :placeholder="$t('AA0074')"
+      )
 </template>
 
 <script setup>
@@ -66,7 +71,12 @@ const isOrgNameExist = ref(false)
 const formData = reactive({ ...store.getters['organization/createForm'] })
 const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
 const countryList = computed(() => store.getters['code/countryList'])
-const availableToCreateOrg = computed(() => formData.countryCode !== '' && formData.orgName !== '' && !isOrgNameExist.value)
+const availableToCreateOrg = computed(
+  () =>
+    formData.countryCode !== '' &&
+    formData.orgName !== '' &&
+    !isOrgNameExist.value
+)
 
 watch(
   () => formData.orgName,
@@ -85,7 +95,7 @@ const openModalCreateMailOrg = async () => {
 
   store.commit('organization/SET_createForm', formData)
   store.dispatch('helper/openModalBehavior', {
-    component: 'modal-create-mail-org'
+    component: 'modal-create-mail-org',
   })
 }
 
@@ -95,6 +105,10 @@ const handleCountryCodeSelected = (option) => {
 }
 
 const checkOrgNameExist = async () => {
-  isOrgNameExist.value = formData.orgName !== '' && (await store.dispatch('organization/checkOrgNameExist', { orgName: formData.orgName }))
+  isOrgNameExist.value =
+    formData.orgName !== '' &&
+    (await store.dispatch('organization/checkOrgNameExist', {
+      orgName: formData.orgName,
+    }))
 }
 </script>

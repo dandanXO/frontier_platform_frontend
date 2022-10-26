@@ -9,20 +9,23 @@ export default {
    * @param {object?} params.search
    * @param {object?} params.filter
    */
-  getShareToMeList: (type, id, params) => apiWrapper('/share-to-me/get-list', type, id, params),
+  getShareToMeList: (type, id, params) =>
+    apiWrapper('/share-to-me/get-list', type, id, params),
 
   /**
    * @param {object} params
    * @param {number} params.sharingId
    * @param {object[]} params.workspaceNodeId - [{id, location}]
    */
-  getShareToMeMaterial: (type, id, params) => apiWrapper('/share-to-me/get-material', type, id, params),
+  getShareToMeMaterial: (type, id, params) =>
+    apiWrapper('/share-to-me/get-material', type, id, params),
 
   /**
    * @param {object} params
    * @param {object[]} params.workspaceNodeList - [{id, location}]
    */
-  cloneCheckShareToMe: (type, id, params) => apiWrapper('/share-to-me/clone-check', type, id, params),
+  cloneCheckShareToMe: (type, id, params) =>
+    apiWrapper('/share-to-me/clone-check', type, id, params),
 
   /**
    * @param {object} params
@@ -31,11 +34,13 @@ export default {
    * @param {object[]} params.targetLocationList - [{id, location}]
    * @param {object} params.optional - {u3m, attachment}
    */
-  cloneShareToMe: (type, id, params) => apiWrapper('/share-to-me/clone', type, id, params),
+  cloneShareToMe: (type, id, params) =>
+    apiWrapper('/share-to-me/clone', type, id, params),
 
   /**
    * @param {object} params
    * @param {object[]} params.workspaceNodeList - [{id, location}]
    */
-  deleteShareToMe: (type, id, params) => apiWrapper('/share-to-me/delete', type, id, params),
+  deleteShareToMe: (type, id, params) =>
+    apiWrapper('/share-to-me/delete', type, id, params),
 }

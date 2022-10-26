@@ -23,8 +23,8 @@ import { U3M_STATUS } from '@/utils/constants'
 
 const props = defineProps({
   materialList: {
-    type: Array
-  }
+    type: Array,
+  },
 })
 
 const { t } = useI18n()
@@ -32,19 +32,23 @@ const store = useStore()
 const formatOptions = [
   {
     name: t('EE0081'),
-    value: 'zipUrl'
+    value: 'zipUrl',
   },
   {
     name: t('EE0082'),
-    value: 'u3maUrl'
-  }
+    value: 'u3maUrl',
+  },
 ]
 const selectedFormat = ref(formatOptions[0].value)
 
 const downloadU3m = () => {
   store.dispatch('helper/openModalLoading')
-  const allowedList = props.materialList.filter((material) => material.u3m.status === U3M_STATUS.COMPLETED)
-  const failedList = props.materialList.filter((material) => material.u3m.status !== U3M_STATUS.COMPLETED)
+  const allowedList = props.materialList.filter(
+    (material) => material.u3m.status === U3M_STATUS.COMPLETED
+  )
+  const failedList = props.materialList.filter(
+    (material) => material.u3m.status !== U3M_STATUS.COMPLETED
+  )
 
   if (failedList.length > 0) {
     store.dispatch('helper/openModalBehavior', {
@@ -52,8 +56,8 @@ const downloadU3m = () => {
       properties: {
         allowedList,
         failedList,
-        selectedFormat: selectedFormat.value
-      }
+        selectedFormat: selectedFormat.value,
+      },
     })
   } else {
     props.materialList.forEach((material) => {

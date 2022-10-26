@@ -1,5 +1,6 @@
-export default function tempFilenameGenerator () {
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+export default function tempFilenameGenerator() {
+  const possible =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   let text = ''
 
   for (let i = 0; i < 10; i++) {

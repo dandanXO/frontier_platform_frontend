@@ -10,7 +10,9 @@
     "deploy:dev": "npm run deploy --mode=development",
     "preview": "vite preview --port 8080 --mode=development",
     "test:e2e": "npx playwright test",
-    "test:show-report": "npx playwright show-report"
+    "test:show-report": "npx playwright show-report",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path ../../.gitignore",
+    "format": "prettier --write '**/*.{js,ts,vue,json}' --ignore-path ../../.gitignore"
   },
   "dependencies": {
     "dom-to-image": "^2.6.0",

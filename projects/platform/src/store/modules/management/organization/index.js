@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 export default {
   namespaced: true,
   modules: {
-    orgUser
+    orgUser,
   },
   state: () => ({
     orgId: 1,
@@ -34,7 +34,7 @@ export default {
       cardInfo: {
         lastFour: '',
         expiredDate: '',
-        cardHolderName: ''
+        cardHolderName: '',
       },
       billingInfo: {
         recipient: '',
@@ -42,8 +42,8 @@ export default {
         countryCode: '',
         zipCode: '',
         city: '',
-        address: ''
-      }
+        address: '',
+      },
     },
     pricing: {
       basic: {
@@ -54,7 +54,7 @@ export default {
         materialUpgradeAlert: 2000,
         u3mUnit: 100,
         u3mPrice: 20,
-        u3mFreeQty: 10
+        u3mFreeQty: 10,
       },
       pro: {
         planPrice: 0,
@@ -64,8 +64,8 @@ export default {
         materialFreeQuota: 50,
         u3mUnit: 100,
         u3mPrice: 20,
-        u3mMonthFreeQty: 10
-      }
+        u3mMonthFreeQty: 10,
+      },
     },
 
     /** LOCAL VAR */
@@ -78,47 +78,47 @@ export default {
       phoneCountryCode: 'TW',
       fax: '',
       faxCountryCode: 'TW',
-      uploadMaterialEmail: ''
-    }
+      uploadMaterialEmail: '',
+    },
   }),
   getters: {
-    organization: state => state,
-    orgLogo: state => state.logo,
-    orgId: state => state.orgId,
-    orgNo: state => state.orgNo,
-    uploadMaterialEmail: state => state.uploadMaterialEmail,
-    memberList: state => state.memberList,
-    groupList: state => state.groupList,
-    historyList: state => state.historyList,
-    createForm: state => state.createForm,
-    paymentDetail: state => state.paymentDetail,
+    organization: (state) => state,
+    orgLogo: (state) => state.logo,
+    orgId: (state) => state.orgId,
+    orgNo: (state) => state.orgNo,
+    uploadMaterialEmail: (state) => state.uploadMaterialEmail,
+    memberList: (state) => state.memberList,
+    groupList: (state) => state.groupList,
+    historyList: (state) => state.historyList,
+    createForm: (state) => state.createForm,
+    paymentDetail: (state) => state.paymentDetail,
     noBindingPayment: (state, getters) => !getters.paymentDetail.cardInfo,
-    pricing: state => state.pricing
+    pricing: (state) => state.pricing,
   },
   mutations: {
-    SET_organization (state, organization) {
+    SET_organization(state, organization) {
       Object.assign(state, organization)
     },
-    SET_createForm (state, data) {
+    SET_createForm(state, data) {
       Object.assign(state.createForm, data)
     },
-    SET_createForm_uploadMaterialEmail (state, uploadMaterialEmail) {
+    SET_createForm_uploadMaterialEmail(state, uploadMaterialEmail) {
       state.createForm.uploadMaterialEmail = uploadMaterialEmail
     },
-    SET_pricing (state, pricing) {
+    SET_pricing(state, pricing) {
       state.pricing = pricing
-    }
+    },
   },
   actions: {
-    async callOrgApi ({ getters }, { func, params = {} }) {
+    async callOrgApi({ getters }, { func, params = {} }) {
       return await organizationApi[func](getters.orgId, params)
     },
-    setOrganization ({ commit }, data) {
+    setOrganization({ commit }, data) {
       commit('SET_organization', data)
     },
-    async createOrg ({ state, dispatch }) {
+    async createOrg({ state, dispatch }) {
       const temp = {}
-      Object.keys(state.createForm).forEach(key => {
+      Object.keys(state.createForm).forEach((key) => {
         if (state.createForm[key] !== '') {
           temp[key] = state.createForm[key]
         }
@@ -130,79 +130,117 @@ export default {
         delete temp.faxCountryCode
       }
 
-      const { data } = await dispatch('callOrgApi', { func: 'createOrg', params: temp })
+      const { data } = await dispatch('callOrgApi', {
+        func: 'createOrg',
+        params: temp,
+      })
       if (data.success) {
         dispatch('setOrganization', data.result.organization)
       }
       return data
     },
-    async setOrgUploadMail ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'setOrgUploadMail', params })
+    async setOrgUploadMail({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'setOrgUploadMail',
+        params,
+      })
       if (data.success) {
         dispatch('setOrganization', data.result.organization)
       }
       return data
     },
-    async getOrg ({ rootGetters, dispatch }, { orgNo }) {
-      const orgId = rootGetters['user/organizationList'].find(org => org.orgNo === orgNo)?.orgId || null
+    async getOrg({ rootGetters, dispatch }, { orgNo }) {
+      const orgId =
+        rootGetters['user/organizationList'].find((org) => org.orgNo === orgNo)
+          ?.orgId || null
       const { data } = await organizationApi.getOrg(orgId)
       dispatch('setOrganization', data.result.organization)
     },
-    async checkOrgNameExist (_, { orgId, orgName }) {
-      const { data } = await organizationApi.checkOrgNameExist(orgId, { orgName })
+    async checkOrgNameExist(_, { orgId, orgName }) {
+      const { data } = await organizationApi.checkOrgNameExist(orgId, {
+        orgName,
+      })
       return data.result.isExist
     },
-    async checkOrgMemberExist ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'checkOrgMemberExist', params })
+    async checkOrgMemberExist({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'checkOrgMemberExist',
+        params,
+      })
       return data.result.isExist
     },
-    async updateOrg ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'updateOrg', params })
+    async updateOrg({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'updateOrg',
+        params,
+      })
       dispatch('setOrganization', data.result.organization)
     },
-    async deleteOrg ({ dispatch }) {
+    async deleteOrg({ dispatch }) {
       const { data } = await dispatch('callOrgApi', { func: 'deleteOrg' })
       return data
     },
-    async updateOrgLogo ({ dispatch }, { logo, originalLogo }) {
+    async updateOrgLogo({ dispatch }, { logo, originalLogo }) {
       const logoFileName = logo.name
       const originalLogoFileName = originalLogo.name
 
-      const { data: { result: { tempUploadId, logoUploadUrl, originalLogoUploadUrl } } } = await axios('/org/update-logo/get-upload-url', {
+      const {
+        data: {
+          result: { tempUploadId, logoUploadUrl, originalLogoUploadUrl },
+        },
+      } = await axios('/org/update-logo/get-upload-url', {
         method: 'POST',
-        data: { logoFileName, originalLogoFileName }
+        data: { logoFileName, originalLogoFileName },
       })
       await putBinaryData(logoUploadUrl, logo)
       await putBinaryData(originalLogoUploadUrl, originalLogo)
 
-      const { data } = await dispatch('callOrgApi', { func: 'updateOrgLogo', params: { tempUploadId, logoFileName, originalLogoFileName } })
+      const { data } = await dispatch('callOrgApi', {
+        func: 'updateOrgLogo',
+        params: { tempUploadId, logoFileName, originalLogoFileName },
+      })
       dispatch('setOrganization', data.result.organization)
     },
-    async removeOrgLogo ({ dispatch }) {
+    async removeOrgLogo({ dispatch }) {
       const { data } = await dispatch('callOrgApi', { func: 'removeOrgLogo' })
       dispatch('setOrganization', data.result.organization)
     },
-    async changeOrgMemberRole ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'changeOrgMemberRole', params })
+    async changeOrgMemberRole({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'changeOrgMemberRole',
+        params,
+      })
       dispatch('setOrganization', data.result.organization)
     },
-    async removeOrgMember ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'removeOrgMember', params })
+    async removeOrgMember({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'removeOrgMember',
+        params,
+      })
       dispatch('setOrganization', data.result.organization)
     },
-    async cancelOrgInvitation ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'cancelOrgInvitation', params })
+    async cancelOrgInvitation({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'cancelOrgInvitation',
+        params,
+      })
       dispatch('setOrganization', data.result.organization)
     },
-    async orgInviteViaEmail ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'orgInviteViaEmail', params })
+    async orgInviteViaEmail({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'orgInviteViaEmail',
+        params,
+      })
       dispatch('setOrganization', data.result.organization)
     },
-    async joinOrgViaLink ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'joinOrgViaLink', params })
+    async joinOrgViaLink({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'joinOrgViaLink',
+        params,
+      })
       dispatch('setOrganization', data.result.organization)
     },
-    resetCreateForm ({ commit }) {
+    resetCreateForm({ commit }) {
       commit('SET_createForm', {
         orgCategoryId: 1,
         countryCode: '',
@@ -212,54 +250,76 @@ export default {
         phoneCountryCode: 'TW',
         fax: '',
         faxCountryCode: 'TW',
-        uploadMaterialEmail: ''
+        uploadMaterialEmail: '',
       })
     },
-    async getPricing ({ commit, dispatch }) {
+    async getPricing({ commit, dispatch }) {
       const { data } = await dispatch('callOrgApi', { func: 'getPricing' })
       commit('SET_pricing', data.result.pricing)
     },
-    async updateBillingInfo ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'updateBillingInfo', params })
+    async updateBillingInfo({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'updateBillingInfo',
+        params,
+      })
       dispatch('setOrganization', data.result.organization)
     },
-    async getStripeClientSecret ({ dispatch }) {
-      const { data } = await dispatch('callOrgApi', { func: 'getStripeClientSecret' })
+    async getStripeClientSecret({ dispatch }) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'getStripeClientSecret',
+      })
       return data.result.clientSecret
     },
-    async setCardHolderName ({ dispatch }, params) {
+    async setCardHolderName({ dispatch }, params) {
       await dispatch('callOrgApi', { func: 'setCardHolderName', params })
     },
-    async upgradePlan ({ dispatch }) {
+    async upgradePlan({ dispatch }) {
       const { data } = await dispatch('callOrgApi', { func: 'upgradePlan' })
       dispatch('setOrganization', data.result.organization)
       return data
     },
-    async getChargingOfUpgradePlan ({ dispatch }) {
-      const { data } = await dispatch('callOrgApi', { func: 'getChargingOfUpgradePlan' })
+    async getChargingOfUpgradePlan({ dispatch }) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'getChargingOfUpgradePlan',
+      })
       return data.result
     },
-    async requestUpgradeToEnterprise ({ dispatch }, params) {
-      await dispatch('callOrgApi', { func: 'requestUpgradeToEnterprise', params })
+    async requestUpgradeToEnterprise({ dispatch }, params) {
+      await dispatch('callOrgApi', {
+        func: 'requestUpgradeToEnterprise',
+        params,
+      })
     },
-    async purchaseMaterial ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'purchaseMaterial', params })
+    async purchaseMaterial({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'purchaseMaterial',
+        params,
+      })
       dispatch('setOrganization', data.result.organization)
     },
-    async getChargingOfPurchaseMaterial ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'getChargingOfPurchaseMaterial', params })
+    async getChargingOfPurchaseMaterial({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'getChargingOfPurchaseMaterial',
+        params,
+      })
       return data.result
     },
-    async cancelMaterial ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'cancelMaterial', params })
+    async cancelMaterial({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'cancelMaterial',
+        params,
+      })
       dispatch('setOrganization', data.result.organization)
     },
-    async purchaseU3m ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'purchaseU3m', params })
+    async purchaseU3m({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'purchaseU3m',
+        params,
+      })
       dispatch('setOrganization', data.result.organization)
       return data
     },
-    async getInvoiceList ({ dispatch }, params) {
+    async getInvoiceList({ dispatch }, params) {
       if (params.startDate?.length > 0) {
         params.startDate = dayjs(params.startDate).format('YYYY/MM/DD')
       }
@@ -268,47 +328,71 @@ export default {
         params.endDate = dayjs(params.endDate).format('YYYY/MM/DD')
       }
 
-      const { data } = await dispatch('callOrgApi', { func: 'getInvoiceList', params })
+      const { data } = await dispatch('callOrgApi', {
+        func: 'getInvoiceList',
+        params,
+      })
       return data.result
     },
-    async getInvoiceDetail ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'getInvoiceDetail', params })
+    async getInvoiceDetail({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'getInvoiceDetail',
+        params,
+      })
       dispatch('setOrganization', data.result.organization)
       return data.result
     },
-    async updateInvoiceBillingInfo ({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', { func: 'updateInvoiceBillingInfo', params })
+    async updateInvoiceBillingInfo({ dispatch }, params) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'updateInvoiceBillingInfo',
+        params,
+      })
       return data.result
     },
-    async getUnbilledInfo ({ dispatch }) {
+    async getUnbilledInfo({ dispatch }) {
       const { data } = await dispatch('callOrgApi', { func: 'getUnbilledInfo' })
       return data
     },
-    async getLastMonthUnbilledInfo ({ dispatch }) {
-      const { data } = await dispatch('callOrgApi', { func: 'getLastMonthUnbilledInfo' })
+    async getLastMonthUnbilledInfo({ dispatch }) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'getLastMonthUnbilledInfo',
+      })
       return data
     },
-    async payLastMonthUnbilledInfo ({ dispatch }) {
-      const { data } = await dispatch('callOrgApi', { func: 'payLastMonthUnbilledInfo' })
+    async payLastMonthUnbilledInfo({ dispatch }) {
+      const { data } = await dispatch('callOrgApi', {
+        func: 'payLastMonthUnbilledInfo',
+      })
       dispatch('setOrganization', data.result.organization)
       return data
     },
-    async deactivateOrg ({ dispatch }) {
+    async deactivateOrg({ dispatch }) {
       const { data } = await dispatch('callOrgApi', { func: 'deactivateOrg' })
       dispatch('setOrganization', data.result.organization)
       return data
     },
-    async activateOrg ({ dispatch }) {
+    async activateOrg({ dispatch }) {
       const { data } = await dispatch('callOrgApi', { func: 'activateOrg' })
       dispatch('setOrganization', data.result.organization)
     },
-    async made2flowScheduleMeeting ({ dispatch }, params) {
+    async made2flowScheduleMeeting({ dispatch }, params) {
       const { attachmentFileList } = params
-      const attachmentList = await Promise.all(attachmentFileList.map(attachment => dispatch('uploadFileToS3', { fileName: attachment.name, file: attachment }, { root: true })))
+      const attachmentList = await Promise.all(
+        attachmentFileList.map((attachment) =>
+          dispatch(
+            'uploadFileToS3',
+            { fileName: attachment.name, file: attachment },
+            { root: true }
+          )
+        )
+      )
       const tempParams = { ...params, attachmentList }
       delete tempParams.attachmentFileList
 
-      await dispatch('callOrgApi', { func: 'made2flowScheduleMeeting', params: tempParams })
-    }
-  }
+      await dispatch('callOrgApi', {
+        func: 'made2flowScheduleMeeting',
+        params: tempParams,
+      })
+    },
+  },
 }

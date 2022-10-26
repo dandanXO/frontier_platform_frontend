@@ -7,23 +7,23 @@ modal-behavior(
   @click:secondary="secondaryHandler"
 )
   div(class="w-180 flex justify-between")
-    p(class="text-body2 leading-1.6 text-grey-600 w-102") {{ $t("EE0066") }}
+    p(class="text-body2 leading-1.6 text-grey-600 w-102") {{ $t('EE0066') }}
     img(src="@/assets/images/u3m.png" class="w-70")
 </template>
 
 <script setup>
 defineProps({
   primaryBtnText: {
-    type: String
+    type: String,
   },
   primaryHandler: {
-    type: Function
+    type: Function,
   },
   secondaryBtnText: {
-    type: String
+    type: String,
   },
   secondaryHandler: {
-    type: Function
-  }
+    type: Function,
+  },
 })
 </script>

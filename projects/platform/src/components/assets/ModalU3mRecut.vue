@@ -1,7 +1,7 @@
 <template lang="pug">
 fullscreen-header
   template(#left)
-    h5(class="text-h5 text-grey-900 font-bold") {{ $t("EE0069") }}
+    h5(class="text-h5 text-grey-900 font-bold") {{ $t('EE0069') }}
   template(#right)
     btn-group(
       :primaryText="hasNext ? $t('UU0021') : $t('UU0020')"
@@ -11,7 +11,11 @@ fullscreen-header
     )
   template(#content)
     template(v-for="cropper in croppers")
-      div(v-show="cropper.ref === currentSide" class="flex h-full justify-center items-center" :class="[cropper.ref]")
+      div(
+        v-show="cropper.ref === currentSide"
+        class="flex h-full justify-center items-center"
+        :class="[cropper.ref]"
+      )
         div
           div(class="mb-4.5 text-center text-grey-900 text-body2 font-bold") {{ cropper.title }}
           cropper-default-layout(
@@ -26,7 +30,7 @@ fullscreen-header
           )
             template(#imageCropArea="{ innerScaleSize }")
               image-crop-area(
-                :ref="(el => handleRefUpdate(cropper.ref, el))"
+                :ref="(el) => handleRefUpdate(cropper.ref, el)"
                 :config="cropper.config"
                 :cropRectSize="cropRectSize"
                 @update:options="Object.assign(cropper.config.options, $event)"
@@ -71,17 +75,15 @@ const pxPerCm = 2.54 // 1 dpi = 0.393701 pixel/cm; 1 pixel/cm = 2.54 dpi
 const croppers = reactive([])
 const faceSideConfig = reactive({})
 const backSideConfig = reactive({})
-const previewScaleRatio = computed(() => previewRect.value ? previewRect.value.clientWidth / cropRectSize : 1)
+const previewScaleRatio = computed(() =>
+  previewRect.value ? previewRect.value.clientWidth / cropRectSize : 1
+)
 
 let faceSideCropImg = null
 let backSideCropImg = null
 
-const {
-  isDoubleSideMaterial,
-  isFaceSideMaterial,
-  faceSideUrl,
-  backSideUrl
-} = useMaterialImage(material.value, 'u3m')
+const { isDoubleSideMaterial, isFaceSideMaterial, faceSideUrl, backSideUrl } =
+  useMaterialImage(material.value, 'u3m')
 
 const hasNext = ref(isDoubleSideMaterial && faceSideUrl && backSideUrl)
 const isAtSecondStep = ref(false)
@@ -106,7 +108,8 @@ const goBack = () => {
 
 const handleUpdateScaleRatio = (cropper, event) => {
   const width2Cm = cropper.config.image?.width * (pxPerCm / cropper.config.dpi)
-  const height2Cm = cropper.config.image?.height * (pxPerCm / cropper.config.dpi)
+  const height2Cm =
+    cropper.config.image?.height * (pxPerCm / cropper.config.dpi)
   const mainRuler = width2Cm > height2Cm ? height2Cm : width2Cm
   cropper.config.scaleRatio = mainRuler / event
 }
@@ -122,7 +125,7 @@ const confirm = async () => {
   await store.dispatch('assets/generateU3m', {
     faceSideCropImg,
     backSideCropImg,
-    isAutoRepeat: false
+    isAutoRepeat: false,
   })
 
   store.dispatch('helper/closeModalLoading')
@@ -134,7 +137,7 @@ const confirm = async () => {
     contentText: t('EE0122', { RR0008: t('RR0008') }),
     primaryBtnText: t('UU0103'),
     secondaryBtnText: t('UU0090'),
-    secondaryBtnHandler: () => goToProgress('u3m')
+    secondaryBtnHandler: () => goToProgress('u3m'),
   })
 }
 
@@ -154,14 +157,14 @@ onMounted(async () => {
     const faceSideCropper = new Cropper({
       src: faceSideUrl,
       dpi: faceSideImg.dpi,
-      cropRectSize
+      cropRectSize,
     })
     await faceSideCropper.formatImage()
 
     Object.assign(faceSideConfig, {
       ref: 'refFaceSide',
       title: t('EE0051'),
-      config: faceSideCropper.config
+      config: faceSideCropper.config,
     })
     croppers.push(faceSideConfig)
   }
@@ -169,14 +172,14 @@ onMounted(async () => {
     const backSideCropper = new Cropper({
       src: backSideUrl,
       dpi: backSideImg.dpi,
-      cropRectSize
+      cropRectSize,
     })
     await backSideCropper.formatImage()
 
     Object.assign(backSideConfig, {
       ref: 'refBackSide',
       title: t('EE0052'),
-      config: backSideCropper.config
+      config: backSideCropper.config,
     })
     croppers.push(backSideConfig)
   }

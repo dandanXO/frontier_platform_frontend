@@ -20,16 +20,16 @@ import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 export default {
   name: 'Plan',
   components: {
-    FullscreenHeader
+    FullscreenHeader,
   },
-  setup () {
+  setup() {
     const store = useStore()
 
     const closeModal = () => store.dispatch('helper/closeModal')
 
     return {
-      closeModal
+      closeModal,
     }
-  }
+  },
 }
 </script>

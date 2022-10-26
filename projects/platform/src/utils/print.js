@@ -21,18 +21,18 @@ const A4_HEIGHT = 842
 const formatMaterialList = (materialList) => {
   const list = []
 
-  materialList.forEach(material => {
+  materialList.forEach((material) => {
     const { isDoubleSideMaterial, frontierNo, relationFrontierNo } = material
     if (isDoubleSideMaterial) {
       list.push({
         ...material,
         frontierNo,
-        sideType: SIDE_TYPE.FACE
+        sideType: SIDE_TYPE.FACE,
       })
       list.push({
         ...material,
         frontierNo: relationFrontierNo,
-        sideType: SIDE_TYPE.BACK
+        sideType: SIDE_TYPE.BACK,
       })
     } else {
       list.push(material)
@@ -47,7 +47,7 @@ const formatMaterialList = (materialList) => {
     item.materialWidth = materialInfo.width.value
 
     // 此處將「%」符號由半形改為全形，是因為某些字串組合如「100%BCI」會導致渲染錯誤
-    Object.keys(item).forEach(key => {
+    Object.keys(item).forEach((key) => {
       if (typeof item[key] === 'string') {
         item[key] = item[key].split('%').join('％')
       }
@@ -60,12 +60,19 @@ const formatMaterialList = (materialList) => {
 const printPdf = async (dataUrls, config) => {
   await asyncForEach(dataUrls, async (el, index, arr) => {
     for (let i = 0; i < el.num; i++) {
-      config.doc.addImage(el.dataUrl, 'JPEG', 0, -i * config.height, config.width, config.height * el.num)
-      if (i !== (el.num - 1)) {
+      config.doc.addImage(
+        el.dataUrl,
+        'JPEG',
+        0,
+        -i * config.height,
+        config.width,
+        config.height * el.num
+      )
+      if (i !== el.num - 1) {
         config.doc.addPage()
       }
     }
-    if (index !== (arr.length - 1)) {
+    if (index !== arr.length - 1) {
       config.doc.addPage()
     }
   })
@@ -92,26 +99,66 @@ const printA4Card = async (materialList) => {
           <div class="w-full">
             <p class="text-body1 font-bold mb-3.5">${material.materialNo}</p>
             <div class="text-caption text-grey-900 grid gap-y-1">
-              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t("RR0014")}：</p><p class="flex-1 line-clamp-2">${material.description}</p></div>
-              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t("RR0021")}：</p><p class="flex-1 line-clamp-2">${material.content}</p></div>
-              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t("RR0023")}：</p><p class="flex-1 line-clamp-2">${material.materialYarnCount}</p></div>
-              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t("RR0024")}：</p><p class="flex-1 line-clamp-1">${material.materialDensity}</p></div>
-              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t("RR0025")}：</p><p class="flex-1 line-clamp-1">${material.pattern || ''}</p></div>
-              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t("RR0026")}：</p><p class="flex-1 line-clamp-1">${material.color || ''}</p></div>
-              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t("RR0015")}：</p><p class="flex-1 line-clamp-1">${material.materialWeight}</p></div>
-              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t("RR0019")}：</p><p class="flex-1 line-clamp-1">${material.materialWidth}</p></div>
-              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t("RR0022")}：</p><p class="flex-1 line-clamp-2">${material.finish}</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t(
+                'RR0014'
+              )}：</p><p class="flex-1 line-clamp-2">${
+      material.description
+    }</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t(
+                'RR0021'
+              )}：</p><p class="flex-1 line-clamp-2">${
+      material.content
+    }</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t(
+                'RR0023'
+              )}：</p><p class="flex-1 line-clamp-2">${
+      material.materialYarnCount
+    }</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t(
+                'RR0024'
+              )}：</p><p class="flex-1 line-clamp-1">${
+      material.materialDensity
+    }</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t(
+                'RR0025'
+              )}：</p><p class="flex-1 line-clamp-1">${
+      material.pattern || ''
+    }</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t(
+                'RR0026'
+              )}：</p><p class="flex-1 line-clamp-1">${
+      material.color || ''
+    }</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t(
+                'RR0015'
+              )}：</p><p class="flex-1 line-clamp-1">${
+      material.materialWeight
+    }</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-1">${t(
+                'RR0019'
+              )}：</p><p class="flex-1 line-clamp-1">${
+      material.materialWidth
+    }</p></div>
+              <div class="flex"><p class="whitespace-nowrap flex-shrink-0 line-clamp-2">${t(
+                'RR0022'
+              )}：</p><p class="flex-1 line-clamp-2">${
+      material.finish
+    }</p></div>
             </div>
           </div>
           <div class="flex flex-col flex-shrink-0 items-center text-grey-900">
             <span id="mark" class="whitespace-nowrap text-caption font-bold"></span>
             <div id="container" class="mt-2.5 mb-2"></div>
-            <span class="whitespace-nowrap text-caption scale-90">${material.frontierNo}</span>
+            <span class="whitespace-nowrap text-caption scale-90">${
+              material.frontierNo
+            }</span>
           </div>
         </div>
         <div class="text-grey-600 relative flex flex-col items-center justify-center w-full h-97 bg-cover" style="background-image: url(${imgPdfOutLine})">
-          <span class="whitespace-nowrap text-caption mb-2.5">${material.sideType === SIDE_TYPE.FACE ? t("DD0046") : t("DD0047")}</span>
-          <span class="whitespace-nowrap text-caption">${t("DD0050")}</span>
+          <span class="whitespace-nowrap text-caption mb-2.5">${
+            material.sideType === SIDE_TYPE.FACE ? t('DD0046') : t('DD0047')
+          }</span>
+          <span class="whitespace-nowrap text-caption">${t('DD0050')}</span>
         </div>
         <div class="flex flex-col justify-start items-start w-full">
           <span class="mb-2 font-bold text-caption">${org.orgName}</span>
@@ -124,17 +171,27 @@ const printA4Card = async (materialList) => {
     const mark = document.getElementById('mark')
     if (material.sideType === SIDE_TYPE.BACK) {
       mark.innerText = t('DD0051')
-      mark.classList.add('text-grey-0', 'py-1.5', 'px-2', 'bg-grey-900', 'rounded-sm')
+      mark.classList.add(
+        'text-grey-0',
+        'py-1.5',
+        'px-2',
+        'bg-grey-900',
+        'rounded-sm'
+      )
     } else {
       mark.innerText = t('DD0046')
     }
 
-    QRCode.toCanvas(material.frontierNo, { width: 60, margin: 0 }, (err, canvas) => {
-      if (err) throw err
+    QRCode.toCanvas(
+      material.frontierNo,
+      { width: 60, margin: 0 },
+      (err, canvas) => {
+        if (err) throw err
 
-      const container = document.getElementById('container')
-      container.appendChild(canvas)
-    })
+        const container = document.getElementById('container')
+        container.appendChild(canvas)
+      }
+    )
   }
 
   await asyncForEach(list, async (el, index, arr) => {
@@ -144,13 +201,13 @@ const printA4Card = async (materialList) => {
       height: A4_HEIGHT * scale,
       style: {
         transform: 'scale(' + scale + ')',
-        transformOrigin: 'top left'
-      }
+        transformOrigin: 'top left',
+      },
     })
 
     dataUrls.push({
       dataUrl,
-      num: pdfTarget.children.length
+      num: pdfTarget.children.length,
     })
     pdfTarget.remove()
   })
@@ -158,7 +215,7 @@ const printA4Card = async (materialList) => {
   await printPdf(dataUrls, {
     width: 21,
     height: 29.7,
-    doc: new JsPDF({ unit: 'cm', format: 'a4', orientation: 'p' })
+    doc: new JsPDF({ unit: 'cm', format: 'a4', orientation: 'p' }),
   })
 
   store.dispatch('helper/closeModalLoading')
@@ -175,11 +232,20 @@ const printGeneralLabel = async (materialList) => {
   pdfTarget.classList.add('w-0', 'h-0', 'overflow-hidden')
 
   const domGenerator = (material) => {
-    material['materialYarnDensityWidth'] = `${material.materialYarnCount} ${material.materialDensity} ${material.materialWidth}`
-    const fields = ['description', 'content', 'materialYarnDensityWidth', 'finish', 'materialWeight']
+    material[
+      'materialYarnDensityWidth'
+    ] = `${material.materialYarnCount} ${material.materialDensity} ${material.materialWidth}`
+    const fields = [
+      'description',
+      'content',
+      'materialYarnDensityWidth',
+      'finish',
+      'materialWeight',
+    ]
     const getHtmlString = () => {
-      return fields.filter(field => material[field].trim().length !== 0)
-        .map(field => material[field] + '<br>')
+      return fields
+        .filter((field) => material[field].trim().length !== 0)
+        .map((field) => material[field] + '<br>')
         .join('')
     }
 
@@ -192,8 +258,12 @@ const printGeneralLabel = async (materialList) => {
           <div class="flex justify-center w-full">
             <div class="flex flex-col items-center justify-center ml-16">
               <div id="container" class="mb-4"></div>
-              <div class="whitespace-nowrap text-grey-900 text-body2 mb-2">${t("DD0046")}</div>
-              <div class="whitespace-nowrap text-grey-600 text-body2">${material.frontierNo}</div>
+              <div class="whitespace-nowrap text-grey-900 text-body2 mb-2">${t(
+                'DD0046'
+              )}</div>
+              <div class="whitespace-nowrap text-grey-600 text-body2">${
+                material.frontierNo
+              }</div>
             </div>
             <div class="flex-none border border-grey-200 mx-6 my-5"></div>
             <div class="flex flex-col justify-center text-grey-900 w-56">
@@ -213,10 +283,16 @@ const printGeneralLabel = async (materialList) => {
           </div>
           <div class="flex justify-center w-full">
             <div class="flex flex-col items-center justify-center">
-              <div class="whitespace-nowrap text-grey-900 font-bold text-body1">${material.materialNo}</div>
+              <div class="whitespace-nowrap text-grey-900 font-bold text-body1">${
+                material.materialNo
+              }</div>
               <div id="container" class="mt-4 mb-4"></div>
-              <div class="whitespace-nowrap text-grey-900 text-body2 mb-2">${t("DD0051")}</div>
-              <div class="whitespace-nowrap text-grey-600 text-body2">${material.frontierNo}</div>
+              <div class="whitespace-nowrap text-grey-900 text-body2 mb-2">${t(
+                'DD0051'
+              )}</div>
+              <div class="whitespace-nowrap text-grey-600 text-body2">${
+                material.frontierNo
+              }</div>
             </div>
           </div>
         </div>
@@ -225,12 +301,16 @@ const printGeneralLabel = async (materialList) => {
 
     document.body.appendChild(pdfTarget)
 
-    QRCode.toCanvas(material.frontierNo, { width: 100, margin: 0 }, (err, canvas) => {
-      if (err) throw err
+    QRCode.toCanvas(
+      material.frontierNo,
+      { width: 100, margin: 0 },
+      (err, canvas) => {
+        if (err) throw err
 
-      const container = document.getElementById('container')
-      container.appendChild(canvas)
-    })
+        const container = document.getElementById('container')
+        container.appendChild(canvas)
+      }
+    )
   }
 
   await asyncForEach(list, async (el, index, arr) => {
@@ -240,13 +320,13 @@ const printGeneralLabel = async (materialList) => {
       height: LABEL_HEIGHT * scale,
       style: {
         transform: 'scale(' + scale + ')',
-        transformOrigin: 'top left'
-      }
+        transformOrigin: 'top left',
+      },
     })
 
     dataUrls.push({
       dataUrl,
-      num: pdfTarget.children.length
+      num: pdfTarget.children.length,
     })
     pdfTarget.remove()
   })
@@ -256,7 +336,11 @@ const printGeneralLabel = async (materialList) => {
   await printPdf(dataUrls, {
     width: PDF_WIDTH,
     height: PDF_HEIGHT,
-    doc: new JsPDF({ unit: 'cm', format: [PDF_HEIGHT, PDF_WIDTH], orientation: 'l' })
+    doc: new JsPDF({
+      unit: 'cm',
+      format: [PDF_HEIGHT, PDF_WIDTH],
+      orientation: 'l',
+    }),
   })
 
   store.dispatch('helper/closeModalLoading')
@@ -274,18 +358,24 @@ const printBackSideLabel = async () => {
         <span class="mb-2 text-grey-900 font-bold text-h5">${t('DD0051')}</span>
         <span class="text-body2 leading-1.5">${t('DD0052')}</span>
       </div>
-      <div class="absolute bottom-2.5 right-2.5 text-grey-200 font-bold">${t('DD0053')}</div>
+      <div class="absolute bottom-2.5 right-2.5 text-grey-200 font-bold">${t(
+        'DD0053'
+      )}</div>
     </div>
   `
 
   document.body.appendChild(pdfTarget)
 
-  QRCode.toCanvas('Scan Back Side', { width: 100, margin: 0 }, (err, canvas) => {
-    if (err) throw err
+  QRCode.toCanvas(
+    'Scan Back Side',
+    { width: 100, margin: 0 },
+    (err, canvas) => {
+      if (err) throw err
 
-    const container = document.getElementById('container')
-    container.appendChild(canvas)
-  })
+      const container = document.getElementById('container')
+      container.appendChild(canvas)
+    }
+  )
 
   const scale = 5
   const dataUrl = await domtoimage.toJpeg(pdfTarget, {
@@ -293,8 +383,8 @@ const printBackSideLabel = async () => {
     height: LABEL_HEIGHT * scale,
     style: {
       transform: 'scale(' + scale + ')',
-      transformOrigin: 'top left'
-    }
+      transformOrigin: 'top left',
+    },
   })
   const doc = new JsPDF({ unit: 'cm', format: [4, 8], orientation: 'l' })
   doc.addImage(dataUrl, 'JPEG', 0, 0, 8, 4)

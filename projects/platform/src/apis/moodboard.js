@@ -8,7 +8,8 @@ export default {
    * @param {object} params
    * @param {number} params.moodboardId
    */
-  getMoodboard: (type, id, params) => apiWrapper('/moodboard/get', type, id, params),
+  getMoodboard: (type, id, params) =>
+    apiWrapper('/moodboard/get', type, id, params),
 
   /**
    * @param {object} params
@@ -17,7 +18,8 @@ export default {
    * @param {object?} params.trendBoard - {tempUploadId, fileName}
    * @param {object[]?} params.attachmentList - [{tempUploadId, fileName}]
    */
-  createMoodboard: (type, id, params) => apiWrapper('/moodboard/create', type, id, params),
+  createMoodboard: (type, id, params) =>
+    apiWrapper('/moodboard/create', type, id, params),
 
   /**
    * @param {object} params
@@ -29,39 +31,45 @@ export default {
    * @param {number[]?} params.deleteAttachmentIdList
    * @param {boolean} params.isDeleteTrendBoard
    */
-  updateMoodboard: (type, id, params) => apiWrapper('/moodboard/update', type, id, params),
+  updateMoodboard: (type, id, params) =>
+    apiWrapper('/moodboard/update', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number} params.moodboardId
    */
-  deleteMoodboard: (type, id, params) => apiWrapper('/moodboard/delete', type, id, params),
+  deleteMoodboard: (type, id, params) =>
+    apiWrapper('/moodboard/delete', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number} params.moodboardId
    * @param {number} params.nodeId
    * @param {string} params.keyword
    */
-  getMoodboardNodeCollection: (type, id, params) => apiWrapper('/moodboard/offer/node/collection/get', type, id, params),
+  getMoodboardNodeCollection: (type, id, params) =>
+    apiWrapper('/moodboard/offer/node/collection/get', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number[]} params.nodeIdList
    */
-  deleteMoodboardNode: (type, id, params) => apiWrapper('/moodboard/offer/node/delete', type, id, params),
+  deleteMoodboardNode: (type, id, params) =>
+    apiWrapper('/moodboard/offer/node/delete', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number} params.nodeId
    */
-  pickMoodboardNode: (type, id, params) => apiWrapper('/moodboard/offer/node/pick', type, id, params),
+  pickMoodboardNode: (type, id, params) =>
+    apiWrapper('/moodboard/offer/node/pick', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number} params.nodeId
    */
-  unpickMoodboardNode: (type, id, params) => apiWrapper('/moodboard/offer/node/unpick', type, id, params),
+  unpickMoodboardNode: (type, id, params) =>
+    apiWrapper('/moodboard/offer/node/unpick', type, id, params),
 
   /**
    * @param {object} params
@@ -69,13 +77,15 @@ export default {
    * @param {number} params.offerId
    * @param {string} params.keyword
    */
-  getPickedMoodboardNode: (type, id, params) => apiWrapper('/moodboard/offer/picked/get', type, id, params),
+  getPickedMoodboardNode: (type, id, params) =>
+    apiWrapper('/moodboard/offer/picked/get', type, id, params),
 
   /**
    * @param {object} params
    * @param {number[]} params.nodeIdList
    */
-  cloneCheckMoodboardNode: (type, id, params) => apiWrapper('/moodboard/offer/node/clone-check', type, id, params),
+  cloneCheckMoodboardNode: (type, id, params) =>
+    apiWrapper('/moodboard/offer/node/clone-check', type, id, params),
 
   /**
    * @param {object} params
@@ -83,107 +93,121 @@ export default {
    * @param {object[]} params.targetLocationList - [{id, location}]
    * @param {object} params.optional - {u3m, attachment}
    */
-  cloneMoodboardNode: (type, id, params) => apiWrapper('/moodboard/offer/node/clone', type, id, params),
+  cloneMoodboardNode: (type, id, params) =>
+    apiWrapper('/moodboard/offer/node/clone', type, id, params),
 
   /**
    * @param {object} params
    * @param {number} params.moodboardId
    * @param {number[]} params.nodeIdList
    */
-  exportMoodboardNode: (type, id, params) => apiWrapper('/moodboard/offer/picked/export', type, id, params),
+  exportMoodboardNode: (type, id, params) =>
+    apiWrapper('/moodboard/offer/picked/export', type, id, params),
 
   /**
    * @param {object} params
    * @param {number} params.moodboardId
    * @param {number[]} params.nodeIdList
    */
-  massExportMoodboardNode: (type, id, params) => apiWrapper('/moodboard/offer/picked/mass-export', type, id, params),
+  massExportMoodboardNode: (type, id, params) =>
+    apiWrapper('/moodboard/offer/picked/mass-export', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number} params.moodboardId
    * @param {number} params.offerId
    */
-  getMoodboardComment: (type, id, params) => apiWrapper('/moodboard/offer/comment/get', type, id, params),
+  getMoodboardComment: (type, id, params) =>
+    apiWrapper('/moodboard/offer/comment/get', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number} params.moodboardId
    * @param {number} params.offerId
    * @param {string} params.comment
    */
-  createMoodboardComment: (type, id, params) => apiWrapper('/moodboard/offer/comment/create', type, id, params),
+  createMoodboardComment: (type, id, params) =>
+    apiWrapper('/moodboard/offer/comment/create', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number} params.moodboardId
    * @param {string} params.target
    */
-  getMoodboardShareTarget: (type, id, params) => apiWrapper('/moodboard/share/get-target', type, id, params),
+  getMoodboardShareTarget: (type, id, params) =>
+    apiWrapper('/moodboard/share/get-target', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number} params.moodboardId
    * @param {object[]} params.targetList
    * @param {string} params.message
    */
-  shareMoodboard: (type, id, params) => apiWrapper('/moodboard/share', type, id, params),
+  shareMoodboard: (type, id, params) =>
+    apiWrapper('/moodboard/share', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number} params.shareId
    */
-  removeMoodboardShare: (type, id, params) => apiWrapper('/moodboard/share/remove', type, id, params),
+  removeMoodboardShare: (type, id, params) =>
+    apiWrapper('/moodboard/share/remove', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number} params.nodeId
    */
-  getMoodboardNodeMaterial: (type, id, params) => apiWrapper('/moodboard/offer/node/material/get', type, id, params),
+  getMoodboardNodeMaterial: (type, id, params) =>
+    apiWrapper('/moodboard/offer/node/material/get', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number} params.nodeId
    * @param {number[]} params.materialIdList
    */
-  addMaterialToMoodboardNode: (type, id, params) => apiWrapper('/moodboard/offer/node/material/create', type, id, params),
+  addMaterialToMoodboardNode: (type, id, params) =>
+    apiWrapper('/moodboard/offer/node/material/create', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number} params.nodeId
    * @param {string} params.name
    * @param {string} params.description
    * @param {object?} params.trendBoard - {tempUploadId, fileName}
    */
-  createMoodboardNodeCollection: (type, id, params) => apiWrapper('/moodboard/offer/node/collection/create', type, id, params),
+  createMoodboardNodeCollection: (type, id, params) =>
+    apiWrapper('/moodboard/offer/node/collection/create', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {number} params.nodeId
    * @param {string} params.name
    * @param {string} params.description
    * @param {object?} params.newTrendBoard - {tempUploadId, fileName}
    * @param {boolean} params.isDeleteTrendBoard
    */
-  updateMoodboardNodeCollection: (type, id, params) => apiWrapper('/moodboard/offer/node/collection/update', type, id, params),
+  updateMoodboardNodeCollection: (type, id, params) =>
+    apiWrapper('/moodboard/offer/node/collection/update', type, id, params),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {string} params.sharingKey
    */
-  getMoodboardReceivedShare: (params) => axios('/share/moodboard/get-received', {
-    method: 'POST',
-    data: params
-  }),
+  getMoodboardReceivedShare: (params) =>
+    axios('/share/moodboard/get-received', {
+      method: 'POST',
+      data: params,
+    }),
 
   /**
-   * @param {object} params 
+   * @param {object} params
    * @param {string} params.sharingKey
    * @param {number} params.orgId
    * @param {number} params.groupId
    */
-  saveMoodboardReceivedShare: (params) => axios('/share/moodboard/get-received/save', {
-    method: 'POST',
-    data: params
-  })
+  saveMoodboardReceivedShare: (params) =>
+    axios('/share/moodboard/get-received/save', {
+      method: 'POST',
+      data: params,
+    }),
 }

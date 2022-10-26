@@ -4,13 +4,11 @@ import { computed } from 'vue'
 import { SOURCE_ASSET_LOCATION, NODE_LOCATION } from '@/utils/constants.js'
 import useNavigation from '@/composables/useNavigation.js'
 
-export default function useWorkspace () {
+export default function useWorkspace() {
   const { t } = useI18n()
   const store = useStore()
-  const {
-    goToOrgAssetMaterialEdit,
-    goToGroupAssetMaterialEdit
-  } = useNavigation()
+  const { goToOrgAssetMaterialEdit, goToGroupAssetMaterialEdit } =
+    useNavigation()
 
   const routeLocation = computed(() => store.getters['helper/routeLocation'])
 
@@ -20,7 +18,7 @@ export default function useWorkspace () {
     DUPLICATE_NODE: 2,
     MOVE_NODE: 3,
     DELETE_NODE: 4,
-    SHARE_NODE: 5
+    SHARE_NODE: 5,
   }
 
   const editNodeCollection = {
@@ -32,10 +30,10 @@ export default function useWorkspace () {
         component: 'modal-create-or-edit-collection',
         properties: {
           mode: 2,
-          workspaceNodeId
-        }
+          workspaceNodeId,
+        },
       })
-    }
+    },
   }
 
   const editNodeMaterial = {
@@ -44,7 +42,7 @@ export default function useWorkspace () {
     func: (node) => {
       const { materialId, sourceAssetLocation } = node.properties
       editMaterial(materialId, sourceAssetLocation)
-    }
+    },
   }
 
   const editMaterial = (materialId, sourceAssetLocation) => {
@@ -74,7 +72,7 @@ export default function useWorkspace () {
                 primaryBtnText: t('UU0001'),
                 primaryBtnHandler: resolve.bind(undefined, 'confirm'),
                 secondaryBtnText: t('UU0002'),
-                secondaryBtnHandler: resolve.bind(undefined, 'cancel')
+                secondaryBtnHandler: resolve.bind(undefined, 'cancel'),
               })
             })
             if (result === 'confirm') {
@@ -84,16 +82,16 @@ export default function useWorkspace () {
                 targetWorkspaceNodeList: nodeList.map(({ nodeKey }) => {
                   const [location, id] = nodeKey.split('-')
                   return { id, location }
-                })
+                }),
               })
               store.dispatch('helper/closeModalLoading')
               store.dispatch('helper/reloadInnerApp')
               store.dispatch('helper/pushFlashMessage', t('FF0047'))
             }
-          }
-        }
+          },
+        },
       })
-    }
+    },
   }
 
   const moveNode = {
@@ -108,7 +106,11 @@ export default function useWorkspace () {
           canCrossLocation: false,
           isMultiSelect: false,
           canSelectSelf: false,
-          selfNodeKey: `${routeLocation.value === 'org' ? NODE_LOCATION.ORG : NODE_LOCATION.GROUP}-${workspaceNodeId}`,
+          selfNodeKey: `${
+            routeLocation.value === 'org'
+              ? NODE_LOCATION.ORG
+              : NODE_LOCATION.GROUP
+          }-${workspaceNodeId}`,
           actionText: t('UU0061'),
           actionCallback: async (node) => {
             const result = await new Promise((resolve) => {
@@ -119,7 +121,7 @@ export default function useWorkspace () {
                 primaryBtnText: t('UU0001'),
                 primaryBtnHandler: resolve.bind(undefined, 'confirm'),
                 secondaryBtnText: t('UU0002'),
-                secondaryBtnHandler: resolve.bind(undefined, 'cancel')
+                secondaryBtnHandler: resolve.bind(undefined, 'cancel'),
               })
             })
             if (result === 'confirm') {
@@ -127,17 +129,23 @@ export default function useWorkspace () {
               const targetWorkspaceNodeId = node.nodeKey.split('-')[1]
               await store.dispatch('workspace/moveNode', {
                 workspaceNodeId,
-                targetWorkspaceNodeId
+                targetWorkspaceNodeId,
               })
-              const { name: collectionName } = await store.dispatch('workspace/getCollection', { workspaceNodeId: targetWorkspaceNodeId })
+              const { name: collectionName } = await store.dispatch(
+                'workspace/getCollection',
+                { workspaceNodeId: targetWorkspaceNodeId }
+              )
               store.dispatch('helper/closeModalLoading')
               store.dispatch('helper/reloadInnerApp')
-              store.dispatch('helper/pushFlashMessage', t('FF0042', { collectionName }))
+              store.dispatch(
+                'helper/pushFlashMessage',
+                t('FF0042', { collectionName })
+              )
             }
-          }
-        }
+          },
+        },
       })
-    }
+    },
   }
 
   const deleteNodeList = async (workspaceNodeIdList, header, contentText) => {
@@ -149,7 +157,7 @@ export default function useWorkspace () {
         primaryBtnText: t('UU0001'),
         primaryBtnHandler: resolve.bind(undefined, 'confirm'),
         secondaryBtnText: t('UU0002'),
-        secondaryBtnHandler: resolve.bind(undefined, 'cancel')
+        secondaryBtnHandler: resolve.bind(undefined, 'cancel'),
       })
     })
     if (result === 'confirm') {
@@ -166,7 +174,7 @@ export default function useWorkspace () {
     func: (node) => {
       const workspaceNodeId = node.workspaceNodeId
       deleteNodeList([workspaceNodeId], t('FF0044'), t('FF0045'))
-    }
+    },
   }
 
   const deleteMaterial = {
@@ -175,16 +183,16 @@ export default function useWorkspace () {
     func: (node) => {
       const workspaceNodeId = node.workspaceNodeId
       deleteNodeList([workspaceNodeId], t('FF0046'), t('FF0045'))
-    }
+    },
   }
 
   const deleteMultipleNode = {
     id: FUNCTION_ID.DELETE_NODE,
     name: t('RR0063'),
     func: (nodeList) => {
-      const workspaceNodeIdList = nodeList.map(node => node.workspaceNodeId)
+      const workspaceNodeIdList = nodeList.map((node) => node.workspaceNodeId)
       deleteNodeList(workspaceNodeIdList, t('FF0004'), t('FF0005'))
-    }
+    },
   }
 
   const shareNode = {
@@ -196,10 +204,10 @@ export default function useWorkspace () {
         properties: {
           nodeKey: node.nodeKey,
           workspaceNodeId: node.workspaceNodeId,
-          nodeType: node.nodeType
-        }
+          nodeType: node.nodeType,
+        },
       })
-    }
+    },
   }
 
   return {
@@ -211,6 +219,6 @@ export default function useWorkspace () {
     deleteMultipleNode,
     deleteCollection,
     deleteMaterial,
-    editMaterial
+    editMaterial,
   }
 }

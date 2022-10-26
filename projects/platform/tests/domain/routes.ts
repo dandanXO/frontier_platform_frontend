@@ -1,11 +1,11 @@
-import { getUrl } from "./utils"
+import { getUrl } from './utils'
 
 export const port = 8080
 export const host = `http://localhost:${port}`
-export const apiUrl = "https://textile-webapi-dev.frontier.cool"
+export const apiUrl = 'https://textile-webapi-dev.frontier.cool'
 
 export const paths = {
-  index: "/",
+  index: '/',
   signIn: `/sign-in`,
   signUp: `/sign-up`,
 }

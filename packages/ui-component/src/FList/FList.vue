@@ -11,6 +11,6 @@ div(class="bg-grey-0 py-2 rounded card-shadow")
 
 <script>
 export default {
-  name: 'FList'
+  name: 'FList',
 }
 </script>

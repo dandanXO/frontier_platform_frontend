@@ -19,11 +19,24 @@ modal-behavior(
     )
     div(class="flex-grow flex flex-col")
       div(class="relative z-20 flex justify-between items-center py-4")
-        f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="goTo($event)")
+        f-breadcrumb(
+          :breadcrumbList="breadcrumbList"
+          @click:item="goTo($event)"
+        )
         div(class="flex items-center")
           div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
-            f-svg-icon(iconName="cancel" size="14" class="text-grey-200 mr-1 cursor-pointer" @click="clearSelect")
-            i18n-t(keypath="RR0073" tag="div" class="mr-1.5 text-caption" scope="global")
+            f-svg-icon(
+              iconName="cancel"
+              size="14"
+              class="text-grey-200 mr-1 cursor-pointer"
+              @click="clearSelect"
+            )
+            i18n-t(
+              keypath="RR0073"
+              tag="div"
+              class="mr-1.5 text-caption"
+              scope="global"
+            )
               template(#number) {{ selectedValue.length }}
           f-popper(v-if="!isInRoot" placement="bottom-end")
             template(#trigger="{ isExpand }")
@@ -40,9 +53,16 @@ modal-behavior(
                 :selectMode="2"
                 @click:menu="sort"
               )
-      div(v-show="isSearching && nodeMaterialList.length === 0" class="flex-grow flex items-center justify-center")
+      div(
+        v-show="isSearching && nodeMaterialList.length === 0"
+        class="flex-grow flex items-center justify-center"
+      )
         f-svg-icon(iconName="loading" size="92" class="text-primary-400")
-      f-scrollbar-container(v-if="!isSearching || nodeMaterialList.length > 0" class="h-64.5 -mx-5" @reachBottom="infiniteScroll")
+      f-scrollbar-container(
+        v-if="!isSearching || nodeMaterialList.length > 0"
+        class="h-64.5 -mx-5"
+        @reachBottom="infiniteScroll"
+      )
         div(class="grid grid-flow-row grid-cols-5 auto-rows-auto gap-5 px-5")
           template(v-if="isInRoot")
             div(
@@ -59,7 +79,10 @@ modal-behavior(
               :node="nodeMaterial"
               :isMultiSelect="isMultiSelect"
             )
-        div(v-if="isSearching && nodeMaterialList.length > 0" class="flex justify-center items-center")
+        div(
+          v-if="isSearching && nodeMaterialList.length > 0"
+          class="flex justify-center items-center"
+        )
           f-svg-icon(iconName="loading" size="54" class="text-primary-400")
 </template>
 
@@ -73,23 +96,23 @@ import { useI18n } from 'vue-i18n'
 const props = defineProps({
   modalTitle: {
     type: String,
-    required: true
+    required: true,
   },
   actionText: {
     type: String,
-    required: true
+    required: true,
   },
   actionCallback: {
     type: Function,
-    required: true
+    required: true,
   },
   isMultiSelect: {
     type: Boolean,
-    default: true
+    default: true,
   },
   noteComponent: {
-    type: Object
-  }
+    type: Object,
+  },
 })
 
 const { t } = useI18n()
@@ -100,12 +123,14 @@ const sortMenuTree = computed(() => {
   return {
     blockList: [
       {
-        menuList: [CREATE_DATE, LAST_UPDATE, MATERIAL_NO_A_Z].map(({ text, value }) => ({
-          title: text,
-          selectValue: value
-        }))
-      }
-    ]
+        menuList: [CREATE_DATE, LAST_UPDATE, MATERIAL_NO_A_Z].map(
+          ({ text, value }) => ({
+            title: text,
+            selectValue: value,
+          })
+        ),
+      },
+    ],
   }
 })
 const keyword = ref('')
@@ -116,54 +141,63 @@ const queryParams = reactive({
   targetPage: 1,
   sort: SORT_BY.value.CREATE_DATE.value,
   id: null,
-  nodeLocation: null
+  nodeLocation: null,
 })
 const totalPage = ref(1)
 const selectedValue = ref(props.isMultiSelect ? [] : '')
 const breadcrumbList = ref([
   {
     name: t('FF0016'),
-    key: 'root'
-  }
+    key: 'root',
+  },
 ])
 
 const routeLocation = computed(() => store.getters['helper/routeLocation'])
-const isInRoot = computed(() => routeLocation.value === 'group' && breadcrumbList.value.length === 1)
+const isInRoot = computed(
+  () => routeLocation.value === 'group' && breadcrumbList.value.length === 1
+)
 const actionButtonDisabled = computed(() => {
-  return props.isMultiSelect ? selectedValue.value.length === 0 : !selectedValue.value
+  return props.isMultiSelect
+    ? selectedValue.value.length === 0
+    : !selectedValue.value
 })
 const orgAndGroupList = computed(() => {
   const organization = store.getters['organization/organization']
   const list = []
   list.push({
     key: `${NODE_LOCATION.ORG}-${organization.orgId}`,
-    name: organization.orgName
+    name: organization.orgName,
   })
   if (routeLocation.value === 'group') {
     const { groupId, groupName } = store.getters['group/group']
     list.push({
       key: `${NODE_LOCATION.GROUP}-${groupId}`,
-      name: groupName
+      name: groupName,
     })
   }
   return list
 })
 
 const innerActionCallback = async () => {
-  const tempSelectValue = props.isMultiSelect ? selectedValue.value.map((v) => v.properties) : selectedValue.value.properties
+  const tempSelectValue = props.isMultiSelect
+    ? selectedValue.value.map((v) => v.properties)
+    : selectedValue.value.properties
   await props.actionCallback(tempSelectValue)
 }
 
 const getMaterialListForModal = async () => {
   isSearching.value = true
 
-  const { pagination, assets } = await store.dispatch('assets/getMaterialListForModal', queryParams)
+  const { pagination, assets } = await store.dispatch(
+    'assets/getMaterialListForModal',
+    queryParams
+  )
   totalPage.value = pagination.totalPage
 
   assets.materialList.forEach((material) => {
     nodeMaterialList.value.push({
       nodeType: NODE_TYPE.MATERIAL,
-      properties: material
+      properties: material,
     })
   })
 

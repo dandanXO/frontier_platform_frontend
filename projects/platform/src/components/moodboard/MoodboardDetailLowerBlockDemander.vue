@@ -5,7 +5,12 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
     p(class="text-body2 text-grey-200") {{ $t('QQ0017') }}
   div(class="flex-grow flex gap-x-5.5")
     div(class="w-52 shrink-0 h-full")
-      f-button(size="md" prependIcon="add" class="w-full" @click="openModalMoodboardShareList") {{ $t('UU0096') }}
+      f-button(
+        size="md"
+        prependIcon="add"
+        class="w-full"
+        @click="openModalMoodboardShareList"
+      ) {{ $t('UU0096') }}
       div(
         class="w-full h-23 rounded flex flex-col justify-center pl-6 mt-6 hover:bg-grey-100 cursor-pointer"
         :class="[{ 'bg-grey-200': currentOfferId === 'all' }]"
@@ -24,7 +29,10 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
             )
               div(class="relative flex-shrink-0")
                 img(:src="offer.logo" class="w-8 h-8 rounded-full")
-                div(v-if="offer.hasNewUpdate" class="absolute w-3 h-3 bg-primary-400 border border-grey-0 rounded-full top-0 -right-0.5")
+                div(
+                  v-if="offer.hasNewUpdate"
+                  class="absolute w-3 h-3 bg-primary-400 border border-grey-0 rounded-full top-0 -right-0.5"
+                )
               div
                 p(class="text-body1 font-bold text-grey-900 leading-1.6 line-clamp-1") {{ offer.name }}
                 p(class="text-caption text-grey-600 leading-1.6") {{ $t('RR0068', { number: offer.itemCounts }) }}・{{ offer.lastUpdateTime }}
@@ -33,7 +41,13 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
         h4(class="text-h4 text-grey-900 pb-6") {{ $t('QQ0018') }}
         p(class="text-body2 text-grey-600") {{ $t('QQ0019') }}
       template(v-else)
-        f-tabs(v-if="currentOfferId !== 'all'"  :tabList="tabList" :initValue="currentTab" :key="currentOfferId" @switch="switchTab($event)")
+        f-tabs(
+          v-if="currentOfferId !== 'all'"
+          :tabList="tabList"
+          :initValue="currentTab"
+          :key="currentOfferId"
+          @switch="switchTab($event)"
+        )
         div(v-if="currentTab !== MOODBOARD_TAB.COMMENT" class="pt-4")
           div(class="flex justify-between items-center")
             f-input-text(
@@ -46,14 +60,35 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
               @clear="search"
             )
             div(class="flex")
-              f-button(v-if="!isFirstLayer" size="sm" type="secondary" class="mr-3" @click="openModalMoodboardCollectionDetail(false)") {{ $t("UU0057") }}
-              f-button(v-if="currentOfferId === 'all'" size="sm" type="secondary" prependIcon="pinned" @click="goToMoodboardPickedList(moodboard.moodboardId)") {{ $t("QQ0086") }}
+              f-button(
+                v-if="!isFirstLayer"
+                size="sm"
+                type="secondary"
+                class="mr-3"
+                @click="openModalMoodboardCollectionDetail(false)"
+              ) {{ $t('UU0057') }}
+              f-button(
+                v-if="currentOfferId === 'all'"
+                size="sm"
+                type="secondary"
+                prependIcon="pinned"
+                @click="goToMoodboardPickedList(moodboard.moodboardId)"
+              ) {{ $t('QQ0086') }}
           div(class="pt-3 pb-3.5 h-6 box-content flex items-center justify-between")
-            f-breadcrumb(:breadcrumbList="moodboardOfferNodeCollection.locationList" fontSize="text-body2" @click:item="goTo($event.nodeId)")
-            f-button-label(v-if="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED" size="lg" @click="selectAll") {{ $t("RR0209") }}
+            f-breadcrumb(
+              :breadcrumbList="moodboardOfferNodeCollection.locationList"
+              fontSize="text-body2"
+              @click:item="goTo($event.nodeId)"
+            )
+            f-button-label(
+              v-if="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED"
+              size="lg"
+              @click="selectAll"
+            ) {{ $t('RR0209') }}
           div(v-if="isLoading" class="flex-grow flex items-center justify-center")
             f-svg-icon(iconName="loading" size="92" class="text-primary-400")
-          div(v-else
+          div(
+            v-else
             class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start pb-2 overflow-y-auto hide-scrollbar"
             :class="[currentOfferId === 'all' ? 'h-166' : 'h-156']"
           )
@@ -75,8 +110,15 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
         template(v-if="currentTab === MOODBOARD_TAB.COMMENT")
           div(v-if="isLoading" class="flex-grow flex items-center justify-center")
             f-svg-icon(iconName="loading" size="92" class="text-primary-400")
-          mood-board-comment(v-else :moodboardId="moodboard.moodboardId" :offerId="Number(currentOfferId)")
-multi-select-menu(:optionMultiSelect="optionMultiSelect" v-model:selectedList="selectedNodeList")
+          mood-board-comment(
+            v-else
+            :moodboardId="moodboard.moodboardId"
+            :offerId="Number(currentOfferId)"
+          )
+multi-select-menu(
+  :optionMultiSelect="optionMultiSelect"
+  v-model:selectedList="selectedNodeList"
+)
 </template>
 
 <script setup>
@@ -96,8 +138,12 @@ const store = useStore()
 const { t } = useI18n()
 const { goToMoodboardPickedList } = useNavigation()
 const moodboard = computed(() => store.getters['moodboard/moodboard'])
-const moodboardOfferNodeCollection = computed(() => store.getters['moodboard/moodboardOfferNodeCollection'])
-const isFirstLayer = computed(() => moodboardOfferNodeCollection.value.locationList.length === 1)
+const moodboardOfferNodeCollection = computed(
+  () => store.getters['moodboard/moodboardOfferNodeCollection']
+)
+const isFirstLayer = computed(
+  () => moodboardOfferNodeCollection.value.locationList.length === 1
+)
 const {
   cloneMoodboardNode,
   exportMoodboardNode,
@@ -106,7 +152,7 @@ const {
   togglePick,
   selectedNodeList,
   selectAll,
-  openModalMoodboardCollectionDetail
+  openModalMoodboardCollectionDetail,
 } = useMoodboardNode(moodboard, moodboardOfferNodeCollection)
 const {
   keyword,
@@ -116,8 +162,12 @@ const {
   switchOffer,
   switchTab,
   goTo,
-  search
-} = useMoodboardDetail({ defaultOfferId: 'all', defaultNodeId: null, selectedNodeList })
+  search,
+} = useMoodboardDetail({
+  defaultOfferId: 'all',
+  defaultNodeId: null,
+  selectedNodeList,
+})
 const handleNodeClick = (node) => {
   if (node.nodeType === NODE_TYPE.COLLECTION) {
     goTo(node.nodeId)
@@ -133,35 +183,40 @@ const openModalMoodboardShareList = () => {
   })
 }
 
-const moodboardOfferList = computed(() => store.getters['moodboard/moodboardOfferList'])
-const totalOfferItemCounts = computed(() => moodboardOfferList.value.reduce((prev, current) => prev + current.itemCounts, 0))
+const moodboardOfferList = computed(
+  () => store.getters['moodboard/moodboardOfferList']
+)
+const totalOfferItemCounts = computed(() =>
+  moodboardOfferList.value.reduce(
+    (prev, current) => prev + current.itemCounts,
+    0
+  )
+)
 
 const tabList = computed(() => {
-  const currentOffer = moodboardOfferList.value.find(offer => offer.offerId === Number(currentOfferId.value))
+  const currentOffer = moodboardOfferList.value.find(
+    (offer) => offer.offerId === Number(currentOfferId.value)
+  )
   return [
     {
       name: t('QQ0051'),
-      path: MOODBOARD_TAB.OFFER
+      path: MOODBOARD_TAB.OFFER,
     },
     {
       name: t('QQ0052'),
-      path: MOODBOARD_TAB.PICKED
+      path: MOODBOARD_TAB.PICKED,
     },
     {
       name: t('QQ0031'),
       path: MOODBOARD_TAB.COMMENT,
-      hasNewUpdate: !!currentOffer ? currentOffer.hasNewComment : false
-    }
+      hasNewUpdate: currentOffer ? currentOffer.hasNewComment : false,
+    },
   ]
 })
 
 const optionNode = (node) => {
   if (node.nodeType === NODE_TYPE.COLLECTION) {
-    return [
-      [
-        { name: t('UU0015'), func: (n) => cloneMoodboardNode([n]) },
-      ]
-    ]
+    return [[{ name: t('UU0015'), func: (n) => cloneMoodboardNode([n]) }]]
   } else {
     return [
       [
@@ -169,17 +224,17 @@ const optionNode = (node) => {
         {
           name: t('RR0059'),
           disabled: node.properties.u3m.status !== U3M_STATUS.COMPLETED,
-          func: (n) => openModalU3mSelectFileFormat([n])
-        }
-      ]
+          func: (n) => openModalU3mSelectFileFormat([n]),
+        },
+      ],
     ]
   }
 }
 
-const optionMultiSelect = computed(() => ([
+const optionMultiSelect = computed(() => [
   {
     name: t('RR0060'),
-    func: exportMoodboardNode
-  }
-]))
+    func: exportMoodboardNode,
+  },
+])
 </script>

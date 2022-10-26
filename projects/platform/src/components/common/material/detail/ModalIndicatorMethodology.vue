@@ -11,5 +11,4 @@ modal-behavior(
     img(src="@/assets/images/methodology_visual_2.png")
 </template>
 
-<script setup>
-</script>
+<script setup></script>

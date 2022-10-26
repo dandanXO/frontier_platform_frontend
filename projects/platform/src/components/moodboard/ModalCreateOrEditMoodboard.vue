@@ -8,7 +8,11 @@ modal-behavior(
   @click:secondary="closeModal"
 )
   template(#note)
-    file-upload-error-note(v-if="fileUploadErrorCode" :errorCode="fileUploadErrorCode" :fileSizeMaxLimit="fileSizeMaxLimit")
+    file-upload-error-note(
+      v-if="fileUploadErrorCode"
+      :errorCode="fileUploadErrorCode"
+      :fileSizeMaxLimit="fileSizeMaxLimit"
+    )
   div(class="w-121.5 grid gap-y-6")
     f-input-text(
       ref="refInputName"
@@ -26,7 +30,12 @@ modal-behavior(
       div
         div(class="h-5.5 flex items-center pb-1")
           p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
-          f-button-label(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewFile(formData.trendBoardFile)") {{ $t('UU0060') }}
+          f-button-label(
+            v-if="uploadTrendBoardName"
+            size="sm"
+            class="ml-1.5"
+            @click="previewFile(formData.trendBoardFile)"
+          ) {{ $t('UU0060') }}
         f-input-text-button(
           class="w-full"
           disabledInput
@@ -37,8 +46,8 @@ modal-behavior(
           @clear="removeTrendBoard"
         )
       div(class="grid gap-y-2 pt-1.5")
-        p(class='text-grey-600 text-caption') {{ $t('RR0243') }} {{ trendBoardFileAcceptType.join(', ').toUpperCase() }}
-        p(class='text-grey-600 text-caption') {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
+        p(class="text-grey-600 text-caption") {{ $t('RR0243') }} {{ trendBoardFileAcceptType.join(', ').toUpperCase() }}
+        p(class="text-grey-600 text-caption") {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
     div
       f-input-textarea(
         ref="refInputDescription"
@@ -52,17 +61,38 @@ modal-behavior(
     f-input-container(:label="$t('QQ0015')")
       f-scrollbar-container(class="max-h-18 mb-2.5")
         div(class="grid gap-y-2 max-w-121.5")
-          div(v-for="(attachment, index) in formData.attachmentFileList" class="h-8 flex justify-between items-center px-4 bg-grey-50")
+          div(
+            v-for="(attachment, index) in formData.attachmentFileList"
+            class="h-8 flex justify-between items-center px-4 bg-grey-50"
+          )
             div(class="flex items-center gap-x-1")
               p(class="text-body2 font-bold text-grey-900 line-clamp-1") {{ attachment.name }}
               p(class="text-body2 font-normal text-grey-900 flex-shrink-0") ({{ bytesToSize(attachment.size) }})
-            f-svg-icon(iconName="clear" size="14" class="text-grey-900 ml-1 cursor-pointer" @click="removeAttachment(index)")
-          div(v-for="(attachment, index) in originalAttachmentList" class="h-8 flex justify-between items-center px-4 bg-grey-50")
+            f-svg-icon(
+              iconName="clear"
+              size="14"
+              class="text-grey-900 ml-1 cursor-pointer"
+              @click="removeAttachment(index)"
+            )
+          div(
+            v-for="(attachment, index) in originalAttachmentList"
+            class="h-8 flex justify-between items-center px-4 bg-grey-50"
+          )
             div(class="flex items-center gap-x-1")
               p(class="text-body2 font-bold text-grey-900 line-clamp-1") {{ attachment.displayFileName }}
               p(class="text-body2 font-normal text-grey-900 flex-shrink-0") ({{ bytesToSize(attachment.fileSize) }})
-            f-svg-icon(iconName="clear" size="14" class="text-grey-900 ml-1 cursor-pointer" @click="removeOriginalAttachment(index, attachment.attachmentId)")
-      f-button(size="sm" type="secondary" prependIcon="add" @click="chooseAttachment") {{ $t("UU0063") }}
+            f-svg-icon(
+              iconName="clear"
+              size="14"
+              class="text-grey-900 ml-1 cursor-pointer"
+              @click="removeOriginalAttachment(index, attachment.attachmentId)"
+            )
+      f-button(
+        size="sm"
+        type="secondary"
+        prependIcon="add"
+        @click="chooseAttachment"
+      ) {{ $t('UU0063') }}
       div(class="text-caption text-grey-600 pt-2")
         p(class="pb-1") {{ $t('RR0243') }} {{ attachmentFileAcceptType.join(', ').toUpperCase() }}
         p {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
@@ -81,8 +111,8 @@ const { goToMoodboardDetail } = useNavigation()
 const props = defineProps({
   mode: {
     type: Number,
-    default: CREATE_EDIT.CREATE
-  }
+    default: CREATE_EDIT.CREATE,
+  },
 })
 
 const formData = reactive({
@@ -93,7 +123,7 @@ const formData = reactive({
   // the below variables only use for edit mode
   moodboardId: 0,
   deleteAttachmentIdList: [],
-  isDeleteTrendBoard: false
+  isDeleteTrendBoard: false,
 })
 const isUploadNewTrendBoard = ref(false)
 const uploadTrendBoardName = ref('')
@@ -103,7 +133,9 @@ const originalAttachmentList = ref([])
 
 const orgLogo = computed(() => store.getters['organization/orgLogo'])
 const creator = computed(() => {
-  return store.getters['helper/routeLocation'] === 'org' ? store.getters['organization/organization'].orgName : store.getters['group/group'].groupName
+  return store.getters['helper/routeLocation'] === 'org'
+    ? store.getters['organization/organization'].orgName
+    : store.getters['group/group'].groupName
 })
 
 const refInputName = ref(null)
@@ -112,7 +144,10 @@ const fileUploadErrorCode = ref(0)
 const fileSizeMaxLimit = 20
 const trendBoardFileAcceptType = ['pdf']
 
-const trendBoardFileOperator = new FileOperator(trendBoardFileAcceptType, fileSizeMaxLimit)
+const trendBoardFileOperator = new FileOperator(
+  trendBoardFileAcceptType,
+  fileSizeMaxLimit
+)
 trendBoardFileOperator.on('finish', (file) => {
   store.dispatch('helper/pushModalLoading')
   formData.trendBoardFile = file
@@ -132,8 +167,21 @@ const removeTrendBoard = () => {
   }
 }
 
-const attachmentFileAcceptType = ['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mov', 'mp4']
-const attachmentFileOperator = new FileOperator(attachmentFileAcceptType, fileSizeMaxLimit, true)
+const attachmentFileAcceptType = [
+  'pdf',
+  'jpg',
+  'jpeg',
+  'png',
+  'zip',
+  'gif',
+  'mov',
+  'mp4',
+]
+const attachmentFileOperator = new FileOperator(
+  attachmentFileAcceptType,
+  fileSizeMaxLimit,
+  true
+)
 const chooseAttachment = () => attachmentFileOperator.upload()
 attachmentFileOperator.on('finish', (file) => {
   store.dispatch('helper/pushModalLoading')
@@ -152,12 +200,24 @@ const removeOriginalAttachment = (index, attachmentId) => {
   formData.deleteAttachmentIdList.push(attachmentId)
 }
 
-const primaryBtnDisabled = computed(() => !formData.moodboardName || refInputName.value?.isError || !formData.description || refInputDescription.value?.isError)
+const primaryBtnDisabled = computed(
+  () =>
+    !formData.moodboardName ||
+    refInputName.value?.isError ||
+    !formData.description ||
+    refInputDescription.value?.isError
+)
 const primaryHandler = async () => {
   store.dispatch('helper/openModalLoading')
   if (props.mode === CREATE_EDIT.CREATE) {
-    const { moodboardName, description, trendBoardFile, attachmentFileList } = formData
-    const { moodboard } = await store.dispatch('moodboard/createMoodboard', { moodboardName, description, trendBoardFile, attachmentFileList })
+    const { moodboardName, description, trendBoardFile, attachmentFileList } =
+      formData
+    const { moodboard } = await store.dispatch('moodboard/createMoodboard', {
+      moodboardName,
+      description,
+      trendBoardFile,
+      attachmentFileList,
+    })
     goToMoodboardDetail(moodboard.moodboardId)
   } else {
     if (!isUploadNewTrendBoard.value) {
@@ -173,8 +233,20 @@ const closeModal = () => {
 }
 
 if (props.mode === CREATE_EDIT.EDIT) {
-  const { moodboardId, moodboardName, description, attachmentList, trendBoardUrl, trendBoardFileName } = JSON.parse(JSON.stringify(store.getters['moodboard/moodboard']))
-  Object.assign(formData, { moodboardId, moodboardName, description, trendBoardFile: trendBoardUrl })
+  const {
+    moodboardId,
+    moodboardName,
+    description,
+    attachmentList,
+    trendBoardUrl,
+    trendBoardFileName,
+  } = JSON.parse(JSON.stringify(store.getters['moodboard/moodboard']))
+  Object.assign(formData, {
+    moodboardId,
+    moodboardName,
+    description,
+    trendBoardFile: trendBoardUrl,
+  })
   originalAttachmentList.value = attachmentList
   uploadTrendBoardName.value = trendBoardFileName
 }

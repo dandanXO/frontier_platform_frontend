@@ -3,13 +3,15 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 import { MOODBOARD_TAB } from '@/utils/constants'
 
-export default function useNavigation () {
+export default function useNavigation() {
   const store = useStore()
   const router = useRouter()
   const route = useRoute()
 
   const routeLocation = computed(() => store.getters['helper/routeLocation'])
-  const prefixPath = computed(() => routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId')
+  const prefixPath = computed(() =>
+    routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
+  )
 
   const nextAfterSignIn = async () => {
     if (route.query.redirect !== undefined) {
@@ -21,7 +23,10 @@ export default function useNavigation () {
     const user = store.getters['user/user']
     const organizationList = user.organizationList
     if (organizationList.length === 1) {
-      return router.push({ name: 'PublicLibrary', params: { orgNo: organizationList[0].orgNo } })
+      return router.push({
+        name: 'PublicLibrary',
+        params: { orgNo: organizationList[0].orgNo },
+      })
     }
 
     goToLobby()
@@ -29,7 +34,7 @@ export default function useNavigation () {
 
   const parsePath = (path) => {
     let temp = path
-    Object.keys(route.params).forEach(key => {
+    Object.keys(route.params).forEach((key) => {
       const regex = new RegExp(':' + key)
       temp = temp.replace(regex, route.params[key])
     })
@@ -37,7 +42,9 @@ export default function useNavigation () {
     return temp
   }
 
-  const goToLobby = () => { router.push('/') }
+  const goToLobby = () => {
+    router.push('/')
+  }
 
   const goToBillings = () => {
     router.push(parsePath('/:orgNo/billings/plan'))
@@ -64,7 +71,9 @@ export default function useNavigation () {
   }
 
   const goToAssetMaterialEdit = (material) => {
-    router.push(parsePath(`${prefixPath.value}/assets/${material.materialId}/edit`))
+    router.push(
+      parsePath(`${prefixPath.value}/assets/${material.materialId}/edit`)
+    )
   }
 
   const goToOrgAssetMaterialEdit = (materialId) => {
@@ -107,7 +116,11 @@ export default function useNavigation () {
   }
 
   const goToShareToMeMaterial = (nodeKey, sharingId) => {
-    router.push(parsePath(`${prefixPath.value}/share-to-me/material/${nodeKey}?sharingId=${sharingId}`))
+    router.push(
+      parsePath(
+        `${prefixPath.value}/share-to-me/material/${nodeKey}?sharingId=${sharingId}`
+      )
+    )
   }
 
   const goToMoodboard = () => {
@@ -115,11 +128,17 @@ export default function useNavigation () {
   }
 
   const goToMoodboardDetail = (moodboardId) => {
-    router.push(parsePath(`${prefixPath.value}/moodboard/${moodboardId}?tab=${MOODBOARD_TAB.OFFER}`))
+    router.push(
+      parsePath(
+        `${prefixPath.value}/moodboard/${moodboardId}?tab=${MOODBOARD_TAB.OFFER}`
+      )
+    )
   }
 
   const goToMoodboardPickedList = (moodboardId) => {
-    router.push(parsePath(`${prefixPath.value}/moodboard/${moodboardId}/picked-list`))
+    router.push(
+      parsePath(`${prefixPath.value}/moodboard/${moodboardId}/picked-list`)
+    )
   }
 
   return {
@@ -147,6 +166,6 @@ export default function useNavigation () {
     goToMoodboard,
     goToMoodboardDetail,
     goToMoodboardPickedList,
-    prefixPath
+    prefixPath,
   }
 }

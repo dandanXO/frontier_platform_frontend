@@ -3,22 +3,23 @@
   position: relative;
   border: none;
   box-shadow: none;
-  background-color: #E9E9E9;
+  background-color: #e9e9e9;
 }
 
 .noUi-connect {
-  background-color: #21B185;
+  background-color: #21b185;
 }
 
 // handle base css
 .noUi-handle {
-  background-color: #FFFFFF;
-  border: 1px solid #E9E9E9;
+  background-color: #ffffff;
+  border: 1px solid #e9e9e9;
   border-radius: 50%;
-  box-shadow: 0px 0.6px 1px rgba(0, 0, 0, 0.1), 0px 2px 4px rgba(103, 103, 103, 0.11);
+  box-shadow: 0px 0.6px 1px rgba(0, 0, 0, 0.1),
+    0px 2px 4px rgba(103, 103, 103, 0.11);
 
   &:active {
-    background-color: #F4F4F4;
+    background-color: #f4f4f4;
   }
 }
 
@@ -58,7 +59,6 @@
 
 // tooltip
 .noUi-handle {
-
   &:hover,
   &:active {
     .noUi-tooltip {
@@ -72,7 +72,7 @@
     border-radius: 4px;
     bottom: 150% !important;
     padding: 6px 8px;
-    color: #F9F9F9;
+    color: #f9f9f9;
     background-color: rgb(34 34 34 / 0.8);
     font-family: 'Noto Sans TC';
     font-style: normal;
@@ -94,30 +94,52 @@
 // disabled status
 [disabled] {
   .noUi-connect {
-    background-color: #A8A8A8;
+    background-color: #a8a8a8;
   }
 
   .noUi-handle {
-    background-color: #E9E9E9;
+    background-color: #e9e9e9;
 
     &:active {
-      background-color: #E9E9E9;
+      background-color: #e9e9e9;
     }
   }
 }
 </style>
 
 <template lang="pug">
-div(class="relative flex items-center justify-center" :class="[orientation === 'vertical' ? 'w-4.5' : 'h-4.5']")
-  div(ref="refSlider" :class="[orientation === 'horizontal' ? 'w-full' : 'h-full']")
+div(
+  class="relative flex items-center justify-center"
+  :class="[orientation === 'vertical' ? 'w-4.5' : 'h-4.5']"
+)
+  div(
+    ref="refSlider"
+    :class="[orientation === 'horizontal' ? 'w-full' : 'h-full']"
+  )
   template(v-if="orientation === 'horizontal'")
-    div(v-show="isDragging" class="absolute h-1 left-0 right-0" style="bottom: 1px; margin: 0 9px;")
+    div(
+      v-show="isDragging"
+      class="absolute h-1 left-0 right-0"
+      style="bottom: 1px; margin: 0 9px"
+    )
       div(class="absolute w-1 h-1 bg-grey-300 rounded-full" :style="absoluteLeft")
-      div(v-if="initPosition && initPosition.length > 1" class="absolute w-1 h-1 bg-grey-300 rounded-full" :style="absoluteRight")
+      div(
+        v-if="initPosition && initPosition.length > 1"
+        class="absolute w-1 h-1 bg-grey-300 rounded-full"
+        :style="absoluteRight"
+      )
   template(v-else="orientation === 'vertical'")
-    div(v-show="isDragging" class="absolute w-1 top-0 bottom-0" style="right: 1px; margin: 9px 0;")
+    div(
+      v-show="isDragging"
+      class="absolute w-1 top-0 bottom-0"
+      style="right: 1px; margin: 9px 0"
+    )
       div(class="absolute w-1 h-1 bg-grey-300 rounded-full" :style="absoluteBottom")
-      div(v-if="initPosition && initPosition.length > 1" class="absolute w-1 h-1 bg-grey-300 rounded-full" :style="absoluteTop")
+      div(
+        v-if="initPosition && initPosition.length > 1"
+        class="absolute w-1 h-1 bg-grey-300 rounded-full"
+        :style="absoluteTop"
+      )
 </template>
 
 <script>
@@ -136,45 +158,45 @@ export default {
      */
     range: {
       type: [Number, Array],
-      required: true
+      required: true,
     },
     min: {
       type: Number,
-      default: 0
+      default: 0,
     },
     max: {
       type: Number,
-      default: 200
+      default: 200,
     },
     step: {
       type: Number,
-      default: 1
+      default: 1,
     },
     /**
      * set `false`, `true` or `formatter` to apply to the each handle.
      * or pass an array to set individually.
      * `array[formatter or true or false, ...]`
-     * 
-     * 
-     * 
-     * 
+     *
+     *
+     *
+     *
      */
     tooltips: {
       type: [Boolean, Array],
-      default: false
+      default: false,
     },
     orientation: {
       type: String,
       validator: (v) => ['horizontal', 'vertical'].includes(v),
-      default: 'horizontal'
+      default: 'horizontal',
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ['update:range'],
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const refSlider = ref(null)
     const { min, max, range } = toRefs(props)
     const initPosition = ref(null)
@@ -226,8 +248,8 @@ export default {
         start: range.value,
         range: {
           min: min.value,
-          max: max.value
-        }
+          max: max.value,
+        },
       })
 
       if (props.disabled) {
@@ -242,27 +264,30 @@ export default {
         isDragging.value = true
       })
 
-      refSlider.value.noUiSlider.on('update', (v, handle, unencoded, tap, positions, noUiSlider) => {
-        let values = refSlider.value.noUiSlider.get()
+      refSlider.value.noUiSlider.on(
+        'update',
+        (v, handle, unencoded, tap, positions, noUiSlider) => {
+          let values = refSlider.value.noUiSlider.get()
 
-        if (initPosition.value === null) {
-          initPosition.value = positions
-        }
+          if (initPosition.value === null) {
+            initPosition.value = positions
+          }
 
-        if (Array.isArray(values)) {
-          values = values.map(v => Number(v))
-        } else {
-          values = Number(values)
-        }
+          if (Array.isArray(values)) {
+            values = values.map((v) => Number(v))
+          } else {
+            values = Number(values)
+          }
 
-        if (props.step === 1) {
-          emit('update:range', values)
-        } else {
-          // Use .get(true) to get the slider values without formatting applied
-          const valuesWithoutFormat = refSlider.value.noUiSlider.get(true)
-          emit('update:range', valuesWithoutFormat)
+          if (props.step === 1) {
+            emit('update:range', values)
+          } else {
+            // Use .get(true) to get the slider values without formatting applied
+            const valuesWithoutFormat = refSlider.value.noUiSlider.get(true)
+            emit('update:range', valuesWithoutFormat)
+          }
         }
-      })
+      )
 
       refSlider.value.noUiSlider.on('end', () => {
         isDragging.value = false
@@ -277,8 +302,8 @@ export default {
       absoluteTop,
       absoluteBottom,
       isDragging,
-      initPosition
+      initPosition,
     }
-  }
+  },
 }
 </script>

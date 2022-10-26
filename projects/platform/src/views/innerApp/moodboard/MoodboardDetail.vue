@@ -1,7 +1,10 @@
 <template lang="pug">
 div(class="h-full")
   div(class="ml-8 mt-12 mb-16")
-    f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
+    f-breadcrumb(
+      :breadcrumbList="breadcrumbList"
+      @click:item="$router.push($event.path)"
+    )
   moodboard-detail-upper-block
   template(v-if="moodboard.moodboardType === MOODBOARD_TYPE.DEMANDER")
     moodboard-detail-lower-block-demander
@@ -22,8 +25,8 @@ import useNavigation from '@/composables/useNavigation'
 const props = defineProps({
   moodboardId: {
     type: Number,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const { t } = useI18n()
@@ -35,14 +38,18 @@ const breadcrumbList = computed(() => {
   return [
     {
       name: t('QQ0001'),
-      path: parsePath(`${prefixPath.value}/moodboard`)
+      path: parsePath(`${prefixPath.value}/moodboard`),
     },
     {
       name: moodboard.value.moodboardName,
-      path: parsePath(`${prefixPath.value}/moodboard/${props.moodboardId}?tab=${MOODBOARD_TAB.OFFER}`)
-    }
+      path: parsePath(
+        `${prefixPath.value}/moodboard/${props.moodboardId}?tab=${MOODBOARD_TAB.OFFER}`
+      ),
+    },
   ]
 })
 
-await store.dispatch('moodboard/getMoodboard', { moodboardId: props.moodboardId })
+await store.dispatch('moodboard/getMoodboard', {
+  moodboardId: props.moodboardId,
+})
 </script>

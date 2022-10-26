@@ -1,5 +1,9 @@
 <template lang="pug">
-filter-wrapper(iconName="color_circle" :displayName="$t('RR0026')" :dirty="filterDirty.color")
+filter-wrapper(
+  iconName="color_circle"
+  :displayName="$t('RR0026')"
+  :dirty="filterDirty.color"
+)
   div(class="px-5 py-4 rounded card-shadow grid grid-cols-4 grid-rows-3 gap-2")
     div(
       v-for="color in filterOptions.colorList"
@@ -8,7 +12,12 @@ filter-wrapper(iconName="color_circle" :displayName="$t('RR0026')" :dirty="filte
       :style="{ backgroundColor: `${color.hex}` }"
       @click="select(color.value)"
     )
-      f-svg-icon(v-if="filter.color === color.value" iconName="done" size="24" class="text-grey-0")
+      f-svg-icon(
+        v-if="filter.color === color.value"
+        iconName="done"
+        size="24"
+        class="text-grey-0"
+      )
 </template>
 
 <script>
@@ -19,25 +28,31 @@ import { computed } from 'vue'
 export default {
   name: 'FilterColor',
   components: {
-    FilterWrapper
+    FilterWrapper,
   },
-  setup () {
+  setup() {
     const store = useStore()
 
     const filter = computed(() => store.getters['helper/search/filter'])
-    const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
-    const filterOptions = computed(() => store.getters['helper/search/filterOptions'])
+    const filterDirty = computed(
+      () => store.getters['helper/search/filterDirty']
+    )
+    const filterOptions = computed(
+      () => store.getters['helper/search/filterOptions']
+    )
 
     const select = (color) => {
-      store.dispatch('helper/search/setFilter', { color: filter.value.color === color ? null : color })
+      store.dispatch('helper/search/setFilter', {
+        color: filter.value.color === color ? null : color,
+      })
     }
 
     return {
       filter,
       filterDirty,
       filterOptions,
-      select
+      select,
     }
-  }
+  },
 }
 </script>

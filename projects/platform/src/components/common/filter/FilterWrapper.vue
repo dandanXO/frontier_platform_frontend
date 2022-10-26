@@ -1,7 +1,9 @@
 <template lang="pug">
 f-tooltip(v-if="disabled")
   template(#trigger)
-    div(class="flex items-center gap-x-1 p-1.5 border rounded-lg border-grey-200 cursor-default")
+    div(
+      class="flex items-center gap-x-1 p-1.5 border rounded-lg border-grey-200 cursor-default"
+    )
       f-svg-icon(:iconName="iconName" size="24" class="text-grey-200")
       span(class="text-grey-200 text-body2") {{ displayName }}
       f-svg-icon(iconName="keyboard_arrow_down" size="24" class="text-grey-200")
@@ -14,10 +16,18 @@ f-popper(
   @collapse="$emit('collapse')"
 )
   template(#trigger="{ isExpand }")
-    div(class="flex items-center gap-x-1 p-1.5 border rounded-lg cursor-pointer" :class="[isExpand || dirty ? 'border-grey-900' : 'border-grey-200']")
+    div(
+      class="flex items-center gap-x-1 p-1.5 border rounded-lg cursor-pointer"
+      :class="[isExpand || dirty ? 'border-grey-900' : 'border-grey-200']"
+    )
       f-svg-icon(:iconName="iconName" size="24" class="text-grey-900")
       span(class="text-grey-900 text-body2") {{ displayName }}
-      f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-grey-200 transform" :class="[isExpand ? '-rotate-90' : 'rotate-90']")
+      f-svg-icon(
+        iconName="keyboard_arrow_right"
+        size="24"
+        class="text-grey-200 transform"
+        :class="[isExpand ? '-rotate-90' : 'rotate-90']"
+      )
   template(#content)
     slot
 </template>
@@ -28,21 +38,21 @@ export default {
   props: {
     iconName: {
       type: String,
-      required: true
+      required: true,
     },
     displayName: {
       type: String,
-      required: true
+      required: true,
     },
     dirty: {
       type: Boolean,
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  emits: ['expand', 'collapse']
+  emits: ['expand', 'collapse'],
 }
 </script>

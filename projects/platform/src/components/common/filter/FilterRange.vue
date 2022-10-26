@@ -13,21 +13,39 @@ div(class="px-5")
   )
   div(class="grid grid-cols-2 gap-4 mt-4")
     div
-      div(class="text-caption text-grey-600 pb-2") {{ $t("JJ0006") }}
+      div(class="text-caption text-grey-600 pb-2") {{ $t('JJ0006') }}
       div(class="h-13")
-        f-input-text(v-model:textValue="formattedMinValue" size="sm" @change="handleMinValueChange")
+        f-input-text(
+          v-model:textValue="formattedMinValue"
+          size="sm"
+          @change="handleMinValueChange"
+        )
           template(v-if="isFromError" #slot:errorMsg)
-            i18n-t(keypath="JJ0007" tag="p" class="text-caption text-red-400 pt-1" scope="global")
+            i18n-t(
+              keypath="JJ0007"
+              tag="p"
+              class="text-caption text-red-400 pt-1"
+              scope="global"
+            )
               template(#JJ0005) 
-                span(class="font-bold") {{ $t("JJ0005") }}
+                span(class="font-bold") {{ $t('JJ0005') }}
     div
-      div(class="text-caption text-grey-600 pb-2") {{ $t("JJ0005") }}
+      div(class="text-caption text-grey-600 pb-2") {{ $t('JJ0005') }}
       div(class="h-13")
-        f-input-text(v-model:textValue="formattedMaxValue" size="sm" @change="handleMaxValueChange")
+        f-input-text(
+          v-model:textValue="formattedMaxValue"
+          size="sm"
+          @change="handleMaxValueChange"
+        )
           template(v-if="isToError" #slot:errorMsg)
-            i18n-t(keypath="JJ0008" tag="p" class="text-caption text-red-400 pt-1" scope="global")
+            i18n-t(
+              keypath="JJ0008"
+              tag="p"
+              class="text-caption text-red-400 pt-1"
+              scope="global"
+            )
               template(#JJ0006) 
-                span(class="font-bold") {{ $t("JJ0006") }}
+                span(class="font-bold") {{ $t('JJ0006') }}
 </template>
 
 <script>
@@ -39,23 +57,23 @@ export default {
   props: {
     min: {
       type: Number,
-      default: 0
+      default: 0,
     },
     max: {
       type: Number,
-      default: 200
+      default: 200,
     },
     range: {
       type: Array,
-      required: true
+      required: true,
     },
     label: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   emits: ['update:range'],
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const { t } = useI18n()
     const isFromError = ref(false)
     const isToError = ref(false)
@@ -76,7 +94,7 @@ export default {
         } else {
           emit('update:range', [Number(min), Number(max)])
         }
-      }
+      },
     })
 
     const formattedMinValue = computed({
@@ -86,7 +104,7 @@ export default {
       },
       set: (v) => {
         innerRange.value = [v, innerRange.value[1]]
-      }
+      },
     })
 
     const formattedMaxValue = computed({
@@ -96,7 +114,7 @@ export default {
       },
       set: (v) => {
         innerRange.value = [innerRange.value[0], v]
-      }
+      },
     })
 
     const handleMinValueChange = (e) => {
@@ -130,14 +148,15 @@ export default {
       tooltips: [
         {
           from: (v) => v,
-          to: (v) => customFormatter(v)
-        }, {
+          to: (v) => customFormatter(v),
+        },
+        {
           from: (v) => v,
-          to: (v) => customFormatter(v)
-        }
+          to: (v) => customFormatter(v),
+        },
       ],
       min: props.min,
-      max: fakeMaxValue
+      max: fakeMaxValue,
     }
 
     const reset = () => {
@@ -155,8 +174,8 @@ export default {
       options,
       fakeMaxValue,
       isFromError,
-      isToError
+      isToError,
     }
-  }
+  },
 }
 </script>

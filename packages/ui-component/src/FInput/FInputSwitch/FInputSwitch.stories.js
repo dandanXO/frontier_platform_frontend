@@ -6,21 +6,21 @@ export default {
   component: FInputSwitch,
   args: {
     label: 'Label',
-    iconSize: '30'
+    iconSize: '30',
   },
   argTypes: {
     inputValue: {
-      control: { type: null }
+      control: { type: null },
     },
     label: {
-      control: { type: 'text' }
-    }
-  }
+      control: { type: 'text' },
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FInputSwitch },
-  setup () {
+  setup() {
     const inputValue = ref(false)
     return { args, inputValue }
   },

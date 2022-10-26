@@ -9,7 +9,10 @@ div(class="flex flex-col")
         @click="!tab.disabled && switchTab(tab)"
       )
         f-svg-icon(v-if="tab.icon" :iconName="tab.icon" size="14" class="mr-1")
-        p(class="pb-3 text-body2 whitespace-nowrap cursor-pointer" :class="{ 'font-bold': tab[keyField] === currentTab }") {{ tab.name }}
+        p(
+          class="pb-3 text-body2 whitespace-nowrap cursor-pointer"
+          :class="{ 'font-bold': tab[keyField] === currentTab }"
+        ) {{ tab.name }}
         div(v-if="tab.hasNewUpdate" class="ml-0.5 w-1.5 h-1.5 rounded-full bg-red-400")
   div(class="flex-grow")
     slot(:currentTab="currentTab")
@@ -17,7 +20,7 @@ div(class="flex flex-col")
 
 <script>
 export default {
-  name: 'FTabs'
+  name: 'FTabs',
 }
 </script>
 
@@ -27,12 +30,12 @@ import { ref } from 'vue'
 const props = defineProps({
   /**
    * format:
-   * 
+   *
    * ```
    * [
    *  {
    *    [keyField]: '',
-   *    name: '', 
+   *    name: '',
    *    hasNewUpdate: false,
    *    icon: '',
    *    disabled: false
@@ -42,18 +45,18 @@ const props = defineProps({
    */
   tabList: {
     type: Array,
-    required: true
+    required: true,
   },
   keyField: {
     type: String,
-    default: 'path'
+    default: 'path',
   },
   /**
    * To be equal to the value of [keyField] in `tabList` item
    */
   initValue: {
-    type: [String, Number]
-  }
+    type: [String, Number],
+  },
 })
 const emit = defineEmits(['switch'])
 

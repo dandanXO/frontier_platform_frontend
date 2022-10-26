@@ -23,17 +23,16 @@ import { useStore } from 'vuex'
 defineProps({
   errorList: {
     type: Array,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const store = useStore()
 
 const openModalMassUpload = () => {
   store.dispatch('helper/openModalBehavior', {
-    component: 'modal-mass-upload'
+    component: 'modal-mass-upload',
   })
 }
 const closeModalBehavior = () => store.dispatch('helper/closeModalBehavior')
-
 </script>

@@ -7,7 +7,7 @@ const NodePublishState = () => ({
   displayName: '',
   publicDate: null,
   isCanClone: false,
-  isCanDownloadU3M: false
+  isCanDownloadU3M: false,
 })
 
 export default NodePublishState

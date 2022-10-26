@@ -5,24 +5,24 @@ export default {
   title: 'Input/FInputCheckbox',
   component: FInputCheckbox,
   args: {
-    label: 'Checkbox'
+    label: 'Checkbox',
   },
   argTypes: {
     inputValue: {
-      control: { type: null }
+      control: { type: null },
     },
     value: {
-      control: { type: null }
+      control: { type: null },
     },
     label: {
-      control: { type: 'text' }
-    }
-  }
+      control: { type: 'text' },
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FInputCheckbox },
-  setup () {
+  setup() {
     const inputValue = ref([])
     return { args, inputValue }
   },

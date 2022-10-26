@@ -8,7 +8,11 @@ modal-behavior(
   @click:text="$store.dispatch('helper/closeModalBehavior')"
 )
   template(#note)
-    file-upload-error-note(v-if="errorCode" :errorCode="errorCode" :fileSizeMaxLimit="fileSizeMaxLimit")
+    file-upload-error-note(
+      v-if="errorCode"
+      :errorCode="errorCode"
+      :fileSizeMaxLimit="fileSizeMaxLimit"
+    )
   div(class="w-94")
     f-input-select(
       v-model:selectValue="formData.category"
@@ -28,17 +32,28 @@ modal-behavior(
       class="pb-2"
       :rules="[$inputRules.required()]"
     )
-    f-scrollbar-container(v-if="feedbackAttachmentList.length > 0" class="max-h-18 mb-2.5")
+    f-scrollbar-container(
+      v-if="feedbackAttachmentList.length > 0"
+      class="max-h-18 mb-2.5"
+    )
       div(class="grid gap-y-2")
-        div(v-for="attachment in feedbackAttachmentList" class="h-8 flex justify-between items-center px-4 bg-grey-50")
+        div(
+          v-for="attachment in feedbackAttachmentList"
+          class="h-8 flex justify-between items-center px-4 bg-grey-50"
+        )
           div(class="flex items-center gap-x-1")
             p(class="text-body2 font-bold text-grey-900 line-clamp-1") {{ attachment.fileName }}
             p(class="text-body2 font-normal text-grey-900 flex-shrink-0") ({{ bytesToSize(attachment.fileSize) }})
-          f-svg-icon(iconName="clear" size="14" class="text-grey-900 ml-1 cursor-pointer" @click="removeAttachment(attachment.tempFeedbackAttachmentId)")
-    f-button(size="sm" type="secondary" prependIcon="add" @click="chooseFile") {{ $t("UU0063") }}
+          f-svg-icon(
+            iconName="clear"
+            size="14"
+            class="text-grey-900 ml-1 cursor-pointer"
+            @click="removeAttachment(attachment.tempFeedbackAttachmentId)"
+          )
+    f-button(size="sm" type="secondary" prependIcon="add" @click="chooseFile") {{ $t('UU0063') }}
     div(class="text-caption text-grey-900 pt-1")
-      p(class="pb-2") {{ $t("RR0243") }} {{ acceptType.join(', ').toUpperCase() }}
-      p {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
+      p(class="pb-2") {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
+      p {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
 </template>
 
 <script setup>
@@ -55,12 +70,14 @@ const store = useStore()
 const tempFeedbackId = uuidv4()
 const formData = reactive({
   category: null,
-  comment: ''
+  comment: '',
 })
 const feedbackAttachmentList = ref([])
 const errorCode = ref('')
 
-const actionBtnDisabled = computed(() => !formData.category || !formData.comment)
+const actionBtnDisabled = computed(
+  () => !formData.category || !formData.comment
+)
 
 const fileSizeMaxLimit = 20
 const acceptType = ['jpg', 'jpeg', 'png', 'mp4']
@@ -73,15 +90,24 @@ fileOperator.on('error', (code) => {
 fileOperator.on('finish', async (file) => {
   errorCode.value = ''
   store.dispatch('helper/pushModalLoading')
-  feedbackAttachmentList.value = await store.dispatch('user/sendFeedbackAttachment', { tempFeedbackId, file })
+  feedbackAttachmentList.value = await store.dispatch(
+    'user/sendFeedbackAttachment',
+    { tempFeedbackId, file }
+  )
   store.dispatch('helper/closeModalLoading')
 })
 
 const chooseFile = () => fileOperator.upload()
 
 const removeAttachment = (tempFeedbackAttachmentId) => {
-  feedbackAttachmentList.value = feedbackAttachmentList.value.filter((attachment) => attachment.tempFeedbackAttachmentId !== tempFeedbackAttachmentId)
-  store.dispatch('user/removeFeedbackAttachment', { tempFeedbackId, tempFeedbackAttachmentId })
+  feedbackAttachmentList.value = feedbackAttachmentList.value.filter(
+    (attachment) =>
+      attachment.tempFeedbackAttachmentId !== tempFeedbackAttachmentId
+  )
+  store.dispatch('user/removeFeedbackAttachment', {
+    tempFeedbackId,
+    tempFeedbackAttachmentId,
+  })
 }
 
 const actionHandler = () => {

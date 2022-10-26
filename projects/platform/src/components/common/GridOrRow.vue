@@ -20,8 +20,8 @@ import { DISPLAY_NODE } from '@/utils/constants.js'
 defineProps({
   displayMode: {
     type: Number,
-    default: DISPLAY_NODE.LIST
-  }
+    default: DISPLAY_NODE.LIST,
+  },
 })
 
 defineEmits(['update:displayMode'])

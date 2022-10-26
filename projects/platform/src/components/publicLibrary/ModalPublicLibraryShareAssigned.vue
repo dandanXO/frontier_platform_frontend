@@ -24,7 +24,10 @@ modal-behavior(
           div(class="text-body2 flex-grow")
             p(class="text-grey-900 line-clamp-1") {{ item.name }}
             p(v-if="item.number" class="text-grey-200") {{ item.number }}
-          p(class="text-body2 text-grey-200 pr-2.5 cursor-pointer" @click="removeTarget(index)") {{ $t("FF0060") }}
+          p(
+            class="text-body2 text-grey-200 pr-2.5 cursor-pointer"
+            @click="removeTarget(index)"
+          ) {{ $t('FF0060') }}
 </template>
 
 <script setup>
@@ -35,8 +38,8 @@ import { useI18n } from 'vue-i18n'
 const props = defineProps({
   nodeKey: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const { t } = useI18n()
@@ -47,7 +50,10 @@ const errorMsg = ref('')
 
 const addToTargetList = async () => {
   const frozenTargetValue = target.value.trim()
-  const existedTarget = targetList.value.find(({ name, number }) => name === frozenTargetValue || number === frozenTargetValue)
+  const existedTarget = targetList.value.find(
+    ({ name, number }) =>
+      name === frozenTargetValue || number === frozenTargetValue
+  )
   if (existedTarget) {
     switch (existedTarget.type) {
       case 1:
@@ -61,7 +67,7 @@ const addToTargetList = async () => {
 
   const temp = await store.dispatch('publicLibrary/getShareTarget', {
     nodeKey: props.nodeKey,
-    target: frozenTargetValue
+    target: frozenTargetValue,
   })
   targetList.value.push(temp)
   target.value = ''
@@ -71,7 +77,7 @@ const assignedShare = async () => {
   store.dispatch('helper/pushModalLoading')
   await store.dispatch('publicLibrary/assignedShare', {
     nodeKey: props.nodeKey,
-    targetList: targetList.value
+    targetList: targetList.value,
   })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/closeModal')

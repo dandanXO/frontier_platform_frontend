@@ -9,13 +9,13 @@ export default {
   title: 'Input/FInputText Series/FInputPassword',
   component: FInputPassword,
   argTypes: {
-    ...FInputTextStories.argTypes
-  }
+    ...FInputTextStories.argTypes,
+  },
 }
 
 const Template = (args) => ({
   components: { FInputPassword },
-  setup () {
+  setup() {
     const inputText = ref('')
     return { args, inputText }
   },

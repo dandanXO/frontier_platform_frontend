@@ -1,7 +1,17 @@
 <template lang="pug">
 label(class="flex items-center")
-  f-svg-icon(v-if="checked" iconName="check_box" :size="iconSize" :class="[disabled ? 'text-grey-200' : iconColor, { 'cursor-pointer': !disabled }]")
-  f-svg-icon(v-else iconName="check_box_outline_blank" :size="iconSize" :class="[uncheckColor, { 'cursor-pointer': !disabled }]")
+  f-svg-icon(
+    v-if="checked"
+    iconName="check_box"
+    :size="iconSize"
+    :class="[disabled ? 'text-grey-200' : iconColor, { 'cursor-pointer': !disabled }]"
+  )
+  f-svg-icon(
+    v-else
+    iconName="check_box_outline_blank"
+    :size="iconSize"
+    :class="[uncheckColor, { 'cursor-pointer': !disabled }]"
+  )
   input(
     type="checkbox"
     class="hidden"
@@ -10,7 +20,11 @@ label(class="flex items-center")
     @input="check($event)"
     :disabled="disabled"
   )
-  div(v-if="label !== ''" class="text-body2 pl-1 whitespace-nowrap" :class="[disabled ? 'text-grey-200' : 'text-grey-900 cursor-pointer']") {{ label }}
+  div(
+    v-if="label !== ''"
+    class="text-body2 pl-1 whitespace-nowrap"
+    :class="[disabled ? 'text-grey-200' : 'text-grey-900 cursor-pointer']"
+  ) {{ label }}
 </template>
 
 <script>
@@ -23,14 +37,14 @@ export default {
      */
     binary: {
       type: Boolean,
-      default: false
+      default: false,
     },
     /**
      * v-model:inputValue
      */
     inputValue: {
       type: [Array, Boolean],
-      required: true
+      required: true,
     },
     /**
      * The value used when the component is selected
@@ -38,36 +52,38 @@ export default {
      * you don't have to set value if `binary` is true
      */
     value: {
-      type: [String, Number, Object]
+      type: [String, Number, Object],
     },
     label: {
       type: [String, Number],
-      default: ''
+      default: '',
     },
     iconSize: {
       type: String,
-      default: '24'
+      default: '24',
     },
     iconColor: {
       type: String,
-      default: 'text-primary-400'
+      default: 'text-primary-400',
     },
     uncheckColor: {
       type: String,
-      default: 'text-grey-200'
+      default: 'text-grey-200',
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ['update:inputValue'],
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const checked = computed(() => {
       if (props.binary) {
         return props.inputValue
       } else {
-        const tempInputValueString = props.inputValue.map(v => JSON.stringify(v))
+        const tempInputValueString = props.inputValue.map((v) =>
+          JSON.stringify(v)
+        )
         return tempInputValueString.includes(JSON.stringify(props.value))
       }
     })
@@ -78,8 +94,13 @@ export default {
       }
       const updatedInputValue = [...props.inputValue]
       if (!e.target.checked) {
-        const tempInputValueString = props.inputValue.map(v => JSON.stringify(v))
-        updatedInputValue.splice(tempInputValueString.indexOf(JSON.stringify(props.value)), 1)
+        const tempInputValueString = props.inputValue.map((v) =>
+          JSON.stringify(v)
+        )
+        updatedInputValue.splice(
+          tempInputValueString.indexOf(JSON.stringify(props.value)),
+          1
+        )
       } else {
         updatedInputValue.push(props.value)
       }
@@ -87,8 +108,8 @@ export default {
     }
     return {
       checked,
-      check
+      check,
     }
-  }
+  },
 }
 </script>

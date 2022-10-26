@@ -2,7 +2,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { NODE_TYPE } from '@/utils/constants.js'
 
-export default function useShareToMe () {
+export default function useShareToMe() {
   const { t } = useI18n()
   const store = useStore()
 
@@ -20,8 +20,10 @@ export default function useShareToMe () {
 
   const shareToMeCloneByNodeList = (nodeList, sharingId) => {
     const nodeKeyList = nodeList.map(({ nodeKey }) => nodeKey)
-    const isCanClone = nodeList.every(node => node.share.isCanClone)
-    const isContainCollection = nodeList.some(node => node.nodeType === NODE_TYPE.COLLECTION)
+    const isCanClone = nodeList.every((node) => node.share.isCanClone)
+    const isContainCollection = nodeList.some(
+      (node) => node.nodeType === NODE_TYPE.COLLECTION
+    )
     const msg = isContainCollection ? t('II0009') : t('II0008')
     shareToMeClone(sharingId, nodeKeyList, isCanClone, msg)
   }
@@ -32,7 +34,7 @@ export default function useShareToMe () {
         type: 1,
         header: t('GG0016'),
         contentText: t('GG0020'),
-        primaryBtnText: t('UU0031')
+        primaryBtnText: t('UU0031'),
       })
     }
 
@@ -40,13 +42,20 @@ export default function useShareToMe () {
       component: 'modal-clone-to',
       properties: {
         checkHandler: async () => {
-          return store.dispatch('shareToMe/cloneCheckShareToMe', { nodeKeyList })
+          return store.dispatch('shareToMe/cloneCheckShareToMe', {
+            nodeKeyList,
+          })
         },
         cloneHandler: async (targetLocationList, optional) => {
-          await store.dispatch('shareToMe/cloneShareToMe', { sharingId, nodeKeyList, targetLocationList, optional })
+          await store.dispatch('shareToMe/cloneShareToMe', {
+            sharingId,
+            nodeKeyList,
+            targetLocationList,
+            optional,
+          })
           store.dispatch('helper/pushFlashMessage', msg)
-        }
-      }
+        },
+      },
     })
   }
 
@@ -67,7 +76,7 @@ export default function useShareToMe () {
         store.dispatch('helper/closeModalLoading')
         store.dispatch('helper/reloadInnerApp')
       },
-      secondaryBtnText: t('UU0002')
+      secondaryBtnText: t('UU0002'),
     })
   }
 
@@ -77,6 +86,6 @@ export default function useShareToMe () {
     shareToMeCloneByNode,
     shareToMeCloneByNodeList,
     shareToMeDeleteByNode,
-    shareToMeDeleteByNodeList
+    shareToMeDeleteByNodeList,
   }
 }

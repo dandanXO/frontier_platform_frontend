@@ -31,7 +31,7 @@ app.config.errorHandler = (err, vm, info) => {
       header: i18n.global.t('RR0107'),
       contentText: i18n.global.t('RR0108'),
       primaryBtnText: i18n.global.t('UU0031'),
-      primaryBtnHandler: () => window.location.reload()
+      primaryBtnHandler: () => window.location.reload(),
     })
   } else if (status === 401) {
     return
@@ -42,7 +42,7 @@ app.config.errorHandler = (err, vm, info) => {
       header: title || i18n.global.t('WW0122'),
       contentText: content,
       primaryBtnText: i18n.global.t('UU0031'),
-      primaryBtnHandler: () => window.location.reload()
+      primaryBtnHandler: () => window.location.reload(),
     })
   }
 
@@ -61,7 +61,9 @@ app.config.warnHandler = (msg, vm, trace) => {
 app.directive('permission', permission)
 app.directive('defaultImg', defaultImg)
 
-const globalComponents = import.meta.globEager('/src/components/global/**/*.vue')
+const globalComponents = import.meta.globEager(
+  '/src/components/global/**/*.vue'
+)
 
 for (const path in globalComponents) {
   const component = globalComponents[path].default
@@ -70,10 +72,14 @@ for (const path in globalComponents) {
 
 app
   .use(router)
-  .use(VueGtag, {
-    bootstrap: false,
-    config: { id: import.meta.env.VITE_APP_GA_MEASUREMENT_ID }
-  }, router)
+  .use(
+    VueGtag,
+    {
+      bootstrap: false,
+      config: { id: import.meta.env.VITE_APP_GA_MEASUREMENT_ID },
+    },
+    router
+  )
   .use(store)
   .use(i18n)
   .use(uiComponents)

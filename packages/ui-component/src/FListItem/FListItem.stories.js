@@ -6,14 +6,14 @@ export default {
   component: FListItem,
   parameters: {
     backgrounds: {
-      default: 'dark'
-    }
-  }
+      default: 'dark',
+    },
+  },
 }
 
 export const Default = (args) => ({
   components: { FListItem },
-  setup () {
+  setup() {
     return { args }
   },
   template: `
@@ -25,7 +25,7 @@ export const Default = (args) => ({
 
 export const ListAndListItem = (args) => ({
   components: { FListItem, FList },
-  setup () {
+  setup() {
     return { args }
   },
   template: `
@@ -39,5 +39,3 @@ export const ListAndListItem = (args) => ({
     </f-list>
   `,
 })
-
-

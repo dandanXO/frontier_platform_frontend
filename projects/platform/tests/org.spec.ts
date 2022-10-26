@@ -1,7 +1,7 @@
-import { expect } from "@playwright/test"
-import test from "./domain/test"
-import { initialOrg, createOrgReq } from "./domain/org"
-import { urls } from "./domain/routes"
+import { expect } from '@playwright/test'
+import test from './domain/test'
+import { initialOrg, createOrgReq } from './domain/org'
+import { urls } from './domain/routes'
 
 // test.describe.configure({ mode: "parallel" })
 
@@ -9,9 +9,12 @@ test.beforeEach(async ({ orgPage }) => {
   await orgPage.goto()
 })
 
-test.describe("Create Organization", () => {
-  test.describe("Case 1: Successful", () => {
-    test("Case 1-1: Create Organization Successfully", async ({ page, orgPage }) => {
+test.describe('Create Organization', () => {
+  test.describe('Case 1: Successful', () => {
+    test('Case 1-1: Create Organization Successfully', async ({
+      page,
+      orgPage,
+    }) => {
       const { orgName, uploadMaterialEmail: orgEmail } = createOrgReq()
 
       await orgPage.clickCreateOrgBtn()
@@ -27,17 +30,16 @@ test.describe("Create Organization", () => {
       await orgPage.fillOrgEmailInput(orgEmail)
       await Promise.all([
         orgPage.clickModalPrimaryBtn(),
-        page.waitForNavigation({ waitUntil: "networkidle" }),
+        page.waitForNavigation({ waitUntil: 'networkidle' }),
       ])
 
       await expect(page).not.toHaveURL(urls.index)
       await expect(page).toHaveURL(/\/public-library/)
-
     })
   })
 
-  test.describe("Case 2: Failed", () => {
-    test("Case 2-1: E-mail already registered", async ({ orgPage }) => {
+  test.describe('Case 2: Failed', () => {
+    test('Case 2-1: E-mail already registered', async ({ orgPage }) => {
       const { orgName } = createOrgReq()
 
       await orgPage.clickCreateOrgBtn()
@@ -55,7 +57,7 @@ test.describe("Create Organization", () => {
       await expect(orgPage.modalConfirmElement()).toBeVisible()
     })
 
-    test("Case 2-2: Organization name already exists", async ({ orgPage }) => {
+    test('Case 2-2: Organization name already exists', async ({ orgPage }) => {
       await orgPage.clickCreateOrgBtn()
       await orgPage.fillOrgNameInput(initialOrg.orgName)
       await orgPage.clickCountryDropdown()
@@ -66,9 +68,12 @@ test.describe("Create Organization", () => {
   })
 })
 
-test.describe("Edit Organization", () => {
-  test.describe("Case 1: Successful", () => {
-    test("Case 1-1: Edit Organization Successfully @debug", async ({ loginPage, orgPage }) => {
+test.describe('Edit Organization', () => {
+  test.describe('Case 1: Successful', () => {
+    test('Case 1-1: Edit Organization Successfully @debug', async ({
+      loginPage,
+      orgPage,
+    }) => {
       const orgReq = createOrgReq()
       const token = await loginPage.getToken()
       if (!token) throw new Error('token expired')
@@ -78,7 +83,7 @@ test.describe("Edit Organization", () => {
 
       await orgPage.clickOrgByName(originOrg.orgName)
       await orgPage.clickManagementBtn()
-      await orgPage.fillAboutOrgNameInput("")
+      await orgPage.fillAboutOrgNameInput('')
       await expect(orgPage.orgAboutSaveBtnElement()).toBeDisabled()
 
       await orgPage.fillAboutOrgNameInput(newOrgName)
@@ -91,8 +96,11 @@ test.describe("Edit Organization", () => {
     })
   })
 
-  test.describe("Case 2: Failed", () => {
-    test("Case 2-1: Organization name already exists", async ({ orgPage, loginPage }) => {
+  test.describe('Case 2: Failed', () => {
+    test('Case 2-1: Organization name already exists', async ({
+      orgPage,
+      loginPage,
+    }) => {
       const token = await loginPage.getToken()
       if (!token) throw new Error('token expired')
       const org = await orgPage.createOrgApi(createOrgReq(), token)
@@ -109,9 +117,9 @@ test.describe("Edit Organization", () => {
   })
 })
 
-test.describe("Delete Organization", () => {
-  test.describe("Case 1: Successful", () => {
-    test("Case 1-1: Organization name is correct, delete organization", async ({
+test.describe('Delete Organization', () => {
+  test.describe('Case 1: Successful', () => {
+    test('Case 1-1: Organization name is correct, delete organization', async ({
       page,
       loginPage,
       orgPage,
@@ -129,21 +137,24 @@ test.describe("Delete Organization", () => {
       await orgPage.clickModalPrimaryBtn()
       await Promise.all([
         orgPage.clickModalConfirmPrimary(),
-        page.waitForNavigation({ waitUntil: "networkidle" }),
+        page.waitForNavigation({ waitUntil: 'networkidle' }),
       ])
 
       await expect(page).toHaveURL(urls.index)
     })
   })
 
-  test.describe("Case 2: Failed", () => {
-    test("Case 2-1: Organization name is not correct", async ({ loginPage, orgPage }) => {
+  test.describe('Case 2: Failed', () => {
+    test('Case 2-1: Organization name is not correct', async ({
+      loginPage,
+      orgPage,
+    }) => {
       const orgReq = createOrgReq()
       const token = await loginPage.getToken()
       if (!token) throw new Error('token expired')
       await orgPage.createOrgApi(orgReq, token)
       await orgPage.goto()
-      const incorrectOrgName = "incorrect org name"
+      const incorrectOrgName = 'incorrect org name'
 
       await orgPage.clickOrgByName(orgReq.orgName)
       await orgPage.clickManagementBtn()

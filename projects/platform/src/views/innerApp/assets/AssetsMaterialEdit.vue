@@ -2,7 +2,10 @@
 div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
     div(class="pt-12 pb-9 flex justify-between")
-      f-breadcrumb(:breadcrumbList="breadcrumbList" @click:item="$router.push($event.path)")
+      f-breadcrumb(
+        :breadcrumbList="breadcrumbList"
+        @click:item="$router.push($event.path)"
+      )
     div
       block-material-image
       block-material-information(:invalidation="invalidation")
@@ -11,8 +14,13 @@ div(class="w-full h-full flex justify-center")
       block-material-additional-info
       div(class="flex justify-center items-center pt-17.5")
         div(class="grid grid-cols-2 gap-x-2")
-          f-button(size="md" type="secondary" class="h-10" @click="cancel") {{ $t("UU0002") }}
-          f-button(size="md" class="h-10" :disabled="isInvalid" @click="updateMaterial") {{ $t("UU0018") }}
+          f-button(size="md" type="secondary" class="h-10" @click="cancel") {{ $t('UU0002') }}
+          f-button(
+            size="md"
+            class="h-10"
+            :disabled="isInvalid"
+            @click="updateMaterial"
+          ) {{ $t('UU0018') }}
 </template>
 
 <script setup>
@@ -44,12 +52,12 @@ const breadcrumbList = computed(() => {
   return [
     {
       name: t('DD0044'),
-      path: parsePath(`${prefix}/assets`)
+      path: parsePath(`${prefix}/assets`),
     },
     {
       name: t('EE0037'),
-      path: parsePath(`${prefix}/assets/:materialId/edit`)
-    }
+      path: parsePath(`${prefix}/assets/:materialId/edit`),
+    },
   ]
 })
 
@@ -75,7 +83,7 @@ const cancel = async () => {
       isConfirmedToLeave.value = true
       goToAssets()
     },
-    secondaryBtnText: t('UU0002')
+    secondaryBtnText: t('UU0002'),
   })
 }
 
@@ -92,7 +100,7 @@ onBeforeRouteLeave(async () => {
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: resolve.bind(undefined, 'confirm'),
       secondaryBtnText: t('UU0002'),
-      secondaryBtnHandler: resolve.bind(undefined, 'cancel')
+      secondaryBtnHandler: resolve.bind(undefined, 'cancel'),
     })
   })
 
@@ -100,5 +108,7 @@ onBeforeRouteLeave(async () => {
 })
 
 await store.dispatch('assets/getMaterialOptions')
-await store.dispatch('assets/getMaterial', { materialId: route.params.materialId })
+await store.dispatch('assets/getMaterial', {
+  materialId: route.params.materialId,
+})
 </script>

@@ -1,14 +1,14 @@
 <template lang="pug">
 div(data-scroll-to="block-material-information" class="pb-15 border-b border-grey-200")
   div(class="h-16 flex items-center justify-between")
-    h5(class="text-h5 text-grey-900 font-bold") {{ $t("DD0013") }}
+    h5(class="text-h5 text-grey-900 font-bold") {{ $t('DD0013') }}
     f-button(
       v-if="isEditMode"
       size="sm"
       type="secondary"
       :disabled="hideSampleCard"
       @click="isOpenSampleCard = !isOpenSampleCard"
-    ) {{ isOpenSampleCard ? $t("UU0026") : $t("UU0033") }}
+    ) {{ isOpenSampleCard ? $t('UU0026') : $t('UU0033') }}
   div
     div(class="flex")
       div(class="grid gap-y-7.5 flex-grow" :class="{ 'px-15': !isOpenSampleCard }")
@@ -64,7 +64,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
             )
               template(v-if="invalidation.weightGy" #slot:errorMsg)
                 p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ invalidation.weightGy }}
-            p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0018") }}
+            p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0018') }}
         f-input-container(:label="$t('RR0019')" required)
           div(class="flex items-center gap-x-3")
             f-input-text(
@@ -75,10 +75,13 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
             )
               template(v-if="invalidation.width" #slot:errorMsg)
                 p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ invalidation.width }}
-            p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0020") }}
+            p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0020') }}
         f-input-container(:label="$t('RR0021')" required)
           div(class="grid gap-y-3")
-            div(v-for="(content, contentItemIndex) in material.contentList" class="flex items-center")
+            div(
+              v-for="(content, contentItemIndex) in material.contentList"
+              class="flex items-center"
+            )
               f-input-select(
                 v-model:selectValue="content.name"
                 :optionList="specOptions.contentList"
@@ -94,12 +97,34 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
                 :style="{ zIndex: material.contentList.length - contentItemIndex }"
                 data-cy="content"
               )
-              f-input-text(v-model:textValue="content.percentage" inputType="number" class="w-25 mr-3" data-cy="percentage")
+              f-input-text(
+                v-model:textValue="content.percentage"
+                inputType="number"
+                class="w-25 mr-3"
+                data-cy="percentage"
+              )
               p(class="text-body2 text-grey-900 pr-7.5") %
-              f-svg-icon(v-if="contentItemIndex === 0" size="20" iconName="add_box" class="text-grey-600" @click="addNewContent" data-cy="add-content")
-              f-svg-icon(v-else size="20" iconName="delete" class="text-grey-600" @click="removeContent(contentItemIndex)")
+              f-svg-icon(
+                v-if="contentItemIndex === 0"
+                size="20"
+                iconName="add_box"
+                class="text-grey-600"
+                @click="addNewContent"
+                data-cy="add-content"
+              )
+              f-svg-icon(
+                v-else
+                size="20"
+                iconName="delete"
+                class="text-grey-600"
+                @click="removeContent(contentItemIndex)"
+              )
           template(#slot:hint)
-            p(v-if="invalidation.contentList" class="text-caption text-red-400 absolute pt-1" data-cy="error-msg") {{ invalidation.contentList }}
+            p(
+              v-if="invalidation.contentList"
+              class="text-caption text-red-400 absolute pt-1"
+              data-cy="error-msg"
+            ) {{ invalidation.contentList }}
         f-input-chips(
           v-model:chips="material.finishList"
           :label="$t('RR0022')"
@@ -116,14 +141,14 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
               v-model:textValue="material.warpYarnCount"
               :customErrorMsg="invalidation.warpYarnCount"
               class="w-50"
-                data-cy="warpYarnCount"
+              data-cy="warpYarnCount"
             )
             f-svg-icon(iconName="clear" size="20" class="text-grey-900")
             f-input-text(
               v-model:textValue="material.weftYarnCount"
               :customErrorMsg="invalidation.weftYarnCount"
               class="w-50"
-                data-cy="weftYarnCount"
+              data-cy="weftYarnCount"
             )
         f-input-container(:label="$t('RR0024')")
           div(class="flex items-center gap-x-3")
@@ -164,7 +189,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
             v-model:chips="material.aiTagList"
             :placeholder="$t('DD0018')"
           )
-          p(class="absolute right-0 top-0 text-caption text-grey-900") {{ $t("EE0036") }}
+          p(class="absolute right-0 top-0 text-caption text-grey-900") {{ $t('EE0036') }}
       div(v-if="isOpenSampleCard" class="flex-shrink-0 w-75 h-fit ml-8 sticky top-0")
         cropper-default-layout(
           :showScale="true"
@@ -179,7 +204,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
               @update:options="Object.assign(config.options, $event)"
             )
     div(class="bg-grey-50 px-15 py-12.5 mt-7.5 grid gap-y-7.5")
-      h6(class="text-h6 text-grey-600 font-bold") {{ $t("DD0019") }}
+      h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
       f-input-chips(
         v-model:chips="material.privateTagList"
         :label="$t('RR0028')"
@@ -204,14 +229,16 @@ import { Cropper } from '@/utils/cropper'
 const props = defineProps({
   invalidation: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const store = useStore()
 const material = computed(() => store.getters['assets/material'])
 const isEditMode = computed(() => !!material.value.materialId)
-const { isBackSideMaterial, faceSideUrl, backSideUrl } = useMaterialImage(material.value)
+const { isBackSideMaterial, faceSideUrl, backSideUrl } = useMaterialImage(
+  material.value
+)
 const { faceSideImg, backSideImg } = material.value
 const isOpenSampleCard = ref(false)
 const config = reactive({})
@@ -224,7 +251,7 @@ const {
   addNewContent,
   removeContent,
   addDescriptionOption,
-  addFinishOption
+  addFinishOption,
 } = useMaterialEdit(material.value)
 
 const hideSampleCard = computed(() => {
@@ -243,7 +270,7 @@ const getCropperConfig = async () => {
     const cropper = new Cropper({
       src: imageObj.original,
       dpi: imageObj.dpi,
-      cropRectSize
+      cropRectSize,
     })
     await cropper.formatImage()
     Object.assign(config, cropper.config)
@@ -260,7 +287,7 @@ watch(
     store.commit('assets/UPDATE_material', material.value)
   },
   {
-    deep: true
+    deep: true,
   }
 )
 </script>

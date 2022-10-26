@@ -1,11 +1,23 @@
 <template lang="pug">
 div(class="grid gap-y-1.5 text-caption leading-none")
   div(class="flex")
-    p(:class="[moreThanSix && moreThanSix ? 'text-grey-600' : 'text-grey-200']") {{ $t("AA0019") }}
-    f-svg-icon(v-if="moreThanSix && lessThanEighteen" iconName="tick_bold" size="12" class="ml-0.5 text-grey-600")
+    p(
+      :class="[moreThanSix && moreThanSix ? 'text-grey-600' : 'text-grey-200']"
+    ) {{ $t('AA0019') }}
+    f-svg-icon(
+      v-if="moreThanSix && lessThanEighteen"
+      iconName="tick_bold"
+      size="12"
+      class="ml-0.5 text-grey-600"
+    )
   div(class="flex")
-    p(:class="[containsLetter ? 'text-grey-600' : 'text-grey-200']") {{ $t("AA0020") }}
-    f-svg-icon(v-if="containsLetter" iconName="tick_bold" size="12" class="ml-0.5 text-grey-600")
+    p(:class="[containsLetter ? 'text-grey-600' : 'text-grey-200']") {{ $t('AA0020') }}
+    f-svg-icon(
+      v-if="containsLetter"
+      iconName="tick_bold"
+      size="12"
+      class="ml-0.5 text-grey-600"
+    )
 </template>
 
 <script>
@@ -16,31 +28,34 @@ export default {
   props: {
     password: {
       type: String,
-      required: true
+      required: true,
     },
     isValid: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ['update:isValid'],
-  setup (props, { emit }) {
-    const containsLetter = computed(() => (/[a-zA-Z]/ig).test(props.password))
+  setup(props, { emit }) {
+    const containsLetter = computed(() => /[a-zA-Z]/gi.test(props.password))
     const moreThanSix = computed(() => props.password.length >= 6)
     const lessThanEighteen = computed(() => props.password.length <= 18)
 
     watch(
       () => props.password,
       () => {
-        emit('update:isValid', containsLetter.value && moreThanSix.value && lessThanEighteen.value)
+        emit(
+          'update:isValid',
+          containsLetter.value && moreThanSix.value && lessThanEighteen.value
+        )
       }
     )
 
     return {
       containsLetter,
       moreThanSix,
-      lessThanEighteen
+      lessThanEighteen,
     }
-  }
+  },
 }
 </script>

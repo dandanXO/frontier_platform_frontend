@@ -6,7 +6,12 @@ modal-behavior(
   @click:primary="openResetPassword"
   @click:text="closeModal"
 )
-  i18n-t(keypath="AA0059" tag="p" class="w-94 text-grey-900 text-body1 leading-1.6" scope="global")
+  i18n-t(
+    keypath="AA0059"
+    tag="p"
+    class="w-94 text-grey-900 text-body1 leading-1.6"
+    scope="global"
+  )
     template(#newline)
       br
 </template>
@@ -17,12 +22,12 @@ import { useStore } from 'vuex'
 const props = defineProps({
   email: {
     type: String,
-    required: true
+    required: true,
   },
   oldUserVerifyToken: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const store = useStore()
@@ -32,8 +37,8 @@ const openResetPassword = () => {
     properties: {
       mode: 1,
       email: props.email,
-      oldUserVerifyToken: props.oldUserVerifyToken
-    }
+      oldUserVerifyToken: props.oldUserVerifyToken,
+    },
   })
 }
 

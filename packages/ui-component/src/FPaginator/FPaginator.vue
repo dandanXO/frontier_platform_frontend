@@ -30,23 +30,23 @@ import { computed } from 'vue'
 export default {
   name: 'FPaginator',
   components: {
-    VPagination
+    VPagination,
   },
   props: {
     currentPage: {
       type: Number,
-      required: true
+      required: true,
     },
     totalPage: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   emits: ['update:currentPage', 'goTo'],
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const innerCurrentPage = computed({
       get: () => props.currentPage,
-      set: (v) => emit('update:currentPage', v)
+      set: (v) => emit('update:currentPage', v),
     })
 
     const updateHandler = (page) => {
@@ -55,8 +55,8 @@ export default {
 
     return {
       innerCurrentPage,
-      updateHandler
+      updateHandler,
     }
-  }
+  },
 }
 </script>

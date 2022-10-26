@@ -18,7 +18,7 @@ modal-behavior(
     )
     f-input-container(:label="$t('RR0043')")
       div(class="flex items-center gap-x-3")
-        p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0044") }}
+        p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0044') }}
         f-input-text(
           v-model:textValue="material.publicPrice.price"
           inputType="number"
@@ -63,7 +63,7 @@ modal-behavior(
           class="w-50"
           :customErrorMsg="invalidation.publicPriceProductionLeadTime"
         )
-        p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0050") }}
+        p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0050') }}
     f-input-container(:label="$t('RR0051')")
       div(class="flex items-center gap-x-3")
         f-input-text(
@@ -71,7 +71,7 @@ modal-behavior(
           class="w-50"
           :customErrorMsg="invalidation.publicPriceSampleLeadTime"
         )
-        p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0050") }}
+        p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0050') }}
 </template>
 
 <script setup>
@@ -93,7 +93,7 @@ watch(
     store.commit('assets/UPDATE_material', material.value)
   },
   {
-    deep: true
+    deep: true,
   }
 )
 

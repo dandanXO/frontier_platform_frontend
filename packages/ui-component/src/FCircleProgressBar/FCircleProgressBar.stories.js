@@ -2,7 +2,7 @@ import FCircleProgressBar from './FCircleProgressBar.vue'
 
 const baseArgs = {
   size: 60,
-  max: 100
+  max: 100,
 }
 
 export default {
@@ -18,13 +18,13 @@ export default {
     },
     max: {
       control: { type: 'number' },
-    }
-  }
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FCircleProgressBar },
-  setup () {
+  setup() {
     return { args }
   },
   template: '<f-circle-progress-bar v-bind="args"> </f-circle-progress-bar>',
@@ -32,25 +32,24 @@ const Template = (args) => ({
 
 export const Percent0 = Template.bind({})
 Percent0.args = {
-  current: 0
+  current: 0,
 }
 export const Percent33 = Template.bind({})
 Percent33.args = {
-  current: 33
+  current: 33,
 }
 export const Percent66 = Template.bind({})
 Percent66.args = {
-  current: 66
+  current: 66,
 }
 export const Percent100 = Template.bind({})
 Percent100.args = {
-  current: 100
+  current: 100,
 }
-
 
 export const WithText = (args) => ({
   components: { FCircleProgressBar },
-  setup () {
+  setup() {
     return { args }
   },
   template: `
@@ -61,5 +60,5 @@ export const WithText = (args) => ({
   `,
 })
 WithText.args = {
-  current: 50
+  current: 50,
 }

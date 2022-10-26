@@ -6,7 +6,12 @@ modal-behavior(
   @click:primary="actionHandler"
 )
   template(#note)
-    file-upload-error-note(v-if="errorCode" :errorCode="errorCode" :fileSizeMaxLimit="fileSizeMaxLimit" data-cy="modal-mass-upload_error")
+    file-upload-error-note(
+      v-if="errorCode"
+      :errorCode="errorCode"
+      :fileSizeMaxLimit="fileSizeMaxLimit"
+      data-cy="modal-mass-upload_error"
+    )
   div(class="w-101")
     p(class="text-right pb-0.5 text-caption text-grey-600") *{{ $t('RR0163') }}
     f-input-text(
@@ -20,7 +25,12 @@ modal-behavior(
       div
         div(class="h-5.5 flex items-center pb-1")
           p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
-          f-button-label(v-if="uploadTrendBoardName" size="sm" class="ml-1.5" @click="previewFile(formData.trendBoardFile)") {{ $t('UU0060') }}
+          f-button-label(
+            v-if="uploadTrendBoardName"
+            size="sm"
+            class="ml-1.5"
+            @click="previewFile(formData.trendBoardFile)"
+          ) {{ $t('UU0060') }}
         f-input-text-button(
           class="w-full"
           disabledInput
@@ -29,8 +39,8 @@ modal-behavior(
           @click:button="chooseFile"
           @clear="removeTrendBoard"
         )
-      p(class='text-grey-900 text-caption leading-1.6') {{ $t("RR0243") }} {{ acceptType.join(', ').toUpperCase() }}
-      p(class='text-grey-900 text-caption leading-1.6') {{ $t("RR0145") }} {{ fileSizeMaxLimit }} MB
+      p(class="text-grey-900 text-caption leading-1.6") {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
+      p(class="text-grey-900 text-caption leading-1.6") {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
     f-input-textarea(
       v-model:textValue="formData.description"
       :label="$t('RR0014')"
@@ -47,7 +57,7 @@ import { useI18n } from 'vue-i18n'
 
 const MODE = {
   CREATE: 1,
-  EDIT: 2
+  EDIT: 2,
 }
 
 export default {
@@ -55,14 +65,14 @@ export default {
   props: {
     mode: {
       type: Number,
-      default: MODE.CREATE
+      default: MODE.CREATE,
     },
     workspaceNodeId: {
       type: [Number, String],
-      required: true
-    }
+      required: true,
+    },
   },
-  async setup (props) {
+  async setup(props) {
     const { t } = useI18n()
     const store = useStore()
     const fileSizeMaxLimit = 20
@@ -75,11 +85,15 @@ export default {
     const formData = reactive({
       collectionName: '',
       trendBoardFile: null,
-      description: ''
+      description: '',
     })
     const DESCRIPTION_LIMIT = 1000
 
-    const actionBtnDisabled = computed(() => !formData.collectionName || formData.description.length > DESCRIPTION_LIMIT)
+    const actionBtnDisabled = computed(
+      () =>
+        !formData.collectionName ||
+        formData.description.length > DESCRIPTION_LIMIT
+    )
 
     fileOperator.on('error', (code) => {
       errorCode.value = code
@@ -103,13 +117,13 @@ export default {
       if (props.mode === MODE.EDIT) {
         await store.dispatch('workspace/updateCollection', {
           collectionId: collectionId.value,
-          ...formData
+          ...formData,
         })
         store.dispatch('helper/pushFlashMessage', t('FF0035'))
       } else {
         await store.dispatch('workspace/createCollection', {
           workspaceNodeId: props.workspaceNodeId,
-          ...formData
+          ...formData,
         })
         store.dispatch('helper/pushFlashMessage', t('FF0027'))
       }
@@ -118,15 +132,26 @@ export default {
     }
 
     const removeTrendBoard = () => {
-      props.mode === MODE.EDIT && store.dispatch('workspace/removeTrendBoard', { collectionId: collectionId.value })
+      props.mode === MODE.EDIT &&
+        store.dispatch('workspace/removeTrendBoard', {
+          collectionId: collectionId.value,
+        })
     }
 
     if (props.mode === MODE.EDIT) {
-      const { collectionId: cId, name, description, trendBoardUrl, trendBoardDisplayFileName } = await store.dispatch('workspace/getCollection', { workspaceNodeId: props.workspaceNodeId })
+      const {
+        collectionId: cId,
+        name,
+        description,
+        trendBoardUrl,
+        trendBoardDisplayFileName,
+      } = await store.dispatch('workspace/getCollection', {
+        workspaceNodeId: props.workspaceNodeId,
+      })
       Object.assign(formData, {
         collectionName: name,
         description: description || '',
-        trendBoardFile: trendBoardUrl
+        trendBoardFile: trendBoardUrl,
       })
       collectionId.value = cId
       uploadTrendBoardName.value = trendBoardDisplayFileName
@@ -144,8 +169,8 @@ export default {
       actionBtnDisabled,
       MODE,
       removeTrendBoard,
-      DESCRIPTION_LIMIT
+      DESCRIPTION_LIMIT,
     }
-  }
+  },
 }
 </script>

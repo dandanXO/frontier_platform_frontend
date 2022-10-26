@@ -13,13 +13,13 @@ export default {
     size: {
       control: { type: 'select' },
       options: ['lg', 'sm'],
-    }
-  }
+    },
+  },
 }
 
 const Template = (args) => ({
   components: { FButtonLabel },
-  setup () {
+  setup() {
     return { args }
   },
   template: '<f-button-label v-bind="args"> Button </f-button-label>',
@@ -41,4 +41,3 @@ Active.args = {
   ...baseArgs,
   active: true,
 }
-

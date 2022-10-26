@@ -20,23 +20,23 @@ modal-behavior(
 <script setup>
 defineProps({
   header: {
-    type: String
+    type: String,
   },
   primaryBtnText: {
-    type: String
+    type: String,
   },
   secondaryBtnText: {
-    type: String
+    type: String,
   },
   primaryBtnHandler: {
-    type: Function
+    type: Function,
   },
   secondaryBtnHandler: {
-    type: Function
+    type: Function,
   },
   materialNoList: {
     type: Array,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>

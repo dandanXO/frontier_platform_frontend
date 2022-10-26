@@ -2,10 +2,10 @@
 $radius: 3px;
 $shadow: rgba(0, 0, 0, 0.1);
 
-div[role="popper"] {
+div[role='popper'] {
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
 
-  &[data-popper-placement^="top"]>#arrow {
+  &[data-popper-placement^='top'] > #arrow {
     bottom: -7px;
 
     &::before {
@@ -14,7 +14,7 @@ div[role="popper"] {
     }
   }
 
-  &[data-popper-placement^="bottom"]>#arrow {
+  &[data-popper-placement^='bottom'] > #arrow {
     top: -7px;
 
     &::before {
@@ -23,7 +23,7 @@ div[role="popper"] {
     }
   }
 
-  &[data-popper-placement^="left"]>#arrow {
+  &[data-popper-placement^='left'] > #arrow {
     right: -7px;
 
     &::before {
@@ -32,7 +32,7 @@ div[role="popper"] {
     }
   }
 
-  &[data-popper-placement^="right"]>#arrow {
+  &[data-popper-placement^='right'] > #arrow {
     left: -7px;
 
     &::before {
@@ -57,7 +57,7 @@ div[role="popper"] {
 
 #arrow::before {
   visibility: visible;
-  content: "";
+  content: '';
   transform: rotate(45deg);
 }
 </style>
@@ -73,13 +73,18 @@ div(
 teleport(v-if="isExpand" to="body")
   div(class="fixed z-popper w-screen h-screen top-0 left-0" @click="collapsePopper")
     div(ref="refPopper" role="popper" class="relative rounded bg-grey-0" @click.stop)
-      slot(v-if="isExpand" name="content" :isExpand="isExpand" :collapsePopper="collapsePopper")
-      div(v-if="showArrow" id="arrow" data-popper-arrow)
+      slot(
+        v-if="isExpand"
+        name="content"
+        :isExpand="isExpand"
+        :collapsePopper="collapsePopper"
+      )
+      #arrow(v-if="showArrow" data-popper-arrow)
 </template>
 
 <script>
 export default {
-  name: 'FPopper'
+  name: 'FPopper',
 }
 </script>
 
@@ -107,18 +112,18 @@ const props = defineProps({
         'right-end',
         'left',
         'left-start',
-        'left-end'
+        'left-end',
       ].includes(value)
-    }
+    },
   },
   offset: {
     type: Array,
-    default: () => [0, 10]
+    default: () => [0, 10],
   },
   showArrow: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const isExpand = ref(false)
@@ -134,21 +139,17 @@ const expandPopper = async () => {
 
   await nextTick()
 
-  createPopper(
-    refTrigger.value,
-    refPopper.value,
-    {
-      placement: props.placement,
-      modifiers: [
-        {
-          name: 'offset',
-          options: {
-            offset: props.offset
-          }
-        }
-      ]
-    }
-  )
+  createPopper(refTrigger.value, refPopper.value, {
+    placement: props.placement,
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: props.offset,
+        },
+      },
+    ],
+  })
   emit('expand')
 }
 

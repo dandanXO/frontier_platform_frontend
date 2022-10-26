@@ -1,10 +1,18 @@
 <template lang="pug">
-div(class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center")
+div(
+  class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center"
+)
   div(class="w-screen h-screen" @click="closable && close()")
   div(class="absolute bg-grey-0 rounded card-shadow")
     div(class="h-12 pl-8 pr-3 grid grid-flow-col items-center")
       p(v-if="header !== ''" class="text-h6 font-bold text-grey-900") {{ header }}
-      f-svg-icon(v-if="closable" iconName="clear" size="24" class="justify-self-end cursor-pointer text-grey-600" @click="close")
+      f-svg-icon(
+        v-if="closable"
+        iconName="clear"
+        size="24"
+        class="justify-self-end cursor-pointer text-grey-600"
+        @click="close"
+      )
     component(:is="component" v-bind="properties")
 </template>
 
@@ -17,40 +25,56 @@ export default {
   name: 'Modal',
   components: {
     ModalLoading,
-    ModalPreviewAttachment: defineAsyncComponent(() => import('@/components/common/material/attachment/ModalPreviewAttachment.vue')),
-    ModalU3mRecut: defineAsyncComponent(() => import('@/components/assets/ModalU3mRecut.vue')),
-    ModalMaterialMerge: defineAsyncComponent(() => import('@/components/assets/merge/ModalMaterialMerge.vue')),
-    ModalMaterialMergePreview: defineAsyncComponent(() => import('@/components/assets/merge/ModalMaterialMergePreview.vue')),
-    ModalChoosePlan: defineAsyncComponent(() => import('@/components/billings/ModalChoosePlan.vue')),
-    ModalPlanIntroduction: defineAsyncComponent(() => import('@/components/billings/ModalPlanIntroduction.vue')),
-    ModalPreviewInvoice: defineAsyncComponent(() => import('@/components/billings/ModalPreviewInvoice.vue'))
+    ModalPreviewAttachment: defineAsyncComponent(() =>
+      import(
+        '@/components/common/material/attachment/ModalPreviewAttachment.vue'
+      )
+    ),
+    ModalU3mRecut: defineAsyncComponent(() =>
+      import('@/components/assets/ModalU3mRecut.vue')
+    ),
+    ModalMaterialMerge: defineAsyncComponent(() =>
+      import('@/components/assets/merge/ModalMaterialMerge.vue')
+    ),
+    ModalMaterialMergePreview: defineAsyncComponent(() =>
+      import('@/components/assets/merge/ModalMaterialMergePreview.vue')
+    ),
+    ModalChoosePlan: defineAsyncComponent(() =>
+      import('@/components/billings/ModalChoosePlan.vue')
+    ),
+    ModalPlanIntroduction: defineAsyncComponent(() =>
+      import('@/components/billings/ModalPlanIntroduction.vue')
+    ),
+    ModalPreviewInvoice: defineAsyncComponent(() =>
+      import('@/components/billings/ModalPreviewInvoice.vue')
+    ),
   },
   props: {
     component: {
       type: String,
-      required: true
+      required: true,
     },
     header: {
       type: String,
-      default: ''
+      default: '',
     },
     properties: {
-      type: Object
+      type: Object,
     },
     closable: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
-  setup () {
+  setup() {
     const store = useStore()
     const close = () => {
       store.dispatch('helper/closeModal')
     }
 
     return {
-      close
+      close,
     }
-  }
+  },
 }
 </script>

@@ -1,12 +1,18 @@
 <template lang="pug">
 div
   div(class="w-full flex justify-center items-center overflow-hidden")
-    div(class="relative w-full aspect-square flex justify-center items-center bg-[#F1F2F5]")
-      slot(name="imageCropArea" :innerScaleSize="scaleValue" :innerShowScale="showScale")
+    div(
+      class="relative w-full aspect-square flex justify-center items-center bg-[#F1F2F5]"
+    )
+      slot(
+        name="imageCropArea"
+        :innerScaleSize="scaleValue"
+        :innerShowScale="showScale"
+      )
   div(class="mt-4")
     div(class="flex items-center")
-      p(class="text-grey-900 text-body2 mr-2") {{ $t("EE0049") }}
-      f-button-label(size="sm" :disabled="!rotateDirty" @click="resetRotate") {{ $t("RR0255") }}
+      p(class="text-grey-900 text-body2 mr-2") {{ $t('EE0049') }}
+      f-button-label(size="sm" :disabled="!rotateDirty" @click="resetRotate") {{ $t('RR0255') }}
     div(class="flex items-center justify-between")
       f-input-range(
         ref="refRotateDeg"
@@ -25,9 +31,9 @@ div
         )
   div(v-if="showScale" class="mt-3")
     div(class="flex items-center")
-      p(class="text-grey-900 text-body2 mr-2") {{ $t("EE0098") }}
+      p(class="text-grey-900 text-body2 mr-2") {{ $t('EE0098') }}
       f-svg-icon(iconName="open_in_full" size="16" class="mr-2")
-      f-button-label(size="sm" :disabled="!scaleDirty" @click="resetScale") {{ $t("RR0255") }}
+      f-button-label(size="sm" :disabled="!scaleDirty" @click="resetScale") {{ $t('RR0255') }}
     div(class="flex items-center justify-between")
       f-input-range(
         ref="refScale"
@@ -52,32 +58,36 @@ import { ref, computed, watch } from 'vue'
 const props = defineProps({
   config: {
     type: Object,
-    required: true
+    required: true,
   },
   showScale: {
     type: Boolean,
-    default: true
+    default: true,
   },
   scaleUnit: {
     type: String,
-    default: '%'
+    default: '%',
   },
   scaleInputStep: {
     type: Number,
-    default: 1
+    default: 1,
   },
   scaleRange: {
     type: Array,
     default: () => {
       return [100, 800]
-    }
+    },
   },
   scaleStart: {
-    type: Number
-  }
+    type: Number,
+  },
 })
 
-const emit = defineEmits(['update:rotateDeg', 'update:scaleRatio', 'update:options'])
+const emit = defineEmits([
+  'update:rotateDeg',
+  'update:scaleRatio',
+  'update:options',
+])
 
 const refScale = ref(null)
 const refRotateDeg = ref(null)
@@ -85,19 +95,19 @@ const scaleSetting = {
   step: props.scaleInputStep,
   tooltips: false,
   min: props.scaleRange[0],
-  max: props.scaleRange[1]
+  max: props.scaleRange[1],
 }
 const rotateSetting = {
   step: 0.1,
   tooltips: false,
   min: -180,
-  max: 180
+  max: 180,
 }
 const scaleValue = ref(props.scaleStart || props.scaleRange[0])
 
 const innerRotateDeg = computed({
   get: () => props.config.rotateDeg,
-  set: (val) => emit('update:rotateDeg', val)
+  set: (val) => emit('update:rotateDeg', val),
 })
 
 const formattedScaleValue = computed({
@@ -105,7 +115,7 @@ const formattedScaleValue = computed({
   set: (val) => {
     if (val > props.scaleRange[1] || val < props.scaleRange[0]) return
     scaleValue.value = val
-  }
+  },
 })
 
 const formattedRotateDeg = computed({
@@ -113,11 +123,15 @@ const formattedRotateDeg = computed({
   set: (val) => {
     if (val.length === 0) return
     innerRotateDeg.value = val
-  }
+  },
 })
 
 const rotateDirty = computed(() => innerRotateDeg.value !== 0)
-const scaleDirty = computed(() => props.scaleStart ? scaleValue.value !== props.scaleStart : scaleValue.value !== scaleSetting.min)
+const scaleDirty = computed(() =>
+  props.scaleStart
+    ? scaleValue.value !== props.scaleStart
+    : scaleValue.value !== scaleSetting.min
+)
 
 const handleScaleChange = (scale) => {
   if (scale > props.scaleRange[1]) {
@@ -154,7 +168,7 @@ watch(
     emit('update:scaleRatio', scaleValue.value)
   },
   {
-    immediate: true
+    immediate: true,
   }
 )
 </script>
@@ -168,7 +182,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 
   &:focus {

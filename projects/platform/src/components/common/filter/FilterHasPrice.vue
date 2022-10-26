@@ -1,5 +1,9 @@
 <template lang="pug">
-filter-wrapper(iconName="price" :displayName="$t('RR0094')" :dirty="filterDirty.hasPrice")
+filter-wrapper(
+  iconName="price"
+  :displayName="$t('RR0094')"
+  :dirty="filterDirty.hasPrice"
+)
   f-contextual-menu(
     v-model:inputSelectValue="hasPrice"
     :selectMode="1"
@@ -23,19 +27,19 @@ const menuTree = computed(() => ({
       menuList: [
         {
           title: t('RR0096'),
-          selectValue: true
+          selectValue: true,
         },
         {
           title: t('RR0097'),
-          selectValue: false
-        }
-      ]
-    }
-  ]
+          selectValue: false,
+        },
+      ],
+    },
+  ],
 }))
 
 const hasPrice = computed({
   get: () => store.getters['helper/search/filter'].hasPrice,
-  set: (v) => store.dispatch('helper/search/setFilter', { hasPrice: v })
+  set: (v) => store.dispatch('helper/search/setFilter', { hasPrice: v }),
 })
 </script>

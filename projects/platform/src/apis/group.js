@@ -18,7 +18,8 @@ export default {
    * @param {string} params.labelColor
    * @param {string} params.uploadMaterialEmail
    */
-  createGroup: (_, params) => groupApiWrapper('/org/group/create', null, params),
+  createGroup: (_, params) =>
+    groupApiWrapper('/org/group/create', null, params),
   getGroup: (groupId) => groupApiWrapper('/org/group/get', groupId),
   /**
    * @param {object} params
@@ -26,43 +27,51 @@ export default {
    * @param {string} params.description
    * @param {string} params.labelColor
    */
-  updateGroup: (groupId, params) => groupApiWrapper('/org/group/update', groupId, params),
+  updateGroup: (groupId, params) =>
+    groupApiWrapper('/org/group/update', groupId, params),
   /**
    * @param {object} params
    * @param {number?} params.transferOrgId
    * @param {number?} params.transferGroupId
    */
-  deleteGroup: (groupId, params) => groupApiWrapper('/org/group/delete', groupId, params),
+  deleteGroup: (groupId, params) =>
+    groupApiWrapper('/org/group/delete', groupId, params),
   getGroupUser: (groupId) => groupApiWrapper('/org/group/user/get', groupId),
   /**
    * @param {object} params
    * @param {number} params.email
    */
-  cancelGroupInvitation: (groupId, params) => groupApiWrapper('/org/group/member/cancel-invitation', groupId, params),
+  cancelGroupInvitation: (groupId, params) =>
+    groupApiWrapper('/org/group/member/cancel-invitation', groupId, params),
   /**
    * @param {object} params
    * @param {number} params.groupUserId
    * @param {number} params.roleId
    */
-  changeGroupMemberRole: (_, params) => groupApiWrapper('/org/group/member/change-role', null, params),
+  changeGroupMemberRole: (_, params) =>
+    groupApiWrapper('/org/group/member/change-role', null, params),
   /**
    * @param {object} params
    * @param {number} params.groupUserId
    */
-  removeGroupMember: (_, params) => groupApiWrapper('/org/group/member/delete-member', null, params),
+  removeGroupMember: (_, params) =>
+    groupApiWrapper('/org/group/member/delete-member', null, params),
   /**
    * @param {object} params
    * @param {number[]} params.orgUserIdList
    */
-  addMemberToGroup: (groupId, params) => groupApiWrapper('/org/group/member/add-members', groupId, params),
+  addMemberToGroup: (groupId, params) =>
+    groupApiWrapper('/org/group/member/add-members', groupId, params),
   /**
    * @param {object} params
    * @param {string[]} params.emailList
    */
-  inviteToOrgFromGroup: (groupId, params) => groupApiWrapper('/org/group/member/invite-via-email', groupId, params),
+  inviteToOrgFromGroup: (groupId, params) =>
+    groupApiWrapper('/org/group/member/invite-via-email', groupId, params),
   /**
    * @param {object} params
    * @param {string} params.inviteCode
    */
-  joinGroupViaLink: (_, params) => groupApiWrapper('/org/group/member/join-via-link', null, params)
+  joinGroupViaLink: (_, params) =>
+    groupApiWrapper('/org/group/member/join-via-link', null, params),
 }

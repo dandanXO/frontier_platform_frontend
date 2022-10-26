@@ -18,25 +18,31 @@ import titas from '@/store/modules/titas'
 
 export default createStore({
   actions: {
-    async getUploadUrl (_, { fileName }) {
+    async getUploadUrl(_, { fileName }) {
       const { data } = await axios('/general/get-upload-url', {
         method: 'POST',
-        data: { fileName }
+        data: { fileName },
       })
       return data.result
     },
-    async uploadFileToS3 ({ dispatch }, { fileName, file }) {
-      const { tempUploadId, fileUploadUrl } = await dispatch('getUploadUrl', { fileName })
+    async uploadFileToS3({ dispatch }, { fileName, file }) {
+      const { tempUploadId, fileUploadUrl } = await dispatch('getUploadUrl', {
+        fileName,
+      })
       await putBinaryData(fileUploadUrl, file)
       return { fileName, tempUploadId }
     },
-    async checkTokenStatus (_, { accessToken }) {
-      const { data: { result: { status } } } = await axios('/general/check-token-status', {
+    async checkTokenStatus(_, { accessToken }) {
+      const {
+        data: {
+          result: { status },
+        },
+      } = await axios('/general/check-token-status', {
         method: 'POST',
-        data: { accessToken }
+        data: { accessToken },
       })
       return status
-    }
+    },
   },
   modules: {
     code,
@@ -52,6 +58,6 @@ export default createStore({
     embed,
     polling,
     moodboard,
-    titas
-  }
+    titas,
+  },
 })

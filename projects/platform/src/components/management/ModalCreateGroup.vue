@@ -16,9 +16,15 @@ modal-behavior(
       class="mb-7.5"
       data-cy="modal-create-group_name"
     )
-    f-input-textarea(v-model:textValue="description" :label="$t('BB0087')" :placeholder="$t('BB0088')" class="mb-1" height="160")
+    f-input-textarea(
+      v-model:textValue="description"
+      :label="$t('BB0087')"
+      :placeholder="$t('BB0088')"
+      class="mb-1"
+      height="160"
+    )
   template(#note) 
-    p(class="text-caption text-grey-600") {{ $t("BB0114") }}
+    p(class="text-caption text-grey-600") {{ $t('BB0114') }}
 </template>
 
 <script setup>
@@ -29,22 +35,28 @@ import InputLabelColor from '@/components/management/InputLabelColor.vue'
 const store = useStore()
 const groupName = computed({
   get: () => store.getters['group/createForm'].groupName,
-  set: (v) => store.commit('group/SET_createForm_groupName', v)
+  set: (v) => store.commit('group/SET_createForm_groupName', v),
 })
 const labelColor = computed({
   get: () => store.getters['group/createForm'].labelColor,
-  set: (v) => store.commit('group/SET_createForm_labelColor', v)
+  set: (v) => store.commit('group/SET_createForm_labelColor', v),
 })
 const description = computed({
   get: () => store.getters['group/createForm'].description,
-  set: (v) => store.commit('group/SET_createForm_description', v)
+  set: (v) => store.commit('group/SET_createForm_description', v),
 })
-const isGroupNameExist = computed(() => store.getters['organization/groupList'].some(group => group.groupName === groupName.value))
-const availableToNextStep = computed(() => groupName.value !== '' && !isGroupNameExist.value)
+const isGroupNameExist = computed(() =>
+  store.getters['organization/groupList'].some(
+    (group) => group.groupName === groupName.value
+  )
+)
+const availableToNextStep = computed(
+  () => groupName.value !== '' && !isGroupNameExist.value
+)
 
 const openModalCreateMailGroup = () => {
   store.dispatch('helper/openModalBehavior', {
-    component: 'modal-create-mail-group'
+    component: 'modal-create-mail-group',
   })
 }
 </script>

@@ -163,16 +163,18 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
     @roughnessReset="handleRoughnessReset"
     @specularReset="handleSpecularReset"
     @scaleReset="handleScaleReset"
-    @scaleChange="handleScaleChange" 
+    @scaleChange="handleScaleChange"
     @screenshot="takeScreenShot"
   )
-  canvas(v-show="displayMode === DISPLAY_MODE.MODEL" ref="canvas" class="w-full h-full")
+  canvas(
+    v-show="displayMode === DISPLAY_MODE.MODEL"
+    ref="canvas"
+    class="w-full h-full"
+  )
   div(
     v-show="displayMode === DISPLAY_MODE.TEXTURE"
     class="w-full max-h-full h-full flex items-center justify-center"
   )
-    img(
-      class="h-3/4 rounded"
-      :src="textureImage")
+    img(class="h-3/4 rounded" :src="textureImage")
   editor-loader(v-if="loading")
 </template>

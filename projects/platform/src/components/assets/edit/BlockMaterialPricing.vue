@@ -2,7 +2,7 @@
 f-expansion-panel(class="border-b border-grey-200")
   template(#trigger="{ isExpand }")
     div(class="h-15 flex items-center justify-between")
-      h5(class="text-h5 text-grey-900 font-bold") {{ $t("DD0025") }}
+      h5(class="text-h5 text-grey-900 font-bold") {{ $t('DD0025') }}
       f-svg-icon(
         iconName="keyboard_arrow_right"
         size="20"
@@ -22,7 +22,7 @@ f-expansion-panel(class="border-b border-grey-200")
       )
       f-input-container(:label="$t('RR0043')")
         div(class="flex items-center gap-x-3")
-          p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0044") }}
+          p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0044') }}
           f-input-text(
             v-model:textValue="material.publicPrice.price"
             inputType="number"
@@ -67,7 +67,7 @@ f-expansion-panel(class="border-b border-grey-200")
             class="w-50"
             :customErrorMsg="invalidation.publicPriceProductionLeadTime"
           )
-          p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0050") }}
+          p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0050') }}
       f-input-container(:label="$t('RR0051')")
         div(class="flex items-center gap-x-3")
           f-input-text(
@@ -75,9 +75,9 @@ f-expansion-panel(class="border-b border-grey-200")
             class="w-50"
             :customErrorMsg="invalidation.publicPriceSampleLeadTime"
           )
-          p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0050") }}
+          p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0050') }}
       div(class="-mx-15 bg-grey-50 px-15 py-12.5 grid gap-y-7.5")
-        h6(class="text-h6 text-grey-600 font-bold") {{ $t("DD0019") }}
+        h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
         f-input-select(
           v-model:selectValue="material.privatePrice.countryCode"
           :optionList="countryList"
@@ -146,7 +146,7 @@ f-expansion-panel(class="border-b border-grey-200")
               class="w-50"
               :customErrorMsg="invalidation.privatePriceProductionLeadTime"
             )
-            p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0050") }}
+            p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0050') }}
         f-input-container(:label="$t('RR0051')")
           div(class="flex items-center gap-x-3")
             f-input-text(
@@ -154,7 +154,7 @@ f-expansion-panel(class="border-b border-grey-200")
               class="w-50"
               :customErrorMsg="invalidation.privatePriceSampleLeadTime"
             )
-            p(class="text-body2 text-grey-900 font-bold") {{ $t("RR0050") }}
+            p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0050') }}
 </template>
 
 <script>
@@ -168,10 +168,10 @@ export default {
   props: {
     invalidation: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  setup () {
+  setup() {
     const store = useStore()
     const material = computed(() => store.getters['assets/material'])
     const countryList = computed(() => store.getters['code/countryList'])
@@ -184,7 +184,7 @@ export default {
         store.commit('assets/UPDATE_material', material.value)
       },
       {
-        deep: true
+        deep: true,
       }
     )
 
@@ -193,8 +193,8 @@ export default {
       material,
       INVENTORY_UNIT,
       inventoryUnitList,
-      currencyList
+      currencyList,
     }
-  }
+  },
 }
 </script>

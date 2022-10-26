@@ -15,13 +15,13 @@ export default {
   props: {
     iconName: {
       type: String,
-      required: true
+      required: true,
     },
     size: {
       type: String,
-      default: '20'
-    }
-  }
+      default: '20',
+    },
+  },
 }
 </script>
 

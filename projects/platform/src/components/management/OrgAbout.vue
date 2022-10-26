@@ -5,20 +5,40 @@ div(class="pt-16 xl:pt-17.5")
       div(class="flex flex-col items-center")
         div(class="relative")
           img(:src="logo" class="w-40 h-40 rounded-full bg-grey-200")
-          div(class="absolute flex justify-center items-center right-2 bottom-2 w-8 h-8 rounded-full bg-grey-0 border-4 border-grey-100 cursor-pointer"
+          div(
+            class="absolute flex justify-center items-center right-2 bottom-2 w-8 h-8 rounded-full bg-grey-0 border-4 border-grey-100 cursor-pointer"
             @click="openModalUploadLogo"
           )
-            f-svg-icon(iconName="camera" size="20" class="text-grey-200 hover:text-primary-400")
+            f-svg-icon(
+              iconName="camera"
+              size="20"
+              class="text-grey-200 hover:text-primary-400"
+            )
         f-tooltip(class="pt-4")
           template(#trigger)
-            div(class="flex items-center" @click="copyText(organization.orgNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))")
+            div(
+              class="flex items-center"
+              @click="copyText(organization.orgNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))"
+            )
               p(class="text-caption text-grey-900 pr-1.5 cursor-pointer") ID: {{ organization.orgNo }}
-              f-svg-icon(iconName="content_copy" size="14" class="text-grey-600 cursor-pointer")
+              f-svg-icon(
+                iconName="content_copy"
+                size="14"
+                class="text-grey-600 cursor-pointer"
+              )
           template(#content)
-            p {{ $t("BB0056") }}
-        p(v-permission="FUNC_ID.DELETE_ORG" v-if="!planType.ENT" class="pt-2.5 text-caption text-grey-200 cursor-pointer" @click="openModalTypeTextToConfirm" data-cy="org-about_delete") {{ $t("UU0013") }}
+            p {{ $t('BB0056') }}
+        p(
+          v-permission="FUNC_ID.DELETE_ORG"
+          v-if="!planType.ENT"
+          class="pt-2.5 text-caption text-grey-200 cursor-pointer"
+          @click="openModalTypeTextToConfirm"
+          data-cy="org-about_delete"
+        ) {{ $t('UU0013') }}
     div(class="grid gap-y-8.5 relative")
-      p(class="absolute text-caption text-grey-200 right-0 -top-7 transform -translate-y-full") *{{ $t("RR0163") }}
+      p(
+        class="absolute text-caption text-grey-200 right-0 -top-7 transform -translate-y-full"
+      ) *{{ $t('RR0163') }}
       div(class="grid grid-cols-2 grid-rows-3 gap-y-7.5 gap-x-8 xl:gap-x-15")
         input-label-color(
           v-model:labelColor="orgFormData.labelColor"
@@ -49,7 +69,12 @@ div(class="pt-16 xl:pt-17.5")
           data-cy="org-about_country"
           @select="handleCountryCodeSelected"
         )
-        f-input-text(v-model:textValue="orgFormData.address" :label="$t('BB0078')" class="w-85" :placeholder="$t('BB0079')")
+        f-input-text(
+          v-model:textValue="orgFormData.address"
+          :label="$t('BB0078')"
+          class="w-85"
+          :placeholder="$t('BB0079')"
+        )
         input-calling-code(
           v-model:textValue="orgFormData.phone"
           v-model:countryCode="orgFormData.phoneCountryCode"
@@ -64,7 +89,13 @@ div(class="pt-16 xl:pt-17.5")
           :label="$t('BB0080')"
           :placeholder="$t('BB0081')"
         )
-      f-button(size="md" class="justify-self-end" :disabled="!availableToUpdateOrg" @click="updateOrg" data-cy="org-about_save") {{ $t("UU0018") }}
+      f-button(
+        size="md"
+        class="justify-self-end"
+        :disabled="!availableToUpdateOrg"
+        @click="updateOrg"
+        data-cy="org-about_save"
+      ) {{ $t('UU0018') }}
 </template>
 
 <script setup>
@@ -85,12 +116,34 @@ const { openModalPaymentFail } = usePlan()
 const organization = computed(() => store.getters['organization/organization'])
 const planType = computed(() => store.getters['polling/planType'])
 const logo = computed(() => store.getters['organization/orgLogo'])
-const { orgName, labelColor, orgCategoryId, address, countryCode, fax, faxCountryCode, phone, phoneCountryCode } = organization.value
+const {
+  orgName,
+  labelColor,
+  orgCategoryId,
+  address,
+  countryCode,
+  fax,
+  faxCountryCode,
+  phone,
+  phoneCountryCode,
+} = organization.value
 const countryList = computed(() => store.getters['code/countryList'])
 const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
-const orgFormData = reactive({ orgName, labelColor, orgCategoryId, address, countryCode, fax, faxCountryCode, phone, phoneCountryCode })
+const orgFormData = reactive({
+  orgName,
+  labelColor,
+  orgCategoryId,
+  address,
+  countryCode,
+  fax,
+  faxCountryCode,
+  phone,
+  phoneCountryCode,
+})
 const isOrgNameExist = ref(false)
-const availableToUpdateOrg = computed(() => orgFormData.orgName !== '' && !isOrgNameExist.value)
+const availableToUpdateOrg = computed(
+  () => orgFormData.orgName !== '' && !isOrgNameExist.value
+)
 
 const openModalUploadLogo = () => {
   store.dispatch('helper/openModalBehavior', {
@@ -100,12 +153,15 @@ const openModalUploadLogo = () => {
       thumbnail: logo.value,
       defaultImage: 'logo-default.png', // This file name is static
       updateHandler: async (croppedImage, originalImage) => {
-        await store.dispatch('organization/updateOrgLogo', { logo: croppedImage, originalLogo: originalImage })
+        await store.dispatch('organization/updateOrgLogo', {
+          logo: croppedImage,
+          originalLogo: originalImage,
+        })
       },
       removeHandler: async () => {
         await store.dispatch('organization/removeOrgLogo')
-      }
-    }
+      },
+    },
   })
 }
 
@@ -134,15 +190,17 @@ const openModalTypeTextToConfirm = () => {
                 await router.replace('/')
               } else {
                 openModalPaymentFail()
-
               }
               return success
             }
 
-            const { result: { totalPrice, checkoutItemList } } = await store.dispatch('organization/getUnbilledInfo')
+            const {
+              result: { totalPrice, checkoutItemList },
+            } = await store.dispatch('organization/getUnbilledInfo')
 
             if (checkoutItemList.length === 0) {
-              await deleteOrg() && store.dispatch('helper/pushFlashMessage', t('OO0101'))
+              ;(await deleteOrg()) &&
+                store.dispatch('helper/pushFlashMessage', t('OO0101'))
               return
             }
 
@@ -152,26 +210,30 @@ const openModalTypeTextToConfirm = () => {
                 checkoutItemList,
                 totalPrice,
                 payHandler: async () => {
-                  await deleteOrg() && store.dispatch('helper/openModalConfirm', {
-                    type: 2,
-                    header: t('OO0039'),
-                    contentText: t('OO0101'),
-                    primaryBtnText: t('UU0031')
-                  })
-                }
-              }
+                  ;(await deleteOrg()) &&
+                    store.dispatch('helper/openModalConfirm', {
+                      type: 2,
+                      header: t('OO0039'),
+                      contentText: t('OO0101'),
+                      primaryBtnText: t('UU0031'),
+                    })
+                },
+              },
             })
           },
-          secondaryBtnText: t('UU0002')
+          secondaryBtnText: t('UU0002'),
         })
-      }
-    }
+      },
+    },
   })
 }
 
 const updateOrg = async () => {
   if (orgFormData.orgName !== organization.value.orgName) {
-    isOrgNameExist.value = await store.dispatch('organization/checkOrgNameExist', { orgName: orgFormData.orgName, orgId: organization.value.orgId })
+    isOrgNameExist.value = await store.dispatch(
+      'organization/checkOrgNameExist',
+      { orgName: orgFormData.orgName, orgId: organization.value.orgId }
+    )
     if (isOrgNameExist.value) {
       return
     }
