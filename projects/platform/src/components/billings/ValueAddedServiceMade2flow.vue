@@ -19,7 +19,7 @@ div(class="w-full pt-3")
           div(class="flex-shrink-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer" @click="prevSlide" style="box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);")
             f-svg-icon(iconName="keyboard_arrow_left" size="34" class="text-grey-600")
           carousel(ref="refCarousel")
-            slide(v-for="(image, index) in [Image1, Image2, Image3]" :key="index")
+            slide(v-for="(image, index) in made2flow.detail.slideImage" :key="index")
               img(class="w-165 h-100" :src="image")
           div(class="flex-shrink-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer" @click="nextSlide" style="box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);")
             f-svg-icon(iconName="keyboard_arrow_right" size="34" class="text-grey-600")
@@ -76,9 +76,6 @@ import valueAddedServiceList from '@/components/billings/valueAddedServiceList.j
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide } from 'vue3-carousel'
 // https://ismail9k.github.io/vue3-carousel/
-import Image1 from "@/assets/images/made2flow_1.jpg"
-import Image2 from "@/assets/images/made2flow_2.jpg"
-import Image3 from "@/assets/images/made2flow_3.jpg"
 
 const ValueAddedServiceMade2flowAppointment = defineAsyncComponent(() => import('@/components/billings/ValueAddedServiceMade2flowAppointment.vue'))
 
@@ -86,11 +83,12 @@ const { t } = useI18n()
 const route = useRoute()
 const { prefixPath, parsePath } = useNavigation()
 const { MADE2FLOW_TAG_LIST } = useConstants()
+const serviceList = valueAddedServiceList()
 
 const refCarousel = ref(null)
 const currentSlide = computed(() => refCarousel.value?.data.currentSlide.value || 0)
 
-const made2flow = ref(valueAddedServiceList.find(service => service.id === VALUE_ADDED_SERVICE_ID.MADE2FLOW))
+const made2flow = ref(serviceList.find(service => service.id === VALUE_ADDED_SERVICE_ID.MADE2FLOW))
 const faqList = ref(made2flow.value.detail.faqList.map(faq => ({ ...faq, isExpand: false })))
 
 const indexOfActiveTag = ref(0)

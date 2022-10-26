@@ -81,7 +81,7 @@ const STATUS_NAME = {
 const subscribedServiceList = computed(() => {
   const list = []
   for (const serviceName in store.getters['polling/valueAddedService']) {
-    for (const service of valueAddedServiceList) {
+    for (const service of valueAddedServiceList()) {
       if (service.id === serviceName) {
         list.push({
           ...service,

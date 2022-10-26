@@ -20,11 +20,11 @@ div(v-else class="w-full pt-3")
             template(v-else)
               span(class="text-grey-900") {{ $t("VV0006") }}
         div(class="w-132 flex-none bg-cover rounded-r" :style="{ backgroundImage: `url(${recommendService.bannerImage})` }")
-    div(v-if="valueAddedServiceList.length > 1")
+    div(v-if="serviceList.length > 1")
       div(class="text-body1 text-grey-900 pb-1") {{ $t("VV0007") }}
       p(class="text-body2 text-grey-900 leading-1.6 pb-7.5") {{ $t("VV0008") }}
       div(class="grid")
-        template(v-for="service in valueAddedServiceList")
+        template(v-for="service in serviceList")
           div(v-if="!service.bannerImage" class="max-w-63 min-h-62 flex flex-col rounded px-4.5 pb-5 justify-between border border-grey-200 cursor-pointer hover:bg-grey-100" @click="goTo(service.id)")
             div
               div(class="flex items-start my-2 h-11.5")
@@ -52,6 +52,7 @@ import valueAddedServiceList from '@/components/billings/valueAddedServiceList.j
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
+const serviceList = valueAddedServiceList()
 
 const valueAddedService = computed(() => store.getters['polling/valueAddedService'])
 const valueAddedServiceDetailPage = computed(() => {
@@ -63,7 +64,7 @@ const valueAddedServiceDetailPage = computed(() => {
   }
 })
 
-const recommendService = computed(() => valueAddedServiceList.find(service => !!service.bannerImage))
+const recommendService = computed(() => serviceList.find(service => !!service.bannerImage))
 const isDetailPage = computed(() => !!route.query.service)
 
 const goTo = (pageId) => {
