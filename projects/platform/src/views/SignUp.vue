@@ -109,8 +109,12 @@ div(
       template(#name) {{ formData.firstName }}
     h4(class="text-grey-900 text-h4 mb-9") {{ $t('AA0026') }}
     p(class="text-grey-600 text-body2 text-center mb-10 leading-1.4") {{ $t('AA0027') }}
-  f-button(size="special" class="w-35 h-10.5" data-cy="next" @click="nextAfterSignIn") {{ $t('UU0021') }}
-  f-button(size="special" class="w-35 h-10.5" @click="nextAfterSignIn") {{ $t('UU0021') }}
+    f-button(
+      size="special"
+      class="w-35 h-10.5"
+      data-cy="next"
+      @click="nextAfterSignIn"
+    ) {{ $t('UU0021') }}
 </template>
 
 <script setup>
@@ -197,10 +201,12 @@ onMounted(() => {
   const googleSignUp = new SignInWithGoogle({
     elementId: 'google-sign-up',
     callback: async (response) => {
+      store.dispatch('helper/openModalLoading')
       isEmailExist.value = await store.dispatch('user/googleSignUp', {
         idToken: response.credential,
       })
-      !isEmailExist.value && nextAfterSignIn()
+      !isEmailExist.value && (await nextAfterSignIn())
+      store.dispatch('helper/closeModalLoading')
     },
   })
   isGoogleLoadFail.value = !googleSignUp.google

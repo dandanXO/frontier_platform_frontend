@@ -94,6 +94,8 @@ const generalSignIn = async () => {
     return (errorMsgSignIn.value = t('WW0019'))
   }
 
+  store.dispatch('helper/openModalLoading')
+
   const { isOldUser, oldUserVerifyToken } = await store.dispatch(
     'user/generalSignIn',
     toRaw(formData)
@@ -108,7 +110,8 @@ const generalSignIn = async () => {
       },
     })
   } else {
-    nextAfterSignIn()
+    await nextAfterSignIn()
+    store.dispatch('helper/closeModalLoading')
   }
 }
 
@@ -118,10 +121,12 @@ onMounted(() => {
   const googleSignIn = new SignInWithGoogle({
     elementId: 'google-sign-in',
     callback: async (response) => {
+      store.dispatch('helper/openModalLoading')
       await store.dispatch('user/googleSignIn', {
         idToken: response.credential,
       })
-      nextAfterSignIn()
+      await nextAfterSignIn()
+      store.dispatch('helper/closeModalLoading')
     },
   })
   isGoogleLoadFail.value = !googleSignIn.google

@@ -40,20 +40,24 @@ const actions = {
     const { data } = await userApi.checkEmailExist(params)
     return data.result.isExist
   },
-  async generalSignUp(_, params) {
+  async generalSignUp({ dispatch }, params) {
     const { data } = await userApi.generalSignUp(params)
+    dispatch('setUser', data.result.user)
     return data.result.isExist
   },
-  async generalSignIn(_, params) {
+  async generalSignIn({ dispatch }, params) {
     const { data } = await userApi.generalSignIn(params)
+    dispatch('setUser', data.result.user)
     return data.result
   },
-  async googleSignUp(_, params) {
+  async googleSignUp({ dispatch }, params) {
     const { data } = await userApi.googleSignUp(params)
+    dispatch('setUser', data.result.user)
     return data.result.isExist
   },
-  async googleSignIn(_, params) {
-    await userApi.googleSignIn(params)
+  async googleSignIn({ dispatch }, params) {
+    const { data } = await userApi.googleSignIn(params)
+    dispatch('setUser', data.result.user)
   },
   async oldUserResetPassword(_, params) {
     await userApi.oldUserResetPassword(params)

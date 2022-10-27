@@ -93,6 +93,7 @@ const changeHandler = async () => {
       break
   }
   store.dispatch('helper/closeModal')
+  await store.dispatch('user/getUser')
   await nextAfterSignIn()
 }
 </script>

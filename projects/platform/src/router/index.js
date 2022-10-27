@@ -249,10 +249,6 @@ const routes = [
         path: '',
         name: 'Lobby',
         component: () => import('@/views/innerApp/Lobby.vue'),
-        beforeEnter: async (to, from, next) => {
-          await store.dispatch('user/getUser')
-          next()
-        },
       },
       {
         path: 'invite-link',

@@ -18,8 +18,6 @@ export default function useNavigation() {
       return router.push(route.query.redirect)
     }
 
-    await store.dispatch('user/getUser')
-
     const user = store.getters['user/user']
     const organizationList = user.organizationList
     if (organizationList.length === 1) {
@@ -29,7 +27,7 @@ export default function useNavigation() {
       })
     }
 
-    goToLobby()
+    await goToLobby()
   }
 
   const parsePath = (path) => {
@@ -42,8 +40,8 @@ export default function useNavigation() {
     return temp
   }
 
-  const goToLobby = () => {
-    router.push('/')
+  const goToLobby = async () => {
+    await router.push('/')
   }
 
   const goToBillings = () => {
