@@ -232,6 +232,11 @@ const routes = [
     ],
   },
   {
+    path: '/embed-3d-viewer/:materialId',
+    name: 'Embed3DViewer',
+    component: () => import('@/views/embed3DViewer/Embed3DViewer.vue'),
+  },
+  {
     path: '/',
     name: 'AppRoot',
     component: () => import('@/views/innerApp/InnerAppLayout.vue'),

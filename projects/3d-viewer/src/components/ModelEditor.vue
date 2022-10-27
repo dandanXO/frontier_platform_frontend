@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import 'vue3-carousel/dist/carousel.css'
-import { clamp } from 'ramda'
 import useScene from '../composables/useScene'
 import useModels from '../composables/useModels'
 import useU3M from '../composables/useU3M'
 import useColors from '../composables/useColors'
+import useKeyboard from '../composables/useKeyboard'
 import EditorHeader from './EditorHeader.vue'
 import EditorSidebar from './EditorSidebar.vue'
 import EditorLoader from './EditorLoader.vue'
@@ -44,16 +44,14 @@ const {
   handleSpecularChange,
 } = useU3M(props.u3mPath)
 const {
-  activeModelType,
+  modelIndex,
+  currentModel,
   material,
-  modelTypes,
   scale,
   loadModel,
-  getModelCoverImg,
   handleScaleChange,
   handleScaleReset,
 } = useModels(
-  baseUrl,
   scene,
   u3m,
   props.dpi,
@@ -80,6 +78,10 @@ const textureType = ref(TEXTURE_TYPE.BASE)
 const handleDisplayModeChange = (v: number) => (displayMode.value = v)
 const handleTextureClick = (v: number) => (textureType.value = v)
 
+useKeyboard(displayMode, textureType, modelIndex, loadModel, () =>
+  emit('close')
+)
+
 const textureImages = {
   [TEXTURE_TYPE.BASE]: props.baseImgUrl,
   [TEXTURE_TYPE.NORMAL]: props.normalImgUrl,
@@ -88,51 +90,14 @@ const textureImages = {
 }
 
 const textureImage = computed(() => textureImages[textureType.value])
-
-const keyDownHandler = (e: KeyboardEvent) => {
-  const textureClamp = clamp(TEXTURE_TYPE.BASE, TEXTURE_TYPE.DISPLACEMENT)
-  const handleRightKey = () => {
-    if (displayMode.value === DISPLAY_MODE.TEXTURE)
-      textureType.value = textureClamp(textureType.value + 1)
-    if (displayMode.value === DISPLAY_MODE.MODEL) {
-      // TODO
-    }
-  }
-
-  const handleLeftKey = () => {
-    if (displayMode.value === DISPLAY_MODE.TEXTURE)
-      textureType.value = textureClamp(textureType.value - 1)
-    if (displayMode.value === DISPLAY_MODE.MODEL) {
-      // TODO
-    }
-  }
-
-  switch (e.key) {
-    case 'Escape':
-      return emit('close')
-    case '1':
-      return (displayMode.value = DISPLAY_MODE.MODEL)
-    case '2':
-      return (displayMode.value = DISPLAY_MODE.TEXTURE)
-    case 'ArrowRight':
-      return handleRightKey()
-    case 'ArrowLeft':
-      return handleLeftKey()
-  }
-}
-
-onMounted(() => window.addEventListener('keydown', keyDownHandler))
-onUnmounted(() => window.removeEventListener('keydown', keyDownHandler))
 </script>
 
 <template lang="pug">
 div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex flex-col")
   editor-header(
     :displayMode="displayMode"
-    :modelTypes="modelTypes"
-    :activeModelType="activeModelType"
+    :currentModel="currentModel"
     :textureType="textureType"
-    :getModelCoverImg="getModelCoverImg"
     @displayModeChange="handleDisplayModeChange"
     @modelClick="loadModel"
     @textureClick="handleTextureClick"

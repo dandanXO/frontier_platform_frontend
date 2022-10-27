@@ -11,13 +11,13 @@ div(class="shrink-0 w-full h-20 bg-grey-900 px-10 flex items-center justify-betw
     div(class="w-150 px-10")
       div(v-if="displayMode === DISPLAY_MODE.MODEL")
         carousel(:settings="settings")
-          slide(v-for="modelType in modelTypes" :key="modelType")
+          slide(v-for="(model, index) in MODELS" :key="model.name")
             div(
               class="cursor-pointer mx-1 hover:opacity-70 border border-grey-700 rounded"
-              :class="{ '!border-primary-400': activeModelType === modelType }"
-              @click="emit('modelClick', modelType)"
+              :class="{ '!border-primary-400': currentModel.name === model.name }"
+              @click="emit('modelClick', index)"
             )
-              img(:src="getModelCoverImg(modelType)" class="rounded")
+              img(:src="model.coverImg" class="rounded")
       div(v-else class="flex flex-row gap-x-2")
         dark-tag(
           @click="emit('textureClick', TEXTURE_TYPE.BASE)"
@@ -42,21 +42,20 @@ div(class="shrink-0 w-full h-20 bg-grey-900 px-10 flex items-center justify-betw
 import { Carousel, Slide } from 'vue3-carousel'
 import ModelTextureSwitch from './ModelTextureSwitch.vue'
 import DarkTag from './DarkTag.vue'
+import MODELS from '../constants/models'
+import type { Model } from '../constants/models'
 import { DISPLAY_MODE, TEXTURE_TYPE } from '../constants'
-import type { MODEL_INFO } from '../composables/useModels'
 
 defineProps<{
   displayMode: number
-  modelTypes: (keyof typeof MODEL_INFO)[]
-  activeModelType: keyof typeof MODEL_INFO
+  currentModel: Model
   textureType: number
-  getModelCoverImg(modelTypes: string): string
 }>()
 
 const emit = defineEmits<{
   (e: 'close'): void
   (e: 'displayModeChange', displayMode: number): void
-  (e: 'modelClick', modelType: keyof typeof MODEL_INFO): void
+  (e: 'modelClick', modelIndex: number): void
   (e: 'textureClick', textureType: number): void
 }>()
 const settings = { itemsToShow: 10, snapAlign: 'center' }

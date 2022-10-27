@@ -6,6 +6,7 @@ importers:
     specifiers:
       '@frontier/3d-viewer': workspace:^0.0.0
       '@frontier/console': workspace:^0.0.0
+      '@frontier/mock-embed': workspace:^0.0.0
       '@frontier/platform': workspace:^0.0.0
       '@frontier/tailwindcss': workspace:^0.0.0
       '@frontier/ui-component': workspace:^0.0.0
@@ -44,6 +45,7 @@ importers:
     dependencies:
       '@frontier/3d-viewer': link:projects/3d-viewer
       '@frontier/console': link:projects/console
+      '@frontier/mock-embed': link:projects/mock-embed
       '@frontier/platform': link:projects/platform
       '@frontier/tailwindcss': link:packages/tailwindcss
       '@frontier/ui-component': link:packages/ui-component
@@ -141,6 +143,12 @@ importers:
 
   projects/console:
     specifiers: {}
+
+  projects/mock-embed:
+    specifiers:
+      npm-run-all: ^4.1.5
+    devDependencies:
+      npm-run-all: 4.1.5
 
   projects/platform:
     specifiers:
