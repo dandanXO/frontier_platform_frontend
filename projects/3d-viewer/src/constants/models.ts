@@ -4,32 +4,26 @@ import sphereCoverImg from '../assets/models/sphere/cover.jpg'
 import tshirtModel from '../assets/models/tshirt/scene.glb'
 import tshirtCoverImg from '../assets/models/tshirt/cover.jpg'
 
-import demoDressModel from '../assets/models/demo_dress/scene.glb'
-import demoDressCoverImg from '../assets/models/demo_dress/cover.jpg'
-
-import shoeModel from '../assets/models/shoe/scene.glb'
-import shoeCoverImg from '../assets/models/shoe/cover.jpg'
-
-import braModel from '../assets/models/sports_bra_and_leggings_for_nike/scene.glb'
-import braCoverImg from '../assets/models/sports_bra_and_leggings_for_nike/cover.jpg'
-
-import backpackModel from '../assets/models/large_camping_backpack_freegameready/scene.glb'
-import backpackCoverImg from '../assets/models/large_camping_backpack_freegameready/cover.jpg'
-
-import pantsModel from '../assets/models/black_pants/scene.glb'
-import pantsCoverImg from '../assets/models/black_pants/cover.jpg'
-
-import jeansModel from '../assets/models/blue-jeans-pants/scene.glb'
-import jeansCoverImg from '../assets/models/blue-jeans-pants/cover.jpg'
-
-import suitModel from '../assets/models/suit/scene.glb'
-import suitCoverImg from '../assets/models/suit/cover.jpg'
+import shirtModel from '../assets/models/shirt/scene.glb'
+import shirtCoverImg from '../assets/models/shirt/cover.jpg'
 
 import jacketModel from '../assets/models/jacket/scene.glb'
 import jacketCoverImg from '../assets/models/jacket/cover.jpg'
 
-import jacket2Model from '../assets/models/jacket-2/scene.glb'
-import jacket2CoverImg from '../assets/models/jacket-2/cover.jpg'
+import pantsModel from '../assets/models/pants/scene.glb'
+import pantsCoverImg from '../assets/models/pants/cover.jpg'
+
+import dressModel from '../assets/models/dress/scene.glb'
+import dressCoverImg from '../assets/models/dress/cover.jpg'
+
+import leggingsModel from '../assets/models/leggings/scene.glb'
+import leggingsCoverImg from '../assets/models/leggings/cover.jpg'
+
+import backpackModel from '../assets/models/backpack/scene.glb'
+import backpackCoverImg from '../assets/models/backpack/cover.jpg'
+
+import shoeModel from '../assets/models/shoe/scene.glb'
+import shoeCoverImg from '../assets/models/shoe/cover.jpg'
 
 export interface Model {
   name: string
@@ -52,35 +46,21 @@ const MODELS: Model[] = [
     name: 'tshirt',
     filePath: tshirtModel,
     coverImg: tshirtCoverImg,
+    size: 80,
+    flipY: true,
+  },
+  {
+    name: 'shirt',
+    filePath: shirtModel,
+    coverImg: shirtCoverImg,
     size: 108,
     flipY: true,
   },
   {
-    name: 'dress',
-    filePath: demoDressModel,
-    coverImg: demoDressCoverImg,
-    size: 40,
-    flipY: true,
-  },
-  {
-    name: 'shoe',
-    filePath: shoeModel,
-    coverImg: shoeCoverImg,
-    size: 50,
-    flipY: false,
-  },
-  {
-    name: 'bra',
-    filePath: braModel,
-    coverImg: braCoverImg,
-    size: 75,
-    flipY: true,
-  },
-  {
-    name: 'backpack',
-    filePath: backpackModel,
-    coverImg: backpackCoverImg,
-    size: 115,
+    name: 'jacket',
+    filePath: jacketModel,
+    coverImg: jacketCoverImg,
+    size: 140,
     flipY: true,
   },
   {
@@ -91,32 +71,34 @@ const MODELS: Model[] = [
     flipY: true,
   },
   {
-    name: 'jeans',
-    filePath: jeansModel,
-    coverImg: jeansCoverImg,
-    size: 130,
+    name: 'dress',
+    filePath: dressModel,
+    coverImg: dressCoverImg,
+    size: 20,
+    flipY: true,
+  },
+
+  {
+    name: 'leggins',
+    filePath: leggingsModel,
+    coverImg: leggingsCoverImg,
+    size: 200,
+    flipY: true,
+  },
+
+  {
+    name: 'backpack',
+    filePath: backpackModel,
+    coverImg: backpackCoverImg,
+    size: 5,
     flipY: true,
   },
   {
-    name: 'suit',
-    filePath: suitModel,
-    coverImg: suitCoverImg,
-    size: 108,
-    flipY: true,
-  },
-  {
-    name: 'jacket',
-    filePath: jacketModel,
-    coverImg: jacketCoverImg,
-    size: 108,
-    flipY: true,
-  },
-  {
-    name: 'jacket2',
-    filePath: jacket2Model,
-    coverImg: jacket2CoverImg,
-    size: 400,
-    flipY: true,
+    name: 'shoe',
+    filePath: shoeModel,
+    coverImg: shoeCoverImg,
+    size: 30,
+    flipY: false,
   },
 ]
 
