@@ -112,12 +112,12 @@ div
       p(class="text-caption ml-1.5 leading-1.6") {{ $t('EE0118') }}
   model-editor(
     v-if="showModelEditor"
-    :dpi="material.u3m.status.dpi"
-    :u3mPath="material.u3m.status.u3mSpecUrl"
-    :baseImgUrl="material.u3m.status.baseImgUrl"
-    :normalImgUrl="material.u3m.status.normalImgUrl"
-    :roughImgUrl="material.u3m.status.roughImgUrl"
-    :dispImgUrl="material.u3m.status.dispImgUrl"
+    :dpi="material.u3m.dpi"
+    :u3mPath="material.u3m.u3mSpecUrl"
+    :baseImgUrl="material.u3m.baseImgUrl"
+    :normalImgUrl="material.u3m.normalImgUrl"
+    :roughImgUrl="material.u3m.roughImgUrl"
+    :dispImgUrl="material.u3m.dispImgUrl"
     @close="closeModalViewer"
   )
 </template>
