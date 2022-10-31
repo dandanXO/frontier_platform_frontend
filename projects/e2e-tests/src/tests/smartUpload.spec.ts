@@ -1,6 +1,6 @@
 import { expect, Page } from '@playwright/test'
-import test from './domain/test'
-import { urls } from './domain/routes'
+import test from '@/domain/test'
+import { urls } from '@/domain/routes'
 
 /**
  *  Case 1: 上傳成功

@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test'
-import test from './domain/test'
-import { urls } from './domain/routes'
-import { initialOrg } from './domain/org'
+import test from '@/domain/test'
+import { urls } from '@/domain/routes'
+import { initialOrg } from '@/domain/org'
 
 test.describe.configure({ mode: 'parallel' })
 
