@@ -6,9 +6,9 @@ import { printA4Card, printGeneralLabel } from '@/utils/print'
 
 export default function useAssets() {
   const { t } = useI18n()
+  const store = useStore()
   const { goToAssetMaterialEdit, goToMaterialUpload, goToProgress } =
     useNavigation()
-  const store = useStore()
 
   const editMaterial = {
     id: 'editMaterial',
@@ -114,6 +114,22 @@ export default function useAssets() {
     func: (v) => {
       const status = v.u3m.status
       store.dispatch('assets/setMaterial', v)
+
+      if (!v.isComplete) {
+        store.dispatch('helper/openModalConfirm', {
+          type: 0,
+          header: t('EE0142'),
+          contentText: t('EE0143'),
+          primaryBtnText: t('UU0162'),
+          primaryBtnHandler: () => {
+            goToAssetMaterialEdit(v)
+            store.dispatch('helper/closeModalBehavior')
+          },
+          secondaryBtnText: t('UU0127'),
+        })
+        return
+      }
+
       switch (status) {
         case U3M_STATUS.UNQUALIFIED:
           store.dispatch('helper/openModalConfirm', {

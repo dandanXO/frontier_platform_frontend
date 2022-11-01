@@ -19,45 +19,20 @@ div
       class="text-primary-400 inline-block ml-2"
     )
   div(
-    v-if="material.u3m.status === INITIAL || material.u3m.status === UNQUALIFIED"
     class="flex items-center bg-grey-50 w-fit px-3.5 h-8.5 rounded mb-6"
+    :class="{ 'cursor-pointer': !hasNotCreatedU3M }"
+    @click="!hasNotCreatedU3M && goToProgress('u3m')"
   )
-    p(class="text-body2 text-grey-900") {{ $t('EE0019') }}
-  div(
-    v-else
-    class="flex items-center bg-grey-50 w-fit px-3.5 h-8.5 rounded mb-6"
-    @click="goToProgress('u3m')"
-  )
-    div(class="w-3 h-3 rounded-sm mr-2.5" :class="[label.color]")
+    div(v-if="label.color" class="w-3 h-3 rounded-sm mr-2.5" :class="[label.color]")
     p(class="text-body2 text-grey-900") {{ label.text }}
   div(class="flex flex-nowrap flex-grow")
-    div(class="flex-shrink-0")
-      f-button(
-        v-if="material.u3m.status === COMPLETED"
-        size="md"
-        type="secondary"
-        @click="openModalViewer"
-      ) {{ $t('UU0006') }}
-      f-button(
-        v-else-if="material.u3m.status === UNSUCCESSFUL"
-        size="md"
-        @click="handleCreateU3m"
-      ) {{ $t('UU0082') }}
-      f-button(
-        v-else-if="material.u3m.status === INITIAL && haveQuota"
-        size="md"
-        @click="handleCreateU3m"
-      ) {{ $t('UU0020') }}
-      f-button(
-        v-else-if="material.u3m.status === UNQUALIFIED || !haveQuota"
-        size="md"
-        disabled
-      ) {{ $t('UU0101') }}
-      f-button(
-        v-else-if="material.u3m.status === IN_QUEUE || material.u3m.status === PROCESSING"
-        size="md"
-        disabled
-      ) {{ $t('UU0102') }}
+    f-button(
+      class="flex-shrink-0"
+      size="md"
+      :type="actionButton.buttonType"
+      :disabled="!actionButton.clickHandler"
+      @click="actionButton.clickHandler"
+    ) {{ actionButton.text }}
     div(
       v-if="material.u3m.status === COMPLETED"
       class="flex text-body2 text-cyan-400 gap-2 ml-4"
@@ -92,24 +67,14 @@ div
       span(class="text-cyan-400 ml-0.5 cursor-pointer" @click="handleCreateU3m") {{ $t('EE0120') }}
     template(#RR0123)
       span(class="text-cyan-400 ml-0.5 cursor-pointer" @click="openModalSendFeedback") {{ $t('RR0123') }}
-  div(
-    v-else-if="material.u3m.status === INITIAL || material.u3m.status === UNQUALIFIED"
-    class="grid gap-0.5 mt-2"
-  )
+  div(v-else-if="hasNotCreatedU3M" class="grid gap-0.5 mt-2")
     div(
+      v-for="requirement in requirementList"
       class="flex items-center"
-      :class="[haveScannedImage ? 'text-primary-400' : 'text-grey-200']"
+      :class="[requirement.isMeet ? 'text-primary-400' : 'text-grey-200']"
     )
-      f-svg-icon(v-if="haveScannedImage" iconName="done" size="16")
-      f-svg-icon(v-else iconName="clear" size="16")
-      p(class="text-caption ml-1.5 leading-1.6") {{ $t('EE0117') }}
-    div(
-      class="flex items-center"
-      :class="[haveQuota ? 'text-primary-400' : 'text-grey-200']"
-    )
-      f-svg-icon(v-if="haveQuota" iconName="done" size="16")
-      f-svg-icon(v-else iconName="clear" size="16")
-      p(class="text-caption ml-1.5 leading-1.6") {{ $t('EE0118') }}
+      f-svg-icon(:iconName="requirement.isMeet ? 'done' : 'clear'" size="16")
+      p(class="text-caption ml-1.5 leading-1.6") {{ requirement.text }}
   model-editor(
     v-if="showModelEditor"
     :dpi="material.u3m.dpi"
@@ -156,6 +121,10 @@ const haveQuota = computed(() => {
   return max - used > 0
 })
 
+const hasNotCreatedU3M = computed(() =>
+  [INITIAL, UNQUALIFIED].includes(props.material.u3m.status)
+)
+
 const downloadU3m = async (url) => {
   const fileName = url.split('/')[url.split('/').length - 1]
   downloadDataURLFile(url, fileName)
@@ -163,6 +132,14 @@ const downloadU3m = async (url) => {
 
 const handleCreateU3m = () => {
   create3DMaterial.func(props.material)
+}
+
+const openModalViewer = () => {
+  showModelEditor.value = true
+}
+
+const closeModalViewer = () => {
+  showModelEditor.value = false
 }
 
 const openModalU3mInstruction = () => {
@@ -182,6 +159,32 @@ const openModalSendFeedback = () => {
     component: 'modal-send-feedback',
   })
 }
+
+const actionButton = computed(() => {
+  const status = props.material.u3m.status
+  let text, clickHandler
+  let buttonType = 'primary'
+
+  if (status === COMPLETED) {
+    text = t('UU0006')
+    clickHandler = openModalViewer
+    buttonType = 'secondary'
+  } else if (status === UNSUCCESSFUL) {
+    text = t('UU0082')
+    clickHandler = handleCreateU3m
+  } else if (status === UNQUALIFIED || !haveQuota.value) {
+    clickHandler = null
+    text = t('UU0101')
+  } else if ([IN_QUEUE, PROCESSING].includes(status)) {
+    clickHandler = null
+    text = t('UU0102')
+  } else if (status === INITIAL) {
+    clickHandler = handleCreateU3m
+    text = t('UU0020')
+  }
+
+  return { buttonType, text, clickHandler }
+})
 
 const label = computed(() => {
   let text
@@ -203,16 +206,28 @@ const label = computed(() => {
       text = t('PP0007')
       color = 'bg-red-400'
       break
+    case INITIAL:
+    case UNQUALIFIED:
+      color = null
+      text = t('EE0019')
+      break
   }
 
   return { text, color }
 })
 
-const openModalViewer = () => {
-  showModelEditor.value = true
-}
-
-const closeModalViewer = () => {
-  showModelEditor.value = false
-}
+const requirementList = computed(() => [
+  {
+    text: t('EE0117'),
+    isMeet: haveScannedImage.value,
+  },
+  {
+    text: t('EE0118'),
+    isMeet: haveQuota.value,
+  },
+  {
+    text: t('EE0141'),
+    isMeet: props.material.isComplete,
+  },
+])
 </script>
