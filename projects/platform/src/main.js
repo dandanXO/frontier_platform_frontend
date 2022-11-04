@@ -85,3 +85,8 @@ app
   .use(uiComponents)
   .use(modelViewerComponents)
   .mount('#app')
+
+if (window.Worker) {
+  const worker = new Worker(new URL('./worker.js', import.meta.url))
+  store.dispatch('polling/setWorker', worker)
+}

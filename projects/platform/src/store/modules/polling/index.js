@@ -10,7 +10,7 @@ import i18n from '@/utils/i18n'
 import dayjs from 'dayjs'
 
 const state = () => ({
-  timerId: null,
+  worker: null,
   isProcessing: false,
   notificationList: [],
   plan: {
@@ -49,6 +49,7 @@ const state = () => ({
 })
 
 const getters = {
+  worker: (state) => state.worker,
   plan: (state) => state.plan,
   valueAddedService: (state) => {
     const formatServiceTable = {}
@@ -165,40 +166,62 @@ const getters = {
   },
 }
 
+const MUTATION = {
+  SET_polling: 'SET_polling',
+}
+
 const mutations = {
-  SET_polling(state, polling) {
+  SET_worker (state, worker) {
+    state.worker = worker
+  },
+  [MUTATION.SET_polling] (state, polling) {
     const { isProcessing, notificationList, plan, valueAddedService } = polling
     state.isProcessing = isProcessing
     state.notificationList = notificationList
     state.plan = plan
     state.valueAddedService = valueAddedService
   },
-  SET_timerId(state, timerId) {
-    state.timerId = timerId
-  },
-  CLEAR_timerId(state) {
-    clearTimeout(state.timerId)
-  },
 }
 
 const actions = {
-  async getPollingSidebar({ rootGetters, commit, dispatch }) {
-    dispatch('stopPollingSidebar')
+  setWorker ({ commit }, worker) {
+    commit('SET_worker', worker)
 
-    const { data } = await pollingApi.getPollingSidebar({
+    worker.onmessage = (e) => {
+      const { mutation, data } = e.data
+      const { result } = data
+
+      switch (mutation) {
+        case MUTATION.SET_polling:
+          commit(mutation, result.polling)
+          break
+      }
+    }
+  },
+  workerPostMessage ({ getters }, { api, body }) {
+    getters.worker.postMessage({
+      api,
+      params: {
+        apiEndPoint: import.meta.env.VITE_APP_API_ENDPOINT,
+        token: localStorage.getItem('accessToken'),
+        body,
+      },
+    })
+  },
+  async getSidebar ({ rootGetters, commit, dispatch }) {
+    const { data } = await pollingApi.getSidebar({
       orgId: rootGetters['organization/orgId'],
     })
-
     commit('SET_polling', data.result.polling)
-    commit(
-      'SET_timerId',
-      setTimeout(async () => {
-        await dispatch('getPollingSidebar')
-      }, 30000)
-    )
+    dispatch('startPollingSidebar')
   },
-  stopPollingSidebar({ commit }) {
-    commit('CLEAR_timerId')
+  startPollingSidebar ({ rootGetters, dispatch }) {
+    dispatch('workerPostMessage', {
+      api: 'getSideBar',
+      body: {
+        orgId: rootGetters['organization/orgId'],
+      },
+    })
   },
 }
 

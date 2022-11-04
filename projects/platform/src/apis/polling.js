@@ -1,7 +1,7 @@
 import axios from '@/apis'
 
 export default {
-  getPollingSidebar: ({ orgId }) =>
+  getSidebar: ({ orgId }) =>
     axios('/polling/sidebar', {
       method: 'POST',
       data: { orgId },

@@ -95,7 +95,7 @@ instance.interceptors.response.use(
     }
 
     if (status === 200 && success && needPollingApiList.includes(config.url)) {
-      await store.dispatch('polling/getPollingSidebar')
+      store.dispatch('polling/getSidebar')
     }
 
     return response

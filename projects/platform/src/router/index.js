@@ -299,12 +299,24 @@ const routes = [
         beforeEnter: [
           checkUserIsVerify,
           async (to, from, next) => {
-            store.dispatch('organization/getPricing')
-            await store.dispatch('user/getUser')
             await store.dispatch('organization/getOrg', {
               orgNo: to.params.orgNo,
             })
-            await store.dispatch('organization/orgUser/getOrgUser')
+
+            const apiList = [
+              'organization/orgUser/getOrgUser',
+              'organization/getPricing',
+              'titas/getTitasInfo',
+            ]
+
+            if (to.params.orgNo && !from.params.orgNo) {
+              apiList.push('polling/getSidebar')
+            }
+
+            await Promise.all(
+              apiList.map((actionPath) => store.dispatch(actionPath))
+            )
+
             const org = store.getters['organization/organization']
             const orgUser = store.getters['organization/orgUser/orgUser']
             if (
@@ -319,11 +331,6 @@ const routes = [
                 },
               })
             }
-
-            if (to.params.orgNo && !from.params.orgNo) {
-              await store.dispatch('polling/getPollingSidebar')
-            }
-            await store.dispatch('titas/getTitasInfo')
             next()
           },
         ],
