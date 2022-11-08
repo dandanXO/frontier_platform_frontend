@@ -28,5 +28,8 @@
     "nouislider": "^15.5.1",
     "overlayscrollbars": "^1.13.1",
     "vue-loader": "^16.8.3"
+  },
+  "peerDependencies": {
+    "vue": "3.2.37"
   }
 }
