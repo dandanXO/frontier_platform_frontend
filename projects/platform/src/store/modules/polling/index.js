@@ -171,10 +171,10 @@ const MUTATION = {
 }
 
 const mutations = {
-  SET_worker (state, worker) {
+  SET_worker(state, worker) {
     state.worker = worker
   },
-  [MUTATION.SET_polling] (state, polling) {
+  [MUTATION.SET_polling](state, polling) {
     const { isProcessing, notificationList, plan, valueAddedService } = polling
     state.isProcessing = isProcessing
     state.notificationList = notificationList
@@ -184,7 +184,7 @@ const mutations = {
 }
 
 const actions = {
-  setWorker ({ commit }, worker) {
+  setWorker({ commit }, worker) {
     commit('SET_worker', worker)
 
     worker.onmessage = (e) => {
@@ -198,7 +198,7 @@ const actions = {
       }
     }
   },
-  workerPostMessage ({ getters }, { api, body }) {
+  workerPostMessage({ getters }, { api, body }) {
     getters.worker.postMessage({
       api,
       params: {
@@ -208,14 +208,14 @@ const actions = {
       },
     })
   },
-  async getSidebar ({ rootGetters, commit, dispatch }) {
+  async getSidebar({ rootGetters, commit, dispatch }) {
     const { data } = await pollingApi.getSidebar({
       orgId: rootGetters['organization/orgId'],
     })
     commit('SET_polling', data.result.polling)
     dispatch('startPollingSidebar')
   },
-  startPollingSidebar ({ rootGetters, dispatch }) {
+  startPollingSidebar({ rootGetters, dispatch }) {
     dispatch('workerPostMessage', {
       api: 'getSideBar',
       body: {

@@ -224,9 +224,6 @@ export default {
     ModalPublicLibraryShareAssigned: defineAsyncComponent(() =>
       import('@/components/publicLibrary/ModalPublicLibraryShareAssigned.vue')
     ),
-    ModalTitasContactForm: defineAsyncComponent(() =>
-      import('@/components/titas/ModalTitasContactForm.vue')
-    ),
     ModalChangeLocale: defineAsyncComponent(() =>
       import('@/components/common/ModalChangeLocale.vue')
     ),

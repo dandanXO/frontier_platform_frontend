@@ -306,7 +306,6 @@ const routes = [
             const apiList = [
               'organization/orgUser/getOrgUser',
               'organization/getPricing',
-              'titas/getTitasInfo',
             ]
 
             if (to.params.orgNo && !from.params.orgNo) {
@@ -393,21 +392,6 @@ const routes = [
             props: true,
             component: () =>
               import('@/views/innerApp/PublicLibraryMaterialDetail.vue'),
-            beforeEnter: checkOrgIsInactive,
-          },
-          {
-            path: 'titas/:nodeKey?',
-            name: 'TitasShowroom',
-            props: true,
-            component: () => import('@/views/innerApp/TitasShowroom.vue'),
-            beforeEnter: checkOrgIsInactive,
-          },
-          {
-            path: 'titas/material/:nodeKey',
-            name: 'TitasShowroomMaterialDetail',
-            props: true,
-            component: () =>
-              import('@/views/innerApp/TitasShowroomMaterialDetail.vue'),
             beforeEnter: checkOrgIsInactive,
           },
         ],

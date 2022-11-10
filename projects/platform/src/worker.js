@@ -2,7 +2,10 @@ const timerMap = {
   getSideBar: null,
 }
 
-const fetchWrapper = async ({ params: { apiEndPoint, token, body = {} }, path }) => {
+const fetchWrapper = async ({
+  params: { apiEndPoint, token, body = {} },
+  path,
+}) => {
   const res = await fetch(`${apiEndPoint}${path}`, {
     method: 'post',
     mode: 'cors',
@@ -18,7 +21,10 @@ const fetchWrapper = async ({ params: { apiEndPoint, token, body = {} }, path })
 const apiMap = {
   getSideBar: async (params) => {
     clearTimeout(timerMap.getSideBar)
-    const responseData = await fetchWrapper({ params, path: '/polling/sidebar' })
+    const responseData = await fetchWrapper({
+      params,
+      path: '/polling/sidebar',
+    })
     self.postMessage({
       mutation: 'SET_polling',
       data: responseData,
