@@ -71,11 +71,12 @@ const createOrg = async () => {
   try {
     store.dispatch('helper/pushModalLoading')
     await store.dispatch('organization/createOrg')
-    store.dispatch('helper/clearModalPipeline')
-    router.push({
+    await store.dispatch('user/getUser')
+    await router.push({
       name: 'PublicLibrary',
       params: { orgNo: store.getters['organization/organization'].orgNo },
     })
+    store.dispatch('helper/clearModalPipeline')
   } catch (error) {
     store.dispatch('helper/closeModalLoading')
     const { code, result } = error
