@@ -192,6 +192,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
           p(class="absolute right-0 top-0 text-caption text-grey-900") {{ $t('EE0036') }}
       div(v-if="isOpenSampleCard" class="flex-shrink-0 w-75 h-fit ml-8 sticky top-0")
         cropper-default-layout(
+          v-if="isImageCropConfigReady"
           :showScale="true"
           :config="config"
           @update:rotateDeg="config.rotateDeg = $event"
@@ -242,6 +243,7 @@ const { isBackSideMaterial, faceSideUrl, backSideUrl } = useMaterialImage(
 const { faceSideImg, backSideImg } = material.value
 const isOpenSampleCard = ref(false)
 const config = reactive({})
+const isImageCropConfigReady = ref(false)
 const cropRectSize = 300
 
 const {
@@ -274,12 +276,11 @@ const getCropperConfig = async () => {
     })
     await cropper.formatImage()
     Object.assign(config, cropper.config)
+    isImageCropConfigReady.value = true
   }
 }
 
-onMounted(async () => {
-  await getCropperConfig()
-})
+getCropperConfig()
 
 watch(
   () => material.value,
