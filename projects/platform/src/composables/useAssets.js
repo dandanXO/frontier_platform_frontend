@@ -120,7 +120,7 @@ export default function useAssets() {
           type: 0,
           header: t('EE0142'),
           contentText: t('EE0143'),
-          primaryBtnText: t('UU0162'),
+          primaryBtnText: t('UU0126'),
           primaryBtnHandler: () => {
             goToAssetMaterialEdit(v)
             store.dispatch('helper/closeModalBehavior')
