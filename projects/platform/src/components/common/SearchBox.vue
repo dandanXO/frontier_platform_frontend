@@ -12,7 +12,7 @@ div(class="grid")
       )
       input(
         type="text"
-        v-model="keyword"
+        v-model.trim="keyword"
         :placeholder="$t('RR0053')"
         @keydown.enter="onEnter"
         class="placeholder:text-grey-200 placeholder:overflow-visible flex-grow outline-none bg-transparent overflow-hidden text-grey-900 text-body1 disabled:text-grey-600"
