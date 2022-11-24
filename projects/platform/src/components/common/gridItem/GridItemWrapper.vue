@@ -102,15 +102,16 @@ const haveSelectedMoreThanOne = computed(
   () => props.isSelectable && props.selectedValue.length > 0
 )
 
-const menuTree = computed(() => {
-  return {
-    blockList: props.optionList.map((block) => ({
-      menuList: block.map((option) => ({
-        title: option.name,
-        clickHandler: () => emit('click:option', option),
-        disabled: option.disabled || false,
-      })),
+const menuTree = computed(() => ({
+  blockList: props.optionList.map((block) => ({
+    menuList: block.map((option) => ({
+      title: option.name,
+      clickHandler: () => {
+        if (option.disabled) return
+        emit('click:option', option)
+      },
+      disabled: option.disabled || false,
     })),
-  }
-})
+  })),
+}))
 </script>

@@ -64,7 +64,7 @@ modal-behavior(
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, shallowRef, h } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { TARGET_LOCATION } from '@/utils/constants'

@@ -22,17 +22,22 @@ div(
   i18n-t(keypath="RR0073" tag="div" class="mr-7.5" scope="global")
     template(#number) {{ innerSelectedList.length }}
   div(class="flex flex-wrap gap-y-5 divide-x w-fit max-w-127")
-    template(v-for="option in optionMultiSelect")
+    template(v-for="option in optionMultiSelect" :key="option.id")
       slot(:option="option")
         div(
           class="whitespace-nowrap px-5"
-          :class="[option.disabled ? 'text-grey-200' : 'cursor-pointer hover:text-primary-400']"
+          :class="[getValueByMaterial(option.disabled, innerSelectedList) ? 'text-grey-200' : 'cursor-pointer hover:text-primary-400']"
           @click="handleClick(option)"
-        ) {{ option.name }}
+        ) {{ getValueByMaterial(option.name, innerSelectedList) }}
 </template>
 
 <script setup>
 import { computed } from 'vue'
+
+const getValueByMaterial = (value, material) => {
+  if (typeof value === 'function') return value(material)
+  return value
+}
 
 const props = defineProps({
   optionMultiSelect: {
@@ -60,7 +65,10 @@ const innerSelectedList = computed({
 
 const clearList = () => emit('update:selectedList', [])
 const handleClick = (option) => {
-  if (!option.func || option.disabled) {
+  if (
+    !option.func ||
+    getValueByMaterial(option.disabled, innerSelectedList.value)
+  ) {
     return
   }
   option.func(innerSelectedList.value)

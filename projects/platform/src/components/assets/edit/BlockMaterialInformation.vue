@@ -219,7 +219,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
 </template>
 
 <script setup>
-import { ref, computed, watch, reactive, onMounted } from 'vue'
+import { ref, computed, watch, reactive } from 'vue'
 import { useStore } from 'vuex'
 import useMaterialEdit from '@/composables/useMaterialEdit'
 import useMaterialImage from '@/composables/useMaterialImage'

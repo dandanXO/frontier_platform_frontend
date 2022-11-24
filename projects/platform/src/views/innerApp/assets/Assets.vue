@@ -55,6 +55,7 @@ div(class="w-full h-full")
         )
           grid-item-material(
             v-for="material in materialList"
+            :key="material.materialId"
             :material="material"
             v-model:selectedValue="selectedMaterialList"
             isSelectable
@@ -81,12 +82,7 @@ import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
-import {
-  SEARCH_TYPE,
-  DISPLAY_NODE,
-  U3M_STATUS,
-  useConstants,
-} from '@/utils/constants.js'
+import { SEARCH_TYPE, DISPLAY_NODE, useConstants } from '@/utils/constants.js'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useRoute, useRouter } from 'vue-router'
@@ -156,41 +152,37 @@ const {
 } = useAssets()
 
 const optionList = (material) => {
+  const getValueByMaterial = (value, material) => {
+    if (typeof value === 'function') return value(material)
+    return value
+  }
+
   return [
     [editMaterial],
     [cloneTo, addToWorkspace],
-    [
-      create3DMaterial,
-      {
-        ...downloadU3M,
-        disabled: material.u3m.status !== U3M_STATUS.COMPLETED,
-      },
-      exportExcel,
-    ],
+    [create3DMaterial, downloadU3M, exportExcel],
     [printQRCode, printCard],
     [deleteMaterial],
-  ]
+  ].map((block) =>
+    block.map((option) => ({
+      id: option.id,
+      name: getValueByMaterial(option.name, material),
+      func: () => option.func(material),
+      disabled: getValueByMaterial(option.disabled, material) || false,
+    }))
+  )
 }
 
-const optionMultiSelect = computed(() => {
-  const nonU3MList = selectedMaterialList.value.filter(
-    (material) => material.u3m.status !== U3M_STATUS.COMPLETED
-  )
-
-  return [
-    cloneTo,
-    addToWorkspace,
-    printCard,
-    printQRCode,
-    {
-      ...downloadU3M,
-      disabled: selectedMaterialList.value.length === nonU3MList.length,
-    },
-    exportExcel,
-    { ...mergeCard, disabled: selectedMaterialList.value.length < 2 },
-    deleteMaterial,
-  ]
-})
+const optionMultiSelect = computed(() => [
+  cloneTo,
+  addToWorkspace,
+  printCard,
+  printQRCode,
+  downloadU3M,
+  exportExcel,
+  mergeCard,
+  deleteMaterial,
+])
 
 const getMaterialList = async (targetPage = 1, query) => {
   await router.push({

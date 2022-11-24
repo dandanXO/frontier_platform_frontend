@@ -1,8 +1,13 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation'
-import { U3M_STATUS } from '@/utils/constants'
+import { U3M_STATUS, MODAL_CONFIRM_TYPE } from '@/utils/constants'
 import { printA4Card, printGeneralLabel } from '@/utils/print'
+
+const toMaterialList = (material) =>
+  Array.isArray(material) ? material : [material]
+const toMaterialIdList = (material) =>
+  toMaterialList(material).map((m) => m.materialId)
 
 export default function useAssets() {
   const { t } = useI18n()
@@ -20,17 +25,13 @@ export default function useAssets() {
   const cloneTo = {
     id: 'cloneTo',
     name: t('RR0167'),
-    func: (v) => {
-      const materialIdList = Array.isArray(v)
-        ? v.map(({ materialId }) => materialId)
-        : [v.materialId]
-
+    func: (material) => {
+      const materialIdList = toMaterialIdList(material)
       store.dispatch('helper/openModalBehavior', {
         component: 'modal-clone-to',
         properties: {
-          checkHandler: async () => {
-            return store.dispatch('assets/cloneCheck', { materialIdList })
-          },
+          checkHandler: () =>
+            store.dispatch('assets/cloneCheck', { materialIdList }),
           cloneHandler: async (targetLocationList, optional) => {
             await store.dispatch('assets/cloneMaterial', {
               targetLocationList,
@@ -48,8 +49,9 @@ export default function useAssets() {
   const addToWorkspace = {
     id: 'addToWorkspace',
     name: t('RR0057'),
-    func: (v) => {
-      const materialList = Array.isArray(v) ? v : [v]
+    func: (material) => {
+      const materialList = toMaterialList(material)
+      const materialIdList = toMaterialIdList(material)
       if (materialList.length === 1 && !materialList[0].isComplete) {
         return store.dispatch('helper/openModalConfirm', {
           type: 1,
@@ -65,9 +67,6 @@ export default function useAssets() {
           modalTitle: t('EE0057'),
           actionText: t('UU0035'),
           actionCallback: async (nodeList) => {
-            const materialIdList = materialList.map(
-              (material) => material.materialId
-            )
             const failMaterialList = await store.dispatch(
               'assets/addToWorkspace',
               {
@@ -110,19 +109,19 @@ export default function useAssets() {
 
   const create3DMaterial = {
     id: 'create3DMaterial',
-    name: t('RR0058'),
-    func: (v) => {
-      const status = v.u3m.status
-      store.dispatch('assets/setMaterial', v)
+    name: (material) =>
+      material.u3m.status === U3M_STATUS.COMPLETED ? t('RR0074') : t('RR0058'),
+    func: (material) => {
+      store.dispatch('assets/setMaterial', material)
 
-      if (!v.isComplete) {
+      if (!material.isComplete) {
         store.dispatch('helper/openModalConfirm', {
-          type: 0,
+          type: MODAL_CONFIRM_TYPE.INFO,
           header: t('EE0142'),
           contentText: t('EE0143'),
           primaryBtnText: t('UU0126'),
           primaryBtnHandler: () => {
-            goToAssetMaterialEdit(v)
+            goToAssetMaterialEdit(material)
             store.dispatch('helper/closeModalBehavior')
           },
           secondaryBtnText: t('UU0127'),
@@ -130,7 +129,7 @@ export default function useAssets() {
         return
       }
 
-      switch (status) {
+      switch (material.u3m.status) {
         case U3M_STATUS.UNQUALIFIED:
           store.dispatch('helper/openModalConfirm', {
             type: 0,
@@ -155,7 +154,7 @@ export default function useAssets() {
                     goToMaterialUpload()
                     store.dispatch('helper/closeModalBehavior')
                   },
-                  materialList: [v],
+                  materialList: toMaterialList(material),
                 },
               })
             },
@@ -201,8 +200,12 @@ export default function useAssets() {
     id: 'downloadU3M',
     icon: 'u3m',
     name: t('RR0059'),
-    func: (v) => {
-      const materialList = Array.isArray(v) ? v : [v]
+    disabled: (material) =>
+      toMaterialList(material).every(
+        (m) => m.u3m.status !== U3M_STATUS.COMPLETED
+      ),
+    func: (material) => {
+      const materialList = toMaterialList(material)
       store.dispatch('helper/openModalBehavior', {
         component: 'modal-u3m-select-file-format',
         properties: { materialList },
@@ -213,11 +216,8 @@ export default function useAssets() {
   const exportExcel = {
     id: 'exportExcel',
     name: t('RR0060'),
-    func: async (v) => {
-      const materialIdList = Array.isArray(v)
-        ? v.map(({ materialId }) => materialId)
-        : [v.materialId]
-
+    func: async (material) => {
+      const materialIdList = toMaterialIdList(material)
       if (materialIdList.length >= 100) {
         await store.dispatch('assets/massExportMaterial', { materialIdList })
         store.dispatch('helper/openModalConfirm', {
@@ -242,8 +242,8 @@ export default function useAssets() {
   const printQRCode = {
     id: 'printQRCode',
     name: t('RR0061'),
-    func: (v) => {
-      const materialList = Array.isArray(v) ? v : [v]
+    func: (material) => {
+      const materialList = toMaterialList(material)
       printGeneralLabel(materialList)
     },
   }
@@ -252,8 +252,8 @@ export default function useAssets() {
     id: 'printCard',
     icon: 'print',
     name: t('RR0062'),
-    func: (v) => {
-      const materialList = Array.isArray(v) ? v : [v]
+    func: (material) => {
+      const materialList = toMaterialList(material)
       printA4Card(materialList)
     },
   }
@@ -261,6 +261,7 @@ export default function useAssets() {
   const mergeCard = {
     id: 'mergeCard',
     name: t('RR0072'),
+    disabled: (materialList) => materialList.length < 2,
     func: (materialList) => {
       store.dispatch('helper/openModal', {
         component: 'modal-material-merge',
@@ -272,11 +273,8 @@ export default function useAssets() {
   const deleteMaterial = {
     id: 'deleteMaterial',
     name: t('RR0063'),
-    func: async (v) => {
-      const materialIdList = Array.isArray(v)
-        ? v.map(({ materialId }) => materialId)
-        : [v.materialId]
-
+    func: async (material) => {
+      const materialIdList = toMaterialIdList(material)
       const { isOnExportingExcel, isOnGeneratingU3m, materialNoList } =
         await store.dispatch('assets/deleteCheckMaterial', { materialIdList })
       if (!isOnExportingExcel && !isOnGeneratingU3m) {

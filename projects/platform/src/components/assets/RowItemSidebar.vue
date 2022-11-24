@@ -2,12 +2,13 @@
 div(class="text-grey-600 flex flex-col gap-3.5")
   f-tooltip(
     v-for="item in [editMaterial, printCard, downloadU3M]"
+    :key="item.id"
     class="cursor-pointer"
     boundaryReference="search-table-header"
   )
     template(#trigger)
       div(
-        v-if="item.id === 'downloadU3M' && material.u3m.status !== U3M_STATUS.COMPLETED"
+        v-if="item.id === 'downloadU3M' && getValueByMaterial(item.disabled, props.material)"
         class="w-7.5 h-7.5 flex justify-center items-center text-grey-200"
       )
         f-svg-icon(:iconName="item.icon" size="24")
@@ -18,7 +19,7 @@ div(class="text-grey-600 flex flex-col gap-3.5")
       )
         f-svg-icon(:iconName="item.icon" size="24")
     template(#content)
-      p {{ item.name }}
+      p {{ getValueByMaterial(item.name, props.material) }}
   f-popper(class="cursor-pointer" placement="left-start")
     template(#trigger)
       div(
@@ -30,11 +31,8 @@ div(class="text-grey-600 flex flex-col gap-3.5")
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import useAssets from '@/composables/useAssets'
-import { U3M_STATUS } from '@/utils/constants'
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 
 const props = defineProps({
   material: {
@@ -55,47 +53,24 @@ const {
   deleteMaterial,
 } = useAssets()
 
-const menuTree = {
-  blockList: [
-    {
-      menuList: [
-        {
-          title: cloneTo.name,
-          clickHandler: cloneTo.func.bind(undefined, props.material),
-        },
-        {
-          title: addToWorkspace.name,
-          clickHandler: addToWorkspace.func.bind(undefined, props.material),
-        },
-      ],
-    },
-    {
-      menuList: [
-        {
-          title:
-            props.material.u3m.status === U3M_STATUS.COMPLETED
-              ? t('RR0074')
-              : create3DMaterial.name,
-          clickHandler: create3DMaterial.func.bind(undefined, props.material),
-        },
-        {
-          title: exportExcel.name,
-          clickHandler: exportExcel.func.bind(undefined, props.material),
-        },
-        {
-          title: printQRCode.name,
-          clickHandler: printQRCode.func.bind(undefined, props.material),
-        },
-      ],
-    },
-    {
-      menuList: [
-        {
-          title: deleteMaterial.name,
-          clickHandler: deleteMaterial.func.bind(undefined, props.material),
-        },
-      ],
-    },
-  ],
+const optionList = [
+  [cloneTo, addToWorkspace],
+  [create3DMaterial, exportExcel, printQRCode],
+  [deleteMaterial],
+]
+
+const getValueByMaterial = (value, material) => {
+  if (typeof value === 'function') return value(material)
+  return value
 }
+
+const menuTree = computed(() => ({
+  blockList: optionList.map((block) => ({
+    menuList: block.map((option) => ({
+      title: getValueByMaterial(option.name, props.material),
+      clickHandler: () => option.func(props.material),
+      disabled: getValueByMaterial(option.disabled, props.material) || false,
+    })),
+  })),
+}))
 </script>
