@@ -178,6 +178,10 @@ module.exports = plugin(function () {}, {
           '0px 0.6px 2px rgba(103, 103, 103, 0.11)',
           '0px 3px 7px rgba(103, 103, 103, 0.13)',
         ],
+        16: [
+          '0px 1.5px 3.6px rgba(103, 103, 103, 0.24)',
+          '0px 6px 14.4px rgba(103, 103, 103, 0.13)',
+        ],
       },
     },
   },

@@ -50,7 +50,7 @@ modal-behavior(
               f-contextual-menu(
                 :menuTree="sortMenuTree"
                 v-model:inputSelectValue="queryParams.sort"
-                :selectMode="2"
+                :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
                 @click:menu="sort"
               )
       div(
@@ -88,7 +88,12 @@ modal-behavior(
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
-import { NODE_TYPE, NODE_LOCATION, useConstants } from '@/utils/constants'
+import {
+  NODE_TYPE,
+  NODE_LOCATION,
+  useConstants,
+  CONTEXTUAL_MENU_MODE,
+} from '@/utils/constants'
 import GridItemNodeForModal from '@/components/common/gridItem/GridItemNodeForModal.vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'

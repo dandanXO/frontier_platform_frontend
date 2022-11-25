@@ -5,8 +5,9 @@ filter-wrapper(
   :dirty="filterDirty.category"
 )
   f-contextual-menu(
+    class="w-40"
     v-model:inputSelectValue="category"
-    :selectMode="1"
+    :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_CANCEL"
     :menuTree="menuTree"
   )
 </template>
@@ -15,6 +16,7 @@ filter-wrapper(
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
+import { CONTEXTUAL_MENU_MODE } from '@/utils/constants'
 
 const store = useStore()
 

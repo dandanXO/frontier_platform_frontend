@@ -29,7 +29,7 @@ div(class="w-full h-full flex flex-col")
         template(#content)
           f-contextual-menu(
             v-model:inputSelectValue="sort"
-            :selectMode="2"
+            :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
             :menuTree="sortMenuTree"
             @click:menu="search()"
           )
@@ -73,7 +73,7 @@ import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { SEARCH_TYPE } from '@/utils/constants'
+import { SEARCH_TYPE, CONTEXTUAL_MENU_MODE } from '@/utils/constants'
 
 const props = defineProps({
   searchType: {

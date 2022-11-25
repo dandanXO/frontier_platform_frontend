@@ -6,14 +6,14 @@ filter-wrapper(
 )
   f-contextual-menu(
     v-model:inputSelectValue="complete"
-    :selectMode="1"
+    :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_CANCEL"
     :menuTree="menuTree"
   )
 </template>
 
 <script setup>
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
-import { useConstants } from '@/utils/constants'
+import { useConstants, CONTEXTUAL_MENU_MODE } from '@/utils/constants'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 

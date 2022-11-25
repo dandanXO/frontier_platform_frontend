@@ -1,5 +1,9 @@
 import FContextualMenu from './FContextualMenu.vue'
+import { CONTEXTUAL_MENU_MODE } from '../constants.js'
 import { ref } from 'vue'
+
+const { NONE_SELECT, SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } =
+  CONTEXTUAL_MENU_MODE
 
 const menuTree = {
   blockList: [
@@ -9,7 +13,8 @@ const menuTree = {
           title: 'Menu 1',
         },
         {
-          title: 'Menu 2',
+          title: 'Menu 2 (Disabled)',
+          disabled: true,
         },
         {
           title: 'Menu 3',
@@ -44,34 +49,50 @@ const TemplateDefault = (args) => ({
   setup() {
     return { args }
   },
-  template: '<f-contextual-menu v-bind="args"></f-contextual-menu>',
+  template: `
+  <div style="margin: 100px">
+    <f-contextual-menu class="w-60" v-bind="args"></f-contextual-menu>
+  </div>
+  `,
 })
 
 export const Default = TemplateDefault.bind({})
 Default.args = {
-  selectMode: 0,
+  selectMode: NONE_SELECT,
 }
+
+export const LeadingVisual = TemplateDefault.bind({})
+const menuTreeLeadingVisual = JSON.parse(JSON.stringify(menuTree))
+menuTreeLeadingVisual.blockList[0].menuList[0].icon = 'create'
+menuTreeLeadingVisual.blockList[0].menuList[1].labelColor = '#0F7F73'
+menuTreeLeadingVisual.blockList[0].menuList[2].thumbnail =
+  'https://picsum.photos/50'
+LeadingVisual.args = {
+  selectMode: NONE_SELECT,
+  menuTree: menuTreeLeadingVisual,
+}
+
+export const RootTitle = TemplateDefault.bind({})
+RootTitle.args = {
+  selectMode: NONE_SELECT,
+  menuTree: {
+    rootTitle: 'Root Title',
+    ...menuTree,
+  },
+}
+
 export const MultipleBlock = TemplateDefault.bind({})
 const menuTreeMultipleBlock = JSON.parse(JSON.stringify(menuTree))
 menuTreeMultipleBlock.blockList.push(menuTreeMultipleBlock.blockList[0])
 menuTreeMultipleBlock.blockList.push(menuTreeMultipleBlock.blockList[0])
 MultipleBlock.args = {
-  selectMode: 0,
+  selectMode: NONE_SELECT,
   menuTree: menuTreeMultipleBlock,
-}
-
-export const RootTitle = TemplateDefault.bind({})
-RootTitle.args = {
-  selectMode: 0,
-  menuTree: {
-    title: 'Root Title',
-    ...menuTree,
-  },
 }
 
 export const BlockTitle = TemplateDefault.bind({})
 const menuTreeBlockTitle = JSON.parse(JSON.stringify(menuTree))
-menuTreeBlockTitle.title = 'Root Title'
+menuTreeBlockTitle.rootTitle = 'Root Title'
 menuTreeBlockTitle.blockList.push(
   JSON.parse(JSON.stringify(menuTreeBlockTitle.blockList[0]))
 )
@@ -81,13 +102,65 @@ menuTreeBlockTitle.blockList.push(
 menuTreeBlockTitle.blockList[0].blockTitle = 'Block Title'
 menuTreeBlockTitle.blockList[2].blockTitle = 'Block Title'
 BlockTitle.args = {
-  selectMode: 0,
+  selectMode: NONE_SELECT,
   menuTree: menuTreeBlockTitle,
+}
+
+export const SearchInput = TemplateDefault.bind({})
+SearchInput.args = {
+  selectMode: NONE_SELECT,
+  menuTree: {
+    searchEnable: true,
+    ...menuTree,
+  },
+}
+
+export const ButtonTop = TemplateDefault.bind({})
+ButtonTop.args = {
+  selectMode: NONE_SELECT,
+  menuTree: {
+    button: {
+      position: 'top',
+      icon: 'create',
+      text: 'button',
+    },
+    ...menuTree,
+  },
+}
+
+export const ButtonBottom = TemplateDefault.bind({})
+ButtonBottom.args = {
+  selectMode: NONE_SELECT,
+  menuTree: {
+    button: {
+      position: 'bottom',
+      icon: 'create',
+      text: 'button',
+    },
+    ...menuTree,
+  },
+}
+
+export const Description = TemplateDefault.bind({})
+const menuTreeDescription = JSON.parse(JSON.stringify(menuTree))
+menuTreeDescription.blockList[0].menuList[0].description = 'description'
+menuTreeDescription.blockList[0].menuList[1].description = 'description'
+menuTreeDescription.blockList[0].menuList[2].display = 'block'
+menuTreeDescription.blockList[0].menuList[2].description = 'description'
+menuTreeDescription.blockList[0].menuList[3].display = 'block'
+menuTreeDescription.blockList[0].menuList[3].description =
+  'looooooooooooooooooooooooooooooooooooooooong description'
+menuTreeDescription.blockList[0].menuList.push(
+  JSON.parse(JSON.stringify(menuTreeDescription.blockList[0].menuList[3]))
+)
+menuTreeDescription.blockList[0].menuList[4].descriptionLineClamp = 2
+Description.args = {
+  menuTree: menuTreeDescription,
 }
 
 export const Mode0NonSelectable = TemplateDefault.bind({})
 Mode0NonSelectable.args = {
-  selectMode: 0,
+  selectMode: NONE_SELECT,
 }
 
 const TemplateSingleSelect = (args) => ({
@@ -102,14 +175,39 @@ const TemplateSingleSelect = (args) => ({
   `,
 })
 
+const menuTreeCannotSelect = {
+  blockList: [
+    {
+      menuList: [
+        {
+          title: 'Menu 1',
+        },
+        {
+          title: 'Menu 2 (Disabled)',
+          disabled: true,
+        },
+        {
+          title: 'Menu 3 (Can not Select)',
+          selectable: false,
+        },
+        {
+          title: 'Menu 4',
+        },
+      ],
+    },
+  ],
+}
+
 export const Mode1SingleSelectAndCancelable = TemplateSingleSelect.bind({})
 Mode1SingleSelectAndCancelable.args = {
-  selectMode: 1,
+  selectMode: SINGLE_CANCEL,
+  menuTree: menuTreeCannotSelect,
 }
 
 export const Mode2SingleSelectAndNonCancelable = TemplateSingleSelect.bind({})
 Mode2SingleSelectAndNonCancelable.args = {
-  selectMode: 2,
+  selectMode: SINGLE_NONE_CANCEL,
+  menuTree: menuTreeCannotSelect,
 }
 
 const TemplateMultiSelect = (args) => ({
@@ -126,7 +224,8 @@ const TemplateMultiSelect = (args) => ({
 
 export const Mode3MultipleSelectAndCancelable = TemplateMultiSelect.bind({})
 Mode3MultipleSelectAndCancelable.args = {
-  selectMode: 3,
+  selectMode: MULTIPLE,
+  menuTree: menuTreeCannotSelect,
 }
 
 const TemplateMultiLayer = (args) => ({
@@ -136,13 +235,12 @@ const TemplateMultiLayer = (args) => ({
   },
   template: `
     <div class="w-screen h-screen">
-      <f-contextual-menu class="w-30" v-bind="args"></f-contextual-menu>
+      <f-contextual-menu class="w-60" v-bind="args"></f-contextual-menu>
     </div>
   `,
 })
 
 const menuMultiLayer = {
-  title: 'Root',
   blockList: [
     {
       menuList: [
@@ -219,7 +317,7 @@ const menuMultiLayer = {
 
 export const MultiLayerMode0 = TemplateMultiLayer.bind({})
 MultiLayerMode0.args = {
-  selectMode: 0,
+  selectMode: NONE_SELECT,
   menuTree: menuMultiLayer,
 }
 
@@ -231,20 +329,21 @@ const TemplateMultiLayerSingleSelect = (args) => ({
   },
   template: `
     <div class="w-screen h-screen">
-      <f-contextual-menu class="w-30" v-model:inputSelectValue="inputSelectValue" v-bind="args"></f-contextual-menu>
+      <f-contextual-menu class="w-60" v-model:inputSelectValue="inputSelectValue" v-bind="args"></f-contextual-menu>
       <p>inputSelectValue:  {{ JSON.stringify(inputSelectValue) }} </p>
     </div>
   `,
 })
+
 export const MultiLayerMode1 = TemplateMultiLayerSingleSelect.bind({})
 MultiLayerMode1.args = {
-  selectMode: 1,
+  selectMode: SINGLE_CANCEL,
   menuTree: menuMultiLayer,
 }
 
 export const MultiLayerMode2 = TemplateMultiLayerSingleSelect.bind({})
 MultiLayerMode2.args = {
-  selectMode: 2,
+  selectMode: SINGLE_NONE_CANCEL,
   menuTree: menuMultiLayer,
 }
 
@@ -256,7 +355,7 @@ const TemplateMultiLayerMultiSelect = (args) => ({
   },
   template: `
     <div class="w-screen h-screen">
-      <f-contextual-menu class="w-30" v-model:inputSelectValue="inputSelectValue" v-bind="args"></f-contextual-menu>
+      <f-contextual-menu class="w-60" v-model:inputSelectValue="inputSelectValue" v-bind="args"></f-contextual-menu>
       <p>inputSelectValue:  {{ JSON.stringify(inputSelectValue) }} </p>
     </div>
   `,
@@ -264,32 +363,40 @@ const TemplateMultiLayerMultiSelect = (args) => ({
 
 export const MultiLayerMode3 = TemplateMultiLayerMultiSelect.bind({})
 MultiLayerMode3.args = {
-  selectMode: 3,
+  selectMode: MULTIPLE,
   menuTree: menuMultiLayer,
 }
 
-const TemplateMultiLayerMultiBlock = (args) => ({
-  components: { FContextualMenu },
-  setup() {
-    return { args }
+const menuCombination = {
+  rootTitle: 'Root',
+  searchEnable: true,
+  button: {
+    position: 'top', // top or bottom
+    icon: 'create',
+    text: 'button',
+    clickHandler: null,
+    disabled: false,
   },
-  template: `
-    <div class="w-screen h-screen">
-      <f-contextual-menu class="w-30" v-bind="args"></f-contextual-menu>
-    </div>
-  `,
-})
-
-const menuMultiLayerMultiBlock = {
-  title: 'Root',
   blockList: [
     {
       menuList: [
         {
           title: 'Menu 1',
+          description: 'description',
+          thumbnail: 'https://picsum.photos/50',
         },
         {
-          title: 'Menu 2',
+          title: 'Menu 2~~~~~~',
+          description: 'min-w-40',
+          searchEnable: true,
+          icon: 'create',
+          button: {
+            position: 'bottom', // top or bottom
+            icon: 'create',
+            text: 'button',
+            clickHandler: null,
+            disabled: false,
+          },
           blockList: [
             {
               blockTitle: 'Block',
@@ -330,10 +437,16 @@ const menuMultiLayerMultiBlock = {
           ],
         },
         {
-          title: 'Menu 3',
+          title: 'Menu 3~~~~~~~~~~~~~~~~',
+          titleLineClamp: 2,
+          description: 'min-w-40',
         },
         {
-          title: 'Menu 4',
+          title: 'Menu 4~~~~~~~~~~~~~~~~',
+          titleLineClamp: 2,
+          description: 'min-w-40 ~~~~~~~~~~~~~',
+          descriptionLineClamp: 2,
+          labelColor: '#0F7F73',
           blockList: [
             {
               menuList: [
@@ -355,12 +468,42 @@ const menuMultiLayerMultiBlock = {
         },
       ],
     },
-    menuTree.blockList[0],
+    {
+      menuList: [
+        {
+          title: 'Menu 5',
+          description: 'description',
+          display: 'block',
+          selectable: false,
+        },
+        {
+          title: 'Menu 6~~~~~~~~~~~~~~~~~~~~',
+          description: 'description~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
+          display: 'block',
+        },
+        {
+          title: 'Menu 7~~~~~~~~~~~~~~~~',
+          titleLineClamp: 2,
+          display: 'block',
+          description: 'description~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
+          selectable: false,
+          labelColor: '#0F7F73',
+        },
+        {
+          title: 'Menu 8~~~~~~~~~~~~~~~~',
+          titleLineClamp: 2,
+          display: 'block',
+          description: 'description~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
+          descriptionLineClamp: 2,
+          labelColor: '#0F7F73',
+        },
+      ],
+    },
   ],
 }
 
-export const MultiLayerMultiBlock = TemplateMultiLayerMultiBlock.bind({})
-MultiLayerMultiBlock.args = {
-  selectMode: 0,
-  menuTree: menuMultiLayerMultiBlock,
+export const Combination = TemplateMultiLayerMultiSelect.bind({})
+Combination.args = {
+  selectMode: MULTIPLE,
+  menuTree: menuCombination,
 }

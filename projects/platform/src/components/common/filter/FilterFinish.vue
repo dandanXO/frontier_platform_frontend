@@ -6,7 +6,7 @@ filter-wrapper(
 )
   f-contextual-menu(
     v-model:inputSelectValue="finishList"
-    :selectMode="3"
+    :selectMode="CONTEXTUAL_MENU_MODE.MULTIPLE"
     :menuTree="menuTree"
   )
 </template>
@@ -15,6 +15,7 @@ filter-wrapper(
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
+import { CONTEXTUAL_MENU_MODE } from '@/utils/constants'
 
 const store = useStore()
 

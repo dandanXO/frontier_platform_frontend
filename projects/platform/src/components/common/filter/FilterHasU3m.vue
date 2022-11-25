@@ -6,7 +6,7 @@ filter-wrapper(
 )
   f-contextual-menu(
     v-model:inputSelectValue="hasU3M"
-    :selectMode="1"
+    :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_CANCEL"
     :menuTree="menuTree"
   )
 </template>
@@ -16,6 +16,7 @@ import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { CONTEXTUAL_MENU_MODE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()

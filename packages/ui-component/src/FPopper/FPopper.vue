@@ -74,7 +74,6 @@ teleport(v-if="isExpand" to="body")
   div(class="fixed z-popper w-screen h-screen top-0 left-0" @click="collapsePopper")
     div(ref="refPopper" role="popper" class="relative rounded bg-grey-0" @click.stop)
       slot(
-        v-if="isExpand"
         name="content"
         :isExpand="isExpand"
         :collapsePopper="collapsePopper"

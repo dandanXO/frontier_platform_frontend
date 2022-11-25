@@ -1,20 +1,45 @@
 <template lang="pug">
-f-list(class="min-w-57.5")
-  f-list-item(
-    v-if="menuTree.title"
-    class="text-body2 !text-grey-900 font-bold"
-    disabled
-  ) {{ menuTree.title }}
-  template(v-for="(block, index) in menuTree.blockList")
-    f-list-item(v-if="block.blockTitle" class="text-grey-200" disabled) {{ block.blockTitle }}
-    contextual-menu-node(
-      v-for="menu in block.menuList"
-      :menu="menu"
-      @click:menu="clickMenuHandler($event)"
-      :selectMode="selectMode"
-      :inputSelectValue="inputSelectValue"
-    )
-    div(v-if="index !== menuTree.blockList.length - 1" class="mx-2 my-1 h-px bg-grey-200")
+div(class="py-2 bg-grey-0 rounded drop-shadow-16")
+  //- Root Title
+  template(v-if="innerMenuTree.rootTitle")
+    div(class="h-8.5 pt-2 px-4 text-body2 text-grey-900 font-bold") {{ innerMenuTree.rootTitle }}
+    div(class="w-full h-px my-1 bg-grey-150")
+  //- Button if position is top
+  contextual-menu-button(
+    v-if="innerMenuTree.button && innerMenuTree.button.position === 'top'"
+    v-bind="innerMenuTree.button"
+  )
+  //- Search Input
+  template(v-if="innerMenuTree.searchEnable")
+    div(class="h-8 flex items-center px-4")
+      f-svg-icon(iconName="search" size="20" class="text-grey-600 mr-2")
+      input(
+        v-model="searchInput"
+        placeholder="Search"
+        class="outline-none w-full text-caption text-grey-900 placeholder:text-grey-200"
+      )
+    div(class="w-full h-px my-1 bg-grey-150")
+  template(v-if="filteredBlockList.length > 0")
+    template(v-for="(block, index) in filteredBlockList")
+      //- Block Title
+      div(v-if="block.blockTitle" class="h-6 py-1.5 px-4 text-caption text-grey-600") {{ block.blockTitle }}
+      contextual-menu-node(
+        v-for="menu in block.menuList"
+        :menu="menu"
+        @click:menu="clickMenuHandler($event)"
+        :selectMode="selectMode"
+        :inputSelectValue="inputSelectValue"
+      )
+      div(
+        v-if="index !== filteredBlockList.length - 1"
+        class="w-full h-px my-1 bg-grey-150"
+      )
+  div(v-else class="h-6 py-1.5 px-4 text-caption text-grey-600") No Results Found
+  //- Button if position is bottom
+  contextual-menu-button(
+    v-if="innerMenuTree.button && innerMenuTree.button.position === 'bottom'"
+    v-bind="innerMenuTree.button"
+  )
 </template>
 
 <script>
@@ -24,6 +49,11 @@ export default {
 </script>
 
 <script setup>
+import { ref, computed } from 'vue'
+import { CONTEXTUAL_MENU_MODE } from '../constants.js'
+
+const { SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
+
 // update:inputSelectValue will execute before click:menu
 const emit = defineEmits(['update:inputSelectValue', 'click:menu'])
 const props = defineProps({
@@ -48,21 +78,42 @@ const props = defineProps({
   /**
    * ```
    * {
-   *  title: String,
+   *  rootTitle: String,
+   *  searchEnable: Boolean,
+   *  button: {
+   *    position: String, // top or bottom
+   *    icon: String,
+   *    text: String,
+   *    clickHandler: Function,
+   *    disabled: Boolean
+   *  },
    *  blockList: [
    *    {
    *      blockTitle: String,
    *      menuList: [
    *        {
    *          title: String,
+   *          blockList: Array,
+   *          titleLineClamp: Number,
+   *          description: String,
+   *          descriptionLineClamp: Number
+   *          display: String,
+   *          disabled: Boolean,
    *          selectable: Boolean,
    *          selectValue: null,
-   *          disabled: Boolean,
    *          icon: String,
+   *          labelColor: String, (Color)
    *          thumbnail: String (URL)
    *          clickHandler: Function,
-   *          blockList: Array,
-   *          tooltip: String
+   *          tooltip: String,
+   *          searchEnable: Boolean,
+   *          button: {
+   *            position: String, // top or bottom
+   *            icon: String,
+   *            text: String,
+   *            clickHandler: Function,
+   *            disabled: Boolean
+   *          }
    *        }
    *      ]
    *    }
@@ -77,8 +128,20 @@ const props = defineProps({
   },
 })
 
+const innerMenuTree = computed(() => {
+  const defaultMenuTree = {
+    // required
+    blockList: [],
+    // optional
+    rootTitle: '',
+    searchEnable: false,
+    button: null,
+  }
+  return Object.assign({}, defaultMenuTree, props.menuTree)
+})
+
 const clickMenuHandler = (menu) => {
-  if (props.selectMode === 3) {
+  if (props.selectMode === MULTIPLE) {
     const tempArr = [...props.inputSelectValue]
     const index = tempArr.findIndex(
       (selectValue) => selectValue === menu.selectValue
@@ -90,8 +153,11 @@ const clickMenuHandler = (menu) => {
       tempArr.splice(index, 1)
     }
     emit('update:inputSelectValue', tempArr)
-  } else if ([1, 2].includes(props.selectMode)) {
-    if (props.selectMode === 1 && props.inputSelectValue === menu.selectValue) {
+  } else if ([SINGLE_CANCEL, SINGLE_NONE_CANCEL].includes(props.selectMode)) {
+    if (
+      props.selectMode === SINGLE_CANCEL &&
+      props.inputSelectValue === menu.selectValue
+    ) {
       emit('update:inputSelectValue', null)
     } else {
       emit('update:inputSelectValue', menu.selectValue)
@@ -100,4 +166,21 @@ const clickMenuHandler = (menu) => {
 
   emit('click:menu', menu)
 }
+
+const searchInput = ref('')
+const filteredBlockList = computed(() => {
+  const blockList = []
+  innerMenuTree.value.blockList.forEach((block) => {
+    const filteredMenuList = block.menuList.filter((menu) =>
+      menu.title.includes(searchInput.value)
+    )
+    if (filteredMenuList.length > 0) {
+      blockList.push({
+        ...block,
+        menuList: filteredMenuList,
+      })
+    }
+  })
+  return blockList
+})
 </script>
