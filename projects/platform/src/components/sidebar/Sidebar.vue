@@ -129,6 +129,11 @@ const menuOrgOrGroup = computed(() => {
           pathUseToMatch: `/${orgNo}/workspace`,
         },
         {
+          id: 'sticker-board',
+          title: 'Digital threads',
+          path: `/${orgNo}/sticker`,
+        },
+        {
           id: 'moodboard',
           title: t('QQ0001'),
           path: `/${orgNo}/moodboard`,
@@ -159,6 +164,11 @@ const menuOrgOrGroup = computed(() => {
             title: t('RR0009'),
             path: `/${orgNo}/${groupId}/workspace/${NODE_LOCATION.GROUP}-${workspaceNodeId}`,
             pathUseToMatch: `/${orgNo}/${groupId}/workspace`,
+          },
+          {
+            id: 'sticker-board',
+            title: 'Digital threads',
+            path: `/${orgNo}/${groupId}/sticker`,
           },
           {
             id: 'moodboard',

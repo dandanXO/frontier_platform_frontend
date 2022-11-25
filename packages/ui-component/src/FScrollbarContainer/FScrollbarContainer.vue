@@ -15,7 +15,7 @@ import { onMounted, ref } from 'vue'
 import overlayscrollbars from 'overlayscrollbars'
 // https://kingsora.github.io/OverlayScrollbars/#!overview
 
-const emit = defineEmits(['reach-bottom'])
+const emit = defineEmits(['reach-bottom', 'scroll', 'overflowAmountChanged'])
 const props = defineProps({
   /**
    * Indicates whether the host element is capable of "auto" sizes such as: width: auto and height: auto. If set to false and the property width or height is "auto", the rendered width or height of the content will be zero.
@@ -27,26 +27,41 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  direction: {
+    type: String,
+    default: 'vertical', // Another option is 'horizontal'
+    validator(v) {
+      return ['horizontal', 'vertical'].includes(v)
+    },
+  },
 })
 
 const rootElement = ref(null)
+const instance = ref(null)
 
 onMounted(() => {
-  const instance = overlayscrollbars(rootElement.value, {
+  instance.value = overlayscrollbars(rootElement.value, {
     sizeAutoCapable: props.sizeAutoCapable,
     overflowBehavior: {
-      x: 'hidden',
-      y: 'scroll',
+      x: props.direction === 'vertical' ? 'hidden' : 'scroll',
+      y: props.direction === 'vertical' ? 'scroll' : 'hidden',
     },
     callbacks: {
       onScroll: () => {
-        const scrollInfo = instance.scroll()
-
+        const scrollInfo = instance.value.scroll()
         if (scrollInfo.ratio.y >= 0.9) {
           emit('reach-bottom')
         }
+        emit('scroll', scrollInfo)
+      },
+      onOverflowAmountChanged: ({ x, y }) => {
+        emit('overflowAmountChanged', { x, y })
       },
     },
   })
+})
+
+defineExpose({
+  instance,
 })
 </script>

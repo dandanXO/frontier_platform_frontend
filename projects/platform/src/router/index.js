@@ -40,6 +40,15 @@ const reuseRoutes = (prefix) => [
     component: () => import('@/views/innerApp/Progress.vue'),
   },
   {
+    path: 'sticker',
+    name: `${prefix}Sticker`,
+    component: () => import('@/views/innerApp/Sticker.vue'),
+    beforeEnter: async (to, from, next) => {
+      // await store.dispatch('stickerBoard/getChannelList')
+      next()
+    },
+  },
+  {
     path: 'assets',
     component: () => import('@/views/PassThrough.vue'),
     children: [
@@ -125,11 +134,6 @@ const reuseRoutes = (prefix) => [
       await store.dispatch('moodboard/getMoodboard', { moodboardId })
       next()
     },
-  },
-  {
-    path: 'sticker',
-    name: `${prefix}Sticker`,
-    component: () => import('@/views/innerApp/Sticker.vue'),
   },
 ]
 

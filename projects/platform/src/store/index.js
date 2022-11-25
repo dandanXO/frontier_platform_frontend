@@ -14,6 +14,7 @@ import embed from '@/store/modules/embed'
 import moodboard from '@/store/modules/moodboard'
 import shareToMe from '@/store/modules/shareToMe'
 import polling from '@/store/modules/polling'
+import stickerBoard from '@/store/modules/stickerBoard'
 
 export default createStore({
   actions: {
@@ -57,5 +58,6 @@ export default createStore({
     embed,
     polling,
     moodboard,
+    stickerBoard,
   },
 })
