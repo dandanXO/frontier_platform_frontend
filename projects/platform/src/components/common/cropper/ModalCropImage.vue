@@ -19,6 +19,7 @@ modal-behavior(
           :config="config"
           :cropRectSize="cropRectSize"
           @update:options="Object.assign(config.options, $event)"
+          :isCircular="isCircular"
         )
 </template>
 
@@ -43,6 +44,10 @@ const props = defineProps({
   afterCropHandler: {
     type: Function,
     required: true,
+  },
+  isCircular: {
+    type: Boolean,
+    default: false,
   },
 })
 

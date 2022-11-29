@@ -90,6 +90,7 @@ imageOperator.on('finish', (image) => {
       afterCropHandler: async (croppedImage, originalImage) => {
         await props.updateHandler(croppedImage, originalImage)
       },
+      isCircular: true,
     },
   })
 })
