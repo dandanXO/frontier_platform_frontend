@@ -204,6 +204,8 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
               :cropRectSize="cropRectSize"
               @update:options="Object.assign(config.options, $event)"
             )
+        div(v-else class="h-111 flex justify-center items-center")
+          f-svg-icon(iconName="loading" size="54" class="text-primary-400")
     div(class="bg-grey-50 px-15 py-12.5 mt-7.5 grid gap-y-7.5")
       h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
       f-input-chips(
