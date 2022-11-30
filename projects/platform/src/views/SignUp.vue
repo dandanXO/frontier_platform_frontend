@@ -127,6 +127,7 @@ import useNavigation from '@/composables/useNavigation'
 import PasswordValidator from '@/components/account/PasswordValidator.vue'
 import imgCover from '@/assets/images/cover.png'
 import DropdownLocale from '@/components/common/DropdownLocale.vue'
+import inputValidator from '@/utils/input-validator'
 
 const { t } = useI18n()
 const store = useStore()
@@ -143,7 +144,7 @@ const isEmailExist = ref(false)
 const isPasswordValid = ref(false)
 const { nextAfterSignIn } = useNavigation()
 
-const isEmailValid = computed(() => /.+@.+/gi.test(formData.email))
+const isEmailValid = computed(() => inputValidator.emailFormat(formData.email))
 const availableToSignUp = computed(
   () =>
     formData.firstName !== '' &&

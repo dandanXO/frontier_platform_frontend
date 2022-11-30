@@ -13,7 +13,7 @@ modal-behavior(
         :rules="[$inputRules.required()]"
         :label="$t('AA0038')"
         :placeholder="$t('AA0039')"
-        :customErrorMsg="isOrgNameExist ? $t('WW0001') : ''"
+        :hintError="isOrgNameExist ? $t('WW0001') : ''"
         @blur="checkOrgNameExist"
         data-cy="modal-create-org_name"
       )

@@ -24,8 +24,6 @@ modal-behavior(
       :placeholder="slotValue"
       data-cy="modal-type-text-to-confirm_input"
     )
-      template(#slot:errorMsg v-if="isError")
-        p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ errorMsg }}
 </template>
 <script setup>
 import { ref } from 'vue'

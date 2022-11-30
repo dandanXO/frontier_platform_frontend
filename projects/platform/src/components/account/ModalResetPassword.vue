@@ -23,7 +23,7 @@ modal-behavior(
       f-input-password(
         v-model:textValue="confirmPassword"
         :placeholder="$t('AA0056')"
-        :customErrorMsg="errorMsg"
+        :hintError="errorMsg"
       )
 </template>
 

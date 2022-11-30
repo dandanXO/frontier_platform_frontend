@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="py-2 bg-grey-0 rounded drop-shadow-16")
+div(:class="innerMenuTree.width" class="py-2 bg-grey-0 rounded drop-shadow-16")
   //- Root Title
   template(v-if="innerMenuTree.rootTitle")
     div(class="h-8.5 pt-2 px-4 text-body2 text-grey-900 font-bold") {{ innerMenuTree.rootTitle }}
@@ -19,7 +19,11 @@ div(class="py-2 bg-grey-0 rounded drop-shadow-16")
         class="outline-none w-full text-caption text-grey-900 placeholder:text-grey-200"
       )
     div(class="w-full h-px my-1 bg-grey-150")
-  template(v-if="filteredBlockList.length > 0")
+  div(
+    v-if="filteredBlockList.length > 0"
+    :class="innerMenuTree.scrollAreaMaxHeight"
+    class="overflow-scroll overscroll-contain"
+  )
     template(v-for="(block, index) in filteredBlockList")
       //- Block Title
       div(v-if="block.blockTitle" class="h-6 py-1.5 px-4 text-caption text-grey-600") {{ block.blockTitle }}
@@ -87,6 +91,8 @@ const props = defineProps({
    *    clickHandler: Function,
    *    disabled: Boolean
    *  },
+   *  width: String (Tailwindcss),
+   *  scrollAreaMaxHeight: String (Tailwindcss),
    *  blockList: [
    *    {
    *      blockTitle: String,
@@ -104,6 +110,7 @@ const props = defineProps({
    *          icon: String,
    *          labelColor: String, (Color)
    *          thumbnail: String (URL)
+   *          flag: String (URL),
    *          clickHandler: Function,
    *          tooltip: String,
    *          searchEnable: Boolean,
@@ -113,7 +120,9 @@ const props = defineProps({
    *            text: String,
    *            clickHandler: Function,
    *            disabled: Boolean
-   *          }
+   *          },
+   *          width: String (Tailwindcss),
+   *          scrollAreaMaxHeight: String (Tailwindcss),
    *        }
    *      ]
    *    }
@@ -136,6 +145,8 @@ const innerMenuTree = computed(() => {
     rootTitle: '',
     searchEnable: false,
     button: null,
+    width: 'w-fit',
+    scrollAreaMaxHeight: '',
   }
   return Object.assign({}, defaultMenuTree, props.menuTree)
 })

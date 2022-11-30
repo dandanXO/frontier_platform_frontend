@@ -4,15 +4,9 @@ f-input-text(
   v-model:textValue="innerTextValue"
   :inputType="isVisible ? 'text' : 'password'"
   prependIcon="lock"
+  :appendIcon="isVisible ? 'openeye' : 'hideeye'"
+  @click:appendIcon="isVisible = !isVisible"
 )
-  template(#slot:appendItem)
-    div(class="h-full flex items-center")
-      f-svg-icon(
-        size="20"
-        :class="[isVisible ? 'text-grey-900' : 'text-grey-200']"
-        :iconName="isVisible ? 'openeye' : 'hideeye'"
-        @click="isVisible = !isVisible"
-      )
 </template>
 
 <script>
@@ -59,7 +53,7 @@ const props = defineProps({
   /**
    * inherit from `FInputText.vue`
    *
-   * only work when `label` has been setted
+   * only work when `label` has been set
    */
   required: {
     type: Boolean,
@@ -83,11 +77,16 @@ const props = defineProps({
   },
   /**
    * inherit from `FInputText.vue`
-   *
-   * It turn to error state when customErrorMsg has value
    */
-  customErrorMsg: {
-    type: [String, Boolean],
+  hintError: {
+    type: String,
+    default: '',
+  },
+  /**
+   * inherit from `FInputText.vue`
+   */
+  hintSupporting: {
+    type: String,
     default: '',
   },
   /**

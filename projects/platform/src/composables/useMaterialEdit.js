@@ -4,20 +4,41 @@ import {
   INVENTORY_UNIT,
   MATERIAL_PRICING_CURRENCY,
   useConstants,
+  CONTEXTUAL_MENU_MODE,
 } from '@/utils/constants'
 
 export default function useMaterialEdit(material) {
   const store = useStore()
   const { WEIGHT_UNIT } = useConstants()
 
-  const inventoryUnitList = computed(() =>
-    Object.keys(INVENTORY_UNIT).map((key) => ({ unit: INVENTORY_UNIT[key] }))
-  )
-  const currencyList = computed(() =>
-    Object.keys(MATERIAL_PRICING_CURRENCY).map((key) => ({
-      currency: MATERIAL_PRICING_CURRENCY[key],
-    }))
-  )
+  const inventoryUnitList = computed(() => ({
+    selectMode: CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL,
+    menuTree: {
+      width: 'w-30',
+      blockList: [
+        {
+          menuList: Object.keys(INVENTORY_UNIT).map((key) => ({
+            selectValue: INVENTORY_UNIT[key],
+            title: key,
+          })),
+        },
+      ],
+    },
+  }))
+  const currencyList = computed(() => ({
+    selectMode: CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL,
+    menuTree: {
+      width: 'w-30',
+      blockList: [
+        {
+          menuList: Object.keys(MATERIAL_PRICING_CURRENCY).map((key) => ({
+            selectValue: MATERIAL_PRICING_CURRENCY[key],
+            title: key,
+          })),
+        },
+      ],
+    },
+  }))
 
   const newContentList = reactive([])
   const newDescriptionList = reactive([])
@@ -27,12 +48,20 @@ export default function useMaterialEdit(material) {
     contentList: computed(() =>
       store.getters['assets/code'].contentList.concat(newContentList)
     ),
-    weightUnitList: computed(() => {
-      return Object.keys(WEIGHT_UNIT.value).map((key) => ({
-        weightUnit: WEIGHT_UNIT.value[key].value,
-        name: WEIGHT_UNIT.value[key].text,
-      }))
-    }),
+    weightUnitList: computed(() => ({
+      selectMode: CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL,
+      menuTree: {
+        width: 'w-35',
+        blockList: [
+          {
+            menuList: Object.keys(WEIGHT_UNIT.value).map((key) => ({
+              selectValue: WEIGHT_UNIT.value[key].value,
+              title: WEIGHT_UNIT.value[key].text,
+            })),
+          },
+        ],
+      },
+    })),
     descriptionList: computed(() =>
       store.getters['assets/code'].descriptionList.concat(newDescriptionList)
     ),

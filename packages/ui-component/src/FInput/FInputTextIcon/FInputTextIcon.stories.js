@@ -1,6 +1,6 @@
 import FInputTextIcon from './FInputTextIcon.vue'
 import { ref } from 'vue'
-import FInputTextStories from '../FInputText/FInputText.stories'
+import FInputTextStories from '../FInputTextOld/FInputTextOld.stories'
 
 delete FInputTextStories.argTypes.inputType
 delete FInputTextStories.argTypes['slot:errorMsg']

@@ -1,46 +1,19 @@
 <template lang="pug">
-f-input-text(v-model:textValue="innerTextValue" :size="size" ref="refContainer")
-  template(#slot:prependItem)
-    div(class="h-full -ml-4 pr-3 flex")
-      f-popper(placement="bottom-start" @expand="expand")
-        template(#trigger="{ isExpand }")
-          div(
-            class="w-19 pl-4 pr-3 border-r border-grey-200 rounded-l flex justify-between items-center"
-            :class="[size === 'lg' ? 'h-11' : 'h-9']"
-          )
-            img(
-              class="w-6 h-6 rounded"
-              :alt="innerCountryCode"
-              :src="`http://purecatamphetamine.github.io/country-flag-icons/3x2/${innerCountryCode}.svg`"
-            )
-            f-svg-icon(
-              iconName="keyboard_arrow_right"
-              size="20"
-              class="transform"
-              :class="[isExpand ? '-rotate-90 text-grey-200' : 'rotate-90 text-grey-600']"
-            )
-        template(#content)
-          div(
-            class="py-2 bg-grey-0 border rounded border-grey-150 card-shadow"
-            :style="{ width: contentWidth + 'px' }"
-          )
-            f-scrollbar-container(
-              :style="{ 'max-height': 36 * maxLength + 'px' }"
-            )
-              div(
-                v-for="country in countryList"
-                class="h-9 pl-3 flex items-center cursor-pointer"
-                :class="[country.countryCode === innerCountryCode ? 'bg-grey-100' : '']"
-                @click="innerCountryCode = country.countryCode"
-              )
-                img(
-                  class="w-6 h-6 rounded mr-1.5"
-                  :alt="country.countryCode"
-                  :src="`http://purecatamphetamine.github.io/country-flag-icons/3x2/${country.countryCode}.svg`"
-                )
-                span(class="text-body2 text-grey-900 mr-2") {{ country.name }}
-                span(class="text-body2 text-grey-600") +{{ country.phone }}
-    span(v-if="innerTextValue !== ''" class="text-grey-900 text-body1 pr-1") {{ `(+${callingCode}) ` }}
+f-input-text(
+  v-model:textValue="innerTextValue"
+  :size="size"
+  ref="refContainer"
+  v-model:leftSelectValue="innerCountryCode"
+  :leftDropdownOption="dropdownOption"
+)
+  template(#slot:left-dropdown-trigger)
+    div(class="flex items-center")
+      img(
+        class="w-6 h-4 rounded-sm"
+        :alt="innerCountryCode"
+        :src="`http://purecatamphetamine.github.io/country-flag-icons/3x2/${innerCountryCode}.svg`"
+      )
+      span(class="text-grey-600 text-body2 pl-1") {{ `(+${callingCode}) ` }}
 </template>
 
 <script>
@@ -52,7 +25,7 @@ export default {
 <script setup>
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
-
+import { CONTEXTUAL_MENU_MODE } from '@/utils/constants'
 const store = useStore()
 
 const emit = defineEmits(['update:textValue', 'update:countryCode'])
@@ -76,12 +49,28 @@ const props = defineProps({
 })
 
 const refContainer = ref(null)
-const contentWidth = ref(340)
-const expand = () => {
-  contentWidth.value = refContainer.value.$el.getBoundingClientRect().width
-}
 
 const countryList = computed(() => store.getters['code/countryList'])
+
+const dropdownOption = computed(() => ({
+  selectMode: CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL,
+  menuTree: {
+    searchEnable: true,
+    width: 'w-85',
+    scrollAreaMaxHeight: 'max-h-72',
+    blockList: [
+      {
+        menuList: countryList.value.map((country) => ({
+          title: country.name,
+          description: `+${country.phone}`,
+          selectValue: country.countryCode,
+          flag: `http://purecatamphetamine.github.io/country-flag-icons/3x2/${country.countryCode}.svg`,
+        })),
+      },
+    ],
+  },
+}))
+
 const innerCountryCode = computed({
   get: () => props.countryCode || countryList.value[0].countryCode,
   set: (v) => emit('update:countryCode', v),

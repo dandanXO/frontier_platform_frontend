@@ -123,6 +123,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const isExpand = ref(false)
@@ -130,7 +134,7 @@ const refTrigger = ref(null)
 const refPopper = ref(null)
 
 const expandPopper = async () => {
-  if (isExpand.value) {
+  if (isExpand.value || props.disabled) {
     return
   }
 

@@ -20,62 +20,51 @@ f-expansion-panel(class="border-b border-grey-200")
         keyOptionValue="countryCode"
         searchBox
       )
-      f-input-container(:label="$t('RR0043')")
-        div(class="flex items-center gap-x-3")
-          p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0044') }}
-          f-input-text(
-            v-model:textValue="material.publicPrice.price"
-            inputType="number"
-            class="w-50"
-            :customErrorMsg="invalidation.publicPricePrice"
-          )
-          p(class="text-body2 text-grey-900 font-bold") {{ INVENTORY_UNIT.Y }}
-      f-input-container(:label="$t('RR0047')")
-        div(class="flex items-center gap-x-3")
-          f-input-text(
-            v-model:textValue="material.publicPrice.minimumOrderQuantity"
-            inputType="number"
-            class="w-50"
-            :customErrorMsg="invalidation.publicPriceMinimumOrderQuantity"
-          )
-          f-input-select(
-            v-model:selectValue="material.publicPrice.minimumOrderQuantityUnit"
-            :optionList="inventoryUnitList"
-            keyOptionDisplay="unit"
-            keyOptionValue="unit"
-            class="w-25"
-          )
-      f-input-container(:label="$t('RR0048')")
-        div(class="flex items-center gap-x-3")
-          f-input-text(
-            v-model:textValue="material.publicPrice.minimumContainerQuantity"
-            inputType="number"
-            class="w-50"
-            :customErrorMsg="invalidation.publicPriceMinimumContainerQuantity"
-          )
-          f-input-select(
-            v-model:selectValue="material.publicPrice.minimumContainerQuantityUnit"
-            :optionList="inventoryUnitList"
-            keyOptionDisplay="unit"
-            keyOptionValue="unit"
-            class="w-25"
-          )
-      f-input-container(:label="$t('RR0049')")
-        div(class="flex items-center gap-x-3")
-          f-input-text(
-            v-model:textValue="material.publicPrice.productionLeadTime"
-            class="w-50"
-            :customErrorMsg="invalidation.publicPriceProductionLeadTime"
-          )
-          p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0050') }}
-      f-input-container(:label="$t('RR0051')")
-        div(class="flex items-center gap-x-3")
-          f-input-text(
-            v-model:textValue="material.publicPrice.sampleLeadTime"
-            class="w-50"
-            :customErrorMsg="invalidation.publicPriceSampleLeadTime"
-          )
-          p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0050') }}
+      f-input-text(
+        :label="$t('RR0043')"
+        v-model:textValue="material.publicPrice.price"
+        inputType="number"
+        class="w-50"
+        :hintError="invalidation.publicPricePrice"
+        :addOnLeft="$t('RR0044')"
+        :addOnRight="INVENTORY_UNIT.Y"
+      )
+      f-input-text(
+        v-model:textValue="material.publicPrice.minimumOrderQuantity"
+        inputType="number"
+        :label="$t('RR0047')"
+        class="w-50"
+        :hintError="invalidation.publicPriceMinimumOrderQuantity"
+        v-model:rightSelectValue="material.publicPrice.minimumOrderQuantityUnit"
+        :rightDropdownOption="inventoryUnitList"
+      )
+        template(#slot:right-dropdown-trigger="{ selectedMenu }")
+          p {{ selectedMenu?.title }}
+      f-input-text(
+        v-model:textValue="material.publicPrice.minimumContainerQuantity"
+        inputType="number"
+        :label="$t('RR0048')"
+        class="w-50"
+        :hintError="invalidation.publicPriceMinimumContainerQuantity"
+        v-model:rightSelectValue="material.publicPrice.minimumContainerQuantityUnit"
+        :rightDropdownOption="inventoryUnitList"
+      )
+        template(#slot:right-dropdown-trigger="{ selectedMenu }")
+          p {{ selectedMenu?.title }}
+      f-input-text(
+        :label="$t('RR0049')"
+        v-model:textValue="material.publicPrice.productionLeadTime"
+        class="w-50"
+        :hintError="invalidation.publicPriceProductionLeadTime"
+        :addOnRight="$t('RR0050')"
+      )
+      f-input-text(
+        :label="$t('RR0051')"
+        v-model:textValue="material.publicPrice.sampleLeadTime"
+        class="w-50"
+        :hintError="invalidation.publicPriceSampleLeadTime"
+        :addOnRight="$t('RR0050')"
+      )
       div(class="-mx-15 bg-grey-50 px-15 py-12.5 grid gap-y-7.5")
         h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
         f-input-select(
@@ -87,74 +76,57 @@ f-expansion-panel(class="border-b border-grey-200")
           keyOptionValue="countryCode"
           searchBox
         )
-        f-input-container(:label="$t('RR0043')")
-          div(class="flex items-center gap-x-3")
-            f-input-select(
-              v-model:selectValue="material.privatePrice.currency"
-              :optionList="currencyList"
-              keyOptionDisplay="currency"
-              keyOptionValue="currency"
-              class="w-25"
-            )
-            f-input-text(
-              v-model:textValue="material.privatePrice.price"
-              inputType="number"
-              class="w-50"
-              :customErrorMsg="invalidation.privatePricePrice"
-            )
-            f-input-select(
-              v-model:selectValue="material.privatePrice.unit"
-              :optionList="inventoryUnitList"
-              keyOptionDisplay="unit"
-              keyOptionValue="unit"
-              class="w-25"
-            )
-        f-input-container(:label="$t('RR0047')")
-          div(class="flex items-center gap-x-3")
-            f-input-text(
-              v-model:textValue="material.privatePrice.minimumOrderQuantity"
-              inputType="number"
-              class="w-50"
-              :customErrorMsg="invalidation.privatePriceMinimumOrderQuantity"
-            )
-            f-input-select(
-              v-model:selectValue="material.privatePrice.minimumOrderQuantityUnit"
-              :optionList="inventoryUnitList"
-              keyOptionDisplay="unit"
-              keyOptionValue="unit"
-              class="w-25"
-            )
-        f-input-container(:label="$t('RR0048')")
-          div(class="flex items-center gap-x-3")
-            f-input-text(
-              v-model:textValue="material.privatePrice.minimumContainerQuantity"
-              inputType="number"
-              class="w-50"
-              :customErrorMsg="invalidation.privatePriceMinimumContainerQuantity"
-            )
-            f-input-select(
-              v-model:selectValue="material.privatePrice.minimumContainerQuantityUnit"
-              :optionList="inventoryUnitList"
-              keyOptionDisplay="unit"
-              keyOptionValue="unit"
-              class="w-25"
-            )
-        f-input-container(:label="$t('RR0049')")
-          div(class="flex items-center gap-x-3")
-            f-input-text(
-              v-model:textValue="material.privatePrice.productionLeadTime"
-              class="w-50"
-              :customErrorMsg="invalidation.privatePriceProductionLeadTime"
-            )
-            p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0050') }}
-        f-input-container(:label="$t('RR0051')")
-          div(class="flex items-center gap-x-3")
-            f-input-text(
-              v-model:textValue="material.privatePrice.sampleLeadTime"
-              class="w-50"
-              :customErrorMsg="invalidation.privatePriceSampleLeadTime"
-            )
-            p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0050') }}
+        f-input-text(
+          v-model:textValue="material.privatePrice.price"
+          inputType="number"
+          :label="$t('RR0043')"
+          class="w-70"
+          :hintError="invalidation.privatePricePrice"
+          v-model:leftSelectValue="material.privatePrice.currency"
+          :leftDropdownOption="currencyList"
+          v-model:rightSelectValue="material.privatePrice.unit"
+          :rightDropdownOption="inventoryUnitList"
+        )
+          template(#slot:left-dropdown-trigger="{ selectedMenu }")
+            p {{ selectedMenu?.title }}
+          template(#slot:right-dropdown-trigger="{ selectedMenu }")
+            p {{ selectedMenu?.title }}
+        f-input-text(
+          v-model:textValue="material.privatePrice.minimumOrderQuantity"
+          inputType="number"
+          :label="$t('RR0047')"
+          class="w-50"
+          :hintError="invalidation.privatePriceMinimumOrderQuantity"
+          v-model:rightSelectValue="material.privatePrice.minimumOrderQuantityUnit"
+          :rightDropdownOption="inventoryUnitList"
+        )
+          template(#slot:right-dropdown-trigger="{ selectedMenu }")
+            p {{ selectedMenu?.title }}
+        f-input-text(
+          v-model:textValue="material.privatePrice.minimumContainerQuantity"
+          inputType="number"
+          :label="$t('RR0048')"
+          class="w-50"
+          :hintError="invalidation.privatePriceMinimumContainerQuantity"
+          v-model:rightSelectValue="material.privatePrice.minimumContainerQuantityUnit"
+          :rightDropdownOption="inventoryUnitList"
+        )
+          template(#slot:right-dropdown-trigger="{ selectedMenu }")
+            p {{ selectedMenu?.title }}
+        f-input-text(
+          :label="$t('RR0049')"
+          v-model:textValue="material.privatePrice.productionLeadTime"
+          class="w-50"
+          :hintError="invalidation.privatePriceProductionLeadTime"
+          :addOnRight="$t('RR0050')"
+        )
+        f-input-text(
+          :label="$t('RR0051')"
+          v-model:textValue="material.privatePrice.sampleLeadTime"
+          class="w-50"
+          :hintError="invalidation.privatePriceSampleLeadTime"
+          :addOnRight="$t('RR0050')"
+        )
 </template>
 
 <script>

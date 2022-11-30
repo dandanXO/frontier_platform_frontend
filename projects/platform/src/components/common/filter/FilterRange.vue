@@ -17,10 +17,10 @@ div(class="px-5")
       div(class="h-13")
         f-input-text(
           v-model:textValue="formattedMinValue"
-          size="sm"
+          size="md"
           @change="handleMinValueChange"
         )
-          template(v-if="isFromError" #slot:errorMsg)
+          template(#slot:hint-error v-if="isFromError")
             i18n-t(
               keypath="JJ0007"
               tag="p"
@@ -34,10 +34,10 @@ div(class="px-5")
       div(class="h-13")
         f-input-text(
           v-model:textValue="formattedMaxValue"
-          size="sm"
+          size="md"
           @change="handleMaxValueChange"
         )
-          template(v-if="isToError" #slot:errorMsg)
+          template(#slot:hint-error v-if="isToError")
             i18n-t(
               keypath="JJ0008"
               tag="p"
@@ -50,7 +50,6 @@ div(class="px-5")
 
 <script>
 import { computed, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'FilterRange',
@@ -74,7 +73,6 @@ export default {
   },
   emits: ['update:range'],
   setup(props, { emit }) {
-    const { t } = useI18n()
     const isFromError = ref(false)
     const isToError = ref(false)
 

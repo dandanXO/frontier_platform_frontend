@@ -26,15 +26,16 @@ div
               )
           template(#content)
             p {{ $t('BB0056') }}
-      input-label-color(
-        v-model:labelColor="groupFormData.labelColor"
-        v-model:textValue="groupFormData.groupName"
-        :placeholder="$t('BB0089')"
-        :customErrorMsg="isGroupNameExist ? $t('WW0001') : ''"
-        required
-        class="w-85 mb-7.5"
-        data-cy="group-about_name"
-      )
+      div(class="flex gap-x-2 w-85 mb-7.5")
+        f-input-text(
+          v-model:textValue="groupFormData.groupName"
+          :placeholder="$t('BB0089')"
+          :hintError="isGroupNameExist ? $t('WW0001') : ''"
+          required
+          class="flex-grow"
+          data-cy="group-about_name"
+        )
+        input-label-color(v-model:labelColor="groupFormData.labelColor")
     f-input-textarea(
       v-model:textValue="groupFormData.description"
       :label="$t('BB0087')"

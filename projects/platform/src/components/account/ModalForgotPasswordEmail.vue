@@ -10,16 +10,15 @@ modal-behavior(
     p(class="max-w-57 text-body2 text-grey-900 text-center leading-1.6") {{ $t('AA0043') }}
     f-input-text(
       v-model:textValue="email"
-      class="w-80 pb-7.5"
+      class="w-80"
       prependIcon="mail"
       size="lg"
       placeholder="example@gmail.com"
-      :customErrorMsg="errorMsg"
+      :hintError="errorMsg"
     )
-      template(#slot:errorMsg v-if="!isEmailExist")
-        div(class="absolute pt-1 text-caption")
-          p(class="text-red-400 whitespace-nowrap") {{ $t('WW0043') }}
-          p(class="text-cyan-400 cursor-pointer pt-1" @click="goToSignup") {{ $t('UU0050') }}
+      template(#slot:hint-error v-if="!isEmailExist")
+        p(class="text-caption text-red-400 whitespace-nowrap") {{ $t('WW0043') }}
+        p(class="text-caption text-cyan-400 cursor-pointer pt-1" @click="goToSignup") {{ $t('UU0050') }}
 </template>
 
 <script setup>

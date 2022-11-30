@@ -31,7 +31,7 @@ f-input-container(:required="required" :label="label" ref="refContainer")
     template(#content="{ collapsePopper }")
       f-list(class="border border-grey-150" :style="{ width: contentWidth + 'px' }")
         div(v-if="searchBox" class="pt-1.5 pb-1")
-          f-input-text(
+          f-input-text-old(
             v-model:textValue="searchInput"
             size="sm"
             prependIcon="search"

@@ -40,15 +40,16 @@ div(class="pt-16 xl:pt-17.5")
         class="absolute text-caption text-grey-200 right-0 -top-7 transform -translate-y-full"
       ) *{{ $t('RR0163') }}
       div(class="grid grid-cols-2 grid-rows-3 gap-y-7.5 gap-x-8 xl:gap-x-15")
-        input-label-color(
-          v-model:labelColor="orgFormData.labelColor"
-          v-model:textValue="orgFormData.orgName"
-          :label="$t('BB0068')"
-          :customErrorMsg="isOrgNameExist ? $t('WW0001') : ''"
-          required
-          class="w-85"
-          data-cy="org-about_name"
-        )
+        div(class="flex gap-x-2 items-end")
+          f-input-text(
+            v-model:textValue="orgFormData.orgName"
+            :label="$t('BB0068')"
+            :hintError="isOrgNameExist ? $t('WW0001') : ''"
+            required
+            class="w-66"
+            data-cy="org-about_name"
+          )
+          input-label-color(v-model:labelColor="orgFormData.labelColor")
         f-input-radio-group(
           v-model:inputValue="orgFormData.orgCategoryId"
           :label="$t('BB0072')"
@@ -173,7 +174,6 @@ const openModalTypeTextToConfirm = () => {
       keypath: 'BB0064',
       slotName: 'orgName',
       slotValue: organization.value.orgName,
-      errorMsg: t('WW0015'),
       confirmHandler: () => {
         store.dispatch('helper/openModalConfirm', {
           type: 1,

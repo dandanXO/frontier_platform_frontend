@@ -24,7 +24,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
           v-model:textValue="material.materialNo"
           :placeholder="$t('DD0015')"
           :label="$t('RR0013')"
-          :customErrorMsg="invalidation.materialNo"
+          :hintError="invalidation.materialNo"
           required
           :rules="[$inputRules.required()]"
           data-cy="materialNo"
@@ -46,37 +46,35 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
               inputType="number"
               class="w-50"
               data-cy="weight"
+              :hintError="invalidation.weight"
+              v-model:rightSelectValue="material.weightUnit"
+              :rightDropdownOption="specOptions.weightUnitList"
             )
-              template(v-if="invalidation.weight" #slot:errorMsg)
-                p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ invalidation.weight }}
-            f-input-select(
-              v-model:selectValue="material.weightUnit"
-              :optionList="specOptions.weightUnitList"
-              keyOptionDisplay="name"
-              keyOptionValue="weightUnit"
-              class="w-25"
-            )
+              template(#slot:right-dropdown-trigger="{ selectedMenu }")
+                p {{ selectedMenu.title }}
             f-input-text(
               v-model:textValue="material.weightGy"
               inputType="number"
               :placeholder="$t('DD0017')"
               class="w-50"
+              :hintError="invalidation.weightGy"
+              :addOnRight="$t('RR0018')"
             )
-              template(v-if="invalidation.weightGy" #slot:errorMsg)
-                p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ invalidation.weightGy }}
-            p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0018') }}
-        f-input-container(:label="$t('RR0019')" required)
-          div(class="flex items-center gap-x-3")
-            f-input-text(
-              v-model:textValue="material.width"
-              inputType="number"
-              class="w-50"
-              data-cy="width"
-            )
-              template(v-if="invalidation.width" #slot:errorMsg)
-                p(class="text-caption text-red-400 absolute pt-1 whitespace-nowrap") {{ invalidation.width }}
-            p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0020') }}
-        f-input-container(:label="$t('RR0021')" required)
+        f-input-text(
+          :label="$t('RR0019')"
+          required
+          v-model:textValue="material.width"
+          inputType="number"
+          class="w-50"
+          data-cy="width"
+          :hintError="invalidation.width"
+          :addOnRight="$t('RR0020')"
+        )
+        f-input-container(
+          :label="$t('RR0021')"
+          required
+          :hintError="invalidation.contentList"
+        )
           div(class="grid gap-y-3")
             div(
               v-for="(content, contentItemIndex) in material.contentList"
@@ -100,10 +98,10 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
               f-input-text(
                 v-model:textValue="content.percentage"
                 inputType="number"
-                class="w-25 mr-3"
+                class="w-40 mr-3"
                 data-cy="percentage"
+                addOnRight="%"
               )
-              p(class="text-body2 text-grey-900 pr-7.5") %
               f-svg-icon(
                 v-if="contentItemIndex === 0"
                 size="20"
@@ -119,12 +117,6 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
                 class="text-grey-600"
                 @click="removeContent(contentItemIndex)"
               )
-          template(#slot:hint)
-            p(
-              v-if="invalidation.contentList"
-              class="text-caption text-red-400 absolute pt-1"
-              data-cy="error-msg"
-            ) {{ invalidation.contentList }}
         f-input-chips(
           v-model:chips="material.finishList"
           :label="$t('RR0022')"
@@ -139,14 +131,14 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
           div(class="flex items-center gap-x-3")
             f-input-text(
               v-model:textValue="material.warpYarnCount"
-              :customErrorMsg="invalidation.warpYarnCount"
+              :hintError="invalidation.warpYarnCount"
               class="w-50"
               data-cy="warpYarnCount"
             )
             f-svg-icon(iconName="clear" size="20" class="text-grey-900")
             f-input-text(
               v-model:textValue="material.weftYarnCount"
-              :customErrorMsg="invalidation.weftYarnCount"
+              :hintError="invalidation.weftYarnCount"
               class="w-50"
               data-cy="weftYarnCount"
             )
@@ -154,14 +146,14 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
           div(class="flex items-center gap-x-3")
             f-input-text(
               v-model:textValue="material.warpDensity"
-              :customErrorMsg="invalidation.warpDensity"
+              :hintError="invalidation.warpDensity"
               class="w-50"
               data-cy="warpDensity"
             )
             f-svg-icon(iconName="clear" size="20" class="text-grey-900")
             f-input-text(
               v-model:textValue="material.weftDensity"
-              :customErrorMsg="invalidation.weftDensity"
+              :hintError="invalidation.weftDensity"
               class="w-50"
               data-cy="weftDensity"
             )
@@ -169,13 +161,13 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
           div(class="flex items-center gap-x-3")
             f-input-text(
               v-model:textValue="material.pattern"
-              :customErrorMsg="invalidation.pattern"
+              :hintError="invalidation.pattern"
               class="w-50"
             )
             f-svg-icon(iconName="slash" size="20" class="text-grey-900")
             f-input-text(
               v-model:textValue="material.color"
-              :customErrorMsg="invalidation.color"
+              :hintError="invalidation.color"
               class="w-50"
             )
         f-input-chips(

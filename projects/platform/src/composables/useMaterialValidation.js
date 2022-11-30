@@ -113,16 +113,20 @@ export default function useMaterialValidation(
         fieldHasValidatedMap.materialSeq &&
         maxLength(material.value.materialSeq, 50)
     ),
-    sampleCardsRemainingQty: computed(() =>
-      integerOnly(material.value.sampleCardsRemainingQty)
+    sampleCardsRemainingQty: computed(
+      () =>
+        fieldHasValidatedMap.sampleCardsRemainingQty &&
+        integerOnly(material.value.sampleCardsRemainingQty)
     ),
     sampleCardsLocation: computed(
       () =>
         fieldHasValidatedMap.sampleCardsLocation &&
         maxLength(material.value.sampleCardsLocation, 256)
     ),
-    hangersRemainingQty: computed(() =>
-      integerOnly(material.value.hangersRemainingQty)
+    hangersRemainingQty: computed(
+      () =>
+        fieldHasValidatedMap.hangersRemainingQty &&
+        integerOnly(material.value.hangersRemainingQty)
     ),
     hangersLocation: computed(
       () =>

@@ -196,7 +196,9 @@ const Material = {
       state.contentList.splice(index, 1)
     },
     ADD_inventory_item(state) {
-      state.inventoryList.push(Material.state().inventoryList[0])
+      const inventory = Material.state().inventoryList[0]
+      inventory.unit = state.inventoryList[0].unit
+      state.inventoryList.push(inventory)
     },
     REMOVE_inventory_item(state, index) {
       state.inventoryList.splice(index, 1)

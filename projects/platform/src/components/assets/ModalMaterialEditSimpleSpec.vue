@@ -11,7 +11,7 @@ modal-behavior(
       v-model:textValue="material.materialNo"
       :placeholder="$t('DD0015')"
       :label="$t('RR0013')"
-      :customErrorMsg="invalidation.materialNo"
+      :hintError="invalidation.materialNo"
       required
       :rules="[$inputRules.required()]"
     )
@@ -24,7 +24,11 @@ modal-behavior(
       @addNewOption="addDescriptionOption($event)"
       canAddNewOption
     )
-    f-input-container(:label="$t('RR0021')" required)
+    f-input-container(
+      :label="$t('RR0021')"
+      required
+      :hintError="invalidation.contentList"
+    )
       div(class="grid gap-y-3")
         div(
           v-for="(content, contentItemIndex) in material.contentList"
@@ -47,9 +51,9 @@ modal-behavior(
           f-input-text(
             v-model:textValue="content.percentage"
             inputType="number"
-            class="w-25 mr-3"
+            class="w-40 mr-3"
+            addOnRight="%"
           )
-          p(class="text-body2 text-grey-900 pr-7.5") %
           f-svg-icon(
             v-if="contentItemIndex === 0"
             size="20"
@@ -64,48 +68,43 @@ modal-behavior(
             class="text-grey-600"
             @click="removeContent(contentItemIndex)"
           )
-      template(#slot:hint)
-        p(
-          v-if="invalidation.contentList"
-          class="text-caption text-red-400 absolute pt-1"
-        ) {{ invalidation.contentList }}
     f-input-container(:label="$t('RR0023')")
       div(class="flex items-center gap-x-3")
         f-input-text(
           v-model:textValue="material.warpYarnCount"
-          :customErrorMsg="invalidation.warpYarnCount"
+          :hintError="invalidation.warpYarnCount"
           class="w-50"
         )
         f-svg-icon(iconName="clear" size="20" class="text-grey-900")
         f-input-text(
           v-model:textValue="material.weftYarnCount"
-          :customErrorMsg="invalidation.weftYarnCount"
+          :hintError="invalidation.weftYarnCount"
           class="w-50"
         )
     f-input-container(:label="$t('RR0024')")
       div(class="flex items-center gap-x-3")
         f-input-text(
           v-model:textValue="material.warpDensity"
-          :customErrorMsg="invalidation.warpDensity"
+          :hintError="invalidation.warpDensity"
           class="w-50"
         )
         f-svg-icon(iconName="clear" size="20" class="text-grey-900")
         f-input-text(
           v-model:textValue="material.weftDensity"
-          :customErrorMsg="invalidation.weftDensity"
+          :hintError="invalidation.weftDensity"
           class="w-50"
         )
     f-input-container(:label="`${$t('RR0025')} / ${$t('RR0026')}`")
       div(class="flex items-center gap-x-3")
         f-input-text(
           v-model:textValue="material.pattern"
-          :customErrorMsg="invalidation.pattern"
+          :hintError="invalidation.pattern"
           class="w-50"
         )
         f-svg-icon(iconName="slash" size="20" class="text-grey-900")
         f-input-text(
           v-model:textValue="material.color"
-          :customErrorMsg="invalidation.color"
+          :hintError="invalidation.color"
           class="w-50"
         )
     f-input-container(:label="$t('RR0015')" required)
@@ -113,32 +112,29 @@ modal-behavior(
         f-input-text(
           v-model:textValue="material.weight"
           inputType="number"
-          :customErrorMsg="invalidation.weight"
+          :hintError="invalidation.weight"
           class="w-50"
+          v-model:rightSelectValue="material.weightUnit"
+          :rightDropdownOption="specOptions.weightUnitList"
         )
-        f-input-select(
-          v-model:selectValue="material.weightUnit"
-          :optionList="specOptions.weightUnitList"
-          keyOptionDisplay="name"
-          keyOptionValue="weightUnit"
-          class="w-25"
-        )
+          template(#slot:right-dropdown-trigger="{ selectedMenu }")
+            p {{ selectedMenu.title }}
         f-input-text(
           v-model:textValue="material.weightGy"
           inputType="number"
           :placeholder="$t('DD0017')"
           class="w-50"
+          :addOnRight="$t('RR0018')"
         )
-        p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0018') }}
-    f-input-container(:label="$t('RR0019')" required)
-      div(class="flex items-center gap-x-3")
-        f-input-text(
-          v-model:textValue="material.width"
-          :customErrorMsg="invalidation.width"
-          inputType="number"
-          class="w-50"
-        )
-        p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0020') }}
+    f-input-text(
+      :label="$t('RR0019')"
+      required
+      v-model:textValue="material.width"
+      :hintError="invalidation.width"
+      inputType="number"
+      class="w-50"
+      :addOnRight="$t('RR0020')"
+    )
     f-input-chips(
       v-model:chips="material.finishList"
       :label="$t('RR0022')"

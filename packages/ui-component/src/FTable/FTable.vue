@@ -4,7 +4,7 @@ div(class="relative")
     f-input-text(
       v-if="searchable"
       v-model:textValue="innerKeyword"
-      size="sm"
+      size="md"
       class="w-67.5 justify-self-start"
       prependIcon="search"
       :placeholder="searchPlaceholder"

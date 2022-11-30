@@ -24,7 +24,7 @@ modal-behavior(
     p(class="text-body2 text-grey-900 pb-3") {{ orgUser.email }}
     p(class="text-caption text-grey-600 self-end pt-3.5 pb-1") *{{ $t('RR0163') }}
     f-input-text(
-      class="w-full pb-4"
+      class="w-full"
       v-model:textValue="displayName"
       :label="$t('MM0002')"
       required

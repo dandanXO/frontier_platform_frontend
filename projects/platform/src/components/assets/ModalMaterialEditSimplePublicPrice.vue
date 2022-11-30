@@ -16,62 +16,51 @@ modal-behavior(
       keyOptionValue="countryCode"
       searchBox
     )
-    f-input-container(:label="$t('RR0043')")
-      div(class="flex items-center gap-x-3")
-        p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0044') }}
-        f-input-text(
-          v-model:textValue="material.publicPrice.price"
-          inputType="number"
-          class="w-50"
-          :customErrorMsg="invalidation.publicPricePrice"
-        )
-        p(class="text-body2 text-grey-900 font-bold") {{ INVENTORY_UNIT.Y }}
-    f-input-container(:label="$t('RR0047')")
-      div(class="flex items-center gap-x-3")
-        f-input-text(
-          v-model:textValue="material.publicPrice.minimumOrderQuantity"
-          inputType="number"
-          class="w-50"
-          :customErrorMsg="invalidation.publicPriceMinimumOrderQuantity"
-        )
-        f-input-select(
-          v-model:selectValue="material.publicPrice.minimumOrderQuantityUnit"
-          :optionList="inventoryUnitList"
-          keyOptionDisplay="unit"
-          keyOptionValue="unit"
-          class="w-25"
-        )
-    f-input-container(:label="$t('RR0048')")
-      div(class="flex items-center gap-x-3")
-        f-input-text(
-          v-model:textValue="material.publicPrice.minimumContainerQuantity"
-          inputType="number"
-          class="w-50"
-          :customErrorMsg="invalidation.publicPriceMinimumContainerQuantity"
-        )
-        f-input-select(
-          v-model:selectValue="material.publicPrice.minimumContainerQuantityUnit"
-          :optionList="inventoryUnitList"
-          keyOptionDisplay="unit"
-          keyOptionValue="unit"
-          class="w-25"
-        )
-    f-input-container(:label="$t('RR0049')")
-      div(class="flex items-center gap-x-3")
-        f-input-text(
-          v-model:textValue="material.publicPrice.productionLeadTime"
-          class="w-50"
-          :customErrorMsg="invalidation.publicPriceProductionLeadTime"
-        )
-        p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0050') }}
-    f-input-container(:label="$t('RR0051')")
-      div(class="flex items-center gap-x-3")
-        f-input-text(
-          v-model:textValue="material.publicPrice.sampleLeadTime"
-          class="w-50"
-          :customErrorMsg="invalidation.publicPriceSampleLeadTime"
-        )
-        p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0050') }}
+    f-input-text(
+      :label="$t('RR0043')"
+      v-model:textValue="material.publicPrice.price"
+      inputType="number"
+      class="w-50"
+      :hintError="invalidation.publicPricePrice"
+      :addOnLeft="$t('RR0044')"
+      :addOnRight="INVENTORY_UNIT.Y"
+    )
+    f-input-text(
+      v-model:textValue="material.publicPrice.minimumOrderQuantity"
+      inputType="number"
+      :label="$t('RR0047')"
+      class="w-50"
+      :hintError="invalidation.publicPriceMinimumOrderQuantity"
+      v-model:rightSelectValue="material.publicPrice.minimumOrderQuantityUnit"
+      :rightDropdownOption="inventoryUnitList"
+    )
+      template(#slot:right-dropdown-trigger="{ selectedMenu }")
+        p {{ selectedMenu?.title }}
+    f-input-text(
+      v-model:textValue="material.publicPrice.minimumContainerQuantity"
+      inputType="number"
+      :label="$t('RR0048')"
+      class="w-50"
+      :hintError="invalidation.publicPriceMinimumContainerQuantity"
+      v-model:rightSelectValue="material.publicPrice.minimumContainerQuantityUnit"
+      :rightDropdownOption="inventoryUnitList"
+    )
+      template(#slot:right-dropdown-trigger="{ selectedMenu }")
+        p {{ selectedMenu?.title }}
+    f-input-text(
+      :label="$t('RR0049')"
+      v-model:textValue="material.publicPrice.productionLeadTime"
+      class="w-50"
+      :hintError="invalidation.publicPriceProductionLeadTime"
+      :addOnRight="$t('RR0050')"
+    )
+    f-input-text(
+      :label="$t('RR0051')"
+      v-model:textValue="material.publicPrice.sampleLeadTime"
+      class="w-50"
+      :hintError="invalidation.publicPriceSampleLeadTime"
+      :addOnRight="$t('RR0050')"
+    )
 </template>
 
 <script setup>

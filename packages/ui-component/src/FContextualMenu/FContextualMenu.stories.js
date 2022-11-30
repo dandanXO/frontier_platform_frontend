@@ -6,6 +6,8 @@ const { NONE_SELECT, SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } =
   CONTEXTUAL_MENU_MODE
 
 const menuTree = {
+  width: 'w-60',
+  scrollAreaMaxHeight: 'max-h-40',
   blockList: [
     {
       menuList: [
@@ -51,7 +53,7 @@ const TemplateDefault = (args) => ({
   },
   template: `
   <div style="margin: 100px">
-    <f-contextual-menu class="w-60" v-bind="args"></f-contextual-menu>
+    <f-contextual-menu v-bind="args"></f-contextual-menu>
   </div>
   `,
 })
@@ -235,7 +237,7 @@ const TemplateMultiLayer = (args) => ({
   },
   template: `
     <div class="w-screen h-screen">
-      <f-contextual-menu class="w-60" v-bind="args"></f-contextual-menu>
+      <f-contextual-menu v-bind="args"></f-contextual-menu>
     </div>
   `,
 })
@@ -329,7 +331,7 @@ const TemplateMultiLayerSingleSelect = (args) => ({
   },
   template: `
     <div class="w-screen h-screen">
-      <f-contextual-menu class="w-60" v-model:inputSelectValue="inputSelectValue" v-bind="args"></f-contextual-menu>
+      <f-contextual-menu v-model:inputSelectValue="inputSelectValue" v-bind="args"></f-contextual-menu>
       <p>inputSelectValue:  {{ JSON.stringify(inputSelectValue) }} </p>
     </div>
   `,
@@ -355,7 +357,7 @@ const TemplateMultiLayerMultiSelect = (args) => ({
   },
   template: `
     <div class="w-screen h-screen">
-      <f-contextual-menu class="w-60" v-model:inputSelectValue="inputSelectValue" v-bind="args"></f-contextual-menu>
+      <f-contextual-menu v-model:inputSelectValue="inputSelectValue" v-bind="args"></f-contextual-menu>
       <p>inputSelectValue:  {{ JSON.stringify(inputSelectValue) }} </p>
     </div>
   `,
@@ -377,6 +379,8 @@ const menuCombination = {
     clickHandler: null,
     disabled: false,
   },
+  width: 'w-60',
+  scrollAreaMaxHeight: 'max-h-40',
   blockList: [
     {
       menuList: [

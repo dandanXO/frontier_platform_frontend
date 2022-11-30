@@ -19,7 +19,7 @@ div(class="h-full")
     div(class="flex items-center justify-between mb-2")
       f-input-text(
         v-model:textValue="keyword"
-        size="sm"
+        size="md"
         class="w-67.5"
         prependIcon="search"
         :placeholder="$t('RR0053')"

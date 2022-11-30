@@ -14,11 +14,11 @@ modal-behavior(
         v-model:textValue="uploadMaterialEmail"
         required
         class="w-68.5 mr-2"
-        :customErrorMsg="errorMsg"
+        :hintError="errorMsg"
         :rules="[$inputRules.required()]"
         data-cy="modal-create-mail-org_email"
       )
-        template(#slot:errorMsg v-if="suggestEmailList.length > 0")
+        template(#slot:hint-error v-if="suggestEmailList.length > 0")
           p(
             v-if="suggestEmailList.length > 0"
             class="text-caption text-red-400 absolute pt-1 whitespace-nowrap"

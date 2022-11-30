@@ -12,28 +12,28 @@ modal-behavior(
       div(class="flex items-center gap-x-3")
         f-input-text(
           v-model:textValue="material.sampleCardsRemainingQty"
-          :customErrorMsg="invalidation.sampleCardsRemainingQty"
           inputType="number"
+          :hintError="invalidation.sampleCardsRemainingQty"
           class="w-50"
         )
         f-svg-icon(iconName="slash" size="20" class="text-grey-900")
         f-input-text(
           v-model:textValue="material.sampleCardsLocation"
-          :customErrorMsg="invalidation.sampleCardsLocation"
+          :hintError="invalidation.sampleCardsLocation"
           class="w-50"
         )
     f-input-container(:label="`${$t('RR0033')} / ${$t('RR0032')}`")
       div(class="flex items-center gap-x-3")
         f-input-text(
           v-model:textValue="material.hangersRemainingQty"
-          :customErrorMsg="invalidation.hangersRemainingQty"
           inputType="number"
+          :hintError="invalidation.hangersRemainingQty"
           class="w-50"
         )
         f-svg-icon(iconName="slash" size="20" class="text-grey-900")
         f-input-text(
           v-model:textValue="material.hangersLocation"
-          :customErrorMsg="invalidation.hangersLocation"
+          :hintError="invalidation.hangersLocation"
           class="w-50"
         )
     h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0023') }}
@@ -72,16 +72,12 @@ modal-behavior(
           inputType="number"
           :label="index === 0 ? $t('RR0037') : ''"
           class="w-50"
+          v-model:rightSelectValue="inventory.unit"
+          @update:rightSelectValue="updateInventoryListUnit"
+          :rightDropdownOption="inventoryUnitList"
         )
-        f-input-select(
-          v-model:selectValue="inventory.unit"
-          :label="index === 0 ? $t('RR0038') : ''"
-          :optionList="inventoryUnitList"
-          @update:selectValue="updateInventoryListUnit"
-          keyOptionDisplay="unit"
-          keyOptionValue="unit"
-          class="w-25"
-        )
+          template(#slot:right-dropdown-trigger="{ selectedMenu }")
+            p {{ selectedMenu.title }}
         f-svg-icon(
           v-if="index === 0"
           size="20"

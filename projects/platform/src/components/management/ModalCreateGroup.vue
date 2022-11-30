@@ -6,16 +6,16 @@ modal-behavior(
   @click:primary="openModalCreateMailGroup"
 )
   div(class="w-94")
-    input-label-color(
-      v-model:labelColor="labelColor"
-      v-model:textValue="groupName"
-      :label="$t('BB0086')"
-      :placeholder="$t('BB0089')"
-      :customErrorMsg="isGroupNameExist ? $t('WW0001') : ''"
-      required
-      class="mb-7.5"
-      data-cy="modal-create-group_name"
-    )
+    div(class="flex gap-x-2 mb-7.5")
+      f-input-text(
+        v-model:textValue="groupName"
+        :placeholder="$t('BB0089')"
+        :hintError="isGroupNameExist ? $t('WW0001') : ''"
+        required
+        class="flex-grow"
+        data-cy="group-about_name"
+      )
+      input-label-color(v-model:labelColor="labelColor")
     f-input-textarea(
       v-model:textValue="description"
       :label="$t('BB0087')"

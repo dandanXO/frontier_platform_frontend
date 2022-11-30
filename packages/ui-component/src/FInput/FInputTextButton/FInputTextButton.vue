@@ -1,5 +1,5 @@
 <template lang="pug">
-f-input-text(
+f-input-text-old(
   v-bind="props"
   v-model:textValue="innerTextValue"
   :disabled="disabledInput"

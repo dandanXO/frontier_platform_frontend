@@ -34,7 +34,7 @@ div(class="w-178")
         v-model:textValue="formData.email"
         :label="$t('VV0037')"
         :placeholder="$t('VV0038')"
-        :customErrorMsg="emailFormatErrorMsg"
+        :hintError="emailFormatErrorMsg"
         :rules="[$inputRules.required()]"
         required
       )

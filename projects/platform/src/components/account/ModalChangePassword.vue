@@ -12,7 +12,7 @@ modal-behavior(
       v-model:textValue="currentPassword"
       :placeholder="$t('MM0026')"
       class="mb-7.5"
-      :customErrorMsg="isPasswordCurrect ? '' : $t('WW0074')"
+      :hintError="isPasswordCorrect ? '' : $t('WW0074')"
       @blur="verifyPassword"
     )
     f-input-password(
@@ -37,14 +37,14 @@ const store = useStore()
 const currentPassword = ref('')
 const newPassword = ref('')
 const isPasswordValid = ref(false)
-const isPasswordCurrect = ref(true)
+const isPasswordCorrect = ref(true)
 
 const availableToChangePassword = computed(
   () =>
     !!newPassword.value &&
     !!currentPassword.value &&
     isPasswordValid.value &&
-    isPasswordCurrect.value
+    isPasswordCorrect.value
 )
 
 const closeModal = () => store.dispatch('helper/closeModal')
@@ -57,7 +57,7 @@ const verifyPassword = async () => {
   const isVerify = await store.dispatch('user/verifyPassword', {
     password: currentPassword.value,
   })
-  isPasswordCurrect.value = isVerify
+  isPasswordCorrect.value = isVerify
 }
 
 const changePassword = async () => {

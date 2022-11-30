@@ -33,7 +33,7 @@ div(
         )
       //- Leading Visual
       div(
-        v-if="innerMenu.icon || innerMenu.thumbnail || innerMenu.labelColor"
+        v-if="innerMenu.icon || innerMenu.thumbnail || innerMenu.labelColor || innerMenu.flag"
         class="w-6 h-6 flex items-center justify-center mr-2 shrink-0"
       )
         //- Icon
@@ -48,6 +48,12 @@ div(
           v-else-if="innerMenu.thumbnail"
           :src="innerMenu.thumbnail"
           class="w-full h-full rounded-full"
+        )
+        //- Flag
+        img(
+          v-else-if="innerMenu.flag"
+          :src="innerMenu.flag"
+          class="w-full h-4 rounded-sm"
         )
         //- Label Color
         div(
@@ -100,7 +106,8 @@ div(
   div(
     ref="refContextMenu"
     v-if="isExpand"
-    class="w-full py-2 bg-grey-0 rounded drop-shadow-16"
+    :class="innerMenu.width"
+    class="py-2 bg-grey-0 rounded drop-shadow-16"
     @click.stop
   )
     //- Button if position is top
@@ -118,7 +125,11 @@ div(
           class="outline-none w-full text-caption text-grey-900 placeholder:text-grey-200"
         )
       div(class="w-full h-px my-1 bg-grey-150")
-    template(v-if="filteredBlockList.length > 0")
+    div(
+      v-if="filteredBlockList.length > 0"
+      :class="innerMenu.scrollAreaMaxHeight"
+      class="overflow-scroll overscroll-contain"
+    )
       template(v-for="(block, index) in filteredBlockList")
         //- Block Title
         div(v-if="block.blockTitle" class="h-6 py-1.5 px-4 text-caption text-grey-600") {{ block.blockTitle }}
@@ -195,11 +206,14 @@ const innerMenu = computed(() => {
     selectValue: props.menu.title,
     icon: '',
     thumbnail: '', // https://picsum.photos/50
+    flag: '', // http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg
     labelColor: '',
     clickHandler: () => {},
     tooltip: '',
     searchEnable: false,
     button: null,
+    width: 'w-fit',
+    scrollAreaMaxHeight: '',
   }
 
   return Object.assign({}, defaultMenu, props.menu)
@@ -314,8 +328,13 @@ onMounted(async () => {
     refTitle.value.clientHeight < refTitle.value.scrollHeight
 
   if (innerMenu.value.description !== '') {
+    /**
+     * @Magic
+     * Don't know there is a slight error between the two,
+     * So adding a small number that doesn't cause errors makes the result as expected
+     */
     isDescriptionEllipsis.value =
-      refDescription.value.clientHeight < refDescription.value.scrollHeight
+      refDescription.value.clientHeight + 3 < refDescription.value.scrollHeight
   }
 })
 

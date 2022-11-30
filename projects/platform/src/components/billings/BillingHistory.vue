@@ -23,7 +23,7 @@ div(class="w-full mt-4")
             v-model:textValue="queryParams.startDate"
             inputType="date"
             :clearable="false"
-            size="sm"
+            size="md"
             @change="getList()"
           )
           span(class="text-body1 text-grey-900 mx-2") ~
@@ -31,7 +31,7 @@ div(class="w-full mt-4")
             v-model:textValue="queryParams.endDate"
             inputType="date"
             :clearable="false"
-            size="sm"
+            size="md"
             @change="getList()"
           )
       div(class="border-t border-grey-100")

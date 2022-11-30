@@ -24,16 +24,16 @@ f-table(
         f-input-text(
           v-model:textValue="queryParams.startDate"
           inputType="date"
+          size="md"
           :clearable="false"
-          size="sm"
           @change="getList()"
         )
         span(class="text-body1 text-grey-900 mx-2") ~
         f-input-text(
           v-model:textValue="queryParams.endDate"
           inputType="date"
+          size="md"
           :clearable="false"
-          size="sm"
           @change="getList()"
         )
   template(v-slot="{ item, prop, isHover }")

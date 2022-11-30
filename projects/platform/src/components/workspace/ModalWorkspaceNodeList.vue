@@ -345,7 +345,7 @@ const getWorkspaceForModal = async () => {
         publicDate,
         share,
         publish,
-        rank
+        rank,
         /** material property */
         materialId,
         materialNo,
