@@ -338,13 +338,7 @@ const routes = [
             path: '',
             name: 'OrgRoot',
             component: () => import('@/views/PassThrough.vue'),
-            beforeEnter: [
-              checkOrgIsInactive,
-              (to, from, next) => {
-                store.commit('helper/SET_routeLocation', 'org')
-                next()
-              },
-            ],
+            beforeEnter: [checkOrgIsInactive],
             children: [
               ...reuseRoutes('Org'),
               {
@@ -370,7 +364,6 @@ const routes = [
             beforeEnter: [
               checkOrgIsInactive,
               async (to, from, next) => {
-                store.commit('helper/SET_routeLocation', 'group')
                 await store.dispatch('group/getGroup', {
                   groupId: to.params.groupId,
                 })

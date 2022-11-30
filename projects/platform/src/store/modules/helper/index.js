@@ -1,14 +1,9 @@
 import search from './search'
 import { MODAL_TYPE } from '@/utils/constants'
 import { nextTick } from 'vue'
+import router from '@/router'
 
 const state = () => ({
-  /**
-   * control by route
-   * /:orgNo -> org
-   * /:orgNo/:groupId -> group
-   */
-  routeLocation: 'org',
   modalPipeline: [],
   message: '',
   isReloadInnerApp: true,
@@ -17,7 +12,13 @@ const state = () => ({
 const getters = {
   modalPipeline: (state) => state.modalPipeline,
   message: (state) => state.message,
-  routeLocation: (state) => state.routeLocation,
+  /**
+   * control by route
+   * /:orgNo -> org
+   * /:orgNo/:groupId -> group
+   */
+  routeLocation: () =>
+    !!router.currentRoute.value.params.groupId ? 'group' : 'org',
   routeLocationId: (state, getters, rootState, rootGetters) => {
     return getters.routeLocation === 'org'
       ? rootGetters['organization/orgId']
@@ -45,9 +46,6 @@ const mutations = {
   },
   REMOVE_flashMessage(state) {
     state.message = ''
-  },
-  SET_routeLocation(state, routeLocation) {
-    state.routeLocation = routeLocation
   },
   SET_isReloadInnerApp(state, bool) {
     state.isReloadInnerApp = bool
