@@ -249,11 +249,6 @@ export const CREATE_EDIT = {
   EDIT: 2,
 }
 
-export const STICKER_BOARD_CHANNEL_ID = {
-  ALL: 'all',
-  MY_ORG: 'myOrg',
-}
-
 export const MADE2FLOW_PLAN_TYPE = {
   STANDARD: 1,
   PERSONALIZED: 2,

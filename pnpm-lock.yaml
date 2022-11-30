@@ -160,7 +160,6 @@ importers:
       html2canvas: ^1.4.1
       jspdf: ^2.5.1
       qrcode: ^1.5.0
-      sortablejs: ^1.15.0
       start-server-and-test: ^1.14.0
       uuid: ^8.3.2
       vue: 3.2.37
@@ -172,7 +171,6 @@ importers:
       html2canvas: 1.4.1
       jspdf: 2.5.1
       qrcode: 1.5.1
-      sortablejs: 1.15.0
       uuid: 8.3.2
       vue: 3.2.37
       vue-gtag: 2.0.1_vue@3.2.37
@@ -11750,10 +11748,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /sortablejs/1.15.0:
-    resolution: {integrity: sha512-bv9qgVMjUMf89wAvM6AxVvS/4MX3sPeN0+agqShejLU5z5GX4C75ow1O2e5k4L6XItUyAK3gH6AxSbXrOM5e8w==}
-    dev: false
 
   /source-list-map/2.0.1:
     resolution: {integrity: sha512-qnQ7gVMxGNxsiL4lEuJwe/To8UnK7fAnmbGEEH8RpLouuKbeEm0lhbQVFIrNSuB+G7tVrAlVsZgETT5nljf+Iw==}
