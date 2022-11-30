@@ -17,9 +17,9 @@ export default {
       method: 'POST',
       data: { sharingKey, workspaceNodeId, search, filter, pagination },
     }),
-  getEmbedMaterial: ({ sharingKey, workspaceNodeId }) =>
+  getEmbedMaterial: ({ sharingKey, workspaceNodeId, keyword, rank }) =>
     axios('/share/get-embed/get-material', {
       method: 'POST',
-      data: { sharingKey, workspaceNodeId },
+      data: { sharingKey, workspaceNodeId, keyword, rank },
     }),
 }

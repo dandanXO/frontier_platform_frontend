@@ -34,6 +34,7 @@ div(
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'
 
@@ -49,6 +50,7 @@ const props = defineProps({
 })
 
 const store = useStore()
+const route = useRoute()
 const { receivedShareCloneByNodeKey } = useReceivedShare()
 
 const isLoading = ref(true)
@@ -76,6 +78,7 @@ onMounted(async () => {
   await store.dispatch('receivedShare/getShareReceivedMaterial', {
     sharingKey: props.sharingKey,
     nodeKey: props.nodeKey,
+    rank: Number(route.query.rank),
   })
   isLoading.value = false
 })

@@ -68,11 +68,19 @@ export default {
       })
       dispatch('setShareToMeModule', data.result)
     },
-    async getShareToMeMaterial({ dispatch }, { sharingId, nodeKey }) {
+    async getShareToMeMaterial(
+      { rootGetters, dispatch },
+      { sharingId, nodeKey, rank }
+    ) {
       const workspaceNodeId = nodeKey.split('-')[1]
       const params = {
         sharingId,
         workspaceNodeId,
+      }
+      const keyword = rootGetters['helper/search/keyword']
+      if (keyword) {
+        params['keyword'] = keyword
+        params['rank'] = rank
       }
       const { data } = await dispatch('callShareToMeApi', {
         func: 'getShareToMeMaterial',

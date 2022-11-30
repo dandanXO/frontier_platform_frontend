@@ -85,26 +85,34 @@ export default function useNavigation() {
     router.push(parsePath(`${prefixPath.value}/assets/upload/manual`))
   }
 
-  const goToWorkspaceMaterialDetail = (nodeKey) => {
-    router.push(parsePath(`${prefixPath.value}/workspace/material/${nodeKey}`))
-  }
-
-  const goToPublicLibraryMaterialDetail = (nodeKey) => {
-    router.push(parsePath(`/:orgNo/public-library/material/${nodeKey}`))
-  }
-
-  const goToReceivedShareMaterial = (nodeKey, sharingKey) => {
-    router.push(`/received-share/${sharingKey}/material/${nodeKey}`)
-  }
-
-  const goToEmbedMaterialDetail = (nodeKey, sharingKey) => {
-    router.push(`/embed/${sharingKey}/material/${nodeKey}`)
-  }
-
-  const goToShareToMeMaterial = (nodeKey, sharingId) => {
+  const goToWorkspaceMaterialDetail = (nodeKey, rank) => {
     router.push(
       parsePath(
-        `${prefixPath.value}/share-to-me/material/${nodeKey}?sharingId=${sharingId}`
+        `${prefixPath.value}/workspace/material/${nodeKey}?rank=${rank}`
+      )
+    )
+  }
+
+  const goToPublicLibraryMaterialDetail = (nodeKey, rank) => {
+    router.push(
+      parsePath(`/:orgNo/public-library/material/${nodeKey}?rank=${rank}`)
+    )
+  }
+
+  const goToReceivedShareMaterial = (nodeKey, sharingKey, rank) => {
+    router.push(
+      `/received-share/${sharingKey}/material/${nodeKey}?rank=${rank}`
+    )
+  }
+
+  const goToEmbedMaterialDetail = (nodeKey, sharingKey, rank) => {
+    router.push(`/embed/${sharingKey}/material/${nodeKey}?rank=${rank}`)
+  }
+
+  const goToShareToMeMaterial = (nodeKey, sharingId, rank) => {
+    router.push(
+      parsePath(
+        `${prefixPath.value}/share-to-me/material/${nodeKey}?sharingId=${sharingId}&rank=${rank}`
       )
     )
   }

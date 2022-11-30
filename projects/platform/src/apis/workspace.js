@@ -24,6 +24,8 @@ export default {
   /**
    * @param {object} params
    * @param {number} params.workspaceNodeId
+   * @param {number} params.keyword
+   * @param {number} params.rank
    */
   getWorkspaceMaterial: (type, id, params) =>
     apiWrapper('/workspace/get-material', type, id, params),

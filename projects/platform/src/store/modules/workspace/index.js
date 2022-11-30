@@ -126,11 +126,19 @@ export default {
       })
       return data.result.workspaceCollection
     },
-    async getWorkspaceMaterial({ dispatch }, { nodeKey }) {
+    async getWorkspaceMaterial({ rootGetters, dispatch }, { nodeKey, rank }) {
       const workspaceNodeId = nodeKey.split('-')[1]
+      const params = {
+        workspaceNodeId,
+      }
+      const keyword = rootGetters['helper/search/keyword']
+      if (keyword) {
+        params['keyword'] = keyword
+        params['rank'] = rank
+      }
       const { data } = await dispatch('callWorkspaceApi', {
         func: 'getWorkspaceMaterial',
-        params: { workspaceNodeId },
+        params,
       })
       dispatch('setWorkspaceModule', data.result)
     },

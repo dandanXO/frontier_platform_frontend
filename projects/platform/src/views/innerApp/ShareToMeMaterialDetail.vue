@@ -60,6 +60,7 @@ const sharingId = ref(route.query.sharingId)
 await store.dispatch('shareToMe/getShareToMeMaterial', {
   nodeKey: props.nodeKey,
   sharingId: sharingId.value,
+  rank: Number(route.query.rank),
 })
 
 const material = computed(() => store.getters['shareToMe/material'])

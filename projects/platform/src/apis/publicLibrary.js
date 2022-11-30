@@ -18,10 +18,16 @@ export default {
         pagination,
       },
     }),
-  getPublicMaterial: ({ orgId, workspaceNodeId, workspaceNodeLocation }) =>
+  getPublicMaterial: ({
+    orgId,
+    workspaceNodeId,
+    workspaceNodeLocation,
+    keyword,
+    rank,
+  }) =>
     axios('/public/get-material', {
       method: 'POST',
-      data: { orgId, workspaceNodeId, workspaceNodeLocation },
+      data: { orgId, workspaceNodeId, workspaceNodeLocation, keyword, rank },
     }),
   cloneCheck: ({ orgId, workspaceNodeList }) =>
     axios('/public/clone-check', {

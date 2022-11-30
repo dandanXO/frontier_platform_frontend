@@ -179,7 +179,7 @@ const handleNodeClick = (node, goTo) => {
     currentNodeKey.value = node.nodeKey
     goTo()
   } else {
-    goToEmbedMaterialDetail(node.nodeKey, share.value.sharingKey)
+    goToEmbedMaterialDetail(node.nodeKey, share.value.sharingKey, node.rank)
   }
 }
 </script>

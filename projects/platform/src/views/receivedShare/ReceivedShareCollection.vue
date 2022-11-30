@@ -203,7 +203,7 @@ const handleNodeClick = (node, goTo) => {
     currentNodeKey.value = node.nodeKey
     goTo()
   } else {
-    goToReceivedShareMaterial(node.nodeKey, share.value.sharingKey)
+    goToReceivedShareMaterial(node.nodeKey, share.value.sharingKey, node.rank)
   }
 }
 </script>

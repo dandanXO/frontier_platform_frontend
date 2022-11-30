@@ -191,7 +191,7 @@ const handleNodeClick = (node, goTo) => {
     currentNodeKey.value = node.nodeKey
     goTo()
   } else {
-    goToPublicLibraryMaterialDetail(node.nodeKey)
+    goToPublicLibraryMaterialDetail(node.nodeKey, node.rank)
   }
 }
 

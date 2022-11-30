@@ -84,6 +84,7 @@ const Collection = {
               publicDate,
               share,
               publish,
+              rank,
               /** material property */
               materialId,
               materialNo,
@@ -115,6 +116,7 @@ const Collection = {
               publicDate,
               share,
               publish,
+              rank,
               properties: {
                 materialId,
                 materialNo,

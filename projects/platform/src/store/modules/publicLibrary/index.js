@@ -68,16 +68,22 @@ export default {
 
       dispatch('setPublicLibraryModule', data.result)
     },
-    async getPublicMaterial({ rootGetters, dispatch }, { nodeKey }) {
+    async getPublicMaterial({ rootGetters, dispatch }, { nodeKey, rank }) {
       const [workspaceNodeLocation, workspaceNodeId] = nodeKey?.split('-') || [
         null,
         null,
       ]
-      const { data } = await publicLibraryApi.getPublicMaterial({
+      const params = {
         orgId: rootGetters['organization/orgId'],
         workspaceNodeId,
         workspaceNodeLocation,
-      })
+      }
+      const keyword = rootGetters['helper/search/keyword']
+      if (keyword) {
+        params['keyword'] = keyword
+        params['rank'] = rank
+      }
+      const { data } = await publicLibraryApi.getPublicMaterial(params)
       dispatch('setPublicLibraryModule', data.result)
     },
     async cloneCheck({ rootGetters }, { nodeKeyList }) {

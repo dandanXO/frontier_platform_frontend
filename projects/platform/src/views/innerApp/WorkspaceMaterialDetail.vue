@@ -24,6 +24,7 @@ import useNavigation from '@/composables/useNavigation'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import useWorkspace from '@/composables/useWorkspace'
 import MaterialDetailInternal from '@/components/common/material/detail/MaterialDetailInternal.vue'
 import dayjs from 'dayjs'
@@ -37,11 +38,13 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
+const route = useRoute()
 const { editMaterial } = useWorkspace()
 const { parsePath, prefixPath } = useNavigation()
 
 await store.dispatch('workspace/getWorkspaceMaterial', {
   nodeKey: props.nodeKey,
+  rank: Number(route.query.rank),
 })
 
 const material = computed(() => store.getters['workspace/material'])

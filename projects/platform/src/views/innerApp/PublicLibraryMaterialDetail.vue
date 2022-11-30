@@ -33,6 +33,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
 
@@ -45,11 +46,13 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
+const route = useRoute()
 const { parsePath } = useNavigation()
 const { publicCloneByMaterial } = usePublicLibrary()
 
 await store.dispatch('publicLibrary/getPublicMaterial', {
   nodeKey: props.nodeKey,
+  rank: Number(route.query.rank),
 })
 
 const material = computed(() => store.getters['publicLibrary/material'])

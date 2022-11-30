@@ -202,7 +202,7 @@ const handleNodeClick = (node, goTo) => {
     setSharingIdAndNodeKey(node.nodeKey, node.share.sharingId)
     goTo()
   } else {
-    goToShareToMeMaterial(node.nodeKey, node.share.sharingId)
+    goToShareToMeMaterial(node.nodeKey, node.share.sharingId, node.rank)
   }
 }
 

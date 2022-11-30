@@ -16,6 +16,8 @@ export default {
    * @param {object} params
    * @param {number} params.sharingId
    * @param {object[]} params.workspaceNodeId - [{id, location}]
+   * @param {number} params.keyword
+   * @param {number} params.rank
    */
   getShareToMeMaterial: (type, id, params) =>
     apiWrapper('/share-to-me/get-material', type, id, params),

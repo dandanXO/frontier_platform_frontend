@@ -275,7 +275,7 @@ const handleNodeClick = (node, goTo) => {
     currentNodeKey.value = node.nodeKey
     goTo()
   } else {
-    goToWorkspaceMaterialDetail(node.nodeKey)
+    goToWorkspaceMaterialDetail(node.nodeKey, node.rank)
   }
 }
 </script>

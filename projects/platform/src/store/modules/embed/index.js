@@ -70,11 +70,20 @@ export default {
 
       dispatch('setEmbedModule', data.result)
     },
-    async getEmbedMaterial({ dispatch }, { sharingKey, nodeKey }) {
-      const { data } = await embedApi.getEmbedMaterial({
+    async getEmbedMaterial(
+      { rootGetters, dispatch },
+      { sharingKey, nodeKey, rank }
+    ) {
+      const params = {
         sharingKey,
         workspaceNodeId: nodeKey.split('-')[1],
-      })
+      }
+      const keyword = rootGetters['helper/search/keyword']
+      if (keyword) {
+        params['keyword'] = keyword
+        params['rank'] = rank
+      }
+      const { data } = await embedApi.getEmbedMaterial(params)
       dispatch('setEmbedModule', data.result)
     },
   },

@@ -75,11 +75,20 @@ export default {
 
       dispatch('setReceivedShareModule', data.result)
     },
-    async getShareReceivedMaterial({ dispatch }, { sharingKey, nodeKey }) {
-      const { data } = await receivedShareApi.getShareReceivedMaterial({
+    async getShareReceivedMaterial(
+      { rootGetters, dispatch },
+      { sharingKey, nodeKey, rank }
+    ) {
+      const params = {
         sharingKey,
         workspaceNodeId: nodeKey.split('-')[1],
-      })
+      }
+      const keyword = rootGetters['helper/search/keyword']
+      if (keyword) {
+        params['keyword'] = keyword
+        params['rank'] = rank
+      }
+      const { data } = await receivedShareApi.getShareReceivedMaterial(params)
       dispatch('setReceivedShareModule', data.result)
     },
     async checkShareReceivedPermission({ getters }, { type }) {
