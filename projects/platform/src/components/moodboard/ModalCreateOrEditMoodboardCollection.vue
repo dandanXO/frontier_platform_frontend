@@ -46,8 +46,8 @@ modal-behavior(
       v-model:textValue="formData.description"
       :label="$t('RR0014')"
       :placeholder="$t('QQ0059')"
-      height="120"
-      :customErrorMsg="formData.description.length > DESCRIPTION_LIMIT ? $t('WW0073') : ''"
+      minHeight="min-h-30"
+      :rules="[(v) => v.length > DESCRIPTION_LIMIT && $t('WW0073')]"
     )
 </template>
 

@@ -208,7 +208,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
       f-input-textarea(
         v-model:textValue="material.remark"
         :label="$t('RR0029')"
-        height="110"
+        minHeight="min-h-27.5"
       )
 </template>
 

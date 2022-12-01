@@ -51,8 +51,8 @@ modal-behavior(
         f-input-textarea(
           v-model:textValue="formData.messages"
           :label="$t('RR0146')"
-          height="174"
-          :customErrorMsg="formData.messages.length > 1000 ? $t('WW0073') : ''"
+          minHeight="min-h-43.5"
+          :rules="[(v) => v.length > 1000 && $t('WW0073')]"
         )
 </template>
 

@@ -28,8 +28,8 @@ modal-behavior(
       v-model:textValue="formData.comment"
       :label="$t('MM0009')"
       required
-      height="120"
       class="pb-2"
+      minHeight="min-h-30"
       :rules="[$inputRules.required()]"
     )
     f-scrollbar-container(
@@ -50,7 +50,13 @@ modal-behavior(
             class="text-grey-900 ml-1 cursor-pointer"
             @click="removeAttachment(attachment.tempFeedbackAttachmentId)"
           )
-    f-button(size="sm" type="secondary" prependIcon="add" @click="chooseFile") {{ $t('UU0063') }}
+    f-button(
+      size="sm"
+      type="secondary"
+      prependIcon="add"
+      class="mt-4"
+      @click="chooseFile"
+    ) {{ $t('UU0063') }}
     div(class="text-caption text-grey-900 pt-1")
       p(class="pb-2") {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
       p {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB

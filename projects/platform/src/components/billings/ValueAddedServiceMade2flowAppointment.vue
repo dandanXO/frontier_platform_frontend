@@ -49,9 +49,9 @@ div(class="w-178")
     f-input-textarea(
       v-model:textValue="formData.message"
       :label="$t('VV0043')"
-      height="120"
-      class="pb-2"
       :placeholder="$t('VV0044')"
+      minHeight="min-h-30"
+      class="pb-2"
     )
     f-scrollbar-container(
       v-if="formData.attachmentFileList.length > 0"

@@ -19,7 +19,7 @@ div(class="flex flex-col items-center")
           v-model:textValue="text"
           :placeholder="$t('QQ0037')"
           class="w-134 mr-2"
-          height="82"
+          minHeight="min-h-20.5"
         )
         f-button(size="sm" :disabled="text === ''" @click="handleSubmit") {{ $t('UU0049') }}
   div(class="w-full border-t border-grey-100")

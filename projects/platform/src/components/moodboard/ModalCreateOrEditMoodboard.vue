@@ -52,7 +52,7 @@ modal-behavior(
       :label="$t('RR0014')"
       :placeholder="$t('QQ0013')"
       required
-      height="178"
+      minHeight="min-h-44.5"
       :rules="[$inputRules.required(), (v) => v.length > 1000 && $t('WW0073')]"
     )
     f-input-container(:label="$t('QQ0015')")

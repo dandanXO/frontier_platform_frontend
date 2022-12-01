@@ -21,7 +21,7 @@ modal-behavior(
       :label="$t('BB0087')"
       :placeholder="$t('BB0088')"
       class="mb-1"
-      height="160"
+      minHeight="min-h-40"
     )
   template(#note) 
     p(class="text-caption text-grey-600") {{ $t('BB0114') }}

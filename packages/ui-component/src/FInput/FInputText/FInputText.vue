@@ -429,7 +429,7 @@ onMounted(() => {
     !!props.hintError
 })
 
-const onInput = (e) => {
+const onInput = () => {
   emit('input')
 }
 const onFocus = () => {

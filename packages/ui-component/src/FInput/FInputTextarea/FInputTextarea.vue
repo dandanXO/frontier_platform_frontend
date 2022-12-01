@@ -1,93 +1,163 @@
 <template lang="pug">
-f-input-container(:label="label" :required="required")
+f-input-container(
+  :label="label"
+  :required="required"
+  :hintSupporting="hintSupporting"
+  :hintError="ruleErrorMsg || hintError"
+)
   div(
-    class="p-4 rounded border"
-    :class="[classBorder, { 'bg-grey-100': disabled }]"
-    :style="{ height: height + 'px' }"
+    ref="refInput"
+    class="px-3 py-1.5 rounded border outline-none text-body2 leading-1.6 text-grey-900"
+    :class="[minHeight, disabled ? 'bg-grey-50 border-none cursor-not-allowed' : 'bg-grey-0', isError ? 'border-red-300' : 'border-grey-150']"
+    :contenteditable="!disabled"
+    @input="onInput"
+    @focus="onFocus"
+    @blur="onBlur"
   )
-    textarea(
-      :value="textValue"
-      :placeholder="placeholder"
-      :disabled="disabled"
-      @input="typing"
-      @focus="onFocus"
-      @blur="onBlur"
-      class="w-full h-full resize-none leading-1.6 placeholder:text-grey-200 placeholder:overflow-visible outline-none bg-transparent text-grey-900 text-body2 disabled:text-grey-600"
-    )
-  template(#slot:hint)
-    p(v-if="errorMsg !== ''" class="absolute text-caption text-red-400 pt-1") {{ errorMsg }}
-    slot(v-else name="slot:errorMsg")
+    span(
+      v-if="!innerTextValue && !isFocus"
+      class="text-body2 leading-1.6 text-grey-200"
+    ) {{ placeholder }}
+  template(v-if="slots['slot:hint-error']" #slot:hint-error)
+    slot(name="slot:hint-error")
+  template(v-if="slots['slot:hint-supporting']" #slot:hint-supporting)
+    slot(name="slot:hint-supporting")
 </template>
 
 <script>
-import useInput from '../useInput'
-import { toRefs } from 'vue'
-
 export default {
   name: 'FInputTextarea',
-  props: {
-    /**
-     * inherit from `FInputContainer.vue`
-     */
-    label: {
-      type: String,
-      default: '',
-    },
-    /**
-     * inherit from `FInputContainer.vue`
-     */
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    textValue: {
-      required: true,
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    height: {
-      type: String,
-      required: true,
-    },
-    customErrorMsg: {
-      type: [String, Boolean],
-      default: '',
-    },
-    rules: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  emits: ['update:textValue', 'blur', 'enter', 'clear', 'change', 'input'],
-  setup(props, context) {
-    const { textValue, disabled, rules, customErrorMsg } = toRefs(props)
-    const {
-      isFocus,
-      isError,
-      onFocus,
-      onBlur,
-      typing,
-      isEmpty,
-      classBorder,
-      errorMsg,
-    } = useInput({ context, textValue, disabled, customErrorMsg, rules })
-
-    return {
-      isFocus,
-      isEmpty,
-      typing,
-      onFocus,
-      onBlur,
-      isError,
-      classBorder,
-      errorMsg,
-    }
-  },
 }
+</script>
+
+<script setup>
+import { ref, useSlots, computed, watch, onMounted, onUpdated } from 'vue'
+const slots = useSlots()
+const props = defineProps({
+  /**
+   * inherit from `FInputContainer.vue`
+   */
+  label: {
+    type: String,
+    default: '',
+  },
+  /**
+   * inherit from `FInputContainer.vue`
+   *
+   * only work when `label` has been set
+   */
+  required: {
+    type: Boolean,
+    default: false,
+  },
+  /**
+   * Throws an error message if any rule fails, then it will be used in preference to it instead of `hintError`
+   *
+   * ***format: false case && error message***
+   */
+  rules: {
+    type: Array,
+    default: () => [],
+  },
+  /**
+   * inherit from `FInputContainer.vue`
+   *
+   * it could be i18n key or text and it works only when `slot:hint-error` hasn't been set and all `rules` are pass.
+   *
+   */
+  hintError: {
+    type: [String, Boolean],
+    default: '',
+  },
+  /**
+   * inherit from `FInputContainer.vue`
+   *
+   * it could be i18n key or text and it works only when `slot:hint-supporting` hasn't been set.
+   */
+  hintSupporting: {
+    type: String,
+    default: '',
+  },
+  textValue: {
+    required: true,
+  },
+  placeholder: {
+    type: String,
+    default: 'Text',
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  minHeight: {
+    type: String,
+    default: 'min-h-26',
+  },
+})
+
+const emit = defineEmits(['update:textValue', 'focus', 'blur', 'input'])
+
+const innerTextValue = computed({
+  get: () => props.textValue,
+  set: (v) => emit('update:textValue', v),
+})
+
+const refInput = ref(null)
+const isFocus = ref(false)
+const isError = ref(false)
+const ruleErrorMsg = ref('')
+
+defineExpose({
+  isError,
+})
+
+const onInput = () => {
+  innerTextValue.value = refInput.value.textContent
+  emit('input')
+}
+const onFocus = () => {
+  isFocus.value = true
+  emit('focus')
+}
+const onBlur = () => {
+  isFocus.value = false
+  emit('blur')
+}
+
+if (props.rules.length > 0) {
+  watch(
+    () => innerTextValue.value,
+    (v) => {
+      const _rules = [...props.rules]
+      for (let i = 0; i < _rules.length; i++) {
+        const rule = _rules[i]
+        const result = rule(v)
+        if (typeof result !== 'boolean') {
+          ruleErrorMsg.value = result
+          return
+        } else {
+          ruleErrorMsg.value = ''
+        }
+      }
+    }
+  )
+}
+/**
+ * Because slots isn't reactive, the only way to detect if slots have changed is to check in onUpdate and onMounted.
+ *
+ */
+onUpdated(() => {
+  isError.value =
+    slots['slot:hint-error'] !== undefined ||
+    !!ruleErrorMsg.value ||
+    !!props.hintError
+})
+
+onMounted(() => {
+  refInput.value.textContent = innerTextValue.value
+  isError.value =
+    slots['slot:hint-error'] !== undefined ||
+    !!ruleErrorMsg.value ||
+    !!props.hintError
+})
 </script>

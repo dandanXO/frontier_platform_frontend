@@ -33,7 +33,7 @@ modal-behavior(
         class="row-span-3"
         v-model:textValue="formData.description"
         :label="$t('OO0112')"
-        height="240"
+        minHeight="min-h-60"
       )
 </template>
 

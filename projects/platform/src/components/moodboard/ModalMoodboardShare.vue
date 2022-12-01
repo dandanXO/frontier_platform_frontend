@@ -30,14 +30,13 @@ modal-behavior(
               class="text-body2 text-grey-200 pr-2.5 cursor-pointer"
               @click="removeTarget(index)"
             ) {{ $t('FF0060') }}
-    div
-      f-input-textarea(
-        v-model:textValue="message"
-        :label="$t('RR0146')"
-        :placeholder="$t('RR0202')"
-        height="174"
-        :customErrorMsg="message.length > 1000 ? $t('WW0073') : ''"
-      )
+    f-input-textarea(
+      v-model:textValue="message"
+      :label="$t('RR0146')"
+      :placeholder="$t('RR0202')"
+      minHeight="min-h-43.5"
+      :rules="[(v) => v.length > 1000 && $t('WW0073')]"
+    )
 </template>
 
 <script setup>

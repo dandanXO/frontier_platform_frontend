@@ -41,7 +41,7 @@ div
       :label="$t('BB0087')"
       :placeholder="$t('BB0088')"
       class="w-85 mb-7.5"
-      height="160"
+      minHeight="min-h-40"
     )
     f-button(
       size="md"
