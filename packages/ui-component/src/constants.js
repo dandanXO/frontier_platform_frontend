@@ -10,3 +10,9 @@ export const CONTEXTUAL_MENU_MODE = {
   SINGLE_NONE_CANCEL: 2,
   MULTIPLE: 3,
 }
+
+export const UPLOAD_ERROR_CODE = {
+  INVALID_TYPE: 1,
+  EXCEED_LIMIT: 2,
+  TOO_SMALL: 3,
+}

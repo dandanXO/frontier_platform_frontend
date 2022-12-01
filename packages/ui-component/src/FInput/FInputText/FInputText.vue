@@ -93,10 +93,10 @@ f-input-container(
         f-svg-icon(iconName="keyboard_arrow_down" size="14" class="text-grey-800")
     //- Clear Icon
     f-svg-icon(
-      v-if="clearable && textValue !== '' && state === STATE.FOCUS"
+      v-if="(clearable && textValue !== '' && state === STATE.FOCUS) || (button?.isFile && textValue !== '')"
       :size="size === 'lg' ? '24' : '20'"
       iconName="cancel"
-      class="text-grey-150 hover:text-grey-200 active:text-grey-300"
+      class="text-grey-150 hover:text-grey-200 active:text-grey-300 cursor-pointer"
       :class="{ '-mr-1': size === 'lg' && !!appendIcon }"
       @click="clear"
       @mousedown.prevent
@@ -113,12 +113,15 @@ f-input-container(
       @click="onClickAppendIcon"
       @mousedown.prevent
     )
-  template(#slot:append-item v-if="addOnRight !== '' || hasRightDropdown")
+  template(
+    #slot:append-item
+    v-if="addOnRight !== '' || hasRightDropdown || button"
+  )
     //- Add On
     div(v-if="addOnRight !== ''" class="border-l-0 rounded-r" :class="classAddon") {{ te(addOnRight) ? $t(addOnRight) : addOnRight }}
     //- Dropdown
     f-popper(
-      v-else
+      v-else-if="hasRightDropdown"
       placement="bottom-start"
       class="border-l-0 rounded-r relative"
       :disabled="disabled"
@@ -145,6 +148,15 @@ f-input-container(
           v-bind="rightDropdownOption"
           :class="rightDropdownOption.width"
         )
+    //-
+    button(
+      v-else
+      :class="classButton"
+      class="rounded-r flex items-center gap-x-1 px-4"
+      @click="$emit('click:button')"
+    )
+      f-svg-icon(v-if="button.icon" :iconName="button.icon" size="24")
+      p(v-if="button.text" class="cursor-pointer") {{ te(button.text) ? $t(button.text) : button.text }}
   template(v-if="slots['slot:hint-error']" #slot:hint-error)
     slot(name="slot:hint-error")
   template(v-if="slots['slot:hint-supporting']" #slot:hint-supporting)
@@ -275,6 +287,20 @@ const props = defineProps({
       menuTree: () => ({}),
     }),
   },
+  /**
+   * ```
+   * {
+   *   type: String, // primary or secondary
+   *   icon: String,
+   *   text: String
+   *   isFile: Boolean
+   * }
+   * ```
+   */
+  button: {
+    type: Object,
+    default: () => {},
+  },
 })
 const emit = defineEmits([
   'update:textValue',
@@ -288,6 +314,7 @@ const emit = defineEmits([
   'blur',
   'click:input',
   'click:appendIcon',
+  'click:button',
 ])
 
 const innerTextValue = computed({
@@ -374,7 +401,12 @@ if (props.rules.length > 0) {
       for (let i = 0; i < _rules.length; i++) {
         const rule = _rules[i]
         const result = rule(v)
-        ruleErrorMsg.value = typeof result !== 'boolean' ? result : ''
+        if (typeof result !== 'boolean') {
+          ruleErrorMsg.value = result
+          return
+        } else {
+          ruleErrorMsg.value = ''
+        }
       }
     }
   )
@@ -519,7 +551,7 @@ const classMain = computed(() => {
   if (props.addOnLeft !== '' || hasLeftDropdown.value) {
     classList.push('rounded-l-none')
   }
-  if (props.addOnRight !== '' || hasRightDropdown.value) {
+  if (props.addOnRight !== '' || hasRightDropdown.value || props.button) {
     classList.push('rounded-r-none')
   }
 
@@ -565,11 +597,12 @@ const classInput = computed(() => {
       classList.push('placeholder:text-grey-200', 'text-grey-900')
       break
     case STATE.DISABLED:
-      classList.push(
-        'placeholder:text-grey-200',
-        'text-grey-200',
-        'cursor-not-allowed'
-      )
+      classList.push('placeholder:text-grey-200', 'cursor-not-allowed')
+      if (props.button?.isFile) {
+        classList.push('text-grey-600')
+      } else {
+        classList.push('text-grey-200')
+      }
       break
   }
 
@@ -590,6 +623,27 @@ const classAddon = computed(() => {
   state.value === STATE.DISABLED
     ? classList.push('bg-grey-50', 'text-grey-200', 'cursor-not-allowed')
     : classList.push('bg-grey-100', 'text-grey-900')
+
+  return classList
+})
+
+const classButton = computed(() => {
+  const classList = []
+
+  switch (props.button.type) {
+    case 'primary':
+      classList.push('bg-primary-400', 'text-grey-0', 'hover:bg-primary-500')
+      break
+    case 'secondary':
+      classList.push(
+        'bg-grey-0',
+        'text-primary-400',
+        'border',
+        'border-grey-150',
+        'border-l-0'
+      )
+      break
+  }
 
   return classList
 })

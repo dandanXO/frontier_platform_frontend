@@ -5,8 +5,13 @@ modal-behavior(
   :primaryBtnDisabled="primaryBtnDisabled"
   @click:primary="primaryHandler"
 )
-  template(#note v-if="mode === CREATE_EDIT.CREATE")
-    div(class="flex items-center text-grey-600")
+  template(#note)
+    file-upload-error-note(
+      v-if="fileUploadErrorCode"
+      :errorCode="fileUploadErrorCode"
+      :fileSizeMaxLimit="fileSizeMaxLimit"
+    ) 
+    div(v-else-if="mode === CREATE_EDIT.CREATE" class="flex items-center text-grey-600")
       f-svg-icon(iconName="info_outline" size="20")
       p(class="text-caption leading-1.6 pl-1.5") {{ $t('QQ0060') }}
   div(class="w-95")
@@ -18,28 +23,25 @@ modal-behavior(
       :placeholder="$t('QQ0058')"
       class="pb-6"
     )
-    div(class="h-35")
-      div
-        div(class="h-5.5 flex items-center pb-1")
-          p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
-          f-button-label(
-            v-if="uploadTrendBoardName"
-            size="sm"
-            class="ml-1.5"
-            @click="previewFile(formData.trendBoardFile)"
-          ) {{ $t('UU0060') }}
-        f-input-text-button(
-          class="w-full"
-          disabledInput
-          :textValue="uploadTrendBoardName"
-          :buttonLabel="$t('UU0025')"
-          :placeholder="$t('QQ0009')"
-          @click:button="trendBoardFileOperator.upload()"
-          @clear="removeTrendBoard"
-        )
-      p(v-if="!!customErrorMsg" class="text-red-400 text-caption leading-1.6") {{ customErrorMsg }}
-      p(class="text-grey-600 text-caption leading-1.6") {{ $t('RR0243') }} {{ trendBoardFileAcceptType.join(', ').toUpperCase() }}
-      p(class="text-grey-600 text-caption leading-1.6") {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
+    div(class="h-5.5 flex items-center pb-1")
+      p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
+      f-button-label(
+        v-if="uploadTrendBoardName"
+        size="sm"
+        class="ml-1.5"
+        @click="previewFile(formData.trendBoardFile)"
+      ) {{ $t('UU0060') }}
+    f-input-file(
+      class="w-full mb-15"
+      v-model:fileName="uploadTrendBoardName"
+      :acceptType="trendBoardFileAcceptType"
+      :maximumSize="fileSizeMaxLimit"
+      :text="$t('UU0025')"
+      :placeholder="$t('QQ0009')"
+      @finish="onFinish"
+      @clear="removeTrendBoard"
+      @error="fileUploadErrorCode = $event"
+    )
     f-input-textarea(
       v-model:textValue="formData.description"
       :label="$t('RR0014')"
@@ -53,8 +55,8 @@ modal-behavior(
 import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import { FileOperator, previewFile } from '@/utils/fileOperator'
-import { CREATE_EDIT, UPLOAD_ERROR_CODE } from '@/utils/constants.js'
+import { previewFile } from '@/utils/fileOperator'
+import { CREATE_EDIT } from '@/utils/constants.js'
 
 const props = defineProps({
   mode: {
@@ -82,36 +84,20 @@ const formData = reactive({
 const DESCRIPTION_LIMIT = 1000
 const isUploadNewTrendBoard = ref(false)
 const uploadTrendBoardName = ref('')
-const customErrorMsg = ref('')
 
 const fileSizeMaxLimit = 20
 const trendBoardFileAcceptType = ['pdf']
-const trendBoardFileOperator = new FileOperator(
-  trendBoardFileAcceptType,
-  fileSizeMaxLimit
-)
+const fileUploadErrorCode = ref(0)
 
-trendBoardFileOperator.on('error', (code) => {
-  const { INVALID_TYPE, EXCEED_LIMIT } = UPLOAD_ERROR_CODE
-
-  if (code === INVALID_TYPE) {
-    customErrorMsg.value = t('RR0144')
-  } else if (code === EXCEED_LIMIT) {
-    customErrorMsg.value = t('RR0145') + fileSizeMaxLimit + 'MB'
-  }
-})
-
-trendBoardFileOperator.on('finish', (file) => {
-  customErrorMsg.value = ''
+const onFinish = (file) => {
   store.dispatch('helper/pushModalLoading')
   formData.trendBoardFile = file
-  uploadTrendBoardName.value = file.name
   isUploadNewTrendBoard.value = true
+  fileUploadErrorCode.value = 0
   store.dispatch('helper/closeModalLoading')
-})
+}
 const removeTrendBoard = () => {
   formData.trendBoardFile = null
-  uploadTrendBoardName.value = ''
   if (props.mode === CREATE_EDIT.EDIT) {
     formData.isDeleteTrendBoard = true
   }

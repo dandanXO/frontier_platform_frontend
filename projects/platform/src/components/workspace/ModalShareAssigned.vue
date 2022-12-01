@@ -8,14 +8,14 @@ modal-behavior(
   div(class="w-197.5")
     div(class="h-72.5 grid grid-cols-2 gap-x-7.5")
       div
-        f-input-text-icon(
+        f-input-text(
           v-model:textValue="target"
           prependIcon="search"
           :label="$t('RR0156')"
           :placeholder="$t('RR0150')"
-          :disabledIcon="target === ''"
-          :customErrorMsg="errorMsg"
-          @click:icon="addToTargetList"
+          :hintError="errorMsg"
+          :button="{ type: 'primary', icon: 'add' }"
+          @click:button="addToTargetList"
           class="mb-5"
         )
         f-scrollbar-container(class="h-51")
@@ -61,6 +61,7 @@ import { ref, watch, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { SHARE_TARGET_TYPE } from '@/utils/constants.js'
+import inputValidator from '@/utils/input-validator'
 
 const props = defineProps({
   workspaceNodeId: {
@@ -83,17 +84,21 @@ const targetList = ref([])
 
 const addToTargetList = async () => {
   const frozenTargetValue = target.value.trim()
+  if (!inputValidator.required(frozenTargetValue)) {
+    return (errorMsg.value = t('WW0002'))
+  }
   const existedTarget = targetList.value.find(
     ({ name, number }) =>
       name === frozenTargetValue || number === frozenTargetValue
   )
   if (existedTarget) {
+    const { ORG, GROUP, EMAIL } = SHARE_TARGET_TYPE
     switch (existedTarget.type) {
-      case SHARE_TARGET_TYPE.ORG:
+      case ORG:
         return (errorMsg.value = t('WW0058'))
-      case SHARE_TARGET_TYPE.GROUP:
+      case GROUP:
         return (errorMsg.value = t('WW0059'))
-      case SHARE_TARGET_TYPE.EMAIL:
+      case EMAIL:
         return (errorMsg.value = t('WW0057'))
     }
   }

@@ -21,18 +21,16 @@ modal-behavior(
       data-cy="modal-mass-upload_error"
     )
   div(class="w-94")
-    div(class="mb-5")
-      f-input-text-button(
-        class="w-full mb-1.5"
-        disabledInput
-        :label="$t('DD0038')"
-        :textValue="fileName"
-        :clearable="false"
-        :buttonLabel="$t('UU0025')"
-        @click:button="chooseFile"
-      )
-      p(class="text-grey-600 text-caption mb-2") {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
-      p(class="text-grey-600 text-caption") {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
+    f-input-file(
+      class="w-full mb-12"
+      :label="$t('DD0038')"
+      v-model:fileName="fileName"
+      :acceptType="acceptType"
+      :maximumSize="fileSizeMaxLimit"
+      :text="$t('UU0025')"
+      @finish="onFinish"
+      @error="errorCode = $event"
+    )
     div(class="text-grey-900 text-caption leading-1.6")
       i18n-t(keypath="DD0036" tag="p" scope="global")
         template(#UU0065)
@@ -52,7 +50,6 @@ modal-behavior(
 </template>
 
 <script setup>
-import { FileOperator } from '@/utils/fileOperator'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
@@ -76,22 +73,12 @@ let binaryFile
 
 const fileSizeMaxLimit = 20
 const acceptType = ['xlsx']
-const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 
-const chooseFile = () => {
-  fileOperator.upload()
-}
-
-fileOperator.on('finish', (file) => {
+const onFinish = (file) => {
   binaryFile = file
-  fileName.value = file.name
   errorCode.value = ''
   showErrorList.value = false
-})
-
-fileOperator.on('error', (code) => {
-  errorCode.value = code
-})
+}
 
 const handleUpload = async () => {
   try {

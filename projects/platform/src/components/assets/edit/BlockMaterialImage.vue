@@ -48,11 +48,12 @@ div(class="pb-15 mb-5 border-b border-grey-200")
           ) {{ $t('UU0012') }}
         div(class="w-52.5")
           h5(class="text-h5 font-bold text-grey-900 pb-5") {{ $t('RR0131') }}
-          f-input-text-icon(
+          f-input-text(
             v-model:textValue="pantoneName"
             :label="$t('EE0040')"
             :placeholder="$t('EE0078')"
-            @click:icon="addPantone"
+            :button="{ type: 'primary', icon: 'add' }"
+            @click:button="addPantone"
             class="pb-5"
           )
           div(class="grid gap-y-3")

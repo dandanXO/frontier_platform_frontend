@@ -9,13 +9,13 @@ modal-behavior(
     div(class="py-2.5 px-4 flex items-center gap-x-3 bg-grey-50 rounded mb-4")
       f-svg-icon(iconName="error_outline" class="text-grey-600")
       p(class="flex-grow text-caption text-grey-600 leading-1.6") {{ $t('BB0021') }}
-    f-input-text-icon(
+    f-input-text(
       v-model:textValue="email"
       prependIcon="search"
       :placeholder="$t('BB0065')"
-      :disabledIcon="email === ''"
-      :customErrorMsg="errorMsg"
-      @click:icon="addToInviteList"
+      :hintError="errorMsg"
+      :button="{ type: 'primary', icon: 'add' }"
+      @click:button="addToInviteList"
     )
     f-scrollbar-container(class="h-48 mt-2 -mx-5")
       div(class="grid gap-y-0.5 mx-5")

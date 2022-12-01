@@ -15,22 +15,18 @@ modal-behavior(
       data-cy="modal-mass-upload_error"
     )
   div(class="w-94")
-    p(class="text-caption text-grey-600 text-right mb-1.5") 
-      span(class="text-red-400") *
-      span {{ $t('RR0163') }}
-    div(class="mb-7.5")
-      f-input-text-button(
-        class="w-full"
-        :label="$t('EE0088')"
-        :textValue="originalFileName"
-        :clearable="false"
-        :buttonLabel="$t('UU0025')"
-        @click:button="chooseFile"
-        disabledInput
-        required
-      )
-      p(class="text-grey-900 text-caption leading-1.6") {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
-      p(class="text-grey-900 text-caption leading-1.6") {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
+    f-input-file(
+      class="w-full mb-12"
+      v-model:fileName="originalFileName"
+      :acceptType="acceptType"
+      :maximumSize="fileSizeMaxLimit"
+      :label="$t('EE0088')"
+      :text="$t('UU0025')"
+      required
+      @finish="onFinish"
+      @clear="fileName = ''"
+      @error="errorCode = $event"
+    )
     f-input-text(
       v-model:textValue="fileName"
       :label="$t('EE0091')"
@@ -42,7 +38,6 @@ modal-behavior(
 <script setup>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import { FileOperator } from '@/utils/fileOperator'
 
 const props = defineProps({
   uploadHandler: {
@@ -59,23 +54,14 @@ const originalFileName = ref('')
 const errorCode = ref('')
 const disabled = computed(() => !fileName.value || !originalFileName.value)
 const fileSizeMaxLimit = 20
-const fileOperator = new FileOperator(props.acceptType, fileSizeMaxLimit)
 let binaryFile
 
-const chooseFile = () => {
-  fileOperator.upload()
-}
-
-fileOperator.on('error', (code) => {
-  errorCode.value = code
-})
-
-fileOperator.on('finish', (file) => {
+const onFinish = (file) => {
   errorCode.value = ''
   binaryFile = file
   fileName.value = file.name
   originalFileName.value = file.name
-})
+}
 
 const upload = async () => {
   if (typeof props.uploadHandler === 'function') {

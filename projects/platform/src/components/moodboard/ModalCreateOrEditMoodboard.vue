@@ -13,7 +13,7 @@ modal-behavior(
       :errorCode="fileUploadErrorCode"
       :fileSizeMaxLimit="fileSizeMaxLimit"
     )
-  div(class="w-121.5 grid gap-y-6")
+  div(class="w-121.5 flex flex-col gap-y-6")
     f-input-text(
       ref="refInputName"
       v-model:textValue="formData.moodboardName"
@@ -27,37 +27,34 @@ modal-behavior(
         img(class="w-5 h-5 rounded-full" :src="orgLogo")
         p(class="pl-2 text-body2 text-grey-900") {{ creator }}
     div
-      div
-        div(class="h-5.5 flex items-center pb-1")
-          p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
-          f-button-label(
-            v-if="uploadTrendBoardName"
-            size="sm"
-            class="ml-1.5"
-            @click="previewFile(formData.trendBoardFile)"
-          ) {{ $t('UU0060') }}
-        f-input-text-button(
-          class="w-full"
-          disabledInput
-          :textValue="uploadTrendBoardName"
-          :buttonLabel="$t('UU0025')"
-          :placeholder="$t('QQ0009')"
-          @click:button="trendBoardFileOperator.upload()"
-          @clear="removeTrendBoard"
-        )
-      div(class="grid gap-y-2 pt-1.5")
-        p(class="text-grey-600 text-caption") {{ $t('RR0243') }} {{ trendBoardFileAcceptType.join(', ').toUpperCase() }}
-        p(class="text-grey-600 text-caption") {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
-    div
-      f-input-textarea(
-        ref="refInputDescription"
-        v-model:textValue="formData.description"
-        :label="$t('RR0014')"
-        :placeholder="$t('QQ0013')"
-        required
-        height="178"
-        :rules="[$inputRules.required(), (v) => v.length > 1000 && $t('WW0073')]"
+      div(class="h-5.5 flex items-center pb-1")
+        p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
+        f-button-label(
+          v-if="uploadTrendBoardName"
+          size="sm"
+          class="ml-1.5"
+          @click="previewFile(formData.trendBoardFile)"
+        ) {{ $t('UU0060') }}
+      f-input-file(
+        class="w-full mb-9"
+        v-model:fileName="uploadTrendBoardName"
+        :text="$t('UU0025')"
+        :placeholder="$t('QQ0009')"
+        :acceptType="trendBoardFileAcceptType"
+        :maximumSize="fileSizeMaxLimit"
+        @finish="trendBoardUploadFinish"
+        @clear="removeTrendBoard"
+        @error="fileUploadErrorCode = $event"
       )
+    f-input-textarea(
+      ref="refInputDescription"
+      v-model:textValue="formData.description"
+      :label="$t('RR0014')"
+      :placeholder="$t('QQ0013')"
+      required
+      height="178"
+      :rules="[$inputRules.required(), (v) => v.length > 1000 && $t('WW0073')]"
+    )
     f-input-container(:label="$t('QQ0015')")
       f-scrollbar-container(class="max-h-18 mb-2.5")
         div(class="grid gap-y-2 max-w-121.5")
@@ -144,24 +141,16 @@ const fileUploadErrorCode = ref(0)
 const fileSizeMaxLimit = 20
 const trendBoardFileAcceptType = ['pdf']
 
-const trendBoardFileOperator = new FileOperator(
-  trendBoardFileAcceptType,
-  fileSizeMaxLimit
-)
-trendBoardFileOperator.on('finish', (file) => {
+const trendBoardUploadFinish = (file) => {
   store.dispatch('helper/pushModalLoading')
   formData.trendBoardFile = file
-  uploadTrendBoardName.value = file.name
   isUploadNewTrendBoard.value = true
   fileUploadErrorCode.value = 0
   store.dispatch('helper/closeModalLoading')
-})
-trendBoardFileOperator.on('error', (code) => {
-  fileUploadErrorCode.value = code
-})
+}
+
 const removeTrendBoard = () => {
   formData.trendBoardFile = null
-  uploadTrendBoardName.value = ''
   if (props.mode === CREATE_EDIT.EDIT) {
     formData.isDeleteTrendBoard = true
   }

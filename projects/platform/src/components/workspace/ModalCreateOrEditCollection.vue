@@ -21,26 +21,24 @@ modal-behavior(
       class="mb-7.5"
       :rules="[$inputRules.required()]"
     )
-    div(class="mb-9")
-      div
-        div(class="h-5.5 flex items-center pb-1")
-          p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
-          f-button-label(
-            v-if="uploadTrendBoardName"
-            size="sm"
-            class="ml-1.5"
-            @click="previewFile(formData.trendBoardFile)"
-          ) {{ $t('UU0060') }}
-        f-input-text-button(
-          class="w-full"
-          disabledInput
-          v-model:textValue="uploadTrendBoardName"
-          :buttonLabel="$t('UU0025')"
-          @click:button="chooseFile"
-          @clear="removeTrendBoard"
-        )
-      p(class="text-grey-900 text-caption leading-1.6") {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
-      p(class="text-grey-900 text-caption leading-1.6") {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
+    div(class="h-5.5 flex items-center pb-1")
+      p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
+      f-button-label(
+        v-if="uploadTrendBoardName"
+        size="sm"
+        class="ml-1.5"
+        @click="previewFile(formData.trendBoardFile)"
+      ) {{ $t('UU0060') }}
+    f-input-file(
+      class="w-full mb-15"
+      v-model:fileName="uploadTrendBoardName"
+      :text="$t('UU0025')"
+      :acceptType="acceptType"
+      :maximumSize="fileSizeMaxLimit"
+      @finish="finishUpload"
+      @clear="removeTrendBoard"
+      @error="errorCode = $event"
+    )
     f-input-textarea(
       v-model:textValue="formData.description"
       :label="$t('RR0014')"
@@ -52,7 +50,7 @@ modal-behavior(
 <script>
 import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
-import { FileOperator, previewFile } from '@/utils/fileOperator'
+import { previewFile } from '@/utils/fileOperator'
 import { useI18n } from 'vue-i18n'
 
 const MODE = {
@@ -77,8 +75,22 @@ export default {
     const store = useStore()
     const fileSizeMaxLimit = 20
     const acceptType = ['pdf']
-    const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
     const errorCode = ref('')
+    const finishUpload = (file) => {
+      errorCode.value = ''
+      formData.trendBoardFile = file
+    }
+
+    const removeTrendBoard = () => {
+      if (!uploadTrendBoardName.value) {
+        return
+      }
+
+      props.mode === MODE.EDIT &&
+        store.dispatch('workspace/removeTrendBoard', {
+          collectionId: collectionId.value,
+        })
+    }
 
     const uploadTrendBoardName = ref('')
     const collectionId = ref(null) // only use when MODE is equal to EDIT
@@ -94,20 +106,6 @@ export default {
         !formData.collectionName ||
         formData.description.length > DESCRIPTION_LIMIT
     )
-
-    fileOperator.on('error', (code) => {
-      errorCode.value = code
-    })
-
-    fileOperator.on('finish', (file) => {
-      errorCode.value = ''
-      formData.trendBoardFile = file
-      uploadTrendBoardName.value = file.name
-    })
-
-    const chooseFile = () => {
-      fileOperator.upload()
-    }
 
     const actionHandler = async () => {
       if (uploadTrendBoardName.value === '') {
@@ -129,13 +127,6 @@ export default {
       }
       store.dispatch('helper/clearModalPipeline')
       store.dispatch('helper/reloadInnerApp')
-    }
-
-    const removeTrendBoard = () => {
-      props.mode === MODE.EDIT &&
-        store.dispatch('workspace/removeTrendBoard', {
-          collectionId: collectionId.value,
-        })
     }
 
     if (props.mode === MODE.EDIT) {
@@ -163,7 +154,7 @@ export default {
       acceptType,
       fileSizeMaxLimit,
       errorCode,
-      chooseFile,
+      finishUpload,
       uploadTrendBoardName,
       previewFile,
       actionBtnDisabled,
