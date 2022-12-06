@@ -86,7 +86,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
           )
             p(
               v-if="moreThan4Notification && !isExpand"
-              class="w-full"
+              class="w-full cursor-pointer"
               @click.stop="isExpand = true"
             ) {{ $t('NN0006') }}
             p(v-else class="px-10.5") {{ $t('NN0005') }}
