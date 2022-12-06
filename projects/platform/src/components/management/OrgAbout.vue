@@ -68,7 +68,6 @@ div(class="pt-16 xl:pt-17.5")
           class="w-85"
           required
           data-cy="org-about_country"
-          @select="handleCountryCodeSelected"
         )
         f-input-text(
           v-model:textValue="orgFormData.address"
@@ -244,17 +243,23 @@ const updateOrg = async () => {
   store.dispatch('helper/pushFlashMessage', t('BB0107'))
 }
 
-const handleCountryCodeSelected = (option) => {
-  orgFormData.faxCountryCode = option
-  orgFormData.phoneCountryCode = option
-}
-
 watch(
   () => orgFormData.orgName,
   () => {
     if (isOrgNameExist.value) {
       isOrgNameExist.value = false
     }
+  }
+)
+
+watch(
+  () => orgFormData.countryCode,
+  () => {
+    orgFormData.faxCountryCode = orgFormData.countryCode
+    orgFormData.phoneCountryCode = orgFormData.countryCode
+  },
+  {
+    immediate: true,
   }
 )
 </script>
