@@ -16,7 +16,7 @@ filter-wrapper(
         v-if="filter.color === color.value"
         iconName="done"
         size="24"
-        class="text-grey-0"
+        :class="[color.value === 'White' ? ' text-grey-600' : 'text-grey-0']"
       )
 </template>
 
