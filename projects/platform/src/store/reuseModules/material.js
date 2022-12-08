@@ -197,7 +197,9 @@ const Material = {
     },
     ADD_inventory_item(state) {
       const inventory = Material.state().inventoryList[0]
-      inventory.unit = state.inventoryList[0].unit
+      if (state.inventoryList[0]?.unit) {
+        inventory.unit = state.inventoryList[0].unit
+      }
       state.inventoryList.push(inventory)
     },
     REMOVE_inventory_item(state, index) {
