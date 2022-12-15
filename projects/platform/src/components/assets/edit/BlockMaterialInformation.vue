@@ -248,7 +248,7 @@ const {
   removeContent,
   addDescriptionOption,
   addFinishOption,
-} = useMaterialEdit(material.value)
+} = useMaterialEdit()
 
 const hideSampleCard = computed(() => {
   if (faceSideUrl) {

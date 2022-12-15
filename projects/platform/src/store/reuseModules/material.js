@@ -168,6 +168,43 @@ const Material = {
       )
       return sortedAttachmentList
     },
+    immediateTotalInventoryQty: (state) => {
+      let inventoryUnit
+      const { inventoryList, weightUnit, weight, width } = state
+      const total = inventoryList.reduce((prev, current) => {
+        const quantity = current.quantity
+        inventoryUnit = current.unit
+
+        if (!weight || !width) {
+          return 0
+        }
+
+        switch (inventoryUnit) {
+          case INVENTORY_UNIT.Y: {
+            return prev + Number(quantity)
+          }
+          case INVENTORY_UNIT.M: {
+            return prev + Number(quantity) / 0.9114
+          }
+          case INVENTORY_UNIT.KG: {
+            let gsm
+            if (weightUnit === WEIGHT_UNIT.value.GSM.value) {
+              gsm = weight
+            } else if (weightUnit === WEIGHT_UNIT.value.OZ.value) {
+              gsm = weight / 0.9114
+            }
+            return prev + (Number(quantity) / (gsm * 0.02323 * width)) * 1000
+          }
+          default:
+            return prev + Number(quantity)
+        }
+      }, 0)
+
+      if ([INVENTORY_UNIT.M, INVENTORY_UNIT.KG].includes(inventoryUnit)) {
+        return Math.round(total)
+      }
+      return total
+    },
   },
   mutations: {
     SET_material(state, material) {

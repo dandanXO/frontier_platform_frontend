@@ -148,7 +148,7 @@ export default {
     const material = computed(() => store.getters['assets/material'])
     const countryList = computed(() => store.getters['code/countryList'])
 
-    const { inventoryUnitList, currencyList } = useMaterialEdit(material.value)
+    const { inventoryUnitList, currencyList } = useMaterialEdit()
 
     watch(
       () => material.value,

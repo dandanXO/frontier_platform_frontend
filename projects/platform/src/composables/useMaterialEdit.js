@@ -7,7 +7,7 @@ import {
   CONTEXTUAL_MENU_MODE,
 } from '@/utils/constants'
 
-export default function useMaterialEdit(material) {
+export default function useMaterialEdit() {
   const store = useStore()
   const { WEIGHT_UNIT } = useConstants()
 
@@ -122,44 +122,6 @@ export default function useMaterialEdit(material) {
     store.commit('assets/UPDATE_inventoryList_unit', unit)
   }
 
-  const totalInventory = computed(() => {
-    let inventoryUnit
-    const total = material.inventoryList.reduce((prev, current) => {
-      const { weightUnit, weight, width } = material
-      const quantity = current.quantity
-      inventoryUnit = current.unit
-
-      if (!weight || !width) {
-        return 0
-      }
-
-      switch (inventoryUnit) {
-        case INVENTORY_UNIT.Y: {
-          return prev + Number(quantity)
-        }
-        case INVENTORY_UNIT.M: {
-          return prev + Number(quantity) / 0.9114
-        }
-        case INVENTORY_UNIT.KG: {
-          let gsm
-          if (weightUnit === WEIGHT_UNIT.value.GSM.value) {
-            gsm = weight
-          } else if (weightUnit === WEIGHT_UNIT.value.OZ.value) {
-            gsm = weight / 0.9114
-          }
-          return prev + (Number(quantity) / (gsm * 0.02323 * width)) * 1000
-        }
-        default:
-          return prev + Number(quantity)
-      }
-    }, 0)
-
-    if ([INVENTORY_UNIT.M, INVENTORY_UNIT.KG].includes(inventoryUnit)) {
-      return Math.round(total)
-    }
-    return total
-  })
-
   return {
     inventoryUnitList,
     currencyList,
@@ -172,7 +134,6 @@ export default function useMaterialEdit(material) {
     addFinishOption,
     addNewInventory,
     removeInventory,
-    totalInventory,
     updateInventoryListUnit,
   }
 }

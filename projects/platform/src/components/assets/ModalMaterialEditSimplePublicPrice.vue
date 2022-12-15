@@ -73,8 +73,14 @@ import useMaterialValidation from '@/composables/useMaterialValidation'
 const store = useStore()
 const countryList = computed(() => store.getters['code/countryList'])
 const material = computed(() => store.getters['assets/material'])
-const { invalidation, validate } = useMaterialValidation(material)
-const { inventoryUnitList } = useMaterialEdit(material.value)
+const { invalidation, validate } = useMaterialValidation(material, [
+  'publicPricePrice',
+  'publicPriceMinimumOrderQuantity',
+  'publicPriceMinimumContainerQuantity',
+  'publicPriceProductionLeadTime',
+  'publicPriceSampleLeadTime',
+])
+const { inventoryUnitList } = useMaterialEdit()
 
 watch(
   () => material.value,

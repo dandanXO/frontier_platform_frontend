@@ -154,7 +154,18 @@ import useMaterialValidation from '@/composables/useMaterialValidation'
 
 const store = useStore()
 const material = computed(() => store.getters['assets/material'])
-const { invalidation, validate } = useMaterialValidation(material)
+const { invalidation, validate } = useMaterialValidation(material, [
+  'materialNo',
+  'contentList',
+  'warpYarnCount',
+  'weftYarnCount',
+  'warpDensity',
+  'weftDensity',
+  'pattern',
+  'color',
+  'weight',
+  'width',
+])
 
 const {
   specOptions,
@@ -164,7 +175,7 @@ const {
   removeContent,
   addDescriptionOption,
   addFinishOption,
-} = useMaterialEdit(material.value)
+} = useMaterialEdit()
 
 watch(
   () => material.value,

@@ -43,7 +43,7 @@ const { t } = useI18n()
 const store = useStore()
 const material = computed(() => store.getters['assets/material'])
 
-const { specOptions } = useMaterialEdit(material.value)
+const { specOptions } = useMaterialEdit()
 
 const attachmentList = computed(() => store.getters['assets/attachmentList'])
 const isEditMode = computed(() => !!store.getters['assets/material'].materialId)

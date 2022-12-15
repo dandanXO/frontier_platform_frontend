@@ -49,7 +49,7 @@ f-expansion-panel(class="border-b border-grey-200")
       f-input-container(:label="$t('RR0034')")
         div(class="flex items-center gap-x-3")
           f-input-text(
-            :textValue="`${totalInventory} ${INVENTORY_UNIT.Y}`"
+            :textValue="`${immediateTotalInventoryQty} ${INVENTORY_UNIT.Y}`"
             class="w-50"
             disabled
             :clearable="false"
@@ -124,14 +124,16 @@ export default {
   setup() {
     const store = useStore()
     const material = computed(() => store.getters['assets/material'])
+    const immediateTotalInventoryQty = computed(
+      () => store.getters['assets/immediateTotalInventoryQty']
+    )
 
     const {
       inventoryUnitList,
       addNewInventory,
       removeInventory,
-      totalInventory,
       updateInventoryListUnit,
-    } = useMaterialEdit(material.value)
+    } = useMaterialEdit()
 
     watch(
       () => material.value,
@@ -148,7 +150,7 @@ export default {
       inventoryUnitList,
       addNewInventory,
       removeInventory,
-      totalInventory,
+      immediateTotalInventoryQty,
       INVENTORY_UNIT,
       updateInventoryListUnit,
     }

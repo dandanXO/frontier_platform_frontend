@@ -32,11 +32,9 @@ modal-behavior(
 <script setup>
 import { computed, watch } from 'vue'
 import { useStore } from 'vuex'
-import useMaterialValidation from '@/composables/useMaterialValidation'
 
 const store = useStore()
 const material = computed(() => store.getters['assets/material'])
-const { validate } = useMaterialValidation(material)
 
 watch(
   () => material.value,
@@ -49,9 +47,6 @@ watch(
 )
 
 const updateMaterialSimpleTag = async () => {
-  if (!validate()) {
-    return
-  }
   store.dispatch('helper/pushModalLoading')
   await store.dispatch('assets/updateMaterialSimpleTag')
   store.dispatch('helper/clearModalPipeline')

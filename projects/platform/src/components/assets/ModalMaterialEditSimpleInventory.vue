@@ -40,7 +40,7 @@ modal-behavior(
     f-input-container(:label="$t('RR0034')")
       div(class="flex items-center gap-x-3")
         f-input-text(
-          :textValue="`${totalInventory} ${INVENTORY_UNIT.Y}`"
+          :textValue="`${immediateTotalInventoryQty} ${INVENTORY_UNIT.Y}`"
           class="w-50"
           disabled
           :clearable="false"
@@ -107,15 +107,23 @@ import useMaterialValidation from '@/composables/useMaterialValidation'
 
 const store = useStore()
 const material = computed(() => store.getters['assets/material'])
-const { invalidation, validate } = useMaterialValidation(material)
+const immediateTotalInventoryQty = computed(
+  () => store.getters['assets/immediateTotalInventoryQty']
+)
+const { invalidation, validate } = useMaterialValidation(material, [
+  'sampleCardsRemainingQty',
+  'sampleCardsLocation',
+  'hangersRemainingQty',
+  'hangersLocation',
+  'inventoryList',
+])
 
 const {
   inventoryUnitList,
   addNewInventory,
   removeInventory,
-  totalInventory,
   updateInventoryListUnit,
-} = useMaterialEdit(material.value)
+} = useMaterialEdit()
 
 watch(
   () => material.value,
