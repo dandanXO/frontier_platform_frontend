@@ -18,20 +18,7 @@ div
       :disabled="status !== COMPLETED"
       @click="openModalViewer"
     ) {{ $t('UU0006') }}
-    div(
-      v-if="status === U3M_STATUS.COMPLETED"
-      class="inline-flex text-body2 text-cyan-400 gap-2 ml-4"
-    )
-      span(
-        class="inline-flex items-center underline cursor-pointer"
-        @click="downloadU3m(zipUrl)"
-      ) {{ $t('EE0081') }}
-        f-svg-icon(iconName="u3m_download" size="20")
-      span(
-        class="inline-flex items-center underline cursor-pointer"
-        @click="downloadU3m(u3maUrl)"
-      ) {{ $t('EE0082') }}
-        f-svg-icon(iconName="u3m_download" size="20")
+    material-u3m-files(:u3m="material.u3m" :download-u3m="downloadU3m")
   model-editor(
     v-if="showModelEditor"
     :dpi="dpi"
@@ -48,6 +35,7 @@ div
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { toRefs, onMounted, onUnmounted, ref } from 'vue'
+import MaterialU3mFiles from '@/components/common/material/u3m/MaterialU3mFiles.vue'
 import { U3M_STATUS } from '@/utils/constants'
 import { downloadDataURLFile } from '@/utils/fileOperator'
 
@@ -70,8 +58,6 @@ const { t } = useI18n()
 const store = useStore()
 const {
   status,
-  zipUrl,
-  u3maUrl,
   u3mSpecUrl,
   baseImgUrl,
   normalImgUrl,

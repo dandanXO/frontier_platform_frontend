@@ -33,20 +33,7 @@ div
       :disabled="!actionButton.clickHandler"
       @click="actionButton.clickHandler"
     ) {{ actionButton.text }}
-    div(
-      v-if="material.u3m.status === COMPLETED"
-      class="flex text-body2 text-cyan-400 gap-2 ml-4"
-    )
-      span(
-        class="inline-flex items-center underline cursor-pointer"
-        @click="downloadU3m(material.u3m.zipUrl)"
-      ) {{ $t('EE0081') }}
-        f-svg-icon(iconName="u3m_download" size="20")
-      span(
-        class="inline-flex items-center underline cursor-pointer"
-        @click="downloadU3m(material.u3m.u3maUrl)"
-      ) {{ $t('EE0082') }}
-        f-svg-icon(iconName="u3m_download" size="20")
+    material-u3m-files(:u3m="material.u3m")
   div(
     v-if="material.u3m.status === COMPLETED"
     class="text-grey-900 flex items-center cursor-pointer mt-5.5"
@@ -91,10 +78,10 @@ div
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
-import { U3M_STATUS } from '@/utils/constants'
+import MaterialU3mFiles from '@/components/common/material/u3m/MaterialU3mFiles.vue'
 import useAssets from '@/composables/useAssets'
-import { downloadDataURLFile } from '@/utils/fileOperator'
 import useNavigation from '@/composables/useNavigation'
+import { U3M_STATUS } from '@/utils/constants'
 
 const props = defineProps({
   material: {
@@ -124,11 +111,6 @@ const haveQuota = computed(() => {
 const hasNotCreatedU3M = computed(() =>
   [INITIAL, UNQUALIFIED].includes(props.material.u3m.status)
 )
-
-const downloadU3m = async (url) => {
-  const fileName = url.split('/')[url.split('/').length - 1]
-  downloadDataURLFile(url, fileName)
-}
 
 const handleCreateU3m = () => {
   create3DMaterial.func(props.material)

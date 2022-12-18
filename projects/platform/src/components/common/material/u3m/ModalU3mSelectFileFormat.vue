@@ -31,12 +31,16 @@ const { t } = useI18n()
 const store = useStore()
 const formatOptions = [
   {
-    name: t('EE0081'),
+    name: t('UU0005'),
     value: 'zipUrl',
   },
   {
-    name: t('EE0082'),
+    name: t('UU0058'),
     value: 'u3maUrl',
+  },
+  {
+    name: t('UU0129'),
+    value: 'gltfUrl',
   },
 ]
 const selectedFormat = ref(formatOptions[0].value)

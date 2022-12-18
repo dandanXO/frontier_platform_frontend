@@ -11,6 +11,7 @@ modal-behavior(
     f-scrollbar-container(class="max-h-89.5 -mx-5 px-5")
       div(
         v-for="(material, index) in failedList"
+        :key="material.materialId"
         class="flex gap-3 border-grey-200 py-2.5 text-body2 text-grey-900 leading-1.6"
         :class="{ 'border-b': index !== failedList.length - 1 }"
       )
