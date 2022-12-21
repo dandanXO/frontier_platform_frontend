@@ -46,8 +46,8 @@ f-input-container(
           :class="leftDropdownOption.width"
         )
   div(
-    :class="classMain"
-    class="border rounded flex items-center"
+    :class="[...classMain, { 'relative z-1': STATE.FOCUS === state }]"
+    class="border-[1.5px] rounded flex items-center"
     @mouseenter="isHover = true"
     @mouseleave="isHover = false"
   )
@@ -93,7 +93,7 @@ f-input-container(
         f-svg-icon(iconName="keyboard_arrow_down" size="14" class="text-grey-800")
     //- Clear Icon
     f-svg-icon(
-      v-if="(clearable && textValue !== '' && state === STATE.FOCUS) || (button?.isFile && textValue !== '')"
+      v-if="(clearable && !!textValue && state === STATE.FOCUS) || (button?.isFile && !!textValue)"
       :size="size === 'lg' ? '24' : '20'"
       iconName="cancel"
       class="text-grey-150 hover:text-grey-200 active:text-grey-300 cursor-pointer"
@@ -130,7 +130,7 @@ f-input-container(
       template(#trigger="{ isExpand }")
         div(
           v-if="isExpand"
-          class="absolute z-1 top-0 left-0 w-full h-full border rounded-r outline outline-offset-0 outline-4 outline-primary-0 border-primary-300"
+          class="absolute z-1 top-0 left-0 w-full h-full border-[1.5px] rounded-r outline outline-offset-0 outline-4 outline-primary-0 border-primary-300"
         )
         slot(
           name="slot:right-dropdown-trigger"
@@ -611,7 +611,7 @@ const classInput = computed(() => {
 
 const classAddon = computed(() => {
   const classList = [
-    'border',
+    'border-[1.5px]',
     'border-grey-150',
     'flex',
     'items-center',
@@ -638,7 +638,7 @@ const classButton = computed(() => {
       classList.push(
         'bg-grey-0',
         'text-primary-400',
-        'border',
+        'border-[1.5px]',
         'border-grey-150',
         'border-l-0'
       )

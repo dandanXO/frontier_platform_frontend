@@ -6,9 +6,10 @@ modal-behavior(
   @click:primary="openModalCreateMailGroup"
 )
   div(class="w-94")
-    div(class="flex gap-x-2 mb-7.5")
+    div(class="flex gap-x-2 mb-7.5 items-end")
       f-input-text(
         v-model:textValue="groupName"
+        :label="$t('BB0086')"
         :placeholder="$t('BB0089')"
         :hintError="isGroupNameExist ? $t('WW0001') : ''"
         required

@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-full h-full flex justify-center")
-  div(class="w-230 h-fit pb-25")
+  div(class="w-260 h-fit pb-25")
     div(class="pt-12 pb-9 flex justify-between")
       f-breadcrumb(
         :breadcrumbList="breadcrumbList"

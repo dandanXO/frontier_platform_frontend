@@ -82,7 +82,10 @@ div(
           @mouseenter="hoverOn = 'description'"
         ) {{ innerMenu.description }}
       //- Trailing Icon
-      div(class="shrink-0 w-6 h-6")
+      div(
+        v-if="hasNextLevel || (selectMode !== MULTIPLE && isSelect)"
+        class="shrink-0 w-6 h-6"
+      )
         f-svg-icon(
           v-if="hasNextLevel"
           iconName="keyboard_arrow_right"

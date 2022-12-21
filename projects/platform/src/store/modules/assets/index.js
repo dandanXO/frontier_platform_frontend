@@ -1,7 +1,11 @@
 import axios from '@/apis'
 import assetsApi from '@/apis/assets'
 import { downloadBase64File } from '@/utils/fileOperator'
-import { NODE_LOCATION } from '@/utils/constants'
+import {
+  NODE_LOCATION,
+  INVENTORY_UNIT,
+  MATERIAL_PRICING_CURRENCY,
+} from '@/utils/constants'
 import putBinaryData from '@/utils/put-binary-data'
 import Material from '@/store/reuseModules/material.js'
 import progress from './progress'
@@ -52,12 +56,25 @@ export default {
     setMaterial({ commit }, material) {
       commit('SET_material', material)
 
-      if (material.contentList && material.contentList.length === 0) {
+      // set default value for Asset Create/Edit page
+      const { contentList, inventoryList, publicPrice, privatePrice } = material
+      if (contentList && contentList.length === 0) {
         commit('ADD_content_item')
       }
-      if (material.inventoryList && material.inventoryList.length === 0) {
+      if (inventoryList && inventoryList.length === 0) {
         commit('ADD_inventory_item')
       }
+      const properties = [
+        'unit',
+        'minimumOrderQuantityUnit',
+        'minimumContainerQuantityUnit',
+      ]
+      properties.forEach((property) => {
+        publicPrice[property] = publicPrice[property] || INVENTORY_UNIT.Y
+        privatePrice[property] = privatePrice[property] || INVENTORY_UNIT.Y
+      })
+      privatePrice.currency =
+        privatePrice.currency || MATERIAL_PRICING_CURRENCY.USD
     },
     resetMaterial({ commit }) {
       commit('RESET_material')
