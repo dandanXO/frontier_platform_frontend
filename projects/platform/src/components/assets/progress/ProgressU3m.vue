@@ -131,16 +131,6 @@ f-table(
                 f-list-item(
                   @click="handleViewMaterial(item); collapsePopper()"
                 ) {{ $t('PP0016') }}
-model-editor(
-  v-if="showModelEditor"
-  :dpi="material.u3m.dpi"
-  :u3mPath="material.u3m.u3mSpecUrl"
-  :baseImgUrl="material.u3m.baseImgUrl"
-  :normalImgUrl="material.u3m.normalImgUrl"
-  :roughImgUrl="material.u3m.roughImgUrl"
-  :dispImgUrl="material.u3m.dispImgUrl"
-  @close="closeModalViewer"
-)
 </template>
 
 <script setup>
@@ -149,6 +139,7 @@ import TableStatusLabel from '@/components/assets/progress/TableStatusLabel.vue'
 import TableStatusProgress from '@/components/assets/progress/TableStatusProgress.vue'
 import { UPLOAD_PROGRESS_SORT_BY, UPLOAD_PROGRESS } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
+import useModelEditor from '@/composables/useModelEditor'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { ref, computed, reactive, watch } from 'vue'
@@ -180,7 +171,6 @@ const pagination = ref({
   totalPage: 1,
   perPageCount: 8,
 })
-const showModelEditor = ref(false)
 const queryParams = reactive({
   startDate: '',
   endDate: '',
@@ -189,6 +179,8 @@ const tableData = computed(
   () => store.getters['assets/progress/u3mProgressList']
 )
 const material = computed(() => store.getters['assets/material'])
+const u3m = computed(() => material.value.u3m)
+const { openModalModelEditor } = useModelEditor(u3m, false)
 
 const headers = [
   {
@@ -275,11 +267,7 @@ const openModalSendFeedback = () => {
 
 const openModalViewer = async (materialId) => {
   await store.dispatch('assets/getMaterial', { materialId })
-  showModelEditor.value = true
-}
-
-const closeModalViewer = () => {
-  showModelEditor.value = false
+  openModalModelEditor()
 }
 
 const openModalDownloadU3M = async (materialId) => {

@@ -18,6 +18,7 @@ const props = defineProps<{
   normalImgUrl: string
   dispImgUrl: string
   roughImgUrl: string
+  onClose: () => void
 }>()
 
 const emit = defineEmits<{ (e: 'close'): void }>()
@@ -77,10 +78,12 @@ const displayMode = ref(DISPLAY_MODE.MODEL)
 const textureType = ref(TEXTURE_TYPE.BASE)
 const handleDisplayModeChange = (v: number) => (displayMode.value = v)
 const handleTextureClick = (v: number) => (textureType.value = v)
-
-useKeyboard(displayMode, textureType, modelIndex, loadModel, () =>
+const handleClose = () => {
   emit('close')
-)
+  props.onClose()
+}
+
+useKeyboard(displayMode, textureType, modelIndex, loadModel, handleClose)
 
 const textureImages = {
   [TEXTURE_TYPE.BASE]: props.baseImgUrl,
@@ -101,7 +104,7 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
     @displayModeChange="handleDisplayModeChange"
     @modelClick="loadModel"
     @textureClick="handleTextureClick"
-    @close="emit('close')"
+    @close="handleClose"
   )
   editor-sidebar(
     v-show="displayMode === DISPLAY_MODE.MODEL"

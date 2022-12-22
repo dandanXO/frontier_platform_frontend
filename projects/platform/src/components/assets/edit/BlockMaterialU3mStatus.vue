@@ -62,26 +62,17 @@ div
     )
       f-svg-icon(:iconName="requirement.isMeet ? 'done' : 'clear'" size="16")
       p(class="text-caption ml-1.5 leading-1.6") {{ requirement.text }}
-  model-editor(
-    v-if="showModelEditor"
-    :dpi="material.u3m.dpi"
-    :u3mPath="material.u3m.u3mSpecUrl"
-    :baseImgUrl="material.u3m.baseImgUrl"
-    :normalImgUrl="material.u3m.normalImgUrl"
-    :roughImgUrl="material.u3m.roughImgUrl"
-    :dispImgUrl="material.u3m.dispImgUrl"
-    @close="closeModalViewer"
-  )
 </template>
 
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import MaterialU3mFiles from '@/components/common/material/u3m/MaterialU3mFiles.vue'
 import useAssets from '@/composables/useAssets'
 import useNavigation from '@/composables/useNavigation'
 import { U3M_STATUS } from '@/utils/constants'
+import useModelEditor from '@/composables/useModelEditor'
 
 const props = defineProps({
   material: {
@@ -90,13 +81,16 @@ const props = defineProps({
   },
 })
 
+const u3m = computed(() => props.material.u3m)
+
 const { t } = useI18n()
 const store = useStore()
 const { create3DMaterial } = useAssets()
 const { goToProgress } = useNavigation()
+const { openModalModelEditor } = useModelEditor(u3m)
+
 const { UNQUALIFIED, INITIAL, IN_QUEUE, COMPLETED, PROCESSING, UNSUCCESSFUL } =
   U3M_STATUS
-const showModelEditor = ref(false)
 
 const haveScannedImage = computed(() => {
   const { faceSideImg, backSideImg } = props.material
@@ -114,14 +108,6 @@ const hasNotCreatedU3M = computed(() =>
 
 const handleCreateU3m = () => {
   create3DMaterial.func(props.material)
-}
-
-const openModalViewer = () => {
-  showModelEditor.value = true
-}
-
-const closeModalViewer = () => {
-  showModelEditor.value = false
 }
 
 const openModalU3mInstruction = () => {
@@ -149,7 +135,7 @@ const actionButton = computed(() => {
 
   if (status === COMPLETED) {
     text = t('UU0006')
-    clickHandler = openModalViewer
+    clickHandler = openModalModelEditor
     buttonType = 'secondary'
   } else if (status === UNSUCCESSFUL) {
     text = t('UU0082')

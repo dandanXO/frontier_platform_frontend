@@ -35,28 +35,19 @@ div
       size="md"
       type="secondary"
       :disabled="status !== COMPLETED"
-      @click="openModalViewer"
+      @click="openModalModelEditor"
     ) {{ $t('UU0006') }}
     material-u3m-files(:u3m="material.u3m")
-  model-editor(
-    v-if="showModelEditor"
-    :dpi="dpi"
-    :u3mPath="u3mSpecUrl"
-    :baseImgUrl="baseImgUrl"
-    :normalImgUrl="normalImgUrl"
-    :roughImgUrl="roughImgUrl"
-    :dispImgUrl="dispImgUrl"
-    @close="closeModalViewer"
-  )
 </template>
 
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { computed, toRefs, ref, onMounted, onUnmounted } from 'vue'
+import { computed } from 'vue'
 import MaterialU3mFiles from '@/components/common/material/u3m/MaterialU3mFiles.vue'
 import { U3M_STATUS } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
+import useModelEditor from '@/composables/useModelEditor'
 
 const props = defineProps({
   material: {
@@ -65,21 +56,15 @@ const props = defineProps({
   },
 })
 
+const u3m = computed(() => props.material.u3m)
+const status = computed(() => u3m.value.status)
+
 const { t } = useI18n()
 const store = useStore()
 const { goToProgress } = useNavigation()
-const {
-  status,
-  u3mSpecUrl,
-  baseImgUrl,
-  normalImgUrl,
-  roughImgUrl,
-  dispImgUrl,
-  dpi,
-} = toRefs(props.material.u3m)
+const { openModalModelEditor } = useModelEditor(u3m)
 const { UNQUALIFIED, INITIAL, IN_QUEUE, COMPLETED, PROCESSING, UNSUCCESSFUL } =
   U3M_STATUS
-const showModelEditor = ref(false)
 
 const openModalU3mInstruction = () => {
   store.dispatch('helper/openModalBehavior', {
@@ -117,22 +102,4 @@ const label = computed(() => {
 
   return { text, color }
 })
-
-const openModalViewer = () => {
-  showModelEditor.value = true
-}
-
-const closeModalViewer = () => {
-  showModelEditor.value = false
-}
-
-const keyDownHandler = (e) => {
-  if (e.key === ' ') {
-    showModelEditor.value = true
-    e.preventDefault()
-  }
-}
-
-onMounted(() => window.addEventListener('keydown', keyDownHandler))
-onUnmounted(() => window.removeEventListener('keydown', keyDownHandler))
 </script>
