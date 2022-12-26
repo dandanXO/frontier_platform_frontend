@@ -504,12 +504,7 @@ export default {
         func: 'generateU3m',
         params: tempParams,
       })
-      const { u3m } = data.result.material
-      dispatch('setAssetsModule', {
-        material: {
-          u3m,
-        },
-      })
+      dispatch('setAssetsModule', data.result)
     },
 
     /**
