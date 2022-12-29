@@ -38,7 +38,7 @@ const downloadU3m = props.downloadU3m || defaultDownloadU3m
 
 const items = [
   { name: t('UU0005'), url: props.u3m.zipUrl },
-  { name: t('UU0058'), url: props.u3m.zipUrl },
+  { name: t('UU0058'), url: props.u3m.u3maUrl },
   { name: t('UU0129'), url: props.u3m.gltfUrl },
 ]
 </script>
