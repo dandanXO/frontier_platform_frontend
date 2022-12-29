@@ -123,7 +123,7 @@ f-input-container(
     f-popper(
       v-else-if="hasRightDropdown"
       placement="bottom-start"
-      class="border-l-0 rounded-r relative"
+      class="border-l-0 rounded-r relative hover:bg-grey-50"
       :disabled="disabled"
       :class="classAddon"
     )

@@ -44,7 +44,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
             f-input-text(
               v-model:textValue="material.weight"
               inputType="number"
-              class="w-50"
+              class="w-69"
               data-cy="weight"
               :hintError="invalidation.weight"
               v-model:rightSelectValue="material.weightUnit"
@@ -56,7 +56,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
               v-model:textValue="material.weightGy"
               inputType="number"
               :placeholder="$t('DD0017')"
-              class="w-50"
+              class="w-53.5"
               :hintError="invalidation.weightGy"
               :addOnRight="$t('RR0018')"
             )
@@ -65,7 +65,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
           required
           v-model:textValue="material.width"
           inputType="number"
-          class="w-50"
+          class="w-60.5"
           data-cy="width"
           :hintError="invalidation.width"
           :addOnRight="$t('RR0020')"
