@@ -131,7 +131,7 @@ div(
     div(
       v-if="filteredBlockList.length > 0"
       :class="innerMenu.scrollAreaMaxHeight"
-      class="overflow-scroll overscroll-contain"
+      class="overflow-auto overscroll-contain"
     )
       template(v-for="(block, index) in filteredBlockList")
         //- Block Title

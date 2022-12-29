@@ -22,7 +22,7 @@ div(:class="innerMenuTree.width" class="py-2 bg-grey-0 rounded drop-shadow-16")
   div(
     v-if="filteredBlockList.length > 0"
     :class="innerMenuTree.scrollAreaMaxHeight"
-    class="overflow-scroll overscroll-contain"
+    class="overflow-auto overscroll-contain"
   )
     template(v-for="(block, index) in filteredBlockList")
       //- Block Title
