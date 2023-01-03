@@ -405,6 +405,9 @@ export default {
      * @param {boolean} params.isExchange
      * @param {object} params.faceSideCropImg - file object
      * @param {object} params.backSideCropImg - file object
+     * @param {object} params.faceSideCropImageRecord
+     * @param {object} params.backSideCropImageRecord
+     *
      */
     async updateScannedImage({ getters, dispatch }, params) {
       const { faceSideCropImg, backSideCropImg } = params
@@ -459,6 +462,8 @@ export default {
      * @param {number} params.isAutoRepeat
      * @param {object} params.faceSideCropImg - file object
      * @param {object} params.backSideCropImg - file object
+     * @param {string?} params.faceSideCropImageRecord
+     * @param {string?} params.backSideCropImageRecord
      */
     async generateU3m({ getters, dispatch }, params) {
       const { faceSideCropImg, backSideCropImg } = params

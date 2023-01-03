@@ -10,39 +10,40 @@ fullscreen-header
       @click:secondary="isAtSecondStep ? goBack() : closeModal()"
     )
   template(#content)
-    template(v-for="cropper in croppers")
+    template(v-for="side in sides" :key="side.sideName")
       div(
-        v-show="cropper.ref === currentSide"
+        v-show="side.sideName === currentSide"
         class="flex h-full justify-center items-center"
-        :class="[cropper.ref]"
+        :class="[side.sideName]"
       )
         div
-          div(class="mb-4.5 text-center text-grey-900 text-body2 font-bold") {{ cropper.title }}
+          div(class="mb-4.5 text-center text-grey-900 text-body2 font-bold") {{ side.title }}
           cropper-default-layout(
             class="w-70"
             scaleUnit="cm"
-            :scaleInputStep="0.1"
-            :scaleStart="4"
-            :scaleRange="[1, 21]"
-            :config="cropper.config"
-            @update:rotateDeg="cropper.config.rotateDeg = $event"
-            @update:scaleRatio="handleUpdateScaleRatio(cropper, $event)"
+            :scaleInputStep="scaleOptions.step"
+            :scaleStart="side.scaleStartInCm"
+            :scaleRange="[scaleOptions.min, scaleOptions.max]"
+            :rotateStart="side.rotateStart"
+            :config="side.config"
+            @update:rotateDeg="side.config.rotateDeg = $event"
+            @update:scaleRatio="handleUpdateScaleSize(side, $event)"
           )
             template(#imageCropArea="{ innerScaleSize }")
               image-crop-area(
-                :ref="(el) => handleRefUpdate(cropper.ref, el)"
-                :config="cropper.config"
+                :ref="(el) => handleRefUpdate(side.sideName, el)"
+                :config="side.config"
                 :cropRectSize="cropRectSize"
-                @update:options="Object.assign(cropper.config.options, $event)"
+                @update:options="Object.assign(side.config.options, $event)"
               )
                 div(class="mt-1 absolute w-full")
                   div(class="h-2 flex items-center border-r-2 border-l-2 border-grey-900")
                     div(class="h-0.5 bg-grey-900 w-full")
                   div(class="text-caption text-grey-900 font-bold text-center") {{ `${innerScaleSize} cm` }}
         div(class="w-125 h-125 bg-grey-200 ml-21 grid grid-cols-3 grid-rows-3")
-          div(v-for="i in 9" class="overflow-hidden")
+          div(v-for="i in 9" class="overflow-hidden" :key="i")
             cropped-image(
-              :config="cropper.config"
+              :config="side.config"
               :previewScaleRatio="previewScaleRatio"
               :movable="false"
             )
@@ -50,44 +51,74 @@ fullscreen-header
       div(ref="previewRect")
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import { ref, computed, reactive, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import useMaterialImage from '@/composables/useMaterialImage'
 import useNavigation from '@/composables/useNavigation'
 import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import CroppedImage from '@/components/common/cropper/CroppedImage.vue'
 import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
-import { Cropper } from '@/utils/cropper'
+import { Cropper, pixelToCm } from '@/utils/cropper'
+import type {
+  Side,
+  SideName,
+  U3mCropRecord,
+  MaterialImage,
+} from '@/utils/cropper'
+import { MODAL_TYPE } from '@/utils/constants'
+
+interface U3mSide extends Side {
+  title: string
+  scaleSizeInCm: number
+  scaleStartInCm: number
+}
 
 const { t } = useI18n()
 const store = useStore()
 const { goToProgress } = useNavigation()
-const previewRect = ref(null)
-const refFaceSide = ref(null)
-const refBackSide = ref(null)
+const previewRect = ref<HTMLDivElement | null>(null)
+
+const refFaceSide = ref<InstanceType<typeof ImageCropArea> | null>(null)
+const refBackSide = ref<InstanceType<typeof ImageCropArea> | null>(null)
+
 const material = computed(() => store.getters['assets/material'])
-const { faceSideImg, backSideImg } = material.value
+const {
+  faceSideImg,
+  backSideImg,
+}: {
+  faceSideImg: MaterialImage
+  backSideImg: MaterialImage
+} = material.value
 const cropRectSize = 176
-const pxPerCm = 2.54 // 1 dpi = 0.393701 pixel/cm; 1 pixel/cm = 2.54 dpi
-const croppers = reactive([])
-const faceSideConfig = reactive({})
-const backSideConfig = reactive({})
+const faceSide = ref<U3mSide>()
+const backSide = ref<U3mSide>()
+const sides = computed(() => {
+  return [faceSide.value, backSide.value].filter((s) => !!s) as U3mSide[]
+})
 const previewScaleRatio = computed(() =>
   previewRect.value ? previewRect.value.clientWidth / cropRectSize : 1
 )
 
-let faceSideCropImg = null
-let backSideCropImg = null
+const defaultScaleSizeInCm = 4
+
+const scaleOptions = {
+  min: 1,
+  max: 21,
+  step: 0.1,
+}
+
+let faceSideCropImg: File | null = null
+let backSideCropImg: File | null = null
 
 const { isDoubleSideMaterial, isFaceSideMaterial, faceSideUrl, backSideUrl } =
   useMaterialImage(material.value, 'u3m')
 
 const hasNext = ref(isDoubleSideMaterial && faceSideUrl && backSideUrl)
 const isAtSecondStep = ref(false)
-const currentSide = computed(() => {
+const currentSide = computed<SideName>(() => {
   return isFaceSideMaterial || (isDoubleSideMaterial && !isAtSecondStep.value)
     ? 'refFaceSide'
     : 'refBackSide'
@@ -106,12 +137,23 @@ const goBack = () => {
   isAtSecondStep.value = false
 }
 
-const handleUpdateScaleRatio = (cropper, event) => {
-  const width2Cm = cropper.config.image?.width * (pxPerCm / cropper.config.dpi)
-  const height2Cm =
-    cropper.config.image?.height * (pxPerCm / cropper.config.dpi)
-  const mainRuler = width2Cm > height2Cm ? height2Cm : width2Cm
-  cropper.config.scaleRatio = mainRuler / event
+const handleUpdateScaleSize = (side: U3mSide, newScaleSizeInCm: number) => {
+  if (
+    newScaleSizeInCm > scaleOptions.max ||
+    newScaleSizeInCm < scaleOptions.min
+  ) {
+    return
+  }
+
+  const image = side.config.image
+  const widthInPixel = image.width
+  const heightInPixel = image.height
+  const dpi = side.config.dpi
+  const widthInCm = pixelToCm(widthInPixel, dpi)
+  const heightInCm = pixelToCm(heightInPixel, dpi)
+  const mainRulerInCm = Math.min(widthInCm, heightInCm)
+  side.config.scaleRatio = mainRulerInCm / newScaleSizeInCm
+  side.scaleSizeInCm = newScaleSizeInCm
 }
 
 const confirm = async () => {
@@ -122,17 +164,35 @@ const confirm = async () => {
     backSideCropImg = await refBackSide.value?.cropImage()
   }
 
+  const toRecord = (side?: U3mSide): U3mCropRecord | null => {
+    if (!side) {
+      return null
+    }
+
+    const { options, rotateDeg } = side.config
+    return {
+      squareCropRecord: {
+        x: Number(options.x.toFixed(1)),
+        y: Number(options.y.toFixed(1)),
+        rotateDeg: Number(rotateDeg.toFixed(1)),
+        scaleRatio: Number(side.scaleSizeInCm.toFixed(1)),
+      },
+    }
+  }
+
   await store.dispatch('assets/generateU3m', {
     faceSideCropImg,
     backSideCropImg,
     isAutoRepeat: false,
+    faceSideCropImageRecord: toRecord(faceSide.value),
+    backSideCropImageRecord: toRecord(backSide.value),
   })
 
   store.dispatch('helper/closeModalLoading')
   closeModal()
 
   store.dispatch('helper/openModalConfirm', {
-    type: 2,
+    type: MODAL_TYPE.LOADING,
     header: t('EE0121'),
     contentText: t('EE0122', { RR0008: t('RR0008') }),
     primaryBtnText: t('UU0103'),
@@ -141,11 +201,14 @@ const confirm = async () => {
   })
 }
 
-const handleRefUpdate = (ref, el) => {
-  if (ref === 'refFaceSide') {
+const handleRefUpdate = (
+  sideName: SideName,
+  el: InstanceType<typeof ImageCropArea>
+) => {
+  if (sideName === 'refFaceSide') {
     refFaceSide.value = el
   }
-  if (ref === 'refBackSide') {
+  if (sideName === 'refBackSide') {
     refBackSide.value = el
   }
 }
@@ -153,35 +216,55 @@ const handleRefUpdate = (ref, el) => {
 const closeModal = () => store.dispatch('helper/closeModal')
 
 onMounted(async () => {
-  if (faceSideUrl) {
-    const faceSideCropper = new Cropper({
-      src: faceSideUrl,
-      dpi: faceSideImg.dpi,
+  const getSide = async (
+    sideName: SideName,
+    sideTitle: string,
+    imageSrc: string,
+    image: MaterialImage
+  ): Promise<U3mSide> => {
+    const sideCropper = new Cropper({
+      src: imageSrc,
+      dpi: image.dpi,
       cropRectSize,
     })
-    await faceSideCropper.formatImage()
-
-    Object.assign(faceSideConfig, {
-      ref: 'refFaceSide',
-      title: t('EE0051'),
-      config: faceSideCropper.config,
-    })
-    croppers.push(faceSideConfig)
+    await sideCropper.formatImage()
+    const { config } = sideCropper
+    const widthInCm = pixelToCm(config.image.width, config.dpi)
+    const scaleSizeInCm =
+      image.u3mCropRecord.squareCropRecord?.scaleRatio || defaultScaleSizeInCm
+    config.scaleRatio = widthInCm / scaleSizeInCm
+    if (image.u3mCropRecord.squareCropRecord) {
+      const { x, y, rotateDeg } = image.u3mCropRecord.squareCropRecord
+      config.options.x = x
+      config.options.y = y
+      config.rotateDeg = rotateDeg
+    }
+    return {
+      sideName,
+      title: sideTitle,
+      config,
+      scaleSizeInCm,
+      scaleStartInCm: scaleSizeInCm,
+      rotateStart: config.rotateDeg,
+    }
   }
-  if (backSideUrl) {
-    const backSideCropper = new Cropper({
-      src: backSideUrl,
-      dpi: backSideImg.dpi,
-      cropRectSize,
-    })
-    await backSideCropper.formatImage()
 
-    Object.assign(backSideConfig, {
-      ref: 'refBackSide',
-      title: t('EE0052'),
-      config: backSideCropper.config,
-    })
-    croppers.push(backSideConfig)
+  if (faceSideUrl) {
+    faceSide.value = await getSide(
+      'refFaceSide',
+      t('EE0051'),
+      faceSideUrl,
+      faceSideImg
+    )
+  }
+
+  if (backSideUrl) {
+    backSide.value = await getSide(
+      'refBackSide',
+      t('EE0052'),
+      backSideUrl,
+      backSideImg
+    )
   }
 })
 </script>

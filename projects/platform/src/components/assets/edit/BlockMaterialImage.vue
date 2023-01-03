@@ -154,16 +154,8 @@ const openModalEditImage = async () => {
   store.dispatch('helper/pushModalBehavior', {
     component: 'modal-edit-scanned-image',
     properties: {
-      afterCropHandler: async ({
-        faceSideCropImg,
-        backSideCropImg,
-        isExchange,
-      }) => {
-        await store.dispatch('assets/updateScannedImage', {
-          faceSideCropImg,
-          backSideCropImg,
-          isExchange,
-        })
+      afterCropHandler: async (params) => {
+        await store.dispatch('assets/updateScannedImage', params)
         store.dispatch('helper/reloadInnerApp')
       },
     },

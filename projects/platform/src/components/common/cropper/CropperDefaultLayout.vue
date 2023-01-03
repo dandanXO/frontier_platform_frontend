@@ -81,6 +81,9 @@ const props = defineProps({
   scaleStart: {
     type: Number,
   },
+  rotateStart: {
+    type: Number,
+  },
 })
 
 const emit = defineEmits([
@@ -126,7 +129,11 @@ const formattedRotateDeg = computed({
   },
 })
 
-const rotateDirty = computed(() => innerRotateDeg.value !== 0)
+const rotateDirty = computed(() =>
+  props.rotateStart
+    ? formattedRotateDeg.value !== props.rotateStart
+    : formattedRotateDeg.value !== 0
+)
 const scaleDirty = computed(() =>
   props.scaleStart
     ? scaleValue.value !== props.scaleStart
@@ -155,7 +162,7 @@ const handleRotateChange = (rotate) => {
 }
 
 const resetRotate = () => {
-  refRotateDeg.value.setValue(0)
+  refRotateDeg.value.setValue(props.rotateStart || 0)
 }
 
 const resetScale = () => {

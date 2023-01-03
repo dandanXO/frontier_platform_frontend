@@ -1,4 +1,6 @@
 {
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "include": ["env.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.vue"],
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
@@ -12,12 +14,12 @@
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
+    "allowJs": true,
     "paths": {
       "@/*": ["./src/*"]
     }
   },
   "vueCompilerOptions": {
     "plugins": ["@volar/vue-language-plugin-pug"]
-  },
-  "include": ["src/**/*.js", "src/**/*.ts", "src/**/*.vue"]
+  }
 }

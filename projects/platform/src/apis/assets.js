@@ -212,6 +212,9 @@ export default {
    * @param {string?} params.tempUploadId
    * @param {string?} params.faceSideCropImgFileName
    * @param {string?} params.backSideCropImgFileName
+   * @param {object?} params.faceSideCropImageRecord - { x, y, rotateDeg, scaleRatio }
+   * @param {object?} params.backSideCropImageRecord - { x, y, rotateDeg, scaleRatio }
+   *
    */
   updateScannedImage: (type, id, params) =>
     apiWrapper('/assets/material/update/scan-image', type, id, params),
@@ -223,6 +226,8 @@ export default {
    * @param {string?} params.tempUploadId
    * @param {string?} params.faceSideCropImgFileName
    * @param {string?} params.backSideCropImgFileName
+   * @param {string?} params.faceSideCropImageRecord
+   * @param {string?} params.backSideCropImageRecord
    */
   generateU3m: (type, id, params) =>
     apiWrapper('/assets/material/update/generate-u3m', type, id, params),
