@@ -26,18 +26,25 @@ f-input-container(
             :iconName="prependIcon"
             :size="size === 'lg' ? '24' : '20'"
           )
+        //- display text
         div(class="flex-grow w-full h-full flex items-center")
           div(
             v-if="multiple && displayText.length !== 0"
             :class="classChipContainer"
           )
-            f-label(v-for="chip in displayText") {{ chip }}
+            f-tag(
+              v-for="chip in displayText"
+              :size="size === 'lg' ? 'lg' : 'sm'"
+              :isActive="isHover"
+              appendIcon="clear"
+            ) {{ chip }}
           div(
             v-else-if="!multiple && !!displayText"
             :class="classInput"
             class="flex items-center"
           )
             p(class="line-clamp-1") {{ displayText }}
+          //- placeholder
           input(
             v-else
             type="text"
@@ -46,7 +53,7 @@ f-input-container(
             class="w-full"
             :disabled="disabled"
           )
-    template(#content)
+    template(#content="{ collapsePopper }")
       div(:style="{ width: contentWidth + 'px' }" :class="classMain")
         //- Leading Visual - Icon
         div(v-if="prependIcon" :class="classIcon")
@@ -54,19 +61,19 @@ f-input-container(
             :iconName="prependIcon"
             :size="size === 'lg' ? '24' : '20'"
           )
+        //- Input
         div(
           :class="[multiple ? classChipContainer : '']"
           class="flex-grow w-full h-full flex items-center"
         )
-          //- Input
           template(v-if="multiple")
-            f-label(v-for="(chip, index) in displayText") {{ chip }}
-              f-svg-icon(
-                iconName="clear"
-                size="20"
-                class="text-grey-200 cursor-pointer ml-1"
-                @click.stop="removeChip(index)"
-              )
+            f-tag(
+              v-for="(chip, index) in displayText"
+              appendIcon="clear"
+              isActive
+              @click.stop="removeChip(index)"
+              :size="size === 'lg' ? 'lg' : 'sm'"
+            ) {{ chip }}
           input(
             :class="classInput"
             ref="refInput"
@@ -89,7 +96,7 @@ f-input-container(
         ref="refContextualMenu"
         class="absolute top-full"
         v-model:inputSelectValue="innerSelectValue"
-        @click:menu="select($event)"
+        @click:menu="!multiple && collapsePopper()"
         :canAddNew="canAddNew"
         :selectMode="multiple ? MULTIPLE : SINGLE_CANCEL"
         :menuTree="dropdownMenuTree"
@@ -414,14 +421,6 @@ const refContextualMenu = ref(null)
 
 const setSearchInput = (searchInput) => {
   refContextualMenu.value.setSearchInput(searchInput)
-}
-
-const select = (menu) => {
-  if (props.multiple) {
-    return
-  }
-
-  inputText.value = menu.title
 }
 
 const addNewMenu = async () => {

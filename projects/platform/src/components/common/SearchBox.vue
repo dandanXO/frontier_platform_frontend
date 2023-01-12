@@ -36,7 +36,7 @@ div(class="grid")
     //- f-svg-icon(size="24" iconName="camera_border" class="text-grey-900 cursor-pointer")
   slider(v-if="innerTagList.length > 0")
     div(class="flex items-center gap-x-2 pb-5 pl-7.5")
-      f-tag(
+      f-label(
         v-for="tag in innerTagList"
         size="lg"
         @click="selectTag(tag)"

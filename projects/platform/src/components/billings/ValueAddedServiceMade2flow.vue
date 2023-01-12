@@ -26,7 +26,7 @@ div(class="w-full pt-3")
                 class="text-cyan-500"
               ) {{ made2flow.providerName }}
       div(class="flex gap-2")
-        f-tag(
+        f-label(
           v-for="(tag, index) in tagList"
           :active="indexOfActiveTag === index"
           @click="indexOfActiveTag = index"

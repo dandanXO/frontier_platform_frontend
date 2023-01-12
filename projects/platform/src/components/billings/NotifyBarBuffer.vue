@@ -15,7 +15,7 @@ div(
         template(#RR0139)
           span(class="font-bold") {{ $t('RR0139') }}
   div(class="flex items-center")
-    f-tag(
+    f-label(
       v-if="planType.BASIC || planType.PRO"
       size="lg"
       @click="openModalPaymentLastMonthFail"

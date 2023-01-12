@@ -14,7 +14,7 @@ div
     div
       h5(class="text-h5 font-bold text-grey-900 pb-5") {{ $t('RR0133') }}
       div(class="flex flex-wrap gap-x-2 gap-y-3")
-        f-label(
+        f-tag(
           v-for="tag in [...material.publicTagList, ...material.aiTagList]"
         ) {{ tag }}
     div
@@ -33,7 +33,7 @@ div
         div
           p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('EE0129') }}
           div(class="flex flex-wrap gap-x-2 gap-y-3")
-            f-label(v-for="tag in material.certificateList") {{ tag.name }}
+            f-tag(v-for="tag in material.certificateList") {{ tag.name }}
         div
           p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('EE0130') }}
           div(v-if="attachmentSortedList.length > 0" class="flex flex-wrap gap-5")

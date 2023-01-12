@@ -13,17 +13,17 @@ div
           div
             p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('RR0027') }}
             div(class="flex flex-wrap gap-x-2 gap-y-3")
-              f-label(v-for="tag in material.publicTagList") {{ tag }}
+              f-tag(v-for="tag in material.publicTagList") {{ tag }}
           div(class="pt-7 pb-10")
             p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('RR0071') }}
             div(class="flex flex-wrap gap-x-2 gap-y-3")
-              f-label(v-for="tag in material.aiTagList") {{ tag }}
+              f-tag(v-for="tag in material.aiTagList") {{ tag }}
           div(class="rounded-md bg-grey-50 px-5 py-7.5")
             h6(class="text-h6 font-bold text-grey-600") {{ $t('EE0026') }}
             div(class="pt-7.5")
               p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('RR0028') }}
               div(class="flex flex-wrap gap-x-2 gap-y-3")
-                f-label(v-for="tag in material.privateTagList") {{ tag }}
+                f-tag(v-for="tag in material.privateTagList") {{ tag }}
             div(class="pt-17.5")
               p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('RR0029') }}
               p(class="text-body2 text-grey-900 leading-1.6") {{ material.remark }}
@@ -91,7 +91,7 @@ div
           div(class="pb-10")
             p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('EE0129') }}
             div(class="flex flex-wrap gap-x-2 gap-y-3")
-              f-label(v-for="tag in material.certificateList") {{ tag.name }}
+              f-tag(v-for="tag in material.certificateList") {{ tag.name }}
           div
             p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('EE0130') }}
             div(v-if="attachmentSortedList.length > 0" class="flex flex-wrap gap-5")

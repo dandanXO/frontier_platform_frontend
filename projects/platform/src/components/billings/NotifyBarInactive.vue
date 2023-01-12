@@ -17,7 +17,7 @@ div(
     h6(v-else-if="planStatus.TRANSITION" class="text-h6 ml-3") {{ $t('OO0058') }}
       span(class="font-bold pl-1") {{ deactivatedDate }}
   div(class="flex items-center")
-    f-tag(
+    f-label(
       v-permission="FUNC_ID.VISIT_BILLING_PAGE"
       v-if="planStatus.INACTIVE && $route.name !== 'Billings'"
       size="lg"

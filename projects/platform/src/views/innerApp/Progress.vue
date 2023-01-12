@@ -15,7 +15,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
   )
     template(#default="{ currentTab }")
       div(class="flex items-center gap-x-2 pt-4 pb-3")
-        f-tag(
+        f-label(
           v-for="status in statusList"
           size="lg"
           @click="selectedStatus = status.id"
