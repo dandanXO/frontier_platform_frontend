@@ -130,6 +130,7 @@ const sortMenuTree = computed(() => {
             selectValue: value,
             disabled,
             tooltip,
+            tooltipPlacement: 'top',
           })
         ),
       },

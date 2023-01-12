@@ -8,7 +8,7 @@ div(
   @click.stop="clickMenuHandler"
 )
   f-tooltip(
-    placement="right"
+    :placement="innerMenu.tooltipPlacement"
     isNotFitWidth
     @mouseenter="hasNextLevel && expandMenu()"
     class="w-full flex items-center px-4"
@@ -213,6 +213,7 @@ const innerMenu = computed(() => {
     labelColor: '',
     clickHandler: () => {},
     tooltip: '',
+    tooltipPlacement: 'right',
     searchEnable: false,
     button: null,
     width: 'w-fit',

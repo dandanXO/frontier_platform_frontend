@@ -122,6 +122,7 @@ const props = defineProps({
    *          flag: String (URL),
    *          clickHandler: Function,
    *          tooltip: String,
+   *          tooltipPlacement: String,
    *          searchEnable: Boolean,
    *          button: {
    *            position: String, // top or bottom
@@ -159,7 +160,7 @@ const innerMenuTree = computed(() => {
     searchEnable: false,
     button: null,
     width: 'w-fit',
-    scrollAreaMaxHeight: 'max-h-40',
+    scrollAreaMaxHeight: 'max-h-100',
   }
   return Object.assign({}, defaultMenuTree, props.menuTree)
 })

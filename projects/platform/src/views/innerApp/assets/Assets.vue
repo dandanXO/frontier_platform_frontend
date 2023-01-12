@@ -110,8 +110,8 @@ const optionSort = computed(() => {
     LAND_USE_RESULTS,
     RELEVANCE,
   } = SORT_BY.value
-  const valueAddedService = computed(
-    () => store.getters['polling/valueAddedService']
+  const made2flowPlanStatus = computed(
+    () => store.getters['polling/valueAddedService'].made2flow.planStatus
   )
   return {
     base: [
@@ -120,18 +120,18 @@ const optionSort = computed(() => {
       MATERIAL_NO_A_Z,
       {
         ...GHG_RESULTS,
-        disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
-        tooltip: t('VV0047'),
+        disabled: !made2flowPlanStatus.value.ACTIVATE,
+        tooltip: !made2flowPlanStatus.value.ACTIVATE && t('VV0047'),
       },
       {
         ...WATER_DEPLETION_RESULTS,
-        disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
-        tooltip: t('VV0047'),
+        disabled: !made2flowPlanStatus.value.ACTIVATE,
+        tooltip: !made2flowPlanStatus.value.ACTIVATE && t('VV0047'),
       },
       {
         ...LAND_USE_RESULTS,
-        disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
-        tooltip: t('VV0047'),
+        disabled: !made2flowPlanStatus.value.ACTIVATE,
+        tooltip: !made2flowPlanStatus.value.ACTIVATE && t('VV0047'),
       },
     ],
     keywordSearch: [RELEVANCE],
