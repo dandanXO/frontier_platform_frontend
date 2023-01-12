@@ -43,11 +43,9 @@ f-input-container(
         f-contextual-menu(
           v-model:inputSelectValue="innerLeftSelectValue"
           v-bind="leftDropdownOption"
-          :class="leftDropdownOption.width"
         )
   div(
-    :class="[...classMain, { 'relative z-1': STATE.FOCUS === state }]"
-    class="border-[1.5px] rounded flex items-center"
+    :class="classMain"
     @mouseenter="isHover = true"
     @mouseleave="isHover = false"
   )
@@ -66,7 +64,6 @@ f-input-container(
       :placeholder="placeholder"
       :class="classInput"
       :disabled="disabled"
-      class="w-full h-full flex-grow outline-none bg-transparent text-body2 leading-1.6"
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"
@@ -146,7 +143,6 @@ f-input-container(
         f-contextual-menu(
           v-model:inputSelectValue="innerRightSelectValue"
           v-bind="rightDropdownOption"
-          :class="rightDropdownOption.width"
         )
     //-
     button(
@@ -170,9 +166,10 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed, useSlots, watch, onUpdated, onMounted } from 'vue'
+import { ref, toRefs, computed, useSlots } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { CONTEXTUAL_MENU_MODE } from '../../constants.js'
+import useInput from '../useInput'
 const { te } = useI18n()
 const slots = useSlots()
 
@@ -269,7 +266,6 @@ const props = defineProps({
   leftDropdownOption: {
     type: Object,
     default: () => ({
-      width: 'w-35',
       selectMode: 0,
       menuTree: () => ({}),
     }),
@@ -282,7 +278,6 @@ const props = defineProps({
   rightDropdownOption: {
     type: Object,
     default: () => ({
-      width: 'w-35',
       selectMode: 0,
       menuTree: () => ({}),
     }),
@@ -322,12 +317,23 @@ const innerTextValue = computed({
   set: (v) => emit('update:textValue', v),
 })
 
-const refInput = ref(null)
-const isFocus = ref(false)
-const isHover = ref(false)
-const isFilled = computed(() => !!innerTextValue.value)
-const isError = ref(false)
-const ruleErrorMsg = ref('')
+const { rules, hintError, disabled } = toRefs(props)
+const {
+  isFilled,
+  isFocus,
+  isHover,
+  isError,
+  ruleErrorMsg,
+  state,
+  STATE,
+  classTransition,
+} = useInput({
+  slots,
+  inputValue: innerTextValue,
+  rules,
+  hintError,
+  disabled,
+})
 
 defineExpose({
   isError,
@@ -393,41 +399,7 @@ const rightSelectedMenu = computed(() =>
   )
 )
 
-if (props.rules.length > 0) {
-  watch(
-    () => innerTextValue.value,
-    (v) => {
-      const _rules = [...props.rules]
-      for (let i = 0; i < _rules.length; i++) {
-        const rule = _rules[i]
-        const result = rule(v)
-        if (typeof result !== 'boolean') {
-          ruleErrorMsg.value = result
-          return
-        } else {
-          ruleErrorMsg.value = ''
-        }
-      }
-    }
-  )
-}
-/**
- * Because slots isn't reactive, the only way to detect if slots have changed is to check in onUpdate and onMounted.
- *
- */
-onUpdated(() => {
-  isError.value =
-    slots['slot:hint-error'] !== undefined ||
-    !!ruleErrorMsg.value ||
-    !!props.hintError
-})
-
-onMounted(() => {
-  isError.value =
-    slots['slot:hint-error'] !== undefined ||
-    !!ruleErrorMsg.value ||
-    !!props.hintError
-})
+const refInput = ref(null)
 
 const onInput = () => {
   emit('input')
@@ -470,42 +442,18 @@ const decrease = () => {
   emit('update:textValue', textValue)
 }
 
-const STATE = {
-  DEFAULT: 0,
-  HOVER: 1,
-  FOCUS: 2,
-  DISABLED: 3,
-}
-const state = computed(() => {
-  if (props.disabled) {
-    return STATE.DISABLED
-  }
-  if (isFocus.value) {
-    return STATE.FOCUS
-  }
-  if (isHover.value) {
-    return STATE.HOVER
-  }
-
-  return STATE.DEFAULT
-})
-
-const classTransition = computed(() => {
-  switch (state.value) {
-    case STATE.HOVER:
-      return ['ease-in', 'duration-100']
-    case STATE.FOCUS:
-      return ['ease-out', 'duration-200']
-    default:
-      return []
-  }
-})
-
 const classMain = computed(() => {
-  const classList = ['outline', 'outline-none', ...classTransition.value]
+  const classList = [
+    'border-[1.5px]',
+    'rounded',
+    'flex',
+    'items-center',
+    'outline',
+    'outline-none',
+    ...classTransition.value,
+  ]
 
-  const size = props.size
-  switch (size) {
+  switch (props.size) {
     case 'md':
       classList.push('h-9', 'px-2', 'gap-x-1')
       break
@@ -527,32 +475,71 @@ const classMain = computed(() => {
         'outline-4',
         isError.value ? 'outline-red-0' : 'outline-primary-0',
         'border-primary-300',
-        'bg-grey-0'
+        'bg-grey-0',
+        'relative',
+        'z-1'
       )
       break
     case STATE.DISABLED:
-      classList.push('border-none', 'cursor-not-allowed')
-      if (
-        props.addOnLeft !== '' ||
-        props.addOnRight !== '' ||
-        hasRightDropdown.value ||
-        hasLeftDropdown.value
-      ) {
-        classList.push('bg-grey-150')
-      } else {
-        classList.push('bg-grey-100')
-      }
+      classList.push('border-none', 'cursor-not-allowed', 'bg-grey-100')
       break
   }
 
   if (isError.value) {
     classList.push('!border-red-300')
   }
+
+  if (
+    state.value === STATE.DISABLED &&
+    (props.addOnLeft !== '' ||
+      props.addOnRight !== '' ||
+      hasRightDropdown.value ||
+      hasLeftDropdown.value)
+  ) {
+    classList.push('!bg-grey-150')
+  }
   if (props.addOnLeft !== '' || hasLeftDropdown.value) {
-    classList.push('rounded-l-none')
+    classList.push('!rounded-l-none')
   }
   if (props.addOnRight !== '' || hasRightDropdown.value || props.button) {
-    classList.push('rounded-r-none')
+    classList.push('!rounded-r-none')
+  }
+
+  return classList
+})
+
+const classInput = computed(() => {
+  const classList = [
+    'w-full',
+    'h-full',
+    'flex-grow',
+    'outline-none',
+    'bg-transparent',
+    'text-body2',
+    'leading-1.6',
+  ]
+
+  switch (state.value) {
+    case STATE.DEFAULT:
+      classList.push('placeholder:text-grey-200', 'text-grey-800')
+      break
+    case STATE.HOVER:
+      classList.push('placeholder:text-grey-300', 'text-grey-900')
+      break
+    case STATE.FOCUS:
+      classList.push('placeholder:text-grey-200', 'text-grey-900')
+      break
+    case STATE.DISABLED:
+      classList.push(
+        'placeholder:text-grey-200',
+        'text-grey-200',
+        'cursor-not-allowed'
+      )
+      break
+  }
+
+  if (state.value === STATE.DISABLED && props.button?.isFile) {
+    classList.push('!text-grey-600')
   }
 
   return classList
@@ -577,32 +564,6 @@ const classIcon = computed(() => {
       break
     case STATE.DISABLED:
       classList.push('text-grey-200')
-      break
-  }
-
-  return classList
-})
-
-const classInput = computed(() => {
-  const classList = []
-
-  switch (state.value) {
-    case STATE.DEFAULT:
-      classList.push('placeholder:text-grey-200', 'text-grey-800')
-      break
-    case STATE.HOVER:
-      classList.push('placeholder:text-grey-300', 'text-grey-900')
-      break
-    case STATE.FOCUS:
-      classList.push('placeholder:text-grey-200', 'text-grey-900')
-      break
-    case STATE.DISABLED:
-      classList.push('placeholder:text-grey-200', 'cursor-not-allowed')
-      if (props.button?.isFile) {
-        classList.push('text-grey-600')
-      } else {
-        classList.push('text-grey-200')
-      }
       break
   }
 

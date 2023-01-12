@@ -60,11 +60,8 @@ div(class="pt-16 xl:pt-17.5")
         )
         f-input-select(
           v-model:selectValue="orgFormData.countryCode"
-          :optionList="countryList"
+          :dropdownMenuTree="countryMenuTree"
           :label="$t('BB0069')"
-          keyOptionDisplay="name"
-          keyOptionValue="countryCode"
-          searchBox
           class="w-85"
           required
           data-cy="org-about_country"
@@ -127,7 +124,7 @@ const {
   phone,
   phoneCountryCode,
 } = organization.value
-const countryList = computed(() => store.getters['code/countryList'])
+const countryMenuTree = computed(() => store.getters['code/countryMenuTree'])
 const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
 const orgFormData = reactive({
   orgName,

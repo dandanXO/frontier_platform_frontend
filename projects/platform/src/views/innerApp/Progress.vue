@@ -4,10 +4,8 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
     div(class="text-h6 font-bold text-grey-900 pl-1.5") {{ $t('PP0001') }}
     f-input-select(
       :selectValue="currentMenu"
-      :optionList="menuOrgOrGroup"
-      keyOptionDisplay="name"
-      keyOptionValue="path"
-      @select="toggleOrgOrGroup"
+      :dropdownMenuTree="menuOrgOrGroup"
+      @update:selectValue="toggleOrgOrGroup"
       class="w-75"
     )
   f-tabs(
@@ -75,19 +73,26 @@ const organization = computed(() => store.getters['organization/organization'])
 
 const menuOrgOrGroup = computed(() => {
   const { orgNo, orgName } = organization.value
-  return [
-    {
-      name: orgName,
-      path: `/${orgNo}/progress`,
-    },
-    ...store.getters['organization/groupList'].map((group) => {
-      const { groupId, groupName } = group
-      return {
-        name: groupName,
-        path: `/${orgNo}/${groupId}/progress`,
-      }
-    }),
-  ]
+  return {
+    width: 'w-75',
+    blockList: [
+      {
+        menuList: [
+          {
+            title: orgName,
+            selectValue: `/${orgNo}/progress`,
+          },
+          ...store.getters['organization/groupList'].map((group) => {
+            const { groupId, groupName } = group
+            return {
+              title: groupName,
+              selectValue: `/${orgNo}/${groupId}/progress`,
+            }
+          }),
+        ],
+      },
+    ],
+  }
 })
 const currentMenu = computed(() => {
   const { orgNo } = organization.value

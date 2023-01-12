@@ -7,7 +7,7 @@ f-input-container(
 )
   div(
     ref="refInput"
-    class="px-3 py-1.5 rounded border outline-none text-body2 leading-1.6 text-grey-900"
+    class="px-3 py-1.5 rounded border-[1.5px] outline-none text-body2 leading-1.6 text-grey-900"
     :class="[minHeight, disabled ? 'bg-grey-50 border-none cursor-not-allowed' : 'bg-grey-0', isError ? 'border-red-300' : 'border-grey-150']"
     :contenteditable="!disabled"
     @input="onInput"
@@ -31,7 +31,9 @@ export default {
 </script>
 
 <script setup>
-import { ref, useSlots, computed, watch, onMounted, onUpdated } from 'vue'
+import { ref, computed, toRefs, useSlots, onMounted, onUpdated } from 'vue'
+import useInput from '../useInput'
+
 const slots = useSlots()
 const props = defineProps({
   /**
@@ -96,16 +98,20 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:textValue', 'focus', 'blur', 'input'])
-
 const innerTextValue = computed({
   get: () => props.textValue,
   set: (v) => emit('update:textValue', v),
 })
+const { rules, hintError, disabled } = toRefs(props)
+const { isFocus, isError, ruleErrorMsg } = useInput({
+  slots,
+  inputValue: innerTextValue,
+  rules,
+  hintError,
+  disabled,
+})
 
 const refInput = ref(null)
-const isFocus = ref(false)
-const isError = ref(false)
-const ruleErrorMsg = ref('')
 
 defineExpose({
   isError,
@@ -124,40 +130,11 @@ const onBlur = () => {
   emit('blur')
 }
 
-if (props.rules.length > 0) {
-  watch(
-    () => innerTextValue.value,
-    (v) => {
-      const _rules = [...props.rules]
-      for (let i = 0; i < _rules.length; i++) {
-        const rule = _rules[i]
-        const result = rule(v)
-        if (typeof result !== 'boolean') {
-          ruleErrorMsg.value = result
-          return
-        } else {
-          ruleErrorMsg.value = ''
-        }
-      }
-    }
-  )
-}
-/**
- * Because slots isn't reactive, the only way to detect if slots have changed is to check in onUpdate and onMounted.
- *
- */
-onUpdated(() => {
-  isError.value =
-    slots['slot:hint-error'] !== undefined ||
-    !!ruleErrorMsg.value ||
-    !!props.hintError
-})
-
 onMounted(() => {
   refInput.value.textContent = innerTextValue.value
-  isError.value =
-    slots['slot:hint-error'] !== undefined ||
-    !!ruleErrorMsg.value ||
-    !!props.hintError
+})
+
+onUpdated(() => {
+  refInput.value.textContent = innerTextValue.value
 })
 </script>

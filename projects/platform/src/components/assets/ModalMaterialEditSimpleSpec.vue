@@ -16,13 +16,12 @@ modal-behavior(
       :rules="[$inputRules.required()]"
     )
     f-input-chips(
-      v-model:chips="material.descriptionList"
+      v-model:selectValue="material.descriptionList"
+      :dropdownMenuTree="specOptions.descriptionList"
+      @addNew="addDescriptionOption($event)"
       :label="$t('RR0014')"
-      :optionList="specOptions.descriptionList"
       :placeholder="$t('DD0016')"
-      keyOptionDisplay="name"
-      @addNewOption="addDescriptionOption($event)"
-      canAddNewOption
+      multiple
     )
     f-input-container(
       :label="$t('RR0021')"
@@ -34,16 +33,12 @@ modal-behavior(
           v-for="(content, contentItemIndex) in material.contentList"
           class="flex items-center"
         )
-          f-input-select(
+          f-input-chips(
             v-model:selectValue="content.name"
-            :optionList="specOptions.contentList"
+            @update:selectValue="selectContent($event, contentItemIndex)"
+            :dropdownMenuTree="specOptions.contentList"
+            @addNew="addContentOption($event)"
             :placeholder="$t('DD0016')"
-            @select="selectContent($event, contentItemIndex)"
-            @addNewOption="addContentOption($event)"
-            keyOptionDisplay="name"
-            keyOptionValue="name"
-            searchBox
-            canAddNewOption
             required
             class="w-100 mr-3"
             :style="{ zIndex: material.contentList.length - contentItemIndex }"
@@ -136,13 +131,12 @@ modal-behavior(
       :addOnRight="$t('RR0020')"
     )
     f-input-chips(
-      v-model:chips="material.finishList"
+      v-model:selectValue="material.finishList"
+      :dropdownMenuTree="specOptions.finishList"
+      @addNew="addFinishOption($event)"
       :label="$t('RR0022')"
-      :optionList="specOptions.finishList"
       :placeholder="$t('DD0016')"
-      keyOptionDisplay="name"
-      @addNewOption="addFinishOption($event)"
-      canAddNewOption
+      multiple
     )
 </template>
 

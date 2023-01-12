@@ -45,9 +45,18 @@ export default function useMaterialEdit() {
   const newFinishList = reactive([])
 
   const specOptions = reactive({
-    contentList: computed(() =>
-      store.getters['assets/code'].contentList.concat(newContentList)
-    ),
+    contentList: computed(() => ({
+      blockList: [
+        {
+          menuList: newContentList
+            .concat(store.getters['assets/code'].contentList)
+            .map((content) => ({
+              selectValue: content.name,
+              title: content.name,
+            })),
+        },
+      ],
+    })),
     weightUnitList: computed(() => ({
       selectMode: CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL,
       menuTree: {
@@ -62,13 +71,45 @@ export default function useMaterialEdit() {
         ],
       },
     })),
-    descriptionList: computed(() =>
-      store.getters['assets/code'].descriptionList.concat(newDescriptionList)
-    ),
-    finishList: computed(() =>
-      store.getters['assets/code'].finishList.concat(newFinishList)
-    ),
-    certificateList: store.getters['assets/code'].certificateList,
+    descriptionList: computed(() => ({
+      blockList: [
+        {
+          menuList: newDescriptionList
+            .concat(store.getters['assets/code'].descriptionList)
+            .map((description) => ({
+              title: description.name,
+              selectValue: description,
+            })),
+        },
+      ],
+    })),
+    finishList: computed(() => ({
+      blockList: [
+        {
+          menuList: newFinishList
+            .concat(store.getters['assets/code'].finishList)
+            .map((finish) => ({
+              title: finish.name,
+              selectValue: finish,
+            })),
+        },
+      ],
+    })),
+    certificateList: computed(() => ({
+      blockList: [
+        {
+          menuList: store.getters['assets/code'].certificateList.map(
+            ({ name, certificateId }) => ({
+              title: name,
+              selectValue: {
+                name,
+                certificateId,
+              },
+            })
+          ),
+        },
+      ],
+    })),
   })
 
   const addDescriptionOption = (descriptionName) => {
@@ -93,9 +134,9 @@ export default function useMaterialEdit() {
   }
 
   const selectContent = (contentName, contentItemIndex) => {
-    const content = specOptions.contentList.find(
-      (content) => content.name === contentName
-    )
+    const content = store.getters['assets/code'].contentList
+      .concat(newContentList)
+      .find((content) => content.name === contentName)
     store.commit('assets/UPDATE_content_item', {
       index: contentItemIndex,
       content,

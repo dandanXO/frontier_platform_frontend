@@ -7,12 +7,10 @@ div(class="flex flex-col items-center")
     div(class="pl-11")
       f-input-select(
         v-model:selectValue="autoText"
-        :optionList="options"
+        :dropdownMenuTree="autoTextMenuTree"
         :placeholder="$t('QQ0036')"
-        keyOptionDisplay="label"
-        keyOptionValue="value"
         class="w-82 mb-3"
-        @select="handleSelect"
+        @update:selectValue="handleSelect"
       )
       div(class="flex items-end")
         f-input-textarea(
@@ -72,24 +70,30 @@ const store = useStore()
 const text = ref('')
 const autoText = ref(null)
 
-const options = [
-  {
-    label: t('QQ0038'),
-    value: AUTO_TEXT.CUSTOM,
-  },
-  {
-    label: t('QQ0039'),
-    value: AUTO_TEXT.SAMPLE_CARD_INQUIRY,
-  },
-  {
-    label: t('QQ0040'),
-    value: AUTO_TEXT.SAMPLE_INQUIRY,
-  },
-  {
-    label: t('QQ0041'),
-    value: AUTO_TEXT.PRICE_INQUIRY,
-  },
-]
+const autoTextMenuTree = computed(() => ({
+  blockList: [
+    {
+      menuList: [
+        {
+          title: t('QQ0038'),
+          selectValue: AUTO_TEXT.CUSTOM,
+        },
+        {
+          title: t('QQ0039'),
+          selectValue: AUTO_TEXT.SAMPLE_CARD_INQUIRY,
+        },
+        {
+          title: t('QQ0040'),
+          selectValue: AUTO_TEXT.SAMPLE_INQUIRY,
+        },
+        {
+          title: t('QQ0041'),
+          selectValue: AUTO_TEXT.PRICE_INQUIRY,
+        },
+      ],
+    },
+  ],
+}))
 
 const org = computed(() => store.getters['organization/organization'])
 const moodboardCommentList = computed(

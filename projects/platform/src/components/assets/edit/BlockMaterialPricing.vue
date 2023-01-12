@@ -13,12 +13,9 @@ f-expansion-panel(class="border-b border-grey-200")
     div(class="px-15 pt-5 mb-15 grid gap-y-7.5")
       f-input-select(
         v-model:selectValue="material.publicPrice.countryCode"
-        :optionList="countryList"
+        :dropdownMenuTree="countryMenuTree"
         :label="$t('RR0042')"
         :placeholder="$t('DD0016')"
-        keyOptionDisplay="name"
-        keyOptionValue="countryCode"
-        searchBox
       )
       f-input-text(
         :label="$t('RR0043')"
@@ -69,12 +66,9 @@ f-expansion-panel(class="border-b border-grey-200")
         h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
         f-input-select(
           v-model:selectValue="material.privatePrice.countryCode"
-          :optionList="countryList"
+          :dropdownMenuTree="countryMenuTree"
           :label="$t('RR0042')"
           :placeholder="$t('DD0016')"
-          keyOptionDisplay="name"
-          keyOptionValue="countryCode"
-          searchBox
         )
         f-input-text(
           v-model:textValue="material.privatePrice.price"
@@ -146,7 +140,9 @@ export default {
   setup() {
     const store = useStore()
     const material = computed(() => store.getters['assets/material'])
-    const countryList = computed(() => store.getters['code/countryList'])
+    const countryMenuTree = computed(
+      () => store.getters['code/countryMenuTree']
+    )
 
     const { inventoryUnitList, currencyList } = useMaterialEdit()
 
@@ -161,7 +157,7 @@ export default {
     )
 
     return {
-      countryList,
+      countryMenuTree,
       material,
       INVENTORY_UNIT,
       inventoryUnitList,

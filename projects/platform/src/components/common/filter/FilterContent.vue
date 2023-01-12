@@ -20,11 +20,8 @@ filter-wrapper(
         div(v-for="(content, contentItemIndex) in contentList" class="flex items-center")
           f-input-select(
             v-model:selectValue="content.name"
-            :optionList="filterOptions.contentList"
+            :dropdownMenuTree="menuTree"
             :placeholder="$t('JJ0001')"
-            keyOptionDisplay="displayName"
-            keyOptionValue="value"
-            searchBox
             class="w-64 mr-3"
             :style="{ zIndex: contentList.length - contentItemIndex }"
           )
@@ -77,9 +74,21 @@ export default {
     const filterDirty = computed(
       () => store.getters['helper/search/filterDirty']
     )
-    const filterOptions = computed(
-      () => store.getters['helper/search/filterOptions']
-    )
+
+    const menuTree = computed(() => {
+      const { contentList } = store.getters['code/filterOptionList']
+      return {
+        width: 'w-64',
+        blockList: [
+          {
+            menuList: contentList.map(({ displayName, value }) => ({
+              title: displayName,
+              selectValue: value,
+            })),
+          },
+        ],
+      }
+    })
 
     const contentList = ref([])
 
@@ -150,7 +159,7 @@ export default {
     return {
       contentList,
       filterDirty,
-      filterOptions,
+      menuTree,
       addItem,
       removeItem,
       reset,

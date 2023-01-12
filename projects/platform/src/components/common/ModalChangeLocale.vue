@@ -9,25 +9,30 @@ modal-behavior(
   f-input-select(
     class="w-85"
     v-model:selectValue="newLocale"
-    :optionList="localeOptionList"
-    keyOptionDisplay="lang"
-    keyOptionValue="locale"
+    :dropdownMenuTree="langMenuTree"
   )
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useStore } from 'vuex'
-const localeOptionList = [
-  {
-    lang: 'English',
-    locale: 'en-US',
-  },
-  {
-    lang: '繁體中文',
-    locale: 'zh-TW',
-  },
-]
+const langMenuTree = {
+  width: 'w-85',
+  blockList: [
+    {
+      menuList: [
+        {
+          title: 'English',
+          selectValue: 'en-US',
+        },
+        {
+          title: '繁體中文',
+          selectValue: 'zh-TW',
+        },
+      ],
+    },
+  ],
+}
 
 const store = useStore()
 const originalLocale = store.getters['user/user'].locale

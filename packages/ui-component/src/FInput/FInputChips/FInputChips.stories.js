@@ -6,14 +6,42 @@ export default {
   component: FInputChips,
   args: {
     label: 'Input Chips',
-    required: true,
-    placeholder: 'Placeholder',
+    dropdownMenuTree: {
+      width: 'w-60',
+      scrollAreaMaxHeight: 'max-h-40',
+      blockList: [
+        {
+          menuList: [
+            {
+              title: 'Menu 1',
+            },
+            {
+              title: 'Menu 2 (Disabled)',
+              disabled: true,
+            },
+            {
+              title: 'Menu 3',
+            },
+            {
+              title: 'Menu 4',
+            },
+          ],
+        },
+      ],
+    },
   },
   argTypes: {
-    chips: {
+    selectValue: {
       control: { type: null },
     },
+    size: {
+      control: { type: 'radio' },
+      options: ['lg', 'md', 'sm'],
+    },
     label: {
+      control: { type: 'text' },
+    },
+    hintError: {
       control: { type: 'text' },
     },
   },
@@ -22,68 +50,56 @@ export default {
 const Template = (args) => ({
   components: { FInputChips },
   setup() {
-    const chips = ref([])
-    return { args, chips }
-  },
-  template: `
-    <f-input-chips v-model:chips="chips" v-bind="args"></f-input-chips>
-    <div> {{ chips }} </div>
-  `,
-})
+    const selectValue1 = ref()
+    const selectValue2 = ref([])
+    const dropdownMenuTree = ref({
+      width: 'w-60',
+      scrollAreaMaxHeight: 'max-h-40',
+      blockList: [
+        {
+          menuList: [
+            {
+              title: 'Menu 1',
+              selectValue: { name: 'Menu 1', value: 1 },
+            },
+            {
+              title: 'Menu 2 (Disabled)',
+              disabled: true,
+              selectValue: { name: 'Menu 2', value: 2 },
+            },
+            {
+              title: 'Menu 3',
+              selectValue: { name: 'Menu 3', value: 3 },
+            },
+            {
+              title: 'Menu 4',
+              selectValue: { name: 'Menu 4', value: 4 },
+            },
+          ],
+        },
+      ],
+    })
 
-export const ArrayOfObject = Template.bind({})
-ArrayOfObject.args = {
-  ...ArrayOfObject.args,
-  optionList: [
-    {
-      name: 'Chip 1',
-      id: 1,
-    },
-    {
-      name: 'Chip 2',
-      id: 2,
-    },
-    {
-      name: 'Chip 3',
-      id: 3,
-    },
-  ],
-}
-
-export const ArrayOfString = Template.bind({})
-ArrayOfString.args = {
-  ...ArrayOfString.args,
-  optionList: ['Chip 1', 'Chip 2', 'Chip 3'],
-}
-
-export const AddNewOption = (args) => ({
-  components: { FInputChips },
-  setup() {
-    const chips = ref([])
-    const optionList = ref([
-      {
-        name: 'Chip 1',
-        id: 1,
-      },
-      {
-        name: 'Chip 2',
-        id: 2,
-      },
-      {
-        name: 'Chip 3',
-        id: 3,
-      },
-    ])
-    const addNewOption = (name) => {
-      optionList.value.push({
-        name,
-        id: optionList.value.length + 1,
+    const addNew = (newValue) => {
+      dropdownMenuTree.value.blockList[0].menuList.push({
+        title: newValue,
+        selectValue: {
+          name: newValue,
+          value: null,
+        },
       })
     }
-    return { args, chips, optionList, addNewOption }
+
+    delete args.selectValue
+    delete args.dropdownMenuTree
+    return { args, selectValue1, selectValue2, dropdownMenuTree, addNew }
   },
   template: `
-    <f-input-chips v-model:chips="chips" v-bind="args" :optionList="optionList" canAddNewOption @addNewOption="addNewOption" ></f-input-chips>
-    <div> {{ chips }} </div>
+    <f-input-chips v-model:selectValue="selectValue1" :dropdownMenuTree="dropdownMenuTree" @addNew="addNew" v-bind="args"></f-input-chips>
+    <div>selectValue:  {{ selectValue1 }} </div>
+    <f-input-chips v-model:selectValue="selectValue2" :dropdownMenuTree="dropdownMenuTree" @addNew="addNew" multiple v-bind="args"></f-input-chips>
+    <div>selectValue:  {{ selectValue2 }} </div>
   `,
 })
+
+export const Default = Template.bind({})

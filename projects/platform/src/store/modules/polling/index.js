@@ -208,12 +208,13 @@ const actions = {
       },
     })
   },
-  async getSidebar({ rootGetters, commit, dispatch }) {
+  async getSidebar({ rootGetters, commit, dispatch }, needPolling = true) {
     const { data } = await pollingApi.getSidebar({
       orgId: rootGetters['organization/orgId'],
     })
     commit('SET_polling', data.result.polling)
-    dispatch('startPollingSidebar')
+
+    needPolling && dispatch('startPollingSidebar')
   },
   startPollingSidebar({ rootGetters, dispatch }) {
     dispatch('workerPostMessage', {

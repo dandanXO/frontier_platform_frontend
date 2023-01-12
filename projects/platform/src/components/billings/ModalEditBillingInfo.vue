@@ -34,11 +34,8 @@ modal-behavior(
       )
       f-input-select(
         v-model:selectValue="formData.countryCode"
-        :optionList="countryList"
+        :dropdownMenuTree="countryMenuTree"
         :label="$t('OO0024')"
-        keyOptionDisplay="name"
-        keyOptionValue="countryCode"
-        searchBox
         required
       )
       f-input-text(
@@ -68,7 +65,7 @@ const store = useStore()
 const formData = reactive({ ...props.billingInfo })
 const refInputRecipient = ref(null)
 const refInputEmail = ref(null)
-const countryList = computed(() => store.getters['code/countryList'])
+const countryMenuTree = computed(() => store.getters['code/countryMenuTree'])
 const availableToSave = computed(
   () =>
     !!formData.email &&

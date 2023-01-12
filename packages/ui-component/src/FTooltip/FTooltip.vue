@@ -11,7 +11,7 @@ div(
     div(
       ref="refTooltip"
       role="tooltip"
-      class="z-100 rounded bg-grey-900/80 px-2 py-1.5 max-w-85"
+      class="z-tooltip rounded bg-grey-900/80 px-2 py-1.5 max-w-85"
     )
       slot(name="content" :isActive="isActive")
 </template>

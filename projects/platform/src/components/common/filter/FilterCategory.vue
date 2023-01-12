@@ -5,7 +5,6 @@ filter-wrapper(
   :dirty="filterDirty.category"
 )
   f-contextual-menu(
-    class="w-40"
     v-model:inputSelectValue="category"
     :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_CANCEL"
     :menuTree="menuTree"
@@ -25,10 +24,12 @@ const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
 const menuTree = computed(() => {
   const { categoryList } = store.getters['code/filterOptionList']
   return {
+    width: 'w-40',
     blockList: [
       {
         menuList: categoryList.map(({ key, list }) => ({
           title: key,
+          width: 'w-40',
           blockList: [
             {
               menuList: list.map(({ displayName, value }) => ({

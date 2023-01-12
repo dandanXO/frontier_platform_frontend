@@ -11,9 +11,7 @@ modal-behavior(
     p(class="text-body2 text-grey-900 font-bold pb-1.5") {{ $t('BB0104') }}
     f-input-select(
       v-model:selectValue="currentStorage"
-      :optionList="storageOrgOrGroup"
-      keyOptionDisplay="name"
-      keyOptionValue="index"
+      :dropdownMenuTree="storageMenuTree"
       data-cy="modal-choose-storage_select"
     )
 </template>
@@ -40,37 +38,36 @@ const groupList = computed(() =>
   )
 )
 const { orgId, orgName, orgNo } = organization.value
-const currentStorage = ref(0)
-const storageOrgOrGroup = computed(() => {
-  let index = 0
-  return [
-    {
-      index,
-      name: orgName,
-      id: orgId,
-      storageLocation: STORAGE_LOCATION.ORG,
-    },
-    ...groupList.value.map((group) => {
-      const { groupId, groupName } = group
-      index++
-      return {
-        index,
-        name: groupName,
-        id: groupId,
-        storageLocation: STORAGE_LOCATION.GROUP,
-      }
-    }),
-    {
-      index: ++index,
-      name: t('BB0105'),
-      id: null,
-      storageLocation: STORAGE_LOCATION.NO_STORE,
-    },
-  ]
+const currentStorage = ref(null)
+const storageMenuTree = computed(() => {
+  return {
+    width: 'w-94',
+    blockList: [
+      {
+        menuList: [
+          {
+            title: orgName,
+            selectValue: `${STORAGE_LOCATION.ORG}-${orgId}`,
+          },
+          ...groupList.value.map((group) => {
+            const { groupId, groupName } = group
+            return {
+              title: groupName,
+              selectValue: `${STORAGE_LOCATION.GROUP}-${groupId}`,
+            }
+          }),
+          {
+            title: t('BB0105'),
+            selectValue: `${STORAGE_LOCATION.NO_STORE}-${null}`,
+          },
+        ],
+      },
+    ],
+  }
 })
 
 const deleteGroup = async () => {
-  const { id, storageLocation } = storageOrgOrGroup.value[currentStorage.value]
+  const [storageLocation, id] = currentStorage.value.split('-')
   const transferOrgId =
     storageLocation === STORAGE_LOCATION.ORG ? Number(id) : null
   const transferGroupId =

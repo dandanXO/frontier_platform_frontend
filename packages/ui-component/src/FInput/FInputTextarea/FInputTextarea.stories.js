@@ -1,19 +1,13 @@
 import FInputTextarea from './FInputTextarea.vue'
 import { ref } from 'vue'
-import FInputTextStories from '../FInputTextOld/FInputTextOld.stories'
-
-delete FInputTextStories.argTypes.inputType
-delete FInputTextStories.argTypes.clearable
-delete FInputTextStories.argTypes.size
 
 export default {
   title: 'Input/FInputTextarea',
   component: FInputTextarea,
-  args: {
-    height: '120',
-  },
   argTypes: {
-    ...FInputTextStories.argTypes,
+    textValue: {
+      control: { type: null },
+    },
   },
 }
 

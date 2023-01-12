@@ -28,6 +28,21 @@ const getters = {
     })
     return countryList
   },
+  countryMenuTree: (state) => {
+    return {
+      searchEnable: true,
+      width: 'w-85',
+      scrollAreaMaxHeight: 'max-h-72',
+      blockList: [
+        {
+          menuList: state.countryList.map((country) => ({
+            title: country.name,
+            selectValue: country.countryCode,
+          })),
+        },
+      ],
+    }
+  },
   roleList: (state) => state.roleList,
   getRoleName: (state) => (roleId) =>
     state.roleList.find((role) => role.roleId === roleId).name,

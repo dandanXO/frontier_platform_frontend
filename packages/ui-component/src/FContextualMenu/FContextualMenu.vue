@@ -19,6 +19,15 @@ div(:class="innerMenuTree.width" class="py-2 bg-grey-0 rounded drop-shadow-16")
         class="outline-none w-full text-caption text-grey-900 placeholder:text-grey-200"
       )
     div(class="w-full h-px my-1 bg-grey-150")
+  //- Add New Menu
+  template(v-if="canAddNew && !!searchInput && !menuIsExist")
+    div(class="px-4 min-h-6 flex items-center")
+      p(class="text-caption text-grey-600 break-all")
+        span Press
+        span(class="font-bold") &nbspEnter&nbsp
+        span to create "{{ searchInput }}"
+
+    div(v-if="filteredBlockList.length !== 0" class="w-full h-px my-1 bg-grey-150")
   div(
     v-if="filteredBlockList.length > 0"
     :class="innerMenuTree.scrollAreaMaxHeight"
@@ -38,7 +47,7 @@ div(:class="innerMenuTree.width" class="py-2 bg-grey-0 rounded drop-shadow-16")
         v-if="index !== filteredBlockList.length - 1"
         class="w-full h-px my-1 bg-grey-150"
       )
-  div(v-else class="h-6 py-1.5 px-4 text-caption text-grey-600") No Results Found
+  div(v-else-if="!canAddNew" class="h-6 py-1.5 px-4 text-caption text-grey-600") No Results Found
   //- Button if position is bottom
   contextual-menu-button(
     v-if="innerMenuTree.button && innerMenuTree.button.position === 'bottom'"
@@ -135,6 +144,10 @@ const props = defineProps({
     required: true,
     default: () => ({}),
   },
+  canAddNew: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const innerMenuTree = computed(() => {
@@ -146,7 +159,7 @@ const innerMenuTree = computed(() => {
     searchEnable: false,
     button: null,
     width: 'w-fit',
-    scrollAreaMaxHeight: '',
+    scrollAreaMaxHeight: 'max-h-40',
   }
   return Object.assign({}, defaultMenuTree, props.menuTree)
 })
@@ -155,7 +168,8 @@ const clickMenuHandler = (menu) => {
   if (props.selectMode === MULTIPLE) {
     const tempArr = [...props.inputSelectValue]
     const index = tempArr.findIndex(
-      (selectValue) => selectValue === menu.selectValue
+      (selectValue) =>
+        JSON.stringify(selectValue) === JSON.stringify(menu.selectValue)
     )
 
     if (!~index) {
@@ -167,7 +181,8 @@ const clickMenuHandler = (menu) => {
   } else if ([SINGLE_CANCEL, SINGLE_NONE_CANCEL].includes(props.selectMode)) {
     if (
       props.selectMode === SINGLE_CANCEL &&
-      props.inputSelectValue === menu.selectValue
+      JSON.stringify(props.inputSelectValue) ===
+        JSON.stringify(menu.selectValue)
     ) {
       emit('update:inputSelectValue', null)
     } else {
@@ -193,5 +208,19 @@ const filteredBlockList = computed(() => {
     }
   })
   return blockList
+})
+
+// invoke externally e.g. FInputChips.vue
+const setSearchInput = (v) => (searchInput.value = v)
+const menuIsExist = computed(() =>
+  innerMenuTree.value.blockList.some((block) =>
+    block.menuList.some((menu) => menu.title === searchInput.value)
+  )
+)
+
+defineExpose({
+  setSearchInput,
+  menuIsExist,
+  clickMenuHandler,
 })
 </script>

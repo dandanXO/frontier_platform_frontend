@@ -251,10 +251,15 @@ const isSelect = computed(() => {
     return false
   } else if (props.selectMode === MULTIPLE) {
     return props.inputSelectValue?.some(
-      (selectValue) => selectValue === innerMenu.value.selectValue
+      (selectValue) =>
+        JSON.stringify(selectValue) ===
+        JSON.stringify(innerMenu.value.selectValue)
     )
   } else {
-    return props.inputSelectValue === innerMenu.value.selectValue
+    return (
+      JSON.stringify(props.inputSelectValue) ===
+      JSON.stringify(innerMenu.value.selectValue)
+    )
   }
 })
 

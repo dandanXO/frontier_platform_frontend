@@ -1,64 +1,69 @@
 <template lang="pug">
-f-input-container(:required="required" :label="label" ref="refContainer")
+f-input-container(
+  :label="label"
+  :required="required"
+  :hintSupporting="hintSupporting"
+  :hintError="ruleErrorMsg || hintError"
+)
   f-popper(
     placement="bottom-start"
-    @expand="expand"
-    @collapse="collapse"
-    :class="[{ 'pointer-events-none': disabled }]"
     data-cy="input-select"
+    :disabled="disabled"
+    :offset="[0, -4]"
+    @expand="isFocus = true"
+    @collapse="isFocus = false"
   )
-    template(#trigger="{ isExpand }")
+    template(#trigger)
       div(
-        class="px-4 border rounded flex items-center"
-        :class="[isExpand ? 'border-grey-900' : 'border-grey-200', size === 'lg' ? 'h-11' : 'h-9', { 'bg-grey-100': disabled }]"
+        :class="classMain"
+        @mouseenter="isHover = true"
+        @mouseleave="isHover = false"
       )
-        div(v-if="prependIcon || slots['slot:prependIcon']" class="pr-1")
-          f-svg-icon(v-if="prependIcon" size="20" :iconName="prependIcon")
-          slot(v-else name="slot:prependIcon")
-        p(
-          class="flex-grow text-body2"
-          :class="[{ 'text-grey-600': disabled }, { 'text-grey-900': !disabled && currentIndex !== -1 }, { 'text-grey-200': !disabled && currentIndex === -1 }]"
-        ) {{ currentIndex === -1 ? placeholder : optionList[currentIndex][keyOptionDisplay] }}
-        div(class="pl-1")
-          slot(v-if="slots['slot:appendIcon']" name="slot:appendIcon")
-          f-svg-icon(
-            v-else
-            iconName="keyboard_arrow_right"
-            size="20"
-            class="transform"
-            :class="[isExpand ? '-rotate-90 text-grey-200' : 'rotate-90 text-grey-600']"
-          )
-    template(#content="{ collapsePopper }")
-      f-list(class="border border-grey-150" :style="{ width: contentWidth + 'px' }")
-        div(v-if="searchBox" class="pt-1.5 pb-1")
-          f-input-text-old(
-            v-model:textValue="searchInput"
-            size="sm"
-            prependIcon="search"
-            class="px-3.5"
-          )
-          div(class="mx-2 border-b border-grey-200 pt-2")
-        f-scrollbar-container(
-          v-if="searchedOptionList.length > 0"
-          :style="{ 'max-height': 36 * maxLength + 'px' }"
+        //- Leading Visual
+        div(
+          v-if="prependIcon || selectedMenu?.thumbnail || selectedMenu?.labelColor"
+          class="flex items-center justify-center shrink-0"
+          :class="[size === 'sm' ? 'w-5 h-5' : 'w-6 h-6']"
         )
-          f-list-item(
-            v-for="(option, index) in searchedOptionList"
-            :class="[index === currentIndex ? 'bg-grey-100' : '']"
-            @click="select(option); collapsePopper()"
-            data-cy="list-item"
+          //- Icon
+          f-svg-icon(
+            v-if="prependIcon"
+            :iconName="prependIcon"
+            :size="size === 'sm' ? '20' : '24'"
+            :class="classIcon"
           )
-            p(class="text-grey-600") {{ option[keyOptionDisplay] }}
-        div(v-if="canAddNewOption && !isOptionExist")
-          f-list-item(
-            v-if="searchInput !== ''"
-            @click="addNewOption(); collapsePopper()"
-            data-cy="list-item"
-          ) {{ searchInput }}
-        p(
-          v-if="!canAddNewOption && searchedOptionList.length === 0"
-          class="h-9 pl-7.5 text-grey-900 text-body2 flex items-center"
-        ) No search result
+          //- Thumbnail
+          img(
+            v-else-if="selectedMenu?.thumbnail"
+            :src="selectedMenu.thumbnail"
+            class="w-full h-full rounded-full"
+          )
+          //- Label Color
+          div(
+            v-else-if="selectedMenu?.labelColor"
+            :style="{ backgroundColor: selectedMenu.labelColor }"
+            class="w-full h-full rounded"
+          )
+        //- Display Text
+        div(:class="classDisplayText") {{ selectedMenu ? selectedMenu?.title : placeholder }}
+        //- Trailing Icon
+        f-svg-icon(
+          v-if="appendIcon"
+          :size="size === 'sm' ? '20' : '24'"
+          :iconName="appendIcon"
+          :class="[...classIcon, { '!text-primary-500': isFocus }]"
+        )
+    template(#content="{ collapsePopper }")
+      f-contextual-menu(
+        v-model:inputSelectValue="innerSelectValue"
+        :selectMode="canCancel ? SINGLE_CANCEL : SINGLE_NONE_CANCEL"
+        :menuTree="dropdownMenuTree"
+        @click:menu="collapsePopper"
+      )
+  template(v-if="slots['slot:hint-error']" #slot:hint-error)
+    slot(name="slot:hint-error")
+  template(v-if="slots['slot:hint-supporting']" #slot:hint-supporting)
+    slot(name="slot:hint-supporting")
 </template>
 
 <script>
@@ -68,71 +73,15 @@ export default {
 </script>
 
 <script setup>
-import { ref } from 'vue'
-import { computed } from 'vue'
-import { nextTick, useSlots } from 'vue'
+import { computed, useSlots, toRefs } from 'vue'
+import { CONTEXTUAL_MENU_MODE } from '../../constants.js'
+import useInput from '../useInput'
 
-const emit = defineEmits([
-  'expand',
-  'collapse',
-  'select',
-  'update:selectValue',
-  'addNewOption',
-])
+const { SINGLE_CANCEL, SINGLE_NONE_CANCEL } = CONTEXTUAL_MENU_MODE
+
+const slots = useSlots()
+const emit = defineEmits(['update:selectValue'])
 const props = defineProps({
-  /**
-   * v-model:selectValue
-   */
-  selectValue: {
-    required: true,
-    validator: () => true,
-  },
-  size: {
-    type: String,
-    default: 'lg',
-  },
-  searchBox: {
-    type: Boolean,
-    default: false,
-  },
-  prependIcon: {
-    type: String,
-    default: '',
-  },
-  /**
-   * ```
-   * [
-   *   {
-   *     [keyOptionDisplay]: String,
-   *     [keyOptionValue]: String,
-   *   }
-   * ]
-   * ```
-   */
-  optionList: {
-    type: Array,
-    required: true,
-  },
-  keyOptionDisplay: {
-    type: String,
-    required: true,
-  },
-  keyOptionValue: {
-    type: String,
-    required: true,
-  },
-  placeholder: {
-    type: String,
-    default: '',
-  },
-  maxLength: {
-    type: Number,
-    default: 8,
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
   /**
    * inherit from `FInputContainer.vue`
    */
@@ -150,66 +99,242 @@ const props = defineProps({
     default: false,
   },
   /**
-   *  Only work when `searchBox` is true and when `canAddNewOption` is true, the `addNewOption` event must also be handled
+   * Throws an error message if any rule fails, then it will be used in preference to it instead of `hintError`
+   *
+   * ***format: false case && error message***
    */
-  canAddNewOption: {
+  rules: {
+    type: Array,
+    default: () => [],
+  },
+  /**
+   * inherit from `FInputContainer.vue`
+   *
+   * it could be i18n key or text and it works only when `slot:hint-error` hasn't been set and all `rules` are pass.
+   *
+   */
+  hintError: {
+    type: [String, Boolean],
+    default: '',
+  },
+  /**
+   * inherit from `FInputContainer.vue`
+   *
+   * it could be i18n key or text and it works only when `slot:hint-supporting` hasn't been set.
+   */
+  hintSupporting: {
+    type: String,
+    default: '',
+  },
+  /**
+   * v-model:selectValue
+   */
+  selectValue: {
+    required: true,
+    validator: () => true,
+  },
+  /**
+   * inherit from `menuTree` of `FContextualMenu.vue`
+   */
+  dropdownMenuTree: {
+    type: Object,
+    required: true,
+    default: () => ({}),
+  },
+  canCancel: {
     type: Boolean,
     default: false,
   },
+  size: {
+    type: String,
+    default: 'lg',
+  },
+  prependIcon: {
+    type: String,
+    default: '',
+  },
+  appendIcon: {
+    type: String,
+    default: 'keyboard_arrow_down',
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  placeholder: {
+    type: String,
+    default: '',
+  },
 })
-
-const slots = useSlots()
-
-const refContainer = ref(null)
-const contentWidth = ref(340)
-const searchInput = ref('')
-
-const expand = () => {
-  contentWidth.value = refContainer.value.$el.getBoundingClientRect().width
-  emit('expand')
-}
-
-const collapse = () => {
-  searchInput.value = ''
-  emit('collapse')
-}
-
-const select = (option) => {
-  innerSelectValue.value = option[props.keyOptionValue]
-  emit('select', option[props.keyOptionValue])
-}
-
 const innerSelectValue = computed({
   get: () => props.selectValue,
   set: (v) => emit('update:selectValue', v),
 })
 
-const currentIndex = computed(() => {
-  return innerSelectValue.value !== undefined
-    ? props.optionList.findIndex(
-        (option) => option[props.keyOptionValue] === innerSelectValue.value
-      )
-    : -1
+const { rules, hintError, disabled } = toRefs(props)
+const {
+  isFilled,
+  isFocus,
+  isHover,
+  isError,
+  ruleErrorMsg,
+  state,
+  STATE,
+  classTransition,
+} = useInput({
+  slots,
+  inputValue: innerSelectValue,
+  rules,
+  hintError,
+  disabled,
 })
 
-const searchedOptionList = computed(() =>
-  props.optionList.filter((option) =>
-    option[props.keyOptionDisplay]
-      .toLocaleLowerCase()
-      .includes(searchInput.value.toLocaleLowerCase())
-  )
-)
+const classMain = computed(() => {
+  const classList = [
+    'border-[1.5px]',
+    'rounded',
+    'flex',
+    'items-center',
+    'outline',
+    'outline-none',
+    ...classTransition.value,
+  ]
 
-const isOptionExist = computed(() =>
-  props.optionList.some(
-    (option) => option[props.keyOptionDisplay] === searchInput.value
-  )
-)
+  switch (props.size) {
+    case 'sm':
+      classList.push('h-7', 'px-2', 'gap-x-1.5')
+      break
+    case 'md':
+      classList.push('h-9', 'px-3', 'gap-x-1')
+      break
+    case 'lg':
+      classList.push('h-11', 'px-4', 'gap-x-2')
+      break
+  }
 
-const addNewOption = async () => {
-  // create new option first, then after component update selecting the option
-  emit('addNewOption', searchInput.value)
-  await nextTick()
-  select(props.optionList[props.optionList.length - 1])
-}
+  switch (state.value) {
+    case STATE.DEFAULT:
+      classList.push(
+        'border-grey-150',
+        isError.value ? 'bg-grey-50' : 'bg-grey-0'
+      )
+      break
+    case STATE.HOVER:
+      classList.push('border-grey-150', 'bg-grey-50')
+      break
+    case STATE.FOCUS:
+      classList.push(
+        'outline-offset-0',
+        'outline-4',
+        isError.value ? 'outline-red-0' : 'outline-primary-0',
+        'border-primary-300',
+        'bg-grey-100'
+      )
+      break
+    case STATE.DISABLED:
+      classList.push('border-none', 'cursor-not-allowed', 'bg-grey-50')
+      break
+  }
+
+  if (isError.value) {
+    classList.push('!border-red-300')
+  }
+
+  return classList
+})
+
+const classIcon = computed(() => {
+  const classList = [...classTransition.value]
+
+  switch (state.value) {
+    case STATE.DEFAULT:
+      isFilled.value
+        ? classList.push('text-grey-800')
+        : classList.push('text-grey-900')
+      break
+    case STATE.HOVER:
+      isFilled.value
+        ? classList.push('text-grey-900')
+        : classList.push('text-grey-600')
+      break
+    case STATE.FOCUS:
+      isFilled.value
+        ? classList.push('text-grey-900')
+        : classList.push('text-grey-600')
+      break
+    case STATE.DISABLED:
+      classList.push('text-grey-200')
+      break
+  }
+
+  return classList
+})
+
+const classDisplayText = computed(() => {
+  const classList = ['flex-grow']
+
+  switch (props.size) {
+    case 'sm':
+      classList.push('text-caption', 'leading-1.3')
+      break
+    case 'md':
+    case 'lg':
+      classList.push('text-body2', 'leading-1.6')
+      break
+  }
+
+  switch (state.value) {
+    case STATE.DEFAULT:
+      isFilled.value
+        ? classList.push('text-grey-800')
+        : classList.push('text-grey-200')
+      break
+    case STATE.HOVER:
+      isFilled.value
+        ? classList.push('text-grey-900')
+        : classList.push('text-grey-600')
+      break
+    case STATE.FOCUS:
+      isFilled.value
+        ? classList.push('text-grey-900')
+        : classList.push('text-grey-600')
+      break
+    case STATE.DISABLED:
+      classList.push('text-grey-200')
+      break
+  }
+
+  return classList
+})
+
+const selectedMenu = computed(() => {
+  const menuList = []
+
+  const travel = (tree) => {
+    for (const block of tree.blockList) {
+      for (const menu of block.menuList) {
+        if (menu.blockList && menu.blockList.length > 0) {
+          travel(menu)
+        } else {
+          menuList.push(menu)
+        }
+      }
+    }
+  }
+
+  travel(props.dropdownMenuTree)
+
+  if (!innerSelectValue.value) {
+    return null
+  }
+
+  return menuList.find((menu) =>
+    [menu.title, menu.selectValue].includes(innerSelectValue.value)
+  )
+})
+
+defineExpose({
+  isError,
+  selectedMenu,
+})
 </script>

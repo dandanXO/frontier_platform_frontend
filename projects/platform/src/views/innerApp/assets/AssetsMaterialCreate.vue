@@ -16,17 +16,13 @@ div(class="w-full h-full flex justify-center")
             div(class="flex items-center gap-x-3")
               f-input-select(
                 v-model:selectValue="material.isDoubleSideMaterial"
-                :optionList="optionSingleOrDouble"
-                keyOptionDisplay="name"
-                keyOptionValue="value"
+                :dropdownMenuTree="sideTypeMenuTree"
                 class="w-50"
               )
               f-input-select(
                 v-if="!material.isDoubleSideMaterial"
                 v-model:selectValue="material.sideType"
-                :optionList="optionSideType"
-                keyOptionDisplay="name"
-                keyOptionValue="value"
+                :dropdownMenuTree="singleOrDoubleMenuTree"
                 class="w-25"
               )
       block-material-information(:invalidation="invalidation")
@@ -66,27 +62,42 @@ const material = computed(() => store.getters['assets/material'])
 const { invalidation, validate, isInvalid } = useMaterialValidation(material)
 const { parsePath, goToMaterialUpload, goToAssets } = useNavigation()
 const tempMaterialId = uuidv4()
-const optionSideType = [
-  {
-    name: t('DD0048'),
-    value: SIDE_TYPE.FACE,
-  },
-  {
-    name: t('DD0049'),
-    value: SIDE_TYPE.BACK,
-  },
-]
 
-const optionSingleOrDouble = [
-  {
-    name: t('DD0014'),
-    value: true,
-  },
-  {
-    name: t('DD0061'),
-    value: false,
-  },
-]
+const sideTypeMenuTree = computed(() => ({
+  width: 'w-50',
+  blockList: [
+    {
+      menuList: [
+        {
+          title: t('DD0048'),
+          selectValue: SIDE_TYPE.FACE,
+        },
+        {
+          title: t('DD0049'),
+          selectValue: SIDE_TYPE.BACK,
+        },
+      ],
+    },
+  ],
+}))
+
+const singleOrDoubleMenuTree = computed(() => ({
+  width: 'w-25',
+  blockList: [
+    {
+      menuList: [
+        {
+          title: t('DD0014'),
+          selectValue: true,
+        },
+        {
+          title: t('DD0061'),
+          selectValue: false,
+        },
+      ],
+    },
+  ],
+}))
 
 const isConfirmedToLeave = ref(false)
 const routeLocation = computed(() => store.getters['helper/routeLocation'])

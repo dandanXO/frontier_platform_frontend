@@ -16,9 +16,7 @@ modal-behavior(
   div(class="w-94")
     f-input-select(
       v-model:selectValue="formData.category"
-      :optionList="Object.values(FEEDBACK_CATEGORY)"
-      keyOptionDisplay="text"
-      keyOptionValue="value"
+      :dropdownMenuTree="categoryMenuTree"
       :label="$t('MM0007')"
       :placeholder="$t('MM0008')"
       class="pb-5"
@@ -84,6 +82,18 @@ const errorCode = ref('')
 const actionBtnDisabled = computed(
   () => !formData.category || !formData.comment
 )
+
+const categoryMenuTree = computed(() => ({
+  width: 'w-94',
+  blockList: [
+    {
+      menuList: Object.keys(FEEDBACK_CATEGORY.value).map((category) => ({
+        title: FEEDBACK_CATEGORY.value[category].text,
+        selectValue: FEEDBACK_CATEGORY.value[category].value,
+      })),
+    },
+  ],
+}))
 
 const fileSizeMaxLimit = 20
 const acceptType = ['jpg', 'jpeg', 'png', 'mp4']

@@ -1,15 +1,13 @@
 <template lang="pug">
 div(class="px-6 pt-6.5 h-full flex flex-col")
   div(class="h-11 flex justify-between items-center mb-12.5")
-    div(class="w-75")
-      f-input-select(
-        :selectValue="currentMenu"
-        :optionList="menuOrgOrGroup"
-        keyOptionDisplay="name"
-        keyOptionValue="path"
-        @select="toggleOrgOrGroup"
-        data-cy="management_select"
-      )
+    f-input-select(
+      class="w-75"
+      :selectValue="currentMenu"
+      :dropdownMenuTree="menuOrgOrGroup"
+      @update:selectValue="toggleOrgOrGroup"
+      data-cy="management_select"
+    )
     div(class="flex gap-x-6 items-center")
       div(
         v-permission="FUNC_ID.OPEN_CREATE_GROUP"
@@ -74,19 +72,26 @@ const routeLocation = computed(() =>
 const organization = computed(() => store.getters['organization/organization'])
 const menuOrgOrGroup = computed(() => {
   const { orgNo, orgName } = organization.value
-  return [
-    {
-      name: orgName,
-      path: `/${orgNo}/management`,
-    },
-    ...store.getters['organization/groupList'].map((group) => {
-      const { groupId, groupName } = group
-      return {
-        name: groupName,
-        path: `/${orgNo}/${groupId}/management`,
-      }
-    }),
-  ]
+  return {
+    width: 'w-75',
+    blockList: [
+      {
+        menuList: [
+          {
+            title: orgName,
+            selectValue: `/${orgNo}/management`,
+          },
+          ...store.getters['organization/groupList'].map((group) => {
+            const { groupId, groupName } = group
+            return {
+              title: groupName,
+              selectValue: `/${orgNo}/${groupId}/management`,
+            }
+          }),
+        ],
+      },
+    ],
+  }
 })
 const currentMenu = computed(() => {
   const { orgNo } = organization.value

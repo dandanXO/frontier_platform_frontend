@@ -1,32 +1,66 @@
 <template lang="pug">
-f-input-container(:label="label" :required="required" ref="refContainer")
+f-input-container(
+  ref="refContainer"
+  :label="label"
+  :required="required"
+  :hintSupporting="hintSupporting"
+  :hintError="ruleErrorMsg || hintError"
+)
   f-popper(
     placement="bottom-start"
-    :offset="[0, -popperOffsetY]"
+    data-cy="input-chips"
     @expand="expand"
     @collapse="collapse"
-    data-cy="input-chips"
+    :offset="[0, -popperOffsetY]"
+    :disabled="disabled"
   )
     template(#trigger)
-      label(
-        class="px-4 py-1 border border-grey-200 rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11"
+      div(
+        :class="classMain"
+        @mouseenter="isHover = true"
+        @mouseleave="isHover = false"
       )
-        div(v-for="chip in chips" class="flex")
-          f-label {{ returnObject ? chip[keyOptionDisplay] : chip }}
-        input(
-          v-if="chips.length === 0"
-          type="text"
-          :placeholder="placeholder"
-          class="line-clamp-1 h-8 flex-grow outline-none bg-transparent overflow-hidden text-grey-900 text-body2 disabled:text-grey-600 placeholder:text-grey-200 placeholder:overflow-visible"
-        )
+        //- Leading Visual - Icon
+        div(v-if="prependIcon" :class="classIcon")
+          f-svg-icon(
+            :iconName="prependIcon"
+            :size="size === 'lg' ? '24' : '20'"
+          )
+        div(class="flex-grow w-full h-full flex items-center")
+          div(
+            v-if="multiple && displayText.length !== 0"
+            :class="classChipContainer"
+          )
+            f-label(v-for="chip in displayText") {{ chip }}
+          div(
+            v-else-if="!multiple && !!displayText"
+            :class="classInput"
+            class="flex items-center"
+          )
+            p(class="line-clamp-1") {{ displayText }}
+          input(
+            v-else
+            type="text"
+            :placeholder="placeholder"
+            :class="classInput"
+            class="w-full"
+            :disabled="disabled"
+          )
     template(#content)
-      div(:style="{ width: contentWidth + 'px' }")
-        label(
-          class="px-4 py-1 border border-grey-200 rounded flex flex-wrap gap-x-2 gap-y-1.5 min-h-11"
-          :class="[classBorder]"
+      div(:style="{ width: contentWidth + 'px' }" :class="classMain")
+        //- Leading Visual - Icon
+        div(v-if="prependIcon" :class="classIcon")
+          f-svg-icon(
+            :iconName="prependIcon"
+            :size="size === 'lg' ? '24' : '20'"
+          )
+        div(
+          :class="[multiple ? classChipContainer : '']"
+          class="flex-grow w-full h-full flex items-center"
         )
-          div(v-for="(chip, index) in chips" class="flex")
-            f-label {{ returnObject ? chip[keyOptionDisplay] : chip }}
+          //- Input
+          template(v-if="multiple")
+            f-label(v-for="(chip, index) in displayText") {{ chip }}
               f-svg-icon(
                 iconName="clear"
                 size="20"
@@ -34,26 +68,36 @@ f-input-container(:label="label" :required="required" ref="refContainer")
                 @click.stop="removeChip(index)"
               )
           input(
+            :class="classInput"
             ref="refInput"
             type="text"
-            v-model="inputValue"
-            @focus="onFocus"
-            @keydown="onKeydown($event)"
-            :placeholder="chips.length === 0 ? placeholder : ''"
-            class="line-clamp-1 h-8 flex-grow outline-none bg-transparent overflow-hidden text-grey-900 text-body2 disabled:text-grey-600 placeholder:text-grey-200 placeholder:overflow-visible"
+            class="flex-grow"
+            v-model.trim="inputText"
+            @input="setSearchInput(inputText)"
+            @keydown.enter="addNewMenu"
           )
-        f-list(v-if="optionList.length !== 0")
-          f-scrollbar-container(v-if="filteredOptionList.length > 0" class="max-h-72")
-            f-list-item(
-              v-for="option in filteredOptionList"
-              class="cursor-pointer"
-              :class="[{ 'bg-grey-100': option.checked }]"
-              @click="option.checked ? removeChipFromOptionList(option) : addChipFromOptionList(option)"
-              data-cy="list-item"
-            )
-              p(class="text-grey-600") {{ option.displayValue }}
-          f-list-item(v-else @click.stop="addChip" data-cy="list-item")
-            p(class="text-grey-900") {{ inputValue }}
+        //- Clear Icon
+        div(v-if="clearable" :class="classIcon")
+          f-svg-icon(
+            v-if="clearable"
+            :size="size === 'lg' ? '24' : '20'"
+            iconName="cancel"
+            class="text-grey-150 hover:text-grey-200 active:text-grey-300 cursor-pointer"
+            @click.stop="clearAll"
+          )
+      f-contextual-menu(
+        ref="refContextualMenu"
+        class="absolute top-full"
+        v-model:inputSelectValue="innerSelectValue"
+        @click:menu="select($event)"
+        :canAddNew="canAddNew"
+        :selectMode="multiple ? MULTIPLE : SINGLE_CANCEL"
+        :menuTree="dropdownMenuTree"
+      )
+  template(v-if="slots['slot:hint-error']" #slot:hint-error)
+    slot(name="slot:hint-error")
+  template(v-if="slots['slot:hint-supporting']" #slot:hint-supporting)
+    slot(name="slot:hint-supporting")
 </template>
 
 <script>
@@ -63,10 +107,22 @@ export default {
 </script>
 
 <script setup>
-import useInput from '../useInput'
-import { ref, computed, nextTick, useSlots, onMounted } from 'vue'
+/**
+ * @KnownIssues
+ * 1. Leading Visual 無依照 Figma 設計圖實現 Color Label & Thumbnail
+ * 2. Contextual Menu 展開時可以滑動
+ * 3. 數量多時爆卡
+ */
 
-const emit = defineEmits(['update:chips', 'blur', 'addNewOption'])
+import { ref, toRefs, useSlots, computed, onMounted, nextTick } from 'vue'
+import { CONTEXTUAL_MENU_MODE } from '../../constants.js'
+import useInput from '../useInput'
+import isObjectEqual from '../../isEqual.js'
+
+const { SINGLE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
+
+const slots = useSlots()
+const emit = defineEmits(['update:selectValue', 'addNew'])
 const props = defineProps({
   /**
    * inherit from `FInputContainer.vue`
@@ -78,69 +134,255 @@ const props = defineProps({
   /**
    * inherit from `FInputContainer.vue`
    *
-   * only work when `label` has been setted
+   * only work when `label` has been set
    */
   required: {
     type: Boolean,
     default: false,
   },
   /**
-   * v-model:chips
+   * Throws an error message if any rule fails, then it will be used in preference to it instead of `hintError`
    *
-   * format: same as optionList
+   * ***format: false case && error message***
    */
-  chips: {
-    type: Array,
-    required: true,
-  },
-  /**
-   * ```
-   * [
-   *   {
-   *     [keyOptionDisplay]: String,
-   *     ...
-   *   }
-   * ]
-   * ```
-   * or
-   *
-   * ```
-   * [ String ]
-   * ```
-   */
-  optionList: {
+  rules: {
     type: Array,
     default: () => [],
+  },
+  /**
+   * inherit from `FInputContainer.vue`
+   *
+   * it could be i18n key or text and it works only when `slot:hint-error` hasn't been set and all `rules` are pass.
+   *
+   */
+  hintError: {
+    type: [String, Boolean],
+    default: '',
+  },
+  /**
+   * inherit from `FInputContainer.vue`
+   *
+   * it could be i18n key or text and it works only when `slot:hint-supporting` hasn't been set.
+   */
+  hintSupporting: {
+    type: String,
+    default: '',
+  },
+  size: {
+    type: String,
+    default: 'lg',
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  /**
+   * v-model:selectValue
+   * If `multiple` is true then selectValue must be an Array
+   */
+  selectValue: {
+    required: true,
+    validator: () => true,
+  },
+  prependIcon: {
+    type: String,
+    default: '',
+  },
+  /**
+   * inherit from `menuTree` of `FContextualMenu.vue`
+   */
+  dropdownMenuTree: {
+    type: Object,
+    required: true,
+    default: () => ({}),
+  },
+  clearable: {
+    type: Boolean,
+    default: true,
+  },
+  multiple: {
+    type: Boolean,
+    default: false,
+  },
+  canAddNew: {
+    type: Boolean,
+    default: true,
   },
   placeholder: {
     type: String,
     default: '',
   },
-  keyOptionDisplay: {
-    type: String,
-    default: 'name',
-  },
-  /**
-   *  When `canAddNewOption` is true, the `addNewOption` event must also be handled
-   */
-  canAddNewOption: {
-    type: Boolean,
-    default: (v) => !(typeof v.optionList[0] === 'object'),
-  },
 })
 
-const refInput = ref(null)
-const inputValue = ref('')
-const { onFocus, onBlur, classBorder } = useInput({
-  context: { emit, slots: useSlots() },
+const innerSelectValue = computed({
+  get: () => props.selectValue,
+  set: (v) => emit('update:selectValue', v),
 })
-const returnObject = computed(() => typeof props.optionList[0] === 'object')
+const displayText = computed(() => {
+  const getMenu = (v) =>
+    props.dropdownMenuTree.blockList[0].menuList.find((menu) =>
+      isObjectEqual(menu.selectValue, v)
+    )
+  if (props.multiple) {
+    return innerSelectValue.value.map((v) => getMenu(v).title)
+  }
+  return getMenu(innerSelectValue.value)?.title
+})
+
+/**  */
+const inputText = ref('')
+
+const { rules, hintError, disabled } = toRefs(props)
+const {
+  isFilled,
+  isFocus,
+  isHover,
+  isError,
+  ruleErrorMsg,
+  state,
+  STATE,
+  classTransition,
+} = useInput({
+  slots,
+  inputValue: inputText,
+  rules,
+  hintError,
+  disabled,
+})
+
+const classMain = computed(() => {
+  const classList = [
+    'border',
+    'rounded',
+    'flex',
+    'items-center',
+    'outline',
+    'outline-none',
+    ...classTransition.value,
+  ]
+
+  switch (props.size) {
+    case 'md':
+      classList.push('min-h-9', 'px-2', 'gap-x-1')
+      break
+    case 'lg':
+      classList.push('min-h-11', 'px-3', 'gap-x-2')
+      break
+  }
+
+  switch (state.value) {
+    case STATE.DEFAULT:
+      classList.push(
+        'border-grey-150',
+        isError.value ? 'bg-grey-50' : 'bg-grey-0'
+      )
+      break
+    case STATE.HOVER:
+      classList.push('border-grey-150', 'bg-grey-50')
+      break
+    case STATE.FOCUS:
+      classList.push(
+        'outline-offset-0',
+        'outline-4',
+        isError.value ? 'outline-red-0' : 'outline-primary-0',
+        'border-primary-300',
+        'bg-grey-0'
+      )
+      break
+    case STATE.DISABLED:
+      classList.push('border-none', 'cursor-not-allowed', 'bg-grey-50')
+      break
+  }
+
+  if (isError.value) {
+    classList.push('!border-red-300')
+  }
+
+  return classList
+})
+
+const classIcon = computed(() => {
+  const classList = ['self-start', ...classTransition.value]
+
+  switch (props.size) {
+    case 'md':
+      classList.push('mt-[7px]')
+      break
+    case 'lg':
+      classList.push('mt-[9px]')
+      break
+  }
+
+  switch (state.value) {
+    case STATE.DEFAULT:
+      isFilled.value
+        ? classList.push('text-grey-800')
+        : classList.push('text-grey-200')
+      break
+    case STATE.HOVER:
+      isFilled.value
+        ? classList.push('text-grey-900')
+        : classList.push('text-grey-600')
+      break
+    case STATE.FOCUS:
+      classList.push('text-grey-900')
+      break
+    case STATE.DISABLED:
+      classList.push('text-grey-200')
+      break
+  }
+
+  return classList
+})
+
+const classChipContainer = computed(() => [
+  'flex',
+  'flex-wrap',
+  'gap-x-1',
+  'gap-y-1',
+  props.multiple ? 'py-[5px]' : 'py-[3px]',
+])
+
+const classInput = computed(() => {
+  const classList = [
+    'outline-none',
+    'bg-transparent',
+    'text-body2',
+    'leading-1.6',
+    'placeholder:text-grey-200',
+  ]
+
+  switch (props.size) {
+    case 'md':
+      classList.push('h-5')
+      break
+    case 'lg':
+      classList.push('h-6')
+      break
+  }
+
+  switch (state.value) {
+    case STATE.DEFAULT:
+      classList.push('text-grey-800')
+      break
+    case STATE.HOVER:
+      classList.push('text-grey-900')
+      break
+    case STATE.FOCUS:
+      classList.push('text-grey-900')
+      break
+    case STATE.DISABLED:
+      classList.push('text-grey-200', 'cursor-not-allowed')
+      break
+  }
+
+  return classList
+})
 
 const refContainer = ref(null)
+const refInput = ref(null)
 const contentWidth = ref(0)
-
-const popperOffsetY = ref(44)
-
+const popperOffsetY = ref(props.size === 'lg' ? 44 : 36)
 const setPopperOffsetY = () => {
   if (props.label) {
     popperOffsetY.value =
@@ -150,118 +392,85 @@ const setPopperOffsetY = () => {
       refContainer.value.$el.children[0].getBoundingClientRect().height
   }
 }
+onMounted(() => {
+  contentWidth.value = refContainer.value.$el.getBoundingClientRect().width
+})
 
 const expand = () => {
-  contentWidth.value = refContainer.value.$el.getBoundingClientRect().width
   setPopperOffsetY()
+  isFocus.value = true
   refInput.value.focus()
+  !props.multiple && (inputText.value = displayText.value)
 }
 
 const collapse = () => {
-  onBlur()
   setPopperOffsetY()
+  isFocus.value = false
+  setSearchInput('')
+  inputText.value = ''
 }
 
-const filteredOptionList = computed(() => {
-  const list = []
-  props.optionList.forEach((option) => {
-    const comparedValue = returnObject.value
-      ? option[props.keyOptionDisplay]
-      : option
+const refContextualMenu = ref(null)
 
-    if (
-      comparedValue
-        .toUpperCase()
-        .includes(inputValue.value.trim().toUpperCase())
-    ) {
-      const checked = props.chips.some(
-        (chip) => JSON.stringify(chip) === JSON.stringify(option)
-      )
-      list.push({
-        checked,
-        displayValue: comparedValue,
-      })
-    }
-  })
-  return list
-})
+const setSearchInput = (searchInput) => {
+  refContextualMenu.value.setSearchInput(searchInput)
+}
 
-const addChip = async () => {
-  if (inputValue.value.trim().length === 0) {
+const select = (menu) => {
+  if (props.multiple) {
     return
   }
+
+  inputText.value = menu.title
+}
+
+const addNewMenu = async () => {
   /**
-   * if the chip to be added doesn't exist in option list,
-   * emit "addNewOption" to outside to add an new option in option list
+   * 1. check if it is filled or if it is allowed to add new menu
+   * 2. if this menu doesn't exist in current dropdownMenuTree then emit 'addNew' event to outside, so that it can add new menu externally
+   * 3. invoke refContextualMenu.value.clickMenuHandler to select
+   * 4. clear inputText and search input which is from FContextualMenu
    */
-  const isOptionExist = props.optionList.some((option) => {
-    return returnObject.value
-      ? option[props.keyOptionDisplay] === inputValue.value
-      : option === inputValue.value
-  })
-  if (!isOptionExist && props.canAddNewOption) {
-    emit('addNewOption', inputValue.value)
+
+  // step 1
+  if (!isFilled.value || !props.canAddNew) {
+    return
+  }
+
+  // step 2
+  /**
+   * 在 <Input>(ref = refInput) 的 input 事件已經呼叫 refContextualMenu 的 setSearchInput
+   * 所以可以直接調用 refContextualMenu 的 menuIsExist 來檢查該 Menu 是否已存在在清單中。
+   */
+  if (!refContextualMenu.value.menuIsExist) {
+    emit('addNew', inputText.value)
     await nextTick()
   }
 
+  // step 3
+  const selectedMenu = props.dropdownMenuTree.blockList[0].menuList.find(
+    (menu) => menu.title === inputText.value
+  )
+  refContextualMenu.value.clickMenuHandler(selectedMenu)
+
+  // step 4
+  setSearchInput('')
+  props.multiple && (inputText.value = '')
+}
+
+const clearAll = () => {
   /**
-   *  if the chip to be added doesn't exist in chip list,
-   *  emit "update:chips" to outside to append an new chip,
-   *  in the other way, do nothing just clear input text
+   * the following things need to be cleared
+   * 1. inputText
+   * 2. innerSelectValue
+   * 3. searchInput (which is from FContextualMenu)
    */
-  const isChipExist = props.chips.find((chip) => {
-    return returnObject.value
-      ? chip[props.keyOptionDisplay] === inputValue.value
-      : chip === inputValue.value
-  })
-
-  if (!isChipExist) {
-    const newChip = returnObject.value
-      ? props.optionList.find(
-          (option) => option[props.keyOptionDisplay] === inputValue.value
-        )
-      : inputValue.value
-    if ((!isOptionExist && props.canAddNewOption) || isOptionExist) {
-      emit('update:chips', [...props.chips, newChip])
-    }
-  }
-
-  inputValue.value = ''
-  refInput.value.focus()
+  inputText.value = ''
+  innerSelectValue.value = props.multiple ? [] : ''
+  setSearchInput('')
 }
 
 const removeChip = (index) => {
-  const temp = [...props.chips]
-  temp.splice(index, 1)
-  emit('update:chips', temp)
+  innerSelectValue.value.splice(index, 1)
 }
-
-const onKeydown = (e) => {
-  switch (e.which) {
-    case 13: // enter
-      addChip()
-      break
-    case 8: // backspace
-      inputValue.value.length === 0 && removeChip(props.chips.length - 1)
-      break
-  }
-}
-
-const addChipFromOptionList = (option) => {
-  inputValue.value = option.displayValue
-  addChip()
-}
-
-const removeChipFromOptionList = (option) => {
-  const index = props.chips.findIndex((chip) => {
-    return returnObject.value
-      ? chip[props.keyOptionDisplay] === option.displayValue
-      : chip === option.displayValue
-  })
-  removeChip(index)
-}
-
-onMounted(() => {
-  setPopperOffsetY()
-})
 </script>

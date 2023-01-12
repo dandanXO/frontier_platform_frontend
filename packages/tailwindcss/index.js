@@ -143,6 +143,7 @@ module.exports = plugin(function () {}, {
         'flash-msg': 201,
         footer: 200,
         popper: 999,
+        tooltip: 1000,
         ...zIndex,
       },
       spacing: spacing,

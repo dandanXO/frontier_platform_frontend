@@ -7,15 +7,29 @@ export default {
   args: {
     label: 'Label',
     size: 'lg',
-    optionList: [
-      { name: 'Option 1', value: 1 },
-      { name: 'Option 2', value: 2 },
-      { name: 'Option 3', value: 3 },
-      { name: 'Option 4', value: 4 },
-    ],
-    keyOptionDisplay: 'name',
-    keyOptionValue: 'value',
-    placeholder: 'select',
+    dropdownMenuTree: {
+      width: 'w-60',
+      scrollAreaMaxHeight: 'max-h-40',
+      blockList: [
+        {
+          menuList: [
+            {
+              title: 'Menu 1',
+            },
+            {
+              title: 'Menu 2 (Disabled)',
+              disabled: true,
+            },
+            {
+              title: 'Menu 3',
+            },
+            {
+              title: 'Menu 4',
+            },
+          ],
+        },
+      ],
+    },
   },
   argTypes: {
     selectValue: {
@@ -23,9 +37,12 @@ export default {
     },
     size: {
       control: { type: 'radio' },
-      optionList: ['lg', 'sm'],
+      options: ['lg', 'md', 'sm'],
     },
     label: {
+      control: { type: 'text' },
+    },
+    hintError: {
       control: { type: 'text' },
     },
   },
@@ -44,44 +61,3 @@ const Template = (args) => ({
 })
 
 export const Default = Template.bind({})
-
-export const SearchBox = Template.bind({})
-SearchBox.args = {
-  searchBox: true,
-}
-
-export const SearchBoxAddNewOption = (args) => ({
-  components: { FInputSelect },
-  setup() {
-    const selectValue = ref()
-    const addNewOption = (name) => {
-      args.optionList.push({
-        name,
-        value: args.optionList.length + 1,
-      })
-    }
-    return { args, selectValue, addNewOption }
-  },
-  template: `
-    <f-input-select v-model:selectValue="selectValue" v-bind="args" @addNewOption="addNewOption">
-    </f-input-select>
-  `,
-})
-SearchBoxAddNewOption.args = {
-  searchBox: true,
-  canAddNewOption: true,
-  optionList: [
-    {
-      name: 'Chip 1',
-      value: 1,
-    },
-    {
-      name: 'Chip 2',
-      value: 2,
-    },
-    {
-      name: 'Chip 3',
-      value: 3,
-    },
-  ],
-}

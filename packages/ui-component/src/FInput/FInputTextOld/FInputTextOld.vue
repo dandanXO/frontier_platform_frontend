@@ -53,7 +53,7 @@ f-input-container(:label="label" :required="required")
 
 <script>
 import { toRefs } from 'vue'
-import useInput from '../useInput'
+import useInput from '../useInputOld'
 
 export default {
   name: 'FInputTextOld',

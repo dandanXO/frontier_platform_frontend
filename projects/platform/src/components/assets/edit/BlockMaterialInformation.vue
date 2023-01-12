@@ -30,14 +30,12 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
           data-cy="materialNo"
         )
         f-input-chips(
-          v-model:chips="material.descriptionList"
+          v-model:selectValue="material.descriptionList"
+          :dropdownMenuTree="specOptions.descriptionList"
+          @addNew="addDescriptionOption($event)"
           :label="$t('RR0014')"
-          :optionList="specOptions.descriptionList"
           :placeholder="$t('DD0016')"
-          keyOptionDisplay="name"
-          @addNewOption="addDescriptionOption($event)"
-          canAddNewOption
-          data-cy="descriptionList"
+          multiple
         )
         f-input-container(:label="$t('RR0015')" required)
           div(class="flex items-center gap-x-3")
@@ -80,20 +78,15 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
               v-for="(content, contentItemIndex) in material.contentList"
               class="flex items-center"
             )
-              f-input-select(
+              f-input-chips(
                 v-model:selectValue="content.name"
-                :optionList="specOptions.contentList"
+                @update:selectValue="selectContent($event, contentItemIndex)"
+                :dropdownMenuTree="specOptions.contentList"
+                @addNew="addContentOption($event)"
                 :placeholder="$t('DD0016')"
-                @select="selectContent($event, contentItemIndex)"
-                @addNewOption="addContentOption($event)"
-                keyOptionDisplay="name"
-                keyOptionValue="name"
-                searchBox
-                canAddNewOption
                 required
                 class="w-100 mr-3"
                 :style="{ zIndex: material.contentList.length - contentItemIndex }"
-                data-cy="content"
               )
               f-input-text(
                 v-model:textValue="content.percentage"
@@ -118,14 +111,12 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
                 @click="removeContent(contentItemIndex)"
               )
         f-input-chips(
-          v-model:chips="material.finishList"
+          v-model:selectValue="material.finishList"
+          :dropdownMenuTree="specOptions.finishList"
+          @addNew="addFinishOption($event)"
           :label="$t('RR0022')"
-          :optionList="specOptions.finishList"
           :placeholder="$t('DD0016')"
-          keyOptionDisplay="name"
-          @addNewOption="addFinishOption($event)"
-          canAddNewOption
-          data-cy="finishList"
+          multiple
         )
         f-input-container(:label="$t('RR0023')")
           div(class="flex items-center gap-x-3")
@@ -171,15 +162,21 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
               class="w-50"
             )
         f-input-chips(
-          v-model:chips="material.publicTagList"
+          v-model:selectValue="material.publicTagList"
+          :dropdownMenuTree="menuTreePublicTag"
+          @addNew="addNew($event, menuTreePublicTag)"
           :label="$t('RR0027')"
           :placeholder="$t('DD0018')"
+          multiple
         )
         div(v-if="isEditMode" class="relative")
           f-input-chips(
+            v-model:selectValue="material.aiTagList"
+            :dropdownMenuTree="menuTreeAiTag"
+            @addNew="addNew($event, menuTreeAiTag)"
             :label="$t('RR0071')"
-            v-model:chips="material.aiTagList"
             :placeholder="$t('DD0018')"
+            multiple
           )
           p(class="absolute right-0 top-0 text-caption text-grey-900") {{ $t('EE0036') }}
       div(v-if="isOpenSampleCard" class="flex-shrink-0 w-75 h-fit ml-8 sticky top-0")
@@ -201,9 +198,12 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
     div(class="bg-grey-50 px-15 py-12.5 mt-7.5 grid gap-y-7.5")
       h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
       f-input-chips(
-        v-model:chips="material.privateTagList"
+        v-model:selectValue="material.privateTagList"
+        :dropdownMenuTree="menuTreePrivateTag"
+        @addNew="addNew($event, menuTreePrivateTag)"
         :label="$t('RR0028')"
         :placeholder="$t('DD0020')"
+        multiple
       )
       f-input-textarea(
         v-model:textValue="material.remark"
@@ -249,6 +249,44 @@ const {
   addDescriptionOption,
   addFinishOption,
 } = useMaterialEdit()
+
+const menuTreePublicTag = ref({
+  blockList: [
+    {
+      menuList: material.value.publicTagList.map((tag) => ({
+        title: tag,
+        selectValue: tag,
+      })),
+    },
+  ],
+})
+const menuTreeAiTag = ref({
+  blockList: [
+    {
+      menuList: material.value.aiTagList.map((tag) => ({
+        title: tag,
+        selectValue: tag,
+      })),
+    },
+  ],
+})
+const menuTreePrivateTag = ref({
+  blockList: [
+    {
+      menuList: material.value.privateTagList.map((tag) => ({
+        title: tag,
+        selectValue: tag,
+      })),
+    },
+  ],
+})
+
+const addNew = (newMenu, source) => {
+  source.blockList[0].menuList.push({
+    title: newMenu,
+    selectValue: newMenu,
+  })
+}
 
 const hideSampleCard = computed(() => {
   if (faceSideUrl) {

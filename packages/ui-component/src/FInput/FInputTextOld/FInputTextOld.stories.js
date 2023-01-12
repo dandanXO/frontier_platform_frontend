@@ -45,7 +45,7 @@ const Template = (args) => ({
     return { args, inputText }
   },
   template:
-    '<f-input-text-old v-model:textValue="inputText" v-bind="args"></f-input-text>',
+    '<f-input-text-old v-model:textValue="inputText" v-bind="args"></f-input-text-old>',
 })
 
 export const Default = Template.bind({})
@@ -85,5 +85,5 @@ export const SlotErrorMsg = (args) => ({
       <template #slot:errorMsg>
         <p class="text-red-400 text-caption pt-1.5">This is <strong class="text-primary-400">slot</strong> error msg</p>
       </template>
-    </f-input-text>`,
+    </f-input-text-old>`,
 })

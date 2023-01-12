@@ -1,81 +1,39 @@
-import { ref } from 'vue'
-import { computed, watch, onUpdated, onMounted } from 'vue'
+import { ref, watch, onMounted, onUpdated, computed } from 'vue'
 
 export default function useInput({
-  context: { emit, slots },
-  inputType = ref('text'),
-  textValue,
-  disabled = ref(false),
-  rules = ref([]),
-  customErrorMsg = ref(''),
+  slots,
+  inputValue,
+  rules = [],
+  hintError,
+  disabled,
+  validImmediately = false,
 }) {
   const isFocus = ref(false)
-
-  const isEmpty = computed(() => !textValue.value)
-
-  const classBorder = computed(() => {
-    if (disabled.value) {
-      return 'border-transparent'
+  const isHover = ref(false)
+  const isFilled = computed(() => {
+    const v = inputValue.value
+    if (v === null) {
+      return false
     }
-    if (isError.value) {
-      return 'border-red-400'
+    if (Array.isArray(v)) {
+      return v.length !== 0
+    } else if (typeof v === 'object') {
+      return Object.keys(v).length !== 0
     }
-    return isFocus.value ? 'border-grey-600' : 'border-grey-200'
+
+    return !!v
   })
-  const classPrependIcon = computed(() => {
-    if (disabled.value) {
-      return 'text-grey-600'
-    }
-    return isFocus.value || !isEmpty.value ? 'text-grey-900' : 'text-grey-200'
-  })
-
-  const typing = (e) => {
-    let value = e.target.value
-    if (inputType.value === 'number') {
-      value = Number(value)
-    }
-
-    if (typeof value === 'string') {
-      value = value.trim()
-    }
-
-    emit('input')
-    emit('update:textValue', value)
-  }
-
-  const onFocus = () => {
-    isFocus.value = true
-  }
-
-  const onBlur = () => {
-    isFocus.value = false
-    emit('blur')
-  }
-
-  const clear = () => {
-    const initValue = typeof textValue.value === 'number' ? 0 : ''
-    emit('update:textValue', initValue)
-    emit('clear')
-  }
-
   const isError = ref(false)
   const ruleErrorMsg = ref('')
-  const errorMsg = computed(() => {
-    if (ruleErrorMsg.value !== '') {
-      return ruleErrorMsg.value
-    }
-    return customErrorMsg.value
-  })
 
   if (rules.value.length > 0) {
     watch(
-      () => textValue.value,
+      () => inputValue.value,
       (v) => {
         const _rules = [...rules.value]
         for (let i = 0; i < _rules.length; i++) {
           const rule = _rules[i]
           const result = rule(v)
-
           if (typeof result !== 'boolean') {
             ruleErrorMsg.value = result
             return
@@ -83,38 +41,68 @@ export default function useInput({
             ruleErrorMsg.value = ''
           }
         }
-      }
+      },
+      { immediate: validImmediately }
     )
   }
-
   /**
-   * Because attrs and slots and not reactive, so in order to apply side effects based on slots changes,
-   * it have to do inside an onUpdated lifecycle hook.
+   * Because slots isn't reactive, the only way to detect if slots have changed is to check in onUpdate and onMounted.
+   *
    */
   onUpdated(() => {
     isError.value =
-      !!errorMsg.value ||
-      !!customErrorMsg.value ||
-      slots['slot:errorMsg'] !== undefined
+      slots['slot:hint-error'] !== undefined ||
+      !!ruleErrorMsg.value ||
+      !!hintError.value
   })
 
   onMounted(() => {
     isError.value =
-      !!errorMsg.value ||
-      !!customErrorMsg.value ||
-      slots['slot:errorMsg'] !== undefined
+      slots['slot:hint-error'] !== undefined ||
+      !!ruleErrorMsg.value ||
+      !!hintError.value
+  })
+
+  const STATE = {
+    DEFAULT: 0,
+    HOVER: 1,
+    FOCUS: 2,
+    DISABLED: 3,
+  }
+
+  const state = computed(() => {
+    if (disabled.value) {
+      return STATE.DISABLED
+    }
+    if (isFocus.value) {
+      return STATE.FOCUS
+    }
+    if (isHover.value) {
+      return STATE.HOVER
+    }
+
+    return STATE.DEFAULT
+  })
+
+  const classTransition = computed(() => {
+    switch (state.value) {
+      case STATE.HOVER:
+        return ['ease-in', 'duration-100']
+      case STATE.FOCUS:
+        return ['ease-out', 'duration-200']
+      default:
+        return []
+    }
   })
 
   return {
     isFocus,
+    isHover,
+    isFilled,
     isError,
-    onFocus,
-    onBlur,
-    clear,
-    isEmpty,
-    typing,
-    classBorder,
-    classPrependIcon,
-    errorMsg,
+    ruleErrorMsg,
+    state,
+    STATE,
+    classTransition,
   }
 }

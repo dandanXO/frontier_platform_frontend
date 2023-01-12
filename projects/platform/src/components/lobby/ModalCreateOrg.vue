@@ -19,14 +19,10 @@ modal-behavior(
       )
       f-input-select(
         v-model:selectValue="formData.countryCode"
-        :optionList="countryList"
+        :dropdownMenuTree="countryMenuTree"
         :label="$t('AA0036')"
-        keyOptionDisplay="name"
-        keyOptionValue="countryCode"
-        searchBox
         :placeholder="$t('AA0037')"
         required
-        @select="handleCountryCodeSelected"
         data-cy="modal-create-org_country"
       )
       f-input-radio-group(
@@ -70,7 +66,7 @@ const store = useStore()
 const isOrgNameExist = ref(false)
 const formData = reactive({ ...store.getters['organization/createForm'] })
 const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
-const countryList = computed(() => store.getters['code/countryList'])
+const countryMenuTree = computed(() => store.getters['code/countryMenuTree'])
 const availableToCreateOrg = computed(
   () =>
     formData.countryCode !== '' &&
@@ -86,6 +82,15 @@ watch(
     }
   }
 )
+
+watch(
+  () => formData.countryCode,
+  () => {
+    formData.faxCountryCode = formData.countryCode
+    formData.phoneCountryCode = formData.countryCode
+  }
+)
+
 const openModalCreateMailOrg = async () => {
   await checkOrgNameExist()
 
@@ -97,11 +102,6 @@ const openModalCreateMailOrg = async () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-create-mail-org',
   })
-}
-
-const handleCountryCodeSelected = (option) => {
-  formData.faxCountryCode = option
-  formData.phoneCountryCode = option
 }
 
 const checkOrgNameExist = async () => {

@@ -1,6 +1,5 @@
 import { ref } from 'vue'
-import { computed, watch, onUpdated } from 'vue'
-import inputRules from '@/utils/inputRules'
+import { computed, watch, onUpdated, onMounted } from 'vue'
 
 export default function useInput({
   context: { emit, slots },
@@ -8,7 +7,6 @@ export default function useInput({
   textValue,
   disabled = ref(false),
   rules = ref([]),
-  required = ref(false),
   customErrorMsg = ref(''),
 }) {
   const isFocus = ref(false)
@@ -69,14 +67,11 @@ export default function useInput({
     return customErrorMsg.value
   })
 
-  if (required.value || rules.value.length > 0) {
+  if (rules.value.length > 0) {
     watch(
       () => textValue.value,
       (v) => {
         const _rules = [...rules.value]
-        if (required.value) {
-          _rules.unshift(inputRules.required())
-        }
         for (let i = 0; i < _rules.length; i++) {
           const rule = _rules[i]
           const result = rule(v)
@@ -97,7 +92,17 @@ export default function useInput({
    * it have to do inside an onUpdated lifecycle hook.
    */
   onUpdated(() => {
-    isError.value = !!errorMsg.value || slots.errorMsg !== undefined
+    isError.value =
+      !!errorMsg.value ||
+      !!customErrorMsg.value ||
+      slots['slot:errorMsg'] !== undefined
+  })
+
+  onMounted(() => {
+    isError.value =
+      !!errorMsg.value ||
+      !!customErrorMsg.value ||
+      slots['slot:errorMsg'] !== undefined
   })
 
   return {

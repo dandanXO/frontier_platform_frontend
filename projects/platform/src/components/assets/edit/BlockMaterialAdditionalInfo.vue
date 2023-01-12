@@ -4,11 +4,11 @@ div
     h5(class="text-h5 text-grey-900 font-bold") {{ $t('DD0026') }}
   div(class="px-15 grid gap-y-7.5 pt-5")
     f-input-chips(
-      v-model:chips="material.certificateList"
+      v-model:selectValue="material.certificateList"
       :label="$t('EE0129')"
-      :optionList="specOptions.certificateList"
+      :dropdownMenuTree="specOptions.certificateList"
       :placeholder="$t('EE0131')"
-      keyOptionDisplay="name"
+      multiple
     )
     div
       div(class="pb-10")

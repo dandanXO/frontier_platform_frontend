@@ -10,18 +10,17 @@ modal-behavior(
     f-input-select(
       v-if="crossOrg"
       v-model:selectValue="selectedOrgId"
-      :optionList="orgList"
-      keyOptionDisplay="orgName"
-      keyOptionValue="orgId"
+      :dropdownMenuTree="orgMenuTree"
       :label="$t('RR0212')"
       class="mb-3"
     )
     f-input-chips(
-      v-model:chips="selectedLocationList"
+      v-model:selectValue="selectedLocationList"
       :label="$t('RR0174')"
-      :optionList="locationList"
+      :dropdownMenuTree="locationList"
       :placeholder="$t('RR0178')"
-      keyOptionDisplay="name"
+      :canAddNew="false"
+      multiple
     )
     div(class="pt-5.5 grid gap-y-4")
       p(class="font-bold text-caption text-grey-900") {{ $t('RR0175') }}
@@ -99,22 +98,45 @@ const estimatedQuota = ref({
 })
 
 const orgList = computed(() => store.getters['user/organizationList'])
+const orgMenuTree = computed(() => ({
+  width: 'w-94',
+  blockList: [
+    {
+      menuList: orgList.value.map(({ orgName, orgId }) => ({
+        title: orgName,
+        selectValue: orgId,
+      })),
+    },
+  ],
+}))
 const locationList = computed(() => {
   const organization = store.getters['organization/organization']
-  return [
-    {
-      id: organization.orgId,
-      name: organization.orgName,
-      location: TARGET_LOCATION.ORG,
-    },
-    ...organization.groupList.map((group) => ({
-      id: group.groupId,
-      name: group.groupName,
-      location: TARGET_LOCATION.GROUP,
-    })),
-  ]
+  return {
+    blockList: [
+      {
+        menuList: [
+          {
+            title: organization.orgName,
+            selectValue: {
+              id: organization.orgId,
+              location: TARGET_LOCATION.ORG,
+            },
+          },
+          ...organization.groupList.map((group) => ({
+            title: group.groupName,
+            selectValue: {
+              id: group.groupId,
+              location: TARGET_LOCATION.GROUP,
+            },
+          })),
+        ],
+      },
+    ],
+  }
 })
-const remainingQuota = computed(() => store.getters['polling/plan'].quota)
+const remainingQuota = computed(
+  () => store.getters['organization/organization'].plan.quota
+)
 const selectedOrgId = ref(
   props.crossOrg
     ? orgList.value[0]?.orgId || null

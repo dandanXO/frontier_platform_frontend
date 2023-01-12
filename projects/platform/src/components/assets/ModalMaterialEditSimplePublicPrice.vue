@@ -9,12 +9,9 @@ modal-behavior(
   div(class="min-w-200 grid gap-y-7.5")
     f-input-select(
       v-model:selectValue="material.publicPrice.countryCode"
-      :optionList="countryList"
+      :dropdownMenuTree="countryMenuTree"
       :label="$t('RR0042')"
       :placeholder="$t('DD0016')"
-      keyOptionDisplay="name"
-      keyOptionValue="countryCode"
-      searchBox
     )
     f-input-text(
       :label="$t('RR0043')"
@@ -71,7 +68,7 @@ import useMaterialEdit from '@/composables/useMaterialEdit'
 import useMaterialValidation from '@/composables/useMaterialValidation'
 
 const store = useStore()
-const countryList = computed(() => store.getters['code/countryList'])
+const countryMenuTree = computed(() => store.getters['code/countryMenuTree'])
 const material = computed(() => store.getters['assets/material'])
 const { invalidation, validate } = useMaterialValidation(material, [
   'publicPricePrice',
