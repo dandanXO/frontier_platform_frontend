@@ -71,7 +71,7 @@ const routeLocation = computed(() =>
 )
 const organization = computed(() => store.getters['organization/organization'])
 const menuOrgOrGroup = computed(() => {
-  const { orgNo, orgName } = organization.value
+  const { orgNo, orgName, labelColor } = organization.value
   return {
     width: 'w-75',
     blockList: [
@@ -80,12 +80,14 @@ const menuOrgOrGroup = computed(() => {
           {
             title: orgName,
             selectValue: `/${orgNo}/management`,
+            labelColor,
           },
           ...store.getters['organization/groupList'].map((group) => {
-            const { groupId, groupName } = group
+            const { groupId, groupName, labelColor } = group
             return {
               title: groupName,
               selectValue: `/${orgNo}/${groupId}/management`,
+              labelColor,
             }
           }),
         ],

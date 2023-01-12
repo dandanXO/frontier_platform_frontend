@@ -59,7 +59,7 @@ div(
         div(
           v-else-if="innerMenu.labelColor"
           :style="{ backgroundColor: innerMenu.labelColor }"
-          class="w-3 h-3 rounded"
+          class="w-3 h-3 rounded-sm"
         )
       div(
         :class="innerMenu.display"

@@ -42,7 +42,7 @@ f-input-container(
           div(
             v-else-if="selectedMenu?.labelColor"
             :style="{ backgroundColor: selectedMenu.labelColor }"
-            class="w-full h-full rounded"
+            class="w-3 h-3 rounded-sm"
           )
         //- Display Text
         div(:class="classDisplayText") {{ selectedMenu ? selectedMenu?.title : placeholder }}
