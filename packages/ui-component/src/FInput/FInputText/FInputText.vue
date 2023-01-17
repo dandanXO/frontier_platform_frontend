@@ -402,6 +402,7 @@ const rightSelectedMenu = computed(() =>
 const refInput = ref(null)
 
 const onInput = () => {
+  !isFilled.value && emit('update:textValue', null)
   emit('input')
 }
 const onFocus = () => {
@@ -426,7 +427,7 @@ const onClickAppendIcon = () => {
   emit('click:appendIcon')
 }
 const clear = () => {
-  emit('update:textValue', '')
+  emit('update:textValue', null)
   emit('clear')
 }
 const increase = () => {
