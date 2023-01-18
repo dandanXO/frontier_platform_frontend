@@ -27,7 +27,7 @@ modal-behavior(
       class="justify-self-end cursor-pointer text-primary-500"
     )
     div(v-else class="w-full flex flex-col items-center")
-      img(class="w-50 h-50 rounded-full mb-9" :src="thumbnail")
+      f-avatar(:imageUrl="thumbnail" type="org" size="4xl" class="mb-9")
       f-button(size="md" @click="uploadImg" prependIcon="tune" class="mb-2.5") {{ $t('UU0019') }}
       f-button(size="md" type="text" @click="removeLogo") {{ $t('UU0016') }}
 </template>

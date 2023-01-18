@@ -64,7 +64,7 @@ div(class="w-full h-full relative")
         )
           template(#caption v-if="isFirstLayer")
             div(class="mt-1.5 h-6 flex items-center")
-              img(:src="node.publish.logo" class="aspect-square h-full rounded-full")
+              f-avatar(:imageUrl="node.publish.logo" type="org" size="sm")
               p(class="pl-1 font-bold text-caption text-grey-900") {{ node.publish.displayName }}
       div(v-else class="flex h-full justify-center items-end")
         p(class="text-body1 text-grey-900") {{ $t('II0007') }}

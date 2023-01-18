@@ -7,7 +7,7 @@ modal-behavior(
 )
   div(class="w-85 flex flex-col items-center")
     div(class="relative mb-3")
-      img(:src="avatar" class="w-30 h-30 rounded-full bg-grey-200")
+      f-avatar(:imageUrl="avatar" type="user" size="3xl")
       div(
         class="group absolute right-0 bottom-0 w-7.5 h-7.5 rounded-full cursor-pointer bg-grey-0 flex justify-center items-center"
         @click="openModalChangeAvatar"

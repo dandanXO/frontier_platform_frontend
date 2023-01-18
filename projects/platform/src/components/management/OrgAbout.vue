@@ -4,7 +4,7 @@ div(class="pt-16 xl:pt-17.5")
     div(class="w-40 mr-11 xl:mr-15")
       div(class="flex flex-col items-center")
         div(class="relative")
-          img(:src="logo" class="w-40 h-40 rounded-full bg-grey-200")
+          f-avatar(:imageUrl="logo" size="4xl" type="org")
           div(
             class="absolute flex justify-center items-center right-2 bottom-2 w-8 h-8 rounded-full bg-grey-0 border-4 border-grey-100 cursor-pointer"
             @click="openModalUploadLogo"

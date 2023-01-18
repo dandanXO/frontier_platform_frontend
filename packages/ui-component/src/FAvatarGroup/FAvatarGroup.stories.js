@@ -24,25 +24,33 @@ const Template = (args) => ({
 
 export const One = Template.bind({})
 One.args = {
-  avatarList: new Array(1).fill('https://picsum.photos/50'),
+  itemList: Array.from({ length: 1 }).map((_, index) => ({
+    name: `Name ${index}`,
+    imageUrl: 'https://picsum.photos/50',
+  })),
 }
 
 export const Two = Template.bind({})
 Two.args = {
-  avatarList: new Array(2).fill('https://picsum.photos/50'),
+  itemList: Array.from({ length: 2 }).map((_, index) => ({
+    name: `Name ${index}`,
+    imageUrl: 'https://picsum.photos/50',
+  })),
 }
 
-export const Six = Template.bind({})
-Six.args = {
-  avatarList: new Array(6).fill('https://picsum.photos/50'),
+export const Five = Template.bind({})
+Five.args = {
+  itemList: Array.from({ length: 5 }).map((_, index) => ({
+    name: `Name ${index}`,
+    imageUrl: 'https://picsum.photos/50',
+    labelColor: '#F07D73',
+  })),
 }
 
-export const MoreThanSix = Template.bind({})
-MoreThanSix.args = {
-  avatarList: new Array(7).fill('https://picsum.photos/50'),
-}
-export const RightToLeft = Template.bind({})
-RightToLeft.args = {
-  avatarList: new Array(7).fill('https://picsum.photos/50'),
-  direction: 'rtl',
+export const MoreThanFive = Template.bind({})
+MoreThanFive.args = {
+  itemList: Array.from({ length: 7 }).map((_, index) => ({
+    name: `Name ${index}`,
+    imageUrl: 'https://picsum.photos/50',
+  })),
 }

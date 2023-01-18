@@ -95,7 +95,7 @@ const printA4Card = async (materialList) => {
     pdfTarget.innerHTML = `
       <div class="relative flex flex-col justify-between items-center w-148.5 h-210.5 bg-grey-0 px-10 py-10">
         <div class="flex w-full">
-          <img src="${logo}" class="mr-7 w-12.5 h-12.5 rounded-sm flex-shrink-0" />
+          <img src="${logo}" class="mr-3.5 w-16 h-16 rounded-full flex-shrink-0" />
           <div class="w-full">
             <p class="text-body1 font-bold mb-3.5">${material.materialNo}</p>
             <div class="text-caption text-grey-900 grid gap-y-1">
@@ -253,7 +253,7 @@ const printGeneralLabel = async (materialList) => {
       pdfTarget.innerHTML = `
         <div class="relative flex w-113 h-56.5 bg-grey-0 pr-4 py-3">
           <div class="absolute top-3 left-3.5">
-            <img src="${logo}" class="w-8.5 h-8.5 rounded-sm" />
+            <img src="${logo}" class="w-5 h-5 rounded-full" />
           </div>
           <div class="flex justify-center w-full">
             <div class="flex flex-col items-center justify-center ml-16">
@@ -279,7 +279,7 @@ const printGeneralLabel = async (materialList) => {
       pdfTarget.innerHTML = `
         <div class="relative flex w-113 h-56.5 bg-grey-0 pr-4 py-3">
           <div class="absolute top-3 left-3.5">
-            <img src="${logo}" class="w-8.5 h-8.5 rounded-sm" />
+            <img src="${logo}" class="w-5 h-5 rounded-full" />
           </div>
           <div class="flex justify-center w-full">
             <div class="flex flex-col items-center justify-center">

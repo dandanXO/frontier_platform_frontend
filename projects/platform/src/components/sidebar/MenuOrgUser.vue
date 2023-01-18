@@ -3,7 +3,7 @@ div(class="h-13 bg-grey-100 py-2.5 pl-4 pr-6")
   f-popper(placement="right-start" :offset="[-40, -60]")
     template(#trigger="{ isExpand }")
       div(class="w-50 flex items-center cursor-pointer")
-        img(:src="avatar" class="rounded-full w-8 h-8 mr-2")
+        f-avatar(:imageUrl="avatar" size="md" class="mr-2")
         p(class="flex-grow text-body2 text-grey-900 line-clamp-1 cursor-pointer") {{ orgUser.displayName }}
         f-svg-icon(
           iconName="keyboard_arrow_down"

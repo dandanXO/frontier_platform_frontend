@@ -15,7 +15,7 @@ modal-behavior(:header="$t('RR0079')")
               div(class="flex items-center")
                 f-avatar-group(
                   v-if="shareInfo.shareList.length > 0"
-                  :avatarList="shareInfo.shareList.map((share) => share.logo)"
+                  :itemList="shareInfo.shareList.map((share) => ({ imageUrl: share.logo, name: share.name }))"
                   class="mr-6"
                 )
                 p {{ $t('FF0058', { number: shareInfo.shareList.length }) }}

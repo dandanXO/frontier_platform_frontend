@@ -25,15 +25,13 @@ div(class="w-full")
           @click="goToPublicLibrary(org.orgNo)"
           data-cy="org"
         )
-          div(class="w-15 h-15 mb-5")
-            img(:src="org.logo" class="rounded-full")
+          f-avatar(type="org" :imageUrl="org.logo" size="xl" class="mb-5")
           p(
             class="text-body1 text-grey-900 text-center font-bold mb-1 w-50 truncate break-all leading-1.4"
           ) {{ org.orgName }}
           p(class="text-grey-600 text-caption mb-7.5") {{ `${org.memberList.length} ${$t('AA0010', org.memberList.length)}` }}
           f-avatar-group(
-            :avatarList="org.memberList.map((member) => member.avatar)"
-            direction="rtl"
+            :itemList="org.memberList.map((member) => ({ imageUrl: member.avatar, name: member?.displayName }))"
           )
         div(
           class="w-58 h-55 rounded-md border border-grey-200 border-dashed flex justify-center items-center cursor-pointer"

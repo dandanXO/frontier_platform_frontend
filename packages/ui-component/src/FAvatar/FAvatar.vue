@@ -1,8 +1,8 @@
 <template lang="pug">
 div(:class="classSize.avatar" class="relative")
   div(
-    class="bg-grey-0 border border-grey-0 rounded-full overflow-hidden"
-    :class="classSize.avatar"
+    class="bg-grey-0 rounded-full overflow-hidden"
+    :class="[classSize.avatar, { 'border border-grey-0': !!labelColor }]"
   )
     img(class="w-full h-full" :src="!!imageUrl ? imageUrl : defaultImage")
   div(

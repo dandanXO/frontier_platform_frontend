@@ -4,16 +4,16 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
     f-popper(class="flex-grow" placement="bottom-start" :offset="[30, 8]")
       template(#trigger)
         div(class="flex items-center cursor-pointer")
-          img(:src="orgLogo" class="rounded-full w-9 h-9 mr-2")
+          f-avatar(:imageUrl="orgLogo" type="org" size="lg" class="mr-2")
           p(
-            class="text-body1 text-grey-900 font-bold max-w-27.5 truncate leading-1.4 cursor-pointer"
+            class="text-body1 text-grey-900 font-bold max-w-26.5 truncate leading-1.4 cursor-pointer"
             data-cy="menu-org_name"
           ) {{ org.orgName }}
           f-svg-icon(iconName="keyboard_arrow_down" size="24" class="text-grey-600")
       template(#content="{ collapsePopper }")
         f-list(class="w-70")
-          div(class="h-18 px-7.5 flex items-center")
-            img(:src="orgLogo" class="rounded-md w-12 h-12 mr-3.5")
+          div(class="h-13 px-7.5 flex items-center")
+            f-avatar(:imageUrl="orgLogo" type="org" size="lg" class="mr-3.5")
             span(class="text-body1 text-grey-900 font-bold line-clamp-2") {{ org.orgName }}
           div(class="mx-2 my-1 h-px bg-grey-200")
           f-list-item

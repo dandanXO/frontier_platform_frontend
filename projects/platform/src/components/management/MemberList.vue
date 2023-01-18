@@ -18,7 +18,7 @@ f-table(
           v-if="item.isPending"
           class="w-10 h-10 rounded-full border border-grey-900 border-dashed"
         )
-        img(v-else :src="item.avatar" class="w-10 h-10 rounded-full")
+        f-avatar(v-else :imageUrl="item.avatar" size="lg")
       div
         div(
           v-if="item.isPending"

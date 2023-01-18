@@ -2,13 +2,13 @@
 fullscreen-header
   template(#left)
     template(v-if="share.sharingFrom === SHARING_FROM.WORKSPACE")
-      img(:src="logo" class="w-10 h-10 rounded-full")
+      f-avatar(:imageUrl="logo" type="org" size="lg")
       div(class="flex items-end pl-2")
         p(class="text-body1 font-bold text-grey-900 pr-2.5") {{ share.displayName }}
         p(class="text-caption text-grey-600") {{ $t('RR0148') }} {{ $dayjs.unix(share.shareDate).format('YYYY/MM/DD') }}
     template(v-else-if="share.sharingFrom === SHARING_FROM.PUBLIC_LIBRARY")
       p(class="text-body1 font-bold text-grey-900 pr-2.5") {{ $t('GG0032') }}
-      img(:src="logo" class="w-10 h-10 rounded-full")
+      f-avatar(:imageUrl="logo" type="org" size="lg")
       p(class="text-body1 font-bold text-grey-900 pl-2.5") {{ share.displayName }}
   template(#right)
     dropdown-locale(class="mr-4")
