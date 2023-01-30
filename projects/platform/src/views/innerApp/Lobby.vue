@@ -21,15 +21,13 @@ div(class="w-full")
       div(class="grid grid-cols-lobby gap-5 mt-7.5")
         div(
           v-for="org in orgList"
-          class="w-58 h-55 rounded-md border border-grey-200 bg-grey-50 flex flex-col items-center py-5 cursor-pointer"
+          class="w-58 h-55 rounded-md border border-grey-200 bg-grey-50 flex flex-col items-center justify-between py-5 cursor-pointer"
           @click="goToPublicLibrary(org.orgNo)"
           data-cy="org"
         )
-          f-avatar(type="org" :imageUrl="org.logo" size="xl" class="mb-5")
-          p(
-            class="text-body1 text-grey-900 text-center font-bold mb-1 w-50 truncate break-all leading-1.4"
-          ) {{ org.orgName }}
-          p(class="text-grey-600 text-caption mb-7.5") {{ `${org.memberList.length} ${$t('AA0010', org.memberList.length)}` }}
+          f-avatar(type="org" :imageUrl="org.logo" size="xl")
+          p(class="text-body1 text-grey-900 text-center font-bold line-clamp-1") {{ org.orgName }}
+          p(class="text-grey-600 text-caption") {{ `${org.memberList.length} ${$t('AA0010', org.memberList.length)}` }}
           f-avatar-group(
             :itemList="org.memberList.map((member) => ({ imageUrl: member.avatar, name: member?.displayName }))"
           )

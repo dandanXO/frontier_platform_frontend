@@ -1,5 +1,5 @@
 <template lang="pug">
-f-popper(:placement="placement" :offset="[0, 4]")
+f-popper(:placement="placement" :offset="[0, 4]" @click.stop)
   template(#trigger="{ isExpand }")
     div(
       class="p-[5px] flex rounded-md border border-transparent hover:bg-grey-50 hover:drop-shadow-2 hover:ease-in hover:duration-100"
