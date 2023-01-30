@@ -48,8 +48,8 @@ export default function useNavigation() {
     router.push(parsePath('/:orgNo/billings/plan'))
   }
 
-  const goToProgress = (tabName = 'material') => {
-    router.push(parsePath(`${prefixPath.value}/progress/${tabName}`))
+  const goToProgress = async (tabName = 'material') => {
+    await router.push(parsePath(`${prefixPath.value}/progress/${tabName}`))
   }
 
   const goToPaymentDetail = () => {
