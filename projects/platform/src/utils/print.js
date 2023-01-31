@@ -7,10 +7,11 @@ import useMaterial from '@/composables/useMaterial'
 import { SIDE_TYPE } from '@/utils/constants.js'
 import i18n from '@/utils/i18n'
 import imgPdfOutLine from '@/assets/images/pdf-outline.png'
+import { computed } from 'vue'
 
 const t = i18n.global.t
-const org = store?.getters['organization/organization']
-const logo = store?.getters['organization/orgLogo']
+const org = computed(() => store?.getters['organization/organization'])
+const logo = computed(() => store?.getters['organization/orgLogo'])
 
 const LABEL_WIDTH = 452
 const LABEL_HEIGHT = 226
@@ -83,19 +84,18 @@ const printPdf = async (dataUrls, config) => {
 
 const printA4Card = async (materialList) => {
   store.dispatch('helper/pushModalLoading')
-
   const list = formatMaterialList(materialList)
-
   const scale = 3
   const dataUrls = []
   const pdfTarget = document.createElement('div')
   pdfTarget.classList.add('w-0', 'h-0', 'overflow-hidden')
-
   const domGenerator = (material) => {
     pdfTarget.innerHTML = `
       <div class="relative flex flex-col justify-between items-center w-148.5 h-210.5 bg-grey-0 px-10 py-10">
         <div class="flex w-full">
-          <img src="${logo}" class="mr-3.5 w-16 h-16 rounded-full flex-shrink-0" />
+          <img src="${
+            logo.value
+          }" class="mr-3.5 w-16 h-16 rounded-full flex-shrink-0" />
           <div class="w-full">
             <p class="text-body1 font-bold mb-3.5">${material.materialNo}</p>
             <div class="text-caption text-grey-900 grid gap-y-1">
@@ -161,13 +161,12 @@ const printA4Card = async (materialList) => {
           <span class="whitespace-nowrap text-caption">${t('DD0050')}</span>
         </div>
         <div class="flex flex-col justify-start items-start w-full">
-          <span class="mb-2 font-bold text-caption">${org.orgName}</span>
-          <span class="text-caption">${org.address || ''}</span>
+          <span class="mb-2 font-bold text-caption">${org.value.orgName}</span>
+          <span class="text-caption">${org.value.address || ''}</span>
         </div>
       </div>
     `
     document.body.appendChild(pdfTarget)
-
     const mark = document.getElementById('mark')
     if (material.sideType === SIDE_TYPE.BACK) {
       mark.innerText = t('DD0051')
@@ -181,19 +180,16 @@ const printA4Card = async (materialList) => {
     } else {
       mark.innerText = t('DD0046')
     }
-
     QRCode.toCanvas(
       material.frontierNo,
       { width: 60, margin: 0 },
       (err, canvas) => {
         if (err) throw err
-
         const container = document.getElementById('container')
         container.appendChild(canvas)
       }
     )
   }
-
   await asyncForEach(list, async (el, index, arr) => {
     domGenerator(el)
     const dataUrl = await domtoimage.toJpeg(pdfTarget, {
@@ -204,20 +200,17 @@ const printA4Card = async (materialList) => {
         transformOrigin: 'top left',
       },
     })
-
     dataUrls.push({
       dataUrl,
       num: pdfTarget.children.length,
     })
     pdfTarget.remove()
   })
-
   await printPdf(dataUrls, {
     width: 21,
     height: 29.7,
     doc: new JsPDF({ unit: 'cm', format: 'a4', orientation: 'p' }),
   })
-
   store.dispatch('helper/closeModalLoading')
 }
 
@@ -253,7 +246,7 @@ const printGeneralLabel = async (materialList) => {
       pdfTarget.innerHTML = `
         <div class="relative flex w-113 h-56.5 bg-grey-0 pr-4 py-3">
           <div class="absolute top-3 left-3.5">
-            <img src="${logo}" class="w-5 h-5 rounded-full" />
+            <img src="${logo.value}" class="w-5 h-5 rounded-full" />
           </div>
           <div class="flex justify-center w-full">
             <div class="flex flex-col items-center justify-center ml-16">
@@ -279,7 +272,7 @@ const printGeneralLabel = async (materialList) => {
       pdfTarget.innerHTML = `
         <div class="relative flex w-113 h-56.5 bg-grey-0 pr-4 py-3">
           <div class="absolute top-3 left-3.5">
-            <img src="${logo}" class="w-5 h-5 rounded-full" />
+            <img src="${logo.value}" class="w-5 h-5 rounded-full" />
           </div>
           <div class="flex justify-center w-full">
             <div class="flex flex-col items-center justify-center">
