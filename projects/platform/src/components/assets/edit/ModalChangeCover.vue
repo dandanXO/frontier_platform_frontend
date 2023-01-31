@@ -6,7 +6,7 @@ modal-behavior(
   @click:primary="choose"
   @click:secondary="closeModal"
 )
-  div(class="w-fit")
+  div(class="w-115")
     p(class="text-body2 font-bold text-grey-900 pb-4.5") {{ $t('EE0048') }}
     f-scrollbar-container(class="h-70 -mx-5 px-5")
       div(class="grid grid-cols-4 gap-x-5 gap-y-4.5")
