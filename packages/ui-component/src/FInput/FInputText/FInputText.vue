@@ -166,7 +166,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, toRefs, computed, useSlots } from 'vue'
+import { ref, toRefs, computed, useSlots, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { CONTEXTUAL_MENU_MODE } from '../../constants.js'
 import useInput from '../useInput'
@@ -401,7 +401,8 @@ const rightSelectedMenu = computed(() =>
 
 const refInput = ref(null)
 
-const onInput = () => {
+const onInput = async () => {
+  await nextTick()
   !isFilled.value && emit('update:textValue', null)
   emit('input')
 }
@@ -445,13 +446,13 @@ const decrease = () => {
 
 const classMain = computed(() => {
   const classList = [
+    ...classTransition.value,
     'border-[1.5px]',
     'rounded',
     'flex',
     'items-center',
     'outline',
     'outline-none',
-    ...classTransition.value,
   ]
 
   switch (props.size) {
