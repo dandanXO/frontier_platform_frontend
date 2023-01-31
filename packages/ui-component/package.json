@@ -27,7 +27,8 @@
     "babel-loader": "^8.2.5",
     "nouislider": "^15.5.1",
     "overlayscrollbars": "^1.13.1",
-    "vue-loader": "^16.8.3"
+    "vue-loader": "^16.8.3",
+    "vue-virtual-scroller": "^2.0.0-alpha.1"
   },
   "peerDependencies": {
     "vue": "3.2.37"

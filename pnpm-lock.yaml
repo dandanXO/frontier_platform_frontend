@@ -102,6 +102,7 @@ importers:
       overlayscrollbars: ^1.13.1
       vue: 3.2.37
       vue-loader: ^16.8.3
+      vue-virtual-scroller: ^2.0.0-alpha.1
     dependencies:
       vue: 3.2.37
     devDependencies:
@@ -118,6 +119,7 @@ importers:
       nouislider: 15.6.0
       overlayscrollbars: 1.13.3
       vue-loader: 16.8.3_bksoumsgnvxdxlcfohbaijcgqa
+      vue-virtual-scroller: 2.0.0-alpha.1_vue@3.2.37
 
   projects/3d-viewer:
     specifiers:
@@ -4885,7 +4887,7 @@ packages:
   /axios/0.21.4_debug@4.3.2:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.15.1_debug@4.3.2
+      follow-redirects: 1.15.1
     transitivePeerDependencies:
       - debug
     dev: true
@@ -7625,19 +7627,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dev: false
-
-  /follow-redirects/1.15.1_debug@4.3.2:
-    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.2
-    dev: true
 
   /for-in/1.0.2:
     resolution: {integrity: sha512-7EwmXrOjyL+ChxMhmG5lnW9MPt1aIeZEwKhQzoBUdTV0N3zuwWDZYVJatDvZ2OyzPUvdIAZDsCetk3coyMfcnQ==}
@@ -9648,7 +9637,6 @@ packages:
 
   /mitt/2.1.0:
     resolution: {integrity: sha512-ILj2TpLiysu2wkBbWjAmww7TkZb65aiQO+DkVdUTBpBXq+MHYiETENkKFMtsJZX1Lf4pe4QOrTSjIfUwN5lRdg==}
-    dev: false
 
   /mixin-deep/1.3.2:
     resolution: {integrity: sha512-WRoDn//mXBiJ1H40rqa3vH0toePwSsGb45iInWlTySa+Uu4k3tYUSxa2v1KqAiLtvlrSzaExqS1gtk96A9zvEA==}
@@ -13122,7 +13110,6 @@ packages:
       vue: ^3.0.0
     dependencies:
       vue: 3.2.37
-    dev: false
 
   /vue-resize/2.0.0-alpha.1_vue@3.2.37:
     resolution: {integrity: sha512-7+iqOueLU7uc9NrMfrzbG8hwMqchfVfSzpVlCMeJQe4pyibqyoifDNbKTZvwxZKDvGkB+PdFeKvnGZMoEb8esg==}
@@ -13130,7 +13117,6 @@ packages:
       vue: ^3.0.0
     dependencies:
       vue: 3.2.37
-    dev: false
 
   /vue-router/4.1.3_vue@3.2.37:
     resolution: {integrity: sha512-XvK81bcYglKiayT7/vYAg/f36ExPC4t90R/HIpzrZ5x+17BOWptXLCrEPufGgZeuq68ww4ekSIMBZY1qdUdfjA==}
@@ -13168,7 +13154,6 @@ packages:
       vue: 3.2.37
       vue-observe-visibility: 2.0.0-alpha.1_vue@3.2.37
       vue-resize: 2.0.0-alpha.1_vue@3.2.37
-    dev: false
 
   /vue/3.2.37:
     resolution: {integrity: sha512-bOKEZxrm8Eh+fveCqS1/NkG/n6aMidsI6hahas7pa0w/l7jkbssJVsRhVDs07IdDq7h9KHswZOgItnwJAgtVtQ==}

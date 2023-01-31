@@ -31,12 +31,31 @@ div(:class="innerMenuTree.width" class="py-2 bg-grey-0 rounded drop-shadow-16")
   div(
     v-if="filteredBlockList.length > 0"
     :class="innerMenuTree.scrollAreaMaxHeight"
-    class="overflow-auto overscroll-contain"
+    class="overflow-y-auto overflow-x-hidden overscroll-contain"
   )
     template(v-for="(block, index) in filteredBlockList")
       //- Block Title
       div(v-if="block.blockTitle" class="h-6 py-1.5 px-4 text-caption text-grey-600") {{ block.blockTitle }}
+
+      recycle-scroller(
+        v-if="depthOfMenuTree === 1"
+        :class="innerMenuTree.width"
+        :items="block.menuList"
+        :itemSize="36"
+        key-field="title"
+        pageMode
+        v-slot="{ item }"
+        :buffer="108"
+      )
+        contextual-menu-node(
+          :class="innerMenuTree.width"
+          :menu="item"
+          @click:menu="clickMenuHandler($event)"
+          :selectMode="selectMode"
+          :inputSelectValue="inputSelectValue"
+        )
       contextual-menu-node(
+        v-else
         v-for="menu in block.menuList"
         :menu="menu"
         @click:menu="clickMenuHandler($event)"
@@ -64,6 +83,8 @@ export default {
 <script setup>
 import { ref, computed } from 'vue'
 import { CONTEXTUAL_MENU_MODE } from '../constants.js'
+import { RecycleScroller } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 const { SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
 
@@ -159,7 +180,7 @@ const innerMenuTree = computed(() => {
     rootTitle: '',
     searchEnable: false,
     button: null,
-    width: 'w-fit',
+    width: 'w-50',
     scrollAreaMaxHeight: 'max-h-100',
   }
   return Object.assign({}, defaultMenuTree, props.menuTree)
@@ -172,7 +193,6 @@ const clickMenuHandler = (menu) => {
       (selectValue) =>
         JSON.stringify(selectValue) === JSON.stringify(menu.selectValue)
     )
-
     if (!~index) {
       tempArr.push(menu.selectValue)
     } else {
@@ -190,7 +210,6 @@ const clickMenuHandler = (menu) => {
       emit('update:inputSelectValue', menu.selectValue)
     }
   }
-
   emit('click:menu', menu)
 }
 
@@ -223,5 +242,24 @@ defineExpose({
   setSearchInput,
   menuIsExist,
   clickMenuHandler,
+})
+
+const depthOfMenuTree = computed(() => {
+  const getDepth = (tree, level) => {
+    return Math.max(
+      ...tree.blockList.map((block) => {
+        return Math.max(
+          ...block.menuList.map((menu) => {
+            if (menu.blockList && menu.blockList.length > 0) {
+              return getDepth(menu, level + 1)
+            } else {
+              return level
+            }
+          })
+        )
+      })
+    )
+  }
+  return getDepth(props.menuTree, 1)
 })
 </script>

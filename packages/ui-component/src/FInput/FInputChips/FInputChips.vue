@@ -29,7 +29,7 @@ f-input-container(
         //- display text
         div(class="flex-grow w-full h-full flex items-center")
           div(
-            v-if="multiple && displayText.length !== 0"
+            v-show="multiple && displayText.length !== 0"
             :class="classChipContainer"
           )
             f-tag(
@@ -39,14 +39,14 @@ f-input-container(
               appendIcon="clear"
             ) {{ chip }}
           div(
-            v-else-if="!multiple && !!displayText"
+            v-show="!multiple && !!displayText"
             :class="classInput"
             class="flex items-center"
           )
             p(class="line-clamp-1") {{ displayText }}
           //- placeholder
           input(
-            v-else
+            v-show="!(multiple && displayText.length !== 0) && !(!multiple && !!displayText)"
             type="text"
             :placeholder="placeholder"
             :class="classInput"
@@ -231,7 +231,7 @@ const displayText = computed(() => {
       isObjectEqual(menu.selectValue, v)
     )
   if (props.multiple) {
-    return innerSelectValue.value.map((v) => getMenu(v).title)
+    return innerSelectValue.value.map((v) => getMenu(v)?.title)
   }
   return getMenu(innerSelectValue.value)?.title
 })
