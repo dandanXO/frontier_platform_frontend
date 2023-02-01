@@ -317,7 +317,7 @@ export default {
         return {
           '--noUi-handle-bg-color': '#ffffff',
           '--noUi-handle-bg-active-color': '#f4f4f4',
-          '--noUi-horizontal-color': 'e9e9e9',
+          '--noUi-horizontal-color': '#e9e9e9',
         }
       } else {
         return {
