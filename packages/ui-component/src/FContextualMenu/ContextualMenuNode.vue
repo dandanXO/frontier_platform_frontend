@@ -242,8 +242,8 @@ const bgClassList = computed(() => {
   }
 
   return [
-    'hover:bg-grey-900',
-    'active:bg-grey-900',
+    'hover:bg-grey-100',
+    'active:bg-grey-150',
     isSelect.value ? 'bg-grey-150' : 'bg-grey-0',
   ]
 })
