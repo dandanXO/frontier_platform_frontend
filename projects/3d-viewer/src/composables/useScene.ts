@@ -4,14 +4,22 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { downloadDataURLFile } from '../utils/fileOperator'
 
 export default function useScene(baseUrl: string) {
+  const container = ref<HTMLElement>()
   const canvas = ref<HTMLCanvasElement>()
   const scene = ref<THREE.Scene>()
+  let controls: OrbitControls | undefined
   let renderer: THREE.WebGLRenderer | undefined
-  let camera: THREE.Camera | undefined
+  let camera: THREE.PerspectiveCamera | undefined
   let animationReq: number | undefined
 
   const initScene = () => {
-    if (!canvas.value) throw new Error('error')
+    if (!canvas.value) {
+      throw new Error('canvas undefined')
+    }
+    if (!container.value) {
+      throw new Error('container undefined')
+    }
+
     const backgroundColor = 0x111111
 
     scene.value = new THREE.Scene()
@@ -54,7 +62,7 @@ export default function useScene(baseUrl: string) {
 
     camera = new THREE.PerspectiveCamera(
       45,
-      window.innerWidth / window.innerHeight,
+      canvas.value.width / canvas.value.height,
       0.1,
       300
     )
@@ -76,37 +84,19 @@ export default function useScene(baseUrl: string) {
     spotLight.shadow.bias = -0.001
     scene.value.add(spotLight)
 
-    const controls = new OrbitControls(camera, renderer.domElement)
+    controls = new OrbitControls(camera, renderer.domElement)
     controls.enableDamping = true
     controls.target = new THREE.Vector3(0, 0.6, 0)
     controls.maxDistance = 4
     controls.minDistance = 0.5
     controls.maxPolarAngle = Math.PI
 
-    function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
-      const canvas = renderer.domElement
-      const width = window.innerWidth
-      const height = window.innerHeight
-      const canvasPixelWidth = canvas.width / window.devicePixelRatio
-      const canvasPixelHeight = canvas.height / window.devicePixelRatio
-      const needResize =
-        canvasPixelWidth !== width || canvasPixelHeight !== height
-
-      if (needResize) renderer.setSize(width, height, false)
-      return needResize
-    }
-
     function animate() {
-      if (!renderer || !camera || !scene.value || !camera) return
-
-      controls.update()
-
-      if (resizeRendererToDisplaySize(renderer)) {
-        const canvas = renderer.domElement
-        camera.aspect = canvas.clientWidth / canvas.clientHeight
-        camera.updateProjectionMatrix()
+      if (!renderer || !camera || !controls || !scene.value) {
+        return
       }
 
+      controls.update()
       renderer.render(toRaw(scene.value), camera)
       animationReq = requestAnimationFrame(animate)
     }
@@ -115,10 +105,15 @@ export default function useScene(baseUrl: string) {
   }
 
   const takeScreenShot = () => {
-    if (!canvas.value) throw new Error('error')
+    if (!canvas.value) {
+      throw new Error('error')
+    }
 
     canvas.value.toBlob((blob) => {
-      if (!blob || !canvas.value) return
+      if (!blob || !canvas.value) {
+        return
+      }
+
       const { width, height } = canvas.value
       const fileName = `screencapture-${width}x${height}.png`
       const url = window.URL.createObjectURL(blob)
@@ -126,14 +121,58 @@ export default function useScene(baseUrl: string) {
     })
   }
 
-  onMounted(initScene)
+  const observer = new ResizeObserver(() => {
+    if (!container.value || !canvas.value) {
+      return
+    }
+
+    canvas.value.style.width = '100%'
+    canvas.value.style.height = '100%'
+    canvas.value.width = container.value.clientWidth * window.devicePixelRatio
+    canvas.value.height = container.value.clientHeight * window.devicePixelRatio
+
+    if (!renderer) {
+      throw new Error('renderer undefined')
+    }
+    if (!camera) {
+      throw new Error('camera undefined')
+    }
+    if (!scene.value) {
+      throw new Error('scene undefined')
+    }
+
+    camera.aspect = canvas.value.clientWidth / canvas.value.clientHeight
+    camera.updateProjectionMatrix()
+    renderer.setSize(
+      container.value.clientWidth,
+      container.value.clientHeight,
+      false
+    )
+    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.render(toRaw(scene.value), camera)
+  })
+
+  onMounted(() => {
+    if (!container.value) {
+      throw new Error('container undefined')
+    }
+    initScene()
+    observer.observe(container.value)
+  })
 
   onUnmounted(() => {
-    if (animationReq) cancelAnimationFrame(animationReq)
+    if (animationReq) {
+      cancelAnimationFrame(animationReq)
+    }
+
     scene.value = undefined
     camera = undefined
     renderer = undefined
+
+    if (container.value) {
+      observer.unobserve(container.value)
+    }
   })
 
-  return { scene, canvas, takeScreenShot }
+  return { scene, container, canvas, takeScreenShot }
 }

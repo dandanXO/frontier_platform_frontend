@@ -28,5 +28,5 @@ defineProps({
 
 defineEmits(['update:displayMode'])
 
-const activeClass = 'bg-primary-0 border-primary-400 text-primary-400'
+const activeClass = 'border-primary-400 text-primary-400'
 </script>

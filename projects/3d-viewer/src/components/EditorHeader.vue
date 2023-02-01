@@ -1,50 +1,78 @@
 <template lang="pug">
-div(class="shrink-0 w-full h-20 bg-grey-900 px-10 flex items-center justify-between")
-  div(class="flex items-center text-grey-100")
-    f-svg-icon(iconName="3D_viewer" size="24")
-    p(class="text-h5 font-bold pl-4") {{ $t('EE0029') }}
-  div(class="flex flex-row")
-    model-texture-switch(
+div(
+  class="w-screen h-20 border-b border-grey-800 bg-grey-900 flex items-center justify-between"
+  :class="largerThenLg ? 'px-10' : 'px-5'"
+)
+  div(v-if="largerThenLg" class="flex items-center gap-x-2 text-grey-100")
+    f-svg-icon(iconName="3d_viewer" size="24")
+    p(class="text-body1 font-bold") {{ $t('EE0029') }}
+  div(class="flex flex-row gap-x-10" :class="{ 'flex-1 min-w-0': !largerThenLg }")
+    model-texture-tap-status(
       :displayMode="displayMode"
-      @update:displayMode="(v) => emit('displayModeChange', v)"
+      @update:displayMode="handleDisplayModeChange"
     )
-    div(class="w-150 px-10")
-      div(v-if="displayMode === DISPLAY_MODE.MODEL")
-        carousel(:settings="settings")
-          slide(v-for="(model, index) in MODELS" :key="model.name")
-            div(
-              class="cursor-pointer mx-1 hover:opacity-70 border border-grey-700 rounded"
-              :class="{ '!border-primary-400': currentModel.name === model.name }"
-              @click="emit('modelClick', index)"
-            )
-              img(:src="model.coverImg" class="rounded")
-      div(v-else class="flex flex-row gap-x-2")
-        dark-tag(
-          @click="emit('textureClick', TEXTURE_TYPE.BASE)"
-          :active="textureType === TEXTURE_TYPE.BASE"
-        ) base
-        dark-tag(
-          @click="emit('textureClick', TEXTURE_TYPE.NORMAL)"
-          :active="textureType === TEXTURE_TYPE.NORMAL"
-        ) normal
-        dark-tag(
-          @click="emit('textureClick', TEXTURE_TYPE.ROUGHNESS)"
-          :active="textureType === TEXTURE_TYPE.ROUGHNESS"
-        ) roughness
-        dark-tag(
-          @click="emit('textureClick', TEXTURE_TYPE.DISPLACEMENT)"
-          :active="textureType === TEXTURE_TYPE.DISPLACEMENT"
-        ) displacement
-  f-button(theme="dark" size="md" @click="emit('close')") {{ $t('UU0112') }}
+    div(class="relative mx-auto min-w-0 items-center" :class="{ 'pr-10': largerThenMd }")
+      div(ref="carousel" class="relative flex flex-row overflow-x-hidden")
+        template(v-if="displayMode === DISPLAY_MODE.MODEL")
+          div(
+            v-for="(model, index) in MODELS"
+            :key="model.name"
+            class="mx-1 h-[42px] w-[42px] hover:opacity-70 border border-grey-700 rounded shrink-0 cursor-pointer"
+            :class="{ '!border-primary-400': currentModel.name === model.name }"
+            @click="emit('modelClick', index)"
+          )
+            img(:src="model.coverImg" class="rounded")
+        template(v-else)
+          div(class="flex flex-row shirk gap-x-2 items-center")
+            dark-tag(
+              @click="emit('textureClick', TEXTURE_TYPE.BASE)"
+              :active="textureType === TEXTURE_TYPE.BASE"
+            ) base
+            dark-tag(
+              @click="emit('textureClick', TEXTURE_TYPE.NORMAL)"
+              :active="textureType === TEXTURE_TYPE.NORMAL"
+            ) normal
+            dark-tag(
+              @click="emit('textureClick', TEXTURE_TYPE.ROUGHNESS)"
+              :active="textureType === TEXTURE_TYPE.ROUGHNESS"
+            ) roughness
+            dark-tag(
+              @click="emit('textureClick', TEXTURE_TYPE.DISPLACEMENT)"
+              :active="textureType === TEXTURE_TYPE.DISPLACEMENT"
+            ) displacement
+      div(
+        v-show="canScrollLeft"
+        class="absolute left-0 top-1/2 transform -translate-y-1/2 w-[50px] h-20 cursor-pointer"
+        :style="{ background: 'linear-gradient(90deg, #262626 0%, rgba(38, 38, 38, 0) 100%)' }"
+        @click="scrollLeft"
+      )
+        f-svg-icon(
+          iconName="keyboard_arrow_left"
+          size="24"
+          class="absolute left-5 top-7 text-grey-150"
+        )
+      div(
+        v-show="canScrollRight"
+        class="absolute right-0 top-1/2 transform -translate-y-1/2 w-[100px] h-20 cursor-pointer"
+        :style="{ background: 'linear-gradient(270deg, #262626 0%, rgba(38, 38, 38, 0) 100%)' }"
+        @click="scrollRight"
+      )
+        f-svg-icon(
+          iconName="keyboard_arrow_right"
+          size="24"
+          class="absolute right-0 top-1/2 transform -translate-y-1/2 text-grey-150"
+        )
+  f-button(v-if="largerThenMd" theme="dark" size="md" @click="emit('close')") {{ $t('UU0112') }}
 </template>
 
 <script setup lang="ts">
-import { Carousel, Slide } from 'vue3-carousel'
+import { onMounted, onUnmounted, ref } from 'vue'
 import DarkTag from '@frontier/ui-component/src/FTag/DarkTag.vue'
-import ModelTextureSwitch from './ModelTextureSwitch.vue'
-import MODELS from '../constants/models'
-import type { Model } from '../constants/models'
+import ModelTextureTapStatus from './ModelTextureTapStatus.vue'
 import { DISPLAY_MODE, TEXTURE_TYPE } from '../constants'
+import MODELS from '../constants/models'
+import useBreakpoints from '../composables/useBreakpoints'
+import type { Model } from '../constants/models'
 
 defineProps<{
   displayMode: number
@@ -52,43 +80,89 @@ defineProps<{
   textureType: number
 }>()
 
+const { largerThenMd, largerThenLg } = useBreakpoints()
+
+const modelItemSize = 42
+const modelItemsPerScroll = 3
+const gap = 4
+const scrollLength =
+  modelItemSize * modelItemsPerScroll + gap * (modelItemsPerScroll - 1)
+const carousel = ref<HTMLDivElement>()
+const canScrollLeft = ref(false)
+const canScrollRight = ref(false)
+
+const checkCanScroll = () => {
+  if (!carousel.value) {
+    return
+  }
+  canScrollLeft.value = carousel.value.scrollLeft > 0
+  canScrollRight.value =
+    carousel.value.scrollLeft + carousel.value.clientWidth <
+    carousel.value.scrollWidth
+}
+
+const observer = new ResizeObserver(checkCanScroll)
+
+const scrollToInitial = () => {
+  if (!carousel.value) {
+    return
+  }
+  carousel.value.scrollTo({
+    left: 0,
+    top: 0,
+  })
+}
+
+const scrollLeft = () => {
+  if (!carousel.value) {
+    return
+  }
+  carousel.value.scrollTo({
+    left: carousel.value.scrollLeft - scrollLength,
+    top: 0,
+    behavior: 'smooth',
+  })
+}
+
+const scrollRight = () => {
+  if (!carousel.value) {
+    return
+  }
+  carousel.value.scrollTo({
+    left: carousel.value.scrollLeft + scrollLength,
+    top: 0,
+    behavior: 'smooth',
+  })
+}
+
+const handleDisplayModeChange = (v: number) => {
+  scrollToInitial()
+  emit('displayModeChange', v)
+}
+
+onMounted(() => {
+  if (!carousel.value) {
+    return
+  }
+  checkCanScroll()
+  carousel.value.addEventListener('scroll', checkCanScroll)
+  observer.observe(carousel.value, { box: 'content-box' })
+})
+
+onUnmounted(() => {
+  if (!carousel.value) {
+    return
+  }
+  carousel.value.removeEventListener('scroll', checkCanScroll)
+  observer.unobserve(carousel.value)
+})
+
 const emit = defineEmits<{
   (e: 'close'): void
   (e: 'displayModeChange', displayMode: number): void
   (e: 'modelClick', modelIndex: number): void
   (e: 'textureClick', textureType: number): void
 }>()
-const settings = { itemsToShow: 10, snapAlign: 'center' }
 </script>
 
-<style lang="scss">
-.carousel__prev,
-.carousel__next {
-  box-sizing: content-box;
-  background-color: #444;
-  width: 25px;
-  height: 25px;
-}
-
-.carousel__prev {
-  transform: translate(-30px, -20px);
-}
-
-.carousel__next {
-  transform: translate(30px, -20px);
-}
-
-.carousel__pagination-button {
-  background-color: #444;
-  opacity: 0.6;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin: 15px 8px 0;
-}
-
-.carousel__pagination-button--active {
-  background-color: #444;
-  opacity: 1;
-}
-</style>
+<style lang="scss"></style>

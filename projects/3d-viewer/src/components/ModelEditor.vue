@@ -5,11 +5,15 @@ import useScene from '../composables/useScene'
 import useModels from '../composables/useModels'
 import useU3M from '../composables/useU3M'
 import useColors from '../composables/useColors'
+import useBreakpoints from '../composables/useBreakpoints'
 import useKeyboard from '../composables/useKeyboard'
-import EditorHeader from './EditorHeader.vue'
-import EditorSidebar from './EditorSidebar.vue'
-import EditorLoader from './EditorLoader.vue'
 import { DISPLAY_MODE, TEXTURE_TYPE } from '../constants'
+import EditorHeader from './EditorHeader.vue'
+import EditorSidebar from './sidebar/EditorSidebar.vue'
+import HiddenSidebar from './sidebar/HiddenSidebar.vue'
+import EditorLoader from './EditorLoader.vue'
+import MobileModelControlBar from './MobileModelControlBar.vue'
+import MobileTextureControlBar from './MobileTextureControlBar.vue'
 
 const props = defineProps<{
   u3mPath: string
@@ -28,7 +32,7 @@ const baseUrl = VITE_APP_WEB_URL + '/static-data/material'
 
 const loading = ref(true)
 
-const { scene, canvas, takeScreenShot } = useScene(baseUrl)
+const { scene, container, canvas, takeScreenShot } = useScene(baseUrl)
 const {
   u3m,
   alpha,
@@ -93,6 +97,12 @@ const textureImages = {
 }
 
 const textureImage = computed(() => textureImages[textureType.value])
+
+const { largerThenMd } = useBreakpoints()
+const sidebarExpanded = ref(largerThenMd.value)
+const handleSidebarToggle = () => {
+  sidebarExpanded.value = !sidebarExpanded.value
+}
 </script>
 
 <template lang="pug">
@@ -106,43 +116,64 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
     @textureClick="handleTextureClick"
     @close="handleClose"
   )
-  editor-sidebar(
-    v-show="displayMode === DISPLAY_MODE.MODEL"
-    :pantoneList="pantoneList"
-    :currentColors="currentColors"
-    :colorRemovable="colorRemovable"
-    :colorAddable="colorAddable"
-    :alpha="alpha"
-    :roughness="roughness"
-    :specular="specular"
-    :scale="scale"
-    :isAlphaChanged="isAlphaChanged"
-    :isRoughnessChanged="isRoughnessChanged"
-    :isSpecularChanged="isSpecularChanged"
-    :analyzeImage="analyzeImage"
-    @colorAdd="handleColorAdd"
-    @colorRemove="handleColorRemove"
-    @colorChange="handleColorChange"
-    @colorInput="handleColorInput"
-    @alphaChange="handleAlphaChange"
-    @roughnessChange="handleRoughnessChange"
-    @specularChange="handleSpecularChange"
-    @alphaReset="handleAlphaReset"
-    @roughnessReset="handleRoughnessReset"
-    @specularReset="handleSpecularReset"
-    @scaleReset="handleScaleReset"
-    @scaleChange="handleScaleChange"
-    @screenshot="takeScreenShot"
-  )
-  canvas(
-    v-show="displayMode === DISPLAY_MODE.MODEL"
-    ref="canvas"
-    class="w-full h-full"
-  )
+
+  div(v-show="displayMode === DISPLAY_MODE.MODEL" class="relative flex flex-col flex-1")
+    div(class="relative flex flex-row flex-1 items-stretch")
+      editor-sidebar(
+        v-if="sidebarExpanded"
+        :pantoneList="pantoneList"
+        :currentColors="currentColors"
+        :colorRemovable="colorRemovable"
+        :colorAddable="colorAddable"
+        :alpha="alpha"
+        :roughness="roughness"
+        :specular="specular"
+        :scale="scale"
+        :isAlphaChanged="isAlphaChanged"
+        :isRoughnessChanged="isRoughnessChanged"
+        :isSpecularChanged="isSpecularChanged"
+        :analyzeImage="analyzeImage"
+        @toggleExpand="handleSidebarToggle"
+        @colorAdd="handleColorAdd"
+        @colorRemove="handleColorRemove"
+        @colorChange="handleColorChange"
+        @colorInput="handleColorInput"
+        @alphaChange="handleAlphaChange"
+        @roughnessChange="handleRoughnessChange"
+        @specularChange="handleSpecularChange"
+        @alphaReset="handleAlphaReset"
+        @roughnessReset="handleRoughnessReset"
+        @specularReset="handleSpecularReset"
+        @scaleReset="handleScaleReset"
+        @scaleChange="handleScaleChange"
+        @screenshot="takeScreenShot"
+      )
+      hidden-sidebar(
+        v-else-if="largerThenMd"
+        @toggle-expand="handleSidebarToggle"
+      )
+      div(ref="container" class="flex-1")
+        canvas(ref="canvas")
+    mobile-model-control-bar(
+      v-if="!largerThenMd"
+      :expanded="sidebarExpanded"
+      @toggleExpand="handleSidebarToggle"
+      @close="handleClose"
+    )
   div(
     v-show="displayMode === DISPLAY_MODE.TEXTURE"
-    class="w-full max-h-full h-full flex items-center justify-center"
+    class="relative flex-1 w-full flex items-center min-h-0 justify-center"
   )
-    img(class="h-3/4 rounded" :src="textureImage")
+    img(
+      class="rounded"
+      :style="{ maxHeight: '75%', maxWidth: '75%' }"
+      :src="textureImage"
+    )
+    mobile-texture-control-bar(
+      v-if="!largerThenMd"
+      :expanded="sidebarExpanded"
+      @toggleExpand="handleSidebarToggle"
+      @close="handleClose"
+    )
   editor-loader(v-if="loading")
 </template>
