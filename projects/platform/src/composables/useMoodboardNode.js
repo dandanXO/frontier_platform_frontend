@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { useStore } from 'vuex'
-import { NODE_TYPE } from '@/utils/constants.js'
+import { NODE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 
 /**

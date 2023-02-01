@@ -1,4 +1,4 @@
-import { SIDE_TYPE } from '@/utils/constants.js'
+import { SIDE_TYPE } from '@/utils/constants'
 
 export default function useMaterialImage(material, type = 'general') {
   const { isDoubleSideMaterial, sideType, faceSideImg, backSideImg } = material

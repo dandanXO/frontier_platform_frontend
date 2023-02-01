@@ -11,7 +11,7 @@ export default {
 </script>
 
 <script setup>
-import { UPLOAD_ERROR_CODE } from '@/utils/constants.js'
+import { UPLOAD_ERROR_CODE } from '@/utils/constants'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 

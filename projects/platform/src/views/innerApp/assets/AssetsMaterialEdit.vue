@@ -111,4 +111,9 @@ await store.dispatch('assets/getMaterialOptions')
 await store.dispatch('assets/getMaterial', {
   materialId: route.params.materialId,
 })
+// onMounted(() => {
+//   store.dispatch('helper/openModal', {
+//     component: 'modal-u3m-recut',
+//   })
+// })
 </script>

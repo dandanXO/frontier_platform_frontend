@@ -75,7 +75,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation.js'
 import BlockAttachment from '@/components/moodboard/BlockAttachment.vue'
-import { MOODBOARD_TYPE, CREATE_EDIT } from '@/utils/constants.js'
+import { MOODBOARD_TYPE, CREATE_EDIT } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()

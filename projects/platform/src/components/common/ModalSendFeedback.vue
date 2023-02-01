@@ -61,7 +61,7 @@ modal-behavior(
 </template>
 
 <script setup>
-import { useConstants } from '@/utils/constants.js'
+import { useConstants } from '@/utils/constants'
 import { ref, reactive, computed } from 'vue'
 import { FileOperator, bytesToSize } from '@/utils/fileOperator'
 import { useI18n } from 'vue-i18n'

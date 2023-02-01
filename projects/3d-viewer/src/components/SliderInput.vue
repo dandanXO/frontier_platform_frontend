@@ -3,7 +3,7 @@ div(ref="rootDom" class="flex flex-col w-full justify-between py-1")
   div(class="flex flex-row items-center gap-x-2")
     p(class="text-body2 font-bold") {{ name }}
     f-button-label(
-      class="bg-grey-700 disabled:bg-grey-700 disabled:text-grey-500 text-grey-100"
+      theme="dark"
       size="sm"
       :disabled="!changed"
       @click="emit('reset')"
@@ -19,7 +19,7 @@ div(ref="rootDom" class="flex flex-col w-full justify-between py-1")
         :value="value"
         @input="handleSliderInput"
       )
-    input-number(
+    f-input-number(
       class="w-16 text-grey-100 bg-grey-900 border:none"
       theme="dark"
       type="number"
@@ -34,7 +34,6 @@ div(ref="rootDom" class="flex flex-col w-full justify-between py-1")
 <script setup lang="ts">
 import { clamp } from 'ramda'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import InputNumber from './InputNumber.vue'
 
 const props = defineProps<{
   name: string

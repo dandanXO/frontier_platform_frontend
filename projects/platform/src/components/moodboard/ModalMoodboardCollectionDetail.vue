@@ -44,7 +44,7 @@ modal-behavior(
 
 <script setup>
 import { useStore } from 'vuex'
-import { CREATE_EDIT } from '@/utils/constants.js'
+import { CREATE_EDIT } from '@/utils/constants'
 
 const props = defineProps({
   nodeId: {

@@ -1,5 +1,5 @@
 <template lang="pug">
-div(:class="classes")
+div(:class="classes" @click.stop="handleClick")
   slot
 </template>
 
@@ -7,7 +7,12 @@ div(:class="classes")
 import { computed } from 'vue'
 
 const props = defineProps<{
-  active: boolean
+  active?: boolean
+  disabled?: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'click'): void
 }>()
 
 const classes = computed(() => {
@@ -20,21 +25,28 @@ const classes = computed(() => {
     'cursor-pointer',
     'box-border',
     'bg-grey-700',
-    'border',
-    'border-grey-500',
-    'h-8.5',
-    'px-5',
-    'py-2.5',
-    'font-bold',
+    'h-6',
+    'px-2.5',
+    'py-[5px]',
     'text-body2',
     'text-grey-100',
     'hover:bg-grey-300',
-    'hover:border-grey-300',
   ]
 
-  if (props.active)
+  if (props.active) {
     baseClass.push('!bg-primary-0', '!border-primary-400', '!text-primary-400')
+  }
+
+  if (props.disabled) {
+    baseClass.push('!text-grey-500 !cursor-default !bg-grey-700')
+  }
 
   return baseClass
 })
+
+const handleClick = () => {
+  if (!props.disabled) {
+    emit('click')
+  }
+}
 </script>

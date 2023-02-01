@@ -5,11 +5,12 @@ input[type='number']::-webkit-inner-spin-button {
 </style>
 
 <template lang="pug">
-div(class="relative")
+div(class="relative" :class="textStyles")
   input(
     v-model.number="innerValue"
     type="number"
-    class="w-full p-2 text-grey-900 text-body2 border border-grey-200 rounded outline-none disabled:bg-grey-100 disabled:text-grey-200 disabled:border-grey-50"
+    class="w-full p-2 text-body2 border border-grey-200 rounded outline-none disabled:bg-grey-100 disabled:border-grey-50"
+    :class="{ 'bg-grey-900 border-grey-800': isDarkTheme }"
     :step="step"
     :min="min"
     :max="max"
@@ -18,31 +19,28 @@ div(class="relative")
   )
   div(
     class="absolute top-0 left-0.5 text-body2 p-2 h-full flex items-center pointer-events-none"
-    :class="[disabled ? 'text-grey-200' : 'text-grey-900']"
   )
     div(class="invisible") {{ innerValue }}
     div {{ unit }}
   div(class="absolute top-0 right-1 h-full flex items-center")
     div(class="grid grid-rows-2 h-7 gap-0.5")
       div(
-        class="w-4 h-3.5 bg-grey-150 flex justify-center items-center cursor-pointer"
+        class="w-4 h-3.5 flex justify-center items-center cursor-pointer"
+        :class="[isDarkTheme ? 'bg-grey-600 text-grey-100' : 'bg-grey-150']"
         style="border-radius: 3px 3px 0 0"
         @click="plus"
       )
-        f-svg-icon(
-          iconName="keyboard_arrow_up"
-          size="14"
-          :class="[disabled ? 'text-grey-200' : 'text-grey-800']"
-        )
+        f-svg-icon(iconName="keyboard_arrow_up" size="14" :class="iconStyles")
       div(
-        class="w-4 h-3.5 bg-grey-150 flex justify-center items-center cursor-pointer"
+        class="w-4 h-3.5 flex justify-center items-center cursor-pointer"
+        :class="[isDarkTheme ? 'bg-grey-600 text-grey-100' : 'bg-grey-150']"
         style="border-radius: 0 0 3px 3px"
         @click="minus"
       )
         f-svg-icon(
           iconName="keyboard_arrow_down"
           size="14"
-          :class="[disabled ? 'text-grey-200' : 'text-grey-800']"
+          :class="iconStyles"
         )
 </template>
 
@@ -52,6 +50,10 @@ import { computed } from 'vue'
 export default {
   name: 'FInputNumber',
   props: {
+    theme: {
+      type: String,
+      default: 'light',
+    },
     value: {
       type: Number,
       required: true,
@@ -102,7 +104,28 @@ export default {
       emit('change', Number(e.target.value))
     }
 
+    const isDarkTheme = props.theme === 'dark'
+
+    const textStyles = computed(() => {
+      if (isDarkTheme) {
+        return [props.disabled ? 'text-grey-200' : 'text-grey-300']
+      } else {
+        return [props.disabled ? 'text-grey-200' : 'text-grey-900']
+      }
+    })
+
+    const iconStyles = computed(() => {
+      if (isDarkTheme) {
+        return [props.disabled ? 'text-grey-200' : 'text-grey-100']
+      } else {
+        return [props.disabled ? 'text-grey-200' : 'text-grey-900']
+      }
+    })
+
     return {
+      isDarkTheme,
+      textStyles,
+      iconStyles,
       innerValue,
       plus,
       minus,

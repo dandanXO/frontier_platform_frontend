@@ -12,19 +12,20 @@
 
 // handle base css
 .noUi-handle {
-  background-color: #ffffff;
-  border: 1px solid #e9e9e9;
+  background-color: var(--noUi-handle-bg-color);
+  border: 1px solid var(--noUi-horizontal-color);
   border-radius: 50%;
   box-shadow: 0px 0.6px 1px rgba(0, 0, 0, 0.1),
     0px 2px 4px rgba(103, 103, 103, 0.11);
 
   &:active {
-    background-color: #f4f4f4;
+    background-color: var(--noUi-handle-bg-active-color);
   }
 }
 
 // horizontal type
 .noUi-horizontal {
+  background-color: var(--noUi-horizontal-color);
   height: 4px;
   padding: 0 9px;
 
@@ -111,6 +112,7 @@
 div(
   class="relative flex items-center justify-center"
   :class="[orientation === 'vertical' ? 'w-4.5' : 'h-4.5']"
+  :style="cssProps"
 )
   div(
     ref="refSlider"
@@ -156,6 +158,10 @@ export default {
      *
      * Array -> Two Way
      */
+    theme: {
+      type: String,
+      default: 'light',
+    },
     range: {
       type: [Number, Array],
       required: true,
@@ -304,6 +310,23 @@ export default {
       isDragging,
       initPosition,
     }
+  },
+  computed: {
+    cssProps() {
+      if (this.theme === 'light') {
+        return {
+          '--noUi-handle-bg-color': '#ffffff',
+          '--noUi-handle-bg-active-color': '#f4f4f4',
+          '--noUi-horizontal-color': 'e9e9e9',
+        }
+      } else {
+        return {
+          '--noUi-handle-bg-color': '#262626',
+          '--noUi-handle-bg-active-color': '#3C3C3C',
+          '--noUi-horizontal-color': '#676767',
+        }
+      }
+    },
   },
 }
 </script>

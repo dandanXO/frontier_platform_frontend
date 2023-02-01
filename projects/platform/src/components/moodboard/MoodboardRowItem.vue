@@ -139,10 +139,7 @@ import { U3M_STATUS } from '@/utils/constants'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import useMoodboardNode from '@/composables/useMoodboardNode.js'
-import {
-  VALUE_ADDED_SERVICE_ID,
-  MADE2FLOW_PLAN_TYPE,
-} from '@/utils/constants.js'
+import { VALUE_ADDED_SERVICE_ID, MADE2FLOW_PLAN_TYPE } from '@/utils/constants'
 import listViewMask from '@/assets/images/list_view_mask.png'
 
 const props = defineProps({

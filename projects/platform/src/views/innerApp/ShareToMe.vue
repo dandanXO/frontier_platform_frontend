@@ -84,7 +84,7 @@ div(class="w-full h-full")
 
 <script setup>
 import SearchTable from '@/components/common/SearchTable.vue'
-import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants.js'
+import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { ref, computed, watch } from 'vue'

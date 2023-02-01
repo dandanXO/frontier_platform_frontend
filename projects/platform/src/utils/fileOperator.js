@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events'
 import i18n from '@/utils/i18n'
-import { UPLOAD_ERROR_CODE } from '@/utils/constants.js'
+import { UPLOAD_ERROR_CODE } from '@/utils/constants'
 
 const t = i18n.global.t
 

@@ -221,7 +221,7 @@ import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import { Cropper } from '@/utils/cropper'
 
-const props = defineProps({
+defineProps({
   invalidation: {
     type: Object,
     required: true,

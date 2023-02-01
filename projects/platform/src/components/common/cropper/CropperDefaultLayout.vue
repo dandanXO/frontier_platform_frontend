@@ -2,7 +2,8 @@
 div
   div(class="w-full flex justify-center items-center overflow-hidden")
     div(
-      class="relative w-full aspect-square flex justify-center items-center bg-[#F1F2F5]"
+      class="relative w-full aspect-square flex justify-center items-center"
+      :class="theme === 'light' ? 'bg-[#F1F2F5]' : 'bg-grey-900'"
     )
       slot(
         name="imageCropArea"
@@ -10,18 +11,29 @@ div
         :innerShowScale="showScale"
       )
   div(class="mt-4")
-    div(class="flex items-center")
-      p(class="text-grey-900 text-body2 mr-2") {{ $t('EE0049') }}
-      f-button-label(size="sm" :disabled="!rotateDirty" @click="resetRotate") {{ $t('RR0255') }}
+    div(
+      class="flex items-center"
+      :class="theme === 'light' ? 'text-grey-900' : 'text-grey-100'"
+    )
+      f-svg-icon(iconName="rotate" size="20" class="mr-1")
+      p(class="text-body2 mr-2") {{ $t('EE0049') }}
+      f-button-label(
+        :theme="theme"
+        size="sm"
+        :disabled="!rotateDirty"
+        @click="resetRotate"
+      ) {{ $t('RR0255') }}
     div(class="flex items-center justify-between")
       f-input-range(
         ref="refRotateDeg"
         v-model:range="formattedRotateDeg"
         v-bind="rotateSetting"
+        :theme="theme"
         class="w-full mr-3.5"
       )
       div(class="w-19.5 flex-shrink-0")
         f-input-number(
+          :theme="theme"
           v-model:value="formattedRotateDeg"
           :step="rotateSetting.step"
           :min="rotateSetting.min"
@@ -30,19 +42,29 @@ div
           @change="handleRotateChange"
         )
   div(v-if="showScale" class="mt-3")
-    div(class="flex items-center")
-      p(class="text-grey-900 text-body2 mr-2") {{ $t('EE0098') }}
-      f-svg-icon(iconName="open_in_full" size="16" class="mr-2")
-      f-button-label(size="sm" :disabled="!scaleDirty" @click="resetScale") {{ $t('RR0255') }}
+    div(
+      class="flex items-center"
+      :class="theme === 'light' ? 'text-grey-900' : 'text-grey-100'"
+    )
+      f-svg-icon(iconName="open_in_full" size="20" class="mr-1")
+      p(class="text-body2 mr-2") {{ $t('EE0098') }}
+      f-button-label(
+        :theme="theme"
+        size="sm"
+        :disabled="!scaleDirty"
+        @click="resetScale"
+      ) {{ $t('RR0255') }}
     div(class="flex items-center justify-between")
       f-input-range(
         ref="refScale"
         v-model:range="formattedScaleValue"
         v-bind="scaleSetting"
+        :theme="theme"
         class="w-full mr-3.5"
       )
       div(class="w-19.5 flex-shrink-0")
         f-input-number(
+          :theme="theme"
           v-model:value="formattedScaleValue"
           :step="scaleInputStep"
           :min="scaleRange[0]"
@@ -56,6 +78,10 @@ div
 import { ref, computed, watch } from 'vue'
 
 const props = defineProps({
+  theme: {
+    type: String,
+    default: 'light',
+  },
   config: {
     type: Object,
     required: true,
@@ -79,6 +105,9 @@ const props = defineProps({
     },
   },
   scaleStart: {
+    type: Number,
+  },
+  scaleInitial: {
     type: Number,
   },
   rotateStart: {
@@ -106,7 +135,9 @@ const rotateSetting = {
   min: -180,
   max: 180,
 }
-const scaleValue = ref(props.scaleStart || props.scaleRange[0])
+const scaleValue = ref(
+  props.scaleInitial || props.scaleStart || props.scaleRange[0]
+)
 
 const innerRotateDeg = computed({
   get: () => props.config.rotateDeg,
@@ -168,6 +199,8 @@ const resetRotate = () => {
 const resetScale = () => {
   refScale.value.setValue(props.scaleStart || props.scaleRange[0])
 }
+
+defineExpose({ resetRotate, resetScale })
 
 watch(
   () => scaleValue.value,

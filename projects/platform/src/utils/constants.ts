@@ -27,6 +27,23 @@ export const COLOR = {
   GREY: '#939393',
 }
 
+export const CROPPER_GRID_COLORS = [
+  { color: '#262626', invertContent: false },
+  { color: '#FFFFFF', invertContent: true },
+  { color: '#F07D73', invertContent: false },
+  { color: '#F2C94C', invertContent: false },
+  { color: '#8BC34A', invertContent: false },
+  { color: '#57B4DF', invertContent: false },
+  { color: '#D8B4FE', invertContent: false },
+  { color: '#515151', invertContent: false },
+  { color: '#939393', invertContent: false },
+  { color: '#E04A4B', invertContent: false },
+  { color: '#F8A853', invertContent: false },
+  { color: '#48A148', invertContent: false },
+  { color: '#3B82F6', invertContent: false },
+  { color: '#A855F7', invertContent: false },
+]
+
 export const MODAL_TYPE = {
   MODAL: 0,
   FULLSCREEN: 1,
@@ -437,4 +454,26 @@ export const useConstants = () => {
     FILTER_COMPLETE,
     WEIGHT_UNIT,
   }
+}
+
+export const THEME = {
+  LIGHT: 'light',
+  DARK: 'dark',
+}
+
+export enum CROP_MODE {
+  SQUARE = 'square',
+  PERSPECTIVE = 'perspective',
+}
+
+export enum U3M_CUT_SIDE {
+  FACE_SIDE = 'faceSide',
+  BACK_SIDE = 'backSide',
+}
+
+export enum U3M_CUT_SIDE_EDIT_STATE {
+  EDITED = 'edited',
+  CURRENT = 'current',
+  NEXT = 'next',
+  DISABLED = 'disabled',
 }

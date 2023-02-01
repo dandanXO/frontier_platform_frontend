@@ -56,7 +56,7 @@ import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { previewFile } from '@/utils/fileOperator'
-import { CREATE_EDIT } from '@/utils/constants.js'
+import { CREATE_EDIT } from '@/utils/constants'
 
 const props = defineProps({
   mode: {

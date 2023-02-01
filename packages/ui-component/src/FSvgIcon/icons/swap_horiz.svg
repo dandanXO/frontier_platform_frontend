@@ -1,3 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-  <path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/>
+  <g clip-path="url(#a)">
+    <path d="M13 6.99 9 3 5 6.99h3V14h2V6.99h3ZM15 21l4-3.99h-3V10h-2v7.01h-3L15 21Z"/>
+    <path fill-rule="evenodd" d="m9 3 4 3.99h-3V14H8V6.99H5L9 3Zm2 14.01h3V10h2v7.01h3L15 21l-4-3.99Z" clip-rule="evenodd"/>
+  </g>
+  <defs>
+    <clipPath id="a">
+      <path d="M0 0h24v24H0z" transform="rotate(90 12 12)"/>
+    </clipPath>
+  </defs>
 </svg>

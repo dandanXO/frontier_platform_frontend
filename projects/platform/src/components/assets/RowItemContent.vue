@@ -76,7 +76,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import useMaterial from '@/composables/useMaterial'
 import listViewMask from '@/assets/images/list_view_mask.png'
-import { VALUE_ADDED_SERVICE_ID } from '@/utils/constants.js'
+import { VALUE_ADDED_SERVICE_ID } from '@/utils/constants'
 
 const props = defineProps({
   material: {

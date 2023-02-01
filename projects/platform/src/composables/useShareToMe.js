@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { NODE_TYPE } from '@/utils/constants.js'
+import { NODE_TYPE } from '@/utils/constants'
 
 export default function useShareToMe() {
   const { t } = useI18n()

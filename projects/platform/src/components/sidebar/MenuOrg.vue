@@ -97,7 +97,7 @@ import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import useNavigation from '@/composables/useNavigation.js'
 // import usePlan from '@/composables/usePlan.js'
-import { FUNC_ID } from '@/utils/constants.js'
+import { FUNC_ID } from '@/utils/constants'
 
 const store = useStore()
 const { goToBillings, goToLobby } = useNavigation()

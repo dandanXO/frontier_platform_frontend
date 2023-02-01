@@ -21,7 +21,7 @@ import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import FilterRange from '@/components/common/filter/FilterRange.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
-import { SEARCH_TYPE } from '@/utils/constants.js'
+import { SEARCH_TYPE } from '@/utils/constants'
 
 export default {
   name: 'FilterPrice',

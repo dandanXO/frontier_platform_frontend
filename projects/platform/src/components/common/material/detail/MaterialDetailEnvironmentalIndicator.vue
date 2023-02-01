@@ -179,7 +179,7 @@ import {
   VALUE_ADDED_SERVICE_ID,
   MADE2FLOW_PLAN_TYPE,
   useConstants,
-} from '@/utils/constants.js'
+} from '@/utils/constants'
 import useReceivedShare from '@/composables/useReceivedShare'
 
 const router = useRouter()

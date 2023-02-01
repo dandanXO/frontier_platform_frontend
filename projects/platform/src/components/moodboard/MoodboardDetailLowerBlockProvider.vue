@@ -91,7 +91,7 @@ multi-select-menu(
 <script setup>
 import { h, computed, shallowRef } from 'vue'
 import { useStore } from 'vuex'
-import { MOODBOARD_TAB, CREATE_EDIT, NODE_TYPE } from '@/utils/constants.js'
+import { MOODBOARD_TAB, CREATE_EDIT, NODE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import FSvgIcon from '@frontier/ui-component/src/FSvgIcon/FSvgIcon.vue'

@@ -61,12 +61,14 @@ div(
     div(class="flex flex-row justify-around items-center gap-x-2")
       f-button(
         class="bg-transparent text-grey-300 disabled:text-grey-700 border-none"
+        theme="dark"
         type="text"
         size="md"
         :disabled="!colorRemovable"
         @click="emit('colorRemove')"
       ) {{ $t('UU0121') }}
       f-button(
+        theme="dark"
         size="md"
         prependIcon="add"
         :disabled="!colorAddable"
@@ -77,7 +79,12 @@ div(
       hr(class="w-full text-grey-600")
   div(class="flex flex-row items-center justify-center gap-x-2")
     //- f-button(size="sm" prependIcon="upload"  @click="emit('screenshot')") {{ $t('UU0124') }}
-    f-button(size="sm" prependIcon="camera" @click="emit('screenshot')") {{ $t('UU0125') }}
+    f-button(
+      theme="dark"
+      size="sm"
+      prependIcon="camera"
+      @click="emit('screenshot')"
+    ) {{ $t('UU0125') }}
   //- input(ref="fileInput" type="file" @change="handleUploadModel")
 </template>
 

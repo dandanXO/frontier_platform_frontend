@@ -31,7 +31,7 @@ export default {
       )
     ),
     ModalU3mRecut: defineAsyncComponent(() =>
-      import('@/components/assets/ModalU3mRecut.vue')
+      import('@/components/assets/modalU3mRecut/ModalU3mRecut.vue')
     ),
     ModalMaterialMerge: defineAsyncComponent(() =>
       import('@/components/assets/merge/ModalMaterialMerge.vue')

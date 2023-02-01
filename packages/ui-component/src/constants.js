@@ -16,3 +16,8 @@ export const UPLOAD_ERROR_CODE = {
   EXCEED_LIMIT: 2,
   TOO_SMALL: 3,
 }
+
+export const THEME = {
+  LIGHT: 'light',
+  DARK: 'dark',
+}

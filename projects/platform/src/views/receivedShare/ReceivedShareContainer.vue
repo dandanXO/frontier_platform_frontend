@@ -35,7 +35,7 @@ import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'
-import { SHARING_FROM } from '@/utils/constants.js'
+import { SHARING_FROM } from '@/utils/constants'
 import DropdownLocale from '@/components/common/DropdownLocale.vue'
 
 const store = useStore()

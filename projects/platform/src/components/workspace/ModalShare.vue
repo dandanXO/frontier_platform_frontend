@@ -85,9 +85,9 @@ modal-behavior(:header="$t('RR0079')")
 import { useI18n } from 'vue-i18n'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import { SOCIAL_MEDIA_TYPE } from '@/utils/constants.js'
+import { SOCIAL_MEDIA_TYPE } from '@/utils/constants'
 import { shareViaCopyLink, shareViaSocialMedia } from '@/utils/share.js'
-import { NODE_TYPE } from '@/utils/constants.js'
+import { NODE_TYPE } from '@/utils/constants'
 import copyText from '@/utils/copy-text'
 
 const props = defineProps({

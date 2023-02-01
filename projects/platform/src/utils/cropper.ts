@@ -1,4 +1,5 @@
 import Decimal from 'decimal.js'
+import type { U3M_CUT_SIDE } from './constants'
 
 export interface Image {
   width: number
@@ -23,33 +24,61 @@ export interface CropperConfig {
   }
 }
 
-export type SideName = 'refFaceSide' | 'refBackSide'
-
 export interface Side {
-  sideName: SideName
+  sideName: U3M_CUT_SIDE
   config: CropperConfig
   rotateStart: number
 }
 
-export interface CropRecord {
+export interface Coord {
   x: number
   y: number
+}
+
+export interface SquareCropRecord extends Coord {
   rotateDeg: number
   scaleRatio: number
 }
 
-export interface U3mCropRecord {
-  squareCropRecord?: CropRecord
+export interface PerspectiveCropRecord {
+  leftTop: Coord
+  leftBottom: Coord
+  rightTop: Coord
+  rightBottom: Coord
+  rotateDeg: number
 }
 
-export interface MaterialImage {
-  cropRecord?: CropRecord
+export interface U3mCropRecord {
+  squareCropRecord?: SquareCropRecord
+  perspectiveCropRecord?: PerspectiveCropRecord
+}
+
+export interface ScannedImage {
+  cropRecord?: SquareCropRecord
+  dpi: number
+}
+
+export interface U3mImage {
   u3mCropRecord: U3mCropRecord
   dpi: number
 }
 
-// 1 dpi = 0.393701 pixel/cm; 1 pixel/cm = 2.54 dpi
+/**
+ * 1 dpi = 0.393701 pixel/cm
+ * 1 pixel/cm = 2.54 dpi
+ */
 export const PX_PER_CM = 2.54
+
+/**
+ * 目前 Cropper 相關的 rotation、scale 等數字，
+ * 無論是呈現或是傳遞給後端 API 都是處理到小數點第一位。
+ */
+export const toFixed1 = (n: number) => Number(n.toFixed(1))
+
+export const coordToFixed1 = (coord: Coord) => ({
+  x: toFixed1(coord.x),
+  y: toFixed1(coord.y),
+})
 
 export const pixelToCm = (pixel: number, dpi: number, dp: number = 1) =>
   new Decimal(pixel).mul(PX_PER_CM).div(dpi).toDP(dp).toNumber()

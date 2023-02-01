@@ -6,13 +6,18 @@ div(
 )
   div(
     class="w-104 max-h-125 min-h-54 px-8 py-6 bg-grey-0 rounded flex flex-col"
+    :class="[theme === 'light' ? 'bg-grey-0' : 'bg-grey-800']"
     @click.stop
   )
     div(class="h-9 pb-3.5 flex items-center")
       f-svg-icon(:iconName="getIconName" :class="[getIconColor]" size="22")
-      p(class="text-body1 font-bold pl-3") {{ header }}
+      p(class="text-body1 font-bold pl-3" :class="theme === 'dark' && 'text-grey-100'") {{ header }}
     f-scrollbar-container(class="max-h-92.5 flex-grow pl-8.5")
-      p(v-if="!!contentText" class="text-body2 leading-1.6") {{ contentText }}
+      p(
+        v-if="!!contentText"
+        class="text-body2 leading-1.6"
+        :class="theme === 'dark' && 'text-grey-150'"
+      ) {{ contentText }}
       component(v-else :is="contentComponent")
     div(class="h-11.5 pt-3 flex justify-between")
       p(class="flex items-center text-caption leading-1.6")
@@ -21,18 +26,21 @@ div(
       div(class="grid grid-flow-col gap-x-2.5")
         f-button(
           v-if="textBtnText !== ''"
+          :theme="theme"
           size="sm"
           type="text"
           @click="textHandler"
         ) {{ textBtnText }}
         f-button(
           v-if="secondaryBtnText !== ''"
+          :theme="theme"
           size="sm"
           type="secondary"
           @click="secondaryHandler"
         ) {{ secondaryBtnText }}
         f-button(
           v-if="primaryBtnText !== ''"
+          :theme="theme"
           size="sm"
           type="primary"
           @click="primaryHandler"
@@ -41,12 +49,16 @@ div(
 </template>
 
 <script setup>
-import { MODAL_CONFIRM_TYPE } from '@/utils/constants.js'
+import { MODAL_CONFIRM_TYPE } from '@/utils/constants'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 
 const store = useStore()
 const props = defineProps({
+  theme: {
+    type: String,
+    default: 'light',
+  },
   header: {
     type: String,
     required: true,

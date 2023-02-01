@@ -92,7 +92,7 @@ div(class="max-w-315 h-full mx-auto pt-10")
 <script setup>
 import SearchTable from '@/components/common/SearchTable.vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
-import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants.js'
+import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation.js'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'

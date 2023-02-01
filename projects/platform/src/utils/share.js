@@ -1,4 +1,4 @@
-import { SOCIAL_MEDIA_TYPE } from '@/utils/constants.js'
+import { SOCIAL_MEDIA_TYPE } from '@/utils/constants'
 import copyText from '@/utils/copy-text'
 
 const { VITE_APP_FACEBOOK_APP_ID } = import.meta.env

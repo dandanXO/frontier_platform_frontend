@@ -79,7 +79,7 @@ div
 <script setup>
 import useMaterial from '@/composables/useMaterial'
 import { ref, computed, nextTick } from 'vue'
-import { COVER_MODE } from '@/utils/constants.js'
+import { COVER_MODE } from '@/utils/constants'
 
 const props = defineProps({
   material: {

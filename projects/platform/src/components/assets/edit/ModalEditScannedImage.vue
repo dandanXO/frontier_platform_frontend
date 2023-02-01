@@ -96,15 +96,20 @@ import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import useMaterialImage from '@/composables/useMaterialImage'
 import { Cropper, pixelToCm } from '@/utils/cropper'
-import type { Side, SideName, CropRecord, MaterialImage } from '@/utils/cropper'
+import type {
+  Side,
+  SideName,
+  SquareCropRecord,
+  ScannedImage,
+} from '@/utils/cropper'
 
 const props = defineProps<{
   afterCropHandler: (params: {
     faceSideCropImg: File | null
     backSideCropImg: File | null
     isExchange: boolean
-    faceSideCropImageRecord: CropRecord | null
-    backSideCropImageRecord: CropRecord | null
+    faceSideCropImageRecord: SquareCropRecord | null
+    backSideCropImageRecord: SquareCropRecord | null
   }) => Promise<void>
 }>()
 
@@ -124,8 +129,8 @@ const {
   faceSideImg,
   backSideImg,
 }: {
-  faceSideImg: MaterialImage
-  backSideImg: MaterialImage
+  faceSideImg: ScannedImage
+  backSideImg: ScannedImage
 } = material.value
 const defaultScaleSizeInCm = 4
 const initScaleSizeInCm: number =
@@ -193,7 +198,7 @@ const confirm = async () => {
     return refSide.cropImage()
   }
 
-  const toRecord = (side?: Side): CropRecord | null => {
+  const toRecord = (side?: Side): SquareCropRecord | null => {
     if (!side) {
       return null
     }
@@ -237,7 +242,7 @@ onMounted(async () => {
   const getSide = async (
     sideName: SideName,
     imageSrc: string,
-    image: MaterialImage
+    image: ScannedImage
   ): Promise<Side> => {
     const sideCropper = new Cropper({
       src: imageSrc,

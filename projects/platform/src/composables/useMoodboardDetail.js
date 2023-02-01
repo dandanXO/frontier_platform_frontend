@@ -1,7 +1,7 @@
 import { watch, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { MOODBOARD_TAB } from '@/utils/constants.js'
+import { MOODBOARD_TAB } from '@/utils/constants'
 
 export default function useMoodboardDetail({
   defaultOfferId,

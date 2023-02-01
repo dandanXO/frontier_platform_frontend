@@ -5,7 +5,7 @@ import {
   MADE2FLOW_PLAN_TYPE,
   VALUE_ADDED_SERVICE_ID,
   VALUE_ADDED_SERVICE_STATUS,
-} from '@/utils/constants.js'
+} from '@/utils/constants'
 import i18n from '@/utils/i18n'
 import dayjs from 'dayjs'
 

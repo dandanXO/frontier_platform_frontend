@@ -54,7 +54,7 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
-import { UPLOAD_ERROR_CODE } from '@/utils/constants.js'
+import { UPLOAD_ERROR_CODE } from '@/utils/constants'
 
 const { t, locale } = useI18n()
 const store = useStore()

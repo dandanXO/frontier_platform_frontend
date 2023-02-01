@@ -103,7 +103,7 @@ import InputLabelColor from '@/components/management/InputLabelColor.vue'
 import copyText from '@/utils/copy-text'
 import { useRouter } from 'vue-router'
 import usePlan from '@/composables/usePlan.js'
-import { FUNC_ID } from '@/utils/constants.js'
+import { FUNC_ID } from '@/utils/constants'
 
 const store = useStore()
 const { t } = useI18n()

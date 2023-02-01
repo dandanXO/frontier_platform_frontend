@@ -32,7 +32,7 @@ div(
 <script>
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
-import { FUNC_ID } from '@/utils/constants.js'
+import { FUNC_ID } from '@/utils/constants'
 
 export default {
   name: 'NotifyBarBuffer',

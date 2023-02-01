@@ -3,7 +3,8 @@ div(
   class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/70 flex justify-center items-center"
 )
   div(
-    class="flex flex-col items-center justify-center w-49 h-28 px-13 py-7 bg-grey-0 rounded card-shadow"
+    class="flex flex-col items-center justify-center w-49 h-28 px-13 py-7 rounded card-shadow"
+    :class="[theme === 'light' ? 'bg-grey-0' : 'bg-grey-800']"
   )
     f-svg-icon(
       iconName="loading"
@@ -11,11 +12,16 @@ div(
       class="text-primary-500"
       :style="{ minHeight: '28px' }"
     )
-    p(class="text-body2 text-grey-900 pt-3.5") {{ $t('RR0162') }}
+    p(
+      class="text-body2 pt-3.5"
+      :class="[theme === 'light' ? 'text-grey-900' : 'text-grey-100']"
+    ) {{ $t('RR0162') }}
 </template>
 
-<script>
-export default {
-  name: 'ModalLoading',
-}
+<script setup lang="ts">
+const props = defineProps<{
+  theme?: 'light' | 'dark'
+}>()
+
+const theme = props.theme || 'light'
 </script>

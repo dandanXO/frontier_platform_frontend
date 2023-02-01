@@ -34,7 +34,7 @@ modal-behavior(
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import { SHARE_TARGET_TYPE } from '@/utils/constants.js'
+import { SHARE_TARGET_TYPE } from '@/utils/constants'
 import inputValidator from '@/utils/input-validator'
 
 const props = defineProps({

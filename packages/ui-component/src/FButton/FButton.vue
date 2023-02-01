@@ -9,9 +9,15 @@ button(
 
 <script>
 import { computed } from 'vue'
+import { THEME } from '../constants.js'
+
 export default {
   name: 'FButton',
   props: {
+    theme: {
+      type: String,
+      default: THEME.LIGHT,
+    },
     size: {
       type: String,
       default: 'special',
@@ -49,36 +55,73 @@ export default {
             'h-8.5',
             props.prependIcon === '' ? 'px-3.5' : 'px-3',
           ]
+        default:
+          return []
       }
     })
 
     const btnType = computed(() => {
-      switch (props.type) {
-        case 'primary':
-          return [
-            'bg-primary-400',
-            'text-grey-0',
-            'disabled:bg-grey-150',
-            'hover:bg-primary-500',
-          ]
-        case 'secondary':
-          return [
-            'bg-grey-0',
-            'text-primary-400',
-            'disabled:text-grey-200',
-            'border',
-            'border-grey-150',
-            'hover:text-primary-500',
-          ]
-        case 'text':
-          return [
-            'bg-grey-0',
-            'text-grey-900',
-            'disabled:text-grey-200',
-            'hover:text-primary-500',
-          ]
+      if (props.theme === THEME.LIGHT) {
+        switch (props.type) {
+          case 'primary':
+            return [
+              'bg-primary-400',
+              'text-grey-0',
+              'disabled:bg-grey-150',
+              'hover:bg-primary-500',
+            ]
+          case 'secondary':
+            return [
+              'bg-grey-0',
+              'text-primary-400',
+              'disabled:text-grey-200',
+              'border',
+              'border-grey-150',
+              'hover:text-primary-500',
+            ]
+          case 'text':
+            return [
+              'bg-grey-0',
+              'text-grey-900',
+              'disabled:text-grey-200',
+              'hover:text-primary-500',
+            ]
+          default:
+            return []
+        }
+      } else if (props.theme === THEME.DARK) {
+        switch (props.type) {
+          case 'primary':
+            return [
+              'bg-primary-400',
+              'text-grey-0',
+              'disabled:bg-grey-150',
+              'hover:bg-primary-500',
+            ]
+          case 'secondary':
+            return [
+              'bg-transparent',
+              'text-primary-400',
+              'disabled:text-grey-200',
+              'border',
+              'border-grey-300',
+              'hover:text-primary-500',
+            ]
+          case 'text':
+            return [
+              'bg-transparent',
+              'text-grey-300',
+              'disabled:text-grey-200',
+              'hover:text-primary-500',
+            ]
+          default:
+            return []
+        }
+      } else {
+        throw new Error('invalid theme, only accept "light" or "dark"')
       }
     })
+
     return {
       btnSize,
       btnType,

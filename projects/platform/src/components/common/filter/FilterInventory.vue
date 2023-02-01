@@ -29,7 +29,7 @@ import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import FilterRange from '@/components/common/filter/FilterRange.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
-import { INVENTORY_UNIT, SEARCH_TYPE } from '@/utils/constants.js'
+import { INVENTORY_UNIT, SEARCH_TYPE } from '@/utils/constants'
 
 export default {
   name: 'FilterInventory',

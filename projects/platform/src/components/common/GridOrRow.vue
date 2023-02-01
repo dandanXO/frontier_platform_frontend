@@ -15,7 +15,7 @@ div(class="flex text-grey-600 cursor-pointer")
 </template>
 
 <script setup>
-import { DISPLAY_NODE } from '@/utils/constants.js'
+import { DISPLAY_NODE } from '@/utils/constants'
 
 defineProps({
   displayMode: {

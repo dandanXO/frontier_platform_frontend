@@ -5,7 +5,7 @@ template(v-if="modalPipeline.length > 0")
       suspense
         modal(v-bind="modal.options" :key="modal.options.component")
         template(#fallback)
-          modal-loading
+          modal-loading(v-bind="modal.options")
     template(v-else-if="modal.type === MODAL_TYPE.BEHAVIOR")
       suspense
         component(
@@ -14,11 +14,11 @@ template(v-if="modalPipeline.length > 0")
           v-bind="modal.options.properties"
         )
         template(#fallback)
-          modal-loading
+          modal-loading(v-bind="modal.options")
     template(v-else-if="modal.type === MODAL_TYPE.CONFIRM")
       modal-confirm(v-bind="modal.options")
     template(v-else-if="modal.type === MODAL_TYPE.LOADING")
-      modal-loading
+      modal-loading(v-bind="modal.options")
 </template>
 
 <script>

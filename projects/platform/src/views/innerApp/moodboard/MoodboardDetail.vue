@@ -16,7 +16,7 @@ div(class="h-full")
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import { MOODBOARD_TYPE, MOODBOARD_TAB } from '@/utils/constants.js'
+import { MOODBOARD_TYPE, MOODBOARD_TAB } from '@/utils/constants'
 import MoodboardDetailLowerBlockDemander from '@/components/moodboard/MoodboardDetailLowerBlockDemander.vue'
 import MoodboardDetailLowerBlockProvider from '@/components/moodboard/MoodboardDetailLowerBlockProvider.vue'
 import MoodboardDetailUpperBlock from '@/components/moodboard/MoodboardDetailUpperBlock.vue'

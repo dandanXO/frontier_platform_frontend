@@ -96,8 +96,8 @@ const actions = {
     commit('CLEAR_modalPipeline')
     commit('PUSH_modalPipeline', { type: MODAL_TYPE.LOADING })
   },
-  pushModalLoading({ commit }) {
-    commit('PUSH_modalPipeline', { type: MODAL_TYPE.LOADING })
+  pushModalLoading({ commit }, options) {
+    commit('PUSH_modalPipeline', { type: MODAL_TYPE.LOADING, options })
   },
   closeModalLoading({ commit }) {
     commit('CLOSE_modalPipeline')

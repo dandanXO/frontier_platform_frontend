@@ -1,9 +1,12 @@
 <template lang="pug">
-div(:class="innerMenuTree.width" class="py-2 bg-grey-0 rounded drop-shadow-16")
+div(
+  class="py-2 bg-grey-0 rounded drop-shadow-16"
+  :class="[innerMenuTree.width, { 'bg-grey-800': theme === 'dark' }]"
+)
   //- Root Title
   template(v-if="innerMenuTree.rootTitle")
     div(class="h-8.5 pt-2 px-4 text-body2 text-grey-900 font-bold") {{ innerMenuTree.rootTitle }}
-    div(class="w-full h-px my-1 bg-grey-150")
+    div(class="w-full h-px my-1 bg-grey-150" :class="{ 'bg-grey-800': theme === 'dark' }")
   //- Button if position is top
   contextual-menu-button(
     v-if="innerMenuTree.button && innerMenuTree.button.position === 'top'"
@@ -48,6 +51,7 @@ div(:class="innerMenuTree.width" class="py-2 bg-grey-0 rounded drop-shadow-16")
         :buffer="108"
       )
         contextual-menu-node(
+          :theme="theme"
           :class="innerMenuTree.width"
           :menu="item"
           @click:menu="clickMenuHandler($event)"
@@ -57,6 +61,7 @@ div(:class="innerMenuTree.width" class="py-2 bg-grey-0 rounded drop-shadow-16")
       contextual-menu-node(
         v-else
         v-for="menu in block.menuList"
+        :theme="theme"
         :menu="menu"
         @click:menu="clickMenuHandler($event)"
         :selectMode="selectMode"
@@ -65,6 +70,7 @@ div(:class="innerMenuTree.width" class="py-2 bg-grey-0 rounded drop-shadow-16")
       div(
         v-if="index !== filteredBlockList.length - 1"
         class="w-full h-px my-1 bg-grey-150"
+        :class="{ 'bg-grey-700': theme === 'dark' }"
       )
   div(v-else-if="!canAddNew" class="h-6 py-1.5 px-4 text-caption text-grey-600") No Results Found
   //- Button if position is bottom
@@ -91,6 +97,10 @@ const { SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
 // update:inputSelectValue will execute before click:menu
 const emit = defineEmits(['update:inputSelectValue', 'click:menu'])
 const props = defineProps({
+  theme: {
+    type: String,
+    default: 'light',
+  },
   /**
    * v-model:inputSelectValue
    *

@@ -124,7 +124,7 @@ multi-select-menu(
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { MOODBOARD_TAB, NODE_TYPE, U3M_STATUS } from '@/utils/constants.js'
+import { MOODBOARD_TAB, NODE_TYPE, U3M_STATUS } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import MoodBoardComment from '@/components/moodboard/MoodBoardComment.vue'

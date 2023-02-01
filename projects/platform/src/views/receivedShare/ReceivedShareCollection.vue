@@ -110,7 +110,7 @@ div(class="max-w-315 h-full mx-auto")
 import SearchTable from '@/components/common/SearchTable.vue'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
-import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants.js'
+import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
 import { useRoute, useRouter } from 'vue-router'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'

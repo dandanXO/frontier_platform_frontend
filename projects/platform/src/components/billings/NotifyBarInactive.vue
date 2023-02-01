@@ -36,7 +36,7 @@ div(
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import useNavigation from '@/composables/useNavigation.js'
-import { FUNC_ID } from '@/utils/constants.js'
+import { FUNC_ID } from '@/utils/constants'
 
 export default {
   name: 'NotifyBarInactive',

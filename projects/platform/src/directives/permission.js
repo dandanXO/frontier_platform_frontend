@@ -1,5 +1,5 @@
 import store from '@/store'
-import { PERMISSION_MAP } from '@/utils/constants.js'
+import { PERMISSION_MAP } from '@/utils/constants'
 
 export default {
   mounted(el, binding) {

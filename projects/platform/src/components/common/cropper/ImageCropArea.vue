@@ -11,18 +11,10 @@ div(class="relative")
     div(class="cursor-move" :style="cropRectStyle")
       cropped-image(:config="config" @update="updateOptions")
   template(v-if="!isCircular")
-    div(
-      class="corner absolute w-4.5 h-4.5 border-t-2 border-l-2 top-0 left-0 border-grey-900"
-    )
-    div(
-      class="corner absolute w-4.5 h-4.5 border-t-2 border-r-2 top-0 right-0 border-grey-900"
-    )
-    div(
-      class="corner absolute w-4.5 h-4.5 border-b-2 border-l-2 bottom-0 left-0 border-grey-900"
-    )
-    div(
-      class="corner absolute w-4.5 h-4.5 border-b-2 border-r-2 bottom-0 right-0 border-grey-900"
-    )
+    div(class="border-t-2 border-l-2 top-0 left-0" :class="basedBorderStyles")
+    div(class="border-t-2 border-r-2 top-0 right-0" :class="basedBorderStyles")
+    div(class="border-b-2 border-l-2 bottom-0 left-0" :class="basedBorderStyles")
+    div(class="border-b-2 border-r-2 bottom-0 right-0" :class="basedBorderStyles")
   teleport(to="body")
     div(ref="cropRect" class="w-0 h-0 overflow-hidden -z-1")
       div(:style="styleSize")
@@ -41,6 +33,10 @@ import { dataUrlToBlob } from '@/utils/fileOperator'
 import tempFilenameGenerator from '@/utils/temp-filename-generator'
 
 const props = defineProps({
+  theme: {
+    type: String,
+    default: 'light',
+  },
   config: {
     type: Object,
     required: true,
@@ -85,11 +81,21 @@ const updateOptions = (option) => {
   emit('update:options', option)
 }
 
+const basedBorderStyles = computed(() => {
+  const styles = ['corner', 'absolute', 'w-4.5', 'h-4.5']
+  if (props.theme === 'light') {
+    styles.push('border-grey-900')
+  } else {
+    styles.push('border-grey-100')
+  }
+  return styles
+})
+
 const cropImage = () => {
   return new Promise((resolve, reject) => {
     cropRect.value.style.width = styleSize.value.width
     cropRect.value.style.height = styleSize.value.height
-    document.body.classList.add('overflow-hidden', 'bg-grey-0')
+    document.body.classList.add('overflow-hidden', 'bg-grey-900')
     html2canvas(cropRect.value, {
       allowTaint: true,
       useCORS: true,
@@ -99,7 +105,7 @@ const cropImage = () => {
     }).then((canvas) => {
       cropRect.value.style.width = 0
       cropRect.value.style.height = 0
-      document.body.classList.remove('overflow-hidden', 'bg-grey-0')
+      document.body.classList.remove('overflow-hidden', 'bg-grey-900')
       const dataUrl = canvas.toDataURL('image/jpeg')
       const fileName = `${tempFilenameGenerator()}.jpeg`
       const blob = dataUrlToBlob(dataUrl)

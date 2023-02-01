@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="shrink-0 w-full h-20 bg-grey-900 px-10 flex items-center justify-between")
   div(class="flex items-center text-grey-100")
-    f-svg-icon(iconName="3d_viewer" size="24")
+    f-svg-icon(iconName="3D_viewer" size="24")
     p(class="text-h5 font-bold pl-4") {{ $t('EE0029') }}
   div(class="flex flex-row")
     model-texture-switch(
@@ -35,13 +35,13 @@ div(class="shrink-0 w-full h-20 bg-grey-900 px-10 flex items-center justify-betw
           @click="emit('textureClick', TEXTURE_TYPE.DISPLACEMENT)"
           :active="textureType === TEXTURE_TYPE.DISPLACEMENT"
         ) displacement
-  f-button(size="md" @click="emit('close')") {{ $t('UU0112') }}
+  f-button(theme="dark" size="md" @click="emit('close')") {{ $t('UU0112') }}
 </template>
 
 <script setup lang="ts">
 import { Carousel, Slide } from 'vue3-carousel'
+import DarkTag from '@frontier/ui-component/src/FTag/DarkTag.vue'
 import ModelTextureSwitch from './ModelTextureSwitch.vue'
-import DarkTag from './DarkTag.vue'
 import MODELS from '../constants/models'
 import type { Model } from '../constants/models'
 import { DISPLAY_MODE, TEXTURE_TYPE } from '../constants'

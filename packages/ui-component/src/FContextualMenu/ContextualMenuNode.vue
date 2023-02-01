@@ -69,7 +69,7 @@ div(
         p(
           ref="refTitle"
           class="text-body2 !leading-1.6 text-ellipsis overflow-hidden break-all"
-          :class="[{ 'font-bold': innerMenu.description !== '' }, innerMenu.disabled ? 'text-grey-200' : 'text-grey-900']"
+          :class="[{ 'font-bold': innerMenu.description !== '' }, innerMenu.disabled ? 'text-grey-200' : 'text-grey-900', { 'text-grey-100': props.theme === 'dark' }]"
           :style="{ '-webkit-box-orient': 'vertical', '-webkit-line-clamp': innerMenu.titleLineClamp, display: '-webkit-box' }"
           @mouseenter="hoverOn = 'title'"
         ) {{ innerMenu.title }}
@@ -138,6 +138,7 @@ div(
         div(v-if="block.blockTitle" class="h-6 py-1.5 px-4 text-caption text-grey-600") {{ block.blockTitle }}
         contextual-menu-node(
           v-for="childMenu in block.menuList"
+          :theme="theme"
           :menu="childMenu"
           @click:menu="$emit('click:menu', $event)"
           :selectMode="selectMode"
@@ -170,6 +171,10 @@ const { NONE_SELECT, MULTIPLE } = CONTEXTUAL_MENU_MODE
 
 const emit = defineEmits(['click:menu'])
 const props = defineProps({
+  theme: {
+    type: String,
+    default: 'light',
+  },
   menu: {
     type: Object,
     default: () => {},
@@ -231,9 +236,14 @@ const bgClassList = computed(() => {
   if (innerMenu.value.disabled) {
     return ['bg-grey-0']
   }
+
+  if (props.theme === 'dark') {
+    return ['bg-grey-800', 'hover:bg-grey-700']
+  }
+
   return [
-    'hover:bg-grey-100',
-    'active:bg-grey-150',
+    'hover:bg-grey-900',
+    'active:bg-grey-900',
     isSelect.value ? 'bg-grey-150' : 'bg-grey-0',
   ]
 })

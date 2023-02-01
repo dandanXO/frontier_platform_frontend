@@ -1,7 +1,7 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import { SOURCE_ASSET_LOCATION, NODE_LOCATION } from '@/utils/constants.js'
+import { SOURCE_ASSET_LOCATION, NODE_LOCATION } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation.js'
 
 export default function useWorkspace() {
