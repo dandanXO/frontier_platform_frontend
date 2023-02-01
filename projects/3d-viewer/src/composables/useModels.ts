@@ -21,28 +21,33 @@ export default function useModels(
   const modelIndex = ref<number>(0)
   const material = ref<THREE.MeshPhysicalMaterial>()
   const scale = ref<number>(1)
-  const originRepeatTimes = ref<number>(1)
-  const repeatTimes = computed(() => originRepeatTimes.value / scale.value)
+  const originRepeatTimesX = ref<number>(1)
+  const textureRatio = ref(1)
+  const repeatTimesX = computed(() => originRepeatTimesX.value / scale.value)
+  const repeatTimesY = computed(() => repeatTimesX.value * textureRatio.value)
   const currentModel = computed(() => MODELS[modelIndex.value])
 
-  const initMaterial = () => {
+  const initMaterial = async () => {
     if (!scene || !u3m.value) return
     const setUpTextureWraps = (textures: THREE.Texture[]) => {
       textures.forEach((texture) => {
         texture.matrixAutoUpdate = true
         texture.wrapS = THREE.RepeatWrapping
         texture.wrapT = THREE.RepeatWrapping
-        texture.repeat.set(repeatTimes.value, repeatTimes.value)
+        texture.repeat.set(repeatTimesX.value, repeatTimesY.value)
         texture.flipY = MODELS[0].flipY
         texture.needsUpdate = true
       })
     }
 
-    const baseTexture = new THREE.TextureLoader().load(baseImgUrl)
-    const normalTexture = new THREE.TextureLoader().load(normalImgUrl)
-    const roughnessTexture = new THREE.TextureLoader().load(roughImgUrl)
-    const displacementTexture = new THREE.TextureLoader().load(dispImgUrl)
+    const loader = new THREE.TextureLoader()
+    const baseTexture = await loader.loadAsync(baseImgUrl)
+    const normalTexture = await loader.loadAsync(normalImgUrl)
+    const roughnessTexture = await loader.loadAsync(roughImgUrl)
+    const displacementTexture = await loader.loadAsync(dispImgUrl)
 
+    const { width, height } = baseTexture.image as HTMLImageElement
+    textureRatio.value = width / height
     baseTexture.anisotropy = 16
 
     setUpTextureWraps([
@@ -62,7 +67,7 @@ export default function useModels(
       roughness: u3m.value.roughness,
       specularColor: new THREE.Color(255, 255, 255),
       specularIntensity: u3m.value.specular,
-      displacementScale: DISPLACEMENT_SCALE_BASE / repeatTimes.value,
+      displacementScale: DISPLACEMENT_SCALE_BASE / repeatTimesX.value,
       transparent: true,
     })
   }
@@ -73,9 +78,9 @@ export default function useModels(
     modelIndex.value = index
     const model = MODELS[index]
 
-    const { width } = await image2Object(baseImgUrl)
-    const cm = (width / dpi) * 2.54
-    originRepeatTimes.value = model.size / cm
+    const { width: widthInPx } = await image2Object(baseImgUrl)
+    const widthInCm = (widthInPx / dpi) * 2.54
+    originRepeatTimesX.value = model.size / widthInCm
 
     scene.value.children.forEach((item) => {
       if (!scene.value) return
@@ -127,18 +132,18 @@ export default function useModels(
 
   const updateMaterialRepeatTimes = () => {
     if (!material.value) return
-    material.value.map?.repeat.set(repeatTimes.value, repeatTimes.value)
-    material.value.normalMap?.repeat.set(repeatTimes.value, repeatTimes.value)
+    material.value.map?.repeat.set(repeatTimesX.value, repeatTimesY.value)
+    material.value.normalMap?.repeat.set(repeatTimesX.value, repeatTimesY.value)
     material.value.roughnessMap?.repeat.set(
-      repeatTimes.value,
-      repeatTimes.value
+      repeatTimesX.value,
+      repeatTimesY.value
     )
     material.value.displacementMap?.repeat.set(
-      repeatTimes.value,
-      repeatTimes.value
+      repeatTimesX.value,
+      repeatTimesY.value
     )
     material.value.displacementScale =
-      DISPLACEMENT_SCALE_BASE / repeatTimes.value
+      DISPLACEMENT_SCALE_BASE / repeatTimesX.value
     material.value.needsUpdate = true
   }
 
@@ -148,10 +153,10 @@ export default function useModels(
     scale.value = 1
   }
 
-  watch(u3m, (newU3m, oldU3m) => {
+  watch(u3m, async (newU3m, oldU3m) => {
     if (!newU3m) return
     if (oldU3m) return updateMaterial()
-    initMaterial()
+    await initMaterial()
     loadModel(0)
   })
   watch(scale, updateMaterialRepeatTimes)
@@ -162,7 +167,6 @@ export default function useModels(
     loadModel,
     material,
     scale,
-    repeatTimes,
     handleScaleChange,
     handleScaleReset,
   }
