@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="relative w-6 h-full bg-grey-900 border border-grey-800")
+div(class="relative w-6 h-full bg-grey-900 border-r border-grey-800")
   toggle-expand-button(:expanded="false" @click="emits('toggleExpand')")
 </template>
 

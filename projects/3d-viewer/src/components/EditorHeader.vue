@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="w-screen h-20 border-b border-grey-800 bg-grey-900 flex items-center justify-between"
+  class="w-screen h-20 shrink-0 border-b border-grey-800 bg-grey-900 flex items-center justify-between"
   :class="largerThenLg ? 'px-10' : 'px-5'"
 )
   div(v-if="largerThenLg" class="flex items-center gap-x-2 text-grey-100")
@@ -107,10 +107,7 @@ const scrollToInitial = () => {
   if (!carousel.value) {
     return
   }
-  carousel.value.scrollTo({
-    left: 0,
-    top: 0,
-  })
+  carousel.value.scrollTo({ left: 0, top: 0 })
 }
 
 const scrollLeft = () => {
@@ -164,5 +161,3 @@ const emit = defineEmits<{
   (e: 'textureClick', textureType: number): void
 }>()
 </script>
-
-<style lang="scss"></style>

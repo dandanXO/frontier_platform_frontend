@@ -116,11 +116,13 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
     @textureClick="handleTextureClick"
     @close="handleClose"
   )
-
-  div(v-show="displayMode === DISPLAY_MODE.MODEL" class="relative flex flex-col flex-1")
-    div(class="relative flex flex-row flex-1 items-stretch")
+  div(
+    v-show="displayMode === DISPLAY_MODE.MODEL"
+    class="relative flex flex-col flex-1 min-h-0"
+  )
+    div(class="relative flex flex-row flex-1 min-h-0 items-stretch")
       editor-sidebar(
-        v-if="sidebarExpanded"
+        v-show="sidebarExpanded"
         :pantoneList="pantoneList"
         :currentColors="currentColors"
         :colorRemovable="colorRemovable"
@@ -149,7 +151,7 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
         @screenshot="takeScreenShot"
       )
       hidden-sidebar(
-        v-else-if="largerThenMd"
+        v-show="!sidebarExpanded && largerThenMd"
         @toggle-expand="handleSidebarToggle"
       )
       div(ref="container" class="flex-1")
