@@ -4,7 +4,7 @@ div(
   :class="largerThenLg ? 'px-10' : 'px-5'"
 )
   div(v-if="largerThenLg" class="flex items-center gap-x-2 text-grey-100")
-    f-svg-icon(iconName="3d_viewer" size="24")
+    f-svg-icon(iconName="3D_viewer" size="24")
     p(class="text-body1 font-bold") {{ $t('EE0029') }}
   div(class="flex flex-row gap-x-10" :class="{ 'flex-1 min-w-0': !largerThenLg }")
     model-texture-tap-status(
@@ -12,7 +12,7 @@ div(
       @update:displayMode="handleDisplayModeChange"
     )
     div(class="relative mx-auto min-w-0 items-center" :class="{ 'pr-10': largerThenMd }")
-      div(ref="carousel" class="relative flex flex-row overflow-x-hidden")
+      div(ref="carousel" class="relative flex flex-row overflow-x-scroll hide-scrollbar")
         template(v-if="displayMode === DISPLAY_MODE.MODEL")
           div(
             v-for="(model, index) in MODELS"

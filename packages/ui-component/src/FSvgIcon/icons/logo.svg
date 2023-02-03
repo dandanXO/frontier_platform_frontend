@@ -1,6 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-  <path d="M22 2H2v20h20V2Z"/>
-  <path d="M4.27 8.136V4.271h3.865L4.269 8.136Zm0 3.868V8.138h3.865L4.27 12.004Zm3.865-3.868V4.271H12L8.135 8.136Zm5.799 0V4.271h3.865l-3.865 3.865Zm-5.799 3.868V8.138H12l-3.865 3.866Zm3.867 3.864v-3.865h3.865l-3.865 3.865Z"/>
-  <path d="M4.27 15.868v-3.865h3.865L4.27 15.868Z"/>
-  <path d="M4.27 19.732v-3.865h3.865L4.27 19.732Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path fill="url(#a)" d="M22 2H2v20h20V2Z"/>
+  <path fill="#fff" d="M4.27 8.136V4.271h3.865L4.269 8.136Zm0 3.868V8.138h3.865L4.27 12.004Zm3.865-3.868V4.271H12L8.135 8.136Zm5.799 0V4.271h3.865l-3.865 3.865Zm-5.799 3.868V8.138H12l-3.865 3.866Zm3.867 3.864v-3.865h3.865l-3.865 3.865Z"/>
+  <path fill="#fff" d="M4.27 15.868v-3.865h3.865L4.27 15.868Z"/>
+  <path fill="#fff" d="M4.27 19.732v-3.865h3.865L4.27 19.732Z"/>
+  <defs>
+    <linearGradient id="a" x1="3.4" x2="20.78" y1="3.4" y2="20.78" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1E9A50"/>
+      <stop offset=".445" stop-color="#5BB64D"/>
+      <stop offset="1" stop-color="#65C2BB"/>
+    </linearGradient>
+  </defs>
 </svg>

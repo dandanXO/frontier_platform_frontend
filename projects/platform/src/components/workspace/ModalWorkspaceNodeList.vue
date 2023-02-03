@@ -45,9 +45,9 @@ modal-behavior(
           f-popper(v-if="!isInRoot" placement="bottom-end")
             template(#trigger="{ isExpand }")
               f-svg-icon(
-                iconName="swap_horiz"
+                iconName="sortby"
                 size="20"
-                class="transform rotate-90 cursor-pointer text-grey-600 hover:text-primary-400"
+                class="transform cursor-pointer text-grey-600 hover:text-primary-400"
                 :class="{ 'text-primary-400': isExpand }"
               )
             template(#content)

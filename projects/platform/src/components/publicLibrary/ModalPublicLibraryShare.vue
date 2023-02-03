@@ -32,9 +32,9 @@ modal-behavior(
     )
       div(class="w-14 h-14 flex justify-center items-center bg-grey-100 rounded-full")
         f-svg-icon(
-          iconName="link_1"
+          iconName="copy_link"
           size="30"
-          class="text-grey-900 transform -rotate-45"
+          class="text-grey-900"
           :class="{ 'text-grey-200': !isCanShared }"
         )
       p(

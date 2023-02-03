@@ -108,13 +108,13 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
           v-if="properties.u3m.status !== U3M_STATUS.COMPLETED"
           class="w-7.5 h-7.5 flex justify-center items-center text-grey-200"
         )
-          f-svg-icon(iconName="u3m" size="24")
+          f-svg-icon(iconName="3D_material" size="24")
         div(
           v-else
           class="w-7.5 h-7.5 hover:bg-primary-400/10 hover:text-primary-400 flex justify-center items-center rounded-full cursor-pointer"
           @click="openModalU3mSelectFileFormat([node])"
         )
-          f-svg-icon(iconName="u3m" size="24")
+          f-svg-icon(iconName="3D_material" size="24")
       template(#content)
         p {{ $t('RR0059') }}
     f-popper(placement="left-start")

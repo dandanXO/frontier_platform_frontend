@@ -198,7 +198,7 @@ export default function useAssets() {
 
   const downloadU3M = {
     id: 'downloadU3M',
-    icon: 'u3m',
+    icon: '3D_material',
     name: t('RR0059'),
     disabled: (material) =>
       toMaterialList(material).every(

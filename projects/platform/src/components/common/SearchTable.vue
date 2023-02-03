@@ -21,9 +21,9 @@ div(class="w-full h-full flex flex-col")
       f-popper(placement="bottom-end")
         template(#trigger="{ isExpand }")
           f-svg-icon(
-            iconName="swap_horiz"
+            iconName="sortby"
             size="24"
-            class="transform rotate-90 cursor-pointer text-grey-600 hover:text-primary-400"
+            class="transform cursor-pointer text-grey-600 hover:text-primary-400"
             :class="{ 'text-primary-400': isExpand }"
           )
         template(#content)

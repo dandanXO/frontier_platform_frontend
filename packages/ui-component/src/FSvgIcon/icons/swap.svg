@@ -1,8 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-  <mask id="a" width="24" height="24" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha">
-    <path d="M0 0h24v24H0z"/>
-  </mask>
-  <g mask="url(#a)">
-    <path d="m7 21-5-5 5-5 1.425 1.4-2.6 2.6H21v2H5.825l2.6 2.6L7 21Zm10-8-1.425-1.4 2.6-2.6H3V7h15.175l-2.6-2.6L17 3l5 5-5 5Z"/>
+  <g clip-path="url(#a)">
+    <path fill-rule="evenodd" d="m21 9-3.99 4v-3H10V8h7.01V5L21 9ZM6.99 11v3H14v2H6.99v3L3 15l3.99-4Z" clip-rule="evenodd"/>
   </g>
+  <defs>
+    <clipPath id="a">
+      <path d="M0 0h24v24H0z" transform="rotate(90 12 12)"/>
+    </clipPath>
+  </defs>
 </svg>

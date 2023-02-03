@@ -5,14 +5,14 @@ div(class="flex items-center text-grey-600 cursor-pointer")
     :class="[displayMode === DISPLAY_MODE.MODEL ? `${activeClass}` : '']"
     @click="$emit('update:displayMode', DISPLAY_MODE.MODEL)"
   )
-    f-svg-icon(iconName="3d_view" size="24")
+    f-svg-icon(iconName="3D_material" size="24")
     span(class="text-body2 font-bold") {{ $t('UU0122') }}
   div(
     class="flex flex-row items-center gap-x-1 py-1 px-1.5 border-grey-500 border rounded-r bg-grey-700"
     :class="[displayMode === DISPLAY_MODE.TEXTURE ? `${activeClass}` : '']"
     @click="$emit('update:displayMode', DISPLAY_MODE.TEXTURE)"
   )
-    f-svg-icon(iconName="2d_view" size="24")
+    f-svg-icon(iconName="2D_layer" size="24")
     span(class="text-body2 font-bold") {{ $t('UU0123') }}
 </template>
 

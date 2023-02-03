@@ -36,8 +36,8 @@ div(class="w-full")
           @click="openModalCreateOrg(true)"
           data-cy="open-create-org-modal"
         )
-          div(class="grid justify-items-center gap-y-3.5")
-            f-svg-icon(iconName="add" size="24" class="text-grey-150")
+          div(class="grid justify-items-center")
+            f-svg-icon(iconName="add" size="60" class="text-grey-150")
             span(class="text-grey-150 text-body2 font-bold") {{ $t('AA0011') }}
 </template>
 

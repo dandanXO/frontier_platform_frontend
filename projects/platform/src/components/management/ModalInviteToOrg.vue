@@ -35,7 +35,7 @@ modal-behavior(
       class="text-cyan-400 flex items-center cursor-pointer"
       @click="copyText(inviteLink), $store.dispatch('helper/pushFlashMessage', $t('BB0108'))"
     )
-      f-svg-icon(iconName="link_2" size="14" class="mr-1.5")
+      f-svg-icon(iconName="copy_link" size="14" class="mr-1.5")
       span(class="text-caption") {{ $t('UU0015') }}
 </template>
 

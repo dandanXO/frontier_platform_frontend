@@ -9,7 +9,7 @@ div(
     class="inline-flex items-center underline cursor-pointer"
     @click="downloadU3m(item.url)"
   ) {{ item.name }}
-    f-svg-icon(iconName="u3m_download" size="20")
+    f-svg-icon(iconName="download" size="20")
 </template>
 
 <script setup>

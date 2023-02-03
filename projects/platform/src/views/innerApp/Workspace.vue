@@ -52,7 +52,7 @@ div(class="w-full h-full")
         )
           template(#hover-corner-bottom-left v-if="isFirstLayer")
             f-svg-icon(
-              :iconName="node.isPublic ? 'public' : 'lock_outline'"
+              :iconName="node.isPublic ? 'public' : 'internal'"
               size="20"
               class="cursor-pointer text-grey-200"
               @click.stop="openModalPublish(node)"

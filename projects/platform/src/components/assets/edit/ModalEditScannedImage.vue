@@ -85,7 +85,7 @@ modal-behavior(
           @change="handleUpdateDoubleMaterialScaleSize($event, true)"
         )
       div(class="mt-7 cursor-pointer text-grey-900" @click="isExchange = !isExchange")
-        f-svg-icon(iconName="swap_horiz" size="32" class="m-auto")
+        f-svg-icon(iconName="swap" size="32" class="m-auto")
 </template>
 
 <script setup lang="ts">
