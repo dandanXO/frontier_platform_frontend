@@ -39,17 +39,21 @@ div(
     template(v-for="(block, index) in filteredBlockList")
       //- Block Title
       div(v-if="block.blockTitle" class="h-6 py-1.5 px-4 text-caption text-grey-600") {{ block.blockTitle }}
-
-      recycle-scroller(
-        v-if="depthOfMenuTree === 1"
-        :class="innerMenuTree.width"
-        :items="block.menuList"
-        :itemSize="36"
-        key-field="title"
-        pageMode
-        v-slot="{ item }"
-        :buffer="108"
-      )
+      //- 使用 vue-virtual-scroller 會導致 popper.js 在判斷 content 展開的位置出錯，故先不使用，等有解決方案後再考慮加回。
+      //- 原因參考： https://codesandbox.io/s/vue-virtual-scroller-forked-q20xw0?file=/src/VirtualList.vue:410-556
+      //- recycle-scroller 元件第一時間的 height 為 0，之後才會根據 itemSize 跟 items 計算出真正高度，
+      //- 這會導致 popper.js 計算 content 位置時用 height: 0 計算，導致 placement 是在上方的情況下會跑版。
+      //-
+      //- recycle-scroller(
+      //-   v-if="depthOfMenuTree === 1"
+      //-   :class="innerMenuTree.width"
+      //-   :items="block.menuList"
+      //-   :itemSize="36"
+      //-   key-field="title"
+      //-   pageMode
+      //-   v-slot="{ item }"
+      //-   :buffer="108"
+      //- )
         contextual-menu-node(
           :theme="theme"
           :class="innerMenuTree.width"
@@ -59,7 +63,6 @@ div(
           :inputSelectValue="inputSelectValue"
         )
       contextual-menu-node(
-        v-else
         v-for="menu in block.menuList"
         :theme="theme"
         :menu="menu"
@@ -89,8 +92,8 @@ export default {
 <script setup>
 import { ref, computed } from 'vue'
 import { CONTEXTUAL_MENU_MODE } from '../constants.js'
-import { RecycleScroller } from 'vue-virtual-scroller'
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+// import { RecycleScroller } from 'vue-virtual-scroller'
+// import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 const { SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
 
@@ -254,22 +257,22 @@ defineExpose({
   clickMenuHandler,
 })
 
-const depthOfMenuTree = computed(() => {
-  const getDepth = (tree, level) => {
-    return Math.max(
-      ...tree.blockList.map((block) => {
-        return Math.max(
-          ...block.menuList.map((menu) => {
-            if (menu.blockList && menu.blockList.length > 0) {
-              return getDepth(menu, level + 1)
-            } else {
-              return level
-            }
-          })
-        )
-      })
-    )
-  }
-  return getDepth(props.menuTree, 1)
-})
+// const depthOfMenuTree = computed(() => {
+//   const getDepth = (tree, level) => {
+//     return Math.max(
+//       ...tree.blockList.map((block) => {
+//         return Math.max(
+//           ...block.menuList.map((menu) => {
+//             if (menu.blockList && menu.blockList.length > 0) {
+//               return getDepth(menu, level + 1)
+//             } else {
+//               return level
+//             }
+//           })
+//         )
+//       })
+//     )
+//   }
+//   return getDepth(props.menuTree, 1)
+// })
 </script>
