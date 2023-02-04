@@ -324,7 +324,7 @@ const selectedMenu = computed(() => {
 
   travel(props.dropdownMenuTree)
 
-  if (!innerSelectValue.value) {
+  if (innerSelectValue.value == null) {
     return null
   }
 

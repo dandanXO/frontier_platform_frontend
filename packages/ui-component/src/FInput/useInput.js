@@ -12,16 +12,19 @@ export default function useInput({
   const isHover = ref(false)
   const isFilled = computed(() => {
     const v = inputValue.value
-    if (v === null) {
+    if (v == null) {
       return false
     }
     if (Array.isArray(v)) {
       return v.length !== 0
-    } else if (typeof v === 'object') {
+    }
+    if (typeof v === 'object') {
       return Object.keys(v).length !== 0
     }
-
-    return !!v
+    if (typeof v === 'string') {
+      return v.length !== 0
+    }
+    return true
   })
   const isError = ref(false)
   const ruleErrorMsg = ref('')

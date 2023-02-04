@@ -16,13 +16,13 @@ div(class="w-full h-full flex justify-center")
             div(class="flex items-center gap-x-3")
               f-input-select(
                 v-model:selectValue="material.isDoubleSideMaterial"
-                :dropdownMenuTree="sideTypeMenuTree"
+                :dropdownMenuTree="singleOrDoubleMenuTree"
                 class="w-50"
               )
               f-input-select(
                 v-if="!material.isDoubleSideMaterial"
                 v-model:selectValue="material.sideType"
-                :dropdownMenuTree="singleOrDoubleMenuTree"
+                :dropdownMenuTree="sideTypeMenuTree"
                 class="w-25"
               )
       block-material-information(:invalidation="invalidation")
