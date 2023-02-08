@@ -50,11 +50,9 @@ export default {
         dispatch('helper/search/setPagination', pagination, { root: true })
     },
     async getShareReceivedInfo({ dispatch }, { sharingKey }) {
-      const ip = await getIPs() // get public ip address
       // https://github.com/joeymalvinni/webrtc-ip
       const { data } = await receivedShareApi.getShareReceivedInfo({
         sharingKey,
-        ip: ip.join('\n'),
       })
 
       dispatch('setReceivedShareModule', data.result)

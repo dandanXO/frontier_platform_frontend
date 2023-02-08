@@ -173,6 +173,7 @@ const routes = [
       store.dispatch('code/getFilterOptions')
       await store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey })
       const share = store.getters['receivedShare/share']
+      store.dispatch('dashboard/createReceivePageLog', { sharingKey })
       const nodeKey = `${share.workspaceNodeLocation}-${share.workspaceNodeId}`
       if (share.workspaceNodeType === NODE_TYPE.COLLECTION) {
         next(`/received-share/${sharingKey}/${nodeKey}`)
@@ -214,6 +215,7 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       const sharingKey = to.params.sharingKey
       await store.dispatch('embed/getEmbedInfo', { sharingKey })
+      store.dispatch('dashboard/createEmbedPageLog', { sharingKey })
       next()
     },
     children: [

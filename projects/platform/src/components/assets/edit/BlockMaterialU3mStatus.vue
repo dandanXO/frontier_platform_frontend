@@ -33,7 +33,7 @@ div
       :disabled="!actionButton.clickHandler"
       @click="actionButton.clickHandler"
     ) {{ actionButton.text }}
-    material-u3m-files(:u3m="material.u3m")
+    material-u3m-files(:material="material")
   div(
     v-if="material.u3m.status === COMPLETED"
     class="text-grey-900 flex items-center cursor-pointer mt-5.5"
@@ -81,13 +81,13 @@ const props = defineProps({
   },
 })
 
-const u3m = computed(() => props.material.u3m)
+const material = computed(() => props.material)
 
 const { t } = useI18n()
 const store = useStore()
 const { create3DMaterial } = useAssets()
 const { goToProgress } = useNavigation()
-const { openModalModelEditor } = useModelEditor(u3m)
+const { openModalModelEditor } = useModelEditor(material)
 
 const { UNQUALIFIED, INITIAL, IN_QUEUE, COMPLETED, PROCESSING, UNSUCCESSFUL } =
   U3M_STATUS

@@ -1,10 +1,10 @@
 import axios from '@/apis'
 
 export default {
-  getShareReceivedInfo: ({ sharingKey, ip }) =>
+  getShareReceivedInfo: ({ sharingKey }) =>
     axios('/share/get-received', {
       method: 'POST',
-      data: { sharingKey, ip },
+      data: { sharingKey },
     }),
   getShareReceivedList: ({
     sharingKey,

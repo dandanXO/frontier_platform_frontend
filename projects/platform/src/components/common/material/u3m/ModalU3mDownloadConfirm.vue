@@ -22,6 +22,7 @@ modal-behavior(
 <script>
 import { useStore } from 'vuex'
 import { downloadDataURLFile } from '@/utils/fileOperator'
+import useDashboard from '@/composables/useDashboard'
 
 export default {
   name: 'ModalU3mDownloadConfirm',
@@ -38,12 +39,14 @@ export default {
   },
   setup(props) {
     const store = useStore()
+    const dashboard = useDashboard()
     const downloadU3m = () => {
       props.allowedList.forEach((material) => {
         setTimeout(() => {
           const url = material.u3m[props.selectedFormat]
           const fileName = url.split('/')[url.split('/').length - 1]
           downloadDataURLFile(url, fileName)
+          dashboard.createDownloadLog(material.materialId, props.selectedFormat)
         }, 0)
       })
     }

@@ -17,8 +17,9 @@ modal-behavior(
 <script setup>
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import { downloadDataURLFile } from '@/utils/fileOperator'
 import { ref } from 'vue'
+import useDashboard from '@/composables/useDashboard'
+import { downloadDataURLFile } from '@/utils/fileOperator'
 import { U3M_STATUS } from '@/utils/constants'
 
 const props = defineProps({
@@ -29,6 +30,8 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
+const dashboard = useDashboard()
+
 const formatOptions = [
   {
     name: t('UU0005'),
@@ -69,6 +72,7 @@ const downloadU3m = () => {
         const url = material.u3m[selectedFormat.value]
         const fileName = url.split('/')[url.split('/').length - 1]
         downloadDataURLFile(url, fileName)
+        dashboard.createDownloadLog(material.materialId, selectedFormat.value)
       }, 0)
     })
     closeModal()

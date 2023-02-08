@@ -179,8 +179,7 @@ const tableData = computed(
   () => store.getters['assets/progress/u3mProgressList']
 )
 const material = computed(() => store.getters['assets/material'])
-const u3m = computed(() => material.value.u3m)
-const { openModalModelEditor } = useModelEditor(u3m)
+const { openModalModelEditor } = useModelEditor(material)
 
 const headers = [
   {

@@ -37,7 +37,7 @@ div
       :disabled="status !== COMPLETED"
       @click="openModalModelEditor"
     ) {{ $t('UU0006') }}
-    material-u3m-files(:u3m="material.u3m")
+    material-u3m-files(:material="material")
 </template>
 
 <script setup>
@@ -56,13 +56,13 @@ const props = defineProps({
   },
 })
 
-const u3m = computed(() => props.material.u3m)
-const status = computed(() => u3m.value.status)
+const material = computed(() => props.material)
+const status = computed(() => material.value.u3m.status)
 
 const { t } = useI18n()
 const store = useStore()
 const { goToProgress } = useNavigation()
-const { openModalModelEditor } = useModelEditor(u3m)
+const { openModalModelEditor } = useModelEditor(material)
 const { UNQUALIFIED, INITIAL, IN_QUEUE, COMPLETED, PROCESSING, UNSUCCESSFUL } =
   U3M_STATUS
 

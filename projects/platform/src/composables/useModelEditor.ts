@@ -1,19 +1,13 @@
 import { ref, unref } from 'vue'
 import { useStore } from 'vuex'
 import { U3M_STATUS } from '@/utils/constants'
+import useDashboard from '@/composables/useDashboard'
 import type { Ref } from 'vue'
+import type { Material } from '@/types'
 
-interface U3M {
-  status: number
-  dpi: number
-  u3mSpecUrl: string
-  normalImgUrl: string
-  roughImgUrl: string
-  dispImgUrl: string
-}
-
-const useModelEditor = (u3m: Ref<U3M> | U3M) => {
+const useModelEditor = (material: Ref<Material> | Material) => {
   const store = useStore()
+  const dashboard = useDashboard()
   const isOpen = ref(false)
 
   const closeModalModelEditor = () => {
@@ -23,20 +17,20 @@ const useModelEditor = (u3m: Ref<U3M> | U3M) => {
   }
 
   const openModalModelEditor = () => {
-    const u3mValue = unref(u3m)
-    if (isOpen.value || u3mValue.status !== U3M_STATUS.COMPLETED) {
+    const { materialId, u3m } = unref(material)
+    if (isOpen.value || u3m.status !== U3M_STATUS.COMPLETED) {
       return
     }
-
     store.dispatch('helper/pushModalBehavior', {
       component: 'modal-model-editor',
       properties: {
-        ...u3mValue,
-        u3mPath: u3mValue.u3mSpecUrl,
+        ...u3m,
+        u3mPath: u3m.u3mSpecUrl,
         onClose: closeModalModelEditor,
       },
     })
     isOpen.value = true
+    dashboard.createViewerLog(materialId)
   }
 
   // 因為使用空白鍵作為快捷鍵會跟 edit asset 的 input 衝突，
@@ -46,7 +40,7 @@ const useModelEditor = (u3m: Ref<U3M> | U3M) => {
   //   if (
   //     useKeyboard &&
   //     e.key === ' ' &&
-  //     unref(u3m).status === U3M_STATUS.COMPLETED &&
+  //     unref(material).u3m.status === U3M_STATUS.COMPLETED &&
   //     !isOpen.value
   //   ) {
   //     openModalModelEditor()

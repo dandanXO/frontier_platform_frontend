@@ -18,7 +18,7 @@ div
       :disabled="status !== COMPLETED"
       @click="openModalModelEditor"
     ) {{ $t('UU0006') }}
-    material-u3m-files(:u3m="material.u3m" :download-u3m="downloadU3m")
+    material-u3m-files(:material="material" :download-u3m="downloadU3m")
 </template>
 
 <script setup>
@@ -27,6 +27,7 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 import MaterialU3mFiles from '@/components/common/material/u3m/MaterialU3mFiles.vue'
 import useModelEditor from '@/composables/useModelEditor'
+import useDashboard from '@/composables/useDashboard'
 import { U3M_STATUS } from '@/utils/constants'
 import { downloadDataURLFile } from '@/utils/fileOperator'
 
@@ -45,15 +46,17 @@ const props = defineProps({
   },
 })
 
-const u3m = computed(() => props.material.u3m)
-const status = computed(() => u3m.value.status)
+const material = computed(() => props.material)
+const status = computed(() => material.value.u3m.status)
 
 const { t } = useI18n()
 const store = useStore()
-const { openModalModelEditor } = useModelEditor(u3m)
+const { openModalModelEditor } = useModelEditor(material)
+const dashboard = useDashboard()
 const { COMPLETED } = U3M_STATUS
 
-const downloadU3m = async (url) => {
+const downloadU3m = async (item) => {
+  const { url, format } = item
   const needCheckTokenStatus = [
     'metafabric.design', // 青望科技
     'bluehope.4pt.tw', // 青望科技 Demo 網域
@@ -85,6 +88,7 @@ const downloadU3m = async (url) => {
   } else {
     const fileName = url.split('/')[url.split('/').length - 1]
     downloadDataURLFile(url, fileName)
+    dashboard.createDownloadLog(material.value.materialId, format)
   }
 }
 
