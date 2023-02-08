@@ -180,7 +180,7 @@ const tableData = computed(
 )
 const material = computed(() => store.getters['assets/material'])
 const u3m = computed(() => material.value.u3m)
-const { openModalModelEditor } = useModelEditor(u3m, false)
+const { openModalModelEditor } = useModelEditor(u3m)
 
 const headers = [
   {
