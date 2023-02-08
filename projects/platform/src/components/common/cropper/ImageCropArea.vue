@@ -92,10 +92,15 @@ const basedBorderStyles = computed(() => {
 })
 
 const cropImage = () => {
+  const classList = [
+    'overflow-hidden',
+    props.theme === 'light' ? 'bg-grey-0' : 'bg-grey-900',
+  ]
+
   return new Promise((resolve, reject) => {
     cropRect.value.style.width = styleSize.value.width
     cropRect.value.style.height = styleSize.value.height
-    document.body.classList.add('overflow-hidden', 'bg-grey-900')
+    document.body.classList.add(...classList)
     html2canvas(cropRect.value, {
       allowTaint: true,
       useCORS: true,
@@ -105,7 +110,7 @@ const cropImage = () => {
     }).then((canvas) => {
       cropRect.value.style.width = 0
       cropRect.value.style.height = 0
-      document.body.classList.remove('overflow-hidden', 'bg-grey-900')
+      document.body.classList.remove(...classList)
       const dataUrl = canvas.toDataURL('image/jpeg')
       const fileName = `${tempFilenameGenerator()}.jpeg`
       const blob = dataUrlToBlob(dataUrl)
