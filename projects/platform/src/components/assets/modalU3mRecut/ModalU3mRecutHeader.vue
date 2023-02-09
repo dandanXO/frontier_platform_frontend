@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="flex items-center justify-between shrink-0 w-full h-27.5 bg-grey-900 px-2.5")
+div(class="flex items-center justify-between shrink-0 w-full h-27.5 bg-grey-900 px-10")
   div(class="flex items-center text-grey-100")
     f-svg-icon(iconName="transform" size="24")
     p(class="text-body1 font-bold pl-1.5") {{ $t('EE0069') }}

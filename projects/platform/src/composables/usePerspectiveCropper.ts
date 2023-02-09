@@ -24,24 +24,30 @@ export interface EditStatus {
 
 const DEFAULT_CROP_CM = 4
 
+/**
+ * 設計稿上 w:56, h: 28, radius:4, fontSize: 12
+ * 因 Canvas 可能會經過縮放，所以這裡透過等比例換算成大略的數字。
+ * offset 則是為了因應旋轉，將旋轉點固定在物件的中心點。
+ */
 const textProps: TextConfig = {
   offsetX: 250,
-  offsetY: 75,
+  offsetY: 125,
   fontSize: 100,
   opacity: 0,
   width: 500,
-  height: 150,
+  height: 250,
+  fontFamily: 'Noto Sans TC',
   verticalAlign: 'middle',
   align: 'center',
   fill: '#F4F4F4',
 }
 const rectProps = {
   offsetX: 250,
-  offsetY: 75,
+  offsetY: 125,
   width: 500,
-  height: 150,
+  height: 250,
   fill: 'rgb(168, 168, 168)',
-  cornerRadius: 50,
+  cornerRadius: 36,
   opacity: 0,
 }
 

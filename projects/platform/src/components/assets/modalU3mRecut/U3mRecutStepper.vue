@@ -1,6 +1,10 @@
 <template lang="pug">
 div(class="relative overflow-hidden")
   span(class="absolute left-10 top-[33px] w-75 h-0.5 bg-grey-700") 
+  span(
+    v-if="isDoubleSideMaterial && faceSideUrl && currentSideName === U3M_CUT_SIDE.BACK_SIDE"
+    class="absolute left-10 top-[33px] w-55 h-0.5 bg-primary-400"
+  ) 
   div(class="flex flex-row items-center gap-[45px] text-grey-150 overflow-hidden")
     template(v-if="isDoubleSideMaterial")
       u3m-recut-step(

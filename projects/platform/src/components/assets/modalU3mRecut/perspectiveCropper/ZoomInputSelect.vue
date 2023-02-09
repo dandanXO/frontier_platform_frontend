@@ -4,6 +4,7 @@ f-input-container(ref="refContainer")
     placement="bottom-start"
     @expand="expand"
     @collapse="collapse"
+    :offset="[0, -4]"
     :class="[{ 'pointer-events-none': disabled }]"
     data-cy="input-select"
   )
