@@ -9,7 +9,7 @@ div(class="relative" :class="textStyles")
   input(
     v-model.number="innerValue"
     type="number"
-    class="w-full p-2 text-body2 border border-grey-200 rounded outline-none disabled:bg-grey-100 disabled:border-grey-50"
+    class="w-full p-2 text-body2 border border-grey-250 rounded outline-none disabled:bg-grey-100 disabled:border-grey-50"
     :class="{ 'bg-grey-900 border-grey-800': isDarkTheme }"
     :step="step"
     :min="min"
@@ -108,17 +108,17 @@ export default {
 
     const textStyles = computed(() => {
       if (isDarkTheme) {
-        return [props.disabled ? 'text-grey-200' : 'text-grey-300']
+        return [props.disabled ? 'text-grey-250' : 'text-grey-300']
       } else {
-        return [props.disabled ? 'text-grey-200' : 'text-grey-900']
+        return [props.disabled ? 'text-grey-250' : 'text-grey-900']
       }
     })
 
     const iconStyles = computed(() => {
       if (isDarkTheme) {
-        return [props.disabled ? 'text-grey-200' : 'text-grey-100']
+        return [props.disabled ? 'text-grey-250' : 'text-grey-100']
       } else {
-        return [props.disabled ? 'text-grey-200' : 'text-grey-900']
+        return [props.disabled ? 'text-grey-250' : 'text-grey-900']
       }
     })
 

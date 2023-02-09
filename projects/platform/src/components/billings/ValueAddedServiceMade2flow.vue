@@ -93,7 +93,7 @@ div(class="w-full pt-3")
       class="pb-19"
     )
       div(v-for="faq in faqList")
-        div(class="rounded border border-grey-200 mb-2") 
+        div(class="rounded border border-grey-250 mb-2") 
           div(
             class="h-12 pl-7 pr-4 flex items-center justify-between text-grey-900 hover:bg-grey-100 cursor-pointer"
             :class="{ 'bg-grey-100': faq.isExpand }"
@@ -108,7 +108,7 @@ div(class="w-full pt-3")
             f-svg-icon(v-else iconName="keyboard_arrow_up" size="24")
           div(
             v-if="faq.isExpand"
-            class="border-t border-grey-200 py-6 px-7 text-body2 text-grey-900 leading-1.6"
+            class="border-t border-grey-250 py-6 px-7 text-body2 text-grey-900 leading-1.6"
           ) {{ faq.answer }}
     div(
       v-else-if="tagList[indexOfActiveTag] === MADE2FLOW_TAG_LIST.PLAN_AND_PRICE.text"

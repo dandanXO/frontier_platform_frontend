@@ -4,7 +4,7 @@ modal-behavior(:header="title")
     p(class="text-body2 text-grey-900 leading-1.6 pb-10") {{ introduction }}
     div(class="grid gap-y-12.5")
       div(v-for="section in sectionList")
-        p(class="text-body1 font-bold text-grey-900 pb-5 border-b border-grey-200 mb-4") {{ section.title }}
+        p(class="text-body1 font-bold text-grey-900 pb-5 border-b border-grey-250 mb-4") {{ section.title }}
         p(v-html="section.content" class="text-body2 text-grey-900 leading-1.6")
 </template>
 

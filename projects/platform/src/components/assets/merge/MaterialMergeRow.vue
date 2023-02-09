@@ -50,9 +50,9 @@ div(class="flex mb-5 mx-auto pl-17 pr-7 relative max-w-286")
     template(v-for="(material, blockType) in rowData")
       div(v-if="blockType !== BLOCK_TYPE.DETAIL" class="relative mr-11")
         div(v-if="material.imageInfo.crop" class="absolute -left-6 top-20")
-          f-svg-icon(iconName="drag_indicator" size="24" class="text-grey-200")
+          f-svg-icon(iconName="drag_indicator" size="24" class="text-grey-250")
         div(
-          class="w-47.5 h-47.5 rounded border-2 border-solid border-grey-200"
+          class="w-47.5 h-47.5 rounded border-2 border-solid border-grey-250"
           :class="{ 'border-none': material.imageInfo.crop }"
         )
           img(
@@ -65,9 +65,9 @@ div(class="flex mb-5 mx-auto pl-17 pr-7 relative max-w-286")
           )
       div(v-else class="relative w-full")
         div(class="absolute -left-6 top-20")
-          f-svg-icon(iconName="drag_indicator" size="24" class="text-grey-200")
+          f-svg-icon(iconName="drag_indicator" size="24" class="text-grey-250")
         div(
-          class="h-47.5 rounded border-2 border-solid border-grey-200 cursor-move"
+          class="h-47.5 rounded border-2 border-solid border-grey-250 cursor-move"
           :data-type="blockType"
           draggable="true"
           @dragstart="startDrag($event)"
@@ -98,7 +98,7 @@ export default {
   setup(props, { emit }) {
     const emptyBoxClass =
       'flex justify-center items-center border-2 border-dashed border-grey-600 text-grey-900 text-caption'
-    const filledTextBoxClass = 'border-2 border-solid border-grey-200'
+    const filledTextBoxClass = 'border-2 border-solid border-grey-250'
 
     const BLOCK_TYPE = {
       FACE: 'faceSide',

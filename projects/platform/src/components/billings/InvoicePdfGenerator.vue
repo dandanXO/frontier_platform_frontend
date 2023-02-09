@@ -42,7 +42,7 @@ div
                         div(class="text-grey-600") {{ item.periodDate }}
                       div(class="text-center" style="width: 30%") {{ item.listPrice }}
                       div(class="text-center" style="width: 20%") {{ invoiceInfo.currency }} ${{ item.price.toFixed(2) }}
-                div(class="border-t border-grey-200 mx-8")
+                div(class="border-t border-grey-250 mx-8")
               div(class="px-8 mt-3 flex justify-between")
                 div
                   div(class="mb-3 text-grey-900 text-caption") {{ $t('OO0094') }}:

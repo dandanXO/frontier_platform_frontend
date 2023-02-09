@@ -33,11 +33,11 @@ modal-behavior(
               :style="{ 'background-image': `url(${member.avatar})` }"
             )
             template(v-if="member.isPending")
-              span(class="flex-grow pl-4 text-body2 text-grey-200") {{ member.email }}
-              span(class="text-body2 text-grey-200") ({{ $t('BB0024') }})
+              span(class="flex-grow pl-4 text-body2 text-grey-250") {{ member.email }}
+              span(class="text-body2 text-grey-250") ({{ $t('BB0024') }})
             template(v-else-if="member.joined")
-              span(class="flex-grow pl-4 text-body2 text-grey-200") {{ member.displayName }}
-              span(class="text-body2 text-grey-200") ({{ $t('BB0097') }})
+              span(class="flex-grow pl-4 text-body2 text-grey-250") {{ member.displayName }}
+              span(class="text-body2 text-grey-250") ({{ $t('BB0097') }})
             template(v-else)
               span(class="flex-grow pl-4 text-body2 text-grey-900") {{ member.displayName }}
           template(v-if="!member.isPending && !member.joined")

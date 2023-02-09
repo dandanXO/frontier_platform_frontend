@@ -47,7 +47,7 @@ div(class="w-full h-full")
           )
           div(
             v-if="index !== materialList.length - 1"
-            class="border-b border-grey-200 mx-7.5 my-5"
+            class="border-b border-grey-250 mx-7.5 my-5"
           )
         div(
           v-show="displayMode === DISPLAY_NODE.GRID"
@@ -66,7 +66,7 @@ div(class="w-full h-full")
           )
       div(v-else class="flex flex-col justify-center items-center")
         div(
-          class="border border-grey-200 rounded-md border-dashed p-2 mt-40 cursor-pointer"
+          class="border border-grey-250 rounded-md border-dashed p-2 mt-40 cursor-pointer"
           @click="goToMaterialUpload"
         )
           f-svg-icon(iconName="add" size="24" class="text-grey-900")

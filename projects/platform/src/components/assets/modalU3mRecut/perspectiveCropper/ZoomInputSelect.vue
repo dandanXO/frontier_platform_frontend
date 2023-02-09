@@ -15,7 +15,7 @@ f-input-container(ref="refContainer")
       )
         p(
           class="flex-grow text-caption"
-          :class="[{ 'text-grey-600': disabled }, { 'text-grey-100': !disabled !== -1 }, { 'text-grey-200': !disabled === -1 }]"
+          :class="[{ 'text-grey-600': disabled }, { 'text-grey-100': !disabled !== -1 }, { 'text-grey-250': !disabled === -1 }]"
         ) {{ value }}
         div(class="pl-1")
           f-svg-icon(

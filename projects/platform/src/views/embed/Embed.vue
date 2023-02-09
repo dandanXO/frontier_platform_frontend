@@ -57,7 +57,7 @@ div(class="max-w-315 h-full mx-auto pt-10")
                 ) {{ collection.description }}
               p(v-else class="text-body2 text-grey-900 leading-1.6") {{ $t('FF0008') }}
             div(
-              class="relative w-97.5 h-69 rounded bg-grey-200 flex items-center justify-center flex-shrink-0"
+              class="relative w-97.5 h-69 rounded bg-grey-250 flex items-center justify-center flex-shrink-0"
             )
               div(
                 v-if="collection.trendBoardCoverImg"

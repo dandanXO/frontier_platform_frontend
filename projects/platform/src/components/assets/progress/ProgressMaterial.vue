@@ -42,7 +42,7 @@ f-table(
         :class="{ 'opacity-20': item.isMaterialDeleted }"
         :style="{ 'background-image': `url(${item.image})` }"
       )
-      div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-200 font-bold z-1") {{ $t('RR0063') }}
+      div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-250 font-bold z-1") {{ $t('RR0063') }}
     div(v-if="prop === 'createdTime'")
       div(
         v-for="string in $dayjs.unix(item.createDate).format('YYYY/MM/DD-hh:mm:ss A').split('-')"
@@ -64,7 +64,7 @@ f-table(
       //- Completed
       div(
         v-else-if="item.status === UPLOAD_PROGRESS.COMPLETE && item.isMapping"
-        class="text-grey-200 inline-flex"
+        class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         i18n-t(keypath="PP0025" tag="p" scope="global")
@@ -75,14 +75,14 @@ f-table(
       //- In Queue
       div(
         v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE"
-        class="text-grey-200 inline-flex"
+        class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         p {{ $t('PP0012') }}
       //- Processing
       div(
         v-else-if="item.status === UPLOAD_PROGRESS.PROCESSING"
-        class="text-grey-200 inline-flex"
+        class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         p {{ $t('PP0013') }}

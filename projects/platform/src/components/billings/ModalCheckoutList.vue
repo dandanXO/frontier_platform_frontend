@@ -37,7 +37,7 @@ modal-behavior(
       i18n-t(scope="global" keypath="OO0052" tag="p" class="text-grey-900 font-bold")
         template(#date)
           span(class="text-primary-400") {{ renewDate }}
-    div(class="border border-grey-200 rounded px-7.5 pb-4")
+    div(class="border border-grey-250 rounded px-7.5 pb-4")
       f-scrollbar-container(class="max-h-60.5 -mx-6 px-6")
         div(class="grid gap-y-4 py-5")
           div(v-for="item in checkoutItemList")
@@ -45,7 +45,7 @@ modal-behavior(
               p {{ item.title }}
               p {{ item.price }}
             p(v-if="item.periodDate" class="text-grey-600 text-caption pt-1.5") {{ item.periodDate }}
-      div(class="w-full h-px bg-grey-200 mb-2.5")
+      div(class="w-full h-px bg-grey-250 mb-2.5")
       p(
         v-if="isChargeNow"
         class="text-body2 font-bold text-primary-400 text-right mb-4.5"

@@ -31,11 +31,11 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 sidebar-shadow fle
           f-svg-icon(
             iconName="progress"
             size="20"
-            :class="[planStatus.INACTIVE ? 'text-grey-200' : 'text-grey-600']"
+            :class="[planStatus.INACTIVE ? 'text-grey-250' : 'text-grey-600']"
           )
           span(
             class="text-body2 line-clamp-1 flex-grow"
-            :class="[planStatus.INACTIVE ? 'text-grey-200' : 'text-grey-900']"
+            :class="[planStatus.INACTIVE ? 'text-grey-250' : 'text-grey-900']"
           ) {{ $t('PP0001') }}
           div(
             v-if="isProcessing"
@@ -55,13 +55,13 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 sidebar-shadow fle
               )
               span(
                 class="flex-grow text-body2 line-clamp-1"
-                :class="[item.disabled ? 'text-grey-200' : 'text-grey-900']"
+                :class="[item.disabled ? 'text-grey-250' : 'text-grey-900']"
               ) {{ item.name }}
               f-svg-icon(
                 iconName="keyboard_arrow_right"
                 size="24"
                 class="transform"
-                :class="[isExpand ? 'rotate-90' : 'rotate-0', item.disabled ? 'text-grey-200' : 'text-grey-600']"
+                :class="[isExpand ? 'rotate-90' : 'rotate-0', item.disabled ? 'text-grey-250' : 'text-grey-600']"
               )
           template(#content)
             div(class="flex flex-col gap-y-0.5")

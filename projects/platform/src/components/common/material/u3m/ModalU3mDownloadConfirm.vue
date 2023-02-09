@@ -12,7 +12,7 @@ modal-behavior(
       div(
         v-for="(material, index) in failedList"
         :key="material.materialId"
-        class="flex gap-3 border-grey-200 py-2.5 text-body2 text-grey-900 leading-1.6"
+        class="flex gap-3 border-grey-250 py-2.5 text-body2 text-grey-900 leading-1.6"
         :class="{ 'border-b': index !== failedList.length - 1 }"
       )
         div(class="w-31 pl-15 font-bold flex-shrink-0") {{ index + 1 }}

@@ -24,7 +24,7 @@ fullscreen-header
           span {{ $dayjs.unix(moodboard.updateDate).format('h:mm a') }}
       div(class="mb-6 flex")
         div(
-          class="relative w-97.5 h-69 rounded bg-grey-200 flex items-center justify-center flex-shrink-0 mr-9"
+          class="relative w-97.5 h-69 rounded bg-grey-250 flex items-center justify-center flex-shrink-0 mr-9"
         )
           div(
             v-if="moodboard.trendBoardCoverImg"

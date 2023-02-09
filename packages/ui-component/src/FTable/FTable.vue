@@ -15,7 +15,7 @@ div(class="relative")
     f-popper(v-if="filterable" placement="bottom-end" class="justify-self-end")
       template(#trigger="{ isExpand }")
         div(
-          class="cursor-pointer w-43 h-9 px-1.5 flex justify-between items-center border border-grey-200 rounded"
+          class="cursor-pointer w-43 h-9 px-1.5 flex justify-between items-center border border-grey-250 rounded"
           :class="{ 'border-grey-900': isExpand }"
         )
           div(class="flex justify-between items-center")
@@ -23,7 +23,7 @@ div(class="relative")
             span(class="text-grey-900") Filter
           f-svg-icon(
             iconName="keyboard_arrow_down"
-            class="text-grey-200 transform"
+            class="text-grey-250 transform"
             :class="{ 'rotate-180': isExpand }"
           )
       template(#content)

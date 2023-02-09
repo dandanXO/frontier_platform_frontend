@@ -24,13 +24,13 @@ modal-behavior(
               img(v-if="item.logo" :src="item.logo" class="w-9 h-9 rounded-full")
               div(
                 v-else
-                class="w-9 h-9 rounded-full border-grey-200 border border-dashed"
+                class="w-9 h-9 rounded-full border-grey-250 border border-dashed"
               )
               div(class="text-body2 flex-grow")
                 p(class="text-grey-900 line-clamp-1") {{ item.name }}
-                p(v-if="item.number" class="text-grey-200") {{ item.number }}
+                p(v-if="item.number" class="text-grey-250") {{ item.number }}
               p(
-                class="text-body2 text-grey-200 pr-2.5 cursor-pointer"
+                class="text-body2 text-grey-250 pr-2.5 cursor-pointer"
                 @click="removeTarget(index)"
               ) {{ $t('FF0060') }}
       div

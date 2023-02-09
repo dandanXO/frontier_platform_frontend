@@ -34,7 +34,7 @@ transition(name="slide-fade")
     f-svg-icon(
       iconName="clear"
       size="24"
-      class="text-grey-200 ml-2.5 cursor-pointer"
+      class="text-grey-250 ml-2.5 cursor-pointer"
       @click="close"
     )
 </template>

@@ -58,7 +58,7 @@ div
     div(
       v-for="requirement in requirementList"
       class="flex items-center"
-      :class="[requirement.isMeet ? 'text-primary-400' : 'text-grey-200']"
+      :class="[requirement.isMeet ? 'text-primary-400' : 'text-grey-250']"
     )
       f-svg-icon(:iconName="requirement.isMeet ? 'done' : 'clear'" size="16")
       p(class="text-caption ml-1.5 leading-1.6") {{ requirement.text }}

@@ -28,7 +28,7 @@ modal-behavior(
             f-svg-icon(
               iconName="cancel"
               size="14"
-              class="text-grey-200 mr-1 cursor-pointer"
+              class="text-grey-250 mr-1 cursor-pointer"
               @click="clearSelect"
             )
             i18n-t(
@@ -67,7 +67,7 @@ modal-behavior(
           template(v-if="isInRoot")
             div(
               v-for="item in orgAndGroupList"
-              class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden border-grey-200 bg-grey-50 text-grey-900"
+              class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden border-grey-250 bg-grey-50 text-grey-900"
               @click="goTo(item)"
             )
               p(class="text-caption text-center font-bold line-clamp-3") {{ item.name }}

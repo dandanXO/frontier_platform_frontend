@@ -13,7 +13,7 @@ div(class="w-195")
           span(class="text-cyan-400 cursor-pointer" @click="payLastMonthUnbilledInfo") {{ $t('UU0082') }}
   div(class="grid grid-cols-3 grid-rows-2 gap-3 h-78")
     div(
-      class="col-span-3 border border-grey-200 rounded px-7.5 flex justify-between items-center"
+      class="col-span-3 border border-grey-250 rounded px-7.5 flex justify-between items-center"
     )
       div
         h5(class="font-bold text-h5 text-grey-900 mb-2") {{ planName }}
@@ -25,7 +25,7 @@ div(class="w-195")
         :disabled="!planStatus.ACTIVE"
         @click="openModalChoosePlan"
       ) {{ $t('UU0075') }}
-    div(class="border border-grey-200 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between")
+    div(class="border border-grey-250 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between")
       div
         p(class="text-body1 font-bold text-grey-900 mb-1") {{ $t('OO0002') }}
         p(class="text-caption text-grey-600 leading-1.6 mb-5") {{ $t('OO0137') }}
@@ -39,12 +39,12 @@ div(class="w-195")
         :size="60"
         :current="materialQuota.used"
         :max="materialQuota.max"
-        :primaryColor="planStatus.ACTIVE ? (isMaterialFull ? 'stroke-red-400' : 'stroke-primary-400') : 'stroke-grey-200'"
+        :primaryColor="planStatus.ACTIVE ? (isMaterialFull ? 'stroke-red-400' : 'stroke-primary-400') : 'stroke-grey-250'"
       )
         div(class="text-caption font-normal text-grey-900 text-center")
           p(:class="{ 'text-red-400': isMaterialFull }") {{ ((materialQuota.used / materialQuota.max) * 100).toFixed(0) }}%
           p {{ $t('OO0005') }}
-    div(class="border border-grey-200 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between")
+    div(class="border border-grey-250 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between")
       div
         p(class="text-body1 font-bold text-grey-900 mb-1") {{ $t('OO0003') }}
         p(class="text-caption text-grey-600 leading-1.6 mb-5") {{ $t('OO0137') }}
@@ -58,12 +58,12 @@ div(class="w-195")
         :size="60"
         :current="u3mQuota.used"
         :max="u3mQuota.max"
-        :primaryColor="planStatus.ACTIVE ? (isU3mFull ? 'stroke-red-400' : 'stroke-primary-400') : 'stroke-grey-200'"
+        :primaryColor="planStatus.ACTIVE ? (isU3mFull ? 'stroke-red-400' : 'stroke-primary-400') : 'stroke-grey-250'"
       )
         div(class="text-caption font-normal text-grey-900 text-center")
           p(:class="{ 'text-red-400': isU3mFull }") {{ ((u3mQuota.used / u3mQuota.max) * 100).toFixed(0) }}%
           p {{ $t('OO0005') }}
-    div(class="border border-grey-200 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between")
+    div(class="border border-grey-250 rounded pt-8 pr-3 pb-6 pl-7 flex justify-between")
       div
         p(class="text-body1 font-bold text-grey-900 mb-1") {{ $t('OO0114') }}
         p(class="text-caption text-grey-600 leading-1.6 mb-5") {{ $t('OO0137') }}

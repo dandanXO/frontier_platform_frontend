@@ -16,7 +16,7 @@ div(class="w-149 h-194")
         div(class="flex justify-between items-center mb-1 h-5")
           p {{ $t('OO0090') }}:
           f-button-label(@click="pushModalEditBillingInfo") {{ $t('RR0054') }}
-        div(class="py-2.5 border border-grey-200 rounded px-2")
+        div(class="py-2.5 border border-grey-250 rounded px-2")
           div(class="font-bold mb-2") {{ innerInvoice.recipient }}
           div(class="grid gap-1.5")
             div {{ innerInvoice.address }}
@@ -42,7 +42,7 @@ div(class="w-149 h-194")
             div(class="text-grey-600") {{ item.periodDate }}
           div(class="text-center" style="width: 30%") {{ item.listPrice }}
           div(class="text-center" style="width: 20%") {{ innerInvoice.currency }} ${{ item.price.toFixed(2) }}
-    div(class="border-t border-grey-200 mx-8")
+    div(class="border-t border-grey-250 mx-8")
   div(class="px-8 mt-3 flex justify-between")
     div
       div(class="mb-3 text-grey-900 text-caption") {{ $t('OO0094') }}:

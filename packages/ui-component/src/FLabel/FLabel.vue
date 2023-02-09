@@ -48,7 +48,7 @@ const classes = computed(() => {
         'hover:text-grey-0',
         'font-bold',
         'border',
-        'border-grey-200'
+        'border-grey-250'
       )
       if (props.active) {
         baseClass.push('!bg-grey-900', '!text-grey-0')

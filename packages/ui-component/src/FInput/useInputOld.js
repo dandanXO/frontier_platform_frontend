@@ -20,13 +20,13 @@ export default function useInput({
     if (isError.value) {
       return 'border-red-400'
     }
-    return isFocus.value ? 'border-grey-600' : 'border-grey-200'
+    return isFocus.value ? 'border-grey-600' : 'border-grey-250'
   })
   const classPrependIcon = computed(() => {
     if (disabled.value) {
       return 'text-grey-600'
     }
-    return isFocus.value || !isEmpty.value ? 'text-grey-900' : 'text-grey-200'
+    return isFocus.value || !isEmpty.value ? 'text-grey-900' : 'text-grey-250'
   })
 
   const typing = (e) => {

@@ -8,10 +8,10 @@ modal-behavior(
   @click:secondary="closeModal"
 )
   div(class="w-117.5")
-    div(class="w-full border border-grey-200 rounded px-7.5 pt-8 pb-5")
+    div(class="w-full border border-grey-250 rounded px-7.5 pt-8 pb-5")
       div(class="grid grid-cols-2 gap-x-8")
         div(
-          class="border border-grey-200 rounded flex flex-col items-center pt-7.5 px-7 pb-5"
+          class="border border-grey-250 rounded flex flex-col items-center pt-7.5 px-7 pb-5"
         )
           f-circle-progress-bar(
             :size="80"
@@ -30,7 +30,7 @@ modal-behavior(
           p(class="text-body2 text-grey-900 pt-2.5 pb-5") {{ $t('OO0032') }}:
           div(class="flex")
             div(
-              class="w-30 h-12 border rounded flex items-center justify-center text-body1 text-grey-900 border-grey-200"
+              class="w-30 h-12 border rounded flex items-center justify-center text-body1 text-grey-900 border-grey-250"
             ) {{ previewAmount }}
             div(class="cursor-pointer")
               f-svg-icon(iconName="keyboard_arrow_up" size="24" @click="add")
@@ -42,7 +42,7 @@ modal-behavior(
               )
           p(class="text-body2 text-grey-900 pt-0.5") {{ `${pricing.u3mUnit}${$t('OO0035')} / ${$t('RR0044')} $${pricing.u3mPrice}` }}
       p(
-        class="text-body1 font-bold text-grey-900 text-right pt-3 mt-7.5 border-t border-grey-200"
+        class="text-body1 font-bold text-grey-900 text-right pt-3 mt-7.5 border-t border-grey-250"
       ) {{ `${$t('OO0034')}: ${$t('RR0044')} $${totalPrice}` }}
 </template>
 

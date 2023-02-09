@@ -8,7 +8,7 @@ div(class="w-full h-full flex justify-center")
       )
       f-button(size="sm" type="secondary" class="ml-5" @click="openModalMassUpload") {{ $t('UU0009') }}
     div
-      div(class="pb-15 mb-5 border-b border-grey-200")
+      div(class="pb-15 mb-5 border-b border-grey-250")
         div(class="h-16 flex items-center")
           h5(class="text-h5 text-grey-900 font-bold pr-1.5") {{ $t('DD0063') }}
         div(class="pl-15")

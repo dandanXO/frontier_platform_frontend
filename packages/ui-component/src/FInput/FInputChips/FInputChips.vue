@@ -89,7 +89,7 @@ f-input-container(
             v-if="clearable"
             :size="size === 'lg' ? '24' : '20'"
             iconName="cancel"
-            class="text-grey-150 hover:text-grey-200 active:text-grey-300 cursor-pointer"
+            class="text-grey-150 hover:text-grey-250 active:text-grey-300 cursor-pointer"
             @click.stop="clearAll"
           )
       f-contextual-menu(
@@ -324,7 +324,7 @@ const classIcon = computed(() => {
     case STATE.DEFAULT:
       isFilled.value
         ? classList.push('text-grey-800')
-        : classList.push('text-grey-200')
+        : classList.push('text-grey-250')
       break
     case STATE.HOVER:
       isFilled.value
@@ -335,7 +335,7 @@ const classIcon = computed(() => {
       classList.push('text-grey-900')
       break
     case STATE.DISABLED:
-      classList.push('text-grey-200')
+      classList.push('text-grey-250')
       break
   }
 
@@ -356,7 +356,7 @@ const classInput = computed(() => {
     'bg-transparent',
     'text-body2',
     'leading-1.6',
-    'placeholder:text-grey-200',
+    'placeholder:text-grey-250',
   ]
 
   switch (props.size) {
@@ -379,7 +379,7 @@ const classInput = computed(() => {
       classList.push('text-grey-900')
       break
     case STATE.DISABLED:
-      classList.push('text-grey-200', 'cursor-not-allowed')
+      classList.push('text-grey-250', 'cursor-not-allowed')
       break
   }
 

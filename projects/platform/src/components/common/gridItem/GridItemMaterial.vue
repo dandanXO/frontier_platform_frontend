@@ -9,7 +9,7 @@ grid-item-wrapper(
   template(#title) {{ material.materialNo }}
   template(#content)
     div(
-      class="w-full h-full rounded-md border-grey-200 overflow-hidden bg-cover"
+      class="w-full h-full rounded-md border-grey-250 overflow-hidden bg-cover"
       :class="{ border: hasNoCoverImage }"
     )
       img(v-defaultImg :src="material.coverImg" class="w-full h-full")

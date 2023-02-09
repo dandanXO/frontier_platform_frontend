@@ -19,7 +19,7 @@ div(
       input(
         v-model="searchInput"
         placeholder="Search"
-        class="outline-none w-full text-caption text-grey-900 placeholder:text-grey-200"
+        class="outline-none w-full text-caption text-grey-900 placeholder:text-grey-250"
       )
     div(class="w-full h-px my-1 bg-grey-150")
   //- Add New Menu

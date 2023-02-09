@@ -17,12 +17,12 @@ modal-behavior(
             img(v-if="item.logo" :src="item.logo" class="w-10 h-10 rounded-full")
             div(
               v-else
-              class="w-10 h-10 rounded-full border-grey-200 border border-dashed"
+              class="w-10 h-10 rounded-full border-grey-250 border border-dashed"
             )
             div(class="w-86")
               p(
                 class="text-body2 font-bold w-86 line-clamp-1 mb-2"
-                :class="[item.isRemove ? 'text-grey-200' : 'text-grey-900']"
+                :class="[item.isRemove ? 'text-grey-250' : 'text-grey-900']"
               ) {{ item.name }}
               div(class="flex items-center gap-x-3")
                 f-input-checkbox(
@@ -49,7 +49,7 @@ modal-behavior(
             ) {{ $t('UU0113') }}
             p(
               v-else
-              class="text-body2 text-grey-200 cursor-pointer"
+              class="text-body2 text-grey-250 cursor-pointer"
               @click="item.isRemove = true"
             ) {{ $t('FF0060') }}
 </template>

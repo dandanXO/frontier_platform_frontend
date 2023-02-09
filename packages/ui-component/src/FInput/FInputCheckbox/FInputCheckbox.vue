@@ -4,7 +4,7 @@ label(class="flex items-center")
     v-if="checked"
     iconName="check_box"
     :size="iconSize"
-    :class="[disabled ? 'text-grey-200' : iconColor, { 'cursor-pointer': !disabled }]"
+    :class="[disabled ? 'text-grey-250' : iconColor, { 'cursor-pointer': !disabled }]"
   )
   f-svg-icon(
     v-else
@@ -23,7 +23,7 @@ label(class="flex items-center")
   div(
     v-if="label !== ''"
     class="text-body2 pl-1 whitespace-nowrap"
-    :class="[disabled ? 'text-grey-200' : 'text-grey-900 cursor-pointer']"
+    :class="[disabled ? 'text-grey-250' : 'text-grey-900 cursor-pointer']"
   ) {{ label }}
 </template>
 
@@ -68,7 +68,7 @@ export default {
     },
     uncheckColor: {
       type: String,
-      default: 'text-grey-200',
+      default: 'text-grey-250',
     },
     disabled: {
       type: Boolean,

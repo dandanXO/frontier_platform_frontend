@@ -74,7 +74,7 @@ export default {
             return [
               'bg-grey-0',
               'text-primary-400',
-              'disabled:text-grey-200',
+              'disabled:text-grey-250',
               'border',
               'border-grey-150',
               'hover:text-primary-500',
@@ -83,7 +83,7 @@ export default {
             return [
               'bg-grey-0',
               'text-grey-900',
-              'disabled:text-grey-200',
+              'disabled:text-grey-250',
               'hover:text-primary-500',
             ]
           default:
@@ -102,7 +102,7 @@ export default {
             return [
               'bg-transparent',
               'text-primary-400',
-              'disabled:text-grey-200',
+              'disabled:text-grey-250',
               'border',
               'border-grey-300',
               'hover:text-primary-500',
@@ -111,7 +111,7 @@ export default {
             return [
               'bg-transparent',
               'text-grey-300',
-              'disabled:text-grey-200',
+              'disabled:text-grey-250',
               'hover:text-primary-500',
             ]
           default:

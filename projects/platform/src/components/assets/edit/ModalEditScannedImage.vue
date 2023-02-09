@@ -51,7 +51,7 @@ modal-behavior(
         class="w-70 h-70 flex justify-center items-center bg-[#F1F2F5]"
       )
         div(
-          class="bg-grey-200"
+          class="bg-grey-250"
           :style="{ width: cropRectSize + 'px', height: cropRectSize + 'px' }"
         )
     div(

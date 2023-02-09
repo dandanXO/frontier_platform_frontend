@@ -47,7 +47,7 @@ div(class="w-227 mx-auto")
     div(class="w-97.5")
       p(class="text-grey-900 font-bold text-caption mb-4") {{ $t('RR0249') }}
       div(
-        class="relative h-69 rounded bg-grey-200 flex items-center justify-center flex-shrink-0"
+        class="relative h-69 rounded bg-grey-250 flex items-center justify-center flex-shrink-0"
       )
         div(
           v-if="moodboard.trendBoardCoverImg"

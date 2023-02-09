@@ -8,7 +8,7 @@ modal-behavior(
   @click:secondary="closeModalBehavior"
 )
   div(class="w-117.5")
-    div(class="w-full h-95 border border-grey-200 rounded overflow-hidden")
+    div(class="w-full h-95 border border-grey-250 rounded overflow-hidden")
       div(class="h-13 grid grid-cols-2 cursor-pointer")
         div(
           v-for="tab in tabList"
@@ -19,7 +19,7 @@ modal-behavior(
       div(class="h-82 pt-7.5 px-7 pb-5 flex flex-col justify-between")
         div(class="grid grid-cols-2 gap-x-8")
           div(
-            class="border border-grey-200 rounded flex flex-col items-center pt-7.5 px-7 pb-5"
+            class="border border-grey-250 rounded flex flex-col items-center pt-7.5 px-7 pb-5"
           )
             f-circle-progress-bar(
               :size="80"
@@ -39,7 +39,7 @@ modal-behavior(
             div(class="flex")
               div(
                 class="w-30 h-12 border rounded flex items-center justify-center text-body1 text-grey-900"
-                :class="[isHitUpgradeAlert || !!cancelErrorMsg ? 'border-red-400' : 'border-grey-200']"
+                :class="[isHitUpgradeAlert || !!cancelErrorMsg ? 'border-red-400' : 'border-grey-250']"
               ) {{ currentTab === TAB.ADD ? previewAmount : `-${previewAmount}` }}
               div(class="cursor-pointer")
                 f-svg-icon(iconName="keyboard_arrow_up" size="24" @click="add")
@@ -67,7 +67,7 @@ modal-behavior(
               div(class="flex items-start text-grey-600")
                 f-svg-icon(iconName="error_outline" size="14" class="mt-1")
                 p(class="text-caption leading-1.6 pl-0.5") {{ $t('OO0062') }}
-        div(v-if="currentTab === TAB.ADD" class="border-t border-grey-200 pt-3")
+        div(v-if="currentTab === TAB.ADD" class="border-t border-grey-250 pt-3")
           p(class="text-body1 font-bold text-grey-900 text-right") {{ `${$t('OO0034')}: ${$t('RR0044')} $${totalPrice}` }}
 </template>
 

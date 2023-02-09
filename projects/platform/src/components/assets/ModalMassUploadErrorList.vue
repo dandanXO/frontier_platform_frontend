@@ -10,7 +10,7 @@ modal-behavior(
     f-scrollbar-container(class="max-h-89.5")
       div(
         v-for="(error, index) in errorList"
-        class="flex gap-3 border-grey-200 py-2.5 text-body2 text-grey-900 leading-1.6"
+        class="flex gap-3 border-grey-250 py-2.5 text-body2 text-grey-900 leading-1.6"
         :class="{ 'border-b': index !== errorList.length - 1 }"
       )
         div(class="w-27 font-bold flex-shrink-0 break-all") {{ error.key }}

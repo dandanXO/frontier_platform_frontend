@@ -2,7 +2,7 @@
 div(class="grid gap-y-1.5 text-caption leading-none")
   div(class="flex")
     p(
-      :class="[moreThanSix && moreThanSix ? 'text-grey-600' : 'text-grey-200']"
+      :class="[moreThanSix && moreThanSix ? 'text-grey-600' : 'text-grey-250']"
     ) {{ $t('AA0019') }}
     f-svg-icon(
       v-if="moreThanSix && lessThanEighteen"
@@ -11,7 +11,7 @@ div(class="grid gap-y-1.5 text-caption leading-none")
       class="ml-0.5 text-grey-600"
     )
   div(class="flex")
-    p(:class="[containsLetter ? 'text-grey-600' : 'text-grey-200']") {{ $t('AA0020') }}
+    p(:class="[containsLetter ? 'text-grey-600' : 'text-grey-250']") {{ $t('AA0020') }}
     f-svg-icon(
       v-if="containsLetter"
       iconName="tick_bold"

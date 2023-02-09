@@ -8,11 +8,11 @@ div(
     f-svg-icon(
       :iconName="icon"
       size="20"
-      :class="[disabled ? 'text-grey-200' : 'text-grey-600']"
+      :class="[disabled ? 'text-grey-250' : 'text-grey-600']"
     )
     span(
       class="text-body2 line-clamp-1"
-      :class="[disabled ? 'text-grey-200' : 'text-grey-900']"
+      :class="[disabled ? 'text-grey-250' : 'text-grey-900']"
     ) {{ title }}
 </template>
 

@@ -20,18 +20,18 @@ fullscreen-header
         div(v-for="row in nonEmptyRowList" :key="row.id" class="flex my-7.5")
           div(class="relative mr-11")
             div(
-              class="w-47.5 h-47.5 rounded border-2 border-solid border-grey-200 bg-cover"
+              class="w-47.5 h-47.5 rounded border-2 border-solid border-grey-250 bg-cover"
               :class="{ 'border-none': row.faceSide.exist }"
               :style="getBgImg(row, 'faceSide')"
             )
           div(class="relative mr-11")
             div(
-              class="w-47.5 h-47.5 rounded border-2 border-solid border-grey-200 bg-cover"
+              class="w-47.5 h-47.5 rounded border-2 border-solid border-grey-250 bg-cover"
               :class="{ 'border-none': row.backSide.exist }"
               :style="getBgImg(row, 'backSide')"
             )
           div(class="relative w-full")
-            div(class="h-47.5 rounded" class="border-2 border-solid border-grey-200")
+            div(class="h-47.5 rounded" class="border-2 border-solid border-grey-250")
               material-merge-row-detail(
                 v-if="row.detail.exist"
                 :material="row.detail"

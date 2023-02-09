@@ -9,7 +9,7 @@ div(class="w-full")
       h3(class="text-grey-900 font-bold text-h3 mb-6") {{ $t('AA0014') }}
       p(class="text-grey-900 text-body1 leading-1.6 w-160 text-center mb-7.5") {{ $t('AA0015') }}
       div(
-        class="w-58 h-55 rounded-md border border-grey-200 border-dashed flex justify-center items-center cursor-pointer"
+        class="w-58 h-55 rounded-md border border-grey-250 border-dashed flex justify-center items-center cursor-pointer"
         @click="openModalCreateOrg(true)"
         data-cy="open-create-org-modal"
       )
@@ -21,7 +21,7 @@ div(class="w-full")
       div(class="grid grid-cols-lobby gap-5 mt-7.5")
         div(
           v-for="org in orgList"
-          class="w-58 h-55 rounded-md border border-grey-200 bg-grey-50 flex flex-col items-center justify-between py-5 cursor-pointer"
+          class="w-58 h-55 rounded-md border border-grey-250 bg-grey-50 flex flex-col items-center justify-between py-5 cursor-pointer"
           @click="goToPublicLibrary(org.orgNo)"
           data-cy="org"
         )
@@ -32,13 +32,13 @@ div(class="w-full")
             :itemList="org.memberList.map((member) => ({ imageUrl: member.avatar, name: member?.displayName }))"
           )
         div(
-          class="w-58 h-55 rounded-md border border-grey-200 border-dashed flex justify-center items-center cursor-pointer"
+          class="w-58 h-55 rounded-md border border-grey-250 border-dashed flex justify-center items-center cursor-pointer"
           @click="openModalCreateOrg(true)"
           data-cy="open-create-org-modal"
         )
-          div(class="grid justify-items-center")
-            f-svg-icon(iconName="add" size="60" class="text-grey-150")
-            span(class="text-grey-150 text-body2 font-bold") {{ $t('AA0011') }}
+          div(class="grid justify-items-center text-grey-200")
+            f-svg-icon(iconName="add" size="60")
+            span(class="text-body2 font-bold") {{ $t('AA0011') }}
 </template>
 
 <script setup>

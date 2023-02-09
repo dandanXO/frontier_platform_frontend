@@ -12,14 +12,14 @@ modal-behavior(
         div(class="text-center text-grey-900 text-body2 font-bold mb-3.5") {{ $t('EE0051') }}
         div(
           class="rounded overflow-hidden h-70"
-          :class="[!isFaceSideU3mCropExist ? 'border border-dashed border-grey-200' : '']"
+          :class="[!isFaceSideU3mCropExist ? 'border border-dashed border-grey-250' : '']"
         )
           img(v-if="isFaceSideU3mCropExist" :src="faceSideImg.u3mCrop" class="w-full")
       div(v-if="isDoubleSideMaterial || isBackSideMaterial" class="w-70")
         div(class="text-center text-grey-900 text-body2 font-bold mb-3.5") {{ $t('EE0052') }}
         div(
           class="rounded overflow-hidden h-70"
-          :class="[!isBackSideU3mCropExist ? 'border border-dashed border-grey-200' : '']"
+          :class="[!isBackSideU3mCropExist ? 'border border-dashed border-grey-250' : '']"
         )
           img(v-if="isBackSideU3mCropExist" :src="backSideImg.u3mCrop" class="w-full")
     i18n-t(

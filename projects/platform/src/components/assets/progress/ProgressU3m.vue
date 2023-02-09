@@ -46,7 +46,7 @@ f-table(
         :class="{ 'opacity-20': item.isMaterialDeleted }"
         :style="{ 'background-image': `url(${item.image})` }"
       )
-      div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-200 font-bold z-1") {{ $t('RR0063') }}
+      div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-250 font-bold z-1") {{ $t('RR0063') }}
     div(v-if="prop === 'itemNumber'" class="relative") {{ item.materialNo }}
     div(v-if="prop === 'createdTime'")
       div(
@@ -71,14 +71,14 @@ f-table(
       //- In Queue
       div(
         v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE"
-        class="text-grey-200 inline-flex"
+        class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         p {{ $t('PP0029') }}
       //- Processing
       div(
         v-else-if="item.status === UPLOAD_PROGRESS.PROCESSING"
-        class="text-grey-200 inline-flex"
+        class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         p {{ $t('PP0013') }}

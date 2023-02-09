@@ -41,7 +41,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
       p(class="pl-1 font-bold text-caption text-grey-900") {{ node.creator }}
   div(class="col-span-8 grid gap-x-14 grid-cols-2")
     div(class="min-w-75 max-w-115")
-      div(class="pb-2 border-b-2 border-grey-200 mb-3 text-body1 font-bold text-grey-900") {{ $t('RR0130') }}
+      div(class="pb-2 border-b-2 border-grey-250 mb-3 text-body1 font-bold text-grey-900") {{ $t('RR0130') }}
       div(class="grid gap-3")
         p(
           v-for="(item, key) in materialBasicInfo"
@@ -51,24 +51,24 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
     div(class="flex flex-col gap-y-7 min-w-75 max-w-115")
       div(v-if="properties.isPublicInventory")
         div(
-          class="pb-2 border-b-2 border-grey-200 mb-3 text-body1 font-bold text-grey-900"
+          class="pb-2 border-b-2 border-grey-250 mb-3 text-body1 font-bold text-grey-900"
         ) {{ $t('RR0135') }}
         p(class="text-body2 line-clamp-1 !break-all") {{ materialInfo.totalInventoryQty.name }}: {{ materialInfo.totalInventoryQty.value }}
       div
         div(
-          class="pb-2 border-b-2 border-grey-200 mb-3 text-body1 font-bold text-grey-900"
+          class="pb-2 border-b-2 border-grey-250 mb-3 text-body1 font-bold text-grey-900"
         ) {{ $t('RR0134') }}
         p(class="text-body2 line-clamp-1 !break-all") {{ materialInfo.publicPrice.pricing.name }}: {{ materialInfo.publicPrice.pricing.value }}
       div
         div(
-          class="pb-2 border-b-2 border-grey-200 mb-3 text-body1 font-bold text-grey-900"
+          class="pb-2 border-b-2 border-grey-250 mb-3 text-body1 font-bold text-grey-900"
         ) {{ $t('RR0133') }}
         p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0027') }}: {{ properties.publicTagList.join(',') }}
       div
-        div(class="flex justify-between items-end pb-2 border-b-2 border-grey-200 mb-3")
+        div(class="flex justify-between items-end pb-2 border-b-2 border-grey-250 mb-3")
           div(
             class="text-body1 font-bold"
-            :class="[made2flowSubscribed ? 'text-grey-900' : 'text-grey-200']"
+            :class="[made2flowSubscribed ? 'text-grey-900' : 'text-grey-250']"
           ) {{ $t('RR0219') }}
           f-svg-icon(
             iconName="info_outline"
@@ -87,7 +87,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
               :class="[property.differenceInPercent > 0 ? 'text-primary-400' : 'text-grey-900']"
             )
             p(v-if="property.personalized" class="text-body2 text-grey-900") {{ property.personalized }} {{ property.unitShort }}
-            hr(v-else class="w-4 border-grey-200")
+            hr(v-else class="w-4 border-grey-250")
         div(
           v-else
           class="flex items-center bg-no-repeat"
@@ -106,7 +106,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
       template(#trigger)
         div(
           v-if="properties.u3m.status !== U3M_STATUS.COMPLETED"
-          class="w-7.5 h-7.5 flex justify-center items-center text-grey-200"
+          class="w-7.5 h-7.5 flex justify-center items-center text-grey-250"
         )
           f-svg-icon(iconName="3D_material" size="24")
         div(

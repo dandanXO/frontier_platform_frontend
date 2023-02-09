@@ -8,7 +8,7 @@ div
           i(class="text-red-400 pr-0.5") *
           p(class="text-grey-900") {{ $t('BB0086') }}
           p(
-            class="font-normal text-caption text-grey-200 cursor-pointer pl-1"
+            class="font-normal text-caption text-grey-250 cursor-pointer pl-1"
             @click="openModalTypeTextToConfirm"
             data-cy="group-about_delete"
           ) {{ $t('UU0013') }}

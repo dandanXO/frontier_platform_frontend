@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="w-44 rounded bg-grey-50")
   div(
-    class="relative cursor-pointer h-33 rounded-t bg-grey-200 flex justify-center items-center"
+    class="relative cursor-pointer h-33 rounded-t bg-grey-250 flex justify-center items-center"
     @click="openModalPreviewAttachment"
   )
     f-svg-icon(

@@ -12,7 +12,7 @@ div(class="pt-16 xl:pt-17.5")
             f-svg-icon(
               iconName="camera"
               size="20"
-              class="text-grey-200 hover:text-primary-400"
+              class="text-grey-250 hover:text-primary-400"
             )
         f-tooltip(class="pt-4")
           template(#trigger)
@@ -31,13 +31,13 @@ div(class="pt-16 xl:pt-17.5")
         p(
           v-permission="FUNC_ID.DELETE_ORG"
           v-if="!planType.ENT"
-          class="pt-2.5 text-caption text-grey-200 cursor-pointer"
+          class="pt-2.5 text-caption text-grey-250 cursor-pointer"
           @click="openModalTypeTextToConfirm"
           data-cy="org-about_delete"
         ) {{ $t('UU0013') }}
     div(class="grid gap-y-8.5 relative")
       p(
-        class="absolute text-caption text-grey-200 right-0 -top-7 transform -translate-y-full"
+        class="absolute text-caption text-grey-250 right-0 -top-7 transform -translate-y-full"
       ) *{{ $t('RR0163') }}
       div(class="grid grid-cols-2 grid-rows-3 gap-y-7.5 gap-x-8 xl:gap-x-15")
         div(class="flex gap-x-2 items-end")

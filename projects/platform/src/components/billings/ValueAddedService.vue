@@ -5,7 +5,7 @@ div(v-else class="w-full pt-3")
     div(class="mb-12")
       div(class="text-body1 text-grey-900 pb-5") {{ $t('VV0002') }}
       div(
-        class="flex border border-grey-200 rounded h-62 cursor-pointer hover:bg-grey-100"
+        class="flex border border-grey-250 rounded h-62 cursor-pointer hover:bg-grey-100"
         @click="goTo(recommendService.id)"
       )
         div(class="w-63 flex-none pb-5 px-4.5 flex flex-col h-full justify-between")
@@ -44,7 +44,7 @@ div(v-else class="w-full pt-3")
         template(v-for="service in serviceList")
           div(
             v-if="!service.bannerImage"
-            class="max-w-63 min-h-62 flex flex-col rounded px-4.5 pb-5 justify-between border border-grey-200 cursor-pointer hover:bg-grey-100"
+            class="max-w-63 min-h-62 flex flex-col rounded px-4.5 pb-5 justify-between border border-grey-250 cursor-pointer hover:bg-grey-100"
             @click="goTo(service.id)"
           )
             div

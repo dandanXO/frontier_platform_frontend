@@ -2,7 +2,7 @@
 div(class="rounded border border-grey-150") 
   div(
     class="h-12 pl-7 pr-4 flex items-center justify-between"
-    :class="[attachmentList.length > 0 ? 'text-grey-900 hover:bg-grey-100 cursor-pointer' : 'text-grey-200', { 'bg-grey-100': isExpand }]"
+    :class="[attachmentList.length > 0 ? 'text-grey-900 hover:bg-grey-100 cursor-pointer' : 'text-grey-250', { 'bg-grey-100': isExpand }]"
     @click="handleExpand"
   )
     p(class="text-caption font-bold") {{ $t('QQ0015') }} ({{ attachmentList.length }})

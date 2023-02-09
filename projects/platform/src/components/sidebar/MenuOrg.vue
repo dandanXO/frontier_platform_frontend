@@ -15,10 +15,10 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
           div(class="h-13 px-7.5 flex items-center")
             f-avatar(:imageUrl="orgLogo" type="org" size="lg" class="mr-3.5")
             span(class="text-body1 text-grey-900 font-bold line-clamp-2") {{ org.orgName }}
-          div(class="mx-2 my-1 h-px bg-grey-200")
+          div(class="mx-2 my-1 h-px bg-grey-250")
           f-list-item
             p(class="pl-4.5 font-bold text-body1 text-grey-900") {{ planName }}
-          div(class="mx-2 my-1 h-px bg-grey-200")
+          div(class="mx-2 my-1 h-px bg-grey-250")
           f-list-item(class="h-10")
             div(class="pl-4.5 w-full flex justify-between items-center")
               p(class="text-grey-900 text-caption") {{ $t('OO0002') }}: {{ plan.quota.material.used }}/{{ plan.quota.material.isUnlimited ? $t('OO0173') : plan.quota.material.max }}
@@ -37,7 +37,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
               //-   class="rounded-full flex items-center justify-center bg-primary-400 text-grey-0 px-3.5 py-1 text-caption hover:bg-primary-500"
               //-   @click="openModalPurchaseU3mQuota"
               //- ) {{ $t("UU0074") }}
-          div(class="mx-2 my-1 h-px bg-grey-200")
+          div(class="mx-2 my-1 h-px bg-grey-250")
           f-list-item(
             v-permission="FUNC_ID.VISIT_BILLING_PAGE"
             @click="goToBillings(); collapsePopper()"

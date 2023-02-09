@@ -16,7 +16,7 @@ div(class="flex flex-row justify-between items-center")
         @click="handleColorClick"
       )
     span(class="flex items-center text-body2 min-w-12 ml-3") {{ color.toUpperCase() }}
-  div(class="px-4 border border-grey-200 rounded flex items-center h-11 w-40")
+  div(class="px-4 border border-grey-250 rounded flex items-center h-11 w-40")
     input(
       ref="pantoneInputDom"
       class="w-full flex-grow outline-none bg-transparent overflow-hidden text-grey-100 text-body2 placeholder:text-grey-400 placeholder:overflow-visible"

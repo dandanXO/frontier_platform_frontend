@@ -16,7 +16,7 @@ div(
   f-svg-icon(
     iconName="cancel"
     size="24"
-    class="text-grey-200 mr-4 cursor-pointer"
+    class="text-grey-250 mr-4 cursor-pointer"
     @click="clearList"
   )
   i18n-t(keypath="RR0073" tag="div" class="mr-7.5" scope="global")
@@ -26,7 +26,7 @@ div(
       slot(:option="option")
         div(
           class="whitespace-nowrap px-5"
-          :class="[getValueByMaterial(option.disabled, innerSelectedList) ? 'text-grey-200' : 'cursor-pointer hover:text-primary-400']"
+          :class="[getValueByMaterial(option.disabled, innerSelectedList) ? 'text-grey-250' : 'cursor-pointer hover:text-primary-400']"
           @click="handleClick(option)"
         ) {{ getValueByMaterial(option.name, innerSelectedList) }}
 </template>

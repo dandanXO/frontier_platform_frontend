@@ -19,7 +19,7 @@ modal-behavior(
           f-svg-icon(
             iconName="camera"
             size="20"
-            class="text-grey-200 group-hover:text-primary-400"
+            class="text-grey-250 group-hover:text-primary-400"
           )
     p(class="text-body2 text-grey-900 pb-3") {{ orgUser.email }}
     p(class="text-caption text-grey-600 self-end pt-3.5 pb-1") *{{ $t('RR0163') }}

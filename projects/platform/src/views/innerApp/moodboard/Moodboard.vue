@@ -11,7 +11,7 @@ div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
   div(class="flex-grow overflow-y-scroll")
     div(
       v-if="currentTab === MOODBOARD_TYPE.DEMANDER"
-      class="h-12 flex items-center justify-center text-grey-900 mt-4 rounded-md border border-dashed border-grey-200 cursor-pointer"
+      class="h-12 flex items-center justify-center text-grey-900 mt-4 rounded-md border border-dashed border-grey-250 cursor-pointer"
       @click="openCreateOrEditMoodboard"
     )
       f-svg-icon(iconName="add" size="16")
@@ -19,11 +19,11 @@ div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
     div(v-if="moodboardList.length > 0" class="grid gap-3 mt-4")
       div(
         v-for="moodboard in moodboardList"
-        class="flex h-37.5 rounded border border-grey-200 cursor-pointer hover:bg-grey-50"
+        class="flex h-37.5 rounded border border-grey-250 cursor-pointer hover:bg-grey-50"
         @click="goToMoodboardDetail(moodboard.moodboardId)"
       )
         div(
-          class="w-53 bg-cover bg-center rounded-l bg-grey-200 flex flex-col items-center justify-center"
+          class="w-53 bg-cover bg-center rounded-l bg-grey-250 flex flex-col items-center justify-center"
           :style="{ backgroundImage: `url(${moodboard.trendBoardCoverImg})` }"
         )
           template(v-if="!moodboard.trendBoardCoverImg")

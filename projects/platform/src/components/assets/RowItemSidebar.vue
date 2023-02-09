@@ -9,7 +9,7 @@ div(class="text-grey-600 flex flex-col gap-3.5")
     template(#trigger)
       div(
         v-if="item.id === 'downloadU3M' && getValueByMaterial(item.disabled, props.material)"
-        class="w-7.5 h-7.5 flex justify-center items-center text-grey-200"
+        class="w-7.5 h-7.5 flex justify-center items-center text-grey-250"
       )
         f-svg-icon(:iconName="item.icon" size="24")
       div(

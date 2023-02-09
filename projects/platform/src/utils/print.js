@@ -258,7 +258,7 @@ const printGeneralLabel = async (materialList) => {
                 material.frontierNo
               }</div>
             </div>
-            <div class="flex-none border border-grey-200 mx-6 my-5"></div>
+            <div class="flex-none border border-grey-250 mx-6 my-5"></div>
             <div class="flex flex-col justify-center text-grey-900 w-56">
               <p class="mb-2 font-bold text-body2">${material.materialNo}</p>
               <p class="text-body2 line-clamp-7 break-words leading-1.4">${getHtmlString()}</p>
@@ -351,7 +351,7 @@ const printBackSideLabel = async () => {
         <span class="mb-2 text-grey-900 font-bold text-h5">${t('DD0051')}</span>
         <span class="text-body2 leading-1.5">${t('DD0052')}</span>
       </div>
-      <div class="absolute bottom-2.5 right-2.5 text-grey-200 font-bold">${t(
+      <div class="absolute bottom-2.5 right-2.5 text-grey-250 font-bold">${t(
         'DD0053'
       )}</div>
     </div>

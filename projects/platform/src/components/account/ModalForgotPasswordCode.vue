@@ -25,7 +25,7 @@ modal-behavior(
     p(
       ref="refText"
       class="text-body2 leading-1.6 w-fit"
-      :class="[secRemains > 0 ? 'text-grey-200 cursor-not-allowed' : 'text-cyan-400 cursor-pointer']"
+      :class="[secRemains > 0 ? 'text-grey-250 cursor-not-allowed' : 'text-cyan-400 cursor-pointer']"
       @click="sendForgotPasswordEmail"
     )
 </template>

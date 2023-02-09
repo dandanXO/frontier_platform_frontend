@@ -37,7 +37,7 @@ f-input-container(
           iconName="keyboard_arrow_down"
           size="24"
           class="transform ml-1"
-          :class="[isExpand ? 'text-primary-500' : 'text-grey-600', { '!text-grey-200': disabled }]"
+          :class="[isExpand ? 'text-primary-500' : 'text-grey-600', { '!text-grey-250': disabled }]"
         )
       template(#content)
         f-contextual-menu(
@@ -78,13 +78,13 @@ f-input-container(
       @mousedown.prevent
     )
       div(
-        class="w-4 h-3.5 rounded-t bg-grey-150 hover:bg-grey-200 active:bg-grey-300 flex justify-center"
+        class="w-4 h-3.5 rounded-t bg-grey-150 hover:bg-grey-250 active:bg-grey-300 flex justify-center"
         @click="increase"
       )
         f-svg-icon(iconName="keyboard_arrow_up" size="14" class="text-grey-800")
       div(class="w-full h-px bg-grey-100")
       div(
-        class="w-4 h-3.5 rounded-b bg-grey-150 hover:bg-grey-200 active:bg-grey-300 flex justify-center"
+        class="w-4 h-3.5 rounded-b bg-grey-150 hover:bg-grey-250 active:bg-grey-300 flex justify-center"
         @click="decrease"
       )
         f-svg-icon(iconName="keyboard_arrow_down" size="14" class="text-grey-800")
@@ -93,7 +93,7 @@ f-input-container(
       v-if="(clearable && !!textValue && state === STATE.FOCUS) || (button?.isFile && !!textValue)"
       :size="size === 'lg' ? '24' : '20'"
       iconName="cancel"
-      class="text-grey-150 hover:text-grey-200 active:text-grey-300 cursor-pointer"
+      class="text-grey-150 hover:text-grey-250 active:text-grey-300 cursor-pointer"
       :class="{ '-mr-1': size === 'lg' && !!appendIcon }"
       @click="clear"
       @mousedown.prevent
@@ -137,7 +137,7 @@ f-input-container(
           iconName="keyboard_arrow_down"
           size="24"
           class="transform ml-1"
-          :class="[isExpand ? 'text-primary-500' : 'text-grey-600', { '!text-grey-200': disabled }]"
+          :class="[isExpand ? 'text-primary-500' : 'text-grey-600', { '!text-grey-250': disabled }]"
         )
       template(#content)
         f-contextual-menu(
@@ -523,18 +523,18 @@ const classInput = computed(() => {
 
   switch (state.value) {
     case STATE.DEFAULT:
-      classList.push('placeholder:text-grey-200', 'text-grey-800')
+      classList.push('placeholder:text-grey-250', 'text-grey-800')
       break
     case STATE.HOVER:
       classList.push('placeholder:text-grey-300', 'text-grey-900')
       break
     case STATE.FOCUS:
-      classList.push('placeholder:text-grey-200', 'text-grey-900')
+      classList.push('placeholder:text-grey-250', 'text-grey-900')
       break
     case STATE.DISABLED:
       classList.push(
-        'placeholder:text-grey-200',
-        'text-grey-200',
+        'placeholder:text-grey-250',
+        'text-grey-250',
         'cursor-not-allowed'
       )
       break
@@ -554,7 +554,7 @@ const classIcon = computed(() => {
     case STATE.DEFAULT:
       isFilled.value
         ? classList.push('text-grey-800')
-        : classList.push('text-grey-200')
+        : classList.push('text-grey-250')
       break
     case STATE.HOVER:
       isFilled.value
@@ -565,7 +565,7 @@ const classIcon = computed(() => {
       classList.push('text-grey-900')
       break
     case STATE.DISABLED:
-      classList.push('text-grey-200')
+      classList.push('text-grey-250')
       break
   }
 
@@ -584,7 +584,7 @@ const classAddon = computed(() => {
   ]
 
   state.value === STATE.DISABLED
-    ? classList.push('bg-grey-50', 'text-grey-200', 'cursor-not-allowed')
+    ? classList.push('bg-grey-50', 'text-grey-250', 'cursor-not-allowed')
     : classList.push('bg-grey-100', 'text-grey-900')
 
   return classList

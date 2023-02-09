@@ -6,7 +6,7 @@ div(class="flex")
         template(#trigger)
           div(
             class="h-3 w-24 rounded-l"
-            :class="[status === UPLOAD_PROGRESS.PROCESSING ? 'bg-primary-400/80' : status === UPLOAD_PROGRESS.IN_QUEUE || status === UPLOAD_PROGRESS.COMPLETE ? 'bg-primary-400' : 'bg-grey-200']"
+            :class="[status === UPLOAD_PROGRESS.PROCESSING ? 'bg-primary-400/80' : status === UPLOAD_PROGRESS.IN_QUEUE || status === UPLOAD_PROGRESS.COMPLETE ? 'bg-primary-400' : 'bg-grey-250']"
           )
         template(#content)
           p {{ $t('PP0004') }}
@@ -14,7 +14,7 @@ div(class="flex")
         template(#trigger)
           div(
             class="h-3 w-24"
-            :class="[status === UPLOAD_PROGRESS.PROCESSING || status === UPLOAD_PROGRESS.COMPLETE ? 'bg-primary-400' : 'bg-grey-200']"
+            :class="[status === UPLOAD_PROGRESS.PROCESSING || status === UPLOAD_PROGRESS.COMPLETE ? 'bg-primary-400' : 'bg-grey-250']"
           )
         template(#content)
           p {{ $t('PP0005') }}
@@ -22,7 +22,7 @@ div(class="flex")
         template(#trigger)
           div(
             class="h-3 w-24 rounded-r"
-            :class="[status === UPLOAD_PROGRESS.COMPLETE ? 'bg-primary-400' : 'bg-grey-200']"
+            :class="[status === UPLOAD_PROGRESS.COMPLETE ? 'bg-primary-400' : 'bg-grey-250']"
           )
         template(#content)
           p {{ $t('PP0006') }}

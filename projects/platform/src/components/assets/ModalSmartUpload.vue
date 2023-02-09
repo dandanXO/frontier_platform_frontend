@@ -28,7 +28,7 @@ modal-behavior(
         div(class="text-grey-600") {{ $t('DD0102') }}
         div(class="text-grey-900 font-bold") {{ $t('DD0103') }}
       div(
-        class="rounded border-grey-200 bg-grey-50 border border-dashed h-57 flex justify-center items-center"
+        class="rounded border-grey-250 bg-grey-50 border border-dashed h-57 flex justify-center items-center"
         data-cy="modal-smart-upload_dropzone"
         @drop.stop.prevent="onDrop($event)"
         @dragover.prevent
@@ -63,7 +63,7 @@ modal-behavior(
                   class="w-34 text-body2 font-bold text-grey-900 line-clamp-1 mr-2.5 flex-shrink-0"
                 ) {{ image.file.name }}
                 div(class="w-40 mr-2.5 flex-shrink-0")
-                  div(class="w-full h-2 bg-grey-200 rounded-lg")
+                  div(class="w-full h-2 bg-grey-250 rounded-lg")
                     div(class="h-2 bg-primary-400 rounded-lg w-full")
                 div(class="w-5 flex-shrink-0")
       f-scrollbar-container(v-else class="h-75")
@@ -80,7 +80,7 @@ modal-behavior(
               div(class="w-40 mr-2.5 flex-shrink-0")
                 div(
                   v-if="isUploading || isFinish"
-                  class="w-full h-2 bg-grey-200 rounded-lg"
+                  class="w-full h-2 bg-grey-250 rounded-lg"
                 )
                   div(
                     class="h-2 bg-primary-400 rounded-lg"

@@ -14,7 +14,7 @@ export default function remindVerifyEmail() {
     }
     secRemains = 30
     const noteDom = document.getElementById('verify-email-note')
-    noteDom.classList.add('!text-grey-200', '!cursor-not-allowed')
+    noteDom.classList.add('!text-grey-250', '!cursor-not-allowed')
     noteDom.textContent = `${t('UU0056')}... (${secRemains})`
 
     timerId = setInterval(() => {
@@ -22,7 +22,7 @@ export default function remindVerifyEmail() {
       noteDom.textContent = `${t('UU0056')}... (${secRemains})`
       if (secRemains <= 0) {
         noteDom.textContent = t('UU0056')
-        noteDom.classList.remove('!text-grey-200', '!cursor-not-allowed')
+        noteDom.classList.remove('!text-grey-250', '!cursor-not-allowed')
         clearInterval(timerId)
       }
     }, 1000)

@@ -1,7 +1,7 @@
 <template lang="pug">
 div(
   class="cursor-pointer active:text-primary-400"
-  :class="active ? ['text-primary-400', 'hover:text-primary-500'] : ['hover:text-grey-200']"
+  :class="active ? ['text-primary-400', 'hover:text-primary-500'] : ['hover:text-grey-250']"
   @click="emit('click')"
 )
   f-svg-icon(:iconName="iconName" :size="size")

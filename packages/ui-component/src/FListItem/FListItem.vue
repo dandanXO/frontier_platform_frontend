@@ -19,7 +19,7 @@ export default {
   setup(props) {
     const classes = computed(() => {
       if (props.disabled) {
-        return ['text-grey-200', 'cursor-default']
+        return ['text-grey-250', 'cursor-default']
       } else {
         return ['text-grey-900', 'cursor-pointer']
       }

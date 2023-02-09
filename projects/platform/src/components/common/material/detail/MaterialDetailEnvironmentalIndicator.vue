@@ -103,7 +103,7 @@ div(class="flex flex-col")
       )
         div(
           class="col-span-3 h-9.5 flex items-center gap-x-3"
-          :class="[made2flowSubscribed ? 'text-grey-900' : 'text-grey-200']"
+          :class="[made2flowSubscribed ? 'text-grey-900' : 'text-grey-250']"
         )
           f-svg-icon(:iconName="property.icon" size="32")
           p(class="text-body2 font-bold") {{ property.title }}
@@ -113,21 +113,21 @@ div(class="flex flex-col")
               template(v-if="property.personalized != null")
                 div(class="w-2 h-2 rounded-sm bg-primary-400")
                 p(class="text-body2 text-grey-900") {{ property.personalized }} {{ property.unitLong }}
-              hr(v-else class="w-4 border-grey-200")
+              hr(v-else class="w-4 border-grey-250")
             div(class="col-span-2 flex items-center gap-x-2")
               //- template(v-if="property.benchmark != null")
-              //-   div(class="w-2 h-2 rounded-sm bg-grey-200")
+              //-   div(class="w-2 h-2 rounded-sm bg-grey-250")
               //-   p(class="text-body2 text-grey-900") {{ property.benchmark }} {{ property.unitShort }}
-              hr(class="w-4 border-grey-200")
+              hr(class="w-4 border-grey-250")
             div(class="col-span-2 flex items-center")
               //- div(
               //-   v-if="property.differenceInPercent != null"
               //-   class="h-6 flex items-center justify-center gap-x-2 rounded px-2 whitespace-nowrap text-caption"
-              //-   :class="[property.differenceInPercent > 0 ? 'bg-primary-0 text-primary-400' : 'bg-grey-50 text-grey-200']"
+              //-   :class="[property.differenceInPercent > 0 ? 'bg-primary-0 text-primary-400' : 'bg-grey-50 text-grey-250']"
               //- )
               //-   p(class="font-bold") {{ property.differenceInPercent }}% {{ $t('RR0229') }}
               //-   f-svg-icon(v-if="property.differenceInPercent > 0" iconName="done" size="16" class="text-primary-400")
-              hr(class="w-4 border-grey-200")
+              hr(class="w-4 border-grey-250")
           div(v-if="isShowGraph" class="pt-2")
             div(class="relative")
               div(
@@ -136,10 +136,10 @@ div(class="flex flex-col")
                 div(v-for="i in 5" class="relative")
                   span(
                     v-if="i === 1"
-                    class="absolute -bottom-0.5 translate-y-full left-0 text-caption text-grey-200"
+                    class="absolute -bottom-0.5 translate-y-full left-0 text-caption text-grey-250"
                   ) 0
                   span(
-                    class="absolute -bottom-0.5 translate-y-full right-0 text-caption text-grey-200"
+                    class="absolute -bottom-0.5 translate-y-full right-0 text-caption text-grey-250"
                   ) {{ i * 10 }}
               div(
                 class="border-0 absolute z-1 left-0 top-3 bg-primary-400 h-1"
@@ -148,15 +148,15 @@ div(class="flex flex-col")
               div(
                 class="border-0 absolute z-2 right-1 top-1 text-primary-500 text-caption"
               ) {{ property.personalized }}
-              //- div(class="border-0 absolute z-1 left-0 bottom-3 bg-grey-200 h-1" :style="{ 'width': 100 * (property.benchmark / 50) + '%' }")
-              //- div(class="border-0 absolute z-2 right-1 bottom-1 text-grey-200 text-caption") {{ property.benchmark }}
+              //- div(class="border-0 absolute z-1 left-0 bottom-3 bg-grey-250 h-1" :style="{ 'width': 100 * (property.benchmark / 50) + '%' }")
+              //- div(class="border-0 absolute z-2 right-1 bottom-1 text-grey-250 text-caption") {{ property.benchmark }}
         div(class="col-span-2 h-9.5 flex items-center gap-x-1")
-          //- f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-grey-200")
+          //- f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-grey-250")
           //- span(v-if="property.saving != null" class="whitespace-nowrap text-caption leading-1.6") {{ property.saving }}&nbsp
           //-   i18n-t(:keypath="property.saveUnit" scope="global")
           //-     template(#newline)
           //-       br
-          hr(class="w-4 border-grey-200")
+          hr(class="w-4 border-grey-250")
   div(v-if="made2flowSubscribed" class="flex items-center gap-x-4")
     img(src="@/assets/images/m2f_logo.png" class="w-16 h-4.5")
     div(

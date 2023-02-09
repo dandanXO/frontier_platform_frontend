@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="pb-15 mb-5 border-b border-grey-200")
+div(class="pb-15 mb-5 border-b border-grey-250")
   div(class="h-16 flex items-center")
     h5(class="text-h5 text-grey-900 font-bold pr-1.5") {{ $t('EE0038') }}
     f-svg-icon(:iconName="statusIconName" size="24" class="text-grey-900")
@@ -20,7 +20,7 @@ div(class="pb-15 mb-5 border-b border-grey-200")
             template(v-if="!!imageList[currentDisplayIndex].src")
               img(class="w-full h-full" :src="imageList[currentDisplayIndex].src")
             div(
-              class="rounded w-full h-full border border-grey-200 bg-grey-100 flex items-center justify-center text-h4 font-bold text-grey-200"
+              class="rounded w-full h-full border border-grey-250 bg-grey-100 flex items-center justify-center text-h4 font-bold text-grey-250"
             ) {{ $t('RR0103') }}
           div(class="grid grid-flow-col gap-x-2 justify-start pt-2 pb-6")
             div(
@@ -28,7 +28,7 @@ div(class="pb-15 mb-5 border-b border-grey-200")
               @click="currentDisplayIndex = index"
             )
               div(
-                class="w-13 h-13 rounded overflow-hidden border border-grey-200 bg-grey-100"
+                class="w-13 h-13 rounded overflow-hidden border border-grey-250 bg-grey-100"
               )
                 template(v-if="!!image.src")
                   img(class="w-full h-full" :src="image.src")
@@ -77,7 +77,7 @@ div(class="pb-15 mb-5 border-b border-grey-200")
               f-svg-icon(
                 iconName="clear"
                 size="20"
-                class="text-grey-200 cursor-pointer"
+                class="text-grey-250 cursor-pointer"
                 @click="removePantone(pantone.materialPantoneId)"
               )
         block-material-u3m-status(:material="material")

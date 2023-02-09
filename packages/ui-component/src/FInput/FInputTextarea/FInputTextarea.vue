@@ -16,7 +16,7 @@ f-input-container(
   )
     span(
       v-if="!innerTextValue && !isFocus"
-      class="text-body2 leading-1.6 text-grey-200"
+      class="text-body2 leading-1.6 text-grey-250"
     ) {{ placeholder }}
   template(v-if="slots['slot:hint-error']" #slot:hint-error)
     slot(name="slot:hint-error")

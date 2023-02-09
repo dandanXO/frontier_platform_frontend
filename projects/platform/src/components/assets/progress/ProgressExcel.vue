@@ -65,7 +65,7 @@ f-table(
             f-svg-icon(
               iconName="visibility"
               size="20"
-              class="text-grey-200 ml-3 w-5 flex-shrink-0 cursor-pointer"
+              class="text-grey-250 ml-3 w-5 flex-shrink-0 cursor-pointer"
               @click="openModalMaterialNoList(item.materialNoList)"
             )
           template(#content)
@@ -89,14 +89,14 @@ f-table(
       //- In Queue
       div(
         v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE"
-        class="text-grey-200 inline-flex"
+        class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         p {{ $t('PP0028') }}
       //- Processing
       div(
         v-else-if="item.status === UPLOAD_PROGRESS.PROCESSING"
-        class="text-grey-200 inline-flex"
+        class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         i18n-t(
@@ -139,7 +139,7 @@ f-table(
                 f-list-item(
                   @click="handleAction(PRINT_TYPE.LABEL, item.excelProgressId); collapsePopper()"
                 ) {{ $t('RR0061') }}
-                div(class="border-t border-grey-200 my-1")
+                div(class="border-t border-grey-250 my-1")
                 f-list-item(
                   @click="handleAction(_, item.excelProgressId); collapsePopper()"
                 ) {{ $t('RR0060') }}

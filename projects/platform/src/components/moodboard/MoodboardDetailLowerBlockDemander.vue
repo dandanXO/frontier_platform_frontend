@@ -2,7 +2,7 @@
 div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
   div(class="pl-31 pb-13.5")
     h5(class="text-h5 font-bold text-grey-900 pb-3") {{ $t('QQ0016') }}
-    p(class="text-body2 text-grey-200") {{ $t('QQ0017') }}
+    p(class="text-body2 text-grey-250") {{ $t('QQ0017') }}
   div(class="flex-grow flex gap-x-5.5")
     div(class="w-52 shrink-0 h-full")
       f-button(
@@ -13,7 +13,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
       ) {{ $t('UU0096') }}
       div(
         class="w-full h-23 rounded flex flex-col justify-center pl-6 mt-6 hover:bg-grey-100 cursor-pointer"
-        :class="[{ 'bg-grey-200': currentOfferId === 'all' }]"
+        :class="[{ 'bg-grey-250': currentOfferId === 'all' }]"
         @click="switchOffer('all', null)"
       )
         p(class="text-body1 font-bold text-grey-900 leading-1.6") {{ $t('RR0052') }}
@@ -24,7 +24,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
             div(
               v-for="offer in moodboardOfferList"
               class="h-20 flex items-center gap-x-3 pl-3 rounded hover:bg-grey-100 cursor-pointer"
-              :class="[{ 'bg-grey-200': Number(currentOfferId) === offer.offerId }]"
+              :class="[{ 'bg-grey-250': Number(currentOfferId) === offer.offerId }]"
               @click="switchOffer(offer.offerId, offer.rootNodeId)"
             )
               div(class="relative flex-shrink-0")

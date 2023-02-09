@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="grid gap-x-14 grid-cols-2")
   div(class="min-w-75 max-w-115")
-    div(class="flex justify-between pb-2 border-grey-200 border-b mb-3")
+    div(class="flex justify-between pb-2 border-grey-250 border-b mb-3")
       div(class="text-body1 font-bold text-grey-900") {{ $t('RR0130') }}
       f-button-label(@click="openModalMaterialEditSimple('spec')") {{ $t('UU0027') }}
     div(class="grid gap-3")
@@ -12,19 +12,19 @@ div(class="grid gap-x-14 grid-cols-2")
       ) {{ item.name }}: {{ item.value }}
   div(class="flex flex-col gap-y-7 min-w-75 max-w-115")
     div
-      div(class="flex justify-between pb-2 border-grey-200 border-b mb-3")
+      div(class="flex justify-between pb-2 border-grey-250 border-b mb-3")
         div(class="text-body1 font-bold text-grey-900") {{ $t('RR0135') }}
         f-button-label(@click="openModalMaterialEditSimple('inventory')") {{ $t('UU0027') }}
       div(class="grid gap-3")
         p(class="text-body2 line-clamp-1 !break-all") {{ materialInfo.totalInventoryQty.name }}: {{ materialInfo.totalInventoryQty.value }}
     div
-      div(class="flex justify-between pb-2 border-grey-200 border-b mb-3")
+      div(class="flex justify-between pb-2 border-grey-250 border-b mb-3")
         div(class="text-body1 font-bold text-grey-900") {{ $t('RR0134') }}
         f-button-label(@click="openModalMaterialEditSimple('public-price')") {{ $t('UU0027') }}
       div(class="grid gap-3")
         p(class="text-body2 line-clamp-1 !break-all") {{ materialInfo.publicPrice.pricing.name }}: {{ materialInfo.publicPrice.pricing.value }}
     div
-      div(class="flex justify-between pb-2 border-grey-200 border-b mb-3")
+      div(class="flex justify-between pb-2 border-grey-250 border-b mb-3")
         div(class="text-body1 font-bold text-grey-900") {{ $t('RR0133') }}
         f-button-label(@click="openModalMaterialEditSimple('tag')") {{ $t('UU0027') }}
       div(class="grid gap-3")
@@ -32,10 +32,10 @@ div(class="grid gap-x-14 grid-cols-2")
         p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0071') }}: {{ material.aiTagList.join(',') }}
         p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0028') }}: {{ material.privateTagList.join(',') }}
     div
-      div(class="flex justify-between items-end pb-2 border-grey-200 border-b mb-3")
+      div(class="flex justify-between items-end pb-2 border-grey-250 border-b mb-3")
         div(
           class="text-body1 font-bold"
-          :class="[made2flowSubscribed ? 'text-grey-900' : 'text-grey-200']"
+          :class="[made2flowSubscribed ? 'text-grey-900' : 'text-grey-250']"
         ) {{ $t('RR0219') }}
         f-svg-icon(
           iconName="info_outline"
@@ -54,7 +54,7 @@ div(class="grid gap-x-14 grid-cols-2")
             :class="[property.differenceInPercent > 0 ? 'text-primary-400' : 'text-grey-900']"
           )
           p(v-if="property.personalized" class="text-body2 text-grey-900") {{ property.personalized }} {{ property.unitShort }}
-          hr(v-else class="w-4 border-grey-200")
+          hr(v-else class="w-4 border-grey-250")
       div(
         v-else
         class="flex items-center bg-no-repeat"

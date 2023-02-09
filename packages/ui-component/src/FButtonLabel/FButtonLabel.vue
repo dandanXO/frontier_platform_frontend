@@ -45,7 +45,7 @@ export default {
           'text-grey-900',
           'enabled:hover:bg-primary-0',
           'enabled:hover:text-primary-400',
-          'disabled:text-grey-200',
+          'disabled:text-grey-250',
         ]
       } else if (props.theme === THEME.DARK) {
         return [

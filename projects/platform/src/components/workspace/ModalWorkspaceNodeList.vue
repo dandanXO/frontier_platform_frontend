@@ -32,7 +32,7 @@ modal-behavior(
             f-svg-icon(
               iconName="cancel"
               size="14"
-              class="text-grey-200 mr-1 cursor-pointer"
+              class="text-grey-250 mr-1 cursor-pointer"
               @click="clearSelect"
             )
             i18n-t(
@@ -77,7 +77,7 @@ modal-behavior(
               :isMultiSelect="isMultiSelect"
               :selectValue="item"
               class="w-25 h-25 border rounded-md overflow-hidden"
-              :class="[isMultiSelect && selectedValue.map((v) => JSON.stringify(v)).includes(JSON.stringify(item)) ? 'border-primary-400 bg-primary-0 text-primary-400' : 'border-grey-200 bg-grey-50 text-grey-900']"
+              :class="[isMultiSelect && selectedValue.map((v) => JSON.stringify(v)).includes(JSON.stringify(item)) ? 'border-primary-400 bg-primary-0 text-primary-400' : 'border-grey-250 bg-grey-50 text-grey-900']"
               @click="goTo(item.nodeKey), setRootId(item.id)"
             )
               template(#content)
@@ -85,7 +85,7 @@ modal-behavior(
                   p(class="text-caption text-center font-bold line-clamp-3 leading-1.6") {{ item.name }}
           template(v-else)
             div(
-              class="w-25 h-25 rounded-md border border-grey-200 border-dashed flex items-center justify-center cursor-pointer"
+              class="w-25 h-25 rounded-md border border-grey-250 border-dashed flex items-center justify-center cursor-pointer"
               @click="openModalCreateCollectionSimple"
             )
               f-svg-icon(iconName="add" size="24" class="text-grey-900")

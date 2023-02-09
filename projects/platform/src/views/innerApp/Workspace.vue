@@ -36,7 +36,7 @@ div(class="w-full h-full")
         class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
       )
         div(
-          class="aspect-square border border-grey-200 border-dashed rounded-md flex justify-center items-center cursor-pointer"
+          class="aspect-square border border-grey-250 border-dashed rounded-md flex justify-center items-center cursor-pointer"
           @click="openModalCreateCollection"
         )
           div(class="flex flex-col justify-center items-center")
@@ -54,7 +54,7 @@ div(class="w-full h-full")
             f-svg-icon(
               :iconName="node.isPublic ? 'public' : 'internal'"
               size="20"
-              class="cursor-pointer text-grey-200"
+              class="cursor-pointer text-grey-250"
               @click.stop="openModalPublish(node)"
             )
           template(#title-right-icon)

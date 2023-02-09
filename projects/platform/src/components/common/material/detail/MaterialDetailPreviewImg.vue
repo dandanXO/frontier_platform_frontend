@@ -28,7 +28,7 @@ div
         f-svg-icon(iconName="search" size="28" class="text-grey-600")
     div(
       v-else
-      class="rounded w-full h-full border border-grey-200 bg-grey-100 flex items-center justify-center text-h4 font-bold text-grey-200"
+      class="rounded w-full h-full border border-grey-250 bg-grey-100 flex items-center justify-center text-h4 font-bold text-grey-250"
     ) {{ $t('RR0103') }}
   div(class="flex pt-3 pb-4")
     p(
@@ -38,7 +38,7 @@ div
   div(class="grid grid-flow-col gap-x-2 justify-start")
     template(v-for="(image, index) in imageList")
       div(
-        class="w-19.5 h-19.5 rounded overflow-hidden border-grey-200 bg-grey-100"
+        class="w-19.5 h-19.5 rounded overflow-hidden border-grey-250 bg-grey-100"
         :class="[currentDisplayIndex === index ? 'border-4' : 'border']"
         @click="currentDisplayIndex = index"
       )
@@ -55,7 +55,7 @@ div
         template(v-for="(image, index) in imageList")
           div(
             v-if="!(props.material.coverMode === COVER_MODE.SUP && index === defaultCoverImgIndex)"
-            class="w-19.5 h-19.5 rounded overflow-hidden border-grey-200 bg-grey-100"
+            class="w-19.5 h-19.5 rounded overflow-hidden border-grey-250 bg-grey-100"
             :class="[currentDisplayIndex === index ? 'border-4' : 'border']"
             @click="currentDisplayIndex = index"
           )

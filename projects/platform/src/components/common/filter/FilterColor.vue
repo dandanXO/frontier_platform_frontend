@@ -8,7 +8,7 @@ filter-wrapper(
     div(
       v-for="color in filterOptions.colorList"
       class="w-15 h-12.5 rounded flex items-center justify-center"
-      :class="{ 'border border-grey-200': color.value === 'White' }"
+      :class="{ 'border border-grey-250': color.value === 'White' }"
       :style="{ backgroundColor: `${color.hex}` }"
       @click="select(color.value)"
     )

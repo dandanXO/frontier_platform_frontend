@@ -11,7 +11,7 @@ div(class="h-full")
       i18n-t(
         keypath="RR0068"
         tag="p"
-        class="text-caption text-grey-200 pb-0.5"
+        class="text-caption text-grey-250 pb-0.5"
         scope="global"
       )
         template(#number) {{ moodboardOfferNodeCollection.childNodeList.length }}
@@ -44,7 +44,7 @@ div(class="h-full")
         )
         div(
           v-if="index !== moodboardOfferNodeCollection.childNodeList.length - 1"
-          class="border-b border-grey-200 mx-7.5 my-5"
+          class="border-b border-grey-250 mx-7.5 my-5"
         )
     div(
       v-else-if="displayMode === DISPLAY_NODE.GRID"

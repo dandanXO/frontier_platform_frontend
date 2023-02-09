@@ -27,7 +27,7 @@ modal-behavior(
           f-svg-icon(
             iconName="clear"
             size="20"
-            class="text-grey-200 cursor-pointer"
+            class="text-grey-250 cursor-pointer"
             @click="removeInvite(index)"
           )
   template(#note)

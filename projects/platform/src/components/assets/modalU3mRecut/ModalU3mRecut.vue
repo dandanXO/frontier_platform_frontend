@@ -59,7 +59,7 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
                     )
                       div(class="h-0.5 bg-grey-100 w-full")
                     div(class="text-caption text-grey-100 font-bold text-center") {{ `${innerScaleSize} cm` }}
-          div(class="w-125 h-125 bg-grey-200 ml-21 grid grid-cols-3 grid-rows-3")
+          div(class="w-125 h-125 bg-grey-250 ml-21 grid grid-cols-3 grid-rows-3")
             div(v-for="i in 9" class="overflow-hidden" :key="i")
               cropped-image(
                 :config="side.config"

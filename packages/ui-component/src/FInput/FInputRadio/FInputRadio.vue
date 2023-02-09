@@ -54,7 +54,7 @@ export default {
     },
     uncheckColor: {
       type: String,
-      default: 'text-grey-200',
+      default: 'text-grey-250',
     },
   },
   emits: ['update:inputValue'],

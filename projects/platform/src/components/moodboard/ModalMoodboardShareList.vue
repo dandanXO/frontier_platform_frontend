@@ -22,7 +22,7 @@ modal-behavior(:header="$t('RR0155')")
               :src="shareTarget.logo"
               class="w-8 h-8 rounded-full"
             )
-            div(v-else class="w-8 h-8 rounded-full border-grey-200 border border-dashed")
+            div(v-else class="w-8 h-8 rounded-full border-grey-250 border border-dashed")
             p(class="flex-grow text-body2 text-grey-900 !break-all line-clamp-1") {{ shareTarget.name }} ({{ shareTarget.itemCounts }})
             p(
               class="text-body2 text-red-400 cursor-pointer invisible group-hover:visible"

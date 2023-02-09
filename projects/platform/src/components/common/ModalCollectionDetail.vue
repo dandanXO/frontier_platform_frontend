@@ -24,7 +24,7 @@ modal-behavior(
         v-if="trendBoardCoverImg"
         :href="trendBoardUrl"
         target="_blank"
-        class="flex-grow flex flex-col bg-grey-200 rounded overflow-hidden"
+        class="flex-grow flex flex-col bg-grey-250 rounded overflow-hidden"
       )
         div(class="h-32.5 relative")
           img(:src="trendBoardCoverImg" class="w-full h-full object-contain")
@@ -36,10 +36,10 @@ modal-behavior(
         div(class="flex-grow bg-grey-50 flex items-center justify-center")
           p(class="text-caption text-grey-900 w-37.5 line-clamp-1 !break-all") {{ trendBoardDisplayFileName }}
       div(v-else class="flex-grow flex flex-col rounded overflow-hidden")
-        div(class="h-32.5 bg-grey-200 flex items-center justify-center")
+        div(class="h-32.5 bg-grey-250 flex items-center justify-center")
           f-svg-icon(iconName="file" size="50" class="text-grey-0")
         div(class="flex-grow bg-grey-50 flex items-center justify-center")
-          p(class="text-caption text-grey-200") {{ $t('RR0247') }}
+          p(class="text-caption text-grey-250") {{ $t('RR0247') }}
 </template>
 
 <script setup>

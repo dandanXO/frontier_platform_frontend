@@ -10,11 +10,11 @@ div(class="flex items-center gap-x-1")
         v-if="index !== length - 1"
         size="20"
         iconName="slash"
-        class="text-grey-200"
+        class="text-grey-250"
       )
   template(v-else)
     p(:class="classes" @click="$emit('click:item', breadcrumbList[0])") {{ breadcrumbList[0].name }}
-    f-svg-icon(size="20" iconName="slash" class="text-grey-200")
+    f-svg-icon(size="20" iconName="slash" class="text-grey-250")
     f-popper(placement="bottom-start")
       template(#trigger="{ isExpand }")
         f-svg-icon(
@@ -29,7 +29,7 @@ div(class="flex items-center gap-x-1")
             v-for="item in breadcrumbList.slice(1, length - 1)"
             @click="$emit('click:item', item)"
           ) {{ item.name }}
-    f-svg-icon(size="20" iconName="slash" class="text-grey-200")
+    f-svg-icon(size="20" iconName="slash" class="text-grey-250")
     p(:class="classes" class="font-bold") {{ breadcrumbList[length - 1].name }}
 </template>
 

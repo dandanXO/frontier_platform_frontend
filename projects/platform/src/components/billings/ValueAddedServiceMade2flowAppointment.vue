@@ -2,7 +2,7 @@
 div(class="w-178")
   p(class="text-body2 text-grey-900") {{ $t('VV0027') }}
   div(class="py-7")
-    p(class="text-caption text-grey-200 text-right") *{{ $t('RR0163') }}
+    p(class="text-caption text-grey-250 text-right") *{{ $t('RR0163') }}
     div(class="grid grid-cols-2 gap-x-8 gap-y-7.5 mb-7.5")
       f-input-text(
         v-model:textValue="formData.orgName"

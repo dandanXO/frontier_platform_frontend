@@ -1,5 +1,5 @@
 <template lang="pug">
-div(data-scroll-to="block-material-information" class="pb-15 border-b border-grey-200")
+div(data-scroll-to="block-material-information" class="pb-15 border-b border-grey-250")
   div(class="h-16 flex items-center justify-between")
     h5(class="text-h5 text-grey-900 font-bold") {{ $t('DD0013') }}
     f-button(

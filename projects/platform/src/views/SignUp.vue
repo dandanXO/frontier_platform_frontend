@@ -6,15 +6,15 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
     div(class="w-105")
       div(class="w-full rounded-lg card-shadow px-10 pt-10 pb-9.5 flex flex-col")
         p(
-          class="text-grey-900 text-h6 font-bold text-center pb-5.5 border-b border-grey-200"
+          class="text-grey-900 text-h6 font-bold text-center pb-5.5 border-b border-grey-250"
         ) {{ $t('AA0016') }}
         template(v-if="!isGoogleLoadFail")
           button#google-sign-up(class="mt-5 mb-3")
           div(class="grid grid-flow-col gap-x-3 items-center justify-center")
-            div(class="w-19 h-px border-b border-grey-200")
-            span(class="w-30.5 text-grey-200 text-body2 text-center") {{ $t('AA0005') }}
-            div(class="w-19 h-px border-b border-grey-200")
-        span(class="self-end text-grey-200 text-caption my-1.5") *{{ $t('RR0163') }}
+            div(class="w-19 h-px border-b border-grey-250")
+            span(class="w-30.5 text-grey-250 text-body2 text-center") {{ $t('AA0005') }}
+            div(class="w-19 h-px border-b border-grey-250")
+        span(class="self-end text-grey-250 text-caption my-1.5") *{{ $t('RR0163') }}
         form
           div(class="grid grid-cols-2 gap-3")
             f-input-text(
@@ -67,7 +67,7 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
         div(class="flex items-center mt-1.5")
           div(
             class="w-3 h-3 border flex justify-center items-center"
-            :class="[agreeTermsAndPrivacy ? 'border-grey-900' : 'border-grey-200']"
+            :class="[agreeTermsAndPrivacy ? 'border-grey-900' : 'border-grey-250']"
             data-cy="agree"
             @click="agreeTermsAndPrivacy = !agreeTermsAndPrivacy"
           )

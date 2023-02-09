@@ -34,7 +34,7 @@ modal-behavior(
         data-cy="modal-create-org_category"
       )
     div(class="flex items-center mb-5")
-      div(class="text-caption font-bold text-grey-200 mr-4.5") {{ $t('RR0177') }}
+      div(class="text-caption font-bold text-grey-250 mr-4.5") {{ $t('RR0177') }}
       div(class="border-t border-grey-100 w-full")
     div(class="grid grid-cols-2 grid-rows-2 gap-x-7.5 gap-y-4")
       input-calling-code(

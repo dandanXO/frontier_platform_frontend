@@ -22,12 +22,12 @@ f-scrollbar-container(class="w-full h-full")
       div(class="mt-8")
         div(class="grid grid-cols-3 gap-7.5")
           div
-            div(class="border border-grey-200 card-shadow rounded-md")
+            div(class="border border-grey-250 card-shadow rounded-md")
               div(class="h-64 flex items-end justify-center")
                 img(src="@/assets/images/upload_step1.png" class="w-60")
               div(class="flex min-h-20 bg-grey-100 rounded-b-md p-4")
                 div(
-                  class="mr-2 flex-shrink-0 bg-grey-0 text-grey-200 rounded-full w-6 h-6 flex items-center justify-center"
+                  class="mr-2 flex-shrink-0 bg-grey-0 text-grey-250 rounded-full w-6 h-6 flex items-center justify-center"
                 ) 1
                 div(class="text-grey-900 text-body1 font-bold leading-1.6") {{ $t('DD0082') }}
             div(class="text-grey-900 pl-5 pt-6")
@@ -37,24 +37,24 @@ f-scrollbar-container(class="w-full h-full")
                 li 2. {{ $t('DD0074') }}
                 li 3. {{ $t('DD0075') }}
           div
-            div(class="border border-grey-200 card-shadow rounded-md")
+            div(class="border border-grey-250 card-shadow rounded-md")
               div(class="h-64 flex items-end justify-center")
                 img(src="@/assets/images/upload_step2.png" class="w-60")
               div(class="flex min-h-20 bg-grey-100 rounded-b-md p-4")
                 div(
-                  class="mr-2 flex-shrink-0 bg-grey-0 text-grey-200 rounded-full w-6 h-6 flex items-center justify-center"
+                  class="mr-2 flex-shrink-0 bg-grey-0 text-grey-250 rounded-full w-6 h-6 flex items-center justify-center"
                 ) 2
                 div(class="text-grey-900 text-body1 font-bold leading-1.6") {{ $t('DD0083') }}
             div(class="pl-5 pt-6 font-bold leading-1.6 text-body2")
               p(class="text-grey-900 mb-1.5") {{ $t('DD0086') }}:
               p(class="text-primary-400") {{ uploadMaterialEmail }}
           div
-            div(class="border border-grey-200 card-shadow rounded-md")
+            div(class="border border-grey-250 card-shadow rounded-md")
               div(class="h-64 flex items-end justify-center")
                 img(src="@/assets/images/upload_step3.png" class="w-60")
               div(class="flex min-h-20 bg-grey-100 rounded-b-md p-4")
                 div(
-                  class="mr-2 flex-shrink-0 bg-grey-0 text-grey-200 rounded-full w-6 h-6 flex items-center justify-center"
+                  class="mr-2 flex-shrink-0 bg-grey-0 text-grey-250 rounded-full w-6 h-6 flex items-center justify-center"
                 ) 3
                 div(class="text-grey-900 text-body1 font-bold leading-1.6")
                   div {{ $t('DD0084') }}
@@ -69,7 +69,7 @@ f-scrollbar-container(class="w-full h-full")
           div(class="grid gap-3")
             div(
               v-for="option in alternativeUploadOptions"
-              class="flex py-6 px-7.5 cursor-pointer border border-grey-200 rounded"
+              class="flex py-6 px-7.5 cursor-pointer border border-grey-250 rounded"
               :data-cy="option.testId"
               @click="option.action"
             )

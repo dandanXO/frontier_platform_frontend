@@ -35,11 +35,11 @@ modal-behavior(
           iconName="copy_link"
           size="30"
           class="text-grey-900"
-          :class="{ 'text-grey-200': !isCanShared }"
+          :class="{ 'text-grey-250': !isCanShared }"
         )
       p(
         class="text-caption text-center pt-3"
-        :class="{ 'text-grey-200': !isCanShared }"
+        :class="{ 'text-grey-250': !isCanShared }"
       ) {{ $t('RR0154') }}
 </template>
 

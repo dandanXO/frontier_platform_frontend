@@ -11,14 +11,14 @@ modal-behavior(
     f-scrollbar-container(class="h-70 -mx-5 px-5")
       div(class="grid grid-cols-4 gap-x-5 gap-y-4.5")
         div(
-          class="w-25 h-25 rounded border border-dashed border-grey-200 flex justify-center items-center cursor-pointer"
+          class="w-25 h-25 rounded border border-dashed border-grey-250 flex justify-center items-center cursor-pointer"
           @click="openModalUploadCoverImage"
         )
           f-svg-icon(iconName="add" size="24" class="text-grey-900")
         template(v-for="(image, index) in imageList")
           label(v-if="!hideNotExistSide(index)" class="w-25 h-30.5")
             div(
-              class="h-25 rounded border border-grey-200 relative flex justify-center items-center"
+              class="h-25 rounded border border-grey-250 relative flex justify-center items-center"
             )
               img(
                 v-if="!!image.imgSrc"
@@ -27,7 +27,7 @@ modal-behavior(
               )
               div(
                 v-else
-                class="rounded w-full h-full bg-grey-100 flex items-center justify-center text-body2 font-bold text-grey-200"
+                class="rounded w-full h-full bg-grey-100 flex items-center justify-center text-body2 font-bold text-grey-250"
               ) {{ $t('RR0103') }}
               f-input-radio(
                 v-model:inputValue="coverImageIndex"

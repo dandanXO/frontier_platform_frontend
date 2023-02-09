@@ -263,7 +263,7 @@ const classIcon = computed(() => {
         : classList.push('text-grey-600')
       break
     case STATE.DISABLED:
-      classList.push('text-grey-200')
+      classList.push('text-grey-250')
       break
   }
 
@@ -287,7 +287,7 @@ const classDisplayText = computed(() => {
     case STATE.DEFAULT:
       isFilled.value
         ? classList.push('text-grey-800')
-        : classList.push('text-grey-200')
+        : classList.push('text-grey-250')
       break
     case STATE.HOVER:
       isFilled.value
@@ -300,7 +300,7 @@ const classDisplayText = computed(() => {
         : classList.push('text-grey-600')
       break
     case STATE.DISABLED:
-      classList.push('text-grey-200')
+      classList.push('text-grey-250')
       break
   }
 

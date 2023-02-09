@@ -6,7 +6,7 @@ div(class="grid")
     div(class="flex-grow flex items-center")
       f-svg-icon(
         v-if="!keyword"
-        class="pr-1 text-grey-200"
+        class="pr-1 text-grey-250"
         size="24"
         iconName="search"
       )
@@ -15,16 +15,16 @@ div(class="grid")
         v-model.trim="keyword"
         :placeholder="$t('RR0053')"
         @keydown.enter="onEnter"
-        class="placeholder:text-grey-200 placeholder:overflow-visible flex-grow outline-none bg-transparent overflow-hidden text-grey-900 text-body1 disabled:text-grey-600"
+        class="placeholder:text-grey-250 placeholder:overflow-visible flex-grow outline-none bg-transparent overflow-hidden text-grey-900 text-body1 disabled:text-grey-600"
       )
       f-svg-icon(
         v-if="!!keyword"
         size="24"
         iconName="clear"
-        class="text-grey-200 cursor-pointer"
+        class="text-grey-250 cursor-pointer"
         @click="keyword = ''"
       )
-    div(class="w-0.5 h-4 bg-grey-200")
+    div(class="w-0.5 h-4 bg-grey-250")
     f-svg-icon(
       size="24"
       iconName="filter_border"
@@ -32,7 +32,7 @@ div(class="grid")
       :class="[isOpenFilterPanel ? 'text-primary-400' : 'text-grey-900']"
       @click="isOpenFilterPanel = !isOpenFilterPanel"
     )
-    //- div(class="w-0.5 h-4 bg-grey-200")
+    //- div(class="w-0.5 h-4 bg-grey-250")
     //- f-svg-icon(size="24" iconName="camera_border" class="text-grey-900 cursor-pointer")
   slider(v-if="innerTagList.length > 0")
     div(class="flex items-center gap-x-2 pb-5 pl-7.5")
@@ -46,7 +46,7 @@ div(class="grid")
     div(class="bg-grey-50 p-5 rounded")
       div(class="flex items-end pb-4")
         p(class="text-body1 text-grey-900") {{ $t('RR0085') }}
-        p(class="text-caption text-grey-200 pl-3 cursor-pointer" @click="resetFilter") {{ $t('UU0041') }}
+        p(class="text-caption text-grey-250 pl-3 cursor-pointer" @click="resetFilter") {{ $t('UU0041') }}
       div(class="flex flex-wrap gap-x-2 gap-y-4")
         filter-category
         filter-content

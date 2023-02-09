@@ -2,7 +2,7 @@
 div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
   div(class="pl-31 pb-13.5")
     h5(class="text-h5 font-bold text-grey-900 pb-3") {{ $t('QQ0061') }}
-    p(class="text-body2 text-grey-200") {{ $t('QQ0062', { Creator: moodboard.creator }) }}
+    p(class="text-body2 text-grey-250") {{ $t('QQ0062', { Creator: moodboard.creator }) }}
   div(class="bg-grey-0 border-grey-150 border rounded flex-grow px-6 pt-2")
     f-tabs(
       :tabList="tabList"
@@ -52,7 +52,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
         )
           div(
             v-if="currentTab === MOODBOARD_TAB.OFFER"
-            class="aspect-square border border-grey-200 border-dashed rounded-md flex justify-center items-center cursor-pointer"
+            class="aspect-square border border-grey-250 border-dashed rounded-md flex justify-center items-center cursor-pointer"
             @click="openModalCreateOrEditMoodboardCollection(CREATE_EDIT.CREATE, currentNodeId)"
           )
             div(class="flex flex-col justify-center items-center")

@@ -9,7 +9,7 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
     div(class="w-105")
       div(class="w-full rounded-lg card-shadow px-10 py-11 flex flex-col")
         p(
-          class="text-grey-900 text-h6 font-bold text-center pb-5.5 border-b border-grey-200"
+          class="text-grey-900 text-h6 font-bold text-center pb-5.5 border-b border-grey-250"
         ) {{ $t('AA0001') }}
         form(class="grid gap-y-3 mt-5 mb-1.5")
           f-input-text(
@@ -41,9 +41,9 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
           ) {{ errorMsgSignIn }}
         template(v-if="!isGoogleLoadFail")
           div(class="grid grid-flow-col gap-x-3 items-center justify-center mb-4")
-            div(class="w-19 h-px border-b border-grey-200")
-            span(class="w-30.5 text-grey-200 text-body2 text-center") {{ $t('AA0005') }}
-            div(class="w-19 h-px border-b border-grey-200")
+            div(class="w-19 h-px border-b border-grey-250")
+            span(class="w-30.5 text-grey-250 text-body2 text-center") {{ $t('AA0005') }}
+            div(class="w-19 h-px border-b border-grey-250")
           button#google-sign-in
       i18n-t(
         keypath="UU0045"

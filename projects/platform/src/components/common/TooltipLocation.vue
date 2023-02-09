@@ -4,7 +4,7 @@ f-tooltip
     f-svg-icon(
       iconName="location_on"
       size="14"
-      :class="[isActive ? 'text-primary-400' : 'text-grey-200']"
+      :class="[isActive ? 'text-primary-400' : 'text-grey-250']"
     )
   template(#content)
     div(class="flex items-center flex-wrap")
