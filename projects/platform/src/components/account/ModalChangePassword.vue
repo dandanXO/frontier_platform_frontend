@@ -50,7 +50,7 @@ const availableToChangePassword = computed(
 const closeModal = () => store.dispatch('helper/closeModal')
 
 const verifyPassword = async () => {
-  if (currentPassword.value.length === 0) {
+  if (currentPassword.value?.length === 0) {
     return
   }
 

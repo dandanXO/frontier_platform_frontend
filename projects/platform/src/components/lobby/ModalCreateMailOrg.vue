@@ -123,7 +123,7 @@ watch(
       errorMsg.value = t('WW0114')
     } else if (!order.test(uploadMaterialEmail.value)) {
       errorMsg.value = t('WW0115')
-    } else if (uploadMaterialEmail.value.length > 46) {
+    } else if (uploadMaterialEmail.value?.length > 46) {
       errorMsg.value = t('WW0116')
     }
   }

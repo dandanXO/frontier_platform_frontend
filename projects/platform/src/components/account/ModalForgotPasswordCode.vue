@@ -2,7 +2,7 @@
 modal-behavior(
   :header="$t('AA0047')"
   :primaryBtnText="$t('UU0052')"
-  :primaryBtnDisabled="verifyCode.length !== 6"
+  :primaryBtnDisabled="verifyCode?.length !== 6"
   @click:primary="verifyForgotPasswordCode"
 )
   div(class="w-80 flex flex-col items-center")

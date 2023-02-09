@@ -38,8 +38,13 @@ export default {
   emits: ['update:isValid'],
   setup(props, { emit }) {
     const containsLetter = computed(() => /[a-zA-Z]/gi.test(props.password))
-    const moreThanSix = computed(() => props.password.length >= 6)
-    const lessThanEighteen = computed(() => props.password.length <= 18)
+    const moreThanSix = computed(() => props.password?.length >= 6)
+    const lessThanEighteen = computed(() => {
+      if (!props.password) {
+        return false
+      }
+      return props.password.length <= 18
+    })
 
     watch(
       () => props.password,
