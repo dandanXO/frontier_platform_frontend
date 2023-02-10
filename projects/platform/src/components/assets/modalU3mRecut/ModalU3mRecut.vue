@@ -284,6 +284,7 @@ const handleGoNext = async () => {
     if (!cropResult) {
       return
     }
+    faceSide.value.croppedImage = cropResult.imageFile
     faceSide.value.perspectiveCropRecord = cropResult.cropRecord
   } else {
     throw new Error('invalid crop mode.')
@@ -368,6 +369,7 @@ const handleConfirm = async () => {
       currentSide.value.perspectiveCropRecord = result.cropRecord
     }
   }
+
   await store.dispatch('assets/generateU3m', {
     faceSideCropImg: faceSide.value?.croppedImage,
     backSideCropImg: backSide.value?.croppedImage,
