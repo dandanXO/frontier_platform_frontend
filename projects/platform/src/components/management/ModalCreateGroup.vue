@@ -52,7 +52,7 @@ const isGroupNameExist = computed(() =>
   )
 )
 const availableToNextStep = computed(
-  () => groupName.value !== '' && !isGroupNameExist.value
+  () => !!groupName.value && !isGroupNameExist.value
 )
 
 const openModalCreateMailGroup = () => {

@@ -2,7 +2,7 @@
 modal-behavior(
   :header="$t('FF0022')"
   :primaryBtnText="$t('UU0020')"
-  :primaryBtnDisabled="collectionName === ''"
+  :primaryBtnDisabled="!collectionName"
   @click:primary="createCollectionForModal"
 )
   div(class="w-84")

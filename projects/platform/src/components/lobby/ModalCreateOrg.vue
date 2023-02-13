@@ -69,9 +69,7 @@ const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
 const countryMenuTree = computed(() => store.getters['code/countryMenuTree'])
 const availableToCreateOrg = computed(
   () =>
-    formData.countryCode !== '' &&
-    formData.orgName !== '' &&
-    !isOrgNameExist.value
+    formData.countryCode !== '' && !!formData.orgName && !isOrgNameExist.value
 )
 
 watch(
@@ -106,7 +104,7 @@ const openModalCreateMailOrg = async () => {
 
 const checkOrgNameExist = async () => {
   isOrgNameExist.value =
-    formData.orgName !== '' &&
+    !!formData.orgName &&
     (await store.dispatch('organization/checkOrgNameExist', {
       orgName: formData.orgName,
     }))

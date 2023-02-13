@@ -78,7 +78,7 @@ export default {
       )
     )
     const availableToCreateGroup = computed(
-      () => groupFormData.groupName !== '' && !isGroupNameExist.value
+      () => !!groupFormData.groupName && !isGroupNameExist.value
     )
 
     const updateGroup = async () => {

@@ -147,8 +147,8 @@ const { nextAfterSignIn } = useNavigation()
 const isEmailValid = computed(() => inputValidator.emailFormat(formData.email))
 const availableToSignUp = computed(
   () =>
-    formData.firstName !== '' &&
-    formData.lastName !== '' &&
+    !!formData.firstName &&
+    !!formData.lastName &&
     isEmailValid.value &&
     isPasswordValid.value &&
     agreeTermsAndPrivacy.value
@@ -158,11 +158,11 @@ const validateEmailFormat = async () => {
   isEmailExist.value = false
   errorMsg.value = ''
 
-  if (formData.email === '') {
+  if (!formData.email) {
     return
   }
 
-  if (formData.email !== '' && !isEmailValid.value) {
+  if (!!formData.email && !isEmailValid.value) {
     return (errorMsg.value = t('WW0019'))
   }
 

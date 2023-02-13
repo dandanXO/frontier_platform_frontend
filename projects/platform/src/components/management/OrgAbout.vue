@@ -139,7 +139,7 @@ const orgFormData = reactive({
 })
 const isOrgNameExist = ref(false)
 const availableToUpdateOrg = computed(
-  () => orgFormData.orgName !== '' && !isOrgNameExist.value
+  () => !!orgFormData.orgName && !isOrgNameExist.value
 )
 
 const openModalUploadLogo = () => {

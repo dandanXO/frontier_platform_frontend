@@ -1,7 +1,7 @@
 import inputValidator from '@/utils/input-validator'
 import i18n from '@/utils/i18n'
 
-// format: fail case && error msg
+// format: !(fail case) && error msg
 
 export default {
   required:

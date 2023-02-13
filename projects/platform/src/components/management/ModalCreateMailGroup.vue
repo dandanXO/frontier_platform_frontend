@@ -48,7 +48,7 @@ const uploadMaterialEmail = computed({
 })
 const availableToCreateGroup = computed(
   () =>
-    uploadMaterialEmail.value !== '' &&
+    !!uploadMaterialEmail.value &&
     suggestEmailList.value.length === 0 &&
     errorMsg.value.length === 0
 )

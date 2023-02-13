@@ -111,7 +111,7 @@ const currentDisplayIndex = ref(defaultCoverImgIndex.value)
 const pantoneName = ref('')
 
 const addPantone = async () => {
-  if (pantoneName.value === '') {
+  if (!pantoneName.value) {
     return
   }
 
