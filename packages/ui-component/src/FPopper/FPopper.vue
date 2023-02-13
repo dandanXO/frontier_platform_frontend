@@ -72,7 +72,13 @@ div(
   slot(name="trigger" :isExpand="isExpand")
 teleport(v-if="isExpand" to="body")
   div(class="fixed z-popper w-screen h-screen top-0 left-0" @click="collapsePopper")
-    div(ref="refPopper" role="popper" class="relative rounded bg-grey-0" @click.stop)
+    div(
+      ref="refPopper"
+      role="popper"
+      class="relative rounded"
+      :class="theme === THEME.LIGHT ? 'bg-grey-0' : 'bg-grey-800'"
+      @click.stop
+    )
       slot(
         name="content"
         :isExpand="isExpand"
@@ -90,10 +96,15 @@ export default {
 <script setup>
 import { ref, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core'
+import { THEME } from '../constants.js'
 // https://popper.js.org/docs/v2/
 
 const emit = defineEmits(['expand', 'collapse'])
 const props = defineProps({
+  theme: {
+    type: String,
+    default: THEME.LIGHT,
+  },
   placement: {
     type: String,
     default: 'auto',
