@@ -260,7 +260,9 @@ const printGeneralLabel = async (materialList) => {
             </div>
             <div class="flex-none border border-grey-250 mx-6 my-5"></div>
             <div class="flex flex-col justify-center text-grey-900 w-56">
-              <p class="mb-2 font-bold text-body2">${material.materialNo}</p>
+              <p class="mb-0.5 line-clamp-2 font-bold text-body2 !leading-1.3">${
+                material.materialNo
+              }</p>
               <p class="text-body2 line-clamp-7 break-words leading-1.4">${getHtmlString()}</p>
             </div>
           </div>
@@ -270,13 +272,13 @@ const printGeneralLabel = async (materialList) => {
 
     if (material.sideType === SIDE_TYPE.BACK) {
       pdfTarget.innerHTML = `
-        <div class="relative flex w-113 h-56.5 bg-grey-0 pr-4 py-3">
+        <div class="relative flex w-113 h-56.5 bg-grey-0 pr-4 pt-1 pb-3">
           <div class="absolute top-3 left-3.5">
             <img src="${logo.value}" class="w-5 h-5 rounded-full" />
           </div>
           <div class="flex justify-center w-full">
             <div class="flex flex-col items-center justify-center">
-              <div class="whitespace-nowrap text-grey-900 font-bold text-body1">${
+              <div class="max-w-56 line-clamp-2 text-grey-900 font-bold text-body1 !leading-1.3">${
                 material.materialNo
               }</div>
               <div id="container" class="mt-4 mb-4"></div>
