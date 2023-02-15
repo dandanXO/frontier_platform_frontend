@@ -18,6 +18,11 @@ div(class="h-full flex flex-col")
         class="box-border absolute left-0 top-0 w-full h-full rounded-lg border-grey-500 pointer-events-none"
         :class="{ 'border-2': activeArea === 'edit' }"
       )
+      div(
+        v-if="!side.perspectiveEditStatus.isValid"
+        class="absolute bottom-5 left-1/2 -translate-x-1/2 margin-auto"
+      )
+        notify-bar {{ $t('WW0124') }}
     div(class="relative flex-1 flex flex-col" @click="handleAreaClick('preview')")
       div(class="flex-1 rounded-lg bg-grey-900 overflow-hidden")
         div(ref="previewCanvasContainer" class="relative w-full h-full bg-grey-900")
@@ -60,7 +65,7 @@ div(class="h-full flex flex-col")
             :dimension="destinationDimension"
           )
           label-button(
-            :disabled="!editStatus.isPositionsDirty"
+            :disabled="!side.perspectiveEditStatus.isPositionsDirty"
             @click="handlePositionReset"
           ) {{ $t('RR0255') }}
       divider(color="black")
@@ -71,7 +76,7 @@ div(class="h-full flex flex-col")
           label-button(@click="handleRotate(90)") {{ $t('EE0156', { degree: '90°' }) }}
           label-button(@click="handleRotate(180)") 180°
           label-button(
-            :disabled="!editStatus.isRotationDirty"
+            :disabled="!side.perspectiveEditStatus.isRotationDirty"
             @click="handleResetRotate"
           ) {{ $t('RR0255') }}
 </template>
@@ -90,6 +95,7 @@ import DimensionInfo from '@/components/assets/modalU3mRecut/perspectiveCropper/
 import Divider from '@/components/assets/modalU3mRecut/perspectiveCropper/Divider.vue'
 import LabelButton from '@/components/assets/modalU3mRecut/perspectiveCropper/LabelButton.vue'
 import InfoBlock from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoBlock.vue'
+import NotifyBar from '@/components/assets/modalU3mRecut/perspectiveCropper/NotifyBar.vue'
 import { CROPPER_GRID_COLORS, MODAL_CONFIRM_TYPE } from '@/utils/constants'
 import type { Dimension } from '@/utils/perspectiveCropper'
 import type { PerspectiveCropRecord, U3mImage } from '@/utils/cropper'
@@ -107,8 +113,13 @@ const props = defineProps<{
         src: string
       }
     }
+    perspectiveEditStatus: EditStatus
     perspectiveCropRecord?: PerspectiveCropRecord
   }
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:editStatus', editStatus: EditStatus): void
 }>()
 
 const store = useStore()
@@ -129,11 +140,6 @@ const previewScale = ref(0)
 const rotateDeg = ref(0)
 const gridOpen = ref(true)
 const destinationDimension = ref<Dimension>()
-const editStatus = ref<EditStatus>({
-  isPositionsDirty: false,
-  isRotationDirty: false,
-})
-
 const activeArea = ref<'edit' | 'preview'>('edit')
 
 const ZOOM_TYPES = {
@@ -205,9 +211,7 @@ const { destinationImage, perspectiveCropper } = usePerspectiveCropper({
     store.dispatch('helper/pushModalLoading', { theme: 'dark' }),
   onScaleChange: (v) => (sourceScale.value = v),
   onRotationChange: (v) => (rotateDeg.value = v),
-  onEditStatusChange: (status) => {
-    editStatus.value = status
-  },
+  onEditStatusChange: (status) => emit('update:editStatus', status),
   onError: errorHandler,
 })
 

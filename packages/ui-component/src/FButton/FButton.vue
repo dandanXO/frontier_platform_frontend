@@ -95,7 +95,8 @@ export default {
             return [
               'bg-primary-400',
               'text-grey-0',
-              'disabled:bg-grey-150',
+              'disabled:bg-grey-700',
+              'disabled:text-grey-500',
               'hover:bg-primary-500',
             ]
           case 'secondary':

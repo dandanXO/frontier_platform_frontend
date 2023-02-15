@@ -16,6 +16,7 @@ div(class="flex items-center justify-between shrink-0 w-full h-27.5 bg-grey-900 
         f-button(
           theme="dark"
           size="md"
+          :disabled="!isValid"
           :prependIcon="readyToSubmit ? 'done' : ''"
           @click="readyToSubmit ? emit('confirm') : emit('next')"
         ) {{ readyToSubmit ? $t('UU0020') : $t('UU0021') }}
@@ -29,6 +30,7 @@ import U3mRecutStepper from '@/components/assets/modalU3mRecut/U3mRecutStepper.v
 import { U3M_CUT_SIDE } from '@/utils/constants'
 
 const props = defineProps<{
+  isValid: boolean
   isDoubleSideMaterial: boolean
   currentSideName?: U3M_CUT_SIDE
   faceSideUrl: string | false

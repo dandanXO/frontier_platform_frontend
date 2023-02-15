@@ -23,7 +23,7 @@ defineProps<{ cropMode: CROP_MODE }>()
 
 const emit = defineEmits<{
   (e: 'restore'): void
-  (e: 'update:cropMode', v: string): void
+  (e: 'update:cropMode', v: CROP_MODE): void
 }>()
 </script>
 

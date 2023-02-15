@@ -1,6 +1,7 @@
 <template lang="pug">
 div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overflow-y-auto")
   modal-u3m-recut-header(
+    :isValid="isValid"
     :isDoubleSideMaterial="isDoubleSideMaterial"
     :currentSideName="currentSideName"
     :faceSideUrl="faceSideUrl"
@@ -25,6 +26,7 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
           :currentSide="currentSideName"
           :side="side"
           :ref="(el) => handlePerspectiveCropAreaRefUpdate(side.sideName, el)"
+          @update:editStatus="handlePerspectiveEditStatusChange"
         )
       template(v-if="side.cropMode === CROP_MODE.SQUARE")
         div(
@@ -96,6 +98,7 @@ import type {
   PerspectiveCropRecord,
   U3mImage,
 } from '@/utils/cropper'
+import type { EditStatus } from '@/composables/usePerspectiveCropper'
 
 interface U3mSide extends Side {
   title: string
@@ -103,6 +106,7 @@ interface U3mSide extends Side {
   scaleSizeInCm: number
   scaleStartInCm: number
   croppedImage: File | null
+  perspectiveEditStatus: EditStatus
   perspectiveCropRecord?: PerspectiveCropRecord
   image: U3mImage
 }
@@ -159,6 +163,16 @@ const currentSideCropMode = computed(() => currentSide.value?.cropMode)
 const previewScaleRatio = computed(() =>
   previewRect.value ? previewRect.value.clientWidth / cropRectSize : 1
 )
+
+const isValid = computed(() => {
+  if (!currentSide.value) {
+    return false
+  }
+  if (currentSide.value.cropMode === CROP_MODE.PERSPECTIVE) {
+    return currentSide.value.perspectiveEditStatus.isValid
+  }
+  return true
+})
 
 const handleCropModeChange = async (v: CROP_MODE) => {
   if (!currentSide.value) {
@@ -438,6 +452,11 @@ const handleClose = () => {
   store.dispatch('helper/closeModal')
 }
 
+const handlePerspectiveEditStatusChange = (editStatus: EditStatus) => {
+  if (!currentSide.value) throw new Error('current side undefined')
+  currentSide.value.perspectiveEditStatus = editStatus
+}
+
 onMounted(async () => {
   const getSide = async (
     sideName: U3M_CUT_SIDE,
@@ -476,6 +495,11 @@ onMounted(async () => {
       config,
       scaleSizeInCm,
       scaleStartInCm: scaleSizeInCm,
+      perspectiveEditStatus: {
+        isValid: true,
+        isPositionsDirty: false,
+        isRotationDirty: false,
+      },
       rotateStart: config.rotateDeg,
     }
   }

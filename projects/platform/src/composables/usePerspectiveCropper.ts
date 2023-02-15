@@ -17,11 +17,16 @@ import type { Coord, PerspectiveCropRecord } from '@/utils/cropper'
 import type { TextConfig } from 'konva/lib/shapes/Text'
 
 export interface EditStatus {
+  isValid: boolean
   isPositionsDirty: boolean
   isRotationDirty: boolean
 }
 
 const DEFAULT_CROP_CM = 4
+const MIN_CROP_CM = 1
+
+const INVALID_LINE_COLOR = '#A0253A'
+const INVALID_LINE_OUTER_COLOR = '#FFF'
 
 /**
  * 設計稿上 w:56, h: 28, radius:4, fontSize: 12
@@ -67,6 +72,7 @@ class PerspectiveCropper {
   circleLeftBottom: Konva.Circle
   circleRightBottom: Konva.Circle
   line: Konva.Line
+  errorLine: Konva.Line
   leftSideInfoRect: Konva.Rect
   topSideInfoRect: Konva.Rect
   rightSideInfoRect: Konva.Rect
@@ -77,6 +83,8 @@ class PerspectiveCropper {
   bottomSideInfoText: Konva.Text
   restoreRecord?: PerspectiveCropRecord
   initialRecord?: PerspectiveCropRecord
+  editStatus: EditStatus
+  gridColor: string
   initialMargin = 0
   rotatePresets = [0, 90, 180, 270]
   rotatePresetsIndex = 0
@@ -165,6 +173,44 @@ class PerspectiveCropper {
     this.rotatePresetsIndex = result
   }
 
+  get leftSideInCm() {
+    return pixelToCm(
+      getDistance(
+        this.circleLeftTop.position(),
+        this.circleLeftBottom.position()
+      ),
+      this.sourceDimension.dpi
+    )
+  }
+
+  get topSideInCm() {
+    return pixelToCm(
+      getDistance(
+        this.circleLeftTop.position(),
+        this.circleRightTop.position()
+      ),
+      this.sourceDimension.dpi
+    )
+  }
+  get rightSideInCm() {
+    return pixelToCm(
+      getDistance(
+        this.circleRightTop.position(),
+        this.circleRightBottom.position()
+      ),
+      this.sourceDimension.dpi
+    )
+  }
+  get bottomSideInCm() {
+    return pixelToCm(
+      getDistance(
+        this.circleLeftBottom.position(),
+        this.circleRightBottom.position()
+      ),
+      this.sourceDimension.dpi
+    )
+  }
+
   constructor(
     sourceImage: HTMLImageElement,
     downSampledCanvases: HTMLCanvasElement[],
@@ -236,9 +282,15 @@ class PerspectiveCropper {
     // Setup draggable cropper circles and line.
     this.initialRecord = initialRecord
     this.restoreRecord = restoreRecord
+    this.gridColor = initialGridColor
+    this.editStatus = {
+      isValid: true,
+      isRotationDirty: false,
+      isPositionsDirty: false,
+    }
     const circleStyle: Partial<Konva.CircleConfig> = {
       radius: 75,
-      stroke: initialGridColor,
+      stroke: this.gridColor,
       strokeWidth: 20,
       draggable: true,
     }
@@ -274,8 +326,24 @@ class PerspectiveCropper {
         const pos = circle.getPosition()
         return [pos.x, pos.y]
       }),
-      stroke: initialGridColor,
+      stroke: this.gridColor,
       strokeWidth: 10,
+      lineJoin: 'round',
+      closed: true,
+    })
+    this.errorLine = new Konva.Line({
+      visible: false,
+      points: [
+        this.circleLeftTop,
+        this.circleRightTop,
+        this.circleRightBottom,
+        this.circleLeftBottom,
+      ].flatMap((circle) => {
+        const pos = circle.getPosition()
+        return [pos.x, pos.y]
+      }),
+      stroke: INVALID_LINE_OUTER_COLOR,
+      strokeWidth: 30,
       lineJoin: 'round',
       closed: true,
     })
@@ -296,16 +364,25 @@ class PerspectiveCropper {
     this.layer.add(this.rightSideInfoText)
     this.layer.add(this.bottomSideInfoText)
     this.updateInfos()
+    this.handleEditStatusChange()
     this.circles.forEach((c) => {
       c.on('dragstart', () => {
         this.stage.container().style.cursor = 'grabbing'
         const opacity = this.grabbingOpacity
         this.circles.forEach((c) => c.opacity(opacity))
         this.line.opacity(opacity)
+        this.errorLine.opacity(opacity)
         this.infoTexts.forEach((i) => i.opacity(1))
         this.infoRects.forEach((i) => i.opacity(0.8))
       })
       c.on('dragmove', () => {
+        const handleBoundingLimit = () => {
+          c.x(Math.max(c.x(), 0))
+          c.x(Math.min(c.x(), width))
+          c.y(Math.max(c.y(), 0))
+          c.y(Math.min(c.y(), height))
+        }
+        handleBoundingLimit()
         this.updateLines()
         this.updateInfos()
         this.handleEditStatusChange()
@@ -315,6 +392,7 @@ class PerspectiveCropper {
         this.stage.container().style.cursor = 'grab'
         this.circles.forEach((c) => c.opacity(1))
         this.line.opacity(1)
+        this.errorLine.opacity(1)
         this.infoTexts.forEach((i) => i.opacity(0))
         this.infoRects.forEach((i) => i.opacity(0))
       })
@@ -328,6 +406,7 @@ class PerspectiveCropper {
       })
     })
 
+    this.layer.add(this.errorLine)
     this.layer.add(this.line)
     this.circles.forEach((c) => this.layer.add(c))
     if (initialRecord && this.rotateDeg !== initialRecord.rotateDeg) {
@@ -392,6 +471,23 @@ class PerspectiveCropper {
       return p1.x === p2.x && p1.y === p2.y
     }
 
+    const isValid = [
+      this.leftSideInCm,
+      this.topSideInCm,
+      this.rightSideInCm,
+      this.bottomSideInCm,
+    ].every((sideInCm) => sideInCm.gte(MIN_CROP_CM))
+
+    if (this.editStatus.isValid !== isValid) {
+      if (isValid) {
+        this.updateGridColor(this.gridColor)
+        this.errorLine.visible(false)
+      } else {
+        this.updateGridColor(INVALID_LINE_COLOR)
+        this.errorLine.visible(true)
+      }
+    }
+
     if (this.restoreRecord) {
       const isPositionsDirty = !(
         isEqual(this.circleLeftTop.position(), this.restoreRecord.leftTop) &&
@@ -406,10 +502,12 @@ class PerspectiveCropper {
         )
       )
 
-      this.onEditStatusChange({
+      this.editStatus = {
+        isValid,
         isPositionsDirty,
         isRotationDirty: this.rotateDeg !== this.restoreRecord.rotateDeg,
-      })
+      }
+      this.onEditStatusChange(this.editStatus)
 
       return
     }
@@ -422,18 +520,22 @@ class PerspectiveCropper {
       isEqual(this.circleRightBottom.position(), defaultPositions.rightBottom)
     )
 
-    this.onEditStatusChange({
+    this.editStatus = {
+      isValid,
       isPositionsDirty,
       isRotationDirty: this.rotateDeg !== 0,
-    })
+    }
+    this.onEditStatusChange(this.editStatus)
   }
 
   setGridColor(hex: string) {
+    this.gridColor = hex
+    this.updateGridColor(hex)
+  }
+
+  updateGridColor(hex: string) {
     this.line.stroke(hex)
-    this.circleLeftTop.stroke(hex)
-    this.circleRightTop.stroke(hex)
-    this.circleLeftBottom.stroke(hex)
-    this.circleRightBottom.stroke(hex)
+    this.circles.forEach((c) => c.stroke(hex))
   }
 
   cropToCanvas() {
@@ -570,42 +672,26 @@ class PerspectiveCropper {
         return [pos.x, pos.y]
       })
     )
+    this.errorLine.points(
+      [
+        this.circleLeftTop,
+        this.circleRightTop,
+        this.circleRightBottom,
+        this.circleLeftBottom,
+        this.circleLeftTop,
+      ].flatMap((circle) => {
+        const pos = circle.getPosition()
+        return [pos.x, pos.y]
+      })
+    )
   }
 
   updateInfos() {
     const margin = 300
-    const leftSideInCm = pixelToCm(
-      getDistance(
-        this.circleLeftTop.position(),
-        this.circleLeftBottom.position()
-      ),
-      this.sourceDimension.dpi
-    )
-    const topSideInCm = pixelToCm(
-      getDistance(
-        this.circleLeftTop.position(),
-        this.circleRightTop.position()
-      ),
-      this.sourceDimension.dpi
-    )
-    const rightSideInCm = pixelToCm(
-      getDistance(
-        this.circleRightTop.position(),
-        this.circleRightBottom.position()
-      ),
-      this.sourceDimension.dpi
-    )
-    const bottomSideInCm = pixelToCm(
-      getDistance(
-        this.circleLeftBottom.position(),
-        this.circleRightBottom.position()
-      ),
-      this.sourceDimension.dpi
-    )
-    this.leftSideInfoText.text(`${toDP1(leftSideInCm)} cm`)
-    this.topSideInfoText.text(`${toDP1(topSideInCm)} cm`)
-    this.rightSideInfoText.text(`${toDP1(rightSideInCm)} cm`)
-    this.bottomSideInfoText.text(`${toDP1(bottomSideInCm)} cm`)
+    this.leftSideInfoText.text(`${toDP1(this.leftSideInCm)} cm`)
+    this.topSideInfoText.text(`${toDP1(this.topSideInCm)} cm`)
+    this.rightSideInfoText.text(`${toDP1(this.rightSideInCm)} cm`)
+    this.bottomSideInfoText.text(`${toDP1(this.bottomSideInCm)} cm`)
     const leftSideCenter = getCenter(
       this.circleLeftTop.position(),
       this.circleLeftBottom.position()

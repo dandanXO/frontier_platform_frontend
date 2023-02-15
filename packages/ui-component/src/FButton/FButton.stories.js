@@ -10,6 +10,10 @@ export default {
   component: FButton,
   args: baseArgs,
   argTypes: {
+    theme: {
+      control: { type: 'select' },
+      option: ['light', 'dark'],
+    },
     size: {
       control: { type: 'select' },
       options: ['lg', 'md', 'sm'],
