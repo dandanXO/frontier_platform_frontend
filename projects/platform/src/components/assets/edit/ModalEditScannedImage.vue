@@ -41,6 +41,7 @@ modal-behavior(
             :config="side.config"
             :cropRectSize="cropRectSize"
             @update:options="Object.assign(side.config.options, $event)"
+            @load="handleLoad"
           )
             div(class="mt-1 absolute w-full")
               div(class="h-2 flex items-center border-r-2 border-l-2 border-grey-900")
@@ -90,7 +91,7 @@ modal-behavior(
 
 <script setup lang="ts">
 import { useStore } from 'vuex'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import FInputRange from '@frontier/ui-component/src/FInput/FInputRange/FInputRange.vue'
 import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
@@ -236,8 +237,24 @@ const handleRefUpdate = (
   }
 }
 
+const sideImgLoadCount = ref(0)
+const isAllSideImgLoaded = computed(
+  () =>
+    sideImgLoadCount.value >=
+    [faceSideUrl, backSideUrl].filter((url) => !!url).length
+)
+const handleLoad = () => {
+  sideImgLoadCount.value++
+}
+watch(isAllSideImgLoaded, () => {
+  if (isAllSideImgLoaded.value) {
+    store.dispatch('helper/closeModalLoading')
+  }
+})
+
 const closeModal = () => store.dispatch('helper/closeModal')
 
+store.dispatch('helper/pushModalLoading')
 onMounted(async () => {
   const getSide = async (
     sideName: SideName,

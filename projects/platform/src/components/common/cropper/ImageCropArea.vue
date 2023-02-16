@@ -1,7 +1,12 @@
 <template lang="pug">
 div(class="relative")
   div(class="absolute" :style="cropRectStyle")
-    cropped-image(:config="config" isTransparent @update="updateOptions")
+    cropped-image(
+      :config="config"
+      isTransparent
+      @update="updateOptions"
+      @load="handleImgLoad"
+    )
     slot
   div(
     class="overflow-hidden bg-grey-0"
@@ -9,7 +14,11 @@ div(class="relative")
     :class="{ 'rounded-full': isCircular }"
   )
     div(class="cursor-move" :style="cropRectStyle")
-      cropped-image(:config="config" @update="updateOptions")
+      cropped-image(
+        :config="config"
+        @update="updateOptions"
+        @load="handleImgLoad"
+      )
   template(v-if="!isCircular")
     div(class="border-t-2 border-l-2 top-0 left-0" :class="basedBorderStyles")
     div(class="border-t-2 border-r-2 top-0 right-0" :class="basedBorderStyles")
@@ -22,15 +31,18 @@ div(class="relative")
           :config="config"
           :movable="false"
           :previewScaleRatio="realSize / cropRectSize"
+          @load="handleImgLoad"
         )
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import html2canvas from 'html2canvas'
 import CroppedImage from '@/components/common/cropper/CroppedImage.vue'
 import { dataUrlToBlob } from '@/utils/fileOperator'
 import tempFilenameGenerator from '@/utils/temp-filename-generator'
+
+const IMAGE_COUNT = 3
 
 const props = defineProps({
   theme: {
@@ -51,7 +63,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['update:options'])
+const emit = defineEmits(['update:options', 'load'])
 
 const cropRect = ref(null)
 
@@ -80,6 +92,17 @@ const styleSize = computed(() => {
 const updateOptions = (option) => {
   emit('update:options', option)
 }
+
+const imgLoadCount = ref(0)
+const isAllImgLoad = computed(() => imgLoadCount.value >= IMAGE_COUNT)
+const handleImgLoad = () => {
+  imgLoadCount.value += 1
+}
+watch(isAllImgLoad, () => {
+  if (isAllImgLoad.value) {
+    emit('load')
+  }
+})
 
 const basedBorderStyles = computed(() => {
   const styles = ['corner', 'absolute', 'w-4.5', 'h-4.5']

@@ -11,6 +11,7 @@ div(class="cropped-image" :style="rotateStyle")
           :src="config.image.src"
           @dragstart.prevent
           @mousedown.left.stop="moveStart"
+          @load="$emit('load')"
         )
 </template>
 
@@ -38,7 +39,7 @@ export default {
       default: false,
     },
   },
-  emits: ['update'],
+  emits: ['update', 'load'],
   setup(props, { emit }) {
     const body = ref(null)
     const { options } = reactive(props.config)
