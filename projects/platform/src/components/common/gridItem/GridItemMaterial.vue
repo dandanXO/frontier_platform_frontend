@@ -15,16 +15,17 @@ grid-item-wrapper(
       img(v-defaultImg :src="material.coverImg" class="w-full h-full")
   template(#hover-content)
     div(
-      class="text-grey-0 px-7.5 py-10 h-full flex flex-col items-center justify-center text-center"
+      class="text-grey-0 px-7.5 py-10 w-full h-full flex flex-col items-center justify-center text-center"
+      @click="onClick($event)"
     )
-      div(class="text-body2 font-bold line-clamp-2 leading-1.6") {{ material.description }}
-      div(class="text-caption line-clamp-2 leading-1.6") {{ material.content }}
-      div(class="text-caption flex gap-1 leading-1.6")
-        div {{ materialInfo.yarn.value }}
-        div {{ materialInfo.density.value }}
-        div {{ materialInfo.width.value }}
-      div(class="text-caption line-clamp-2 leading-1.6") {{ material.finish }}
-      div(class="text-caption line-clamp-1 leading-1.6") {{ materialInfo.weight.value }}
+      p(class="text-body2 font-bold line-clamp-2 leading-1.6") {{ material.description }}
+      p(class="text-caption line-clamp-2 leading-1.6 break-all") {{ material.content }}
+      p(class="text-caption line-clamp-1 leading-1.6")
+        span {{ materialInfo.yarn.value }}
+        span(class="px-1") {{ materialInfo.density.value }}
+        span {{ materialInfo.width.value }}
+      p(class="text-caption line-clamp-2 leading-1.6") {{ material.finish }}
+      p(class="text-caption line-clamp-1 leading-1.6") {{ materialInfo.weight.value }}
   template(#hover-corner-top-right)
     slot(name="hover-corner-top-right")
   template(#hover-corner-bottom-left)
@@ -69,4 +70,14 @@ const innerSelectedValue = computed({
   get: () => props.selectedValue,
   set: (v) => emit('update:selectedValue', v),
 })
+
+const onClick = (e) => {
+  // 避免選取文字的時候出發 click 事件
+  if (window.getSelection && window.getSelection().toString() !== '') {
+    e.stopPropagation()
+    return false
+  }
+
+  return true
+}
 </script>
