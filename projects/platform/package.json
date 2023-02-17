@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.25.0",
+    "@types/pica": "^9.0.1",
     "start-server-and-test": "^1.14.0"
   },
   "peerDependencies": {

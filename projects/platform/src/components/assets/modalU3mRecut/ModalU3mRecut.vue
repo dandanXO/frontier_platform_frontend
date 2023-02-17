@@ -15,6 +15,8 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
     @update:cropMode="handleCropModeChange"
     @restore="handleRestore"
   )
+  div(class="absolute invisible w-125 h-125 grid grid-cols-3 grid-rows-3 inset-0")
+    div(ref="previewRect")
   div(class="flex-1 bg-grey-800")
     template(v-for="side in sideList" :key="side.sideName")
       template(v-if="side.cropMode === CROP_MODE.PERSPECTIVE")
@@ -66,14 +68,13 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
                 :previewScaleRatio="previewScaleRatio"
                 :movable="false"
               )
-      div(class="absolute invisible w-125 h-125 grid grid-cols-3 grid-rows-3 inset-0")
-        div(ref="previewRect")
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
+import Decimal from 'decimal.js'
 import useMaterialImage from '@/composables/useMaterialImage'
 import useNavigation from '@/composables/useNavigation'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
@@ -82,15 +83,19 @@ import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import ModalU3mRecutHeader from '@/components/assets/modalU3mRecut/ModalU3mRecutHeader.vue'
 import ModalU3mRecutSwitchControlBar from '@/components/assets/modalU3mRecut/ModalU3mRecutSwitchControlBar.vue'
 import PerspectiveCropper from '@/components/assets/modalU3mRecut/perspectiveCropper/PerspectiveCropper.vue'
-import { CROP_MODE, MODAL_CONFIRM_TYPE, U3M_CUT_SIDE } from '@/utils/constants'
-import { coordToFixed1, Cropper, pixelToCm, toFixed1 } from '@/utils/cropper'
+import {
+  CROP_MODE,
+  MODAL_CONFIRM_TYPE,
+  U3M_CUT_SIDE,
+  MODAL_TYPE,
+} from '@/utils/constants'
+import { coordToDP1, Cropper, pixelToCm, toDP1 } from '@/utils/cropper'
 import type {
   Side,
   U3mCropRecord,
   PerspectiveCropRecord,
   U3mImage,
 } from '@/utils/cropper'
-import { MODAL_TYPE } from '@/utils/constants'
 
 interface U3mSide extends Side {
   title: string
@@ -146,6 +151,11 @@ const sideList = computed(() => {
 const currentSide = ref<U3mSide>()
 const currentSideName = computed(() => currentSide.value?.sideName)
 const currentSideCropMode = computed(() => currentSide.value?.cropMode)
+
+/**
+ * 計算 preview 九宮格其中一格的縮放比例，
+ * 因 cropRectSize 和九宮格其中一格的寬度不同，需要相除計算出 ratio。
+ **/
 const previewScaleRatio = computed(() =>
   previewRect.value ? previewRect.value.clientWidth / cropRectSize : 1
 )
@@ -193,8 +203,8 @@ const handleUpdateScaleSize = (side: U3mSide, newScaleSizeInCm: number) => {
   const dpi = side.config.dpi
   const widthInCm = pixelToCm(widthInPixel, dpi)
   const heightInCm = pixelToCm(heightInPixel, dpi)
-  const mainRulerInCm = Math.min(widthInCm, heightInCm)
-  side.config.scaleRatio = mainRulerInCm / newScaleSizeInCm
+  const mainRulerInCm = Decimal.min(widthInCm, heightInCm)
+  side.config.scaleRatio = mainRulerInCm.div(newScaleSizeInCm).toNumber()
   side.scaleSizeInCm = newScaleSizeInCm
 }
 
@@ -309,10 +319,10 @@ const handleConfirm = async () => {
     if (side.cropMode === CROP_MODE.SQUARE) {
       return {
         squareCropRecord: {
-          x: toFixed1(options.x),
-          y: toFixed1(options.y),
-          rotateDeg: toFixed1(squareCropRotateDeg),
-          scaleRatio: toFixed1(side.scaleSizeInCm),
+          x: toDP1(options.x),
+          y: toDP1(options.y),
+          rotateDeg: toDP1(squareCropRotateDeg),
+          scaleRatio: toDP1(side.scaleSizeInCm),
         },
       }
     }
@@ -327,11 +337,11 @@ const handleConfirm = async () => {
 
     return {
       perspectiveCropRecord: {
-        leftTop: coordToFixed1(leftTop),
-        leftBottom: coordToFixed1(leftBottom),
-        rightTop: coordToFixed1(rightTop),
-        rightBottom: coordToFixed1(rightBottom),
-        rotateDeg: toFixed1(rotateDeg),
+        leftTop: coordToDP1(leftTop),
+        leftBottom: coordToDP1(leftBottom),
+        rightTop: coordToDP1(rightTop),
+        rightBottom: coordToDP1(rightBottom),
+        rotateDeg: toDP1(rotateDeg),
       },
     }
   }
@@ -446,7 +456,7 @@ onMounted(async () => {
     const scaleSizeInCm =
       image.u3mCropRecord.squareCropRecord?.scaleRatio ||
       scaleOptions.defaultScaleSizeInCm
-    config.scaleRatio = widthInCm / scaleSizeInCm
+    config.scaleRatio = widthInCm.div(scaleSizeInCm).toNumber()
     if (image.u3mCropRecord.squareCropRecord) {
       const { x, y, rotateDeg } = image.u3mCropRecord.squareCropRecord
       config.options.x = x

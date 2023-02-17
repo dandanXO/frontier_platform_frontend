@@ -2,15 +2,14 @@ import { ref, toRaw, onMounted, onUnmounted } from 'vue'
 import Konva from 'konva'
 import cv from '@techstark/opencv-js'
 import {
-  pixelToCm,
   getDistance,
   preRender,
   setupStage,
   setScale,
-  cmToPixel,
   getFitScale,
   getCenter,
 } from '@/utils/perspectiveCropper'
+import { pixelToCm, cmToPixel, toDP1 } from '@/utils/cropper'
 import tempFilenameGenerator from '@/utils/temp-filename-generator'
 import type { Ref } from 'vue'
 import type { Point, Dimension } from '@/utils/perspectiveCropper'
@@ -603,10 +602,10 @@ class PerspectiveCropper {
       ),
       this.sourceDimension.dpi
     )
-    this.leftSideInfoText.text(`${leftSideInCm} cm`)
-    this.topSideInfoText.text(`${topSideInCm} cm`)
-    this.rightSideInfoText.text(`${rightSideInCm} cm`)
-    this.bottomSideInfoText.text(`${bottomSideInCm} cm`)
+    this.leftSideInfoText.text(`${toDP1(leftSideInCm)} cm`)
+    this.topSideInfoText.text(`${toDP1(topSideInCm)} cm`)
+    this.rightSideInfoText.text(`${toDP1(rightSideInCm)} cm`)
+    this.bottomSideInfoText.text(`${toDP1(bottomSideInCm)} cm`)
     const leftSideCenter = getCenter(
       this.circleLeftTop.position(),
       this.circleLeftBottom.position()
@@ -683,7 +682,10 @@ class PerspectiveCropper {
   }
 
   getDefaultPositions() {
-    const offset = cmToPixel(DEFAULT_CROP_CM, this.sourceDimension.dpi)
+    const offset = cmToPixel(
+      DEFAULT_CROP_CM,
+      this.sourceDimension.dpi
+    ).toNumber()
     return {
       leftTop: {
         x: (this.sourceImage.width - offset) / 2,

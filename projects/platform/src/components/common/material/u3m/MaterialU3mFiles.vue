@@ -28,7 +28,7 @@ interface FileItem {
 
 const props = defineProps<{
   material: Material
-  downloadU3m: (item: FileItem) => void
+  downloadU3m?: (item: FileItem) => void
 }>()
 
 const { t } = useI18n()

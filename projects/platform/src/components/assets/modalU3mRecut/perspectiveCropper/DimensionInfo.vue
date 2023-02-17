@@ -6,6 +6,7 @@ info-block(:iconName="iconName" :text="text")
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import InfoBlock from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoBlock.vue'
+import { toDP1 } from '@/utils/cropper'
 import type { Dimension } from '@/utils/perspectiveCropper'
 
 const props = defineProps<{
@@ -17,8 +18,9 @@ const props = defineProps<{
 const { t } = useI18n()
 
 const text = computed(() => {
-  return `${props.cropText} W ${props.dimension.cm.width} x H ${
-    props.dimension.cm.height
-  } ${t('EE0099')}`
+  const { cropText, dimension } = props
+  const widthInCm = toDP1(dimension.cm.width)
+  const heightInCm = toDP1(dimension.cm.height)
+  return `${cropText} W ${widthInCm} x H ${heightInCm} ${t('EE0099')}`
 })
 </script>

@@ -92,17 +92,14 @@ modal-behavior(
 <script setup lang="ts">
 import { useStore } from 'vuex'
 import { ref, computed, onMounted, watch } from 'vue'
+import Decimal from 'decimal.js'
 import FInputRange from '@frontier/ui-component/src/FInput/FInputRange/FInputRange.vue'
 import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import useMaterialImage from '@/composables/useMaterialImage'
-import { Cropper, pixelToCm } from '@/utils/cropper'
-import type {
-  Side,
-  SideName,
-  SquareCropRecord,
-  ScannedImage,
-} from '@/utils/cropper'
+import { Cropper, pixelToCm, toDP1 } from '@/utils/cropper'
+import { U3M_CUT_SIDE } from '@/utils/constants'
+import type { Side, SquareCropRecord, ScannedImage } from '@/utils/cropper'
 
 const props = defineProps<{
   afterCropHandler: (params: {
@@ -164,10 +161,10 @@ const handleUpdateScaleSize = (side: Side, newScaleSizeInCm: number) => {
   const widthInPixel = image.width
   const heightInPixel = image.height
   const dpi = side.config.dpi
-  const widthInCm = pixelToCm(widthInPixel, dpi)
-  const heightInCm = pixelToCm(heightInPixel, dpi)
-  const mainRulerInCm = Math.min(widthInCm, heightInCm)
-  side.config.scaleRatio = mainRulerInCm / newScaleSizeInCm
+  const imgWidthInCm = pixelToCm(widthInPixel, dpi)
+  const imgHeightInCm = pixelToCm(heightInPixel, dpi)
+  const imgMainRulerInCm = Decimal.min(imgWidthInCm, imgHeightInCm)
+  side.config.scaleRatio = imgMainRulerInCm.div(newScaleSizeInCm).toNumber()
   scaleSizeInCm.value = newScaleSizeInCm
 }
 
@@ -206,10 +203,10 @@ const confirm = async () => {
 
     const { options, rotateDeg } = side.config
     return {
-      x: Number(options.x.toFixed(1)),
-      y: Number(options.y.toFixed(1)),
-      rotateDeg: Number(rotateDeg.toFixed(1)),
-      scaleRatio: Number(scaleSizeInCm.value.toFixed(1)),
+      x: toDP1(options.x),
+      y: toDP1(options.y),
+      rotateDeg: toDP1(rotateDeg),
+      scaleRatio: toDP1(scaleSizeInCm.value),
     }
   }
 
@@ -226,13 +223,13 @@ const confirm = async () => {
 }
 
 const handleRefUpdate = (
-  sideName: SideName,
+  sideName: U3M_CUT_SIDE,
   el: InstanceType<typeof ImageCropArea>
 ) => {
-  if (sideName === 'refFaceSide') {
+  if (sideName === U3M_CUT_SIDE.FACE_SIDE) {
     refFaceSide.value = el
   }
-  if (sideName === 'refBackSide') {
+  if (sideName === U3M_CUT_SIDE.BACK_SIDE) {
     refBackSide.value = el
   }
 }
@@ -257,7 +254,7 @@ const closeModal = () => store.dispatch('helper/closeModal')
 store.dispatch('helper/pushModalLoading')
 onMounted(async () => {
   const getSide = async (
-    sideName: SideName,
+    sideName: U3M_CUT_SIDE,
     imageSrc: string,
     image: ScannedImage
   ): Promise<Side> => {
@@ -269,7 +266,7 @@ onMounted(async () => {
     await sideCropper.formatImage()
     const { config } = sideCropper
     const widthInCm = pixelToCm(config.image.width, config.dpi)
-    config.scaleRatio = widthInCm / scaleSizeInCm.value
+    config.scaleRatio = widthInCm.div(scaleSizeInCm.value).toNumber()
     if (image.cropRecord) {
       const { x, y, rotateDeg } = image.cropRecord
       config.options.x = x
@@ -280,11 +277,19 @@ onMounted(async () => {
   }
 
   if (faceSideUrl) {
-    faceSide.value = await getSide('refFaceSide', faceSideUrl, faceSideImg)
+    faceSide.value = await getSide(
+      U3M_CUT_SIDE.FACE_SIDE,
+      faceSideUrl,
+      faceSideImg
+    )
   }
 
   if (backSideUrl) {
-    backSide.value = await getSide('refBackSide', backSideUrl, backSideImg)
+    backSide.value = await getSide(
+      U3M_CUT_SIDE.BACK_SIDE,
+      backSideUrl,
+      backSideImg
+    )
   }
 })
 </script>

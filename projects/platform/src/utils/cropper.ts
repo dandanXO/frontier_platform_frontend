@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js'
-import type { U3M_CUT_SIDE } from './constants'
+import type { U3M_CUT_SIDE } from '@/utils/constants'
 
 export interface Image {
   width: number
@@ -67,21 +67,29 @@ export interface U3mImage {
  * 1 dpi = 0.393701 pixel/cm
  * 1 pixel/cm = 2.54 dpi
  */
-export const PX_PER_CM = 2.54
+export const CM_PER_INCH = 2.54
 
 /**
  * 目前 Cropper 相關的 rotation、scale 等數字，
  * 無論是呈現或是傳遞給後端 API 都是處理到小數點第一位。
  */
-export const toFixed1 = (n: number) => Number(n.toFixed(1))
+export const toDP1 = (n: number | Decimal) => {
+  if (typeof n === 'number') {
+    return new Decimal(n).toDP(1).toNumber()
+  }
+  return n.toDP(1).toNumber()
+}
 
-export const coordToFixed1 = (coord: Coord) => ({
-  x: toFixed1(coord.x),
-  y: toFixed1(coord.y),
+export const coordToDP1 = (coord: Coord) => ({
+  x: toDP1(coord.x),
+  y: toDP1(coord.y),
 })
 
-export const pixelToCm = (pixel: number, dpi: number, dp: number = 1) =>
-  new Decimal(pixel).mul(PX_PER_CM).div(dpi).toDP(dp).toNumber()
+export const pixelToCm = (pixel: number, dpi: number) =>
+  new Decimal(pixel).div(dpi).mul(CM_PER_INCH)
+
+export const cmToPixel = (cm: number, dpi: number) =>
+  new Decimal(cm).div(CM_PER_INCH).mul(dpi)
 
 const image2Object = (url: string): Promise<Image> => {
   return new Promise((resolve, reject) => {

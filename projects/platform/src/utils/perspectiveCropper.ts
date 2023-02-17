@@ -1,6 +1,6 @@
 import Konva from 'konva'
 import Pica from 'pica'
-import Decimal from 'decimal.js'
+import type Decimal from 'decimal.js'
 
 const pica = Pica()
 
@@ -14,14 +14,8 @@ export interface Point {
 export interface Dimension {
   dpi: number
   pixel: { width: number; height: number }
-  cm: { width: number; height: number }
+  cm: { width: Decimal; height: Decimal }
 }
-
-export const pixelToCm = (pixel: number, dpi: number, dp: number = 1) =>
-  new Decimal(pixel).mul(2.54).div(dpi).toDP(dp).toNumber()
-
-export const cmToPixel = (cm: number, dpi: number, dp: number = 1) =>
-  new Decimal(cm).div(2.54).mul(dpi).toDP(dp).toNumber()
 
 export const getDelta = (n1: number, n2: number) => Math.abs(n1 - n2)
 
