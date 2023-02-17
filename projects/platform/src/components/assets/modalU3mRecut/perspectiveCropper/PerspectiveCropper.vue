@@ -19,10 +19,11 @@ div(class="h-full flex flex-col")
         :class="{ 'border-2': activeArea === 'edit' }"
       )
       div(
-        v-if="!side.perspectiveEditStatus.isValid"
+        v-if="!side.perspectiveEditStatus.isSizeValid || !side.perspectiveEditStatus.isDirectionValid"
         class="absolute bottom-5 left-1/2 -translate-x-1/2 margin-auto"
       )
-        notify-bar {{ $t('WW0124') }}
+        notify-bar(v-if="!side.perspectiveEditStatus.isDirectionValid") {{ $t('WW0125') }}
+        notify-bar(v-else-if="!side.perspectiveEditStatus.isSizeValid") {{ $t('WW0124') }}
     div(class="relative flex-1 flex flex-col" @click="handleAreaClick('preview')")
       div(class="flex-1 rounded-lg bg-grey-900 overflow-hidden")
         div(ref="previewCanvasContainer" class="relative w-full h-full bg-grey-900")
@@ -87,9 +88,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import Decimal from 'decimal.js'
 import usePreview from '@/composables/usePreview'
-import usePerspectiveCropper, {
-  type EditStatus,
-} from '@/composables/usePerspectiveCropper'
+import usePerspectiveCropper from '@/composables/usePerspectiveCropper'
 import CanvasControl from '@/components/assets/modalU3mRecut/perspectiveCropper/CanvasControl.vue'
 import DimensionInfo from '@/components/assets/modalU3mRecut/perspectiveCropper/DimensionInfo.vue'
 import Divider from '@/components/assets/modalU3mRecut/perspectiveCropper/Divider.vue'
@@ -97,25 +96,10 @@ import LabelButton from '@/components/assets/modalU3mRecut/perspectiveCropper/La
 import InfoBlock from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoBlock.vue'
 import NotifyBar from '@/components/assets/modalU3mRecut/perspectiveCropper/NotifyBar.vue'
 import { CROPPER_GRID_COLORS, MODAL_CONFIRM_TYPE } from '@/utils/constants'
-import type { Dimension } from '@/utils/perspectiveCropper'
-import type { PerspectiveCropRecord, U3mImage } from '@/utils/cropper'
+import type { U3mSide, EditStatus, Dimension } from '@/types'
 
 const props = defineProps<{
-  side: {
-    title: string
-    ref: string
-    image: U3mImage
-    config: {
-      dpi: number
-      image: {
-        width: number
-        height: number
-        src: string
-      }
-    }
-    perspectiveEditStatus: EditStatus
-    perspectiveCropRecord?: PerspectiveCropRecord
-  }
+  side: U3mSide
 }>()
 
 const emit = defineEmits<{

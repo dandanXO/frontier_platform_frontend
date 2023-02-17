@@ -99,7 +99,7 @@ import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayo
 import useMaterialImage from '@/composables/useMaterialImage'
 import { Cropper, pixelToCm, toDP1 } from '@/utils/cropper'
 import { U3M_CUT_SIDE } from '@/utils/constants'
-import type { Side, SquareCropRecord, ScannedImage } from '@/utils/cropper'
+import type { Side, SquareCropRecord, ScannedImage } from '@/types'
 
 const props = defineProps<{
   afterCropHandler: (params: {

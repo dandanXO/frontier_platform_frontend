@@ -23,7 +23,6 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
       template(v-if="side.cropMode === CROP_MODE.PERSPECTIVE")
         perspective-cropper(
           v-if="side.sideName === currentSideName"
-          :currentSide="currentSideName"
           :side="side"
           :ref="(el) => handlePerspectiveCropAreaRefUpdate(side.sideName, el)"
           @update:editStatus="handlePerspectiveEditStatusChange"
@@ -92,24 +91,7 @@ import {
   MODAL_TYPE,
 } from '@/utils/constants'
 import { coordToDP1, Cropper, pixelToCm, toDP1 } from '@/utils/cropper'
-import type {
-  Side,
-  U3mCropRecord,
-  PerspectiveCropRecord,
-  U3mImage,
-} from '@/utils/cropper'
-import type { EditStatus } from '@/composables/usePerspectiveCropper'
-
-interface U3mSide extends Side {
-  title: string
-  cropMode: CROP_MODE
-  scaleSizeInCm: number
-  scaleStartInCm: number
-  croppedImage: File | null
-  perspectiveEditStatus: EditStatus
-  perspectiveCropRecord?: PerspectiveCropRecord
-  image: U3mImage
-}
+import type { EditStatus, U3mCropRecord, U3mImage, U3mSide } from '@/types'
 
 const cropRectSize = 176
 const scaleOptions = {
@@ -169,7 +151,9 @@ const isValid = computed(() => {
     return false
   }
   if (currentSide.value.cropMode === CROP_MODE.PERSPECTIVE) {
-    return currentSide.value.perspectiveEditStatus.isValid
+    const { isSizeValid, isDirectionValid } =
+      currentSide.value.perspectiveEditStatus
+    return isSizeValid && isDirectionValid
   }
   return true
 })
@@ -496,7 +480,8 @@ onMounted(async () => {
       scaleSizeInCm,
       scaleStartInCm: scaleSizeInCm,
       perspectiveEditStatus: {
-        isValid: true,
+        isSizeValid: true,
+        isDirectionValid: true,
         isPositionsDirty: false,
         isRotationDirty: false,
       },

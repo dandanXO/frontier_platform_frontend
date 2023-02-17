@@ -1,3 +1,6 @@
+import type { CROP_MODE, U3M_CUT_SIDE } from '@/utils/constants'
+import type Decimal from 'decimal.js'
+
 export interface Material {
   materialId: number
   materialNo: string
@@ -31,6 +34,92 @@ export enum FROM_LOCATION_TYPE {
   SHARED_WITH_ME = 5,
   SHARED_RECEIVE_PAGE = 6,
   EMBED = 7,
+}
+
+export interface Image {
+  width: number
+  height: number
+  src: string
+}
+
+export interface CropperConfig {
+  image: Image
+  dpi: number
+  rotateDeg: number
+  scaleRatio: number
+  options: {
+    x: number
+    y: number
+    width: number
+    height: number
+    initWidth: number
+    initHeight: number
+    imgWidth: number
+    imgHeight: number
+  }
+}
+
+export interface Side {
+  sideName: U3M_CUT_SIDE
+  config: CropperConfig
+  rotateStart: number
+}
+
+export interface U3mSide extends Side {
+  title: string
+  cropMode: CROP_MODE
+  scaleSizeInCm: number
+  scaleStartInCm: number
+  croppedImage: File | null
+  perspectiveEditStatus: EditStatus
+  perspectiveCropRecord?: PerspectiveCropRecord
+  image: U3mImage
+}
+
+export interface Coord {
+  x: number
+  y: number
+}
+
+export interface SquareCropRecord extends Coord {
+  rotateDeg: number
+  scaleRatio: number
+}
+
+export interface PerspectiveCropRecord {
+  leftTop: Coord
+  leftBottom: Coord
+  rightTop: Coord
+  rightBottom: Coord
+  rotateDeg: number
+}
+
+export interface U3mCropRecord {
+  squareCropRecord?: SquareCropRecord
+  perspectiveCropRecord?: PerspectiveCropRecord
+}
+
+export interface ScannedImage {
+  cropRecord?: SquareCropRecord
+  dpi: number
+}
+
+export interface U3mImage {
+  u3mCropRecord: U3mCropRecord
+  dpi: number
+}
+
+export interface EditStatus {
+  isSizeValid: boolean
+  isDirectionValid: boolean
+  isPositionsDirty: boolean
+  isRotationDirty: boolean
+}
+
+export interface Dimension {
+  dpi: number
+  pixel: { width: number; height: number }
+  cm: { width: Decimal; height: Decimal }
 }
 
 export interface DownloadLogPayload {

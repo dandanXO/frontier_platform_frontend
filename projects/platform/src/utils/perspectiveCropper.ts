@@ -1,31 +1,20 @@
 import Konva from 'konva'
 import Pica from 'pica'
-import type Decimal from 'decimal.js'
+import type { Coord } from '@/types'
 
 const pica = Pica()
 
 const FIT_PERCENTAGE = 0.95
 
-export interface Point {
-  x: number
-  y: number
-}
-
-export interface Dimension {
-  dpi: number
-  pixel: { width: number; height: number }
-  cm: { width: Decimal; height: Decimal }
-}
-
 export const getDelta = (n1: number, n2: number) => Math.abs(n1 - n2)
 
-export const getDistance = (p1: Point, p2: Point) => {
+export const getDistance = (p1: Coord, p2: Coord) => {
   const dx = getDelta(p1.x, p2.x)
   const dy = getDelta(p1.y, p2.y)
   return Math.sqrt(dx ** 2 + dy ** 2)
 }
 
-export const getCenter = (p1: Point, p2: Point) => ({
+export const getCenter = (p1: Coord, p2: Coord) => ({
   x: (p1.x + p2.x) / 2,
   y: (p1.y + p2.y) / 2,
 })
@@ -121,7 +110,7 @@ export const setupStage = (
   stage.offset(fitOffset)
   stage.scale({ x: fitScale, y: fitScale })
   onScaleChange(fitScale)
-  let lastCenter: Point | null = null
+  let lastCenter: Coord | null = null
   let lastDist = 0
   stage.on('touchstart', () => {
     stage.container().style.cursor = 'move'

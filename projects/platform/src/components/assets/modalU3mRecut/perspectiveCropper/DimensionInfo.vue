@@ -7,7 +7,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import InfoBlock from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoBlock.vue'
 import { toDP1 } from '@/utils/cropper'
-import type { Dimension } from '@/utils/perspectiveCropper'
+import type { Dimension } from '@/types'
 
 const props = defineProps<{
   iconName: string

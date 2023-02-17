@@ -12,15 +12,13 @@ import {
 import { pixelToCm, cmToPixel, toDP1 } from '@/utils/cropper'
 import tempFilenameGenerator from '@/utils/temp-filename-generator'
 import type { Ref } from 'vue'
-import type { Point, Dimension } from '@/utils/perspectiveCropper'
-import type { Coord, PerspectiveCropRecord } from '@/utils/cropper'
 import type { TextConfig } from 'konva/lib/shapes/Text'
-
-export interface EditStatus {
-  isValid: boolean
-  isPositionsDirty: boolean
-  isRotationDirty: boolean
-}
+import type {
+  Coord,
+  Dimension,
+  EditStatus,
+  PerspectiveCropRecord,
+} from '@/types'
 
 const DEFAULT_CROP_CM = 4
 const MIN_CROP_CM = 1
@@ -284,7 +282,8 @@ class PerspectiveCropper {
     this.restoreRecord = restoreRecord
     this.gridColor = initialGridColor
     this.editStatus = {
-      isValid: true,
+      isSizeValid: true,
+      isDirectionValid: true,
       isRotationDirty: false,
       isPositionsDirty: false,
     }
@@ -425,7 +424,7 @@ class PerspectiveCropper {
     const image = this.displayImage
     const degToRad = Math.PI / 180
 
-    const rotatePoint = ({ x, y }: Point, deg: number) => {
+    const rotatePoint = ({ x, y }: Coord, deg: number) => {
       const rcos = Math.cos(deg * degToRad)
       const rsin = Math.sin(deg * degToRad)
       return { x: x * rcos - y * rsin, y: y * rcos + x * rsin }
@@ -471,15 +470,24 @@ class PerspectiveCropper {
       return p1.x === p2.x && p1.y === p2.y
     }
 
-    const isValid = [
+    const isSizeValid = [
       this.leftSideInCm,
       this.topSideInCm,
       this.rightSideInCm,
       this.bottomSideInCm,
     ].every((sideInCm) => sideInCm.gte(MIN_CROP_CM))
 
-    if (this.editStatus.isValid !== isValid) {
-      if (isValid) {
+    const isDirectionValid =
+      this.circleLeftTop.position().y < this.circleLeftBottom.position().y &&
+      this.circleRightTop.position().y < this.circleRightBottom.position().y &&
+      this.circleLeftTop.position().x < this.circleRightTop.position().x &&
+      this.circleLeftBottom.position().x < this.circleRightBottom.position().x
+
+    if (
+      this.editStatus.isSizeValid !== isSizeValid ||
+      this.editStatus.isDirectionValid !== isDirectionValid
+    ) {
+      if (isSizeValid && isDirectionValid) {
         this.updateGridColor(this.gridColor)
         this.errorLine.visible(false)
       } else {
@@ -503,7 +511,8 @@ class PerspectiveCropper {
       )
 
       this.editStatus = {
-        isValid,
+        isSizeValid,
+        isDirectionValid,
         isPositionsDirty,
         isRotationDirty: this.rotateDeg !== this.restoreRecord.rotateDeg,
       }
@@ -521,7 +530,8 @@ class PerspectiveCropper {
     )
 
     this.editStatus = {
-      isValid,
+      isSizeValid,
+      isDirectionValid,
       isPositionsDirty,
       isRotationDirty: this.rotateDeg !== 0,
     }
@@ -541,21 +551,21 @@ class PerspectiveCropper {
   cropToCanvas() {
     this.onCropStart()
     try {
-      const getDestinationWidth = (points: Point[]) => {
+      const getDestinationWidth = (points: Coord[]) => {
         const [leftTop, rightTop, rightBottom, leftBottom] = points
         const topWidth = getDistance(leftTop, rightTop)
         const bottomWidth = getDistance(leftBottom, rightBottom)
         return Math.floor((topWidth + bottomWidth) / 2)
       }
 
-      const getDestinationHeight = (points: Point[]) => {
+      const getDestinationHeight = (points: Coord[]) => {
         const [leftTop, rightTop, rightBottom, leftBottom] = points
         const leftHeight = getDistance(leftTop, leftBottom)
         const rightHeight = getDistance(rightTop, rightBottom)
         return Math.floor((leftHeight + rightHeight) / 2)
       }
 
-      const rotateLeft = (src: Point[], n: number) => {
+      const rotateLeft = (src: Coord[], n: number) => {
         const dst = src.slice()
         for (let i = 0; i < n; i++) {
           const point = dst.shift()
@@ -565,7 +575,7 @@ class PerspectiveCropper {
         return dst
       }
 
-      const rotateRight = (src: Point[], n: number) => {
+      const rotateRight = (src: Coord[], n: number) => {
         const dst = src.slice()
         for (let i = 0; i < n; i++) {
           const point = dst.pop()
@@ -745,15 +755,16 @@ class PerspectiveCropper {
       x: this.bottomSideInfoRect.position().x + leftPadding,
       y: this.bottomSideInfoRect.position().y + topPadding,
     })
-
-    this.leftSideInfoText.rotation(-this.rotateDeg)
-    this.leftSideInfoRect.rotation(-this.rotateDeg)
-    this.topSideInfoText.rotation(-this.rotateDeg)
-    this.topSideInfoRect.rotation(-this.rotateDeg)
-    this.rightSideInfoText.rotation(-this.rotateDeg)
-    this.rightSideInfoRect.rotation(-this.rotateDeg)
-    this.bottomSideInfoText.rotation(-this.rotateDeg)
-    this.bottomSideInfoRect.rotation(-this.rotateDeg)
+    ;[
+      this.leftSideInfoText,
+      this.leftSideInfoRect,
+      this.topSideInfoText,
+      this.topSideInfoRect,
+      this.rightSideInfoText,
+      this.rightSideInfoRect,
+      this.bottomSideInfoText,
+      this.bottomSideInfoRect,
+    ].forEach((i) => i.rotation(-this.rotateDeg))
   }
 
   zoomToFit() {
