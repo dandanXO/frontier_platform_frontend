@@ -152,7 +152,7 @@ f-input-container(
       @click="$emit('click:button')"
     )
       f-svg-icon(v-if="button.icon" :iconName="button.icon" size="24")
-      p(v-if="button.text" class="cursor-pointer") {{ te(button.text) ? $t(button.text) : button.text }}
+      p(v-if="button.text" class="cursor-pointer whitespace-nowrap") {{ te(button.text) ? $t(button.text) : button.text }}
   template(v-if="slots['slot:hint-error']" #slot:hint-error)
     slot(name="slot:hint-error")
   template(v-if="slots['slot:hint-supporting']" #slot:hint-supporting)
