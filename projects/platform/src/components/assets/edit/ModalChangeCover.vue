@@ -82,13 +82,14 @@ const imageList = computed(() => {
   )
 
   for (let i = 0; i < attachmentImageList.value.length; i++) {
-    const { materialAttachmentId, displayFileName, url } =
+    const { materialAttachmentId, displayFileName, url, isCover } =
       attachmentImageList.value[i]
 
     list.push({
       materialAttachmentId,
       name: displayFileName,
       imgSrc: url,
+      cropRecord: isCover ? material.value.attachmentCropImageRecord : null,
     })
   }
 
@@ -100,7 +101,7 @@ const choose = async () => {
 
   if (coverImageIndex.value - 2 >= 0) {
     const targetAttachment = imageList.value[coverImageIndex.value]
-    const { materialAttachmentId, imgSrc } = targetAttachment
+    const { materialAttachmentId, imgSrc, cropRecord } = targetAttachment
     const image = await image2Object(imgSrc)
     store.dispatch('helper/pushModalBehavior', {
       component: 'modal-crop-image',
@@ -108,11 +109,13 @@ const choose = async () => {
         title: t('EE0048'),
         image,
         cropRectSize: 200,
-        afterCropHandler: async (croppedImage) => {
+        cropRecord,
+        afterCropHandler: async (croppedImage, _file, cropRecord) => {
           await store.dispatch('assets/changeCoverImg', {
             coverMode: COVER_MODE.SUP,
             materialAttachmentId,
             attachmentCropImg: croppedImage,
+            attachmentCropImageRecord: cropRecord,
           })
           closeModal()
           store.dispatch('helper/reloadInnerApp')

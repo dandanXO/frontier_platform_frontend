@@ -85,6 +85,16 @@ export const coordToDP1 = (coord: Coord) => ({
   y: toDP1(coord.y),
 })
 
+export const configToRecord = (config: CropperConfig): SquareCropRecord => {
+  const { options, rotateDeg, scaleRatio } = config
+  return {
+    x: toDP1(options.x),
+    y: toDP1(options.y),
+    rotateDeg: toDP1(rotateDeg),
+    scaleRatio: toDP1(scaleRatio),
+  }
+}
+
 export const pixelToCm = (pixel: number, dpi: number) =>
   new Decimal(pixel).div(dpi).mul(CM_PER_INCH)
 
