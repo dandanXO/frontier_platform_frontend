@@ -82,10 +82,6 @@ export default {
     }
 
     const removeTrendBoard = () => {
-      if (!uploadTrendBoardName.value) {
-        return
-      }
-
       props.mode === MODE.EDIT &&
         store.dispatch('workspace/removeTrendBoard', {
           collectionId: collectionId.value,
