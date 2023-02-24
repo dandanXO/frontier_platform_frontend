@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js'
-import type { Image, Coord, CropperConfig } from '@/types'
+import type { Image, Coord, CropperConfig, SquareCropRecord } from '@/types'
 
 /**
  * 1 dpi = 0.393701 pixel/cm
@@ -7,29 +7,39 @@ import type { Image, Coord, CropperConfig } from '@/types'
  */
 export const CM_PER_INCH = 2.54
 
+const toDP = (n: number | Decimal, dp: number) => {
+  if (typeof n === 'number') {
+    return new Decimal(n).toDP(dp).toNumber()
+  }
+  return n.toDP(dp).toNumber()
+}
+
 /**
- * 目前 Cropper 相關的 rotation、scale 等數字，
+ * 目前 Cropper 相關的 rotation、scale (cm) 等數字，
  * 無論是呈現或是傳遞給後端 API 都是處理到小數點第一位。
  */
-export const toDP1 = (n: number | Decimal) => {
-  if (typeof n === 'number') {
-    return new Decimal(n).toDP(1).toNumber()
-  }
-  return n.toDP(1).toNumber()
-}
+export const toDP1 = (n: number | Decimal) => toDP(n, 1)
+
+/**
+ * 目前 Cropper 的 scale (百分比) 數字，
+ * 無論是呈現或是傳遞給後端 API 都是處理到小數點第二位。
+ */
+export const toDP2 = (n: number | Decimal) => toDP(n, 2)
 
 export const coordToDP1 = (coord: Coord) => ({
   x: toDP1(coord.x),
   y: toDP1(coord.y),
 })
 
-export const configToRecord = (config: CropperConfig): SquareCropRecord => {
+export const configToPercentScaleRecord = (
+  config: CropperConfig
+): SquareCropRecord => {
   const { options, rotateDeg, scaleRatio } = config
   return {
     x: toDP1(options.x),
     y: toDP1(options.y),
     rotateDeg: toDP1(rotateDeg),
-    scaleRatio: toDP1(scaleRatio),
+    scaleRatio: toDP2(scaleRatio),
   }
 }
 

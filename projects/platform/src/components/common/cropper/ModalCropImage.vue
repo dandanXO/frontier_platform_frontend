@@ -30,7 +30,7 @@ import { reactive, computed, ref, toRaw } from 'vue'
 import { useStore } from 'vuex'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
-import { Cropper, configToRecord } from '@/utils/cropper'
+import { Cropper, configToPercentScaleRecord } from '@/utils/cropper'
 
 const props = defineProps({
   title: {
@@ -80,7 +80,7 @@ const rotateStart = config.rotateDeg
 const confirm = async () => {
   store.dispatch('helper/pushModalLoading')
   const croppedImage = await imageCropper.value?.cropImage()
-  const record = configToRecord(config)
+  const record = configToPercentScaleRecord(config)
   await props.afterCropHandler(croppedImage, props.image?.file, record)
   store.dispatch('helper/closeModalLoading')
   closeModal()

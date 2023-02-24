@@ -96,6 +96,7 @@ import LabelButton from '@/components/assets/modalU3mRecut/perspectiveCropper/La
 import InfoBlock from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoBlock.vue'
 import NotifyBar from '@/components/assets/modalU3mRecut/perspectiveCropper/NotifyBar.vue'
 import { CROPPER_GRID_COLORS, MODAL_CONFIRM_TYPE } from '@/utils/constants'
+import { toDP2 } from '@/utils/cropper'
 import type { U3mSide, EditStatus, Dimension } from '@/types'
 
 const props = defineProps<{
@@ -203,7 +204,6 @@ const cropImage = () => perspectiveCropper.value?.getCroppedImage()
 const restore = () => perspectiveCropper.value?.restore()
 
 const step = 0.01
-const toDP2 = (v: Decimal) => v.toDP(2).toNumber()
 const stepAdd = (v: number) => toDP2(new Decimal(v).add(step))
 const stepMinus = (v: number) => toDP2(new Decimal(v).sub(step))
 
