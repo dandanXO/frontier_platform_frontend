@@ -2,6 +2,26 @@
 #pagination-container {
   padding-bottom: 152px;
 }
+
+.v-enter-active {
+  transition: all 0.2s ease-out;
+}
+.v-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.v-enter-to {
+  opacity: 0;
+  height: 324px;
+}
+.v-enter-from {
+  opacity: 0;
+  height: 0px;
+}
+.v-leave-to {
+  opacity: 0;
+  height: 0px;
+}
 </style>
 
 <template lang="pug">
@@ -33,7 +53,6 @@ div(class="max-w-315 h-full mx-auto pt-10")
         class="px-7.5 pb-8 pt-1.5"
       )
         f-expansion-panel(
-          isExpand
           class="drop-shadow-2 rounded border border-grey-150 overflow-hidden"
         )
           template(#trigger="{ isExpand }")
@@ -48,7 +67,7 @@ div(class="max-w-315 h-full mx-auto pt-10")
               ) {{ collection.description }}
               span(
                 class="text-body2 flex-grow"
-                :class="[isExpand ? 'text-grey-400' : 'text-primary-400']"
+                :class="[isExpand ? 'text-grey-400 invisible group-hover:visible' : 'text-primary-400']"
               ) {{ isExpand ? 'Show less' : 'Show more' }}
               div(
                 v-if="isExpand"

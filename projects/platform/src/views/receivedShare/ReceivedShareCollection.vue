@@ -62,7 +62,6 @@ div(class="max-w-315 h-full mx-auto")
         class="px-7.5 pb-8 pt-1.5"
       )
         f-expansion-panel(
-          isExpand
           class="drop-shadow-2 rounded border border-grey-150 overflow-hidden bg-transparent"
         )
           template(#trigger="{ isExpand }")
@@ -77,7 +76,7 @@ div(class="max-w-315 h-full mx-auto")
               ) {{ collection.description }}
               span(
                 class="text-body2 flex-grow"
-                :class="[isExpand ? 'text-grey-400' : 'text-primary-400']"
+                :class="[isExpand ? 'text-grey-400 invisible group-hover:visible' : 'text-primary-400']"
               ) {{ isExpand ? 'Show less' : 'Show more' }}
               div(
                 v-if="isExpand"
