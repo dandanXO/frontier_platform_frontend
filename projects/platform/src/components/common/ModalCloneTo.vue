@@ -166,25 +166,25 @@ watch(
   }
 )
 
-watch(
-  () => selectedOrgId.value,
-  async () => {
-    isExceedU3mStorage.value = false
-    isExceedMaterialStorage.value = false
-    selectedLocationList.value.length = 0
-    await store.dispatch('organization/getOrg', { orgNo: selectedOrgNo.value })
-    if (
-      1 * estimatedQuota.value.material >
-      remainingQuota.value.material.max - remainingQuota.value.material.used
-    ) {
-      if (props.crossOrg) {
-        isExceedMaterialStorage.value = true
-      } else {
-        openModalConfirmReachMaterialStorage()
-      }
+const innerCheckHandler = async () => {
+  isExceedU3mStorage.value = false
+  isExceedMaterialStorage.value = false
+  selectedLocationList.value.length = 0
+  await store.dispatch('organization/getOrg', { orgNo: selectedOrgNo.value })
+  estimatedQuota.value = await props.checkHandler(selectedOrgId.value)
+  if (
+    1 * estimatedQuota.value.material >
+    remainingQuota.value.material.max - remainingQuota.value.material.used
+  ) {
+    if (props.crossOrg) {
+      isExceedMaterialStorage.value = true
+    } else {
+      openModalConfirmReachMaterialStorage()
     }
   }
-)
+}
+
+watch(() => selectedOrgId.value, innerCheckHandler)
 
 const goToBillings = () => {
   router.push(`/${selectedOrgNo.value}/billings/plan`)
@@ -234,16 +234,5 @@ const submit = async () => {
   }
 }
 
-await store.dispatch('organization/getOrg', { orgNo: selectedOrgNo.value })
-estimatedQuota.value = await props.checkHandler(selectedOrgId.value)
-if (
-  1 * estimatedQuota.value.material >
-  remainingQuota.value.material.max - remainingQuota.value.material.used
-) {
-  if (props.crossOrg) {
-    isExceedMaterialStorage.value = true
-  } else {
-    openModalConfirmReachMaterialStorage()
-  }
-}
+await innerCheckHandler()
 </script>
