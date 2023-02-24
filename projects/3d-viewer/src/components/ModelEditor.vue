@@ -4,7 +4,6 @@ import 'vue3-carousel/dist/carousel.css'
 import useScene from '../composables/useScene'
 import useModels from '../composables/useModels'
 import useU3M from '../composables/useU3M'
-import useColors from '../composables/useColors'
 import useBreakpoints from '../composables/useBreakpoints'
 import useKeyboard from '../composables/useKeyboard'
 import { DISPLAY_MODE, TEXTURE_TYPE } from '../constants'
@@ -51,11 +50,19 @@ const {
 const {
   modelIndex,
   currentModel,
-  material,
   scale,
+  pantoneList,
+  currentColors,
+  colorRemovable,
+  colorAddable,
   loadModel,
+  moireEffectPreventToggle,
   handleScaleChange,
   handleScaleReset,
+  handleColorChange,
+  handleColorInput,
+  handleColorAdd,
+  handleColorRemove,
 } = useModels(
   scene,
   u3m,
@@ -66,17 +73,6 @@ const {
   props.dispImgUrl,
   loading
 )
-const {
-  pantoneList,
-  currentColors,
-  colorRemovable,
-  colorAddable,
-  analyzeImage,
-  handleColorChange,
-  handleColorInput,
-  handleColorAdd,
-  handleColorRemove,
-} = useColors(props.baseImgUrl, material, 10)
 
 const displayMode = ref(DISPLAY_MODE.MODEL)
 const textureType = ref(TEXTURE_TYPE.BASE)
@@ -134,7 +130,6 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
         :isAlphaChanged="isAlphaChanged"
         :isRoughnessChanged="isRoughnessChanged"
         :isSpecularChanged="isSpecularChanged"
-        :analyzeImage="analyzeImage"
         @toggleExpand="handleSidebarToggle"
         @colorAdd="handleColorAdd"
         @colorRemove="handleColorRemove"
@@ -149,6 +144,7 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
         @scaleReset="handleScaleReset"
         @scaleChange="handleScaleChange"
         @screenshot="takeScreenShot"
+        @toggleMoireEffectPrevent="moireEffectPreventToggle"
       )
       hidden-sidebar(
         v-show="!sidebarExpanded && largerThenMd"

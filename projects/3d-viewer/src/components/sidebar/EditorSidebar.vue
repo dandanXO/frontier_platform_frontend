@@ -92,6 +92,13 @@ div(
           prependIcon="camera"
           @click="emit('screenshot')"
         ) {{ $t('UU0125') }}
+        //- This moire effect prevent on/off button is only for testing purpose, DON'T use in prod env.
+        //- f-button(
+        //-   theme="dark"
+        //-   size="sm"
+        //-   prependIcon="camera"
+        //-   @click="emit('toggleMoireEffectPrevent')"
+        //- ) MoireEffect
       //- input(ref="fileInput" type="file" @change="handleUploadModel")
   toggle-expand-button(
     class="z-1"
@@ -120,7 +127,6 @@ defineProps<{
   isAlphaChanged: boolean
   isRoughnessChanged: boolean
   isSpecularChanged: boolean
-  analyzeImage: () => void
 }>()
 
 const emit = defineEmits<{
@@ -138,6 +144,7 @@ const emit = defineEmits<{
   (e: 'scaleChange', v: number): void
   (e: 'screenshot'): void
   (e: 'toggleExpand'): void
+  (e: 'toggleMoireEffectPrevent'): void
 }>()
 
 const { largerThenMd } = useBreakpoints()

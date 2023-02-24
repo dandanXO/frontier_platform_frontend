@@ -31,13 +31,12 @@ export const getDiff = (
 }
 
 export default function useColors(
-  baseImgUrl: string,
   material: Ref<THREE.MeshStandardMaterial | undefined>,
+  baseTexture: Ref<THREE.Texture | undefined>,
+  baseImage: Ref<HTMLImageElement | undefined>,
   maxColorCount: number
 ) {
-  const img = ref<HTMLImageElement>()
-  const canvas = ref<HTMLCanvasElement>()
-
+  const baseTextureCanvas = ref<HTMLCanvasElement>()
   const paletteColorCount = ref<number>(1)
   const originColors = ref<string[]>([])
   const currentColors = ref<string[]>(['#ffffff'])
@@ -51,51 +50,56 @@ export default function useColors(
   )
   const colorRemovable = computed(() => currentColors.value.length > 1)
 
-  const updateMaterial = () => {
-    if (!material.value?.map || !canvas.value) return
-    const originTexture = material.value.map
-    const changedTexture = new THREE.TextureLoader().load(
-      canvas.value.toDataURL()
-    )
-
-    changedTexture.wrapS = originTexture.wrapS
-    changedTexture.wrapT = originTexture.wrapT
-    changedTexture.repeat.set(originTexture.repeat.x, originTexture.repeat.y)
-    changedTexture.flipY = originTexture.flipY
-    changedTexture.needsUpdate = true
-
-    material.value.map = changedTexture
-  }
-
   const analyzeImage = () => {
-    if (!img.value || !canvas.value) return
+    if (!baseTextureCanvas.value) return
 
-    const timerName = 'analyze'
+    const timerName = 'analyze image colors'
     console.time(timerName)
 
-    const ctx = canvas.value.getContext('2d')
+    const analyzeCanvas = document.createElement('canvas')
+    analyzeCanvas.width = baseTextureCanvas.value.width
+    analyzeCanvas.height = baseTextureCanvas.value.height
+    const ctx = analyzeCanvas.getContext('2d')
     if (!ctx) return
-    ctx.drawImage(img.value, 0, 0)
+    ctx.drawImage(baseTextureCanvas.value, 0, 0)
 
     const q = new RgbQuant({ colors: paletteColorCount.value, minHueCols: 256 })
-    q.sample(canvas.value)
+    q.sample(analyzeCanvas)
     const palette = q.palette(true) as PixelRgb
 
     originImageData.value = ctx.getImageData(
       0,
       0,
-      canvas.value.width,
-      canvas.value.height
+      analyzeCanvas.width,
+      analyzeCanvas.height
     )
     currentImageData.value = originImageData.value
 
     originColors.value = palette.map((color) => chroma(color).hex())
     currentColors.value = originColors.value
 
-    reducerOut.value = q.reduce(canvas.value, 1)
+    reducerOut.value = q.reduce(analyzeCanvas, 1)
     console.timeEnd(timerName)
+  }
 
-    updateMaterial()
+  const setMaterialTexture = (canvas: HTMLCanvasElement) => {
+    const originTexture = baseTexture.value
+    if (!material.value || !originTexture) return
+
+    baseTexture.value = new THREE.TextureLoader().load(canvas.toDataURL())
+    baseTexture.value.wrapS = originTexture.wrapS
+    baseTexture.value.wrapT = originTexture.wrapT
+    baseTexture.value.repeat.set(originTexture.repeat.x, originTexture.repeat.y)
+    baseTexture.value.flipY = originTexture.flipY
+    baseTexture.value.minFilter = THREE.LinearMipMapLinearFilter
+
+    material.value.map = baseTexture.value
+    material.value.needsUpdate = true
+  }
+
+  const resetMaterialTexture = () => {
+    if (!baseTextureCanvas.value) return
+    setMaterialTexture(baseTextureCanvas.value)
   }
 
   const handleColorAdd = () => {
@@ -108,7 +112,7 @@ export default function useColors(
 
   const handleColorChange = (targetColor: string, index: number) => {
     if (
-      !canvas.value ||
+      !baseTextureCanvas.value ||
       !targetColor ||
       !currentColors.value[index] ||
       !reducerOut.value
@@ -119,7 +123,7 @@ export default function useColors(
     currentColors.value = [...currentColors.value]
     currentColors.value[index] = targetColor
 
-    if (!img.value) return
+    if (!baseImage.value) return
     if (!currentImageData.value) return
     if (!originImageData.value) return
 
@@ -128,8 +132,8 @@ export default function useColors(
 
     const reduceOutPixelsValue = reducerOut.value
 
-    const timerName = 'change color'
-    console.time(timerName)
+    const changeColorTimerName = 'change color'
+    console.time(changeColorTimerName)
     const processedImageDataContent = new Uint8ClampedArray(
       currentImageData.value.data.length
     )
@@ -162,9 +166,12 @@ export default function useColors(
         processedImageDataContent[i + 3] = currentImageData.value.data[i + 3]
       }
     }
-    console.timeEnd(timerName)
+    console.timeEnd(changeColorTimerName)
 
-    const ctx = canvas.value.getContext('2d')
+    const changedColorCanvas = document.createElement('canvas')
+    changedColorCanvas.width = baseImage.value.naturalWidth
+    changedColorCanvas.height = baseImage.value.naturalHeight
+    const ctx = changedColorCanvas.getContext('2d')
     if (!ctx) return
 
     currentImageData.value = new ImageData(
@@ -174,26 +181,24 @@ export default function useColors(
       { colorSpace: currentImageData.value.colorSpace }
     )
     ctx.putImageData(currentImageData.value, 0, 0)
-    updateMaterial()
+    setMaterialTexture(changedColorCanvas)
   }
 
   const handleColorInput = debounce(handleColorChange, 200)
 
-  watch(paletteColorCount, analyzeImage)
-
-  const initCanvas = () => {
-    if (!img.value) return
-    canvas.value = document.createElement('canvas')
-    canvas.value.width = img.value.naturalWidth
-    canvas.value.height = img.value.naturalHeight
+  watch([paletteColorCount, baseTextureCanvas], () => {
     analyzeImage()
-  }
+    resetMaterialTexture()
+  })
 
-  onMounted(() => {
-    img.value = document.createElement('img')
-    img.value.src = baseImgUrl
-    img.value.crossOrigin = 'anonymous'
-    img.value.onload = initCanvas
+  watch(baseImage, () => {
+    if (!baseImage.value) return
+    baseTextureCanvas.value = document.createElement('canvas')
+    baseTextureCanvas.value.width = baseImage.value.naturalWidth
+    baseTextureCanvas.value.height = baseImage.value.naturalHeight
+    const ctx = baseTextureCanvas.value.getContext('2d')
+    if (!ctx) return
+    ctx.drawImage(baseImage.value, 0, 0)
   })
 
   onMounted(async () => {
@@ -211,7 +216,6 @@ export default function useColors(
     currentColors,
     colorAddable,
     colorRemovable,
-    analyzeImage,
     handleColorChange,
     handleColorInput,
     handleColorAdd,
