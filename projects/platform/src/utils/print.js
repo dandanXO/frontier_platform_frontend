@@ -278,7 +278,7 @@ const printGeneralLabel = async (materialList) => {
           </div>
           <div class="flex justify-center w-full">
             <div class="flex flex-col items-center justify-center">
-              <div class="max-w-56 line-clamp-2 text-grey-900 font-bold text-body1 !leading-1.3">${
+              <div class="w-56 text-center line-clamp-2 text-grey-900 font-bold text-body1 !leading-1.3">${
                 material.materialNo
               }</div>
               <div id="container" class="mt-4 mb-4"></div>
