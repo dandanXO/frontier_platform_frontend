@@ -127,7 +127,7 @@ f-input-container(
       template(#trigger="{ isExpand }")
         div(
           v-if="isExpand"
-          class="absolute z-1 top-0 left-0 w-full h-full border-[1.5px] rounded-r outline outline-offset-0 outline-4 outline-primary-0 border-primary-300"
+          class="absolute z-1 top-0 left-0 w-full h-full border rounded-r outline outline-offset-0 outline-4 outline-primary-0 border-primary-300"
         )
         slot(
           name="slot:right-dropdown-trigger"
@@ -447,7 +447,7 @@ const decrease = () => {
 const classMain = computed(() => {
   const classList = [
     ...classTransition.value,
-    'border-[1.5px]',
+    'border',
     'rounded',
     'flex',
     'items-center',
@@ -466,10 +466,10 @@ const classMain = computed(() => {
 
   switch (state.value) {
     case STATE.DEFAULT:
-      classList.push('border-grey-150', 'bg-grey-0')
+      classList.push('border-grey-200', 'bg-grey-0')
       break
     case STATE.HOVER:
-      classList.push('border-grey-150', 'bg-grey-50')
+      classList.push('border-grey-250', 'bg-grey-50')
       break
     case STATE.FOCUS:
       classList.push(
@@ -483,7 +483,7 @@ const classMain = computed(() => {
       )
       break
     case STATE.DISABLED:
-      classList.push('border-none', 'cursor-not-allowed', 'bg-grey-100')
+      classList.push('border-grey-200', 'cursor-not-allowed', 'bg-grey-100')
       break
   }
 
@@ -574,8 +574,8 @@ const classIcon = computed(() => {
 
 const classAddon = computed(() => {
   const classList = [
-    'border-[1.5px]',
-    'border-grey-150',
+    'border',
+    'border-grey-250',
     'flex',
     'items-center',
     'px-4',
@@ -601,8 +601,8 @@ const classButton = computed(() => {
       classList.push(
         'bg-grey-0',
         'text-primary-400',
-        'border-[1.5px]',
-        'border-grey-150',
+        'border',
+        'border-grey-250',
         'border-l-0'
       )
       break

@@ -7,8 +7,8 @@ f-input-container(
 )
   div(
     ref="refInput"
-    class="px-3 py-1.5 rounded border-[1.5px] outline-none text-body2 leading-1.6 text-grey-900"
-    :class="[minHeight, disabled ? 'bg-grey-50 border-none cursor-not-allowed' : 'bg-grey-0', isError ? 'border-red-300' : 'border-grey-150']"
+    class="px-3 py-1.5 rounded border outline-none text-body2 leading-1.6 text-grey-900"
+    :class="[minHeight, disabled ? 'bg-grey-50 border-none cursor-not-allowed' : 'bg-grey-0', isError ? 'border-red-300' : 'border-grey-250']"
     :contenteditable="!disabled"
     @input="onInput"
     @focus="onFocus"

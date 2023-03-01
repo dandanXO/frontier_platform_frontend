@@ -280,12 +280,12 @@ const classMain = computed(() => {
   switch (state.value) {
     case STATE.DEFAULT:
       classList.push(
-        'border-grey-150',
+        'border-grey-200',
         isError.value ? 'bg-grey-50' : 'bg-grey-0'
       )
       break
     case STATE.HOVER:
-      classList.push('border-grey-150', 'bg-grey-50')
+      classList.push('border-grey-250', 'bg-grey-50')
       break
     case STATE.FOCUS:
       classList.push(
@@ -297,7 +297,7 @@ const classMain = computed(() => {
       )
       break
     case STATE.DISABLED:
-      classList.push('border-none', 'cursor-not-allowed', 'bg-grey-50')
+      classList.push('border-grey-200', 'cursor-not-allowed', 'bg-grey-50')
       break
   }
 
