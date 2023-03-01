@@ -288,6 +288,8 @@ const getWorkspaceForModal = async () => {
     })
   )
 
+  pureNodeList.value.length = 0
+
   if (workspaceCollection.childCollectionList.length > 0) {
     workspaceCollection.childCollectionList.forEach((collection) => {
       const {
