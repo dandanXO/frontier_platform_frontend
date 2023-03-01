@@ -13,6 +13,7 @@ f-input-container(
     @collapse="collapse"
     :offset="[0, -popperOffsetY]"
     :disabled="disabled"
+    :onFirstUpdate="checkPlacementAndReverse"
   )
     template(#trigger)
       div(
@@ -54,53 +55,53 @@ f-input-container(
             :disabled="disabled"
           )
     template(#content="{ collapsePopper }")
-      div(:style="{ width: contentWidth + 'px' }" :class="classMain")
-        //- Leading Visual - Icon
-        div(v-if="prependIcon" :class="classIcon")
-          f-svg-icon(
-            :iconName="prependIcon"
-            :size="size === 'lg' ? '24' : '20'"
+      div(:class="{ 'flex-col-reverse': isReverse }" class="w-0 flex flex-col")
+        div(:style="{ width: contentWidth + 'px' }" :class="classMain")
+          //- Leading Visual - Icon
+          div(v-if="prependIcon" :class="classIcon")
+            f-svg-icon(
+              :iconName="prependIcon"
+              :size="size === 'lg' ? '24' : '20'"
+            )
+          //- Input
+          div(
+            :class="[multiple ? classChipContainer : '']"
+            class="flex-grow w-full h-full flex items-center"
           )
-        //- Input
-        div(
-          :class="[multiple ? classChipContainer : '']"
-          class="flex-grow w-full h-full flex items-center"
+            template(v-if="multiple")
+              f-tag(
+                v-for="(chip, index) in displayText"
+                appendIcon="clear"
+                isActive
+                @click.stop="removeChip(index)"
+                :size="size === 'lg' ? 'lg' : 'sm'"
+              ) {{ chip }}
+            input(
+              :class="classInput"
+              ref="refInput"
+              type="text"
+              class="flex-grow"
+              v-model.trim="inputText"
+              @input="setSearchInput(inputText)"
+              @keydown.enter="addNewMenu"
+            )
+          //- Clear Icon
+          div(v-if="clearable" :class="classIcon")
+            f-svg-icon(
+              v-if="clearable"
+              :size="size === 'lg' ? '24' : '20'"
+              iconName="cancel"
+              class="text-grey-150 hover:text-grey-250 active:text-grey-300 cursor-pointer"
+              @click.stop="clearAll"
+            )
+        f-contextual-menu(
+          ref="refContextualMenu"
+          v-model:inputSelectValue="innerSelectValue"
+          @click:menu="!multiple && collapsePopper()"
+          :canAddNew="canAddNew"
+          :selectMode="multiple ? MULTIPLE : SINGLE_CANCEL"
+          :menuTree="dropdownMenuTree"
         )
-          template(v-if="multiple")
-            f-tag(
-              v-for="(chip, index) in displayText"
-              appendIcon="clear"
-              isActive
-              @click.stop="removeChip(index)"
-              :size="size === 'lg' ? 'lg' : 'sm'"
-            ) {{ chip }}
-          input(
-            :class="classInput"
-            ref="refInput"
-            type="text"
-            class="flex-grow"
-            v-model.trim="inputText"
-            @input="setSearchInput(inputText)"
-            @keydown.enter="addNewMenu"
-          )
-        //- Clear Icon
-        div(v-if="clearable" :class="classIcon")
-          f-svg-icon(
-            v-if="clearable"
-            :size="size === 'lg' ? '24' : '20'"
-            iconName="cancel"
-            class="text-grey-150 hover:text-grey-250 active:text-grey-300 cursor-pointer"
-            @click.stop="clearAll"
-          )
-      f-contextual-menu(
-        ref="refContextualMenu"
-        class="absolute top-full"
-        v-model:inputSelectValue="innerSelectValue"
-        @click:menu="!multiple && collapsePopper()"
-        :canAddNew="canAddNew"
-        :selectMode="multiple ? MULTIPLE : SINGLE_CANCEL"
-        :menuTree="dropdownMenuTree"
-      )
   template(v-if="slots['slot:hint-error']" #slot:hint-error)
     slot(name="slot:hint-error")
   template(v-if="slots['slot:hint-supporting']" #slot:hint-supporting)
@@ -220,7 +221,6 @@ const props = defineProps({
     default: '',
   },
 })
-
 const innerSelectValue = computed({
   get: () => props.selectValue,
   set: (v) => emit('update:selectValue', v),
@@ -390,31 +390,36 @@ const refContainer = ref(null)
 const refInput = ref(null)
 const contentWidth = ref(0)
 const popperOffsetY = ref(props.size === 'lg' ? 44 : 36)
-const setPopperOffsetY = () => {
-  if (props.label) {
-    popperOffsetY.value =
-      refContainer.value.$el.children[1].getBoundingClientRect().height
-  } else {
-    popperOffsetY.value =
-      refContainer.value.$el.children[0].getBoundingClientRect().height
-  }
-}
 onMounted(() => {
-  contentWidth.value = refContainer.value.$el.getBoundingClientRect().width
+  new ResizeObserver((entries) => {
+    if (props.label) {
+      popperOffsetY.value =
+        refContainer.value.$el.children[1].getBoundingClientRect().height
+    } else {
+      popperOffsetY.value =
+        refContainer.value.$el.children[0].getBoundingClientRect().height
+    }
+    contentWidth.value = entries[0].contentRect.width
+  }).observe(refContainer.value.$el)
 })
 
 const expand = () => {
-  setPopperOffsetY()
   isFocus.value = true
   refInput.value.focus()
   !props.multiple && (inputText.value = displayText.value)
 }
 
 const collapse = () => {
-  setPopperOffsetY()
   isFocus.value = false
   setSearchInput('')
   inputText.value = ''
+}
+
+const isReverse = ref(false)
+
+const checkPlacementAndReverse = (state) => {
+  const { placement } = state
+  isReverse.value = placement.includes('top')
 }
 
 const refContextualMenu = ref(null)

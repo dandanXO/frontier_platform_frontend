@@ -46,6 +46,8 @@ export default function useMaterialEdit() {
 
   const specOptions = reactive({
     contentList: computed(() => ({
+      width: 'w-100',
+      scrollAreaMaxHeight: 'max-h-63',
       blockList: [
         {
           menuList: newContentList

@@ -3,8 +3,6 @@ $radius: 3px;
 $shadow: rgba(0, 0, 0, 0.1);
 
 div[role='popper'] {
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
-
   &[data-popper-placement^='top'] > #arrow {
     bottom: -7px;
 
@@ -71,14 +69,13 @@ div(
 )
   slot(name="trigger" :isExpand="isExpand")
 teleport(v-if="isExpand" to="body")
-  div(class="fixed z-popper w-screen h-screen top-0 left-0" @click="collapsePopper")
+  div(class="fixed z-popper w-screen h-screen")
     div(
-      ref="refPopper"
-      role="popper"
-      class="relative rounded"
-      :class="theme === THEME.LIGHT ? 'bg-grey-0' : 'bg-grey-800'"
-      @click.stop
+      class="fixed w-screen h-screen top-0 left-0"
+      @click="collapsePopper"
+      @wheel.prevent
     )
+    div(ref="refPopper" role="popper" @click.stop)
       slot(
         name="content"
         :isExpand="isExpand"
@@ -138,6 +135,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  onFirstUpdate: {
+    type: Function,
+    default: () => {},
+  },
 })
 
 const isExpand = ref(false)
@@ -154,6 +155,7 @@ const expandPopper = async () => {
   await nextTick()
 
   createPopper(refTrigger.value, refPopper.value, {
+    onFirstUpdate: props.onFirstUpdate,
     placement: props.placement,
     modifiers: [
       {

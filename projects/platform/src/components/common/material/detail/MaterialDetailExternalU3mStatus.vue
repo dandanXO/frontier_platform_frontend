@@ -6,7 +6,7 @@ div
       template(#trigger)
         f-svg-icon(iconName="info_outline" class="cursor-pointer" size="14")
       template(#content="{ collapsePopper }")
-        div(class="p-5")
+        div(class="p-5 bg-grey-0 drop-shadow-4 rounded")
           span(
             class="text-body2 text-cyan-400 underline leading-1.6 cursor-pointer"
             @click="openModalU3mInstruction(); collapsePopper()"

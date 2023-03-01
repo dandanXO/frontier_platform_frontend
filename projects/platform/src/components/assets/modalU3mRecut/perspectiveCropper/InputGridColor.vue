@@ -1,5 +1,5 @@
 <template lang="pug">
-f-popper(theme="dark" placement="bottom-start" :offset="[0, -4]")
+f-popper(placement="bottom-start" :offset="[0, -4]")
   template(#trigger="{ isExpand }")
     div(
       class="flex items-center gap-x-1 px-3 rounded border hover:bg-grey-800 cursor-pointer"
