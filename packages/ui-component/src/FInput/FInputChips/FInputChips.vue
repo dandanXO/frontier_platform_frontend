@@ -263,8 +263,6 @@ const classMain = computed(() => {
     'rounded',
     'flex',
     'items-center',
-    'outline',
-    'outline-none',
     ...classTransition.value,
   ]
 
@@ -289,9 +287,9 @@ const classMain = computed(() => {
       break
     case STATE.FOCUS:
       classList.push(
-        'outline-offset-0',
-        'outline-4',
-        isError.value ? 'outline-red-0' : 'outline-primary-0',
+        isError.value
+          ? 'shadow-[0_0_0_4px_#FDE7DA]'
+          : 'shadow-[0_0_0_4px_#E9F8F3]',
         'border-primary-300',
         'bg-grey-0'
       )

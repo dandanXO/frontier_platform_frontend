@@ -27,7 +27,7 @@ f-input-container(
       template(#trigger="{ isExpand }")
         div(
           v-if="isExpand"
-          class="absolute z-1 top-0 left-0 w-full h-full border rounded-l outline outline-offset-0 outline-4 outline-primary-0 border-primary-300"
+          class="absolute z-1 top-0 left-0 w-full h-full border rounded-l shadow-[0_0_0_4px_#E9F8F3] border-primary-300"
         )
         slot(
           name="slot:left-dropdown-trigger"
@@ -127,7 +127,7 @@ f-input-container(
       template(#trigger="{ isExpand }")
         div(
           v-if="isExpand"
-          class="absolute z-1 top-0 left-0 w-full h-full border rounded-r outline outline-offset-0 outline-4 outline-primary-0 border-primary-300"
+          class="absolute z-1 top-0 left-0 w-full h-full border rounded-r shadow-[0_0_0_4px_#E9F8F3] border-primary-300"
         )
         slot(
           name="slot:right-dropdown-trigger"
@@ -451,8 +451,6 @@ const classMain = computed(() => {
     'rounded',
     'flex',
     'items-center',
-    'outline',
-    'outline-none',
   ]
 
   switch (props.size) {
@@ -473,9 +471,9 @@ const classMain = computed(() => {
       break
     case STATE.FOCUS:
       classList.push(
-        'outline-offset-0',
-        'outline-4',
-        isError.value ? 'outline-red-0' : 'outline-primary-0',
+        isError.value
+          ? 'shadow-[0_0_0_4px_#FDE7DA]'
+          : 'shadow-[0_0_0_4px_#E9F8F3]',
         'border-primary-300',
         'bg-grey-0',
         'relative',
