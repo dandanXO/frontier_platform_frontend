@@ -23,7 +23,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, nextTick, useSlots } from 'vue'
+import { ref, nextTick, useSlots, watch } from 'vue'
 import { createPopper } from '@popperjs/core'
 // https://popper.js.org/docs/v2/
 
@@ -72,6 +72,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  disabledTooltip: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const refTrigger = ref(null)
@@ -89,6 +93,10 @@ const showTooltip = () => {
     isActive.value = true
 
     await nextTick()
+
+    if (props.disabledTooltip) {
+      return
+    }
 
     const children = refTooltip.value?.children
     // due to some reason, instance is not exist
@@ -137,4 +145,11 @@ const hideTooltip = () => {
   isActive.value = false
   emit('hide')
 }
+
+watch(
+  () => props.disabledTooltip,
+  () => {
+    props.disabledTooltip ? hideTooltip() : showTooltip()
+  }
+)
 </script>

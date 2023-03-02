@@ -12,7 +12,7 @@ div(
     isNotFitWidth
     @mouseenter="hasNextLevel && expandMenu()"
     class="w-full flex items-center px-4"
-    :key="hoverOn"
+    :disabledTooltip="disabledTooltip"
   )
     template(#trigger)
       //- Checkbox
@@ -98,10 +98,7 @@ div(
           size="24"
           class="text-primary-400"
         )
-    template(
-      v-if="innerMenu.tooltip || (isTitleEllipsis && hoverOn === 'title') || (isDescriptionEllipsis && hoverOn === 'description')"
-      #content
-    )
+    template(#content)
       p
         span(v-if="isTitleEllipsis && hoverOn === 'title'" class="break-all font-bold") {{ innerMenu.title }}
         span(v-else-if="isDescriptionEllipsis && hoverOn === 'description'") {{ innerMenu.description }}
@@ -343,17 +340,20 @@ onMounted(async () => {
    */
   await nextTick()
 
+  /**
+   * @Magic
+   * 元素的實際大小會有浮點數，且在 chrome 和 safari 中呈現的數值會有些微差異
+   * 所以目前的先直接無條件進位，以確保不會錯判。
+   */
+
   isTitleEllipsis.value =
-    refTitle.value.clientHeight < refTitle.value.scrollHeight
+    Math.ceil(refTitle.value.getBoundingClientRect().height) <
+    refTitle.value.scrollHeight
 
   if (innerMenu.value.description !== '') {
-    /**
-     * @Magic
-     * Don't know there is a slight error between the two,
-     * So adding a small number that doesn't cause errors makes the result as expected
-     */
     isDescriptionEllipsis.value =
-      refDescription.value.clientHeight + 3 < refDescription.value.scrollHeight
+      Math.ceil(refDescription.value.getBoundingClientRect().height) <
+      refDescription.value.scrollHeight
   }
 })
 
@@ -372,5 +372,26 @@ const filteredBlockList = computed(() => {
     }
   })
   return blockList
+})
+
+const disabledTooltip = computed(() => {
+  if (hoverOn.value === 'title' && isTitleEllipsis.value) {
+    return false
+  }
+
+  if (hoverOn.value === 'description' && isDescriptionEllipsis.value) {
+    return false
+  }
+
+  if (
+    !!innerMenu.value.tooltip &&
+    !!hoverOn.value &&
+    !isTitleEllipsis.value &&
+    !isDescriptionEllipsis.value
+  ) {
+    return false
+  }
+
+  return true
 })
 </script>
