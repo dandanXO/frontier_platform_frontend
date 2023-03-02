@@ -14,6 +14,7 @@ div(class="flex flex-col items-center")
       )
       div(class="flex items-end")
         f-input-textarea(
+          :key="autoText"
           v-model:textValue="text"
           :placeholder="$t('QQ0037')"
           class="w-134 mr-2"

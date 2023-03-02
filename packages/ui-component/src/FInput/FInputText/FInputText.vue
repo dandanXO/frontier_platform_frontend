@@ -63,7 +63,7 @@ f-input-container(
       v-model.trim="innerTextValue"
       :placeholder="placeholder"
       :class="classInput"
-      :disabled="disabled"
+      :readonly="disabled"
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"

@@ -118,6 +118,7 @@ defineExpose({
 })
 
 const onInput = () => {
+  console.log('hjere')
   innerTextValue.value = refInput.value.textContent
   emit('input')
 }
@@ -131,10 +132,6 @@ const onBlur = () => {
 }
 
 onMounted(() => {
-  refInput.value.textContent = innerTextValue.value
-})
-
-onUpdated(() => {
   refInput.value.textContent = innerTextValue.value
 })
 </script>

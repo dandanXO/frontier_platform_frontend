@@ -52,7 +52,7 @@ f-input-container(
             :placeholder="placeholder"
             :class="classInput"
             class="w-full"
-            :disabled="disabled"
+            :readonly="disabled"
           )
     template(#content="{ collapsePopper }")
       div(:class="{ 'flex-col-reverse': isReverse }" class="w-0 flex flex-col")
