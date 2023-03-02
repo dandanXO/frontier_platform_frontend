@@ -23,14 +23,19 @@ div(
       )
     div(class="w-full h-px my-1 bg-grey-150")
   //- Add New Menu
-  template(v-if="canAddNew && !!searchInput && !menuIsExist")
-    div(class="px-4 min-h-6 flex items-center")
+  template(v-if="canAddNew")
+    template(v-if="!!searchInput && !menuIsExist")
+      div(class="px-4 min-h-6 flex items-center")
+        p(class="text-caption text-grey-600 break-all")
+          span Press
+          span(class="font-bold") &nbspEnter&nbsp
+          span to create "{{ searchInput }}"
+      div(v-if="filteredBlockList.length !== 0" class="w-full h-px my-1 bg-grey-150")
+    div(v-else-if="filteredBlockList.length === 0" class="px-4 min-h-6 flex items-center")
       p(class="text-caption text-grey-600 break-all")
-        span Press
+        span Type and Press
         span(class="font-bold") &nbspEnter&nbsp
-        span to create "{{ searchInput }}"
-
-    div(v-if="filteredBlockList.length !== 0" class="w-full h-px my-1 bg-grey-150")
+        span to create
   div(
     v-if="filteredBlockList.length > 0"
     :class="innerMenuTree.scrollAreaMaxHeight"
@@ -193,7 +198,7 @@ const innerMenuTree = computed(() => {
     rootTitle: '',
     searchEnable: false,
     button: null,
-    width: 'w-50',
+    width: 'w-60',
     scrollAreaMaxHeight: 'max-h-100',
   }
   return Object.assign({}, defaultMenuTree, props.menuTree)
