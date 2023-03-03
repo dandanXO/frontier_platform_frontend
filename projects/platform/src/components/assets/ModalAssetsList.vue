@@ -199,6 +199,8 @@ const getMaterialListForModal = async () => {
   )
   totalPage.value = pagination.totalPage
 
+  nodeMaterialList.value.length = 0
+
   assets.materialList.forEach((material) => {
     nodeMaterialList.value.push({
       nodeType: NODE_TYPE.MATERIAL,
