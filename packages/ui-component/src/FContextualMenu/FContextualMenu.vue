@@ -32,10 +32,14 @@ div(
           span to create "{{ searchInput }}"
       div(v-if="filteredBlockList.length !== 0" class="w-full h-px my-1 bg-grey-150")
     div(v-else-if="filteredBlockList.length === 0" class="px-4 min-h-6 flex items-center")
-      p(class="text-caption text-grey-600 break-all")
-        span Type and Press
-        span(class="font-bold") &nbspEnter&nbsp
-        span to create
+      i18n-t(
+        keypath="RR0256"
+        tag="p"
+        class="text-caption text-grey-600 break-all"
+        scope="global"
+      )
+        template(#Enter)
+          span(class="font-bold") Enter
   div(
     v-if="filteredBlockList.length > 0"
     :class="innerMenuTree.scrollAreaMaxHeight"

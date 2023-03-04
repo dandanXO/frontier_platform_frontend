@@ -95,6 +95,7 @@ f-input-container(
               @click.stop="clearAll"
             )
         f-contextual-menu(
+          :style="[widthFitWithInput ? { width: contentWidth + 'px' } : '']"
           ref="refContextualMenu"
           v-model:inputSelectValue="innerSelectValue"
           @click:menu="!multiple && collapsePopper()"
@@ -219,6 +220,13 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: '',
+  },
+  /**
+   * if `widthFitWithInput` is true, then it would ignore dropdownMenuTree's `width` property
+   */
+  widthFitWithInput: {
+    type: Boolean,
+    default: false,
   },
 })
 const innerSelectValue = computed({

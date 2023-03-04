@@ -46,8 +46,7 @@ export default function useMaterialEdit() {
 
   const specOptions = reactive({
     contentList: computed(() => ({
-      width: 'w-100',
-      scrollAreaMaxHeight: 'max-h-63',
+      scrollAreaMaxHeight: 'max-h-72',
       blockList: [
         {
           menuList: newContentList
@@ -74,6 +73,7 @@ export default function useMaterialEdit() {
       },
     })),
     descriptionList: computed(() => ({
+      scrollAreaMaxHeight: 'max-h-72',
       blockList: [
         {
           menuList: newDescriptionList
@@ -86,6 +86,7 @@ export default function useMaterialEdit() {
       ],
     })),
     finishList: computed(() => ({
+      scrollAreaMaxHeight: 'max-h-72',
       blockList: [
         {
           menuList: newFinishList
