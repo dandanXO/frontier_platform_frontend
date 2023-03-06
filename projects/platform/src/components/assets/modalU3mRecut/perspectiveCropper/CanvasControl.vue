@@ -14,7 +14,7 @@ span(
       @select="handleSelectUpdate"
     )
     icon-button(iconName="add" size="16" @click="emit('zoomAdd')")
-  divider(color="black")
+  info-divider(size="sm")
   icon-button(
     v-if="useGridToggle"
     size="16"
@@ -31,7 +31,7 @@ span(
 <script setup lang="ts">
 import { computed } from 'vue'
 import Decimal from 'decimal.js'
-import Divider from '@/components/assets/modalU3mRecut/perspectiveCropper/Divider.vue'
+import InfoDivider from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoDivider.vue'
 import IconButton from '@/components/assets/modalU3mRecut/perspectiveCropper/IconButton.vue'
 import InputGridColor from '@/components/assets/modalU3mRecut/perspectiveCropper/InputGridColor.vue'
 import ZoomInputSelect from '@/components/assets/modalU3mRecut/perspectiveCropper/ZoomInputSelect.vue'

@@ -55,23 +55,23 @@ div(class="h-full flex flex-col")
       div(class="flex flex-row items-center gap-x-4")
         dimension-info(
           iconName="crop_original"
-          :crop-text="$t('EE0154')"
+          :text="$t('EE0154')"
           :dimension="perspectiveCropper.sourceDimension"
         )
-        divider(color="black")
+        info-divider(size="lg")
         div(class="flex flex-row items-center gap-x-2")
           dimension-info(
             iconName="crop"
-            :crop-text="$t('EE0150')"
+            :text="$t('EE0150')"
             :dimension="destinationDimension"
           )
           label-button(
             :disabled="!side.perspectiveEditStatus.isPositionsDirty"
             @click="handlePositionReset"
           ) {{ $t('RR0255') }}
-      divider(color="black")
+        info-divider(size="lg")
       div(class="flex flex-row items-center gap-x-3")
-        info-block(iconName="rotate" :text="$t('EE0049')")
+        info-name(iconName="rotate" :text="$t('EE0049')")
         div(class="flex flex-row items-center gap-2")
           label-button(@click="handleRotate(270)") {{ $t('EE0155', { degree: '90°' }) }}
           label-button(@click="handleRotate(90)") {{ $t('EE0156', { degree: '90°' }) }}
@@ -91,9 +91,9 @@ import usePreview from '@/composables/usePreview'
 import usePerspectiveCropper from '@/composables/usePerspectiveCropper'
 import CanvasControl from '@/components/assets/modalU3mRecut/perspectiveCropper/CanvasControl.vue'
 import DimensionInfo from '@/components/assets/modalU3mRecut/perspectiveCropper/DimensionInfo.vue'
-import Divider from '@/components/assets/modalU3mRecut/perspectiveCropper/Divider.vue'
+import InfoDivider from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoDivider.vue'
 import LabelButton from '@/components/assets/modalU3mRecut/perspectiveCropper/LabelButton.vue'
-import InfoBlock from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoBlock.vue'
+import InfoName from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoName.vue'
 import NotifyBar from '@/components/assets/modalU3mRecut/perspectiveCropper/NotifyBar.vue'
 import { CROPPER_GRID_COLORS, MODAL_CONFIRM_TYPE } from '@/utils/constants'
 import { toDP2 } from '@/utils/cropper'
