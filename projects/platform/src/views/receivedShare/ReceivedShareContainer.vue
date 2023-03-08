@@ -23,8 +23,10 @@ fullscreen-header
     div(v-if="share.isClosed" class="w-full h-full flex items-center justify-center")
       p(class="text-body1 text-grey-900") {{ $t('GG0026') }}
     router-view(v-else)
-    div(
+    a(
       class="fixed z-footer bottom-0 w-full h-13 bg-grey-50 px-36 flex items-center justify-end card-shadow"
+      href="https://www.frontier.cool/"
+      target="_blank"
     )
       img(src="@/assets/images/frontier_logo.png" class="w-20.5 h-4 mr-2")
       p(class="text-body2 text-grey-900") {{ $t('GG0004') }}
