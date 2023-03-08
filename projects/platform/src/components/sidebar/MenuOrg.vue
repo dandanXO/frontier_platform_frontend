@@ -63,7 +63,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
             class="absolute top-0.5 right-px w-2 h-2 rounded-full border border-grey-0 bg-red-400"
           )
       template(#content)
-        div(class="w-75 rounded-md overflow-hidden drop-shadow-4")
+        div(class="bg-grey-0 w-75 rounded-md overflow-hidden drop-shadow-4")
           div(class="h-9 bg-grey-50 flex items-center pl-5")
             p(class="text-body1 font-bold text-grey-900") {{ $t('NN0001') }}
           f-scrollbar-container(class="max-h-127.5")
