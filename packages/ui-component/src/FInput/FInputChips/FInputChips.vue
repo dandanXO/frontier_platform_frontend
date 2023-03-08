@@ -33,12 +33,17 @@ f-input-container(
             v-show="multiple && displayText.length !== 0"
             :class="classChipContainer"
           )
-            f-tag(
+            div(
               v-for="chip in displayText"
-              :size="size === 'lg' ? 'lg' : 'sm'"
-              :isActive="isHover"
-              appendIcon="clear"
+              class="rounded w-fit h-4 box-content px-2 whitespace-nowrap flex items-center gap-x-1 bg-grey-100 cursor-pointer"
+              :class="[size === 'lg' ? 'py-2 text-body2' : 'py-1.5 text-caption']"
             ) {{ chip }}
+              f-svg-icon(
+                v-if="isHover"
+                iconName="clear"
+                size="16"
+                class="text-grey-600"
+              )
           div(
             v-show="!multiple && !!displayText"
             :class="classInput"
@@ -69,13 +74,13 @@ f-input-container(
             class="flex-grow w-full h-full flex items-center"
           )
             template(v-if="multiple")
-              f-tag(
+              div(
                 v-for="(chip, index) in displayText"
-                appendIcon="clear"
-                isActive
+                class="rounded w-fit h-4 box-content px-2 whitespace-nowrap flex items-center gap-x-1 bg-grey-100 cursor-pointer"
+                :class="[size === 'lg' ? 'py-2 text-body2' : 'py-1.5 text-caption']"
                 @click.stop="removeChip(index)"
-                :size="size === 'lg' ? 'lg' : 'sm'"
               ) {{ chip }}
+                f-svg-icon(iconName="clear" size="16" class="text-grey-600")
             input(
               :class="classInput"
               ref="refInput"
@@ -119,8 +124,7 @@ export default {
 /**
  * @KnownIssues
  * 1. Leading Visual 無依照 Figma 設計圖實現 Color Label & Thumbnail
- * 2. Contextual Menu 展開時可以滑動
- * 3. 數量多時爆卡
+ * 2. 數量多時爆卡
  */
 
 import { ref, toRefs, useSlots, computed, onMounted, nextTick } from 'vue'
@@ -244,7 +248,6 @@ const displayText = computed(() => {
   return getMenu(innerSelectValue.value)?.title
 })
 
-/**  */
 const inputText = ref('')
 
 const { rules, hintError, disabled } = toRefs(props)

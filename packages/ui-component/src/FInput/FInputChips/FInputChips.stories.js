@@ -36,7 +36,7 @@ export default {
     },
     size: {
       control: { type: 'radio' },
-      options: ['lg', 'md', 'sm'],
+      options: ['lg', 'md'],
     },
     label: {
       control: { type: 'text' },
