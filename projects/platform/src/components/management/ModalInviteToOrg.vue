@@ -6,9 +6,6 @@ modal-behavior(
   @click:primary="inviteToOrg"
 )
   div(class="w-94")
-    div(class="py-2.5 px-4 flex items-center gap-x-3 bg-grey-50 rounded mb-4")
-      f-svg-icon(iconName="error_outline" class="text-grey-600")
-      p(class="flex-grow text-caption text-grey-600 leading-1.6") {{ $t('BB0021') }}
     f-input-text(
       v-model:textValue="email"
       prependIcon="search"
