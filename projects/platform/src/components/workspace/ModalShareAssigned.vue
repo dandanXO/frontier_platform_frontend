@@ -114,9 +114,9 @@ const addToTargetList = async () => {
 const assignedShare = async () => {
   store.dispatch('helper/pushModalLoading')
   await store.dispatch('workspace/assignedShare', {
+    ...formData,
     workspaceNodeId: props.workspaceNodeId,
     targetList: targetList.value,
-    ...formData,
   })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/closeModal')

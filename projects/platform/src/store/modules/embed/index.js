@@ -61,9 +61,9 @@ export default {
       const searchParams =
         rootGetters['helper/search/getSearchParams'](targetPage)
       const params = {
+        ...searchParams,
         sharingKey,
         workspaceNodeId: nodeKey?.split('-')[1] || null,
-        ...searchParams,
       }
 
       const { data } = await embedApi.getEmbedList(params)

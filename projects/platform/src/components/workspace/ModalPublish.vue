@@ -64,8 +64,8 @@ const params = reactive({
 const publishNode = async () => {
   store.dispatch('helper/openModalLoading')
   await store.dispatch('workspace/publishNode', {
-    workspaceNodeId: workspaceNode.value.workspaceNodeId,
     ...params,
+    workspaceNodeId: workspaceNode.value.workspaceNodeId,
   })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/reloadInnerApp')

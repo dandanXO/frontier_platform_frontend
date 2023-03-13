@@ -11,7 +11,7 @@ div(
   //- Sticker
   div(
     class="px-5 pt-2.5 pb-3.5 bg-grey-0"
-    @click="isExpandChildStickerList = !isExpandChildStickerList"
+    @click="!isFilterDirty && (isExpandChildStickerList = !isExpandChildStickerList)"
   )
     //- Header
     div(class="flex items-center justify-between pb-5")
@@ -86,7 +86,7 @@ div(
         span(class="text-caption text-grey-300 font-normal") ・{{ $dayjs.unix(sticker.createDate).format('MMM DD, YYYY [at] hh:mm A') }}
     //- Button - Add child sticker
     f-button(
-      v-if="!refStickerTagList?.isEditingTagList && isHoverSticker && !isExpandChildStickerList"
+      v-if="!isFilterDirty && !refStickerTagList?.isEditingTagList && isHoverSticker && !isExpandChildStickerList"
       type="secondary"
       size="sm"
       prependIcon="add"
@@ -102,7 +102,10 @@ div(
     )
       f-svg-icon(iconName="sticker" size="16" class="text-grey-400")
       p(class="text-caption text-grey-400") {{ $t('TT0103') }}
-    template(v-for="(childSticker, index) in childStickerList")
+    template(
+      v-for="(childSticker, index) in childStickerList"
+      :key="childSticker.stickerId"
+    )
       child-sticker-card(:childSticker="childSticker")
       hr(v-if="index !== childStickerList.length - 1" class="text-grey-150 my-3.5")
     child-sticker-text-editor(
@@ -113,7 +116,7 @@ div(
     )
     //- Button - Add child sticker
     div(
-      v-if="isHoverSticker && isExpandChildStickerList && !isCreatingChildSticker"
+      v-if="!isFilterDirty && isHoverSticker && isExpandChildStickerList && !isCreatingChildSticker"
       class="-ml-8 pt-2"
       @click="isCreatingChildSticker = true"
     )
@@ -121,7 +124,7 @@ div(
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import StickerLabelAddTo from '@/components/sticker/StickerLabelAddTo.vue'
 import StickerTextViewer from '@/components/sticker/stickerTextEditor/StickerTextViewer.vue'
 import StickerHeaderIcon from '@/components/sticker/StickerHeaderIcon.vue'
@@ -156,9 +159,8 @@ const isHoverIconMore = ref(false)
 
 const isExpandChildStickerList = ref(false)
 const isCreatingChildSticker = ref(false)
-const childStickerList = props.sticker.childStickerList
+const childStickerList = computed(() => props.sticker.childStickerList || [])
 
-const isHoverIconTag = ref(false)
 const isShowTagList = ref(false)
 const refStickerTagList = ref(null)
 
@@ -170,4 +172,34 @@ const toggleStarred = () => {
     ? store.dispatch('sticker/starSticker', stickerId)
     : store.dispatch('sticker/unstarSticker', stickerId)
 }
+
+const isFilterDirty = computed(() => store.getters['sticker/isFilterDirty'])
+const isFilterTagListDirty = computed(
+  () => store.getters['sticker/isFilterTagListDirty']
+)
+watch(
+  /**
+   * 因為 isFilterDirty 的值會先改變，但 childStickerList 的值得等 API 回傳，
+   * 所以如果監聽 isFilterDirty 是不準確的
+   */
+  () => childStickerList.value,
+  () => {
+    // 有使用篩選且篩選結果包含 Child Sticker 故自動展開 Child Sticker List
+    if (isFilterDirty.value && childStickerList.value.length > 0) {
+      isExpandChildStickerList.value = true
+    }
+    if (isFilterTagListDirty.value && props.sticker.tagList.length > 0) {
+      isShowTagList.value = true
+    }
+  }
+)
+watch(
+  () => isFilterDirty.value,
+  () => {
+    if (!isFilterDirty.value) {
+      isExpandChildStickerList.value = false
+      isShowTagList.value = false
+    }
+  }
+)
 </script>

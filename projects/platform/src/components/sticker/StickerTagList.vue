@@ -1,12 +1,17 @@
 <template lang="pug">
 //- Tag List
-div(
-  class="flex items-center flex-wrap gap-x-1.5 gap-y-1.5 pt-2"
-  @click.stop="onEditTagList"
-)
+div(class="flex items-center flex-wrap gap-x-1.5 gap-y-1.5 pt-2")
   template(v-if="!isEditingTagList")
-    f-tag(v-for="tag in stickerTagList" size="sm") {{ tag }}
-    div(class="group text-grey-300 flex items-center gap-x-1.5")
+    f-tag(v-for="tag in stickerTagList" size="sm")
+      p(
+        class="h-full flex items-center"
+        :class="{ 'bg-yellow-100': filter.tagList.includes(tag) }"
+      ) {{ tag }}
+    div(
+      v-if="!isFilterDirty"
+      class="group text-grey-300 flex items-center gap-x-1.5 cursor-pointer"
+      @click.stop="onEditTagList"
+    )
       f-svg-icon(
         iconName="create"
         size="16"
@@ -29,7 +34,7 @@ div(v-if="isEditingTagList" @click.stop)
 </template>
 
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, computed } from 'vue'
 import StickerTagInput from '@/components/sticker/StickerTagInput.vue'
 import { useStore } from 'vuex'
 
@@ -70,4 +75,7 @@ const cancelEditTagList = () => {
 defineExpose({
   isEditingTagList,
 })
+
+const isFilterDirty = computed(() => store.getters['sticker/isFilterDirty'])
+const filter = computed(() => store.getters['sticker/filter'])
 </script>

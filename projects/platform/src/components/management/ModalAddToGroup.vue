@@ -85,8 +85,8 @@ const memberList = computed(() => {
           (groupMember) => groupMember.email === orgMember.email
         )
       return {
-        joined,
         ...orgMember,
+        joined,
       }
     })
     .sort((a, b) => {

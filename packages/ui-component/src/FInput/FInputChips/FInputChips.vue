@@ -271,11 +271,11 @@ const {
 
 const classMain = computed(() => {
   const classList = [
+    ...classTransition.value,
     'border',
     'rounded',
     'flex',
     'items-center',
-    ...classTransition.value,
   ]
 
   switch (props.size) {

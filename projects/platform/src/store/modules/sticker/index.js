@@ -1,6 +1,7 @@
 import stickerApi from '@/apis/sticker.js'
 import Material from '@/store/reuseModules/material.js'
 import { OG_TYPE } from '@/utils/constants'
+import isEqual from '@frontier/ui-component/src/isEqual.js'
 
 const defaultDigitalThreadBase = () => ({
   digitalThreadId: null,
@@ -32,6 +33,19 @@ const defaultDigitalThreadBase = () => ({
   unreadStickerQty: 0,
 })
 
+const defaultFilter = () => ({
+  addTo: 0,
+  isStarred: false,
+  addedBy: {
+    addedByMe: false,
+    addedByInternalUnit: false,
+    addedByExternalUnit: false,
+  },
+  createStartDate: '',
+  createEndDate: '',
+  tagList: [],
+})
+
 export default {
   namespaced: true,
   modules: {
@@ -50,6 +64,7 @@ export default {
     tempDigitalThreadList: [], // 尚未真的新增到後端時，用於前端操作的 digital thread list,
     indexOfDrawerDigitalThread: 0,
     sourceTagList: [], // 該 unit 下曾經添加過哪些 tag
+    filter: defaultFilter(),
   }),
   getters: {
     currentMaterialId: (state) => state.currentMaterialId,
@@ -63,6 +78,34 @@ export default {
       getters.tempDigitalThreadList.concat(getters.digitalThreadList),
     indexOfDrawerDigitalThread: (state) => state.indexOfDrawerDigitalThread,
     sourceTagList: (state) => state.sourceTagList,
+    filter: (state) => state.filter,
+    isFilterDirty: (state) => {
+      return !isEqual(
+        {
+          ...state.filter,
+          addTo: null,
+        },
+        {
+          ...defaultFilter(),
+          addTo: null,
+        }
+      )
+    },
+    isAdvanceFilterDirty: (state) => {
+      return !isEqual(
+        {
+          ...state.filter,
+          addTo: null,
+          isStarred: null,
+        },
+        {
+          ...defaultFilter(),
+          addTo: null,
+          isStarred: null,
+        }
+      )
+    },
+    isFilterTagListDirty: (state) => state.filter.tagList.length !== 0,
   },
   mutations: {
     SET_isStickerDrawerOpen(state, isStickerDrawerOpen) {
@@ -102,6 +145,25 @@ export default {
     SET_sourceTagList(state, tagList) {
       state.sourceTagList = tagList
     },
+    SET_filter(state, filter) {
+      state.filter = filter
+    },
+    RESET_filter(state) {
+      state.filter = defaultFilter()
+    },
+    RESET_filter_createDate(state) {
+      const { createStartDate, createEndDate } = defaultFilter()
+      state.filter.createStartDate = createStartDate
+      state.filter.createEndDate = createEndDate
+    },
+    RESET_filter_addedBy(state) {
+      const { addedBy } = defaultFilter()
+      state.filter.addedBy = addedBy
+    },
+    RESET_filter_tagList(state) {
+      const { tagList } = defaultFilter()
+      state.filter.tagList = tagList
+    },
   },
   actions: {
     openStickerDrawer(
@@ -115,6 +177,7 @@ export default {
     closeStickerDrawer({ commit }) {
       commit('SET_isStickerDrawerOpen', false)
       commit('RESET_tempDigitalThreadList')
+      commit('RESET_filter')
     },
     async getDigitalThreadList({ commit, rootGetters, getters }) {
       const { data } = await stickerApi.getDigitalThreadList({
@@ -124,24 +187,15 @@ export default {
       commit('SET_digitalThreadList', data.result.digitalThreadList)
     },
     async getDigitalThread(
-      { commit, rootGetters, dispatch },
-      { digitalThreadId, filter = null }
+      { commit, rootGetters, getters },
+      { digitalThreadId }
     ) {
       const { data } = await stickerApi.getDigitalThread({
         orgId: rootGetters['organization/orgId'],
         digitalThreadId,
-        filter,
+        filter: getters.filter,
       })
       commit('SET_digitalThread', data.result.digitalThread)
-
-      // 待 API 調整後，應修改成 digital thread 中的 id & type
-      dispatch('getStickerTagList', {
-        addFromOGId: rootGetters['helper/routeLocationId'],
-        addFromOGType:
-          rootGetters['helper/routeLocation'] === 'org'
-            ? OG_TYPE.ORG
-            : OG_TYPE.GROUP,
-      })
     },
     async getDigitalThreadMaterial({ commit, rootGetters, getters }) {
       const { data } = await stickerApi.getDigitalThreadMaterial({
@@ -160,6 +214,14 @@ export default {
       await Promise.all([
         dispatch('getDigitalThreadMaterial'),
         dispatch('getDigitalThreadList'),
+        // 待 API 調整後，應修改成 digital thread 中的 id & type
+        dispatch('getStickerTagList', {
+          addFromOGId: rootGetters['helper/routeLocationId'],
+          addFromOGType:
+            rootGetters['helper/routeLocation'] === 'org'
+              ? OG_TYPE.ORG
+              : OG_TYPE.GROUP,
+        }),
       ])
 
       if (getters.digitalThreadList.length === 0) {
@@ -167,7 +229,6 @@ export default {
       } else {
         await dispatch('getDigitalThread', {
           digitalThreadId: getters.digitalThreadList[0].digitalThreadId,
-          filter: null,
         })
       }
     },
@@ -207,11 +268,11 @@ export default {
        *
        */
       const { data } = await stickerApi.createDigitalThread({
+        ...params,
         orgId: rootGetters['organization/orgId'],
         materialId: getters.currentMaterialId,
         addFromLocationType: getters.addFromLocationType,
         addFromLocationList: getters.addFromLocationList,
-        ...params,
       })
       commit(
         'REMOVE_ITEM_tempDigitalThreadList',
@@ -304,9 +365,9 @@ export default {
      */
     async createSticker({ rootGetters, getters, state, dispatch }, params) {
       await stickerApi.createSticker({
+        ...params,
         orgId: rootGetters['organization/orgId'],
         digitalThreadId: getters.digitalThread.digitalThreadId,
-        ...params,
       })
 
       // 暫時用
@@ -352,7 +413,10 @@ export default {
           digitalThreadName,
         })
     },
-    async createChildSticker({ rootGetters, state }, { stickerId, content }) {
+    async createChildSticker(
+      { rootGetters, dispatch, getters },
+      { stickerId, content }
+    ) {
       await stickerApi.createChildSticker({
         orgId: rootGetters['organization/orgId'],
         stickerId,

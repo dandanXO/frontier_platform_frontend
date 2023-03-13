@@ -90,9 +90,9 @@ export default {
             member.orgRoleId === ROLE_ID.ADMIN
         )
         .map((member) => ({
+          ...member,
           groupUserId: null,
           groupRoleId: member.orgRoleId,
-          ...member,
         }))
         .concat(store.getters['group/memberList'])
     })

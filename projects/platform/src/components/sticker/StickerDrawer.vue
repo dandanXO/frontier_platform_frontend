@@ -86,19 +86,19 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           div(class="flex items-center gap-x-2")
             img(class="w-5 h-5 rounded-full" :src="material.unitLogo")
             p(class="text-caption text-grey-800") {{ material.unitName }}
-      //- Control Bar
+      //- Filter
       div(class="pt-2.5 flex items-center gap-x-2")
         f-input-select(
-          v-model:selectValue="filterAddTo"
+          v-model:selectValue="filter.addTo"
           :dropdownMenuTree="menuAddTo"
           class="w-30"
           size="sm"
         )
         div(class="w-px py-2 box-content bg-grey-150")
-        div(
-          class="px-2.5 h-6 rounded-[20px] flex justify-center items-center gap-x-0.5 cursor-pointer"
-          :class="[isStarred ? 'bg-primary-0' : 'bg-grey-100']"
-          @click="!isCreatingDigitalThread && (isStarred = !isStarred)"
+        button(
+          class="px-2.5 h-6 rounded-[20px] flex justify-center items-center gap-x-0.5"
+          :class="[filter.isStarred ? 'bg-primary-0' : 'bg-grey-100']"
+          @click="!isCreatingDigitalThread && (filter.isStarred = !filter.isStarred)"
         )
           f-svg-icon(
             iconName="starred"
@@ -106,51 +106,161 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
             :class="[isCreatingDigitalThread ? 'text-grey-200' : 'text-yellow-400']"
           )
           span(
-            :class="{ 'text-grey-200': isCreatingDigitalThread, 'text-grey-800': !isCreatingDigitalThread && !isStarred, 'text-primary-400': isStarred }"
+            :class="{ 'text-grey-200': isCreatingDigitalThread, 'text-grey-800': !isCreatingDigitalThread && !filter.isStarred, 'text-primary-400': filter.isStarred }"
             class="text-body2"
           ) {{ 'Starred' }}
-          span(v-if="isStarred" class="pl-1 text-caption fond-bold text-primary-500") {{ digitalThread.stickerStatistics.starredQty }}
-        div(class="px-2 h-6 rounded-[20px] bg-grey-100 flex items-center")
-          f-svg-icon(iconName="filter" size="16" class="text-grey-800")
-    //- Content
-    f-scrollbar-container(class="flex-grow pt-4")
-      //- Button: Add a sticker
-      div(v-if="!isAddingSticker" class="pl-8 pr-10.5")
-        div(
-          class="relative w-full h-16 bg-grey-0 rounded-md overflow-hidden drop-shadow-2 cursor-pointer"
-          @click="isAddingSticker = true"
+          span(
+            v-if="filter.isStarred"
+            class="pl-1 text-caption fond-bold text-primary-500"
+          ) {{ digitalThread.stickerStatistics.starredQty }}
+        //- Advance Filter Panel
+        f-popper(
+          placement="bottom"
+          :offset="[-17, 8]"
+          :disabled="isCreatingDigitalThread"
         )
-          div(class="absolute top-0 left-0 w-1 h-full bg-forestgreen-300")
-          div(class="pl-7.5 h-full flex items-center")
-            f-svg-icon(iconName="add" size="20" class="text-forestgreen-300")
-            span(class="text-body2 font-bold text-grey-800 pl-3") {{ $t('TT0092') }}
-      //- Default intro
-      div(v-if="isCreatingDigitalThread && !isAddingSticker" class="pl-8 pr-10.5")
-        div(class="pt-10")
-          img(src="@/assets/images/image_sticker_empty.png" class="w-72.5 ml-15")
-          i18n-t(
-            keypath="TT0004"
-            tag="p"
-            class="text-h6 font-bold text-grey-300 text-center pb-6"
-            scope="global"
+          template(#trigger="{ isExpand }")
+            button(
+              :class="{ 'bg-primary-0': isExpand || isAdvanceFilterDirty }"
+              class="px-2 h-6 rounded-[20px] bg-grey-100 flex items-center"
+            )
+              f-svg-icon(
+                iconName="filter"
+                size="16"
+                :class="[isExpand || isAdvanceFilterDirty ? 'text-primary-400' : 'text-grey-800']"
+              )
+          template(#content="{ collapsePopper }")
+            div(class="bg-grey-0 drop-shadow-16 rounded w-93.5 py-4")
+              div(
+                class="px-4 pb-5 border-b border-grey-150 flex items-center justify-between"
+              )
+                p(class="text-body2 font-bold text-grey-900") {{ $t('RR0085') }}
+                f-svg-icon(
+                  iconName="clear"
+                  size="20"
+                  class="text-grey-600 cursor-pointer"
+                  @click="collapsePopper"
+                ) 
+              div(class="flex flex-col divide-y divide-grey-150")
+                div(class="px-4 py-3.5")
+                  div(class="flex items-center gap-x-2.5 pb-3")
+                    p(class="text-grey-900 text-caption font-bold") {{ $t('TT0047') }}
+                    f-button-label(
+                      @click="$store.commit('sticker/RESET_filter_addedBy')"
+                    ) {{ $t('UU0040') }}
+                  div(class="flex flex-col gap-y-3")
+                    f-input-checkbox(
+                      binary
+                      v-model:inputValue="filter.addedBy.addedByMe"
+                      :label="$t('TT0048', { username })"
+                      iconSize="20"
+                    )
+                    f-input-checkbox(
+                      binary
+                      v-model:inputValue="filter.addedBy.addedByInternalUnit"
+                      :label="$t('TT0049', { orgName })"
+                      iconSize="20"
+                    )
+                    f-input-checkbox(
+                      binary
+                      v-model:inputValue="filter.addedBy.addedByExternalUnit"
+                      :label="$t('TT0050')"
+                      iconSize="20"
+                    )
+                div(class="px-4 py-3.5")
+                  div(class="flex items-center gap-x-2.5 pb-3")
+                    p(class="text-grey-900 text-caption font-bold") {{ $t('TT0052') }}
+                    f-button-label(
+                      @click="$store.commit('sticker/RESET_filter_createDate')"
+                    ) {{ $t('UU0040') }}
+                  div(class="flex items-center gap-x-2")
+                    f-input-text(
+                      v-model:textValue="filter.createStartDate"
+                      inputType="date"
+                      size="md"
+                      class="flex-1"
+                    )
+                    span(class="text-body1 text-grey-900") ~
+                    f-input-text(
+                      v-model:textValue="filter.createEndDate"
+                      inputType="date"
+                      size="md"
+                      class="flex-1"
+                    ) 
+                div(class="px-4 py-3.5")
+                  div(class="flex items-center gap-x-2.5 pb-3")
+                    f-svg-icon(iconName="tag" size="16" class="text-grey-900 -mr-0.5")
+                    p(class="text-grey-900 text-caption font-bold") {{ $t('TT0053') }}
+                    f-button-label(
+                      @click="$store.commit('sticker/RESET_filter_tagList')"
+                    ) {{ $t('UU0040') }}
+                  div
+                    f-input-text(
+                      v-model:textValue="inputSearchTagList"
+                      size="md"
+                      prependIcon="search"
+                      :placeholder="$t('RR0053')"
+                    )
+                    div(class="pt-3")
+                      p(
+                        v-if="!!inputSearchTagList"
+                        class="text-caption text-grey-400 pb-2"
+                      ) {{ displayTagList.length === 0 ? $t('TT0105') : $t('TT0104') }}
+                      div(class="flex flex-wrap gap-x-2 gap-y-2")
+                        f-tag(
+                          v-for="tag in displayTagList"
+                          size="sm"
+                          class="cursor-pointer"
+                          :isActive="tag.isSelect"
+                          :appendIcon="tag.isSelect ? 'done' : ''"
+                          @click="toggleTagList(tag.text)"
+                        ) {{ tag.text }}
+                      p(
+                        v-if="!inputSearchTagList && !isShowMore"
+                        class="text-cyan-400 text-caption pt-2"
+                        @click="isShowMore = true"
+                      ) {{ $t('TT0054') }}
+        button(
+          v-if="isFilterDirty"
+          class="text-caption text-grey-400"
+          @click="$store.commit('sticker/RESET_filter')"
+        ) {{ $t('UU0040') }}
+    //- Content
+    f-scrollbar-container(class="flex-grow")
+      div(class="py-4")
+        //- Button: Add a sticker
+        div(v-if="!isAddingSticker && !isFilterDirty" class="pl-8 pr-10.5")
+          button(
+            class="relative w-full h-16 bg-grey-0 rounded-md overflow-hidden drop-shadow-2"
+            @click="isAddingSticker = true"
           )
-            template(#TT0092)
-              span(class="text-grey-800") {{ $t('TT0092') }}
-          p(class="text-body2 leading-1.6 text-grey-400 text-center") {{ $t('TT0005') }}
-      //- State - Normal
-      template(v-else)
-        div(v-if="isAddingSticker" class="pl-8 pr-7")
-          sticker-create(
-            :isCreatingDigitalThread="isCreatingDigitalThread"
-            :digitalThreadName="digitalThread.digitalThreadName"
-            @close="isAddingSticker = false"
-          )
-        div(class="pt-3 pl-8 pr-10.5 flex flex-col gap-y-3")
-          sticker-card(
-            v-for="sticker in stickerList"
-            :key="sticker.stickerId"
-            :sticker="sticker"
-          )
+            div(class="absolute top-0 left-0 w-1 h-full bg-forestgreen-300")
+            div(class="pl-7.5 h-full flex items-center")
+              f-svg-icon(iconName="add" size="20" class="text-forestgreen-300")
+              span(class="text-body2 font-bold text-grey-800 pl-3") {{ $t('TT0092') }}
+        //- Default intro
+        div(v-if="isCreatingDigitalThread && !isAddingSticker" class="pl-8 pr-10.5")
+          div(class="pt-10")
+            img(src="@/assets/images/image_sticker_empty.png" class="w-72.5 ml-15")
+            i18n-t(
+              keypath="TT0004"
+              tag="p"
+              class="text-h6 font-bold text-grey-300 text-center pb-6"
+              scope="global"
+            )
+              template(#TT0092)
+                span(class="text-grey-800") {{ $t('TT0092') }}
+            p(class="text-body2 leading-1.6 text-grey-400 text-center") {{ $t('TT0005') }}
+        //- State - Normal
+        template(v-else)
+          div(v-if="isAddingSticker" class="pl-8 pr-7")
+            sticker-create(
+              :isCreatingDigitalThread="isCreatingDigitalThread"
+              :digitalThreadName="digitalThread.digitalThreadName"
+              @close="isAddingSticker = false"
+            )
+          div(class="pt-3 pl-8 pr-10.5 flex flex-col gap-y-3")
+            sticker-card(v-for="sticker in stickerList" :sticker="sticker")
   template(v-if="isExpandDigitalThreadList")
     div(class="absolute z-0 top-0 right-0 w-screen h-screen bg-grey-900/30")
     div(
@@ -178,12 +288,13 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
 
 <script setup>
 import { useStore } from 'vuex'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import StickerCreate from '@/components/sticker/StickerCreate.vue'
 import { STICKER_ADD_TO } from '@/utils/constants.js'
 import StickerCard from '@/components/sticker/StickerCard.vue'
 import DigitalThreadCard from '@/components/sticker/DigitalThreadCard.vue'
+import { OG_TYPE } from '@/utils/constants'
 
 const store = useStore()
 const { t } = useI18n()
@@ -192,7 +303,11 @@ const material = computed(() => store.getters['sticker/material'])
 const digitalThread = computed(() => store.getters['sticker/digitalThread'])
 const stickerList = computed(() => digitalThread.value.stickerList)
 const isHoverHeader = ref(false)
-const isCreatingDigitalThread = computed(() => stickerList.value.length === 0) // 全新的 digital thread 尚未建立任何一個 sticker
+const isCreatingDigitalThread = computed(
+  () =>
+    digitalThread.value.digitalThreadId === null &&
+    stickerList.value.length === 0
+) // 全新的 digital thread 尚未建立任何一個 sticker
 const isAddingSticker = ref(false)
 
 const isEditingDigitalThreadName = ref(false)
@@ -208,9 +323,6 @@ const saveDigitalThreadName = () => {
     digitalThreadName: tempDigitalThreadName.value,
   })
 }
-
-const filterAddTo = ref(STICKER_ADD_TO.ALL)
-const isStarred = ref(false)
 
 const menuAddTo = computed(() => ({
   blockList: [
@@ -259,21 +371,110 @@ const startToCreateDigitalThread = () => {
   store.dispatch('sticker/startToCreateDigitalThread')
 }
 
-const openDigitalThread = (digitalThread, index) => {
+const openDigitalThread = async (digitalThread, index) => {
   if (indexOfDrawerDigitalThread.value === index) {
     return
   }
-
+  isChangingDigitalThread.value = true
   isAddingSticker.value = false
   store.commit('sticker/SET_indexOfDrawerDigitalThread', index)
+  store.commit('sticker/RESET_filter')
   const digitalThreadId = digitalThread.digitalThreadId
   if (digitalThreadId === null) {
-    store.commit('sticker/SET_digitalThread', digitalThread)
+    // 避免 isChangingDigitalThread 太快被切換回 false 導致 watch handler 被處執行
+    setTimeout(() => {
+      store.commit('sticker/SET_digitalThread', digitalThread)
+      isChangingDigitalThread.value = false
+    }, 0)
   } else {
-    store.dispatch('sticker/getDigitalThread', {
-      digitalThreadId,
-      filter: null,
+    // 待 API 調整後，應修改成 digital thread 中的 id & type
+    store.dispatch('sticker/getStickerTagList', {
+      addFromOGId: store.getters['helper/routeLocationId'],
+      addFromOGType:
+        store.getters['helper/routeLocation'] === 'org'
+          ? OG_TYPE.ORG
+          : OG_TYPE.GROUP,
     })
+    await store.dispatch('sticker/getDigitalThread', {
+      digitalThreadId,
+    })
+    isChangingDigitalThread.value = false
+  }
+}
+/**
+ * 在切換 digital thread 時因為會執行 reset filter 的行為，所以會觸發到 watch，
+ * 但因為 digital thread id 還是舊的，所以會拿到舊的資料，
+ * 因此設定一個 flag 來阻止因 reset 時而觸發的 watch handler
+ */
+const isChangingDigitalThread = ref(false)
+const filter = computed(() => store.getters['sticker/filter'])
+const isFilterDirty = computed(() => store.getters['sticker/isFilterDirty'])
+const isAdvanceFilterDirty = computed(
+  () => store.getters['sticker/isAdvanceFilterDirty']
+)
+watch(
+  () => filter.value,
+  () => {
+    store.commit('sticker/SET_filter', filter.value)
+    !isChangingDigitalThread.value &&
+      store.dispatch('sticker/getDigitalThread', {
+        digitalThreadId: digitalThread.value.digitalThreadId,
+      })
+  },
+  {
+    deep: true,
+  }
+)
+const orgName = computed(
+  () => store.getters['organization/organization'].orgName
+)
+const username = computed(
+  () => store.getters['organization/orgUser/orgUser'].displayName
+)
+const inputSearchTagList = ref('')
+const sourceTagList = computed(() => store.getters['sticker/sourceTagList'])
+const isShowMore = ref(false)
+const displayTagList = computed(() => {
+  const tagList = sourceTagList.value
+    .filter((tag) => tag.includes(inputSearchTagList.value || ''))
+    .map((tag) => ({
+      isSelect: filter.value.tagList.includes(tag),
+      text: tag,
+    }))
+    .sort((a, b) => {
+      if (a.isSelect === b.isSelect) {
+        return 0
+      }
+      if (a.isSelect) {
+        return -1
+      }
+      return 1
+    })
+
+  if (isShowMore.value) {
+    return tagList
+  }
+
+  let amountOfSelect = 0
+  for (const tag of tagList) {
+    if (!tag.isSelect) {
+      break
+    }
+    amountOfSelect++
+  }
+  let indexOfSlice = 10
+  if (amountOfSelect > 10) {
+    indexOfSlice = amountOfSelect
+  }
+
+  return tagList.slice(0, indexOfSlice)
+})
+const toggleTagList = (selectTag) => {
+  const index = filter.value.tagList.findIndex((tag) => tag === selectTag)
+  if (!~index) {
+    filter.value.tagList.push(selectTag)
+  } else {
+    filter.value.tagList.splice(index, 1)
   }
 }
 </script>

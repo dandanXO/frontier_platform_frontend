@@ -110,14 +110,14 @@ export default {
       store.dispatch('helper/pushModalLoading')
       if (props.mode === MODE.EDIT) {
         await store.dispatch('workspace/updateCollection', {
-          collectionId: collectionId.value,
           ...formData,
+          collectionId: collectionId.value,
         })
         store.dispatch('helper/pushFlashMessage', t('FF0035'))
       } else {
         await store.dispatch('workspace/createCollection', {
-          workspaceNodeId: props.workspaceNodeId,
           ...formData,
+          workspaceNodeId: props.workspaceNodeId,
         })
         store.dispatch('helper/pushFlashMessage', t('FF0027'))
       }

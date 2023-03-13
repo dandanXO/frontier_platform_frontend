@@ -78,8 +78,8 @@ export const RootTitle = TemplateDefault.bind({})
 RootTitle.args = {
   selectMode: NONE_SELECT,
   menuTree: {
-    rootTitle: 'Root Title',
     ...menuTree,
+    rootTitle: 'Root Title',
   },
 }
 
@@ -121,12 +121,12 @@ export const ButtonTop = TemplateDefault.bind({})
 ButtonTop.args = {
   selectMode: NONE_SELECT,
   menuTree: {
+    ...menuTree,
     button: {
       position: 'top',
       icon: 'create',
       text: 'button',
     },
-    ...menuTree,
   },
 }
 
@@ -134,12 +134,12 @@ export const ButtonBottom = TemplateDefault.bind({})
 ButtonBottom.args = {
   selectMode: NONE_SELECT,
   menuTree: {
+    ...menuTree,
     button: {
       position: 'bottom',
       icon: 'create',
       text: 'button',
     },
-    ...menuTree,
   },
 }
 

@@ -23,7 +23,7 @@ div(
       )
       sticker-header-icon(
         :iconName="isStarred ? 'starred' : 'star'"
-        :isHoverSticker="isHoverSticker"
+        :isHoverSticker="isHoverChildSticker"
         :isActive="isStarred"
         :activeTooltip="$t('TT0099')"
         :inactiveTooltip="$t('TT0098')"
@@ -73,7 +73,7 @@ div(
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import ChildStickerTextViewer from '@/components/sticker/stickerTextEditor/ChildStickerTextViewer.vue'
 import StickerTagList from '@/components/sticker/StickerTagList.vue'
 import StickerHeaderIcon from '@/components/sticker/StickerHeaderIcon.vue'
@@ -114,4 +114,19 @@ const toggleStarred = () => {
     ? store.dispatch('sticker/starSticker', stickerId)
     : store.dispatch('sticker/unstarSticker', stickerId)
 }
+
+const isFilterTagListDirty = computed(
+  () => store.getters['sticker/isFilterTagListDirty']
+)
+watch(
+  () => isFilterTagListDirty.value,
+  () => {
+    if (isFilterTagListDirty.value && props.childSticker.tagList.length > 0) {
+      isShowTagList.value = true
+    }
+  },
+  {
+    immediate: true,
+  }
+)
 </script>

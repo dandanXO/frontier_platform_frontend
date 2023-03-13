@@ -138,6 +138,7 @@ module.exports = plugin(function () {}, {
         caption2: ['10px', '1'],
       },
       zIndex: {
+        ...zIndex,
         sidebar: 100,
         header: 100,
         modal: 200,
@@ -146,7 +147,6 @@ module.exports = plugin(function () {}, {
         footer: 200,
         popper: 999,
         tooltip: 1000,
-        ...zIndex,
       },
       spacing: spacing,
       maxWidth: spacing,
