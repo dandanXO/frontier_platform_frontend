@@ -57,7 +57,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           size="20"
           class="text-grey-600 hover:text-primary-400 ml-4 cursor-pointer"
           tooltip="Close"
-          @click="$store.dispatch('sticker/closeStickerDrawer')"
+          @click="closeStickerDrawer"
         )
       template(v-else)
         f-input-text(v-model:textValue="tempDigitalThreadName" class="flex-grow")
@@ -420,6 +420,7 @@ watch(
   },
   {
     deep: true,
+    flush: 'post', // avoid it be invoked after component unmount
   }
 )
 const orgName = computed(
@@ -476,7 +477,7 @@ const toggleTagList = (selectTag) => {
 }
 
 const readDigitalThread = (e) => {
-  if (!isChangingDigitalThread.value) {
+  if (!isCreatingDigitalThread.value) {
     const body = {
       orgId: 6,
       digitalThreadId: digitalThread.value.digitalThreadId,
@@ -500,4 +501,33 @@ onUnmounted(() => {
   window.removeEventListener('beforeunload', readDigitalThread)
   readDigitalThread()
 })
+
+const closeStickerDrawer = () => {
+  const tempDigitalThreadList = store.getters['sticker/tempDigitalThreadList']
+
+  if (tempDigitalThreadList.length === 0 && !isAddingSticker.value) {
+    store.dispatch('sticker/closeStickerDrawer')
+    return
+  }
+
+  let header, contentText
+  if (tempDigitalThreadList.length > 0) {
+    header = t('TT0088')
+    contentText = t('TT0089')
+  } else if (isAddingSticker.value) {
+    header = t('TT0090')
+    contentText = t('TT0091')
+  }
+
+  store.dispatch('helper/openModalConfirm', {
+    type: 1,
+    header,
+    contentText,
+    primaryBtnText: t('UU0128'),
+    primaryBtnHandler: () => {
+      store.dispatch('sticker/closeStickerDrawer')
+    },
+    secondaryBtnText: t('UU0002'),
+  })
+}
 </script>
