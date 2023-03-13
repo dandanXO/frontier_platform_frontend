@@ -75,7 +75,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
         ) {{ $t('UU0002') }}
     div(
       class="w-full h-28 px-8 pt-3 pb-2.5 bg-grey-0 drop-shadow-4"
-      :key="currentMaterialId"
+      :key="material.materialId"
     )
       //- Material Info
       div(class="flex items-center gap-x-4")
@@ -187,9 +187,6 @@ import DigitalThreadCard from '@/components/sticker/DigitalThreadCard.vue'
 const store = useStore()
 const { t } = useI18n()
 
-const currentMaterialId = computed(
-  () => store.getters['sticker/currentMaterialId']
-)
 const material = computed(() => store.getters['sticker/material'])
 const digitalThread = computed(() => store.getters['sticker/digitalThread'])
 const stickerList = computed(() => digitalThread.value.stickerList)
@@ -214,6 +211,15 @@ const saveDigitalThreadName = () => {
     )
   }
 }
+watch(
+  () => digitalThread.value,
+  () => {
+    store.commit('sticker/UPDATE_digitalThread', digitalThread.value)
+  },
+  {
+    deep: true,
+  }
+)
 
 const filterAddTo = ref(STICKER_ADD_TO.ALL)
 const isStarred = ref(false)
@@ -246,16 +252,6 @@ onMounted(async () => {
   await store.dispatch('sticker/fetchStickerDrawerData')
 })
 
-watch(
-  () => digitalThread.value,
-  () => {
-    store.commit('sticker/UPDATE_digitalThread', digitalThread.value)
-  },
-  {
-    deep: true,
-  }
-)
-
 const openModalDigitalThreadSummary = () => {
   console.log('openModalDigitalThreadSummary')
 }
@@ -269,11 +265,13 @@ const digitalThreadList = computed(() =>
 )
 
 const startToCreateDigitalThread = () => {
+  isAddingSticker.value = false
   store.dispatch('sticker/startToCreateDigitalThread')
   indexOfOpenedDigitalThread.value = 0
 }
 
 const openDigitalThread = (digitalThread, index) => {
+  isAddingSticker.value = false
   indexOfOpenedDigitalThread.value = index
   const digitalThreadId = digitalThread.digitalThreadId
   if (digitalThreadId === null) {

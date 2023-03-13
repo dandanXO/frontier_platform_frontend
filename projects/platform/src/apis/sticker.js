@@ -103,4 +103,16 @@ export default {
       method: 'POST',
       data,
     }),
+  /**
+   *
+   * @param {object} data
+   * @param {number} data.orgId
+   * @param {number} data.stickerId
+   * @param {string} data.content
+   */
+  createChildSticker: (data) =>
+    axios('/digital-thread/sticker/child-sticker/create', {
+      method: 'POST',
+      data,
+    }),
 }

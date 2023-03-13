@@ -47,7 +47,6 @@ export default {
     },
     digitalThreadList: [],
     tempDigitalThreadList: [], // 尚未真的新增到後端時，用於前端操作的 digital thread list,
-    sticker: {},
   }),
   getters: {
     currentMaterialId: (state) => state.currentMaterialId,
@@ -288,6 +287,34 @@ export default {
         orgId: rootGetters['organization/orgId'],
         digitalThreadId: getters.digitalThread.digitalThreadId,
         digitalThreadName,
+      })
+    },
+    async createChildSticker({ rootGetters, state }, { stickerId, content }) {
+      // await stickerApi.createChildSticker({
+      //   orgId: rootGetters['organization/orgId'],
+      //   stickerId,
+      //   content,
+      // })
+
+      const sticker = state.digitalThread.stickerList.find(
+        (sticker) => sticker.stickerId === stickerId
+      )
+      const order = sticker.childStickerList.length + 1
+      sticker.childStickerList.push({
+        stickerId,
+        digitalThreadId: state.digitalThread.digitalThreadId,
+        content,
+        tagList: [],
+        isStarred: false,
+        addTo: sticker.addTo,
+        type: sticker.type,
+        creatorUnitName: sticker.creatorUnitName,
+        creatorUnitLogo: sticker.creatorUnitLogo,
+        creatorUnitLabelColor: sticker.creatorUnitLabelColor,
+        creator: sticker.creator,
+        creatorAvatar: sticker.creatorAvatar,
+        createDate: Date.now(),
+        order,
       })
     },
   },

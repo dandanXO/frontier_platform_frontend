@@ -1,6 +1,5 @@
 <template lang="pug">
-div(v-if="editor")
-  editor-content(:editor="editor" @keydown.space.stop)
+editor-content(v-if="editor" :editor="editor" @keydown.space.stop)
 </template>
 
 <script setup>

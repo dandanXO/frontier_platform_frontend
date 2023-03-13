@@ -1,6 +1,5 @@
 <template lang="pug">
-div(v-if="editor")
-  editor-content(:editor="editor" @keydown.space.stop)
+editor-content(v-if="editor" :editor="editor" @keydown.space.stop)
 </template>
 
 <script setup>
@@ -25,7 +24,6 @@ const props = defineProps({
     required: true,
   },
 })
-const emits = defineEmits(['update:content'])
 
 const memberList = computed(() => [
   {
@@ -60,7 +58,7 @@ const editor = useEditor({
   ],
   editorProps: {
     attributes: {
-      class: 'outline-none bg-grey-0 text-body2 leading-1.6 text-grey-800',
+      class: 'outline-none bg-grey-0 text-body2 leading-1.6 text-grey-900',
     },
   },
   editable: false,
