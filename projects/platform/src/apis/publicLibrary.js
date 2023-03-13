@@ -2,6 +2,7 @@ import axios from '@/apis'
 
 export default {
   getPublicList: ({
+    orgId,
     workspaceNodeId,
     workspaceNodeLocation,
     search = null,
@@ -11,6 +12,7 @@ export default {
     axios('/public/get-list', {
       method: 'POST',
       data: {
+        orgId,
         workspaceNodeId,
         workspaceNodeLocation,
         search,

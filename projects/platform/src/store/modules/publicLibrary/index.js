@@ -59,6 +59,7 @@ export default {
       const searchParams =
         rootGetters['helper/search/getSearchParams'](targetPage)
       const params = {
+        orgId: rootGetters['organization/orgId'],
         workspaceNodeId,
         workspaceNodeLocation,
         ...searchParams,
