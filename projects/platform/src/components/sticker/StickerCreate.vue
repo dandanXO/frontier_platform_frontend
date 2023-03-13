@@ -203,7 +203,7 @@ const STICKER_TYPE = {
 
 const isInternalLocation = computed(() =>
   [LOCATION_TYPE.ASSETS, LOCATION_TYPE.WORKSPACE].includes(
-    store.getters['sticker/addFromLocationType']
+    store.getters['sticker/drawerOpenFromLocationType']
   )
 )
 
@@ -259,7 +259,10 @@ if (props.isCreatingDigitalThread) {
   watch(
     () => addFrom.value,
     () => {
-      store.dispatch('sticker/getStickerTagList', addFrom.value)
+      store.dispatch('sticker/getStickerTagList', {
+        ogId: addFrom.value.addFromOGId,
+        ogType: addFrom.value.addFromOGType,
+      })
       store.dispatch('sticker/getMentionMemberList', {
         ogId: addFrom.value.addFromOGId,
         ogType: addFrom.value.addFromOGType,

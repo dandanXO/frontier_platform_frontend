@@ -132,8 +132,10 @@ watch(
       closeStickerDrawer()
       store.dispatch('sticker/openStickerDrawer', {
         materialId: material.value.materialId,
-        addFromLocationList: store.getters['sticker/addFromLocationList'],
-        addFromLocationType: store.getters['sticker/addFromLocationType'],
+        drawerOpenFromLocationList:
+          store.getters['sticker/drawerOpenFromLocationList'],
+        drawerOpenFromLocationType:
+          store.getters['sticker/drawerOpenFromLocationType'],
       })
     }
   },

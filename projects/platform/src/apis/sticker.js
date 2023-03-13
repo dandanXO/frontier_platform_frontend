@@ -6,6 +6,8 @@ export default {
    * @param {object} data
    * @param {number} data.orgId
    * @param {number} data.materialId
+   * @param {number} data.ogType // ogType及ogId不給時，是帶出該user在該組織及底下所有團隊可看到的digital thread list; 有給值時，只帶出該組織或團隊可看到的
+   * @param {number} data.ogId // ogType及ogId不給時，是帶出該user在該組織及底下所有團隊可看到的digital thread list; 有給值時，只帶出該組織或團隊可看到的
    */
   getDigitalThreadList: (data) =>
     axios('/digital-thread/get-list', {
@@ -16,7 +18,7 @@ export default {
    *
    * @param {object} data
    * @param {number} data.orgId
-   * @param {number} data.digitalThreadId
+   * @param {number} data.digitalThreadSideId
    * @param {object} data.filter
    * @param {number} data.filter.addTo
    * @param {boolean} data.filter.isStarred
@@ -48,8 +50,8 @@ export default {
   /**
    *
    * @param {object} data
-   * @param {number} data.addFromOGId
-   * @param {number} data.addFromOGType
+   * @param {number} data.ogId
+   * @param {number} data.ogType
    */
   getStickerTagList: (data) =>
     axios('/polling/digital-thread/sticker/tag-list/get', {
@@ -80,7 +82,7 @@ export default {
    *
    * @param {object} data
    * @param {number} data.orgId
-   * @param {number} data.digitalThreadId
+   * @param {number} data.digitalThreadSideId
    * @param {string} data.digitalThreadName
    */
   updateDigitalThreadName: (data) =>
@@ -92,7 +94,7 @@ export default {
    *
    * @param {object} data
    * @param {number} data.orgId
-   * @param {number} data.digitalThreadId
+   * @param {number} data.digitalThreadSideId
    * @param {number} data.addTo
    * @param {number} data.type
    * @param {string} data.content
@@ -107,6 +109,7 @@ export default {
    *
    * @param {object} data
    * @param {number} data.orgId
+   * @param {number} data.digitalThreadSideId
    * @param {number} data.stickerId
    * @param {string} data.content
    */
@@ -119,6 +122,7 @@ export default {
    *
    * @param {object} data
    * @param {number} data.orgId
+   * @param {number} data.digitalThreadSideId
    * @param {number} data.stickerId
    * @param {string[]} data.tagList
    */
@@ -131,6 +135,7 @@ export default {
    *
    * @param {object} data
    * @param {number} data.orgId
+   * @param {number} data.digitalThreadSideId
    * @param {number} data.stickerId
    */
   starSticker: (data) =>
@@ -142,6 +147,7 @@ export default {
    *
    * @param {object} data
    * @param {number} data.orgId
+   * @param {number} data.digitalThreadSideId
    * @param {number} data.stickerId
    */
   unstarSticker: (data) =>
@@ -153,6 +159,7 @@ export default {
    *
    * @param {object} data
    * @param {number} data.orgId
+   * @param {number} data.digitalThreadSideId
    * @param {number} data.stickerId
    */
   readChildSticker: (data) =>
@@ -164,7 +171,7 @@ export default {
    *
    * @param {object} data
    * @param {number} data.orgId
-   * @param {number} data.digitalThreadId
+   * @param {number} data.digitalThreadSideId
    */
   readDigitalThread: (data) =>
     axios('/digital-thread/read-new-add-and-update', {

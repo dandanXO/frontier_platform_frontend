@@ -33,7 +33,7 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  stickerAddFromLocationList: {
+  drawerOpenFromLocationList: {
     type: Array,
     required: true,
   },
@@ -47,36 +47,36 @@ const currentMaterialId = computed(
 
 const openStickerDrawer = () => {
   const routePath = route.path
-  let addFromLocationType
+  let drawerOpenFromLocationType
 
   if (routePath.includes('public-library')) {
-    addFromLocationType = LOCATION_TYPE.PUBLIC
+    drawerOpenFromLocationType = LOCATION_TYPE.PUBLIC
   } else if (routePath.includes('assets')) {
-    addFromLocationType = LOCATION_TYPE.ASSETS
+    drawerOpenFromLocationType = LOCATION_TYPE.ASSETS
   } else if (routePath.includes('workspace')) {
-    addFromLocationType = LOCATION_TYPE.WORKSPACE
+    drawerOpenFromLocationType = LOCATION_TYPE.WORKSPACE
   } else if (routePath.includes('moodboard')) {
-    addFromLocationType = LOCATION_TYPE.MOODBOARD
+    drawerOpenFromLocationType = LOCATION_TYPE.MOODBOARD
   } else if (routePath.includes('share-to-me')) {
-    addFromLocationType = LOCATION_TYPE.SHARE_TO_ME
+    drawerOpenFromLocationType = LOCATION_TYPE.SHARE_TO_ME
   } else if (routePath.includes('received-share')) {
-    addFromLocationType = LOCATION_TYPE.RECEIVED_SHARE
+    drawerOpenFromLocationType = LOCATION_TYPE.RECEIVED_SHARE
   }
 
   if (
-    addFromLocationType === LOCATION_TYPE.RECEIVED_SHARE &&
+    drawerOpenFromLocationType === LOCATION_TYPE.RECEIVED_SHARE &&
     !store.getters['receivedShare/hasLogin']
   ) {
     store.dispatch('sticker/openReceivedShareStickerDrawer', {
       material: props.material,
-      addFromLocationList: props.stickerAddFromLocationList,
-      addFromLocationType,
+      drawerOpenFromLocationList: props.drawerOpenFromLocationList,
+      drawerOpenFromLocationType,
     })
   } else {
     store.dispatch('sticker/openStickerDrawer', {
       materialId,
-      addFromLocationList: props.stickerAddFromLocationList,
-      addFromLocationType,
+      drawerOpenFromLocationList: props.drawerOpenFromLocationList,
+      drawerOpenFromLocationType,
     })
   }
 }

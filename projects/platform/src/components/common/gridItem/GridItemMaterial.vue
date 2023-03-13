@@ -33,7 +33,7 @@ grid-item-wrapper(
         v-if="canAddSticker"
         :isHover="isHover"
         :material="material"
-        :stickerAddFromLocationList="stickerAddFromLocationList"
+        :drawerOpenFromLocationList="drawerOpenFromLocationList"
       )
   template(#corner-bottom-left)
     slot(name="corner-bottom-left")
@@ -73,7 +73,7 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-  stickerAddFromLocationList: {
+  drawerOpenFromLocationList: {
     type: Array,
     required: true,
     default: [],

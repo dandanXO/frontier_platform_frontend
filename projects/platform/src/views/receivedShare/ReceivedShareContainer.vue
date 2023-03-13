@@ -104,10 +104,10 @@ watch(
               store.dispatch('organization/orgUser/getOrgUser'),
               store.dispatch('sticker/openStickerDrawer', {
                 materialId: store.getters['sticker/currentMaterialId'],
-                addFromLocationList:
-                  store.getters['sticker/addFromLocationList'],
-                addFromLocationType:
-                  store.getters['sticker/addFromLocationType'],
+                drawerOpenFromLocationList:
+                  store.getters['sticker/drawerOpenFromLocationList'],
+                drawerOpenFromLocationType:
+                  store.getters['sticker/drawerOpenFromLocationType'],
               }),
             ])
             hasSelectedStickerAddFrom.value = true

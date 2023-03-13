@@ -7,7 +7,7 @@ modal-behavior(
   div(class="box-content w-203 px-21")
     div(class="pb-4")
       div(class="flex items-center pb-2")
-        p(class="text-body2 text-grey-900 font-bold line-clamp-1 !break-all pr-6") {{ `${nodeMaterial.properties.materialNo} ${nodeMaterial.properties.description}` }}
+        p(class="text-body2 text-grey-900 font-bold line-clamp-1 !break-all pr-4") {{ `${nodeMaterial.properties.materialNo} ${nodeMaterial.properties.description}` }}
         btn-pick-tooltip(
           :isPicked="nodeMaterial.isPicked"
           @togglePick="moodboardType === MOODBOARD_TYPE.DEMANDER && pickHandler()"

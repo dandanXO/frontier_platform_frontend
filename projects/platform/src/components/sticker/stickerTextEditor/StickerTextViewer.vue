@@ -23,7 +23,7 @@ const props = defineProps({
 const store = useStore()
 
 const suggestionList = computed(
-  () => store.getters['sticker/mentionMemberList']
+  () => store.getters['sticker/digitalThread'].participantList
 )
 
 const editor = useEditor({

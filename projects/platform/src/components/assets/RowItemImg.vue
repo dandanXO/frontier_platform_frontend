@@ -31,7 +31,7 @@ div(class="w-full min-w-42.5 max-w-67.5")
   digital-thread-entrance(
     :isHover="isHover"
     :material="material"
-    :stickerAddFromLocationList="[`${material.materialId}`]"
+    :drawerOpenFromLocationList="[`${material.materialId}`]"
   )
 </template>
 

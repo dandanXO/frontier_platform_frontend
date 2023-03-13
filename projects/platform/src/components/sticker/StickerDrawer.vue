@@ -304,7 +304,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           p(class="text-body2 font-bold text-grey-900") {{ $t('TT0106') }}
         digital-thread-card(
           v-for="(digitalThread, index) in digitalThreadList"
-          :key="`${index}-${digitalThread.digitalThreadId}`"
+          :key="`${index}-${digitalThread.digitalThreadSideId}`"
           :digitalThread="digitalThread"
           :class="{ 'bg-grey-100': index === indexOfDrawerDigitalThread }"
           @click="openDigitalThread(digitalThread, index)"
@@ -329,7 +329,7 @@ const stickerList = computed(() => digitalThread.value.stickerList)
 const isHoverHeader = ref(false)
 const isCreatingDigitalThread = computed(
   () =>
-    digitalThread.value.digitalThreadId === null &&
+    digitalThread.value.digitalThreadSideId === null &&
     stickerList.value.length === 0
 ) // 全新的 digital thread 尚未建立任何一個 sticker
 const isAddingSticker = ref(false)
@@ -401,8 +401,8 @@ const openDigitalThread = async (digitalThread, index) => {
   isAddingSticker.value = false
   store.commit('sticker/SET_indexOfDrawerDigitalThread', index)
   store.commit('sticker/RESET_filter')
-  const digitalThreadId = digitalThread.digitalThreadId
-  if (digitalThreadId === null) {
+  const digitalThreadSideId = digitalThread.digitalThreadSideId
+  if (digitalThreadSideId === null) {
     // 避免 isChangingDigitalThread 太快被切換回 false 導致 watch handler 被處執行
     setTimeout(() => {
       store.commit('sticker/SET_digitalThread', digitalThread)
@@ -410,7 +410,7 @@ const openDigitalThread = async (digitalThread, index) => {
     }, 0)
   } else {
     await store.dispatch('sticker/getDigitalThread', {
-      digitalThreadId,
+      digitalThreadSideId,
     })
     isChangingDigitalThread.value = false
   }
@@ -432,7 +432,7 @@ watch(
     store.commit('sticker/SET_filter', filter.value)
     !isChangingDigitalThread.value &&
       store.dispatch('sticker/getDigitalThread', {
-        digitalThreadId: digitalThread.value.digitalThreadId,
+        digitalThreadSideId: digitalThread.value.digitalThreadSideId,
         wllGetAdditionalData: false,
       })
   },
@@ -498,7 +498,8 @@ const readDigitalThread = (e) => {
   if (!isCreatingDigitalThread.value) {
     const body = {
       orgId: 6,
-      digitalThreadId: digitalThread.value.digitalThreadId,
+      digitalThreadSideId: digitalThread.value.digitalThreadSideId,
+      accessToken: localStorage.getItem('accessToken'),
     }
     const headers = {
       type: 'application/json',

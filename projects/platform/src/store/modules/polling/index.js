@@ -5,6 +5,7 @@ import {
   MADE2FLOW_PLAN_TYPE,
   VALUE_ADDED_SERVICE_ID,
   VALUE_ADDED_SERVICE_STATUS,
+  LOCATION_TYPE,
 } from '@/utils/constants'
 import i18n from '@/utils/i18n'
 import dayjs from 'dayjs'
@@ -124,32 +125,6 @@ const getters = {
   notificationList: (state) => {
     return state.notificationList.map(
       ({ isRead, content, contentValue, createDate }) => {
-        // return [
-        //   {
-        //     isRead: false,
-        //     content: 'hasMaterialDeleted {0}',
-        //     contentValue: [
-        //       {
-        //         type: 'sticker',
-        //         text: 'view it now',
-        //         value: 9, // 60528
-        //       },
-        //     ],
-        //     createDate: 1674011611,
-        //   },
-        //   {
-        //     isRead: false,
-        //     content: 'hasMaterialNoAccess  {0}',
-        //     contentValue: [
-        //       {
-        //         type: 'sticker',
-        //         text: 'view it now',
-        //         value: 10, // 74
-        //       },
-        //     ],
-        //     createDate: 1674011611,
-        //   },
-        // ].map(({ isRead, content, contentValue, createDate }) => {
         const re = new RegExp(/\{\d+\}/, 'g')
         const matches = [...content.matchAll(re)]
         const pairIndexList = []
@@ -177,7 +152,8 @@ const getters = {
                   if (fragment.match(re)) {
                     const index = Number(fragment.slice(1, fragment.length - 1)) // {x}
                     const { type, text, value } = contentValue[index]
-                    if (type === 'url') {
+                    // url
+                    if (type === 1) {
                       return h(
                         'a',
                         {
@@ -188,14 +164,17 @@ const getters = {
                         text
                       )
                     }
-                    if (type === 'sticker') {
+                    // sticker
+                    if (type === 2) {
                       return h(
                         'span',
                         {
                           class: 'text-caption text-cyan-400 cursor-pointer',
                           onClick: () => {
                             store.dispatch('sticker/openStickerDrawer', {
-                              digitalThreadId: value,
+                              digitalThreadSideId: value,
+                              drawerOpenFromLocationType:
+                                LOCATION_TYPE.NOTIFICATION,
                             })
                           },
                         },
@@ -286,7 +265,6 @@ const actions = {
       orgId: rootGetters['organization/orgId'],
     })
     commit('SET_polling', data.result.polling)
-
     needPolling && dispatch('startPollingSidebar')
   },
   startPollingSidebar({ rootGetters, dispatch }) {

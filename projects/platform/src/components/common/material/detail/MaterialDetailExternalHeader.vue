@@ -19,7 +19,7 @@ div(class="pb-7.5")
         p {{ $t('RR0056') }}
     digital-thread-entrance(
       :material="material"
-      :stickerAddFromLocationList="breadcrumbList.map((item) => item.name).slice(1)"
+      :drawerOpenFromLocationList="breadcrumbList.map((item) => item.name).slice(1)"
     )
     slot(name="action-list")
   slot(name="caption")

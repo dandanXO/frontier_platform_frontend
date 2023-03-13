@@ -67,7 +67,9 @@ const props = defineProps({
 })
 
 const material = computed(() => store.getters['sticker/material'])
-const uncreated = computed(() => props.digitalThread.digitalThreadId === null)
+const uncreated = computed(
+  () => props.digitalThread.digitalThreadSideId === null
+)
 const orgItemList = computed(() => {
   const {
     materialOwnerUnitName,

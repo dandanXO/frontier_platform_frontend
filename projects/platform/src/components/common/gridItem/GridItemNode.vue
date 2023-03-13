@@ -8,7 +8,7 @@ grid-item-material(
   :optionList="optionList"
   @click:option="$emit('click:option', $event)"
   :canAddSticker="canAddSticker"
-  :stickerAddFromLocationList="node.location?.slice(1)"
+  :drawerOpenFromLocationList="node.location?.slice(1)"
 )
   template(#corner-top-right)
     slot(name="corner-top-right")

@@ -63,7 +63,7 @@ div(class="w-full h-full")
             :optionList="optionList(material)"
             @click:option="$event.func(material)"
             @click.stop="goToAssetMaterialDetail(material)"
-            :stickerAddFromLocationList="[`${material.materialId}`]"
+            :drawerOpenFromLocationList="[`${material.materialId}`]"
           )
       div(v-else class="flex flex-col justify-center items-center")
         div(

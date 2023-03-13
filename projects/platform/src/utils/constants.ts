@@ -299,6 +299,7 @@ export const LOCATION_TYPE = {
   MOODBOARD: 4,
   SHARE_TO_ME: 5,
   RECEIVED_SHARE: 6,
+  NOTIFICATION: 99,
 }
 
 export const SIGNUP_SOURCE = {
