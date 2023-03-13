@@ -8,6 +8,8 @@ import {
 } from '@/utils/constants'
 import i18n from '@/utils/i18n'
 import dayjs from 'dayjs'
+import { h } from 'vue'
+import store from '@/store'
 
 const state = () => ({
   worker: null,
@@ -122,18 +124,87 @@ const getters = {
   notificationList: (state) => {
     return state.notificationList.map(
       ({ isRead, content, contentValue, createDate }) => {
+        // return [
+        //   {
+        //     isRead: false,
+        //     content: '{0} jklm nop q {1} stuvwx {2}',
+        //     contentValue: [
+        //       {
+        //         type: 'url',
+        //         text: '測試',
+        //         value: 'https://youtube.com',
+        //       },
+        //       {
+        //         type: 'sticker',
+        //         text: '測試2',
+        //         value: 8,
+        //       },
+        //       {
+        //         type: 'url',
+        //         text: '測試3',
+        //         value: 'https://youtube.com',
+        //       },
+        //     ],
+        //     createDate: 1674011611,
+        //   },
+        // ].map(({ isRead, content, contentValue, createDate }) => {
         const re = new RegExp(/\{\d+\}/, 'g')
         const matches = [...content.matchAll(re)]
-
-        let replacedContent = content
-
+        const pairIndexList = []
+        let i = 0
         if (matches.length !== 0) {
           for (const match of matches) {
-            const targetIndex = Number(match[0].slice(1, match[0].length - 1))
-            const { text, url } = contentValue[targetIndex]
-            const html = `<a href="${url}" target="_blank" class="text-caption text-cyan-400">${text}</a>`
-            replacedContent = replacedContent.replace(match[0], html)
+            const index = match.index
+            pairIndexList.push([i, index])
+            pairIndexList.push([index, index + 3])
+            i = index + 3
           }
+        }
+        pairIndexList.push([i, content.length])
+        const contentComponent = {
+          render: () => {
+            return h(
+              'span',
+              {
+                class: 'text-caption text-grey-900 leading-1.6 pb-1',
+              },
+              ...pairIndexList
+                .filter(([start, end]) => start !== end)
+                .map(([start, end]) => {
+                  const fragment = content.slice(start, end)
+                  if (fragment.match(re)) {
+                    const index = Number(fragment.slice(1, fragment.length - 1)) // {x}
+                    const { type, text, value } = contentValue[index]
+                    if (type === 'url') {
+                      return h(
+                        'a',
+                        {
+                          class: 'text-caption text-cyan-400',
+                          href: value,
+                          target: '_blank',
+                        },
+                        text
+                      )
+                    }
+                    if (type === 'sticker') {
+                      return h(
+                        'span',
+                        {
+                          class: 'text-caption text-cyan-400 cursor-pointer',
+                          onClick: () => {
+                            store.dispatch('sticker/openStickerDrawer', {
+                              digitalThreadId: value,
+                            })
+                          },
+                        },
+                        text
+                      )
+                    }
+                  }
+                  return h('span', {}, fragment)
+                })
+            )
+          },
         }
 
         let formattedDate
@@ -159,7 +230,7 @@ const getters = {
         return {
           isRead,
           formattedDate,
-          content: replacedContent,
+          contentComponent,
         }
       }
     )

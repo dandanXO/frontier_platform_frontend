@@ -149,4 +149,26 @@ export default {
       method: 'POST',
       data,
     }),
+  /**
+   *
+   * @param {object} data
+   * @param {number} data.orgId
+   * @param {number} data.stickerId
+   */
+  readChildSticker: (data) =>
+    axios('/digital-thread/sticker/read-child-sticker', {
+      method: 'POST',
+      data,
+    }),
+  /**
+   *
+   * @param {object} data
+   * @param {number} data.orgId
+   * @param {number} data.digitalThreadId
+   */
+  readDigitalThread: (data) =>
+    axios('/digital-thread/read-new-add-and-update', {
+      method: 'POST',
+      data,
+    }),
 }

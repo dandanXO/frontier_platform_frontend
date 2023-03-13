@@ -13,8 +13,12 @@ div(
   )
   span(
     v-if="amount !== -1 && (isHoverSticker || amount > 0 || isActive)"
-    class="text-body2"
+    class="text-body2 relative"
   ) {{ amount }}
+    span(
+      v-if="hasUnread"
+      class="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-primary-400"
+    )
 </template>
 
 <script setup>
@@ -43,6 +47,10 @@ defineProps({
   inactiveTooltip: {
     type: String,
     required: true,
+  },
+  hasUnread: {
+    type: Boolean,
+    default: false,
   },
 })
 

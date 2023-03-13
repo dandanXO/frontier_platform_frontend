@@ -5,11 +5,15 @@ div(
   div(class="pb-1 flex items-center gap-x-2.5")
     img(class="w-8 h-8 rounded" :src="material.coverImg")
     p(class="text-body2 text-grey-800") {{ `#${material.materialNo}` }}
-  div(class="pb-1 flex items-center gap-x-4")
-    p(
+  div(class="pb-1 flex items-center gap-x-2")
+    span(
       class="text-body2 font-bold leading-1.6 group-hover:text-primary-400"
       :class="[uncreated ? 'text-grey-300 py-2' : 'text-grey-900']"
     ) {{ digitalThread.digitalThreadName }}
+    span(
+      v-if="digitalThread.unreadStickerQty > 0"
+      class="h-4.5 px-1.5 bg-primary-400 text-caption font-bold text-grey-0 rounded-xl flex items-center"
+    ) {{ digitalThread.unreadStickerQty }}
     f-avatar-group(
       v-if="!uncreated"
       :itemList="orgItemList"

@@ -263,7 +263,11 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
               @close="isAddingSticker = false"
             )
           div(class="pt-3 pl-8 pr-10.5 flex flex-col gap-y-3")
-            sticker-card(v-for="sticker in stickerList" :sticker="sticker")
+            sticker-card(
+              v-for="sticker in stickerList"
+              :key="sticker.stickerId"
+              :sticker="sticker"
+            )
   template(v-if="isExpandDigitalThreadList")
     div(class="absolute z-0 top-0 right-0 w-screen h-screen bg-grey-900/30")
     div(
@@ -291,13 +295,12 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
 
 <script setup>
 import { useStore } from 'vuex'
-import { computed, ref, onMounted, watch } from 'vue'
+import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import StickerCreate from '@/components/sticker/StickerCreate.vue'
 import { STICKER_ADD_TO } from '@/utils/constants.js'
 import StickerCard from '@/components/sticker/StickerCard.vue'
 import DigitalThreadCard from '@/components/sticker/DigitalThreadCard.vue'
-import { OG_TYPE } from '@/utils/constants'
 
 const store = useStore()
 const { t } = useI18n()
@@ -351,10 +354,6 @@ const menuAddTo = computed(() => ({
   ],
 }))
 
-onMounted(async () => {
-  await store.dispatch('sticker/fetchStickerDrawerData')
-})
-
 const openModalDigitalThreadSummary = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-digital-thread-summary',
@@ -392,14 +391,6 @@ const openDigitalThread = async (digitalThread, index) => {
       isChangingDigitalThread.value = false
     }, 0)
   } else {
-    // 待 API 調整後，應修改成 digital thread 中的 id & type
-    store.dispatch('sticker/getStickerTagList', {
-      addFromOGId: store.getters['helper/routeLocationId'],
-      addFromOGType:
-        store.getters['helper/routeLocation'] === 'org'
-          ? OG_TYPE.ORG
-          : OG_TYPE.GROUP,
-    })
     await store.dispatch('sticker/getDigitalThread', {
       digitalThreadId,
     })
@@ -424,6 +415,7 @@ watch(
     !isChangingDigitalThread.value &&
       store.dispatch('sticker/getDigitalThread', {
         digitalThreadId: digitalThread.value.digitalThreadId,
+        willGetTagList: false,
       })
   },
   {
@@ -482,4 +474,30 @@ const toggleTagList = (selectTag) => {
     filter.value.tagList.splice(index, 1)
   }
 }
+
+const readDigitalThread = (e) => {
+  if (!isChangingDigitalThread.value) {
+    const body = {
+      orgId: 6,
+      digitalThreadId: digitalThread.value.digitalThreadId,
+    }
+    const headers = {
+      type: 'application/json',
+    }
+    const blob = new Blob([JSON.stringify(body)], headers)
+    navigator.sendBeacon(
+      `${
+        import.meta.env.VITE_APP_API_ENDPOINT
+      }/digital-thread/read-new-add-and-update`,
+      blob
+    )
+  }
+}
+onMounted(() => {
+  window.addEventListener('beforeunload', readDigitalThread)
+})
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', readDigitalThread)
+  readDigitalThread()
+})
 </script>

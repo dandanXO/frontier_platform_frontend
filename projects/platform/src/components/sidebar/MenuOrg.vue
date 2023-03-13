@@ -72,10 +72,7 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
                 v-for="notification in notificationList"
                 class="w-full relative px-7.5 py-2.5"
               )
-                p(
-                  class="text-caption text-grey-900 leading-1.6 pb-1"
-                  v-html="notification.content"
-                )
+                component(:is="notification.contentComponent")
                 p(class="text-caption text-grey-600") {{ notification.formattedDate }}
                 i(
                   v-if="!notification.isRead"

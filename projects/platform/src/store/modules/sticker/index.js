@@ -166,13 +166,20 @@ export default {
     },
   },
   actions: {
-    openStickerDrawer(
-      { commit },
-      { materialId, addFromLocationType, addFromLocationList }
+    async openStickerDrawer(
+      { commit, dispatch },
+      {
+        materialId = null,
+        digitalThreadId = null,
+        addFromLocationType,
+        addFromLocationList,
+      }
     ) {
-      commit('SET_isStickerDrawerOpen', true)
-      commit('SET_currentMaterialId', materialId)
+      dispatch('helper/openModalLoading', null, { root: true })
       commit('SET_addFrom', { addFromLocationType, addFromLocationList })
+      await dispatch('fetchStickerDrawerData', { materialId, digitalThreadId })
+      commit('SET_isStickerDrawerOpen', true)
+      dispatch('helper/closeModalLoading', null, { root: true })
     },
     closeStickerDrawer({ commit }) {
       commit('SET_isStickerDrawerOpen', false)
@@ -187,8 +194,8 @@ export default {
       commit('SET_digitalThreadList', data.result.digitalThreadList)
     },
     async getDigitalThread(
-      { commit, rootGetters, getters },
-      { digitalThreadId }
+      { commit, rootGetters, getters, dispatch },
+      { digitalThreadId, willGetTagList = true }
     ) {
       const { data } = await stickerApi.getDigitalThread({
         orgId: rootGetters['organization/orgId'],
@@ -196,6 +203,15 @@ export default {
         filter: getters.filter,
       })
       commit('SET_digitalThread', data.result.digitalThread)
+      // 待 API 調整後，應修改成 digital thread 中的 id & type
+      willGetTagList &&
+        dispatch('getStickerTagList', {
+          addFromOGId: rootGetters['helper/routeLocationId'],
+          addFromOGType:
+            rootGetters['helper/routeLocation'] === 'org'
+              ? OG_TYPE.ORG
+              : OG_TYPE.GROUP,
+        })
     },
     async getDigitalThreadMaterial({ commit, rootGetters, getters }) {
       const { data } = await stickerApi.getDigitalThreadMaterial({
@@ -204,33 +220,53 @@ export default {
       })
       commit('SET_material', data.result.material)
     },
-    async fetchStickerDrawerData({ dispatch, getters, rootGetters }) {
+    async fetchStickerDrawerData(
+      { dispatch, getters, commit },
+      { materialId = null, digitalThreadId = null }
+    ) {
       /**
-       * 1. call getDigitalThreadMaterial 取得 unit name 與 unit logo 等相關資料
-       * 2. call getDigitalThreadList，
-       *    如果 list 為空，則在 state.tempDigitalThreadList 推入一個新的，並覆寫道 state.digitalThread
-       *    如果 list 不為空，則取第一個 digitalThreadId 並 call getDigitalThread。
+       * A. materialId 有值，表示從布片開啟 Drawer
+       *    1. call getDigitalThreadMaterial 取得 unit name 與 unit logo 等相關資料
+       *    2. call getDigitalThreadList，
+       *       如果 list 為空，則在 state.tempDigitalThreadList 推入一個新的，並覆寫道 state.digitalThread
+       *       如果 list 不為空，則取第一個 digitalThreadId 並 call getDigitalThread。
+       *
+       * B. digitalThreadId 有值，表示從 Notification 開啟 Drawer
+       *    1. 先 getDigitalThread 取得 materialId
+       *    2. 再 getDigitalThreadMaterial & getDigitalThreadList 拿其餘資料
        */
-      await Promise.all([
-        dispatch('getDigitalThreadMaterial'),
-        dispatch('getDigitalThreadList'),
-        // 待 API 調整後，應修改成 digital thread 中的 id & type
-        dispatch('getStickerTagList', {
-          addFromOGId: rootGetters['helper/routeLocationId'],
-          addFromOGType:
-            rootGetters['helper/routeLocation'] === 'org'
-              ? OG_TYPE.ORG
-              : OG_TYPE.GROUP,
-        }),
-      ])
 
-      if (getters.digitalThreadList.length === 0) {
-        dispatch('startToCreateDigitalThread')
+      let currentDigitalThreadId = digitalThreadId
+
+      if (materialId) {
+        commit('SET_currentMaterialId', materialId)
+        await Promise.all([
+          dispatch('getDigitalThreadMaterial'),
+          dispatch('getDigitalThreadList'),
+        ])
+        if (getters.digitalThreadList.length === 0) {
+          dispatch('startToCreateDigitalThread')
+        } else {
+          currentDigitalThreadId = getters.digitalThreadList[0].digitalThreadId
+          await dispatch('getDigitalThread', {
+            digitalThreadId: currentDigitalThreadId,
+          })
+        }
       } else {
         await dispatch('getDigitalThread', {
-          digitalThreadId: getters.digitalThreadList[0].digitalThreadId,
+          digitalThreadId: currentDigitalThreadId,
         })
+        commit('SET_currentMaterialId', getters.digitalThread.materialId)
+        await Promise.all([
+          dispatch('getDigitalThreadMaterial'),
+          dispatch('getDigitalThreadList'),
+        ])
       }
+      const index = getters.drawerDigitalThreadList.findIndex(
+        (digitalThread) =>
+          digitalThread.digitalThreadId === currentDigitalThreadId
+      )
+      commit('SET_indexOfDrawerDigitalThread', index)
     },
     startToCreateDigitalThread({ commit }) {
       const digitalThreadBase = defaultDigitalThreadBase()
@@ -475,6 +511,18 @@ export default {
       stickerApi.unstarSticker({
         orgId: rootGetters['organization/orgId'],
         stickerId,
+      })
+    },
+    readChildSticker({ rootGetters }, stickerId) {
+      stickerApi.readChildSticker({
+        orgId: rootGetters['organization/orgId'],
+        stickerId,
+      })
+    },
+    readDigitalThread({ rootGetters, getters }) {
+      stickerApi.readDigitalThread({
+        orgId: rootGetters['organization/orgId'],
+        digitalThreadId: getters.digitalThread.digitalThreadId,
       })
     },
   },

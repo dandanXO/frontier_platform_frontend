@@ -1,18 +1,24 @@
 <template lang="pug">
 div(
-  class="relative w-full rounded-md drop-shadow-8 overflow-hidden"
+  class="relative w-full drop-shadow-8"
   @mouseenter="isHoverSticker = true"
   @mouseleave="isHoverSticker = false"
 )
   div(
-    class="absolute top-0 left-0 w-1 h-full"
+    class="absolute z-1 top-0 left-0 w-1 h-full rounded-l-md"
     :class="{ 'bg-forestgreen-300': sticker.addTo === EXTERNAL, 'bg-grey-300': sticker.addTo === INTERNAL }"
   )
   //- Sticker
   div(
-    class="px-5 pt-2.5 pb-3.5 bg-grey-0"
-    @click="!isFilterDirty && (isExpandChildStickerList = !isExpandChildStickerList)"
+    class="relative px-5 pt-2.5 pb-3.5 bg-grey-0 rounded-r-md"
+    @click="expandChildStickerList"
   )
+    //- Unread Hint
+    div(
+      v-if="sticker.hasNewAddOrUpdate"
+      class="absolute top-1/2 -left-4 w-2 h-2 rounded-full"
+      :class="{ 'bg-forestgreen-300': sticker.addTo === EXTERNAL, 'bg-grey-300': sticker.addTo === INTERNAL }"
+    )
     //- Header
     div(class="flex items-center justify-between pb-5")
       sticker-label-add-to(:addTo="sticker.addTo")
@@ -24,6 +30,7 @@ div(
           :amount="childStickerList.length"
           :activeTooltip="$t('TT0095')"
           :inactiveTooltip="$t('TT0094')"
+          :hasUnread="sticker.hasChildStickerUnread"
         )
         sticker-header-icon(
           iconName="tag"
@@ -158,6 +165,16 @@ const isHoverSticker = ref(false)
 const isHoverIconMore = ref(false)
 
 const isExpandChildStickerList = ref(false)
+const expandChildStickerList = () => {
+  if (isFilterDirty.value) {
+    return
+  }
+  isExpandChildStickerList.value = !isExpandChildStickerList.value
+
+  childStickerList.value.length > 0 &&
+    store.dispatch('sticker/readChildSticker', props.sticker.stickerId)
+}
+
 const isCreatingChildSticker = ref(false)
 const childStickerList = computed(() => props.sticker.childStickerList || [])
 

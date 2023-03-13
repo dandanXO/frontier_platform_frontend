@@ -147,6 +147,7 @@ module.exports = plugin(function () {}, {
         footer: 200,
         popper: 999,
         tooltip: 1000,
+        loading: 1001,
       },
       spacing: spacing,
       maxWidth: spacing,

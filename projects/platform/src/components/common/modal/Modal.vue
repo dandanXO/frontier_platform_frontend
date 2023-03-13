@@ -19,12 +19,10 @@ div(
 <script>
 import { defineAsyncComponent } from 'vue'
 import { useStore } from 'vuex'
-import ModalLoading from '@/components/common/modal/ModalLoading.vue'
 
 export default {
   name: 'Modal',
   components: {
-    ModalLoading,
     ModalPreviewAttachment: defineAsyncComponent(() =>
       import(
         '@/components/common/material/attachment/ModalPreviewAttachment.vue'
