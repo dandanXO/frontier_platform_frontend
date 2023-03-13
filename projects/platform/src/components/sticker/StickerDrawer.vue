@@ -10,9 +10,9 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           iconName="arrow_back"
           size="20"
           class="text-grey-600 hover:text-primary-400 cursor-pointer"
-          :class="{ 'text-primary-400 transform rotate-180': isExpandDigitalThreadList, '!text-grey-200': digitalThread.hasMaterialDeleted }"
+          :class="{ 'text-primary-400 transform rotate-180': isExpandDigitalThreadList, '!text-grey-200': digitalThread.hasMaterialDeleted || drawerOpenFromLocationType === LOCATION_TYPE.NOTIFICATION }"
           tooltip="Show all threads"
-          @click="!digitalThread.hasMaterialDeleted && (isExpandDigitalThreadList = !isExpandDigitalThreadList)"
+          @click="!(digitalThread.hasMaterialDeleted || drawerOpenFromLocationType === LOCATION_TYPE.NOTIFICATION) && (isExpandDigitalThreadList = !isExpandDigitalThreadList)"
         )
         div(class="w-px h-6 bg-grey-150 mx-4")
         div(
@@ -329,7 +329,7 @@ import { useStore } from 'vuex'
 import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import StickerCreate from '@/components/sticker/StickerCreate.vue'
-import { STICKER_ADD_TO, OG_TYPE } from '@/utils/constants'
+import { STICKER_ADD_TO, OG_TYPE, LOCATION_TYPE } from '@/utils/constants'
 import StickerCard from '@/components/sticker/StickerCard.vue'
 import DigitalThreadCard from '@/components/sticker/DigitalThreadCard.vue'
 import useNavigation from '@/composables/useNavigation'
@@ -342,6 +342,9 @@ const { parsePath } = useNavigation()
 
 const material = computed(() => store.getters['sticker/material'])
 const digitalThread = computed(() => store.getters['sticker/digitalThread'])
+const drawerOpenFromLocationType = computed(
+  () => store.getters['sticker/drawerOpenFromLocationType']
+)
 const stickerList = computed(() => digitalThread.value.stickerList)
 const isHoverHeader = ref(false)
 const isCreatingDigitalThread = computed(
@@ -516,9 +519,7 @@ const readDigitalThread = (e) => {
       accessToken: localStorage.getItem('accessToken'),
     }
     const headers = {
-      Authorization:
-        'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjQ2IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibWlhLnlhbmdAZnJvbnRpZXIuY29vbCIsIklwQWRkcmVzcyI6IjgyLjQ2LjExNS4xODEiLCJleHAiOjE2NzUxODgyMjksImlzcyI6Imh0dHBzOi8vdGV4dGlsZS13ZWJhcGkuZnJvbnRpZXIuY29vbCIsImF1ZCI6Imh0dHBzOi8vdGV4dGlsZS13ZWJhcGkuZnJvbnRpZXIuY29vbCJ9.C3Abr8VeTOV3Hj72lekqhjjjnlcgRg9zqz6iW2kF09c',
-      Type: 'application/json',
+      type: 'application/json',
     }
     const blob = new Blob([JSON.stringify(body)], headers)
     navigator.sendBeacon(
