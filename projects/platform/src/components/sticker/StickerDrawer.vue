@@ -10,9 +10,9 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           iconName="arrow_back"
           size="20"
           class="text-grey-600 hover:text-primary-400 cursor-pointer"
-          :class="{ 'text-primary-400 transform rotate-180': isExpandDigitalThreadList }"
+          :class="{ 'text-primary-400 transform rotate-180': isExpandDigitalThreadList, '!text-grey-200': digitalThread.hasMaterialDeleted }"
           tooltip="Show all threads"
-          @click="isExpandDigitalThreadList = !isExpandDigitalThreadList"
+          @click="!digitalThread.hasMaterialDeleted && (isExpandDigitalThreadList = !isExpandDigitalThreadList)"
         )
         div(class="w-px h-6 bg-grey-150 mx-4")
         div(
@@ -81,14 +81,23 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
       div(class="flex items-center gap-x-4")
         img(
           v-defaultImg
-          class="w-13 h-13 rounded overflow-hidden"
+          class="flex-shrink-0 w-13 h-13 rounded overflow-hidden"
           :src="material.coverImg"
         )
         div(class="flex-grow h-11")
-          p(class="pb-2 text-body2 font-bold text-grey-800") {{ `#${material.materialNo}` }}
+          p(
+            class="pb-2 flex items-center text-body2"
+            :class="[digitalThread.hasMaterialDeleted || digitalThread.hasMaterialNoAccess ? 'text-grey-200' : 'text-grey-800']"
+          )
+            span(class="font-bold line-clamp-1") {{ `#${material.materialNo}` }}
+            span(class="leading-1.4 pl-0.5" v-if="digitalThread.hasMaterialDeleted") ({{ $t('RR0063') }})
+            span(
+              class="leading-1.4 pl-0.5"
+              v-else-if="digitalThread.hasMaterialNoAccess"
+            ) ({{ $t('TT0107') }})
           div(class="flex items-center gap-x-2")
             f-avatar(:imageUrl="material.unitLogo" type="org" size="xs")
-            p(class="text-caption text-grey-800") {{ material.unitName }}
+            span(class="text-caption text-grey-800") {{ material.unitName }}
       //- Filter
       div(class="pt-2.5 flex items-center gap-x-2")
         f-input-select(
@@ -98,6 +107,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           size="sm"
         )
         div(class="w-px py-2 box-content bg-grey-150")
+        //- isStarred
         button(
           class="px-2.5 h-6 rounded-[20px] flex justify-center items-center gap-x-0.5"
           :class="[filter.isStarred ? 'bg-primary-0' : 'bg-grey-100']"
@@ -109,7 +119,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
             :class="[isCreatingDigitalThread ? 'text-grey-200' : 'text-yellow-400']"
           )
           span(
-            :class="{ 'text-grey-200': isCreatingDigitalThread, 'text-grey-800': !isCreatingDigitalThread && !filter.isStarred, 'text-primary-400': filter.isStarred }"
+            :class="{ 'text-grey-200': isCreatingDigitalThread, 'text-grey-800': !isCreatingDigitalThread && !filter.isStarred && !digitalThread.hasMaterialDeleted, 'text-primary-400': filter.isStarred }"
             class="text-body2"
           ) {{ 'Starred' }}
           span(
@@ -233,14 +243,22 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
       div(class="py-4")
         //- Button: Add a sticker
         div(v-if="!isAddingSticker && !isFilterDirty" class="pl-8 pr-10.5")
-          button(
-            class="relative w-full h-16 bg-grey-0 rounded-md overflow-hidden drop-shadow-2"
-            @click="isAddingSticker = true"
-          )
-            div(class="absolute top-0 left-0 w-1 h-full bg-forestgreen-300")
-            div(class="pl-7.5 h-full flex items-center")
-              f-svg-icon(iconName="add" size="20" class="text-forestgreen-300")
-              span(class="text-body2 font-bold text-grey-800 pl-3") {{ $t('TT0092') }}
+          f-tooltip(placement="top" isNotFitWidth)
+            template(#trigger)
+              button(
+                class="relative w-full h-16 rounded-md overflow-hidden drop-shadow-2"
+                :class="[digitalThread.hasMaterialDeleted ? 'bg-grey-50' : 'bg-grey-0']"
+                @click="!digitalThread.hasMaterialDeleted && (isAddingSticker = true)"
+              )
+                div(class="absolute top-0 left-0 w-1 h-full bg-forestgreen-300")
+                div(class="pl-7.5 h-full flex items-center")
+                  f-svg-icon(iconName="add" size="20" class="text-forestgreen-300")
+                  span(
+                    class="text-body2 font-bold pl-3"
+                    :class="[digitalThread.hasMaterialDeleted ? 'text-grey-200' : 'text-grey-800']"
+                  ) {{ $t('TT0092') }}
+            template(#content v-if="digitalThread.hasMaterialDeleted")
+              p {{ $t('TT0102') }}
         //- Default intro
         div(v-if="isCreatingDigitalThread && !isAddingSticker" class="pl-8 pr-10.5")
           div(class="pt-10")
@@ -275,15 +293,15 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
     )
       div(class="w-full h-17.5 px-4.5 border-b border-grey-150 flex items-center gap-x-2")
         f-svg-icon(iconName="sticker_thread" size="20" class="text-grey-900")
-        p(class="text-body1 font-bold text-grey-900") {{ $t('TT0076') }}
-        p(class="text-body1 font-bold text-grey-800") {{ `#${material.materialNo}` }}
+        span(class="text-body1 font-bold text-grey-900 whitespace-nowrap") {{ $t('TT0076') }}
+        span(class="text-body1 font-bold text-grey-800 line-clamp-1") {{ `#${material.materialNo}` }}
       f-scrollbar-container(class="flex-grow")
         div(
           class="mt-3 mx-5 mb-2.5 h-13 bg-grey-0 border border-grey-150 rounded-md flex items-center justify-center gap-x-2 cursor-pointer"
           @click="startToCreateDigitalThread"
         )
           f-svg-icon(iconName="add" size="16" class="text-grey-900")
-          p(class="text-body2 font-bold text-grey-900") {{ $t('TT0103') }}
+          p(class="text-body2 font-bold text-grey-900") {{ $t('TT0106') }}
         digital-thread-card(
           v-for="(digitalThread, index) in digitalThreadList"
           :key="`${index}-${digitalThread.digitalThreadId}`"

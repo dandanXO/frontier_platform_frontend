@@ -2,13 +2,30 @@
 modal-behavior(:header="$t('TT0067')")
   div(class="w-132 flex items-start gap-x-11.5")
     //-Left Side - Material Info
-    div(class="sticky top-5 w-35")
+    div(class="sticky top-5 w-35 flex-shrink-0")
       //- Material Img
-      img(v-defaultImg class="w-27 h-27 rounded" :src="digitalThread.materialCoverImg")
+      div(
+        class="relative w-27 h-27 rounded overflow-hidden flex items-center justify-center"
+      )
+        img(
+          v-defaultImg
+          :src="digitalThread.materialCoverImg"
+          :class="{ 'opacity-20': digitalThread.hasMaterialDeleted || digitalThread.hasMaterialNoAccess }"
+        )
+        span(
+          v-if="digitalThread.hasMaterialDeleted"
+          class="absolute text-body1 font-bold text-grey-400"
+        ) {{ $t('RR0063') }}
+        span(
+          v-else-if="digitalThread.hasMaterialNoAccess"
+          class="absolute text-body1 font-bold text-grey-400"
+        ) {{ $t('TT0107') }}
       //- Material No
       div(class="pt-7 pb-6")
         p(class="text-caption text-grey-500 pb-4") {{ $t('RR0200') }}
-        p(class="text-caption text-grey-900") {{ `#${digitalThread.materialNo}` }}
+        p(class="text-caption text-grey-900 break-all") {{ `#${digitalThread.materialNo}` }}
+          span(v-if="digitalThread.hasMaterialDeleted") &nbsp({{ $t('RR0063') }})
+          span(v-else-if="digitalThread.hasMaterialNoAccess") &nbsp({{ $t('TT0107') }})
       //- Material Owner
       div
         p(class="text-caption text-grey-500 pb-4") {{ $t('TT0056') }}

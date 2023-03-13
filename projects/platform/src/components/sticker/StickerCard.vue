@@ -98,6 +98,7 @@ div(
       size="sm"
       prependIcon="add"
       class="w-full mt-2.5"
+      :disabled="digitalThread.hasMaterialDeleted"
       @click="isCreatingChildSticker = true"
     ) {{ $t('TT0092') }}
   //- Child Sticker List
@@ -127,7 +128,13 @@ div(
       class="-ml-8 pt-2"
       @click="isCreatingChildSticker = true"
     )
-      f-button(type="secondary" size="sm" prependIcon="add" class="w-full") {{ $t('TT0092') }}
+      f-button(
+        type="secondary"
+        size="sm"
+        prependIcon="add"
+        class="w-full"
+        :disabled="digitalThread.hasMaterialDeleted"
+      ) {{ $t('TT0092') }}
 </template>
 
 <script setup>
@@ -160,6 +167,8 @@ const creator = computed(() => {
     ? props.sticker.creatorUnitName
     : props.sticker.creator
 })
+
+const digitalThread = computed(() => store.getters['sticker/digitalThread'])
 
 const isHoverSticker = ref(false)
 const isHoverIconMore = ref(false)
