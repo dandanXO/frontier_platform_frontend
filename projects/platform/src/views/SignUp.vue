@@ -97,7 +97,10 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
         scope="global"
       )
         template(#signIn)
-          router-link(class="text-grey-900 font-bold" to="/sign-in") {{ $t('AA0001') }}
+          router-link(
+            class="text-grey-900 font-bold"
+            :to="{ path: '/sign-in', query: $route.query }"
+          ) {{ $t('AA0001') }}
 div(
   v-if="isSignUpSuccessfully"
   class="fixed inset-0 w-full h-full bg-grey-50 flex justify-center items-center"
@@ -128,15 +131,19 @@ import PasswordValidator from '@/components/account/PasswordValidator.vue'
 import imgCover from '@/assets/images/cover.png'
 import DropdownLocale from '@/components/common/DropdownLocale.vue'
 import inputValidator from '@/utils/input-validator'
+import { useRoute } from 'vue-router'
+import { SIGNUP_SOURCE } from '@/utils/constants.js'
 
 const { t } = useI18n()
 const store = useStore()
+const route = useRoute()
 const formData = reactive({
   lastName: '',
   firstName: '',
   email: '',
   password: '',
 })
+const signupSourceType = ref(SIGNUP_SOURCE.NORMAL)
 const errorMsg = ref('')
 const agreeTermsAndPrivacy = ref(false)
 const isSignUpSuccessfully = ref(false)
@@ -172,10 +179,10 @@ const validateEmailFormat = async () => {
 }
 
 const signUp = async () => {
-  isEmailExist.value = await store.dispatch(
-    'user/generalSignUp',
-    toRaw(formData)
-  )
+  isEmailExist.value = await store.dispatch('user/generalSignUp', {
+    ...toRaw(formData),
+    signupSourceType: signupSourceType.value,
+  })
 
   !isEmailExist.value && (isSignUpSuccessfully.value = true)
 }
@@ -199,12 +206,16 @@ watch(
 const isGoogleLoadFail = ref(false)
 
 onMounted(() => {
+  if ('signupSourceType' in route.query) {
+    signupSourceType.value = Number(route.query.signupSourceType)
+  }
   const googleSignUp = new SignInWithGoogle({
     elementId: 'google-sign-up',
     callback: async (response) => {
       store.dispatch('helper/openModalLoading')
       isEmailExist.value = await store.dispatch('user/googleSignUp', {
         idToken: response.credential,
+        signupSourceType: signupSourceType.value,
       })
       !isEmailExist.value && (await nextAfterSignIn())
       store.dispatch('helper/closeModalLoading')

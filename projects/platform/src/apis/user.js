@@ -2,7 +2,7 @@ import axios from '@/apis'
 import putBinaryData from '@/utils/put-binary-data'
 
 export default {
-  generalSignUp: ({ email, lastName, firstName, password }) =>
+  generalSignUp: ({ email, lastName, firstName, password, signupSourceType }) =>
     axios('/sign-up/general', {
       method: 'POST',
       data: {
@@ -12,6 +12,7 @@ export default {
         password,
         locale: 'en-US',
         platform: 1,
+        signupSourceType,
       },
     }),
   generalSignIn: ({ email, password }) =>
@@ -19,10 +20,10 @@ export default {
       method: 'POST',
       data: { email, password, platform: 1 },
     }),
-  googleSignUp: ({ idToken }) =>
+  googleSignUp: ({ idToken, signupSourceType }) =>
     axios('/sign-up/google', {
       method: 'POST',
-      data: { idToken, locale: 'en-US', platform: 1 },
+      data: { idToken, locale: 'en-US', platform: 1, signupSourceType },
     }),
   googleSignIn: ({ idToken }) =>
     axios('/sign-in/google', {
@@ -63,10 +64,10 @@ export default {
       method: 'POST',
       data: { verifyCode },
     }),
-  resendVerifyEmail: () =>
+  resendVerifyEmail: (signupSourceType) =>
     axios('/user/resend-verify-email', {
       method: 'POST',
-      data: { platform: 1 },
+      data: { platform: 1, signupSourceType },
     }),
   sendForgotPasswordEmail: ({ email }) =>
     axios('/user/forgot-password/send-email', {

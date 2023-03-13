@@ -21,6 +21,7 @@ export default {
    * @param {string} params.fax
    * @param {string} params.faxCountryCode
    * @param {string} params.uploadMaterialEmail
+   * @param {number} params.signupSourceType
    */
   createOrg: (_, params) => orgApiWrapper('/org/create', null, params),
   getOrg: (orgId) => orgApiWrapper('/org/get', orgId),

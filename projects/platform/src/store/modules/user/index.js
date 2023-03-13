@@ -79,8 +79,8 @@ const actions = {
   async resetPassword(_, params) {
     await userApi.resetPassword(params)
   },
-  async resendVerifyEmail() {
-    await userApi.resendVerifyEmail()
+  async resendVerifyEmail(_, signupSourceType) {
+    await userApi.resendVerifyEmail(signupSourceType)
   },
   async verifyUser(_, { verifyCode }) {
     await userApi.verifyUser({ verifyCode })

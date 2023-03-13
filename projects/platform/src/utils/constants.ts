@@ -301,6 +301,11 @@ export const LOCATION_TYPE = {
   RECEIVED_SHARE: 6,
 }
 
+export const SIGNUP_SOURCE = {
+  NORMAL: 1,
+  RECEIVED_SHARE: 2, // 從 Received share 的 add sticker 的跳轉而來的。
+}
+
 export const useConstants = () => {
   const MADE2FLOW_TAG_LIST = computed(() => ({
     INTRODUCTION: { id: 1, text: i18n.global.t('VV0022') },

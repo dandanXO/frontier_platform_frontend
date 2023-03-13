@@ -9,8 +9,8 @@ div(class="w-full")
       h3(class="text-grey-900 font-bold text-h3 mb-6") {{ $t('AA0014') }}
       p(class="text-grey-900 text-body1 leading-1.6 w-160 text-center mb-7.5") {{ $t('AA0015') }}
       div(
-        class="w-58 h-55 rounded-md border border-grey-250 border-dashed flex justify-center items-center cursor-pointer"
-        @click="openModalCreateOrg(true)"
+        class="w-58 h-55 rounded-md border border-grey-200 border-dashed flex justify-center items-center cursor-pointer"
+        @click="openModalCreateOrg"
         data-cy="open-create-org-modal"
       )
         div(class="grid justify-items-center gap-y-3.5")
@@ -32,8 +32,8 @@ div(class="w-full")
             :itemList="org.memberList.map((member) => ({ imageUrl: member.avatar, name: member?.displayName }))"
           )
         div(
-          class="w-58 h-55 rounded-md border border-grey-250 border-dashed flex justify-center items-center cursor-pointer"
-          @click="openModalCreateOrg(true)"
+          class="w-58 h-55 rounded-md border border-grey-200 border-dashed flex justify-center items-center cursor-pointer"
+          @click="openModalCreateOrg"
           data-cy="open-create-org-modal"
         )
           div(class="grid justify-items-center text-grey-200")
@@ -43,13 +43,15 @@ div(class="w-full")
 
 <script setup>
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import MenuPersonal from '@/components/lobby/MenuPersonal.vue'
 import { computed } from 'vue'
 import remindVerifyEmail from '@/utils/remind-verify-email'
+import { SIGNUP_SOURCE } from '@/utils/constants.js'
 
 const store = useStore()
 const router = useRouter()
+const route = useRoute()
 const user = computed(() => store.getters['user/user'])
 const orgList = computed(() => store.getters['user/organizationList'])
 
@@ -62,18 +64,16 @@ const goToPublicLibrary = (orgNo) => {
   router.push({ name: 'PublicLibrary', params: { orgNo } })
 }
 
-const openModalCreateOrg = (closable = true) => {
+const openModalCreateOrg = () => {
   if (!user.value.isVerify) {
-    remindVerifyEmail()
+    remindVerifyEmail(
+      Number(route.query.signupSourceType) || SIGNUP_SOURCE.NORMAL
+    )
     return
   }
-
   store.dispatch('organization/resetCreateForm')
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-create-org',
-    properties: {
-      closable,
-    },
   })
 }
 </script>

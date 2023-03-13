@@ -1,6 +1,7 @@
 import organizationApi from '@/apis/organization'
 import orgUser from '@/store/modules/management/organization/orgUser.js'
 import putBinaryData from '@/utils/put-binary-data'
+import { SIGNUP_SOURCE } from '@/utils/constants'
 import axios from '@/apis'
 
 import dayjs from 'dayjs'
@@ -79,6 +80,7 @@ export default {
       fax: '',
       faxCountryCode: 'TW',
       uploadMaterialEmail: '',
+      signupSourceType: SIGNUP_SOURCE.NORMAL,
     },
   }),
   getters: {

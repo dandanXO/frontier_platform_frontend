@@ -12,6 +12,7 @@ export default {
   state: () => ({
     materialBreadcrumbList: [],
     share: NodeShareState(),
+    hasLogin: false,
   }),
   getters: {
     materialBreadcrumbList: (state) =>
@@ -23,6 +24,7 @@ export default {
       ),
     share: (state) => state.share,
     logo: (state) => state.share.logo,
+    hasLogin: (state) => state.hasLogin,
   },
   mutations: {
     SET_materialBreadcrumbList(state, materialBreadcrumbList) {
@@ -30,6 +32,9 @@ export default {
     },
     SET_share(state, share) {
       state.share = share
+    },
+    SET_hasLogin(state, hasLogin) {
+      state.hasLogin = hasLogin
     },
   },
   actions: {
@@ -139,6 +144,23 @@ export default {
         targetLocationList,
         optional,
       })
+    },
+    async checkHasLogin({ commit, dispatch }) {
+      const accessToken = localStorage.getItem('accessToken')
+
+      if (!accessToken) {
+        return
+      }
+
+      const status = await dispatch(
+        'checkTokenStatus',
+        {
+          accessToken,
+        },
+        { root: true }
+      )
+
+      commit('SET_hasLogin', status !== 1)
     },
   },
 }

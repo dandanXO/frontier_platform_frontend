@@ -1,11 +1,15 @@
 import store from '@/store'
 import i18n from '@/utils/i18n'
 import { shallowRef, h } from 'vue'
+import { SIGNUP_SOURCE } from '@/utils/constants.js'
 
 const t = i18n.global.t
 let timerId
 
-export default function remindVerifyEmail() {
+export default function remindVerifyEmail(
+  signupSourceType = SIGNUP_SOURCE.NORMAL
+) {
+  const canSkip = signupSourceType === SIGNUP_SOURCE.RECEIVED_SHARE
   let secRemains = 0
 
   const startCountDown = () => {
@@ -34,7 +38,7 @@ export default function remindVerifyEmail() {
     onClick: async () => {
       if (secRemains > 0) return
       startCountDown()
-      await store.dispatch('user/resendVerifyEmail')
+      await store.dispatch('user/resendVerifyEmail', signupSourceType)
       store.dispatch('helper/pushFlashMessage', t('AA0087'))
     },
   }
@@ -52,5 +56,14 @@ export default function remindVerifyEmail() {
       },
     }),
     secondaryBtnText: t('UU0026'),
+    textBtnText: canSkip ? t('TT0109') : '',
+    afterTextBtnHandler: canSkip
+      ? () => {
+          store.dispatch('organization/resetCreateForm')
+          store.dispatch('helper/openModalBehavior', {
+            component: 'modal-create-org',
+          })
+        }
+      : null,
   })
 }

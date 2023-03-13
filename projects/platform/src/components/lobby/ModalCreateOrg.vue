@@ -1,9 +1,9 @@
 <template lang="pug">
 modal-behavior(
   :header="$t('AA0011')"
-  :primaryBtnText="$t('UU0021')"
+  :primaryBtnText="canSkipCreateMail ? $t('UU0020') : $t('UU0021')"
   :primaryBtnDisabled="!availableToCreateOrg"
-  @click:primary="openModalCreateMailOrg"
+  @click:primary="canSkipCreateMail ? createOrg() : openModalCreateMailOrg()"
 )
   form(class="w-183.5")
     div(class="grid grid-cols-2 grid-rows-2 gap-x-7.5 gap-y-6")
@@ -61,10 +61,21 @@ modal-behavior(
 <script setup>
 import { useStore } from 'vuex'
 import { computed, reactive, ref, watch } from 'vue'
+import { SIGNUP_SOURCE } from '@/utils/constants'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
+const router = useRouter()
 const store = useStore()
+const formData = reactive({
+  ...store.getters['organization/createForm'],
+  signupSourceType:
+    Number(route.query.signupSourceType) || SIGNUP_SOURCE.NORMAL,
+})
+const canSkipCreateMail = computed(
+  () => formData.signupSourceType === SIGNUP_SOURCE.RECEIVED_SHARE
+)
 const isOrgNameExist = ref(false)
-const formData = reactive({ ...store.getters['organization/createForm'] })
 const orgCategoryList = computed(() => store.getters['code/orgCategoryList'])
 const countryMenuTree = computed(() => store.getters['code/countryMenuTree'])
 const availableToCreateOrg = computed(
@@ -88,6 +99,13 @@ watch(
     formData.phoneCountryCode = formData.countryCode
   }
 )
+
+const createOrg = async () => {
+  store.commit('organization/SET_createForm', formData)
+  await store.dispatch('organization/createOrg')
+  router.push(route.query.redirect)
+  store.dispatch('helper/clearModalPipeline')
+}
 
 const openModalCreateMailOrg = async () => {
   await checkOrgNameExist()

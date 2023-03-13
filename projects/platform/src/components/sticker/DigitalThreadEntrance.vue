@@ -63,10 +63,21 @@ const openStickerDrawer = () => {
     addFromLocationType = LOCATION_TYPE.RECEIVED_SHARE
   }
 
-  store.dispatch('sticker/openStickerDrawer', {
-    materialId,
-    addFromLocationList: props.stickerAddFromLocationList,
-    addFromLocationType,
-  })
+  if (
+    addFromLocationType === LOCATION_TYPE.RECEIVED_SHARE &&
+    !store.getters['receivedShare/hasLogin']
+  ) {
+    store.dispatch('sticker/openReceivedShareStickerDrawer', {
+      material: props.material,
+      addFromLocationList: props.stickerAddFromLocationList,
+      addFromLocationType,
+    })
+  } else {
+    store.dispatch('sticker/openStickerDrawer', {
+      materialId,
+      addFromLocationList: props.stickerAddFromLocationList,
+      addFromLocationType,
+    })
+  }
 }
 </script>

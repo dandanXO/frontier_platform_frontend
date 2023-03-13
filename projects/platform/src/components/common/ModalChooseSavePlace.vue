@@ -24,6 +24,7 @@ modal-behavior(
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
+import organizationApi from '@/apis/organization'
 
 const props = defineProps({
   title: {
@@ -54,12 +55,10 @@ const orgMenuTree = computed(() => ({
   ],
 }))
 const selectedOrgId = ref(orgList.value[0]?.orgId || null)
-const selectedOrgNo = computed(
-  () => orgList.value.find((org) => org.orgId === selectedOrgId.value)?.orgNo
-)
+const selectedOrg = ref(null)
 const selectedSavePlace = ref(null)
 const savePlaceMenuTree = computed(() => {
-  const { orgName, orgId } = store.getters['organization/organization']
+  const { orgName, orgId } = selectedOrg.value
   return {
     width: 'w-94',
     blockList: [
@@ -69,12 +68,10 @@ const savePlaceMenuTree = computed(() => {
             title: orgName,
             selectValue: `${SAVE_PLACE_TYPE.ORG}-${orgId}`,
           },
-          ...store.getters['organization/groupList'].map(
-            ({ groupId, groupName }) => ({
-              title: groupName,
-              selectValue: `${SAVE_PLACE_TYPE.GROUP}-${groupId}`,
-            })
-          ),
+          ...selectedOrg.value.groupList.map(({ groupId, groupName }) => ({
+            title: groupName,
+            selectValue: `${SAVE_PLACE_TYPE.GROUP}-${groupId}`,
+          })),
         ],
       },
     ],
@@ -94,23 +91,15 @@ const closeModalBehavior = () => {
 }
 
 const isFetch = ref(false)
-watch(
-  () => selectedOrgNo.value,
-  async () => {
-    isFetch.value = true
-    !!selectedOrgNo.value &&
-      (await store.dispatch('organization/getOrg', {
-        orgNo: selectedOrgNo.value,
-      }))
+const fetchData = async () => {
+  isFetch.value = true
+  const { data } = await organizationApi.getOrg(selectedOrgId.value)
+  selectedOrg.value = data.result.organization
+  selectedSavePlace.value =
+    savePlaceMenuTree.value?.blockList[0].menuList[0].selectValue || null
+  isFetch.value = false
+}
+watch(() => selectedOrgId.value, fetchData)
 
-    selectedSavePlace.value =
-      savePlaceMenuTree.value?.blockList[0].menuList[0].selectValue || null
-
-    isFetch.value = false
-  },
-  {
-    immediate: true,
-    deep: true,
-  }
-)
+await fetchData()
 </script>

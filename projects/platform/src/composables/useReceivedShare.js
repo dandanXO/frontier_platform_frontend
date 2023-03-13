@@ -8,8 +8,10 @@ export default function useReceivedShare() {
   const { goToLobby } = useNavigation()
 
   const saveReceivedShare = async () => {
-    store.dispatch('helper/openModalLoading')
-    await store.dispatch('user/getUser')
+    if (!store.getters['receivedShare/hasLogin']) {
+      store.dispatch('helper/openModalLoading')
+      await store.dispatch('user/getUser')
+    }
 
     const { isCanSave } = store.getters['receivedShare/share']
     const organizationList = store.getters['user/organizationList']
@@ -73,8 +75,10 @@ export default function useReceivedShare() {
   }
 
   const receivedShareClone = async (nodeKeyList) => {
-    store.dispatch('helper/openModalLoading')
-    await store.dispatch('user/getUser')
+    if (!store.getters['receivedShare/hasLogin']) {
+      store.dispatch('helper/openModalLoading')
+      await store.dispatch('user/getUser')
+    }
 
     const { isCanClone } = store.getters['receivedShare/share']
     const organizationList = store.getters['user/organizationList']

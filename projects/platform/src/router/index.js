@@ -188,7 +188,13 @@ const routes = [
     component: () => import('@/views/receivedShare/ReceivedShareContainer.vue'),
     beforeEnter: async (to, from, next) => {
       const sharingKey = to.params.sharingKey
-      await store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey })
+      await Promise.all([
+        store.dispatch('receivedShare/checkHasLogin'),
+        store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey }),
+      ])
+      if (store.getters['receivedShare/hasLogin']) {
+        await store.dispatch('user/getUser')
+      }
       next()
     },
     children: [

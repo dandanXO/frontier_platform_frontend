@@ -54,6 +54,7 @@ export default {
   },
   state: () => ({
     isStickerDrawerOpen: false,
+    isReceivedShareStickerDrawerOpen: false,
     currentMaterialId: null, //  drawer 顯示的 materialId
     addFromLocationType: null, // drawer 是從哪一個位置的 material 開啟的
     addFromLocationList: null, // drawer 是從哪一個路徑的 material 開啟的
@@ -73,6 +74,8 @@ export default {
     addFromLocationType: (state) => state.addFromLocationType,
     addFromLocationList: (state) => state.addFromLocationList,
     isStickerDrawerOpen: (state) => state.isStickerDrawerOpen,
+    isReceivedShareStickerDrawerOpen: (state) =>
+      state.isReceivedShareStickerDrawerOpen,
     digitalThread: (state) => state.digitalThread,
     digitalThreadList: (state) => state.digitalThreadList,
     tempDigitalThreadList: (state) => state.tempDigitalThreadList,
@@ -113,6 +116,12 @@ export default {
   mutations: {
     SET_isStickerDrawerOpen(state, isStickerDrawerOpen) {
       state.isStickerDrawerOpen = isStickerDrawerOpen
+    },
+    SET_isReceivedShareStickerDrawerOpen(
+      state,
+      isReceivedShareStickerDrawerOpen
+    ) {
+      state.isReceivedShareStickerDrawerOpen = isReceivedShareStickerDrawerOpen
     },
     SET_currentMaterialId(state, currentMaterialId) {
       state.currentMaterialId = currentMaterialId
@@ -181,11 +190,20 @@ export default {
         addFromLocationList,
       }
     ) {
+      dispatch('closeStickerDrawer')
       dispatch('helper/openModalLoading', null, { root: true })
       commit('SET_addFrom', { addFromLocationType, addFromLocationList })
       await dispatch('fetchStickerDrawerData', { materialId, digitalThreadId })
       commit('SET_isStickerDrawerOpen', true)
       dispatch('helper/closeModalLoading', null, { root: true })
+    },
+    openReceivedShareStickerDrawer(
+      { commit },
+      { material, addFromLocationType, addFromLocationList }
+    ) {
+      commit('SET_addFrom', { addFromLocationType, addFromLocationList })
+      commit('SET_material', material)
+      commit('SET_isReceivedShareStickerDrawerOpen', true)
     },
     closeStickerDrawer({ commit }) {
       commit('SET_isStickerDrawerOpen', false)

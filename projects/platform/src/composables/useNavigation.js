@@ -1,7 +1,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import { MOODBOARD_TAB } from '@/utils/constants'
+import { MOODBOARD_TAB, SIGNUP_SOURCE } from '@/utils/constants'
 
 export default function useNavigation() {
   const store = useStore()
@@ -14,12 +14,24 @@ export default function useNavigation() {
   )
 
   const nextAfterSignIn = async () => {
+    const user = store.getters['user/user']
+    const organizationList = user.organizationList
+
     if (route.query.redirect !== undefined) {
+      if (
+        'signupSourceType' in route.query &&
+        Number(route.query.signupSourceType) === SIGNUP_SOURCE.RECEIVED_SHARE &&
+        organizationList.length === 0
+      ) {
+        // 來自 received share add sticker
+        return router.push({
+          name: 'Lobby',
+          query: route.query,
+        })
+      }
       return router.push(route.query.redirect)
     }
 
-    const user = store.getters['user/user']
-    const organizationList = user.organizationList
     if (organizationList.length === 1) {
       return router.push({
         name: 'PublicLibrary',
