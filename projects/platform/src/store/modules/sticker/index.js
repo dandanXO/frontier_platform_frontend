@@ -56,6 +56,7 @@ export default {
     isStickerDrawerOpen: (state) => state.isStickerDrawerOpen,
     digitalThread: (state) => state.digitalThread,
     digitalThreadList: (state) => state.digitalThreadList,
+    tempDigitalThreadList: (state) => state.tempDigitalThreadList,
   },
   mutations: {
     SET_isStickerDrawerOpen(state, isStickerDrawerOpen) {
@@ -70,17 +71,14 @@ export default {
     UPDATE_digitalThread(state, digitalThread) {
       Object.assign(state.digitalThread, digitalThread)
     },
-    PUSH_tempDigitalThreadList(state, digitalThreadBase) {
-      state.tempDigitalThreadList.push(digitalThreadBase)
+    UNSHIFT_tempDigitalThreadList(state, digitalThreadBase) {
+      state.tempDigitalThreadList.unshift(digitalThreadBase)
     },
     RESET_tempDigitalThreadList(state) {
       state.tempDigitalThreadList.length = 0
     },
     SET_digitalThreadList(state, digitalThreadList) {
       state.digitalThreadList = digitalThreadList
-    },
-    RESET_digitalThreadList(state) {
-      state.digitalThreadList.length = 0
     },
     SET_addFrom(state, { addFromLocationType, addFromLocationList }) {
       state.addFromLocationList = addFromLocationList
@@ -96,14 +94,9 @@ export default {
       commit('SET_currentMaterialId', materialId)
       commit('SET_addFrom', { addFromLocationType, addFromLocationList })
     },
-    closeStickerDrawer({ commit, dispatch }) {
+    closeStickerDrawer({ commit }) {
       commit('SET_isStickerDrawerOpen', false)
-      dispatch('resetData')
-    },
-    resetData({ commit }) {
       commit('RESET_tempDigitalThreadList')
-      commit('RESET_digitalThreadList')
-      commit('SET_currentMaterialId', null)
     },
     async getDigitalThreadList({ commit, rootGetters, getters }) {
       // const { data } = await stickerApi.getDigitalThreadList({
@@ -130,7 +123,7 @@ export default {
       })
       commit('SET_material', data.result.material)
     },
-    async fetchStickerDrawerData({ commit, dispatch, getters }) {
+    async fetchStickerDrawerData({ dispatch, getters }) {
       /**
        * 1. call digital-thread/get-material 取得 unit name 與 unit logo 等相關資料
        * 2. call digital-thread/get-list，
@@ -143,18 +136,21 @@ export default {
       ])
 
       if (getters.digitalThreadList.length === 0) {
-        const digitalThreadBase = defaultDigitalThreadBase()
-        commit('PUSH_tempDigitalThreadList', digitalThreadBase)
-
-        const digitalThread = digitalThreadBase
-        digitalThread['stickerList'] = []
-        commit('SET_digitalThread', digitalThread)
+        dispatch('startToCreateDigitalThread')
       } else {
         await dispatch('getDigitalThread', {
           digitalThreadId: getters.digitalThreadList[0].digitalThreadId,
           filter: null,
         })
       }
+    },
+    startToCreateDigitalThread({ commit }) {
+      const digitalThreadBase = defaultDigitalThreadBase()
+      commit('UNSHIFT_tempDigitalThreadList', digitalThreadBase)
+
+      const digitalThread = digitalThreadBase
+      digitalThread['stickerList'] = []
+      commit('SET_digitalThread', digitalThread)
     },
     async getStickerTagList(_, params) {
       const { data } = await stickerApi.getStickerTagList(params)
@@ -172,7 +168,7 @@ export default {
      * @param {string} params.content
      * @param {string[]} params.tagList
      */
-    async createDigitalThread({ commit, rootGetters, getters }, params) {
+    async createDigitalThread({ state, commit, rootGetters, getters }, params) {
       // const { data } = await stickerApi.createDigitalThread({
       //   orgId: rootGetters['organization/orgId'],
       //   materialId: getters.currentMaterialId,
@@ -181,8 +177,7 @@ export default {
       //   ...params,
       // })
       // commit('SET_digitalThread', data.result.digitalThread)
-
-      commit('SET_digitalThread', {
+      const digitalThread = {
         digitalThreadId: 0,
         digitalThreadName: params.digitalThreadName,
         isCreatorSide: false, // 檢視該DigitalThread的使用者是否為建立方組織的成員
@@ -207,8 +202,8 @@ export default {
         createDate: '1662179523',
         stickerStatistics: {
           totalQty: 1,
-          internalQty: 1,
-          externalQty: 0,
+          internalQty: params.addTo === 2 ? 1 : 0,
+          externalQty: params.addTo === 1 ? 1 : 0,
           starredQty: 0,
         },
         tagList: [],
@@ -220,6 +215,9 @@ export default {
           },
         ], // { name: '', avatar: '' }
         unreadStickerQty: 0,
+      }
+      commit('SET_digitalThread', {
+        ...digitalThread,
         stickerList: [
           {
             stickerId: 0,
@@ -243,6 +241,7 @@ export default {
           },
         ],
       })
+      state.digitalThreadList.push(digitalThread)
     },
     /**
      *
@@ -259,7 +258,10 @@ export default {
       //   digitalThreadId: getters.digitalThread.digitalThreadId,
       //   ...params,
       // })
-
+      state.digitalThread.stickerStatistics.totalQty++
+      params.addTo === 1
+        ? state.digitalThread.stickerStatistics.externalQty++
+        : state.digitalThread.stickerStatistics.internalQty++
       state.digitalThread.stickerList.unshift({
         stickerId: Date.now(),
         digitalThreadId: 0,
@@ -279,6 +281,13 @@ export default {
         hasNewAddOrUpdate: true,
         hasChildStickerUnread: false,
         childStickerList: [],
+      })
+    },
+    updateDigitalThreadName({ rootGetters, getters }, digitalThreadName) {
+      stickerApi.updateDigitalThreadName({
+        orgId: rootGetters['organization/orgId'],
+        digitalThreadId: getters.digitalThread.digitalThreadId,
+        digitalThreadName,
       })
     },
   },

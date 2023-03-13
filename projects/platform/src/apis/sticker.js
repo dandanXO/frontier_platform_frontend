@@ -91,4 +91,16 @@ export default {
       method: 'POST',
       data,
     }),
+  /**
+   *
+   * @param {object} data
+   * @param {number} data.orgId
+   * @param {number} data.digitalThreadId
+   * @param {string} data.digitalThreadName
+   */
+  updateDigitalThreadName: (data) =>
+    axios('/digital-thread/update/digital-thread-name', {
+      method: 'POST',
+      data,
+    }),
 }
