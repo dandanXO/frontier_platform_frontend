@@ -173,4 +173,8 @@ const collapsePopper = () => {
   isExpand.value = false
   emit('collapse')
 }
+
+defineExpose({
+  expandPopper,
+})
 </script>

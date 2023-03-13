@@ -66,7 +66,7 @@ modal-behavior(
 import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import { TARGET_LOCATION } from '@/utils/constants'
+import { OG_TYPE } from '@/utils/constants'
 import { useRouter } from 'vue-router'
 
 const store = useStore()
@@ -119,14 +119,14 @@ const locationList = computed(() => {
             title: organization.orgName,
             selectValue: {
               id: organization.orgId,
-              location: TARGET_LOCATION.ORG,
+              location: OG_TYPE.ORG,
             },
           },
           ...organization.groupList.map((group) => ({
             title: group.groupName,
             selectValue: {
               id: group.groupId,
-              location: TARGET_LOCATION.GROUP,
+              location: OG_TYPE.GROUP,
             },
           })),
         ],

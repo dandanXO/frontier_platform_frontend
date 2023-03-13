@@ -1,7 +1,7 @@
 import { WorkspaceCollection } from '@/store/reuseModules/collection'
 import Material from '@/store/reuseModules/material.js'
 import workspaceApi from '@/apis/workspace'
-import { NODE_LOCATION } from '@/utils/constants'
+import { OG_TYPE } from '@/utils/constants'
 
 export default {
   namespaced: true,
@@ -31,8 +31,8 @@ export default {
     shareInfo: (state) => state.shareInfo,
     defaultWorkspaceNodeKey: (state, getters, rootState, rootGetters) => {
       return rootGetters['helper/routeLocation'] === 'org'
-        ? `${NODE_LOCATION.ORG}-${rootGetters['organization/organization'].workspaceNodeId}`
-        : `${NODE_LOCATION.GROUP}-${rootGetters['group/group'].workspaceNodeId}`
+        ? `${OG_TYPE.ORG}-${rootGetters['organization/organization'].workspaceNodeId}`
+        : `${OG_TYPE.GROUP}-${rootGetters['group/group'].workspaceNodeId}`
     },
   },
   mutations: {
@@ -146,7 +146,7 @@ export default {
       const { id, workspaceNodeLocation } = params
       delete params.id
       await workspaceApi.createCollection(
-        Number(workspaceNodeLocation) === NODE_LOCATION.ORG ? 'org' : 'group',
+        Number(workspaceNodeLocation) === OG_TYPE.ORG ? 'org' : 'group',
         id,
         params
       )

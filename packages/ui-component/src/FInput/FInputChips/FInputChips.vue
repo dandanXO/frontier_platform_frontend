@@ -7,6 +7,7 @@ f-input-container(
   :hintError="ruleErrorMsg || hintError"
 )
   f-popper(
+    ref="refPopper"
     placement="bottom-start"
     data-cy="input-chips"
     @expand="expand"
@@ -130,12 +131,12 @@ export default {
 import { ref, toRefs, useSlots, computed, onMounted, nextTick } from 'vue'
 import { CONTEXTUAL_MENU_MODE } from '../../constants.js'
 import useInput from '../useInput'
-import isObjectEqual from '../../isEqual.js'
+import isEqual from '../../isEqual.js'
 
 const { SINGLE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
 
 const slots = useSlots()
-const emit = defineEmits(['update:selectValue', 'addNew'])
+const emit = defineEmits(['update:selectValue', 'addNew', 'collapse'])
 const props = defineProps({
   /**
    * inherit from `FInputContainer.vue`
@@ -240,7 +241,7 @@ const innerSelectValue = computed({
 const displayText = computed(() => {
   const getMenu = (v) =>
     props.dropdownMenuTree.blockList[0].menuList.find((menu) =>
-      isObjectEqual(menu.selectValue, v)
+      isEqual(menu.selectValue, v)
     )
   if (props.multiple) {
     return innerSelectValue.value.map((v) => getMenu(v)?.title)
@@ -422,6 +423,7 @@ const collapse = () => {
   isFocus.value = false
   setSearchInput('')
   inputText.value = ''
+  emit('collapse')
 }
 
 const isReverse = ref(false)
@@ -486,4 +488,13 @@ const clearAll = () => {
 const removeChip = (index) => {
   innerSelectValue.value.splice(index, 1)
 }
+
+const refPopper = ref(null)
+const focus = () => {
+  refPopper.value.expandPopper()
+}
+
+defineExpose({
+  focus,
+})
 </script>

@@ -32,8 +32,8 @@ grid-item-wrapper(
       digital-thread-entrance(
         v-if="canAddSticker"
         :isHover="isHover"
-        :digitalThreadQty="material.digitalThreadQty"
-        :digitalThreadHasUnread="material.digitalThreadHasUnread"
+        :material="material"
+        :stickerAddFromLocationList="stickerAddFromLocationList"
       )
   template(#corner-bottom-left)
     slot(name="corner-bottom-left")
@@ -71,6 +71,11 @@ const props = defineProps({
   canAddSticker: {
     type: Boolean,
     default: true,
+  },
+  stickerAddFromLocationList: {
+    type: Array,
+    required: true,
+    default: [],
   },
 })
 

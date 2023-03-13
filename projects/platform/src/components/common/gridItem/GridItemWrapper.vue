@@ -29,6 +29,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
     div(
       v-if="(cornerTopRightHover && isHover) || !cornerTopRightHover"
       class="absolute z-10 top-3 right-3"
+      @click.stop
     )
       slot(name="corner-top-right" :isHover="isHover")
     div(v-if="isHover" class="absolute z-10 bottom-3 left-3")

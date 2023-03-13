@@ -91,17 +91,7 @@ export const U3M_STATUS = {
   UNSUCCESSFUL: 99,
 }
 
-export const TARGET_LOCATION = {
-  ORG: 1,
-  GROUP: 2,
-}
-
-export const NODE_LOCATION = {
-  ORG: 1,
-  GROUP: 2,
-}
-
-export const SOURCE_ASSET_LOCATION = {
+export const OG_TYPE = {
   ORG: 1,
   GROUP: 2,
 }
@@ -294,6 +284,12 @@ export const CONTEXTUAL_MENU_MODE = {
   SINGLE_CANCEL: 1,
   SINGLE_NONE_CANCEL: 2,
   MULTIPLE: 3,
+}
+
+export const STICKER_ADD_TO = {
+  ALL: 0,
+  EXTERNAL: 1,
+  INTERNAL: 2,
 }
 
 export const useConstants = () => {

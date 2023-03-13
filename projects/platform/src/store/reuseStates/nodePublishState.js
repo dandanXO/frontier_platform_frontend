@@ -1,8 +1,8 @@
-import { NODE_LOCATION } from '@/utils/constants'
+import { OG_TYPE } from '@/utils/constants'
 
 const NodePublishState = () => ({
   workspaceNodeId: null,
-  workspaceNodeLocation: NODE_LOCATION.ORG,
+  workspaceNodeLocation: OG_TYPE.ORG,
   logo: '',
   displayName: '',
   publicDate: null,

@@ -1,11 +1,11 @@
 import NodeShareState from '@/store/reuseStates/nodeShareState.js'
 import NodePublishState from '@/store/reuseStates/nodePublishState.js'
-import { NODE_LOCATION, NODE_TYPE, useConstants } from '@/utils/constants'
+import { OG_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
 
 const Collection = {
   state: () => ({
     workspaceNodeId: null,
-    workspaceNodeLocation: NODE_LOCATION.ORG,
+    workspaceNodeLocation: OG_TYPE.ORG,
     collectionId: null,
     name: '',
     description: '',
@@ -136,8 +136,8 @@ const Collection = {
                 weftYarnCount,
                 coverImg,
                 sourceAssetLocation,
-                digitalThreadQty: 0,
-                digitalThreadHasUnread: false,
+                digitalThreadQty,
+                digitalThreadHasUnread,
               },
             })
           })

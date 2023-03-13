@@ -98,7 +98,7 @@ import SidebarItem from '@/components/sidebar/SidebarItem.vue'
 import MenuOrg from '@/components/sidebar/MenuOrg.vue'
 import MenuOrgUser from '@/components/sidebar/MenuOrgUser.vue'
 import { useI18n } from 'vue-i18n'
-import { NODE_LOCATION } from '@/utils/constants'
+import { OG_TYPE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
@@ -125,7 +125,7 @@ const menuOrgOrGroup = computed(() => {
         {
           id: 'workspace',
           title: t('RR0009'),
-          path: `/${orgNo}/workspace/${NODE_LOCATION.ORG}-${workspaceNodeId}`,
+          path: `/${orgNo}/workspace/${OG_TYPE.ORG}-${workspaceNodeId}`,
           pathUseToMatch: `/${orgNo}/workspace`,
         },
         {
@@ -157,7 +157,7 @@ const menuOrgOrGroup = computed(() => {
           {
             id: 'workspace',
             title: t('RR0009'),
-            path: `/${orgNo}/${groupId}/workspace/${NODE_LOCATION.GROUP}-${workspaceNodeId}`,
+            path: `/${orgNo}/${groupId}/workspace/${OG_TYPE.GROUP}-${workspaceNodeId}`,
             pathUseToMatch: `/${orgNo}/${groupId}/workspace`,
           },
           {

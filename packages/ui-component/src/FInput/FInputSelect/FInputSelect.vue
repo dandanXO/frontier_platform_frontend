@@ -21,14 +21,14 @@ f-input-container(
       )
         //- Leading Visual
         div(
-          v-if="prependIcon || selectedMenu?.thumbnail || selectedMenu?.labelColor"
+          v-if="prependIcon || selectedMenu?.icon || selectedMenu?.thumbnail || selectedMenu?.labelColor"
           class="flex items-center justify-center shrink-0"
           :class="[size === 'sm' ? 'w-5 h-5' : 'w-6 h-6']"
         )
           //- Icon
           f-svg-icon(
-            v-if="prependIcon"
-            :iconName="prependIcon"
+            v-if="prependIcon || selectedMenu?.icon"
+            :iconName="prependIcon || selectedMenu?.icon"
             :size="size === 'sm' ? '20' : '24'"
             :class="classIcon"
           )
@@ -76,6 +76,7 @@ export default {
 import { computed, useSlots, toRefs } from 'vue'
 import { CONTEXTUAL_MENU_MODE } from '../../constants.js'
 import useInput from '../useInput'
+import isEqual from '../../isEqual.js'
 
 const { SINGLE_CANCEL, SINGLE_NONE_CANCEL } = CONTEXTUAL_MENU_MODE
 
@@ -326,8 +327,10 @@ const selectedMenu = computed(() => {
     return null
   }
 
-  return menuList.find((menu) =>
-    [menu.title, menu.selectValue].includes(innerSelectValue.value)
+  return menuList.find(
+    (menu) =>
+      isEqual(menu.title, innerSelectValue.value) ||
+      isEqual(menu.selectValue, innerSelectValue.value)
   )
 })
 

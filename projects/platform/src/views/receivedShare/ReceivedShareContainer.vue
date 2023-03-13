@@ -30,6 +30,7 @@ fullscreen-header
     )
       img(src="@/assets/images/frontier_logo.png" class="w-20.5 h-4 mr-2")
       p(class="text-body2 text-grey-900") {{ $t('GG0004') }}
+sticker-drawer(class="z-[1001]")
 </template>
 
 <script setup>
@@ -39,6 +40,7 @@ import { computed, ref } from 'vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'
 import { SHARING_FROM } from '@/utils/constants'
 import DropdownLocale from '@/components/common/DropdownLocale.vue'
+import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
 
 const store = useStore()
 const { saveReceivedShare } = useReceivedShare()

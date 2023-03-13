@@ -135,7 +135,7 @@ modal-behavior(
 import { ref, computed, reactive } from 'vue'
 import { useStore } from 'vuex'
 import {
-  NODE_LOCATION,
+  OG_TYPE,
   NODE_TYPE,
   useConstants,
   CONTEXTUAL_MENU_MODE,
@@ -219,14 +219,14 @@ const orgAndGroupList = computed(() => {
     const organization = store.getters['organization/organization']
     list.push({
       id: organization.orgId,
-      nodeKey: `${NODE_LOCATION.ORG}-${organization.workspaceNodeId}`,
+      nodeKey: `${OG_TYPE.ORG}-${organization.workspaceNodeId}`,
       name: organization.orgName,
     })
     if (props.canCrossLocation) {
       organization.groupList.forEach((group) => {
         list.push({
           id: group.groupId,
-          nodeKey: `${NODE_LOCATION.GROUP}-${group.workspaceNodeId}`,
+          nodeKey: `${OG_TYPE.GROUP}-${group.workspaceNodeId}`,
           name: group.groupName,
         })
       })
@@ -235,7 +235,7 @@ const orgAndGroupList = computed(() => {
     const { groupId, workspaceNodeId, groupName } = store.getters['group/group']
     list.push({
       id: groupId,
-      nodeKey: `${NODE_LOCATION.GROUP}-${workspaceNodeId}`,
+      nodeKey: `${OG_TYPE.GROUP}-${workspaceNodeId}`,
       name: groupName,
     })
   }

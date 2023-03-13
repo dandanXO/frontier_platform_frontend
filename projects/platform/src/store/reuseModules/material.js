@@ -2,7 +2,7 @@ import {
   SIDE_TYPE,
   INVENTORY_UNIT,
   MATERIAL_PRICING_CURRENCY,
-  SOURCE_ASSET_LOCATION,
+  OG_TYPE,
   useConstants,
 } from '@/utils/constants'
 
@@ -16,7 +16,7 @@ const Material = {
     relationFrontierNo: null,
     materialNo: '',
     materialSeq: null,
-    sourceAssetLocation: SOURCE_ASSET_LOCATION.ORG,
+    sourceAssetLocation: OG_TYPE.ORG,
     coverMode: 0,
     coverImg: null,
     isDoubleSideMaterial: true,
@@ -148,6 +148,9 @@ const Material = {
     updateDate: '',
     digitalThreadQty: 0,
     digitalThreadHasUnread: false,
+    unitName: 'FabricPro.Co',
+    unitLogo:
+      'https://textile-dev.frontier.cool/Resource/OrgLogo/202209050034001703.jpeg',
   }),
   getters: {
     material: (state) => state,

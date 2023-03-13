@@ -15,7 +15,7 @@ export default {
   /**
    * @param {object} params
    * @param {number} params.sharingId
-   * @param {object[]} params.workspaceNodeId - [{id, location}]
+   * @param {object[]} params.workspaceNodeId
    * @param {number} params.keyword
    * @param {number} params.rank
    */

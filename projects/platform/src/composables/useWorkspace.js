@@ -1,7 +1,7 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import { SOURCE_ASSET_LOCATION, NODE_LOCATION } from '@/utils/constants'
+import { OG_TYPE } from '@/utils/constants.js'
 import useNavigation from '@/composables/useNavigation.js'
 
 export default function useWorkspace() {
@@ -46,7 +46,7 @@ export default function useWorkspace() {
   }
 
   const editMaterial = (materialId, sourceAssetLocation) => {
-    if (sourceAssetLocation === SOURCE_ASSET_LOCATION.ORG) {
+    if (sourceAssetLocation === OG_TYPE.ORG) {
       goToOrgAssetMaterialEdit(materialId)
     } else {
       goToGroupAssetMaterialEdit(materialId)
@@ -107,9 +107,7 @@ export default function useWorkspace() {
           isMultiSelect: false,
           canSelectSelf: false,
           selfNodeKey: `${
-            routeLocation.value === 'org'
-              ? NODE_LOCATION.ORG
-              : NODE_LOCATION.GROUP
+            routeLocation.value === 'org' ? OG_TYPE.ORG : OG_TYPE.GROUP
           }-${workspaceNodeId}`,
           actionText: t('UU0061'),
           actionCallback: async (node) => {

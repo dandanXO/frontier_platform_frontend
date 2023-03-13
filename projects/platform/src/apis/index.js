@@ -6,7 +6,7 @@ import i18n from '@/utils/i18n'
 const { VITE_APP_API_ENDPOINT } = import.meta.env
 
 const options = {
-  baseURL: `${VITE_APP_API_ENDPOINT}`,
+  baseURL: `https://textile-webapi-dev.frontier.cool/v2.1.0`,
   headers: {
     'Content-Type': 'application/json',
   },

@@ -103,6 +103,7 @@ import { ref, computed } from 'vue'
 import { CONTEXTUAL_MENU_MODE } from '../constants.js'
 // import { RecycleScroller } from 'vue-virtual-scroller'
 // import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+import isEqual from '../isEqual'
 
 const { SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
 
@@ -211,9 +212,8 @@ const innerMenuTree = computed(() => {
 const clickMenuHandler = (menu) => {
   if (props.selectMode === MULTIPLE) {
     const tempArr = [...props.inputSelectValue]
-    const index = tempArr.findIndex(
-      (selectValue) =>
-        JSON.stringify(selectValue) === JSON.stringify(menu.selectValue)
+    const index = tempArr.findIndex((selectValue) =>
+      isEqual(selectValue, menu.selectValue)
     )
     if (!~index) {
       tempArr.push(menu.selectValue)
@@ -224,8 +224,7 @@ const clickMenuHandler = (menu) => {
   } else if ([SINGLE_CANCEL, SINGLE_NONE_CANCEL].includes(props.selectMode)) {
     if (
       props.selectMode === SINGLE_CANCEL &&
-      JSON.stringify(props.inputSelectValue) ===
-        JSON.stringify(menu.selectValue)
+      isEqual(props.inputSelectValue, menu.selectValue)
     ) {
       emit('update:inputSelectValue', null)
     } else {

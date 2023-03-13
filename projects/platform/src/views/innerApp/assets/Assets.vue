@@ -56,13 +56,14 @@ div(class="w-full h-full")
           grid-item-material(
             v-for="(material, index) in materialList"
             :key="material.materialId"
-            :material="{ ...material, digitalThreadQty: index, digitalThreadHasUnread: false }"
+            :material="material"
             v-model:selectedValue="selectedMaterialList"
             isSelectable
             :selectValue="material"
             :optionList="optionList(material)"
             @click:option="$event.func(material)"
             @click.stop="goToAssetMaterialDetail(material)"
+            :stickerAddFromLocationList="[`${material.materialId}`]"
           )
       div(v-else class="flex flex-col justify-center items-center")
         div(

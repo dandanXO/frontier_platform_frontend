@@ -1,3 +1,16 @@
+<style lang="scss" scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+  transform: translateX(474px);
+}
+</style>
+
 <template lang="pug">
 div(class="flex h-full")
   router-view(name="sidebar")
@@ -18,6 +31,8 @@ div(class="flex h-full")
       :key="$route.params.orgNo"
       class="absolute bottom-0 left-0 z-100"
     )
+  transition
+    sticker-drawer(v-if="isStickerDrawerOpen")
 </template>
 
 <script setup>
@@ -25,6 +40,7 @@ import { setOptions, bootstrap } from 'vue-gtag'
 import { useStore } from 'vuex'
 import { computed, defineAsyncComponent } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
 
 const NotifyBarBuffer = defineAsyncComponent(() =>
   import('@/components/billings/NotifyBarBuffer.vue')
@@ -39,6 +55,9 @@ const isInInnerApp = computed(() =>
   route.matched.some((r) => r.name === 'InnerAppRoot')
 )
 const user = computed(() => store.getters['user/user'])
+const isStickerDrawerOpen = computed(
+  () => store.getters['sticker/isStickerDrawerOpen']
+)
 
 onBeforeRouteUpdate(async (to, from) => {
   const isFromGroup = 'groupId' in from.params

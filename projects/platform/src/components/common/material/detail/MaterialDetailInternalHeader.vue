@@ -18,8 +18,8 @@ div(class="pb-7.5")
       template(#content)
         p {{ $t('RR0054') }}
     digital-thread-entrance(
-      :digitalThreadQty="material.digitalThreadQty"
-      :digitalThreadHasUnread="material.digitalThreadHasUnread"
+      :material="material"
+      :stickerAddFromLocationList="breadcrumbList.map((item) => item.name).slice(1)"
     )
   p(class="text-caption text-grey-600") {{ $t('EE0014') }} : {{ lastUpdateDate }}
 </template>

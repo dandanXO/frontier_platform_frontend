@@ -1,4 +1,4 @@
-import { SHARING_FROM, NODE_LOCATION, NODE_TYPE } from '@/utils/constants'
+import { SHARING_FROM, OG_TYPE, NODE_TYPE } from '@/utils/constants'
 
 const NodeShareState = () => ({
   sharingId: null,
@@ -6,7 +6,7 @@ const NodeShareState = () => ({
   sharingFrom: SHARING_FROM.WORKSPACE,
   workspaceNodeId: '',
   workspaceNodeType: NODE_TYPE.COLLECTION,
-  workspaceNodeLocation: NODE_LOCATION.ORG,
+  workspaceNodeLocation: OG_TYPE.ORG,
   message: '',
   logo: '',
   displayName: '',

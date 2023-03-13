@@ -2,7 +2,7 @@ import axios from '@/apis'
 import assetsApi from '@/apis/assets'
 import { downloadBase64File } from '@/utils/fileOperator'
 import {
-  NODE_LOCATION,
+  OG_TYPE,
   INVENTORY_UNIT,
   MATERIAL_PRICING_CURRENCY,
 } from '@/utils/constants'
@@ -541,7 +541,7 @@ export default {
       }
 
       const { data } = await assetsApi.getMaterialList(
-        Number(nodeLocation) === NODE_LOCATION.ORG ? 'org' : 'group',
+        Number(nodeLocation) === OG_TYPE.ORG ? 'org' : 'group',
         id,
         tempParams
       )

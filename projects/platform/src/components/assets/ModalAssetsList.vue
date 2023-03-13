@@ -90,7 +90,7 @@ modal-behavior(
 import { ref, reactive, computed } from 'vue'
 import {
   NODE_TYPE,
-  NODE_LOCATION,
+  OG_TYPE,
   useConstants,
   CONTEXTUAL_MENU_MODE,
 } from '@/utils/constants'
@@ -170,13 +170,13 @@ const orgAndGroupList = computed(() => {
   const organization = store.getters['organization/organization']
   const list = []
   list.push({
-    key: `${NODE_LOCATION.ORG}-${organization.orgId}`,
+    key: `${OG_TYPE.ORG}-${organization.orgId}`,
     name: organization.orgName,
   })
   if (routeLocation.value === 'group') {
     const { groupId, groupName } = store.getters['group/group']
     list.push({
-      key: `${NODE_LOCATION.GROUP}-${groupId}`,
+      key: `${OG_TYPE.GROUP}-${groupId}`,
       name: groupName,
     })
   }
@@ -255,7 +255,7 @@ const goTo = (option) => {
 const clearSelect = () => (selectedValue.value.length = 0)
 
 if (routeLocation.value === 'org') {
-  queryParams.nodeLocation = NODE_LOCATION.ORG
+  queryParams.nodeLocation = OG_TYPE.ORG
   queryParams.id = store.getters['organization/organization'].orgId
   getMaterialListForModal()
 }
