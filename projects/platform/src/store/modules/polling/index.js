@@ -122,119 +122,120 @@ const getters = {
   },
   isProcessing: (state) => state.isProcessing,
   notificationList: (state) => {
-    // return state.notificationList.map(
-    //   ({ isRead, content, contentValue, createDate }) => {
-    return [
-      {
-        isRead: false,
-        content: 'hasMaterialDeleted {0}',
-        contentValue: [
-          {
-            type: 'sticker',
-            text: 'view it now',
-            value: 9, // 60528
+    return state.notificationList.map(
+      ({ isRead, content, contentValue, createDate }) => {
+        // return [
+        //   {
+        //     isRead: false,
+        //     content: 'hasMaterialDeleted {0}',
+        //     contentValue: [
+        //       {
+        //         type: 'sticker',
+        //         text: 'view it now',
+        //         value: 9, // 60528
+        //       },
+        //     ],
+        //     createDate: 1674011611,
+        //   },
+        //   {
+        //     isRead: false,
+        //     content: 'hasMaterialNoAccess  {0}',
+        //     contentValue: [
+        //       {
+        //         type: 'sticker',
+        //         text: 'view it now',
+        //         value: 10, // 74
+        //       },
+        //     ],
+        //     createDate: 1674011611,
+        //   },
+        // ].map(({ isRead, content, contentValue, createDate }) => {
+        const re = new RegExp(/\{\d+\}/, 'g')
+        const matches = [...content.matchAll(re)]
+        const pairIndexList = []
+        let i = 0
+        if (matches.length !== 0) {
+          for (const match of matches) {
+            const index = match.index
+            pairIndexList.push([i, index])
+            pairIndexList.push([index, index + 3])
+            i = index + 3
+          }
+        }
+        pairIndexList.push([i, content.length])
+        const contentComponent = {
+          render: () => {
+            return h(
+              'span',
+              {
+                class: 'text-caption text-grey-900 leading-1.6 pb-1',
+              },
+              ...pairIndexList
+                .filter(([start, end]) => start !== end)
+                .map(([start, end]) => {
+                  const fragment = content.slice(start, end)
+                  if (fragment.match(re)) {
+                    const index = Number(fragment.slice(1, fragment.length - 1)) // {x}
+                    const { type, text, value } = contentValue[index]
+                    if (type === 'url') {
+                      return h(
+                        'a',
+                        {
+                          class: 'text-caption text-cyan-400',
+                          href: value,
+                          target: '_blank',
+                        },
+                        text
+                      )
+                    }
+                    if (type === 'sticker') {
+                      return h(
+                        'span',
+                        {
+                          class: 'text-caption text-cyan-400 cursor-pointer',
+                          onClick: () => {
+                            store.dispatch('sticker/openStickerDrawer', {
+                              digitalThreadId: value,
+                            })
+                          },
+                        },
+                        text
+                      )
+                    }
+                  }
+                  return h('span', {}, fragment)
+                })
+            )
           },
-        ],
-        createDate: 1674011611,
-      },
-      {
-        isRead: false,
-        content: 'hasMaterialNoAccess  {0}',
-        contentValue: [
-          {
-            type: 'sticker',
-            text: 'view it now',
-            value: 10, // 74
-          },
-        ],
-        createDate: 1674011611,
-      },
-    ].map(({ isRead, content, contentValue, createDate }) => {
-      const re = new RegExp(/\{\d+\}/, 'g')
-      const matches = [...content.matchAll(re)]
-      const pairIndexList = []
-      let i = 0
-      if (matches.length !== 0) {
-        for (const match of matches) {
-          const index = match.index
-          pairIndexList.push([i, index])
-          pairIndexList.push([index, index + 3])
-          i = index + 3
+        }
+
+        let formattedDate
+
+        if (dayjs.unix(createDate).isToday()) {
+          const tempCreateDate = dayjs.unix(createDate).format('hh:mm A')
+          formattedDate = `${i18n.global.t('NN0002')} ${i18n.global.t(
+            'NN0004'
+          )} ${tempCreateDate}`
+        } else if (dayjs.unix(createDate).isYesterday()) {
+          const tempCreateDate = dayjs.unix(createDate).format('hh:mm A')
+          formattedDate = `${i18n.global.t('NN0003')} ${i18n.global.t(
+            'NN0004'
+          )} ${tempCreateDate}`
+        } else {
+          const tempCreateDate = dayjs.unix(createDate).format('MMM DD hh:mm A')
+          formattedDate =
+            tempCreateDate.slice(0, 6) +
+            ` ${i18n.global.t('NN0004')} ` +
+            tempCreateDate.slice(7)
+        }
+
+        return {
+          isRead,
+          formattedDate,
+          contentComponent,
         }
       }
-      pairIndexList.push([i, content.length])
-      const contentComponent = {
-        render: () => {
-          return h(
-            'span',
-            {
-              class: 'text-caption text-grey-900 leading-1.6 pb-1',
-            },
-            ...pairIndexList
-              .filter(([start, end]) => start !== end)
-              .map(([start, end]) => {
-                const fragment = content.slice(start, end)
-                if (fragment.match(re)) {
-                  const index = Number(fragment.slice(1, fragment.length - 1)) // {x}
-                  const { type, text, value } = contentValue[index]
-                  if (type === 'url') {
-                    return h(
-                      'a',
-                      {
-                        class: 'text-caption text-cyan-400',
-                        href: value,
-                        target: '_blank',
-                      },
-                      text
-                    )
-                  }
-                  if (type === 'sticker') {
-                    return h(
-                      'span',
-                      {
-                        class: 'text-caption text-cyan-400 cursor-pointer',
-                        onClick: () => {
-                          store.dispatch('sticker/openStickerDrawer', {
-                            digitalThreadId: value,
-                          })
-                        },
-                      },
-                      text
-                    )
-                  }
-                }
-                return h('span', {}, fragment)
-              })
-          )
-        },
-      }
-
-      let formattedDate
-
-      if (dayjs.unix(createDate).isToday()) {
-        const tempCreateDate = dayjs.unix(createDate).format('hh:mm A')
-        formattedDate = `${i18n.global.t('NN0002')} ${i18n.global.t(
-          'NN0004'
-        )} ${tempCreateDate}`
-      } else if (dayjs.unix(createDate).isYesterday()) {
-        const tempCreateDate = dayjs.unix(createDate).format('hh:mm A')
-        formattedDate = `${i18n.global.t('NN0003')} ${i18n.global.t(
-          'NN0004'
-        )} ${tempCreateDate}`
-      } else {
-        const tempCreateDate = dayjs.unix(createDate).format('MMM DD hh:mm A')
-        formattedDate =
-          tempCreateDate.slice(0, 6) +
-          ` ${i18n.global.t('NN0004')} ` +
-          tempCreateDate.slice(7)
-      }
-
-      return {
-        isRead,
-        formattedDate,
-        contentComponent,
-      }
-    })
+    )
   },
 }
 

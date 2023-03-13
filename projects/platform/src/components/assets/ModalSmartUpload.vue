@@ -166,10 +166,6 @@ const startUpload = () => {
 
       xhr.addEventListener('loadend', () => {
         if (!image.isRemoved) {
-          console.log(
-            new Date().getTime(),
-            `${image.file.name} was upload to S3 successfully!`
-          )
           uploadedFiles.push({ tempUploadId, fileName: image.file.name })
         }
         resolve()
@@ -199,7 +195,6 @@ const confirmAndViewProgress = () => {
 
 const cancelUpload = () => {
   if (isUploading.value) {
-    console.log(new Date().getTime(), 'Cancel upload!')
     materialImageList.forEach((image) => (image.isRemoved = true))
   }
 

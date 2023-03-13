@@ -15,7 +15,10 @@ div(class="relative w-full rounded-md drop-shadow-8 overflow-hidden")
       )
     div(class="pt-2.5 pl-1 flex flex-col gap-y-3")
       //- Add From
-      div(v-if="isCreatingDigitalThread" class="h-9 flex items-center gap-x-1.5")
+      div(
+        v-if="isCreatingDigitalThread && !isInternalLocation"
+        class="h-9 flex items-center gap-x-1.5"
+      )
         div(class="w-17.5 flex items-center gap-x-1")
           p(class="text-caption text-grey-900") {{ $t('TT0006') }}
           f-svg-icon(
@@ -37,23 +40,30 @@ div(class="relative w-full rounded-md drop-shadow-8 overflow-hidden")
           div(
             class="flex-grow h-7 bg-grey-150 grid grid-cols-2 items-center justify-items-center rounded-sm"
           )
+            f-tooltip
+              template(#trigger)
+                div(
+                  class="w-35 h-5.5 flex items-center justify-center gap-x-1.5"
+                  :class="[{ 'bg-grey-0 rounded-sm': addTo === EXTERNAL }, isInternalLocation ? 'text-grey-200' : 'text-grey-900']"
+                  @click="!isInternalLocation && (addTo = EXTERNAL)"
+                )
+                  f-svg-icon(iconName="external" size="14")
+                  p(class="text-caption") {{ $t('TT0009') }}
+              template(v-if="isInternalLocation" #content)
+                p {{ $t('TT0111') }}
             div(
-              class="w-36 h-5.5 flex items-center justify-center gap-x-1.5 text-grey-900"
-              :class="{ 'bg-grey-0 rounded-sm': addTo === EXTERNAL }"
-              @click="addTo = EXTERNAL"
-            )
-              f-svg-icon(iconName="external" size="14")
-              p(class="text-caption") {{ $t('TT0009') }}
-            div(
-              class="w-36 h-5.5 flex items-center justify-center gap-x-1.5 text-grey-900"
+              class="w-35 h-5.5 flex items-center justify-center gap-x-1.5 text-grey-900"
               :class="{ 'bg-grey-0 rounded-sm': addTo === INTERNAL }"
               @click="addTo = INTERNAL"
             )
               f-svg-icon(iconName="internal" size="14")
               p(class="text-caption") {{ $t('TT0010') }}
         div(class="w-73.5 self-end text-grey-300 flex items-center gap-x-2")
-          f-svg-icon(iconName="visibility" size="14")
-          p(class="text-caption leading-1.6") {{ $t('TT0018') }}
+          f-svg-icon(
+            :iconName="addTo === EXTERNAL ? 'visibility' : 'internal'"
+            size="14"
+          )
+          p(class="text-caption leading-1.6") {{ addTo === EXTERNAL ? $t('TT0018') : $t('TT0030') }}
       //- Type
       div(v-if="addTo === EXTERNAL" class="h-7 flex items-center gap-x-1.5")
         p(class="w-17.5 text-caption text-grey-900") {{ $t('TT0008') }}
@@ -113,7 +123,7 @@ div(class="relative w-full rounded-md drop-shadow-8 overflow-hidden")
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { STICKER_ADD_TO, OG_TYPE } from '@/utils/constants.js'
+import { STICKER_ADD_TO, OG_TYPE, LOCATION_TYPE } from '@/utils/constants.js'
 import StickerLabelAddTo from '@/components/sticker/StickerLabelAddTo.vue'
 import StickerTagInput from '@/components/sticker/StickerTagInput.vue'
 import StickerTextEditor from '@/components/sticker/stickerTextEditor/StickerTextEditor.vue'
@@ -191,12 +201,33 @@ const STICKER_TYPE = {
   },
 }
 
+const isInternalLocation = computed(() =>
+  [LOCATION_TYPE.ASSETS, LOCATION_TYPE.WORKSPACE].includes(
+    store.getters['sticker/addFromLocationType']
+  )
+)
+
 // form data of creating digit thread or sticker
 const addFrom = ref(menuAddFrom.value.blockList[0].menuList[0].selectValue)
-const addTo = ref(EXTERNAL)
+const addTo = ref(isInternalLocation.value ? INTERNAL : EXTERNAL)
 const type = ref(STICKER_TYPE.TEXT_ONLY.value)
 const content = ref('')
 const tagList = ref([])
+
+const routeLocation = computed(() => store.getters['helper/routeLocation'])
+const routeLocationId = computed(() => store.getters['helper/routeLocationId'])
+
+if (routeLocation.value === 'org') {
+  addFrom.value = {
+    addFromOGType: OG_TYPE.ORG,
+    addFromOGId: routeLocationId.value,
+  }
+} else {
+  addFrom.value = {
+    addFromOGType: OG_TYPE.GROUP,
+    addFromOGId: routeLocationId.value,
+  }
+}
 
 const createStickerOrDigitalThread = async () => {
   if (props.isCreatingDigitalThread) {

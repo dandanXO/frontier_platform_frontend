@@ -163,6 +163,7 @@ export default {
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core'
 import { CONTEXTUAL_MENU_MODE } from '../constants.js'
+import isEqual from '../isEqual'
 
 const { NONE_SELECT, MULTIPLE } = CONTEXTUAL_MENU_MODE
 
@@ -258,16 +259,11 @@ const isSelect = computed(() => {
   if (props.selectMode === NONE_SELECT) {
     return false
   } else if (props.selectMode === MULTIPLE) {
-    return props.inputSelectValue?.some(
-      (selectValue) =>
-        JSON.stringify(selectValue) ===
-        JSON.stringify(innerMenu.value.selectValue)
+    return props.inputSelectValue?.some((selectValue) =>
+      isEqual(selectValue, innerMenu.value.selectValue)
     )
   } else {
-    return (
-      JSON.stringify(props.inputSelectValue) ===
-      JSON.stringify(innerMenu.value.selectValue)
-    )
+    return isEqual(props.inputSelectValue, innerMenu.value.selectValue)
   }
 })
 

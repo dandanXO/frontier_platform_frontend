@@ -9,7 +9,7 @@ div(class="w-full")
       h3(class="text-grey-900 font-bold text-h3 mb-6") {{ $t('AA0014') }}
       p(class="text-grey-900 text-body1 leading-1.6 w-160 text-center mb-7.5") {{ $t('AA0015') }}
       div(
-        class="w-58 h-55 rounded-md border border-grey-200 border-dashed flex justify-center items-center cursor-pointer"
+        class="w-58 h-55 rounded-md border border-grey-250 border-dashed flex justify-center items-center cursor-pointer"
         @click="openModalCreateOrg"
         data-cy="open-create-org-modal"
       )
@@ -32,7 +32,7 @@ div(class="w-full")
             :itemList="org.memberList.map((member) => ({ imageUrl: member.avatar, name: member?.displayName }))"
           )
         div(
-          class="w-58 h-55 rounded-md border border-grey-200 border-dashed flex justify-center items-center cursor-pointer"
+          class="w-58 h-55 rounded-md border border-grey-250 border-dashed flex justify-center items-center cursor-pointer"
           @click="openModalCreateOrg"
           data-cy="open-create-org-modal"
         )
