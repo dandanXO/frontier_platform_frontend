@@ -47,7 +47,7 @@ import { useRoute, useRouter } from 'vue-router'
 import MenuPersonal from '@/components/lobby/MenuPersonal.vue'
 import { computed } from 'vue'
 import remindVerifyEmail from '@/utils/remind-verify-email'
-import { SIGNUP_SOURCE } from '@/utils/constants.js'
+import { SIGNUP_SOURCE } from '@/utils/constants'
 
 const store = useStore()
 const router = useRouter()

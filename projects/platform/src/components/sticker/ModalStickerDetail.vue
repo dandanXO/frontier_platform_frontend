@@ -112,7 +112,7 @@ modal-behavior(:header="$t('TT0055')")
 <script setup>
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import { LOCATION_TYPE } from '@/utils/constants.js'
+import { LOCATION_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 
 const store = useStore()

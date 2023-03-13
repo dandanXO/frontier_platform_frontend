@@ -123,7 +123,7 @@ div(class="relative w-full rounded-md drop-shadow-8 overflow-hidden")
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { STICKER_ADD_TO, OG_TYPE, LOCATION_TYPE } from '@/utils/constants.js'
+import { STICKER_ADD_TO, OG_TYPE, LOCATION_TYPE } from '@/utils/constants'
 import StickerLabelAddTo from '@/components/sticker/StickerLabelAddTo.vue'
 import StickerTagInput from '@/components/sticker/StickerTagInput.vue'
 import StickerTextEditor from '@/components/sticker/stickerTextEditor/StickerTextEditor.vue'

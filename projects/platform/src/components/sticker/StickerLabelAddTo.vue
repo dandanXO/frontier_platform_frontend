@@ -9,7 +9,7 @@ div(
 
 <script setup>
 import { computed } from 'vue'
-import { STICKER_ADD_TO } from '@/utils/constants.js'
+import { STICKER_ADD_TO } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()

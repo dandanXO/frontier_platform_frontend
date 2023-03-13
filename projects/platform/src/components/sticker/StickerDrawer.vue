@@ -316,7 +316,7 @@ import { useStore } from 'vuex'
 import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import StickerCreate from '@/components/sticker/StickerCreate.vue'
-import { STICKER_ADD_TO } from '@/utils/constants.js'
+import { STICKER_ADD_TO } from '@/utils/constants'
 import StickerCard from '@/components/sticker/StickerCard.vue'
 import DigitalThreadCard from '@/components/sticker/DigitalThreadCard.vue'
 

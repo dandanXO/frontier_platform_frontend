@@ -1,7 +1,7 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import { OG_TYPE } from '@/utils/constants.js'
+import { OG_TYPE } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation.js'
 
 export default function useWorkspace() {

@@ -75,7 +75,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
 import { useStore } from 'vuex'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { STICKER_ADD_TO, SIGNUP_SOURCE } from '@/utils/constants.js'
+import { STICKER_ADD_TO, SIGNUP_SOURCE } from '@/utils/constants'
 import { useRouter } from 'vue-router'
 
 const store = useStore()

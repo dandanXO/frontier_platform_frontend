@@ -1,7 +1,7 @@
 import store from '@/store'
 import i18n from '@/utils/i18n'
 import { shallowRef, h } from 'vue'
-import { SIGNUP_SOURCE } from '@/utils/constants.js'
+import { SIGNUP_SOURCE } from '@/utils/constants'
 
 const t = i18n.global.t
 let timerId

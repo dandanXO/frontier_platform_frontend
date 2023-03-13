@@ -12,7 +12,7 @@ import Placeholder from '@tiptap/extension-placeholder' // https://tiptap.dev/ap
 import { CustomMention as Mention } from '@/components/sticker/stickerTextEditor/customMention.js'
 import suggestion from '@/components/sticker/stickerTextEditor/suggestion.js'
 // https://tiptap.dev/api/nodes/mention#render-label
-import { STICKER_ADD_TO } from '@/utils/constants.js'
+import { STICKER_ADD_TO } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 const { EXTERNAL, INTERNAL } = STICKER_ADD_TO

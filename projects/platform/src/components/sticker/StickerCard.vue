@@ -145,7 +145,7 @@ import StickerHeaderIcon from '@/components/sticker/StickerHeaderIcon.vue'
 import StickerTagList from '@/components/sticker/StickerTagList.vue'
 import ChildStickerTextEditor from '@/components/sticker/stickerTextEditor/ChildStickerTextEditor.vue'
 import ChildStickerCard from '@/components/sticker/ChildStickerCard.vue'
-import { STICKER_ADD_TO } from '@/utils/constants.js'
+import { STICKER_ADD_TO } from '@/utils/constants'
 import { useStore } from 'vuex'
 
 const { EXTERNAL, INTERNAL } = STICKER_ADD_TO

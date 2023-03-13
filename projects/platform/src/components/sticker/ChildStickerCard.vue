@@ -77,7 +77,7 @@ import { ref, computed, watch } from 'vue'
 import ChildStickerTextViewer from '@/components/sticker/stickerTextEditor/ChildStickerTextViewer.vue'
 import StickerTagList from '@/components/sticker/StickerTagList.vue'
 import StickerHeaderIcon from '@/components/sticker/StickerHeaderIcon.vue'
-import { STICKER_ADD_TO } from '@/utils/constants.js'
+import { STICKER_ADD_TO } from '@/utils/constants'
 import { useStore } from 'vuex'
 
 const { EXTERNAL } = STICKER_ADD_TO

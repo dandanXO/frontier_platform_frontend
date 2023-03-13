@@ -18,7 +18,7 @@ f-tooltip(@click.stop="openStickerDrawer")
 <script setup>
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { LOCATION_TYPE } from '@/utils/constants.js'
+import { LOCATION_TYPE } from '@/utils/constants'
 import { computed } from 'vue'
 
 const store = useStore()

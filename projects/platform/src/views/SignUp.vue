@@ -132,7 +132,7 @@ import imgCover from '@/assets/images/cover.png'
 import DropdownLocale from '@/components/common/DropdownLocale.vue'
 import inputValidator from '@/utils/input-validator'
 import { useRoute } from 'vue-router'
-import { SIGNUP_SOURCE } from '@/utils/constants.js'
+import { SIGNUP_SOURCE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
