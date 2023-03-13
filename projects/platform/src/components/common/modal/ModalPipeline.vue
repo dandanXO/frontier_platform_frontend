@@ -245,6 +245,9 @@ export default {
     ModalDigitalThreadSummary: defineAsyncComponent(() =>
       import('@/components/sticker/ModalDigitalThreadSummary.vue')
     ),
+    ModalStickerDetail: defineAsyncComponent(() =>
+      import('@/components/sticker/ModalStickerDetail.vue')
+    ),
   },
   setup() {
     const store = useStore()

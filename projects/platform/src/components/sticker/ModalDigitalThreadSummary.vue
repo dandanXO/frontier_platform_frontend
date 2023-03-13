@@ -23,7 +23,7 @@ modal-behavior(:header="$t('TT0067')")
     div(class="flex-grow flex flex-col gap-y-6")
       //-Digital Thread Name
       div
-        p(class="text-caption text-grey-500 pb-2") {{ $t('TT0056') }}
+        p(class="text-caption text-grey-500 pb-2") {{ $t('TT0066') }}
         div(v-if="!isEditingDigitalThreadName" class="flex items-start")
           p(class="text-body1 font-bold text-grey-900 leading-1.6 break-all") {{ digitalThread.digitalThreadName }}
           f-svg-icon(

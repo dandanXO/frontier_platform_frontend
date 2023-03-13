@@ -58,9 +58,9 @@ div(
               class="text-grey-300"
               :class="{ '!text-grey-600': isHoverSticker && !isHoverIconMore, '!text-primary-400': isHoverIconMore || isExpand }"
             )
-          template(#content)
+          template(#content="{ collapsePopper }")
             f-list
-              f-list-item {{ $t('TT0055') }}
+              f-list-item(@click="collapsePopper(); openModalStickerDetail()") {{ $t('TT0055') }}
     //- Content
     sticker-text-viewer(:content="sticker.content" :addTo="sticker.addTo")
     //- Tag List
@@ -202,4 +202,13 @@ watch(
     }
   }
 )
+
+const openModalStickerDetail = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-sticker-detail',
+    properties: {
+      sticker: props.sticker,
+    },
+  })
+}
 </script>
