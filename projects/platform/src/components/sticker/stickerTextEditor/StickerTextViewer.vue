@@ -11,37 +11,19 @@ import Text from '@tiptap/extension-text' // https://tiptap.dev/api/nodes/text
 import { CustomMention as Mention } from '@/components/sticker/stickerTextEditor/customMention.js'
 import suggestion from '@/components/sticker/stickerTextEditor/suggestion.js'
 // https://tiptap.dev/api/nodes/mention#render-label
-import { STICKER_ADD_TO } from '@/utils/constants.js'
-const { EXTERNAL, INTERNAL } = STICKER_ADD_TO
+import { useStore } from 'vuex'
 
 const props = defineProps({
-  addTo: {
-    type: Number,
-    required: true,
-  },
   content: {
     type: String,
     required: true,
   },
 })
 
-const memberList = computed(() => [
-  {
-    userId: 1,
-    name: 'Yuki',
-  },
-  {
-    userId: 2,
-    name: 'Mia',
-  },
-  {
-    userId: 3,
-    name: 'Walle',
-  },
-])
+const store = useStore()
 
-const suggestionList = computed(() =>
-  props.addTo === INTERNAL ? memberList.value : []
+const suggestionList = computed(
+  () => store.getters['sticker/mentionMemberList']
 )
 
 const editor = useEditor({
@@ -53,7 +35,10 @@ const editor = useEditor({
       HTMLAttributes: {
         class: 'font-bold text-primary-400',
       },
-      suggestion: suggestion(suggestionList),
+      suggestion: suggestion(
+        computed(() => true),
+        suggestionList
+      ),
     }),
   ],
   editorProps: {

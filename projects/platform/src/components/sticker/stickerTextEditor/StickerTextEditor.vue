@@ -14,9 +14,11 @@ import suggestion from '@/components/sticker/stickerTextEditor/suggestion.js'
 // https://tiptap.dev/api/nodes/mention#render-label
 import { STICKER_ADD_TO } from '@/utils/constants.js'
 import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
 const { EXTERNAL, INTERNAL } = STICKER_ADD_TO
 
 const { t } = useI18n()
+const store = useStore()
 
 const props = defineProps({
   addTo: {
@@ -36,24 +38,10 @@ const innerContent = computed({
   set: (v) => emits('update:content', v),
 })
 
-const memberList = computed(() => [
-  {
-    userId: 1,
-    name: 'Yuki',
-  },
-  {
-    userId: 2,
-    name: 'Mia',
-  },
-  {
-    userId: 3,
-    name: 'Walle',
-  },
-])
-
-const suggestionList = computed(() =>
-  props.addTo === INTERNAL ? memberList.value : []
+const suggestionList = computed(
+  () => store.getters['sticker/mentionMemberList']
 )
+const isMentionable = computed(() => props.addTo === INTERNAL)
 
 const editor = useEditor({
   extensions: [
@@ -64,7 +52,7 @@ const editor = useEditor({
       HTMLAttributes: {
         class: 'font-bold text-primary-400',
       },
-      suggestion: suggestion(suggestionList),
+      suggestion: suggestion(isMentionable, suggestionList),
     }),
     Placeholder.configure({
       placeholder: t('TT0014'),
@@ -99,7 +87,7 @@ watch(
           const content = contentList[i]
           if (content.type === 'mention') {
             i++
-            const name = memberList.value.find(
+            const name = suggestionList.value.find(
               (member) => member.userId === content.attrs.userId
             ).name
             newContentList.push({
@@ -136,10 +124,6 @@ const setContent = (content) => {
 const mentionPerson = () => {
   props.addTo === INTERNAL && editor.value.commands.insertContent(' @')
 }
-
-// const setEditable = (editable) => {
-//   editor.value.setEditable(editable)
-// }
 
 defineExpose({
   mentionPerson,

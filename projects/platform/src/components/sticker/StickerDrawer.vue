@@ -433,7 +433,7 @@ watch(
     !isChangingDigitalThread.value &&
       store.dispatch('sticker/getDigitalThread', {
         digitalThreadId: digitalThread.value.digitalThreadId,
-        willGetTagList: false,
+        wllGetAdditionalData: false,
       })
   },
   {

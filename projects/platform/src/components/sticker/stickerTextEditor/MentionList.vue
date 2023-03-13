@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="w-50 py-2 bg-grey-0 drop-shadow-16 rounded")
-  div(v-if="items.length" class="max-h-63 overflow-y-scroll")
+  div(v-if="items.length" class="max-h-63 overflow-y-auto")
     div(
       v-for="(item, index) in items"
       class="h-9 px-4 flex items-center gap-x-2 hover:bg-grey-100 cursor-pointer"
@@ -8,7 +8,7 @@ div(class="w-50 py-2 bg-grey-0 drop-shadow-16 rounded")
       :key="index"
       @click="selectItem(index)"
     )
-      img(class="w-6 h-6 rounded-full" src="https://picsum.photos/100")
+      img(class="w-6 h-6 rounded-full" :src="item.avatar")
       span(class="text-body2 text-grey-900") {{ item.name }}
   div(v-else class="h-9 px-4 flex items-center text-body2 text-grey-400") No Result
 </template>

@@ -1,7 +1,8 @@
 import stickerApi from '@/apis/sticker.js'
 import Material from '@/store/reuseModules/material.js'
-import { OG_TYPE } from '@/utils/constants'
+import { OG_TYPE, ROLE_ID } from '@/utils/constants'
 import isEqual from '@frontier/ui-component/src/isEqual.js'
+import groupApi from '@/apis/group'
 
 const defaultDigitalThreadBase = () => ({
   digitalThreadId: null,
@@ -64,6 +65,7 @@ export default {
     tempDigitalThreadList: [], // 尚未真的新增到後端時，用於前端操作的 digital thread list,
     indexOfDrawerDigitalThread: 0,
     sourceTagList: [], // 該 unit 下曾經添加過哪些 tag
+    mentionMemberList: [], // 可以 mention 的 成員清單
     filter: defaultFilter(),
   }),
   getters: {
@@ -78,6 +80,7 @@ export default {
       getters.tempDigitalThreadList.concat(getters.digitalThreadList),
     indexOfDrawerDigitalThread: (state) => state.indexOfDrawerDigitalThread,
     sourceTagList: (state) => state.sourceTagList,
+    mentionMemberList: (state) => state.mentionMemberList,
     filter: (state) => state.filter,
     isFilterDirty: (state) => {
       return !isEqual(
@@ -145,6 +148,9 @@ export default {
     SET_sourceTagList(state, tagList) {
       state.sourceTagList = tagList
     },
+    SET_mentionMemberList(state, memberList) {
+      state.mentionMemberList = memberList
+    },
     SET_filter(state, filter) {
       state.filter = filter
     },
@@ -185,6 +191,7 @@ export default {
       commit('SET_isStickerDrawerOpen', false)
       commit('RESET_tempDigitalThreadList')
       commit('RESET_filter')
+      commit('SET_currentMaterialId', null)
     },
     async getDigitalThreadList({ commit, rootGetters, getters }) {
       const { data } = await stickerApi.getDigitalThreadList({
@@ -195,7 +202,7 @@ export default {
     },
     async getDigitalThread(
       { commit, rootGetters, getters, dispatch },
-      { digitalThreadId, willGetTagList = true }
+      { digitalThreadId, wllGetAdditionalData = true }
     ) {
       const { data } = await stickerApi.getDigitalThread({
         orgId: rootGetters['organization/orgId'],
@@ -204,7 +211,7 @@ export default {
       })
       commit('SET_digitalThread', data.result.digitalThread)
       // 待 API 調整後，應修改成 digital thread 中的 id & type
-      willGetTagList &&
+      if (wllGetAdditionalData) {
         dispatch('getStickerTagList', {
           addFromOGId: rootGetters['helper/routeLocationId'],
           addFromOGType:
@@ -212,6 +219,14 @@ export default {
               ? OG_TYPE.ORG
               : OG_TYPE.GROUP,
         })
+        dispatch('getMentionMemberList', {
+          ogId: rootGetters['helper/routeLocationId'],
+          ogType:
+            rootGetters['helper/routeLocation'] === 'org'
+              ? OG_TYPE.ORG
+              : OG_TYPE.GROUP,
+        })
+      }
     },
     async getDigitalThreadMaterial({ commit, rootGetters, getters }) {
       const { data } = await stickerApi.getDigitalThreadMaterial({
@@ -280,6 +295,35 @@ export default {
     async getStickerTagList({ commit }, params) {
       const { data } = await stickerApi.getStickerTagList(params)
       commit('SET_sourceTagList', data.result.tagList)
+    },
+    async getMentionMemberList({ commit, rootGetters }, { ogId, ogType }) {
+      const memberList = []
+      let originalMemberList
+
+      if (ogType === OG_TYPE.ORG) {
+        originalMemberList = rootGetters['organization/memberList']
+      } else {
+        const { data } = await groupApi.getGroup(ogId)
+        originalMemberList = rootGetters['organization/memberList']
+          .filter(
+            (member) =>
+              member.orgRoleId === ROLE_ID.OWNER ||
+              member.orgRoleId === ROLE_ID.ADMIN
+          )
+          .concat(data.result.group.memberList)
+      }
+
+      for (const member of originalMemberList) {
+        const { userId, displayName, avatar, isPending } = member
+        !isPending &&
+          memberList.push({
+            userId,
+            name: displayName,
+            avatar,
+          })
+      }
+
+      commit('SET_mentionMemberList', memberList)
     },
     /**
      *

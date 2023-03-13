@@ -223,13 +223,20 @@ const createStickerOrDigitalThread = async () => {
 
 const refStickerTextEditor = ref(null)
 const refStickerTagInput = ref(null)
-watch(
-  () => addFrom.value,
-  () => {
-    store.dispatch('sticker/getStickerTagList', addFrom.value)
-  },
-  {
-    immediate: true,
-  }
-)
+
+if (props.isCreatingDigitalThread) {
+  watch(
+    () => addFrom.value,
+    () => {
+      store.dispatch('sticker/getStickerTagList', addFrom.value)
+      store.dispatch('sticker/getMentionMemberList', {
+        ogId: addFrom.value.addFromOGId,
+        ogType: addFrom.value.addFromOGType,
+      })
+    },
+    {
+      immediate: true,
+    }
+  )
+}
 </script>

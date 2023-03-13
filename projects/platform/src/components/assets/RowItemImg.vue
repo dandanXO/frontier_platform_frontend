@@ -27,16 +27,25 @@ div(class="w-full min-w-42.5 max-w-67.5")
         iconColor="text-grey-0"
         uncheckColor="text-grey-0"
       )
-  div(class="h-6.5 text-grey-900 text-body1 line-clamp-1 mt-2.5") {{ material.description }}
+  div(class="h-6.5 text-grey-900 text-body1 line-clamp-1 my-2.5") {{ material.description }}
+  digital-thread-entrance(
+    :isHover="isHover"
+    :material="material"
+    :stickerAddFromLocationList="[`${material.materialId}`]"
+  )
 </template>
 
 <script>
 import { ref, computed } from 'vue'
 import useMaterial from '@/composables/useMaterial'
 import useNavigation from '@/composables/useNavigation'
+import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 
 export default {
   name: 'RowItemImg',
+  components: {
+    DigitalThreadEntrance,
+  },
   props: {
     material: {
       type: Object,

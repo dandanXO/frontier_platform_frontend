@@ -3,10 +3,10 @@ f-tooltip(@click.stop="openStickerDrawer")
   template(#trigger)
     div(
       class="relative cursor-pointer w-12 h-7.5 rounded border border-grey-150 hover:bg-grey-100 text-grey-600 flex items-center justify-center gap-x-2"
-      :class="[isHover ? 'bg-grey-0' : 'bg-grey-0/80']"
+      :class="[isHover ? 'bg-grey-0' : 'bg-grey-0/80', { '!bg-primary-0 !text-primary-400': currentMaterialId === materialId }]"
     )
       f-svg-icon(iconName="sticker_thread" size="20")
-      span(class="text-caption") {{ digitalThreadQty }}
+      span(class="text-caption font-bold") {{ digitalThreadQty }}
       div(
         v-if="digitalThreadHasUnread"
         class="w-2 h-2 rounded-full bg-primary-400 absolute -top-0.5 -right-0.5"
@@ -19,6 +19,7 @@ f-tooltip(@click.stop="openStickerDrawer")
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { LOCATION_TYPE } from '@/utils/constants.js'
+import { computed } from 'vue'
 
 const store = useStore()
 const route = useRoute()
@@ -39,6 +40,10 @@ const props = defineProps({
 })
 
 const { digitalThreadQty, digitalThreadHasUnread, materialId } = props.material
+
+const currentMaterialId = computed(
+  () => store.getters['sticker/currentMaterialId']
+)
 
 const openStickerDrawer = () => {
   const routePath = route.path

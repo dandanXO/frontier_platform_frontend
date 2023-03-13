@@ -69,7 +69,7 @@ div(
             f-list
               f-list-item(@click="collapsePopper(); openModalStickerDetail()") {{ $t('TT0055') }}
     //- Content
-    sticker-text-viewer(:content="sticker.content" :addTo="sticker.addTo")
+    sticker-text-viewer(:content="sticker.content")
     //- Tag List
     sticker-tag-list(
       ref="refStickerTagList"

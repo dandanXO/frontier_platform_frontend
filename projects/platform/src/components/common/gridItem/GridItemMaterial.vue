@@ -5,7 +5,7 @@ grid-item-wrapper(
   :isSelectable="isSelectable"
   :optionList="optionList"
   @click:option="$emit('click:option', $event)"
-  :cornerTopRightHover="material.digitalThreadQty === 0"
+  :cornerTopRightHover="material.digitalThreadQty === 0 && currentMaterialId !== material.materialId"
 )
   template(#title) {{ material.materialNo }}
   template(#content)
@@ -48,6 +48,7 @@ import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
 import { computed } from 'vue'
 import useMaterial from '@/composables/useMaterial'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
+import { useStore } from 'vuex'
 
 const props = defineProps({
   material: {
@@ -80,6 +81,12 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:selectedValue', 'click:option'])
+
+const store = useStore()
+
+const currentMaterialId = computed(
+  () => store.getters['sticker/currentMaterialId']
+)
 
 const { hasNoCoverImage, materialInfo } = useMaterial(props.material)
 
