@@ -403,7 +403,7 @@ export default {
     },
     updateDigitalThreadName(
       { rootGetters, getters, commit },
-      { isCreatingDigitalThread, digitalThreadName }
+      { isCreatingDigitalThread = false, digitalThreadName }
     ) {
       commit('UPDATE_digitalThread_digitalThreadName', digitalThreadName)
       !isCreatingDigitalThread &&

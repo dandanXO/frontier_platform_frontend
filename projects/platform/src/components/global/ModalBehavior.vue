@@ -13,7 +13,7 @@ div(
         class="cursor-pointer text-grey-600"
         @click="closeModalBehavior"
       )
-    f-scrollbar-container(class="px-5 pt-5 pb-10 w-fit max-h-103 box-content")
+    f-scrollbar-container(class="px-5 pt-5 pb-10 w-fit max-h-103 box-content relative")
       slot(name="default")
     div(class="px-5 h-13.5 border-t border-grey-100 flex items-end")
       div(class="w-full flex justify-between")

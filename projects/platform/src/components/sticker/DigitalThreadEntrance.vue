@@ -18,6 +18,7 @@ f-tooltip(@click.stop="openStickerDrawer")
 <script setup>
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
+import { LOCATION_TYPE } from '@/utils/constants.js'
 
 const store = useStore()
 const route = useRoute()
@@ -44,17 +45,17 @@ const openStickerDrawer = () => {
   let addFromLocationType
 
   if (routePath.includes('public-library')) {
-    addFromLocationType = 1
+    addFromLocationType = LOCATION_TYPE.PUBLIC
   } else if (routePath.includes('assets')) {
-    addFromLocationType = 2
+    addFromLocationType = LOCATION_TYPE.ASSETS
   } else if (routePath.includes('workspace')) {
-    addFromLocationType = 3
+    addFromLocationType = LOCATION_TYPE.WORKSPACE
   } else if (routePath.includes('moodboard')) {
-    addFromLocationType = 4
+    addFromLocationType = LOCATION_TYPE.MOODBOARD
   } else if (routePath.includes('share-to-me')) {
-    addFromLocationType = 5
+    addFromLocationType = LOCATION_TYPE.SHARE_TO_ME
   } else if (routePath.includes('received-share')) {
-    addFromLocationType = 6
+    addFromLocationType = LOCATION_TYPE.RECEIVED_SHARE
   }
 
   store.dispatch('sticker/openStickerDrawer', {

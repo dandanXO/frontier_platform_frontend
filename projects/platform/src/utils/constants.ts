@@ -292,6 +292,15 @@ export const STICKER_ADD_TO = {
   INTERNAL: 2,
 }
 
+export const LOCATION_TYPE = {
+  PUBLIC: 1,
+  ASSETS: 2,
+  WORKSPACE: 3,
+  MOODBOARD: 4,
+  SHARE_TO_ME: 5,
+  RECEIVED_SHARE: 6,
+}
+
 export const useConstants = () => {
   const MADE2FLOW_TAG_LIST = computed(() => ({
     INTRODUCTION: { id: 1, text: i18n.global.t('VV0022') },

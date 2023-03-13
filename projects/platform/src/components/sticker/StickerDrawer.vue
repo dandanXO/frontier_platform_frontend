@@ -79,12 +79,15 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
     )
       //- Material Info
       div(class="flex items-center gap-x-4")
-        div(class="w-13 h-13 rounded overflow-hidden")
-          img(v-defaultImg class="w-full h-full" :src="material.coverImg")
+        img(
+          v-defaultImg
+          class="w-13 h-13 rounded overflow-hidden"
+          :src="material.coverImg"
+        )
         div(class="flex-grow h-11")
           p(class="pb-2 text-body2 font-bold text-grey-800") {{ `#${material.materialNo}` }}
           div(class="flex items-center gap-x-2")
-            img(class="w-5 h-5 rounded-full" :src="material.unitLogo")
+            f-avatar(:imageUrl="material.unitLogo" type="org" size="xs")
             p(class="text-caption text-grey-800") {{ material.unitName }}
       //- Filter
       div(class="pt-2.5 flex items-center gap-x-2")
@@ -353,7 +356,9 @@ onMounted(async () => {
 })
 
 const openModalDigitalThreadSummary = () => {
-  console.log('openModalDigitalThreadSummary')
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-digital-thread-summary',
+  })
 }
 
 const isExpandDigitalThreadList = ref(false)

@@ -242,6 +242,9 @@ export default {
     ModalModelEditor: defineAsyncComponent(() =>
       import('@frontier/3d-viewer/src/components/ModelEditor.vue')
     ),
+    ModalDigitalThreadSummary: defineAsyncComponent(() =>
+      import('@/components/sticker/ModalDigitalThreadSummary.vue')
+    ),
   },
   setup() {
     const store = useStore()
