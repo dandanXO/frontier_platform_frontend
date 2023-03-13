@@ -90,13 +90,13 @@ const showTooltip = () => {
   }
 
   timer.value = setTimeout(async () => {
-    isActive.value = true
-
-    await nextTick()
-
     if (props.disabledTooltip) {
       return
     }
+
+    isActive.value = true
+
+    await nextTick()
 
     const children = refTooltip.value?.children
     // due to some reason, instance is not exist

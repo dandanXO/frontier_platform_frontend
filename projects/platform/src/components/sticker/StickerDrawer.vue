@@ -82,14 +82,27 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
         img(
           v-defaultImg
           class="flex-shrink-0 w-13 h-13 rounded overflow-hidden"
+          :class="{ 'cursor-pointer': !digitalThread.hasMaterialDeleted || !digitalThread.hasMaterialNoAccess }"
           :src="material.coverImg"
+          @click="goToMaterialDetail(false)"
         )
         div(class="flex-grow h-11")
           p(
-            class="pb-2 flex items-center text-body2"
+            class="group pb-2 flex items-center text-body2"
             :class="[digitalThread.hasMaterialDeleted || digitalThread.hasMaterialNoAccess ? 'text-grey-200' : 'text-grey-800']"
+            @click="goToMaterialDetail(false)"
           )
-            span(class="font-bold line-clamp-1") {{ `#${material.materialNo}` }}
+            span(
+              class="font-bold line-clamp-1"
+              :class="{ 'hover:text-primary-400 hover:underline hover:cursor-pointer': !digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess }"
+            ) {{ `#${material.materialNo}` }}
+            f-svg-icon(
+              v-if="!digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess"
+              iconName="open_in_new"
+              size="14"
+              class="ml-1 invisible group-hover:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
+              @click.stop="goToMaterialDetail(true)"
+            )
             span(class="leading-1.4 pl-0.5" v-if="digitalThread.hasMaterialDeleted") ({{ $t('RR0063') }})
             span(
               class="leading-1.4 pl-0.5"
@@ -229,7 +242,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
                           @click="toggleTagList(tag.text)"
                         ) {{ tag.text }}
                       p(
-                        v-if="!inputSearchTagList && !isShowMore"
+                        v-if="sourceTagList.length >= 10 && !isShowMore"
                         class="text-cyan-400 text-caption pt-2"
                         @click="isShowMore = true"
                       ) {{ $t('TT0054') }}
@@ -316,12 +329,16 @@ import { useStore } from 'vuex'
 import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import StickerCreate from '@/components/sticker/StickerCreate.vue'
-import { STICKER_ADD_TO } from '@/utils/constants'
+import { STICKER_ADD_TO, OG_TYPE } from '@/utils/constants'
 import StickerCard from '@/components/sticker/StickerCard.vue'
 import DigitalThreadCard from '@/components/sticker/DigitalThreadCard.vue'
+import useNavigation from '@/composables/useNavigation'
+import { useRouter } from 'vue-router'
 
 const store = useStore()
 const { t } = useI18n()
+const router = useRouter()
+const { parsePath } = useNavigation()
 
 const material = computed(() => store.getters['sticker/material'])
 const digitalThread = computed(() => store.getters['sticker/digitalThread'])
@@ -430,7 +447,8 @@ watch(
   () => filter.value,
   () => {
     store.commit('sticker/SET_filter', filter.value)
-    !isChangingDigitalThread.value &&
+    !isCreatingDigitalThread.value &&
+      !isChangingDigitalThread.value &&
       store.dispatch('sticker/getDigitalThread', {
         digitalThreadSideId: digitalThread.value.digitalThreadSideId,
         wllGetAdditionalData: false,
@@ -478,12 +496,8 @@ const displayTagList = computed(() => {
     }
     amountOfSelect++
   }
-  let indexOfSlice = 10
-  if (amountOfSelect > 10) {
-    indexOfSlice = amountOfSelect
-  }
 
-  return tagList.slice(0, indexOfSlice)
+  return tagList.slice(0, Math.max(10, amountOfSelect))
 })
 const toggleTagList = (selectTag) => {
   const index = filter.value.tagList.findIndex((tag) => tag === selectTag)
@@ -502,13 +516,13 @@ const readDigitalThread = (e) => {
       accessToken: localStorage.getItem('accessToken'),
     }
     const headers = {
-      type: 'application/json',
+      Authorization:
+        'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjQ2IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibWlhLnlhbmdAZnJvbnRpZXIuY29vbCIsIklwQWRkcmVzcyI6IjgyLjQ2LjExNS4xODEiLCJleHAiOjE2NzUxODgyMjksImlzcyI6Imh0dHBzOi8vdGV4dGlsZS13ZWJhcGkuZnJvbnRpZXIuY29vbCIsImF1ZCI6Imh0dHBzOi8vdGV4dGlsZS13ZWJhcGkuZnJvbnRpZXIuY29vbCJ9.C3Abr8VeTOV3Hj72lekqhjjjnlcgRg9zqz6iW2kF09c',
+      Type: 'application/json',
     }
     const blob = new Blob([JSON.stringify(body)], headers)
     navigator.sendBeacon(
-      `${
-        import.meta.env.VITE_APP_API_ENDPOINT
-      }/digital-thread/read-new-add-and-update`,
+      `https://textile-webapi-dev.frontier.cool/v2.1.0/digital-thread/read-new-add-and-update`,
       blob
     )
   }
@@ -548,5 +562,37 @@ const closeStickerDrawer = () => {
     },
     secondaryBtnText: t('UU0002'),
   })
+}
+
+const goToMaterialDetail = (openNewPage = false) => {
+  if (
+    digitalThread.value.hasMaterialDeleted ||
+    digitalThread.value.hasMaterialNoAccess
+  ) {
+    return
+  }
+
+  if (!digitalThread.value.isMaterialOwnerSide) {
+    return store.dispatch('helper/openModalBehavior', {
+      component: 'modal-sticker-material-detail',
+      properties: {
+        material: material.value,
+      },
+    })
+  }
+
+  const { sourceAssetLocation, materialId } = material.value
+  let unParsedPath
+  if (sourceAssetLocation === OG_TYPE.ORG) {
+    unParsedPath = `/:orgNo/assets/${materialId}`
+  } else {
+    unParsedPath = `/:orgNo/:groupId/assets/${materialId}`
+  }
+
+  if (openNewPage) {
+    window.open(parsePath(unParsedPath), '_blank')
+  } else {
+    router.push(parsePath(unParsedPath))
+  }
 }
 </script>

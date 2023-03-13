@@ -32,6 +32,9 @@ const defaultDigitalThreadBase = () => ({
   tagList: [],
   participantList: [], // { userId: number, name: string, avatar: string }
   unreadStickerQty: 0,
+  sideOGType: 0, // 檢視該DigitalThread的使用者的side的ogType
+  sideOGId: 0, // 檢視該DigitalThread的使用者的side的ogType
+  isMaterialOwnerSide: false, //檢視該DigitalThread的使用者是否為布片擁有者組織的成員
 })
 
 const defaultFilter = () => ({
