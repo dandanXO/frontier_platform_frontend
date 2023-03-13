@@ -14,7 +14,7 @@ div(
     @click="isExpandChildStickerList = !isExpandChildStickerList"
   )
     //- Header
-    div(class="flex items-center justify-between")
+    div(class="flex items-center justify-between pb-5")
       sticker-label-add-to(:addTo="sticker.addTo")
       div(class="flex items-center gap-x-4")
         div(
@@ -30,13 +30,16 @@ div(
           ) {{ childStickerList.length }}
         div(
           class="group flex items-center gap-x-1 cursor-pointer text-grey-300"
-          :class="{ '!text-grey-600': isHoverSticker && !isHoverIconTag, '!text-primary-400': isHoverIconTag }"
+          :class="{ '!text-grey-600': isHoverSticker && !isHoverIconTag && !isShowTagList, '!text-primary-400': isHoverIconTag || isShowTagList }"
           @mouseenter="isHoverIconTag = true"
           @mouseleave="isHoverIconTag = false"
-          @click.stop
+          @click.stop="isShowTagList = !isShowTagList"
         )
           f-svg-icon(iconName="tag" size="20" :tooltip="$t('TT0096')")
-          span(v-if="isHoverSticker || sticker.tagList.length > 0" class="text-body2") {{ sticker.tagList.length }}
+          span(
+            v-if="isHoverSticker || sticker.tagList.length > 0 || isShowTagList"
+            class="text-body2"
+          ) {{ sticker.tagList.length }}
         div(
           class="group flex items-center gap-x-1 cursor-pointer text-grey-300"
           :class="{ '!text-grey-600': isHoverSticker && !isHoverIconStar, '!text-primary-400': isHoverIconStar }"
@@ -64,9 +67,20 @@ div(
               f-list
                 f-list-item {{ $t('TT0055') }}
     //- Content
-    div(class="py-5")
-      sticker-text-viewer(:content="sticker.content" :addTo="sticker.addTo")
-    div(class="flex items-center gap-x-2" @click.stop)
+    sticker-text-viewer(:content="sticker.content" :addTo="sticker.addTo")
+    //- Tag List
+    sticker-tag-list(
+      ref="refStickerTagList"
+      v-if="(sticker.tagList.length !== 0 && isHoverIconTag) || isShowTagList"
+      :stickerId="sticker.stickerId"
+      :stickerTagList="sticker.tagList"
+    )
+    //- Footer
+    div(
+      v-if="!refStickerTagList?.isEditingTagList"
+      class="flex items-center gap-x-2 pt-5"
+      @click.stop
+    )
       f-avatar(
         :imageUrl="avatar"
         :type="sticker.addTo === EXTERNAL ? 'org' : 'user'"
@@ -75,8 +89,9 @@ div(
       )
       p(class="text-caption text-grey-900 font-bold leading-1.6") {{ creator }}
         span(class="text-caption text-grey-300 font-normal") ・{{ $dayjs.unix(sticker.createDate).format('MMM DD, YYYY [at] hh:mm A') }}
+    //- Button - Add child sticker
     f-button(
-      v-if="isHoverSticker && !isExpandChildStickerList"
+      v-if="!refStickerTagList?.isEditingTagList && isHoverSticker && !isExpandChildStickerList"
       type="secondary"
       size="sm"
       prependIcon="add"
@@ -85,22 +100,23 @@ div(
     ) {{ $t('TT0092') }}
   //- Child Sticker List
   div(v-if="isExpandChildStickerList" class="bg-grey-50 py-4 pl-12 pr-5")
+    //- Empty state
     div(
       v-if="childStickerList.length === 0 && !isCreatingChildSticker"
       class="flex items-center gap-x-1"
     )
       f-svg-icon(iconName="sticker" size="16" class="text-grey-400")
       p(class="text-caption text-grey-400") {{ $t('TT0103') }}
-    div
-      template(v-for="(childSticker, index) in childStickerList")
-        child-sticker-card(:childSticker="childSticker")
-        hr(v-if="index !== childStickerList.length - 1" class="text-grey-150 my-3.5")
+    template(v-for="(childSticker, index) in childStickerList")
+      child-sticker-card(:childSticker="childSticker")
+      hr(v-if="index !== childStickerList.length - 1" class="text-grey-150 my-3.5")
     child-sticker-text-editor(
       v-if="isCreatingChildSticker"
       :stickerId="sticker.stickerId"
       :class="{ 'pt-3': childStickerList.length !== 0 }"
       @close="isCreatingChildSticker = false"
     )
+    //- Button - Add child sticker
     div(
       v-if="isHoverSticker && isExpandChildStickerList && !isCreatingChildSticker"
       class="-ml-8 pt-2"
@@ -113,6 +129,7 @@ div(
 import { ref, computed } from 'vue'
 import StickerLabelAddTo from '@/components/sticker/StickerLabelAddTo.vue'
 import StickerTextViewer from '@/components/sticker/stickerTextEditor/StickerTextViewer.vue'
+import StickerTagList from '@/components/sticker/StickerTagList.vue'
 import ChildStickerTextEditor from '@/components/sticker/stickerTextEditor/ChildStickerTextEditor.vue'
 import ChildStickerCard from '@/components/sticker/ChildStickerCard.vue'
 import { STICKER_ADD_TO } from '@/utils/constants.js'
@@ -146,4 +163,7 @@ const isHoverIconMore = ref(false)
 const isExpandChildStickerList = ref(false)
 const isCreatingChildSticker = ref(false)
 const childStickerList = props.sticker.childStickerList
+
+const isShowTagList = ref(false)
+const refStickerTagList = ref(null)
 </script>

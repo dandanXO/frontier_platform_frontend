@@ -490,11 +490,7 @@ const removeChip = (index) => {
 }
 
 const refPopper = ref(null)
-const focus = () => {
-  refPopper.value.expandPopper()
-}
-
 defineExpose({
-  focus,
+  focus: () => refPopper.value.expandPopper(),
 })
 </script>

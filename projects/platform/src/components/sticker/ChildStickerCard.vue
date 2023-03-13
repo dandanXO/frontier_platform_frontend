@@ -3,7 +3,8 @@ div(
   @mouseenter="isHoverChildSticker = true"
   @mouseleave="isHoverChildSticker = false"
 )
-  div(class="flex items-center justify-between")
+  //- Header
+  div(class="flex items-center justify-between pb-2")
     div(
       class="flex items-center gap-x-1 text-grey-300"
       :class="{ '!text-grey-600': isHoverChildSticker }"
@@ -13,10 +14,10 @@ div(
     div(class="flex items-center gap-x-4")
       div(
         class="group flex items-center gap-x-1 cursor-pointer text-grey-300"
-        :class="{ '!text-grey-600': isHoverChildSticker && !isHoverIconTag, '!text-primary-400': isHoverIconTag }"
+        :class="{ '!text-grey-600': isHoverChildSticker && !isHoverIconTag && !isShowTagList, '!text-primary-400': isHoverIconTag || isShowTagList }"
         @mouseenter="isHoverIconTag = true"
         @mouseleave="isHoverIconTag = false"
-        @click.stop
+        @click.stop="isShowTagList = !isShowTagList"
       )
         f-svg-icon(iconName="tag" size="20" :tooltip="$t('TT0096')")
         span(
@@ -49,9 +50,21 @@ div(
           template(#content)
             f-list
               f-list-item {{ $t('TT0055') }}
-  div(class="pt-2 pb-4")
-    child-sticker-text-viewer(:content="childSticker.content")
-  div(class="flex items-center gap-x-2" @click.stop)
+  //- Content
+  child-sticker-text-viewer(:content="childSticker.content")
+  //- Tag List
+  sticker-tag-list(
+    ref="refStickerTagList"
+    v-if="(childSticker.tagList.length !== 0 && isHoverIconTag) || isShowTagList"
+    :stickerId="childSticker.stickerId"
+    :stickerTagList="childSticker.tagList"
+  )
+  //- Footer
+  div(
+    v-if="!refStickerTagList?.isEditingTagList"
+    class="flex items-center gap-x-2 pt-4"
+    @click.stop
+  )
     f-avatar(
       :imageUrl="avatar"
       :type="childSticker.addTo === EXTERNAL ? 'org' : 'user'"
@@ -64,6 +77,7 @@ div(
 <script setup>
 import { ref, computed } from 'vue'
 import ChildStickerTextViewer from '@/components/sticker/stickerTextEditor/ChildStickerTextViewer.vue'
+import StickerTagList from '@/components/sticker/StickerTagList.vue'
 import { STICKER_ADD_TO } from '@/utils/constants.js'
 
 const { EXTERNAL } = STICKER_ADD_TO
@@ -90,4 +104,7 @@ const isHoverChildSticker = ref(false)
 const isHoverIconTag = ref(false)
 const isHoverIconStar = ref(false)
 const isHoverIconMore = ref(false)
+
+const isShowTagList = ref(false)
+const refStickerTagList = ref(null)
 </script>

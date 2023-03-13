@@ -154,30 +154,31 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
   template(v-if="isExpandDigitalThreadList")
     div(class="absolute z-0 top-0 right-0 w-screen h-screen bg-grey-900/30")
     div(
-      class="absolute z-0 top-0 right-full w-118.5 h-screen bg-grey-0 border border-grey-150 drop-shadow-8"
+      class="absolute z-0 top-0 right-full w-118.5 h-screen bg-grey-0 border border-grey-150 drop-shadow-8 flex flex-col"
     )
       div(class="w-full h-17.5 px-4.5 border-b border-grey-150 flex items-center gap-x-2")
         f-svg-icon(iconName="sticker_thread" size="20" class="text-grey-900")
         p(class="text-body1 font-bold text-grey-900") {{ $t('TT0076') }}
         p(class="text-body1 font-bold text-grey-800") {{ `#${material.materialNo}` }}
-      div(
-        class="mt-3 mx-5 mb-2.5 h-13 bg-grey-0 border border-grey-150 rounded-md flex items-center justify-center gap-x-2 cursor-pointer"
-        @click="startToCreateDigitalThread"
-      )
-        f-svg-icon(iconName="add" size="16" class="text-grey-900")
-        p(class="text-body2 font-bold text-grey-900") {{ $t('TT0103') }}
-      digital-thread-card(
-        v-for="(digitalThread, index) in digitalThreadList"
-        :key="`${index}-${digitalThread.digitalThreadId}`"
-        :digitalThread="digitalThread"
-        :class="{ 'bg-grey-100': index === indexOfOpenedDigitalThread }"
-        @click="openDigitalThread(digitalThread, index)"
-      )
+      f-scrollbar-container(class="flex-grow")
+        div(
+          class="mt-3 mx-5 mb-2.5 h-13 bg-grey-0 border border-grey-150 rounded-md flex items-center justify-center gap-x-2 cursor-pointer"
+          @click="startToCreateDigitalThread"
+        )
+          f-svg-icon(iconName="add" size="16" class="text-grey-900")
+          p(class="text-body2 font-bold text-grey-900") {{ $t('TT0103') }}
+        digital-thread-card(
+          v-for="(digitalThread, index) in digitalThreadList"
+          :key="`${index}-${digitalThread.digitalThreadId}`"
+          :digitalThread="digitalThread"
+          :class="{ 'bg-grey-100': index === indexOfDrawerDigitalThread }"
+          @click="openDigitalThread(digitalThread, index)"
+        )
 </template>
 
 <script setup>
 import { useStore } from 'vuex'
-import { computed, ref, onMounted, watch } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import StickerCreate from '@/components/sticker/StickerCreate.vue'
 import { STICKER_ADD_TO } from '@/utils/constants.js'
@@ -202,24 +203,11 @@ const openDigitalThreadNameEditor = () => {
 }
 const saveDigitalThreadName = () => {
   isEditingDigitalThreadName.value = false
-  digitalThread.value.digitalThreadName = tempDigitalThreadName.value
-
-  if (!isCreatingDigitalThread.value) {
-    store.dispatch(
-      'sticker/updateDigitalThreadName',
-      tempDigitalThreadName.value
-    )
-  }
+  store.dispatch('sticker/updateDigitalThreadName', {
+    isCreatingDigitalThread: isCreatingDigitalThread.value,
+    digitalThreadName: tempDigitalThreadName.value,
+  })
 }
-watch(
-  () => digitalThread.value,
-  () => {
-    store.commit('sticker/UPDATE_digitalThread', digitalThread.value)
-  },
-  {
-    deep: true,
-  }
-)
 
 const filterAddTo = ref(STICKER_ADD_TO.ALL)
 const isStarred = ref(false)
@@ -257,7 +245,9 @@ const openModalDigitalThreadSummary = () => {
 }
 
 const isExpandDigitalThreadList = ref(false)
-const indexOfOpenedDigitalThread = ref(0)
+const indexOfDrawerDigitalThread = computed(
+  () => store.getters['sticker/indexOfDrawerDigitalThread']
+)
 const digitalThreadList = computed(() =>
   store.getters['sticker/tempDigitalThreadList'].concat(
     store.getters['sticker/digitalThreadList']
@@ -267,12 +257,15 @@ const digitalThreadList = computed(() =>
 const startToCreateDigitalThread = () => {
   isAddingSticker.value = false
   store.dispatch('sticker/startToCreateDigitalThread')
-  indexOfOpenedDigitalThread.value = 0
 }
 
 const openDigitalThread = (digitalThread, index) => {
+  if (indexOfDrawerDigitalThread.value === index) {
+    return
+  }
+
   isAddingSticker.value = false
-  indexOfOpenedDigitalThread.value = index
+  store.commit('sticker/SET_indexOfDrawerDigitalThread', index)
   const digitalThreadId = digitalThread.digitalThreadId
   if (digitalThreadId === null) {
     store.commit('sticker/SET_digitalThread', digitalThread)

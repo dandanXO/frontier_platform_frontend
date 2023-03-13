@@ -81,6 +81,18 @@ export default {
    * @param {object} data
    * @param {number} data.orgId
    * @param {number} data.digitalThreadId
+   * @param {string} data.digitalThreadName
+   */
+  updateDigitalThreadName: (data) =>
+    axios('/digital-thread/update/digital-thread-name', {
+      method: 'POST',
+      data,
+    }),
+  /**
+   *
+   * @param {object} data
+   * @param {number} data.orgId
+   * @param {number} data.digitalThreadId
    * @param {number} data.addTo
    * @param {number} data.type
    * @param {string} data.content
@@ -95,11 +107,11 @@ export default {
    *
    * @param {object} data
    * @param {number} data.orgId
-   * @param {number} data.digitalThreadId
-   * @param {string} data.digitalThreadName
+   * @param {number} data.stickerId
+   * @param {string} data.content
    */
-  updateDigitalThreadName: (data) =>
-    axios('/digital-thread/update/digital-thread-name', {
+  createChildSticker: (data) =>
+    axios('/digital-thread/sticker/child-sticker/create', {
       method: 'POST',
       data,
     }),
@@ -108,10 +120,10 @@ export default {
    * @param {object} data
    * @param {number} data.orgId
    * @param {number} data.stickerId
-   * @param {string} data.content
+   * @param {string[]} data.tagList
    */
-  createChildSticker: (data) =>
-    axios('/digital-thread/sticker/child-sticker/create', {
+  updateStickerTagList: (data) =>
+    axios('/digital-thread/sticker/update/tag', {
       method: 'POST',
       data,
     }),

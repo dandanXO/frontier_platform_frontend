@@ -72,15 +72,9 @@ div(class="relative w-full rounded-md drop-shadow-8 overflow-hidden")
         v-model:content="content"
         :addTo="addTo"
       )
-    f-input-chips(
-      v-if="tagList.length !== 0 || isEditingTag"
-      ref="refTagList"
-      v-model:selectValue="tagList"
-      multiple
-      size="md"
-      :dropdownMenuTree="menuTagList"
-      @addNew="addNewTag"
-      @collapse="isEditingTag = false"
+    sticker-tag-input(
+      ref="refStickerTagInput"
+      v-model:inputTagList="tagList"
       class="mb-2"
     )
     div(class="flex items-center h-9.5")
@@ -102,9 +96,14 @@ div(class="relative w-full rounded-md drop-shadow-8 overflow-hidden")
         f-svg-icon(iconName="mention" size="16")
       div(
         class="flex-shrink-0 w-7 h-7 bg-grey-0 border border-grey-150 flex items-center justify-center rounded mr-4 cursor-pointer"
-        @click="showTagList"
+        @click="refStickerTagInput.focus"
       )
-        f-svg-icon(iconName="tag" size="16" class="text-grey-900")
+        f-svg-icon(
+          iconName="tag"
+          size="16"
+          class="text-grey-900"
+          :tooltip="$t('TT0053')"
+        )
       f-button(
         size="sm"
         :disabled="content.length === 0"
@@ -113,9 +112,10 @@ div(class="relative w-full rounded-md drop-shadow-8 overflow-hidden")
 </template>
 
 <script setup>
-import { ref, computed, nextTick, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { STICKER_ADD_TO, OG_TYPE } from '@/utils/constants.js'
 import StickerLabelAddTo from '@/components/sticker/StickerLabelAddTo.vue'
+import StickerTagInput from '@/components/sticker/StickerTagInput.vue'
 import StickerTextEditor from '@/components/sticker/stickerTextEditor/StickerTextEditor.vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
@@ -222,39 +222,14 @@ const createStickerOrDigitalThread = async () => {
 }
 
 const refStickerTextEditor = ref(null)
-
-const isEditingTag = ref(false)
-const refTagList = ref(null)
-const newAddTagList = ref([]) // 前端暫時新增的
-const existedTagList = ref([]) // 原本就有的
-const menuTagList = computed(() => ({
-  blockList: [
-    {
-      menuList: newAddTagList.value.concat(existedTagList.value).map((tag) => ({
-        title: tag,
-        selectValue: tag,
-      })),
-    },
-  ],
-}))
+const refStickerTagInput = ref(null)
 watch(
   () => addFrom.value,
-  async () => {
-    existedTagList.value = await store.dispatch(
-      'sticker/getStickerTagList',
-      addFrom.value
-    )
+  () => {
+    store.dispatch('sticker/getStickerTagList', addFrom.value)
   },
   {
     immediate: true,
   }
 )
-const addNewTag = (tag) => {
-  newAddTagList.value.push(tag)
-}
-const showTagList = async () => {
-  isEditingTag.value = true
-  await nextTick()
-  refTagList.value.focus()
-}
 </script>

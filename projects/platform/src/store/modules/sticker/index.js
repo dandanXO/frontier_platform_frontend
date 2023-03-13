@@ -1,5 +1,6 @@
 import stickerApi from '@/apis/sticker.js'
 import Material from '@/store/reuseModules/material.js'
+import { OG_TYPE } from '@/utils/constants'
 
 const defaultDigitalThreadBase = () => ({
   digitalThreadId: null,
@@ -38,15 +39,17 @@ export default {
   },
   state: () => ({
     isStickerDrawerOpen: false,
-    currentMaterialId: null,
-    addFromLocationType: null,
-    addFromLocationList: null,
+    currentMaterialId: null, //  drawer 顯示的 materialId
+    addFromLocationType: null, // drawer 是從哪一個位置的 material 開啟的
+    addFromLocationList: null, // drawer 是從哪一個路徑的 material 開啟的
     digitalThread: {
       ...defaultDigitalThreadBase(),
       stickerList: [],
     },
     digitalThreadList: [],
     tempDigitalThreadList: [], // 尚未真的新增到後端時，用於前端操作的 digital thread list,
+    indexOfDrawerDigitalThread: 0,
+    sourceTagList: [], // 該 unit 下曾經添加過哪些 tag
   }),
   getters: {
     currentMaterialId: (state) => state.currentMaterialId,
@@ -56,6 +59,10 @@ export default {
     digitalThread: (state) => state.digitalThread,
     digitalThreadList: (state) => state.digitalThreadList,
     tempDigitalThreadList: (state) => state.tempDigitalThreadList,
+    drawerDigitalThreadList: (state, getters) =>
+      getters.tempDigitalThreadList.concat(getters.digitalThreadList),
+    indexOfDrawerDigitalThread: (state) => state.indexOfDrawerDigitalThread,
+    sourceTagList: (state) => state.sourceTagList,
   },
   mutations: {
     SET_isStickerDrawerOpen(state, isStickerDrawerOpen) {
@@ -67,8 +74,8 @@ export default {
     SET_digitalThread(state, digitalThread) {
       state.digitalThread = digitalThread
     },
-    UPDATE_digitalThread(state, digitalThread) {
-      Object.assign(state.digitalThread, digitalThread)
+    UPDATE_digitalThread_digitalThreadName(state, digitalThreadName) {
+      state.digitalThread.digitalThreadName = digitalThreadName
     },
     UNSHIFT_tempDigitalThreadList(state, digitalThreadBase) {
       state.tempDigitalThreadList.unshift(digitalThreadBase)
@@ -76,12 +83,24 @@ export default {
     RESET_tempDigitalThreadList(state) {
       state.tempDigitalThreadList.length = 0
     },
+    REMOVE_ITEM_tempDigitalThreadList(state, index) {
+      state.tempDigitalThreadList.splice(index, 1)
+    },
+    SET_indexOfDrawerDigitalThread(state, index) {
+      state.indexOfDrawerDigitalThread = index
+    },
     SET_digitalThreadList(state, digitalThreadList) {
       state.digitalThreadList = digitalThreadList
+    },
+    PUSH_digitalThreadList(state, digitalThread) {
+      state.digitalThreadList.push(digitalThread)
     },
     SET_addFrom(state, { addFromLocationType, addFromLocationList }) {
       state.addFromLocationList = addFromLocationList
       state.addFromLocationType = addFromLocationType
+    },
+    SET_sourceTagList(state, tagList) {
+      state.sourceTagList = tagList
     },
   },
   actions: {
@@ -98,22 +117,31 @@ export default {
       commit('RESET_tempDigitalThreadList')
     },
     async getDigitalThreadList({ commit, rootGetters, getters }) {
-      // const { data } = await stickerApi.getDigitalThreadList({
-      //   orgId: rootGetters['organization/orgId'],
-      //   materialId: getters.currentMaterialId,
-      // })
-      // commit('SET_digitalThreadList', data.result.digitalThreadList)
+      const { data } = await stickerApi.getDigitalThreadList({
+        orgId: rootGetters['organization/orgId'],
+        materialId: getters.currentMaterialId,
+      })
+      commit('SET_digitalThreadList', data.result.digitalThreadList)
     },
     async getDigitalThread(
-      { commit, rootGetters },
-      { digitalThreadId, filter }
+      { commit, rootGetters, dispatch },
+      { digitalThreadId, filter = null }
     ) {
-      // const { data } = await stickerApi.getDigitalThread({
-      //   orgId: rootGetters['organization/orgId'],
-      //   digitalThreadId,
-      //   filter,
-      // })
-      // commit('SET_digitalThread', data.result.digitalThread)
+      const { data } = await stickerApi.getDigitalThread({
+        orgId: rootGetters['organization/orgId'],
+        digitalThreadId,
+        filter,
+      })
+      commit('SET_digitalThread', data.result.digitalThread)
+
+      // 待 API 調整後，應修改成 digital thread 中的 id & type
+      dispatch('getStickerTagList', {
+        addFromOGId: rootGetters['helper/routeLocationId'],
+        addFromOGType:
+          rootGetters['helper/routeLocation'] === 'org'
+            ? OG_TYPE.ORG
+            : OG_TYPE.GROUP,
+      })
     },
     async getDigitalThreadMaterial({ commit, rootGetters, getters }) {
       const { data } = await stickerApi.getDigitalThreadMaterial({
@@ -122,12 +150,12 @@ export default {
       })
       commit('SET_material', data.result.material)
     },
-    async fetchStickerDrawerData({ dispatch, getters }) {
+    async fetchStickerDrawerData({ dispatch, getters, rootGetters }) {
       /**
-       * 1. call digital-thread/get-material 取得 unit name 與 unit logo 等相關資料
-       * 2. call digital-thread/get-list，
+       * 1. call getDigitalThreadMaterial 取得 unit name 與 unit logo 等相關資料
+       * 2. call getDigitalThreadList，
        *    如果 list 為空，則在 state.tempDigitalThreadList 推入一個新的，並覆寫道 state.digitalThread
-       *    如果 list 不為空，則取第一個 digitalThreadId 並 call digital-thread/get。
+       *    如果 list 不為空，則取第一個 digitalThreadId 並 call getDigitalThread。
        */
       await Promise.all([
         dispatch('getDigitalThreadMaterial'),
@@ -150,10 +178,11 @@ export default {
       const digitalThread = digitalThreadBase
       digitalThread['stickerList'] = []
       commit('SET_digitalThread', digitalThread)
+      commit('SET_indexOfDrawerDigitalThread', 0)
     },
-    async getStickerTagList(_, params) {
+    async getStickerTagList({ commit }, params) {
       const { data } = await stickerApi.getStickerTagList(params)
-      return data.result.tagList
+      commit('SET_sourceTagList', data.result.tagList)
     },
     /**
      *
@@ -168,79 +197,101 @@ export default {
      * @param {string[]} params.tagList
      */
     async createDigitalThread({ state, commit, rootGetters, getters }, params) {
-      // const { data } = await stickerApi.createDigitalThread({
-      //   orgId: rootGetters['organization/orgId'],
-      //   materialId: getters.currentMaterialId,
-      //   addFromLocationType: getters.addFromLocationType,
-      //   addFromLocationList: getters.addFromLocationList,
-      //   ...params,
-      // })
-      // commit('SET_digitalThread', data.result.digitalThread)
-      const digitalThread = {
-        digitalThreadId: 0,
-        digitalThreadName: params.digitalThreadName,
-        isCreatorSide: false, // 檢視該DigitalThread的使用者是否為建立方組織的成員
-        materialId: 12234,
-        materialNo: 'EP10456',
-        materialCoverImg:
-          'https://textile-dev.frontier.cool/Resource/MaterialAttachCover/F372827091637_202204231402164329.jpg',
-        materialOwnerUnitName: 'FabricPro.Co', // 布片擁有者的單位名稱，檢視角度為布片擁有者時為:布片擁有者的組織(+團隊)名稱，非布片擁有者為:布片擁有者的組織名稱
-        materialOwnerUnitLogo:
-          'https://textile-dev.frontier.cool/Resource/OrgLogo/202209050034001703.jpeg', // 布片擁有者的單位Logo
-        hasMaterialDeleted: false,
-        hasMaterialNoAccess: false,
-        addFromLocationType: 1, // 從哪個功能新增這個Digital Thread,
-        addFromLocationList: ['EP10456'], // 從哪個功能底下的哪個路徑新增這個Digital Thread,
-        creatorUnitName: 'FabricPro.Co', //  建立者單位，檢視角度為建立者時為:呈現建立者的組織(+團隊)名稱，非建立者為:呈現建立者的組織名稱
-        creatorUnitLogo:
-          'https://textile-dev.frontier.cool/Resource/OrgLogo/202209050034001703.jpeg', // 建立者的單位的Logo,
-        creatorUnitLabelColor: '#57B4DF',
-        creator: 'Mia Yang', // 建立者的使用者名稱，若isCreatorSide為false，則為null值
-        creatorAvatar:
-          'https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png', // 建立者的大頭貼，若isCreatorSide為false，則為null值
-        createDate: '1662179523',
-        stickerStatistics: {
-          totalQty: 1,
-          internalQty: params.addTo === 2 ? 1 : 0,
-          externalQty: params.addTo === 1 ? 1 : 0,
-          starredQty: 0,
-        },
-        tagList: [],
-        participantList: [
-          {
-            name: 'Mia Yang',
-            avatar:
-              'https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png',
-          },
-        ], // { name: '', avatar: '' }
-        unreadStickerQty: 0,
-      }
-      commit('SET_digitalThread', {
-        ...digitalThread,
-        stickerList: [
-          {
-            stickerId: 0,
-            digitalThreadId: 0,
-            addTo: params.addTo,
-            type: 1,
-            content: params.content,
-            tagList: params.tagList,
-            isStarred: false,
-            creatorUnitName: 'FabricPro.Co',
-            creatorUnitLogo:
-              'https://textile-dev.frontier.cool/Resource/OrgLogo/202209050034001703.jpeg', // 建立者的單位的Logo,
-            creatorUnitLabelColor: '#57B4DF',
-            creator: 'Mia Yang', // 建立者的使用者名稱，若isCreatorSide為false，則為null值
-            creatorAvatar:
-              'https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png', // 建立者的大頭貼，若isCreatorSide為false，則為null值
-            createDate: 1662179523,
-            hasNewAddOrUpdate: true,
-            hasChildStickerUnread: false,
-            childStickerList: [],
-          },
-        ],
+      /**
+       * 1. 透過 API 新增 DigitalThread
+       * 2. 將其從 tempDigitalThreadList 清除
+       * 3. 覆寫到 state
+       * 3. 將新的 DigitalThread push 至 digitalThreadList 中
+       * 4. 找出該其在 drawerDigitalThreadList (由 tempDigitalThreadList 與 digitalThreadList 組合的 List) 的 index
+       * 5. 把新的 index 覆寫至 indexOfDrawerDigitalThread 讓 drawer 顯示正確的狀態
+       *
+       */
+      const { data } = await stickerApi.createDigitalThread({
+        orgId: rootGetters['organization/orgId'],
+        materialId: getters.currentMaterialId,
+        addFromLocationType: getters.addFromLocationType,
+        addFromLocationList: getters.addFromLocationList,
+        ...params,
       })
-      state.digitalThreadList.push(digitalThread)
+      commit(
+        'REMOVE_ITEM_tempDigitalThreadList',
+        getters.indexOfDrawerDigitalThread
+      )
+      const createdDigitalThread = data.result.digitalThread
+      commit('SET_digitalThread', createdDigitalThread)
+      commit('PUSH_digitalThreadList', createdDigitalThread)
+      const index = getters.drawerDigitalThreadList.findIndex(
+        ({ digitalThreadId }) =>
+          createdDigitalThread.digitalThreadId === digitalThreadId
+      )
+      commit('SET_indexOfDrawerDigitalThread', index)
+
+      // 測試用
+      // const digitalThread = {
+      //   digitalThreadId: 0,
+      //   digitalThreadName: params.digitalThreadName,
+      //   isCreatorSide: false, // 檢視該DigitalThread的使用者是否為建立方組織的成員
+      //   materialId: 12234,
+      //   materialNo: 'EP10456',
+      //   materialCoverImg:
+      //     'https://textile-dev.frontier.cool/Resource/MaterialAttachCover/F372827091637_202204231402164329.jpg',
+      //   materialOwnerUnitName: 'FabricPro.Co', // 布片擁有者的單位名稱，檢視角度為布片擁有者時為:布片擁有者的組織(+團隊)名稱，非布片擁有者為:布片擁有者的組織名稱
+      //   materialOwnerUnitLogo:
+      //     'https://textile-dev.frontier.cool/Resource/OrgLogo/202209050034001703.jpeg', // 布片擁有者的單位Logo
+      //   hasMaterialDeleted: false,
+      //   hasMaterialNoAccess: false,
+      //   addFromLocationType: 1, // 從哪個功能新增這個Digital Thread,
+      //   addFromLocationList: ['EP10456'], // 從哪個功能底下的哪個路徑新增這個Digital Thread,
+      //   creatorUnitName: 'FabricPro.Co', //  建立者單位，檢視角度為建立者時為:呈現建立者的組織(+團隊)名稱，非建立者為:呈現建立者的組織名稱
+      //   creatorUnitLogo:
+      //     'https://textile-dev.frontier.cool/Resource/OrgLogo/202209050034001703.jpeg', // 建立者的單位的Logo,
+      //   creatorUnitLabelColor: '#57B4DF',
+      //   creator: 'Mia Yang', // 建立者的使用者名稱，若isCreatorSide為false，則為null值
+      //   creatorAvatar:
+      //     'https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png', // 建立者的大頭貼，若isCreatorSide為false，則為null值
+      //   createDate: '1662179523',
+      //   stickerStatistics: {
+      //     totalQty: 1,
+      //     internalQty: params.addTo === 2 ? 1 : 0,
+      //     externalQty: params.addTo === 1 ? 1 : 0,
+      //     starredQty: 0,
+      //   },
+      //   tagList: [],
+      //   participantList: [
+      //     {
+      //       name: 'Mia Yang',
+      //       avatar:
+      //         'https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png',
+      //     },
+      //   ], // { name: '', avatar: '' }
+      //   unreadStickerQty: 0,
+      // }
+      // commit('SET_digitalThread', {
+      //   ...digitalThread,
+      //   stickerList: [
+      //     {
+      //       stickerId: 0,
+      //       digitalThreadId: 0,
+      //       addTo: params.addTo,
+      //       type: 1,
+      //       content: params.content,
+      //       tagList: params.tagList,
+      //       isStarred: false,
+      //       creatorUnitName: 'FabricPro.Co',
+      //       creatorUnitLogo:
+      //         'https://textile-dev.frontier.cool/Resource/OrgLogo/202209050034001703.jpeg', // 建立者的單位的Logo,
+      //       creatorUnitLabelColor: '#57B4DF',
+      //       creator: 'Mia Yang', // 建立者的使用者名稱，若isCreatorSide為false，則為null值
+      //       creatorAvatar:
+      //         'https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png', // 建立者的大頭貼，若isCreatorSide為false，則為null值
+      //       createDate: 1662179523,
+      //       hasNewAddOrUpdate: true,
+      //       hasChildStickerUnread: false,
+      //       childStickerList: [],
+      //     },
+      //   ],
+      // })
+      // state.digitalThreadList.push(digitalThread)
     },
     /**
      *
@@ -251,70 +302,103 @@ export default {
      * @param {string} params.content
      * @param {string[]} params.tagList
      */
-    async createSticker({ rootGetters, getters, state }, params) {
-      // await stickerApi.createSticker({
-      //   orgId: rootGetters['organization/orgId'],
-      //   digitalThreadId: getters.digitalThread.digitalThreadId,
-      //   ...params,
-      // })
-      state.digitalThread.stickerStatistics.totalQty++
-      params.addTo === 1
-        ? state.digitalThread.stickerStatistics.externalQty++
-        : state.digitalThread.stickerStatistics.internalQty++
-      state.digitalThread.stickerList.unshift({
-        stickerId: Date.now(),
-        digitalThreadId: 0,
-        addTo: params.addTo,
-        type: 1,
-        content: params.content,
-        tagList: params.tagList,
-        isStarred: false,
-        creatorUnitName: 'FabricPro.Co',
-        creatorUnitLogo:
-          'https://textile-dev.frontier.cool/Resource/OrgLogo/202209050034001703.jpeg', // 建立者的單位的Logo,
-        creatorUnitLabelColor: '#57B4DF',
-        creator: 'Mia Yang', // 建立者的使用者名稱，若isCreatorSide為false，則為null值
-        creatorAvatar:
-          'https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png', // 建立者的大頭貼，若isCreatorSide為false，則為null值
-        createDate: 1662179523,
-        hasNewAddOrUpdate: true,
-        hasChildStickerUnread: false,
-        childStickerList: [],
-      })
-    },
-    updateDigitalThreadName({ rootGetters, getters }, digitalThreadName) {
-      stickerApi.updateDigitalThreadName({
+    async createSticker({ rootGetters, getters, state, dispatch }, params) {
+      await stickerApi.createSticker({
         orgId: rootGetters['organization/orgId'],
         digitalThreadId: getters.digitalThread.digitalThreadId,
-        digitalThreadName,
+        ...params,
       })
+
+      // 暫時用
+      dispatch('getDigitalThread', {
+        digitalThreadId: getters.digitalThread.digitalThreadId,
+      })
+
+      // 測試用
+      // state.digitalThread.stickerStatistics.totalQty++
+      // params.addTo === 1
+      //   ? state.digitalThread.stickerStatistics.externalQty++
+      //   : state.digitalThread.stickerStatistics.internalQty++
+      // state.digitalThread.stickerList.unshift({
+      //   stickerId: Date.now(),
+      //   digitalThreadId: 0,
+      //   addTo: params.addTo,
+      //   type: 1,
+      //   content: params.content,
+      //   tagList: params.tagList,
+      //   isStarred: false,
+      //   creatorUnitName: 'FabricPro.Co',
+      //   creatorUnitLogo:
+      //     'https://textile-dev.frontier.cool/Resource/OrgLogo/202209050034001703.jpeg', // 建立者的單位的Logo,
+      //   creatorUnitLabelColor: '#57B4DF',
+      //   creator: 'Mia Yang', // 建立者的使用者名稱，若isCreatorSide為false，則為null值
+      //   creatorAvatar:
+      //     'https://textile-dev.frontier.cool/Resource/UserAvatar/default_user.png', // 建立者的大頭貼，若isCreatorSide為false，則為null值
+      //   createDate: 1662179523,
+      //   hasNewAddOrUpdate: true,
+      //   hasChildStickerUnread: false,
+      //   childStickerList: [],
+      // })
+    },
+    updateDigitalThreadName(
+      { rootGetters, getters, commit },
+      { isCreatingDigitalThread, digitalThreadName }
+    ) {
+      commit('UPDATE_digitalThread_digitalThreadName', digitalThreadName)
+      !isCreatingDigitalThread &&
+        stickerApi.updateDigitalThreadName({
+          orgId: rootGetters['organization/orgId'],
+          digitalThreadId: getters.digitalThread.digitalThreadId,
+          digitalThreadName,
+        })
     },
     async createChildSticker({ rootGetters, state }, { stickerId, content }) {
-      // await stickerApi.createChildSticker({
-      //   orgId: rootGetters['organization/orgId'],
-      //   stickerId,
-      //   content,
-      // })
-
-      const sticker = state.digitalThread.stickerList.find(
-        (sticker) => sticker.stickerId === stickerId
-      )
-      const order = sticker.childStickerList.length + 1
-      sticker.childStickerList.push({
+      await stickerApi.createChildSticker({
+        orgId: rootGetters['organization/orgId'],
         stickerId,
-        digitalThreadId: state.digitalThread.digitalThreadId,
         content,
-        tagList: [],
-        isStarred: false,
-        addTo: sticker.addTo,
-        type: sticker.type,
-        creatorUnitName: sticker.creatorUnitName,
-        creatorUnitLogo: sticker.creatorUnitLogo,
-        creatorUnitLabelColor: sticker.creatorUnitLabelColor,
-        creator: sticker.creator,
-        creatorAvatar: sticker.creatorAvatar,
-        createDate: Date.now(),
-        order,
+      })
+
+      // 暫時用
+      dispatch('getDigitalThread', {
+        digitalThreadId: getters.digitalThread.digitalThreadId,
+      })
+
+      // 測試用
+      // const sticker = state.digitalThread.stickerList.find(
+      //   (sticker) => sticker.stickerId === stickerId
+      // )
+      // const order = sticker.childStickerList.length + 1
+      // sticker.childStickerList.push({
+      //   stickerId,
+      //   digitalThreadId: state.digitalThread.digitalThreadId,
+      //   content,
+      //   tagList: [],
+      //   isStarred: false,
+      //   addTo: sticker.addTo,
+      //   type: sticker.type,
+      //   creatorUnitName: sticker.creatorUnitName,
+      //   creatorUnitLogo: sticker.creatorUnitLogo,
+      //   creatorUnitLabelColor: sticker.creatorUnitLabelColor,
+      //   creator: sticker.creator,
+      //   creatorAvatar: sticker.creatorAvatar,
+      //   createDate: Date.now(),
+      //   order,
+      // })
+    },
+    updateStickerTagList(
+      { rootGetters, dispatch, getters },
+      { stickerId, tagList }
+    ) {
+      stickerApi.updateStickerTagList({
+        orgId: rootGetters['organization/orgId'],
+        stickerId,
+        tagList,
+      })
+
+      // 暫時用
+      dispatch('getDigitalThread', {
+        digitalThreadId: getters.digitalThread.digitalThreadId,
       })
     },
   },

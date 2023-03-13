@@ -8,7 +8,7 @@ div(
   div(class="pb-1 flex items-center gap-x-4")
     p(
       class="text-body2 font-bold leading-1.6 group-hover:text-primary-400"
-      :class="[uncreated ? 'text-grey-300' : 'text-grey-900']"
+      :class="[uncreated ? 'text-grey-300 py-2' : 'text-grey-900']"
     ) {{ digitalThread.digitalThreadName }}
     f-avatar-group(
       v-if="!uncreated"
@@ -28,7 +28,7 @@ div(
       span(class="text-caption") {{ digitalThread.stickerStatistics.starredQty }}
     div(
       v-if="digitalThread.stickerStatistics.externalQty > 0 || digitalThread.stickerStatistics.internalQty > 0"
-      class="pl-2"
+      class="pl-2 flex items-center gap-x-1"
     )
       div(
         v-if="digitalThread.stickerStatistics.externalQty > 0"
