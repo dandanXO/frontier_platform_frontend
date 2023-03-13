@@ -146,6 +146,8 @@ const Material = {
     },
     createDate: '',
     updateDate: '',
+    digitalThreadQty: 0,
+    digitalThreadHasUnread: false,
   }),
   getters: {
     material: (state) => state,

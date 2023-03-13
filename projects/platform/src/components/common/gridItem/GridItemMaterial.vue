@@ -5,6 +5,7 @@ grid-item-wrapper(
   :isSelectable="isSelectable"
   :optionList="optionList"
   @click:option="$emit('click:option', $event)"
+  :cornerTopRightHover="material.digitalThreadQty === 0"
 )
   template(#title) {{ material.materialNo }}
   template(#content)
@@ -26,10 +27,16 @@ grid-item-wrapper(
         span {{ materialInfo.width.value }}
       p(class="text-caption line-clamp-2 leading-1.6") {{ material.finish }}
       p(class="text-caption line-clamp-1 leading-1.6") {{ materialInfo.weight.value }}
-  template(#hover-corner-top-right)
-    slot(name="hover-corner-top-right")
-  template(#hover-corner-bottom-left)
-    slot(name="hover-corner-bottom-left")
+  template(#corner-top-right="{ isHover }")
+    slot(name="corner-top-right")
+      digital-thread-entrance(
+        v-if="canAddSticker"
+        :isHover="isHover"
+        :digitalThreadQty="material.digitalThreadQty"
+        :digitalThreadHasUnread="material.digitalThreadHasUnread"
+      )
+  template(#corner-bottom-left)
+    slot(name="corner-bottom-left")
   template(#title-right-icon)
     slot(name="title-right-icon")
   template(#caption)
@@ -40,6 +47,7 @@ grid-item-wrapper(
 import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
 import { computed } from 'vue'
 import useMaterial from '@/composables/useMaterial'
+import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 
 const props = defineProps({
   material: {
@@ -59,6 +67,10 @@ const props = defineProps({
   optionList: {
     type: Array,
     default: () => [], // [[{ name: '', func: () => { }, disabled: false }]]
+  },
+  canAddSticker: {
+    type: Boolean,
+    default: true,
   },
 })
 

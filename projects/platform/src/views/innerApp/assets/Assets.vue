@@ -54,9 +54,9 @@ div(class="w-full h-full")
           class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
         )
           grid-item-material(
-            v-for="material in materialList"
+            v-for="(material, index) in materialList"
             :key="material.materialId"
-            :material="material"
+            :material="{ ...material, digitalThreadQty: index, digitalThreadHasUnread: false }"
             v-model:selectedValue="selectedMaterialList"
             isSelectable
             :selectValue="material"

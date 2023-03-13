@@ -1,21 +1,11 @@
 <template lang="pug">
 div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
-    f-breadcrumb(
+    material-detail-internal-header(
       :breadcrumbList="breadcrumbList"
-      @click:item="$router.push($event.path)"
-      class="pt-12 pb-9"
+      :material="material"
+      @goToEdit="editMaterial(material.materialId, material.sourceAssetLocation)"
     )
-    div(class="pb-7.5")
-      div(class="flex items-center pb-2")
-        h5(class="text-h5 text-grey-900 font-bold line-clamp-1 pr-3") {{ `${material.materialNo} ${material.description}` }}
-        f-svg-icon(
-          iconName="create"
-          class="text-grey-600 cursor-pointer"
-          size="24"
-          @click="editMaterial(material.materialId, material.sourceAssetLocation)"
-        )
-      p(class="text-caption text-grey-600") {{ $t('EE0014') }} : {{ lastUpdateDate }}
     material-detail-internal(:material="material")
 </template>
 
@@ -27,7 +17,7 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import useWorkspace from '@/composables/useWorkspace'
 import MaterialDetailInternal from '@/components/common/material/detail/MaterialDetailInternal.vue'
-import dayjs from 'dayjs'
+import MaterialDetailInternalHeader from '@/components/common/material/detail/MaterialDetailInternalHeader.vue'
 
 const props = defineProps({
   nodeKey: {
@@ -74,12 +64,5 @@ const breadcrumbList = computed(() => {
       }
     ),
   ]
-})
-
-const lastUpdateDate = computed(() => {
-  const tempUpdateDate = dayjs
-    .unix(material.value.updateDate)
-    .format('YYYY/MM/DD hh:mm A')
-  return tempUpdateDate.slice(0, 10) + ' at ' + tempUpdateDate.slice(10)
 })
 </script>

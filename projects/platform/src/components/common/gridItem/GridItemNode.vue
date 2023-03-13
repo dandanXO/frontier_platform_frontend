@@ -7,11 +7,12 @@ grid-item-material(
   :selectValue="node"
   :optionList="optionList"
   @click:option="$emit('click:option', $event)"
+  :canAddSticker="canAddSticker"
 )
-  template(#hover-corner-top-right)
-    slot(name="hover-corner-top-right")
-  template(#hover-corner-bottom-left)
-    slot(name="hover-corner-bottom-left")
+  template(#corner-top-right)
+    slot(name="corner-top-right")
+  template(#corner-bottom-left)
+    slot(name="corner-bottom-left")
   template(#title-right-icon)
     slot(name="title-right-icon")
   template(#caption)
@@ -49,10 +50,10 @@ grid-item-wrapper(
         )
   template(#hover-content)
     p(class="text-body1 font-bold leading-1.6 text-grey-0") {{ $t('RR0068', { number: node.properties.itemCounts }) }}
-  template(#hover-corner-top-right)
-    slot(name="hover-corner-top-right")
-  template(#hover-corner-bottom-left)
-    slot(name="hover-corner-bottom-left")
+  template(#corner-top-right)
+    slot(name="corner-top-right")
+  template(#corner-bottom-left)
+    slot(name="corner-bottom-left")
   template(#title-right-icon)
     slot(name="title-right-icon")
   template(#caption)
@@ -81,6 +82,10 @@ const props = defineProps({
   optionList: {
     type: Array,
     default: () => [], // [[{ name: '', func: () => { }, disabled: false }]]
+  },
+  canAddSticker: {
+    type: Boolean,
+    default: true,
   },
 })
 const emit = defineEmits(['update:selectedValue', 'click:option'])

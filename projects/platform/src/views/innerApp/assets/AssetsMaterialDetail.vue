@@ -1,25 +1,11 @@
 <template lang="pug">
 div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
-    f-breadcrumb(
+    material-detail-internal-header(
       :breadcrumbList="breadcrumbList"
-      @click:item="$router.push($event.path)"
-      class="pt-12 pb-9"
+      :material="material"
+      @goToEdit="goToAssetMaterialEdit(material)"
     )
-    div(class="pb-7.5")
-      div(class="flex items-start pb-2")
-        h5(class="text-h5 text-grey-900 font-bold leading-1.6 pr-3 break-words") {{ `${material.materialNo} ${material.description}` }}
-        f-tooltip
-          template(#trigger)
-            f-svg-icon(
-              iconName="create"
-              class="text-grey-600 hover:text-primary-400 cursor-pointer"
-              size="24"
-              @click="goToAssetMaterialEdit(material)"
-            )
-          template(#content)
-            p {{ $t('RR0054') }}
-      p(class="text-caption text-grey-600") {{ $t('EE0014') }} : {{ lastUpdateDate }}
     material-detail-internal(:material="material")
 </template>
 
@@ -30,12 +16,13 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import MaterialDetailInternal from '@/components/common/material/detail/MaterialDetailInternal.vue'
-import dayjs from 'dayjs'
+import MaterialDetailInternalHeader from '@/components/common/material/detail/MaterialDetailInternalHeader.vue'
 
 export default {
   name: 'AssetsMaterialDetail',
   components: {
     MaterialDetailInternal,
+    MaterialDetailInternalHeader,
   },
   async setup() {
     const { t } = useI18n()
@@ -63,18 +50,10 @@ export default {
         },
       ]
     })
-    const lastUpdateDate = computed(() => {
-      const tempUpdateDate = dayjs
-        .unix(material.value.updateDate)
-        .format('YYYY/MM/DD hh:mm A')
-      return tempUpdateDate.slice(0, 10) + ' at ' + tempUpdateDate.slice(10)
-    })
-
     return {
       material,
       breadcrumbList,
       goToAssetMaterialEdit,
-      lastUpdateDate,
     }
   },
 }

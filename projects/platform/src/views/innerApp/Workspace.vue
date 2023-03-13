@@ -50,7 +50,7 @@ div(class="w-full h-full")
           @click:option="$event.func(node)"
           @click.stop="handleNodeClick(node, goTo)"
         )
-          template(#hover-corner-bottom-left v-if="isFirstLayer")
+          template(#corner-bottom-left v-if="isFirstLayer")
             f-svg-icon(
               :iconName="node.isPublic ? 'public' : 'internal'"
               size="20"

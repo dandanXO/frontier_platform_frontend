@@ -26,10 +26,13 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
         uncheckColor="text-grey-0"
         @click.stop
       )
-    div(v-if="isHover" class="absolute z-10 top-3 right-3")
-      slot(name="hover-corner-top-right")
+    div(
+      v-if="(cornerTopRightHover && isHover) || !cornerTopRightHover"
+      class="absolute z-10 top-3 right-3"
+    )
+      slot(name="corner-top-right" :isHover="isHover")
     div(v-if="isHover" class="absolute z-10 bottom-3 left-3")
-      slot(name="hover-corner-bottom-left")
+      slot(name="corner-bottom-left")
     f-popper(
       v-if="optionList.length > 0 && !haveSelectedMoreThanOne"
       placement="right-start"
@@ -87,6 +90,10 @@ const props = defineProps({
   optionList: {
     type: Array,
     default: () => [], // [[{ name: '', func: () => { }, disabled: false }]]
+  },
+  cornerTopRightHover: {
+    type: Boolean,
+    default: true,
   },
 })
 const emit = defineEmits(['update:selectedValue', 'click:option'])

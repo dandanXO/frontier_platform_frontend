@@ -127,7 +127,7 @@ div(class="max-w-315 h-full mx-auto")
           :node="node"
           @click.stop="handleNodeClick(node, goTo)"
         )
-          template(#hover-corner-bottom-left)
+          template(#corner-bottom-left)
             f-svg-icon(
               iconName="clone"
               size="20"

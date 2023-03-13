@@ -102,6 +102,8 @@ const Collection = {
               weftYarnCount,
               coverImg,
               sourceAssetLocation,
+              digitalThreadQty,
+              digitalThreadHasUnread,
             } = material
             list.push({
               workspaceNodeId,
@@ -134,6 +136,8 @@ const Collection = {
                 weftYarnCount,
                 coverImg,
                 sourceAssetLocation,
+                digitalThreadQty: 0,
+                digitalThreadHasUnread: false,
               },
             })
           })

@@ -1,27 +1,19 @@
 <template lang="pug">
 div(class="w-full h-full flex justify-center")
   div(class="w-230 h-fit pb-25")
-    f-breadcrumb(
-      class="pt-12 pb-9"
+    material-detail-external-header(
       :breadcrumbList="breadcrumbList"
-      @click:item="$router.push($event.path)"
+      :material="material"
+      @clone="publicCloneByMaterial(nodeKey, publish.isCanClone)"
     )
-    div(class="pb-7.5")
-      div(class="flex items-center pb-2")
-        h5(class="text-h5 text-grey-900 font-bold line-clamp-1 pr-3") {{ `${material.materialNo} ${material.description}` }}
-        f-svg-icon(
-          iconName="clone"
-          class="text-grey-600 cursor-pointer"
-          size="24"
-          @click="publicCloneByMaterial(nodeKey, publish.isCanClone)"
+      template(#caption)
+        i18n-t(
+          keypath="II0002"
+          tag="p"
+          class="text-caption text-grey-600"
+          scope="global"
         )
-      i18n-t(
-        keypath="II0002"
-        tag="p"
-        class="text-caption text-grey-600"
-        scope="global"
-      )
-        template(#displayName) {{ publish.displayName }}
+          template(#displayName) {{ publish.displayName }}
     material-detail-external(
       :material="material"
       :isCanDownloadU3M="publish.isCanDownloadU3M"
@@ -36,6 +28,7 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
+import MaterialDetailExternalHeader from '@/components/common/material/detail/MaterialDetailExternalHeader.vue'
 
 const props = defineProps({
   nodeKey: {

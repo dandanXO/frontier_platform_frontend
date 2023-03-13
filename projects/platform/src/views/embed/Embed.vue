@@ -117,6 +117,7 @@ div(class="max-w-315 h-full mx-auto pt-10")
           :node="node"
           :isSelectable="false"
           @click.stop="handleNodeClick(node, goTo)"
+          :canAddSticker="false"
         )
 </template>
 
