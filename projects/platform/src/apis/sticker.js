@@ -127,4 +127,26 @@ export default {
       method: 'POST',
       data,
     }),
+  /**
+   *
+   * @param {object} data
+   * @param {number} data.orgId
+   * @param {number} data.stickerId
+   */
+  starSticker: (data) =>
+    axios('/digital-thread/sticker/star', {
+      method: 'POST',
+      data,
+    }),
+  /**
+   *
+   * @param {object} data
+   * @param {number} data.orgId
+   * @param {number} data.stickerId
+   */
+  unstarSticker: (data) =>
+    axios('/digital-thread/sticker/unstar', {
+      method: 'POST',
+      data,
+    }),
 }

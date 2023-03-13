@@ -17,61 +17,56 @@ div(
     div(class="flex items-center justify-between pb-5")
       sticker-label-add-to(:addTo="sticker.addTo")
       div(class="flex items-center gap-x-4")
-        div(
-          class="group flex items-center gap-x-1 cursor-pointer text-grey-300"
-          :class="{ '!text-grey-600': isHoverSticker && !isHoverIconSticker && !isExpandChildStickerList, '!text-primary-400': isHoverIconSticker || isExpandChildStickerList }"
-          @mouseenter="isHoverIconSticker = true"
-          @mouseleave="isHoverIconSticker = false"
+        sticker-header-icon(
+          iconName="sticker"
+          :isHoverSticker="isHoverSticker"
+          :isActive="isExpandChildStickerList"
+          :amount="childStickerList.length"
+          :activeTooltip="$t('TT0095')"
+          :inactiveTooltip="$t('TT0094')"
         )
-          f-svg-icon(iconName="sticker" size="20" :tooltip="$t('TT0094')")
-          span(
-            v-if="isHoverSticker || childStickerList.length > 0 || isExpandChildStickerList"
-            class="text-body2"
-          ) {{ childStickerList.length }}
-        div(
-          class="group flex items-center gap-x-1 cursor-pointer text-grey-300"
-          :class="{ '!text-grey-600': isHoverSticker && !isHoverIconTag && !isShowTagList, '!text-primary-400': isHoverIconTag || isShowTagList }"
-          @mouseenter="isHoverIconTag = true"
-          @mouseleave="isHoverIconTag = false"
+        sticker-header-icon(
+          iconName="tag"
+          :isHoverSticker="isHoverSticker"
+          :isActive="isShowTagList"
+          :amount="sticker.tagList.length"
+          :activeTooltip="$t('TT0097')"
+          :inactiveTooltip="$t('TT0096')"
           @click.stop="isShowTagList = !isShowTagList"
         )
-          f-svg-icon(iconName="tag" size="20" :tooltip="$t('TT0096')")
-          span(
-            v-if="isHoverSticker || sticker.tagList.length > 0 || isShowTagList"
-            class="text-body2"
-          ) {{ sticker.tagList.length }}
-        div(
-          class="group flex items-center gap-x-1 cursor-pointer text-grey-300"
-          :class="{ '!text-grey-600': isHoverSticker && !isHoverIconStar, '!text-primary-400': isHoverIconStar }"
-          @mouseenter="isHoverIconStar = true"
-          @mouseleave="isHoverIconStar = false"
-          @click.stop
+        sticker-header-icon(
+          :iconName="isStarred ? 'starred' : 'star'"
+          :isHoverSticker="isHoverSticker"
+          :isActive="isStarred"
+          :activeTooltip="$t('TT0099')"
+          :inactiveTooltip="$t('TT0098')"
+          :class="{ '!text-yellow-400': isStarred }"
+          @click.stop="toggleStarred"
         )
-          f-svg-icon(iconName="star" size="20" :tooltip="$t('TT0098')")
-        div(
-          class="group flex items-center gap-x-1 cursor-pointer text-grey-300"
+        f-popper(
+          placement="left"
+          class="flex items-center gap-x-1 cursor-pointer text-grey-300"
           @mouseenter="isHoverIconMore = true"
           @mouseleave="isHoverIconMore = false"
           @click.stop
         )
-          f-popper(placement="left")
-            template(#trigger="{ isExpand }")
-              f-svg-icon(
-                iconName="more_horiz"
-                size="20"
-                :tooltip="$t('TT0098')"
-                class="text-grey-300"
-                :class="{ '!text-grey-600': isHoverSticker && !isHoverIconMore, '!text-primary-400': isHoverIconMore || isExpand }"
-              )
-            template(#content)
-              f-list
-                f-list-item {{ $t('TT0055') }}
+          template(#trigger="{ isExpand }")
+            f-svg-icon(
+              iconName="more_horiz"
+              size="20"
+              :tooltip="$t('TT0098')"
+              class="text-grey-300"
+              :class="{ '!text-grey-600': isHoverSticker && !isHoverIconMore, '!text-primary-400': isHoverIconMore || isExpand }"
+            )
+          template(#content)
+            f-list
+              f-list-item {{ $t('TT0055') }}
     //- Content
     sticker-text-viewer(:content="sticker.content" :addTo="sticker.addTo")
     //- Tag List
     sticker-tag-list(
       ref="refStickerTagList"
-      v-if="(sticker.tagList.length !== 0 && isHoverIconTag) || isShowTagList"
+      v-if="isShowTagList"
       :stickerId="sticker.stickerId"
       :stickerTagList="sticker.tagList"
     )
@@ -129,13 +124,15 @@ div(
 import { ref, computed } from 'vue'
 import StickerLabelAddTo from '@/components/sticker/StickerLabelAddTo.vue'
 import StickerTextViewer from '@/components/sticker/stickerTextEditor/StickerTextViewer.vue'
+import StickerHeaderIcon from '@/components/sticker/StickerHeaderIcon.vue'
 import StickerTagList from '@/components/sticker/StickerTagList.vue'
 import ChildStickerTextEditor from '@/components/sticker/stickerTextEditor/ChildStickerTextEditor.vue'
 import ChildStickerCard from '@/components/sticker/ChildStickerCard.vue'
 import { STICKER_ADD_TO } from '@/utils/constants.js'
+import { useStore } from 'vuex'
 
 const { EXTERNAL, INTERNAL } = STICKER_ADD_TO
-
+const store = useStore()
 const props = defineProps({
   sticker: {
     type: Object,
@@ -155,15 +152,22 @@ const creator = computed(() => {
 })
 
 const isHoverSticker = ref(false)
-const isHoverIconSticker = ref(false)
-const isHoverIconTag = ref(false)
-const isHoverIconStar = ref(false)
 const isHoverIconMore = ref(false)
 
 const isExpandChildStickerList = ref(false)
 const isCreatingChildSticker = ref(false)
 const childStickerList = props.sticker.childStickerList
 
+const isHoverIconTag = ref(false)
 const isShowTagList = ref(false)
 const refStickerTagList = ref(null)
+
+const isStarred = ref(props.sticker.isStarred)
+const toggleStarred = () => {
+  isStarred.value = !isStarred.value
+  const stickerId = props.sticker.stickerId
+  isStarred.value
+    ? store.dispatch('sticker/starSticker', stickerId)
+    : store.dispatch('sticker/unstarSticker', stickerId)
+}
 </script>

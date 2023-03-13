@@ -12,50 +12,48 @@ div(
       f-svg-icon(iconName="sticker")
       span(class="text-caption") {{ `#${childSticker.order}` }}
     div(class="flex items-center gap-x-4")
-      div(
-        class="group flex items-center gap-x-1 cursor-pointer text-grey-300"
-        :class="{ '!text-grey-600': isHoverChildSticker && !isHoverIconTag && !isShowTagList, '!text-primary-400': isHoverIconTag || isShowTagList }"
-        @mouseenter="isHoverIconTag = true"
-        @mouseleave="isHoverIconTag = false"
+      sticker-header-icon(
+        iconName="tag"
+        :isHoverSticker="isHoverChildSticker"
+        :isActive="isShowTagList"
+        :amount="childSticker.tagList.length"
+        :activeTooltip="$t('TT0097')"
+        :inactiveTooltip="$t('TT0096')"
         @click.stop="isShowTagList = !isShowTagList"
       )
-        f-svg-icon(iconName="tag" size="20" :tooltip="$t('TT0096')")
-        span(
-          v-if="isHoverChildSticker || childSticker.tagList.length > 0"
-          class="text-body2"
-        ) {{ childSticker.tagList.length }}
-      div(
-        class="group flex items-center gap-x-1 cursor-pointer text-grey-300"
-        :class="{ '!text-grey-600': isHoverChildSticker && !isHoverIconStar, '!text-primary-400': isHoverIconStar }"
-        @mouseenter="isHoverIconStar = true"
-        @mouseleave="isHoverIconStar = false"
-        @click.stop
+      sticker-header-icon(
+        :iconName="isStarred ? 'starred' : 'star'"
+        :isHoverSticker="isHoverSticker"
+        :isActive="isStarred"
+        :activeTooltip="$t('TT0099')"
+        :inactiveTooltip="$t('TT0098')"
+        :class="{ '!text-yellow-400': isStarred }"
+        @click.stop="toggleStarred"
       )
-        f-svg-icon(iconName="star" size="20" :tooltip="$t('TT0098')")
-      div(
-        class="group flex items-center gap-x-1 cursor-pointer text-grey-300"
+      f-popper(
+        placement="left"
+        class="flex items-center gap-x-1 cursor-pointer text-grey-300"
         @mouseenter="isHoverIconMore = true"
         @mouseleave="isHoverIconMore = false"
         @click.stop
       )
-        f-popper(placement="left")
-          template(#trigger="{ isExpand }")
-            f-svg-icon(
-              iconName="more_horiz"
-              size="20"
-              :tooltip="$t('TT0098')"
-              class="text-grey-300"
-              :class="{ '!text-grey-600': isHoverChildSticker && !isHoverIconMore, '!text-primary-400': isHoverIconMore || isExpand }"
-            )
-          template(#content)
-            f-list
-              f-list-item {{ $t('TT0055') }}
+        template(#trigger="{ isExpand }")
+          f-svg-icon(
+            iconName="more_horiz"
+            size="20"
+            :tooltip="$t('TT0098')"
+            class="text-grey-300"
+            :class="{ '!text-grey-600': isHoverChildSticker && !isHoverIconMore, '!text-primary-400': isHoverIconMore || isExpand }"
+          )
+        template(#content)
+          f-list
+            f-list-item {{ $t('TT0055') }}
   //- Content
   child-sticker-text-viewer(:content="childSticker.content")
   //- Tag List
   sticker-tag-list(
     ref="refStickerTagList"
-    v-if="(childSticker.tagList.length !== 0 && isHoverIconTag) || isShowTagList"
+    v-if="isShowTagList"
     :stickerId="childSticker.stickerId"
     :stickerTagList="childSticker.tagList"
   )
@@ -78,10 +76,12 @@ div(
 import { ref, computed } from 'vue'
 import ChildStickerTextViewer from '@/components/sticker/stickerTextEditor/ChildStickerTextViewer.vue'
 import StickerTagList from '@/components/sticker/StickerTagList.vue'
+import StickerHeaderIcon from '@/components/sticker/StickerHeaderIcon.vue'
 import { STICKER_ADD_TO } from '@/utils/constants.js'
+import { useStore } from 'vuex'
 
 const { EXTERNAL } = STICKER_ADD_TO
-
+const store = useStore()
 const props = defineProps({
   childSticker: {
     type: Object,
@@ -101,10 +101,17 @@ const creator = computed(() => {
 })
 
 const isHoverChildSticker = ref(false)
-const isHoverIconTag = ref(false)
-const isHoverIconStar = ref(false)
 const isHoverIconMore = ref(false)
 
 const isShowTagList = ref(false)
 const refStickerTagList = ref(null)
+
+const isStarred = ref(props.childSticker.isStarred)
+const toggleStarred = () => {
+  isStarred.value = !isStarred.value
+  const stickerId = props.childSticker.stickerId
+  isStarred.value
+    ? store.dispatch('sticker/starSticker', stickerId)
+    : store.dispatch('sticker/unstarSticker', stickerId)
+}
 </script>

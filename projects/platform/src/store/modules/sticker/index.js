@@ -401,5 +401,17 @@ export default {
         digitalThreadId: getters.digitalThread.digitalThreadId,
       })
     },
+    starSticker({ rootGetters }, stickerId) {
+      stickerApi.starSticker({
+        orgId: rootGetters['organization/orgId'],
+        stickerId,
+      })
+    },
+    unstarSticker({ rootGetters }, stickerId) {
+      stickerApi.unstarSticker({
+        orgId: rootGetters['organization/orgId'],
+        stickerId,
+      })
+    },
   },
 }
