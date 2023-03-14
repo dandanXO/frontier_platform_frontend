@@ -86,11 +86,14 @@ export interface SquareCropRecord extends Coord {
   scaleRatio: number
 }
 
-export interface PerspectiveCropRecord {
+export interface PerspectiveCropPositions {
   leftTop: Coord
   leftBottom: Coord
   rightTop: Coord
   rightBottom: Coord
+}
+
+export interface PerspectiveCropRecord extends PerspectiveCropPositions {
   rotateDeg: number
 }
 

@@ -10,6 +10,7 @@ import isYesterday from 'dayjs/plugin/isYesterday'
 import permission from '@/directives/permission.js'
 import defaultImg from '@/directives/defaultImg.js'
 import VueGtag from 'vue-gtag'
+import VueKonva from 'vue-konva'
 import uiComponents from '@frontier/ui-component'
 import inputRules from '@/utils/inputRules'
 
@@ -82,6 +83,7 @@ app
   .use(store)
   .use(i18n)
   .use(uiComponents)
+  .use(VueKonva)
   .mount('#app')
 
 if (window.Worker) {

@@ -4,7 +4,22 @@ div(class="h-full flex flex-col")
     div(class="dark relative flex-1 flex flex-col" @click="handleAreaClick('edit')")
       div(class="flex-1 rounded-lg bg-grey-900 overflow-hidden")
         div(ref="sourceCanvasContainer" class="relative w-full h-full bg-grey-900")
-      template(v-if="perspectiveCropper")
+          perspective-canvas(
+            ref="refPerspectiveCanvas"
+            v-if="sourceCanvasContainer && sourceImage && downSampledCanvases"
+            :container="sourceCanvasContainer"
+            :sourceImage="sourceImage"
+            :downSampleScales="downSampleScales"
+            :downSampledCanvases="downSampledCanvases"
+            :dpi="props.side.config.dpi"
+            :restoreRecord="props.side.image.u3mCropRecord.perspectiveCropRecord"
+            :initialRecord="props.side.perspectiveCropRecord"
+            :gridColor="sourceGridColor"
+            @scaleChange="handleSourceScaleChange"
+            @cropStart="handleCropStart"
+            @cropSuccess="handleCropSuccess"
+            @editStatusChange="emit('update:editStatus', $event)"
+          )
         canvas-control(
           :zoom="sourceScale"
           :zoomBlockList="zoomBlockList"
@@ -44,23 +59,19 @@ div(class="h-full flex flex-col")
         class="box-border absolute left-0 top-0 w-full h-full rounded-lg border-grey-500 pointer-events-none"
         :class="{ 'border-2': activeArea === 'preview' }"
       )
-    div(class="hidden")
-      canvas(ref="destinationCanvas" class="w-200")
-      img(ref="destinationImage" class="w-200")
   div(class="bg-grey-800 flex flex-row items-center justify-center h-17")
-    div(
-      v-if="perspectiveCropper && destinationDimension"
-      class="flex-1 flex flex-row items-center justify-center gap-4 text-grey-150"
-    )
+    div(class="flex-1 flex flex-row items-center justify-center gap-4 text-grey-150")
       div(class="flex flex-row items-center gap-x-4")
         dimension-info(
+          v-if="sourceDimension"
           iconName="crop_original"
           :text="$t('EE0154')"
-          :dimension="perspectiveCropper.sourceDimension"
+          :dimension="sourceDimension"
         )
         info-divider(size="lg")
         div(class="flex flex-row items-center gap-x-2")
           dimension-info(
+            v-if="destinationDimension"
             iconName="crop"
             :text="$t('EE0150')"
             :dimension="destinationDimension"
@@ -83,12 +94,12 @@ div(class="h-full flex flex-col")
 </template>
 
 <script setup lang="ts">
-import { ref, toRaw, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, toRaw, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import Decimal from 'decimal.js'
 import usePreview from '@/composables/usePreview'
-import usePerspectiveCropper from '@/composables/usePerspectiveCropper'
+import PerspectiveCanvas from '@/components/assets/modalU3mRecut/perspectiveCropper/PerspectiveCanvas.vue'
 import CanvasControl from '@/components/assets/modalU3mRecut/perspectiveCropper/CanvasControl.vue'
 import DimensionInfo from '@/components/assets/modalU3mRecut/perspectiveCropper/DimensionInfo.vue'
 import InfoDivider from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoDivider.vue'
@@ -97,7 +108,14 @@ import InfoName from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoN
 import NotifyBar from '@/components/assets/modalU3mRecut/perspectiveCropper/NotifyBar.vue'
 import { CROPPER_GRID_COLORS, MODAL_CONFIRM_TYPE } from '@/utils/constants'
 import { toDP2 } from '@/utils/cropper'
-import type { U3mSide, EditStatus, Dimension } from '@/types'
+import { getDimension, preRender } from '@/utils/perspectiveCropper'
+import tempFilenameGenerator from '@/utils/temp-filename-generator'
+import type {
+  U3mSide,
+  EditStatus,
+  Dimension,
+  PerspectiveCropRecord,
+} from '@/types'
 
 const props = defineProps<{
   side: U3mSide
@@ -107,6 +125,8 @@ const emit = defineEmits<{
   (e: 'update:editStatus', editStatus: EditStatus): void
 }>()
 
+const downSampleScales = [0.1, 0.15, 0.3, 0.5]
+
 const store = useStore()
 const { t } = useI18n()
 
@@ -115,6 +135,11 @@ const dpi = toRaw(props.side.config.dpi)
 const sourceCanvasContainer = ref<HTMLDivElement>()
 const previewCanvasContainer = ref<HTMLDivElement>()
 const destinationCanvas = ref<HTMLCanvasElement>()
+const destinationImage = ref<HTMLImageElement>(new Image())
+const destinationCropRecord = ref<PerspectiveCropRecord>()
+const refPerspectiveCanvas = ref<InstanceType<typeof PerspectiveCanvas> | null>(
+  null
+)
 
 const defaultGridColor = CROPPER_GRID_COLORS[11].color
 const sourceGridColor = ref(defaultGridColor)
@@ -122,10 +147,37 @@ const previewGridColor = ref(defaultGridColor)
 
 const sourceScale = ref(0)
 const previewScale = ref(0)
-const rotateDeg = ref(0)
 const gridOpen = ref(true)
 const destinationDimension = ref<Dimension>()
 const activeArea = ref<'edit' | 'preview'>('edit')
+
+const sourceImage = ref<HTMLImageElement>()
+const downSampledCanvases = ref<HTMLCanvasElement[]>()
+
+const sourceDimension = computed(() => {
+  if (!sourceImage.value) {
+    return null
+  }
+  return getDimension(sourceImage.value.width, sourceImage.value.height, dpi)
+})
+
+const errorHandler = (err: Error) => {
+  console.error(err)
+  store.dispatch('helper/openModalConfirm', {
+    type: MODAL_CONFIRM_TYPE.ALERT,
+    header: t('RR0107'),
+    contentText: t('RR0108'),
+    primaryBtnText: t('UU0031'),
+    primaryBtnHandler: () => window.location.reload(),
+  })
+}
+const { previewDisplay, renderPreviewDisplay } = usePreview(
+  destinationCanvas,
+  previewCanvasContainer,
+  previewGridColor.value,
+  (v) => (previewScale.value = v),
+  errorHandler
+)
 
 const ZOOM_TYPES = {
   ZOOM_TO_FIT: t('EE0152'),
@@ -153,55 +205,57 @@ const zoomBlockList = [
   },
 ]
 
-const errorHandler = (err: Error) => {
-  console.error(err)
-  store.dispatch('helper/openModalConfirm', {
-    type: MODAL_CONFIRM_TYPE.ALERT,
-    header: t('RR0107'),
-    contentText: t('RR0108'),
-    primaryBtnText: t('UU0031'),
-    primaryBtnHandler: () => window.location.reload(),
+const getSourceImageWithDownSampled = async (
+  imageUrl: string,
+  downSampleScales: number[]
+): Promise<{
+  sourceImage: HTMLImageElement
+  downSampledCanvases: HTMLCanvasElement[]
+}> => {
+  const downSampledCanvases = downSampleScales.map(() =>
+    document.createElement('canvas')
+  )
+
+  return new Promise((resolve, reject) => {
+    try {
+      const img = new Image()
+      img.src = imageUrl
+      img.crossOrigin = 'anonymous'
+      img.onload = async () => {
+        await preRender(img, downSampleScales, downSampledCanvases)
+        resolve({
+          sourceImage: img,
+          downSampledCanvases,
+        })
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        return reject(err)
+      }
+    }
   })
 }
 
-const { previewDisplay, renderPreviewDisplay } = usePreview(
-  destinationCanvas,
-  previewCanvasContainer,
-  previewGridColor.value,
-  (v) => (previewScale.value = v),
-  () => store.dispatch('helper/closeModalLoading'),
-  errorHandler
-)
+const handleSourceScaleChange = (v: number) => (sourceScale.value = v)
 
-const { destinationImage, perspectiveCropper } = usePerspectiveCropper({
-  sourceCanvasContainer,
-  dpi,
-  imageUrl: props.side.config.image.src,
-  restoreRecord: props.side.image.u3mCropRecord.perspectiveCropRecord,
-  initialRecord: props.side.perspectiveCropRecord,
-  initialGridColor: sourceGridColor.value,
-  destinationCanvas,
-  onCropSuccess: () => {
-    if (!perspectiveCropper.value?.destinationDimension) {
-      throw new Error('destinationDimension undefined')
-    }
-    destinationDimension.value = perspectiveCropper.value.destinationDimension
-    renderPreviewDisplay()
-    previewDisplay.value?.zoomToFit()
-  },
-  onInitStart: () =>
-    store.dispatch('helper/pushModalLoading', { theme: 'dark' }),
-  onInitEnd: () => store.dispatch('helper/closeModalLoading'),
-  onCropStart: () =>
-    store.dispatch('helper/pushModalLoading', { theme: 'dark' }),
-  onScaleChange: (v) => (sourceScale.value = v),
-  onRotationChange: (v) => (rotateDeg.value = v),
-  onEditStatusChange: (status) => emit('update:editStatus', status),
-  onError: errorHandler,
-})
+const handleCropStart = () => {
+  store.dispatch('helper/pushModalLoading', { theme: 'dark' })
+}
 
-const cropImage = () => perspectiveCropper.value?.getCroppedImage()
-const restore = () => perspectiveCropper.value?.restore()
+const handleCropSuccess = (result: {
+  canvas: HTMLCanvasElement
+  record: PerspectiveCropRecord
+}) => {
+  destinationDimension.value = getDimension(
+    result.canvas.width,
+    result.canvas.height,
+    dpi
+  )
+  destinationCanvas.value = result.canvas
+  destinationCropRecord.value = result.record
+  renderPreviewDisplay()
+  store.dispatch('helper/closeModalLoading', { theme: 'dark' })
+}
 
 const step = 0.01
 const stepAdd = (v: number) => toDP2(new Decimal(v).add(step))
@@ -212,43 +266,80 @@ const handleAreaClick = (area: 'edit' | 'preview') => {
 }
 
 const handleRotate = (deg: number) => {
-  if (!perspectiveCropper.value) {
-    throw new Error('perspective cropper is null or undefined')
+  if (!refPerspectiveCanvas.value) {
+    return
   }
-  perspectiveCropper.value.rotate(
-    (perspectiveCropper.value.rotateDeg + deg) % 360,
-    true
+  refPerspectiveCanvas.value.rotate(
+    (refPerspectiveCanvas.value.rotateDeg + deg) % 360
   )
 }
 
 const handleResetRotate = () => {
-  if (!perspectiveCropper.value) {
+  if (!refPerspectiveCanvas.value) {
     return
   }
-  perspectiveCropper.value.resetRotation()
+  refPerspectiveCanvas.value.resetRotation()
 }
 
 const handlePositionReset = () => {
-  if (!perspectiveCropper.value) {
+  if (!refPerspectiveCanvas.value) {
     return
   }
-  perspectiveCropper.value.resetPosition(true)
+  refPerspectiveCanvas.value.resetPositions()
+}
+
+const handleSourceGridColorChange = (hex: string) => {
+  sourceGridColor.value = hex
 }
 
 const handleSourceZoomAdd = () => {
-  if (!perspectiveCropper.value) {
+  if (!refPerspectiveCanvas.value) {
     return
   }
   const newScale = stepAdd(sourceScale.value)
-  perspectiveCropper.value.setScale(newScale)
+  refPerspectiveCanvas.value.setScale(newScale)
 }
 
 const handleSourceZoomMinus = () => {
-  if (!perspectiveCropper.value || sourceScale.value <= 0.01) {
+  if (!refPerspectiveCanvas.value || sourceScale.value <= 0.01) {
     return
   }
   const newScale = stepMinus(sourceScale.value)
-  perspectiveCropper.value.setScale(newScale)
+  refPerspectiveCanvas.value.setScale(newScale)
+}
+
+const handleSourceZoomUpdate = (type: string) => {
+  if (!refPerspectiveCanvas.value) {
+    return
+  }
+  switch (type) {
+    case ZOOM_TYPES.ZOOM_TO_FIT:
+      return refPerspectiveCanvas.value.zoomToFit()
+    case ZOOM_TYPES.ZOOM_TO_6:
+      return refPerspectiveCanvas.value.setScale(0.06)
+    case ZOOM_TYPES.ZOOM_TO_12:
+      return refPerspectiveCanvas.value.setScale(0.12)
+    case ZOOM_TYPES.ZOOM_TO_25:
+      return refPerspectiveCanvas.value.setScale(0.25)
+    case ZOOM_TYPES.ZOOM_TO_50:
+      return refPerspectiveCanvas.value.setScale(0.5)
+    case ZOOM_TYPES.ZOOM_TO_100:
+      return refPerspectiveCanvas.value.setScale(1)
+    case ZOOM_TYPES.ZOOM_TO_200:
+      return refPerspectiveCanvas.value.setScale(2)
+    case ZOOM_TYPES.ZOOM_TO_400:
+      return refPerspectiveCanvas.value.setScale(4)
+    default:
+      return
+  }
+}
+
+const handleTogglePreviewGrid = () => {
+  gridOpen.value = previewDisplay.value?.toggleGrid() || false
+}
+
+const handlePreviewGridColorChange = (hex: string) => {
+  previewGridColor.value = hex
 }
 
 const handlePreviewZoomAdd = () => {
@@ -267,45 +358,10 @@ const handlePreviewZoomMinus = () => {
   previewDisplay.value.setScale(newScale)
 }
 
-const handleSourceGridColorChange = (hex: string) => {
-  sourceGridColor.value = hex
-}
-const handlePreviewGridColorChange = (hex: string) => {
-  previewGridColor.value = hex
-}
-
-const handleSourceZoomUpdate = (type: string) => {
-  if (!perspectiveCropper.value) {
-    return
-  }
-
-  switch (type) {
-    case ZOOM_TYPES.ZOOM_TO_FIT:
-      return perspectiveCropper.value.zoomToFit()
-    case ZOOM_TYPES.ZOOM_TO_6:
-      return perspectiveCropper.value.setScale(0.06)
-    case ZOOM_TYPES.ZOOM_TO_12:
-      return perspectiveCropper.value.setScale(0.12)
-    case ZOOM_TYPES.ZOOM_TO_25:
-      return perspectiveCropper.value.setScale(0.25)
-    case ZOOM_TYPES.ZOOM_TO_50:
-      return perspectiveCropper.value.setScale(0.5)
-    case ZOOM_TYPES.ZOOM_TO_100:
-      return perspectiveCropper.value.setScale(1)
-    case ZOOM_TYPES.ZOOM_TO_200:
-      return perspectiveCropper.value.setScale(2)
-    case ZOOM_TYPES.ZOOM_TO_400:
-      return perspectiveCropper.value.setScale(4)
-    default:
-      return
-  }
-}
-
 const handlePreviewZoomUpdate = (type: string) => {
   if (!previewDisplay.value) {
     return
   }
-
   switch (type) {
     case ZOOM_TYPES.ZOOM_TO_FIT:
       return previewDisplay.value.zoomToFit()
@@ -328,17 +384,51 @@ const handlePreviewZoomUpdate = (type: string) => {
   }
 }
 
-watch(sourceGridColor, () => {
-  perspectiveCropper.value?.setGridColor(sourceGridColor.value)
-})
-
 watch(previewGridColor, () => {
   previewDisplay.value?.setGridColor(previewGridColor.value)
 })
 
-const handleTogglePreviewGrid = () => {
-  gridOpen.value = previewDisplay.value?.toggleGrid() || false
+onMounted(async () => {
+  store.dispatch('helper/pushModalLoading', { theme: 'dark' })
+  const result = await getSourceImageWithDownSampled(
+    props.side.config.image.src,
+    downSampleScales
+  )
+  sourceImage.value = result.sourceImage
+  downSampledCanvases.value = result.downSampledCanvases
+  store.dispatch('helper/closeModalLoading', { theme: 'dark' })
+})
+
+onUnmounted(() => {
+  if (destinationImage.value.src) {
+    URL.revokeObjectURL(destinationImage.value.src)
+  }
+})
+
+const cropImage = async () => {
+  const imageFile = await new Promise<File>((resolve, reject) => {
+    if (!destinationCanvas.value) {
+      throw new Error('destinationCanvas undefined')
+    }
+
+    destinationCanvas.value.toBlob((blob) => {
+      if (!blob) {
+        return reject('no blob')
+      }
+
+      if (destinationImage.value.src) {
+        URL.revokeObjectURL(destinationImage.value.src)
+      }
+      destinationImage.value.src = URL.createObjectURL(blob)
+      const fileName = `${tempFilenameGenerator()}.jpeg`
+      resolve(new File([blob], fileName, { type: 'image/jpeg' }))
+    }, 'image/jpeg')
+  })
+
+  return { imageFile, cropRecord: destinationCropRecord.value }
 }
+
+const restore = () => refPerspectiveCanvas.value?.restore()
 
 defineExpose({ cropImage, restore })
 </script>

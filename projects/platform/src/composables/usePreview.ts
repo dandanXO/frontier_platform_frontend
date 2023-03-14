@@ -46,8 +46,14 @@ class PreviewDisplay {
 
     this.layer = new Konva.Layer()
     this.drawByCanvas(this.destinationCanvas)
-    this.stage = this.stage = setupStage(
-      previewCanvasContainer,
+    this.stage = new Konva.Stage({
+      container: previewCanvasContainer,
+      width: previewCanvasContainer.offsetWidth,
+      height: previewCanvasContainer.offsetHeight,
+      draggable: true,
+    })
+    setupStage(
+      this.stage,
       destinationCanvas,
       this.wheelScaleBy,
       this.handleScaleChange.bind(this),
@@ -64,8 +70,9 @@ class PreviewDisplay {
       const line = new Konva.Line({
         points,
         stroke,
-        strokeWidth: 15,
+        strokeWidth: 2,
         closed: true,
+        strokeScaleEnabled: false,
       })
       this.lines.push(line)
       this.layer.add(line)
@@ -185,7 +192,6 @@ const usePreview = (
   previewCanvasContainer: Ref<HTMLDivElement | undefined>,
   initialGridColor: string,
   onScaleChange: (v: number) => void,
-  onPainted: () => void,
   onError: (err: Error) => void
 ) => {
   const previewDisplay = ref<PreviewDisplay>()
@@ -213,7 +219,7 @@ const usePreview = (
         )
         previewDisplay.value.draw()
       }
-      onPainted()
+      previewDisplay.value.zoomToFit()
     } catch (err) {
       if (err instanceof Error) {
         onError(err)

@@ -1,6 +1,7 @@
 import Konva from 'konva'
 import Pica from 'pica'
-import type { Coord } from '@/types'
+import type { Coord, Dimension } from '@/types'
+import { pixelToCm } from './cropper'
 
 const pica = Pica()
 
@@ -14,10 +15,28 @@ export const getDistance = (p1: Coord, p2: Coord) => {
   return Math.sqrt(dx ** 2 + dy ** 2)
 }
 
+export const getDistanceInCm = (pos1: Coord, pos2: Coord, dpi: number) =>
+  pixelToCm(getDistance(pos1, pos2), dpi)
+
 export const getCenter = (p1: Coord, p2: Coord) => ({
   x: (p1.x + p2.x) / 2,
   y: (p1.y + p2.y) / 2,
 })
+
+export const getDimension = (
+  widthInPx: number,
+  heightInPx: number,
+  dpi: number
+): Dimension => {
+  return {
+    dpi,
+    pixel: { width: widthInPx, height: heightInPx },
+    cm: {
+      width: pixelToCm(widthInPx, dpi),
+      height: pixelToCm(heightInPx, dpi),
+    },
+  }
+}
 
 export const setScale = (
   stage: Konva.Stage,
@@ -91,19 +110,13 @@ export const getFitOffset = (
 }
 
 export const setupStage = (
-  container: HTMLDivElement,
+  stage: Konva.Stage,
   source: HTMLImageElement | HTMLCanvasElement,
   wheelScaleBy: number,
   onScaleChange: (v: number) => void,
   mul = 1
 ) => {
   Konva.hitOnDragEnabled = true
-  const stage = new Konva.Stage({
-    container: container,
-    width: container.offsetWidth,
-    height: container.offsetHeight,
-    draggable: true,
-  })
   stage.container().style.cursor = 'move'
   const fitScale = getFitScale(stage, source, mul)
   const fitOffset = getFitOffset(stage, source, fitScale, mul)
