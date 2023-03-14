@@ -38,5 +38,6 @@
     "unstar",
     "VITE",
     "vuex"
-  ]
+  ],
+  "volar.inlayHints.eventArgumentInInlineHandlers": false
 }

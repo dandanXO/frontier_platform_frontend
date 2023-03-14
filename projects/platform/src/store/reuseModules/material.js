@@ -148,9 +148,11 @@ const Material = {
     updateDate: '',
     digitalThreadQty: 0,
     digitalThreadHasUnread: false,
-    unitName: 'FabricPro.Co',
-    unitLogo:
-      'https://textile-dev.frontier.cool/Resource/OrgLogo/202209050034001703.jpeg',
+    unitName: '',
+    unitLogo: '',
+    isMaterialOwnerSide: false,
+    materialOwnerOGId: 0,
+    materialOwnerOGType: OG_TYPE.ORG,
   }),
   getters: {
     material: (state) => state,

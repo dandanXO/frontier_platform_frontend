@@ -186,7 +186,7 @@ const optionMultiSelect = computed(() => [
 ])
 
 const getMaterialList = async (targetPage = 1, query) => {
-  await router.push({
+  router.push({
     name: route.name,
     query,
   })

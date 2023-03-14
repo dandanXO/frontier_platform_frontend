@@ -214,7 +214,7 @@ const currentNodeKey = ref(props.nodeKey)
 const selectedNodeList = ref([])
 
 const getShareReceivedList = async (targetPage = 1, query) => {
-  await router.push({
+  router.push({
     name: route.name,
     params: {
       nodeKey: currentNodeKey.value,

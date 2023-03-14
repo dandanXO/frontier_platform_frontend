@@ -15,10 +15,7 @@ div(class="relative w-full rounded-md drop-shadow-8 overflow-hidden")
       )
     div(class="pt-2.5 pl-1 flex flex-col gap-y-3")
       //- Add From
-      div(
-        v-if="isCreatingDigitalThread && !isInternalLocation"
-        class="h-9 flex items-center gap-x-1.5"
-      )
+      div(v-if="canChooseAddFrom" class="h-9 flex items-center gap-x-1.5")
         div(class="w-17.5 flex items-center gap-x-1")
           p(class="text-caption text-grey-900") {{ $t('TT0006') }}
           f-svg-icon(
@@ -206,6 +203,15 @@ const isInternalLocation = computed(() =>
     store.getters['sticker/drawerOpenFromLocationType']
   )
 )
+
+const canChooseAddFrom = computed(() => {
+  return (
+    props.isCreatingDigitalThread &&
+    [LOCATION_TYPE.PUBLIC, LOCATION_TYPE.RECEIVED_SHARE].includes(
+      store.getters['sticker/drawerOpenFromLocationType']
+    )
+  )
+})
 
 // form data of creating digit thread or sticker
 const addFrom = ref(menuAddFrom.value.blockList[0].menuList[0].selectValue)

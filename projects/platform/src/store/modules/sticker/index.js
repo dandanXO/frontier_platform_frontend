@@ -3,6 +3,7 @@ import Material from '@/store/reuseModules/material.js'
 import { OG_TYPE, ROLE_ID, LOCATION_TYPE } from '@/utils/constants'
 import isEqual from '@frontier/ui-component/src/isEqual.js'
 import groupApi from '@/apis/group'
+import i18n from '@/utils/i18n'
 
 const defaultDigitalThreadBase = () => ({
   digitalThreadSideId: null,
@@ -57,6 +58,7 @@ export default {
   },
   state: () => ({
     isStickerDrawerOpen: false,
+    isAddingSticker: false, // 正在新增 sticker
     isReceivedShareStickerDrawerOpen: false,
     currentMaterialId: null, // drawer 顯示的 materialId
     drawerOpenFromLocationType: null, // drawer 是從哪一個位置的 material 開啟的
@@ -77,6 +79,7 @@ export default {
     drawerOpenFromLocationType: (state) => state.drawerOpenFromLocationType,
     drawerOpenFromLocationList: (state) => state.drawerOpenFromLocationList,
     isStickerDrawerOpen: (state) => state.isStickerDrawerOpen,
+    isAddingSticker: (state) => state.isAddingSticker,
     isReceivedShareStickerDrawerOpen: (state) =>
       state.isReceivedShareStickerDrawerOpen,
     digitalThread: (state) => state.digitalThread,
@@ -119,6 +122,9 @@ export default {
   mutations: {
     SET_isStickerDrawerOpen(state, isStickerDrawerOpen) {
       state.isStickerDrawerOpen = isStickerDrawerOpen
+    },
+    SET_isAddingSticker(state, isAddingSticker) {
+      state.isAddingSticker = isAddingSticker
     },
     SET_isReceivedShareStickerDrawerOpen(
       state,
@@ -196,7 +202,7 @@ export default {
         drawerOpenFromLocationList = null,
       }
     ) {
-      dispatch('closeStickerDrawer')
+      dispatch('resetState')
       dispatch('helper/openModalLoading', null, { root: true })
       commit('SET_drawerOpenFrom', {
         drawerOpenFromLocationType,
@@ -220,11 +226,51 @@ export default {
       commit('SET_material', material)
       commit('SET_isReceivedShareStickerDrawerOpen', true)
     },
-    closeStickerDrawer({ commit }) {
-      commit('SET_isStickerDrawerOpen', false)
+    resetState({ commit }) {
       commit('RESET_tempDigitalThreadList')
       commit('RESET_filter')
       commit('SET_currentMaterialId', null)
+    },
+    async closeStickerDrawer({ commit, getters, dispatch }) {
+      console.log('close')
+      await new Promise((resolve, reject) => {
+        const resolveHandler = () => {
+          dispatch('resetState')
+          commit('SET_isStickerDrawerOpen', false)
+          resolve('confirm')
+          return
+        }
+
+        const tempDigitalThreadList = getters.tempDigitalThreadList
+        const isAddingSticker = getters.isAddingSticker
+
+        if (tempDigitalThreadList.length === 0 && !isAddingSticker) {
+          return resolveHandler()
+        }
+
+        let header, contentText
+        if (tempDigitalThreadList.length > 0) {
+          header = i18n.global.t('TT0088')
+          contentText = i18n.global.t('TT0089')
+        } else if (isAddingSticker) {
+          header = i18n.global.t('TT0090')
+          contentText = i18n.global.t('TT0091')
+        }
+
+        dispatch(
+          'helper/openModalConfirm',
+          {
+            type: 1,
+            header,
+            contentText,
+            primaryBtnText: i18n.global.t('UU0128'),
+            primaryBtnHandler: resolveHandler,
+            secondaryBtnText: i18n.global.t('UU0002'),
+            secondaryBtnHandler: reject,
+          },
+          { root: true }
+        )
+      })
     },
     async getDigitalThreadList({ commit, rootGetters, getters }) {
       let ogType =

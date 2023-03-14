@@ -261,7 +261,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
               button(
                 class="relative w-full h-16 rounded-md overflow-hidden drop-shadow-2"
                 :class="[digitalThread.hasMaterialDeleted ? 'bg-grey-50' : 'bg-grey-0']"
-                @click="!digitalThread.hasMaterialDeleted && (isAddingSticker = true)"
+                @click="!digitalThread.hasMaterialDeleted && setIsAddingSticker(true)"
               )
                 div(class="absolute top-0 left-0 w-1 h-full bg-forestgreen-300")
                 div(class="pl-7.5 h-full flex items-center")
@@ -291,7 +291,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
             sticker-create(
               :isCreatingDigitalThread="isCreatingDigitalThread"
               :digitalThreadName="digitalThread.digitalThreadName"
-              @close="isAddingSticker = false"
+              @close="setIsAddingSticker(false)"
             )
           div(class="pt-3 pl-8 pr-10.5 flex flex-col gap-y-3")
             sticker-card(
@@ -352,7 +352,10 @@ const isCreatingDigitalThread = computed(
     digitalThread.value.digitalThreadSideId === null &&
     stickerList.value.length === 0
 ) // 全新的 digital thread 尚未建立任何一個 sticker
-const isAddingSticker = ref(false)
+
+const isAddingSticker = computed(() => store.getters['sticker/isAddingSticker'])
+const setIsAddingSticker = (bool) =>
+  store.commit('sticker/SET_isAddingSticker', bool)
 
 const isEditingDigitalThreadName = ref(false)
 const tempDigitalThreadName = ref('')
@@ -409,7 +412,7 @@ const digitalThreadList = computed(() =>
 )
 
 const startToCreateDigitalThread = () => {
-  isAddingSticker.value = false
+  setIsAddingSticker(false)
   store.dispatch('sticker/startToCreateDigitalThread')
 }
 
@@ -418,7 +421,7 @@ const openDigitalThread = async (digitalThread, index) => {
     return
   }
   isChangingDigitalThread.value = true
-  isAddingSticker.value = false
+  setIsAddingSticker(false)
   store.commit('sticker/SET_indexOfDrawerDigitalThread', index)
   store.commit('sticker/RESET_filter')
   const digitalThreadSideId = digitalThread.digitalThreadSideId
@@ -511,6 +514,44 @@ const toggleTagList = (selectTag) => {
   }
 }
 
+const goToMaterialDetail = (openNewPage = false) => {
+  if (
+    digitalThread.value.hasMaterialDeleted ||
+    digitalThread.value.hasMaterialNoAccess
+  ) {
+    return
+  }
+  const {
+    isMaterialOwnerSide,
+    materialId,
+    materialOwnerOGId,
+    materialOwnerOGType,
+  } = material.value
+
+  if (!isMaterialOwnerSide) {
+    return store.dispatch('helper/openModalBehavior', {
+      component: 'modal-sticker-material-detail',
+      properties: {
+        material: material.value,
+      },
+    })
+  }
+
+  const orgNo = store.getters['organization/orgNo']
+  let unParsedPath
+  if (materialOwnerOGType === OG_TYPE.ORG) {
+    unParsedPath = `/${orgNo}/assets/${materialId}`
+  } else {
+    unParsedPath = `/${orgNo}/${materialOwnerOGId}/assets/${materialId}`
+  }
+
+  if (openNewPage) {
+    window.open(parsePath(unParsedPath), '_blank')
+  } else {
+    router.push(parsePath(unParsedPath))
+  }
+}
+
 const readDigitalThread = (e) => {
   if (!isCreatingDigitalThread.value) {
     const body = {
@@ -537,63 +578,6 @@ onUnmounted(() => {
 })
 
 const closeStickerDrawer = () => {
-  const tempDigitalThreadList = store.getters['sticker/tempDigitalThreadList']
-
-  if (tempDigitalThreadList.length === 0 && !isAddingSticker.value) {
-    store.dispatch('sticker/closeStickerDrawer')
-    return
-  }
-
-  let header, contentText
-  if (tempDigitalThreadList.length > 0) {
-    header = t('TT0088')
-    contentText = t('TT0089')
-  } else if (isAddingSticker.value) {
-    header = t('TT0090')
-    contentText = t('TT0091')
-  }
-
-  store.dispatch('helper/openModalConfirm', {
-    type: 1,
-    header,
-    contentText,
-    primaryBtnText: t('UU0128'),
-    primaryBtnHandler: () => {
-      store.dispatch('sticker/closeStickerDrawer')
-    },
-    secondaryBtnText: t('UU0002'),
-  })
-}
-
-const goToMaterialDetail = (openNewPage = false) => {
-  if (
-    digitalThread.value.hasMaterialDeleted ||
-    digitalThread.value.hasMaterialNoAccess
-  ) {
-    return
-  }
-
-  if (!digitalThread.value.isMaterialOwnerSide) {
-    return store.dispatch('helper/openModalBehavior', {
-      component: 'modal-sticker-material-detail',
-      properties: {
-        material: material.value,
-      },
-    })
-  }
-
-  const { sourceAssetLocation, materialId } = material.value
-  let unParsedPath
-  if (sourceAssetLocation === OG_TYPE.ORG) {
-    unParsedPath = `/:orgNo/assets/${materialId}`
-  } else {
-    unParsedPath = `/:orgNo/:groupId/assets/${materialId}`
-  }
-
-  if (openNewPage) {
-    window.open(parsePath(unParsedPath), '_blank')
-  } else {
-    router.push(parsePath(unParsedPath))
-  }
+  store.dispatch('sticker/closeStickerDrawer')
 }
 </script>

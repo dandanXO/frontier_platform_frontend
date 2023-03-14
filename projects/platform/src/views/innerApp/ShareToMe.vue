@@ -152,7 +152,7 @@ const haveMsgAndFirstRead = computed(
 )
 
 const getShareToMeList = async (targetPage = 1, query) => {
-  await router.push({
+  router.push({
     name: route.name,
     params: {
       nodeKey: currentNodeKey.value,
