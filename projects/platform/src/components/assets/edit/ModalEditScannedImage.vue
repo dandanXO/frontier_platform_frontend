@@ -4,6 +4,7 @@ modal-behavior(
   :primaryBtnText="$t('UU0018')"
   primaryBtnIcon="done"
   :secondaryBtnText="$t('UU0002')"
+  :primaryBtnDisabled="!isAllSideImgLoaded"
   @click:primary="confirm"
   @click:secondary="closeModal"
   :closable="false"
