@@ -51,7 +51,7 @@ const dataUrlToBlob = (dataUrl) => {
 const downloadDataURLFile = (dataURL, fileName = 'file') => {
   const link = document.createElement('a')
   link.hidden = true
-  link.download = fileName
+  link.download = decodeURIComponent(fileName)
   link.href = dataURL
   link.text = 'downloading...'
   link.target = '_blank'
