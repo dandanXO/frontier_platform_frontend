@@ -128,7 +128,15 @@ export default {
  * 2. 數量多時爆卡
  */
 
-import { ref, toRefs, useSlots, computed, onMounted, nextTick } from 'vue'
+import {
+  ref,
+  toRefs,
+  useSlots,
+  computed,
+  onMounted,
+  nextTick,
+  onBeforeUnmount,
+} from 'vue'
 import { CONTEXTUAL_MENU_MODE } from '../../constants.js'
 import useInput from '../useInput'
 import isEqual from '../../isEqual.js'
@@ -239,10 +247,16 @@ const innerSelectValue = computed({
   set: (v) => emit('update:selectValue', v),
 })
 const displayText = computed(() => {
-  const getMenu = (v) =>
-    props.dropdownMenuTree.blockList[0].menuList.find((menu) =>
-      isEqual(menu.selectValue, v)
-    )
+  const getMenu = (v) => {
+    for (const block of props.dropdownMenuTree.blockList) {
+      for (const menu of block.menuList) {
+        if (isEqual(menu.selectValue, v)) {
+          return menu
+        }
+      }
+    }
+    return null
+  }
   if (props.multiple) {
     return innerSelectValue.value.map((v) => getMenu(v)?.title)
   }
@@ -400,8 +414,9 @@ const refContainer = ref(null)
 const refInput = ref(null)
 const contentWidth = ref(0)
 const popperOffsetY = ref(props.size === 'lg' ? 44 : 36)
+const refContainerObserver = ref(null)
 onMounted(() => {
-  new ResizeObserver((entries) => {
+  refContainerObserver.value = new ResizeObserver((entries) => {
     if (props.label) {
       popperOffsetY.value =
         refContainer.value.$el.children[1].getBoundingClientRect().height
@@ -410,7 +425,11 @@ onMounted(() => {
         refContainer.value.$el.children[0].getBoundingClientRect().height
     }
     contentWidth.value = entries[0].contentRect.width
-  }).observe(refContainer.value.$el)
+  })
+  refContainerObserver.value.observe(refContainer.value.$el)
+})
+onBeforeUnmount(() => {
+  refContainerObserver.value.unobserve(refContainer.value.$el)
 })
 
 const expand = () => {
@@ -463,6 +482,7 @@ const addNewMenu = async () => {
   }
 
   // step 3
+  // 不管有沒有 custom，當下新增的結果都會在 blockList[0]
   const selectedMenu = props.dropdownMenuTree.blockList[0].menuList.find(
     (menu) => menu.title === inputText.value
   )

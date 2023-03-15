@@ -81,13 +81,28 @@ const Template = (args) => ({
     })
 
     const addNew = (newValue) => {
-      dropdownMenuTree.value.blockList[0].menuList.push({
-        title: newValue,
-        selectValue: {
-          name: newValue,
-          value: null,
-        },
-      })
+      if (dropdownMenuTree.value.blockList.length === 1) {
+        dropdownMenuTree.value.blockList.unshift({
+          blockTitle: 'custom',
+          menuList: [
+            {
+              title: newValue,
+              selectValue: {
+                name: newValue,
+                value: null,
+              },
+            },
+          ],
+        })
+      } else {
+        dropdownMenuTree.value.blockList[0].menuList.push({
+          title: newValue,
+          selectValue: {
+            name: newValue,
+            value: null,
+          },
+        })
+      }
     }
 
     delete args.selectValue

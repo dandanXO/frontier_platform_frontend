@@ -49,12 +49,21 @@ export default function useMaterialEdit() {
       scrollAreaMaxHeight: 'max-h-72',
       blockList: [
         {
+          blockTitle: 'custom',
           menuList: newContentList
-            .concat(store.getters['assets/code'].contentList)
+            .concat(store.getters['assets/code'].contentList.custom)
             .map((content) => ({
               selectValue: content.name,
               title: content.name,
             })),
+        },
+        {
+          menuList: store.getters['assets/code'].contentList.default.map(
+            (content) => ({
+              selectValue: content.name,
+              title: content.name,
+            })
+          ),
         },
       ],
     })),
@@ -76,12 +85,21 @@ export default function useMaterialEdit() {
       scrollAreaMaxHeight: 'max-h-72',
       blockList: [
         {
+          blockTitle: 'custom',
           menuList: newDescriptionList
-            .concat(store.getters['assets/code'].descriptionList)
+            .concat(store.getters['assets/code'].descriptionList.custom)
             .map((description) => ({
               title: description.name,
               selectValue: description,
             })),
+        },
+        {
+          menuList: store.getters['assets/code'].descriptionList.default.map(
+            (description) => ({
+              title: description.name,
+              selectValue: description,
+            })
+          ),
         },
       ],
     })),
@@ -89,12 +107,21 @@ export default function useMaterialEdit() {
       scrollAreaMaxHeight: 'max-h-72',
       blockList: [
         {
+          blockTitle: 'custom',
           menuList: newFinishList
-            .concat(store.getters['assets/code'].finishList)
+            .concat(store.getters['assets/code'].finishList.custom)
             .map((finish) => ({
               title: finish.name,
               selectValue: finish,
             })),
+        },
+        {
+          menuList: store.getters['assets/code'].finishList.default.map(
+            (finish) => ({
+              title: finish.name,
+              selectValue: finish,
+            })
+          ),
         },
       ],
     })),
@@ -137,7 +164,8 @@ export default function useMaterialEdit() {
   }
 
   const selectContent = (contentName, contentItemIndex) => {
-    const content = store.getters['assets/code'].contentList
+    const content = store.getters['assets/code'].contentList.custom
+      .concat(store.getters['assets/code'].contentList.default)
       .concat(newContentList)
       .find((content) => content.name === contentName)
     store.commit('assets/UPDATE_content_item', {

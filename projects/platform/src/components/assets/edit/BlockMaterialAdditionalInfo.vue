@@ -9,6 +9,8 @@ div
       :dropdownMenuTree="specOptions.certificateList"
       :placeholder="$t('EE0131')"
       multiple
+      widthFitWithInput
+      :canAddNew="false"
     )
     div
       div(class="pb-10")
