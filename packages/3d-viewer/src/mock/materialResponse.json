@@ -1,0 +1,201 @@
+{
+  "material": {
+    "materialId": 63957,
+    "sourceAssetLocation": 1,
+    "frontierNo": "F100331272501",
+    "relationFrontierNo": null,
+    "materialNo": "EY11905",
+    "materialSeq": null,
+    "relationMaterialId": -1,
+    "content": "100% Apple",
+    "contentList": [
+      {
+        "contentId": 3262,
+        "name": "Apple",
+        "percentage": 100
+      }
+    ],
+    "description": "Woven,Dobby",
+    "descriptionList": [
+      {
+        "descriptionId": 2,
+        "name": "Woven"
+      },
+      {
+        "descriptionId": 131,
+        "name": "Dobby"
+      }
+    ],
+    "finish": "",
+    "finishList": [],
+    "width": 57,
+    "weightUnit": 2,
+    "weightGsm": 5864.7,
+    "weightOz": 173,
+    "weightGy": 0,
+    "warpDensity": "54",
+    "weftDensity": "56",
+    "warpYarnCount": "20+10/2*20",
+    "weftYarnCount": "",
+    "pattern": "",
+    "color": "",
+    "sampleCardsRemainingQty": 1212121,
+    "sampleCardsLocation": "hhkjhjkh",
+    "hangersRemainingQty": null,
+    "hangersLocation": "ewewe",
+    "publicTagList": [],
+    "privateTagList": [],
+    "tagList": [
+      "100% Apple",
+      "12-0304 TCX",
+      "14-1122 TCX",
+      "Dobby",
+      "EY11905",
+      "F100331272501",
+      "horizontal stripe",
+      "Orange",
+      "Poplin",
+      "Sheepskin",
+      "stripe",
+      "White",
+      "Whitecap Gray",
+      "Woven",
+      "yarn:20+10/2*20"
+    ],
+    "aiTagList": ["Dobby", "horizontal stripe", "Poplin", "stripe", "woven"],
+    "coverMode": 1,
+    "coverImg": "https://textile-dev.frontier.cool/Resource/MaterialCut/Thumbnail/F100331272501_202210031936235585.jpg",
+    "faceSideImg": {
+      "crop": "https://textile-dev.frontier.cool/Resource/MaterialCut/F100331272501_202210031936235585.jpg",
+      "ruler": "https://textile-dev.frontier.cool/Resource/MaterialRuler/F100331272501_202210031936235585.jpg",
+      "original": "https://textile-dev.frontier.cool/Resource/MaterialSampleCard/F100331272501_202210031936235585.jpg",
+      "dpi": 600,
+      "u3mCrop": "https://textile-dev.frontier.cool/Resource/MaterialU3M/Original/EY11905_F100331272501_202212061412233142.jpg",
+      "u3mOriginal": "https://textile-dev.frontier.cool/Resource/OriginalMaterialSampleCard/F100331272501_202210031936235578.jpg",
+      "cropRecord": null,
+      "u3mCropRecord": {
+        "squareCropRecord": null,
+        "perspectiveCropRecord": null
+      }
+    },
+    "backSideImg": {
+      "crop": null,
+      "ruler": null,
+      "original": null,
+      "dpi": null,
+      "u3mCrop": null,
+      "u3mOriginal": null,
+      "cropRecord": null,
+      "u3mCropRecord": null
+    },
+    "isDoubleSideMaterial": false,
+    "sideType": 1,
+    "remark": null,
+    "isDelete": false,
+    "isComplete": true,
+    "cloneFromMaterialId": 63931,
+    "totalInventoryQty": 0,
+    "inventoryUnit": "Y",
+    "inventoryList": [
+      {
+        "section": "",
+        "shelf": "",
+        "quantity": 0,
+        "unit": "Y"
+      }
+    ],
+    "isPublicInventory": false,
+    "publicPrice": {
+      "countryCode": null,
+      "currency": "USD",
+      "price": 1.11,
+      "unit": "Y",
+      "minimumOrderQuantity": null,
+      "minimumOrderQuantityUnit": null,
+      "minimumContainerQuantity": null,
+      "minimumContainerQuantityUnit": null,
+      "productionLeadTime": null,
+      "sampleLeadTime": null
+    },
+    "privatePrice": {
+      "countryCode": null,
+      "currency": null,
+      "price": null,
+      "unit": null,
+      "minimumOrderQuantity": null,
+      "minimumOrderQuantityUnit": null,
+      "minimumContainerQuantity": null,
+      "minimumContainerQuantityUnit": null,
+      "productionLeadTime": null,
+      "sampleLeadTime": null
+    },
+    "attachmentList": [],
+    "pantoneList": [
+      {
+        "materialPantoneId": 131180,
+        "pantoneId": 412,
+        "name": "14-1122 TCX",
+        "majorColorName": "Orange",
+        "colorName": "Sheepskin",
+        "r": 218,
+        "g": 181,
+        "b": 143
+      },
+      {
+        "materialPantoneId": 136928,
+        "pantoneId": 51,
+        "name": "12-0304 TCX",
+        "majorColorName": "White",
+        "colorName": "Whitecap Gray",
+        "r": 224,
+        "g": 213,
+        "b": 198
+      }
+    ],
+    "u3m": {
+      "status": 2,
+      "zipUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/ZIP/EY11905_F100331272501_202212061412233142.zip",
+      "u3maUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3MA/EY11905_F100331272501_202212061412233142.u3ma",
+      "gltfUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/Gltf/EY11905_F100331272501_202212061412233142/EY11905_F100331272501.gltf",
+      "baseImgUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3M/EY11905_F100331272501_202212061412233142/textures/base.jpg",
+      "normalImgUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3M/EY11905_F100331272501_202212061412233142/textures/nrm.jpg",
+      "dispImgUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3M/EY11905_F100331272501_202212061412233142/textures/disp.jpg",
+      "roughImgUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3M/EY11905_F100331272501_202212061412233142/textures/rough.jpg",
+      "dpi": 600,
+      "u3mSpecUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3M/EY11905_F100331272501_202212061412233142/u3m_package.u3m",
+      "u3mPhysicSpecUrl": "https://textile-dev.frontier.cool/Resource/MaterialU3M/U3M/EY11905_F100331272501_202212061412233142/physics.json"
+    },
+    "carbonEmission": {
+      "co2": {
+        "benchmark": null,
+        "personalized": 143.86,
+        "differenceInPercent": null,
+        "saving": null
+      },
+      "water": {
+        "benchmark": null,
+        "personalized": 9.9,
+        "differenceInPercent": null,
+        "saving": null
+      },
+      "land": {
+        "benchmark": null,
+        "personalized": 1.91,
+        "differenceInPercent": null,
+        "saving": null
+      },
+      "energy": {
+        "benchmark": null,
+        "personalized": 278.06,
+        "differenceInPercent": null,
+        "saving": null
+      },
+      "lastUpdateTime": 1670533213,
+      "materialOwnerMade2FlowPlanType": 1,
+      "viewerMade2FlowPlanType": 1
+    },
+    "certificateList": [],
+    "createDate": 1664796980,
+    "updateDate": 1670533213
+  }
+}

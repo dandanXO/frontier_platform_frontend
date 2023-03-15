@@ -43,7 +43,7 @@ importers:
       vue-tsc: 1.0.13
       vue3-carousel: ^0.1.46
     dependencies:
-      '@frontier/3d-viewer': link:projects/3d-viewer
+      '@frontier/3d-viewer': link:packages/3d-viewer
       '@frontier/console': link:projects/console
       '@frontier/mock-embed': link:projects/mock-embed
       '@frontier/platform': link:projects/platform
@@ -83,6 +83,33 @@ importers:
       vite-plugin-svg-sprite-component: 1.0.10
       vue-tsc: 1.0.13_typescript@4.7.4
 
+  packages/3d-viewer:
+    specifiers:
+      '@types/chroma-js': ^2.1.4
+      '@types/debounce': ^1.2.1
+      '@types/ramda': ^0.28.15
+      '@types/three': ^0.144.0
+      '@vueuse/core': ^9.11.0
+      chroma-js: ^2.4.2
+      debounce: ^1.2.1
+      npm-run-all: ^4.1.5
+      ramda: ^0.28.0
+      rgbquant: ^1.1.2
+      three: ^0.137.5
+    dependencies:
+      '@vueuse/core': 9.11.0_vue@3.2.37
+      chroma-js: 2.4.2
+      debounce: 1.2.1
+      ramda: 0.28.0
+      rgbquant: 1.1.2
+      three: 0.137.5
+    devDependencies:
+      '@types/chroma-js': 2.1.4
+      '@types/debounce': 1.2.1
+      '@types/ramda': 0.28.15
+      '@types/three': 0.144.0
+      npm-run-all: 4.1.5
+
   packages/tailwindcss:
     specifiers: {}
 
@@ -120,33 +147,6 @@ importers:
       overlayscrollbars: 1.13.3
       vue-loader: 16.8.3_qqqe4csfwjpdw4fx3iknp23xnq
       vue-virtual-scroller: 2.0.0-alpha.1_vue@3.2.37
-
-  projects/3d-viewer:
-    specifiers:
-      '@types/chroma-js': ^2.1.4
-      '@types/debounce': ^1.2.1
-      '@types/ramda': ^0.28.15
-      '@types/three': ^0.144.0
-      '@vueuse/core': ^9.11.0
-      chroma-js: ^2.4.2
-      debounce: ^1.2.1
-      npm-run-all: ^4.1.5
-      ramda: ^0.28.0
-      rgbquant: ^1.1.2
-      three: ^0.137.5
-    dependencies:
-      '@vueuse/core': 9.11.0_vue@3.2.37
-      chroma-js: 2.4.2
-      debounce: 1.2.1
-      ramda: 0.28.0
-      rgbquant: 1.1.2
-      three: 0.137.5
-    devDependencies:
-      '@types/chroma-js': 2.1.4
-      '@types/debounce': 1.2.1
-      '@types/ramda': 0.28.15
-      '@types/three': 0.144.0
-      npm-run-all: 4.1.5
 
   projects/console:
     specifiers: {}
@@ -199,7 +199,7 @@ importers:
       '@tiptap/extension-placeholder': 2.0.0-beta.209_rzrfxp22ufute5oinbrky5ltgq
       '@tiptap/extension-text': 2.0.0-beta.209_f4ffqkgz5d3wev7su7t7l2rrua
       '@tiptap/suggestion': 2.0.0-beta.209_rzrfxp22ufute5oinbrky5ltgq
-      '@tiptap/vue-3': 2.0.0-beta.209_xqznyvyqfm5xnvennhxsjel3iu
+      '@tiptap/vue-3': 2.0.0-beta.209_xamqrwtlg72v44xv4ucp4kftpm
       decimal.js: 10.4.3
       dom-to-image: 2.6.0
       html2canvas: 1.4.1
@@ -3612,20 +3612,18 @@ packages:
       prosemirror-view: 1.30.0
     dev: false
 
-  /@tiptap/extension-bubble-menu/2.0.0-beta.209_27jgeup2z74i6zpmgsqikpgc3m:
+  /@tiptap/extension-bubble-menu/2.0.0-beta.209_6hygshthdpjql2h3ln2tmxwxxy:
     resolution: {integrity: sha512-tceZAuDpy3J96uGyCzpJFD3fHABJDTJTq5E0hm+TRQT+eVGVqZI0PE3/4yVFgkCshioTuJq8veMDFcqNsSkKsQ==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0-beta.193
+      prosemirror-state: ^1.4.1
+      prosemirror-view: ^1.28.2
     dependencies:
       '@tiptap/core': 2.0.0-beta.209_4nuxvpohlb3jeygmbr7vfoeqbe
       lodash: 4.17.21
       prosemirror-state: 1.4.2
       prosemirror-view: 1.30.0
       tippy.js: 6.3.7
-    transitivePeerDependencies:
-      - prosemirror-commands
-      - prosemirror-keymap
-      - prosemirror-model
-      - prosemirror-schema-list
-      - prosemirror-transform
     dev: false
 
   /@tiptap/extension-document/2.0.0-beta.209_f4ffqkgz5d3wev7su7t7l2rrua:
@@ -3707,7 +3705,7 @@ packages:
       prosemirror-view: 1.30.0
     dev: false
 
-  /@tiptap/vue-3/2.0.0-beta.209_xqznyvyqfm5xnvennhxsjel3iu:
+  /@tiptap/vue-3/2.0.0-beta.209_xamqrwtlg72v44xv4ucp4kftpm:
     resolution: {integrity: sha512-v0GUO6mcRgDfT6bNX3fHJds9QIpYqFBiGaanvTDVlOhErOSgrOx2+QuEieG0F9nUQ1az9h0kj5NZxvP9CeTlcQ==}
     peerDependencies:
       '@tiptap/core': ^2.0.0-beta.193
@@ -3716,17 +3714,11 @@ packages:
       vue: ^3.0.0
     dependencies:
       '@tiptap/core': 2.0.0-beta.209_4nuxvpohlb3jeygmbr7vfoeqbe
-      '@tiptap/extension-bubble-menu': 2.0.0-beta.209_27jgeup2z74i6zpmgsqikpgc3m
+      '@tiptap/extension-bubble-menu': 2.0.0-beta.209_6hygshthdpjql2h3ln2tmxwxxy
       '@tiptap/extension-floating-menu': 2.0.0-beta.209_6hygshthdpjql2h3ln2tmxwxxy
       prosemirror-state: 1.4.2
       prosemirror-view: 1.30.0
       vue: 3.2.37
-    transitivePeerDependencies:
-      - prosemirror-commands
-      - prosemirror-keymap
-      - prosemirror-model
-      - prosemirror-schema-list
-      - prosemirror-transform
     dev: false
 
   /@types/aria-query/4.2.2:
