@@ -37,7 +37,10 @@ export class LoginPage {
     locale: string
     platform: number
   }) {
-    this.page.request.post(`${apiUrl}/sign-up/general`, { data: user })
+    const res = await this.page.request.post(`${apiUrl}/sign-up/general`, {
+      data: user,
+    })
+    return res.json()
   }
 
   async signInApi(user: { email: string; password: string; platform: number }) {
