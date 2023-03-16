@@ -1,11 +1,11 @@
 import { expect } from '@playwright/test'
-import test from './domain/test'
+import test from '@/domain/test'
 import {
   createGroupReq,
   createOrgReq,
   initialGroup,
   initialOrg,
-} from './domain/org'
+} from '@/domain/org'
 
 test.beforeEach(async ({ orgPage }) => {
   await orgPage.goto()

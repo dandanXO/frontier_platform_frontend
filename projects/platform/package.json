@@ -9,8 +9,6 @@
     "deploy": "npm run build --mode=$npm_config_mode && bash ./scripts/deploy.sh $npm_config_mode",
     "deploy:dev": "npm run deploy --mode=development",
     "preview": "vite preview --port 8080 --mode=development",
-    "test:e2e": "npx playwright test",
-    "test:show-report": "npx playwright show-report",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path ../../.gitignore",
     "format": "prettier --write '**/*.{js,ts,vue,json}' --ignore-path ../../.gitignore"
   },
@@ -45,9 +43,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@playwright/test": "^1.25.0",
-    "@types/pica": "^9.0.1",
-    "start-server-and-test": "^1.14.0"
+    "@types/pica": "^9.0.1"
   },
   "peerDependencies": {
     "vue": "3.2.37"

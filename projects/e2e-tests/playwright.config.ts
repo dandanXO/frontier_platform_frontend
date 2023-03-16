@@ -4,9 +4,9 @@ import { devices, PlaywrightTestConfig } from '@playwright/test'
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
-  globalSetup: require.resolve('./tests/global-setup'),
-  globalTeardown: require.resolve('./tests/global-teardown'),
-  testDir: './tests',
+  globalSetup: require.resolve('./src/tests/global-setup'),
+  globalTeardown: require.resolve('./src/tests/global-teardown'),
+  testDir: './src/tests',
   timeout: 90 * 1000,
   expect: { timeout: 10000 },
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -34,7 +34,7 @@ const config: PlaywrightTestConfig = {
   outputDir: 'test-results/',
   webServer: {
     // 也可以為了更好的效能改成 npm run preview，不過就需要先 build 過。
-    command: 'npm run serve:dev',
+    command: 'cd ../platform && npm run serve:dev',
     port: 8080,
   },
 }

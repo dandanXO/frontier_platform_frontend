@@ -1,7 +1,7 @@
 import { expect, Page } from '@playwright/test'
-import test from './domain/test'
-import { randomNumber, randomString } from './domain/utils'
-import { urls } from './domain/routes'
+import test from '@/domain/test'
+import { randomNumber, randomString } from '@/domain/utils'
+import { urls } from '@/domain/routes'
 
 /**
  *  Case 1: 初始狀態

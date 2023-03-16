@@ -1,6 +1,6 @@
 // global-setup.ts
 import { chromium, FullConfig } from '@playwright/test'
-import { OrgPage } from './domain/org'
+import { OrgPage } from '@/domain/org'
 
 async function globalSetup(_config: FullConfig) {
   const browser = await chromium.launch()

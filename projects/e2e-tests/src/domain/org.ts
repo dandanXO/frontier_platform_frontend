@@ -29,6 +29,7 @@ export const createOrgReq = () => {
     orgCategoryId: 1,
     countryCode: 'TW',
     uploadMaterialEmail: `e2e.org.${id}`,
+    signupSourceType: 1,
   }
 }
 
@@ -48,6 +49,7 @@ export const initialOrg = {
   orgCategoryId: 1,
   countryCode: 'TW',
   uploadMaterialEmail: 'e2e.org.initial',
+  signupSourceType: 1,
 }
 
 export const initialGroup = {
@@ -58,18 +60,24 @@ export const initialGroup = {
 }
 
 const apiAnnotation = async (name: string, req: object, res: APIResponse) => {
-  const body = await res.json()
-  const status = res.status()
-  const headers = res.headers()
-  test.info().annotations.push({
-    type: name,
-    description: JSON.stringify({
-      request: req,
-      status: status,
-      headers,
-      body,
-    }),
-  })
+  try {
+    const body = await res.json()
+    const status = res.status()
+    const headers = res.headers()
+    test.info().annotations.push({
+      type: name,
+      description: JSON.stringify({
+        request: req,
+        status: status,
+        headers,
+        body,
+      }),
+    })
+    // eslint-disable-next-line no-empty
+  } catch {
+    // WORKAROUND: Because test.info() should only be called during tests running.
+    // So use empty catch here to prevent global-setup, global-teardown throw exception.
+  }
 }
 
 export class OrgPage {
