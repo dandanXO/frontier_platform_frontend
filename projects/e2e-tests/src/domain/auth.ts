@@ -9,6 +9,7 @@ export const initialUser = {
   firstName: 'test',
   locale: 'en-US',
   platform: 1,
+  signupSourceType: 1,
 }
 
 export const signUpReq = () => {

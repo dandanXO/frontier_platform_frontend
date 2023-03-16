@@ -29,6 +29,7 @@ export const createOrgReq = () => {
     orgCategoryId: 1,
     countryCode: 'TW',
     uploadMaterialEmail: `e2e.org.${id}`,
+    signupSourceType: 1,
   }
 }
 
@@ -48,6 +49,7 @@ export const initialOrg = {
   orgCategoryId: 1,
   countryCode: 'TW',
   uploadMaterialEmail: 'e2e.org.initial',
+  signupSourceType: 1,
 }
 
 export const initialGroup = {
