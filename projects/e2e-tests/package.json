@@ -7,7 +7,7 @@
     "test:show-report": "npx playwright show-report"
   },
   "devDependencies": {
-    "@playwright/test": "^1.25.0",
+    "@playwright/test": "^1.31.2",
     "start-server-and-test": "^1.14.0"
   }
 }
