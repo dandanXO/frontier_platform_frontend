@@ -134,7 +134,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           span(
             :class="{ 'text-grey-200': isCreatingDigitalThread, 'text-grey-800': !isCreatingDigitalThread && !filter.isStarred && !digitalThread.hasMaterialDeleted, 'text-primary-400': filter.isStarred }"
             class="text-body2"
-          ) {{ 'Starred' }}
+          ) {{ $t('TT0019') }}
           span(
             v-if="filter.isStarred"
             class="pl-1 text-caption fond-bold text-primary-500"
