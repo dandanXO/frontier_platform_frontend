@@ -3,9 +3,9 @@ import { ref, watch, onMounted, onUpdated, computed } from 'vue'
 export default function useInput({
   slots,
   inputValue,
-  rules = [],
-  hintError,
-  disabled,
+  rules = ref([]),
+  hintError = ref(''),
+  disabled = ref(false),
   validImmediately = false,
 }) {
   const isFocus = ref(false)

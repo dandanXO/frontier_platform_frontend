@@ -1,9 +1,14 @@
 <template lang="pug">
-f-popper(placement="bottom-end")
+f-popper(
+  placement="bottom-end"
+  @expand="isFocus = true"
+  @collapse="isFocus = false"
+)
   template(#trigger="{ isExpand }")
     div(
-      class="flex items-center gap-x-1 px-3 rounded border border-grey-150"
-      :class="[size === 'lg' ? 'h-11' : 'h-9']"
+      :class="classMain"
+      @mouseenter="isHover = true"
+      @mouseleave="isHover = false"
     )
       label(class="w-5 h-5 rounded" :style="{ backgroundColor: innerLabelColor }")
       f-svg-icon(
@@ -34,8 +39,9 @@ f-popper(placement="bottom-end")
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, useSlots } from 'vue'
 import { COLOR } from '@/utils/constants'
+import useInput from '@frontier/ui-component/src/FInput/useInput'
 
 const emit = defineEmits(['update:labelColor'])
 const props = defineProps({
@@ -55,5 +61,52 @@ const labelColorList = computed(() =>
 const innerLabelColor = computed({
   get: () => props.labelColor,
   set: (v) => emit('update:labelColor', v),
+})
+
+const slots = useSlots()
+
+const { state, STATE, classTransition, isFocus, isHover } = useInput({
+  slots,
+  inputValue: innerLabelColor,
+})
+
+const classMain = computed(() => {
+  const classList = [
+    'border',
+    'rounded',
+    'flex',
+    'items-center',
+    ...classTransition.value,
+  ]
+
+  switch (props.size) {
+    case 'md':
+      classList.push('h-9', 'px-3', 'gap-x-1')
+      break
+    case 'lg':
+      classList.push('h-11', 'px-4', 'gap-x-2')
+      break
+  }
+
+  switch (state.value) {
+    case STATE.DEFAULT:
+      classList.push('border-grey-200', 'bg-grey-0')
+      break
+    case STATE.HOVER:
+      classList.push('border-grey-250', 'bg-grey-50')
+      break
+    case STATE.FOCUS:
+      classList.push(
+        'shadow-[0_0_0_4px_#E9F8F3]',
+        'border-primary-300',
+        'bg-grey-100'
+      )
+      break
+    case STATE.DISABLED:
+      classList.push('border-grey-200', 'cursor-not-allowed', 'bg-grey-50')
+      break
+  }
+
+  return classList
 })
 </script>
