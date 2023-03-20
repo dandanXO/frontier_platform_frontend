@@ -8,7 +8,7 @@ modal-behavior(
 )
   div(class="min-w-200")
     div(class="grid gap-y-7.5 px-8 mb-7.5")
-      f-input-chips(
+      f-select-input(
         v-model:selectValue="material.publicTagList"
         :dropdownMenuTree="menuTreePublicTag"
         @addNew="addNew($event, menuTreePublicTag)"
@@ -17,7 +17,7 @@ modal-behavior(
         multiple
       )
       div(class="relative")
-        f-input-chips(
+        f-select-input(
           v-model:selectValue="material.aiTagList"
           :dropdownMenuTree="menuTreeAiTag"
           @addNew="addNew($event, menuTreeAiTag)"
@@ -28,7 +28,7 @@ modal-behavior(
         p(class="absolute right-0 top-0 text-caption text-grey-900") {{ $t('EE0036') }}
     div(class="bg-grey-50 px-7.5 py-7.5")
       h6(class="text-h6 text-grey-600 font-bold mb-7.5") {{ $t('DD0019') }}
-      f-input-chips(
+      f-select-input(
         v-model:selectValue="material.privateTagList"
         :dropdownMenuTree="menuTreePrivateTag"
         @addNew="addNew($event, menuTreePrivateTag)"

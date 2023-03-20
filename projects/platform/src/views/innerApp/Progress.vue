@@ -2,7 +2,7 @@
 div(class="px-6 pt-6.5 h-full flex flex-col")
   div(class="mb-4 h-11 flex justify-between items-center")
     div(class="text-h6 font-bold text-grey-900 pl-1.5") {{ $t('PP0001') }}
-    f-input-select(
+    f-select-dropdown(
       :selectValue="currentMenu"
       :dropdownMenuTree="menuOrgOrGroup"
       @update:selectValue="toggleOrgOrGroup"

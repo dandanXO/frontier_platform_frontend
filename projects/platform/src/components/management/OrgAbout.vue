@@ -58,7 +58,7 @@ div(class="pt-16 xl:pt-17.5")
           required
           data-cy="org-about_category"
         )
-        f-input-select(
+        f-select-dropdown(
           v-model:selectValue="orgFormData.countryCode"
           :dropdownMenuTree="countryMenuTree"
           :label="$t('BB0069')"

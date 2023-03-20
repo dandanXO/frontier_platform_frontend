@@ -251,7 +251,7 @@ const filteredBlockList = computed(() => {
   return blockList
 })
 
-// invoke externally e.g. FInputChips.vue
+// invoke externally e.g. FSelectInput.vue
 const setSearchInput = (v) => (searchInput.value = v)
 const menuIsExist = computed(() =>
   innerMenuTree.value.blockList.some((block) =>

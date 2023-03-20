@@ -1,9 +1,9 @@
-import FInputChips from './FInputChips.vue'
+import FSelectInput from './FSelectInput.vue'
 import { ref } from 'vue'
 
 export default {
-  title: 'Input/FInputChips',
-  component: FInputChips,
+  title: 'Input/FSelectInput',
+  component: FSelectInput,
   args: {
     label: 'Input Chips',
     dropdownMenuTree: {
@@ -48,7 +48,7 @@ export default {
 }
 
 const Template = (args) => ({
-  components: { FInputChips },
+  components: { FSelectInput },
   setup() {
     const selectValue1 = ref()
     const selectValue2 = ref([])
@@ -110,9 +110,9 @@ const Template = (args) => ({
     return { args, selectValue1, selectValue2, dropdownMenuTree, addNew }
   },
   template: `
-    <f-input-chips v-model:selectValue="selectValue1" :dropdownMenuTree="dropdownMenuTree" @addNew="addNew" v-bind="args"></f-input-chips>
+    <f-select-input v-model:selectValue="selectValue1" :dropdownMenuTree="dropdownMenuTree" @addNew="addNew" v-bind="args"></f-select-input>
     <div>selectValue:  {{ selectValue1 }} </div>
-    <f-input-chips v-model:selectValue="selectValue2" :dropdownMenuTree="dropdownMenuTree" @addNew="addNew" multiple v-bind="args"></f-input-chips>
+    <f-select-input v-model:selectValue="selectValue2" :dropdownMenuTree="dropdownMenuTree" @addNew="addNew" multiple v-bind="args"></f-select-input>
     <div>selectValue:  {{ selectValue2 }} </div>
   `,
 })

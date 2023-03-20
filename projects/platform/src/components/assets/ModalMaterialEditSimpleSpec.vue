@@ -15,7 +15,7 @@ modal-behavior(
       required
       :rules="[$inputRules.required()]"
     )
-    f-input-chips(
+    f-select-input(
       v-model:selectValue="material.descriptionList"
       :dropdownMenuTree="specOptions.descriptionList"
       @addNew="addDescriptionOption($event)"
@@ -33,7 +33,7 @@ modal-behavior(
           v-for="(content, contentItemIndex) in material.contentList"
           class="flex items-center"
         )
-          f-input-chips(
+          f-select-input(
             v-model:selectValue="content.name"
             @update:selectValue="selectContent($event, contentItemIndex)"
             :dropdownMenuTree="specOptions.contentList"
@@ -130,7 +130,7 @@ modal-behavior(
       class="w-50"
       :addOnRight="$t('RR0020')"
     )
-    f-input-chips(
+    f-select-input(
       v-model:selectValue="material.finishList"
       :dropdownMenuTree="specOptions.finishList"
       @addNew="addFinishOption($event)"

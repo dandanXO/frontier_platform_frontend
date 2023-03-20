@@ -17,7 +17,7 @@ modal-behavior(
         @blur="checkOrgNameExist"
         data-cy="modal-create-org_name"
       )
-      f-input-select(
+      f-select-dropdown(
         v-model:selectValue="formData.countryCode"
         :dropdownMenuTree="countryMenuTree"
         :label="$t('AA0036')"

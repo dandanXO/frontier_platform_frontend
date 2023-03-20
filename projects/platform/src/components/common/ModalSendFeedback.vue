@@ -14,7 +14,7 @@ modal-behavior(
       :fileSizeMaxLimit="fileSizeMaxLimit"
     )
   div(class="w-94")
-    f-input-select(
+    f-select-dropdown(
       v-model:selectValue="formData.category"
       :dropdownMenuTree="categoryMenuTree"
       :label="$t('MM0007')"

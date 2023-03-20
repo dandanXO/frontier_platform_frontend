@@ -14,12 +14,12 @@ div(class="w-full h-full flex justify-center")
         div(class="pl-15")
           f-input-container(:label="$t('DD0062')")
             div(class="flex items-center gap-x-3")
-              f-input-select(
+              f-select-dropdown(
                 v-model:selectValue="material.isDoubleSideMaterial"
                 :dropdownMenuTree="singleOrDoubleMenuTree"
                 class="w-50"
               )
-              f-input-select(
+              f-select-dropdown(
                 v-if="!material.isDoubleSideMaterial"
                 v-model:selectValue="material.sideType"
                 :dropdownMenuTree="sideTypeMenuTree"

@@ -1,7 +1,7 @@
 <template lang="pug">
-f-input-chips(
+f-select-input(
   v-if="innerInputTagList.length !== 0 || isEditing || revealForever"
-  ref="refInputChips"
+  ref="reFSelectInput"
   v-model:selectValue="innerInputTagList"
   multiple
   size="md"
@@ -51,14 +51,14 @@ const addNewTag = (tag) => {
   newAddTagList.value.push(tag)
 }
 
-const refInputChips = ref(null)
+const reFSelectInput = ref(null)
 const isEditing = ref(false)
 
 defineExpose({
   focus: async () => {
     isEditing.value = true
     await nextTick()
-    refInputChips.value.focus()
+    reFSelectInput.value.focus()
   },
 })
 </script>

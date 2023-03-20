@@ -32,7 +32,7 @@ modal-behavior(
         :label="$t('OO0026')"
         :placeholder="$t('OO0029')"
       )
-      f-input-select(
+      f-select-dropdown(
         v-model:selectValue="formData.countryCode"
         :dropdownMenuTree="countryMenuTree"
         :label="$t('OO0024')"

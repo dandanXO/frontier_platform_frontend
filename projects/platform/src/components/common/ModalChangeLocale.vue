@@ -6,7 +6,7 @@ modal-behavior(
   :secondaryBtnText="$t('UU0026')"
   @click:secondary="$store.dispatch('helper/closeModalBehavior')"
 )
-  f-input-select(
+  f-select-dropdown(
     class="w-85"
     v-model:selectValue="newLocale"
     :dropdownMenuTree="langMenuTree"

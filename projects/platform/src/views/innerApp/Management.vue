@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="px-6 pt-6.5 h-full flex flex-col")
   div(class="h-11 flex justify-between items-center mb-12.5")
-    f-input-select(
+    f-select-dropdown(
       class="w-75"
       :selectValue="currentMenu"
       :dropdownMenuTree="menuOrgOrGroup"

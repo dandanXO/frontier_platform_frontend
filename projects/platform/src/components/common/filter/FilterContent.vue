@@ -18,7 +18,7 @@ filter-wrapper(
         f-svg-icon(size="20" iconName="add_box" class="text-grey-600" @click="addItem")
       div(v-if="contentList.length > 0" class="grid gap-y-5 relative py-2")
         div(v-for="(content, contentItemIndex) in contentList" class="flex items-center")
-          f-input-select(
+          f-select-dropdown(
             v-model:selectValue="content.name"
             :dropdownMenuTree="menuTree"
             :placeholder="$t('JJ0001')"

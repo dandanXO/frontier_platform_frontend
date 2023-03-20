@@ -9,7 +9,7 @@ modal-behavior(
   div(class="w-94")
     p(class="text-caption text-grey-600 leading-1.6 pb-4") {{ $t('BB0103') }}
     p(class="text-body2 text-grey-900 font-bold pb-1.5") {{ $t('BB0104') }}
-    f-input-select(
+    f-select-dropdown(
       v-model:selectValue="currentStorage"
       :dropdownMenuTree="storageMenuTree"
       data-cy="modal-choose-storage_select"

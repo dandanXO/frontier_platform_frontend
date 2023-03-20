@@ -24,7 +24,7 @@ div(class="relative w-full rounded-md drop-shadow-8 overflow-hidden")
             class="text-grey-300 hover:text-grey-600"
             :tooltip="$t('TT0015')"
           )
-        f-input-select(
+        f-select-dropdown(
           class="w-73.5"
           v-model:selectValue="addFrom"
           :dropdownMenuTree="menuAddFrom"

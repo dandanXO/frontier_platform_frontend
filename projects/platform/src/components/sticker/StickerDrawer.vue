@@ -113,7 +113,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
             span(class="text-caption text-grey-800") {{ material.unitName }}
       //- Filter
       div(class="pt-2.5 flex items-center gap-x-2")
-        f-input-select(
+        f-select-dropdown(
           v-model:selectValue="filter.addTo"
           :dropdownMenuTree="menuAddTo"
           class="w-30"

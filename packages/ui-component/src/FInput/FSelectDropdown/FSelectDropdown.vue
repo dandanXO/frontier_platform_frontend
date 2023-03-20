@@ -68,7 +68,7 @@ f-input-container(
 
 <script>
 export default {
-  name: 'FInputSelect',
+  name: 'FSelectDropdown',
 }
 </script>
 

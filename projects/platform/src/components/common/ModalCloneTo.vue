@@ -7,14 +7,14 @@ modal-behavior(
 )
   div(class="w-94 relative z-20")
     p(class="pb-3 text-grey-600 text-body2 leading-1.6") {{ $t('RR0180') }}
-    f-input-select(
+    f-select-dropdown(
       v-if="crossOrg"
       v-model:selectValue="selectedOrgId"
       :dropdownMenuTree="orgMenuTree"
       :label="$t('RR0212')"
       class="mb-3"
     )
-    f-input-chips(
+    f-select-input(
       v-model:selectValue="selectedLocationList"
       :label="$t('RR0174')"
       :dropdownMenuTree="locationList"

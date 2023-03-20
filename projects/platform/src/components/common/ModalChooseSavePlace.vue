@@ -8,13 +8,13 @@ modal-behavior(
   @click:secondary="closeModalBehavior"
 )
   div(class="w-94")
-    f-input-select(
+    f-select-dropdown(
       v-model:selectValue="selectedOrgId"
       :dropdownMenuTree="orgMenuTree"
       :label="$t('RR0212')"
       class="mb-7.5"
     )
-    f-input-select(
+    f-select-dropdown(
       v-model:selectValue="selectedSavePlace"
       :dropdownMenuTree="savePlaceMenuTree"
       :label="$t('RR0174')"

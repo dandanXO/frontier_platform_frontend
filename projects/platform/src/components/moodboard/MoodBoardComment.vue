@@ -5,7 +5,7 @@ div(class="flex flex-col items-center")
       img(:src="org.logo" class="w-8 h-8 rounded-full mr-3")
       p(class="text-body2 text-grey-900") {{ org.orgName }}
     div(class="pl-11")
-      f-input-select(
+      f-select-dropdown(
         v-model:selectValue="autoText"
         :dropdownMenuTree="autoTextMenuTree"
         :placeholder="$t('QQ0036')"

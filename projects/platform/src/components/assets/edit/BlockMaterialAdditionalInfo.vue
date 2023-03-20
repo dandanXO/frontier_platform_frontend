@@ -3,7 +3,7 @@ div
   div(class="h-15 flex items-center")
     h5(class="text-h5 text-grey-900 font-bold") {{ $t('DD0026') }}
   div(class="px-15 grid gap-y-7.5 pt-5")
-    f-input-chips(
+    f-select-input(
       v-model:selectValue="material.certificateList"
       :label="$t('EE0129')"
       :dropdownMenuTree="specOptions.certificateList"

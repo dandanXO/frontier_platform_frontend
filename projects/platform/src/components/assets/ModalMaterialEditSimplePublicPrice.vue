@@ -7,7 +7,7 @@ modal-behavior(
   @click:secondary="$store.dispatch('helper/closeModal')"
 )
   div(class="min-w-200 grid gap-y-7.5")
-    f-input-select(
+    f-select-dropdown(
       v-model:selectValue="material.publicPrice.countryCode"
       :dropdownMenuTree="countryMenuTree"
       :label="$t('RR0042')"

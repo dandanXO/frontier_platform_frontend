@@ -1,9 +1,9 @@
-import FInputSelect from './FInputSelect.vue'
+import FSelectDropdown from './FSelectDropdown.vue'
 import { ref } from 'vue'
 
 export default {
-  title: 'Input/FInputSelect',
-  component: FInputSelect,
+  title: 'Input/FSelectDropdown',
+  component: FSelectDropdown,
   args: {
     label: 'Label',
     size: 'lg',
@@ -49,14 +49,14 @@ export default {
 }
 
 const Template = (args) => ({
-  components: { FInputSelect },
+  components: { FSelectDropdown },
   setup() {
     const selectValue = ref()
     return { args, selectValue }
   },
   template: `
-    <f-input-select v-model:selectValue="selectValue" v-bind="args">
-    </f-input-select>
+    <f-select-dropdown v-model:selectValue="selectValue" v-bind="args">
+    </f-select-dropdown>
   `,
 })
 

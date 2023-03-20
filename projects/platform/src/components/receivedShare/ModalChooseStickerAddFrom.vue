@@ -7,7 +7,7 @@ modal-behavior(
   @click:secondary="closeModalBehavior"
 )
   div(class="w-94")
-    f-input-select(
+    f-select-dropdown(
       v-model:selectValue="selectedOrgNo"
       :dropdownMenuTree="orgMenuTree"
       :label="$t('RR0212')"

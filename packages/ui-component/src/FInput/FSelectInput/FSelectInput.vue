@@ -117,7 +117,7 @@ f-input-container(
 
 <script>
 export default {
-  name: 'FInputChips',
+  name: 'FSelectInput',
 }
 </script>
 

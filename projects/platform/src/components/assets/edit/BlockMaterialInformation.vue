@@ -29,7 +29,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
           :rules="[$inputRules.required()]"
           data-cy="materialNo"
         )
-        f-input-chips(
+        f-select-input(
           v-model:selectValue="material.descriptionList"
           :dropdownMenuTree="specOptions.descriptionList"
           @addNew="addDescriptionOption($event)"
@@ -79,7 +79,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
               v-for="(content, contentItemIndex) in material.contentList"
               class="flex items-center"
             )
-              f-input-chips(
+              f-select-input(
                 v-model:selectValue="content.name"
                 @update:selectValue="selectContent($event, contentItemIndex)"
                 :dropdownMenuTree="specOptions.contentList"
@@ -112,7 +112,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
                 class="text-grey-600"
                 @click="removeContent(contentItemIndex)"
               )
-        f-input-chips(
+        f-select-input(
           v-model:selectValue="material.finishList"
           :dropdownMenuTree="specOptions.finishList"
           @addNew="addFinishOption($event)"
@@ -164,7 +164,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
               :hintError="invalidation.color"
               class="w-50"
             )
-        f-input-chips(
+        f-select-input(
           v-model:selectValue="material.publicTagList"
           :dropdownMenuTree="menuTreePublicTag"
           @addNew="addNew($event, menuTreePublicTag)"
@@ -174,7 +174,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
           widthFitWithInput
         )
         div(v-if="isEditMode" class="relative")
-          f-input-chips(
+          f-select-input(
             v-model:selectValue="material.aiTagList"
             :dropdownMenuTree="menuTreeAiTag"
             @addNew="addNew($event, menuTreeAiTag)"
@@ -202,7 +202,7 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
           f-svg-icon(iconName="loading" size="54" class="text-primary-400")
     div(class="bg-grey-50 px-15 py-12.5 mt-7.5 grid gap-y-7.5")
       h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
-      f-input-chips(
+      f-select-input(
         v-model:selectValue="material.privateTagList"
         :dropdownMenuTree="menuTreePrivateTag"
         @addNew="addNew($event, menuTreePrivateTag)"
