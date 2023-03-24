@@ -65,7 +65,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           type="primary"
           size="sm"
           class="ml-3 mr-2"
-          :disabled="tempDigitalThreadName === ''"
+          :disabled="!tempDigitalThreadName"
           @click="saveDigitalThreadName"
         ) {{ $t('UU0018') }}
         f-button(
