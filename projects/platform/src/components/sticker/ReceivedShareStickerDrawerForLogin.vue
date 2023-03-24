@@ -32,7 +32,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
         )
         div(class="flex-grow h-11")
           p(class="pb-2 flex items-center text-body2 text-grey-800")
-            span(class="font-bold line-clamp-1") {{ `#${material.materialNo}` }}
+            span(class="font-bold line-clamp-1") {{ material.materialNo }}
           div(class="flex items-center gap-x-2")
             f-avatar(:imageUrl="material.unitLogo" type="org" size="xs")
             span(class="text-caption text-grey-800") {{ material.unitName }}

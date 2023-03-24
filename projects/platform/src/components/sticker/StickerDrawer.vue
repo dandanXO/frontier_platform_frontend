@@ -95,7 +95,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
             span(
               class="font-bold line-clamp-1"
               :class="{ 'hover:text-primary-400 hover:underline hover:cursor-pointer': !digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess }"
-            ) {{ `#${material.materialNo}` }}
+            ) {{ material.materialNo }}
             f-svg-icon(
               v-if="!digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess"
               iconName="open_in_new"
@@ -307,7 +307,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
       div(class="w-full h-17.5 px-4.5 border-b border-grey-150 flex items-center gap-x-2")
         f-svg-icon(iconName="sticker_thread" size="20" class="text-grey-900")
         span(class="text-body1 font-bold text-grey-900 whitespace-nowrap") {{ $t('TT0076') }}
-        span(class="text-body1 font-bold text-grey-800 line-clamp-1") {{ `#${material.materialNo}` }}
+        span(class="text-body1 font-bold text-grey-800 line-clamp-1") {{ material.materialNo }}
       f-scrollbar-container(class="flex-grow")
         div(
           class="mt-3 mx-5 mb-2.5 h-13 bg-grey-0 border border-grey-150 rounded-md flex items-center justify-center gap-x-2 cursor-pointer"

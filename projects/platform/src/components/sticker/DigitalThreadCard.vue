@@ -4,7 +4,7 @@ div(
 )
   div(class="pb-1 flex items-center gap-x-2.5")
     img(v-defaultImg class="w-8 h-8 rounded" :src="material.coverImg")
-    p(class="text-body2 text-grey-800") {{ `#${material.materialNo}` }}
+    p(class="text-body2 text-grey-800") {{ material.materialNo }}
   div(class="pb-1 flex items-center gap-x-2")
     span(
       class="text-body2 font-bold leading-1.6 group-hover:text-primary-400"
