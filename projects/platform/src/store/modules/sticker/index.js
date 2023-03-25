@@ -232,7 +232,6 @@ export default {
       commit('SET_currentMaterialId', null)
     },
     async closeStickerDrawer({ commit, getters, dispatch }) {
-      console.log('close')
       await new Promise((resolve, reject) => {
         const resolveHandler = () => {
           dispatch('resetState')
@@ -468,32 +467,51 @@ export default {
      * @param {string} params.content
      * @param {string[]} params.tagList
      */
-    async createSticker({ rootGetters, getters }, params) {
-      await stickerApi.createSticker({
+    async createSticker({ rootGetters, getters, commit, dispatch }, params) {
+      const { data } = await stickerApi.createSticker({
         ...params,
         orgId: rootGetters['organization/orgId'],
         digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
       })
+      commit('SET_digitalThread', data.result.digitalThread)
+      const { sideOGType, sideOGId } = getters.digitalThread
+      dispatch('getStickerTagList', {
+        ogId: sideOGId,
+        ogType: sideOGType,
+      })
+      dispatch('getDigitalThreadList')
     },
     updateDigitalThreadName(
-      { rootGetters, getters, commit },
+      { rootGetters, getters, commit, dispatch },
       { isCreatingDigitalThread = false, digitalThreadName }
     ) {
       commit('UPDATE_digitalThread_digitalThreadName', digitalThreadName)
-      !isCreatingDigitalThread &&
+      if (!isCreatingDigitalThread) {
         stickerApi.updateDigitalThreadName({
           orgId: rootGetters['organization/orgId'],
           digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
           digitalThreadName,
         })
+        dispatch('getDigitalThreadList')
+      }
     },
-    async createChildSticker({ rootGetters, getters }, { stickerId, content }) {
-      await stickerApi.createChildSticker({
+    async createChildSticker(
+      { rootGetters, getters, commit, dispatch },
+      { stickerId, content }
+    ) {
+      const { data } = await stickerApi.createChildSticker({
         orgId: rootGetters['organization/orgId'],
         digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
         stickerId,
         content,
       })
+      commit('SET_digitalThread', data.result.digitalThread)
+      const { sideOGType, sideOGId } = getters.digitalThread
+      dispatch('getStickerTagList', {
+        ogId: sideOGId,
+        ogType: sideOGType,
+      })
+      dispatch('getDigitalThreadList')
     },
     async updateStickerTagList(
       { rootGetters, dispatch, getters },
