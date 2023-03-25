@@ -156,8 +156,8 @@ export default {
     SET_digitalThreadList(state, digitalThreadList) {
       state.digitalThreadList = digitalThreadList
     },
-    PUSH_digitalThreadList(state, digitalThread) {
-      state.digitalThreadList.push(digitalThread)
+    UNSHIFT_digitalThreadList(state, digitalThread) {
+      state.digitalThreadList.unshift(digitalThread)
     },
     SET_drawerOpenFrom(
       state,
@@ -452,7 +452,7 @@ export default {
       )
       const createdDigitalThread = data.result.digitalThread
       commit('SET_digitalThread', createdDigitalThread)
-      commit('PUSH_digitalThreadList', createdDigitalThread)
+      commit('UNSHIFT_digitalThreadList', createdDigitalThread)
       const index = getters.drawerDigitalThreadList.findIndex(
         ({ digitalThreadSideId }) =>
           createdDigitalThread.digitalThreadSideId === digitalThreadSideId
