@@ -8,6 +8,7 @@ import i18n from '@/utils/i18n'
 const defaultDigitalThreadBase = () => ({
   digitalThreadSideId: null,
   digitalThreadName: 'Untitled',
+  isDigitalThreadNameEdited: false,
   isCreatorSide: false, // 檢視該DigitalThread的使用者是否為建立方組織的成員
   materialId: 0,
   materialNo: '',
@@ -57,6 +58,11 @@ export default {
     material: Material,
   },
   state: () => ({
+    /**
+     * 每一個有輸入內容但尚未送出的 sticker, child sticker 都會有一組 uuid 存放在此陣列，
+     * 作為關閉 drawer 時是否要跳出 Modal 提醒 user 依據。
+     */
+    tempCreatingStickerIdList: [],
     isStickerDrawerOpen: false,
     isAddingSticker: false, // 正在新增 sticker
     isReceivedShareStickerDrawerOpen: false,
@@ -75,6 +81,7 @@ export default {
     filter: defaultFilter(),
   }),
   getters: {
+    tempCreatingStickerIdList: (state) => state.tempCreatingStickerIdList,
     currentMaterialId: (state) => state.currentMaterialId,
     drawerOpenFromLocationType: (state) => state.drawerOpenFromLocationType,
     drawerOpenFromLocationList: (state) => state.drawerOpenFromLocationList,
@@ -140,6 +147,7 @@ export default {
     },
     UPDATE_digitalThread_digitalThreadName(state, digitalThreadName) {
       state.digitalThread.digitalThreadName = digitalThreadName
+      state.digitalThread.isDigitalThreadNameEdited = true
     },
     UNSHIFT_tempDigitalThreadList(state, digitalThreadBase) {
       state.tempDigitalThreadList.unshift(digitalThreadBase)
@@ -191,6 +199,9 @@ export default {
       const { tagList } = defaultFilter()
       state.filter.tagList = tagList
     },
+    SET_TEMP_CREATE_STICKER_ID_LIST(state, tempCreatingStickerIdList) {
+      state.tempCreatingStickerIdList = tempCreatingStickerIdList
+    },
   },
   actions: {
     async openStickerDrawer(
@@ -241,19 +252,21 @@ export default {
         }
 
         const tempDigitalThreadList = getters.tempDigitalThreadList
-        const isAddingSticker = getters.isAddingSticker
-
-        if (tempDigitalThreadList.length === 0 && !isAddingSticker) {
-          return resolveHandler()
-        }
+        const tempCreatingStickerIdList = getters.tempCreatingStickerIdList
 
         let header, contentText
-        if (tempDigitalThreadList.length > 0) {
-          header = i18n.global.t('TT0088')
-          contentText = i18n.global.t('TT0089')
-        } else if (isAddingSticker) {
+        if (tempCreatingStickerIdList.length) {
           header = i18n.global.t('TT0090')
           contentText = i18n.global.t('TT0091')
+        } else if (
+          tempDigitalThreadList.some(
+            (thread) => thread.isDigitalThreadNameEdited
+          )
+        ) {
+          header = i18n.global.t('TT0088')
+          contentText = i18n.global.t('TT0089')
+        } else {
+          return resolveHandler()
         }
 
         dispatch(
@@ -558,6 +571,21 @@ export default {
             digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
           }),
       ])
+    },
+    addTempCreateStickerId({ getters, commit }, tempCreatingStickerId) {
+      const tempCreatingStickerIdList = getters.tempCreatingStickerIdList
+      if (tempCreatingStickerIdList.includes(tempCreatingStickerId)) return
+      commit('SET_TEMP_CREATE_STICKER_ID_LIST', [
+        ...tempCreatingStickerIdList,
+        tempCreatingStickerId,
+      ])
+    },
+    removeTempCreateStickerId({ getters, commit }, tempCreatingStickerId) {
+      const tempCreatingStickerIdList = getters.tempCreatingStickerIdList
+      commit(
+        'SET_TEMP_CREATE_STICKER_ID_LIST',
+        tempCreatingStickerIdList.filter((id) => id !== tempCreatingStickerId)
+      )
     },
   },
 }

@@ -119,7 +119,8 @@ div(class="relative w-full rounded-md drop-shadow-8 overflow-hidden")
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, onUnmounted, watch } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 import { STICKER_ADD_TO, OG_TYPE, LOCATION_TYPE } from '@/utils/constants'
 import StickerLabelAddTo from '@/components/sticker/StickerLabelAddTo.vue'
 import StickerTagInput from '@/components/sticker/StickerTagInput.vue'
@@ -128,6 +129,8 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 
 const { EXTERNAL, INTERNAL } = STICKER_ADD_TO
+
+const tempCreatingStickerId = uuidv4()
 
 const emit = defineEmits(['close'])
 const props = defineProps({
@@ -279,4 +282,16 @@ if (props.isCreatingDigitalThread) {
     }
   )
 }
+
+watch(content, (contentValue) => {
+  if (contentValue) {
+    store.dispatch('sticker/addTempCreateStickerId', tempCreatingStickerId)
+  } else {
+    store.dispatch('sticker/removeTempCreateStickerId', tempCreatingStickerId)
+  }
+})
+
+onUnmounted(() => {
+  store.dispatch('sticker/removeTempCreateStickerId', tempCreatingStickerId)
+})
 </script>

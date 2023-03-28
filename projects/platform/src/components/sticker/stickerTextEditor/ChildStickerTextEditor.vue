@@ -11,7 +11,7 @@ div(v-if="editor")
 </template>
 
 <script setup>
-import { ref, onUnmounted } from 'vue'
+import { ref, onUnmounted, watch } from 'vue'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document' // https://tiptap.dev/api/nodes/document
 import Paragraph from '@tiptap/extension-paragraph' // https://tiptap.dev/api/nodes/paragraph
@@ -20,6 +20,9 @@ import Placeholder from '@tiptap/extension-placeholder' // https://tiptap.dev/ap
 // https://tiptap.dev/api/nodes/mention#render-label
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { v4 as uuidv4 } from 'uuid'
+
+const tempCreatingStickerId = uuidv4()
 
 const store = useStore()
 const { t } = useI18n()
@@ -65,4 +68,16 @@ const createChildSticker = async () => {
   })
   emit('close')
 }
+
+watch(content, (contentValue) => {
+  if (contentValue) {
+    store.dispatch('sticker/addTempCreateStickerId', tempCreatingStickerId)
+  } else {
+    store.dispatch('sticker/removeTempCreateStickerId', tempCreatingStickerId)
+  }
+})
+
+onUnmounted(() => {
+  store.dispatch('sticker/removeTempCreateStickerId', tempCreatingStickerId)
+})
 </script>
