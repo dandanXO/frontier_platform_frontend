@@ -15,7 +15,7 @@ modal-behavior(:header="$t('TT0067')")
         span(
           v-if="digitalThread.hasMaterialDeleted"
           class="absolute text-body1 font-bold text-grey-400"
-        ) {{ $t('RR0063') }}
+        ) {{ $t('TT0112') }}
         span(
           v-else-if="digitalThread.hasMaterialNoAccess"
           class="absolute text-body1 font-bold text-grey-400"
@@ -24,7 +24,7 @@ modal-behavior(:header="$t('TT0067')")
       div(class="pt-7 pb-6")
         p(class="text-caption text-grey-500 pb-4") {{ $t('RR0257') }}
         p(class="text-caption text-grey-900 break-all") {{ digitalThread.materialNo }}
-          span(v-if="digitalThread.hasMaterialDeleted") &nbsp({{ $t('RR0063') }})
+          span(v-if="digitalThread.hasMaterialDeleted") &nbsp({{ $t('TT0113') }})
           span(v-else-if="digitalThread.hasMaterialNoAccess") &nbsp({{ $t('TT0107') }})
       //- Material Owner
       div

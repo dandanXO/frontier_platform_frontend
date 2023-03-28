@@ -103,7 +103,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
               class="ml-1 invisible group-hover:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
               @click.stop="goToMaterialDetail(true)"
             )
-            span(class="leading-1.4 pl-0.5" v-if="digitalThread.hasMaterialDeleted") ({{ $t('RR0063') }})
+            span(class="leading-1.4 pl-0.5" v-if="digitalThread.hasMaterialDeleted") ({{ $t('TT0112') }})
             span(
               class="leading-1.4 pl-0.5"
               v-else-if="digitalThread.hasMaterialNoAccess"
