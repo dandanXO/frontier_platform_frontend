@@ -37,7 +37,7 @@ modal-behavior(:header="$t('TT0055')")
           )
           p(class="text-caption text-grey-900 leading-1.6") {{ digitalThread.materialOwnerUnitName }}
     //- Right Side
-    div(class="flex-grow flex flex-col gap-y-6")
+    div(class="flex-grow flex flex-col gap-y-2.5")
       //- Sticker Info
       div(class="py-4 px-5 border border-grey-150 rounded")
         div(class="pb-4 flex items-center")
