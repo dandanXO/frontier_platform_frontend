@@ -284,7 +284,10 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
               scope="global"
             )
               template(#TT0092)
-                span(class="text-grey-800") {{ $t('TT0092') }}
+                span(
+                  class="text-grey-800 cursor-pointer hover:text-primary-500"
+                  @click="setIsAddingSticker(true)"
+                ) {{ $t('TT0092') }}
             p(class="text-body2 leading-1.6 text-grey-400 text-center") {{ $t('TT0005') }}
         //- State - Normal
         template(v-else)
