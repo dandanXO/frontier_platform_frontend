@@ -37,7 +37,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
                 p {{ digitalThread.digitalThreadName }}
           div(class="flex-shrink pl-4 flex items-center gap-x-4")
             f-svg-icon(
-              v-if="isHoverHeader || !isCreatingDigitalThread"
+              v-if="isHoverHeader"
               iconName="create"
               size="20"
               class="text-grey-600 hover:text-primary-400 cursor-pointer"
