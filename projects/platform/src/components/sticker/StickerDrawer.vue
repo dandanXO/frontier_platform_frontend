@@ -136,8 +136,9 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
             class="text-body2"
           ) {{ $t('TT0019') }}
           span(
-            v-if="filter.isStarred"
-            class="pl-1 text-caption fond-bold text-primary-500"
+            v-if="showStartQty"
+            class="pl-1 text-caption fond-bold"
+            :class="[filter.isStarred ? 'text-primary-400' : 'text-grey-600']"
           ) {{ digitalThread.stickerStatistics.starredQty }}
         //- Advance Filter Panel
         f-popper(
@@ -395,6 +396,19 @@ const menuAddTo = computed(() => ({
     },
   ],
 }))
+
+const showStartQty = computed(() => {
+  if (isCreatingDigitalThread.value) {
+    return false
+  }
+  if (filter.value.isStarred) {
+    return true
+  }
+  if (digitalThread.value.stickerStatistics.starredQty > 0) {
+    return true
+  }
+  return false
+})
 
 const openModalDigitalThreadSummary = () => {
   store.dispatch('helper/openModalBehavior', {
