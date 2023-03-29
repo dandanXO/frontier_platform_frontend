@@ -314,7 +314,7 @@ const routes = [
             const apiList = [
               'organization/orgUser/getOrgUser',
               'organization/getPricing',
-              'titas/getTitasInfo',
+              'showroom/getShowroomAnnouncement',
             ]
 
             if (to.params.orgNo && !from.params.orgNo) {

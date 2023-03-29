@@ -5,12 +5,10 @@ import {
   MADE2FLOW_PLAN_TYPE,
   VALUE_ADDED_SERVICE_ID,
   VALUE_ADDED_SERVICE_STATUS,
-  LOCATION_TYPE,
 } from '@/utils/constants'
 import i18n from '@/utils/i18n'
 import dayjs from 'dayjs'
-import { h } from 'vue'
-import store from '@/store'
+import generateContentComponent from '@/utils/generateContentComponent'
 
 const state = () => ({
   worker: null,
@@ -138,55 +136,12 @@ const getters = {
           }
         }
         pairIndexList.push([i, content.length])
-        const contentComponent = {
-          render: () => {
-            return h(
-              'span',
-              {
-                class: 'text-caption text-grey-900 leading-1.6 pb-1',
-              },
-              ...pairIndexList
-                .filter(([start, end]) => start !== end)
-                .map(([start, end]) => {
-                  const fragment = content.slice(start, end)
-                  if (fragment.match(re)) {
-                    const index = Number(fragment.slice(1, fragment.length - 1)) // {x}
-                    const { type, text, value } = contentValue[index]
-                    // url
-                    if (type === 1) {
-                      return h(
-                        'a',
-                        {
-                          class: 'text-caption text-cyan-400',
-                          href: value,
-                          target: '_blank',
-                        },
-                        text
-                      )
-                    }
-                    // sticker
-                    if (type === 2) {
-                      return h(
-                        'span',
-                        {
-                          class: 'text-caption text-cyan-400 cursor-pointer',
-                          onClick: () => {
-                            store.dispatch('sticker/openStickerDrawer', {
-                              digitalThreadSideId: value,
-                              drawerOpenFromLocationType:
-                                LOCATION_TYPE.NOTIFICATION,
-                            })
-                          },
-                        },
-                        text
-                      )
-                    }
-                  }
-                  return h('span', {}, fragment)
-                })
-            )
-          },
-        }
+        const contentComponent = generateContentComponent(
+          content,
+          contentValue,
+          ['text-caption', 'text-grey-900', 'leading-1.6', 'pb-1'],
+          ['text-caption', 'text-cyan-400', 'cursor-pointer']
+        )
 
         let formattedDate
 

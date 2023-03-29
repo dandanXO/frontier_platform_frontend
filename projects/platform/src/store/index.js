@@ -17,6 +17,7 @@ import polling from '@/store/modules/polling'
 import dashboard from '@/store/modules/dashboard'
 import sticker from '@/store/modules/sticker'
 import titas from '@/store/modules/titas'
+import showroom from '@/store/modules/showroom'
 
 export default createStore({
   actions: {
@@ -62,6 +63,7 @@ export default createStore({
     moodboard,
     dashboard,
     sticker,
+    showroom,
     titas,
   },
 })
