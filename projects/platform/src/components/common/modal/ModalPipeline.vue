@@ -224,6 +224,9 @@ export default {
     ModalPublicLibraryShareAssigned: defineAsyncComponent(() =>
       import('@/components/publicLibrary/ModalPublicLibraryShareAssigned.vue')
     ),
+    ModalShowroomContactForm: defineAsyncComponent(() =>
+      import('@/components/showroom/ModalShowroomContactForm.vue')
+    ),
     ModalChangeLocale: defineAsyncComponent(() =>
       import('@/components/common/ModalChangeLocale.vue')
     ),

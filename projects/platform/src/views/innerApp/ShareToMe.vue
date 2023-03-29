@@ -46,7 +46,6 @@ div(class="w-full h-full")
         v-if="!isFirstLayer"
         size="sm"
         type="secondary"
-        class="-mr-3"
         @click="openModalCollectionDetail"
       ) {{ $t('UU0057') }}
     template(v-if="!isFirstLayer" #sub-header)

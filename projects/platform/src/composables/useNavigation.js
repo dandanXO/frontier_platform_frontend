@@ -105,9 +105,25 @@ export default function useNavigation() {
     )
   }
 
+  const goToPublicLibrary = () => {
+    router.push(parsePath(`/:orgNo/public-library`))
+  }
+
   const goToPublicLibraryMaterialDetail = (nodeKey, rank) => {
     router.push(
       parsePath(`/:orgNo/public-library/material/${nodeKey}?rank=${rank}`)
+    )
+  }
+
+  const goShowroom = (showroomId) => {
+    router.push(parsePath(`/:orgNo/showroom/${showroomId}`))
+  }
+
+  const goShowroomMaterialDetail = (nodeKey, showroomId, rank) => {
+    router.push(
+      parsePath(
+        `/:orgNo/showroom/${showroomId}/material/${nodeKey}?&rank=${rank}`
+      )
     )
   }
 
@@ -157,7 +173,10 @@ export default function useNavigation() {
     goToAssetsMaterialCreate,
     goToAssetMaterialEdit,
     goToWorkspaceMaterialDetail,
+    goToPublicLibrary,
     goToPublicLibraryMaterialDetail,
+    goShowroom,
+    goShowroomMaterialDetail,
     goToOrgAssetMaterialEdit,
     goToGroupAssetMaterialEdit,
     goToReceivedShareMaterial,

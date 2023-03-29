@@ -488,3 +488,14 @@ export enum U3M_CUT_SIDE_EDIT_STATE {
   NEXT = 'next',
   DISABLED = 'disabled',
 }
+
+export enum CONTENT_PARSED_TYPE {
+  URL = 1,
+  STICKER = 2,
+}
+
+export enum SHOWROOM_STATUS {
+  CLOSE = 0,
+  COMING_SOON = 1,
+  CURRENT = 2,
+}

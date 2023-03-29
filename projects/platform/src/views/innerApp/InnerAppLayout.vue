@@ -31,9 +31,16 @@ div(class="flex h-full")
       :key="$route.params.orgNo"
       class="absolute bottom-0 left-0 z-100"
     )
+    modal-showroom-announcement(v-if="isInInnerApp && isPromoting")
   transition
     sticker-drawer(v-if="isStickerDrawerOpen")
 </template>
+
+<script>
+export default {
+  name: 'InnerAppLayout',
+}
+</script>
 
 <script setup>
 import { setOptions, bootstrap } from 'vue-gtag'
@@ -41,6 +48,7 @@ import { useStore } from 'vuex'
 import { computed, defineAsyncComponent } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
+import ModalShowroomAnnouncement from '@/components/showroom/ModalShowroomAnnouncement.vue'
 
 const NotifyBarBuffer = defineAsyncComponent(() =>
   import('@/components/billings/NotifyBarBuffer.vue')
@@ -78,4 +86,7 @@ setOptions({
   },
 })
 bootstrap()
+
+/** showroom */
+const isPromoting = computed(() => store.getters['showroom/isPromoting'])
 </script>

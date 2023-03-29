@@ -93,7 +93,7 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 sidebar-shadow fle
 
 <script setup>
 import { useStore } from 'vuex'
-import { computed, onUnmounted } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import SidebarItem from '@/components/sidebar/SidebarItem.vue'
 import MenuOrg from '@/components/sidebar/MenuOrg.vue'
 import MenuOrgUser from '@/components/sidebar/MenuOrgUser.vue'
@@ -102,7 +102,6 @@ import { OG_TYPE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
-
 const organization = computed(() => store.getters['organization/organization'])
 const isProcessing = computed(() => store.getters['polling/isProcessing'])
 const planStatus = computed(() => store.getters['polling/planStatus'])

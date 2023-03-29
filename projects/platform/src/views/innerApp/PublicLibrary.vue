@@ -37,17 +37,30 @@ div(class="w-full h-full relative")
         v-if="!isFirstLayer"
         size="sm"
         type="secondary"
-        class="-mr-3"
         @click="openModalCollectionDetail"
       ) {{ $t('UU0057') }}
-    template(v-if="!isFirstLayer" #sub-header)
+    template(#sub-header)
       i18n-t(
+        v-if="!isFirstLayer"
         keypath="II0002"
         tag="p"
         class="mx-7.5 mb-7.5 text-caption text-grey-600"
         scope="global"
       )
         template(#displayName) {{ publishBy }}
+    template(
+      #banner="{ inSearch }"
+      v-if="pagination.currentPage === 1 && isFirstLayer"
+    )
+      div(v-if="!inSearch" class="pb-4 px-7.5")
+        div(
+          class="rounded-md box-border bg-center bg-fit p-5 flex flex-col gap-y-4 justify-between drop-shadow-2 cursor-pointer"
+          :style="{ backgroundImage: `url(${banner.coverImg})` }"
+        )
+          h6(class="text-h6 text-grey-0 font-bold") {{ banner.title }}
+          component(:is="bannerDescriptionComponent")
+        div(class="mt-4 w-full")
+          showroom-carousel
     template(#default="{ goTo }")
       div(
         v-if="nodeList.length > 0"
@@ -86,6 +99,7 @@ import { useRoute, useRouter } from 'vue-router'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import useNavigation from '@/composables/useNavigation'
 import NotifyBarInactive from '@/components/billings/NotifyBarInactive.vue'
+import ShowroomCarousel from '@/components/showroom/ShowroomCarousel.vue'
 
 const { t } = useI18n()
 const store = useStore()
@@ -198,5 +212,11 @@ const handleNodeClick = (node, goTo) => {
 watch(
   () => isFirstLayer.value,
   () => (selectedNodeList.value.length = 0)
+)
+
+/** Showroom */
+const banner = computed(() => store.getters['showroom/banner'])
+const bannerDescriptionComponent = computed(
+  () => store.getters['showroom/bannerDescriptionComponent']
 )
 </script>

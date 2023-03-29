@@ -314,6 +314,8 @@ const routes = [
             const apiList = [
               'organization/orgUser/getOrgUser',
               'organization/getPricing',
+              'showroom/getShowroomAnnouncement',
+              'showroom/getShowroomBannerAndList',
             ]
 
             if (to.params.orgNo && !from.params.orgNo) {
@@ -393,6 +395,21 @@ const routes = [
             props: true,
             component: () =>
               import('@/views/innerApp/PublicLibraryMaterialDetail.vue'),
+            beforeEnter: checkOrgIsInactive,
+          },
+          {
+            path: 'showroom/:showroomId/:nodeKey?',
+            name: 'Showroom',
+            props: true,
+            component: () => import('@/views/innerApp/Showroom.vue'),
+            beforeEnter: checkOrgIsInactive,
+          },
+          {
+            path: 'showroom/:showroomId/material/:nodeKey',
+            name: 'ShowroomMaterialDetail',
+            props: true,
+            component: () =>
+              import('@/views/innerApp/ShowroomMaterialDetail.vue'),
             beforeEnter: checkOrgIsInactive,
           },
         ],
