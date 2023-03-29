@@ -72,7 +72,7 @@ instance.interceptors.response.use(
     }
 
     if (status === 200 && !success) {
-      if (message) {
+      if (message && !code) {
         const { type, title, content } = message
         store.dispatch('helper/openModalConfirm', {
           type: type || 3,

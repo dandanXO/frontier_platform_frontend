@@ -251,11 +251,6 @@ export const MOODBOARD_TAB = {
   COMMENT: 'comment',
 }
 
-export const CREATE_EDIT = {
-  CREATE: 1,
-  EDIT: 2,
-}
-
 export const MADE2FLOW_PLAN_TYPE = {
   STANDARD: 1,
   PERSONALIZED: 2,
@@ -498,4 +493,9 @@ export enum SHOWROOM_STATUS {
   CLOSE = 0,
   COMING_SOON = 1,
   CURRENT = 2,
+}
+
+export enum CREATE_EDIT {
+  CREATE = 1,
+  EDIT = 2,
 }

@@ -11,53 +11,59 @@ modal-behavior(
       v-model:textValue="collectionName"
       required
       :rules="[$inputRules.required()]"
+      :hintError="isCollectionNameExist ? $t('WW0001') : ''"
     )
 </template>
 
-<script>
-import { ref } from 'vue'
+<script setup>
+import { ref, watch } from 'vue'
 import { useStore } from 'vuex'
+const store = useStore()
 
-export default {
-  name: 'ModalCreateCollectionSimple',
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
-    workspaceNodeLocation: {
-      type: Number,
-      required: true,
-    },
-    workspaceNodeId: {
-      type: Number,
-      required: true,
-    },
-    callback: {
-      type: Function,
-      required: true,
-    },
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
   },
-  setup(props) {
-    const store = useStore()
-
-    const collectionName = ref('')
-
-    const createCollectionForModal = async () => {
-      await store.dispatch('workspace/createCollectionForModal', {
-        id: props.id,
-        workspaceNodeLocation: props.workspaceNodeLocation,
-        workspaceNodeId: props.workspaceNodeId,
-        collectionName: collectionName.value,
-      })
-      store.dispatch('helper/closeModal')
-      props.callback()
-    }
-
-    return {
-      collectionName,
-      createCollectionForModal,
-    }
+  workspaceNodeLocation: {
+    type: Number,
+    required: true,
   },
+  workspaceNodeId: {
+    type: Number,
+    required: true,
+  },
+  callback: {
+    type: Function,
+    required: true,
+  },
+})
+
+const collectionName = ref('')
+const isCollectionNameExist = ref(false)
+watch(
+  () => collectionName.value,
+  () => (isCollectionNameExist.value = false)
+)
+const createCollectionForModal = async () => {
+  try {
+    await store.dispatch('workspace/createCollectionForModal', {
+      id: props.id,
+      workspaceNodeLocation: props.workspaceNodeLocation,
+      workspaceNodeId: props.workspaceNodeId,
+      collectionName: collectionName.value,
+    })
+    store.dispatch('helper/closeModal')
+    props.callback()
+  } catch (error) {
+    const { code } = error
+    switch (code) {
+      case 'ERR0035':
+        isCollectionNameExist.value = true
+        break
+      default:
+        throw error
+    }
+  }
 }
 </script>
