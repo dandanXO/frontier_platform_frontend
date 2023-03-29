@@ -16,7 +16,6 @@ import shareToMe from '@/store/modules/shareToMe'
 import polling from '@/store/modules/polling'
 import dashboard from '@/store/modules/dashboard'
 import sticker from '@/store/modules/sticker'
-import titas from '@/store/modules/titas'
 import showroom from '@/store/modules/showroom'
 
 export default createStore({
@@ -64,6 +63,5 @@ export default createStore({
     dashboard,
     sticker,
     showroom,
-    titas,
   },
 })

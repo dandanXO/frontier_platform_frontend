@@ -6,7 +6,7 @@ const useDashboard = () => {
   const route = useRoute()
 
   const getLocationType = (): FROM_LOCATION_TYPE => {
-    if (route.path.match(/public-library|titas/)) {
+    if (route.path.match(/public-library|showroom/)) {
       return FROM_LOCATION_TYPE.PUBLIC_LIBRARY
     }
     if (route.path.match(/assets|progress/)) {

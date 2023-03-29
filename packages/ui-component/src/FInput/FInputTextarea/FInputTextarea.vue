@@ -118,7 +118,6 @@ defineExpose({
 })
 
 const onInput = () => {
-  console.log('hjere')
   innerTextValue.value = refInput.value.textContent
   emit('input')
 }

@@ -4,7 +4,7 @@ modal-behavior(
   :primaryBtnText="$t('UU0049')"
   :secondaryBtnText="$t('UU0002')"
   :primaryBtnDisabled="primaryBtnDisabled"
-  @click:primary="contactTitasOrg"
+  @click:primary="contactShowroomOrg"
   @click:secondary="$store.dispatch('helper/closeModalBehavior')"
 )
   form(class="w-125")
@@ -32,7 +32,7 @@ modal-behavior(
             f-contextual-menu(
               class="w-60"
               :menuTree="orgMenuTree"
-              v-model:inputSelectValue="formData.toEmail"
+              v-model:inputSelectValue="formData.toOrgId"
               :selectMode="2"
             )
     f-input-text(
@@ -57,16 +57,18 @@ import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
-  toEmail: {
-    type: String,
+  toOrgId: {
+    type: Number,
   },
 })
 
 const store = useStore()
 const { t } = useI18n()
 
+const showroom = computed(() => store.getters['showroom/showroom'])
 const formData = reactive({
-  toEmail: props.toEmail,
+  showroomId: showroom.value.showroomId,
+  toOrgId: props.toOrgId,
   fromEmail: store.getters['user/email'],
   subject: '',
   content: '',
@@ -76,33 +78,32 @@ const refFromEmail = ref(null)
 const primaryBtnDisabled = computed(
   () => refFromEmail.value?.isError || !formData.subject || !formData.content
 )
-const titasInfo = computed(() => store.getters['titas/titasInfo'])
-const orgMenuTree = {
+const orgMenuTree = computed(() => ({
   scrollAreaMaxHeight: 'max-h-99',
   blockList: [
     {
-      menuList: titasInfo.value.orgList.map(
-        ({ orgName, logo, contactEmail }) => ({
+      menuList: showroom.value.participatedOrgList.map(
+        ({ orgName, logo, orgId }) => ({
           title: orgName,
-          selectValue: contactEmail,
+          selectValue: orgId,
           thumbnail: logo,
         })
       ),
     },
   ],
-}
+}))
 const selectedOrg = computed(() =>
-  titasInfo.value.orgList.find((org) => org.contactEmail === formData.toEmail)
+  showroom.value.participatedOrgList.find(
+    (org) => org.orgId === formData.toOrgId
+  )
 )
 
-const contactTitasOrg = async () => {
-  store.dispatch('helper/pushModalLoading')
-  await store.dispatch('titas/contactTitasOrg', formData)
-  store.dispatch('helper/openModalConfirm', {
-    type: 2,
-    header: t('II0028'),
-    contentText: t('II0033', { orgName: selectedOrg.value.orgName }),
-    primaryBtnText: t('UU0031'),
-  })
+const contactShowroomOrg = async () => {
+  store.dispatch('helper/clearModalPipeline')
+  await store.dispatch('showroom/contactShowroomOrg', formData)
+  store.dispatch(
+    'helper/pushFlashMessage',
+    t('II0033', { orgName: selectedOrg.value.orgName })
+  )
 }
 </script>

@@ -115,12 +115,16 @@ export default function useNavigation() {
     )
   }
 
-  const goToTitasShowroom = () => {
-    router.push(parsePath(`/:orgNo/titas`))
+  const goShowroom = (showroomId) => {
+    router.push(parsePath(`/:orgNo/showroom/${showroomId}`))
   }
 
-  const goToTitasShowroomMaterialDetail = (nodeKey, rank) => {
-    router.push(parsePath(`/:orgNo/titas/material/${nodeKey}?&rank=${rank}`))
+  const goShowroomMaterialDetail = (nodeKey, showroomId, rank) => {
+    router.push(
+      parsePath(
+        `/:orgNo/showroom/${showroomId}/material/${nodeKey}?&rank=${rank}`
+      )
+    )
   }
 
   const goToReceivedShareMaterial = (nodeKey, sharingKey, rank) => {
@@ -171,8 +175,8 @@ export default function useNavigation() {
     goToWorkspaceMaterialDetail,
     goToPublicLibrary,
     goToPublicLibraryMaterialDetail,
-    goToTitasShowroom,
-    goToTitasShowroomMaterialDetail,
+    goShowroom,
+    goShowroomMaterialDetail,
     goToOrgAssetMaterialEdit,
     goToGroupAssetMaterialEdit,
     goToReceivedShareMaterial,

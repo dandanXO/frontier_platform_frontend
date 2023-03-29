@@ -48,13 +48,16 @@ div(class="w-full h-full relative")
         scope="global"
       )
         template(#displayName) {{ publishBy }}
-    template(#banner v-if="pagination.currentPage === 1")
-      div(class="pb-4 px-7.5")
+    template(
+      #banner="{ inSearch }"
+      v-if="pagination.currentPage === 1 && isFirstLayer"
+    )
+      div(v-if="!inSearch" class="pb-4 px-7.5")
         div(
-          class="rounded-md box-border bg-center bg-fit p-5 flex flex-col gap-y-4 justify-between drop-shadow-2 hover:drop-shadow-4 cursor-pointer"
+          class="rounded-md box-border bg-center bg-fit p-5 flex flex-col gap-y-4 justify-between drop-shadow-2 cursor-pointer"
           :style="{ backgroundImage: `url(${banner.coverImg})` }"
         )
-          h6(class="text-grey-0") {{ banner.title }}
+          h6(class="text-h6 text-grey-0 font-bold") {{ banner.title }}
           component(:is="bannerDescriptionComponent")
         div(class="mt-4 w-full")
           showroom-carousel
@@ -108,7 +111,7 @@ const {
   publicCloneByCollection,
   optionShareNode,
 } = usePublicLibrary()
-const { goToPublicLibraryMaterialDetail, goToTitasShowroom } = useNavigation()
+const { goToPublicLibraryMaterialDetail } = useNavigation()
 
 const props = defineProps({
   nodeKey: {

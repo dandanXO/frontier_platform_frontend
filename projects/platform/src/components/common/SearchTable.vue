@@ -51,7 +51,7 @@ div(class="w-full h-full flex flex-col")
         class="text-center text-body2 text-grey-900"
       ) {{ $t('RR0105') }}
     div(v-else class="flex-grow")
-      slot(v-if="!inSearch" name="banner")
+      slot(:inSearch="inSearch" name="banner")
       slot(:inSearch="inSearch" :goTo="goTo")
     #pagination-container(class="py-9.5 self-center")
       f-paginator(

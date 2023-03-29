@@ -14,6 +14,7 @@ carousel(
     v-for="showroom in showroomList"
     :key="showroom.title"
     class="px-2.5 group/card cursor-pointer rounded"
+    @click="goShowroom(showroom.showroomId)"
   )
     div(
       class="w-full h-80 relative text-left object-cover"
@@ -73,9 +74,12 @@ import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { SHOWROOM_STATUS } from '@/utils/constants'
+import useNavigation from '@/composables/useNavigation'
 
 const store = useStore()
 const { t } = useI18n()
+
+const { goShowroom } = useNavigation()
 
 const getStatusProps = (status) => {
   let text
@@ -97,11 +101,7 @@ const getStatusProps = (status) => {
     color,
   }
 }
-const showroomList = computed(() => [
-  ...store.getters['showroom/showroomList'],
-  ...store.getters['showroom/showroomList'],
-  store.getters['showroom/showroomList'][0],
-])
+const showroomList = computed(() => store.getters['showroom/showroomList'])
 const refCarousel = ref(null)
 const totalSlide = computed(() => showroomList.value.length)
 const currentSlide = ref(0)

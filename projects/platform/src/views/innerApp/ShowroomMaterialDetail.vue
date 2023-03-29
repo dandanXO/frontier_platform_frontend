@@ -37,6 +37,9 @@ import usePublicLibrary from '@/composables/usePublicLibrary'
 import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
 
 const props = defineProps({
+  showroomId: {
+    type: String,
+  },
   nodeKey: {
     type: String,
     required: true,
@@ -48,10 +51,14 @@ const store = useStore()
 const { parsePath } = useNavigation()
 const { publicCloneByMaterial } = usePublicLibrary()
 
-await store.dispatch('titas/getTitasMaterial', { nodeKey: props.nodeKey })
+await Promise.all([
+  store.dispatch('showroom/getShowroom', { showroomId: props.showroomId }),
+  store.dispatch('showroom/getShowroomMaterial', { nodeKey: props.nodeKey }),
+])
 
-const material = computed(() => store.getters['titas/material'])
-const publish = computed(() => store.getters['titas/materialPublish'])
+const showroom = computed(() => store.getters['showroom/showroom'])
+const material = computed(() => store.getters['showroom/material'])
+const publish = computed(() => store.getters['showroom/materialPublish'])
 const breadcrumbList = computed(() => {
   return [
     {
@@ -59,20 +66,20 @@ const breadcrumbList = computed(() => {
       path: parsePath('/:orgNo/public-library'),
     },
     {
-      name: '2023 Exhibition Showroom',
-      path: parsePath('/:orgNo/titas'),
+      name: showroom.value.title,
+      path: parsePath('/:orgNo/showroom/:showroomId'),
     },
-    ...store.getters['titas/materialBreadcrumbList'].map(
+    ...store.getters['showroom/materialBreadcrumbList'].map(
       ({ name, nodeKey }, index, array) => {
         if (index !== array.length - 1) {
           return {
             name,
-            path: parsePath(`/:orgNo/titas/${nodeKey}`),
+            path: parsePath(`/:orgNo/showroom/${nodeKey}`),
           }
         } else {
           return {
             name: material.value.materialNo,
-            path: parsePath('/:orgNo/titas/material/:nodeKey'),
+            path: parsePath('/:orgNo/showroom/material/:nodeKey'),
           }
         }
       }

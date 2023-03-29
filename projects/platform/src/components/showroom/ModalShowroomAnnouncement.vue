@@ -23,7 +23,10 @@ div(
         )
           img(:src="logo" class="w-full h-full")
       p(class="w-84.5 text-body2 text-grey-400 leading-1.6 pb-5") {{ announcement.subtitle }}
-      f-button(size="md") {{ $t('UU0118') }}
+      f-button(
+        size="md"
+        @click="goShowroom(announcement.showroomId); closeAnnouncement()"
+      ) {{ $t('UU0118') }}
       div(class="mt-8 mb-6 w-full h-px bg-grey-100")
       component(:is="announcementDescriptionComponent")
 </template>
@@ -31,8 +34,11 @@ div(
 <script setup>
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
+import useNavigation from '@/composables/useNavigation'
 
 const store = useStore()
+
+const { goShowroom } = useNavigation()
 
 const announcement = computed(() => store.getters['showroom/announcement'])
 const announcementDescriptionComponent = computed(
