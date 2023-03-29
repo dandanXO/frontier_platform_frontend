@@ -59,7 +59,7 @@ const breadcrumbList = computed(() => {
       path: parsePath('/:orgNo/public-library'),
     },
     {
-      name: 'TITAS 2022',
+      name: '2023 Exhibition Showroom',
       path: parsePath('/:orgNo/titas'),
     },
     ...store.getters['titas/materialBreadcrumbList'].map(
