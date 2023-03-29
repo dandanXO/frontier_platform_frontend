@@ -10,6 +10,7 @@ modal-behavior(
   form(class="w-125")
     div(class="grid grid-cols-2 gap-5 mb-5")
       f-input-text(
+        ref="refFromEmail"
         v-model:textValue="formData.fromEmail"
         :label="$t('II0026')"
         required
@@ -52,7 +53,7 @@ modal-behavior(
 
 <script setup>
 import { useStore } from 'vuex'
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
@@ -70,8 +71,10 @@ const formData = reactive({
   subject: '',
   content: '',
 })
+
+const refFromEmail = ref(null)
 const primaryBtnDisabled = computed(
-  () => !formData.fromEmail || !formData.subject || !formData.content
+  () => refFromEmail.value?.isError || !formData.subject || !formData.content
 )
 const titasInfo = computed(() => store.getters['titas/titasInfo'])
 const orgMenuTree = {
