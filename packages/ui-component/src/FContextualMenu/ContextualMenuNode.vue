@@ -296,7 +296,7 @@ const expandMenu = async () => {
     offset += BUTTON
   }
 
-  if (!!blockList[0].blockTitle) {
+  if (blockList[0].blockTitle) {
     offset += BLOCK_TITLE
   }
 
