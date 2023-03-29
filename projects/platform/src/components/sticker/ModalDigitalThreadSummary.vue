@@ -22,7 +22,7 @@ modal-behavior(:header="$t('TT0067')")
         ) {{ $t('TT0107') }}
       //- Material No
       div(class="pt-7 pb-6")
-        p(class="text-caption text-grey-500 pb-4") {{ $t('RR0200') }}
+        p(class="text-caption text-grey-500 pb-4") {{ $t('RR0257') }}
         p(class="text-caption text-grey-900 break-all") {{ digitalThread.materialNo }}
           span(v-if="digitalThread.hasMaterialDeleted") &nbsp({{ $t('RR0063') }})
           span(v-else-if="digitalThread.hasMaterialNoAccess") &nbsp({{ $t('TT0107') }})

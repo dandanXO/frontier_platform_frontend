@@ -195,7 +195,7 @@
   "RR0197": "Copying Without Permission",
   "RR0198": "This material cannot be copied. You may ask the material owner to grant permission.",
   "RR0199": "3D Material",
-  "RR0200": "Item Number\nItem number (for stickers UI)",
+  "RR0200": "Item Number",
   "RR0201": "{number} people",
   "RR0202": "Leave a message here!",
   "RR0203": "Items",
@@ -252,8 +252,8 @@
   "RR0254": "Eco-Impactor",
   "RR0255": "Reset",
   "RR0256": "Type and press {Enter} to create",
-  "RR0257": "",
-  "RR0258": "",
+  "RR0257": "Item number",
+  "RR0258": "Custom",
   "RR0259": "",
   "RR0260": "",
   "RR0261": "",
@@ -1597,7 +1597,8 @@
   "TT0109": "Verify later",
   "TT0110": "Add sticker from...",
   "TT0111": "External sticker can’t be send while the thread is internal.",
-  "TT0112": "",
-  "TT0113": "",
-  "TT0114": ""
+  "TT0112": "Deleted",
+  "TT0113": "deleted",
+  "TT0114": "Clear filters",
+  "TT0115": ""
 }
