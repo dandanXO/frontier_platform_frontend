@@ -90,7 +90,7 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 sidebar-shadow fle
       div(class="w-auto h-px bg-grey-100 mx-1.5 my-1.5")
   div(v-if="isShowTitasCallout" class="py-4 px-3")
     div(
-      class="rounded-md h-17 box-border p-3 bg-cover flex items-center relative drop-shadow-2 hover:drop-shadow-4 cursor-pointer"
+      class="rounded-md h-17 box-border p-3 bg-center bg-fit flex items-center relative drop-shadow-2 hover:drop-shadow-4 cursor-pointer"
       :style="{ backgroundImage: `url(${titasSidebarCallout})` }"
       @click="goToTitasShowroom"
     )

@@ -51,7 +51,7 @@ div(class="flex h-full")
           h5(class="w-84.5 text-h5 leading-1.5 text-grey-900 font-bold") {{ $t('II0036') }}
           div(class="pt-7.5 pb-3 grid grid-flow-col gap-x-3 justify-start")
             div(
-              v-for="org in titasInfo.orgList"
+              v-for="org in titasOrgList"
               class="rounded-full card-shadow w-10 h-10 overflow-hidden border border-grey-0"
             )
               img(:src="org.logo" class="w-full h-full")
@@ -65,7 +65,7 @@ div(class="flex h-full")
             keypath="II0038"
             scope="global"
             tag="p"
-            class="text-body2 leading-1.6"
+            class="w-84.5 text-body2 text-grey-400 leading-1.6"
           )
             template(#newline)
               br
@@ -134,4 +134,7 @@ bootstrap()
 /** Titas */
 const isShowTitasAnnouncement = ref(true)
 const titasInfo = computed(() => store.getters['titas/titasInfo'])
+const titasOrgList = computed(() =>
+  titasInfo.value.orgList.slice(0, 6).sort((a, b) => Math.random() - 0.5)
+)
 </script>

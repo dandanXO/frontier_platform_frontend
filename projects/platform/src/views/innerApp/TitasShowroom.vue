@@ -49,7 +49,7 @@ div(class="w-full h-full relative")
     template(#sub-header)
       div(class="pb-4 px-7.5")
         div(
-          class="rounded-md h-22 box-border pl-5 pr-6 py-5 bg-cover flex drop-shadow-2 hover:drop-shadow-4"
+          class="rounded bg-center h-22 box-border pl-5 pr-6 py-5 bg-fit flex drop-shadow-2 hover:drop-shadow-4"
           :style="{ backgroundImage: `url(${titasShowroomBanner})` }"
         )
           lord-icon(
@@ -71,13 +71,13 @@ div(class="w-full h-full relative")
                 a(
                   href="https://export.textiles.org.tw/en/taiwan_select.aspx?exh=IWA_Outdoor_Classics&sort=Intro"
                   target="_blank"
-                  class="text-blue-500 underline"
+                  class="text-grey-0 underline"
                 ) {{ $t('II0042') }}
           f-popper(placement="bottom-end" class="self-end")
             template(#trigger)
               f-button(type="secondary" size="sm" prependIcon="email") {{ $t('UU0119') }}
             template(#content="{ collapsePopper }")
-              div(class="w-86 rounded pt-2 pb-3")
+              f-scrollbar-container(class="w-86 max-h-117.5 rounded pt-2 pb-3")
                 div(class="h-9.5 pl-3 font-bold text-body2 flex items-center") {{ $t('II0023') }}
                 div(class="px-2 grid grid-flow-row gap-1")
                   div(

@@ -43,7 +43,7 @@ div(class="w-full h-full relative")
     template(#sub-header)
       div(v-if="isFirstLayer" class="pb-3 px-7.5")
         div(
-          class="rounded-md h-13.5 box-border pl-5 pr-8 bg-cover flex items-center justify-between drop-shadow-2 hover:drop-shadow-4 cursor-pointer"
+          class="rounded-md h-13.5 box-border bg-center bg-fit pl-5 pr-8 flex items-center justify-between drop-shadow-2 hover:drop-shadow-4 cursor-pointer"
           :style="{ backgroundImage: `url(${titasPublicBanner})` }"
           @click="goToTitasShowroom"
         )

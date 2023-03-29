@@ -75,6 +75,7 @@ const primaryBtnDisabled = computed(
 )
 const titasInfo = computed(() => store.getters['titas/titasInfo'])
 const orgMenuTree = {
+  scrollAreaMaxHeight: 'max-h-99',
   blockList: [
     {
       menuList: titasInfo.value.orgList.map(
