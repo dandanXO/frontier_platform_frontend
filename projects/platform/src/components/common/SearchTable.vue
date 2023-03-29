@@ -35,10 +35,10 @@ div(class="w-full h-full flex flex-col")
           )
       slot(name="header-right")
   slot(name="sub-header")
-  div(class="overflow-y-auto flex-grow grid")
+  div(class="overflow-y-auto flex-grow flex flex-col")
     div(
       v-if="isSearching || (inSearch && pagination.totalCount === 0)"
-      class="flex flex-col justify-center items-center"
+      class="flex-grow flex flex-col justify-center items-center"
     )
       f-svg-icon(
         v-if="isSearching"
@@ -50,8 +50,10 @@ div(class="w-full h-full flex flex-col")
         v-else-if="inSearch && pagination.totalCount === 0"
         class="text-center text-body2 text-grey-900"
       ) {{ $t('RR0105') }}
-    slot(v-else :inSearch="inSearch" :goTo="goTo")
-    #pagination-container(class="py-9.5 justify-self-center self-end")
+    div(v-else class="flex-grow")
+      slot(v-if="!inSearch" name="banner")
+      slot(:inSearch="inSearch" :goTo="goTo")
+    #pagination-container(class="py-9.5 self-center")
       f-paginator(
         v-if="!isSearching && pagination.totalCount > 0"
         v-model:currentPage="pagination.currentPage"

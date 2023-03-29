@@ -88,33 +88,6 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 sidebar-shadow fle
                     template(#content)
                       p {{ $t('RR0012') }}
       div(class="w-auto h-px bg-grey-100 mx-1.5 my-1.5")
-  div(v-if="isShowTitasCallout" class="py-4 px-3")
-    div(
-      class="rounded-md h-17 box-border p-3 bg-center bg-fit flex items-center relative drop-shadow-2 hover:drop-shadow-4 cursor-pointer"
-      :style="{ backgroundImage: `url(${titasSidebarCallout})` }"
-      @click="goToTitasShowroom"
-    )
-      f-svg-icon(
-        iconName="clear"
-        size="16"
-        class="absolute top-4 right-4 text-grey-50"
-        @click="isShowTitasCallout = false"
-      )
-      lord-icon(
-        src="https://cdn.lordicon.com/lupuorrc.json"
-        trigger="loop"
-        colors="primary:#ffffff,secondary:#21b185"
-        stroke="65"
-        style="width: 32px; height: 32px"
-      )
-      i18n-t(
-        keypath="II0039"
-        tag="p"
-        class="w-30 pl-2 text-body2 font-bold text-grey-0 leading-1.6"
-        scope="global"
-      )
-        template(#newline)
-          br
   menu-org-user
 </template>
 
@@ -126,12 +99,9 @@ import MenuOrg from '@/components/sidebar/MenuOrg.vue'
 import MenuOrgUser from '@/components/sidebar/MenuOrgUser.vue'
 import { useI18n } from 'vue-i18n'
 import { OG_TYPE } from '@/utils/constants'
-import titasSidebarCallout from '@/assets/images/titas_sidebar_callout.png'
-import useNavigation from '@/composables/useNavigation'
 
 const { t } = useI18n()
 const store = useStore()
-const { goToTitasShowroom } = useNavigation()
 const organization = computed(() => store.getters['organization/organization'])
 const isProcessing = computed(() => store.getters['polling/isProcessing'])
 const planStatus = computed(() => store.getters['polling/planStatus'])
@@ -208,7 +178,4 @@ const menuOrgOrGroup = computed(() => {
 onUnmounted(() => {
   store.dispatch('polling/stopPollingSidebar')
 })
-
-/** Titas */
-const isShowTitasCallout = ref(true)
 </script>

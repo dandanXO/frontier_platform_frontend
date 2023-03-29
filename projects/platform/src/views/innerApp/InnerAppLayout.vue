@@ -31,50 +31,7 @@ div(class="flex h-full")
       :key="$route.params.orgNo"
       class="absolute bottom-0 left-0 z-100"
     )
-    div(
-      v-if="isInInnerApp && isShowTitasAnnouncement"
-      class="fixed top-0 left-0 w-screen h-screen bg-grey-900/40 z-100 flex items-center justify-center"
-      @click="isShowTitasAnnouncement = false"
-    )
-      div(
-        class="w-192.5 h-119.5 bg-grey-0 rounded relative flex overflow-hidden"
-        @click.stop
-      )
-        f-svg-icon(
-          iconName="clear"
-          class="absolute top-6 right-6 text-grey-600 cursor-pointer"
-          @click="isShowTitasAnnouncement = false"
-        )
-        div(class="w-86 h-full shrink-0")
-          img(src="@/assets/images/titas_announcement_banner.png")
-        div(class="flex-grow pt-15 pl-8.5 pr-8")
-          h5(class="w-84.5 text-h5 leading-1.5 text-grey-900 font-bold") {{ $t('II0036') }}
-          div(class="pt-7.5 pb-3 grid grid-flow-col gap-x-3 justify-start")
-            div(
-              v-for="org in titasOrgList"
-              class="rounded-full card-shadow w-10 h-10 overflow-hidden border border-grey-0"
-            )
-              img(:src="org.logo" class="w-full h-full")
-          p(class="w-84.5 text-body2 text-grey-400 leading-1.6 pb-5") {{ $t('II0037') }}
-          f-button(
-            size="md"
-            @click="goToTitasShowroom(); isShowTitasAnnouncement = false"
-          ) {{ $t('UU0118') }}
-          div(class="my-6 w-full h-px bg-grey-100")
-          i18n-t(
-            keypath="II0038"
-            scope="global"
-            tag="p"
-            class="w-84.5 text-body2 text-grey-400 leading-1.6"
-          )
-            template(#newline)
-              br
-            template(#II0041)
-              a(
-                href="https://export.textiles.org.tw/en/taiwan_select.aspx?exh=IWA_Outdoor_Classics&sort=Intro"
-                target="_blank"
-                class="text-blue-500 underline"
-              ) {{ $t('II0041') }}
+    modal-showroom-announcement(v-if="isInInnerApp && isPromoting")
   transition
     sticker-drawer(v-if="isStickerDrawerOpen")
 </template>
@@ -88,17 +45,16 @@ export default {
 <script setup>
 import { setOptions, bootstrap } from 'vue-gtag'
 import { useStore } from 'vuex'
-import { ref, computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
-import useNavigation from '@/composables/useNavigation'
+import ModalShowroomAnnouncement from '@/components/showroom/ModalShowroomAnnouncement.vue'
 
 const NotifyBarBuffer = defineAsyncComponent(() =>
   import('@/components/billings/NotifyBarBuffer.vue')
 )
 const store = useStore()
 const route = useRoute()
-const { goToTitasShowroom } = useNavigation()
 const isReloadInnerApp = computed(
   () => store.getters['helper/isReloadInnerApp']
 )
@@ -131,10 +87,6 @@ setOptions({
 })
 bootstrap()
 
-/** Titas */
-const isShowTitasAnnouncement = ref(true)
-const titasInfo = computed(() => store.getters['titas/titasInfo'])
-const titasOrgList = computed(() =>
-  titasInfo.value.orgList.slice(0, 6).sort((a, b) => Math.random() - 0.5)
-)
+/** showroom */
+const isPromoting = computed(() => store.getters['showroom/isPromoting'])
 </script>

@@ -315,6 +315,7 @@ const routes = [
               'organization/orgUser/getOrgUser',
               'organization/getPricing',
               'showroom/getShowroomAnnouncement',
+              'showroom/getShowroomBannerAndList',
             ]
 
             if (to.params.orgNo && !from.params.orgNo) {

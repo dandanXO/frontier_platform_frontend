@@ -43,11 +43,19 @@ div(class="w-full h-full relative")
         v-if="!isFirstLayer"
         size="sm"
         type="secondary"
-        class="-mr-3"
         @click="openModalCollectionDetail"
       ) {{ $t('UU0057') }}
     template(#sub-header)
-      div(class="pb-4 px-7.5")
+      i18n-t(
+        v-if="!isFirstLayer"
+        keypath="II0002"
+        tag="p"
+        class="mx-7.5 mb-4 text-caption text-grey-600"
+        scope="global"
+      )
+        template(#displayName) {{ publishBy }}
+    template(#banner)
+      div(class="pb-4 px-7.5 self-start")
         div(
           class="rounded bg-center h-22 box-border pl-5 pr-6 py-5 bg-fit flex drop-shadow-2 hover:drop-shadow-4"
           :style="{ backgroundImage: `url(${titasShowroomBanner})` }"
@@ -111,14 +119,11 @@ div(class="w-full h-full relative")
                         )
                       template(#content)
                         p {{ $t('II0034') }}
-      i18n-t(
-        v-if="!isFirstLayer"
-        keypath="II0002"
-        tag="p"
-        class="mx-7.5 mb-4 text-caption text-grey-600"
-        scope="global"
-      )
-        template(#displayName) {{ publishBy }}
+        div(class="mt-5 border w-full border-grey-100")
+          carousel(:itemsToShow="2" snapAlign="start" class="-mx-2")
+            slide(v-for="node in nodeList" :key="node.properties.name" class="px-2")
+              div(class="w-full h-50 border border-grey-100")
+                p {{ node.properties.name }}
     template(#default="{ goTo }")
       div(
         v-if="nodeList.length > 0"
@@ -157,6 +162,7 @@ div(class="w-full h-full relative")
 </template>
 
 <script setup>
+import Slider from '@/components/common/Slider.vue'
 import SearchTable from '@/components/common/SearchTable.vue'
 import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
@@ -169,6 +175,8 @@ import useNavigation from '@/composables/useNavigation'
 import NotifyBarInactive from '@/components/billings/NotifyBarInactive.vue'
 import titasShowroomBanner from '@/assets/images/titas_showroom_banner.png'
 import copyText from '@/utils/copy-text'
+import 'vue3-carousel/dist/carousel.css'
+import { Carousel, Slide } from 'vue3-carousel'
 
 const { t } = useI18n()
 const store = useStore()

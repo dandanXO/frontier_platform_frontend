@@ -6,4 +6,9 @@ export default {
       method: 'POST',
       data: { orgId },
     }),
+  getShowroomBannerAndList: ({ orgId }) =>
+    axios('/showroom/get-banner-and-list', {
+      method: 'POST',
+      data: { orgId },
+    }),
 }

@@ -25,7 +25,6 @@ div(class="w-full h-full")
         v-if="!isFirstLayer"
         size="sm"
         type="secondary"
-        class="-mr-3"
         @click="openModalCollectionDetail"
       ) {{ $t('UU0057') }}
       f-button(size="sm" prependIcon="add" @click="openModalAssetsList") {{ $t('UU0055') }}

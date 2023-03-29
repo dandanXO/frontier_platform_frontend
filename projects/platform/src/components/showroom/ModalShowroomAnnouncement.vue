@@ -25,26 +25,19 @@ div(
       p(class="w-84.5 text-body2 text-grey-400 leading-1.6 pb-5") {{ announcement.subtitle }}
       f-button(size="md") {{ $t('UU0118') }}
       div(class="mt-8 mb-6 w-full h-px bg-grey-100")
-      component(:is="description")
+      component(:is="announcementDescriptionComponent")
 </template>
 
 <script setup>
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
-import generateContentComponent from '@/utils/generateContentComponent'
 
 const store = useStore()
 
 const announcement = computed(() => store.getters['showroom/announcement'])
-const description = computed(() => {
-  const { content, contentValue } = announcement.value.description
-  return generateContentComponent(
-    content,
-    contentValue,
-    ['w-full', 'text-body-2', 'text-grey-400', 'leading-1.6'],
-    ['text-blue-500', 'underline']
-  )
-})
+const announcementDescriptionComponent = computed(
+  () => store.getters['showroom/announcementDescriptionComponent']
+)
 
 const refAnnouncement = ref(null)
 const closeAnnouncement = () => {
