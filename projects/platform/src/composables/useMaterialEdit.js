@@ -6,9 +6,11 @@ import {
   useConstants,
   CONTEXTUAL_MENU_MODE,
 } from '@/utils/constants'
+import { useI18n } from 'vue-i18n'
 
 export default function useMaterialEdit() {
   const store = useStore()
+  const { t } = useI18n()
   const { WEIGHT_UNIT } = useConstants()
 
   const inventoryUnitList = computed(() => ({
@@ -49,7 +51,7 @@ export default function useMaterialEdit() {
       scrollAreaMaxHeight: 'max-h-72',
       blockList: [
         {
-          blockTitle: 'custom',
+          blockTitle: t('RR0258'),
           menuList: newContentList
             .concat(store.getters['assets/code'].contentList.custom)
             .map((content) => ({
@@ -85,7 +87,7 @@ export default function useMaterialEdit() {
       scrollAreaMaxHeight: 'max-h-72',
       blockList: [
         {
-          blockTitle: 'custom',
+          blockTitle: t('RR0258'),
           menuList: newDescriptionList
             .concat(store.getters['assets/code'].descriptionList.custom)
             .map((description) => ({
@@ -107,7 +109,7 @@ export default function useMaterialEdit() {
       scrollAreaMaxHeight: 'max-h-72',
       blockList: [
         {
-          blockTitle: 'custom',
+          blockTitle: t('RR0258'),
           menuList: newFinishList
             .concat(store.getters['assets/code'].finishList.custom)
             .map((finish) => ({
