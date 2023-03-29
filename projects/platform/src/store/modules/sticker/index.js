@@ -474,12 +474,7 @@ export default {
         digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
       })
       commit('SET_digitalThread', data.result.digitalThread)
-      const { sideOGType, sideOGId } = getters.digitalThread
-      dispatch('getStickerTagList', {
-        ogId: sideOGId,
-        ogType: sideOGType,
-      })
-      dispatch('getDigitalThreadList')
+      await dispatch('refetch', { refetchDigitalThread: false })
     },
     updateDigitalThreadName(
       { rootGetters, getters, commit, dispatch },
@@ -506,12 +501,7 @@ export default {
         content,
       })
       commit('SET_digitalThread', data.result.digitalThread)
-      const { sideOGType, sideOGId } = getters.digitalThread
-      dispatch('getStickerTagList', {
-        ogId: sideOGId,
-        ogType: sideOGType,
-      })
-      dispatch('getDigitalThreadList')
+      await dispatch('refetch', { refetchDigitalThread: false })
     },
     async updateStickerTagList(
       { rootGetters, dispatch, getters },
@@ -523,24 +513,24 @@ export default {
         stickerId,
         tagList,
       })
+      await dispatch('refetch')
+    },
+    async starSticker({ rootGetters, getters, dispatch }, stickerId) {
+      await stickerApi.starSticker({
+        orgId: rootGetters['organization/orgId'],
+        digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
+        stickerId,
+      })
 
-      dispatch('getDigitalThread', {
-        digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
-      })
+      await dispatch('refetch')
     },
-    starSticker({ rootGetters, getters }, stickerId) {
-      stickerApi.starSticker({
+    async unstarSticker({ rootGetters, getters, dispatch }, stickerId) {
+      await stickerApi.unstarSticker({
         orgId: rootGetters['organization/orgId'],
         digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
         stickerId,
       })
-    },
-    unstarSticker({ rootGetters, getters }, stickerId) {
-      stickerApi.unstarSticker({
-        orgId: rootGetters['organization/orgId'],
-        digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
-        stickerId,
-      })
+      await dispatch('refetch')
     },
     readChildSticker({ rootGetters, getters }, stickerId) {
       stickerApi.readChildSticker({
@@ -554,6 +544,20 @@ export default {
         orgId: rootGetters['organization/orgId'],
         digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
       })
+    },
+    async refetch({ getters, dispatch }, { refetchDigitalThread = true } = {}) {
+      const { sideOGType, sideOGId } = getters.digitalThread
+      await Promise.all([
+        dispatch('getStickerTagList', {
+          ogId: sideOGId,
+          ogType: sideOGType,
+        }),
+        dispatch('getDigitalThreadList'),
+        refetchDigitalThread &&
+          dispatch('getDigitalThread', {
+            digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
+          }),
+      ])
     },
   },
 }

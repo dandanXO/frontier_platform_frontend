@@ -26,10 +26,10 @@ div(
       span(class="text-caption") {{ digitalThread.stickerStatistics.totalQty }}
     div(class="flex items-center gap-x-1.5 text-grey-600")
       f-svg-icon(iconName="starred" size="14" class="text-yellow-400")
-      span(class="text-caption") {{ digitalThread.tagList.length }}
+      span(class="text-caption") {{ digitalThread.stickerStatistics.starredQty }}
     div(class="flex items-center gap-x-1.5 text-grey-600")
       f-svg-icon(iconName="tag" size="14")
-      span(class="text-caption") {{ digitalThread.stickerStatistics.starredQty }}
+      span(class="text-caption") {{ digitalThread.tagList.length }}
     div(
       v-if="digitalThread.stickerStatistics.externalQty > 0 || digitalThread.stickerStatistics.internalQty > 0"
       class="pl-2 flex items-center gap-x-1"
