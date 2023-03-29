@@ -159,11 +159,9 @@ modal-behavior(:header="$t('TT0067')")
 <script setup>
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
-import { LOCATION_TYPE } from '@/utils/constants'
-import { useI18n } from 'vue-i18n'
+import useAddFromDisplayList from '@/composables/useAddFromLocationListDisplay'
 
 const store = useStore()
-const { t } = useI18n()
 
 const digitalThread = computed(() => store.getters['sticker/digitalThread'])
 
@@ -180,30 +178,5 @@ const saveDigitalThreadName = () => {
   })
 }
 
-const addFromLocationList = computed(() => {
-  const list = [...digitalThread.value.addFromLocationList]
-
-  switch (digitalThread.value.addFromLocationType) {
-    case LOCATION_TYPE.PUBLIC:
-      list.unshift(t('RR0003'))
-      break
-    case LOCATION_TYPE.ASSETS:
-      list.unshift(t('RR0008'))
-      break
-    case LOCATION_TYPE.WORKSPACE:
-      list.unshift(t('RR0009'))
-      break
-    case LOCATION_TYPE.MOODBOARD:
-      list.unshift(t('RR0003'))
-      break
-    case LOCATION_TYPE.SHARE_TO_ME:
-      list.unshift(t('QQ0001'))
-      break
-    case LOCATION_TYPE.RECEIVED_SHARE:
-      list.unshift(t('RR0256'))
-      break
-  }
-
-  return list
-})
+const addFromLocationList = useAddFromDisplayList(digitalThread)
 </script>

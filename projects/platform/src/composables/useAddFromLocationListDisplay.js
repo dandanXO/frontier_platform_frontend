@@ -1,0 +1,37 @@
+import { computed } from 'vue'
+import { LOCATION_TYPE } from '@/utils/constants'
+import { useI18n } from 'vue-i18n'
+
+const useAddFromDisplayList = (digitalThread) => {
+  const { t } = useI18n()
+  const addFromLocationList = computed(() => {
+    const list = [...digitalThread.value.addFromLocationList]
+
+    switch (digitalThread.value.addFromLocationType) {
+      case LOCATION_TYPE.PUBLIC:
+        list.unshift(t('RR0003'))
+        break
+      case LOCATION_TYPE.ASSETS:
+        list.unshift(t('RR0008'))
+        break
+      case LOCATION_TYPE.WORKSPACE:
+        list.unshift(t('RR0009'))
+        break
+      case LOCATION_TYPE.MOODBOARD:
+        list.unshift(t('QQ0001'))
+        break
+      case LOCATION_TYPE.SHARE_TO_ME:
+        list.unshift(t('RR0010'))
+        break
+      case LOCATION_TYPE.RECEIVED_SHARE:
+        list.unshift(t('RR0256'))
+        break
+    }
+
+    return list
+  })
+
+  return addFromLocationList
+}
+
+export default useAddFromDisplayList

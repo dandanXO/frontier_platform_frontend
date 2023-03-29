@@ -19,7 +19,7 @@ div(class="pb-7.5")
         p {{ $t('RR0054') }}
     digital-thread-entrance(
       :material="material"
-      :drawerOpenFromLocationList="breadcrumbList.map((item) => item.name).slice(1)"
+      :drawerOpenFromLocationList="breadcrumbList.map((item) => item.name).slice(1, -1)"
     )
   p(class="text-caption text-grey-600") {{ $t('EE0014') }} : {{ lastUpdateDate }}
 </template>

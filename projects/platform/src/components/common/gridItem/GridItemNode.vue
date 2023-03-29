@@ -8,7 +8,7 @@ grid-item-material(
   :optionList="optionList"
   @click:option="$emit('click:option', $event)"
   :canAddSticker="canAddSticker"
-  :drawerOpenFromLocationList="node.location?.slice(1)"
+  :drawerOpenFromLocationList="drawerOpenFromLocationList"
 )
   template(#corner-top-right)
     slot(name="corner-top-right")
@@ -88,11 +88,24 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  drawerOpenFromLocationList: {
+    type: Array,
+  },
 })
 const emit = defineEmits(['update:selectedValue', 'click:option'])
 
 const innerSelectedValue = computed({
   get: () => props.selectedValue,
   set: (v) => emit('update:selectedValue', v),
+})
+
+/**
+ * sticker drawer location list
+ * 不包含 assets, workspace 等 location type => 去除陣列第一個元素
+ * 不包含 materialNo, materialId, frontierNo => 去除陣列最後一個元素
+ */
+const drawerOpenFromLocationList = computed(() => {
+  if (props.drawerOpenFromLocationList) return props.drawerOpenFromLocationList
+  return props.node.location?.slice(1, -1)
 })
 </script>
