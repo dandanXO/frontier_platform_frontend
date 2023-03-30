@@ -45,7 +45,7 @@ div(class="w-full h-full relative")
                 iconName="forward_to_mail"
                 size="24"
                 class="text-grey-600 hover:text-primary-400"
-                @click="openModalShowroomContactForm(org.orgId); collapsePopper()"
+                @click="openModalShowroomContactForm(collection.publish.orgId)"
               )
             template(#content)
               p {{ $t('II0034') }}
