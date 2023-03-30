@@ -88,9 +88,11 @@ const getStatusProps = (status) => {
     case SHOWROOM_STATUS.CLOSE:
       text = t('II0062')
       color = 'text-grey-200'
+      break
     case SHOWROOM_STATUS.COMING_SOON:
       text = t('II0061')
       color = 'text-yellow-0'
+      break
     default:
       text = t('II0060')
       color = 'text-yellow-0'

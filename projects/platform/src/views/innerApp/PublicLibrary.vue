@@ -57,7 +57,10 @@ div(class="w-full h-full relative")
           class="rounded-md box-border bg-center bg-fit p-5 flex flex-col gap-y-4 justify-between drop-shadow-2 cursor-pointer"
           :style="{ backgroundImage: `url(${banner.coverImg})` }"
         )
-          h6(class="text-h6 text-grey-0 font-bold") {{ banner.title }}
+          h6(
+            class="text-h6 font-bold"
+            :class="[banner.color === BANNER_TEXT_COLOR.WHITE ? 'text-grey-0' : 'text-grey-900']"
+          ) {{ banner.title }}
           component(:is="bannerDescriptionComponent")
         div(class="mt-4 w-full")
           showroom-carousel
@@ -90,7 +93,12 @@ div(class="w-full h-full relative")
 
 <script setup>
 import SearchTable from '@/components/common/SearchTable.vue'
-import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
+import {
+  SEARCH_TYPE,
+  NODE_TYPE,
+  useConstants,
+  BANNER_TEXT_COLOR,
+} from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { watch, ref, computed } from 'vue'

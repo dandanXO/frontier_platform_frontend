@@ -1,5 +1,5 @@
 import showroomApi from '@/apis/showroom.js'
-import { SHOWROOM_STATUS } from '@/utils/constants'
+import { SHOWROOM_STATUS, BANNER_TEXT_COLOR } from '@/utils/constants'
 import generateContentComponent from '@/utils/generateContentComponent'
 import { PublicCollection } from '@/store/reuseModules/collection'
 import Material from '@/store/reuseModules/material.js'
@@ -85,22 +85,30 @@ export default {
     banner: (state) => state.banner,
     bannerDescriptionComponent: (state) => {
       const { content, contentValue } = state.banner.description
+      const textColor =
+        state.banner.color === BANNER_TEXT_COLOR.WHITE
+          ? 'text-grey-0'
+          : 'text-grey-900'
       return generateContentComponent(
         content,
         contentValue,
-        ['w-full', 'text-body2', 'text-grey-0'],
-        ['text-body2', 'text-grey-0', 'underline']
+        ['w-full', 'text-body2', textColor],
+        ['text-body2', textColor, 'underline']
       )
     },
     showroomList: (state) => state.showroomList,
     showroom: (state) => state.showroom,
     showroomDescriptionComponent: (state) => {
       const { content, contentValue } = state.showroom.description
+      const textColor =
+        state.showroom.color === BANNER_TEXT_COLOR.WHITE
+          ? 'text-grey-0'
+          : 'text-grey-900'
       return generateContentComponent(
         content,
         contentValue,
-        ['w-full', 'text-body2', 'text-grey-0'],
-        ['text-body2', 'text-grey-0', 'underline']
+        ['w-full', 'text-body2', textColor],
+        ['text-body2', textColor, 'underline']
       )
     },
     materialBreadcrumbList: (state) =>

@@ -499,3 +499,8 @@ export enum CREATE_EDIT {
   CREATE = 1,
   EDIT = 2,
 }
+
+export enum BANNER_TEXT_COLOR {
+  WHITE = 0,
+  EDIT = 1,
+}
