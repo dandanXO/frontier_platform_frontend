@@ -98,18 +98,7 @@ export default {
     sourceTagList: (state) => state.sourceTagList,
     mentionMemberList: (state) => state.mentionMemberList,
     filter: (state) => state.filter,
-    isFilterDirty: (state) => {
-      return !isEqual(
-        {
-          ...state.filter,
-          addTo: null,
-        },
-        {
-          ...defaultFilter(),
-          addTo: null,
-        }
-      )
-    },
+    isFilterDirty: (state) => !isEqual(state.filter, defaultFilter()),
     isAdvanceFilterDirty: (state) => {
       return !isEqual(
         {
