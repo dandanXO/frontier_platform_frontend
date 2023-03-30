@@ -18,7 +18,7 @@ div(
       ) {{ announcement.title }}
       div(class="pt-5 pb-3 grid grid-flow-col gap-x-3 justify-start")
         div(
-          v-for="logo in announcement.participatedOrgLogoList"
+          v-for="logo in announcement.participatedOrgLogoList.slice(0, 6)"
           class="rounded-full card-shadow w-10 h-10 overflow-hidden border border-grey-0"
         )
           img(:src="logo" class="w-full h-full")

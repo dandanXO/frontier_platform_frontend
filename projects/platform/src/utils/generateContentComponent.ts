@@ -10,8 +10,11 @@ interface ContentValue {
 
 /**
  * 將 content 字串中的 {x} 替換成 contentValue item 中的 value (x 為數字並對應到 contentValue 的 index)，
- * 其中 type 的型別可參考 CONTENT_PARSED_TYPE 1 為一般 url 連結，2 為 sticker drawer 連結，
- * 並且函式會回傳一個 Vue 3 的 render 函式
+ * 其中 type 的型別可參考 CONTENT_PARSED_TYPE
+ *  - 1 為一般 url 連結
+ *  - 2 為 sticker drawer 連結
+ *  - 3 為換行
+ * 並且函式會回傳一個 render 函式
  */
 export default (
   content: string,
@@ -74,6 +77,9 @@ export default (
                   },
                   text
                 )
+              }
+              if (type === CONTENT_PARSED_TYPE.NEWLINE) {
+                return h('br')
               }
             }
             return h('span', {}, fragment)

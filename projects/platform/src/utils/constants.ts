@@ -487,6 +487,7 @@ export enum U3M_CUT_SIDE_EDIT_STATE {
 export enum CONTENT_PARSED_TYPE {
   URL = 1,
   STICKER = 2,
+  NEWLINE = 3,
 }
 
 export enum SHOWROOM_STATUS {
