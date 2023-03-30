@@ -54,7 +54,7 @@ div(class="w-full h-full relative")
     )
       div(v-if="!inSearch" class="pb-4 px-7.5")
         div(
-          class="rounded-md box-border bg-center bg-fit p-5 flex flex-col gap-y-4 justify-between drop-shadow-2 cursor-pointer"
+          class="rounded-md box-border bg-center bg-fit p-5 flex flex-col gap-y-4 justify-between drop-shadow-2"
           :style="{ backgroundImage: `url(${banner.coverImg})` }"
         )
           h6(

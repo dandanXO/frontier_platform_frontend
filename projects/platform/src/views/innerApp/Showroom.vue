@@ -104,7 +104,7 @@ div(class="w-full h-full relative")
     template(#banner v-if="pagination.currentPage === 1 && isFirstLayer")
       div(class="pb-4 px-7.5")
         div(
-          class="rounded-md box-border bg-center bg-fit p-5 flex flex-col gap-y-4 justify-between drop-shadow-2 hover:drop-shadow-4 cursor-pointer"
+          class="rounded-md box-border bg-center bg-fit p-5 flex flex-col gap-y-4 justify-between drop-shadow-2 hover:drop-shadow-4"
           :style="{ backgroundImage: `url(${showroom.coverImg})` }"
         )
           h6(
