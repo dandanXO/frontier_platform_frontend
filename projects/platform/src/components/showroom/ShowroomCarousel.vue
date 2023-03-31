@@ -17,7 +17,7 @@ carousel(
     @click="goShowroom(showroom.showroomId)"
   )
     div(
-      class="w-full h-80 relative text-left object-cover"
+      class="w-full h-80 relative text-left bg-center bg-cover"
       :style="{ backgroundImage: `url(${showroom.coverImg})` }"
     )
       div(
