@@ -35,7 +35,9 @@ carousel(
           span {{ showroom.period }}
         h5(class="pt-1 text-h5 !leading-1.5 font-bold text-grey-0 line-clamp-1") {{ showroom.subtitle }}
         p(class="pb-1 text-body1 !leading-1.6 text-grey-0 line-clamp-1") {{ showroom.location }}
-        p(class="flex items-start line-clamp-2 text-caption text-grey-200 !leading-1.6") {{ showroom.categoryList.join(', ') }}
+        p(
+          class="flex items-start line-clamp-2 text-caption text-grey-200 !leading-1.6 !break-normal"
+        ) {{ showroom.categoryList.join(', ') }}
   template(#addons="{ slidesCount }")
     template(v-if="slidesCount > 2")
       div(class="grid gap-x-3 grid-flow-col w-fit mx-auto pt-4")
