@@ -52,7 +52,7 @@ div(class="w-full h-full relative")
     template(#header-right)
       f-popper(v-if="isFirstLayer" placement="bottom-end" class="self-end")
         template(#trigger)
-          f-button(type="secondary" size="sm" prependIcon="email") {{ $t('UU0119') }}
+          f-button(size="sm" prependIcon="email") {{ $t('UU0119') }}
         template(#content="{ collapsePopper }")
           f-scrollbar-container(
             class="w-86 max-h-117.5 rounded pt-2 pb-3 bg-grey-0 drop-shadow-16"
