@@ -13,11 +13,11 @@ carousel(
   slide(
     v-for="showroom in showroomList"
     :key="showroom.title"
-    class="px-2.5 group/card cursor-pointer rounded"
+    class="px-2.5 group/card cursor-pointer"
     @click="goShowroom(showroom.showroomId)"
   )
     div(
-      class="w-full h-80 relative text-left bg-center bg-cover"
+      class="w-full h-80 relative text-left bg-center bg-cover rounded overflow-hidden"
       :style="{ backgroundImage: `url(${showroom.coverImg})` }"
     )
       div(
