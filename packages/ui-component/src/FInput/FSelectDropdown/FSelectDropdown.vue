@@ -270,7 +270,7 @@ const classIcon = computed(() => {
 })
 
 const classDisplayText = computed(() => {
-  const classList = ['flex-grow']
+  const classList = ['flex-grow', 'line-clamp-1']
 
   switch (props.size) {
     case 'sm':

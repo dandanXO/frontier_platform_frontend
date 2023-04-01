@@ -45,7 +45,7 @@ div(class="w-full h-full relative")
                 iconName="forward_to_mail"
                 size="24"
                 class="text-grey-600 hover:text-primary-400"
-                @click="openModalShowroomContactForm(collection.publish.orgId)"
+                @click="openModalShowroomContactForm(collection.publish.orgId, true)"
               )
             template(#content)
               p {{ $t('II0034') }}
@@ -82,7 +82,7 @@ div(class="w-full h-full relative")
                       iconName="forward_to_mail"
                       size="24"
                       class="text-grey-600 hover:text-primary-400"
-                      @click="openModalShowroomContactForm(org.orgId); collapsePopper()"
+                      @click="openModalShowroomContactForm(org.orgId, false); collapsePopper()"
                     )
                   template(#content)
                     p {{ $t('II0034') }}
@@ -274,11 +274,12 @@ watch(
   () => (selectedNodeList.value.length = 0)
 )
 
-const openModalShowroomContactForm = (toOrgId) => {
+const openModalShowroomContactForm = (toOrgId, onlyToOne) => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-showroom-contact-form',
     properties: {
       toOrgId,
+      onlyToOne,
     },
   })
 }

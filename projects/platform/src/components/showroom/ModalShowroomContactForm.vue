@@ -17,24 +17,22 @@ modal-behavior(
         size="md"
         :rules="[$inputRules.required(), $inputRules.email()]"
       )
-      f-input-container(:label="$t('II0025')")
-        f-popper(placement="bottom" :offset="[0, 0]")
-          template(#trigger)
-            div(class="h-9 rounded border border-grey-200 w-full flex px-4 items-center")
-              img(:src="selectedOrg.logo" class="w-6 h-6 rounded-full")
-              p(class="flex-grow text-body2 px-2 line-clamp-1") {{ selectedOrg.orgName }}
-              f-svg-icon(
-                iconName="keyboard_arrow_right"
-                size="20"
-                class="transform rotate-90 cursor-pointer text-grey-600"
-              )
-          template(#content)
-            f-contextual-menu(
-              class="w-60"
-              :menuTree="orgMenuTree"
-              v-model:inputSelectValue="formData.toOrgId"
-              :selectMode="2"
-            )
+      f-select-dropdown(
+        v-if="!onlyToOne"
+        :label="$t('II0025')"
+        required
+        :dropdownMenuTree="orgMenuTree"
+        v-model:selectValue="formData.toOrgId"
+        size="md"
+      )
+      f-input-text(
+        v-else
+        :label="$t('II0025')"
+        v-model:textValue="selectedOrg.orgName"
+        required
+        disabled
+        size="md"
+      )
     f-input-text(
       v-model:textValue="formData.subject"
       :label="$t('II0027')"
@@ -59,6 +57,11 @@ import { useI18n } from 'vue-i18n'
 const props = defineProps({
   toOrgId: {
     type: Number,
+  },
+  // 只能發送給預設的 toOrgId 對象，不能選擇其他的 (從單一 showroom 開啟的)
+  onlyToOne: {
+    type: Boolean,
+    default: false,
   },
 })
 
