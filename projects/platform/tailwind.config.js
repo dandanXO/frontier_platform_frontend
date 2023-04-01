@@ -5,8 +5,5 @@ module.exports = {
     '../../packages/ui-component/src/**/*.vue',
     '../../packages/3d-viewer/src/**/*.vue',
   ],
-  plugins: [
-    require('@tailwindcss/line-clamp'),
-    require('@frontier/tailwindcss'),
-  ],
+  plugins: [require('@frontier/tailwindcss')],
 }

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "storybook": "start-storybook -p 6006",
-    "build": "build-storybook",
+    "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider build-storybook",
     "deploy": "npm run build && bash ./deploy.sh",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path ../../.gitignore",
     "format": "prettier --write '**/*.{js,ts,vue,json}' --ignore-path ../../.gitignore"

@@ -3,15 +3,15 @@ stages:
   - deploy
 
 platform-build:
-  image: node:16.13.2
+  image: node:18.15.0
   stage: build
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
       variables:
-        DEPLOY_ENV: "development"
+        DEPLOY_ENV: 'development'
     - if: $CI_COMMIT_TAG
       variables:
-        DEPLOY_ENV: "production"
+        DEPLOY_ENV: 'production'
   script:
     - npm install -g pnpm
     - pnpm i
@@ -43,7 +43,7 @@ platform-deploy-to-prod:
 
 storybook-build:
   stage: build
-  image: node:16.13.2
+  image: node:18.15.0
   only:
     refs:
       - main
