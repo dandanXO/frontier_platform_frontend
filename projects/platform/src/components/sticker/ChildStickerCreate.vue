@@ -27,6 +27,7 @@ div(class="relative w-full overflow-hidden")
     common-sticker-text-editor-footer(
       v-model:tagList="tagList"
       :addTo="addTo"
+      :addFrom="addFrom"
       :addButtonDisabled="content.length === 0"
       @mentionTrigger="() => refChildStickerTextEditor.mentionPerson()"
       @tagInputTrigger="() => refChildStickerTagInput.focus()"
@@ -36,12 +37,12 @@ div(class="relative w-full overflow-hidden")
 
 <script setup>
 import { ref, computed, onUnmounted, watch } from 'vue'
+import { useStore } from 'vuex'
 import { v4 as uuidv4 } from 'uuid'
-import { OG_TYPE } from '@/utils/constants'
+import useStickerAddFromMenu from '@/composables/useStickerAddFromMenu'
 import StickerTagInput from '@/components/sticker/StickerTagInput.vue'
 import CommonStickerTextEditor from '@/components/sticker/stickerTextEditor/CommonStickerTextEditor.vue'
 import CommonStickerTextEditorFooter from '@/components/sticker/stickerTextEditor/CommonStickerTextEditorFooter.vue'
-import { useStore } from 'vuex'
 
 const tempCreatingStickerId = uuidv4()
 
@@ -60,65 +61,27 @@ const props = defineProps({
     required: true,
   },
 })
+
 const store = useStore()
-
-const refChildStickerTextEditor = ref()
-
-const organization = computed(() => store.getters['organization/organization'])
-const menuAddFrom = computed(() => {
-  const { orgName, orgId, labelColor } = organization.value
-
-  return {
-    width: 'w-73.5',
-    blockList: [
-      {
-        menuList: [
-          {
-            title: orgName,
-            selectValue: {
-              addFromOGId: orgId,
-              addFromOGType: OG_TYPE.ORG,
-            },
-            labelColor,
-          },
-          ...store.getters['organization/groupList'].map((group) => {
-            const { groupId, groupName, labelColor } = group
-            return {
-              title: groupName,
-              selectValue: {
-                addFromOGId: groupId,
-                addFromOGType: OG_TYPE.GROUP,
-              },
-              labelColor,
-            }
-          }),
-        ],
-      },
-    ],
-  }
-})
+const menuAddFrom = useStickerAddFromMenu()
 
 // form data of creating digit thread or sticker
-const addFrom = ref(menuAddFrom.value.blockList[0].menuList[0].selectValue)
 const content = ref('')
 const tagList = ref([])
-
-const routeLocation = computed(() => store.getters['helper/routeLocation'])
-const routeLocationId = computed(() => store.getters['helper/routeLocationId'])
-
-if (routeLocation.value === 'org') {
-  addFrom.value = {
-    addFromOGType: OG_TYPE.ORG,
-    addFromOGId: routeLocationId.value,
-  }
-} else {
-  addFrom.value = {
-    addFromOGType: OG_TYPE.GROUP,
-    addFromOGId: routeLocationId.value,
-  }
-}
-
 const refChildStickerTagInput = ref(null)
+const refChildStickerTextEditor = ref()
+
+const addFrom = computed(() => {
+  const menuItem = menuAddFrom.value.blockList[0].menuList.find(
+    (v) =>
+      v.selectValue.addFromOGId ===
+      store.getters['sticker/digitalThread'].sideOGId
+  )
+  return {
+    name: menuItem.title,
+    labelColor: menuItem.labelColor,
+  }
+})
 
 const createChildSticker = async () => {
   await store.dispatch('sticker/createChildSticker', {

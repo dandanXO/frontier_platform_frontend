@@ -66,41 +66,30 @@ div(
     class="flex items-center gap-x-2 pt-4"
     @click.stop
   )
-    f-avatar(
-      :imageUrl="avatar"
-      :type="childSticker.addTo === EXTERNAL ? 'org' : 'user'"
-      size="sm"
+    sticker-creator-info(
+      :avatar="avatar"
+      :avatarType="avatarType"
+      :labelColor="labelColor"
+      :creatorInfoText="creatorInfoText"
+      :createDate="createDate"
     )
-    p(class="text-caption text-grey-900 font-bold leading-1.6") {{ creator }}
-      span(class="text-caption text-grey-300 font-normal") ・{{ $dayjs.unix(childSticker.createDate).format('MMM DD, YYYY [at] hh:mm A') }}
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import useStickerCreatorInfo from '@/composables/useStickerCreatorInfo'
+import StickerCreatorInfo from '@/components/sticker/StickerCreatorInfo.vue'
 import CommonStickerTextViewer from '@/components/sticker/stickerTextEditor/CommonStickerTextViewer.vue'
 import StickerTagList from '@/components/sticker/StickerTagList.vue'
 import StickerHeaderIcon from '@/components/sticker/StickerHeaderIcon.vue'
-import { STICKER_ADD_TO } from '@/utils/constants'
 import { useStore } from 'vuex'
 
-const { EXTERNAL } = STICKER_ADD_TO
 const store = useStore()
 const props = defineProps({
   childSticker: {
     type: Object,
     required: true,
   },
-})
-
-const avatar = computed(() => {
-  return props.childSticker.addTo === EXTERNAL
-    ? props.childSticker.creatorUnitLogo
-    : props.childSticker.creatorAvatar
-})
-const creator = computed(() => {
-  return props.childSticker.addTo === EXTERNAL
-    ? props.childSticker.creatorUnitName
-    : props.childSticker.creator
 })
 
 const isHoverChildSticker = ref(false)
@@ -121,6 +110,10 @@ const toggleStarred = () => {
 const isFilterTagListDirty = computed(
   () => store.getters['sticker/isFilterTagListDirty']
 )
+
+const { avatar, avatarType, labelColor, creatorInfoText, createDate } =
+  useStickerCreatorInfo(props.childSticker)
+
 watch(
   () => isFilterTagListDirty.value,
   () => {

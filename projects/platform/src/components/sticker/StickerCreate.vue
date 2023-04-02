@@ -82,6 +82,7 @@ div(class="relative w-full rounded-md shadow-8 overflow-hidden")
     common-sticker-text-editor-footer(
       v-model:tagList="tagList"
       :addTo="addTo"
+      :addFrom="addFrom"
       :addButtonDisabled="content.length === 0"
       @mentionTrigger="() => refStickerTextEditor.mentionPerson()"
       @tagInputTrigger="() => refStickerTagInput.focus()"
@@ -93,6 +94,7 @@ div(class="relative w-full rounded-md shadow-8 overflow-hidden")
 import { ref, computed, onUnmounted, watch } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { STICKER_ADD_TO, OG_TYPE, LOCATION_TYPE } from '@/utils/constants'
+import useStickerAddFromMenu from '@/composables/useStickerAddFromMenu'
 import StickerLabelAddTo from '@/components/sticker/StickerLabelAddTo.vue'
 import StickerTagInput from '@/components/sticker/StickerTagInput.vue'
 import CommonStickerTextEditor from '@/components/sticker/stickerTextEditor/CommonStickerTextEditor.vue'
@@ -118,39 +120,7 @@ const props = defineProps({
 const { t } = useI18n()
 const store = useStore()
 
-const organization = computed(() => store.getters['organization/organization'])
-const menuAddFrom = computed(() => {
-  const { orgName, orgId, labelColor } = organization.value
-
-  return {
-    width: 'w-73.5',
-    blockList: [
-      {
-        menuList: [
-          {
-            title: orgName,
-            selectValue: {
-              addFromOGId: orgId,
-              addFromOGType: OG_TYPE.ORG,
-            },
-            labelColor,
-          },
-          ...store.getters['organization/groupList'].map((group) => {
-            const { groupId, groupName, labelColor } = group
-            return {
-              title: groupName,
-              selectValue: {
-                addFromOGId: groupId,
-                addFromOGType: OG_TYPE.GROUP,
-              },
-              labelColor,
-            }
-          }),
-        ],
-      },
-    ],
-  }
-})
+const menuAddFrom = useStickerAddFromMenu()
 
 const STICKER_TYPE = {
   TEXT_ONLY: {
@@ -179,9 +149,34 @@ const isInternalLocation = computed(() => {
 
 const isExternalLocation = computed(() => !isInternalLocation.value)
 
+const routeLocation = computed(() => store.getters['helper/routeLocation'])
+const routeLocationId = computed(() => store.getters['helper/routeLocationId'])
+
 const canChooseAddFrom = computed(
   () => props.isCreatingDigitalThread && isExternalLocation.value
 )
+// form data of creating digit thread or sticker
+const getDefaultAddFrom = () => {
+  if (!canChooseAddFrom.value) {
+    const menuItem = menuAddFrom.value.blockList[0].menuList.find(
+      (v) =>
+        v.selectValue.addFromOGId ===
+        store.getters['sticker/digitalThread'].sideOGId
+    )
+    return {
+      name: menuItem.title,
+      labelColor: menuItem.labelColor,
+    }
+  }
+
+  if (routeLocation.value !== 'org') {
+    return menuAddFrom.value.blockList[0].menuList.find(
+      (v) => v.selectValue.addFromOGId === routeLocationId.value
+    )
+  }
+  return menuAddFrom.value.blockList[0].menuList[0].selectValue
+}
+const addFrom = ref(getDefaultAddFrom())
 
 const canChooseAddToExternal = computed(() => {
   if (props.isCreatingDigitalThread && isInternalLocation.value) {
@@ -207,27 +202,10 @@ const canChooseAddToExternal = computed(() => {
   return true
 })
 
-// form data of creating digit thread or sticker
-const addFrom = ref(menuAddFrom.value.blockList[0].menuList[0].selectValue)
 const addTo = ref(canChooseAddToExternal.value ? EXTERNAL : INTERNAL)
 const type = ref(STICKER_TYPE.TEXT_ONLY.value)
 const content = ref('')
 const tagList = ref([])
-
-const routeLocation = computed(() => store.getters['helper/routeLocation'])
-const routeLocationId = computed(() => store.getters['helper/routeLocationId'])
-
-if (routeLocation.value === 'org') {
-  addFrom.value = {
-    addFromOGType: OG_TYPE.ORG,
-    addFromOGId: routeLocationId.value,
-  }
-} else {
-  addFrom.value = {
-    addFromOGType: OG_TYPE.GROUP,
-    addFromOGId: routeLocationId.value,
-  }
-}
 
 const createStickerOrDigitalThread = async () => {
   if (props.isCreatingDigitalThread) {

@@ -80,14 +80,13 @@ div(
       class="flex items-center gap-x-2 pt-5"
       @click.stop
     )
-      f-avatar(
-        :imageUrl="avatar"
-        :type="sticker.addTo === EXTERNAL ? 'org' : 'user'"
-        :labelColor="sticker.creatorUnitLabelColor"
-        size="sm"
+      sticker-creator-info(
+        :avatar="avatar"
+        :avatarType="avatarType"
+        :labelColor="labelColor"
+        :creatorInfoText="creatorInfoText"
+        :createDate="createDate"
       )
-      p(class="text-caption text-grey-900 font-bold leading-1.6") {{ creator }}
-        span(class="text-caption text-grey-300 font-normal") ・{{ $dayjs.unix(sticker.createDate).format('MMM DD, YYYY [at] hh:mm A') }}
     //- Button - Add child sticker
     f-button(
       v-if="!isFilterDirty && !refStickerTagList?.isEditingTagList && isHoverSticker && !isExpandChildStickerList"
@@ -138,14 +137,16 @@ div(
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import useStickerCreatorInfo from '@/composables/useStickerCreatorInfo'
 import StickerLabelAddTo from '@/components/sticker/StickerLabelAddTo.vue'
 import CommonStickerTextViewer from '@/components/sticker/stickerTextEditor/CommonStickerTextViewer.vue'
 import StickerHeaderIcon from '@/components/sticker/StickerHeaderIcon.vue'
 import StickerTagList from '@/components/sticker/StickerTagList.vue'
 import ChildStickerCreate from '@/components/sticker/ChildStickerCreate.vue'
 import ChildStickerCard from '@/components/sticker/ChildStickerCard.vue'
+import StickerCreatorInfo from '@/components/sticker/StickerCreatorInfo.vue'
 import { STICKER_ADD_TO } from '@/utils/constants'
-import { useStore } from 'vuex'
 
 const { EXTERNAL, INTERNAL } = STICKER_ADD_TO
 const store = useStore()
@@ -156,18 +157,9 @@ const props = defineProps({
   },
 })
 
-const avatar = computed(() => {
-  return props.sticker.addTo === EXTERNAL
-    ? props.sticker.creatorUnitLogo
-    : props.sticker.creatorAvatar
-})
-const creator = computed(() => {
-  return props.sticker.addTo === EXTERNAL
-    ? props.sticker.creatorUnitName
-    : props.sticker.creator
-})
-
 const digitalThread = computed(() => store.getters['sticker/digitalThread'])
+const { avatar, avatarType, labelColor, creatorInfoText, createDate } =
+  useStickerCreatorInfo(props.sticker)
 
 const isHoverSticker = ref(false)
 const isHoverIconMore = ref(false)
