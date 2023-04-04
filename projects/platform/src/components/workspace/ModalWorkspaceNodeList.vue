@@ -19,7 +19,7 @@ modal-behavior(
       prependIcon="search"
       :placeholder="$t('RR0118')"
       :disabled="isInRoot"
-      @enter="search"
+      @enter="getWorkspaceForModal()"
     )
     div(class="flex-grow flex flex-col")
       div(class="relative z-20 flex justify-between items-center py-4")
@@ -55,7 +55,7 @@ modal-behavior(
                 :menuTree="sortMenuTree"
                 v-model:inputSelectValue="queryParams.sort"
                 :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
-                @click:menu="sort"
+                @click:menu="getWorkspaceForModal()"
               )
       div(
         v-show="isSearching && nodeList.length === 0"
@@ -272,8 +272,14 @@ const actionButtonDisabled = computed(() => {
 
 const setRootId = (id) => (rootId.value = id)
 
-const getWorkspaceForModal = async () => {
+const getWorkspaceForModal = async (targetPage = 1, needReset = true) => {
   isSearching.value = true
+
+  queryParams.targetPage = targetPage
+  queryParams.keyword = keyword.value
+
+  // first time clear for loading UI
+  needReset && (pureNodeList.value.length = 0)
 
   const { pagination, workspaceCollection } = await store.dispatch(
     'workspace/getWorkspaceForModal',
@@ -288,7 +294,7 @@ const getWorkspaceForModal = async () => {
     })
   )
 
-  pureNodeList.value.length = 0
+  needReset && (pureNodeList.value.length = 0)
 
   if (workspaceCollection.childCollectionList.length > 0) {
     workspaceCollection.childCollectionList.forEach((collection) => {
@@ -403,42 +409,16 @@ const getWorkspaceForModal = async () => {
   isSearching.value = false
 }
 
-const parseAndSetKey = (key) => {
-  const [workspaceNodeLocation, workspaceNodeId] = key.split('-')
-  queryParams.workspaceNodeLocation = workspaceNodeLocation
-  queryParams.workspaceNodeId = workspaceNodeId
-}
-
-const clearNodeList = () => {
-  pureNodeList.value.length = 0
-  queryParams.targetPage = 1
-}
-
-const clearKeyword = () => {
-  keyword.value = ''
-  queryParams.keyword = ''
-}
-
 const goTo = (key) => {
-  clearKeyword()
-  clearNodeList()
+  keyword.value = null
   if (key === 'root') {
     appendedBreadcrumbList.value.length = 0
   } else {
-    parseAndSetKey(key)
+    const [workspaceNodeLocation, workspaceNodeId] = key.split('-')
+    queryParams.workspaceNodeLocation = workspaceNodeLocation
+    queryParams.workspaceNodeId = workspaceNodeId
     getWorkspaceForModal()
   }
-}
-
-const search = () => {
-  queryParams.keyword = keyword.value
-  clearNodeList()
-  getWorkspaceForModal()
-}
-
-const sort = () => {
-  clearNodeList()
-  getWorkspaceForModal()
 }
 
 const infiniteScroll = () => {
@@ -462,10 +442,7 @@ const openModalCreateCollectionSimple = () => {
       id: rootId.value,
       workspaceNodeLocation: Number(queryParams.workspaceNodeLocation),
       workspaceNodeId: Number(queryParams.workspaceNodeId),
-      callback: () => {
-        clearNodeList()
-        getWorkspaceForModal()
-      },
+      callback: getWorkspaceForModal,
     },
   })
 }

@@ -15,7 +15,7 @@ modal-behavior(
       prependIcon="search"
       :placeholder="$t('FF0017')"
       :disabled="isInRoot"
-      @enter="search"
+      @enter="getMaterialListForModal()"
     )
     div(class="flex-grow flex flex-col")
       div(class="relative z-20 flex justify-between items-center py-4")
@@ -51,7 +51,7 @@ modal-behavior(
                 :menuTree="sortMenuTree"
                 v-model:inputSelectValue="queryParams.sort"
                 :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
-                @click:menu="sort"
+                @click:menu="getMaterialListForModal()"
               )
       div(
         v-show="isSearching && nodeMaterialList.length === 0"
@@ -190,8 +190,14 @@ const innerActionCallback = async () => {
   await props.actionCallback(tempSelectValue)
 }
 
-const getMaterialListForModal = async () => {
+const getMaterialListForModal = async (targetPage = 1, needReset = true) => {
   isSearching.value = true
+
+  queryParams.targetPage = targetPage
+  queryParams.keyword = keyword.value
+
+  // first time clear for loading UI
+  needReset && (nodeMaterialList.value.length = 0)
 
   const { pagination, assets } = await store.dispatch(
     'assets/getMaterialListForModal',
@@ -199,7 +205,7 @@ const getMaterialListForModal = async () => {
   )
   totalPage.value = pagination.totalPage
 
-  nodeMaterialList.value.length = 0
+  needReset && (nodeMaterialList.value.length = 0)
 
   assets.materialList.forEach((material) => {
     nodeMaterialList.value.push({
@@ -218,28 +224,12 @@ const infiniteScroll = () => {
 
   const currentPage = queryParams.targetPage
   if (currentPage !== totalPage.value) {
-    queryParams.targetPage = Math.min(currentPage + 1, totalPage.value)
-    getMaterialListForModal()
+    getMaterialListForModal(Math.min(currentPage + 1, totalPage.value), false)
   }
 }
 
-const reset = () => {
-  nodeMaterialList.value.length = 0
-  queryParams.targetPage = 1
-}
-
-const sort = () => {
-  reset()
-  getMaterialListForModal()
-}
-
-const search = () => {
-  queryParams.keyword = keyword.value
-  reset()
-  getMaterialListForModal()
-}
-
 const goTo = (option) => {
+  keyword.value = null
   if (option.key === 'root') {
     breadcrumbList.value.length = 1
   } else if (!breadcrumbList.value.some((item) => item.key === option.key)) {
@@ -247,7 +237,6 @@ const goTo = (option) => {
     const [nodeLocation, id] = option.key.split('-')
     queryParams.nodeLocation = nodeLocation
     queryParams.id = id
-    reset()
     getMaterialListForModal()
   }
 }
