@@ -18,12 +18,15 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  editorClass: {
+    type: String,
+  },
 })
 
 const store = useStore()
 
 const suggestionList = computed(
-  () => store.getters['sticker/digitalThread'].participantList
+  () => store.getters['sticker/digitalThread'].participantAndMentionList
 )
 
 const editor = useEditor({
@@ -43,7 +46,7 @@ const editor = useEditor({
   ],
   editorProps: {
     attributes: {
-      class: 'outline-none bg-grey-0 text-body2 leading-1.6 text-grey-900',
+      class: props.editorClass,
     },
   },
   editable: false,

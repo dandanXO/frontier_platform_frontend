@@ -494,13 +494,14 @@ export default {
     },
     async createChildSticker(
       { rootGetters, getters, commit, dispatch },
-      { stickerId, content }
+      { stickerId, content, tagList }
     ) {
       const { data } = await stickerApi.createChildSticker({
         orgId: rootGetters['organization/orgId'],
         digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
         stickerId,
         content,
+        tagList,
       })
       commit('SET_digitalThread', data.result.digitalThread)
       await dispatch('refetch', { refetchDigitalThread: false })

@@ -69,7 +69,10 @@ div(
             f-list
               f-list-item(@click="collapsePopper(); openModalStickerDetail()") {{ $t('TT0055') }}
     //- Content
-    sticker-text-viewer(:content="sticker.content")
+    common-sticker-text-viewer(
+      :content="sticker.content"
+      editorClass="outline-none bg-grey-0 text-body2 leading-1.6 text-grey-900"
+    )
     //- Tag List
     sticker-tag-list(
       ref="refStickerTagList"
@@ -116,9 +119,11 @@ div(
     )
       child-sticker-card(:childSticker="childSticker")
       hr(v-if="index !== childStickerList.length - 1" class="text-grey-150 my-3.5")
-    child-sticker-text-editor(
+    child-sticker-create(
       v-if="isCreatingChildSticker"
+      :order="sticker.childStickerList.length + 1"
       :stickerId="sticker.stickerId"
+      :addTo="sticker.addTo"
       :class="{ 'pt-3': childStickerList.length !== 0 }"
       @close="isCreatingChildSticker = false"
     )
@@ -140,10 +145,10 @@ div(
 <script setup>
 import { ref, computed, watch } from 'vue'
 import StickerLabelAddTo from '@/components/sticker/StickerLabelAddTo.vue'
-import StickerTextViewer from '@/components/sticker/stickerTextEditor/StickerTextViewer.vue'
+import CommonStickerTextViewer from '@/components/sticker/stickerTextEditor/CommonStickerTextViewer.vue'
 import StickerHeaderIcon from '@/components/sticker/StickerHeaderIcon.vue'
 import StickerTagList from '@/components/sticker/StickerTagList.vue'
-import ChildStickerTextEditor from '@/components/sticker/stickerTextEditor/ChildStickerTextEditor.vue'
+import ChildStickerCreate from '@/components/sticker/ChildStickerCreate.vue'
 import ChildStickerCard from '@/components/sticker/ChildStickerCard.vue'
 import { STICKER_ADD_TO } from '@/utils/constants'
 import { useStore } from 'vuex'

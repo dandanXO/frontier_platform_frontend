@@ -49,7 +49,10 @@ div(
           f-list
             f-list-item(@click="collapsePopper(); openModalStickerDetail()") {{ $t('TT0055') }}
   //- Content
-  child-sticker-text-viewer(:content="childSticker.content")
+  common-sticker-text-viewer(
+    :content="childSticker.content"
+    editorClass="outline-none text-body2 leading-1.6 text-grey-900"
+  )
   //- Tag List
   sticker-tag-list(
     ref="refStickerTagList"
@@ -74,7 +77,7 @@ div(
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import ChildStickerTextViewer from '@/components/sticker/stickerTextEditor/ChildStickerTextViewer.vue'
+import CommonStickerTextViewer from '@/components/sticker/stickerTextEditor/CommonStickerTextViewer.vue'
 import StickerTagList from '@/components/sticker/StickerTagList.vue'
 import StickerHeaderIcon from '@/components/sticker/StickerHeaderIcon.vue'
 import { STICKER_ADD_TO } from '@/utils/constants'

@@ -74,7 +74,7 @@ div(class="relative w-full rounded-md drop-shadow-8 overflow-hidden")
                 p {{ $t('TT0093') }}
   div(class="min-h-45 px-5 pb-2.5 bg-grey-100")
     div(class="min-h-25 py-4 box-content")
-      sticker-text-editor(
+      common-sticker-text-editor(
         ref="refStickerTextEditor"
         v-model:content="content"
         :addTo="addTo"
@@ -84,38 +84,14 @@ div(class="relative w-full rounded-md drop-shadow-8 overflow-hidden")
       v-model:inputTagList="tagList"
       class="mb-2"
     )
-    div(class="flex items-center h-9.5")
-      div(class="flex-grow pr-3.5 flex items-center gap-x-3")
-        f-avatar(
-          :imageUrl="avatar"
-          :type="addTo === EXTERNAL ? 'org' : 'user'"
-          :labelColor="organization.labelColor"
-          size="sm"
-        )
-        div(class="w-50")
-          p(class="font-bold text-grey-900 text-caption leading-1.6 truncate") {{ organization.orgName }}
-          p(v-if="addTo === INTERNAL" class="pt-1 text-grey-800 text-caption") {{ orgUser.displayName }}
-      div(
-        class="flex-shrink-0 w-7 h-7 bg-grey-0 border border-grey-150 flex items-center justify-center rounded mr-1.5"
-        @click="refStickerTextEditor.mentionPerson"
-        :class="[addTo === EXTERNAL ? 'text-grey-150 pointer-events-none' : 'text-grey-900 cursor-pointer']"
-      )
-        f-svg-icon(iconName="mention" size="16")
-      div(
-        class="flex-shrink-0 w-7 h-7 bg-grey-0 border border-grey-150 flex items-center justify-center rounded mr-4 cursor-pointer"
-        @click="refStickerTagInput.focus"
-      )
-        f-svg-icon(
-          iconName="tag"
-          size="16"
-          class="text-grey-900"
-          :tooltip="$t('TT0053')"
-        )
-      f-button(
-        size="sm"
-        :disabled="content.length === 0"
-        @click="createStickerOrDigitalThread"
-      ) {{ $t('UU0035') }}
+    common-sticker-text-editor-footer(
+      v-model:tagList="tagList"
+      :addTo="addTo"
+      :addButtonDisabled="content.length === 0"
+      @mentionTrigger="() => refStickerTextEditor.mentionPerson()"
+      @tagInputTrigger="() => refStickerTagInput.focus()"
+      @addButtonClick="createStickerOrDigitalThread"
+    )
 </template>
 
 <script setup>
@@ -124,7 +100,8 @@ import { v4 as uuidv4 } from 'uuid'
 import { STICKER_ADD_TO, OG_TYPE, LOCATION_TYPE } from '@/utils/constants'
 import StickerLabelAddTo from '@/components/sticker/StickerLabelAddTo.vue'
 import StickerTagInput from '@/components/sticker/StickerTagInput.vue'
-import StickerTextEditor from '@/components/sticker/stickerTextEditor/StickerTextEditor.vue'
+import CommonStickerTextEditor from '@/components/sticker/stickerTextEditor/CommonStickerTextEditor.vue'
+import CommonStickerTextEditorFooter from '@/components/sticker/stickerTextEditor/CommonStickerTextEditorFooter.vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 
@@ -178,12 +155,6 @@ const menuAddFrom = computed(() => {
       },
     ],
   }
-})
-const orgUser = computed(() => store.getters['organization/orgUser/orgUser'])
-const avatar = computed(() => {
-  return addTo.value === EXTERNAL
-    ? organization.value.logo
-    : orgUser.value.avatar
 })
 
 const STICKER_TYPE = {
