@@ -64,6 +64,7 @@ export default {
      */
     tempCreatingStickerIdList: [],
     isStickerDrawerOpen: false,
+    isFetchingDigitalThread: false,
     isAddingSticker: false, // 正在新增 sticker
     isReceivedShareStickerDrawerOpen: false,
     currentMaterialId: null, // drawer 顯示的 materialId
@@ -86,6 +87,7 @@ export default {
     drawerOpenFromLocationType: (state) => state.drawerOpenFromLocationType,
     drawerOpenFromLocationList: (state) => state.drawerOpenFromLocationList,
     isStickerDrawerOpen: (state) => state.isStickerDrawerOpen,
+    isFetchingDigitalThread: (state) => state.isFetchingDigitalThread,
     isAddingSticker: (state) => state.isAddingSticker,
     isReceivedShareStickerDrawerOpen: (state) =>
       state.isReceivedShareStickerDrawerOpen,
@@ -118,6 +120,9 @@ export default {
   mutations: {
     SET_isStickerDrawerOpen(state, isStickerDrawerOpen) {
       state.isStickerDrawerOpen = isStickerDrawerOpen
+    },
+    SET_IS_FETCHING_DIGITAL_THREAD(state, isFetchingDigitalThread) {
+      state.isFetchingDigitalThread = isFetchingDigitalThread
     },
     SET_isAddingSticker(state, isAddingSticker) {
       state.isAddingSticker = isAddingSticker
@@ -302,6 +307,7 @@ export default {
       { commit, rootGetters, getters, dispatch },
       { digitalThreadSideId, wllGetAdditionalData = true }
     ) {
+      commit('SET_IS_FETCHING_DIGITAL_THREAD', true)
       const { data } = await stickerApi.getDigitalThread({
         orgId: rootGetters['organization/orgId'],
         digitalThreadSideId,
@@ -319,6 +325,7 @@ export default {
           ogType: sideOGType,
         })
       }
+      commit('SET_IS_FETCHING_DIGITAL_THREAD', false)
     },
     async getDigitalThreadMaterial({ commit, rootGetters, getters }) {
       const { data } = await stickerApi.getDigitalThreadMaterial({

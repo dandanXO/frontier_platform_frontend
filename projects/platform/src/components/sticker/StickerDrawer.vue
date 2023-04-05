@@ -254,7 +254,9 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
         ) {{ $t('UU0040') }}
     //- Content
     f-scrollbar-container(class="flex-grow")
-      div(class="py-4")
+      div(v-if="isFetchingDigitalThread" class="pt-28.5 flex items-center justify-center")
+        f-svg-icon(iconName="loading" size="84" class="text-primary-400")
+      div(v-else class="py-4")
         //- Button: Add a sticker
         div(v-if="!isAddingSticker && !isFilterDirty" class="pl-8 pr-10.5")
           f-tooltip(placement="top" isNotFitWidth)
@@ -358,6 +360,9 @@ const isCreatingDigitalThread = computed(
     stickerList.value.length === 0
 ) // 全新的 digital thread 尚未建立任何一個 sticker
 
+const isFetchingDigitalThread = computed(
+  () => store.getters['sticker/isFetchingDigitalThread']
+)
 const isAddingSticker = computed(() => store.getters['sticker/isAddingSticker'])
 const setIsAddingSticker = (bool) =>
   store.commit('sticker/SET_isAddingSticker', bool)
