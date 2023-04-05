@@ -24,7 +24,7 @@ const useAddFromDisplayList = (digitalThread) => {
         list.unshift(t('RR0010'))
         break
       case LOCATION_TYPE.RECEIVED_SHARE:
-        list.unshift(t('RR0256'))
+        list.unshift(t('RR0259'))
         break
     }
 

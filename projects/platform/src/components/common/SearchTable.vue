@@ -53,9 +53,11 @@ div(class="w-full h-full flex flex-col")
     div(v-else class="flex-grow")
       slot(:inSearch="inSearch" name="banner")
       slot(:inSearch="inSearch" :goTo="goTo")
-    #pagination-container(class="py-9.5 self-center")
+    #pagination-container(
+      v-if="!isSearching && pagination.totalCount > 0"
+      class="py-9.5 self-center"
+    )
       f-paginator(
-        v-if="!isSearching && pagination.totalCount > 0"
         v-model:currentPage="pagination.currentPage"
         :totalPage="pagination.totalPage"
         @goTo="search($event)"

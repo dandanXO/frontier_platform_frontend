@@ -65,13 +65,14 @@ div(class="w-full h-full")
             @click.stop="goToAssetMaterialDetail(material)"
             :drawerOpenFromLocationList="[]"
           )
-      div(v-else class="flex flex-col justify-center items-center")
-        div(
-          class="border border-grey-250 rounded-md border-dashed p-2 mt-40 cursor-pointer"
-          @click="goToMaterialUpload"
-        )
-          f-svg-icon(iconName="add" size="24" class="text-grey-900")
-        p(class="text-body2 text-grey-900 pt-3") {{ $t('EE0079') }}
+      div(v-else class="flex h-full justify-center items-center")
+        div(class="flex flex-col justify-center items-center")
+          div(
+            class="border border-grey-250 rounded-md border-dashed p-2 cursor-pointer"
+            @click="goToMaterialUpload"
+          )
+            f-svg-icon(iconName="add" size="24" class="text-grey-900")
+          p(class="text-body2 text-grey-900 pt-3") {{ $t('EE0079') }}
 </template>
 
 <script setup>

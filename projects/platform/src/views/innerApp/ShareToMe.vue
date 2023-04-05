@@ -71,7 +71,7 @@ div(class="w-full h-full")
             div(class="mt-1.5 h-6 flex items-center")
               img(:src="node.share.logo" class="aspect-square h-full rounded-full")
               p(class="pl-1 font-bold text-caption text-grey-900") {{ node.share.displayName }}
-      div(v-else class="flex h-full justify-center items-end")
+      div(v-else class="flex h-full justify-center items-center")
         p(class="text-body1 text-grey-900") {{ $t('HH0001') }}
     template(#menu-option="{ option }")
       div(
