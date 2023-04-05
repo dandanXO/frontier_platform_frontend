@@ -485,18 +485,18 @@ export default {
       commit('SET_digitalThread', data.result.digitalThread)
       await dispatch('refetch', { refetchDigitalThread: false })
     },
-    updateDigitalThreadName(
+    async updateDigitalThreadName(
       { rootGetters, getters, commit, dispatch },
       { isCreatingDigitalThread = false, digitalThreadName }
     ) {
       commit('UPDATE_digitalThread_digitalThreadName', digitalThreadName)
       if (!isCreatingDigitalThread) {
-        stickerApi.updateDigitalThreadName({
+        await stickerApi.updateDigitalThreadName({
           orgId: rootGetters['organization/orgId'],
           digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
           digitalThreadName,
         })
-        dispatch('getDigitalThreadList')
+        await dispatch('getDigitalThreadList')
       }
     },
     async createChildSticker(
