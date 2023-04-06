@@ -13,12 +13,6 @@ div(
     class="relative px-5 pt-2.5 pb-3.5 bg-grey-0 rounded-r-md"
     @click="expandChildStickerList"
   )
-    //- Unread Hint
-    div(
-      v-if="sticker.hasNewAddOrUpdate"
-      class="absolute top-1/2 -left-4 w-2 h-2 rounded-full"
-      :class="{ 'bg-forestgreen-300': sticker.addTo === EXTERNAL, 'bg-grey-300': sticker.addTo === INTERNAL }"
-    )
     //- Header
     div(class="flex items-center justify-between pb-5")
       sticker-label-add-to(:addTo="sticker.addTo")

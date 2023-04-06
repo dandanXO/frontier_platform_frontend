@@ -336,7 +336,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
 </template>
 
 <script setup>
-import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -345,7 +345,6 @@ import { STICKER_ADD_TO, OG_TYPE, LOCATION_TYPE } from '@/utils/constants'
 import StickerCard from '@/components/sticker/StickerCard.vue'
 import DigitalThreadCard from '@/components/sticker/DigitalThreadCard.vue'
 import useNavigation from '@/composables/useNavigation'
-import stickerApi from '@/apis/sticker'
 
 const store = useStore()
 const { t } = useI18n()
@@ -580,25 +579,6 @@ const goToMaterialDetail = (openNewPage = false) => {
     router.push(parsePath(unParsedPath))
   }
 }
-
-const readDigitalThread = (e) => {
-  const orgId = store.getters['organization/orgId']
-  if (!isCreatingDigitalThread.value) {
-    const body = {
-      orgId,
-      digitalThreadSideId: digitalThread.value.digitalThreadSideId,
-      accessToken: localStorage.getItem('accessToken'),
-    }
-    stickerApi.readDigitalThreadBySendBeacon(body)
-  }
-}
-onMounted(() => {
-  window.addEventListener('beforeunload', readDigitalThread)
-})
-onUnmounted(() => {
-  window.removeEventListener('beforeunload', readDigitalThread)
-  readDigitalThread()
-})
 
 const closeStickerDrawer = () => {
   store.dispatch('sticker/closeStickerDrawer')

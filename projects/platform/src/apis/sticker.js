@@ -167,32 +167,4 @@ export default {
       method: 'POST',
       data,
     }),
-  /**
-   *
-   * @param {object} data
-   * @param {number} data.orgId
-   * @param {number} data.digitalThreadSideId
-   */
-  readDigitalThread: (data) =>
-    axios('/digital-thread/read-new-add-and-update', {
-      method: 'POST',
-      data,
-    }),
-  /**
-   *
-   * @param {object} data
-   * @param {number} data.orgId
-   * @param {number} data.digitalThreadSideId
-   */
-  readDigitalThreadBySendBeacon: (data) => {
-    const headers = {
-      type: 'application/json',
-    }
-    data.o
-    const blob = new Blob([JSON.stringify(data)], headers)
-    const path = `${
-      import.meta.env.VITE_APP_API_ENDPOINT
-    }/digital-thread/read-new-add-and-update`
-    return navigator.sendBeacon(path, blob)
-  },
 }

@@ -558,12 +558,6 @@ export default {
       })
       dispatch('fetchStickerDrawerData')
     },
-    readDigitalThread({ rootGetters, getters }) {
-      stickerApi.readDigitalThread({
-        orgId: rootGetters['organization/orgId'],
-        digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
-      })
-    },
     addTempCreateStickerId({ getters, commit }, tempCreatingStickerId) {
       const tempCreatingStickerIdList = getters.tempCreatingStickerIdList
       if (tempCreatingStickerIdList.includes(tempCreatingStickerId)) return
