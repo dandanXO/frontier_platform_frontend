@@ -5,7 +5,7 @@ filter-wrapper(
   :dirty="filterDirty.widthAndWeightGsm"
   @expand="initWidthAndWeight"
 )
-  div(class="w-95 rounded card-shadow py-4")
+  div(class="w-95 rounded shadow-16 py-4")
     filter-range(
       v-model:range="inputRangeWidth"
       :min="filterOptions.width.min"

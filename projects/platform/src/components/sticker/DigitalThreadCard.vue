@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="group w-full h-39.5 bg-grey-0 hover:bg-grey-50 border border-grey-150 drop-shadow-2 pl-5 pt-3.5 pr-3.5 pb-2"
+  class="group w-full h-39.5 bg-grey-0 hover:bg-grey-50 border border-grey-150 shadow-2 pl-5 pt-3.5 pr-3.5 pb-2"
 )
   div(class="pb-1 flex items-center gap-x-2.5")
     img(v-defaultImg class="w-8 h-8 rounded" :src="material.coverImg")

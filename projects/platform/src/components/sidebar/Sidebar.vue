@@ -1,11 +1,5 @@
-<style lang="scss" scoped>
-.sidebar-shadow {
-  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25));
-}
-</style>
-
 <template lang="pug">
-div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 sidebar-shadow flex flex-col")
+div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex flex-col")
   menu-org
   div(class="border-t border-grey-150 px-1 py-1.5 flex flex-col")
     div(class="grid gap-y-1.5")

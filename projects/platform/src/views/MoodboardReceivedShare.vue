@@ -37,7 +37,7 @@ fullscreen-header
             a(
               :href="moodboard.trendBoardUrl"
               target="_blank"
-              class="absolute right-3.5 bottom-3.5 card-shadow w-7 h-7 rounded-sm bg-grey-0 flex items-center justify-center"
+              class="absolute right-3.5 bottom-3.5 w-7 h-7 bg-grey-0 flex items-center justify-center rounded border border-grey-250"
             )
               f-svg-icon(iconName="open_in_new" class="text-grey-600" size="24")
           div(v-else)
@@ -48,7 +48,7 @@ fullscreen-header
           p(class="text-body2 break-all leading-1.6") {{ moodboard.description }}
       block-attachment(:attachmentList="moodboard.attachmentList")
     div(
-      class="fixed z-footer bottom-0 w-full h-13 bg-grey-50 px-36 flex items-center justify-end card-shadow"
+      class="fixed z-footer bottom-0 w-full h-13 bg-grey-50 px-36 flex items-center justify-end shadow-4 border-t border-grey-150"
     )
       p(class="text-body2 text-grey-900") {{ $t('GG0004') }}
 </template>

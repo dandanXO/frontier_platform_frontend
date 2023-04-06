@@ -4,7 +4,7 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
   div(class="flex gap-x-23 items-center")
     div(class="w-97.5 h-126 bg-contain" :style="{ backgroundImage: `url(${imgCover}` }")
     div(class="w-105")
-      div(class="w-full rounded-lg card-shadow px-10 pt-10 pb-9.5 flex flex-col")
+      div(class="w-full rounded-lg shadow-4 px-10 pt-10 pb-9.5 flex flex-col")
         p(
           class="text-grey-900 text-h6 font-bold text-center pb-5.5 border-b border-grey-250"
         ) {{ $t('AA0016') }}
@@ -106,7 +106,7 @@ div(
   class="fixed inset-0 w-full h-full bg-grey-50 flex justify-center items-center"
 )
   div(
-    class="w-112 h-92 rounded-md bg-grey-0 card-shadow pt-22.5 px-14 pb-15 flex flex-col items-center"
+    class="w-112 h-92 rounded-md bg-grey-0 shadow-32 pt-22.5 px-14 pb-15 flex flex-col items-center"
   )
     i18n-t(keypath="AA0025" tag="h4" class="text-grey-900 text-h4 mb-3" scope="global")
       template(#name) {{ formData.firstName }}

@@ -6,14 +6,17 @@ div(class="pt-16 xl:pt-17.5")
         div(class="relative")
           f-avatar(:imageUrl="logo" size="4xl" type="org")
           div(
-            class="absolute flex justify-center items-center right-2 bottom-2 w-8 h-8 rounded-full bg-grey-0 border-4 border-grey-100 cursor-pointer"
+            class="group absolute right-2 bottom-2 w-7.5 h-7.5 flex justify-center items-center rounded-full bg-grey-0 cursor-pointer"
             @click="openModalUploadLogo"
           )
-            f-svg-icon(
-              iconName="camera"
-              size="20"
-              class="text-grey-250 hover:text-primary-400"
+            div(
+              class="flex justify-center items-center w-6.5 h-6.5 rounded-full bg-grey-0 shadow-2"
             )
+              f-svg-icon(
+                iconName="camera"
+                size="20"
+                class="text-grey-250 group-hover:text-primary-400"
+              )
         f-tooltip(class="pt-4")
           template(#trigger)
             div(

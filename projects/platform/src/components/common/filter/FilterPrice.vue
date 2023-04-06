@@ -5,7 +5,7 @@ filter-wrapper(
   :dirty="filterDirty.price"
   @expand="init"
 )
-  div(class="w-131 py-4 rounded card-shadow")
+  div(class="w-131 py-4 rounded shadow-16")
     filter-range(
       v-model:range="inputRange"
       :min="filterOptions.price.min"

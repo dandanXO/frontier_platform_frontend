@@ -3,15 +3,15 @@
   background: no-repeat #fff;
   width: 300px;
   height: 300px;
-  box-shadow: 0 5px 10px -2px rgba(0, 0, 0, 0.3);
   pointer-events: none;
   position: absolute;
-  border: 4px solid #efefef;
+  border: 4px solid;
   z-index: 300;
   border-radius: 100%;
   display: block;
   opacity: 1;
   transition: opacity 0.2s;
+  @apply border-grey-250;
 }
 </style>
 
@@ -69,7 +69,7 @@ div
       )
         img(
           ref="refMagnifierSourceImage"
-          class="rounded overflow-hidden"
+          class="rounded-2xl overflow-hidden"
           :src="imageList[currentDisplayIndex].src"
           @mousemove="!isOpenMagnifier && openMagnifier($event)"
         )

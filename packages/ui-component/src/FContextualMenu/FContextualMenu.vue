@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="py-2 bg-grey-0 rounded drop-shadow-16"
+  class="py-2 bg-grey-0 rounded shadow-16"
   :class="[innerMenuTree.width, { 'bg-grey-800': theme === 'dark' }]"
 )
   //- Root Title

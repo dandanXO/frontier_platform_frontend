@@ -69,7 +69,7 @@ div(
         p(
           ref="refTitle"
           class="text-body2 !leading-1.6 text-ellipsis overflow-hidden break-all"
-          :class="[{ 'font-bold': innerMenu.description !== '' }, innerMenu.disabled ? 'text-grey-250' : 'text-grey-900', { 'text-grey-100': props.theme === 'dark' }]"
+          :class="[{ 'font-bold': innerMenu.description !== '' }, innerMenu.disabled ? 'text-grey-250' : 'text-grey-900', { '!text-grey-100': props.theme === 'dark' }]"
           :style="{ '-webkit-box-orient': 'vertical', '-webkit-line-clamp': innerMenu.titleLineClamp, display: '-webkit-box' }"
           @mouseenter="hoverOn = 'title'"
         ) {{ innerMenu.title }}
@@ -107,7 +107,7 @@ div(
     ref="refContextMenu"
     v-if="isExpand"
     :class="innerMenu.width"
-    class="py-2 bg-grey-0 rounded drop-shadow-16"
+    class="py-2 bg-grey-0 rounded shadow-16"
     @click.stop
   )
     //- Button if position is top

@@ -29,7 +29,7 @@ f-popper(
         :class="[isExpand ? '-rotate-90' : 'rotate-90']"
       )
   template(#content)
-    div(class="bg-grey-0 drop-shadow-4 rounded")
+    div(class="bg-grey-0 shadow-4 rounded")
       slot
 </template>
 

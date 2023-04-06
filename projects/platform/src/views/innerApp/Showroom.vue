@@ -55,7 +55,7 @@ div(class="w-full h-full relative")
           f-button(size="sm" prependIcon="email") {{ $t('UU0119') }}
         template(#content="{ collapsePopper }")
           f-scrollbar-container(
-            class="w-86 max-h-117.5 rounded pt-2 pb-3 bg-grey-0 drop-shadow-16"
+            class="w-86 max-h-117.5 rounded pt-2 pb-3 bg-grey-0 shadow-16"
           )
             div(class="h-9.5 pl-3 font-bold text-body2 flex items-center") {{ $t('II0023') }}
             div(class="px-2 grid grid-flow-row gap-1")
@@ -104,7 +104,7 @@ div(class="w-full h-full relative")
     template(#banner v-if="pagination.currentPage === 1 && isFirstLayer")
       div(class="pb-4 px-7.5")
         div(
-          class="rounded-md box-border p-5 flex flex-col gap-y-4 justify-between drop-shadow-2 hover:drop-shadow-4 bg-center bg-cover"
+          class="rounded-md box-border p-5 flex flex-col gap-y-4 justify-between shadow-2 hover:shadow-4 bg-center bg-cover"
           :style="{ backgroundImage: `url(${showroom.coverImg})` }"
         )
           h6(

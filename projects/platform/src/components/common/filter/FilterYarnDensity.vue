@@ -5,7 +5,7 @@ filter-wrapper(
   :dirty="filterDirty.yarnAndDensity"
   @expand="initFormYarnAndDensity"
 )
-  div(class="w-121 py-4 rounded card-shadow")
+  div(class="w-121 py-4 rounded shadow-16")
     div(class="px-5 grid gap-y-7.5")
       div(class="flex flex-col gap-y-5")
         div(class="flex gap-x-1.5")

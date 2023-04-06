@@ -62,7 +62,7 @@ div(class="max-w-315 h-full mx-auto")
         class="px-7.5 pb-8 pt-1.5"
       )
         f-expansion-panel(
-          class="drop-shadow-2 rounded border border-grey-150 overflow-hidden bg-transparent"
+          class="shadow-2 rounded border border-grey-150 overflow-hidden bg-transparent"
         )
           template(#trigger="{ isExpand }")
             div(
@@ -110,7 +110,7 @@ div(class="max-w-315 h-full mx-auto")
                   a(
                     :href="collection.trendBoardUrl"
                     target="_blank"
-                    class="absolute right-3.5 bottom-3.5 card-shadow w-7 h-7 rounded-sm bg-grey-0 flex items-center justify-center"
+                    class="absolute right-3.5 bottom-3.5 w-7 h-7 bg-grey-0 flex items-center justify-center rounded border border-grey-250"
                   )
                     f-svg-icon(iconName="open_in_new" class="text-grey-600" size="24")
                 div(v-else)

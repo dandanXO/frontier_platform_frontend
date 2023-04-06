@@ -7,7 +7,7 @@ div(class="w-screen h-screen flex justify-center items-center bg-grey-50")
       :style="{ backgroundImage: `url(${imgCover})` }"
     )
     div(class="w-105")
-      div(class="w-full rounded-lg card-shadow px-10 py-11 flex flex-col")
+      div(class="w-full rounded-lg shadow-4 px-10 py-11 flex flex-col")
         p(
           class="text-grey-900 text-h6 font-bold text-center pb-5.5 border-b border-grey-250"
         ) {{ $t('AA0001') }}

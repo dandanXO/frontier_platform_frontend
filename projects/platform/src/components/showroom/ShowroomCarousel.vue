@@ -49,7 +49,7 @@ carousel(
         )
       div(
         v-if="currentPage !== 1"
-        class="invisible group-hover/addons:visible absolute top-1/2 left-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer drop-shadow-4"
+        class="invisible group-hover/addons:visible absolute top-1/2 left-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
         @click="prevSlide"
       )
         f-svg-icon(
@@ -59,7 +59,7 @@ carousel(
         )
       div(
         v-if="currentPage !== totalPage"
-        class="invisible group-hover/addons:visible absolute top-1/2 right-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer drop-shadow-4"
+        class="invisible group-hover/addons:visible absolute top-1/2 right-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
         @click="nextSlide"
       )
         f-svg-icon(

@@ -32,7 +32,7 @@ modal-behavior(
     div(class="text-h5 font-bold text-grey-900 text-center mb-2.5") {{ title }}
     div(class="text-caption text-grey-600 text-center leading-1.6 mb-6") {{ description || $t('DD0097') }}
     div(class="grid grid-cols-3 gap-7.5")
-      div(class="border border-grey-250 card-shadow rounded-md")
+      div(class="border border-grey-250 rounded-md")
         div(class="h-64 flex items-end justify-center")
           img(src="@/assets/images/upload_step1.png" class="w-60")
         div(class="flex min-h-20 bg-grey-100 rounded-b-md p-4")
@@ -40,7 +40,7 @@ modal-behavior(
             class="mr-2 flex-shrink-0 bg-grey-0 text-grey-250 rounded-full w-6 h-6 flex items-center justify-center"
           ) 1
           div(class="text-grey-900 text-body1 font-bold leading-1.6") {{ $t('DD0082') }}
-      div(class="border border-grey-250 card-shadow rounded-md")
+      div(class="border border-grey-250 rounded-md")
         div(class="h-64 flex items-end justify-center")
           img(src="@/assets/images/upload_step2.png" class="w-60")
         div(class="flex min-h-20 bg-grey-100 rounded-b-md p-4")
@@ -48,7 +48,7 @@ modal-behavior(
             class="mr-2 flex-shrink-0 bg-grey-0 text-grey-250 rounded-full w-6 h-6 flex items-center justify-center"
           ) 2
           div(class="text-grey-900 text-body1 font-bold leading-1.6") {{ $t('DD0083') }}
-      div(class="border border-grey-250 card-shadow rounded-md")
+      div(class="border border-grey-250 rounded-md")
         div(class="h-64 flex items-end justify-center")
           img(src="@/assets/images/upload_step3.png" class="w-60")
         div(class="flex min-h-20 bg-grey-100 rounded-b-md p-4")

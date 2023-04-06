@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="fixed w-118.5 h-screen z-sidebar right-0")
-  div(class="relative z-1 w-full h-full bg-grey-100 drop-shadow-4 flex flex-col")
+  div(class="relative z-1 w-full h-full bg-grey-100 shadow-4 flex flex-col")
     //- Header
     div(
       class="w-full h-17.5 pl-4 pr-5 bg-grey-0 border-b border-grey-150 flex items-center"
@@ -22,7 +22,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           tooltip="Close"
           @click="closeStickerDrawer"
         )
-    div(class="w-full h-28 px-8 pt-3 pb-2.5 bg-grey-0 drop-shadow-4")
+    div(class="w-full h-28 px-8 pt-3 pb-2.5 bg-grey-0 shadow-4")
       //- Material Info
       div(class="flex items-center gap-x-4")
         img(
@@ -59,9 +59,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
       div(class="py-4")
         //- Button: Add a sticker
         div(class="pl-8 pr-10.5")
-          div(
-            class="relative w-full h-16 rounded-md overflow-hidden drop-shadow-2 bg-grey-50"
-          )
+          div(class="relative w-full h-16 rounded-md overflow-hidden shadow-2 bg-grey-50")
             div(class="absolute top-0 left-0 w-1 h-full bg-forestgreen-300")
             div(class="pl-7.5 h-full flex items-center")
               f-svg-icon(iconName="add" size="20" class="text-forestgreen-300")

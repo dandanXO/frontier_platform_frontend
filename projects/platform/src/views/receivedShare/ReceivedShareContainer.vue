@@ -37,7 +37,7 @@ fullscreen-header
       p(class="text-body1 text-grey-900") {{ $t('GG0026') }}
     router-view(v-else)
     a(
-      class="fixed z-footer bottom-0 w-full h-13 bg-grey-50 px-36 flex items-center justify-end card-shadow"
+      class="fixed z-footer bottom-0 w-full h-13 bg-grey-50 px-36 flex items-center justify-end shadow-4 border-t border-grey-150"
       href="https://www.frontier.cool/"
       target="_blank"
     )

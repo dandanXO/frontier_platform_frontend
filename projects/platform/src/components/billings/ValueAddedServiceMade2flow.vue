@@ -37,9 +37,8 @@ div(class="w-full pt-3")
       div
         div(class="flex items-center")
           div(
-            class="flex-shrink-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer"
+            class="flex-shrink-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
             @click="prevSlide"
-            style="box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15)"
           )
             f-svg-icon(iconName="keyboard_arrow_left" size="34" class="text-grey-600")
           carousel(ref="refCarousel")
@@ -49,9 +48,8 @@ div(class="w-full pt-3")
             )
               img(class="w-165 h-100" :src="image")
           div(
-            class="flex-shrink-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer"
+            class="flex-shrink-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
             @click="nextSlide"
-            style="box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15)"
           )
             f-svg-icon(iconName="keyboard_arrow_right" size="34" class="text-grey-600")
         div(class="grid gap-x-3 grid-cols-3 w-fit mx-auto mt-4")

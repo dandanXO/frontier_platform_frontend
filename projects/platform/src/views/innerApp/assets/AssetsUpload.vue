@@ -22,7 +22,7 @@ f-scrollbar-container(class="w-full h-full")
       div(class="mt-8")
         div(class="grid grid-cols-3 gap-7.5")
           div
-            div(class="border border-grey-250 card-shadow rounded-md")
+            div(class="border border-grey-250 rounded-md")
               div(class="h-64 flex items-end justify-center")
                 img(src="@/assets/images/upload_step1.png" class="w-60")
               div(class="flex min-h-20 bg-grey-100 rounded-b-md p-4")
@@ -37,7 +37,7 @@ f-scrollbar-container(class="w-full h-full")
                 li 2. {{ $t('DD0074') }}
                 li 3. {{ $t('DD0075') }}
           div
-            div(class="border border-grey-250 card-shadow rounded-md")
+            div(class="border border-grey-250 rounded-md")
               div(class="h-64 flex items-end justify-center")
                 img(src="@/assets/images/upload_step2.png" class="w-60")
               div(class="flex min-h-20 bg-grey-100 rounded-b-md p-4")
@@ -49,7 +49,7 @@ f-scrollbar-container(class="w-full h-full")
               p(class="text-grey-900 mb-1.5") {{ $t('DD0086') }}:
               p(class="text-primary-400") {{ uploadMaterialEmail }}
           div
-            div(class="border border-grey-250 card-shadow rounded-md")
+            div(class="border border-grey-250 rounded-md")
               div(class="h-64 flex items-end justify-center")
                 img(src="@/assets/images/upload_step3.png" class="w-60")
               div(class="flex min-h-20 bg-grey-100 rounded-b-md p-4")

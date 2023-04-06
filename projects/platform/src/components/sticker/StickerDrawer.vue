@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="fixed w-118.5 h-screen z-sidebar right-0")
-  div(class="relative z-1 w-full h-full bg-grey-100 drop-shadow-4 flex flex-col")
+  div(class="relative z-1 w-full h-full bg-grey-100 shadow-32 flex flex-col")
     //- Header
     div(
       class="w-full h-17.5 pl-4 pr-5 bg-grey-0 border-b border-grey-150 flex items-center"
@@ -74,7 +74,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           @click="isEditingDigitalThreadName = false"
         ) {{ $t('UU0002') }}
     div(
-      class="w-full h-28 px-8 pt-3 pb-2.5 bg-grey-0 drop-shadow-4"
+      class="w-full h-28 px-8 pt-3 pb-2.5 bg-grey-0 shadow-2"
       :key="material.materialId"
     )
       //- Material Info
@@ -157,7 +157,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
                 :class="[isExpand || isAdvanceFilterDirty ? 'text-primary-400' : 'text-grey-800']"
               )
           template(#content="{ collapsePopper }")
-            div(class="bg-grey-0 drop-shadow-16 rounded w-93.5 py-4")
+            div(class="bg-grey-0 shadow-16 rounded w-93.5 py-4")
               div(
                 class="px-4 pb-5 border-b border-grey-150 flex items-center justify-between"
               )
@@ -262,7 +262,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           f-tooltip(placement="top" isNotFitWidth)
             template(#trigger)
               button(
-                class="relative w-full h-16 rounded-md overflow-hidden drop-shadow-2"
+                class="relative w-full h-16 rounded-md overflow-hidden shadow-2 hover:shadow-4"
                 :class="[digitalThread.hasMaterialDeleted ? 'bg-grey-50' : 'bg-grey-0']"
                 @click="!digitalThread.hasMaterialDeleted && setIsAddingSticker(true)"
               )
@@ -308,7 +308,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
   template(v-if="isExpandDigitalThreadList")
     div(class="absolute z-0 top-0 right-0 w-screen h-screen bg-grey-900/30")
     div(
-      class="absolute z-0 top-0 right-full w-118.5 h-screen bg-grey-0 border border-grey-150 drop-shadow-8 flex flex-col"
+      class="absolute z-0 top-0 right-full w-118.5 h-screen bg-grey-0 border border-grey-150 shadow-8 flex flex-col"
     )
       div(class="w-full h-17.5 px-4.5 border-b border-grey-150 flex items-center gap-x-2")
         f-svg-icon(iconName="sticker_thread" size="20" class="text-grey-900")

@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="relative w-full drop-shadow-8"
+  class="relative w-full shadow-2 hover:shadow-4"
   @mouseenter="isHoverSticker = true"
   @mouseleave="isHoverSticker = false"
 )

@@ -5,7 +5,7 @@ filter-wrapper(
   :dirty="filterDirty.inventory"
   @expand="init"
 )
-  div(class="w-95 rounded card-shadow py-4")
+  div(class="w-95 rounded shadow-16 py-4")
     filter-range(
       v-model:range="inputRange"
       :min="filterOptions.inventory.min"

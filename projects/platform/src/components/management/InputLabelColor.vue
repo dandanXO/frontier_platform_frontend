@@ -18,10 +18,7 @@ f-popper(
         :class="[isExpand ? '-rotate-90' : 'rotate-90']"
       )
   template(#content)
-    div(
-      class="w-max p-2.5 rounded bg-grey-0"
-      style="box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15)"
-    )
+    div(class="w-max p-2.5 rounded bg-grey-0 shadow-16")
       div(class="grid grid-cols-6 grid-rows-3 gap-x-2 gap-y-1.5")
         label(
           v-for="item in labelColorList"

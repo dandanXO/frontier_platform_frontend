@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="relative w-full rounded-md drop-shadow-8 overflow-hidden")
+div(class="relative w-full rounded-md shadow-8 overflow-hidden")
   div(
     class="absolute top-0 left-0 w-1 h-full"
     :class="{ 'bg-forestgreen-300': addTo === EXTERNAL, 'bg-grey-300': addTo === INTERNAL }"

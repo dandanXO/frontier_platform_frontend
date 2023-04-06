@@ -3,7 +3,7 @@ div(
   class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center"
 )
   div(class="w-screen h-screen" @click="closable && closeModalBehavior()")
-  div(class="absolute w-min bg-grey-0 rounded card-show py-5")
+  div(class="absolute w-min bg-grey-0 rounded card-show py-5 shadow-32")
     div(class="h-8.5 px-5 pb-5 flex justify-between items-start border-b border-grey-100")
       p(class="text-body2 font-bold text-grey-900") {{ header }}
       f-svg-icon(

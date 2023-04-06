@@ -27,7 +27,7 @@ div(class="relative")
             :class="{ 'rotate-180': isExpand }"
           )
       template(#content)
-        div(class="bg-grey-0 drop-shadow-4 rounded")
+        div(class="bg-grey-0 shadow-4 rounded")
           slot(name="filter")
   div(
     ref="refTable"

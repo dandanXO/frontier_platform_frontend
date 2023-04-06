@@ -9,12 +9,11 @@ modal-behavior(
     div(class="relative mb-3")
       f-avatar(:imageUrl="avatar" type="user" size="3xl")
       div(
-        class="group absolute right-0 bottom-0 w-7.5 h-7.5 rounded-full cursor-pointer bg-grey-0 flex justify-center items-center"
+        class="group absolute right-0 bottom-0 w-7.5 h-7.5 flex justify-center items-center rounded-full bg-grey-0 cursor-pointer"
         @click="openModalChangeAvatar"
       )
         div(
-          class="flex justify-center items-center w-6.5 h-6.5 rounded-full bg-grey-0"
-          style="box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15)"
+          class="flex justify-center items-center w-6.5 h-6.5 rounded-full bg-grey-0 shadow-2"
         )
           f-svg-icon(
             iconName="camera"

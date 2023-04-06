@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-50 py-2 bg-grey-0 drop-shadow-16 rounded")
+div(class="w-50 py-2 bg-grey-0 shadow-16 rounded")
   div(v-if="items.length" class="max-h-63 overflow-y-auto")
     div(
       v-for="(item, index) in items"

@@ -15,8 +15,8 @@
   background-color: var(--noUi-handle-bg-color);
   border: 1px solid var(--noUi-horizontal-color);
   border-radius: 50%;
-  box-shadow: 0px 0.6px 1px rgba(0, 0, 0, 0.1),
-    0px 2px 4px rgba(103, 103, 103, 0.11);
+
+  @apply shadow-4;
 
   &:active {
     background-color: var(--noUi-handle-bg-active-color);

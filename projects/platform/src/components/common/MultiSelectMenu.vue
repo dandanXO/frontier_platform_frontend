@@ -11,7 +11,7 @@
 <template lang="pug">
 div(
   v-if="innerSelectedList.length > 0"
-  class="menu-position menu-shadow w-fit px-15 py-7.5 bg-grey-0 rounded-full text-body2 text-grey-900 flex justify-center items-center"
+  class="menu-position shadow-32 w-fit px-15 py-7.5 bg-grey-0 rounded-full text-body2 text-grey-900 flex justify-center items-center"
 )
   f-svg-icon(
     iconName="cancel"

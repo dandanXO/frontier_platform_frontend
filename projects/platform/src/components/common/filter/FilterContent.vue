@@ -5,7 +5,7 @@ filter-wrapper(
   :dirty="filterDirty.contentList"
   @expand="init"
 )
-  div(class="w-120.5 py-4 rounded card-shadow")
+  div(class="w-120.5 py-4 rounded shadow-16")
     div(class="px-5")
       div(class="flex justify-between items-center")
         div(class="flex items-center gap-x-2")
