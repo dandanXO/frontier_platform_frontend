@@ -6,14 +6,19 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
       class="w-full h-17.5 pl-4 pr-5 bg-grey-0 border-b border-grey-150 flex items-center"
     )
       template(v-if="!isEditingDigitalThreadName")
-        f-svg-icon(
-          iconName="arrow_back"
-          size="20"
-          class="text-grey-600 hover:text-primary-400 cursor-pointer"
-          :class="{ 'text-primary-400 transform rotate-180': isExpandDigitalThreadList, '!text-grey-200': digitalThread.hasMaterialDeleted || drawerOpenFromLocationType === LOCATION_TYPE.NOTIFICATION }"
-          tooltip="Show all threads"
-          @click="!(digitalThread.hasMaterialDeleted || drawerOpenFromLocationType === LOCATION_TYPE.NOTIFICATION) && (isExpandDigitalThreadList = !isExpandDigitalThreadList)"
-        )
+        div(class="relative")
+          f-svg-icon(
+            iconName="arrow_back"
+            size="20"
+            class="text-grey-600 hover:text-primary-400 cursor-pointer"
+            :class="{ 'text-primary-400 transform rotate-180': isExpandDigitalThreadList, '!text-grey-200': digitalThread.hasMaterialDeleted || drawerOpenFromLocationType === LOCATION_TYPE.NOTIFICATION }"
+            tooltip="Show all threads"
+            @click="!(digitalThread.hasMaterialDeleted || drawerOpenFromLocationType === LOCATION_TYPE.NOTIFICATION) && (isExpandDigitalThreadList = !isExpandDigitalThreadList)"
+          )
+          div(
+            v-if="hasAnyUnreadDigitalThread && drawerOpenFromLocationType !== LOCATION_TYPE.NOTIFICATION"
+            class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary-400"
+          )
         div(class="w-px h-6 bg-grey-150 mx-4")
         div(
           class="flex-grow flex items-center"
@@ -256,7 +261,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
     f-scrollbar-container(class="flex-grow")
       div(v-if="isFetchingDigitalThread" class="pt-28.5 flex items-center justify-center")
         f-svg-icon(iconName="loading" size="84" class="text-primary-400")
-      div(v-else class="py-4")
+      div(v-show="!isFetchingDigitalThread" class="py-4")
         //- Button: Add a sticker
         div(v-if="!isAddingSticker && !isFilterDirty" class="pl-8 pr-10.5")
           f-tooltip(placement="top" isNotFitWidth)
@@ -455,8 +460,9 @@ const openDigitalThread = async (digitalThread, index) => {
       isChangingDigitalThread.value = false
     }, 0)
   } else {
-    await store.dispatch('sticker/getDigitalThread', {
+    await store.dispatch('sticker/fetchStickerDrawerData', {
       digitalThreadSideId,
+      showLoading: true,
     })
     isChangingDigitalThread.value = false
   }
@@ -478,9 +484,9 @@ watch(
     store.commit('sticker/SET_filter', filter.value)
     !isCreatingDigitalThread.value &&
       !isChangingDigitalThread.value &&
-      store.dispatch('sticker/getDigitalThread', {
+      store.dispatch('sticker/fetchStickerDrawerData', {
         digitalThreadSideId: digitalThread.value.digitalThreadSideId,
-        wllGetAdditionalData: false,
+        showLoading: true,
       })
   },
   {
@@ -597,4 +603,10 @@ onUnmounted(() => {
 const closeStickerDrawer = () => {
   store.dispatch('sticker/closeStickerDrawer')
 }
+
+const hasAnyUnreadDigitalThread = computed(() =>
+  store.getters['sticker/digitalThreadList'].some(
+    (digitalThread) => digitalThread.unreadStickerQty > 0
+  )
+)
 </script>

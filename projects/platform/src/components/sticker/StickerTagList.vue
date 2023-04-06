@@ -1,6 +1,9 @@
 <template lang="pug">
 //- Tag List
-div(class="flex items-center flex-wrap gap-x-1.5 gap-y-1.5 pt-2")
+div(
+  class="flex items-center flex-wrap"
+  :class="{ 'gap-x-1.5 gap-y-1.5 pt-2': isEditingTagList }"
+)
   template(v-if="!isEditingTagList")
     f-tag(v-for="tag in stickerTagList" size="sm")
       p(

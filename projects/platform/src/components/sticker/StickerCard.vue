@@ -185,7 +185,8 @@ const expandChildStickerList = () => {
   }
   isExpandChildStickerList.value = !isExpandChildStickerList.value
 
-  childStickerList.value.length > 0 &&
+  isExpandChildStickerList.value &&
+    childStickerList.value.length > 0 &&
     store.dispatch('sticker/readChildSticker', props.sticker.stickerId)
 }
 
