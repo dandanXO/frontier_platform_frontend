@@ -74,12 +74,12 @@ const breadcrumbList = computed(() => {
         if (index !== array.length - 1) {
           return {
             name,
-            path: parsePath(`/:orgNo/showroom/${nodeKey}`),
+            path: parsePath(`/:orgNo/showroom/:showroomId/${nodeKey}`),
           }
         } else {
           return {
             name: material.value.materialNo,
-            path: parsePath('/:orgNo/showroom/material/:nodeKey'),
+            path: parsePath('/:orgNo/showroom/:showroomId/material/:nodeKey'),
           }
         }
       }
