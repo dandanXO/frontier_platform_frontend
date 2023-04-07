@@ -72,7 +72,7 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex fle
                       div(
                         class="flex justify-center items-center w-6 h-6 rounded bg-grey-100"
                         data-cy="upload-page"
-                        @click.stop="$router.push(menu.path + '/upload')"
+                        @click.stop="goToAssetsUpload(menu.path)"
                       )
                         f-svg-icon(
                           :iconName="menu.icon"
@@ -87,15 +87,17 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex fle
 
 <script setup>
 import { useStore } from 'vuex'
-import { ref, computed, onUnmounted } from 'vue'
+import { computed, onUnmounted } from 'vue'
 import SidebarItem from '@/components/sidebar/SidebarItem.vue'
 import MenuOrg from '@/components/sidebar/MenuOrg.vue'
 import MenuOrgUser from '@/components/sidebar/MenuOrgUser.vue'
 import { useI18n } from 'vue-i18n'
 import { OG_TYPE } from '@/utils/constants'
+import { useRouter } from 'vue-router'
 
 const { t } = useI18n()
 const store = useStore()
+const router = useRouter()
 const organization = computed(() => store.getters['organization/organization'])
 const isProcessing = computed(() => store.getters['polling/isProcessing'])
 const planStatus = computed(() => store.getters['polling/planStatus'])
@@ -172,4 +174,9 @@ const menuOrgOrGroup = computed(() => {
 onUnmounted(() => {
   store.dispatch('polling/stopPollingSidebar')
 })
+
+const goToAssetsUpload = async (path) => {
+  await store.dispatch('sticker/closeStickerDrawer')
+  router.push(path + '/upload')
+}
 </script>

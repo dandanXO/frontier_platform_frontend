@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="h-full")
   div(data-tooltip-boundary-reference="pick-list-header" class="mx-8")
-    f-breadcrumb(
+    global-breadcrumb-list(
       :breadcrumbList="breadcrumbList"
       @click:item="$router.push($event.path)"
       class="mt-12 mb-9"

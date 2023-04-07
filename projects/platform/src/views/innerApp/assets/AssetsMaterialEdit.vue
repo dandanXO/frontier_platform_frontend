@@ -2,7 +2,7 @@
 div(class="w-full h-full flex justify-center")
   div(class="w-260 h-fit pb-25")
     div(class="pt-12 pb-9 flex justify-between")
-      f-breadcrumb(
+      global-breadcrumb-list(
         :breadcrumbList="breadcrumbList"
         @click:item="$router.push($event.path)"
       )

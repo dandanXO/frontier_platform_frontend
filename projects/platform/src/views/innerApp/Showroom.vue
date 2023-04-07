@@ -18,7 +18,7 @@ div(class="w-full h-full relative")
               @click="goToPublicLibrary"
             ) {{ $t('II0001') }}
             f-svg-icon(size="20" iconName="slash" class="text-grey-200")
-            f-breadcrumb(
+            global-breadcrumb-list(
               :breadcrumbList="breadcrumbList"
               @click:item="currentNodeKey = $event.nodeKey; goTo()"
               fontSize="text-h6"
@@ -124,7 +124,7 @@ div(class="w-full h-full relative")
           :isSelectable="!isFirstLayer"
           :optionList="optionNode"
           @click:option="$event.func(node)"
-          @click.stop="handleNodeClick(node, goTo)"
+          @click.node="handleNodeClick(node, goTo)"
         )
           template(#caption v-if="isFirstLayer")
             div(class="mt-1.5 h-6 flex items-center")

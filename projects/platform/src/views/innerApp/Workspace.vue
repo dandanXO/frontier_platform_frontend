@@ -10,7 +10,7 @@ div(class="w-full h-full")
   )
     template(#header-left="{ goTo }")
       div(class="flex items-end")
-        f-breadcrumb(
+        global-breadcrumb-list(
           :breadcrumbList="breadcrumbList"
           @click:item="currentNodeKey = $event.nodeKey; goTo()"
           fontSize="text-h6"
@@ -47,7 +47,7 @@ div(class="w-full h-full")
           :node="node"
           :optionList="optionNode(node, inSearch)"
           @click:option="$event.func(node)"
-          @click.stop="handleNodeClick(node, goTo)"
+          @click.node="handleNodeClick(node, goTo)"
         )
           template(#corner-bottom-left v-if="isFirstLayer")
             f-svg-icon(

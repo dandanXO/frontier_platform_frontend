@@ -36,7 +36,7 @@ div(class="max-w-315 h-full mx-auto")
     template(#header-left="{ goTo }")
       div(class="flex items-start")
         div(class="flex items-end pr-3")
-          f-breadcrumb(
+          global-breadcrumb-list(
             :breadcrumbList="breadcrumbList"
             @click:item="currentNodeKey = $event.nodeKey; goTo()"
             fontSize="text-h5"
@@ -125,7 +125,7 @@ div(class="max-w-315 h-full mx-auto")
           v-for="node in nodeList"
           v-model:selectedValue="selectedNodeList"
           :node="node"
-          @click.stop="handleNodeClick(node, goTo)"
+          @click.node="handleNodeClick(node, goTo)"
         )
           template(#corner-bottom-left)
             f-svg-icon(

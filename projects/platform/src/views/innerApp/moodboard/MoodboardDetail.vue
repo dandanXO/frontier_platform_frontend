@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="h-full")
   div(class="ml-8 mt-12 mb-16")
-    f-breadcrumb(
+    global-breadcrumb-list(
       :breadcrumbList="breadcrumbList"
       @click:item="$router.push($event.path)"
     )

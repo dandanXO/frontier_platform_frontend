@@ -1,7 +1,7 @@
 <template lang="pug">
 f-scrollbar-container(class="w-full h-full")
   div(class="ml-7.5 mt-7.5")
-    f-breadcrumb(
+    global-breadcrumb-list(
       :breadcrumbList="breadcrumbList"
       @click:item="$router.push($event.path)"
     )

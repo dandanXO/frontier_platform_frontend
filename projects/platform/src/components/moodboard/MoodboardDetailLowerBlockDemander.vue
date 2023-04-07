@@ -75,7 +75,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
                 @click="goToMoodboardPickedList(moodboard.moodboardId)"
               ) {{ $t('QQ0086') }}
           div(class="pt-3 pb-3.5 h-6 box-content flex items-center justify-between")
-            f-breadcrumb(
+            global-breadcrumb-list(
               :breadcrumbList="moodboardOfferNodeCollection.locationList"
               fontSize="text-body2"
               @click:item="goTo($event.nodeId)"
@@ -100,7 +100,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
               :isSelectable="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED"
               :optionList="optionNode(node)"
               @click:option="$event.func(node)"
-              @click.stop="handleNodeClick(node)"
+              @click:node="handleNodeClick(node)"
             )
               template(#caption v-if="node.nodeType === NODE_TYPE.MATERIAL")
                 btn-pick-tooltip(

@@ -1,5 +1,5 @@
 <template lang="pug">
-f-breadcrumb(
+global-breadcrumb-list(
   :breadcrumbList="breadcrumbList"
   @click:item="$router.push($event.path)"
   class="pt-12.5 pb-12"

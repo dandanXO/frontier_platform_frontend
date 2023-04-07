@@ -37,7 +37,7 @@ div(class="max-w-315 h-full mx-auto pt-10")
       div(class="flex items-center")
         img(:src="logo" class="w-10 h-10 rounded-full")
         div(class="flex items-end pl-2.5")
-          f-breadcrumb(
+          global-breadcrumb-list(
             :breadcrumbList="breadcrumbList"
             @click:item="currentNodeKey = $event.nodeKey; goTo()"
             fontSize="text-h5"
@@ -116,7 +116,7 @@ div(class="max-w-315 h-full mx-auto pt-10")
           v-for="node in nodeList"
           :node="node"
           :isSelectable="false"
-          @click.stop="handleNodeClick(node, goTo)"
+          @click.node="handleNodeClick(node, goTo)"
         )
 </template>
 

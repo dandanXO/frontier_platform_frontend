@@ -12,7 +12,7 @@ div(class="w-full h-full relative")
     template(#header-left="{ goTo }")
       div(class="flex items-center")
         div(class="flex items-end")
-          f-breadcrumb(
+          global-breadcrumb-list(
             :breadcrumbList="breadcrumbList"
             @click:item="currentNodeKey = $event.nodeKey; goTo()"
             fontSize="text-h6"
@@ -76,7 +76,7 @@ div(class="w-full h-full relative")
           :isSelectable="!isFirstLayer"
           :optionList="optionNode"
           @click:option="$event.func(node)"
-          @click.stop="handleNodeClick(node, goTo)"
+          @click:node="handleNodeClick(node, goTo)"
         )
           template(#caption v-if="isFirstLayer")
             div(class="mt-1.5 h-6 flex items-center")

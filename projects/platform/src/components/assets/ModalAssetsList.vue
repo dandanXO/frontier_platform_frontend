@@ -19,7 +19,7 @@ modal-behavior(
     )
     div(class="flex-grow flex flex-col")
       div(class="relative z-20 flex justify-between items-center py-4")
-        f-breadcrumb(
+        global-breadcrumb-list(
           :breadcrumbList="breadcrumbList"
           @click:item="goTo($event)"
         )

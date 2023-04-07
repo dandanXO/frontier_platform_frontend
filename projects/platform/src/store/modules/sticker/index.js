@@ -4,6 +4,7 @@ import { OG_TYPE, ROLE_ID, LOCATION_TYPE } from '@/utils/constants'
 import isEqual from '@frontier/ui-component/src/isEqual.js'
 import groupApi from '@/apis/group'
 import i18n from '@/utils/i18n'
+import { nextTick } from 'vue'
 
 const defaultDigitalThreadBase = () => ({
   digitalThreadSideId: null,
@@ -216,7 +217,9 @@ export default {
        */
       let currentDigitalThreadSideId = digitalThreadSideId
 
-      dispatch('resetState')
+      await dispatch('closeStickerDrawer')
+      await nextTick()
+
       dispatch('helper/openModalLoading', null, { root: true })
       commit('SET_drawerOpenFrom', {
         drawerOpenFromLocationType,
@@ -284,6 +287,10 @@ export default {
       commit('SET_currentMaterialId', null)
     },
     async closeStickerDrawer({ commit, getters, dispatch }) {
+      if (!getters.isStickerDrawerOpen) {
+        return
+      }
+
       await new Promise((resolve, reject) => {
         const resolveHandler = () => {
           dispatch('resetState')

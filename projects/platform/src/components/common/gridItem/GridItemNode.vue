@@ -7,6 +7,7 @@ grid-item-material(
   :selectValue="node"
   :optionList="optionList"
   @click:option="$emit('click:option', $event)"
+  @click="clickNodeHandler"
   :drawerOpenFromLocationList="drawerOpenFromLocationList"
 )
   template(#corner-top-right)
@@ -24,6 +25,7 @@ grid-item-wrapper(
   :selectValue="node"
   :optionList="optionList"
   @click:option="$emit('click:option', $event)"
+  @click="clickNodeHandler"
 )
   template(#title) {{ node.properties.name }}
   template(#content)
@@ -66,6 +68,7 @@ import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
 import { NODE_TYPE } from '@/utils/constants'
 import { computed } from 'vue'
 import useStickerLocationList from '@/composables/useStickerLocationList'
+import { useStore } from 'vuex'
 
 const props = defineProps({
   node: {
@@ -88,7 +91,8 @@ const props = defineProps({
     type: Array,
   },
 })
-const emit = defineEmits(['update:selectedValue', 'click:option'])
+const emit = defineEmits(['update:selectedValue', 'click:option', 'click:node'])
+const store = useStore()
 
 const innerSelectedValue = computed({
   get: () => props.selectedValue,
@@ -96,4 +100,17 @@ const innerSelectedValue = computed({
 })
 
 const drawerOpenFromLocationList = useStickerLocationList(props.node.location)
+
+const clickNodeHandler = async () => {
+  const { nodeType, properties } = props.node
+  if (
+    !(
+      nodeType === NODE_TYPE.MATERIAL &&
+      properties.materialId === store.getters['sticker/currentMaterialId']
+    )
+  ) {
+    await store.dispatch('sticker/closeStickerDrawer')
+  }
+  emit('click:node')
+}
 </script>

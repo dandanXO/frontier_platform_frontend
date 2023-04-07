@@ -53,10 +53,12 @@ export default function useNavigation() {
   }
 
   const goToLobby = async () => {
+    await store.dispatch('sticker/closeStickerDrawer')
     await router.push('/')
   }
 
-  const goToBillings = () => {
+  const goToBillings = async () => {
+    await store.dispatch('sticker/closeStickerDrawer')
     router.push(parsePath('/:orgNo/billings/plan'))
   }
 
@@ -76,7 +78,10 @@ export default function useNavigation() {
     router.push(parsePath(`${prefixPath.value}/assets/upload`))
   }
 
-  const goToAssetMaterialDetail = (material) => {
+  const goToAssetMaterialDetail = async (material) => {
+    if (material.materialId !== store.getters['sticker/currentMaterialId']) {
+      await store.dispatch('sticker/closeStickerDrawer')
+    }
     router.push(parsePath(`${prefixPath.value}/assets/${material.materialId}`))
   }
 
@@ -105,7 +110,8 @@ export default function useNavigation() {
     )
   }
 
-  const goToPublicLibrary = () => {
+  const goToPublicLibrary = async () => {
+    await store.dispatch('sticker/closeStickerDrawer')
     router.push(parsePath(`/:orgNo/public-library`))
   }
 
@@ -115,7 +121,8 @@ export default function useNavigation() {
     )
   }
 
-  const goShowroom = (showroomId) => {
+  const goShowroom = async (showroomId) => {
+    await store.dispatch('sticker/closeStickerDrawer')
     router.push(parsePath(`/:orgNo/showroom/${showroomId}`))
   }
 

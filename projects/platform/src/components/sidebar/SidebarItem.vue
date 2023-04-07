@@ -88,9 +88,7 @@ export default {
         return
       }
       try {
-        if (store.getters['sticker/isStickerDrawerOpen']) {
-          await store.dispatch('sticker/closeStickerDrawer')
-        }
+        await store.dispatch('sticker/closeStickerDrawer')
         await router.push(props.path)
         store.dispatch('helper/reloadInnerApp')
       } catch (err) {

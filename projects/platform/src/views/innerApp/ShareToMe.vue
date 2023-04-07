@@ -11,7 +11,7 @@ div(class="w-full h-full")
     template(#header-left="{ goTo }")
       div(class="flex items-center")
         div(class="flex items-end")
-          f-breadcrumb(
+          global-breadcrumb-list(
             :breadcrumbList="breadcrumbList"
             @click:item="setSharingIdAndNodeKey($event.nodeKey); goTo()"
             fontSize="text-h6"
@@ -63,7 +63,7 @@ div(class="w-full h-full")
           :node="node"
           :optionList="optionNode"
           @click:option="$event.func(node, node.share.sharingId)"
-          @click.stop="handleNodeClick(node, goTo)"
+          @click.node="handleNodeClick(node, goTo)"
         )
           template(#title-right-icon)
             tooltip-location(v-if="inSearch" :location="node.location")

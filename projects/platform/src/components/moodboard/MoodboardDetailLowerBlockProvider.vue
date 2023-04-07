@@ -35,7 +35,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
               @click="openModalAssetsList"
             ) {{ $t('UU0055') }}
         div(class="py-2 flex justify-between items-center")
-          f-breadcrumb(
+          global-breadcrumb-list(
             :breadcrumbList="moodboardOfferNodeCollection.locationList"
             @click:item="goTo($event.nodeId)"
             fontSize="text-body2"
@@ -65,7 +65,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
             :drawerOpenFromLocationList="moodboardOfferNodeCollection.locationList.map((item) => item.name)"
             :optionList="optionNode(node)"
             @click:option="$event.func(node)"
-            @click.stop="handleNodeClick(node)"
+            @click.node="handleNodeClick(node)"
           )
             template(
               #caption

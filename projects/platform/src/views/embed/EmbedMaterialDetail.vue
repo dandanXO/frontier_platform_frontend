@@ -6,7 +6,7 @@ div(
   div(v-if="!isLoading" class="w-230 h-fit pb-25 px-4 box-content")
     div(class="flex items-center pt-12 pb-9")
       img(:src="logo" class="w-10 h-10 rounded-full mr-2.5")
-      f-breadcrumb(
+      global-breadcrumb-list(
         v-if="breadcrumbList.length > 1"
         :breadcrumbList="breadcrumbList"
         @click:item="$router.push($event.path)"
