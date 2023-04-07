@@ -61,9 +61,11 @@ const openStickerDrawer = async () => {
     drawerOpenFromLocationType = LOCATION_TYPE.SHARE_TO_ME
   } else if (routePath.includes('received-share')) {
     drawerOpenFromLocationType = LOCATION_TYPE.RECEIVED_SHARE
+  } else if (routePath.includes('embed')) {
+    drawerOpenFromLocationType = LOCATION_TYPE.EMBED
   }
 
-  const openAuthenticatedUserStickerDrawer = () => {
+  const openStickerDrawer = () => {
     return store.dispatch('sticker/openStickerDrawer', {
       materialId,
       drawerOpenFromLocationList: props.drawerOpenFromLocationList,
@@ -71,44 +73,80 @@ const openStickerDrawer = async () => {
     })
   }
 
-  const openUnauthenticatedUserStickerDrawer = () => {
+  const openStickerDrawerForLogin = () => {
     store.commit('sticker/SET_currentMaterialId', props.material.materialId)
-    return store.dispatch('sticker/openReceivedShareStickerDrawer', {
+    return store.dispatch('sticker/openStickerDrawerForLogin', {
       material: props.material,
       drawerOpenFromLocationList: props.drawerOpenFromLocationList,
       drawerOpenFromLocationType,
     })
   }
 
-  if (drawerOpenFromLocationType !== LOCATION_TYPE.RECEIVED_SHARE) {
-    return openAuthenticatedUserStickerDrawer()
+  if (
+    ![LOCATION_TYPE.RECEIVED_SHARE, LOCATION_TYPE.EMBED].includes(
+      drawerOpenFromLocationType
+    )
+  ) {
+    return openStickerDrawer()
   }
 
-  if (!store.getters['receivedShare/hasLogin']) {
-    return openUnauthenticatedUserStickerDrawer()
-  }
+  if (drawerOpenFromLocationType === LOCATION_TYPE.RECEIVED_SHARE) {
+    if (!store.getters['receivedShare/hasLogin']) {
+      return openStickerDrawerForLogin()
+    }
 
-  const hasSelectedStickerAddFromOG =
-    store.getters['receivedShare/hasSelectedStickerAddFromOG']
-  if (hasSelectedStickerAddFromOG) {
-    return openAuthenticatedUserStickerDrawer()
-  }
+    const hasSelectedStickerAddFromOG =
+      store.getters['receivedShare/hasSelectedStickerAddFromOG']
+    if (hasSelectedStickerAddFromOG) {
+      return openStickerDrawer()
+    }
 
-  return store.dispatch('helper/openModalBehavior', {
-    component: 'modal-choose-sticker-add-from',
-    properties: {
-      actionHandler: async (orgNo) => {
-        store.dispatch('helper/openModalLoading')
-        await store.dispatch('organization/getOrg', { orgNo })
-        store.commit('receivedShare/SET_hasSelectedStickerAddFromOG', true)
-        store.dispatch('receivedShare/reloadReceivedShare')
-        await Promise.all([
-          store.dispatch('organization/orgUser/getOrgUser'),
-          openAuthenticatedUserStickerDrawer(),
-        ])
-        store.dispatch('helper/closeModalLoading')
+    return store.dispatch('helper/openModalBehavior', {
+      component: 'modal-choose-sticker-add-from',
+      properties: {
+        actionHandler: async (orgNo) => {
+          store.dispatch('helper/openModalLoading')
+          await store.dispatch('organization/getOrg', { orgNo })
+          store.commit('receivedShare/SET_hasSelectedStickerAddFromOG', true)
+          store.dispatch('receivedShare/reload')
+          await Promise.all([
+            store.dispatch('organization/orgUser/getOrgUser'),
+            openStickerDrawer(),
+          ])
+          store.dispatch('helper/closeModalLoading')
+        },
       },
-    },
-  })
+    })
+  }
+
+  if (drawerOpenFromLocationType === LOCATION_TYPE.EMBED) {
+    if (localStorage.getItem('accessToken') === null) {
+      return openStickerDrawerForLogin()
+    }
+
+    const hasSelectedStickerAddFromOG =
+      store.getters['embed/hasSelectedStickerAddFromOG']
+    if (hasSelectedStickerAddFromOG) {
+      return openStickerDrawer()
+    }
+
+    await store.dispatch('user/getUser')
+    return store.dispatch('helper/openModalBehavior', {
+      component: 'modal-choose-sticker-add-from',
+      properties: {
+        actionHandler: async (orgNo) => {
+          store.dispatch('helper/openModalLoading')
+          await store.dispatch('organization/getOrg', { orgNo })
+          store.commit('embed/SET_hasSelectedStickerAddFromOG', true)
+          store.dispatch('embed/reload')
+          await Promise.all([
+            store.dispatch('organization/orgUser/getOrgUser'),
+            openStickerDrawer(),
+          ])
+          store.dispatch('helper/closeModalLoading')
+        },
+      },
+    })
+  }
 }
 </script>

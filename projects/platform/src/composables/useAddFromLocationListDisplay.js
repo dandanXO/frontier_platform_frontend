@@ -26,6 +26,9 @@ const useAddFromDisplayList = (digitalThread) => {
       case LOCATION_TYPE.RECEIVED_SHARE:
         list.unshift(t('RR0259'))
         break
+      case LOCATION_TYPE.EMBED:
+        list.unshift(t('RR0261'))
+        break
     }
 
     return list

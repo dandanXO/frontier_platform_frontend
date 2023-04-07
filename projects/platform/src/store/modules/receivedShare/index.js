@@ -15,7 +15,7 @@ export default {
     share: NodeShareState(),
     hasLogin: false,
     hasSelectedStickerAddFromOG: false,
-    isReloadReceivedShare: true,
+    isReload: true,
   }),
   getters: {
     materialBreadcrumbList: (state) =>
@@ -29,7 +29,7 @@ export default {
     logo: (state) => state.share.logo,
     hasLogin: (state) => state.hasLogin,
     hasSelectedStickerAddFromOG: (state) => state.hasSelectedStickerAddFromOG,
-    isReloadReceivedShare: (state) => state.isReloadReceivedShare,
+    isReload: (state) => state.isReload,
   },
   mutations: {
     SET_materialBreadcrumbList(state, materialBreadcrumbList) {
@@ -44,8 +44,8 @@ export default {
     SET_hasSelectedStickerAddFromOG(state, hasSelectedStickerAddFromOG) {
       state.hasSelectedStickerAddFromOG = hasSelectedStickerAddFromOG
     },
-    SET_isReloadReceivedShare(state, bool) {
-      state.isReloadReceivedShare = bool
+    SET_isReload(state, bool) {
+      state.isReload = bool
     },
   },
   actions: {
@@ -181,10 +181,10 @@ export default {
 
       commit('SET_hasLogin', status !== 1)
     },
-    async reloadReceivedShare({ commit }) {
-      commit('SET_isReloadReceivedShare', false)
+    async reload({ commit }) {
+      commit('SET_isReload', false)
       await nextTick()
-      commit('SET_isReloadReceivedShare', true)
+      commit('SET_isReload', true)
     },
   },
 }

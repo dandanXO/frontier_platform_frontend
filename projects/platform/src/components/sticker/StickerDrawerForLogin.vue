@@ -20,7 +20,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           size="20"
           class="text-grey-600 hover:text-primary-400 ml-4 cursor-pointer"
           tooltip="Close"
-          @click="closeStickerDrawer"
+          @click="closeStickerDrawerForLogin"
         )
     div(class="w-full h-28 px-8 pt-3 pb-2.5 bg-grey-0 shadow-4")
       //- Material Info
@@ -108,8 +108,8 @@ const menuAddTo = computed(() => ({
   ],
 }))
 
-const closeStickerDrawer = () => {
-  store.dispatch('sticker/closeReceivedShareStickerDrawer')
+const closeStickerDrawerForLogin = () => {
+  store.dispatch('sticker/closeStickerDrawerForLogin')
 }
 
 const goToLogin = () => {

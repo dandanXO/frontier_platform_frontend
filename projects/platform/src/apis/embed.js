@@ -7,6 +7,7 @@ export default {
       data: { sharingKey },
     }),
   getEmbedList: ({
+    orgId,
     sharingKey,
     workspaceNodeId,
     search = null,
@@ -15,11 +16,11 @@ export default {
   }) =>
     axios('/share/get-embed/get-list', {
       method: 'POST',
-      data: { sharingKey, workspaceNodeId, search, filter, pagination },
+      data: { orgId, sharingKey, workspaceNodeId, search, filter, pagination },
     }),
-  getEmbedMaterial: ({ sharingKey, workspaceNodeId, keyword, rank }) =>
+  getEmbedMaterial: ({ orgId, sharingKey, workspaceNodeId, keyword, rank }) =>
     axios('/share/get-embed/get-material', {
       method: 'POST',
-      data: { sharingKey, workspaceNodeId, keyword, rank },
+      data: { orgId, sharingKey, workspaceNodeId, keyword, rank },
     }),
 }

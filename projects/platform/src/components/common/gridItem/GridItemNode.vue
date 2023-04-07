@@ -7,7 +7,6 @@ grid-item-material(
   :selectValue="node"
   :optionList="optionList"
   @click:option="$emit('click:option', $event)"
-  :canAddSticker="canAddSticker"
   :drawerOpenFromLocationList="drawerOpenFromLocationList"
 )
   template(#corner-top-right)
@@ -85,10 +84,6 @@ const props = defineProps({
     type: Array,
     default: () => [], // [[{ name: '', func: () => { }, disabled: false }]]
   },
-  canAddSticker: {
-    type: Boolean,
-    default: true,
-  },
   drawerOpenFromLocationList: {
     type: Array,
   },
@@ -99,12 +94,6 @@ const innerSelectedValue = computed({
   get: () => props.selectedValue,
   set: (v) => emit('update:selectedValue', v),
 })
-
-/**
- * sticker drawer location list
- * 不包含 assets, workspace 等 location type => 去除陣列第一個元素
- * 不包含 materialNo, materialId, frontierNo => 去除陣列最後一個元素
- */
 
 const drawerOpenFromLocationList = useStickerLocationList(props.node.location)
 </script>

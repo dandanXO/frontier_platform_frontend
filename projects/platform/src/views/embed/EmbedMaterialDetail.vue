@@ -14,6 +14,10 @@ div(
     div(class="pb-7.5")
       div(class="flex items-center pb-2")
         h5(class="text-h5 text-grey-900 font-bold line-clamp-1 pr-3") {{ `${material.materialNo} ${material.description}` }}
+        digital-thread-entrance(
+          :material="material"
+          :drawerOpenFromLocationList="drawerOpenFromLocationList"
+        )
     material-detail-external(
       isEmbed
       :material="material"
@@ -28,6 +32,8 @@ import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
+import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
+import useStickerLocationList from '@/composables/useStickerLocationList'
 
 const store = useStore()
 const route = useRoute()
@@ -72,4 +78,8 @@ onMounted(async () => {
   })
   isLoading.value = false
 })
+
+const drawerOpenFromLocationList = useStickerLocationList(
+  breadcrumbList.value.map((item) => item.name)
+)
 </script>

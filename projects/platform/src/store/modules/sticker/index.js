@@ -66,7 +66,7 @@ export default {
     isStickerDrawerOpen: false,
     isFetchingDigitalThread: false,
     isAddingSticker: false, // 正在新增 sticker
-    isReceivedShareStickerDrawerOpen: false,
+    isStickerDrawerForLoginOpen: false,
     currentMaterialId: null, // drawer 顯示的 materialId
     drawerOpenFromLocationType: null, // drawer 是從哪一個位置的 material 開啟的
     drawerOpenFromLocationList: null, // drawer 是從哪一個路徑的 material 開啟的
@@ -89,8 +89,7 @@ export default {
     isStickerDrawerOpen: (state) => state.isStickerDrawerOpen,
     isFetchingDigitalThread: (state) => state.isFetchingDigitalThread,
     isAddingSticker: (state) => state.isAddingSticker,
-    isReceivedShareStickerDrawerOpen: (state) =>
-      state.isReceivedShareStickerDrawerOpen,
+    isStickerDrawerForLoginOpen: (state) => state.isStickerDrawerForLoginOpen,
     digitalThread: (state) => state.digitalThread,
     digitalThreadList: (state) => state.digitalThreadList,
     tempDigitalThreadList: (state) => state.tempDigitalThreadList,
@@ -127,11 +126,8 @@ export default {
     SET_isAddingSticker(state, isAddingSticker) {
       state.isAddingSticker = isAddingSticker
     },
-    SET_isReceivedShareStickerDrawerOpen(
-      state,
-      isReceivedShareStickerDrawerOpen
-    ) {
-      state.isReceivedShareStickerDrawerOpen = isReceivedShareStickerDrawerOpen
+    SET_isStickerDrawerForLoginOpen(state, isStickerDrawerForLoginOpen) {
+      state.isStickerDrawerForLoginOpen = isStickerDrawerForLoginOpen
     },
     SET_currentMaterialId(state, currentMaterialId) {
       state.currentMaterialId = currentMaterialId
@@ -267,7 +263,7 @@ export default {
       commit('SET_isStickerDrawerOpen', true)
       dispatch('helper/closeModalLoading', null, { root: true })
     },
-    openReceivedShareStickerDrawer(
+    openStickerDrawerForLogin(
       { commit },
       { material, drawerOpenFromLocationType, drawerOpenFromLocationList }
     ) {
@@ -276,10 +272,10 @@ export default {
         drawerOpenFromLocationList,
       })
       commit('SET_material', material)
-      commit('SET_isReceivedShareStickerDrawerOpen', true)
+      commit('SET_isStickerDrawerForLoginOpen', true)
     },
-    closeReceivedShareStickerDrawer({ commit, dispatch }) {
-      commit('SET_isReceivedShareStickerDrawerOpen', false)
+    closeStickerDrawerForLogin({ commit, dispatch }) {
+      commit('SET_isStickerDrawerForLoginOpen', false)
       dispatch('resetState')
     },
     resetState({ commit }) {

@@ -26,7 +26,6 @@ div(class="pb-7.5")
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 import useStickerLocationList from '@/composables/useStickerLocationList'
 

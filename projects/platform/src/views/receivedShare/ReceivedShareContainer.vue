@@ -44,9 +44,7 @@ fullscreen-header
       img(src="@/assets/images/frontier_logo.png" class="w-20.5 h-4 mr-2")
       p(class="text-body2 text-grey-900") {{ $t('GG0004') }}
 transition(name="sticker-drawer")
-  received-share-sticker-drawer-for-login(
-    v-if="isReceivedShareStickerDrawerOpen"
-  )
+  sticker-drawer-for-login(v-if="isStickerDrawerForLoginOpen")
 transition(name="sticker-drawer")
   sticker-drawer(v-if="isStickerDrawerOpen")
 </template>
@@ -59,13 +57,13 @@ import useReceivedShare from '@/composables/useReceivedShare.js'
 import { SHARING_FROM } from '@/utils/constants'
 import DropdownLocale from '@/components/common/DropdownLocale.vue'
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
-import ReceivedShareStickerDrawerForLogin from '@/components/sticker/ReceivedShareStickerDrawerForLogin.vue'
+import StickerDrawerForLogin from '@/components/sticker/StickerDrawerForLogin.vue'
 
 const store = useStore()
 const { saveReceivedShare } = useReceivedShare()
 
 const isReloadReceivedShare = computed(
-  () => store.getters['receivedShare/isReloadReceivedShare']
+  () => store.getters['receivedShare/isReload']
 )
 const share = computed(() => store.getters['receivedShare/share'])
 const logo = computed(() => store.getters['receivedShare/logo'])
@@ -91,17 +89,17 @@ const hasSelectedStickerAddFromOG = computed(
 const isStickerDrawerOpen = computed(
   () => store.getters['sticker/isStickerDrawerOpen']
 )
-const isReceivedShareStickerDrawerOpen = computed(
-  () => store.getters['sticker/isReceivedShareStickerDrawerOpen']
+const isStickerDrawerForLoginOpen = computed(
+  () => store.getters['sticker/isStickerDrawerForLoginOpen']
 )
 
 onMounted(async () => {
   if (
     hasLogin.value &&
-    isReceivedShareStickerDrawerOpen.value &&
+    isStickerDrawerForLoginOpen.value &&
     !hasSelectedStickerAddFromOG.value
   ) {
-    store.commit('sticker/SET_isReceivedShareStickerDrawerOpen', false)
+    store.commit('sticker/SET_isStickerDrawerForLoginOpen', false)
     // 檢查是否有選擇過組織
     setTimeout(() => {
       store.dispatch('helper/openModalBehavior', {
@@ -111,7 +109,7 @@ onMounted(async () => {
             store.dispatch('helper/openModalLoading')
             await store.dispatch('organization/getOrg', { orgNo })
             store.commit('receivedShare/SET_hasSelectedStickerAddFromOG', true)
-            store.dispatch('receivedShare/reloadReceivedShare')
+            store.dispatch('receivedShare/reload')
             await Promise.all([
               store.dispatch('organization/orgUser/getOrgUser'),
               store.dispatch('sticker/openStickerDrawer', {

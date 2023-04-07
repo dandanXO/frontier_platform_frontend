@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { WorkspaceCollection } from '@/store/reuseModules/collection'
 import NodeShareState from '@/store/reuseStates/nodeShareState.js'
 import Material from '@/store/reuseModules/material.js'
@@ -12,6 +13,8 @@ export default {
   state: () => ({
     materialBreadcrumbList: [],
     share: NodeShareState(),
+    hasSelectedStickerAddFromOG: false,
+    isReload: true,
   }),
   getters: {
     materialBreadcrumbList: (state) =>
@@ -23,6 +26,8 @@ export default {
       ),
     share: (state) => state.share,
     logo: (state) => state.share.logo,
+    isReload: (state) => state.isReload,
+    hasSelectedStickerAddFromOG: (state) => state.hasSelectedStickerAddFromOG,
   },
   mutations: {
     SET_materialBreadcrumbList(state, materialBreadcrumbList) {
@@ -30,6 +35,12 @@ export default {
     },
     SET_share(state, share) {
       state.share = share
+    },
+    SET_isReload(state, bool) {
+      state.isReload = bool
+    },
+    SET_hasSelectedStickerAddFromOG(state, hasSelectedStickerAddFromOG) {
+      state.hasSelectedStickerAddFromOG = hasSelectedStickerAddFromOG
     },
   },
   actions: {
@@ -55,13 +66,17 @@ export default {
       dispatch('setEmbedModule', data.result)
     },
     async getEmbedList(
-      { rootGetters, dispatch },
+      { rootGetters, getters, dispatch },
       { targetPage = 1, sharingKey, nodeKey }
     ) {
       const searchParams =
         rootGetters['helper/search/getSearchParams'](targetPage)
+      const orgId = getters['hasSelectedStickerAddFromOG']
+        ? rootGetters['organization/orgId']
+        : undefined
       const params = {
         ...searchParams,
+        orgId,
         sharingKey,
         workspaceNodeId: nodeKey?.split('-')[1] || null,
       }
@@ -71,10 +86,14 @@ export default {
       dispatch('setEmbedModule', data.result)
     },
     async getEmbedMaterial(
-      { rootGetters, dispatch },
+      { rootGetters, getters, dispatch },
       { sharingKey, nodeKey, rank }
     ) {
+      const orgId = getters['hasSelectedStickerAddFromOG']
+        ? rootGetters['organization/orgId']
+        : undefined
       const params = {
+        orgId,
         sharingKey,
         workspaceNodeId: nodeKey.split('-')[1],
       }
@@ -85,6 +104,11 @@ export default {
       }
       const { data } = await embedApi.getEmbedMaterial(params)
       dispatch('setEmbedModule', data.result)
+    },
+    async reload({ commit }) {
+      commit('SET_isReload', false)
+      await nextTick()
+      commit('SET_isReload', true)
     },
   },
 }

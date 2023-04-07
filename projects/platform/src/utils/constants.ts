@@ -294,6 +294,7 @@ export const LOCATION_TYPE = {
   MOODBOARD: 4,
   SHARE_TO_ME: 5,
   RECEIVED_SHARE: 6,
+  EMBED: 7,
   NOTIFICATION: 99,
 }
 

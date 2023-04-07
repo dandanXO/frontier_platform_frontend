@@ -30,7 +30,6 @@ grid-item-wrapper(
   template(#corner-top-right="{ isHover }")
     slot(name="corner-top-right")
       digital-thread-entrance(
-        v-if="canAddSticker"
         :isHover="isHover"
         :material="material"
         :drawerOpenFromLocationList="drawerOpenFromLocationList"
@@ -68,10 +67,6 @@ const props = defineProps({
   optionList: {
     type: Array,
     default: () => [], // [[{ name: '', func: () => { }, disabled: false }]]
-  },
-  canAddSticker: {
-    type: Boolean,
-    default: true,
   },
   drawerOpenFromLocationList: {
     type: Array,
