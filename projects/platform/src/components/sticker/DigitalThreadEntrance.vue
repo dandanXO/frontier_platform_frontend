@@ -51,6 +51,8 @@ const openStickerDrawer = async () => {
 
   if (routePath.includes('public-library')) {
     drawerOpenFromLocationType = LOCATION_TYPE.PUBLIC
+  } else if (routePath.includes('showroom')) {
+    drawerOpenFromLocationType = LOCATION_TYPE.SHOWROOM
   } else if (routePath.includes('assets')) {
     drawerOpenFromLocationType = LOCATION_TYPE.ASSETS
   } else if (routePath.includes('workspace')) {

@@ -181,9 +181,12 @@ const isInternalLocation = computed(() =>
 const canChooseAddFrom = computed(() => {
   return (
     props.isCreatingDigitalThread &&
-    [LOCATION_TYPE.PUBLIC, LOCATION_TYPE.RECEIVED_SHARE].includes(
-      store.getters['sticker/drawerOpenFromLocationType']
-    )
+    [
+      LOCATION_TYPE.PUBLIC,
+      LOCATION_TYPE.SHOWROOM,
+      LOCATION_TYPE.RECEIVED_SHARE,
+      LOCATION_TYPE.EMBED,
+    ].includes(store.getters['sticker/drawerOpenFromLocationType'])
   )
 })
 

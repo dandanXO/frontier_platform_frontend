@@ -295,6 +295,7 @@ export const LOCATION_TYPE = {
   SHARE_TO_ME: 5,
   RECEIVED_SHARE: 6,
   EMBED: 7,
+  SHOWROOM: 8,
   NOTIFICATION: 99,
 }
 

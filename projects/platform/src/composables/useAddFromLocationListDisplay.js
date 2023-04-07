@@ -9,6 +9,7 @@ const useAddFromDisplayList = (digitalThread) => {
 
     switch (digitalThread.value.addFromLocationType) {
       case LOCATION_TYPE.PUBLIC:
+      case LOCATION_TYPE.SHOWROOM:
         list.unshift(t('RR0003'))
         break
       case LOCATION_TYPE.ASSETS:
