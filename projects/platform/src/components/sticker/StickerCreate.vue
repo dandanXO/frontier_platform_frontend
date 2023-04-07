@@ -31,7 +31,7 @@ div(class="relative w-full rounded-md shadow-8 overflow-hidden")
           size="md"
         )
       //- Add To
-      div(class="h-13 flex flex-col")
+      div(class="flex flex-col gap-y-1.5")
         div(class="w-full flex items-center gap-x-1.5")
           p(class="w-17.5 text-caption text-grey-900") {{ $t('TT0007') }}
           div(
@@ -55,12 +55,7 @@ div(class="relative w-full rounded-md shadow-8 overflow-hidden")
             )
               f-svg-icon(iconName="internal" size="14")
               p(class="text-caption") {{ $t('TT0010') }}
-        div(class="w-73.5 self-end text-grey-300 flex items-center gap-x-2")
-          f-svg-icon(
-            :iconName="addTo === EXTERNAL ? 'visibility' : 'internal'"
-            size="14"
-          )
-          p(class="text-caption leading-1.6") {{ addTo === EXTERNAL ? $t('TT0018') : $t('TT0030') }}
+        p(class="w-73.5 self-end text-grey-300 text-caption leading-1.6") {{ addTo === EXTERNAL ? $t('TT0018', { addFrom: addFrom.addFromOGType === OG_TYPE.ORG ? $t('RR0262') : $t('RR0263') }) : $t('TT0030', { addFrom: addFrom.addFromOGType === OG_TYPE.ORG ? $t('RR0262') : $t('RR0263') }) }}
       //- Type
       div(v-if="addTo === EXTERNAL" class="h-7 flex items-center gap-x-1.5")
         p(class="w-17.5 text-caption text-grey-900") {{ $t('TT0008') }}
