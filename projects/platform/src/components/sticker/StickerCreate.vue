@@ -41,12 +41,12 @@ div(class="relative w-full rounded-md shadow-8 overflow-hidden")
               template(#trigger)
                 div(
                   class="w-35 h-5.5 flex items-center justify-center gap-x-1.5"
-                  :class="[{ 'bg-grey-0 rounded-sm': addTo === EXTERNAL }, isInternalLocation ? 'text-grey-200' : 'text-grey-900']"
-                  @click="!isInternalLocation && (addTo = EXTERNAL)"
+                  :class="[{ 'bg-grey-0 rounded-sm': addTo === EXTERNAL }, !canChooseAddToExternal ? 'text-grey-200' : 'text-grey-900']"
+                  @click="canChooseAddToExternal && (addTo = EXTERNAL)"
                 )
                   f-svg-icon(iconName="external" size="14")
                   p(class="text-caption") {{ $t('TT0009') }}
-              template(v-if="isInternalLocation" #content)
+              template(v-if="!canChooseAddToExternal" #content)
                 p {{ $t('TT0111') }}
             div(
               class="w-35 h-5.5 flex items-center justify-center gap-x-1.5 text-grey-900"
@@ -172,27 +172,49 @@ const STICKER_TYPE = {
   },
 }
 
-const isInternalLocation = computed(() =>
-  [LOCATION_TYPE.ASSETS, LOCATION_TYPE.WORKSPACE].includes(
+const isInternalLocation = computed(() => {
+  const drawerOpenFromLocationType =
     store.getters['sticker/drawerOpenFromLocationType']
+  const { ASSETS, WORKSPACE, NOTIFICATION } = LOCATION_TYPE
+  return (
+    [ASSETS, WORKSPACE].includes(drawerOpenFromLocationType) &&
+    drawerOpenFromLocationType !== NOTIFICATION
   )
+})
+
+const isExternalLocation = computed(() => !isInternalLocation.value)
+
+const canChooseAddFrom = computed(
+  () => props.isCreatingDigitalThread && isExternalLocation.value
 )
 
-const canChooseAddFrom = computed(() => {
-  return (
+const canChooseAddToExternal = computed(() => {
+  if (props.isCreatingDigitalThread && isInternalLocation.value) {
+    return false
+  }
+  if (
+    isInternalLocation.value &&
+    store.getters['sticker/digitalThread'].stickerStatistics.externalQty === 0
+  ) {
+    return false
+  }
+  const { materialOwnerOGId, materialOwnerOGType } =
+    store.getters['sticker/material']
+  if (
     props.isCreatingDigitalThread &&
-    [
-      LOCATION_TYPE.PUBLIC,
-      LOCATION_TYPE.SHOWROOM,
-      LOCATION_TYPE.RECEIVED_SHARE,
-      LOCATION_TYPE.EMBED,
-    ].includes(store.getters['sticker/drawerOpenFromLocationType'])
-  )
+    isExternalLocation.value &&
+    addFrom.value.addFromOGType === materialOwnerOGType &&
+    addFrom.value.addFromOGId === materialOwnerOGId
+  ) {
+    return false
+  }
+
+  return true
 })
 
 // form data of creating digit thread or sticker
 const addFrom = ref(menuAddFrom.value.blockList[0].menuList[0].selectValue)
-const addTo = ref(isInternalLocation.value ? INTERNAL : EXTERNAL)
+const addTo = ref(canChooseAddToExternal.value ? EXTERNAL : INTERNAL)
 const type = ref(STICKER_TYPE.TEXT_ONLY.value)
 const content = ref('')
 const tagList = ref([])
@@ -242,14 +264,18 @@ if (props.isCreatingDigitalThread) {
   watch(
     () => addFrom.value,
     () => {
+      const { addFromOGId: ogId, addFromOGType: ogType } = addFrom.value
       store.dispatch('sticker/getStickerTagList', {
-        ogId: addFrom.value.addFromOGId,
-        ogType: addFrom.value.addFromOGType,
+        ogId,
+        ogType,
       })
       store.dispatch('sticker/getMentionMemberList', {
-        ogId: addFrom.value.addFromOGId,
-        ogType: addFrom.value.addFromOGType,
+        ogId,
+        ogType,
       })
+      if (!canChooseAddToExternal.value) {
+        addTo.value = INTERNAL
+      }
     },
     {
       immediate: true,
