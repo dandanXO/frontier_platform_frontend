@@ -45,7 +45,7 @@ const currentMaterialId = computed(
   () => store.getters['sticker/currentMaterialId']
 )
 
-const openStickerDrawer = () => {
+const openStickerDrawer = async () => {
   const routePath = route.path
   let drawerOpenFromLocationType
 
@@ -63,21 +63,52 @@ const openStickerDrawer = () => {
     drawerOpenFromLocationType = LOCATION_TYPE.RECEIVED_SHARE
   }
 
-  if (
-    drawerOpenFromLocationType === LOCATION_TYPE.RECEIVED_SHARE &&
-    !store.getters['receivedShare/hasLogin']
-  ) {
-    store.dispatch('sticker/openReceivedShareStickerDrawer', {
-      material: props.material,
-      drawerOpenFromLocationList: props.drawerOpenFromLocationList,
-      drawerOpenFromLocationType,
-    })
-  } else {
-    store.dispatch('sticker/openStickerDrawer', {
+  const openAuthenticatedUserStickerDrawer = () => {
+    return store.dispatch('sticker/openStickerDrawer', {
       materialId,
       drawerOpenFromLocationList: props.drawerOpenFromLocationList,
       drawerOpenFromLocationType,
     })
   }
+
+  const openUnauthenticatedUserStickerDrawer = () => {
+    store.commit('sticker/SET_currentMaterialId', props.material.materialId)
+    return store.dispatch('sticker/openReceivedShareStickerDrawer', {
+      material: props.material,
+      drawerOpenFromLocationList: props.drawerOpenFromLocationList,
+      drawerOpenFromLocationType,
+    })
+  }
+
+  if (drawerOpenFromLocationType !== LOCATION_TYPE.RECEIVED_SHARE) {
+    return openAuthenticatedUserStickerDrawer()
+  }
+
+  if (!store.getters['receivedShare/hasLogin']) {
+    return openUnauthenticatedUserStickerDrawer()
+  }
+
+  const hasSelectedStickerAddFromOG =
+    store.getters['receivedShare/hasSelectedStickerAddFromOG']
+  if (hasSelectedStickerAddFromOG) {
+    return openAuthenticatedUserStickerDrawer()
+  }
+
+  return store.dispatch('helper/openModalBehavior', {
+    component: 'modal-choose-sticker-add-from',
+    properties: {
+      actionHandler: async (orgNo) => {
+        store.dispatch('helper/openModalLoading')
+        await store.dispatch('organization/getOrg', { orgNo })
+        store.commit('receivedShare/SET_hasSelectedStickerAddFromOG', true)
+        store.dispatch('receivedShare/reloadReceivedShare')
+        await Promise.all([
+          store.dispatch('organization/orgUser/getOrgUser'),
+          openAuthenticatedUserStickerDrawer(),
+        ])
+        store.dispatch('helper/closeModalLoading')
+      },
+    },
+  })
 }
 </script>

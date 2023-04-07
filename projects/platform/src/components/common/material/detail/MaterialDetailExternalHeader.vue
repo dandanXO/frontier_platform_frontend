@@ -28,6 +28,7 @@ div(class="pb-7.5")
 <script setup>
 import { computed } from 'vue'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
+import useStickerLocationList from '@/composables/useStickerLocationList'
 
 const props = defineProps({
   breadcrumbList: {
@@ -41,12 +42,7 @@ const props = defineProps({
 })
 defineEmits(['clone'])
 
-/**
- * sticker drawer location list
- * 不包含 assets, workspace 等 location type => 去除陣列第一個元素
- * 不包含 materialNo, materialId, frontierNo => 去除陣列最後一個元素
- */
-const drawerOpenFromLocationList = computed(() => {
-  return props.breadcrumbList.map((item) => item.name).slice(1, -1)
-})
+const drawerOpenFromLocationList = useStickerLocationList(
+  props.breadcrumbList.map((b) => b.name)
+)
 </script>

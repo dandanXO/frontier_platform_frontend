@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { WorkspaceCollection } from '@/store/reuseModules/collection'
 import NodeShareState from '@/store/reuseStates/nodeShareState.js'
 import Material from '@/store/reuseModules/material.js'
@@ -13,6 +14,8 @@ export default {
     materialBreadcrumbList: [],
     share: NodeShareState(),
     hasLogin: false,
+    hasSelectedStickerAddFromOG: false,
+    isReloadReceivedShare: true,
   }),
   getters: {
     materialBreadcrumbList: (state) =>
@@ -25,6 +28,8 @@ export default {
     share: (state) => state.share,
     logo: (state) => state.share.logo,
     hasLogin: (state) => state.hasLogin,
+    hasSelectedStickerAddFromOG: (state) => state.hasSelectedStickerAddFromOG,
+    isReloadReceivedShare: (state) => state.isReloadReceivedShare,
   },
   mutations: {
     SET_materialBreadcrumbList(state, materialBreadcrumbList) {
@@ -35,6 +40,12 @@ export default {
     },
     SET_hasLogin(state, hasLogin) {
       state.hasLogin = hasLogin
+    },
+    SET_hasSelectedStickerAddFromOG(state, hasSelectedStickerAddFromOG) {
+      state.hasSelectedStickerAddFromOG = hasSelectedStickerAddFromOG
+    },
+    SET_isReloadReceivedShare(state, bool) {
+      state.isReloadReceivedShare = bool
     },
   },
   actions: {
@@ -63,14 +74,18 @@ export default {
       dispatch('setReceivedShareModule', data.result)
     },
     async getShareReceivedList(
-      { rootGetters, dispatch },
+      { rootGetters, getters, dispatch },
       { targetPage = 1, sharingKey, nodeKey }
     ) {
       const searchParams =
         rootGetters['helper/search/getSearchParams'](targetPage)
+      const orgId = getters['hasSelectedStickerAddFromOG']
+        ? rootGetters['organization/orgId']
+        : undefined
       const params = {
         sharingKey,
         workspaceNodeId: nodeKey?.split('-')[1] || null,
+        orgId,
         ...searchParams,
       }
 
@@ -79,10 +94,14 @@ export default {
       dispatch('setReceivedShareModule', data.result)
     },
     async getShareReceivedMaterial(
-      { rootGetters, dispatch },
+      { rootGetters, getters, dispatch },
       { sharingKey, nodeKey, rank }
     ) {
+      const orgId = getters['hasSelectedStickerAddFromOG']
+        ? rootGetters['organization/orgId']
+        : undefined
       const params = {
+        orgId,
         sharingKey,
         workspaceNodeId: nodeKey.split('-')[1],
       }
@@ -161,6 +180,11 @@ export default {
       )
 
       commit('SET_hasLogin', status !== 1)
+    },
+    async reloadReceivedShare({ commit }) {
+      commit('SET_isReloadReceivedShare', false)
+      await nextTick()
+      commit('SET_isReloadReceivedShare', true)
     },
   },
 }

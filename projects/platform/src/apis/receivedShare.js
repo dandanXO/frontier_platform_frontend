@@ -7,6 +7,7 @@ export default {
       data: { sharingKey },
     }),
   getShareReceivedList: ({
+    orgId,
     sharingKey,
     workspaceNodeId,
     search = null,
@@ -15,12 +16,18 @@ export default {
   }) =>
     axios('/share/get-received/get-list', {
       method: 'POST',
-      data: { sharingKey, workspaceNodeId, search, filter, pagination },
+      data: { orgId, sharingKey, workspaceNodeId, search, filter, pagination },
     }),
-  getShareReceivedMaterial: ({ sharingKey, workspaceNodeId, keyword, rank }) =>
+  getShareReceivedMaterial: ({
+    orgId,
+    sharingKey,
+    workspaceNodeId,
+    keyword,
+    rank,
+  }) =>
     axios('/share/get-received/get-material', {
       method: 'POST',
-      data: { sharingKey, workspaceNodeId, keyword, rank },
+      data: { orgId, sharingKey, workspaceNodeId, keyword, rank },
     }),
   checkShareReceivedPermission: ({ sharingKey, type }) =>
     axios('/share/get-received/check-permission', {

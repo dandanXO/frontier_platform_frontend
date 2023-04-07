@@ -109,7 +109,7 @@ const menuAddTo = computed(() => ({
 }))
 
 const closeStickerDrawer = () => {
-  store.commit('sticker/SET_isReceivedShareStickerDrawerOpen', false)
+  store.dispatch('sticker/closeReceivedShareStickerDrawer')
 }
 
 const goToLogin = () => {
@@ -121,24 +121,4 @@ const goToLogin = () => {
     },
   })
 }
-
-const hasLogin = computed(() => store.getters['receivedShare/hasLogin'])
-watch(
-  () => hasLogin.value,
-  () => {
-    if (hasLogin.value) {
-      closeStickerDrawer()
-      store.dispatch('sticker/openStickerDrawer', {
-        materialId: material.value.materialId,
-        drawerOpenFromLocationList:
-          store.getters['sticker/drawerOpenFromLocationList'],
-        drawerOpenFromLocationType:
-          store.getters['sticker/drawerOpenFromLocationType'],
-      })
-    }
-  },
-  {
-    immediate: true,
-  }
-)
 </script>

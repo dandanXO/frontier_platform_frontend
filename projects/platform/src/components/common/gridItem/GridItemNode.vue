@@ -66,6 +66,7 @@ import GridItemMaterial from '@/components/common/gridItem/GridItemMaterial.vue'
 import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
 import { NODE_TYPE } from '@/utils/constants'
 import { computed } from 'vue'
+import useStickerLocationList from '@/composables/useStickerLocationList'
 
 const props = defineProps({
   node: {
@@ -104,8 +105,6 @@ const innerSelectedValue = computed({
  * 不包含 assets, workspace 等 location type => 去除陣列第一個元素
  * 不包含 materialNo, materialId, frontierNo => 去除陣列最後一個元素
  */
-const drawerOpenFromLocationList = computed(() => {
-  if (props.drawerOpenFromLocationList) return props.drawerOpenFromLocationList
-  return props.node.location?.slice(1, -1)
-})
+
+const drawerOpenFromLocationList = useStickerLocationList(props.node.location)
 </script>

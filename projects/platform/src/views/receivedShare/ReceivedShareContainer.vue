@@ -1,11 +1,11 @@
 <style lang="scss" scoped>
-.v-enter-active,
-.v-leave-active {
+.sticker-drawer-enter-active,
+.sticker-drawer-leave-active {
   transition: all 0.5s ease;
 }
 
-.v-enter-from,
-.v-leave-to {
+.sticker-drawer-enter-from,
+.sticker-drawer-leave-to {
   opacity: 0;
   transform: translateX(474px);
 }
@@ -35,7 +35,7 @@ fullscreen-header
   template(#content)
     div(v-if="share.isClosed" class="w-full h-full flex items-center justify-center")
       p(class="text-body1 text-grey-900") {{ $t('GG0026') }}
-    router-view(v-else)
+    router-view(v-else-if="isReloadReceivedShare")
     a(
       class="fixed z-footer bottom-0 w-full h-13 bg-grey-50 px-36 flex items-center justify-end shadow-4 border-t border-grey-150"
       href="https://www.frontier.cool/"
@@ -43,18 +43,18 @@ fullscreen-header
     )
       img(src="@/assets/images/frontier_logo.png" class="w-20.5 h-4 mr-2")
       p(class="text-body2 text-grey-900") {{ $t('GG0004') }}
-transition
+transition(name="sticker-drawer")
   received-share-sticker-drawer-for-login(
     v-if="isReceivedShareStickerDrawerOpen"
   )
-transition
+transition(name="sticker-drawer")
   sticker-drawer(v-if="isStickerDrawerOpen")
 </template>
 
 <script setup>
 import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import { useStore } from 'vuex'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'
 import { SHARING_FROM } from '@/utils/constants'
 import DropdownLocale from '@/components/common/DropdownLocale.vue'
@@ -64,6 +64,9 @@ import ReceivedShareStickerDrawerForLogin from '@/components/sticker/ReceivedSha
 const store = useStore()
 const { saveReceivedShare } = useReceivedShare()
 
+const isReloadReceivedShare = computed(
+  () => store.getters['receivedShare/isReloadReceivedShare']
+)
 const share = computed(() => store.getters['receivedShare/share'])
 const logo = computed(() => store.getters['receivedShare/logo'])
 const isFirstTime = ref(true)
@@ -81,25 +84,34 @@ const openModalShareMessage = () => {
   })
 }
 
-const isReceivedShareStickerDrawerOpen = computed(
-  () => store.getters['sticker/isReceivedShareStickerDrawerOpen']
+const hasLogin = computed(() => store.getters['receivedShare/hasLogin'])
+const hasSelectedStickerAddFromOG = computed(
+  () => store.getters['receivedShare/hasSelectedStickerAddFromOG']
 )
 const isStickerDrawerOpen = computed(
   () => store.getters['sticker/isStickerDrawerOpen']
 )
-const hasSelectedStickerAddFrom = ref(false)
+const isReceivedShareStickerDrawerOpen = computed(
+  () => store.getters['sticker/isReceivedShareStickerDrawerOpen']
+)
 
-watch(
-  () => isStickerDrawerOpen.value,
-  () => {
-    if (isStickerDrawerOpen.value && !hasSelectedStickerAddFrom.value) {
-      // 檢查是否有選擇過組織
+onMounted(async () => {
+  if (
+    hasLogin.value &&
+    isReceivedShareStickerDrawerOpen.value &&
+    !hasSelectedStickerAddFromOG.value
+  ) {
+    store.commit('sticker/SET_isReceivedShareStickerDrawerOpen', false)
+    // 檢查是否有選擇過組織
+    setTimeout(() => {
       store.dispatch('helper/openModalBehavior', {
         component: 'modal-choose-sticker-add-from',
         properties: {
           actionHandler: async (orgNo) => {
             store.dispatch('helper/openModalLoading')
             await store.dispatch('organization/getOrg', { orgNo })
+            store.commit('receivedShare/SET_hasSelectedStickerAddFromOG', true)
+            store.dispatch('receivedShare/reloadReceivedShare')
             await Promise.all([
               store.dispatch('organization/orgUser/getOrgUser'),
               store.dispatch('sticker/openStickerDrawer', {
@@ -110,12 +122,11 @@ watch(
                   store.getters['sticker/drawerOpenFromLocationType'],
               }),
             ])
-            hasSelectedStickerAddFrom.value = true
             store.dispatch('helper/closeModalLoading')
           },
         },
       })
-    }
+    }, 0)
   }
-)
+})
 </script>

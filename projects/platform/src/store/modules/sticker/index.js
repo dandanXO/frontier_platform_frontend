@@ -278,6 +278,10 @@ export default {
       commit('SET_material', material)
       commit('SET_isReceivedShareStickerDrawerOpen', true)
     },
+    closeReceivedShareStickerDrawer({ commit, dispatch }) {
+      commit('SET_isReceivedShareStickerDrawerOpen', false)
+      dispatch('resetState')
+    },
     resetState({ commit }) {
       commit('RESET_tempDigitalThreadList')
       commit('RESET_filter')

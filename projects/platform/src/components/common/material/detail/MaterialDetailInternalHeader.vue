@@ -19,7 +19,7 @@ div(class="pb-7.5")
         p {{ $t('RR0054') }}
     digital-thread-entrance(
       :material="material"
-      :drawerOpenFromLocationList="breadcrumbList.map((item) => item.name).slice(1, -1)"
+      :drawerOpenFromLocationList="drawerOpenFromLocationList"
     )
   p(class="text-caption text-grey-600") {{ $t('EE0014') }} : {{ lastUpdateDate }}
 </template>
@@ -28,6 +28,7 @@ div(class="pb-7.5")
 import { computed } from 'vue'
 import dayjs from 'dayjs'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
+import useStickerLocationList from '@/composables/useStickerLocationList'
 
 const props = defineProps({
   breadcrumbList: {
@@ -47,4 +48,8 @@ const lastUpdateDate = computed(() => {
     .format('YYYY/MM/DD hh:mm A')
   return tempUpdateDate.slice(0, 10) + ' at ' + tempUpdateDate.slice(10)
 })
+
+const drawerOpenFromLocationList = useStickerLocationList(
+  props.breadcrumbList.map((b) => b.name)
+)
 </script>
