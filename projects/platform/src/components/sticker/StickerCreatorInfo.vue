@@ -1,12 +1,20 @@
 <template lang="pug">
-f-avatar(
-  :imageUrl="avatar"
-  :type="avatarType"
-  :labelColor="labelColor"
-  size="sm"
-)
-p(class="text-caption text-grey-900 font-bold leading-1.6") {{ creatorInfoText }}
-  span(v-if="createDate" class="text-caption text-grey-300 font-normal") ・{{ $dayjs.unix(createDate).format('MMM DD, YYYY [at] hh:mm A') }}
+div(class="flex flex-shrink min-w-0 items-center gap-x-2")
+  f-avatar(
+    :imageUrl="avatar"
+    :type="avatarType"
+    :labelColor="labelColor"
+    size="sm"
+  )
+  div(class="flex-shrink min-w-0")
+    f-tooltip(isNotFitWidth)
+      template(#trigger)
+        p(
+          class="whitespace-nowrap text-ellipsis overflow-hidden text-caption text-grey-900 font-bold leading-1.6"
+        ) {{ creatorInfoText }}
+      template(#content)
+        p {{ creatorInfoText }}
+span(v-if="createDate" class="flex-shrink-0 text-caption text-grey-300 font-normal") ・{{ $dayjs.unix(createDate).format('MMM DD, YYYY [at] hh:mm A') }}
 </template>
 
 <script setup lang="ts">

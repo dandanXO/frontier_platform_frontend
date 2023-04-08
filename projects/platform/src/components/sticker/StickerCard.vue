@@ -77,7 +77,7 @@ div(
     //- Footer
     div(
       v-if="!refStickerTagList?.isEditingTagList"
-      class="flex items-center gap-x-2 pt-5"
+      class="flex items-center pt-5"
       @click.stop
     )
       sticker-creator-info(
