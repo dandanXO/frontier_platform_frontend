@@ -96,7 +96,6 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
               v-for="node in moodboardOfferNodeCollection.childNodeList"
               v-model:selectedValue="selectedNodeList"
               :node="node"
-              :drawerOpenFromLocationList="moodboardOfferNodeCollection.locationList.map((item) => item.name)"
               :isSelectable="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED"
               :optionList="optionNode(node)"
               @click:option="$event.func(node)"

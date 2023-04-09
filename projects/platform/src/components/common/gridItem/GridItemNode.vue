@@ -87,9 +87,6 @@ const props = defineProps({
     type: Array,
     default: () => [], // [[{ name: '', func: () => { }, disabled: false }]]
   },
-  drawerOpenFromLocationList: {
-    type: Array,
-  },
 })
 const emit = defineEmits(['update:selectedValue', 'click:option', 'click:node'])
 const store = useStore()
