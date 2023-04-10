@@ -36,7 +36,6 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
           :label="$t('RR0014')"
           :placeholder="$t('DD0016')"
           multiple
-          widthFitWithInput
         )
         f-input-container(:label="$t('RR0015')" required)
           div(class="flex items-center gap-x-3")
@@ -88,7 +87,6 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
                 required
                 class="w-100 mr-3"
                 :style="{ zIndex: material.contentList.length - contentItemIndex }"
-                widthFitWithInput
               )
               f-input-text(
                 v-model:textValue="content.percentage"
@@ -119,7 +117,6 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
           :label="$t('RR0022')"
           :placeholder="$t('DD0016')"
           multiple
-          widthFitWithInput
         )
         f-input-container(:label="$t('RR0023')")
           div(class="flex items-center gap-x-3")
@@ -171,7 +168,6 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
           :label="$t('RR0027')"
           :placeholder="$t('DD0018')"
           multiple
-          widthFitWithInput
         )
         div(v-if="isEditMode" class="relative")
           f-select-input(
@@ -181,7 +177,6 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
             :label="$t('RR0071')"
             :placeholder="$t('DD0018')"
             multiple
-            widthFitWithInput
           )
           p(class="absolute right-0 top-0 text-caption text-grey-900") {{ $t('EE0036') }}
       div(v-if="isOpenSampleCard" class="flex-shrink-0 w-75 h-fit ml-8 sticky top-0")
@@ -209,7 +204,6 @@ div(data-scroll-to="block-material-information" class="pb-15 border-b border-gre
         :label="$t('RR0028')"
         :placeholder="$t('DD0020')"
         multiple
-        widthFitWithInput
       )
       f-input-textarea(
         v-model:textValue="material.remark"

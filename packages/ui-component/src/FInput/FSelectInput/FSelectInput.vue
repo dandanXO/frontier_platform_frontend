@@ -239,7 +239,7 @@ const props = defineProps({
    */
   widthFitWithInput: {
     type: Boolean,
-    default: false,
+    default: true,
   },
 })
 const innerSelectValue = computed({

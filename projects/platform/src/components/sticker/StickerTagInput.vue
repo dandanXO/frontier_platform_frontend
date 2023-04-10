@@ -38,6 +38,7 @@ const innerInputTagList = computed({
 const newAddTagList = ref([]) // 前端暫時新增的
 const sourceTagList = computed(() => store.getters['sticker/sourceTagList'])
 const menuTagList = computed(() => ({
+  scrollAreaMaxHeight: 'max-h-45',
   blockList: [
     {
       menuList: newAddTagList.value.concat(sourceTagList.value).map((tag) => ({
