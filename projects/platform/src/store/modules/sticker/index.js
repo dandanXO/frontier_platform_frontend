@@ -511,6 +511,9 @@ export default {
           digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
           digitalThreadName,
         })
+        dispatch('helper/pushFlashMessage', i18n.global.t('TT0122'), {
+          root: true,
+        })
         await dispatch('getDigitalThreadList')
       }
     },
