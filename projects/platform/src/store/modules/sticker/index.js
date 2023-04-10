@@ -66,7 +66,6 @@ export default {
     tempCreatingStickerIdList: [],
     isStickerDrawerOpen: false,
     isFetchingDigitalThread: false,
-    isAddingSticker: false, // 正在新增 sticker
     isStickerDrawerForLoginOpen: false,
     currentMaterialId: null, // drawer 顯示的 materialId
     drawerOpenFromLocationType: null, // drawer 是從哪一個位置的 material 開啟的
@@ -89,7 +88,6 @@ export default {
     drawerOpenFromLocationList: (state) => state.drawerOpenFromLocationList,
     isStickerDrawerOpen: (state) => state.isStickerDrawerOpen,
     isFetchingDigitalThread: (state) => state.isFetchingDigitalThread,
-    isAddingSticker: (state) => state.isAddingSticker,
     isStickerDrawerForLoginOpen: (state) => state.isStickerDrawerForLoginOpen,
     digitalThread: (state) => state.digitalThread,
     digitalThreadList: (state) => state.digitalThreadList,
@@ -123,9 +121,6 @@ export default {
     },
     SET_IS_FETCHING_DIGITAL_THREAD(state, isFetchingDigitalThread) {
       state.isFetchingDigitalThread = isFetchingDigitalThread
-    },
-    SET_isAddingSticker(state, isAddingSticker) {
-      state.isAddingSticker = isAddingSticker
     },
     SET_isStickerDrawerForLoginOpen(state, isStickerDrawerForLoginOpen) {
       state.isStickerDrawerForLoginOpen = isStickerDrawerForLoginOpen

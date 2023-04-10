@@ -107,6 +107,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
               size="14"
               class="ml-1 invisible group-hover:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
               @click.stop="goToMaterialDetail(true)"
+              tooltip="TT0074"
             )
             span(class="leading-1.4 pl-0.5" v-if="digitalThread.hasMaterialDeleted") ({{ $t('TT0112') }})
             span(
@@ -304,7 +305,10 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
               :digitalThreadName="digitalThread.digitalThreadName"
               @close="setIsAddingSticker(false)"
             )
-          div(v-if="stickerList.length === 0" class="pt-29 flex flex-col items-center")
+          div(
+            v-if="stickerList.length === 0 && isFilterDirty"
+            class="pt-29 flex flex-col items-center"
+          )
             img(src="@/assets/images/sticker_no_result.png" class="w-47")
             p(class="text-body2 text-grey-400 pt-6 pb-8.5") {{ $t('RR0105') }}
             p(
@@ -322,10 +326,24 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
     div(
       class="absolute z-0 top-0 right-full w-118.5 h-screen bg-grey-0 border border-grey-150 shadow-8 flex flex-col"
     )
-      div(class="w-full h-17.5 px-4.5 border-b border-grey-150 flex items-center gap-x-2")
+      div(
+        class="group w-full h-17.5 px-4.5 border-b border-grey-150 flex items-center gap-x-2"
+      )
         f-svg-icon(iconName="sticker_thread" size="20" class="text-grey-900")
         span(class="text-body1 font-bold text-grey-900 whitespace-nowrap") {{ $t('TT0076') }}
-        span(class="text-body1 font-bold text-grey-800 line-clamp-1") {{ material.materialNo }}
+        span(
+          class="text-body1 font-bold text-grey-800 line-clamp-1"
+          :class="{ 'hover:text-primary-400 hover:underline hover:cursor-pointer': !digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess }"
+          @click.stop="goToMaterialDetail(false)"
+        ) {{ material.materialNo }}
+        f-svg-icon(
+          v-if="!digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess"
+          iconName="open_in_new"
+          size="14"
+          class="invisible group-hover:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
+          @click.stop="goToMaterialDetail(true)"
+          tooltip="TT0074"
+        )
       f-scrollbar-container(class="flex-grow")
         div(
           class="mt-3 mx-5 mb-2.5 h-13 bg-grey-0 border border-grey-150 rounded-md flex items-center justify-center gap-x-2 cursor-pointer"
@@ -339,6 +357,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           :digitalThread="digitalThread"
           :class="{ 'bg-grey-100': index === indexOfDrawerDigitalThread }"
           @click="openDigitalThread(digitalThread, index)"
+          @goToMaterialDetail="goToMaterialDetail"
         )
 </template>
 
@@ -374,9 +393,8 @@ const isCreatingDigitalThread = computed(
 const isFetchingDigitalThread = computed(
   () => store.getters['sticker/isFetchingDigitalThread']
 )
-const isAddingSticker = computed(() => store.getters['sticker/isAddingSticker'])
-const setIsAddingSticker = (bool) =>
-  store.commit('sticker/SET_isAddingSticker', bool)
+const isAddingSticker = ref(false)
+const setIsAddingSticker = (bool) => (isAddingSticker.value = bool)
 
 const isEditingDigitalThreadName = ref(false)
 const tempDigitalThreadName = ref('')

@@ -149,32 +149,30 @@ const isInternalLocation = computed(() => {
 
 const isExternalLocation = computed(() => !isInternalLocation.value)
 
-const routeLocation = computed(() => store.getters['helper/routeLocation'])
-const routeLocationId = computed(() => store.getters['helper/routeLocationId'])
-
 const canChooseAddFrom = computed(
   () => props.isCreatingDigitalThread && isExternalLocation.value
 )
 // form data of creating digit thread or sticker
 const getDefaultAddFrom = () => {
-  if (!canChooseAddFrom.value) {
-    const menuItem = menuAddFrom.value.blockList[0].menuList.find(
-      (v) =>
-        v.selectValue.addFromOGId ===
-        store.getters['sticker/digitalThread'].sideOGId
-    )
-    return {
-      name: menuItem.title,
-      labelColor: menuItem.labelColor,
-    }
-  }
+  const menuItem = menuAddFrom.value.blockList[0].menuList.find((menu) => {
+    const { addFromOGId, addFromOGType } = menu.selectValue
+    let ogType, ogId
 
-  if (routeLocation.value !== 'org') {
-    return menuAddFrom.value.blockList[0].menuList.find(
-      (v) => v.selectValue.addFromOGId === routeLocationId.value
-    )
-  }
-  return menuAddFrom.value.blockList[0].menuList[0].selectValue
+    if (!props.isCreatingDigitalThread) {
+      const { sideOGId, sideOGType } = store.getters['sticker/digitalThread']
+      ogType = sideOGType
+      ogId = sideOGId
+    } else {
+      ogType =
+        store.getters['helper/routeLocation'] === 'org'
+          ? OG_TYPE.ORG
+          : OG_TYPE.GROUP
+      ogId = store.getters['helper/routeLocationId']
+    }
+
+    return addFromOGType === ogType && addFromOGId === ogId
+  })
+  return menuItem.selectValue
 }
 const addFrom = ref(getDefaultAddFrom())
 

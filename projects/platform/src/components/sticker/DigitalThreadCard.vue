@@ -1,10 +1,27 @@
 <template lang="pug">
 div(
-  class="group w-full h-39.5 bg-grey-0 hover:bg-grey-50 border border-grey-150 shadow-2 pl-5 pt-3.5 pr-3.5 pb-2"
+  class="group w-full h-39.5 bg-grey-0 hover:bg-grey-50 border border-grey-150 shadow-2 pl-5 pt-3.5 pr-3.5 pb-2 cursor-pointer"
 )
-  div(class="pb-1 flex items-center gap-x-2.5")
-    img(v-defaultImg class="w-8 h-8 rounded" :src="material.coverImg")
-    p(class="text-body2 text-grey-800") {{ material.materialNo }}
+  div(class="group/material-no pb-1 flex items-center gap-x-2.5")
+    img(
+      v-defaultImg
+      class="w-8 h-8 rounded cursor-pointer"
+      :src="material.coverImg"
+      @click.stop="$emit('goToMaterialDetail', false)"
+    )
+    p(
+      class="text-body2 text-grey-800"
+      :class="{ 'hover:text-primary-400 hover:underline hover:cursor-pointer': !digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess }"
+      @click.stop="$emit('goToMaterialDetail', false)"
+    ) {{ material.materialNo }}
+    f-svg-icon(
+      v-if="!digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess"
+      iconName="open_in_new"
+      size="14"
+      class="invisible group-hover/material-no:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
+      @click.stop="$emit('goToMaterialDetail', true)"
+      tooltip="TT0074"
+    )
   div(class="pb-1 flex items-center gap-x-2")
     span(
       class="text-body2 font-bold leading-1.6 group-hover:text-primary-400"
@@ -59,6 +76,7 @@ import { useStore } from 'vuex'
 
 const store = useStore()
 
+defineEmits(['goToMaterialDetail'])
 const props = defineProps({
   digitalThread: {
     type: Object,
