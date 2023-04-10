@@ -283,7 +283,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
         //- Default intro
         div(v-if="isCreatingDigitalThread && !isAddingSticker" class="pl-8 pr-10.5")
           div(class="pt-10")
-            img(src="@/assets/images/image_sticker_empty.png" class="w-72.5 ml-15")
+            img(src="@/assets/images/sticker_empty.png" class="w-72.5 ml-15")
             i18n-t(
               keypath="TT0004"
               tag="p"
@@ -304,7 +304,14 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
               :digitalThreadName="digitalThread.digitalThreadName"
               @close="setIsAddingSticker(false)"
             )
-          div(class="pt-3 pl-8 pr-10.5 flex flex-col gap-y-3")
+          div(v-if="stickerList.length === 0" class="pt-29 flex flex-col items-center")
+            img(src="@/assets/images/sticker_no_result.png" class="w-47")
+            p(class="text-body2 text-grey-400 pt-6 pb-8.5") {{ $t('RR0105') }}
+            p(
+              class="text-body2 text-grey-900 cursor-pointer"
+              @click="$store.commit('sticker/RESET_filter')"
+            ) {{ $t('TT0114') }}
+          div(v-else class="pt-3 pl-8 pr-10.5 flex flex-col gap-y-3")
             sticker-card(
               v-for="sticker in stickerList"
               :key="sticker.stickerId"
