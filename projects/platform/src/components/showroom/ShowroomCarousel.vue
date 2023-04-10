@@ -23,7 +23,7 @@ carousel(
       div(
         class="invisible group-hover/card:visible absolute z-1 w-full h-full bg-grey-900/30"
       )
-      h1(class="text-h1 font-bold text-grey-100 pt-4 pl-4.5") {{ showroom.title }}
+      h1(class="relative z-2 text-h1 font-bold text-grey-100 pt-4 pl-4.5") {{ showroom.title }}
       div(
         class="absolute z-2 h-36.5 box-border bottom-0 left-0 bg-grey-900/50 w-full py-4 px-4.5"
       )
@@ -39,34 +39,36 @@ carousel(
           class="flex items-start line-clamp-2 text-caption text-grey-200 !leading-1.6 !break-normal"
         ) {{ showroom.categoryList.join(', ') }}
   template(#addons="{ slidesCount }")
-    template(v-if="slidesCount > 2")
-      div(class="grid gap-x-3 grid-flow-col w-fit mx-auto pt-4")
-        div(
-          v-for="page in totalPage"
-          class="w-3 h-3 rounded-full cursor-pointer"
-          :class="[currentPage === page ? 'bg-grey-900' : 'bg-grey-150']"
-          @click="slideTo(page)"
-        )
-      div(
-        v-if="currentPage !== 1"
-        class="invisible group-hover/addons:visible absolute top-1/2 left-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
-        @click="prevSlide"
-      )
-        f-svg-icon(
-          iconName="keyboard_arrow_left"
-          size="34"
-          class="text-grey-600 hover:text-primary-400"
-        )
-      div(
-        v-if="currentPage !== totalPage"
-        class="invisible group-hover/addons:visible absolute top-1/2 right-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
-        @click="nextSlide"
-      )
-        f-svg-icon(
-          iconName="keyboard_arrow_right"
-          size="34"
-          class="text-grey-600 hover:text-primary-400"
-        )
+    div(class="px-2.5")
+      div(class="h-11 w-full border-b border-grey-250")
+        template(v-if="slidesCount > 2")
+          div(class="grid gap-x-3 grid-flow-col w-fit mx-auto pt-4")
+            div(
+              v-for="page in totalPage"
+              class="w-3 h-3 rounded-full cursor-pointer"
+              :class="[currentPage === page ? 'bg-grey-900' : 'bg-grey-150']"
+              @click="slideTo(page)"
+            )
+          div(
+            v-if="currentPage !== 1"
+            class="invisible group-hover/addons:visible absolute top-1/2 left-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
+            @click="prevSlide"
+          )
+            f-svg-icon(
+              iconName="keyboard_arrow_left"
+              size="34"
+              class="text-grey-600 hover:text-primary-400"
+            )
+          div(
+            v-if="currentPage !== totalPage"
+            class="invisible group-hover/addons:visible absolute top-1/2 right-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
+            @click="nextSlide"
+          )
+            f-svg-icon(
+              iconName="keyboard_arrow_right"
+              size="34"
+              class="text-grey-600 hover:text-primary-400"
+            )
 </template>
 
 <script setup>

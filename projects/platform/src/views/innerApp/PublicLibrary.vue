@@ -52,7 +52,7 @@ div(class="w-full h-full relative")
       #banner="{ inSearch }"
       v-if="pagination.currentPage === 1 && isFirstLayer"
     )
-      div(v-if="!inSearch" class="pb-4 px-7.5")
+      div(v-if="!inSearch" class="pb-6 px-7.5")
         div(
           class="rounded-md box-border p-5 flex flex-col gap-y-4 justify-between shadow-2 bg-center bg-cover"
           :style="{ backgroundImage: `url(${banner.coverImg})` }"

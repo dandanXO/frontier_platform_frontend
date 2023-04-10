@@ -18,20 +18,12 @@ modal-behavior(
         :rules="[$inputRules.required(), $inputRules.email()]"
       )
       f-select-dropdown(
-        v-if="!onlyToOne"
         :label="$t('II0025')"
         required
         :dropdownMenuTree="orgMenuTree"
         v-model:selectValue="formData.toOrgId"
         size="md"
-      )
-      f-input-text(
-        v-else
-        :label="$t('II0025')"
-        v-model:textValue="selectedOrg.orgName"
-        required
-        disabled
-        size="md"
+        :disabled="onlyToOne"
       )
     f-input-text(
       v-model:textValue="formData.subject"
@@ -82,7 +74,6 @@ const primaryBtnDisabled = computed(
   () => refFromEmail.value?.isError || !formData.subject || !formData.content
 )
 const orgMenuTree = computed(() => ({
-  scrollAreaMaxHeight: 'max-h-99',
   blockList: [
     {
       menuList: showroom.value.participatedOrgList.map(
