@@ -4,7 +4,7 @@ div(
   @mouseleave="isHoverChildSticker = false"
 )
   //- Header
-  div(class="flex items-center justify-between pb-2")
+  div(class="flex items-center justify-between pb-4")
     div(
       class="flex items-center gap-x-1 text-grey-300"
       :class="{ '!text-grey-600': isHoverChildSticker }"

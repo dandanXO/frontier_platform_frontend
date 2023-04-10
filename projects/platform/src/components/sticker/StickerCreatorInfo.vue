@@ -5,6 +5,7 @@ div(class="flex flex-shrink min-w-0 items-center gap-x-2")
     :type="avatarType"
     :labelColor="labelColor"
     size="sm"
+    :hasBorder="false"
   )
   div(class="flex-shrink min-w-0")
     f-tooltip(isNotFitWidth)

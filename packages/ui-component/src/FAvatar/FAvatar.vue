@@ -2,7 +2,7 @@
 div(:class="classSize.avatar" class="relative")
   div(
     class="bg-grey-0 rounded-full overflow-hidden"
-    :class="[classSize.avatar, { 'border border-grey-0': !!labelColor }]"
+    :class="[classSize.avatar, { 'border border-grey-0': hasBorder && !!labelColor }]"
   )
     img(class="w-full h-full" :src="!!imageUrl ? imageUrl : defaultImage")
   div(
@@ -34,6 +34,10 @@ const props = defineProps({
   labelColor: {
     type: String,
     default: '',
+  },
+  hasBorder: {
+    type: Boolean,
+    default: true,
   },
 })
 

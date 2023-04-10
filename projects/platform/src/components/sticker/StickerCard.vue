@@ -1,20 +1,17 @@
 <template lang="pug">
 div(
-  class="relative w-full shadow-2 hover:shadow-4"
+  class="relative w-full shadow-2 hover:shadow-4 rounded-md overflow-hidden"
   @mouseenter="isHoverSticker = true"
   @mouseleave="isHoverSticker = false"
 )
   div(
-    class="absolute z-1 top-0 left-0 w-1 h-full rounded-l-md"
+    class="absolute z-1 top-0 left-0 w-1 h-full"
     :class="{ 'bg-forestgreen-300': sticker.addTo === EXTERNAL, 'bg-grey-300': sticker.addTo === INTERNAL }"
   )
   //- Sticker
-  div(
-    class="relative px-5 pt-2.5 pb-3.5 bg-grey-0 rounded-r-md"
-    @click="expandChildStickerList"
-  )
+  div(class="relative px-5 pt-2.5 pb-3.5 bg-grey-0" @click="expandChildStickerList")
     //- Header
-    div(class="flex items-center justify-between pb-5")
+    div(class="flex items-center justify-between pb-4")
       sticker-label-add-to(:addTo="sticker.addTo")
       div(class="flex items-center gap-x-4")
         sticker-header-icon(
@@ -77,7 +74,7 @@ div(
     //- Footer
     div(
       v-if="!refStickerTagList?.isEditingTagList"
-      class="flex items-center pt-5"
+      class="flex items-center pt-4"
       @click.stop
     )
       sticker-creator-info(
