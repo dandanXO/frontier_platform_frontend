@@ -314,7 +314,6 @@ const routes = [
             const apiList = [
               'organization/orgUser/getOrgUser',
               'organization/getPricing',
-              'showroom/getShowroomAnnouncement',
               'showroom/getShowroomBannerAndList',
             ]
 

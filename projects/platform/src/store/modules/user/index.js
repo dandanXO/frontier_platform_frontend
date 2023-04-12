@@ -8,12 +8,14 @@ const state = () => ({
   isVerify: false,
   locale: 'zh-TW',
   organizationList: [],
+  isShowAnnouncement: true,
 })
 
 const getters = {
   user: (state) => state,
   email: (state) => state.email,
   organizationList: (state) => state.organizationList,
+  isShowAnnouncement: (state) => state.isShowAnnouncement,
 }
 
 const mutations = {
@@ -108,6 +110,9 @@ const actions = {
       tempFeedbackAttachmentId,
     })
     return data.result.feedbackAttachmentList
+  },
+  readAnnouncement() {
+    userApi.readAnnouncement()
   },
 }
 

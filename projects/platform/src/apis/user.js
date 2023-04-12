@@ -117,4 +117,9 @@ export default {
       method: 'POST',
       data: { tempFeedbackId, tempFeedbackAttachmentId },
     }),
+  readAnnouncement: () =>
+    axios('/user/read-announcement', {
+      method: 'POST',
+      data: {},
+    }),
 }

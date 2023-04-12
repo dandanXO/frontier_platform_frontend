@@ -31,7 +31,9 @@ div(class="flex h-full")
       :key="$route.params.orgNo"
       class="absolute bottom-0 left-0 z-100"
     )
-    modal-showroom-announcement(v-if="isInInnerApp && isPromoting")
+    modal-announcement(
+      v-if="(isInInnerApp || isInLobby) && user.isShowAnnouncement"
+    )
   transition
     sticker-drawer(v-if="isStickerDrawerOpen")
 </template>
@@ -48,11 +50,13 @@ import { useStore } from 'vuex'
 import { computed, defineAsyncComponent } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
-import ModalShowroomAnnouncement from '@/components/showroom/ModalShowroomAnnouncement.vue'
-
 const NotifyBarBuffer = defineAsyncComponent(() =>
   import('@/components/billings/NotifyBarBuffer.vue')
 )
+const ModalAnnouncement = defineAsyncComponent(() =>
+  import('@/components/common/ModalAnnouncement.vue')
+)
+
 const store = useStore()
 const route = useRoute()
 const isReloadInnerApp = computed(
@@ -62,6 +66,7 @@ const planStatus = computed(() => store.getters['polling/planStatus'])
 const isInInnerApp = computed(() =>
   route.matched.some((r) => r.name === 'InnerAppRoot')
 )
+const isInLobby = computed(() => route.matched.some((r) => r.name === 'Lobby'))
 const user = computed(() => store.getters['user/user'])
 const isStickerDrawerOpen = computed(
   () => store.getters['sticker/isStickerDrawerOpen']
@@ -86,7 +91,4 @@ setOptions({
   },
 })
 bootstrap()
-
-/** showroom */
-const isPromoting = computed(() => store.getters['showroom/isPromoting'])
 </script>

@@ -12,12 +12,9 @@ export default {
     material: Material,
   },
   state: () => ({
-    isPromoting: false, // 用來判斷要不要跳showroom的 announcement modal
-    announcement: {
+    banner: {
       coverImg: '',
       title: '',
-      subtitle: '',
-      participatedOrgLogoList: [],
       description: {
         // follow notification structure
         content: '', // Don't miss out on the amazing {0}
@@ -29,12 +26,6 @@ export default {
           // }
         ],
       },
-      showroomId: 0, // 導向哪一個 showroom
-    },
-    banner: {
-      coverImg: '',
-      title: '',
-      description: {}, // follow announcement.description
     },
     showroomList: [
       {
@@ -57,7 +48,7 @@ export default {
       location: '',
       subtitle: '',
       categoryList: [],
-      description: {}, // follow announcement.description
+      description: {}, // follow banner.description
       participatedOrgList: [
         // {
         //   orgId: 0,
@@ -71,17 +62,6 @@ export default {
     materialPublish: NodePublishState(),
   }),
   getters: {
-    isPromoting: (state) => state.isPromoting,
-    announcement: (state) => state.announcement,
-    announcementDescriptionComponent: (state) => {
-      const { content, contentValue } = state.announcement.description
-      return generateContentComponent(
-        content,
-        contentValue,
-        ['w-full', 'text-body2', 'text-grey-400', 'leading-1.6'],
-        ['text-body2', 'text-blue-500', 'underline']
-      )
-    },
     banner: (state) => state.banner,
     bannerDescriptionComponent: (state) => {
       const { content, contentValue } = state.banner.description
@@ -121,12 +101,6 @@ export default {
     materialPublish: (state) => state.materialPublish,
   },
   mutations: {
-    SET_isPromoting(state, isPromoting) {
-      state.isPromoting = isPromoting
-    },
-    SET_announcement(state, announcement) {
-      state.announcement = announcement
-    },
     SET_banner(state, banner) {
       state.banner = banner
     },
@@ -144,13 +118,6 @@ export default {
     },
   },
   actions: {
-    async getShowroomAnnouncement({ rootGetters, commit }) {
-      const { data } = await showroomApi.getShowroomAnnouncement({
-        orgId: rootGetters['organization/orgId'],
-      })
-      commit('SET_isPromoting', data.result.isPromoting)
-      commit('SET_announcement', data.result.announcement)
-    },
     async getShowroomBannerAndList({ rootGetters, commit }) {
       const { data } = await showroomApi.getShowroomBannerAndList({
         orgId: rootGetters['organization/orgId'],
