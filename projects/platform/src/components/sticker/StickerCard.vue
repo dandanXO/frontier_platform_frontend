@@ -17,8 +17,8 @@ div(
         sticker-header-icon(
           iconName="sticker"
           :isHoverSticker="isHoverSticker"
-          :isActive="isExpandChildStickerList"
-          :amount="childStickerList.length"
+          :isActive="isExpandChildStickerListForever || isExpandChildStickerList"
+          :amount="sticker.childStickerCount"
           :activeTooltip="$t('TT0095')"
           :inactiveTooltip="$t('TT0094')"
           :hasUnread="sticker.hasChildStickerUnread"
@@ -95,7 +95,10 @@ div(
       @click="isCreatingChildSticker = true"
     ) {{ $t('TT0092') }}
   //- Child Sticker List
-  div(v-if="isExpandChildStickerList" class="bg-grey-50 py-4 pl-12 pr-5")
+  div(
+    v-if="isExpandChildStickerListForever || isExpandChildStickerList"
+    class="bg-grey-50 py-4 pl-12 pr-5"
+  )
     //- Empty state
     div(
       v-if="childStickerList.length === 0 && !isCreatingChildSticker"
@@ -161,7 +164,13 @@ const { avatar, avatarType, labelColor, creatorInfoText, createDate } =
 const isHoverSticker = ref(false)
 const isHoverIconMore = ref(false)
 
+const isFilterDirty = computed(() => store.getters['sticker/isFilterDirty'])
+
 const isExpandChildStickerList = ref(false)
+// 有使用篩選且篩選結果包含 Child Sticker 故永遠展開 Child Sticker List
+const isExpandChildStickerListForever = computed(
+  () => isFilterDirty.value && childStickerList.value.length > 0
+)
 const expandChildStickerList = () => {
   if (isFilterDirty.value) {
     return
@@ -177,6 +186,17 @@ const isCreatingChildSticker = ref(false)
 const childStickerList = computed(() => props.sticker.childStickerList || [])
 
 const isShowTagList = ref(false)
+const filterTagList = computed(() => store.getters['sticker/filter'].tagList)
+watch(
+  () => filterTagList.value,
+  () => {
+    isShowTagList.value = filterTagList.value.some((filterTag) =>
+      props.sticker.tagList.some((tag) => tag === filterTag)
+    )
+  },
+  { deep: true }
+)
+
 const refStickerTagList = ref(null)
 
 const isStarred = ref(props.sticker.isStarred)
@@ -187,36 +207,6 @@ const toggleStarred = () => {
     ? store.dispatch('sticker/starSticker', stickerId)
     : store.dispatch('sticker/unstarSticker', stickerId)
 }
-
-const isFilterDirty = computed(() => store.getters['sticker/isFilterDirty'])
-const isFilterTagListDirty = computed(
-  () => store.getters['sticker/isFilterTagListDirty']
-)
-watch(
-  /**
-   * 因為 isFilterDirty 的值會先改變，但 childStickerList 的值得等 API 回傳，
-   * 所以如果監聽 isFilterDirty 是不準確的
-   */
-  () => childStickerList.value,
-  () => {
-    // 有使用篩選且篩選結果包含 Child Sticker 故自動展開 Child Sticker List
-    if (isFilterDirty.value && childStickerList.value.length > 0) {
-      isExpandChildStickerList.value = true
-    }
-    if (isFilterTagListDirty.value && props.sticker.tagList.length > 0) {
-      isShowTagList.value = true
-    }
-  }
-)
-watch(
-  () => isFilterDirty.value,
-  () => {
-    if (!isFilterDirty.value) {
-      isExpandChildStickerList.value = false
-      isShowTagList.value = false
-    }
-  }
-)
 
 const openModalStickerDetail = () => {
   store.dispatch('helper/openModalBehavior', {

@@ -107,23 +107,18 @@ const toggleStarred = () => {
     : store.dispatch('sticker/unstarSticker', stickerId)
 }
 
-const isFilterTagListDirty = computed(
-  () => store.getters['sticker/isFilterTagListDirty']
-)
-
 const { avatar, avatarType, labelColor, creatorInfoText, createDate } =
   useStickerCreatorInfo(props.childSticker)
 
+const filterTagList = computed(() => store.getters['sticker/filter'].tagList)
 watch(
-  () => isFilterTagListDirty.value,
+  () => filterTagList.value,
   () => {
-    if (isFilterTagListDirty.value && props.childSticker.tagList.length > 0) {
-      isShowTagList.value = true
-    }
+    isShowTagList.value = filterTagList.value.some((filterTag) =>
+      props.childSticker.tagList.some((tag) => tag === filterTag)
+    )
   },
-  {
-    immediate: true,
-  }
+  { immediate: true, deep: true }
 )
 
 const openModalStickerDetail = () => {

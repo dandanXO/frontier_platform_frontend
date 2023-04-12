@@ -113,7 +113,6 @@ export default {
         }
       )
     },
-    isFilterTagListDirty: (state) => state.filter.tagList.length !== 0,
   },
   mutations: {
     SET_isStickerDrawerOpen(state, isStickerDrawerOpen) {
