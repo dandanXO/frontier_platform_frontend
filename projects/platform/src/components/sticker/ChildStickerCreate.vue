@@ -10,7 +10,7 @@ div(class="relative w-full overflow-hidden")
       class="text-grey-600 cursor-pointer"
       @click="emit('close')"
     )
-  div(class="min-h-45 pb-2.5")
+  div
     div(class="min-h-25 pt-2.5 pb-2 box-content")
       common-sticker-text-editor(
         ref="refChildStickerTextEditor"

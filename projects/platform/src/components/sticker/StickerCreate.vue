@@ -67,7 +67,7 @@ div(class="relative w-full rounded-md shadow-8 overflow-hidden")
                 p(class="text-body2 text-grey-200") {{ item.text }}
               template(#content)
                 p {{ $t('TT0093') }}
-  div(class="min-h-45 px-5 pb-2.5 bg-grey-100")
+  div(class="px-5 pb-2.5 bg-grey-100")
     div(class="min-h-25 py-4 box-content")
       common-sticker-text-editor(
         ref="refStickerTextEditor"

@@ -120,7 +120,7 @@ div(
     //- Button - Add child sticker
     div(
       v-if="!isFilterDirty && isHoverSticker && isExpandChildStickerList && !isCreatingChildSticker"
-      class="-ml-8 pt-2"
+      class="-ml-8 pt-2 -mb-2"
       @click="isCreatingChildSticker = true"
     )
       f-button(
