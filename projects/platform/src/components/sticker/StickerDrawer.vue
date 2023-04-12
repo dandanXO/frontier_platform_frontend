@@ -79,7 +79,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           @click="isEditingDigitalThreadName = false"
         ) {{ $t('UU0002') }}
     div(
-      class="w-full h-28 px-8 pt-3 pb-2.5 bg-grey-0 shadow-2"
+      class="w-full h-28 px-8 pt-3 pb-2.5 bg-grey-0 shadow-2 relative"
       :key="material.materialId"
     )
       //- Material Info
@@ -258,6 +258,11 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           class="text-caption text-grey-400"
           @click="$store.commit('sticker/RESET_filter')"
         ) {{ $t('UU0040') }}
+      div(
+        class="absolute z-1 bottom-3 right-6 w-6 h-6 hover:bg-grey-100 hover:rounded flex justify-center items-center cursor-pointer"
+        @click="$store.dispatch('user/openModalNewFeatureReminder')"
+      )
+        f-svg-icon(iconName="question" size="16" class="text-grey-600")
     //- Content
     f-scrollbar-container(class="flex-grow")
       div(v-if="isFetchingDigitalThread" class="pt-28.5 flex items-center justify-center")

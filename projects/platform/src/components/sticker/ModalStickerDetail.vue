@@ -112,11 +112,9 @@ modal-behavior(:header="$t('TT0055')")
 <script setup>
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 import useAddFromDisplayList from '@/composables/useAddFromLocationListDisplay'
 
 const store = useStore()
-const { t } = useI18n()
 
 const props = defineProps({
   sticker: {

@@ -46,6 +46,9 @@ export default {
     ModalPreviewInvoice: defineAsyncComponent(() =>
       import('@/components/billings/ModalPreviewInvoice.vue')
     ),
+    ModalNewFeatureReminder: defineAsyncComponent(() =>
+      import('@/components/common/ModalNewFeatureReminder.vue')
+    ),
   },
   props: {
     component: {

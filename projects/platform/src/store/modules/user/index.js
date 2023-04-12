@@ -9,6 +9,7 @@ const state = () => ({
   locale: 'zh-TW',
   organizationList: [],
   isShowAnnouncement: true,
+  isPromotingNewFeature: true,
 })
 
 const getters = {
@@ -16,6 +17,7 @@ const getters = {
   email: (state) => state.email,
   organizationList: (state) => state.organizationList,
   isShowAnnouncement: (state) => state.isShowAnnouncement,
+  isPromotingNewFeature: (state) => state.isPromotingNewFeature,
 }
 
 const mutations = {
@@ -113,6 +115,15 @@ const actions = {
   },
   readAnnouncement() {
     userApi.readAnnouncement()
+  },
+  openModalNewFeatureReminder({ dispatch }) {
+    dispatch(
+      'helper/pushModal',
+      {
+        component: 'modal-new-feature-reminder',
+      },
+      { root: true }
+    )
   },
 }
 

@@ -83,6 +83,12 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex fle
                       p {{ $t('RR0012') }}
       div(class="w-auto h-px bg-grey-100 mx-1.5 my-1.5")
   menu-org-user
+  div(
+    v-if="isPromotingNewFeature"
+    class="absolute bottom-16 left-1/2 transform -translate-x-1/2 bg-grey-0 shadow-2 rounded"
+    @click="store.dispatch('user/openModalNewFeatureReminder')"
+  )
+    f-button(type="secondary" size="md" prependIcon="new") {{ $t('TT0127') }}
 </template>
 
 <script setup>
@@ -98,6 +104,9 @@ import { useRouter } from 'vue-router'
 const { t } = useI18n()
 const store = useStore()
 const router = useRouter()
+const isPromotingNewFeature = computed(
+  () => store.getters['user/isPromotingNewFeature']
+)
 const organization = computed(() => store.getters['organization/organization'])
 const isProcessing = computed(() => store.getters['polling/isProcessing'])
 const planStatus = computed(() => store.getters['polling/planStatus'])

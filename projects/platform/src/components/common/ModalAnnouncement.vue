@@ -7,7 +7,7 @@ div(
   div(class="w-192.5 h-119.5 bg-grey-0 rounded relative flex overflow-hidden" @click.stop)
     f-svg-icon(
       iconName="clear"
-      class="absolute top-7.5 right-7.5 text-grey-600 cursor-pointer"
+      class="absolute top-5 right-5 text-grey-600 cursor-pointer"
       @click="closeAnnouncement"
     )
     div(class="w-70 h-full shrink-0")
