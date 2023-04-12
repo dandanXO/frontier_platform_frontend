@@ -482,10 +482,12 @@ const addNewMenu = async () => {
   }
 
   // step 3
-  // 不管有沒有 custom，當下新增的結果都會在 blockList[0]
-  const selectedMenu = props.dropdownMenuTree.blockList[0].menuList.find(
-    (menu) => menu.title === inputText.value
-  )
+  /**
+   * 從 dropdownMenuTree 中找到該 menu 並呼叫 refContextualMenu 的 clickMenuHandler 將其選取。
+   */
+  const selectedMenu = props.dropdownMenuTree.blockList
+    .flatMap((block) => block.menuList)
+    .find((menu) => menu.title === inputText.value)
   refContextualMenu.value.clickMenuHandler(selectedMenu)
 
   // step 4
