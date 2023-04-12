@@ -9,7 +9,6 @@ f-breadcrumb(
 <script>
 export default {
   name: 'GlobalBreadcrumbList',
-  inheritAttrs: false,
 }
 </script>
 
