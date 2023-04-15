@@ -105,13 +105,13 @@ div
         template(v-else-if="currentTab === TAB.INDICATOR")
           div(class="-mt-10")
             div(
-              v-if="!haveScannedImage || !material.isComplete || material.certificateList.length === 0"
+              v-if="!hasScannedImage || !material.isComplete || material.certificateList.length === 0"
               class="h-15 bg-grey-50 flex items-center mt-6 pl-4 gap-x-8"
             )
               div(class="flex items-center")
                 f-svg-icon(iconName="info_outline" size="20" class="text-grey-600")
                 p(
-                  v-if="!haveScannedImage || !material.isComplete"
+                  v-if="!hasScannedImage || !material.isComplete"
                   class="pl-3 text-grey-600 text-caption leading-1.6"
                 ) {{ $t('EE0126') }}
                 p(
@@ -188,8 +188,8 @@ const {
   attachmentSortedList,
 } = useMaterial(props.material)
 
-const haveScannedImage = computed(() => {
+const hasScannedImage = computed(() => {
   const { faceSideImg, backSideImg } = props.material
-  return faceSideImg.original || backSideImg.original
+  return !!faceSideImg.original || !!backSideImg.original
 })
 </script>

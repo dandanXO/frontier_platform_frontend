@@ -21,7 +21,7 @@ const Material = {
     coverImg: null,
     isDoubleSideMaterial: true,
     sideType: SIDE_TYPE.FACE,
-    isComplete: false,
+    isComplete: false, // isComplete 的規則是，所以必填欄位 + 有封面圖或上傳正或反面圖
     cloneFromMaterialId: null,
     description: null,
     descriptionList: [],

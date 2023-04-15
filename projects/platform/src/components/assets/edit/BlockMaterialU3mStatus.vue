@@ -92,9 +92,9 @@ const { openModalModelEditor } = useModelEditor(material)
 const { UNQUALIFIED, INITIAL, IN_QUEUE, COMPLETED, PROCESSING, UNSUCCESSFUL } =
   U3M_STATUS
 
-const haveScannedImage = computed(() => {
+const hasScannedImage = computed(() => {
   const { faceSideImg, backSideImg } = props.material
-  return faceSideImg.original || backSideImg.original
+  return !!faceSideImg.original || !!backSideImg.original
 })
 
 const haveQuota = computed(() => {
@@ -187,7 +187,7 @@ const label = computed(() => {
 const requirementList = computed(() => [
   {
     text: t('EE0117'),
-    isMeet: haveScannedImage.value,
+    isMeet: hasScannedImage.value,
   },
   {
     text: t('EE0118'),

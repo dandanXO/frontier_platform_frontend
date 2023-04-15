@@ -114,8 +114,14 @@ export default function useAssets() {
     func: (material) => {
       store.dispatch('assets/setMaterial', material)
 
-      if (!material.isComplete) {
-        store.dispatch('helper/openModalConfirm', {
+      const { faceSideImg, backSideImg } = material
+      const hasScannedImage = !!faceSideImg.original || !!backSideImg.original
+
+      // isComplete 的規則是，所以必填欄位 + 有封面圖或上傳正或反面圖
+
+      // 檢查是否缺少必填欄位。
+      if (!material.isComplete && hasScannedImage) {
+        return store.dispatch('helper/openModalConfirm', {
           type: MODAL_CONFIRM_TYPE.INFO,
           header: t('EE0142'),
           contentText: t('EE0143'),
@@ -126,72 +132,75 @@ export default function useAssets() {
           },
           secondaryBtnText: t('UU0127'),
         })
-        return
       }
 
-      switch (material.u3m.status) {
-        case U3M_STATUS.UNQUALIFIED:
-          store.dispatch('helper/openModalConfirm', {
-            type: 0,
-            header: t('EE0124'),
-            contentText: t('EE0125'),
-            secondaryBtnText: t('UU0031'),
-            textBtnText: t('UU0032'),
-            closeAfterTextBtnHandler: false,
-            textBtnHandler: () => {
-              store.dispatch('helper/openModalBehavior', {
-                component: 'modal-how-to-scan',
-                properties: {
-                  header: t('UU0032'),
-                  title: t('EE0109'),
-                  description: t('EE0110'),
-                  primaryBtnText: t('UU0094'),
-                  secondaryBtnText: t('UU0092'),
-                  primaryHandler: () => {
-                    store.dispatch('helper/closeModalBehavior')
-                  },
-                  secondaryHandler: () => {
-                    goToMaterialUpload()
-                    store.dispatch('helper/closeModalBehavior')
-                  },
-                  materialList: toMaterialList(material),
-                },
-              })
-            },
-          })
-          break
-        case U3M_STATUS.PROCESSING:
-        case U3M_STATUS.IN_QUEUE:
-          store.dispatch('helper/openModalConfirm', {
-            type: 0,
-            header: t('RR0162'),
-            contentText: t('EE0072'),
-            primaryBtnText: t('UU0031'),
-          })
-          break
-        default:
-          if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
+      // 檢查是否缺少正面或反面圖。
+      if (!hasScannedImage) {
+        return store.dispatch('helper/openModalConfirm', {
+          type: 0,
+          header: t('EE0124'),
+          contentText: t('EE0125'),
+          secondaryBtnText: t('UU0031'),
+          textBtnText: t('UU0032'),
+          closeAfterTextBtnHandler: false,
+          textBtnHandler: () => {
             store.dispatch('helper/openModalBehavior', {
-              component: 'modal-u3m-preview',
-            })
-          } else {
-            localStorage.setItem('haveReadU3mInstruction', 'y')
-            store.dispatch('helper/openModalBehavior', {
-              component: 'modal-u3m-instruction',
+              component: 'modal-how-to-scan',
               properties: {
-                primaryBtnText: t('UU0095'),
+                header: t('UU0032'),
+                title: t('EE0109'),
+                description: t('EE0110'),
+                primaryBtnText: t('UU0094'),
+                secondaryBtnText: t('UU0092'),
                 primaryHandler: () => {
-                  store.dispatch('helper/replaceModalBehavior', {
-                    component: 'modal-u3m-preview',
-                  })
-                },
-                secondaryBtnText: t('UU0026'),
-                secondaryHandler: () => {
                   store.dispatch('helper/closeModalBehavior')
                 },
+                secondaryHandler: () => {
+                  goToMaterialUpload()
+                  store.dispatch('helper/closeModalBehavior')
+                },
+                materialList: toMaterialList(material),
               },
             })
-          }
+          },
+        })
+      }
+
+      // 檢查是否已進入生產階段，包含處理中或是等待中。
+      if (
+        [U3M_STATUS.PROCESSING, U3M_STATUS.IN_QUEUE].includes(
+          material.u3m.status
+        )
+      ) {
+        return store.dispatch('helper/openModalConfirm', {
+          type: 0,
+          header: t('RR0162'),
+          contentText: t('EE0072'),
+          primaryBtnText: t('UU0031'),
+        })
+      }
+
+      if (localStorage.getItem('haveReadU3mInstruction') === 'y') {
+        store.dispatch('helper/openModalBehavior', {
+          component: 'modal-u3m-preview',
+        })
+      } else {
+        localStorage.setItem('haveReadU3mInstruction', 'y')
+        store.dispatch('helper/openModalBehavior', {
+          component: 'modal-u3m-instruction',
+          properties: {
+            primaryBtnText: t('UU0095'),
+            primaryHandler: () => {
+              store.dispatch('helper/replaceModalBehavior', {
+                component: 'modal-u3m-preview',
+              })
+            },
+            secondaryBtnText: t('UU0026'),
+            secondaryHandler: () => {
+              store.dispatch('helper/closeModalBehavior')
+            },
+          },
+        })
       }
     },
   }
