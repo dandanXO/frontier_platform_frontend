@@ -131,7 +131,7 @@ modal-behavior(:header="$t('TT0067')")
               iconName="internal"
               size="16"
               class="text-grey-300"
-              :tooltip="$t('TT0101')"
+              :tooltip="$t('TT0101', { addFrom: digitalThread.sideOGType === OG_TYPE.ORG ? $t('RR0262') : $t('RR0263') })"
             )
           div(class="flex items-center flex-wrap gap-x-2 gap-y-2")
             f-tag(v-for="tag in digitalThread.tagList" size="sm") {{ tag }}
@@ -145,7 +145,7 @@ modal-behavior(:header="$t('TT0067')")
               iconName="internal"
               size="16"
               class="text-grey-300"
-              :tooltip="$t('TT0101')"
+              :tooltip="$t('TT0101', { addFrom: digitalThread.sideOGType === OG_TYPE.ORG ? $t('RR0262') : $t('RR0263') })"
             )
           div(class="flex flex-col gap-y-2")
             div(
@@ -160,6 +160,7 @@ modal-behavior(:header="$t('TT0067')")
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import useAddFromDisplayList from '@/composables/useAddFromLocationListDisplay'
+import { OG_TYPE } from '@/utils/constants'
 
 const store = useStore()
 
