@@ -31,9 +31,7 @@ div(class="flex h-full")
       :key="$route.params.orgNo"
       class="absolute bottom-0 left-0 z-100"
     )
-    modal-announcement(
-      v-if="(isInInnerApp || isInLobby) && user.isShowAnnouncement"
-    )
+    modal-announcement(v-if="isInInnerApp && user.isShowAnnouncement")
   transition
     sticker-drawer(v-if="isStickerDrawerOpen")
 </template>
@@ -66,7 +64,6 @@ const planStatus = computed(() => store.getters['polling/planStatus'])
 const isInInnerApp = computed(() =>
   route.matched.some((r) => r.name === 'InnerAppRoot')
 )
-const isInLobby = computed(() => route.matched.some((r) => r.name === 'Lobby'))
 const user = computed(() => store.getters['user/user'])
 const isStickerDrawerOpen = computed(
   () => store.getters['sticker/isStickerDrawerOpen']
