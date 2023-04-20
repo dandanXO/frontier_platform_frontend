@@ -1,10 +1,3 @@
-<script setup lang="ts">
-import ModelEditor from './components/ModelEditor.vue'
-import materialResponse from './mock/materialResponse.json'
-
-const u3m = materialResponse.material.u3m
-</script>
-
 <template lang="pug">
 model-editor(
   :dpi="u3m.dpi"
@@ -15,3 +8,10 @@ model-editor(
   :dispImgUrl="u3m.dispImgUrl"
 )
 </template>
+
+<script setup lang="ts">
+import ModelEditor from './components/ModelEditor.vue'
+import materialResponse from './mock/materialResponse.json'
+
+const u3m = materialResponse.material.u3m
+</script>

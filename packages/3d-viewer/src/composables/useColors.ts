@@ -7,6 +7,8 @@ import { debounce } from 'debounce'
 import colorApi from '../apis/color'
 import type { Ref } from 'vue'
 
+THREE.ColorManagement.enabled = true
+
 export interface PantoneItem {
   pantoneId: number
   r: number
@@ -92,6 +94,7 @@ export default function useColors(
     baseTexture.value.repeat.set(originTexture.repeat.x, originTexture.repeat.y)
     baseTexture.value.flipY = originTexture.flipY
     baseTexture.value.minFilter = THREE.LinearMipMapLinearFilter
+    baseTexture.value.encoding = THREE.sRGBEncoding
 
     material.value.map = baseTexture.value
     material.value.needsUpdate = true

@@ -8,8 +8,9 @@ import useColors from './useColors'
 import type { Ref } from 'vue'
 import type { U3M } from './useU3M'
 
-const DISPLACEMENT_SCALE_BASE = 0.005
+THREE.ColorManagement.enabled = true
 
+const DISPLACEMENT_SCALE_BASE = 0.005
 const pica = Pica()
 
 /**
@@ -211,6 +212,9 @@ export default function useModels(
     textureRatio.value = width / height
     baseTexture.value.anisotropy = 16
 
+    baseTexture.value.encoding = THREE.sRGBEncoding
+    moireEffectPreventedBaseTexture.value.encoding = THREE.sRGBEncoding
+
     setUpTextures([
       baseTexture.value,
       normalTexture.value,
@@ -238,7 +242,7 @@ export default function useModels(
         ? moireEffectPreventedDisplacementTexture.value
         : displacementTexture.value,
       roughness: u3m.value.roughness,
-      specularColor: new THREE.Color(255, 255, 255),
+      specularColor: new THREE.Color(1, 1, 1),
       specularIntensity: u3m.value.specular,
       displacementScale: DISPLACEMENT_SCALE_BASE / repeatTimesX.value,
       transparent: true,
@@ -284,11 +288,12 @@ export default function useModels(
 
         // 我們透過 blender 先將希望覆蓋 u3m 圖層的 material 命名為 `Mesh_` prefix
         if (mesh.name.includes('Mesh_')) mesh.material = material.value
-        if (mesh.name.includes('Ball_'))
+        if (mesh.name.includes('Ball_')) {
           mesh.material = new THREE.MeshPhongMaterial({
             color: 0xffffff,
             flatShading: true,
           })
+        }
       })
       scene.value.add(model)
     })

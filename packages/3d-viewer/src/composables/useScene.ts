@@ -3,6 +3,8 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { downloadDataURLFile } from '../utils/fileOperator'
 
+THREE.ColorManagement.enabled = true
+
 export default function useScene(baseUrl: string) {
   const container = ref<HTMLElement>()
   const canvas = ref<HTMLCanvasElement>()
@@ -42,6 +44,7 @@ export default function useScene(baseUrl: string) {
     groundTexture.wrapT = THREE.RepeatWrapping
     groundTexture.repeat.set(25, 25)
     groundTexture.anisotropy = 36
+    groundTexture.encoding = THREE.sRGBEncoding
 
     const groundMaterial = new THREE.MeshPhongMaterial({
       map: groundTexture,
@@ -68,11 +71,11 @@ export default function useScene(baseUrl: string) {
     )
     camera.position.set(0, 1, 2)
 
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.3)
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6)
     hemiLight.position.set(0, 20, 0)
     scene.value.add(hemiLight)
 
-    const spotLight = new THREE.SpotLight(0xffffff, 0.5)
+    const spotLight = new THREE.SpotLight(0xffffff, 1)
     spotLight.position.set(0, 5, 0)
     spotLight.angle = Math.PI / 9
     spotLight.penumbra = 0.1
