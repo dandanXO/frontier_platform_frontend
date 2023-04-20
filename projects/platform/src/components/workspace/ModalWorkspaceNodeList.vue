@@ -428,8 +428,7 @@ const infiniteScroll = () => {
 
   const currentPage = queryParams.targetPage
   if (currentPage !== totalPage.value) {
-    queryParams.targetPage = Math.min(currentPage + 1, totalPage.value)
-    getWorkspaceForModal()
+    getWorkspaceForModal(Math.min(currentPage + 1, totalPage.value), false)
   }
 }
 
