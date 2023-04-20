@@ -3,7 +3,7 @@ f-popper(:placement="placement" :offset="[0, 4]" @click.stop)
   template(#trigger="{ isExpand }")
     div(
       class="p-[5px] flex rounded-md border border-transparent hover:bg-grey-50 hover:shadow-16 hover:ease-in hover:duration-100"
-      :class="{ 'bg-grey-50 border-primary-300 ease-out duration-200': isExpand, 'pr-[7px]': itemList.length !== 1, 'flex-row-reverse': direction === 'rtl' }"
+      :class="{ 'bg-grey-50 !border-primary-300 ease-out duration-200 shadow-16': isExpand, 'pr-[7px]': itemList.length !== 1, 'flex-row-reverse': direction === 'rtl' }"
     )
       f-avatar(
         v-for="(item, index) in itemList.slice(0, 5)"

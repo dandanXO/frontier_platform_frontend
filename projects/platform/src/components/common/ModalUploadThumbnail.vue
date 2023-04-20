@@ -10,7 +10,7 @@ modal-behavior(
       :errorCode="errorCode"
       :fileSizeMaxLimit="fileSizeMaxLimit"
     )
-  div(class="w-86 h-100 flex items-center")
+  div(class="w-86 h-100 flex justify-center items-center")
     div(v-if="!isUploading && !haveUploadedImage")
       f-button(size="md" class="mb-6" @click="uploadImg" prependIcon="upload") {{ $t('BB0035') }}
       div(class="grid gap-0.5 text-caption leading-1.6 text-grey-600")

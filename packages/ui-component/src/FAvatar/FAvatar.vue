@@ -2,7 +2,7 @@
 div(:class="classSize.avatar" class="relative")
   div(
     class="bg-grey-0 rounded-full overflow-hidden"
-    :class="[classSize.avatar, { 'border border-grey-0': hasBorder && !!labelColor }]"
+    :class="[classSize.avatar, { 'border border-grey-0': hasBorder }]"
   )
     img(class="w-full h-full" :src="!!imageUrl ? imageUrl : defaultImage")
   div(

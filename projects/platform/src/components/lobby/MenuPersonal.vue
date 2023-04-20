@@ -2,7 +2,7 @@
 f-popper(placement="bottom-end")
   template(#trigger="{ isExpand }")
     div(class="flex items-center cursor-pointer")
-      img(src="@/assets/images/default_user.png" class="rounded-full w-8 h-8 mr-1")
+      f-avatar(size="md" class="mr-1")
       f-svg-icon(
         iconName="keyboard_arrow_down"
         size="24"
