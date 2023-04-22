@@ -1,12 +1,6 @@
 <template lang="pug">
 div(class="flex items-center h-9.5")
-  sticker-create-creator-info(
-    :avatar="avatar"
-    :avatarType="avatarType"
-    :labelColor="labelColor"
-    :primaryInfoText="primaryInfoText"
-    :secondaryInfoText="secondaryInfoText"
-  )
+  sticker-create-creator-info(:addFrom="props.addFrom" :addTo="props.addTo")
   div(
     class="flex-shrink-0 w-7 h-7 bg-grey-0 border border-grey-150 flex items-center justify-center rounded mr-1.5"
     @click="emit('mentionTrigger')"
@@ -28,9 +22,7 @@ div(class="flex items-center h-9.5")
 <script setup lang="ts">
 import { computed } from 'vue'
 import { STICKER_ADD_TO } from '@/utils/constants'
-import { useStore } from 'vuex'
 import StickerCreateCreatorInfo from '@/components/sticker/StickerCreateCreatorInfo.vue'
-import useStickerEditorCreatorInfo from '@/composables/useStickerEditorCreatorInfo'
 
 const props = defineProps<{
   addButtonDisabled: boolean
@@ -46,15 +38,7 @@ const emit = defineEmits<{
   (e: 'update:tagList', v: any): void
 }>()
 
-const store = useStore()
-
-const organization = computed(() => store.getters['organization/organization'])
-const orgUser = computed(() => store.getters['organization/orgUser/orgUser'])
-const addFrom = computed(() => props.addFrom)
 const addTo = computed(() => props.addTo)
-
-const { avatar, avatarType, labelColor, primaryInfoText, secondaryInfoText } =
-  useStickerEditorCreatorInfo(organization, orgUser, addFrom, addTo)
 </script>
 
 <style scoped></style>

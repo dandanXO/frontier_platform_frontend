@@ -11,7 +11,7 @@ const useStickerLocationList = (
   const drawerOpenFromLocationList = computed(() => {
     let resultList = unref(locationList)
 
-    // 在 public library 的 material node location 為 null，為了維持資料一致性使用空陣列
+    // 在 public library 第一層 的 material node location 後端回應 null，為了維持資料一致性使用空陣列
     if (!resultList) return []
 
     // 若路徑不是 embed, received-share，material node location 或是 material detail breadcrumb 不會包含 location type

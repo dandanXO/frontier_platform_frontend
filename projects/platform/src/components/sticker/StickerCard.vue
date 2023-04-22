@@ -77,13 +77,7 @@ div(
       class="flex items-center pt-4"
       @click.stop
     )
-      sticker-creator-info(
-        :avatar="avatar"
-        :avatarType="avatarType"
-        :labelColor="labelColor"
-        :creatorInfoText="creatorInfoText"
-        :createDate="createDate"
-      )
+      sticker-creator-info(:sticker="sticker")
     //- Button - Add child sticker
     f-button(
       v-if="!isFilterDirty && !refStickerTagList?.isEditingTagList && isHoverSticker && !isExpandChildStickerList"
@@ -138,7 +132,6 @@ div(
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
-import useStickerCreatorInfo from '@/composables/useStickerCreatorInfo'
 import StickerLabelAddTo from '@/components/sticker/StickerLabelAddTo.vue'
 import CommonStickerTextViewer from '@/components/sticker/stickerTextEditor/CommonStickerTextViewer.vue'
 import StickerHeaderIcon from '@/components/sticker/StickerHeaderIcon.vue'
@@ -158,9 +151,6 @@ const props = defineProps({
 })
 
 const digitalThread = computed(() => store.getters['sticker/digitalThread'])
-const { avatar, avatarType, labelColor, creatorInfoText, createDate } =
-  useStickerCreatorInfo(props.sticker)
-
 const isHoverSticker = ref(false)
 const isHoverIconMore = ref(false)
 

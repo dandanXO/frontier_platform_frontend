@@ -1,12 +1,19 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["env.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.vue"],
+  "include": [
+    "env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/**/*.vue",
+    "vitest.config.ts"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "allowJs": true
+    "allowJs": true,
+    "types": ["vitest/globals"]
   },
   "vueCompilerOptions": {
     "plugins": ["@volar/vue-language-plugin-pug"]

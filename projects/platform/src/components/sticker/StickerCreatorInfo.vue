@@ -19,13 +19,14 @@ span(v-if="createDate" class="flex-shrink-0 text-caption text-grey-300 font-norm
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  avatar: string
-  avatarType: string
-  labelColor: string
-  creatorInfoText: string
-  createDate: number
+import useStickerCreatorInfo from '@/composables/useStickerCreatorInfo'
+
+const props = defineProps<{
+  sticker: object
 }>()
+
+const { avatar, avatarType, labelColor, creatorInfoText, createDate } =
+  useStickerCreatorInfo(props.sticker)
 </script>
 
 <style scoped></style>

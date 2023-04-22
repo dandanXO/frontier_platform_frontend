@@ -9,7 +9,9 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path ../../.gitignore",
-    "format": "prettier --write '**/*.{js,ts,vue,json}' --ignore-path ../../.gitignore"
+    "format": "prettier --write '**/*.{js,ts,vue,json}' --ignore-path ../../.gitignore",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@vueuse/core": "^9.11.0",

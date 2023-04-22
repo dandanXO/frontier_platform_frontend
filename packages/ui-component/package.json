@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
     "build": "NODE_OPTIONS=--openssl-legacy-provider build-storybook",
     "deploy": "npm run build && bash ./deploy.sh",

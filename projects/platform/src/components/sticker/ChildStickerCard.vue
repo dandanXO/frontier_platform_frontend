@@ -66,18 +66,11 @@ div(
     class="flex items-center pt-4"
     @click.stop
   )
-    sticker-creator-info(
-      :avatar="avatar"
-      :avatarType="avatarType"
-      :labelColor="labelColor"
-      :creatorInfoText="creatorInfoText"
-      :createDate="createDate"
-    )
+    sticker-creator-info(:sticker="childSticker")
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import useStickerCreatorInfo from '@/composables/useStickerCreatorInfo'
 import StickerCreatorInfo from '@/components/sticker/StickerCreatorInfo.vue'
 import CommonStickerTextViewer from '@/components/sticker/stickerTextEditor/CommonStickerTextViewer.vue'
 import StickerTagList from '@/components/sticker/StickerTagList.vue'
@@ -106,9 +99,6 @@ const toggleStarred = () => {
     ? store.dispatch('sticker/starSticker', stickerId)
     : store.dispatch('sticker/unstarSticker', stickerId)
 }
-
-const { avatar, avatarType, labelColor, creatorInfoText, createDate } =
-  useStickerCreatorInfo(props.childSticker)
 
 const filterTagList = computed(() => store.getters['sticker/filter'].tagList)
 watch(

@@ -25,13 +25,24 @@ div(class="flex-grow flex-shrink min-w-0 pr-3.5 flex items-center gap-x-3")
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  avatar: string
-  avatarType: string
-  labelColor: string
-  primaryInfoText: string
-  secondaryInfoText: string
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import useStickerEditorCreatorInfo from '@/composables/useStickerEditorCreatorInfo'
+
+const props = defineProps<{
+  addFrom: object
+  addTo: number
 }>()
+
+const store = useStore()
+
+const organization = computed(() => store.getters['organization/organization'])
+const orgUser = computed(() => store.getters['organization/orgUser/orgUser'])
+const addFrom = computed(() => props.addFrom)
+const addTo = computed(() => props.addTo)
+
+const { avatar, avatarType, labelColor, primaryInfoText, secondaryInfoText } =
+  useStickerEditorCreatorInfo(organization, orgUser, addFrom, addTo)
 </script>
 
 <style scoped></style>
