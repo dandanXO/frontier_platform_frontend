@@ -161,11 +161,15 @@ const searchDirty = computed(() => {
 })
 
 const goTo = () => {
+  /**
+   *  Since helper/search/filter is watched in the SearchBox.vue
+   *  and when its watcher is triggered, it emits a search event,
+   *  Also helper/search/reset includes reset filer,
+   *  This means it will call search event
+   */
   store.dispatch('helper/search/reset', {
     sort: props.optionSort.base[0].value,
   })
-  store.dispatch('helper/search/setPagination', { currentPage: 1 })
-  search()
 }
 
 const innerSelectedItemList = computed({
