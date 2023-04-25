@@ -16,6 +16,7 @@ const defaultDigitalThreadBase = () => ({
   materialCoverImg: '',
   materialOwnerUnitName: '', // 布片擁有者的單位名稱，檢視角度為布片擁有者時為:布片擁有者的組織(+團隊)名稱，非布片擁有者為:布片擁有者的組織名稱
   materialOwnerUnitLogo: '', // 布片擁有者的單位Logo
+  materialOwnerUnitLabelColor: '',
   hasMaterialDeleted: false,
   hasMaterialNoAccess: false,
   addFromLocationType: null, // 從哪個功能新增這個Digital Thread,

@@ -92,21 +92,30 @@ const orgItemList = computed(() => {
   const {
     materialOwnerUnitName,
     materialOwnerUnitLogo,
+    materialOwnerUnitLabelColor,
     creatorUnitName,
     creatorUnitLogo,
+    creatorUnitLabelColor,
   } = props.digitalThread
 
   const itemList = [
     {
       name: materialOwnerUnitName,
       imageUrl: materialOwnerUnitLogo,
+      labelColor: materialOwnerUnitLabelColor,
     },
   ]
 
-  if (materialOwnerUnitName !== creatorUnitName) {
+  if (
+    (!!materialOwnerUnitLabelColor &&
+      !!creatorUnitLabelColor &&
+      materialOwnerUnitLabelColor !== creatorUnitLabelColor) ||
+    materialOwnerUnitName !== creatorUnitName
+  ) {
     itemList.push({
       name: creatorUnitName,
       imageUrl: creatorUnitLogo,
+      labelColor: creatorUnitLabelColor,
     })
   }
 
