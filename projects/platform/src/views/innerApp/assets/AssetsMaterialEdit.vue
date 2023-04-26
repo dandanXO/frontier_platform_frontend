@@ -40,7 +40,7 @@ import scrollTo from '@/utils/scrollTo'
 const { t } = useI18n()
 const store = useStore()
 const route = useRoute()
-const { parsePath, goToAssets } = useNavigation()
+const { parsePath, goToAssetMaterialDetail } = useNavigation()
 const material = computed(() => store.getters['assets/material'])
 const { invalidation, validate, isInvalid } = useMaterialValidation(material)
 
@@ -70,7 +70,7 @@ const updateMaterial = async () => {
   await store.dispatch('assets/updateMaterial')
   store.dispatch('helper/closeModalLoading')
   isConfirmedToLeave.value = true
-  goToAssets()
+  goToAssetMaterialDetail(material.value)
 }
 
 const cancel = async () => {
@@ -81,7 +81,7 @@ const cancel = async () => {
     primaryBtnText: t('UU0001'),
     primaryBtnHandler: () => {
       isConfirmedToLeave.value = true
-      goToAssets()
+      goToAssetMaterialDetail(material.value)
     },
     secondaryBtnText: t('UU0002'),
   })
@@ -111,9 +111,4 @@ await store.dispatch('assets/getMaterialOptions')
 await store.dispatch('assets/getMaterial', {
   materialId: route.params.materialId,
 })
-// onMounted(() => {
-//   store.dispatch('helper/openModal', {
-//     component: 'modal-u3m-recut',
-//   })
-// })
 </script>
