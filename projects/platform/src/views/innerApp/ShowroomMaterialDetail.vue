@@ -59,7 +59,7 @@ const breadcrumbList = computed(() => {
       path: parsePath('/:orgNo/public-library'),
     },
     {
-      name: showroom.value.title,
+      name: showroom.value.subtitle,
       path: parsePath('/:orgNo/showroom/:showroomId'),
     },
     ...store.getters['showroom/materialBreadcrumbList'].map(

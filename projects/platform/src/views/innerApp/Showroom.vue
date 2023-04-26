@@ -110,7 +110,7 @@ div(class="w-full h-full relative")
           h6(
             class="text-h6 font-bold"
             :class="[showroom.color === BANNER_TEXT_COLOR.WHITE ? 'text-grey-0' : 'text-grey-900']"
-          ) {{ $t('II0039') }} | {{ showroom.title }}
+          ) {{ $t('II0039') }} | {{ showroom.subtitle }}
           component(:is="showroomDescriptionComponent")
     template(#default="{ goTo }")
       div(
@@ -211,7 +211,7 @@ const pagination = computed(() => store.getters['helper/search/pagination'])
 const collection = computed(() => store.getters['showroom/collection'])
 const breadcrumbList = computed(() =>
   store.getters['showroom/collectionBreadcrumbList']({
-    name: showroom.value.title,
+    name: showroom.value.subtitle,
     nodeKey: null,
   })
 )
