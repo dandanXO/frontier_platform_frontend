@@ -7,8 +7,8 @@ carousel(
   :wrapAround="false"
   class="-mx-2.5 relative group/addons"
   v-model="currentSlide"
-  :mouseDrag="false"
-  :touchDrag="false"
+  :mouseDrag="showroomList.length > 2"
+  :touchDrag="showroomList.length > 2"
 )
   slide(
     v-for="showroom in showroomList"
@@ -51,7 +51,7 @@ carousel(
             )
           div(
             v-if="currentPage !== 1"
-            class="invisible group-hover/addons:visible absolute top-1/2 left-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
+            class="invisible group-hover/addons:visible transform -translate-y-1/2 absolute top-40 left-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
             @click="prevSlide"
           )
             f-svg-icon(
@@ -61,7 +61,7 @@ carousel(
             )
           div(
             v-if="currentPage !== totalPage"
-            class="invisible group-hover/addons:visible absolute top-1/2 right-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
+            class="invisible group-hover/addons:visible transform -translate-y-1/2 absolute top-40 right-0 bg-grey-0 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer shadow-4"
             @click="nextSlide"
           )
             f-svg-icon(
