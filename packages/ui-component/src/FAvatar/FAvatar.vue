@@ -1,7 +1,7 @@
 <template lang="pug">
 div(:class="classSize.avatar" class="relative")
   div(
-    class="bg-grey-0 rounded-full overflow-hidden"
+    class="bg-grey-0 rounded-full overflow-hidden box-content"
     :class="[classSize.avatar, { 'border border-grey-0': hasBorder }]"
   )
     img(class="w-full h-full" :src="!!imageUrl ? imageUrl : defaultImage")

@@ -14,12 +14,12 @@ f-popper(:placement="placement" :offset="[0, 4]" @click.stop)
         :class="{ '-ml-0.5 transform translate-x-0.5': itemList.length !== 1 }"
         :style="{ zIndex: itemList.length - index }"
       )
-      div(
-        v-if="itemList.length > 5"
-        class="bg-grey-150 border border-grey-0 rounded-full overflow-hidden flex items-center justify-center -ml-0.5"
-        :class="classSize"
-      )
-        span(class="text-caption2 text-grey-600") +{{ itemList.length > 104 ? 99 : itemList.length - 5 }}
+      div(v-if="itemList.length > 5" :class="classSize" class="-ml-0.5")
+        div(
+          :class="classSize"
+          class="box-content bg-grey-150 border border-grey-0 rounded-full overflow-hidden flex items-center justify-center"
+        )
+          span(class="text-caption2 text-grey-600") +{{ itemList.length > 104 ? 99 : itemList.length - 5 }}
   template(#content)
     f-contextual-menu(:menuTree="menuTree")
 </template>
