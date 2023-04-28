@@ -31,7 +31,7 @@ const getters = {
   countryMenuTree: (state) => {
     return {
       searchEnable: true,
-      width: 'w-85',
+      width: 'w-100',
       scrollAreaMaxHeight: 'max-h-72',
       blockList: [
         {

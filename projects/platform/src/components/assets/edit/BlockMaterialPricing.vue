@@ -12,6 +12,7 @@ f-expansion-panel(class="border-b border-grey-250")
   template(#content)
     div(class="px-15 pt-5 mb-15 grid gap-y-7.5")
       f-select-dropdown(
+        class="w-100"
         v-model:selectValue="material.publicPrice.countryCode"
         :dropdownMenuTree="countryMenuTree"
         :label="$t('RR0042')"
@@ -65,6 +66,7 @@ f-expansion-panel(class="border-b border-grey-250")
       div(class="-mx-15 bg-grey-50 px-15 py-12.5 grid gap-y-7.5")
         h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
         f-select-dropdown(
+          class="w-100"
           v-model:selectValue="material.privatePrice.countryCode"
           :dropdownMenuTree="countryMenuTree"
           :label="$t('RR0042')"

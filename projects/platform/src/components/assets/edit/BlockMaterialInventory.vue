@@ -13,6 +13,7 @@ f-expansion-panel(class="border-b border-grey-250")
     div(class="bg-grey-50 px-15 py-12.5 mb-15 grid gap-y-7.5")
       h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
       f-input-text(
+        class="w-100"
         v-model:textValue="material.materialSeq"
         :label="$t('RR0030')"
         :placeholder="$t('DD0022')"

@@ -64,7 +64,7 @@ const { parsePath, goToMaterialUpload, goToAssets } = useNavigation()
 const tempMaterialId = uuidv4()
 
 const sideTypeMenuTree = computed(() => ({
-  width: 'w-50',
+  width: 'w-25',
   blockList: [
     {
       menuList: [
@@ -82,7 +82,7 @@ const sideTypeMenuTree = computed(() => ({
 }))
 
 const singleOrDoubleMenuTree = computed(() => ({
-  width: 'w-25',
+  width: 'w-50',
   blockList: [
     {
       menuList: [

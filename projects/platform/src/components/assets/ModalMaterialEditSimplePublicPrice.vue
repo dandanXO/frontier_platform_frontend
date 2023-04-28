@@ -6,8 +6,9 @@ modal-behavior(
   @click:primary="updateMaterialSimplePublicPrice"
   @click:secondary="$store.dispatch('helper/closeModal')"
 )
-  div(class="min-w-200 grid gap-y-7.5")
+  div(class="min-w-110 grid gap-y-7.5")
     f-select-dropdown(
+      class="w-100"
       v-model:selectValue="material.publicPrice.countryCode"
       :dropdownMenuTree="countryMenuTree"
       :label="$t('RR0042')"
