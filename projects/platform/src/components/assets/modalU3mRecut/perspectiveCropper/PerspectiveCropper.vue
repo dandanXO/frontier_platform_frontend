@@ -106,7 +106,7 @@ import InfoDivider from '@/components/assets/modalU3mRecut/perspectiveCropper/In
 import LabelButton from '@/components/assets/modalU3mRecut/perspectiveCropper/LabelButton.vue'
 import InfoName from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoName.vue'
 import NotifyBar from '@/components/assets/modalU3mRecut/perspectiveCropper/NotifyBar.vue'
-import { CROPPER_GRID_COLORS, MODAL_CONFIRM_TYPE } from '@/utils/constants'
+import { CROPPER_GRID_COLORS, NOTIFY_TYPE } from '@/utils/constants'
 import { toDP2 } from '@/utils/cropper'
 import { getDimension, preRender } from '@/utils/perspectiveCropper'
 import tempFilenameGenerator from '@/utils/temp-filename-generator'
@@ -164,7 +164,7 @@ const sourceDimension = computed(() => {
 const errorHandler = (err: Error) => {
   console.error(err)
   store.dispatch('helper/openModalConfirm', {
-    type: MODAL_CONFIRM_TYPE.ALERT,
+    type: NOTIFY_TYPE.ALERT,
     header: t('RR0107'),
     contentText: t('RR0108'),
     primaryBtnText: t('UU0031'),

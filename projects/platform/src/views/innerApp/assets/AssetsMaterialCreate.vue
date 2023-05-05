@@ -51,7 +51,7 @@ import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { v4 as uuidv4 } from 'uuid'
-import { SIDE_TYPE } from '@/utils/constants'
+import { SIDE_TYPE, NOTIFY_TYPE } from '@/utils/constants'
 import { computed, ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import scrollTo from '@/utils/scrollTo'
@@ -152,7 +152,7 @@ const createMaterial = async () => {
 
 const cancel = async () => {
   store.dispatch('helper/pushModalConfirm', {
-    type: 1,
+    type: NOTIFY_TYPE.WARNING,
     header: t('DD0033'),
     contentText: t('DD0034'),
     primaryBtnText: t('UU0001'),
@@ -176,7 +176,7 @@ onBeforeRouteLeave(async () => {
   }
   const result = await new Promise((resolve) => {
     store.dispatch('helper/openModalConfirm', {
-      type: 1,
+      type: NOTIFY_TYPE.WARNING,
       header: t('EE0045'),
       contentText: t('EE0046'),
       primaryBtnText: t('UU0001'),

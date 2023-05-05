@@ -44,6 +44,7 @@ import MaterialMergeRowDetail from '@/components/assets/merge/MaterialMergeRowDe
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
+import { useNotifyStore } from '@/stores/notify'
 
 export default {
   name: 'ModalMaterialMergePreview',
@@ -59,6 +60,7 @@ export default {
   setup(props) {
     const { t } = useI18n()
     const store = useStore()
+    const notify = useNotifyStore()
 
     const primaryHandler = async () => {
       const apiInput = nonEmptyRowList.value.map((row) => {
@@ -73,7 +75,7 @@ export default {
       store.dispatch('helper/closeModalLoading')
       store.dispatch('helper/clearModalPipeline')
       store.dispatch('helper/reloadInnerApp')
-      store.dispatch('helper/pushFlashMessage', t('EE0077'))
+      notify.showNotifySnackbar({ messageText: t('EE0077') })
     }
 
     const getBgImg = (target, blockType) => {

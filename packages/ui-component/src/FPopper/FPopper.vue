@@ -93,7 +93,7 @@ export default {
 <script setup>
 import { ref, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core'
-import { THEME } from '../constants.js'
+import { THEME } from '../constants'
 // https://popper.js.org/docs/v2/
 
 const emit = defineEmits(['expand', 'collapse'])

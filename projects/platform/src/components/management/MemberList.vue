@@ -67,7 +67,7 @@ f-table(
 <script>
 import { computed, ref, reactive } from 'vue'
 import { useStore } from 'vuex'
-import { ROLE_ID } from '@/utils/constants'
+import { ROLE_ID, NOTIFY_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 
 export default {
@@ -152,7 +152,7 @@ export default {
 
     const confirmToRemoveMember = (member) => {
       store.dispatch('helper/openModalConfirm', {
-        type: 1,
+        type: NOTIFY_TYPE.WARNING,
         header: t('BB0058'),
         contentText: t('BB0062', { name: member.displayName }),
         primaryBtnText: t('UU0001'),
@@ -171,7 +171,7 @@ export default {
 
     const confirmToCancelInvitation = (member) => {
       store.dispatch('helper/openModalConfirm', {
-        type: 1,
+        type: NOTIFY_TYPE.WARNING,
         header: t('BB0057'),
         contentText: t('BB0061'),
         primaryBtnText: t('UU0001'),

@@ -46,6 +46,7 @@ modal-behavior(
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import { SOCIAL_MEDIA_TYPE } from '@/utils/constants'
 import { shareViaCopyLink, shareViaSocialMedia } from '@/utils/share.js'
 
@@ -62,6 +63,7 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 
 const shareToSocialMedia = async (type) => {
   const sharingKey = await store.dispatch('publicLibrary/generateSocialMedia', {
@@ -82,7 +84,7 @@ const generateCopyLink = async () => {
   })
   shareViaCopyLink(sharingKey)
   store.dispatch('helper/closeModalLoading')
-  store.dispatch('helper/pushFlashMessage', t('RR0149'))
+  notify.showNotifySnackbar({ messageText: t('RR0149') })
 }
 
 const openModalPublicLibraryShareAssigned = () => {

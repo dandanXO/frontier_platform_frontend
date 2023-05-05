@@ -32,7 +32,7 @@ div(class="grid gap-x-14 grid-cols-2")
         p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0071') }}: {{ material.aiTagList.join(',') }}
         p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0028') }}: {{ material.privateTagList.join(',') }}
     div
-      div(class="flex justify-between items-end pb-2 border-grey-250 border-b mb-3")
+      div(class="flex justify-between items-end pb-2 border-grey-250 border-b")
         div(
           class="text-body1 font-bold"
           :class="[made2flowSubscribed ? 'text-grey-900' : 'text-grey-250']"
@@ -43,7 +43,7 @@ div(class="grid gap-x-14 grid-cols-2")
           class="text-grey-900 cursor-pointer"
           @click="openModalIndicatorMethodology"
         )
-      div(v-if="made2flowSubscribed" class="flex items-center gap-x-1")
+      div(v-if="made2flowSubscribed" class="flex items-center gap-x-1 pt-3")
         div(
           v-for="property in carbonEmissionInfo"
           class="min-w-19.5 flex items-center gap-x-1"
@@ -57,17 +57,15 @@ div(class="grid gap-x-14 grid-cols-2")
           hr(v-else class="w-4 border-grey-250")
       div(
         v-else
-        class="flex items-center bg-no-repeat"
+        class="bg-no-repeat"
         :style="{ backgroundImage: `url(${listViewMask})` }"
       )
-        f-svg-icon(iconName="info_outline" size="20" class="text-grey-600 mr-3")
-        p(class="text-caption leading-1.6")
-          span(class="text-grey-600 mr-6") {{ $t('VV0048') }}
-          span(
-            class="inline-flex items-center text-cyan-400 text-right cursor-pointer"
-            @click="viewTheProgram"
-          ) {{ $t('UU0116') }}
-            f-svg-icon(iconName="arrow_forward" size="16" class="ml-1")
+        f-infobar(
+          :messageText="$t('VV0048')"
+          :action="{ text: $t('UU0116'), handler: viewTheProgram }"
+          :hasContainer="false"
+          :display="DISPLAY.BLOCK"
+        )
 </template>
 
 <script setup>
@@ -76,7 +74,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import useMaterial from '@/composables/useMaterial'
 import listViewMask from '@/assets/images/list_view_mask.png'
-import { VALUE_ADDED_SERVICE_ID } from '@/utils/constants'
+import { VALUE_ADDED_SERVICE_ID, DISPLAY } from '@/utils/constants'
 
 const props = defineProps({
   material: {

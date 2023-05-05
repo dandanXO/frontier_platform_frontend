@@ -33,6 +33,7 @@ import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import AttachmentItem from '@/components/common/material/attachment/AttachmentItem.vue'
 import useMaterialEdit from '@/composables/useMaterialEdit'
+import { NOTIFY_TYPE } from '@/utils/constants'
 
 const props = defineProps({
   tempMaterialId: {
@@ -74,7 +75,7 @@ const openModalUpload = () => {
 
 const handleRemove = (attachment) => {
   store.dispatch('helper/openModalConfirm', {
-    type: 0,
+    type: NOTIFY_TYPE.INFO,
     header: t('DD0068'),
     contentText: t('DD0069'),
     primaryBtnText: t('UU0001'),

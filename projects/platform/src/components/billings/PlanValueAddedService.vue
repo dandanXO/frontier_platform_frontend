@@ -92,18 +92,16 @@ div(class="mt-11 mb-16.5")
               class="h-full w-129"
               :style="{ backgroundImage: `url(${Made2FlowData})` }"
             )
-          div(
-            class="mb-3.5 bg-grey-50 rounded flex items-center text-grey-600 h-10 px-4"
-            :class="{ 'text-grey-250': service.planStatus.INVALID }"
+          f-infobar(
+            class="mb-3.5"
+            :messageText="$t('M2F039', { number: service.unFilledCertificationQty })"
           )
-            f-svg-icon(iconName="info_outline" size="16")
-            i18n-t(keypath="M2F039" scope="global" tag="div" class="text-caption pl-3")
-              template(#number) {{ service.unFilledCertificationQty }}
-          div(v-if="!service.planStatus.INVALID" class="flex justify-end mb-5")
+
           p(
             class="text-cyan-400 text-right cursor-pointer"
             @click="goTo(service.id, MADE2FLOW_TAG_LIST.APPOINTMENT.id)"
           ) {{ $t('UU0078') }}
+          div(v-if="!service.planStatus.INVALID" class="flex justify-end mb-5")
 </template>
 
 <script setup>

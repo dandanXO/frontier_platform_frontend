@@ -19,10 +19,7 @@ div(class="pt-16 xl:pt-17.5")
               )
         f-tooltip(class="pt-4")
           template(#trigger)
-            div(
-              class="flex items-center"
-              @click="copyText(organization.orgNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))"
-            )
+            div(class="flex items-center" @click="copyOrgId")
               p(class="text-caption text-grey-900 pr-1.5 cursor-pointer") ID: {{ organization.orgNo }}
               f-svg-icon(
                 iconName="content_copy"
@@ -106,9 +103,11 @@ import InputLabelColor from '@/components/management/InputLabelColor.vue'
 import copyText from '@/utils/copy-text'
 import { useRouter } from 'vue-router'
 import usePlan from '@/composables/usePlan.js'
-import { FUNC_ID } from '@/utils/constants'
+import { FUNC_ID, NOTIFY_TYPE } from '@/utils/constants'
+import { useNotifyStore } from '@/stores/notify'
 
 const store = useStore()
+const notify = useNotifyStore()
 const { t } = useI18n()
 const router = useRouter()
 const { openModalPaymentFail } = usePlan()
@@ -175,7 +174,7 @@ const openModalTypeTextToConfirm = () => {
       slotValue: organization.value.orgName,
       confirmHandler: () => {
         store.dispatch('helper/openModalConfirm', {
-          type: 1,
+          type: NOTIFY_TYPE.WARNING,
           header: t('BB0029'),
           contentText: t('BB0030'),
           primaryBtnText: t('UU0001'),
@@ -199,7 +198,7 @@ const openModalTypeTextToConfirm = () => {
 
             if (checkoutItemList.length === 0) {
               ;(await deleteOrg()) &&
-                store.dispatch('helper/pushFlashMessage', t('OO0101'))
+                notify.showNotifySnackbar({ messageText: t('OO0101') })
               return
             }
 
@@ -211,7 +210,7 @@ const openModalTypeTextToConfirm = () => {
                 payHandler: async () => {
                   ;(await deleteOrg()) &&
                     store.dispatch('helper/openModalConfirm', {
-                      type: 2,
+                      type: NOTIFY_TYPE.SUCCESS,
                       header: t('OO0039'),
                       contentText: t('OO0101'),
                       primaryBtnText: t('UU0031'),
@@ -240,7 +239,7 @@ const updateOrg = async () => {
 
   await store.dispatch('organization/updateOrg', toRaw(orgFormData))
 
-  store.dispatch('helper/pushFlashMessage', t('BB0107'))
+  notify.showNotifySnackbar({ messageText: t('BB0107') })
 }
 
 watch(
@@ -262,4 +261,9 @@ watch(
     immediate: true,
   }
 )
+
+const copyOrgId = () => {
+  copyText(organization.value.orgNo)
+  notify.showNotifySnackbar({ messageText: t('BB0038') })
+}
 </script>

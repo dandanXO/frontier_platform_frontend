@@ -34,6 +34,7 @@ modal-behavior(
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
+import { useNotifyStore } from '@/stores/notify'
 
 const props = defineProps({
   email: {
@@ -43,6 +44,7 @@ const props = defineProps({
 })
 
 const { t } = useI18n()
+const notify = useNotifyStore()
 const store = useStore()
 const verifyCode = ref('')
 const refText = ref(null)
@@ -52,7 +54,7 @@ const sendForgotPasswordEmail = async () => {
   if (secRemains.value > 0) return
   startCountDown()
   await store.dispatch('user/sendForgotPasswordEmail', { email: props.email })
-  store.dispatch('helper/pushFlashMessage', t('AA0088'))
+  notify.showNotifySnackbar({ messageText: t('AA0088') })
 }
 
 let timerId

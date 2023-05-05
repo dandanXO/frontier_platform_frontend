@@ -1,10 +1,12 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { NODE_TYPE } from '@/utils/constants'
+import { useNotifyStore } from '@/stores/notify'
+import { NODE_TYPE, NOTIFY_TYPE } from '@/utils/constants'
 
 export default function usePublicLibrary() {
   const { t } = useI18n()
   const store = useStore()
+  const notify = useNotifyStore()
 
   const publicCloneByMaterial = (nodeKey, isCanClone) => {
     publicClone([nodeKey], isCanClone, t('II0008'))
@@ -31,7 +33,7 @@ export default function usePublicLibrary() {
   const publicClone = (nodeKeyList, isCanClone, msg) => {
     if (!isCanClone) {
       return store.dispatch('helper/openModalConfirm', {
-        type: 1,
+        type: NOTIFY_TYPE.WARNING,
         header: t('II0013'),
         contentText: t('II0014'),
         primaryBtnText: t('UU0031'),
@@ -50,7 +52,7 @@ export default function usePublicLibrary() {
             targetLocationList,
             optional,
           })
-          store.dispatch('helper/pushFlashMessage', msg)
+          notify.showNotifySnackbar({ messageText: msg })
         },
       },
     })

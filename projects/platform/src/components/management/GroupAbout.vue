@@ -14,10 +14,7 @@ div
           ) {{ $t('UU0013') }}
         f-tooltip
           template(#trigger)
-            div(
-              class="flex items-center"
-              @click="copyText(groupNo), $store.dispatch('helper/pushFlashMessage', $t('BB0038'))"
-            )
+            div(class="flex items-center" @click="copyGroupId")
               p(class="text-caption text-grey-900 cursor-pointer pr-1.5") ID: {{ groupNo }}
               f-svg-icon(
                 iconName="content_copy"
@@ -58,6 +55,8 @@ import { computed, reactive, toRaw } from 'vue'
 import InputLabelColor from '@/components/management/InputLabelColor.vue'
 import { useI18n } from 'vue-i18n'
 import copyText from '@/utils/copy-text'
+import { NOTIFY_TYPE } from '@/utils/constants'
+import { useNotifyStore } from '@/stores/notify'
 
 export default {
   name: 'GroupAbout',
@@ -67,6 +66,7 @@ export default {
   setup() {
     const { t } = useI18n()
     const store = useStore()
+    const notify = useNotifyStore()
     const group = computed(() => store.getters['group/group'])
     const { groupName, labelColor, description, groupId, groupNo } = group.value
     const groupFormData = reactive({ groupName, labelColor, description })
@@ -83,7 +83,7 @@ export default {
 
     const updateGroup = async () => {
       await store.dispatch('group/updateGroup', toRaw(groupFormData))
-      store.dispatch('helper/pushFlashMessage', t('BB0107'))
+      notify.showNotifySnackbar({ messageText: t('BB0107') })
     }
 
     const openModalTypeTextToConfirm = () => {
@@ -97,7 +97,7 @@ export default {
           errorMsg: t('WW0026'),
           confirmHandler: () => {
             store.dispatch('helper/openModalConfirm', {
-              type: 1,
+              type: NOTIFY_TYPE.WARNING,
               header: t('BB0100'),
               contentText: t('BB0101'),
               primaryBtnText: t('UU0001'),
@@ -113,6 +113,11 @@ export default {
       })
     }
 
+    const copyGroupId = () => {
+      copyText(groupNo)
+      notify.showNotifySnackbar({ messageText: t('BB0038') })
+    }
+
     return {
       groupFormData,
       isGroupNameExist,
@@ -121,6 +126,7 @@ export default {
       openModalTypeTextToConfirm,
       copyText,
       groupNo,
+      copyGroupId,
     }
   },
 }

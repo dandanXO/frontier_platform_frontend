@@ -40,6 +40,7 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 import useMaterialImage from '@/composables/useMaterialImage'
 import useNavigation from '@/composables/useNavigation'
+import { NOTIFY_TYPE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
@@ -65,7 +66,7 @@ const handleCreateU3mAuto = async () => {
   await store.dispatch('assets/generateU3m', { isAutoRepeat: true })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/openModalConfirm', {
-    type: 2,
+    type: NOTIFY_TYPE.SUCCESS,
     header: t('EE0121'),
     contentText: t('EE0122', { RR0008: t('RR0008') }),
     primaryBtnText: t('UU0103'),

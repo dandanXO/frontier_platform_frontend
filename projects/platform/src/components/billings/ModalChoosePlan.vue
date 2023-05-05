@@ -60,6 +60,7 @@ import { useStore } from 'vuex'
 import { h, computed, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import usePlan from '@/composables/usePlan.js'
+import { NOTIFY_TYPE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
@@ -96,7 +97,7 @@ const upgradePlan = async () => {
         store.dispatch('helper/closeModalLoading')
 
         store.dispatch('helper/openModalConfirm', {
-          type: 2,
+          type: NOTIFY_TYPE.SUCCESS,
           header: t('OO0165'),
           primaryBtnText: t('UU0031'),
           contentComponent: shallowRef({

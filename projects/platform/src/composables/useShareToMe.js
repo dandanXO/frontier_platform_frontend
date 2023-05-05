@@ -1,10 +1,12 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { NODE_TYPE } from '@/utils/constants'
+import { useNotifyStore } from '@/stores/notify'
+import { NODE_TYPE, NOTIFY_TYPE } from '@/utils/constants'
 
 export default function useShareToMe() {
   const { t } = useI18n()
   const store = useStore()
+  const notify = useNotifyStore()
 
   const shareToMeCloneByMaterial = (nodeKey, sharingId, isCanClone) => {
     shareToMeClone(sharingId, [nodeKey], isCanClone, t('II0008'))
@@ -31,7 +33,7 @@ export default function useShareToMe() {
   const shareToMeClone = (sharingId, nodeKeyList, isCanClone, msg) => {
     if (!isCanClone) {
       return store.dispatch('helper/openModalConfirm', {
-        type: 1,
+        type: NOTIFY_TYPE.WARNING,
         header: t('GG0016'),
         contentText: t('GG0020'),
         primaryBtnText: t('UU0031'),
@@ -53,7 +55,7 @@ export default function useShareToMe() {
             targetLocationList,
             optional,
           })
-          store.dispatch('helper/pushFlashMessage', msg)
+          notify.showNotifySnackbar({ messageText: msg })
         },
       },
     })
@@ -66,7 +68,7 @@ export default function useShareToMe() {
   const shareToMeDeleteByNodeList = (nodeList) => {
     const nodeKeyList = nodeList.map(({ nodeKey }) => nodeKey)
     store.dispatch('helper/openModalConfirm', {
-      type: 1,
+      type: NOTIFY_TYPE.WARNING,
       header: t('HH0004'),
       contentText: t('HH0005'),
       primaryBtnText: t('UU0001'),

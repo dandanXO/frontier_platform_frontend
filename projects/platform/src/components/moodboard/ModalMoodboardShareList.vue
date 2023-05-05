@@ -34,8 +34,11 @@ modal-behavior(:header="$t('RR0155')")
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
+import { NOTIFY_TYPE } from '@/utils/constants'
 
 const store = useStore()
+const notify = useNotifyStore()
 const { t } = useI18n()
 
 const shareList = computed(() => store.getters['moodboard/moodboardShareList'])
@@ -48,7 +51,7 @@ const openModalMoodboardShare = () => {
 
 const removeMoodboardShare = (shareTarget) => {
   store.dispatch('helper/pushModalConfirm', {
-    type: 1,
+    type: NOTIFY_TYPE.WARNING,
     header: t('QQ0025', { orgName: shareTarget.name }),
     contentText: t('QQ0026', { orgName: shareTarget.name }),
     primaryBtnText: t('UU0097'),
@@ -58,10 +61,9 @@ const removeMoodboardShare = (shareTarget) => {
         shareId: shareTarget.shareId,
       })
       store.dispatch('helper/closeModalLoading')
-      store.dispatch(
-        'helper/pushFlashMessage',
-        t('QQ0027', { orgName: shareTarget.name })
-      )
+      notify.showNotifySnackbar({
+        messageText: t('QQ0027', { orgName: shareTarget.name }),
+      })
     },
     textBtnText: t('UU0002'),
   })

@@ -22,6 +22,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import ModalLoading from '@/components/common/modal/ModalLoading.vue'
+import { NOTIFY_TYPE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
@@ -38,7 +39,7 @@ const availableToSetup = computed(
 
 const setupCard = () => {
   store.dispatch('helper/pushModalConfirm', {
-    type: 0,
+    type: NOTIFY_TYPE.INFO,
     header: t('OO0049'),
     contentText: t('OO0048'),
     primaryBtnText: t('UU0031'),
@@ -59,7 +60,7 @@ const setupCard = () => {
 
       if (error) {
         store.dispatch('helper/pushModalConfirm', {
-          type: 3,
+          type: NOTIFY_TYPE.ALERT,
           header: t('OO0019'),
           contentText: t('OO0020'),
           primaryBtnText: t('UU0031'),

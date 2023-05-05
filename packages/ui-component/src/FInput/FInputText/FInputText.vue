@@ -168,7 +168,7 @@ export default {
 <script setup>
 import { ref, toRefs, computed, useSlots, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { CONTEXTUAL_MENU_MODE } from '../../constants.js'
+import { CONTEXTUAL_MENU_MODE } from '../../constants'
 import useInput from '../useInput'
 const { te } = useI18n()
 const slots = useSlots()

@@ -72,7 +72,7 @@ div(class="w-full h-full relative")
                       iconName="copy_link"
                       size="24"
                       class="text-grey-600 hover:text-primary-400 mr-3"
-                      @click="copyText(org.contactEmail); $store.dispatch('helper/pushFlashMessage', $t('II0029'))"
+                      @click="copyContactEmail"
                     )
                   template(#content)
                     p {{ $t('II0035') }}
@@ -144,6 +144,7 @@ import {
 } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import { watch, ref, computed } from 'vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -153,6 +154,7 @@ import copyText from '@/utils/copy-text'
 
 const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 const router = useRouter()
 const route = useRoute()
 const {
@@ -282,5 +284,10 @@ const openModalShowroomContactForm = (toOrgId, onlyToOne) => {
       onlyToOne,
     },
   })
+}
+
+const copyContactEmail = () => {
+  copyText(org.contactEmail)
+  notify.showNotifySnackbar({ messageText: t('II0029') })
 }
 </script>

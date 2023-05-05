@@ -65,6 +65,7 @@ import SearchTable from '@/components/common/SearchTable.vue'
 import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import { ref, computed } from 'vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import TooltipLocation from '@/components/common/TooltipLocation.vue'
@@ -81,6 +82,7 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 const router = useRouter()
 const route = useRoute()
 const { goToWorkspaceMaterialDetail } = useNavigation()
@@ -253,7 +255,7 @@ const openModalAssetsList = () => {
           !failMaterialList ||
           failMaterialList.length !== materialIdList.length
         ) {
-          store.dispatch('helper/pushFlashMessage', t('FF0018'))
+          notify.showNotifySnackbar({ messageText: t('FF0018') })
         }
       },
     },

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
+import { useNotifyStore } from '@/stores/notify'
 import { ROLE_ID, NODE_TYPE } from '@/utils/constants'
 import Sidebar from '@/components/sidebar/Sidebar.vue'
 import i18n from '@/utils/i18n'
@@ -288,7 +289,8 @@ const routes = [
           const { verifyCode } = to.query
           await store.dispatch('user/verifyUser', { verifyCode })
           await next('/')
-          store.dispatch('helper/pushFlashMessage', i18n.global.t('AA0086'))
+          const notify = useNotifyStore()
+          notify.showNotifySnackbar({ messageText: i18n.global.t('AA0086') })
         },
       },
       {

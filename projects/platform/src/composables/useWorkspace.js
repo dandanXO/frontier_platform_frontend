@@ -1,12 +1,14 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import { computed } from 'vue'
-import { OG_TYPE } from '@/utils/constants'
+import { OG_TYPE, NOTIFY_TYPE } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation.js'
 
 export default function useWorkspace() {
   const { t } = useI18n()
   const store = useStore()
+  const notify = useNotifyStore()
   const { goToOrgAssetMaterialEdit, goToGroupAssetMaterialEdit } =
     useNavigation()
 
@@ -66,7 +68,7 @@ export default function useWorkspace() {
           actionCallback: async (nodeList) => {
             const result = await new Promise((resolve) => {
               store.dispatch('helper/pushModalConfirm', {
-                type: 1,
+                type: NOTIFY_TYPE.WARNING,
                 header: t('FF0040'),
                 contentText: t('FF0048'),
                 primaryBtnText: t('UU0001'),
@@ -86,7 +88,7 @@ export default function useWorkspace() {
               })
               store.dispatch('helper/closeModalLoading')
               store.dispatch('helper/reloadInnerApp')
-              store.dispatch('helper/pushFlashMessage', t('FF0047'))
+              notify.showNotifySnackbar({ messageText: t('FF0047') })
             }
           },
         },
@@ -113,7 +115,7 @@ export default function useWorkspace() {
           actionCallback: async (node) => {
             const result = await new Promise((resolve) => {
               store.dispatch('helper/pushModalConfirm', {
-                type: 1,
+                type: NOTIFY_TYPE.WARNING,
                 header: t('FF0040'),
                 contentText: t('FF0041'),
                 primaryBtnText: t('UU0001'),
@@ -135,10 +137,9 @@ export default function useWorkspace() {
               )
               store.dispatch('helper/closeModalLoading')
               store.dispatch('helper/reloadInnerApp')
-              store.dispatch(
-                'helper/pushFlashMessage',
-                t('FF0042', { collectionName })
-              )
+              notify.showNotifySnackbar({
+                messageText: t('FF0042', { collectionName }),
+              })
             }
           },
         },
@@ -149,7 +150,7 @@ export default function useWorkspace() {
   const deleteNodeList = async (workspaceNodeIdList, header, contentText) => {
     const result = await new Promise((resolve) => {
       store.dispatch('helper/pushModalConfirm', {
-        type: 1,
+        type: NOTIFY_TYPE.WARNING,
         header,
         contentText,
         primaryBtnText: t('UU0001'),

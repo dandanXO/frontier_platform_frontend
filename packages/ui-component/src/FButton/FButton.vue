@@ -9,7 +9,7 @@ button(
 
 <script>
 import { computed } from 'vue'
-import { THEME } from '../constants.js'
+import { THEME } from '../constants'
 
 export default {
   name: 'FButton',

@@ -34,6 +34,8 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { NOTIFY_TYPE } from '@/utils/constants'
+
 export default {
   name: 'PaymentDetail',
   setup() {
@@ -72,7 +74,7 @@ export default {
           switch (setupIntent.status) {
             case 'succeeded': {
               store.dispatch('helper/openModalConfirm', {
-                type: 2,
+                type: NOTIFY_TYPE.SUCCESS,
                 header: t('OO0017'),
                 contentText: t('OO0018'),
                 primaryBtnText: t('UU0031'),

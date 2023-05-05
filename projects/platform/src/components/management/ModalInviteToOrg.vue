@@ -28,10 +28,7 @@ modal-behavior(
             @click="removeInvite(index)"
           )
   template(#note)
-    div(
-      class="text-cyan-400 flex items-center cursor-pointer"
-      @click="copyText(inviteLink), $store.dispatch('helper/pushFlashMessage', $t('BB0108'))"
-    )
+    div(class="text-cyan-400 flex items-center cursor-pointer" @click="copyInviteLink")
       f-svg-icon(iconName="copy_link" size="14" class="mr-1.5")
       span(class="text-caption") {{ $t('UU0015') }}
 </template>
@@ -42,6 +39,7 @@ import inputValidator from '@/utils/input-validator'
 import copyText from '@/utils/copy-text'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 
 const props = defineProps({
   from: {
@@ -52,6 +50,7 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 const email = ref('')
 const errorMsg = ref('')
 const inviteLink = computed(() => {
@@ -112,4 +111,9 @@ watch(
     errorMsg.value = ''
   }
 )
+
+const copyInviteLink = () => {
+  copyText(inviteLink)
+  notify.showNotifySnackbar({ messageText: t('BB0108') })
+}
 </script>

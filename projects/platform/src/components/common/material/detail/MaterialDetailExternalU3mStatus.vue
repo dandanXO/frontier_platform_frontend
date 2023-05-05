@@ -28,7 +28,7 @@ import { computed } from 'vue'
 import MaterialU3mFiles from '@/components/common/material/u3m/MaterialU3mFiles.vue'
 import useModelEditor from '@/composables/useModelEditor'
 import useDashboard from '@/composables/useDashboard'
-import { U3M_STATUS } from '@/utils/constants'
+import { U3M_STATUS, NOTIFY_TYPE } from '@/utils/constants'
 import { downloadDataURLFile } from '@/utils/fileOperator'
 
 const props = defineProps({
@@ -80,7 +80,7 @@ const downloadU3m = async (item) => {
 
   if (!props.isCanDownloadU3M) {
     store.dispatch('helper/openModalConfirm', {
-      type: 1,
+      type: NOTIFY_TYPE.WARNING,
       header: t('II0003'),
       contentText: t('II0004'),
       primaryBtnText: t('UU0031'),

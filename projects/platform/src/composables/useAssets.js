@@ -1,7 +1,8 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import useNavigation from '@/composables/useNavigation'
-import { U3M_STATUS, MODAL_CONFIRM_TYPE } from '@/utils/constants'
+import { U3M_STATUS, NOTIFY_TYPE } from '@/utils/constants'
 import { printA4Card, printGeneralLabel } from '@/utils/print'
 
 const toMaterialList = (material) =>
@@ -12,6 +13,7 @@ const toMaterialIdList = (material) =>
 export default function useAssets() {
   const { t } = useI18n()
   const store = useStore()
+  const notify = useNotifyStore()
   const { goToAssetMaterialEdit, goToMaterialUpload, goToProgress } =
     useNavigation()
 
@@ -39,7 +41,7 @@ export default function useAssets() {
               optional,
             })
             store.dispatch('helper/reloadInnerApp')
-            store.dispatch('helper/pushFlashMessage', t('EE0056'))
+            notify.showNotifySnackbar({ messageText: t('EE0056') })
           },
         },
       })
@@ -54,7 +56,7 @@ export default function useAssets() {
       const materialIdList = toMaterialIdList(material)
       if (materialList.length === 1 && !materialList[0].isComplete) {
         return store.dispatch('helper/openModalConfirm', {
-          type: 1,
+          type: NOTIFY_TYPE.WARNING,
           header: t('EE0096'),
           contentText: t('EE0097'),
           primaryBtnText: t('UU0031'),
@@ -99,7 +101,7 @@ export default function useAssets() {
               !failMaterialList ||
               failMaterialList.length !== materialIdList.length
             ) {
-              store.dispatch('helper/pushFlashMessage', t('EE0062'))
+              notify.showNotifySnackbar({ messageText: t('EE0062') })
             }
           },
         },
@@ -122,7 +124,7 @@ export default function useAssets() {
       // 檢查是否缺少必填欄位。
       if (!material.isComplete && hasScannedImage) {
         return store.dispatch('helper/openModalConfirm', {
-          type: MODAL_CONFIRM_TYPE.INFO,
+          type: NOTIFY_TYPE.INFO,
           header: t('EE0142'),
           contentText: t('EE0143'),
           primaryBtnText: t('UU0126'),
@@ -137,7 +139,7 @@ export default function useAssets() {
       // 檢查是否缺少正面或反面圖。
       if (!hasScannedImage) {
         return store.dispatch('helper/openModalConfirm', {
-          type: 0,
+          type: NOTIFY_TYPE.INFO,
           header: t('EE0124'),
           contentText: t('EE0125'),
           secondaryBtnText: t('UU0031'),
@@ -173,7 +175,7 @@ export default function useAssets() {
         )
       ) {
         return store.dispatch('helper/openModalConfirm', {
-          type: 0,
+          type: NOTIFY_TYPE.INFO,
           header: t('RR0162'),
           contentText: t('EE0072'),
           primaryBtnText: t('UU0031'),
@@ -230,7 +232,7 @@ export default function useAssets() {
       if (materialIdList.length >= 100) {
         await store.dispatch('assets/massExportMaterial', { materialIdList })
         store.dispatch('helper/openModalConfirm', {
-          type: 2,
+          type: NOTIFY_TYPE.SUCCESS,
           header: t('PP0030'),
           contentText: t('PP0031'),
           primaryBtnText: t('UU0031'),
@@ -288,7 +290,7 @@ export default function useAssets() {
         await store.dispatch('assets/deleteCheckMaterial', { materialIdList })
       if (!isOnExportingExcel && !isOnGeneratingU3m) {
         store.dispatch('helper/openModalConfirm', {
-          type: 1,
+          type: NOTIFY_TYPE.WARNING,
           header: t('EE0075'),
           contentText: t('EE0076'),
           primaryBtnText: t('UU0001'),
@@ -302,7 +304,7 @@ export default function useAssets() {
         })
       } else if (isOnGeneratingU3m) {
         store.dispatch('helper/openModalConfirm', {
-          type: 1,
+          type: NOTIFY_TYPE.WARNING,
           header: t('EE0111'),
           contentText: t('EE0112'),
           secondaryBtnText: t('UU0094'),
@@ -310,7 +312,7 @@ export default function useAssets() {
       } else if (isOnExportingExcel) {
         if (materialIdList.length > 1) {
           store.dispatch('helper/openModalConfirm', {
-            type: 1,
+            type: NOTIFY_TYPE.WARNING,
             header: t('EE0111'),
             contentText: t('EE0112'),
             primaryBtnText: t('UU0091'),
@@ -339,7 +341,7 @@ export default function useAssets() {
           })
         } else {
           store.dispatch('helper/openModalConfirm', {
-            type: 1,
+            type: NOTIFY_TYPE.WARNING,
             header: t('EE0113'),
             contentText: t('EE0114', { materialNo: materialIdList[0] }),
             primaryBtnText: t('UU0091'),

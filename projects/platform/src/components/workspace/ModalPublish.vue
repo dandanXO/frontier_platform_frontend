@@ -33,6 +33,7 @@ modal-behavior(
 import { useI18n } from 'vue-i18n'
 import { reactive, toRefs } from 'vue'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 
 const props = defineProps({
   workspaceNode: {
@@ -43,6 +44,7 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 const { workspaceNode } = toRefs(props)
 const optionIsPublic = [
   {
@@ -69,7 +71,7 @@ const publishNode = async () => {
   })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/reloadInnerApp')
-  store.dispatch('helper/pushFlashMessage', t('FF0035'))
+  notify.showNotifySnackbar({ messageText: t('FF0035') })
 }
 
 const closeModal = () => store.dispatch('helper/closeModalBehavior')

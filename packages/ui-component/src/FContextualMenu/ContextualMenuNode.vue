@@ -76,7 +76,7 @@ div(
         p(
           v-if="innerMenu.description"
           ref="refDescription"
-          :class="{ 'pl-2': innerMenu.display === 'flex', 'pt-0.5': innerMenu.display === 'block' }"
+          :class="{ 'pl-2': innerMenu.display === DISPLAY.FLEX, 'pt-0.5': innerMenu.display === DISPLAY.BLOCK }"
           class="min-w-[40%] text-caption text-grey-600 !leading-1.3 text-ellipsis overflow-hidden break-all"
           :style="{ '-webkit-box-orient': 'vertical', '-webkit-line-clamp': innerMenu.descriptionLineClamp, display: '-webkit-box' }"
           @mouseenter="hoverOn = 'description'"
@@ -162,7 +162,7 @@ export default {
 <script setup>
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core'
-import { CONTEXTUAL_MENU_MODE } from '../constants.js'
+import { CONTEXTUAL_MENU_MODE, DISPLAY } from '../constants'
 import isEqual from '../isEqual'
 
 const { NONE_SELECT, MULTIPLE } = CONTEXTUAL_MENU_MODE
@@ -206,7 +206,7 @@ const innerMenu = computed(() => {
     titleLineClamp: 1,
     description: '',
     descriptionLineClamp: 1,
-    display: 'flex', // flex or block
+    display: DISPLAY.FLEX,
     disabled: false,
     selectable: true,
     selectValue: props.menu.title,

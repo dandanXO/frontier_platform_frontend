@@ -59,6 +59,7 @@ modal-behavior(
 <script setup>
 import { ref, watch, reactive } from 'vue'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
 import { SHARE_TARGET_TYPE } from '@/utils/constants'
 import inputValidator from '@/utils/input-validator'
@@ -72,6 +73,7 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 
 const target = ref('')
 const formData = reactive({
@@ -120,7 +122,7 @@ const assignedShare = async () => {
   })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/closeModal')
-  store.dispatch('helper/pushFlashMessage', t('RR0157'))
+  notify.showNotifySnackbar({ messageText: t('RR0157') })
 }
 
 const removeTarget = (index) => targetList.value.splice(index, 1)

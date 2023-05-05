@@ -2,6 +2,7 @@ import Axios from 'axios'
 import router from '@/router'
 import store from '@/store'
 import i18n from '@/utils/i18n'
+import { NOTIFY_TYPE } from '@/utils/constants'
 
 const { VITE_APP_API_ENDPOINT } = import.meta.env
 
@@ -109,7 +110,7 @@ instance.interceptors.response.use(
       router.push({ name: 'SignIn', query })
     } else if ([400, 404, 500].includes(status)) {
       store.dispatch('helper/openModalConfirm', {
-        type: 3,
+        type: NOTIFY_TYPE.ALERT,
         header: i18n.global.t('RR0107'),
         contentText: i18n.global.t('RR0108'),
         primaryBtnText: i18n.global.t('UU0031'),

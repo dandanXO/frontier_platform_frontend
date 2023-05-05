@@ -54,6 +54,7 @@ modal-behavior(
 <script setup>
 import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
 import { previewFile } from '@/utils/fileOperator'
 import { CREATE_EDIT } from '@/utils/constants'
@@ -72,7 +73,7 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
-
+const notify = useNotifyStore()
 const formData = reactive({
   nodeId: props.nodeId,
   name: '',
@@ -114,11 +115,11 @@ const primaryHandler = async () => {
       formData.trendBoardFile = null
     }
     await store.dispatch('moodboard/updateMoodboardNodeCollection', formData)
-    store.dispatch('helper/pushFlashMessage', t('QQ0064'))
+    notify.showNotifySnackbar({ messageText: t('QQ0064') })
     store.dispatch('helper/reloadInnerApp')
   } else {
     await store.dispatch('moodboard/createMoodboardNodeCollection', formData)
-    store.dispatch('helper/pushFlashMessage', t('QQ0063'))
+    notify.showNotifySnackbar({ messageText: t('QQ0063') })
   }
   store.dispatch('helper/clearModalPipeline')
 }

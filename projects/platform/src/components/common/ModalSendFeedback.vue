@@ -66,11 +66,13 @@ import { ref, reactive, computed } from 'vue'
 import { FileOperator, bytesToSize } from '@/utils/fileOperator'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import { v4 as uuidv4 } from 'uuid'
 
 const { FEEDBACK_CATEGORY } = useConstants()
 const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 const tempFeedbackId = uuidv4()
 const formData = reactive({
   category: null,
@@ -129,6 +131,6 @@ const removeAttachment = (tempFeedbackAttachmentId) => {
 const actionHandler = () => {
   store.dispatch('user/sendFeedback', { tempFeedbackId, ...formData })
   store.dispatch('helper/closeModal')
-  store.dispatch('helper/pushFlashMessage', t('MM0018'))
+  notify.showNotifySnackbar({ messageText: t('MM0018') })
 }
 </script>

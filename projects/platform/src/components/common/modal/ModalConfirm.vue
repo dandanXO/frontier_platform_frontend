@@ -49,7 +49,7 @@ div(
 </template>
 
 <script setup>
-import { MODAL_CONFIRM_TYPE } from '@/utils/constants'
+import { NOTIFY_TYPE } from '@/utils/constants'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 
@@ -65,10 +65,10 @@ const props = defineProps({
   },
   type: {
     type: Number,
-    default: MODAL_CONFIRM_TYPE.SUCCESS,
+    default: NOTIFY_TYPE.SUCCESS,
     validator: (v) =>
-      Object.keys(MODAL_CONFIRM_TYPE)
-        .map((key) => MODAL_CONFIRM_TYPE[key])
+      Object.keys(NOTIFY_TYPE)
+        .map((key) => NOTIFY_TYPE[key])
         .includes(v),
   },
   contentText: {
@@ -127,7 +127,7 @@ const props = defineProps({
   },
 })
 
-const { INFO, WARNING, SUCCESS, ALERT } = MODAL_CONFIRM_TYPE
+const { INFO, WARNING, SUCCESS, ALERT } = NOTIFY_TYPE
 
 const getIconName = computed(() => {
   const map = {

@@ -36,6 +36,7 @@ import useMaterialValidation from '@/composables/useMaterialValidation'
 import { computed, ref } from 'vue'
 import { onBeforeRouteLeave, useRoute } from 'vue-router'
 import scrollTo from '@/utils/scrollTo'
+import { NOTIFY_TYPE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
@@ -75,7 +76,7 @@ const updateMaterial = async () => {
 
 const cancel = async () => {
   store.dispatch('helper/pushModalConfirm', {
-    type: 1,
+    type: NOTIFY_TYPE.WARNING,
     header: t('EE0045'),
     contentText: t('EE0046'),
     primaryBtnText: t('UU0001'),
@@ -94,7 +95,7 @@ onBeforeRouteLeave(async () => {
 
   const result = await new Promise((resolve) => {
     store.dispatch('helper/openModalConfirm', {
-      type: 1,
+      type: NOTIFY_TYPE.WARNING,
       header: t('EE0045'),
       contentText: t('EE0046'),
       primaryBtnText: t('UU0001'),

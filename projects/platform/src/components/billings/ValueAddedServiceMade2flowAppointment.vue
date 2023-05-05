@@ -96,7 +96,7 @@ import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { computed, reactive, ref, watch } from 'vue'
 import { FileOperator, bytesToSize } from '@/utils/fileOperator'
-import { UPLOAD_ERROR_CODE } from '@/utils/constants'
+import { UPLOAD_ERROR_CODE, NOTIFY_TYPE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
@@ -163,7 +163,7 @@ const actionHandler = async () => {
   store.dispatch('helper/closeModalLoading')
 
   store.dispatch('helper/openModalConfirm', {
-    type: 2,
+    type: NOTIFY_TYPE.SUCCESS,
     header: t('VV0045'),
     contentText: t('VV0046'),
     primaryBtnText: t('UU0114'),

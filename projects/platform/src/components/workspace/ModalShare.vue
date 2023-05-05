@@ -40,9 +40,7 @@ modal-behavior(:header="$t('RR0079')")
                 :disabled="!shareInfo.isCanShared"
                 @click="generateCopyLink"
               ) {{ $t('UU0068') }}
-            div(class="bg-grey-50 h-15 flex px-5 py-3 gap-x-2")
-              f-svg-icon(iconName="error_outline" class="text-grey-900")
-              p(class="text-caption leading-1.6 text-grey-900") {{ $t('FF0062') }}
+            f-infobar(:messageText="$t('FF0062')")
         template(v-else-if="currentTab === TAB.SOCIAL_MEDIA")
           div(
             class="grid gap-8.5 grid-cols-4 bg-grey-50 py-5 px-8 justify-items-center text-grey-900"
@@ -76,15 +74,14 @@ modal-behavior(:header="$t('RR0079')")
                   @update:inputValue="updateEmbedDownloadPermission"
                 )
               f-button(size="sm" @click="copyEmbedIFrameCode") {{ $t('UU0068') }}
-            div(class="bg-grey-50 h-15 flex px-5 py-3 gap-x-2")
-              f-svg-icon(iconName="error_outline" class="text-grey-900")
-              p(class="text-caption line-height-1.6 text-grey-900") {{ $t('FF0071') }}
+            f-infobar(:messageText="$t('FF0071')")
 </template>
 
 <script setup>
 import { useI18n } from 'vue-i18n'
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import { SOCIAL_MEDIA_TYPE } from '@/utils/constants'
 import { shareViaCopyLink, shareViaSocialMedia } from '@/utils/share.js'
 import { NODE_TYPE } from '@/utils/constants'
@@ -107,6 +104,7 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 
 const TAB = {
   ASSIGNED: 0,
@@ -177,7 +175,7 @@ const generateCopyLink = async () => {
   })
   shareViaCopyLink(sharingKey)
   store.dispatch('helper/closeModalLoading')
-  store.dispatch('helper/pushFlashMessage', t('RR0149'))
+  notify.showNotifySnackbar({ messageText: t('RR0149') })
 }
 
 const updateEmbedDownloadPermission = () =>
@@ -190,7 +188,7 @@ const copyEmbedIFrameCode = () => {
   copyText(
     `<iframe width="100%" height="100%" src="${window.location.origin}/embed/${shareInfo.value.embed.key}/${props.nodeKey}" title="Frontier.cool" frameborder="0"></iframe>`
   )
-  store.dispatch('helper/pushFlashMessage', t('RR0149'))
+  notify.showNotifySnackbar({ messageText: t('RR0149') })
 }
 
 await store.dispatch('workspace/getShareInfo', {

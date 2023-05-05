@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import { UPLOAD_ERROR_CODE } from '../../constants.js'
+import { UPLOAD_ERROR_CODE } from '../../constants'
 
 /**
  * Common MIME types: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types

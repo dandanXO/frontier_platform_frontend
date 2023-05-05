@@ -5,13 +5,11 @@ import router from '@/router'
 
 const state = () => ({
   modalPipeline: [],
-  message: '',
   isReloadInnerApp: true,
 })
 
 const getters = {
   modalPipeline: (state) => state.modalPipeline,
-  message: (state) => state.message,
   /**
    * control by route
    * /:orgNo -> org
@@ -40,12 +38,6 @@ const mutations = {
   },
   CLEAR_modalPipeline(state) {
     state.modalPipeline.length = 0
-  },
-  PUSH_flashMessage(state, message) {
-    state.message = message
-  },
-  REMOVE_flashMessage(state) {
-    state.message = ''
   },
   SET_isReloadInnerApp(state, bool) {
     state.isReloadInnerApp = bool
@@ -106,12 +98,6 @@ const actions = {
     commit('SET_isReloadInnerApp', false)
     await nextTick()
     commit('SET_isReloadInnerApp', true)
-  },
-  pushFlashMessage({ commit }, message) {
-    commit('PUSH_flashMessage', message)
-  },
-  removeFlashMessage({ commit }, message) {
-    commit('REMOVE_flashMessage', message)
   },
 }
 

@@ -1,7 +1,8 @@
 import store from '@/store'
 import i18n from '@/utils/i18n'
+import { useNotifyStore } from '@/stores/notify'
 import { shallowRef, h } from 'vue'
-import { SIGNUP_SOURCE } from '@/utils/constants'
+import { SIGNUP_SOURCE, NOTIFY_TYPE } from '@/utils/constants'
 
 const t = i18n.global.t
 let timerId
@@ -39,12 +40,13 @@ export default function remindVerifyEmail(
       if (secRemains > 0) return
       startCountDown()
       await store.dispatch('user/resendVerifyEmail', signupSourceType)
-      store.dispatch('helper/pushFlashMessage', t('AA0087'))
+      const notify = useNotifyStore()
+      notify.showNotifySnackbar({ messageText: t('AA0087') })
     },
   }
 
   store.dispatch('helper/openModalConfirm', {
-    type: 1,
+    type: NOTIFY_TYPE.WARNING,
     header: t('AA0030'),
     contentComponent: shallowRef({
       render: () => {

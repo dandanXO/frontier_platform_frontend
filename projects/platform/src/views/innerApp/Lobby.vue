@@ -1,6 +1,6 @@
 <template lang="pug">
-div(class="w-full")
-  header(class="w-full h-15.5 pt-7.5 pl-10 pr-9 fixed inset-0")
+div(class="w-full relative")
+  header(class="w-full h-15.5 pt-7.5 pl-10 pr-9 absolute inset-0")
     div(class="flex justify-between items-center")
       img(src="@/assets/images/frontier_logo.png" class="w-34 h-6.5")
       menu-personal

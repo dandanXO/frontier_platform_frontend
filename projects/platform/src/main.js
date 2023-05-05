@@ -1,5 +1,6 @@
 import '@frontier/tailwindcss/index.css'
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'
@@ -13,6 +14,7 @@ import VueGtag from 'vue-gtag'
 import VueKonva from 'vue-konva'
 import uiComponents from '@frontier/ui-component'
 import inputRules from '@/utils/inputRules'
+import { NOTIFY_TYPE } from '@/utils/constants'
 
 const app = createApp(App)
 
@@ -27,7 +29,7 @@ app.config.errorHandler = (err, vm, info) => {
 
   if (!status || [400, 404, 500].includes(status)) {
     store.dispatch('helper/openModalConfirm', {
-      type: 3,
+      type: NOTIFY_TYPE.ALERT,
       header: i18n.global.t('RR0107'),
       contentText: i18n.global.t('RR0108'),
       primaryBtnText: i18n.global.t('UU0031'),
@@ -71,6 +73,7 @@ for (const path in globalComponents) {
 }
 
 app
+  .use(createPinia())
   .use(router)
   .use(
     VueGtag,

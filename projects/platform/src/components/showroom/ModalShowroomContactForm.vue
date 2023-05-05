@@ -43,6 +43,7 @@ modal-behavior(
 
 <script setup>
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -58,6 +59,7 @@ const props = defineProps({
 })
 
 const store = useStore()
+const notify = useNotifyStore()
 const { t } = useI18n()
 
 const showroom = computed(() => store.getters['showroom/showroom'])
@@ -95,9 +97,8 @@ const selectedOrg = computed(() =>
 const contactShowroomOrg = async () => {
   store.dispatch('helper/clearModalPipeline')
   await store.dispatch('showroom/contactShowroomOrg', formData)
-  store.dispatch(
-    'helper/pushFlashMessage',
-    t('II0033', { orgName: selectedOrg.value.orgName })
-  )
+  notify.showNotifySnackbar({
+    messageText: t('II0033', { orgName: selectedOrg.value.orgName }),
+  })
 }
 </script>

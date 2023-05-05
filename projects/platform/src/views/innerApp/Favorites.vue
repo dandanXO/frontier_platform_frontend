@@ -4,17 +4,16 @@ f-button(@click="showMessage") show message
 </template>
 
 <script>
-import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 
 export default {
   name: 'Favorite',
   setup() {
-    const store = useStore()
+    const notify = useNotifyStore()
     const showMessage = () => {
-      store.dispatch(
-        'helper/pushFlashMessage',
-        'Notification message. Here will be information.'
-      )
+      notify.showNotifySnackbar({
+        messageText: 'Notification message. Here will be information.',
+      })
     }
 
     return {

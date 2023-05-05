@@ -61,7 +61,7 @@ import { useRoute, useRouter } from 'vue-router'
 import useNavigation from '@/composables/useNavigation'
 import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import BlockAttachment from '@/components/moodboard/BlockAttachment.vue'
-import { MOODBOARD_TYPE } from '@/utils/constants'
+import { MOODBOARD_TYPE, NOTIFY_TYPE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
@@ -90,7 +90,7 @@ const openModalShareMessage = () => {
 const saveReceivedShare = async () => {
   if (!moodboardShare.isCanSave) {
     store.dispatch('helper/openModalConfirm', {
-      type: 3,
+      type: NOTIFY_TYPE.ALERT,
       header: t('RR0214'),
       contentText: t('QQ0084'),
       primaryBtnText: t('UU0031'),
@@ -115,7 +115,7 @@ const saveReceivedShare = async () => {
 
   if (organizationList.length === 0) {
     store.dispatch('helper/openModalConfirm', {
-      type: 3,
+      type: NOTIFY_TYPE.ALERT,
       header: t('GG0010'),
       contentText: t('GG0033'),
       primaryBtnText: t('UU0072'),

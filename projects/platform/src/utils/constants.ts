@@ -53,13 +53,6 @@ export const MODAL_TYPE = {
   BEHAVIOR: 4,
 }
 
-export const MODAL_CONFIRM_TYPE = {
-  INFO: 0,
-  WARNING: 1,
-  SUCCESS: 2,
-  ALERT: 3,
-}
-
 export const SIDE_TYPE = {
   FACE: 1,
   BACK: 2,

@@ -2,6 +2,7 @@ import { useStore } from 'vuex'
 import { computed, shallowRef, h } from 'vue'
 import useNavigation from '@/composables/useNavigation.js'
 import { useI18n, Translation } from 'vue-i18n'
+import { NOTIFY_TYPE } from '@/utils/constants'
 
 export default function usePlan() {
   const store = useStore()
@@ -22,7 +23,7 @@ export default function usePlan() {
     }
 
     store.dispatch('helper/openModalConfirm', {
-      type: 1,
+      type: NOTIFY_TYPE.WARNING,
       header: t('OO0012'),
       contentText: t('OO0079'),
       primaryBtnText: t('UU0001'),
@@ -43,7 +44,7 @@ export default function usePlan() {
       //   secondaryBtnText: t('UU0002')
       // })
       store.dispatch('helper/openModalConfirm', {
-        type: 1,
+        type: NOTIFY_TYPE.WARNING,
         header: t('OO0109'),
         contentText: t('OO0110'),
         primaryBtnText: t('UU0031'),
@@ -53,7 +54,7 @@ export default function usePlan() {
       const memberQuota = store.getters['polling/plan'].quota.member
       if (memberQuota.max === 0) {
         store.dispatch('helper/openModalConfirm', {
-          type: 1,
+          type: NOTIFY_TYPE.WARNING,
           header: t('OO0109'),
           contentText: t('OO0110'),
           primaryBtnText: t('UU0031'),
@@ -61,7 +62,7 @@ export default function usePlan() {
         return false
       } else if (memberQuota.max === memberQuota.used) {
         store.dispatch('helper/openModalConfirm', {
-          type: 1,
+          type: NOTIFY_TYPE.WARNING,
           header: t('OO0133'),
           contentText: t('WW0085'),
           primaryBtnText: t('UU0031'),
@@ -98,7 +99,7 @@ export default function usePlan() {
 
   const deactivateOrg = () => {
     store.dispatch('helper/openModalConfirm', {
-      type: 1,
+      type: NOTIFY_TYPE.WARNING,
       header: t('OO0007'),
       secondaryBtnText: t('UU0083'),
       afterSecondaryBtnHandler: async () => {
@@ -129,7 +130,7 @@ export default function usePlan() {
 
               if (success) {
                 store.dispatch('helper/openModalConfirm', {
-                  type: 2,
+                  type: NOTIFY_TYPE.SUCCESS,
                   header: t('OO0039'),
                   contentComponent: shallowRef({
                     render: () => {
@@ -183,7 +184,7 @@ export default function usePlan() {
 
   const openModalPaymentFail = () => {
     store.dispatch('helper/openModalConfirm', {
-      type: 3,
+      type: NOTIFY_TYPE.ALERT,
       header: t('OO0041'),
       contentText: t('OO0042'),
       secondaryButtonText: t('UU0076'),
@@ -223,7 +224,7 @@ export default function usePlan() {
 
           if (success) {
             store.dispatch('helper/openModalConfirm', {
-              type: 2,
+              type: NOTIFY_TYPE.SUCCESS,
               header: t('OO0039'),
               contentText: t('OO0145'),
               primaryBtnText: t('UU0031'),

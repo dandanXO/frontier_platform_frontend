@@ -51,6 +51,7 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import usePlan from '@/composables/usePlan.js'
+import { NOTIFY_TYPE } from '@/utils/constants'
 
 const store = useStore()
 const { t } = useI18n()
@@ -95,7 +96,7 @@ const openModalCheckoutList = () => {
 
         if (success) {
           store.dispatch('helper/openModalConfirm', {
-            type: 2,
+            type: NOTIFY_TYPE.SUCCESS,
             header: t('OO0039'),
             contentText: t('OO0040'),
             primaryBtnText: t('UU0026'),

@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { useStore } from 'vuex'
-import { NODE_TYPE } from '@/utils/constants'
+import { useNotifyStore } from '@/stores/notify'
+import { NODE_TYPE, NOTIFY_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 
 /**
@@ -13,6 +14,7 @@ export default function useMoodboardNode(
   moodboardOfferNodeCollection
 ) {
   const store = useStore()
+  const notify = useNotifyStore()
   const { t } = useI18n()
 
   const { moodboardId, moodboardType } = moodboard.value
@@ -52,7 +54,7 @@ export default function useMoodboardNode(
             targetLocationList,
             optional,
           })
-          store.dispatch('helper/pushFlashMessage', msg)
+          notify.showNotifySnackbar({ messageText: msg })
         },
       },
     })
@@ -66,7 +68,7 @@ export default function useMoodboardNode(
         nodeIdList,
       })
       store.dispatch('helper/openModalConfirm', {
-        type: 2,
+        type: NOTIFY_TYPE.SUCCESS,
         header: t('PP0030'),
         contentText: t('PP0031'),
         primaryBtnText: t('UU0031'),
@@ -92,7 +94,7 @@ export default function useMoodboardNode(
     )
     const nodeIdList = nodeList.map(({ nodeId }) => nodeId)
     store.dispatch('helper/openModalConfirm', {
-      type: 1,
+      type: NOTIFY_TYPE.WARNING,
       header: isContainCollection ? t('QQ0072') : t('QQ0065'),
       contentText: isContainCollection ? t('QQ0073') : t('QQ0066'),
       primaryBtnText: t('UU0091'),

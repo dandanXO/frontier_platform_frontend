@@ -1,10 +1,11 @@
 import stickerApi from '@/apis/sticker.js'
 import Material from '@/store/reuseModules/material.js'
-import { OG_TYPE, ROLE_ID, LOCATION_TYPE } from '@/utils/constants'
+import { OG_TYPE, ROLE_ID, LOCATION_TYPE, NOTIFY_TYPE } from '@/utils/constants'
 import isEqual from '@frontier/ui-component/src/isEqual.js'
 import groupApi from '@/apis/group'
 import i18n from '@/utils/i18n'
 import { nextTick } from 'vue'
+import { useNotifyStore } from '@/stores/notify'
 
 const defaultDigitalThreadBase = () => ({
   digitalThreadSideId: null,
@@ -315,7 +316,7 @@ export default {
         dispatch(
           'helper/openModalConfirm',
           {
-            type: 1,
+            type: NOTIFY_TYPE.WARNING,
             header,
             contentText,
             primaryBtnText: i18n.global.t('UU0128'),
@@ -506,9 +507,8 @@ export default {
           digitalThreadSideId: getters.digitalThread.digitalThreadSideId,
           digitalThreadName,
         })
-        dispatch('helper/pushFlashMessage', i18n.global.t('TT0122'), {
-          root: true,
-        })
+        const notify = useNotifyStore()
+        notify.showNotifySnackbar({ messageText: i18n.global.t('TT0122') })
         await dispatch('getDigitalThreadList')
       }
     },

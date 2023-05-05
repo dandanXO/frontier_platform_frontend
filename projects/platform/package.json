@@ -29,6 +29,7 @@
     "jspdf": "^2.5.1",
     "konva": "^8.3.14",
     "pica": "^9.0.1",
+    "pinia": "^2.0.35",
     "prosemirror-commands": "^1.5.0",
     "prosemirror-keymap": "^1.2.0",
     "prosemirror-model": "^1.19.0",

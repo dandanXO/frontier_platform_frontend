@@ -100,7 +100,7 @@ export default {
 
 <script setup>
 import { ref, computed } from 'vue'
-import { CONTEXTUAL_MENU_MODE } from '../constants.js'
+import { CONTEXTUAL_MENU_MODE } from '../constants'
 // import { RecycleScroller } from 'vue-virtual-scroller'
 // import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import isEqual from '../isEqual'

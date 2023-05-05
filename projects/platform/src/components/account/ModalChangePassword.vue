@@ -31,8 +31,10 @@ import { computed, ref } from 'vue'
 import PasswordValidator from '@/components/account/PasswordValidator.vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
+import { useNotifyStore } from '@/stores/notify'
 
 const { t } = useI18n()
+const notify = useNotifyStore()
 const store = useStore()
 const currentPassword = ref('')
 const newPassword = ref('')
@@ -66,6 +68,6 @@ const changePassword = async () => {
     newPassword: newPassword.value,
   })
   closeModal()
-  store.dispatch('helper/pushFlashMessage', t('MM0030'))
+  notify.showNotifySnackbar({ messageText: t('MM0030') })
 }
 </script>

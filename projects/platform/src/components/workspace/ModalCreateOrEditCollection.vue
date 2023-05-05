@@ -51,12 +51,14 @@ modal-behavior(
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import { previewFile } from '@/utils/fileOperator'
 import { useI18n } from 'vue-i18n'
 import { CREATE_EDIT } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 
 const props = defineProps({
   mode: {
@@ -114,13 +116,13 @@ const actionHandler = async () => {
         ...formData,
         collectionId: collectionId.value,
       })
-      store.dispatch('helper/pushFlashMessage', t('FF0035'))
+      notify.showNotifySnackbar({ messageText: t('FF0035') })
     } else {
       await store.dispatch('workspace/createCollection', {
         ...formData,
         workspaceNodeId: props.workspaceNodeId,
       })
-      store.dispatch('helper/pushFlashMessage', t('FF0027'))
+      notify.showNotifySnackbar({ messageText: t('FF0027') })
     }
     store.dispatch('helper/reloadInnerApp')
     store.dispatch('helper/clearModalPipeline')

@@ -1,6 +1,7 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation.js'
+import { NOTIFY_TYPE } from '@/utils/constants'
 
 export default function useReceivedShare() {
   const { t } = useI18n()
@@ -48,7 +49,7 @@ export default function useReceivedShare() {
       })
     } else if (isCanSave && organizationList.length === 0) {
       store.dispatch('helper/openModalConfirm', {
-        type: 3,
+        type: NOTIFY_TYPE.ALERT,
         header: t('GG0010'),
         contentText: t('GG0033'),
         primaryBtnText: t('UU0072'),
@@ -57,7 +58,7 @@ export default function useReceivedShare() {
       })
     } else {
       store.dispatch('helper/openModalConfirm', {
-        type: 1,
+        type: NOTIFY_TYPE.WARNING,
         header: t('RR0214'),
         contentText: t('GG0015'),
         primaryBtnText: t('UU0031'),
@@ -110,7 +111,7 @@ export default function useReceivedShare() {
       })
     } else if (isCanClone && organizationList.length === 0) {
       store.dispatch('helper/openModalConfirm', {
-        type: 3,
+        type: NOTIFY_TYPE.ALERT,
         header: t('GG0017'),
         contentText: t('GG0034'),
         primaryBtnText: t('UU0072'),
@@ -119,7 +120,7 @@ export default function useReceivedShare() {
       })
     } else {
       store.dispatch('helper/openModalConfirm', {
-        type: 1,
+        type: NOTIFY_TYPE.WARNING,
         header: t('GG0016'),
         contentText: t('GG0020'),
         primaryBtnText: t('UU0031'),

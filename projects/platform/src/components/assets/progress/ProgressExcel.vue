@@ -185,6 +185,7 @@ import {
   UPLOAD_PROGRESS_EXCEL_SORT_BY,
   UPLOAD_PROGRESS,
   EXCEL_CATEGORY,
+  NOTIFY_TYPE,
 } from '@/utils/constants'
 import TableStatusLabel from '@/components/assets/progress/TableStatusLabel.vue'
 import TableStatusProgress from '@/components/assets/progress/TableStatusProgress.vue'
@@ -359,7 +360,7 @@ const handleAction = async (type, excelProgressId) => {
 
   if (deletedMaterialList.length > 0) {
     store.dispatch('helper/pushModalConfirm', {
-      type: 1,
+      type: NOTIFY_TYPE.WARNING,
       header: t('PP0035'),
       contentText: t('PP0036'),
       primaryBtnText: t('UU0094'),

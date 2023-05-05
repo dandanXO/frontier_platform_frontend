@@ -74,7 +74,7 @@ export default {
 
 <script setup>
 import { computed, useSlots, toRefs } from 'vue'
-import { CONTEXTUAL_MENU_MODE } from '../../constants.js'
+import { CONTEXTUAL_MENU_MODE } from '../../constants'
 import useInput from '../useInput'
 import isEqual from '../../isEqual.js'
 

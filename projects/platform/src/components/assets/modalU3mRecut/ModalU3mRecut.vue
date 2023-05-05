@@ -86,7 +86,7 @@ import ModalU3mRecutSwitchControlBar from '@/components/assets/modalU3mRecut/Mod
 import PerspectiveCropper from '@/components/assets/modalU3mRecut/perspectiveCropper/PerspectiveCropper.vue'
 import {
   CROP_MODE,
-  MODAL_CONFIRM_TYPE,
+  NOTIFY_TYPE,
   U3M_CUT_SIDE,
   MODAL_TYPE,
 } from '@/utils/constants'
@@ -208,7 +208,7 @@ const handleUpdateScaleSize = (side: U3mSide, newScaleSizeInCm: number) => {
 
 const handleRestore = () => {
   store.dispatch('helper/pushModalConfirm', {
-    type: MODAL_CONFIRM_TYPE.WARNING,
+    type: NOTIFY_TYPE.WARNING,
     theme: 'dark',
     header: t('EE0145'),
     contentText: t('EE0146'),

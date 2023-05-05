@@ -40,10 +40,12 @@ modal-behavior(
 <script setup>
 import { computed, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 
 const refInputEmail = ref(null)
 const orgUser = computed(() => store.getters['organization/orgUser/orgUser'])
@@ -62,6 +64,6 @@ const requestUpgradeToEnterprise = async () => {
   store.dispatch('helper/openModalLoading')
   await store.dispatch('organization/requestUpgradeToEnterprise', formData)
   store.dispatch('helper/closeModalLoading')
-  store.dispatch('helper/pushFlashMessage', t('OO0113'))
+  notify.showNotifySnackbar({ messageText: t('OO0113') })
 }
 </script>

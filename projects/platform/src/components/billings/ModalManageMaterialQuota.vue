@@ -76,6 +76,7 @@ import { ref, computed, shallowRef, h } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import usePlan from '@/composables/usePlan.js'
+import { NOTIFY_TYPE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
@@ -177,7 +178,7 @@ const primaryHandler = async () => {
           store.dispatch('helper/closeModalLoading')
 
           store.dispatch('helper/openModalConfirm', {
-            type: 2,
+            type: NOTIFY_TYPE.SUCCESS,
             header: t('OO0165'),
             primaryBtnText: t('UU0031'),
             contentComponent: shallowRef({
@@ -194,7 +195,7 @@ const primaryHandler = async () => {
     })
   } else {
     store.dispatch('helper/openModalConfirm', {
-      type: 1,
+      type: NOTIFY_TYPE.WARNING,
       header: t('OO0168'),
       primaryBtnText: t('UU0001'),
       textBtnText: t('UU0026'),
@@ -207,7 +208,7 @@ const primaryHandler = async () => {
         store.dispatch('helper/closeModalLoading')
 
         store.dispatch('helper/openModalConfirm', {
-          type: 2,
+          type: NOTIFY_TYPE.SUCCESS,
           header: t('OO0162'),
           primaryBtnText: t('UU0031'),
           contentComponent: shallowRef({

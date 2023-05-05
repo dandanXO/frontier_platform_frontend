@@ -66,7 +66,7 @@ modal-behavior(
 import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import { OG_TYPE } from '@/utils/constants'
+import { OG_TYPE, NOTIFY_TYPE } from '@/utils/constants'
 import { useRouter } from 'vue-router'
 
 const store = useStore()
@@ -192,7 +192,7 @@ const goToBillings = () => {
 
 const openModalConfirmReachMaterialStorage = () => {
   store.dispatch('helper/openModalConfirm', {
-    type: 3,
+    type: NOTIFY_TYPE.ALERT,
     header: t('RR0168'),
     contentText: t('RR0183', { amount: remainingQuota.value.material.max }),
     primaryBtnText: t('UU0082'),
@@ -209,7 +209,7 @@ const submit = async () => {
     store.dispatch('helper/pushModalLoading')
     await props.cloneHandler(targetLocationList, optional, selectedOrgId.value)
     store.dispatch('helper/openModalConfirm', {
-      type: 0,
+      type: NOTIFY_TYPE.INFO,
       header: t('RR0162'),
       contentText: t('RR0242'),
       secondaryBtnText: t('UU0094'),

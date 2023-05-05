@@ -68,13 +68,15 @@ div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import useNavigation from '@/composables/useNavigation.js'
-import { MOODBOARD_TYPE, CREATE_EDIT } from '@/utils/constants'
+import { MOODBOARD_TYPE, CREATE_EDIT, NOTIFY_TYPE } from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 const route = useRoute()
 const { goToMoodboardDetail } = useNavigation()
 
@@ -109,13 +111,13 @@ const openCreateOrEditMoodboard = () => {
 
 const handleDelete = (moodboardId) => {
   store.dispatch('helper/openModalConfirm', {
-    type: 1,
+    type: NOTIFY_TYPE.WARNING,
     header: t('QQ0075'),
     contentText: t('QQ0076'),
     primaryBtnText: t('UU0105'),
     primaryBtnHandler: () => {
       store.dispatch('moodboard/deleteMoodboard', { moodboardId })
-      store.dispatch('helper/pushFlashMessage', t('QQ0077'))
+      notify.showNotifySnackbar({ messageText: t('QQ0077') })
     },
     textBtnText: t('UU0002'),
   })

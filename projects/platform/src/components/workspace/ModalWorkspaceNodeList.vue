@@ -119,16 +119,12 @@ modal-behavior(
           class="flex justify-center items-center"
         )
           f-svg-icon(iconName="loading" size="54" class="text-primary-400")
-    div(
+    f-infobar(
       v-if="!isInRoot"
-      class="w-full h-8.5 mt-3.5 px-2.5 bg-grey-50 flex items-center gap-x-1"
+      class="mt-3.5"
+      :messageText="isOnlyShowCollection ? $t('RR0119') : $t('UU0037')"
+      :action="{ text: isOnlyShowCollection ? $t('UU0037') : $t('UU0036'), handler: () => { isOnlyShowCollection = !isOnlyShowCollection; }, }"
     )
-      f-svg-icon(iconName="error_outline" size="14" class="text-grey-900")
-      p(class="text-caption text-grey-900") {{ isOnlyShowCollection ? $t('RR0119') : $t('UU0037') }}
-      p(
-        class="text-caption text-cyan-400 cursor-pointer"
-        @click="isOnlyShowCollection = !isOnlyShowCollection"
-      ) {{ isOnlyShowCollection ? $t('UU0037') : $t('UU0036') }}
 </template>
 
 <script setup>
