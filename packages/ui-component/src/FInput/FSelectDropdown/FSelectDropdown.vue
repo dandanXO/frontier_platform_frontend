@@ -51,7 +51,7 @@ f-input-container(
           v-if="appendIcon"
           :size="size === 'sm' ? '20' : '24'"
           :iconName="appendIcon"
-          :class="[...classIcon, { '!text-primary-500': isFocus }]"
+          :class="[...classIcon, { '!text-primary-500': isFocus && !isError }]"
         )
     template(#content="{ collapsePopper }")
       f-contextual-menu(
