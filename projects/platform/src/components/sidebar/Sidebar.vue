@@ -67,8 +67,8 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex fle
               )
                 p(class="pl-7 text-body2 text-grey-900 line-clamp-1") {{ menu.title }}
                 template(v-if="menu.id === 'assets'")
-                  f-tooltip(class="mr-3")
-                    template(#trigger)
+                  f-tooltip-standard(class="mr-3" :tooltipMessage="$t('RR0012')")
+                    template(#slot:tooltip-trigger)
                       div(
                         class="flex justify-center items-center w-6 h-6 rounded bg-grey-100"
                         data-cy="upload-page"
@@ -79,8 +79,6 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex fle
                           size="20"
                           class="text-grey-600"
                         )
-                    template(#content)
-                      p {{ $t('RR0012') }}
       div(class="w-auto h-px bg-grey-100 mx-1.5 my-1.5")
     div(
       v-if="isPromotingNewFeature"

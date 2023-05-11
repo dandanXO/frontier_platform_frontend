@@ -45,7 +45,7 @@ import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import type { Action } from '../../FNotify'
 import { NOTIFY_TYPE, NOTIFY_TYPE_ICON, DISPLAY } from '../../constants'
 
-export interface NotifySnackbarProps {
+export interface NotifyInfobarProps {
   notifyType?: NOTIFY_TYPE
   display?: DISPLAY
   title?: string
@@ -71,7 +71,7 @@ defineEmits<{
   (e: 'close'): void
 }>()
 
-const props = withDefaults(defineProps<NotifySnackbarProps>(), {
+const props = withDefaults(defineProps<NotifyInfobarProps>(), {
   notifyType: NOTIFY_TYPE.INFO,
   display: DISPLAY.FLEX,
   hasCloseButton: false,

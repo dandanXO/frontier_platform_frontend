@@ -11,7 +11,12 @@ div(class="flex items-center h-9.5")
     class="flex-shrink-0 w-7 h-7 bg-grey-0 border border-grey-150 flex items-center justify-center rounded mr-4 cursor-pointer"
     @click="emit('tagInputTrigger')"
   )
-    f-svg-icon(iconName="tag" size="16" class="text-grey-900" :tooltip="$t('TT0053')")
+    f-svg-icon(
+      iconName="tag"
+      size="16"
+      class="text-grey-900"
+      :tooltipMessage="$t('TT0053')"
+    )
   f-button(
     size="sm"
     :disabled="addButtonDisabled"

@@ -7,14 +7,14 @@ div(
   @mouseleave="hasNextLevel && collapseMenu()"
   @click.stop="clickMenuHandler"
 )
-  f-tooltip(
+  f-tooltip-standard(
     :placement="innerMenu.tooltipPlacement"
     isNotFitWidth
     @mouseenter="hasNextLevel && expandMenu()"
     class="w-full flex items-center px-4"
     :disabledTooltip="disabledTooltip"
   )
-    template(#trigger)
+    template(#slot:tooltip-trigger)
       //- Checkbox
       div(
         v-if="!hasNextLevel && !innerMenu.disabled && innerMenu.selectable && selectMode === MULTIPLE"
@@ -98,11 +98,13 @@ div(
           size="24"
           class="text-primary-400"
         )
-    template(#content)
+    template(#slot:tooltip-content)
       p
         span(v-if="isTitleEllipsis && hoverOn === 'title'" class="break-all font-bold") {{ innerMenu.title }}
         span(v-else-if="isDescriptionEllipsis && hoverOn === 'description'") {{ innerMenu.description }}
-        span(v-else) {{ innerMenu.tooltip }}
+        span(v-else)
+          span(v-if="!!innerMenu.tooltipTitle") {{ innerMenu.tooltipTitle }}
+          span(v-if="!!innerMenu.tooltipMessage") {{ innerMenu.tooltipMessage }}
   div(
     ref="refContextMenu"
     v-if="isExpand"
@@ -215,7 +217,8 @@ const innerMenu = computed(() => {
     flag: '', // http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg
     labelColor: '',
     clickHandler: () => {},
-    tooltip: '',
+    tooltipTitle: '',
+    tooltipMessage: '',
     tooltipPlacement: 'right',
     searchEnable: false,
     button: null,
@@ -380,7 +383,7 @@ const disabledTooltip = computed(() => {
   }
 
   if (
-    !!innerMenu.value.tooltip &&
+    (!!innerMenu.value.tooltipTitle || !!innerMenu.value.tooltipMessage) &&
     !!hoverOn.value &&
     !isTitleEllipsis.value &&
     !isDescriptionEllipsis.value

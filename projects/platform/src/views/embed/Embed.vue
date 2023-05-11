@@ -165,17 +165,17 @@ const optionSort = computed(() => {
       {
         ...GHG_RESULTS,
         disabled: !share.value.isSourceOrgHasMade2FlowPlan,
-        tooltip: t('VV0047'),
+        tooltipMessage: t('VV0047'),
       },
       {
         ...WATER_DEPLETION_RESULTS,
         disabled: !share.value.isSourceOrgHasMade2FlowPlan,
-        tooltip: t('VV0047'),
+        tooltipMessage: t('VV0047'),
       },
       {
         ...LAND_USE_RESULTS,
         disabled: !share.value.isSourceOrgHasMade2FlowPlan,
-        tooltip: t('VV0047'),
+        tooltipMessage: t('VV0047'),
       },
     ],
     keywordSearch: [RELEVANCE_M_C],

@@ -3,7 +3,12 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
   div(class="col-span-3 w-full min-w-42.5 max-w-67.5")
     div(class="pb-2.5 flex justify-between")
       div(class="font-bold text-grey-900 line-clamp-1") {{ properties.materialNo }}
-      f-svg-icon(:iconName="statusIconName" size="24" class="text-grey-900")
+      f-svg-icon(
+        :iconName="materialScanImageStatus.iconName"
+        :tooltipMessage="materialScanImageStatus.tooltipMessage"
+        size="24"
+        class="text-grey-900"
+      )
     div(
       class="w-full relative aspect-square"
       @mouseenter="isHover = true"
@@ -102,8 +107,11 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
             ) {{ $t('UU0116') }}
               f-svg-icon(iconName="arrow_forward" size="16" class="ml-1")
   div(class="col-span-1 text-grey-600 flex flex-col gap-3.5")
-    f-tooltip(boundaryReference="pick-list-header")
-      template(#trigger)
+    f-tooltip-standard(
+      boundaryReference="pick-list-header"
+      :tooltipMessage="$t('RR0059')"
+    )
+      template(#slot:tooltip-trigger)
         div(
           v-if="properties.u3m.status !== U3M_STATUS.COMPLETED"
           class="w-7.5 h-7.5 flex justify-center items-center text-grey-250"
@@ -115,14 +123,16 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
           @click="openModalU3mSelectFileFormat([node])"
         )
           f-svg-icon(iconName="3D_material" size="24")
-      template(#content)
-        p {{ $t('RR0059') }}
     f-popper(placement="left-start")
       template(#trigger)
         div(
           class="w-7.5 h-7.5 hover:bg-primary-400/10 hover:text-primary-400 flex justify-center items-center rounded-full cursor-pointer"
         )
-          f-svg-icon(iconName="more_horiz" size="24")
+          f-svg-icon(
+            iconName="more_horiz"
+            size="24"
+            :tooltipMessage="$t('RR0260')"
+          )
       template(#content)
         f-list(class="w-55 py-2.5")
           f-list-item(
@@ -181,8 +191,12 @@ const {
   openModalMoodboardMaterialDetail,
   togglePick,
 } = useMoodboardNode(moodboard, moodboardOfferNodeCollection)
-const { materialBasicInfo, materialInfo, carbonEmissionInfo, statusIconName } =
-  useMaterial(props.properties)
+const {
+  materialBasicInfo,
+  materialInfo,
+  carbonEmissionInfo,
+  materialScanImageStatus,
+} = useMaterial(props.properties)
 
 const innerSelectedList = computed({
   get: () => props.selectedList,

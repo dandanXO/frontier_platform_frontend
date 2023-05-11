@@ -7,16 +7,14 @@ global-breadcrumb-list(
 div(class="pb-7.5")
   div(class="flex items-center pb-1")
     h5(class="text-h5 text-grey-900 font-bold leading-1.6 break-words") {{ `${material.materialNo} ${material.description}` }}
-    f-tooltip(class="pl-6 pr-4")
-      template(#trigger)
+    f-tooltip-standard(class="pl-6 pr-4" :tooltipMessage="$t('RR0054')")
+      template(#slot:tooltip-trigger)
         f-svg-icon(
           iconName="create"
           class="text-grey-600 hover:text-primary-400 cursor-pointer"
           size="24"
           @click="$emit('goToEdit')"
         )
-      template(#content)
-        p {{ $t('RR0054') }}
     digital-thread-entrance(
       :material="material"
       :drawerOpenFromLocationList="drawerOpenFromLocationList"

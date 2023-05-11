@@ -12,7 +12,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
             size="20"
             class="text-grey-600 hover:text-primary-400 cursor-pointer"
             :class="{ 'text-primary-400 transform rotate-180': isExpandDigitalThreadList, '!text-grey-200': digitalThread.hasMaterialDeleted || drawerOpenFromLocationType === LOCATION_TYPE.NOTIFICATION }"
-            tooltip="Show all threads"
+            tooltipMessage="Show all threads"
             @click="!(digitalThread.hasMaterialDeleted || drawerOpenFromLocationType === LOCATION_TYPE.NOTIFICATION) && (isExpandDigitalThreadList = !isExpandDigitalThreadList)"
           )
           div(
@@ -26,8 +26,12 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           @mouseleave="isHoverHeader = false"
         )
           div(:class="{ 'flex-grow': !isCreatingDigitalThread }")
-            f-tooltip(:key="isCreatingDigitalThread" class="flex items-center group")
-              template(#trigger)
+            f-tooltip-standard(
+              :key="isCreatingDigitalThread"
+              class="flex items-center group"
+              :tooltipMessage="!isCreatingDigitalThread ? digitalThread.digitalThreadName : ''"
+            )
+              template(#slot:tooltip-trigger)
                 f-svg-icon(
                   iconName="sticker_thread"
                   size="20"
@@ -38,15 +42,13 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
                   class="pl-2.5 text-body1 font-bold line-clamp-1"
                   :class="[isCreatingDigitalThread ? 'text-grey-300' : 'text-grey-900 group-hover:text-primary-400']"
                 ) {{ digitalThread.digitalThreadName }}
-              template(v-if="!isCreatingDigitalThread" #content)
-                p {{ digitalThread.digitalThreadName }}
           div(class="flex-shrink pl-4 flex items-center gap-x-4")
             f-svg-icon(
               v-if="isHoverHeader"
               iconName="create"
               size="20"
               class="text-grey-600 hover:text-primary-400 cursor-pointer"
-              :tooltip="$t('TT0003')"
+              :tooltipMessage="$t('TT0003')"
               @click="openDigitalThreadNameEditor"
             )
             f-svg-icon(
@@ -54,14 +56,14 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
               iconName="summary"
               size="20"
               class="text-grey-600 hover:text-primary-400 cursor-pointer"
-              :tooltip="$t('TT0067')"
+              :tooltipMessage="$t('TT0067')"
               @click="openModalDigitalThreadSummary"
             )
         f-svg-icon(
           iconName="clear"
           size="20"
           class="text-grey-600 hover:text-primary-400 ml-4 cursor-pointer"
-          tooltip="Close"
+          tooltipMessage="Close"
           @click="closeStickerDrawer"
         )
       template(v-else)
@@ -107,7 +109,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
               size="14"
               class="ml-1 invisible group-hover:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
               @click.stop="goToMaterialDetail(true)"
-              tooltip="TT0074"
+              tooltipMessage="TT0074"
             )
             span(class="leading-1.4 pl-0.5" v-if="digitalThread.hasMaterialDeleted") ({{ $t('TT0112') }})
             span(
@@ -270,8 +272,11 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
       div(v-show="!isFetchingDigitalThread" class="py-4")
         //- Button: Add a sticker
         div(v-if="!isAddingSticker && !isFilterDirty" class="pl-8 pr-10.5")
-          f-tooltip(placement="top" isNotFitWidth)
-            template(#trigger)
+          f-tooltip-standard(
+            isNotFitWidth
+            :tooltipMessage="digitalThread.hasMaterialDeleted ? $t('TT0102') : ''"
+          )
+            template(#slot:tooltip-trigger)
               button(
                 class="relative w-full h-16 rounded-md overflow-hidden shadow-2 hover:shadow-4"
                 :class="[digitalThread.hasMaterialDeleted ? 'bg-grey-50' : 'bg-grey-0']"
@@ -284,8 +289,6 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
                     class="text-body2 font-bold pl-3"
                     :class="[digitalThread.hasMaterialDeleted ? 'text-grey-200' : 'text-grey-800']"
                   ) {{ $t('TT0092') }}
-            template(#content v-if="digitalThread.hasMaterialDeleted")
-              p {{ $t('TT0102') }}
         //- Default intro
         div(v-if="isCreatingDigitalThread && !isAddingSticker" class="pl-8 pr-10.5")
           div(class="pt-10")
@@ -347,7 +350,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           size="14"
           class="invisible group-hover:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
           @click.stop="goToMaterialDetail(true)"
-          tooltip="TT0074"
+          tooltipMessage="TT0074"
         )
       f-scrollbar-container(class="flex-grow")
         div(

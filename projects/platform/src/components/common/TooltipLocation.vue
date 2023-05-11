@@ -1,12 +1,12 @@
 <template lang="pug">
-f-tooltip
-  template(#trigger="{ isActive }")
+f-tooltip-standard
+  template(#slot:tooltip-trigger="{ isActive }")
     f-svg-icon(
       iconName="location_on"
       size="14"
       :class="[isActive ? 'text-primary-400' : 'text-grey-250']"
     )
-  template(#content)
+  template(#slot:tooltip-content)
     div(class="flex items-center flex-wrap")
       template(v-for="(path, index) in location")
         p(

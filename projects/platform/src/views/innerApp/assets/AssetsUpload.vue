@@ -13,12 +13,23 @@ f-scrollbar-container(class="w-full h-full")
           div(class="text-grey-900 text-body1 leading-1.6")
             p {{ $t('DD0079') }}
             p {{ $t('DD0080') }}
-          div(
-            class="flex items-center text-grey-600 cursor-pointer hover:text-grey-900"
-            @click="openModalBackSideQrcode"
-          )
-            f-svg-icon(iconName="info_outline" size="20" class="mr-1.5")
-            p(class="text-body2 font-bold") {{ $t('DD0081') }}
+          f-tooltip-toggle(placement="bottom" :triggerText="$t('DD0081')")
+            template(#slot:tooltip-toggle-content)
+              i18n-t(
+                keypath="DD0010"
+                tag="div"
+                class="mb-7.5 text-caption/1.3 text-grey-50"
+                scope="global"
+              )
+                template(#DD0111)
+                  div(
+                    class="inline-flex items-center text-cyan-400 cursor-pointer"
+                    @click="printBackSideLabel"
+                  ) {{ $t('DD0111') }}
+                    f-svg-icon(iconName="open_in_new" size="15")
+              img(src="@/assets/images/back_side.png")
+            template(#slot:tooltip-toggle-button)
+              f-button(size="sm") {{ $t('UU0026') }}
       div(class="mt-8")
         div(class="grid grid-cols-3 gap-7.5")
           div
@@ -84,6 +95,7 @@ import useNavigation from '@/composables/useNavigation'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { printBackSideLabel } from '@/utils/print'
 
 const { t } = useI18n()
 const store = useStore()
@@ -92,12 +104,6 @@ const { prefixPath, parsePath, goToAssets, goToAssetsMaterialCreate } =
 const openModalUploadMaterialImage = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-smart-upload',
-  })
-}
-
-const openModalBackSideQrcode = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-back-side-qrcode',
   })
 }
 

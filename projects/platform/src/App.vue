@@ -2,7 +2,7 @@
 router-view
 f-snackbar(
   v-bind="notify.notifySnackbarProps"
-  @update:izsShowSnackbar="notify.closeNotifySnackbar"
+  @update:isShowSnackbar="notify.closeNotifySnackbar"
 )
 modal-pipeline
 </template>

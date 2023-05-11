@@ -46,16 +46,14 @@ div(class="max-w-315 h-full mx-auto")
             i18n-t(keypath="RR0068" tag="span" scope="global")
               template(#number) {{ pagination.totalCount }}
             span )
-        f-tooltip
-          template(#trigger)
+        f-tooltip-standard(:tooltipMessage="$t('RR0056')")
+          template(#slot:tooltip-trigger)
             f-svg-icon(
               iconName="clone"
               class="text-grey-600 hover:text-primary-400 cursor-pointer"
               size="24"
               @click="receivedShareCloneByNodeKey(currentNodeKey)"
             )
-          template(#content)
-            p {{ $t('RR0056') }}
     template(#sub-header)
       div(
         v-if="collection.description || collection.trendBoardCoverImg"
@@ -180,17 +178,17 @@ const optionSort = computed(() => {
       {
         ...GHG_RESULTS,
         disabled: !share.value.isSourceOrgHasMade2FlowPlan,
-        tooltip: t('VV0047'),
+        tooltipMessage: t('VV0047'),
       },
       {
         ...WATER_DEPLETION_RESULTS,
         disabled: !share.value.isSourceOrgHasMade2FlowPlan,
-        tooltip: t('VV0047'),
+        tooltipMessage: t('VV0047'),
       },
       {
         ...LAND_USE_RESULTS,
         disabled: !share.value.isSourceOrgHasMade2FlowPlan,
-        tooltip: t('VV0047'),
+        tooltipMessage: t('VV0047'),
       },
     ],
     keywordSearch: [RELEVANCE_M_C],

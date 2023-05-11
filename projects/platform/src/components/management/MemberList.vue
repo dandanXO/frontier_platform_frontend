@@ -32,14 +32,13 @@ f-table(
         //- p(v-if="item.orgRoleId === ROLE_ID.OWNER") {{ getRoleName(item.orgRoleId) }}
         //- p(v-else-if="roleLimitList(item).length === 1") {{ getRoleName(item.orgRoleId) }}
         //- template(v-else)
-        //-   f-tooltip(
+        //-   f-tooltip-standard(
         //-     class="flex-grow"
         //-     placement="bottom-start"
-        //-     :manual="true"
-        //-     :showArrow="false"
+        //-     :manual="true""
         //-     :offset="[0, 8]"
         //-   )
-        //-     template(#trigger="{ isActive }")
+        //-     template(#slot:tooltip-trigger="{ isActive }")
         //-       div(class="flex items-center cursor-pointer")
         //-         p {{ getRoleName(currentRoleId(item)) }}
         //-         f-svg-icon(iconName="keyboard_arrow_right" size="20" class="ml-4 text-grey-600 transform" :class="[isActive ? '-rotate-90' : 'rotate-90']")

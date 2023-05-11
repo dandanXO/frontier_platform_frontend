@@ -122,17 +122,17 @@ const optionSort = computed(() => {
       {
         ...GHG_RESULTS,
         disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
-        tooltip: t('VV0047'),
+        tooltipMessage: t('VV0047'),
       },
       {
         ...WATER_DEPLETION_RESULTS,
         disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
-        tooltip: t('VV0047'),
+        tooltipMessage: t('VV0047'),
       },
       {
         ...LAND_USE_RESULTS,
         disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
-        tooltip: t('VV0047'),
+        tooltipMessage: t('VV0047'),
       },
     ],
     keywordSearch: [RELEVANCE_C_M, RELEVANCE_M_C],

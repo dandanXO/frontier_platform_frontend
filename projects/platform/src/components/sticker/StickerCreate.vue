@@ -22,7 +22,7 @@ div(class="relative w-full rounded-md shadow-8 overflow-hidden")
             iconName="info_outline"
             size="14"
             class="text-grey-300 hover:text-grey-600"
-            :tooltip="$t('TT0015')"
+            :tooltipMessage="$t('TT0015')"
           )
         f-select-dropdown(
           class="w-73.5"
@@ -37,8 +37,10 @@ div(class="relative w-full rounded-md shadow-8 overflow-hidden")
           div(
             class="flex-grow h-7 bg-grey-150 grid grid-cols-2 items-center justify-items-center rounded-sm"
           )
-            f-tooltip
-              template(#trigger)
+            f-tooltip-standard(
+              :tooltipMessage="!canChooseAddToExternal ? $t('TT0111') : ''"
+            )
+              template(#slot:tooltip-trigger)
                 div(
                   class="w-35 h-5.5 flex items-center justify-center gap-x-1.5"
                   :class="[{ 'bg-grey-0 rounded-sm': addTo === EXTERNAL }, !canChooseAddToExternal ? 'text-grey-200' : 'text-grey-900']"
@@ -46,8 +48,6 @@ div(class="relative w-full rounded-md shadow-8 overflow-hidden")
                 )
                   f-svg-icon(iconName="external" size="14")
                   p(class="text-caption") {{ $t('TT0009') }}
-              template(v-if="!canChooseAddToExternal" #content)
-                p {{ $t('TT0111') }}
             div(
               class="w-35 h-5.5 flex items-center justify-center gap-x-1.5 text-grey-900"
               :class="{ 'bg-grey-0 rounded-sm': addTo === INTERNAL }"
@@ -62,11 +62,9 @@ div(class="relative w-full rounded-md shadow-8 overflow-hidden")
         div(class="flex-grow flex items-center gap-x-8")
           template(v-for="item in STICKER_TYPE")
             p(v-if="item.value === type" class="text-body2 text-grey-900 font-bold") {{ item.text }}
-            f-tooltip(v-else)
-              template(#trigger)
+            f-tooltip-standard(v-else :tooltipMessage="$t('TT0093')")
+              template(#slot:tooltip-trigger)
                 p(class="text-body2 text-grey-200") {{ item.text }}
-              template(#content)
-                p {{ $t('TT0093') }}
   div(class="px-5 pb-2.5 bg-grey-100")
     div(class="min-h-25 py-4 box-content")
       common-sticker-text-editor(

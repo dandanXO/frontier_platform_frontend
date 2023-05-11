@@ -59,11 +59,9 @@ div(class="mt-11 mb-16.5")
                   :class="{ 'text-grey-250': service.planStatus.INVALID }"
                 )
                   p(class="text-body1 font-bold mr-1.5") {{ $t('M2F036') }}
-                  f-tooltip(placement="top")
-                    template(#trigger)
+                  f-tooltip-standard(:tooltipMessage="$t('VV0072')")
+                    template(#slot:tooltip-trigger)
                       f-svg-icon(iconName="info_outline" size="16")
-                    template(#content)
-                      p(class="text-caption text-grey-50 leading-1.3 max-w-72") {{ $t('VV0072') }}
                 p(
                   class="text-caption text-grey-600 mb-4"
                   :class="{ 'text-grey-250': service.planStatus.INVALID }"

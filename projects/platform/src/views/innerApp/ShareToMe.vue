@@ -21,16 +21,14 @@ div(class="w-full h-full")
             i18n-t(keypath="RR0068" tag="span" scope="global")
               template(#number) {{ pagination.totalCount }}
             span )
-        f-tooltip(v-if="!isFirstLayer")
-          template(#trigger)
+        f-tooltip-standard(v-if="!isFirstLayer" :tooltipMessage="$t('RR0056')")
+          template(#slot:tooltip-trigger)
             f-svg-icon(
               iconName="clone"
               class="text-grey-600 cursor-pointer hover:text-primary-400 ml-1"
               size="24"
               @click="shareToMeCloneByCollection(currentNodeKey, collection.share.sharingId, collection.isCanClone)"
             )
-          template(#content)
-            p {{ $t('RR0056') }}
     template(#header-right)
       div(
         v-if="!isFirstLayer"

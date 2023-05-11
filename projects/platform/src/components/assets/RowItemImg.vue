@@ -2,7 +2,12 @@
 div(class="w-full min-w-42.5 max-w-67.5")
   div(class="pb-2.5 flex justify-between")
     div(class="font-bold text-grey-900 line-clamp-1") {{ material.materialNo }}
-    f-svg-icon(:iconName="statusIconName" size="24" class="text-grey-900")
+    f-svg-icon(
+      :iconName="materialScanImageStatus.iconName"
+      :tooltipMessage="materialScanImageStatus.tooltipMessage"
+      size="24"
+      class="text-grey-900"
+    )
   div(
     class="w-full relative aspect-square"
     @mouseenter="isHover = true"
@@ -58,7 +63,7 @@ export default {
   setup(props, { emit }) {
     const { goToAssetMaterialDetail } = useNavigation()
     const isHover = ref(false)
-    const { statusIconName } = useMaterial(props.material)
+    const { materialScanImageStatus } = useMaterial(props.material)
 
     const innerSelectedList = computed({
       get: () => props.selectedList,
@@ -71,7 +76,7 @@ export default {
 
     return {
       innerSelectedList,
-      statusIconName,
+      materialScanImageStatus,
       isHover,
       haveSelectedMoreThanOne,
       goToAssetMaterialDetail,

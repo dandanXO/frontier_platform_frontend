@@ -8,20 +8,16 @@ div(class="flex-grow flex-shrink min-w-0 pr-3.5 flex items-center gap-x-3")
     :hasBorder="false"
   )
   div(class="flex-shrink min-w-0")
-    f-tooltip(isNotFitWidth)
-      template(#trigger)
+    f-tooltip-standard(isNotFitWidth :tooltipMessage="primaryInfoText")
+      template(#slot:tooltip-trigger)
         p(
           class="whitespace-nowrap text-ellipsis overflow-hidden text-caption text-grey-900 font-bold leading-1.6"
         ) {{ primaryInfoText }}
-      template(#content)
-        p {{ primaryInfoText }}
-    f-tooltip(isNotFitWidth)
-      template(#trigger)
+    f-tooltip-standard(isNotFitWidth :tooltipMessage="secondaryInfoText")
+      template(#slot:tooltip-trigger)
         p(
           class="whitespace-nowrap text-ellipsis overflow-hidden text-caption text-grey-600 leading-1.6"
         ) {{ secondaryInfoText }}
-      template(#content)
-        p {{ secondaryInfoText }}
 </template>
 
 <script setup lang="ts">

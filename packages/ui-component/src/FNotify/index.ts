@@ -1,3 +1,4 @@
+export * from './FInfobar/FInfobar.vue'
 export * from './FBanner/FBanner.vue'
 export * from './FSnackbar/FSnackbar.vue'
 

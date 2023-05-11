@@ -2,15 +2,14 @@
 div
   div(class="flex items-center mb-6 text-grey-900")
     h5(class="text-h5 font-bold") {{ $t('RR0132') }}
-    f-popper(placement="top" class="pl-1" showArrow)
-      template(#trigger)
+    f-tooltip-media(
+      class="pl-1"
+      :tooltipTitle="$t('UU0029')"
+      :tooltipMessage="$t('EE0066')"
+      :imageUrl="u3mInstructionImage"
+    )
+      template(#slot:tooltip-trigger)
         f-svg-icon(iconName="info_outline" class="cursor-pointer" size="14")
-      template(#content="{ collapsePopper }")
-        div(class="p-5 bg-grey-0 shadow-4 rounded")
-          span(
-            class="text-body2 text-cyan-400 underline leading-1.6 cursor-pointer"
-            @click="openModalU3mInstruction(); collapsePopper()"
-          ) {{ $t('UU0029') }}
   p(class="text-caption text-grey-600 font-bold leading-1.6 mb-1") {{ $t('EE0017') }}
     f-svg-icon(
       v-if="status === IN_QUEUE || status === PROCESSING"
@@ -42,12 +41,12 @@ div
 
 <script setup>
 import { useI18n } from 'vue-i18n'
-import { useStore } from 'vuex'
 import { computed } from 'vue'
 import MaterialU3mFiles from '@/components/common/material/u3m/MaterialU3mFiles.vue'
 import { U3M_STATUS } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
 import useModelEditor from '@/composables/useModelEditor'
+import u3mInstructionImage from '@/assets/images/u3m.png'
 
 const props = defineProps({
   material: {
@@ -60,23 +59,10 @@ const material = computed(() => props.material)
 const status = computed(() => material.value.u3m.status)
 
 const { t } = useI18n()
-const store = useStore()
 const { goToProgress } = useNavigation()
 const { openModalModelEditor } = useModelEditor(material)
 const { UNQUALIFIED, INITIAL, IN_QUEUE, COMPLETED, PROCESSING, UNSUCCESSFUL } =
   U3M_STATUS
-
-const openModalU3mInstruction = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-u3m-instruction',
-    properties: {
-      primaryBtnText: t('UU0094'),
-      primaryHandler: () => {
-        store.dispatch('helper/closeModalBehavior')
-      },
-    },
-  })
-}
 
 const label = computed(() => {
   let text

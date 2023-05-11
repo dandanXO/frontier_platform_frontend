@@ -31,6 +31,7 @@ div(class="grid")
       class="cursor-pointer"
       :class="[isOpenFilterPanel ? 'text-primary-400' : 'text-grey-900']"
       @click="isOpenFilterPanel = !isOpenFilterPanel"
+      :tooltipMessage="$t('RR0085')"
     )
     //- div(class="w-0.5 h-4 bg-grey-250")
     //- f-svg-icon(size="24" iconName="camera_border" class="text-grey-900 cursor-pointer")

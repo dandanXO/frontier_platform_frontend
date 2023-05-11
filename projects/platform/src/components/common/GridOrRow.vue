@@ -5,13 +5,17 @@ div(class="flex text-grey-600 cursor-pointer")
     :class="[displayMode === DISPLAY_NODE.GRID ? `${activeClass} border-r-2` : '']"
     @click="$emit('update:displayMode', DISPLAY_NODE.GRID)"
   )
-    f-svg-icon(iconName="apps" size="24")
+    f-svg-icon(iconName="apps" size="24" :tooltipMessage="$t('RR0273')")
   div(
     class="py-1 px-1.5 border-grey-250 border-t-2 border-b-2 border-r-2 rounded-r"
     :class="[displayMode === DISPLAY_NODE.LIST ? `${activeClass} border-l-2` : '']"
     @click="$emit('update:displayMode', DISPLAY_NODE.LIST)"
   )
-    f-svg-icon(iconName="format_list_bulleted" size="24")
+    f-svg-icon(
+      iconName="format_list_bulleted"
+      size="24"
+      :tooltipMessage="$t('RR0274')"
+    )
 </template>
 
 <script setup>

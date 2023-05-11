@@ -1,14 +1,16 @@
 <template lang="pug">
-f-tooltip(v-if="tooltip")
-  template(#trigger)
+f-tooltip-standard(
+  v-if="tooltipMessage"
+  :tooltipTitle="te(tooltipTitle) ? $t(tooltipTitle) : tooltipTitle"
+  :tooltipMessage="te(tooltipMessage) ? $t(tooltipMessage) : tooltipMessage"
+)
+  template(#slot:tooltip-trigger)
     svg(
       class="svg-icon"
       arid-hidden="true"
       :style="{ width: `${size}px`, height: `${size}px`, minWidth: `${size}px`, minHeight: `${size}px` }"
     )
       use(:xlink:href="`#${iconName}`")
-  template(#content)
-    p {{ te(tooltip) ? $t(tooltip) : tooltip }}
 svg(
   v-else
   class="svg-icon"
@@ -39,7 +41,11 @@ defineProps({
     type: String,
     default: '20',
   },
-  tooltip: {
+  tooltipTitle: {
+    type: String,
+    default: '',
+  },
+  tooltipMessage: {
     type: String,
     default: '',
   },

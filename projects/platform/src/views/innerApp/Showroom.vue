@@ -29,26 +29,22 @@ div(class="w-full h-full relative")
               template(#number) {{ pagination.totalCount }}
             span )
         template(v-if="!isFirstLayer")
-          f-tooltip
-            template(#trigger)
+          f-tooltip-standard(:tooltipMessage="$t('RR0167')")
+            template(#slot:tooltip-trigger)
               f-svg-icon(
                 iconName="clone"
                 class="text-grey-600 cursor-pointer hover:text-primary-400"
                 size="24"
                 @click="publicCloneByCollection(currentNodeKey, collection.publish.isCanClone)"
               )
-            template(#content)
-              p {{ $t('RR0167') }}
-          f-tooltip
-            template(#trigger)
+          f-tooltip-standard(:tooltipMessage="$t('II0034')")
+            template(#slot:tooltip-trigger)
               f-svg-icon(
                 iconName="forward_to_mail"
                 size="24"
                 class="text-grey-600 hover:text-primary-400"
                 @click="openModalShowroomContactForm(collection.publish.orgId, true)"
               )
-            template(#content)
-              p {{ $t('II0034') }}
     template(#header-right)
       f-popper(v-if="isFirstLayer" placement="bottom-end" class="self-end")
         template(#trigger)
@@ -66,26 +62,28 @@ div(class="w-full h-full relative")
               )
                 img(:src="org.logo" class="rounded-full w-8 h-8 object-cover")
                 p(class="flex-grow px-4 line-clamp-1") {{ org.orgName }}
-                f-tooltip(:boundaryReference="`contact-org-${org.orgName}`")
-                  template(#trigger)
+                f-tooltip-standard(
+                  :boundaryReference="`contact-org-${org.orgName}`"
+                  :tooltipMessage="$t('II0035')"
+                )
+                  template(#slot:tooltip-trigger)
                     f-svg-icon(
                       iconName="copy_link"
                       size="24"
                       class="text-grey-600 hover:text-primary-400 mr-3"
                       @click="copyContactEmail"
                     )
-                  template(#content)
-                    p {{ $t('II0035') }}
-                f-tooltip(:boundaryReference="`contact-org-${org.orgName}`")
-                  template(#trigger)
+                f-tooltip-standard(
+                  :boundaryReference="`contact-org-${org.orgName}`"
+                  :tooltipMessage="$t('II0034')"
+                )
+                  template(#slot:tooltip-trigger)
                     f-svg-icon(
                       iconName="forward_to_mail"
                       size="24"
                       class="text-grey-600 hover:text-primary-400"
                       @click="openModalShowroomContactForm(org.orgId, false); collapsePopper()"
                     )
-                  template(#content)
-                    p {{ $t('II0034') }}
       f-button(
         v-else
         size="sm"

@@ -1,12 +1,13 @@
 <template lang="pug">
 div(class="text-grey-600 flex flex-col gap-3.5")
-  f-tooltip(
+  f-tooltip-standard(
     v-for="item in [editMaterial, printCard, downloadU3M]"
     :key="item.id"
     class="cursor-pointer"
     boundaryReference="search-table-header"
+    :tooltipMessage="getValueByMaterial(item.name, props.material)"
   )
-    template(#trigger)
+    template(#slot:tooltip-trigger)
       div(
         v-if="item.id === 'downloadU3M' && getValueByMaterial(item.disabled, props.material)"
         class="w-7.5 h-7.5 flex justify-center items-center text-grey-250"
@@ -18,14 +19,17 @@ div(class="text-grey-600 flex flex-col gap-3.5")
         @click="item.func && item.func(material)"
       )
         f-svg-icon(:iconName="item.icon" size="24")
-    template(#content)
-      p {{ getValueByMaterial(item.name, props.material) }}
   f-popper(class="cursor-pointer" placement="left-start")
     template(#trigger)
-      div(
-        class="w-7.5 h-7.5 hover:bg-primary-400/10 hover:text-primary-400 flex justify-center items-center rounded-full"
+      f-tooltip-standard(
+        :tooltipMessage="$t('RR0260')"
+        boundaryReference="search-table-header"
       )
-        f-svg-icon(iconName="more_horiz" size="24")
+        template(#slot:tooltip-trigger)
+          div(
+            class="w-7.5 h-7.5 hover:bg-primary-400/10 hover:text-primary-400 flex justify-center items-center rounded-full"
+          )
+            f-svg-icon(iconName="more_horiz" size="24")
     template(#content="{ collapsePopper }")
       f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
 </template>

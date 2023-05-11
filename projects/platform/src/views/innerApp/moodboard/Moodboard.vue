@@ -55,6 +55,7 @@ div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
                 iconName="more_horiz"
                 size="24"
                 class="text-grey-600 group-hover:text-primary-400"
+                :tooltipMessage="$t('RR0260')"
               )
           template(#content="{ collapsePopper }")
             f-list

@@ -57,7 +57,11 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
     )
       template(#trigger)
         div(class="relative cursor-pointer")
-          f-svg-icon(iconName="notification" class="text-grey-600")
+          f-svg-icon(
+            iconName="notification"
+            class="text-grey-600"
+            :tooltipMessage="$t('NN0001')"
+          )
           div(
             v-if="haveUnreadNotification"
             class="absolute top-0.5 right-px w-2 h-2 rounded-full border border-grey-0 bg-red-400"

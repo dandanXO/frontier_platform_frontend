@@ -12,8 +12,8 @@ div
             @click="openModalTypeTextToConfirm"
             data-cy="group-about_delete"
           ) {{ $t('UU0013') }}
-        f-tooltip
-          template(#trigger)
+        f-tooltip-standard(:tooltipMessage="$t('BB0056')")
+          template(#slot:tooltip-trigger)
             div(class="flex items-center" @click="copyGroupId")
               p(class="text-caption text-grey-900 cursor-pointer pr-1.5") ID: {{ groupNo }}
               f-svg-icon(
@@ -21,8 +21,6 @@ div
                 size="14"
                 class="text-grey-600 cursor-pointer"
               )
-          template(#content)
-            p {{ $t('BB0056') }}
       div(class="flex gap-x-2 w-85 mb-7.5")
         f-input-text(
           v-model:textValue="groupFormData.groupName"

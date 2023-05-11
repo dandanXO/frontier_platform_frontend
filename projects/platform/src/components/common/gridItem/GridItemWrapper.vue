@@ -46,6 +46,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
           iconName="more_vert"
           size="20"
           class="text-grey-0 hover:text-grey-100"
+          :tooltipMessage="$t('RR0260')"
         )
       template(#content="{ collapsePopper }")
         f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")

@@ -143,9 +143,6 @@ export default {
     ModalChangePassword: defineAsyncComponent(() =>
       import('@/components/account/ModalChangePassword.vue')
     ),
-    ModalBackSideQrcode: defineAsyncComponent(() =>
-      import('@/components/assets/ModalBackSideQrcode.vue')
-    ),
     ModalSmartUpload: defineAsyncComponent(() =>
       import('@/components/assets/ModalSmartUpload.vue')
     ),

@@ -60,16 +60,14 @@ f-table(
       p(v-if="item.category === EXCEL_CATEGORY.UPLOAD") {{ item.fileName }}
       div(v-else-if="item.category === EXCEL_CATEGORY.EXPORT" class="flex items-center")
         p(class="line-clamp-1") {{ item.fileName }}
-        f-tooltip
-          template(#trigger)
+        f-tooltip-standard(:tooltipMessage="$t('RR0190')")
+          template(#slot:tooltip-trigger)
             f-svg-icon(
               iconName="visibility"
               size="20"
               class="text-grey-250 ml-3 w-5 flex-shrink-0 cursor-pointer"
               @click="openModalMaterialNoList(item.materialNoList)"
             )
-          template(#content)
-            p {{ $t('RR0190') }}
     template(v-if="prop === 'createdTime'")
       div(
         v-for="string in $dayjs.unix(item.createDate).format('YYYY/MM/DD-hh:mm:ss A').split('-')"
@@ -128,6 +126,7 @@ f-table(
                   iconName="more_horiz"
                   size="24"
                   class="text-grey-600 group-hover:text-primary-400"
+                  :tooltipMessage="$t('RR0260')"
                 )
             template(#content="{ collapsePopper }")
               f-list(
@@ -166,6 +165,7 @@ f-table(
               iconName="more_horiz"
               size="24"
               class="text-grey-600 group-hover:text-primary-400"
+              :tooltipMessage="$t('RR0260')"
             )
         template(#content="{ collapsePopper }")
           f-list

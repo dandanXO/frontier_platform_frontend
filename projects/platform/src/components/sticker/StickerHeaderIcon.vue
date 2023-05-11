@@ -9,7 +9,7 @@ div(
     :iconName="iconName"
     size="20"
     :key="isActive"
-    :tooltip="isActive ? activeTooltip : inactiveTooltip"
+    :tooltipMessage="isActive ? activeTooltip : inactiveTooltip"
   )
   span(
     v-if="amount !== -1 && (isHoverSticker || amount > 0 || isActive)"

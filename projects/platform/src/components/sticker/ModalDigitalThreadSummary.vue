@@ -47,7 +47,7 @@ modal-behavior(:header="$t('TT0067')")
             iconName="create"
             size="20"
             class="ml-6 text-grey-600 hover:text-primary-400 cursor-pointer"
-            :tooltip="$t('RR0054')"
+            :tooltipMessage="$t('RR0054')"
             @click="openDigitalThreadNameEditor"
           )
         template(v-else)
@@ -131,7 +131,7 @@ modal-behavior(:header="$t('TT0067')")
               iconName="internal"
               size="16"
               class="text-grey-300"
-              :tooltip="$t('TT0101', { addFrom: digitalThread.sideOGType === OG_TYPE.ORG ? $t('RR0262') : $t('RR0263') })"
+              :tooltipMessage="$t('TT0101', { addFrom: digitalThread.sideOGType === OG_TYPE.ORG ? $t('RR0262') : $t('RR0263') })"
             )
           div(class="flex items-center flex-wrap gap-x-2 gap-y-2")
             f-tag(v-for="tag in digitalThread.tagList" size="sm") {{ tag }}
@@ -145,7 +145,7 @@ modal-behavior(:header="$t('TT0067')")
               iconName="internal"
               size="16"
               class="text-grey-300"
-              :tooltip="$t('TT0101', { addFrom: digitalThread.sideOGType === OG_TYPE.ORG ? $t('RR0262') : $t('RR0263') })"
+              :tooltipMessage="$t('TT0101', { addFrom: digitalThread.sideOGType === OG_TYPE.ORG ? $t('RR0262') : $t('RR0263') })"
             )
           div(class="flex flex-col gap-y-2")
             div(

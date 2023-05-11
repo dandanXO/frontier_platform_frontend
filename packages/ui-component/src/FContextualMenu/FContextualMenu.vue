@@ -165,7 +165,8 @@ const props = defineProps({
    *          thumbnail: String (URL)
    *          flag: String (URL),
    *          clickHandler: Function,
-   *          tooltip: String,
+   *          tooltipTitle: String,
+   *          tooltipMessage: String,
    *          tooltipPlacement: String,
    *          searchEnable: Boolean,
    *          button: {

@@ -4,8 +4,8 @@ div(class="w-227 mx-auto")
     div(class="flex items-center mb-4")
       p(class="text-h4 text-grey-900 font-bold mr-6") {{ moodboard.moodboardName }}
       template(v-if="moodboard.moodboardType === MOODBOARD_TYPE.DEMANDER")
-        f-tooltip(class="mr-2")
-          template(#trigger)
+        f-tooltip-standard(class="mr-2" :tooltipMessage="$t('RR0054')")
+          template(#slot:tooltip-trigger)
             div(
               class="w-7.5 h-7.5 group cursor-pointer hover:bg-primary-400/10 rounded-full flex items-center justify-center"
               @click="openCreateOrEditMoodboard"
@@ -15,8 +15,6 @@ div(class="w-227 mx-auto")
                 class="text-grey-900 group-hover:text-primary-400"
                 size="24"
               )
-          template(#content)
-            p {{ $t('RR0054') }}
         f-popper(placement="bottom-start")
           template(#trigger)
             div(
@@ -26,6 +24,7 @@ div(class="w-227 mx-auto")
                 iconName="more_horiz"
                 size="24"
                 class="text-grey-600 group-hover:text-primary-400"
+                :tooltipMessage="$t('RR0260')"
               )
           template(#content)
             f-list

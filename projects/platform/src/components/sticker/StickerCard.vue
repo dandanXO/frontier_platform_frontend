@@ -52,7 +52,7 @@ div(
             f-svg-icon(
               iconName="more_horiz"
               size="20"
-              :tooltip="$t('TT0100')"
+              :tooltipMessage="$t('TT0100')"
               class="text-grey-300"
               :class="{ '!text-grey-600': isHoverSticker && !isHoverIconMore, '!text-primary-400': isHoverIconMore || isExpand }"
             )

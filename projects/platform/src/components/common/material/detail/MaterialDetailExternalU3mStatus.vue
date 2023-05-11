@@ -2,15 +2,14 @@
 div
   div(class="flex items-center text-grey-900 mb-6")
     h5(class="text-h5 font-bold") {{ $t('RR0132') }}
-    f-popper(placement="top" class="pl-1" showArrow)
-      template(#trigger)
+    f-tooltip-media(
+      class="pl-1"
+      :tooltipTitle="$t('UU0029')"
+      :tooltipMessage="$t('EE0066')"
+      :imageUrl="u3mInstructionImage"
+    )
+      template(#slot:tooltip-trigger)
         f-svg-icon(iconName="info_outline" class="cursor-pointer" size="14")
-      template(#content="{ collapsePopper }")
-        div(class="p-5 bg-grey-0 shadow-4 rounded")
-          span(
-            class="text-body2 text-cyan-400 underline leading-1.6 cursor-pointer"
-            @click="openModalU3mInstruction(); collapsePopper()"
-          ) {{ $t('UU0029') }}
   div(class="flex items-center")
     f-button(
       size="md"
@@ -30,6 +29,7 @@ import useModelEditor from '@/composables/useModelEditor'
 import useDashboard from '@/composables/useDashboard'
 import { U3M_STATUS, NOTIFY_TYPE } from '@/utils/constants'
 import { downloadDataURLFile } from '@/utils/fileOperator'
+import u3mInstructionImage from '@/assets/images/u3m.png'
 
 const props = defineProps({
   isEmbed: {
@@ -90,17 +90,5 @@ const downloadU3m = async (item) => {
     downloadDataURLFile(url, fileName)
     dashboard.createDownloadLog(material.value.materialId, format)
   }
-}
-
-const openModalU3mInstruction = () => {
-  store.dispatch('helper/pushModalBehavior', {
-    component: 'modal-u3m-instruction',
-    properties: {
-      primaryBtnText: t('UU0094'),
-      primaryHandler: () => {
-        store.dispatch('helper/closeModalBehavior')
-      },
-    },
-  })
 }
 </script>

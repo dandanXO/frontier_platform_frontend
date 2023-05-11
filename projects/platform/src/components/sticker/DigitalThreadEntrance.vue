@@ -1,6 +1,9 @@
 <template lang="pug">
-f-tooltip(@click.stop="openStickerDrawer")
-  template(#trigger)
+f-tooltip-standard(
+  @click.stop="openStickerDrawer"
+  :tooltipMessage="$t('TT0001')"
+)
+  template(#slot:tooltip-trigger)
     div(
       class="relative cursor-pointer w-12 h-7.5 rounded border border-grey-150 hover:bg-grey-100 text-grey-600 flex items-center justify-center gap-x-2"
       :class="[isHover ? 'bg-grey-0' : 'bg-grey-0/80', { '!bg-primary-0 !text-primary-400': currentMaterialId === materialId }]"
@@ -11,8 +14,6 @@ f-tooltip(@click.stop="openStickerDrawer")
         v-if="digitalThreadHasUnread"
         class="w-2 h-2 rounded-full bg-primary-400 absolute -top-0.5 -right-0.5"
       )
-  template(#content)
-    p {{ $t('TT0001') }}
 </template>
 
 <script setup>

@@ -29,7 +29,7 @@
     "@frontier/ui-component": "workspace:^0.0.0",
     "@frontier/constants": "workspace:^0.0.0",
     "@hennge/vue3-pagination": "^1.0.17",
-    "@popperjs/core": "^2.11.2",
+    "@popperjs/core": "^2.11.7",
     "axios": "^0.27.2",
     "dayjs": "^1.10.7",
     "events": "^3.3.0",

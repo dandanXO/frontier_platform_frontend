@@ -2,7 +2,12 @@
 div(class="pb-15 mb-5 border-b border-grey-250")
   div(class="h-16 flex items-center")
     h5(class="text-h5 text-grey-900 font-bold pr-1.5") {{ $t('EE0038') }}
-    f-svg-icon(:iconName="statusIconName" size="24" class="text-grey-900")
+    f-svg-icon(
+      :iconName="materialScanImageStatus.iconName"
+      :tooltipMessage="materialScanImageStatus.tooltipMessage"
+      size="24"
+      class="text-grey-900"
+    )
   div
     div(class="flex flex-col gap-y-2")
       p(class="text-body2 text-grey-900 leading-1.6") {{ $t('EE0039') }}
@@ -26,6 +31,7 @@ div(class="pb-15 mb-5 border-b border-grey-250")
             div(
               v-for="(image, index) in imageList"
               @click="currentDisplayIndex = index"
+              :key="image.src"
             )
               div(
                 class="w-13 h-13 rounded overflow-hidden border border-grey-250 bg-grey-100"
@@ -34,6 +40,7 @@ div(class="pb-15 mb-5 border-b border-grey-250")
                   img(class="w-full h-full" :src="image.src")
               p(
                 v-for="text in image.text"
+                :key="text"
                 class="text-caption leading-1.6 text-center"
                 :class="{ 'font-bold': index === currentDisplayIndex }"
               ) {{ text }}
@@ -57,22 +64,22 @@ div(class="pb-15 mb-5 border-b border-grey-250")
             class="pb-5"
           )
           div(class="grid gap-y-3")
-            div(v-for="pantone in material.pantoneList" class="flex items-center gap-x-3")
-              f-tooltip(placement="right-end")
-                template(#trigger)
+            div(
+              v-for="pantone in material.pantoneList"
+              :key="pantone.name"
+              class="flex items-center gap-x-3"
+            )
+              f-tooltip-media(
+                placement="right-end"
+                :pantone="{ r: pantone.r, g: pantone.g, b: pantone.g }"
+                :tooltipTitle="pantone.name"
+                :tooltipMessage="pantone.colorName"
+              )
+                template(#slot:tooltip-trigger)
                   div(
                     class="rounded w-5.5 h-5.5"
                     :style="{ backgroundColor: `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }"
                   )
-                template(#content)
-                  div(class="w-26.5 pt-0.5")
-                    div(
-                      class="w-full aspect-square rounded-t"
-                      :style="{ backgroundColor: `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }"
-                    )
-                    div(class="text-caption text-grey-50 leading-1.3 mt-1.5")
-                      p {{ pantone.name }}
-                      p {{ pantone.colorName }}
               p(class="text-body2 text-grey-900") {{ pantone.name }}
               f-svg-icon(
                 iconName="clear"
@@ -95,9 +102,8 @@ import useNavigation from '@/composables/useNavigation'
 const { t } = useI18n()
 const store = useStore()
 const material = computed(() => store.getters['assets/material'])
-const { statusIconName, imageList, defaultCoverImgIndex } = useMaterial(
-  material.value
-)
+const { materialScanImageStatus, imageList, defaultCoverImgIndex } =
+  useMaterial(material.value)
 const { goToMaterialUpload } = useNavigation()
 
 const uploadMaterialEmail = computed(() => {

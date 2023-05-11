@@ -25,6 +25,7 @@ div(class="w-full h-full flex flex-col")
             size="24"
             class="transform cursor-pointer text-grey-600 hover:text-primary-400"
             :class="{ 'text-primary-400': isExpand }"
+            :tooltipMessage="$t('RR0272')"
           )
         template(#content)
           f-contextual-menu(
@@ -129,11 +130,11 @@ const sortMenuTree = computed(() => {
     blockList: [
       {
         menuList: temp.map(
-          ({ text, value, disabled = false, tooltip = '' }) => ({
+          ({ text, value, disabled = false, tooltipMessage = '' }) => ({
             title: text,
             selectValue: value,
             disabled,
-            tooltip,
+            tooltipMessage,
             tooltipPlacement: 'top',
           })
         ),

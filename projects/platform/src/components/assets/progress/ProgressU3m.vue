@@ -114,6 +114,7 @@ f-table(
                 iconName="more_horiz"
                 size="24"
                 class="text-grey-600 group-hover:text-primary-400"
+                :tooltipMessage="$t('RR0260')"
               )
           template(#content="{ collapsePopper }")
             f-list

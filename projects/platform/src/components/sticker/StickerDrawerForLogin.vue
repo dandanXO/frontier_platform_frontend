@@ -9,7 +9,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
         iconName="arrow_back"
         size="20"
         class="text-grey-200"
-        tooltip="Show all threads"
+        tooltipMessage="Show all threads"
       )
       div(class="w-px h-6 bg-grey-150 mx-4")
       div(class="flex-grow flex items-center")
@@ -19,7 +19,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           iconName="clear"
           size="20"
           class="text-grey-600 hover:text-primary-400 ml-4 cursor-pointer"
-          tooltip="Close"
+          tooltipMessage="Close"
           @click="closeStickerDrawerForLogin"
         )
     div(class="w-full h-28 px-8 pt-3 pb-2.5 bg-grey-0 shadow-4")

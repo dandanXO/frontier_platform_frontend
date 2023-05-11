@@ -1,13 +1,13 @@
 <template lang="pug">
-f-tooltip(v-if="disabled")
-  template(#trigger)
+f-tooltip-standard(v-if="disabled")
+  template(#slot:tooltip-trigger)
     div(
       class="flex items-center gap-x-1 p-1.5 border rounded-lg border-grey-250 cursor-default"
     )
       f-svg-icon(:iconName="iconName" size="24" class="text-grey-250")
       span(class="text-grey-250 text-body2") {{ displayName }}
       f-svg-icon(iconName="keyboard_arrow_down" size="24" class="text-grey-250")
-  template(#content)
+  template(#slot:tooltip-content)
     slot
 f-popper(
   v-else

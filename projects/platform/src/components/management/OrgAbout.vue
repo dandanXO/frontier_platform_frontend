@@ -17,17 +17,14 @@ div(class="pt-16 xl:pt-17.5")
                 size="20"
                 class="text-grey-250 group-hover:text-primary-400"
               )
-        f-tooltip(class="pt-4")
-          template(#trigger)
-            div(class="flex items-center" @click="copyOrgId")
-              p(class="text-caption text-grey-900 pr-1.5 cursor-pointer") ID: {{ organization.orgNo }}
-              f-svg-icon(
-                iconName="content_copy"
-                size="14"
-                class="text-grey-600 cursor-pointer"
-              )
-          template(#content)
-            p {{ $t('BB0056') }}
+        div(class="flex items-center mt-4" @click="copyOrgId")
+          p(class="text-caption text-grey-900 pr-1.5 cursor-pointer") ID: {{ organization.orgNo }}
+          f-svg-icon(
+            iconName="content_copy"
+            size="14"
+            class="text-grey-600 cursor-pointer"
+            :tooltipMessage="$t('BB0056')"
+          )
         p(
           v-permission="FUNC_ID.DELETE_ORG"
           v-if="!planType.ENT"

@@ -20,7 +20,7 @@ div(
       size="14"
       class="invisible group-hover/material-no:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
       @click.stop="$emit('goToMaterialDetail', true)"
-      tooltip="TT0074"
+      tooltipMessage="TT0074"
     )
   div(class="pb-1 flex items-center gap-x-2")
     span(

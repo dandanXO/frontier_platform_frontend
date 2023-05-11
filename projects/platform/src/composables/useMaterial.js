@@ -1,6 +1,6 @@
 import { COVER_MODE, SIDE_TYPE, useConstants } from '@/utils/constants'
 import { computed } from 'vue'
-import { ref, reactive } from 'vue'
+import { reactive } from 'vue'
 import i18n from '@/utils/i18n'
 import store from '@/store'
 
@@ -40,25 +40,38 @@ export default function useMaterial(material) {
     carbonEmission,
   } = material
 
-  const scanFaceSide = !!faceSideImg?.crop
-  const scanBackSide = !!backSideImg?.crop
-
-  const statusIconName = ref('front')
   const hasNoCoverImage = computed(() => !coverImg)
 
-  if (isDoubleSideMaterial) {
-    if (scanFaceSide && scanBackSide) statusIconName.value = 'double'
-    else if (scanFaceSide && !scanBackSide)
-      statusIconName.value = 'double_front'
-    else if (!scanFaceSide && scanBackSide) statusIconName.value = 'double_back'
-    else if (!scanFaceSide && !scanBackSide)
-      statusIconName.value = 'no_image_double'
-  } else {
-    if (sideType === SIDE_TYPE.FACE)
-      statusIconName.value = scanFaceSide ? 'front' : 'no_image_front'
-    else if (sideType === SIDE_TYPE.BACK)
-      statusIconName.value = scanBackSide ? 'back' : 'no_image_back'
-  }
+  const materialScanImageStatus = computed(() => {
+    const scanFaceSide = !!faceSideImg?.crop
+    const scanBackSide = !!backSideImg?.crop
+    let iconName = 'front'
+    let tooltipMessage = t('RR0266')
+    if (isDoubleSideMaterial) {
+      if (scanFaceSide && scanBackSide) {
+        iconName = 'double'
+        tooltipMessage = t('RR0270')
+      } else if (scanFaceSide && !scanBackSide) {
+        iconName = 'double_front'
+        tooltipMessage = t('RR0268')
+      } else if (!scanFaceSide && scanBackSide) {
+        iconName = 'double_back'
+        tooltipMessage = t('RR0269')
+      } else if (!scanFaceSide && !scanBackSide) {
+        iconName = 'no_image_double'
+        tooltipMessage = t('RR0271')
+      }
+    } else {
+      if (sideType === SIDE_TYPE.FACE) {
+        iconName = scanFaceSide ? 'front' : 'no_image_front'
+        tooltipMessage = scanFaceSide ? t('RR0266') : t('RR0264')
+      } else if (sideType === SIDE_TYPE.BACK) {
+        iconName = scanBackSide ? 'back' : 'no_image_back'
+        tooltipMessage = scanBackSide ? t('RR0267') : t('RR0265')
+      }
+    }
+    return { iconName, tooltipMessage }
+  })
 
   const imageList = computed(() => {
     const list = []
@@ -129,9 +142,8 @@ export default function useMaterial(material) {
       } else if (coverMode === COVER_MODE.SUP) {
         return 0
       }
-    } else {
-      return 0
     }
+    return 0
   })
 
   const getPriceInfo = (priceObj) => {
@@ -356,7 +368,7 @@ export default function useMaterial(material) {
 
   return {
     hasNoCoverImage,
-    statusIconName,
+    materialScanImageStatus,
     imageList,
     defaultCoverImgIndex,
     materialInfo,
