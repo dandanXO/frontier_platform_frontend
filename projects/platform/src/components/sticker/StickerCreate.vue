@@ -135,21 +135,19 @@ const STICKER_TYPE = {
   },
 }
 
-const isInternalLocation = computed(() => {
+const canChooseAddFrom = computed(() => {
   const drawerOpenFromLocationType =
     store.getters['sticker/drawerOpenFromLocationType']
   const { ASSETS, WORKSPACE, NOTIFICATION } = LOCATION_TYPE
+
   return (
-    [ASSETS, WORKSPACE].includes(drawerOpenFromLocationType) &&
-    drawerOpenFromLocationType !== NOTIFICATION
+    props.isCreatingDigitalThread &&
+    !(
+      [ASSETS, WORKSPACE].includes(drawerOpenFromLocationType) &&
+      drawerOpenFromLocationType !== NOTIFICATION
+    )
   )
 })
-
-const isExternalLocation = computed(() => !isInternalLocation.value)
-
-const canChooseAddFrom = computed(
-  () => props.isCreatingDigitalThread && isExternalLocation.value
-)
 // form data of creating digit thread or sticker
 const getDefaultAddFrom = () => {
   const menuItem = menuAddFrom.value.blockList[0].menuList.find((menu) => {
@@ -175,22 +173,30 @@ const getDefaultAddFrom = () => {
 const addFrom = ref(getDefaultAddFrom())
 
 const canChooseAddToExternal = computed(() => {
-  if (props.isCreatingDigitalThread && isInternalLocation.value) {
-    return false
-  }
-  if (
-    isInternalLocation.value &&
-    store.getters['sticker/digitalThread'].stickerStatistics.externalQty === 0
-  ) {
-    return false
-  }
   const { materialOwnerOGId, materialOwnerOGType } =
     store.getters['sticker/material']
-  if (
-    props.isCreatingDigitalThread &&
-    isExternalLocation.value &&
+  const isSameUnit =
     addFrom.value.addFromOGType === materialOwnerOGType &&
     addFrom.value.addFromOGId === materialOwnerOGId
+
+  if (props.isCreatingDigitalThread) {
+    const drawerOpenFromLocationType =
+      store.getters['sticker/drawerOpenFromLocationType']
+    const { ASSETS } = LOCATION_TYPE
+
+    if (drawerOpenFromLocationType === ASSETS) {
+      return false
+    }
+
+    if (drawerOpenFromLocationType !== ASSETS && isSameUnit) {
+      return false
+    }
+  }
+
+  if (
+    !props.isCreatingDigitalThread &&
+    isSameUnit &&
+    store.getters['sticker/digitalThread'].stickerStatistics.externalQty === 0
   ) {
     return false
   }
