@@ -43,15 +43,17 @@ div(class="w-full h-full")
             span(class="text-body1 text-grey-900") {{ $t('FF0003') }}
         grid-item-node(
           v-for="node in nodeList"
+          :key="node.nodeKey"
           v-model:selectedValue="selectedNodeList"
           :node="node"
           :optionList="optionNode(node, inSearch)"
           @click:option="$event.func(node)"
-          @click.node="handleNodeClick(node, goTo)"
+          @click:node="handleNodeClick(node, goTo)"
         )
           template(#corner-bottom-left v-if="isFirstLayer")
             f-svg-icon(
               :iconName="node.isPublic ? 'public' : 'internal'"
+              :tooltipMessage="node.isPublic ? $t('FF0072') : $t('FF0073')"
               size="20"
               class="cursor-pointer text-grey-250"
               @click.stop="openModalPublish(node)"
@@ -272,6 +274,7 @@ const openModalPublish = (workspaceNode) => {
 }
 
 const handleNodeClick = (node, goTo) => {
+  console.log('here')
   if (node.nodeType === NODE_TYPE.COLLECTION) {
     currentNodeKey.value = node.nodeKey
     goTo()

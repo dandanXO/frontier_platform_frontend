@@ -114,9 +114,10 @@ div(class="max-w-315 h-full mx-auto pt-10")
       )
         grid-item-node(
           v-for="node in nodeList"
+          :key="node.nodeKey"
           :node="node"
           :isSelectable="false"
-          @click.node="handleNodeClick(node, goTo)"
+          @click:node="handleNodeClick(node, goTo)"
         )
 </template>
 

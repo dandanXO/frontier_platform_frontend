@@ -60,11 +60,12 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
               span(class="text-body1 text-grey-900") {{ $t('FF0003') }}
           grid-item-node(
             v-for="node in moodboardOfferNodeCollection.childNodeList"
+            :key="node.nodeId"
             v-model:selectedValue="selectedNodeList"
             :node="node"
             :optionList="optionNode(node)"
             @click:option="$event.func(node)"
-            @click.node="handleNodeClick(node)"
+            @click:node="handleNodeClick(node)"
           )
             template(
               #caption

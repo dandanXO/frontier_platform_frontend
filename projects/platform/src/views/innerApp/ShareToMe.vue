@@ -57,11 +57,12 @@ div(class="w-full h-full")
       )
         grid-item-node(
           v-for="node in nodeList"
+          :key="node.nodeKey"
           v-model:selectedValue="selectedNodeList"
           :node="node"
           :optionList="optionNode"
           @click:option="$event.func(node, node.share.sharingId)"
-          @click.node="handleNodeClick(node, goTo)"
+          @click:node="handleNodeClick(node, goTo)"
         )
           template(#title-right-icon)
             tooltip-location(v-if="inSearch" :location="node.location")

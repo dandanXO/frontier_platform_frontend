@@ -117,12 +117,13 @@ div(class="w-full h-full relative")
       )
         grid-item-node(
           v-for="node in nodeList"
+          :key="node.nodeKey"
           v-model:selectedValue="selectedNodeList"
           :node="node"
           :isSelectable="!isFirstLayer"
           :optionList="optionNode"
           @click:option="$event.func(node)"
-          @click.node="handleNodeClick(node, goTo)"
+          @click:node="handleNodeClick(node, goTo)"
         )
           template(#caption v-if="isFirstLayer")
             div(class="mt-1.5 h-6 flex items-center")

@@ -93,11 +93,11 @@ export const SlotTooltipToggleLinkAndButton: Story = {
     template: `
     <f-tooltip-toggle v-bind="args">
       <template #slot:tooltip-toggle-link>
-        <p class="flex items-center flex-wrap text-caption/1.3 text-grey-50">
-          <span> Text or a Text or a Text or a Text or a&nbsp</span>
+        <span class="text-caption/1.3 text-grey-50 break-all">
+          Text or a Text or a Text or a Text or a
           <span class="text-cyan-200">Learn more</span>
-          <f-svg-icon iconName="open_in_new" size="14" class="text-cyan-200 ml-1"/>
-        </p>
+          <f-svg-icon iconName="open_in_new" size="14" class="text-cyan-200 ml-1 inline"/>
+        </span>
       </template>
       <template #slot:tooltip-toggle-button>
         <f-button size="sm">Primary</f-button>

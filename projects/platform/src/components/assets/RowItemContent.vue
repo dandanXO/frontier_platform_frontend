@@ -37,12 +37,13 @@ div(class="grid gap-x-14 grid-cols-2")
           class="text-body1 font-bold"
           :class="[made2flowSubscribed ? 'text-grey-900' : 'text-grey-250']"
         ) {{ $t('RR0219') }}
-        f-svg-icon(
-          iconName="info_outline"
-          size="14"
-          class="text-grey-900 cursor-pointer"
-          @click="openModalIndicatorMethodology"
-        )
+        div(class="p-1 hover:bg-grey-100 hover:rounded cursor-pointer")
+          f-svg-icon(
+            iconName="info_outline"
+            size="14"
+            class="text-grey-600 cursor-pointer"
+            @click="openModalIndicatorMethodology"
+          )
       div(v-if="made2flowSubscribed" class="flex items-center gap-x-1 pt-3")
         div(
           v-for="property in carbonEmissionInfo"

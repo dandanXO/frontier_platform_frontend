@@ -121,9 +121,10 @@ div(class="max-w-315 h-full mx-auto")
       )
         grid-item-node(
           v-for="node in nodeList"
+          :key="node.nodeKey"
           v-model:selectedValue="selectedNodeList"
           :node="node"
-          @click.node="handleNodeClick(node, goTo)"
+          @click:node="handleNodeClick(node, goTo)"
         )
           template(#corner-bottom-left)
             f-svg-icon(
