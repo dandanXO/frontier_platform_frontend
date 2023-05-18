@@ -69,9 +69,9 @@ f-popper(class="w-fit" :placement="placement" :disabled="disabledTooltip")
     )
       span(v-if="!!triggerText" class="text-caption text-grey-900") {{ triggerText }}
       f-svg-icon(:iconName="triggerIcon" size="16" class="text-grey-600")
-  template(#content="{ isExpand }") 
+  template(#content="{ isExpand, collapsePopper }") 
     div(
-      class="relative rounded bg-grey-900/80 max-w-85 p-5 box-content text-grey-50 text-caption/1.3"
+      class="relative rounded bg-grey-900/80 max-w-85 p-5 box-border text-grey-50 text-caption/1.3"
     )
       div
         template(v-if="!slots['slot:tooltip-toggle-content']")
@@ -85,7 +85,10 @@ f-popper(class="w-fit" :placement="placement" :disabled="disabledTooltip")
         div(v-if="slots['slot:tooltip-toggle-link']" class="justify-self-start break-all")
           slot(name="slot:tooltip-toggle-link")
         div(v-if="slots['slot:tooltip-toggle-button']" class="justify-self-end pl-8.5") 
-          slot(name="slot:tooltip-toggle-button")
+          slot(
+            name="slot:tooltip-toggle-button"
+            :collapseTooltipToggle="collapsePopper"
+          )
       #arrow
 </template>
 

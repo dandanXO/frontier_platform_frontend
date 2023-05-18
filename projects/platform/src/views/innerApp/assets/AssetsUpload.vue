@@ -18,18 +18,20 @@ f-scrollbar-container(class="w-full h-full")
               i18n-t(
                 keypath="DD0010"
                 tag="div"
-                class="mb-7.5 text-caption/1.3 text-grey-50"
+                class="pb-7.5 text-caption/1.3 text-grey-50"
                 scope="global"
               )
                 template(#DD0111)
-                  div(
-                    class="inline-flex items-center text-cyan-400 cursor-pointer"
-                    @click="printBackSideLabel"
-                  ) {{ $t('DD0111') }}
-                    f-svg-icon(iconName="open_in_new" size="15")
+                  span {{ $t('DD0111') }}
               img(src="@/assets/images/back_side.png")
-            template(#slot:tooltip-toggle-button)
-              f-button(size="sm") {{ $t('UU0026') }}
+            template(#slot:tooltip-toggle-link)
+              div(
+                class="flex items-end gap-x-1 text-cyan-200 cursor-pointer text-caption/1.3"
+                @click="printBackSideLabel"
+              ) {{ $t('DD0111') }}
+                f-svg-icon(iconName="open_in_new" size="14")
+            template(#slot:tooltip-toggle-button="{ collapseTooltipToggle }")
+              f-button(size="sm" @click="collapseTooltipToggle") {{ $t('UU0026') }}
       div(class="mt-8")
         div(class="grid grid-cols-3 gap-7.5")
           div
