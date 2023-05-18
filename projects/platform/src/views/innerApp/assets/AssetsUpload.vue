@@ -28,7 +28,7 @@ f-scrollbar-container(class="w-full h-full")
               div(
                 class="flex items-end gap-x-1 text-cyan-200 cursor-pointer text-caption/1.3"
                 @click="printBackSideLabel"
-              ) {{ $t('DD0111') }}
+              ) {{ $t('DD0115') }}
                 f-svg-icon(iconName="open_in_new" size="14")
             template(#slot:tooltip-toggle-button="{ collapseTooltipToggle }")
               f-button(size="sm" @click="collapseTooltipToggle") {{ $t('UU0026') }}
