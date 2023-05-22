@@ -20,36 +20,31 @@ svg(
   use(:xlink:href="`#${iconName}`")
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'FSvgIcon',
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import.meta.globEager('./icons/**/*.svg')
 
 const { te } = useI18n()
 
-defineProps({
-  iconName: {
-    type: String,
-    required: true,
-  },
-  size: {
-    type: String,
-    default: '20',
-  },
-  tooltipTitle: {
-    type: String,
-    default: '',
-  },
-  tooltipMessage: {
-    type: String,
-    default: '',
-  },
-})
+withDefaults(
+  defineProps<{
+    iconName: string
+    size?: string
+    tooltipTitle?: string
+    tooltipMessage?: string
+  }>(),
+  {
+    size: '20',
+    tooltipTitle: '',
+    tooltipMessage: '',
+  }
+)
 </script>
 
 <style scoped>

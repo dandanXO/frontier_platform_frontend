@@ -3,26 +3,25 @@ div(:class="classes")
   slot
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'FLabel',
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 
-const props = defineProps({
-  size: {
-    type: String,
-    default: 'lg',
-    validator: (v) => ['lg', 'sm'].includes(v),
-  },
-  active: {
-    type: Boolean,
-    default: false,
-  },
-})
+const props = withDefaults(
+  defineProps<{
+    size?: 'lg' | 'sm'
+    active?: boolean
+  }>(),
+  {
+    size: 'lg',
+    active: false,
+  }
+)
 
 const classes = computed(() => {
   const baseClass = [
