@@ -23,6 +23,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
           div(class="grid gap-y-2")
             div(
               v-for="offer in moodboardOfferList"
+              :key="offer.rootNodeId"
               class="h-20 flex items-center gap-x-3 pl-3 rounded hover:bg-grey-100 cursor-pointer"
               :class="[{ 'bg-grey-250': Number(currentOfferId) === offer.offerId }]"
               @click="switchOffer(offer.offerId, offer.rootNodeId)"
@@ -45,7 +46,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
           v-if="currentOfferId !== 'all'"
           :tabList="tabList"
           :initValue="currentTab"
-          :key="currentOfferId"
+          :key="`${currentOfferId} + ${currentTab}`"
           @switch="switchTab($event)"
         )
         div(v-if="currentTab !== MOODBOARD_TAB.COMMENT" class="pt-4")
@@ -94,6 +95,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
           )
             grid-item-node(
               v-for="node in moodboardOfferNodeCollection.childNodeList"
+              :key="node.nodeId"
               v-model:selectedValue="selectedNodeList"
               :node="node"
               :isSelectable="currentOfferId !== 'all' && currentTab === MOODBOARD_TAB.PICKED"

@@ -7,6 +7,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
     f-tabs(
       :tabList="tabList"
       :initValue="currentTab"
+      :key="currentTab"
       @switch="switchTab($event)"
     )
       div(v-if="currentTab !== MOODBOARD_TAB.COMMENT" class="pt-4")

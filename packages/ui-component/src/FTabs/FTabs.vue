@@ -4,6 +4,7 @@ div(class="flex flex-col")
     div(class="grid gap-x-6 grid-flow-col justify-start")
       div(
         v-for="tab in tabList"
+        :key="tab.name"
         class="flex cursor-pointer"
         :class="[tab[keyField] === currentTab ? 'border-b-2 border-primary-400 text-grey-900' : 'text-grey-600 hover:text-grey-900', { '!text-grey-250 point-events-none': tab.disabled }]"
         @click="!tab.disabled && switchTab(tab)"
