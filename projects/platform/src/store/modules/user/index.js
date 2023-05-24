@@ -49,6 +49,9 @@ const actions = {
     dispatch('setUser', data.result.user)
     return data.result.isExist
   },
+  async generalSignUpRequest(_, params) {
+    await userApi.generalSignUpRequest(params)
+  },
   async generalSignIn({ dispatch }, params) {
     const { data } = await userApi.generalSignIn(params)
     dispatch('setUser', data.result.user)

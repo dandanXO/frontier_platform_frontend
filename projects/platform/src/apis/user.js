@@ -15,6 +15,23 @@ export default {
         signupSourceType,
       },
     }),
+  generalSignUpRequest: ({
+    name,
+    email,
+    phone,
+    phoneCountryCode,
+    description,
+  }) =>
+    axios('/sign-up/request', {
+      method: 'POST',
+      data: {
+        name,
+        email,
+        phone,
+        phoneCountryCode,
+        description,
+      },
+    }),
   generalSignIn: ({ email, password }) =>
     axios('/sign-in/general', {
       method: 'POST',

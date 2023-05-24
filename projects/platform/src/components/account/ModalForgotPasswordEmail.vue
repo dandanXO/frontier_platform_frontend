@@ -18,7 +18,10 @@ modal-behavior(
     )
       template(#slot:hint-error v-if="!isEmailExist")
         p(class="text-caption text-red-400 whitespace-nowrap") {{ $t('WW0043') }}
-        p(class="text-caption text-cyan-400 cursor-pointer pt-1" @click="goToSignup") {{ $t('UU0050') }}
+        p(
+          class="text-caption text-cyan-400 cursor-pointer pt-1"
+          @click="openSignUpRequestModal"
+        ) {{ $t('UU0050') }}
 </template>
 
 <script setup>
@@ -58,9 +61,11 @@ const sendEmail = async () => {
   })
 }
 
-const goToSignup = () => {
+const openSignUpRequestModal = () => {
   store.dispatch('helper/closeModal')
-  router.push('/sign-up')
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-sign-up-request',
+  })
 }
 
 watch(
