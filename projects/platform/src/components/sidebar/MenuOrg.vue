@@ -45,9 +45,13 @@ div(class="h-18 pt-4 pr-6.5 pb-5 pl-4")
           )
             div(class="w-full flex justify-between items-center")
               p(class="pl-4.5") {{ $t('OO0004') }}
-              div(v-if="planStatus.INACTIVE" class="flex items-center")
-                p(class="text-body2 text-primary-500 font-bold pr-1") {{ $t('OO0130') }}
-                f-svg-icon(iconName="arrow_forward" class="text-primary-500" size="14")
+              //- 註解原因：
+              //- 目前後台正在設定 組織若為 free account 也可以由我們的義務團隊從後台 deactivate 組織， 讓已在平台內的 危險用戶 暫停活動。
+              //- payment流程裡面，有一功能，當使用者想要繼續使用平台，可以 reactivate account，並與我們的顧問尋求服務。為使強制褫奪使用權限的 user 不再能於平台活動，需將 reactivate button 從平台拿掉。
+              //- 考量到這是一個暫時的決策，所以仍先保留程式碼，防止以後會加回來。
+              //- div(v-if="planStatus.INACTIVE" class="flex items-center")
+              //-   p(class="text-body2 text-primary-500 font-bold pr-1") {{ $t('OO0130') }}
+              //-   f-svg-icon(iconName="arrow_forward" class="text-primary-500" size="14")
           f-list-item(@click="goToLobby" class="cursor-pointer")
             p(class="pl-4.5") {{ $t('RR0127') }}
     f-popper(
