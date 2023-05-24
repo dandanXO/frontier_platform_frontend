@@ -41,8 +41,12 @@ modal-behavior(
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
+import { useNotifyStore } from '@/stores/notify'
+import { useI18n } from 'vue-i18n'
 
 const store = useStore()
+const notify = useNotifyStore()
+const { t } = useI18n()
 const material = computed(() => store.getters['assets/material'])
 
 const menuTreePublicTag = ref({
@@ -98,6 +102,7 @@ const updateMaterialSimpleTag = async () => {
   await store.dispatch('assets/updateMaterialSimpleTag')
   store.dispatch('helper/clearModalPipeline')
   store.dispatch('helper/reloadInnerApp')
+  notify.showNotifySnackbar({ messageText: t('EE0164') })
 }
 
 await store.dispatch('assets/getMaterialOptions')

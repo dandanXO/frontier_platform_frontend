@@ -104,8 +104,12 @@ import { computed, watch } from 'vue'
 import { INVENTORY_UNIT } from '@/utils/constants'
 import useMaterialEdit from '@/composables/useMaterialEdit'
 import useMaterialValidation from '@/composables/useMaterialValidation'
+import { useNotifyStore } from '@/stores/notify'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 const material = computed(() => store.getters['assets/material'])
 const immediateTotalInventoryQty = computed(
   () => store.getters['assets/immediateTotalInventoryQty']
@@ -143,6 +147,7 @@ const updateMaterialSimpleInventory = async () => {
   await store.dispatch('assets/updateMaterialSimpleInventory')
   store.dispatch('helper/clearModalPipeline')
   store.dispatch('helper/reloadInnerApp')
+  notify.showNotifySnackbar({ messageText: t('EE0164') })
 }
 
 await store.dispatch('assets/getMaterialOptions')

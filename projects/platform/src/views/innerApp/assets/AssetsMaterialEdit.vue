@@ -37,9 +37,11 @@ import { computed, ref } from 'vue'
 import { onBeforeRouteLeave, useRoute } from 'vue-router'
 import scrollTo from '@/utils/scrollTo'
 import { NOTIFY_TYPE } from '@/utils/constants'
+import { useNotifyStore } from '@/stores/notify'
 
 const { t } = useI18n()
 const store = useStore()
+const notify = useNotifyStore()
 const route = useRoute()
 const { parsePath, goToAssetMaterialDetail } = useNavigation()
 const material = computed(() => store.getters['assets/material'])
@@ -72,6 +74,7 @@ const updateMaterial = async () => {
   store.dispatch('helper/closeModalLoading')
   isConfirmedToLeave.value = true
   goToAssetMaterialDetail(material.value)
+  notify.showNotifySnackbar({ messageText: t('EE0164') })
 }
 
 const cancel = async () => {
