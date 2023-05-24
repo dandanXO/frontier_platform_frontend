@@ -1,0 +1,3 @@
+[submodule "packages/platform-web-sdk/SwaggerFrontierPlatformWebAPI"]
+	path = packages/platform-web-sdk/SwaggerFrontierPlatformWebAPI
+	url = https://gitlab.com/Frontier.cool/SwaggerDoc/SwaggerFrontierPlatformWebAPI.git

@@ -1,13 +1,17 @@
-import { computed } from 'vue'
+import { computed, unref } from 'vue'
 import { LOCATION_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
+import type { Ref } from 'vue'
+import type { DigitalThread } from '@frontier/platform-web-sdk'
 
-const useAddFromDisplayList = (digitalThread) => {
+const useAddFromDisplayList = (
+  digitalThread: Ref<DigitalThread> | DigitalThread
+) => {
   const { t } = useI18n()
   const addFromLocationList = computed(() => {
-    const list = [...digitalThread.value.addFromLocationList]
+    const list = [...unref(digitalThread).addFromLocationList]
 
-    switch (digitalThread.value.addFromLocationType) {
+    switch (unref(digitalThread).addFromLocationType) {
       case LOCATION_TYPE.PUBLIC:
       case LOCATION_TYPE.SHOWROOM:
         list.unshift(t('RR0003'))

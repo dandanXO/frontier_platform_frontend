@@ -1,7 +1,9 @@
 import { computed, unref } from 'vue'
 import { STICKER_ADD_TO } from '@/utils/constants'
+import type { Sticker } from '@frontier/platform-web-sdk'
 
-const useStickerCreatorInfo = (sticker) => {
+// Sticker 還沒跟後端對 swagger required 欄位，故先加上 required
+const useStickerCreatorInfo = (sticker: Required<Sticker>) => {
   const avatar = computed(() =>
     unref(sticker).addTo === STICKER_ADD_TO.EXTERNAL
       ? sticker.creatorUnitLogo

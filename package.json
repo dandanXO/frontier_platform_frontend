@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "storybook": "cd ./packages/ui-component && npm run storybook",
+    "generate-sdk": "cd ./packages/platform-web-sdk && npm run generate-sdk",
     "dev:platform": "cd ./projects/platform && npm run serve:dev",
     "dev:console": "cd ./projects/console && npm run dev",
     "test:e2e": "cd ./projects/platform && npm run test:e2e",
@@ -28,6 +29,7 @@
     "@frontier/tailwindcss": "workspace:^0.0.0",
     "@frontier/ui-component": "workspace:^0.0.0",
     "@frontier/constants": "workspace:^0.0.0",
+    "@frontier/platform-web-sdk": "workspace:^0.0.0",
     "@hennge/vue3-pagination": "^1.0.17",
     "@popperjs/core": "^2.11.7",
     "axios": "^0.27.2",

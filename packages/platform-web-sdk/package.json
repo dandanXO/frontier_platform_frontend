@@ -1,0 +1,12 @@
+{
+  "name": "@frontier/platform-web-sdk",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "generate-sdk": "bash ./scripts/generate-openapi-sdk.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

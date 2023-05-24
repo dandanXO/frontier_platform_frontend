@@ -1,8 +1,9 @@
 import { computed, unref } from 'vue'
 import { useRoute } from 'vue-router'
 import type { Ref } from 'vue'
+import type { DigitalThread } from '@frontier/platform-web-sdk'
 
-type LocationList = string[] | null
+type LocationList = DigitalThread['addFromLocationList']
 
 const useStickerLocationList = (
   locationList: Ref<LocationList> | LocationList
