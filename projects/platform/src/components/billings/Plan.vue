@@ -82,7 +82,11 @@ div(class="w-195")
       div
         h6(class="text-h6 text-grey-900 font-bold") {{ $t('OO0007') }}
         p(class="text-body2 text-grey-600 pt-2") {{ $t('OO0059') }}
-      f-button(size="md" @click="activateOrg") {{ $t('OO0129') }}
+      //- 註解原因：
+      //- 目前後台正在設定 組織若為 free account 也可以由我們的義務團隊從後台 deactivate 組織， 讓已在平台內的 危險用戶 暫停活動。
+      //- payment流程裡面，有一功能，當使用者想要繼續使用平台，可以 reactivate account，並與我們的顧問尋求服務。為使強制褫奪使用權限的 user 不再能於平台活動，需將 reactivate button 從平台拿掉。
+      //- 考量到這是一個暫時的決策，所以仍先保留程式碼，防止以後會加回來。
+      //- f-button(size="md" @click="activateOrg") {{ $t('OO0129') }}
   plan-value-added-service(v-if="hasNoValueAddedService")
 </template>
 
