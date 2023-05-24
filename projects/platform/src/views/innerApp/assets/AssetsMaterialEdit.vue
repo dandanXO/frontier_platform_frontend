@@ -58,6 +58,10 @@ const breadcrumbList = computed(() => {
       path: parsePath(`${prefix}/assets`),
     },
     {
+      name: material.value.materialNo,
+      path: parsePath(`${prefix}/assets/:materialId`),
+    },
+    {
       name: t('EE0037'),
       path: parsePath(`${prefix}/assets/:materialId/edit`),
     },
