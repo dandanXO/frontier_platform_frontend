@@ -64,8 +64,16 @@ modal-behavior(:header="$t('TT0067')")
               size="sm"
               @click="isEditingDigitalThreadName = false"
             ) {{ $t('UU0002') }}
-      //- Create From/By/Date
+      //-  Workflow Stage, Create From/By/Date
       div(class="flex flex-col gap-y-4")
+        //- Workflow Stage
+        div
+          p(class="text-caption text-grey-500 pb-2") {{ $t('TT0064') }}
+          f-select-dropdown(
+            class="w-60"
+            :dropdownMenuTree="dropdownMenuTree"
+            v-model:selectValue="selectedWorkflowStageId"
+          )
         //- Create From
         div
           p(class="text-caption text-grey-500 pb-4") {{ $t('TT0061') }}
@@ -157,14 +165,37 @@ modal-behavior(:header="$t('TT0067')")
 </template>
 
 <script setup>
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { computed, ref } from 'vue'
 import useAddFromDisplayList from '@/composables/useAddFromLocationListDisplay'
 import { OG_TYPE } from '@/utils/constants'
+import useDigitalThreadWorkflowStageStore from '@/stores/digitalThreadWorkflowStage'
 
 const store = useStore()
 
 const digitalThread = computed(() => store.getters['sticker/digitalThread'])
+const selectedWorkflowStageId = ref(digitalThread.value.workflowStageId)
+const workflowStageStore = useDigitalThreadWorkflowStageStore()
+
+const toMenuItem = (opt) => ({
+  title: opt.workflowStageName,
+  selectValue: opt.workflowStageId,
+})
+
+const dropdownMenuTree = computed(() => ({
+  blockList: [
+    {
+      menuList: workflowStageStore.workflowStageOptions
+        .filter((opt) => opt.isDefault)
+        .map(toMenuItem),
+    },
+    {
+      menuList: workflowStageStore.workflowStageOptions
+        .filter((opt) => !opt.isDefault)
+        .map(toMenuItem),
+    },
+  ],
+}))
 
 const isEditingDigitalThreadName = ref(false)
 const tempDigitalThreadName = ref('')
@@ -178,6 +209,10 @@ const saveDigitalThreadName = () => {
     digitalThreadName: tempDigitalThreadName.value,
   })
 }
+
+watch(selectedWorkflowStageId, () => {
+  workflowStageStore.changeDigitalThreadWorkflow(selectedWorkflowStageId.value)
+})
 
 const addFromLocationList = useAddFromDisplayList(digitalThread)
 </script>

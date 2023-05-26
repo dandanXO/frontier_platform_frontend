@@ -2777,7 +2777,8 @@ export const FeatureType = {
     RECEIVED_SHARE: 6,
     EMBED: 7,
     SHOWROOM: 8,
-    THREAD_BOARD: 9
+    THREAD_BOARD: 9,
+    DIGITAL_THREAD: 10
 } as const;
 
 export type FeatureType = typeof FeatureType[keyof typeof FeatureType];
@@ -3219,6 +3220,12 @@ export interface GetDigitalThreadWorkflowStageOptions200ResponseResultWorkflowSt
      * @memberof GetDigitalThreadWorkflowStageOptions200ResponseResultWorkflowStageListInner
      */
     'workflowStageName': string;
+    /**
+     * 是否為預設的WorkflowStage
+     * @type {boolean}
+     * @memberof GetDigitalThreadWorkflowStageOptions200ResponseResultWorkflowStageListInner
+     */
+    'isDefault': boolean;
 }
 /**
  * 

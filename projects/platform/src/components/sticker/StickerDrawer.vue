@@ -370,7 +370,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -379,11 +379,13 @@ import { STICKER_ADD_TO, OG_TYPE, LOCATION_TYPE } from '@/utils/constants'
 import StickerCard from '@/components/sticker/StickerCard.vue'
 import DigitalThreadCard from '@/components/sticker/DigitalThreadCard.vue'
 import useNavigation from '@/composables/useNavigation'
+import useDigitalThreadWorkflowStageStore from '@/stores/digitalThreadWorkflowStage'
 
 const store = useStore()
 const { t } = useI18n()
 const router = useRouter()
 const { parsePath } = useNavigation()
+const workflowStageStore = useDigitalThreadWorkflowStageStore()
 
 const material = computed(() => store.getters['sticker/material'])
 const digitalThread = computed(() => store.getters['sticker/digitalThread'])
@@ -622,4 +624,6 @@ const hasAnyUnreadDigitalThread = computed(() =>
     (digitalThread) => digitalThread.unreadStickerQty > 0
   )
 )
+
+onMounted(workflowStageStore.getWorkflowStageOptions)
 </script>

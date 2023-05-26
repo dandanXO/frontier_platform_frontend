@@ -49,6 +49,6 @@
     "@types/pica": "^9.0.1"
   },
   "peerDependencies": {
-    "vue": "3.2.37"
+    "vue": "3.3.1"
   }
 }

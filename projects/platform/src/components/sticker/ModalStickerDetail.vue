@@ -75,6 +75,11 @@ modal-behavior(:header="$t('TT0055')")
           class="text-body2 font-bold text-grey-900 leading-1.6 break-all border-b border-grey-150 pb-3 mb-3"
         ) {{ digitalThread.digitalThreadName }}
         //- Create From
+        p(class="text-caption text-grey-500 pb-2") {{ $t('TT0064') }}
+        div(class="flex items-center flex-wrap text-body2 text-grey-900 leading-1.6")
+          p {{ workflowStageName }}
+        div(class="border-b border-grey-150 pb-3 mb-3")
+        //- Create From
         div(class="border-b border-grey-150 pb-3 mb-3")
           p(class="text-caption text-grey-500 pb-4") {{ $t('TT0061') }}
           div(class="flex items-center flex-wrap text-body2 text-grey-900 leading-1.6")
@@ -113,8 +118,10 @@ modal-behavior(:header="$t('TT0055')")
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 import useAddFromDisplayList from '@/composables/useAddFromLocationListDisplay'
+import useDigitalThreadWorkflowStageStore from '@/stores/digitalThreadWorkflowStage'
 
 const store = useStore()
+const workflowStageStore = useDigitalThreadWorkflowStageStore()
 
 const props = defineProps({
   sticker: {
@@ -125,4 +132,7 @@ const props = defineProps({
 
 const digitalThread = computed(() => store.getters['sticker/digitalThread'])
 const addFromLocationList = useAddFromDisplayList(digitalThread)
+const workflowStageName = workflowStageStore.getWorkflowStageNameById(
+  digitalThread.value.workflowStageId
+).workflowStageName
 </script>
