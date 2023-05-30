@@ -1,4 +1,4 @@
-import type { CROP_MODE, U3M_CUT_SIDE, STICKER_ADD_TO } from '@/utils/constants'
+import type { CROP_MODE, U3M_CUT_SIDE } from '@/utils/constants'
 import type Decimal from 'decimal.js'
 
 export interface Material {

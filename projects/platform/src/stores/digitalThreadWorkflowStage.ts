@@ -10,6 +10,7 @@ import type {
   DigitalThreadBase,
   GetDigitalThreadWorkflowStageOptionsRequest,
 } from '@frontier/platform-web-sdk'
+import useThreadBoardStore from './threadBoard'
 
 interface WorkflowStageOption {
   workflowStageId: number
@@ -24,6 +25,7 @@ const useDigitalThreadWorkflowStageStore = defineStore(
     const store = useStore()
     const notify = useNotifyStore()
     const { unit } = useCurrentUnit()
+    const threadBoardStore = useThreadBoardStore()
 
     const digitalThread = computed(
       () => store.getters['sticker/digitalThread'] as DigitalThreadBase
@@ -53,6 +55,7 @@ const useDigitalThreadWorkflowStageStore = defineStore(
       }
 
       await digitalThreadApi.changeDigitalThreadWorkflowStage(req)
+      threadBoardStore.getThreadBoard()
       store.dispatch('sticker/getDigitalThread', {
         digitalThreadSideId: digitalThread.value.digitalThreadSideId,
       })

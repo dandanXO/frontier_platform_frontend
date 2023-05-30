@@ -140,6 +140,11 @@ const menuOrgOrGroup = computed(() => {
           title: t('RR0010'),
           path: `/${orgNo}/share-to-me`,
         },
+        {
+          id: 'threadBoard',
+          title: t('TT0132'),
+          path: `/${orgNo}/thread-board`,
+        },
       ],
     },
     ...store.getters['organization/groupList'].map((group) => {
@@ -171,6 +176,11 @@ const menuOrgOrGroup = computed(() => {
             id: 'shareToMe',
             title: t('RR0010'),
             path: `/${orgNo}/${groupId}/share-to-me`,
+          },
+          {
+            id: 'threadBoard',
+            title: t('TT0132'),
+            path: `/${orgNo}/${groupId}/thread-board`,
           },
         ],
       }

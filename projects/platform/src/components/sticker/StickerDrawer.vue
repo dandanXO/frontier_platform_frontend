@@ -379,9 +379,11 @@ import { STICKER_ADD_TO, OG_TYPE, LOCATION_TYPE } from '@/utils/constants'
 import StickerCard from '@/components/sticker/StickerCard.vue'
 import DigitalThreadCard from '@/components/sticker/DigitalThreadCard.vue'
 import useNavigation from '@/composables/useNavigation'
+import useThreadBoardStore from '@/stores/threadBoard'
 import useDigitalThreadWorkflowStageStore from '@/stores/digitalThreadWorkflowStage'
 
 const store = useStore()
+const threadBoardStore = useThreadBoardStore()
 const { t } = useI18n()
 const router = useRouter()
 const { parsePath } = useNavigation()
@@ -616,6 +618,7 @@ const goToMaterialDetail = (openNewPage = false) => {
 }
 
 const closeStickerDrawer = () => {
+  threadBoardStore.deactivateThreadCard()
   store.dispatch('sticker/closeStickerDrawer')
 }
 

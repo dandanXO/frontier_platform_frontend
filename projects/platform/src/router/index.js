@@ -128,6 +128,12 @@ const reuseRoutes = (prefix) => [
     },
   },
   {
+    path: 'thread-board',
+    name: `${prefix}ThreadBoard`,
+    props: true,
+    component: () => import('@/views/innerApp/ThreadBoard.vue'),
+  },
+  {
     path: 'sticker',
     name: `${prefix}Sticker`,
     component: () => import('@/views/innerApp/Sticker.vue'),

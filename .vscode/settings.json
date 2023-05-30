@@ -22,6 +22,7 @@
     "moodboard",
     "networkidle",
     "opencv",
+    "overlayscrollbars",
     "Pantone",
     "Phong",
     "pinable",
@@ -39,6 +40,8 @@
     "unref",
     "unstar",
     "VITE",
+    "vuedraggable",
+    "vueuse",
     "vuex"
   ],
   "volar.inlayHints.eventArgumentInInlineHandlers": false
