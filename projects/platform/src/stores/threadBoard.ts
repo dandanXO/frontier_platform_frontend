@@ -1,4 +1,4 @@
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { defineStore } from 'pinia'
@@ -148,17 +148,32 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     activeThreadSideId.value = null
   }
 
+  const getQuery = async () => {
+    const res = await threadBoardApi.getThreadBoardQuery(baseReq.value)
+    Object.assign(threadBoardQuery, res.data.result!.threadBoardQuery)
+  }
+
+  const updateQuery = (v: Partial<ThreadBoardQuery>) => {
+    Object.assign(threadBoardQuery, v)
+  }
+
   const init = async () => {
     isActive.value = true
+    getQuery()
+  }
+
+  watch(threadBoardQuery, async () => {
     setLoading(true)
     try {
       await getThreadBoard()
+      const updateQueryReq = { ...baseReq.value, threadBoardQuery }
+      threadBoardApi.saveThreadBoardQuery(updateQueryReq)
     } catch {
       console.error('RR')
     } finally {
       setLoading(false)
     }
-  }
+  })
 
   return {
     loading,
@@ -170,6 +185,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     defaultWorkflowStageThreadList,
     draggableWorkflowStageList,
     init,
+    updateQuery,
     getThreadBoard,
     expandDefaultWorkflowStage,
     collapseDefaultWorkflowStage,

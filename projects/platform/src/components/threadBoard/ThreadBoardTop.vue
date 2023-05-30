@@ -7,14 +7,61 @@ div(
     span(class="font-bold text-body1 text-grey-900") {{ $t('TT0133') }}
     span(class="text-body2 text-grey-600") {{ $t('RR0068', { number: threadQty }) }}
   div(class="flex flex-row items-center gap-4")
+    f-popper(placement="bottom-end")
+      template(#trigger="{ isSortByMenuExpand }")
+        f-svg-icon(
+          iconName="sortby"
+          size="24"
+          class="transform cursor-pointer text-grey-600 hover:text-primary-400"
+          :class="{ 'text-primary-400': isSortByMenuExpand }"
+        )
+      template(#content)
+        f-contextual-menu(
+          v-model:inputSelectValue="sortBy"
+          :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
+          :menuTree="sortByMenuTree"
+        )
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
+import { CONTEXTUAL_MENU_MODE } from '@frontier/constants'
+import { ThreadBoardQuerySortByEnum } from '@frontier/platform-web-sdk'
 import useThreadBoardStore from '@/stores/threadBoard'
 
+const { t } = useI18n()
 const threadBoardStore = useThreadBoardStore()
-const { threadQty } = storeToRefs(threadBoardStore)
+const { threadBoardQuery, threadQty } = storeToRefs(threadBoardStore)
+const { updateQuery } = threadBoardStore
+
+const sortByMenuTree = {
+  blockList: [
+    {
+      blockTitle: t('TT0168'),
+      menuList: [
+        {
+          title: t('TT0167'),
+          selectValue: ThreadBoardQuerySortByEnum.CUSTOM,
+        },
+        {
+          title: t('TT0169'),
+          selectValue: ThreadBoardQuerySortByEnum.NEWEST_TO_OLDEST,
+        },
+        {
+          title: t('TT0170'),
+          selectValue: ThreadBoardQuerySortByEnum.OLDEST_TO_NEWEST,
+        },
+      ],
+    },
+  ],
+}
+
+const sortBy = computed({
+  get: () => threadBoardQuery.value.sortBy,
+  set: (sortBy) => updateQuery({ sortBy }),
+})
 </script>
 
 <style scoped></style>
