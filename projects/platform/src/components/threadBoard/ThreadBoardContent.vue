@@ -37,13 +37,16 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
     class="flex flex-row gap-4 max-w-full h-full px-4 overflow-x-scroll bg-grey-100 p-2"
   )
     draggable(
-      class="flex flex-row gap-2 cursor-pointer h-full"
+      class="flex flex-row gap-2 h-full"
+      handle=".handle"
+      draggable=".draggable-workflow-stage"
       v-model="draggableWorkflowStageList"
       v-bind="workflowStageDragOptions"
-      handle=".handle"
+      @change="handleWorkflowStageListChange"
     )
       template(#item="{ element }")
         workflow-stage-column(
+          :class="{ 'draggable-workflow-stage cursor-pointer': canMoveWorkflowStage }"
           :active="element.workflowStageId === activeWorkflowStageId"
           :workflowStage="element"
         )
@@ -81,6 +84,7 @@ const {
   defaultWorkflowStage,
   draggableWorkflowStageList,
   defaultWorkflowStageThreadList,
+  canMoveWorkflowStage,
 } = storeToRefs(threadBoardStore)
 const {
   isThreadCardActive,
@@ -88,6 +92,7 @@ const {
   expandDefaultWorkflowStage,
   openStickerDrawerByThread,
   openMaterialDetail,
+  moveWorkflowStageList,
 } = threadBoardStore
 
 const horizontalScrollContainer = ref<HTMLDivElement>()
@@ -145,6 +150,11 @@ const defaultWorkflowStageWrapperClass = computed(() => {
 
   return baseClass
 })
+
+const handleWorkflowStageListChange = (e) => {
+  const { element, oldIndex, newIndex } = e.moved
+  moveWorkflowStageList(element.workflowStageId, oldIndex, newIndex)
+}
 </script>
 
 <style scoped>

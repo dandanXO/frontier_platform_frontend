@@ -11,11 +11,15 @@ import {
   type ThreadBoardQueryFilter,
   type DigitalThreadBase,
   FeatureType,
+  type MoveWorkflowStageRequest,
 } from '@frontier/platform-web-sdk'
 import threadBoardApi from '@/apis/threadBoard'
 import stickerApi from '@/apis/sticker.js'
+import { useNotifyStore } from '@/stores/notify'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import useGotoMaterialDetail from '@/composables/useGotoMaterialDetail'
+import usePermission from '@/composables/usePermission'
+import { FUNC_ID } from '@/utils/constants'
 
 const defaultFilter = (): ThreadBoardQueryFilter => ({
   createdBy: {
@@ -35,8 +39,10 @@ const defaultFilter = (): ThreadBoardQueryFilter => ({
 const useThreadBoardStore = defineStore('threadBoard', () => {
   const { t } = useI18n()
   const { unit, organization, orgUser } = useCurrentUnit()
+  const notify = useNotifyStore()
   const gotoMaterialDetail = useGotoMaterialDetail()
   const store = useStore()
+  const permissionList = usePermission()
 
   const isActive = ref(false)
   const activeThreadSideId = ref<number | null>(null)
@@ -52,6 +58,10 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const searchText = ref<string>('')
   const mostParticipantId = ref<number>()
   const participantFilterIdList = ref<number[]>([])
+
+  const canMoveWorkflowStage = computed(() =>
+    permissionList.value.includes(FUNC_ID.MOVE_WORKFLOW_STAGE)
+  )
 
   const filterCount = computed(() => {
     return [
@@ -217,7 +227,13 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
         .filter((w) => !w.isDefault)
         .filter((w) => !w.isHidden)
     },
-    set: () => {
+    set: (newDraggableWorkflowStage: WorkflowStage[]) => {
+      let newList = [...newDraggableWorkflowStage]
+      if (defaultWorkflowStage.value) {
+        newList = [defaultWorkflowStage.value, ...newList]
+      }
+      newList = [...newList, ...hiddenWorkflowStageList.value]
+      workflowStageList.value = newList
       // TODO: handle workflow stage move
     },
   })
@@ -227,6 +243,11 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     set: (v: DigitalThreadBase[]) => {
       // TODO: handle thread move
     },
+  })
+
+  const hiddenWorkflowStageList = computed(() => {
+    if (!workflowStageList.value) return []
+    return workflowStageList.value.filter((w) => w.isHidden)
   })
 
   const baseReq = computed(() => ({
@@ -346,6 +367,28 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     threadBoardQuery.filter.createEndDate = null
   }
 
+  const moveWorkflowStageList = async (
+    workflowStageId: number,
+    oldIndex: number,
+    newIndex: number
+  ) => {
+    const req: MoveWorkflowStageRequest = {
+      ...baseReq.value,
+      workflowStageId,
+      targetWorkflowStageId:
+        draggableWorkflowStageList.value[
+          newIndex === 0 ? newIndex + 1 : newIndex - 1
+        ].workflowStageId,
+      isMoveToBeforeTarget: newIndex === 0,
+    }
+    await threadBoardApi.moveWorkflowStage(req)
+    getThreadBoard()
+    notify.showNotifySnackbar({
+      isShowSnackbar: true,
+      messageText: t('WW0131'),
+    })
+  }
+
   const init = async () => {
     isActive.value = true
     getQuery()
@@ -368,6 +411,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
 
   return {
     loading,
+    canMoveWorkflowStage,
     isDefaultWorkflowStageExpanded,
     workflowStageList,
     threadBoardQuery,
@@ -400,6 +444,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     openStickerDrawerByThread,
     isThreadCardActive,
     deactivateThreadCard,
+    moveWorkflowStageList,
   }
 })
 
