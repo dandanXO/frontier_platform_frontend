@@ -43,6 +43,9 @@ importers:
       dayjs:
         specifier: ^1.10.7
         version: 1.11.4
+      debounce:
+        specifier: ^1.2.1
+        version: 1.2.1
       events:
         specifier: ^3.3.0
         version: 3.3.0
@@ -71,6 +74,9 @@ importers:
       '@rushstack/eslint-patch':
         specifier: ^1.1.4
         version: 1.2.0
+      '@types/debounce':
+        specifier: ^1.2.1
+        version: 1.2.1
       '@types/node':
         specifier: ^16.11.56
         version: 16.11.64
@@ -143,9 +149,6 @@ importers:
       chroma-js:
         specifier: ^2.4.2
         version: 2.4.2
-      debounce:
-        specifier: ^1.2.1
-        version: 1.2.1
       ramda:
         specifier: ^0.28.0
         version: 0.28.0
@@ -159,9 +162,6 @@ importers:
       '@types/chroma-js':
         specifier: ^2.1.4
         version: 2.1.4
-      '@types/debounce':
-        specifier: ^1.2.1
-        version: 1.2.1
       '@types/ramda':
         specifier: ^0.28.15
         version: 0.28.15

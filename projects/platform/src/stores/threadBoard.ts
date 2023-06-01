@@ -2,6 +2,7 @@ import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { defineStore } from 'pinia'
+import debounce from 'debounce'
 import {
   ThreadBoardQuerySortByEnum,
   type ThreadBoardQuery,
@@ -48,6 +49,13 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     sortBy: ThreadBoardQuerySortByEnum.CUSTOM,
     filter: defaultFilter(),
   })
+  const searchText = ref<string>('')
+
+  const canClearFilterAndSearch = computed(() =>
+    [threadBoardQuery.onlyShowUnread, threadBoardQuery.search?.length].some(
+      (b) => b
+    )
+  )
 
   const threadQty = computed(() => {
     if (!workflowStageList.value) return 0
@@ -87,7 +95,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   })
 
   const baseReq = computed(() => ({
-    orgId: unit.value.ogId,
+    orgId: unit.value.orgId,
     ogType: unit.value.ogType,
     ogId: unit.value.ogId,
   }))
@@ -157,6 +165,22 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     Object.assign(threadBoardQuery, v)
   }
 
+  const updateThreadBoardQueryText = debounce(
+    (search: string | null) => updateQuery({ search }),
+    500
+  )
+
+  const updateSearchText = (v: string | null) => {
+    searchText.value = v == null ? '' : v
+    updateThreadBoardQueryText(searchText.value)
+  }
+
+  const clearAllQuery = async () => {
+    threadBoardQuery.onlyShowUnread = false
+    threadBoardQuery.search = null
+    threadBoardQuery.filter = defaultFilter()
+  }
+
   const init = async () => {
     isActive.value = true
     getQuery()
@@ -165,6 +189,8 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   watch(threadBoardQuery, async () => {
     setLoading(true)
     try {
+      searchText.value =
+        threadBoardQuery.search == null ? '' : threadBoardQuery.search
       await getThreadBoard()
       const updateQueryReq = { ...baseReq.value, threadBoardQuery }
       threadBoardApi.saveThreadBoardQuery(updateQueryReq)
@@ -181,11 +207,15 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     workflowStageList,
     threadBoardQuery,
     threadQty,
+    canClearFilterAndSearch,
+    searchText,
     defaultWorkflowStage,
     defaultWorkflowStageThreadList,
     draggableWorkflowStageList,
     init,
     updateQuery,
+    updateSearchText,
+    clearAllQuery,
     getThreadBoard,
     expandDefaultWorkflowStage,
     collapseDefaultWorkflowStage,

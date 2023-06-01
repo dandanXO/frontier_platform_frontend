@@ -16,8 +16,8 @@ div
                 size="20"
                 class="text-grey-400"
               )
-              span(class="text-body-2 text-grey-900 font-bold") {{ workflowStage.workflowStageName }}
-            span(class="text-body-2 text-grey-600") {{ workflowStage.digitalThreadList.length }}
+              span(class="text-body2 text-grey-900 font-bold") {{ workflowStage.workflowStageName }}
+            span(class="text-body2 text-grey-600") {{ workflowStage.digitalThreadList.length }}
         div(class="w-8 h-8 flex items-center justify-center")
           icon-button(iconName="more_horiz" size="24")
         div(
