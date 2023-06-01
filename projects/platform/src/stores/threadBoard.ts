@@ -34,7 +34,7 @@ const defaultFilter = (): ThreadBoardQueryFilter => ({
 
 const useThreadBoardStore = defineStore('threadBoard', () => {
   const { t } = useI18n()
-  const { unit, organization } = useCurrentUnit()
+  const { unit, organization, orgUser } = useCurrentUnit()
   const gotoMaterialDetail = useGotoMaterialDetail()
   const store = useStore()
 
@@ -50,12 +50,147 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     filter: defaultFilter(),
   })
   const searchText = ref<string>('')
+  const mostParticipantId = ref<number>()
+  const participantFilterIdList = ref<number[]>([])
+
+  const filterCount = computed(() => {
+    return [
+      Object.values(threadBoardQuery.filter.createdBy).some((b) => b),
+      threadBoardQuery.filter.participantUserIdList.length > 0,
+      Object.values(threadBoardQuery.filter.stickerType).some((b) => b),
+      Object.values([
+        threadBoardQuery.filter.createStartDate,
+        threadBoardQuery.filter.createEndDate,
+      ]).some((b) => b),
+    ].filter((b) => b).length
+  })
+
+  const isFilterDirty = computed(() => filterCount.value > 0)
 
   const canClearFilterAndSearch = computed(() =>
-    [threadBoardQuery.onlyShowUnread, threadBoardQuery.search?.length].some(
-      (b) => b
-    )
+    [
+      threadBoardQuery.onlyShowUnread,
+      threadBoardQuery.search?.length,
+      isFilterDirty.value,
+    ].some((b) => b)
   )
+
+  const createdByMenu = computed(() => [
+    {
+      id: 1,
+      name: t('TT0048', { userName: orgUser.value.displayName }),
+      checked: threadBoardQuery.filter.createdBy.createdByMe,
+      handleInput: (v: boolean) => {
+        threadBoardQuery.filter.createdBy.createdByMe = v
+      },
+    },
+    {
+      id: 2,
+      name: t('TT0049', { orgName: organization.value.orgName }),
+      checked: threadBoardQuery.filter.createdBy.createdByInternalUnit,
+      handleInput: (v: boolean) => {
+        threadBoardQuery.filter.createdBy.createdByInternalUnit = v
+      },
+    },
+    {
+      id: 3,
+      name: t('TT0050'),
+      checked: threadBoardQuery.filter.createdBy.createdByExternalUnit,
+      handleInput: (v: boolean) => {
+        threadBoardQuery.filter.createdBy.createdByExternalUnit = v
+      },
+    },
+  ])
+
+  const stickerTypeMenu = computed(() => [
+    {
+      id: 1,
+      name: 'Internal',
+      checked: threadBoardQuery.filter.stickerType.internal,
+      handleInput: (v: boolean) => {
+        threadBoardQuery.filter.stickerType.internal = v
+      },
+    },
+    {
+      id: 2,
+      name: 'External',
+      checked: threadBoardQuery.filter.stickerType.external,
+      handleInput: (v: boolean) => {
+        threadBoardQuery.filter.stickerType.external = v
+      },
+    },
+  ])
+
+  const dateCreatedInput = computed(() => ({
+    start: {
+      value: threadBoardQuery.filter.createStartDate || '',
+      handleInput: (v: string) => {
+        threadBoardQuery.filter.createStartDate = v
+      },
+    },
+    end: {
+      value: threadBoardQuery.filter.createEndDate || '',
+      handleInput: (v: string) => {
+        threadBoardQuery.filter.createEndDate = v
+      },
+    },
+  }))
+
+  const memberListMenu = computed(() => {
+    return unit.value.activeMemberList.map((m) => {
+      const checked = threadBoardQuery.filter.participantUserIdList.includes(
+        m.userId
+      )
+      const isCurrentUser = orgUser.value.userId === m.userId
+      return {
+        id: m.userId,
+        name: isCurrentUser
+          ? t('TT0048', { userName: orgUser.value.displayName })
+          : m.displayName,
+        avatar: m.avatar,
+        checked,
+        handleInput: () => {
+          if (
+            threadBoardQuery.filter.participantUserIdList.includes(m.userId)
+          ) {
+            threadBoardQuery.filter.participantUserIdList =
+              threadBoardQuery.filter.participantUserIdList.filter(
+                (pId) => pId !== m.userId
+              )
+          } else {
+            threadBoardQuery.filter.participantUserIdList.push(m.userId)
+            if (
+              !participantFilterItemList.value
+                .map((item) => item.id)
+                .includes(m.userId)
+            ) {
+              participantFilterIdList.value.push(m.userId)
+            }
+          }
+        },
+      }
+    })
+  })
+
+  const participantFilterItemList = computed(() => {
+    const getMenuItemById = (id: number) => {
+      const item = memberListMenu.value.find((m) => m.id === id)
+      if (!item) throw new Error('user not exist')
+      return item
+    }
+
+    const list = [getMenuItemById(orgUser.value.userId)]
+    if (mostParticipantId.value) {
+      list.push(getMenuItemById(mostParticipantId.value))
+    }
+    return [...list, ...participantFilterIdList.value.map(getMenuItemById)]
+  })
+
+  const participantMenu = computed(() => {
+    return memberListMenu.value.filter((item) => {
+      return !participantFilterItemList.value.map((i) => i.id).includes(item.id)
+    })
+  })
 
   const threadQty = computed(() => {
     if (!workflowStageList.value) return 0
@@ -159,10 +294,18 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const getQuery = async () => {
     const res = await threadBoardApi.getThreadBoardQuery(baseReq.value)
     Object.assign(threadBoardQuery, res.data.result!.threadBoardQuery)
+    participantFilterIdList.value =
+      threadBoardQuery.filter.participantUserIdList.filter(
+        (pid) => pid !== orgUser.value.userId
+      )
   }
 
   const updateQuery = (v: Partial<ThreadBoardQuery>) => {
     Object.assign(threadBoardQuery, v)
+    participantFilterIdList.value =
+      threadBoardQuery.filter.participantUserIdList.filter(
+        (pid) => pid !== orgUser.value.userId
+      )
   }
 
   const updateThreadBoardQueryText = debounce(
@@ -179,6 +322,28 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     threadBoardQuery.onlyShowUnread = false
     threadBoardQuery.search = null
     threadBoardQuery.filter = defaultFilter()
+    participantFilterIdList.value = []
+  }
+
+  const clearCreatedByFilter = async () => {
+    threadBoardQuery.filter.createdBy.createdByMe = false
+    threadBoardQuery.filter.createdBy.createdByInternalUnit = false
+    threadBoardQuery.filter.createdBy.createdByExternalUnit = false
+  }
+
+  const clearParticipantsFilter = async () => {
+    threadBoardQuery.filter.participantUserIdList = []
+    participantFilterIdList.value = []
+  }
+
+  const clearStickerTypeFilter = async () => {
+    threadBoardQuery.filter.stickerType.internal = false
+    threadBoardQuery.filter.stickerType.external = false
+  }
+
+  const clearDateCreatedFilter = async () => {
+    threadBoardQuery.filter.createStartDate = null
+    threadBoardQuery.filter.createEndDate = null
   }
 
   const init = async () => {
@@ -209,6 +374,14 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     threadQty,
     canClearFilterAndSearch,
     searchText,
+    filterCount,
+    isFilterDirty,
+    createdByMenu,
+    participantFilterItemList,
+    participantMenu,
+    memberListMenu,
+    stickerTypeMenu,
+    dateCreatedInput,
     defaultWorkflowStage,
     defaultWorkflowStageThreadList,
     draggableWorkflowStageList,
@@ -216,6 +389,10 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     updateQuery,
     updateSearchText,
     clearAllQuery,
+    clearCreatedByFilter,
+    clearParticipantsFilter,
+    clearStickerTypeFilter,
+    clearDateCreatedFilter,
     getThreadBoard,
     expandDefaultWorkflowStage,
     collapseDefaultWorkflowStage,

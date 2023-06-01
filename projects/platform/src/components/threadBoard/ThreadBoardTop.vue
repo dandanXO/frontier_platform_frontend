@@ -24,7 +24,97 @@ div(
       @focus="isSearchInputFocus = true"
       @blur="isSearchInputFocus = false"
     )
-    div(class="h-6 w-px bg-grey-150")
+    filter-wrapper(
+      class="w-40"
+      iconName="filter"
+      :displayName="$t('RR0085')"
+      :filterCount="filterCount"
+      :dirty="isFilterDirty"
+    )
+      template(#default="{ collapsePopper }")
+        div(class="w-93.5 rounded shadow-16")
+          div(class="px-4 py-5 flex flex-row items-center justify-between")
+            span(class="text-body2 text-grey-900 font-bold") {{ $t('RR0085') }}
+            f-svg-icon(
+              class="text-grey-600 cursor-pointer"
+              iconName="close"
+              size="24"
+              @click="collapsePopper"
+            )
+          div(class="w-full h-px bg-grey-150")
+          div(class="px-4 py-3.5 flex flex-col gap-3")
+            div(class="flex flex-row items-center gap-2.5")
+              span(class="text-caption text-grey-900 font-bold") {{ $t('TT0062') }}
+              f-button-label(size="sm" @click="clearCreatedByFilter") {{ $t('UU0040') }}
+            div(v-for="item in createdByMenu" :key="item.id")
+              f-input-checkbox(
+                binary
+                :label="item.name"
+                :inputValue="item.checked"
+                @update:inputValue="item.handleInput"
+                iconSize="20"
+              )
+          div(class="w-full h-px bg-grey-150")
+          div(class="px-4 py-3.5 flex flex-col gap-3")
+            div(class="flex flex-row items-center gap-2.5")
+              span(class="text-caption text-grey-900 font-bold") {{ $t('TT0072') }}
+              f-button-label(size="sm" @click="clearParticipantsFilter") {{ $t('UU0040') }}
+            div(v-for="item in participantFilterItemList" :key="item.id")
+              f-input-checkbox(
+                binary
+                :label="item.name"
+                :inputValue="item.checked"
+                @update:inputValue="item.handleInput"
+                iconSize="20"
+              )
+            f-select-input(
+              v-if="showParticipantSelectInput"
+              size="md"
+              prependIcon="search"
+              :canAddNew="false"
+              :placeholder="$t('TT0166')"
+              :dropdownMenuTree="participantShowMoreMenuTree"
+            )
+            p(
+              v-else
+              class="text-caption text-cyan-400 cursor-pointer"
+              @click="showParticipantSelectInput = true"
+            ) {{ $t('TT0054') }}
+          div(class="w-full h-px bg-grey-150")
+          div(class="px-4 py-3.5 flex flex-col gap-3")
+            div(class="flex flex-row items-center gap-2.5")
+              span(class="text-caption text-grey-900 font-bold") {{ $t('TT0165') }}
+              f-button-label(size="sm" @click="clearStickerTypeFilter") {{ $t('UU0040') }}
+            div(v-for="item in stickerTypeMenu" :key="item.id")
+              f-input-checkbox(
+                binary
+                :label="item.name"
+                :inputValue="item.checked"
+                @update:inputValue="item.handleInput"
+                iconSize="20"
+              )
+          div(class="w-full h-px bg-grey-150")
+          div(class="px-4 py-3.5 flex flex-col gap-3")
+            div(class="flex flex-row items-center gap-2.5")
+              span(class="text-caption text-grey-900 font-bold") {{ $t('RR0065') }}
+              f-button-label(size="sm" @click="clearDateCreatedFilter") {{ $t('UU0040') }}
+            div(class="flex flex-row gap-2")
+              f-input-text(
+                inputType="date"
+                size="md"
+                class="flex-1"
+                :textValue="dateCreatedInput.start.value"
+                @update:textValue="dateCreatedInput.start.handleInput"
+              )
+              span(class="text-body1 text-grey-900") ~
+              f-input-text(
+                inputType="date"
+                size="md"
+                class="flex-1"
+                :textValue="dateCreatedInput.end.value"
+                @update:textValue="dateCreatedInput.end.handleInput"
+              )
+    div(class="w-px h-6 bg-grey-150")
     f-popper(placement="bottom-end")
       template(#trigger="{ isSortByMenuExpand }")
         f-svg-icon(
@@ -48,14 +138,35 @@ import { storeToRefs } from 'pinia'
 import { CONTEXTUAL_MENU_MODE } from '@frontier/constants'
 import { ThreadBoardQuerySortByEnum } from '@frontier/platform-web-sdk'
 import useThreadBoardStore from '@/stores/threadBoard'
+import FilterWrapper from '@/components/threadBoard/FilterWrapper.vue'
 
 const { t } = useI18n()
 const threadBoardStore = useThreadBoardStore()
-const { threadBoardQuery, searchText, threadQty, canClearFilterAndSearch } =
-  storeToRefs(threadBoardStore)
-const { updateQuery, updateSearchText, clearAllQuery } = threadBoardStore
+const {
+  threadBoardQuery,
+  threadQty,
+  canClearFilterAndSearch,
+  searchText,
+  filterCount,
+  isFilterDirty,
+  participantFilterItemList,
+  createdByMenu,
+  participantMenu,
+  stickerTypeMenu,
+  dateCreatedInput,
+} = storeToRefs(threadBoardStore)
+const {
+  updateQuery,
+  clearAllQuery,
+  updateSearchText,
+  clearCreatedByFilter,
+  clearParticipantsFilter,
+  clearStickerTypeFilter,
+  clearDateCreatedFilter,
+} = threadBoardStore
 
 const isSearchInputFocus = ref(false)
+const showParticipantSelectInput = ref(false)
 
 const sortByMenuTree = {
   blockList: [
@@ -78,6 +189,19 @@ const sortByMenuTree = {
     },
   ],
 }
+
+const participantShowMoreMenuTree = computed(() => ({
+  blockList: [
+    {
+      menuList: participantMenu.value.map((item) => ({
+        title: item.name || '123',
+        selectValue: item.id,
+        thumbnail: item.avatar,
+        clickHandler: item.handleInput,
+      })),
+    },
+  ],
+}))
 
 const sortBy = computed({
   get: () => threadBoardQuery.value.sortBy,
