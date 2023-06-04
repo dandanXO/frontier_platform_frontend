@@ -1,4 +1,4 @@
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, reactive, ref, nextTick, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { defineStore } from 'pinia'
@@ -333,6 +333,12 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     return thread.digitalThreadSideId === activeThreadSideId.value
   }
 
+  const activateThreadCard = async (digitalThreadSideId: number) => {
+    activeThreadSideId.value = null
+    await nextTick()
+    activeThreadSideId.value = digitalThreadSideId
+  }
+
   const deactivateThreadCard = () => {
     activeThreadSideId.value = null
   }
@@ -514,6 +520,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   })
 
   return {
+    activeThreadSideId,
     loading,
     haveMoveWorkflowStagePermission,
     haveHideShowWorkflowStagePermission,
@@ -553,6 +560,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     openMaterialDetail,
     openStickerDrawerByThread,
     isThreadCardActive,
+    activateThreadCard,
     deactivateThreadCard,
     moveWorkflowStageList,
     deleteWorkflowStage,
