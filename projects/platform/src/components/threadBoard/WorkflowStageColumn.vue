@@ -83,6 +83,7 @@ import useCurrentUnit from '@/composables/useCurrentUnit'
 const emit = defineEmits<{
   (e: 'workflowStageCollapse'): void
   (e: 'workflowStageHide', id: number): void
+  (e: 'workflowStageDelete', id: number): void
 }>()
 
 const props = withDefaults(
@@ -115,11 +116,13 @@ const menuTree = computed(() => ({
   width: 'w-66',
   blockList: (() => {
     const blockList = []
-    const showBlock = {
+    const showDeleteBlock = {
       menuList: (() => {
-        const disabled = !props.workflowStage.canHide
-        return [
-          {
+        const menuList = []
+
+        if (threadBoardStore.haveHideShowWorkflowStagePermission) {
+          const disabled = !props.workflowStage.canHide
+          menuList.push({
             title: t('TT0152'),
             icon: 'hideeye',
             tooltipTitle: disabled
@@ -128,13 +131,27 @@ const menuTree = computed(() => ({
             disabled,
             clickHandler: () =>
               emit('workflowStageHide', props.workflowStage.workflowStageId),
-          },
-        ]
+          })
+        }
+
+        if (threadBoardStore.haveDeleteWorkflowStagePermission) {
+          menuList.push({
+            title: t('TT0153'),
+            icon: 'delete',
+            tooltipTitle: props.workflowStage.canDelete ? null : t('TT0155'),
+            disabled: !props.workflowStage.canDelete,
+            clickHandler: () => {
+              emit('workflowStageDelete', props.workflowStage.workflowStageId)
+            },
+          })
+        }
+
+        return menuList
       })(),
     }
 
-    if (threadBoardStore.haveHideShowWorkflowStagePermission) {
-      blockList.push(showBlock)
+    if (showDeleteBlock.menuList.length) {
+      blockList.push(showDeleteBlock)
     }
 
     return blockList

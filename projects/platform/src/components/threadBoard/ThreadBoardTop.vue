@@ -17,7 +17,7 @@ div(
     f-input-text(
       :class="isLongSearchInput ? 'w-100' : 'w-40'"
       size="md"
-      :placeholder="isLongSearchInput ? 'Search by thread title, item name, organization name' : $t('RR0053')"
+      :placeholder="isLongSearchInput ? $t('TT0163') : $t('RR0053')"
       prependIcon="search"
       :textValue="searchText"
       @update:textValue="updateSearchText"

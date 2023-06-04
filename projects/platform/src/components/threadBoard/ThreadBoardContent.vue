@@ -50,6 +50,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
           :active="element.workflowStageId === activeWorkflowStageId"
           :workflowStage="element"
           @workflowStageHide="hideWorkflowStage"
+          @workflowStageDelete="deleteWorkflowStage"
         )
           template(#default="{ scrollContainer }")
             draggable(
@@ -126,6 +127,7 @@ const {
   moveWorkflowStageList,
   showWorkflowStage,
   hideWorkflowStage,
+  deleteWorkflowStage,
 } = threadBoardStore
 
 const horizontalScrollContainer = ref<HTMLDivElement>()

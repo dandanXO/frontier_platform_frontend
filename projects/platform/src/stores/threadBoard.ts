@@ -13,6 +13,9 @@ import {
   FeatureType,
   type MoveWorkflowStageRequest,
   type HideWorkflowStageRequest,
+  type CreateWorkflowStageRequest,
+  type RenameWorkflowStageRequest,
+  type DeleteWorkflowStageRequest,
 } from '@frontier/platform-web-sdk'
 import threadBoardApi from '@/apis/threadBoard'
 import stickerApi from '@/apis/sticker.js'
@@ -20,7 +23,11 @@ import { useNotifyStore } from '@/stores/notify'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import useGotoMaterialDetail from '@/composables/useGotoMaterialDetail'
 import usePermission from '@/composables/usePermission'
-import { FUNC_ID } from '@/utils/constants'
+import { FUNC_ID, NOTIFY_TYPE } from '@/utils/constants'
+import type {
+  WorkflowStageCreatePayload,
+  WorkflowStageRenamePayload,
+} from '@/types'
 
 const defaultFilter = (): ThreadBoardQueryFilter => ({
   createdBy: {
@@ -67,6 +74,10 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
 
   const haveHideShowWorkflowStagePermission = computed(() =>
     permissionList.value.includes(FUNC_ID.HIDE_SHOW_WORKFLOW_STAGE)
+  )
+
+  const haveDeleteWorkflowStagePermission = computed(() =>
+    permissionList.value.includes(FUNC_ID.DELETE_WORKFLOW_STAGE)
   )
 
   const filterCount = computed(() => {
@@ -403,6 +414,37 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     })
   }
 
+  const deleteWorkflowStage = async (id: number) => {
+    store.dispatch('helper/openModalConfirm', {
+      type: NOTIFY_TYPE.WARNING,
+      header: t('TT0150'),
+      contentText: t('TT0154'),
+      primaryBtnText: t('UU0013'),
+      primaryBtnHandler: async () => {
+        store.dispatch('helper/closeModalConfirm')
+
+        if (!workflowStageList.value) {
+          throw new Error('workflowStageList undefined')
+        }
+
+        workflowStageList.value = workflowStageList.value.filter(
+          (w) => w.workflowStageId !== id
+        )
+        const req: DeleteWorkflowStageRequest = {
+          orgId: baseReq.value.orgId,
+          workflowStageId: id,
+        }
+        await threadBoardApi.deleteWorkflowStage(req)
+        getThreadBoard()
+        notify.showNotifySnackbar({
+          isShowSnackbar: true,
+          messageText: t('WW0132'),
+        })
+      },
+      secondaryBtnText: t('UU0002'),
+    })
+  }
+
   const showWorkflowStage = async (id: number) => {
     if (!workflowStageList.value) {
       throw new Error('workflowStageList undefined')
@@ -475,6 +517,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     loading,
     haveMoveWorkflowStagePermission,
     haveHideShowWorkflowStagePermission,
+    haveDeleteWorkflowStagePermission,
     isDefaultWorkflowStageExpanded,
     isHiddenWorkflowListExpanded,
     workflowStageList,
@@ -512,6 +555,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     isThreadCardActive,
     deactivateThreadCard,
     moveWorkflowStageList,
+    deleteWorkflowStage,
     showWorkflowStage,
     hideWorkflowStage,
   }
