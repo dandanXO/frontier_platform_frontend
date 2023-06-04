@@ -19,14 +19,20 @@ div
               span(class="text-body2 text-grey-900 font-bold") {{ workflowStage.workflowStageName }}
             span(class="text-body2 text-grey-600") {{ workflowStage.digitalThreadList.length }}
         div(class="w-8 h-8 flex items-center justify-center")
-          icon-button(iconName="more_horiz" size="24")
+          f-popper(placement="bottom-end")
+            template(#trigger="{ isExpand }")
+              icon-button(iconName="more_horiz" :active="isExpand")
+            template(#content="{ collapsePopper }")
+              f-contextual-menu(
+                :menuTree="menuTree"
+                @click:menu="collapsePopper"
+              )
         div(
           v-if="workflowStage.isDefault"
           class="w-8 h-8 flex items-center justify-center"
         )
           icon-button(
             iconName="double_arrow_left"
-            size="24"
             @click.stop="handleWorkflowStageCollapse"
           )
     div(class="relative h-full")
@@ -48,7 +54,7 @@ div
     div(class="flex flex-col items-center gap-2")
       div(v-if="haveUnreadThread" class="w-5 h-5 flex items-center justify-center")
         p(class="bg-primary-400 w-2 h-2 rounded-full") 
-      icon-button(v-else iconName="double_arrow_right" size="20")
+      f-svg-icon(v-else iconName="double_arrow_right" size="20")
       p(
         class="flex gap-2 font-bold [writing-mode:vertical-lr] rotate-180"
         :class="haveUnreadThread ? 'text-primary-500' : 'text-grey-800'"
@@ -66,13 +72,17 @@ div
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import IconButton from '@/components/threadBoard/IconButton.vue'
 import type overlayscrollbars from 'overlayscrollbars'
 import type FScrollbarContainer from '@frontier/ui-component/src/FScrollbarContainer/FScrollbarContainer.vue'
 import type { WorkflowStage } from '@frontier/platform-web-sdk'
+import useThreadBoardStore from '@/stores/threadBoard'
+import useCurrentUnit from '@/composables/useCurrentUnit'
 
 const emit = defineEmits<{
   (e: 'workflowStageCollapse'): void
+  (e: 'workflowStageHide', id: number): void
 }>()
 
 const props = withDefaults(
@@ -85,6 +95,9 @@ const props = withDefaults(
 )
 
 const store = useStore()
+const threadBoardStore = useThreadBoardStore()
+const { t } = useI18n()
+const { unit } = useCurrentUnit()
 
 const scrollContainer = ref<InstanceType<typeof FScrollbarContainer>>()
 const showUpperBound = ref(false)
@@ -97,6 +110,36 @@ const haveUnreadThread = computed(() => {
     (thread) => thread.unreadStickerQty > 0
   )
 })
+
+const menuTree = computed(() => ({
+  width: 'w-66',
+  blockList: (() => {
+    const blockList = []
+    const showBlock = {
+      menuList: (() => {
+        const disabled = !props.workflowStage.canHide
+        return [
+          {
+            title: t('TT0152'),
+            icon: 'hideeye',
+            tooltipTitle: disabled
+              ? t('TT0155')
+              : t('TT0158', { currentThreadBoard: unit.value.ogName }),
+            disabled,
+            clickHandler: () =>
+              emit('workflowStageHide', props.workflowStage.workflowStageId),
+          },
+        ]
+      })(),
+    }
+
+    if (threadBoardStore.haveHideShowWorkflowStagePermission) {
+      blockList.push(showBlock)
+    }
+
+    return blockList
+  })(),
+}))
 
 const handleWorkflowStageCollapse = () => {
   emit('workflowStageCollapse')

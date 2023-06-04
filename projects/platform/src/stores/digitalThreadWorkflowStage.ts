@@ -30,9 +30,9 @@ const useDigitalThreadWorkflowStageStore = defineStore(
     const digitalThread = computed(
       () => store.getters['sticker/digitalThread'] as DigitalThreadBase
     )
-    const workflowStageOptions = ref<WorkflowStageOption[]>([])
+    const workflowStageOptionList = ref<WorkflowStageOption[]>([])
 
-    const getWorkflowStageOptions = async () => {
+    const getWorkflowStageOptionList = async () => {
       const req: GetDigitalThreadWorkflowStageOptionsRequest = {
         orgId: unit.value.orgId,
         ogId: unit.value.ogId,
@@ -41,11 +41,11 @@ const useDigitalThreadWorkflowStageStore = defineStore(
       const res = await digitalThreadApi.getDigitalThreadWorkflowStageOptions(
         req
       )
-      workflowStageOptions.value = res.data.result!.workflowStageList
+      workflowStageOptionList.value = res.data.result!.workflowStageList
     }
 
     const getWorkflowStageNameById = (id: number) =>
-      workflowStageOptions.value.find((w) => w.workflowStageId === id)
+      workflowStageOptionList.value.find((w) => w.workflowStageId === id)
 
     const changeDigitalThreadWorkflow = async (workflowStageId: number) => {
       const req: ChangeDigitalThreadWorkflowStageRequest = {
@@ -79,8 +79,8 @@ const useDigitalThreadWorkflowStageStore = defineStore(
     }
 
     return {
-      workflowStageOptions,
-      getWorkflowStageOptions,
+      workflowStageOptionList,
+      getWorkflowStageOptionList,
       getWorkflowStageNameById,
       changeDigitalThreadWorkflow,
     }

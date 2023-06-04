@@ -628,5 +628,5 @@ const hasAnyUnreadDigitalThread = computed(() =>
   )
 )
 
-onMounted(workflowStageStore.getWorkflowStageOptions)
+onMounted(workflowStageStore.getWorkflowStageOptionList)
 </script>

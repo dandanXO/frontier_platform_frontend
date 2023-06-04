@@ -185,12 +185,12 @@ const toMenuItem = (opt) => ({
 const dropdownMenuTree = computed(() => ({
   blockList: [
     {
-      menuList: workflowStageStore.workflowStageOptions
+      menuList: workflowStageStore.workflowStageOptionList
         .filter((opt) => opt.isDefault)
         .map(toMenuItem),
     },
     {
-      menuList: workflowStageStore.workflowStageOptions
+      menuList: workflowStageStore.workflowStageOptionList
         .filter((opt) => !opt.isDefault)
         .map(toMenuItem),
     },

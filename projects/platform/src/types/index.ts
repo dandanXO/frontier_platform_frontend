@@ -143,3 +143,19 @@ export interface ViewerLogPayload {
   materialId: number
   fromLocationType: FROM_LOCATION_TYPE
 }
+
+interface Menu {
+  title: string
+  icon?: string
+  disabled?: boolean
+  clickHandler: () => void
+}
+
+interface Block {
+  menuList: Menu[]
+}
+
+export interface MenuTree {
+  width: string
+  blockList: Block[]
+}

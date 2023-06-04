@@ -34,7 +34,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
               )
   div(
     ref="horizontalScrollContainer"
-    class="flex flex-row gap-4 max-w-full h-full px-4 overflow-x-scroll bg-grey-100 p-2"
+    class="flex flex-row gap-4 max-w-full w-full h-full px-4 overflow-x-scroll bg-grey-100 p-2"
   )
     draggable(
       class="flex flex-row gap-2 h-full"
@@ -46,9 +46,10 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
     )
       template(#item="{ element }")
         workflow-stage-column(
-          :class="{ 'draggable-workflow-stage cursor-pointer': canMoveWorkflowStage }"
+          :class="{ 'draggable-workflow-stage cursor-pointer': haveMoveWorkflowStagePermission }"
           :active="element.workflowStageId === activeWorkflowStageId"
           :workflowStage="element"
+          @workflowStageHide="hideWorkflowStage"
         )
           template(#default="{ scrollContainer }")
             draggable(
@@ -68,6 +69,31 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
                     @materialClick="openMaterialDetail"
                   )
     div(class="w-120 flex-shrink-0")
+      div(
+        v-if="isHiddenWorkflowListExpanded"
+        class="rounded pb-2 flex flex-col gap-2 w-82.5 flex-shrink-0 bg-grey-200"
+      )
+        div(
+          class="h-12 rounded px-5 hover:bg-grey-150 flex flex-row items-center gap-3 cursor-pointer"
+          @click="collapseHiddenWorkflowStage"
+        )
+          span(class="text-body2 text-grey-900 font-bold") {{ $t('TT0159') }}
+          span(class="text-body2 text-grey-600 font-bold") {{ hiddenWorkflowStageList.length }}
+        div(class="px-2 flex flex-col gap-2")
+          workflow-stage-hidden-card(
+            v-for="workflowStage in hiddenWorkflowStageList"
+            :key="workflowStage.workflowStageId"
+            :workflowStage="workflowStage"
+            @workflowStageShow="showWorkflowStage"
+          )
+      div(
+        v-else
+        @click="expandHiddenWorkflowStageList"
+        class="flex-shrink-0 w-82.5 rounded px-2 hover:bg-grey-150 flex flex-row gap-3 cursor-pointer"
+      )
+        div(class="h-12 px-3 flex flex-row items-center gap-3")
+          span(class="text-body2 text-grey-900 font-bold") {{ $t('TT0159') }}
+          span(class="text-body2 text-grey-600 font-bold") {{ hiddenWorkflowStageList.length }}
 </template>
 
 <script setup lang="ts">
@@ -77,22 +103,29 @@ import Draggable from 'vuedraggable'
 import useThreadBoardStore from '@/stores/threadBoard'
 import ThreadCard from '@/components/threadBoard/ThreadCard.vue'
 import WorkflowStageColumn from '@/components/threadBoard/WorkflowStageColumn.vue'
+import WorkflowStageHiddenCard from './WorkflowStageHiddenCard.vue'
 
 const threadBoardStore = useThreadBoardStore()
 const {
   isDefaultWorkflowStageExpanded,
+  isHiddenWorkflowListExpanded,
   defaultWorkflowStage,
   draggableWorkflowStageList,
   defaultWorkflowStageThreadList,
-  canMoveWorkflowStage,
+  hiddenWorkflowStageList,
+  haveMoveWorkflowStagePermission,
 } = storeToRefs(threadBoardStore)
 const {
   isThreadCardActive,
   collapseDefaultWorkflowStage,
   expandDefaultWorkflowStage,
+  expandHiddenWorkflowStageList,
+  collapseHiddenWorkflowStage,
   openStickerDrawerByThread,
   openMaterialDetail,
   moveWorkflowStageList,
+  showWorkflowStage,
+  hideWorkflowStage,
 } = threadBoardStore
 
 const horizontalScrollContainer = ref<HTMLDivElement>()

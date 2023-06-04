@@ -12,6 +12,7 @@ import {
   type DigitalThreadBase,
   FeatureType,
   type MoveWorkflowStageRequest,
+  type HideWorkflowStageRequest,
 } from '@frontier/platform-web-sdk'
 import threadBoardApi from '@/apis/threadBoard'
 import stickerApi from '@/apis/sticker.js'
@@ -49,6 +50,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const workflowStageList = ref<WorkflowStage[]>()
   const loading = ref(true)
   const isDefaultWorkflowStageExpanded = ref(true)
+  const isHiddenWorkflowListExpanded = ref(false)
   const threadBoardQuery = reactive<ThreadBoardQuery>({
     search: '',
     onlyShowUnread: false,
@@ -59,8 +61,12 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const mostParticipantId = ref<number>()
   const participantFilterIdList = ref<number[]>([])
 
-  const canMoveWorkflowStage = computed(() =>
+  const haveMoveWorkflowStagePermission = computed(() =>
     permissionList.value.includes(FUNC_ID.MOVE_WORKFLOW_STAGE)
+  )
+
+  const haveHideShowWorkflowStagePermission = computed(() =>
+    permissionList.value.includes(FUNC_ID.HIDE_SHOW_WORKFLOW_STAGE)
   )
 
   const filterCount = computed(() => {
@@ -259,13 +265,21 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const setLoading = (v: boolean) => (loading.value = v)
 
   const expandDefaultWorkflowStage = () => {
-    if (isDefaultWorkflowStageExpanded.value === true) return
     isDefaultWorkflowStageExpanded.value = true
   }
 
   const collapseDefaultWorkflowStage = () => {
-    if (isDefaultWorkflowStageExpanded.value === false) return
     isDefaultWorkflowStageExpanded.value = false
+  }
+
+  const expandHiddenWorkflowStageList = () => {
+    if (hiddenWorkflowStageList.value.length > 0) {
+      isHiddenWorkflowListExpanded.value = true
+    }
+  }
+
+  const collapseHiddenWorkflowStage = () => {
+    isHiddenWorkflowListExpanded.value = false
   }
 
   const getThreadBoard = async () => {
@@ -389,6 +403,54 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     })
   }
 
+  const showWorkflowStage = async (id: number) => {
+    if (!workflowStageList.value) {
+      throw new Error('workflowStageList undefined')
+    }
+
+    const targetIndex = workflowStageList.value.findIndex(
+      (w) => w.workflowStageId === id
+    )
+    if (targetIndex < 0) {
+      throw new Error('target workflow stage not exist')
+    }
+
+    workflowStageList.value[targetIndex].isHidden = false
+    const req: HideWorkflowStageRequest = {
+      ...baseReq.value,
+      workflowStageId: id,
+    }
+
+    if (hiddenWorkflowStageList.value.length === 0) {
+      isHiddenWorkflowListExpanded.value = false
+    }
+
+    await threadBoardApi.showWorkflowStage(req)
+    getThreadBoard()
+  }
+
+  const hideWorkflowStage = async (id: number) => {
+    if (!workflowStageList.value) {
+      throw new Error('workflowStageList undefined')
+    }
+
+    const targetIndex = workflowStageList.value.findIndex(
+      (w) => w.workflowStageId === id
+    )
+    if (targetIndex < 0) {
+      throw new Error('target workflow stage not exist')
+    }
+
+    workflowStageList.value[targetIndex].isHidden = true
+    const req: HideWorkflowStageRequest = {
+      ...baseReq.value,
+      workflowStageId: id,
+    }
+
+    await threadBoardApi.hideWorkflowStage(req)
+    getThreadBoard()
+  }
+
   const init = async () => {
     isActive.value = true
     getQuery()
@@ -411,8 +473,10 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
 
   return {
     loading,
-    canMoveWorkflowStage,
+    haveMoveWorkflowStagePermission,
+    haveHideShowWorkflowStagePermission,
     isDefaultWorkflowStageExpanded,
+    isHiddenWorkflowListExpanded,
     workflowStageList,
     threadBoardQuery,
     threadQty,
@@ -429,6 +493,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     defaultWorkflowStage,
     defaultWorkflowStageThreadList,
     draggableWorkflowStageList,
+    hiddenWorkflowStageList,
     init,
     updateQuery,
     updateSearchText,
@@ -440,11 +505,15 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     getThreadBoard,
     expandDefaultWorkflowStage,
     collapseDefaultWorkflowStage,
+    expandHiddenWorkflowStageList,
+    collapseHiddenWorkflowStage,
     openMaterialDetail,
     openStickerDrawerByThread,
     isThreadCardActive,
     deactivateThreadCard,
     moveWorkflowStageList,
+    showWorkflowStage,
+    hideWorkflowStage,
   }
 })
 
