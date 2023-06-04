@@ -11,7 +11,7 @@ div(class="h-screen flex flex-col" :style="{ width: 'calc(100vw - 240px)' }")
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import ThreadBoardHeader from '@/components/threadBoard/ThreadBoardHeader.vue'
 import ThreadBoardTop from '@/components/threadBoard/ThreadBoardTop.vue'
@@ -22,6 +22,7 @@ const threadBoardStore = useThreadBoardStore()
 const { loading, workflowStageList } = storeToRefs(threadBoardStore)
 
 onMounted(threadBoardStore.init)
+onUnmounted(threadBoardStore.cleanUp)
 </script>
 
 <style scoped>

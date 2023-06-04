@@ -13,9 +13,8 @@ import {
   FeatureType,
   type MoveWorkflowStageRequest,
   type HideWorkflowStageRequest,
-  type CreateWorkflowStageRequest,
-  type RenameWorkflowStageRequest,
   type DeleteWorkflowStageRequest,
+  type ReadAllUnreadDigitalThreadRequest,
 } from '@frontier/platform-web-sdk'
 import threadBoardApi from '@/apis/threadBoard'
 import stickerApi from '@/apis/sticker.js'
@@ -24,10 +23,6 @@ import useCurrentUnit from '@/composables/useCurrentUnit'
 import useGotoMaterialDetail from '@/composables/useGotoMaterialDetail'
 import usePermission from '@/composables/usePermission'
 import { FUNC_ID, NOTIFY_TYPE } from '@/utils/constants'
-import type {
-  WorkflowStageCreatePayload,
-  WorkflowStageRenamePayload,
-} from '@/types'
 
 const defaultFilter = (): ThreadBoardQueryFilter => ({
   createdBy: {
@@ -219,12 +214,25 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     })
   })
 
+  const unreadDigitalThreadSideIdList = computed(() => {
+    if (!workflowStageList.value) return []
+    return workflowStageList.value
+      .flatMap((workflowStage) =>
+        workflowStage.digitalThreadList.filter((t) => t.unreadStickerQty > 0)
+      )
+      .map((digitalThread) => digitalThread.digitalThreadSideId)
+  })
+
   const threadQty = computed(() => {
     if (!workflowStageList.value) return 0
-    return workflowStageList.value.reduce((sum, current) => {
-      return sum + current.digitalThreadList.length
+    return workflowStageList.value.reduce((sum, workflowStage) => {
+      return sum + workflowStage.digitalThreadList.length
     }, 0)
   })
+
+  const unreadThreadQty = computed(
+    () => unreadDigitalThreadSideIdList.value.length
+  )
 
   const defaultWorkflowStage = computed(() => {
     if (!workflowStageList.value) {
@@ -315,7 +323,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     gotoMaterialDetail(material, thread, openInNew)
   }
 
-  const openStickerDrawerByThread = (thread: DigitalThreadBase) => {
+  const openStickerDrawerByThread = async (thread: DigitalThreadBase) => {
     activeThreadSideId.value = thread.digitalThreadSideId
     const openStickerDrawer = () => {
       return store.dispatch('sticker/openStickerDrawer', {
@@ -326,7 +334,10 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       })
     }
 
-    openStickerDrawer()
+    await openStickerDrawer()
+
+    // should update digital thread read count after user open sticker drawer
+    getThreadBoard()
   }
 
   const isThreadCardActive = (thread: DigitalThreadBase) => {
@@ -396,6 +407,16 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const clearDateCreatedFilter = async () => {
     threadBoardQuery.filter.createStartDate = null
     threadBoardQuery.filter.createEndDate = null
+  }
+
+  const markAsAllRead = async () => {
+    const req: ReadAllUnreadDigitalThreadRequest = {
+      ...baseReq.value,
+      digitalThreadSideIdList: unreadDigitalThreadSideIdList.value,
+    }
+    await threadBoardApi.readAllUnreadDigitalThread(req)
+    threadBoardQuery.onlyShowUnread = false
+    getThreadBoard()
   }
 
   const moveWorkflowStageList = async (
@@ -504,6 +525,14 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     getQuery()
   }
 
+  const cleanUp = async () => {
+    isActive.value = false
+    activeThreadSideId.value = null
+    workflowStageList.value = undefined
+    isDefaultWorkflowStageExpanded.value = true
+    isHiddenWorkflowListExpanded.value = false
+  }
+
   watch(threadBoardQuery, async () => {
     setLoading(true)
     try {
@@ -520,8 +549,9 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   })
 
   return {
-    activeThreadSideId,
+    isActive,
     loading,
+    activeThreadSideId,
     haveMoveWorkflowStagePermission,
     haveHideShowWorkflowStagePermission,
     haveDeleteWorkflowStagePermission,
@@ -530,6 +560,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     workflowStageList,
     threadBoardQuery,
     threadQty,
+    unreadThreadQty,
     canClearFilterAndSearch,
     searchText,
     filterCount,
@@ -545,6 +576,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     draggableWorkflowStageList,
     hiddenWorkflowStageList,
     init,
+    cleanUp,
     updateQuery,
     updateSearchText,
     clearAllQuery,
@@ -552,6 +584,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     clearParticipantsFilter,
     clearStickerTypeFilter,
     clearDateCreatedFilter,
+    markAsAllRead,
     getThreadBoard,
     expandDefaultWorkflowStage,
     collapseDefaultWorkflowStage,

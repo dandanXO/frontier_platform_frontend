@@ -55,7 +55,10 @@ const useDigitalThreadWorkflowStageStore = defineStore(
       }
 
       await digitalThreadApi.changeDigitalThreadWorkflowStage(req)
-      threadBoardStore.getThreadBoard()
+      if (threadBoardStore.isActive) {
+        threadBoardStore.getThreadBoard()
+      }
+
       store.dispatch('sticker/getDigitalThread', {
         digitalThreadSideId: digitalThread.value.digitalThreadSideId,
       })

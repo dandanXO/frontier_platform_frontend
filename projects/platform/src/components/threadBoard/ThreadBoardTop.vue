@@ -12,8 +12,28 @@ div(
       type="special"
       class="text-grey-400 text-body2"
       @click="clearAllQuery"
-    ) {{ $t('UU0041') }}
-    div(v-if="canClearFilterAndSearch" class="h-6 w-px bg-grey-150")
+    ) {{ t('UU0041') }}
+    div(v-if="canClearFilterAndSearch" class="w-px h-6 bg-grey-150")
+    f-button(
+      v-if="threadBoardQuery.onlyShowUnread && unreadThreadQty > 0"
+      type="special"
+      class="text-grey-400 text-body2"
+      @click="markAsAllRead"
+    ) {{ $t('TT0162') }}
+    button(
+      class="px-2.5 h-6 rounded-[20px] flex justify-center items-center gap-x-1.5 outline-none"
+      :class="[threadBoardQuery.onlyShowUnread ? 'bg-primary-0' : 'bg-grey-100']"
+      @click="handleUnreadButtonClick"
+    )
+      span(
+        class="text-body2"
+        :class="[threadBoardQuery.onlyShowUnread ? 'text-primary-400' : 'text-grey-800']"
+      ) {{ $t('TT0134') }}
+      span(
+        v-if="showUnreadThreadQty"
+        class="text-caption fond-bold"
+        :class="[threadBoardQuery.onlyShowUnread ? 'text-primary-500 font-bold' : 'text-grey-600']"
+      ) {{ unreadThreadQty }}
     f-input-text(
       :class="isLongSearchInput ? 'w-100' : 'w-40'"
       size="md"
@@ -145,6 +165,7 @@ const threadBoardStore = useThreadBoardStore()
 const {
   threadBoardQuery,
   threadQty,
+  unreadThreadQty,
   canClearFilterAndSearch,
   searchText,
   filterCount,
@@ -163,6 +184,7 @@ const {
   clearParticipantsFilter,
   clearStickerTypeFilter,
   clearDateCreatedFilter,
+  markAsAllRead,
 } = threadBoardStore
 
 const isSearchInputFocus = ref(false)
@@ -211,6 +233,13 @@ const sortBy = computed({
 const isLongSearchInput = computed(
   () => isSearchInputFocus.value || searchText.value.length > 0
 )
+
+const showUnreadThreadQty = computed(() => {
+  return threadBoardQuery.value.onlyShowUnread || unreadThreadQty.value > 0
+})
+
+const handleUnreadButtonClick = () =>
+  updateQuery({ onlyShowUnread: !threadBoardQuery.value.onlyShowUnread })
 </script>
 
 <style scoped></style>

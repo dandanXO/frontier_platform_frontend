@@ -140,9 +140,11 @@ import ChildStickerCreate from '@/components/sticker/ChildStickerCreate.vue'
 import ChildStickerCard from '@/components/sticker/ChildStickerCard.vue'
 import StickerCreatorInfo from '@/components/sticker/StickerCreatorInfo.vue'
 import { STICKER_ADD_TO } from '@/utils/constants'
+import useThreadBoardStore from '@/stores/threadBoard'
 
 const { EXTERNAL, INTERNAL } = STICKER_ADD_TO
 const store = useStore()
+const threadBoardStore = useThreadBoardStore()
 const props = defineProps({
   sticker: {
     type: Object,
@@ -161,15 +163,18 @@ const isExpandChildStickerList = ref(false)
 const isExpandChildStickerListForever = computed(
   () => isFilterDirty.value && childStickerList.value.length > 0
 )
-const expandChildStickerList = () => {
+const expandChildStickerList = async () => {
   if (isFilterDirty.value) {
     return
   }
   isExpandChildStickerList.value = !isExpandChildStickerList.value
 
-  isExpandChildStickerList.value &&
-    childStickerList.value.length > 0 &&
-    store.dispatch('sticker/readChildSticker', props.sticker.stickerId)
+  if (isExpandChildStickerList.value && childStickerList.value.length > 0) {
+    await store.dispatch('sticker/readChildSticker', props.sticker.stickerId)
+    if (threadBoardStore.isActive) {
+      threadBoardStore.getThreadBoard()
+    }
+  }
 }
 
 const isCreatingChildSticker = ref(false)
