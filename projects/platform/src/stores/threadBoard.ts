@@ -39,6 +39,13 @@ const defaultFilter = (): ThreadBoardQueryFilter => ({
   createEndDate: null,
 })
 
+const defaultThreadBoardQuery = (): ThreadBoardQuery => ({
+  search: '',
+  onlyShowUnread: false,
+  sortBy: ThreadBoardQuerySortByEnum.CUSTOM,
+  filter: defaultFilter(),
+})
+
 const useThreadBoardStore = defineStore('threadBoard', () => {
   const { t } = useI18n()
   const { unit, organization, orgUser } = useCurrentUnit()
@@ -48,17 +55,13 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const permissionList = usePermission()
 
   const isActive = ref(false)
+  const isFirstThreadBoardFetch = ref(true)
   const activeThreadSideId = ref<number | null>(null)
   const workflowStageList = ref<WorkflowStage[]>()
   const loading = ref(true)
   const isDefaultWorkflowStageExpanded = ref(true)
   const isHiddenWorkflowListExpanded = ref(false)
-  const threadBoardQuery = reactive<ThreadBoardQuery>({
-    search: '',
-    onlyShowUnread: false,
-    sortBy: ThreadBoardQuerySortByEnum.CUSTOM,
-    filter: defaultFilter(),
-  })
+  const threadBoardQuery = reactive<ThreadBoardQuery>(defaultThreadBoardQuery())
   const searchText = ref<string>('')
   const mostParticipantId = ref<number>()
   const participantFilterIdList = ref<number[]>([])
@@ -214,12 +217,21 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     })
   })
 
+  const digitalThreadList = computed(() => {
+    if (!workflowStageList.value) return []
+    return workflowStageList.value.flatMap(
+      (workflowStage) => workflowStage.digitalThreadList
+    )
+  })
+
+  const digitalThreadSideIdList = computed(() => {
+    return digitalThreadList.value.map((t) => t.digitalThreadSideId)
+  })
+
   const unreadDigitalThreadSideIdList = computed(() => {
     if (!workflowStageList.value) return []
-    return workflowStageList.value
-      .flatMap((workflowStage) =>
-        workflowStage.digitalThreadList.filter((t) => t.unreadStickerQty > 0)
-      )
+    return digitalThreadList.value
+      .filter((t) => t.unreadStickerQty > 0)
       .map((digitalThread) => digitalThread.digitalThreadSideId)
   })
 
@@ -531,6 +543,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     workflowStageList.value = undefined
     isDefaultWorkflowStageExpanded.value = true
     isHiddenWorkflowListExpanded.value = false
+    isFirstThreadBoardFetch.value = true
   }
 
   watch(threadBoardQuery, async () => {
@@ -541,6 +554,21 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       await getThreadBoard()
       const updateQueryReq = { ...baseReq.value, threadBoardQuery }
       threadBoardApi.saveThreadBoardQuery(updateQueryReq)
+
+      if (activeThreadSideId.value && isFirstThreadBoardFetch.value) {
+        if (!digitalThreadSideIdList.value.includes(activeThreadSideId.value)) {
+          store.dispatch('helper/openModalConfirm', {
+            type: NOTIFY_TYPE.INFO,
+            header: t('TT0139'),
+            contentText: t('TT0140'),
+            primaryBtnText: t('UU0132'),
+            primaryBtnHandler: clearAllQuery,
+            secondaryBtnText: t('UU0133'),
+          })
+        }
+      }
+
+      isFirstThreadBoardFetch.value = false
     } catch {
       console.error('RR')
     } finally {
