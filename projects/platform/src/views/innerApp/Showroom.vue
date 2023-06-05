@@ -57,6 +57,7 @@ div(class="w-full h-full relative")
             div(class="px-2 grid grid-flow-row gap-1")
               div(
                 v-for="org in showroom.participatedOrgList"
+                :key="org.orgName"
                 class="h-12 hover:bg-grey-100 rounded flex items-center pl-2 pr-3"
                 :data-tooltip-boundary-reference="`contact-org-${org.orgName}`"
               )
@@ -71,7 +72,7 @@ div(class="w-full h-full relative")
                       iconName="copy_link"
                       size="24"
                       class="text-grey-600 hover:text-primary-400 mr-3"
-                      @click="copyContactEmail"
+                      @click="copyContactEmail(org)"
                     )
                 f-tooltip-standard(
                   :boundaryReference="`contact-org-${org.orgName}`"
@@ -285,7 +286,7 @@ const openModalShowroomContactForm = (toOrgId, onlyToOne) => {
   })
 }
 
-const copyContactEmail = () => {
+const copyContactEmail = (org) => {
   copyText(org.contactEmail)
   notify.showNotifySnackbar({ messageText: t('II0029') })
 }
