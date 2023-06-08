@@ -13,7 +13,7 @@ import {
   FeatureType,
   type MoveWorkflowStageRequest,
   type HideWorkflowStageRequest,
-  type DeleteWorkflowStageRequest,
+  type CheckCanDeleteWorkflowStageRequest,
   type ReadAllUnreadDigitalThreadRequest,
 } from '@frontier/platform-web-sdk'
 import threadBoardApi from '@/apis/threadBoard'
@@ -478,6 +478,45 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   }
 
   const deleteWorkflowStage = async (id: number) => {
+    const req: CheckCanDeleteWorkflowStageRequest = {
+      orgId: baseReq.value.orgId,
+      workflowStageId: id,
+    }
+    try {
+      await threadBoardApi.checkCanDeleteWorkflowStage(req)
+    } catch (error) {
+      const { code, message, result } = error as {
+        code: string
+        message: {
+          type: number
+          title: string
+          content: string
+        }
+        result: {
+          errorList: {
+            ogName: string
+            labelColor: string
+          }[]
+        }
+      }
+
+      switch (code) {
+        case 'ERR0036': {
+          store.dispatch('helper/openModalBehavior', {
+            component: 'modal-workflow-stage-delete-error-list',
+            properties: {
+              title: message.title,
+              content: message.content,
+              errorList: result.errorList,
+            },
+          })
+          return
+        }
+        default:
+          throw error
+      }
+    }
+
     store.dispatch('helper/openModalConfirm', {
       type: NOTIFY_TYPE.WARNING,
       header: t('TT0150'),
@@ -493,10 +532,6 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
         workflowStageList.value = workflowStageList.value.filter(
           (w) => w.workflowStageId !== id
         )
-        const req: DeleteWorkflowStageRequest = {
-          orgId: baseReq.value.orgId,
-          workflowStageId: id,
-        }
         await threadBoardApi.deleteWorkflowStage(req)
         getThreadBoard()
         notify.showNotifySnackbar({

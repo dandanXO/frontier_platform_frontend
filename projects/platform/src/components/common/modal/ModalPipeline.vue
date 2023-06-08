@@ -257,6 +257,9 @@ export default {
     ModalStickerMaterialDetail: defineAsyncComponent(() =>
       import('@/components/sticker/ModalStickerMaterialDetail.vue')
     ),
+    ModalWorkflowStageDeleteErrorList: defineAsyncComponent(() =>
+      import('@/components/threadBoard/ModalWorkflowStageDeleteErrorList.vue')
+    ),
   },
   setup() {
     const store = useStore()

@@ -4,6 +4,7 @@ declare module '@vue/runtime-core' {
     FSvgIcon: typeof import('./src/FSvgIcon/FSvgIcon.vue').default
     FLabel: typeof import('./src/FLabel/FLabel.vue').default
     fScrollbarContainer: typeof import('./src/FScrollbarContainer/FScrollbarContainer.vue').default
+    FInfobar: typeof import('./src/FNotify/FInfobar/FInfobar.vue').default
   }
 }
 

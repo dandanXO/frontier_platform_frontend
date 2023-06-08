@@ -383,6 +383,25 @@ export interface ChangeDigitalThreadWorkflowStageRequest {
 /**
  * 
  * @export
+ * @interface CheckCanDeleteWorkflowStageRequest
+ */
+export interface CheckCanDeleteWorkflowStageRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof CheckCanDeleteWorkflowStageRequest
+     */
+    'orgId': number;
+    /**
+     * WorkflowStage Id
+     * @type {number}
+     * @memberof CheckCanDeleteWorkflowStageRequest
+     */
+    'workflowStageId': number;
+}
+/**
+ * 
+ * @export
  * @interface ChildCollectionListInner
  */
 export interface ChildCollectionListInner {
@@ -1586,6 +1605,68 @@ export interface CropImageRecord {
     'scaleRatio'?: number;
 }
 /**
+ * Dashboard資訊
+ * @export
+ * @interface Dashboard
+ */
+export interface Dashboard {
+    /**
+     * 
+     * @type {DashboardCreateCounts}
+     * @memberof Dashboard
+     */
+    'createCounts': DashboardCreateCounts;
+    /**
+     * 紋理數量資訊
+     * @type {Array<DashboardTextureCountsInner>}
+     * @memberof Dashboard
+     */
+    'textureCounts': Array<DashboardTextureCountsInner>;
+    /**
+     * 
+     * @type {DashboardFabricKeywordCounts}
+     * @memberof Dashboard
+     */
+    'fabricKeywordCounts': DashboardFabricKeywordCounts;
+    /**
+     * 
+     * @type {DashboardEcoImpactorInfromation}
+     * @memberof Dashboard
+     */
+    'ecoImpactorInfromation': DashboardEcoImpactorInfromation;
+}
+/**
+ * 資產及collection數量資訊
+ * @export
+ * @interface DashboardCreateCounts
+ */
+export interface DashboardCreateCounts {
+    /**
+     * 該單位的資產數量
+     * @type {number}
+     * @memberof DashboardCreateCounts
+     */
+    'yourAssetCounts': number;
+    /**
+     * 該單位的3D資產數量
+     * @type {number}
+     * @memberof DashboardCreateCounts
+     */
+    'threeDimensionAssetCounts': number;
+    /**
+     * 該單位的Collection數量
+     * @type {number}
+     * @memberof DashboardCreateCounts
+     */
+    'collectionCounts': number;
+    /**
+     * 該單位的SharedCollection數量
+     * @type {number}
+     * @memberof DashboardCreateCounts
+     */
+    'sharedCollectionCounts': number;
+}
+/**
  * 
  * @export
  * @interface DashboardDownloadLogCreatePostRequest
@@ -1620,6 +1701,253 @@ export const DashboardDownloadLogCreatePostRequestCategoryEnum = {
 export type DashboardDownloadLogCreatePostRequestCategoryEnum = typeof DashboardDownloadLogCreatePostRequestCategoryEnum[keyof typeof DashboardDownloadLogCreatePostRequestCategoryEnum];
 
 /**
+ * 環保指標資訊
+ * @export
+ * @interface DashboardEcoImpactorInfromation
+ */
+export interface DashboardEcoImpactorInfromation {
+    /**
+     * 
+     * @type {DashboardEcoImpactorInfromationAll}
+     * @memberof DashboardEcoImpactorInfromation
+     */
+    'all': DashboardEcoImpactorInfromationAll;
+    /**
+     * 
+     * @type {DashboardEcoImpactorInfromationInternal}
+     * @memberof DashboardEcoImpactorInfromation
+     */
+    'internal'?: DashboardEcoImpactorInfromationInternal | null;
+}
+/**
+ * 平台所有布片環保指標
+ * @export
+ * @interface DashboardEcoImpactorInfromationAll
+ */
+export interface DashboardEcoImpactorInfromationAll {
+    /**
+     * 平台所有布片環保指標-GHG
+     * @type {Array<DashboardEcoImpactorInfromationAllGhgInner>}
+     * @memberof DashboardEcoImpactorInfromationAll
+     */
+    'ghg': Array<DashboardEcoImpactorInfromationAllGhgInner>;
+    /**
+     * 平台所有布片環保指標-Water
+     * @type {Array<DashboardEcoImpactorInfromationAllGhgInner>}
+     * @memberof DashboardEcoImpactorInfromationAll
+     */
+    'water': Array<DashboardEcoImpactorInfromationAllGhgInner>;
+    /**
+     * 平台所有布片環保指標-Land
+     * @type {Array<DashboardEcoImpactorInfromationAllGhgInner>}
+     * @memberof DashboardEcoImpactorInfromationAll
+     */
+    'land': Array<DashboardEcoImpactorInfromationAllGhgInner>;
+}
+/**
+ * 
+ * @export
+ * @interface DashboardEcoImpactorInfromationAllGhgInner
+ */
+export interface DashboardEcoImpactorInfromationAllGhgInner {
+    /**
+     * 布片環保指標名稱
+     * @type {string}
+     * @memberof DashboardEcoImpactorInfromationAllGhgInner
+     */
+    'name': string;
+    /**
+     * 布片環保指標數值
+     * @type {number}
+     * @memberof DashboardEcoImpactorInfromationAllGhgInner
+     */
+    'value': number;
+}
+/**
+ * 單位布片環保指標
+ * @export
+ * @interface DashboardEcoImpactorInfromationInternal
+ */
+export interface DashboardEcoImpactorInfromationInternal {
+    /**
+     * 單位布片環保指標-GHG
+     * @type {Array<DashboardEcoImpactorInfromationAllGhgInner>}
+     * @memberof DashboardEcoImpactorInfromationInternal
+     */
+    'ghg': Array<DashboardEcoImpactorInfromationAllGhgInner>;
+    /**
+     * 單位布片環保指標-Water
+     * @type {Array<DashboardEcoImpactorInfromationAllGhgInner>}
+     * @memberof DashboardEcoImpactorInfromationInternal
+     */
+    'water': Array<DashboardEcoImpactorInfromationAllGhgInner>;
+    /**
+     * 單位布片環保指標-Land
+     * @type {Array<DashboardEcoImpactorInfromationAllGhgInner>}
+     * @memberof DashboardEcoImpactorInfromationInternal
+     */
+    'land': Array<DashboardEcoImpactorInfromationAllGhgInner>;
+}
+/**
+ * 搜尋關鍵字數量資訊
+ * @export
+ * @interface DashboardFabricKeywordCounts
+ */
+export interface DashboardFabricKeywordCounts {
+    /**
+     * 
+     * @type {DashboardFabricKeywordCountsLastMonth}
+     * @memberof DashboardFabricKeywordCounts
+     */
+    'lastMonth': DashboardFabricKeywordCountsLastMonth;
+    /**
+     * 
+     * @type {DashboardFabricKeywordCountsLast3Month}
+     * @memberof DashboardFabricKeywordCounts
+     */
+    'last3Month': DashboardFabricKeywordCountsLast3Month;
+}
+/**
+ * 上三個月搜尋關鍵字數量資訊
+ * @export
+ * @interface DashboardFabricKeywordCountsLast3Month
+ */
+export interface DashboardFabricKeywordCountsLast3Month {
+    /**
+     * 搜尋關鍵字日期
+     * @type {Array}
+     * @memberof DashboardFabricKeywordCountsLast3Month
+     */
+    'date': Array;
+    /**
+     * 搜尋關鍵字數量資訊
+     * @type {Array<DashboardFabricKeywordCountsLastMonthDataInner>}
+     * @memberof DashboardFabricKeywordCountsLast3Month
+     */
+    'data': Array<DashboardFabricKeywordCountsLastMonthDataInner>;
+}
+/**
+ * 上個月搜尋關鍵字數量資訊
+ * @export
+ * @interface DashboardFabricKeywordCountsLastMonth
+ */
+export interface DashboardFabricKeywordCountsLastMonth {
+    /**
+     * 搜尋關鍵字日期
+     * @type {Array}
+     * @memberof DashboardFabricKeywordCountsLastMonth
+     */
+    'date': Array;
+    /**
+     * 搜尋關鍵字數量資訊
+     * @type {Array<DashboardFabricKeywordCountsLastMonthDataInner>}
+     * @memberof DashboardFabricKeywordCountsLastMonth
+     */
+    'data': Array<DashboardFabricKeywordCountsLastMonthDataInner>;
+}
+/**
+ * 
+ * @export
+ * @interface DashboardFabricKeywordCountsLastMonthDataInner
+ */
+export interface DashboardFabricKeywordCountsLastMonthDataInner {
+    /**
+     * 搜尋關鍵字
+     * @type {string}
+     * @memberof DashboardFabricKeywordCountsLastMonthDataInner
+     */
+    'name': string;
+    /**
+     * 搜尋關鍵字數量
+     * @type {Array}
+     * @memberof DashboardFabricKeywordCountsLastMonthDataInner
+     */
+    'value': Array;
+}
+/**
+ * 
+ * @export
+ * @interface DashboardGetPost200Response
+ */
+export interface DashboardGetPost200Response {
+    /**
+     * 
+     * @type {Dashboard}
+     * @memberof DashboardGetPost200Response
+     */
+    'result'?: Dashboard;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof DashboardGetPost200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof DashboardGetPost200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof DashboardGetPost200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface DashboardGetPostRequest
+ */
+export interface DashboardGetPostRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof DashboardGetPostRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof DashboardGetPostRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團s隊)ID
+     * @type {number}
+     * @memberof DashboardGetPostRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface DashboardTextureCountsInner
+ */
+export interface DashboardTextureCountsInner {
+    /**
+     * 紋理名稱
+     * @type {string}
+     * @memberof DashboardTextureCountsInner
+     */
+    'name': string;
+    /**
+     * 紋理內部資產數量
+     * @type {number}
+     * @memberof DashboardTextureCountsInner
+     */
+    'internal': number;
+    /**
+     * 紋理所有資產數量
+     * @type {number}
+     * @memberof DashboardTextureCountsInner
+     */
+    'all': number;
+}
+/**
  * 
  * @export
  * @interface DashboardViewerLogCreatePostRequest
@@ -1640,25 +1968,6 @@ export interface DashboardViewerLogCreatePostRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface DeleteWorkflowStageRequest
- */
-export interface DeleteWorkflowStageRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof DeleteWorkflowStageRequest
-     */
-    'orgId': number;
-    /**
-     * WorkflowStage Id
-     * @type {number}
-     * @memberof DeleteWorkflowStageRequest
-     */
-    'workflowStageId': number;
-}
 /**
  * 
  * @export
@@ -14081,6 +14390,12 @@ export interface OrgRemoveLogoPost200ResponseResultOrganization {
      */
     'uploadMaterialEmail': string | null;
     /**
+     * 布片上傳附件檔案大小限制(單位為BYTE)，資料型態為long(int64)
+     * @type {number}
+     * @memberof OrgRemoveLogoPost200ResponseResultOrganization
+     */
+    'MaterialAttachmentUploadSizeLimit': number;
+    /**
      * 
      * @type {number}
      * @memberof OrgRemoveLogoPost200ResponseResultOrganization
@@ -16004,6 +16319,12 @@ export interface Organization {
      * @memberof Organization
      */
     'uploadMaterialEmail': string | null;
+    /**
+     * 布片上傳附件檔案大小限制(單位為BYTE)，資料型態為long(int64)
+     * @type {number}
+     * @memberof Organization
+     */
+    'MaterialAttachmentUploadSizeLimit': number;
     /**
      * 
      * @type {number}
@@ -21830,6 +22151,44 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
+         * @summary 取得Dashboard資訊
+         * @param {DashboardGetPostRequest} [dashboardGetPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dashboardGetPost: async (dashboardGetPostRequest?: DashboardGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/dashboard/get`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(dashboardGetPostRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 開啟ReceivePage記錄
          * @param {ShareGetReceivedPostRequest} [shareGetReceivedPostRequest] 
          * @param {*} [options] Override http request option.
@@ -21938,6 +22297,17 @@ export const DashboardApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 取得Dashboard資訊
+         * @param {DashboardGetPostRequest} [dashboardGetPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dashboardGetPost(dashboardGetPostRequest?: DashboardGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DashboardGetPost200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dashboardGetPost(dashboardGetPostRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary 開啟ReceivePage記錄
          * @param {ShareGetReceivedPostRequest} [shareGetReceivedPostRequest] 
          * @param {*} [options] Override http request option.
@@ -21987,6 +22357,16 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          */
         dashboardEmbedPageLogCreatePost(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
             return localVarFp.dashboardEmbedPageLogCreatePost(shareGetReceivedPostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 取得Dashboard資訊
+         * @param {DashboardGetPostRequest} [dashboardGetPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dashboardGetPost(dashboardGetPostRequest?: DashboardGetPostRequest, options?: any): AxiosPromise<DashboardGetPost200Response> {
+            return localVarFp.dashboardGetPost(dashboardGetPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -22040,6 +22420,18 @@ export class DashboardApi extends BaseAPI {
      */
     public dashboardEmbedPageLogCreatePost(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: AxiosRequestConfig) {
         return DashboardApiFp(this.configuration).dashboardEmbedPageLogCreatePost(shareGetReceivedPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 取得Dashboard資訊
+     * @param {DashboardGetPostRequest} [dashboardGetPostRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DashboardApi
+     */
+    public dashboardGetPost(dashboardGetPostRequest?: DashboardGetPostRequest, options?: AxiosRequestConfig) {
+        return DashboardApiFp(this.configuration).dashboardGetPost(dashboardGetPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -43279,6 +43671,46 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
     return {
         /**
          * 
+         * @summary 在Thread Board中檢查是否可以刪除 Workflow Stage
+         * @param {CheckCanDeleteWorkflowStageRequest} checkCanDeleteWorkflowStageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        checkCanDeleteWorkflowStage: async (checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'checkCanDeleteWorkflowStageRequest' is not null or undefined
+            assertParamExists('checkCanDeleteWorkflowStage', 'checkCanDeleteWorkflowStageRequest', checkCanDeleteWorkflowStageRequest)
+            const localVarPath = `/thread-board/workflow-stage/check-can-delete`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(checkCanDeleteWorkflowStageRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 在Thread Board中建立 Workflow Stage
          * @param {CreateWorkflowStageRequest} createWorkflowStageRequest 
          * @param {*} [options] Override http request option.
@@ -43320,13 +43752,13 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary 在Thread Board中刪除 Workflow Stage
-         * @param {DeleteWorkflowStageRequest} deleteWorkflowStageRequest 
+         * @param {CheckCanDeleteWorkflowStageRequest} checkCanDeleteWorkflowStageRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteWorkflowStage: async (deleteWorkflowStageRequest: DeleteWorkflowStageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'deleteWorkflowStageRequest' is not null or undefined
-            assertParamExists('deleteWorkflowStage', 'deleteWorkflowStageRequest', deleteWorkflowStageRequest)
+        deleteWorkflowStage: async (checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'checkCanDeleteWorkflowStageRequest' is not null or undefined
+            assertParamExists('deleteWorkflowStage', 'checkCanDeleteWorkflowStageRequest', checkCanDeleteWorkflowStageRequest)
             const localVarPath = `/thread-board/workflow-stage/delete`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -43350,7 +43782,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(deleteWorkflowStageRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(checkCanDeleteWorkflowStageRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -43809,6 +44241,17 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary 在Thread Board中檢查是否可以刪除 Workflow Stage
+         * @param {CheckCanDeleteWorkflowStageRequest} checkCanDeleteWorkflowStageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary 在Thread Board中建立 Workflow Stage
          * @param {CreateWorkflowStageRequest} createWorkflowStageRequest 
          * @param {*} [options] Override http request option.
@@ -43821,12 +44264,12 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 在Thread Board中刪除 Workflow Stage
-         * @param {DeleteWorkflowStageRequest} deleteWorkflowStageRequest 
+         * @param {CheckCanDeleteWorkflowStageRequest} checkCanDeleteWorkflowStageRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteWorkflowStage(deleteWorkflowStageRequest: DeleteWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteWorkflowStage(deleteWorkflowStageRequest, options);
+        async deleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -43962,6 +44405,16 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
     return {
         /**
          * 
+         * @summary 在Thread Board中檢查是否可以刪除 Workflow Stage
+         * @param {CheckCanDeleteWorkflowStageRequest} checkCanDeleteWorkflowStageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 在Thread Board中建立 Workflow Stage
          * @param {CreateWorkflowStageRequest} createWorkflowStageRequest 
          * @param {*} [options] Override http request option.
@@ -43973,12 +44426,12 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
         /**
          * 
          * @summary 在Thread Board中刪除 Workflow Stage
-         * @param {DeleteWorkflowStageRequest} deleteWorkflowStageRequest 
+         * @param {CheckCanDeleteWorkflowStageRequest} checkCanDeleteWorkflowStageRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteWorkflowStage(deleteWorkflowStageRequest: DeleteWorkflowStageRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.deleteWorkflowStage(deleteWorkflowStageRequest, options).then((request) => request(axios, basePath));
+        deleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.deleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -44102,6 +44555,18 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
 export class ThreadBoardApi extends BaseAPI {
     /**
      * 
+     * @summary 在Thread Board中檢查是否可以刪除 Workflow Stage
+     * @param {CheckCanDeleteWorkflowStageRequest} checkCanDeleteWorkflowStageRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ThreadBoardApi
+     */
+    public checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: AxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary 在Thread Board中建立 Workflow Stage
      * @param {CreateWorkflowStageRequest} createWorkflowStageRequest 
      * @param {*} [options] Override http request option.
@@ -44115,13 +44580,13 @@ export class ThreadBoardApi extends BaseAPI {
     /**
      * 
      * @summary 在Thread Board中刪除 Workflow Stage
-     * @param {DeleteWorkflowStageRequest} deleteWorkflowStageRequest 
+     * @param {CheckCanDeleteWorkflowStageRequest} checkCanDeleteWorkflowStageRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public deleteWorkflowStage(deleteWorkflowStageRequest: DeleteWorkflowStageRequest, options?: AxiosRequestConfig) {
-        return ThreadBoardApiFp(this.configuration).deleteWorkflowStage(deleteWorkflowStageRequest, options).then((request) => request(this.axios, this.basePath));
+    public deleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: AxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).deleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
