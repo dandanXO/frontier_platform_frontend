@@ -9,6 +9,13 @@ div(class="h-13 flex-shrink-0 px-7.5 border-b border-grey-150")
       class="relative ml-auto flex flex-row items-center gap-2 pl-4 bg-grey-0"
       :style="{ 'box-shadow': '-25px 0px 10px rgba(255, 255, 255, 0.9)' }"
     )
+      div(class="w-9 h-9 flex items-center justify-center")
+        f-svg-icon(
+          v-if="loading"
+          iconName="loading"
+          size="24"
+          class="text-primary-400"
+        )
       f-button(
         v-if="canClearFilterAndSearch"
         type="special"
@@ -165,6 +172,7 @@ import FilterWrapper from '@/components/threadBoard/FilterWrapper.vue'
 const { t } = useI18n()
 const threadBoardStore = useThreadBoardStore()
 const {
+  loading,
   threadBoardQuery,
   threadQty,
   unreadThreadQty,

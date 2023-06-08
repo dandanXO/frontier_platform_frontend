@@ -93,6 +93,10 @@ instance.interceptors.response.use(
     return response
   },
   (error) => {
+    if (Axios.isCancel(error)) {
+      return Promise.reject(error)
+    }
+
     const { response } = error
     const {
       status,

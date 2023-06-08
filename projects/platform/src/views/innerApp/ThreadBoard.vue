@@ -1,10 +1,10 @@
 <template lang="pug">
 div(class="h-screen flex flex-col" :style="{ width: 'calc(100vw - 240px)' }")
-  div(
-    v-if="loading"
-    class="absolute left-0 top-0 w-full h-full flex justify-center items-center bg-grey-200/50 z-loading"
-  )
-    f-svg-icon(iconName="loading" size="92" class="text-primary-400")
+  //- div(
+  //-   v-if="loading"
+  //-   class="absolute left-0 top-0 w-full h-full flex justify-center items-center bg-grey-200/50 z-loading"
+  //- )
+  //-   f-svg-icon(iconName="loading" size="92" class="text-primary-400")
   thread-board-header
   thread-board-top
   thread-board-content(v-if="workflowStageList")

@@ -19,7 +19,10 @@ div
               span(class="text-body2 text-grey-900 font-bold") {{ workflowStage.workflowStageName }}
             span(class="text-body2 text-grey-600") {{ workflowStage.digitalThreadList.length }}
         div(class="w-8 h-8 flex items-center justify-center")
-          f-popper(placement="bottom-end")
+          f-popper(
+            :class="{ 'pointer-events-none': threadBoardStore.loading }"
+            placement="bottom-end"
+          )
             template(#trigger="{ isExpand }")
               icon-button(iconName="more_horiz" :active="isExpand")
             template(#content="{ collapsePopper }")

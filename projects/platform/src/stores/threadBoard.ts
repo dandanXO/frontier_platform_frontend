@@ -23,6 +23,7 @@ import useCurrentUnit from '@/composables/useCurrentUnit'
 import useGotoMaterialDetail from '@/composables/useGotoMaterialDetail'
 import usePermission from '@/composables/usePermission'
 import { FUNC_ID, NOTIFY_TYPE } from '@/utils/constants'
+import axios from 'axios'
 
 const defaultFilter = (): ThreadBoardQueryFilter => ({
   createdBy: {
@@ -54,6 +55,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const store = useStore()
   const permissionList = usePermission()
 
+  const fetchThreadBoardAbortController = ref<AbortController | null>(null)
   const isActive = ref(false)
   const isFirstThreadBoardFetch = ref(true)
   const activeThreadSideId = ref<number | null>(null)
@@ -313,13 +315,35 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     isHiddenWorkflowListExpanded.value = false
   }
 
-  const getThreadBoard = async () => {
+  const getThreadBoard = async (showLoading = false) => {
+    if (showLoading) {
+      setLoading(true)
+    }
+
+    if (fetchThreadBoardAbortController.value) {
+      fetchThreadBoardAbortController.value.abort()
+      fetchThreadBoardAbortController.value = null
+    }
+
     const threadBoardReq: GetThreadBoardRequest = {
       ...baseReq.value,
       threadBoardQuery: threadBoardQuery,
     }
-    const res = await threadBoardApi.getThreadBoard(threadBoardReq)
-    workflowStageList.value = res.data.result!.threadBoard.workflowStageList
+
+    fetchThreadBoardAbortController.value = new AbortController()
+    try {
+      const res = await threadBoardApi.getThreadBoard(threadBoardReq, {
+        signal: fetchThreadBoardAbortController.value.signal,
+      })
+      workflowStageList.value = res.data.result!.threadBoard.workflowStageList
+      setLoading(false)
+      fetchThreadBoardAbortController.value = null
+    } catch (e) {
+      if (!axios.isCancel(e)) {
+        fetchThreadBoardAbortController.value = null
+        setLoading(false)
+      }
+    }
   }
 
   const openMaterialDetail = async (
@@ -547,11 +571,10 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   }
 
   watch(threadBoardQuery, async () => {
-    setLoading(true)
     try {
       searchText.value =
         threadBoardQuery.search == null ? '' : threadBoardQuery.search
-      await getThreadBoard()
+      await getThreadBoard(true)
       const updateQueryReq = { ...baseReq.value, threadBoardQuery }
       threadBoardApi.saveThreadBoardQuery(updateQueryReq)
 
@@ -571,8 +594,6 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       isFirstThreadBoardFetch.value = false
     } catch {
       console.error('RR')
-    } finally {
-      setLoading(false)
     }
   })
 

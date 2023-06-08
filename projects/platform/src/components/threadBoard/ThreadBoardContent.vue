@@ -24,7 +24,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
           v-bind="threadCardDragOptions"
         )
           template(#item="{ element }")
-            div(class="draggable-thread-card")
+            div(:class="threadCardWrapperClass")
               thread-card(
                 :thread="element"
                 :active="isThreadCardActive(element)"
@@ -46,7 +46,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
     )
       template(#item="{ element }")
         workflow-stage-column(
-          :class="{ 'draggable-workflow-stage cursor-pointer': haveMoveWorkflowStagePermission }"
+          :class="{ 'draggable-workflow-stage cursor-pointer': !loading && haveMoveWorkflowStagePermission }"
           :active="element.workflowStageId === activeWorkflowStageId"
           :workflowStage="element"
           @workflowStageHide="hideWorkflowStage"
@@ -60,7 +60,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
               v-bind="threadCardDragOptions"
             )
               template(#item="{ element }")
-                div(class="draggable-thread-card")
+                div(:class="threadCardWrapperClass")
                   thread-card(
                     :thread="element"
                     :active="isThreadCardActive(element)"
@@ -108,6 +108,7 @@ import WorkflowStageHiddenCard from './WorkflowStageHiddenCard.vue'
 
 const threadBoardStore = useThreadBoardStore()
 const {
+  loading,
   isDefaultWorkflowStageExpanded,
   isHiddenWorkflowListExpanded,
   defaultWorkflowStage,
@@ -163,6 +164,10 @@ const threadCardDragOptions = computed(() => ({
   disabled: false,
   ghostClass: 'ghost',
 }))
+
+const threadCardWrapperClass = computed(() =>
+  loading.value ? 'pointer-events-none opacity-80' : 'draggable-thread-card'
+)
 
 const isDefaultWorkflowStageHaveUnreadThread = computed(() => {
   if (!defaultWorkflowStage.value) return false

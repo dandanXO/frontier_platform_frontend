@@ -5,7 +5,10 @@ div(
   div(:key="workflowStage.workflowStageId" class="flex flex-row gap-3")
     span(class="text-body2 text-grey-900 font-bold flex items-center") {{ workflowStage.workflowStageName }}
     span(class="text-body2 text-grey-600 flex items-center") {{ workflowStage.digitalThreadList.length }}
-  f-popper(placement="bottom-end")
+  f-popper(
+    :class="{ 'pointer-events-none': threadBoardStore.loading }"
+    placement="bottom-end"
+  )
     template(#trigger="{ isExpand }")
       icon-button(iconName="more_horiz" :active="isExpand")
     template(#content)
