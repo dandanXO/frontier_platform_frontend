@@ -24,7 +24,7 @@ modal-behavior(
         div(class="text-grey-900 font-bold") {{ acceptType.join(', ').toUpperCase() }}
         div(class="text-grey-600") {{ $t('RR0145') }}
         i18n-t(keypath="DD0101" tag="div" class="text-grey-900 font-bold")
-          template(#number) {{ fileSizeMaxLimit }}
+          template(#number) {{ fileSizeMaxLimit / Math.pow(1024, 2) }}
         div(class="text-grey-600") {{ $t('DD0102') }}
         div(class="text-grey-900 font-bold") {{ $t('DD0103') }}
       div(
@@ -70,6 +70,7 @@ modal-behavior(
         div(class="grid divide-y divide-grey-100")
           div(
             v-for="image in readyToUploadFile"
+            :key="image.file.name"
             class="py-1 h-11 flex items-center"
             data-cy="modal-smart-upload_item"
           )
@@ -123,7 +124,7 @@ const readyToUploadFile = computed(() =>
 )
 const disabledUpload = computed(() => readyToUploadFile.value.length === 0)
 
-const fileSizeMaxLimit = 100
+const fileSizeMaxLimit = 100 * Math.pow(1024, 2)
 const acceptType = ['jpg', 'jpeg', 'png']
 const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 

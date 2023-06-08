@@ -132,7 +132,7 @@ const actionBtnDisabled = computed(
     emailFormatErrorMsg.value.length > 0
 )
 
-const fileSizeMaxLimit = 20
+const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
 const acceptType = ['jpg', 'jpeg', 'png', 'mp4']
 const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 
@@ -142,7 +142,7 @@ fileOperator.on('error', (code) => {
   if (code === INVALID_TYPE) {
     fileErrorMsg.value = t('RR0144')
   } else if (code === EXCEED_LIMIT) {
-    fileErrorMsg.value = t('RR0145') + fileSizeMaxLimit + 'MB'
+    fileErrorMsg.value = t('RR0145') + bytesToSize(fileSizeMaxLimit)
   }
 })
 

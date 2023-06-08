@@ -37,6 +37,7 @@ modal-behavior(
       div(class="grid gap-y-2")
         div(
           v-for="attachment in feedbackAttachmentList"
+          :key="attachment.fileName"
           class="h-8 flex justify-between items-center px-4 bg-grey-50"
         )
           div(class="flex items-center gap-x-1")
@@ -57,7 +58,7 @@ modal-behavior(
     ) {{ $t('UU0063') }}
     div(class="text-caption text-grey-900 pt-1")
       p(class="pb-2") {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
-      p {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
+      p {{ $t('RR0145') }} {{ bytesToSize(fileSizeMaxLimit) }}
 </template>
 
 <script setup>
@@ -97,7 +98,7 @@ const categoryMenuTree = computed(() => ({
   ],
 }))
 
-const fileSizeMaxLimit = 20
+const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
 const acceptType = ['jpg', 'jpeg', 'png', 'mp4']
 const fileOperator = new FileOperator(acceptType, fileSizeMaxLimit)
 

@@ -12,7 +12,7 @@ f-input-text(
 )
   template(#slot:hint-supporting)
     p(class="text-caption text-grey-600 leading-1.3 whitespace-nowrap") {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
-    p(class="text-caption text-grey-600 leading-1.3 whitespace-nowrap") {{ $t('RR0145') }} {{ maximumSize }} MB
+    p(class="text-caption text-grey-600 leading-1.3 whitespace-nowrap") {{ $t('RR0145') }} {{ bytesToSize(maximumSize) }}
 </template>
 
 <script>
@@ -23,7 +23,7 @@ export default {
 
 <script setup>
 import { computed } from 'vue'
-import { FileOperator } from './fileOperator.js'
+import { FileOperator, bytesToSize } from './fileOperator.js'
 const props = defineProps({
   /**
    * inherit from `FInputText.vue`
@@ -74,7 +74,7 @@ const props = defineProps({
   },
   maximumSize: {
     type: Number,
-    default: 5,
+    default: 20971520,
   },
   multipleFile: {
     type: Boolean,

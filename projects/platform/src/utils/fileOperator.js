@@ -1,8 +1,5 @@
 import { EventEmitter } from 'events'
-import i18n from '@/utils/i18n'
 import { UPLOAD_ERROR_CODE } from '@/utils/constants'
-
-const t = i18n.global.t
 
 /**
  * Common MIME types: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
@@ -89,10 +86,10 @@ const previewFile = (file) => {
 class FileOperator {
   /**
    * @param {string[]} validType
-   * @param {number} fileSizeMaxLimit // mb
+   * @param {number} fileSizeMaxLimit // bytes
    */
 
-  constructor(validType = generalImageType, fileSizeMaxLimit = 5) {
+  constructor(validType = generalImageType, fileSizeMaxLimit = 20971520) {
     this.validType = validType
     this.acceptedExtension = validType.map((type) => `.${type}`).join(',')
     this.acceptedFormat = validType
@@ -149,13 +146,12 @@ class FileOperator {
   validateFiles(files) {
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
-      const mb = file.size / 1024 ** 2
       const type = file.type
 
       if (!this.acceptedFormat.includes(type) || !type) {
         this.event.emit('error', UPLOAD_ERROR_CODE.INVALID_TYPE)
         return
-      } else if (mb > this.fileSizeMaxLimit) {
+      } else if (file.size > this.fileSizeMaxLimit) {
         this.event.emit('error', UPLOAD_ERROR_CODE.EXCEED_LIMIT)
         return
       }

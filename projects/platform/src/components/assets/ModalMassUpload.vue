@@ -71,7 +71,7 @@ const { goToProgress, goToAssets } = useNavigation()
 let errorList
 let binaryFile
 
-const fileSizeMaxLimit = 20
+const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
 const acceptType = ['xlsx']
 
 const onFinish = (file) => {

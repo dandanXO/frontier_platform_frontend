@@ -86,7 +86,7 @@ const DESCRIPTION_LIMIT = 1000
 const isUploadNewTrendBoard = ref(false)
 const uploadTrendBoardName = ref('')
 
-const fileSizeMaxLimit = 20
+const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
 const trendBoardFileAcceptType = ['pdf']
 const fileUploadErrorCode = ref(0)
 

@@ -31,6 +31,7 @@ export default {
     memberList: [],
     groupList: [],
     historyList: [],
+    materialAttachmentUploadSizeLimit: 0,
     paymentDetail: {
       cardInfo: {
         lastFour: '',

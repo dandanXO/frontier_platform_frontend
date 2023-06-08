@@ -60,6 +60,7 @@ modal-behavior(
         div(class="grid gap-y-2 max-w-121.5")
           div(
             v-for="(attachment, index) in formData.attachmentFileList"
+            :key="attachment.name"
             class="h-8 flex justify-between items-center px-4 bg-grey-50"
           )
             div(class="flex items-center gap-x-1")
@@ -73,6 +74,7 @@ modal-behavior(
             )
           div(
             v-for="(attachment, index) in originalAttachmentList"
+            :key="attachment.displayFileName"
             class="h-8 flex justify-between items-center px-4 bg-grey-50"
           )
             div(class="flex items-center gap-x-1")
@@ -92,7 +94,7 @@ modal-behavior(
       ) {{ $t('UU0063') }}
       div(class="text-caption text-grey-600 pt-2")
         p(class="pb-1") {{ $t('RR0243') }} {{ attachmentFileAcceptType.join(', ').toUpperCase() }}
-        p {{ $t('RR0145') }} {{ fileSizeMaxLimit }} MB
+        p {{ $t('RR0145') }} {{ bytesToSize(fileSizeMaxLimit) }}
 </template>
 
 <script setup>
@@ -138,7 +140,7 @@ const creator = computed(() => {
 const refInputName = ref(null)
 const refInputDescription = ref(null)
 const fileUploadErrorCode = ref(0)
-const fileSizeMaxLimit = 20
+const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
 const trendBoardFileAcceptType = ['pdf']
 
 const trendBoardUploadFinish = (file) => {

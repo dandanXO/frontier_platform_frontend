@@ -19,7 +19,7 @@ modal-behavior(
         div {{ $t('RR0244') }}
           span(class="text-grey-600 ml-1") 200 x 200 px
         div {{ $t('RR0145') }}
-          span(class="text-grey-600 ml-1") {{ fileSizeMaxLimit }} MB
+          span(class="text-grey-600 ml-1") {{ bytesToSize(fileSizeMaxLimit) }}
     f-svg-icon(
       v-else-if="isUploading"
       iconName="loading"
@@ -35,7 +35,7 @@ modal-behavior(
 <script setup>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import { ImageOperator } from '@/utils/fileOperator.js'
+import { ImageOperator, bytesToSize } from '@/utils/fileOperator.js'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
@@ -65,7 +65,7 @@ const haveUploadedImage = computed(
   () => !props.thumbnail.includes(props.defaultImage)
 )
 
-const fileSizeMaxLimit = 5
+const fileSizeMaxLimit = 5 * Math.pow(1024, 2)
 const acceptType = ['jpeg', 'jpg', 'png']
 const imageOperator = new ImageOperator(
   acceptType,

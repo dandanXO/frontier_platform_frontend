@@ -71,7 +71,7 @@ const props = defineProps({
   },
 })
 
-const fileSizeMaxLimit = 20
+const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
 const acceptType = ['pdf']
 const errorCode = ref('')
 const finishUpload = (file) => {

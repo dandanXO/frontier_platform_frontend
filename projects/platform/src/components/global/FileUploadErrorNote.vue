@@ -14,6 +14,7 @@ export default {
 import { UPLOAD_ERROR_CODE } from '@/utils/constants'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { bytesToSize } from '@/utils/fileOperator'
 
 const props = defineProps({
   errorCode: {
@@ -33,7 +34,7 @@ const errorMsg = computed(() => {
   if (props.errorCode === INVALID_TYPE) {
     return t('RR0144')
   } else if (props.errorCode === EXCEED_LIMIT) {
-    return t('RR0145') + props.fileSizeMaxLimit + 'MB'
+    return t('RR0145') + bytesToSize(props.fileSizeMaxLimit)
   } else if (props.errorCode === TOO_SMALL) {
     return t('WW0018')
   } else {

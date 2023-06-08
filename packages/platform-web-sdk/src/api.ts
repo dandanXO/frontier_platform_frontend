@@ -383,6 +383,69 @@ export interface ChangeDigitalThreadWorkflowStageRequest {
 /**
  * 
  * @export
+ * @interface CheckCanDeleteWorkflowStage200Response
+ */
+export interface CheckCanDeleteWorkflowStage200Response {
+    /**
+     * 
+     * @type {CheckCanDeleteWorkflowStage200ResponseResult}
+     * @memberof CheckCanDeleteWorkflowStage200Response
+     */
+    'result'?: CheckCanDeleteWorkflowStage200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CheckCanDeleteWorkflowStage200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof CheckCanDeleteWorkflowStage200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof CheckCanDeleteWorkflowStage200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface CheckCanDeleteWorkflowStage200ResponseResult
+ */
+export interface CheckCanDeleteWorkflowStage200ResponseResult {
+    /**
+     * 
+     * @type {Array<CheckCanDeleteWorkflowStage200ResponseResultErrorListInner>}
+     * @memberof CheckCanDeleteWorkflowStage200ResponseResult
+     */
+    'errorList': Array<CheckCanDeleteWorkflowStage200ResponseResultErrorListInner> | null;
+}
+/**
+ * 
+ * @export
+ * @interface CheckCanDeleteWorkflowStage200ResponseResultErrorListInner
+ */
+export interface CheckCanDeleteWorkflowStage200ResponseResultErrorListInner {
+    /**
+     * 單位名稱
+     * @type {string}
+     * @memberof CheckCanDeleteWorkflowStage200ResponseResultErrorListInner
+     */
+    'ogName'?: string;
+    /**
+     * 標籤顏色
+     * @type {string}
+     * @memberof CheckCanDeleteWorkflowStage200ResponseResultErrorListInner
+     */
+    'labelColor'?: string;
+}
+/**
+ * 
+ * @export
  * @interface CheckCanDeleteWorkflowStageRequest
  */
 export interface CheckCanDeleteWorkflowStageRequest {
@@ -1537,6 +1600,61 @@ export type CollectionWorkspaceNodeLocationEnum = typeof CollectionWorkspaceNode
 /**
  * 
  * @export
+ * @interface CreateDownloadLogRequest
+ */
+export interface CreateDownloadLogRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateDownloadLogRequest
+     */
+    'materialId': number;
+    /**
+     * 下載項目 1: U3M,2: U3MA,3: glTF
+     * @type {number}
+     * @memberof CreateDownloadLogRequest
+     */
+    'category': CreateDownloadLogRequestCategoryEnum;
+    /**
+     * 
+     * @type {FeatureType}
+     * @memberof CreateDownloadLogRequest
+     */
+    'fromLocationType': FeatureType;
+}
+
+export const CreateDownloadLogRequestCategoryEnum = {
+    NUMBER_1: 1,
+    NUMBER_2: 2,
+    NUMBER_3: 3
+} as const;
+
+export type CreateDownloadLogRequestCategoryEnum = typeof CreateDownloadLogRequestCategoryEnum[keyof typeof CreateDownloadLogRequestCategoryEnum];
+
+/**
+ * 
+ * @export
+ * @interface CreateViewerLogRequest
+ */
+export interface CreateViewerLogRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateViewerLogRequest
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {FeatureType}
+     * @memberof CreateViewerLogRequest
+     */
+    'fromLocationType': FeatureType;
+}
+
+
+/**
+ * 
+ * @export
  * @interface CreateWorkflowStageRequest
  */
 export interface CreateWorkflowStageRequest {
@@ -1630,10 +1748,10 @@ export interface Dashboard {
     'fabricKeywordCounts': DashboardFabricKeywordCounts;
     /**
      * 
-     * @type {DashboardEcoImpactorInfromation}
+     * @type {DashboardEcoImpactorInformation}
      * @memberof Dashboard
      */
-    'ecoImpactorInfromation': DashboardEcoImpactorInfromation;
+    'ecoImpactorInformation': DashboardEcoImpactorInformation;
 }
 /**
  * 資產及collection數量資訊
@@ -1667,126 +1785,92 @@ export interface DashboardCreateCounts {
     'sharedCollectionCounts': number;
 }
 /**
- * 
- * @export
- * @interface DashboardDownloadLogCreatePostRequest
- */
-export interface DashboardDownloadLogCreatePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof DashboardDownloadLogCreatePostRequest
-     */
-    'materialId': number;
-    /**
-     * 下載項目 1: U3M,2: U3MA,3: glTF
-     * @type {number}
-     * @memberof DashboardDownloadLogCreatePostRequest
-     */
-    'category': DashboardDownloadLogCreatePostRequestCategoryEnum;
-    /**
-     * 
-     * @type {FeatureType}
-     * @memberof DashboardDownloadLogCreatePostRequest
-     */
-    'fromLocationType': FeatureType;
-}
-
-export const DashboardDownloadLogCreatePostRequestCategoryEnum = {
-    NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3
-} as const;
-
-export type DashboardDownloadLogCreatePostRequestCategoryEnum = typeof DashboardDownloadLogCreatePostRequestCategoryEnum[keyof typeof DashboardDownloadLogCreatePostRequestCategoryEnum];
-
-/**
  * 環保指標資訊
  * @export
- * @interface DashboardEcoImpactorInfromation
+ * @interface DashboardEcoImpactorInformation
  */
-export interface DashboardEcoImpactorInfromation {
+export interface DashboardEcoImpactorInformation {
     /**
      * 
-     * @type {DashboardEcoImpactorInfromationAll}
-     * @memberof DashboardEcoImpactorInfromation
+     * @type {DashboardEcoImpactorInformationAll}
+     * @memberof DashboardEcoImpactorInformation
      */
-    'all': DashboardEcoImpactorInfromationAll;
+    'all': DashboardEcoImpactorInformationAll;
     /**
      * 
-     * @type {DashboardEcoImpactorInfromationInternal}
-     * @memberof DashboardEcoImpactorInfromation
+     * @type {DashboardEcoImpactorInformationInternal}
+     * @memberof DashboardEcoImpactorInformation
      */
-    'internal'?: DashboardEcoImpactorInfromationInternal | null;
+    'internal'?: DashboardEcoImpactorInformationInternal | null;
 }
 /**
  * 平台所有布片環保指標
  * @export
- * @interface DashboardEcoImpactorInfromationAll
+ * @interface DashboardEcoImpactorInformationAll
  */
-export interface DashboardEcoImpactorInfromationAll {
+export interface DashboardEcoImpactorInformationAll {
     /**
      * 平台所有布片環保指標-GHG
-     * @type {Array<DashboardEcoImpactorInfromationAllGhgInner>}
-     * @memberof DashboardEcoImpactorInfromationAll
+     * @type {Array<DashboardEcoImpactorInformationAllGhgInner>}
+     * @memberof DashboardEcoImpactorInformationAll
      */
-    'ghg': Array<DashboardEcoImpactorInfromationAllGhgInner>;
+    'ghg': Array<DashboardEcoImpactorInformationAllGhgInner>;
     /**
      * 平台所有布片環保指標-Water
-     * @type {Array<DashboardEcoImpactorInfromationAllGhgInner>}
-     * @memberof DashboardEcoImpactorInfromationAll
+     * @type {Array<DashboardEcoImpactorInformationAllGhgInner>}
+     * @memberof DashboardEcoImpactorInformationAll
      */
-    'water': Array<DashboardEcoImpactorInfromationAllGhgInner>;
+    'water': Array<DashboardEcoImpactorInformationAllGhgInner>;
     /**
      * 平台所有布片環保指標-Land
-     * @type {Array<DashboardEcoImpactorInfromationAllGhgInner>}
-     * @memberof DashboardEcoImpactorInfromationAll
+     * @type {Array<DashboardEcoImpactorInformationAllGhgInner>}
+     * @memberof DashboardEcoImpactorInformationAll
      */
-    'land': Array<DashboardEcoImpactorInfromationAllGhgInner>;
+    'land': Array<DashboardEcoImpactorInformationAllGhgInner>;
 }
 /**
  * 
  * @export
- * @interface DashboardEcoImpactorInfromationAllGhgInner
+ * @interface DashboardEcoImpactorInformationAllGhgInner
  */
-export interface DashboardEcoImpactorInfromationAllGhgInner {
+export interface DashboardEcoImpactorInformationAllGhgInner {
     /**
      * 布片環保指標名稱
      * @type {string}
-     * @memberof DashboardEcoImpactorInfromationAllGhgInner
+     * @memberof DashboardEcoImpactorInformationAllGhgInner
      */
     'name': string;
     /**
      * 布片環保指標數值
      * @type {number}
-     * @memberof DashboardEcoImpactorInfromationAllGhgInner
+     * @memberof DashboardEcoImpactorInformationAllGhgInner
      */
     'value': number;
 }
 /**
  * 單位布片環保指標
  * @export
- * @interface DashboardEcoImpactorInfromationInternal
+ * @interface DashboardEcoImpactorInformationInternal
  */
-export interface DashboardEcoImpactorInfromationInternal {
+export interface DashboardEcoImpactorInformationInternal {
     /**
      * 單位布片環保指標-GHG
-     * @type {Array<DashboardEcoImpactorInfromationAllGhgInner>}
-     * @memberof DashboardEcoImpactorInfromationInternal
+     * @type {Array<DashboardEcoImpactorInformationAllGhgInner>}
+     * @memberof DashboardEcoImpactorInformationInternal
      */
-    'ghg': Array<DashboardEcoImpactorInfromationAllGhgInner>;
+    'ghg': Array<DashboardEcoImpactorInformationAllGhgInner>;
     /**
      * 單位布片環保指標-Water
-     * @type {Array<DashboardEcoImpactorInfromationAllGhgInner>}
-     * @memberof DashboardEcoImpactorInfromationInternal
+     * @type {Array<DashboardEcoImpactorInformationAllGhgInner>}
+     * @memberof DashboardEcoImpactorInformationInternal
      */
-    'water': Array<DashboardEcoImpactorInfromationAllGhgInner>;
+    'water': Array<DashboardEcoImpactorInformationAllGhgInner>;
     /**
      * 單位布片環保指標-Land
-     * @type {Array<DashboardEcoImpactorInfromationAllGhgInner>}
-     * @memberof DashboardEcoImpactorInfromationInternal
+     * @type {Array<DashboardEcoImpactorInformationAllGhgInner>}
+     * @memberof DashboardEcoImpactorInformationInternal
      */
-    'land': Array<DashboardEcoImpactorInfromationAllGhgInner>;
+    'land': Array<DashboardEcoImpactorInformationAllGhgInner>;
 }
 /**
  * 搜尋關鍵字數量資訊
@@ -1859,69 +1943,11 @@ export interface DashboardFabricKeywordCountsLastMonthDataInner {
     'name': string;
     /**
      * 搜尋關鍵字數量
-     * @type {Array}
+     * @type {Array<number>}
      * @memberof DashboardFabricKeywordCountsLastMonthDataInner
      */
-    'value': Array;
+    'value': Array<number>;
 }
-/**
- * 
- * @export
- * @interface DashboardGetPost200Response
- */
-export interface DashboardGetPost200Response {
-    /**
-     * 
-     * @type {Dashboard}
-     * @memberof DashboardGetPost200Response
-     */
-    'result'?: Dashboard;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DashboardGetPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof DashboardGetPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof DashboardGetPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface DashboardGetPostRequest
- */
-export interface DashboardGetPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof DashboardGetPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof DashboardGetPostRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團s隊)ID
-     * @type {number}
-     * @memberof DashboardGetPostRequest
-     */
-    'ogId': number;
-}
-
-
 /**
  * 
  * @export
@@ -1947,27 +1973,6 @@ export interface DashboardTextureCountsInner {
      */
     'all': number;
 }
-/**
- * 
- * @export
- * @interface DashboardViewerLogCreatePostRequest
- */
-export interface DashboardViewerLogCreatePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof DashboardViewerLogCreatePostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {FeatureType}
-     * @memberof DashboardViewerLogCreatePostRequest
-     */
-    'fromLocationType': FeatureType;
-}
-
-
 /**
  * 
  * @export
@@ -3467,6 +3472,64 @@ export interface GeneralRefreshTokenPostRequest {
      */
     'refreshToken': string;
 }
+/**
+ * 
+ * @export
+ * @interface GetDashboard200Response
+ */
+export interface GetDashboard200Response {
+    /**
+     * 
+     * @type {Dashboard}
+     * @memberof GetDashboard200Response
+     */
+    'result'?: Dashboard;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetDashboard200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetDashboard200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetDashboard200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetDashboardRequest
+ */
+export interface GetDashboardRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetDashboardRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetDashboardRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團s隊)ID
+     * @type {number}
+     * @memberof GetDashboardRequest
+     */
+    'ogId': number;
+}
+
+
 /**
  * 
  * @export
@@ -14394,7 +14457,7 @@ export interface OrgRemoveLogoPost200ResponseResultOrganization {
      * @type {number}
      * @memberof OrgRemoveLogoPost200ResponseResultOrganization
      */
-    'MaterialAttachmentUploadSizeLimit': number;
+    'materialAttachmentUploadSizeLimit': number;
     /**
      * 
      * @type {number}
@@ -16324,7 +16387,7 @@ export interface Organization {
      * @type {number}
      * @memberof Organization
      */
-    'MaterialAttachmentUploadSizeLimit': number;
+    'materialAttachmentUploadSizeLimit': number;
     /**
      * 
      * @type {number}
@@ -22078,13 +22141,13 @@ export class CodeApi extends BaseAPI {
 export const DashboardApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         * 可在使用者未登入狀態下紀錄
          * @summary 新增下載記錄
-         * @param {DashboardDownloadLogCreatePostRequest} [dashboardDownloadLogCreatePostRequest] 
+         * @param {CreateDownloadLogRequest} [createDownloadLogRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dashboardDownloadLogCreatePost: async (dashboardDownloadLogCreatePostRequest?: DashboardDownloadLogCreatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createDownloadLog: async (createDownloadLogRequest?: CreateDownloadLogRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/dashboard/download-log/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22097,6 +22160,10 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -22104,7 +22171,7 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(dashboardDownloadLogCreatePostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(createDownloadLogRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -22112,13 +22179,13 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
-         * 
-         * @summary 開啟EmbedPage記錄
+         * 可在使用者未登入狀態下紀錄
+         * @summary 新增開啟EmbedPage記錄
          * @param {ShareGetReceivedPostRequest} [shareGetReceivedPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dashboardEmbedPageLogCreatePost: async (shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createEmbedPageLog: async (shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/dashboard/embed-page-log/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22150,51 +22217,13 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
-         * 
-         * @summary 取得Dashboard資訊
-         * @param {DashboardGetPostRequest} [dashboardGetPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        dashboardGetPost: async (dashboardGetPostRequest?: DashboardGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/dashboard/get`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(dashboardGetPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 開啟ReceivePage記錄
+         * 可在使用者未登入狀態下紀錄
+         * @summary 新增開啟ReceivePage記錄
          * @param {ShareGetReceivedPostRequest} [shareGetReceivedPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dashboardReceivePageLogCreatePost: async (shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createReceivePageLog: async (shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/dashboard/receive-page-log/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22226,13 +22255,13 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
-         * 
+         * 可在使用者未登入狀態下紀錄
          * @summary 新增3DViewer執行記錄
-         * @param {DashboardViewerLogCreatePostRequest} [dashboardViewerLogCreatePostRequest] 
+         * @param {CreateViewerLogRequest} [createViewerLogRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dashboardViewerLogCreatePost: async (dashboardViewerLogCreatePostRequest?: DashboardViewerLogCreatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createViewerLog: async (createViewerLogRequest?: CreateViewerLogRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/dashboard/viewer-log/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22256,7 +22285,45 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(dashboardViewerLogCreatePostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(createViewerLogRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 取得Dashboard資訊
+         * @param {GetDashboardRequest} [getDashboardRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDashboard: async (getDashboardRequest?: GetDashboardRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/dashboard/get`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getDashboardRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -22274,58 +22341,58 @@ export const DashboardApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = DashboardApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         * 可在使用者未登入狀態下紀錄
          * @summary 新增下載記錄
-         * @param {DashboardDownloadLogCreatePostRequest} [dashboardDownloadLogCreatePostRequest] 
+         * @param {CreateDownloadLogRequest} [createDownloadLogRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dashboardDownloadLogCreatePost(dashboardDownloadLogCreatePostRequest?: DashboardDownloadLogCreatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dashboardDownloadLogCreatePost(dashboardDownloadLogCreatePostRequest, options);
+        async createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createDownloadLog(createDownloadLogRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * 
-         * @summary 開啟EmbedPage記錄
+         * 可在使用者未登入狀態下紀錄
+         * @summary 新增開啟EmbedPage記錄
          * @param {ShareGetReceivedPostRequest} [shareGetReceivedPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dashboardEmbedPageLogCreatePost(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dashboardEmbedPageLogCreatePost(shareGetReceivedPostRequest, options);
+        async createEmbedPageLog(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createEmbedPageLog(shareGetReceivedPostRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 可在使用者未登入狀態下紀錄
+         * @summary 新增開啟ReceivePage記錄
+         * @param {ShareGetReceivedPostRequest} [shareGetReceivedPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createReceivePageLog(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createReceivePageLog(shareGetReceivedPostRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 可在使用者未登入狀態下紀錄
+         * @summary 新增3DViewer執行記錄
+         * @param {CreateViewerLogRequest} [createViewerLogRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createViewerLog(createViewerLogRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary 取得Dashboard資訊
-         * @param {DashboardGetPostRequest} [dashboardGetPostRequest] 
+         * @param {GetDashboardRequest} [getDashboardRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dashboardGetPost(dashboardGetPostRequest?: DashboardGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DashboardGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dashboardGetPost(dashboardGetPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 開啟ReceivePage記錄
-         * @param {ShareGetReceivedPostRequest} [shareGetReceivedPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async dashboardReceivePageLogCreatePost(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dashboardReceivePageLogCreatePost(shareGetReceivedPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 新增3DViewer執行記錄
-         * @param {DashboardViewerLogCreatePostRequest} [dashboardViewerLogCreatePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async dashboardViewerLogCreatePost(dashboardViewerLogCreatePostRequest?: DashboardViewerLogCreatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dashboardViewerLogCreatePost(dashboardViewerLogCreatePostRequest, options);
+        async getDashboard(getDashboardRequest?: GetDashboardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetDashboard200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getDashboard(getDashboardRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -22339,54 +22406,54 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
     const localVarFp = DashboardApiFp(configuration)
     return {
         /**
-         * 
+         * 可在使用者未登入狀態下紀錄
          * @summary 新增下載記錄
-         * @param {DashboardDownloadLogCreatePostRequest} [dashboardDownloadLogCreatePostRequest] 
+         * @param {CreateDownloadLogRequest} [createDownloadLogRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dashboardDownloadLogCreatePost(dashboardDownloadLogCreatePostRequest?: DashboardDownloadLogCreatePostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.dashboardDownloadLogCreatePost(dashboardDownloadLogCreatePostRequest, options).then((request) => request(axios, basePath));
+        createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.createDownloadLog(createDownloadLogRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @summary 開啟EmbedPage記錄
+         * 可在使用者未登入狀態下紀錄
+         * @summary 新增開啟EmbedPage記錄
          * @param {ShareGetReceivedPostRequest} [shareGetReceivedPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dashboardEmbedPageLogCreatePost(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.dashboardEmbedPageLogCreatePost(shareGetReceivedPostRequest, options).then((request) => request(axios, basePath));
+        createEmbedPageLog(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.createEmbedPageLog(shareGetReceivedPostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 可在使用者未登入狀態下紀錄
+         * @summary 新增開啟ReceivePage記錄
+         * @param {ShareGetReceivedPostRequest} [shareGetReceivedPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createReceivePageLog(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.createReceivePageLog(shareGetReceivedPostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 可在使用者未登入狀態下紀錄
+         * @summary 新增3DViewer執行記錄
+         * @param {CreateViewerLogRequest} [createViewerLogRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.createViewerLog(createViewerLogRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 取得Dashboard資訊
-         * @param {DashboardGetPostRequest} [dashboardGetPostRequest] 
+         * @param {GetDashboardRequest} [getDashboardRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dashboardGetPost(dashboardGetPostRequest?: DashboardGetPostRequest, options?: any): AxiosPromise<DashboardGetPost200Response> {
-            return localVarFp.dashboardGetPost(dashboardGetPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 開啟ReceivePage記錄
-         * @param {ShareGetReceivedPostRequest} [shareGetReceivedPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        dashboardReceivePageLogCreatePost(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.dashboardReceivePageLogCreatePost(shareGetReceivedPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 新增3DViewer執行記錄
-         * @param {DashboardViewerLogCreatePostRequest} [dashboardViewerLogCreatePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        dashboardViewerLogCreatePost(dashboardViewerLogCreatePostRequest?: DashboardViewerLogCreatePostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.dashboardViewerLogCreatePost(dashboardViewerLogCreatePostRequest, options).then((request) => request(axios, basePath));
+        getDashboard(getDashboardRequest?: GetDashboardRequest, options?: any): AxiosPromise<GetDashboard200Response> {
+            return localVarFp.getDashboard(getDashboardRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -22399,63 +22466,63 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
  */
 export class DashboardApi extends BaseAPI {
     /**
-     * 
+     * 可在使用者未登入狀態下紀錄
      * @summary 新增下載記錄
-     * @param {DashboardDownloadLogCreatePostRequest} [dashboardDownloadLogCreatePostRequest] 
+     * @param {CreateDownloadLogRequest} [createDownloadLogRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DashboardApi
      */
-    public dashboardDownloadLogCreatePost(dashboardDownloadLogCreatePostRequest?: DashboardDownloadLogCreatePostRequest, options?: AxiosRequestConfig) {
-        return DashboardApiFp(this.configuration).dashboardDownloadLogCreatePost(dashboardDownloadLogCreatePostRequest, options).then((request) => request(this.axios, this.basePath));
+    public createDownloadLog(createDownloadLogRequest?: CreateDownloadLogRequest, options?: AxiosRequestConfig) {
+        return DashboardApiFp(this.configuration).createDownloadLog(createDownloadLogRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * 
-     * @summary 開啟EmbedPage記錄
+     * 可在使用者未登入狀態下紀錄
+     * @summary 新增開啟EmbedPage記錄
      * @param {ShareGetReceivedPostRequest} [shareGetReceivedPostRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DashboardApi
      */
-    public dashboardEmbedPageLogCreatePost(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: AxiosRequestConfig) {
-        return DashboardApiFp(this.configuration).dashboardEmbedPageLogCreatePost(shareGetReceivedPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public createEmbedPageLog(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: AxiosRequestConfig) {
+        return DashboardApiFp(this.configuration).createEmbedPageLog(shareGetReceivedPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 可在使用者未登入狀態下紀錄
+     * @summary 新增開啟ReceivePage記錄
+     * @param {ShareGetReceivedPostRequest} [shareGetReceivedPostRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DashboardApi
+     */
+    public createReceivePageLog(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: AxiosRequestConfig) {
+        return DashboardApiFp(this.configuration).createReceivePageLog(shareGetReceivedPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 可在使用者未登入狀態下紀錄
+     * @summary 新增3DViewer執行記錄
+     * @param {CreateViewerLogRequest} [createViewerLogRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DashboardApi
+     */
+    public createViewerLog(createViewerLogRequest?: CreateViewerLogRequest, options?: AxiosRequestConfig) {
+        return DashboardApiFp(this.configuration).createViewerLog(createViewerLogRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得Dashboard資訊
-     * @param {DashboardGetPostRequest} [dashboardGetPostRequest] 
+     * @param {GetDashboardRequest} [getDashboardRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DashboardApi
      */
-    public dashboardGetPost(dashboardGetPostRequest?: DashboardGetPostRequest, options?: AxiosRequestConfig) {
-        return DashboardApiFp(this.configuration).dashboardGetPost(dashboardGetPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 開啟ReceivePage記錄
-     * @param {ShareGetReceivedPostRequest} [shareGetReceivedPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DashboardApi
-     */
-    public dashboardReceivePageLogCreatePost(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: AxiosRequestConfig) {
-        return DashboardApiFp(this.configuration).dashboardReceivePageLogCreatePost(shareGetReceivedPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 新增3DViewer執行記錄
-     * @param {DashboardViewerLogCreatePostRequest} [dashboardViewerLogCreatePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DashboardApi
-     */
-    public dashboardViewerLogCreatePost(dashboardViewerLogCreatePostRequest?: DashboardViewerLogCreatePostRequest, options?: AxiosRequestConfig) {
-        return DashboardApiFp(this.configuration).dashboardViewerLogCreatePost(dashboardViewerLogCreatePostRequest, options).then((request) => request(this.axios, this.basePath));
+    public getDashboard(getDashboardRequest?: GetDashboardRequest, options?: AxiosRequestConfig) {
+        return DashboardApiFp(this.configuration).getDashboard(getDashboardRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -44246,7 +44313,7 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+        async checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckCanDeleteWorkflowStage200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -44268,7 +44335,7 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+        async deleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckCanDeleteWorkflowStage200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -44410,7 +44477,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+        checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: any): AxiosPromise<CheckCanDeleteWorkflowStage200Response> {
             return localVarFp.checkCanDeleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -44430,7 +44497,7 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+        deleteWorkflowStage(checkCanDeleteWorkflowStageRequest: CheckCanDeleteWorkflowStageRequest, options?: any): AxiosPromise<CheckCanDeleteWorkflowStage200Response> {
             return localVarFp.deleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
