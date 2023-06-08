@@ -15,6 +15,8 @@ import {
   type HideWorkflowStageRequest,
   type CheckCanDeleteWorkflowStageRequest,
   type ReadAllUnreadDigitalThreadRequest,
+  type MoveWorkflowStageAllDigitalThreadRequest,
+  type MoveWorkflowStageDigitalThreadRequest,
 } from '@frontier/platform-web-sdk'
 import threadBoardApi from '@/apis/threadBoard'
 import stickerApi from '@/apis/sticker.js'
@@ -24,6 +26,7 @@ import useGotoMaterialDetail from '@/composables/useGotoMaterialDetail'
 import usePermission from '@/composables/usePermission'
 import { FUNC_ID, NOTIFY_TYPE } from '@/utils/constants'
 import axios from 'axios'
+import type { WorkflowStageMoveAllThreadsPayload } from '@/types'
 
 const defaultFilter = (): ThreadBoardQueryFilter => ({
   createdBy: {
@@ -97,7 +100,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const canClearFilterAndSearch = computed(() =>
     [
       threadBoardQuery.onlyShowUnread,
-      threadBoardQuery.search?.length,
+      threadBoardQuery.search && threadBoardQuery.search.length > 0,
       isFilterDirty.value,
     ].some((b) => b)
   )
@@ -273,20 +276,43 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       }
       newList = [...newList, ...hiddenWorkflowStageList.value]
       workflowStageList.value = newList
-      // TODO: handle workflow stage move
     },
   })
 
   const defaultWorkflowStageThreadList = computed({
     get: () => defaultWorkflowStage.value?.digitalThreadList || [],
     set: (v: DigitalThreadBase[]) => {
-      // TODO: handle thread move
+      if (!workflowStageList.value) {
+        return
+      }
+
+      const targetIndex = workflowStageList.value.findIndex((w) => w.isDefault)
+      if (targetIndex < 0) {
+        return
+      }
+
+      workflowStageList.value[targetIndex].digitalThreadList = v
     },
   })
 
   const hiddenWorkflowStageList = computed(() => {
     if (!workflowStageList.value) return []
     return workflowStageList.value.filter((w) => w.isHidden)
+  })
+
+  const workflowStageMenu = computed(() => {
+    if (!defaultWorkflowStage.value) {
+      throw new Error('default workflow stage undefined')
+    }
+
+    return [
+      defaultWorkflowStage.value,
+      ...draggableWorkflowStageList.value,
+    ].map((w) => ({
+      id: w.workflowStageId,
+      name: w.workflowStageName,
+      isDefault: w.isDefault,
+    }))
   })
 
   const baseReq = computed(() => ({
@@ -296,6 +322,60 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   }))
 
   const setLoading = (v: boolean) => (loading.value = v)
+
+  const getWorkflowStageById = (id: number) => {
+    if (!workflowStageList.value) {
+      return
+    }
+
+    return workflowStageList.value.find((w) => w.workflowStageId === id)
+  }
+
+  const getWorkflowStageNameById = (id: number) => {
+    const result = getWorkflowStageById(id)
+    if (!result) {
+      return
+    }
+    if (result.isDefault) {
+      return { ...result, workflowStageName: t('TT0135') }
+    }
+    return result
+  }
+
+  const workflowStageSortCompare = (
+    a: DigitalThreadBase,
+    b: DigitalThreadBase
+  ) =>
+    threadBoardQuery.sortBy === ThreadBoardQuerySortByEnum.OLDEST_TO_NEWEST
+      ? a.createDate - b.createDate
+      : b.createDate - a.createDate
+
+  const sortWorkflowStageById = (workflowStageId: number) => {
+    if (threadBoardQuery.sortBy === ThreadBoardQuerySortByEnum.CUSTOM) {
+      return
+    }
+
+    const targetWorkflowStage = getWorkflowStageById(workflowStageId)
+    if (!targetWorkflowStage) {
+      throw new Error('targetWorkflowStage undefined')
+    }
+
+    targetWorkflowStage.digitalThreadList =
+      targetWorkflowStage.digitalThreadList.sort(workflowStageSortCompare)
+  }
+
+  const promptSwitchToSortByCustom = () => {
+    store.dispatch('helper/openModalConfirm', {
+      type: NOTIFY_TYPE.WARNING,
+      header: t('TT0171'),
+      contentText: t('TT0172'),
+      primaryBtnText: t('UU0134'),
+      secondaryBtnText: t('UU0002'),
+      primaryBtnHandler: () => {
+        threadBoardQuery.sortBy = ThreadBoardQuerySortByEnum.CUSTOM
+      },
+    })
+  }
 
   const expandDefaultWorkflowStage = () => {
     isDefaultWorkflowStageExpanded.value = true
@@ -477,6 +557,120 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     })
   }
 
+  const moveWorkflowStageDigitalThread = async (
+    digitalThreadSideId: number,
+    fromWorkflowStageId: number,
+    toWorkflowStageId: number,
+    targetDigitalThreadSideId: number | undefined,
+    isMoveToBeforeTarget: boolean
+  ) => {
+    if (threadBoardQuery.sortBy !== ThreadBoardQuerySortByEnum.CUSTOM) {
+      sortWorkflowStageById(toWorkflowStageId)
+
+      if (fromWorkflowStageId === toWorkflowStageId) {
+        return promptSwitchToSortByCustom()
+      }
+    }
+
+    const customOrderPayload =
+      threadBoardQuery.sortBy === ThreadBoardQuerySortByEnum.CUSTOM &&
+      targetDigitalThreadSideId
+        ? {
+            targetDigitalThreadSideId,
+            isMoveToBeforeTarget,
+          }
+        : null
+    const req: MoveWorkflowStageDigitalThreadRequest = {
+      ...baseReq.value,
+      digitalThreadSideId,
+      targetWorkflowStageId: toWorkflowStageId,
+      customOrderPayload,
+    }
+    await threadBoardApi.moveWorkflowStageDigitalThread(req)
+    getThreadBoard()
+
+    if (fromWorkflowStageId === toWorkflowStageId) {
+      return
+    }
+
+    const fromWorkflowStage = getWorkflowStageNameById(fromWorkflowStageId)
+    const toWorkflowStage = getWorkflowStageNameById(toWorkflowStageId)
+
+    notify.showNotifySnackbar({
+      isShowSnackbar: true,
+      messageText: t('WW0133', {
+        lastStage: fromWorkflowStage?.workflowStageName,
+        newStage: toWorkflowStage?.workflowStageName,
+      }),
+    })
+  }
+
+  const moveWorkflowStageAllThreads = async (
+    v: WorkflowStageMoveAllThreadsPayload
+  ) => {
+    if (!workflowStageList.value) {
+      throw new Error('workflowStageList undefined')
+    }
+
+    const sourceIndex = workflowStageList.value.findIndex(
+      (w) => w.workflowStageId === v.sourceWorkflowStageId
+    )
+    if (sourceIndex < 0) {
+      throw new Error('source workflow stage not exist')
+    }
+
+    const targetIndex = workflowStageList.value.findIndex(
+      (w) => w.workflowStageId === v.targetWorkflowStageId
+    )
+    if (targetIndex < 0) {
+      throw new Error('target workflow stage not exist')
+    }
+
+    workflowStageList.value[targetIndex].digitalThreadList = [
+      ...workflowStageList.value[sourceIndex].digitalThreadList,
+      ...workflowStageList.value[targetIndex].digitalThreadList,
+    ]
+
+    if (threadBoardQuery.sortBy !== ThreadBoardQuerySortByEnum.CUSTOM) {
+      workflowStageList.value[targetIndex].digitalThreadList.sort(
+        workflowStageSortCompare
+      )
+    }
+
+    workflowStageList.value[sourceIndex].digitalThreadList = []
+    if (workflowStageList.value[sourceIndex].isDefault) {
+      workflowStageList.value[sourceIndex].canHide = true
+      workflowStageList.value[sourceIndex].canDelete = true
+    }
+
+    const getWorkStageNameByIndex = (index: number) => {
+      if (!workflowStageList.value) {
+        throw new Error('workflowStageList undefined')
+      }
+
+      const workflowStage = workflowStageList.value[index]
+      if (workflowStage.isDefault) {
+        return t('TT0135')
+      }
+
+      return workflowStage.workflowStageName
+    }
+
+    const sourceName = getWorkStageNameByIndex(sourceIndex)
+    const targetName = getWorkStageNameByIndex(targetIndex)
+    const req: MoveWorkflowStageAllDigitalThreadRequest = {
+      ...baseReq.value,
+      workflowStageId: v.sourceWorkflowStageId,
+      targetWorkflowStageId: v.targetWorkflowStageId,
+    }
+    await threadBoardApi.moveWorkflowStageAllDigitalThread(req)
+    getThreadBoard()
+    notify.showNotifySnackbar({
+      isShowSnackbar: true,
+      messageText: t('WW0134', { lastStage: sourceName, newStage: targetName }),
+    })
+  }
+
   const deleteWorkflowStage = async (id: number) => {
     const req: CheckCanDeleteWorkflowStageRequest = {
       orgId: baseReq.value.orgId,
@@ -635,10 +829,10 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   return {
     isActive,
     loading,
-    activeThreadSideId,
     haveMoveWorkflowStagePermission,
     haveHideShowWorkflowStagePermission,
     haveDeleteWorkflowStagePermission,
+    activeThreadSideId,
     isDefaultWorkflowStageExpanded,
     isHiddenWorkflowListExpanded,
     workflowStageList,
@@ -655,6 +849,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     memberListMenu,
     stickerTypeMenu,
     dateCreatedInput,
+    workflowStageMenu,
     defaultWorkflowStage,
     defaultWorkflowStageThreadList,
     draggableWorkflowStageList,
@@ -680,6 +875,8 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     activateThreadCard,
     deactivateThreadCard,
     moveWorkflowStageList,
+    moveWorkflowStageDigitalThread,
+    moveWorkflowStageAllThreads,
     deleteWorkflowStage,
     showWorkflowStage,
     hideWorkflowStage,

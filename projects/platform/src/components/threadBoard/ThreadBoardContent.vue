@@ -15,13 +15,23 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
       :isExpanded="isDefaultWorkflowStageExpanded"
       :workflowStage="defaultWorkflowStage"
       :active="defaultWorkflowStage.workflowStageId === activeWorkflowStageId"
+      :workflowStageMenu="workflowStageMenu"
       @workflowStageCollapse="collapseDefaultWorkflowStage"
+      @workflowStageMoveAllThreads="handleWorkflowStageMoveAllThreads"
+      @workflowStageMenuMouseEnter="handleWorkflowStageMenuMouseEnter"
+      @workflowStageMenuMouseLeave="handleWorkflowStageMenuMouseLeave"
     )
       template(#default="{ scrollContainer }")
         draggable(
           class="min-h-full flex flex-col items-center gap-2 pb-3.5"
           v-model="defaultWorkflowStageThreadList"
           v-bind="threadCardDragOptions"
+          @start="(e) => handleDragStart(defaultWorkflowStage, scrollContainer)(e)"
+          @end="(e) => handleDragEnd(scrollContainer)(e)"
+          :move="handleMove"
+          @add="handleAdd"
+          @update="handleUpdate"
+          :data-workflow-stage-id="defaultWorkflowStage.workflowStageId"
         )
           template(#item="{ element }")
             div(:class="threadCardWrapperClass")
@@ -49,8 +59,12 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
           :class="{ 'draggable-workflow-stage cursor-pointer': !loading && haveMoveWorkflowStagePermission }"
           :active="element.workflowStageId === activeWorkflowStageId"
           :workflowStage="element"
-          @workflowStageHide="hideWorkflowStage"
+          :workflowStageMenu="workflowStageMenu"
           @workflowStageDelete="deleteWorkflowStage"
+          @workflowStageHide="hideWorkflowStage"
+          @workflowStageMoveAllThreads="handleWorkflowStageMoveAllThreads"
+          @workflowStageMenuMouseEnter="handleWorkflowStageMenuMouseEnter"
+          @workflowStageMenuMouseLeave="handleWorkflowStageMenuMouseLeave"
         )
           template(#default="{ scrollContainer }")
             draggable(
@@ -58,6 +72,12 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
               v-model="element.digitalThreadList"
               draggable=".draggable-thread-card"
               v-bind="threadCardDragOptions"
+              @start="(e) => handleDragStart(element, scrollContainer)(e)"
+              @end="(e) => handleDragEnd(scrollContainer)(e)"
+              @add="handleAdd"
+              @update="handleUpdate"
+              :move="handleMove"
+              :data-workflow-stage-id="element.workflowStageId"
             )
               template(#item="{ element }")
                 div(:class="threadCardWrapperClass")
@@ -105,6 +125,9 @@ import useThreadBoardStore from '@/stores/threadBoard'
 import ThreadCard from '@/components/threadBoard/ThreadCard.vue'
 import WorkflowStageColumn from '@/components/threadBoard/WorkflowStageColumn.vue'
 import WorkflowStageHiddenCard from './WorkflowStageHiddenCard.vue'
+import type { WorkflowStage } from '@frontier/platform-web-sdk'
+import type FScrollbarContainer from '@frontier/ui-component/src/FScrollbarContainer/FScrollbarContainer.vue'
+import type { WorkflowStageMoveAllThreadsPayload } from '@/types'
 
 const threadBoardStore = useThreadBoardStore()
 const {
@@ -115,6 +138,7 @@ const {
   draggableWorkflowStageList,
   defaultWorkflowStageThreadList,
   hiddenWorkflowStageList,
+  workflowStageMenu,
   haveMoveWorkflowStagePermission,
 } = storeToRefs(threadBoardStore)
 const {
@@ -125,6 +149,8 @@ const {
   collapseHiddenWorkflowStage,
   openStickerDrawerByThread,
   openMaterialDetail,
+  moveWorkflowStageDigitalThread,
+  moveWorkflowStageAllThreads,
   moveWorkflowStageList,
   showWorkflowStage,
   hideWorkflowStage,
@@ -170,7 +196,10 @@ const threadCardWrapperClass = computed(() =>
 )
 
 const isDefaultWorkflowStageHaveUnreadThread = computed(() => {
-  if (!defaultWorkflowStage.value) return false
+  if (!defaultWorkflowStage.value) {
+    return false
+  }
+
   return defaultWorkflowStage.value.digitalThreadList.some(
     (thread) => thread.unreadStickerQty > 0
   )
@@ -194,6 +223,87 @@ const defaultWorkflowStageWrapperClass = computed(() => {
 const handleWorkflowStageListChange = (e) => {
   const { element, oldIndex, newIndex } = e.moved
   moveWorkflowStageList(element.workflowStageId, oldIndex, newIndex)
+}
+
+const handleWorkflowStageMoveAllThreads = (
+  v: WorkflowStageMoveAllThreadsPayload
+) => {
+  activeWorkflowStageId.value = null
+  moveWorkflowStageAllThreads(v)
+}
+
+const handleMove = (e) => {
+  activeWorkflowStageId.value = Number(e.to.dataset.workflowStageId)
+}
+
+const handleAdd = (e) => {
+  const digitalThreadSideId = e.item.__draggable_context.element
+    .digitalThreadSideId as number
+  const fromWorkflowStageId = Number(e.from.dataset.workflowStageId)
+  const toWorkflowStageId = Number(e.to.dataset.workflowStageId)
+  const targetDigitalThreadSideId =
+    e.to.__draggable_component__.modelValue[
+      e.newIndex === 0 ? e.newIndex + 1 : e.newIndex - 1
+    ]?.digitalThreadSideId
+  const isMoveToBeforeTarget = e.newIndex === 0
+
+  moveWorkflowStageDigitalThread(
+    digitalThreadSideId,
+    fromWorkflowStageId,
+    toWorkflowStageId,
+    targetDigitalThreadSideId,
+    isMoveToBeforeTarget
+  )
+}
+
+const handleUpdate = (e) => {
+  const digitalThreadSideId = e.item.__draggable_context.element
+    .digitalThreadSideId as number
+  const fromWorkflowStageId = Number(e.from.dataset.workflowStageId)
+  const toWorkflowStageId = Number(e.to.dataset.workflowStageId)
+  const targetDigitalThreadSideId =
+    e.to.__draggable_component__.modelValue[
+      e.newIndex === 0 ? e.newIndex + 1 : e.newIndex - 1
+    ]?.digitalThreadSideId
+  const isMoveToBeforeTarget = e.newIndex === 0
+
+  moveWorkflowStageDigitalThread(
+    digitalThreadSideId,
+    fromWorkflowStageId,
+    toWorkflowStageId,
+    targetDigitalThreadSideId,
+    isMoveToBeforeTarget
+  )
+}
+
+const handleDragStart =
+  (
+    workflowStage: WorkflowStage,
+    scrollContainer: InstanceType<typeof FScrollbarContainer>
+  ) =>
+  (e: Event) => {
+    if (scrollContainer.rootElement) {
+      scrollContainer.rootElement.style.zIndex = '1'
+    }
+    activeWorkflowStageId.value = workflowStage.workflowStageId
+  }
+
+const handleDragEnd =
+  (scrollContainer: InstanceType<typeof FScrollbarContainer>) => (e) => {
+    if (scrollContainer.rootElement) {
+      // scrollContainer.rootElement.style.zIndex = '0'
+    }
+    activeWorkflowStageId.value = null
+  }
+
+const handleWorkflowStageMenuMouseEnter = (id: number) => {
+  activeWorkflowStageId.value = id
+}
+
+const handleWorkflowStageMenuMouseLeave = (id: number) => {
+  if (activeWorkflowStageId.value === id) {
+    activeWorkflowStageId.value = null
+  }
 }
 </script>
 

@@ -262,6 +262,15 @@ const menuMultiLayer = {
                 },
                 {
                   title: 'Menu 2-3',
+                  clickHandler: () => {
+                    console.log('click handler')
+                  },
+                  mouseEnterHandler: () => {
+                    console.log('mouseEnterHandler handler')
+                  },
+                  mouseLeaveHandler: () => {
+                    console.log('mouseLeaveHandler handler')
+                  },
                 },
                 {
                   title: 'Menu 2-4',

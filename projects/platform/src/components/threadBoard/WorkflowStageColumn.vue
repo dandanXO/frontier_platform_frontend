@@ -80,13 +80,26 @@ import IconButton from '@/components/threadBoard/IconButton.vue'
 import type overlayscrollbars from 'overlayscrollbars'
 import type FScrollbarContainer from '@frontier/ui-component/src/FScrollbarContainer/FScrollbarContainer.vue'
 import type { WorkflowStage } from '@frontier/platform-web-sdk'
+import type {
+  WorkflowStageRenamePayload,
+  WorkflowStageMoveAllThreadsPayload,
+  WorkflowStageMenuItem,
+} from '@/types'
 import useThreadBoardStore from '@/stores/threadBoard'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 
 const emit = defineEmits<{
   (e: 'workflowStageCollapse'): void
   (e: 'workflowStageHide', id: number): void
+  (e: 'workflowStageRename', v: WorkflowStageRenamePayload): void
+  (e: 'workflowStageRename', v: WorkflowStageRenamePayload): void
+  (
+    e: 'workflowStageMoveAllThreads',
+    v: WorkflowStageMoveAllThreadsPayload
+  ): void
   (e: 'workflowStageDelete', id: number): void
+  (e: 'workflowStageMenuMouseEnter', id: number): void
+  (e: 'workflowStageMenuMouseLeave', id: number): void
 }>()
 
 const props = withDefaults(
@@ -94,6 +107,7 @@ const props = withDefaults(
     workflowStage: WorkflowStage
     active?: boolean
     isExpanded?: boolean
+    workflowStageMenu: WorkflowStageMenuItem[]
   }>(),
   { active: false, isExpanded: true }
 )
@@ -119,6 +133,47 @@ const menuTree = computed(() => ({
   width: 'w-66',
   blockList: (() => {
     const blockList = []
+    const moveAllDisabled = props.workflowStage.digitalThreadList.length <= 0
+    const mapToMenuTreeItem = (w: WorkflowStageMenuItem) => {
+      const disabled = w.id === props.workflowStage.workflowStageId
+      return {
+        title: w.name,
+        disabled,
+        description: disabled ? t('TT0144') : '',
+        clickHandler: () => {
+          emit('workflowStageMoveAllThreads', {
+            sourceWorkflowStageId: props.workflowStage.workflowStageId,
+            targetWorkflowStageId: w.id,
+          })
+        },
+        mouseEnterHandler: () => emit('workflowStageMenuMouseEnter', w.id),
+        mouseLeaveHandler: () => emit('workflowStageMenuMouseLeave', w.id),
+      }
+    }
+    const moveAllThreadsBlock = {
+      menuList: [
+        {
+          title: t('TT0143'),
+          icon: 'move',
+          disabled: moveAllDisabled,
+          tooltipTitle: moveAllDisabled ? t('TT0161') : null,
+          width: 'w-60',
+          blockList: [
+            {
+              menuList: props.workflowStageMenu
+                .filter((item) => item.isDefault)
+                .map(mapToMenuTreeItem),
+            },
+            {
+              menuList: props.workflowStageMenu
+                .filter((m) => !m.isDefault)
+                .map(mapToMenuTreeItem),
+            },
+          ],
+        },
+      ],
+    }
+
     const showDeleteBlock = {
       menuList: (() => {
         const menuList = []
@@ -153,7 +208,9 @@ const menuTree = computed(() => ({
       })(),
     }
 
-    if (showDeleteBlock.menuList.length) {
+    blockList.push(moveAllThreadsBlock)
+
+    if (threadBoardStore.haveHideShowWorkflowStagePermission) {
       blockList.push(showDeleteBlock)
     }
 

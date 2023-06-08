@@ -4,13 +4,13 @@ div(
   class="min-h-9 py-1.5 flex items-center"
   :class="bgClassList"
   :disabled="innerMenu.disabled"
-  @mouseleave="hasNextLevel && collapseMenu()"
+  @mouseenter="mouseEnterHandler"
+  @mouseleave="mouseLeaveHandler"
   @click.stop="clickMenuHandler"
 )
   f-tooltip-standard(
     :placement="innerMenu.tooltipPlacement"
     isNotFitWidth
-    @mouseenter="hasNextLevel && expandMenu()"
     class="w-full flex items-center px-4"
     :disabledTooltip="disabledTooltip"
   )
@@ -217,6 +217,8 @@ const innerMenu = computed(() => {
     flag: '', // http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg
     labelColor: '',
     clickHandler: () => {},
+    mouseEnterHandler: undefined,
+    mouseLeaveHandler: undefined,
     tooltipTitle: '',
     tooltipMessage: '',
     tooltipPlacement: 'right',
@@ -248,6 +250,18 @@ const bgClassList = computed(() => {
     isSelect.value ? 'bg-grey-150' : 'bg-grey-0',
   ]
 })
+
+const mouseEnterHandler = () => {
+  innerMenu.value?.mouseEnterHandler && innerMenu.value.mouseEnterHandler()
+
+  hasNextLevel.value && expandMenu()
+}
+
+const mouseLeaveHandler = () => {
+  innerMenu.value?.mouseLeaveHandler && innerMenu.value.mouseLeaveHandler()
+
+  hasNextLevel.value && collapseMenu()
+}
 
 const clickMenuHandler = () => {
   const { disabled, selectable } = innerMenu.value

@@ -144,18 +144,18 @@ export interface ViewerLogPayload {
   fromLocationType: FROM_LOCATION_TYPE
 }
 
-interface Menu {
-  title: string
-  icon?: string
-  disabled?: boolean
-  clickHandler: () => void
+export interface WorkflowStageRenamePayload {
+  workflowStageId: number
+  workflowStageName: string
 }
 
-interface Block {
-  menuList: Menu[]
+export interface WorkflowStageMoveAllThreadsPayload {
+  sourceWorkflowStageId: number
+  targetWorkflowStageId: number
 }
 
-export interface MenuTree {
-  width: string
-  blockList: Block[]
+export interface WorkflowStageMenuItem {
+  id: number
+  name: string
+  isDefault: boolean
 }
