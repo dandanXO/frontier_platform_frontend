@@ -18,7 +18,7 @@ modal-behavior(
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
-import useDashboard from '@/composables/useDashboard'
+import { useDashboardStore } from '@/stores/dashboard'
 import { downloadDataURLFile } from '@/utils/fileOperator'
 import { U3M_STATUS } from '@/utils/constants'
 
@@ -30,7 +30,7 @@ const props = defineProps({
 
 const { t } = useI18n()
 const store = useStore()
-const dashboard = useDashboard()
+const dashboard = useDashboardStore()
 
 const formatOptions = [
   {

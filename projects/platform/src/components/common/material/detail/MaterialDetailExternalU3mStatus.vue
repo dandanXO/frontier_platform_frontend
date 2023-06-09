@@ -26,7 +26,7 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 import MaterialU3mFiles from '@/components/common/material/u3m/MaterialU3mFiles.vue'
 import useModelEditor from '@/composables/useModelEditor'
-import useDashboard from '@/composables/useDashboard'
+import { useDashboardStore } from '@/stores/dashboard'
 import { U3M_STATUS, NOTIFY_TYPE } from '@/utils/constants'
 import { downloadDataURLFile } from '@/utils/fileOperator'
 import u3mInstructionImage from '@/assets/images/u3m.png'
@@ -52,7 +52,7 @@ const status = computed(() => material.value.u3m.status)
 const { t } = useI18n()
 const store = useStore()
 const { openModalModelEditor } = useModelEditor(material)
-const dashboard = useDashboard()
+const dashboard = useDashboardStore()
 const { COMPLETED } = U3M_STATUS
 
 const downloadU3m = async (item) => {

@@ -17,7 +17,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { U3M_STATUS } from '@/utils/constants'
 import { downloadDataURLFile } from '@/utils/fileOperator'
-import useDashboard from '@/composables/useDashboard'
+import { useDashboardStore } from '@/stores/dashboard'
 import type { Material } from '@/types'
 
 interface FileItem {
@@ -32,7 +32,7 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
-const dashboard = useDashboard()
+const dashboard = useDashboardStore()
 
 const items = computed<FileItem[]>(() => [
   { name: t('UU0005'), url: props.material.u3m.zipUrl, format: 'zipUrl' },

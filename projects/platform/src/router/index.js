@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import { useNotifyStore } from '@/stores/notify'
+import { useDashboardStore } from '@/stores/dashboard'
 import { ROLE_ID, NODE_TYPE } from '@/utils/constants'
 import Sidebar from '@/components/sidebar/Sidebar.vue'
 import i18n from '@/utils/i18n'
@@ -31,7 +32,7 @@ const checkOrgIsInactive = (to, from, next) => {
 
 const reuseRoutes = (prefix) => [
   {
-    path: 'management/:tab(about|members|history)',
+    path: 'management/:tab(about|members|history|dashboard)',
     name: `${prefix}Management`,
     component: () => import('@/views/innerApp/Management.vue'),
   },
@@ -180,7 +181,8 @@ const routes = [
       store.dispatch('code/getFilterOptions')
       await store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey })
       const share = store.getters['receivedShare/share']
-      store.dispatch('dashboard/createReceivePageLog', { sharingKey })
+      const dashboard = useDashboardStore()
+      dashboard.createReceivePageLog({ sharingKey })
       const nodeKey = `${share.workspaceNodeLocation}-${share.workspaceNodeId}`
       if (share.workspaceNodeType === NODE_TYPE.COLLECTION) {
         next(`/received-share/${sharingKey}/${nodeKey}`)
@@ -228,7 +230,8 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       const sharingKey = to.params.sharingKey
       await store.dispatch('embed/getEmbedInfo', { sharingKey })
-      store.dispatch('dashboard/createEmbedPageLog', { sharingKey })
+      const dashboard = useDashboardStore()
+      dashboard.createEmbedPageLog({ sharingKey })
       next()
     },
     children: [

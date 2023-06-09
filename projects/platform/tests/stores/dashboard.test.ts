@@ -1,6 +1,7 @@
-import useDashboard from '@/composables/useDashboard'
+import { setActivePinia, createPinia } from 'pinia'
 import { useRoute } from 'vue-router'
 import dashboardApi from '@/apis/dashboard'
+import { useDashboardStore } from '@/stores/dashboard'
 import { FROM_LOCATION_TYPE } from '@/types'
 import { CATEGORY } from '@/types'
 import type { Mock } from 'vitest'
@@ -31,6 +32,13 @@ vi.mock('@/apis/dashboard', async () => {
 })
 
 describe('useDashboard', () => {
+  beforeEach(() => {
+    // creates a fresh pinia and make it active so it's automatically picked
+    // up by any useStore() call without having to pass it to it:
+    // `useStore(pinia)`
+    setActivePinia(createPinia())
+  })
+
   afterEach(() => {
     vi.restoreAllMocks()
   })
@@ -141,8 +149,8 @@ describe('useDashboard', () => {
     ) => {
       it(testName, async () => {
         ;(useRoute as Mock).mockReturnValue({ path: args.path })
-        const { createViewerLog } = useDashboard()
-        await createViewerLog(args.materialId)
+        const dashboard = useDashboardStore()
+        await dashboard.createViewerLog(args.materialId)
 
         expect(dashboardApi.createViewerLog).toHaveBeenCalledTimes(1)
         expect(dashboardApi.createViewerLog).toHaveBeenCalledWith({
@@ -173,8 +181,8 @@ describe('useDashboard', () => {
     ) => {
       it(testName, async () => {
         ;(useRoute as Mock).mockReturnValue({ path: args.path })
-        const { createDownloadLog } = useDashboard()
-        await createDownloadLog(args.materialId, args.selectedFormat)
+        const dashboard = useDashboardStore()
+        await dashboard.createDownloadLog(args.materialId, args.selectedFormat)
 
         expect(dashboardApi.createDownloadLog).toHaveBeenCalledTimes(1)
         expect(dashboardApi.createDownloadLog).toHaveBeenCalledWith({
@@ -354,8 +362,8 @@ describe('useDashboard', () => {
       const sharingKey = 'ab1234'
       const expectedRequest = { sharingKey }
 
-      const { createEmbedPageLog } = useDashboard()
-      await createEmbedPageLog(sharingKey)
+      const dashboard = useDashboardStore()
+      await dashboard.createEmbedPageLog(sharingKey)
 
       expect(dashboardApi.createEmbedPageLog).toHaveBeenCalledTimes(1)
       expect(dashboardApi.createEmbedPageLog).toHaveBeenCalledWith(
@@ -369,8 +377,8 @@ describe('useDashboard', () => {
       const sharingKey = 'ab1234'
       const expectedRequest = { sharingKey }
 
-      const { createReceivePageLog } = useDashboard()
-      await createReceivePageLog(sharingKey)
+      const dashboard = useDashboardStore()
+      await dashboard.createReceivePageLog(sharingKey)
 
       expect(dashboardApi.createReceivePageLog).toHaveBeenCalledTimes(1)
       expect(dashboardApi.createReceivePageLog).toHaveBeenCalledWith(

@@ -1,13 +1,13 @@
 import { ref, unref } from 'vue'
 import { useStore } from 'vuex'
 import { U3M_STATUS } from '@/utils/constants'
-import useDashboard from '@/composables/useDashboard'
+import { useDashboardStore } from '@/stores/dashboard'
 import type { Ref } from 'vue'
 import type { Material } from '@/types'
 
 const useModelEditor = (material: Ref<Material> | Material) => {
   const store = useStore()
-  const dashboard = useDashboard()
+  const dashboard = useDashboardStore()
   const isOpen = ref(false)
 
   const closeModalModelEditor = () => {

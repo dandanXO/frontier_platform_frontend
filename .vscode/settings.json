@@ -13,6 +13,7 @@
     "closeable",
     "composables",
     "dragmove",
+    "echarts",
     "gltf",
     "hideeye",
     "imread",

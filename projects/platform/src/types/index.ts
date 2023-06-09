@@ -125,25 +125,6 @@ export interface Dimension {
   cm: { width: Decimal; height: Decimal }
 }
 
-export interface DownloadLogPayload {
-  materialId: number
-  category: CATEGORY
-  fromLocationType: FROM_LOCATION_TYPE
-}
-
-export interface EmbedPageLogPayload {
-  sharingKey: string
-}
-
-export interface ReceivePageLogPayload {
-  sharingKey: string
-}
-
-export interface ViewerLogPayload {
-  materialId: number
-  fromLocationType: FROM_LOCATION_TYPE
-}
-
 export interface WorkflowStageRenamePayload {
   workflowStageId: number
   workflowStageName: string
