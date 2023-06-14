@@ -1,4 +1,5 @@
 import type { CROP_MODE, U3M_CUT_SIDE } from '@/utils/constants'
+import type { WorkflowStage } from '@frontier/platform-web-sdk'
 import type Decimal from 'decimal.js'
 
 export interface Material {
@@ -125,6 +126,11 @@ export interface Dimension {
   cm: { width: Decimal; height: Decimal }
 }
 
+export interface WorkflowStageCreatePayload {
+  workflowStageName: string
+  digitalThreadList: DigitalThreadBase[]
+}
+
 export interface WorkflowStageRenamePayload {
   workflowStageId: number
   workflowStageName: string
@@ -139,4 +145,11 @@ export interface WorkflowStageMenuItem {
   id: number
   name: string
   isDefault: boolean
+}
+
+export type WorkflowStageId = number | 'creatingWorkflowStage'
+
+export interface CreatingGhostWorkflowStage
+  extends Omit<WorkflowStage, 'workflowStageId'> {
+  workflowStageId: 'creatingWorkflowStage'
 }

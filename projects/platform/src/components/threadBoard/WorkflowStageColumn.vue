@@ -5,7 +5,17 @@ div
     class="w-82.5 flex-shrink-0 h-full max-h-full rounded-md flex flex-col overflow-hidden bg-grey-100"
     :class="[{ 'bg-primary-0 outline-primary-300 outline outline-1 -outline-offset-1': active }]"
   )
-    div(class="p-2")
+    div(v-if="isEditingName" class="p-4 flex flex-col gap-2")
+      f-input-text(:placeholder="$t('TT0148')" v-model:textValue="currentName")
+      div(class="flex flex-row gap-2")
+        f-button(
+          size="md"
+          type="primary"
+          :disabled="!isNameValid"
+          @click="handleSaveEdit"
+        ) {{ $t('UU0018') }}
+        f-button(size="md" type="text" @click="doneEdit") {{ $t('UU0002') }}
+    div(v-else class="p-2")
       div(class="flex-shrink-0 h-8 pl-3 flex flex-row justify-between items-center")
         div(class="handle flex-1 flex flex-row gap-2 items-center")
           div(class="flex-1 flex flex-row items-center gap-3")
@@ -87,11 +97,11 @@ import type {
 } from '@/types'
 import useThreadBoardStore from '@/stores/threadBoard'
 import useCurrentUnit from '@/composables/useCurrentUnit'
+import useNameEditor from '@/composables/useNameEditor'
 
 const emit = defineEmits<{
   (e: 'workflowStageCollapse'): void
   (e: 'workflowStageHide', id: number): void
-  (e: 'workflowStageRename', v: WorkflowStageRenamePayload): void
   (e: 'workflowStageRename', v: WorkflowStageRenamePayload): void
   (
     e: 'workflowStageMoveAllThreads',
@@ -117,6 +127,10 @@ const threadBoardStore = useThreadBoardStore()
 const { t } = useI18n()
 const { unit } = useCurrentUnit()
 
+const workflowStageName = computed(() => props.workflowStage.workflowStageName)
+const { isEditingName, currentName, isNameValid, startEdit, doneEdit } =
+  useNameEditor(workflowStageName)
+
 const scrollContainer = ref<InstanceType<typeof FScrollbarContainer>>()
 const showUpperBound = ref(false)
 const showBottomBound = ref(false)
@@ -133,6 +147,17 @@ const menuTree = computed(() => ({
   width: 'w-66',
   blockList: (() => {
     const blockList = []
+    const renameBlock = {
+      menuList: [
+        {
+          title: t('TT0151'),
+          icon: 'create',
+          disabled: props.workflowStage.isDefault,
+          clickHandler: startEdit,
+        },
+      ],
+    }
+
     const moveAllDisabled = props.workflowStage.digitalThreadList.length <= 0
     const mapToMenuTreeItem = (w: WorkflowStageMenuItem) => {
       const disabled = w.id === props.workflowStage.workflowStageId
@@ -150,6 +175,7 @@ const menuTree = computed(() => ({
         mouseLeaveHandler: () => emit('workflowStageMenuMouseLeave', w.id),
       }
     }
+
     const moveAllThreadsBlock = {
       menuList: [
         {
@@ -209,8 +235,10 @@ const menuTree = computed(() => ({
     }
 
     blockList.push(moveAllThreadsBlock)
-
-    if (threadBoardStore.haveHideShowWorkflowStagePermission) {
+    if (threadBoardStore.haveEditWorkflowStagePermission) {
+      blockList.push(renameBlock)
+    }
+    if (showDeleteBlock.menuList.length > 0) {
       blockList.push(showDeleteBlock)
     }
 
@@ -229,6 +257,14 @@ const handleScroll = (scrollInfo: overlayscrollbars.ScrollInfo) => {
   } else {
     showBottomBound.value = false
   }
+}
+
+const handleSaveEdit = () => {
+  emit('workflowStageRename', {
+    workflowStageId: props.workflowStage.workflowStageId,
+    workflowStageName: currentName.value,
+  })
+  doneEdit()
 }
 </script>
 

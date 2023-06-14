@@ -2,7 +2,9 @@ import { computed, reactive, ref, nextTick, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { defineStore } from 'pinia'
+import axios from 'axios'
 import debounce from 'debounce'
+import { clone } from 'ramda'
 import {
   ThreadBoardQuerySortByEnum,
   type ThreadBoardQuery,
@@ -15,6 +17,8 @@ import {
   type HideWorkflowStageRequest,
   type CheckCanDeleteWorkflowStageRequest,
   type ReadAllUnreadDigitalThreadRequest,
+  type CreateWorkflowStageRequest,
+  type RenameWorkflowStageRequest,
   type MoveWorkflowStageAllDigitalThreadRequest,
   type MoveWorkflowStageDigitalThreadRequest,
 } from '@frontier/platform-web-sdk'
@@ -25,8 +29,11 @@ import useCurrentUnit from '@/composables/useCurrentUnit'
 import useGotoMaterialDetail from '@/composables/useGotoMaterialDetail'
 import usePermission from '@/composables/usePermission'
 import { FUNC_ID, NOTIFY_TYPE } from '@/utils/constants'
-import axios from 'axios'
-import type { WorkflowStageMoveAllThreadsPayload } from '@/types'
+import type {
+  WorkflowStageRenamePayload,
+  WorkflowStageMoveAllThreadsPayload,
+  CreatingGhostWorkflowStage,
+} from '@/types'
 
 const defaultFilter = (): ThreadBoardQueryFilter => ({
   createdBy: {
@@ -62,7 +69,16 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const isActive = ref(false)
   const isFirstThreadBoardFetch = ref(true)
   const activeThreadSideId = ref<number | null>(null)
+  const rawWorkflowStageList = ref<WorkflowStage[]>()
   const workflowStageList = ref<WorkflowStage[]>()
+
+  const isCreatingWorkflowStage = ref(false)
+  const creatingWorkflowStageName = ref<string | null>(null)
+  const creatingWorkflowStageThreadList = ref<DigitalThreadBase[]>([])
+  const creatingGhostWorkflowStage = ref<CreatingGhostWorkflowStage | null>(
+    null
+  )
+
   const loading = ref(true)
   const isDefaultWorkflowStageExpanded = ref(true)
   const isHiddenWorkflowListExpanded = ref(false)
@@ -70,6 +86,14 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const searchText = ref<string>('')
   const mostParticipantId = ref<number>()
   const participantFilterIdList = ref<number[]>([])
+
+  const haveCreateWorkflowStagePermission = computed(() =>
+    permissionList.value.includes(FUNC_ID.CREATE_WORKFLOW_STAGE)
+  )
+
+  const haveEditWorkflowStagePermission = computed(() =>
+    permissionList.value.includes(FUNC_ID.EDIT_WORKFLOW_STAGE)
+  )
 
   const haveMoveWorkflowStagePermission = computed(() =>
     permissionList.value.includes(FUNC_ID.MOVE_WORKFLOW_STAGE)
@@ -350,6 +374,13 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       ? a.createDate - b.createDate
       : b.createDate - a.createDate
 
+  const sortCreatingWorkflowStage = () => {
+    if (threadBoardQuery.sortBy !== ThreadBoardQuerySortByEnum.CUSTOM) {
+      creatingWorkflowStageThreadList.value =
+        creatingWorkflowStageThreadList.value.sort(workflowStageSortCompare)
+    }
+  }
+
   const sortWorkflowStageById = (workflowStageId: number) => {
     if (threadBoardQuery.sortBy === ThreadBoardQuerySortByEnum.CUSTOM) {
       return
@@ -415,7 +446,19 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       const res = await threadBoardApi.getThreadBoard(threadBoardReq, {
         signal: fetchThreadBoardAbortController.value.signal,
       })
-      workflowStageList.value = res.data.result!.threadBoard.workflowStageList
+      rawWorkflowStageList.value =
+        res.data.result!.threadBoard.workflowStageList
+      workflowStageList.value = clone(rawWorkflowStageList.value).map(
+        (workflowStage) => {
+          workflowStage.digitalThreadList =
+            workflowStage.digitalThreadList.filter((thread) => {
+              return !creatingWorkflowStageThreadList.value
+                .map((t) => t.digitalThreadSideId)
+                .includes(thread.digitalThreadSideId)
+            })
+          return workflowStage
+        }
+      )
       setLoading(false)
       fetchThreadBoardAbortController.value = null
     } catch (e) {
@@ -424,6 +467,82 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
         setLoading(false)
       }
     }
+  }
+
+  const cancelCreateWorkflowStage = () => {
+    if (creatingWorkflowStageThreadList.value.length > 0) {
+      workflowStageList.value = clone(rawWorkflowStageList.value)
+    }
+
+    isCreatingWorkflowStage.value = false
+    creatingWorkflowStageName.value = null
+    creatingWorkflowStageThreadList.value = []
+  }
+
+  const createWorkflowStage = async () => {
+    if (!workflowStageList.value) {
+      throw new Error('workflowStageList undefined')
+    }
+
+    const req: CreateWorkflowStageRequest = {
+      ...baseReq.value,
+      workflowStageName: creatingWorkflowStageName.value || '',
+      digitalThreadSideIdList: creatingWorkflowStageThreadList.value.map(
+        (t) => t.digitalThreadSideId
+      ),
+    }
+
+    creatingGhostWorkflowStage.value = {
+      workflowStageId: 'creatingWorkflowStage',
+      workflowStageName: creatingWorkflowStageName.value || '',
+      canDelete: false,
+      canHide: false,
+      isDefault: false,
+      isHidden: false,
+      digitalThreadList: creatingWorkflowStageThreadList.value,
+    }
+
+    isCreatingWorkflowStage.value = false
+    creatingWorkflowStageName.value = null
+    creatingWorkflowStageThreadList.value = []
+
+    setLoading(true)
+    try {
+      await threadBoardApi.createWorkflowStage(req)
+      await getThreadBoard()
+      notify.showNotifySnackbar({
+        isShowSnackbar: true,
+        messageText: t('WW0129'),
+      })
+    } finally {
+      creatingGhostWorkflowStage.value = null
+      setLoading(false)
+    }
+  }
+
+  const renameWorkflowStage = async (v: WorkflowStageRenamePayload) => {
+    if (!workflowStageList.value) {
+      throw new Error('workflowStageList undefined')
+    }
+
+    const targetIndex = workflowStageList.value.findIndex(
+      (w) => w.workflowStageId === v.workflowStageId
+    )
+    if (targetIndex < 0) throw new Error('rename target not exist')
+    workflowStageList.value[targetIndex].workflowStageName = v.workflowStageName
+
+    const req: RenameWorkflowStageRequest = {
+      orgId: baseReq.value.orgId,
+      workflowStageId: v.workflowStageId,
+      workflowStageName: v.workflowStageName,
+    }
+    await threadBoardApi.renameWorkflowStage(req)
+    getThreadBoard()
+
+    notify.showNotifySnackbar({
+      isShowSnackbar: true,
+      messageText: t('WW0130'),
+    })
   }
 
   const openMaterialDetail = async (
@@ -826,9 +945,18 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     }
   })
 
+  watch(
+    () => threadBoardQuery.sortBy,
+    () => {
+      sortCreatingWorkflowStage()
+    }
+  )
+
   return {
     isActive,
     loading,
+    haveCreateWorkflowStagePermission,
+    haveEditWorkflowStagePermission,
     haveMoveWorkflowStagePermission,
     haveHideShowWorkflowStagePermission,
     haveDeleteWorkflowStagePermission,
@@ -854,6 +982,11 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     defaultWorkflowStageThreadList,
     draggableWorkflowStageList,
     hiddenWorkflowStageList,
+    isCreatingWorkflowStage,
+    creatingWorkflowStageName,
+    creatingWorkflowStageThreadList,
+    creatingGhostWorkflowStage,
+    sortCreatingWorkflowStage,
     init,
     cleanUp,
     updateQuery,
@@ -874,6 +1007,9 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     isThreadCardActive,
     activateThreadCard,
     deactivateThreadCard,
+    cancelCreateWorkflowStage,
+    createWorkflowStage,
+    renameWorkflowStage,
     moveWorkflowStageList,
     moveWorkflowStageDigitalThread,
     moveWorkflowStageAllThreads,
