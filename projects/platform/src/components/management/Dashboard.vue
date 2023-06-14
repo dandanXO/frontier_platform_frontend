@@ -62,7 +62,7 @@ div(
                 f-button-label(
                   :active="ecoType === key"
                   @click="ecoType = key"
-                ) {{ type.name }}
+                ) {{ type.name }} {{ type.unit }}
             div(class="w-px h-[15px] bg-grey-400")
             f-tooltip-standard(
               :tooltipMessage="'Subscribe to Eco-Impactor to unlock this feature'"
@@ -189,7 +189,8 @@ const getBarChartBaseOption = (
   titleText: string,
   legendData: string[],
   xAxisData: string[],
-  xAxisLabelWidth: number
+  xAxisLabelWidth: number,
+  xAxisLabelOverflow: string
 ) => ({
   title: {
     text: titleText,
@@ -210,6 +211,9 @@ const getBarChartBaseOption = (
     bottom: 0,
     left: 12,
   },
+  grid: {
+    containLabel: true,
+  },
   xAxis: {
     type: 'category',
     data: xAxisData,
@@ -221,7 +225,7 @@ const getBarChartBaseOption = (
     axisLabel: {
       width: xAxisLabelWidth,
       interval: 0,
-      overflow: 'break',
+      overflow: xAxisLabelOverflow,
       fontSize: 12,
       color: colors.grey[600],
       margin: 12,
@@ -245,6 +249,9 @@ const getBarChartBaseOption = (
         color: colors.grey[150],
       },
     },
+    axisLabel: {
+      fontSize: 10,
+    },
   },
 })
 
@@ -258,7 +265,8 @@ const textureOption = computed(() => {
       t('BB0124'),
       [t('BB0128'), t('BB0129')],
       textureCounts.value.map((data) => data.name),
-      54
+      54,
+      'break'
     ),
     {
       series: [
@@ -318,7 +326,8 @@ const keywordOption = computed(() => {
         (data) => data.name
       ),
       fabricKeywordCounts.value[keywordDate.value].date,
-      148
+      148,
+      'none'
     ),
     {
       series: fabricKeywordCounts.value[keywordDate.value].data.map(
@@ -351,14 +360,17 @@ const ecoTypeList = computed(() => ({
   [ECO_TYPE.GHG]: {
     name: t('BB0131'),
     icon: 'co2',
+    unit: t('RR0276'),
   },
   [ECO_TYPE.WATER]: {
     name: t('BB0132'),
     icon: 'water',
+    unit: t('RR0216'),
   },
   [ECO_TYPE.LAND]: {
     name: t('BB0133'),
     icon: 'land',
+    unit: t('RR0218'),
   },
 }))
 const isShowAssetsStatus = ref(false)
