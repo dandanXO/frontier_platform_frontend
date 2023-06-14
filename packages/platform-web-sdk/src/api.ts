@@ -1634,6 +1634,33 @@ export type CreateDownloadLogRequestCategoryEnum = typeof CreateDownloadLogReque
 /**
  * 
  * @export
+ * @interface CreateStickerTagFilterLogRequest
+ */
+export interface CreateStickerTagFilterLogRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateStickerTagFilterLogRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof CreateStickerTagFilterLogRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof CreateStickerTagFilterLogRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
  * @interface CreateViewerLogRequest
  */
 export interface CreateViewerLogRequest {
@@ -22255,6 +22282,44 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
+         * 
+         * @summary 新增篩選StickerTag記錄
+         * @param {CreateStickerTagFilterLogRequest} [createStickerTagFilterLogRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createStickerTagFilterLog: async (createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/dashboard/sticker-tag-filter-log/create`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createStickerTagFilterLogRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 可在使用者未登入狀態下紀錄
          * @summary 新增3DViewer執行記錄
          * @param {CreateViewerLogRequest} [createViewerLogRequest] 
@@ -22374,6 +22439,17 @@ export const DashboardApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * 
+         * @summary 新增篩選StickerTag記錄
+         * @param {CreateStickerTagFilterLogRequest} [createStickerTagFilterLogRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createStickerTagFilterLog(createStickerTagFilterLogRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * 可在使用者未登入狀態下紀錄
          * @summary 新增3DViewer執行記錄
          * @param {CreateViewerLogRequest} [createViewerLogRequest] 
@@ -22434,6 +22510,16 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          */
         createReceivePageLog(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
             return localVarFp.createReceivePageLog(shareGetReceivedPostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 新增篩選StickerTag記錄
+         * @param {CreateStickerTagFilterLogRequest} [createStickerTagFilterLogRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.createStickerTagFilterLog(createStickerTagFilterLogRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 可在使用者未登入狀態下紀錄
@@ -22499,6 +22585,18 @@ export class DashboardApi extends BaseAPI {
      */
     public createReceivePageLog(shareGetReceivedPostRequest?: ShareGetReceivedPostRequest, options?: AxiosRequestConfig) {
         return DashboardApiFp(this.configuration).createReceivePageLog(shareGetReceivedPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 新增篩選StickerTag記錄
+     * @param {CreateStickerTagFilterLogRequest} [createStickerTagFilterLogRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DashboardApi
+     */
+    public createStickerTagFilterLog(createStickerTagFilterLogRequest?: CreateStickerTagFilterLogRequest, options?: AxiosRequestConfig) {
+        return DashboardApiFp(this.configuration).createStickerTagFilterLog(createStickerTagFilterLogRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

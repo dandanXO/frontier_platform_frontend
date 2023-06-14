@@ -383,9 +383,11 @@ import useNavigation from '@/composables/useNavigation'
 import useGotoThreadBoard from '@/composables/useGotoThreadBoard'
 import useThreadBoardStore from '@/stores/threadBoard'
 import useDigitalThreadWorkflowStageStore from '@/stores/digitalThreadWorkflowStage'
+import { useDashboardStore } from '@/stores/dashboard'
 
 const store = useStore()
 const threadBoardStore = useThreadBoardStore()
+const dashboard = useDashboardStore()
 const { t } = useI18n()
 const router = useRouter()
 const { parsePath } = useNavigation()
@@ -491,6 +493,7 @@ const openDigitalThread = async (digitalThread, index) => {
   setIsAddingSticker(false)
   store.commit('sticker/SET_indexOfDrawerDigitalThread', index)
   store.commit('sticker/RESET_filter')
+  store.commit('sticker/SET_isCurrentThreadFilterTagListToggled', false)
   const digitalThreadSideId = digitalThread.digitalThreadSideId
   if (digitalThreadSideId === null) {
     // 避免 isChangingDigitalThread 太快被切換回 false 導致 watch handler 被處執行
@@ -517,6 +520,10 @@ const isFilterDirty = computed(() => store.getters['sticker/isFilterDirty'])
 const isAdvanceFilterDirty = computed(
   () => store.getters['sticker/isAdvanceFilterDirty']
 )
+const isCurrentThreadFilterTagListToggled = computed(
+  () => store.getters['sticker/isCurrentThreadFilterTagListToggled']
+)
+
 watch(
   () => filter.value,
   () => {
@@ -573,13 +580,12 @@ const displayTagList = computed(() => {
 
   return tagList.slice(0, Math.max(10, amountOfSelect))
 })
+
 const toggleTagList = (selectTag) => {
-  const index = filter.value.tagList.findIndex((tag) => tag === selectTag)
-  if (!~index) {
-    filter.value.tagList.push(selectTag)
-  } else {
-    filter.value.tagList.splice(index, 1)
+  if (!isCurrentThreadFilterTagListToggled.value) {
+    dashboard.createStickerTagFilterLog()
   }
+  store.dispatch('sticker/toggleFilterTagList', selectTag)
 }
 
 const goToMaterialDetail = (openNewPage = false) => {

@@ -1,8 +1,6 @@
-import { defineStore } from 'pinia'
-import dashboardApi from '@/apis/dashboard'
-import { CATEGORY, FROM_LOCATION_TYPE } from '@/types'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import useCurrentUnit from '@/composables/useCurrentUnit'
+import { defineStore } from 'pinia'
 import type {
   Dashboard,
   DashboardCreateCounts,
@@ -10,7 +8,9 @@ import type {
   DashboardFabricKeywordCounts,
   DashboardEcoImpactorInformation,
 } from '@frontier/platform-web-sdk'
-import { ref } from 'vue'
+import dashboardApi from '@/apis/dashboard'
+import { CATEGORY, FROM_LOCATION_TYPE } from '@/types'
+import useCurrentUnit from '@/composables/useCurrentUnit'
 
 export const useDashboardStore = defineStore('dashboard', () => {
   // Management - Dashboard Page
@@ -21,12 +21,15 @@ export const useDashboardStore = defineStore('dashboard', () => {
   const fabricKeywordCounts = ref<DashboardFabricKeywordCounts>()
   const ecoImpactorInformation = ref<DashboardEcoImpactorInformation>()
 
+  const getBasedReq = () => ({
+    orgId: unit.value.orgId,
+    ogId: unit.value.ogId,
+    ogType: unit.value.ogType,
+  })
+
   const getDashboard = async () => {
-    const { data } = await dashboardApi.getDashboard({
-      orgId: unit.value.orgId,
-      ogId: unit.value.ogId,
-      ogType: unit.value.ogType,
-    })
+    const req = getBasedReq()
+    const { data } = await dashboardApi.getDashboard(req)
 
     const dashboard = data.result as Dashboard
     createCounts.value = dashboard.createCounts
@@ -94,6 +97,11 @@ export const useDashboardStore = defineStore('dashboard', () => {
       fromLocationType: getLocationType(),
     })
 
+  const createStickerTagFilterLog = async () => {
+    const req = getBasedReq()
+    await dashboardApi.createStickerTagFilterLog(req)
+  }
+
   return {
     getDashboard,
     createCounts,
@@ -104,5 +112,6 @@ export const useDashboardStore = defineStore('dashboard', () => {
     createDownloadLog,
     createReceivePageLog,
     createEmbedPageLog,
+    createStickerTagFilterLog,
   }
 })

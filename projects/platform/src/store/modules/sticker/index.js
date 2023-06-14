@@ -82,6 +82,10 @@ export default {
     sourceTagList: [], // 該 unit 下曾經添加過哪些 tag
     mentionMemberList: [], // 可以 mention 的 成員清單
     filter: defaultFilter(),
+    /**
+     * 用來決定是否要發出 dashboard API 記錄使用者點擊 filter tag 的行為，同一 Thread 僅在第一次點擊時發出。
+     */
+    isCurrentThreadFilterTagListToggled: false,
   }),
   getters: {
     tempCreatingStickerIdList: (state) => state.tempCreatingStickerIdList,
@@ -115,6 +119,8 @@ export default {
         }
       )
     },
+    isCurrentThreadFilterTagListToggled: (state) =>
+      state.isCurrentThreadFilterTagListToggled,
   },
   mutations: {
     SET_isStickerDrawerOpen(state, isStickerDrawerOpen) {
@@ -188,6 +194,13 @@ export default {
     },
     SET_TEMP_CREATE_STICKER_ID_LIST(state, tempCreatingStickerIdList) {
       state.tempCreatingStickerIdList = tempCreatingStickerIdList
+    },
+    SET_isCurrentThreadFilterTagListToggled(
+      state,
+      isCurrentThreadFilterTagListToggled
+    ) {
+      state.isCurrentThreadFilterTagListToggled =
+        isCurrentThreadFilterTagListToggled
     },
   },
   actions: {
@@ -281,6 +294,7 @@ export default {
       commit('RESET_tempDigitalThreadList')
       commit('RESET_filter')
       commit('SET_currentMaterialId', null)
+      commit('SET_isCurrentThreadFilterTagListToggled', false)
     },
     async closeStickerDrawer({ commit, getters, dispatch }) {
       if (!getters.isStickerDrawerOpen) {
@@ -577,6 +591,17 @@ export default {
         'SET_TEMP_CREATE_STICKER_ID_LIST',
         tempCreatingStickerIdList.filter((id) => id !== tempCreatingStickerId)
       )
+    },
+    async toggleFilterTagList({ getters, commit }, selectTag) {
+      const { filter } = getters
+      const { tagList } = filter
+      commit('SET_filter', {
+        ...filter,
+        tagList: tagList.includes(selectTag)
+          ? tagList.filter((t) => t !== selectTag)
+          : [...tagList, selectTag],
+      })
+      commit('SET_isCurrentThreadFilterTagListToggled', true)
     },
   },
 }
