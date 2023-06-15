@@ -10,8 +10,8 @@ div(
   template(v-else)
     div(:style="{ padding: `0 ${PADDING_X_FOR_SHADOW / 2}px` }")
       f-infobar(:messageText="$t('BB0115')")
-    div(:style="{ padding: `0 ${PADDING_X_FOR_SHADOW / 2}px` }")
-      div(class="w-full h-40 pt-5 pb-9 border border-grey-100 rounded shadow-4")
+    div(:style="{ padding: `0 ${PADDING_X_FOR_SHADOW / 2}px` }" class="w-285 box-content")
+      div(class="h-40 pt-5 pb-9 border border-grey-100 rounded shadow-4")
         p(class="text-body1 font-bold text-grey-900 pl-5 pb-6") {{ $t('RR0246') }}
         div(class="flex items-center justify-center gap-x-15")
           div(
@@ -28,7 +28,7 @@ div(
                 span(class="text-caption/1.6 text-grey-600 pl-1") {{ item.unit }}
     div(
       :style="{ padding: `0 ${PADDING_X_FOR_SHADOW / 2}px` }"
-      class="overflow-x-auto overflow-y-hidden flex flex-col gap-y-5"
+      class="flex flex-col gap-y-5 w-285 box-content"
     )
       div(class="flex items-center gap-x-5")
         div(class="min-w-91.5 h-80 bg-grey-0 py-5 border border-grey-100 rounded shadow-4")
@@ -46,9 +46,7 @@ div(
               @click="keywordDate = KEYWORD_DATE.LAST_3_MONTH"
             ) {{ t('BB0127') }}
           v-chart(class="w-full h-69.5" :option="keywordOption")
-      div(
-        class="min-w-285 h-80 bg-grey-0 pt-4 border border-grey-100 rounded shadow-4 mb-2.5"
-      )
+      div(class="h-80 bg-grey-0 pt-4 border border-grey-100 rounded shadow-4 mb-2.5")
         div(class="px-5 flex items-center justify-between")
           p(class="text-body1 font-bold text-grey-900") {{ t('BB0130') }}
           div(class="flex items-center gap-x-4")
