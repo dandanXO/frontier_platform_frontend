@@ -62,7 +62,7 @@ div(
                 f-button-label(
                   :active="ecoType === key"
                   @click="ecoType = key"
-                ) {{ type.name }} {{ type.unit }}
+                ) {{ type.name }} ({{ type.unit }})
             div(class="w-px h-[15px] bg-grey-400")
             f-tooltip-standard(
               :tooltipMessage="'Subscribe to Eco-Impactor to unlock this feature'"
@@ -199,6 +199,7 @@ const getBarChartBaseOption = (
       fontWeight: 700,
       fontSize: 16,
       color: colors.grey[900],
+      fontFamily: 'Noto Sans TC',
     },
   },
   tooltip: {
@@ -251,6 +252,7 @@ const getBarChartBaseOption = (
     },
     axisLabel: {
       fontSize: 10,
+      color: colors.grey[600],
     },
   },
 })
@@ -417,7 +419,7 @@ const ecoOption = computed(() => {
       nameLocation: 'middle',
       nameTextStyle: {
         fontSize: 12,
-        color: colors.grey[900],
+        color: colors.grey[600],
       },
       axisLabel: {
         show: false,
@@ -437,6 +439,9 @@ const ecoOption = computed(() => {
         lineStyle: {
           color: colors.grey[150],
         },
+      },
+      axisLabel: {
+        color: colors.grey[600],
       },
     },
     series: [
