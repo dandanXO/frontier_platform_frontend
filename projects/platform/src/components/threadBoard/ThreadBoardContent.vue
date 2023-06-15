@@ -132,7 +132,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
       template(#content="{ scrollContainer }")
         div(
           class="relative bg-grey-100 h-full rounded flex flex-col items-center"
-          :class="activeWorkflowStageId === 'creatingWorkflowStage' ? 'border border-primary-300 bg-primary-0' : ''"
+          :class="activeWorkflowStageId === 'creatingWorkflowStage' ? 'border border-primary-300 bg-primary-50' : ''"
         )
           p(
             v-if="creatingWorkflowStageThreadList.length === 0"
@@ -288,7 +288,7 @@ const defaultWorkflowStageWrapperClass = computed(() => {
 
   const baseClass = ['pl-2 ']
   if (isDefaultWorkflowStageHaveUnreadThread.value) {
-    baseClass.push('bg-primary-0 hover:bg-primary-0')
+    baseClass.push('bg-primary-50 hover:bg-primary-50')
   } else {
     baseClass.push('hover:bg-grey-150')
   }

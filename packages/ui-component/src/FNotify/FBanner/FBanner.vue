@@ -74,7 +74,7 @@ const getContainerColor = computed(() => {
     case NOTIFY_TYPE.INFO:
       return 'bg-cyan-0'
     case NOTIFY_TYPE.SUCCESS:
-      return 'bg-primary-0'
+      return 'bg-primary-50'
     case NOTIFY_TYPE.WARNING:
       return 'bg-yellow-0'
     case NOTIFY_TYPE.ALERT:

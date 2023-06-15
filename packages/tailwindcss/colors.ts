@@ -66,7 +66,8 @@ export interface Colors {
     300: '#3EC39B'
     200: '#71DABB'
     100: '#CFF6EB'
-    0: '#E9F8F3'
+    50: '#E9F8F3'
+    0: '#F4FBF9'
   }
   brown: {
     800: '#402816'

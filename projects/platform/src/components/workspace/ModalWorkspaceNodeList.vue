@@ -77,7 +77,7 @@ modal-behavior(
               :isMultiSelect="isMultiSelect"
               :selectValue="item"
               class="w-25 h-25 border rounded-md overflow-hidden"
-              :class="[isMultiSelect && selectedValue.map((v) => JSON.stringify(v)).includes(JSON.stringify(item)) ? 'border-primary-400 bg-primary-0 text-primary-400' : 'border-grey-250 bg-grey-50 text-grey-900']"
+              :class="[isMultiSelect && selectedValue.map((v) => JSON.stringify(v)).includes(JSON.stringify(item)) ? 'border-primary-400 bg-primary-50 text-primary-400' : 'border-grey-250 bg-grey-50 text-grey-900']"
               @click="goTo(item.nodeKey), setRootId(item.id)"
             )
               template(#content)

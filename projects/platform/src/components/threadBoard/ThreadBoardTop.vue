@@ -31,7 +31,7 @@ div(class="h-13 flex-shrink-0 px-7.5 border-b border-grey-150")
       ) {{ $t('TT0162') }}
       button(
         class="px-2.5 h-6 rounded-[20px] flex justify-center items-center gap-x-1.5 outline-none"
-        :class="[threadBoardQuery.onlyShowUnread ? 'bg-primary-0' : 'bg-grey-100']"
+        :class="[threadBoardQuery.onlyShowUnread ? 'bg-primary-50' : 'bg-grey-100']"
         @click="handleUnreadButtonClick"
       )
         span(

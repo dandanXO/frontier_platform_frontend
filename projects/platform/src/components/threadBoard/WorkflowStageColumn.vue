@@ -3,7 +3,7 @@ div
   div(
     v-show="isExpanded"
     class="w-82.5 flex-shrink-0 h-full max-h-full rounded-md flex flex-col overflow-hidden bg-grey-100"
-    :class="[{ 'bg-primary-0 outline-primary-300 outline outline-1 -outline-offset-1': active }]"
+    :class="[{ 'bg-primary-50 outline-primary-300 outline outline-1 -outline-offset-1': active }]"
   )
     div(v-if="isEditingName" class="p-4 flex flex-col gap-2")
       f-input-text(:placeholder="$t('TT0148')" v-model:textValue="currentName")

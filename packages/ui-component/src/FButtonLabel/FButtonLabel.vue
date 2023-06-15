@@ -43,7 +43,7 @@ export default {
         return [
           'bg-grey-100',
           'text-grey-900',
-          'enabled:hover:bg-primary-0',
+          'enabled:hover:bg-primary-50',
           'enabled:hover:text-primary-400',
           'disabled:text-grey-250',
         ]
@@ -51,7 +51,7 @@ export default {
         return [
           'bg-grey-700',
           'text-grey-100',
-          'enabled:hover:bg-primary-0',
+          'enabled:hover:bg-primary-50',
           'enabled:hover:text-primary-400',
           'disabled:bg-grey-700',
           'disabled:text-grey-500',
@@ -61,7 +61,7 @@ export default {
       }
     })
 
-    const activeClass = 'bg-primary-0 !text-primary-400'
+    const activeClass = 'bg-primary-50 !text-primary-400'
 
     return {
       btnSize,

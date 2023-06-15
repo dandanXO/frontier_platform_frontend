@@ -33,7 +33,7 @@ const classes = computed(() => {
   ]
 
   if (props.active)
-    baseClass.push('!bg-primary-0', '!border-primary-400', '!text-primary-400')
+    baseClass.push('!bg-primary-50', '!border-primary-400', '!text-primary-400')
 
   return baseClass
 })

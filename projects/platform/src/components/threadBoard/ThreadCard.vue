@@ -73,7 +73,7 @@ div(ref="threadCardRef" :class="containerClass" @click="handleClick")
         )
           div(
             class="w-full h-full flex flex-row items-center justify-center gap-x-2 rounded-sm hover:bg-grey-100"
-            :class="[isExpand ? 'bg-primary-0 border-primary-0 text-primary-400' : 'border-grey-150 text-grey-600']"
+            :class="[isExpand ? 'bg-primary-50 border-primary-50 text-primary-400' : 'border-grey-150 text-grey-600']"
           )
             f-svg-icon(iconName="person" size="20")
             span(class="text-caption font-bold") {{ thread.participantList.length }}
@@ -149,7 +149,7 @@ const containerClass = computed(() => {
     )
   } else if (props.active) {
     baseClass.push(
-      'bg-primary-0 outline-primary-300 outline-1 -outline-offset-1'
+      'bg-primary-50 outline-primary-300 outline-1 -outline-offset-1'
     )
   } else {
     baseClass.push(

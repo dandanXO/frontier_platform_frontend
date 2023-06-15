@@ -132,7 +132,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
         //- isStarred
         button(
           class="px-2.5 h-6 rounded-[20px] flex justify-center items-center gap-x-0.5"
-          :class="[filter.isStarred ? 'bg-primary-0' : 'bg-grey-100']"
+          :class="[filter.isStarred ? 'bg-primary-50' : 'bg-grey-100']"
           @click="!isCreatingDigitalThread && (filter.isStarred = !filter.isStarred)"
         )
           f-svg-icon(
@@ -157,7 +157,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
         )
           template(#trigger="{ isExpand }")
             button(
-              :class="{ 'bg-primary-0': isExpand || isAdvanceFilterDirty }"
+              :class="{ 'bg-primary-50': isExpand || isAdvanceFilterDirty }"
               class="px-2 h-6 rounded-[20px] bg-grey-100 flex items-center"
             )
               f-svg-icon(

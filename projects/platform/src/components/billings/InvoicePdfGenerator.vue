@@ -26,7 +26,7 @@ div
                   div(class="text-body2 text-grey-900 font-bold mt-19.5") {{ $t('OO0128') }} {{ index + 1 }}/{{ serviceItemListByPage.length }}
               div(class="relative")
                 div(
-                  class="flex bg-primary-0 px-8 py-2 text-caption font-bold text-grey-900"
+                  class="flex bg-primary-50 px-8 py-2 text-caption font-bold text-grey-900"
                 )
                   div(style="width: 50%") {{ $t('RR0014') }}
                   div(class="text-center" style="width: 30%") {{ $t('OO0091') }}
@@ -61,7 +61,7 @@ div
                     span {{ invoiceInfo.currency }}${{ calcSubtotal(serviceItemList) }}
                   div(
                     v-if="index + 1 === serviceItemListByPage.length"
-                    class="absolute -right-8 top-14.5 w-60 py-2 px-10 bg-primary-0 text-grey-900 text-body2"
+                    class="absolute -right-8 top-14.5 w-60 py-2 px-10 bg-primary-50 text-grey-900 text-body2"
                   )
                     span(class="font-bold mr-5") {{ $t('OO0034') }}
                     span {{ invoiceInfo.totalPrice }}
