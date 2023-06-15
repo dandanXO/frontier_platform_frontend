@@ -15,8 +15,7 @@ const menuTree = {
           title: 'Menu 1',
         },
         {
-          title: 'Menu 2 (Disabled)',
-          disabled: true,
+          title: 'Menu 2',
         },
         {
           title: 'Menu 3',
@@ -146,9 +145,10 @@ ButtonBottom.args = {
 export const Description = TemplateDefault.bind({})
 const menuTreeDescription = JSON.parse(JSON.stringify(menuTree))
 menuTreeDescription.blockList[0].menuList[0].description = 'description'
+menuTreeDescription.blockList[0].menuList[1].display = 'block'
 menuTreeDescription.blockList[0].menuList[1].description = 'description'
-menuTreeDescription.blockList[0].menuList[2].display = 'block'
-menuTreeDescription.blockList[0].menuList[2].description = 'description'
+menuTreeDescription.blockList[0].menuList[2].description =
+  'looooooooooooooooooooooooooooooooooooooooong description'
 menuTreeDescription.blockList[0].menuList[3].display = 'block'
 menuTreeDescription.blockList[0].menuList[3].description =
   'looooooooooooooooooooooooooooooooooooooooong description'
@@ -519,4 +519,89 @@ export const Combination = TemplateMultiLayerMultiSelect.bind({})
 Combination.args = {
   selectMode: MULTIPLE,
   menuTree: menuCombination,
+}
+
+export const Disabled = TemplateMultiLayerMultiSelect.bind({})
+const menuTreeDisabled = {
+  width: 'w-60',
+  scrollAreaMaxHeight: 'max-h-100',
+  blockList: [
+    {
+      menuList: [
+        {
+          title: 'Menu 1',
+          disabled: true,
+          description: 'description',
+        },
+        {
+          title: 'Menu 2',
+          disabled: true,
+          display: 'block',
+          description: 'description',
+        },
+        {
+          title: 'Menu 3',
+          disabled: true,
+          description:
+            'looooooooooooooooooooooooooooooooooooooooong description',
+        },
+        {
+          title: 'Menu 4',
+          disabled: true,
+          display: 'block',
+          description:
+            'looooooooooooooooooooooooooooooooooooooooong description',
+        },
+        {
+          title: 'Menu 5',
+          disabled: true,
+          icon: 'create',
+        },
+        {
+          title: 'Menu 6',
+          disabled: true,
+          labelColor: '#0F7F73',
+        },
+        {
+          title: 'Menu 7',
+          disabled: true,
+          thumbnail: 'https://picsum.photos/50',
+        },
+        {
+          title: 'Menu ',
+          disabled: true,
+          thumbnail: 'https://picsum.photos/50',
+          blockList: [
+            {
+              menuList: [
+                {
+                  title: 'Menu 2-1',
+                },
+                {
+                  title: 'Menu 2-2',
+                },
+                {
+                  title: 'Menu 2-3',
+                  clickHandler: () => {
+                    console.log('click handler')
+                  },
+                  mouseEnterHandler: () => {
+                    console.log('mouseEnterHandler handler')
+                  },
+                  mouseLeaveHandler: () => {
+                    console.log('mouseLeaveHandler handler')
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}
+
+Disabled.args = {
+  selectMode: MULTIPLE,
+  menuTree: menuTreeDisabled,
 }

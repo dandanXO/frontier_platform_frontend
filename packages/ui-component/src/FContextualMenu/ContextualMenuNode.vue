@@ -17,7 +17,7 @@ div(
     template(#slot:tooltip-trigger)
       //- Checkbox
       div(
-        v-if="!hasNextLevel && !innerMenu.disabled && innerMenu.selectable && selectMode === MULTIPLE"
+        v-if="!hasNextLevel && innerMenu.selectable && selectMode === MULTIPLE"
       )
         f-svg-icon(
           v-if="isSelect"
@@ -41,13 +41,14 @@ div(
           v-if="innerMenu.icon"
           :iconName="innerMenu.icon"
           size="24"
-          class="text-grey-900"
+          :class="[innerMenu.disabled ? 'text-grey-250' : 'text-grey-900']"
         )
         //- Thumbnail
         img(
           v-else-if="innerMenu.thumbnail"
           :src="innerMenu.thumbnail"
           class="w-full h-full rounded-full"
+          :class="{ 'opacity-60': innerMenu.disabled }"
         )
         //- Flag
         img(
@@ -60,6 +61,7 @@ div(
           v-else-if="innerMenu.labelColor"
           :style="{ backgroundColor: innerMenu.labelColor }"
           class="w-3 h-3 rounded-sm"
+          :class="{ 'opacity-60': innerMenu.disabled }"
         )
       div(
         :class="innerMenu.display"
@@ -76,8 +78,8 @@ div(
         p(
           v-if="innerMenu.description"
           ref="refDescription"
-          :class="{ 'pl-2': innerMenu.display === DISPLAY.FLEX, 'pt-0.5': innerMenu.display === DISPLAY.BLOCK }"
-          class="min-w-[40%] text-caption text-grey-600 !leading-1.3 text-ellipsis overflow-hidden break-all"
+          :class="[{ 'pl-2': innerMenu.display === DISPLAY.FLEX, 'pt-0.5': innerMenu.display === DISPLAY.BLOCK }, innerMenu.disabled ? 'text-grey-250' : 'text-grey-600']"
+          class="min-w-[40%] text-caption !leading-1.3 text-ellipsis overflow-hidden break-all"
           :style="{ '-webkit-box-orient': 'vertical', '-webkit-line-clamp': innerMenu.descriptionLineClamp, display: '-webkit-box' }"
           @mouseenter="hoverOn = 'description'"
         ) {{ innerMenu.description }}
@@ -90,7 +92,7 @@ div(
           v-if="hasNextLevel"
           iconName="keyboard_arrow_right"
           size="24"
-          class="text-grey-600"
+          :class="[innerMenu.disabled ? 'text-grey-250' : 'text-grey-600']"
         )
         f-svg-icon(
           v-else-if="selectMode !== MULTIPLE && isSelect"
@@ -132,11 +134,15 @@ div(
       :class="innerMenu.scrollAreaMaxHeight"
       class="overflow-auto overscroll-contain"
     )
-      template(v-for="(block, index) in filteredBlockList")
+      template(
+        v-for="(block, index) in filteredBlockList"
+        :key="`block-${index}`"
+      )
         //- Block Title
         div(v-if="block.blockTitle" class="h-6 py-1.5 px-4 text-caption text-grey-600") {{ block.blockTitle }}
         contextual-menu-node(
           v-for="childMenu in block.menuList"
+          :key="childMenu.title"
           :theme="theme"
           :menu="childMenu"
           @click:menu="$emit('click:menu', $event)"

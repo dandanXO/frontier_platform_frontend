@@ -1,5 +1,5 @@
 const plugin = require('tailwindcss/plugin')
-const colors = require('./colors')
+const colors = require('./colors').default
 
 const spacing = {}
 const marginSpacing = {}
