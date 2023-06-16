@@ -1,26 +1,30 @@
 <template lang="pug">
 div(ref="threadCardRef" :class="containerClass" @click="handleClick")
-  div(class="flex items-center justify-between")
+  div(class="h-8 flex items-center justify-between")
     div(class="flex items-center gap-x-2")
       img(
         class="w-8 h-8 rounded"
         :src="thread.materialCoverImg"
-        @click.stop="emit('materialClick', thread, false)"
+        @click="handleMaterialClick($event, thread, false)"
       )
       div(
         class="group flex items-center text-body2"
-        @click.stop="emit('materialClick', thread, false)"
+        @click="handleMaterialClick($event, thread, false)"
       )
-        span(
-          class="font-bold text-caption text-grey-600 line-clamp-1"
-          :class="{ 'hover:text-primary-400 hover:underline hover:cursor-pointer': !thread.hasMaterialDeleted && !thread.hasMaterialNoAccess }"
-        ) {{ thread.materialNo }}
+        f-tooltip-standard(:tooltipMessage="thread.materialNo")
+          template(#slot:tooltip-trigger)
+            p(
+              class="font-bold text-caption line-clamp-1"
+              :class="[thread.hasMaterialDeleted || thread.hasMaterialNoAccess ? 'text-grey-250' : 'text-grey-600 hover:text-primary-400 hover:underline hover:cursor-pointer']"
+            ) {{ thread.materialNo }}
+              span(v-if="thread.hasMaterialDeleted") &nbsp({{ $t('TT0113') }})
+              span(v-else-if="thread.hasMaterialNoAccess") &nbsp({{ $t('TT0107') }})
         f-svg-icon(
           v-if="!thread.hasMaterialDeleted && !thread.hasMaterialNoAccess"
           iconName="open_in_new"
           size="14"
           class="ml-1 invisible group-hover:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
-          @click.stop="emit('materialClick', thread, true)"
+          @click="handleMaterialClick($event, thread, true)"
           tooltip="TT0074"
         )
     div(class="flex flex-row")
@@ -31,13 +35,13 @@ div(ref="threadCardRef" :class="containerClass" @click="handleClick")
         placement="top-start"
       )
   div(class="flex flex-col gap-3")
-    div(class="flex flex-row items-center gap-2")
+    div(class="flex flex-row items-start gap-2")
       p(
         class="text-body2 text-grey-900 leading-1.6"
-        :class="{ 'text-primary-400': active }"
+        :class="{ 'text-primary-400': active, 'font-bold': thread.unreadStickerQty !== 0 }"
       ) {{ thread.digitalThreadName }}
       p(
-        class="h-4.5 bg-primary-400 rounded-full flex items-center justify-center px-1.5"
+        class="h-4.5 w-5 bg-primary-400 rounded-full flex-shrink-0 flex items-center justify-center"
         v-if="thread.unreadStickerQty !== 0"
       )
         span(class="text-grey-0 text-caption") {{ unreadStickerQtyDisplay }}
@@ -63,8 +67,8 @@ div(ref="threadCardRef" :class="containerClass" @click="handleClick")
       div(class="flex items-center gap-x-1.5 text-grey-600")
         f-svg-icon(iconName="tag" size="14")
         span(class="text-caption") {{ thread.tagList.length }}
-  div(class="h-8 flex justify-between items-end")
-    p(class="text-caption leading-1 text-grey-300") {{ $dayjs.unix(thread.createDate).format('MMM DD, YYYY [at] hh:mm A') }}
+  div(class="h-6 flex justify-between items-end")
+    p(class="text-caption leading-1 text-grey-300") {{ toDigitalThreadDateFormat(thread.createDate) }}
   div(class="absolute right-3.5 bottom-3")
     f-popper(placement="top" :offset="[0, 8]" @click.stop)
       template(#trigger="{ isExpand }")
@@ -92,11 +96,13 @@ import { onClickOutside } from '@vueuse/core'
 import type FScrollbarContainer from '@frontier/ui-component/src/FScrollbarContainer/FScrollbarContainer.vue'
 import type { DigitalThreadBase } from '@frontier/platform-web-sdk'
 import useBadgeCountDisplay from '@/composables/useBadgeCountDisplay'
+import { toDigitalThreadDateFormat } from '@/utils/date'
 
 const props = withDefaults(
   defineProps<{
     thread: DigitalThreadBase
     active?: boolean
+    dragging?: boolean
     horizontalScrollContainer?: HTMLDivElement
     verticalScrollContainer?: InstanceType<typeof FScrollbarContainer>
   }>(),
@@ -140,21 +146,27 @@ const unreadStickerQtyDisplay = useBadgeCountDisplay(unreadStickerQty)
 
 const containerClass = computed(() => {
   const baseClass = [
-    'relative flex-shrink-0 w-77.5 h-33.5 px-3.5 py-3 rounded-md cursor-pointer flex flex-col gap-0.5 shadow-4 outline',
+    'relative flex-shrink-0 w-77.5 min-h-33.5 px-3.5 py-3 rounded-md cursor-pointer flex flex-col gap-0.5 shadow-4 outline',
   ]
 
   if (focused.value) {
     baseClass.push(
-      'bg-primary-50 outline-primary-300 outline-1 -outline-offset-1'
+      'bg-primary-0 outline-primary-300 outline-1 -outline-offset-1'
     )
   } else if (props.active) {
     baseClass.push(
       'bg-primary-50 outline-primary-300 outline-1 -outline-offset-1'
     )
+  } else if (props.dragging) {
+    baseClass.push('bg-grey-100 outline-2 -outline-offset-2 outline-grey-250 ')
   } else {
-    baseClass.push(
-      'bg-grey-50 outline-1 -outline-offset-1 outline-grey-150 hover:outline-2 hover:-outline-offset-2 hover:outline-grey-200'
-    )
+    const hoverClass =
+      'hover:outline-2 hover:-outline-offset-2 hover:outline-grey-200'
+    const pressedClass =
+      'active:outline-2 active:-outline-offset-2 active:outline-grey-250 active:bg-grey-100'
+    baseClass.push('bg-grey-50 outline-1 -outline-offset-1 outline-grey-150')
+    baseClass.push(hoverClass)
+    baseClass.push(pressedClass)
   }
 
   return baseClass
@@ -245,6 +257,19 @@ const handleClick = () => {
   }
 
   emit('active')
+}
+
+const handleMaterialClick = (
+  event: MouseEvent,
+  thread: DigitalThreadBase,
+  openInNew: boolean
+) => {
+  if (thread.hasMaterialDeleted || thread.hasMaterialNoAccess) {
+    return
+  }
+
+  event.stopPropagation()
+  emit('materialClick', thread, openInNew)
 }
 
 defineExpose({ scrollTo })

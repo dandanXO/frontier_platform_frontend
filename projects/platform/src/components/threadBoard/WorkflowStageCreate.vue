@@ -21,6 +21,7 @@ div(
 div(
   v-else
   class="relative w-12 h-full max-h-full flex-shrink-0 rounded border border-dashed border-grey-250 cursor-pointer"
+  :class="{ 'hover:border-primary-300': props.isThreadCardDragging }"
   @click="isCreatingWorkflowStage = true"
 )
   slot(name="toggle")
@@ -31,6 +32,10 @@ import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import useThreadBoardStore from '@/stores/threadBoard'
 import type FScrollbarContainer from '@frontier/ui-component/src/FScrollbarContainer/FScrollbarContainer.vue'
+
+const props = defineProps<{
+  isThreadCardDragging: boolean
+}>()
 
 const threadBoardStore = useThreadBoardStore()
 const { isCreatingWorkflowStage, creatingWorkflowStageName } =

@@ -106,7 +106,7 @@ modal-behavior(:header="$t('TT0067')")
         //- Create Date
         div
           p(class="text-caption text-grey-500 pb-4") {{ $t('TT0063') }}
-          p(class="text-body2 text-grey-900") {{ $dayjs.unix(digitalThread.createDate).format('MMM DD, YYYY [at] hh:mm A') }}
+          p(class="text-body2 text-grey-900") {{ toDigitalThreadDateFormat(digitalThread.createDate) }}
       //- Sticker Statistics / Tags / Participants
       div(class="flex flex-col gap-y-2.5")
         //-  Sticker Statistics
@@ -169,6 +169,7 @@ import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import useAddFromDisplayList from '@/composables/useAddFromLocationListDisplay'
 import { OG_TYPE } from '@/utils/constants'
+import { toDigitalThreadDateFormat } from '@/utils/date'
 import useDigitalThreadWorkflowStageStore from '@/stores/digitalThreadWorkflowStage'
 
 const store = useStore()

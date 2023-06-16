@@ -844,13 +844,21 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
         }
       }
 
+      const workflowStageName = workflowStageList.value?.find(
+        (w) => w.workflowStageId === id
+      )?.workflowStageName
+
+      if (!workflowStageName) {
+        throw new Error('workflowStageName undefined')
+      }
+
       switch (code) {
         case 'ERR0036': {
           store.dispatch('helper/openModalBehavior', {
             component: 'modal-workflow-stage-delete-error-list',
             properties: {
               title: message.title,
-              content: message.content,
+              workflowStageName,
               errorList: result.errorList,
             },
           })

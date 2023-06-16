@@ -30,7 +30,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
           :move="handleMove"
           @add="handleUpdate"
           @update="handleUpdate"
-          @start="handleDragStart(defaultWorkflowStage.workflowStageId, scrollContainer)"
+          @start="(e) => handleDragStart(e, defaultWorkflowStage.workflowStageId, scrollContainer)"
           @end="handleDragEnd(scrollContainer)"
         )
           template(#item="{ element }")
@@ -38,6 +38,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
               thread-card(
                 :thread="element"
                 :active="isThreadCardActive(element)"
+                :dragging="isThreadCardDragging(element)"
                 :verticalScrollContainer="scrollContainer"
                 @active="openStickerDrawerByThread(element)"
                 @materialClick="openMaterialDetail"
@@ -54,10 +55,12 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
         v-model="draggableWorkflowStageList"
         v-bind="workflowStageDragOptions"
         @change="handleWorkflowStageListChange"
+        @start="displayGrabbingCursor"
+        @end="removeGrabbingCursor"
       )
         template(#item="{ element }")
           workflow-stage-column(
-            :class="{ 'draggable-workflow-stage cursor-pointer': !loading && haveMoveWorkflowStagePermission }"
+            :class="{ 'draggable-workflow-stage cursor-grab': !loading && haveMoveWorkflowStagePermission }"
             :active="element.workflowStageId === activeWorkflowStageId"
             :workflowStage="element"
             :workflowStageMenu="workflowStageMenu"
@@ -74,7 +77,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
                 v-model="element.digitalThreadList"
                 draggable=".draggable-thread-card"
                 v-bind="threadCardDragOptions"
-                @start="handleDragStart(element.workflowStageId, scrollContainer)"
+                @start="(e) => handleDragStart(e, element.workflowStageId, scrollContainer)"
                 @end="handleDragEnd(scrollContainer)"
                 @add="handleUpdate"
                 @update="handleUpdate"
@@ -86,6 +89,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
                     thread-card(
                       :thread="element"
                       :active="isThreadCardActive(element)"
+                      :dragging="isThreadCardDragging(element)"
                       :horizontalScrollContainer="horizontalScrollContainer"
                       :verticalScrollContainer="scrollContainer"
                       @active="openStickerDrawerByThread(element)"
@@ -106,12 +110,16 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
               thread-card(
                 :thread="thread"
                 :active="isThreadCardActive(thread)"
+                :dragging="isThreadCardDragging(thread)"
                 :horizontalScrollContainer="horizontalScrollContainer"
                 :verticalScrollContainer="scrollContainer"
                 @active="openStickerDrawerByThread(thread)"
                 @materialClick="openMaterialDetail"
               )
-    workflow-stage-create(v-if="haveCreateWorkflowStagePermission")
+    workflow-stage-create(
+      v-if="haveCreateWorkflowStagePermission"
+      :isThreadCardDragging="draggingThreadCardId != null"
+    )
       template(#toggle)
         draggable(
           class="w-full h-full overflow-hidden"
@@ -122,7 +130,8 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
         )
           template(#item="{ element }")
         div(
-          class="absolute left-0 top-0 w-full h-full pt-3.5 flex flex-col items-center gap-2 text-grey-600 bg-grey-100 hover:bg-grey-150"
+          class="absolute left-0 top-0 w-full h-full pt-3.5 flex flex-col items-center gap-2 text-grey-600 bg-grey-100"
+          :class="[draggingThreadCardId != null ? 'hover:bg-primary-0 hover:text-primary-400' : 'hover:bg-grey-150']"
         )
           f-svg-icon(iconName="add" size="20")
           span(
@@ -146,7 +155,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
             :move="handleMove"
             @add="sortCreatingWorkflowStage"
             @update="sortCreatingWorkflowStage"
-            @start="handleDragStart('creatingWorkflowStage', scrollContainer)"
+            @start="(e) => handleDragStart(e, 'creatingWorkflowStage', scrollContainer)"
             @end="handleDragEnd(scrollContainer)"
             data-workflow-stage-id="creatingWorkflowStage"
           )
@@ -155,14 +164,15 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
                 thread-card(
                   :thread="element"
                   :active="isThreadCardActive(element)"
+                  :dragging="isThreadCardDragging(element)"
                   :horizontalScrollContainer="horizontalScrollContainer"
                   @click="openStickerDrawerByThread(element)"
                   @materialClick="openMaterialDetail"
                 )
-    div(class="w-120 flex-shrink-0")
+    div(class="w-120 max-h-full flex-shrink-0")
       div(
         v-if="isHiddenWorkflowListExpanded"
-        class="rounded pb-2 flex flex-col gap-2 w-82.5 flex-shrink-0 bg-grey-200"
+        class="h-full rounded pb-2 flex flex-col gap-2 w-82.5 flex-shrink-0 bg-grey-200"
       )
         div(
           class="h-12 rounded px-5 hover:bg-grey-150 flex flex-row items-center gap-3 cursor-pointer"
@@ -170,14 +180,15 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
         )
           span(class="text-body2 text-grey-900 font-bold") {{ $t('TT0159') }}
           span(class="text-body2 text-grey-600 font-bold") {{ hiddenWorkflowStageList.length }}
-        div(class="px-2 flex flex-col gap-2")
-          workflow-stage-hidden-card(
-            v-for="workflowStage in hiddenWorkflowStageList"
-            :key="workflowStage.workflowStageId"
-            :workflowStage="workflowStage"
-            @workflowStageShow="showWorkflowStage"
-            @workflowStageRename="renameWorkflowStage"
-          )
+        f-scrollbar-container(class="h-full px-2")
+          div(class="flex flex-col gap-2")
+            workflow-stage-hidden-card(
+              v-for="workflowStage in hiddenWorkflowStageList"
+              :key="workflowStage.workflowStageId"
+              :workflowStage="workflowStage"
+              @workflowStageShow="showWorkflowStage"
+              @workflowStageRename="renameWorkflowStage"
+            )
       div(
         v-else
         @click="expandHiddenWorkflowStageList"
@@ -203,6 +214,7 @@ import type {
   WorkflowStageId,
   WorkflowStageMoveAllThreadsPayload,
 } from '@/types'
+import type { DigitalThreadBase } from '@frontier/platform-web-sdk'
 
 const store = useStore()
 const threadBoardStore = useThreadBoardStore()
@@ -241,30 +253,31 @@ const {
 
 const horizontalScrollContainer = ref<HTMLDivElement>()
 const activeWorkflowStageId = ref<WorkflowStageId | null>(null)
+const draggingThreadCardId = ref<number | null>(null)
 
 const user = computed(() => store.getters['user/user'])
 const isZh = computed(() => user.value.locale === 'zh-TW')
 
 const workflowStageDragOptions = computed(() => ({
   itemKey: 'workflowStageId',
-  forceFallback: 'true',
+  forceFallback: true,
   scrollSensitivity: 40,
   scrollSpeed: 7,
   animation: 250,
   group: 'workflowStage',
   disabled: false,
-  ghostClass: 'ghost',
+  ghostClass: 'vue-draggable-thread-board',
 }))
 
 const threadCardDragOptions = computed(() => ({
   itemKey: 'digitalThreadSideId',
-  forceFallback: 'true',
+  forceFallback: true,
   scrollSensitivity: 60,
   scrollSpeed: 7,
   animation: 250,
   group: 'thread',
   disabled: false,
-  ghostClass: 'ghost',
+  ghostClass: 'vue-draggable-thread-board',
 }))
 
 const threadCardWrapperClass = computed(() =>
@@ -338,13 +351,28 @@ const handleUpdate = (e: any) => {
 }
 
 const handleDragStart = (
+  e: any,
   workflowStageId: WorkflowStageId,
   scrollContainer?: InstanceType<typeof FScrollbarContainer>
 ) => {
+  const digitalThreadSideId = e.item.__draggable_context.element
+    .digitalThreadSideId as number
+  draggingThreadCardId.value = digitalThreadSideId
   if (scrollContainer?.rootElement) {
     scrollContainer.rootElement.style.zIndex = '1'
   }
   activeWorkflowStageId.value = workflowStageId
+  displayGrabbingCursor()
+}
+
+const displayGrabbingCursor = () => {
+  document.documentElement.classList.add('vue-draggable-thread-board-grabbing')
+}
+
+const removeGrabbingCursor = () => {
+  document.documentElement.classList.remove(
+    'vue-draggable-thread-board-grabbing'
+  )
 }
 
 const handleDragEnd = (
@@ -354,6 +382,8 @@ const handleDragEnd = (
     scrollContainer.rootElement.style.zIndex = '0'
   }
   activeWorkflowStageId.value = null
+  draggingThreadCardId.value = null
+  removeGrabbingCursor()
 }
 
 const handleWorkflowStageMenuMouseEnter = (id: number) => {
@@ -365,31 +395,18 @@ const handleWorkflowStageMenuMouseLeave = (id: number) => {
     activeWorkflowStageId.value = null
   }
 }
+
+const isThreadCardDragging = (thread: DigitalThreadBase) => {
+  return thread.digitalThreadSideId === draggingThreadCardId.value
+}
 </script>
 
-<style scoped>
-.flip-list-move {
-  transition: transform 0.5s;
-}
-
-.no-move {
-  transition: transform 0s;
-}
-
-.ghost {
+<style>
+.vue-draggable-thread-board-ghost {
   opacity: 0.5;
-  /* background: #c8ebfb; */
 }
 
-.list-group {
-  min-height: 20px;
-}
-
-.list-group-item {
-  cursor: move;
-}
-
-.list-group-item i {
-  cursor: pointer;
+.vue-draggable-thread-board-grabbing * {
+  cursor: grabbing !important;
 }
 </style>

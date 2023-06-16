@@ -6,7 +6,9 @@ modal-behavior(
 )
   div(class="w-94")
     div(class="flex flex-col gap-y-2")
-      p(class="text-body2 text-grey-900") {{ content }}
+      i18n-t(keypath="TT0156" tag="p" class="text-body2 text-grey-900" scope="global")
+        template(#workflowStageName)
+          span(class="font-bold") {{ workflowStageName }}
       f-scrollbar-container(class="max-h-90")
         div(class="flex flex-col items-stretch border border-grey-150 rounded")
           div(
@@ -28,7 +30,7 @@ import { useStore } from 'vuex'
 
 defineProps<{
   title: string
-  content: string
+  workflowStageName: string
   errorList: {
     ogName: string
     labelColor: string

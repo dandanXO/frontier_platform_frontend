@@ -226,7 +226,7 @@ const participantShowMoreMenuTree = computed(() => ({
   blockList: [
     {
       menuList: participantMenu.value.map((item) => ({
-        title: item.name || '123',
+        title: item.name,
         selectValue: item.id,
         thumbnail: item.avatar,
         clickHandler: item.handleInput,

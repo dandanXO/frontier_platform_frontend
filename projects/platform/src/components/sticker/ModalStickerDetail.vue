@@ -64,7 +64,7 @@ modal-behavior(:header="$t('TT0055')")
         //- add Date
         div
           p(class="text-caption text-grey-500 pb-4") {{ $t('TT0059') }}
-          p(class="text-body2 text-grey-900") {{ $dayjs.unix(sticker.createDate).format('MMM DD, YYYY [at] hh:mm A') }}
+          p(class="text-body2 text-grey-900") {{ toDigitalThreadDateFormat(sticker.createDate) }}
       //- Digital Thread Info
       div(class="py-4 px-5 border border-grey-150 rounded")
         div(class="pb-4 flex items-center")
@@ -111,7 +111,7 @@ modal-behavior(:header="$t('TT0055')")
         //- Create Date
         div
           p(class="text-caption text-grey-500 pb-4") {{ $t('TT0063') }}
-          p(class="text-body2 text-grey-900") {{ $dayjs.unix(digitalThread.createDate).format('MMM DD, YYYY [at] hh:mm A') }}
+          p(class="text-body2 text-grey-900") {{ toDigitalThreadDateFormat(digitalThread.createDate) }}
 </template>
 
 <script setup>
@@ -119,6 +119,7 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 import useAddFromDisplayList from '@/composables/useAddFromLocationListDisplay'
 import useDigitalThreadWorkflowStageStore from '@/stores/digitalThreadWorkflowStage'
+import { toDigitalThreadDateFormat } from '@/utils/date'
 
 const store = useStore()
 const workflowStageStore = useDigitalThreadWorkflowStageStore()

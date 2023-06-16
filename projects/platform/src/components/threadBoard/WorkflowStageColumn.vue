@@ -2,10 +2,10 @@
 div
   div(
     v-show="isExpanded"
-    class="w-82.5 flex-shrink-0 h-full max-h-full rounded-md flex flex-col overflow-hidden bg-grey-100"
-    :class="[{ 'bg-primary-50 outline-primary-300 outline outline-1 -outline-offset-1': active }]"
+    class="w-82.5 flex-shrink-0 h-full max-h-full rounded-md flex flex-col overflow-hidden"
+    :class="[{ 'bg-primary-50 outline-primary-300 outline outline-1 -outline-offset-1': active && !isEditingName }, isEditingName ? 'bg-grey-0 border border-dashed border-grey-250' : 'bg-grey-100']"
   )
-    div(v-if="isEditingName" class="p-4 flex flex-col gap-2")
+    div(v-if="isEditingName" class="px-2.5 py-4 flex flex-col gap-2")
       f-input-text(:placeholder="$t('TT0148')" v-model:textValue="currentName")
       div(class="flex flex-row gap-2")
         f-button(
@@ -16,19 +16,25 @@ div
         ) {{ $t('UU0018') }}
         f-button(size="md" type="text" @click="doneEdit") {{ $t('UU0002') }}
     div(v-else class="p-2")
-      div(class="flex-shrink-0 h-8 pl-3 flex flex-row justify-between items-center")
-        div(class="handle flex-1 flex flex-row gap-2 items-center")
-          div(class="flex-1 flex flex-row items-center gap-3")
-            div(class="flex flex-row items-center gap-1.5")
+      div(class="h-8 pl-3 flex flex-row justify-between items-center gap-2")
+        div(class="handle max-w-full flex-1 flex flex-row gap-2 items-center")
+          div(class="max-w-full flex-1 flex flex-row items-center gap-3")
+            div(class="max-w-full flex flex-row items-center gap-3")
               f-svg-icon(
                 v-if="workflowStage.isDefault"
                 iconName="unsorted"
                 size="20"
                 class="text-grey-400"
               )
-              span(class="text-body2 text-grey-900 font-bold") {{ workflowStage.workflowStageName }}
-            span(class="text-body2 text-grey-600") {{ workflowStage.digitalThreadList.length }}
-        div(class="w-8 h-8 flex items-center justify-center")
+              f-tooltip-standard(
+                :tooltipMessage="workflowStage.workflowStageName"
+              )
+                template(#slot:tooltip-trigger)
+                  span(
+                    class="text-body2 text-grey-900 font-bold flex-shrink-1 line-clamp-1"
+                  ) {{ workflowStage.workflowStageName }}
+              span(class="text-body2 text-grey-600") {{ workflowStage.digitalThreadList.length }}
+        div(class="w-8 h-8 flex items-center justify-center flex-shrink-0")
           f-popper(
             :class="{ 'pointer-events-none': threadBoardStore.loading }"
             placement="bottom-end"
@@ -48,18 +54,25 @@ div
             iconName="double_arrow_left"
             @click.stop="handleWorkflowStageCollapse"
           )
-    div(class="relative h-full")
-      f-scrollbar-container(
-        :ref="(el) => (scrollContainer = el)"
-        class="h-full"
-        @scrollInfoChange="handleScroll"
-      )
-        slot(:scrollContainer="scrollContainer")
-      div(v-if="showUpperBound" class="absolute top-0 left-0 h-[1px] w-full bg-grey-200")
+    div(class="h-full" :class="{ 'px-1 pb-2': isEditingName || active }")
       div(
-        v-if="showBottomBound"
-        class="absolute bottom-0 left-0 h-[1px] w-full bg-grey-200"
+        class="relative h-full"
+        :class="{ 'w-79.5 pt-1 bg-grey-100 rounded': isEditingName, 'bg-primary-0 outline-primary-300 outline outline-1 -outline-offset-1': active && isEditingName }"
       )
+        f-scrollbar-container(
+          :ref="(el) => (scrollContainer = el)"
+          class="h-full"
+          @scrollInfoChange="handleScroll"
+        )
+          slot(:scrollContainer="scrollContainer")
+        div(
+          v-if="showUpperBound && !(isEditingName && active)"
+          class="absolute top-0 left-0 h-[1px] w-full bg-grey-200"
+        )
+        div(
+          v-if="showBottomBound && !(isEditingName && active)"
+          class="absolute bottom-0 left-0 h-[1px] w-full bg-grey-200"
+        )
   div(
     v-show="!isExpanded"
     class="h-full w-8 p-1.5 flex flex-col items-center cursor-pointer"
