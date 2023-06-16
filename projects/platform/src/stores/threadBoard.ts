@@ -21,6 +21,7 @@ import {
   type RenameWorkflowStageRequest,
   type MoveWorkflowStageAllDigitalThreadRequest,
   type MoveWorkflowStageDigitalThreadRequest,
+  OgType,
 } from '@frontier/platform-web-sdk'
 import threadBoardApi from '@/apis/threadBoard'
 import stickerApi from '@/apis/sticker.js'

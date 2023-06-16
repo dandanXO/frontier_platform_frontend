@@ -7,6 +7,7 @@ import {
   type GroupUser,
   type OrgUser,
 } from '@frontier/platform-web-sdk'
+import { ROLE_ID } from '@/utils/constants'
 
 export interface Unit {
   orgId: number
@@ -58,9 +59,20 @@ const useCurrentUnit = () => {
         ? storeGroup.value.memberList
         : organization.value.memberList,
       activeMemberList: isGroup.value
-        ? (storeGroup.value.memberList.filter((m) => {
-            return !m.isPending
-          }) as ActiveGroupUser[])
+        ? (storeGroup.value.memberList.concat(
+            organization.value.memberList
+              .filter(
+                (member) =>
+                  member.orgRoleId === ROLE_ID.OWNER ||
+                  member.orgRoleId === ROLE_ID.ADMIN
+              )
+              .map((member) => ({
+                ...member,
+                groupUserId: null,
+                groupRoleId: member.orgRoleId,
+              }))
+              .filter((m) => !m.isPending)
+          ) as ActiveGroupUser[])
         : (organization.value.memberList.filter((m) => {
             return !m.notificationList
           }) as ActiveOrgUser[]),
