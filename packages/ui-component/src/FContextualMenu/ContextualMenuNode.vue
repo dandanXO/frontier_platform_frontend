@@ -84,6 +84,9 @@ div(
           :style="{ '-webkit-box-orient': 'vertical', '-webkit-line-clamp': innerMenu.descriptionLineClamp, display: '-webkit-box' }"
           @mouseenter="hoverOn = 'description'"
         ) {{ innerMenu.description }}
+      //- Notify
+      div(v-if="innerMenu.hasNotify" class="pr-2 flex items-center justify-center")
+        div(class="w-2 h-2 rounded-full bg-primary-400")
       //- Trailing Icon
       div(
         v-if="hasNextLevel || (selectMode !== MULTIPLE && isSelect)"
@@ -234,6 +237,7 @@ const innerMenu = computed(() => {
     button: null,
     width: 'w-fit',
     scrollAreaMaxHeight: '',
+    hasNotify: false,
   }
 
   return Object.assign({}, defaultMenu, props.menu)

@@ -571,20 +571,20 @@ const menuTreeDisabled = {
           thumbnail: 'https://picsum.photos/50',
         },
         {
-          title: 'Menu ',
+          title: 'Menu 8',
           disabled: true,
           thumbnail: 'https://picsum.photos/50',
           blockList: [
             {
               menuList: [
                 {
-                  title: 'Menu 2-1',
+                  title: 'Menu 8-1',
                 },
                 {
-                  title: 'Menu 2-2',
+                  title: 'Menu 8-2',
                 },
                 {
-                  title: 'Menu 2-3',
+                  title: 'Menu 8-3',
                   clickHandler: () => {
                     console.log('click handler')
                   },
@@ -607,4 +607,88 @@ const menuTreeDisabled = {
 Disabled.args = {
   selectMode: MULTIPLE,
   menuTree: menuTreeDisabled,
+}
+export const Notify = TemplateMultiLayerMultiSelect.bind({})
+const menuTreeNotify = {
+  width: 'w-60',
+  scrollAreaMaxHeight: 'max-h-100',
+  blockList: [
+    {
+      menuList: [
+        {
+          title: 'Menu 1',
+          hasNotify: true,
+          description: 'description',
+        },
+        {
+          title: 'Menu 2',
+          hasNotify: true,
+          display: 'block',
+          description: 'description',
+        },
+        {
+          title: 'Menu 3',
+          hasNotify: true,
+          description:
+            'looooooooooooooooooooooooooooooooooooooooong description',
+        },
+        {
+          title: 'Menu 4',
+          hasNotify: true,
+          display: 'block',
+          description:
+            'looooooooooooooooooooooooooooooooooooooooong description',
+        },
+        {
+          title: 'Menu 5',
+          hasNotify: true,
+          icon: 'create',
+        },
+        {
+          title: 'Menu 6',
+          hasNotify: true,
+          labelColor: '#0F7F73',
+        },
+        {
+          title: 'Menu 7',
+          hasNotify: true,
+          thumbnail: 'https://picsum.photos/50',
+        },
+        {
+          title: 'Menu 8',
+          hasNotify: true,
+          thumbnail: 'https://picsum.photos/50',
+          blockList: [
+            {
+              menuList: [
+                {
+                  title: 'Menu 8-1',
+                },
+                {
+                  title: 'Menu 8-2',
+                },
+                {
+                  title: 'Menu 8-3',
+                  clickHandler: () => {
+                    console.log('click handler')
+                  },
+                  mouseEnterHandler: () => {
+                    console.log('mouseEnterHandler handler')
+                  },
+                  mouseLeaveHandler: () => {
+                    console.log('mouseLeaveHandler handler')
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}
+
+Notify.args = {
+  selectMode: MULTIPLE,
+  menuTree: menuTreeNotify,
 }

@@ -181,6 +181,7 @@ const props = defineProps({
    *          },
    *          width: String (Tailwindcss),
    *          scrollAreaMaxHeight: String (Tailwindcss),
+   *          hasNotify: Boolean
    *        }
    *      ]
    *    }
