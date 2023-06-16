@@ -1,6 +1,7 @@
-import { computed, reactive, ref, nextTick, watch } from 'vue'
+import { computed, nextTick, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import debounce from 'debounce'
@@ -29,6 +30,7 @@ import { useNotifyStore } from '@/stores/notify'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import useGotoMaterialDetail from '@/composables/useGotoMaterialDetail'
 import usePermission from '@/composables/usePermission'
+import useNavigation from '@/composables/useNavigation'
 import { FUNC_ID, NOTIFY_TYPE } from '@/utils/constants'
 import type {
   WorkflowStageRenamePayload,
@@ -65,6 +67,8 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const gotoMaterialDetail = useGotoMaterialDetail()
   const store = useStore()
   const permissionList = usePermission()
+  const router = useRouter()
+  const { parsePath, prefixPath } = useNavigation()
 
   const fetchThreadBoardAbortController = ref<AbortController | null>(null)
   const isActive = ref(false)
@@ -87,6 +91,8 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const searchText = ref<string>('')
   const mostParticipantId = ref<number>()
   const participantFilterIdList = ref<number[]>([])
+
+  let onFetchSuccess: (() => void) | null = null
 
   const haveCreateWorkflowStagePermission = computed(() =>
     permissionList.value.includes(FUNC_ID.CREATE_WORKFLOW_STAGE)
@@ -579,10 +585,35 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     return thread.digitalThreadSideId === activeThreadSideId.value
   }
 
-  const activateThreadCard = async (digitalThreadSideId: number) => {
-    activeThreadSideId.value = null
-    await nextTick()
-    activeThreadSideId.value = digitalThreadSideId
+  const gotoThreadCard = async (digitalThreadSideId: number) => {
+    if (isActive.value) {
+      activeThreadSideId.value = null
+      await nextTick()
+      activeThreadSideId.value = digitalThreadSideId
+      return
+    }
+
+    onFetchSuccess = () => {
+      if (digitalThreadSideIdList.value.includes(digitalThreadSideId)) {
+        onFetchSuccess = null
+        activeThreadSideId.value = digitalThreadSideId
+        return
+      }
+
+      store.dispatch('helper/openModalConfirm', {
+        type: NOTIFY_TYPE.INFO,
+        header: t('TT0139'),
+        contentText: t('TT0140'),
+        primaryBtnText: t('UU0132'),
+        primaryBtnHandler: clearAllQuery,
+        secondaryBtnText: t('UU0133'),
+        secondaryBtnHandler: () => {
+          activeThreadSideId.value = digitalThreadSideId
+          onFetchSuccess = null
+        },
+      })
+    }
+    await router.push(parsePath(`${prefixPath.value}/thread-board`))
   }
 
   const deactivateThreadCard = () => {
@@ -916,6 +947,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     isDefaultWorkflowStageExpanded.value = true
     isHiddenWorkflowListExpanded.value = false
     isFirstThreadBoardFetch.value = true
+    onFetchSuccess = null
   }
 
   watch(threadBoardQuery, async () => {
@@ -926,19 +958,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       const updateQueryReq = { ...baseReq.value, threadBoardQuery }
       threadBoardApi.saveThreadBoardQuery(updateQueryReq)
 
-      if (activeThreadSideId.value && isFirstThreadBoardFetch.value) {
-        if (!digitalThreadSideIdList.value.includes(activeThreadSideId.value)) {
-          store.dispatch('helper/openModalConfirm', {
-            type: NOTIFY_TYPE.INFO,
-            header: t('TT0139'),
-            contentText: t('TT0140'),
-            primaryBtnText: t('UU0132'),
-            primaryBtnHandler: clearAllQuery,
-            secondaryBtnText: t('UU0133'),
-          })
-        }
-      }
-
+      onFetchSuccess?.()
       isFirstThreadBoardFetch.value = false
     } catch {
       console.error('RR')
@@ -1005,7 +1025,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     openMaterialDetail,
     openStickerDrawerByThread,
     isThreadCardActive,
-    activateThreadCard,
+    gotoThreadCard,
     deactivateThreadCard,
     cancelCreateWorkflowStage,
     createWorkflowStage,

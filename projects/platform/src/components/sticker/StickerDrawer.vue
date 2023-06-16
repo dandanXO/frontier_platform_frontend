@@ -41,7 +41,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
                 p(
                   class="pl-2.5 text-body1 font-bold line-clamp-1 cursor-pointer"
                   :class="[isCreatingDigitalThread ? 'text-grey-300' : 'text-grey-900 group-hover:text-primary-400']"
-                  @click="gotoThreadBoard(digitalThread.digitalThreadSideId)"
+                  @click="threadBoardStore.gotoThreadCard(digitalThread.digitalThreadSideId)"
                 ) {{ digitalThread.digitalThreadName }}
           div(class="flex-shrink pl-4 flex items-center gap-x-4")
             f-svg-icon(
@@ -380,7 +380,6 @@ import { STICKER_ADD_TO, OG_TYPE, LOCATION_TYPE } from '@/utils/constants'
 import StickerCard from '@/components/sticker/StickerCard.vue'
 import DigitalThreadCard from '@/components/sticker/DigitalThreadCard.vue'
 import useNavigation from '@/composables/useNavigation'
-import useGotoThreadBoard from '@/composables/useGotoThreadBoard'
 import useThreadBoardStore from '@/stores/threadBoard'
 import useDigitalThreadWorkflowStageStore from '@/stores/digitalThreadWorkflowStage'
 import { useDashboardStore } from '@/stores/dashboard'
@@ -392,7 +391,6 @@ const { t } = useI18n()
 const router = useRouter()
 const { parsePath } = useNavigation()
 const workflowStageStore = useDigitalThreadWorkflowStageStore()
-const gotoThreadBoard = useGotoThreadBoard()
 
 const material = computed(() => store.getters['sticker/material'])
 const digitalThread = computed(() => store.getters['sticker/digitalThread'])
