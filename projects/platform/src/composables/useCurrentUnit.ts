@@ -48,6 +48,9 @@ const useCurrentUnit = () => {
       orgId: organization.value.orgId,
       ogType: ogType.value,
       ogId: isGroup.value ? storeGroup.value.groupId : organization.value.orgId,
+      labelColor: isGroup.value
+        ? storeGroup.value.labelColor
+        : organization.value.labelColor,
       ogName: isGroup.value
         ? storeGroup.value.groupName
         : organization.value.orgName,
