@@ -23,8 +23,9 @@ modal-behavior(
     class="flex justify-between min-h-88.5"
     :class="[isExchange ? 'flex-row-reverse' : '']"
   )
-    template(v-for="side in sides" :key="side.sideName")
+    template(v-for="(side, index) in sides" :key="index")
       cropper-default-layout(
+        v-if="side != null"
         class="w-70 z-100"
         scaleUnit="cm"
         :scaleInputStep="scaleOptions.step"
@@ -48,6 +49,9 @@ modal-behavior(
               div(class="h-2 flex items-center border-r-2 border-l-2 border-grey-900")
                 div(class="h-0.5 bg-grey-900 w-full")
               div(class="text-caption text-grey-900 font-bold text-center") {{ scaleSizeInCm }}cm
+      //- placeholder dom component.
+      //- 避免在沒有 faceSide 的情況下，backSide cropper 跑到 faceSide cropper 的位置
+      div(v-else)
       div(
         v-if="isDoubleSideMaterial && sides.length < 2"
         class="w-70 h-70 flex justify-center items-center bg-[#F1F2F5]"
@@ -119,7 +123,7 @@ const refBackSide = ref<InstanceType<typeof ImageCropArea> | null>(null)
 const faceSide = ref<Side>()
 const backSide = ref<Side>()
 const sides = computed(() => {
-  return [faceSide.value, backSide.value].filter((s) => !!s) as Side[]
+  return [faceSide.value, backSide.value]
 })
 
 const store = useStore()
@@ -174,7 +178,9 @@ const handleUpdateDoubleMaterialScaleSize = (
   fromInputChange = false
 ) => {
   for (let side of sides.value) {
-    handleUpdateScaleSize(side, newScaleSizeInCm)
+    if (side != null) {
+      handleUpdateScaleSize(side, newScaleSizeInCm)
+    }
   }
   if (fromInputChange) refDoubleSideScale.value.setValue(newScaleSizeInCm)
 }
