@@ -19,7 +19,7 @@ f-tooltip-standard(
 <script setup>
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { LOCATION_TYPE } from '@/utils/constants'
+import { FeatureType } from '@frontier/platform-web-sdk'
 import { computed } from 'vue'
 
 const store = useStore()
@@ -51,21 +51,21 @@ const openStickerDrawer = async () => {
   let drawerOpenFromLocationType
 
   if (routePath.includes('public-library')) {
-    drawerOpenFromLocationType = LOCATION_TYPE.PUBLIC
+    drawerOpenFromLocationType = FeatureType.PUBLIC_LIBRARY
   } else if (routePath.includes('showroom')) {
-    drawerOpenFromLocationType = LOCATION_TYPE.SHOWROOM
+    drawerOpenFromLocationType = FeatureType.SHOWROOM
   } else if (routePath.includes('assets')) {
-    drawerOpenFromLocationType = LOCATION_TYPE.ASSETS
+    drawerOpenFromLocationType = FeatureType.ASSET
   } else if (routePath.includes('workspace')) {
-    drawerOpenFromLocationType = LOCATION_TYPE.WORKSPACE
+    drawerOpenFromLocationType = FeatureType.WORKSPACE
   } else if (routePath.includes('moodboard')) {
-    drawerOpenFromLocationType = LOCATION_TYPE.MOODBOARD
+    drawerOpenFromLocationType = FeatureType.MOODBOARD
   } else if (routePath.includes('share-to-me')) {
-    drawerOpenFromLocationType = LOCATION_TYPE.SHARE_TO_ME
+    drawerOpenFromLocationType = FeatureType.SHARED_WITH_ME
   } else if (routePath.includes('received-share')) {
-    drawerOpenFromLocationType = LOCATION_TYPE.RECEIVED_SHARE
+    drawerOpenFromLocationType = FeatureType.RECEIVED_SHARE
   } else if (routePath.includes('embed')) {
-    drawerOpenFromLocationType = LOCATION_TYPE.EMBED
+    drawerOpenFromLocationType = FeatureType.EMBED
   }
 
   const openStickerDrawer = () => {
@@ -86,14 +86,14 @@ const openStickerDrawer = async () => {
   }
 
   if (
-    ![LOCATION_TYPE.RECEIVED_SHARE, LOCATION_TYPE.EMBED].includes(
+    ![FeatureType.RECEIVED_SHARE, FeatureType.EMBED].includes(
       drawerOpenFromLocationType
     )
   ) {
     return openStickerDrawer()
   }
 
-  if (drawerOpenFromLocationType === LOCATION_TYPE.RECEIVED_SHARE) {
+  if (drawerOpenFromLocationType === FeatureType.RECEIVED_SHARE) {
     if (!store.getters['receivedShare/hasLogin']) {
       return openStickerDrawerForLogin()
     }
@@ -122,7 +122,7 @@ const openStickerDrawer = async () => {
     })
   }
 
-  if (drawerOpenFromLocationType === LOCATION_TYPE.EMBED) {
+  if (drawerOpenFromLocationType === FeatureType.EMBED) {
     if (localStorage.getItem('accessToken') === null) {
       return openStickerDrawerForLogin()
     }
