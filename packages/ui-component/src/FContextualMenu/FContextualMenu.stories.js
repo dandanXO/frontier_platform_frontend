@@ -1,5 +1,5 @@
 import FContextualMenu from './FContextualMenu.vue'
-import { CONTEXTUAL_MENU_MODE } from '../constants'
+import { CONTEXTUAL_MENU_MODE, SIZE } from '../constants'
 import { ref } from 'vue'
 
 const { NONE_SELECT, SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } =
@@ -7,7 +7,6 @@ const { NONE_SELECT, SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } =
 
 const menuTree = {
   width: 'w-60',
-  scrollAreaMaxHeight: 'max-h-40',
   blockList: [
     {
       menuList: [
@@ -68,6 +67,10 @@ menuTreeLeadingVisual.blockList[0].menuList[0].icon = 'create'
 menuTreeLeadingVisual.blockList[0].menuList[1].labelColor = '#0F7F73'
 menuTreeLeadingVisual.blockList[0].menuList[2].thumbnail =
   'https://picsum.photos/50'
+menuTreeLeadingVisual.blockList[0].menuList.push(
+  JSON.parse(JSON.stringify(menuTreeLeadingVisual.blockList[0].menuList[2]))
+)
+menuTreeLeadingVisual.blockList[0].menuList[4].thumbnailSize = SIZE.MD
 LeadingVisual.args = {
   selectMode: NONE_SELECT,
   menuTree: menuTreeLeadingVisual,

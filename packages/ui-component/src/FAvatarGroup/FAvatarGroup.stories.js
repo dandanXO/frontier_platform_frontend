@@ -1,4 +1,5 @@
 import FAvatarGroup from './FAvatarGroup.vue'
+import { SIZE } from '../constants'
 
 export default {
   title: 'FAvatarGroup',
@@ -10,6 +11,14 @@ export default {
     direction: {
       control: { type: 'radio' },
       options: ['ltr', 'rtl'],
+    },
+    size: {
+      control: { type: 'radio' },
+      options: [SIZE.SM, SIZE.MD],
+      mapping: {
+        [SIZE.SM]: SIZE.SM,
+        [SIZE.MD]: SIZE.MD,
+      },
     },
   },
 }

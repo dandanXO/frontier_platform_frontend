@@ -34,7 +34,8 @@ div(
       //- Leading Visual
       div(
         v-if="innerMenu.icon || innerMenu.thumbnail || innerMenu.labelColor || innerMenu.flag"
-        class="w-6 h-6 flex items-center justify-center mr-2 shrink-0"
+        class="flex items-center justify-center mr-2 shrink-0"
+        :class="[innerMenu.thumbnailSize === SIZE.MD ? 'w-8 h-8' : 'w-6 h-6']"
       )
         //- Icon
         f-svg-icon(
@@ -170,7 +171,7 @@ export default {
 <script setup>
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core'
-import { CONTEXTUAL_MENU_MODE, DISPLAY } from '../constants'
+import { CONTEXTUAL_MENU_MODE, DISPLAY, SIZE } from '../constants'
 import isEqual from '../isEqual'
 
 const { NONE_SELECT, MULTIPLE } = CONTEXTUAL_MENU_MODE
@@ -220,6 +221,7 @@ const innerMenu = computed(() => {
     selectValue: props.menu.title,
     icon: '',
     thumbnail: '', // https://picsum.photos/50
+    thumbnailSize: SIZE.SM,
     flag: '', // http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg
     labelColor: '',
     clickHandler: () => {},

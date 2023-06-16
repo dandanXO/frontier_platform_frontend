@@ -161,8 +161,9 @@ const props = defineProps({
    *          selectable: Boolean,
    *          selectValue: null,
    *          icon: String,
-   *          labelColor: String, (Color)
+   *          leadingVisual
    *          thumbnail: String (URL)
+   *          thumbnailSize: String (SIZE.MD & SIZE.SM)
    *          flag: String (URL),
    *          clickHandler: Function,
    *          mouseEnterHandler: Function,

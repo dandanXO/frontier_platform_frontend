@@ -26,6 +26,7 @@ f-popper(:placement="placement" :offset="[0, 4]" @click.stop)
 
 <script setup>
 import { computed } from 'vue'
+import { SIZE } from '../constants'
 
 const props = defineProps({
   type: {
@@ -54,11 +55,12 @@ const props = defineProps({
 
 const classSize = computed(() => {
   switch (props.size) {
-    case 'sm':
+    case SIZE.SM:
       return 'w-6 h-6'
-    case 'md':
+    case SIZE.MD:
       return 'w-8 h-8'
   }
+  throw new Error('unexpected size')
 })
 
 const menuTree = computed(() => ({
