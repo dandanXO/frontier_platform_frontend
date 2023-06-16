@@ -562,7 +562,6 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     activeThreadSideId.value = thread.digitalThreadSideId
     const openStickerDrawer = () => {
       return store.dispatch('sticker/openStickerDrawer', {
-        materialId: thread.materialId,
         digitalThreadSideId: thread.digitalThreadSideId,
         drawerOpenFromLocationList: [],
         drawerOpenFromLocationType: FeatureType.THREAD_BOARD,
