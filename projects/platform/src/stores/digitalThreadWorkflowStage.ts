@@ -41,7 +41,14 @@ const useDigitalThreadWorkflowStageStore = defineStore(
       const res = await digitalThreadApi.getDigitalThreadWorkflowStageOptions(
         req
       )
-      workflowStageOptionList.value = res.data.result!.workflowStageList
+      workflowStageOptionList.value = res.data.result!.workflowStageList.map(
+        (w) => {
+          if (w.isDefault) {
+            return { ...w, workflowStageName: t('TT0135') }
+          }
+          return w
+        }
+      )
     }
 
     const getWorkflowStageNameById = (id: number) =>
