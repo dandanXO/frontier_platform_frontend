@@ -182,7 +182,7 @@ const routes = [
       await store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey })
       const share = store.getters['receivedShare/share']
       const dashboard = useDashboardStore()
-      dashboard.createReceivePageLog({ sharingKey })
+      dashboard.createReceivePageLog(sharingKey)
       const nodeKey = `${share.workspaceNodeLocation}-${share.workspaceNodeId}`
       if (share.workspaceNodeType === NODE_TYPE.COLLECTION) {
         next(`/received-share/${sharingKey}/${nodeKey}`)
@@ -231,7 +231,7 @@ const routes = [
       const sharingKey = to.params.sharingKey
       await store.dispatch('embed/getEmbedInfo', { sharingKey })
       const dashboard = useDashboardStore()
-      dashboard.createEmbedPageLog({ sharingKey })
+      dashboard.createEmbedPageLog(sharingKey)
       next()
     },
     children: [
