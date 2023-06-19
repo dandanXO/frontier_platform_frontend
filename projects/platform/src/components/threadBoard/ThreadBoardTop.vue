@@ -62,7 +62,7 @@ div(class="h-13 flex-shrink-0 px-7.5 border-b border-grey-150")
       )
         template(#default="{ collapsePopper }")
           div(class="w-93.5 rounded shadow-16")
-            div(class="px-4 py-5 flex flex-row items-center justify-between")
+            div(class="p-4 flex flex-row items-center justify-between")
               span(class="text-body2 text-grey-900 font-bold") {{ $t('RR0085') }}
               f-svg-icon(
                 class="text-grey-600 cursor-pointer"

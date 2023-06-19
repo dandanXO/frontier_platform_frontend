@@ -57,7 +57,7 @@ div
     div(class="h-full" :class="{ 'px-1 pb-2': isEditingName || active }")
       div(
         class="relative h-full"
-        :class="{ 'w-79.5 pt-1 bg-grey-100 rounded': isEditingName, 'bg-primary-0 outline-primary-300 outline outline-1 -outline-offset-1': active && isEditingName }"
+        :class="{ 'w-79.5 pt-1 bg-grey-100 rounded': isEditingName, 'bg-primary-50 outline-primary-300 outline outline-1 -outline-offset-1': active && isEditingName }"
       )
         f-scrollbar-container(
           :ref="(el) => (scrollContainer = el)"

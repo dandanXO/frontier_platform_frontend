@@ -14,7 +14,7 @@ div(ref="threadCardRef" :class="containerClass" @click="handleClick")
         f-tooltip-standard(:tooltipMessage="thread.materialNo")
           template(#slot:tooltip-trigger)
             p(
-              class="font-bold text-caption line-clamp-1"
+              class="text-caption line-clamp-1"
               :class="[thread.hasMaterialDeleted || thread.hasMaterialNoAccess ? 'text-grey-250' : 'text-grey-600 hover:text-primary-400 hover:underline hover:cursor-pointer']"
             ) {{ thread.materialNo }}
               span(v-if="thread.hasMaterialDeleted") &nbsp({{ $t('TT0113') }})
@@ -73,7 +73,7 @@ div(ref="threadCardRef" :class="containerClass" @click="handleClick")
     f-popper(placement="top" :offset="[0, 8]" @click.stop)
       template(#trigger="{ isExpand }")
         div(
-          class="w-12 h-7.5 flex items-center justify-center border border-grey-150 rounded-sm p-[1px] bg-grey-0"
+          class="w-12 h-7.5 flex items-center justify-center border border-grey-150 rounded p-[1px] bg-grey-0"
         )
           div(
             class="w-full h-full flex flex-row items-center justify-center gap-x-2 rounded-sm hover:bg-grey-100"
@@ -151,7 +151,7 @@ const containerClass = computed(() => {
 
   if (focused.value) {
     baseClass.push(
-      'bg-primary-0 outline-primary-300 outline-1 -outline-offset-1'
+      'bg-primary-50 outline-primary-300 outline-1 -outline-offset-1'
     )
   } else if (props.active) {
     baseClass.push(

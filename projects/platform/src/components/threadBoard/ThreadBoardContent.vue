@@ -131,7 +131,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
           template(#item="{ element }")
         div(
           class="absolute left-0 top-0 w-full h-full pt-3.5 flex flex-col items-center gap-2 text-grey-600 bg-grey-100"
-          :class="[draggingThreadCardId != null ? 'hover:bg-primary-0 hover:text-primary-400' : 'hover:bg-grey-150']"
+          :class="[draggingThreadCardId != null ? 'hover:bg-primary-50 hover:text-primary-400' : 'hover:bg-grey-150']"
         )
           f-svg-icon(iconName="add" size="20")
           span(
