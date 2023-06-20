@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import { useNotifyStore } from '@/stores/notify'
-import { useDashboardStore } from '@/stores/dashboard'
+import useLogSender from '@/composables/useLogSender'
 import { ROLE_ID, NODE_TYPE } from '@/utils/constants'
 import Sidebar from '@/components/sidebar/Sidebar.vue'
 import i18n from '@/utils/i18n'
@@ -181,8 +181,8 @@ const routes = [
       store.dispatch('code/getFilterOptions')
       await store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey })
       const share = store.getters['receivedShare/share']
-      const dashboard = useDashboardStore()
-      dashboard.createReceivePageLog(sharingKey)
+      const logSender = useLogSender()
+      logSender.createReceivePageLog(sharingKey)
       const nodeKey = `${share.workspaceNodeLocation}-${share.workspaceNodeId}`
       if (share.workspaceNodeType === NODE_TYPE.COLLECTION) {
         next(`/received-share/${sharingKey}/${nodeKey}`)
@@ -230,8 +230,8 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       const sharingKey = to.params.sharingKey
       await store.dispatch('embed/getEmbedInfo', { sharingKey })
-      const dashboard = useDashboardStore()
-      dashboard.createEmbedPageLog(sharingKey)
+      const logSender = useLogSender()
+      logSender.createEmbedPageLog(sharingKey)
       next()
     },
     children: [

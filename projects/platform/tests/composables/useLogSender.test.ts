@@ -1,8 +1,7 @@
-import { setActivePinia, createPinia } from 'pinia'
 import { useRoute } from 'vue-router'
+import { FeatureType } from '@frontier/platform-web-sdk'
 import dashboardApi from '@/apis/dashboard'
-import { useDashboardStore } from '@/stores/dashboard'
-import { FROM_LOCATION_TYPE } from '@/types'
+import useLogSender from '@/composables/useLogSender'
 import { CATEGORY } from '@/types'
 import type { Mock } from 'vitest'
 
@@ -31,14 +30,7 @@ vi.mock('@/apis/dashboard', async () => {
   }
 })
 
-describe('useDashboard', () => {
-  beforeEach(() => {
-    // creates a fresh pinia and make it active so it's automatically picked
-    // up by any useStore() call without having to pass it to it:
-    // `useStore(pinia)`
-    setActivePinia(createPinia())
-  })
-
+describe('useLogSender', () => {
   afterEach(() => {
     vi.restoreAllMocks()
   })
@@ -54,7 +46,7 @@ describe('useDashboard', () => {
         },
         expected: {
           materialId,
-          fromLocationType: FROM_LOCATION_TYPE.PUBLIC_LIBRARY,
+          fromLocationType: FeatureType.PUBLIC_LIBRARY,
         },
       },
       {
@@ -65,7 +57,7 @@ describe('useDashboard', () => {
         },
         expected: {
           materialId,
-          fromLocationType: FROM_LOCATION_TYPE.PUBLIC_LIBRARY,
+          fromLocationType: FeatureType.PUBLIC_LIBRARY,
         },
       },
       {
@@ -76,7 +68,7 @@ describe('useDashboard', () => {
         },
         expected: {
           materialId,
-          fromLocationType: FROM_LOCATION_TYPE.ASSET,
+          fromLocationType: FeatureType.ASSET,
         },
       },
       {
@@ -87,7 +79,7 @@ describe('useDashboard', () => {
         },
         expected: {
           materialId,
-          fromLocationType: FROM_LOCATION_TYPE.ASSET,
+          fromLocationType: FeatureType.ASSET,
         },
       },
       {
@@ -98,7 +90,7 @@ describe('useDashboard', () => {
         },
         expected: {
           materialId,
-          fromLocationType: FROM_LOCATION_TYPE.WORKSPACE,
+          fromLocationType: FeatureType.WORKSPACE,
         },
       },
       {
@@ -109,7 +101,7 @@ describe('useDashboard', () => {
         },
         expected: {
           materialId,
-          fromLocationType: FROM_LOCATION_TYPE.SHARED_WITH_ME,
+          fromLocationType: FeatureType.SHARED_WITH_ME,
         },
       },
       {
@@ -120,7 +112,7 @@ describe('useDashboard', () => {
         },
         expected: {
           materialId,
-          fromLocationType: FROM_LOCATION_TYPE.SHARED_RECEIVE_PAGE,
+          fromLocationType: FeatureType.RECEIVED_SHARE,
         },
       },
       {
@@ -131,7 +123,7 @@ describe('useDashboard', () => {
         },
         expected: {
           materialId,
-          fromLocationType: FROM_LOCATION_TYPE.EMBED,
+          fromLocationType: FeatureType.EMBED,
         },
       },
     ]
@@ -144,13 +136,13 @@ describe('useDashboard', () => {
       },
       expected: {
         materialId: number
-        fromLocationType: FROM_LOCATION_TYPE
+        fromLocationType: FeatureType
       }
     ) => {
       it(testName, async () => {
         ;(useRoute as Mock).mockReturnValue({ path: args.path })
-        const dashboard = useDashboardStore()
-        await dashboard.createViewerLog(args.materialId)
+        const logSender = useLogSender()
+        await logSender.createViewerLog(args.materialId)
 
         expect(dashboardApi.createViewerLog).toHaveBeenCalledTimes(1)
         expect(dashboardApi.createViewerLog).toHaveBeenCalledWith({
@@ -176,13 +168,13 @@ describe('useDashboard', () => {
       expected: {
         materialId: number
         category: CATEGORY
-        fromLocationType: FROM_LOCATION_TYPE
+        fromLocationType: FeatureType
       }
     ) => {
       it(testName, async () => {
         ;(useRoute as Mock).mockReturnValue({ path: args.path })
-        const dashboard = useDashboardStore()
-        await dashboard.createDownloadLog(args.materialId, args.selectedFormat)
+        const logSender = useLogSender()
+        await logSender.createDownloadLog(args.materialId, args.selectedFormat)
 
         expect(dashboardApi.createDownloadLog).toHaveBeenCalledTimes(1)
         expect(dashboardApi.createDownloadLog).toHaveBeenCalledWith({
@@ -206,7 +198,7 @@ describe('useDashboard', () => {
           expected: {
             materialId,
             category: CATEGORY.U3M,
-            fromLocationType: FROM_LOCATION_TYPE.PUBLIC_LIBRARY,
+            fromLocationType: FeatureType.PUBLIC_LIBRARY,
           },
         },
         {
@@ -219,7 +211,7 @@ describe('useDashboard', () => {
           expected: {
             materialId,
             category: CATEGORY.U3MA,
-            fromLocationType: FROM_LOCATION_TYPE.PUBLIC_LIBRARY,
+            fromLocationType: FeatureType.PUBLIC_LIBRARY,
           },
         },
         {
@@ -232,7 +224,7 @@ describe('useDashboard', () => {
           expected: {
             materialId,
             category: CATEGORY.GLTF,
-            fromLocationType: FROM_LOCATION_TYPE.PUBLIC_LIBRARY,
+            fromLocationType: FeatureType.PUBLIC_LIBRARY,
           },
         },
       ]
@@ -255,7 +247,7 @@ describe('useDashboard', () => {
           expected: {
             materialId,
             category: CATEGORY.U3M,
-            fromLocationType: FROM_LOCATION_TYPE.PUBLIC_LIBRARY,
+            fromLocationType: FeatureType.PUBLIC_LIBRARY,
           },
         },
         {
@@ -268,7 +260,7 @@ describe('useDashboard', () => {
           expected: {
             materialId,
             category: CATEGORY.U3M,
-            fromLocationType: FROM_LOCATION_TYPE.PUBLIC_LIBRARY,
+            fromLocationType: FeatureType.PUBLIC_LIBRARY,
           },
         },
         {
@@ -281,7 +273,7 @@ describe('useDashboard', () => {
           expected: {
             materialId,
             category: CATEGORY.U3M,
-            fromLocationType: FROM_LOCATION_TYPE.ASSET,
+            fromLocationType: FeatureType.ASSET,
           },
         },
         {
@@ -294,7 +286,7 @@ describe('useDashboard', () => {
           expected: {
             materialId,
             category: CATEGORY.U3M,
-            fromLocationType: FROM_LOCATION_TYPE.ASSET,
+            fromLocationType: FeatureType.ASSET,
           },
         },
         {
@@ -307,7 +299,7 @@ describe('useDashboard', () => {
           expected: {
             materialId,
             category: CATEGORY.U3M,
-            fromLocationType: FROM_LOCATION_TYPE.WORKSPACE,
+            fromLocationType: FeatureType.WORKSPACE,
           },
         },
         {
@@ -320,7 +312,7 @@ describe('useDashboard', () => {
           expected: {
             materialId,
             category: CATEGORY.U3M,
-            fromLocationType: FROM_LOCATION_TYPE.SHARED_WITH_ME,
+            fromLocationType: FeatureType.SHARED_WITH_ME,
           },
         },
         {
@@ -333,7 +325,7 @@ describe('useDashboard', () => {
           expected: {
             materialId,
             category: CATEGORY.U3M,
-            fromLocationType: FROM_LOCATION_TYPE.SHARED_RECEIVE_PAGE,
+            fromLocationType: FeatureType.RECEIVED_SHARE,
           },
         },
         {
@@ -346,7 +338,7 @@ describe('useDashboard', () => {
           expected: {
             materialId,
             category: CATEGORY.U3M,
-            fromLocationType: FROM_LOCATION_TYPE.EMBED,
+            fromLocationType: FeatureType.EMBED,
           },
         },
       ]
@@ -362,8 +354,8 @@ describe('useDashboard', () => {
       const sharingKey = 'ab1234'
       const expectedRequest = { sharingKey }
 
-      const dashboard = useDashboardStore()
-      await dashboard.createEmbedPageLog(sharingKey)
+      const logSender = useLogSender()
+      await logSender.createEmbedPageLog(sharingKey)
 
       expect(dashboardApi.createEmbedPageLog).toHaveBeenCalledTimes(1)
       expect(dashboardApi.createEmbedPageLog).toHaveBeenCalledWith(
@@ -377,8 +369,8 @@ describe('useDashboard', () => {
       const sharingKey = 'ab1234'
       const expectedRequest = { sharingKey }
 
-      const dashboard = useDashboardStore()
-      await dashboard.createReceivePageLog(sharingKey)
+      const logSender = useLogSender()
+      await logSender.createReceivePageLog(sharingKey)
 
       expect(dashboardApi.createReceivePageLog).toHaveBeenCalledTimes(1)
       expect(dashboardApi.createReceivePageLog).toHaveBeenCalledWith(

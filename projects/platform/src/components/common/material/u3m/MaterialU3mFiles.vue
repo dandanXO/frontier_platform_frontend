@@ -17,7 +17,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { U3M_STATUS } from '@/utils/constants'
 import { downloadDataURLFile } from '@/utils/fileOperator'
-import { useDashboardStore } from '@/stores/dashboard'
+import useLogSender from '@/composables/useLogSender'
 import type { Material } from '@/types'
 
 interface FileItem {
@@ -32,7 +32,7 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
-const dashboard = useDashboardStore()
+const logSender = useLogSender()
 
 const items = computed<FileItem[]>(() => [
   { name: t('UU0005'), url: props.material.u3m.zipUrl, format: 'zipUrl' },
@@ -43,7 +43,7 @@ const items = computed<FileItem[]>(() => [
 const defaultDownloadU3m = async (item: FileItem) => {
   const fileName = item.url.split('/')[item.url.split('/').length - 1]
   downloadDataURLFile(item.url, fileName)
-  dashboard.createDownloadLog(props.material.materialId, item.format)
+  logSender.createDownloadLog(props.material.materialId, item.format)
 }
 
 const downloadU3m = props.downloadU3m || defaultDownloadU3m

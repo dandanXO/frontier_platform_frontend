@@ -1,13 +1,13 @@
 import { ref, unref } from 'vue'
 import { useStore } from 'vuex'
 import { U3M_STATUS } from '@/utils/constants'
-import { useDashboardStore } from '@/stores/dashboard'
+import useLogSender from '@/composables/useLogSender'
 import type { Ref } from 'vue'
 import type { Material } from '@/types'
 
 const useModelEditor = (material: Ref<Material> | Material) => {
   const store = useStore()
-  const dashboard = useDashboardStore()
+  const logSender = useLogSender()
   const isOpen = ref(false)
 
   const closeModalModelEditor = () => {
@@ -30,7 +30,7 @@ const useModelEditor = (material: Ref<Material> | Material) => {
       },
     })
     isOpen.value = true
-    dashboard.createViewerLog(materialId)
+    logSender.createViewerLog(materialId)
   }
 
   // 因為使用空白鍵作為快捷鍵會跟 edit asset 的 input 衝突，

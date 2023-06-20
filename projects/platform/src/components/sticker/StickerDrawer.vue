@@ -382,11 +382,11 @@ import DigitalThreadCard from '@/components/sticker/DigitalThreadCard.vue'
 import useNavigation from '@/composables/useNavigation'
 import useThreadBoardStore from '@/stores/threadBoard'
 import useDigitalThreadWorkflowStageStore from '@/stores/digitalThreadWorkflowStage'
-import { useDashboardStore } from '@/stores/dashboard'
+import useLogSender from '@/composables/useLogSender'
 
 const store = useStore()
 const threadBoardStore = useThreadBoardStore()
-const dashboard = useDashboardStore()
+const logSender = useLogSender()
 const { t } = useI18n()
 const router = useRouter()
 const { parsePath } = useNavigation()
@@ -581,7 +581,7 @@ const displayTagList = computed(() => {
 
 const toggleTagList = (selectTag) => {
   if (!isCurrentThreadFilterTagListToggled.value) {
-    dashboard.createStickerTagFilterLog()
+    logSender.createStickerTagFilterLog()
   }
   store.dispatch('sticker/toggleFilterTagList', selectTag)
 }
