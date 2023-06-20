@@ -120,11 +120,10 @@ const actions = {
     userApi.readAnnouncement()
   },
   openModalNewFeatureReminder({ dispatch }) {
+    const latestFeatureModal = 'modal-thread-board-feature-reminder'
     dispatch(
       'helper/pushModal',
-      {
-        component: 'modal-new-feature-reminder',
-      },
+      { component: latestFeatureModal },
       { root: true }
     )
   },

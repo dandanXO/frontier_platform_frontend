@@ -263,7 +263,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
         ) {{ $t('UU0040') }}
       div(
         class="absolute z-1 bottom-3 right-6 w-6 h-6 hover:bg-grey-100 hover:rounded flex justify-center items-center cursor-pointer"
-        @click="$store.dispatch('user/openModalNewFeatureReminder')"
+        @click="$store.dispatch('helper/pushModal', { component: 'modal-digital-thread-feature-reminder' })"
       )
         f-svg-icon(iconName="question" size="16" class="text-grey-600")
     //- Content

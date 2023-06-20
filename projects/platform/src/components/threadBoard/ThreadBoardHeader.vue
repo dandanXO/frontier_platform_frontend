@@ -10,7 +10,16 @@ div(
   )
     div(class="w-3 h-3 rounded-sm" :style="{ background: unit.labelColor }")
     span(class="text-body2 text-grey-100") {{ unit.ogName }}
-  f-svg-icon(iconName="question" size="24" class="text-grey-50 cursor-pointer")
+  f-tooltip-standard(
+    :tooltipMessage="$t('TT0173')"
+    boundaryReference="search-table-header"
+  )
+    template(#slot:tooltip-trigger)
+      div(
+        class="w-6 h-6 rounded hover:bg-primary-700 flex justify-center items-center cursor-pointer"
+        @click="$store.dispatch('helper/pushModal', { component: 'modal-thread-board-feature-reminder' })"
+      )
+        f-svg-icon(iconName="question" size="16" class="text-grey-50")
 </template>
 
 <script setup lang="ts">

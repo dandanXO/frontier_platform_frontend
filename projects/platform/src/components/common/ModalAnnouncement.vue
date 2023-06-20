@@ -11,14 +11,30 @@ div(
       @click="closeAnnouncement"
     )
     div(class="w-70 h-full shrink-0")
-      img(src="@/assets/images/announcement/modal_left_side.png")
-    div(class="flex-grow pt-6 pl-8 pr-5")
-      h3(class="text-h3/1.3 text-grey-900 font-normal") {{ $t('TT0115') }}
-      h3(class="text-h3/1.3 text-primary-400 font-bold") {{ $t('TT0116') }}
-      div(class="pt-5.5 flex flex-col gap-y-5")
-        div(v-for="content in contentList" class="flex gap-x-3")
-          f-svg-icon(:iconName="content.iconName" size="30")
-          div(class="w-96")
+      img(:src="contentList[activeContentIndex].leftSideImg")
+    div(class="flex-grow pt-8 pl-10.5 pr-5.5")
+      div(class="pr-9 flex flex-col gap-y-2")
+        h3(class="text-caption text-primary-400 font-bold") {{ $t('TT0115') }}
+        h3(class="text-h3/1.3 text-grey-900 font-medium") {{ $t('TT0132') }}
+        p(class="text-body2/1.6 text-grey-900") {{ $t('TT0174') }}
+          span(
+            class="text-cyan-400 cursor-pointer"
+            @click="$store.dispatch('helper/pushModal', { component: 'modal-thread-board-feature-reminder' })"
+          ) {{ ' ' + $t('RR0275') }}
+      div(class="pt-8 flex flex-col gap-y-2")
+        div(
+          v-for="(content, index) in contentList"
+          :key="index"
+          class="flex gap-x-3 hover:bg-grey-150 hover:outline outline-grey-150 outline-1 rounded-lg p-4 cursor-pointer"
+          :class="activeContentIndex === index ? 'bg-grey-50 outline' : ''"
+          @click="activeContentIndex = index"
+        )
+          f-svg-icon(
+            :iconName="content.iconName"
+            size="32"
+            :class="{ [content.iconActiveClass]: activeContentIndex === index }"
+          )
+          div(class="")
             p(class="text-body2/1.6 text-grey-900 font-bold") {{ content.title }}
             p(class="text-body2/1.6 text-grey-600") {{ content.description }}
     f-button(
@@ -33,35 +49,36 @@ div(
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import announcement1 from '@/assets/images/announcement/img_threadboard_announcement_01.png'
+import announcement2 from '@/assets/images/announcement/img_threadboard_announcement_02.png'
 
 const store = useStore()
 const { t } = useI18n()
 
 interface Content {
   iconName: string
+  iconActiveClass: string
   title: string
   description: string
+  leftSideImg: string
 }
+
+const activeContentIndex = ref(0)
+
 const contentList = computed<Content[]>(() => [
   {
-    iconName: 'sticker_thread',
-    title: t('TT0117'),
-    description: t('TT0123'),
+    iconName: 'board',
+    iconActiveClass: 'text-primary-300',
+    title: t('TT0132'),
+    description: t('TT0175'),
+    leftSideImg: announcement1,
   },
   {
-    iconName: 'teams',
-    title: t('TT0118'),
-    description: t('TT0124'),
-  },
-  {
-    iconName: 'starred',
-    title: t('TT0119'),
-    description: t('TT0125'),
-  },
-  {
-    iconName: 'summary',
-    title: t('TT0120'),
-    description: t('TT0126'),
+    iconName: 'workflow_stage',
+    iconActiveClass: 'text-cyan-300',
+    title: t('TT0176'),
+    description: t('TT0177'),
+    leftSideImg: announcement2,
   },
 ])
 
