@@ -119,7 +119,7 @@ const tabList = reactive([
     path: 'history',
   },
   {
-    name: 'Dashboard',
+    name: t('BB0138'),
     path: 'dashboard',
   },
 ])
