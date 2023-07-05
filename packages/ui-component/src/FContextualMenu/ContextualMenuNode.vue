@@ -196,10 +196,6 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  searchEnable: {
-    type: Array,
-    default: () => [],
-  },
 })
 
 const innerMenu = computed(() => {
