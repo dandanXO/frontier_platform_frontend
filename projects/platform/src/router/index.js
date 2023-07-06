@@ -6,6 +6,7 @@ import { ROLE_ID, NODE_TYPE } from '@/utils/constants'
 import Sidebar from '@/components/sidebar/Sidebar.vue'
 import i18n from '@/utils/i18n'
 import remindVerifyEmail from '@/utils/remind-verify-email'
+import { pageview } from 'vue-gtag'
 
 const checkUserIsVerify = (to, from, next) => {
   const user = store.getters['user/user']
@@ -432,6 +433,14 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   sensitive: true,
+})
+
+router.afterEach((to) => {
+  pageview({
+    page_title: to.name,
+    page_path: to.path,
+    page_location: to.href,
+  })
 })
 
 export default router

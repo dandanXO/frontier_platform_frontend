@@ -75,14 +75,12 @@ for (const path in globalComponents) {
 app
   .use(createPinia())
   .use(router)
-  .use(
-    VueGtag,
-    {
-      bootstrap: false,
-      config: { id: import.meta.env.VITE_APP_GA_MEASUREMENT_ID },
+  .use(VueGtag, {
+    bootstrap: false,
+    config: {
+      id: import.meta.env.VITE_APP_GA_MEASUREMENT_ID,
     },
-    router
-  )
+  })
   .use(store)
   .use(i18n)
   .use(uiComponents)
