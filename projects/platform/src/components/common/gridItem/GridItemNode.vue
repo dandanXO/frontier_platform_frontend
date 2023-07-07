@@ -81,7 +81,7 @@ const props = defineProps({
   },
   selectedValue: {
     type: Array,
-    default: [],
+    default: () => [],
   },
   optionList: {
     type: Array,

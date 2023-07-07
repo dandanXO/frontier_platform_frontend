@@ -46,7 +46,7 @@ div(class="w-full h-full")
           :key="node.nodeKey"
           v-model:selectedValue="selectedNodeList"
           :node="node"
-          :optionList="optionNode(node, inSearch)"
+          :optionList="optionNode(node)"
           @click:option="$event.func(node)"
           @click:node="handleNodeClick(node, goTo)"
         )
@@ -156,27 +156,16 @@ const breadcrumbList = computed(() =>
 )
 const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
 const nodeList = computed(() => store.getters['workspace/nodeList'])
-const optionNode = (node, inSearch) => {
-  const { nodeType, location } = node
+const optionNode = (node) => {
+  const { nodeType } = node
   if (nodeType === NODE_TYPE.COLLECTION) {
-    const optionList = [
+    return [
       [editNodeCollection],
-      [duplicateNode, moveNode],
+      [duplicateNode, moveNode, shareNode],
       [deleteCollection],
     ]
-
-    if (isFirstLayer.value && location.length === 2) {
-      optionList[1].push(shareNode)
-    }
-    return optionList
   } else {
-    const optionList = [[editNodeMaterial], [moveNode], [deleteMaterial]]
-
-    if (isFirstLayer.value && location.length === 2) {
-      optionList[1].push(shareNode)
-    }
-
-    return optionList
+    return [[editNodeMaterial], [moveNode, shareNode], [deleteMaterial]]
   }
 }
 const currentNodeKey = ref(props.nodeKey)
