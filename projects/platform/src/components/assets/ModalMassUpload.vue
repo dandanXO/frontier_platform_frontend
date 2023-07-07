@@ -35,16 +35,9 @@ modal-behavior(
       i18n-t(keypath="DD0036" tag="p" scope="global")
         template(#UU0065)
           a(
-            v-if="locale === 'en-US'"
             target="_blank"
             class="text-cyan-400 cursor-pointer"
-            href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(英文版).xlsx"
-          ) {{ $t('UU0065') }}
-          a(
-            v-else
-            target="_blank"
-            class="text-cyan-400 cursor-pointer"
-            href="https://textile-dev.frontier.cool/Resource/MaterialExportTemplate/MassUploadFromat(中文版).xlsx"
+            :href="excelTemplateDownloadLink"
           ) {{ $t('UU0065') }}
       p {{ $t('DD0037') }}
 </template>
@@ -73,6 +66,17 @@ let binaryFile
 
 const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
 const acceptType = ['xlsx']
+
+const excelTemplateDownloadLink = computed(() => {
+  const endpoint = import.meta.env.VITE_APP_WEB_URL
+  const fileNameLocaleMap = {
+    'zh-TW': 'MassUploadFromat(中文版)',
+    'en-US': 'MassUploadFromat(英文版)',
+  }
+  return `${endpoint}/Resource/MaterialExportTemplate/${
+    fileNameLocaleMap[locale.value]
+  }.xlsx`
+})
 
 const onFinish = (file) => {
   binaryFile = file
