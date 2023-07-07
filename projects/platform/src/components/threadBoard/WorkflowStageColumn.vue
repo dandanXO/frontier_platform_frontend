@@ -248,6 +248,9 @@ const menuTree = computed(() => ({
     }
 
     blockList.push(moveAllThreadsBlock)
+    if (props.workflowStage.isDefault) {
+      return blockList
+    }
     if (threadBoardStore.haveEditWorkflowStagePermission) {
       blockList.push(renameBlock)
     }
