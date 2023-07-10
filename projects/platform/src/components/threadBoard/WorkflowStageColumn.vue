@@ -33,7 +33,7 @@ div
                   span(
                     class="text-body2 text-grey-900 font-bold flex-shrink-1 line-clamp-1"
                   ) {{ workflowStage.workflowStageName }}
-              span(class="text-body2 text-grey-600") {{ workflowStage.digitalThreadList.length }}
+              span(class="text-body2 leading-1.4 text-grey-600") {{ workflowStage.digitalThreadList.length }}
         div(class="w-8 h-8 flex items-center justify-center flex-shrink-0")
           f-popper(
             :class="{ 'pointer-events-none': threadBoardStore.loading }"
