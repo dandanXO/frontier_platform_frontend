@@ -603,11 +603,11 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       store.dispatch('helper/openModalConfirm', {
         type: NOTIFY_TYPE.INFO,
         header: t('TT0139'),
-        contentText: t('TT0140'),
-        primaryBtnText: t('UU0132'),
-        primaryBtnHandler: clearAllQuery,
-        secondaryBtnText: t('UU0133'),
-        secondaryBtnHandler: () => {
+        contentText: t('TT0241'),
+        secondaryBtnText: t('UU0135'),
+        secondaryBtnHandler: clearAllQuery,
+        textBtnText: t('UU0002'),
+        textBtnHandler: () => {
           activeThreadSideId.value = digitalThreadSideId
           onFetchSuccess = null
         },
