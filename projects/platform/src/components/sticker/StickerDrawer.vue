@@ -275,7 +275,8 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
         div(v-if="!isAddingSticker && !isFilterDirty" class="pl-8 pr-10.5")
           f-tooltip-standard(
             isNotFitWidth
-            :tooltipMessage="digitalThread.hasMaterialDeleted ? $t('TT0102') : ''"
+            :disabledTooltip="!digitalThread.hasMaterialDeleted"
+            :tooltipMessage="$t('TT0102')"
           )
             template(#slot:tooltip-trigger)
               button(
