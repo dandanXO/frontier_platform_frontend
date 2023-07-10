@@ -32,8 +32,6 @@ export default {
       )
     },
     async getMaterialUploadProgress({ dispatch, commit }, params) {
-      params.startDate = params.startDate.split('-').join('/')
-      params.endDate = params.endDate.split('-').join('/')
       const { data } = await dispatch('callAssetsApi', {
         func: 'getMaterialUploadProgress',
         params,
@@ -42,8 +40,6 @@ export default {
       return data.result
     },
     async getU3mUploadProgress({ dispatch, commit }, params) {
-      params.startDate = params.startDate.split('-').join('/')
-      params.endDate = params.endDate.split('-').join('/')
       const { data } = await dispatch('callAssetsApi', {
         func: 'getU3mUploadProgress',
         params,
@@ -52,8 +48,6 @@ export default {
       return data.result
     },
     async getExcelUploadProgress({ dispatch, commit }, params) {
-      params.startDate = params.startDate.split('-').join('/')
-      params.endDate = params.endDate.split('-').join('/')
       const { data } = await dispatch('callAssetsApi', {
         func: 'getExcelUploadProgress',
         params,

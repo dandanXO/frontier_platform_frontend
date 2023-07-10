@@ -57,9 +57,23 @@ f-input-container(
       :class="classIcon"
     )
     //- Main Input
-    input(
+    flat-pickr(
+      v-if="inputType === 'date'"
       ref="refInput"
-      :type="inputType"
+      v-model="innerTextValue"
+      :class="classInput"
+      :disabled="disabled"
+      :config="flatPickrConfig"
+      placeholder="yyyy/mm/dd"
+      @input="onInput"
+      @focus="onFocus"
+      @blur="onBlur"
+      @change="$emit('change', $event)"
+      @keydown.enter="$emit('enter', $event)"
+    )
+    input(
+      v-else
+      ref="refInput"
       v-model.trim="innerTextValue"
       :placeholder="placeholder"
       :class="classInput"
@@ -67,7 +81,6 @@ f-input-container(
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"
-      @click="onClickInput"
       @change="$emit('change', $event)"
       @keydown.enter="$emit('enter', $event)"
     )
@@ -169,6 +182,8 @@ export default {
 import { ref, toRefs, computed, useSlots, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { CONTEXTUAL_MENU_MODE } from '../../constants'
+import flatPickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
 import useInput from '../useInput'
 const { te } = useI18n()
 const slots = useSlots()
@@ -400,6 +415,9 @@ const rightSelectedMenu = computed(() =>
 )
 
 const refInput = ref(null)
+const flatPickrConfig = {
+  dateFormat: 'Y/m/d',
+}
 
 const onInput = async () => {
   await nextTick()
@@ -414,16 +432,10 @@ const onBlur = () => {
   isFocus.value = false
   emit('blur')
 }
-const onClickInput = () => {
-  if (props.inputType === 'date') {
-    refInput.value.showPicker()
-  }
-  emit('click:input')
-}
 const onClickAppendIcon = () => {
   if (props.inputType === 'date') {
-    refInput.value.focus()
-    refInput.value.showPicker()
+    refInput.value.fp.open()
+    refInput.value.getElem().focus()
   }
   emit('click:appendIcon')
 }

@@ -37,6 +37,7 @@
     "vue": "3.3.1"
   },
   "dependencies": {
-    "@storybook/addon-styling": "^1.0.5"
+    "@storybook/addon-styling": "^1.0.5",
+    "vue-flatpickr-component": "^11"
   }
 }

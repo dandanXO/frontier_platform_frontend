@@ -16,7 +16,7 @@ export default {
       control: { type: null },
     },
     inputType: {
-      control: { type: 'select' },
+      control: { type: 'radio' },
       options: ['text', 'number', 'date', 'password'],
     },
     size: {

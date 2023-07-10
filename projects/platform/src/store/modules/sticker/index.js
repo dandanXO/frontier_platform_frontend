@@ -50,8 +50,8 @@ const defaultFilter = () => ({
     addedByInternalUnit: false,
     addedByExternalUnit: false,
   },
-  createStartDate: '',
-  createEndDate: '',
+  createStartDate: null,
+  createEndDate: null,
   tagList: [],
 })
 
