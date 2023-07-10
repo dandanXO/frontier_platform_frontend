@@ -151,9 +151,7 @@ const containerClass = computed(() => {
   ]
 
   if (focused.value) {
-    baseClass.push(
-      'bg-primary-50 outline-primary-300 outline-1 -outline-offset-1'
-    )
+    baseClass.push('bg-grey-50 outline-primary-300 outline-1 -outline-offset-1')
   } else if (props.active) {
     baseClass.push(
       'bg-primary-50 outline-primary-300 outline-1 -outline-offset-1'
@@ -165,7 +163,7 @@ const containerClass = computed(() => {
       'hover:outline-2 hover:-outline-offset-2 hover:outline-grey-200'
     const pressedClass =
       'active:outline-2 active:-outline-offset-2 active:outline-grey-250 active:bg-grey-100'
-    baseClass.push('bg-grey-50 outline-1 -outline-offset-1 outline-grey-150')
+    baseClass.push('bg-grey-0 outline-1 -outline-offset-1 outline-grey-150')
     baseClass.push(hoverClass)
     baseClass.push(pressedClass)
   }
