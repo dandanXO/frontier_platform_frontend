@@ -261,14 +261,16 @@ const bgClassList = computed(() => {
 
 const mouseEnterHandler = () => {
   innerMenu.value?.mouseEnterHandler && innerMenu.value.mouseEnterHandler()
-
-  hasNextLevel.value && expandMenu()
+  if (hasNextLevel.value && !innerMenu.value.disabled) {
+    expandMenu()
+  }
 }
 
 const mouseLeaveHandler = () => {
   innerMenu.value?.mouseLeaveHandler && innerMenu.value.mouseLeaveHandler()
-
-  hasNextLevel.value && collapseMenu()
+  if (hasNextLevel.value && !innerMenu.value.disabled) {
+    collapseMenu()
+  }
 }
 
 const clickMenuHandler = () => {
