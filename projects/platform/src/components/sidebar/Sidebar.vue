@@ -83,7 +83,7 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex fle
     div(
       v-if="isPromotingNewFeature"
       class="mx-auto my-3.5 bg-grey-0 shadow-2 rounded"
-      @click="store.dispatch('user/openModalNewFeatureReminder')"
+      @click="store.dispatch('user/openModalNewFeatureLaunch')"
     )
       f-button(type="secondary" size="md" prependIcon="new") {{ $t('TT0127') }}
   menu-org-user

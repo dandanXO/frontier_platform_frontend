@@ -38,7 +38,6 @@ div(class="flex flex-col h-full")
         :key="$route.params.orgNo"
         class="absolute bottom-0 left-0 z-100"
       )
-      modal-announcement(v-if="isInInnerApp && user.isShowAnnouncement")
     transition
       sticker-drawer(v-if="isStickerDrawerOpen")
 </template>
@@ -52,16 +51,13 @@ export default {
 <script setup>
 import { setOptions, bootstrap } from 'vue-gtag'
 import { useStore } from 'vuex'
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, onMounted } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
 import { useNotifyStore } from '@/stores/notify'
 
 const NotifyBarBuffer = defineAsyncComponent(() =>
   import('@/components/billings/NotifyBarBuffer.vue')
-)
-const ModalAnnouncement = defineAsyncComponent(() =>
-  import('@/components/common/ModalAnnouncement.vue')
 )
 
 const notify = useNotifyStore()
@@ -78,6 +74,12 @@ const user = computed(() => store.getters['user/user'])
 const isStickerDrawerOpen = computed(
   () => store.getters['sticker/isStickerDrawerOpen']
 )
+
+onMounted(() => {
+  if (isInInnerApp.value && user.value.isShowAnnouncement) {
+    store.dispatch('helper/pushModal', { component: 'modal-announcement' })
+  }
+})
 
 onBeforeRouteUpdate(async (to, from) => {
   const isFromGroup = 'groupId' in from.params

@@ -1,6 +1,5 @@
 <template lang="pug">
 div(
-  ref="refAnnouncement"
   class="fixed top-0 left-0 w-screen h-screen bg-grey-900/40 z-100 flex items-center justify-center"
   @click="closeAnnouncement"
 )
@@ -82,9 +81,8 @@ const contentList = computed<Content[]>(() => [
   },
 ])
 
-const refAnnouncement = ref<HTMLElement>()
 const closeAnnouncement = () => {
   store.dispatch('user/readAnnouncement')
-  refAnnouncement.value?.remove()
+  store.dispatch('helper/closeModal')
 }
 </script>

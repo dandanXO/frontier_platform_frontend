@@ -52,6 +52,9 @@ export default {
     ModalThreadBoardFeatureReminder: defineAsyncComponent(() =>
       import('@/components/common/ModalThreadBoardFeatureReminder.vue')
     ),
+    ModalAnnouncement: defineAsyncComponent(() =>
+      import('@/components/common/ModalAnnouncement.vue')
+    ),
   },
   props: {
     component: {
