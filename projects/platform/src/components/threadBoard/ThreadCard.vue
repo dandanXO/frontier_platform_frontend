@@ -3,6 +3,7 @@ div(ref="threadCardRef" :class="containerClass" @click="handleClick")
   div(class="h-8 flex items-center justify-between")
     div(class="flex items-center gap-x-2")
       img(
+        v-defaultImg
         class="w-8 h-8 rounded"
         :src="thread.materialCoverImg"
         @click="handleMaterialClick($event, thread, false)"
