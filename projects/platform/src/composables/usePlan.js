@@ -12,6 +12,7 @@ export default function usePlan() {
   const noBindingPayment = computed(
     () => store.getters['organization/noBindingPayment']
   )
+  const plan = computed(() => store.getters['polling/plan'])
   const planType = computed(() => store.getters['polling/planType'])
   const planStatus = computed(() => store.getters['polling/planStatus'])
 
@@ -134,25 +135,29 @@ export default function usePlan() {
                   header: t('OO0039'),
                   contentComponent: shallowRef({
                     render: () => {
-                      return h('div', { class: 'text-body2 leading-1.6' }, [
-                        h(
-                          'p',
-                          {},
-                          `${t('OO0058')} ${plan.value.deactivatedDate}`
-                        ),
-                        h(
-                          Translation,
-                          { keypath: 'OO0126', tag: 'p', scope: 'global' },
-                          {
-                            OO0127: () =>
-                              h(
-                                'span',
-                                { class: 'text-cyan-400' },
-                                t('OO0127')
-                              ),
-                          }
-                        ),
-                      ])
+                      return h(
+                        'div',
+                        { class: 'text-body2 leading-1.6 text-grey-600' },
+                        [
+                          h(
+                            'p',
+                            {},
+                            `${t('OO0058')} ${plan.value.deactivatedDate}`
+                          ),
+                          h(
+                            Translation,
+                            { keypath: 'OO0126', tag: 'p', scope: 'global' },
+                            {
+                              OO0127: () =>
+                                h(
+                                  'span',
+                                  { class: 'text-cyan-400' },
+                                  t('OO0127')
+                                ),
+                            }
+                          ),
+                        ]
+                      )
                     },
                   }),
                   primaryBtnText: t('UU0031'),
@@ -173,7 +178,7 @@ export default function usePlan() {
               keypath: 'OO0121',
               tag: 'p',
               scope: 'global',
-              class: 'text-grey-900 text-body2 leading-1.6',
+              class: 'text-grey-600 text-body2 leading-1.6',
             },
             { newline: () => h('br') }
           )

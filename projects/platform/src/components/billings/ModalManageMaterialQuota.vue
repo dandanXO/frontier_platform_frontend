@@ -183,10 +183,14 @@ const primaryHandler = async () => {
             primaryBtnText: t('UU0031'),
             contentComponent: shallowRef({
               render: () => {
-                return h('div', { class: 'text-body2 leading-1.6' }, [
-                  h('p', {}, t('OO0051')),
-                  h('p', {}, t('OO0052', { date: plan.value.renewDate })),
-                ])
+                return h(
+                  'div',
+                  { class: 'text-body2 leading-1.6 text-grey-600' },
+                  [
+                    h('p', {}, t('OO0051')),
+                    h('p', {}, t('OO0052', { date: plan.value.renewDate })),
+                  ]
+                )
               },
             }),
           })
@@ -216,7 +220,7 @@ const primaryHandler = async () => {
               return h(
                 'p',
                 {
-                  class: 'text-body2 leading-1.6',
+                  class: 'text-body2 leading-1.6 text-grey-600',
                   style: 'white-space: pre-line;',
                 },
                 t('OO0063', { newline: '\n', date: plan.value.renewDate })

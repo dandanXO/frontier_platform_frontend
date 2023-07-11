@@ -6,17 +6,20 @@ div(
 )
   div(
     class="w-104 max-h-125 min-h-54 px-8 py-6 bg-grey-0 rounded flex flex-col shadow-32"
-    :class="[theme === 'light' ? 'bg-grey-0' : 'bg-grey-800']"
+    :class="[theme === 'dark' ? 'bg-grey-800' : 'bg-grey-0']"
     @click.stop
   )
     div(class="h-9 pb-3.5 flex items-center")
       f-svg-icon(:iconName="getIconName" :class="[getIconColor]" size="22")
-      p(class="text-body1 font-bold pl-3" :class="theme === 'dark' && 'text-grey-100'") {{ header }}
+      p(
+        class="text-body1 font-bold pl-3"
+        :class="[theme === 'dark' ? 'text-grey-100' : 'text-grey-900']"
+      ) {{ header }}
     f-scrollbar-container(class="max-h-92.5 flex-grow pl-8.5")
       p(
         v-if="!!contentText"
         class="text-body2 leading-1.6"
-        :class="theme === 'dark' && 'text-grey-150'"
+        :class="[theme === 'dark' ? 'text-grey-250' : 'text-grey-600']"
       ) {{ contentText }}
       component(v-else :is="contentComponent")
     div(class="h-11.5 pt-3 flex justify-between")
