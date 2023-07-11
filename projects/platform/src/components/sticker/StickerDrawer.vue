@@ -39,9 +39,9 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
                   :class="{ 'group-hover:text-primary-400': !isCreatingDigitalThread }"
                 )
                 p(
-                  class="pl-2.5 text-body1 font-bold line-clamp-1 cursor-pointer"
-                  :class="[isCreatingDigitalThread ? 'text-grey-300' : 'text-grey-900 group-hover:text-primary-400']"
-                  @click="threadBoardStore.gotoThreadCard(digitalThread.digitalThreadSideId)"
+                  class="pl-2.5 text-body1 font-bold line-clamp-1"
+                  :class="[isCreatingDigitalThread ? 'text-grey-300' : 'text-grey-900 group-hover:text-primary-400', { 'cursor-pointer': !isCreatingDigitalThread }]"
+                  @click="!isCreatingDigitalThread && threadBoardStore.gotoThreadCard(digitalThread.digitalThreadSideId)"
                 ) {{ digitalThread.digitalThreadName }}
           div(class="flex-shrink pl-4 flex items-center gap-x-4")
             f-svg-icon(

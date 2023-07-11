@@ -1,7 +1,6 @@
 import { computed, nextTick, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import debounce from 'debounce'
@@ -22,7 +21,6 @@ import {
   type RenameWorkflowStageRequest,
   type MoveWorkflowStageAllDigitalThreadRequest,
   type MoveWorkflowStageDigitalThreadRequest,
-  OgType,
 } from '@frontier/platform-web-sdk'
 import threadBoardApi from '@/apis/threadBoard'
 import stickerApi from '@/apis/sticker.js'
@@ -67,8 +65,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const gotoMaterialDetail = useGotoMaterialDetail()
   const store = useStore()
   const permissionList = usePermission()
-  const router = useRouter()
-  const { parsePath, prefixPath } = useNavigation()
+  const { gotoThreadBoard } = useNavigation()
 
   const fetchThreadBoardAbortController = ref<AbortController | null>(null)
   const isActive = ref(false)
@@ -613,7 +610,8 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
         },
       })
     }
-    await router.push(parsePath(`${prefixPath.value}/thread-board`))
+
+    await gotoThreadBoard()
   }
 
   const deactivateThreadCard = () => {

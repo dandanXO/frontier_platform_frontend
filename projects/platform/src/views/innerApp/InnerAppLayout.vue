@@ -53,6 +53,7 @@ import { setOptions, bootstrap } from 'vue-gtag'
 import { useStore } from 'vuex'
 import { computed, defineAsyncComponent, onMounted } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import useNavigation from '@/composables/useNavigation'
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
 import { useNotifyStore } from '@/stores/notify'
 
@@ -62,14 +63,11 @@ const NotifyBarBuffer = defineAsyncComponent(() =>
 
 const notify = useNotifyStore()
 const store = useStore()
-const route = useRoute()
+const { isInInnerApp } = useNavigation()
 const isReloadInnerApp = computed(
   () => store.getters['helper/isReloadInnerApp']
 )
 const planStatus = computed(() => store.getters['polling/planStatus'])
-const isInInnerApp = computed(() =>
-  route.matched.some((r) => r.name === 'InnerAppRoot')
-)
 const user = computed(() => store.getters['user/user'])
 const isStickerDrawerOpen = computed(
   () => store.getters['sticker/isStickerDrawerOpen']

@@ -1,16 +1,21 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
+import useCurrentUnit from '@/composables/useCurrentUnit'
 import { MOODBOARD_TAB, SIGNUP_SOURCE } from '@/utils/constants'
 
 export default function useNavigation() {
   const store = useStore()
   const router = useRouter()
   const route = useRoute()
+  const { organization } = useCurrentUnit()
 
   const routeLocation = computed(() => store.getters['helper/routeLocation'])
   const prefixPath = computed(() =>
     routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
+  )
+  const isInInnerApp = computed(() =>
+    route.matched.some((r) => r.name === 'InnerAppRoot')
   )
 
   const nextAfterSignIn = async () => {
@@ -170,6 +175,15 @@ export default function useNavigation() {
     )
   }
 
+  const gotoThreadBoard = async () => {
+    if (isInInnerApp.value) {
+      await router.push(parsePath(`${prefixPath.value}/thread-board`))
+    } else {
+      // from received share sticker drawer
+      await router.push(`/${organization.value.orgNo}/thread-board`)
+    }
+  }
+
   return {
     nextAfterSignIn,
     parsePath,
@@ -195,6 +209,8 @@ export default function useNavigation() {
     goToMoodboard,
     goToMoodboardDetail,
     goToMoodboardPickedList,
+    gotoThreadBoard,
     prefixPath,
+    isInInnerApp,
   }
 }
