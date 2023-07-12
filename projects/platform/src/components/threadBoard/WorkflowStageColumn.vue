@@ -58,13 +58,15 @@ div
       div(
         class="relative h-full"
         :class="{ 'w-79.5 pt-1 bg-grey-100 rounded': isEditingName, 'bg-primary-50 outline-primary-300 outline outline-1 -outline-offset-1': active && isEditingName }"
+        @mouseenter="isHoverDragArea = true"
+        @mouseleave="isHoverDragArea = false"
       )
         f-scrollbar-container(
           :ref="(el) => (scrollContainer = el)"
           class="h-full"
           @scrollInfoChange="handleScroll"
         )
-          slot(:scrollContainer="scrollContainer")
+          slot(:scrollContainer="scrollContainer" :disabled="!isHoverDragArea")
         div(
           v-if="showUpperBound && !(isEditingName && active)"
           class="absolute top-0 left-0 h-[1px] w-full bg-grey-200"
@@ -147,6 +149,7 @@ const { isEditingName, currentName, isNameValid, startEdit, doneEdit } =
 const scrollContainer = ref<InstanceType<typeof FScrollbarContainer>>()
 const showUpperBound = ref(false)
 const showBottomBound = ref(false)
+const isHoverDragArea = ref(false)
 
 const user = computed(() => store.getters['user/user'])
 const isZh = computed(() => user.value.locale === 'zh-TW')

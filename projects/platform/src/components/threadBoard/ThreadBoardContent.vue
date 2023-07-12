@@ -21,13 +21,14 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
       @workflowStageMenuMouseEnter="handleWorkflowStageMenuMouseEnter"
       @workflowStageMenuMouseLeave="handleWorkflowStageMenuMouseLeave"
     )
-      template(#default="{ scrollContainer }")
+      template(#default="{ scrollContainer, disabled }")
         draggable(
           class="min-h-full flex flex-col items-center gap-2 pb-3.5"
           v-model="defaultWorkflowStageThreadList"
           v-bind="threadCardDragOptions"
           :data-workflow-stage-id="defaultWorkflowStage.workflowStageId"
           :move="handleMove"
+          :disabled="disabled"
           @add="handleUpdate"
           @update="handleUpdate"
           @start="(e) => handleDragStart(e, defaultWorkflowStage.workflowStageId, scrollContainer)"
@@ -69,7 +70,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
               @workflowStageRename="renameWorkflowStage"
               @workflowStageDelete="deleteWorkflowStage"
             )
-              template(#default="{ scrollContainer }")
+              template(#default="{ scrollContainer, disabled }")
                 draggable(
                   class="min-h-full flex flex-col items-center gap-2 pb-3.5"
                   v-model="element.digitalThreadList"
@@ -79,6 +80,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
                   @end="handleDragEnd(scrollContainer)"
                   @add="handleUpdate"
                   @update="handleUpdate"
+                  :disabled="disabled"
                   :move="handleMove"
                   :data-workflow-stage-id="element.workflowStageId"
                 )
@@ -275,7 +277,6 @@ const threadCardDragOptions = computed(() => ({
   scrollSpeed: 7,
   animation: 250,
   group: 'thread',
-  disabled: false,
   ghostClass: 'vue-draggable-thread-board',
 }))
 
