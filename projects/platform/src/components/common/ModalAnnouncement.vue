@@ -1,5 +1,6 @@
 <template lang="pug">
 div(
+  ref="refAnnouncement"
   class="fixed top-0 left-0 w-screen h-screen bg-grey-900/40 z-100 flex items-center justify-center"
   @click="closeAnnouncement"
 )
@@ -18,7 +19,7 @@ div(
         p(class="text-body2/1.6 text-grey-900") {{ $t('TT0174') }}
           span(
             class="text-cyan-400 cursor-pointer"
-            @click="$store.dispatch('helper/pushModal', { component: 'modal-thread-board-feature-reminder' })"
+            @click="store.dispatch('helper/pushModal', { component: 'modal-thread-board-feature-reminder' })"
           ) {{ ' ' + $t('RR0275') }}
       div(class="pt-8 flex flex-col gap-y-2")
         div(
@@ -81,8 +82,10 @@ const contentList = computed<Content[]>(() => [
   },
 ])
 
+const refAnnouncement = ref<HTMLElement>()
 const closeAnnouncement = () => {
   store.dispatch('user/readAnnouncement')
+  refAnnouncement.value?.remove()
   store.dispatch('helper/closeModal')
 }
 </script>

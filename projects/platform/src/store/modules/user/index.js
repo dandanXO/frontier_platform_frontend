@@ -121,7 +121,7 @@ const actions = {
   },
   openModalNewFeatureLaunch({ dispatch }) {
     dispatch(
-      'helper/pushModal',
+      'helper/openModal',
       { component: 'modal-announcement' },
       { root: true }
     )
