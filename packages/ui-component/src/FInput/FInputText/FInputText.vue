@@ -74,6 +74,7 @@ f-input-container(
     input(
       v-else
       ref="refInput"
+      :type="inputType"
       v-model.trim="innerTextValue"
       :placeholder="placeholder"
       :class="classInput"
