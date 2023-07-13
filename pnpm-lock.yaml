@@ -53,6 +53,9 @@ importers:
       events:
         specifier: ^3.3.0
         version: 3.3.0
+      overlayscrollbars:
+        specifier: ^1.13.1
+        version: 1.13.3
       ramda:
         specifier: ^0.28.0
         version: 0.28.0
@@ -87,6 +90,9 @@ importers:
       '@types/node':
         specifier: ^16.11.56
         version: 16.11.64
+      '@types/overlayscrollbars':
+        specifier: ^1.12.1
+        version: 1.12.1
       '@vitejs/plugin-vue':
         specifier: ^3.0.3
         version: 3.1.2(vite@3.0.9)(vue@3.3.1)
@@ -221,18 +227,12 @@ importers:
       '@storybook/vue3-vite':
         specifier: ^7.0.7
         version: 7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@4.7.4)(vite@4.3.3)(vue@3.3.1)
-      '@types/overlayscrollbars':
-        specifier: ^1.12.1
-        version: 1.12.1
       babel-loader:
         specifier: ^8.2.5
         version: 8.2.5(@babel/core@7.18.10)(webpack@5.77.0)
       nouislider:
         specifier: ^15.5.1
         version: 15.6.0
-      overlayscrollbars:
-        specifier: ^1.13.1
-        version: 1.13.3
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -9069,7 +9069,7 @@ packages:
 
   /overlayscrollbars@1.13.3:
     resolution: {integrity: sha512-1nB/B5kaakJuHXaLXLRK0bUIilWhUGT6q5g+l2s5vqYdLle/sd0kscBHkQC1kuuDg9p9WR4MTdySDOPbeL/86g==}
-    dev: true
+    dev: false
 
   /p-limit@2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}

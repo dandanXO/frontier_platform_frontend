@@ -44,7 +44,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
                 @active="openStickerDrawerByThread(element)"
                 @materialClick="openMaterialDetail"
               )
-  div(ref="horizontalScrollContainer" class="w-full h-full px-4 bg-grey-100 p-2")
+  div(ref="horizontalScrollContainer" class="flex-1 min-w-0 h-full px-4 bg-grey-100 p-2")
     div(class="flex flex-row gap-4 h-full")
       div(class="flex flex-row gap-2 h-full")
         draggable(
@@ -204,7 +204,8 @@ import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { storeToRefs } from 'pinia'
 import Draggable from 'vuedraggable'
-import overlayscrollbars from 'overlayscrollbars'
+import overlayscrollbars, { OverlayScrollbarsStatic } from 'overlayscrollbars'
+import 'overlayscrollbars/css/OverlayScrollbars.css'
 import useThreadBoardStore from '@/stores/threadBoard'
 import ThreadCard from '@/components/threadBoard/ThreadCard.vue'
 import WorkflowStageColumn from '@/components/threadBoard/WorkflowStageColumn.vue'
