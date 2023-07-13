@@ -29,7 +29,8 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
             f-tooltip-standard(
               :key="isCreatingDigitalThread"
               class="flex items-center group"
-              :tooltipMessage="!isCreatingDigitalThread ? digitalThread.digitalThreadName : ''"
+              :disabledTooltip="isCreatingDigitalThread"
+              :tooltipMessage="digitalThread.digitalThreadName"
             )
               template(#slot:tooltip-trigger)
                 f-svg-icon(

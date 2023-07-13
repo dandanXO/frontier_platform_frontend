@@ -38,7 +38,8 @@ div(class="relative w-full rounded-md shadow-8 overflow-hidden")
             class="flex-grow h-7 bg-grey-150 grid grid-cols-2 items-center justify-items-center rounded-sm"
           )
             f-tooltip-standard(
-              :tooltipMessage="!canChooseAddToExternal ? $t('TT0111') : ''"
+              :disabledTooltip="canChooseAddToExternal"
+              :tooltipMessage="$t('TT0111')"
             )
               template(#slot:tooltip-trigger)
                 div(
