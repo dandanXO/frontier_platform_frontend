@@ -30,6 +30,7 @@ import useGotoMaterialDetail from '@/composables/useGotoMaterialDetail'
 import usePermission from '@/composables/usePermission'
 import useNavigation from '@/composables/useNavigation'
 import { FUNC_ID, NOTIFY_TYPE } from '@/utils/constants'
+import { getBoldInterpolationMessageComponent } from '@/utils/render'
 import type {
   WorkflowStageRenamePayload,
   WorkflowStageMoveAllThreadsPayload,
@@ -743,12 +744,18 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
 
     const fromWorkflowStage = getWorkflowStageNameById(fromWorkflowStageId)
     const toWorkflowStage = getWorkflowStageNameById(toWorkflowStageId)
+    if (!fromWorkflowStage) {
+      throw new Error('fromWorkflowStage undefined')
+    }
+    if (!toWorkflowStage) {
+      throw new Error('toWorkflowStage undefined')
+    }
 
     notify.showNotifySnackbar({
       isShowSnackbar: true,
-      messageText: t('WW0133', {
-        lastStage: fromWorkflowStage?.workflowStageName,
-        newStage: toWorkflowStage?.workflowStageName,
+      messageComponent: getBoldInterpolationMessageComponent('WW0133', {
+        lastStage: fromWorkflowStage.workflowStageName,
+        newStage: toWorkflowStage.workflowStageName,
       }),
     })
   }
@@ -815,7 +822,10 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     getThreadBoard()
     notify.showNotifySnackbar({
       isShowSnackbar: true,
-      messageText: t('WW0134', { lastStage: sourceName, newStage: targetName }),
+      messageComponent: getBoldInterpolationMessageComponent('WW0134', {
+        lastStage: sourceName,
+        newStage: targetName,
+      }),
     })
   }
 

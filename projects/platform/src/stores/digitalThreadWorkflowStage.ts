@@ -10,7 +10,8 @@ import type {
   DigitalThreadBase,
   GetDigitalThreadWorkflowStageOptionsRequest,
 } from '@frontier/platform-web-sdk'
-import useThreadBoardStore from './threadBoard'
+import { getBoldInterpolationMessageComponent } from '@/utils/render'
+import useThreadBoardStore from '@/stores/threadBoard'
 
 interface WorkflowStageOption {
   workflowStageId: number
@@ -81,7 +82,7 @@ const useDigitalThreadWorkflowStageStore = defineStore(
 
       notify.showNotifySnackbar({
         isShowSnackbar: true,
-        messageText: t('TT0210', {
+        messageComponent: getBoldInterpolationMessageComponent('TT0210', {
           lastStage: oldWorkflowStage.workflowStageName,
           newStage: newWorkflowStage.workflowStageName,
         }),
