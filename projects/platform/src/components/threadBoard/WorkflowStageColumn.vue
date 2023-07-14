@@ -113,6 +113,7 @@ import type {
 import useThreadBoardStore from '@/stores/threadBoard'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import useNameEditor from '@/composables/useNameEditor'
+import { getBoldInterpolationMessageComponent } from '@/utils/render'
 
 const emit = defineEmits<{
   (e: 'workflowStageCollapse'): void
@@ -198,7 +199,7 @@ const menuTree = computed(() => ({
           title: t('TT0143'),
           icon: 'move',
           disabled: moveAllDisabled,
-          tooltipTitle: moveAllDisabled ? t('TT0161') : null,
+          tooltipMessage: moveAllDisabled ? t('TT0161') : null,
           width: 'w-60',
           blockList: [
             {
@@ -225,9 +226,12 @@ const menuTree = computed(() => ({
           menuList.push({
             title: t('TT0152'),
             icon: 'hideeye',
-            tooltipTitle: disabled
-              ? t('TT0155')
-              : t('TT0158', { currentThreadBoard: unit.value.ogName }),
+            tooltipMessage: disabled ? t('TT0155') : null,
+            tooltipContentComponent: !disabled
+              ? getBoldInterpolationMessageComponent('TT0158', {
+                  currentThreadBoard: unit.value.ogName,
+                }).value
+              : null,
             disabled,
             clickHandler: () =>
               emit('workflowStageHide', props.workflowStage.workflowStageId),
@@ -238,7 +242,7 @@ const menuTree = computed(() => ({
           menuList.push({
             title: t('TT0153'),
             icon: 'delete',
-            tooltipTitle: props.workflowStage.canDelete ? null : t('TT0155'),
+            tooltipMessage: props.workflowStage.canDelete ? null : t('TT0155'),
             disabled: !props.workflowStage.canDelete,
             clickHandler: () => {
               emit('workflowStageDelete', props.workflowStage.workflowStageId)

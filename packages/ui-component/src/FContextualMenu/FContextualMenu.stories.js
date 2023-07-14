@@ -1,6 +1,6 @@
 import FContextualMenu from './FContextualMenu.vue'
 import { CONTEXTUAL_MENU_MODE, SIZE } from '../constants'
-import { ref } from 'vue'
+import { h, ref, shallowRef } from 'vue'
 
 const { NONE_SELECT, SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } =
   CONTEXTUAL_MENU_MODE
@@ -59,6 +59,29 @@ const TemplateDefault = (args) => ({
 export const Default = TemplateDefault.bind({})
 Default.args = {
   selectMode: NONE_SELECT,
+}
+
+export const CustomTooltip = TemplateDefault.bind({})
+const menuTreeCustomTooltip = JSON.parse(JSON.stringify(menuTree))
+menuTreeCustomTooltip.blockList[0].menuList[0].tooltipTitle =
+  'Only tooltip title'
+menuTreeCustomTooltip.blockList[0].menuList[1].tooltipMessage =
+  'Only tooltip message'
+menuTreeCustomTooltip.blockList[0].menuList[2].tooltipTitle = 'Tooltip title'
+menuTreeCustomTooltip.blockList[0].menuList[2].tooltipMessage =
+  'Tooltip message'
+menuTreeCustomTooltip.blockList[0].menuList[3].tooltipContentComponent =
+  shallowRef({
+    render: () => {
+      return h('div', [
+        h('span', {}, 'Tooltip content '),
+        h('span', { class: 'font-bold' }, 'component'),
+      ])
+    },
+  })
+CustomTooltip.args = {
+  selectMode: NONE_SELECT,
+  menuTree: menuTreeCustomTooltip,
 }
 
 export const LeadingVisual = TemplateDefault.bind({})

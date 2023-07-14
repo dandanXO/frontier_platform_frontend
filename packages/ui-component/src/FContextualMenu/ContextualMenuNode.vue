@@ -13,6 +13,8 @@ div(
     isNotFitWidth
     class="w-full flex items-center px-4"
     :disabledTooltip="disabledTooltip"
+    :tooltipTitle="tooltipTitle"
+    :tooltipMessage="tooltipMessage"
   )
     template(#slot:tooltip-trigger)
       //- Checkbox
@@ -104,13 +106,8 @@ div(
           size="24"
           class="text-primary-400"
         )
-    template(#slot:tooltip-content)
-      p
-        span(v-if="isTitleEllipsis && hoverOn === 'title'" class="break-all font-bold") {{ innerMenu.title }}
-        span(v-else-if="isDescriptionEllipsis && hoverOn === 'description'") {{ innerMenu.description }}
-        span(v-else)
-          span(v-if="!!innerMenu.tooltipTitle") {{ innerMenu.tooltipTitle }}
-          span(v-if="!!innerMenu.tooltipMessage") {{ innerMenu.tooltipMessage }}
+    template(#slot:tooltip-content v-if="innerMenu.tooltipContentComponent")
+      component(:is="innerMenu.tooltipContentComponent")
   div(
     ref="refContextMenu"
     v-if="isExpand"
@@ -228,6 +225,7 @@ const innerMenu = computed(() => {
     mouseLeaveHandler: undefined,
     tooltipTitle: '',
     tooltipMessage: '',
+    tooltipContentComponent: null,
     tooltipPlacement: 'right',
     searchEnable: false,
     button: null,
@@ -407,7 +405,9 @@ const disabledTooltip = computed(() => {
   }
 
   if (
-    (!!innerMenu.value.tooltipTitle || !!innerMenu.value.tooltipMessage) &&
+    (!!innerMenu.value.tooltipTitle ||
+      !!innerMenu.value.tooltipMessage ||
+      !!innerMenu.value.tooltipContentComponent) &&
     !!hoverOn.value &&
     !isTitleEllipsis.value &&
     !isDescriptionEllipsis.value
@@ -416,5 +416,25 @@ const disabledTooltip = computed(() => {
   }
 
   return true
+})
+
+const tooltipTitle = computed(() => {
+  if (isTitleEllipsis.value && hoverOn.value === 'title') {
+    return innerMenu.value.title
+  }
+  if (innerMenu.value.tooltipTitle) {
+    return innerMenu.value.tooltipTitle
+  }
+  return null
+})
+
+const tooltipMessage = computed(() => {
+  if (isDescriptionEllipsis.value && hoverOn.value === 'description') {
+    return innerMenu.value.description
+  }
+  if (innerMenu.value.tooltipMessage) {
+    return innerMenu.value.tooltipMessage
+  }
+  return null
 })
 </script>

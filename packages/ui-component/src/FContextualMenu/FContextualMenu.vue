@@ -170,6 +170,7 @@ const props = defineProps({
    *          mouseLeaveHandler: Function,
    *          tooltipTitle: String,
    *          tooltipMessage: String,
+   *          tooltipContentComponent: Component,
    *          tooltipPlacement: String,
    *          searchEnable: Boolean,
    *          button: {
