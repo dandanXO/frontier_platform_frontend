@@ -424,13 +424,10 @@ export default {
               backSideCropImgUploadUrl,
             },
           },
-        } = await axios(
-          '/org/assets/material/update/scan-image/get-upload-url',
-          {
-            method: 'POST',
-            data: { faceSideCropImgFileName, backSideCropImgFileName },
-          }
-        )
+        } = await dispatch('callAssetsApi', {
+          func: 'getUploadUrlUpdateScannedImage',
+          params: { faceSideCropImgFileName, backSideCropImgFileName },
+        })
 
         id = tempUploadId
         !!faceSideCropImg &&
@@ -480,13 +477,10 @@ export default {
               backSideCropImgUploadUrl,
             },
           },
-        } = await axios(
-          '/org/assets/material/update/generate-u3m/get-upload-url',
-          {
-            method: 'POST',
-            data: { faceSideCropImgFileName, backSideCropImgFileName },
-          }
-        )
+        } = await dispatch('callAssetsApi', {
+          func: 'getUploadUrlGenerateU3m',
+          params: { faceSideCropImgFileName, backSideCropImgFileName },
+        })
 
         id = tempUploadId
         !!faceSideCropImg &&

@@ -54,8 +54,8 @@ export default {
    * @param {object} params
    * @param {number} params.groupUserId
    */
-  removeGroupMember: (_, params) =>
-    groupApiWrapper('/org/group/member/delete-member', null, params),
+  removeGroupMember: (groupId, params) =>
+    groupApiWrapper('/org/group/member/delete-member', groupId, params),
   /**
    * @param {object} params
    * @param {number[]} params.orgUserIdList

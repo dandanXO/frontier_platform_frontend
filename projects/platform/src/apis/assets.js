@@ -220,6 +220,20 @@ export default {
     apiWrapper('/assets/material/update/scan-image', type, id, params),
 
   /**
+   *
+   * @param {object} params
+   * @param {string?} params.faceSideCropImgFileName
+   * @param {string?} params.backSideCropImgFileName
+   */
+  getUploadUrlUpdateScannedImage: (type, id, params) =>
+    apiWrapper(
+      '/assets/material/update/scan-image/get-upload-url',
+      type,
+      id,
+      params
+    ),
+
+  /**
    * @param {object} params
    * @param {number} params.materialId
    * @param {boolean} params.isAutoRepeat
@@ -231,6 +245,20 @@ export default {
    */
   generateU3m: (type, id, params) =>
     apiWrapper('/assets/material/update/generate-u3m', type, id, params),
+
+  /**
+   *
+   * @param {object} params
+   * @param {string?} params.faceSideCropImgFileName
+   * @param {string?} params.backSideCropImgFileName
+   */
+  getUploadUrlGenerateU3m: (type, id, params) =>
+    apiWrapper(
+      '/assets/material/update/generate-u3m/get-upload-url',
+      type,
+      id,
+      params
+    ),
 
   /**
    * @param {object} params

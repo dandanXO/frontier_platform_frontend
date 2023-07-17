@@ -178,8 +178,11 @@ export default {
       commit('SET_materialBreadcrumbList', breadcrumbList)
       commit('SET_materialPublish', publish)
     },
-    async contactShowroomOrg(_, params) {
-      await showroomApi.contactShowroomOrg(params)
+    async contactShowroomOrg({ rootGetters }, params) {
+      await showroomApi.contactShowroomOrg({
+        orgId: rootGetters['organization/orgId'],
+        ...params,
+      })
     },
   },
 }

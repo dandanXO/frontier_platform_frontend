@@ -41,10 +41,10 @@ export default {
       method: 'POST',
       data: { orgId, workspaceNodeList, targetLocationList, optional },
     }),
-  getShareTarget: ({ workspaceNodeLocation, workspaceNodeId, target }) =>
+  getShareTarget: ({ orgId, workspaceNodeLocation, workspaceNodeId, target }) =>
     axios('/public/share/assigned/get-target', {
       method: 'POST',
-      data: { workspaceNodeLocation, workspaceNodeId, target },
+      data: { orgId, workspaceNodeLocation, workspaceNodeId, target },
     }),
   assignedShare: ({
     orgId,
@@ -56,14 +56,19 @@ export default {
       method: 'POST',
       data: { orgId, workspaceNodeLocation, workspaceNodeId, targetList },
     }),
-  generateCopyLink: ({ workspaceNodeLocation, workspaceNodeId }) =>
+  generateCopyLink: ({ orgId, workspaceNodeLocation, workspaceNodeId }) =>
     axios('/public/share/copy-link/generate', {
       method: 'POST',
-      data: { workspaceNodeLocation, workspaceNodeId },
+      data: { orgId, workspaceNodeLocation, workspaceNodeId },
     }),
-  generateSocialMedia: ({ workspaceNodeLocation, workspaceNodeId, type }) =>
+  generateSocialMedia: ({
+    orgId,
+    workspaceNodeLocation,
+    workspaceNodeId,
+    type,
+  }) =>
     axios('/public/share/social/generate', {
       method: 'POST',
-      data: { workspaceNodeLocation, workspaceNodeId, type },
+      data: { orgId, workspaceNodeLocation, workspaceNodeId, type },
     }),
 }

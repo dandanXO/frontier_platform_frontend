@@ -183,7 +183,7 @@ export default {
       const { data } = await dispatch('callOrgApi', { func: 'deleteOrg' })
       return data
     },
-    async updateOrgLogo({ dispatch }, { logo, originalLogo }) {
+    async updateOrgLogo({ getters, dispatch }, { logo, originalLogo }) {
       const logoFileName = logo.name
       const originalLogoFileName = originalLogo.name
 
@@ -193,7 +193,7 @@ export default {
         },
       } = await axios('/org/update-logo/get-upload-url', {
         method: 'POST',
-        data: { logoFileName, originalLogoFileName },
+        data: { orgId: getters.orgId, logoFileName, originalLogoFileName },
       })
       await putBinaryData(logoUploadUrl, logo)
       await putBinaryData(originalLogoUploadUrl, originalLogo)

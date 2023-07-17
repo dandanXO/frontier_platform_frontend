@@ -119,9 +119,10 @@ export default {
         optional,
       })
     },
-    async getShareTarget(_, { nodeKey, target }) {
+    async getShareTarget({ rootGetters }, { nodeKey, target }) {
       const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
       const { data } = await publicLibraryApi.getShareTarget({
+        orgId: rootGetters['organization/orgId'],
         workspaceNodeLocation,
         workspaceNodeId,
         target,
@@ -142,17 +143,19 @@ export default {
         targetList,
       })
     },
-    async generateCopyLink(_, { nodeKey }) {
+    async generateCopyLink({ rootGetters }, { nodeKey }) {
       const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
       const { data } = await publicLibraryApi.generateCopyLink({
+        orgId: rootGetters['organization/orgId'],
         workspaceNodeLocation,
         workspaceNodeId,
       })
       return data.result.key
     },
-    async generateSocialMedia(_, { nodeKey, type }) {
+    async generateSocialMedia({ rootGetters }, { nodeKey, type }) {
       const [workspaceNodeLocation, workspaceNodeId] = nodeKey.split('-')
       const { data } = await publicLibraryApi.generateSocialMedia({
+        orgId: rootGetters['organization/orgId'],
         workspaceNodeLocation,
         workspaceNodeId,
         type,

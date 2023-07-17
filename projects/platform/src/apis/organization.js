@@ -90,14 +90,14 @@ export default {
    * @param {number} params.orgUserId
    * @param {number} params.roleId
    */
-  changeOrgMemberRole: (_, params) =>
-    orgApiWrapper('/org/member/change-role', null, params),
+  changeOrgMemberRole: (orgId, params) =>
+    orgApiWrapper('/org/member/change-role', orgId, params),
   /**
    * @param {object} params
    * @param {number} params.orgUserId
    */
-  removeOrgMember: (_, params) =>
-    orgApiWrapper('/org/member/delete', null, params),
+  removeOrgMember: (orgId, params) =>
+    orgApiWrapper('/org/member/delete', orgId, params),
   /**
    * @param {object} params
    * @param {string} params.email

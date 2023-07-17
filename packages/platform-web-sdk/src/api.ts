@@ -26,6 +26,78 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base';
 /**
  * 
  * @export
+ * @interface AddFolderBookmarkRequest
+ */
+export interface AddFolderBookmarkRequest {
+    /**
+     * 資料夾型態書籤名稱
+     * @type {string}
+     * @memberof AddFolderBookmarkRequest
+     */
+    'folderName': string;
+    /**
+     * 資料夾型態書籤內的組織ID列表
+     * @type {Array<number>}
+     * @memberof AddFolderBookmarkRequest
+     */
+    'orgIdList': Array<number>;
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof AddFolderBookmarkRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof AddFolderBookmarkRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof AddFolderBookmarkRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface AddOrgBookmarkRequest
+ */
+export interface AddOrgBookmarkRequest {
+    /**
+     * 書籤組織ID
+     * @type {number}
+     * @memberof AddOrgBookmarkRequest
+     */
+    'bookmarkOrgId': number;
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof AddOrgBookmarkRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof AddOrgBookmarkRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof AddOrgBookmarkRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
  * @interface AssetFilter
  */
 export interface AssetFilter {
@@ -132,6 +204,47 @@ export const AssetFilterCompleteEnum = {
 } as const;
 
 export type AssetFilterCompleteEnum = typeof AssetFilterCompleteEnum[keyof typeof AssetFilterCompleteEnum];
+
+/**
+ * 基礎書籤物件
+ * @export
+ * @interface BaseBookmark
+ */
+export interface BaseBookmark {
+    /**
+     * 書籤ID
+     * @type {number}
+     * @memberof BaseBookmark
+     */
+    'bookmarkId': number;
+    /**
+     * 
+     * @type {BookmarkType}
+     * @memberof BaseBookmark
+     */
+    'bookmarkType': BookmarkType;
+}
+
+
+/**
+ * @type BookmarkListInner
+ * @export
+ */
+export type BookmarkListInner = FolderBookmark | OrgBookmark;
+
+/**
+ * 書籤類型
+ * @export
+ * @enum {string}
+ */
+
+export const BookmarkType = {
+    ORG: 1,
+    FOLDER: 2
+} as const;
+
+export type BookmarkType = typeof BookmarkType[keyof typeof BookmarkType];
+
 
 /**
  * 
@@ -1686,6 +1799,18 @@ export interface CreateViewerLogRequest {
  */
 export interface CreateWorkflowStageRequest {
     /**
+     * WorkflowStage名稱
+     * @type {string}
+     * @memberof CreateWorkflowStageRequest
+     */
+    'workflowStageName': string;
+    /**
+     * 要移動至該新增之WorkflowStage的Digital Thread清單
+     * @type {Array<number>}
+     * @memberof CreateWorkflowStageRequest
+     */
+    'digitalThreadSideIdList'?: Array<number> | null;
+    /**
      * 組織ID
      * @type {number}
      * @memberof CreateWorkflowStageRequest
@@ -1703,18 +1828,6 @@ export interface CreateWorkflowStageRequest {
      * @memberof CreateWorkflowStageRequest
      */
     'ogId': number;
-    /**
-     * WorkflowStage名稱
-     * @type {string}
-     * @memberof CreateWorkflowStageRequest
-     */
-    'workflowStageName': string;
-    /**
-     * 要移動至該新增之WorkflowStage的Digital Thread清單
-     * @type {Array<number>}
-     * @memberof CreateWorkflowStageRequest
-     */
-    'digitalThreadSideIdList'?: Array<number> | null;
 }
 
 
@@ -3308,6 +3421,101 @@ export interface FilterWidth {
     'isInfinity': boolean;
 }
 /**
+ * 資料夾型態書籤
+ * @export
+ * @interface FolderBookmark
+ */
+export interface FolderBookmark {
+    /**
+     * 書籤ID
+     * @type {number}
+     * @memberof FolderBookmark
+     */
+    'bookmarkId': number;
+    /**
+     * 
+     * @type {BookmarkType}
+     * @memberof FolderBookmark
+     */
+    'bookmarkType': BookmarkType;
+    /**
+     * 資料夾型態書籤名稱
+     * @type {string}
+     * @memberof FolderBookmark
+     */
+    'folderName': string;
+    /**
+     * 書籤內容
+     * @type {Array<FolderBookmarkAllOfOrgList>}
+     * @memberof FolderBookmark
+     */
+    'orgList': Array<FolderBookmarkAllOfOrgList>;
+    /**
+     * 是否為所有討論串
+     * @type {boolean}
+     * @memberof FolderBookmark
+     */
+    'isAllThread': boolean;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface FolderBookmarkAllOf
+ */
+export interface FolderBookmarkAllOf {
+    /**
+     * 資料夾型態書籤名稱
+     * @type {string}
+     * @memberof FolderBookmarkAllOf
+     */
+    'folderName': string;
+    /**
+     * 書籤內容
+     * @type {Array<FolderBookmarkAllOfOrgList>}
+     * @memberof FolderBookmarkAllOf
+     */
+    'orgList': Array<FolderBookmarkAllOfOrgList>;
+    /**
+     * 是否為所有討論串
+     * @type {boolean}
+     * @memberof FolderBookmarkAllOf
+     */
+    'isAllThread': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface FolderBookmarkAllOfOrgList
+ */
+export interface FolderBookmarkAllOfOrgList {
+    /**
+     * 
+     * @type {number}
+     * @memberof FolderBookmarkAllOfOrgList
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof FolderBookmarkAllOfOrgList
+     */
+    'orgName': string;
+    /**
+     * 組織Logo
+     * @type {string}
+     * @memberof FolderBookmarkAllOfOrgList
+     */
+    'logo': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FolderBookmarkAllOfOrgList
+     */
+    'isUnread'?: boolean;
+}
+/**
  * 
  * @export
  * @interface GeneralCheckTokenStatusPost200Response
@@ -3498,6 +3706,75 @@ export interface GeneralRefreshTokenPostRequest {
      * @memberof GeneralRefreshTokenPostRequest
      */
     'refreshToken': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetContactOrgList200Response
+ */
+export interface GetContactOrgList200Response {
+    /**
+     * 
+     * @type {GetContactOrgList200ResponseResult}
+     * @memberof GetContactOrgList200Response
+     */
+    'result'?: GetContactOrgList200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetContactOrgList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetContactOrgList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetContactOrgList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetContactOrgList200ResponseResult
+ */
+export interface GetContactOrgList200ResponseResult {
+    /**
+     * 組織清單
+     * @type {Array<GetContactOrgList200ResponseResultOrgListInner>}
+     * @memberof GetContactOrgList200ResponseResult
+     */
+    'orgList'?: Array<GetContactOrgList200ResponseResultOrgListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface GetContactOrgList200ResponseResultOrgListInner
+ */
+export interface GetContactOrgList200ResponseResultOrgListInner {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetContactOrgList200ResponseResultOrgListInner
+     */
+    'orgId': number;
+    /**
+     * 組織名稱
+     * @type {string}
+     * @memberof GetContactOrgList200ResponseResultOrgListInner
+     */
+    'orgName': string;
+    /**
+     * 組織Logo
+     * @type {string}
+     * @memberof GetContactOrgList200ResponseResultOrgListInner
+     */
+    'logo': string;
 }
 /**
  * 
@@ -3700,6 +3977,50 @@ export interface GetThreadBoard200ResponseResult {
 /**
  * 
  * @export
+ * @interface GetThreadBoardBookmarkList200Response
+ */
+export interface GetThreadBoardBookmarkList200Response {
+    /**
+     * 
+     * @type {GetThreadBoardBookmarkList200ResponseResult}
+     * @memberof GetThreadBoardBookmarkList200Response
+     */
+    'result'?: GetThreadBoardBookmarkList200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetThreadBoardBookmarkList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetThreadBoardBookmarkList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetThreadBoardBookmarkList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetThreadBoardBookmarkList200ResponseResult
+ */
+export interface GetThreadBoardBookmarkList200ResponseResult {
+    /**
+     * 
+     * @type {Array<BookmarkListInner>}
+     * @memberof GetThreadBoardBookmarkList200ResponseResult
+     */
+    'bookmarkList'?: Array<BookmarkListInner>;
+}
+/**
+ * 
+ * @export
  * @interface GetThreadBoardMostParticipant200Response
  */
 export interface GetThreadBoardMostParticipant200Response {
@@ -3815,9 +4136,54 @@ export interface GetThreadBoardQuery200ResponseResult {
 /**
  * 
  * @export
+ * @interface GetThreadBoardQueryRequest
+ */
+export interface GetThreadBoardQueryRequest {
+    /**
+     * 書籤ID
+     * @type {number}
+     * @memberof GetThreadBoardQueryRequest
+     */
+    'bookmarkId': number;
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetThreadBoardQueryRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetThreadBoardQueryRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GetThreadBoardQueryRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
  * @interface GetThreadBoardRequest
  */
 export interface GetThreadBoardRequest {
+    /**
+     * 
+     * @type {ThreadBoardQuery}
+     * @memberof GetThreadBoardRequest
+     */
+    'threadBoardQuery': ThreadBoardQuery;
+    /**
+     * 
+     * @type {GetThreadBoardRequestBookmarkFilter}
+     * @memberof GetThreadBoardRequest
+     */
+    'bookmarkFilter': GetThreadBoardRequestBookmarkFilter;
     /**
      * 組織ID
      * @type {number}
@@ -3836,15 +4202,28 @@ export interface GetThreadBoardRequest {
      * @memberof GetThreadBoardRequest
      */
     'ogId': number;
-    /**
-     * 
-     * @type {ThreadBoardQuery}
-     * @memberof GetThreadBoardRequest
-     */
-    'threadBoardQuery': ThreadBoardQuery;
 }
 
 
+/**
+ * 書籤過濾條件
+ * @export
+ * @interface GetThreadBoardRequestBookmarkFilter
+ */
+export interface GetThreadBoardRequestBookmarkFilter {
+    /**
+     * 書籤ID
+     * @type {number}
+     * @memberof GetThreadBoardRequestBookmarkFilter
+     */
+    'bookmarkId': number;
+    /**
+     * 書籤中之組織ID
+     * @type {number}
+     * @memberof GetThreadBoardRequestBookmarkFilter
+     */
+    'orgId': number | null;
+}
 /**
  * 
  * @export
@@ -3986,6 +4365,12 @@ export interface GroupUser {
  */
 export interface HideWorkflowStageRequest {
     /**
+     * WorkflowStage Id
+     * @type {number}
+     * @memberof HideWorkflowStageRequest
+     */
+    'workflowStageId': number;
+    /**
      * 組織ID
      * @type {number}
      * @memberof HideWorkflowStageRequest
@@ -4003,12 +4388,6 @@ export interface HideWorkflowStageRequest {
      * @memberof HideWorkflowStageRequest
      */
     'ogId': number;
-    /**
-     * WorkflowStage Id
-     * @type {number}
-     * @memberof HideWorkflowStageRequest
-     */
-    'workflowStageId': number;
 }
 
 
@@ -4460,6 +4839,12 @@ export interface Material {
     'u3m'?: MaterialU3m;
     /**
      * 
+     * @type {MaterialCustomU3m}
+     * @memberof Material
+     */
+    'customU3m'?: MaterialCustomU3m;
+    /**
+     * 
      * @type {MaterialCarbonEmission}
      * @memberof Material
      */
@@ -4761,6 +5146,115 @@ export interface MaterialContentListInner {
      */
     'percentage'?: number;
 }
+/**
+ * 
+ * @export
+ * @interface MaterialCustomU3m
+ */
+export interface MaterialCustomU3m {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialCustomU3m
+     */
+    'status'?: MaterialCustomU3mStatusEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'zipUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'u3maUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'baseImgUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'normalImgUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'roughImgUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'dispImgUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'gltfUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'u3mSpecUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'u3mPhysicSpecUrl'?: string;
+    /**
+     * 圖片的 dpi
+     * @type {number}
+     * @memberof MaterialCustomU3m
+     */
+    'dpi'?: number;
+    /**
+     * 建立者的單位的標籤顏色，檢視者所屬組織和建立者單位那方所屬組織相同時為:呈現建立者組織或團隊的label color，非建立者那方單位所屬組織為Null值
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'creatorUnitLabelColor'?: string;
+    /**
+     * 建立者的使用者名稱，檢視者所屬組織和建立者單位那方所屬組織相同時呈現建立者的使用者名稱，非建立者那方單位所屬組織為Null值
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'creator'?: string;
+    /**
+     * 建立者的大頭貼，檢視者所屬組織和建立者單位那方所屬組織相同時呈現建立者的大頭貼，非建立者那方單位所屬組織為Null值
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'creatorAvatar'?: string;
+    /**
+     * 建立時間
+     * @type {number}
+     * @memberof MaterialCustomU3m
+     */
+    'createDate'?: number;
+}
+
+export const MaterialCustomU3mStatusEnum = {
+    NUMBER_null: null,
+    NUMBER_null: null,
+    NUMBER_null: null,
+    NUMBER_null: null,
+    NUMBER_null: null,
+    NUMBER_null: null
+} as const;
+
+export type MaterialCustomU3mStatusEnum = typeof MaterialCustomU3mStatusEnum[keyof typeof MaterialCustomU3mStatusEnum];
+
 /**
  * 
  * @export
@@ -5187,6 +5681,30 @@ export interface MaterialU3m {
      * @memberof MaterialU3m
      */
     'dpi'?: number;
+    /**
+     * 建立者的單位的標籤顏色，檢視者所屬組織和建立者單位那方所屬組織相同時為:呈現建立者組織或團隊的label color，非建立者那方單位所屬組織為Null值
+     * @type {string}
+     * @memberof MaterialU3m
+     */
+    'creatorUnitLabelColor'?: string;
+    /**
+     * 建立者的使用者名稱，檢視者所屬組織和建立者單位那方所屬組織相同時呈現建立者的使用者名稱，非建立者那方單位所屬組織為Null值
+     * @type {string}
+     * @memberof MaterialU3m
+     */
+    'creator'?: string;
+    /**
+     * 建立者的大頭貼，檢視者所屬組織和建立者單位那方所屬組織相同時呈現建立者的大頭貼，非建立者那方單位所屬組織為Null值
+     * @type {string}
+     * @memberof MaterialU3m
+     */
+    'creatorAvatar'?: string;
+    /**
+     * 建立時間
+     * @type {number}
+     * @memberof MaterialU3m
+     */
+    'createDate'?: number;
 }
 
 export const MaterialU3mStatusEnum = {
@@ -5645,6 +6163,51 @@ export interface MoodboardShare {
 /**
  * 
  * @export
+ * @interface MoveBookmarkRequest
+ */
+export interface MoveBookmarkRequest {
+    /**
+     * 欲移動之書籤ID
+     * @type {number}
+     * @memberof MoveBookmarkRequest
+     */
+    'bookmarkId': number;
+    /**
+     * 目標書籤ID
+     * @type {number}
+     * @memberof MoveBookmarkRequest
+     */
+    'targetBookmarkId': number;
+    /**
+     * 是否移動至目標書籤之前(左方)
+     * @type {boolean}
+     * @memberof MoveBookmarkRequest
+     */
+    'isMoveToBeforeTarget': boolean;
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof MoveBookmarkRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof MoveBookmarkRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof MoveBookmarkRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
  * @interface MoveWorkflowStageAllDigitalThread200Response
  */
 export interface MoveWorkflowStageAllDigitalThread200Response {
@@ -5693,24 +6256,6 @@ export interface MoveWorkflowStageAllDigitalThread200ResponseResult {
  */
 export interface MoveWorkflowStageAllDigitalThreadRequest {
     /**
-     * 組織ID
-     * @type {number}
-     * @memberof MoveWorkflowStageAllDigitalThreadRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof MoveWorkflowStageAllDigitalThreadRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof MoveWorkflowStageAllDigitalThreadRequest
-     */
-    'ogId': number;
-    /**
      * 欲移動所有Digital Thread之WorkflowStageId
      * @type {number}
      * @memberof MoveWorkflowStageAllDigitalThreadRequest
@@ -5722,6 +6267,24 @@ export interface MoveWorkflowStageAllDigitalThreadRequest {
      * @memberof MoveWorkflowStageAllDigitalThreadRequest
      */
     'targetWorkflowStageId': number;
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof MoveWorkflowStageAllDigitalThreadRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof MoveWorkflowStageAllDigitalThreadRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof MoveWorkflowStageAllDigitalThreadRequest
+     */
+    'ogId': number;
 }
 
 
@@ -5731,24 +6294,6 @@ export interface MoveWorkflowStageAllDigitalThreadRequest {
  * @interface MoveWorkflowStageDigitalThreadRequest
  */
 export interface MoveWorkflowStageDigitalThreadRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof MoveWorkflowStageDigitalThreadRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof MoveWorkflowStageDigitalThreadRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof MoveWorkflowStageDigitalThreadRequest
-     */
-    'ogId': number;
     /**
      * 欲移動之DigitalThreadSideId
      * @type {number}
@@ -5767,6 +6312,24 @@ export interface MoveWorkflowStageDigitalThreadRequest {
      * @memberof MoveWorkflowStageDigitalThreadRequest
      */
     'customOrderPayload'?: MoveWorkflowStageDigitalThreadRequestCustomOrderPayload | null;
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof MoveWorkflowStageDigitalThreadRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof MoveWorkflowStageDigitalThreadRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof MoveWorkflowStageDigitalThreadRequest
+     */
+    'ogId': number;
 }
 
 
@@ -5796,24 +6359,6 @@ export interface MoveWorkflowStageDigitalThreadRequestCustomOrderPayload {
  */
 export interface MoveWorkflowStageRequest {
     /**
-     * 組織ID
-     * @type {number}
-     * @memberof MoveWorkflowStageRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof MoveWorkflowStageRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof MoveWorkflowStageRequest
-     */
-    'ogId': number;
-    /**
      * 欲移動之WorkflowStageId
      * @type {number}
      * @memberof MoveWorkflowStageRequest
@@ -5831,6 +6376,24 @@ export interface MoveWorkflowStageRequest {
      * @memberof MoveWorkflowStageRequest
      */
     'isMoveToBeforeTarget': boolean;
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof MoveWorkflowStageRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof MoveWorkflowStageRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof MoveWorkflowStageRequest
+     */
+    'ogId': number;
 }
 
 
@@ -5865,6 +6428,33 @@ export interface NotificationListInner {
      */
     'contentValue'?: Array<ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInner>;
 }
+/**
+ * 
+ * @export
+ * @interface OGBaseRequestBody
+ */
+export interface OGBaseRequestBody {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof OGBaseRequestBody
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof OGBaseRequestBody
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof OGBaseRequestBody
+     */
+    'ogId': number;
+}
+
+
 /**
  * 單位(組織或團隊)型態：1:Org，2:Group
  * @export
@@ -5947,69 +6537,6 @@ export interface OrgAssetsMaterialAddToWorkspacePostRequest {
      * @memberof OrgAssetsMaterialAddToWorkspacePostRequest
      */
     'targetWorkspaceNodeList': Array<ShareGetReceivedClonePostRequestTargetLocationListInner>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialBatchUploadGetUploadUrlPost200Response
- */
-export interface OrgAssetsMaterialBatchUploadGetUploadUrlPost200Response {
-    /**
-     * 
-     * @type {OrgAssetsMaterialBatchUploadGetUploadUrlPost200ResponseResult}
-     * @memberof OrgAssetsMaterialBatchUploadGetUploadUrlPost200Response
-     */
-    'result'?: OrgAssetsMaterialBatchUploadGetUploadUrlPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialBatchUploadGetUploadUrlPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialBatchUploadGetUploadUrlPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsMaterialBatchUploadGetUploadUrlPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialBatchUploadGetUploadUrlPost200ResponseResult
- */
-export interface OrgAssetsMaterialBatchUploadGetUploadUrlPost200ResponseResult {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialBatchUploadGetUploadUrlPost200ResponseResult
-     */
-    'tempUploadId'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialBatchUploadGetUploadUrlPost200ResponseResult
-     */
-    'xlsxFileUploadUrl'?: string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest
- */
-export interface OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest
-     */
-    'xlsxFileName': string;
 }
 /**
  * 
@@ -6322,6 +6849,12 @@ export interface OrgAssetsMaterialCreatePostRequestMaterial {
      * @memberof OrgAssetsMaterialCreatePostRequestMaterial
      */
     'certificateIdList'?: Array<number>;
+    /**
+     * 是否客製化U3M正在上傳中
+     * @type {boolean}
+     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
+     */
+    'hasCustomU3mUploading': boolean;
 }
 
 export const OrgAssetsMaterialCreatePostRequestMaterialWeightOrThicknessUnitEnum = {
@@ -6668,6 +7201,62 @@ export interface OrgAssetsMaterialCreateUploadAttachmentPostRequest {
      * @memberof OrgAssetsMaterialCreateUploadAttachmentPostRequest
      */
     'displayFileName': string;
+}
+/**
+ * 
+ * @export
+ * @interface OrgAssetsMaterialCustomU3mUploadCancelPostRequest
+ */
+export interface OrgAssetsMaterialCustomU3mUploadCancelPostRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof OrgAssetsMaterialCustomU3mUploadCancelPostRequest
+     */
+    'orgId': number;
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof OrgAssetsMaterialCustomU3mUploadCancelPostRequest
+     */
+    'materialId': number;
+}
+/**
+ * 
+ * @export
+ * @interface OrgAssetsMaterialCustomU3mUploadPostRequest
+ */
+export interface OrgAssetsMaterialCustomU3mUploadPostRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof OrgAssetsMaterialCustomU3mUploadPostRequest
+     */
+    'orgId': number;
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof OrgAssetsMaterialCustomU3mUploadPostRequest
+     */
+    'materialId': number;
+    /**
+     * 暫存檔案ID
+     * @type {string}
+     * @memberof OrgAssetsMaterialCustomU3mUploadPostRequest
+     */
+    'tempUploadId': string;
+    /**
+     * 檔案名稱
+     * @type {string}
+     * @memberof OrgAssetsMaterialCustomU3mUploadPostRequest
+     */
+    'fileName': string;
+    /**
+     * 是否需要產生物理檔案
+     * @type {boolean}
+     * @memberof OrgAssetsMaterialCustomU3mUploadPostRequest
+     */
+    'needToGeneratePhysical': boolean;
 }
 /**
  * 
@@ -7319,69 +7908,6 @@ export interface OrgAssetsMaterialUpdateAddPantonePostRequest {
 /**
  * 
  * @export
- * @interface OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200Response
- */
-export interface OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200Response {
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200ResponseResult}
-     * @memberof OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200Response
-     */
-    'result'?: OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200ResponseResult
- */
-export interface OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200ResponseResult {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200ResponseResult
-     */
-    'tempUploadId'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200ResponseResult
-     */
-    'attachmentCropImgUploadUrl'?: string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest
- */
-export interface OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest
-     */
-    'attachmentCropImgFileName'?: string;
-}
-/**
- * 
- * @export
  * @interface OrgAssetsMaterialUpdateCoverImgPostRequest
  */
 export interface OrgAssetsMaterialUpdateCoverImgPostRequest {
@@ -7962,6 +8488,12 @@ export interface OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResu
  * @interface OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest
  */
 export interface OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest
+     */
+    'orgId': number;
     /**
      * 
      * @type {string}
@@ -9049,6 +9581,12 @@ export interface OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgre
      * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
      */
     'msgCode'?: OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerMsgCodeEnum;
+    /**
+     * 1: Frontier產生 2: 客製化上傳
+     * @type {number}
+     * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
+     */
+    'sourceType'?: OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum;
 }
 
 export const OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum = {
@@ -9066,6 +9604,12 @@ export const OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressLi
 } as const;
 
 export type OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerMsgCodeEnum = typeof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerMsgCodeEnum[keyof typeof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerMsgCodeEnum];
+export const OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum = {
+    FRONTIER: 1,
+    CUSTOMIZED: 2
+} as const;
+
+export type OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum = typeof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum[keyof typeof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum];
 
 /**
  * 
@@ -9122,6 +9666,77 @@ export const OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum = {
 
 export type OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum = typeof OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum[keyof typeof OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum];
 
+/**
+ * 組織型態書籤
+ * @export
+ * @interface OrgBookmark
+ */
+export interface OrgBookmark {
+    /**
+     * 書籤ID
+     * @type {number}
+     * @memberof OrgBookmark
+     */
+    'bookmarkId': number;
+    /**
+     * 
+     * @type {BookmarkType}
+     * @memberof OrgBookmark
+     */
+    'bookmarkType': BookmarkType;
+    /**
+     * 
+     * @type {OrgBookmarkAllOfOrg}
+     * @memberof OrgBookmark
+     */
+    'org': OrgBookmarkAllOfOrg;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface OrgBookmarkAllOf
+ */
+export interface OrgBookmarkAllOf {
+    /**
+     * 
+     * @type {OrgBookmarkAllOfOrg}
+     * @memberof OrgBookmarkAllOf
+     */
+    'org': OrgBookmarkAllOfOrg;
+}
+/**
+ * 
+ * @export
+ * @interface OrgBookmarkAllOfOrg
+ */
+export interface OrgBookmarkAllOfOrg {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof OrgBookmarkAllOfOrg
+     */
+    'orgId': number;
+    /**
+     * 組織名稱
+     * @type {string}
+     * @memberof OrgBookmarkAllOfOrg
+     */
+    'orgName': string;
+    /**
+     * 組織Logo
+     * @type {string}
+     * @memberof OrgBookmarkAllOfOrg
+     */
+    'logo': string;
+    /**
+     * 是否有未讀訊息
+     * @type {boolean}
+     * @memberof OrgBookmarkAllOfOrg
+     */
+    'isUnread': boolean;
+}
 /**
  * 
  * @export
@@ -9559,6 +10174,62 @@ export interface OrgGroupAssetsMaterialCreateUploadAttachmentPostRequest {
 /**
  * 
  * @export
+ * @interface OrgGroupAssetsMaterialCustomU3mUploadCancelPostRequest
+ */
+export interface OrgGroupAssetsMaterialCustomU3mUploadCancelPostRequest {
+    /**
+     * 團隊ID
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialCustomU3mUploadCancelPostRequest
+     */
+    'groupId': number;
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialCustomU3mUploadCancelPostRequest
+     */
+    'materialId': number;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialCustomU3mUploadPostRequest
+ */
+export interface OrgGroupAssetsMaterialCustomU3mUploadPostRequest {
+    /**
+     * 團隊ID
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialCustomU3mUploadPostRequest
+     */
+    'groupId': number;
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialCustomU3mUploadPostRequest
+     */
+    'materialId': number;
+    /**
+     * 暫存檔案ID
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialCustomU3mUploadPostRequest
+     */
+    'tempUploadId': string;
+    /**
+     * 檔案名稱
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialCustomU3mUploadPostRequest
+     */
+    'fileName': string;
+    /**
+     * 是否需要產生物理檔案
+     * @type {boolean}
+     * @memberof OrgGroupAssetsMaterialCustomU3mUploadPostRequest
+     */
+    'needToGeneratePhysical': boolean;
+}
+/**
+ * 
+ * @export
  * @interface OrgGroupAssetsMaterialDeletePostRequest
  */
 export interface OrgGroupAssetsMaterialDeletePostRequest {
@@ -9900,6 +10571,31 @@ export interface OrgGroupAssetsMaterialUpdateRemovePantonePostRequest {
      * @memberof OrgGroupAssetsMaterialUpdateRemovePantonePostRequest
      */
     'materialPantoneId': number;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest
+ */
+export interface OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest {
+    /**
+     * 團隊ID
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest
+     */
+    'groupId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest
+     */
+    'faceSideCropImgFileName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest
+     */
+    'backSideCropImgFileName'?: string;
 }
 /**
  * 
@@ -10632,6 +11328,12 @@ export interface OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mP
      * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
      */
     'isMaterialDeleted'?: boolean;
+    /**
+     * 1: Frontier產生 2: 客製化上傳
+     * @type {number}
+     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
+     */
+    'sourceType'?: OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum;
 }
 
 export const OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum = {
@@ -10643,6 +11345,12 @@ export const OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgr
 } as const;
 
 export type OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum = typeof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum[keyof typeof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum];
+export const OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum = {
+    FRONTIER: 1,
+    CUSTOMIZED: 2
+} as const;
+
+export type OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum = typeof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum[keyof typeof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum];
 
 /**
  * 
@@ -10937,6 +11645,12 @@ export interface OrgGroupMemberChangeRolePostRequest {
  */
 export interface OrgGroupMemberDeleteMemberPostRequest {
     /**
+     * 團隊ID
+     * @type {number}
+     * @memberof OrgGroupMemberDeleteMemberPostRequest
+     */
+    'groupId': number;
+    /**
      * 
      * @type {number}
      * @memberof OrgGroupMemberDeleteMemberPostRequest
@@ -10961,19 +11675,6 @@ export interface OrgGroupMemberInviteViaEmailPostRequest {
      * @memberof OrgGroupMemberInviteViaEmailPostRequest
      */
     'emailList': Array<string>;
-}
-/**
- * 
- * @export
- * @interface OrgGroupMemberJoinViaEmailPostRequest
- */
-export interface OrgGroupMemberJoinViaEmailPostRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgGroupMemberJoinViaEmailPostRequest
-     */
-    'inviteCode': string;
 }
 /**
  * 
@@ -12521,6 +13222,12 @@ export interface OrgMemberCancelInvitationPostRequest {
  */
 export interface OrgMemberChangeRolePostRequest {
     /**
+     * 組織ID
+     * @type {number}
+     * @memberof OrgMemberChangeRolePostRequest
+     */
+    'orgId': number;
+    /**
      * 
      * @type {number}
      * @memberof OrgMemberChangeRolePostRequest
@@ -12539,6 +13246,12 @@ export interface OrgMemberChangeRolePostRequest {
  * @interface OrgMemberDeletePostRequest
  */
 export interface OrgMemberDeletePostRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof OrgMemberDeletePostRequest
+     */
+    'orgId': number;
     /**
      * 
      * @type {number}
@@ -14794,6 +15507,12 @@ export interface OrgUpdateLogoGetUploadUrlPost200ResponseResult {
  */
 export interface OrgUpdateLogoGetUploadUrlPostRequest {
     /**
+     * 組織ID
+     * @type {number}
+     * @memberof OrgUpdateLogoGetUploadUrlPostRequest
+     */
+    'orgId': number;
+    /**
      * 
      * @type {string}
      * @memberof OrgUpdateLogoGetUploadUrlPostRequest
@@ -15356,69 +16075,6 @@ export interface OrgValueAddedServiceMade2flowScheduleMeetingPostRequestAttachme
      * @memberof OrgValueAddedServiceMade2flowScheduleMeetingPostRequestAttachmentListInner
      */
     'fileName'?: string;
-}
-/**
- * 
- * @export
- * @interface OrgWorkspaceCollectionCreateGetUploadUrlPost200Response
- */
-export interface OrgWorkspaceCollectionCreateGetUploadUrlPost200Response {
-    /**
-     * 
-     * @type {OrgWorkspaceCollectionCreateGetUploadUrlPost200ResponseResult}
-     * @memberof OrgWorkspaceCollectionCreateGetUploadUrlPost200Response
-     */
-    'result'?: OrgWorkspaceCollectionCreateGetUploadUrlPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgWorkspaceCollectionCreateGetUploadUrlPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgWorkspaceCollectionCreateGetUploadUrlPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgWorkspaceCollectionCreateGetUploadUrlPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgWorkspaceCollectionCreateGetUploadUrlPost200ResponseResult
- */
-export interface OrgWorkspaceCollectionCreateGetUploadUrlPost200ResponseResult {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgWorkspaceCollectionCreateGetUploadUrlPost200ResponseResult
-     */
-    'tempUploadId'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgWorkspaceCollectionCreateGetUploadUrlPost200ResponseResult
-     */
-    'trendBoardUploadUrl'?: string;
-}
-/**
- * 
- * @export
- * @interface OrgWorkspaceCollectionCreateGetUploadUrlPostRequest
- */
-export interface OrgWorkspaceCollectionCreateGetUploadUrlPostRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgWorkspaceCollectionCreateGetUploadUrlPostRequest
-     */
-    'trendBoardFileName': string;
 }
 /**
  * 
@@ -16999,33 +17655,6 @@ export interface PollingDigitalThreadStickerTagListGetPost200ResponseResult {
 /**
  * 
  * @export
- * @interface PollingDigitalThreadStickerTagListGetPostRequest
- */
-export interface PollingDigitalThreadStickerTagListGetPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof PollingDigitalThreadStickerTagListGetPostRequest
-     */
-    'ogId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PollingDigitalThreadStickerTagListGetPostRequest
-     */
-    'ogType': PollingDigitalThreadStickerTagListGetPostRequestOgTypeEnum;
-}
-
-export const PollingDigitalThreadStickerTagListGetPostRequestOgTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type PollingDigitalThreadStickerTagListGetPostRequestOgTypeEnum = typeof PollingDigitalThreadStickerTagListGetPostRequestOgTypeEnum[keyof typeof PollingDigitalThreadStickerTagListGetPostRequestOgTypeEnum];
-
-/**
- * 
- * @export
  * @interface PollingSidebarPost200Response
  */
 export interface PollingSidebarPost200Response {
@@ -17803,6 +18432,12 @@ export type PublicShareAssignedGetTargetPost200ResponseResultTargetTypeEnum = ty
  */
 export interface PublicShareAssignedGetTargetPostRequest {
     /**
+     * 組織ID
+     * @type {number}
+     * @memberof PublicShareAssignedGetTargetPostRequest
+     */
+    'orgId': number;
+    /**
      * 
      * @type {number}
      * @memberof PublicShareAssignedGetTargetPostRequest
@@ -17959,6 +18594,12 @@ export interface PublicShareCopyLinkGeneratePost200ResponseResult {
  */
 export interface PublicShareCopyLinkGeneratePostRequest {
     /**
+     * 組織ID
+     * @type {number}
+     * @memberof PublicShareCopyLinkGeneratePostRequest
+     */
+    'orgId': number;
+    /**
      * 
      * @type {number}
      * @memberof PublicShareCopyLinkGeneratePostRequest
@@ -17985,6 +18626,12 @@ export type PublicShareCopyLinkGeneratePostRequestWorkspaceNodeLocationEnum = ty
  * @interface PublicShareSocialGeneratePostRequest
  */
 export interface PublicShareSocialGeneratePostRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof PublicShareSocialGeneratePostRequest
+     */
+    'orgId': number;
     /**
      * 
      * @type {number}
@@ -18083,6 +18730,12 @@ export type PublishWorkspaceNodeLocationEnum = typeof PublishWorkspaceNodeLocati
  */
 export interface ReadAllUnreadDigitalThreadRequest {
     /**
+     * 要已讀的Digital Thread清單
+     * @type {Array<number>}
+     * @memberof ReadAllUnreadDigitalThreadRequest
+     */
+    'digitalThreadSideIdList': Array<number>;
+    /**
      * 組織ID
      * @type {number}
      * @memberof ReadAllUnreadDigitalThreadRequest
@@ -18100,12 +18753,6 @@ export interface ReadAllUnreadDigitalThreadRequest {
      * @memberof ReadAllUnreadDigitalThreadRequest
      */
     'ogId': number;
-    /**
-     * 要已讀的Digital Thread清單
-     * @type {Array<number>}
-     * @memberof ReadAllUnreadDigitalThreadRequest
-     */
-    'digitalThreadSideIdList': Array<number>;
 }
 
 
@@ -18272,6 +18919,116 @@ export interface SamplePostRequest {
      */
     'password': string;
 }
+/**
+ * 
+ * @export
+ * @interface SaveThreadBoardBookmarkListRequest
+ */
+export interface SaveThreadBoardBookmarkListRequest {
+    /**
+     * 
+     * @type {Array<SaveThreadBoardBookmarkListRequestBookmarkListInner>}
+     * @memberof SaveThreadBoardBookmarkListRequest
+     */
+    'bookmarkList'?: Array<SaveThreadBoardBookmarkListRequestBookmarkListInner>;
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof SaveThreadBoardBookmarkListRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof SaveThreadBoardBookmarkListRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof SaveThreadBoardBookmarkListRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * @type SaveThreadBoardBookmarkListRequestBookmarkListInner
+ * @export
+ */
+export type SaveThreadBoardBookmarkListRequestBookmarkListInner = SaveThreadBoardBookmarkListRequestBookmarkListInnerOneOf | SaveThreadBoardBookmarkListRequestBookmarkListInnerOneOf1;
+
+/**
+ * 
+ * @export
+ * @interface SaveThreadBoardBookmarkListRequestBookmarkListInnerOneOf
+ */
+export interface SaveThreadBoardBookmarkListRequestBookmarkListInnerOneOf {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof SaveThreadBoardBookmarkListRequestBookmarkListInnerOneOf
+     */
+    'orgId': number;
+}
+/**
+ * 
+ * @export
+ * @interface SaveThreadBoardBookmarkListRequestBookmarkListInnerOneOf1
+ */
+export interface SaveThreadBoardBookmarkListRequestBookmarkListInnerOneOf1 {
+    /**
+     * 資料夾型態書籤名稱
+     * @type {string}
+     * @memberof SaveThreadBoardBookmarkListRequestBookmarkListInnerOneOf1
+     */
+    'folderName': string;
+    /**
+     * 組織ID列表
+     * @type {Array<number>}
+     * @memberof SaveThreadBoardBookmarkListRequestBookmarkListInnerOneOf1
+     */
+    'orgIdList': Array<number>;
+}
+/**
+ * 
+ * @export
+ * @interface SaveThreadBoardQueryRequest
+ */
+export interface SaveThreadBoardQueryRequest {
+    /**
+     * 書籤ID
+     * @type {number}
+     * @memberof SaveThreadBoardQueryRequest
+     */
+    'bookmarkId': number;
+    /**
+     * 
+     * @type {ThreadBoardQuery}
+     * @memberof SaveThreadBoardQueryRequest
+     */
+    'threadBoardQuery': ThreadBoardQuery;
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof SaveThreadBoardQueryRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof SaveThreadBoardQueryRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof SaveThreadBoardQueryRequest
+     */
+    'ogId': number;
+}
+
+
 /**
  * 
  * @export
@@ -19921,6 +20678,12 @@ export type ShowroomGetMaterialPostRequestWorkspaceNodeLocationEnum = typeof Sho
  */
 export interface ShowroomSendMailPostRequest {
     /**
+     * 組織ID
+     * @type {number}
+     * @memberof ShowroomSendMailPostRequest
+     */
+    'orgId': number;
+    /**
      * 
      * @type {number}
      * @memberof ShowroomSendMailPostRequest
@@ -20573,6 +21336,51 @@ export interface ThreadBoardWorkflowStageListInner {
      */
     'digitalThreadList': Array<DigitalThreadBase>;
 }
+/**
+ * 
+ * @export
+ * @interface UpdateFolderBookmarkRequest
+ */
+export interface UpdateFolderBookmarkRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateFolderBookmarkRequest
+     */
+    'bookmarkId': number;
+    /**
+     * 資料夾型態書籤名稱
+     * @type {string}
+     * @memberof UpdateFolderBookmarkRequest
+     */
+    'folderName': string;
+    /**
+     * 資料夾型態書籤內的組織ID列表
+     * @type {Array<number>}
+     * @memberof UpdateFolderBookmarkRequest
+     */
+    'orgIdList': Array<number>;
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof UpdateFolderBookmarkRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof UpdateFolderBookmarkRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof UpdateFolderBookmarkRequest
+     */
+    'ogId': number;
+}
+
+
 /**
  * 
  * @export
@@ -24204,44 +25012,6 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 
-         * @summary 批量上傳 - 產生S3檔案上傳url
-         * @param {OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest} [orgAssetsMaterialBatchUploadGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupAssetsMaterialBatchUploadGetUploadUrlPost: async (orgAssetsMaterialBatchUploadGetUploadUrlPostRequest?: OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/group/assets/material/batch-upload/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          *  **Access roles:** To be clear define
          * @summary 批量上傳
          * @param {OrgGroupAssetsMaterialBatchUploadPostRequest} [orgGroupAssetsMaterialBatchUploadPostRequest] 
@@ -24433,44 +25203,6 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
-         * @summary 建立單一布料時上傳補充資料 - 產生S3檔案上傳url
-         * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupAssetsMaterialCreateUploadAttachmentGetUploadUrlPost: async (userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/group/assets/material/create/upload-attachment/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(userFeedbackUploadAttachmentGetUploadUrlPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 建立單一布料時上傳補充資料
          * @param {OrgGroupAssetsMaterialCreateUploadAttachmentPostRequest} [orgGroupAssetsMaterialCreateUploadAttachmentPostRequest] 
          * @param {*} [options] Override http request option.
@@ -24501,6 +25233,82 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(orgGroupAssetsMaterialCreateUploadAttachmentPostRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Client 端 取消上傳 Custom 3D Material
+         * @param {OrgGroupAssetsMaterialCustomU3mUploadCancelPostRequest} [orgGroupAssetsMaterialCustomU3mUploadCancelPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orgGroupAssetsMaterialCustomU3mUploadCancelPost: async (orgGroupAssetsMaterialCustomU3mUploadCancelPostRequest?: OrgGroupAssetsMaterialCustomU3mUploadCancelPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/org/group/assets/material/custom-u3m-upload/cancel`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(orgGroupAssetsMaterialCustomU3mUploadCancelPostRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Client 端 上傳 Custom 3D Material
+         * @param {OrgGroupAssetsMaterialCustomU3mUploadPostRequest} [orgGroupAssetsMaterialCustomU3mUploadPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orgGroupAssetsMaterialCustomU3mUploadPost: async (orgGroupAssetsMaterialCustomU3mUploadPostRequest?: OrgGroupAssetsMaterialCustomU3mUploadPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/org/group/assets/material/custom-u3m-upload`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(orgGroupAssetsMaterialCustomU3mUploadPostRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -24812,44 +25620,6 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 
-         * @summary Client 端 Smart Upload 產生S3檔案上傳url
-         * @param {GeneralGetUploadUrlPostRequest} [generalGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupAssetsMaterialSmartUploadGetUploadUrlPost: async (generalGetUploadUrlPostRequest?: GeneralGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/group/assets/material/smart-upload/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(generalGetUploadUrlPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          *  **Access roles:** To be clear define
          * @summary Client 端 Smart Upload
          * @param {OrgGroupAssetsMaterialSmartUploadPostRequest} [orgGroupAssetsMaterialSmartUploadPostRequest] 
@@ -24927,44 +25697,6 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
-         * @summary 設定產品預覽圖-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest} [orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupAssetsMaterialUpdateCoverImgGetUploadUrlPost: async (orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/group/assets/material/update/cover-img/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 設定產品預覽圖
          * @param {OrgGroupAssetsMaterialUpdateCoverImgPostRequest} [orgGroupAssetsMaterialUpdateCoverImgPostRequest] 
          * @param {*} [options] Override http request option.
@@ -25004,11 +25736,11 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary 建立 U3M-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
+         * @param {OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost: async (orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost: async (orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/assets/material/update/generate-u3m/get-upload-url`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25032,7 +25764,7 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -25232,11 +25964,11 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary 編輯正反面-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
+         * @param {OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost: async (orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost: async (orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/assets/material/update/scan-image/get-upload-url`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25260,7 +25992,7 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -25451,44 +26183,6 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(orgGroupAssetsMaterialUpdateSimpleTagPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 編輯布料時上傳補充資料 - 產生S3檔案上傳url
-         * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost: async (userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/group/assets/material/update/upload-attachment/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(userFeedbackUploadAttachmentGetUploadUrlPostRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -25821,17 +26515,6 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * 
-         * @summary 批量上傳 - 產生S3檔案上傳url
-         * @param {OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest} [orgAssetsMaterialBatchUploadGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgGroupAssetsMaterialBatchUploadGetUploadUrlPost(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest?: OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialBatchUploadGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialBatchUploadGetUploadUrlPost(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
          *  **Access roles:** To be clear define
          * @summary 批量上傳
          * @param {OrgGroupAssetsMaterialBatchUploadPostRequest} [orgGroupAssetsMaterialBatchUploadPostRequest] 
@@ -25888,17 +26571,6 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 建立單一布料時上傳補充資料 - 產生S3檔案上傳url
-         * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgGroupAssetsMaterialCreateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserFeedbackUploadAttachmentGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialCreateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
          * @summary 建立單一布料時上傳補充資料
          * @param {OrgGroupAssetsMaterialCreateUploadAttachmentPostRequest} [orgGroupAssetsMaterialCreateUploadAttachmentPostRequest] 
          * @param {*} [options] Override http request option.
@@ -25906,6 +26578,28 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          */
         async orgGroupAssetsMaterialCreateUploadAttachmentPost(orgGroupAssetsMaterialCreateUploadAttachmentPostRequest?: OrgGroupAssetsMaterialCreateUploadAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialCreateUploadAttachmentPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialCreateUploadAttachmentPost(orgGroupAssetsMaterialCreateUploadAttachmentPostRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Client 端 取消上傳 Custom 3D Material
+         * @param {OrgGroupAssetsMaterialCustomU3mUploadCancelPostRequest} [orgGroupAssetsMaterialCustomU3mUploadCancelPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async orgGroupAssetsMaterialCustomU3mUploadCancelPost(orgGroupAssetsMaterialCustomU3mUploadCancelPostRequest?: OrgGroupAssetsMaterialCustomU3mUploadCancelPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialCustomU3mUploadCancelPost(orgGroupAssetsMaterialCustomU3mUploadCancelPostRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Client 端 上傳 Custom 3D Material
+         * @param {OrgGroupAssetsMaterialCustomU3mUploadPostRequest} [orgGroupAssetsMaterialCustomU3mUploadPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async orgGroupAssetsMaterialCustomU3mUploadPost(orgGroupAssetsMaterialCustomU3mUploadPostRequest?: OrgGroupAssetsMaterialCustomU3mUploadPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialCustomU3mUploadPost(orgGroupAssetsMaterialCustomU3mUploadPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -25997,17 +26691,6 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * 
-         * @summary Client 端 Smart Upload 產生S3檔案上傳url
-         * @param {GeneralGetUploadUrlPostRequest} [generalGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgGroupAssetsMaterialSmartUploadGetUploadUrlPost(generalGetUploadUrlPostRequest?: GeneralGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GeneralGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialSmartUploadGetUploadUrlPost(generalGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
          *  **Access roles:** To be clear define
          * @summary Client 端 Smart Upload
          * @param {OrgGroupAssetsMaterialSmartUploadPostRequest} [orgGroupAssetsMaterialSmartUploadPostRequest] 
@@ -26031,17 +26714,6 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 設定產品預覽圖-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest} [orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgGroupAssetsMaterialUpdateCoverImgGetUploadUrlPost(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateCoverImgGetUploadUrlPost(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
          * @summary 設定產品預覽圖
          * @param {OrgGroupAssetsMaterialUpdateCoverImgPostRequest} [orgGroupAssetsMaterialUpdateCoverImgPostRequest] 
          * @param {*} [options] Override http request option.
@@ -26054,12 +26726,12 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 建立 U3M-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
+         * @param {OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options);
+        async orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -26120,12 +26792,12 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 編輯正反面-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
+         * @param {OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options);
+        async orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -26181,17 +26853,6 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          */
         async orgGroupAssetsMaterialUpdateSimpleTagPost(orgGroupAssetsMaterialUpdateSimpleTagPostRequest?: OrgGroupAssetsMaterialUpdateSimpleTagPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateSimpleTagPost(orgGroupAssetsMaterialUpdateSimpleTagPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 編輯布料時上傳補充資料 - 產生S3檔案上傳url
-         * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgGroupAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserFeedbackUploadAttachmentGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -26303,16 +26964,6 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
             return localVarFp.orgGroupAssetsMaterialAddToWorkspacePost(orgGroupAssetsMaterialAddToWorkspacePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @summary 批量上傳 - 產生S3檔案上傳url
-         * @param {OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest} [orgAssetsMaterialBatchUploadGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupAssetsMaterialBatchUploadGetUploadUrlPost(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest?: OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialBatchUploadGetUploadUrlPost200Response> {
-            return localVarFp.orgGroupAssetsMaterialBatchUploadGetUploadUrlPost(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
          *  **Access roles:** To be clear define
          * @summary 批量上傳
          * @param {OrgGroupAssetsMaterialBatchUploadPostRequest} [orgGroupAssetsMaterialBatchUploadPostRequest] 
@@ -26364,16 +27015,6 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
-         * @summary 建立單一布料時上傳補充資料 - 產生S3檔案上傳url
-         * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupAssetsMaterialCreateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: any): AxiosPromise<UserFeedbackUploadAttachmentGetUploadUrlPost200Response> {
-            return localVarFp.orgGroupAssetsMaterialCreateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 建立單一布料時上傳補充資料
          * @param {OrgGroupAssetsMaterialCreateUploadAttachmentPostRequest} [orgGroupAssetsMaterialCreateUploadAttachmentPostRequest] 
          * @param {*} [options] Override http request option.
@@ -26381,6 +27022,26 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          */
         orgGroupAssetsMaterialCreateUploadAttachmentPost(orgGroupAssetsMaterialCreateUploadAttachmentPostRequest?: OrgGroupAssetsMaterialCreateUploadAttachmentPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialCreateUploadAttachmentPost200Response> {
             return localVarFp.orgGroupAssetsMaterialCreateUploadAttachmentPost(orgGroupAssetsMaterialCreateUploadAttachmentPostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Client 端 取消上傳 Custom 3D Material
+         * @param {OrgGroupAssetsMaterialCustomU3mUploadCancelPostRequest} [orgGroupAssetsMaterialCustomU3mUploadCancelPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orgGroupAssetsMaterialCustomU3mUploadCancelPost(orgGroupAssetsMaterialCustomU3mUploadCancelPostRequest?: OrgGroupAssetsMaterialCustomU3mUploadCancelPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.orgGroupAssetsMaterialCustomU3mUploadCancelPost(orgGroupAssetsMaterialCustomU3mUploadCancelPostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Client 端 上傳 Custom 3D Material
+         * @param {OrgGroupAssetsMaterialCustomU3mUploadPostRequest} [orgGroupAssetsMaterialCustomU3mUploadPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orgGroupAssetsMaterialCustomU3mUploadPost(orgGroupAssetsMaterialCustomU3mUploadPostRequest?: OrgGroupAssetsMaterialCustomU3mUploadPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.orgGroupAssetsMaterialCustomU3mUploadPost(orgGroupAssetsMaterialCustomU3mUploadPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -26463,16 +27124,6 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
             return localVarFp.orgGroupAssetsMaterialOptionsPost(orgGroupUserGetPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @summary Client 端 Smart Upload 產生S3檔案上傳url
-         * @param {GeneralGetUploadUrlPostRequest} [generalGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupAssetsMaterialSmartUploadGetUploadUrlPost(generalGetUploadUrlPostRequest?: GeneralGetUploadUrlPostRequest, options?: any): AxiosPromise<GeneralGetUploadUrlPost200Response> {
-            return localVarFp.orgGroupAssetsMaterialSmartUploadGetUploadUrlPost(generalGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
          *  **Access roles:** To be clear define
          * @summary Client 端 Smart Upload
          * @param {OrgGroupAssetsMaterialSmartUploadPostRequest} [orgGroupAssetsMaterialSmartUploadPostRequest] 
@@ -26494,16 +27145,6 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
-         * @summary 設定產品預覽圖-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest} [orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupAssetsMaterialUpdateCoverImgGetUploadUrlPost(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200Response> {
-            return localVarFp.orgGroupAssetsMaterialUpdateCoverImgGetUploadUrlPost(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 設定產品預覽圖
          * @param {OrgGroupAssetsMaterialUpdateCoverImgPostRequest} [orgGroupAssetsMaterialUpdateCoverImgPostRequest] 
          * @param {*} [options] Override http request option.
@@ -26515,12 +27156,12 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
         /**
          * 
          * @summary 建立 U3M-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
+         * @param {OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response> {
-            return localVarFp.orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
+        orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response> {
+            return localVarFp.orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -26575,12 +27216,12 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
         /**
          * 
          * @summary 編輯正反面-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
+         * @param {OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response> {
-            return localVarFp.orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
+        orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response> {
+            return localVarFp.orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -26631,16 +27272,6 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          */
         orgGroupAssetsMaterialUpdateSimpleTagPost(orgGroupAssetsMaterialUpdateSimpleTagPostRequest?: OrgGroupAssetsMaterialUpdateSimpleTagPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
             return localVarFp.orgGroupAssetsMaterialUpdateSimpleTagPost(orgGroupAssetsMaterialUpdateSimpleTagPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 編輯布料時上傳補充資料 - 產生S3檔案上傳url
-         * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: any): AxiosPromise<UserFeedbackUploadAttachmentGetUploadUrlPost200Response> {
-            return localVarFp.orgGroupAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -26745,18 +27376,6 @@ export class GroupAssetsApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary 批量上傳 - 產生S3檔案上傳url
-     * @param {OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest} [orgAssetsMaterialBatchUploadGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof GroupAssetsApi
-     */
-    public orgGroupAssetsMaterialBatchUploadGetUploadUrlPost(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest?: OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialBatchUploadGetUploadUrlPost(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
      *  **Access roles:** To be clear define
      * @summary 批量上傳
      * @param {OrgGroupAssetsMaterialBatchUploadPostRequest} [orgGroupAssetsMaterialBatchUploadPostRequest] 
@@ -26818,18 +27437,6 @@ export class GroupAssetsApi extends BaseAPI {
 
     /**
      * 
-     * @summary 建立單一布料時上傳補充資料 - 產生S3檔案上傳url
-     * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof GroupAssetsApi
-     */
-    public orgGroupAssetsMaterialCreateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialCreateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary 建立單一布料時上傳補充資料
      * @param {OrgGroupAssetsMaterialCreateUploadAttachmentPostRequest} [orgGroupAssetsMaterialCreateUploadAttachmentPostRequest] 
      * @param {*} [options] Override http request option.
@@ -26838,6 +27445,30 @@ export class GroupAssetsApi extends BaseAPI {
      */
     public orgGroupAssetsMaterialCreateUploadAttachmentPost(orgGroupAssetsMaterialCreateUploadAttachmentPostRequest?: OrgGroupAssetsMaterialCreateUploadAttachmentPostRequest, options?: AxiosRequestConfig) {
         return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialCreateUploadAttachmentPost(orgGroupAssetsMaterialCreateUploadAttachmentPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Client 端 取消上傳 Custom 3D Material
+     * @param {OrgGroupAssetsMaterialCustomU3mUploadCancelPostRequest} [orgGroupAssetsMaterialCustomU3mUploadCancelPostRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof GroupAssetsApi
+     */
+    public orgGroupAssetsMaterialCustomU3mUploadCancelPost(orgGroupAssetsMaterialCustomU3mUploadCancelPostRequest?: OrgGroupAssetsMaterialCustomU3mUploadCancelPostRequest, options?: AxiosRequestConfig) {
+        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialCustomU3mUploadCancelPost(orgGroupAssetsMaterialCustomU3mUploadCancelPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Client 端 上傳 Custom 3D Material
+     * @param {OrgGroupAssetsMaterialCustomU3mUploadPostRequest} [orgGroupAssetsMaterialCustomU3mUploadPostRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof GroupAssetsApi
+     */
+    public orgGroupAssetsMaterialCustomU3mUploadPost(orgGroupAssetsMaterialCustomU3mUploadPostRequest?: OrgGroupAssetsMaterialCustomU3mUploadPostRequest, options?: AxiosRequestConfig) {
+        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialCustomU3mUploadPost(orgGroupAssetsMaterialCustomU3mUploadPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -26937,18 +27568,6 @@ export class GroupAssetsApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Client 端 Smart Upload 產生S3檔案上傳url
-     * @param {GeneralGetUploadUrlPostRequest} [generalGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof GroupAssetsApi
-     */
-    public orgGroupAssetsMaterialSmartUploadGetUploadUrlPost(generalGetUploadUrlPostRequest?: GeneralGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialSmartUploadGetUploadUrlPost(generalGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
      *  **Access roles:** To be clear define
      * @summary Client 端 Smart Upload
      * @param {OrgGroupAssetsMaterialSmartUploadPostRequest} [orgGroupAssetsMaterialSmartUploadPostRequest] 
@@ -26974,18 +27593,6 @@ export class GroupAssetsApi extends BaseAPI {
 
     /**
      * 
-     * @summary 設定產品預覽圖-產生S3檔案上傳url
-     * @param {OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest} [orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof GroupAssetsApi
-     */
-    public orgGroupAssetsMaterialUpdateCoverImgGetUploadUrlPost(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialUpdateCoverImgGetUploadUrlPost(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary 設定產品預覽圖
      * @param {OrgGroupAssetsMaterialUpdateCoverImgPostRequest} [orgGroupAssetsMaterialUpdateCoverImgPostRequest] 
      * @param {*} [options] Override http request option.
@@ -26999,13 +27606,13 @@ export class GroupAssetsApi extends BaseAPI {
     /**
      * 
      * @summary 建立 U3M-產生S3檔案上傳url
-     * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
+     * @param {OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GroupAssetsApi
      */
-    public orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
+        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -27071,13 +27678,13 @@ export class GroupAssetsApi extends BaseAPI {
     /**
      * 
      * @summary 編輯正反面-產生S3檔案上傳url
-     * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
+     * @param {OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GroupAssetsApi
      */
-    public orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
+        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -27138,18 +27745,6 @@ export class GroupAssetsApi extends BaseAPI {
      */
     public orgGroupAssetsMaterialUpdateSimpleTagPost(orgGroupAssetsMaterialUpdateSimpleTagPostRequest?: OrgGroupAssetsMaterialUpdateSimpleTagPostRequest, options?: AxiosRequestConfig) {
         return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialUpdateSimpleTagPost(orgGroupAssetsMaterialUpdateSimpleTagPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 編輯布料時上傳補充資料 - 產生S3檔案上傳url
-     * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof GroupAssetsApi
-     */
-    public orgGroupAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -27449,11 +28044,11 @@ export const GroupMemberApiAxiosParamCreator = function (configuration?: Configu
         /**
          * **Access roles:** To be clear define
          * @summary 透過 invite link 加入團隊
-         * @param {OrgGroupMemberJoinViaEmailPostRequest} [orgGroupMemberJoinViaEmailPostRequest] 
+         * @param {OrgMemberJoinViaLinkPostRequest} [orgMemberJoinViaLinkPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupMemberJoinViaEmailPost: async (orgGroupMemberJoinViaEmailPostRequest?: OrgGroupMemberJoinViaEmailPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupMemberJoinViaEmailPost: async (orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/member/join-via-email`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27477,7 +28072,7 @@ export const GroupMemberApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgGroupMemberJoinViaEmailPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(orgMemberJoinViaLinkPostRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -27552,12 +28147,12 @@ export const GroupMemberApiFp = function(configuration?: Configuration) {
         /**
          * **Access roles:** To be clear define
          * @summary 透過 invite link 加入團隊
-         * @param {OrgGroupMemberJoinViaEmailPostRequest} [orgGroupMemberJoinViaEmailPostRequest] 
+         * @param {OrgMemberJoinViaLinkPostRequest} [orgMemberJoinViaLinkPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupMemberJoinViaEmailPost(orgGroupMemberJoinViaEmailPostRequest?: OrgGroupMemberJoinViaEmailPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberJoinViaEmailPost(orgGroupMemberJoinViaEmailPostRequest, options);
+        async orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -27623,12 +28218,12 @@ export const GroupMemberApiFactory = function (configuration?: Configuration, ba
         /**
          * **Access roles:** To be clear define
          * @summary 透過 invite link 加入團隊
-         * @param {OrgGroupMemberJoinViaEmailPostRequest} [orgGroupMemberJoinViaEmailPostRequest] 
+         * @param {OrgMemberJoinViaLinkPostRequest} [orgMemberJoinViaLinkPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupMemberJoinViaEmailPost(orgGroupMemberJoinViaEmailPostRequest?: OrgGroupMemberJoinViaEmailPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgGroupMemberJoinViaEmailPost(orgGroupMemberJoinViaEmailPostRequest, options).then((request) => request(axios, basePath));
+        orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -27703,13 +28298,13 @@ export class GroupMemberApi extends BaseAPI {
     /**
      * **Access roles:** To be clear define
      * @summary 透過 invite link 加入團隊
-     * @param {OrgGroupMemberJoinViaEmailPostRequest} [orgGroupMemberJoinViaEmailPostRequest] 
+     * @param {OrgMemberJoinViaLinkPostRequest} [orgMemberJoinViaLinkPostRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GroupMemberApi
      */
-    public orgGroupMemberJoinViaEmailPost(orgGroupMemberJoinViaEmailPostRequest?: OrgGroupMemberJoinViaEmailPostRequest, options?: AxiosRequestConfig) {
-        return GroupMemberApiFp(this.configuration).orgGroupMemberJoinViaEmailPost(orgGroupMemberJoinViaEmailPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest?: OrgMemberJoinViaLinkPostRequest, options?: AxiosRequestConfig) {
+        return GroupMemberApiFp(this.configuration).orgGroupMemberJoinViaEmailPost(orgMemberJoinViaLinkPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -29895,44 +30490,6 @@ export const GroupWorkspaceApiAxiosParamCreator = function (configuration?: Conf
     return {
         /**
          * 
-         * @summary 新增 Collection - 產生S3檔案上傳url
-         * @param {OrgWorkspaceCollectionCreateGetUploadUrlPostRequest} [orgWorkspaceCollectionCreateGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupWorkspaceCollectionCreateGetUploadUrlPost: async (orgWorkspaceCollectionCreateGetUploadUrlPostRequest?: OrgWorkspaceCollectionCreateGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/group/workspace/collection/create/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgWorkspaceCollectionCreateGetUploadUrlPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 新增 Collection
          * @param {OrgGroupWorkspaceCollectionCreatePostRequest} [orgGroupWorkspaceCollectionCreatePostRequest] 
          * @param {*} [options] Override http request option.
@@ -30001,75 +30558,6 @@ export const GroupWorkspaceApiAxiosParamCreator = function (configuration?: Conf
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(orgGroupWorkspaceCollectionRemoveTrendBoardPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 編輯 Collection
-         * @param {number} groupId 
-         * @param {number} collectionId 
-         * @param {string} collectionName 
-         * @param {File} [trendBoard] 
-         * @param {string} [description] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupWorkspaceCollectionUpdateGetUploadUrlPost: async (groupId: number, collectionId: number, collectionName: string, trendBoard?: File, description?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'groupId' is not null or undefined
-            assertParamExists('orgGroupWorkspaceCollectionUpdateGetUploadUrlPost', 'groupId', groupId)
-            // verify required parameter 'collectionId' is not null or undefined
-            assertParamExists('orgGroupWorkspaceCollectionUpdateGetUploadUrlPost', 'collectionId', collectionId)
-            // verify required parameter 'collectionName' is not null or undefined
-            assertParamExists('orgGroupWorkspaceCollectionUpdateGetUploadUrlPost', 'collectionName', collectionName)
-            const localVarPath = `/org/group/workspace/collection/update/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-            if (groupId !== undefined) { 
-                localVarFormParams.append('groupId', groupId as any);
-            }
-    
-            if (collectionId !== undefined) { 
-                localVarFormParams.append('collectionId', collectionId as any);
-            }
-    
-            if (collectionName !== undefined) { 
-                localVarFormParams.append('collectionName', collectionName as any);
-            }
-    
-            if (trendBoard !== undefined) { 
-                localVarFormParams.append('trendBoard', trendBoard as any);
-            }
-    
-            if (description !== undefined) { 
-                localVarFormParams.append('description', description as any);
-            }
-    
-    
-            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = localVarFormParams;
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -30734,17 +31222,6 @@ export const GroupWorkspaceApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary 新增 Collection - 產生S3檔案上傳url
-         * @param {OrgWorkspaceCollectionCreateGetUploadUrlPostRequest} [orgWorkspaceCollectionCreateGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgGroupWorkspaceCollectionCreateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest?: OrgWorkspaceCollectionCreateGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgWorkspaceCollectionCreateGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupWorkspaceCollectionCreateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
          * @summary 新增 Collection
          * @param {OrgGroupWorkspaceCollectionCreatePostRequest} [orgGroupWorkspaceCollectionCreatePostRequest] 
          * @param {*} [options] Override http request option.
@@ -30763,21 +31240,6 @@ export const GroupWorkspaceApiFp = function(configuration?: Configuration) {
          */
         async orgGroupWorkspaceCollectionRemoveTrendBoardPost(orgGroupWorkspaceCollectionRemoveTrendBoardPostRequest?: OrgGroupWorkspaceCollectionRemoveTrendBoardPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupWorkspaceCollectionRemoveTrendBoardPost(orgGroupWorkspaceCollectionRemoveTrendBoardPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 編輯 Collection
-         * @param {number} groupId 
-         * @param {number} collectionId 
-         * @param {string} collectionName 
-         * @param {File} [trendBoard] 
-         * @param {string} [description] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgGroupWorkspaceCollectionUpdateGetUploadUrlPost(groupId: number, collectionId: number, collectionName: string, trendBoard?: File, description?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupWorkspaceCollectionUpdateGetUploadUrlPost(groupId, collectionId, collectionName, trendBoard, description, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -30979,16 +31441,6 @@ export const GroupWorkspaceApiFactory = function (configuration?: Configuration,
     return {
         /**
          * 
-         * @summary 新增 Collection - 產生S3檔案上傳url
-         * @param {OrgWorkspaceCollectionCreateGetUploadUrlPostRequest} [orgWorkspaceCollectionCreateGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupWorkspaceCollectionCreateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest?: OrgWorkspaceCollectionCreateGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgWorkspaceCollectionCreateGetUploadUrlPost200Response> {
-            return localVarFp.orgGroupWorkspaceCollectionCreateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 新增 Collection
          * @param {OrgGroupWorkspaceCollectionCreatePostRequest} [orgGroupWorkspaceCollectionCreatePostRequest] 
          * @param {*} [options] Override http request option.
@@ -31006,20 +31458,6 @@ export const GroupWorkspaceApiFactory = function (configuration?: Configuration,
          */
         orgGroupWorkspaceCollectionRemoveTrendBoardPost(orgGroupWorkspaceCollectionRemoveTrendBoardPostRequest?: OrgGroupWorkspaceCollectionRemoveTrendBoardPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
             return localVarFp.orgGroupWorkspaceCollectionRemoveTrendBoardPost(orgGroupWorkspaceCollectionRemoveTrendBoardPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 編輯 Collection
-         * @param {number} groupId 
-         * @param {number} collectionId 
-         * @param {string} collectionName 
-         * @param {File} [trendBoard] 
-         * @param {string} [description] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupWorkspaceCollectionUpdateGetUploadUrlPost(groupId: number, collectionId: number, collectionName: string, trendBoard?: File, description?: string, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgGroupWorkspaceCollectionUpdateGetUploadUrlPost(groupId, collectionId, collectionName, trendBoard, description, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -31203,18 +31641,6 @@ export const GroupWorkspaceApiFactory = function (configuration?: Configuration,
 export class GroupWorkspaceApi extends BaseAPI {
     /**
      * 
-     * @summary 新增 Collection - 產生S3檔案上傳url
-     * @param {OrgWorkspaceCollectionCreateGetUploadUrlPostRequest} [orgWorkspaceCollectionCreateGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof GroupWorkspaceApi
-     */
-    public orgGroupWorkspaceCollectionCreateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest?: OrgWorkspaceCollectionCreateGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return GroupWorkspaceApiFp(this.configuration).orgGroupWorkspaceCollectionCreateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary 新增 Collection
      * @param {OrgGroupWorkspaceCollectionCreatePostRequest} [orgGroupWorkspaceCollectionCreatePostRequest] 
      * @param {*} [options] Override http request option.
@@ -31235,22 +31661,6 @@ export class GroupWorkspaceApi extends BaseAPI {
      */
     public orgGroupWorkspaceCollectionRemoveTrendBoardPost(orgGroupWorkspaceCollectionRemoveTrendBoardPostRequest?: OrgGroupWorkspaceCollectionRemoveTrendBoardPostRequest, options?: AxiosRequestConfig) {
         return GroupWorkspaceApiFp(this.configuration).orgGroupWorkspaceCollectionRemoveTrendBoardPost(orgGroupWorkspaceCollectionRemoveTrendBoardPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 編輯 Collection
-     * @param {number} groupId 
-     * @param {number} collectionId 
-     * @param {string} collectionName 
-     * @param {File} [trendBoard] 
-     * @param {string} [description] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof GroupWorkspaceApi
-     */
-    public orgGroupWorkspaceCollectionUpdateGetUploadUrlPost(groupId: number, collectionId: number, collectionName: string, trendBoard?: File, description?: string, options?: AxiosRequestConfig) {
-        return GroupWorkspaceApiFp(this.configuration).orgGroupWorkspaceCollectionUpdateGetUploadUrlPost(groupId, collectionId, collectionName, trendBoard, description, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -32181,44 +32591,6 @@ export const OrgAssetsApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
-         * 
-         * @summary 批量上傳 - 產生S3檔案上傳url
-         * @param {OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest} [orgAssetsMaterialBatchUploadGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialBatchUploadGetUploadUrlPost: async (orgAssetsMaterialBatchUploadGetUploadUrlPostRequest?: OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/batch-upload/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          *  **Access roles:** To be clear define
          * @summary 批量上傳
          * @param {OrgAssetsMaterialBatchUploadPostRequest} [orgAssetsMaterialBatchUploadPostRequest] 
@@ -32371,7 +32743,7 @@ export const OrgAssetsApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
-         * **Access roles:** To be clear define
+         * 
          * @summary 確定新增布料資訊
          * @param {OrgAssetsMaterialCreatePostRequest} [orgAssetsMaterialCreatePostRequest] 
          * @param {*} [options] Override http request option.
@@ -32448,44 +32820,6 @@ export const OrgAssetsApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
-         * @summary 建立單一布料時上傳補充資料 - 產生S3檔案上傳url
-         * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCreateUploadAttachmentGetUploadUrlPost: async (userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/create/upload-attachment/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(userFeedbackUploadAttachmentGetUploadUrlPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 建立單一布料時上傳補充資料
          * @param {OrgAssetsMaterialCreateUploadAttachmentPostRequest} [orgAssetsMaterialCreateUploadAttachmentPostRequest] 
          * @param {*} [options] Override http request option.
@@ -32516,6 +32850,82 @@ export const OrgAssetsApiAxiosParamCreator = function (configuration?: Configura
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialCreateUploadAttachmentPostRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Client 端 取消上傳 Custom 3D Material
+         * @param {OrgAssetsMaterialCustomU3mUploadCancelPostRequest} [orgAssetsMaterialCustomU3mUploadCancelPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orgAssetsMaterialCustomU3mUploadCancelPost: async (orgAssetsMaterialCustomU3mUploadCancelPostRequest?: OrgAssetsMaterialCustomU3mUploadCancelPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/org/assets/material/custom-u3m-upload/cancel`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialCustomU3mUploadCancelPostRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Client 端 上傳 Custom 3D Material
+         * @param {OrgAssetsMaterialCustomU3mUploadPostRequest} [orgAssetsMaterialCustomU3mUploadPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orgAssetsMaterialCustomU3mUploadPost: async (orgAssetsMaterialCustomU3mUploadPostRequest?: OrgAssetsMaterialCustomU3mUploadPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/org/assets/material/custom-u3m-upload`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialCustomU3mUploadPostRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -32827,44 +33237,6 @@ export const OrgAssetsApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
-         * 
-         * @summary Client 端 Smart Upload 產生S3檔案上傳url
-         * @param {GeneralGetUploadUrlPostRequest} [generalGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialSmartUploadGetUploadUrlPost: async (generalGetUploadUrlPostRequest?: GeneralGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/smart-upload/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(generalGetUploadUrlPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          *  **Access roles:** To be clear define
          * @summary Client 端 Smart Upload
          * @param {OrgAssetsMaterialSmartUploadPostRequest} [orgAssetsMaterialSmartUploadPostRequest] 
@@ -32934,44 +33306,6 @@ export const OrgAssetsApiAxiosParamCreator = function (configuration?: Configura
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateAddPantonePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 設定產品預覽圖-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest} [orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateCoverImgGetUploadUrlPost: async (orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/cover-img/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -33474,44 +33808,6 @@ export const OrgAssetsApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
-         * @summary 編輯布料時上傳補充資料 - 產生S3檔案上傳url
-         * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost: async (userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/upload-attachment/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(userFeedbackUploadAttachmentGetUploadUrlPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 編輯布料時上傳補充資料
          * @param {OrgAssetsMaterialUpdateUploadAttachmentPostRequest} [orgAssetsMaterialUpdateUploadAttachmentPostRequest] 
          * @param {*} [options] Override http request option.
@@ -33836,17 +34132,6 @@ export const OrgAssetsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * 
-         * @summary 批量上傳 - 產生S3檔案上傳url
-         * @param {OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest} [orgAssetsMaterialBatchUploadGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialBatchUploadGetUploadUrlPost(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest?: OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialBatchUploadGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialBatchUploadGetUploadUrlPost(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
          *  **Access roles:** To be clear define
          * @summary 批量上傳
          * @param {OrgAssetsMaterialBatchUploadPostRequest} [orgAssetsMaterialBatchUploadPostRequest] 
@@ -33891,7 +34176,7 @@ export const OrgAssetsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * **Access roles:** To be clear define
+         * 
          * @summary 確定新增布料資訊
          * @param {OrgAssetsMaterialCreatePostRequest} [orgAssetsMaterialCreatePostRequest] 
          * @param {*} [options] Override http request option.
@@ -33914,17 +34199,6 @@ export const OrgAssetsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 建立單一布料時上傳補充資料 - 產生S3檔案上傳url
-         * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialCreateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserFeedbackUploadAttachmentGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialCreateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
          * @summary 建立單一布料時上傳補充資料
          * @param {OrgAssetsMaterialCreateUploadAttachmentPostRequest} [orgAssetsMaterialCreateUploadAttachmentPostRequest] 
          * @param {*} [options] Override http request option.
@@ -33932,6 +34206,28 @@ export const OrgAssetsApiFp = function(configuration?: Configuration) {
          */
         async orgAssetsMaterialCreateUploadAttachmentPost(orgAssetsMaterialCreateUploadAttachmentPostRequest?: OrgAssetsMaterialCreateUploadAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialCreateUploadAttachmentPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialCreateUploadAttachmentPost(orgAssetsMaterialCreateUploadAttachmentPostRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Client 端 取消上傳 Custom 3D Material
+         * @param {OrgAssetsMaterialCustomU3mUploadCancelPostRequest} [orgAssetsMaterialCustomU3mUploadCancelPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async orgAssetsMaterialCustomU3mUploadCancelPost(orgAssetsMaterialCustomU3mUploadCancelPostRequest?: OrgAssetsMaterialCustomU3mUploadCancelPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialCustomU3mUploadCancelPost(orgAssetsMaterialCustomU3mUploadCancelPostRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Client 端 上傳 Custom 3D Material
+         * @param {OrgAssetsMaterialCustomU3mUploadPostRequest} [orgAssetsMaterialCustomU3mUploadPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async orgAssetsMaterialCustomU3mUploadPost(orgAssetsMaterialCustomU3mUploadPostRequest?: OrgAssetsMaterialCustomU3mUploadPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialCustomU3mUploadPost(orgAssetsMaterialCustomU3mUploadPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -34023,17 +34319,6 @@ export const OrgAssetsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * 
-         * @summary Client 端 Smart Upload 產生S3檔案上傳url
-         * @param {GeneralGetUploadUrlPostRequest} [generalGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialSmartUploadGetUploadUrlPost(generalGetUploadUrlPostRequest?: GeneralGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GeneralGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialSmartUploadGetUploadUrlPost(generalGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
          *  **Access roles:** To be clear define
          * @summary Client 端 Smart Upload
          * @param {OrgAssetsMaterialSmartUploadPostRequest} [orgAssetsMaterialSmartUploadPostRequest] 
@@ -34053,17 +34338,6 @@ export const OrgAssetsApiFp = function(configuration?: Configuration) {
          */
         async orgAssetsMaterialUpdateAddPantonePost(orgAssetsMaterialUpdateAddPantonePostRequest?: OrgAssetsMaterialUpdateAddPantonePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateAddPantonePost(orgAssetsMaterialUpdateAddPantonePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 設定產品預覽圖-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest} [orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateCoverImgGetUploadUrlPost(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateCoverImgGetUploadUrlPost(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -34211,17 +34485,6 @@ export const OrgAssetsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 編輯布料時上傳補充資料 - 產生S3檔案上傳url
-         * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserFeedbackUploadAttachmentGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
          * @summary 編輯布料時上傳補充資料
          * @param {OrgAssetsMaterialUpdateUploadAttachmentPostRequest} [orgAssetsMaterialUpdateUploadAttachmentPostRequest] 
          * @param {*} [options] Override http request option.
@@ -34329,16 +34592,6 @@ export const OrgAssetsApiFactory = function (configuration?: Configuration, base
             return localVarFp.orgAssetsMaterialAddToWorkspacePost(orgAssetsMaterialAddToWorkspacePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @summary 批量上傳 - 產生S3檔案上傳url
-         * @param {OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest} [orgAssetsMaterialBatchUploadGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialBatchUploadGetUploadUrlPost(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest?: OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialBatchUploadGetUploadUrlPost200Response> {
-            return localVarFp.orgAssetsMaterialBatchUploadGetUploadUrlPost(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
          *  **Access roles:** To be clear define
          * @summary 批量上傳
          * @param {OrgAssetsMaterialBatchUploadPostRequest} [orgAssetsMaterialBatchUploadPostRequest] 
@@ -34379,7 +34632,7 @@ export const OrgAssetsApiFactory = function (configuration?: Configuration, base
             return localVarFp.orgAssetsMaterialClonePost(orgAssetsMaterialClonePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * **Access roles:** To be clear define
+         * 
          * @summary 確定新增布料資訊
          * @param {OrgAssetsMaterialCreatePostRequest} [orgAssetsMaterialCreatePostRequest] 
          * @param {*} [options] Override http request option.
@@ -34400,16 +34653,6 @@ export const OrgAssetsApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
-         * @summary 建立單一布料時上傳補充資料 - 產生S3檔案上傳url
-         * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCreateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: any): AxiosPromise<UserFeedbackUploadAttachmentGetUploadUrlPost200Response> {
-            return localVarFp.orgAssetsMaterialCreateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 建立單一布料時上傳補充資料
          * @param {OrgAssetsMaterialCreateUploadAttachmentPostRequest} [orgAssetsMaterialCreateUploadAttachmentPostRequest] 
          * @param {*} [options] Override http request option.
@@ -34417,6 +34660,26 @@ export const OrgAssetsApiFactory = function (configuration?: Configuration, base
          */
         orgAssetsMaterialCreateUploadAttachmentPost(orgAssetsMaterialCreateUploadAttachmentPostRequest?: OrgAssetsMaterialCreateUploadAttachmentPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialCreateUploadAttachmentPost200Response> {
             return localVarFp.orgAssetsMaterialCreateUploadAttachmentPost(orgAssetsMaterialCreateUploadAttachmentPostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Client 端 取消上傳 Custom 3D Material
+         * @param {OrgAssetsMaterialCustomU3mUploadCancelPostRequest} [orgAssetsMaterialCustomU3mUploadCancelPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orgAssetsMaterialCustomU3mUploadCancelPost(orgAssetsMaterialCustomU3mUploadCancelPostRequest?: OrgAssetsMaterialCustomU3mUploadCancelPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.orgAssetsMaterialCustomU3mUploadCancelPost(orgAssetsMaterialCustomU3mUploadCancelPostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Client 端 上傳 Custom 3D Material
+         * @param {OrgAssetsMaterialCustomU3mUploadPostRequest} [orgAssetsMaterialCustomU3mUploadPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orgAssetsMaterialCustomU3mUploadPost(orgAssetsMaterialCustomU3mUploadPostRequest?: OrgAssetsMaterialCustomU3mUploadPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.orgAssetsMaterialCustomU3mUploadPost(orgAssetsMaterialCustomU3mUploadPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -34499,16 +34762,6 @@ export const OrgAssetsApiFactory = function (configuration?: Configuration, base
             return localVarFp.orgAssetsMaterialOptionsPost(orgGetPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @summary Client 端 Smart Upload 產生S3檔案上傳url
-         * @param {GeneralGetUploadUrlPostRequest} [generalGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialSmartUploadGetUploadUrlPost(generalGetUploadUrlPostRequest?: GeneralGetUploadUrlPostRequest, options?: any): AxiosPromise<GeneralGetUploadUrlPost200Response> {
-            return localVarFp.orgAssetsMaterialSmartUploadGetUploadUrlPost(generalGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
          *  **Access roles:** To be clear define
          * @summary Client 端 Smart Upload
          * @param {OrgAssetsMaterialSmartUploadPostRequest} [orgAssetsMaterialSmartUploadPostRequest] 
@@ -34527,16 +34780,6 @@ export const OrgAssetsApiFactory = function (configuration?: Configuration, base
          */
         orgAssetsMaterialUpdateAddPantonePost(orgAssetsMaterialUpdateAddPantonePostRequest?: OrgAssetsMaterialUpdateAddPantonePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
             return localVarFp.orgAssetsMaterialUpdateAddPantonePost(orgAssetsMaterialUpdateAddPantonePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 設定產品預覽圖-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest} [orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateCoverImgGetUploadUrlPost(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialUpdateCoverImgGetUploadUrlPost200Response> {
-            return localVarFp.orgAssetsMaterialUpdateCoverImgGetUploadUrlPost(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -34670,16 +34913,6 @@ export const OrgAssetsApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
-         * @summary 編輯布料時上傳補充資料 - 產生S3檔案上傳url
-         * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: any): AxiosPromise<UserFeedbackUploadAttachmentGetUploadUrlPost200Response> {
-            return localVarFp.orgAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 編輯布料時上傳補充資料
          * @param {OrgAssetsMaterialUpdateUploadAttachmentPostRequest} [orgAssetsMaterialUpdateUploadAttachmentPostRequest] 
          * @param {*} [options] Override http request option.
@@ -34781,18 +35014,6 @@ export class OrgAssetsApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary 批量上傳 - 產生S3檔案上傳url
-     * @param {OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest} [orgAssetsMaterialBatchUploadGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialBatchUploadGetUploadUrlPost(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest?: OrgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialBatchUploadGetUploadUrlPost(orgAssetsMaterialBatchUploadGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
      *  **Access roles:** To be clear define
      * @summary 批量上傳
      * @param {OrgAssetsMaterialBatchUploadPostRequest} [orgAssetsMaterialBatchUploadPostRequest] 
@@ -34841,7 +35062,7 @@ export class OrgAssetsApi extends BaseAPI {
     }
 
     /**
-     * **Access roles:** To be clear define
+     * 
      * @summary 確定新增布料資訊
      * @param {OrgAssetsMaterialCreatePostRequest} [orgAssetsMaterialCreatePostRequest] 
      * @param {*} [options] Override http request option.
@@ -34866,18 +35087,6 @@ export class OrgAssetsApi extends BaseAPI {
 
     /**
      * 
-     * @summary 建立單一布料時上傳補充資料 - 產生S3檔案上傳url
-     * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialCreateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialCreateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary 建立單一布料時上傳補充資料
      * @param {OrgAssetsMaterialCreateUploadAttachmentPostRequest} [orgAssetsMaterialCreateUploadAttachmentPostRequest] 
      * @param {*} [options] Override http request option.
@@ -34886,6 +35095,30 @@ export class OrgAssetsApi extends BaseAPI {
      */
     public orgAssetsMaterialCreateUploadAttachmentPost(orgAssetsMaterialCreateUploadAttachmentPostRequest?: OrgAssetsMaterialCreateUploadAttachmentPostRequest, options?: AxiosRequestConfig) {
         return OrgAssetsApiFp(this.configuration).orgAssetsMaterialCreateUploadAttachmentPost(orgAssetsMaterialCreateUploadAttachmentPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Client 端 取消上傳 Custom 3D Material
+     * @param {OrgAssetsMaterialCustomU3mUploadCancelPostRequest} [orgAssetsMaterialCustomU3mUploadCancelPostRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrgAssetsApi
+     */
+    public orgAssetsMaterialCustomU3mUploadCancelPost(orgAssetsMaterialCustomU3mUploadCancelPostRequest?: OrgAssetsMaterialCustomU3mUploadCancelPostRequest, options?: AxiosRequestConfig) {
+        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialCustomU3mUploadCancelPost(orgAssetsMaterialCustomU3mUploadCancelPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Client 端 上傳 Custom 3D Material
+     * @param {OrgAssetsMaterialCustomU3mUploadPostRequest} [orgAssetsMaterialCustomU3mUploadPostRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrgAssetsApi
+     */
+    public orgAssetsMaterialCustomU3mUploadPost(orgAssetsMaterialCustomU3mUploadPostRequest?: OrgAssetsMaterialCustomU3mUploadPostRequest, options?: AxiosRequestConfig) {
+        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialCustomU3mUploadPost(orgAssetsMaterialCustomU3mUploadPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -34985,18 +35218,6 @@ export class OrgAssetsApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Client 端 Smart Upload 產生S3檔案上傳url
-     * @param {GeneralGetUploadUrlPostRequest} [generalGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialSmartUploadGetUploadUrlPost(generalGetUploadUrlPostRequest?: GeneralGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialSmartUploadGetUploadUrlPost(generalGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
      *  **Access roles:** To be clear define
      * @summary Client 端 Smart Upload
      * @param {OrgAssetsMaterialSmartUploadPostRequest} [orgAssetsMaterialSmartUploadPostRequest] 
@@ -35018,18 +35239,6 @@ export class OrgAssetsApi extends BaseAPI {
      */
     public orgAssetsMaterialUpdateAddPantonePost(orgAssetsMaterialUpdateAddPantonePostRequest?: OrgAssetsMaterialUpdateAddPantonePostRequest, options?: AxiosRequestConfig) {
         return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateAddPantonePost(orgAssetsMaterialUpdateAddPantonePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 設定產品預覽圖-產生S3檔案上傳url
-     * @param {OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest} [orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateCoverImgGetUploadUrlPost(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateCoverImgGetUploadUrlPost(orgAssetsMaterialUpdateCoverImgGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -35186,18 +35395,6 @@ export class OrgAssetsApi extends BaseAPI {
      */
     public orgAssetsMaterialUpdateSimpleTagPost(orgAssetsMaterialUpdateSimpleTagPostRequest?: OrgAssetsMaterialUpdateSimpleTagPostRequest, options?: AxiosRequestConfig) {
         return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateSimpleTagPost(orgAssetsMaterialUpdateSimpleTagPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 編輯布料時上傳補充資料 - 產生S3檔案上傳url
-     * @param {UserFeedbackUploadAttachmentGetUploadUrlPostRequest} [userFeedbackUploadAttachmentGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest?: UserFeedbackUploadAttachmentGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateUploadAttachmentGetUploadUrlPost(userFeedbackUploadAttachmentGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -39716,44 +39913,6 @@ export const OrgWorkspaceApiAxiosParamCreator = function (configuration?: Config
     return {
         /**
          * 
-         * @summary 新增 Collection - 產生S3檔案上傳url
-         * @param {OrgWorkspaceCollectionCreateGetUploadUrlPostRequest} [orgWorkspaceCollectionCreateGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgWorkspaceCollectionCreateGetUploadUrlPost: async (orgWorkspaceCollectionCreateGetUploadUrlPostRequest?: OrgWorkspaceCollectionCreateGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/workspace/collection/create/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgWorkspaceCollectionCreateGetUploadUrlPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 新增 Collection
          * @param {OrgWorkspaceCollectionCreatePostRequest} [orgWorkspaceCollectionCreatePostRequest] 
          * @param {*} [options] Override http request option.
@@ -39822,44 +39981,6 @@ export const OrgWorkspaceApiAxiosParamCreator = function (configuration?: Config
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(orgWorkspaceCollectionRemoveTrendBoardPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 編輯 Collection - 產生S3檔案上傳url
-         * @param {OrgWorkspaceCollectionCreateGetUploadUrlPostRequest} [orgWorkspaceCollectionCreateGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgWorkspaceCollectionUpdateGetUploadUrlPost: async (orgWorkspaceCollectionCreateGetUploadUrlPostRequest?: OrgWorkspaceCollectionCreateGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/workspace/collection/update/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgWorkspaceCollectionCreateGetUploadUrlPostRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -40524,17 +40645,6 @@ export const OrgWorkspaceApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary 新增 Collection - 產生S3檔案上傳url
-         * @param {OrgWorkspaceCollectionCreateGetUploadUrlPostRequest} [orgWorkspaceCollectionCreateGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgWorkspaceCollectionCreateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest?: OrgWorkspaceCollectionCreateGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgWorkspaceCollectionCreateGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgWorkspaceCollectionCreateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
          * @summary 新增 Collection
          * @param {OrgWorkspaceCollectionCreatePostRequest} [orgWorkspaceCollectionCreatePostRequest] 
          * @param {*} [options] Override http request option.
@@ -40553,17 +40663,6 @@ export const OrgWorkspaceApiFp = function(configuration?: Configuration) {
          */
         async orgWorkspaceCollectionRemoveTrendBoardPost(orgWorkspaceCollectionRemoveTrendBoardPostRequest?: OrgWorkspaceCollectionRemoveTrendBoardPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgWorkspaceCollectionRemoveTrendBoardPost(orgWorkspaceCollectionRemoveTrendBoardPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 編輯 Collection - 產生S3檔案上傳url
-         * @param {OrgWorkspaceCollectionCreateGetUploadUrlPostRequest} [orgWorkspaceCollectionCreateGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgWorkspaceCollectionUpdateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest?: OrgWorkspaceCollectionCreateGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgWorkspaceCollectionCreateGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgWorkspaceCollectionUpdateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -40765,16 +40864,6 @@ export const OrgWorkspaceApiFactory = function (configuration?: Configuration, b
     return {
         /**
          * 
-         * @summary 新增 Collection - 產生S3檔案上傳url
-         * @param {OrgWorkspaceCollectionCreateGetUploadUrlPostRequest} [orgWorkspaceCollectionCreateGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgWorkspaceCollectionCreateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest?: OrgWorkspaceCollectionCreateGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgWorkspaceCollectionCreateGetUploadUrlPost200Response> {
-            return localVarFp.orgWorkspaceCollectionCreateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 新增 Collection
          * @param {OrgWorkspaceCollectionCreatePostRequest} [orgWorkspaceCollectionCreatePostRequest] 
          * @param {*} [options] Override http request option.
@@ -40792,16 +40881,6 @@ export const OrgWorkspaceApiFactory = function (configuration?: Configuration, b
          */
         orgWorkspaceCollectionRemoveTrendBoardPost(orgWorkspaceCollectionRemoveTrendBoardPostRequest?: OrgWorkspaceCollectionRemoveTrendBoardPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
             return localVarFp.orgWorkspaceCollectionRemoveTrendBoardPost(orgWorkspaceCollectionRemoveTrendBoardPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 編輯 Collection - 產生S3檔案上傳url
-         * @param {OrgWorkspaceCollectionCreateGetUploadUrlPostRequest} [orgWorkspaceCollectionCreateGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgWorkspaceCollectionUpdateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest?: OrgWorkspaceCollectionCreateGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgWorkspaceCollectionCreateGetUploadUrlPost200Response> {
-            return localVarFp.orgWorkspaceCollectionUpdateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -40985,18 +41064,6 @@ export const OrgWorkspaceApiFactory = function (configuration?: Configuration, b
 export class OrgWorkspaceApi extends BaseAPI {
     /**
      * 
-     * @summary 新增 Collection - 產生S3檔案上傳url
-     * @param {OrgWorkspaceCollectionCreateGetUploadUrlPostRequest} [orgWorkspaceCollectionCreateGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgWorkspaceApi
-     */
-    public orgWorkspaceCollectionCreateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest?: OrgWorkspaceCollectionCreateGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return OrgWorkspaceApiFp(this.configuration).orgWorkspaceCollectionCreateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary 新增 Collection
      * @param {OrgWorkspaceCollectionCreatePostRequest} [orgWorkspaceCollectionCreatePostRequest] 
      * @param {*} [options] Override http request option.
@@ -41017,18 +41084,6 @@ export class OrgWorkspaceApi extends BaseAPI {
      */
     public orgWorkspaceCollectionRemoveTrendBoardPost(orgWorkspaceCollectionRemoveTrendBoardPostRequest?: OrgWorkspaceCollectionRemoveTrendBoardPostRequest, options?: AxiosRequestConfig) {
         return OrgWorkspaceApiFp(this.configuration).orgWorkspaceCollectionRemoveTrendBoardPost(orgWorkspaceCollectionRemoveTrendBoardPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 編輯 Collection - 產生S3檔案上傳url
-     * @param {OrgWorkspaceCollectionCreateGetUploadUrlPostRequest} [orgWorkspaceCollectionCreateGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgWorkspaceApi
-     */
-    public orgWorkspaceCollectionUpdateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest?: OrgWorkspaceCollectionCreateGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return OrgWorkspaceApiFp(this.configuration).orgWorkspaceCollectionUpdateGetUploadUrlPost(orgWorkspaceCollectionCreateGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -41246,11 +41301,11 @@ export const PollingApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary 取得 Sticker 的已存在 Tag List
-         * @param {PollingDigitalThreadStickerTagListGetPostRequest} [pollingDigitalThreadStickerTagListGetPostRequest] 
+         * @param {OGBaseRequestBody} [oGBaseRequestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pollingDigitalThreadStickerTagListGetPost: async (pollingDigitalThreadStickerTagListGetPostRequest?: PollingDigitalThreadStickerTagListGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        pollingDigitalThreadStickerTagListGetPost: async (oGBaseRequestBody?: OGBaseRequestBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/polling/digital-thread/sticker/tag-list/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -41270,7 +41325,7 @@ export const PollingApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(pollingDigitalThreadStickerTagListGetPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(oGBaseRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -41324,12 +41379,12 @@ export const PollingApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得 Sticker 的已存在 Tag List
-         * @param {PollingDigitalThreadStickerTagListGetPostRequest} [pollingDigitalThreadStickerTagListGetPostRequest] 
+         * @param {OGBaseRequestBody} [oGBaseRequestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pollingDigitalThreadStickerTagListGetPost(pollingDigitalThreadStickerTagListGetPostRequest?: PollingDigitalThreadStickerTagListGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PollingDigitalThreadStickerTagListGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pollingDigitalThreadStickerTagListGetPost(pollingDigitalThreadStickerTagListGetPostRequest, options);
+        async pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody?: OGBaseRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PollingDigitalThreadStickerTagListGetPost200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -41356,12 +41411,12 @@ export const PollingApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary 取得 Sticker 的已存在 Tag List
-         * @param {PollingDigitalThreadStickerTagListGetPostRequest} [pollingDigitalThreadStickerTagListGetPostRequest] 
+         * @param {OGBaseRequestBody} [oGBaseRequestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pollingDigitalThreadStickerTagListGetPost(pollingDigitalThreadStickerTagListGetPostRequest?: PollingDigitalThreadStickerTagListGetPostRequest, options?: any): AxiosPromise<PollingDigitalThreadStickerTagListGetPost200Response> {
-            return localVarFp.pollingDigitalThreadStickerTagListGetPost(pollingDigitalThreadStickerTagListGetPostRequest, options).then((request) => request(axios, basePath));
+        pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody?: OGBaseRequestBody, options?: any): AxiosPromise<PollingDigitalThreadStickerTagListGetPost200Response> {
+            return localVarFp.pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -41386,13 +41441,13 @@ export class PollingApi extends BaseAPI {
     /**
      * 
      * @summary 取得 Sticker 的已存在 Tag List
-     * @param {PollingDigitalThreadStickerTagListGetPostRequest} [pollingDigitalThreadStickerTagListGetPostRequest] 
+     * @param {OGBaseRequestBody} [oGBaseRequestBody] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PollingApi
      */
-    public pollingDigitalThreadStickerTagListGetPost(pollingDigitalThreadStickerTagListGetPostRequest?: PollingDigitalThreadStickerTagListGetPostRequest, options?: AxiosRequestConfig) {
-        return PollingApiFp(this.configuration).pollingDigitalThreadStickerTagListGetPost(pollingDigitalThreadStickerTagListGetPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody?: OGBaseRequestBody, options?: AxiosRequestConfig) {
+        return PollingApiFp(this.configuration).pollingDigitalThreadStickerTagListGetPost(oGBaseRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -43307,6 +43362,10 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -43836,6 +43895,86 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
     return {
         /**
          * 
+         * @summary 新增資料夾型態書籤
+         * @param {AddFolderBookmarkRequest} addFolderBookmarkRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addFolderBookmark: async (addFolderBookmarkRequest: AddFolderBookmarkRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'addFolderBookmarkRequest' is not null or undefined
+            assertParamExists('addFolderBookmark', 'addFolderBookmarkRequest', addFolderBookmarkRequest)
+            const localVarPath = `/thread-board/bookmark/folder/add`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(addFolderBookmarkRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 新增組織型態書籤
+         * @param {AddOrgBookmarkRequest} addOrgBookmarkRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addOrgBookmark: async (addOrgBookmarkRequest: AddOrgBookmarkRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'addOrgBookmarkRequest' is not null or undefined
+            assertParamExists('addOrgBookmark', 'addOrgBookmarkRequest', addOrgBookmarkRequest)
+            const localVarPath = `/thread-board/bookmark/org/add`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(addOrgBookmarkRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 在Thread Board中檢查是否可以刪除 Workflow Stage
          * @param {CheckCanDeleteWorkflowStageRequest} checkCanDeleteWorkflowStageRequest 
          * @param {*} [options] Override http request option.
@@ -43955,6 +44094,46 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
+         * 排序以 thread 最多 → 少 (上到下) 排序
+         * @summary 取得Thread Board中的聯絡單位列表
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getContactOrgList: async (oGBaseRequestBody: OGBaseRequestBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'oGBaseRequestBody' is not null or undefined
+            assertParamExists('getContactOrgList', 'oGBaseRequestBody', oGBaseRequestBody)
+            const localVarPath = `/thread-board/get-contact-org-list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(oGBaseRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @summary 取得Thread Board資料
          * @param {GetThreadBoardRequest} getThreadBoardRequest 
@@ -43988,6 +44167,46 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(getThreadBoardRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 取得Thread Board中的bookmark列表
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getThreadBoardBookmarkList: async (oGBaseRequestBody: OGBaseRequestBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'oGBaseRequestBody' is not null or undefined
+            assertParamExists('getThreadBoardBookmarkList', 'oGBaseRequestBody', oGBaseRequestBody)
+            const localVarPath = `/thread-board/bookmark/get-list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(oGBaseRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -44035,15 +44254,15 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 以單位紀錄的是sortBy、onlyShowUnread、filter，以使用者紀錄的是search
+         * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
          * @summary 在Thread Board中取得該單位(組織或團隊)及使用者的查詢條件
-         * @param {GetThreadBoardMostParticipantRequest} getThreadBoardMostParticipantRequest 
+         * @param {GetThreadBoardQueryRequest} getThreadBoardQueryRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getThreadBoardQuery: async (getThreadBoardMostParticipantRequest: GetThreadBoardMostParticipantRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getThreadBoardMostParticipantRequest' is not null or undefined
-            assertParamExists('getThreadBoardQuery', 'getThreadBoardMostParticipantRequest', getThreadBoardMostParticipantRequest)
+        getThreadBoardQuery: async (getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getThreadBoardQueryRequest' is not null or undefined
+            assertParamExists('getThreadBoardQuery', 'getThreadBoardQueryRequest', getThreadBoardQueryRequest)
             const localVarPath = `/thread-board/query/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -44067,7 +44286,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getThreadBoardMostParticipantRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getThreadBoardQueryRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -44108,6 +44327,46 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(hideWorkflowStageRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 移動書籤
+         * @param {MoveBookmarkRequest} moveBookmarkRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        moveBookmark: async (moveBookmarkRequest: MoveBookmarkRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'moveBookmarkRequest' is not null or undefined
+            assertParamExists('moveBookmark', 'moveBookmarkRequest', moveBookmarkRequest)
+            const localVarPath = `/thread-board/bookmark/move`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(moveBookmarkRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -44276,6 +44535,46 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
+         * @summary 刪除書籤
+         * @param {GetThreadBoardQueryRequest} getThreadBoardQueryRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        removeBookmark: async (getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getThreadBoardQueryRequest' is not null or undefined
+            assertParamExists('removeBookmark', 'getThreadBoardQueryRequest', getThreadBoardQueryRequest)
+            const localVarPath = `/thread-board/bookmark/remove`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getThreadBoardQueryRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 在Thread Board中重新命名 Workflow Stage名稱
          * @param {RenameWorkflowStageRequest} renameWorkflowStageRequest 
          * @param {*} [options] Override http request option.
@@ -44315,15 +44614,55 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 以單位紀錄的是sortBy、onlyShowUnread、filter，以使用者紀錄的是search
-         * @summary 在Thread Board中紀錄該單位(組織或團隊)及使用者的查詢條件
-         * @param {GetThreadBoardRequest} getThreadBoardRequest 
+         * Examples為依序執行的範例
+         * @summary 儲存Thread Board中的bookmark列表
+         * @param {SaveThreadBoardBookmarkListRequest} saveThreadBoardBookmarkListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveThreadBoardQuery: async (getThreadBoardRequest: GetThreadBoardRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getThreadBoardRequest' is not null or undefined
-            assertParamExists('saveThreadBoardQuery', 'getThreadBoardRequest', getThreadBoardRequest)
+        saveThreadBoardBookmarkList: async (saveThreadBoardBookmarkListRequest: SaveThreadBoardBookmarkListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'saveThreadBoardBookmarkListRequest' is not null or undefined
+            assertParamExists('saveThreadBoardBookmarkList', 'saveThreadBoardBookmarkListRequest', saveThreadBoardBookmarkListRequest)
+            const localVarPath = `/thread-board/bookmark/save-list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(saveThreadBoardBookmarkListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
+         * @summary 在Thread Board中紀錄該單位(組織或團隊)及使用者的查詢條件
+         * @param {SaveThreadBoardQueryRequest} saveThreadBoardQueryRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveThreadBoardQuery: async (saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'saveThreadBoardQueryRequest' is not null or undefined
+            assertParamExists('saveThreadBoardQuery', 'saveThreadBoardQueryRequest', saveThreadBoardQueryRequest)
             const localVarPath = `/thread-board/query/save`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -44347,7 +44686,7 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getThreadBoardRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(saveThreadBoardQueryRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -44394,6 +44733,46 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary 更新資料夾型態書籤
+         * @param {UpdateFolderBookmarkRequest} updateFolderBookmarkRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateFolderBookmark: async (updateFolderBookmarkRequest: UpdateFolderBookmarkRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateFolderBookmarkRequest' is not null or undefined
+            assertParamExists('updateFolderBookmark', 'updateFolderBookmarkRequest', updateFolderBookmarkRequest)
+            const localVarPath = `/thread-board/bookmark/folder/update`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateFolderBookmarkRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -44404,6 +44783,28 @@ export const ThreadBoardApiAxiosParamCreator = function (configuration?: Configu
 export const ThreadBoardApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ThreadBoardApiAxiosParamCreator(configuration)
     return {
+        /**
+         * 
+         * @summary 新增資料夾型態書籤
+         * @param {AddFolderBookmarkRequest} addFolderBookmarkRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addFolderBookmark(addFolderBookmarkRequest: AddFolderBookmarkRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addFolderBookmark(addFolderBookmarkRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 新增組織型態書籤
+         * @param {AddOrgBookmarkRequest} addOrgBookmarkRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addOrgBookmark(addOrgBookmarkRequest: AddOrgBookmarkRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addOrgBookmark(addOrgBookmarkRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
         /**
          * 
          * @summary 在Thread Board中檢查是否可以刪除 Workflow Stage
@@ -44438,6 +44839,17 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * 排序以 thread 最多 → 少 (上到下) 排序
+         * @summary 取得Thread Board中的聯絡單位列表
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getContactOrgList(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetContactOrgList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getContactOrgList(oGBaseRequestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * 
          * @summary 取得Thread Board資料
          * @param {GetThreadBoardRequest} getThreadBoardRequest 
@@ -44446,6 +44858,17 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async getThreadBoard(getThreadBoardRequest: GetThreadBoardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoard(getThreadBoardRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 取得Thread Board中的bookmark列表
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getThreadBoardBookmarkList(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardBookmarkList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoardBookmarkList(oGBaseRequestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -44460,14 +44883,14 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * 以單位紀錄的是sortBy、onlyShowUnread、filter，以使用者紀錄的是search
+         * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
          * @summary 在Thread Board中取得該單位(組織或團隊)及使用者的查詢條件
-         * @param {GetThreadBoardMostParticipantRequest} getThreadBoardMostParticipantRequest 
+         * @param {GetThreadBoardQueryRequest} getThreadBoardQueryRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getThreadBoardQuery(getThreadBoardMostParticipantRequest: GetThreadBoardMostParticipantRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardQuery200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoardQuery(getThreadBoardMostParticipantRequest, options);
+        async getThreadBoardQuery(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetThreadBoardQuery200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getThreadBoardQuery(getThreadBoardQueryRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -44479,6 +44902,17 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
          */
         async hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.hideWorkflowStage(hideWorkflowStageRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 移動書籤
+         * @param {MoveBookmarkRequest} moveBookmarkRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async moveBookmark(moveBookmarkRequest: MoveBookmarkRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.moveBookmark(moveBookmarkRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -44527,6 +44961,17 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 刪除書籤
+         * @param {GetThreadBoardQueryRequest} getThreadBoardQueryRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async removeBookmark(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removeBookmark(getThreadBoardQueryRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary 在Thread Board中重新命名 Workflow Stage名稱
          * @param {RenameWorkflowStageRequest} renameWorkflowStageRequest 
          * @param {*} [options] Override http request option.
@@ -44537,14 +44982,25 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * 以單位紀錄的是sortBy、onlyShowUnread、filter，以使用者紀錄的是search
-         * @summary 在Thread Board中紀錄該單位(組織或團隊)及使用者的查詢條件
-         * @param {GetThreadBoardRequest} getThreadBoardRequest 
+         * Examples為依序執行的範例
+         * @summary 儲存Thread Board中的bookmark列表
+         * @param {SaveThreadBoardBookmarkListRequest} saveThreadBoardBookmarkListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async saveThreadBoardQuery(getThreadBoardRequest: GetThreadBoardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.saveThreadBoardQuery(getThreadBoardRequest, options);
+        async saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest: SaveThreadBoardBookmarkListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
+         * @summary 在Thread Board中紀錄該單位(組織或團隊)及使用者的查詢條件
+         * @param {SaveThreadBoardQueryRequest} saveThreadBoardQueryRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.saveThreadBoardQuery(saveThreadBoardQueryRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -44558,6 +45014,17 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.showWorkflowStage(hideWorkflowStageRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @summary 更新資料夾型態書籤
+         * @param {UpdateFolderBookmarkRequest} updateFolderBookmarkRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateFolderBookmark(updateFolderBookmarkRequest: UpdateFolderBookmarkRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateFolderBookmark(updateFolderBookmarkRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -44568,6 +45035,26 @@ export const ThreadBoardApiFp = function(configuration?: Configuration) {
 export const ThreadBoardApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = ThreadBoardApiFp(configuration)
     return {
+        /**
+         * 
+         * @summary 新增資料夾型態書籤
+         * @param {AddFolderBookmarkRequest} addFolderBookmarkRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addFolderBookmark(addFolderBookmarkRequest: AddFolderBookmarkRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.addFolderBookmark(addFolderBookmarkRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 新增組織型態書籤
+         * @param {AddOrgBookmarkRequest} addOrgBookmarkRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addOrgBookmark(addOrgBookmarkRequest: AddOrgBookmarkRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.addOrgBookmark(addOrgBookmarkRequest, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @summary 在Thread Board中檢查是否可以刪除 Workflow Stage
@@ -44599,6 +45086,16 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
             return localVarFp.deleteWorkflowStage(checkCanDeleteWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * 排序以 thread 最多 → 少 (上到下) 排序
+         * @summary 取得Thread Board中的聯絡單位列表
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getContactOrgList(oGBaseRequestBody: OGBaseRequestBody, options?: any): AxiosPromise<GetContactOrgList200Response> {
+            return localVarFp.getContactOrgList(oGBaseRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
          * 
          * @summary 取得Thread Board資料
          * @param {GetThreadBoardRequest} getThreadBoardRequest 
@@ -44607,6 +45104,16 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          */
         getThreadBoard(getThreadBoardRequest: GetThreadBoardRequest, options?: any): AxiosPromise<GetThreadBoard200Response> {
             return localVarFp.getThreadBoard(getThreadBoardRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 取得Thread Board中的bookmark列表
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getThreadBoardBookmarkList(oGBaseRequestBody: OGBaseRequestBody, options?: any): AxiosPromise<GetThreadBoardBookmarkList200Response> {
+            return localVarFp.getThreadBoardBookmarkList(oGBaseRequestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -44619,14 +45126,14 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
             return localVarFp.getThreadBoardMostParticipant(getThreadBoardMostParticipantRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 以單位紀錄的是sortBy、onlyShowUnread、filter，以使用者紀錄的是search
+         * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
          * @summary 在Thread Board中取得該單位(組織或團隊)及使用者的查詢條件
-         * @param {GetThreadBoardMostParticipantRequest} getThreadBoardMostParticipantRequest 
+         * @param {GetThreadBoardQueryRequest} getThreadBoardQueryRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getThreadBoardQuery(getThreadBoardMostParticipantRequest: GetThreadBoardMostParticipantRequest, options?: any): AxiosPromise<GetThreadBoardQuery200Response> {
-            return localVarFp.getThreadBoardQuery(getThreadBoardMostParticipantRequest, options).then((request) => request(axios, basePath));
+        getThreadBoardQuery(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: any): AxiosPromise<GetThreadBoardQuery200Response> {
+            return localVarFp.getThreadBoardQuery(getThreadBoardQueryRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -44637,6 +45144,16 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
          */
         hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
             return localVarFp.hideWorkflowStage(hideWorkflowStageRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 移動書籤
+         * @param {MoveBookmarkRequest} moveBookmarkRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        moveBookmark(moveBookmarkRequest: MoveBookmarkRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.moveBookmark(moveBookmarkRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -44680,6 +45197,16 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
+         * @summary 刪除書籤
+         * @param {GetThreadBoardQueryRequest} getThreadBoardQueryRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        removeBookmark(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.removeBookmark(getThreadBoardQueryRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 在Thread Board中重新命名 Workflow Stage名稱
          * @param {RenameWorkflowStageRequest} renameWorkflowStageRequest 
          * @param {*} [options] Override http request option.
@@ -44689,14 +45216,24 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
             return localVarFp.renameWorkflowStage(renameWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 以單位紀錄的是sortBy、onlyShowUnread、filter，以使用者紀錄的是search
-         * @summary 在Thread Board中紀錄該單位(組織或團隊)及使用者的查詢條件
-         * @param {GetThreadBoardRequest} getThreadBoardRequest 
+         * Examples為依序執行的範例
+         * @summary 儲存Thread Board中的bookmark列表
+         * @param {SaveThreadBoardBookmarkListRequest} saveThreadBoardBookmarkListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveThreadBoardQuery(getThreadBoardRequest: GetThreadBoardRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.saveThreadBoardQuery(getThreadBoardRequest, options).then((request) => request(axios, basePath));
+        saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest: SaveThreadBoardBookmarkListRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
+         * @summary 在Thread Board中紀錄該單位(組織或團隊)及使用者的查詢條件
+         * @param {SaveThreadBoardQueryRequest} saveThreadBoardQueryRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.saveThreadBoardQuery(saveThreadBoardQueryRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -44708,6 +45245,16 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
         showWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
             return localVarFp.showWorkflowStage(hideWorkflowStageRequest, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @summary 更新資料夾型態書籤
+         * @param {UpdateFolderBookmarkRequest} updateFolderBookmarkRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateFolderBookmark(updateFolderBookmarkRequest: UpdateFolderBookmarkRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.updateFolderBookmark(updateFolderBookmarkRequest, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -44718,6 +45265,30 @@ export const ThreadBoardApiFactory = function (configuration?: Configuration, ba
  * @extends {BaseAPI}
  */
 export class ThreadBoardApi extends BaseAPI {
+    /**
+     * 
+     * @summary 新增資料夾型態書籤
+     * @param {AddFolderBookmarkRequest} addFolderBookmarkRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ThreadBoardApi
+     */
+    public addFolderBookmark(addFolderBookmarkRequest: AddFolderBookmarkRequest, options?: AxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).addFolderBookmark(addFolderBookmarkRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 新增組織型態書籤
+     * @param {AddOrgBookmarkRequest} addOrgBookmarkRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ThreadBoardApi
+     */
+    public addOrgBookmark(addOrgBookmarkRequest: AddOrgBookmarkRequest, options?: AxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).addOrgBookmark(addOrgBookmarkRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary 在Thread Board中檢查是否可以刪除 Workflow Stage
@@ -44755,6 +45326,18 @@ export class ThreadBoardApi extends BaseAPI {
     }
 
     /**
+     * 排序以 thread 最多 → 少 (上到下) 排序
+     * @summary 取得Thread Board中的聯絡單位列表
+     * @param {OGBaseRequestBody} oGBaseRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ThreadBoardApi
+     */
+    public getContactOrgList(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).getContactOrgList(oGBaseRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * 
      * @summary 取得Thread Board資料
      * @param {GetThreadBoardRequest} getThreadBoardRequest 
@@ -44764,6 +45347,18 @@ export class ThreadBoardApi extends BaseAPI {
      */
     public getThreadBoard(getThreadBoardRequest: GetThreadBoardRequest, options?: AxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).getThreadBoard(getThreadBoardRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 取得Thread Board中的bookmark列表
+     * @param {OGBaseRequestBody} oGBaseRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ThreadBoardApi
+     */
+    public getThreadBoardBookmarkList(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).getThreadBoardBookmarkList(oGBaseRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -44779,15 +45374,15 @@ export class ThreadBoardApi extends BaseAPI {
     }
 
     /**
-     * 以單位紀錄的是sortBy、onlyShowUnread、filter，以使用者紀錄的是search
+     * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
      * @summary 在Thread Board中取得該單位(組織或團隊)及使用者的查詢條件
-     * @param {GetThreadBoardMostParticipantRequest} getThreadBoardMostParticipantRequest 
+     * @param {GetThreadBoardQueryRequest} getThreadBoardQueryRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public getThreadBoardQuery(getThreadBoardMostParticipantRequest: GetThreadBoardMostParticipantRequest, options?: AxiosRequestConfig) {
-        return ThreadBoardApiFp(this.configuration).getThreadBoardQuery(getThreadBoardMostParticipantRequest, options).then((request) => request(this.axios, this.basePath));
+    public getThreadBoardQuery(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: AxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).getThreadBoardQuery(getThreadBoardQueryRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -44800,6 +45395,18 @@ export class ThreadBoardApi extends BaseAPI {
      */
     public hideWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: AxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).hideWorkflowStage(hideWorkflowStageRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 移動書籤
+     * @param {MoveBookmarkRequest} moveBookmarkRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ThreadBoardApi
+     */
+    public moveBookmark(moveBookmarkRequest: MoveBookmarkRequest, options?: AxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).moveBookmark(moveBookmarkRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -44852,6 +45459,18 @@ export class ThreadBoardApi extends BaseAPI {
 
     /**
      * 
+     * @summary 刪除書籤
+     * @param {GetThreadBoardQueryRequest} getThreadBoardQueryRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ThreadBoardApi
+     */
+    public removeBookmark(getThreadBoardQueryRequest: GetThreadBoardQueryRequest, options?: AxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).removeBookmark(getThreadBoardQueryRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary 在Thread Board中重新命名 Workflow Stage名稱
      * @param {RenameWorkflowStageRequest} renameWorkflowStageRequest 
      * @param {*} [options] Override http request option.
@@ -44863,15 +45482,27 @@ export class ThreadBoardApi extends BaseAPI {
     }
 
     /**
-     * 以單位紀錄的是sortBy、onlyShowUnread、filter，以使用者紀錄的是search
-     * @summary 在Thread Board中紀錄該單位(組織或團隊)及使用者的查詢條件
-     * @param {GetThreadBoardRequest} getThreadBoardRequest 
+     * Examples為依序執行的範例
+     * @summary 儲存Thread Board中的bookmark列表
+     * @param {SaveThreadBoardBookmarkListRequest} saveThreadBoardBookmarkListRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ThreadBoardApi
      */
-    public saveThreadBoardQuery(getThreadBoardRequest: GetThreadBoardRequest, options?: AxiosRequestConfig) {
-        return ThreadBoardApiFp(this.configuration).saveThreadBoardQuery(getThreadBoardRequest, options).then((request) => request(this.axios, this.basePath));
+    public saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest: SaveThreadBoardBookmarkListRequest, options?: AxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).saveThreadBoardBookmarkList(saveThreadBoardBookmarkListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 以單位紀錄的是sortBy，以單位+Bookmark書籤+使用者紀錄的是onlyShowUnread、filter和search。
+     * @summary 在Thread Board中紀錄該單位(組織或團隊)及使用者的查詢條件
+     * @param {SaveThreadBoardQueryRequest} saveThreadBoardQueryRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ThreadBoardApi
+     */
+    public saveThreadBoardQuery(saveThreadBoardQueryRequest: SaveThreadBoardQueryRequest, options?: AxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).saveThreadBoardQuery(saveThreadBoardQueryRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -44884,6 +45515,18 @@ export class ThreadBoardApi extends BaseAPI {
      */
     public showWorkflowStage(hideWorkflowStageRequest: HideWorkflowStageRequest, options?: AxiosRequestConfig) {
         return ThreadBoardApiFp(this.configuration).showWorkflowStage(hideWorkflowStageRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 更新資料夾型態書籤
+     * @param {UpdateFolderBookmarkRequest} updateFolderBookmarkRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ThreadBoardApi
+     */
+    public updateFolderBookmark(updateFolderBookmarkRequest: UpdateFolderBookmarkRequest, options?: AxiosRequestConfig) {
+        return ThreadBoardApiFp(this.configuration).updateFolderBookmark(updateFolderBookmarkRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

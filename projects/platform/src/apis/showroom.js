@@ -46,9 +46,16 @@ export default {
       method: 'POST',
       data: { orgId, workspaceNodeId, workspaceNodeLocation, keyword, rank },
     }),
-  contactShowroomOrg: ({ showroomId, fromEmail, toOrgId, subject, content }) =>
+  contactShowroomOrg: ({
+    orgId,
+    showroomId,
+    fromEmail,
+    toOrgId,
+    subject,
+    content,
+  }) =>
     axios('/showroom/send-mail', {
       method: 'POST',
-      data: { showroomId, fromEmail, toOrgId, subject, content },
+      data: { orgId, showroomId, fromEmail, toOrgId, subject, content },
     }),
 }
