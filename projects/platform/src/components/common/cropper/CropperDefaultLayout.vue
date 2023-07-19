@@ -3,84 +3,46 @@ div
   div(class="w-full flex justify-center items-center overflow-hidden")
     div(
       class="relative w-full aspect-square flex justify-center items-center"
-      :class="theme === 'light' ? 'bg-[#F1F2F5]' : 'bg-grey-900'"
+      :class="theme === THEME.LIGHT ? 'bg-[#F1F2F5]' : 'bg-grey-900'"
     )
       slot(
         name="imageCropArea"
         :innerScaleSize="scaleValue"
         :innerShowScale="showScale"
       )
-  div(class="mt-4")
-    div(
-      class="flex items-center"
-      :class="theme === 'light' ? 'text-grey-900' : 'text-grey-100'"
-    )
-      f-svg-icon(iconName="rotate" size="20" class="mr-1")
-      p(class="text-body2 mr-2") {{ $t('EE0049') }}
-      f-button-label(
-        :theme="theme"
-        size="sm"
-        :disabled="!rotateDirty"
-        @click="resetRotate"
-      ) {{ $t('RR0255') }}
-    div(class="flex items-center justify-between")
-      f-input-range(
-        ref="refRotateDeg"
-        v-model:range="formattedRotateDeg"
-        v-bind="rotateSetting"
-        :theme="theme"
-        class="w-full mr-3.5"
-      )
-      div(class="w-19.5 flex-shrink-0")
-        f-input-number(
-          :theme="theme"
-          v-model:value="formattedRotateDeg"
-          :step="rotateSetting.step"
-          :min="rotateSetting.min"
-          :max="rotateSetting.max"
-          unit="°"
-          @change="handleRotateChange"
-        )
-  div(v-if="showScale" class="mt-3")
-    div(
-      class="flex items-center"
-      :class="theme === 'light' ? 'text-grey-900' : 'text-grey-100'"
-    )
-      f-svg-icon(iconName="open_in_full" size="20" class="mr-1")
-      p(class="text-body2 mr-2") {{ $t('EE0098') }}
-      f-button-label(
-        :theme="theme"
-        size="sm"
-        :disabled="!scaleDirty"
-        @click="resetScale"
-      ) {{ $t('RR0255') }}
-    div(class="flex items-center justify-between")
-      f-input-range(
-        ref="refScale"
-        v-model:range="formattedScaleValue"
-        v-bind="scaleSetting"
-        :theme="theme"
-        class="w-full mr-3.5"
-      )
-      div(class="w-19.5 flex-shrink-0")
-        f-input-number(
-          :theme="theme"
-          v-model:value="formattedScaleValue"
-          :step="scaleInputStep"
-          :min="scaleRange[0]"
-          :max="scaleRange[1]"
-          :unit="scaleUnit"
-          @change="handleScaleChange"
-        )
+  f-input-slider(
+    class="mt-4"
+    ref="refRotateDeg"
+    v-model:range="formattedRotateDeg"
+    v-bind="rotateSetting"
+    :theme="theme"
+    withInput
+    inputUnit="°"
+    :label="$t('EE0049')"
+    labelIcon="rotate"
+  )
+  f-input-slider(
+    v-if="showScale"
+    class="mt-3"
+    ref="refScale"
+    v-model:range="formattedScaleValue"
+    v-bind="scaleSetting"
+    :theme="theme"
+    withInput
+    :inputUnit="scaleUnit"
+    :label="$t('EE0098')"
+    labelIcon="open_in_full"
+  )
 </template>
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { THEME } from '@/utils/constants'
 
 const props = defineProps({
   theme: {
     type: String,
-    default: 'light',
+    default: THEME.LIGHT,
   },
   config: {
     type: Object,
@@ -128,12 +90,14 @@ const scaleSetting = {
   tooltips: false,
   min: props.scaleRange[0],
   max: props.scaleRange[1],
+  defaultRange: props.scaleStart || props.scaleRange[0],
 }
 const rotateSetting = {
   step: 0.1,
   tooltips: false,
   min: -180,
   max: 180,
+  defaultRange: props.rotateStart || 0,
 }
 const scaleValue = ref(
   props.scaleInitial || props.scaleStart || props.scaleRange[0]
@@ -160,44 +124,12 @@ const formattedRotateDeg = computed({
   },
 })
 
-const rotateDirty = computed(() =>
-  props.rotateStart
-    ? formattedRotateDeg.value !== props.rotateStart
-    : formattedRotateDeg.value !== 0
-)
-const scaleDirty = computed(() =>
-  props.scaleStart
-    ? scaleValue.value !== props.scaleStart
-    : scaleValue.value !== scaleSetting.min
-)
-
-const handleScaleChange = (scale) => {
-  if (scale > props.scaleRange[1]) {
-    scale = props.scaleRange[1]
-    scaleValue.value = props.scaleRange[1]
-  } else if (scale < props.scaleRange[0]) {
-    scale = props.scaleRange[0]
-    scaleValue.value = props.scaleRange[0]
-  }
-  refScale.value.setValue(scale)
-}
-
-const handleRotateChange = (rotate) => {
-  if (rotate > rotateSetting.max) {
-    rotate = rotateSetting.max
-  } else if (rotate < rotateSetting.min) {
-    rotate = rotateSetting.min
-  }
-  innerRotateDeg.value = rotate
-  refRotateDeg.value.setValue(rotate)
-}
-
 const resetRotate = () => {
-  refRotateDeg.value.setValue(props.rotateStart || 0)
+  refRotateDeg.value.reset()
 }
 
 const resetScale = () => {
-  refScale.value.setValue(props.scaleStart || props.scaleRange[0])
+  refScale.value.reset()
 }
 
 defineExpose({ resetRotate, resetScale })
@@ -212,21 +144,3 @@ watch(
   }
 )
 </script>
-
-<style lang="scss" scoped>
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type='number'] {
-  -moz-appearance: textfield;
-
-  &:focus {
-    outline: 0;
-  }
-}
-</style>

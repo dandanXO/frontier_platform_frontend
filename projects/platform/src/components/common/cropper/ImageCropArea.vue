@@ -41,13 +41,14 @@ import html2canvas from 'html2canvas'
 import CroppedImage from '@/components/common/cropper/CroppedImage.vue'
 import { dataUrlToBlob } from '@/utils/fileOperator'
 import tempFilenameGenerator from '@/utils/temp-filename-generator'
+import { THEME } from '@/utils/constants'
 
 const IMAGE_COUNT = 3
 
 const props = defineProps({
   theme: {
     type: String,
-    default: 'light',
+    default: THEME.LIGHT,
   },
   config: {
     type: Object,
@@ -106,7 +107,7 @@ watch(isAllImgLoad, () => {
 
 const basedBorderStyles = computed(() => {
   const styles = ['corner', 'absolute', 'w-4.5', 'h-4.5']
-  if (props.theme === 'light') {
+  if (props.theme === THEME.LIGHT) {
     styles.push('border-grey-900')
   } else {
     styles.push('border-grey-100')
@@ -117,7 +118,7 @@ const basedBorderStyles = computed(() => {
 const cropImage = () => {
   const classList = [
     'overflow-hidden',
-    props.theme === 'light' ? 'bg-grey-0' : 'bg-grey-900',
+    props.theme === THEME.LIGHT ? 'bg-grey-0' : 'bg-grey-900',
   ]
 
   return new Promise((resolve, reject) => {

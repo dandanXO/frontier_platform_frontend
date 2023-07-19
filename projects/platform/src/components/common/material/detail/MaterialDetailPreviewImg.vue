@@ -33,10 +33,11 @@ div
   div(class="flex pt-3 pb-4")
     p(
       v-for="text in imageList[currentDisplayIndex].text"
+      :key="text"
       class="text-caption text-center font-bold"
     ) {{ text }}
   div(class="grid grid-flow-col gap-x-2 justify-start")
-    template(v-for="(image, index) in imageList")
+    template(v-for="(image, index) in imageList" :key="`image-${index}`")
       div(
         class="w-19.5 h-19.5 rounded overflow-hidden border-grey-250 bg-grey-100"
         :class="[currentDisplayIndex === index ? 'border-4' : 'border']"
@@ -45,18 +46,20 @@ div
         img(v-if="!!image.src" class="w-full h-full" :src="image.src")
   div(
     v-if="isOpenMagnifierMode"
-    class="fixed w-screen h-screen z-popper bg-grey-900/90 left-0 top-0 flex flex-col"
+    class="fixed w-screen h-screen z-popper bg-grey-900 left-0 top-0 flex flex-col"
   )
-    div(class="shrink-0 w-full h-27.5 bg-grey-900 px-10 flex items-center justify-between")
+    div(
+      class="shrink-0 w-full h-27.5 bg-grey-900 px-10 flex items-center justify-between border-b border-grey-700"
+    )
       div(class="flex items-center")
         f-svg-icon(iconName="zoom_in" size="24" class="text-grey-50")
         p(class="text-grey-50 text-body1 font-bold pl-4") {{ $t('EE0132') }}
       div(class="grid grid-flow-col gap-x-2")
-        template(v-for="(image, index) in imageList")
+        template(v-for="(image, index) in imageList" :key="`image-${index}`")
           div(
             v-if="!(props.material.coverMode === COVER_MODE.SUP && index === defaultCoverImgIndex)"
-            class="w-19.5 h-19.5 rounded overflow-hidden border-grey-250 bg-grey-100"
-            :class="[currentDisplayIndex === index ? 'border-4' : 'border']"
+            class="w-19.5 h-19.5 rounded overflow-hidden bg-grey-100"
+            :class="[currentDisplayIndex === index ? 'border-4 border-primary-400' : 'border border-grey-700']"
             @click="currentDisplayIndex = index"
           )
             img(v-if="!!image.src" class="w-full h-full" :src="image.src")

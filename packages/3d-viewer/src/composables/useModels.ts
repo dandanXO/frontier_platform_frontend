@@ -122,9 +122,10 @@ export default function useModels(
   baseImgUrl: string,
   normalImgUrl: string,
   roughImgUrl: string,
-  dispImgUrl: string,
-  loading: Ref<boolean>
+  dispImgUrl: string
 ) {
+  const isLoading = ref(true)
+
   const modelIndex = ref<number>(0)
   const material = ref<THREE.MeshPhysicalMaterial>()
   const baseTexture = ref<THREE.Texture>()
@@ -265,11 +266,11 @@ export default function useModels(
     })
 
     const manager = new THREE.LoadingManager()
-    manager.onStart = () => (loading.value = true)
-    manager.onLoad = () => (loading.value = false)
+    manager.onStart = () => (isLoading.value = true)
+    manager.onLoad = () => (isLoading.value = false)
     manager.onError = (url) => {
       console.error('There was an error loading ' + url)
-      loading.value = false
+      isLoading.value = false
     }
 
     const modelPath = model.filePath
@@ -330,10 +331,6 @@ export default function useModels(
 
   const handleScaleChange = (v: number) => (scale.value = v)
 
-  const handleScaleReset = () => {
-    scale.value = 1
-  }
-
   watch(u3m, async (newU3m, oldU3m) => {
     if (!newU3m) return
     if (oldU3m) return updateMaterial()
@@ -343,6 +340,7 @@ export default function useModels(
   watch(scale, updateMaterialRepeatTimes)
 
   return {
+    isLoading,
     modelIndex,
     currentModel,
     loadModel,
@@ -352,7 +350,6 @@ export default function useModels(
     colorRemovable,
     colorAddable,
     handleScaleChange,
-    handleScaleReset,
     applyMoireEffectPreventedTexture,
     moireEffectPreventToggle,
     handleColorChange,

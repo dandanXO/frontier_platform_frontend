@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="flex flex-row items-center gap-2")
   info-name(:iconName="iconName" :text="text")
-  span(class="text-body2 text-grey-300") {{ dimensionText }}
+  span(class="text-body2 text-grey-250") {{ dimensionText }}
 </template>
 
 <script setup lang="ts">

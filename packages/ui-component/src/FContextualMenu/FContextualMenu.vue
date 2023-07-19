@@ -1,12 +1,15 @@
 <template lang="pug">
 div(
   class="py-2 bg-grey-0 rounded shadow-16"
-  :class="[innerMenuTree.width, { 'bg-grey-800': theme === 'dark' }]"
+  :class="[innerMenuTree.width, { 'bg-grey-850': theme === THEME.DARK }]"
 )
   //- Root Title
   template(v-if="innerMenuTree.rootTitle")
     div(class="h-8.5 pt-2 px-4 text-body2 text-grey-900 font-bold") {{ innerMenuTree.rootTitle }}
-    div(class="w-full h-px my-1 bg-grey-150" :class="{ 'bg-grey-800': theme === 'dark' }")
+    div(
+      class="w-full h-px my-1 bg-grey-150"
+      :class="{ 'bg-grey-850': theme === THEME.DARK }"
+    )
   //- Button if position is top
   contextual-menu-button(
     v-if="innerMenuTree.button && innerMenuTree.button.position === 'top'"
@@ -45,7 +48,10 @@ div(
     :class="innerMenuTree.scrollAreaMaxHeight"
     class="overflow-y-auto overflow-x-hidden overscroll-contain"
   )
-    template(v-for="(block, index) in filteredBlockList")
+    template(
+      v-for="(block, index) in filteredBlockList"
+      :key="`block-${index}`"
+    )
       //- Block Title
       div(v-if="block.blockTitle" class="h-6 py-1.5 px-4 text-caption text-grey-600") {{ block.blockTitle }}
       //- 使用 vue-virtual-scroller 會導致 popper.js 在判斷 content 展開的位置出錯，故先不使用，等有解決方案後再考慮加回。
@@ -73,6 +79,7 @@ div(
         )
       contextual-menu-node(
         v-for="menu in block.menuList"
+        :key="menu.title"
         :theme="theme"
         :menu="menu"
         @click:menu="clickMenuHandler($event)"
@@ -82,7 +89,7 @@ div(
       div(
         v-if="index !== filteredBlockList.length - 1"
         class="w-full h-px my-1 bg-grey-150"
-        :class="{ 'bg-grey-700': theme === 'dark' }"
+        :class="{ 'bg-grey-750': theme === THEME.DARK }"
       )
   div(v-else-if="!canAddNew" class="h-6 py-1.5 px-4 text-caption text-grey-600") No Results Found
   //- Button if position is bottom

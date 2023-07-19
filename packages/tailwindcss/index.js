@@ -27,6 +27,7 @@ for (let i = 0; i <= 20; i++) {
 }
 
 module.exports = plugin(function () {}, {
+  darkMode: 'class',
   theme: {
     colors: {
       transparent: 'transparent',

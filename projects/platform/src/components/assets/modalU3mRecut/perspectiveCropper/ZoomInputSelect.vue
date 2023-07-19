@@ -10,24 +10,23 @@ f-input-container(ref="refContainer")
   )
     template(#trigger="{ isExpand }")
       div(
-        class="px-2 border rounded flex items-center hover:bg-grey-800 cursor-pointer"
-        :class="[isExpand ? 'border-primary-500 outline-primary-200 bg-grey-700' : 'border-grey-700 bg-grey-900', 'h-7', 'w-17.5]']"
-        :style="{ 'box-shadow': isExpand ? '0px 0px 0px 2px rgba(3, 57, 62, 0.85)' : '' }"
+        class="px-2 border rounded flex items-center hover:bg-grey-850 hover:border-grey-600 cursor-pointer"
+        :class="[isExpand ? 'border-primary-300 bg-grey-700 shadow-[0_0_0_2px_#074E54]' : 'border-grey-700 bg-grey-900', 'h-7', 'w-17.5]']"
       )
         p(
           class="flex-grow text-caption"
-          :class="[{ 'text-grey-600': disabled }, { 'text-grey-100': !disabled !== -1 }, { 'text-grey-250': !disabled === -1 }]"
+          :class="[disabled ? 'text-grey-600' : 'text-grey-400 hover:text-grey-250']"
         ) {{ value }}
         div(class="pl-1")
           f-svg-icon(
             iconName="keyboard_arrow_right"
             size="20"
-            class="transform text-grey-500"
+            class="transform text-grey-250"
             :class="[isExpand ? '-rotate-90' : 'rotate-90']"
           )
     template(#content="{ collapsePopper }")
       f-contextual-menu(
-        theme="dark"
+        :theme="THEME.DARK"
         :menuTree="menuTree"
         @click:menu="(menu) => handleClick(menu, collapsePopper)"
       )
@@ -35,6 +34,7 @@ f-input-container(ref="refContainer")
 
 <script setup>
 import { computed, ref } from 'vue'
+import { THEME } from '@/utils/constants'
 
 const props = defineProps({
   value: {

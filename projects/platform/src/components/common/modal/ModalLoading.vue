@@ -4,7 +4,7 @@ div(
 )
   div(
     class="flex flex-col items-center justify-center w-49 h-28 px-13 py-7 rounded shadow-32"
-    :class="[theme === 'light' ? 'bg-grey-0' : 'bg-grey-800']"
+    :class="[theme === THEME.LIGHT ? 'bg-grey-0' : 'bg-grey-800']"
   )
     f-svg-icon(
       iconName="loading"
@@ -14,14 +14,19 @@ div(
     )
     p(
       class="text-body2 pt-3.5"
-      :class="[theme === 'light' ? 'text-grey-900' : 'text-grey-100']"
+      :class="[theme === THEME.LIGHT ? 'text-grey-900' : 'text-grey-100']"
     ) {{ $t('RR0162') }}
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-  theme?: 'light' | 'dark'
-}>()
+import { THEME } from '@/utils/constants'
 
-const theme = props.theme || 'light'
+withDefaults(
+  defineProps<{
+    theme?: `${THEME}`
+  }>(),
+  {
+    theme: THEME.LIGHT,
+  }
+)
 </script>

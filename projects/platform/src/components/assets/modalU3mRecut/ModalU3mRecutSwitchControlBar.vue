@@ -7,7 +7,7 @@ div(class="grid grid-cols-3 bg-grey-800 py-4")
   )
   div(class="col-start-3 justify-self-end pr-8")
     f-button(
-      theme="dark"
+      :theme="THEME.DARK"
       type="text"
       size="sm"
       prependIcon="restore_original_state"
@@ -17,7 +17,7 @@ div(class="grid grid-cols-3 bg-grey-800 py-4")
 
 <script setup lang="ts">
 import TapStatus from '@/components/assets/modalU3mRecut/TapStatus.vue'
-import type { CROP_MODE } from '@/utils/constants'
+import { THEME, type CROP_MODE } from '@/utils/constants'
 
 defineProps<{ cropMode: CROP_MODE }>()
 

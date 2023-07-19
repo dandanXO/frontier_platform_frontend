@@ -3,7 +3,6 @@ filter-wrapper(
   iconName="stock"
   :displayName="$t('RR0093')"
   :dirty="filterDirty.inventory"
-  @expand="init"
 )
   div(class="w-95 rounded shadow-16 py-4")
     filter-range(
@@ -61,14 +60,11 @@ export default {
 
     const inputRange = ref([null, null])
     const inventoryUnit = ref(inventoryOptionList[0].value)
-
-    const init = () => {
-      const {
-        inventory: { unit, quantity },
-      } = filter.value
-      inventoryUnit.value = unit || inventoryOptionList[0].value
-      inputRange.value = [quantity.min, quantity.max]
-    }
+    const {
+      inventory: { unit, quantity },
+    } = filter.value
+    inventoryUnit.value = unit || inventoryOptionList[0].value
+    inputRange.value = [quantity.min, quantity.max]
 
     const update = () => {
       const [min, max] = inputRange.value
@@ -88,7 +84,6 @@ export default {
       filterDirty,
       filterOptions,
       inputRange,
-      init,
       update,
       inventoryUnit,
       inventoryOptionList,

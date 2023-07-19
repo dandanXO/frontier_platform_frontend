@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import FTooltipStandard from './FTooltipStandard.vue'
-import { TOOLTIP_PLACEMENT } from '../../constants'
+import { TOOLTIP_PLACEMENT, THEME } from '../../constants'
 
 export default {
   title: 'Tooltip/FTooltipStandard',
@@ -12,6 +12,10 @@ export default {
     placement: {
       control: { type: 'select' },
       options: TOOLTIP_PLACEMENT,
+    },
+    theme: {
+      control: { type: 'radio' },
+      options: [THEME.LIGHT, THEME.DARK],
     },
   },
   decorators: [() => ({ template: '<div class="mt-10 ml-5"><story /></div>' })],

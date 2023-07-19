@@ -2,9 +2,8 @@
 f-popper(placement="bottom-start" :offset="[0, -4]")
   template(#trigger="{ isExpand }")
     div(
-      class="flex items-center gap-x-1 px-3 rounded border hover:bg-grey-800 cursor-pointer"
-      :class="['h-7', isExpand ? 'border-primary-500 bg-grey-700' : 'border-grey-700 bg-grey-900']"
-      :style="{ 'box-shadow': isExpand ? '0px 0px 0px 2px rgba(3, 57, 62, 0.85)' : '' }"
+      class="flex items-center gap-x-1 px-3 rounded border hover:bg-grey-850 hover:border-grey-600 cursor-pointer"
+      :class="['h-7', isExpand ? 'border-primary-300 bg-grey-700 shadow-[0_0_0_2px_#074E54]' : 'border-grey-700 bg-grey-900']"
     )
       label(
         class="w-3 h-3 border border-grey-600 rounded-sm"
@@ -13,7 +12,7 @@ f-popper(placement="bottom-start" :offset="[0, -4]")
       f-svg-icon(
         iconName="keyboard_arrow_right"
         size="20"
-        class="text-grey-500 transform"
+        class="text-grey-250 transform"
         :class="[isExpand ? '-rotate-90' : 'rotate-90']"
       )
   template(#content="{ isExpand }")

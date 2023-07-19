@@ -11,7 +11,8 @@ div(
     div(
       ref="refTooltip"
       role="tooltip"
-      class="z-tooltip rounded bg-grey-900/80 px-2 py-1.5 max-w-85 text-grey-50 text-caption/1.3"
+      class="z-tooltip rounded px-2 py-1.5 max-w-85 text-caption/1.3"
+      :class="[theme === THEME.LIGHT ? 'bg-grey-900/80 text-grey-50' : 'bg-grey-100/70 text-grey-900']"
     )
       slot(
         v-if="slots['slot:tooltip-content']"
@@ -31,11 +32,12 @@ export default {
 
 <script lang="ts" setup>
 import { useSlots, toRefs } from 'vue'
-import { TOOLTIP_PLACEMENT } from '../../constants'
+import { TOOLTIP_PLACEMENT, THEME } from '../../constants'
 import { useTooltip } from '../../FTooltip'
 // https://popper.js.org/docs/v2/
 
 export interface TooltipStandardProps {
+  theme: `${THEME}`
   placement?: TOOLTIP_PLACEMENT
   offset?: [number, number]
   isNotFitWidth?: boolean
@@ -61,6 +63,7 @@ const emit = defineEmits<{
 }>()
 
 const props = withDefaults(defineProps<TooltipStandardProps>(), {
+  theme: THEME.LIGHT,
   placement: TOOLTIP_PLACEMENT.TOP,
   offset: () => [0, 8],
   isNotFitWidth: false,

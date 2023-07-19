@@ -4,6 +4,10 @@ input[type='date'] {
     display: none;
   }
 }
+
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
 </style>
 
 <template lang="pug">
@@ -79,6 +83,9 @@ f-input-container(
       :placeholder="placeholder"
       :class="classInput"
       :readonly="disabled"
+      :min="min"
+      :max="max"
+      :step="step"
       @input="onInput"
       @focus="onFocus"
       @blur="onBlur"
@@ -92,23 +99,28 @@ f-input-container(
       @mousedown.prevent
     )
       div(
-        class="w-4 h-3.5 rounded-t bg-grey-150 hover:bg-grey-250 active:bg-grey-300 flex justify-center"
+        class="w-4 h-3.5 rounded-t flex justify-center"
+        :class="[theme === THEME.LIGHT ? 'bg-grey-150 hover:bg-grey-250 active:bg-grey-300 text-grey-800' : 'bg-grey-700 hover:bg-grey-800 active:bg-grey-850 text-grey-100']"
         @click="increase"
       )
-        f-svg-icon(iconName="keyboard_arrow_up" size="14" class="text-grey-800")
-      div(class="w-full h-px bg-grey-100")
+        f-svg-icon(iconName="keyboard_arrow_up" size="14")
       div(
-        class="w-4 h-3.5 rounded-b bg-grey-150 hover:bg-grey-250 active:bg-grey-300 flex justify-center"
+        class="w-full h-px"
+        :class="[theme === THEME.LIGHT ? 'bg-grey-100' : 'bg-grey-900']"
+      )
+      div(
+        class="w-4 h-3.5 rounded-b flex justify-center"
+        :class="[theme === THEME.LIGHT ? 'bg-grey-150 hover:bg-grey-250 active:bg-grey-300 text-grey-800' : 'bg-grey-700 hover:bg-grey-800 active:bg-grey-850 text-grey-100']"
         @click="decrease"
       )
-        f-svg-icon(iconName="keyboard_arrow_down" size="14" class="text-grey-800")
+        f-svg-icon(iconName="keyboard_arrow_down" size="14")
     //- Clear Icon
     f-svg-icon(
       v-if="(clearable && !!textValue && state === STATE.FOCUS) || (button?.isFile && !!textValue)"
       :size="size === 'lg' ? '24' : '20'"
       iconName="cancel"
-      class="text-grey-150 hover:text-grey-250 active:text-grey-300 cursor-pointer"
-      :class="{ '-mr-1': size === 'lg' && !!appendIcon }"
+      class="cursor-pointer"
+      :class="[{ '-mr-1': size === 'lg' && !!appendIcon }, theme === THEME.LIGHT ? 'text-grey-150 hover:text-grey-250 active:text-grey-300' : 'text-grey-700 hover:text-grey-750 active:text-grey-800']"
       @click="clear"
       @mousedown.prevent
     )
@@ -186,10 +198,15 @@ import { CONTEXTUAL_MENU_MODE } from '../../constants'
 import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import useInput from '../useInput'
+import { THEME } from '../../constants'
 const { te } = useI18n()
 const slots = useSlots()
 
 const props = defineProps({
+  theme: {
+    type: String,
+    default: THEME.LIGHT,
+  },
   /**
    * inherit from `FInputContainer.vue`
    */
@@ -311,6 +328,16 @@ const props = defineProps({
   button: {
     type: Object,
     default: () => {},
+  },
+  step: {
+    type: Number,
+    default: 1,
+  },
+  min: {
+    type: Number,
+  },
+  max: {
+    type: Number,
   },
 })
 const emit = defineEmits([
@@ -447,13 +474,13 @@ const clear = () => {
 const increase = () => {
   refInput.value.focus()
   let textValue = innerTextValue.value || 0
-  textValue = parseInt(textValue) + 1
+  textValue = Number(Number.parseFloat(textValue + props.step).toFixed(2))
   emit('update:textValue', textValue)
 }
 const decrease = () => {
   refInput.value.focus()
   let textValue = innerTextValue.value || 0
-  textValue = parseInt(textValue) - 1
+  textValue = Number(Number.parseFloat(textValue - props.step).toFixed(2))
   emit('update:textValue', textValue)
 }
 
@@ -475,30 +502,58 @@ const classMain = computed(() => {
       break
   }
 
-  switch (state.value) {
-    case STATE.DEFAULT:
-      classList.push(
-        'border-grey-200',
-        isError.value ? 'bg-grey-50' : 'bg-grey-0'
-      )
-      break
-    case STATE.HOVER:
-      classList.push('border-grey-250', 'bg-grey-50')
-      break
-    case STATE.FOCUS:
-      classList.push(
-        isError.value
-          ? 'shadow-[0_0_0_4px_#FDE7DA]'
-          : 'shadow-[0_0_0_4px_#E9F8F3]',
-        'border-primary-300',
-        'bg-grey-0',
-        'relative',
-        'z-1'
-      )
-      break
-    case STATE.DISABLED:
-      classList.push('border-grey-200', 'cursor-not-allowed', 'bg-grey-100')
-      break
+  if (props.theme === THEME.LIGHT) {
+    switch (state.value) {
+      case STATE.DEFAULT:
+        classList.push(
+          'border-grey-200',
+          isError.value ? 'bg-grey-50' : 'bg-grey-0'
+        )
+        break
+      case STATE.HOVER:
+        classList.push('border-grey-250', 'bg-grey-50')
+        break
+      case STATE.FOCUS:
+        classList.push(
+          isError.value
+            ? 'shadow-[0_0_0_4px_#FDE7DA]'
+            : 'shadow-[0_0_0_4px_#E9F8F3]',
+          'border-primary-300',
+          'bg-grey-0',
+          'relative',
+          'z-1'
+        )
+        break
+      case STATE.DISABLED:
+        classList.push('border-grey-200', 'cursor-not-allowed', 'bg-grey-100')
+        break
+    }
+  } else {
+    switch (state.value) {
+      case STATE.DEFAULT:
+        classList.push(
+          'border-grey-700',
+          isError.value ? 'bg-grey-50' : 'bg-grey-900'
+        )
+        break
+      case STATE.HOVER:
+        classList.push('border-grey-600', 'bg-grey-850')
+        break
+      case STATE.FOCUS:
+        classList.push(
+          isError.value
+            ? 'shadow-[0_0_0_4px_#FDE7DA]'
+            : 'shadow-[0_0_0_4px_#03393E]',
+          'border-primary-500',
+          'bg-grey-900',
+          'relative',
+          'z-1'
+        )
+        break
+      case STATE.DISABLED:
+        classList.push('border-grey-750', 'cursor-not-allowed', 'bg-grey-750')
+        break
+    }
   }
 
   if (isError.value) {
@@ -535,23 +590,44 @@ const classInput = computed(() => {
     'leading-1.6',
   ]
 
-  switch (state.value) {
-    case STATE.DEFAULT:
-      classList.push('placeholder:text-grey-250', 'text-grey-800')
-      break
-    case STATE.HOVER:
-      classList.push('placeholder:text-grey-300', 'text-grey-900')
-      break
-    case STATE.FOCUS:
-      classList.push('placeholder:text-grey-250', 'text-grey-900')
-      break
-    case STATE.DISABLED:
-      classList.push(
-        'placeholder:text-grey-250',
-        'text-grey-250',
-        'cursor-not-allowed'
-      )
-      break
+  if (props.theme === THEME.LIGHT) {
+    switch (state.value) {
+      case STATE.DEFAULT:
+        classList.push('placeholder:text-grey-250', 'text-grey-800')
+        break
+      case STATE.HOVER:
+        classList.push('placeholder:text-grey-300', 'text-grey-900')
+        break
+      case STATE.FOCUS:
+        classList.push('placeholder:text-grey-250', 'text-grey-900')
+        break
+      case STATE.DISABLED:
+        classList.push(
+          'placeholder:text-grey-250',
+          'text-grey-250',
+          'cursor-not-allowed'
+        )
+        break
+    }
+  } else {
+    switch (state.value) {
+      case STATE.DEFAULT:
+        classList.push('placeholder:text-grey-400', 'text-grey-250')
+        break
+      case STATE.HOVER:
+        classList.push('placeholder:text-grey-250', 'text-grey-100')
+        break
+      case STATE.FOCUS:
+        classList.push('placeholder:text-grey-400', 'text-grey-100')
+        break
+      case STATE.DISABLED:
+        classList.push(
+          'placeholder:text-grey-900',
+          'text-grey-900',
+          'cursor-not-allowed'
+        )
+        break
+    }
   }
 
   if (state.value === STATE.DISABLED && props.button?.isFile) {
@@ -605,6 +681,10 @@ const classAddon = computed(() => {
 })
 
 const classButton = computed(() => {
+  if (!props.button?.type) {
+    return []
+  }
+
   const classList = []
 
   switch (props.button.type) {

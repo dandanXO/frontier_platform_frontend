@@ -64,32 +64,17 @@ modal-behavior(
       v-if="isDoubleSideMaterial"
       class="absolute inset-x-0 w-full h-88.5 flex flex-col items-center"
     )
-      div(class="text-grey-900 text-body2 flex justify-center items-center mb-3")
-        span {{ $t('EE0098') }}
-        f-svg-icon(iconName="open_in_full" size="16" class="ml-2")
-      f-button-label(
-        size="sm"
-        :disabled="!scaleDirty"
-        class="mb-3"
-        @click="resetDoubleMaterialScaleSize"
-      ) {{ $t('RR0255') }}
-      f-input-range(
+      f-input-slider(
         ref="refDoubleSideScale"
         :range="scaleSizeInCm"
         @update:range="handleUpdateDoubleMaterialScaleSize"
         v-bind="scaleOptions"
-        class="h-43 mb-3"
+        class="h-full mb-3"
+        withInput
+        inputUnit="cm"
+        :label="$t('EE0098')"
+        labelIcon="open_in_full"
       )
-      div(class="w-22")
-        f-input-number(
-          v-model:value="scaleSizeInCm"
-          :step="scaleOptions.step"
-          :min="scaleOptions.min"
-          :max="scaleOptions.max"
-          unit="cm"
-          @update:value="handleUpdateDoubleMaterialScaleSize"
-          @change="handleUpdateDoubleMaterialScaleSize($event, true)"
-        )
       div(class="mt-7 cursor-pointer text-grey-900" @click="isExchange = !isExchange")
         f-svg-icon(iconName="swap" size="32" class="m-auto")
 </template>
@@ -98,7 +83,7 @@ modal-behavior(
 import { useStore } from 'vuex'
 import { ref, computed, onMounted, watch } from 'vue'
 import Decimal from 'decimal.js'
-import FInputRange from '@frontier/ui-component/src/FInput/FInputRange/FInputRange.vue'
+import FInputSlider from '@frontier/ui-component/src/FInput/FInputSlider/FInputSlider.vue'
 import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import useMaterialImage from '@/composables/useMaterialImage'
@@ -116,7 +101,7 @@ const props = defineProps<{
   }) => Promise<void>
 }>()
 
-const refDoubleSideScale = ref<InstanceType<typeof FInputRange> | null>(null)
+const refDoubleSideScale = ref<InstanceType<typeof FInputSlider> | null>(null)
 const refFaceSide = ref<InstanceType<typeof ImageCropArea> | null>(null)
 const refBackSide = ref<InstanceType<typeof ImageCropArea> | null>(null)
 
@@ -145,14 +130,13 @@ const scaleOptions = {
   step: 0.1,
   tooltips: false,
   orientation: 'vertical',
+  defaultRange: initScaleSizeInCm,
 }
 const isExchange = ref(false)
 const cropRectSize = 176
 
 const { isDoubleSideMaterial, isFaceSideMaterial, faceSideUrl, backSideUrl } =
   useMaterialImage(material.value)
-
-const scaleDirty = computed(() => scaleSizeInCm.value !== initScaleSizeInCm)
 
 const handleUpdateScaleSize = (side: Side, newScaleSizeInCm: number) => {
   if (
@@ -183,11 +167,6 @@ const handleUpdateDoubleMaterialScaleSize = (
     }
   }
   if (fromInputChange) refDoubleSideScale.value.setValue(newScaleSizeInCm)
-}
-
-const resetDoubleMaterialScaleSize = () => {
-  handleUpdateDoubleMaterialScaleSize(initScaleSizeInCm)
-  refDoubleSideScale.value.setValue(initScaleSizeInCm)
 }
 
 const confirm = async () => {
@@ -300,21 +279,3 @@ onMounted(async () => {
   }
 })
 </script>
-
-<style lang="scss" scoped>
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type='number'] {
-  -moz-appearance: textfield;
-
-  &:focus {
-    outline: 0;
-  }
-}
-</style>

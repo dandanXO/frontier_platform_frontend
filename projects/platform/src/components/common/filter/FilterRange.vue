@@ -1,16 +1,13 @@
 <template lang="pug">
-div(class="px-5")
-  div(class="flex justify-between pb-5")
-    div(class="flex items-center gap-x-2")
-      p(class="text-body2 text-grey-900 font-bold") {{ label }}
-      f-button-label(size="sm" @click="reset") {{ $t('UU0040') }}
-    div
-      slot(name="right")
-  f-input-range(
+div(class="px-5 relative")
+  f-input-slider(
     ref="refInputRange"
     v-model:range="innerRange"
     v-bind="options"
+    :label="label"
   )
+  div(v-if="slots['right']" class="absolute top-0 right-5")
+    slot(name="right")
   div(class="grid grid-cols-2 gap-4 mt-4")
     div
       div(class="text-caption text-grey-600 pb-2") {{ $t('JJ0006') }}
@@ -72,7 +69,7 @@ export default {
     },
   },
   emits: ['update:range'],
-  setup(props, { emit }) {
+  setup(props, { emit, slots }) {
     const isFromError = ref(false)
     const isToError = ref(false)
 
@@ -155,10 +152,7 @@ export default {
       ],
       min: props.min,
       max: fakeMaxValue,
-    }
-
-    const reset = () => {
-      refInputRange.value.setValue([props.min, fakeMaxValue])
+      defaultRange: [props.min, fakeMaxValue],
     }
 
     return {
@@ -168,11 +162,11 @@ export default {
       handleMinValueChange,
       handleMaxValueChange,
       refInputRange,
-      reset,
       options,
       fakeMaxValue,
       isFromError,
       isToError,
+      slots,
     }
   },
 }

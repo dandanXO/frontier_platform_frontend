@@ -10,10 +10,12 @@ div(class="absolute top-2 left-0 w-full flex items-center justify-between px-5 g
       size="24"
       :iconName="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
     )
-  f-button(theme="dark" size="md" @click="emit('close')") {{ $t('UU0112') }}
+  f-button(:theme="THEME.DARK" size="md" @click="emit('close')") {{ $t('UU0112') }}
 </template>
 
 <script setup lang="ts">
+import { THEME } from '../constants'
+
 defineProps<{
   expanded: boolean
 }>()

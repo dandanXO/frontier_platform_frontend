@@ -76,7 +76,9 @@ div(class="h-full flex flex-col")
             :text="$t('EE0150')"
             :dimension="destinationDimension"
           )
-          label-button(
+          f-button-label(
+            :theme="THEME.DARK"
+            :size="SIZE.LG"
             :disabled="!side.perspectiveEditStatus.isPositionsDirty"
             @click="handlePositionReset"
           ) {{ $t('RR0255') }}
@@ -84,11 +86,25 @@ div(class="h-full flex flex-col")
       div(class="flex flex-row items-center gap-x-3")
         info-name(iconName="rotate" :text="$t('EE0049')")
         div(class="flex flex-row items-center gap-2")
-          label-button(@click="handleRotate(270)") {{ $t('EE0155', { degree: '90°' }) }}
-          label-button(@click="handleRotate(90)") {{ $t('EE0156', { degree: '90°' }) }}
-          label-button(@click="handleRotate(180)") 180°
-          label-button(
+          f-button-label(
+            :theme="THEME.DARK"
+            :size="SIZE.LG"
+            @click="handleRotate(270)"
+          ) {{ $t('EE0155', { degree: '90°' }) }}
+          f-button-label(
+            :theme="THEME.DARK"
+            :size="SIZE.LG"
+            @click="handleRotate(90)"
+          ) {{ $t('EE0156', { degree: '90°' }) }}
+          f-button-label(
+            :theme="THEME.DARK"
+            :size="SIZE.LG"
+            @click="handleRotate(180)"
+          ) 180°
+          f-button-label(
             :disabled="!side.perspectiveEditStatus.isRotationDirty"
+            :theme="THEME.DARK"
+            :size="SIZE.LG"
             @click="handleResetRotate"
           ) {{ $t('RR0255') }}
 </template>
@@ -103,10 +119,14 @@ import PerspectiveCanvas from '@/components/assets/modalU3mRecut/perspectiveCrop
 import CanvasControl from '@/components/assets/modalU3mRecut/perspectiveCropper/CanvasControl.vue'
 import DimensionInfo from '@/components/assets/modalU3mRecut/perspectiveCropper/DimensionInfo.vue'
 import InfoDivider from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoDivider.vue'
-import LabelButton from '@/components/assets/modalU3mRecut/perspectiveCropper/LabelButton.vue'
 import InfoName from '@/components/assets/modalU3mRecut/perspectiveCropper/InfoName.vue'
 import NotifyBar from '@/components/assets/modalU3mRecut/perspectiveCropper/NotifyBar.vue'
-import { CROPPER_GRID_COLORS, NOTIFY_TYPE } from '@/utils/constants'
+import {
+  CROPPER_GRID_COLORS,
+  NOTIFY_TYPE,
+  THEME,
+  SIZE,
+} from '@/utils/constants'
 import { toDP2 } from '@/utils/cropper'
 import { getDimension, preRender } from '@/utils/perspectiveCropper'
 import tempFilenameGenerator from '@/utils/temp-filename-generator'
@@ -239,7 +259,7 @@ const getSourceImageWithDownSampled = async (
 const handleSourceScaleChange = (v: number) => (sourceScale.value = v)
 
 const handleCropStart = () => {
-  store.dispatch('helper/pushModalLoading', { theme: 'dark' })
+  store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
 }
 
 const handleCropSuccess = (result: {
@@ -254,7 +274,7 @@ const handleCropSuccess = (result: {
   destinationCanvas.value = result.canvas
   destinationCropRecord.value = result.record
   renderPreviewDisplay()
-  store.dispatch('helper/closeModalLoading', { theme: 'dark' })
+  store.dispatch('helper/closeModalLoading', { theme: THEME.DARK })
 }
 
 const step = 0.01
@@ -389,14 +409,14 @@ watch(previewGridColor, () => {
 })
 
 onMounted(async () => {
-  store.dispatch('helper/pushModalLoading', { theme: 'dark' })
+  store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
   const result = await getSourceImageWithDownSampled(
     props.side.config.image.src,
     downSampleScales
   )
   sourceImage.value = result.sourceImage
   downSampledCanvases.value = result.downSampledCanvases
-  store.dispatch('helper/closeModalLoading', { theme: 'dark' })
+  store.dispatch('helper/closeModalLoading', { theme: THEME.DARK })
 })
 
 onUnmounted(() => {

@@ -1,6 +1,8 @@
-export const DISPLAY_MODE = {
-  MODEL: 0,
-  TEXTURE: 1,
+export * from '@frontier/constants'
+
+export enum DISPLAY_MODE {
+  MODEL = 0,
+  TEXTURE = 1,
 }
 
 export const TEXTURE_TYPE = {

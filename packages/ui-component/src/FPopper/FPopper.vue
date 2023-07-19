@@ -30,7 +30,6 @@ export default {
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core'
-import { THEME } from '../constants'
 // https://popper.js.org/docs/v2/
 
 const emit = defineEmits<{
@@ -40,7 +39,6 @@ const emit = defineEmits<{
 
 const props = withDefaults(
   defineProps<{
-    theme: `${THEME}`
     placement:
       | 'auto'
       | 'top'
@@ -60,7 +58,6 @@ const props = withDefaults(
     onFirstUpdate: () => void
   }>(),
   {
-    theme: THEME.LIGHT,
     placement: 'auto',
     offset: () => [0, 10],
     disabled: false,

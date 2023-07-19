@@ -36,7 +36,7 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
           div
             cropper-default-layout(
               :ref="(el) => handleCropLayoutRefUpdate(side.sideName, el)"
-              theme="dark"
+              :theme="THEME.DARK"
               class="w-70"
               scaleUnit="cm"
               :scaleInputStep="scaleOptions.step"
@@ -50,7 +50,7 @@ div(class="fixed inset-0 z-modal flex flex-col w-screen h-screen bg-grey-0 overf
             )
               template(#imageCropArea="{ innerScaleSize }")
                 image-crop-area(
-                  theme="dark"
+                  :theme="THEME.DARK"
                   :ref="(el) => handleCropAreaRefUpdate(side.sideName, el)"
                   :config="side.config"
                   :cropRectSize="cropRectSize"
@@ -89,6 +89,7 @@ import {
   NOTIFY_TYPE,
   U3M_CUT_SIDE,
   MODAL_TYPE,
+  THEME,
 } from '@/utils/constants'
 import { coordToDP1, Cropper, pixelToCm, toDP1 } from '@/utils/cropper'
 import type { EditStatus, U3mCropRecord, U3mImage, U3mSide } from '@/types'
@@ -209,7 +210,7 @@ const handleUpdateScaleSize = (side: U3mSide, newScaleSizeInCm: number) => {
 const handleRestore = () => {
   store.dispatch('helper/pushModalConfirm', {
     type: NOTIFY_TYPE.WARNING,
-    theme: 'dark',
+    theme: THEME.DARK,
     header: t('EE0145'),
     contentText: t('EE0146'),
     primaryBtnText: t('UU0131'),
@@ -278,7 +279,7 @@ const handleGoNext = async () => {
     throw new Error('faceSide not existed.')
   }
 
-  store.dispatch('helper/pushModalLoading', { theme: 'dark' })
+  store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
   if (currentSideCropMode.value === CROP_MODE.SQUARE) {
     if (!refFaceSideCropArea.value) {
       throw new Error('refFaceSide not existed.')
@@ -306,7 +307,7 @@ const handleConfirm = async () => {
     throw new Error('refTargetSide not existed.')
   }
 
-  store.dispatch('helper/pushModalLoading', { theme: 'dark' })
+  store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
 
   const getRecord = (side?: U3mSide): U3mCropRecord | null => {
     if (!side) {
@@ -499,7 +500,7 @@ onMounted(async () => {
     return faceSideUrl ? faceSide.value : backSide.value
   }
 
-  store.dispatch('helper/pushModalLoading', { theme: 'dark' })
+  store.dispatch('helper/pushModalLoading', { theme: THEME.DARK })
 
   if (faceSideUrl) {
     faceSide.value = await getSide(

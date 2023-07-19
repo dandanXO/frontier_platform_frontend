@@ -181,7 +181,7 @@ const emit = defineEmits(['click:menu'])
 const props = defineProps({
   theme: {
     type: String,
-    default: 'light',
+    default: THEME.LIGHT,
   },
   menu: {
     type: Object,
@@ -247,8 +247,8 @@ const bgClassList = computed(() => {
     return ['bg-grey-0']
   }
 
-  if (props.theme === 'dark') {
-    return ['bg-grey-800', 'hover:bg-grey-700']
+  if (props.theme === THEME.DARK) {
+    return ['bg-grey-850', 'hover:bg-grey-750']
   }
 
   return [

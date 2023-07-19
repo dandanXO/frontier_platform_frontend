@@ -25,9 +25,9 @@ const props = defineProps<{
 const borderStyles = computed(() => {
   switch (props.state) {
     case U3M_CUT_SIDE_EDIT_STATE.EDITED:
-      return ['border-2', 'border-primary-500']
+      return ['border-2', 'border-primary-400']
     case U3M_CUT_SIDE_EDIT_STATE.CURRENT:
-      return ['border-4', 'border-primary-500']
+      return ['border-4', 'border-primary-400']
     case U3M_CUT_SIDE_EDIT_STATE.NEXT:
     case U3M_CUT_SIDE_EDIT_STATE.DISABLED:
       return ['border-2', 'border-grey-700']

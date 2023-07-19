@@ -1,4 +1,4 @@
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, type Ref } from 'vue'
 import { path } from 'ramda'
 
 interface U3MColor {
@@ -54,42 +54,13 @@ export const loadU3m = async (u3mPath: string): Promise<U3M> => {
 }
 
 export default function useU3M(path: string) {
+  const isLoading = ref(true)
   const originU3m = ref<U3M>()
   const u3m = ref<U3M>()
 
   const alpha = computed(() => u3m.value?.alpha || 0)
   const roughness = computed(() => u3m.value?.roughness || 0)
   const specular = computed(() => u3m.value?.specular || 0)
-
-  const isAlphaChanged = computed(() => {
-    if (!u3m.value || !originU3m.value) return false
-    return u3m.value.alpha !== originU3m.value.alpha
-  })
-
-  const isRoughnessChanged = computed(() => {
-    if (!u3m.value || !originU3m.value) return false
-    return u3m.value.roughness !== originU3m.value.roughness
-  })
-
-  const isSpecularChanged = computed(() => {
-    if (!u3m.value || !originU3m.value) return false
-    return u3m.value.specular !== originU3m.value.specular
-  })
-
-  const handleAlphaReset = () => {
-    if (!u3m.value || !originU3m.value) return
-    u3m.value = { ...u3m.value, alpha: originU3m.value.alpha }
-  }
-
-  const handleRoughnessReset = () => {
-    if (!u3m.value || !originU3m.value) return
-    u3m.value = { ...u3m.value, roughness: originU3m.value.roughness }
-  }
-
-  const handleSpecularReset = () => {
-    if (!u3m.value || !originU3m.value) return
-    u3m.value = { ...u3m.value, specular: originU3m.value.specular }
-  }
 
   const handleAlphaChange = (alpha: number) => {
     if (!u3m.value) return
@@ -110,20 +81,17 @@ export default function useU3M(path: string) {
     loadU3m(path).then((result) => {
       originU3m.value = result
       u3m.value = result
+      isLoading.value = false
     })
   })
 
   return {
+    isLoading,
+    originU3m,
     u3m,
     alpha,
     roughness,
     specular,
-    isAlphaChanged,
-    isRoughnessChanged,
-    isSpecularChanged,
-    handleAlphaReset,
-    handleRoughnessReset,
-    handleSpecularReset,
     handleAlphaChange,
     handleRoughnessChange,
     handleSpecularChange,

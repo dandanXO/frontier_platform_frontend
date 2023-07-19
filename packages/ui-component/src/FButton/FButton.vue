@@ -2,6 +2,7 @@
 button(
   class="rounded font-normal flex gap-x-1 items-center justify-center whitespace-nowrap"
   :class="[btnSize, btnType]"
+  :disabled="disabled"
 )
   f-svg-icon(v-if="prependIcon !== ''" :iconName="prependIcon")
   slot
@@ -13,20 +14,22 @@ export default { name: 'FButton' }
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { THEME } from '../constants'
+import { THEME, SIZE } from '../constants'
 
 const props = withDefaults(
   defineProps<{
     theme?: `${THEME}`
-    size?: 'lg' | 'md' | 'sm' | 'special'
+    size?: `${SIZE}` | 'special'
     type?: 'primary' | 'secondary' | 'text' | 'special'
     prependIcon?: string
+    disabled: boolean
   }>(),
   {
     theme: THEME.LIGHT,
     size: 'special',
     type: 'primary',
     prependIcon: '',
+    disabled: false,
   }
 )
 
@@ -65,24 +68,24 @@ const btnType = computed(() => {
         return [
           'bg-primary-400',
           'text-grey-0',
-          'disabled:bg-grey-150',
           'hover:bg-primary-500',
+          'disabled:bg-grey-150',
         ]
       case 'secondary':
         return [
           'bg-grey-0',
           'text-primary-400',
-          'disabled:text-grey-250',
           'border',
           'border-grey-150',
           'hover:text-primary-500',
+          'disabled:text-grey-250',
         ]
       case 'text':
         return [
           'bg-grey-0',
           'text-grey-900',
-          'disabled:text-grey-250',
           'hover:text-primary-500',
+          'disabled:text-grey-250',
         ]
       default:
         return []
@@ -94,24 +97,25 @@ const btnType = computed(() => {
           'bg-primary-400',
           'text-grey-0',
           'disabled:bg-grey-700',
-          'disabled:text-grey-500',
+          'disabled:text-grey-900',
           'hover:bg-primary-500',
         ]
       case 'secondary':
         return [
           'bg-transparent',
           'text-primary-400',
-          'disabled:text-grey-250',
           'border',
-          'border-grey-300',
+          'border-grey-700',
           'hover:text-primary-500',
+          'hover:border-grey-600',
+          'disabled:text-grey-600',
         ]
       case 'text':
         return [
           'bg-transparent',
-          'text-grey-300',
-          'disabled:text-grey-250',
+          'text-grey-250',
           'hover:text-primary-500',
+          'disabled:text-grey-500',
         ]
       default:
         return []

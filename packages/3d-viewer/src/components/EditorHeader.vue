@@ -24,19 +24,23 @@ div(
             img(:src="model.coverImg" class="rounded")
         template(v-else)
           div(class="flex flex-row shirk gap-x-2 items-center")
-            dark-tag(
+            f-label(
+              :theme="THEME.DARK"
               @click="emit('textureClick', TEXTURE_TYPE.BASE)"
               :active="textureType === TEXTURE_TYPE.BASE"
             ) base
-            dark-tag(
+            f-label(
+              :theme="THEME.DARK"
               @click="emit('textureClick', TEXTURE_TYPE.NORMAL)"
               :active="textureType === TEXTURE_TYPE.NORMAL"
             ) normal
-            dark-tag(
+            f-label(
+              :theme="THEME.DARK"
               @click="emit('textureClick', TEXTURE_TYPE.ROUGHNESS)"
               :active="textureType === TEXTURE_TYPE.ROUGHNESS"
             ) roughness
-            dark-tag(
+            f-label(
+              :theme="THEME.DARK"
               @click="emit('textureClick', TEXTURE_TYPE.DISPLACEMENT)"
               :active="textureType === TEXTURE_TYPE.DISPLACEMENT"
             ) displacement
@@ -62,14 +66,18 @@ div(
           size="24"
           class="absolute right-0 top-1/2 transform -translate-y-1/2 text-grey-150"
         )
-  f-button(v-if="largerThenMd" theme="dark" size="md" @click="emit('close')") {{ $t('UU0112') }}
+  f-button(
+    v-if="largerThenMd"
+    :theme="THEME.DARK"
+    size="md"
+    @click="emit('close')"
+  ) {{ $t('UU0112') }}
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
-import DarkTag from '@frontier/ui-component/src/FTag/DarkTag.vue'
 import ModelTextureTapStatus from './ModelTextureTapStatus.vue'
-import { DISPLAY_MODE, TEXTURE_TYPE } from '../constants'
+import { DISPLAY_MODE, TEXTURE_TYPE, THEME } from '../constants'
 import MODELS from '../constants/models'
 import useBreakpoints from '../composables/useBreakpoints'
 import type { Model } from '../constants/models'

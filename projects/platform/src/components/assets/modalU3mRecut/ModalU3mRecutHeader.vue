@@ -12,22 +12,32 @@ div(class="flex items-center justify-between shrink-0 w-full h-27.5 bg-grey-900 
     )
     div(class="flex justify-center items-center")
       div(class="grid grid-cols-2 gap-x-2.5")
-        f-button(theme="dark" size="md" type="secondary" @click="emit('back')") {{ $t('UU0004') }}
         f-button(
-          theme="dark"
+          :theme="THEME.DARK"
+          size="md"
+          type="secondary"
+          @click="emit('back')"
+        ) {{ $t('UU0004') }}
+        f-button(
+          :theme="THEME.DARK"
           size="md"
           :disabled="!isValid"
           :prependIcon="readyToSubmit ? 'done' : ''"
           @click="readyToSubmit ? emit('confirm') : emit('next')"
         ) {{ readyToSubmit ? $t('UU0020') : $t('UU0021') }}
   div
-    f-button(theme="dark" type="secondary" size="md" @click="emit('close')") {{ $t('UU0112') }}
+    f-button(
+      :theme="THEME.DARK"
+      type="secondary"
+      size="md"
+      @click="emit('close')"
+    ) {{ $t('UU0112') }}
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import U3mRecutStepper from '@/components/assets/modalU3mRecut/U3mRecutStepper.vue'
-import { U3M_CUT_SIDE } from '@/utils/constants'
+import { U3M_CUT_SIDE, THEME } from '@/utils/constants'
 
 const props = defineProps<{
   isValid: boolean

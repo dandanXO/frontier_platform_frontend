@@ -1,8 +1,10 @@
 import FButton from './FButton.vue'
+import { SIZE, THEME } from '../constants'
 
 const baseArgs = {
-  size: 'lg',
+  size: SIZE.LG,
   type: 'primary',
+  theme: THEME.LIGHT,
 }
 
 export default {
@@ -11,16 +13,21 @@ export default {
   args: baseArgs,
   argTypes: {
     theme: {
-      control: { type: 'select' },
-      option: ['light', 'dark'],
+      control: { type: 'radio' },
+      options: [THEME.LIGHT, THEME.DARK],
     },
     size: {
-      control: { type: 'select' },
-      options: ['lg', 'md', 'sm'],
+      control: { type: 'radio' },
+      options: [SIZE.SM, SIZE.MD, SIZE.LG],
+      mapping: {
+        [SIZE.SM]: SIZE.SM,
+        [SIZE.MD]: SIZE.MD,
+        [SIZE.LG]: SIZE.LG,
+      },
     },
     type: {
       control: { type: 'select' },
-      options: ['primary', 'secondary'],
+      options: ['primary', 'secondary', 'text'],
     },
   },
 }

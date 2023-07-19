@@ -29,25 +29,20 @@ const emit = defineEmits<{ (e: 'close'): void }>()
 const { VITE_APP_WEB_URL } = import.meta.env
 const baseUrl = VITE_APP_WEB_URL + '/static-data/material'
 
-const loading = ref(true)
-
 const { scene, container, canvas, takeScreenShot } = useScene(baseUrl)
 const {
+  isLoading: isLoadingU3M,
+  originU3m,
   u3m,
   alpha,
   roughness,
   specular,
-  isAlphaChanged,
-  isRoughnessChanged,
-  isSpecularChanged,
-  handleAlphaReset,
-  handleRoughnessReset,
-  handleSpecularReset,
   handleAlphaChange,
   handleRoughnessChange,
   handleSpecularChange,
 } = useU3M(props.u3mPath)
 const {
+  isLoading: isLoadingModel,
   modelIndex,
   currentModel,
   scale,
@@ -58,7 +53,6 @@ const {
   loadModel,
   moireEffectPreventToggle,
   handleScaleChange,
-  handleScaleReset,
   handleColorChange,
   handleColorInput,
   handleColorAdd,
@@ -70,8 +64,7 @@ const {
   props.baseImgUrl,
   props.normalImgUrl,
   props.roughImgUrl,
-  props.dispImgUrl,
-  loading
+  props.dispImgUrl
 )
 
 const displayMode = ref(DISPLAY_MODE.MODEL)
@@ -117,35 +110,30 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
     class="relative flex flex-col flex-1 min-h-0"
   )
     div(class="relative flex flex-row flex-1 min-h-0 items-stretch")
-      editor-sidebar(
-        v-show="sidebarExpanded"
-        :pantoneList="pantoneList"
-        :currentColors="currentColors"
-        :colorRemovable="colorRemovable"
-        :colorAddable="colorAddable"
-        :alpha="alpha"
-        :roughness="roughness"
-        :specular="specular"
-        :scale="scale"
-        :isAlphaChanged="isAlphaChanged"
-        :isRoughnessChanged="isRoughnessChanged"
-        :isSpecularChanged="isSpecularChanged"
-        @toggleExpand="handleSidebarToggle"
-        @colorAdd="handleColorAdd"
-        @colorRemove="handleColorRemove"
-        @colorChange="handleColorChange"
-        @colorInput="handleColorInput"
-        @alphaChange="handleAlphaChange"
-        @roughnessChange="handleRoughnessChange"
-        @specularChange="handleSpecularChange"
-        @alphaReset="handleAlphaReset"
-        @roughnessReset="handleRoughnessReset"
-        @specularReset="handleSpecularReset"
-        @scaleReset="handleScaleReset"
-        @scaleChange="handleScaleChange"
-        @screenshot="takeScreenShot"
-        @toggleMoireEffectPrevent="moireEffectPreventToggle"
-      )
+      template(v-if="!isLoadingU3M && !isLoadingModel")
+        editor-sidebar(
+          v-show="sidebarExpanded"
+          :originU3m="originU3m"
+          :pantoneList="pantoneList"
+          :currentColors="currentColors"
+          :colorRemovable="colorRemovable"
+          :colorAddable="colorAddable"
+          :alpha="alpha"
+          :roughness="roughness"
+          :specular="specular"
+          :scale="scale"
+          @toggleExpand="handleSidebarToggle"
+          @colorAdd="handleColorAdd"
+          @colorRemove="handleColorRemove"
+          @colorChange="handleColorChange"
+          @colorInput="handleColorInput"
+          @alphaChange="handleAlphaChange"
+          @roughnessChange="handleRoughnessChange"
+          @specularChange="handleSpecularChange"
+          @scaleChange="handleScaleChange"
+          @screenshot="takeScreenShot"
+          @toggleMoireEffectPrevent="moireEffectPreventToggle"
+        )
       hidden-sidebar(
         v-show="!sidebarExpanded && largerThenMd"
         @toggle-expand="handleSidebarToggle"
@@ -173,5 +161,5 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
       @toggleExpand="handleSidebarToggle"
       @close="handleClose"
     )
-  editor-loader(v-if="loading")
+  editor-loader(v-if="isLoadingModel")
 </template>

@@ -1,7 +1,9 @@
 import FLabel from './FLabel.vue'
+import { SIZE, THEME } from '../constants'
 
 const baseArgs = {
-  size: 'lg',
+  size: SIZE.LG,
+  theme: THEME.LIGHT,
 }
 
 export default {
@@ -9,9 +11,17 @@ export default {
   component: FLabel,
   args: baseArgs,
   argTypes: {
-    size: {
+    theme: {
       control: { type: 'select' },
-      options: ['lg', 'sm'],
+      options: [THEME.LIGHT, THEME.DARK],
+    },
+    size: {
+      control: { type: 'radio' },
+      options: [SIZE.SM, SIZE.LG],
+      mapping: {
+        [SIZE.SM]: SIZE.SM,
+        [SIZE.LG]: SIZE.LG,
+      },
     },
   },
 }

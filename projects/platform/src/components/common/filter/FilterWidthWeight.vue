@@ -3,7 +3,6 @@ filter-wrapper(
   iconName="measure"
   :displayName="`${$t('RR0088')}/${$t('RR0015')}`"
   :dirty="filterDirty.widthAndWeightGsm"
-  @expand="initWidthAndWeight"
 )
   div(class="w-95 rounded shadow-16 py-4")
     filter-range(
@@ -63,12 +62,9 @@ export default {
 
     const inputRangeWidth = ref([null, null])
     const inputRangeWeight = ref([null, null])
-
-    const initWidthAndWeight = () => {
-      const { width, weightGsm } = filter.value
-      inputRangeWidth.value = [width.min, width.max]
-      inputRangeWeight.value = [weightGsm.min, weightGsm.max]
-    }
+    const { width, weightGsm } = filter.value
+    inputRangeWidth.value = [width.min, width.max]
+    inputRangeWeight.value = [weightGsm.min, weightGsm.max]
 
     const updateWidthAndWeightGsm = () => {
       const [widthMin, widthMax] = inputRangeWidth.value
@@ -93,7 +89,6 @@ export default {
       inputRangeWeight,
       filterDirty,
       filterOptions,
-      initWidthAndWeight,
       updateWidthAndWeightGsm,
     }
   },

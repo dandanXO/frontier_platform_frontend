@@ -3,7 +3,6 @@ filter-wrapper(
   iconName="price"
   :displayName="$t('RR0094')"
   :dirty="filterDirty.price"
-  @expand="init"
 )
   div(class="w-131 py-4 rounded shadow-16")
     filter-range(
@@ -46,11 +45,8 @@ export default {
     )
 
     const inputRange = ref([null, null])
-
-    const init = () => {
-      const { price } = filter.value
-      inputRange.value = [price.min, price.max]
-    }
+    const { price } = filter.value
+    inputRange.value = [price.min, price.max]
 
     const update = () => {
       const [min, max] = inputRange.value
@@ -67,7 +63,6 @@ export default {
       filterDirty,
       filterOptions,
       inputRange,
-      init,
       update,
       SEARCH_TYPE,
     }

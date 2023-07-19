@@ -1,5 +1,6 @@
 import FInputText from './FInputText.vue'
 import { ref } from 'vue'
+import { THEME } from '../../constants'
 
 const baseArgs = {
   size: 'lg',
@@ -25,6 +26,10 @@ export default {
     },
     hintError: {
       control: { type: 'text' },
+    },
+    theme: {
+      control: { type: 'radio' },
+      options: [THEME.LIGHT, THEME.DARK],
     },
   },
 }

@@ -146,11 +146,11 @@ const getIconSize = computed(() => {
 const getIconColor = computed(() => {
   switch (props.notifyType) {
     case NOTIFY_TYPE.INFO:
-      return 'text-cyan-300'
+      return 'text-cyan-400'
     case NOTIFY_TYPE.SUCCESS:
       return 'text-primary-300'
     case NOTIFY_TYPE.WARNING:
-      return 'text-yellow-400'
+      return 'text-yellow-500'
     case NOTIFY_TYPE.ALERT:
       return 'text-red-300'
   }

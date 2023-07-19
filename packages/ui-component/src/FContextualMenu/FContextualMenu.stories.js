@@ -1,5 +1,5 @@
 import FContextualMenu from './FContextualMenu.vue'
-import { CONTEXTUAL_MENU_MODE, SIZE } from '../constants'
+import { CONTEXTUAL_MENU_MODE, SIZE, THEME } from '../constants'
 import { h, ref, shallowRef } from 'vue'
 
 const { NONE_SELECT, SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } =
@@ -36,6 +36,10 @@ export default {
   argTypes: {
     inputSelectValue: {
       control: { type: null },
+    },
+    theme: {
+      control: { type: 'radio' },
+      options: [THEME.LIGHT, THEME.DARK],
     },
     selectMode: {
       control: { type: 'select' },

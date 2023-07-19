@@ -1,8 +1,10 @@
 import FButtonLabel from './FButtonLabel.vue'
+import { SIZE, THEME } from '../constants'
 
 const baseArgs = {
   size: 'lg',
   active: false,
+  theme: THEME.LIGHT,
 }
 
 export default {
@@ -10,9 +12,17 @@ export default {
   component: FButtonLabel,
   args: baseArgs,
   argTypes: {
+    theme: {
+      control: { type: 'radio' },
+      options: [THEME.LIGHT, THEME.DARK],
+    },
     size: {
-      control: { type: 'select' },
-      options: ['lg', 'sm'],
+      control: { type: 'radio' },
+      options: [SIZE.SM, SIZE.LG],
+      mapping: {
+        [SIZE.SM]: SIZE.SM,
+        [SIZE.LG]: SIZE.LG,
+      },
     },
   },
 }
