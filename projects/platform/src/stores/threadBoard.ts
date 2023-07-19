@@ -992,6 +992,14 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     getThreadBoard()
   }
 
+  const addOrgBookmark = async (orgId: number) => {
+    await threadBoardApi.addOrgBookmark({
+      ...baseReq.value,
+      bookmarkOrgId: orgId,
+    })
+    getBookmarkList()
+  }
+
   const moveBookmark = async (bookmarkId: number, newIndex: number) => {
     if (!bookmarkList.value) {
       throw new Error('bookmarkList undefined')
@@ -1153,6 +1161,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     deleteWorkflowStage,
     showWorkflowStage,
     hideWorkflowStage,
+    addOrgBookmark,
     moveBookmark,
   }
 })

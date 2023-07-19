@@ -39,21 +39,36 @@ div(
           :dragging="isDraggingBookmark"
           @select="threadBoardStore.setBookmarkFilter"
         )
+    f-popper(placement="bottom-start")
+      template(#trigger)
+        div(
+          class="relative w-11 h-8 flex items-center justify-center rounded-tl rounded-tr text-grey-0 cursor-pointer hover:bg-primary-700"
+        )
+          span(class="absolute left-0 top-1.5 w-px h-6 bg-primary-700")
+          f-svg-icon(iconName="add" size="20")
+      template(#content="{ collapsePopper }")
+        f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import Draggable from 'vuedraggable'
+import type { MenuTree } from '@frontier/ui-component/src/FContextualMenu/types'
 import useThreadBoardStore from '@/stores/threadBoard'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import BookmarkTab from '@/components/threadBoard/bookmark/BookmarkTab.vue'
 
 const { unit } = useCurrentUnit()
 const threadBoardStore = useThreadBoardStore()
+const store = useStore()
+const { t } = useI18n()
 
 const { moveBookmark } = threadBoardStore
-const { bookmarkList, bookmarkFilter } = storeToRefs(threadBoardStore)
+const { bookmarkList, bookmarkFilter, contactOrgList } =
+  storeToRefs(threadBoardStore)
 
 const bookmarkDragOptions = {
   itemKey: 'bookmarkId',
@@ -69,6 +84,26 @@ const bookmarkDragOptions = {
 }
 
 const isDraggingBookmark = ref(false)
+
+const menuTree = computed<MenuTree>(() => ({
+  rootTitle: t('TT0213'),
+  searchEnable: true,
+  blockList: [
+    {
+      blockTitle: t('TT0214'),
+      menuList:
+        contactOrgList.value?.map((org) => {
+          return {
+            title: org.orgName,
+            thumbnail: org.logo,
+            clickHandler: () => {
+              threadBoardStore.addOrgBookmark(org.orgId)
+            },
+          }
+        }) || [],
+    },
+  ],
+}))
 
 const handleBookmarkListChange = (e: any) => {
   const { element, newIndex } = e.moved
