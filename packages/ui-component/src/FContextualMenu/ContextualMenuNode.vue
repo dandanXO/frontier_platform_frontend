@@ -162,17 +162,18 @@ div(
     )
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'ContextualMenuNode',
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core'
-import { CONTEXTUAL_MENU_MODE, DISPLAY, SIZE } from '../constants'
+import { CONTEXTUAL_MENU_MODE, DISPLAY, SIZE, THEME } from '../constants'
 import isEqual from '../isEqual'
+import type { MenuItem, MenuBlock } from './types'
 
 const { NONE_SELECT, MULTIPLE } = CONTEXTUAL_MENU_MODE
 
@@ -195,8 +196,8 @@ const props = defineProps({
   },
 })
 
-const innerMenu = computed(() => {
-  const defaultMenu = {
+const innerMenu = computed<Required<MenuItem>>(() => {
+  const defaultMenu: Required<MenuItem> = {
     // required
     title: 'Menu',
     blockList: [
@@ -220,9 +221,6 @@ const innerMenu = computed(() => {
     thumbnailSize: SIZE.SM,
     flag: '', // http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg
     labelColor: '',
-    clickHandler: () => {},
-    mouseEnterHandler: undefined,
-    mouseLeaveHandler: undefined,
     tooltipTitle: '',
     tooltipMessage: '',
     tooltipContentComponent: null,
@@ -232,6 +230,9 @@ const innerMenu = computed(() => {
     width: 'w-fit',
     scrollAreaMaxHeight: '',
     hasNotify: false,
+    clickHandler: () => {},
+    mouseEnterHandler: () => {},
+    mouseLeaveHandler: () => {},
   }
 
   return Object.assign({}, defaultMenu, props.menu)
@@ -258,14 +259,14 @@ const bgClassList = computed(() => {
 })
 
 const mouseEnterHandler = () => {
-  innerMenu.value?.mouseEnterHandler && innerMenu.value.mouseEnterHandler()
+  innerMenu.value.mouseEnterHandler()
   if (hasNextLevel.value && !innerMenu.value.disabled) {
     expandMenu()
   }
 }
 
 const mouseLeaveHandler = () => {
-  innerMenu.value?.mouseLeaveHandler && innerMenu.value.mouseLeaveHandler()
+  innerMenu.value.mouseEnterHandler()
   if (hasNextLevel.value && !innerMenu.value.disabled) {
     collapseMenu()
   }
@@ -284,7 +285,7 @@ const isSelect = computed(() => {
   if (props.selectMode === NONE_SELECT) {
     return false
   } else if (props.selectMode === MULTIPLE) {
-    return props.inputSelectValue?.some((selectValue) =>
+    return props.inputSelectValue?.some((selectValue: any) =>
       isEqual(selectValue, innerMenu.value.selectValue)
     )
   } else {
@@ -380,7 +381,7 @@ onMounted(async () => {
 
 const searchInput = ref('')
 const filteredBlockList = computed(() => {
-  const blockList = []
+  const blockList: MenuBlock[] = []
   innerMenu.value.blockList.forEach((block) => {
     const filteredMenuList = block.menuList.filter((menu) =>
       menu.title.includes(searchInput.value)

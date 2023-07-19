@@ -21,58 +21,52 @@ teleport(v-if="isExpand" to="body")
       )
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'FPopper',
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { ref, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core'
 import { THEME } from '../constants'
 // https://popper.js.org/docs/v2/
 
-const emit = defineEmits(['expand', 'collapse'])
-const props = defineProps({
-  theme: {
-    type: String,
-    default: THEME.LIGHT,
-  },
-  placement: {
-    type: String,
-    default: 'auto',
-    validator: (value) => {
-      return [
-        'auto',
-        'top',
-        'top-start',
-        'top-end',
-        'bottom',
-        'bottom-start',
-        'bottom-end',
-        'right',
-        'right-start',
-        'right-end',
-        'left',
-        'left-start',
-        'left-end',
-      ].includes(value)
-    },
-  },
-  offset: {
-    type: Array,
-    default: () => [0, 10],
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  onFirstUpdate: {
-    type: Function,
-    default: () => {},
-  },
-})
+const emit = defineEmits<{
+  (e: 'expand'): void
+  (e: 'collapse'): void
+}>()
+
+const props = withDefaults(
+  defineProps<{
+    theme: `${THEME}`
+    placement:
+      | 'auto'
+      | 'top'
+      | 'top-start'
+      | 'top-end'
+      | 'bottom'
+      | 'bottom-start'
+      | 'bottom-end'
+      | 'right'
+      | 'right-start'
+      | 'right-end'
+      | 'left'
+      | 'left-start'
+      | 'left-end'
+    offset: [number, number]
+    disabled: boolean
+    onFirstUpdate: () => void
+  }>(),
+  {
+    theme: THEME.LIGHT,
+    placement: 'auto',
+    offset: () => [0, 10],
+    disabled: false,
+    onFirstUpdate: () => {},
+  }
+)
 
 const isExpand = ref(false)
 const refTrigger = ref(null)

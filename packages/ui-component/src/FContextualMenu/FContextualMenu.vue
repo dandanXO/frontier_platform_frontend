@@ -92,117 +92,150 @@ div(
   )
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'FContextualMenu',
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
-import { CONTEXTUAL_MENU_MODE } from '../constants'
+import { CONTEXTUAL_MENU_MODE, THEME } from '../constants'
 // import { RecycleScroller } from 'vue-virtual-scroller'
 // import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import isEqual from '../isEqual'
+import type { MenuItem, MenuTree } from './types'
 
 const { SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
 
 // update:inputSelectValue will execute before click:menu
-const emit = defineEmits(['update:inputSelectValue', 'click:menu'])
-const props = defineProps({
-  theme: {
-    type: String,
-    default: 'light',
-  },
-  /**
-   * v-model:inputSelectValue
-   *
-   * If `selectMode` is 3 (Multiple Select) then inputSelectValue must be an Array
-   */
-  inputSelectValue: {
-    validator: () => true,
-  },
-  /**
-   * * 0 - 不可選
-   * * 1 - 單選，可取消
-   * * 2 - 單選，不可取消
-   * * 3 - 多選
-   */
-  selectMode: {
-    type: Number,
-    default: 0,
-  },
-  /**
-   * ```
-   * {
-   *  rootTitle: String,
-   *  searchEnable: Boolean,
-   *  button: {
-   *    position: String, // top or bottom
-   *    icon: String,
-   *    text: String,
-   *    clickHandler: Function,
-   *    disabled: Boolean
-   *  },
-   *  width: String (Tailwindcss),
-   *  scrollAreaMaxHeight: String (Tailwindcss),
-   *  blockList: [
-   *    {
-   *      blockTitle: String,
-   *      menuList: [
-   *        {
-   *          title: String,
-   *          blockList: Array,
-   *          titleLineClamp: Number,
-   *          description: String,
-   *          descriptionLineClamp: Number
-   *          display: String,
-   *          disabled: Boolean,
-   *          selectable: Boolean,
-   *          selectValue: null,
-   *          icon: String,
-   *          leadingVisual
-   *          thumbnail: String (URL)
-   *          thumbnailSize: String (SIZE.MD & SIZE.SM)
-   *          flag: String (URL),
-   *          clickHandler: Function,
-   *          mouseEnterHandler: Function,
-   *          mouseLeaveHandler: Function,
-   *          tooltipTitle: String,
-   *          tooltipMessage: String,
-   *          tooltipContentComponent: Component,
-   *          tooltipPlacement: String,
-   *          searchEnable: Boolean,
-   *          button: {
-   *            position: String, // top or bottom
-   *            icon: String,
-   *            text: String,
-   *            clickHandler: Function,
-   *            disabled: Boolean
-   *          },
-   *          width: String (Tailwindcss),
-   *          scrollAreaMaxHeight: String (Tailwindcss),
-   *          hasNotify: Boolean
-   *        }
-   *      ]
-   *    }
-   *  ]
-   * }
-   * ```
-   */
-  menuTree: {
-    type: Object,
-    required: true,
-    default: () => ({}),
-  },
-  canAddNew: {
-    type: Boolean,
-    default: false,
-  },
-})
+const emit = defineEmits<{
+  (e: 'update:inputSelectValue', inputSelectValue: any): void
+  (e: 'click:menu', menu: Required<MenuItem>): void
+}>()
 
-const innerMenuTree = computed(() => {
-  const defaultMenuTree = {
+const props = withDefaults(
+  defineProps<{
+    theme: `${THEME}`
+    /**
+     * v-model:inputSelectValue
+     *
+     * If `selectMode` is 3 (Multiple Select) then inputSelectValue must be an Array
+     */
+    inputSelectValue: any
+    /**
+     * * 0 - 不可選
+     * * 1 - 單選，可取消
+     * * 2 - 單選，不可取消
+     * * 3 - 多選
+     */
+    selectMode: CONTEXTUAL_MENU_MODE
+    /**
+     * ```
+     * {
+     *  rootTitle: String,
+     *  searchEnable: Boolean,
+     *  button: {
+     *    position: String, // top or bottom
+     *    icon: String,
+     *    text: String,
+     *    clickHandler: Function,
+     *    disabled: Boolean
+     *  },
+     *  width: String (Tailwindcss),
+     *  scrollAreaMaxHeight: String (Tailwindcss),
+     *  blockList: [
+     *    {
+     *      blockTitle: String,
+     *      menuList: [
+     *        {
+     *          title: String,
+     *          blockList: Array,
+     *          titleLineClamp: Number,
+     *          description: String,
+     *          descriptionLineClamp: Number
+     *          display: String,
+     *          disabled: Boolean,
+     *          selectable: Boolean,
+     *          selectValue: null,
+     *          icon: String,
+     *          leadingVisual
+     *          thumbnail: String (URL)
+     *          thumbnailSize: String (SIZE.MD & SIZE.SM)
+     *          flag: String (URL),
+     *          clickHandler: Function,
+     *          mouseEnterHandler: Function,
+     *          mouseLeaveHandler: Function,
+     *          tooltipTitle: String,
+     *          tooltipMessage: String,
+     *          tooltipContentComponent: Component,
+     *          tooltipPlacement: String,
+     *          searchEnable: Boolean,
+     *          button: {
+     *            position: String, // top or bottom
+     *            icon: String,
+     *            text: String,
+     *            clickHandler: Function,
+     *            disabled: Boolean
+     *          },
+     *          width: String (Tailwindcss),
+     *          scrollAreaMaxHeight: String (Tailwindcss),
+     *          hasNotify: Boolean
+     *        }
+     *      ]
+     *    }
+     *  ]
+     * }
+     * ```
+     */
+    menuTree: MenuTree
+    canAddNew: boolean
+  }>(),
+  {
+    theme: THEME.LIGHT,
+    selectMode: CONTEXTUAL_MENU_MODE.NONE_SELECT,
+    menuTree: () => ({}),
+    canAddNMew: false,
+  }
+)
+
+// const props = defineProps({
+//   theme: {
+//     type: String,
+//     default: 'light',
+//   },
+//   /**
+//    * v-model:inputSelectValue
+//    *
+//    * If `selectMode` is 3 (Multiple Select) then inputSelectValue must be an Array
+//    */
+//   inputSelectValue: {
+//     validator: () => true,
+//   },
+//   /**
+//    * * 0 - 不可選
+//    * * 1 - 單選，可取消
+//    * * 2 - 單選，不可取消
+//    * * 3 - 多選
+//    */
+//   selectMode: {
+//     type: Number,
+//     default: 0,
+//   },
+
+//   menuTree: {
+//     type: Object,
+//     required: true,
+//     default: () => ({}),
+//   },
+//   canAddNew: {
+//     type: Boolean,
+//     default: false,
+//   },
+// })
+
+const innerMenuTree = computed<Required<MenuTree>>(() => {
+  const defaultMenuTree: Required<MenuTree> = {
     // required
     blockList: [],
     // optional

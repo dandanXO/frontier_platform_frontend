@@ -7,12 +7,13 @@ import debounce from 'debounce'
 import { clone } from 'ramda'
 import {
   ThreadBoardQuerySortByEnum,
+  FeatureType,
+  BookmarkType,
   type ThreadBoardQuery,
   type WorkflowStage,
   type GetThreadBoardRequest,
   type ThreadBoardQueryFilter,
   type DigitalThreadBase,
-  FeatureType,
   type MoveWorkflowStageRequest,
   type HideWorkflowStageRequest,
   type CheckCanDeleteWorkflowStageRequest,
@@ -21,6 +22,9 @@ import {
   type RenameWorkflowStageRequest,
   type MoveWorkflowStageAllDigitalThreadRequest,
   type MoveWorkflowStageDigitalThreadRequest,
+  type GetThreadBoardRequestBookmarkFilter,
+  type OrgBookmark,
+  type FolderBookmark,
 } from '@frontier/platform-web-sdk'
 import threadBoardApi from '@/apis/threadBoard'
 import stickerApi from '@/apis/sticker.js'
@@ -72,6 +76,11 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const isActive = ref(false)
   const isFirstThreadBoardFetch = ref(true)
   const activeThreadSideId = ref<number | null>(null)
+
+  const contactOrgList = ref<
+    { orgId: number; orgName: string; logo: string }[] | null
+  >(null)
+  const bookmarkList = ref<(OrgBookmark | FolderBookmark)[] | null>(null)
   const rawWorkflowStageList = ref<WorkflowStage[]>()
   const workflowStageList = ref<WorkflowStage[]>()
 
@@ -85,6 +94,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const loading = ref(true)
   const isDefaultWorkflowStageExpanded = ref(true)
   const isHiddenWorkflowListExpanded = ref(false)
+  const bookmarkFilter = ref<GetThreadBoardRequestBookmarkFilter | null>(null)
   const threadBoardQuery = reactive<ThreadBoardQuery>(defaultThreadBoardQuery())
   const searchText = ref<string>('')
   const mostParticipantId = ref<number>()
@@ -432,6 +442,10 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   }
 
   const getThreadBoard = async (showLoading = false) => {
+    if (!bookmarkFilter.value) {
+      throw new Error('bookmarkFilter undefined')
+    }
+
     if (showLoading) {
       setLoading(true)
     }
@@ -444,6 +458,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     const threadBoardReq: GetThreadBoardRequest = {
       ...baseReq.value,
       threadBoardQuery: threadBoardQuery,
+      bookmarkFilter: bookmarkFilter.value,
     }
 
     fetchThreadBoardAbortController.value = new AbortController()
@@ -533,7 +548,9 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     const targetIndex = workflowStageList.value.findIndex(
       (w) => w.workflowStageId === v.workflowStageId
     )
-    if (targetIndex < 0) throw new Error('rename target not exist')
+    if (targetIndex < 0) {
+      throw new Error('rename target not exist')
+    }
     workflowStageList.value[targetIndex].workflowStageName = v.workflowStageName
 
     const req: RenameWorkflowStageRequest = {
@@ -619,8 +636,31 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     activeThreadSideId.value = null
   }
 
-  const getQuery = async () => {
-    const res = await threadBoardApi.getThreadBoardQuery(baseReq.value)
+  const getContactOrgList = async () => {
+    const res = await threadBoardApi.getContactOrgList(baseReq.value)
+    contactOrgList.value = res.data.result!.orgList!
+  }
+
+  const getBookmarkList = async () => {
+    const res = await threadBoardApi.getThreadBoardBookmarkList(baseReq.value)
+    bookmarkList.value = res.data.result!.bookmarkList!
+  }
+
+  const setBookmarkFilter = async (
+    filter: GetThreadBoardRequestBookmarkFilter
+  ) => {
+    bookmarkFilter.value = filter
+  }
+
+  const getThreadBoardQuery = async () => {
+    if (!bookmarkFilter.value?.bookmarkId) {
+      throw new Error('bookmarkId undefined')
+    }
+
+    const res = await threadBoardApi.getThreadBoardQuery({
+      ...baseReq.value,
+      bookmarkId: bookmarkFilter.value.bookmarkId,
+    })
     Object.assign(threadBoardQuery, res.data.result!.threadBoardQuery)
     participantFilterIdList.value =
       threadBoardQuery.filter.participantUserIdList.filter(
@@ -953,7 +993,34 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
 
   const init = async () => {
     isActive.value = true
-    getQuery()
+    await Promise.all([getBookmarkList(), getContactOrgList()])
+
+    const getAllThreadBookmarkId = () => {
+      if (!bookmarkList.value) {
+        throw new Error('bookmarkList undefined')
+      }
+
+      let allThreadBookmarkId = null
+      for (const bookmark of bookmarkList.value) {
+        if (bookmark.bookmarkType === BookmarkType.FOLDER) {
+          const folderBookmark = bookmark as FolderBookmark
+          if (folderBookmark.isAllThread) {
+            allThreadBookmarkId = folderBookmark.bookmarkId
+            break
+          }
+        }
+      }
+
+      if (!allThreadBookmarkId) {
+        throw new Error('allThreadBookmarkId undefined')
+      }
+      return allThreadBookmarkId
+    }
+
+    bookmarkFilter.value = {
+      bookmarkId: getAllThreadBookmarkId(),
+      orgId: null,
+    }
   }
 
   const cleanUp = async () => {
@@ -966,12 +1033,24 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     onFetchSuccess = null
   }
 
+  watch(bookmarkFilter, async () => {
+    await getThreadBoardQuery()
+  })
+
   watch(threadBoardQuery, async () => {
     try {
+      if (!bookmarkFilter.value) {
+        throw new Error('bookmarkFilter undefined')
+      }
+
       searchText.value =
         threadBoardQuery.search == null ? '' : threadBoardQuery.search
       await getThreadBoard(true)
-      const updateQueryReq = { ...baseReq.value, threadBoardQuery }
+      const updateQueryReq = {
+        ...baseReq.value,
+        threadBoardQuery,
+        bookmarkId: bookmarkFilter.value.bookmarkId,
+      }
       threadBoardApi.saveThreadBoardQuery(updateQueryReq)
 
       onFetchSuccess?.()
@@ -1000,6 +1079,9 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     isDefaultWorkflowStageExpanded,
     isHiddenWorkflowListExpanded,
     workflowStageList,
+    bookmarkList,
+    bookmarkFilter,
+    contactOrgList,
     threadBoardQuery,
     threadQty,
     unreadThreadQty,
@@ -1025,6 +1107,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     sortCreatingWorkflowStage,
     init,
     cleanUp,
+    setBookmarkFilter,
     updateQuery,
     updateSearchText,
     clearAllQuery,
