@@ -1017,6 +1017,38 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     getBookmarkList()
   }
 
+  const removeBookmark = async (bookmarkId: number) => {
+    if (!bookmarkList.value) {
+      throw new Error('bookmarkList undefined')
+    }
+
+    if (
+      bookmarkFilter.value &&
+      bookmarkFilter.value.bookmarkId === bookmarkId
+    ) {
+      const index = bookmarkList.value.findIndex(
+        (b) => b.bookmarkId === bookmarkId
+      )
+      if (index < 0) {
+        throw new Error('bookmark not found')
+      }
+
+      const nextBookmarkIndex =
+        index === bookmarkList.value.length - 1 ? index - 1 : index + 1
+      bookmarkFilter.value.bookmarkId =
+        bookmarkList.value[nextBookmarkIndex].bookmarkId
+    }
+
+    bookmarkList.value = bookmarkList.value.filter(
+      (b) => b.bookmarkId !== bookmarkId
+    )
+    await threadBoardApi.removeBookmark({
+      ...baseReq.value,
+      bookmarkId,
+    })
+    getBookmarkList()
+  }
+
   const init = async () => {
     isActive.value = true
     await Promise.all([getBookmarkList(), getContactOrgList()])
@@ -1163,6 +1195,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     hideWorkflowStage,
     addOrgBookmark,
     moveBookmark,
+    removeBookmark,
   }
 })
 

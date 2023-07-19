@@ -31,7 +31,10 @@ div(
       )
         f-svg-icon(iconName="keyboard_arrow_down" size="16")
     template(#content="{ collapsePopper }")
-      f-contextual-menu(@click:menu="collapsePopper")
+      f-contextual-menu(
+        :menuTree="actionMenuTree"
+        @click:menu="collapsePopper"
+      )
   teleport(v-if="isOrgMenuExpand" to="body")
     div(ref="refPopper" class="z-popper pt-2 bg-transparent")
       f-contextual-menu(
@@ -47,14 +50,19 @@ div(
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { createPopper } from '@popperjs/core'
 import {
   BookmarkType,
   type FolderBookmark,
   type GetThreadBoardRequestBookmarkFilter,
   type OrgBookmark,
 } from '@frontier/platform-web-sdk'
-import type { MenuTree } from '@frontier/ui-component/src/FContextualMenu/types'
-import { createPopper } from '@popperjs/core'
+import type {
+  MenuBlock,
+  MenuItem,
+  MenuTree,
+} from '@frontier/ui-component/src/FContextualMenu/types'
+import useThreadBoardStore from '@/stores/threadBoard'
 
 const props = defineProps<{
   active: boolean
@@ -66,6 +74,7 @@ const emit = defineEmits<{
   (e: 'select', bookmarkFilter: GetThreadBoardRequestBookmarkFilter): void
 }>()
 
+const threadBoardStore = useThreadBoardStore()
 const { t } = useI18n()
 
 const isOrgMenuExpand = ref(false)
@@ -195,6 +204,42 @@ const childMenuTree = computed<MenuTree | null>(() => {
       },
     ],
   }
+})
+
+const actionMenuTree = computed<MenuTree>(() => {
+  const blockList: MenuBlock[] = []
+
+  const removeClickHandler = () =>
+    threadBoardStore.removeBookmark(props.bookmark.bookmarkId)
+
+  switch (props.bookmark.bookmarkType) {
+    case BookmarkType.FOLDER: {
+      const folderBookmark = props.bookmark as FolderBookmark
+      if (!folderBookmark.isAllThread) {
+        const menuList: MenuItem[] = []
+        menuList.push({
+          title: t('TT0223'),
+          clickHandler: removeClickHandler,
+        })
+        blockList.push({ menuList })
+      }
+      break
+    }
+    case BookmarkType.ORG: {
+      const menuList: MenuItem[] = []
+      menuList.push({
+        title: t('TT0216'),
+        clickHandler: removeClickHandler,
+      })
+      blockList.push({ menuList })
+      break
+    }
+    default: {
+      throw new Error('Invalid bookmark type')
+    }
+  }
+
+  return { width: 'w-60', blockList }
 })
 
 const handleBookmarkTabClick = () => {
