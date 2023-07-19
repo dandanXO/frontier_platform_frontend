@@ -25,6 +25,7 @@ import {
   type GetThreadBoardRequestBookmarkFilter,
   type OrgBookmark,
   type FolderBookmark,
+  type MoveBookmarkRequest,
 } from '@frontier/platform-web-sdk'
 import threadBoardApi from '@/apis/threadBoard'
 import stickerApi from '@/apis/sticker.js'
@@ -991,6 +992,23 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     getThreadBoard()
   }
 
+  const moveBookmark = async (bookmarkId: number, newIndex: number) => {
+    if (!bookmarkList.value) {
+      throw new Error('bookmarkList undefined')
+    }
+
+    const req: MoveBookmarkRequest = {
+      ...baseReq.value,
+      bookmarkId,
+      targetBookmarkId:
+        bookmarkList.value[newIndex === 0 ? newIndex + 1 : newIndex - 1]
+          .bookmarkId,
+      isMoveToBeforeTarget: newIndex === 0,
+    }
+    await threadBoardApi.moveBookmark(req)
+    getBookmarkList()
+  }
+
   const init = async () => {
     isActive.value = true
     await Promise.all([getBookmarkList(), getContactOrgList()])
@@ -1135,6 +1153,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     deleteWorkflowStage,
     showWorkflowStage,
     hideWorkflowStage,
+    moveBookmark,
   }
 })
 

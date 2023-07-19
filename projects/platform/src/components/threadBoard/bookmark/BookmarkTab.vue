@@ -58,6 +58,7 @@ import { createPopper } from '@popperjs/core'
 
 const props = defineProps<{
   active: boolean
+  dragging: boolean
   bookmark: OrgBookmark | FolderBookmark
 }>()
 
@@ -73,6 +74,19 @@ const refTrigger = ref<HTMLElement | null>(null)
 const refPopper = ref<HTMLElement | null>(null)
 const refContextualMenu = ref<HTMLElement | null>(null)
 const isHover = ref(false)
+
+watch(
+  () => props.dragging,
+  () => {
+    if (props.dragging) {
+      collapseOrgMenuPopper()
+    } else {
+      if (isHover.value && isOrgMenuExpand) {
+        expandOrgMenuPopper()
+      }
+    }
+  }
+)
 
 const expandOrgMenuPopper = async () => {
   if (!refTrigger.value) {
@@ -111,12 +125,14 @@ const containerClasses = computed(() => {
   const classes = []
 
   if (props.active) {
-    classes.push('bg-grey-0 text-grey-900 hover:bg-grey-150')
+    classes.push('active bg-grey-0 text-grey-900 hover:!bg-grey-150')
     if (isActionMenuExpand.value) {
       classes.push('bg-grey-150')
     }
   } else {
-    classes.push('text-grey-150 hover:text-grey-0 hover:bg-primary-700 ')
+    classes.push(
+      'inactive text-grey-150 hover:text-grey-0 hover:bg-primary-700 '
+    )
     if (isActionMenuExpand.value) {
       classes.push('bg-primary-700')
     }
@@ -187,6 +203,9 @@ const handleBookmarkTabClick = () => {
 
 const handleMouseEnter = () => {
   isHover.value = true
+  if (props.dragging) {
+    return
+  }
 
   if (props.bookmark.bookmarkType === BookmarkType.FOLDER) {
     expandOrgMenuPopper()
