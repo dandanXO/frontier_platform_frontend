@@ -264,7 +264,7 @@ const isCanCancel = (material) => {
 const setTimer = () => {
   timerId = setTimeout(async () => {
     await getList(pagination.value.currentPage, false)
-  }, 5000)
+  }, 30000)
 }
 
 onBeforeRouteLeave(() => clearTimeout(timerId))

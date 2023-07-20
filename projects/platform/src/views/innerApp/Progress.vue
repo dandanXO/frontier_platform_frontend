@@ -17,6 +17,7 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
       div(class="flex items-center gap-x-2 pt-4 pb-3")
         f-label(
           v-for="status in statusList"
+          :key="status.id"
           size="lg"
           @click="selectedStatus = status.id"
           :active="selectedStatus === status.id"
