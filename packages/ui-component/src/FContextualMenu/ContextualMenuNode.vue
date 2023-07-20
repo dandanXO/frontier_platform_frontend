@@ -15,6 +15,7 @@ div(
     :disabledTooltip="disabledTooltip"
     :tooltipTitle="tooltipTitle"
     :tooltipMessage="tooltipMessage"
+    :key="hoverOn"
   )
     template(#slot:tooltip-trigger)
       //- Checkbox
@@ -177,66 +178,55 @@ import type { MenuItem, MenuBlock } from './types'
 
 const { NONE_SELECT, MULTIPLE } = CONTEXTUAL_MENU_MODE
 
-const emit = defineEmits(['click:menu'])
-const props = defineProps({
-  theme: {
-    type: String,
-    default: THEME.LIGHT,
-  },
-  menu: {
-    type: Object,
-    default: () => {},
-  },
-  inputSelectValue: {
-    validator: () => true,
-  },
-  selectMode: {
-    type: Number,
-    required: true,
-  },
-})
+const emit = defineEmits<{
+  (e: 'click:menu', menu: Required<MenuItem>): void
+}>()
 
-const innerMenu = computed<Required<MenuItem>>(() => {
-  const defaultMenu: Required<MenuItem> = {
-    // required
-    title: 'Menu',
-    blockList: [
-      // {
-      //   blockTitle: 'Block Titles',
-      //   menuList: [
-      //     /** Menu **/
-      //   ],
-      // },
-    ],
-    // optional
-    titleLineClamp: 1,
-    description: '',
-    descriptionLineClamp: 1,
-    display: DISPLAY.FLEX,
-    disabled: false,
-    selectable: true,
-    selectValue: props.menu.title,
-    icon: '',
-    thumbnail: '', // https://picsum.photos/50
-    thumbnailSize: SIZE.SM,
-    flag: '', // http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg
-    labelColor: '',
-    tooltipTitle: '',
-    tooltipMessage: '',
-    tooltipContentComponent: null,
-    tooltipPlacement: 'right',
-    searchEnable: false,
-    button: null,
-    width: 'w-fit',
-    scrollAreaMaxHeight: '',
-    hasNotify: false,
-    clickHandler: () => {},
-    mouseEnterHandler: () => {},
-    mouseLeaveHandler: () => {},
+const props = withDefaults(
+  defineProps<{
+    theme?: `${THEME}`
+    menu: MenuItem
+    inputSelectValue: any
+    selectMode: CONTEXTUAL_MENU_MODE
+  }>(),
+  {
+    theme: THEME.LIGHT,
   }
+)
 
-  return Object.assign({}, defaultMenu, props.menu)
-})
+const innerMenu = computed<Required<MenuItem>>(() =>
+  Object.assign(
+    {},
+    {
+      // optional
+      titleLineClamp: 1,
+      description: '',
+      descriptionLineClamp: 1,
+      display: DISPLAY.FLEX,
+      disabled: false,
+      selectable: true,
+      selectValue: props.menu.title,
+      icon: '',
+      thumbnail: '', // https://picsum.photos/50
+      thumbnailSize: SIZE.SM,
+      flag: '', // http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg
+      labelColor: '',
+      tooltipTitle: '',
+      tooltipMessage: '',
+      tooltipContentComponent: null,
+      tooltipPlacement: 'right',
+      searchEnable: false,
+      button: null,
+      width: 'w-fit',
+      scrollAreaMaxHeight: '',
+      hasNotify: false,
+      clickHandler: () => {},
+      mouseEnterHandler: () => {},
+      mouseLeaveHandler: () => {},
+    },
+    props.menu
+  )
+)
 
 const hasNextLevel = computed(
   () => innerMenu.value.blockList && innerMenu.value.blockList.length > 0
@@ -294,9 +284,9 @@ const isSelect = computed(() => {
 })
 
 const isExpand = ref(false)
-const refTrigger = ref(null)
-const refContextMenu = ref(null)
-const hoverOn = ref(null)
+const refTrigger = ref<HTMLElement>()
+const refContextMenu = ref<HTMLElement>()
+const hoverOn = ref<string | null>(null)
 
 const expandMenu = async () => {
   if (isExpand.value) {
@@ -349,10 +339,10 @@ const collapseMenu = () => {
   isExpand.value = false
 }
 
-const refTitle = ref(null)
+const refTitle = ref<HTMLElement>()
 const isTitleEllipsis = ref(false)
 
-const refDescription = ref(null)
+const refDescription = ref<HTMLElement>()
 const isDescriptionEllipsis = ref(false)
 onMounted(async () => {
   /**
@@ -369,13 +359,13 @@ onMounted(async () => {
    */
 
   isTitleEllipsis.value =
-    Math.ceil(refTitle.value.getBoundingClientRect().height) <
-    refTitle.value.scrollHeight
+    Math.ceil(refTitle.value!.getBoundingClientRect().height) <
+    refTitle.value!.scrollHeight
 
   if (innerMenu.value.description !== '') {
     isDescriptionEllipsis.value =
-      Math.ceil(refDescription.value.getBoundingClientRect().height) <
-      refDescription.value.scrollHeight
+      Math.ceil(refDescription.value!.getBoundingClientRect().height) <
+      refDescription.value!.scrollHeight
   }
 })
 

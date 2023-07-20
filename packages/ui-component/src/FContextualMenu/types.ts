@@ -9,8 +9,8 @@ export interface MenuButton {
 }
 
 export interface MenuItem {
-  title?: string
-  blockList?: MenuBlock[]
+  title: string
+  blockList: MenuBlock[]
   titleLineClamp?: number
   description?: string
   descriptionLineClamp?: number
@@ -48,5 +48,5 @@ export interface MenuTree {
   button?: MenuButton | null
   width?: string // String (Tailwindcss),
   scrollAreaMaxHeight?: string // String (Tailwindcss),
-  blockList?: MenuBlock[]
+  blockList: MenuBlock[]
 }

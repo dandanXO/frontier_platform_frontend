@@ -111,7 +111,7 @@ import { CONTEXTUAL_MENU_MODE, THEME } from '../constants'
 // import { RecycleScroller } from 'vue-virtual-scroller'
 // import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import isEqual from '../isEqual'
-import type { MenuItem, MenuTree } from './types'
+import type { MenuBlock, MenuItem, MenuTree } from './types'
 
 const { SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
 
@@ -123,7 +123,7 @@ const emit = defineEmits<{
 
 const props = withDefaults(
   defineProps<{
-    theme: `${THEME}`
+    theme?: `${THEME}`
     /**
      * v-model:inputSelectValue
      *
@@ -196,12 +196,11 @@ const props = withDefaults(
      * ```
      */
     menuTree: MenuTree
-    canAddNew: boolean
+    canAddNew?: boolean
   }>(),
   {
     theme: THEME.LIGHT,
     selectMode: CONTEXTUAL_MENU_MODE.NONE_SELECT,
-    menuTree: () => ({}),
     canAddNMew: false,
   }
 )
@@ -241,21 +240,21 @@ const props = withDefaults(
 //   },
 // })
 
-const innerMenuTree = computed<Required<MenuTree>>(() => {
-  const defaultMenuTree: Required<MenuTree> = {
-    // required
-    blockList: [],
-    // optional
-    rootTitle: '',
-    searchEnable: false,
-    button: null,
-    width: 'w-60',
-    scrollAreaMaxHeight: 'max-h-100',
-  }
-  return Object.assign({}, defaultMenuTree, props.menuTree)
-})
+const innerMenuTree = computed<Required<MenuTree>>(() =>
+  Object.assign(
+    {},
+    {
+      rootTitle: '',
+      searchEnable: false,
+      button: null,
+      width: 'w-60',
+      scrollAreaMaxHeight: 'max-h-100',
+    },
+    props.menuTree
+  )
+)
 
-const clickMenuHandler = (menu) => {
+const clickMenuHandler = (menu: MenuItem) => {
   if (props.selectMode === MULTIPLE) {
     const tempArr = [...props.inputSelectValue]
     const index = tempArr.findIndex((selectValue) =>
@@ -282,7 +281,7 @@ const clickMenuHandler = (menu) => {
 
 const searchInput = ref('')
 const filteredBlockList = computed(() => {
-  const blockList = []
+  const blockList: MenuBlock[] = []
   innerMenuTree.value.blockList.forEach((block) => {
     const filteredMenuList = block.menuList.filter((menu) =>
       menu.title.toLowerCase().includes(searchInput.value.toLowerCase())
@@ -298,7 +297,7 @@ const filteredBlockList = computed(() => {
 })
 
 // invoke externally e.g. FSelectInput.vue
-const setSearchInput = (v) => (searchInput.value = v)
+const setSearchInput = (v: string) => (searchInput.value = v)
 const menuIsExist = computed(() =>
   innerMenuTree.value.blockList.some((block) =>
     block.menuList.some((menu) => menu.title === searchInput.value)
@@ -310,23 +309,4 @@ defineExpose({
   menuIsExist,
   clickMenuHandler,
 })
-
-// const depthOfMenuTree = computed(() => {
-//   const getDepth = (tree, level) => {
-//     return Math.max(
-//       ...tree.blockList.map((block) => {
-//         return Math.max(
-//           ...block.menuList.map((menu) => {
-//             if (menu.blockList && menu.blockList.length > 0) {
-//               return getDepth(menu, level + 1)
-//             } else {
-//               return level
-//             }
-//           })
-//         )
-//       })
-//     )
-//   }
-//   return getDepth(props.menuTree, 1)
-// })
 </script>
