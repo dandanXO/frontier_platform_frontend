@@ -49,6 +49,7 @@ div(
 
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
+import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { createPopper } from '@popperjs/core'
 import {
@@ -75,6 +76,7 @@ const emit = defineEmits<{
 }>()
 
 const threadBoardStore = useThreadBoardStore()
+const store = useStore()
 const { t } = useI18n()
 
 const isOrgMenuExpand = ref(false)
@@ -216,22 +218,41 @@ const actionMenuTree = computed<MenuTree>(() => {
     case BookmarkType.FOLDER: {
       const folderBookmark = props.bookmark as FolderBookmark
       if (!folderBookmark.isAllThread) {
-        const menuList: MenuItem[] = []
-        menuList.push({
-          title: t('TT0223'),
-          clickHandler: removeClickHandler,
-        })
+        const menuList: MenuItem[] = [
+          {
+            title: t('TT0222'),
+            clickHandler: () => {
+              store.dispatch('helper/openModalBehavior', {
+                component: 'modal-create-or-edit-bookmark-folder',
+                properties: {
+                  bookmark: {
+                    bookmarkId: folderBookmark.bookmarkId,
+                    folderName: folderBookmark.folderName,
+                    orgIdList: folderBookmark.orgList.map((org) => org.orgId),
+                  },
+                },
+              })
+            },
+          },
+          {
+            title: t('TT0223'),
+            clickHandler: removeClickHandler,
+          },
+        ]
+
         blockList.push({ menuList })
       }
       break
     }
     case BookmarkType.ORG: {
-      const menuList: MenuItem[] = []
-      menuList.push({
-        title: t('TT0216'),
-        clickHandler: removeClickHandler,
+      blockList.push({
+        menuList: [
+          {
+            title: t('TT0216'),
+            clickHandler: removeClickHandler,
+          },
+        ],
       })
-      blockList.push({ menuList })
       break
     }
     default: {

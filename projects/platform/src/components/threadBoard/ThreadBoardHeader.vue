@@ -47,11 +47,14 @@ div(
           span(class="absolute left-0 top-1.5 w-px h-6 bg-primary-700")
           f-svg-icon(iconName="add" size="20")
       template(#content="{ collapsePopper }")
-        f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
+        f-contextual-menu(
+          :menuTree="menuTree(collapsePopper)"
+          @click:menu="collapsePopper"
+        )
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
@@ -85,7 +88,7 @@ const bookmarkDragOptions = {
 
 const isDraggingBookmark = ref(false)
 
-const menuTree = computed<MenuTree>(() => ({
+const menuTree = (collapsePopper: () => void): MenuTree => ({
   rootTitle: t('TT0213'),
   searchEnable: true,
   blockList: [
@@ -103,7 +106,18 @@ const menuTree = computed<MenuTree>(() => ({
         }) || [],
     },
   ],
-}))
+  button: {
+    position: 'bottom',
+    icon: 'create',
+    text: t('TT0215'),
+    clickHandler: () => {
+      collapsePopper()
+      store.dispatch('helper/openModalBehavior', {
+        component: 'modal-create-or-edit-bookmark-folder',
+      })
+    },
+  },
+})
 
 const handleBookmarkListChange = (e: any) => {
   const { element, newIndex } = e.moved

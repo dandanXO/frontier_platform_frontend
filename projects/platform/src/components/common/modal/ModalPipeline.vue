@@ -260,6 +260,11 @@ export default {
     ModalWorkflowStageDeleteErrorList: defineAsyncComponent(() =>
       import('@/components/threadBoard/ModalWorkflowStageDeleteErrorList.vue')
     ),
+    ModalCreateOrEditBookmarkFolder: defineAsyncComponent(() =>
+      import(
+        '@/components/threadBoard/bookmark/ModalCreateOrEditBookmarkFolder.vue'
+      )
+    ),
   },
   setup() {
     const store = useStore()
