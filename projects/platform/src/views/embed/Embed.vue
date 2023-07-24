@@ -48,65 +48,7 @@ div(class="max-w-315 h-full mx-auto pt-10")
               template(#number) {{ pagination.totalCount }}
             span )
     template(#sub-header)
-      div(
-        v-if="collection.description || collection.trendBoardCoverImg"
-        class="px-7.5 pb-8 pt-1.5"
-      )
-        f-expansion-panel(
-          class="shadow-2 rounded border border-grey-150 overflow-hidden"
-        )
-          template(#trigger="{ isExpand }")
-            div(
-              class="group w-full h-14 flex items-center gap-x-6 px-7 cursor-pointer"
-              :class="[isExpand ? 'bg-grey-50 hover:bg-grey-150 active:bg-grey-50' : 'bg-grey-0 hover:bg-grey-100 active:bg-grey-150']"
-            )
-              h5(class="text-body1 text-grey-900 font-bold cursor-pointer") {{ $t('RR0246') }}
-              span(
-                v-if="collection.description && !isExpand"
-                class="max-w-100 line-clamp-1 text-grey-300 text-body2"
-              ) {{ collection.description }}
-              span(
-                class="text-body2 flex-grow"
-                :class="[isExpand ? 'text-grey-400 invisible group-hover:visible' : 'text-primary-400']"
-              ) {{ isExpand ? 'Show less' : 'Show more' }}
-              div(
-                v-if="isExpand"
-                class="w-7 h-7 rounded-full flex items-center justify-center bg-grey-150 group-hover:bg-grey-200"
-              )
-                f-svg-icon(iconName="close" size="24" class="transform text-grey-600")
-          template(#content)
-            div(class="w-full h-81 bg-grey-50 py-6 px-7 flex justify-between")
-              div(class="w-155.5 h-full")
-                f-scrollbar-container(
-                  v-if="collection.description"
-                  :sizeAutoCapable="false"
-                  class="h-full -ml-6.5 px-6.5 break-all text-body2 text-grey-900 leading-1.6"
-                )
-                  pre(
-                    class="whitespace-pre-wrap"
-                    :style="{ 'word-break': 'break-word', 'font-family': 'unset' }"
-                  ) {{ collection.description }}
-                p(v-else class="text-body2 text-grey-900 leading-1.6") {{ $t('FF0008') }}
-              div(
-                class="relative w-97.5 h-69 rounded bg-grey-250 flex items-center justify-center flex-shrink-0"
-              )
-                div(
-                  v-if="collection.trendBoardCoverImg"
-                  class="rounded w-full h-full px-7.5 py-6 bg-grey-100"
-                )
-                  div(
-                    class="w-full h-full bg-cover bg-center rounded"
-                    :style="{ backgroundImage: `url(${collection.trendBoardCoverImg})` }"
-                  )
-                  a(
-                    :href="collection.trendBoardUrl"
-                    target="_blank"
-                    class="absolute right-3.5 bottom-3.5 w-7 h-7 rounded-sm bg-grey-0 flex items-center justify-center"
-                  )
-                    f-svg-icon(iconName="open_in_new" class="text-grey-600" size="24")
-                div(v-else)
-                  f-svg-icon(iconName="file" size="110" class="text-grey-0 mx-auto")
-                  p(class="text-body1 font-bold text-grey-50 pt-3") {{ $t('RR0247') }}
+      collection-overview(:collection="collection")
     template(#default="{ goTo }")
       div(
         v-if="nodeList.length > 0"
@@ -130,6 +72,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import CollectionOverview from '@/components/receivedShare/CollectionOverview.vue'
 
 const { t } = useI18n()
 const store = useStore()
