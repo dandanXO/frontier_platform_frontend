@@ -417,8 +417,11 @@ export default {
       commit('SET_digitalThread', digitalThread)
       commit('SET_indexOfDrawerDigitalThread', 0)
     },
-    async getStickerTagList({ commit }, params) {
-      const { data } = await stickerApi.getStickerTagList(params)
+    async getStickerTagList({ commit, rootGetters }, params) {
+      const { data } = await stickerApi.getStickerTagList({
+        ...params,
+        orgId: rootGetters['organization/orgId'],
+      })
       commit('SET_sourceTagList', data.result.tagList)
     },
     async getMentionMemberList({ commit, rootGetters }, { ogId, ogType }) {
