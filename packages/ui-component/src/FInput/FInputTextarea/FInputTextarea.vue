@@ -13,6 +13,7 @@ f-input-container(
     @input="onInput"
     @focus="onFocus"
     @blur="onBlur"
+    @keydown.enter.prevent="newLineHandler"
   )
     span(
       v-if="!innerTextValue && !isFocus"
@@ -128,6 +129,10 @@ const onFocus = () => {
 const onBlur = () => {
   isFocus.value = false
   emit('blur')
+}
+
+const newLineHandler = () => {
+  document.execCommand('insertLineBreak')
 }
 
 onMounted(() => {
