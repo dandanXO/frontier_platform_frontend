@@ -127,6 +127,9 @@ const bookmarkDragOptions = {
 
 const {
   setCurrentBookmarkId,
+  setHoveringBookmarkId,
+  copyToFolderBookmark,
+  copyToBookmarkBar,
   removeBookmark,
   removeFolderBookmarkOrgItem,
   closeBookmarkManager,
@@ -137,6 +140,7 @@ const {
   isDirty,
   isAllThreadBookmarkActive,
   currentBookmark,
+  folderBookmarkList,
   bookmarkBarBookmarkList,
   currentBookmarkOrgList,
   currentBookmarkId,
@@ -167,6 +171,45 @@ const isBookmarkDraggable = (
 
 const getOrgProps = (org: FolderBookmarkAllOfOrgList) => {
   const menuList: MenuItem[] = []
+  menuList.push({
+    title: t('RR0056'),
+    blockList: [
+      {
+        menuList: [
+          {
+            title: t('TT0232'),
+            clickHandler: () => {
+              copyToBookmarkBar(org)
+              setHoveringBookmarkId(null)
+            },
+            mouseEnterHandler: () => {
+              setHoveringBookmarkId('bookmarkBar')
+            },
+            mouseLeaveHandler: () => {
+              setHoveringBookmarkId(null)
+            },
+          },
+          ...folderBookmarkList.value
+            .filter((b) => !b.isAllThread)
+            .filter((b) => b.bookmarkId !== currentBookmarkId.value)
+            .map((folderBookmark) => ({
+              title: folderBookmark.folderName,
+              icon: 'org_folder',
+              clickHandler: () => {
+                copyToFolderBookmark(org, folderBookmark.bookmarkId)
+                setHoveringBookmarkId(null)
+              },
+              mouseEnterHandler: () => {
+                setHoveringBookmarkId(folderBookmark.bookmarkId)
+              },
+              mouseLeaveHandler: () => {
+                setHoveringBookmarkId(null)
+              },
+            })),
+        ],
+      },
+    ],
+  })
 
   if (!isAllThreadBookmarkActive.value) {
     menuList.push({
@@ -231,6 +274,32 @@ const getBookmarkProps = (
       }
     },
     [BookmarkType.ORG]: (orgBookmark) => {
+      menuList.push({
+        title: t('RR0056'),
+        blockList: [
+          {
+            menuList: folderBookmarkList.value
+              .filter((b) => !b.isAllThread)
+              .map((folderBookmark) => ({
+                title: folderBookmark.folderName,
+                icon: 'org_folder',
+                clickHandler: () => {
+                  copyToFolderBookmark(
+                    orgBookmark.org,
+                    folderBookmark.bookmarkId
+                  )
+                  setHoveringBookmarkId(null)
+                },
+                mouseEnterHandler: () => {
+                  setHoveringBookmarkId(folderBookmark.bookmarkId)
+                },
+                mouseLeaveHandler: () => {
+                  setHoveringBookmarkId(null)
+                },
+              })),
+          },
+        ],
+      })
       menuList.push({
         title: t('RR0280'),
         clickHandler: () => {

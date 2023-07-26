@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { defineStore, storeToRefs } from 'pinia'
@@ -9,6 +9,7 @@ import {
   BookmarkType,
   type FolderBookmark,
   type OrgBookmark,
+  type OrgBookmarkAllOfOrg,
   type SaveThreadBoardBookmarkListRequest,
 } from '@frontier/platform-web-sdk'
 import { NOTIFY_TYPE } from '@frontier/constants'
@@ -26,6 +27,7 @@ import type {
   MenuItem,
   MenuTree,
 } from '@frontier/ui-component/src/FContextualMenu/types'
+import { useNotifyStore } from '@/stores/notify'
 
 const useBookmarkManagerStore = defineStore(
   'threadBoard/bookmarkManager',
@@ -33,6 +35,7 @@ const useBookmarkManagerStore = defineStore(
     const { t } = useI18n()
     const { unit } = useCurrentUnit()
     const store = useStore()
+    const notify = useNotifyStore()
     const threadBoardStore = useThreadBoardStore()
 
     const { bookmarkList, contactOrgList } = storeToRefs(threadBoardStore)
@@ -130,6 +133,16 @@ const useBookmarkManagerStore = defineStore(
       })
 
       return info
+    })
+
+    const folderBookmarkList = computed(() => {
+      if (!bookmarkManagerBookmarkList.value) {
+        return []
+      }
+
+      return bookmarkManagerBookmarkList.value.filter(
+        (b) => b.bookmarkType === BookmarkType.FOLDER
+      ) as FolderBookmark[]
     })
 
     const bookmarkBarBookmarkList = computed({
@@ -305,6 +318,80 @@ const useBookmarkManagerStore = defineStore(
       hoveringBookmarkId.value = bookmarkId
     }
 
+    const copyToBookmarkBar = (org: OrgBookmarkAllOfOrg) => {
+      if (!bookmarkManagerBookmarkList.value) {
+        throw new Error('bookmarkManagerBookmarkList undefined')
+      }
+
+      const isOrgDuplicated = () => {
+        if (!bookmarkManagerBookmarkList.value) {
+          throw new Error('bookmarkManagerBookmarkList undefined')
+        }
+
+        return bookmarkManagerBookmarkList.value.some((bookmark) => {
+          return processBookmarkByType(bookmark, {
+            [BookmarkType.FOLDER]: () => false,
+            [BookmarkType.ORG]: (orgBookmark) =>
+              orgBookmark.org.orgId === org.orgId,
+          })
+        })
+      }
+
+      if (isOrgDuplicated()) {
+        notify.showNotifySnackbar({
+          isShowSnackbar: true,
+          notifyType: NOTIFY_TYPE.WARNING,
+          messageText: t('TT0240'),
+        })
+        return
+      }
+
+      const newOrgBookmark: BookmarkManagerOrgBookmark = {
+        bookmarkId: uuidv4(),
+        bookmarkType: BookmarkType.ORG,
+        org,
+      }
+
+      bookmarkManagerBookmarkList.value.push(newOrgBookmark)
+    }
+
+    const copyToFolderBookmark = (
+      org: OrgBookmarkAllOfOrg,
+      folderBookmarkId: BookmarkManagerBookmarkId
+    ) => {
+      if (!bookmarkManagerBookmarkList.value) {
+        throw new Error('bookmarkManagerBookmarkList undefined')
+      }
+
+      const targetBookmark = bookmarkManagerBookmarkList.value.find(
+        (bookmark) => bookmark.bookmarkId === folderBookmarkId
+      )
+      if (!targetBookmark) {
+        throw new Error('targetBookmark undefined')
+      }
+      if (targetBookmark.bookmarkType !== BookmarkType.FOLDER) {
+        throw new Error('targetBookmark is not a folder')
+      }
+
+      const targetFolderBookmark = targetBookmark as FolderBookmark
+      const isOrgDuplicated = () => {
+        if (!bookmarkManagerBookmarkList.value) {
+          throw new Error('bookmarkManagerBookmarkList undefined')
+        }
+        return targetFolderBookmark.orgList.some((o) => o.orgId === org.orgId)
+      }
+      if (isOrgDuplicated()) {
+        notify.showNotifySnackbar({
+          isShowSnackbar: true,
+          notifyType: NOTIFY_TYPE.WARNING,
+          messageText: t('TT0240'),
+        })
+        return
+      }
+
+      targetFolderBookmark.orgList.push(org)
+    }
+
     const removeBookmark = (targetBookmarkId: BookmarkManagerBookmarkId) => {
       if (!bookmarkManagerBookmarkList.value) {
         throw new Error('bookmarkManagerBookmarkList undefined')
@@ -420,6 +507,7 @@ const useBookmarkManagerStore = defineStore(
     return {
       isDirty,
       bookmarkManagerBookmarkList,
+      folderBookmarkList,
       bookmarkBarBookmarkList,
       currentBookmarkOrgList,
       contactOrgList,
@@ -434,6 +522,8 @@ const useBookmarkManagerStore = defineStore(
       addBookmarkMenuTree,
       setCurrentBookmarkId,
       setHoveringBookmarkId,
+      copyToBookmarkBar,
+      copyToFolderBookmark,
       removeBookmark,
       removeFolderBookmarkOrgItem,
       openBookmarkManager,
