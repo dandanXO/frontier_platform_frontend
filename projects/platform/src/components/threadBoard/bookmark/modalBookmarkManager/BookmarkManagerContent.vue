@@ -37,6 +37,12 @@ div(class="flex-1 h-full flex flex-col")
       f-popper(v-if="!isAllThreadBookmarkActive" placement="bottom")
         template(#trigger)
           f-button(type="primary" size="sm" prependIcon="add") {{ $t('TT0234') }}
+        template(#content)
+          f-contextual-menu(
+            v-model:inputSelectValue="addMenuSelectedOrgId"
+            :menuTree="addBookmarkMenuTree"
+            :selectMode="CONTEXTUAL_MENU_MODE.MULTIPLE"
+          )
   div(class="w-full flex-1 min-h-0 px-5 pb-2")
     f-scrollbar-container(class="w-full h-full border border-grey-150 rounded-md p-2")
       div(class="flex flex-col gap-y-1.5")
@@ -89,7 +95,11 @@ import {
   BookmarkType,
   type FolderBookmarkAllOfOrgList,
 } from '@frontier/platform-web-sdk'
-import type { MenuTree } from '@frontier/ui-component/src/FContextualMenu/types'
+import type {
+  MenuItem,
+  MenuTree,
+} from '@frontier/ui-component/src/FContextualMenu/types'
+import { CONTEXTUAL_MENU_MODE } from '@frontier/constants'
 import useBookmarkManagerStore from '@/stores/bookmarkManager'
 import BookmarkManagerContentItem from '@/components/threadBoard/bookmark/modalBookmarkManager/BookmarkManagerContentItem.vue'
 import { processBookmarkByType } from '@/utils/bookmark'
@@ -122,6 +132,8 @@ const {
   currentBookmark,
   bookmarkBarBookmarkList,
   currentBookmarkOrgList,
+  addMenuSelectedOrgId,
+  addBookmarkMenuTree,
   isBookmarkBarActive,
   searchText,
   bookmarkManagerTitleInfo,

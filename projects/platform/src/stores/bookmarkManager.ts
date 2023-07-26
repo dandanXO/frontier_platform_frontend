@@ -2,6 +2,7 @@ import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { defineStore, storeToRefs } from 'pinia'
+import { v4 as uuidv4 } from 'uuid'
 import { clone } from 'ramda'
 import useThreadBoardStore from './threadBoard'
 import {
@@ -20,6 +21,11 @@ import type {
   BookmarkManagerOrgBookmark,
 } from '@/types'
 import { isCaseInsensitiveMatch } from '@/utils/string'
+import type {
+  MenuBlock,
+  MenuItem,
+  MenuTree,
+} from '@frontier/ui-component/src/FContextualMenu/types'
 
 const useBookmarkManagerStore = defineStore(
   'threadBoard/bookmarkManager',
@@ -183,6 +189,110 @@ const useBookmarkManagerStore = defineStore(
       },
     })
 
+    const addMenuSelectedOrgId = computed({
+      get: () => {
+        if (isBookmarkBarActive.value) {
+          const orgBookmarkList = bookmarkBarBookmarkList.value.filter(
+            (bookmark) => bookmark.bookmarkType === BookmarkType.ORG
+          ) as OrgBookmark[]
+          const orgIdList = orgBookmarkList.map(
+            (orgBookmark) => orgBookmark.org.orgId
+          )
+          return orgIdList
+        }
+
+        return currentBookmarkOrgList.value.map((org) => org.orgId)
+      },
+      set: (selectedOrgIdList: number[]) => {
+        const getOrgById = (orgId: number) => {
+          if (!contactOrgList.value) {
+            throw new Error('contactOrgList undefined')
+          }
+          const org = contactOrgList.value.find((org) => org.orgId === orgId)
+          if (!org) {
+            throw new Error('org undefined')
+          }
+          return org
+        }
+
+        if (currentBookmark.value) {
+          currentBookmark.value.orgList = selectedOrgIdList.map(getOrgById)
+          return
+        }
+
+        const processNewSelectedOrgId = () => {
+          selectedOrgIdList.forEach((orgId) => {
+            if (!bookmarkManagerBookmarkList.value) {
+              throw new Error('bookmarkManagerBookmarkList undefined')
+            }
+
+            if (addMenuSelectedOrgId.value.includes(orgId)) {
+              return
+            }
+
+            const newOrg = getOrgById(orgId)
+            if (!newOrg) {
+              throw new Error('newOrg undefined')
+            }
+            const newOrgBookmark: BookmarkManagerOrgBookmark = {
+              bookmarkId: uuidv4(),
+              bookmarkType: BookmarkType.ORG,
+              org: getOrgById(orgId),
+            }
+            bookmarkManagerBookmarkList.value.push(newOrgBookmark)
+          })
+        }
+        const processRemovedOrgId = () => {
+          addMenuSelectedOrgId.value.forEach((orgId) => {
+            if (!bookmarkManagerBookmarkList.value) {
+              throw new Error('bookmarkManagerBookmarkList undefined')
+            }
+
+            if (selectedOrgIdList.includes(orgId)) {
+              return
+            }
+            bookmarkManagerBookmarkList.value =
+              bookmarkManagerBookmarkList.value.filter((bookmark) => {
+                if (bookmark.bookmarkType === BookmarkType.FOLDER) {
+                  return true
+                }
+
+                if (bookmark.bookmarkType !== BookmarkType.ORG) {
+                  const orgBookmark = bookmark as OrgBookmark
+                  return orgBookmark.org.orgId !== orgId
+                }
+              })
+          })
+        }
+        processRemovedOrgId()
+        processNewSelectedOrgId()
+      },
+    })
+
+    const addBookmarkMenuTree = computed<MenuTree>(() => {
+      const getMenuList = (): MenuItem[] => {
+        if (!contactOrgList.value) {
+          return []
+        }
+
+        return contactOrgList.value.map((org) => ({
+          title: org.orgName,
+          thumbnail: org.logo,
+          selectValue: org.orgId,
+        }))
+      }
+
+      const menuBlock: MenuBlock = {
+        blockTitle: t('TT0221'),
+        menuList: getMenuList(),
+      }
+
+      return {
+        searchEnable: true,
+        blockList: [menuBlock],
+      }
+    })
+
     const setCurrentBookmarkId = (
       bookmarkId: BookmarkManagerBookmarkId | null
     ) => {
@@ -278,6 +388,8 @@ const useBookmarkManagerStore = defineStore(
       bookmarkManagerTitleInfo,
       currentBookmarkId,
       hoveringBookmarkId,
+      addMenuSelectedOrgId,
+      addBookmarkMenuTree,
       setCurrentBookmarkId,
       setHoveringBookmarkId,
       openBookmarkManager,
