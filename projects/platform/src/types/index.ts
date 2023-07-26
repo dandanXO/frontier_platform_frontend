@@ -1,5 +1,9 @@
 import type { CROP_MODE, U3M_CUT_SIDE } from '@/utils/constants'
-import type { WorkflowStage } from '@frontier/platform-web-sdk'
+import type {
+  OrgBookmark,
+  FolderBookmark,
+  WorkflowStage,
+} from '@frontier/platform-web-sdk'
 import type Decimal from 'decimal.js'
 
 export interface Material {
@@ -152,4 +156,16 @@ export type WorkflowStageId = number | 'creatingWorkflowStage'
 export interface CreatingGhostWorkflowStage
   extends Omit<WorkflowStage, 'workflowStageId'> {
   workflowStageId: 'creatingWorkflowStage'
+}
+
+export type BookmarkManagerBookmarkId = number | string
+
+export interface BookmarkManagerOrgBookmark
+  extends Omit<OrgBookmark, 'bookmarkId'> {
+  bookmarkId: BookmarkManagerBookmarkId
+}
+
+export interface BookmarkManagerFolderBookmark
+  extends Omit<FolderBookmark, 'bookmarkId'> {
+  bookmarkId: BookmarkManagerBookmarkId
 }

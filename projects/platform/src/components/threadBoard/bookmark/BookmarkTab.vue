@@ -64,6 +64,7 @@ import type {
   MenuTree,
 } from '@frontier/ui-component/src/FContextualMenu/types'
 import useThreadBoardStore from '@/stores/threadBoard'
+import useBookmarkManagerStore from '@/stores/bookmarkManager'
 
 const props = defineProps<{
   active: boolean
@@ -76,6 +77,7 @@ const emit = defineEmits<{
 }>()
 
 const threadBoardStore = useThreadBoardStore()
+const bookmarkManagerStore = useBookmarkManagerStore()
 const store = useStore()
 const { t } = useI18n()
 
@@ -259,6 +261,17 @@ const actionMenuTree = computed<MenuTree>(() => {
       throw new Error('Invalid bookmark type')
     }
   }
+
+  blockList.push({
+    menuList: [
+      {
+        title: t('TT0217'),
+        clickHandler: () => {
+          bookmarkManagerStore.openBookmarkManager()
+        },
+      },
+    ],
+  })
 
   return { width: 'w-60', blockList }
 })

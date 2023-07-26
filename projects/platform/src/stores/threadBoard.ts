@@ -1198,6 +1198,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     clearDateCreatedFilter,
     markAsAllRead,
     getThreadBoard,
+    getBookmarkList,
     expandDefaultWorkflowStage,
     collapseDefaultWorkflowStage,
     expandHiddenWorkflowStageList,

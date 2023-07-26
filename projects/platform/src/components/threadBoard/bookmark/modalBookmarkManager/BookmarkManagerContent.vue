@@ -1,0 +1,150 @@
+<template lang="pug">
+div(class="flex-1 h-full flex flex-col")
+  div(class="w-full h-16 border-b border-grey-150 px-5 flex justify-between items-center")
+    div(class="flex items-center gap-x-2")
+      div(
+        v-if="bookmarkManagerTitleInfo.icon"
+        class="w-8 h-8 flex items-center justify-center border rounded-full border-grey-150"
+      )
+        f-svg-icon(
+          :iconName="bookmarkManagerTitleInfo.icon"
+          class="text-grey-600 cursor-pointer"
+        )
+      p(class="text-body1 font-bold text-grey-800") {{ bookmarkManagerTitleInfo.title }}
+    div(class="flex items-center gap-x-4")
+      f-popper(
+        v-if="bookmarkManagerTitleInfo.showMoreIcon"
+        placement="bottom-end"
+      )
+        template(#trigger)
+          f-svg-icon(iconName="more_horiz" class="text-grey-600 cursor-pointer")
+        template(#content="{ collapsePopper }")
+          f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
+      f-svg-icon(
+        iconName="clear"
+        class="text-grey-600 cursor-pointer"
+        @click="closeBookmarkManager"
+      )
+  div(class="w-full h-8 mt-3 mb-2 px-5 flex items-center justify-between")
+    f-input-text(
+      size="md"
+      :placeholder="$t('RR0053')"
+      prependIcon="search"
+      v-model:textValue="searchText"
+    )
+    div(class="flex items-center gap-x-2")
+      f-button(v-if="isBookmarkBarActive" type="secondary" size="sm") {{ $t('TT0233') }}
+      f-popper(v-if="!isAllThreadBookmarkActive" placement="bottom")
+        template(#trigger)
+          f-button(type="primary" size="sm" prependIcon="add") {{ $t('TT0234') }}
+  div(class="w-full flex-1 min-h-0 px-5 pb-2")
+    f-scrollbar-container(class="w-full h-full border border-grey-150 rounded-md p-2")
+      div(class="flex flex-col gap-y-1.5")
+        template(v-if="isBookmarkBarActive")
+          template(v-if="bookmarkBarBookmarkList.length === 0")
+            div(class="flex items-center justify-center h-12")
+              span(class="text-body2 text-grey-400") {{ $t('TT0239') }}
+          template(
+            v-for="bookmark in bookmarkBarBookmarkList"
+            :key="bookmark.bookmarkId"
+          )
+            bookmark-manager-content-item(
+              v-bind="getBookmarkProps(bookmark)"
+              @click:text="bookmark.bookmarkType === BookmarkType.FOLDER && setCurrentBookmarkId(bookmark.bookmarkId)"
+            )
+        template(v-else)
+          template(v-if="currentBookmarkOrgList.length === 0")
+            div(class="flex items-center justify-center h-12")
+              span(class="text-body2 text-grey-400") {{ $t('TT0239') }}
+          template(v-for="(org, index) in currentBookmarkOrgList" :key="index")
+            bookmark-manager-content-item(v-bind="getOrgProps(org)")
+  div(class="w-full h-16 border-t border-grey-150 pr-5 flex items-center justify-end")
+    f-button(
+      type="primary"
+      size="md"
+      :prependIcon="isDirty ? 'done' : undefined"
+      :disabled="!isDirty"
+      @click="saveBookmarkManager"
+    ) {{ $t('UU0018') }}
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import type { MenuTree } from '@frontier/ui-component/src/FContextualMenu/types'
+import {
+  BookmarkType,
+  type FolderBookmarkAllOfOrgList,
+} from '@frontier/platform-web-sdk'
+import useBookmarkManagerStore from '@/stores/bookmarkManager'
+import BookmarkManagerContentItem from '@/components/threadBoard/bookmark/modalBookmarkManager/BookmarkManagerContentItem.vue'
+import { processBookmarkByType } from '@/utils/bookmark'
+import type {
+  BookmarkManagerFolderBookmark,
+  BookmarkManagerOrgBookmark,
+} from '@/types'
+
+const bookmarkManagerStore = useBookmarkManagerStore()
+
+const { setCurrentBookmarkId, saveBookmarkManager, closeBookmarkManager } =
+  bookmarkManagerStore
+
+const {
+  isDirty,
+  isAllThreadBookmarkActive,
+  bookmarkBarBookmarkList,
+  currentBookmarkOrgList,
+  isBookmarkBarActive,
+  searchText,
+  bookmarkManagerTitleInfo,
+} = storeToRefs(bookmarkManagerStore)
+
+const getOrgProps = (org: FolderBookmarkAllOfOrgList) => {
+  const menuTree: MenuTree = { blockList: [] }
+  return {
+    bookmarkType: BookmarkType.ORG,
+    text: org.orgName,
+    svgIcon: null,
+    orgLogo: org.logo,
+    menuTree,
+  }
+}
+
+const getBookmarkProps = (
+  bookmark: BookmarkManagerOrgBookmark | BookmarkManagerFolderBookmark
+) => {
+  const basicInfo = processBookmarkByType<{
+    text: string
+    svgIcon: string | null
+    orgLogo: string | null
+  }>(bookmark, {
+    allThreads: (allThreadBookmark) => ({
+      text: allThreadBookmark.folderName,
+      orgLogo: null,
+      svgIcon: 'all',
+    }),
+    [BookmarkType.FOLDER]: (folderBookmark) => ({
+      text: folderBookmark.folderName,
+      svgIcon: 'org_folder',
+      orgLogo: null,
+    }),
+    [BookmarkType.ORG]: (orgBookmark) => ({
+      text: orgBookmark.org.orgName,
+      svgIcon: null,
+      orgLogo: orgBookmark.org.logo,
+    }),
+  })
+
+  return {
+    ...basicInfo,
+    bookmarkType: bookmark.bookmarkType,
+    menuTree: { blockList: [] },
+  }
+}
+
+const menuTree = computed<MenuTree>(() => {
+  return { blockList: [] }
+})
+</script>
+
+<style scoped></style>

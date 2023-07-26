@@ -256,7 +256,7 @@ const mouseEnterHandler = () => {
 }
 
 const mouseLeaveHandler = () => {
-  innerMenu.value.mouseEnterHandler()
+  innerMenu.value.mouseLeaveHandler()
   if (hasNextLevel.value && !innerMenu.value.disabled) {
     collapseMenu()
   }

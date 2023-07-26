@@ -10,7 +10,7 @@ export interface MenuButton {
 
 export interface MenuItem {
   title: string
-  blockList: MenuBlock[]
+  blockList?: MenuBlock[]
   titleLineClamp?: number
   description?: string
   descriptionLineClamp?: number

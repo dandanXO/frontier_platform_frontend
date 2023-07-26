@@ -18,7 +18,7 @@ div(
       template(#slot:tooltip-trigger)
         div(
           class="w-6 h-6 rounded hover:bg-primary-700 flex justify-center items-center cursor-pointer"
-          @click="$store.dispatch('helper/pushModal', { component: 'modal-thread-board-feature-reminder' })"
+          @click="store.dispatch('helper/pushModal', { component: 'modal-thread-board-feature-reminder' })"
         )
           f-svg-icon(iconName="question" size="16" class="text-grey-50")
   div(class="flex flex-row items-center pl-7.5")

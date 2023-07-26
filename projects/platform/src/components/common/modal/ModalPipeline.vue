@@ -265,6 +265,11 @@ export default {
         '@/components/threadBoard/bookmark/ModalCreateOrEditBookmarkFolder.vue'
       )
     ),
+    ModalBookmarkManager: defineAsyncComponent(() =>
+      import(
+        '@/components/threadBoard/bookmark/modalBookmarkManager/ModalBookmarkManager.vue'
+      )
+    ),
   },
   setup() {
     const store = useStore()
