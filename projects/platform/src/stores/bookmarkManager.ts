@@ -1,4 +1,4 @@
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { defineStore, storeToRefs } from 'pinia'
@@ -318,7 +318,44 @@ const useBookmarkManagerStore = defineStore(
       hoveringBookmarkId.value = bookmarkId
     }
 
-    const copyToBookmarkBar = (org: OrgBookmarkAllOfOrg) => {
+    const moveFolderOrgItemToBookmarkBar = (
+      sourceFolderBookmarkId: BookmarkManagerBookmarkId,
+      org: OrgBookmarkAllOfOrg
+    ) => {
+      const copySuccess = copyOrgToBookmarkBar(org)
+      if (copySuccess) {
+        removeFolderBookmarkOrgItem(sourceFolderBookmarkId, org.orgId)
+      }
+    }
+
+    const moveFolderOrgItemToFolderBookmark = (
+      sourceFolderBookmarkId: BookmarkManagerBookmarkId,
+      org: OrgBookmarkAllOfOrg,
+      destinationFolderBookmarkId: BookmarkManagerBookmarkId
+    ) => {
+      const copySuccess = copyOrgToFolderBookmark(
+        org,
+        destinationFolderBookmarkId
+      )
+      if (copySuccess) {
+        removeFolderBookmarkOrgItem(sourceFolderBookmarkId, org.orgId)
+      }
+    }
+
+    const moveOrgBookmarkToFolderBookmark = (
+      orgBookmark: BookmarkManagerOrgBookmark,
+      destinationFolderBookmarkId: BookmarkManagerBookmarkId
+    ) => {
+      const copySuccess = copyOrgToFolderBookmark(
+        orgBookmark.org,
+        destinationFolderBookmarkId
+      )
+      if (copySuccess) {
+        removeBookmark(orgBookmark.bookmarkId)
+      }
+    }
+
+    const copyOrgToBookmarkBar = (org: OrgBookmarkAllOfOrg): boolean => {
       if (!bookmarkManagerBookmarkList.value) {
         throw new Error('bookmarkManagerBookmarkList undefined')
       }
@@ -343,7 +380,7 @@ const useBookmarkManagerStore = defineStore(
           notifyType: NOTIFY_TYPE.WARNING,
           messageText: t('TT0240'),
         })
-        return
+        return false
       }
 
       const newOrgBookmark: BookmarkManagerOrgBookmark = {
@@ -353,12 +390,13 @@ const useBookmarkManagerStore = defineStore(
       }
 
       bookmarkManagerBookmarkList.value.push(newOrgBookmark)
+      return true
     }
 
-    const copyToFolderBookmark = (
+    const copyOrgToFolderBookmark = (
       org: OrgBookmarkAllOfOrg,
       folderBookmarkId: BookmarkManagerBookmarkId
-    ) => {
+    ): boolean => {
       if (!bookmarkManagerBookmarkList.value) {
         throw new Error('bookmarkManagerBookmarkList undefined')
       }
@@ -386,10 +424,11 @@ const useBookmarkManagerStore = defineStore(
           notifyType: NOTIFY_TYPE.WARNING,
           messageText: t('TT0240'),
         })
-        return
+        return false
       }
 
       targetFolderBookmark.orgList.push(org)
+      return true
     }
 
     const removeBookmark = (targetBookmarkId: BookmarkManagerBookmarkId) => {
@@ -522,8 +561,11 @@ const useBookmarkManagerStore = defineStore(
       addBookmarkMenuTree,
       setCurrentBookmarkId,
       setHoveringBookmarkId,
-      copyToBookmarkBar,
-      copyToFolderBookmark,
+      moveFolderOrgItemToBookmarkBar,
+      moveFolderOrgItemToFolderBookmark,
+      moveOrgBookmarkToFolderBookmark,
+      copyOrgToBookmarkBar,
+      copyOrgToFolderBookmark,
       removeBookmark,
       removeFolderBookmarkOrgItem,
       openBookmarkManager,

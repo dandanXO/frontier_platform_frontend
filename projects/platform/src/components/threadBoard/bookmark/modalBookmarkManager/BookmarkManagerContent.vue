@@ -128,8 +128,11 @@ const bookmarkDragOptions = {
 const {
   setCurrentBookmarkId,
   setHoveringBookmarkId,
-  copyToFolderBookmark,
-  copyToBookmarkBar,
+  copyOrgToFolderBookmark,
+  copyOrgToBookmarkBar,
+  moveFolderOrgItemToBookmarkBar,
+  moveFolderOrgItemToFolderBookmark,
+  moveOrgBookmarkToFolderBookmark,
   removeBookmark,
   removeFolderBookmarkOrgItem,
   closeBookmarkManager,
@@ -179,7 +182,7 @@ const getOrgProps = (org: FolderBookmarkAllOfOrgList) => {
           {
             title: t('TT0232'),
             clickHandler: () => {
-              copyToBookmarkBar(org)
+              copyOrgToBookmarkBar(org)
               setHoveringBookmarkId(null)
             },
             mouseEnterHandler: () => {
@@ -196,7 +199,7 @@ const getOrgProps = (org: FolderBookmarkAllOfOrgList) => {
               title: folderBookmark.folderName,
               icon: 'org_folder',
               clickHandler: () => {
-                copyToFolderBookmark(org, folderBookmark.bookmarkId)
+                copyOrgToFolderBookmark(org, folderBookmark.bookmarkId)
                 setHoveringBookmarkId(null)
               },
               mouseEnterHandler: () => {
@@ -212,6 +215,59 @@ const getOrgProps = (org: FolderBookmarkAllOfOrgList) => {
   })
 
   if (!isAllThreadBookmarkActive.value) {
+    menuList.push({
+      title: t('RR0279'),
+      blockList: [
+        {
+          menuList: [
+            {
+              title: t('TT0232'),
+              clickHandler: () => {
+                setHoveringBookmarkId(null)
+
+                if (!currentBookmarkId.value) {
+                  throw new Error('currentBookmarkId is not defined')
+                }
+
+                moveFolderOrgItemToBookmarkBar(currentBookmarkId.value, org)
+              },
+              mouseEnterHandler: () => {
+                setHoveringBookmarkId('bookmarkBar')
+              },
+              mouseLeaveHandler: () => {
+                setHoveringBookmarkId(null)
+              },
+            },
+            ...folderBookmarkList.value
+              .filter((b) => !b.isAllThread)
+              .filter((b) => b.bookmarkId !== currentBookmarkId.value)
+              .map((folderBookmark) => ({
+                title: folderBookmark.folderName,
+                icon: 'org_folder',
+                clickHandler: () => {
+                  setHoveringBookmarkId(null)
+
+                  if (!currentBookmarkId.value) {
+                    throw new Error('currentBookmarkId is not defined')
+                  }
+
+                  moveFolderOrgItemToFolderBookmark(
+                    currentBookmarkId.value,
+                    org,
+                    folderBookmark.bookmarkId
+                  )
+                },
+                mouseEnterHandler: () => {
+                  setHoveringBookmarkId(folderBookmark.bookmarkId)
+                },
+                mouseLeaveHandler: () => {
+                  setHoveringBookmarkId(null)
+                },
+              })),
+          ],
+        },
+      ],
+    })
     menuList.push({
       title: t('RR0280'),
       clickHandler: () => {
@@ -284,8 +340,34 @@ const getBookmarkProps = (
                 title: folderBookmark.folderName,
                 icon: 'org_folder',
                 clickHandler: () => {
-                  copyToFolderBookmark(
+                  copyOrgToFolderBookmark(
                     orgBookmark.org,
+                    folderBookmark.bookmarkId
+                  )
+                  setHoveringBookmarkId(null)
+                },
+                mouseEnterHandler: () => {
+                  setHoveringBookmarkId(folderBookmark.bookmarkId)
+                },
+                mouseLeaveHandler: () => {
+                  setHoveringBookmarkId(null)
+                },
+              })),
+          },
+        ],
+      })
+      menuList.push({
+        title: t('RR0279'),
+        blockList: [
+          {
+            menuList: folderBookmarkList.value
+              .filter((b) => !b.isAllThread)
+              .map((folderBookmark) => ({
+                title: folderBookmark.folderName,
+                icon: 'org_folder',
+                clickHandler: () => {
+                  moveOrgBookmarkToFolderBookmark(
+                    orgBookmark,
                     folderBookmark.bookmarkId
                   )
                   setHoveringBookmarkId(null)
