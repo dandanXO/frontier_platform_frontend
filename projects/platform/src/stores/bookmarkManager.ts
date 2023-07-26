@@ -305,19 +305,19 @@ const useBookmarkManagerStore = defineStore(
       hoveringBookmarkId.value = bookmarkId
     }
 
-    const removeBookmark = (bookmarkId: BookmarkManagerBookmarkId) => {
+    const removeBookmark = (targetBookmarkId: BookmarkManagerBookmarkId) => {
       if (!bookmarkManagerBookmarkList.value) {
         throw new Error('bookmarkManagerBookmarkList undefined')
       }
 
-      bookmarkManagerBookmarkList.value =
-        bookmarkManagerBookmarkList.value.filter(
-          (bookmark) => bookmark.bookmarkId !== bookmarkId
-        )
-
-      if (!currentBookmark.value) {
+      if (currentBookmarkId.value === targetBookmarkId) {
         currentBookmarkId.value = null
       }
+
+      bookmarkManagerBookmarkList.value =
+        bookmarkManagerBookmarkList.value.filter(
+          (bookmark) => bookmark.bookmarkId !== targetBookmarkId
+        )
     }
 
     const removeFolderBookmarkOrgItem = (

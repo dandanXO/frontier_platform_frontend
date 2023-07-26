@@ -249,7 +249,10 @@ const getBookmarkProps = (
 }
 
 const menuTree = computed<MenuTree>(() => {
-  return { blockList: [] }
+  if (!currentBookmark.value) {
+    return { blockList: [] }
+  }
+  return getBookmarkProps(currentBookmark.value).menuTree
 })
 </script>
 
