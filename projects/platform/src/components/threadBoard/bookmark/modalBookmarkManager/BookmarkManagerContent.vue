@@ -90,6 +90,7 @@ div(class="flex-1 h-full flex flex-col")
 <script setup lang="ts">
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 import Draggable from 'vuedraggable'
 import {
   BookmarkType,
@@ -109,6 +110,7 @@ import type {
 } from '@/types'
 
 const bookmarkManagerStore = useBookmarkManagerStore()
+const { t } = useI18n()
 
 const bookmarkDragOptions = {
   itemKey: 'bookmarkId',
@@ -123,8 +125,13 @@ const bookmarkDragOptions = {
   ghostClass: 'vue-draggable-bookmark-ghost',
 }
 
-const { setCurrentBookmarkId, closeBookmarkManager, saveBookmarkManager } =
-  bookmarkManagerStore
+const {
+  setCurrentBookmarkId,
+  removeBookmark,
+  removeFolderBookmarkOrgItem,
+  closeBookmarkManager,
+  saveBookmarkManager,
+} = bookmarkManagerStore
 
 const {
   isDirty,
@@ -132,6 +139,7 @@ const {
   currentBookmark,
   bookmarkBarBookmarkList,
   currentBookmarkOrgList,
+  currentBookmarkId,
   addMenuSelectedOrgId,
   addBookmarkMenuTree,
   isBookmarkBarActive,
@@ -158,7 +166,22 @@ const isBookmarkDraggable = (
 }
 
 const getOrgProps = (org: FolderBookmarkAllOfOrgList) => {
-  const menuTree: MenuTree = { blockList: [] }
+  const menuList: MenuItem[] = []
+
+  if (!isAllThreadBookmarkActive.value) {
+    menuList.push({
+      title: t('RR0280'),
+      clickHandler: () => {
+        if (!currentBookmarkId.value) {
+          throw new Error('currentBookmarkId is not defined')
+        }
+        removeFolderBookmarkOrgItem(currentBookmarkId.value, org.orgId)
+      },
+    })
+  }
+
+  const menuTree: MenuTree = { blockList: [{ menuList }] }
+
   return {
     bookmarkType: BookmarkType.ORG,
     draggable: isOrgItemDraggable.value,
@@ -194,11 +217,34 @@ const getBookmarkProps = (
     }),
   })
 
+  const menuList: MenuItem[] = []
+
+  processBookmarkByType(bookmark, {
+    [BookmarkType.FOLDER]: (folderBookmark) => {
+      if (!folderBookmark.isAllThread) {
+        menuList.push({
+          title: t('RR0280'),
+          clickHandler: () => {
+            removeBookmark(folderBookmark.bookmarkId)
+          },
+        })
+      }
+    },
+    [BookmarkType.ORG]: (orgBookmark) => {
+      menuList.push({
+        title: t('RR0280'),
+        clickHandler: () => {
+          removeBookmark(orgBookmark.bookmarkId)
+        },
+      })
+    },
+  })
+
   return {
     ...basicInfo,
     bookmarkType: bookmark.bookmarkType,
     draggable: isBookmarkDraggable(bookmark),
-    menuTree: { blockList: [] },
+    menuTree: { blockList: [{ menuList }] },
   }
 }
 

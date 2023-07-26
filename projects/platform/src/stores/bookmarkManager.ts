@@ -305,6 +305,48 @@ const useBookmarkManagerStore = defineStore(
       hoveringBookmarkId.value = bookmarkId
     }
 
+    const removeBookmark = (bookmarkId: BookmarkManagerBookmarkId) => {
+      if (!bookmarkManagerBookmarkList.value) {
+        throw new Error('bookmarkManagerBookmarkList undefined')
+      }
+
+      bookmarkManagerBookmarkList.value =
+        bookmarkManagerBookmarkList.value.filter(
+          (bookmark) => bookmark.bookmarkId !== bookmarkId
+        )
+
+      if (!currentBookmark.value) {
+        currentBookmarkId.value = null
+      }
+    }
+
+    const removeFolderBookmarkOrgItem = (
+      folderBookmarkId: BookmarkManagerBookmarkId,
+      orgId: number
+    ) => {
+      if (!bookmarkManagerBookmarkList.value) {
+        throw new Error('bookmarkManagerBookmarkList undefined')
+      }
+
+      bookmarkManagerBookmarkList.value = bookmarkManagerBookmarkList.value.map(
+        (bookmark) => {
+          if (bookmark.bookmarkId === folderBookmarkId) {
+            if (bookmark.bookmarkType !== BookmarkType.FOLDER) {
+              throw new Error('bookmark is not a folder')
+            }
+
+            const targetFolderBookmark = bookmark as FolderBookmark
+            targetFolderBookmark.orgList = targetFolderBookmark.orgList.filter(
+              (org) => org.orgId !== orgId
+            )
+
+            return targetFolderBookmark
+          }
+          return bookmark
+        }
+      )
+    }
+
     const saveBookmarkManager = async () => {
       if (!bookmarkManagerBookmarkList.value) {
         throw new Error('bookmarkManagerBookmarkList undefined')
@@ -392,6 +434,8 @@ const useBookmarkManagerStore = defineStore(
       addBookmarkMenuTree,
       setCurrentBookmarkId,
       setHoveringBookmarkId,
+      removeBookmark,
+      removeFolderBookmarkOrgItem,
       openBookmarkManager,
       closeBookmarkManager,
       saveBookmarkManager,
