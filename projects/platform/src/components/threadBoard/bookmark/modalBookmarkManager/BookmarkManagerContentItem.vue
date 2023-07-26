@@ -3,7 +3,12 @@ div(
   class="group w-full pr-4 py-2 rounded flex items-center cursor-pointer hover:bg-grey-100"
 )
   div(class="w-5 h-5 invisible group-hover:visible")
-    f-svg-icon(class="text-grey-250" iconName="drag_indicator" size="20")
+    f-svg-icon(
+      v-if="draggable"
+      class="text-grey-250"
+      iconName="drag_indicator"
+      size="20"
+    )
   div(class="flex-1 flex items-center gap-x-2")
     div(v-if="props.svgIcon" class="w-8 h-8 flex items-center justify-center")
       f-svg-icon(class="text-grey-400" :iconName="props.svgIcon" size="20")
@@ -37,6 +42,7 @@ import type { MenuTree } from '@frontier/ui-component/src/FContextualMenu/types'
 
 const props = defineProps<{
   bookmarkType: BookmarkType
+  draggable: boolean
   text: string
   svgIcon: string | null
   orgLogo: string | null

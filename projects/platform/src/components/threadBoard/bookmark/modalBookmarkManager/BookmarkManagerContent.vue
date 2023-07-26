@@ -44,20 +44,33 @@ div(class="flex-1 h-full flex flex-col")
           template(v-if="bookmarkBarBookmarkList.length === 0")
             div(class="flex items-center justify-center h-12")
               span(class="text-body2 text-grey-400") {{ $t('TT0239') }}
-          template(
-            v-for="bookmark in bookmarkBarBookmarkList"
-            :key="bookmark.bookmarkId"
+          draggable(
+            v-else
+            v-model="bookmarkBarBookmarkList"
+            v-bind="bookmarkDragOptions"
           )
-            bookmark-manager-content-item(
-              v-bind="getBookmarkProps(bookmark)"
-              @click:text="bookmark.bookmarkType === BookmarkType.FOLDER && setCurrentBookmarkId(bookmark.bookmarkId)"
-            )
+            template(#item="{ element: bookmark }")
+              bookmark-manager-content-item(
+                :key="bookmark.bookmarkId"
+                :class="{ 'draggable-bookmark': isBookmarkDraggable(bookmark) }"
+                v-bind="getBookmarkProps(bookmark)"
+                @click:text="bookmark.bookmarkType === BookmarkType.FOLDER && setCurrentBookmarkId(bookmark.bookmarkId)"
+              )
         template(v-else)
           template(v-if="currentBookmarkOrgList.length === 0")
             div(class="flex items-center justify-center h-12")
               span(class="text-body2 text-grey-400") {{ $t('TT0239') }}
-          template(v-for="(org, index) in currentBookmarkOrgList" :key="index")
-            bookmark-manager-content-item(v-bind="getOrgProps(org)")
+          draggable(
+            v-else
+            v-model="currentBookmarkOrgList"
+            v-bind="bookmarkDragOptions"
+          )
+            template(#item="{ element: org, index }")
+              bookmark-manager-content-item(
+                :key="index"
+                :class="{ 'draggable-bookmark': isOrgItemDraggable }"
+                v-bind="getOrgProps(org)"
+              )
   div(class="w-full h-16 border-t border-grey-150 pr-5 flex items-center justify-end")
     f-button(
       type="primary"
@@ -71,11 +84,12 @@ div(class="flex-1 h-full flex flex-col")
 <script setup lang="ts">
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { MenuTree } from '@frontier/ui-component/src/FContextualMenu/types'
+import Draggable from 'vuedraggable'
 import {
   BookmarkType,
   type FolderBookmarkAllOfOrgList,
 } from '@frontier/platform-web-sdk'
+import type { MenuTree } from '@frontier/ui-component/src/FContextualMenu/types'
 import useBookmarkManagerStore from '@/stores/bookmarkManager'
 import BookmarkManagerContentItem from '@/components/threadBoard/bookmark/modalBookmarkManager/BookmarkManagerContentItem.vue'
 import { processBookmarkByType } from '@/utils/bookmark'
@@ -86,12 +100,26 @@ import type {
 
 const bookmarkManagerStore = useBookmarkManagerStore()
 
-const { setCurrentBookmarkId, saveBookmarkManager, closeBookmarkManager } =
+const bookmarkDragOptions = {
+  itemKey: 'bookmarkId',
+  forceFallback: true,
+  scrollSensitivity: 40,
+  scrollSpeed: 7,
+  animation: 250,
+  group: 'bookmark-item',
+  draggable: '.draggable-bookmark',
+  disabled: false,
+  dragClass: 'vue-draggable-bookmark-drag',
+  ghostClass: 'vue-draggable-bookmark-ghost',
+}
+
+const { setCurrentBookmarkId, closeBookmarkManager, saveBookmarkManager } =
   bookmarkManagerStore
 
 const {
   isDirty,
   isAllThreadBookmarkActive,
+  currentBookmark,
   bookmarkBarBookmarkList,
   currentBookmarkOrgList,
   isBookmarkBarActive,
@@ -99,10 +127,29 @@ const {
   bookmarkManagerTitleInfo,
 } = storeToRefs(bookmarkManagerStore)
 
+const isOrgItemDraggable = computed(
+  () => !currentBookmark.value?.isAllThread && !searchText.value
+)
+
+const isBookmarkDraggable = (
+  bookmark: BookmarkManagerFolderBookmark | BookmarkManagerOrgBookmark
+) => {
+  if (searchText.value) {
+    return false
+  }
+
+  return processBookmarkByType(bookmark, {
+    allThreads: () => false,
+    [BookmarkType.FOLDER]: () => true,
+    [BookmarkType.ORG]: () => true,
+  })
+}
+
 const getOrgProps = (org: FolderBookmarkAllOfOrgList) => {
   const menuTree: MenuTree = { blockList: [] }
   return {
     bookmarkType: BookmarkType.ORG,
+    draggable: isOrgItemDraggable.value,
     text: org.orgName,
     svgIcon: null,
     orgLogo: org.logo,
@@ -138,6 +185,7 @@ const getBookmarkProps = (
   return {
     ...basicInfo,
     bookmarkType: bookmark.bookmarkType,
+    draggable: isBookmarkDraggable(bookmark),
     menuTree: { blockList: [] },
   }
 }

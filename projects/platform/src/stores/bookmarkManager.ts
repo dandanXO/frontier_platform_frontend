@@ -67,9 +67,19 @@ const useBookmarkManagerStore = defineStore(
         return null
       }
 
-      return bookmarkManagerBookmarkList.value.find(
+      const bookmark = bookmarkManagerBookmarkList.value.find(
         (b) => b.bookmarkId === currentBookmarkId.value
       )
+
+      if (!bookmark) {
+        throw new Error('current bookmark not found')
+      }
+
+      if (bookmark.bookmarkType !== BookmarkType.FOLDER) {
+        throw new Error('current bookmark is not a folder')
+      }
+
+      return bookmark as FolderBookmark
     })
 
     const isAllThreadBookmarkActive = computed(() => {
@@ -139,8 +149,11 @@ const useBookmarkManagerStore = defineStore(
           })
         )
       },
-      set: () => {
-        // TODO: for draggable bookmark
+      set: (list) => {
+        if (searchText.value) {
+          throw new Error('cannot move bookmark when search enable')
+        }
+        bookmarkManagerBookmarkList.value = list
       },
     })
 
@@ -157,8 +170,16 @@ const useBookmarkManagerStore = defineStore(
           isCaseInsensitiveMatch(org.orgName, searchText.value || '')
         )
       },
-      set: () => {
-        // TODO: for draggable bookmark
+      set: (list) => {
+        if (searchText.value) {
+          throw new Error('cannot move bookmark when search enable')
+        }
+
+        if (!currentBookmark.value) {
+          throw new Error('currentBookmark undefined')
+        }
+
+        currentBookmark.value.orgList = list
       },
     })
 
