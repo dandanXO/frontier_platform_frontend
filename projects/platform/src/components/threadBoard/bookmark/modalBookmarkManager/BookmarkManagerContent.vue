@@ -10,7 +10,27 @@ div(class="flex-1 h-full flex flex-col")
           :iconName="bookmarkManagerTitleInfo.icon"
           class="text-grey-600 cursor-pointer"
         )
-      p(class="text-body1 font-bold text-grey-800") {{ bookmarkManagerTitleInfo.title }}
+      div(v-if="isEditingCurrentFolderBookmarkName" class="px-2.5 py-4 flex gap-2")
+        f-input-text(
+          class="w-75"
+          :placeholder="$t('TT0238')"
+          v-model:textValue="currentFolderBookmarkEditingName"
+        )
+        div(class="flex flex-row gap-2 items-center")
+          f-svg-icon(
+            class="cursor-pointer"
+            :class="isCurrentFolderBookmarkEditingNameValid ? 'text-primary-400' : 'text-grey-400'"
+            iconName="done"
+            size="24"
+            @click="() => { isCurrentFolderBookmarkEditingNameValid && confirmRenameCurrentFolderBookmark(); }"
+          )
+          f-svg-icon(
+            class="cursor-pointer"
+            iconName="clear"
+            size="24"
+            @click="cancelRenameCurrentFolderBookmark"
+          )
+      p(v-else class="text-body1 font-bold text-grey-800") {{ bookmarkManagerTitleInfo.title }}
     div(class="flex items-center gap-x-4")
       f-popper(
         v-if="bookmarkManagerTitleInfo.showMoreIcon"
@@ -33,7 +53,12 @@ div(class="flex-1 h-full flex flex-col")
       v-model:textValue="searchText"
     )
     div(class="flex items-center gap-x-2")
-      f-button(v-if="isBookmarkBarActive" type="secondary" size="sm") {{ $t('TT0233') }}
+      f-button(
+        v-if="isBookmarkBarActive"
+        type="secondary"
+        size="sm"
+        @click="createFolder"
+      ) {{ $t('TT0233') }}
       f-popper(v-if="!isAllThreadBookmarkActive" placement="bottom")
         template(#trigger)
           f-button(type="primary" size="sm" prependIcon="add") {{ $t('TT0234') }}
@@ -91,6 +116,7 @@ div(class="flex-1 h-full flex flex-col")
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
+import { onKeyStroke } from '@vueuse/core'
 import Draggable from 'vuedraggable'
 import {
   BookmarkType,
@@ -135,6 +161,11 @@ const {
   moveOrgBookmarkToFolderBookmark,
   removeBookmark,
   removeFolderBookmarkOrgItem,
+  createFolder,
+  startRenameFolderBookmark,
+  startRenameCurrentFolderBookmark,
+  confirmRenameCurrentFolderBookmark,
+  cancelRenameCurrentFolderBookmark,
   closeBookmarkManager,
   saveBookmarkManager,
 } = bookmarkManagerStore
@@ -142,11 +173,15 @@ const {
 const {
   isDirty,
   isAllThreadBookmarkActive,
-  currentBookmark,
+  isCurrentFolderBookmarkEditingNameValid,
+  isEditingCurrentFolderBookmarkName,
+  currentFolderBookmarkEditingName,
   folderBookmarkList,
   bookmarkBarBookmarkList,
   currentBookmarkOrgList,
   currentBookmarkId,
+  currentBookmark,
+  editingNameBookmarkId,
   addMenuSelectedOrgId,
   addBookmarkMenuTree,
   isBookmarkBarActive,
@@ -284,6 +319,7 @@ const getOrgProps = (org: FolderBookmarkAllOfOrgList) => {
   return {
     bookmarkType: BookmarkType.ORG,
     draggable: isOrgItemDraggable.value,
+    isEditingName: false,
     text: org.orgName,
     svgIcon: null,
     orgLogo: org.logo,
@@ -291,36 +327,25 @@ const getOrgProps = (org: FolderBookmarkAllOfOrgList) => {
   }
 }
 
-const getBookmarkProps = (
-  bookmark: BookmarkManagerOrgBookmark | BookmarkManagerFolderBookmark
-) => {
-  const basicInfo = processBookmarkByType<{
-    text: string
-    svgIcon: string | null
-    orgLogo: string | null
-  }>(bookmark, {
-    allThreads: (allThreadBookmark) => ({
-      text: allThreadBookmark.folderName,
-      orgLogo: null,
-      svgIcon: 'all',
-    }),
-    [BookmarkType.FOLDER]: (folderBookmark) => ({
-      text: folderBookmark.folderName,
-      svgIcon: 'org_folder',
-      orgLogo: null,
-    }),
-    [BookmarkType.ORG]: (orgBookmark) => ({
-      text: orgBookmark.org.orgName,
-      svgIcon: null,
-      orgLogo: orgBookmark.org.logo,
-    }),
-  })
-
+const getBookmarkMenuTree = (
+  bookmark: BookmarkManagerOrgBookmark | BookmarkManagerFolderBookmark,
+  isCurrentBookmark: boolean
+): MenuTree => {
   const menuList: MenuItem[] = []
 
   processBookmarkByType(bookmark, {
     [BookmarkType.FOLDER]: (folderBookmark) => {
       if (!folderBookmark.isAllThread) {
+        menuList.push({
+          title: t('TT0151'),
+          clickHandler: () => {
+            if (isCurrentBookmark) {
+              startRenameCurrentFolderBookmark()
+            } else {
+              startRenameFolderBookmark(bookmark.bookmarkId)
+            }
+          },
+        })
         menuList.push({
           title: t('RR0280'),
           clickHandler: () => {
@@ -391,11 +416,40 @@ const getBookmarkProps = (
     },
   })
 
+  return { blockList: [{ menuList }] }
+}
+
+const getBookmarkProps = (
+  bookmark: BookmarkManagerOrgBookmark | BookmarkManagerFolderBookmark
+) => {
+  const basicInfo = processBookmarkByType<{
+    text: string
+    svgIcon: string | null
+    orgLogo: string | null
+  }>(bookmark, {
+    allThreads: (allThreadBookmark) => ({
+      text: allThreadBookmark.folderName,
+      orgLogo: null,
+      svgIcon: 'all',
+    }),
+    [BookmarkType.FOLDER]: (folderBookmark) => ({
+      text: folderBookmark.folderName,
+      svgIcon: 'org_folder',
+      orgLogo: null,
+    }),
+    [BookmarkType.ORG]: (orgBookmark) => ({
+      text: orgBookmark.org.orgName,
+      svgIcon: null,
+      orgLogo: orgBookmark.org.logo,
+    }),
+  })
+
   return {
     ...basicInfo,
     bookmarkType: bookmark.bookmarkType,
     draggable: isBookmarkDraggable(bookmark),
-    menuTree: { blockList: [{ menuList }] },
+    isEditingName: editingNameBookmarkId.value === bookmark.bookmarkId,
+    menuTree: getBookmarkMenuTree(bookmark, false),
   }
 }
 
@@ -403,7 +457,13 @@ const menuTree = computed<MenuTree>(() => {
   if (!currentBookmark.value) {
     return { blockList: [] }
   }
-  return getBookmarkProps(currentBookmark.value).menuTree
+  return getBookmarkMenuTree(currentBookmark.value, true)
+})
+
+onKeyStroke('Enter', () => {
+  if (isCurrentFolderBookmarkEditingNameValid.value) {
+    confirmRenameCurrentFolderBookmark()
+  }
 })
 </script>
 

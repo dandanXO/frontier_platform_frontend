@@ -38,6 +38,7 @@ div(class="flex flex-col w-65 h-full bg-grey-50 border-r border-grey-150")
             )
         div(
           class="w-59 h-6 bg-grey-0 rounded border border-dashed border-grey-250 flex items-center justify-center cursor-pointer"
+          @click="bookmarkManagerStore.createFolder"
         )
           f-svg-icon(class="text-grey-600" iconName="add" size="16")
 </template>

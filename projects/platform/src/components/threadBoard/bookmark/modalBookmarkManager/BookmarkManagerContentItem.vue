@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="group w-full pr-4 py-2 rounded flex items-center cursor-pointer hover:bg-grey-100"
+  class="group w-full h-12 pr-4 rounded flex items-center cursor-pointer hover:bg-grey-100"
 )
   div(class="w-5 h-5 invisible group-hover:visible")
     f-svg-icon(
@@ -18,7 +18,29 @@ div(
       type="org"
       size="md"
     )
+    div(v-if="isEditingName" class="flex gap-2")
+      f-input-text(
+        class="w-75"
+        size="md"
+        :placeholder="$t('TT0238')"
+        v-model:textValue="folderBookmarkEditingName"
+      )
+      div(class="flex flex-row gap-2 items-center")
+        f-svg-icon(
+          class="cursor-pointer"
+          :class="isFolderBookmarkEditingNameValid ? 'text-primary-400' : 'text-grey-400'"
+          iconName="done"
+          size="24"
+          @click="() => { isFolderBookmarkEditingNameValid && confirmRenameFolderBookmark(); }"
+        )
+        f-svg-icon(
+          class="cursor-pointer"
+          iconName="clear"
+          size="24"
+          @click="cancelRenameFolderBookmark"
+        )
     p(
+      v-else
       class="text-body2 text-grey-800"
       :class="{ 'hover:text-primary-400 hover:underline': props.bookmarkType === BookmarkType.FOLDER }"
       @click="emits('click:text')"
@@ -37,12 +59,16 @@ div(
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
+import { onKeyStroke } from '@vueuse/core'
 import { BookmarkType } from '@frontier/platform-web-sdk'
 import type { MenuTree } from '@frontier/ui-component/src/FContextualMenu/types'
+import useBookmarkManagerStore from '@/stores/bookmarkManager'
 
 const props = defineProps<{
   bookmarkType: BookmarkType
   draggable: boolean
+  isEditingName: boolean
   text: string
   svgIcon: string | null
   orgLogo: string | null
@@ -52,4 +78,17 @@ const props = defineProps<{
 const emits = defineEmits<{
   (e: 'click:text'): void
 }>()
+
+const bookmarkManagerStore = useBookmarkManagerStore()
+const { confirmRenameFolderBookmark, cancelRenameFolderBookmark } =
+  bookmarkManagerStore
+
+const { folderBookmarkEditingName, isFolderBookmarkEditingNameValid } =
+  storeToRefs(bookmarkManagerStore)
+
+onKeyStroke('Enter', () => {
+  if (props.isEditingName && isFolderBookmarkEditingNameValid.value) {
+    confirmRenameFolderBookmark()
+  }
+})
 </script>

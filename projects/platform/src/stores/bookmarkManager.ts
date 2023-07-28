@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { defineStore, storeToRefs } from 'pinia'
@@ -28,6 +28,7 @@ import type {
   MenuTree,
 } from '@frontier/ui-component/src/FContextualMenu/types'
 import { useNotifyStore } from '@/stores/notify'
+import useNameEditor from '@/composables/useNameEditor'
 
 const useBookmarkManagerStore = defineStore(
   'threadBoard/bookmarkManager',
@@ -48,6 +49,7 @@ const useBookmarkManagerStore = defineStore(
     const hoveringBookmarkId = ref<
       BookmarkManagerBookmarkId | 'bookmarkBar' | null
     >(null)
+    const editingNameBookmarkId = ref<BookmarkManagerBookmarkId | null>(null)
 
     const baseReq = computed(() => ({
       orgId: unit.value.orgId,
@@ -318,6 +320,23 @@ const useBookmarkManagerStore = defineStore(
       hoveringBookmarkId.value = bookmarkId
     }
 
+    const createFolder = () => {
+      if (!bookmarkManagerBookmarkList.value) {
+        throw new Error('bookmarkManagerBookmarkList undefined')
+      }
+
+      const newFolderBookmark: BookmarkManagerFolderBookmark = {
+        bookmarkId: uuidv4(),
+        bookmarkType: BookmarkType.FOLDER,
+        isAllThread: false,
+        folderName: t('TT0220'),
+        orgList: [],
+      }
+
+      bookmarkManagerBookmarkList.value.push(newFolderBookmark)
+      currentBookmarkId.value = newFolderBookmark.bookmarkId
+    }
+
     const moveFolderOrgItemToBookmarkBar = (
       sourceFolderBookmarkId: BookmarkManagerBookmarkId,
       org: OrgBookmarkAllOfOrg
@@ -431,6 +450,89 @@ const useBookmarkManagerStore = defineStore(
       return true
     }
 
+    const {
+      isEditingName: isEditingCurrentFolderBookmarkName,
+      currentName: currentFolderBookmarkEditingName,
+      isNameValid: isCurrentFolderBookmarkEditingNameValid,
+      startEdit: startRenameCurrentFolderBookmark,
+      doneEdit: currentFolderBookmarkDoneEdit,
+    } = useNameEditor(computed(() => bookmarkManagerTitleInfo.value.title))
+
+    const confirmRenameCurrentFolderBookmark = () => {
+      if (!currentBookmark.value) {
+        throw new Error('currentBookmark undefined')
+      }
+
+      if (currentBookmark.value.bookmarkType !== BookmarkType.FOLDER) {
+        throw new Error('currentBookmark is not a folder')
+      }
+
+      const currentFolderBookmark = currentBookmark.value as FolderBookmark
+      currentFolderBookmark.folderName = currentFolderBookmarkEditingName.value
+      currentFolderBookmarkDoneEdit()
+    }
+
+    const cancelRenameCurrentFolderBookmark = () => {
+      currentFolderBookmarkDoneEdit()
+    }
+
+    const {
+      isEditingName: isEditingFolderBookmarkName,
+      currentName: folderBookmarkEditingName,
+      isNameValid: isFolderBookmarkEditingNameValid,
+      startEdit: startEditFolderBookmarkName,
+      doneEdit: folderBookmarkDoneEdit,
+    } = useNameEditor(
+      computed(() => {
+        if (!bookmarkManagerBookmarkList.value) {
+          throw new Error('bookmarkManagerBookmarkList undefined')
+        }
+
+        const bookmark = bookmarkManagerBookmarkList.value.find(
+          (bookmark) => bookmark.bookmarkId === editingNameBookmarkId.value
+        )
+
+        if (!bookmark) {
+          return ''
+        }
+        if (bookmark.bookmarkType !== BookmarkType.FOLDER) {
+          throw new Error('bookmark is not a folder')
+        }
+
+        return (bookmark as FolderBookmark).folderName
+      })
+    )
+
+    const startRenameFolderBookmark = (
+      bookmarkId: BookmarkManagerBookmarkId
+    ) => {
+      editingNameBookmarkId.value = bookmarkId
+      startEditFolderBookmarkName()
+    }
+
+    const confirmRenameFolderBookmark = () => {
+      if (!bookmarkManagerBookmarkList.value) {
+        throw new Error('bookmarkManagerBookmarkList undefined')
+      }
+
+      bookmarkManagerBookmarkList.value = bookmarkManagerBookmarkList.value.map(
+        (bookmark) => {
+          if (bookmark.bookmarkId === editingNameBookmarkId.value) {
+            return { ...bookmark, folderName: folderBookmarkEditingName.value }
+          }
+          return bookmark
+        }
+      )
+
+      editingNameBookmarkId.value = null
+      folderBookmarkDoneEdit()
+    }
+
+    const cancelRenameFolderBookmark = () => {
+      editingNameBookmarkId.value = null
+      folderBookmarkDoneEdit()
+    }
+
     const removeBookmark = (targetBookmarkId: BookmarkManagerBookmarkId) => {
       if (!bookmarkManagerBookmarkList.value) {
         throw new Error('bookmarkManagerBookmarkList undefined')
@@ -473,6 +575,14 @@ const useBookmarkManagerStore = defineStore(
       )
     }
 
+    const cleanup = () => {
+      currentBookmarkId.value = null
+      hoveringBookmarkId.value = null
+      editingNameBookmarkId.value = null
+      bookmarkManagerBookmarkList.value = null
+      searchText.value = ''
+    }
+
     const saveBookmarkManager = async () => {
       if (!bookmarkManagerBookmarkList.value) {
         throw new Error('bookmarkManagerBookmarkList undefined')
@@ -508,13 +618,7 @@ const useBookmarkManagerStore = defineStore(
       threadBoardStore.getBookmarkList()
       bookmarkManagerBookmarkList.value = null
       store.dispatch('helper/closeModalBehavior')
-    }
-
-    const cleanup = () => {
-      currentBookmarkId.value = null
-      hoveringBookmarkId.value = null
-      bookmarkManagerBookmarkList.value = null
-      searchText.value = ''
+      cleanup()
     }
 
     const openBookmarkManager = () => {
@@ -543,8 +647,17 @@ const useBookmarkManagerStore = defineStore(
       }
     }
 
+    watch(currentBookmark, () => {
+      cancelRenameCurrentFolderBookmark()
+      cancelRenameFolderBookmark()
+    })
+
     return {
       isDirty,
+      isEditingCurrentFolderBookmarkName,
+      isEditingFolderBookmarkName,
+      isCurrentFolderBookmarkEditingNameValid,
+      isFolderBookmarkEditingNameValid,
       bookmarkManagerBookmarkList,
       folderBookmarkList,
       bookmarkBarBookmarkList,
@@ -557,10 +670,14 @@ const useBookmarkManagerStore = defineStore(
       bookmarkManagerTitleInfo,
       currentBookmarkId,
       hoveringBookmarkId,
+      editingNameBookmarkId,
       addMenuSelectedOrgId,
       addBookmarkMenuTree,
       setCurrentBookmarkId,
       setHoveringBookmarkId,
+      startRenameFolderBookmark,
+      confirmRenameFolderBookmark,
+      cancelRenameFolderBookmark,
       moveFolderOrgItemToBookmarkBar,
       moveFolderOrgItemToFolderBookmark,
       moveOrgBookmarkToFolderBookmark,
@@ -568,6 +685,12 @@ const useBookmarkManagerStore = defineStore(
       copyOrgToFolderBookmark,
       removeBookmark,
       removeFolderBookmarkOrgItem,
+      currentFolderBookmarkEditingName,
+      folderBookmarkEditingName,
+      createFolder,
+      startRenameCurrentFolderBookmark,
+      confirmRenameCurrentFolderBookmark,
+      cancelRenameCurrentFolderBookmark,
       openBookmarkManager,
       closeBookmarkManager,
       saveBookmarkManager,
