@@ -2,7 +2,7 @@
 modal-behavior(
   :header="mode === CREATE_EDIT.EDIT ? $t('FF0009') : $t('FF0022')"
   :primaryBtnText="mode === CREATE_EDIT.EDIT ? $t('UU0018') : $t('UU0020')"
-  :primaryBtnDisabled="actionBtnDisabled"
+  :primaryBtnDisabled="!isFormValid"
   @click:primary="actionHandler"
 )
   template(#note)
@@ -15,11 +15,12 @@ modal-behavior(
   div(class="w-101")
     p(class="text-right pb-0.5 text-caption text-grey-600") *{{ $t('RR0163') }}
     f-input-text(
+      ref="refInputCollectionName"
       v-model:textValue="formData.collectionName"
       required
       :label="$t('FF0010')"
       class="mb-7.5"
-      :rules="[$inputRules.required()]"
+      :rules="[$inputRules.required(), $inputRules.maxLength(COLLECTION_NAME_MAX_LENGTH)]"
       :hintError="isCollectionNameExist ? $t('WW0001') : ''"
     )
     div(class="h-5.5 flex items-center pb-1")
@@ -41,9 +42,10 @@ modal-behavior(
       @error="errorCode = $event"
     )
     f-input-textarea(
+      ref="refInputDescription"
       v-model:textValue="formData.description"
       :label="$t('RR0014')"
-      :rules="[(v) => v.length > DESCRIPTION_LIMIT && $t('WW0073')]"
+      :rules="[$inputRules.maxLength(COLLECTION_DESCRIPTION_MAX_LENGTH, $t('WW0073'))]"
       minHeight="min-h-30"
     )
 </template>
@@ -54,7 +56,11 @@ import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { previewFile } from '@/utils/fileOperator'
 import { useI18n } from 'vue-i18n'
-import { CREATE_EDIT } from '@/utils/constants'
+import {
+  CREATE_EDIT,
+  COLLECTION_NAME_MAX_LENGTH,
+  COLLECTION_DESCRIPTION_MAX_LENGTH,
+} from '@/utils/constants'
 
 const { t } = useI18n()
 const store = useStore()
@@ -86,6 +92,8 @@ const removeTrendBoard = () => {
     })
 }
 
+const refInputCollectionName = ref(null)
+const refInputDescription = ref(null)
 const uploadTrendBoardName = ref('')
 const collectionId = ref(null) // only use when CREATE_EDIT is equal to EDIT
 const formData = reactive({
@@ -93,11 +101,12 @@ const formData = reactive({
   trendBoardFile: null,
   description: '',
 })
-const DESCRIPTION_LIMIT = 1000
 const isCollectionNameExist = ref(false)
-const actionBtnDisabled = computed(
+const isFormValid = computed(
   () =>
-    !formData.collectionName || formData.description.length > DESCRIPTION_LIMIT
+    formData.collectionName?.length > 0 &&
+    !refInputCollectionName.value?.isError &&
+    !refInputDescription.value?.isError
 )
 
 watch(

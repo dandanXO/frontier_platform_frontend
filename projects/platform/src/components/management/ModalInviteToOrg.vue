@@ -35,7 +35,7 @@ modal-behavior(
 
 <script setup>
 import { computed, reactive, ref, toRaw, watch } from 'vue'
-import inputValidator from '@/utils/input-validator'
+import inputValidator from '@/utils/inputValidator'
 import copyText from '@/utils/copy-text'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'

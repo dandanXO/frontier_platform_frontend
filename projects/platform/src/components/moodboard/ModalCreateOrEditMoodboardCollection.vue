@@ -2,7 +2,7 @@
 modal-behavior(
   :header="mode === CREATE_EDIT.EDIT ? $t('FF0009') : $t('QQ0056')"
   :primaryBtnText="mode === CREATE_EDIT.CREATE ? $t('UU0020') : $t('UU0018')"
-  :primaryBtnDisabled="primaryBtnDisabled"
+  :primaryBtnDisabled="!isFormValid"
   @click:primary="primaryHandler"
 )
   template(#note)
@@ -16,9 +16,10 @@ modal-behavior(
       p(class="text-caption leading-1.6 pl-1.5") {{ $t('QQ0060') }}
   div(class="w-95")
     f-input-text(
+      ref="refInputCollectionName"
       v-model:textValue="formData.name"
       required
-      :rules="[$inputRules.required()]"
+      :rules="[$inputRules.required(), $inputRules.maxLength(COLLECTION_NAME_MAX_LENGTH)]"
       :label="$t('FF0010')"
       :placeholder="$t('QQ0058')"
       class="pb-6"
@@ -43,11 +44,12 @@ modal-behavior(
       @error="fileUploadErrorCode = $event"
     )
     f-input-textarea(
+      ref="refInputDescription"
       v-model:textValue="formData.description"
       :label="$t('RR0014')"
       :placeholder="$t('QQ0059')"
       minHeight="min-h-30"
-      :rules="[(v) => v.length > DESCRIPTION_LIMIT && $t('WW0073')]"
+      :rules="[$inputRules.maxLength(COLLECTION_DESCRIPTION_MAX_LENGTH, $t('WW0073'))]"
     )
 </template>
 
@@ -57,7 +59,11 @@ import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
 import { previewFile } from '@/utils/fileOperator'
-import { CREATE_EDIT } from '@/utils/constants'
+import {
+  CREATE_EDIT,
+  COLLECTION_NAME_MAX_LENGTH,
+  COLLECTION_DESCRIPTION_MAX_LENGTH,
+} from '@/utils/constants'
 
 const props = defineProps({
   mode: {
@@ -82,7 +88,10 @@ const formData = reactive({
   // the below variables only use for edit mode
   isDeleteTrendBoard: false,
 })
-const DESCRIPTION_LIMIT = 1000
+
+const refInputCollectionName = ref(null)
+const refInputDescription = ref(null)
+
 const isUploadNewTrendBoard = ref(false)
 const uploadTrendBoardName = ref('')
 
@@ -104,8 +113,11 @@ const removeTrendBoard = () => {
   }
 }
 
-const primaryBtnDisabled = computed(
-  () => !formData.name || formData.description.length > DESCRIPTION_LIMIT
+const isFormValid = computed(
+  () =>
+    formData.name?.length > 0 &&
+    !refInputCollectionName.value?.isError &&
+    !refInputDescription.value?.isError
 )
 
 const primaryHandler = async () => {

@@ -1,5 +1,7 @@
-import { ref, reactive, computed } from 'vue'
+import { reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import inputRules from '@/utils/inputRules'
+import inputValidator from '@/utils/inputValidator'
 
 /**
  * @param {ComputedRef} material
@@ -12,21 +14,17 @@ export default function useMaterialValidation(
 ) {
   const { t } = useI18n()
 
-  const required = (v) => !v && t('WW0002')
-  const maxLength = (v, max) => v?.length > max && t('WW0003')
-  const maxIntegerDecimal = (maxInteger, maxDecimal, v) => {
-    if (!v) {
-      return false
-    }
-
-    const [integer, decimal] = String(v).split('.')
-    return integer?.length > maxInteger || decimal?.length > maxDecimal
-  }
+  const required = (v) => inputRules.required()(v)
+  const maxLength = (v, max) => inputRules()(v, max)
   const integerOnly = (v) => !!v && !Number.isInteger(v) && t('WW0007')
-  const maxI6D2 = (v) => maxIntegerDecimal(6, 2, v) && t('WW0009')
-  const maxI3D2 = (v) => maxIntegerDecimal(3, 2, v) && t('WW0010')
-  const maxI9D1 = (v) => maxIntegerDecimal(9, 1, v) && t('WW0011')
-  const maxI18D10 = (v) => maxIntegerDecimal(18, 10, v) && t('WW0012')
+  const maxI6D2 = (v) =>
+    !inputValidator.maxIntegerDecimal(6, 2, v) && t('WW0009')
+  const maxI3D2 = (v) =>
+    !inputValidator.maxIntegerDecimal(3, 2, v) && t('WW0010')
+  const maxI9D1 = (v) =>
+    !inputValidator.maxIntegerDecimal(9, 1, v) && t('WW0011')
+  const maxI18D10 = (v) =>
+    !inputValidator.maxIntegerDecimal(18, 10, v) && t('WW0012')
 
   const invalidation = reactive({
     materialNo: computed(() => {
