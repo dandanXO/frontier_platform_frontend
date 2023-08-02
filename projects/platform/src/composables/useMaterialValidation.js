@@ -15,7 +15,7 @@ export default function useMaterialValidation(
   const { t } = useI18n()
 
   const required = (v) => inputRules.required()(v)
-  const maxLength = (v, max) => inputRules()(v, max)
+  const maxLength = (v, max) => inputRules.maxLength(max)(v)
   const integerOnly = (v) => !!v && !Number.isInteger(v) && t('WW0007')
   const maxI6D2 = (v) =>
     !inputValidator.maxIntegerDecimal(6, 2, v) && t('WW0009')
