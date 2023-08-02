@@ -14,7 +14,7 @@ div(class="flex flex-col w-65 h-full bg-grey-50 border-r border-grey-150")
             @click="setCurrentBookmarkId(null)"
           )
             div(
-              class="flex items-center gap-x-3.5 text-grey-600"
+              class="flex items-center gap-x-1 text-grey-600"
               :class="{ 'font-bold': isBookmarkBarActive, 'text-primary-400': isHoveringBookmarkBar }"
             )
               f-svg-icon(
@@ -24,7 +24,8 @@ div(class="flex flex-col w-65 h-full bg-grey-50 border-r border-grey-150")
                 @click.stop="toggleSidebar"
               )
               span {{ $t('TT0232') }}
-            span(
+            div(
+              class="w-6 h-6 flex items-center justify-center"
               :class="isHoveringBookmarkBar ? 'text-primary-400' : 'text-grey-400'"
             ) {{ bookmarkManagerBookmarkList.length }}
           template(v-if="isSidebarExpand")

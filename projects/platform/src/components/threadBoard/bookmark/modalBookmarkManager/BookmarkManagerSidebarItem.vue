@@ -4,23 +4,25 @@ div(
   :class="{ 'bg-grey-150': active, 'bg-primary-50 outline outline-primary-300 outline-1 -outline-offset-1 ': hovering, 'hover:bg-grey-150 cursor-pointer': bookmark.bookmarkType === BookmarkType.FOLDER }"
 )
   div(
-    class="flex items-center gap-x-3.5 text-grey-600"
+    class="flex-1 flex items-center gap-x-2 text-grey-600 min-w-0"
     :class="{ 'font-bold': active, 'text-primary-400': hovering }"
   )
     div(
       v-if="bookmarkInfo.svgIcon"
-      class="w-8 h-8 flex items-center justify-center text-grey-600"
+      class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-grey-600"
     )
       f-svg-icon(:iconName="bookmarkInfo.svgIcon" size="20")
     f-avatar(
       v-if="bookmarkInfo.orgLogo"
+      class="flex-shrink-0"
       :imageUrl="bookmarkInfo.orgLogo"
       type="org"
       size="md"
     )
-    span {{ bookmarkInfo.text }}
-  span(
+    span(class="flex-1 whitespace-nowrap text-ellipsis overflow-hidden") {{ bookmarkInfo.text }}
+  div(
     v-if="bookmarkInfo.orgCount"
+    class="w-6 h-6 flex-shrink-0 flex items-center justify-center"
     :class="hovering ? 'text-primary-400' : 'text-grey-400'"
   ) {{ bookmarkInfo.orgCount }}
 </template>
