@@ -113,6 +113,7 @@ import type {
   PerspectiveCropPositions,
   PerspectiveCropRecord,
 } from '@/types'
+import colors from '@frontier/tailwindcss/colors'
 
 type CircleId = 'leftTop' | 'rightTop' | 'rightBottom' | 'leftBottom'
 
@@ -144,9 +145,8 @@ const emit = defineEmits<{
 
 const DEFAULT_CROP_CM = 4
 const MIN_CROP_CM = 1
-const INVALID_LINE_COLOR = '#A0253A'
-const INVALID_LINE_OUTER_COLOR = '#A0253A'
-const CIRCLE_HOVER_STROKE = '#A8A8A8'
+const INVALID_LINE_COLOR = colors.red[400]
+const CIRCLE_HOVER_STROKE = colors.grey[300]
 const WHEEL_SCALE_BY = 1.03
 const ROTATE_PRESETS = [0, 90, 180, 270]
 

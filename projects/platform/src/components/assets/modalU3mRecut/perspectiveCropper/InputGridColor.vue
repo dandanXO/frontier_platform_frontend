@@ -22,9 +22,10 @@ f-popper(placement="bottom-start" :offset="[0, -4]")
     )
       div(class="grid grid-cols-7 grid-rows-2 gap-x-2 gap-y-1.5")
         label(
-          v-for="item in labelColorList"
+          v-for="(item, index) in labelColorList"
           :key="item.labelColor"
-          class="w-5 h-5 relative border border-grey-600 rounded-sm cursor-pointer"
+          class="w-5 h-5 relative rounded-sm cursor-pointer"
+          :class="{ 'border border-grey-600': index < 2 }"
           :style="{ backgroundColor: item.labelColor }"
           @click="innerLabelColor = item.labelColor"
         )

@@ -562,6 +562,7 @@ const classMain = computed(() => {
 
   if (
     state.value === STATE.DISABLED &&
+    props.theme === THEME.LIGHT &&
     (props.addOnLeft !== '' ||
       props.addOnRight !== '' ||
       hasRightDropdown.value ||
@@ -665,7 +666,6 @@ const classIcon = computed(() => {
 const classAddon = computed(() => {
   const classList = [
     'border',
-    'border-grey-250',
     'flex',
     'items-center',
     'px-4',
@@ -673,9 +673,21 @@ const classAddon = computed(() => {
     'flex-shrink-0',
   ]
 
-  state.value === STATE.DISABLED
-    ? classList.push('bg-grey-50', 'text-grey-250', 'cursor-not-allowed')
-    : classList.push('bg-grey-100', 'text-grey-900')
+  if (props.them === THEME.LIGHT) {
+    classList.push('border-grey-250')
+    state.value === STATE.DISABLED
+      ? classList.push('bg-grey-50', 'text-grey-250', 'cursor-not-allowed')
+      : classList.push('bg-grey-100', 'text-grey-900')
+  } else {
+    classList.push(
+      state.value === STATE.HOVER ? 'border-grey-600' : 'border-grey-700',
+      'bg-grey-800',
+      'text-grey-400'
+    )
+    if (state.value === STATE.DISABLED) {
+      classList.push('border-grey-750', '!text-grey-600')
+    }
+  }
 
   return classList
 })

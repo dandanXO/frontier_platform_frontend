@@ -11,11 +11,16 @@
 .noUi-handle {
   background-color: var(--noUi-handle-bg-color);
   border: 1px solid var(--noUi-horizontal-color);
-  @apply shadow-4 rounded-full;
+  @apply rounded-full shadow-none;
 
   &:active {
     background-color: var(--noUi-handle-bg-active-color);
   }
+}
+
+.noUi-touch-area {
+  background-color: var(--noUi-handle-bg-color);
+  @apply rounded-full;
 }
 
 // horizontal type

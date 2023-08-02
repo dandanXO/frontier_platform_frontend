@@ -1,6 +1,7 @@
 export * from '@frontier/constants'
 import i18n from '@/utils/i18n'
 import { computed } from 'vue'
+import colors from '@frontier/tailwindcss/colors'
 
 export const ROLE_ID = {
   OWNER: 1,
@@ -29,20 +30,20 @@ export const COLOR = {
 }
 
 export const CROPPER_GRID_COLORS = [
-  { color: '#262626', invertContent: false },
-  { color: '#FFFFFF', invertContent: true },
-  { color: '#F07D73', invertContent: false },
-  { color: '#F2C94C', invertContent: false },
-  { color: '#8BC34A', invertContent: false },
-  { color: '#57B4DF', invertContent: false },
-  { color: '#D8B4FE', invertContent: false },
-  { color: '#515151', invertContent: false },
-  { color: '#939393', invertContent: false },
-  { color: '#E04A4B', invertContent: false },
-  { color: '#F8A853', invertContent: false },
-  { color: '#48A148', invertContent: false },
-  { color: '#3B82F6', invertContent: false },
-  { color: '#A855F7', invertContent: false },
+  { color: colors.grey[900], invertContent: false },
+  { color: colors.grey[0], invertContent: true },
+  { color: '#F8BEB9', invertContent: false },
+  { color: colors.yellow[100], invertContent: false },
+  { color: '#C5E1A4', invertContent: false },
+  { color: colors.cyan[100], invertContent: false },
+  { color: colors.purple[100], invertContent: false },
+  { color: colors.grey[600], invertContent: false },
+  { color: colors.grey[300], invertContent: false },
+  { color: colors.red[300], invertContent: false },
+  { color: '#FAC187', invertContent: false },
+  { color: colors.forestgreen[400], invertContent: false },
+  { color: colors.blue[400], invertContent: false },
+  { color: colors.purple[400], invertContent: false },
 ]
 
 export const MODAL_TYPE = {
