@@ -30,7 +30,7 @@ modal-behavior(
         div(
           v-for="(org, index) in searchedContactOrgList"
           :key="index"
-          class="w-full h-12 flex items-center justify-between pl-2 pr-4 text-body2 gap-x-2 cursor-pointer"
+          class="w-full h-12 flex items-center justify-between pl-2 pr-4 rounded text-body2 gap-x-2 cursor-pointer hover:bg-grey-100"
           @mouseenter="showCheckboxId = org.orgId"
           @mouseleave="showCheckboxId = null"
           @click="updateCheckedIdList(org.orgId)"
