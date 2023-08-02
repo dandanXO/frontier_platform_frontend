@@ -176,6 +176,7 @@ const {
   isCurrentFolderBookmarkEditingNameValid,
   isEditingCurrentFolderBookmarkName,
   currentFolderBookmarkEditingName,
+  isEditingFolderBookmarkName,
   folderBookmarkList,
   bookmarkBarBookmarkList,
   currentBookmarkOrgList,
@@ -194,7 +195,7 @@ const isOrgItemDraggable = computed(() => !searchText.value)
 const isBookmarkDraggable = (
   bookmark: BookmarkManagerFolderBookmark | BookmarkManagerOrgBookmark
 ) => {
-  if (searchText.value) {
+  if (searchText.value || isEditingFolderBookmarkName.value) {
     return false
   }
 
