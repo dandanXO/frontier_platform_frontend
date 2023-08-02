@@ -189,9 +189,7 @@ const {
   bookmarkManagerTitleInfo,
 } = storeToRefs(bookmarkManagerStore)
 
-const isOrgItemDraggable = computed(
-  () => !currentBookmark.value?.isAllThread && !searchText.value
-)
+const isOrgItemDraggable = computed(() => !searchText.value)
 
 const isBookmarkDraggable = (
   bookmark: BookmarkManagerFolderBookmark | BookmarkManagerOrgBookmark
