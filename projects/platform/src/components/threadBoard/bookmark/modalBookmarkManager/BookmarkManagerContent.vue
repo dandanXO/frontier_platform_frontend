@@ -45,63 +45,64 @@ div(class="flex-1 h-full flex flex-col")
         class="text-grey-600 cursor-pointer"
         @click="closeBookmarkManager"
       )
-  div(class="w-full h-8 mt-3 mb-2 px-5 flex items-center justify-between")
-    f-input-text(
-      size="md"
-      :placeholder="$t('RR0053')"
-      prependIcon="search"
-      v-model:textValue="searchText"
-    )
-    div(class="flex items-center gap-x-2")
-      f-button(
-        v-if="isBookmarkBarActive"
-        type="secondary"
-        size="sm"
-        @click="createFolder"
-      ) {{ $t('TT0233') }}
-      f-popper(v-if="!isAllThreadBookmarkActive" placement="bottom")
-        template(#trigger)
-          f-button(type="primary" size="sm" prependIcon="add") {{ $t('TT0234') }}
-        template(#content)
-          f-contextual-menu(
-            v-model:inputSelectValue="addMenuSelectedOrgId"
-            :menuTree="addBookmarkMenuTree"
-            :selectMode="CONTEXTUAL_MENU_MODE.MULTIPLE"
-          )
-  div(class="w-full flex-1 min-h-0 px-5 pb-2")
-    f-scrollbar-container(class="w-full h-full border border-grey-150 rounded-md p-2")
-      div(class="flex flex-col gap-y-1.5")
-        template(v-if="isBookmarkBarActive")
-          template(v-if="bookmarkBarBookmarkList.length === 0")
-            div(class="flex items-center justify-center h-12")
-              span(class="text-body2 text-grey-400") {{ $t('TT0239') }}
-          draggable(
-            v-else
-            v-model="bookmarkBarBookmarkList"
-            v-bind="bookmarkDragOptions"
-          )
-            template(#item="{ element: bookmark }")
-              bookmark-manager-content-item(
-                :key="bookmark.bookmarkId"
-                :class="{ 'draggable-bookmark': isBookmarkDraggable(bookmark) }"
-                v-bind="getBookmarkProps(bookmark)"
-                @click:text="bookmark.bookmarkType === BookmarkType.FOLDER && setCurrentBookmarkId(bookmark.bookmarkId)"
-              )
-        template(v-else)
-          template(v-if="currentBookmarkOrgList.length === 0")
-            div(class="flex items-center justify-center h-12")
-              span(class="text-body2 text-grey-400") {{ $t('TT0239') }}
-          draggable(
-            v-else
-            v-model="currentBookmarkOrgList"
-            v-bind="bookmarkDragOptions"
-          )
-            template(#item="{ element: org, index }")
-              bookmark-manager-content-item(
-                :key="index"
-                :class="{ 'draggable-bookmark': isOrgItemDraggable }"
-                v-bind="getOrgProps(org)"
-              )
+  f-scrollbar-container(class="flex-1")
+    div(class="w-full h-8 mt-3 mb-2 px-5 flex items-center justify-between")
+      f-input-text(
+        size="md"
+        :placeholder="$t('RR0053')"
+        prependIcon="search"
+        v-model:textValue="searchText"
+      )
+      div(class="flex items-center gap-x-2")
+        f-button(
+          v-if="isBookmarkBarActive"
+          type="secondary"
+          size="sm"
+          @click="createFolder"
+        ) {{ $t('TT0233') }}
+        f-popper(v-if="!isAllThreadBookmarkActive" placement="bottom")
+          template(#trigger)
+            f-button(type="primary" size="sm" prependIcon="add") {{ $t('TT0234') }}
+          template(#content)
+            f-contextual-menu(
+              v-model:inputSelectValue="addMenuSelectedOrgId"
+              :menuTree="addBookmarkMenuTree"
+              :selectMode="CONTEXTUAL_MENU_MODE.MULTIPLE"
+            )
+    div(class="w-full flex-1 min-h-0 px-5 pb-2")
+      div(class="w-full border border-grey-150 rounded-md p-2")
+        div(class="flex flex-col gap-y-1.5")
+          template(v-if="isBookmarkBarActive")
+            template(v-if="bookmarkBarBookmarkList.length === 0")
+              div(class="flex items-center justify-center h-12")
+                span(class="text-body2 text-grey-400") {{ $t('TT0239') }}
+            draggable(
+              v-else
+              v-model="bookmarkBarBookmarkList"
+              v-bind="bookmarkDragOptions"
+            )
+              template(#item="{ element: bookmark }")
+                bookmark-manager-content-item(
+                  :key="bookmark.bookmarkId"
+                  :class="{ 'draggable-bookmark': isBookmarkDraggable(bookmark) }"
+                  v-bind="getBookmarkProps(bookmark)"
+                  @click:text="bookmark.bookmarkType === BookmarkType.FOLDER && setCurrentBookmarkId(bookmark.bookmarkId)"
+                )
+          template(v-else)
+            template(v-if="currentBookmarkOrgList.length === 0")
+              div(class="flex items-center justify-center h-12")
+                span(class="text-body2 text-grey-400") {{ $t('TT0239') }}
+            draggable(
+              v-else
+              v-model="currentBookmarkOrgList"
+              v-bind="bookmarkDragOptions"
+            )
+              template(#item="{ element: org, index }")
+                bookmark-manager-content-item(
+                  :key="index"
+                  :class="{ 'draggable-bookmark': isOrgItemDraggable }"
+                  v-bind="getOrgProps(org)"
+                )
   div(class="w-full h-16 border-t border-grey-150 pr-5 flex items-center justify-end")
     f-button(
       type="primary"
