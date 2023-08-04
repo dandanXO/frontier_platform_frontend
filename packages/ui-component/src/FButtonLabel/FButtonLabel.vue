@@ -62,5 +62,13 @@ const btnType = computed(() => {
   }
 })
 
-const activeClass = 'bg-primary-50 !text-primary-400'
+const activeClass = computed(() => {
+  if (props.theme === THEME.LIGHT) {
+    return 'bg-primary-50 !text-primary-400'
+  } else if (props.theme === THEME.DARK) {
+    return 'bg-primary-700 !text-primary-300'
+  } else {
+    throw new Error('invalid theme, only accept "light" or "dark"')
+  }
+})
 </script>
