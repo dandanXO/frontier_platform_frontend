@@ -673,7 +673,7 @@ const classAddon = computed(() => {
     'flex-shrink-0',
   ]
 
-  if (props.them === THEME.LIGHT) {
+  if (props.theme === THEME.LIGHT) {
     classList.push('border-grey-250')
     state.value === STATE.DISABLED
       ? classList.push('bg-grey-50', 'text-grey-250', 'cursor-not-allowed')
