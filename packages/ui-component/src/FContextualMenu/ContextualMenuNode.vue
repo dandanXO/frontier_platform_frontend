@@ -264,7 +264,7 @@ const mouseLeaveHandler = () => {
 
 const clickMenuHandler = () => {
   const { disabled, selectable } = innerMenu.value
-  if (hasNextLevel.value || disabled || !selectable) {
+  if (disabled || !selectable) {
     return
   }
 

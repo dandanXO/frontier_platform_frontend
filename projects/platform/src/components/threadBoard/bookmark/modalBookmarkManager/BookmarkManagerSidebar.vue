@@ -47,7 +47,7 @@ div(class="flex flex-col w-65 h-full bg-grey-50 border-r border-grey-150")
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { BookmarkType } from '@frontier/platform-web-sdk'
-import useBookmarkManagerStore from '@/stores/bookmarkManager'
+import useBookmarkManagerStore from '@/stores/threadBoard/bookmarkManager'
 import BookmarkManagerSidebarItem from '@/components/threadBoard/bookmark/modalBookmarkManager/BookmarkManagerSidebarItem.vue'
 
 const bookmarkManagerStore = useBookmarkManagerStore()

@@ -64,7 +64,7 @@ import type {
   MenuTree,
 } from '@frontier/ui-component/src/FContextualMenu/types'
 import useThreadBoardStore from '@/stores/threadBoard'
-import useBookmarkManagerStore from '@/stores/bookmarkManager'
+import useBookmarkManagerStore from '@/stores/threadBoard/bookmarkManager'
 
 const props = defineProps<{
   active: boolean

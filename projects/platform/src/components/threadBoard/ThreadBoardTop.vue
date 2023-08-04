@@ -1,12 +1,7 @@
 <template lang="pug">
 div(class="h-13 flex-shrink-0 px-7.5 border-b border-grey-150")
   div(class="relative h-full flex flex-row justify-between items-center")
-    current-bookmark-info(
-      v-if="bookmarkFilter && bookmarkList"
-      :threadQty="threadQty"
-      :bookmarkFilter="bookmarkFilter"
-      :bookmarkList="bookmarkList"
-    )
+    current-bookmark-info
     div(
       class="relative ml-auto flex flex-row items-center gap-2 pl-4 bg-grey-0"
       :style="{ 'box-shadow': '-25px 0px 10px rgba(255, 255, 255, 0.9)' }"

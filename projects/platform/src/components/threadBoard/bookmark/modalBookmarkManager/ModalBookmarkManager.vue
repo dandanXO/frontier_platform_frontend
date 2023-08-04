@@ -9,7 +9,7 @@ div(
 </template>
 
 <script lang="ts" setup>
-import useBookmarkManagerStore from '@/stores/bookmarkManager'
+import useBookmarkManagerStore from '@/stores/threadBoard/bookmarkManager'
 import BookmarkManagerSidebar from '@/components/threadBoard/bookmark/modalBookmarkManager/BookmarkManagerSidebar.vue'
 import BookmarkManagerContent from '@/components/threadBoard/bookmark/modalBookmarkManager/BookmarkManagerContent.vue'
 

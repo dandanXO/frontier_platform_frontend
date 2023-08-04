@@ -355,6 +355,89 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     }))
   })
 
+  const currentBookmark = computed(() => {
+    if (!bookmarkList.value || !bookmarkFilter.value) {
+      return null
+    }
+
+    const bookmarkFilterBookmarkId = bookmarkFilter.value.bookmarkId
+    const target = bookmarkList.value.find(
+      (b) => b.bookmarkId === bookmarkFilterBookmarkId
+    )
+    if (!target) {
+      throw new Error('Bookmark not found')
+    }
+    return target
+  })
+
+  const currentBookmarkInfo = computed(() => {
+    if (!currentBookmark.value || !bookmarkFilter.value) {
+      return null
+    }
+
+    const bookmarkFilterValue = bookmarkFilter.value
+
+    switch (currentBookmark.value.bookmarkType) {
+      case BookmarkType.FOLDER: {
+        const folderBookmark = currentBookmark.value as FolderBookmark
+
+        const getTitle = () => {
+          if (!bookmarkFilterValue.orgId) {
+            return folderBookmark.folderName
+          }
+          const result = folderBookmark.orgList.find(
+            (o) => o.orgId === bookmarkFilterValue.orgId
+          )
+          if (!result) {
+            throw new Error('Bookmark not found')
+          }
+          return result.orgName
+        }
+
+        const getTooltipContent = () => folderBookmark.folderName
+        const getOrgLogo = () => {
+          if (!bookmarkFilterValue.orgId) {
+            return ''
+          }
+          const result = folderBookmark.orgList.find(
+            (o) => o.orgId === bookmarkFilterValue.orgId
+          )
+          if (!result) {
+            throw new Error('bookmark not found')
+          }
+          return result.logo
+        }
+
+        return {
+          title: getTitle(),
+          tooltipContent: getTooltipContent(),
+          orgLogo: getOrgLogo(),
+          activeBookmarkType: bookmarkFilterValue.orgId
+            ? BookmarkType.ORG
+            : BookmarkType.FOLDER,
+          isAllThread: folderBookmark.isAllThread,
+        }
+      }
+      case BookmarkType.ORG: {
+        const orgBookmark = currentBookmark.value as OrgBookmark
+
+        const getTitle = () => orgBookmark.org.orgName
+        const getTooltipContent = () => orgBookmark.org.orgName
+        const getOrgLogo = () => orgBookmark.org.logo
+
+        return {
+          title: getTitle(),
+          tooltipContent: getTooltipContent(),
+          orgLog: getOrgLogo(),
+          activeBookmarkType: BookmarkType.ORG,
+          isAllThread: false,
+        }
+      }
+      default:
+        throw new Error('Invalid bookmark type')
+    }
+  })
+
   const baseReq = computed(() => ({
     orgId: unit.value.orgId,
     ogType: unit.value.ogType,
@@ -442,7 +525,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     isHiddenWorkflowListExpanded.value = false
   }
 
-  const getThreadBoard = async (showLoading = false) => {
+  const fetchThreadBoard = async (showLoading = false) => {
     if (!bookmarkFilter.value) {
       throw new Error('bookmarkFilter undefined')
     }
@@ -530,7 +613,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     setLoading(true)
     try {
       await threadBoardApi.createWorkflowStage(req)
-      await getThreadBoard()
+      await fetchThreadBoard()
       notify.showNotifySnackbar({
         isShowSnackbar: true,
         messageText: t('WW0129'),
@@ -560,7 +643,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       workflowStageName: v.workflowStageName,
     }
     await threadBoardApi.renameWorkflowStage(req)
-    getThreadBoard()
+    fetchThreadBoard()
 
     notify.showNotifySnackbar({
       isShowSnackbar: true,
@@ -594,7 +677,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     await openStickerDrawer()
 
     // should update digital thread read count after user open sticker drawer
-    getThreadBoard()
+    fetchThreadBoard()
   }
 
   const isThreadCardActive = (thread: DigitalThreadBase) => {
@@ -642,7 +725,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     contactOrgList.value = res.data.result!.orgList!
   }
 
-  const getBookmarkList = async () => {
+  const fetchBookmarkList = async () => {
     const res = await threadBoardApi.getThreadBoardBookmarkList(baseReq.value)
     bookmarkList.value = res.data.result!.bookmarkList!
   }
@@ -653,7 +736,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     bookmarkFilter.value = filter
   }
 
-  const getThreadBoardQuery = async () => {
+  const fetchThreadBoardQuery = async () => {
     if (!bookmarkFilter.value?.bookmarkId) {
       throw new Error('bookmarkId undefined')
     }
@@ -722,7 +805,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     }
     await threadBoardApi.readAllUnreadDigitalThread(req)
     threadBoardQuery.onlyShowUnread = false
-    getThreadBoard()
+    fetchThreadBoard()
   }
 
   const moveWorkflowStageList = async (
@@ -740,7 +823,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       isMoveToBeforeTarget: newIndex === 0,
     }
     await threadBoardApi.moveWorkflowStage(req)
-    getThreadBoard()
+    fetchThreadBoard()
     notify.showNotifySnackbar({
       isShowSnackbar: true,
       messageText: t('WW0131'),
@@ -777,7 +860,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       customOrderPayload,
     }
     await threadBoardApi.moveWorkflowStageDigitalThread(req)
-    getThreadBoard()
+    fetchThreadBoard()
 
     if (fromWorkflowStageId === toWorkflowStageId) {
       return
@@ -860,7 +943,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       targetWorkflowStageId: v.targetWorkflowStageId,
     }
     await threadBoardApi.moveWorkflowStageAllDigitalThread(req)
-    getThreadBoard()
+    fetchThreadBoard()
     notify.showNotifySnackbar({
       isShowSnackbar: true,
       messageComponent: getBoldInterpolationMessageComponent('WW0134', {
@@ -934,7 +1017,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
           (w) => w.workflowStageId !== id
         )
         await threadBoardApi.deleteWorkflowStage(req)
-        getThreadBoard()
+        fetchThreadBoard()
         notify.showNotifySnackbar({
           isShowSnackbar: true,
           messageText: t('WW0132'),
@@ -967,7 +1050,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     }
 
     await threadBoardApi.showWorkflowStage(req)
-    getThreadBoard()
+    fetchThreadBoard()
   }
 
   const hideWorkflowStage = async (id: number) => {
@@ -989,7 +1072,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     }
 
     await threadBoardApi.hideWorkflowStage(req)
-    getThreadBoard()
+    fetchThreadBoard()
   }
 
   const addOrgBookmark = async (orgId: number) => {
@@ -997,7 +1080,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       ...baseReq.value,
       bookmarkOrgId: orgId,
     })
-    getBookmarkList()
+    fetchBookmarkList()
   }
 
   const addFolderBookmark = async (folderName: string, orgIdList: number[]) => {
@@ -1006,7 +1089,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       folderName,
       orgIdList,
     })
-    getBookmarkList()
+    fetchBookmarkList()
   }
 
   const updateFolderBookmark = async (
@@ -1020,7 +1103,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       folderName,
       orgIdList,
     })
-    getBookmarkList()
+    fetchBookmarkList()
   }
 
   const moveBookmark = async (bookmarkId: number, newIndex: number) => {
@@ -1037,7 +1120,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       isMoveToBeforeTarget: newIndex === 0,
     }
     await threadBoardApi.moveBookmark(req)
-    getBookmarkList()
+    fetchBookmarkList()
   }
 
   const removeBookmark = async (bookmarkId: number) => {
@@ -1069,12 +1152,12 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       ...baseReq.value,
       bookmarkId,
     })
-    getBookmarkList()
+    fetchBookmarkList()
   }
 
   const init = async () => {
     isActive.value = true
-    await Promise.all([getBookmarkList(), getContactOrgList()])
+    await Promise.all([fetchBookmarkList(), getContactOrgList()])
 
     const getAllThreadBookmarkId = () => {
       if (!bookmarkList.value) {
@@ -1115,7 +1198,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   }
 
   watch(bookmarkFilter, async () => {
-    await getThreadBoardQuery()
+    await fetchThreadBoardQuery()
   })
 
   watch(threadBoardQuery, async () => {
@@ -1126,7 +1209,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
 
       searchText.value =
         threadBoardQuery.search == null ? '' : threadBoardQuery.search
-      await getThreadBoard(true)
+      await fetchThreadBoard(true)
       const updateQueryReq = {
         ...baseReq.value,
         threadBoardQuery,
@@ -1162,6 +1245,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     workflowStageList,
     bookmarkList,
     bookmarkFilter,
+    currentBookmarkInfo,
     contactOrgList,
     threadBoardQuery,
     threadQty,
@@ -1197,8 +1281,8 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     clearStickerTypeFilter,
     clearDateCreatedFilter,
     markAsAllRead,
-    getThreadBoard,
-    getBookmarkList,
+    fetchThreadBoard,
+    fetchBookmarkList,
     expandDefaultWorkflowStage,
     collapseDefaultWorkflowStage,
     expandHiddenWorkflowStageList,

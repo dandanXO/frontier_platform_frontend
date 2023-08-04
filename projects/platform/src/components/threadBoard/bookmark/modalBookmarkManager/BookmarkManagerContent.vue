@@ -127,7 +127,7 @@ import type {
   MenuTree,
 } from '@frontier/ui-component/src/FContextualMenu/types'
 import { CONTEXTUAL_MENU_MODE } from '@frontier/constants'
-import useBookmarkManagerStore from '@/stores/bookmarkManager'
+import useBookmarkManagerStore from '@/stores/threadBoard/bookmarkManager'
 import BookmarkManagerContentItem from '@/components/threadBoard/bookmark/modalBookmarkManager/BookmarkManagerContentItem.vue'
 import { processBookmarkByType } from '@/utils/bookmark'
 import type {

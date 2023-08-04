@@ -172,7 +172,7 @@ const expandChildStickerList = async () => {
   if (isExpandChildStickerList.value && childStickerList.value.length > 0) {
     await store.dispatch('sticker/readChildSticker', props.sticker.stickerId)
     if (threadBoardStore.isActive) {
-      threadBoardStore.getThreadBoard()
+      threadBoardStore.fetchThreadBoard()
     }
   }
 }

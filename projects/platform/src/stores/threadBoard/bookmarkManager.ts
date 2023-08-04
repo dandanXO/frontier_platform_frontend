@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { defineStore, storeToRefs } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
 import { clone } from 'ramda'
-import useThreadBoardStore from './threadBoard'
+import useThreadBoardStore from '@/stores/threadBoard'
 import {
   BookmarkType,
   type FolderBookmark,
@@ -615,7 +615,7 @@ const useBookmarkManagerStore = defineStore(
         bookmarkList,
       }
       await threadBoardApi.saveThreadBoardBookmarkList(req)
-      threadBoardStore.getBookmarkList()
+      threadBoardStore.fetchBookmarkList()
       bookmarkManagerBookmarkList.value = null
       store.dispatch('helper/closeModalBehavior')
       cleanup()
