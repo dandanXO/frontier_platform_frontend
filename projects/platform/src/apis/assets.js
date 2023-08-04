@@ -79,6 +79,16 @@ export default {
 
   /**
    * @param {object} params
+   * @param {number} params.materialId
+   * @param {string} params.tempUploadId
+   * @param {string} params.fileName
+   * @param {boolean} params.needToGeneratePhysical
+   */
+  customU3mUpload: (type, id, params) =>
+    apiWrapper('/assets/material/custom-u3m-upload', type, id, params),
+
+  /**
+   * @param {object} params
    * @param {object[]} params.fileList - [{tempUploadId, fileName}]
    */
   smartUpload: (type, id, params) =>

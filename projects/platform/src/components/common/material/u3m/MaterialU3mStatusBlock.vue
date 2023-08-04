@@ -1,7 +1,8 @@
 <template lang="pug">
 div(class="bg-grey-50 rounded py-2 px-4 box-border flex flex-col gap-y-2")
+  slot(name="slot:prepend-item")
   div(class="flex items-center gap-x-2")
-    p(class="w-30 text-caption text-grey-600") {{ $t('PP0010') }}
+    p(class="w-18 text-caption text-grey-600") {{ $t('PP0010') }}
     material-u3m-status-label(:status="u3m.status")
     f-svg-icon(
       v-if="[U3M_STATUS.IN_QUEUE, U3M_STATUS.PROCESSING].includes(u3m.status)"
@@ -10,7 +11,7 @@ div(class="bg-grey-50 rounded py-2 px-4 box-border flex flex-col gap-y-2")
       class="text-primary-400"
     )
   div(v-if="u3m.status === U3M_STATUS.COMPLETED" class="flex items-center gap-x-2")
-    p(class="w-30 text-caption text-grey-600") {{ $t('RR0188') }}
+    p(class="w-18 text-caption text-grey-600") {{ $t('RR0188') }}
     div(class="flex items-center gap-x-3")
       f-avatar(
         :imageUrl="u3m.creatorAvatar"
@@ -22,6 +23,7 @@ div(class="bg-grey-50 rounded py-2 px-4 box-border flex flex-col gap-y-2")
       div
         p(class="text-body2 text-grey-900 pb-1") {{ u3m.creator }}
         p(class="text-caption text-grey-600") {{ toDigitalThreadDateFormat(u3m.createDate) }}
+  slot(name="slot:append-item")
 </template>
 
 <script setup lang="ts">

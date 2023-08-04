@@ -6,21 +6,18 @@ div(class="w-full h-full flex justify-center")
         :breadcrumbList="breadcrumbList"
         @click:item="$router.push($event.path)"
       )
-    div
+    div(class="grid grid-cols-1 divide-y divide-grey-250")
       block-material-image
+        template(#slot:block-material-u3m)
+          block-material-u3m(ref="refBlockMaterialU3m" :material="material")
       block-material-information(:invalidation="invalidation")
       block-material-inventory(:invalidation="invalidation")
       block-material-pricing(:invalidation="invalidation")
       block-material-additional-info
-      div(class="flex justify-center items-center pt-17.5")
-        div(class="grid grid-cols-2 gap-x-2")
-          f-button(size="md" type="secondary" class="h-10" @click="cancel") {{ $t('UU0002') }}
-          f-button(
-            size="md"
-            class="h-10"
-            :disabled="isInvalid"
-            @click="updateMaterial"
-          ) {{ $t('UU0018') }}
+    div(class="flex justify-center items-center pt-17.5")
+      div(class="grid grid-cols-2 gap-x-2")
+        f-button(size="md" type="secondary" class="h-10" @click="cancel") {{ $t('UU0002') }}
+        f-button(size="md" class="h-10" :disabled="isInvalid" @click="updateMaterial") {{ $t('UU0018') }}
 </template>
 
 <script setup>
@@ -29,6 +26,7 @@ import BlockMaterialInformation from '@/components/assets/edit/BlockMaterialInfo
 import BlockMaterialInventory from '@/components/assets/edit/BlockMaterialInventory.vue'
 import BlockMaterialPricing from '@/components/assets/edit/BlockMaterialPricing.vue'
 import BlockMaterialAdditionalInfo from '@/components/assets/edit/BlockMaterialAdditionalInfo.vue'
+import BlockMaterialU3m from '@/components/assets/edit/BlockMaterialU3m.vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
@@ -68,13 +66,23 @@ const breadcrumbList = computed(() => {
   ]
 })
 
+const refBlockMaterialU3m = ref()
+
 const updateMaterial = async () => {
   if (!validate()) {
     scrollTo('block-material-information')
     return
   }
   store.dispatch('helper/pushModalLoading')
-  await store.dispatch('assets/updateMaterial')
+
+  const { hasUploadedU3mFile, u3mFile, needToGeneratePhysical } =
+    refBlockMaterialU3m.value
+  await store.dispatch('assets/updateMaterial', {
+    hasCustomU3mUploading: hasUploadedU3mFile,
+    u3mFile,
+    needToGeneratePhysical,
+  })
+
   store.dispatch('helper/closeModalLoading')
   isConfirmedToLeave.value = true
   goToAssetMaterialDetail(material.value)

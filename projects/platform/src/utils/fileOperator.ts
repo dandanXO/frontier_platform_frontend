@@ -1,5 +1,18 @@
 import { EventEmitter } from 'events'
-import { UPLOAD_ERROR_CODE } from '@/utils/constants'
+import {
+  UPLOAD_ERROR_CODE,
+  NATIVE_EXTENSION,
+  EXTENSION,
+} from '@/utils/constants'
+import JSZip from 'jszip'
+
+export interface UnzippedFile {
+  file: JSZip.JSZipObject
+  isDir: boolean
+  path: string
+  content: string
+  extension: EXTENSION
+}
 
 /**
  * Common MIME types: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
@@ -14,21 +27,21 @@ const extension2MimeType = {
   gif: 'image/gif',
   mov: 'video/quicktime',
   mp4: 'video/mp4',
+  json: 'application/json',
 }
 
-const generalImageType = ['jpg', 'jpeg', 'png']
+const generalImageType = ['jpg', 'jpeg', 'png'] as NATIVE_EXTENSION[]
 
-/**
- * @param {string} base64Data
- * @param {string} extension
- * @param {string} fileName
- */
-const downloadBase64File = (base64Data, extension, fileName = 'file') => {
+const downloadBase64File = (
+  base64Data: string,
+  extension: NATIVE_EXTENSION,
+  fileName = 'file'
+) => {
   const dataURL = `data:${extension2MimeType[extension]};base64,${base64Data}`
   downloadDataURLFile(dataURL, fileName)
 }
 
-const dataUrlToBlob = (dataUrl) => {
+const dataUrlToBlob = (dataUrl: string) => {
   const byteString = atob(dataUrl.split(',')[1])
 
   const mimeString = dataUrl.split(',')[0].split(':')[1].split(';')[0]
@@ -41,15 +54,11 @@ const dataUrlToBlob = (dataUrl) => {
   return new Blob([ab], { type: mimeString })
 }
 
-/**
- * @param {string} dataURL
- * @param {string} fileName
- */
-const downloadDataURLFile = (dataURL, fileName = 'file') => {
+const downloadDataURLFile = (dataUrl: string, fileName = 'file') => {
   const link = document.createElement('a')
   link.hidden = true
   link.download = decodeURIComponent(fileName)
-  link.href = dataURL
+  link.href = dataUrl
   link.text = 'downloading...'
   link.target = '_blank'
 
@@ -58,23 +67,15 @@ const downloadDataURLFile = (dataURL, fileName = 'file') => {
   link.remove()
 }
 
-/**
- *
- * @param {number} bytes
- * @returns {string} size
- */
-const bytesToSize = (bytes) => {
+const bytesToSize = (bytes: number) => {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
   if (bytes === 0) return '0 Byte'
-  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)))
-  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i]
+  const i = parseInt(String(Math.floor(Math.log(bytes) / Math.log(1024))))
+  return Math.round(bytes / Math.pow(1024, i)) + ' ' + sizes[i]
 }
 
-/**
- * @param {object | string} file
- */
-const previewFile = (file) => {
-  const a = document.createElement('A')
+const previewFile = (file: Blob | string) => {
+  const a = document.createElement('A') as HTMLLinkElement
   a.hidden = true
   a.target = '_blank'
   // A File object is a Blob object with a name attribute, which is a string
@@ -83,11 +84,41 @@ const previewFile = (file) => {
   a.remove()
 }
 
+const unzip = async (zipFile: File, parseExtensionTypeList: EXTENSION[]) => {
+  const zip = new JSZip()
+  const zipData = await zip.loadAsync(zipFile)
+
+  return (await Promise.all(
+    Object.values(zipData.files).map(async (file) => {
+      let extension: EXTENSION = EXTENSION.FOLDER
+      const isDir = file.dir
+      if (!isDir) {
+        const pathSplitList = file.name.split('.')
+        const pathSplitLength = pathSplitList.length
+        extension = pathSplitList[pathSplitLength - 1] as EXTENSION
+      }
+
+      let content = null
+      if (parseExtensionTypeList.includes(extension)) {
+        content = await file.async('string')
+      }
+
+      return {
+        file,
+        content,
+        extension,
+      }
+    })
+  )) as UnzippedFile[]
+}
+
 class FileOperator {
-  /**
-   * @param {string[]} validType
-   * @param {number} fileSizeMaxLimit // bytes
-   */
+  validType: NATIVE_EXTENSION[]
+  acceptedExtension: string
+  acceptedFormat: string
+  fileSizeMaxLimit: number
+  event: EventEmitter
+  eventHash: { [key: string]: any } = {}
 
   constructor(validType = generalImageType, fileSizeMaxLimit = 20971520) {
     this.validType = validType
@@ -101,7 +132,7 @@ class FileOperator {
     this.eventHash = {}
   }
 
-  on(type, callback) {
+  on(type: string, callback: any) {
     // replace origin event
     if (this.eventHash[type]) {
       this.event.off(type, this.eventHash[type])
@@ -129,21 +160,23 @@ class FileOperator {
     inputNode.click()
     inputNode.addEventListener(
       'change',
-      (evt) => {
+      (evt: Event) => {
         this.event.emit('uploading')
-        this.validateFiles(evt.target.files)
+        const target = evt.target as HTMLInputElement
+        const files = target.files
+        files && this.validateFiles(files)
         document.body.removeChild(inputNode)
       },
       false
     )
   }
 
-  onDrop(evt) {
+  onDrop(evt: DragEvent) {
     this.event.emit('uploading')
-    this.validateFiles(evt.dataTransfer.files)
+    this.validateFiles(evt!.dataTransfer!.files)
   }
 
-  validateFiles(files) {
+  validateFiles(files: FileList) {
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
       const type = file.type
@@ -160,22 +193,28 @@ class FileOperator {
     Array.from(files).forEach((file) => this.uploadHandler(file))
   }
 
-  uploadHandler(file) {
+  uploadHandler(file: File) {
     this.event.emit('finish', file)
   }
 }
 
 class ImageOperator extends FileOperator {
-  constructor(validType, fileSizeMaxLimit, cropRectSize = 200) {
+  cropRectSize: number
+
+  constructor(
+    validType: NATIVE_EXTENSION[],
+    fileSizeMaxLimit: number,
+    cropRectSize = 200
+  ) {
     super(validType, fileSizeMaxLimit)
     this.cropRectSize = cropRectSize
   }
 
-  uploadHandler(file) {
+  uploadHandler(file: File) {
     const reader = new FileReader()
 
     reader.onload = (evt) => {
-      const target = evt.target.result
+      const target = evt!.target!.result
       const img = new Image()
       img.src = target
 
@@ -205,4 +244,5 @@ export {
   ImageOperator,
   bytesToSize,
   previewFile,
+  unzip,
 }

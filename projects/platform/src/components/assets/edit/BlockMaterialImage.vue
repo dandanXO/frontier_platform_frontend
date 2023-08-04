@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="pb-15 mb-5 border-b border-grey-250")
+div(class="pb-15")
   div(class="h-16 flex items-center")
     h5(class="text-h5 text-grey-900 font-bold pr-1.5") {{ $t('EE0038') }}
     f-svg-icon(
@@ -19,8 +19,8 @@ div(class="pb-15 mb-5 border-b border-grey-250")
             class="text-body2 text-grey-900 underline font-normal"
             @click="openModalHowToScan"
           ) {{ $t('UU0032') }}
-      div(class="pt-7.5 flex gap-x-10")
-        div(class="w-112.5 flex-shrink-0")
+      div(class="pt-7.5 flex gap-x-7.5")
+        div(class="w-115 flex-shrink-0")
           div(class="aspect-square rounded overflow-hidden")
             template(v-if="!!imageList[currentDisplayIndex].src")
               img(class="w-full h-full" :src="imageList[currentDisplayIndex].src")
@@ -87,7 +87,7 @@ div(class="pb-15 mb-5 border-b border-grey-250")
                 class="text-grey-250 cursor-pointer"
                 @click="removePantone(pantone.materialPantoneId)"
               )
-        block-material-u3m-status(:material="material")
+        slot(name="slot:block-material-u3m")
 </template>
 
 <script setup>
@@ -96,7 +96,6 @@ import { computed, ref } from 'vue'
 import useMaterial from '@/composables/useMaterial'
 import { SIDE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import BlockMaterialU3mStatus from '@/components/assets/edit/BlockMaterialU3mStatus.vue'
 import useNavigation from '@/composables/useNavigation'
 
 const { t } = useI18n()

@@ -19,7 +19,7 @@ div(class="flex flex-col h-full")
     class="flex-shrink-0"
     @close="notify.closeNotifyBanner"
   )
-  div(class="flex-grow flex overflow-y-auto")
+  div(class="flex-grow flex overflow-x-hidden overflow-y-auto")
     router-view(name="sidebar")
     main(class="flex-grow relative")
       router-view(

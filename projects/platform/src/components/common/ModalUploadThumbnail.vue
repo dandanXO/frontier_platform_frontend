@@ -35,7 +35,7 @@ modal-behavior(
 <script setup>
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import { ImageOperator, bytesToSize } from '@/utils/fileOperator.js'
+import { ImageOperator, bytesToSize } from '@/utils/fileOperator'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps({

@@ -119,6 +119,10 @@ const getters = {
       ENT: ENT === planType,
     }
   },
+  hasU3mQuota: (state, getters) => {
+    const { max, used } = getters.plan.quota.u3m
+    return max - used > 0
+  },
   isProcessing: (state) => state.isProcessing,
   notificationList: (state) => {
     return state.notificationList.map(

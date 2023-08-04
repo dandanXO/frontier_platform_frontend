@@ -66,3 +66,27 @@ export enum TOOLTIP_PLACEMENT {
   LEFT_START = 'left-start',
   LEFT_END = 'left-end',
 }
+
+export enum NATIVE_EXTENSION {
+  XLSX = 'xlsx',
+  ZIP = 'zip',
+  PDF = 'pdf',
+  JPEG = 'jpeg',
+  JPG = 'jpg',
+  PNG = 'png',
+  GIF = 'gif',
+  MOV = 'mov',
+  MP4 = 'mp4',
+  JSON = 'json',
+}
+
+export enum CUSTOMIZED_EXTENSION {
+  FOLDER = 'folder',
+  U3M = 'u3m',
+}
+
+export const EXTENSION = {
+  ...NATIVE_EXTENSION,
+  ...CUSTOMIZED_EXTENSION,
+}
+export type EXTENSION = NATIVE_EXTENSION | CUSTOMIZED_EXTENSION

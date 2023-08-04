@@ -3,7 +3,8 @@ div
   div(@click="isExpand ? collapse() : expand()")
     slot(name="trigger" :isExpand="isExpand")
   transition(appear)
-    slot(v-if="isExpand" name="content")
+    div(v-show="isExpand")
+      slot(name="content")
 </template>
 
 <script>

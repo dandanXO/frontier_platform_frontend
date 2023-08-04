@@ -1,11 +1,11 @@
 <template lang="pug">
 div
   div(class="flex gap-x-10")
-    material-detail-preview-img(:material="material" class="w-112.5 flex-shrink-0")
+    material-detail-preview-img(:material="material" class="w-125 flex-shrink-0")
     div(class="flex flex-col gap-y-7.5 flex-grow")
       material-detail-specification(:material="material")
       material-detail-pantone(:pantoneList="material.pantoneList")
-      material-detail-u3m-status(
+      material-detail-u3m(
         :materialId="material.materialId"
         :u3m="material.u3m"
         :customU3m="material.customU3m"
@@ -62,7 +62,7 @@ import AttachmentItem from '@/components/common/material/attachment/AttachmentIt
 import MaterialDetailPreviewImg from '@/components/common/material/detail/MaterialDetailPreviewImg.vue'
 import MaterialDetailPantone from '@/components/common/material/detail/MaterialDetailPantone.vue'
 import MaterialDetailSpecification from '@/components/common/material/detail/MaterialDetailSpecification.vue'
-import MaterialDetailU3mStatus from '@/components/common/material/detail/MaterialDetailU3mStatus.vue'
+import MaterialDetailU3m from '@/components/common/material/detail/MaterialDetailU3m.vue'
 import MaterialDetailEnvironmentalIndicator from '@/components/common/material/detail/MaterialDetailEnvironmentalIndicator.vue'
 import { downloadDataURLFile } from '@/utils/fileOperator'
 import useLogSender from '@/composables/useLogSender'

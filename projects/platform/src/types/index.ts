@@ -163,3 +163,7 @@ export interface BookmarkManagerFolderBookmark
   extends Omit<FolderBookmark, 'bookmarkId'> {
   bookmarkId: BookmarkManagerBookmarkId
 }
+
+export type MakePropertiesRequired<Type, Key extends keyof Type> = Type & {
+  [Property in Key]-?: Type[Property]
+}

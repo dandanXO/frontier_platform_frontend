@@ -7,8 +7,8 @@ div(class="w-full h-full flex justify-center")
         @click:item="$router.push($event.path)"
       )
       f-button(size="sm" type="secondary" class="ml-5" @click="openModalMassUpload") {{ $t('UU0009') }}
-    div
-      div(class="pb-15 mb-5 border-b border-grey-250")
+    div(class="grid grid-cols-1 divide-y divide-grey-250")
+      div(class="pb-15")
         div(class="h-16 flex items-center")
           h5(class="text-h5 text-grey-900 font-bold pr-1.5") {{ $t('DD0063') }}
         div(class="pl-15")
@@ -29,16 +29,35 @@ div(class="w-full h-full flex justify-center")
       block-material-inventory(:invalidation="invalidation")
       block-material-pricing(:invalidation="invalidation")
       block-material-additional-info(:tempMaterialId="tempMaterialId")
-      div(class="flex justify-center items-center pt-17.5")
-        div(class="grid grid-cols-2 gap-x-2")
-          f-button(size="md" type="secondary" class="h-10" @click="cancel") {{ $t('UU0002') }}
-          f-button(
-            size="md"
-            class="h-10"
-            :disabled="isInvalid"
-            @click="createMaterial"
-            data-cy="create-material"
-          ) {{ $t('UU0020') }}
+      f-expansion-panel
+        template(#trigger="{ isExpand }")
+          div(class="h-15 flex items-center justify-between")
+            h5(class="text-h5 text-grey-900 font-bold") {{ $t('EE0165') }}
+            f-svg-icon(
+              iconName="keyboard_arrow_right"
+              size="20"
+              class="transform text-grey-900"
+              :class="[isExpand ? '-rotate-90' : 'rotate-90']"
+            )
+        template(#content)
+          div(class="px-15 pt-5")
+            p(class="text-body2 font-bold text-grey-900") {{ $t('EE0165') }}
+            p(class="py-5 text-body2 text-grey-900") {{ $t('EE0166') }}
+            block-material-upload-u3m(
+              ref="refBlockMaterialUploadU3m"
+              :mode="CREATE_EDIT.CREATE"
+              class="w-95"
+            )
+    div(class="flex justify-center items-center pt-17.5")
+      div(class="grid grid-cols-2 gap-x-2")
+        f-button(size="md" type="secondary" class="h-10" @click="cancel") {{ $t('UU0002') }}
+        f-button(
+          size="md"
+          class="h-10"
+          :disabled="isInvalid"
+          @click="createMaterial"
+          data-cy="create-material"
+        ) {{ $t('UU0020') }}
 </template>
 
 <script setup>
@@ -46,12 +65,13 @@ import BlockMaterialInformation from '@/components/assets/edit/BlockMaterialInfo
 import BlockMaterialInventory from '@/components/assets/edit/BlockMaterialInventory.vue'
 import BlockMaterialPricing from '@/components/assets/edit/BlockMaterialPricing.vue'
 import BlockMaterialAdditionalInfo from '@/components/assets/edit/BlockMaterialAdditionalInfo.vue'
+import BlockMaterialUploadU3m from '@/components/assets/edit/BlockMaterialUploadU3m.vue'
 import useMaterialValidation from '@/composables/useMaterialValidation'
 import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { v4 as uuidv4 } from 'uuid'
-import { SIDE_TYPE, NOTIFY_TYPE } from '@/utils/constants'
+import { SIDE_TYPE, NOTIFY_TYPE, CREATE_EDIT } from '@/utils/constants'
 import { computed, ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import scrollTo from '@/utils/scrollTo'
@@ -119,6 +139,14 @@ const breadcrumbList = computed(() => {
   ]
 })
 
+const openModalMassUpload = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-mass-upload',
+  })
+}
+
+const refBlockMaterialUploadU3m = ref(null)
+
 const createMaterial = async () => {
   if (!validate()) {
     scrollTo('block-material-information')
@@ -126,7 +154,16 @@ const createMaterial = async () => {
   }
 
   store.dispatch('helper/openModalLoading')
-  await store.dispatch('assets/createMaterial', { tempMaterialId })
+
+  const { hasUploadedU3mFile, u3mFile, needToGeneratePhysical } =
+    refBlockMaterialUploadU3m.value
+  await store.dispatch('assets/createMaterial', {
+    tempMaterialId,
+    hasCustomU3mUploading: hasUploadedU3mFile,
+    u3mFile,
+    needToGeneratePhysical,
+  })
+
   store.dispatch('helper/closeModalLoading')
 
   isConfirmedToLeave.value = true
@@ -161,12 +198,6 @@ const cancel = async () => {
       goToMaterialUpload()
     },
     secondaryBtnText: t('UU0002'),
-  })
-}
-
-const openModalMassUpload = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-mass-upload',
   })
 }
 

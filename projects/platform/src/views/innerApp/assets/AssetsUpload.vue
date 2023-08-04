@@ -103,7 +103,7 @@ const { t } = useI18n()
 const store = useStore()
 const { prefixPath, parsePath, goToAssets, goToAssetsMaterialCreate } =
   useNavigation()
-const openModalUploadMaterialImage = () => {
+const openModalSmartUpload = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-smart-upload',
   })
@@ -119,7 +119,7 @@ const alternativeUploadOptions = [
     icon: 'image_file',
     title: t('DD0088'),
     content: t('DD0089'),
-    action: openModalUploadMaterialImage,
+    action: openModalSmartUpload,
     testId: 'smart-upload',
   },
   {

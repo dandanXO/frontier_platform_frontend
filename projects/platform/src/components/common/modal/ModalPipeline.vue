@@ -267,6 +267,9 @@ export default {
     ModalU3mDownload: defineAsyncComponent(() =>
       import('@/components/common/material/u3m/ModalU3mDownload.vue')
     ),
+    ModalUploadU3mFile: defineAsyncComponent(() =>
+      import('@/components/common/material/u3m/ModalUploadU3mFile.vue')
+    ),
   },
   setup() {
     const store = useStore()

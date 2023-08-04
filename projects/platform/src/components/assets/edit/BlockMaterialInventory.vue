@@ -1,5 +1,5 @@
 <template lang="pug">
-f-expansion-panel(class="border-b border-grey-250")
+f-expansion-panel
   template(#trigger="{ isExpand }")
     div(class="h-15 flex items-center justify-between")
       h5(class="text-h5 text-grey-900 font-bold") {{ $t('DD0021') }}

@@ -4,8 +4,8 @@ modal-behavior(
   :primaryBtnText="$t('UU0049')"
   :primaryBtnDisabled="actionBtnDisabled"
   @click:primary="actionHandler"
-  :textBtnText="$t('UU0026')"
-  @click:text="$store.dispatch('helper/closeModalBehavior')"
+  :secondaryBtnText="$t('UU0026')"
+  @click:secondary="$store.dispatch('helper/closeModalBehavior')"
 )
   template(#note)
     file-upload-error-note(

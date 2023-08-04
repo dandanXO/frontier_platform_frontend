@@ -1,4 +1,3 @@
-import axios from '@/apis'
 import assetsApi from '@/apis/assets'
 import { downloadBase64File } from '@/utils/fileOperator'
 import {
@@ -18,6 +17,7 @@ export default {
   },
   state: {
     materialList: [],
+    uploadingU3mMaterialIdList: [],
     code: {
       contentList: [],
       descriptionList: [],
@@ -28,6 +28,7 @@ export default {
   getters: {
     materialList: (state) => state.materialList,
     code: (state) => state.code,
+    uploadingU3mMaterialIdList: (state) => state.uploadingU3mMaterialIdList,
   },
   mutations: {
     SET_materialList(state, materialList) {
@@ -35,6 +36,13 @@ export default {
     },
     SET_code(state, code) {
       Object.assign(state.code, code)
+    },
+    PUSH_uploadingU3mMaterialIdList(state, materialId) {
+      state.uploadingU3mMaterialIdList.push(materialId)
+    },
+    REMOVE_uploadingU3mMaterialIdList(state, materialId) {
+      state.uploadingU3mMaterialIdList =
+        state.uploadingU3mMaterialIdList.filter((mId) => mId !== materialId)
     },
   },
   actions: {
@@ -100,7 +108,15 @@ export default {
       })
       dispatch('setAssetsModule', data.result)
     },
-    async createMaterial({ getters, dispatch }, { tempMaterialId }) {
+    async createMaterial(
+      { getters, dispatch },
+      {
+        tempMaterialId,
+        hasCustomU3mUploading = false,
+        u3mFile,
+        needToGeneratePhysical,
+      }
+    ) {
       const material = Object.fromEntries(
         Object.entries(getters.material).filter(([key]) =>
           [
@@ -139,13 +155,26 @@ export default {
       material['certificateIdList'] = getters.material.certificateList.map(
         ({ certificateId }) => certificateId
       )
+
+      material['hasCustomU3mUploading'] = hasCustomU3mUploading
+
       const { data } = await dispatch('callAssetsApi', {
         func: 'createMaterial',
         params: { tempMaterialId, material },
       })
       dispatch('setAssetsModule', data.result)
+
+      hasCustomU3mUploading &&
+        dispatch('customU3mUpload', {
+          materialId: data.result.material.materialId,
+          u3mFile,
+          needToGeneratePhysical,
+        })
     },
-    async updateMaterial({ getters, dispatch }) {
+    async updateMaterial(
+      { getters, dispatch },
+      { hasCustomU3mUploading = false, u3mFile, needToGeneratePhysical }
+    ) {
       const materialId = getters.material.materialId
       const material = Object.fromEntries(
         Object.entries(getters.material).filter(([key]) =>
@@ -185,10 +214,20 @@ export default {
       material['certificateIdList'] = getters.material.certificateList.map(
         ({ certificateId }) => certificateId
       )
+
+      material['hasCustomU3mUploading'] = hasCustomU3mUploading
+
       await dispatch('callAssetsApi', {
         func: 'updateMaterial',
         params: { materialId, material },
       })
+
+      hasCustomU3mUploading &&
+        dispatch('customU3mUpload', {
+          materialId,
+          u3mFile,
+          needToGeneratePhysical,
+        })
     },
     async updateMaterialSimpleSpec({ getters, dispatch }) {
       const materialId = getters.material.materialId
@@ -598,6 +637,40 @@ export default {
         params: tempParams,
       })
       return data
+    },
+
+    /**
+     * @param {object} params
+     * @param {number} params.materialId
+     * @param {File} params.u3mFile
+     * @param {boolean} params.needToGeneratePhysical
+     */
+    async customU3mUpload(
+      { dispatch, commit },
+      { materialId, u3mFile, needToGeneratePhysical }
+    ) {
+      commit('PUSH_uploadingU3mMaterialIdList', materialId)
+      console.log('start to upload to s3')
+      const { tempUploadId, fileName } = await dispatch(
+        'uploadFileToS3',
+        { fileName: u3mFile.name, file: u3mFile },
+        { root: true }
+      )
+
+      console.log('uploaded to s3')
+      console.log('start to send to server')
+      await dispatch('callAssetsApi', {
+        func: 'customU3mUpload',
+        params: {
+          materialId,
+          tempUploadId,
+          fileName,
+          needToGeneratePhysical,
+        },
+      })
+      console.log('sent to server')
+
+      commit('REMOVE_uploadingU3mMaterialIdList', materialId)
     },
     async smartUpload({ dispatch }, params) {
       const { data } = await dispatch('callAssetsApi', {

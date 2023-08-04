@@ -12,7 +12,7 @@ modal-behavior(
       div(class="grid grid-cols-4 gap-x-5 gap-y-4.5")
         div(
           class="w-25 h-25 rounded border border-dashed border-grey-250 flex justify-center items-center cursor-pointer"
-          @click="openModalUploadCoverImage"
+          @click="openModalUploadFileGeneral"
         )
           f-svg-icon(iconName="add" size="24" class="text-grey-900")
         template(v-for="(image, index) in imageList")
@@ -130,7 +130,7 @@ const choose = async () => {
   }
 }
 
-const openModalUploadCoverImage = () => {
+const openModalUploadFileGeneral = () => {
   store.dispatch('helper/pushModalBehavior', {
     component: 'modal-upload-file-general',
     properties: {
