@@ -5169,7 +5169,7 @@ export interface MaterialCustomU3m {
      * @type {boolean}
      * @memberof MaterialCustomU3m
      */
-    'hasPhysicalData'?: boolean;
+    'hasPhysicalData': boolean;
     /**
      * 
      * @type {string}
@@ -5253,7 +5253,7 @@ export interface MaterialCustomU3m {
      * @type {number}
      * @memberof MaterialCustomU3m
      */
-    'createDate'?: number;
+    'createDate': number;
 }
 
 export const MaterialCustomU3mStatusEnum = {
@@ -5638,7 +5638,7 @@ export interface MaterialU3m {
      * @type {boolean}
      * @memberof MaterialU3m
      */
-    'hasPhysicalData'?: boolean;
+    'hasPhysicalData': boolean;
     /**
      * 
      * @type {string}
@@ -5722,7 +5722,7 @@ export interface MaterialU3m {
      * @type {number}
      * @memberof MaterialU3m
      */
-    'createDate'?: number;
+    'createDate': number;
 }
 
 export const MaterialU3mStatusEnum = {
@@ -9534,107 +9534,11 @@ export interface OrgAssetsUploadProgressU3mGetListPost200Response {
 export interface OrgAssetsUploadProgressU3mGetListPost200ResponseResult {
     /**
      * 
-     * @type {Array<OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner>}
+     * @type {Array<ProgressU3mItem>}
      * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResult
      */
-    'u3mProgressList'?: Array<OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner>;
+    'u3mProgressList'?: Array<ProgressU3mItem>;
 }
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
- */
-export interface OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'u3mProgressId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'materialId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'materialNo'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'image'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'createDate'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'createUser'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'createAvatar'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'status'?: OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'isMaterialDeleted'?: boolean;
-    /**
-     * status 為 3 Unsuccessful 時 msgCode 才有值
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'msgCode'?: OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerMsgCodeEnum;
-    /**
-     * 1: Frontier產生 2: 客製化上傳
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'sourceType'?: OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum;
-}
-
-export const OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum = typeof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum[keyof typeof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum];
-export const OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerMsgCodeEnum = {
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerMsgCodeEnum = typeof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerMsgCodeEnum[keyof typeof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerMsgCodeEnum];
-export const OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum = {
-    FRONTIER: 1,
-    CUSTOMIZED: 2
-} as const;
-
-export type OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum = typeof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum[keyof typeof OrgAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum];
-
 /**
  * 
  * @export
@@ -9673,10 +9577,10 @@ export interface OrgAssetsUploadProgressU3mGetListPostRequest {
     'keyword'?: string;
     /**
      * 
-     * @type {OrgAssetsUploadProgressMaterialGetListPostRequestPagination}
+     * @type {OrgAssetsUploadProgressU3mGetListPostRequestPagination}
      * @memberof OrgAssetsUploadProgressU3mGetListPostRequest
      */
-    'pagination': OrgAssetsUploadProgressMaterialGetListPostRequestPagination;
+    'pagination': OrgAssetsUploadProgressU3mGetListPostRequestPagination;
 }
 
 export const OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum = {
@@ -9689,6 +9593,33 @@ export const OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum = {
 } as const;
 
 export type OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum = typeof OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum[keyof typeof OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum];
+
+/**
+ * 
+ * @export
+ * @interface OrgAssetsUploadProgressU3mGetListPostRequestPagination
+ */
+export interface OrgAssetsUploadProgressU3mGetListPostRequestPagination {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgAssetsUploadProgressU3mGetListPostRequestPagination
+     */
+    'perPageCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgAssetsUploadProgressU3mGetListPostRequestPagination
+     */
+    'targetPage'?: number;
+    /**
+     * 
+     * @type {ProgressU3mSort}
+     * @memberof OrgAssetsUploadProgressU3mGetListPostRequestPagination
+     */
+    'sort'?: ProgressU3mSort;
+}
+
 
 /**
  * 組織型態書籤
@@ -11251,134 +11182,6 @@ export interface OrgGroupAssetsUploadProgressU3mDeletePostRequest {
 /**
  * 
  * @export
- * @interface OrgGroupAssetsUploadProgressU3mGetListPost200Response
- */
-export interface OrgGroupAssetsUploadProgressU3mGetListPost200Response {
-    /**
-     * 
-     * @type {OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResult}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200Response
-     */
-    'result'?: OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResult
- */
-export interface OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResult {
-    /**
-     * 
-     * @type {Array<OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner>}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResult
-     */
-    'u3mProgressList'?: Array<OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner>;
-}
-/**
- * 
- * @export
- * @interface OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
- */
-export interface OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'u3mProgressId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'materialId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'materialNo'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'image'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'createDate'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'createUser'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'createAvatar'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'status'?: OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'isMaterialDeleted'?: boolean;
-    /**
-     * 1: Frontier產生 2: 客製化上傳
-     * @type {number}
-     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInner
-     */
-    'sourceType'?: OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum;
-}
-
-export const OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum = typeof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum[keyof typeof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerStatusEnum];
-export const OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum = {
-    FRONTIER: 1,
-    CUSTOMIZED: 2
-} as const;
-
-export type OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum = typeof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum[keyof typeof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResultU3mProgressListInnerSourceTypeEnum];
-
-/**
- * 
- * @export
  * @interface OrgGroupAssetsUploadProgressU3mGetListPostRequest
  */
 export interface OrgGroupAssetsUploadProgressU3mGetListPostRequest {
@@ -11414,10 +11217,10 @@ export interface OrgGroupAssetsUploadProgressU3mGetListPostRequest {
     'keyword'?: string;
     /**
      * 
-     * @type {OrgAssetsUploadProgressMaterialGetListPostRequestPagination}
+     * @type {OrgAssetsUploadProgressU3mGetListPostRequestPagination}
      * @memberof OrgGroupAssetsUploadProgressU3mGetListPostRequest
      */
-    'pagination': OrgAssetsUploadProgressMaterialGetListPostRequestPagination;
+    'pagination': OrgAssetsUploadProgressU3mGetListPostRequestPagination;
 }
 
 export const OrgGroupAssetsUploadProgressU3mGetListPostRequestStatusEnum = {
@@ -17893,6 +17696,120 @@ export interface PricingPro {
      */
     'u3mMonthFreeQty'?: number;
 }
+/**
+ * 
+ * @export
+ * @interface ProgressU3mItem
+ */
+export interface ProgressU3mItem {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgressU3mItem
+     */
+    'u3mProgressId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgressU3mItem
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgressU3mItem
+     */
+    'materialNo': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgressU3mItem
+     */
+    'image': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgressU3mItem
+     */
+    'createDate': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgressU3mItem
+     */
+    'createUser': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgressU3mItem
+     */
+    'createAvatar': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgressU3mItem
+     */
+    'status': ProgressU3mItemStatusEnum;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProgressU3mItem
+     */
+    'isMaterialDeleted': boolean;
+    /**
+     * status 為 3 Unsuccessful 時 msgCode 才有值，1: 在 in queue 時來源布片被刪除
+     * @type {number}
+     * @memberof ProgressU3mItem
+     */
+    'msgCode'?: ProgressU3mItemMsgCodeEnum;
+    /**
+     * 1: Frontier產生 2: 客製化上傳
+     * @type {number}
+     * @memberof ProgressU3mItem
+     */
+    'sourceType': ProgressU3mItemSourceTypeEnum;
+}
+
+export const ProgressU3mItemStatusEnum = {
+    ALL: 0,
+    In_QUEUE: 1,
+    PROCESSING: 2,
+    UNSUCCESSFUL: 3,
+    COMPLETED: 4,
+    CANCELED: 5
+} as const;
+
+export type ProgressU3mItemStatusEnum = typeof ProgressU3mItemStatusEnum[keyof typeof ProgressU3mItemStatusEnum];
+export const ProgressU3mItemMsgCodeEnum = {
+    SOURCE_DELETED: 1
+} as const;
+
+export type ProgressU3mItemMsgCodeEnum = typeof ProgressU3mItemMsgCodeEnum[keyof typeof ProgressU3mItemMsgCodeEnum];
+export const ProgressU3mItemSourceTypeEnum = {
+    FRONTIER: 1,
+    CUSTOMIZED: 2
+} as const;
+
+export type ProgressU3mItemSourceTypeEnum = typeof ProgressU3mItemSourceTypeEnum[keyof typeof ProgressU3mItemSourceTypeEnum];
+
+/**
+ * 排序方式 3:status (In Queue > Processing > Unsuccessful > Complete),4: status (Complete > Unsuccessful > Processing > In Queue), 5 sourceType (Frontier -> Customized), 6 sourceType (Customized -> Frontier)
+ * @export
+ * @enum {string}
+ */
+
+export const ProgressU3mSort = {
+    NEWEST_FIRST: 1,
+    OLDEST_FIRST: 2,
+    IN_QUEUE_FIRST: 3,
+    COMPLETE_FIRST: 4,
+    FRONTIER_FIRST: 5,
+    CUSTOMIZE_FIRST: 6
+} as const;
+
+export type ProgressU3mSort = typeof ProgressU3mSort[keyof typeof ProgressU3mSort];
+
+
 /**
  * 
  * @export
@@ -26963,7 +26880,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsUploadProgressU3mGetListPost(orgGroupAssetsUploadProgressU3mGetListPostRequest?: OrgGroupAssetsUploadProgressU3mGetListPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupAssetsUploadProgressU3mGetListPost200Response>> {
+        async orgGroupAssetsUploadProgressU3mGetListPost(orgGroupAssetsUploadProgressU3mGetListPostRequest?: OrgGroupAssetsUploadProgressU3mGetListPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsUploadProgressU3mGetListPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsUploadProgressU3mGetListPost(orgGroupAssetsUploadProgressU3mGetListPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -27374,7 +27291,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsUploadProgressU3mGetListPost(orgGroupAssetsUploadProgressU3mGetListPostRequest?: OrgGroupAssetsUploadProgressU3mGetListPostRequest, options?: any): AxiosPromise<OrgGroupAssetsUploadProgressU3mGetListPost200Response> {
+        orgGroupAssetsUploadProgressU3mGetListPost(orgGroupAssetsUploadProgressU3mGetListPostRequest?: OrgGroupAssetsUploadProgressU3mGetListPostRequest, options?: any): AxiosPromise<OrgAssetsUploadProgressU3mGetListPost200Response> {
             return localVarFp.orgGroupAssetsUploadProgressU3mGetListPost(orgGroupAssetsUploadProgressU3mGetListPostRequest, options).then((request) => request(axios, basePath));
         },
     };

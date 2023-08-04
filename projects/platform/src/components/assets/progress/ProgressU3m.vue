@@ -8,7 +8,7 @@ f-table(
   :searchPlaceholder="$t('RR0053')"
   :isLoading="isLoading"
   rowHeight="124px"
-  tableWidth="1600px"
+  tableWidth="1700px"
   @search="getList()"
   @sort="getList()"
   @goTo="getList($event)"
@@ -47,12 +47,10 @@ f-table(
         :style="{ 'background-image': `url(${item.image})` }"
       )
       div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-250 font-bold z-1") {{ $t('RR0063') }}
-    div(v-if="prop === 'itemNumber'" class="relative") {{ item.materialNo }}
+    div(v-if="prop === 'sourceType'") {{ item.sourceType == U3M_PROVIDER.FRONTIER ? $t('EE0174') : $t('EE0175') }}
+    div(v-if="prop === 'itemNumber'") {{ item.materialNo }}
     div(v-if="prop === 'createdTime'")
-      div(
-        v-for="string in $dayjs.unix(item.createDate).format('YYYY/MM/DD-hh:mm:ss A').split('-')"
-        class="leading-1.6"
-      ) {{ string }}
+      p(class="text-body2/1.6 text-grey-600") {{ toDigitalThreadDateFormat(item.createDate) }}
     table-status-label(v-if="prop === 'statusLabel'" :status="item.status")
     table-status-progress(v-if="prop === 'procedure'" :status="item.status")
       //- Unsuccessful
@@ -98,7 +96,7 @@ f-table(
           type="secondary"
           size="sm"
           class="mr-2.5"
-          @click="openModalViewer(item.materialId)"
+          @click="openModal3dViewer(item.materialId, item.sourceType)"
         ) {{ $t('UU0006') }}
         f-popper(
           v-if="[UPLOAD_PROGRESS.IN_QUEUE, UPLOAD_PROGRESS.COMPLETE].includes(item.status)"
@@ -134,17 +132,20 @@ f-table(
                 ) {{ $t('PP0016') }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import TableStatusLabel from '@/components/assets/progress/TableStatusLabel.vue'
 import TableStatusProgress from '@/components/assets/progress/TableStatusProgress.vue'
-import { UPLOAD_PROGRESS_SORT_BY, UPLOAD_PROGRESS } from '@/utils/constants'
+import { UPLOAD_PROGRESS } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
-import useModelEditor from '@/composables/useModelEditor'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { ref, computed, reactive, watch } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
+import type { ProgressU3mItem, Material } from '@frontier/platform-web-sdk'
+import { ProgressU3mSort } from '@frontier/platform-web-sdk'
+import { toDigitalThreadDateFormat } from '@/utils/date'
+import { U3M_PROVIDER } from '@/utils/constants'
 
 const ERROR_MSG = {
   SOURCE_DELETED: 1,
@@ -167,7 +168,7 @@ const { goToAssetMaterialDetail } = useNavigation()
 const isLoading = ref(false)
 const keyword = ref('')
 const pagination = ref({
-  sort: UPLOAD_PROGRESS_SORT_BY.NEWEST_FIRST,
+  sort: ProgressU3mSort.NEWEST_FIRST,
   currentPage: 1,
   totalPage: 1,
   perPageCount: 8,
@@ -176,11 +177,10 @@ const queryParams = reactive({
   startDate: '',
   endDate: '',
 })
-const tableData = computed(
+const tableData = computed<ProgressU3mItem[]>(
   () => store.getters['assets/progress/u3mProgressList']
 )
-const material = computed(() => store.getters['assets/material'])
-const { openModalModelEditor } = useModelEditor(material)
+const material = computed<Material>(() => store.getters['assets/material'])
 
 const headers = [
   {
@@ -189,19 +189,23 @@ const headers = [
     colSpan: 'col-span-1',
   },
   {
+    prop: 'sourceType',
+    label: t('RR0087'),
+    colSpan: 'col-span-1',
+    itemCustomClass: ['line-clamp-1'],
+    sortBy: [ProgressU3mSort.FRONTIER_FIRST, ProgressU3mSort.COMPLETE_FIRST],
+  },
+  {
     prop: 'itemNumber',
     label: t('RR0013'),
-    colSpan: 'col-span-2',
+    colSpan: 'col-span-1',
     itemCustomClass: ['line-clamp-2'],
   },
   {
     prop: 'statusLabel',
     label: t('PP0010'),
     colSpan: 'col-span-2',
-    sortBy: [
-      UPLOAD_PROGRESS_SORT_BY.IN_QUEUE_FIRST,
-      UPLOAD_PROGRESS_SORT_BY.COMPLETE_FIRST,
-    ],
+    sortBy: [ProgressU3mSort.IN_QUEUE_FIRST, ProgressU3mSort.COMPLETE_FIRST],
   },
   {
     prop: 'procedure',
@@ -212,10 +216,7 @@ const headers = [
     prop: 'createdTime',
     label: t('RR0189'),
     colSpan: 'col-span-1',
-    sortBy: [
-      UPLOAD_PROGRESS_SORT_BY.NEWEST_FIRST,
-      UPLOAD_PROGRESS_SORT_BY.OLDEST_FIRST,
-    ],
+    sortBy: [ProgressU3mSort.NEWEST_FIRST, ProgressU3mSort.OLDEST_FIRST],
   },
   {
     prop: 'createBy',
@@ -235,7 +236,8 @@ const clearDate = () => {
   getList()
 }
 
-let timerId
+type Timeout = ReturnType<typeof setTimeout>
+let timerId: Timeout
 
 const getList = async (targetPage = 1, showSpinner = true) => {
   clearTimeout(timerId)
@@ -265,12 +267,24 @@ const openModalSendFeedback = () => {
   })
 }
 
-const openModalViewer = async (materialId) => {
+const openModal3dViewer = async (
+  materialId: number,
+  sourceType: U3M_PROVIDER
+) => {
   await store.dispatch('assets/getMaterial', { materialId })
-  openModalModelEditor()
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-3d-viewer',
+    properties: {
+      materialId,
+      u3m:
+        sourceType === U3M_PROVIDER.FRONTIER
+          ? material.value.u3m
+          : material.value.customU3m,
+    },
+  })
 }
 
-const openModalU3mDownload = async (materialId) => {
+const openModalU3mDownload = async (materialId: number) => {
   await store.dispatch('assets/getMaterial', { materialId })
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-u3m-download',
@@ -278,18 +292,20 @@ const openModalU3mDownload = async (materialId) => {
   })
 }
 
-const openModalCreate3DMaterial = async (materialId) => {
+const openModalCreate3DMaterial = async (materialId: number) => {
   await store.dispatch('assets/getMaterial', { materialId })
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-u3m-preview',
   })
 }
 
-const handleViewMaterial = (material) => {
+const handleViewMaterial = (material: Material) => {
   goToAssetMaterialDetail(material)
 }
 
-const handleCancel = async (u3mProgressId) => {
+const handleCancel = async (
+  u3mProgressId: ProgressU3mItem['u3mProgressId']
+) => {
   await store.dispatch('assets/progress/cancelU3mUploadProgress', {
     u3mProgressId,
   })

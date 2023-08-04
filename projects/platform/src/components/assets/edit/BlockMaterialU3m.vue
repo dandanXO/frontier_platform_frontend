@@ -58,6 +58,12 @@ div(class="w-79")
           @click="handleCreateU3m"
         ) {{ $t('RR0278') }}
         f-button(
+          v-if="material.u3m.status === UNSUCCESSFUL"
+          size="md"
+          class="self-end"
+          @click="handleCreateU3m"
+        ) {{ $t('UU0082') }}
+        f-button(
           v-if="material.u3m.status === COMPLETED"
           size="md"
           type="text"
@@ -68,7 +74,11 @@ div(class="w-79")
   f-expansion-panel(class="border-t border-grey-250")
     template(#trigger="{ isExpand }")
       div(class="h-15 flex items-center justify-between")
-        p(class="text-body2 text-grey-800 font-bold") {{ $t('EE0175') }}
+        div(class="flex items-center gap-x-1")
+          p(class="text-body2 text-grey-800 font-bold") {{ $t('EE0175') }}
+          f-tooltip-standard(:tooltipMessage="$t('EE0166')")
+            template(#slot:tooltip-trigger)
+              f-svg-icon(iconName="info_outline" class="cursor-pointer" size="14")
         f-svg-icon(
           iconName="keyboard_arrow_right"
           size="20"
@@ -127,7 +137,7 @@ import BlockMaterialUploadU3m from '@/components/assets/edit/BlockMaterialUpload
 import useAssets from '@/composables/useAssets'
 import { U3M_STATUS, CREATE_EDIT } from '@/utils/constants'
 import u3mInstructionImage from '@/assets/images/u3m.png'
-import inputValidator from '@/utils/input-validator'
+import inputValidator from '@/utils/inputValidator'
 import type { Material } from '@frontier/platform-web-sdk'
 import type { MakePropertiesRequired } from '@/types'
 

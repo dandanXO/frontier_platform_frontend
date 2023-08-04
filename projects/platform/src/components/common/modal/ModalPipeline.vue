@@ -236,8 +236,8 @@ export default {
     ModalMaterialEditSimpleTag: defineAsyncComponent(() =>
       import('@/components/assets/ModalMaterialEditSimpleTag.vue')
     ),
-    ModalModelEditor: defineAsyncComponent(() =>
-      import('@frontier/3d-viewer/src/components/ModelEditor.vue')
+    Modal3dViewer: defineAsyncComponent(() =>
+      import('@/components/common/material/u3m/Modal3dViewer.vue')
     ),
     ModalDigitalThreadSummary: defineAsyncComponent(() =>
       import('@/components/sticker/ModalDigitalThreadSummary.vue')

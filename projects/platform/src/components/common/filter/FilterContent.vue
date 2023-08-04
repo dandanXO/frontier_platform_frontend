@@ -51,6 +51,7 @@ import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { maxIntegerDecimal } from '@/utils/inputValidator'
 
 export default {
   name: 'FilterContent',
@@ -89,15 +90,6 @@ export default {
 
         if (name === null) {
           return t('WW0002')
-        }
-
-        const maxIntegerDecimal = (maxInteger, maxDecimal, v) => {
-          if (!v) {
-            return false
-          }
-
-          const [integer, decimal] = String(v).split('.')
-          return integer?.length > maxInteger || decimal?.length > maxDecimal
         }
 
         if (maxIntegerDecimal(3, 2, percentage)) {

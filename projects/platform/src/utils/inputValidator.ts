@@ -33,7 +33,7 @@ export const maxLength = (v: string | null | undefined, max: number) => {
 export const maxIntegerDecimal = (
   maxInteger: number,
   maxDecimal: number,
-  v: string | null | undefined
+  v: number | null | undefined
 ) => {
   if (v == null || v == undefined) {
     return true

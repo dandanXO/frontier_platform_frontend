@@ -4,10 +4,13 @@ import {
   OG_TYPE,
   INVENTORY_UNIT,
   MATERIAL_PRICING_CURRENCY,
+  NOTIFY_TYPE,
 } from '@/utils/constants'
 import putBinaryData from '@/utils/put-binary-data'
 import Material from '@/store/reuseModules/material.js'
 import progress from './progress'
+import { useNotifyStore } from '@/stores/notify'
+import i18n from '@/utils/i18n'
 
 export default {
   namespaced: true,
@@ -646,19 +649,23 @@ export default {
      * @param {boolean} params.needToGeneratePhysical
      */
     async customU3mUpload(
-      { dispatch, commit },
+      { getters, dispatch, commit },
       { materialId, u3mFile, needToGeneratePhysical }
     ) {
+      const { showNotifyBanner, closeNotifyBanner } = useNotifyStore()
+
+      showNotifyBanner({
+        notifyType: NOTIFY_TYPE.INFO,
+        title: i18n.global.t('EE0176'),
+        messageText: i18n.global.t('EE0177'),
+      })
       commit('PUSH_uploadingU3mMaterialIdList', materialId)
-      console.log('start to upload to s3')
+
       const { tempUploadId, fileName } = await dispatch(
         'uploadFileToS3',
         { fileName: u3mFile.name, file: u3mFile },
         { root: true }
       )
-
-      console.log('uploaded to s3')
-      console.log('start to send to server')
       await dispatch('callAssetsApi', {
         func: 'customU3mUpload',
         params: {
@@ -668,9 +675,10 @@ export default {
           needToGeneratePhysical,
         },
       })
-      console.log('sent to server')
-
       commit('REMOVE_uploadingU3mMaterialIdList', materialId)
+      if (getters.uploadingU3mMaterialIdList.length === 0) {
+        closeNotifyBanner()
+      }
     },
     async smartUpload({ dispatch }, params) {
       const { data } = await dispatch('callAssetsApi', {

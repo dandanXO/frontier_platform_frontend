@@ -87,8 +87,8 @@ export enum U3M_STATUS {
 }
 
 export enum U3M_PROVIDER {
-  FRONTIER = 0,
-  CUSTOMER = 1,
+  FRONTIER = 1,
+  CUSTOMER = 2,
 }
 
 export enum U3M_FILE_TYPE {

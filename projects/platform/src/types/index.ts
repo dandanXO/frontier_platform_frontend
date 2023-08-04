@@ -10,25 +10,6 @@ import type {
 } from '@/utils/constants'
 import type Decimal from 'decimal.js'
 
-export interface Material {
-  materialId: number
-  materialNo: string
-  frontierNo: string
-  u3m: U3M
-}
-
-export interface U3M {
-  status: number
-  dpi: number
-  u3mSpecUrl: string
-  normalImgUrl: string
-  roughImgUrl: string
-  dispImgUrl: string
-  zipUrl: string
-  u3maUrl: string
-  gltfUrl: string
-}
-
 export interface DownloadU3mPayload {
   materialId: number
   url: string

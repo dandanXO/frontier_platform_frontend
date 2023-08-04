@@ -13,7 +13,7 @@ div(class="flex flex-col gap-y-2.5")
       :messageText="$t('WW0094')"
       :action="{ text: $t('UU0085'), handler: goToBillings }"
     )
-  template(v-if="mode === CREATE_EDIT.EDIT")
+  template(v-if="mode === CREATE_EDIT.EDIT && status")
     f-button(
       v-if="status === U3M_STATUS.COMPLETED"
       size="md"
@@ -23,7 +23,13 @@ div(class="flex flex-col gap-y-2.5")
       @click="openModalUploadU3mFile"
     ) {{ $t('UU0022') }}
     f-button(
-      v-if="hasU3mQuota"
+      v-if="status === U3M_STATUS.UNSUCCESSFUL"
+      size="md"
+      class="self-end"
+      @click="openModalUploadU3mFile"
+    ) {{ $t('UU0022') }}
+    f-button(
+      v-if="hasU3mQuota && [U3M_STATUS.INITIAL, U3M_STATUS.UNQUALIFIED].includes(status)"
       size="md"
       class="self-end"
       @click="openModalUploadU3mFile"

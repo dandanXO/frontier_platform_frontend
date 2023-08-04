@@ -78,14 +78,13 @@ div(class="relative")
             v-for="header in headers"
             :class="[header.colSpan, header.align, getItemCustomClass(header)]"
           )
-            div(v-if="item[header.prop]") {{ item[header.prop] }}
             slot(
-              v-else
               :item="item"
               :prop="header.prop"
               :isHover="indexOfHover === index"
               :index="index"
             )
+              div {{ item[header.prop] }}
       div(v-else class="text-body1 text-grey-600 mt-10 text-center") {{ emptyText }}
   div(v-if="innerPagination.totalPage > 1" class="py-6 flex justify-center")
     f-paginator(
