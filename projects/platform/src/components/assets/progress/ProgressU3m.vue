@@ -124,7 +124,7 @@ f-table(
                 ) {{ $t('UU0002') }}
               template(v-else-if="item.status === UPLOAD_PROGRESS.COMPLETE")
                 f-list-item(
-                  @click="openModalDownloadU3M(item.materialId); collapsePopper()"
+                  @click="openModalU3mDownload(item.materialId); collapsePopper()"
                 ) {{ $t('RR0059') }}
                 f-list-item(
                   @click="openModalCreate3DMaterial(item.materialId); collapsePopper()"
@@ -270,10 +270,10 @@ const openModalViewer = async (materialId) => {
   openModalModelEditor()
 }
 
-const openModalDownloadU3M = async (materialId) => {
+const openModalU3mDownload = async (materialId) => {
   await store.dispatch('assets/getMaterial', { materialId })
   store.dispatch('helper/openModalBehavior', {
-    component: 'modal-u3m-select-file-format',
+    component: 'modal-u3m-download',
     properties: { materialList: [material.value] },
   })
 }

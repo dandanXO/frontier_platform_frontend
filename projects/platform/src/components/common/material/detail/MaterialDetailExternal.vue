@@ -92,8 +92,7 @@ const logSender = useLogSender()
 const { materialInfo, materialPublicPriceInfo, attachmentSortedList } =
   useMaterial(props.material)
 
-const downloadU3m = async (item) => {
-  const { url, format } = item
+const downloadU3m = async ({ materialId, url, format }) => {
   const needCheckTokenStatus = [
     'metafabric.design', // 青望科技
     'bluehope.4pt.tw', // 青望科技 Demo 網域
@@ -125,7 +124,7 @@ const downloadU3m = async (item) => {
   } else {
     const fileName = url.split('/')[url.split('/').length - 1]
     downloadDataURLFile(url, fileName)
-    logSender.createDownloadLog(props.material.materialId, format)
+    logSender.createDownloadLog(materialId, format)
   }
 }
 </script>

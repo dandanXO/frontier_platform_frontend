@@ -107,7 +107,7 @@ const {
   selectedNodeList,
   selectAll,
   cloneMoodboardNode,
-  openModalU3mSelectFileFormat,
+  openModalU3mDownload,
   exportMoodboardNode,
   openModalMoodboardMaterialDetail,
   togglePick,
@@ -140,7 +140,7 @@ const optionMaterial = (node) => {
       {
         name: t('RR0059'),
         disabled: node.properties.u3m.status !== U3M_STATUS.COMPLETED,
-        func: (n) => openModalU3mSelectFileFormat([n]),
+        func: (n) => openModalU3mDownload([n]),
       },
     ],
   ]

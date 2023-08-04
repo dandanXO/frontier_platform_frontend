@@ -1,9 +1,13 @@
-import type { CROP_MODE, U3M_CUT_SIDE } from '@/utils/constants'
 import type {
   OrgBookmark,
   FolderBookmark,
   WorkflowStage,
 } from '@frontier/platform-web-sdk'
+import type {
+  CROP_MODE,
+  U3M_CUT_SIDE,
+  U3M_DOWNLOAD_PROP,
+} from '@/utils/constants'
 import type Decimal from 'decimal.js'
 
 export interface Material {
@@ -25,26 +29,10 @@ export interface U3M {
   gltfUrl: string
 }
 
-export interface U3mDownloadFileItem {
-  title: string
+export interface DownloadU3mPayload {
+  materialId: number
   url: string
-  format: 'zipUrl' | 'u3maUrl' | 'gltfUrl'
-}
-
-export enum CATEGORY {
-  U3M = 1,
-  U3MA = 2,
-  GLTF = 3,
-}
-
-export enum FROM_LOCATION_TYPE {
-  PUBLIC_LIBRARY = 1,
-  ASSET = 2,
-  WORKSPACE = 3,
-  MOODBOARD = 4,
-  SHARED_WITH_ME = 5,
-  SHARED_RECEIVE_PAGE = 6,
-  EMBED = 7,
+  format: U3M_DOWNLOAD_PROP
 }
 
 export interface Image {

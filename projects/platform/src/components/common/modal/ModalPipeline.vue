@@ -80,12 +80,6 @@ export default {
     ModalCropImage: defineAsyncComponent(() =>
       import('@/components/common/cropper/ModalCropImage.vue')
     ),
-    ModalU3mSelectFileFormat: defineAsyncComponent(() =>
-      import('@/components/common/material/u3m/ModalU3mSelectFileFormat.vue')
-    ),
-    ModalU3mDownloadConfirm: defineAsyncComponent(() =>
-      import('@/components/common/material/u3m/ModalU3mDownloadConfirm.vue')
-    ),
     ModalCollectionDetail: defineAsyncComponent(() =>
       import('@/components/common/ModalCollectionDetail.vue')
     ),
@@ -269,6 +263,9 @@ export default {
       import(
         '@/components/threadBoard/bookmark/modalBookmarkManager/ModalBookmarkManager.vue'
       )
+    ),
+    ModalU3mDownload: defineAsyncComponent(() =>
+      import('@/components/common/material/u3m/ModalU3mDownload.vue')
     ),
   },
   setup() {

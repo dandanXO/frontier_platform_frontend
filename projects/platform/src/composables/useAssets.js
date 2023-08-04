@@ -211,14 +211,10 @@ export default function useAssets() {
     id: 'downloadU3M',
     icon: '3D_material',
     name: t('RR0059'),
-    disabled: (material) =>
-      toMaterialList(material).every(
-        (m) => m.u3m.status !== U3M_STATUS.COMPLETED
-      ),
     func: (material) => {
       const materialList = toMaterialList(material)
       store.dispatch('helper/openModalBehavior', {
-        component: 'modal-u3m-select-file-format',
+        component: 'modal-u3m-download',
         properties: { materialList },
       })
     },

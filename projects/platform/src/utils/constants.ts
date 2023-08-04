@@ -86,6 +86,23 @@ export enum U3M_STATUS {
   UNSUCCESSFUL = 99,
 }
 
+export enum U3M_PROVIDER {
+  FRONTIER = 0,
+  CUSTOMER = 1,
+}
+
+export enum U3M_FILE_TYPE {
+  U3M = 1,
+  U3MA = 2,
+  GLTF = 3,
+}
+
+export enum U3M_DOWNLOAD_PROP {
+  U3M = 'zipUrl',
+  U3MA = 'u3maUrl',
+  GLTF = 'gltfUrl',
+}
+
 export const OG_TYPE = {
   ORG: 1,
   GROUP: 2,

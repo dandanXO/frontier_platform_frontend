@@ -2,7 +2,7 @@ import { useRoute } from 'vue-router'
 import { FeatureType } from '@frontier/platform-web-sdk'
 import dashboardApi from '@/apis/dashboard'
 import useLogSender from '@/composables/useLogSender'
-import { CATEGORY } from '@/types'
+import { U3M_FILE_TYPE } from '@/utils/constants'
 import type { Mock } from 'vitest'
 
 vi.mock('vue-router')
@@ -167,7 +167,7 @@ describe('useLogSender', () => {
       },
       expected: {
         materialId: number
-        category: CATEGORY
+        category: U3M_FILE_TYPE
         fromLocationType: FeatureType
       }
     ) => {
@@ -197,7 +197,7 @@ describe('useLogSender', () => {
           },
           expected: {
             materialId,
-            category: CATEGORY.U3M,
+            category: U3M_FILE_TYPE.U3M,
             fromLocationType: FeatureType.PUBLIC_LIBRARY,
           },
         },
@@ -210,7 +210,7 @@ describe('useLogSender', () => {
           },
           expected: {
             materialId,
-            category: CATEGORY.U3MA,
+            category: U3M_FILE_TYPE.U3MA,
             fromLocationType: FeatureType.PUBLIC_LIBRARY,
           },
         },
@@ -223,7 +223,7 @@ describe('useLogSender', () => {
           },
           expected: {
             materialId,
-            category: CATEGORY.GLTF,
+            category: U3M_FILE_TYPE.GLTF,
             fromLocationType: FeatureType.PUBLIC_LIBRARY,
           },
         },
@@ -246,7 +246,7 @@ describe('useLogSender', () => {
           },
           expected: {
             materialId,
-            category: CATEGORY.U3M,
+            category: U3M_FILE_TYPE.U3M,
             fromLocationType: FeatureType.PUBLIC_LIBRARY,
           },
         },
@@ -259,7 +259,7 @@ describe('useLogSender', () => {
           },
           expected: {
             materialId,
-            category: CATEGORY.U3M,
+            category: U3M_FILE_TYPE.U3M,
             fromLocationType: FeatureType.PUBLIC_LIBRARY,
           },
         },
@@ -272,7 +272,7 @@ describe('useLogSender', () => {
           },
           expected: {
             materialId,
-            category: CATEGORY.U3M,
+            category: U3M_FILE_TYPE.U3M,
             fromLocationType: FeatureType.ASSET,
           },
         },
@@ -285,7 +285,7 @@ describe('useLogSender', () => {
           },
           expected: {
             materialId,
-            category: CATEGORY.U3M,
+            category: U3M_FILE_TYPE.U3M,
             fromLocationType: FeatureType.ASSET,
           },
         },
@@ -298,7 +298,7 @@ describe('useLogSender', () => {
           },
           expected: {
             materialId,
-            category: CATEGORY.U3M,
+            category: U3M_FILE_TYPE.U3M,
             fromLocationType: FeatureType.WORKSPACE,
           },
         },
@@ -311,7 +311,7 @@ describe('useLogSender', () => {
           },
           expected: {
             materialId,
-            category: CATEGORY.U3M,
+            category: U3M_FILE_TYPE.U3M,
             fromLocationType: FeatureType.SHARED_WITH_ME,
           },
         },
@@ -324,7 +324,7 @@ describe('useLogSender', () => {
           },
           expected: {
             materialId,
-            category: CATEGORY.U3M,
+            category: U3M_FILE_TYPE.U3M,
             fromLocationType: FeatureType.RECEIVED_SHARE,
           },
         },
@@ -337,7 +337,7 @@ describe('useLogSender', () => {
           },
           expected: {
             materialId,
-            category: CATEGORY.U3M,
+            category: U3M_FILE_TYPE.U3M,
             fromLocationType: FeatureType.EMBED,
           },
         },

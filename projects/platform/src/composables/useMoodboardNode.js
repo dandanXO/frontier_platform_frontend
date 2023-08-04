@@ -3,6 +3,7 @@ import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { NODE_TYPE, NOTIFY_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
+import useNavigation from '@/composables/useNavigation'
 
 /**
  * @param {ComputedRef} moodboard
@@ -16,6 +17,7 @@ export default function useMoodboardNode(
   const store = useStore()
   const notify = useNotifyStore()
   const { t } = useI18n()
+  const { goToProgress } = useNavigation()
 
   const { moodboardId, moodboardType } = moodboard.value
 
@@ -106,10 +108,10 @@ export default function useMoodboardNode(
     })
   }
 
-  const openModalU3mSelectFileFormat = (nodeList) => {
+  const openModalU3mDownload = (nodeList) => {
     const materialList = nodeList.map(({ properties }) => properties)
     store.dispatch('helper/openModalBehavior', {
-      component: 'modal-u3m-select-file-format',
+      component: 'modal-u3m-download',
       properties: { materialList },
     })
   }
@@ -180,7 +182,7 @@ export default function useMoodboardNode(
     cloneMoodboardNode,
     exportMoodboardNode,
     deleteMoodboardNode,
-    openModalU3mSelectFileFormat,
+    openModalU3mDownload,
     openModalMoodboardMaterialDetail,
     togglePick,
     openModalMoodboardCollectionDetail,

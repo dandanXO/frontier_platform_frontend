@@ -113,14 +113,8 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
     )
       template(#slot:tooltip-trigger)
         div(
-          v-if="properties.u3m.status !== U3M_STATUS.COMPLETED"
-          class="w-7.5 h-7.5 flex justify-center items-center text-grey-250"
-        )
-          f-svg-icon(iconName="3D_material" size="24")
-        div(
-          v-else
           class="w-7.5 h-7.5 hover:bg-primary-400/10 hover:text-primary-400 flex justify-center items-center rounded-full cursor-pointer"
-          @click="openModalU3mSelectFileFormat([node])"
+          @click="openModalU3mDownload([node])"
         )
           f-svg-icon(iconName="3D_material" size="24")
     f-popper(placement="left-start")
@@ -187,7 +181,7 @@ const moodboardOfferNodeCollection = computed(
 )
 const {
   cloneMoodboardNode,
-  openModalU3mSelectFileFormat,
+  openModalU3mDownload,
   openModalMoodboardMaterialDetail,
   togglePick,
 } = useMoodboardNode(moodboard, moodboardOfferNodeCollection)

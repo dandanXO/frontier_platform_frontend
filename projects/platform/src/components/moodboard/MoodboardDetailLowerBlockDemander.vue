@@ -149,7 +149,7 @@ const isFirstLayer = computed(
 const {
   cloneMoodboardNode,
   exportMoodboardNode,
-  openModalU3mSelectFileFormat,
+  openModalU3mDownload,
   openModalMoodboardMaterialDetail,
   togglePick,
   selectedNodeList,
@@ -226,7 +226,7 @@ const optionNode = (node) => {
         {
           name: t('RR0059'),
           disabled: node.properties.u3m.status !== U3M_STATUS.COMPLETED,
-          func: (n) => openModalU3mSelectFileFormat([n]),
+          func: (n) => openModalU3mDownload([n]),
         },
       ],
     ]

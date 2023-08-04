@@ -2,7 +2,7 @@ import { useRoute } from 'vue-router'
 import { FeatureType } from '@frontier/platform-web-sdk'
 import dashboardApi from '@/apis/dashboard'
 import useCurrentUnit from '@/composables/useCurrentUnit'
-import { CATEGORY } from '@/types'
+import { U3M_FILE_TYPE, U3M_DOWNLOAD_PROP } from '@/utils/constants'
 
 const useLogSender = () => {
   const route = useRoute()
@@ -40,14 +40,14 @@ const useLogSender = () => {
   })
 
   const createDownloadLog = (materialId: number, selectedFormat: string) => {
-    const getCategory = (selectedFormat: string): CATEGORY => {
+    const getCategory = (selectedFormat: string): U3M_FILE_TYPE => {
       switch (selectedFormat) {
-        case 'zipUrl':
-          return CATEGORY.U3M
-        case 'u3maUrl':
-          return CATEGORY.U3MA
-        case 'gltfUrl':
-          return CATEGORY.GLTF
+        case U3M_DOWNLOAD_PROP.U3M:
+          return U3M_FILE_TYPE.U3M
+        case U3M_DOWNLOAD_PROP.U3MA:
+          return U3M_FILE_TYPE.U3MA
+        case U3M_DOWNLOAD_PROP.GLTF:
+          return U3M_FILE_TYPE.GLTF
         default:
           throw new Error('unexpected error')
       }
