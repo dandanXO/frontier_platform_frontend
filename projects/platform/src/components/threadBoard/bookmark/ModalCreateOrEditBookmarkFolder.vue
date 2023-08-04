@@ -84,14 +84,11 @@ const searchedContactOrgList = computed(() => {
 })
 
 const isValid = computed(() => {
-  if (!folderName.value) {
-    return false
-  }
-  if (checkedOrgIdSet.value.size === 0) {
+  if (folderName.value == null) {
     return false
   }
 
-  return true
+  return folderName.value.length > 0
 })
 
 const closeModalBehavior = () => store.dispatch('helper/closeModalBehavior')
