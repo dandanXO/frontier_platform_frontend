@@ -5,10 +5,12 @@ div
     div(class="flex flex-col gap-y-7.5 flex-grow")
       material-detail-specification(:material="material")
       material-detail-pantone(:pantoneList="material.pantoneList")
-      material-detail-external-u3m-status(
-        :isEmbed="isEmbed"
-        :material="material"
-        :isCanDownloadU3M="isCanDownloadU3M"
+      material-detail-u3m-status(
+        :materialId="material.materialId"
+        :u3m="material.u3m"
+        :customU3m="material.customU3m"
+        :showStatusBlock="false"
+        :downloadHandler="downloadU3m"
       )
   div(class="pt-16 grid gap-y-7.5")
     div
@@ -16,12 +18,14 @@ div
       div(class="flex flex-wrap gap-x-2 gap-y-3")
         f-tag(
           v-for="tag in [...material.publicTagList, ...material.aiTagList]"
+          :key="tag"
         ) {{ tag }}
     div
       h5(class="text-h5 font-bold text-grey-900 pb-5") {{ $t('RR0043') }}
       div(class="grid gap-y-2")
         p(
           v-for="item in materialPublicPriceInfo"
+          :key="item.name"
           class="text-body2 text-grey-900 line-clamp-1"
         ) {{ item.name }}: {{ item.value }}
     div(v-if="material.isPublicInventory")
@@ -33,12 +37,13 @@ div
         div
           p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('EE0129') }}
           div(class="flex flex-wrap gap-x-2 gap-y-3")
-            f-tag(v-for="tag in material.certificateList") {{ tag.name }}
+            f-tag(v-for="tag in material.certificateList" :key="tag") {{ tag.name }}
         div
           p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('EE0130') }}
           div(v-if="attachmentSortedList.length > 0" class="flex flex-wrap gap-5")
             attachment-item(
               v-for="(attachment, index) in attachmentSortedList"
+              :key="`attachment-${index}`"
               :attachmentList="attachmentSortedList"
               :attachment="attachment"
               :index="index"
@@ -57,8 +62,13 @@ import AttachmentItem from '@/components/common/material/attachment/AttachmentIt
 import MaterialDetailPreviewImg from '@/components/common/material/detail/MaterialDetailPreviewImg.vue'
 import MaterialDetailPantone from '@/components/common/material/detail/MaterialDetailPantone.vue'
 import MaterialDetailSpecification from '@/components/common/material/detail/MaterialDetailSpecification.vue'
-import MaterialDetailExternalU3mStatus from '@/components/common/material/detail/MaterialDetailExternalU3mStatus.vue'
+import MaterialDetailU3mStatus from '@/components/common/material/detail/MaterialDetailU3mStatus.vue'
 import MaterialDetailEnvironmentalIndicator from '@/components/common/material/detail/MaterialDetailEnvironmentalIndicator.vue'
+import { downloadDataURLFile } from '@/utils/fileOperator'
+import useLogSender from '@/composables/useLogSender'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { NOTIFY_TYPE } from '@frontier/constants'
 
 const props = defineProps({
   isEmbed: {
@@ -75,6 +85,47 @@ const props = defineProps({
   },
 })
 
+const { t } = useI18n()
+const store = useStore()
+const logSender = useLogSender()
+
 const { materialInfo, materialPublicPriceInfo, attachmentSortedList } =
   useMaterial(props.material)
+
+const downloadU3m = async (item) => {
+  const { url, format } = item
+  const needCheckTokenStatus = [
+    'metafabric.design', // 青望科技
+    'bluehope.4pt.tw', // 青望科技 Demo 網域
+  ].some((hostname) => document.referrer.includes(hostname))
+
+  if (!props.isEmbed) {
+    await store.dispatch('user/getUser')
+  } else if (needCheckTokenStatus) {
+    const status = await store.dispatch('checkTokenStatus', {
+      accessToken: localStorage.getItem('accessToken'),
+    })
+
+    if (status === 1) {
+      parent.postMessage({ error: 'Unauthorized' }, document.referrer)
+      return
+    } else if (status === 2) {
+      parent.postMessage({ error: 'Unverified' }, document.referrer)
+      return
+    }
+  }
+
+  if (!props.isCanDownloadU3M) {
+    store.dispatch('helper/openModalConfirm', {
+      type: NOTIFY_TYPE.WARNING,
+      header: t('II0003'),
+      contentText: t('II0004'),
+      primaryBtnText: t('UU0031'),
+    })
+  } else {
+    const fileName = url.split('/')[url.split('/').length - 1]
+    downloadDataURLFile(url, fileName)
+    logSender.createDownloadLog(props.material.materialId, format)
+  }
+}
 </script>

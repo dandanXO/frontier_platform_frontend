@@ -67,4 +67,8 @@ const switchTab = (tab) => {
   currentTab.value = tab[props.keyField]
   emit('switch', tab)
 }
+
+defineExpose({
+  currentTab,
+})
 </script>

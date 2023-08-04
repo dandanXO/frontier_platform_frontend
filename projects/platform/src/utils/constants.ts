@@ -77,13 +77,13 @@ export const COVER_MODE = {
   SUP: 3,
 }
 
-export const U3M_STATUS = {
-  UNQUALIFIED: -1,
-  INITIAL: 0,
-  IN_QUEUE: 1,
-  COMPLETED: 2,
-  PROCESSING: 3,
-  UNSUCCESSFUL: 99,
+export enum U3M_STATUS {
+  UNQUALIFIED = -1,
+  INITIAL = 0,
+  IN_QUEUE = 1,
+  COMPLETED = 2,
+  PROCESSING = 3,
+  UNSUCCESSFUL = 99,
 }
 
 export const OG_TYPE = {

@@ -25,6 +25,12 @@ export interface U3M {
   gltfUrl: string
 }
 
+export interface U3mDownloadFileItem {
+  title: string
+  url: string
+  format: 'zipUrl' | 'u3maUrl' | 'gltfUrl'
+}
+
 export enum CATEGORY {
   U3M = 1,
   U3MA = 2,

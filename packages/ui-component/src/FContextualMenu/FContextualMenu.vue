@@ -254,7 +254,7 @@ const innerMenuTree = computed<Required<MenuTree>>(() =>
   )
 )
 
-const clickMenuHandler = (menu: MenuItem) => {
+const clickMenuHandler = (menu: Required<MenuItem>) => {
   if (props.selectMode === MULTIPLE) {
     const tempArr = [...props.inputSelectValue]
     const index = tempArr.findIndex((selectValue) =>

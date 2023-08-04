@@ -5157,7 +5157,19 @@ export interface MaterialCustomU3m {
      * @type {number}
      * @memberof MaterialCustomU3m
      */
-    'status'?: MaterialCustomU3mStatusEnum;
+    'status': MaterialCustomU3mStatusEnum;
+    /**
+     * 使用者上傳的檔案名稱
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'customFileName'?: string;
+    /**
+     * 是否有物理資料
+     * @type {boolean}
+     * @memberof MaterialCustomU3m
+     */
+    'hasPhysicalData'?: boolean;
     /**
      * 
      * @type {string}
@@ -5245,12 +5257,12 @@ export interface MaterialCustomU3m {
 }
 
 export const MaterialCustomU3mStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    UNQUALIFIED: -1,
+    INITIAL: 0,
+    IN_QUEUE: 1,
+    COMPLETED: 2,
+    PROCESSING: 3,
+    UNSUCCESSFUL: 99
 } as const;
 
 export type MaterialCustomU3mStatusEnum = typeof MaterialCustomU3mStatusEnum[keyof typeof MaterialCustomU3mStatusEnum];
@@ -5620,7 +5632,13 @@ export interface MaterialU3m {
      * @type {number}
      * @memberof MaterialU3m
      */
-    'status'?: MaterialU3mStatusEnum;
+    'status': MaterialU3mStatusEnum;
+    /**
+     * 是否有物理資料
+     * @type {boolean}
+     * @memberof MaterialU3m
+     */
+    'hasPhysicalData'?: boolean;
     /**
      * 
      * @type {string}
@@ -5708,12 +5726,12 @@ export interface MaterialU3m {
 }
 
 export const MaterialU3mStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    UNQUALIFIED: -1,
+    INITIAL: 0,
+    IN_QUEUE: 1,
+    COMPLETED: 2,
+    PROCESSING: 3,
+    UNSUCCESSFUL: 99
 } as const;
 
 export type MaterialU3mStatusEnum = typeof MaterialU3mStatusEnum[keyof typeof MaterialU3mStatusEnum];
@@ -8366,6 +8384,12 @@ export interface OrgAssetsMaterialUpdatePostRequestMaterial {
      * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
      */
     'certificateIdList'?: Array<number>;
+    /**
+     * 是否客製化U3M正在上傳中
+     * @type {boolean}
+     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
+     */
+    'hasCustomU3mUploading': boolean;
 }
 
 export const OrgAssetsMaterialUpdatePostRequestMaterialWeightOrThicknessUnitEnum = {

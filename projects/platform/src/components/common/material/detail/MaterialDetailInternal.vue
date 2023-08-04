@@ -5,7 +5,11 @@ div
     div(class="flex flex-col gap-y-7.5 flex-grow")
       material-detail-specification(:material="material")
       material-detail-pantone(:pantoneList="material.pantoneList")
-      material-detail-internal-u3m-status(:material="material")
+      material-detail-u3m-status(
+        :materialId="material.materialId"
+        :u3m="material.u3m"
+        :customU3m="material.customU3m"
+      )
   f-tabs(:tabList="tabList" keyField="id" class="pt-20")
     template(#default="{ currentTab }")
       div(class="pt-10")
@@ -13,17 +17,17 @@ div
           div
             p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('RR0027') }}
             div(class="flex flex-wrap gap-x-2 gap-y-3")
-              f-tag(v-for="tag in material.publicTagList") {{ tag }}
+              f-tag(v-for="tag in material.publicTagList" :key="tag") {{ tag }}
           div(class="pt-7 pb-10")
             p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('RR0071') }}
             div(class="flex flex-wrap gap-x-2 gap-y-3")
-              f-tag(v-for="tag in material.aiTagList") {{ tag }}
+              f-tag(v-for="tag in material.aiTagList" :key="tag") {{ tag }}
           div(class="rounded-md bg-grey-50 px-5 py-7.5")
             h6(class="text-h6 font-bold text-grey-600") {{ $t('EE0026') }}
             div(class="pt-7.5")
               p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('RR0028') }}
               div(class="flex flex-wrap gap-x-2 gap-y-3")
-                f-tag(v-for="tag in material.privateTagList") {{ tag }}
+                f-tag(v-for="tag in material.privateTagList" :key="tag") {{ tag }}
             div(class="pt-17.5")
               p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('RR0029') }}
               p(class="text-body2 text-grey-900 leading-1.6") {{ material.remark }}
@@ -31,6 +35,7 @@ div
           div(class="grid gap-y-5")
             div(
               v-for="item in materialPublicPriceInfo"
+              :key="item.name"
               class="text-body2 text-grey-900 grid grid-cols-8"
             )
               p(class="col-span-3") {{ item.name }}
@@ -41,6 +46,7 @@ div
               div(class="grid gap-y-5")
                 div(
                   v-for="item in materialPrivatePriceInfo"
+                  :key="item.name"
                   class="text-body2 text-grey-900 grid grid-cols-8"
                 )
                   p(class="col-span-3") {{ item.name }}
@@ -53,6 +59,7 @@ div
                 div(class="grid gap-y-5")
                   div(
                     v-for="item in materialInventoryInfo"
+                    :key="item.name"
                     class="text-body2 text-grey-900 grid grid-cols-8"
                   )
                     p(class="col-span-3") {{ item.name }}
@@ -80,7 +87,8 @@ div
                     p {{ $t('RR0038') }}
                   div(class="divide-y divide-solid divide-grey-100")
                     div(
-                      v-for="inventory in material.inventoryList"
+                      v-for="(inventory, index) in material.inventoryList"
+                      :key="`inventory-${index}`"
                       class="h-10.5 grid grid-cols-4 justify-items-center content-center"
                     )
                       p {{ inventory.section }}
@@ -91,12 +99,13 @@ div
           div(class="pb-10")
             p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('EE0129') }}
             div(class="flex flex-wrap gap-x-2 gap-y-3")
-              f-tag(v-for="tag in material.certificateList") {{ tag.name }}
+              f-tag(v-for="tag in material.certificateList" :key="tag") {{ tag.name }}
           div
             p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('EE0130') }}
             div(v-if="attachmentSortedList.length > 0" class="flex flex-wrap gap-5")
               attachment-item(
                 v-for="(attachment, index) in attachmentSortedList"
+                :key="`attachment-${index}`"
                 :attachmentList="attachmentSortedList"
                 :attachment="attachment"
                 :index="index"
@@ -136,7 +145,7 @@ import AttachmentItem from '@/components/common/material/attachment/AttachmentIt
 import MaterialDetailPreviewImg from '@/components/common/material/detail/MaterialDetailPreviewImg.vue'
 import MaterialDetailPantone from '@/components/common/material/detail/MaterialDetailPantone.vue'
 import MaterialDetailSpecification from '@/components/common/material/detail/MaterialDetailSpecification.vue'
-import MaterialDetailInternalU3mStatus from '@/components/common/material/detail/MaterialDetailInternalU3mStatus.vue'
+import MaterialDetailU3mStatus from '@/components/common/material/detail/MaterialDetailU3mStatus.vue'
 import MaterialDetailEnvironmentalIndicator from '@/components/common/material/detail/MaterialDetailEnvironmentalIndicator.vue'
 
 const props = defineProps({

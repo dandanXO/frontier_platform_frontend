@@ -1,4 +1,5 @@
 import type { Component } from 'vue'
+import type { DISPLAY } from '@frontier/constants'
 
 export interface MenuButton {
   position: 'top' | 'bottom'
@@ -14,7 +15,7 @@ export interface MenuItem {
   titleLineClamp?: number
   description?: string
   descriptionLineClamp?: number
-  display?: string
+  display?: `${DISPLAY}`
   disabled?: boolean
   selectable?: boolean
   selectValue?: any

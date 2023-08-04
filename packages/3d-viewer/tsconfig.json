@@ -16,7 +16,7 @@
     "types": ["vitest/globals", "@frontier/ui-component/components.d.ts"]
   },
   "vueCompilerOptions": {
-    "plugins": ["@volar/vue-language-plugin-pug"]
+    "plugins": ["@vue/language-plugin-pug"]
   },
   "references": [
     {

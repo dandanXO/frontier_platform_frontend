@@ -7,6 +7,7 @@ declare module '@vue/runtime-core' {
     FInfobar: typeof import('./src/FNotify/FInfobar/FInfobar.vue').default
     FPopper: typeof import('./src/FPopper/FPopper.vue').default
     FContextualMenu: typeof import('./src/FContextualMenu/FContextualMenu.vue').default
+    FTabs: typeof import('./src/FTabs/FTabs.vue').default
   }
 }
 

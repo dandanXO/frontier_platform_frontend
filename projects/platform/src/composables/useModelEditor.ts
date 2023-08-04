@@ -4,8 +4,14 @@ import { U3M_STATUS } from '@/utils/constants'
 import useLogSender from '@/composables/useLogSender'
 import type { Ref } from 'vue'
 import type { Material } from '@/types'
+import type { MaterialCustomU3m, MaterialU3m } from '@frontier/platform-web-sdk'
 
-const useModelEditor = (material: Ref<Material> | Material) => {
+interface Temp {
+  materialId: number
+  u3m: MaterialCustomU3m | MaterialU3m
+}
+
+const useModelEditor = (material: Ref<Material> | Material | Temp) => {
   const store = useStore()
   const logSender = useLogSender()
   const isOpen = ref(false)
