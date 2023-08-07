@@ -40,6 +40,7 @@ const useBookmarkManagerStore = defineStore(
     const threadBoardStore = useThreadBoardStore()
 
     const { bookmarkList, contactOrgList } = storeToRefs(threadBoardStore)
+    const { setBookmarkFilter, getAllThreadBookmarkId } = threadBoardStore
 
     const searchText = ref<string | null>('')
     const bookmarkManagerBookmarkList = ref<
@@ -616,6 +617,14 @@ const useBookmarkManagerStore = defineStore(
       }
       await threadBoardApi.saveThreadBoardBookmarkList(req)
       threadBoardStore.fetchBookmarkList()
+
+      if (!currentBookmark.value) {
+        setBookmarkFilter({
+          bookmarkId: getAllThreadBookmarkId(),
+          orgId: null,
+        })
+      }
+
       bookmarkManagerBookmarkList.value = null
       store.dispatch('helper/closeModalBehavior')
       cleanup()

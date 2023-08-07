@@ -368,7 +368,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       (b) => b.bookmarkId === bookmarkFilterBookmarkId
     )
     if (!target) {
-      throw new Error('Bookmark not found')
+      return null
     }
     return target
   })
@@ -392,7 +392,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
             (o) => o.orgId === bookmarkFilterValue.orgId
           )
           if (!result) {
-            throw new Error('Bookmark not found')
+            return null
           }
           return result.orgName
         }
@@ -406,7 +406,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
             (o) => o.orgId === bookmarkFilterValue.orgId
           )
           if (!result) {
-            throw new Error('bookmark not found')
+            return null
           }
           return result.logo
         }
@@ -1158,31 +1158,31 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     fetchBookmarkList()
   }
 
+  const getAllThreadBookmarkId = () => {
+    if (!bookmarkList.value) {
+      throw new Error('bookmarkList undefined')
+    }
+
+    let allThreadBookmarkId = null
+    for (const bookmark of bookmarkList.value) {
+      if (bookmark.bookmarkType === BookmarkType.FOLDER) {
+        const folderBookmark = bookmark as FolderBookmark
+        if (folderBookmark.isAllThread) {
+          allThreadBookmarkId = folderBookmark.bookmarkId
+          break
+        }
+      }
+    }
+
+    if (!allThreadBookmarkId) {
+      throw new Error('allThreadBookmarkId undefined')
+    }
+    return allThreadBookmarkId
+  }
+
   const init = async () => {
     isActive.value = true
     await Promise.all([fetchBookmarkList(), getContactOrgList()])
-
-    const getAllThreadBookmarkId = () => {
-      if (!bookmarkList.value) {
-        throw new Error('bookmarkList undefined')
-      }
-
-      let allThreadBookmarkId = null
-      for (const bookmark of bookmarkList.value) {
-        if (bookmark.bookmarkType === BookmarkType.FOLDER) {
-          const folderBookmark = bookmark as FolderBookmark
-          if (folderBookmark.isAllThread) {
-            allThreadBookmarkId = folderBookmark.bookmarkId
-            break
-          }
-        }
-      }
-
-      if (!allThreadBookmarkId) {
-        throw new Error('allThreadBookmarkId undefined')
-      }
-      return allThreadBookmarkId
-    }
 
     bookmarkFilter.value = {
       bookmarkId: getAllThreadBookmarkId(),
@@ -1293,6 +1293,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     sortCreatingWorkflowStage,
     init,
     cleanUp,
+    getAllThreadBookmarkId,
     setBookmarkFilter,
     updateQuery,
     updateSearchText,
