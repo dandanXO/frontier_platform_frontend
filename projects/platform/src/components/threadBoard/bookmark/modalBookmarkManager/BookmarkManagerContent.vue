@@ -75,7 +75,7 @@ div(class="flex-1 h-full flex flex-col")
           template(v-if="isBookmarkBarActive")
             template(v-if="bookmarkBarBookmarkList.length === 0")
               div(class="flex items-center justify-center h-12")
-                span(class="text-body2 text-grey-400") {{ $t('TT0239') }}
+                span(class="text-body2 text-grey-400") {{ isSearching ? $t('RR0105') : $t('TT0239') }}
             draggable(
               v-else
               v-model="bookmarkBarBookmarkList"
@@ -91,7 +91,7 @@ div(class="flex-1 h-full flex flex-col")
           template(v-else)
             template(v-if="currentBookmarkOrgList.length === 0")
               div(class="flex items-center justify-center h-12")
-                span(class="text-body2 text-grey-400") {{ $t('TT0239') }}
+                span(class="text-body2 text-grey-400") {{ isSearching ? $t('RR0105') : $t('TT0239') }}
             draggable(
               v-else
               v-model="currentBookmarkOrgList"
@@ -191,7 +191,15 @@ const {
   bookmarkManagerTitleInfo,
 } = storeToRefs(bookmarkManagerStore)
 
-const isOrgItemDraggable = computed(() => !searchText.value)
+const isSearching = computed(() => {
+  if (searchText.value == null) {
+    return false
+  }
+
+  return searchText.value.length > 0
+})
+
+const isOrgItemDraggable = computed(() => !isSearching.value)
 
 const isBookmarkDraggable = (
   bookmark: BookmarkManagerFolderBookmark | BookmarkManagerOrgBookmark
