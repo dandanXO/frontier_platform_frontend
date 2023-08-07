@@ -149,6 +149,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     {
       id: 1,
       name: t('TT0048', { userName: orgUser.value.displayName }),
+      avatar: orgUser.value.avatar,
       checked: threadBoardQuery.filter.createdBy.createdByMe,
       handleInput: (v: boolean) => {
         threadBoardQuery.filter.createdBy.createdByMe = v
@@ -157,6 +158,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     {
       id: 2,
       name: t('TT0049', { orgName: organization.value.orgName }),
+      avatar: null,
       checked: threadBoardQuery.filter.createdBy.createdByInternalUnit,
       handleInput: (v: boolean) => {
         threadBoardQuery.filter.createdBy.createdByInternalUnit = v
@@ -165,6 +167,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     {
       id: 3,
       name: t('TT0050'),
+      avatar: null,
       checked: threadBoardQuery.filter.createdBy.createdByExternalUnit,
       handleInput: (v: boolean) => {
         threadBoardQuery.filter.createdBy.createdByExternalUnit = v
@@ -174,16 +177,16 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
 
   const stickerTypeMenu = computed(() => [
     {
-      id: 1,
-      name: 'Internal',
+      id: 'internal',
+      name: t('TT0010'),
       checked: threadBoardQuery.filter.stickerType.internal,
       handleInput: (v: boolean) => {
         threadBoardQuery.filter.stickerType.internal = v
       },
     },
     {
-      id: 2,
-      name: 'External',
+      id: 'external',
+      name: t('TT0009'),
       checked: threadBoardQuery.filter.stickerType.external,
       handleInput: (v: boolean) => {
         threadBoardQuery.filter.stickerType.external = v

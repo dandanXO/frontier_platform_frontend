@@ -80,6 +80,12 @@ div(class="h-13 flex-shrink-0 px-7.5 border-b border-grey-150")
                   @update:inputValue="item.handleInput"
                   iconSize="20"
                 )
+                  f-avatar(
+                    v-if="item.avatar"
+                    :imageUrl="item.avatar"
+                    type="user"
+                    size="sm"
+                  )
             div(class="w-full h-px bg-grey-150")
             div(class="px-4 py-3.5 flex flex-col gap-3")
               div(class="flex flex-row items-center gap-2.5")
@@ -93,6 +99,7 @@ div(class="h-13 flex-shrink-0 px-7.5 border-b border-grey-150")
                   @update:inputValue="item.handleInput"
                   iconSize="20"
                 )
+                  f-avatar(:imageUrl="item.avatar" type="user" size="sm")
               f-select-input(
                 v-if="showParticipantSelectInput"
                 size="md"
@@ -119,6 +126,12 @@ div(class="h-13 flex-shrink-0 px-7.5 border-b border-grey-150")
                   @update:inputValue="item.handleInput"
                   iconSize="20"
                 )
+                  div(class="w-3.5 h-5 flex items-center justify-center")
+                    div(v-if="item.id === 'internal'" class="w-1 h-4 bg-grey-300 rounded")
+                    div(
+                      v-if="item.id === 'external'"
+                      class="w-1 h-4 bg-forestgreen-300 rounded"
+                    )
             div(class="w-full h-px bg-grey-150")
             div(class="px-4 py-3.5 flex flex-col gap-3")
               div(class="flex flex-row items-center gap-2.5")
