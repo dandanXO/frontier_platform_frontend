@@ -20,96 +20,92 @@ label(class="flex items-center")
     @input="check($event)"
     :disabled="disabled"
   )
-  div(
-    v-if="label !== ''"
-    class="text-body2 pl-1 whitespace-nowrap"
-    :class="[disabled ? 'text-grey-250' : 'text-grey-900 cursor-pointer']"
-  ) {{ label }}
+  div(class="flex flex-row gap-x-2 items-center px-2")
+    slot
+    div(
+      v-if="label !== ''"
+      class="text-body2 whitespace-nowrap"
+      :class="[disabled ? 'text-grey-250' : 'text-grey-900 cursor-pointer']"
+    ) {{ label }}
 </template>
 
-<script>
+<script lang="ts">
+export default { name: 'FInputCheckbox' }
+</script>
+
+<script setup lang="ts">
 import { computed } from 'vue'
-export default {
-  name: 'FInputCheckbox',
-  props: {
+
+type ArrayInputValue = Array<any>
+type InputValue = boolean | ArrayInputValue
+
+const props = withDefaults(
+  defineProps<{
     /**
      * when `binary` is true, the type of `inputValue` must be Boolean
      */
-    binary: {
-      type: Boolean,
-      default: false,
-    },
+    binary?: boolean
     /**
      * v-model:inputValue
      */
-    inputValue: {
-      type: [Array, Boolean],
-      required: true,
-    },
+    inputValue: InputValue
     /**
      * The value used when the component is selected
      *
      * you don't have to set value if `binary` is true
      */
-    value: {
-      type: [String, Number, Object],
-    },
-    label: {
-      type: [String, Number],
-      default: '',
-    },
-    iconSize: {
-      type: String,
-      default: '24',
-    },
-    iconColor: {
-      type: String,
-      default: 'text-primary-400',
-    },
-    uncheckColor: {
-      type: String,
-      default: 'text-grey-250',
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ['update:inputValue'],
-  setup(props, { emit }) {
-    const checked = computed(() => {
-      if (props.binary) {
-        return props.inputValue
-      } else {
-        const tempInputValueString = props.inputValue.map((v) =>
-          JSON.stringify(v)
-        )
-        return tempInputValueString.includes(JSON.stringify(props.value))
-      }
-    })
-    const check = (e) => {
-      if (props.binary) {
-        emit('update:inputValue', !props.inputValue)
-        return
-      }
-      const updatedInputValue = [...props.inputValue]
-      if (!e.target.checked) {
-        const tempInputValueString = props.inputValue.map((v) =>
-          JSON.stringify(v)
-        )
-        updatedInputValue.splice(
-          tempInputValueString.indexOf(JSON.stringify(props.value)),
-          1
-        )
-      } else {
-        updatedInputValue.push(props.value)
-      }
-      emit('update:inputValue', updatedInputValue)
-    }
-    return {
-      checked,
-      check,
-    }
-  },
+    value?: any
+    label?: string | number
+    iconSize?: string
+    iconColor?: string
+    uncheckColor?: string
+    disabled: boolean
+  }>(),
+  {
+    binary: false,
+    label: '',
+    iconSize: '24',
+    iconColor: 'text-primary-400',
+    uncheckColor: 'text-grey-250',
+    disabled: false,
+  }
+)
+
+const emit = defineEmits<{
+  (e: 'update:inputValue', v: InputValue): void
+}>()
+
+const checked = computed(() => {
+  if (props.binary) {
+    return props.inputValue
+  } else {
+    const arrayInputValue = props.inputValue as ArrayInputValue
+    const tempInputValueString = arrayInputValue.map((v) => JSON.stringify(v))
+    return tempInputValueString.includes(JSON.stringify(props.value))
+  }
+})
+
+const check = (e: Event) => {
+  if (!e.target) {
+    return
+  }
+
+  const target = e.target as HTMLInputElement
+  if (props.binary) {
+    emit('update:inputValue', !props.inputValue)
+    return
+  }
+  const arrayInputValue = props.inputValue as ArrayInputValue
+  const updatedInputValue = [...arrayInputValue]
+  if (!target.checked) {
+    const tempInputValueString = arrayInputValue.map((v) => JSON.stringify(v))
+    updatedInputValue.splice(
+      tempInputValueString.indexOf(JSON.stringify(props.value)),
+      1
+    )
+  } else {
+    updatedInputValue.push(props.value)
+  }
+  emit('update:inputValue', updatedInputValue)
 }
 </script>
