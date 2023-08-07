@@ -46,7 +46,6 @@ modal-behavior(
               v-model:inputValue="addedMemberList"
               type="checkbox"
               :value="member.orgUserId"
-              uncheckColor="text-grey-600"
             )
       p(v-else class="text-body1 text-grey-900 text-center pt-9.5") {{ $t('BB0031') }}
   template(#note)
