@@ -1188,12 +1188,30 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   }
 
   const cleanUp = async () => {
+    if (fetchThreadBoardAbortController.value) {
+      fetchThreadBoardAbortController.value.abort()
+      fetchThreadBoardAbortController.value = null
+    }
+
     isActive.value = false
+    isFirstThreadBoardFetch.value = true
     activeThreadSideId.value = null
+    contactOrgList.value = null
+    bookmarkList.value = null
+    rawWorkflowStageList.value = undefined
     workflowStageList.value = undefined
+    isCreatingWorkflowStage.value = false
+    creatingWorkflowStageName.value = null
+    creatingWorkflowStageThreadList.value = []
+    creatingGhostWorkflowStage.value = null
+    loading.value = false
     isDefaultWorkflowStageExpanded.value = true
     isHiddenWorkflowListExpanded.value = false
-    isFirstThreadBoardFetch.value = true
+    bookmarkFilter.value = null
+    Object.assign(threadBoardQuery, defaultThreadBoardQuery())
+    searchText.value = ''
+    mostParticipantId.value = undefined
+    participantFilterIdList.value = []
     onFetchSuccess = null
   }
 
