@@ -221,36 +221,48 @@ const collapsedBookmarkListMenuTree = computed<MenuTree>(() => {
   return { blockList: [{ menuList }] }
 })
 
-const addBookmarkMenuTree = (collapsePopper: () => void): MenuTree => ({
-  rootTitle: t('TT0213'),
-  searchEnable: true,
-  blockList: [
-    {
-      blockTitle: t('TT0214'),
-      menuList:
-        contactOrgList.value?.map((org) => {
-          return {
-            title: org.orgName,
-            thumbnail: org.logo,
-            clickHandler: () => {
-              threadBoardStore.addOrgBookmark(org.orgId)
-            },
-          }
-        }) || [],
+const addBookmarkMenuTree = (collapsePopper: () => void): MenuTree => {
+  const existedOrgIdList =
+    bookmarkList.value
+      ?.filter((b) => b.bookmarkType === BookmarkType.ORG)
+      .map((bookmark) => {
+        const orgBookmark = bookmark as OrgBookmark
+        return orgBookmark.org.orgId
+      }) || []
+
+  return {
+    rootTitle: t('TT0213'),
+    searchEnable: true,
+    blockList: [
+      {
+        blockTitle: t('TT0214'),
+        menuList:
+          contactOrgList.value
+            ?.filter((org) => !existedOrgIdList.includes(org.orgId))
+            .map((org) => {
+              return {
+                title: org.orgName,
+                thumbnail: org.logo,
+                clickHandler: () => {
+                  threadBoardStore.addOrgBookmark(org.orgId)
+                },
+              }
+            }) || [],
+      },
+    ],
+    button: {
+      position: 'bottom',
+      icon: 'create',
+      text: t('TT0215'),
+      clickHandler: () => {
+        collapsePopper()
+        store.dispatch('helper/openModalBehavior', {
+          component: 'modal-create-or-edit-bookmark-folder',
+        })
+      },
     },
-  ],
-  button: {
-    position: 'bottom',
-    icon: 'create',
-    text: t('TT0215'),
-    clickHandler: () => {
-      collapsePopper()
-      store.dispatch('helper/openModalBehavior', {
-        component: 'modal-create-or-edit-bookmark-folder',
-      })
-    },
-  },
-})
+  }
+}
 
 const handleBookmarkListChange = (e: any) => {
   const { element, newIndex } = e.moved
