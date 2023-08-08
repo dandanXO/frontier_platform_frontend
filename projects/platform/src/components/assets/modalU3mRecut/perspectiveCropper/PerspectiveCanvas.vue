@@ -164,15 +164,16 @@ const textProps: Konva.TextConfig = {
   fontSize: 12,
   fontFamily: 'Noto Sans TC',
   verticalAlign: 'middle',
+  lineHeight: 1.3,
   align: 'center',
-  fill: '#F4F4F4',
+  fill: colors.grey[900],
 }
 const rectProps: Konva.RectConfig = {
   ...size,
   ...offset,
-  fill: 'rgb(168, 168, 168)',
+  fill: colors.grey[100],
   cornerRadius: 4,
-  opacity: 0.8,
+  opacity: 0.7,
 }
 
 const stageConfig: Konva.StageConfig = {
