@@ -266,7 +266,9 @@ const props = defineProps({
 })
 
 const range = computed(() => {
-  if (props.useLog) return Math.log10(props.range)
+  if (props.useLog) {
+    return Math.log10(props.range)
+  }
   return props.range
 })
 

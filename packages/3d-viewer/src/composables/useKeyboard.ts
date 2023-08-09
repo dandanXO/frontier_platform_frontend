@@ -14,16 +14,18 @@ const useKeyboard = (
     const textureClamp = clamp(TEXTURE_TYPE.BASE, TEXTURE_TYPE.DISPLACEMENT)
     const modelClamp = clamp(0, MODELS.length - 1)
     const handleRightKey = () => {
-      if (displayMode.value === DISPLAY_MODE.TEXTURE)
+      if (displayMode.value === DISPLAY_MODE.TEXTURE) {
         textureType.value = textureClamp(textureType.value + 1)
+      }
       if (displayMode.value === DISPLAY_MODE.MODEL) {
         onChangeModel(modelClamp(modelIndex.value + 1))
       }
     }
 
     const handleLeftKey = () => {
-      if (displayMode.value === DISPLAY_MODE.TEXTURE)
+      if (displayMode.value === DISPLAY_MODE.TEXTURE) {
         textureType.value = textureClamp(textureType.value - 1)
+      }
       if (displayMode.value === DISPLAY_MODE.MODEL) {
         onChangeModel(modelClamp(modelIndex.value - 1))
       }

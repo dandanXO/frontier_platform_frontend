@@ -61,14 +61,22 @@ const loadCount = ref(0)
 const errorMessage = ref('')
 
 const handleIframeLoad = () => {
-  if (type.value === TYPE.BY_API_KEY) setApiKey()
-  if (type.value === TYPE.BY_ACCESS_TOKEN) setAccessToken()
+  if (type.value === TYPE.BY_API_KEY) {
+    setApiKey()
+  }
+  if (type.value === TYPE.BY_ACCESS_TOKEN) {
+    setAccessToken()
+  }
 }
 
 const setApiKey = () => {
-  if (!iframeDom.value) return
+  if (!iframeDom.value) {
+    return
+  }
   const { contentWindow } = iframeDom.value
-  if (!contentWindow) return
+  if (!contentWindow) {
+    return
+  }
 
   contentWindow.postMessage(
     { method: 'setApiKey', params: { apiKey: apiKey.value } },
@@ -77,9 +85,13 @@ const setApiKey = () => {
 }
 
 const setAccessToken = () => {
-  if (!iframeDom.value) return
+  if (!iframeDom.value) {
+    return
+  }
   const { contentWindow } = iframeDom.value
-  if (!contentWindow) return
+  if (!contentWindow) {
+    return
+  }
 
   contentWindow.postMessage(
     { method: 'setAccessToken', params: { accessToken: accessToken.value } },

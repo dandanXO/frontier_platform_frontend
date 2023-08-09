@@ -31,7 +31,9 @@ const getMoireEffectPreventedTexture = (
     originalImage.src = url
     originalImage.crossOrigin = 'anonymous'
     originalImage.onload = async () => {
-      if (!originalImage) return
+      if (!originalImage) {
+        return
+      }
       const processedCanvas = document.createElement('canvas')
 
       const nearestPowerOf2 = (n: number) => 1 << (31 - Math.clz32(n))
@@ -174,7 +176,9 @@ export default function useModels(
     )
 
   const initMaterial = async () => {
-    if (!scene || !u3m.value) return
+    if (!scene || !u3m.value) {
+      return
+    }
     const setUpTextures = (textures: THREE.Texture[]) => {
       textures.forEach((texture) => {
         texture.matrixAutoUpdate = true
@@ -251,7 +255,9 @@ export default function useModels(
   }
 
   const loadModel = async (index: number) => {
-    if (!scene.value) return
+    if (!scene.value) {
+      return
+    }
 
     modelIndex.value = index
     const model = MODELS[index]
@@ -261,8 +267,12 @@ export default function useModels(
     originRepeatTimesX.value = model.size / widthInCm
 
     scene.value.children.forEach((item) => {
-      if (!scene.value) return
-      if (item.type === 'Group') scene.value.remove(item)
+      if (!scene.value) {
+        return
+      }
+      if (item.type === 'Group') {
+        scene.value.remove(item)
+      }
     })
 
     const manager = new THREE.LoadingManager()
@@ -276,19 +286,25 @@ export default function useModels(
     const modelPath = model.filePath
     const loader = new GLTFLoader(manager)
     loader.load(modelPath, (gltf) => {
-      if (!u3m.value || !scene.value) throw new Error('error')
+      if (!u3m.value || !scene.value) {
+        throw new Error('error')
+      }
 
       const model = gltf.scene
       model.scale.set(0.5, 0.5, 0.5)
       model.traverse((obj) => {
         const mesh = obj as THREE.Mesh
-        if (!mesh.isMesh || !material.value) return
+        if (!mesh.isMesh || !material.value) {
+          return
+        }
 
         mesh.receiveShadow = true
         mesh.castShadow = true
 
         // 我們透過 blender 先將希望覆蓋 u3m 圖層的 material 命名為 `Mesh_` prefix
-        if (mesh.name.includes('Mesh_')) mesh.material = material.value
+        if (mesh.name.includes('Mesh_')) {
+          mesh.material = material.value
+        }
         if (mesh.name.includes('Ball_')) {
           mesh.material = new THREE.MeshPhongMaterial({
             color: 0xffffff,
@@ -302,7 +318,9 @@ export default function useModels(
   }
 
   const updateMaterial = () => {
-    if (!material.value || !u3m.value) throw new Error('error')
+    if (!material.value || !u3m.value) {
+      throw new Error('error')
+    }
     material.value.opacity = u3m.value.alpha
     material.value.roughness = u3m.value.roughness
     material.value.specularIntensity = u3m.value.specular
@@ -332,8 +350,12 @@ export default function useModels(
   const handleScaleChange = (v: number) => (scale.value = v)
 
   watch(u3m, async (newU3m, oldU3m) => {
-    if (!newU3m) return
-    if (oldU3m) return updateMaterial()
+    if (!newU3m) {
+      return
+    }
+    if (oldU3m) {
+      return updateMaterial()
+    }
     await initMaterial()
     loadModel(0)
   })

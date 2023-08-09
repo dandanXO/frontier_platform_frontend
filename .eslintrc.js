@@ -25,4 +25,7 @@ module.exports = {
       env: { node: true },
     },
   ],
+  rules: {
+    curly: ['error', 'all'],
+  },
 }

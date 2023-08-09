@@ -218,7 +218,9 @@ export default {
     const getItemCustomClass = (header) => header.itemCustomClass || []
 
     const handleSort = (sortBy) => {
-      if (!sortBy) return
+      if (!sortBy) {
+        return
+      }
 
       if (sortBy.includes(innerPagination.value.sort)) {
         if (innerPagination.value.sort === sortBy[0]) {

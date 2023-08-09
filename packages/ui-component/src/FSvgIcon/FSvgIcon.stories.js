@@ -30,7 +30,7 @@ export const Color = (args) => ({
   `,
 })
 
-export const IconList = (args) => ({
+export const IconList = () => ({
   components: { FSvgIcon },
   setup() {
     const icons = import.meta.globEager('./icons/**/*.svg')

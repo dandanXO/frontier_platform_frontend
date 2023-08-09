@@ -54,7 +54,9 @@ const handleColorClick = () => colorInputDom.value?.click()
 
 const pantoneDisplay = computed(() => {
   const rgb = chroma(props.color).rgb()
-  if (!props.pantoneList) return
+  if (!props.pantoneList) {
+    return
+  }
   const pantoneItem = values(props.pantoneList).find(
     (pantoneItem) =>
       pantoneItem.r === rgb[0] &&
@@ -65,13 +67,17 @@ const pantoneDisplay = computed(() => {
 })
 
 const handleColorInput = (e: Event, index: number) => {
-  if (!e.target) return
+  if (!e.target) {
+    return
+  }
   const target = e.target as HTMLInputElement
   emit('colorInput', target.value, index)
 }
 
 const handlePantoneCodeChange = (e: Event) => {
-  if (!e.target) return
+  if (!e.target) {
+    return
+  }
   const target = e.target as HTMLInputElement
 
   const pantoneItem = props.pantoneList?.[target.value]
@@ -87,12 +93,16 @@ const handlePantoneCodeChange = (e: Event) => {
 }
 
 onMounted(() => {
-  if (!pantoneInputDom.value) return
+  if (!pantoneInputDom.value) {
+    return
+  }
   pantoneInputDom.value.addEventListener('keydown', handleKeyboardEvent)
 })
 
 onUnmounted(() => {
-  if (!pantoneInputDom.value) return
+  if (!pantoneInputDom.value) {
+    return
+  }
   pantoneInputDom.value.removeEventListener('keydown', handleKeyboardEvent)
 })
 </script>

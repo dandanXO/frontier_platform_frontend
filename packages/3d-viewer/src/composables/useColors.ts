@@ -53,7 +53,9 @@ export default function useColors(
   const colorRemovable = computed(() => currentColors.value.length > 1)
 
   const analyzeImage = () => {
-    if (!baseTextureCanvas.value) return
+    if (!baseTextureCanvas.value) {
+      return
+    }
 
     const timerName = 'analyze image colors'
     console.time(timerName)
@@ -62,7 +64,9 @@ export default function useColors(
     analyzeCanvas.width = baseTextureCanvas.value.width
     analyzeCanvas.height = baseTextureCanvas.value.height
     const ctx = analyzeCanvas.getContext('2d')
-    if (!ctx) return
+    if (!ctx) {
+      return
+    }
     ctx.drawImage(baseTextureCanvas.value, 0, 0)
 
     const q = new RgbQuant({ colors: paletteColorCount.value, minHueCols: 256 })
@@ -86,7 +90,9 @@ export default function useColors(
 
   const setMaterialTexture = (canvas: HTMLCanvasElement) => {
     const originTexture = baseTexture.value
-    if (!material.value || !originTexture) return
+    if (!material.value || !originTexture) {
+      return
+    }
 
     baseTexture.value = new THREE.TextureLoader().load(canvas.toDataURL())
     baseTexture.value.wrapS = originTexture.wrapS
@@ -101,16 +107,22 @@ export default function useColors(
   }
 
   const resetMaterialTexture = () => {
-    if (!baseTextureCanvas.value) return
+    if (!baseTextureCanvas.value) {
+      return
+    }
     setMaterialTexture(baseTextureCanvas.value)
   }
 
   const handleColorAdd = () => {
-    if (colorAddable.value) paletteColorCount.value++
+    if (colorAddable.value) {
+      paletteColorCount.value++
+    }
   }
 
   const handleColorRemove = () => {
-    if (colorRemovable.value) paletteColorCount.value--
+    if (colorRemovable.value) {
+      paletteColorCount.value--
+    }
   }
 
   const handleColorChange = (targetColor: string, index: number) => {
@@ -126,9 +138,15 @@ export default function useColors(
     currentColors.value = [...currentColors.value]
     currentColors.value[index] = targetColor
 
-    if (!baseImage.value) return
-    if (!currentImageData.value) return
-    if (!originImageData.value) return
+    if (!baseImage.value) {
+      return
+    }
+    if (!currentImageData.value) {
+      return
+    }
+    if (!originImageData.value) {
+      return
+    }
 
     const originColor = chroma(originColors.value[index]).rgba()
     const diff = getDiff(chroma(originColor).rgba(), chroma(targetColor).rgba())
@@ -175,7 +193,9 @@ export default function useColors(
     changedColorCanvas.width = baseImage.value.naturalWidth
     changedColorCanvas.height = baseImage.value.naturalHeight
     const ctx = changedColorCanvas.getContext('2d')
-    if (!ctx) return
+    if (!ctx) {
+      return
+    }
 
     currentImageData.value = new ImageData(
       new Uint8ClampedArray(processedImageDataContent),
@@ -195,12 +215,16 @@ export default function useColors(
   })
 
   watch(baseImage, () => {
-    if (!baseImage.value) return
+    if (!baseImage.value) {
+      return
+    }
     baseTextureCanvas.value = document.createElement('canvas')
     baseTextureCanvas.value.width = baseImage.value.naturalWidth
     baseTextureCanvas.value.height = baseImage.value.naturalHeight
     const ctx = baseTextureCanvas.value.getContext('2d')
-    if (!ctx) return
+    if (!ctx) {
+      return
+    }
     ctx.drawImage(baseImage.value, 0, 0)
   })
 
