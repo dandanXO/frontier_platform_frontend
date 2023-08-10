@@ -30,6 +30,11 @@ const localeOptionList = [
     abbr: '繁中',
     locale: 'zh-TW',
   },
+  {
+    lang: '日本語',
+    abbr: '日本語',
+    locale: 'ja-JP',
+  },
 ]
 
 const currentLocaleAbbr = (locale) =>

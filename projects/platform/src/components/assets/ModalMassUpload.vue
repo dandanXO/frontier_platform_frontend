@@ -72,6 +72,7 @@ const excelTemplateDownloadLink = computed(() => {
   const fileNameLocaleMap = {
     'zh-TW': 'MassUploadFromat(中文版)',
     'en-US': 'MassUploadFromat(英文版)',
+    'ja-JP': 'MassUploadFromat(日文版)',
   }
   return `${endpoint}/Resource/MaterialExportTemplate/${
     fileNameLocaleMap[locale.value]

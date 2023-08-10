@@ -2,6 +2,7 @@ import { createI18n } from 'vue-i18n'
 // import messages from '@intlify/vite-plugin-vue-i18n/messages'
 import enUS from '@/locales/en-US.json'
 import zhTW from '@/locales/zh-TW.json'
+import jaJP from '@/locales/ja-JP.json'
 
 /**
  * Load locale messages
@@ -29,6 +30,7 @@ export default createI18n({
   messages: {
     'en-US': enUS,
     'zh-TW': zhTW,
+    'ja-JP': jaJP,
   },
   globalInjection: true,
 })

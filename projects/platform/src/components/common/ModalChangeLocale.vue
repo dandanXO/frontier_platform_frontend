@@ -29,6 +29,10 @@ const langMenuTree = {
           title: '繁體中文',
           selectValue: 'zh-TW',
         },
+        {
+          title: '日本語',
+          selectValue: 'ja-JP',
+        },
       ],
     },
   ],

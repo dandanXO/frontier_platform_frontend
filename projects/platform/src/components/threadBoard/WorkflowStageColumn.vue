@@ -89,11 +89,11 @@ div
       )
         span(
           class="text-caption flex items-center"
-          :class="{ 'rotate-90 leading-2': isZh }"
+          :class="{ 'rotate-90 leading-2': !isEn }"
         ) {{ workflowStage.digitalThreadList.length }}
         span(
           class="text-body2 flex items-center"
-          :class="{ 'rotate-180 [letter-spacing:.1rem]': isZh }"
+          :class="{ 'rotate-180 [letter-spacing:.1rem]': !isEn }"
         ) {{ workflowStage.workflowStageName }}
 </template>
 
@@ -153,7 +153,7 @@ const showBottomBound = ref(false)
 const isHoverDragArea = ref(false)
 
 const user = computed(() => store.getters['user/user'])
-const isZh = computed(() => user.value.locale === 'zh-TW')
+const isEn = computed(() => user.value.locale === 'en-US')
 const haveUnreadThread = computed(() => {
   return props.workflowStage.digitalThreadList.some(
     (thread) => thread.unreadStickerQty > 0

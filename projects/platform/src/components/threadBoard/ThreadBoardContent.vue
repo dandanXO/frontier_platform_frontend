@@ -136,7 +136,7 @@ div(class="w-full max-w-full h-full min-h-0 flex-shrink-1 flex flex-row")
             f-svg-icon(iconName="add" size="20")
             span(
               class="font-bold text-body2 [writing-mode:vertical-lr] flex gap-2"
-              :class="isZh ? 'leading-2' : 'rotate-180'"
+              :class="isEn ? 'rotate-180' : 'leading-2'"
             ) {{ $t('TT0142') }}
         template(#content="{ scrollContainer }")
           div(
@@ -258,7 +258,7 @@ const activeWorkflowStageId = ref<WorkflowStageId | null>(null)
 const draggingThreadCardId = ref<number | null>(null)
 
 const user = computed(() => store.getters['user/user'])
-const isZh = computed(() => user.value.locale === 'zh-TW')
+const isEn = computed(() => user.value.locale === 'en-US')
 
 const workflowStageDragOptions = computed(() => ({
   itemKey: 'workflowStageId',
