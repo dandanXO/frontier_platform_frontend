@@ -7,7 +7,7 @@ modal-behavior(
   @click:primary="innerActionHandler"
   @click:secondary="closeModalBehavior"
 )
-  div(class="w-94")
+  div(class="w-80 xl:w-94")
     f-select-dropdown(
       v-model:selectValue="selectedOrgId"
       :dropdownMenuTree="orgMenuTree"

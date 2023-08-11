@@ -50,17 +50,21 @@ const dataUrlToBlob = (dataUrl: string) => {
   return new Blob([ab], { type: mimeString })
 }
 
-const downloadDataURLFile = (dataUrl: string, fileName = 'file') => {
+const downloadDataURLFile = async (dataUrl: string, fileName = 'file') => {
+  const response = await fetch(dataUrl)
+  const blobImage = await response.blob()
+  const href = URL.createObjectURL(blobImage)
   const link = document.createElement('a')
   link.hidden = true
   link.download = decodeURIComponent(fileName)
-  link.href = dataUrl
+  link.href = href
   link.text = 'downloading...'
   link.target = '_blank'
 
   document.body.appendChild(link)
   link.click()
   link.remove()
+  window.URL.revokeObjectURL(href)
 }
 
 const bytesToSize = (bytes: number) => {

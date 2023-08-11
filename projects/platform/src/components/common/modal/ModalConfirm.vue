@@ -5,20 +5,20 @@ div(
   data-cy="modal-confirm"
 )
   div(
-    class="w-104 max-h-125 min-h-54 px-8 py-6 bg-grey-0 rounded flex flex-col shadow-32"
+    class="w-80 xl:w-104 max-h-125 min-h-30 xl:min-h-54 px-4 xl:px-8 py-4 xl:py-6 bg-grey-0 rounded flex flex-col shadow-32"
     :class="[theme === THEME.DARK ? 'bg-grey-800' : 'bg-grey-0']"
     @click.stop
   )
-    div(class="h-9 pb-3.5 flex items-center")
+    div(class="h-9 pb-1 xl:pb-3.5 flex items-center gap-x-1 xl:gap-x-3")
       f-svg-icon(:iconName="getIconName" :class="[getIconColor]" size="22")
       p(
-        class="text-body1 font-bold pl-3"
+        class="text-body2 xl:text-body1 font-bold"
         :class="[theme === THEME.DARK ? 'text-grey-100' : 'text-grey-900']"
       ) {{ header }}
-    f-scrollbar-container(class="max-h-92.5 flex-grow pl-8.5")
+    f-scrollbar-container(class="max-h-92.5 flex-grow pl-6.5 xl:pl-8.5")
       p(
         v-if="!!contentText"
-        class="text-body2 leading-1.6"
+        class="text-caption xl:text-body2 leading-1.6"
         :class="[theme === THEME.DARK ? 'text-grey-250' : 'text-grey-600']"
       ) {{ contentText }}
       component(v-else :is="contentComponent")

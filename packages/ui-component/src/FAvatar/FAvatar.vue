@@ -60,7 +60,7 @@ const classSize = computed(() => {
       labelColor = 'w-2 h-2'
       break
     case 'lg':
-      avatar = 'w-10 h-10'
+      avatar = 'w-6 xl:w-10 h-6 xl:h-10'
       labelColor = 'w-2.5 h-2.5'
       break
     case 'xl':

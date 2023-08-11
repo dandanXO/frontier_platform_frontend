@@ -1,9 +1,6 @@
 <template lang="pug">
-div(
-  class="w-full h-full flex justify-center"
-  :class="{ 'pt-13': breadcrumbList.length === 1 }"
-)
-  div(v-if="!isLoading" class="w-230 h-fit pb-25")
+div(class="w-full h-full flex justify-center")
+  div(v-if="!isLoading" class="px-5 xl:px-0 xl:w-230 h-fit pb-20 xl:pb-25")
     material-detail-external-header(
       :breadcrumbList="breadcrumbList"
       :material="material"

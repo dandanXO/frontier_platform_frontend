@@ -6,7 +6,8 @@ div(
   :disabled="innerMenu.disabled"
   @mouseenter="mouseEnterHandler"
   @mouseleave="mouseLeaveHandler"
-  @click.stop="clickMenuHandler"
+  @click.stop.prevent="clickMenuHandler"
+  @touchstart.prevent="clickMenuHandler"
 )
   f-tooltip-standard(
     :placement="innerMenu.tooltipPlacement"

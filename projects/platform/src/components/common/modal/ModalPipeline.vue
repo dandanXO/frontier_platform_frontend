@@ -246,7 +246,7 @@ export default {
       import('@/components/sticker/ModalStickerDetail.vue')
     ),
     ModalChooseStickerAddFrom: defineAsyncComponent(() =>
-      import('@/components/receivedShare/ModalChooseStickerAddFrom.vue')
+      import('@/components/outerApp/ModalChooseStickerAddFrom.vue')
     ),
     ModalStickerMaterialDetail: defineAsyncComponent(() =>
       import('@/components/sticker/ModalStickerMaterialDetail.vue')

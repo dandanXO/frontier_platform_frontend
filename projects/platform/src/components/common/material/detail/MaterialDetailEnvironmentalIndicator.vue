@@ -8,14 +8,14 @@ div(class="flex flex-col")
     :disabled="!made2flowSubscribed"
     class="self-end"
   )
-  div(class="mt-2 mb-10 relative")
+  div(class="mt-2 xl:mb-10 relative")
     div(
-      class="px-10 h-10 grid grid-cols-12 gap-x-6 items-center bg-grey-100 text-body2 text-grey-600"
+      class="px-2 xl:px-10 h-10 grid grid-cols-12 gap-x-6 items-center bg-grey-100 text-body2 text-grey-600"
     )
-      p(class="col-start-4 col-span-3") {{ $t('RR0237') }}
-      p(class="col-span-2") {{ $t('RR0238') }}
-      p(class="col-span-2") {{ $t('RR0239') }}
-      p(class="col-span-2") {{ $t('RR0240') }}
+      p(class="col-start-4 col-span-3 text-caption2 xl:text-body2") {{ $t('RR0237') }}
+      p(class="col-span-2 text-caption2 xl:text-body2") {{ $t('RR0238') }}
+      p(class="col-span-2 text-caption2 xl:text-body2") {{ $t('RR0239') }}
+      p(class="col-span-2 text-caption2 xl:text-body2") {{ $t('RR0240') }}
 
     //- Mask
     div(
@@ -98,42 +98,37 @@ div(class="flex flex-col")
     div(class="pt-2 grid gap-y-1 relative")
       div(
         v-for="property in carbonEmissionInfo"
-        class="px-10 py-4 grid grid-cols-12 gap-x-6 items-start"
+        :key="property.title"
+        class="px-2 xl:px-10 py-4 grid grid-cols-12 gap-x-1 xl:gap-x-6 items-start"
         :class="{ 'hover:bg-grey-100': made2flowSubscribed }"
       )
         div(
           class="col-span-3 h-9.5 flex items-center gap-x-3"
           :class="[made2flowSubscribed ? 'text-grey-900' : 'text-grey-250']"
         )
-          f-svg-icon(:iconName="property.icon" size="32")
-          p(class="text-body2 font-bold") {{ property.title }}
+          f-svg-icon(
+            :iconName="property.icon"
+            size="32"
+            class="!w-4 !h-4 !min-w-4 !min-h-4"
+          )
+          p(class="text-caption2 xl:text-body2 font-bold") {{ property.title }}
         div(class="col-span-7")
           div(class="h-9.5 grid grid-cols-7 gap-x-6")
-            div(class="col-span-3 flex items-center gap-x-2")
+            div(class="col-span-3 flex items-center gap-x-1 xl:gap-x-2")
               template(v-if="property.personalized != null")
-                div(class="w-2 h-2 rounded-sm bg-primary-400")
-                p(class="text-body2 text-grey-900") {{ property.personalized }} {{ property.unitLong }}
+                div(class="w-2 h-2 rounded-sm bg-primary-400 shrink-0")
+                p(class="text-caption2 xl:text-body2 text-grey-900") {{ property.personalized }} {{ property.unitLong }}
               hr(v-else class="w-4 border-grey-250")
             div(class="col-span-2 flex items-center gap-x-2")
-              //- template(v-if="property.benchmark != null")
-              //-   div(class="w-2 h-2 rounded-sm bg-grey-250")
-              //-   p(class="text-body2 text-grey-900") {{ property.benchmark }} {{ property.unitShort }}
               hr(class="w-4 border-grey-250")
             div(class="col-span-2 flex items-center")
-              //- div(
-              //-   v-if="property.differenceInPercent != null"
-              //-   class="h-6 flex items-center justify-center gap-x-2 rounded px-2 whitespace-nowrap text-caption"
-              //-   :class="[property.differenceInPercent > 0 ? 'bg-primary-50 text-primary-400' : 'bg-grey-50 text-grey-250']"
-              //- )
-              //-   p(class="font-bold") {{ property.differenceInPercent }}% {{ $t('RR0229') }}
-              //-   f-svg-icon(v-if="property.differenceInPercent > 0" iconName="done" size="16" class="text-primary-400")
               hr(class="w-4 border-grey-250")
           div(v-if="isShowGraph" class="pt-2")
             div(class="relative")
               div(
                 class="grid grid-cols-5 h-10 divide-x divide-grey-100 bg-grey-50 border border-grey-100 rounded mb-3.5"
               )
-                div(v-for="i in 5" class="relative")
+                div(v-for="i in 5" class="relative" :key="i")
                   span(
                     v-if="i === 1"
                     class="absolute -bottom-0.5 translate-y-full left-0 text-caption text-grey-250"
@@ -148,14 +143,7 @@ div(class="flex flex-col")
               div(
                 class="border-0 absolute z-2 right-1 top-1 text-primary-500 text-caption"
               ) {{ property.personalized }}
-              //- div(class="border-0 absolute z-1 left-0 bottom-3 bg-grey-250 h-1" :style="{ 'width': 100 * (property.benchmark / 50) + '%' }")
-              //- div(class="border-0 absolute z-2 right-1 bottom-1 text-grey-250 text-caption") {{ property.benchmark }}
         div(class="col-span-2 h-9.5 flex items-center gap-x-1")
-          //- f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-grey-250")
-          //- span(v-if="property.saving != null" class="whitespace-nowrap text-caption leading-1.6") {{ property.saving }}&nbsp
-          //-   i18n-t(:keypath="property.saveUnit" scope="global")
-          //-     template(#newline)
-          //-       br
           hr(class="w-4 border-grey-250")
   div(v-if="made2flowSubscribed" class="flex items-center gap-x-4")
     img(src="@/assets/images/m2f_logo.png" class="w-16 h-4.5")

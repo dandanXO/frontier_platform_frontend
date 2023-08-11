@@ -17,18 +17,13 @@ transition(name="sticker-drawer")
 transition(name="sticker-drawer")
   sticker-drawer(v-if="isStickerDrawerOpen")
 router-view(v-if="isEmbedPageReload")
-a(
-  class="fixed z-footer bottom-0 w-full h-13 bg-grey-50 px-36 flex items-center justify-end shadow-4 border-t border-grey-150"
-  href="https://www.frontier.cool/"
-  target="_blank"
-)
-  img(src="@/assets/images/frontier_logo.png" class="w-20.5 h-4 mr-2")
-  p(class="text-body2 text-grey-900") {{ $t('GG0004') }}
+outer-footer
 </template>
 
 <script setup>
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import OuterFooter from '@/components/outerApp/OuterFooter.vue'
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
 import StickerDrawerForLogin from '@/components/sticker/StickerDrawerForLogin.vue'
 

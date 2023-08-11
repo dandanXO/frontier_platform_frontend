@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="flex items-center gap-x-1")
   template(v-if="length < 4")
-    template(v-for="(item, index) in breadcrumbList")
+    template(v-for="(item, index) in breadcrumbList" :key="index")
       p(
         :class="[...classes, { 'font-bold': index === length - 1 }]"
         @click="$emit('click:item', item)"
@@ -27,6 +27,7 @@ div(class="flex items-center gap-x-1")
         f-list
           f-list-item(
             v-for="item in breadcrumbList.slice(1, length - 1)"
+            :key="item.name"
             @click="$emit('click:item', item)"
           ) {{ item.name }}
     f-svg-icon(size="20" iconName="slash" class="text-grey-250")

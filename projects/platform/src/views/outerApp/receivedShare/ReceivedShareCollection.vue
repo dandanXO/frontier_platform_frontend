@@ -1,8 +1,7 @@
 <style lang="scss">
 #pagination-container {
-  padding-bottom: 152px;
+  @apply pb-20 xl:pb-30;
 }
-
 .v-enter-active {
   transition: all 0.2s ease-out;
 }
@@ -25,18 +24,18 @@
 </style>
 
 <template lang="pug">
-div(class="max-w-315 h-full mx-auto pt-10")
+div(class="max-w-315 h-full mx-auto")
   search-table(
     :searchType="SEARCH_TYPE.SHARE"
-    :canSelectAll="false"
     :optionSort="optionSort"
-    :searchCallback="getEmbedList"
+    :optionMultiSelect="optionMultiSelect"
+    :searchCallback="getShareReceivedList"
     :itemList="nodeList"
+    v-model:selectedItemList="selectedNodeList"
   )
     template(#header-left="{ goTo }")
-      div(class="flex items-center")
-        img(:src="logo" class="w-10 h-10 rounded-full")
-        div(class="flex items-end pl-2.5")
+      div(class="flex items-start")
+        div(class="flex items-end pr-3")
           global-breadcrumb-list(
             :breadcrumbList="breadcrumbList"
             @click:item="currentNodeKey = $event.nodeKey; goTo()"
@@ -47,6 +46,14 @@ div(class="max-w-315 h-full mx-auto pt-10")
             i18n-t(keypath="RR0068" tag="span" scope="global")
               template(#number) {{ pagination.totalCount }}
             span )
+        f-tooltip-standard(:tooltipMessage="$t('RR0056')")
+          template(#slot:tooltip-trigger)
+            f-svg-icon(
+              iconName="clone"
+              class="text-grey-600 hover:text-primary-400 cursor-pointer"
+              size="24"
+              @click="receivedShareCloneByNodeKey(currentNodeKey)"
+            )
     template(#sub-header)
       collection-overview(:collection="collection")
     template(#default="{ goTo }")
@@ -57,41 +64,47 @@ div(class="max-w-315 h-full mx-auto pt-10")
         grid-item-node(
           v-for="node in nodeList"
           :key="node.nodeKey"
+          v-model:selectedValue="selectedNodeList"
           :node="node"
-          :isSelectable="false"
           @click:node="handleNodeClick(node, goTo)"
         )
+          template(#corner-bottom-left)
+            f-svg-icon(
+              iconName="clone"
+              size="20"
+              class="cursor-pointer text-grey-250"
+              @click.stop="receivedShareCloneByNodeKey(node.nodeKey)"
+            )
 </template>
 
 <script setup>
 import SearchTable from '@/components/common/SearchTable.vue'
-import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
-import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
-import useNavigation from '@/composables/useNavigation.js'
-import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
+import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
+import { useRoute, useRouter } from 'vue-router'
+import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
+import useReceivedShare from '@/composables/useReceivedShare.js'
 import { useI18n } from 'vue-i18n'
-import CollectionOverview from '@/components/receivedShare/CollectionOverview.vue'
+import useNavigation from '@/composables/useNavigation.js'
+import CollectionOverview from '@/components/outerApp/CollectionOverview.vue'
 
 const { t } = useI18n()
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
-const { goToEmbedMaterialDetail } = useNavigation()
-
 const props = defineProps({
-  sharingKey: {
-    type: String,
-    required: true,
-  },
   nodeKey: {
     type: String,
     required: true,
   },
 })
 
-const share = computed(() => store.getters['embed/share'])
+const { receivedShareCloneByNodeKey, receivedShareCloneByNodeList } =
+  useReceivedShare()
+const { goToReceivedShareMaterial } = useNavigation()
+
+const share = computed(() => store.getters['receivedShare/share'])
 const optionSort = computed(() => {
   const { SORT_BY } = useConstants()
   const {
@@ -125,16 +138,24 @@ const optionSort = computed(() => {
     keywordSearch: [RELEVANCE_M_C],
   }
 })
-const logo = computed(() => store.getters['embed/logo'])
-const pagination = computed(() => store.getters['helper/search/pagination'])
-const nodeList = computed(() => store.getters['embed/nodeList'])
-const breadcrumbList = computed(() =>
-  store.getters['embed/collectionBreadcrumbList']()
-)
-const collection = computed(() => store.getters['embed/collection'])
-const currentNodeKey = ref(props.nodeKey)
 
-const getEmbedList = async (targetPage = 1, query) => {
+const optionMultiSelect = computed(() => [
+  {
+    name: t('RR0167'),
+    func: receivedShareCloneByNodeList,
+  },
+])
+
+const pagination = computed(() => store.getters['helper/search/pagination'])
+const nodeList = computed(() => store.getters['receivedShare/nodeList'])
+const breadcrumbList = computed(() =>
+  store.getters['receivedShare/collectionBreadcrumbList']()
+)
+const collection = computed(() => store.getters['receivedShare/collection'])
+const currentNodeKey = ref(props.nodeKey)
+const selectedNodeList = ref([])
+
+const getShareReceivedList = async (targetPage = 1, query) => {
   router.push({
     name: route.name,
     params: {
@@ -142,7 +163,7 @@ const getEmbedList = async (targetPage = 1, query) => {
     },
     query,
   })
-  await store.dispatch('embed/getEmbedList', {
+  await store.dispatch('receivedShare/getShareReceivedList', {
     targetPage,
     sharingKey: share.value.sharingKey,
     nodeKey: currentNodeKey.value,
@@ -154,7 +175,7 @@ const handleNodeClick = (node, goTo) => {
     currentNodeKey.value = node.nodeKey
     goTo()
   } else {
-    goToEmbedMaterialDetail(node.nodeKey, share.value.sharingKey, node.rank)
+    goToReceivedShareMaterial(node.nodeKey, share.value.sharingKey, node.rank)
   }
 }
 </script>

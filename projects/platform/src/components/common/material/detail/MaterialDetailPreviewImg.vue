@@ -1,8 +1,6 @@
 <style lang="scss" scoped>
 .magnifier {
   background: no-repeat #fff;
-  width: 300px;
-  height: 300px;
   pointer-events: none;
   position: absolute;
   border: 4px solid;
@@ -11,7 +9,7 @@
   display: block;
   opacity: 1;
   transition: opacity 0.2s;
-  @apply border-grey-250;
+  @apply border-grey-250 w-35 xl:w-75 h-35 xl:h-75;
 }
 </style>
 
@@ -46,19 +44,19 @@ div
         img(v-if="!!image.src" class="w-full h-full" :src="image.src")
   div(
     v-if="isOpenMagnifierMode"
-    class="fixed w-screen h-screen z-popper bg-grey-900 left-0 top-0 flex flex-col"
+    class="fixed w-screen h-full z-popper bg-grey-900 left-0 top-0 flex flex-col"
   )
     div(
-      class="shrink-0 w-full h-27.5 bg-grey-900 px-10 flex items-center justify-between border-b border-grey-700"
+      class="shrink-0 w-full h-27.5 bg-grey-900 px-3 xl:px-10 flex items-center justify-between border-b border-grey-700"
     )
-      div(class="flex items-center")
+      div(class="flex items-center gap-x-1 xl:gap-x-4")
         f-svg-icon(iconName="zoom_in" size="24" class="text-grey-50")
-        p(class="text-grey-50 text-body1 font-bold pl-4") {{ $t('EE0132') }}
+        p(class="text-grey-50 text-caption xl:text-body1 font-bold") {{ $t('EE0132') }}
       div(class="grid grid-flow-col gap-x-2")
         template(v-for="(image, index) in imageList" :key="`image-${index}`")
           div(
             v-if="!(props.material.coverMode === COVER_MODE.SUP && index === defaultCoverImgIndex)"
-            class="w-19.5 h-19.5 rounded overflow-hidden bg-grey-100"
+            class="w-15 xl:w-19.5 h-15 xl:h-19.5 rounded overflow-hidden bg-grey-100"
             :class="[currentDisplayIndex === index ? 'border-4 border-primary-400' : 'border border-grey-700']"
             @click="currentDisplayIndex = index"
           )
@@ -67,14 +65,17 @@ div
     div(class="flex-grow h-full relative flex items-center justify-center")
       div(
         class="p-10"
-        @mouseleave="isOpenMagnifier = false"
-        @mousemove.stop="moveMagnifier($event)"
+        @mouseleave.prevent="isOpenMagnifier = false"
+        @touchend.prevent="isOpenMagnifier = false"
+        @mousemove.stop.prevent="moveMagnifier($event)"
+        @touchmove.stop.prevent="moveMagnifier($event)"
       )
         img(
           ref="refMagnifierSourceImage"
           class="rounded-2xl overflow-hidden"
           :src="imageList[currentDisplayIndex].src"
           @mousemove="!isOpenMagnifier && openMagnifier($event)"
+          @touchmove.prevent="!isOpenMagnifier && openMagnifier($event)"
         )
         div(v-show="isOpenMagnifier" ref="refMagnifierGlass" class="magnifier")
 </template>

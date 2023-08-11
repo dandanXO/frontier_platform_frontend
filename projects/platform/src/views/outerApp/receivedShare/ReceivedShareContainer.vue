@@ -17,15 +17,15 @@ fullscreen-header
     template(v-if="share.sharingFrom === SHARING_FROM.WORKSPACE")
       f-avatar(:imageUrl="logo" type="org" size="lg")
       div(class="flex items-end pl-2")
-        p(class="text-body1 font-bold text-grey-900 pr-2.5") {{ share.displayName }}
+        p(class="text-caption xl:text-body1 font-bold text-grey-900 pr-2.5") {{ share.displayName }}
         p(class="text-caption text-grey-600") {{ $t('RR0148') }} {{ $dayjs.unix(share.shareDate).format('YYYY/MM/DD') }}
     template(v-else-if="share.sharingFrom === SHARING_FROM.PUBLIC_LIBRARY")
-      p(class="text-body1 font-bold text-grey-900 pr-2.5") {{ $t('GG0032') }}
+      p(class="text-caption2 xl:text-body1 font-bold text-grey-900 pr-2.5") {{ $t('GG0032') }}
       f-avatar(:imageUrl="logo" type="org" size="lg")
-      p(class="text-body1 font-bold text-grey-900 pl-2.5") {{ share.displayName }}
+      p(class="text-caption2 xl:text-body1 font-bold text-grey-900 pl-2.5") {{ share.displayName }}
   template(#right)
-    dropdown-locale(class="mr-4")
-    div(class="relative cursor-pointer mr-4" @click="openModalShareMessage")
+    dropdown-locale
+    div(class="relative cursor-pointer mx-2 xl:mx-4" @click="openModalShareMessage")
       f-svg-icon(iconName="chat" size="24" class="text-grey-600")
       div(
         v-if="haveMsgAndFirstRead"
@@ -36,13 +36,7 @@ fullscreen-header
     div(v-if="share.isClosed" class="w-full h-full flex items-center justify-center")
       p(class="text-body1 text-grey-900") {{ $t('GG0026') }}
     router-view(v-else-if="isReloadReceivedShare")
-    a(
-      class="fixed z-footer bottom-0 w-full h-13 bg-grey-50 px-36 flex items-center justify-end shadow-4 border-t border-grey-150"
-      href="https://www.frontier.cool/"
-      target="_blank"
-    )
-      img(src="@/assets/images/frontier_logo.png" class="w-20.5 h-4 mr-2")
-      p(class="text-body2 text-grey-900") {{ $t('GG0004') }}
+    outer-footer
 transition(name="sticker-drawer")
   sticker-drawer-for-login(v-if="isStickerDrawerForLoginOpen")
 transition(name="sticker-drawer")
@@ -51,6 +45,7 @@ transition(name="sticker-drawer")
 
 <script setup>
 import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
+import OuterFooter from '@/components/outerApp/OuterFooter.vue'
 import { useStore } from 'vuex'
 import { computed, ref, onMounted } from 'vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'

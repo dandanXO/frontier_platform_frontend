@@ -1,7 +1,7 @@
 <template lang="pug">
-div(class="w-200")
+div(class="w-90 xl:w-200")
   div(
-    class="relative h-113 flex flex-col justify-center items-center"
+    class="relative h-80 xl:h-113 flex flex-col justify-center items-center"
     :class="[extensionInfo[currentAttachment.extension].display === 'video' ? 'bg-grey-900' : 'bg-grey-100']"
   )
     img(
@@ -30,15 +30,15 @@ div(class="w-200")
     )
       f-svg-icon(iconName="open_in_new" size="20" class="text-grey-900")
       p(class="text-body2 leading-1.6 text-grey-900 pl-1.5") {{ $t('DD0070') }}
-  div(class="h-25 bg-grey-0 flex justify-between items-center px-8")
+  div(class="h-16 xl:h-25 bg-grey-0 flex justify-between items-center px-4 xl:px-8")
     div(class="text-grey-900 flex items-center")
-      span(class="text-h6 mr-5 line-clamp-1") {{ currentAttachment.displayFileName }}
-      a(
-        :href="currentAttachment.url"
-        :download="currentAttachment.displayFileName"
-        target="_blank"
+      span(class="text-caption xl:text-h6/1.6 mr-5 line-clamp-1") {{ currentAttachment.displayFileName }}
+      f-svg-icon(
+        iconName="download"
+        size="24"
+        class="text-grey-900 cursor-pointer"
+        @click="downloadDataURLFile(currentAttachment.url, currentAttachment.displayFileName)"
       )
-        f-svg-icon(iconName="download" size="24" class="text-grey-900 cursor-pointer")
     div(class="flex justify-between items-center gap-5 flex-shrink-0")
       f-svg-icon(
         iconName="keyboard_arrow_left"
@@ -46,7 +46,7 @@ div(class="w-200")
         class="cursor-pointer"
         @click="getLast"
       )
-      div(class="text-grey-900 text-h6 font-bold") {{ currentIndex + 1 }} / {{ attachmentList.length }}
+      span(class="text-grey-900 text-caption xl:text-h6 font-bold") {{ currentIndex + 1 }} / {{ attachmentList.length }}
       f-svg-icon(
         iconName="keyboard_arrow_right"
         size="24"
@@ -57,6 +57,7 @@ div(class="w-200")
 
 <script>
 import { ref, computed } from 'vue'
+import { downloadDataURLFile } from '@/utils/fileOperator'
 
 export default {
   name: 'ModalPreviewAttachment',
@@ -112,6 +113,7 @@ export default {
       currentIndex,
       getNext,
       getLast,
+      downloadDataURLFile,
     }
   },
 }

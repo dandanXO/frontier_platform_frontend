@@ -4,6 +4,7 @@ div
   div(class="grid gap-y-2")
     p(
       v-for="(item, key) in materialBasicInfo"
+      :key="key"
       class="text-body2 leading-1.6 break-words"
       :class="{ 'text-grey-600': key === 'frontierNo' }"
     ) {{ item.name }}: {{ item.value }}

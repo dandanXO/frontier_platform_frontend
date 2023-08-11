@@ -195,7 +195,8 @@ const routes = [
   {
     path: '/received-share/:sharingKey',
     name: 'ReceivedShare',
-    component: () => import('@/views/receivedShare/ReceivedShareContainer.vue'),
+    component: () =>
+      import('@/views/outerApp/receivedShare/ReceivedShareContainer.vue'),
     beforeEnter: async (to, from, next) => {
       const sharingKey = to.params.sharingKey
       await Promise.all([
@@ -213,21 +214,21 @@ const routes = [
         name: 'ReceivedShareCollection',
         props: true,
         component: () =>
-          import('@/views/receivedShare/ReceivedShareCollection.vue'),
+          import('@/views/outerApp/receivedShare/ReceivedShareCollection.vue'),
       },
       {
         path: 'material/:nodeKey',
         name: 'ReceivedShareMaterial',
         props: true,
         component: () =>
-          import('@/views/receivedShare/ReceivedShareMaterial.vue'),
+          import('@/views/outerApp/receivedShare/ReceivedShareMaterial.vue'),
       },
     ],
   },
   {
     path: '/embed/:sharingKey',
     name: 'Embed',
-    component: () => import('@/views/embed/EmbedContainer.vue'),
+    component: () => import('@/views/outerApp/embed/EmbedContainer.vue'),
     beforeEnter: async (to, from, next) => {
       const sharingKey = to.params.sharingKey
       await store.dispatch('embed/getEmbedInfo', { sharingKey })
@@ -240,20 +241,21 @@ const routes = [
         path: ':nodeKey',
         name: 'EmbedCollection',
         props: true,
-        component: () => import('@/views/embed/Embed.vue'),
+        component: () => import('@/views/outerApp/embed/Embed.vue'),
       },
       {
         path: 'material/:nodeKey',
         name: 'EmbedMaterialDetail',
         props: true,
-        component: () => import('@/views/embed/EmbedMaterialDetail.vue'),
+        component: () =>
+          import('@/views/outerApp/embed/EmbedMaterialDetail.vue'),
       },
     ],
   },
   {
     path: '/embed-3d-viewer/:materialId',
     name: 'Embed3DViewer',
-    component: () => import('@/views/embed3DViewer/Embed3DViewer.vue'),
+    component: () => import('@/views/outerApp/embed3DViewer/Embed3DViewer.vue'),
   },
   {
     path: '/',
@@ -306,7 +308,7 @@ const routes = [
       {
         path: 'moodboard/:sharingKey',
         name: 'MoodboardReceivedShare',
-        component: () => import('@/views/MoodboardReceivedShare.vue'),
+        component: () => import('@/views/outerApp/MoodboardReceivedShare.vue'),
         beforeEnter: checkUserIsVerify,
       },
       {
