@@ -39,18 +39,17 @@ div(class="flex flex-col gap-y-2.5")
       div(class="bg-grey-150 flex items-center justify-center p-2 rounded")
         f-svg-icon(iconName="file" size="20" class="text-grey-600")
       div(class="flex-grow pl-2 pr-4 flex flex-col gap-y-1")
-        p(class="text-body2 font-bold text-grey-800") {{ u3mFile.name }}
+        p(class="text-body2 font-bold text-grey-800 line-clamp-1") {{ u3mFile.name }}
         p(class="text-caption text-grey-600") {{ hasPhysicalData ? $t('EE0169') : $t('EE0170') }}
       f-svg-icon(
         iconName="delete"
         size="24"
         class="text-grey-600 cursor-pointer"
-        @click="$emit('remove')"
+        @click="remove"
       )
     div(v-if="!hasPhysicalData")
       f-input-checkbox(
-        :inputValue="needToGeneratePhysical"
-        @update:inputValue="$emit('update:needToGeneratePhysical', $event)"
+        v-model:inputValue="needToGeneratePhysical"
         :label="$t('EE0171')"
         binary
         iconSize="20"
@@ -79,11 +78,6 @@ defineProps<{
   status?: U3M_STATUS
 }>()
 
-defineEmits<{
-  (e: 'update:needToGeneratePhysical', needToGeneratePhysical: boolean): void
-  (e: 'remove'): void
-}>()
-
 const store = useStore()
 const { goToBillings } = useNavigation()
 
@@ -109,6 +103,12 @@ const openModalUploadU3mFile = () => {
       },
     },
   })
+}
+
+const remove = () => {
+  u3mFile.value = null
+  hasPhysicalData.value = false
+  needToGeneratePhysical.value = true
 }
 
 defineExpose({

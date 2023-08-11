@@ -106,7 +106,7 @@ div(class="w-79")
               div(class="flex items-center gap-x-2")
                 div(class="bg-grey-150 flex items-center justify-center p-1 rounded")
                   f-svg-icon(iconName="file" size="16" class="text-grey-600")
-                p(class="text-body2/1.6 text-grey-800") {{ material.customU3m.customFileName }}
+                p(class="text-body2/1.6 text-grey-800 line-clamp-1") {{ material.customU3m.customFileName }}
         i18n-t(
           v-if="material.customU3m.status === UNSUCCESSFUL"
           keypath="PP0014"
