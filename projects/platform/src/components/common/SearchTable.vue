@@ -4,7 +4,7 @@ div(class="w-full h-full flex flex-col")
   slot(name="header-above" :goTo="goTo")
   div(
     data-tooltip-boundary-reference="search-table-header"
-    class="pt-7.5 pb-2.5 mx-7.5 flex justify-between items-center"
+    class="py-3 xl:pt-7.5 xl:pb-2.5 mx-7.5 flex justify-between items-center"
   )
     div
       slot(name="header-left" :goTo="goTo")
@@ -36,7 +36,7 @@ div(class="w-full h-full flex flex-col")
           )
       slot(name="header-right")
   slot(name="sub-header")
-  div(class="overflow-y-auto flex-grow flex flex-col")
+  div(class="xl:overflow-y-auto flex-grow flex flex-col")
     div(
       v-if="isSearching || (inSearch && pagination.totalCount === 0)"
       class="flex-grow flex flex-col justify-center items-center"

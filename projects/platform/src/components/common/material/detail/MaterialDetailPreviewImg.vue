@@ -1,6 +1,5 @@
 <style lang="scss" scoped>
 .magnifier {
-  background: no-repeat #fff;
   pointer-events: none;
   position: absolute;
   border: 4px solid;
@@ -9,7 +8,7 @@
   display: block;
   opacity: 1;
   transition: opacity 0.2s;
-  @apply border-grey-250 w-35 xl:w-75 h-35 xl:h-75;
+  @apply border-grey-250 w-35 xl:w-75 h-35 xl:h-75 bg-grey-900 bg-no-repeat;
 }
 </style>
 

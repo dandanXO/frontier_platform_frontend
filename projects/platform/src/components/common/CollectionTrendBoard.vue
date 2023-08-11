@@ -1,8 +1,11 @@
 <template lang="pug">
 div(
-  class="relative w-97.5 h-69 rounded bg-grey-250 flex items-center justify-center flex-shrink-0"
+  class="w-full h-40 xl:w-97.5 xl:h-69 relative rounded bg-grey-250 flex items-center justify-center flex-shrink-0"
 )
-  div(v-if="trendBoardCoverImg" class="rounded w-full h-full px-7.5 py-6 bg-grey-100")
+  div(
+    v-if="trendBoardCoverImg"
+    class="rounded w-full h-full p-3 xl:px-7.5 xl:py-6 bg-grey-100"
+  )
     div(
       class="w-full h-full bg-contain bg-no-repeat bg-center rounded bg-grey-0"
       :style="{ backgroundImage: `url(${trendBoardCoverImg})` }"

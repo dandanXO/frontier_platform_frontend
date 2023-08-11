@@ -25,7 +25,7 @@
 </style>
 
 <template lang="pug">
-div(class="max-w-315 h-full mx-auto pt-10")
+div(class="max-w-315 h-full mx-auto xl:pt-10")
   search-table(
     :searchType="SEARCH_TYPE.SHARE"
     :canSelectAll="false"
@@ -51,7 +51,7 @@ div(class="max-w-315 h-full mx-auto pt-10")
     template(#default="{ goTo }")
       div(
         v-if="nodeList.length > 0"
-        class="mx-7.5 grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start"
+        class="mx-7.5 grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 xl:gap-y-6.5 xl:gap-x-5 grid-flow-row auto-rows-auto content-start"
       )
         grid-item-node(
           v-for="node in nodeList"
