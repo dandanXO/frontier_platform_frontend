@@ -73,7 +73,7 @@ div
           ref="refMagnifierSourceImage"
           class="rounded-2xl overflow-hidden"
           :src="imageList[currentDisplayIndex].src"
-          @mousemove="!isOpenMagnifier && openMagnifier($event)"
+          @mousemove.prevent="!isOpenMagnifier && openMagnifier($event)"
           @touchmove.prevent="!isOpenMagnifier && openMagnifier($event)"
         )
         div(v-show="isOpenMagnifier" ref="refMagnifierGlass" class="magnifier")
@@ -139,8 +139,15 @@ const openMagnifier = (e) => {
 // https://www.w3schools.com/howto/howto_js_image_magnifier_glass.asp
 const moveMagnifier = (e) => {
   const { left, top } = refMagnifierSourceImage.value.getBoundingClientRect()
-  const x = e.pageX - left
-  const y = e.pageY - top
+  let x, y
+  if (e.targetTouches) {
+    const { pageX, pageY } = e.targetTouches[0]
+    x = pageX - left
+    y = pageY - top
+  } else {
+    x = e.pageX - left
+    y = e.pageY - top
+  }
   const imgWidth = refMagnifierSourceImage.value.width
   const imgHeight = refMagnifierSourceImage.value.height
   const glassHalfWidth = refMagnifierGlass.value.offsetWidth / 2
