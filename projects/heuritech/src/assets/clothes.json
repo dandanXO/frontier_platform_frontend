@@ -1,0 +1,1290 @@
+[
+  {
+    "clothesId": "1",
+    "title": "Clothes 1",
+    "description": "",
+    "clothesImageFileName": "sample_1.png",
+    "mapAreaList": [
+      {
+        "color": "black",
+        "coords": "469,472,377,532,350,604,344,720,346,847,345,968,307,1246,403,1244,399,1105,419,1022,455,920,430,886,560,853,577,651,566,605"
+      },
+      {
+        "color": "black",
+        "coords": "712,440,709,500,647,619,666,726,664,787,666,847,784,884,792,849,841,1109,841,1178,849,1248,941,1247,938,1177,922,1035,902,870,887,754,867,629,851,561,823,490"
+      },
+      {
+        "color": "white",
+        "coords": "444,892,464,929,582,955,665,955,761,955,774,950,777,918,779,887,657,847,657,738,642,646,638,609,652,562,686,522,704,492,695,431,684,430,640,532,625,585,625,599,570,590,555,540,505,482,497,445,534,437,533,425,512,422,473,437,501,502,537,558,569,602,576,700,575,774,569,855"
+      },
+      {
+        "color": "denim",
+        "coords": "460,931,578,963,676,963,766,963,792,1069,798,1117,812,1172,801,1263,788,1347,782,1495,766,1599,778,1737,766,1838,745,1875,775,1919,544,1919,515,1769,470,1634,450,1550,429,1420,419,1299,407,1208,405,1104,418,1026"
+      }
+    ],
+    "materialList": [
+      {
+        "frontierNo": "F03186523641",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F03186523641_202103181442049436.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F04012974786",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F04012974786_202204061525043826.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F07070388671",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F07070388671_202007071617028296.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F07260747533",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F07260747533_202207261629335436.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F09021806242",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F09021806242_202009040934398668.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F09090852076",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F09090852076_202009091531270497.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F10141199",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F10141199_202010141027113860.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F12097033620",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F12097033620_202012101054187366.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F22800834480",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F22800834480_202111051525590250.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F82980740363",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F82980740363_202207041753037144.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "C160415730",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C160415730_201708151232167347.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C161227447",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C161227447_201707101631161110.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170615012",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170615012_201706211030133869.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170616037",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170616037_201706161701226596.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C171205844",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C171205844_201712051730206104.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C171211865",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C171211865_201712111023169581.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180410655",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180410655_201804101414552103.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C190426515",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C190426515_201904261048261127.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C191022486",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C191022486_201910221136253787.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C200534363",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C200534363_202005051541532640.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "F01183725454",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F01183725454_202202091415096131.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F02040749720",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F02040749720_202102041534215527.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F033121151878",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F033121151878_202303311650555842.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F042706737848",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F042706737848_202304270144498421.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F05206464180",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F05206464180_202106070939514695.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F08125814761",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F08125814761_202008121628232066.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F09027915394",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F09027915394_202009040934229600.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F10287631272",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F10287631272_202010291149158031.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F78696390859",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F78696390859_202202220931100444.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F87191281911",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F87191281911_202202071448055275.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "C170706423",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170706423_201707061642164816.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C171227973",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C171227973_201712271523171282.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180319421",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180319421_201803211048462348.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180416714",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180416714_201804161730311460.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180430859",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180430859_201804301146203890.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180627283",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180627283_201806271728104913.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C181105233",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C181105233_201811081227254473.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C191104561",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C191104561_201911041106258230.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C200102011",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C200102011_202001061342520947.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C200120146",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C200120146_202001221316157395.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "F04220926618",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F04220926618_202104221711058476.jpg",
+        "color": "denim",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F06030129499",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F06030129499_202006081204449052.jpg",
+        "color": "denim",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F06036305199",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F06036305199_202006091454491864.jpg",
+        "color": "denim",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F06220107205",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F06220107205_202206231356139288.jpg",
+        "color": "denim",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F06233636231",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F06233636231_202206231652423080.jpg",
+        "color": "denim",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F07130459490",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F07130459490_202007131156130993.jpg",
+        "color": "denim",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F08183216253",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F08183216253_202008181502257329.jpg",
+        "color": "denim",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F09016031576",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F09016031576_202009021437362966.jpg",
+        "color": "denim",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F12155339135",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F12155339135_202012181148238007.jpg",
+        "color": "denim",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F256727889659",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F256727889659_202307041218093520.jpg",
+        "color": "denim",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "C160505873",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C160505873.jpg",
+        "color": "denim",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C160714385",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C160714385.jpg",
+        "color": "denim",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C160825619",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C160825619.jpg",
+        "color": "denim",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C160902737",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C160902737.jpg",
+        "color": "denim",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C161004916",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C161004916_201612151311138255.jpg",
+        "color": "denim",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170313257",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170313257_201703131547134159.jpg",
+        "color": "denim",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170525885",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170525885_201705251541166674.jpg",
+        "color": "denim",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180308321",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180308321_201803151504192348.jpg",
+        "color": "denim",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180726596",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180726596_201808081714254424.jpg",
+        "color": "denim",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C190514563",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C190514563_201905151210431733.jpg",
+        "color": "denim",
+        "isPublic": false
+      }
+    ]
+  },
+  {
+    "clothesId": "2",
+    "title": "Clothes 2",
+    "description": "",
+    "clothesImageFileName": "sample_2.png",
+    "mapAreaList": [
+      {
+        "color": "red",
+        "coords": "376,526,545,472,617,544,633,680,651,554,739,475,902,544,858,681,846,763,843,847,839,938,840,1032,866,1124,850,1186,882,1233,929,1352,947,1400,854,1462,811,1485,741,1484,667,1492,587,1488,501,1486,446,1477,408,1461,364,1432,348,1403,309,1385,378,1208,405,1091,417,1053,403,985,430,936,415,772"
+      },
+      {
+        "color": "white",
+        "coords": "380,561,348,607,334,692,316,777,291,816,338,873,390,927,411,951,426,928"
+      },
+      {
+        "color": "white",
+        "coords": "848,976,924,917,940,951,1009,853,984,830,973,761,947,673,931,607,904,563,882,636,857,710,847,807"
+      },
+      {
+        "color": "black",
+        "coords": "362,1435,435,1482,513,1493,616,1498,669,1497,729,1494,786,1492,828,1489,860,1468,860,1539,856,1623,844,1723,840,1790,780,1832,726,1856,678,1873,637,1889,615,1896,603,1898,544,1912,468,1918,397,1918,366,1919,357,1918,352,1835,384,1739,352,1664"
+      }
+    ],
+    "materialList": [
+      {
+        "frontierNo": "F05077362592",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F05077362592_202105121440310483.jpg",
+        "color": "red",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F061759712825",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F061759712825_202306171047528340.jpg",
+        "color": "red",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F07020078731",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F07020078731_202107021516344021.jpg",
+        "color": "red",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F103079517061",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F103079517061_202210300107504676.jpg",
+        "color": "red",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F103089542467",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F103089542467_202210300106552814.jpg",
+        "color": "red",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F11041359821",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F11041359821_202011041014060848.jpg",
+        "color": "red",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F11100338168",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F11100338168_202011101407248764.jpg",
+        "color": "red",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F11119692339",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F11119692339_202011111648526654.jpg",
+        "color": "red",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F11262938823",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F11262938823_202011261549522957.jpg",
+        "color": "red",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F693168030387",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F693168030387_202210041309593273.jpg",
+        "color": "red",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "B170710434",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/B170710434_201707201534289862.jpg",
+        "color": "red",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C160407584",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C160407584.jpg",
+        "color": "red",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C160509888",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C160509888.jpg",
+        "color": "red",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C161212360",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C161212360_201704281521385518.jpg",
+        "color": "red",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170215106",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170215106_201704261523224182.jpg",
+        "color": "red",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170222138",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170222138_201702241345133510.jpg",
+        "color": "red",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180314381",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180314381_201803192347477597.jpg",
+        "color": "red",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180650220",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180650220_201806201832194769.jpg",
+        "color": "red",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180736425",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180736425_201807131029258017.jpg",
+        "color": "red",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C181219497",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C181219497_201812191944255575.jpg",
+        "color": "red",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "F01186954590",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F01186954590_202106031153077824.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F01273302089",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F01273302089_202101271531499761.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F03283753418",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F03283753418_202203281607454340.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F03295411702",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F03295411702_202203291824350229.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F033168337404",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F033168337404_202303311609587831.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F042687686229",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F042687686229_202304261732555618.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F05061198194",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F05061198194_202105281715587760.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F05151559033",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F05151559033_202005261506209744.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F09153674772",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F09153674772_202009181126252493.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F825980638781",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F825980638781_202210281053216360.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "C150831077",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C150831077.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C150901098",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C150901098_201708031501196933.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C151228789",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C151228789_201610181718290316.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C160902721",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C160902721.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C171023503",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C171023503_201710231314531750.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C171103637",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C171103637_201711031613525104.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180503892",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180503892_201805031728396797.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180503894",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180503894_201805031728306502.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C190711905",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C190711905_201907111807318828.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C200102010",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C200102010_202003241522188879.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "F01072220813",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F01072220813_202101071427517626.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F01200695806",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F01200695806_202101201643456380.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F09090218044",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F09090218044_202009091531458754.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F10141199",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F10141199_202010141027113860.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F10155073",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F10155073_202010151627075780.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F10197902368",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F10197902368_202010231417380207.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F11108952197",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F11108952197_202011101407001388.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F11255438481",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F11255438481_202011251437125129.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F22720410667",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F22720410667_202201031041034064.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F87170321030",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F87170321030_202108121731125451.jpg",
+        "color": "black",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "B180202251",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/B180202251_201802051731180911.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "B180425818",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/B180425818_201804251731377165.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C161227443",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C161227443_201703211054138555.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C161227468",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C161227468_201708101520173507.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170616020",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170616020_201706161257133467.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170620180",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170620180_201706201239139788.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180138076",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180138076_201801161309274447.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C181106239",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C181106239_201811061422255964.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C200813471",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C200813471_202105211106321224.jpg",
+        "color": "black",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C200929646",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C200929646_202010081146312039.jpg",
+        "color": "black",
+        "isPublic": false
+      }
+    ]
+  },
+  {
+    "clothesId": "3",
+    "title": "Clothes 3",
+    "description": "",
+    "clothesImageFileName": "sample_3.png",
+    "mapAreaList": [
+      {
+        "color": "cream",
+        "coords": "544,402,665,494,676,486,738,784,752,878,819,1080,790,1093,814,1144,767,1144,722,1149,685,1164,633,1179,524,1200,471,1200,410,1188,378,1181,439,932,418,872,434,752,437,662,461,581,480,534"
+      },
+      {
+        "color": "blue",
+        "coords": "142,1548,273,1591,371,1606,488,1639,533,1647,653,1642,692,1637,719,1635,753,1646,786,1638,835,1633,877,1625,895,1618,892,1475,883,1373,879,1312,852,1231,834,1201,817,1170,807,1148,752,1144,692,1165,622,1181,568,1194,507,1205,451,1203,423,1198,392,1193,376,1186,375,1175,383,1153,394,1103,314,1239,282,1278,236,1341,200,1403,182,1425,162,1460"
+      }
+    ],
+    "materialList": [
+      {
+        "frontierNo": "F03294009759",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F03294009759_202203291822225565.jpg",
+        "color": "cream",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F042645942260",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F042645942260_202304262353511517.jpg",
+        "color": "cream",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F05047236925",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F05047236925_202009040935306169.jpg",
+        "color": "cream",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F07285720257",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F07285720257_202110181736018819.jpg",
+        "color": "cream",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F09216256656",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F09216256656_202009211543370430.jpg",
+        "color": "cream",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F12098237700",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F12098237700_202012101615512677.jpg",
+        "color": "cream",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F12176037121",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F12176037121_202012171021399743.jpg",
+        "color": "cream",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F12178747376",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F12178747376_202012171613208496.jpg",
+        "color": "cream",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F12243810878",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F12243810878_202012241556373913.jpg",
+        "color": "cream",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F52822287529",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F52822287529_202107081509422797.jpg",
+        "color": "cream",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "C150831073",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C150831073_201705241210161005.jpg",
+        "color": "cream",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C150901098",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C150901098_201708031501196933.jpg",
+        "color": "cream",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C150915274",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C150915274_201701131224133960.jpg",
+        "color": "cream",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C161020019",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C161020019_201610201318135626.jpg",
+        "color": "cream",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170316304",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170316304_201703161700142319.jpg",
+        "color": "cream",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170901969",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170901969_201709011728137019.jpg",
+        "color": "cream",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180109116",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180109116_201801101143136638.jpg",
+        "color": "cream",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180350466",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180350466_201803211859559534.jpg",
+        "color": "cream",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180504905",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180504905_201805041825291588.jpg",
+        "color": "cream",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180926972",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180926972_201809261149355826.jpg",
+        "color": "cream",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "F01188160558",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F01188160558_202106031152160806.jpg",
+        "color": "blue",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F042880999785",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F042880999785_202304281847523155.jpg",
+        "color": "blue",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F06014277416",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F06014277416_202206021135338552.jpg",
+        "color": "blue",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F10194108140",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F10194108140_202010231413409878.jpg",
+        "color": "blue",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F10236797",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F10236797_202010231117120153.jpg",
+        "color": "blue",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F103098240338",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F103098240338_202210300106577800.jpg",
+        "color": "blue",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F11108614966",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F11108614966_202011101359282945.jpg",
+        "color": "blue",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F589425129583",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F589425129583_202211171558099258.jpg",
+        "color": "blue",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F65743899139",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F65743899139_202204181143596950.jpg",
+        "color": "blue",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F857790290009",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F857790290009_202210041317183294.jpg",
+        "color": "blue",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "C161227478",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C161227478_201703201703133390.jpg",
+        "color": "blue",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170345295",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170345295_201809041715254923.jpg",
+        "color": "blue",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170620188",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170620188_201706211027198639.jpg",
+        "color": "blue",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170911086",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170911086_201709111159137378.jpg",
+        "color": "blue",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C170920221",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C170920221_201709201849171667.jpg",
+        "color": "blue",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C171214917",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C171214917_201712141722171411.jpg",
+        "color": "blue",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180319429",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180319429_201803221808138315.jpg",
+        "color": "blue",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180330590",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180330590_201804061155466359.jpg",
+        "color": "blue",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180404618",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180404618_201804041759553745.jpg",
+        "color": "blue",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180803680",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180803680_201808071617452002.jpg",
+        "color": "blue",
+        "isPublic": false
+      }
+    ]
+  },
+  {
+    "clothesId": "4",
+    "title": "Clothes 4",
+    "description": "",
+    "clothesImageFileName": "sample_4.png",
+    "mapAreaList": [
+      {
+        "color": "stripe",
+        "coords": "422,441,394,490,316,517,243,550,223,563,176,631,126,737,102,834,57,1080,95,1156,108,1236,109,1276,148,1303,172,1300,228,1294,295,1393,304,1404,423,1308,474,1313,568,1328,666,1334,725,1334,771,1325,788,1309,823,1375,818,1413,815,1495,815,1551,819,1625,915,1646,924,1542,959,1462,984,1390,1012,1313,983,1110,930,850,910,724,888,652,875,598,850,572,742,515,627,422,608,566,548,616,491,601,477,596,442,538"
+      },
+      {
+        "color": "white",
+        "coords": "340,1918,805,1913,797,1801,797,1694,806,1612,805,1517,809,1429,797,1366,778,1329,623,1344,519,1330,431,1315,461,1407,442,1417,421,1413,364,1448,312,1444,310,1413,272,1371,280,1453,278,1515,273,1577"
+      }
+    ],
+    "materialList": [
+      {
+        "frontierNo": "F02254953196",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F02254953196_202102251531080528.jpg",
+        "color": "stripe",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F03180934643",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F03180934643_202103181452547408.jpg",
+        "color": "stripe",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F03187600254",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F03187600254_202103181451288658.jpg",
+        "color": "stripe",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F03241013405",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F03241013405_202103241443584935.jpg",
+        "color": "stripe",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F04017495003",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F04017495003_202104011205545736.jpg",
+        "color": "stripe",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F06100433341",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F06100433341_202006101045409103.jpg",
+        "color": "stripe",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F07284852677",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F07284852677_202007281130144209.jpg",
+        "color": "stripe",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F09273613449",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F09273613449_202009281138420311.jpg",
+        "color": "stripe",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F10289922186",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F10289922186_202010291128462651.jpg",
+        "color": "stripe",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F12103156801",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F12103156801_202012101613104305.jpg",
+        "color": "stripe",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "B191014445",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/19F308CGK0148-01F_201908191554291791.jpg",
+        "color": "stripe",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C191226763",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C191226763_201912271021409068.jpg",
+        "color": "stripe",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C191226775",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C191226775_201912271025200201.jpg",
+        "color": "stripe",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C200306232",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C200306232_202210280859195774.jpg",
+        "color": "stripe",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C200917572",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C200917572_202010081148457747.jpg",
+        "color": "stripe",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C201211789",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C201211789_202012221648438897.jpg",
+        "color": "stripe",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C201218800",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C201218800_202012311544174224.jpg",
+        "color": "stripe",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C201221805",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C201221805_202012311543373421.jpg",
+        "color": "stripe",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "F35592818794",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F35592818794_202308011100308467.jpg",
+        "color": "stripe",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "F69986902599",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F69986902599_202004291643428871.jpg",
+        "color": "stripe",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "F01186954590",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F01186954590_202106031153077824.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F01273302089",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F01273302089_202101271531499761.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F02012764670",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F02012764670_202209281618341977.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F02015909451",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F02015909451_202102031215128263.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F05201833603",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F05201833603_202106031441049737.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F08261759448",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F08261759448_202008261118239557.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F08310452740",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F08310452740_202008311409078474.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F10083143706",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F10083143706_202010121738594871.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F12246965103",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F12246965103_202012241552220297.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "F35711626340",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F35711626340_202208151215177998.jpg",
+        "color": "white",
+        "isPublic": true
+      },
+      {
+        "frontierNo": "B161002903",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/B161002903_201705231227164611.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C171011399",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C171011399_201710111400171541.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C171103638",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C171103638_201711031613203556.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C171227974",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C171227974_201712271559171297.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C180504905",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C180504905_201805041825291588.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C190335214",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C190335214_201903081403561207.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C190415470",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C190415470_201904151246253986.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C190649785",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C190649785_201906201415409159.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "C210202056",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/C210202056_202102021833257023.jpg",
+        "color": "white",
+        "isPublic": false
+      },
+      {
+        "frontierNo": "F10290248570",
+        "imageUrl": "https://textile.frontier.cool/Resource/MaterialCut/F10290248570_202111041312569654.jpg",
+        "color": "white",
+        "isPublic": false
+      }
+    ]
+  }
+]

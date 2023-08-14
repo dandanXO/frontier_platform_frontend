@@ -22,7 +22,7 @@
   "license": "ISC",
   "dependencies": {
     "@frontier/3d-viewer": "workspace:^0.0.0",
-    "@frontier/console": "workspace:^0.0.0",
+    "@frontier/heuritech": "workspace:^0.0.0",
     "@frontier/constants": "workspace:^0.0.0",
     "@frontier/e2e-tests": "workspace:^0.0.0",
     "@frontier/mock-embed": "workspace:^0.0.0",

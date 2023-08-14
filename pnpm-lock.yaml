@@ -11,15 +11,15 @@ importers:
       '@frontier/3d-viewer':
         specifier: workspace:^0.0.0
         version: link:packages/3d-viewer
-      '@frontier/console':
-        specifier: workspace:^0.0.0
-        version: link:projects/console
       '@frontier/constants':
         specifier: workspace:^0.0.0
         version: link:packages/constants
       '@frontier/e2e-tests':
         specifier: workspace:^0.0.0
         version: link:projects/e2e-tests
+      '@frontier/heuritech':
+        specifier: workspace:^0.0.0
+        version: link:projects/heuritech
       '@frontier/mock-embed':
         specifier: workspace:^0.0.0
         version: link:projects/mock-embed
@@ -249,8 +249,6 @@ importers:
         specifier: ^2.0.0-alpha.1
         version: 2.0.0-alpha.1(vue@3.3.1)
 
-  projects/console: {}
-
   projects/e2e-tests:
     devDependencies:
       '@playwright/test':
@@ -259,6 +257,12 @@ importers:
       start-server-and-test:
         specifier: ^1.14.0
         version: 1.14.0
+
+  projects/heuritech:
+    dependencies:
+      image-map-resizer:
+        specifier: ^1.0.10
+        version: 1.0.10
 
   projects/mock-embed:
     devDependencies:
@@ -7390,6 +7394,11 @@ packages:
     resolution: {integrity: sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==}
     engines: {node: '>= 4'}
     dev: true
+
+  /image-map-resizer@1.0.10:
+    resolution: {integrity: sha512-e1dhQAIqBx1MUrUpwXfM4TGtVt1Q/YRnJAUxLPDnNG9TOIVf57TCP5PrDzvoy085ZdxZGxdDCSiaWyQfOPTdpA==}
+    engines: {node: '>=0.8.0'}
+    dev: false
 
   /image-size@0.5.5:
     resolution: {integrity: sha512-6TDAlDPZxUFCv+fuOkIoXT/V/f3Qbq8e37p+YOiYrUv3v9cc3/6x78VdfPgFVaB9dZYeLUfKgHRebpkm/oP2VQ==}
