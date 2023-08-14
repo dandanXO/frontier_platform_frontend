@@ -53,7 +53,7 @@ div(
         :range="scale"
         @update:range="(v: number) => emit('scaleChange', v)"
         withInput
-        :label="$t('EE0135')"
+        :label="$t('EE0136')"
         :min="0.1"
         :max="50"
         :step="0.01"
