@@ -1,65 +1,64 @@
 <template lang="pug">
-div(class="w-full h-full")
-  search-table(
-    :searchType="SEARCH_TYPE.WORKSPACE"
-    :searchCallback="getWorkspace"
-    :optionSort="optionSort"
-    :optionMultiSelect="optionMultiSelect"
-    :itemList="nodeList"
-    v-model:selectedItemList="selectedNodeList"
-  )
-    template(#header-left="{ goTo }")
-      div(class="flex items-end")
-        global-breadcrumb-list(
-          :breadcrumbList="breadcrumbList"
-          @click:item="currentNodeKey = $event.nodeKey; goTo()"
-          fontSize="text-h6"
-        )
-        p(class="flex text-caption text-grey-600 pl-1")
-          span (
-          i18n-t(keypath="RR0068" tag="span" scope="global")
-            template(#number) {{ pagination.totalCount }}
-          span )
-    template(#header-right)
-      f-button(
-        v-if="!isFirstLayer"
-        size="sm"
-        type="secondary"
-        @click="openModalCollectionDetail"
-      ) {{ $t('UU0057') }}
-      f-button(size="sm" prependIcon="add" @click="openModalAssetsList") {{ $t('UU0055') }}
-    template(v-if="!isFirstLayer" #sub-header)
-      p(class="mx-7.5 mb-7.5 text-caption text-grey-600") {{ $t('FF0002') }}: {{ $dayjs.unix(collection.createDate).format('YYYY/MM/DD') }}
-    template(#default="{ inSearch, goTo }")
-      div(
-        class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
+search-table(
+  :searchType="SEARCH_TYPE.WORKSPACE"
+  :searchCallback="getWorkspace"
+  :optionSort="optionSort"
+  :optionMultiSelect="optionMultiSelect"
+  :itemList="nodeList"
+  v-model:selectedItemList="selectedNodeList"
+)
+  template(#header-left="{ goTo }")
+    div(class="flex items-end")
+      global-breadcrumb-list(
+        :breadcrumbList="breadcrumbList"
+        @click:item="currentNodeKey = $event.nodeKey; goTo()"
+        fontSize="text-h6"
       )
-        div(
-          class="aspect-square border border-grey-250 border-dashed rounded-md flex justify-center items-center cursor-pointer"
-          @click="openModalCreateCollection"
-        )
-          div(class="flex flex-col justify-center items-center")
-            f-svg-icon(iconName="add" size="24" class="text-grey-900 mb-3.5")
-            span(class="text-body1 text-grey-900") {{ $t('FF0003') }}
-        grid-item-node(
-          v-for="node in nodeList"
-          :key="node.nodeKey"
-          v-model:selectedValue="selectedNodeList"
-          :node="node"
-          :optionList="optionNode(node)"
-          @click:option="$event.func(node)"
-          @click:node="handleNodeClick(node, goTo)"
-        )
-          template(#corner-bottom-left v-if="isFirstLayer")
-            f-svg-icon(
-              :iconName="node.isPublic ? 'public' : 'internal'"
-              :tooltipMessage="node.isPublic ? $t('FF0072') : $t('FF0073')"
-              size="20"
-              class="cursor-pointer text-grey-250"
-              @click.stop="openModalPublish(node)"
-            )
-          template(#title-right-icon)
-            tooltip-location(v-if="inSearch" :location="node.location")
+      p(class="flex text-caption text-grey-600 pl-1")
+        span (
+        i18n-t(keypath="RR0068" tag="span" scope="global")
+          template(#number) {{ pagination.totalCount }}
+        span )
+  template(#header-right)
+    f-button(
+      v-if="!isFirstLayer"
+      size="sm"
+      type="secondary"
+      @click="openModalCollectionDetail"
+    ) {{ $t('UU0057') }}
+    f-button(size="sm" prependIcon="add" @click="openModalAssetsList") {{ $t('UU0055') }}
+  template(v-if="!isFirstLayer" #sub-header)
+    p(class="mx-7.5 mb-7.5 text-caption text-grey-600") {{ $t('FF0002') }}: {{ $dayjs.unix(collection.createDate).format('YYYY/MM/DD') }}
+  template(#default="{ inSearch, goTo }")
+    div(
+      class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
+    )
+      div(
+        class="aspect-square border border-grey-250 border-dashed rounded-md flex justify-center items-center cursor-pointer"
+        @click="openModalCreateCollection"
+      )
+        div(class="flex flex-col justify-center items-center")
+          f-svg-icon(iconName="add" size="24" class="text-grey-900 mb-3.5")
+          span(class="text-body1 text-grey-900") {{ $t('FF0003') }}
+      grid-item-node(
+        v-for="node in nodeList"
+        :key="node.nodeKey"
+        v-model:selectedValue="selectedNodeList"
+        :node="node"
+        :optionList="optionNode(node)"
+        @click:option="$event.func(node)"
+        @click:node="handleNodeClick(node, goTo)"
+      )
+        template(#corner-bottom-left v-if="isFirstLayer")
+          f-svg-icon(
+            :iconName="node.isPublic ? 'public' : 'internal'"
+            :tooltipMessage="node.isPublic ? $t('FF0072') : $t('FF0073')"
+            size="20"
+            class="cursor-pointer text-grey-250"
+            @click.stop="openModalPublish(node)"
+          )
+        template(#title-right-icon)
+          tooltip-location(v-if="inSearch" :location="node.location")
 </template>
 
 <script setup>

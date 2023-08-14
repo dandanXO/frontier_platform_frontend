@@ -1,6 +1,6 @@
 <template lang="pug">
-div(class="w-full h-full flex justify-center")
-  div(class="w-230 h-fit pb-25")
+div
+  div(class="mx-auto w-230 h-fit pb-25")
     material-detail-external-header(
       :breadcrumbList="breadcrumbList"
       :material="material"

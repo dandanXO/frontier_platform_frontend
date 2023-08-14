@@ -7,72 +7,71 @@
 </style>
 
 <template lang="pug">
-div(class="w-full h-full")
-  search-table(
-    :searchType="SEARCH_TYPE.ASSETS"
-    :searchCallback="getMaterialList"
-    :optionSort="optionSort"
-    :optionMultiSelect="optionMultiSelect"
-    :itemList="materialList"
-    v-model:selectedItemList="selectedMaterialList"
-  )
-    template(#header-left)
-      h5(class="text-h5 font-bold text-grey-900") {{ $t('EE0001') }}
-        span(class="text-caption text-grey-600 pl-1")
-          span (
-          i18n-t(keypath="RR0068" tag="span" scope="global")
-            template(#number) {{ pagination.totalCount }}
-          span )
-    template(#header-right)
-      grid-or-row(v-model:displayMode="displayMode" class="justify-self-end")
-      f-button(size="sm" prependIcon="add" @click="goToMaterialUpload") {{ $t('UU0020') }}
-    template(#default)
-      template(v-if="materialList.length > 0")
-        recycle-scroller(
-          v-show="displayMode === DISPLAY_NODE.LIST"
-          :items="materialList"
-          :itemSize="currentItemSize"
-          key-field="materialId"
-          pageMode
-          v-slot="{ item, index }"
-          @resize="resize"
-          :buffer="currentItemSize * 3"
+search-table(
+  :searchType="SEARCH_TYPE.ASSETS"
+  :searchCallback="getMaterialList"
+  :optionSort="optionSort"
+  :optionMultiSelect="optionMultiSelect"
+  :itemList="materialList"
+  v-model:selectedItemList="selectedMaterialList"
+)
+  template(#header-left)
+    h5(class="text-h5 font-bold text-grey-900") {{ $t('EE0001') }}
+      span(class="text-caption text-grey-600 pl-1")
+        span (
+        i18n-t(keypath="RR0068" tag="span" scope="global")
+          template(#number) {{ pagination.totalCount }}
+        span )
+  template(#header-right)
+    grid-or-row(v-model:displayMode="displayMode" class="justify-self-end")
+    f-button(size="sm" prependIcon="add" @click="goToMaterialUpload") {{ $t('UU0020') }}
+  template(#default)
+    template(v-if="materialList.length > 0")
+      recycle-scroller(
+        v-show="displayMode === DISPLAY_NODE.LIST"
+        :items="materialList"
+        :itemSize="currentItemSize"
+        key-field="materialId"
+        pageMode
+        v-slot="{ item, index }"
+        @resize="resize"
+        :buffer="currentItemSize * 3"
+      )
+        row-item(
+          :key="item.materialId"
+          :material="item"
+          v-model:selectedList="selectedMaterialList"
+          @mouseenter="onMouseEnter"
+          data-cy="assets"
         )
-          row-item(
-            :key="item.materialId"
-            :material="item"
-            v-model:selectedList="selectedMaterialList"
-            @mouseenter="onMouseEnter"
-            data-cy="assets"
-          )
-          div(
-            v-if="index !== materialList.length - 1"
-            class="border-b border-grey-250 mx-7.5 my-5"
-          )
         div(
-          v-show="displayMode === DISPLAY_NODE.GRID"
-          class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
+          v-if="index !== materialList.length - 1"
+          class="border-b border-grey-250 mx-7.5 my-5"
         )
-          grid-item-material(
-            v-for="(material, index) in materialList"
-            :key="material.materialId"
-            :material="material"
-            v-model:selectedValue="selectedMaterialList"
-            isSelectable
-            :selectValue="material"
-            :optionList="optionList(material)"
-            @click:option="$event.func(material)"
-            @click.stop="goToAssetMaterialDetail(material)"
-            :drawerOpenFromLocationList="[]"
-          )
-      div(v-else class="flex h-full justify-center items-center")
-        div(class="flex flex-col justify-center items-center")
-          div(
-            class="border border-grey-250 rounded-md border-dashed p-2 cursor-pointer"
-            @click="goToMaterialUpload"
-          )
-            f-svg-icon(iconName="add" size="24" class="text-grey-900")
-          p(class="text-body2 text-grey-900 pt-3") {{ $t('EE0079') }}
+      div(
+        v-show="displayMode === DISPLAY_NODE.GRID"
+        class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
+      )
+        grid-item-material(
+          v-for="(material, index) in materialList"
+          :key="material.materialId"
+          :material="material"
+          v-model:selectedValue="selectedMaterialList"
+          isSelectable
+          :selectValue="material"
+          :optionList="optionList(material)"
+          @click:option="$event.func(material)"
+          @click.stop="goToAssetMaterialDetail(material)"
+          :drawerOpenFromLocationList="[]"
+        )
+    div(v-else class="flex h-full justify-center items-center")
+      div(class="flex flex-col justify-center items-center")
+        div(
+          class="border border-grey-250 rounded-md border-dashed p-2 cursor-pointer"
+          @click="goToMaterialUpload"
+        )
+          f-svg-icon(iconName="add" size="24" class="text-grey-900")
+        p(class="text-body2 text-grey-900 pt-3") {{ $t('EE0079') }}
 </template>
 
 <script setup>

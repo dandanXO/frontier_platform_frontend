@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-full h-full relative")
+div(class="relative")
   search-table(
     :searchType="SEARCH_TYPE.PUBLIC_LIBRARY"
     :searchCallback="getPublicList"
@@ -69,6 +69,7 @@ div(class="w-full h-full relative")
       )
         grid-item-node(
           v-for="node in nodeList"
+          :key="node.nodeKey"
           v-model:selectedValue="selectedNodeList"
           :node="node"
           :isSelectable="!isFirstLayer"

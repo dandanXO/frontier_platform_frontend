@@ -659,6 +659,14 @@ export default {
         title: i18n.global.t('EE0176'),
         messageText: i18n.global.t('EE0177'),
       })
+
+      const cancelCustomU3mUpload = () => {
+        dispatch('cancelCustomU3mUpload', materialId)
+      }
+
+      if (getters.uploadingU3mMaterialIdList.length === 0) {
+        window.addEventListener('unload', cancelCustomU3mUpload)
+      }
       commit('PUSH_uploadingU3mMaterialIdList', materialId)
 
       const { tempUploadId, fileName } = await dispatch(
@@ -678,7 +686,32 @@ export default {
       commit('REMOVE_uploadingU3mMaterialIdList', materialId)
       if (getters.uploadingU3mMaterialIdList.length === 0) {
         closeNotifyBanner()
+        window.removeEventListener('unload', cancelCustomU3mUpload)
       }
+    },
+    cancelCustomU3mUpload({ rootGetters }, materialId) {
+      const type = rootGetters['helper/routeLocation']
+      const id = rootGetters['helper/routeLocationId']
+      const prefixPath = type === 'org' ? '/org' : '/org/group'
+      const path = `${
+        import.meta.env.VITE_APP_API_ENDPOINT
+      }${prefixPath}/assets/material/custom-u3m-upload/cancel`
+
+      const headers = {
+        type: 'application/json',
+      }
+      const data = {
+        materialId,
+        accessToken: localStorage.getItem('accessToken'),
+      }
+      if (type === 'org') {
+        data['orgId'] = id
+      } else {
+        data['groupId'] = id
+      }
+      const blob = new Blob([JSON.stringify(data)], headers)
+
+      return navigator.sendBeacon(path, blob)
     },
     async smartUpload({ dispatch }, params) {
       const { data } = await dispatch('callAssetsApi', {

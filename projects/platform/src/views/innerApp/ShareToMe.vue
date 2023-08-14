@@ -1,83 +1,82 @@
 <template lang="pug">
-div(class="w-full h-full")
-  search-table(
-    :searchType="SEARCH_TYPE.SHARE"
-    :searchCallback="getShareToMeList"
-    :optionSort="optionSort"
-    :optionMultiSelect="optionMultiSelect"
-    :itemList="nodeList"
-    v-model:selectedItemList="selectedNodeList"
-  )
-    template(#header-left="{ goTo }")
-      div(class="flex items-center")
-        div(class="flex items-end")
-          global-breadcrumb-list(
-            :breadcrumbList="breadcrumbList"
-            @click:item="setSharingIdAndNodeKey($event.nodeKey); goTo()"
-            fontSize="text-h6"
+search-table(
+  :searchType="SEARCH_TYPE.SHARE"
+  :searchCallback="getShareToMeList"
+  :optionSort="optionSort"
+  :optionMultiSelect="optionMultiSelect"
+  :itemList="nodeList"
+  v-model:selectedItemList="selectedNodeList"
+)
+  template(#header-left="{ goTo }")
+    div(class="flex items-center")
+      div(class="flex items-end")
+        global-breadcrumb-list(
+          :breadcrumbList="breadcrumbList"
+          @click:item="setSharingIdAndNodeKey($event.nodeKey); goTo()"
+          fontSize="text-h6"
+        )
+        p(class="flex text-caption text-grey-600 pl-1")
+          span (
+          i18n-t(keypath="RR0068" tag="span" scope="global")
+            template(#number) {{ pagination.totalCount }}
+          span )
+      f-tooltip-standard(v-if="!isFirstLayer" :tooltipMessage="$t('RR0056')")
+        template(#slot:tooltip-trigger)
+          f-svg-icon(
+            iconName="clone"
+            class="text-grey-600 cursor-pointer hover:text-primary-400 ml-1"
+            size="24"
+            @click="shareToMeCloneByCollection(currentNodeKey, collection.share.sharingId, collection.isCanClone)"
           )
-          p(class="flex text-caption text-grey-600 pl-1")
-            span (
-            i18n-t(keypath="RR0068" tag="span" scope="global")
-              template(#number) {{ pagination.totalCount }}
-            span )
-        f-tooltip-standard(v-if="!isFirstLayer" :tooltipMessage="$t('RR0056')")
-          template(#slot:tooltip-trigger)
-            f-svg-icon(
-              iconName="clone"
-              class="text-grey-600 cursor-pointer hover:text-primary-400 ml-1"
-              size="24"
-              @click="shareToMeCloneByCollection(currentNodeKey, collection.share.sharingId, collection.isCanClone)"
-            )
-    template(#header-right)
+  template(#header-right)
+    div(
+      v-if="!isFirstLayer"
+      class="relative cursor-pointer"
+      @click="openModalShareMessage"
+    )
+      f-svg-icon(iconName="chat" size="24" class="text-grey-600")
       div(
-        v-if="!isFirstLayer"
-        class="relative cursor-pointer"
-        @click="openModalShareMessage"
+        v-if="haveMsgAndFirstRead"
+        class="absolute -top-px -right-px w-2 h-2 rounded-full border border-grey-0 bg-red-400"
       )
-        f-svg-icon(iconName="chat" size="24" class="text-grey-600")
-        div(
-          v-if="haveMsgAndFirstRead"
-          class="absolute -top-px -right-px w-2 h-2 rounded-full border border-grey-0 bg-red-400"
-        )
-      f-button(
-        v-if="!isFirstLayer"
-        size="sm"
-        type="secondary"
-        @click="openModalCollectionDetail"
-      ) {{ $t('UU0057') }}
-    template(v-if="!isFirstLayer" #sub-header)
-      div(class="mx-7.5 mb-7.5 text-caption text-grey-600 flex items-center")
-        p(class="pr-2.5") {{ collection.share.displayName }}
-        p {{ $t('RR0148') }} {{ $dayjs.unix(collection.share.shareDate).format('YYYY/MM/DD') }}
-    template(#default="{ inSearch, goTo }")
-      div(
-        v-if="nodeList.length > 0"
-        class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
+    f-button(
+      v-if="!isFirstLayer"
+      size="sm"
+      type="secondary"
+      @click="openModalCollectionDetail"
+    ) {{ $t('UU0057') }}
+  template(v-if="!isFirstLayer" #sub-header)
+    div(class="mx-7.5 mb-7.5 text-caption text-grey-600 flex items-center")
+      p(class="pr-2.5") {{ collection.share.displayName }}
+      p {{ $t('RR0148') }} {{ $dayjs.unix(collection.share.shareDate).format('YYYY/MM/DD') }}
+  template(#default="{ inSearch, goTo }")
+    div(
+      v-if="nodeList.length > 0"
+      class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
+    )
+      grid-item-node(
+        v-for="node in nodeList"
+        :key="node.nodeKey"
+        v-model:selectedValue="selectedNodeList"
+        :node="node"
+        :optionList="optionNode"
+        @click:option="$event.func(node, node.share.sharingId)"
+        @click:node="handleNodeClick(node, goTo)"
       )
-        grid-item-node(
-          v-for="node in nodeList"
-          :key="node.nodeKey"
-          v-model:selectedValue="selectedNodeList"
-          :node="node"
-          :optionList="optionNode"
-          @click:option="$event.func(node, node.share.sharingId)"
-          @click:node="handleNodeClick(node, goTo)"
-        )
-          template(#title-right-icon)
-            tooltip-location(v-if="inSearch" :location="node.location")
-          template(#caption v-if="isFirstLayer")
-            div(class="mt-1.5 h-6 flex items-center")
-              img(:src="node.share.logo" class="aspect-square h-full rounded-full")
-              p(class="pl-1 font-bold text-caption text-grey-900") {{ node.share.displayName }}
-      div(v-else class="flex h-full justify-center items-center")
-        p(class="text-body1 text-grey-900") {{ $t('HH0001') }}
-    template(#menu-option="{ option }")
-      div(
-        v-if="option.name === $t('RR0167')"
-        class="whitespace-nowrap cursor-pointer hover:text-primary-400 px-5"
-        @click="shareToMeCloneByNodeList(selectedNodeList, collection.share.sharingId)"
-      ) {{ option.name }}
+        template(#title-right-icon)
+          tooltip-location(v-if="inSearch" :location="node.location")
+        template(#caption v-if="isFirstLayer")
+          div(class="mt-1.5 h-6 flex items-center")
+            img(:src="node.share.logo" class="aspect-square h-full rounded-full")
+            p(class="pl-1 font-bold text-caption text-grey-900") {{ node.share.displayName }}
+    div(v-else class="flex h-full justify-center items-center")
+      p(class="text-body1 text-grey-900") {{ $t('HH0001') }}
+  template(#menu-option="{ option }")
+    div(
+      v-if="option.name === $t('RR0167')"
+      class="whitespace-nowrap cursor-pointer hover:text-primary-400 px-5"
+      @click="shareToMeCloneByNodeList(selectedNodeList, collection.share.sharingId)"
+    ) {{ option.name }}
 </template>
 
 <script setup>

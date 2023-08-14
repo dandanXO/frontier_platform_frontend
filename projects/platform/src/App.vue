@@ -1,4 +1,10 @@
 <template lang="pug">
+f-banner(
+  v-if="notify.isShowNotifyBanner"
+  v-bind="notify.notifyBannerProps"
+  class="flex-shrink-0"
+  @close="notify.closeNotifyBanner"
+)
 router-view
 f-snackbar(
   v-bind="notify.notifySnackbarProps"
@@ -19,4 +25,9 @@ const notify = useNotifyStore()
 
 <style lang="scss">
 @import '@/assets/scss/main.scss';
+
+#app {
+  font-family: 'Noto Sans TC', '微軟正黑體', sans-serif;
+  @apply h-full flex flex-col;
+}
 </style>

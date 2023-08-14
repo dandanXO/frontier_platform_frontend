@@ -1,8 +1,8 @@
 <template lang="pug">
 div(
   ref="refContainer"
-  class="flex flex-col gap-y-5 my-5"
   :style="{ width: containerWidth + PADDING_X_FOR_SHADOW + 'px' }"
+  class="my-5"
   :class="{ 'mx-auto': containerWidth === 1140 }"
 )
   div(v-if="isLoading" class="w-full flex justify-center items-center")
@@ -10,8 +10,12 @@ div(
   template(v-else)
     div(:style="{ padding: `0 ${PADDING_X_FOR_SHADOW / 2}px` }")
       f-infobar(:messageText="$t('BB0115')")
-    div(:style="{ padding: `0 ${PADDING_X_FOR_SHADOW / 2}px` }" class="w-285 box-content")
-      div(class="h-40 pt-5 pb-9 border border-grey-100 rounded shadow-4")
+    div(
+      :style="{ width: containerWidth + 'px', padding: `0 ${PADDING_X_FOR_SHADOW / 2}px` }"
+      class="flex flex-col gap-y-5 mt-5 overflow-x-auto overflow-y-hidden hide-scrollbar"
+      :class="{ '!w-287.5': containerWidth === 1140 }"
+    )
+      div(class="w-285 h-40 pt-5 pb-9 border border-grey-100 rounded shadow-4")
         p(class="text-body1 font-bold text-grey-900 pl-5 pb-6") {{ $t('RR0246') }}
         div(class="flex items-center justify-center gap-x-15")
           div(
@@ -26,11 +30,7 @@ div(
                 span(class="text-h1 font-bold text-primary-400") {{ item.amount }}
                 span(v-if="item.isOverflow" class="text-h4 font-bold text-primary-400") +
                 span(class="text-caption/1.6 text-grey-600 pl-1") {{ item.unit }}
-    div(
-      :style="{ padding: `0 ${PADDING_X_FOR_SHADOW / 2}px` }"
-      class="flex flex-col gap-y-5 w-285 box-content"
-    )
-      div(class="flex items-center gap-x-5")
+      div(class="w-285 flex items-center gap-x-5")
         div(class="min-w-91.5 h-80 bg-grey-0 py-5 border border-grey-100 rounded shadow-4")
           v-chart(class="w-full h-69.5" :option="textureOption")
         div(
@@ -46,7 +46,7 @@ div(
               @click="keywordDate = KEYWORD_DATE.LAST_3_MONTH"
             ) {{ t('BB0127') }}
           v-chart(class="w-full h-69.5" :option="keywordOption")
-      div(class="h-80 bg-grey-0 pt-4 border border-grey-100 rounded shadow-4 mb-2.5")
+      div(class="w-285 h-80 bg-grey-0 pt-4 border border-grey-100 rounded shadow-4 mb-2.5")
         div(class="px-5 flex items-center justify-between")
           p(class="text-body1 font-bold text-grey-900") {{ t('BB0130') }}
           div(class="flex items-center gap-x-4")
