@@ -48,7 +48,7 @@ export const maxIntegerDecimal = (
   if (integer !== undefined && integer.length > maxInteger) {
     return false
   }
-  if (decimal !== undefined && integer.length > maxDecimal) {
+  if (decimal !== undefined && decimal.length > maxDecimal) {
     return false
   }
 
