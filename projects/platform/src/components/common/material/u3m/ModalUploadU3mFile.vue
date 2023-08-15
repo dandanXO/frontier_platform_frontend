@@ -23,8 +23,7 @@ modal-behavior(
       div(class="text-grey-600") {{ $t('RR0243') }}
       div(class="text-grey-900 font-bold") {{ acceptType.join(', ').toUpperCase() }}
       div(class="text-grey-600") {{ $t('RR0145') }}
-      i18n-t(keypath="DD0101" tag="div" class="text-grey-900 font-bold")
-        template(#number) {{ fileSizeMaxLimit / Math.pow(1024, 3) }}
+      div(class="text-grey-900 font-bold") {{ bytesToSize(fileSizeMaxLimit) }}
     div(
       class="rounded border-grey-250 bg-grey-50 border border-dashed pt-6 pb-7 flex justify-center items-center"
       data-cy="modal-smart-upload_dropzone"
@@ -53,6 +52,7 @@ import { useStore } from 'vuex'
 import { FileOperator, unzip } from '@/utils/fileOperator'
 import { UPLOAD_ERROR_CODE, EXTENSION, NOTIFY_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
+import { bytesToSize } from '@/utils/fileOperator'
 
 const props = defineProps<{
   uploadedHandler: (payload: {
