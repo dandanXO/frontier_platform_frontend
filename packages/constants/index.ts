@@ -83,6 +83,7 @@ export enum NATIVE_EXTENSION {
 export enum CUSTOMIZED_EXTENSION {
   FOLDER = 'folder',
   U3M = 'u3m',
+  SCCH = 'scch',
 }
 
 export const EXTENSION = {

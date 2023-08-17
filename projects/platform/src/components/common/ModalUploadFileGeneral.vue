@@ -16,7 +16,7 @@ modal-behavior(
     )
   div(class="w-94")
     f-input-file(
-      class="w-full mb-12"
+      class="w-full mb-14"
       v-model:fileName="originalFileName"
       :acceptType="acceptType"
       :maximumSize="fileSizeMaxLimit"

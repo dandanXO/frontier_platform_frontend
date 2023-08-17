@@ -62,7 +62,17 @@ const openModalUploadFileGeneral = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-upload-file-general',
     properties: {
-      acceptType: ['pdf', 'jpg', 'jpeg', 'png', 'zip', 'gif', 'mov', 'mp4'],
+      acceptType: [
+        'pdf',
+        'jpg',
+        'jpeg',
+        'png',
+        'zip',
+        'gif',
+        'mov',
+        'mp4',
+        'scch',
+      ],
       uploadHandler: async (file, displayFileName) => {
         if (isEditMode.value) {
           await store.dispatch('assets/uploadAttachmentWhenUpdate', {

@@ -79,6 +79,7 @@ export default {
       '.png': { placeholder: null, display: 'image' },
       '.jpg': { placeholder: null, display: 'image' },
       '.jpeg': { placeholder: null, display: 'image' },
+      '.scch': { placeholder: null, display: 'no-preview' },
       '.gif': { placeholder: 'file_gif', display: 'image' },
       '.mov': { placeholder: 'file_mov', display: 'video' },
       '.mp4': { placeholder: 'file_mp4', display: 'video' },

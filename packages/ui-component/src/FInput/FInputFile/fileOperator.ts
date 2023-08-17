@@ -117,7 +117,6 @@ const unzip = async (zipFile: File, parseExtensionTypeList: EXTENSION[]) => {
 class FileOperator {
   validType: NATIVE_EXTENSION[]
   acceptedExtension: string
-  acceptedFormat: string
   fileSizeMaxLimit: number
   event: EventEmitter
   eventHash: { [key: string]: any } = {}
@@ -125,9 +124,6 @@ class FileOperator {
   constructor(validType = generalImageType, fileSizeMaxLimit = 20971520) {
     this.validType = validType
     this.acceptedExtension = validType.map((type) => `.${type}`).join(',')
-    this.acceptedFormat = validType
-      .map((type) => extension2MimeType[type])
-      .join(',')
     this.fileSizeMaxLimit = fileSizeMaxLimit
 
     this.event = new EventEmitter()
@@ -181,12 +177,8 @@ class FileOperator {
   validateFiles(files: FileList) {
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
-      const type = file.type
 
-      if (!this.acceptedFormat.includes(type) || !type) {
-        this.event.emit('error', UPLOAD_ERROR_CODE.INVALID_TYPE)
-        return
-      } else if (file.size > this.fileSizeMaxLimit) {
+      if (file.size > this.fileSizeMaxLimit) {
         this.event.emit('error', UPLOAD_ERROR_CODE.EXCEED_LIMIT)
         return
       }

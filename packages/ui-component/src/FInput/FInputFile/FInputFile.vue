@@ -11,7 +11,7 @@ f-input-text(
   @clear="$emit('clear')"
 )
   template(#slot:hint-supporting)
-    p(class="text-caption text-grey-600 leading-1.3 whitespace-nowrap") {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
+    p(class="text-caption text-grey-600 leading-1.3") {{ $t('RR0243') }} {{ acceptType.join(', ').toUpperCase() }}
     p(class="text-caption text-grey-600 leading-1.3 whitespace-nowrap") {{ $t('RR0145') }} {{ bytesToSize(maximumSize) }}
 </template>
 
