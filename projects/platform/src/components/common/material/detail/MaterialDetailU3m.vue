@@ -10,7 +10,7 @@ div
     )
       template(#slot:tooltip-trigger)
         f-svg-icon(iconName="info_outline" class="cursor-pointer" size="14")
-  f-tabs(ref="refTab" :tabList="tabList" keyField="id")
+  f-tabs(ref="refTab" :tabList="tabList" :initValue="defaultTab" keyField="id")
     div(class="flex items-center gap-x-2 py-2.5")
       material-u3m-viewer-button(
         :key="currentTab"
@@ -34,7 +34,7 @@ import MaterialU3mDownloadButton from '@/components/common/material/u3m/Material
 import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
 import u3mInstructionImage from '@/assets/images/u3m.png'
 import type { DownloadU3mPayload } from '@/types'
-import { U3M_PROVIDER } from '@/utils/constants'
+import { U3M_PROVIDER, U3M_STATUS } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -51,6 +51,26 @@ const props = withDefaults(
     showStatusBlock: true,
   }
 )
+
+const defaultTab = computed(() => {
+  /**
+   * define a default tab computed, and its value is decided by the following rules:
+   * 1. if the status of u3m is completed, then the default tab is Frontier
+   * 2. if the status fo custom u3 is completed, then the default tab is Customer
+   * 3. if both of them are not completed, then the default tab is Frontier
+   */
+
+  if (props.u3m.status === U3M_STATUS.COMPLETED) {
+    return U3M_PROVIDER.FRONTIER
+  }
+
+  if (props.customU3m.status === U3M_STATUS.COMPLETED) {
+    return U3M_PROVIDER.CUSTOMER
+  }
+
+  return U3M_PROVIDER.FRONTIER
+})
+
 const refTab = ref<InstanceType<typeof FTabs>>()
 const tabList = ref([
   {

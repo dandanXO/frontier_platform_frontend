@@ -18,7 +18,12 @@ modal-behavior(
         div(class="w-31 pl-15 font-bold flex-shrink-0") {{ index + 1 }}
         div {{ material.materialNo }}
   div(v-show="!isShowDisallowedList" class="w-92.5 h-49")
-    f-tabs(ref="refTab" :tabList="tabList" keyField="id")
+    f-tabs(
+      ref="refTab"
+      :initValue="defaultTab"
+      :tabList="tabList"
+      keyField="id"
+    )
     material-u3m-download-button(
       class="my-3"
       :materialId="materialU3mDownloadItemList[0].materialId"
@@ -36,11 +41,10 @@ import MaterialU3mStatusBlock from '@/components/common/material/u3m/MaterialU3m
 import MaterialU3mDownloadButton from '@/components/common/material/u3m/MaterialU3mDownloadButton.vue'
 import type { Material } from '@frontier/platform-web-sdk'
 import type { DownloadU3mPayload } from '@/types'
-import { U3M_STATUS } from '@/utils/constants'
+import { U3M_STATUS, U3M_PROVIDER, U3M_DOWNLOAD_PROP } from '@/utils/constants'
 import { downloadDataURLFile } from '@/utils/fileOperator'
 import useLogSender from '@/composables/useLogSender'
 import { useStore } from 'vuex'
-import { U3M_PROVIDER, U3M_DOWNLOAD_PROP } from '@/utils/constants'
 import FTabs from '@frontier/ui-component/src/FTabs/FTabs.vue'
 
 const logSender = useLogSender()
@@ -61,6 +65,31 @@ const tabList = ref([
     name: 'Customized',
   },
 ])
+
+const defaultTab = computed(() => {
+  /**
+   * define a default tab computed, and its value is decided by the following rules:
+   * 1. if there is at least one u3m created by Frontier, the default tab is Frontier
+   * 2. if there is no u3m created by Frontier, check if there is at least one custom u3m uploaded by user
+   * 3. if there is no custom u3m, the default tab is Frontier
+   */
+  const hasAtLeastOneU3m = props.materialList.some(
+    (material) => material.u3m?.status === U3M_STATUS.COMPLETED
+  )
+  const hasAtLeastOneCustomU3m = props.materialList.some(
+    (material) => material.customU3m?.status === U3M_STATUS.COMPLETED
+  )
+
+  if (hasAtLeastOneU3m) {
+    return U3M_PROVIDER.FRONTIER
+  }
+
+  if (hasAtLeastOneCustomU3m) {
+    return U3M_PROVIDER.CUSTOMER
+  }
+
+  return U3M_PROVIDER.FRONTIER
+})
 const currentTab = computed<U3M_PROVIDER>(
   () => refTab.value?.currentTab || tabList.value[0].id
 )
@@ -101,7 +130,10 @@ const disallowedList = computed(() =>
 const selectedU3m = computed<MaterialU3m | MaterialCustomU3m>(() => {
   if (isMultiple.value) {
     return {
-      status: U3M_STATUS.COMPLETED,
+      status:
+        disallowedList.value.length === materialU3mDownloadItemList.value.length
+          ? U3M_STATUS.INITIAL
+          : U3M_STATUS.COMPLETED,
       hasPhysicalData: true,
       createDate: 0,
     }
