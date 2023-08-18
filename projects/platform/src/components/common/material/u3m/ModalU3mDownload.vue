@@ -46,6 +46,7 @@ import { downloadDataURLFile } from '@/utils/fileOperator'
 import useLogSender from '@/composables/useLogSender'
 import { useStore } from 'vuex'
 import FTabs from '@frontier/ui-component/src/FTabs/FTabs.vue'
+import JSZip from 'jszip'
 
 const logSender = useLogSender()
 const store = useStore()
@@ -148,12 +149,34 @@ const downloadU3m = (materialId: number, url: string, format: string) => {
   logSender.createDownloadLog(materialId, format)
 }
 
-const multipleDownloadU3m = (format: U3M_DOWNLOAD_PROP) => {
-  allowedList.value.forEach((material) => {
-    setTimeout(() => {
-      downloadU3m(material.materialId!, material.u3m[format]!, format)
-    }, 0)
-  })
+const multipleDownloadU3m = async (format: U3M_DOWNLOAD_PROP) => {
+  /**
+   * use JSZip to create a zip file and add all allowed u3m files into it
+   */
+  const zip = new JSZip()
+  const addFileToZip = (url: string) => {
+    const fileName = url.split('/')[url.split('/').length - 1]
+    return fetch(url)
+      .then((response) => response.blob())
+      .then((blob) => {
+        zip.file(decodeURIComponent(fileName), blob)
+      })
+  }
+
+  store.dispatch('helper/pushModalLoading')
+
+  await Promise.all(
+    allowedList.value.map((material) => {
+      return addFileToZip(material.u3m[format]!)
+    })
+  )
+  const content = await zip.generateAsync({ type: 'blob' })
+  downloadDataURLFile(
+    URL.createObjectURL(content),
+    'Frontier_3D materials downloaded.zip'
+  )
+
+  store.dispatch('helper/closeModalLoading')
 }
 
 const isShowDisallowedList = ref(false)
