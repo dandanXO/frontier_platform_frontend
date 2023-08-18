@@ -35,6 +35,9 @@ import MaterialU3mViewerButton from '@/components/material/u3m/MaterialU3mViewer
 import u3mInstructionImage from '@/assets/images/u3m.png'
 import type { DownloadU3mPayload } from '@/types'
 import { U3M_PROVIDER } from '@/utils/constants'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = withDefaults(
   defineProps<{
@@ -52,11 +55,11 @@ const refTab = ref<InstanceType<typeof FTabs>>()
 const tabList = ref([
   {
     id: U3M_PROVIDER.FRONTIER,
-    name: 'Created in Frontier',
+    name: t('EE0174'),
   },
   {
     id: U3M_PROVIDER.CUSTOMER,
-    name: 'Customized',
+    name: t('EE0175'),
   },
 ])
 const currentTab = computed<U3M_PROVIDER>(

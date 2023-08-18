@@ -41,7 +41,9 @@ import { downloadDataURLFile } from '@/utils/fileOperator'
 import { useModalStore } from '@/stores/modal'
 import { U3M_PROVIDER, U3M_DOWNLOAD_PROP } from '@/utils/constants'
 import FTabs from '@frontier/ui-component/src/FTabs/FTabs.vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const modalStore = useModalStore()
 
 const props = defineProps<{
@@ -52,11 +54,11 @@ const refTab = ref<InstanceType<typeof FTabs>>()
 const tabList = ref([
   {
     id: U3M_PROVIDER.FRONTIER,
-    name: 'Created in Frontier',
+    name: t('EE0174'),
   },
   {
     id: U3M_PROVIDER.CUSTOMER,
-    name: 'Customized',
+    name: t('EE0175'),
   },
 ])
 const currentTab = computed<U3M_PROVIDER>(

@@ -51,12 +51,13 @@ div(class="flex flex-col")
                 template(#newline)
                   br
       template(v-else)
-        div(class="col-span-3")
         div(
-          class="col-span-9 bg-contain bg-no-repeat flex items-center bg-grey-0"
+          class="col-start-4 col-span-9 bg-contain bg-no-repeat flex items-center bg-grey-0"
           :style="{ backgroundImage: `url(${maskFull})` }"
         )
-          div(class="flex flex-col items-center justify-center w-full")
+          div(
+            class="w-5/6 mx-auto xl:w-full flex flex-col items-center justify-center w-full"
+          )
             template(v-if="isInnerApp")
               f-svg-icon(iconName="subscribe" size="30" class="mb-3.5 text-grey-900")
               p(class="text-body2 leading-1.6 text-grey-900") {{ $t('VV0048') }}
@@ -77,7 +78,7 @@ div(class="flex flex-col")
               template(v-if="isReceivedShare")
                 f-svg-icon(iconName="login" size="30" class="mb-3.5 text-grey-900")
                 p(class="text-body2 leading-1.6 text-grey-900") {{ $t('VV0070') }}
-                p(class="mb-5 text-caption text-grey-600 leading-1.6") {{ $t('VV0069') }}
+                p(class="mb-5 text-caption2 xl:text-caption text-grey-600 leading-1.6") {{ $t('VV0069') }}
                 f-button(
                   size="md"
                   type="primary"
