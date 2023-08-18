@@ -6,7 +6,7 @@ div(
   :disabled="innerMenu.disabled"
   @mouseenter="mouseEnterHandler"
   @mouseleave="mouseLeaveHandler"
-  @click.stop.prevent="clickMenuHandler"
+  @click.prevent="clickMenuHandler"
   @touchstart.prevent="clickMenuHandler"
 )
   f-tooltip-standard(
@@ -16,7 +16,6 @@ div(
     :disabledTooltip="disabledTooltip"
     :tooltipTitle="tooltipTitle"
     :tooltipMessage="tooltipMessage"
-    :key="hoverOn"
   )
     template(#slot:tooltip-trigger)
       //- Checkbox

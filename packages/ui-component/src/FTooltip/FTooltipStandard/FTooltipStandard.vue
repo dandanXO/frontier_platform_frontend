@@ -3,8 +3,8 @@ div(
   ref="refTrigger"
   :class="[isNotFitWidth ? 'w-full' : 'w-fit']"
   aria-describedby="tooltip"
-  @mouseenter="showTooltip"
-  @mouseleave="hideTooltip"
+  @mouseenter="mouseenterHandler"
+  @mouseleave="mouseleaveHandler"
 )
   slot(name="slot:tooltip-trigger" :isActive="isActive")
   teleport(v-if="isActive" to="body") 
@@ -72,12 +72,17 @@ const props = withDefaults(defineProps<TooltipStandardProps>(), {
 
 const slots = useSlots()
 const { disabledTooltip, offset, boundaryReference, placement } = toRefs(props)
-const { refTrigger, refTooltip, isActive, showTooltip, hideTooltip } =
-  useTooltip({
-    disabledTooltip,
-    offset,
-    boundaryReference,
-    placement,
-    emit,
-  })
+const {
+  refTrigger,
+  refTooltip,
+  isActive,
+  mouseenterHandler,
+  mouseleaveHandler,
+} = useTooltip({
+  disabledTooltip,
+  offset,
+  boundaryReference,
+  placement,
+  emit,
+})
 </script>

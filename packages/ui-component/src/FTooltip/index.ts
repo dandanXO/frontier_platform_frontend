@@ -1,6 +1,3 @@
-export * from './FTooltipStandard/FTooltipStandard.vue'
-export * from './FTooltipMedia/FTooltipMedia.vue'
-
 import { ref, nextTick, watch, type Ref } from 'vue'
 import type { TOOLTIP_PLACEMENT } from '../constants'
 import { createPopper } from '@popperjs/core'
@@ -21,6 +18,7 @@ export const useTooltip = ({
   const refTrigger = ref<HTMLElement>()
   const refTooltip = ref<HTMLElement>()
   const isActive = ref(false)
+  const isHovering = ref(false)
   type Timeout = ReturnType<typeof setTimeout>
   const timer = ref<Timeout>()
 
@@ -73,10 +71,26 @@ export const useTooltip = ({
     emit('hide')
   }
 
+  const mouseenterHandler = () => {
+    isHovering.value = true
+    showTooltip()
+  }
+
+  const mouseleaveHandler = () => {
+    isHovering.value = false
+    hideTooltip()
+  }
+
   watch(
     () => disabledTooltip.value,
     () => {
-      disabledTooltip.value && hideTooltip()
+      if (disabledTooltip.value) {
+        hideTooltip()
+      }
+
+      if (!disabledTooltip.value && isHovering.value) {
+        showTooltip()
+      }
     }
   )
 
@@ -84,7 +98,7 @@ export const useTooltip = ({
     refTrigger,
     refTooltip,
     isActive,
-    showTooltip,
-    hideTooltip,
+    mouseenterHandler,
+    mouseleaveHandler,
   }
 }
