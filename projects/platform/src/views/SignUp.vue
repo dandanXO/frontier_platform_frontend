@@ -209,18 +209,23 @@ onMounted(() => {
   if ('signupSourceType' in route.query) {
     signupSourceType.value = Number(route.query.signupSourceType)
   }
-  const googleSignUp = new SignInWithGoogle({
-    elementId: 'google-sign-up',
-    callback: async (response) => {
-      store.dispatch('helper/openModalLoading')
-      isEmailExist.value = await store.dispatch('user/googleSignUp', {
-        idToken: response.credential,
-        signupSourceType: signupSourceType.value,
-      })
-      !isEmailExist.value && (await nextAfterSignIn())
-      store.dispatch('helper/closeModalLoading')
-    },
-  })
-  isGoogleLoadFail.value = !googleSignUp.google
+
+  try {
+    const googleSignUp = new SignInWithGoogle({
+      elementId: 'google-sign-up',
+      callback: async (response) => {
+        store.dispatch('helper/openModalLoading')
+        isEmailExist.value = await store.dispatch('user/googleSignUp', {
+          idToken: response.credential,
+          signupSourceType: signupSourceType.value,
+        })
+        !isEmailExist.value && (await nextAfterSignIn())
+        store.dispatch('helper/closeModalLoading')
+      },
+    })
+    isGoogleLoadFail.value = !googleSignUp.google
+  } catch {
+    isGoogleLoadFail.value = true
+  }
 })
 </script>

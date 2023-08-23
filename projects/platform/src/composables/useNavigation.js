@@ -21,8 +21,9 @@ export default function useNavigation() {
   const nextAfterSignIn = async () => {
     const user = store.getters['user/user']
     const organizationList = user.organizationList
+    const redirect = route.query.redirect
 
-    if (route.query.redirect !== undefined) {
+    if (redirect !== undefined) {
       if (
         'signupSourceType' in route.query &&
         Number(route.query.signupSourceType) === SIGNUP_SOURCE.RECEIVED_SHARE &&
@@ -34,7 +35,9 @@ export default function useNavigation() {
           query: route.query,
         })
       }
-      return router.push(route.query.redirect)
+      return redirect.includes('/sign-in')
+        ? router.push('/')
+        : router.push(redirect)
     }
 
     if (organizationList.length === 1) {

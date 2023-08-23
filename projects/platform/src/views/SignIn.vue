@@ -131,17 +131,21 @@ const openSignUpRequestModal = () => {
 const isGoogleLoadFail = ref(false)
 
 onMounted(() => {
-  const googleSignIn = new SignInWithGoogle({
-    elementId: 'google-sign-in',
-    callback: async (response) => {
-      store.dispatch('helper/openModalLoading')
-      await store.dispatch('user/googleSignIn', {
-        idToken: response.credential,
-      })
-      await nextAfterSignIn()
-      store.dispatch('helper/closeModalLoading')
-    },
-  })
-  isGoogleLoadFail.value = !googleSignIn.google
+  try {
+    const googleSignIn = new SignInWithGoogle({
+      elementId: 'google-sign-in',
+      callback: async (response) => {
+        store.dispatch('helper/openModalLoading')
+        await store.dispatch('user/googleSignIn', {
+          idToken: response.credential,
+        })
+        await nextAfterSignIn()
+        store.dispatch('helper/closeModalLoading')
+      },
+    })
+    isGoogleLoadFail.value = !googleSignIn.google
+  } catch {
+    isGoogleLoadFail.value = true
+  }
 })
 </script>
