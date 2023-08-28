@@ -1,12 +1,12 @@
 <template lang="pug">
 modal-behavior(
-  :header="`${material.materialNo} - ${$t('RR0130')}`"
+  :header="header"
   :primaryBtnText="$t('UU0018')"
   :secondaryBtnText="$t('UU0002')"
   @click:primary="updateMaterialSimpleSpec"
   @click:secondary="$store.dispatch('helper/closeModal')"
 )
-  div(class="min-w-200 grid gap-y-7.5")
+  div(class="w-200 grid gap-y-7.5")
     f-input-text(
       v-model:textValue="material.materialNo"
       :placeholder="$t('DD0015')"
@@ -142,7 +142,7 @@ modal-behavior(
 </template>
 
 <script setup>
-import { computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import useMaterialEdit from '@/composables/useMaterialEdit'
 import useMaterialValidation from '@/composables/useMaterialValidation'
@@ -153,6 +153,7 @@ const { t } = useI18n()
 const store = useStore()
 const notify = useNotifyStore()
 const material = computed(() => store.getters['assets/material'])
+const header = ref(`${material.value.materialNo} - ${t('RR0130')}`)
 const { invalidation, validate } = useMaterialValidation(material, [
   'materialNo',
   'contentList',

@@ -6,7 +6,7 @@ modal-behavior(
   @click:primary="updateMaterialSimpleTag"
   @click:secondary="$store.dispatch('helper/closeModal')"
 )
-  div(class="min-w-200")
+  div(class="w-200")
     div(class="grid gap-y-7.5 px-8 mb-7.5")
       f-select-input(
         v-model:selectValue="material.publicTagList"

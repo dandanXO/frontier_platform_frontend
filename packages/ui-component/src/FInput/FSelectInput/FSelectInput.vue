@@ -36,9 +36,16 @@ f-input-container(
           )
             div(
               v-for="chip in displayText"
-              class="rounded w-fit h-4 box-content px-2 whitespace-nowrap flex items-center gap-x-1 bg-grey-100 cursor-pointer"
+              :key="chip"
+              class="rounded h-4 box-content px-2 flex items-center gap-x-1 bg-grey-100 cursor-pointer"
               :class="[size === 'lg' ? 'py-2 text-body2' : 'py-1.5 text-caption']"
-            ) {{ chip }}
+              :style="{ maxWidth: chipMaxWidth + 'px' }"
+            )
+              template(v-if="getIsEllipsis(chip)")
+                f-tooltip-standard(:tooltipMessage="chip" class="flex-grow")
+                  template(#slot:tooltip-trigger)
+                    span(class="line-clamp-1") {{ chip }}
+              span(v-else) {{ chip }}
               f-svg-icon(
                 v-if="isHover"
                 iconName="clear"
@@ -50,7 +57,11 @@ f-input-container(
             :class="classInput"
             class="flex items-center"
           )
-            p(class="line-clamp-1") {{ displayText }}
+            template(v-if="getIsEllipsis(displayText)")
+              f-tooltip-standard(:tooltipMessage="displayText")
+                template(#slot:tooltip-trigger)
+                  span(class="line-clamp-1") {{ displayText }}
+            span(v-else) {{ displayText }}
           //- placeholder
           input(
             v-show="!(multiple && displayText.length !== 0) && !(!multiple && !!displayText)"
@@ -77,10 +88,17 @@ f-input-container(
             template(v-if="multiple")
               div(
                 v-for="(chip, index) in displayText"
-                class="rounded w-fit h-4 box-content px-2 whitespace-nowrap flex items-center gap-x-1 bg-grey-100 cursor-pointer"
+                :key="chip"
+                class="rounded h-4 box-content px-2 flex items-center gap-x-1 bg-grey-100 cursor-pointer"
                 :class="[size === 'lg' ? 'py-2 text-body2' : 'py-1.5 text-caption']"
+                :style="{ maxWidth: chipMaxWidth + 'px' }"
                 @click.stop="removeChip(index)"
-              ) {{ chip }}
+              )
+                template(v-if="getIsEllipsis(chip)")
+                  f-tooltip-standard(:tooltipMessage="chip" class="flex-grow")
+                    template(#slot:tooltip-trigger)
+                      span(class="line-clamp-1") {{ chip }}
+                span(v-else) {{ chip }}
                 f-svg-icon(iconName="clear" size="16" class="text-grey-600")
             input(
               :class="classInput"
@@ -413,6 +431,47 @@ const classInput = computed(() => {
 const refContainer = ref(null)
 const refInput = ref(null)
 const contentWidth = ref(0)
+const chipMaxWidth = computed(() => {
+  /**
+   * the width of input is determined by the following rules:
+   * 1. the width of container padding x is 24px if size is lg, otherwise 16px
+   * 2. the width of item gap is 12px if size is lg, otherwise 8px
+   * 3. the width of leading visual is 24px if size is lg, otherwise 20px
+   * 4. the width of clear button is 24px if size is lg, otherwise 20px
+   * 5. the width of chip padding x is 16px
+   * 6. the width of input is 100% of container - (clear button + item gap)(if there is clear button) - (leading visual + item gap)(if there is prependIcon) - container padding x - chip padding x (if it is multiple)
+   */
+  const containerPaddingX = props.size === 'lg' ? 24 : 16
+  const itemGapWidth = props.size === 'lg' ? 12 : 8
+  const leadingVisualWidth = props.prependIcon
+    ? (props.size === 'lg' ? 24 : 20) + itemGapWidth
+    : 0
+  const clearButtonWidth = props.clearable
+    ? (props.size === 'lg' ? 24 : 20) + itemGapWidth
+    : 0
+  const chipPaddingX = props.multiple ? 16 : 0
+  return (
+    contentWidth.value -
+    clearButtonWidth -
+    leadingVisualWidth -
+    containerPaddingX -
+    chipPaddingX
+  )
+})
+const getIsEllipsis = (chip) => {
+  const span = document.createElement('span')
+  span.innerText = chip
+  span.style.maxWidth = chipMaxWidth.value + 'px'
+  span.style.display = 'inline-block'
+  span.style.overflow = 'hidden'
+  span.style.textOverflow = 'ellipsis'
+  span.style.whiteSpace = 'nowrap'
+  document.body.appendChild(span)
+  const isEllipsis = span.offsetWidth < span.scrollWidth
+  isEllipsis && console.log(chip, span.offsetWidth, span.scrollWidth)
+  document.body.removeChild(span)
+  return isEllipsis
+}
 const popperOffsetY = ref(props.size === 'lg' ? 44 : 36)
 const refContainerObserver = ref(null)
 onMounted(() => {
