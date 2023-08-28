@@ -28,7 +28,7 @@ search-table(
     ) {{ $t('UU0057') }}
     f-button(size="sm" prependIcon="add" @click="openModalAssetsList") {{ $t('UU0055') }}
   template(v-if="!isFirstLayer" #sub-header)
-    p(class="mx-7.5 mb-7.5 text-caption text-grey-600") {{ $t('FF0002') }}: {{ $dayjs.unix(collection.createDate).format('YYYY/MM/DD') }}
+    p(class="mx-7.5 mb-7.5 text-caption text-grey-600") {{ $t('FF0002') }}: {{ toYYYYMMDDFormat(collection.createDate) }}
   template(#default="{ inSearch, goTo }")
     div(
       class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
@@ -73,6 +73,7 @@ import TooltipLocation from '@/components/common/TooltipLocation.vue'
 import { useRoute, useRouter } from 'vue-router'
 import useWorkspace from '@/composables/useWorkspace'
 import useNavigation from '@/composables/useNavigation.js'
+import { toYYYYMMDDFormat } from '@frontier/utils'
 
 const props = defineProps({
   nodeKey: {

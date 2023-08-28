@@ -57,4 +57,4 @@ export const maxIntegerDecimal = (
 
 const inputValidator = { emailFormat, required, maxLength, maxIntegerDecimal }
 
-export default inputValidator
+export { inputValidator }

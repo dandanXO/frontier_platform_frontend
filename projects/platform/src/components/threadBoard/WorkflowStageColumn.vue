@@ -103,7 +103,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import IconButton from '@/components/threadBoard/IconButton.vue'
 import type overlayscrollbars from 'overlayscrollbars'
-import type FScrollbarContainer from '@frontier/ui-component/src/FScrollbarContainer/FScrollbarContainer.vue'
+import type { FScrollbarContainer } from '@frontier/ui-component'
 import type { WorkflowStage } from '@frontier/platform-web-sdk'
 import type {
   WorkflowStageRenamePayload,

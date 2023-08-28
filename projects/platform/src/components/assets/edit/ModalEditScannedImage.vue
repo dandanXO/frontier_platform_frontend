@@ -83,7 +83,7 @@ modal-behavior(
 import { useStore } from 'vuex'
 import { ref, computed, onMounted, watch } from 'vue'
 import Decimal from 'decimal.js'
-import FInputSlider from '@frontier/ui-component/src/FInput/FInputSlider/FInputSlider.vue'
+import { FInputSlider } from '@frontier/ui-component'
 import ImageCropArea from '@/components/common/cropper/ImageCropArea.vue'
 import CropperDefaultLayout from '@/components/common/cropper/CropperDefaultLayout.vue'
 import useMaterialImage from '@/composables/useMaterialImage'

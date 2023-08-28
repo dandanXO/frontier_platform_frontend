@@ -173,8 +173,8 @@ export default {
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core'
 import { CONTEXTUAL_MENU_MODE, DISPLAY, SIZE, THEME } from '../constants'
-import isEqual from '../isEqual'
-import type { MenuItem, MenuBlock } from './types'
+import type { MenuItem, MenuBlock } from '../types'
+import { isEqual } from '@frontier/utils'
 
 const { NONE_SELECT, MULTIPLE } = CONTEXTUAL_MENU_MODE
 

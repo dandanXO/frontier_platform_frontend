@@ -64,7 +64,7 @@ modal-behavior(
 <script setup>
 import { useConstants } from '@/utils/constants'
 import { ref, reactive, computed } from 'vue'
-import { FileOperator, bytesToSize } from '@/utils/fileOperator'
+import { FileOperator, bytesToSize } from '@frontier/utils'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'

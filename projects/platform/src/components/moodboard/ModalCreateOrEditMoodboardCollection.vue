@@ -58,7 +58,7 @@ import { ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
-import { previewFile } from '@/utils/fileOperator'
+import { previewFile } from '@frontier/utils'
 import {
   CREATE_EDIT,
   COLLECTION_NAME_MAX_LENGTH,

@@ -1,5 +1,5 @@
 import userApi from '@/apis/user'
-import i18n from '@/utils/i18n'
+import i18n from '@frontier/i18n'
 
 const state = () => ({
   lastName: '',

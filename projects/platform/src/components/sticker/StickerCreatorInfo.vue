@@ -13,12 +13,12 @@ div(class="flex flex-shrink min-w-0 items-center gap-x-2")
         p(
           class="whitespace-nowrap text-ellipsis overflow-hidden text-caption text-grey-900 font-bold leading-1.6"
         ) {{ creatorInfoText }}
-span(v-if="createDate" class="flex-shrink-0 text-caption text-grey-300 font-normal") ・{{ toDigitalThreadDateFormat(createDate) }}
+span(v-if="createDate" class="flex-shrink-0 text-caption text-grey-300 font-normal") ・{{ toStandardFormat(createDate) }}
 </template>
 
 <script setup lang="ts">
 import useStickerCreatorInfo from '@/composables/useStickerCreatorInfo'
-import { toDigitalThreadDateFormat } from '@/utils/date'
+import { toStandardFormat } from '@frontier/utils'
 
 const props = defineProps<{
   sticker: object

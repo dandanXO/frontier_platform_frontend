@@ -1,5 +1,5 @@
 export * from '@frontier/constants'
-import i18n from '@/utils/i18n'
+import i18n from '@frontier/i18n'
 import { computed } from 'vue'
 
 export const COVER_MODE = {

@@ -31,7 +31,7 @@ div(
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import useThreadBoardStore from '@/stores/threadBoard'
-import type FScrollbarContainer from '@frontier/ui-component/src/FScrollbarContainer/FScrollbarContainer.vue'
+import type { FScrollbarContainer } from '@frontier/ui-component'
 
 const props = defineProps<{
   isThreadCardDragging: boolean

@@ -48,7 +48,7 @@ search-table(
   template(v-if="!isFirstLayer" #sub-header)
     div(class="mx-7.5 mb-7.5 text-caption text-grey-600 flex items-center")
       p(class="pr-2.5") {{ collection.share.displayName }}
-      p {{ $t('RR0148') }} {{ $dayjs.unix(collection.share.shareDate).format('YYYY/MM/DD') }}
+      p {{ $t('RR0148') }} {{ toYYYYMMDDFormat(collection.share.shareDate) }}
   template(#default="{ inSearch, goTo }")
     div(
       v-if="nodeList.length > 0"
@@ -90,6 +90,7 @@ import TooltipLocation from '@/components/common/TooltipLocation.vue'
 import { useRoute, useRouter } from 'vue-router'
 import useShareToMe from '@/composables/useShareToMe'
 import useNavigation from '@/composables/useNavigation'
+import { toYYYYMMDDFormat } from '@frontier/utils'
 
 const props = defineProps({
   nodeKey: {

@@ -1,5 +1,5 @@
 import assetsApi from '@/apis/assets'
-import { downloadBase64File } from '@/utils/fileOperator'
+import { downloadBase64File } from '@frontier/utils'
 import {
   OG_TYPE,
   INVENTORY_UNIT,
@@ -10,7 +10,7 @@ import putBinaryData from '@/utils/put-binary-data'
 import Material from '@/store/reuseModules/material.js'
 import progress from './progress'
 import { useNotifyStore } from '@/stores/notify'
-import i18n from '@/utils/i18n'
+import i18n from '@frontier/i18n'
 
 export default {
   namespaced: true,

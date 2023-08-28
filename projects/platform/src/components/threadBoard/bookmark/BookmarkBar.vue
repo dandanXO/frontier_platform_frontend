@@ -86,10 +86,7 @@ import { useI18n } from 'vue-i18n'
 import { useElementBounding } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import Draggable from 'vuedraggable'
-import type {
-  MenuItem,
-  MenuTree,
-} from '@frontier/ui-component/src/FContextualMenu/types'
+import type { MenuItem, MenuTree } from '@frontier/ui-component'
 import {
   BookmarkType,
   type FolderBookmark,

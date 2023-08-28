@@ -1,5 +1,5 @@
 import { VALUE_ADDED_SERVICE_ID } from '@/utils/constants'
-import i18n from '@/utils/i18n'
+import i18n from '@frontier/i18n'
 import Made2FlowLogo from '@/assets/images/Made2Flow_logo.png'
 import Made2FlowBannerCh from '@/assets/images/Made2Flow_banner_ch.jpg'
 import Made2FlowBannerEn from '@/assets/images/Made2Flow_banner_en.jpg'

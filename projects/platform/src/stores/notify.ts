@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import type {
   NotifyBannerProps,
   NotifySnackbarProps,
-} from '@frontier/ui-component/src/FNotify'
+} from '@frontier/ui-component'
 
 export const useNotifyStore = defineStore('notify', () => {
   /**

@@ -69,7 +69,7 @@ import MaterialDetailPantone from '@/components/common/material/detail/MaterialD
 import MaterialDetailSpecification from '@/components/common/material/detail/MaterialDetailSpecification.vue'
 import MaterialDetailU3m from '@/components/common/material/detail/MaterialDetailU3m.vue'
 import MaterialDetailEnvironmentalIndicator from '@/components/common/material/detail/MaterialDetailEnvironmentalIndicator.vue'
-import { downloadDataURLFile } from '@/utils/fileOperator'
+import { downloadDataURLFile } from '@frontier/utils'
 import useLogSender from '@/composables/useLogSender'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'

@@ -108,7 +108,7 @@ modal-behavior(
 <script setup>
 import { computed, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
-import { FileOperator } from '@/utils/fileOperator'
+import { FileOperator } from '@frontier/utils'
 import useNavigation from '@/composables/useNavigation'
 
 const store = useStore()

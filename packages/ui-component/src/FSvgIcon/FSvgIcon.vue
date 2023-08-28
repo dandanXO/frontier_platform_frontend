@@ -28,7 +28,7 @@ export default {
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import.meta.globEager('./icons/**/*.svg')
+import.meta.glob('./icons/**/*.svg', { eager: true })
 
 const { te } = useI18n()
 

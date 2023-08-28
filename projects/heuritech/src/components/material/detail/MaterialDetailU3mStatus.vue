@@ -28,7 +28,7 @@ div
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import type { MaterialCustomU3m, MaterialU3m } from '@frontier/platform-web-sdk'
-import FTabs from '@frontier/ui-component/src/FTabs/FTabs.vue'
+import { FTabs } from '@frontier/ui-component'
 import MaterialU3mStatusBlock from '@/components/material/u3m/MaterialU3mStatusBlock.vue'
 import MaterialU3mDownloadButton from '@/components/material/u3m/MaterialU3mDownloadButton.vue'
 import MaterialU3mViewerButton from '@/components/material/u3m/MaterialU3mViewerButton.vue'

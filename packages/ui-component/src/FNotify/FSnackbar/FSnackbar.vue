@@ -67,7 +67,7 @@ export default {
 <script lang="ts" setup>
 import { computed, ref, watch, nextTick } from 'vue'
 import type { Component } from 'vue'
-import type { Action } from '../../FNotify'
+import type { Action } from '../../types'
 import { NOTIFY_TYPE, NOTIFY_TYPE_ICON, SIZE, DISPLAY } from '../../constants'
 
 export interface NotifySnackbarProps {

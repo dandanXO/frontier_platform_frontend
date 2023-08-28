@@ -57,7 +57,7 @@ div(class="w-90 xl:w-200")
 
 <script>
 import { ref, computed } from 'vue'
-import { downloadDataURLFile } from '@/utils/fileOperator'
+import { downloadDataURLFile } from '@frontier/utils'
 
 export default {
   name: 'ModalPreviewAttachment',

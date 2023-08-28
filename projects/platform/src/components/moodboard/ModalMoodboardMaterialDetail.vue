@@ -13,9 +13,8 @@ modal-behavior(
           @togglePick="moodboardType === MOODBOARD_TYPE.DEMANDER && pickHandler()"
         )
       p(class="text-caption text-grey-600")
-        span {{ $t('RR0066') }}: {{ $dayjs.unix(nodeMaterial.properties.updateDate).format('YYYY/MM/DD') }}
-        span(class="mx-1") at
-        span {{ $dayjs.unix(nodeMaterial.properties.updateDate).format('h:mm a') }}
+        span {{ $t('RR0066') }}:
+        span {{ toStandardFormat(nodeMaterial.properties.updateDate) }}
     material-detail-external(
       :material="nodeMaterial.properties"
       isCanDownloadU3M
@@ -26,6 +25,7 @@ modal-behavior(
 import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
 import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
 import { MOODBOARD_TYPE } from '@/utils/constants'
+import { toStandardFormat } from '@frontier/utils'
 
 defineProps({
   nodeMaterial: {

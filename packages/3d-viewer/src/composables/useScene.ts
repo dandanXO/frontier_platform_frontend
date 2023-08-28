@@ -1,7 +1,7 @@
 import { onMounted, onUnmounted, ref, toRaw } from 'vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { downloadDataURLFile } from '../utils/fileOperator'
+import { downloadDataURLFile } from '@frontier/utils'
 
 THREE.ColorManagement.enabled = true
 

@@ -49,10 +49,10 @@ modal-behavior(
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useStore } from 'vuex'
-import { FileOperator, unzip } from '@/utils/fileOperator'
+import { FileOperator, unzip } from '@frontier/utils'
 import { UPLOAD_ERROR_CODE, EXTENSION, NOTIFY_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
-import { bytesToSize } from '@/utils/fileOperator'
+import { bytesToSize } from '@frontier/utils'
 
 const props = defineProps<{
   uploadedHandler: (payload: {

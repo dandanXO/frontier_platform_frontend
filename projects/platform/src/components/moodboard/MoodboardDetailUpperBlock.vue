@@ -30,9 +30,8 @@ div(class="w-227 mx-auto")
             f-list
               f-list-item(@click.stop="handleDelete") {{ $t('RR0063') }}
     p(class="text-caption text-grey-600")
-      span {{ $t('RR0066') }}: {{ $dayjs.unix(moodboard.updateDate).format('YYYY/MM/DD') }}
-      span(class="mx-1") at
-      span {{ $dayjs.unix(moodboard.updateDate).format('h:mm a') }}
+      span {{ $t('RR0066') }}:&nbsp
+      span {{ toStandardFormat(moodboard.updateDate) }}
   div(class="flex justify-between mb-10")
     div(class="w-110.5")
       div(class="mb-6")
@@ -61,6 +60,7 @@ import useNavigation from '@/composables/useNavigation.js'
 import BlockAttachment from '@/components/moodboard/BlockAttachment.vue'
 import { MOODBOARD_TYPE, CREATE_EDIT, NOTIFY_TYPE } from '@/utils/constants'
 import CollectionTrendBoard from '@/components/common/CollectionTrendBoard.vue'
+import { toStandardFormat } from '@frontier/utils'
 
 const { t } = useI18n()
 const store = useStore()

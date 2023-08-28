@@ -42,10 +42,10 @@ import MaterialU3mDownloadButton from '@/components/common/material/u3m/Material
 import type { Material } from '@frontier/platform-web-sdk'
 import type { DownloadU3mPayload } from '@/types'
 import { U3M_STATUS, U3M_PROVIDER, U3M_DOWNLOAD_PROP } from '@/utils/constants'
-import { downloadDataURLFile } from '@/utils/fileOperator'
+import { downloadDataURLFile } from '@frontier/utils'
 import useLogSender from '@/composables/useLogSender'
 import { useStore } from 'vuex'
-import FTabs from '@frontier/ui-component/src/FTabs/FTabs.vue'
+import { FTabs } from '@frontier/ui-component'
 import JSZip from 'jszip'
 
 const logSender = useLogSender()

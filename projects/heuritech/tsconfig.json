@@ -1,7 +1,6 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "extends": "../../tsconfig.json",
   "include": [
-    "env.d.ts",
     "src/**/*.ts",
     "src/**/*.js",
     "src/**/*.vue",
@@ -9,35 +8,10 @@
     "tests/**/*.js"
   ],
   "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "strict": true,
-    "jsx": "preserve",
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
-    "skipLibCheck": true,
-    "allowJs": true,
     "paths": {
       "@/*": [
-        "./src/*"
+        "./src/*",
       ]
     },
-    "types": [
-      "vitest/globals",
-      "@frontier/ui-component/components.d.ts"
-    ]
   },
-  "vueCompilerOptions": {
-    "plugins": [
-      "@vue/language-plugin-pug"
-    ]
-  }
 }

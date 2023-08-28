@@ -60,7 +60,7 @@ div(
         class="w-1 h-4 rounded-[18px] bg-grey-300"
       )
   div(v-if="!uncreated" class="flex justify-between")
-    p(class="text-caption leading-1.6 text-grey-300 pt-2.5") {{ $t('RR0065') }} {{ toDigitalThreadDateFormat(digitalThread.createDate) }}
+    p(class="text-caption leading-1.6 text-grey-300 pt-2.5") {{ $t('RR0065') }} {{ toStandardFormat(digitalThread.createDate) }}
     f-avatar-group(
       v-if="!uncreated"
       :itemList="digitalThread.participantList.map(({ name, avatar }) => ({ name, imageUrl: avatar }))"
@@ -73,7 +73,7 @@ div(
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { toDigitalThreadDateFormat } from '@/utils/date'
+import { toStandardFormat } from '@frontier/utils'
 
 const store = useStore()
 

@@ -5,11 +5,14 @@ declare module '@vue/runtime-core' {
     FSvgIcon: typeof import('./src/FSvgIcon/FSvgIcon.vue').default
     FLabel: typeof import('./src/FLabel/FLabel.vue').default
     FScrollbarContainer: typeof import('./src/FScrollbarContainer/FScrollbarContainer.vue').default
+    FBanner: typeof import('./src/FNotify/FBanner/FBanner.vue').default
+    FSnackbar: typeof import('./src/FNotify/FSnackbar/FSnackbar.vue').default
     FInfobar: typeof import('./src/FNotify/FInfobar/FInfobar.vue').default
     FPopper: typeof import('./src/FPopper/FPopper.vue').default
     FContextualMenu: typeof import('./src/FContextualMenu/FContextualMenu.vue').default
     FTabs: typeof import('./src/FTabs/FTabs.vue').default
     FInputCheckbox: typeof import('./src/FInput/FInputCheckbox/FInputCheckbox.vue').default
+    FInputSlider: typeof import('./src/FInput/FInputSlider/FInputSlider.vue').default
   }
 }
 

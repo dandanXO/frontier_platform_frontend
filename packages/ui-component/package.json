@@ -2,7 +2,7 @@
   "name": "@frontier/ui-component",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "storybook": "NODE_OPTIONS=--openssl-legacy-provider storybook dev -p 6006",
     "build": "NODE_OPTIONS=--openssl-legacy-provider storybook build",

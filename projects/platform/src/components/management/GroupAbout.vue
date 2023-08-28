@@ -52,9 +52,9 @@ import { useStore } from 'vuex'
 import { computed, reactive, toRaw } from 'vue'
 import InputLabelColor from '@/components/management/InputLabelColor.vue'
 import { useI18n } from 'vue-i18n'
-import copyText from '@/utils/copy-text'
 import { NOTIFY_TYPE } from '@/utils/constants'
 import { useNotifyStore } from '@/stores/notify'
+import { copyText } from '@frontier/utils'
 
 export default {
   name: 'GroupAbout',

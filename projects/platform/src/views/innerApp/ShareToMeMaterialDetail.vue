@@ -16,7 +16,7 @@ div
       template(#caption)
         div(class="text-caption text-grey-600 flex items-center")
           p(class="pr-2.5") {{ share.displayName }}
-          p {{ $t('RR0148') }} {{ $dayjs.unix(share.shareDate).format('YYYY/MM/DD') }}
+          p {{ $t('RR0148') }} {{ toYYYYMMDDFormat(share.shareDate) }}
     material-detail-external(
       :material="material"
       :isCanDownloadU3M="share.isCanDownloadU3M"
@@ -32,6 +32,7 @@ import { useRoute } from 'vue-router'
 import useShareToMe from '@/composables/useShareToMe'
 import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
 import MaterialDetailExternalHeader from '@/components/common/material/detail/MaterialDetailExternalHeader.vue'
+import { toYYYYMMDDFormat } from '@frontier/utils'
 
 const props = defineProps({
   nodeKey: {

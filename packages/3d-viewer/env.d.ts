@@ -1,5 +1,3 @@
-/// <reference types="vite/client" />
-
 declare module '*.glb' {
   declare const url: string
   export default url

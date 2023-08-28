@@ -51,3 +51,9 @@ export interface MenuTree {
   scrollAreaMaxHeight?: string // String (Tailwindcss),
   blockList: MenuBlock[]
 }
+
+export interface Action {
+  text: string
+  handler(): void
+  classes?: string
+}

@@ -36,7 +36,7 @@ div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
               img(:src="moodboard.creatorLogo" class="w-5 h-5 rounded-full")
               p(class="text-caption text-grey-600 leading-1.6 ml-1.5") {{ moodboard.creator }}
           div
-            span(class="text-caption text-grey-600 leading-1.6 mr-2") {{ $t('RR0066') }}: {{ $dayjs.unix(moodboard.updateDate).format('YYYY/MM/DD・hh:mm:ss A') }}
+            span(class="text-caption text-grey-600 leading-1.6 mr-2") {{ $t('RR0066') }}: {{ toStandardFormat(moodboard.updateDate) }}
             span(
               v-if="moodboard.hasNewUpdate"
               class="text-caption text-primary-400 leading-1.6 font-bold"
@@ -74,6 +74,7 @@ import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import useNavigation from '@/composables/useNavigation.js'
 import { MOODBOARD_TYPE, CREATE_EDIT, NOTIFY_TYPE } from '@/utils/constants'
+import { toStandardFormat } from '@frontier/utils'
 
 const { t } = useI18n()
 const store = useStore()

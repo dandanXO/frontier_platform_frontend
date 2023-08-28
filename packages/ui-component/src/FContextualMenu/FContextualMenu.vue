@@ -110,8 +110,8 @@ import { ref, computed } from 'vue'
 import { CONTEXTUAL_MENU_MODE, THEME } from '../constants'
 // import { RecycleScroller } from 'vue-virtual-scroller'
 // import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
-import isEqual from '../isEqual'
-import type { MenuBlock, MenuItem, MenuTree } from './types'
+import { isEqual } from '@frontier/utils'
+import type { MenuBlock, MenuItem, MenuTree } from '../types'
 
 const { SINGLE_CANCEL, SINGLE_NONE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
 

@@ -69,7 +69,7 @@ div(ref="threadCardRef" :class="containerClass" @click="handleClick")
         f-svg-icon(iconName="tag" size="14")
         span(class="text-caption") {{ thread.tagList.length }}
   div(class="h-6 flex justify-between items-end")
-    p(class="text-caption leading-1 text-grey-300") {{ toDigitalThreadDateFormat(thread.createDate) }}
+    p(class="text-caption leading-1 text-grey-300") {{ toStandardFormat(thread.createDate) }}
   div(class="absolute right-3.5 bottom-3")
     f-popper(placement="top" :offset="[0, 8]" @click.stop)
       template(#trigger="{ isExpand }")
@@ -94,10 +94,10 @@ div(ref="threadCardRef" :class="containerClass" @click="handleClick")
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import type FScrollbarContainer from '@frontier/ui-component/src/FScrollbarContainer/FScrollbarContainer.vue'
+import type { FScrollbarContainer } from '@frontier/ui-component'
 import type { DigitalThreadBase } from '@frontier/platform-web-sdk'
 import useBadgeCountDisplay from '@/composables/useBadgeCountDisplay'
-import { toDigitalThreadDateFormat } from '@/utils/date'
+import { toStandardFormat } from '@frontier/utils'
 
 const props = withDefaults(
   defineProps<{

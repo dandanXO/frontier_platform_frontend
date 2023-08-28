@@ -204,14 +204,14 @@ import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { storeToRefs } from 'pinia'
 import Draggable from 'vuedraggable'
-import overlayscrollbars, { OverlayScrollbarsStatic } from 'overlayscrollbars'
+import overlayscrollbars from 'overlayscrollbars'
 import 'overlayscrollbars/css/OverlayScrollbars.css'
 import useThreadBoardStore from '@/stores/threadBoard'
 import ThreadCard from '@/components/threadBoard/ThreadCard.vue'
 import WorkflowStageColumn from '@/components/threadBoard/WorkflowStageColumn.vue'
 import workflowStageCreate from '@/components/threadBoard/WorkflowStageCreate.vue'
 import WorkflowStageHiddenCard from './WorkflowStageHiddenCard.vue'
-import type FScrollbarContainer from '@frontier/ui-component/src/FScrollbarContainer/FScrollbarContainer.vue'
+import type { FScrollbarContainer } from '@frontier/ui-component'
 import type {
   WorkflowStageId,
   WorkflowStageMoveAllThreadsPayload,

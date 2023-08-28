@@ -62,7 +62,7 @@ div(
 import { storeToRefs } from 'pinia'
 import { onKeyStroke } from '@vueuse/core'
 import { BookmarkType } from '@frontier/platform-web-sdk'
-import type { MenuTree } from '@frontier/ui-component/src/FContextualMenu/types'
+import type { MenuTree } from '@frontier/ui-component'
 import useBookmarkManagerStore from '@/stores/threadBoard/bookmarkManager'
 
 const props = defineProps<{

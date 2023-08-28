@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import router from '@/router'
 import store from '@/store'
-import i18n from '@/utils/i18n'
+import i18n from '@frontier/i18n'
 import { NOTIFY_TYPE } from '@/utils/constants'
 
 const { VITE_APP_API_ENDPOINT } = import.meta.env

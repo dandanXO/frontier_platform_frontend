@@ -155,7 +155,7 @@ div(class="flex flex-col")
     )
       f-svg-icon(iconName="info_outline" size="14")
       p(class="text-caption") {{ $t('UU0078') }}
-    p(class="text-caption text-grey-600") {{ $t('RR0066') }}: {{ $dayjs.unix(material.carbonEmission.lastUpdateTime).format('MMM DD, YYYY [at] hh:mm:ss A') }}
+    p(class="text-caption text-grey-600") {{ $t('RR0066') }}: {{ toStandardFormat(material.carbonEmission.lastUpdateTime) }}
 </template>
 
 <script setup>
@@ -170,6 +170,7 @@ import {
   useConstants,
 } from '@/utils/constants'
 import useReceivedShare from '@/composables/useReceivedShare'
+import { toStandardFormat } from '@frontier/utils'
 
 const router = useRouter()
 const route = useRoute()

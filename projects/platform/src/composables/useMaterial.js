@@ -1,7 +1,7 @@
 import { COVER_MODE, SIDE_TYPE, useConstants } from '@/utils/constants'
 import { computed } from 'vue'
 import { reactive } from 'vue'
-import i18n from '@/utils/i18n'
+import i18n from '@frontier/i18n'
 import store from '@/store'
 
 const t = i18n.global.t

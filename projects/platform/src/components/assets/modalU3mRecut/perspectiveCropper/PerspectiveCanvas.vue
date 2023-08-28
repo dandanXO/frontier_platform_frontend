@@ -114,6 +114,7 @@ import type {
   PerspectiveCropRecord,
 } from '@/types'
 import colors from '@frontier/tailwindcss/colors'
+import { isEqual } from '@frontier/utils'
 
 type CircleId = 'leftTop' | 'rightTop' | 'rightBottom' | 'leftBottom'
 
@@ -397,10 +398,6 @@ const bottomInfoGroupConfig = computed(() => ({
 }))
 
 const editStatus = computed<EditStatus>(() => {
-  const isEqual = (p1: Coord, p2: Coord) => {
-    return p1.x === p2.x && p1.y === p2.y
-  }
-
   const isSizeValid = [
     leftSideInCm.value,
     topSideInCm.value,
@@ -434,6 +431,8 @@ const editStatus = computed<EditStatus>(() => {
   }
 
   const isPositionsDirty = !positionsEqualTo(defaultPositions)
+
+  console.log(isPositionsDirty)
 
   return {
     isSizeValid,

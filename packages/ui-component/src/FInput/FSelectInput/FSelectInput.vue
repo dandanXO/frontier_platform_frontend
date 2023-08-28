@@ -139,7 +139,7 @@ import {
 } from 'vue'
 import { CONTEXTUAL_MENU_MODE } from '../../constants'
 import useInput from '../useInput'
-import isEqual from '../../isEqual.js'
+import { isEqual } from '@frontier/utils'
 
 const { SINGLE_CANCEL, MULTIPLE } = CONTEXTUAL_MENU_MODE
 

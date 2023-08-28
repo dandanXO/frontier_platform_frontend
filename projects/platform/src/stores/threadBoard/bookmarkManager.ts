@@ -22,11 +22,7 @@ import type {
   BookmarkManagerOrgBookmark,
 } from '@/types'
 import { isCaseInsensitiveMatch } from '@/utils/string'
-import type {
-  MenuBlock,
-  MenuItem,
-  MenuTree,
-} from '@frontier/ui-component/src/FContextualMenu/types'
+import type { MenuBlock, MenuItem, MenuTree } from '@frontier/ui-component'
 import { useNotifyStore } from '@/stores/notify'
 import useNameEditor from '@/composables/useNameEditor'
 

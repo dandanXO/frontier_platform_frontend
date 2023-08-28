@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import { UPLOAD_ERROR_CODE, NATIVE_EXTENSION, EXTENSION } from '../../constants'
+import { UPLOAD_ERROR_CODE, NATIVE_EXTENSION, EXTENSION } from '../constants'
 import JSZip from 'jszip'
 
 export interface UnzippedFile {

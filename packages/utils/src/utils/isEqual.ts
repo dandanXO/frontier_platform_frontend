@@ -1,18 +1,21 @@
 // ref - https://www.syncfusion.com/blogs/post/5-different-ways-to-deep-compare-javascript-objects.aspx
 
-const isObject = (object) => {
+const isObject = (object: { [key: string]: any }) => {
   return object != null && typeof object === 'object'
 }
 
-const isObjectEqual = (object1, object2) => {
-  const objKeys1 = Object.keys(object1)
-  const objKeys2 = Object.keys(object2)
+const isObjectEqual = (
+  object1: { [key: string]: any },
+  object2: { [key: string]: any }
+) => {
+  const objKeyList1 = Object.keys(object1)
+  const objKeyList2 = Object.keys(object2)
 
-  if (objKeys1.length !== objKeys2.length) {
+  if (objKeyList1.length !== objKeyList2.length) {
     return false
   }
 
-  for (var key of objKeys1) {
+  for (const key of objKeyList1) {
     const value1 = object1[key]
     const value2 = object2[key]
 
@@ -28,7 +31,7 @@ const isObjectEqual = (object1, object2) => {
   return true
 }
 
-const isEqual = (value1, value2) => {
+const isEqual = (value1: any, value2: any) => {
   if (isObject(value1) && isObject(value2)) {
     return isObjectEqual(value1, value2)
   }
@@ -36,4 +39,4 @@ const isEqual = (value1, value2) => {
   return value1 === value2
 }
 
-export default isEqual
+export { isEqual }

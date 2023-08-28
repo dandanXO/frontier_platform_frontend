@@ -47,10 +47,12 @@ f-table(
         :style="{ 'background-image': `url(${item.image})` }"
       )
       div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-250 font-bold z-1") {{ $t('RR0063') }}
-    div(v-if="prop === 'sourceType'") {{ item.sourceType == U3M_PROVIDER.FRONTIER ? $t('EE0174') : $t('EE0175') }}
-    div(v-if="prop === 'itemNumber'") {{ item.materialNo }}
-    div(v-if="prop === 'createdTime'")
-      p(class="text-body2/1.6 text-grey-600") {{ toDigitalThreadDateFormat(item.createDate) }}
+    template(v-if="prop === 'sourceType'")
+      p {{ item.sourceType == U3M_PROVIDER.FRONTIER ? $t('EE0174') : $t('EE0175') }}
+    template(v-if="prop === 'itemNumber'")
+      p {{ item.materialNo }}
+    template(v-if="prop === 'createdTime'")
+      p(class="text-body2/1.6 text-grey-600") {{ toStandardFormat(item.createDate) }}
     table-status-label(v-if="prop === 'statusLabel'" :status="item.status")
     table-status-progress(v-if="prop === 'procedure'" :status="item.status")
       //- Unsuccessful
@@ -144,7 +146,7 @@ import { ref, computed, reactive, watch } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 import type { ProgressU3mItem, Material } from '@frontier/platform-web-sdk'
 import { ProgressU3mSort } from '@frontier/platform-web-sdk'
-import { toDigitalThreadDateFormat } from '@/utils/date'
+import { toStandardFormat } from '@frontier/utils'
 import { U3M_PROVIDER } from '@/utils/constants'
 
 const ERROR_MSG = {

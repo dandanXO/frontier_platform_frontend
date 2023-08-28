@@ -1,6 +1,6 @@
 // https://stackoverflow.com/a/30810322
 
-export default function copyTex(text) {
+export function copyText(text: string) {
   if (!navigator.clipboard) {
     const textArea = document.createElement('textarea')
     textArea.value = text

@@ -5,7 +5,7 @@ import { jsPDF as JsPDF } from 'jspdf'
 import store from '@/store'
 import useMaterial from '@/composables/useMaterial'
 import { SIDE_TYPE } from '@/utils/constants'
-import i18n from '@/utils/i18n'
+import i18n from '@frontier/i18n'
 import imgPdfOutLine from '@/assets/images/pdf-outline.png'
 import { computed } from 'vue'
 

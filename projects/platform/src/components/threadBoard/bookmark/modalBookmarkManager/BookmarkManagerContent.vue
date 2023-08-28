@@ -123,10 +123,7 @@ import {
   BookmarkType,
   type FolderBookmarkAllOfOrgList,
 } from '@frontier/platform-web-sdk'
-import type {
-  MenuItem,
-  MenuTree,
-} from '@frontier/ui-component/src/FContextualMenu/types'
+import type { MenuItem, MenuTree } from '@frontier/ui-component'
 import { CONTEXTUAL_MENU_MODE } from '@frontier/constants'
 import useBookmarkManagerStore from '@/stores/threadBoard/bookmarkManager'
 import BookmarkManagerContentItem from '@/components/threadBoard/bookmark/modalBookmarkManager/BookmarkManagerContentItem.vue'

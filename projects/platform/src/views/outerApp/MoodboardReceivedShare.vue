@@ -4,7 +4,7 @@ fullscreen-header
     img(:src="moodboardShare.logo" class="w-10 h-10 rounded-full")
     div(class="flex items-end pl-2")
       p(class="text-body1 font-bold text-grey-900 pr-2.5") {{ moodboardShare.displayName }}
-      p(class="text-caption text-grey-600") {{ $t('QQ0083') }}: {{ $dayjs.unix(moodboardShare.shareDate).format('YYYY/MM/DD') }}
+      p(class="text-caption text-grey-600") {{ $t('QQ0083') }}: {{ toYYYYMMDDFormat(moodboardShare.shareDate) }}
   template(#right)
     div(class="relative cursor-pointer mr-4" @click="openModalShareMessage")
       f-svg-icon(iconName="chat" size="24" class="text-grey-600")
@@ -19,9 +19,8 @@ fullscreen-header
         p(class="text-caption text-grey-600 mb-2") {{ $t('QQ0001') }}
         p(class="text-h5 font-bold text-grey-900 mb-3") {{ moodboard.moodboardName }}
         p(class="text-caption text-grey-600")
-          span {{ $t('RR0066') }}: {{ $dayjs.unix(moodboard.updateDate).format('YYYY/MM/DD') }}
-          span(class="mx-1") at
-          span {{ $dayjs.unix(moodboard.updateDate).format('h:mm a') }}
+          span {{ $t('RR0066') }}: &nbsp
+          span {{ toYYYYMMDDFormat(moodboard.updateDate) }}
       div(class="mb-6 flex")
         collection-trend-board(
           class="mr-9"
@@ -48,6 +47,7 @@ import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import BlockAttachment from '@/components/moodboard/BlockAttachment.vue'
 import { MOODBOARD_TYPE, NOTIFY_TYPE } from '@/utils/constants'
 import CollectionTrendBoard from '@/components/common/CollectionTrendBoard.vue'
+import { toYYYYMMDDFormat } from '@frontier/utils'
 
 const { t } = useI18n()
 const store = useStore()

@@ -62,7 +62,7 @@ import MaterialDetailPreviewImg from '@/components/material/detail/MaterialDetai
 import MaterialDetailPantone from '@/components/material/detail/MaterialDetailPantone.vue'
 import MaterialDetailSpecification from '@/components/material/detail/MaterialDetailSpecification.vue'
 import MaterialDetailU3m from '@/components/material/detail/MaterialDetailU3m.vue'
-import { downloadDataURLFile } from '@/utils/fileOperator'
+import { downloadDataURLFile } from '@frontier/utils'
 import { useModalStore } from '@/stores/modal'
 import { useI18n } from 'vue-i18n'
 import { NOTIFY_TYPE } from '@/utils/constants'

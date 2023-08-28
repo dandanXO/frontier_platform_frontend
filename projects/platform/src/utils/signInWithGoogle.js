@@ -1,6 +1,6 @@
 // https://developers.google.com/identity/gsi/web/guides/overview
 
-import i18n from '@/utils/i18n.js'
+import i18n from '@frontier/i18n'
 
 class SignInWithGoogle {
   constructor({ elementId, callback }) {

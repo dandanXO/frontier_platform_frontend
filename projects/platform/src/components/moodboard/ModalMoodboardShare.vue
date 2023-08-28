@@ -45,7 +45,7 @@ import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
 import { SHARE_TARGET_TYPE } from '@/utils/constants'
-import inputValidator from '@/utils/inputValidator'
+import { inputValidator } from '@frontier/utils'
 
 const { t } = useI18n()
 const store = useStore()

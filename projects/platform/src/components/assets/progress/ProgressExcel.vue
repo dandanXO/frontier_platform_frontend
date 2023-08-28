@@ -44,6 +44,7 @@ f-table(
       div(class="flex")
         div(
           v-for="(category, index) in categoryOptions"
+          :key="category.label"
           class="text-grey-900 text-body2 cursor-pointer flex"
           :class="{ 'text-primary-400': queryParams.category === category.value }"
           @click="changeCategory(category.value)"
@@ -69,10 +70,7 @@ f-table(
               @click="openModalMaterialNoList(item.materialNoList)"
             )
     template(v-if="prop === 'createdTime'")
-      div(
-        v-for="string in $dayjs.unix(item.createDate).format('YYYY/MM/DD-hh:mm:ss A').split('-')"
-        class="leading-1.6"
-      ) {{ string }}
+      p(class="text-body2/1.6 text-grey-600") {{ toStandardFormat(item.createDate) }}
     table-status-label(v-if="prop === 'statusLabel'" :status="item.status")
     table-status-progress(v-if="prop === 'procedure'" :status="item.status")
       //- Unsuccessful
@@ -180,7 +178,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive, watch } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
-import { downloadDataURLFile } from '@/utils/fileOperator'
+import { downloadDataURLFile } from '@frontier/utils'
 import {
   UPLOAD_PROGRESS_EXCEL_SORT_BY,
   UPLOAD_PROGRESS,
@@ -192,6 +190,7 @@ import TableStatusProgress from '@/components/assets/progress/TableStatusProgres
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
 import { printGeneralLabel, printA4Card } from '@/utils/print'
+import { toStandardFormat } from '@frontier/utils'
 
 const ERROR_MSG = {
   INACTIVE: 1,

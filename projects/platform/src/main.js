@@ -4,7 +4,7 @@ import { createPinia } from 'pinia'
 import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'
-import i18n from '@/utils/i18n'
+import i18n from '@frontier/i18n'
 import dayjs from 'dayjs'
 import isToday from 'dayjs/plugin/isToday'
 import isYesterday from 'dayjs/plugin/isYesterday'
@@ -13,8 +13,8 @@ import defaultImg from '@/directives/defaultImg.js'
 import VueGtag from 'vue-gtag'
 import VueKonva from 'vue-konva'
 import uiComponents from '@frontier/ui-component'
-import inputRules from '@/utils/inputRules'
 import { NOTIFY_TYPE } from '@/utils/constants'
+import { inputRules } from '@frontier/utils'
 
 const app = createApp(App)
 

@@ -22,7 +22,7 @@ div(class="bg-grey-50 rounded py-2 px-4 box-border flex flex-col gap-y-2")
       )
       div
         p(class="text-body2 text-grey-900 pb-1") {{ u3m.creator }}
-        p(class="text-caption text-grey-600") {{ toDigitalThreadDateFormat(u3m.createDate) }}
+        p(class="text-caption text-grey-600") {{ toStandardFormat(u3m.createDate) }}
   slot(name="slot:append-item")
 </template>
 
@@ -30,7 +30,7 @@ div(class="bg-grey-50 rounded py-2 px-4 box-border flex flex-col gap-y-2")
 import type { MaterialCustomU3m, MaterialU3m } from '@frontier/platform-web-sdk'
 import MaterialU3mStatusLabel from '@/components/material/u3m/MaterialU3mStatusLabel.vue'
 import { U3M_STATUS } from '@/utils/constants'
-import { toDigitalThreadDateFormat } from '@/utils/date'
+import { toStandardFormat } from '@frontier/utils'
 
 defineProps<{
   u3m: MaterialU3m | MaterialCustomU3m

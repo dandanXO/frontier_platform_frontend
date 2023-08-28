@@ -1,4 +1,4 @@
-import inputValidator from '@/utils/inputValidator'
+import { inputValidator } from '../../src/utils/inputValidator'
 
 describe('inputValidator', () => {
   describe('email format', () => {

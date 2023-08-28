@@ -43,11 +43,8 @@ f-table(
         :style="{ 'background-image': `url(${item.image})` }"
       )
       div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-250 font-bold z-1") {{ $t('RR0063') }}
-    div(v-if="prop === 'createdTime'")
-      div(
-        v-for="string in $dayjs.unix(item.createDate).format('YYYY/MM/DD-hh:mm:ss A').split('-')"
-        class="leading-1.6"
-      ) {{ string }}
+    template(v-if="prop === 'createdTime'")
+      p(class="text-body2/1.6 text-grey-600") {{ toStandardFormat(item.createDate) }}
     table-status-label(v-if="prop === 'statusLabel'" :status="item.status")
     table-status-progress(v-if="prop === 'procedure'" :status="item.status")
       //- Unsuccessful
@@ -130,6 +127,7 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { ref, computed, reactive, watch } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
+import { toStandardFormat } from '@frontier/utils'
 
 const props = defineProps({
   currentStatus: {

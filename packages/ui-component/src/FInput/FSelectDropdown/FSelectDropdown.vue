@@ -76,7 +76,7 @@ export default {
 import { computed, useSlots, toRefs } from 'vue'
 import { CONTEXTUAL_MENU_MODE } from '../../constants'
 import useInput from '../useInput'
-import isEqual from '../../isEqual.js'
+import { isEqual } from '@frontier/utils'
 
 const { SINGLE_CANCEL, SINGLE_NONE_CANCEL } = CONTEXTUAL_MENU_MODE
 

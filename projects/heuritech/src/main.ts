@@ -6,7 +6,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from '@/router'
 import uiComponents from '@frontier/ui-component'
-import i18n from '@/utils/i18n'
+import i18n from '@frontier/i18n'
 
 createApp(App)
   .use(createPinia())

@@ -58,11 +58,7 @@ import {
   type GetThreadBoardRequestBookmarkFilter,
   type OrgBookmark,
 } from '@frontier/platform-web-sdk'
-import type {
-  MenuBlock,
-  MenuItem,
-  MenuTree,
-} from '@frontier/ui-component/src/FContextualMenu/types'
+import type { MenuBlock, MenuItem, MenuTree } from '@frontier/ui-component'
 import useThreadBoardStore from '@/stores/threadBoard'
 import useBookmarkManagerStore from '@/stores/threadBoard/bookmarkManager'
 

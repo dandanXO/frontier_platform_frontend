@@ -3,8 +3,7 @@ import orgUser from '@/store/modules/management/organization/orgUser.js'
 import putBinaryData from '@/utils/put-binary-data'
 import { SIGNUP_SOURCE } from '@/utils/constants'
 import axios from '@/apis'
-
-import dayjs from 'dayjs'
+import { toYYYYMMDDFormat } from '@frontier/utils'
 
 export default {
   namespaced: true,
@@ -324,11 +323,11 @@ export default {
     },
     async getInvoiceList({ dispatch }, params) {
       if (params.startDate?.length > 0) {
-        params.startDate = dayjs(params.startDate).format('YYYY/MM/DD')
+        params.startDate = toYYYYMMDDFormat('YYYY/MM/DD')
       }
 
       if (params.endDate?.length > 0) {
-        params.endDate = dayjs(params.endDate).format('YYYY/MM/DD')
+        params.endDate = toYYYYMMDDFormat('YYYY/MM/DD')
       }
 
       const { data } = await dispatch('callOrgApi', {

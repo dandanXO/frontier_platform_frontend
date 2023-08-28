@@ -1,5 +1,5 @@
 import store from '@/store'
-import i18n from '@/utils/i18n'
+import i18n from '@frontier/i18n'
 import { useNotifyStore } from '@/stores/notify'
 import { shallowRef, h } from 'vue'
 import { SIGNUP_SOURCE, NOTIFY_TYPE } from '@/utils/constants'

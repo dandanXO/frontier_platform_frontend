@@ -18,7 +18,7 @@ fullscreen-header
       f-avatar(:imageUrl="logo" type="org" size="lg")
       div(class="flex items-end pl-2")
         p(class="text-caption xl:text-body1 font-bold text-grey-900 pr-2.5") {{ share.displayName }}
-        p(class="text-caption text-grey-600") {{ $t('RR0148') }} {{ $dayjs.unix(share.shareDate).format('YYYY/MM/DD') }}
+        p(class="text-caption text-grey-600") {{ $t('RR0148') }} {{ toYYYYMMDDFormat(share.shareDate) }}
     template(v-else-if="share.sharingFrom === SHARING_FROM.PUBLIC_LIBRARY")
       p(class="text-caption2 xl:text-body1 font-bold text-grey-900 pr-2.5") {{ $t('GG0032') }}
       f-avatar(:imageUrl="logo" type="org" size="lg")
@@ -53,6 +53,7 @@ import { SHARING_FROM } from '@/utils/constants'
 import DropdownLocale from '@/components/common/DropdownLocale.vue'
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
 import StickerDrawerForLogin from '@/components/sticker/StickerDrawerForLogin.vue'
+import { toYYYYMMDDFormat } from '@frontier/utils'
 
 const store = useStore()
 const { saveReceivedShare } = useReceivedShare()

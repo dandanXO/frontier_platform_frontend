@@ -130,7 +130,7 @@ import useNavigation from '@/composables/useNavigation'
 import PasswordValidator from '@/components/account/PasswordValidator.vue'
 import imgCover from '@/assets/images/cover.png'
 import DropdownLocale from '@/components/common/DropdownLocale.vue'
-import inputValidator from '@/utils/inputValidator'
+import { inputValidator } from '@frontier/utils'
 import { useRoute } from 'vue-router'
 import { SIGNUP_SOURCE } from '@/utils/constants'
 

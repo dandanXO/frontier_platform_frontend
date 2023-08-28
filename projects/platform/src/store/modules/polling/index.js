@@ -6,7 +6,7 @@ import {
   VALUE_ADDED_SERVICE_ID,
   VALUE_ADDED_SERVICE_STATUS,
 } from '@/utils/constants'
-import i18n from '@/utils/i18n'
+import i18n from '@frontier/i18n'
 import dayjs from 'dayjs'
 import generateContentComponent from '@/utils/generateContentComponent'
 

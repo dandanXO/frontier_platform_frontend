@@ -51,7 +51,7 @@ import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { maxIntegerDecimal } from '@/utils/inputValidator'
+import { inputValidator } from '@frontier/utils'
 
 export default {
   name: 'FilterContent',
@@ -92,7 +92,7 @@ export default {
           return t('WW0002')
         }
 
-        if (maxIntegerDecimal(3, 2, percentage)) {
+        if (!inputValidator.maxIntegerDecimal(3, 2, percentage)) {
           return t('WW0010')
         }
 

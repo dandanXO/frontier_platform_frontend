@@ -42,7 +42,7 @@ export default {
 
 <script lang="ts" setup>
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
-import type { Action } from '../../FNotify'
+import type { Action } from '../../types'
 import { NOTIFY_TYPE, NOTIFY_TYPE_ICON, DISPLAY } from '../../constants'
 
 export interface NotifyInfobarProps {

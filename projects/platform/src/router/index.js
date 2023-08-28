@@ -4,7 +4,7 @@ import { useNotifyStore } from '@/stores/notify'
 import useLogSender from '@/composables/useLogSender'
 import { ROLE_ID, NODE_TYPE } from '@/utils/constants'
 import Sidebar from '@/components/sidebar/Sidebar.vue'
-import i18n from '@/utils/i18n'
+import i18n from '@frontier/i18n'
 import remindVerifyEmail from '@/utils/remind-verify-email'
 import { pageview } from 'vue-gtag'
 

@@ -28,11 +28,9 @@ modal-behavior(
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import inputValidator from '@/utils/inputValidator'
-import { useRouter } from 'vue-router'
+import { inputValidator } from '@frontier/utils'
 
 const { t } = useI18n()
-const router = useRouter()
 const store = useStore()
 const email = ref('')
 const errorMsg = ref('')
