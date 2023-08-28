@@ -468,7 +468,6 @@ const getIsEllipsis = (chip) => {
   span.style.whiteSpace = 'nowrap'
   document.body.appendChild(span)
   const isEllipsis = span.offsetWidth < span.scrollWidth
-  isEllipsis && console.log(chip, span.offsetWidth, span.scrollWidth)
   document.body.removeChild(span)
   return isEllipsis
 }
