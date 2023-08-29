@@ -184,7 +184,6 @@ export default function useModels(
         texture.matrixAutoUpdate = true
         texture.wrapS = THREE.RepeatWrapping
         texture.wrapT = THREE.RepeatWrapping
-        texture.flipY = MODELS[0].flipY
         texture.minFilter = THREE.LinearMipMapLinearFilter
         texture.needsUpdate = true
       })

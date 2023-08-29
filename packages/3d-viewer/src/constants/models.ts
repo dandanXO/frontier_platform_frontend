@@ -30,7 +30,6 @@ export interface Model {
   filePath: string
   coverImg: string
   size: number
-  flipY: boolean
 }
 
 // Size and flipY properties are magic. Don't touch.
@@ -40,65 +39,54 @@ const MODELS: Model[] = [
     filePath: sphereModel,
     coverImg: sphereCoverImg,
     size: 108,
-    flipY: true,
   },
   {
     name: 'tshirt',
     filePath: tshirtModel,
     coverImg: tshirtCoverImg,
     size: 80,
-    flipY: true,
   },
   {
     name: 'shirt',
     filePath: shirtModel,
     coverImg: shirtCoverImg,
     size: 108,
-    flipY: true,
   },
   {
     name: 'jacket',
     filePath: jacketModel,
     coverImg: jacketCoverImg,
     size: 140,
-    flipY: true,
   },
   {
     name: 'pants',
     filePath: pantsModel,
     coverImg: pantsCoverImg,
     size: 130,
-    flipY: true,
   },
   {
     name: 'dress',
     filePath: dressModel,
     coverImg: dressCoverImg,
     size: 20,
-    flipY: true,
   },
-
   {
     name: 'leggins',
     filePath: leggingsModel,
     coverImg: leggingsCoverImg,
     size: 200,
-    flipY: true,
   },
-
   {
     name: 'backpack',
     filePath: backpackModel,
     coverImg: backpackCoverImg,
     size: 5,
-    flipY: true,
   },
   {
     name: 'shoe',
     filePath: shoeModel,
     coverImg: shoeCoverImg,
     size: 30,
-    flipY: false,
   },
 ]
 
