@@ -174,7 +174,7 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core'
 import { CONTEXTUAL_MENU_MODE, DISPLAY, SIZE, THEME } from '../constants'
 import type { MenuItem, MenuBlock } from '../types'
-import { isEqual } from '@frontier/utils'
+import { isEqual } from '@frontier/lib'
 
 const { NONE_SELECT, MULTIPLE } = CONTEXTUAL_MENU_MODE
 

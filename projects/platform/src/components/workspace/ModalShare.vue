@@ -85,7 +85,7 @@ import { useNotifyStore } from '@/stores/notify'
 import { SOCIAL_MEDIA_TYPE } from '@/utils/constants'
 import { shareViaCopyLink, shareViaSocialMedia } from '@/utils/share.js'
 import { NODE_TYPE } from '@/utils/constants'
-import { copyText } from '@frontier/utils'
+import { copyText } from '@frontier/lib'
 
 const props = defineProps({
   workspaceNodeId: {

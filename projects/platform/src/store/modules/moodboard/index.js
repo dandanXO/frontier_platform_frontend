@@ -1,5 +1,5 @@
 import moodboardApi from '@/apis/moodboard'
-import { downloadBase64File } from '@frontier/utils'
+import { downloadBase64File } from '@frontier/lib'
 import { MOODBOARD_TYPE, NODE_TYPE } from '@/utils/constants'
 import Material from '@/store/reuseModules/material.js'
 

@@ -54,7 +54,7 @@ div(
 <script setup lang="ts">
 import CollectionTrendBoard from '@/components/common/CollectionTrendBoard.vue'
 import type { Collection } from '@frontier/platform-web-sdk'
-import useBreakpoints from '@frontier/3d-viewer/src/composables/useBreakpoints'
+import { useBreakpoints } from '@frontier/lib'
 
 defineProps<{
   collection: Collection

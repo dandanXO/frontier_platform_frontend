@@ -1,7 +1,7 @@
 import { reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { inputValidator } from '@frontier/utils'
-import { inputRules } from '@frontier/utils'
+import { inputValidator } from '@frontier/lib'
+import { inputRules } from '@frontier/lib'
 
 /**
  * @param {ComputedRef} material

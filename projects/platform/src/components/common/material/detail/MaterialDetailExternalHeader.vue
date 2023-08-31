@@ -33,7 +33,7 @@ div(class="pb-1 xl:pb-4" :class="{ 'xl:pt-5': breadcrumbList.length <= 1 }")
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 import useStickerLocationList from '@/composables/useStickerLocationList'
 import { useSlots } from 'vue'
-import useBreakpoints from '@frontier/3d-viewer/src/composables/useBreakpoints'
+import { useBreakpoints } from '@frontier/lib'
 
 const slots = useSlots()
 

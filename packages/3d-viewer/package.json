@@ -1,7 +1,7 @@
 {
   "name": "@frontier/3d-viewer",
   "version": "0.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "dev": "bash ./scripts/fetchEnvVar.sh development && vite --mode development",
     "preview": "vite preview --port 4173 --mode=development",

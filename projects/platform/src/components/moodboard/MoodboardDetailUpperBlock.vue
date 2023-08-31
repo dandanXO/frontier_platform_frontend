@@ -60,7 +60,7 @@ import useNavigation from '@/composables/useNavigation.js'
 import BlockAttachment from '@/components/moodboard/BlockAttachment.vue'
 import { MOODBOARD_TYPE, CREATE_EDIT, NOTIFY_TYPE } from '@/utils/constants'
 import CollectionTrendBoard from '@/components/common/CollectionTrendBoard.vue'
-import { toStandardFormat } from '@frontier/utils'
+import { toStandardFormat } from '@frontier/lib'
 
 const { t } = useI18n()
 const store = useStore()

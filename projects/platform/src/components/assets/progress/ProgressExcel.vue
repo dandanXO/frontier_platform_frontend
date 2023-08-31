@@ -178,7 +178,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive, watch } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
-import { downloadDataURLFile } from '@frontier/utils'
+import { downloadDataURLFile } from '@frontier/lib'
 import {
   UPLOAD_PROGRESS_EXCEL_SORT_BY,
   UPLOAD_PROGRESS,
@@ -190,7 +190,7 @@ import TableStatusProgress from '@/components/assets/progress/TableStatusProgres
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
 import { printGeneralLabel, printA4Card } from '@/utils/print'
-import { toStandardFormat } from '@frontier/utils'
+import { toStandardFormat } from '@frontier/lib'
 
 const ERROR_MSG = {
   INACTIVE: 1,

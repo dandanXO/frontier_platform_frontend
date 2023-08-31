@@ -150,7 +150,7 @@ import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import { useRoute, useRouter } from 'vue-router'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import useNavigation from '@/composables/useNavigation'
-import { copyText } from '@frontier/utils'
+import { copyText } from '@frontier/lib'
 
 const { t } = useI18n()
 const store = useStore()

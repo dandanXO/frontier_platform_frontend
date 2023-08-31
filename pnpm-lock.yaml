@@ -23,6 +23,9 @@ importers:
       '@frontier/i18n':
         specifier: workspace:^0.0.0
         version: link:packages/i18n
+      '@frontier/lib':
+        specifier: workspace:^0.0.0
+        version: link:packages/lib
       '@frontier/mock-embed':
         specifier: workspace:^0.0.0
         version: link:projects/mock-embed
@@ -38,9 +41,6 @@ importers:
       '@frontier/ui-component':
         specifier: workspace:^0.0.0
         version: link:packages/ui-component
-      '@frontier/utils':
-        specifier: workspace:^0.0.0
-        version: link:packages/utils
       '@hennge/vue3-pagination':
         specifier: ^1.0.17
         version: 1.0.17(vue@3.3.1)
@@ -189,6 +189,8 @@ importers:
 
   packages/i18n: {}
 
+  packages/lib: {}
+
   packages/platform-web-sdk: {}
 
   packages/tailwindcss: {}
@@ -253,8 +255,6 @@ importers:
       vue-virtual-scroller:
         specifier: ^2.0.0-alpha.1
         version: 2.0.0-alpha.1(vue@3.3.1)
-
-  packages/utils: {}
 
   projects/e2e-tests:
     devDependencies:
@@ -4791,7 +4791,7 @@ packages:
   /axios@0.27.2:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1(debug@4.3.2)
       form-data: 4.0.0
     transitivePeerDependencies:
       - debug
@@ -5554,7 +5554,6 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
-    dev: true
 
   /debug@4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -6877,16 +6876,6 @@ packages:
     engines: {node: '>=0.4.0'}
     dev: true
 
-  /follow-redirects@1.15.1:
-    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dev: false
-
   /follow-redirects@1.15.1(debug@4.3.2):
     resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
     engines: {node: '>=4.0'}
@@ -6897,7 +6886,6 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.2
-    dev: true
 
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}

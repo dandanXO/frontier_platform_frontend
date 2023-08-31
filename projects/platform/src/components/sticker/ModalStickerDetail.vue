@@ -119,7 +119,7 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 import useAddFromDisplayList from '@/composables/useAddFromLocationListDisplay'
 import useDigitalThreadWorkflowStageStore from '@/stores/digitalThreadWorkflowStage'
-import { toStandardFormat } from '@frontier/utils'
+import { toStandardFormat } from '@frontier/lib'
 
 const store = useStore()
 const workflowStageStore = useDigitalThreadWorkflowStageStore()

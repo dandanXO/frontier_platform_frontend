@@ -30,7 +30,7 @@ div(class="bg-grey-50 rounded py-2 px-4 box-border flex flex-col gap-y-2")
 import type { MaterialCustomU3m, MaterialU3m } from '@frontier/platform-web-sdk'
 import MaterialU3mStatusLabel from '@/components/common/material/u3m/MaterialU3mStatusLabel.vue'
 import { U3M_STATUS } from '@/utils/constants'
-import { toStandardFormat } from '@frontier/utils'
+import { toStandardFormat } from '@frontier/lib'
 
 defineProps<{
   u3m: MaterialU3m | MaterialCustomU3m

@@ -137,7 +137,7 @@ import BlockMaterialUploadU3m from '@/components/assets/edit/BlockMaterialUpload
 import useAssets from '@/composables/useAssets'
 import { U3M_STATUS, CREATE_EDIT } from '@/utils/constants'
 import u3mInstructionImage from '@/assets/images/u3m.png'
-import { inputValidator } from '@frontier/utils'
+import { inputValidator } from '@frontier/lib'
 import type { Material } from '@frontier/platform-web-sdk'
 import type { MakePropertiesRequired } from '@/types'
 

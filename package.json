@@ -31,7 +31,7 @@
     "@frontier/platform-web-sdk": "workspace:^0.0.0",
     "@frontier/tailwindcss": "workspace:^0.0.0",
     "@frontier/ui-component": "workspace:^0.0.0",
-    "@frontier/utils": "workspace:^0.0.0",
+    "@frontier/lib": "workspace:^0.0.0",
     "@hennge/vue3-pagination": "^1.0.17",
     "@popperjs/core": "^2.11.7",
     "axios": "^0.27.2",

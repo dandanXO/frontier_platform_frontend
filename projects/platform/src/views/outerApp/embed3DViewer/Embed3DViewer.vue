@@ -15,7 +15,6 @@ model-editor(
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import openApi from '@/apis/openApi'
-import ModelEditor from '@frontier/3d-viewer/src/components/ModelEditor.vue'
 
 const route = useRoute()
 const material = ref()

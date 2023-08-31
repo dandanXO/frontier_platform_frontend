@@ -14,7 +14,7 @@ export default {
 import { UPLOAD_ERROR_CODE } from '@/utils/constants'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { bytesToSize } from '@frontier/utils'
+import { bytesToSize } from '@frontier/lib'
 
 const props = defineProps({
   errorCode: {

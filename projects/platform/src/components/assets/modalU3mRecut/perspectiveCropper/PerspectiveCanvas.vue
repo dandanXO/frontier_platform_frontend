@@ -114,7 +114,7 @@ import type {
   PerspectiveCropRecord,
 } from '@/types'
 import colors from '@frontier/tailwindcss/colors'
-import { isEqual } from '@frontier/utils'
+import { isEqual } from '@frontier/lib'
 
 type CircleId = 'leftTop' | 'rightTop' | 'rightBottom' | 'leftBottom'
 

@@ -12,10 +12,9 @@ model-editor(
 
 <script setup lang="ts">
 import type { MaterialCustomU3m, MaterialU3m } from '@frontier/platform-web-sdk'
-import ModelEditor from '@frontier/3d-viewer/src/components/ModelEditor.vue'
 import { useModalStore } from '@/stores/modal'
 
-const props = defineProps<{
+defineProps<{
   materialId: number
   u3m: Required<MaterialCustomU3m | MaterialU3m>
 }>()

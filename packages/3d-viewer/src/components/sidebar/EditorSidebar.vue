@@ -124,7 +124,7 @@ div(
 <script setup lang="ts">
 import ColorInput from '../ColorInput.vue'
 import ToggleExpandButton from './ToggleExpandButton.vue'
-import useBreakpoints from '../../composables/useBreakpoints'
+import { useBreakpoints } from '@frontier/lib'
 import type { PantoneItem } from '../../composables/useColors'
 import { THEME, SIZE } from '../../constants'
 import type { U3M } from '@/composables/useU3M'

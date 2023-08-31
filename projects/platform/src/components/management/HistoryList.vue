@@ -15,7 +15,7 @@ f-table(
 import { useStore } from 'vuex'
 import { computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { toYYYYMMDDFormat } from '@frontier/utils'
+import { toYYYYMMDDFormat } from '@frontier/lib'
 
 const { t } = useI18n()
 const store = useStore()

@@ -13,8 +13,9 @@ import defaultImg from '@/directives/defaultImg.js'
 import VueGtag from 'vue-gtag'
 import VueKonva from 'vue-konva'
 import uiComponents from '@frontier/ui-component'
+import ModelEditor from '@frontier/3d-viewer'
 import { NOTIFY_TYPE } from '@/utils/constants'
-import { inputRules } from '@frontier/utils'
+import { inputRules } from '@frontier/lib'
 
 const app = createApp(App)
 
@@ -84,6 +85,7 @@ app
   .use(store)
   .use(i18n)
   .use(uiComponents)
+  .use(ModelEditor)
   .use(VueKonva)
   .mount('#app')
 

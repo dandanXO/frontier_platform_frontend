@@ -51,7 +51,7 @@ import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { inputValidator } from '@frontier/utils'
+import { inputValidator } from '@frontier/lib'
 
 export default {
   name: 'FilterContent',

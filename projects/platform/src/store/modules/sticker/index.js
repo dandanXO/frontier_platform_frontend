@@ -1,7 +1,7 @@
 import stickerApi from '@/apis/sticker.js'
 import Material from '@/store/reuseModules/material.js'
 import { OG_TYPE, ROLE_ID, LOCATION_TYPE, NOTIFY_TYPE } from '@/utils/constants'
-import { isEqual } from '@frontier/utils'
+import { isEqual } from '@frontier/lib'
 import groupApi from '@/apis/group'
 import i18n from '@frontier/i18n'
 import { nextTick } from 'vue'

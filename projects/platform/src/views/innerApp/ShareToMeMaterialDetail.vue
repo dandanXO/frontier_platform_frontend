@@ -32,7 +32,7 @@ import { useRoute } from 'vue-router'
 import useShareToMe from '@/composables/useShareToMe'
 import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
 import MaterialDetailExternalHeader from '@/components/common/material/detail/MaterialDetailExternalHeader.vue'
-import { toYYYYMMDDFormat } from '@frontier/utils'
+import { toYYYYMMDDFormat } from '@frontier/lib'
 
 const props = defineProps({
   nodeKey: {

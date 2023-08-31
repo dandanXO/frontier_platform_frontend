@@ -90,7 +90,7 @@ import TooltipLocation from '@/components/common/TooltipLocation.vue'
 import { useRoute, useRouter } from 'vue-router'
 import useShareToMe from '@/composables/useShareToMe'
 import useNavigation from '@/composables/useNavigation'
-import { toYYYYMMDDFormat } from '@frontier/utils'
+import { toYYYYMMDDFormat } from '@frontier/lib'
 
 const props = defineProps({
   nodeKey: {

@@ -1,5 +1,5 @@
 import { SOCIAL_MEDIA_TYPE } from '@/utils/constants'
-import { copyText } from '@frontier/utils'
+import { copyText } from '@frontier/lib'
 
 const { VITE_APP_FACEBOOK_APP_ID } = import.meta.env
 const SHARE_BASE_URL = `${window.location.origin}/share-page/index.html`

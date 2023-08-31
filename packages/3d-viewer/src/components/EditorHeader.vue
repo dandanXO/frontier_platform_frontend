@@ -79,8 +79,8 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import ModelTextureTapStatus from './ModelTextureTapStatus.vue'
 import { DISPLAY_MODE, TEXTURE_TYPE, THEME } from '../constants'
 import MODELS from '../constants/models'
-import useBreakpoints from '../composables/useBreakpoints'
 import type { Model } from '../constants/models'
+import { useBreakpoints } from '@frontier/lib'
 
 defineProps<{
   displayMode: number

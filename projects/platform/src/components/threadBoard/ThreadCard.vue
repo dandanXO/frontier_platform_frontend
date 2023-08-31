@@ -97,7 +97,7 @@ import { onClickOutside } from '@vueuse/core'
 import type { FScrollbarContainer } from '@frontier/ui-component'
 import type { DigitalThreadBase } from '@frontier/platform-web-sdk'
 import useBadgeCountDisplay from '@/composables/useBadgeCountDisplay'
-import { toStandardFormat } from '@frontier/utils'
+import { toStandardFormat } from '@frontier/lib'
 
 const props = withDefaults(
   defineProps<{

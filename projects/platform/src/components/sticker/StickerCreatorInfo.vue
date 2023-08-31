@@ -18,7 +18,7 @@ span(v-if="createDate" class="flex-shrink-0 text-caption text-grey-300 font-norm
 
 <script setup lang="ts">
 import useStickerCreatorInfo from '@/composables/useStickerCreatorInfo'
-import { toStandardFormat } from '@frontier/utils'
+import { toStandardFormat } from '@frontier/lib'
 
 const props = defineProps<{
   sticker: object

@@ -127,7 +127,7 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { ref, computed, reactive, watch } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
-import { toStandardFormat } from '@frontier/utils'
+import { toStandardFormat } from '@frontier/lib'
 
 const props = defineProps({
   currentStatus: {

@@ -4,7 +4,7 @@ import 'vue3-carousel/dist/carousel.css'
 import useScene from '../composables/useScene'
 import useModels from '../composables/useModels'
 import useU3M from '../composables/useU3M'
-import useBreakpoints from '../composables/useBreakpoints'
+import { useBreakpoints } from '@frontier/lib'
 import useKeyboard from '../composables/useKeyboard'
 import { DISPLAY_MODE, TEXTURE_TYPE } from '../constants'
 import EditorHeader from './EditorHeader.vue'
@@ -21,15 +21,12 @@ const props = defineProps<{
   normalImgUrl: string
   dispImgUrl: string
   roughImgUrl: string
-  onClose: () => void
+  onClose?: () => void
 }>()
 
 const emit = defineEmits<{ (e: 'close'): void }>()
 
-const { VITE_APP_WEB_URL } = import.meta.env
-const baseUrl = VITE_APP_WEB_URL + '/static-data/material'
-
-const { scene, container, canvas, takeScreenShot } = useScene(baseUrl)
+const { scene, container, canvas, takeScreenShot } = useScene()
 const {
   isLoading: isLoadingU3M,
   originU3m,

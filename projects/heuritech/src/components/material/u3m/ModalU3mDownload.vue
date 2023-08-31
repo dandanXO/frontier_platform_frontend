@@ -37,7 +37,7 @@ import MaterialU3mDownloadButton from '@/components/material/u3m/MaterialU3mDown
 import type { Material } from '@frontier/platform-web-sdk'
 import type { DownloadU3mPayload } from '@/types'
 import { U3M_STATUS } from '@/utils/constants'
-import { downloadDataURLFile } from '@frontier/utils'
+import { downloadDataURLFile } from '@frontier/lib'
 import { useModalStore } from '@/stores/modal'
 import { U3M_PROVIDER, U3M_DOWNLOAD_PROP } from '@/utils/constants'
 import { FTabs } from '@frontier/ui-component'

@@ -30,7 +30,7 @@ import type { MaterialCustomU3m, MaterialU3m } from '@frontier/platform-web-sdk'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import useLogSender from '@/composables/useLogSender'
-import { downloadDataURLFile } from '@frontier/utils'
+import { downloadDataURLFile } from '@frontier/lib'
 import type { DownloadU3mPayload } from '@/types'
 
 const props = withDefaults(

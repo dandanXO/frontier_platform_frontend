@@ -35,8 +35,8 @@ modal-behavior(
 
 <script setup>
 import { computed, reactive, ref, toRaw, watch } from 'vue'
-import { inputValidator } from '@frontier/utils'
-import { copyText } from '@frontier/utils'
+import { inputValidator } from '@frontier/lib'
+import { copyText } from '@frontier/lib'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'

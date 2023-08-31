@@ -54,7 +54,7 @@ import InputLabelColor from '@/components/management/InputLabelColor.vue'
 import { useI18n } from 'vue-i18n'
 import { NOTIFY_TYPE } from '@/utils/constants'
 import { useNotifyStore } from '@/stores/notify'
-import { copyText } from '@frontier/utils'
+import { copyText } from '@frontier/lib'
 
 export default {
   name: 'GroupAbout',

@@ -73,7 +73,7 @@ div(
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { toStandardFormat } from '@frontier/utils'
+import { toStandardFormat } from '@frontier/lib'
 
 const store = useStore()
 

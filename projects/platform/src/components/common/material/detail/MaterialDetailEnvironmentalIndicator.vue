@@ -170,7 +170,7 @@ import {
   useConstants,
 } from '@/utils/constants'
 import useReceivedShare from '@/composables/useReceivedShare'
-import { toStandardFormat } from '@frontier/utils'
+import { toStandardFormat } from '@frontier/lib'
 
 const router = useRouter()
 const route = useRoute()

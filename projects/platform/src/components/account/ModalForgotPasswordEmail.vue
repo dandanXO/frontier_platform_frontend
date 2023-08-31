@@ -28,7 +28,7 @@ modal-behavior(
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { inputValidator } from '@frontier/utils'
+import { inputValidator } from '@frontier/lib'
 
 const { t } = useI18n()
 const store = useStore()

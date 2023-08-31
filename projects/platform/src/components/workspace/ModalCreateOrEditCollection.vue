@@ -54,7 +54,7 @@ modal-behavior(
 import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
-import { previewFile } from '@frontier/utils'
+import { previewFile } from '@frontier/lib'
 import { useI18n } from 'vue-i18n'
 import {
   CREATE_EDIT,

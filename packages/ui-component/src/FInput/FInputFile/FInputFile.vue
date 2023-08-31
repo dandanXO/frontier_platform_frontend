@@ -23,7 +23,7 @@ export default {
 
 <script setup>
 import { computed } from 'vue'
-import { FileOperator, bytesToSize } from '@frontier/utils'
+import { FileOperator, bytesToSize } from '@frontier/lib'
 const props = defineProps({
   /**
    * inherit from `FInputText.vue`

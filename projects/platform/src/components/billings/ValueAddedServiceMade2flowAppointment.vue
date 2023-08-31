@@ -95,7 +95,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { computed, reactive, ref, watch } from 'vue'
-import { FileOperator, bytesToSize } from '@frontier/utils'
+import { FileOperator, bytesToSize } from '@frontier/lib'
 import { UPLOAD_ERROR_CODE, NOTIFY_TYPE } from '@/utils/constants'
 
 const { t } = useI18n()

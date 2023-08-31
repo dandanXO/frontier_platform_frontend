@@ -146,7 +146,7 @@ import { ref, computed, reactive, watch } from 'vue'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 import type { ProgressU3mItem, Material } from '@frontier/platform-web-sdk'
 import { ProgressU3mSort } from '@frontier/platform-web-sdk'
-import { toStandardFormat } from '@frontier/utils'
+import { toStandardFormat } from '@frontier/lib'
 import { U3M_PROVIDER } from '@/utils/constants'
 
 const ERROR_MSG = {

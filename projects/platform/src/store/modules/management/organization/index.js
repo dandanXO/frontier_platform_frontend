@@ -3,7 +3,7 @@ import orgUser from '@/store/modules/management/organization/orgUser.js'
 import putBinaryData from '@/utils/put-binary-data'
 import { SIGNUP_SOURCE } from '@/utils/constants'
 import axios from '@/apis'
-import { toYYYYMMDDFormat } from '@frontier/utils'
+import { toYYYYMMDDFormat } from '@frontier/lib'
 
 export default {
   namespaced: true,

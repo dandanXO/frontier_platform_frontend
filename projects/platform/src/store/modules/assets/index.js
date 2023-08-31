@@ -1,5 +1,5 @@
 import assetsApi from '@/apis/assets'
-import { downloadBase64File } from '@frontier/utils'
+import { downloadBase64File } from '@frontier/lib'
 import {
   OG_TYPE,
   INVENTORY_UNIT,

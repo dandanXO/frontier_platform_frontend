@@ -53,7 +53,7 @@ import { SHARING_FROM } from '@/utils/constants'
 import DropdownLocale from '@/components/common/DropdownLocale.vue'
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
 import StickerDrawerForLogin from '@/components/sticker/StickerDrawerForLogin.vue'
-import { toYYYYMMDDFormat } from '@frontier/utils'
+import { toYYYYMMDDFormat } from '@frontier/lib'
 
 const store = useStore()
 const { saveReceivedShare } = useReceivedShare()

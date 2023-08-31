@@ -1,30 +1,3 @@
-import sphereModel from '../assets/models/sphere/scene.glb'
-import sphereCoverImg from '../assets/models/sphere/cover.jpg'
-
-import tshirtModel from '../assets/models/tshirt/scene.glb'
-import tshirtCoverImg from '../assets/models/tshirt/cover.jpg'
-
-import shirtModel from '../assets/models/shirt/scene.glb'
-import shirtCoverImg from '../assets/models/shirt/cover.jpg'
-
-import jacketModel from '../assets/models/jacket/scene.glb'
-import jacketCoverImg from '../assets/models/jacket/cover.jpg'
-
-import pantsModel from '../assets/models/pants/scene.glb'
-import pantsCoverImg from '../assets/models/pants/cover.jpg'
-
-import dressModel from '../assets/models/dress/scene.glb'
-import dressCoverImg from '../assets/models/dress/cover.jpg'
-
-import leggingsModel from '../assets/models/leggings/scene.glb'
-import leggingsCoverImg from '../assets/models/leggings/cover.jpg'
-
-import backpackModel from '../assets/models/backpack/scene.glb'
-import backpackCoverImg from '../assets/models/backpack/cover.jpg'
-
-import shoeModel from '../assets/models/shoe/scene.glb'
-import shoeCoverImg from '../assets/models/shoe/cover.jpg'
-
 export interface Model {
   name: string
   filePath: string
@@ -32,60 +5,64 @@ export interface Model {
   size: number
 }
 
+const baseUrl = `${
+  import.meta.env.VITE_APP_WEB_URL
+}/static-data/3d-viewer/models/`
+
 // Size and flipY properties are magic. Don't touch.
 const MODELS: Model[] = [
   {
     name: 'sphere',
-    filePath: sphereModel,
-    coverImg: sphereCoverImg,
+    filePath: baseUrl + 'sphere/scene.glb',
+    coverImg: baseUrl + 'sphere/cover.jpg',
     size: 108,
   },
   {
     name: 'tshirt',
-    filePath: tshirtModel,
-    coverImg: tshirtCoverImg,
+    filePath: baseUrl + 'tshirt/scene.glb',
+    coverImg: baseUrl + 'tshirt/cover.jpg',
     size: 80,
   },
   {
     name: 'shirt',
-    filePath: shirtModel,
-    coverImg: shirtCoverImg,
+    filePath: baseUrl + 'shirt/scene.glb',
+    coverImg: baseUrl + 'shirt/cover.jpg',
     size: 108,
   },
   {
     name: 'jacket',
-    filePath: jacketModel,
-    coverImg: jacketCoverImg,
+    filePath: baseUrl + 'jacket/scene.glb',
+    coverImg: baseUrl + 'jacket/cover.jpg',
     size: 140,
   },
   {
     name: 'pants',
-    filePath: pantsModel,
-    coverImg: pantsCoverImg,
+    filePath: baseUrl + 'pants/scene.glb',
+    coverImg: baseUrl + 'pants/cover.jpg',
     size: 130,
   },
   {
     name: 'dress',
-    filePath: dressModel,
-    coverImg: dressCoverImg,
+    filePath: baseUrl + 'dress/scene.glb',
+    coverImg: baseUrl + 'dress/cover.jpg',
     size: 20,
   },
   {
     name: 'leggins',
-    filePath: leggingsModel,
-    coverImg: leggingsCoverImg,
+    filePath: baseUrl + 'leggings/scene.glb',
+    coverImg: baseUrl + 'leggings/cover.jpg',
     size: 200,
   },
   {
     name: 'backpack',
-    filePath: backpackModel,
-    coverImg: backpackCoverImg,
+    filePath: baseUrl + 'backpack/scene.glb',
+    coverImg: baseUrl,
     size: 5,
   },
   {
     name: 'shoe',
-    filePath: shoeModel,
-    coverImg: shoeCoverImg,
+    filePath: baseUrl + 'shoe/scene.glb',
+    coverImg: baseUrl + 'shoe/cover.jpg',
     size: 30,
   },
 ]

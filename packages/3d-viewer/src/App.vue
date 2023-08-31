@@ -10,8 +10,8 @@ model-editor(
 </template>
 
 <script setup lang="ts">
-import ModelEditor from './components/ModelEditor.vue'
-import materialResponse from './mock/materialResponse.json'
+import ModelEditor from '@/components/ModelEditor.vue'
+import materialResponse from '@/mock/materialResponse.json'
 
 const u3m = materialResponse.material.u3m
 </script>

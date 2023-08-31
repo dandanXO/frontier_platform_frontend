@@ -39,7 +39,7 @@ div(class="relative")
 import { ref, computed, watch } from 'vue'
 import html2canvas from 'html2canvas'
 import CroppedImage from '@/components/common/cropper/CroppedImage.vue'
-import { dataUrlToBlob } from '@frontier/utils'
+import { dataUrlToBlob } from '@frontier/lib'
 import tempFilenameGenerator from '@/utils/temp-filename-generator'
 import { THEME } from '@/utils/constants'
 

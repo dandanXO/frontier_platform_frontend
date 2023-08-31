@@ -100,7 +100,7 @@ modal-behavior(
 <script setup>
 import { reactive, computed, ref } from 'vue'
 import { useStore } from 'vuex'
-import { FileOperator, bytesToSize, previewFile } from '@frontier/utils'
+import { FileOperator, bytesToSize, previewFile } from '@frontier/lib'
 import { CREATE_EDIT } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation.js'
 

@@ -1,11 +1,11 @@
 import { onMounted, onUnmounted, ref, toRaw } from 'vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { downloadDataURLFile } from '@frontier/utils'
+import { downloadDataURLFile } from '@frontier/lib'
 
 THREE.ColorManagement.enabled = true
 
-export default function useScene(baseUrl: string) {
+export default function useScene() {
   const container = ref<HTMLElement>()
   const canvas = ref<HTMLCanvasElement>()
   const scene = ref<THREE.Scene>()
@@ -38,7 +38,7 @@ export default function useScene(baseUrl: string) {
     renderer.outputEncoding = THREE.sRGBEncoding
 
     const groundTexture = new THREE.TextureLoader().load(
-      `${baseUrl}/retina_wood.png`
+      `${import.meta.env.VITE_APP_WEB_URL}/static-data/3d-viewer/ground.png`
     )
     groundTexture.wrapS = THREE.RepeatWrapping
     groundTexture.wrapT = THREE.RepeatWrapping
