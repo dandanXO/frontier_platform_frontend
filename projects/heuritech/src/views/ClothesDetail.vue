@@ -54,7 +54,7 @@ div(class="pt-5 pl-10 pr-3 flex gap-x-5")
           class="h-full flex items-center justify-center"
         )
           p Not result found, Try another keyword !
-        div(v-else class="grid grid-cols-3 xl:grid-cols-5 gap-y-1 gap-x-3 mr-3")
+        div(v-else class="grid grid-cols-3 md:grid-cols-5 gap-y-1 gap-x-3 mr-3")
           div(v-for="material in materialList" :key="material.frontierNo")
             div(
               class="aspect-square rounded shadow-2 border border-grey-200 cursor-pointer"

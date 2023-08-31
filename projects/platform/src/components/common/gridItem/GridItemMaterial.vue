@@ -16,19 +16,19 @@ grid-item-wrapper(
       img(v-defaultImg :src="material.coverImg" class="w-full h-full")
   template(#hover-content)
     div(
-      class="text-grey-0 p-2 xl:px-7.5 xl:py-10 w-full h-full flex flex-col items-center justify-center text-center"
+      class="text-grey-0 p-2 md:px-7.5 md:py-10 w-full h-full flex flex-col items-center justify-center text-center"
       @click="onClick($event)"
     )
-      p(class="text-caption2 xl:text-body2/1.6 font-bold line-clamp-1 xl:line-clamp-2") {{ material.description }}
+      p(class="text-caption2 md:text-body2/1.6 font-bold line-clamp-1 md:line-clamp-2") {{ material.description }}
       p(
-        class="text-caption2 xl:text-caption/1.6 line-clamp-1 xl:line-clamp-2 break-all"
+        class="text-caption2 md:text-caption/1.6 line-clamp-1 md:line-clamp-2 break-all"
       ) {{ material.content }}
-      p(class="text-caption2 xl:text-caption/1.6 line-clamp-1")
+      p(class="text-caption2 md:text-caption/1.6 line-clamp-1")
         span {{ materialInfo.yarn.value }}
         span(class="px-1") {{ materialInfo.density.value }}
         span {{ materialInfo.width.value }}
-      p(class="text-caption2 xl:text-caption/1.6 line-clamp-1 xl:line-clamp-2") {{ material.finish }}
-      p(class="text-caption2 xl:text-caption/1.6 line-clamp-1") {{ materialInfo.weight.value }}
+      p(class="text-caption2 md:text-caption/1.6 line-clamp-1 md:line-clamp-2") {{ material.finish }}
+      p(class="text-caption2 md:text-caption/1.6 line-clamp-1") {{ materialInfo.weight.value }}
   template(#corner-top-right="{ isHover }")
     slot(name="corner-top-right")
       digital-thread-entrance(

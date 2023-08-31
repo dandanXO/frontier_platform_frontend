@@ -46,18 +46,18 @@ div(
             ) displacement
       div(
         v-show="canScrollLeft"
-        class="absolute -left-3 xl:left-0 top-1/2 transform -translate-y-1/2 w-8 xl:w-12.5 h-20 cursor-pointer"
+        class="absolute -left-3 md:left-0 top-1/2 transform -translate-y-1/2 w-8 md:w-12.5 h-20 cursor-pointer"
         :style="{ background: 'linear-gradient(90deg, #262626 0%, rgba(38, 38, 38, 0) 100%)' }"
         @click="scrollLeft"
       )
         f-svg-icon(
           iconName="keyboard_arrow_left"
           size="24"
-          class="absolute xl:left-5 top-7 text-grey-150"
+          class="absolute md:left-5 top-7 text-grey-150"
         )
       div(
         v-show="canScrollRight"
-        class="absolute -right-3 xl:right-0 top-1/2 transform -translate-y-1/2 w-8 xl:w-25 h-20 cursor-pointer"
+        class="absolute -right-3 md:right-0 top-1/2 transform -translate-y-1/2 w-8 md:w-25 h-20 cursor-pointer"
         :style="{ background: 'linear-gradient(270deg, #262626 0%, rgba(38, 38, 38, 0) 100%)' }"
         @click="scrollRight"
       )

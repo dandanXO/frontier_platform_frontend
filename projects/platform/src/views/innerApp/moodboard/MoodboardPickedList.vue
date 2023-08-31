@@ -48,7 +48,7 @@ div(class="h-full")
         )
     div(
       v-else-if="displayMode === DISPLAY_NODE.GRID"
-      class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
+      class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
     )
       grid-item-node(
         v-for="node in moodboardOfferNodeCollection.childNodeList"

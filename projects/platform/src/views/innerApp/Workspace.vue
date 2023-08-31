@@ -31,7 +31,7 @@ search-table(
     p(class="mx-7.5 mb-7.5 text-caption text-grey-600") {{ $t('FF0002') }}: {{ toYYYYMMDDFormat(collection.createDate) }}
   template(#default="{ inSearch, goTo }")
     div(
-      class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
+      class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
     )
       div(
         class="aspect-square border border-grey-250 border-dashed rounded-md flex justify-center items-center cursor-pointer"

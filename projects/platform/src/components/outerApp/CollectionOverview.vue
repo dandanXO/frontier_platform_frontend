@@ -1,23 +1,23 @@
 <template lang="pug">
 div(
   v-if="collection.description || collection.trendBoardCoverImg"
-  class="px-7.5 pb-4 xl:pb-8 pt-1.5"
+  class="px-7.5 pb-4 md:pb-8 pt-1.5"
 )
   f-expansion-panel(
     class="shadow-2 rounded border border-grey-150 overflow-hidden bg-transparent"
   )
     template(#trigger="{ isExpand }")
       div(
-        class="group w-full h-14 flex items-center gap-x-2 xl:gap-x-6 px-3 xl:px-7 cursor-pointer"
+        class="group w-full h-14 flex items-center gap-x-2 md:gap-x-6 px-3 md:px-7 cursor-pointer"
         :class="[isExpand ? 'bg-grey-50 hover:bg-grey-150 active:bg-grey-50' : 'bg-grey-0 hover:bg-grey-100 active:bg-grey-150']"
       )
-        h5(class="text-body2 xl:text-body1 text-grey-900 font-bold cursor-pointer") {{ $t('RR0246') }}
+        h5(class="text-body2 md:text-body1 text-grey-900 font-bold cursor-pointer") {{ $t('RR0246') }}
         span(
           v-if="collection.description && !isExpand"
-          class="max-w-100 line-clamp-1 text-grey-300 text-caption xl:text-body2"
+          class="max-w-100 line-clamp-1 text-grey-300 text-caption md:text-body2"
         ) {{ collection.description }}
         span(
-          class="text-caption xl:text-body2 flex-grow whitespace-nowrap"
+          class="text-caption md:text-body2 flex-grow whitespace-nowrap"
           :class="[isExpand ? 'text-grey-400 invisible group-hover:visible' : 'text-primary-400']"
         ) {{ isExpand ? 'Show less' : 'Show more' }}
         div(
@@ -27,9 +27,9 @@ div(
           f-svg-icon(iconName="close" size="24" class="transform text-grey-600")
     template(#content)
       div(
-        class="w-full xl:h-81 bg-grey-50 p-3 xl:py-6 xl:px-7 flex justify-between flex-col xl:flex-row"
+        class="w-full md:h-81 bg-grey-50 p-3 md:py-6 md:px-7 flex justify-between flex-col md:flex-row"
       )
-        div(class="w-full xl:w-155.5 xl:h-full pb-3 xl:pb-0")
+        div(class="w-full md:w-155.5 md:h-full pb-3 md:pb-0")
           f-scrollbar-container(
             v-if="collection.description && largerThenLg"
             :sizeAutoCapable="false"

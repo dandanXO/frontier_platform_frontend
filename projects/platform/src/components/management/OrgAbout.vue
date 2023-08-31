@@ -1,7 +1,7 @@
 <template lang="pug">
-div(class="pt-16 xl:pt-17.5")
+div(class="pt-16 md:pt-17.5")
   div(class="flex justify-center")
-    div(class="w-40 mr-11 xl:mr-15")
+    div(class="w-40 mr-11 md:mr-15")
       div(class="flex flex-col items-center")
         div(class="relative")
           f-avatar(:imageUrl="logo" size="4xl" type="org")
@@ -36,7 +36,7 @@ div(class="pt-16 xl:pt-17.5")
       p(
         class="absolute text-caption text-grey-250 right-0 -top-7 transform -translate-y-full"
       ) *{{ $t('RR0163') }}
-      div(class="grid grid-cols-2 grid-rows-3 gap-y-7.5 gap-x-8 xl:gap-x-15")
+      div(class="grid grid-cols-2 grid-rows-3 gap-y-7.5 gap-x-8 md:gap-x-15")
         div(class="flex gap-x-2 items-end")
           f-input-text(
             v-model:textValue="orgFormData.orgName"

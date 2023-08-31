@@ -17,15 +17,15 @@ fullscreen-header
     template(v-if="share.sharingFrom === SHARING_FROM.WORKSPACE")
       f-avatar(:imageUrl="logo" type="org" size="lg")
       div(class="flex items-end pl-2")
-        p(class="text-caption xl:text-body1 font-bold text-grey-900 pr-2.5") {{ share.displayName }}
+        p(class="text-caption md:text-body1 font-bold text-grey-900 pr-2.5") {{ share.displayName }}
         p(class="text-caption text-grey-600") {{ $t('RR0148') }} {{ toYYYYMMDDFormat(share.shareDate) }}
     template(v-else-if="share.sharingFrom === SHARING_FROM.PUBLIC_LIBRARY")
-      p(class="text-caption2 xl:text-body1 font-bold text-grey-900 pr-2.5") {{ $t('GG0032') }}
+      p(class="text-caption2 md:text-body1 font-bold text-grey-900 pr-2.5") {{ $t('GG0032') }}
       f-avatar(:imageUrl="logo" type="org" size="lg")
-      p(class="text-caption2 xl:text-body1 font-bold text-grey-900 pl-2.5") {{ share.displayName }}
+      p(class="text-caption2 md:text-body1 font-bold text-grey-900 pl-2.5") {{ share.displayName }}
   template(#right)
     dropdown-locale
-    div(class="relative cursor-pointer mx-2 xl:mx-4" @click="openModalShareMessage")
+    div(class="relative cursor-pointer mx-2 md:mx-4" @click="openModalShareMessage")
       f-svg-icon(iconName="chat" size="24" class="text-grey-600")
       div(
         v-if="haveMsgAndFirstRead"

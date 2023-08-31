@@ -1,9 +1,9 @@
 <template lang="pug">
 div
-  div(class="flex flex-col xl:flex-row gap-y-5 xl:gap-x-10")
+  div(class="flex flex-col md:flex-row gap-y-5 md:gap-x-10")
     material-detail-preview-img(
       :material="material"
-      class="w-full xl:w-125 flex-shrink-0"
+      class="w-full md:w-125 flex-shrink-0"
     )
     div(class="flex flex-col gap-y-7.5 flex-grow")
       material-detail-specification(:material="material")
@@ -15,7 +15,7 @@ div
         :showStatusBlock="false"
         :downloadHandler="downloadU3m"
       )
-  div(class="pt-5 xl:pt-16 grid gap-y-7.5")
+  div(class="pt-5 md:pt-16 grid gap-y-7.5")
     div
       h5(class="text-h5 font-bold text-grey-900 pb-5") {{ $t('RR0133') }}
       div(class="flex flex-wrap gap-x-2 gap-y-3")
@@ -45,7 +45,7 @@ div
             f-tag(v-for="tag in material.certificateList" :key="tag") {{ tag.name }}
         div(v-if="attachmentSortedList.length > 0")
           p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('EE0130') }}
-          div(class="grid grid-cols-2 xl:flex xl:flex-wrap gap-5")
+          div(class="grid grid-cols-2 md:flex md:flex-wrap gap-5")
             attachment-item(
               v-for="(attachment, index) in attachmentSortedList"
               :key="`attachment-${index}`"

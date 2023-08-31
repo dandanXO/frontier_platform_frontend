@@ -8,7 +8,7 @@
   display: block;
   opacity: 1;
   transition: opacity 0.2s;
-  @apply border-grey-250 w-35 xl:w-75 h-35 xl:h-75 bg-grey-900 bg-no-repeat;
+  @apply border-grey-250 w-35 md:w-75 h-35 md:h-75 bg-grey-900 bg-no-repeat;
 }
 </style>
 
@@ -36,7 +36,7 @@ div
   div(class="grid grid-flow-col gap-x-2 justify-start")
     template(v-for="(image, index) in imageList" :key="`image-${index}`")
       div(
-        class="w-15 xl:w-19.5 h-15 xl:h-19.5 rounded overflow-hidden border-grey-250 bg-grey-100"
+        class="w-15 md:w-19.5 h-15 md:h-19.5 rounded overflow-hidden border-grey-250 bg-grey-100"
         :class="[currentDisplayIndex === index ? 'border-4' : 'border']"
         @click="currentDisplayIndex = index"
       )
@@ -46,16 +46,16 @@ div
     class="fixed w-screen h-full z-popper bg-grey-900 left-0 top-0 flex flex-col"
   )
     div(
-      class="shrink-0 w-full h-27.5 bg-grey-900 px-3 xl:px-10 flex items-center justify-between border-b border-grey-700"
+      class="shrink-0 w-full h-27.5 bg-grey-900 px-3 md:px-10 flex items-center justify-between border-b border-grey-700"
     )
-      div(class="flex items-center gap-x-1 xl:gap-x-4")
+      div(class="flex items-center gap-x-1 md:gap-x-4")
         f-svg-icon(iconName="zoom_in" size="24" class="text-grey-50")
-        p(class="text-grey-50 text-caption xl:text-body1 font-bold") {{ $t('EE0132') }}
+        p(class="text-grey-50 text-caption md:text-body1 font-bold") {{ $t('EE0132') }}
       div(class="grid grid-flow-col gap-x-2")
         template(v-for="(image, index) in imageList" :key="`image-${index}`")
           div(
             v-if="!(props.material.coverMode === COVER_MODE.SUP && index === defaultCoverImgIndex)"
-            class="w-15 xl:w-19.5 h-15 xl:h-19.5 rounded overflow-hidden bg-grey-100"
+            class="w-15 md:w-19.5 h-15 md:h-19.5 rounded overflow-hidden bg-grey-100"
             :class="[currentDisplayIndex === index ? 'border-4 border-primary-400' : 'border border-grey-700']"
             @click="currentDisplayIndex = index"
           )

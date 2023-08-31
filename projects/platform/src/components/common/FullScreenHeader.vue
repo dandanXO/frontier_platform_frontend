@@ -2,7 +2,7 @@
 div(class="fixed inset-0 pt-16 w-screen h-full bg-grey-0 overflow-y-auto")
   div(
     ref="root"
-    class="fixed inset-0 z-header w-screen h-16 bg-grey-0 px-5 xl:px-36 flex justify-between items-center transition duration-300 ease-in"
+    class="fixed inset-0 z-header w-screen h-16 bg-grey-0 px-5 md:px-36 flex justify-between items-center transition duration-300 ease-in"
     :class="{ 'shadow-4': isScrolling }"
   )
     div(class="flex items-center")

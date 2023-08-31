@@ -51,7 +51,7 @@ grid-item-wrapper(
           class="w-full h-full"
         )
   template(#hover-content)
-    p(class="text-caption2 xl:text-body1/1.6 font-bold text-grey-0") {{ $t('RR0068', { number: node.properties.itemCounts }) }}
+    p(class="text-caption2 md:text-body1/1.6 font-bold text-grey-0") {{ $t('RR0068', { number: node.properties.itemCounts }) }}
   template(#corner-top-right)
     slot(name="corner-top-right")
   template(#corner-bottom-left)

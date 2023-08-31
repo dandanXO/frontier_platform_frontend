@@ -1,10 +1,10 @@
 <template lang="pug">
 div(
-  class="w-full h-40 xl:w-97.5 xl:h-69 relative rounded bg-grey-250 flex items-center justify-center flex-shrink-0"
+  class="w-full h-40 md:w-97.5 md:h-69 relative rounded bg-grey-250 flex items-center justify-center flex-shrink-0"
 )
   div(
     v-if="trendBoardCoverImg"
-    class="rounded w-full h-full p-3 xl:px-7.5 xl:py-6 bg-grey-100"
+    class="rounded w-full h-full p-3 md:px-7.5 md:py-6 bg-grey-100"
   )
     div(
       class="w-full h-full bg-contain bg-no-repeat bg-center rounded bg-grey-0"

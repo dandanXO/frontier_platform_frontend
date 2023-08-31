@@ -8,14 +8,14 @@ div(class="flex flex-col")
     :disabled="!made2flowSubscribed"
     class="self-end"
   )
-  div(class="mt-2 xl:mb-10 relative")
+  div(class="mt-2 md:mb-10 relative")
     div(
-      class="px-2 xl:px-10 h-10 grid grid-cols-12 gap-x-6 items-center bg-grey-100 text-body2 text-grey-600"
+      class="px-2 md:px-10 h-10 grid grid-cols-12 gap-x-6 items-center bg-grey-100 text-body2 text-grey-600"
     )
-      p(class="col-start-4 col-span-3 text-caption2 xl:text-body2") {{ $t('RR0237') }}
-      p(class="col-span-2 text-caption2 xl:text-body2") {{ $t('RR0238') }}
-      p(class="col-span-2 text-caption2 xl:text-body2") {{ $t('RR0239') }}
-      p(class="col-span-2 text-caption2 xl:text-body2") {{ $t('RR0240') }}
+      p(class="col-start-4 col-span-3 text-caption2 md:text-body2") {{ $t('RR0237') }}
+      p(class="col-span-2 text-caption2 md:text-body2") {{ $t('RR0238') }}
+      p(class="col-span-2 text-caption2 md:text-body2") {{ $t('RR0239') }}
+      p(class="col-span-2 text-caption2 md:text-body2") {{ $t('RR0240') }}
 
     //- Mask
     div(
@@ -56,7 +56,7 @@ div(class="flex flex-col")
           :style="{ backgroundImage: `url(${maskFull})` }"
         )
           div(
-            class="w-5/6 mx-auto xl:w-full flex flex-col items-center justify-center w-full"
+            class="w-5/6 mx-auto md:w-full flex flex-col items-center justify-center w-full"
           )
             template(v-if="isInnerApp")
               f-svg-icon(iconName="subscribe" size="30" class="mb-3.5 text-grey-900")
@@ -78,7 +78,7 @@ div(class="flex flex-col")
               template(v-if="isReceivedShare")
                 f-svg-icon(iconName="login" size="30" class="mb-3.5 text-grey-900")
                 p(class="text-body2 leading-1.6 text-grey-900") {{ $t('VV0070') }}
-                p(class="mb-5 text-caption2 xl:text-caption text-grey-600 leading-1.6") {{ $t('VV0069') }}
+                p(class="mb-5 text-caption2 md:text-caption text-grey-600 leading-1.6") {{ $t('VV0069') }}
                 f-button(
                   size="md"
                   type="primary"
@@ -100,7 +100,7 @@ div(class="flex flex-col")
       div(
         v-for="property in carbonEmissionInfo"
         :key="property.title"
-        class="px-2 xl:px-10 py-4 grid grid-cols-12 gap-x-1 xl:gap-x-6 items-start"
+        class="px-2 md:px-10 py-4 grid grid-cols-12 gap-x-1 md:gap-x-6 items-start"
         :class="{ 'hover:bg-grey-100': made2flowSubscribed }"
       )
         div(
@@ -112,13 +112,13 @@ div(class="flex flex-col")
             size="32"
             class="!w-4 !h-4 !min-w-4 !min-h-4"
           )
-          p(class="text-caption2 xl:text-body2 font-bold") {{ property.title }}
+          p(class="text-caption2 md:text-body2 font-bold") {{ property.title }}
         div(class="col-span-7")
           div(class="h-9.5 grid grid-cols-7 gap-x-6")
-            div(class="col-span-3 flex items-center gap-x-1 xl:gap-x-2")
+            div(class="col-span-3 flex items-center gap-x-1 md:gap-x-2")
               template(v-if="property.personalized != null")
                 div(class="w-2 h-2 rounded-sm bg-primary-400 shrink-0")
-                p(class="text-caption2 xl:text-body2 text-grey-900") {{ property.personalized }} {{ property.unitLong }}
+                p(class="text-caption2 md:text-body2 text-grey-900") {{ property.personalized }} {{ property.unitLong }}
               hr(v-else class="w-4 border-grey-250")
             div(class="col-span-2 flex items-center gap-x-2")
               hr(class="w-4 border-grey-250")

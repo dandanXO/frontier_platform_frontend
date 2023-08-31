@@ -1,6 +1,6 @@
 <style lang="scss">
 #pagination-container {
-  @apply pb-20 xl:pb-30;
+  @apply pb-20 md:pb-30;
 }
 
 .v-enter-active {
@@ -25,7 +25,7 @@
 </style>
 
 <template lang="pug">
-div(class="w-full h-full flex flex-col items-center xl:pt-10")
+div(class="w-full h-full flex flex-col items-center md:pt-10")
   search-table(
     class="max-w-315"
     :searchType="SEARCH_TYPE.SHARE"
@@ -52,7 +52,7 @@ div(class="w-full h-full flex flex-col items-center xl:pt-10")
     template(#default="{ goTo }")
       div(
         v-if="nodeList.length > 0"
-        class="mx-7.5 grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 xl:gap-y-6.5 xl:gap-x-5 grid-flow-row auto-rows-auto content-start"
+        class="mx-7.5 grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-y-6.5 md:gap-x-5 grid-flow-row auto-rows-auto content-start"
       )
         grid-item-node(
           v-for="node in nodeList"

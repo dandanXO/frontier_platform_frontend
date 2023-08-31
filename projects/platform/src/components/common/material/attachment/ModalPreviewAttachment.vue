@@ -1,7 +1,7 @@
 <template lang="pug">
-div(class="w-90 xl:w-200")
+div(class="w-90 md:w-200")
   div(
-    class="relative h-80 xl:h-113 flex flex-col justify-center items-center"
+    class="relative h-80 md:h-113 flex flex-col justify-center items-center"
     :class="[extensionInfo[currentAttachment.extension].display === 'video' ? 'bg-grey-900' : 'bg-grey-100']"
   )
     img(
@@ -30,9 +30,9 @@ div(class="w-90 xl:w-200")
     )
       f-svg-icon(iconName="open_in_new" size="20" class="text-grey-900")
       p(class="text-body2 leading-1.6 text-grey-900 pl-1.5") {{ $t('DD0070') }}
-  div(class="h-16 xl:h-25 bg-grey-0 flex justify-between items-center px-4 xl:px-8")
+  div(class="h-16 md:h-25 bg-grey-0 flex justify-between items-center px-4 md:px-8")
     div(class="text-grey-900 flex items-center")
-      span(class="text-caption xl:text-h6/1.6 mr-5 line-clamp-1") {{ currentAttachment.displayFileName }}
+      span(class="text-caption md:text-h6/1.6 mr-5 line-clamp-1") {{ currentAttachment.displayFileName }}
       f-svg-icon(
         iconName="download"
         size="24"
@@ -46,7 +46,7 @@ div(class="w-90 xl:w-200")
         class="cursor-pointer"
         @click="getLast"
       )
-      span(class="text-grey-900 text-caption xl:text-h6 font-bold") {{ currentIndex + 1 }} / {{ attachmentList.length }}
+      span(class="text-grey-900 text-caption md:text-h6 font-bold") {{ currentIndex + 1 }} / {{ attachmentList.length }}
       f-svg-icon(
         iconName="keyboard_arrow_right"
         size="24"

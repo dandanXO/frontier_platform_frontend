@@ -52,7 +52,7 @@ search-table(
   template(#default="{ inSearch, goTo }")
     div(
       v-if="nodeList.length > 0"
-      class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
+      class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
     )
       grid-item-node(
         v-for="node in nodeList"

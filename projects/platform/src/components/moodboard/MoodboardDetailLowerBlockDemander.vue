@@ -90,7 +90,7 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
             f-svg-icon(iconName="loading" size="92" class="text-primary-400")
           div(
             v-else
-            class="grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start pb-2 overflow-y-auto hide-scrollbar"
+            class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 grid-flow-row auto-rows-auto content-start pb-2 overflow-y-auto hide-scrollbar"
             :class="[currentOfferId === 'all' ? 'h-166' : 'h-156']"
           )
             grid-item-node(
