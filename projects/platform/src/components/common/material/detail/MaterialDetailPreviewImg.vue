@@ -36,7 +36,7 @@ div
   div(class="grid grid-flow-col gap-x-2 justify-start")
     template(v-for="(image, index) in imageList" :key="`image-${index}`")
       div(
-        class="w-19.5 h-19.5 rounded overflow-hidden border-grey-250 bg-grey-100"
+        class="w-15 xl:w-19.5 h-15 xl:h-19.5 rounded overflow-hidden border-grey-250 bg-grey-100"
         :class="[currentDisplayIndex === index ? 'border-4' : 'border']"
         @click="currentDisplayIndex = index"
       )

@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="w-full h-full flex flex-col")
+div(class="w-full h-full flex flex-col" v-bind="$attrs")
   search-box(:searchType="searchType" @search="search")
   slot(name="header-above" :goTo="goTo")
   div(
@@ -76,9 +76,13 @@ multi-select-menu(
 import SearchBox from '@/components/common/SearchBox.vue'
 import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
 import { useStore } from 'vuex'
-import { ref, computed } from 'vue'
+import { ref, computed, defineOptions } from 'vue'
 import { useRoute } from 'vue-router'
 import { SEARCH_TYPE, CONTEXTUAL_MENU_MODE } from '@/utils/constants'
+
+defineOptions({
+  inheritAttrs: false,
+})
 
 const props = defineProps({
   searchType: {

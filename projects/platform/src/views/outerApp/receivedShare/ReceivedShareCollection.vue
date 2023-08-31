@@ -24,8 +24,9 @@
 </style>
 
 <template lang="pug">
-div(class="max-w-315 h-full mx-auto")
+div(class="w-full h-full flex flex-col items-center mx-auto")
   search-table(
+    class="max-w-315"
     :searchType="SEARCH_TYPE.SHARE"
     :optionSort="optionSort"
     :optionMultiSelect="optionMultiSelect"
