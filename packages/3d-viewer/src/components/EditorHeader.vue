@@ -7,9 +7,11 @@ div(
     f-svg-icon(iconName="3D_viewer" size="24")
     p(class="text-body1 font-bold") {{ $t('EE0029') }}
   div(class="flex flex-row gap-x-10" :class="{ 'flex-1 min-w-0': !largerThenLg }")
-    model-texture-tap-status(
-      :displayMode="displayMode"
-      @update:displayMode="handleDisplayModeChange"
+    f-input-tap(
+      :theme="THEME.DARK"
+      :optionList="displayModeOptionList"
+      :inputValue="displayMode"
+      @update:inputValue="(v) => handleDisplayModeChange(v)"
     )
     div(class="relative mx-auto min-w-0 items-center" :class="{ 'pr-10': largerThenMd }")
       div(ref="carousel" class="relative flex flex-row overflow-x-scroll hide-scrollbar")
@@ -76,11 +78,13 @@ div(
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
-import ModelTextureTapStatus from './ModelTextureTapStatus.vue'
 import { DISPLAY_MODE, TEXTURE_TYPE, THEME } from '../constants'
 import MODELS from '../constants/models'
 import type { Model } from '../constants/models'
 import { useBreakpoints } from '@frontier/lib'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 defineProps<{
   displayMode: number
@@ -139,6 +143,19 @@ const scrollRight = () => {
     behavior: 'smooth',
   })
 }
+
+const displayModeOptionList = [
+  {
+    label: t('UU0122'),
+    selectValue: DISPLAY_MODE.MODEL,
+    icon: '3D_material',
+  },
+  {
+    label: t('UU0123'),
+    selectValue: DISPLAY_MODE.TEXTURE,
+    icon: '2D_layer',
+  },
+]
 
 const handleDisplayModeChange = (v: number) => {
   scrollToInitial()

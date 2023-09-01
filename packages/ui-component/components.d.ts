@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     FTabs: typeof import('./src/FTabs/FTabs.vue').default
     FInputCheckbox: typeof import('./src/FInput/FInputCheckbox/FInputCheckbox.vue').default
     FInputSlider: typeof import('./src/FInput/FInputSlider/FInputSlider.vue').default
+    FInputTap: typeof import('./src/FInput/FInputTap/FInputTap.vue').default
   }
 }
 
