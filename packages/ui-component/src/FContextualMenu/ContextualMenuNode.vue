@@ -69,12 +69,12 @@ div(
         )
       div(
         :class="innerMenu.display"
-        class="w-full flex-grow items-center pr-2"
+        class="w-full flex-grow items-center pr-2 overflow-hidden"
         @mouseleave="hoverOn = null"
       )
         p(
           ref="refTitle"
-          class="text-body2 !leading-1.6 text-ellipsis overflow-hidden break-all"
+          class="text-body2 !leading-1.6 text-ellipsis overflow-hidden break-words"
           :class="[{ 'font-bold': innerMenu.description !== '' }, innerMenu.disabled ? 'text-grey-250' : 'text-grey-900', { '!text-grey-100': props.theme === 'dark' }]"
           :style="{ '-webkit-box-orient': 'vertical', '-webkit-line-clamp': innerMenu.titleLineClamp, display: '-webkit-box' }"
           @mouseenter="hoverOn = 'title'"
@@ -83,7 +83,7 @@ div(
           v-if="innerMenu.description"
           ref="refDescription"
           :class="[{ 'pl-2': innerMenu.display === DISPLAY.FLEX, 'pt-0.5': innerMenu.display === DISPLAY.BLOCK }, innerMenu.disabled ? 'text-grey-250' : 'text-grey-600']"
-          class="min-w-[40%] text-caption !leading-1.3 text-ellipsis overflow-hidden break-all"
+          class="min-w-[40%] text-caption !leading-1.3 text-ellipsis overflow-hidden break-words"
           :style="{ '-webkit-box-orient': 'vertical', '-webkit-line-clamp': innerMenu.descriptionLineClamp, display: '-webkit-box' }"
           @mouseenter="hoverOn = 'description'"
         ) {{ innerMenu.description }}
