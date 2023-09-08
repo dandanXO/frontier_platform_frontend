@@ -103,18 +103,6 @@ export interface AddOrgBookmarkRequest {
 export interface AssetFilter {
     /**
      * 
-     * @type {boolean}
-     * @memberof AssetFilter
-     */
-    'hasPrice'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof AssetFilter
-     */
-    'complete'?: AssetFilterCompleteEnum;
-    /**
-     * 
      * @type {string}
      * @memberof AssetFilter
      */
@@ -145,40 +133,40 @@ export interface AssetFilter {
     'width'?: FilterWidth;
     /**
      * 
-     * @type {FilterWeightGsm}
+     * @type {FilterWeight}
      * @memberof AssetFilter
      */
-    'weightGsm'?: FilterWeightGsm;
+    'weight'?: FilterWeight;
     /**
-     * 
+     * 梭織布種密度(經向)
      * @type {string}
      * @memberof AssetFilter
      */
-    'warpDensity'?: string;
+    'wovenWarpDensity'?: string | null;
     /**
-     * 
+     * 梭織布種密度(緯向)
      * @type {string}
      * @memberof AssetFilter
      */
-    'weftDensity'?: string;
+    'wovenWeftDensity'?: string | null;
     /**
-     * 
+     * 梭織布種紗支數(經向)
      * @type {string}
      * @memberof AssetFilter
      */
-    'wovenWarpYarnCount'?: string;
+    'wovenWarpYarnSize'?: string | null;
     /**
-     * 
+     * 梭織布種紗支數(緯向)
      * @type {string}
      * @memberof AssetFilter
      */
-    'wovenWeftYarnCount'?: string;
+    'wovenWeftYarnSize'?: string | null;
     /**
-     * 
+     * 針織布種紗支數
      * @type {string}
      * @memberof AssetFilter
      */
-    'knitYarnCount'?: string;
+    'knitYarnSize'?: string | null;
     /**
      * 
      * @type {Array<string>}
@@ -191,20 +179,249 @@ export interface AssetFilter {
      * @memberof AssetFilter
      */
     'inventory'?: FilterInventory;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AssetFilter
+     */
+    'hasPrice'?: boolean;
+    /**
+     * - \'1. 未加入工作區的\' - \'2. 已生成U3M\' - \'3. 待生成U3M (有掃描圖)\' - \'4. 沒有掃描圖 (無法生成3D)\' - \'5. 沒有任何圖 (包含掃描跟封面)\' - \'6. 沒有文字資訊 (沒有完整必填欄位)\' - \'7. 沒有填碳排認證資料\' 
+     * @type {number}
+     * @memberof AssetFilter
+     */
+    'complete'?: AssetFilterCompleteEnum;
 }
 
 export const AssetFilterCompleteEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_1: 1,
+    NUMBER_2: 2,
+    NUMBER_3: 3,
+    NUMBER_4: 4,
+    NUMBER_5: 5,
+    NUMBER_6: 6,
+    NUMBER_7: 7
 } as const;
 
 export type AssetFilterCompleteEnum = typeof AssetFilterCompleteEnum[keyof typeof AssetFilterCompleteEnum];
 
+/**
+ * 
+ * @export
+ * @interface AssetFilterAllOf
+ */
+export interface AssetFilterAllOf {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AssetFilterAllOf
+     */
+    'hasPrice'?: boolean;
+    /**
+     * - \'1. 未加入工作區的\' - \'2. 已生成U3M\' - \'3. 待生成U3M (有掃描圖)\' - \'4. 沒有掃描圖 (無法生成3D)\' - \'5. 沒有任何圖 (包含掃描跟封面)\' - \'6. 沒有文字資訊 (沒有完整必填欄位)\' - \'7. 沒有填碳排認證資料\' 
+     * @type {number}
+     * @memberof AssetFilterAllOf
+     */
+    'complete'?: AssetFilterAllOfCompleteEnum;
+}
+
+export const AssetFilterAllOfCompleteEnum = {
+    NUMBER_1: 1,
+    NUMBER_2: 2,
+    NUMBER_3: 3,
+    NUMBER_4: 4,
+    NUMBER_5: 5,
+    NUMBER_6: 6,
+    NUMBER_7: 7
+} as const;
+
+export type AssetFilterAllOfCompleteEnum = typeof AssetFilterAllOfCompleteEnum[keyof typeof AssetFilterAllOfCompleteEnum];
+
+/**
+ * 
+ * @export
+ * @interface AssetsMaterialAddToWorkspace200Response
+ */
+export interface AssetsMaterialAddToWorkspace200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AssetsMaterialAddToWorkspace200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetsMaterialAddToWorkspace200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {AssetsMaterialAddToWorkspace200ResponseAllOfResult}
+     * @memberof AssetsMaterialAddToWorkspace200Response
+     */
+    'result': AssetsMaterialAddToWorkspace200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof AssetsMaterialAddToWorkspace200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface AssetsMaterialAddToWorkspace200ResponseAllOf
+ */
+export interface AssetsMaterialAddToWorkspace200ResponseAllOf {
+    /**
+     * 
+     * @type {AssetsMaterialAddToWorkspace200ResponseAllOfResult}
+     * @memberof AssetsMaterialAddToWorkspace200ResponseAllOf
+     */
+    'result': AssetsMaterialAddToWorkspace200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface AssetsMaterialAddToWorkspace200ResponseAllOfResult
+ */
+export interface AssetsMaterialAddToWorkspace200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AssetsMaterialAddToWorkspace200ResponseAllOfResult
+     */
+    'failMaterialItemNoList': Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface AssetsMaterialAddToWorkspaceRequest
+ */
+export interface AssetsMaterialAddToWorkspaceRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof AssetsMaterialAddToWorkspaceRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof AssetsMaterialAddToWorkspaceRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof AssetsMaterialAddToWorkspaceRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof AssetsMaterialAddToWorkspaceRequest
+     */
+    'materialIdList': Array<number>;
+    /**
+     * 
+     * @type {Array<AssetsMaterialAddToWorkspaceRequestAllOfTargetWorkspaceNodeListInner>}
+     * @memberof AssetsMaterialAddToWorkspaceRequest
+     */
+    'targetWorkspaceNodeList': Array<AssetsMaterialAddToWorkspaceRequestAllOfTargetWorkspaceNodeListInner>;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface AssetsMaterialAddToWorkspaceRequestAllOf
+ */
+export interface AssetsMaterialAddToWorkspaceRequestAllOf {
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof AssetsMaterialAddToWorkspaceRequestAllOf
+     */
+    'materialIdList': Array<number>;
+    /**
+     * 
+     * @type {Array<AssetsMaterialAddToWorkspaceRequestAllOfTargetWorkspaceNodeListInner>}
+     * @memberof AssetsMaterialAddToWorkspaceRequestAllOf
+     */
+    'targetWorkspaceNodeList': Array<AssetsMaterialAddToWorkspaceRequestAllOfTargetWorkspaceNodeListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface AssetsMaterialAddToWorkspaceRequestAllOfTargetWorkspaceNodeListInner
+ */
+export interface AssetsMaterialAddToWorkspaceRequestAllOfTargetWorkspaceNodeListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof AssetsMaterialAddToWorkspaceRequestAllOfTargetWorkspaceNodeListInner
+     */
+    'id': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof AssetsMaterialAddToWorkspaceRequestAllOfTargetWorkspaceNodeListInner
+     */
+    'location': OgType;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface AttachmentFile
+ */
+export interface AttachmentFile {
+    /**
+     * 
+     * @type {number}
+     * @memberof AttachmentFile
+     */
+    'fileId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AttachmentFile
+     */
+    'fileName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AttachmentFile
+     */
+    'displayFileName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AttachmentFile
+     */
+    'originalUrl': string;
+    /**
+     * 非 image, pdf 時為 null
+     * @type {string}
+     * @memberof AttachmentFile
+     */
+    'displayUrl': string | null;
+    /**
+     * 非 image, pdf 時為 null
+     * @type {string}
+     * @memberof AttachmentFile
+     */
+    'thumbnailUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof AttachmentFile
+     */
+    'extension': string;
+}
 /**
  * 基礎書籤物件
  * @export
@@ -226,6 +443,140 @@ export interface BaseBookmark {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface BatchUploadAssetsMaterialList200Response
+ */
+export interface BatchUploadAssetsMaterialList200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BatchUploadAssetsMaterialList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof BatchUploadAssetsMaterialList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {BatchUploadAssetsMaterialList200ResponseAllOfResult}
+     * @memberof BatchUploadAssetsMaterialList200Response
+     */
+    'result': BatchUploadAssetsMaterialList200ResponseAllOfResult | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof BatchUploadAssetsMaterialList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface BatchUploadAssetsMaterialList200ResponseAllOf
+ */
+export interface BatchUploadAssetsMaterialList200ResponseAllOf {
+    /**
+     * 
+     * @type {BatchUploadAssetsMaterialList200ResponseAllOfResult}
+     * @memberof BatchUploadAssetsMaterialList200ResponseAllOf
+     */
+    'result': BatchUploadAssetsMaterialList200ResponseAllOfResult | null;
+}
+/**
+ * 
+ * @export
+ * @interface BatchUploadAssetsMaterialList200ResponseAllOfResult
+ */
+export interface BatchUploadAssetsMaterialList200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Array<BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner>}
+     * @memberof BatchUploadAssetsMaterialList200ResponseAllOfResult
+     */
+    'errorList': Array<BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner
+ */
+export interface BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner
+     */
+    'key': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner
+     */
+    'value': string;
+}
+/**
+ * 
+ * @export
+ * @interface BatchUploadAssetsMaterialListRequest
+ */
+export interface BatchUploadAssetsMaterialListRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof BatchUploadAssetsMaterialListRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof BatchUploadAssetsMaterialListRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof BatchUploadAssetsMaterialListRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof BatchUploadAssetsMaterialListRequest
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BatchUploadAssetsMaterialListRequest
+     */
+    'fileName': string;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface BatchUploadAssetsMaterialListRequestAllOf
+ */
+export interface BatchUploadAssetsMaterialListRequestAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof BatchUploadAssetsMaterialListRequestAllOf
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BatchUploadAssetsMaterialListRequestAllOf
+     */
+    'fileName': string;
+}
 /**
  * @type BookmarkListInner
  * @export
@@ -282,191 +633,106 @@ export type BreadcrumbListInnerWorkspaceNodeLocationEnum = typeof BreadcrumbList
 /**
  * 
  * @export
- * @interface CarbonEmission
+ * @interface CancelAssetsMaterialCustomU3mUploadRequest
  */
-export interface CarbonEmission {
+export interface CancelAssetsMaterialCustomU3mUploadRequest {
     /**
-     * 
-     * @type {CarbonEmissionCo2}
-     * @memberof CarbonEmission
-     */
-    'co2'?: CarbonEmissionCo2;
-    /**
-     * 
-     * @type {CarbonEmissionWater}
-     * @memberof CarbonEmission
-     */
-    'water'?: CarbonEmissionWater;
-    /**
-     * 
-     * @type {CarbonEmissionLand}
-     * @memberof CarbonEmission
-     */
-    'land'?: CarbonEmissionLand;
-    /**
-     * 
-     * @type {CarbonEmissionEnergy}
-     * @memberof CarbonEmission
-     */
-    'energy'?: CarbonEmissionEnergy;
-    /**
-     * M2F數據最後更新時間，若未有值則為null
+     * 組織ID
      * @type {number}
-     * @memberof CarbonEmission
+     * @memberof CancelAssetsMaterialCustomU3mUploadRequest
      */
-    'lastUpdateTime'?: number | null;
+    'orgId': number;
     /**
-     * 未有訂閱M2F加值服務時為NULL
-     * @type {number}
-     * @memberof CarbonEmission
+     * 
+     * @type {OgType}
+     * @memberof CancelAssetsMaterialCustomU3mUploadRequest
      */
-    'materialOwnerMade2FlowPlanType'?: CarbonEmissionMaterialOwnerMade2FlowPlanTypeEnum;
+    'ogType': OgType;
     /**
-     * 未有訂閱M2F加值服務時為NULL
+     * 單位(組織或團隊)ID
      * @type {number}
-     * @memberof CarbonEmission
+     * @memberof CancelAssetsMaterialCustomU3mUploadRequest
      */
-    'viewerMade2FlowPlanType'?: CarbonEmissionViewerMade2FlowPlanTypeEnum;
+    'ogId': number;
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof CancelAssetsMaterialCustomU3mUploadRequest
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CancelAssetsMaterialCustomU3mUploadRequest
+     */
+    'accessToken': string;
 }
 
-export const CarbonEmissionMaterialOwnerMade2FlowPlanTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type CarbonEmissionMaterialOwnerMade2FlowPlanTypeEnum = typeof CarbonEmissionMaterialOwnerMade2FlowPlanTypeEnum[keyof typeof CarbonEmissionMaterialOwnerMade2FlowPlanTypeEnum];
-export const CarbonEmissionViewerMade2FlowPlanTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type CarbonEmissionViewerMade2FlowPlanTypeEnum = typeof CarbonEmissionViewerMade2FlowPlanTypeEnum[keyof typeof CarbonEmissionViewerMade2FlowPlanTypeEnum];
 
 /**
  * 
  * @export
- * @interface CarbonEmissionCo2
+ * @interface CancelAssetsMaterialCustomU3mUploadRequestAllOf
  */
-export interface CarbonEmissionCo2 {
+export interface CancelAssetsMaterialCustomU3mUploadRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof CancelAssetsMaterialCustomU3mUploadRequestAllOf
+     */
+    'materialId': number;
     /**
      * 
-     * @type {number}
-     * @memberof CarbonEmissionCo2
+     * @type {string}
+     * @memberof CancelAssetsMaterialCustomU3mUploadRequestAllOf
      */
-    'benchmark'?: number;
-    /**
-     * 對應UI的Result
-     * @type {number}
-     * @memberof CarbonEmissionCo2
-     */
-    'personalized'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CarbonEmissionCo2
-     */
-    'differenceInPercent'?: number;
-    /**
-     * driven by car (km)
-     * @type {number}
-     * @memberof CarbonEmissionCo2
-     */
-    'saving'?: number;
+    'accessToken': string;
 }
 /**
  * 
  * @export
- * @interface CarbonEmissionEnergy
+ * @interface CancelMaterialUploadProgressRequest
  */
-export interface CarbonEmissionEnergy {
+export interface CancelMaterialUploadProgressRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof CancelMaterialUploadProgressRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof CancelMaterialUploadProgressRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof CancelMaterialUploadProgressRequest
+     */
+    'ogId': number;
     /**
      * 
      * @type {number}
-     * @memberof CarbonEmissionEnergy
+     * @memberof CancelMaterialUploadProgressRequest
      */
-    'benchmark'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CarbonEmissionEnergy
-     */
-    'personalized'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CarbonEmissionEnergy
-     */
-    'differenceInPercent'?: number;
-    /**
-     * Watching TV (hours)
-     * @type {number}
-     * @memberof CarbonEmissionEnergy
-     */
-    'saving'?: number;
+    'progressId': number;
 }
+
+
 /**
  * 
  * @export
- * @interface CarbonEmissionLand
+ * @interface CancelMaterialUploadProgressRequestAllOf
  */
-export interface CarbonEmissionLand {
+export interface CancelMaterialUploadProgressRequestAllOf {
     /**
      * 
      * @type {number}
-     * @memberof CarbonEmissionLand
+     * @memberof CancelMaterialUploadProgressRequestAllOf
      */
-    'benchmark'?: number;
-    /**
-     * 對應UI的Result
-     * @type {number}
-     * @memberof CarbonEmissionLand
-     */
-    'personalized'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CarbonEmissionLand
-     */
-    'differenceInPercent'?: number;
-    /**
-     * A4 paper
-     * @type {number}
-     * @memberof CarbonEmissionLand
-     */
-    'saving'?: number;
-}
-/**
- * 
- * @export
- * @interface CarbonEmissionWater
- */
-export interface CarbonEmissionWater {
-    /**
-     * 
-     * @type {number}
-     * @memberof CarbonEmissionWater
-     */
-    'benchmark'?: number;
-    /**
-     * 對應UI的Result
-     * @type {number}
-     * @memberof CarbonEmissionWater
-     */
-    'personalized'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CarbonEmissionWater
-     */
-    'differenceInPercent'?: number;
-    /**
-     * days of drinking water (day)
-     * @type {number}
-     * @memberof CarbonEmissionWater
-     */
-    'saving'?: number;
+    'progressId': number;
 }
 /**
  * 
@@ -492,6 +758,128 @@ export interface ChangeDigitalThreadWorkflowStageRequest {
      * @memberof ChangeDigitalThreadWorkflowStageRequest
      */
     'workflowStageId'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface CheckAssetsMaterialListCloneQuota200Response
+ */
+export interface CheckAssetsMaterialListCloneQuota200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CheckAssetsMaterialListCloneQuota200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof CheckAssetsMaterialListCloneQuota200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {CheckAssetsMaterialListCloneQuota200ResponseAllOfResult}
+     * @memberof CheckAssetsMaterialListCloneQuota200Response
+     */
+    'result': CheckAssetsMaterialListCloneQuota200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof CheckAssetsMaterialListCloneQuota200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface CheckAssetsMaterialListCloneQuota200ResponseAllOf
+ */
+export interface CheckAssetsMaterialListCloneQuota200ResponseAllOf {
+    /**
+     * 
+     * @type {CheckAssetsMaterialListCloneQuota200ResponseAllOfResult}
+     * @memberof CheckAssetsMaterialListCloneQuota200ResponseAllOf
+     */
+    'result': CheckAssetsMaterialListCloneQuota200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface CheckAssetsMaterialListCloneQuota200ResponseAllOfResult
+ */
+export interface CheckAssetsMaterialListCloneQuota200ResponseAllOfResult {
+    /**
+     * 
+     * @type {CheckAssetsMaterialListCloneQuota200ResponseAllOfResultEstimatedQuota}
+     * @memberof CheckAssetsMaterialListCloneQuota200ResponseAllOfResult
+     */
+    'estimatedQuota': CheckAssetsMaterialListCloneQuota200ResponseAllOfResultEstimatedQuota;
+}
+/**
+ * 
+ * @export
+ * @interface CheckAssetsMaterialListCloneQuota200ResponseAllOfResultEstimatedQuota
+ */
+export interface CheckAssetsMaterialListCloneQuota200ResponseAllOfResultEstimatedQuota {
+    /**
+     * 
+     * @type {number}
+     * @memberof CheckAssetsMaterialListCloneQuota200ResponseAllOfResultEstimatedQuota
+     */
+    'u3m': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CheckAssetsMaterialListCloneQuota200ResponseAllOfResultEstimatedQuota
+     */
+    'material': number;
+}
+/**
+ * 
+ * @export
+ * @interface CheckAssetsMaterialListCloneQuotaRequest
+ */
+export interface CheckAssetsMaterialListCloneQuotaRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof CheckAssetsMaterialListCloneQuotaRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof CheckAssetsMaterialListCloneQuotaRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof CheckAssetsMaterialListCloneQuotaRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof CheckAssetsMaterialListCloneQuotaRequest
+     */
+    'materialIdList': Array<number>;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface CheckAssetsMaterialListCloneQuotaRequestAllOf
+ */
+export interface CheckAssetsMaterialListCloneQuotaRequestAllOf {
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof CheckAssetsMaterialListCloneQuotaRequestAllOf
+     */
+    'materialIdList': Array<number>;
 }
 /**
  * 
@@ -574,6 +962,75 @@ export interface CheckCanDeleteWorkflowStageRequest {
      * @memberof CheckCanDeleteWorkflowStageRequest
      */
     'workflowStageId': number;
+}
+/**
+ * 
+ * @export
+ * @interface CheckDeleteAssetsMaterialList200Response
+ */
+export interface CheckDeleteAssetsMaterialList200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CheckDeleteAssetsMaterialList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof CheckDeleteAssetsMaterialList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {CheckDeleteAssetsMaterialList200ResponseAllOfResult}
+     * @memberof CheckDeleteAssetsMaterialList200Response
+     */
+    'result': CheckDeleteAssetsMaterialList200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof CheckDeleteAssetsMaterialList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface CheckDeleteAssetsMaterialList200ResponseAllOf
+ */
+export interface CheckDeleteAssetsMaterialList200ResponseAllOf {
+    /**
+     * 
+     * @type {CheckDeleteAssetsMaterialList200ResponseAllOfResult}
+     * @memberof CheckDeleteAssetsMaterialList200ResponseAllOf
+     */
+    'result': CheckDeleteAssetsMaterialList200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface CheckDeleteAssetsMaterialList200ResponseAllOfResult
+ */
+export interface CheckDeleteAssetsMaterialList200ResponseAllOfResult {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CheckDeleteAssetsMaterialList200ResponseAllOfResult
+     */
+    'isOnGeneratingU3m': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CheckDeleteAssetsMaterialList200ResponseAllOfResult
+     */
+    'isOnExportingExcel': boolean;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CheckDeleteAssetsMaterialList200ResponseAllOfResult
+     */
+    'itemNoList': Array<string>;
 }
 /**
  * 
@@ -681,113 +1138,11 @@ export interface ChildMaterialListInner {
      */
     'workspaceNodeLocation'?: ChildMaterialListInnerWorkspaceNodeLocationEnum;
     /**
-     * 這個 material 是來自 org 或是 group 的 assets
-     * @type {number}
-     * @memberof ChildMaterialListInner
-     */
-    'sourceAssetLocation'?: ChildMaterialListInnerSourceAssetLocationEnum;
-    /**
      * 
-     * @type {number}
+     * @type {ChildMaterialListInnerMaterial}
      * @memberof ChildMaterialListInner
      */
-    'materialId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChildMaterialListInner
-     */
-    'materialNo'?: string;
-    /**
-     * 
-     * @type {OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerMainType}
-     * @memberof ChildMaterialListInner
-     */
-    'mainType'?: OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerMainType;
-    /**
-     * 
-     * @type {MaterialSubType}
-     * @memberof ChildMaterialListInner
-     */
-    'subType'?: MaterialSubType;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChildMaterialListInner
-     */
-    'content'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChildMaterialListInner
-     */
-    'description'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChildMaterialListInner
-     */
-    'finish'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof ChildMaterialListInner
-     */
-    'width'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ChildMaterialListInner
-     */
-    'weightOrThicknessUnit'?: ChildMaterialListInnerWeightOrThicknessUnitEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof ChildMaterialListInner
-     */
-    'weightGsmOrThickness'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ChildMaterialListInner
-     */
-    'weightOz'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ChildMaterialListInner
-     */
-    'weightGy'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChildMaterialListInner
-     */
-    'warpDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChildMaterialListInner
-     */
-    'weftDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChildMaterialListInner
-     */
-    'warpYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChildMaterialListInner
-     */
-    'weftYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChildMaterialListInner
-     */
-    'coverImg'?: string;
+    'material'?: ChildMaterialListInnerMaterial;
     /**
      * 
      * @type {boolean}
@@ -830,18 +1185,6 @@ export interface ChildMaterialListInner {
      * @memberof ChildMaterialListInner
      */
     'rank'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ChildMaterialListInner
-     */
-    'digitalThreadQty'?: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ChildMaterialListInner
-     */
-    'digitalThreadHasUnread'?: boolean;
 }
 
 export const ChildMaterialListInnerWorkspaceNodeLocationEnum = {
@@ -850,19 +1193,273 @@ export const ChildMaterialListInnerWorkspaceNodeLocationEnum = {
 } as const;
 
 export type ChildMaterialListInnerWorkspaceNodeLocationEnum = typeof ChildMaterialListInnerWorkspaceNodeLocationEnum[keyof typeof ChildMaterialListInnerWorkspaceNodeLocationEnum];
-export const ChildMaterialListInnerSourceAssetLocationEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
 
-export type ChildMaterialListInnerSourceAssetLocationEnum = typeof ChildMaterialListInnerSourceAssetLocationEnum[keyof typeof ChildMaterialListInnerSourceAssetLocationEnum];
-export const ChildMaterialListInnerWeightOrThicknessUnitEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
+/**
+ * 
+ * @export
+ * @interface ChildMaterialListInnerMaterial
+ */
+export interface ChildMaterialListInnerMaterial {
+    /**
+     * 布片ID
+     * @type {number}
+     * @memberof ChildMaterialListInnerMaterial
+     */
+    'materialId': number;
+    /**
+     * Item# 產品編號
+     * @type {string}
+     * @memberof ChildMaterialListInnerMaterial
+     */
+    'itemNo': string;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof ChildMaterialListInnerMaterial
+     */
+    'assetOgType': OgType;
+    /**
+     * 
+     * @type {ChildMaterialListInnerMaterialCoverImage}
+     * @memberof ChildMaterialListInnerMaterial
+     */
+    'coverImage': ChildMaterialListInnerMaterialCoverImage;
+    /**
+     * 
+     * @type {ChildMaterialListInnerMaterialFaceSide}
+     * @memberof ChildMaterialListInnerMaterial
+     */
+    'faceSide': ChildMaterialListInnerMaterialFaceSide;
+    /**
+     * 
+     * @type {ChildMaterialListInnerMaterialFaceSide}
+     * @memberof ChildMaterialListInnerMaterial
+     */
+    'backSide': ChildMaterialListInnerMaterialFaceSide;
+    /**
+     * 
+     * @type {ChildMaterialListInnerMaterialDigitalThreadInfo}
+     * @memberof ChildMaterialListInnerMaterial
+     */
+    'digitalThreadInfo': ChildMaterialListInnerMaterialDigitalThreadInfo;
+}
+/**
+ * 封面圖
+ * @export
+ * @interface ChildMaterialListInnerMaterialCoverImage
+ */
+export interface ChildMaterialListInnerMaterialCoverImage {
+    /**
+     * 
+     * @type {string}
+     * @memberof ChildMaterialListInnerMaterialCoverImage
+     */
+    'thumbnailUrl': string;
+}
+/**
+ * 
+ * @export
+ * @interface ChildMaterialListInnerMaterialDigitalThreadInfo
+ */
+export interface ChildMaterialListInnerMaterialDigitalThreadInfo {
+    /**
+     * 
+     * @type {number}
+     * @memberof ChildMaterialListInnerMaterialDigitalThreadInfo
+     */
+    'threadQty': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ChildMaterialListInnerMaterialDigitalThreadInfo
+     */
+    'hasUnreadThread': boolean;
+}
+/**
+ * 正面布資訊
+ * @export
+ * @interface ChildMaterialListInnerMaterialFaceSide
+ */
+export interface ChildMaterialListInnerMaterialFaceSide {
+    /**
+     * 是否為主要布面
+     * @type {boolean}
+     * @memberof ChildMaterialListInnerMaterialFaceSide
+     */
+    'isMainSide': boolean;
+    /**
+     * 
+     * @type {MaterialType}
+     * @memberof ChildMaterialListInnerMaterialFaceSide
+     */
+    'materialType': MaterialType;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialDescription>}
+     * @memberof ChildMaterialListInnerMaterialFaceSide
+     */
+    'descriptionList': Array<MaterialDescription>;
+    /**
+     * 
+     * @type {MaterialWidth}
+     * @memberof ChildMaterialListInnerMaterialFaceSide
+     */
+    'width': MaterialWidth;
+    /**
+     * 
+     * @type {Array<ChildMaterialListInnerMaterialFaceSideContentListInner>}
+     * @memberof ChildMaterialListInnerMaterialFaceSide
+     */
+    'contentList': Array<ChildMaterialListInnerMaterialFaceSideContentListInner>;
+    /**
+     * 
+     * @type {MaterialWeight}
+     * @memberof ChildMaterialListInnerMaterialFaceSide
+     */
+    'weight': MaterialWeight;
+    /**
+     * 
+     * @type {Array<MaterialFinish>}
+     * @memberof ChildMaterialListInnerMaterialFaceSide
+     */
+    'finishList': Array<MaterialFinish>;
+}
 
-export type ChildMaterialListInnerWeightOrThicknessUnitEnum = typeof ChildMaterialListInnerWeightOrThicknessUnitEnum[keyof typeof ChildMaterialListInnerWeightOrThicknessUnitEnum];
+
+/**
+ * 
+ * @export
+ * @interface ChildMaterialListInnerMaterialFaceSideContentListInner
+ */
+export interface ChildMaterialListInnerMaterialFaceSideContentListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof ChildMaterialListInnerMaterialFaceSideContentListInner
+     */
+    'contentId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChildMaterialListInnerMaterialFaceSideContentListInner
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ChildMaterialListInnerMaterialFaceSideContentListInner
+     */
+    'percentage'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface CloneAssetsMaterialListRequest
+ */
+export interface CloneAssetsMaterialListRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof CloneAssetsMaterialListRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof CloneAssetsMaterialListRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof CloneAssetsMaterialListRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof CloneAssetsMaterialListRequest
+     */
+    'materialIdList': Array<number>;
+    /**
+     * 
+     * @type {Array<CloneAssetsMaterialListRequestAllOfTargetLocationListInner>}
+     * @memberof CloneAssetsMaterialListRequest
+     */
+    'targetLocationList': Array<CloneAssetsMaterialListRequestAllOfTargetLocationListInner>;
+    /**
+     * 
+     * @type {CloneAssetsMaterialListRequestAllOfOptional}
+     * @memberof CloneAssetsMaterialListRequest
+     */
+    'optional': CloneAssetsMaterialListRequestAllOfOptional;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface CloneAssetsMaterialListRequestAllOf
+ */
+export interface CloneAssetsMaterialListRequestAllOf {
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof CloneAssetsMaterialListRequestAllOf
+     */
+    'materialIdList': Array<number>;
+    /**
+     * 
+     * @type {Array<CloneAssetsMaterialListRequestAllOfTargetLocationListInner>}
+     * @memberof CloneAssetsMaterialListRequestAllOf
+     */
+    'targetLocationList': Array<CloneAssetsMaterialListRequestAllOfTargetLocationListInner>;
+    /**
+     * 
+     * @type {CloneAssetsMaterialListRequestAllOfOptional}
+     * @memberof CloneAssetsMaterialListRequestAllOf
+     */
+    'optional': CloneAssetsMaterialListRequestAllOfOptional;
+}
+/**
+ * 
+ * @export
+ * @interface CloneAssetsMaterialListRequestAllOfOptional
+ */
+export interface CloneAssetsMaterialListRequestAllOfOptional {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CloneAssetsMaterialListRequestAllOfOptional
+     */
+    'u3m': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CloneAssetsMaterialListRequestAllOfOptional
+     */
+    'attachment': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface CloneAssetsMaterialListRequestAllOfTargetLocationListInner
+ */
+export interface CloneAssetsMaterialListRequestAllOfTargetLocationListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof CloneAssetsMaterialListRequestAllOfTargetLocationListInner
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof CloneAssetsMaterialListRequestAllOfTargetLocationListInner
+     */
+    'location'?: OgType;
+}
+
 
 /**
  * 
@@ -928,7 +1525,7 @@ export interface CodeCountryGet200ResponseResultCode {
  */
 export interface CodeCountryGet200ResponseResultCodeCountryListInner {
     /**
-     * 
+     * 國家代碼
      * @type {string}
      * @memberof CodeCountryGet200ResponseResultCodeCountryListInner
      */
@@ -1312,59 +1909,10 @@ export interface CodePantoneGet200ResponseResult {
 export interface CodePantoneGet200ResponseResultCode {
     /**
      * 
-     * @type {Array<CodePantoneGet200ResponseResultCodePantoneListInner>}
+     * @type {Array<PantoneColor>}
      * @memberof CodePantoneGet200ResponseResultCode
      */
-    'pantoneList'?: Array<CodePantoneGet200ResponseResultCodePantoneListInner>;
-}
-/**
- * 
- * @export
- * @interface CodePantoneGet200ResponseResultCodePantoneListInner
- */
-export interface CodePantoneGet200ResponseResultCodePantoneListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof CodePantoneGet200ResponseResultCodePantoneListInner
-     */
-    'pantoneId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodePantoneGet200ResponseResultCodePantoneListInner
-     */
-    'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodePantoneGet200ResponseResultCodePantoneListInner
-     */
-    'majorColorName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodePantoneGet200ResponseResultCodePantoneListInner
-     */
-    'colorName'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof CodePantoneGet200ResponseResultCodePantoneListInner
-     */
-    'r'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CodePantoneGet200ResponseResultCodePantoneListInner
-     */
-    'g'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CodePantoneGet200ResponseResultCodePantoneListInner
-     */
-    'b'?: number;
+    'pantoneList'?: Array<PantoneColor>;
 }
 /**
  * 
@@ -1713,6 +2261,188 @@ export type CollectionWorkspaceNodeLocationEnum = typeof CollectionWorkspaceNode
 /**
  * 
  * @export
+ * @interface Coordinate
+ */
+export interface Coordinate {
+    /**
+     * 
+     * @type {number}
+     * @memberof Coordinate
+     */
+    'x': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Coordinate
+     */
+    'y': number;
+}
+/**
+ * 1 (正面為封面) 2 (背面為封面) 3 (多媒體資料為封面)
+ * @export
+ * @enum {string}
+ */
+
+export const CoverMode = {
+    FACE: 1,
+    BACK: 2,
+    MULTI_MEDIA: 3
+} as const;
+
+export type CoverMode = typeof CoverMode[keyof typeof CoverMode];
+
+
+/**
+ * 
+ * @export
+ * @interface CreateAndEditAttachmentFile
+ */
+export interface CreateAndEditAttachmentFile {
+    /**
+     * S3上傳ID
+     * @type {string}
+     * @memberof CreateAndEditAttachmentFile
+     */
+    's3UploadId': string;
+    /**
+     * 原始檔案名稱
+     * @type {string}
+     * @memberof CreateAndEditAttachmentFile
+     */
+    'fileName': string;
+    /**
+     * 顯示檔案名稱
+     * @type {string}
+     * @memberof CreateAndEditAttachmentFile
+     */
+    'displayFileName': string;
+}
+/**
+ * 
+ * @export
+ * @interface CreateAssetsMaterialRequest
+ */
+export interface CreateAssetsMaterialRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'ogId': number;
+    /**
+     * 是否為雙面布
+     * @type {boolean}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'isDoubleSide': boolean;
+    /**
+     * 
+     * @type {MaterialSideType}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'sideType': MaterialSideType | null;
+    /**
+     * 是否為複合布
+     * @type {boolean}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'isComposite': boolean;
+    /**
+     * 產品編號
+     * @type {string}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'itemNo': string;
+    /**
+     * 
+     * @type {MaterialPatternInfoCreate}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'patternInfo': MaterialPatternInfoCreate;
+    /**
+     * 
+     * @type {MaterialColorInfoCreate}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'colorInfo': MaterialColorInfoCreate;
+    /**
+     * 
+     * @type {MaterialSeasonInfoCreate}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'seasonInfo': MaterialSeasonInfoCreate;
+    /**
+     * 是否同步正反面布資訊
+     * @type {boolean}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'isAutoSyncFaceToBackSideInfo': boolean;
+    /**
+     * 
+     * @type {MaterialCreateFaceSide}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'faceSide': MaterialCreateFaceSide;
+    /**
+     * 
+     * @type {MaterialCreateMiddleSide}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'middleSide': MaterialCreateMiddleSide;
+    /**
+     * 
+     * @type {MaterialCreateBackSide}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'backSide': MaterialCreateBackSide;
+    /**
+     * 
+     * @type {MaterialCreateTagInfo}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'tagInfo': MaterialCreateTagInfo;
+    /**
+     * 
+     * @type {MaterialPriceInfo}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'priceInfo': MaterialPriceInfo;
+    /**
+     * 多媒體附件清單
+     * @type {Array<CreateMultimediaFile>}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'multimediaList': Array<CreateMultimediaFile> | null;
+    /**
+     * 
+     * @type {MaterialCreateInternalInfo}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'internalInfo': MaterialCreateInternalInfo | null;
+    /**
+     * 是否客製化U3M正在上傳中
+     * @type {boolean}
+     * @memberof CreateAssetsMaterialRequest
+     */
+    'hasCustomU3mUploading': boolean;
+}
+
+
+/**
+ * 
+ * @export
  * @interface CreateDownloadLogRequest
  */
 export interface CreateDownloadLogRequest {
@@ -1744,6 +2474,87 @@ export const CreateDownloadLogRequestCategoryEnum = {
 
 export type CreateDownloadLogRequestCategoryEnum = typeof CreateDownloadLogRequestCategoryEnum[keyof typeof CreateDownloadLogRequestCategoryEnum];
 
+/**
+ * 
+ * @export
+ * @interface CreateMultimediaFile
+ */
+export interface CreateMultimediaFile {
+    /**
+     * S3上傳ID
+     * @type {string}
+     * @memberof CreateMultimediaFile
+     */
+    's3UploadId': string;
+    /**
+     * 原始檔案名稱
+     * @type {string}
+     * @memberof CreateMultimediaFile
+     */
+    'fileName': string;
+    /**
+     * 顯示檔案名稱
+     * @type {string}
+     * @memberof CreateMultimediaFile
+     */
+    'displayFileName': string;
+    /**
+     * 是否為封面圖
+     * @type {boolean}
+     * @memberof CreateMultimediaFile
+     */
+    'isCover': boolean;
+    /**
+     * 
+     * @type {CreateMultimediaFileAllOfCroppedImage}
+     * @memberof CreateMultimediaFile
+     */
+    'croppedImage': CreateMultimediaFileAllOfCroppedImage | null;
+}
+/**
+ * 
+ * @export
+ * @interface CreateMultimediaFileAllOf
+ */
+export interface CreateMultimediaFileAllOf {
+    /**
+     * 是否為封面圖
+     * @type {boolean}
+     * @memberof CreateMultimediaFileAllOf
+     */
+    'isCover': boolean;
+    /**
+     * 
+     * @type {CreateMultimediaFileAllOfCroppedImage}
+     * @memberof CreateMultimediaFileAllOf
+     */
+    'croppedImage': CreateMultimediaFileAllOfCroppedImage | null;
+}
+/**
+ * 
+ * @export
+ * @interface CreateMultimediaFileAllOfCroppedImage
+ */
+export interface CreateMultimediaFileAllOfCroppedImage {
+    /**
+     * S3上傳ID
+     * @type {string}
+     * @memberof CreateMultimediaFileAllOfCroppedImage
+     */
+    's3UploadId': string;
+    /**
+     * 檔案名稱
+     * @type {string}
+     * @memberof CreateMultimediaFileAllOfCroppedImage
+     */
+    'fileName': string;
+    /**
+     * 
+     * @type {CropImageRecord}
+     * @memberof CreateMultimediaFileAllOfCroppedImage
+     */
+    'cropRecord': CropImageRecord;
+}
 /**
  * 
  * @export
@@ -1832,7 +2643,90 @@ export interface CreateWorkflowStageRequest {
 
 
 /**
- * 記錄正方形裁切圖片的參數
+ * 
+ * @export
+ * @interface CropAssetsMaterialMultimediaRequest
+ */
+export interface CropAssetsMaterialMultimediaRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof CropAssetsMaterialMultimediaRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof CropAssetsMaterialMultimediaRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof CropAssetsMaterialMultimediaRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CropAssetsMaterialMultimediaRequest
+     */
+    'fileId': string;
+    /**
+     * 
+     * @type {CropAssetsMaterialMultimediaRequestAllOfCroppedImage}
+     * @memberof CropAssetsMaterialMultimediaRequest
+     */
+    'croppedImage': CropAssetsMaterialMultimediaRequestAllOfCroppedImage | null;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface CropAssetsMaterialMultimediaRequestAllOf
+ */
+export interface CropAssetsMaterialMultimediaRequestAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof CropAssetsMaterialMultimediaRequestAllOf
+     */
+    'fileId': string;
+    /**
+     * 
+     * @type {CropAssetsMaterialMultimediaRequestAllOfCroppedImage}
+     * @memberof CropAssetsMaterialMultimediaRequestAllOf
+     */
+    'croppedImage': CropAssetsMaterialMultimediaRequestAllOfCroppedImage | null;
+}
+/**
+ * 
+ * @export
+ * @interface CropAssetsMaterialMultimediaRequestAllOfCroppedImage
+ */
+export interface CropAssetsMaterialMultimediaRequestAllOfCroppedImage {
+    /**
+     * 
+     * @type {string}
+     * @memberof CropAssetsMaterialMultimediaRequestAllOfCroppedImage
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CropAssetsMaterialMultimediaRequestAllOfCroppedImage
+     */
+    'fileName': string;
+    /**
+     * 
+     * @type {CropImageRecord}
+     * @memberof CropAssetsMaterialMultimediaRequestAllOfCroppedImage
+     */
+    'cropRecord': CropImageRecord;
+}
+/**
+ * 
  * @export
  * @interface CropImageRecord
  */
@@ -1842,26 +2736,63 @@ export interface CropImageRecord {
      * @type {number}
      * @memberof CropImageRecord
      */
-    'x'?: number;
+    'x': number;
     /**
      * 
      * @type {number}
      * @memberof CropImageRecord
      */
-    'y'?: number;
+    'y': number;
     /**
      * 
      * @type {number}
      * @memberof CropImageRecord
      */
-    'rotateDeg'?: number;
+    'rotateDeg': number;
     /**
      * 
      * @type {number}
      * @memberof CropImageRecord
      */
-    'scaleRatio'?: number;
+    'scaleRatio': number;
 }
+/**
+ * 記錄正方形裁切圖片的參數
+ * @export
+ * @interface CropImageRecordAllOf
+ */
+export interface CropImageRecordAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof CropImageRecordAllOf
+     */
+    'rotateDeg': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CropImageRecordAllOf
+     */
+    'scaleRatio': number;
+}
+/**
+ * 幣別
+ * @export
+ * @enum {string}
+ */
+
+export const CurrencyCode = {
+    USD: 'USD',
+    EUR: 'EUR',
+    CNY: 'CNY',
+    TWD: 'TWD',
+    JPY: 'JPY',
+    INR: 'INR'
+} as const;
+
+export type CurrencyCode = typeof CurrencyCode[keyof typeof CurrencyCode];
+
+
 /**
  * Dashboard資訊
  * @export
@@ -2039,10 +2970,10 @@ export interface DashboardFabricKeywordCounts {
 export interface DashboardFabricKeywordCountsLast3Month {
     /**
      * 搜尋關鍵字日期
-     * @type {Array}
+     * @type {Array<string>}
      * @memberof DashboardFabricKeywordCountsLast3Month
      */
-    'date': Array;
+    'date': Array<string>;
     /**
      * 搜尋關鍵字數量資訊
      * @type {Array<DashboardFabricKeywordCountsLastMonthDataInner>}
@@ -2058,10 +2989,10 @@ export interface DashboardFabricKeywordCountsLast3Month {
 export interface DashboardFabricKeywordCountsLastMonth {
     /**
      * 搜尋關鍵字日期
-     * @type {Array}
+     * @type {Array<string>}
      * @memberof DashboardFabricKeywordCountsLastMonth
      */
-    'date': Array;
+    'date': Array<string>;
     /**
      * 搜尋關鍵字數量資訊
      * @type {Array<DashboardFabricKeywordCountsLastMonthDataInner>}
@@ -2112,6 +3043,52 @@ export interface DashboardTextureCountsInner {
      * @memberof DashboardTextureCountsInner
      */
     'all': number;
+}
+/**
+ * 
+ * @export
+ * @interface DeleteAssetsMaterialListRequest
+ */
+export interface DeleteAssetsMaterialListRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof DeleteAssetsMaterialListRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof DeleteAssetsMaterialListRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof DeleteAssetsMaterialListRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof DeleteAssetsMaterialListRequest
+     */
+    'materialIdList': Array<number>;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface DeleteAssetsMaterialListRequestAllOf
+ */
+export interface DeleteAssetsMaterialListRequestAllOf {
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof DeleteAssetsMaterialListRequestAllOf
+     */
+    'materialIdList': Array<number>;
 }
 /**
  * 
@@ -3217,6 +4194,276 @@ export interface DigitalThreadUpdateDigitalThreadNamePostRequest {
     'digitalThreadName': string;
 }
 /**
+ * 
+ * @export
+ * @interface ExportAssetsMaterialExcel200Response
+ */
+export interface ExportAssetsMaterialExcel200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ExportAssetsMaterialExcel200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExportAssetsMaterialExcel200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {ExportAssetsMaterialExcel200ResponseAllOfResult}
+     * @memberof ExportAssetsMaterialExcel200Response
+     */
+    'result'?: ExportAssetsMaterialExcel200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof ExportAssetsMaterialExcel200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface ExportAssetsMaterialExcel200ResponseAllOf
+ */
+export interface ExportAssetsMaterialExcel200ResponseAllOf {
+    /**
+     * 
+     * @type {ExportAssetsMaterialExcel200ResponseAllOfResult}
+     * @memberof ExportAssetsMaterialExcel200ResponseAllOf
+     */
+    'result'?: ExportAssetsMaterialExcel200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface ExportAssetsMaterialExcel200ResponseAllOfResult
+ */
+export interface ExportAssetsMaterialExcel200ResponseAllOfResult {
+    /**
+     * 
+     * @type {string}
+     * @memberof ExportAssetsMaterialExcel200ResponseAllOfResult
+     */
+    'file'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExportAssetsMaterialExcel200ResponseAllOfResult
+     */
+    'fileName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExportAssetsMaterialExcel200ResponseAllOfResult
+     */
+    'extension'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ExportAssetsMaterialExcelRequest
+ */
+export interface ExportAssetsMaterialExcelRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof ExportAssetsMaterialExcelRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof ExportAssetsMaterialExcelRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof ExportAssetsMaterialExcelRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof ExportAssetsMaterialExcelRequest
+     */
+    'materialIdList': Array<number>;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface ExportAssetsMaterialExcelRequestAllOf
+ */
+export interface ExportAssetsMaterialExcelRequestAllOf {
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof ExportAssetsMaterialExcelRequestAllOf
+     */
+    'materialIdList': Array<number>;
+}
+/**
+ * 
+ * @export
+ * @interface ExternalFilter
+ */
+export interface ExternalFilter {
+    /**
+     * 
+     * @type {string}
+     * @memberof ExternalFilter
+     */
+    'category'?: string;
+    /**
+     * 
+     * @type {Array<FilterContentListInner>}
+     * @memberof ExternalFilter
+     */
+    'contentList'?: Array<FilterContentListInner>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExternalFilter
+     */
+    'pattern'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExternalFilter
+     */
+    'color'?: string;
+    /**
+     * 
+     * @type {FilterWidth}
+     * @memberof ExternalFilter
+     */
+    'width'?: FilterWidth;
+    /**
+     * 
+     * @type {FilterWeight}
+     * @memberof ExternalFilter
+     */
+    'weight'?: FilterWeight;
+    /**
+     * 梭織布種密度(經向)
+     * @type {string}
+     * @memberof ExternalFilter
+     */
+    'wovenWarpDensity'?: string | null;
+    /**
+     * 梭織布種密度(緯向)
+     * @type {string}
+     * @memberof ExternalFilter
+     */
+    'wovenWeftDensity'?: string | null;
+    /**
+     * 梭織布種紗支數(經向)
+     * @type {string}
+     * @memberof ExternalFilter
+     */
+    'wovenWarpYarnSize'?: string | null;
+    /**
+     * 梭織布種紗支數(緯向)
+     * @type {string}
+     * @memberof ExternalFilter
+     */
+    'wovenWeftYarnSize'?: string | null;
+    /**
+     * 針織布種紗支數
+     * @type {string}
+     * @memberof ExternalFilter
+     */
+    'knitYarnSize'?: string | null;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ExternalFilter
+     */
+    'finishList'?: Array<string>;
+    /**
+     * 
+     * @type {FilterInventory}
+     * @memberof ExternalFilter
+     */
+    'inventory'?: FilterInventory;
+    /**
+     * 
+     * @type {ExternalFilterAllOfPrice}
+     * @memberof ExternalFilter
+     */
+    'price'?: ExternalFilterAllOfPrice;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ExternalFilter
+     */
+    'hasU3M'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface ExternalFilterAllOf
+ */
+export interface ExternalFilterAllOf {
+    /**
+     * 
+     * @type {ExternalFilterAllOfPrice}
+     * @memberof ExternalFilterAllOf
+     */
+    'price'?: ExternalFilterAllOfPrice;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ExternalFilterAllOf
+     */
+    'hasU3M'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface ExternalFilterAllOfPrice
+ */
+export interface ExternalFilterAllOfPrice {
+    /**
+     * 
+     * @type {number}
+     * @memberof ExternalFilterAllOfPrice
+     */
+    'min': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ExternalFilterAllOfPrice
+     */
+    'max': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ExternalFilterAllOfPrice
+     */
+    'isInfinity': boolean;
+    /**
+     * 
+     * @type {CurrencyCode}
+     * @memberof ExternalFilterAllOfPrice
+     */
+    'currency'?: CurrencyCode;
+    /**
+     * 
+     * @type {MaterialQuantityUnit}
+     * @memberof ExternalFilterAllOfPrice
+     */
+    'unit'?: MaterialQuantityUnit;
+}
+
+
+/**
  * 功能列表Enum
  * @export
  * @enum {string}
@@ -3276,40 +4523,40 @@ export interface Filter {
     'width'?: FilterWidth;
     /**
      * 
-     * @type {FilterWeightGsm}
+     * @type {FilterWeight}
      * @memberof Filter
      */
-    'weightGsm'?: FilterWeightGsm;
+    'weight'?: FilterWeight;
     /**
-     * 
+     * 梭織布種密度(經向)
      * @type {string}
      * @memberof Filter
      */
-    'warpDensity'?: string;
+    'wovenWarpDensity'?: string | null;
     /**
-     * 
+     * 梭織布種密度(緯向)
      * @type {string}
      * @memberof Filter
      */
-    'weftDensity'?: string;
+    'wovenWeftDensity'?: string | null;
     /**
-     * 
+     * 梭織布種紗支數(經向)
      * @type {string}
      * @memberof Filter
      */
-    'wovenWarpYarnCount'?: string;
+    'wovenWarpYarnSize'?: string | null;
     /**
-     * 
+     * 梭織布種紗支數(緯向)
      * @type {string}
      * @memberof Filter
      */
-    'wovenWeftYarnCount'?: string;
+    'wovenWeftYarnSize'?: string | null;
     /**
-     * 
+     * 針織布種紗支數
      * @type {string}
      * @memberof Filter
      */
-    'knitYarnCount'?: string;
+    'knitYarnSize'?: string | null;
     /**
      * 
      * @type {Array<string>}
@@ -3350,51 +4597,77 @@ export interface FilterContentListInner {
 export interface FilterInventory {
     /**
      * 
-     * @type {string}
+     * @type {MaterialQuantityUnit}
      * @memberof FilterInventory
      */
-    'unit'?: FilterInventoryUnitEnum;
+    'unit'?: MaterialQuantityUnit;
     /**
      * 
-     * @type {FilterWeightGsm}
+     * @type {FilterInventoryQuantity}
      * @memberof FilterInventory
      */
-    'quantity'?: FilterWeightGsm;
+    'quantity'?: FilterInventoryQuantity;
 }
 
-export const FilterInventoryUnitEnum = {
-    Y: 'Y',
-    M: 'M',
-    Kg: 'KG'
-} as const;
-
-export type FilterInventoryUnitEnum = typeof FilterInventoryUnitEnum[keyof typeof FilterInventoryUnitEnum];
 
 /**
  * 
  * @export
- * @interface FilterWeightGsm
+ * @interface FilterInventoryQuantity
  */
-export interface FilterWeightGsm {
+export interface FilterInventoryQuantity {
     /**
      * 
      * @type {number}
-     * @memberof FilterWeightGsm
+     * @memberof FilterInventoryQuantity
      */
     'min': number;
     /**
      * 
      * @type {number}
-     * @memberof FilterWeightGsm
+     * @memberof FilterInventoryQuantity
      */
     'max': number;
     /**
      * 
      * @type {boolean}
-     * @memberof FilterWeightGsm
+     * @memberof FilterInventoryQuantity
      */
     'isInfinity': boolean;
 }
+/**
+ * 
+ * @export
+ * @interface FilterWeight
+ */
+export interface FilterWeight {
+    /**
+     * 
+     * @type {number}
+     * @memberof FilterWeight
+     */
+    'min': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof FilterWeight
+     */
+    'max': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FilterWeight
+     */
+    'isInfinity': boolean;
+    /**
+     * 
+     * @type {WeightUnit}
+     * @memberof FilterWeight
+     */
+    'unit': WeightUnit;
+}
+
+
 /**
  * 
  * @export
@@ -3403,23 +4676,50 @@ export interface FilterWeightGsm {
 export interface FilterWidth {
     /**
      * 
-     * @type {number}
+     * @type {FilterWidthCuttable}
      * @memberof FilterWidth
+     */
+    'cuttable': FilterWidthCuttable;
+    /**
+     * 
+     * @type {FilterWidthCuttable}
+     * @memberof FilterWidth
+     */
+    'full': FilterWidthCuttable;
+}
+/**
+ * 
+ * @export
+ * @interface FilterWidthCuttable
+ */
+export interface FilterWidthCuttable {
+    /**
+     * 
+     * @type {number}
+     * @memberof FilterWidthCuttable
      */
     'min': number;
     /**
      * 
      * @type {number}
-     * @memberof FilterWidth
+     * @memberof FilterWidthCuttable
      */
     'max': number;
     /**
      * 
      * @type {boolean}
-     * @memberof FilterWidth
+     * @memberof FilterWidthCuttable
      */
     'isInfinity': boolean;
+    /**
+     * 
+     * @type {LengthUnit}
+     * @memberof FilterWidthCuttable
+     */
+    'unit': LengthUnit;
 }
+
+
 /**
  * 資料夾型態書籤
  * @export
@@ -3584,6 +4884,82 @@ export interface GeneralCheckTokenStatusPostRequest {
 /**
  * 
  * @export
+ * @interface GeneralGetS3UploadUrlPost200Response
+ */
+export interface GeneralGetS3UploadUrlPost200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GeneralGetS3UploadUrlPost200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GeneralGetS3UploadUrlPost200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GeneralGetS3UploadUrlPost200ResponseAllOfResult}
+     * @memberof GeneralGetS3UploadUrlPost200Response
+     */
+    'result': GeneralGetS3UploadUrlPost200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GeneralGetS3UploadUrlPost200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GeneralGetS3UploadUrlPost200ResponseAllOf
+ */
+export interface GeneralGetS3UploadUrlPost200ResponseAllOf {
+    /**
+     * 
+     * @type {GeneralGetS3UploadUrlPost200ResponseAllOfResult}
+     * @memberof GeneralGetS3UploadUrlPost200ResponseAllOf
+     */
+    'result': GeneralGetS3UploadUrlPost200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GeneralGetS3UploadUrlPost200ResponseAllOfResult
+ */
+export interface GeneralGetS3UploadUrlPost200ResponseAllOfResult {
+    /**
+     * 
+     * @type {string}
+     * @memberof GeneralGetS3UploadUrlPost200ResponseAllOfResult
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GeneralGetS3UploadUrlPost200ResponseAllOfResult
+     */
+    'fileUploadUrl': string;
+}
+/**
+ * 
+ * @export
+ * @interface GeneralGetS3UploadUrlPostRequest
+ */
+export interface GeneralGetS3UploadUrlPostRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof GeneralGetS3UploadUrlPostRequest
+     */
+    'fileName': string;
+}
+/**
+ * 
+ * @export
  * @interface GeneralGetUploadUrlPost200Response
  */
 export interface GeneralGetUploadUrlPost200Response {
@@ -3706,6 +5082,342 @@ export interface GeneralRefreshTokenPostRequest {
      * @memberof GeneralRefreshTokenPostRequest
      */
     'refreshToken': string;
+}
+/**
+ * 
+ * @export
+ * @interface GenerateAssetsMaterialU3mRequest
+ */
+export interface GenerateAssetsMaterialU3mRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GenerateAssetsMaterialU3mRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GenerateAssetsMaterialU3mRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GenerateAssetsMaterialU3mRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GenerateAssetsMaterialU3mRequest
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GenerateAssetsMaterialU3mRequest
+     */
+    'isAutoRepeat': boolean;
+    /**
+     * 
+     * @type {GenerateAssetsMaterialU3mRequestAllOfFaceSide}
+     * @memberof GenerateAssetsMaterialU3mRequest
+     */
+    'faceSide': GenerateAssetsMaterialU3mRequestAllOfFaceSide;
+    /**
+     * 
+     * @type {GenerateAssetsMaterialU3mRequestAllOfFaceSide}
+     * @memberof GenerateAssetsMaterialU3mRequest
+     */
+    'backSide': GenerateAssetsMaterialU3mRequestAllOfFaceSide;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface GenerateAssetsMaterialU3mRequestAllOf
+ */
+export interface GenerateAssetsMaterialU3mRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GenerateAssetsMaterialU3mRequestAllOf
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GenerateAssetsMaterialU3mRequestAllOf
+     */
+    'isAutoRepeat': boolean;
+    /**
+     * 
+     * @type {GenerateAssetsMaterialU3mRequestAllOfFaceSide}
+     * @memberof GenerateAssetsMaterialU3mRequestAllOf
+     */
+    'faceSide': GenerateAssetsMaterialU3mRequestAllOfFaceSide;
+    /**
+     * 
+     * @type {GenerateAssetsMaterialU3mRequestAllOfFaceSide}
+     * @memberof GenerateAssetsMaterialU3mRequestAllOf
+     */
+    'backSide': GenerateAssetsMaterialU3mRequestAllOfFaceSide;
+}
+/**
+ * 
+ * @export
+ * @interface GenerateAssetsMaterialU3mRequestAllOfFaceSide
+ */
+export interface GenerateAssetsMaterialU3mRequestAllOfFaceSide {
+    /**
+     * 
+     * @type {string}
+     * @memberof GenerateAssetsMaterialU3mRequestAllOfFaceSide
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GenerateAssetsMaterialU3mRequestAllOfFaceSide
+     */
+    'fileName': string;
+    /**
+     * 
+     * @type {MultimediaFileAllOfCropRecord}
+     * @memberof GenerateAssetsMaterialU3mRequestAllOfFaceSide
+     */
+    'squareCropRecord': MultimediaFileAllOfCropRecord;
+    /**
+     * 
+     * @type {MaterialGenerateU3mSidePerspectiveCropRecord}
+     * @memberof GenerateAssetsMaterialU3mRequestAllOfFaceSide
+     */
+    'perspectiveCropRecord': MaterialGenerateU3mSidePerspectiveCropRecord;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetMaterialList200Response
+ */
+export interface GetAssetMaterialList200Response {
+    /**
+     * 
+     * @type {GetAssetMaterialList200ResponseResult}
+     * @memberof GetAssetMaterialList200Response
+     */
+    'result'?: GetAssetMaterialList200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetAssetMaterialList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAssetMaterialList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetAssetMaterialList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetMaterialList200ResponseResult
+ */
+export interface GetAssetMaterialList200ResponseResult {
+    /**
+     * 
+     * @type {PaginationRes}
+     * @memberof GetAssetMaterialList200ResponseResult
+     */
+    'pagination'?: PaginationRes;
+    /**
+     * 
+     * @type {GetAssetMaterialList200ResponseResultAssets}
+     * @memberof GetAssetMaterialList200ResponseResult
+     */
+    'assets'?: GetAssetMaterialList200ResponseResultAssets;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetMaterialList200ResponseResultAssets
+ */
+export interface GetAssetMaterialList200ResponseResultAssets {
+    /**
+     * 
+     * @type {Array<Material>}
+     * @memberof GetAssetMaterialList200ResponseResultAssets
+     */
+    'materialList'?: Array<Material>;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetMaterialListRequest
+ */
+export interface GetAssetMaterialListRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetAssetMaterialListRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetAssetMaterialListRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GetAssetMaterialListRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {Search}
+     * @memberof GetAssetMaterialListRequest
+     */
+    'search': Search;
+    /**
+     * 
+     * @type {AssetFilter}
+     * @memberof GetAssetMaterialListRequest
+     */
+    'filter': AssetFilter;
+    /**
+     * 
+     * @type {PaginationReq}
+     * @memberof GetAssetMaterialListRequest
+     */
+    'pagination': PaginationReq;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface GetAssetMaterialListRequestAllOf
+ */
+export interface GetAssetMaterialListRequestAllOf {
+    /**
+     * 
+     * @type {Search}
+     * @memberof GetAssetMaterialListRequestAllOf
+     */
+    'search': Search;
+    /**
+     * 
+     * @type {AssetFilter}
+     * @memberof GetAssetMaterialListRequestAllOf
+     */
+    'filter': AssetFilter;
+    /**
+     * 
+     * @type {PaginationReq}
+     * @memberof GetAssetMaterialListRequestAllOf
+     */
+    'pagination': PaginationReq;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetsMaterial200Response
+ */
+export interface GetAssetsMaterial200Response {
+    /**
+     * 
+     * @type {GetAssetsMaterial200ResponseResult}
+     * @memberof GetAssetsMaterial200Response
+     */
+    'result'?: GetAssetsMaterial200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetAssetsMaterial200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAssetsMaterial200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetAssetsMaterial200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetsMaterial200ResponseResult
+ */
+export interface GetAssetsMaterial200ResponseResult {
+    /**
+     * 
+     * @type {Material}
+     * @memberof GetAssetsMaterial200ResponseResult
+     */
+    'material'?: Material;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetsMaterialRequest
+ */
+export interface GetAssetsMaterialRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetAssetsMaterialRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetAssetsMaterialRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GetAssetsMaterialRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetAssetsMaterialRequest
+     */
+    'materialId': number;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface GetAssetsMaterialRequestAllOf
+ */
+export interface GetAssetsMaterialRequestAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetAssetsMaterialRequestAllOf
+     */
+    'materialId': number;
 }
 /**
  * 
@@ -3930,6 +5642,786 @@ export interface GetDigitalThreadWorkflowStageOptionsRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface GetExcelProgressList200Response
+ */
+export interface GetExcelProgressList200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetExcelProgressList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GetExcelProgressList200ResponseAllOfResult}
+     * @memberof GetExcelProgressList200Response
+     */
+    'result': GetExcelProgressList200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetExcelProgressList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetExcelProgressList200ResponseAllOf
+ */
+export interface GetExcelProgressList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetExcelProgressList200ResponseAllOfResult}
+     * @memberof GetExcelProgressList200ResponseAllOf
+     */
+    'result': GetExcelProgressList200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetExcelProgressList200ResponseAllOfResult
+ */
+export interface GetExcelProgressList200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Array<GetExcelProgressList200ResponseAllOfResultProgressListInner>}
+     * @memberof GetExcelProgressList200ResponseAllOfResult
+     */
+    'progressList': Array<GetExcelProgressList200ResponseAllOfResultProgressListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface GetExcelProgressList200ResponseAllOfResultProgressListInner
+ */
+export interface GetExcelProgressList200ResponseAllOfResultProgressListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
+     */
+    'progressId': number;
+    /**
+     * 1: Upload 2: Export 
+     * @type {number}
+     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
+     */
+    'category': GetExcelProgressList200ResponseAllOfResultProgressListInnerCategoryEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
+     */
+    'fileName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
+     */
+    'fileUrl': string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
+     */
+    'itemNoList': Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
+     */
+    'createDate': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
+     */
+    'createUser': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
+     */
+    'createAvatar': string;
+    /**
+     * 1: In Queue 2: Processing 3: Unsuccessful 4: Complete 5: Canceled 
+     * @type {number}
+     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
+     */
+    'status': GetExcelProgressList200ResponseAllOfResultProgressListInnerStatusEnum;
+    /**
+     * status 為 3 Unsuccessful 時 msgCode 才有值 - 1 該組織停用中 - 2 該組織方案中的空間不足 
+     * @type {number}
+     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
+     */
+    'unsuccessfulMsgCode': GetExcelProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum;
+}
+
+export const GetExcelProgressList200ResponseAllOfResultProgressListInnerCategoryEnum = {
+    UPLOAD: 1,
+    EXPORT: 2
+} as const;
+
+export type GetExcelProgressList200ResponseAllOfResultProgressListInnerCategoryEnum = typeof GetExcelProgressList200ResponseAllOfResultProgressListInnerCategoryEnum[keyof typeof GetExcelProgressList200ResponseAllOfResultProgressListInnerCategoryEnum];
+export const GetExcelProgressList200ResponseAllOfResultProgressListInnerStatusEnum = {
+    IN_QUEUE: 1,
+    PROCESSING: 2,
+    UNSUCCESSFUL: 3,
+    COMPLETED: 4,
+    CANCELED: 5
+} as const;
+
+export type GetExcelProgressList200ResponseAllOfResultProgressListInnerStatusEnum = typeof GetExcelProgressList200ResponseAllOfResultProgressListInnerStatusEnum[keyof typeof GetExcelProgressList200ResponseAllOfResultProgressListInnerStatusEnum];
+export const GetExcelProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum = {
+    ORG_DEACTIVATED: 1,
+    ORG_STORAGE_NOT_ENOUGH: 2
+} as const;
+
+export type GetExcelProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum = typeof GetExcelProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum[keyof typeof GetExcelProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum];
+
+/**
+ * 
+ * @export
+ * @interface GetExcelProgressListRequest
+ */
+export interface GetExcelProgressListRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetExcelProgressListRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetExcelProgressListRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GetExcelProgressListRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressListRequest
+     */
+    'startDate': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressListRequest
+     */
+    'endDate': string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetExcelProgressListRequest
+     */
+    'status': GetExcelProgressListRequestStatusEnum;
+    /**
+     * 0: ALL 1: Upload 2: Export 
+     * @type {number}
+     * @memberof GetExcelProgressListRequest
+     */
+    'category': GetExcelProgressListRequestCategoryEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressListRequest
+     */
+    'keyword': string | null;
+    /**
+     * 
+     * @type {GetExcelProgressListRequestAllOfPagination}
+     * @memberof GetExcelProgressListRequest
+     */
+    'pagination': GetExcelProgressListRequestAllOfPagination;
+}
+
+export const GetExcelProgressListRequestStatusEnum = {
+    ALL: 0,
+    IN_QUEUE: 1,
+    PROCESSING: 2,
+    UNSUCCESSFUL: 3,
+    COMPLETE: 4,
+    CANCELED: 5
+} as const;
+
+export type GetExcelProgressListRequestStatusEnum = typeof GetExcelProgressListRequestStatusEnum[keyof typeof GetExcelProgressListRequestStatusEnum];
+export const GetExcelProgressListRequestCategoryEnum = {
+    ALL: 0,
+    UPLOAD: 1,
+    EXPORT: 2
+} as const;
+
+export type GetExcelProgressListRequestCategoryEnum = typeof GetExcelProgressListRequestCategoryEnum[keyof typeof GetExcelProgressListRequestCategoryEnum];
+
+/**
+ * 
+ * @export
+ * @interface GetExcelProgressListRequestAllOf
+ */
+export interface GetExcelProgressListRequestAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressListRequestAllOf
+     */
+    'startDate': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressListRequestAllOf
+     */
+    'endDate': string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetExcelProgressListRequestAllOf
+     */
+    'status': GetExcelProgressListRequestAllOfStatusEnum;
+    /**
+     * 0: ALL 1: Upload 2: Export 
+     * @type {number}
+     * @memberof GetExcelProgressListRequestAllOf
+     */
+    'category': GetExcelProgressListRequestAllOfCategoryEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressListRequestAllOf
+     */
+    'keyword': string | null;
+    /**
+     * 
+     * @type {GetExcelProgressListRequestAllOfPagination}
+     * @memberof GetExcelProgressListRequestAllOf
+     */
+    'pagination': GetExcelProgressListRequestAllOfPagination;
+}
+
+export const GetExcelProgressListRequestAllOfStatusEnum = {
+    ALL: 0,
+    IN_QUEUE: 1,
+    PROCESSING: 2,
+    UNSUCCESSFUL: 3,
+    COMPLETE: 4,
+    CANCELED: 5
+} as const;
+
+export type GetExcelProgressListRequestAllOfStatusEnum = typeof GetExcelProgressListRequestAllOfStatusEnum[keyof typeof GetExcelProgressListRequestAllOfStatusEnum];
+export const GetExcelProgressListRequestAllOfCategoryEnum = {
+    ALL: 0,
+    UPLOAD: 1,
+    EXPORT: 2
+} as const;
+
+export type GetExcelProgressListRequestAllOfCategoryEnum = typeof GetExcelProgressListRequestAllOfCategoryEnum[keyof typeof GetExcelProgressListRequestAllOfCategoryEnum];
+
+/**
+ * 
+ * @export
+ * @interface GetExcelProgressListRequestAllOfPagination
+ */
+export interface GetExcelProgressListRequestAllOfPagination {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetExcelProgressListRequestAllOfPagination
+     */
+    'perPageCount': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetExcelProgressListRequestAllOfPagination
+     */
+    'targetPage': number;
+    /**
+     * 1: newest first 2: oldest first 3: status (In Queue > Processing > Unsuccessful > Complete) 4: status (Complete > Unsuccessful > Processing > In Queue) 5: type (Upload > Export) 6: type (Export > Upload) 
+     * @type {number}
+     * @memberof GetExcelProgressListRequestAllOfPagination
+     */
+    'sort': GetExcelProgressListRequestAllOfPaginationSortEnum;
+}
+
+export const GetExcelProgressListRequestAllOfPaginationSortEnum = {
+    NEWEST_FIRST: 1,
+    OLDEST_FIRST: 2,
+    IN_QUEUE_FIRST: 3,
+    COMPLETE_FIRST: 4,
+    UPLOAD_FIRST: 5,
+    EXPORT_FIRST: 6
+} as const;
+
+export type GetExcelProgressListRequestAllOfPaginationSortEnum = typeof GetExcelProgressListRequestAllOfPaginationSortEnum[keyof typeof GetExcelProgressListRequestAllOfPaginationSortEnum];
+
+/**
+ * 
+ * @export
+ * @interface GetExcelProgressMaterialList200Response
+ */
+export interface GetExcelProgressMaterialList200Response {
+    /**
+     * 
+     * @type {GetAssetMaterialList200ResponseResultAssets}
+     * @memberof GetExcelProgressMaterialList200Response
+     */
+    'result'?: GetAssetMaterialList200ResponseResultAssets;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetExcelProgressMaterialList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExcelProgressMaterialList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetExcelProgressMaterialList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetMaterialOptions200Response
+ */
+export interface GetMaterialOptions200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetMaterialOptions200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMaterialOptions200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {MaterialOptions}
+     * @memberof GetMaterialOptions200Response
+     */
+    'result'?: MaterialOptions;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetMaterialOptions200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetMaterialOptions200ResponseAllOf
+ */
+export interface GetMaterialOptions200ResponseAllOf {
+    /**
+     * 
+     * @type {MaterialOptions}
+     * @memberof GetMaterialOptions200ResponseAllOf
+     */
+    'result'?: MaterialOptions;
+}
+/**
+ * 
+ * @export
+ * @interface GetMaterialUploadProgressList200Response
+ */
+export interface GetMaterialUploadProgressList200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetMaterialUploadProgressList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMaterialUploadProgressList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GetMaterialUploadProgressList200ResponseAllOfResult}
+     * @memberof GetMaterialUploadProgressList200Response
+     */
+    'result': GetMaterialUploadProgressList200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetMaterialUploadProgressList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetMaterialUploadProgressList200ResponseAllOf
+ */
+export interface GetMaterialUploadProgressList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetMaterialUploadProgressList200ResponseAllOfResult}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOf
+     */
+    'result': GetMaterialUploadProgressList200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetMaterialUploadProgressList200ResponseAllOfResult
+ */
+export interface GetMaterialUploadProgressList200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Array<GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner>}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResult
+     */
+    'progressList': Array<GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
+ */
+export interface GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
+     */
+    'progressId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
+     */
+    'materialImageUrl': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
+     */
+    'createDate': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
+     */
+    'status': GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerStatusEnum;
+    /**
+     * status 為 3 Unsuccessful 時 msgCode 才有值 - 1 圖片檔案格式不對 - 2 該組織停用中 - 3 圖片檔案 dpi 不對 - 4 該組織方案中的空間不足 
+     * @type {number}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
+     */
+    'unsuccessfulMsgCode': GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum;
+    /**
+     * 
+     * @type {GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerMappingWith}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
+     */
+    'mappingWith': GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerMappingWith | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
+     */
+    'isMaterialDeleted'?: boolean;
+}
+
+export const GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerStatusEnum = {
+    IN_QUEUE: 1,
+    PROCESSING: 2,
+    UNSUCCESSFUL: 3,
+    COMPLETE: 4,
+    CANCELED: 5
+} as const;
+
+export type GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerStatusEnum = typeof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerStatusEnum[keyof typeof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerStatusEnum];
+export const GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum = {
+    IMAGE_FORMAT_ERROR: 1,
+    ORG_DEACTIVATED: 2,
+    IMAGE_DPI_ERROR: 3,
+    ORG_STORAGE_NOT_ENOUGH: 4
+} as const;
+
+export type GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum = typeof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum[keyof typeof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum];
+
+/**
+ * 
+ * @export
+ * @interface GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerMappingWith
+ */
+export interface GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerMappingWith {
+    /**
+     * 
+     * @type {MaterialSideType}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerMappingWith
+     */
+    'sideType': MaterialSideType;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerMappingWith
+     */
+    'itemNo': string;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface GetMaterialUploadProgressListRequest
+ */
+export interface GetMaterialUploadProgressListRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetMaterialUploadProgressListRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetMaterialUploadProgressListRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GetMaterialUploadProgressListRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface GetMaterialUploadProgressListRequestAllOf
+ */
+export interface GetMaterialUploadProgressListRequestAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMaterialUploadProgressListRequestAllOf
+     */
+    'startDate': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMaterialUploadProgressListRequestAllOf
+     */
+    'endDate': string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMaterialUploadProgressListRequestAllOf
+     */
+    'status': GetMaterialUploadProgressListRequestAllOfStatusEnum;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetMaterialUploadProgressListRequestAllOf
+     */
+    'pagination': object;
+}
+
+export const GetMaterialUploadProgressListRequestAllOfStatusEnum = {
+    ALL: 0,
+    IN_QUEUE: 1,
+    PROCESSING: 2,
+    UNSUCCESSFUL: 3,
+    COMPLETE: 4,
+    CANCELED: 5
+} as const;
+
+export type GetMaterialUploadProgressListRequestAllOfStatusEnum = typeof GetMaterialUploadProgressListRequestAllOfStatusEnum[keyof typeof GetMaterialUploadProgressListRequestAllOfStatusEnum];
+
+/**
+ * 
+ * @export
+ * @interface GetSearchFilterOptions200Response
+ */
+export interface GetSearchFilterOptions200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetSearchFilterOptions200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSearchFilterOptions200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GetSearchFilterOptions200ResponseAllOfResult}
+     * @memberof GetSearchFilterOptions200Response
+     */
+    'result': GetSearchFilterOptions200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetSearchFilterOptions200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetSearchFilterOptions200ResponseAllOf
+ */
+export interface GetSearchFilterOptions200ResponseAllOf {
+    /**
+     * 
+     * @type {GetSearchFilterOptions200ResponseAllOfResult}
+     * @memberof GetSearchFilterOptions200ResponseAllOf
+     */
+    'result': GetSearchFilterOptions200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetSearchFilterOptions200ResponseAllOfResult
+ */
+export interface GetSearchFilterOptions200ResponseAllOfResult {
+    /**
+     * 
+     * @type {object}
+     * @memberof GetSearchFilterOptions200ResponseAllOfResult
+     */
+    'descriptionList': object;
+    /**
+     * 
+     * @type {Array<GetSearchFilterOptions200ResponseAllOfResultContentListInner>}
+     * @memberof GetSearchFilterOptions200ResponseAllOfResult
+     */
+    'contentList': Array<GetSearchFilterOptions200ResponseAllOfResultContentListInner>;
+    /**
+     * 
+     * @type {Array<GetSearchFilterOptions200ResponseAllOfResultPatternListInner>}
+     * @memberof GetSearchFilterOptions200ResponseAllOfResult
+     */
+    'patternList': Array<GetSearchFilterOptions200ResponseAllOfResultPatternListInner>;
+    /**
+     * 
+     * @type {Array<GetSearchFilterOptions200ResponseAllOfResultColorListInner>}
+     * @memberof GetSearchFilterOptions200ResponseAllOfResult
+     */
+    'colorList': Array<GetSearchFilterOptions200ResponseAllOfResultColorListInner>;
+    /**
+     * 
+     * @type {Array<GetSearchFilterOptions200ResponseAllOfResultContentListInner>}
+     * @memberof GetSearchFilterOptions200ResponseAllOfResult
+     */
+    'finishList': Array<GetSearchFilterOptions200ResponseAllOfResultContentListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface GetSearchFilterOptions200ResponseAllOfResultColorListInner
+ */
+export interface GetSearchFilterOptions200ResponseAllOfResultColorListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSearchFilterOptions200ResponseAllOfResultColorListInner
+     */
+    'value'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSearchFilterOptions200ResponseAllOfResultColorListInner
+     */
+    'hex'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface GetSearchFilterOptions200ResponseAllOfResultContentListInner
+ */
+export interface GetSearchFilterOptions200ResponseAllOfResultContentListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSearchFilterOptions200ResponseAllOfResultContentListInner
+     */
+    'displayName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSearchFilterOptions200ResponseAllOfResultContentListInner
+     */
+    'value'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface GetSearchFilterOptions200ResponseAllOfResultPatternListInner
+ */
+export interface GetSearchFilterOptions200ResponseAllOfResultPatternListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSearchFilterOptions200ResponseAllOfResultPatternListInner
+     */
+    'key'?: string;
+    /**
+     * 
+     * @type {Array<GetSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner>}
+     * @memberof GetSearchFilterOptions200ResponseAllOfResultPatternListInner
+     */
+    'list'?: Array<GetSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface GetSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner
+ */
+export interface GetSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner
+     */
+    'value'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner
+     */
+    'img'?: string;
+}
 /**
  * 
  * @export
@@ -4227,6 +6719,206 @@ export interface GetThreadBoardRequestBookmarkFilter {
 /**
  * 
  * @export
+ * @interface GetU3mProgressList200Response
+ */
+export interface GetU3mProgressList200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetU3mProgressList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetU3mProgressList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GetU3mProgressList200ResponseAllOfResult}
+     * @memberof GetU3mProgressList200Response
+     */
+    'result': GetU3mProgressList200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetU3mProgressList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetU3mProgressList200ResponseAllOf
+ */
+export interface GetU3mProgressList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetU3mProgressList200ResponseAllOfResult}
+     * @memberof GetU3mProgressList200ResponseAllOf
+     */
+    'result': GetU3mProgressList200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetU3mProgressList200ResponseAllOfResult
+ */
+export interface GetU3mProgressList200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Array<ProgressU3mItem>}
+     * @memberof GetU3mProgressList200ResponseAllOfResult
+     */
+    'progressList': Array<ProgressU3mItem>;
+}
+/**
+ * 
+ * @export
+ * @interface GetU3mProgressListRequest
+ */
+export interface GetU3mProgressListRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetU3mProgressListRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetU3mProgressListRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GetU3mProgressListRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetU3mProgressListRequest
+     */
+    'startDate': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetU3mProgressListRequest
+     */
+    'endDate': string | null;
+    /**
+     * 0: ALL 1: In Queue 2: Processing 3: Unsuccessful 4: Complete 5: Canceled 
+     * @type {number}
+     * @memberof GetU3mProgressListRequest
+     */
+    'status': GetU3mProgressListRequestStatusEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetU3mProgressListRequest
+     */
+    'keyword': string | null;
+    /**
+     * 
+     * @type {GetU3mProgressListRequestAllOfPagination}
+     * @memberof GetU3mProgressListRequest
+     */
+    'pagination': GetU3mProgressListRequestAllOfPagination;
+}
+
+export const GetU3mProgressListRequestStatusEnum = {
+    ALL: 0,
+    IN_QUEUE: 1,
+    PROCESSING: 2,
+    UNSUCCESSFUL: 3,
+    COMPLETE: 4,
+    CANCELED: 5
+} as const;
+
+export type GetU3mProgressListRequestStatusEnum = typeof GetU3mProgressListRequestStatusEnum[keyof typeof GetU3mProgressListRequestStatusEnum];
+
+/**
+ * 
+ * @export
+ * @interface GetU3mProgressListRequestAllOf
+ */
+export interface GetU3mProgressListRequestAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetU3mProgressListRequestAllOf
+     */
+    'startDate': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetU3mProgressListRequestAllOf
+     */
+    'endDate': string | null;
+    /**
+     * 0: ALL 1: In Queue 2: Processing 3: Unsuccessful 4: Complete 5: Canceled 
+     * @type {number}
+     * @memberof GetU3mProgressListRequestAllOf
+     */
+    'status': GetU3mProgressListRequestAllOfStatusEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetU3mProgressListRequestAllOf
+     */
+    'keyword': string | null;
+    /**
+     * 
+     * @type {GetU3mProgressListRequestAllOfPagination}
+     * @memberof GetU3mProgressListRequestAllOf
+     */
+    'pagination': GetU3mProgressListRequestAllOfPagination;
+}
+
+export const GetU3mProgressListRequestAllOfStatusEnum = {
+    ALL: 0,
+    IN_QUEUE: 1,
+    PROCESSING: 2,
+    UNSUCCESSFUL: 3,
+    COMPLETE: 4,
+    CANCELED: 5
+} as const;
+
+export type GetU3mProgressListRequestAllOfStatusEnum = typeof GetU3mProgressListRequestAllOfStatusEnum[keyof typeof GetU3mProgressListRequestAllOfStatusEnum];
+
+/**
+ * 
+ * @export
+ * @interface GetU3mProgressListRequestAllOfPagination
+ */
+export interface GetU3mProgressListRequestAllOfPagination {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetU3mProgressListRequestAllOfPagination
+     */
+    'perPageCount': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetU3mProgressListRequestAllOfPagination
+     */
+    'targetPage': number;
+    /**
+     * 
+     * @type {ProgressU3mSort}
+     * @memberof GetU3mProgressListRequestAllOfPagination
+     */
+    'sort': ProgressU3mSort;
+}
+
+
+/**
+ * 
+ * @export
  * @interface Group
  */
 export interface Group {
@@ -4465,10 +7157,10 @@ export interface InvoiceInfo {
     'cardInfo'?: OrganizationPaymentDetailCardInfo;
     /**
      * 
-     * @type {string}
+     * @type {CurrencyCode}
      * @memberof InvoiceInfo
      */
-    'currency'?: string;
+    'currency'?: CurrencyCode;
     /**
      * 總費用
      * @type {string}
@@ -4476,6 +7168,8 @@ export interface InvoiceInfo {
      */
     'totalPrice'?: string;
 }
+
+
 /**
  * 
  * @export
@@ -4508,535 +7202,319 @@ export interface InvoiceInfoServiceItemListInner {
     'price'?: number;
 }
 /**
+ * 長度單位
+ * @export
+ * @enum {string}
+ */
+
+export const LengthUnit = {
+    CM: 1,
+    INCH: 2
+} as const;
+
+export type LengthUnit = typeof LengthUnit[keyof typeof LengthUnit];
+
+
+/**
+ * 未有訂閱M2F加值服務時為NULL
+ * @export
+ * @enum {string}
+ */
+
+export const Made2FlowPlanType = {
+    STANDARD: 1,
+    PERSONALIZED: 2,
+    PERSONALIZED_PRO: 3
+} as const;
+
+export type Made2FlowPlanType = typeof Made2FlowPlanType[keyof typeof Made2FlowPlanType];
+
+
+/**
+ * 
+ * @export
+ * @interface MassExportAssetsMaterialExcelRequest
+ */
+export interface MassExportAssetsMaterialExcelRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof MassExportAssetsMaterialExcelRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof MassExportAssetsMaterialExcelRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof MassExportAssetsMaterialExcelRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof MassExportAssetsMaterialExcelRequest
+     */
+    'materialIdList': Array<number>;
+}
+
+
+/**
  * 
  * @export
  * @interface Material
  */
 export interface Material {
     /**
-     * 
+     * 布片ID
      * @type {number}
      * @memberof Material
      */
-    'materialId'?: number;
+    'materialId': number;
     /**
-     * 
-     * @type {number}
-     * @memberof Material
-     */
-    'sourceAssetLocation'?: MaterialSourceAssetLocationEnum;
-    /**
-     * Frontier number
+     * Item# 產品編號
      * @type {string}
      * @memberof Material
      */
-    'frontierNo'?: string;
-    /**
-     * Item#
-     * @type {string}
-     * @memberof Material
-     */
-    'materialNo'?: string;
-    /**
-     * Native Code
-     * @type {string}
-     * @memberof Material
-     */
-    'materialSeq'?: string;
+    'itemNo': string;
     /**
      * 
-     * @type {number}
+     * @type {OgType & object}
      * @memberof Material
      */
-    'relationMaterialId'?: number;
-    /**
-     * Another side frontier number
-     * @type {string}
-     * @memberof Material
-     */
-    'relationFronteirNo'?: string;
+    'assetOgType': OgType & object;
     /**
      * 
-     * @type {OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerMainType}
+     * @type {MaterialCoverImage}
      * @memberof Material
      */
-    'mainType'?: OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerMainType;
+    'coverImage': MaterialCoverImage | null;
     /**
-     * 
-     * @type {MaterialSubType}
-     * @memberof Material
-     */
-    'subType'?: MaterialSubType;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'content'?: string;
-    /**
-     * 
-     * @type {Array<MaterialContentListInner>}
-     * @memberof Material
-     */
-    'contentList'?: Array<MaterialContentListInner>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'description'?: string;
-    /**
-     * 
-     * @type {Array<MaterialDescriptionListInner>}
-     * @memberof Material
-     */
-    'descriptionList'?: Array<MaterialDescriptionListInner>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'finish'?: string;
-    /**
-     * 
-     * @type {Array<MaterialFinishListInner>}
-     * @memberof Material
-     */
-    'finishList'?: Array<MaterialFinishListInner>;
-    /**
-     * 
-     * @type {number}
-     * @memberof Material
-     */
-    'width'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Material
-     */
-    'weightOrThicknessUnit'?: MaterialWeightOrThicknessUnitEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof Material
-     */
-    'weightGsmOrThickness'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Material
-     */
-    'weightOz'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Material
-     */
-    'weightGy'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'warpDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'weftDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'warpYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'weftYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'pattern'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'color'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof Material
-     */
-    'sampleCardsRemainingQty'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'sampleCardsLocation'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof Material
-     */
-    'hangersRemainingQty'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'hangersLocation'?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Material
-     */
-    'publicTagList'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Material
-     */
-    'privateTagList'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Material
-     */
-    'tagList'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof Material
-     */
-    'aiTagList'?: Array<string>;
-    /**
-     * 
-     * @type {number}
-     * @memberof Material
-     */
-    'coverMode'?: MaterialCoverModeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'coverImg'?: string;
-    /**
-     * 
-     * @type {MaterialFaceSideImg}
-     * @memberof Material
-     */
-    'faceSideImg'?: MaterialFaceSideImg;
-    /**
-     * 
-     * @type {MaterialBackSideImg}
-     * @memberof Material
-     */
-    'backSideImg'?: MaterialBackSideImg;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Material
-     */
-    'isDoubleSideMaterial'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof Material
-     */
-    'sideType'?: MaterialSideTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'remark'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Material
-     */
-    'isDelete'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Material
-     */
-    'isComplete'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof Material
-     */
-    'cloneFromMaterialId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Material
-     */
-    'totalInventoryQty'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Material
-     */
-    'inventoryUnit'?: MaterialInventoryUnitEnum;
-    /**
-     * 
-     * @type {Array<MaterialInventoryListInner>}
-     * @memberof Material
-     */
-    'inventoryList'?: Array<MaterialInventoryListInner>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Material
-     */
-    'isPublicInventory'?: boolean;
-    /**
-     * 
-     * @type {MaterialPublicPrice}
-     * @memberof Material
-     */
-    'publicPrice'?: MaterialPublicPrice;
-    /**
-     * 
-     * @type {MaterialPublicPrice}
-     * @memberof Material
-     */
-    'privatePrice'?: MaterialPublicPrice;
-    /**
-     * 
-     * @type {Array<MaterialAttachmentListInner>}
-     * @memberof Material
-     */
-    'attachmentList'?: Array<MaterialAttachmentListInner>;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord}
-     * @memberof Material
-     */
-    'attachmentCropImageRecord'?: OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord;
-    /**
-     * 
+     * Pantone Color清單
      * @type {Array<MaterialPantoneListInner>}
      * @memberof Material
      */
-    'pantoneList'?: Array<MaterialPantoneListInner>;
+    'pantoneList': Array<MaterialPantoneListInner>;
+    /**
+     * 
+     * @type {MaterialPatternInfo}
+     * @memberof Material
+     */
+    'patternInfo': MaterialPatternInfo;
+    /**
+     * 
+     * @type {MaterialColorInfo}
+     * @memberof Material
+     */
+    'colorInfo': MaterialColorInfo;
+    /**
+     * 
+     * @type {MaterialSeasonInfo}
+     * @memberof Material
+     */
+    'seasonInfo': MaterialSeasonInfo;
     /**
      * 
      * @type {MaterialU3m}
      * @memberof Material
      */
-    'u3m'?: MaterialU3m;
+    'u3m': MaterialU3m;
     /**
      * 
      * @type {MaterialCustomU3m}
      * @memberof Material
      */
-    'customU3m'?: MaterialCustomU3m;
+    'customU3m': MaterialCustomU3m;
+    /**
+     * 是否為雙面布
+     * @type {boolean}
+     * @memberof Material
+     */
+    'isDoubleSide': boolean;
+    /**
+     * 
+     * @type {MaterialSideType}
+     * @memberof Material
+     */
+    'sideType': MaterialSideType | null;
+    /**
+     * 是否為複合布
+     * @type {boolean}
+     * @memberof Material
+     */
+    'isComposite': boolean;
+    /**
+     * 是否同步正反面布資訊
+     * @type {boolean}
+     * @memberof Material
+     */
+    'isAutoSyncFaceToBackSideInfo': boolean;
+    /**
+     * 
+     * @type {MaterialFaceSide}
+     * @memberof Material
+     */
+    'faceSide': MaterialFaceSide;
+    /**
+     * 
+     * @type {MaterialMiddleSide}
+     * @memberof Material
+     */
+    'middleSide': MaterialMiddleSide;
+    /**
+     * 
+     * @type {MaterialBackSide}
+     * @memberof Material
+     */
+    'backSide': MaterialBackSide;
+    /**
+     * 
+     * @type {MaterialTagInfo}
+     * @memberof Material
+     */
+    'tagInfo': MaterialTagInfo;
+    /**
+     * 
+     * @type {MaterialPriceInfo}
+     * @memberof Material
+     */
+    'priceInfo': MaterialPriceInfo;
+    /**
+     * 庫存總數 數值1~999,999，可填寫至小數2位 
+     * @type {number}
+     * @memberof Material
+     */
+    'inventoryTotalQtyInYard': number | null;
     /**
      * 
      * @type {MaterialCarbonEmission}
      * @memberof Material
      */
-    'carbonEmission'?: MaterialCarbonEmission;
+    'carbonEmission': MaterialCarbonEmission;
     /**
      * 
-     * @type {Array<MaterialCertificateListInner>}
+     * @type {MaterialDigitalThreadInfo}
      * @memberof Material
      */
-    'certificateList'?: Array<MaterialCertificateListInner>;
+    'digitalThreadInfo': MaterialDigitalThreadInfo;
     /**
      * 
-     * @type {number}
+     * @type {Array<MultimediaFile>}
      * @memberof Material
      */
-    'digitalThreadQty'?: number;
+    'multimediaList': Array<MultimediaFile>;
     /**
      * 
-     * @type {boolean}
+     * @type {MaterialPublicMetaData}
      * @memberof Material
      */
-    'digitalThreadHasUnread'?: boolean;
-    /**
-     * 布片擁有者的單位名稱，檢視角度為布片擁有者時為:布片擁有者的組織(+團隊)名稱，非布片擁有者為:布片擁有者的組織名稱
-     * @type {string}
-     * @memberof Material
-     */
-    'unitName'?: string;
-    /**
-     * 布片擁有者的單位Logo
-     * @type {string}
-     * @memberof Material
-     */
-    'unitLogo'?: string;
-    /**
-     * 檢視該布片的使用者是否為布片擁有者組織的成員
-     * @type {boolean}
-     * @memberof Material
-     */
-    'isMaterialOwnerSide'?: boolean;
-    /**
-     * 該布片所屬單位的組織或團隊型態，IsMaterialOwnerSide為true時才有值
-     * @type {number}
-     * @memberof Material
-     */
-    'materialOwnerOGType'?: number | null;
-    /**
-     * 該布片所屬單位的組織或團隊ID，IsMaterialOwnerSide為true時才有值
-     * @type {number}
-     * @memberof Material
-     */
-    'materialOwnerOGId'?: number | null;
+    'metaData': MaterialPublicMetaData;
     /**
      * 
-     * @type {number}
+     * @type {MaterialInternalInfo}
      * @memberof Material
      */
-    'createDate'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Material
-     */
-    'updateDate'?: number;
+    'internalInfo': MaterialInternalInfo | null;
 }
 
-export const MaterialSourceAssetLocationEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type MaterialSourceAssetLocationEnum = typeof MaterialSourceAssetLocationEnum[keyof typeof MaterialSourceAssetLocationEnum];
-export const MaterialWeightOrThicknessUnitEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type MaterialWeightOrThicknessUnitEnum = typeof MaterialWeightOrThicknessUnitEnum[keyof typeof MaterialWeightOrThicknessUnitEnum];
-export const MaterialCoverModeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type MaterialCoverModeEnum = typeof MaterialCoverModeEnum[keyof typeof MaterialCoverModeEnum];
-export const MaterialSideTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type MaterialSideTypeEnum = typeof MaterialSideTypeEnum[keyof typeof MaterialSideTypeEnum];
-export const MaterialInventoryUnitEnum = {
-    Y: 'Y',
-    M: 'M',
-    Kg: 'KG'
-} as const;
-
-export type MaterialInventoryUnitEnum = typeof MaterialInventoryUnitEnum[keyof typeof MaterialInventoryUnitEnum];
 
 /**
  * 
  * @export
- * @interface MaterialAttachmentListInner
+ * @interface MaterialBackSide
  */
-export interface MaterialAttachmentListInner {
+export interface MaterialBackSide {
     /**
-     * 
+     * 布面ID
      * @type {number}
-     * @memberof MaterialAttachmentListInner
+     * @memberof MaterialBackSide
      */
-    'materialAttachmentId'?: number;
+    'materialSideId': number;
     /**
-     * 
+     * Frontier編號
      * @type {string}
-     * @memberof MaterialAttachmentListInner
+     * @memberof MaterialBackSide
      */
-    'displayFileName'?: string;
+    'frontierNo': string;
     /**
      * 
-     * @type {string}
-     * @memberof MaterialAttachmentListInner
+     * @type {Array<MaterialFeature>}
+     * @memberof MaterialBackSide
      */
-    'url'?: string;
+    'featureList': Array<MaterialFeature>;
     /**
      * 
-     * @type {string}
-     * @memberof MaterialAttachmentListInner
+     * @type {Array<MaterialFinish>}
+     * @memberof MaterialBackSide
      */
-    'extension'?: string;
+    'finishList': Array<MaterialFinish>;
     /**
-     * 
+     * 是否為主要布面
      * @type {boolean}
-     * @memberof MaterialAttachmentListInner
+     * @memberof MaterialBackSide
      */
-    'isCover'?: boolean;
+    'isMainSide': boolean;
+    /**
+     * 
+     * @type {MaterialSideAllOfSideImage}
+     * @memberof MaterialBackSide
+     */
+    'sideImage': MaterialSideAllOfSideImage;
+    /**
+     * 
+     * @type {MaterialSideAllOfU3mImage}
+     * @memberof MaterialBackSide
+     */
+    'u3mImage': MaterialSideAllOfU3mImage | null;
+    /**
+     * 
+     * @type {MaterialType}
+     * @memberof MaterialBackSide
+     */
+    'materialType': MaterialType;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialDescription>}
+     * @memberof MaterialBackSide
+     */
+    'descriptionList': Array<MaterialDescription>;
+    /**
+     * 
+     * @type {MaterialSideAllOfConstruction}
+     * @memberof MaterialBackSide
+     */
+    'construction': MaterialSideAllOfConstruction;
+    /**
+     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialSideAllOfConstructionCustomPropertyListInner>}
+     * @memberof MaterialBackSide
+     */
+    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyListInner>;
+    /**
+     * 
+     * @type {Array<MaterialSideAllOfContentList>}
+     * @memberof MaterialBackSide
+     */
+    'contentList': Array<MaterialSideAllOfContentList>;
+    /**
+     * 
+     * @type {MaterialWidth}
+     * @memberof MaterialBackSide
+     */
+    'width': MaterialWidth;
+    /**
+     * 
+     * @type {MaterialWeight}
+     * @memberof MaterialBackSide
+     */
+    'weight': MaterialWeight;
 }
-/**
- * 
- * @export
- * @interface MaterialBackSideImg
- */
-export interface MaterialBackSideImg {
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialBackSideImg
-     */
-    'crop'?: string;
-    /**
-     * 
-     * @type {MaterialFaceSideImgCropRecord}
-     * @memberof MaterialBackSideImg
-     */
-    'cropRecord'?: MaterialFaceSideImgCropRecord;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialBackSideImg
-     */
-    'ruler'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialBackSideImg
-     */
-    'original'?: string;
-    /**
-     * original 圖片的 dpi
-     * @type {number}
-     * @memberof MaterialBackSideImg
-     */
-    'dpi'?: number;
-    /**
-     * 產生u3m畫面的圖片預覽圖
-     * @type {string}
-     * @memberof MaterialBackSideImg
-     */
-    'u3mCrop'?: string;
-    /**
-     * 給產生u3m流程的recut用的圖
-     * @type {string}
-     * @memberof MaterialBackSideImg
-     */
-    'u3mOriginal'?: string;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord}
-     * @memberof MaterialBackSideImg
-     */
-    'u3mCropRecord'?: OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord;
-}
+
+
 /**
  * 
  * @export
@@ -5044,107 +7522,637 @@ export interface MaterialBackSideImg {
  */
 export interface MaterialCarbonEmission {
     /**
-     * 
-     * @type {CarbonEmissionCo2}
+     * 後端對應Made2Flow的personalized null值時代表還未產出 
+     * @type {number}
      * @memberof MaterialCarbonEmission
      */
-    'co2'?: CarbonEmissionCo2;
+    'co2': number | null;
     /**
-     * 
-     * @type {CarbonEmissionWater}
+     * 後端對應Made2Flow的personalized null值時代表還未產出 
+     * @type {number}
      * @memberof MaterialCarbonEmission
      */
-    'water'?: CarbonEmissionWater;
+    'water': number | null;
     /**
-     * 
-     * @type {CarbonEmissionLand}
+     * 後端對應Made2Flow的personalized null值時代表還未產出 
+     * @type {number}
      * @memberof MaterialCarbonEmission
      */
-    'land'?: CarbonEmissionLand;
-    /**
-     * 
-     * @type {CarbonEmissionEnergy}
-     * @memberof MaterialCarbonEmission
-     */
-    'energy'?: CarbonEmissionEnergy;
+    'land': number | null;
     /**
      * M2F數據最後更新時間，若未有值則為null
      * @type {number}
      * @memberof MaterialCarbonEmission
      */
-    'lastUpdateTime'?: number | null;
-    /**
-     * 未有訂閱M2F加值服務時為NULL
-     * @type {number}
-     * @memberof MaterialCarbonEmission
-     */
-    'materialOwnerMade2FlowPlanType'?: MaterialCarbonEmissionMaterialOwnerMade2FlowPlanTypeEnum;
-    /**
-     * 未有訂閱M2F加值服務時為NULL
-     * @type {number}
-     * @memberof MaterialCarbonEmission
-     */
-    'viewerMade2FlowPlanType'?: MaterialCarbonEmissionViewerMade2FlowPlanTypeEnum;
+    'lastUpdateTime': number | null;
 }
-
-export const MaterialCarbonEmissionMaterialOwnerMade2FlowPlanTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type MaterialCarbonEmissionMaterialOwnerMade2FlowPlanTypeEnum = typeof MaterialCarbonEmissionMaterialOwnerMade2FlowPlanTypeEnum[keyof typeof MaterialCarbonEmissionMaterialOwnerMade2FlowPlanTypeEnum];
-export const MaterialCarbonEmissionViewerMade2FlowPlanTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type MaterialCarbonEmissionViewerMade2FlowPlanTypeEnum = typeof MaterialCarbonEmissionViewerMade2FlowPlanTypeEnum[keyof typeof MaterialCarbonEmissionViewerMade2FlowPlanTypeEnum];
-
 /**
- * 
+ * 憑證
  * @export
- * @interface MaterialCertificateListInner
+ * @interface MaterialCertification
  */
-export interface MaterialCertificateListInner {
+export interface MaterialCertification {
     /**
      * 
      * @type {number}
-     * @memberof MaterialCertificateListInner
+     * @memberof MaterialCertification
      */
-    'certificateId'?: number;
+    'certificateId': number;
     /**
      * 
      * @type {string}
-     * @memberof MaterialCertificateListInner
+     * @memberof MaterialCertification
      */
-    'name'?: string;
+    'name': string;
 }
 /**
  * 
  * @export
- * @interface MaterialContentListInner
+ * @interface MaterialColorCustomPropertyBase
  */
-export interface MaterialContentListInner {
+export interface MaterialColorCustomPropertyBase {
     /**
-     * 
-     * @type {number}
-     * @memberof MaterialContentListInner
+     * 是否公開欄位資訊
+     * @type {boolean}
+     * @memberof MaterialColorCustomPropertyBase
      */
-    'contentId'?: number;
+    'isPublic': boolean;
     /**
      * 
      * @type {string}
-     * @memberof MaterialContentListInner
+     * @memberof MaterialColorCustomPropertyBase
      */
-    'name'?: string;
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialColorCustomPropertyBase
+     */
+    'value': string;
+}
+/**
+ * 布片顏色資訊
+ * @export
+ * @interface MaterialColorInfo
+ */
+export interface MaterialColorInfo {
+    /**
+     * 顏色名稱
+     * @type {string}
+     * @memberof MaterialColorInfo
+     */
+    'color': string;
+    /**
+     * 自定義欄位清單，External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳
+     * @type {Array<MaterialColorInfoCustomPropertyListInner>}
+     * @memberof MaterialColorInfo
+     */
+    'customPropertyList': Array<MaterialColorInfoCustomPropertyListInner>;
+}
+/**
+ * 布片顏色資訊
+ * @export
+ * @interface MaterialColorInfoCreate
+ */
+export interface MaterialColorInfoCreate {
+    /**
+     * 顏色名稱
+     * @type {string}
+     * @memberof MaterialColorInfoCreate
+     */
+    'color': string | null;
+    /**
+     * 自定義欄位清單，External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳
+     * @type {Array<MaterialColorCustomPropertyBase>}
+     * @memberof MaterialColorInfoCreate
+     */
+    'customPropertyList': Array<MaterialColorCustomPropertyBase> | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialColorInfoCustomPropertyListInner
+ */
+export interface MaterialColorInfoCustomPropertyListInner {
+    /**
+     * 是否公開欄位資訊
+     * @type {boolean}
+     * @memberof MaterialColorInfoCustomPropertyListInner
+     */
+    'isPublic': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialColorInfoCustomPropertyListInner
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialColorInfoCustomPropertyListInner
+     */
+    'value': string;
     /**
      * 
      * @type {number}
-     * @memberof MaterialContentListInner
+     * @memberof MaterialColorInfoCustomPropertyListInner
      */
-    'percentage'?: number;
+    'customId': number;
+}
+/**
+ * 布片顏色資訊
+ * @export
+ * @interface MaterialColorInfoUpdatePayload
+ */
+export interface MaterialColorInfoUpdatePayload {
+    /**
+     * 顏色名稱
+     * @type {string}
+     * @memberof MaterialColorInfoUpdatePayload
+     */
+    'color': string;
+    /**
+     * 自定義欄位清單，External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳
+     * @type {Array<MaterialColorInfoUpdatePayloadCustomPropertyListInner>}
+     * @memberof MaterialColorInfoUpdatePayload
+     */
+    'customPropertyList': Array<MaterialColorInfoUpdatePayloadCustomPropertyListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialColorInfoUpdatePayloadCustomPropertyListInner
+ */
+export interface MaterialColorInfoUpdatePayloadCustomPropertyListInner {
+    /**
+     * 是否公開欄位資訊
+     * @type {boolean}
+     * @memberof MaterialColorInfoUpdatePayloadCustomPropertyListInner
+     */
+    'isPublic': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialColorInfoUpdatePayloadCustomPropertyListInner
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialColorInfoUpdatePayloadCustomPropertyListInner
+     */
+    'value': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialColorInfoUpdatePayloadCustomPropertyListInner
+     */
+    'customId'?: number | null;
+}
+/**
+ * @type MaterialConstruction
+ * @export
+ */
+export type MaterialConstruction = MaterialKnitConstruction | MaterialLeatherConstruction | MaterialNonWovenConstruction | MaterialTrimConstruction | MaterialWovenConstruction;
+
+/**
+ * 封面圖
+ * @export
+ * @interface MaterialCoverImage
+ */
+export interface MaterialCoverImage {
+    /**
+     * 
+     * @type {CoverMode}
+     * @memberof MaterialCoverImage
+     */
+    'mode': CoverMode;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCoverImage
+     */
+    'thumbnailUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCoverImage
+     */
+    'displayUrl': string;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialCreate
+ */
+export interface MaterialCreate {
+    /**
+     * 是否為雙面布
+     * @type {boolean}
+     * @memberof MaterialCreate
+     */
+    'isDoubleSide': boolean;
+    /**
+     * 
+     * @type {MaterialSideType}
+     * @memberof MaterialCreate
+     */
+    'sideType': MaterialSideType | null;
+    /**
+     * 是否為複合布
+     * @type {boolean}
+     * @memberof MaterialCreate
+     */
+    'isComposite': boolean;
+    /**
+     * 產品編號
+     * @type {string}
+     * @memberof MaterialCreate
+     */
+    'itemNo': string;
+    /**
+     * 
+     * @type {MaterialPatternInfoCreate}
+     * @memberof MaterialCreate
+     */
+    'patternInfo': MaterialPatternInfoCreate;
+    /**
+     * 
+     * @type {MaterialColorInfoCreate}
+     * @memberof MaterialCreate
+     */
+    'colorInfo': MaterialColorInfoCreate;
+    /**
+     * 
+     * @type {MaterialSeasonInfoCreate}
+     * @memberof MaterialCreate
+     */
+    'seasonInfo': MaterialSeasonInfoCreate;
+    /**
+     * 是否同步正反面布資訊
+     * @type {boolean}
+     * @memberof MaterialCreate
+     */
+    'isAutoSyncFaceToBackSideInfo': boolean;
+    /**
+     * 
+     * @type {MaterialCreateFaceSide}
+     * @memberof MaterialCreate
+     */
+    'faceSide': MaterialCreateFaceSide;
+    /**
+     * 
+     * @type {MaterialCreateMiddleSide}
+     * @memberof MaterialCreate
+     */
+    'middleSide': MaterialCreateMiddleSide;
+    /**
+     * 
+     * @type {MaterialCreateBackSide}
+     * @memberof MaterialCreate
+     */
+    'backSide': MaterialCreateBackSide;
+    /**
+     * 
+     * @type {MaterialCreateTagInfo}
+     * @memberof MaterialCreate
+     */
+    'tagInfo': MaterialCreateTagInfo;
+    /**
+     * 
+     * @type {MaterialPriceInfo}
+     * @memberof MaterialCreate
+     */
+    'priceInfo': MaterialPriceInfo;
+    /**
+     * 多媒體附件清單
+     * @type {Array<CreateMultimediaFile>}
+     * @memberof MaterialCreate
+     */
+    'multimediaList': Array<CreateMultimediaFile> | null;
+    /**
+     * 
+     * @type {MaterialCreateInternalInfo}
+     * @memberof MaterialCreate
+     */
+    'internalInfo': MaterialCreateInternalInfo | null;
+    /**
+     * 是否客製化U3M正在上傳中
+     * @type {boolean}
+     * @memberof MaterialCreate
+     */
+    'hasCustomU3mUploading': boolean;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialCreateBackSide
+ */
+export interface MaterialCreateBackSide {
+    /**
+     * 布面特性清單
+     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * @memberof MaterialCreateBackSide
+     */
+    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    /**
+     * 布面後處理清單
+     * @type {Array<MaterialSideCreateBaseFinishListInner>}
+     * @memberof MaterialCreateBackSide
+     */
+    'finishList': Array<MaterialSideCreateBaseFinishListInner> | null;
+    /**
+     * 
+     * @type {MaterialType}
+     * @memberof MaterialCreateBackSide
+     */
+    'materialType': MaterialType;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialSideCreateAllOfDescriptionList>}
+     * @memberof MaterialCreateBackSide
+     */
+    'descriptionList': Array<MaterialSideCreateAllOfDescriptionList> | null;
+    /**
+     * 
+     * @type {MaterialSideCreateAllOfConstruction}
+     * @memberof MaterialCreateBackSide
+     */
+    'construction': MaterialSideCreateAllOfConstruction;
+    /**
+     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialCustomConstructionBase>}
+     * @memberof MaterialCreateBackSide
+     */
+    'constructionCustomPropertyList': Array<MaterialCustomConstructionBase> | null;
+    /**
+     * 布面成分清單
+     * @type {Array<MaterialSideCreateAllOfContentList>}
+     * @memberof MaterialCreateBackSide
+     */
+    'contentList': Array<MaterialSideCreateAllOfContentList>;
+    /**
+     * 
+     * @type {MaterialWidth}
+     * @memberof MaterialCreateBackSide
+     */
+    'width': MaterialWidth;
+    /**
+     * 
+     * @type {MaterialWeight}
+     * @memberof MaterialCreateBackSide
+     */
+    'weight': MaterialWeight;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialCreateFaceSide
+ */
+export interface MaterialCreateFaceSide {
+    /**
+     * 布面特性清單
+     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * @memberof MaterialCreateFaceSide
+     */
+    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    /**
+     * 布面後處理清單
+     * @type {Array<MaterialSideCreateBaseFinishListInner>}
+     * @memberof MaterialCreateFaceSide
+     */
+    'finishList': Array<MaterialSideCreateBaseFinishListInner> | null;
+    /**
+     * 
+     * @type {MaterialType}
+     * @memberof MaterialCreateFaceSide
+     */
+    'materialType': MaterialType;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialSideCreateAllOfDescriptionList>}
+     * @memberof MaterialCreateFaceSide
+     */
+    'descriptionList': Array<MaterialSideCreateAllOfDescriptionList> | null;
+    /**
+     * 
+     * @type {MaterialSideCreateAllOfConstruction}
+     * @memberof MaterialCreateFaceSide
+     */
+    'construction': MaterialSideCreateAllOfConstruction;
+    /**
+     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialCustomConstructionBase>}
+     * @memberof MaterialCreateFaceSide
+     */
+    'constructionCustomPropertyList': Array<MaterialCustomConstructionBase> | null;
+    /**
+     * 布面成分清單
+     * @type {Array<MaterialSideCreateAllOfContentList>}
+     * @memberof MaterialCreateFaceSide
+     */
+    'contentList': Array<MaterialSideCreateAllOfContentList>;
+    /**
+     * 
+     * @type {MaterialWidth}
+     * @memberof MaterialCreateFaceSide
+     */
+    'width': MaterialWidth;
+    /**
+     * 
+     * @type {MaterialWeight}
+     * @memberof MaterialCreateFaceSide
+     */
+    'weight': MaterialWeight;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialCreateInternalInfo
+ */
+export interface MaterialCreateInternalInfo {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof MaterialCreateInternalInfo
+     */
+    'tagList': Array<string> | null;
+    /**
+     * 
+     * @type {MaterialPriceInfo}
+     * @memberof MaterialCreateInternalInfo
+     */
+    'priceInfo': MaterialPriceInfo;
+    /**
+     * 
+     * @type {MaterialCreateInternalInfoInventoryInfo}
+     * @memberof MaterialCreateInternalInfo
+     */
+    'inventoryInfo': MaterialCreateInternalInfoInventoryInfo;
+    /**
+     * 附件清單
+     * @type {Array<CreateAndEditAttachmentFile>}
+     * @memberof MaterialCreateInternalInfo
+     */
+    'attachmentList': Array<CreateAndEditAttachmentFile> | null;
+    /**
+     * 備註
+     * @type {string}
+     * @memberof MaterialCreateInternalInfo
+     */
+    'remark': string | null;
+    /**
+     * 代碼
+     * @type {string}
+     * @memberof MaterialCreateInternalInfo
+     */
+    'nativeCode': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialCreateInternalInfoInventoryInfo
+ */
+export interface MaterialCreateInternalInfoInventoryInfo {
+    /**
+     * 是否公開庫存總數量
+     * @type {boolean}
+     * @memberof MaterialCreateInternalInfoInventoryInfo
+     */
+    'isTotalPublic': boolean;
+    /**
+     * 剩餘樣卡清單
+     * @type {Array<MaterialInternalInventoryInfoSampleCardsRemainingListInner>}
+     * @memberof MaterialCreateInternalInfoInventoryInfo
+     */
+    'sampleCardsRemainingList': Array<MaterialInternalInventoryInfoSampleCardsRemainingListInner> | null;
+    /**
+     * 剩餘吊卡清單
+     * @type {Array<MaterialInternalInventoryInfoSampleCardsRemainingListInner>}
+     * @memberof MaterialCreateInternalInfoInventoryInfo
+     */
+    'hangersRemainingList': Array<MaterialInternalInventoryInfoSampleCardsRemainingListInner> | null;
+    /**
+     * 
+     * @type {MaterialInternalInventoryInfoYardageRemainingInfo}
+     * @memberof MaterialCreateInternalInfoInventoryInfo
+     */
+    'yardageRemainingInfo': MaterialInternalInventoryInfoYardageRemainingInfo | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialCreateMiddleSide
+ */
+export interface MaterialCreateMiddleSide {
+    /**
+     * 布面特性清單
+     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * @memberof MaterialCreateMiddleSide
+     */
+    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    /**
+     * 布面後處理清單
+     * @type {Array<MaterialSideCreateBaseFinishListInner>}
+     * @memberof MaterialCreateMiddleSide
+     */
+    'finishList': Array<MaterialSideCreateBaseFinishListInner> | null;
+    /**
+     * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialCreateMiddleSideAllOfCustomPropertyList>}
+     * @memberof MaterialCreateMiddleSide
+     */
+    'customPropertyList': Array<MaterialCreateMiddleSideAllOfCustomPropertyList>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialCreateMiddleSideAllOf
+ */
+export interface MaterialCreateMiddleSideAllOf {
+    /**
+     * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialCreateMiddleSideAllOfCustomPropertyList>}
+     * @memberof MaterialCreateMiddleSideAllOf
+     */
+    'customPropertyList': Array<MaterialCreateMiddleSideAllOfCustomPropertyList>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialCreateMiddleSideAllOfCustomPropertyList
+ */
+export interface MaterialCreateMiddleSideAllOfCustomPropertyList {
+    /**
+     * 是否公開欄位資訊
+     * @type {boolean}
+     * @memberof MaterialCreateMiddleSideAllOfCustomPropertyList
+     */
+    'isPublic': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCreateMiddleSideAllOfCustomPropertyList
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCreateMiddleSideAllOfCustomPropertyList
+     */
+    'value': string;
+}
+/**
+ * Tag資訊
+ * @export
+ * @interface MaterialCreateTagInfo
+ */
+export interface MaterialCreateTagInfo {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof MaterialCreateTagInfo
+     */
+    'tagList': Array<string> | null;
+    /**
+     * 認證關鍵字ID清單
+     * @type {Array<number>}
+     * @memberof MaterialCreateTagInfo
+     */
+    'certificationTagIdList': Array<number> | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialCustomConstructionBase
+ */
+export interface MaterialCustomConstructionBase {
+    /**
+     * 是否公開欄位資訊
+     * @type {boolean}
+     * @memberof MaterialCustomConstructionBase
+     */
+    'isPublic': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomConstructionBase
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomConstructionBase
+     */
+    'value': string;
 }
 /**
  * 
@@ -5154,16 +8162,10 @@ export interface MaterialContentListInner {
 export interface MaterialCustomU3m {
     /**
      * 
-     * @type {number}
+     * @type {MaterialU3mStatus}
      * @memberof MaterialCustomU3m
      */
-    'status': MaterialCustomU3mStatusEnum;
-    /**
-     * 使用者上傳的檔案名稱
-     * @type {string}
-     * @memberof MaterialCustomU3m
-     */
-    'customFileName'?: string;
+    'status': MaterialU3mStatus;
     /**
      * 是否有物理資料
      * @type {boolean}
@@ -5175,281 +8177,1043 @@ export interface MaterialCustomU3m {
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'zipUrl'?: string;
+    'zipUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'u3maUrl'?: string;
+    'u3maUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'baseImgUrl'?: string;
+    'baseImgUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'normalImgUrl'?: string;
+    'normalImgUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'roughImgUrl'?: string;
+    'roughImgUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'dispImgUrl'?: string;
+    'dispImgUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'gltfUrl'?: string;
+    'gltfUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'u3mSpecUrl'?: string;
+    'u3mSpecUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'u3mPhysicSpecUrl'?: string;
+    'u3mPhysicSpecUrl': string;
     /**
-     * 圖片的 dpi
+     * 
      * @type {number}
      * @memberof MaterialCustomU3m
      */
-    'dpi'?: number;
+    'dpi': number;
     /**
      * 建立者的單位的標籤顏色，檢視者所屬組織和建立者單位那方所屬組織相同時為:呈現建立者組織或團隊的label color，非建立者那方單位所屬組織為Null值
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'creatorUnitLabelColor'?: string;
+    'creatorUnitLabelColor': string;
     /**
      * 建立者的使用者名稱，檢視者所屬組織和建立者單位那方所屬組織相同時呈現建立者的使用者名稱，非建立者那方單位所屬組織為Null值
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'creator'?: string;
+    'creator': string;
     /**
      * 建立者的大頭貼，檢視者所屬組織和建立者單位那方所屬組織相同時呈現建立者的大頭貼，非建立者那方單位所屬組織為Null值
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'creatorAvatar'?: string;
+    'creatorAvatar': string;
     /**
      * 建立時間
      * @type {number}
      * @memberof MaterialCustomU3m
      */
     'createDate': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialCustomU3m
+     */
+    'customFileName': string;
 }
 
-export const MaterialCustomU3mStatusEnum = {
-    UNQUALIFIED: -1,
-    INITIAL: 0,
-    IN_QUEUE: 1,
-    COMPLETED: 2,
-    PROCESSING: 3,
-    UNSUCCESSFUL: 99
-} as const;
-
-export type MaterialCustomU3mStatusEnum = typeof MaterialCustomU3mStatusEnum[keyof typeof MaterialCustomU3mStatusEnum];
 
 /**
  * 
  * @export
- * @interface MaterialDescriptionListInner
+ * @interface MaterialCustomU3mAllOf
  */
-export interface MaterialDescriptionListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialDescriptionListInner
-     */
-    'descriptionId'?: number;
+export interface MaterialCustomU3mAllOf {
     /**
      * 
      * @type {string}
-     * @memberof MaterialDescriptionListInner
+     * @memberof MaterialCustomU3mAllOf
      */
-    'name'?: string;
+    'customFileName': string;
+}
+/**
+ * 布種材料描述
+ * @export
+ * @interface MaterialDescription
+ */
+export interface MaterialDescription {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialDescription
+     */
+    'descriptionId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialDescription
+     */
+    'name': string;
+}
+/**
+ * DigitalThread資訊
+ * @export
+ * @interface MaterialDigitalThreadInfo
+ */
+export interface MaterialDigitalThreadInfo {
+    /**
+     * DigitalThread數量
+     * @type {number}
+     * @memberof MaterialDigitalThreadInfo
+     */
+    'threadQty': number;
+    /**
+     * 是否有未讀DigitalThread
+     * @type {boolean}
+     * @memberof MaterialDigitalThreadInfo
+     */
+    'hasUnreadThread': boolean;
 }
 /**
  * 
  * @export
- * @interface MaterialFaceSideImg
+ * @interface MaterialFaceSide
  */
-export interface MaterialFaceSideImg {
+export interface MaterialFaceSide {
     /**
-     * 
-     * @type {string}
-     * @memberof MaterialFaceSideImg
-     */
-    'crop'?: string;
-    /**
-     * 
-     * @type {MaterialFaceSideImgCropRecord}
-     * @memberof MaterialFaceSideImg
-     */
-    'cropRecord'?: MaterialFaceSideImgCropRecord;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialFaceSideImg
-     */
-    'ruler'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialFaceSideImg
-     */
-    'original'?: string;
-    /**
-     * original 圖片的 dpi
+     * 布面ID
      * @type {number}
-     * @memberof MaterialFaceSideImg
+     * @memberof MaterialFaceSide
      */
-    'dpi'?: number;
+    'materialSideId': number;
     /**
-     * 產生u3m畫面的圖片預覽圖
+     * Frontier編號
      * @type {string}
-     * @memberof MaterialFaceSideImg
+     * @memberof MaterialFaceSide
      */
-    'u3mCrop'?: string;
-    /**
-     * 給產生u3m流程的recut用的圖
-     * @type {string}
-     * @memberof MaterialFaceSideImg
-     */
-    'u3mOriginal'?: string;
+    'frontierNo': string;
     /**
      * 
-     * @type {MaterialFaceSideImgU3mCropRecord}
-     * @memberof MaterialFaceSideImg
+     * @type {Array<MaterialFeature>}
+     * @memberof MaterialFaceSide
      */
-    'u3mCropRecord'?: MaterialFaceSideImgU3mCropRecord;
+    'featureList': Array<MaterialFeature>;
+    /**
+     * 
+     * @type {Array<MaterialFinish>}
+     * @memberof MaterialFaceSide
+     */
+    'finishList': Array<MaterialFinish>;
+    /**
+     * 是否為主要布面
+     * @type {boolean}
+     * @memberof MaterialFaceSide
+     */
+    'isMainSide': boolean;
+    /**
+     * 
+     * @type {MaterialSideAllOfSideImage}
+     * @memberof MaterialFaceSide
+     */
+    'sideImage': MaterialSideAllOfSideImage;
+    /**
+     * 
+     * @type {MaterialSideAllOfU3mImage}
+     * @memberof MaterialFaceSide
+     */
+    'u3mImage': MaterialSideAllOfU3mImage | null;
+    /**
+     * 
+     * @type {MaterialType}
+     * @memberof MaterialFaceSide
+     */
+    'materialType': MaterialType;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialDescription>}
+     * @memberof MaterialFaceSide
+     */
+    'descriptionList': Array<MaterialDescription>;
+    /**
+     * 
+     * @type {MaterialSideAllOfConstruction}
+     * @memberof MaterialFaceSide
+     */
+    'construction': MaterialSideAllOfConstruction;
+    /**
+     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialSideAllOfConstructionCustomPropertyListInner>}
+     * @memberof MaterialFaceSide
+     */
+    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyListInner>;
+    /**
+     * 
+     * @type {Array<MaterialSideAllOfContentList>}
+     * @memberof MaterialFaceSide
+     */
+    'contentList': Array<MaterialSideAllOfContentList>;
+    /**
+     * 
+     * @type {MaterialWidth}
+     * @memberof MaterialFaceSide
+     */
+    'width': MaterialWidth;
+    /**
+     * 
+     * @type {MaterialWeight}
+     * @memberof MaterialFaceSide
+     */
+    'weight': MaterialWeight;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialFeature
+ */
+export interface MaterialFeature {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialFeature
+     */
+    'featureId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialFeature
+     */
+    'name': string;
 }
 /**
- * 記錄裁切正方形圖片的參數
+ * 後處理
  * @export
- * @interface MaterialFaceSideImgCropRecord
+ * @interface MaterialFinish
  */
-export interface MaterialFaceSideImgCropRecord {
+export interface MaterialFinish {
     /**
      * 
      * @type {number}
-     * @memberof MaterialFaceSideImgCropRecord
+     * @memberof MaterialFinish
      */
-    'x'?: number;
+    'finishId': number;
     /**
      * 
-     * @type {number}
-     * @memberof MaterialFaceSideImgCropRecord
+     * @type {string}
+     * @memberof MaterialFinish
      */
-    'y'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialFaceSideImgCropRecord
-     */
-    'rotateDeg'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialFaceSideImgCropRecord
-     */
-    'scaleRatio'?: number;
-}
-/**
- * 記錄U3M裁切圖片的參數
- * @export
- * @interface MaterialFaceSideImgU3mCropRecord
- */
-export interface MaterialFaceSideImgU3mCropRecord {
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord}
-     * @memberof MaterialFaceSideImgU3mCropRecord
-     */
-    'squareCropRecord'?: OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord}
-     * @memberof MaterialFaceSideImgU3mCropRecord
-     */
-    'perspectiveCropRecord'?: OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord;
+    'name': string;
 }
 /**
  * 
  * @export
- * @interface MaterialFinishListInner
+ * @interface MaterialGenerateU3mSide
  */
-export interface MaterialFinishListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialFinishListInner
-     */
-    'finishId'?: number;
+export interface MaterialGenerateU3mSide {
     /**
      * 
      * @type {string}
-     * @memberof MaterialFinishListInner
+     * @memberof MaterialGenerateU3mSide
      */
-    'name'?: string;
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialGenerateU3mSide
+     */
+    'fileName': string;
+    /**
+     * 
+     * @type {MultimediaFileAllOfCropRecord}
+     * @memberof MaterialGenerateU3mSide
+     */
+    'squareCropRecord': MultimediaFileAllOfCropRecord;
+    /**
+     * 
+     * @type {MaterialGenerateU3mSidePerspectiveCropRecord}
+     * @memberof MaterialGenerateU3mSide
+     */
+    'perspectiveCropRecord': MaterialGenerateU3mSidePerspectiveCropRecord;
 }
 /**
  * 
  * @export
- * @interface MaterialInventoryListInner
+ * @interface MaterialGenerateU3mSidePerspectiveCropRecord
  */
-export interface MaterialInventoryListInner {
+export interface MaterialGenerateU3mSidePerspectiveCropRecord {
     /**
      * 
-     * @type {string}
-     * @memberof MaterialInventoryListInner
+     * @type {Coordinate}
+     * @memberof MaterialGenerateU3mSidePerspectiveCropRecord
      */
-    'section'?: string;
+    'leftTop': Coordinate;
     /**
      * 
-     * @type {string}
-     * @memberof MaterialInventoryListInner
+     * @type {Coordinate}
+     * @memberof MaterialGenerateU3mSidePerspectiveCropRecord
      */
-    'shelf'?: string;
+    'leftBottom': Coordinate;
+    /**
+     * 
+     * @type {Coordinate}
+     * @memberof MaterialGenerateU3mSidePerspectiveCropRecord
+     */
+    'rightTop': Coordinate;
+    /**
+     * 
+     * @type {Coordinate}
+     * @memberof MaterialGenerateU3mSidePerspectiveCropRecord
+     */
+    'rightBottom': Coordinate;
     /**
      * 
      * @type {number}
-     * @memberof MaterialInventoryListInner
+     * @memberof MaterialGenerateU3mSidePerspectiveCropRecord
      */
-    'quantity'?: number;
+    'rotateDeg': number;
+}
+/**
+ * External Page(非Asset或WorkSpace的頁面)時，回應 null
+ * @export
+ * @interface MaterialInternalInfo
+ */
+export interface MaterialInternalInfo {
+    /**
+     * 
+     * @type {MaterialPrivateMetaData}
+     * @memberof MaterialInternalInfo
+     */
+    'metaData': MaterialPrivateMetaData;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof MaterialInternalInfo
+     */
+    'tagList': Array<string>;
+    /**
+     * 
+     * @type {MaterialPriceInfo}
+     * @memberof MaterialInternalInfo
+     */
+    'priceInfo': MaterialPriceInfo;
+    /**
+     * 
+     * @type {MaterialInternalInventoryInfo}
+     * @memberof MaterialInternalInfo
+     */
+    'inventoryInfo': MaterialInternalInventoryInfo;
+    /**
+     * 
+     * @type {Array<AttachmentFile>}
+     * @memberof MaterialInternalInfo
+     */
+    'attachmentList': Array<AttachmentFile>;
     /**
      * 
      * @type {string}
-     * @memberof MaterialInventoryListInner
+     * @memberof MaterialInternalInfo
      */
-    'unit'?: MaterialInventoryListInnerUnitEnum;
+    'remark': string | null;
+    /**
+     * Native Code
+     * @type {string}
+     * @memberof MaterialInternalInfo
+     */
+    'nativeCode': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialInternalInventoryInfo
+ */
+export interface MaterialInternalInventoryInfo {
+    /**
+     * 是否公開庫存總數量
+     * @type {boolean}
+     * @memberof MaterialInternalInventoryInfo
+     */
+    'isTotalPublic': boolean;
+    /**
+     * 剩餘樣卡清單
+     * @type {Array<MaterialInternalInventoryInfoSampleCardsRemainingListInner>}
+     * @memberof MaterialInternalInventoryInfo
+     */
+    'sampleCardsRemainingList': Array<MaterialInternalInventoryInfoSampleCardsRemainingListInner> | null;
+    /**
+     * 剩餘吊卡清單
+     * @type {Array<MaterialInternalInventoryInfoSampleCardsRemainingListInner>}
+     * @memberof MaterialInternalInventoryInfo
+     */
+    'hangersRemainingList': Array<MaterialInternalInventoryInfoSampleCardsRemainingListInner> | null;
+    /**
+     * 
+     * @type {MaterialInternalInventoryInfoYardageRemainingInfo}
+     * @memberof MaterialInternalInventoryInfo
+     */
+    'yardageRemainingInfo': MaterialInternalInventoryInfoYardageRemainingInfo | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialInternalInventoryInfoSampleCardsRemainingListInner
+ */
+export interface MaterialInternalInventoryInfoSampleCardsRemainingListInner {
+    /**
+     * 布卡來源
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoSampleCardsRemainingListInner
+     */
+    'source': string | null;
+    /**
+     * 櫃位1
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoSampleCardsRemainingListInner
+     */
+    'shelf1': string | null;
+    /**
+     * 櫃位2
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoSampleCardsRemainingListInner
+     */
+    'shelf2': string | null;
+    /**
+     * 地點
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoSampleCardsRemainingListInner
+     */
+    'location': string | null;
+    /**
+     * 庫存數量 1~999，整數 
+     * @type {number}
+     * @memberof MaterialInternalInventoryInfoSampleCardsRemainingListInner
+     */
+    'qtyInPcs': number | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialInternalInventoryInfoSampleCardsRemainingListInnerAllOf
+ */
+export interface MaterialInternalInventoryInfoSampleCardsRemainingListInnerAllOf {
+    /**
+     * 庫存數量 1~999，整數 
+     * @type {number}
+     * @memberof MaterialInternalInventoryInfoSampleCardsRemainingListInnerAllOf
+     */
+    'qtyInPcs': number | null;
+}
+/**
+ * 剩餘碼數資訊
+ * @export
+ * @interface MaterialInternalInventoryInfoYardageRemainingInfo
+ */
+export interface MaterialInternalInventoryInfoYardageRemainingInfo {
+    /**
+     * 剩餘碼數清單
+     * @type {Array<MaterialInternalInventoryInfoYardageRemainingInfoListInner>}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfo
+     */
+    'list': Array<MaterialInternalInventoryInfoYardageRemainingInfoListInner>;
+    /**
+     * 
+     * @type {MaterialQuantityUnit}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfo
+     */
+    'unit': MaterialQuantityUnit;
 }
 
-export const MaterialInventoryListInnerUnitEnum = {
-    Y: 'Y',
-    M: 'M',
-    Kg: 'KG'
-} as const;
 
-export type MaterialInventoryListInnerUnitEnum = typeof MaterialInventoryListInnerUnitEnum[keyof typeof MaterialInventoryListInnerUnitEnum];
-
+/**
+ * 
+ * @export
+ * @interface MaterialInternalInventoryInfoYardageRemainingInfoListInner
+ */
+export interface MaterialInternalInventoryInfoYardageRemainingInfoListInner {
+    /**
+     * 布卡來源
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInner
+     */
+    'source': string | null;
+    /**
+     * 櫃位1
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInner
+     */
+    'shelf1': string | null;
+    /**
+     * 櫃位2
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInner
+     */
+    'shelf2': string | null;
+    /**
+     * 地點
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInner
+     */
+    'location': string | null;
+    /**
+     * 生產編號
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInner
+     */
+    'productionNo': string | null;
+    /**
+     * 疋號
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInner
+     */
+    'roll': string | null;
+    /**
+     * 缸號
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInner
+     */
+    'lot': string | null;
+    /**
+     * 庫存數量 1~999999，整數 
+     * @type {number}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInner
+     */
+    'qty': number | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
+ */
+export interface MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf {
+    /**
+     * 生產編號
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
+     */
+    'productionNo': string | null;
+    /**
+     * 疋號
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
+     */
+    'roll': string | null;
+    /**
+     * 缸號
+     * @type {string}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
+     */
+    'lot': string | null;
+    /**
+     * 庫存數量 1~999999，整數 
+     * @type {number}
+     * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
+     */
+    'qty': number | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialInventoryRemaingInfoBase
+ */
+export interface MaterialInventoryRemaingInfoBase {
+    /**
+     * 布卡來源
+     * @type {string}
+     * @memberof MaterialInventoryRemaingInfoBase
+     */
+    'source': string | null;
+    /**
+     * 櫃位1
+     * @type {string}
+     * @memberof MaterialInventoryRemaingInfoBase
+     */
+    'shelf1': string | null;
+    /**
+     * 櫃位2
+     * @type {string}
+     * @memberof MaterialInventoryRemaingInfoBase
+     */
+    'shelf2': string | null;
+    /**
+     * 地點
+     * @type {string}
+     * @memberof MaterialInventoryRemaingInfoBase
+     */
+    'location': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialInventoryRemainingInfoBase
+ */
+export interface MaterialInventoryRemainingInfoBase {
+    /**
+     * 布卡來源
+     * @type {string}
+     * @memberof MaterialInventoryRemainingInfoBase
+     */
+    'source': string | null;
+    /**
+     * 櫃位1
+     * @type {string}
+     * @memberof MaterialInventoryRemainingInfoBase
+     */
+    'shelf1': string | null;
+    /**
+     * 櫃位2
+     * @type {string}
+     * @memberof MaterialInventoryRemainingInfoBase
+     */
+    'shelf2': string | null;
+    /**
+     * 地點
+     * @type {string}
+     * @memberof MaterialInventoryRemainingInfoBase
+     */
+    'location': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialKnitConstruction
+ */
+export interface MaterialKnitConstruction {
+    /**
+     * 針織布種織機類型
+     * @type {string}
+     * @memberof MaterialKnitConstruction
+     */
+    'machineType': string | null;
+    /**
+     * 針織布種經向密度
+     * @type {number}
+     * @memberof MaterialKnitConstruction
+     */
+    'walesPerInch': number | null;
+    /**
+     * 針織布種緯向密度
+     * @type {number}
+     * @memberof MaterialKnitConstruction
+     */
+    'coursesPerInch': number | null;
+    /**
+     * 針織布種紗支數
+     * @type {string}
+     * @memberof MaterialKnitConstruction
+     */
+    'yarnSize': string | null;
+    /**
+     * 針織布種機台針數
+     * @type {number}
+     * @memberof MaterialKnitConstruction
+     */
+    'machineGaugeInGg': number | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialLeatherConstruction
+ */
+export interface MaterialLeatherConstruction {
+    /**
+     * 皮革布種AverageSkin
+     * @type {string}
+     * @memberof MaterialLeatherConstruction
+     */
+    'averageSkinPerMeterSquare': string | null;
+    /**
+     * 皮革布種級別
+     * @type {string}
+     * @memberof MaterialLeatherConstruction
+     */
+    'grade': string | null;
+    /**
+     * 皮革布種鞣製
+     * @type {string}
+     * @memberof MaterialLeatherConstruction
+     */
+    'tannage': string | null;
+    /**
+     * 皮革布種厚度
+     * @type {number}
+     * @memberof MaterialLeatherConstruction
+     */
+    'thicknessPerMm': number | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialMiddleSide
+ */
+export interface MaterialMiddleSide {
+    /**
+     * 布面ID
+     * @type {number}
+     * @memberof MaterialMiddleSide
+     */
+    'materialSideId': number;
+    /**
+     * Frontier編號
+     * @type {string}
+     * @memberof MaterialMiddleSide
+     */
+    'frontierNo': string;
+    /**
+     * 
+     * @type {Array<MaterialFeature>}
+     * @memberof MaterialMiddleSide
+     */
+    'featureList': Array<MaterialFeature>;
+    /**
+     * 
+     * @type {Array<MaterialFinish>}
+     * @memberof MaterialMiddleSide
+     */
+    'finishList': Array<MaterialFinish>;
+    /**
+     * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialMiddleSideAllOfCustomPropertyList>}
+     * @memberof MaterialMiddleSide
+     */
+    'customPropertyList': Array<MaterialMiddleSideAllOfCustomPropertyList>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialMiddleSideAllOf
+ */
+export interface MaterialMiddleSideAllOf {
+    /**
+     * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialMiddleSideAllOfCustomPropertyList>}
+     * @memberof MaterialMiddleSideAllOf
+     */
+    'customPropertyList': Array<MaterialMiddleSideAllOfCustomPropertyList>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialMiddleSideAllOfCustomPropertyList
+ */
+export interface MaterialMiddleSideAllOfCustomPropertyList {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialMiddleSideAllOfCustomPropertyList
+     */
+    'customId': number;
+    /**
+     * 是否公開欄位資訊
+     * @type {boolean}
+     * @memberof MaterialMiddleSideAllOfCustomPropertyList
+     */
+    'isPublic': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialMiddleSideAllOfCustomPropertyList
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialMiddleSideAllOfCustomPropertyList
+     */
+    'value': string;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialMiddleSideCreate
+ */
+export interface MaterialMiddleSideCreate {
+    /**
+     * 布面特性清單
+     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * @memberof MaterialMiddleSideCreate
+     */
+    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    /**
+     * 布面後處理清單
+     * @type {Array<MaterialSideCreateBaseFinishListInner>}
+     * @memberof MaterialMiddleSideCreate
+     */
+    'finishList': Array<MaterialSideCreateBaseFinishListInner> | null;
+    /**
+     * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialCreateMiddleSideAllOfCustomPropertyList>}
+     * @memberof MaterialMiddleSideCreate
+     */
+    'customPropertyList': Array<MaterialCreateMiddleSideAllOfCustomPropertyList>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialNonWovenConstruction
+ */
+export interface MaterialNonWovenConstruction {
+    /**
+     * 無紡布種粘合法
+     * @type {string}
+     * @memberof MaterialNonWovenConstruction
+     */
+    'bondingMethod': string | null;
+    /**
+     * 無紡布種厚度
+     * @type {number}
+     * @memberof MaterialNonWovenConstruction
+     */
+    'thicknessPerMm': number | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialOptions
+ */
+export interface MaterialOptions {
+    /**
+     * 
+     * @type {MaterialOptionsCode}
+     * @memberof MaterialOptions
+     */
+    'code': MaterialOptionsCode;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialOptionsCode
+ */
+export interface MaterialOptionsCode {
+    /**
+     * 
+     * @type {MaterialOptionsCodeSeasonList}
+     * @memberof MaterialOptionsCode
+     */
+    'seasonList'?: MaterialOptionsCodeSeasonList;
+    /**
+     * 
+     * @type {MaterialOptionsCodeContentList}
+     * @memberof MaterialOptionsCode
+     */
+    'contentList': MaterialOptionsCodeContentList;
+    /**
+     * 
+     * @type {MaterialOptionsCodeDescriptionList}
+     * @memberof MaterialOptionsCode
+     */
+    'descriptionList': MaterialOptionsCodeDescriptionList;
+    /**
+     * 
+     * @type {MaterialOptionsCodeFinishList}
+     * @memberof MaterialOptionsCode
+     */
+    'finishList': MaterialOptionsCodeFinishList;
+    /**
+     * 憑證
+     * @type {Array<MaterialCertification>}
+     * @memberof MaterialOptionsCode
+     */
+    'certificateList': Array<MaterialCertification>;
+}
+/**
+ * 成分
+ * @export
+ * @interface MaterialOptionsCodeContentList
+ */
+export interface MaterialOptionsCodeContentList {
+    /**
+     * 
+     * @type {Array<MaterialOptionsCodeContentListDefaultInner>}
+     * @memberof MaterialOptionsCodeContentList
+     */
+    'default': Array<MaterialOptionsCodeContentListDefaultInner>;
+    /**
+     * 
+     * @type {Array<MaterialOptionsCodeContentListDefaultInner>}
+     * @memberof MaterialOptionsCodeContentList
+     */
+    'custom': Array<MaterialOptionsCodeContentListDefaultInner>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialOptionsCodeContentListDefaultInner
+ */
+export interface MaterialOptionsCodeContentListDefaultInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialOptionsCodeContentListDefaultInner
+     */
+    'contentId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialOptionsCodeContentListDefaultInner
+     */
+    'name': string;
+}
+/**
+ * 布種材料描述
+ * @export
+ * @interface MaterialOptionsCodeDescriptionList
+ */
+export interface MaterialOptionsCodeDescriptionList {
+    /**
+     * 
+     * @type {MaterialOptionsCodeDescriptionListWoven}
+     * @memberof MaterialOptionsCodeDescriptionList
+     */
+    'woven': MaterialOptionsCodeDescriptionListWoven;
+    /**
+     * 
+     * @type {MaterialOptionsCodeDescriptionListWoven}
+     * @memberof MaterialOptionsCodeDescriptionList
+     */
+    'knit': MaterialOptionsCodeDescriptionListWoven;
+    /**
+     * 
+     * @type {MaterialOptionsCodeDescriptionListWoven}
+     * @memberof MaterialOptionsCodeDescriptionList
+     */
+    'leather': MaterialOptionsCodeDescriptionListWoven;
+    /**
+     * 
+     * @type {MaterialOptionsCodeDescriptionListWoven}
+     * @memberof MaterialOptionsCodeDescriptionList
+     */
+    'nonWoven': MaterialOptionsCodeDescriptionListWoven;
+    /**
+     * 
+     * @type {MaterialOptionsCodeDescriptionListWoven}
+     * @memberof MaterialOptionsCodeDescriptionList
+     */
+    'trim': MaterialOptionsCodeDescriptionListWoven;
+    /**
+     * 
+     * @type {MaterialOptionsCodeDescriptionListWoven}
+     * @memberof MaterialOptionsCodeDescriptionList
+     */
+    'others': MaterialOptionsCodeDescriptionListWoven;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialOptionsCodeDescriptionListWoven
+ */
+export interface MaterialOptionsCodeDescriptionListWoven {
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialDescription>}
+     * @memberof MaterialOptionsCodeDescriptionListWoven
+     */
+    'default': Array<MaterialDescription>;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialDescription>}
+     * @memberof MaterialOptionsCodeDescriptionListWoven
+     */
+    'custom': Array<MaterialDescription>;
+}
+/**
+ * 後處理
+ * @export
+ * @interface MaterialOptionsCodeFinishList
+ */
+export interface MaterialOptionsCodeFinishList {
+    /**
+     * 
+     * @type {Array<MaterialFinish>}
+     * @memberof MaterialOptionsCodeFinishList
+     */
+    'default': Array<MaterialFinish>;
+    /**
+     * 
+     * @type {Array<MaterialFinish>}
+     * @memberof MaterialOptionsCodeFinishList
+     */
+    'custom': Array<MaterialFinish>;
+}
+/**
+ * season options
+ * @export
+ * @interface MaterialOptionsCodeSeasonList
+ */
+export interface MaterialOptionsCodeSeasonList {
+    /**
+     * 
+     * @type {Array<MaterialOptionsCodeSeasonListDefaultInner>}
+     * @memberof MaterialOptionsCodeSeasonList
+     */
+    'default': Array<MaterialOptionsCodeSeasonListDefaultInner>;
+    /**
+     * 
+     * @type {Array<MaterialOptionsCodeSeasonListDefaultInner>}
+     * @memberof MaterialOptionsCodeSeasonList
+     */
+    'custom': Array<MaterialOptionsCodeSeasonListDefaultInner>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialOptionsCodeSeasonListDefaultInner
+ */
+export interface MaterialOptionsCodeSeasonListDefaultInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialOptionsCodeSeasonListDefaultInner
+     */
+    'seasonId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialOptionsCodeSeasonListDefaultInner
+     */
+    'name': string;
+}
 /**
  * 
  * @export
@@ -5461,166 +9225,1583 @@ export interface MaterialPantoneListInner {
      * @type {number}
      * @memberof MaterialPantoneListInner
      */
-    'materialPantoneId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialPantoneListInner
-     */
-    'pantoneId'?: number;
+    'pantoneId': number;
     /**
      * 
      * @type {string}
      * @memberof MaterialPantoneListInner
      */
-    'name'?: string;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialPantoneListInner
      */
-    'majorColorName'?: string;
+    'majorColorName': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialPantoneListInner
      */
-    'colorName'?: string;
+    'colorName': string;
     /**
      * 
      * @type {number}
      * @memberof MaterialPantoneListInner
      */
-    'r'?: number;
+    'r': number;
     /**
      * 
      * @type {number}
      * @memberof MaterialPantoneListInner
      */
-    'g'?: number;
+    'g': number;
     /**
      * 
      * @type {number}
      * @memberof MaterialPantoneListInner
      */
-    'b'?: number;
+    'b': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialPantoneListInner
+     */
+    'materialPantoneId': number;
 }
 /**
  * 
  * @export
- * @interface MaterialPublicPrice
+ * @interface MaterialPantoneListInnerAllOf
  */
-export interface MaterialPublicPrice {
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialPublicPrice
-     */
-    'countryCode'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialPublicPrice
-     */
-    'currency'?: MaterialPublicPriceCurrencyEnum;
+export interface MaterialPantoneListInnerAllOf {
     /**
      * 
      * @type {number}
-     * @memberof MaterialPublicPrice
+     * @memberof MaterialPantoneListInnerAllOf
      */
-    'price'?: number;
+    'materialPantoneId': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialPatternCustomPropertyBase
+ */
+export interface MaterialPatternCustomPropertyBase {
+    /**
+     * 是否公開欄位資訊
+     * @type {boolean}
+     * @memberof MaterialPatternCustomPropertyBase
+     */
+    'isPublic': boolean;
     /**
      * 
      * @type {string}
-     * @memberof MaterialPublicPrice
+     * @memberof MaterialPatternCustomPropertyBase
      */
-    'unit'?: MaterialPublicPriceUnitEnum;
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPatternCustomPropertyBase
+     */
+    'value': string;
+}
+/**
+ * 布片花型資訊
+ * @export
+ * @interface MaterialPatternInfo
+ */
+export interface MaterialPatternInfo {
+    /**
+     * 花型名稱
+     * @type {string}
+     * @memberof MaterialPatternInfo
+     */
+    'pattern': string;
+    /**
+     * 自定義欄位清單，External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳
+     * @type {Array<MaterialPatternInfoCustomPropertyListInner>}
+     * @memberof MaterialPatternInfo
+     */
+    'customPropertyList': Array<MaterialPatternInfoCustomPropertyListInner>;
+}
+/**
+ * 布片花型資訊
+ * @export
+ * @interface MaterialPatternInfoCreate
+ */
+export interface MaterialPatternInfoCreate {
+    /**
+     * 花型名稱
+     * @type {string}
+     * @memberof MaterialPatternInfoCreate
+     */
+    'pattern': string | null;
+    /**
+     * 自定義欄位清單，External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳
+     * @type {Array<MaterialPatternCustomPropertyBase>}
+     * @memberof MaterialPatternInfoCreate
+     */
+    'customPropertyList': Array<MaterialPatternCustomPropertyBase> | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialPatternInfoCustomPropertyListInner
+ */
+export interface MaterialPatternInfoCustomPropertyListInner {
+    /**
+     * 是否公開欄位資訊
+     * @type {boolean}
+     * @memberof MaterialPatternInfoCustomPropertyListInner
+     */
+    'isPublic': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPatternInfoCustomPropertyListInner
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPatternInfoCustomPropertyListInner
+     */
+    'value': string;
     /**
      * 
      * @type {number}
-     * @memberof MaterialPublicPrice
+     * @memberof MaterialPatternInfoCustomPropertyListInner
      */
-    'minimumOrderQuantity'?: number;
+    'customId': number;
+}
+/**
+ * 布片花型資訊
+ * @export
+ * @interface MaterialPatternInfoUpdatePayload
+ */
+export interface MaterialPatternInfoUpdatePayload {
+    /**
+     * 花型名稱
+     * @type {string}
+     * @memberof MaterialPatternInfoUpdatePayload
+     */
+    'pattern': string;
+    /**
+     * 自定義欄位清單，External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳
+     * @type {Array<MaterialPatternInfoUpdatePayloadCustomPropertyListInner>}
+     * @memberof MaterialPatternInfoUpdatePayload
+     */
+    'customPropertyList': Array<MaterialPatternInfoUpdatePayloadCustomPropertyListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialPatternInfoUpdatePayloadCustomPropertyListInner
+ */
+export interface MaterialPatternInfoUpdatePayloadCustomPropertyListInner {
+    /**
+     * 是否公開欄位資訊
+     * @type {boolean}
+     * @memberof MaterialPatternInfoUpdatePayloadCustomPropertyListInner
+     */
+    'isPublic': boolean;
     /**
      * 
      * @type {string}
-     * @memberof MaterialPublicPrice
+     * @memberof MaterialPatternInfoUpdatePayloadCustomPropertyListInner
      */
-    'minimumOrderQuantityUnit'?: MaterialPublicPriceMinimumOrderQuantityUnitEnum;
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPatternInfoUpdatePayloadCustomPropertyListInner
+     */
+    'value': string;
     /**
      * 
      * @type {number}
-     * @memberof MaterialPublicPrice
+     * @memberof MaterialPatternInfoUpdatePayloadCustomPropertyListInner
      */
-    'minimumContainerQuantity'?: number;
+    'customId'?: number | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialPatternInfoUpdatePayloadCustomPropertyListInnerAllOf
+ */
+export interface MaterialPatternInfoUpdatePayloadCustomPropertyListInnerAllOf {
     /**
      * 
-     * @type {string}
-     * @memberof MaterialPublicPrice
+     * @type {number}
+     * @memberof MaterialPatternInfoUpdatePayloadCustomPropertyListInnerAllOf
      */
-    'minimumContainerQuantityUnit'?: MaterialPublicPriceMinimumContainerQuantityUnitEnum;
+    'customId'?: number | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialPriceInfo
+ */
+export interface MaterialPriceInfo {
     /**
-     * 產品交貨期
+     * 國家代碼
      * @type {string}
-     * @memberof MaterialPublicPrice
+     * @memberof MaterialPriceInfo
      */
-    'productionLeadTime'?: string;
+    'countryOfOriginal': string | null;
     /**
-     * 樣品交貨期
-     * @type {string}
-     * @memberof MaterialPublicPrice
+     * 
+     * @type {MaterialPriceInfoPricing}
+     * @memberof MaterialPriceInfo
      */
-    'sampleLeadTime'?: string;
+    'pricing': MaterialPriceInfoPricing | null;
+    /**
+     * 
+     * @type {MaterialPriceInfoMinimumOrder}
+     * @memberof MaterialPriceInfo
+     */
+    'minimumOrder': MaterialPriceInfoMinimumOrder | null;
+    /**
+     * 
+     * @type {MaterialPriceInfoMinimumColor}
+     * @memberof MaterialPriceInfo
+     */
+    'minimumColor': MaterialPriceInfoMinimumColor | null;
+    /**
+     * 產品交貨期天數
+     * @type {string}
+     * @memberof MaterialPriceInfo
+     */
+    'productionLeadTimeInDays': string | null;
+    /**
+     * 樣品交貨期天數
+     * @type {string}
+     * @memberof MaterialPriceInfo
+     */
+    'sampleLeadTimeInDays': string | null;
+}
+/**
+ * 單色最小訂購數量
+ * @export
+ * @interface MaterialPriceInfoMinimumColor
+ */
+export interface MaterialPriceInfoMinimumColor {
+    /**
+     * 數量，0~999,999，整數
+     * @type {number}
+     * @memberof MaterialPriceInfoMinimumColor
+     */
+    'qty': number;
+    /**
+     * 
+     * @type {MaterialQuantityUnit}
+     * @memberof MaterialPriceInfoMinimumColor
+     */
+    'unit': MaterialQuantityUnit;
 }
 
-export const MaterialPublicPriceCurrencyEnum = {
-    Usd: 'USD',
-    Rmb: 'RMB',
-    Twd: 'TWD'
-} as const;
 
-export type MaterialPublicPriceCurrencyEnum = typeof MaterialPublicPriceCurrencyEnum[keyof typeof MaterialPublicPriceCurrencyEnum];
-export const MaterialPublicPriceUnitEnum = {
-    Y: 'Y',
-    M: 'M',
-    Kg: 'KG'
-} as const;
+/**
+ * 最小訂購數量
+ * @export
+ * @interface MaterialPriceInfoMinimumOrder
+ */
+export interface MaterialPriceInfoMinimumOrder {
+    /**
+     * 數量，0~999,999，整數
+     * @type {number}
+     * @memberof MaterialPriceInfoMinimumOrder
+     */
+    'qty': number;
+    /**
+     * 
+     * @type {MaterialQuantityUnit}
+     * @memberof MaterialPriceInfoMinimumOrder
+     */
+    'unit': MaterialQuantityUnit;
+}
 
-export type MaterialPublicPriceUnitEnum = typeof MaterialPublicPriceUnitEnum[keyof typeof MaterialPublicPriceUnitEnum];
-export const MaterialPublicPriceMinimumOrderQuantityUnitEnum = {
-    Y: 'Y',
-    M: 'M',
-    Kg: 'KG'
-} as const;
-
-export type MaterialPublicPriceMinimumOrderQuantityUnitEnum = typeof MaterialPublicPriceMinimumOrderQuantityUnitEnum[keyof typeof MaterialPublicPriceMinimumOrderQuantityUnitEnum];
-export const MaterialPublicPriceMinimumContainerQuantityUnitEnum = {
-    Y: 'Y',
-    M: 'M',
-    Kg: 'KG'
-} as const;
-
-export type MaterialPublicPriceMinimumContainerQuantityUnitEnum = typeof MaterialPublicPriceMinimumContainerQuantityUnitEnum[keyof typeof MaterialPublicPriceMinimumContainerQuantityUnitEnum];
 
 /**
  * 
  * @export
- * @interface MaterialSubType
+ * @interface MaterialPriceInfoPricing
  */
-export interface MaterialSubType {
+export interface MaterialPriceInfoPricing {
+    /**
+     * 
+     * @type {CurrencyCode}
+     * @memberof MaterialPriceInfoPricing
+     */
+    'currencyCode': CurrencyCode;
+    /**
+     * 數值，0~不限，可填寫至小數 2 位，但防止攻擊，價格上限為 999999999999999999.99
+     * @type {string}
+     * @memberof MaterialPriceInfoPricing
+     */
+    'price': string;
+    /**
+     * 
+     * @type {MaterialQuantityUnit}
+     * @memberof MaterialPriceInfoPricing
+     */
+    'unit': MaterialQuantityUnit;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialPrivateMetaData
+ */
+export interface MaterialPrivateMetaData {
+    /**
+     * 
+     * @type {MaterialPrivateMetaDataCreatedByInfo}
+     * @memberof MaterialPrivateMetaData
+     */
+    'createdByInfo': MaterialPrivateMetaDataCreatedByInfo;
+    /**
+     * 
+     * @type {MaterialPrivateMetaDataLastModifiedByInfo}
+     * @memberof MaterialPrivateMetaData
+     */
+    'lastModifiedByInfo': MaterialPrivateMetaDataLastModifiedByInfo;
+    /**
+     * 
+     * @type {MaterialPrivateMetaDataCopiedFromInfo}
+     * @memberof MaterialPrivateMetaData
+     */
+    'copiedFromInfo': MaterialPrivateMetaDataCopiedFromInfo | null;
+}
+/**
+ * Copied from 從哪裡複製 - 若 Copy 的布料為自己組織或團隊的布料，則顯示   Org logo + Org name + (Group name) + Color label - 若 Copy 的布料為非自己組織或團隊的布料，則顯示   Org logo + Org name 
+ * @export
+ * @interface MaterialPrivateMetaDataCopiedFromInfo
+ */
+export interface MaterialPrivateMetaDataCopiedFromInfo {
     /**
      * 
      * @type {number}
-     * @memberof MaterialSubType
+     * @memberof MaterialPrivateMetaDataCopiedFromInfo
      */
-    'id'?: number;
+    'date': number;
     /**
      * 
      * @type {string}
-     * @memberof MaterialSubType
+     * @memberof MaterialPrivateMetaDataCopiedFromInfo
+     */
+    'orgName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataCopiedFromInfo
+     */
+    'orgLogo': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataCopiedFromInfo
+     */
+    'copiedFromItemNo'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialPrivateMetaDataCreatedByInfo
+ */
+export interface MaterialPrivateMetaDataCreatedByInfo {
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataCreatedByInfo
+     */
+    'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataCreatedByInfo
+     */
+    'unitName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataCreatedByInfo
+     */
+    'unitLabelColor': string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialPrivateMetaDataCreatedByInfo
+     */
+    'date': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialPrivateMetaDataLastModifiedByInfo
+ */
+export interface MaterialPrivateMetaDataLastModifiedByInfo {
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataLastModifiedByInfo
+     */
+    'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataLastModifiedByInfo
+     */
+    'unitName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataLastModifiedByInfo
+     */
+    'unitLabelColor': string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialPrivateMetaDataLastModifiedByInfo
+     */
+    'date': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialPublicMetaData
+ */
+export interface MaterialPublicMetaData {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MaterialPublicMetaData
+     */
+    'isDelete': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MaterialPublicMetaData
+     */
+    'isComplete': boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialPublicMetaData
+     */
+    'createDate': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialPublicMetaData
+     */
+    'updateDate': number;
+    /**
+     * 布片擁有者的單位名稱，檢視角度為布片擁有者時為:布片擁有者的組織(+團隊)名稱，非布片擁有者為:布片擁有者的組織名稱
+     * @type {string}
+     * @memberof MaterialPublicMetaData
+     */
+    'unitName': string;
+    /**
+     * 布片擁有者的單位Logo
+     * @type {string}
+     * @memberof MaterialPublicMetaData
+     */
+    'unitLogo': string;
+    /**
+     * 檢視該布片的使用者是否為布片擁有者組織的成員
+     * @type {boolean}
+     * @memberof MaterialPublicMetaData
+     */
+    'isMaterialOwnerSide': boolean;
+    /**
+     * 該布片所屬單位的組織或團隊型態，IsMaterialOwnerSide為true時才有值
+     * @type {number}
+     * @memberof MaterialPublicMetaData
+     */
+    'materialOwnerOGType': number | null;
+    /**
+     * 該布片所屬單位的組織或團隊ID，IsMaterialOwnerSide為true時才有值
+     * @type {number}
+     * @memberof MaterialPublicMetaData
+     */
+    'materialOwnerOGId': number | null;
+}
+/**
+ * 單位
+ * @export
+ * @enum {string}
+ */
+
+export const MaterialQuantityUnit = {
+    Y: 'Y',
+    M: 'M',
+    KG: 'KG'
+} as const;
+
+export type MaterialQuantityUnit = typeof MaterialQuantityUnit[keyof typeof MaterialQuantityUnit];
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialSeasonInfo
+ */
+export interface MaterialSeasonInfo {
+    /**
+     * 
+     * @type {MaterialSeasonInfoSeason}
+     * @memberof MaterialSeasonInfo
+     */
+    'season': MaterialSeasonInfoSeason | null;
+    /**
+     * 年份
+     * @type {number}
+     * @memberof MaterialSeasonInfo
+     */
+    'year': number | null;
+    /**
+     * 是否公開規格資訊
+     * @type {boolean}
+     * @memberof MaterialSeasonInfo
+     */
+    'isPublic': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSeasonInfoCreate
+ */
+export interface MaterialSeasonInfoCreate {
+    /**
+     * 
+     * @type {MaterialSeasonInfoCreateSeason}
+     * @memberof MaterialSeasonInfoCreate
+     */
+    'season': MaterialSeasonInfoCreateSeason | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSeasonInfoCreate
+     */
+    'year': number | null;
+    /**
+     * 是否公開規格資訊
+     * @type {boolean}
+     * @memberof MaterialSeasonInfoCreate
+     */
+    'isPublic': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSeasonInfoCreateSeason
+ */
+export interface MaterialSeasonInfoCreateSeason {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSeasonInfoCreateSeason
+     */
+    'seasonId': number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSeasonInfoCreateSeason
+     */
+    'name': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSeasonInfoSeason
+ */
+export interface MaterialSeasonInfoSeason {
+    /**
+     * 季節代碼ID
+     * @type {number}
+     * @memberof MaterialSeasonInfoSeason
+     */
+    'seasonId': number;
+    /**
+     * 季節名稱
+     * @type {string}
+     * @memberof MaterialSeasonInfoSeason
+     */
+    'name': string;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSide
+ */
+export interface MaterialSide {
+    /**
+     * 布面ID
+     * @type {number}
+     * @memberof MaterialSide
+     */
+    'materialSideId': number;
+    /**
+     * Frontier編號
+     * @type {string}
+     * @memberof MaterialSide
+     */
+    'frontierNo': string;
+    /**
+     * 
+     * @type {Array<MaterialFeature>}
+     * @memberof MaterialSide
+     */
+    'featureList': Array<MaterialFeature>;
+    /**
+     * 
+     * @type {Array<MaterialFinish>}
+     * @memberof MaterialSide
+     */
+    'finishList': Array<MaterialFinish>;
+    /**
+     * 是否為主要布面
+     * @type {boolean}
+     * @memberof MaterialSide
+     */
+    'isMainSide': boolean;
+    /**
+     * 
+     * @type {MaterialSideAllOfSideImage}
+     * @memberof MaterialSide
+     */
+    'sideImage': MaterialSideAllOfSideImage;
+    /**
+     * 
+     * @type {MaterialSideAllOfU3mImage}
+     * @memberof MaterialSide
+     */
+    'u3mImage': MaterialSideAllOfU3mImage | null;
+    /**
+     * 
+     * @type {MaterialType}
+     * @memberof MaterialSide
+     */
+    'materialType': MaterialType;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialDescription>}
+     * @memberof MaterialSide
+     */
+    'descriptionList': Array<MaterialDescription>;
+    /**
+     * 
+     * @type {MaterialSideAllOfConstruction}
+     * @memberof MaterialSide
+     */
+    'construction': MaterialSideAllOfConstruction;
+    /**
+     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialSideAllOfConstructionCustomPropertyListInner>}
+     * @memberof MaterialSide
+     */
+    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyListInner>;
+    /**
+     * 
+     * @type {Array<MaterialSideAllOfContentList>}
+     * @memberof MaterialSide
+     */
+    'contentList': Array<MaterialSideAllOfContentList>;
+    /**
+     * 
+     * @type {MaterialWidth}
+     * @memberof MaterialSide
+     */
+    'width': MaterialWidth;
+    /**
+     * 
+     * @type {MaterialWeight}
+     * @memberof MaterialSide
+     */
+    'weight': MaterialWeight;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialSideAllOf
+ */
+export interface MaterialSideAllOf {
+    /**
+     * 是否為主要布面
+     * @type {boolean}
+     * @memberof MaterialSideAllOf
+     */
+    'isMainSide': boolean;
+    /**
+     * 
+     * @type {MaterialSideAllOfSideImage}
+     * @memberof MaterialSideAllOf
+     */
+    'sideImage': MaterialSideAllOfSideImage;
+    /**
+     * 
+     * @type {MaterialSideAllOfU3mImage}
+     * @memberof MaterialSideAllOf
+     */
+    'u3mImage': MaterialSideAllOfU3mImage | null;
+    /**
+     * 
+     * @type {MaterialType}
+     * @memberof MaterialSideAllOf
+     */
+    'materialType': MaterialType;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialDescription>}
+     * @memberof MaterialSideAllOf
+     */
+    'descriptionList': Array<MaterialDescription>;
+    /**
+     * 
+     * @type {MaterialSideAllOfConstruction}
+     * @memberof MaterialSideAllOf
+     */
+    'construction': MaterialSideAllOfConstruction;
+    /**
+     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialSideAllOfConstructionCustomPropertyListInner>}
+     * @memberof MaterialSideAllOf
+     */
+    'constructionCustomPropertyList': Array<MaterialSideAllOfConstructionCustomPropertyListInner>;
+    /**
+     * 
+     * @type {Array<MaterialSideAllOfContentList>}
+     * @memberof MaterialSideAllOf
+     */
+    'contentList': Array<MaterialSideAllOfContentList>;
+    /**
+     * 
+     * @type {MaterialWidth}
+     * @memberof MaterialSideAllOf
+     */
+    'width': MaterialWidth;
+    /**
+     * 
+     * @type {MaterialWeight}
+     * @memberof MaterialSideAllOf
+     */
+    'weight': MaterialWeight;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialSideAllOfConstruction
+ */
+export interface MaterialSideAllOfConstruction {
+    /**
+     * 梭織布種密度(經向)
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'warpDensity': string | null;
+    /**
+     * 梭織布種密度(緯向)
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'weftDensity': string | null;
+    /**
+     * 梭織布種紗支數(經向)
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'warpYarnSize': string | null;
+    /**
+     * 梭織布種紗支數(緯向)
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'weftYarnSize': string | null;
+    /**
+     * 針織布種織機類型
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'machineType': string | null;
+    /**
+     * 針織布種經向密度
+     * @type {number}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'walesPerInch': number | null;
+    /**
+     * 針織布種緯向密度
+     * @type {number}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'coursesPerInch': number | null;
+    /**
+     * 針織布種紗支數
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'yarnSize': string | null;
+    /**
+     * 針織布種機台針數
+     * @type {number}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'machineGaugeInGg': number | null;
+    /**
+     * 皮革布種AverageSkin
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'averageSkinPerMeterSquare': string | null;
+    /**
+     * 皮革布種級別
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'grade': string | null;
+    /**
+     * 皮革布種鞣製
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'tannage': string | null;
+    /**
+     * 無紡布種厚度
+     * @type {number}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'thicknessPerMm': number | null;
+    /**
+     * 無紡布種粘合法
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'bondingMethod': string | null;
+    /**
+     * 副料布種外徑
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'outerDiameter': string | null;
+    /**
+     * 副料布種長度
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'length': string | null;
+    /**
+     * 副料布種厚度
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'thickness': string | null;
+    /**
+     * 副料布種寬度
+     * @type {string}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'width': string | null;
+    /**
+     * 是否公開規格資訊
+     * @type {boolean}
+     * @memberof MaterialSideAllOfConstruction
+     */
+    'isPublic': boolean;
+}
+/**
+ * 規格資訊 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+ * @export
+ * @interface MaterialSideAllOfConstructionAllOf
+ */
+export interface MaterialSideAllOfConstructionAllOf {
+    /**
+     * 是否公開規格資訊
+     * @type {boolean}
+     * @memberof MaterialSideAllOfConstructionAllOf
+     */
+    'isPublic': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideAllOfConstructionCustomPropertyListInner
+ */
+export interface MaterialSideAllOfConstructionCustomPropertyListInner {
+    /**
+     * 是否公開欄位資訊
+     * @type {boolean}
+     * @memberof MaterialSideAllOfConstructionCustomPropertyListInner
+     */
+    'isPublic': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideAllOfConstructionCustomPropertyListInner
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideAllOfConstructionCustomPropertyListInner
+     */
+    'value': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfConstructionCustomPropertyListInner
+     */
+    'customId': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideAllOfConstructionCustomPropertyListInnerAllOf
+ */
+export interface MaterialSideAllOfConstructionCustomPropertyListInnerAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfConstructionCustomPropertyListInnerAllOf
+     */
+    'customId': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideAllOfContentList
+ */
+export interface MaterialSideAllOfContentList {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfContentList
+     */
+    'contentId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideAllOfContentList
      */
     'name'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfContentList
+     */
+    'percentage'?: number;
 }
+/**
+ * 
+ * @export
+ * @interface MaterialSideAllOfSideImage
+ */
+export interface MaterialSideAllOfSideImage {
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideAllOfSideImage
+     */
+    'originalUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideAllOfSideImage
+     */
+    'displayUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideAllOfSideImage
+     */
+    'thumbnailUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideAllOfSideImage
+     */
+    'rulerUrl': string;
+    /**
+     * 
+     * @type {CropImageRecord}
+     * @memberof MaterialSideAllOfSideImage
+     */
+    'cropRecord': CropImageRecord;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfSideImage
+     */
+    'dpi': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideAllOfU3mImage
+ */
+export interface MaterialSideAllOfU3mImage {
+    /**
+     * 給產生u3m流程的recut用的圖
+     * @type {string}
+     * @memberof MaterialSideAllOfU3mImage
+     */
+    'original': string;
+    /**
+     * 產生u3m畫面的圖片預覽圖
+     * @type {string}
+     * @memberof MaterialSideAllOfU3mImage
+     */
+    'crop': string;
+    /**
+     * 
+     * @type {MaterialSideAllOfU3mImageCropRecord}
+     * @memberof MaterialSideAllOfU3mImage
+     */
+    'cropRecord': MaterialSideAllOfU3mImageCropRecord;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfU3mImage
+     */
+    'dpi': number;
+}
+/**
+ * 記錄U3M裁切圖片的參數
+ * @export
+ * @interface MaterialSideAllOfU3mImageCropRecord
+ */
+export interface MaterialSideAllOfU3mImageCropRecord {
+    /**
+     * 
+     * @type {CropImageRecord & object}
+     * @memberof MaterialSideAllOfU3mImageCropRecord
+     */
+    'squareCropRecord': CropImageRecord & object;
+    /**
+     * 
+     * @type {PerspectiveCropImageRecord & object}
+     * @memberof MaterialSideAllOfU3mImageCropRecord
+     */
+    'perspectiveCropRecord': PerspectiveCropImageRecord & object;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideBase
+ */
+export interface MaterialSideBase {
+    /**
+     * 布面ID
+     * @type {number}
+     * @memberof MaterialSideBase
+     */
+    'materialSideId': number;
+    /**
+     * Frontier編號
+     * @type {string}
+     * @memberof MaterialSideBase
+     */
+    'frontierNo': string;
+    /**
+     * 
+     * @type {Array<MaterialFeature>}
+     * @memberof MaterialSideBase
+     */
+    'featureList': Array<MaterialFeature>;
+    /**
+     * 
+     * @type {Array<MaterialFinish>}
+     * @memberof MaterialSideBase
+     */
+    'finishList': Array<MaterialFinish>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideCreate
+ */
+export interface MaterialSideCreate {
+    /**
+     * 布面特性清單
+     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * @memberof MaterialSideCreate
+     */
+    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    /**
+     * 布面後處理清單
+     * @type {Array<MaterialSideCreateBaseFinishListInner>}
+     * @memberof MaterialSideCreate
+     */
+    'finishList': Array<MaterialSideCreateBaseFinishListInner> | null;
+    /**
+     * 
+     * @type {MaterialType}
+     * @memberof MaterialSideCreate
+     */
+    'materialType': MaterialType;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialSideCreateAllOfDescriptionList>}
+     * @memberof MaterialSideCreate
+     */
+    'descriptionList': Array<MaterialSideCreateAllOfDescriptionList> | null;
+    /**
+     * 
+     * @type {MaterialSideCreateAllOfConstruction}
+     * @memberof MaterialSideCreate
+     */
+    'construction': MaterialSideCreateAllOfConstruction;
+    /**
+     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialCustomConstructionBase>}
+     * @memberof MaterialSideCreate
+     */
+    'constructionCustomPropertyList': Array<MaterialCustomConstructionBase> | null;
+    /**
+     * 布面成分清單
+     * @type {Array<MaterialSideCreateAllOfContentList>}
+     * @memberof MaterialSideCreate
+     */
+    'contentList': Array<MaterialSideCreateAllOfContentList>;
+    /**
+     * 
+     * @type {MaterialWidth}
+     * @memberof MaterialSideCreate
+     */
+    'width': MaterialWidth;
+    /**
+     * 
+     * @type {MaterialWeight}
+     * @memberof MaterialSideCreate
+     */
+    'weight': MaterialWeight;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialSideCreateAllOf
+ */
+export interface MaterialSideCreateAllOf {
+    /**
+     * 
+     * @type {MaterialType}
+     * @memberof MaterialSideCreateAllOf
+     */
+    'materialType': MaterialType;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialSideCreateAllOfDescriptionList>}
+     * @memberof MaterialSideCreateAllOf
+     */
+    'descriptionList': Array<MaterialSideCreateAllOfDescriptionList> | null;
+    /**
+     * 
+     * @type {MaterialSideCreateAllOfConstruction}
+     * @memberof MaterialSideCreateAllOf
+     */
+    'construction': MaterialSideCreateAllOfConstruction;
+    /**
+     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialCustomConstructionBase>}
+     * @memberof MaterialSideCreateAllOf
+     */
+    'constructionCustomPropertyList': Array<MaterialCustomConstructionBase> | null;
+    /**
+     * 布面成分清單
+     * @type {Array<MaterialSideCreateAllOfContentList>}
+     * @memberof MaterialSideCreateAllOf
+     */
+    'contentList': Array<MaterialSideCreateAllOfContentList>;
+    /**
+     * 
+     * @type {MaterialWidth}
+     * @memberof MaterialSideCreateAllOf
+     */
+    'width': MaterialWidth;
+    /**
+     * 
+     * @type {MaterialWeight}
+     * @memberof MaterialSideCreateAllOf
+     */
+    'weight': MaterialWeight;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialSideCreateAllOfConstruction
+ */
+export interface MaterialSideCreateAllOfConstruction {
+    /**
+     * 梭織布種密度(經向)
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'warpDensity': string | null;
+    /**
+     * 梭織布種密度(緯向)
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'weftDensity': string | null;
+    /**
+     * 梭織布種紗支數(經向)
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'warpYarnSize': string | null;
+    /**
+     * 梭織布種紗支數(緯向)
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'weftYarnSize': string | null;
+    /**
+     * 針織布種織機類型
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'machineType': string | null;
+    /**
+     * 針織布種經向密度
+     * @type {number}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'walesPerInch': number | null;
+    /**
+     * 針織布種緯向密度
+     * @type {number}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'coursesPerInch': number | null;
+    /**
+     * 針織布種紗支數
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'yarnSize': string | null;
+    /**
+     * 針織布種機台針數
+     * @type {number}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'machineGaugeInGg': number | null;
+    /**
+     * 皮革布種AverageSkin
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'averageSkinPerMeterSquare': string | null;
+    /**
+     * 皮革布種級別
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'grade': string | null;
+    /**
+     * 皮革布種鞣製
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'tannage': string | null;
+    /**
+     * 無紡布種厚度
+     * @type {number}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'thicknessPerMm': number | null;
+    /**
+     * 無紡布種粘合法
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'bondingMethod': string | null;
+    /**
+     * 副料布種外徑
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'outerDiameter': string | null;
+    /**
+     * 副料布種長度
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'length': string | null;
+    /**
+     * 副料布種厚度
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'thickness': string | null;
+    /**
+     * 副料布種寬度
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'width': string | null;
+    /**
+     * 是否公開規格資訊
+     * @type {boolean}
+     * @memberof MaterialSideCreateAllOfConstruction
+     */
+    'isPublic': boolean;
+}
+/**
+ * 規格資訊 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+ * @export
+ * @interface MaterialSideCreateAllOfConstructionAllOf
+ */
+export interface MaterialSideCreateAllOfConstructionAllOf {
+    /**
+     * 是否公開規格資訊
+     * @type {boolean}
+     * @memberof MaterialSideCreateAllOfConstructionAllOf
+     */
+    'isPublic': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideCreateAllOfContentList
+ */
+export interface MaterialSideCreateAllOfContentList {
+    /**
+     * 成分代碼ID user 新增的 contentId 為 null 
+     * @type {number}
+     * @memberof MaterialSideCreateAllOfContentList
+     */
+    'contentId': number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfContentList
+     */
+    'name': string | null;
+    /**
+     * 百分比，1~100，可填寫至小數 2 位
+     * @type {number}
+     * @memberof MaterialSideCreateAllOfContentList
+     */
+    'percentage': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideCreateAllOfDescriptionList
+ */
+export interface MaterialSideCreateAllOfDescriptionList {
+    /**
+     * user 新增的 description id 為 null
+     * @type {number}
+     * @memberof MaterialSideCreateAllOfDescriptionList
+     */
+    'descriptionId': number | null;
+    /**
+     * 既有的 description name 為 null
+     * @type {string}
+     * @memberof MaterialSideCreateAllOfDescriptionList
+     */
+    'name': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideCreateBase
+ */
+export interface MaterialSideCreateBase {
+    /**
+     * 布面特性清單
+     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * @memberof MaterialSideCreateBase
+     */
+    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    /**
+     * 布面後處理清單
+     * @type {Array<MaterialSideCreateBaseFinishListInner>}
+     * @memberof MaterialSideCreateBase
+     */
+    'finishList': Array<MaterialSideCreateBaseFinishListInner> | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideCreateBaseFeatureListInner
+ */
+export interface MaterialSideCreateBaseFeatureListInner {
+    /**
+     * 布面特性代碼ID
+     * @type {number}
+     * @memberof MaterialSideCreateBaseFeatureListInner
+     */
+    'featureId': number | null;
+    /**
+     * 布面特性名稱
+     * @type {string}
+     * @memberof MaterialSideCreateBaseFeatureListInner
+     */
+    'name': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideCreateBaseFinishListInner
+ */
+export interface MaterialSideCreateBaseFinishListInner {
+    /**
+     * 布面後處理代碼ID
+     * @type {number}
+     * @memberof MaterialSideCreateBaseFinishListInner
+     */
+    'finishId': number | null;
+    /**
+     * 布面後處理名稱
+     * @type {string}
+     * @memberof MaterialSideCreateBaseFinishListInner
+     */
+    'name': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideImage
+ */
+export interface MaterialSideImage {
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideImage
+     */
+    'originalUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideImage
+     */
+    'displayUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideImage
+     */
+    'thumbnailUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideImage
+     */
+    'rulerUrl': string;
+    /**
+     * 
+     * @type {CropImageRecord}
+     * @memberof MaterialSideImage
+     */
+    'cropRecord': CropImageRecord;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideImage
+     */
+    'dpi': number;
+}
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const MaterialSideType = {
+    FACE_SIDE: 1,
+    BACK_SIDE: 2
+} as const;
+
+export type MaterialSideType = typeof MaterialSideType[keyof typeof MaterialSideType];
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialTagInfo
+ */
+export interface MaterialTagInfo {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof MaterialTagInfo
+     */
+    'tagList': Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof MaterialTagInfo
+     */
+    'aiTagList': Array<string>;
+    /**
+     * 
+     * @type {Array<MaterialCertification>}
+     * @memberof MaterialTagInfo
+     */
+    'certificationTagList': Array<MaterialCertification>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialTrimConstruction
+ */
+export interface MaterialTrimConstruction {
+    /**
+     * 副料布種外徑
+     * @type {string}
+     * @memberof MaterialTrimConstruction
+     */
+    'outerDiameter': string | null;
+    /**
+     * 副料布種長度
+     * @type {string}
+     * @memberof MaterialTrimConstruction
+     */
+    'length': string | null;
+    /**
+     * 副料布種厚度
+     * @type {string}
+     * @memberof MaterialTrimConstruction
+     */
+    'thickness': string | null;
+    /**
+     * 副料布種寬度
+     * @type {string}
+     * @memberof MaterialTrimConstruction
+     */
+    'width': string | null;
+}
+/**
+ * 布種
+ * @export
+ * @enum {string}
+ */
+
+export const MaterialType = {
+    WOVEN: 'woven',
+    KNIT: 'knit',
+    LEATHER: 'leather',
+    NON_WOVEN: 'nonWoven',
+    TRIM: 'trim',
+    OTHERS: 'others'
+} as const;
+
+export type MaterialType = typeof MaterialType[keyof typeof MaterialType];
+
+
 /**
  * 
  * @export
@@ -5629,10 +10810,10 @@ export interface MaterialSubType {
 export interface MaterialU3m {
     /**
      * 
-     * @type {number}
+     * @type {MaterialU3mStatus}
      * @memberof MaterialU3m
      */
-    'status': MaterialU3mStatusEnum;
+    'status': MaterialU3mStatus;
     /**
      * 是否有物理資料
      * @type {boolean}
@@ -5644,79 +10825,79 @@ export interface MaterialU3m {
      * @type {string}
      * @memberof MaterialU3m
      */
-    'zipUrl'?: string;
+    'zipUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'u3maUrl'?: string;
+    'u3maUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'baseImgUrl'?: string;
+    'baseImgUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'normalImgUrl'?: string;
+    'normalImgUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'roughImgUrl'?: string;
+    'roughImgUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'dispImgUrl'?: string;
+    'dispImgUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'gltfUrl'?: string;
+    'gltfUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'u3mSpecUrl'?: string;
+    'u3mSpecUrl': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'u3mPhysicSpecUrl'?: string;
+    'u3mPhysicSpecUrl': string;
     /**
-     * original 圖片的 dpi
+     * 
      * @type {number}
      * @memberof MaterialU3m
      */
-    'dpi'?: number;
+    'dpi': number;
     /**
      * 建立者的單位的標籤顏色，檢視者所屬組織和建立者單位那方所屬組織相同時為:呈現建立者組織或團隊的label color，非建立者那方單位所屬組織為Null值
      * @type {string}
      * @memberof MaterialU3m
      */
-    'creatorUnitLabelColor'?: string;
+    'creatorUnitLabelColor': string;
     /**
      * 建立者的使用者名稱，檢視者所屬組織和建立者單位那方所屬組織相同時呈現建立者的使用者名稱，非建立者那方單位所屬組織為Null值
      * @type {string}
      * @memberof MaterialU3m
      */
-    'creator'?: string;
+    'creator': string;
     /**
      * 建立者的大頭貼，檢視者所屬組織和建立者單位那方所屬組織相同時呈現建立者的大頭貼，非建立者那方單位所屬組織為Null值
      * @type {string}
      * @memberof MaterialU3m
      */
-    'creatorAvatar'?: string;
+    'creatorAvatar': string;
     /**
      * 建立時間
      * @type {number}
@@ -5725,7 +10906,14 @@ export interface MaterialU3m {
     'createDate': number;
 }
 
-export const MaterialU3mStatusEnum = {
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const MaterialU3mStatus = {
     UNQUALIFIED: -1,
     INITIAL: 0,
     IN_QUEUE: 1,
@@ -5734,8 +10922,594 @@ export const MaterialU3mStatusEnum = {
     UNSUCCESSFUL: 99
 } as const;
 
-export type MaterialU3mStatusEnum = typeof MaterialU3mStatusEnum[keyof typeof MaterialU3mStatusEnum];
+export type MaterialU3mStatus = typeof MaterialU3mStatus[keyof typeof MaterialU3mStatus];
 
+
+/**
+ * 
+ * @export
+ * @interface MaterialUpdate
+ */
+export interface MaterialUpdate {
+    /**
+     * 布片ID
+     * @type {number}
+     * @memberof MaterialUpdate
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialUpdate
+     */
+    'itemNo': string;
+    /**
+     * 
+     * @type {MaterialPatternInfoCreate}
+     * @memberof MaterialUpdate
+     */
+    'patternInfo': MaterialPatternInfoCreate;
+    /**
+     * 
+     * @type {MaterialColorInfoCreate}
+     * @memberof MaterialUpdate
+     */
+    'colorInfo': MaterialColorInfoCreate;
+    /**
+     * 
+     * @type {MaterialSeasonInfoCreate}
+     * @memberof MaterialUpdate
+     */
+    'seasonInfo': MaterialSeasonInfoCreate;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MaterialUpdate
+     */
+    'isAutoSyncFaceToBackSideInfo'?: boolean;
+    /**
+     * 
+     * @type {MaterialUpdateFaceSide}
+     * @memberof MaterialUpdate
+     */
+    'faceSide': MaterialUpdateFaceSide;
+    /**
+     * 
+     * @type {MaterialUpdateMiddleSide}
+     * @memberof MaterialUpdate
+     */
+    'middleSide': MaterialUpdateMiddleSide;
+    /**
+     * 
+     * @type {MaterialUpdateFaceSide}
+     * @memberof MaterialUpdate
+     */
+    'backSide': MaterialUpdateFaceSide;
+    /**
+     * 
+     * @type {MaterialUpdateTagInfo}
+     * @memberof MaterialUpdate
+     */
+    'tagInfo': MaterialUpdateTagInfo;
+    /**
+     * 
+     * @type {MaterialPriceInfo}
+     * @memberof MaterialUpdate
+     */
+    'priceInfo': MaterialPriceInfo;
+    /**
+     * 
+     * @type {MaterialUpdateInternalInfo}
+     * @memberof MaterialUpdate
+     */
+    'internalInfo': MaterialUpdateInternalInfo | null;
+    /**
+     * 是否客製化U3M正在上傳中
+     * @type {boolean}
+     * @memberof MaterialUpdate
+     */
+    'hasCustomU3mUploading': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialUpdateFaceSide
+ */
+export interface MaterialUpdateFaceSide {
+    /**
+     * 布面特性清單
+     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * @memberof MaterialUpdateFaceSide
+     */
+    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    /**
+     * 布面後處理清單
+     * @type {Array<MaterialSideCreateBaseFinishListInner>}
+     * @memberof MaterialUpdateFaceSide
+     */
+    'finishList': Array<MaterialSideCreateBaseFinishListInner> | null;
+    /**
+     * 
+     * @type {MaterialType}
+     * @memberof MaterialUpdateFaceSide
+     */
+    'materialType': MaterialType;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialSideCreateAllOfDescriptionList>}
+     * @memberof MaterialUpdateFaceSide
+     */
+    'descriptionList': Array<MaterialSideCreateAllOfDescriptionList> | null;
+    /**
+     * 
+     * @type {MaterialSideCreateAllOfConstruction}
+     * @memberof MaterialUpdateFaceSide
+     */
+    'construction': MaterialSideCreateAllOfConstruction;
+    /**
+     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialCustomConstructionBase>}
+     * @memberof MaterialUpdateFaceSide
+     */
+    'constructionCustomPropertyList': Array<MaterialCustomConstructionBase> | null;
+    /**
+     * 布面成分清單
+     * @type {Array<MaterialSideCreateAllOfContentList>}
+     * @memberof MaterialUpdateFaceSide
+     */
+    'contentList': Array<MaterialSideCreateAllOfContentList>;
+    /**
+     * 
+     * @type {MaterialWidth}
+     * @memberof MaterialUpdateFaceSide
+     */
+    'width': MaterialWidth;
+    /**
+     * 
+     * @type {MaterialWeight}
+     * @memberof MaterialUpdateFaceSide
+     */
+    'weight': MaterialWeight;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialUpdateInternalInfo
+ */
+export interface MaterialUpdateInternalInfo {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof MaterialUpdateInternalInfo
+     */
+    'tagList': Array<string> | null;
+    /**
+     * 
+     * @type {MaterialPriceInfo}
+     * @memberof MaterialUpdateInternalInfo
+     */
+    'priceInfo': MaterialPriceInfo;
+    /**
+     * 
+     * @type {MaterialInternalInventoryInfo}
+     * @memberof MaterialUpdateInternalInfo
+     */
+    'inventoryInfo': MaterialInternalInventoryInfo;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialUpdateInternalInfo
+     */
+    'remark': string | null;
+    /**
+     * Native Code
+     * @type {string}
+     * @memberof MaterialUpdateInternalInfo
+     */
+    'nativeCode': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialUpdateInventory
+ */
+export interface MaterialUpdateInventory {
+    /**
+     * 布片ID
+     * @type {number}
+     * @memberof MaterialUpdateInventory
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {MaterialUpdateInventoryInternalInfo}
+     * @memberof MaterialUpdateInventory
+     */
+    'internalInfo': MaterialUpdateInventoryInternalInfo;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialUpdateInventoryInternalInfo
+ */
+export interface MaterialUpdateInventoryInternalInfo {
+    /**
+     * 
+     * @type {MaterialInternalInventoryInfo}
+     * @memberof MaterialUpdateInventoryInternalInfo
+     */
+    'inventoryInfo': MaterialInternalInventoryInfo;
+    /**
+     * Native Code
+     * @type {string}
+     * @memberof MaterialUpdateInventoryInternalInfo
+     */
+    'nativeCode': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialUpdateMiddleSide
+ */
+export interface MaterialUpdateMiddleSide {
+    /**
+     * 布面特性清單
+     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * @memberof MaterialUpdateMiddleSide
+     */
+    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    /**
+     * 布面後處理清單
+     * @type {Array<MaterialSideCreateBaseFinishListInner>}
+     * @memberof MaterialUpdateMiddleSide
+     */
+    'finishList': Array<MaterialSideCreateBaseFinishListInner> | null;
+    /**
+     * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialCreateMiddleSideAllOfCustomPropertyList>}
+     * @memberof MaterialUpdateMiddleSide
+     */
+    'customPropertyList': Array<MaterialCreateMiddleSideAllOfCustomPropertyList>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialUpdatePublicPrice
+ */
+export interface MaterialUpdatePublicPrice {
+    /**
+     * 布片ID
+     * @type {number}
+     * @memberof MaterialUpdatePublicPrice
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {MaterialPriceInfo}
+     * @memberof MaterialUpdatePublicPrice
+     */
+    'priceInfo': MaterialPriceInfo;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialUpdateSpec
+ */
+export interface MaterialUpdateSpec {
+    /**
+     * 布片ID
+     * @type {number}
+     * @memberof MaterialUpdateSpec
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialUpdateSpec
+     */
+    'itemNo': string;
+    /**
+     * 
+     * @type {MaterialSeasonInfoCreate}
+     * @memberof MaterialUpdateSpec
+     */
+    'seasonInfo': MaterialSeasonInfoCreate;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MaterialUpdateSpec
+     */
+    'isAutoSyncFaceToBackSideInfo'?: boolean;
+    /**
+     * 
+     * @type {MaterialUpdateFaceSide}
+     * @memberof MaterialUpdateSpec
+     */
+    'faceSide': MaterialUpdateFaceSide;
+    /**
+     * 
+     * @type {MaterialUpdateMiddleSide}
+     * @memberof MaterialUpdateSpec
+     */
+    'middleSide': MaterialUpdateMiddleSide;
+    /**
+     * 
+     * @type {MaterialUpdateFaceSide}
+     * @memberof MaterialUpdateSpec
+     */
+    'backSide': MaterialUpdateFaceSide;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialUpdateTag
+ */
+export interface MaterialUpdateTag {
+    /**
+     * 布片ID
+     * @type {number}
+     * @memberof MaterialUpdateTag
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {MaterialUpdateTagTagInfo}
+     * @memberof MaterialUpdateTag
+     */
+    'tagInfo': MaterialUpdateTagTagInfo;
+    /**
+     * 
+     * @type {MaterialUpdateTagInternalInfo}
+     * @memberof MaterialUpdateTag
+     */
+    'internalInfo': MaterialUpdateTagInternalInfo;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialUpdateTagInfo
+ */
+export interface MaterialUpdateTagInfo {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof MaterialUpdateTagInfo
+     */
+    'tagList': Array<string> | null;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof MaterialUpdateTagInfo
+     */
+    'certificationTagIdList': Array<number> | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialUpdateTagInternalInfo
+ */
+export interface MaterialUpdateTagInternalInfo {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof MaterialUpdateTagInternalInfo
+     */
+    'tagList': Array<string> | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialUpdateTagInternalInfo
+     */
+    'remark': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialUpdateTagTagInfo
+ */
+export interface MaterialUpdateTagTagInfo {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof MaterialUpdateTagTagInfo
+     */
+    'tagList': Array<string>;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof MaterialUpdateTagTagInfo
+     */
+    'certificationTagIdList': Array<number> | null;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialUserInfo
+ */
+export interface MaterialUserInfo {
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialUserInfo
+     */
+    'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialUserInfo
+     */
+    'unitName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialUserInfo
+     */
+    'unitLabelColor': string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialUserInfo
+     */
+    'date': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialWeight
+ */
+export interface MaterialWeight {
+    /**
+     * 數值，1~999，可填寫至 小數3位
+     * @type {number}
+     * @memberof MaterialWeight
+     */
+    'value': number;
+    /**
+     * 
+     * @type {WeightUnit}
+     * @memberof MaterialWeight
+     */
+    'unit': WeightUnit;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialWidth
+ */
+export interface MaterialWidth {
+    /**
+     * 可裁幅寬 1~999，可填寫至小數 2 位 
+     * @type {number}
+     * @memberof MaterialWidth
+     */
+    'cuttable': number;
+    /**
+     * 全幅寬 1~999，可填寫至小數 2 位 
+     * @type {number}
+     * @memberof MaterialWidth
+     */
+    'full': number;
+    /**
+     * 
+     * @type {LengthUnit}
+     * @memberof MaterialWidth
+     */
+    'unit': LengthUnit;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MaterialWovenConstruction
+ */
+export interface MaterialWovenConstruction {
+    /**
+     * 梭織布種密度(經向)
+     * @type {string}
+     * @memberof MaterialWovenConstruction
+     */
+    'warpDensity': string | null;
+    /**
+     * 梭織布種密度(緯向)
+     * @type {string}
+     * @memberof MaterialWovenConstruction
+     */
+    'weftDensity': string | null;
+    /**
+     * 梭織布種紗支數(經向)
+     * @type {string}
+     * @memberof MaterialWovenConstruction
+     */
+    'warpYarnSize': string | null;
+    /**
+     * 梭織布種紗支數(緯向)
+     * @type {string}
+     * @memberof MaterialWovenConstruction
+     */
+    'weftYarnSize': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface MergeAssetsMaterialListRequest
+ */
+export interface MergeAssetsMaterialListRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof MergeAssetsMaterialListRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof MergeAssetsMaterialListRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof MergeAssetsMaterialListRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {Array<MergeAssetsMaterialListRequestAllOfMergedListInner>}
+     * @memberof MergeAssetsMaterialListRequest
+     */
+    'mergedList': Array<MergeAssetsMaterialListRequestAllOfMergedListInner>;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MergeAssetsMaterialListRequestAllOf
+ */
+export interface MergeAssetsMaterialListRequestAllOf {
+    /**
+     * 
+     * @type {Array<MergeAssetsMaterialListRequestAllOfMergedListInner>}
+     * @memberof MergeAssetsMaterialListRequestAllOf
+     */
+    'mergedList': Array<MergeAssetsMaterialListRequestAllOfMergedListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface MergeAssetsMaterialListRequestAllOfMergedListInner
+ */
+export interface MergeAssetsMaterialListRequestAllOfMergedListInner {
+    /**
+     * 是否為複合布
+     * @type {boolean}
+     * @memberof MergeAssetsMaterialListRequestAllOfMergedListInner
+     */
+    'isComposite': boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof MergeAssetsMaterialListRequestAllOfMergedListInner
+     */
+    'faceSideMaterialSideId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MergeAssetsMaterialListRequestAllOfMergedListInner
+     */
+    'backSideMaterialSideId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MergeAssetsMaterialListRequestAllOfMergedListInner
+     */
+    'detailMaterialSideId': number;
+}
 /**
  * 
  * @export
@@ -6181,6 +11955,76 @@ export interface MoodboardShare {
 /**
  * 
  * @export
+ * @interface MoveAssetsMaterialAttachmentRequest
+ */
+export interface MoveAssetsMaterialAttachmentRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof MoveAssetsMaterialAttachmentRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof MoveAssetsMaterialAttachmentRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof MoveAssetsMaterialAttachmentRequest
+     */
+    'ogId': number;
+    /**
+     * 欲移動之 fileId
+     * @type {number}
+     * @memberof MoveAssetsMaterialAttachmentRequest
+     */
+    'fileId': number;
+    /**
+     * 目標位置的 fileId
+     * @type {number}
+     * @memberof MoveAssetsMaterialAttachmentRequest
+     */
+    'targetFileId': number;
+    /**
+     * 是否移動至目標的前方(上方或左方)，後端預設為false移動至目標的後方(下方或右方)
+     * @type {boolean}
+     * @memberof MoveAssetsMaterialAttachmentRequest
+     */
+    'isMoveToBeforeTarget': boolean;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface MoveAssetsMaterialAttachmentRequestAllOf
+ */
+export interface MoveAssetsMaterialAttachmentRequestAllOf {
+    /**
+     * 欲移動之 fileId
+     * @type {number}
+     * @memberof MoveAssetsMaterialAttachmentRequestAllOf
+     */
+    'fileId': number;
+    /**
+     * 目標位置的 fileId
+     * @type {number}
+     * @memberof MoveAssetsMaterialAttachmentRequestAllOf
+     */
+    'targetFileId': number;
+    /**
+     * 是否移動至目標的前方(上方或左方)，後端預設為false移動至目標的後方(下方或右方)
+     * @type {boolean}
+     * @memberof MoveAssetsMaterialAttachmentRequestAllOf
+     */
+    'isMoveToBeforeTarget': boolean;
+}
+/**
+ * 
+ * @export
  * @interface MoveBookmarkRequest
  */
 export interface MoveBookmarkRequest {
@@ -6418,6 +12262,117 @@ export interface MoveWorkflowStageRequest {
 /**
  * 
  * @export
+ * @interface MultimediaFile
+ */
+export interface MultimediaFile {
+    /**
+     * 
+     * @type {number}
+     * @memberof MultimediaFile
+     */
+    'fileId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MultimediaFile
+     */
+    'fileName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MultimediaFile
+     */
+    'displayFileName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MultimediaFile
+     */
+    'originalUrl': string;
+    /**
+     * 非 image, pdf 時為 null
+     * @type {string}
+     * @memberof MultimediaFile
+     */
+    'displayUrl': string | null;
+    /**
+     * 非 image, pdf 時為 null
+     * @type {string}
+     * @memberof MultimediaFile
+     */
+    'thumbnailUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MultimediaFile
+     */
+    'extension': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MultimediaFile
+     */
+    'isCover': boolean;
+    /**
+     * 
+     * @type {MultimediaFileAllOfCropRecord}
+     * @memberof MultimediaFile
+     */
+    'cropRecord': MultimediaFileAllOfCropRecord;
+}
+/**
+ * 
+ * @export
+ * @interface MultimediaFileAllOf
+ */
+export interface MultimediaFileAllOf {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MultimediaFileAllOf
+     */
+    'isCover': boolean;
+    /**
+     * 
+     * @type {MultimediaFileAllOfCropRecord}
+     * @memberof MultimediaFileAllOf
+     */
+    'cropRecord': MultimediaFileAllOfCropRecord;
+}
+/**
+ * 
+ * @export
+ * @interface MultimediaFileAllOfCropRecord
+ */
+export interface MultimediaFileAllOfCropRecord {
+    /**
+     * 
+     * @type {number}
+     * @memberof MultimediaFileAllOfCropRecord
+     */
+    'x': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MultimediaFileAllOfCropRecord
+     */
+    'y': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MultimediaFileAllOfCropRecord
+     */
+    'rotateDeg': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MultimediaFileAllOfCropRecord
+     */
+    'scaleRatio': number;
+}
+/**
+ * 
+ * @export
  * @interface NotificationListInner
  */
 export interface NotificationListInner {
@@ -6485,3140 +12440,6 @@ export const OgType = {
 } as const;
 
 export type OgType = typeof OgType[keyof typeof OgType];
-
-
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialAddToWorkspacePost200Response
- */
-export interface OrgAssetsMaterialAddToWorkspacePost200Response {
-    /**
-     * 
-     * @type {OrgAssetsMaterialAddToWorkspacePost200ResponseResult}
-     * @memberof OrgAssetsMaterialAddToWorkspacePost200Response
-     */
-    'result'?: OrgAssetsMaterialAddToWorkspacePost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialAddToWorkspacePost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialAddToWorkspacePost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsMaterialAddToWorkspacePost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialAddToWorkspacePost200ResponseResult
- */
-export interface OrgAssetsMaterialAddToWorkspacePost200ResponseResult {
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OrgAssetsMaterialAddToWorkspacePost200ResponseResult
-     */
-    'failMaterialList'?: Array<string>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialAddToWorkspacePostRequest
- */
-export interface OrgAssetsMaterialAddToWorkspacePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialAddToWorkspacePostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof OrgAssetsMaterialAddToWorkspacePostRequest
-     */
-    'materialIdList': Array<number>;
-    /**
-     * 
-     * @type {Array<ShareGetReceivedClonePostRequestTargetLocationListInner>}
-     * @memberof OrgAssetsMaterialAddToWorkspacePostRequest
-     */
-    'targetWorkspaceNodeList': Array<ShareGetReceivedClonePostRequestTargetLocationListInner>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialBatchUploadPostRequest
- */
-export interface OrgAssetsMaterialBatchUploadPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialBatchUploadPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialBatchUploadPostRequest
-     */
-    'tempUploadId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialBatchUploadPostRequest
-     */
-    'xlsxFileName': string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCarbonCopyPostRequest
- */
-export interface OrgAssetsMaterialCarbonCopyPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCarbonCopyPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCarbonCopyPostRequest
-     */
-    'materialId': number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCloneCheckPostRequest
- */
-export interface OrgAssetsMaterialCloneCheckPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCloneCheckPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof OrgAssetsMaterialCloneCheckPostRequest
-     */
-    'materialIdList': Array<number>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialClonePostRequest
- */
-export interface OrgAssetsMaterialClonePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialClonePostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof OrgAssetsMaterialClonePostRequest
-     */
-    'materialIdList': Array<number>;
-    /**
-     * 
-     * @type {Array<ShareGetReceivedClonePostRequestTargetLocationListInner>}
-     * @memberof OrgAssetsMaterialClonePostRequest
-     */
-    'targetLocationList': Array<ShareGetReceivedClonePostRequestTargetLocationListInner>;
-    /**
-     * 
-     * @type {ShareGetReceivedClonePostRequestOptional}
-     * @memberof OrgAssetsMaterialClonePostRequest
-     */
-    'optional': ShareGetReceivedClonePostRequestOptional;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCreatePostRequest
- */
-export interface OrgAssetsMaterialCreatePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequest
-     */
-    'tempMaterialId': string;
-    /**
-     * 
-     * @type {OrgAssetsMaterialCreatePostRequestMaterial}
-     * @memberof OrgAssetsMaterialCreatePostRequest
-     */
-    'material'?: OrgAssetsMaterialCreatePostRequestMaterial;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCreatePostRequestMaterial
- */
-export interface OrgAssetsMaterialCreatePostRequestMaterial {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'isDoubleSideMaterial': boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'sideType': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'materialNo': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'mainTypeId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'subTypeId': number;
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialCreatePostRequestMaterialDescriptionListInner>}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'descriptionList'?: Array<OrgAssetsMaterialCreatePostRequestMaterialDescriptionListInner>;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'weightOrThickness': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'weightOrThicknessUnit': OrgAssetsMaterialCreatePostRequestMaterialWeightOrThicknessUnitEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'weightGy'?: number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'width': number;
-    /**
-     * 成分
-     * @type {Array<OrgAssetsMaterialCreatePostRequestMaterialContentListInner>}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'contentList': Array<OrgAssetsMaterialCreatePostRequestMaterialContentListInner>;
-    /**
-     * 後處理
-     * @type {Array<OrgAssetsMaterialCreatePostRequestMaterialFinishListInner>}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'finishList'?: Array<OrgAssetsMaterialCreatePostRequestMaterialFinishListInner>;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'warpYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'weftYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'warpDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'weftDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'pattern'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'color'?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'publicTagList'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'privateTagList'?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'remark'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'materialSeq'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'sampleCardsRemainingQty'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'sampleCardsLocation'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'hangersRemainingQty'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'hangersLocation'?: string;
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialCreatePostRequestMaterialInventoryListInner>}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'inventoryList'?: Array<OrgAssetsMaterialCreatePostRequestMaterialInventoryListInner>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'isPublicInventory'?: boolean;
-    /**
-     * 
-     * @type {OrgAssetsMaterialCreatePostRequestMaterialPublicPrice}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'publicPrice'?: OrgAssetsMaterialCreatePostRequestMaterialPublicPrice;
-    /**
-     * 
-     * @type {OrgAssetsMaterialCreatePostRequestMaterialPublicPrice}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'privatePrice'?: OrgAssetsMaterialCreatePostRequestMaterialPublicPrice;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'certificateIdList'?: Array<number>;
-    /**
-     * 是否客製化U3M正在上傳中
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterial
-     */
-    'hasCustomU3mUploading': boolean;
-}
-
-export const OrgAssetsMaterialCreatePostRequestMaterialWeightOrThicknessUnitEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsMaterialCreatePostRequestMaterialWeightOrThicknessUnitEnum = typeof OrgAssetsMaterialCreatePostRequestMaterialWeightOrThicknessUnitEnum[keyof typeof OrgAssetsMaterialCreatePostRequestMaterialWeightOrThicknessUnitEnum];
-
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCreatePostRequestMaterialContentListInner
- */
-export interface OrgAssetsMaterialCreatePostRequestMaterialContentListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialContentListInner
-     */
-    'contentId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialContentListInner
-     */
-    'name'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialContentListInner
-     */
-    'percentage'?: number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCreatePostRequestMaterialDescriptionListInner
- */
-export interface OrgAssetsMaterialCreatePostRequestMaterialDescriptionListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialDescriptionListInner
-     */
-    'descriptionId'?: number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialDescriptionListInner
-     */
-    'name'?: string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCreatePostRequestMaterialFinishListInner
- */
-export interface OrgAssetsMaterialCreatePostRequestMaterialFinishListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialFinishListInner
-     */
-    'finishId'?: number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialFinishListInner
-     */
-    'name'?: string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCreatePostRequestMaterialInventoryListInner
- */
-export interface OrgAssetsMaterialCreatePostRequestMaterialInventoryListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialInventoryListInner
-     */
-    'section'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialInventoryListInner
-     */
-    'shelf'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialInventoryListInner
-     */
-    'quantity'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialInventoryListInner
-     */
-    'unit'?: OrgAssetsMaterialCreatePostRequestMaterialInventoryListInnerUnitEnum;
-}
-
-export const OrgAssetsMaterialCreatePostRequestMaterialInventoryListInnerUnitEnum = {
-    Y: 'Y',
-    M: 'M',
-    Kg: 'KG'
-} as const;
-
-export type OrgAssetsMaterialCreatePostRequestMaterialInventoryListInnerUnitEnum = typeof OrgAssetsMaterialCreatePostRequestMaterialInventoryListInnerUnitEnum[keyof typeof OrgAssetsMaterialCreatePostRequestMaterialInventoryListInnerUnitEnum];
-
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCreatePostRequestMaterialPublicPrice
- */
-export interface OrgAssetsMaterialCreatePostRequestMaterialPublicPrice {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialPublicPrice
-     */
-    'countryCode'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialPublicPrice
-     */
-    'currency'?: OrgAssetsMaterialCreatePostRequestMaterialPublicPriceCurrencyEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialPublicPrice
-     */
-    'price'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialPublicPrice
-     */
-    'unit'?: OrgAssetsMaterialCreatePostRequestMaterialPublicPriceUnitEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialPublicPrice
-     */
-    'minimumOrderQuantity'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialPublicPrice
-     */
-    'minimumOrderQuantityUnit'?: OrgAssetsMaterialCreatePostRequestMaterialPublicPriceMinimumOrderQuantityUnitEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialPublicPrice
-     */
-    'minimumContainerQuantity'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialPublicPrice
-     */
-    'minimumContainerQuantityUnit'?: OrgAssetsMaterialCreatePostRequestMaterialPublicPriceMinimumContainerQuantityUnitEnum;
-    /**
-     * 產品交貨期
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialPublicPrice
-     */
-    'productionLeadTime'?: string;
-    /**
-     * 樣品交貨期
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreatePostRequestMaterialPublicPrice
-     */
-    'sampleLeadTime'?: string;
-}
-
-export const OrgAssetsMaterialCreatePostRequestMaterialPublicPriceCurrencyEnum = {
-    Usd: 'USD',
-    Rmb: 'RMB',
-    Twd: 'TWD'
-} as const;
-
-export type OrgAssetsMaterialCreatePostRequestMaterialPublicPriceCurrencyEnum = typeof OrgAssetsMaterialCreatePostRequestMaterialPublicPriceCurrencyEnum[keyof typeof OrgAssetsMaterialCreatePostRequestMaterialPublicPriceCurrencyEnum];
-export const OrgAssetsMaterialCreatePostRequestMaterialPublicPriceUnitEnum = {
-    Y: 'Y',
-    M: 'M',
-    Kg: 'KG'
-} as const;
-
-export type OrgAssetsMaterialCreatePostRequestMaterialPublicPriceUnitEnum = typeof OrgAssetsMaterialCreatePostRequestMaterialPublicPriceUnitEnum[keyof typeof OrgAssetsMaterialCreatePostRequestMaterialPublicPriceUnitEnum];
-export const OrgAssetsMaterialCreatePostRequestMaterialPublicPriceMinimumOrderQuantityUnitEnum = {
-    Y: 'Y',
-    M: 'M',
-    Kg: 'KG'
-} as const;
-
-export type OrgAssetsMaterialCreatePostRequestMaterialPublicPriceMinimumOrderQuantityUnitEnum = typeof OrgAssetsMaterialCreatePostRequestMaterialPublicPriceMinimumOrderQuantityUnitEnum[keyof typeof OrgAssetsMaterialCreatePostRequestMaterialPublicPriceMinimumOrderQuantityUnitEnum];
-export const OrgAssetsMaterialCreatePostRequestMaterialPublicPriceMinimumContainerQuantityUnitEnum = {
-    Y: 'Y',
-    M: 'M',
-    Kg: 'KG'
-} as const;
-
-export type OrgAssetsMaterialCreatePostRequestMaterialPublicPriceMinimumContainerQuantityUnitEnum = typeof OrgAssetsMaterialCreatePostRequestMaterialPublicPriceMinimumContainerQuantityUnitEnum[keyof typeof OrgAssetsMaterialCreatePostRequestMaterialPublicPriceMinimumContainerQuantityUnitEnum];
-
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCreateRemoveAttachmentPostRequest
- */
-export interface OrgAssetsMaterialCreateRemoveAttachmentPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreateRemoveAttachmentPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreateRemoveAttachmentPostRequest
-     */
-    'tempMaterialId': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreateRemoveAttachmentPostRequest
-     */
-    'tempMaterialAttachmentId': number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCreateUploadAttachmentPost200Response
- */
-export interface OrgAssetsMaterialCreateUploadAttachmentPost200Response {
-    /**
-     * 
-     * @type {OrgAssetsMaterialCreateUploadAttachmentPost200ResponseResult}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPost200Response
-     */
-    'result'?: OrgAssetsMaterialCreateUploadAttachmentPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCreateUploadAttachmentPost200ResponseResult
- */
-export interface OrgAssetsMaterialCreateUploadAttachmentPost200ResponseResult {
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner>}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPost200ResponseResult
-     */
-    'attachmentList'?: Array<OrgAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner
- */
-export interface OrgAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner
-     */
-    'tempMaterialAttachmentId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner
-     */
-    'displayFileName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner
-     */
-    'url'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner
-     */
-    'extension'?: string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCreateUploadAttachmentPostRequest
- */
-export interface OrgAssetsMaterialCreateUploadAttachmentPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPostRequest
-     */
-    'tempMaterialId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPostRequest
-     */
-    'tempUploadId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPostRequest
-     */
-    'attachmentFileName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialCreateUploadAttachmentPostRequest
-     */
-    'displayFileName': string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCustomU3mUploadCancelPostRequest
- */
-export interface OrgAssetsMaterialCustomU3mUploadCancelPostRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof OrgAssetsMaterialCustomU3mUploadCancelPostRequest
-     */
-    'orgId': number;
-    /**
-     * 布料ID
-     * @type {number}
-     * @memberof OrgAssetsMaterialCustomU3mUploadCancelPostRequest
-     */
-    'materialId': number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialCustomU3mUploadPostRequest
- */
-export interface OrgAssetsMaterialCustomU3mUploadPostRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof OrgAssetsMaterialCustomU3mUploadPostRequest
-     */
-    'orgId': number;
-    /**
-     * 布料ID
-     * @type {number}
-     * @memberof OrgAssetsMaterialCustomU3mUploadPostRequest
-     */
-    'materialId': number;
-    /**
-     * 暫存檔案ID
-     * @type {string}
-     * @memberof OrgAssetsMaterialCustomU3mUploadPostRequest
-     */
-    'tempUploadId': string;
-    /**
-     * 檔案名稱
-     * @type {string}
-     * @memberof OrgAssetsMaterialCustomU3mUploadPostRequest
-     */
-    'fileName': string;
-    /**
-     * 是否需要產生物理檔案
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialCustomU3mUploadPostRequest
-     */
-    'needToGeneratePhysical': boolean;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialDeleteCheckPost200Response
- */
-export interface OrgAssetsMaterialDeleteCheckPost200Response {
-    /**
-     * 
-     * @type {OrgAssetsMaterialDeleteCheckPost200ResponseResult}
-     * @memberof OrgAssetsMaterialDeleteCheckPost200Response
-     */
-    'result'?: OrgAssetsMaterialDeleteCheckPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialDeleteCheckPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialDeleteCheckPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsMaterialDeleteCheckPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialDeleteCheckPost200ResponseResult
- */
-export interface OrgAssetsMaterialDeleteCheckPost200ResponseResult {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialDeleteCheckPost200ResponseResult
-     */
-    'isOnGeneratingU3m'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialDeleteCheckPost200ResponseResult
-     */
-    'isOnExportingExcel'?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OrgAssetsMaterialDeleteCheckPost200ResponseResult
-     */
-    'materialNoList'?: Array<string>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialDeletePostRequest
- */
-export interface OrgAssetsMaterialDeletePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialDeletePostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof OrgAssetsMaterialDeletePostRequest
-     */
-    'materialIdList': Array<number>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialExportPost200Response
- */
-export interface OrgAssetsMaterialExportPost200Response {
-    /**
-     * 
-     * @type {OrgAssetsMaterialExportPost200ResponseResult}
-     * @memberof OrgAssetsMaterialExportPost200Response
-     */
-    'result'?: OrgAssetsMaterialExportPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialExportPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialExportPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsMaterialExportPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialExportPost200ResponseResult
- */
-export interface OrgAssetsMaterialExportPost200ResponseResult {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialExportPost200ResponseResult
-     */
-    'file'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialExportPost200ResponseResult
-     */
-    'fileName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialExportPost200ResponseResult
-     */
-    'extension'?: string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialGetListPost200Response
- */
-export interface OrgAssetsMaterialGetListPost200Response {
-    /**
-     * 
-     * @type {OrgAssetsMaterialGetListPost200ResponseResult}
-     * @memberof OrgAssetsMaterialGetListPost200Response
-     */
-    'result'?: OrgAssetsMaterialGetListPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialGetListPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialGetListPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsMaterialGetListPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialGetListPost200ResponseResult
- */
-export interface OrgAssetsMaterialGetListPost200ResponseResult {
-    /**
-     * 
-     * @type {PaginationRes}
-     * @memberof OrgAssetsMaterialGetListPost200ResponseResult
-     */
-    'pagination'?: PaginationRes;
-    /**
-     * 
-     * @type {OrgAssetsMaterialGetListPost200ResponseResultAssets}
-     * @memberof OrgAssetsMaterialGetListPost200ResponseResult
-     */
-    'assets'?: OrgAssetsMaterialGetListPost200ResponseResultAssets;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialGetListPost200ResponseResultAssets
- */
-export interface OrgAssetsMaterialGetListPost200ResponseResultAssets {
-    /**
-     * 
-     * @type {Array<Material>}
-     * @memberof OrgAssetsMaterialGetListPost200ResponseResultAssets
-     */
-    'materialList'?: Array<Material>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialGetListPostRequest
- */
-export interface OrgAssetsMaterialGetListPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialGetListPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {Search}
-     * @memberof OrgAssetsMaterialGetListPostRequest
-     */
-    'search'?: Search;
-    /**
-     * 
-     * @type {AssetFilter}
-     * @memberof OrgAssetsMaterialGetListPostRequest
-     */
-    'filter'?: AssetFilter;
-    /**
-     * 
-     * @type {PaginationReq}
-     * @memberof OrgAssetsMaterialGetListPostRequest
-     */
-    'pagination': PaginationReq;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialGetPost200Response
- */
-export interface OrgAssetsMaterialGetPost200Response {
-    /**
-     * 
-     * @type {OrgAssetsMaterialGetPost200ResponseResult}
-     * @memberof OrgAssetsMaterialGetPost200Response
-     */
-    'result'?: OrgAssetsMaterialGetPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialGetPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialGetPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsMaterialGetPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialGetPost200ResponseResult
- */
-export interface OrgAssetsMaterialGetPost200ResponseResult {
-    /**
-     * 
-     * @type {Material}
-     * @memberof OrgAssetsMaterialGetPost200ResponseResult
-     */
-    'material'?: Material;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialGetPostRequest
- */
-export interface OrgAssetsMaterialGetPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialGetPostRequest
-     */
-    'orglId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialGetPostRequest
-     */
-    'materialId': number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialMergePostRequest
- */
-export interface OrgAssetsMaterialMergePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialMergePostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialMergePostRequestMergedListInner>}
-     * @memberof OrgAssetsMaterialMergePostRequest
-     */
-    'mergedList': Array<OrgAssetsMaterialMergePostRequestMergedListInner>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialMergePostRequestMergedListInner
- */
-export interface OrgAssetsMaterialMergePostRequestMergedListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialMergePostRequestMergedListInner
-     */
-    'faceSideMaterialId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialMergePostRequestMergedListInner
-     */
-    'backSideMaterialId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialMergePostRequestMergedListInner
-     */
-    'detailMaterialId'?: number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialOptionsPost200Response
- */
-export interface OrgAssetsMaterialOptionsPost200Response {
-    /**
-     * 
-     * @type {OrgAssetsMaterialOptionsPost200ResponseResult}
-     * @memberof OrgAssetsMaterialOptionsPost200Response
-     */
-    'result'?: OrgAssetsMaterialOptionsPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialOptionsPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialOptionsPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsMaterialOptionsPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialOptionsPost200ResponseResult
- */
-export interface OrgAssetsMaterialOptionsPost200ResponseResult {
-    /**
-     * 
-     * @type {OrgAssetsMaterialOptionsPost200ResponseResultCode}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResult
-     */
-    'code'?: OrgAssetsMaterialOptionsPost200ResponseResultCode;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialOptionsPost200ResponseResultCode
- */
-export interface OrgAssetsMaterialOptionsPost200ResponseResultCode {
-    /**
-     * 
-     * @type {OrgAssetsMaterialOptionsPost200ResponseResultCodeContentList}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCode
-     */
-    'contentList'?: OrgAssetsMaterialOptionsPost200ResponseResultCodeContentList;
-    /**
-     * 
-     * @type {OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionList}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCode
-     */
-    'descriptionList'?: OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionList;
-    /**
-     * 
-     * @type {OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishList}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCode
-     */
-    'finishList'?: OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishList;
-    /**
-     * 憑證
-     * @type {Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeCertificateListInner>}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCode
-     */
-    'certificateList'?: Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeCertificateListInner>;
-    /**
-     * 分類
-     * @type {Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInner>}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCode
-     */
-    'typeList'?: Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInner>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialOptionsPost200ResponseResultCodeCertificateListInner
- */
-export interface OrgAssetsMaterialOptionsPost200ResponseResultCodeCertificateListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeCertificateListInner
-     */
-    'certificateId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeCertificateListInner
-     */
-    'name'?: string;
-}
-/**
- * 成分
- * @export
- * @interface OrgAssetsMaterialOptionsPost200ResponseResultCodeContentList
- */
-export interface OrgAssetsMaterialOptionsPost200ResponseResultCodeContentList {
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner>}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeContentList
-     */
-    'default'?: Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner>;
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner>}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeContentList
-     */
-    'custom'?: Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner
- */
-export interface OrgAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner
-     */
-    'contentId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner
-     */
-    'name'?: string;
-}
-/**
- * 品名描述
- * @export
- * @interface OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionList
- */
-export interface OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionList {
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner>}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionList
-     */
-    'default'?: Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner>;
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner>}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionList
-     */
-    'custom'?: Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner
- */
-export interface OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner
-     */
-    'descriptionId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner
-     */
-    'name'?: string;
-}
-/**
- * 後處理
- * @export
- * @interface OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishList
- */
-export interface OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishList {
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner>}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishList
-     */
-    'default'?: Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner>;
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner>}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishList
-     */
-    'custom'?: Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner
- */
-export interface OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner
-     */
-    'finishId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner
-     */
-    'name'?: string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInner
- */
-export interface OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInner {
-    /**
-     * 
-     * @type {OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerMainType}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInner
-     */
-    'mainType'?: OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerMainType;
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerSubTypeListInner>}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInner
-     */
-    'subTypeList'?: Array<OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerSubTypeListInner>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerMainType
- */
-export interface OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerMainType {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerMainType
-     */
-    'id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerMainType
-     */
-    'name'?: string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerSubTypeListInner
- */
-export interface OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerSubTypeListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerSubTypeListInner
-     */
-    'id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialOptionsPost200ResponseResultCodeTypeListInnerSubTypeListInner
-     */
-    'mame'?: string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialSmartUploadPostRequest
- */
-export interface OrgAssetsMaterialSmartUploadPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialSmartUploadPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {Array<OrgValueAddedServiceMade2flowScheduleMeetingPostRequestAttachmentListInner>}
-     * @memberof OrgAssetsMaterialSmartUploadPostRequest
-     */
-    'fileList': Array<OrgValueAddedServiceMade2flowScheduleMeetingPostRequestAttachmentListInner>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateAddPantonePostRequest
- */
-export interface OrgAssetsMaterialUpdateAddPantonePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateAddPantonePostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateAddPantonePostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateAddPantonePostRequest
-     */
-    'name': string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateCoverImgPostRequest
- */
-export interface OrgAssetsMaterialUpdateCoverImgPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateCoverImgPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateCoverImgPostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateCoverImgPostRequest
-     */
-    'coverMode': OrgAssetsMaterialUpdateCoverImgPostRequestCoverModeEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateCoverImgPostRequest
-     */
-    'materialAttachmentId'?: number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateCoverImgPostRequest
-     */
-    'tempUploadId'?: string;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord}
-     * @memberof OrgAssetsMaterialUpdateCoverImgPostRequest
-     */
-    'attachmentCropImageRecord'?: OrgAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord;
-}
-
-export const OrgAssetsMaterialUpdateCoverImgPostRequestCoverModeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsMaterialUpdateCoverImgPostRequestCoverModeEnum = typeof OrgAssetsMaterialUpdateCoverImgPostRequestCoverModeEnum[keyof typeof OrgAssetsMaterialUpdateCoverImgPostRequestCoverModeEnum];
-
-/**
- * coverMode=3,欄位必填
- * @export
- * @interface OrgAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord
- */
-export interface OrgAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord
-     */
-    'x'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord
-     */
-    'y'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord
-     */
-    'rotateDeg'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord
-     */
-    'scaleRatio'?: number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateGenerateU3mPostRequest
- */
-export interface OrgAssetsMaterialUpdateGenerateU3mPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequest
-     */
-    'isAutoRepeat': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequest
-     */
-    'tempUploadId'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequest
-     */
-    'faceSideCropImgFileName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequest
-     */
-    'backSideCropImgFileName'?: string;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequest
-     */
-    'faceSideCropImageRecord'?: OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequest
-     */
-    'backSideCropImageRecord'?: OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord
- */
-export interface OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord {
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord
-     */
-    'squareCropRecord'?: OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord
-     */
-    'perspectiveCropRecord'?: OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord
- */
-export interface OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord {
-    /**
-     * 
-     * @type {PerspectiveCropImageRecordLeftTop}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord
-     */
-    'leftTop'?: PerspectiveCropImageRecordLeftTop;
-    /**
-     * 
-     * @type {PerspectiveCropImageRecordLeftTop}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord
-     */
-    'leftBottom'?: PerspectiveCropImageRecordLeftTop;
-    /**
-     * 
-     * @type {PerspectiveCropImageRecordLeftTop}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord
-     */
-    'rightTop'?: PerspectiveCropImageRecordLeftTop;
-    /**
-     * 
-     * @type {PerspectiveCropImageRecordLeftTop}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord
-     */
-    'rightBottom'?: PerspectiveCropImageRecordLeftTop;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord
-     */
-    'rotateDeg'?: number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord
- */
-export interface OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord
-     */
-    'x'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord
-     */
-    'y'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord
-     */
-    'rotateDeg'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord
-     */
-    'scaleRatio'?: number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateIsDoubleSidePostRequest
- */
-export interface OrgAssetsMaterialUpdateIsDoubleSidePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateIsDoubleSidePostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateIsDoubleSidePostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialUpdateIsDoubleSidePostRequest
-     */
-    'isDoubleSideMaterial': boolean;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdatePostRequest
- */
-export interface OrgAssetsMaterialUpdatePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdatePostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdatePostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdatePostRequestMaterial}
-     * @memberof OrgAssetsMaterialUpdatePostRequest
-     */
-    'material'?: OrgAssetsMaterialUpdatePostRequestMaterial;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdatePostRequestMaterial
- */
-export interface OrgAssetsMaterialUpdatePostRequestMaterial {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'materialNo': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'mainTypeId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'subTypeId': number;
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialCreatePostRequestMaterialDescriptionListInner>}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'descriptionList'?: Array<OrgAssetsMaterialCreatePostRequestMaterialDescriptionListInner>;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'weightOrThickness': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'weightOrThicknessUnit': OrgAssetsMaterialUpdatePostRequestMaterialWeightOrThicknessUnitEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'weightGy'?: number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'width': number;
-    /**
-     * 成分
-     * @type {Array<OrgAssetsMaterialCreatePostRequestMaterialContentListInner>}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'contentList': Array<OrgAssetsMaterialCreatePostRequestMaterialContentListInner>;
-    /**
-     * 後處理
-     * @type {Array<OrgAssetsMaterialCreatePostRequestMaterialFinishListInner>}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'finishList'?: Array<OrgAssetsMaterialCreatePostRequestMaterialFinishListInner>;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'warpYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'weftYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'warpDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'weftDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'pattern'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'color'?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'publicTagList'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'privateTagList'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'aiTagList'?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'remark'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'materialSeq'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'sampleCardsRemainingQty'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'sampleCardsLocation'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'hangersRemainingQty'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'hangersLocation'?: string;
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialCreatePostRequestMaterialInventoryListInner>}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'inventoryList'?: Array<OrgAssetsMaterialCreatePostRequestMaterialInventoryListInner>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'isPublicInventory'?: boolean;
-    /**
-     * 
-     * @type {OrgAssetsMaterialCreatePostRequestMaterialPublicPrice}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'publicPrice'?: OrgAssetsMaterialCreatePostRequestMaterialPublicPrice;
-    /**
-     * 
-     * @type {OrgAssetsMaterialCreatePostRequestMaterialPublicPrice}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'privatePrice'?: OrgAssetsMaterialCreatePostRequestMaterialPublicPrice;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'certificateIdList'?: Array<number>;
-    /**
-     * 是否客製化U3M正在上傳中
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialUpdatePostRequestMaterial
-     */
-    'hasCustomU3mUploading': boolean;
-}
-
-export const OrgAssetsMaterialUpdatePostRequestMaterialWeightOrThicknessUnitEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsMaterialUpdatePostRequestMaterialWeightOrThicknessUnitEnum = typeof OrgAssetsMaterialUpdatePostRequestMaterialWeightOrThicknessUnitEnum[keyof typeof OrgAssetsMaterialUpdatePostRequestMaterialWeightOrThicknessUnitEnum];
-
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateRemoveAttachmentPostRequest
- */
-export interface OrgAssetsMaterialUpdateRemoveAttachmentPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateRemoveAttachmentPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateRemoveAttachmentPostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateRemoveAttachmentPostRequest
-     */
-    'materialAttachmentId': number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateRemovePantonePostRequest
- */
-export interface OrgAssetsMaterialUpdateRemovePantonePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateRemovePantonePostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateRemovePantonePostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateRemovePantonePostRequest
-     */
-    'materialPantoneId': number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response
- */
-export interface OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response {
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult}
-     * @memberof OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response
-     */
-    'result'?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult
- */
-export interface OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult
-     */
-    'tempUploadId'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult
-     */
-    'faceSideCropImgUploadUrl'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult
-     */
-    'backSideCropImgUploadUrl'?: string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest
- */
-export interface OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest
-     */
-    'faceSideCropImgFileName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest
-     */
-    'backSideCropImgFileName'?: string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateScanImagePostRequest
- */
-export interface OrgAssetsMaterialUpdateScanImagePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateScanImagePostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateScanImagePostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialUpdateScanImagePostRequest
-     */
-    'isExchange': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateScanImagePostRequest
-     */
-    'tempUploadId'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateScanImagePostRequest
-     */
-    'faceSideCropImgFileName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateScanImagePostRequest
-     */
-    'backSideCropImgFileName'?: string;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord}
-     * @memberof OrgAssetsMaterialUpdateScanImagePostRequest
-     */
-    'faceSideCropImageRecord'?: OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord}
-     * @memberof OrgAssetsMaterialUpdateScanImagePostRequest
-     */
-    'backSideCropImageRecord'?: OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord
- */
-export interface OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord
-     */
-    'x'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord
-     */
-    'y'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord
-     */
-    'rotateDeg'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord
-     */
-    'scaleRatio'?: number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateSimpleInventoryPostRequest
- */
-export interface OrgAssetsMaterialUpdateSimpleInventoryPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleInventoryPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleInventoryPostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateSimpleInventoryPostRequestMaterial}
-     * @memberof OrgAssetsMaterialUpdateSimpleInventoryPostRequest
-     */
-    'material'?: OrgAssetsMaterialUpdateSimpleInventoryPostRequestMaterial;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
- */
-export interface OrgAssetsMaterialUpdateSimpleInventoryPostRequestMaterial {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
-     */
-    'sampleCardsRemainingQty'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
-     */
-    'sampleCardsLocation'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
-     */
-    'hangersRemainingQty'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
-     */
-    'hangersLocation'?: string;
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialCreatePostRequestMaterialInventoryListInner>}
-     * @memberof OrgAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
-     */
-    'inventoryList'?: Array<OrgAssetsMaterialCreatePostRequestMaterialInventoryListInner>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
-     */
-    'isPublicInventory'?: boolean;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateSimplePublicPricePostRequest
- */
-export interface OrgAssetsMaterialUpdateSimplePublicPricePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimplePublicPricePostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimplePublicPricePostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateSimplePublicPricePostRequestMaterial}
-     * @memberof OrgAssetsMaterialUpdateSimplePublicPricePostRequest
-     */
-    'material'?: OrgAssetsMaterialUpdateSimplePublicPricePostRequestMaterial;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateSimplePublicPricePostRequestMaterial
- */
-export interface OrgAssetsMaterialUpdateSimplePublicPricePostRequestMaterial {
-    /**
-     * 
-     * @type {OrgAssetsMaterialCreatePostRequestMaterialPublicPrice}
-     * @memberof OrgAssetsMaterialUpdateSimplePublicPricePostRequestMaterial
-     */
-    'publicPrice'?: OrgAssetsMaterialCreatePostRequestMaterialPublicPrice;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateSimpleSpecPostRequest
- */
-export interface OrgAssetsMaterialUpdateSimpleSpecPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequest
-     */
-    'material'?: OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
- */
-export interface OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial {
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'materialNo': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'mainTypeId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'subTypeId': number;
-    /**
-     * 
-     * @type {Array<OrgAssetsMaterialCreatePostRequestMaterialDescriptionListInner>}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'descriptionList'?: Array<OrgAssetsMaterialCreatePostRequestMaterialDescriptionListInner>;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'weightOrThickness': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'weightOrThicknessUnit': OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterialWeightOrThicknessUnitEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'weightGy'?: number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'width': number;
-    /**
-     * 成分
-     * @type {Array<OrgAssetsMaterialCreatePostRequestMaterialContentListInner>}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'contentList': Array<OrgAssetsMaterialCreatePostRequestMaterialContentListInner>;
-    /**
-     * 後處理
-     * @type {Array<OrgAssetsMaterialCreatePostRequestMaterialFinishListInner>}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'finishList'?: Array<OrgAssetsMaterialCreatePostRequestMaterialFinishListInner>;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'warpYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'weftYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'warpDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'weftDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'pattern'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial
-     */
-    'color'?: string;
-}
-
-export const OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterialWeightOrThicknessUnitEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterialWeightOrThicknessUnitEnum = typeof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterialWeightOrThicknessUnitEnum[keyof typeof OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterialWeightOrThicknessUnitEnum];
-
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateSimpleTagPostRequest
- */
-export interface OrgAssetsMaterialUpdateSimpleTagPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleTagPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateSimpleTagPostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdateSimpleTagPostRequestMaterial}
-     * @memberof OrgAssetsMaterialUpdateSimpleTagPostRequest
-     */
-    'material'?: OrgAssetsMaterialUpdateSimpleTagPostRequestMaterial;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateSimpleTagPostRequestMaterial
- */
-export interface OrgAssetsMaterialUpdateSimpleTagPostRequestMaterial {
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OrgAssetsMaterialUpdateSimpleTagPostRequestMaterial
-     */
-    'publicTagList'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OrgAssetsMaterialUpdateSimpleTagPostRequestMaterial
-     */
-    'privateTagList'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OrgAssetsMaterialUpdateSimpleTagPostRequestMaterial
-     */
-    'aiTagList'?: Array<string>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsMaterialUpdateUploadAttachmentPostRequest
- */
-export interface OrgAssetsMaterialUpdateUploadAttachmentPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateUploadAttachmentPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsMaterialUpdateUploadAttachmentPostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateUploadAttachmentPostRequest
-     */
-    'tempUploadId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateUploadAttachmentPostRequest
-     */
-    'attachmentFileName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsMaterialUpdateUploadAttachmentPostRequest
-     */
-    'displayFileName': string;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressExcelCancelPostRequest
- */
-export interface OrgAssetsUploadProgressExcelCancelPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressExcelCancelPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressExcelCancelPostRequest
-     */
-    'excelProgressId': number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressExcelGetListPost200Response
- */
-export interface OrgAssetsUploadProgressExcelGetListPost200Response {
-    /**
-     * 
-     * @type {OrgAssetsUploadProgressExcelGetListPost200ResponseResult}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200Response
-     */
-    'result'?: OrgAssetsUploadProgressExcelGetListPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressExcelGetListPost200ResponseResult
- */
-export interface OrgAssetsUploadProgressExcelGetListPost200ResponseResult {
-    /**
-     * 
-     * @type {Array<OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner>}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200ResponseResult
-     */
-    'excelProgressList'?: Array<OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner
- */
-export interface OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner
-     */
-    'excelProgressId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner
-     */
-    'category'?: OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerCategoryEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner
-     */
-    'fileName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner
-     */
-    'fileUrl'?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner
-     */
-    'materialNoList'?: Array<string>;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner
-     */
-    'createDate'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner
-     */
-    'createUser'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner
-     */
-    'createAvatar'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner
-     */
-    'status'?: OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerStatusEnum;
-    /**
-     * status 為 3 Unsuccessful 時 msgCode 才有值
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInner
-     */
-    'msgCode'?: OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerMsgCodeEnum;
-}
-
-export const OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerCategoryEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerCategoryEnum = typeof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerCategoryEnum[keyof typeof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerCategoryEnum];
-export const OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerStatusEnum = typeof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerStatusEnum[keyof typeof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerStatusEnum];
-export const OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerMsgCodeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerMsgCodeEnum = typeof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerMsgCodeEnum[keyof typeof OrgAssetsUploadProgressExcelGetListPost200ResponseResultExcelProgressListInnerMsgCodeEnum];
-
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressExcelGetListPostRequest
- */
-export interface OrgAssetsUploadProgressExcelGetListPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressExcelGetListPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressExcelGetListPostRequest
-     */
-    'startDate'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressExcelGetListPostRequest
-     */
-    'endDate'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressExcelGetListPostRequest
-     */
-    'status'?: OrgAssetsUploadProgressExcelGetListPostRequestStatusEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressExcelGetListPostRequest
-     */
-    'category'?: OrgAssetsUploadProgressExcelGetListPostRequestCategoryEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressExcelGetListPostRequest
-     */
-    'keyword'?: string;
-    /**
-     * 
-     * @type {OrgAssetsUploadProgressExcelGetListPostRequestPagination}
-     * @memberof OrgAssetsUploadProgressExcelGetListPostRequest
-     */
-    'pagination': OrgAssetsUploadProgressExcelGetListPostRequestPagination;
-}
-
-export const OrgAssetsUploadProgressExcelGetListPostRequestStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressExcelGetListPostRequestStatusEnum = typeof OrgAssetsUploadProgressExcelGetListPostRequestStatusEnum[keyof typeof OrgAssetsUploadProgressExcelGetListPostRequestStatusEnum];
-export const OrgAssetsUploadProgressExcelGetListPostRequestCategoryEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressExcelGetListPostRequestCategoryEnum = typeof OrgAssetsUploadProgressExcelGetListPostRequestCategoryEnum[keyof typeof OrgAssetsUploadProgressExcelGetListPostRequestCategoryEnum];
-
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressExcelGetListPostRequestPagination
- */
-export interface OrgAssetsUploadProgressExcelGetListPostRequestPagination {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressExcelGetListPostRequestPagination
-     */
-    'perPageCount'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressExcelGetListPostRequestPagination
-     */
-    'targetPage'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressExcelGetListPostRequestPagination
-     */
-    'sort'?: OrgAssetsUploadProgressExcelGetListPostRequestPaginationSortEnum;
-}
-
-export const OrgAssetsUploadProgressExcelGetListPostRequestPaginationSortEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressExcelGetListPostRequestPaginationSortEnum = typeof OrgAssetsUploadProgressExcelGetListPostRequestPaginationSortEnum[keyof typeof OrgAssetsUploadProgressExcelGetListPostRequestPaginationSortEnum];
-
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressExcelGetMaterialListPost200Response
- */
-export interface OrgAssetsUploadProgressExcelGetMaterialListPost200Response {
-    /**
-     * 
-     * @type {OrgAssetsMaterialGetListPost200ResponseResultAssets}
-     * @memberof OrgAssetsUploadProgressExcelGetMaterialListPost200Response
-     */
-    'result'?: OrgAssetsMaterialGetListPost200ResponseResultAssets;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsUploadProgressExcelGetMaterialListPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressExcelGetMaterialListPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsUploadProgressExcelGetMaterialListPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressMaterialCancelPostRequest
- */
-export interface OrgAssetsUploadProgressMaterialCancelPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressMaterialCancelPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressMaterialCancelPostRequest
-     */
-    'materialProgressId': number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressMaterialGetListPost200Response
- */
-export interface OrgAssetsUploadProgressMaterialGetListPost200Response {
-    /**
-     * 
-     * @type {OrgAssetsUploadProgressMaterialGetListPost200ResponseResult}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200Response
-     */
-    'result'?: OrgAssetsUploadProgressMaterialGetListPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressMaterialGetListPost200ResponseResult
- */
-export interface OrgAssetsUploadProgressMaterialGetListPost200ResponseResult {
-    /**
-     * 
-     * @type {Array<OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner>}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200ResponseResult
-     */
-    'materialProgressList'?: Array<OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner
- */
-export interface OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner
-     */
-    'materialProgressId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner
-     */
-    'materialId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner
-     */
-    'image'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner
-     */
-    'createDate'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner
-     */
-    'status'?: OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerStatusEnum;
-    /**
-     * status 為 3 Unsuccessful 時 msgCode 才有值
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner
-     */
-    'msgCode'?: OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerMsgCodeEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner
-     */
-    'isMapping'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner
-     */
-    'sideType'?: OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerSideTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner
-     */
-    'materialNo'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInner
-     */
-    'isMaterialDeleted'?: boolean;
-}
-
-export const OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerStatusEnum = typeof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerStatusEnum[keyof typeof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerStatusEnum];
-export const OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerMsgCodeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerMsgCodeEnum = typeof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerMsgCodeEnum[keyof typeof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerMsgCodeEnum];
-export const OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerSideTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerSideTypeEnum = typeof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerSideTypeEnum[keyof typeof OrgAssetsUploadProgressMaterialGetListPost200ResponseResultMaterialProgressListInnerSideTypeEnum];
-
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressMaterialGetListPostRequest
- */
-export interface OrgAssetsUploadProgressMaterialGetListPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPostRequest
-     */
-    'startDate'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPostRequest
-     */
-    'endDate'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPostRequest
-     */
-    'status'?: OrgAssetsUploadProgressMaterialGetListPostRequestStatusEnum;
-    /**
-     * 
-     * @type {OrgAssetsUploadProgressMaterialGetListPostRequestPagination}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPostRequest
-     */
-    'pagination': OrgAssetsUploadProgressMaterialGetListPostRequestPagination;
-}
-
-export const OrgAssetsUploadProgressMaterialGetListPostRequestStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressMaterialGetListPostRequestStatusEnum = typeof OrgAssetsUploadProgressMaterialGetListPostRequestStatusEnum[keyof typeof OrgAssetsUploadProgressMaterialGetListPostRequestStatusEnum];
-
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressMaterialGetListPostRequestPagination
- */
-export interface OrgAssetsUploadProgressMaterialGetListPostRequestPagination {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPostRequestPagination
-     */
-    'perPageCount'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPostRequestPagination
-     */
-    'targetPage'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressMaterialGetListPostRequestPagination
-     */
-    'sort'?: OrgAssetsUploadProgressMaterialGetListPostRequestPaginationSortEnum;
-}
-
-export const OrgAssetsUploadProgressMaterialGetListPostRequestPaginationSortEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressMaterialGetListPostRequestPaginationSortEnum = typeof OrgAssetsUploadProgressMaterialGetListPostRequestPaginationSortEnum[keyof typeof OrgAssetsUploadProgressMaterialGetListPostRequestPaginationSortEnum];
-
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressU3mCancelPostRequest
- */
-export interface OrgAssetsUploadProgressU3mCancelPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressU3mCancelPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressU3mCancelPostRequest
-     */
-    'u3mProgressId': number;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressU3mGetListPost200Response
- */
-export interface OrgAssetsUploadProgressU3mGetListPost200Response {
-    /**
-     * 
-     * @type {OrgAssetsUploadProgressU3mGetListPost200ResponseResult}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200Response
-     */
-    'result'?: OrgAssetsUploadProgressU3mGetListPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressU3mGetListPost200ResponseResult
- */
-export interface OrgAssetsUploadProgressU3mGetListPost200ResponseResult {
-    /**
-     * 
-     * @type {Array<ProgressU3mItem>}
-     * @memberof OrgAssetsUploadProgressU3mGetListPost200ResponseResult
-     */
-    'u3mProgressList'?: Array<ProgressU3mItem>;
-}
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressU3mGetListPostRequest
- */
-export interface OrgAssetsUploadProgressU3mGetListPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressU3mGetListPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressU3mGetListPostRequest
-     */
-    'startDate'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressU3mGetListPostRequest
-     */
-    'endDate'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressU3mGetListPostRequest
-     */
-    'status'?: OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrgAssetsUploadProgressU3mGetListPostRequest
-     */
-    'keyword'?: string;
-    /**
-     * 
-     * @type {OrgAssetsUploadProgressU3mGetListPostRequestPagination}
-     * @memberof OrgAssetsUploadProgressU3mGetListPostRequest
-     */
-    'pagination': OrgAssetsUploadProgressU3mGetListPostRequestPagination;
-}
-
-export const OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum = typeof OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum[keyof typeof OrgAssetsUploadProgressU3mGetListPostRequestStatusEnum];
-
-/**
- * 
- * @export
- * @interface OrgAssetsUploadProgressU3mGetListPostRequestPagination
- */
-export interface OrgAssetsUploadProgressU3mGetListPostRequestPagination {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressU3mGetListPostRequestPagination
-     */
-    'perPageCount'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgAssetsUploadProgressU3mGetListPostRequestPagination
-     */
-    'targetPage'?: number;
-    /**
-     * 
-     * @type {ProgressU3mSort}
-     * @memberof OrgAssetsUploadProgressU3mGetListPostRequestPagination
-     */
-    'sort'?: ProgressU3mSort;
-}
 
 
 /**
@@ -9967,6 +12788,50 @@ export interface OrgGetPostRequest {
 /**
  * 
  * @export
+ * @interface OrgGroupAssetsMaterialAddToWorkspacePost200Response
+ */
+export interface OrgGroupAssetsMaterialAddToWorkspacePost200Response {
+    /**
+     * 
+     * @type {OrgGroupAssetsMaterialAddToWorkspacePost200ResponseResult}
+     * @memberof OrgGroupAssetsMaterialAddToWorkspacePost200Response
+     */
+    'result'?: OrgGroupAssetsMaterialAddToWorkspacePost200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrgGroupAssetsMaterialAddToWorkspacePost200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialAddToWorkspacePost200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof OrgGroupAssetsMaterialAddToWorkspacePost200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialAddToWorkspacePost200ResponseResult
+ */
+export interface OrgGroupAssetsMaterialAddToWorkspacePost200ResponseResult {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof OrgGroupAssetsMaterialAddToWorkspacePost200ResponseResult
+     */
+    'failMaterialList'?: Array<string>;
+}
+/**
+ * 
+ * @export
  * @interface OrgGroupAssetsMaterialAddToWorkspacePostRequest
  */
 export interface OrgGroupAssetsMaterialAddToWorkspacePostRequest {
@@ -10013,6 +12878,25 @@ export interface OrgGroupAssetsMaterialBatchUploadPostRequest {
      * @memberof OrgGroupAssetsMaterialBatchUploadPostRequest
      */
     'xlsxFileName': string;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialCarbonCopyPostRequest
+ */
+export interface OrgGroupAssetsMaterialCarbonCopyPostRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialCarbonCopyPostRequest
+     */
+    'groupId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialCarbonCopyPostRequest
+     */
+    'materialId': number;
 }
 /**
  * 
@@ -10067,27 +12951,77 @@ export interface OrgGroupAssetsMaterialClonePostRequest {
 /**
  * 
  * @export
- * @interface OrgGroupAssetsMaterialCreatePostRequest
+ * @interface OrgGroupAssetsMaterialCreateUploadAttachmentPost200Response
  */
-export interface OrgGroupAssetsMaterialCreatePostRequest {
+export interface OrgGroupAssetsMaterialCreateUploadAttachmentPost200Response {
     /**
      * 
-     * @type {number}
-     * @memberof OrgGroupAssetsMaterialCreatePostRequest
+     * @type {OrgGroupAssetsMaterialCreateUploadAttachmentPost200ResponseResult}
+     * @memberof OrgGroupAssetsMaterialCreateUploadAttachmentPost200Response
      */
-    'orgId'?: number;
+    'result'?: OrgGroupAssetsMaterialCreateUploadAttachmentPost200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrgGroupAssetsMaterialCreateUploadAttachmentPost200Response
+     */
+    'success': boolean;
     /**
      * 
      * @type {string}
-     * @memberof OrgGroupAssetsMaterialCreatePostRequest
+     * @memberof OrgGroupAssetsMaterialCreateUploadAttachmentPost200Response
      */
-    'tempMaterialId': string;
+    'code'?: string | null;
     /**
      * 
-     * @type {OrgAssetsMaterialCreatePostRequestMaterial}
-     * @memberof OrgGroupAssetsMaterialCreatePostRequest
+     * @type {object}
+     * @memberof OrgGroupAssetsMaterialCreateUploadAttachmentPost200Response
      */
-    'material'?: OrgAssetsMaterialCreatePostRequestMaterial;
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialCreateUploadAttachmentPost200ResponseResult
+ */
+export interface OrgGroupAssetsMaterialCreateUploadAttachmentPost200ResponseResult {
+    /**
+     * 
+     * @type {Array<OrgGroupAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner>}
+     * @memberof OrgGroupAssetsMaterialCreateUploadAttachmentPost200ResponseResult
+     */
+    'attachmentList'?: Array<OrgGroupAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner
+ */
+export interface OrgGroupAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner
+     */
+    'tempMaterialAttachmentId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner
+     */
+    'displayFileName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner
+     */
+    'url'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialCreateUploadAttachmentPost200ResponseResultAttachmentListInner
+     */
+    'extension'?: string;
 }
 /**
  * 
@@ -10185,6 +13119,62 @@ export interface OrgGroupAssetsMaterialCustomU3mUploadPostRequest {
 /**
  * 
  * @export
+ * @interface OrgGroupAssetsMaterialDeleteCheckPost200Response
+ */
+export interface OrgGroupAssetsMaterialDeleteCheckPost200Response {
+    /**
+     * 
+     * @type {OrgGroupAssetsMaterialDeleteCheckPost200ResponseResult}
+     * @memberof OrgGroupAssetsMaterialDeleteCheckPost200Response
+     */
+    'result'?: OrgGroupAssetsMaterialDeleteCheckPost200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrgGroupAssetsMaterialDeleteCheckPost200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialDeleteCheckPost200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof OrgGroupAssetsMaterialDeleteCheckPost200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialDeleteCheckPost200ResponseResult
+ */
+export interface OrgGroupAssetsMaterialDeleteCheckPost200ResponseResult {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrgGroupAssetsMaterialDeleteCheckPost200ResponseResult
+     */
+    'isOnGeneratingU3m'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrgGroupAssetsMaterialDeleteCheckPost200ResponseResult
+     */
+    'isOnExportingExcel'?: boolean;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof OrgGroupAssetsMaterialDeleteCheckPost200ResponseResult
+     */
+    'materialNoList'?: Array<string>;
+}
+/**
+ * 
+ * @export
  * @interface OrgGroupAssetsMaterialDeletePostRequest
  */
 export interface OrgGroupAssetsMaterialDeletePostRequest {
@@ -10235,25 +13225,6 @@ export interface OrgGroupAssetsMaterialGetListPostRequest {
 /**
  * 
  * @export
- * @interface OrgGroupAssetsMaterialGetPostRequest
- */
-export interface OrgGroupAssetsMaterialGetPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgGroupAssetsMaterialGetPostRequest
-     */
-    'groupId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgGroupAssetsMaterialGetPostRequest
-     */
-    'materialId': number;
-}
-/**
- * 
- * @export
  * @interface OrgGroupAssetsMaterialMergePostRequest
  */
 export interface OrgGroupAssetsMaterialMergePostRequest {
@@ -10265,10 +13236,243 @@ export interface OrgGroupAssetsMaterialMergePostRequest {
     'groupId': number;
     /**
      * 
-     * @type {Array<OrgAssetsMaterialMergePostRequestMergedListInner>}
+     * @type {Array<OrgGroupAssetsMaterialMergePostRequestMergedListInner>}
      * @memberof OrgGroupAssetsMaterialMergePostRequest
      */
-    'mergedList': Array<OrgAssetsMaterialMergePostRequestMergedListInner>;
+    'mergedList': Array<OrgGroupAssetsMaterialMergePostRequestMergedListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialMergePostRequestMergedListInner
+ */
+export interface OrgGroupAssetsMaterialMergePostRequestMergedListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialMergePostRequestMergedListInner
+     */
+    'faceSideMaterialId'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialMergePostRequestMergedListInner
+     */
+    'backSideMaterialId'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialMergePostRequestMergedListInner
+     */
+    'detailMaterialId'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialOptionsPost200Response
+ */
+export interface OrgGroupAssetsMaterialOptionsPost200Response {
+    /**
+     * 
+     * @type {OrgGroupAssetsMaterialOptionsPost200ResponseResult}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200Response
+     */
+    'result'?: OrgGroupAssetsMaterialOptionsPost200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialOptionsPost200ResponseResult
+ */
+export interface OrgGroupAssetsMaterialOptionsPost200ResponseResult {
+    /**
+     * 
+     * @type {OrgGroupAssetsMaterialOptionsPost200ResponseResultCode}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResult
+     */
+    'code'?: OrgGroupAssetsMaterialOptionsPost200ResponseResultCode;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCode
+ */
+export interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCode {
+    /**
+     * 
+     * @type {OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentList}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCode
+     */
+    'contentList'?: OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentList;
+    /**
+     * 
+     * @type {OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionList}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCode
+     */
+    'descriptionList'?: OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionList;
+    /**
+     * 
+     * @type {OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishList}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCode
+     */
+    'finishList'?: OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishList;
+    /**
+     * 憑證
+     * @type {Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeCertificateListInner>}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCode
+     */
+    'certificateList'?: Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeCertificateListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeCertificateListInner
+ */
+export interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeCertificateListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeCertificateListInner
+     */
+    'certificateId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeCertificateListInner
+     */
+    'name'?: string;
+}
+/**
+ * 成分
+ * @export
+ * @interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentList
+ */
+export interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentList {
+    /**
+     * 
+     * @type {Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner>}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentList
+     */
+    'default'?: Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner>;
+    /**
+     * 
+     * @type {Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner>}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentList
+     */
+    'custom'?: Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner>;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner
+ */
+export interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner
+     */
+    'contentId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeContentListDefaultInner
+     */
+    'name'?: string;
+}
+/**
+ * 品名描述
+ * @export
+ * @interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionList
+ */
+export interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionList {
+    /**
+     * 
+     * @type {Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner>}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionList
+     */
+    'default'?: Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner>;
+    /**
+     * 
+     * @type {Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner>}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionList
+     */
+    'custom'?: Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner>;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner
+ */
+export interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner
+     */
+    'descriptionId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeDescriptionListDefaultInner
+     */
+    'name'?: string;
+}
+/**
+ * 後處理
+ * @export
+ * @interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishList
+ */
+export interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishList {
+    /**
+     * 
+     * @type {Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner>}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishList
+     */
+    'default'?: Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner>;
+    /**
+     * 
+     * @type {Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner>}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishList
+     */
+    'custom'?: Array<OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner>;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner
+ */
+export interface OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner
+     */
+    'finishId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialOptionsPost200ResponseResultCodeFinishListDefaultInner
+     */
+    'name'?: string;
 }
 /**
  * 
@@ -10334,10 +13538,10 @@ export interface OrgGroupAssetsMaterialUpdateCoverImgPostRequest {
     'materialId': number;
     /**
      * 
-     * @type {number}
+     * @type {CoverMode}
      * @memberof OrgGroupAssetsMaterialUpdateCoverImgPostRequest
      */
-    'coverMode': OrgGroupAssetsMaterialUpdateCoverImgPostRequestCoverModeEnum;
+    'coverMode': CoverMode;
     /**
      * 
      * @type {number}
@@ -10358,20 +13562,44 @@ export interface OrgGroupAssetsMaterialUpdateCoverImgPostRequest {
     'attachmentCropImgFileName'?: string;
     /**
      * 
-     * @type {OrgAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord}
+     * @type {OrgGroupAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord}
      * @memberof OrgGroupAssetsMaterialUpdateCoverImgPostRequest
      */
-    'attachmentCropImageRecord'?: OrgAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord;
+    'attachmentCropImageRecord'?: OrgGroupAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord;
 }
 
-export const OrgGroupAssetsMaterialUpdateCoverImgPostRequestCoverModeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
 
-export type OrgGroupAssetsMaterialUpdateCoverImgPostRequestCoverModeEnum = typeof OrgGroupAssetsMaterialUpdateCoverImgPostRequestCoverModeEnum[keyof typeof OrgGroupAssetsMaterialUpdateCoverImgPostRequestCoverModeEnum];
-
+/**
+ * coverMode=3,欄位必填
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord
+ */
+export interface OrgGroupAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord
+     */
+    'x': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord
+     */
+    'y': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord
+     */
+    'rotateDeg': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateCoverImgPostRequestAttachmentCropImageRecord
+     */
+    'scaleRatio': number;
+}
 /**
  * 
  * @export
@@ -10416,16 +13644,103 @@ export interface OrgGroupAssetsMaterialUpdateGenerateU3mPostRequest {
     'backSideCropImgFileName'?: string;
     /**
      * 
-     * @type {OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord}
+     * @type {OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord}
      * @memberof OrgGroupAssetsMaterialUpdateGenerateU3mPostRequest
      */
-    'faceSideCropImageRecord'?: OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord;
+    'faceSideCropImageRecord'?: OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord;
     /**
      * 
-     * @type {OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord}
+     * @type {OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord}
      * @memberof OrgGroupAssetsMaterialUpdateGenerateU3mPostRequest
      */
-    'backSideCropImageRecord'?: OrgAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord;
+    'backSideCropImageRecord'?: OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord
+ */
+export interface OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord {
+    /**
+     * 
+     * @type {OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord}
+     * @memberof OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord
+     */
+    'squareCropRecord'?: OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord;
+    /**
+     * 
+     * @type {OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord}
+     * @memberof OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecord
+     */
+    'perspectiveCropRecord'?: OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord
+ */
+export interface OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord {
+    /**
+     * 
+     * @type {Coordinate}
+     * @memberof OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord
+     */
+    'leftTop': Coordinate;
+    /**
+     * 
+     * @type {Coordinate}
+     * @memberof OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord
+     */
+    'leftBottom': Coordinate;
+    /**
+     * 
+     * @type {Coordinate}
+     * @memberof OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord
+     */
+    'rightTop': Coordinate;
+    /**
+     * 
+     * @type {Coordinate}
+     * @memberof OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord
+     */
+    'rightBottom': Coordinate;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordPerspectiveCropRecord
+     */
+    'rotateDeg': number;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord
+ */
+export interface OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord
+     */
+    'x': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord
+     */
+    'y': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord
+     */
+    'rotateDeg': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateGenerateU3mPostRequestFaceSideCropImageRecordSquareCropRecord
+     */
+    'scaleRatio': number;
 }
 /**
  * 
@@ -10451,31 +13766,6 @@ export interface OrgGroupAssetsMaterialUpdateIsDoubleSidePostRequest {
      * @memberof OrgGroupAssetsMaterialUpdateIsDoubleSidePostRequest
      */
     'isDoubleSideMaterial': boolean;
-}
-/**
- * 
- * @export
- * @interface OrgGroupAssetsMaterialUpdatePostRequest
- */
-export interface OrgGroupAssetsMaterialUpdatePostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgGroupAssetsMaterialUpdatePostRequest
-     */
-    'groupId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof OrgGroupAssetsMaterialUpdatePostRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {OrgAssetsMaterialUpdatePostRequestMaterial}
-     * @memberof OrgGroupAssetsMaterialUpdatePostRequest
-     */
-    'material'?: OrgAssetsMaterialUpdatePostRequestMaterial;
 }
 /**
  * 
@@ -10526,6 +13816,62 @@ export interface OrgGroupAssetsMaterialUpdateRemovePantonePostRequest {
      * @memberof OrgGroupAssetsMaterialUpdateRemovePantonePostRequest
      */
     'materialPantoneId': number;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200Response
+ */
+export interface OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200Response {
+    /**
+     * 
+     * @type {OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200Response
+     */
+    'result'?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult
+ */
+export interface OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult {
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult
+     */
+    'tempUploadId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult
+     */
+    'faceSideCropImgUploadUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200ResponseResult
+     */
+    'backSideCropImgUploadUrl'?: string;
 }
 /**
  * 
@@ -10596,16 +13942,47 @@ export interface OrgGroupAssetsMaterialUpdateScanImagePostRequest {
     'backSideCropImgFileName'?: string;
     /**
      * 
-     * @type {OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord}
+     * @type {OrgGroupAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord}
      * @memberof OrgGroupAssetsMaterialUpdateScanImagePostRequest
      */
-    'faceSideCropImageRecord'?: OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord;
+    'faceSideCropImageRecord'?: OrgGroupAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord;
     /**
      * 
-     * @type {OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord}
+     * @type {OrgGroupAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord}
      * @memberof OrgGroupAssetsMaterialUpdateScanImagePostRequest
      */
-    'backSideCropImageRecord'?: OrgAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord;
+    'backSideCropImageRecord'?: OrgGroupAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord
+ */
+export interface OrgGroupAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord
+     */
+    'x': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord
+     */
+    'y': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord
+     */
+    'rotateDeg': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateScanImagePostRequestFaceSideCropImageRecord
+     */
+    'scaleRatio': number;
 }
 /**
  * 
@@ -10627,11 +14004,94 @@ export interface OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequest {
     'materialId': number;
     /**
      * 
-     * @type {OrgAssetsMaterialUpdateSimpleInventoryPostRequestMaterial}
+     * @type {OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterial}
      * @memberof OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequest
      */
-    'material'?: OrgAssetsMaterialUpdateSimpleInventoryPostRequestMaterial;
+    'material'?: OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterial;
 }
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
+ */
+export interface OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterial {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
+     */
+    'sampleCardsRemainingQty'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
+     */
+    'sampleCardsLocation'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
+     */
+    'hangersRemainingQty'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
+     */
+    'hangersLocation'?: string;
+    /**
+     * 
+     * @type {Array<OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterialInventoryListInner>}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
+     */
+    'inventoryList'?: Array<OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterialInventoryListInner>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterial
+     */
+    'isPublicInventory'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterialInventoryListInner
+ */
+export interface OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterialInventoryListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterialInventoryListInner
+     */
+    'section'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterialInventoryListInner
+     */
+    'shelf'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterialInventoryListInner
+     */
+    'quantity'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterialInventoryListInner
+     */
+    'unit'?: OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterialInventoryListInnerUnitEnum;
+}
+
+export const OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterialInventoryListInnerUnitEnum = {
+    Y: 'Y',
+    M: 'M',
+    Kg: 'KG'
+} as const;
+
+export type OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterialInventoryListInnerUnitEnum = typeof OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterialInventoryListInnerUnitEnum[keyof typeof OrgGroupAssetsMaterialUpdateSimpleInventoryPostRequestMaterialInventoryListInnerUnitEnum];
+
 /**
  * 
  * @export
@@ -10652,11 +14112,93 @@ export interface OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequest {
     'materialId': number;
     /**
      * 
-     * @type {OrgAssetsMaterialUpdateSimplePublicPricePostRequestMaterial}
+     * @type {OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterial}
      * @memberof OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequest
      */
-    'material'?: OrgAssetsMaterialUpdateSimplePublicPricePostRequestMaterial;
+    'material'?: OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterial;
 }
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterial
+ */
+export interface OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterial {
+    /**
+     * 
+     * @type {OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice}
+     * @memberof OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterial
+     */
+    'publicPrice'?: OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice
+ */
+export interface OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice {
+    /**
+     * 國家代碼
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice
+     */
+    'countryCode'?: string;
+    /**
+     * 
+     * @type {CurrencyCode}
+     * @memberof OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice
+     */
+    'currency'?: CurrencyCode;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice
+     */
+    'price'?: number;
+    /**
+     * 
+     * @type {MaterialQuantityUnit}
+     * @memberof OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice
+     */
+    'unit'?: MaterialQuantityUnit;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice
+     */
+    'minimumOrderQuantity'?: number;
+    /**
+     * 
+     * @type {MaterialQuantityUnit}
+     * @memberof OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice
+     */
+    'minimumOrderQuantityUnit'?: MaterialQuantityUnit;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice
+     */
+    'minimumContainerQuantity'?: number;
+    /**
+     * 
+     * @type {MaterialQuantityUnit}
+     * @memberof OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice
+     */
+    'minimumContainerQuantityUnit'?: MaterialQuantityUnit;
+    /**
+     * 產品交貨期
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice
+     */
+    'productionLeadTime'?: string;
+    /**
+     * 樣品交貨期
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimplePublicPricePostRequestMaterialPublicPrice
+     */
+    'sampleLeadTime'?: string;
+}
+
+
 /**
  * 
  * @export
@@ -10677,10 +14219,166 @@ export interface OrgGroupAssetsMaterialUpdateSimpleSpecPostRequest {
     'materialId': number;
     /**
      * 
-     * @type {OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial}
+     * @type {OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial}
      * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequest
      */
-    'material'?: OrgAssetsMaterialUpdateSimpleSpecPostRequestMaterial;
+    'material'?: OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+ */
+export interface OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial {
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'materialNo': string;
+    /**
+     * 
+     * @type {Array<OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialDescriptionListInner>}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'descriptionList'?: Array<OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialDescriptionListInner>;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'weight': number;
+    /**
+     * 
+     * @type {WeightUnit}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'weightUnit': WeightUnit;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'weightGy'?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'width': number;
+    /**
+     * 成分
+     * @type {Array<OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialContentListInner>}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'contentList': Array<OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialContentListInner>;
+    /**
+     * 後處理
+     * @type {Array<OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialFinishListInner>}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'finishList'?: Array<OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialFinishListInner>;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'warpYarnCount'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'weftYarnCount'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'warpDensity'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'weftDensity'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'pattern'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterial
+     */
+    'color'?: string;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialContentListInner
+ */
+export interface OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialContentListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialContentListInner
+     */
+    'contentId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialContentListInner
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialContentListInner
+     */
+    'percentage'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialDescriptionListInner
+ */
+export interface OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialDescriptionListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialDescriptionListInner
+     */
+    'descriptionId'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialDescriptionListInner
+     */
+    'name'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialFinishListInner
+ */
+export interface OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialFinishListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialFinishListInner
+     */
+    'finishId'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleSpecPostRequestMaterialFinishListInner
+     */
+    'name'?: string;
 }
 /**
  * 
@@ -10702,10 +14400,35 @@ export interface OrgGroupAssetsMaterialUpdateSimpleTagPostRequest {
     'materialId': number;
     /**
      * 
-     * @type {OrgAssetsMaterialUpdateSimpleTagPostRequestMaterial}
+     * @type {OrgGroupAssetsMaterialUpdateSimpleTagPostRequestMaterial}
      * @memberof OrgGroupAssetsMaterialUpdateSimpleTagPostRequest
      */
-    'material'?: OrgAssetsMaterialUpdateSimpleTagPostRequestMaterial;
+    'material'?: OrgGroupAssetsMaterialUpdateSimpleTagPostRequestMaterial;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsMaterialUpdateSimpleTagPostRequestMaterial
+ */
+export interface OrgGroupAssetsMaterialUpdateSimpleTagPostRequestMaterial {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleTagPostRequestMaterial
+     */
+    'publicTagList'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleTagPostRequestMaterial
+     */
+    'privateTagList'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof OrgGroupAssetsMaterialUpdateSimpleTagPostRequestMaterial
+     */
+    'aiTagList'?: Array<string>;
 }
 /**
  * 
@@ -10941,10 +14664,10 @@ export interface OrgGroupAssetsUploadProgressExcelGetListPostRequest {
     'keyword'?: string;
     /**
      * 
-     * @type {OrgAssetsUploadProgressExcelGetListPostRequestPagination}
+     * @type {OrgGroupAssetsUploadProgressExcelGetListPostRequestPagination}
      * @memberof OrgGroupAssetsUploadProgressExcelGetListPostRequest
      */
-    'pagination': OrgAssetsUploadProgressExcelGetListPostRequestPagination;
+    'pagination': OrgGroupAssetsUploadProgressExcelGetListPostRequestPagination;
 }
 
 export const OrgGroupAssetsUploadProgressExcelGetListPostRequestStatusEnum = {
@@ -10963,6 +14686,43 @@ export const OrgGroupAssetsUploadProgressExcelGetListPostRequestCategoryEnum = {
 } as const;
 
 export type OrgGroupAssetsUploadProgressExcelGetListPostRequestCategoryEnum = typeof OrgGroupAssetsUploadProgressExcelGetListPostRequestCategoryEnum[keyof typeof OrgGroupAssetsUploadProgressExcelGetListPostRequestCategoryEnum];
+
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsUploadProgressExcelGetListPostRequestPagination
+ */
+export interface OrgGroupAssetsUploadProgressExcelGetListPostRequestPagination {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsUploadProgressExcelGetListPostRequestPagination
+     */
+    'perPageCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsUploadProgressExcelGetListPostRequestPagination
+     */
+    'targetPage'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsUploadProgressExcelGetListPostRequestPagination
+     */
+    'sort'?: OrgGroupAssetsUploadProgressExcelGetListPostRequestPaginationSortEnum;
+}
+
+export const OrgGroupAssetsUploadProgressExcelGetListPostRequestPaginationSortEnum = {
+    NUMBER_null: null,
+    NUMBER_null: null,
+    NUMBER_null: null,
+    NUMBER_null: null,
+    NUMBER_null: null,
+    NUMBER_null: null
+} as const;
+
+export type OrgGroupAssetsUploadProgressExcelGetListPostRequestPaginationSortEnum = typeof OrgGroupAssetsUploadProgressExcelGetListPostRequestPaginationSortEnum[keyof typeof OrgGroupAssetsUploadProgressExcelGetListPostRequestPaginationSortEnum];
 
 /**
  * 
@@ -11144,10 +14904,10 @@ export interface OrgGroupAssetsUploadProgressMaterialGetListPostRequest {
     'status'?: OrgGroupAssetsUploadProgressMaterialGetListPostRequestStatusEnum;
     /**
      * 
-     * @type {OrgAssetsUploadProgressMaterialGetListPostRequestPagination}
+     * @type {OrgGroupAssetsUploadProgressMaterialGetListPostRequestPagination}
      * @memberof OrgGroupAssetsUploadProgressMaterialGetListPostRequest
      */
-    'pagination': OrgAssetsUploadProgressMaterialGetListPostRequestPagination;
+    'pagination': OrgGroupAssetsUploadProgressMaterialGetListPostRequestPagination;
 }
 
 export const OrgGroupAssetsUploadProgressMaterialGetListPostRequestStatusEnum = {
@@ -11159,6 +14919,41 @@ export const OrgGroupAssetsUploadProgressMaterialGetListPostRequestStatusEnum = 
 } as const;
 
 export type OrgGroupAssetsUploadProgressMaterialGetListPostRequestStatusEnum = typeof OrgGroupAssetsUploadProgressMaterialGetListPostRequestStatusEnum[keyof typeof OrgGroupAssetsUploadProgressMaterialGetListPostRequestStatusEnum];
+
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsUploadProgressMaterialGetListPostRequestPagination
+ */
+export interface OrgGroupAssetsUploadProgressMaterialGetListPostRequestPagination {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsUploadProgressMaterialGetListPostRequestPagination
+     */
+    'perPageCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsUploadProgressMaterialGetListPostRequestPagination
+     */
+    'targetPage'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsUploadProgressMaterialGetListPostRequestPagination
+     */
+    'sort'?: OrgGroupAssetsUploadProgressMaterialGetListPostRequestPaginationSortEnum;
+}
+
+export const OrgGroupAssetsUploadProgressMaterialGetListPostRequestPaginationSortEnum = {
+    NUMBER_null: null,
+    NUMBER_null: null,
+    NUMBER_null: null,
+    NUMBER_null: null
+} as const;
+
+export type OrgGroupAssetsUploadProgressMaterialGetListPostRequestPaginationSortEnum = typeof OrgGroupAssetsUploadProgressMaterialGetListPostRequestPaginationSortEnum[keyof typeof OrgGroupAssetsUploadProgressMaterialGetListPostRequestPaginationSortEnum];
 
 /**
  * 
@@ -11178,6 +14973,50 @@ export interface OrgGroupAssetsUploadProgressU3mDeletePostRequest {
      * @memberof OrgGroupAssetsUploadProgressU3mDeletePostRequest
      */
     'u3mProgressId': number;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsUploadProgressU3mGetListPost200Response
+ */
+export interface OrgGroupAssetsUploadProgressU3mGetListPost200Response {
+    /**
+     * 
+     * @type {OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResult}
+     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200Response
+     */
+    'result'?: OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResult
+ */
+export interface OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResult {
+    /**
+     * 
+     * @type {Array<ProgressU3mItem>}
+     * @memberof OrgGroupAssetsUploadProgressU3mGetListPost200ResponseResult
+     */
+    'u3mProgressList'?: Array<ProgressU3mItem>;
 }
 /**
  * 
@@ -11217,10 +15056,10 @@ export interface OrgGroupAssetsUploadProgressU3mGetListPostRequest {
     'keyword'?: string;
     /**
      * 
-     * @type {OrgAssetsUploadProgressU3mGetListPostRequestPagination}
+     * @type {OrgGroupAssetsUploadProgressU3mGetListPostRequestPagination}
      * @memberof OrgGroupAssetsUploadProgressU3mGetListPostRequest
      */
-    'pagination': OrgAssetsUploadProgressU3mGetListPostRequestPagination;
+    'pagination': OrgGroupAssetsUploadProgressU3mGetListPostRequestPagination;
 }
 
 export const OrgGroupAssetsUploadProgressU3mGetListPostRequestStatusEnum = {
@@ -11233,6 +15072,25 @@ export const OrgGroupAssetsUploadProgressU3mGetListPostRequestStatusEnum = {
 
 export type OrgGroupAssetsUploadProgressU3mGetListPostRequestStatusEnum = typeof OrgGroupAssetsUploadProgressU3mGetListPostRequestStatusEnum[keyof typeof OrgGroupAssetsUploadProgressU3mGetListPostRequestStatusEnum];
 
+/**
+ * 
+ * @export
+ * @interface OrgGroupAssetsUploadProgressU3mGetListPostRequestPagination
+ */
+export interface OrgGroupAssetsUploadProgressU3mGetListPostRequestPagination {
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsUploadProgressU3mGetListPostRequestPagination
+     */
+    'perPageCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrgGroupAssetsUploadProgressU3mGetListPostRequestPagination
+     */
+    'targetPage'?: number;
+}
 /**
  * 
  * @export
@@ -12126,10 +15984,10 @@ export interface OrgGroupShareToMeGetListPostRequest {
     'search'?: Search;
     /**
      * 
-     * @type {ShareFilter}
+     * @type {ExternalFilter}
      * @memberof OrgGroupShareToMeGetListPostRequest
      */
-    'filter'?: ShareFilter;
+    'filter'?: ExternalFilter;
     /**
      * 
      * @type {PaginationReq}
@@ -13691,6 +17549,62 @@ export interface OrgMoodboardOfferNodePickPostRequest {
 /**
  * 
  * @export
+ * @interface OrgMoodboardOfferPickedExportPost200Response
+ */
+export interface OrgMoodboardOfferPickedExportPost200Response {
+    /**
+     * 
+     * @type {OrgMoodboardOfferPickedExportPost200ResponseResult}
+     * @memberof OrgMoodboardOfferPickedExportPost200Response
+     */
+    'result'?: OrgMoodboardOfferPickedExportPost200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof OrgMoodboardOfferPickedExportPost200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgMoodboardOfferPickedExportPost200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof OrgMoodboardOfferPickedExportPost200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface OrgMoodboardOfferPickedExportPost200ResponseResult
+ */
+export interface OrgMoodboardOfferPickedExportPost200ResponseResult {
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgMoodboardOfferPickedExportPost200ResponseResult
+     */
+    'file'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgMoodboardOfferPickedExportPost200ResponseResult
+     */
+    'fileName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrgMoodboardOfferPickedExportPost200ResponseResult
+     */
+    'extension'?: string;
+}
+/**
+ * 
+ * @export
  * @interface OrgMoodboardOfferPickedExportPostRequest
  */
 export interface OrgMoodboardOfferPickedExportPostRequest {
@@ -14582,10 +18496,10 @@ export interface OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo {
     'cardInfo'?: OrganizationPaymentDetailCardInfo;
     /**
      * 
-     * @type {string}
+     * @type {CurrencyCode}
      * @memberof OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo
      */
-    'currency'?: string;
+    'currency'?: CurrencyCode;
     /**
      * 總費用
      * @type {string}
@@ -14593,6 +18507,8 @@ export interface OrgPaymentInvoiceGetPost200ResponseResultInvoiceInfo {
      */
     'totalPrice'?: string;
 }
+
+
 /**
  * 
  * @export
@@ -15223,10 +19139,10 @@ export interface OrgShareToMeGetListPostRequest {
     'search'?: Search;
     /**
      * 
-     * @type {ShareFilter}
+     * @type {ExternalFilter}
      * @memberof OrgShareToMeGetListPostRequest
      */
-    'filter'?: ShareFilter;
+    'filter'?: ExternalFilter;
     /**
      * 
      * @type {PaginationReq}
@@ -17095,7 +21011,7 @@ export interface Pagination {
      */
     'isShowMatch'?: boolean;
     /**
-     * 
+     * - 1. 關聯度 Relevance：照分數高至低排名 - 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名 - 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名 - 4. 字母順序 A to Z - 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z) - 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z) - 7. 建立時間：最新建立的排前 - 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前 - 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前 - 10. 最新加入 (New arrived)：最新加入的排前 - 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新 - 12. 隨機排序 (Random)：隨機重新排序 - 13. GHG results (Low to High)：GHG數值由低到高排序 - 14. Water Depletion results (Low to High)：用水量數值由低到高排序 - 15. Land Use results (Low to High)：土地面積數值由低到高排序 
      * @type {number}
      * @memberof Pagination
      */
@@ -17109,21 +21025,21 @@ export interface Pagination {
 }
 
 export const PaginationSortEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_1: 1,
+    NUMBER_2: 2,
+    NUMBER_3: 3,
+    NUMBER_4: 4,
+    NUMBER_5: 5,
+    NUMBER_6: 6,
+    NUMBER_7: 7,
+    NUMBER_8: 8,
+    NUMBER_9: 9,
+    NUMBER_10: 10,
+    NUMBER_11: 11,
+    NUMBER_12: 12,
+    NUMBER_13: 13,
+    NUMBER_14: 14,
+    NUMBER_15: 15
 } as const;
 
 export type PaginationSortEnum = typeof PaginationSortEnum[keyof typeof PaginationSortEnum];
@@ -17136,18 +21052,12 @@ export type PaginationSortEnum = typeof PaginationSortEnum[keyof typeof Paginati
 export interface PaginationReq {
     /**
      * 
-     * @type {number}
-     * @memberof PaginationReq
-     */
-    'targetPage'?: number;
-    /**
-     * 
      * @type {boolean}
      * @memberof PaginationReq
      */
     'isShowMatch'?: boolean;
     /**
-     * 
+     * - 1. 關聯度 Relevance：照分數高至低排名 - 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名 - 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名 - 4. 字母順序 A to Z - 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z) - 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z) - 7. 建立時間：最新建立的排前 - 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前 - 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前 - 10. 最新加入 (New arrived)：最新加入的排前 - 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新 - 12. 隨機排序 (Random)：隨機重新排序 - 13. GHG results (Low to High)：GHG數值由低到高排序 - 14. Water Depletion results (Low to High)：用水量數值由低到高排序 - 15. Land Use results (Low to High)：土地面積數值由低到高排序 
      * @type {number}
      * @memberof PaginationReq
      */
@@ -17158,24 +21068,30 @@ export interface PaginationReq {
      * @memberof PaginationReq
      */
     'perPageCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginationReq
+     */
+    'targetPage'?: number;
 }
 
 export const PaginationReqSortEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_1: 1,
+    NUMBER_2: 2,
+    NUMBER_3: 3,
+    NUMBER_4: 4,
+    NUMBER_5: 5,
+    NUMBER_6: 6,
+    NUMBER_7: 7,
+    NUMBER_8: 8,
+    NUMBER_9: 9,
+    NUMBER_10: 10,
+    NUMBER_11: 11,
+    NUMBER_12: 12,
+    NUMBER_13: 13,
+    NUMBER_14: 14,
+    NUMBER_15: 15
 } as const;
 
 export type PaginationReqSortEnum = typeof PaginationReqSortEnum[keyof typeof PaginationReqSortEnum];
@@ -17183,9 +21099,40 @@ export type PaginationReqSortEnum = typeof PaginationReqSortEnum[keyof typeof Pa
 /**
  * 
  * @export
+ * @interface PaginationReqAllOf
+ */
+export interface PaginationReqAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginationReqAllOf
+     */
+    'targetPage'?: number;
+}
+/**
+ * 
+ * @export
  * @interface PaginationRes
  */
 export interface PaginationRes {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PaginationRes
+     */
+    'isShowMatch'?: boolean;
+    /**
+     * - 1. 關聯度 Relevance：照分數高至低排名 - 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名 - 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名 - 4. 字母順序 A to Z - 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z) - 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z) - 7. 建立時間：最新建立的排前 - 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前 - 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前 - 10. 最新加入 (New arrived)：最新加入的排前 - 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新 - 12. 隨機排序 (Random)：隨機重新排序 - 13. GHG results (Low to High)：GHG數值由低到高排序 - 14. Water Depletion results (Low to High)：用水量數值由低到高排序 - 15. Land Use results (Low to High)：土地面積數值由低到高排序 
+     * @type {number}
+     * @memberof PaginationRes
+     */
+    'sort'?: PaginationResSortEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginationRes
+     */
+    'perPageCount'?: number;
     /**
      * 
      * @type {number}
@@ -17204,46 +21151,102 @@ export interface PaginationRes {
      * @memberof PaginationRes
      */
     'totalCount'?: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PaginationRes
-     */
-    'isShowMatch'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginationRes
-     */
-    'sort'?: PaginationResSortEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof PaginationRes
-     */
-    'perPageCount'?: number;
 }
 
 export const PaginationResSortEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    NUMBER_1: 1,
+    NUMBER_2: 2,
+    NUMBER_3: 3,
+    NUMBER_4: 4,
+    NUMBER_5: 5,
+    NUMBER_6: 6,
+    NUMBER_7: 7,
+    NUMBER_8: 8,
+    NUMBER_9: 9,
+    NUMBER_10: 10,
+    NUMBER_11: 11,
+    NUMBER_12: 12,
+    NUMBER_13: 13,
+    NUMBER_14: 14,
+    NUMBER_15: 15
 } as const;
 
 export type PaginationResSortEnum = typeof PaginationResSortEnum[keyof typeof PaginationResSortEnum];
 
+/**
+ * 
+ * @export
+ * @interface PaginationResAllOf
+ */
+export interface PaginationResAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginationResAllOf
+     */
+    'currentPage'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginationResAllOf
+     */
+    'totalPage'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginationResAllOf
+     */
+    'totalCount'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface PantoneColor
+ */
+export interface PantoneColor {
+    /**
+     * 
+     * @type {number}
+     * @memberof PantoneColor
+     */
+    'pantoneId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PantoneColor
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PantoneColor
+     */
+    'majorColorName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PantoneColor
+     */
+    'colorName': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PantoneColor
+     */
+    'r': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PantoneColor
+     */
+    'g': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PantoneColor
+     */
+    'b': number;
+}
 /**
  * 記錄透視變形裁切圖片的參數
  * @export
@@ -17252,53 +21255,34 @@ export type PaginationResSortEnum = typeof PaginationResSortEnum[keyof typeof Pa
 export interface PerspectiveCropImageRecord {
     /**
      * 
-     * @type {PerspectiveCropImageRecordLeftTop}
+     * @type {Coordinate}
      * @memberof PerspectiveCropImageRecord
      */
-    'leftTop'?: PerspectiveCropImageRecordLeftTop;
+    'leftTop': Coordinate;
     /**
      * 
-     * @type {PerspectiveCropImageRecordLeftTop}
+     * @type {Coordinate}
      * @memberof PerspectiveCropImageRecord
      */
-    'leftBottom'?: PerspectiveCropImageRecordLeftTop;
+    'leftBottom': Coordinate;
     /**
      * 
-     * @type {PerspectiveCropImageRecordLeftTop}
+     * @type {Coordinate}
      * @memberof PerspectiveCropImageRecord
      */
-    'rightTop'?: PerspectiveCropImageRecordLeftTop;
+    'rightTop': Coordinate;
     /**
      * 
-     * @type {PerspectiveCropImageRecordLeftTop}
+     * @type {Coordinate}
      * @memberof PerspectiveCropImageRecord
      */
-    'rightBottom'?: PerspectiveCropImageRecordLeftTop;
+    'rightBottom': Coordinate;
     /**
      * 
      * @type {number}
      * @memberof PerspectiveCropImageRecord
      */
-    'rotateDeg'?: number;
-}
-/**
- * 
- * @export
- * @interface PerspectiveCropImageRecordLeftTop
- */
-export interface PerspectiveCropImageRecordLeftTop {
-    /**
-     * 
-     * @type {number}
-     * @memberof PerspectiveCropImageRecordLeftTop
-     */
-    'x'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PerspectiveCropImageRecordLeftTop
-     */
-    'y'?: number;
+    'rotateDeg': number;
 }
 /**
  * 
@@ -17707,7 +21691,7 @@ export interface ProgressU3mItem {
      * @type {number}
      * @memberof ProgressU3mItem
      */
-    'u3mProgressId': number;
+    'progressId': number;
     /**
      * 
      * @type {number}
@@ -17719,13 +21703,13 @@ export interface ProgressU3mItem {
      * @type {string}
      * @memberof ProgressU3mItem
      */
-    'materialNo': string;
+    'itemNo': string;
     /**
      * 
      * @type {string}
      * @memberof ProgressU3mItem
      */
-    'image': string;
+    'materialMainSideU3mCropUrl': string;
     /**
      * 
      * @type {number}
@@ -17761,7 +21745,7 @@ export interface ProgressU3mItem {
      * @type {number}
      * @memberof ProgressU3mItem
      */
-    'msgCode'?: ProgressU3mItemMsgCodeEnum;
+    'unsuccessfulMsgCode': ProgressU3mItemUnsuccessfulMsgCodeEnum;
     /**
      * 1: Frontier產生 2: 客製化上傳
      * @type {number}
@@ -17772,7 +21756,7 @@ export interface ProgressU3mItem {
 
 export const ProgressU3mItemStatusEnum = {
     ALL: 0,
-    In_QUEUE: 1,
+    IN_QUEUE: 1,
     PROCESSING: 2,
     UNSUCCESSFUL: 3,
     COMPLETED: 4,
@@ -17780,11 +21764,11 @@ export const ProgressU3mItemStatusEnum = {
 } as const;
 
 export type ProgressU3mItemStatusEnum = typeof ProgressU3mItemStatusEnum[keyof typeof ProgressU3mItemStatusEnum];
-export const ProgressU3mItemMsgCodeEnum = {
+export const ProgressU3mItemUnsuccessfulMsgCodeEnum = {
     SOURCE_DELETED: 1
 } as const;
 
-export type ProgressU3mItemMsgCodeEnum = typeof ProgressU3mItemMsgCodeEnum[keyof typeof ProgressU3mItemMsgCodeEnum];
+export type ProgressU3mItemUnsuccessfulMsgCodeEnum = typeof ProgressU3mItemUnsuccessfulMsgCodeEnum[keyof typeof ProgressU3mItemUnsuccessfulMsgCodeEnum];
 export const ProgressU3mItemSourceTypeEnum = {
     FRONTIER: 1,
     CUSTOMIZED: 2
@@ -17793,7 +21777,7 @@ export const ProgressU3mItemSourceTypeEnum = {
 export type ProgressU3mItemSourceTypeEnum = typeof ProgressU3mItemSourceTypeEnum[keyof typeof ProgressU3mItemSourceTypeEnum];
 
 /**
- * 排序方式 3:status (In Queue > Processing > Unsuccessful > Complete),4: status (Complete > Unsuccessful > Processing > In Queue), 5 sourceType (Frontier -> Customized), 6 sourceType (Customized -> Frontier)
+ * 排序方式 1: 時間排序由新到舊 2: 時間排序由舊到新 3: status (In Queue > Processing > Unsuccessful > Complete) 4: status (Complete > Unsuccessful > Processing > In Queue) 5: sourceType (Frontier -> Customized) 6: sourceType (Customized -> Frontier) 
  * @export
  * @enum {string}
  */
@@ -17986,103 +21970,6 @@ export type PublicCollectionWorkspaceNodeLocationEnum = typeof PublicCollectionW
 /**
  * 
  * @export
- * @interface PublicFilter
- */
-export interface PublicFilter {
-    /**
-     * 
-     * @type {object}
-     * @memberof PublicFilter
-     */
-    'price'?: object;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PublicFilter
-     */
-    'hasU3M'?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof PublicFilter
-     */
-    'category'?: string;
-    /**
-     * 
-     * @type {Array<FilterContentListInner>}
-     * @memberof PublicFilter
-     */
-    'contentList'?: Array<FilterContentListInner>;
-    /**
-     * 
-     * @type {string}
-     * @memberof PublicFilter
-     */
-    'pattern'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PublicFilter
-     */
-    'color'?: string;
-    /**
-     * 
-     * @type {FilterWidth}
-     * @memberof PublicFilter
-     */
-    'width'?: FilterWidth;
-    /**
-     * 
-     * @type {FilterWeightGsm}
-     * @memberof PublicFilter
-     */
-    'weightGsm'?: FilterWeightGsm;
-    /**
-     * 
-     * @type {string}
-     * @memberof PublicFilter
-     */
-    'warpDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PublicFilter
-     */
-    'weftDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PublicFilter
-     */
-    'wovenWarpYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PublicFilter
-     */
-    'wovenWeftYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PublicFilter
-     */
-    'knitYarnCount'?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof PublicFilter
-     */
-    'finishList'?: Array<string>;
-    /**
-     * 
-     * @type {FilterInventory}
-     * @memberof PublicFilter
-     */
-    'inventory'?: FilterInventory;
-}
-/**
- * 
- * @export
  * @interface PublicGetListPost200Response
  */
 export interface PublicGetListPost200Response {
@@ -18162,10 +22049,10 @@ export interface PublicGetListPostRequest {
     'search'?: Search;
     /**
      * 
-     * @type {PublicFilter}
+     * @type {ExternalFilter}
      * @memberof PublicGetListPostRequest
      */
-    'filter'?: PublicFilter;
+    'filter'?: ExternalFilter;
     /**
      * 
      * @type {PaginationReq}
@@ -18700,6 +22587,137 @@ export interface ReadAllUnreadDigitalThreadRequest {
 /**
  * 
  * @export
+ * @interface RemoveAssetsMaterialAttachmentRequest
+ */
+export interface RemoveAssetsMaterialAttachmentRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof RemoveAssetsMaterialAttachmentRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof RemoveAssetsMaterialAttachmentRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof RemoveAssetsMaterialAttachmentRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof RemoveAssetsMaterialAttachmentRequest
+     */
+    'fileId': string;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface RemoveAssetsMaterialAttachmentRequestAllOf
+ */
+export interface RemoveAssetsMaterialAttachmentRequestAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof RemoveAssetsMaterialAttachmentRequestAllOf
+     */
+    'fileId': string;
+}
+/**
+ * 
+ * @export
+ * @interface RemoveAssetsMaterialMultimediaRequest
+ */
+export interface RemoveAssetsMaterialMultimediaRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof RemoveAssetsMaterialMultimediaRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof RemoveAssetsMaterialMultimediaRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof RemoveAssetsMaterialMultimediaRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface RenameAssetsMaterialAttachmentRequest
+ */
+export interface RenameAssetsMaterialAttachmentRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof RenameAssetsMaterialAttachmentRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof RenameAssetsMaterialAttachmentRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof RenameAssetsMaterialAttachmentRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof RenameAssetsMaterialAttachmentRequest
+     */
+    'fileId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RenameAssetsMaterialAttachmentRequest
+     */
+    'displayFileName': string;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface RenameAssetsMaterialAttachmentRequestAllOf
+ */
+export interface RenameAssetsMaterialAttachmentRequestAllOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof RenameAssetsMaterialAttachmentRequestAllOf
+     */
+    'fileId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RenameAssetsMaterialAttachmentRequestAllOf
+     */
+    'displayFileName': string;
+}
+/**
+ * 
+ * @export
  * @interface RenameWorkflowStageRequest
  */
 export interface RenameWorkflowStageRequest {
@@ -18984,10 +23002,10 @@ export interface Search {
     'keyword'?: string;
     /**
      * 
-     * @type {Array<SearchGetAiTagsPost200ResponseResultTagListInner>}
+     * @type {Array<SearchTagListInner>}
      * @memberof Search
      */
-    'tagList'?: Array<SearchGetAiTagsPost200ResponseResultTagListInner>;
+    'tagList'?: Array<SearchTagListInner>;
 }
 /**
  * 
@@ -19073,6 +23091,177 @@ export interface SearchGetAiTagsPostRequest {
      */
     'searchKeyword': string;
 }
+/**
+ * 
+ * @export
+ * @interface SearchTagListInner
+ */
+export interface SearchTagListInner {
+    /**
+     * - 1 布名 - 2 布性 
+     * @type {number}
+     * @memberof SearchTagListInner
+     */
+    'type'?: SearchTagListInnerTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof SearchTagListInner
+     */
+    'name'?: string;
+}
+
+export const SearchTagListInnerTypeEnum = {
+    NUMBER_1: 1,
+    NUMBER_2: 2
+} as const;
+
+export type SearchTagListInnerTypeEnum = typeof SearchTagListInnerTypeEnum[keyof typeof SearchTagListInnerTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface SetAssetsMaterialCover200Response
+ */
+export interface SetAssetsMaterialCover200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SetAssetsMaterialCover200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof SetAssetsMaterialCover200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {SetAssetsMaterialCover200ResponseAllOfResult}
+     * @memberof SetAssetsMaterialCover200Response
+     */
+    'result': SetAssetsMaterialCover200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof SetAssetsMaterialCover200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface SetAssetsMaterialCover200ResponseAllOf
+ */
+export interface SetAssetsMaterialCover200ResponseAllOf {
+    /**
+     * 
+     * @type {SetAssetsMaterialCover200ResponseAllOfResult}
+     * @memberof SetAssetsMaterialCover200ResponseAllOf
+     */
+    'result': SetAssetsMaterialCover200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface SetAssetsMaterialCover200ResponseAllOfResult
+ */
+export interface SetAssetsMaterialCover200ResponseAllOfResult {
+    /**
+     * 
+     * @type {SetAssetsMaterialCover200ResponseAllOfResultCoverImage}
+     * @memberof SetAssetsMaterialCover200ResponseAllOfResult
+     */
+    'coverImage': SetAssetsMaterialCover200ResponseAllOfResultCoverImage;
+    /**
+     * 
+     * @type {Array<MultimediaFile>}
+     * @memberof SetAssetsMaterialCover200ResponseAllOfResult
+     */
+    'multimediaList': Array<MultimediaFile>;
+}
+/**
+ * 封面圖
+ * @export
+ * @interface SetAssetsMaterialCover200ResponseAllOfResultCoverImage
+ */
+export interface SetAssetsMaterialCover200ResponseAllOfResultCoverImage {
+    /**
+     * 
+     * @type {CoverMode}
+     * @memberof SetAssetsMaterialCover200ResponseAllOfResultCoverImage
+     */
+    'mode': CoverMode;
+    /**
+     * 
+     * @type {string}
+     * @memberof SetAssetsMaterialCover200ResponseAllOfResultCoverImage
+     */
+    'url': string;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface SetAssetsMaterialCoverRequest
+ */
+export interface SetAssetsMaterialCoverRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof SetAssetsMaterialCoverRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof SetAssetsMaterialCoverRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof SetAssetsMaterialCoverRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {CoverMode}
+     * @memberof SetAssetsMaterialCoverRequest
+     */
+    'coverMode': CoverMode;
+    /**
+     * coverMode=3時才有值
+     * @type {number}
+     * @memberof SetAssetsMaterialCoverRequest
+     */
+    'multimediaFileId': number | null;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface SetAssetsMaterialCoverRequestAllOf
+ */
+export interface SetAssetsMaterialCoverRequestAllOf {
+    /**
+     * 
+     * @type {CoverMode}
+     * @memberof SetAssetsMaterialCoverRequestAllOf
+     */
+    'coverMode': CoverMode;
+    /**
+     * coverMode=3時才有值
+     * @type {number}
+     * @memberof SetAssetsMaterialCoverRequestAllOf
+     */
+    'multimediaFileId': number | null;
+}
+
+
 /**
  * 
  * @export
@@ -19313,103 +23502,6 @@ export const ShareCollectionWorkspaceNodeLocationEnum = {
 
 export type ShareCollectionWorkspaceNodeLocationEnum = typeof ShareCollectionWorkspaceNodeLocationEnum[keyof typeof ShareCollectionWorkspaceNodeLocationEnum];
 
-/**
- * 
- * @export
- * @interface ShareFilter
- */
-export interface ShareFilter {
-    /**
-     * 
-     * @type {object}
-     * @memberof ShareFilter
-     */
-    'price'?: object;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ShareFilter
-     */
-    'hasU3M'?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShareFilter
-     */
-    'category'?: string;
-    /**
-     * 
-     * @type {Array<FilterContentListInner>}
-     * @memberof ShareFilter
-     */
-    'contentList'?: Array<FilterContentListInner>;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShareFilter
-     */
-    'pattern'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShareFilter
-     */
-    'color'?: string;
-    /**
-     * 
-     * @type {FilterWidth}
-     * @memberof ShareFilter
-     */
-    'width'?: FilterWidth;
-    /**
-     * 
-     * @type {FilterWeightGsm}
-     * @memberof ShareFilter
-     */
-    'weightGsm'?: FilterWeightGsm;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShareFilter
-     */
-    'warpDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShareFilter
-     */
-    'weftDensity'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShareFilter
-     */
-    'wovenWarpYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShareFilter
-     */
-    'wovenWeftYarnCount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShareFilter
-     */
-    'knitYarnCount'?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ShareFilter
-     */
-    'finishList'?: Array<string>;
-    /**
-     * 
-     * @type {FilterInventory}
-     * @memberof ShareFilter
-     */
-    'inventory'?: FilterInventory;
-}
 /**
  * 
  * @export
@@ -19762,10 +23854,10 @@ export interface ShareGetReceivedGetListPostRequest {
     'search'?: Search;
     /**
      * 
-     * @type {ShareFilter}
+     * @type {ExternalFilter}
      * @memberof ShareGetReceivedGetListPostRequest
      */
-    'filter'?: ShareFilter;
+    'filter'?: ExternalFilter;
     /**
      * 
      * @type {PaginationReq}
@@ -20548,10 +24640,10 @@ export interface ShowroomGetListPostRequest {
     'search'?: Search;
     /**
      * 
-     * @type {PublicFilter}
+     * @type {ExternalFilter}
      * @memberof ShowroomGetListPostRequest
      */
-    'filter'?: PublicFilter;
+    'filter'?: ExternalFilter;
     /**
      * 
      * @type {PaginationReq}
@@ -20875,6 +24967,52 @@ export interface SignUpRequestPostRequest {
      * @memberof SignUpRequestPostRequest
      */
     'description'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface SmartUploadAssetsMaterialListRequest
+ */
+export interface SmartUploadAssetsMaterialListRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof SmartUploadAssetsMaterialListRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof SmartUploadAssetsMaterialListRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof SmartUploadAssetsMaterialListRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {Array<BatchUploadAssetsMaterialListRequestAllOf>}
+     * @memberof SmartUploadAssetsMaterialListRequest
+     */
+    'fileList': Array<BatchUploadAssetsMaterialListRequestAllOf>;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface SmartUploadAssetsMaterialListRequestAllOf
+ */
+export interface SmartUploadAssetsMaterialListRequestAllOf {
+    /**
+     * 
+     * @type {Array<BatchUploadAssetsMaterialListRequestAllOf>}
+     * @memberof SmartUploadAssetsMaterialListRequestAllOf
+     */
+    'fileList': Array<BatchUploadAssetsMaterialListRequestAllOf>;
 }
 /**
  * 
@@ -21280,6 +25418,354 @@ export interface ThreadBoardWorkflowStageListInner {
 /**
  * 
  * @export
+ * @interface UpdateAssetsMaterialRequest
+ */
+export interface UpdateAssetsMaterialRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'ogId': number;
+    /**
+     * 布片ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'itemNo': string;
+    /**
+     * 
+     * @type {MaterialPatternInfoCreate}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'patternInfo': MaterialPatternInfoCreate;
+    /**
+     * 
+     * @type {MaterialColorInfoCreate}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'colorInfo': MaterialColorInfoCreate;
+    /**
+     * 
+     * @type {MaterialSeasonInfoCreate}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'seasonInfo': MaterialSeasonInfoCreate;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'isAutoSyncFaceToBackSideInfo'?: boolean;
+    /**
+     * 
+     * @type {MaterialUpdateFaceSide}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'faceSide': MaterialUpdateFaceSide;
+    /**
+     * 
+     * @type {MaterialUpdateMiddleSide}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'middleSide': MaterialUpdateMiddleSide;
+    /**
+     * 
+     * @type {MaterialUpdateFaceSide}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'backSide': MaterialUpdateFaceSide;
+    /**
+     * 
+     * @type {MaterialUpdateTagInfo}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'tagInfo': MaterialUpdateTagInfo;
+    /**
+     * 
+     * @type {MaterialPriceInfo}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'priceInfo': MaterialPriceInfo;
+    /**
+     * 
+     * @type {MaterialUpdateInternalInfo}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'internalInfo': MaterialUpdateInternalInfo | null;
+    /**
+     * 是否客製化U3M正在上傳中
+     * @type {boolean}
+     * @memberof UpdateAssetsMaterialRequest
+     */
+    'hasCustomU3mUploading': boolean;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UpdateAssetsMaterialSideImage200Response
+ */
+export interface UpdateAssetsMaterialSideImage200Response {
+    /**
+     * 
+     * @type {UpdateAssetsMaterialSideImage200ResponseResult}
+     * @memberof UpdateAssetsMaterialSideImage200Response
+     */
+    'result'?: UpdateAssetsMaterialSideImage200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateAssetsMaterialSideImage200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetsMaterialSideImage200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof UpdateAssetsMaterialSideImage200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateAssetsMaterialSideImage200ResponseResult
+ */
+export interface UpdateAssetsMaterialSideImage200ResponseResult {
+    /**
+     * 
+     * @type {UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResult
+     */
+    'faceSideImage': UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage;
+    /**
+     * 
+     * @type {UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResult
+     */
+    'backSideImage': UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
+ */
+export interface UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
+     */
+    'originalUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
+     */
+    'displayUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
+     */
+    'thumbnailUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
+     */
+    'rulerUrl': string;
+    /**
+     * 
+     * @type {CropImageRecord}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
+     */
+    'cropRecord': CropImageRecord;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
+     */
+    'dpi': number;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateAssetsMaterialSideImageRequest
+ */
+export interface UpdateAssetsMaterialSideImageRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSideImageRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof UpdateAssetsMaterialSideImageRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSideImageRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UpdateAssetsMaterialSimpleInventoryRequest
+ */
+export interface UpdateAssetsMaterialSimpleInventoryRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSimpleInventoryRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof UpdateAssetsMaterialSimpleInventoryRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSimpleInventoryRequest
+     */
+    'ogId': number;
+    /**
+     * 布片ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSimpleInventoryRequest
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {MaterialUpdateInventoryInternalInfo}
+     * @memberof UpdateAssetsMaterialSimpleInventoryRequest
+     */
+    'internalInfo': MaterialUpdateInventoryInternalInfo;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UpdateAssetsMaterialSimplePublicPriceRequest
+ */
+export interface UpdateAssetsMaterialSimplePublicPriceRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSimplePublicPriceRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof UpdateAssetsMaterialSimplePublicPriceRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSimplePublicPriceRequest
+     */
+    'ogId': number;
+    /**
+     * 布片ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSimplePublicPriceRequest
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {MaterialPriceInfo}
+     * @memberof UpdateAssetsMaterialSimplePublicPriceRequest
+     */
+    'priceInfo': MaterialPriceInfo;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UpdateAssetsMaterialSimpleTagRequest
+ */
+export interface UpdateAssetsMaterialSimpleTagRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSimpleTagRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof UpdateAssetsMaterialSimpleTagRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSimpleTagRequest
+     */
+    'ogId': number;
+    /**
+     * 布片ID
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSimpleTagRequest
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {MaterialUpdateTagTagInfo}
+     * @memberof UpdateAssetsMaterialSimpleTagRequest
+     */
+    'tagInfo': MaterialUpdateTagTagInfo;
+    /**
+     * 
+     * @type {MaterialUpdateTagInternalInfo}
+     * @memberof UpdateAssetsMaterialSimpleTagRequest
+     */
+    'internalInfo': MaterialUpdateTagInternalInfo;
+}
+
+
+/**
+ * 
+ * @export
  * @interface UpdateFolderBookmarkRequest
  */
 export interface UpdateFolderBookmarkRequest {
@@ -21322,6 +25808,363 @@ export interface UpdateFolderBookmarkRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface UpdateMaterialSimpleSpecRequest
+ */
+export interface UpdateMaterialSimpleSpecRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof UpdateMaterialSimpleSpecRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof UpdateMaterialSimpleSpecRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof UpdateMaterialSimpleSpecRequest
+     */
+    'ogId': number;
+    /**
+     * 布片ID
+     * @type {number}
+     * @memberof UpdateMaterialSimpleSpecRequest
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateMaterialSimpleSpecRequest
+     */
+    'itemNo': string;
+    /**
+     * 
+     * @type {MaterialSeasonInfoCreate}
+     * @memberof UpdateMaterialSimpleSpecRequest
+     */
+    'seasonInfo': MaterialSeasonInfoCreate;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateMaterialSimpleSpecRequest
+     */
+    'isAutoSyncFaceToBackSideInfo'?: boolean;
+    /**
+     * 
+     * @type {MaterialUpdateFaceSide}
+     * @memberof UpdateMaterialSimpleSpecRequest
+     */
+    'faceSide': MaterialUpdateFaceSide;
+    /**
+     * 
+     * @type {MaterialUpdateMiddleSide}
+     * @memberof UpdateMaterialSimpleSpecRequest
+     */
+    'middleSide': MaterialUpdateMiddleSide;
+    /**
+     * 
+     * @type {MaterialUpdateFaceSide}
+     * @memberof UpdateMaterialSimpleSpecRequest
+     */
+    'backSide': MaterialUpdateFaceSide;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialAttachment200Response
+ */
+export interface UploadAssetsMaterialAttachment200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UploadAssetsMaterialAttachment200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadAssetsMaterialAttachment200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {UploadAssetsMaterialAttachment200ResponseAllOfResult}
+     * @memberof UploadAssetsMaterialAttachment200Response
+     */
+    'result': UploadAssetsMaterialAttachment200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof UploadAssetsMaterialAttachment200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialAttachment200ResponseAllOf
+ */
+export interface UploadAssetsMaterialAttachment200ResponseAllOf {
+    /**
+     * 
+     * @type {UploadAssetsMaterialAttachment200ResponseAllOfResult}
+     * @memberof UploadAssetsMaterialAttachment200ResponseAllOf
+     */
+    'result': UploadAssetsMaterialAttachment200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialAttachment200ResponseAllOfResult
+ */
+export interface UploadAssetsMaterialAttachment200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Array<AttachmentFile>}
+     * @memberof UploadAssetsMaterialAttachment200ResponseAllOfResult
+     */
+    'attachmentList': Array<AttachmentFile>;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialAttachmentRequest
+ */
+export interface UploadAssetsMaterialAttachmentRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialAttachmentRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof UploadAssetsMaterialAttachmentRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialAttachmentRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {Array<CreateAndEditAttachmentFile>}
+     * @memberof UploadAssetsMaterialAttachmentRequest
+     */
+    'attachmentList': Array<CreateAndEditAttachmentFile>;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialAttachmentRequestAllOf
+ */
+export interface UploadAssetsMaterialAttachmentRequestAllOf {
+    /**
+     * 
+     * @type {Array<CreateAndEditAttachmentFile>}
+     * @memberof UploadAssetsMaterialAttachmentRequestAllOf
+     */
+    'attachmentList': Array<CreateAndEditAttachmentFile>;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialCustomU3mRequest
+ */
+export interface UploadAssetsMaterialCustomU3mRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialCustomU3mRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof UploadAssetsMaterialCustomU3mRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialCustomU3mRequest
+     */
+    'ogId': number;
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialCustomU3mRequest
+     */
+    'materialId': number;
+    /**
+     * 暫存檔案ID
+     * @type {string}
+     * @memberof UploadAssetsMaterialCustomU3mRequest
+     */
+    's3UploadId': string;
+    /**
+     * 檔案名稱
+     * @type {string}
+     * @memberof UploadAssetsMaterialCustomU3mRequest
+     */
+    'fileName': string;
+    /**
+     * 是否需要產生物理檔案
+     * @type {boolean}
+     * @memberof UploadAssetsMaterialCustomU3mRequest
+     */
+    'needToGeneratePhysical': boolean;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialCustomU3mRequestAllOf
+ */
+export interface UploadAssetsMaterialCustomU3mRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialCustomU3mRequestAllOf
+     */
+    'materialId': number;
+    /**
+     * 暫存檔案ID
+     * @type {string}
+     * @memberof UploadAssetsMaterialCustomU3mRequestAllOf
+     */
+    's3UploadId': string;
+    /**
+     * 檔案名稱
+     * @type {string}
+     * @memberof UploadAssetsMaterialCustomU3mRequestAllOf
+     */
+    'fileName': string;
+    /**
+     * 是否需要產生物理檔案
+     * @type {boolean}
+     * @memberof UploadAssetsMaterialCustomU3mRequestAllOf
+     */
+    'needToGeneratePhysical': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialMultimedia200Response
+ */
+export interface UploadAssetsMaterialMultimedia200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UploadAssetsMaterialMultimedia200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadAssetsMaterialMultimedia200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {UploadAssetsMaterialMultimedia200ResponseAllOfResult}
+     * @memberof UploadAssetsMaterialMultimedia200Response
+     */
+    'result': UploadAssetsMaterialMultimedia200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof UploadAssetsMaterialMultimedia200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialMultimedia200ResponseAllOf
+ */
+export interface UploadAssetsMaterialMultimedia200ResponseAllOf {
+    /**
+     * 
+     * @type {UploadAssetsMaterialMultimedia200ResponseAllOfResult}
+     * @memberof UploadAssetsMaterialMultimedia200ResponseAllOf
+     */
+    'result': UploadAssetsMaterialMultimedia200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialMultimedia200ResponseAllOfResult
+ */
+export interface UploadAssetsMaterialMultimedia200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Array<MultimediaFile>}
+     * @memberof UploadAssetsMaterialMultimedia200ResponseAllOfResult
+     */
+    'multimediaList': Array<MultimediaFile>;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialMultimediaRequest
+ */
+export interface UploadAssetsMaterialMultimediaRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialMultimediaRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof UploadAssetsMaterialMultimediaRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialMultimediaRequest
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {Array<CreateAndEditAttachmentFile>}
+     * @memberof UploadAssetsMaterialMultimediaRequest
+     */
+    'multimediaList': Array<CreateAndEditAttachmentFile>;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialMultimediaRequestAllOf
+ */
+export interface UploadAssetsMaterialMultimediaRequestAllOf {
+    /**
+     * 
+     * @type {Array<CreateAndEditAttachmentFile>}
+     * @memberof UploadAssetsMaterialMultimediaRequestAllOf
+     */
+    'multimediaList': Array<CreateAndEditAttachmentFile>;
+}
 /**
  * 
  * @export
@@ -22111,10 +26954,10 @@ export interface ValueAddedServiceMade2flow {
     'status'?: ValueAddedServiceMade2flowStatusEnum;
     /**
      * 
-     * @type {number}
+     * @type {Made2FlowPlanType}
      * @memberof ValueAddedServiceMade2flow
      */
-    'planType'?: ValueAddedServiceMade2flowPlanTypeEnum;
+    'planType'?: Made2FlowPlanType | null;
     /**
      * 
      * @type {number}
@@ -22149,13 +26992,22 @@ export const ValueAddedServiceMade2flowStatusEnum = {
 } as const;
 
 export type ValueAddedServiceMade2flowStatusEnum = typeof ValueAddedServiceMade2flowStatusEnum[keyof typeof ValueAddedServiceMade2flowStatusEnum];
-export const ValueAddedServiceMade2flowPlanTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const WeightUnit = {
+    GSM: 1,
+    OZ: 2,
+    GY: 3,
+    GM: 4
 } as const;
 
-export type ValueAddedServiceMade2flowPlanTypeEnum = typeof ValueAddedServiceMade2flowPlanTypeEnum[keyof typeof ValueAddedServiceMade2flowPlanTypeEnum];
+export type WeightUnit = typeof WeightUnit[keyof typeof WeightUnit];
+
 
 /**
  * 
@@ -22331,24 +27183,6 @@ export type WorkspaceCollectionWorkspaceNodeLocationEnum = typeof WorkspaceColle
 export interface WorkspaceFilter {
     /**
      * 
-     * @type {boolean}
-     * @memberof WorkspaceFilter
-     */
-    'hasPrice'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof WorkspaceFilter
-     */
-    'hasU3M'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof WorkspaceFilter
-     */
-    'made2Flow'?: WorkspaceFilterMade2FlowEnum;
-    /**
-     * 
      * @type {string}
      * @memberof WorkspaceFilter
      */
@@ -22379,40 +27213,40 @@ export interface WorkspaceFilter {
     'width'?: FilterWidth;
     /**
      * 
-     * @type {FilterWeightGsm}
+     * @type {FilterWeight}
      * @memberof WorkspaceFilter
      */
-    'weightGsm'?: FilterWeightGsm;
+    'weight'?: FilterWeight;
     /**
-     * 
+     * 梭織布種密度(經向)
      * @type {string}
      * @memberof WorkspaceFilter
      */
-    'warpDensity'?: string;
+    'wovenWarpDensity'?: string | null;
     /**
-     * 
+     * 梭織布種密度(緯向)
      * @type {string}
      * @memberof WorkspaceFilter
      */
-    'weftDensity'?: string;
+    'wovenWeftDensity'?: string | null;
     /**
-     * 
+     * 梭織布種紗支數(經向)
      * @type {string}
      * @memberof WorkspaceFilter
      */
-    'wovenWarpYarnCount'?: string;
+    'wovenWarpYarnSize'?: string | null;
     /**
-     * 
+     * 梭織布種紗支數(緯向)
      * @type {string}
      * @memberof WorkspaceFilter
      */
-    'wovenWeftYarnCount'?: string;
+    'wovenWeftYarnSize'?: string | null;
     /**
-     * 
+     * 針織布種紗支數
      * @type {string}
      * @memberof WorkspaceFilter
      */
-    'knitYarnCount'?: string;
+    'knitYarnSize'?: string | null;
     /**
      * 
      * @type {Array<string>}
@@ -22425,15 +27259,2448 @@ export interface WorkspaceFilter {
      * @memberof WorkspaceFilter
      */
     'inventory'?: FilterInventory;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof WorkspaceFilter
+     */
+    'hasPrice'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof WorkspaceFilter
+     */
+    'hasU3M'?: boolean;
+    /**
+     * - 1. Unfilled Certification - 2. Public Lock Values - 3. Shared Fabric 
+     * @type {number}
+     * @memberof WorkspaceFilter
+     */
+    'made2Flow'?: WorkspaceFilterMade2FlowEnum;
 }
 
 export const WorkspaceFilterMade2FlowEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
+    UNFILLED_CERTIFICATION: 1,
+    PUBLIC_LOCK_VALUES: 2,
+    SHARED_FABRIC: 3
 } as const;
 
 export type WorkspaceFilterMade2FlowEnum = typeof WorkspaceFilterMade2FlowEnum[keyof typeof WorkspaceFilterMade2FlowEnum];
+
+/**
+ * 
+ * @export
+ * @interface WorkspaceFilterAllOf
+ */
+export interface WorkspaceFilterAllOf {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof WorkspaceFilterAllOf
+     */
+    'hasPrice'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof WorkspaceFilterAllOf
+     */
+    'hasU3M'?: boolean;
+    /**
+     * - 1. Unfilled Certification - 2. Public Lock Values - 3. Shared Fabric 
+     * @type {number}
+     * @memberof WorkspaceFilterAllOf
+     */
+    'made2Flow'?: WorkspaceFilterAllOfMade2FlowEnum;
+}
+
+export const WorkspaceFilterAllOfMade2FlowEnum = {
+    UNFILLED_CERTIFICATION: 1,
+    PUBLIC_LOCK_VALUES: 2,
+    SHARED_FABRIC: 3
+} as const;
+
+export type WorkspaceFilterAllOfMade2FlowEnum = typeof WorkspaceFilterAllOfMade2FlowEnum[keyof typeof WorkspaceFilterAllOfMade2FlowEnum];
+
+
+/**
+ * AssetsApi - axios parameter creator
+ * @export
+ */
+export const AssetsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary assets add to workspace
+         * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        assetsMaterialAddToWorkspace: async (assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/add-to-workspace`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(assetsMaterialAddToWorkspaceRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         *  **Access roles:** To be clear define
+         * @summary 透過 Excel 批量上傳布料
+         * @param {BatchUploadAssetsMaterialListRequest} [batchUploadAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        batchUploadAssetsMaterialList: async (batchUploadAssetsMaterialListRequest?: BatchUploadAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/batch-upload`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(batchUploadAssetsMaterialListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 此 api 前端使用 sendbeacon 方式呼叫 header 不帶 accessToken 改由 Request Body 夾帶 
+         * @summary 取消上傳 Custom 3D Material
+         * @param {CancelAssetsMaterialCustomU3mUploadRequest} [cancelAssetsMaterialCustomU3mUploadRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cancelAssetsMaterialCustomU3mUpload: async (cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/custom-u3m/cancel-upload`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cancelAssetsMaterialCustomU3mUploadRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 取得此次 Clone 產生 quota 數量
+         * @param {CheckAssetsMaterialListCloneQuotaRequest} [checkAssetsMaterialListCloneQuotaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        checkAssetsMaterialListCloneQuota: async (checkAssetsMaterialListCloneQuotaRequest?: CheckAssetsMaterialListCloneQuotaRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/clone-check`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(checkAssetsMaterialListCloneQuotaRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 確認要刪除布料是否可以刪除
+         * @param {DeleteAssetsMaterialListRequest} [deleteAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        checkDeleteAssetsMaterialList: async (deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/delete-check`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(deleteAssetsMaterialListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Clone
+         * @param {CloneAssetsMaterialListRequest} [cloneAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cloneAssetsMaterialList: async (cloneAssetsMaterialListRequest?: CloneAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/clone`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cloneAssetsMaterialListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 確定新增布料資訊
+         * @param {CreateAssetsMaterialRequest} createAssetsMaterialRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createAssetsMaterial: async (createAssetsMaterialRequest: CreateAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createAssetsMaterialRequest' is not null or undefined
+            assertParamExists('createAssetsMaterial', 'createAssetsMaterialRequest', createAssetsMaterialRequest)
+            const localVarPath = `/assets/material/create`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createAssetsMaterialRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 裁切單一布料的 Multimedia
+         * @param {CropAssetsMaterialMultimediaRequest} [cropAssetsMaterialMultimediaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cropAssetsMaterialMultimedia: async (cropAssetsMaterialMultimediaRequest?: CropAssetsMaterialMultimediaRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/multimedia/crop`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cropAssetsMaterialMultimediaRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 刪除布料（可批量）
+         * @param {DeleteAssetsMaterialListRequest} [deleteAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteAssetsMaterialList: async (deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/delete`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(deleteAssetsMaterialListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 匯出 Excel
+         * @param {ExportAssetsMaterialExcelRequest} [exportAssetsMaterialExcelRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exportAssetsMaterialExcel: async (exportAssetsMaterialExcelRequest?: ExportAssetsMaterialExcelRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/export`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(exportAssetsMaterialExcelRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 建立 U3M
+         * @param {GenerateAssetsMaterialU3mRequest} [generateAssetsMaterialU3mRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        generateAssetsMaterialU3m: async (generateAssetsMaterialU3mRequest?: GenerateAssetsMaterialU3mRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/u3m/generate`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(generateAssetsMaterialU3mRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 取得布料清單
+         * @param {GetAssetMaterialListRequest} [getAssetMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetMaterialList: async (getAssetMaterialListRequest?: GetAssetMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/get-list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getAssetMaterialListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 取得單一布料資料
+         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetsMaterial: async (getAssetsMaterialRequest?: GetAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/get`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getAssetsMaterialRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 取得布料相關選項資訊
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMaterialOptions: async (oGBaseRequestBody: OGBaseRequestBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'oGBaseRequestBody' is not null or undefined
+            assertParamExists('getMaterialOptions', 'oGBaseRequestBody', oGBaseRequestBody)
+            const localVarPath = `/org/assets/material/options`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(oGBaseRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 大量匯出 Excel
+         * @param {MassExportAssetsMaterialExcelRequest} [massExportAssetsMaterialExcelRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        massExportAssetsMaterialExcel: async (massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/mass-export`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(massExportAssetsMaterialExcelRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 合併布卡
+         * @param {MergeAssetsMaterialListRequest} [mergeAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        mergeAssetsMaterialList: async (mergeAssetsMaterialListRequest?: MergeAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/merge`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(mergeAssetsMaterialListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 移動布料的 Attachment
+         * @param {MoveAssetsMaterialAttachmentRequest} [moveAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        moveAssetsMaterialAttachment: async (moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/attachment/move`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(moveAssetsMaterialAttachmentRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 移動布料的 Multimedia
+         * @param {MoveAssetsMaterialAttachmentRequest} [moveAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        moveAssetsMaterialMultimedia: async (moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/multimedia/move`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(moveAssetsMaterialAttachmentRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 刪除布料的 Attachment
+         * @param {RemoveAssetsMaterialAttachmentRequest} [removeAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        removeAssetsMaterialAttachment: async (removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/attachment/remove`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(removeAssetsMaterialAttachmentRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 刪除布料的 Multimedia
+         * @param {RemoveAssetsMaterialMultimediaRequest} [removeAssetsMaterialMultimediaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        removeAssetsMaterialMultimedia: async (removeAssetsMaterialMultimediaRequest?: RemoveAssetsMaterialMultimediaRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/multimedia/remove`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(removeAssetsMaterialMultimediaRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 重新命名布料的 Attachment
+         * @param {RenameAssetsMaterialAttachmentRequest} [renameAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        renameAssetsMaterialAttachment: async (renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/attachment/rename`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(renameAssetsMaterialAttachmentRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 重新命名布料的 Multimedia
+         * @param {RenameAssetsMaterialAttachmentRequest} [renameAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        renameAssetsMaterialMultimedia: async (renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/multimedia/rename`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(renameAssetsMaterialAttachmentRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 設定布料資產封面
+         * @param {SetAssetsMaterialCoverRequest} [setAssetsMaterialCoverRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        setAssetsMaterialCover: async (setAssetsMaterialCoverRequest?: SetAssetsMaterialCoverRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/update/set-cover`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(setAssetsMaterialCoverRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         *  **Access roles:** To be clear define
+         * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
+         * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        smartUploadAssetsMaterialList: async (smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/smart-upload`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(smartUploadAssetsMaterialListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 編輯布料資訊
+         * @param {UpdateAssetsMaterialRequest} [updateAssetsMaterialRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAssetsMaterial: async (updateAssetsMaterialRequest?: UpdateAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/update`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateAssetsMaterialRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 編輯正反面
+         * @param {UpdateAssetsMaterialSideImageRequest} [updateAssetsMaterialSideImageRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAssetsMaterialSideImage: async (updateAssetsMaterialSideImageRequest?: UpdateAssetsMaterialSideImageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/side-image/update`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateAssetsMaterialSideImageRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 簡易編輯布料 inventory
+         * @param {UpdateAssetsMaterialSimpleInventoryRequest} [updateAssetsMaterialSimpleInventoryRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAssetsMaterialSimpleInventory: async (updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/update/simple/inventory`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateAssetsMaterialSimpleInventoryRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 簡易編輯布料 public price
+         * @param {UpdateAssetsMaterialSimplePublicPriceRequest} [updateAssetsMaterialSimplePublicPriceRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAssetsMaterialSimplePublicPrice: async (updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/update/simple/public-price`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateAssetsMaterialSimplePublicPriceRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 簡易編輯布料 tag
+         * @param {UpdateAssetsMaterialSimpleTagRequest} [updateAssetsMaterialSimpleTagRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAssetsMaterialSimpleTag: async (updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/update/simple/tag`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateAssetsMaterialSimpleTagRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 簡易編輯布料 spec
+         * @param {UpdateMaterialSimpleSpecRequest} [updateMaterialSimpleSpecRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateMaterialSimpleSpec: async (updateMaterialSimpleSpecRequest?: UpdateMaterialSimpleSpecRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/update/simple/spec`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateMaterialSimpleSpecRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 編輯單一布料時上傳Attachment
+         * @param {UploadAssetsMaterialAttachmentRequest} [uploadAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadAssetsMaterialAttachment: async (uploadAssetsMaterialAttachmentRequest?: UploadAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/attachment/upload`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(uploadAssetsMaterialAttachmentRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 上傳 Custom 3D Material
+         * @param {UploadAssetsMaterialCustomU3mRequest} [uploadAssetsMaterialCustomU3mRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadAssetsMaterialCustomU3m: async (uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/custom-u3m/upload`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(uploadAssetsMaterialCustomU3mRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 編輯單一布料時上傳 Multimedia
+         * @param {UploadAssetsMaterialMultimediaRequest} [uploadAssetsMaterialMultimediaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadAssetsMaterialMultimedia: async (uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/assets/material/multimedia/upload`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(uploadAssetsMaterialMultimediaRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AssetsApi - functional programming interface
+ * @export
+ */
+export const AssetsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AssetsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary assets add to workspace
+         * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetsMaterialAddToWorkspace200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         *  **Access roles:** To be clear define
+         * @summary 透過 Excel 批量上傳布料
+         * @param {BatchUploadAssetsMaterialListRequest} [batchUploadAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async batchUploadAssetsMaterialList(batchUploadAssetsMaterialListRequest?: BatchUploadAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BatchUploadAssetsMaterialList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.batchUploadAssetsMaterialList(batchUploadAssetsMaterialListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 此 api 前端使用 sendbeacon 方式呼叫 header 不帶 accessToken 改由 Request Body 夾帶 
+         * @summary 取消上傳 Custom 3D Material
+         * @param {CancelAssetsMaterialCustomU3mUploadRequest} [cancelAssetsMaterialCustomU3mUploadRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 取得此次 Clone 產生 quota 數量
+         * @param {CheckAssetsMaterialListCloneQuotaRequest} [checkAssetsMaterialListCloneQuotaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async checkAssetsMaterialListCloneQuota(checkAssetsMaterialListCloneQuotaRequest?: CheckAssetsMaterialListCloneQuotaRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckAssetsMaterialListCloneQuota200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.checkAssetsMaterialListCloneQuota(checkAssetsMaterialListCloneQuotaRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 確認要刪除布料是否可以刪除
+         * @param {DeleteAssetsMaterialListRequest} [deleteAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckDeleteAssetsMaterialList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Clone
+         * @param {CloneAssetsMaterialListRequest} [cloneAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cloneAssetsMaterialList(cloneAssetsMaterialListRequest?: CloneAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cloneAssetsMaterialList(cloneAssetsMaterialListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 確定新增布料資訊
+         * @param {CreateAssetsMaterialRequest} createAssetsMaterialRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createAssetsMaterial(createAssetsMaterialRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 裁切單一布料的 Multimedia
+         * @param {CropAssetsMaterialMultimediaRequest} [cropAssetsMaterialMultimediaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest?: CropAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 刪除布料（可批量）
+         * @param {DeleteAssetsMaterialListRequest} [deleteAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteAssetsMaterialList(deleteAssetsMaterialListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 匯出 Excel
+         * @param {ExportAssetsMaterialExcelRequest} [exportAssetsMaterialExcelRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest?: ExportAssetsMaterialExcelRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExportAssetsMaterialExcel200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 建立 U3M
+         * @param {GenerateAssetsMaterialU3mRequest} [generateAssetsMaterialU3mRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest?: GenerateAssetsMaterialU3mRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 取得布料清單
+         * @param {GetAssetMaterialListRequest} [getAssetMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAssetMaterialList(getAssetMaterialListRequest?: GetAssetMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetMaterialList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetMaterialList(getAssetMaterialListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 取得單一布料資料
+         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetsMaterial(getAssetsMaterialRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 取得布料相關選項資訊
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMaterialOptions(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMaterialOptions200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMaterialOptions(oGBaseRequestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 大量匯出 Excel
+         * @param {MassExportAssetsMaterialExcelRequest} [massExportAssetsMaterialExcelRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 合併布卡
+         * @param {MergeAssetsMaterialListRequest} [mergeAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async mergeAssetsMaterialList(mergeAssetsMaterialListRequest?: MergeAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.mergeAssetsMaterialList(mergeAssetsMaterialListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 移動布料的 Attachment
+         * @param {MoveAssetsMaterialAttachmentRequest} [moveAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 移動布料的 Multimedia
+         * @param {MoveAssetsMaterialAttachmentRequest} [moveAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 刪除布料的 Attachment
+         * @param {RemoveAssetsMaterialAttachmentRequest} [removeAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 刪除布料的 Multimedia
+         * @param {RemoveAssetsMaterialMultimediaRequest} [removeAssetsMaterialMultimediaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async removeAssetsMaterialMultimedia(removeAssetsMaterialMultimediaRequest?: RemoveAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removeAssetsMaterialMultimedia(removeAssetsMaterialMultimediaRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 重新命名布料的 Attachment
+         * @param {RenameAssetsMaterialAttachmentRequest} [renameAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 重新命名布料的 Multimedia
+         * @param {RenameAssetsMaterialAttachmentRequest} [renameAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 設定布料資產封面
+         * @param {SetAssetsMaterialCoverRequest} [setAssetsMaterialCoverRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async setAssetsMaterialCover(setAssetsMaterialCoverRequest?: SetAssetsMaterialCoverRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SetAssetsMaterialCover200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.setAssetsMaterialCover(setAssetsMaterialCoverRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         *  **Access roles:** To be clear define
+         * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
+         * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 編輯布料資訊
+         * @param {UpdateAssetsMaterialRequest} [updateAssetsMaterialRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateAssetsMaterial(updateAssetsMaterialRequest?: UpdateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterial(updateAssetsMaterialRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 編輯正反面
+         * @param {UpdateAssetsMaterialSideImageRequest} [updateAssetsMaterialSideImageRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateAssetsMaterialSideImage(updateAssetsMaterialSideImageRequest?: UpdateAssetsMaterialSideImageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateAssetsMaterialSideImage200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSideImage(updateAssetsMaterialSideImageRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 簡易編輯布料 inventory
+         * @param {UpdateAssetsMaterialSimpleInventoryRequest} [updateAssetsMaterialSimpleInventoryRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 簡易編輯布料 public price
+         * @param {UpdateAssetsMaterialSimplePublicPriceRequest} [updateAssetsMaterialSimplePublicPriceRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 簡易編輯布料 tag
+         * @param {UpdateAssetsMaterialSimpleTagRequest} [updateAssetsMaterialSimpleTagRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 簡易編輯布料 spec
+         * @param {UpdateMaterialSimpleSpecRequest} [updateMaterialSimpleSpecRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest?: UpdateMaterialSimpleSpecRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResSuccessTrue>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 編輯單一布料時上傳Attachment
+         * @param {UploadAssetsMaterialAttachmentRequest} [uploadAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest?: UploadAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialAttachment200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 上傳 Custom 3D Material
+         * @param {UploadAssetsMaterialCustomU3mRequest} [uploadAssetsMaterialCustomU3mRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 編輯單一布料時上傳 Multimedia
+         * @param {UploadAssetsMaterialMultimediaRequest} [uploadAssetsMaterialMultimediaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * AssetsApi - factory interface
+ * @export
+ */
+export const AssetsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AssetsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary assets add to workspace
+         * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options?: any): AxiosPromise<AssetsMaterialAddToWorkspace200Response> {
+            return localVarFp.assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *  **Access roles:** To be clear define
+         * @summary 透過 Excel 批量上傳布料
+         * @param {BatchUploadAssetsMaterialListRequest} [batchUploadAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        batchUploadAssetsMaterialList(batchUploadAssetsMaterialListRequest?: BatchUploadAssetsMaterialListRequest, options?: any): AxiosPromise<BatchUploadAssetsMaterialList200Response> {
+            return localVarFp.batchUploadAssetsMaterialList(batchUploadAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 此 api 前端使用 sendbeacon 方式呼叫 header 不帶 accessToken 改由 Request Body 夾帶 
+         * @summary 取消上傳 Custom 3D Material
+         * @param {CancelAssetsMaterialCustomU3mUploadRequest} [cancelAssetsMaterialCustomU3mUploadRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 取得此次 Clone 產生 quota 數量
+         * @param {CheckAssetsMaterialListCloneQuotaRequest} [checkAssetsMaterialListCloneQuotaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        checkAssetsMaterialListCloneQuota(checkAssetsMaterialListCloneQuotaRequest?: CheckAssetsMaterialListCloneQuotaRequest, options?: any): AxiosPromise<CheckAssetsMaterialListCloneQuota200Response> {
+            return localVarFp.checkAssetsMaterialListCloneQuota(checkAssetsMaterialListCloneQuotaRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 確認要刪除布料是否可以刪除
+         * @param {DeleteAssetsMaterialListRequest} [deleteAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: any): AxiosPromise<CheckDeleteAssetsMaterialList200Response> {
+            return localVarFp.checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Clone
+         * @param {CloneAssetsMaterialListRequest} [cloneAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cloneAssetsMaterialList(cloneAssetsMaterialListRequest?: CloneAssetsMaterialListRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.cloneAssetsMaterialList(cloneAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 確定新增布料資訊
+         * @param {CreateAssetsMaterialRequest} createAssetsMaterialRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+            return localVarFp.createAssetsMaterial(createAssetsMaterialRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 裁切單一布料的 Multimedia
+         * @param {CropAssetsMaterialMultimediaRequest} [cropAssetsMaterialMultimediaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest?: CropAssetsMaterialMultimediaRequest, options?: any): AxiosPromise<UploadAssetsMaterialMultimedia200Response> {
+            return localVarFp.cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 刪除布料（可批量）
+         * @param {DeleteAssetsMaterialListRequest} [deleteAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.deleteAssetsMaterialList(deleteAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 匯出 Excel
+         * @param {ExportAssetsMaterialExcelRequest} [exportAssetsMaterialExcelRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest?: ExportAssetsMaterialExcelRequest, options?: any): AxiosPromise<ExportAssetsMaterialExcel200Response> {
+            return localVarFp.exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 建立 U3M
+         * @param {GenerateAssetsMaterialU3mRequest} [generateAssetsMaterialU3mRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest?: GenerateAssetsMaterialU3mRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 取得布料清單
+         * @param {GetAssetMaterialListRequest} [getAssetMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetMaterialList(getAssetMaterialListRequest?: GetAssetMaterialListRequest, options?: any): AxiosPromise<GetAssetMaterialList200Response> {
+            return localVarFp.getAssetMaterialList(getAssetMaterialListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 取得單一布料資料
+         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+            return localVarFp.getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 取得布料相關選項資訊
+         * @param {OGBaseRequestBody} oGBaseRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMaterialOptions(oGBaseRequestBody: OGBaseRequestBody, options?: any): AxiosPromise<GetMaterialOptions200Response> {
+            return localVarFp.getMaterialOptions(oGBaseRequestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 大量匯出 Excel
+         * @param {MassExportAssetsMaterialExcelRequest} [massExportAssetsMaterialExcelRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 合併布卡
+         * @param {MergeAssetsMaterialListRequest} [mergeAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        mergeAssetsMaterialList(mergeAssetsMaterialListRequest?: MergeAssetsMaterialListRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.mergeAssetsMaterialList(mergeAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 移動布料的 Attachment
+         * @param {MoveAssetsMaterialAttachmentRequest} [moveAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: any): AxiosPromise<UploadAssetsMaterialAttachment200Response> {
+            return localVarFp.moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 移動布料的 Multimedia
+         * @param {MoveAssetsMaterialAttachmentRequest} [moveAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: any): AxiosPromise<UploadAssetsMaterialMultimedia200Response> {
+            return localVarFp.moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 刪除布料的 Attachment
+         * @param {RemoveAssetsMaterialAttachmentRequest} [removeAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: any): AxiosPromise<UploadAssetsMaterialAttachment200Response> {
+            return localVarFp.removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 刪除布料的 Multimedia
+         * @param {RemoveAssetsMaterialMultimediaRequest} [removeAssetsMaterialMultimediaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        removeAssetsMaterialMultimedia(removeAssetsMaterialMultimediaRequest?: RemoveAssetsMaterialMultimediaRequest, options?: any): AxiosPromise<UploadAssetsMaterialMultimedia200Response> {
+            return localVarFp.removeAssetsMaterialMultimedia(removeAssetsMaterialMultimediaRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 重新命名布料的 Attachment
+         * @param {RenameAssetsMaterialAttachmentRequest} [renameAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: any): AxiosPromise<UploadAssetsMaterialAttachment200Response> {
+            return localVarFp.renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 重新命名布料的 Multimedia
+         * @param {RenameAssetsMaterialAttachmentRequest} [renameAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: any): AxiosPromise<UploadAssetsMaterialMultimedia200Response> {
+            return localVarFp.renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 設定布料資產封面
+         * @param {SetAssetsMaterialCoverRequest} [setAssetsMaterialCoverRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        setAssetsMaterialCover(setAssetsMaterialCoverRequest?: SetAssetsMaterialCoverRequest, options?: any): AxiosPromise<SetAssetsMaterialCover200Response> {
+            return localVarFp.setAssetsMaterialCover(setAssetsMaterialCoverRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *  **Access roles:** To be clear define
+         * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
+         * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 編輯布料資訊
+         * @param {UpdateAssetsMaterialRequest} [updateAssetsMaterialRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAssetsMaterial(updateAssetsMaterialRequest?: UpdateAssetsMaterialRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.updateAssetsMaterial(updateAssetsMaterialRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 編輯正反面
+         * @param {UpdateAssetsMaterialSideImageRequest} [updateAssetsMaterialSideImageRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAssetsMaterialSideImage(updateAssetsMaterialSideImageRequest?: UpdateAssetsMaterialSideImageRequest, options?: any): AxiosPromise<UpdateAssetsMaterialSideImage200Response> {
+            return localVarFp.updateAssetsMaterialSideImage(updateAssetsMaterialSideImageRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 簡易編輯布料 inventory
+         * @param {UpdateAssetsMaterialSimpleInventoryRequest} [updateAssetsMaterialSimpleInventoryRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 簡易編輯布料 public price
+         * @param {UpdateAssetsMaterialSimplePublicPriceRequest} [updateAssetsMaterialSimplePublicPriceRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 簡易編輯布料 tag
+         * @param {UpdateAssetsMaterialSimpleTagRequest} [updateAssetsMaterialSimpleTagRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * **Access roles:** To be clear define
+         * @summary 簡易編輯布料 spec
+         * @param {UpdateMaterialSimpleSpecRequest} [updateMaterialSimpleSpecRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest?: UpdateMaterialSimpleSpecRequest, options?: any): AxiosPromise<ResSuccessTrue> {
+            return localVarFp.updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 編輯單一布料時上傳Attachment
+         * @param {UploadAssetsMaterialAttachmentRequest} [uploadAssetsMaterialAttachmentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest?: UploadAssetsMaterialAttachmentRequest, options?: any): AxiosPromise<UploadAssetsMaterialAttachment200Response> {
+            return localVarFp.uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 上傳 Custom 3D Material
+         * @param {UploadAssetsMaterialCustomU3mRequest} [uploadAssetsMaterialCustomU3mRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 編輯單一布料時上傳 Multimedia
+         * @param {UploadAssetsMaterialMultimediaRequest} [uploadAssetsMaterialMultimediaRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options?: any): AxiosPromise<UploadAssetsMaterialMultimedia200Response> {
+            return localVarFp.uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * AssetsApi - object-oriented interface
+ * @export
+ * @class AssetsApi
+ * @extends {BaseAPI}
+ */
+export class AssetsApi extends BaseAPI {
+    /**
+     * 
+     * @summary assets add to workspace
+     * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     *  **Access roles:** To be clear define
+     * @summary 透過 Excel 批量上傳布料
+     * @param {BatchUploadAssetsMaterialListRequest} [batchUploadAssetsMaterialListRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public batchUploadAssetsMaterialList(batchUploadAssetsMaterialListRequest?: BatchUploadAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).batchUploadAssetsMaterialList(batchUploadAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 此 api 前端使用 sendbeacon 方式呼叫 header 不帶 accessToken 改由 Request Body 夾帶 
+     * @summary 取消上傳 Custom 3D Material
+     * @param {CancelAssetsMaterialCustomU3mUploadRequest} [cancelAssetsMaterialCustomU3mUploadRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest?: CancelAssetsMaterialCustomU3mUploadRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).cancelAssetsMaterialCustomU3mUpload(cancelAssetsMaterialCustomU3mUploadRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 取得此次 Clone 產生 quota 數量
+     * @param {CheckAssetsMaterialListCloneQuotaRequest} [checkAssetsMaterialListCloneQuotaRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public checkAssetsMaterialListCloneQuota(checkAssetsMaterialListCloneQuotaRequest?: CheckAssetsMaterialListCloneQuotaRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).checkAssetsMaterialListCloneQuota(checkAssetsMaterialListCloneQuotaRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 確認要刪除布料是否可以刪除
+     * @param {DeleteAssetsMaterialListRequest} [deleteAssetsMaterialListRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).checkDeleteAssetsMaterialList(deleteAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Clone
+     * @param {CloneAssetsMaterialListRequest} [cloneAssetsMaterialListRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public cloneAssetsMaterialList(cloneAssetsMaterialListRequest?: CloneAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).cloneAssetsMaterialList(cloneAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 確定新增布料資訊
+     * @param {CreateAssetsMaterialRequest} createAssetsMaterialRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).createAssetsMaterial(createAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 裁切單一布料的 Multimedia
+     * @param {CropAssetsMaterialMultimediaRequest} [cropAssetsMaterialMultimediaRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest?: CropAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 刪除布料（可批量）
+     * @param {DeleteAssetsMaterialListRequest} [deleteAssetsMaterialListRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).deleteAssetsMaterialList(deleteAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 匯出 Excel
+     * @param {ExportAssetsMaterialExcelRequest} [exportAssetsMaterialExcelRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest?: ExportAssetsMaterialExcelRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).exportAssetsMaterialExcel(exportAssetsMaterialExcelRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 建立 U3M
+     * @param {GenerateAssetsMaterialU3mRequest} [generateAssetsMaterialU3mRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest?: GenerateAssetsMaterialU3mRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).generateAssetsMaterialU3m(generateAssetsMaterialU3mRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 取得布料清單
+     * @param {GetAssetMaterialListRequest} [getAssetMaterialListRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public getAssetMaterialList(getAssetMaterialListRequest?: GetAssetMaterialListRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).getAssetMaterialList(getAssetMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 取得單一布料資料
+     * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * **Access roles:** To be clear define
+     * @summary 取得布料相關選項資訊
+     * @param {OGBaseRequestBody} oGBaseRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public getMaterialOptions(oGBaseRequestBody: OGBaseRequestBody, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).getMaterialOptions(oGBaseRequestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 大量匯出 Excel
+     * @param {MassExportAssetsMaterialExcelRequest} [massExportAssetsMaterialExcelRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest?: MassExportAssetsMaterialExcelRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).massExportAssetsMaterialExcel(massExportAssetsMaterialExcelRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 合併布卡
+     * @param {MergeAssetsMaterialListRequest} [mergeAssetsMaterialListRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public mergeAssetsMaterialList(mergeAssetsMaterialListRequest?: MergeAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).mergeAssetsMaterialList(mergeAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 移動布料的 Attachment
+     * @param {MoveAssetsMaterialAttachmentRequest} [moveAssetsMaterialAttachmentRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).moveAssetsMaterialAttachment(moveAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 移動布料的 Multimedia
+     * @param {MoveAssetsMaterialAttachmentRequest} [moveAssetsMaterialAttachmentRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest?: MoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).moveAssetsMaterialMultimedia(moveAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 刪除布料的 Attachment
+     * @param {RemoveAssetsMaterialAttachmentRequest} [removeAssetsMaterialAttachmentRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).removeAssetsMaterialAttachment(removeAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 刪除布料的 Multimedia
+     * @param {RemoveAssetsMaterialMultimediaRequest} [removeAssetsMaterialMultimediaRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public removeAssetsMaterialMultimedia(removeAssetsMaterialMultimediaRequest?: RemoveAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).removeAssetsMaterialMultimedia(removeAssetsMaterialMultimediaRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 重新命名布料的 Attachment
+     * @param {RenameAssetsMaterialAttachmentRequest} [renameAssetsMaterialAttachmentRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).renameAssetsMaterialAttachment(renameAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 重新命名布料的 Multimedia
+     * @param {RenameAssetsMaterialAttachmentRequest} [renameAssetsMaterialAttachmentRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest?: RenameAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).renameAssetsMaterialMultimedia(renameAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 設定布料資產封面
+     * @param {SetAssetsMaterialCoverRequest} [setAssetsMaterialCoverRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public setAssetsMaterialCover(setAssetsMaterialCoverRequest?: SetAssetsMaterialCoverRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).setAssetsMaterialCover(setAssetsMaterialCoverRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     *  **Access roles:** To be clear define
+     * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
+     * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * **Access roles:** To be clear define
+     * @summary 編輯布料資訊
+     * @param {UpdateAssetsMaterialRequest} [updateAssetsMaterialRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public updateAssetsMaterial(updateAssetsMaterialRequest?: UpdateAssetsMaterialRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).updateAssetsMaterial(updateAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 編輯正反面
+     * @param {UpdateAssetsMaterialSideImageRequest} [updateAssetsMaterialSideImageRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public updateAssetsMaterialSideImage(updateAssetsMaterialSideImageRequest?: UpdateAssetsMaterialSideImageRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).updateAssetsMaterialSideImage(updateAssetsMaterialSideImageRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * **Access roles:** To be clear define
+     * @summary 簡易編輯布料 inventory
+     * @param {UpdateAssetsMaterialSimpleInventoryRequest} [updateAssetsMaterialSimpleInventoryRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest?: UpdateAssetsMaterialSimpleInventoryRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).updateAssetsMaterialSimpleInventory(updateAssetsMaterialSimpleInventoryRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * **Access roles:** To be clear define
+     * @summary 簡易編輯布料 public price
+     * @param {UpdateAssetsMaterialSimplePublicPriceRequest} [updateAssetsMaterialSimplePublicPriceRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest?: UpdateAssetsMaterialSimplePublicPriceRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).updateAssetsMaterialSimplePublicPrice(updateAssetsMaterialSimplePublicPriceRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * **Access roles:** To be clear define
+     * @summary 簡易編輯布料 tag
+     * @param {UpdateAssetsMaterialSimpleTagRequest} [updateAssetsMaterialSimpleTagRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest?: UpdateAssetsMaterialSimpleTagRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).updateAssetsMaterialSimpleTag(updateAssetsMaterialSimpleTagRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * **Access roles:** To be clear define
+     * @summary 簡易編輯布料 spec
+     * @param {UpdateMaterialSimpleSpecRequest} [updateMaterialSimpleSpecRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest?: UpdateMaterialSimpleSpecRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).updateMaterialSimpleSpec(updateMaterialSimpleSpecRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 編輯單一布料時上傳Attachment
+     * @param {UploadAssetsMaterialAttachmentRequest} [uploadAssetsMaterialAttachmentRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest?: UploadAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).uploadAssetsMaterialAttachment(uploadAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 上傳 Custom 3D Material
+     * @param {UploadAssetsMaterialCustomU3mRequest} [uploadAssetsMaterialCustomU3mRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest?: UploadAssetsMaterialCustomU3mRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).uploadAssetsMaterialCustomU3m(uploadAssetsMaterialCustomU3mRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 編輯單一布料時上傳 Multimedia
+     * @param {UploadAssetsMaterialMultimediaRequest} [uploadAssetsMaterialMultimediaRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
 
 
 /**
@@ -23928,7 +31195,7 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
+        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -24078,7 +31345,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
+        digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -24382,6 +31649,44 @@ export const GeneralApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary 取得 s3 上傳 url
+         * @param {GeneralGetS3UploadUrlPostRequest} [generalGetS3UploadUrlPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        generalGetS3UploadUrlPost: async (generalGetS3UploadUrlPostRequest?: GeneralGetS3UploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/general/get-s3-upload-url`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(generalGetS3UploadUrlPostRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 取得 s3 上傳 url (舊版需並存)
          * @param {GeneralGetUploadUrlPostRequest} [generalGetUploadUrlPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24479,6 +31784,17 @@ export const GeneralApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得 s3 上傳 url
+         * @param {GeneralGetS3UploadUrlPostRequest} [generalGetS3UploadUrlPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async generalGetS3UploadUrlPost(generalGetS3UploadUrlPostRequest?: GeneralGetS3UploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GeneralGetS3UploadUrlPost200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.generalGetS3UploadUrlPost(generalGetS3UploadUrlPostRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 取得 s3 上傳 url (舊版需並存)
          * @param {GeneralGetUploadUrlPostRequest} [generalGetUploadUrlPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24521,6 +31837,16 @@ export const GeneralApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary 取得 s3 上傳 url
+         * @param {GeneralGetS3UploadUrlPostRequest} [generalGetS3UploadUrlPostRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        generalGetS3UploadUrlPost(generalGetS3UploadUrlPostRequest?: GeneralGetS3UploadUrlPostRequest, options?: any): AxiosPromise<GeneralGetS3UploadUrlPost200Response> {
+            return localVarFp.generalGetS3UploadUrlPost(generalGetS3UploadUrlPostRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 取得 s3 上傳 url (舊版需並存)
          * @param {GeneralGetUploadUrlPostRequest} [generalGetUploadUrlPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -24563,6 +31889,18 @@ export class GeneralApi extends BaseAPI {
     /**
      * 
      * @summary 取得 s3 上傳 url
+     * @param {GeneralGetS3UploadUrlPostRequest} [generalGetS3UploadUrlPostRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof GeneralApi
+     */
+    public generalGetS3UploadUrlPost(generalGetS3UploadUrlPostRequest?: GeneralGetS3UploadUrlPostRequest, options?: AxiosRequestConfig) {
+        return GeneralApiFp(this.configuration).generalGetS3UploadUrlPost(generalGetS3UploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 取得 s3 上傳 url (舊版需並存)
      * @param {GeneralGetUploadUrlPostRequest} [generalGetUploadUrlPostRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24993,11 +32331,11 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Carbon copy
-         * @param {OrgGroupAssetsMaterialGetPostRequest} [orgGroupAssetsMaterialGetPostRequest] 
+         * @param {OrgGroupAssetsMaterialCarbonCopyPostRequest} [orgGroupAssetsMaterialCarbonCopyPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialCarbonCopyPost: async (orgGroupAssetsMaterialGetPostRequest?: OrgGroupAssetsMaterialGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupAssetsMaterialCarbonCopyPost: async (orgGroupAssetsMaterialCarbonCopyPostRequest?: OrgGroupAssetsMaterialCarbonCopyPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/assets/material/carbon-copy`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25021,7 +32359,7 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgGroupAssetsMaterialGetPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(orgGroupAssetsMaterialCarbonCopyPostRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -25107,11 +32445,11 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
         /**
          * **Access roles:** To be clear define
          * @summary 確定新增布料資訊
-         * @param {OrgGroupAssetsMaterialCreatePostRequest} [orgGroupAssetsMaterialCreatePostRequest] 
+         * @param {CreateAssetsMaterialRequest} [createAssetsMaterialRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialCreatePost: async (orgGroupAssetsMaterialCreatePostRequest?: OrgGroupAssetsMaterialCreatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupAssetsMaterialCreatePost: async (createAssetsMaterialRequest?: CreateAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/assets/material/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25135,7 +32473,7 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgGroupAssetsMaterialCreatePostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(createAssetsMaterialRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -25402,44 +32740,6 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(orgGroupAssetsMaterialGetListPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 取得單一布料資料
-         * @param {OrgGroupAssetsMaterialGetPostRequest} [orgGroupAssetsMaterialGetPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupAssetsMaterialGetPost: async (orgGroupAssetsMaterialGetPostRequest?: OrgGroupAssetsMaterialGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/group/assets/material/get`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgGroupAssetsMaterialGetPostRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -25791,11 +33091,11 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
         /**
          * **Access roles:** To be clear define
          * @summary 編輯布料資訊
-         * @param {OrgGroupAssetsMaterialUpdatePostRequest} [orgGroupAssetsMaterialUpdatePostRequest] 
+         * @param {MaterialUpdate} [materialUpdate] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdatePost: async (orgGroupAssetsMaterialUpdatePostRequest?: OrgGroupAssetsMaterialUpdatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGroupAssetsMaterialUpdatePost: async (materialUpdate?: MaterialUpdate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/org/group/assets/material/update`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25819,7 +33119,7 @@ export const GroupAssetsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgGroupAssetsMaterialUpdatePostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(materialUpdate, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -26451,7 +33751,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialAddToWorkspacePost(orgGroupAssetsMaterialAddToWorkspacePostRequest?: OrgGroupAssetsMaterialAddToWorkspacePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialAddToWorkspacePost200Response>> {
+        async orgGroupAssetsMaterialAddToWorkspacePost(orgGroupAssetsMaterialAddToWorkspacePostRequest?: OrgGroupAssetsMaterialAddToWorkspacePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupAssetsMaterialAddToWorkspacePost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialAddToWorkspacePost(orgGroupAssetsMaterialAddToWorkspacePostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26469,12 +33769,12 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Carbon copy
-         * @param {OrgGroupAssetsMaterialGetPostRequest} [orgGroupAssetsMaterialGetPostRequest] 
+         * @param {OrgGroupAssetsMaterialCarbonCopyPostRequest} [orgGroupAssetsMaterialCarbonCopyPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialCarbonCopyPost(orgGroupAssetsMaterialGetPostRequest?: OrgGroupAssetsMaterialGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialCarbonCopyPost(orgGroupAssetsMaterialGetPostRequest, options);
+        async orgGroupAssetsMaterialCarbonCopyPost(orgGroupAssetsMaterialCarbonCopyPostRequest?: OrgGroupAssetsMaterialCarbonCopyPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialCarbonCopyPost(orgGroupAssetsMaterialCarbonCopyPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -26502,12 +33802,12 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
         /**
          * **Access roles:** To be clear define
          * @summary 確定新增布料資訊
-         * @param {OrgGroupAssetsMaterialCreatePostRequest} [orgGroupAssetsMaterialCreatePostRequest] 
+         * @param {CreateAssetsMaterialRequest} [createAssetsMaterialRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialCreatePost(orgGroupAssetsMaterialCreatePostRequest?: OrgGroupAssetsMaterialCreatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialCreatePost(orgGroupAssetsMaterialCreatePostRequest, options);
+        async orgGroupAssetsMaterialCreatePost(createAssetsMaterialRequest?: CreateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialCreatePost(createAssetsMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -26517,7 +33817,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialCreateUploadAttachmentPost(orgGroupAssetsMaterialCreateUploadAttachmentPostRequest?: OrgGroupAssetsMaterialCreateUploadAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialCreateUploadAttachmentPost200Response>> {
+        async orgGroupAssetsMaterialCreateUploadAttachmentPost(orgGroupAssetsMaterialCreateUploadAttachmentPostRequest?: OrgGroupAssetsMaterialCreateUploadAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupAssetsMaterialCreateUploadAttachmentPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialCreateUploadAttachmentPost(orgGroupAssetsMaterialCreateUploadAttachmentPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26550,7 +33850,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialDeleteCheckPost(orgGroupAssetsMaterialDeletePostRequest?: OrgGroupAssetsMaterialDeletePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialDeleteCheckPost200Response>> {
+        async orgGroupAssetsMaterialDeleteCheckPost(orgGroupAssetsMaterialDeletePostRequest?: OrgGroupAssetsMaterialDeletePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupAssetsMaterialDeleteCheckPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialDeleteCheckPost(orgGroupAssetsMaterialDeletePostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26572,7 +33872,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialExportPost(orgGroupAssetsMaterialDeletePostRequest?: OrgGroupAssetsMaterialDeletePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialExportPost200Response>> {
+        async orgGroupAssetsMaterialExportPost(orgGroupAssetsMaterialDeletePostRequest?: OrgGroupAssetsMaterialDeletePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgMoodboardOfferPickedExportPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialExportPost(orgGroupAssetsMaterialDeletePostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26583,19 +33883,8 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialGetListPost(orgGroupAssetsMaterialGetListPostRequest?: OrgGroupAssetsMaterialGetListPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetListPost200Response>> {
+        async orgGroupAssetsMaterialGetListPost(orgGroupAssetsMaterialGetListPostRequest?: OrgGroupAssetsMaterialGetListPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialGetListPost(orgGroupAssetsMaterialGetListPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 取得單一布料資料
-         * @param {OrgGroupAssetsMaterialGetPostRequest} [orgGroupAssetsMaterialGetPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgGroupAssetsMaterialGetPost(orgGroupAssetsMaterialGetPostRequest?: OrgGroupAssetsMaterialGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialGetPost(orgGroupAssetsMaterialGetPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -26627,7 +33916,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialOptionsPost(orgGroupUserGetPostRequest?: OrgGroupUserGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialOptionsPost200Response>> {
+        async orgGroupAssetsMaterialOptionsPost(orgGroupUserGetPostRequest?: OrgGroupUserGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupAssetsMaterialOptionsPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialOptionsPost(orgGroupUserGetPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26649,7 +33938,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialUpdateAddPantonePost(orgGroupAssetsMaterialUpdateAddPantonePostRequest?: OrgGroupAssetsMaterialUpdateAddPantonePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
+        async orgGroupAssetsMaterialUpdateAddPantonePost(orgGroupAssetsMaterialUpdateAddPantonePostRequest?: OrgGroupAssetsMaterialUpdateAddPantonePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateAddPantonePost(orgGroupAssetsMaterialUpdateAddPantonePostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26660,7 +33949,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialUpdateCoverImgPost(orgGroupAssetsMaterialUpdateCoverImgPostRequest?: OrgGroupAssetsMaterialUpdateCoverImgPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
+        async orgGroupAssetsMaterialUpdateCoverImgPost(orgGroupAssetsMaterialUpdateCoverImgPostRequest?: OrgGroupAssetsMaterialUpdateCoverImgPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateCoverImgPost(orgGroupAssetsMaterialUpdateCoverImgPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26671,7 +33960,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response>> {
+        async orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26682,7 +33971,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialUpdateGenerateU3mPost(orgGroupAssetsMaterialUpdateGenerateU3mPostRequest?: OrgGroupAssetsMaterialUpdateGenerateU3mPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
+        async orgGroupAssetsMaterialUpdateGenerateU3mPost(orgGroupAssetsMaterialUpdateGenerateU3mPostRequest?: OrgGroupAssetsMaterialUpdateGenerateU3mPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateGenerateU3mPost(orgGroupAssetsMaterialUpdateGenerateU3mPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26693,19 +33982,19 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialUpdateIsDoubleSidePost(orgGroupAssetsMaterialUpdateIsDoubleSidePostRequest?: OrgGroupAssetsMaterialUpdateIsDoubleSidePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
+        async orgGroupAssetsMaterialUpdateIsDoubleSidePost(orgGroupAssetsMaterialUpdateIsDoubleSidePostRequest?: OrgGroupAssetsMaterialUpdateIsDoubleSidePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateIsDoubleSidePost(orgGroupAssetsMaterialUpdateIsDoubleSidePostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * **Access roles:** To be clear define
          * @summary 編輯布料資訊
-         * @param {OrgGroupAssetsMaterialUpdatePostRequest} [orgGroupAssetsMaterialUpdatePostRequest] 
+         * @param {MaterialUpdate} [materialUpdate] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialUpdatePost(orgGroupAssetsMaterialUpdatePostRequest?: OrgGroupAssetsMaterialUpdatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdatePost(orgGroupAssetsMaterialUpdatePostRequest, options);
+        async orgGroupAssetsMaterialUpdatePost(materialUpdate?: MaterialUpdate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdatePost(materialUpdate, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -26715,7 +34004,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialUpdateRemoveAttachmentPost(orgGroupAssetsMaterialUpdateRemoveAttachmentPostRequest?: OrgGroupAssetsMaterialUpdateRemoveAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
+        async orgGroupAssetsMaterialUpdateRemoveAttachmentPost(orgGroupAssetsMaterialUpdateRemoveAttachmentPostRequest?: OrgGroupAssetsMaterialUpdateRemoveAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateRemoveAttachmentPost(orgGroupAssetsMaterialUpdateRemoveAttachmentPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26726,7 +34015,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialUpdateRemovePantonePost(orgGroupAssetsMaterialUpdateRemovePantonePostRequest?: OrgGroupAssetsMaterialUpdateRemovePantonePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
+        async orgGroupAssetsMaterialUpdateRemovePantonePost(orgGroupAssetsMaterialUpdateRemovePantonePostRequest?: OrgGroupAssetsMaterialUpdateRemovePantonePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateRemovePantonePost(orgGroupAssetsMaterialUpdateRemovePantonePostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26737,7 +34026,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response>> {
+        async orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26748,7 +34037,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialUpdateScanImagePost(orgGroupAssetsMaterialUpdateScanImagePostRequest?: OrgGroupAssetsMaterialUpdateScanImagePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
+        async orgGroupAssetsMaterialUpdateScanImagePost(orgGroupAssetsMaterialUpdateScanImagePostRequest?: OrgGroupAssetsMaterialUpdateScanImagePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateScanImagePost(orgGroupAssetsMaterialUpdateScanImagePostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26803,7 +34092,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsMaterialUpdateUploadAttachmentPost(orgGroupAssetsMaterialUpdateUploadAttachmentPostRequest?: OrgGroupAssetsMaterialUpdateUploadAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
+        async orgGroupAssetsMaterialUpdateUploadAttachmentPost(orgGroupAssetsMaterialUpdateUploadAttachmentPostRequest?: OrgGroupAssetsMaterialUpdateUploadAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsMaterialUpdateUploadAttachmentPost(orgGroupAssetsMaterialUpdateUploadAttachmentPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26836,7 +34125,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsUploadProgressExcelGetMaterialListPost(orgGroupAssetsUploadProgressExcelDeletePostRequest?: OrgGroupAssetsUploadProgressExcelDeletePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsUploadProgressExcelGetMaterialListPost200Response>> {
+        async orgGroupAssetsUploadProgressExcelGetMaterialListPost(orgGroupAssetsUploadProgressExcelDeletePostRequest?: OrgGroupAssetsUploadProgressExcelDeletePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsUploadProgressExcelGetMaterialListPost(orgGroupAssetsUploadProgressExcelDeletePostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26880,7 +34169,7 @@ export const GroupAssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupAssetsUploadProgressU3mGetListPost(orgGroupAssetsUploadProgressU3mGetListPostRequest?: OrgGroupAssetsUploadProgressU3mGetListPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsUploadProgressU3mGetListPost200Response>> {
+        async orgGroupAssetsUploadProgressU3mGetListPost(orgGroupAssetsUploadProgressU3mGetListPostRequest?: OrgGroupAssetsUploadProgressU3mGetListPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGroupAssetsUploadProgressU3mGetListPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupAssetsUploadProgressU3mGetListPost(orgGroupAssetsUploadProgressU3mGetListPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26901,7 +34190,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialAddToWorkspacePost(orgGroupAssetsMaterialAddToWorkspacePostRequest?: OrgGroupAssetsMaterialAddToWorkspacePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialAddToWorkspacePost200Response> {
+        orgGroupAssetsMaterialAddToWorkspacePost(orgGroupAssetsMaterialAddToWorkspacePostRequest?: OrgGroupAssetsMaterialAddToWorkspacePostRequest, options?: any): AxiosPromise<OrgGroupAssetsMaterialAddToWorkspacePost200Response> {
             return localVarFp.orgGroupAssetsMaterialAddToWorkspacePost(orgGroupAssetsMaterialAddToWorkspacePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26917,12 +34206,12 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
         /**
          * 
          * @summary Carbon copy
-         * @param {OrgGroupAssetsMaterialGetPostRequest} [orgGroupAssetsMaterialGetPostRequest] 
+         * @param {OrgGroupAssetsMaterialCarbonCopyPostRequest} [orgGroupAssetsMaterialCarbonCopyPostRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialCarbonCopyPost(orgGroupAssetsMaterialGetPostRequest?: OrgGroupAssetsMaterialGetPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgGroupAssetsMaterialCarbonCopyPost(orgGroupAssetsMaterialGetPostRequest, options).then((request) => request(axios, basePath));
+        orgGroupAssetsMaterialCarbonCopyPost(orgGroupAssetsMaterialCarbonCopyPostRequest?: OrgGroupAssetsMaterialCarbonCopyPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.orgGroupAssetsMaterialCarbonCopyPost(orgGroupAssetsMaterialCarbonCopyPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -26947,12 +34236,12 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
         /**
          * **Access roles:** To be clear define
          * @summary 確定新增布料資訊
-         * @param {OrgGroupAssetsMaterialCreatePostRequest} [orgGroupAssetsMaterialCreatePostRequest] 
+         * @param {CreateAssetsMaterialRequest} [createAssetsMaterialRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialCreatePost(orgGroupAssetsMaterialCreatePostRequest?: OrgGroupAssetsMaterialCreatePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
-            return localVarFp.orgGroupAssetsMaterialCreatePost(orgGroupAssetsMaterialCreatePostRequest, options).then((request) => request(axios, basePath));
+        orgGroupAssetsMaterialCreatePost(createAssetsMaterialRequest?: CreateAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+            return localVarFp.orgGroupAssetsMaterialCreatePost(createAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -26961,7 +34250,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialCreateUploadAttachmentPost(orgGroupAssetsMaterialCreateUploadAttachmentPostRequest?: OrgGroupAssetsMaterialCreateUploadAttachmentPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialCreateUploadAttachmentPost200Response> {
+        orgGroupAssetsMaterialCreateUploadAttachmentPost(orgGroupAssetsMaterialCreateUploadAttachmentPostRequest?: OrgGroupAssetsMaterialCreateUploadAttachmentPostRequest, options?: any): AxiosPromise<OrgGroupAssetsMaterialCreateUploadAttachmentPost200Response> {
             return localVarFp.orgGroupAssetsMaterialCreateUploadAttachmentPost(orgGroupAssetsMaterialCreateUploadAttachmentPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26991,7 +34280,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialDeleteCheckPost(orgGroupAssetsMaterialDeletePostRequest?: OrgGroupAssetsMaterialDeletePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialDeleteCheckPost200Response> {
+        orgGroupAssetsMaterialDeleteCheckPost(orgGroupAssetsMaterialDeletePostRequest?: OrgGroupAssetsMaterialDeletePostRequest, options?: any): AxiosPromise<OrgGroupAssetsMaterialDeleteCheckPost200Response> {
             return localVarFp.orgGroupAssetsMaterialDeleteCheckPost(orgGroupAssetsMaterialDeletePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27011,7 +34300,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialExportPost(orgGroupAssetsMaterialDeletePostRequest?: OrgGroupAssetsMaterialDeletePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialExportPost200Response> {
+        orgGroupAssetsMaterialExportPost(orgGroupAssetsMaterialDeletePostRequest?: OrgGroupAssetsMaterialDeletePostRequest, options?: any): AxiosPromise<OrgMoodboardOfferPickedExportPost200Response> {
             return localVarFp.orgGroupAssetsMaterialExportPost(orgGroupAssetsMaterialDeletePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27021,18 +34310,8 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialGetListPost(orgGroupAssetsMaterialGetListPostRequest?: OrgGroupAssetsMaterialGetListPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetListPost200Response> {
+        orgGroupAssetsMaterialGetListPost(orgGroupAssetsMaterialGetListPostRequest?: OrgGroupAssetsMaterialGetListPostRequest, options?: any): AxiosPromise<GetAssetMaterialList200Response> {
             return localVarFp.orgGroupAssetsMaterialGetListPost(orgGroupAssetsMaterialGetListPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 取得單一布料資料
-         * @param {OrgGroupAssetsMaterialGetPostRequest} [orgGroupAssetsMaterialGetPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgGroupAssetsMaterialGetPost(orgGroupAssetsMaterialGetPostRequest?: OrgGroupAssetsMaterialGetPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
-            return localVarFp.orgGroupAssetsMaterialGetPost(orgGroupAssetsMaterialGetPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -27061,7 +34340,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialOptionsPost(orgGroupUserGetPostRequest?: OrgGroupUserGetPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialOptionsPost200Response> {
+        orgGroupAssetsMaterialOptionsPost(orgGroupUserGetPostRequest?: OrgGroupUserGetPostRequest, options?: any): AxiosPromise<OrgGroupAssetsMaterialOptionsPost200Response> {
             return localVarFp.orgGroupAssetsMaterialOptionsPost(orgGroupUserGetPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27081,7 +34360,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateAddPantonePost(orgGroupAssetsMaterialUpdateAddPantonePostRequest?: OrgGroupAssetsMaterialUpdateAddPantonePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
+        orgGroupAssetsMaterialUpdateAddPantonePost(orgGroupAssetsMaterialUpdateAddPantonePostRequest?: OrgGroupAssetsMaterialUpdateAddPantonePostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.orgGroupAssetsMaterialUpdateAddPantonePost(orgGroupAssetsMaterialUpdateAddPantonePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27091,7 +34370,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateCoverImgPost(orgGroupAssetsMaterialUpdateCoverImgPostRequest?: OrgGroupAssetsMaterialUpdateCoverImgPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
+        orgGroupAssetsMaterialUpdateCoverImgPost(orgGroupAssetsMaterialUpdateCoverImgPostRequest?: OrgGroupAssetsMaterialUpdateCoverImgPostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.orgGroupAssetsMaterialUpdateCoverImgPost(orgGroupAssetsMaterialUpdateCoverImgPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27101,7 +34380,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response> {
+        orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200Response> {
             return localVarFp.orgGroupAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27111,7 +34390,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateGenerateU3mPost(orgGroupAssetsMaterialUpdateGenerateU3mPostRequest?: OrgGroupAssetsMaterialUpdateGenerateU3mPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
+        orgGroupAssetsMaterialUpdateGenerateU3mPost(orgGroupAssetsMaterialUpdateGenerateU3mPostRequest?: OrgGroupAssetsMaterialUpdateGenerateU3mPostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.orgGroupAssetsMaterialUpdateGenerateU3mPost(orgGroupAssetsMaterialUpdateGenerateU3mPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27121,18 +34400,18 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateIsDoubleSidePost(orgGroupAssetsMaterialUpdateIsDoubleSidePostRequest?: OrgGroupAssetsMaterialUpdateIsDoubleSidePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
+        orgGroupAssetsMaterialUpdateIsDoubleSidePost(orgGroupAssetsMaterialUpdateIsDoubleSidePostRequest?: OrgGroupAssetsMaterialUpdateIsDoubleSidePostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.orgGroupAssetsMaterialUpdateIsDoubleSidePost(orgGroupAssetsMaterialUpdateIsDoubleSidePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * **Access roles:** To be clear define
          * @summary 編輯布料資訊
-         * @param {OrgGroupAssetsMaterialUpdatePostRequest} [orgGroupAssetsMaterialUpdatePostRequest] 
+         * @param {MaterialUpdate} [materialUpdate] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdatePost(orgGroupAssetsMaterialUpdatePostRequest?: OrgGroupAssetsMaterialUpdatePostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgGroupAssetsMaterialUpdatePost(orgGroupAssetsMaterialUpdatePostRequest, options).then((request) => request(axios, basePath));
+        orgGroupAssetsMaterialUpdatePost(materialUpdate?: MaterialUpdate, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.orgGroupAssetsMaterialUpdatePost(materialUpdate, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -27141,7 +34420,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateRemoveAttachmentPost(orgGroupAssetsMaterialUpdateRemoveAttachmentPostRequest?: OrgGroupAssetsMaterialUpdateRemoveAttachmentPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
+        orgGroupAssetsMaterialUpdateRemoveAttachmentPost(orgGroupAssetsMaterialUpdateRemoveAttachmentPostRequest?: OrgGroupAssetsMaterialUpdateRemoveAttachmentPostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.orgGroupAssetsMaterialUpdateRemoveAttachmentPost(orgGroupAssetsMaterialUpdateRemoveAttachmentPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27151,7 +34430,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateRemovePantonePost(orgGroupAssetsMaterialUpdateRemovePantonePostRequest?: OrgGroupAssetsMaterialUpdateRemovePantonePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
+        orgGroupAssetsMaterialUpdateRemovePantonePost(orgGroupAssetsMaterialUpdateRemovePantonePostRequest?: OrgGroupAssetsMaterialUpdateRemovePantonePostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.orgGroupAssetsMaterialUpdateRemovePantonePost(orgGroupAssetsMaterialUpdateRemovePantonePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27161,7 +34440,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response> {
+        orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost200Response> {
             return localVarFp.orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPost(orgGroupAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27171,7 +34450,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateScanImagePost(orgGroupAssetsMaterialUpdateScanImagePostRequest?: OrgGroupAssetsMaterialUpdateScanImagePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
+        orgGroupAssetsMaterialUpdateScanImagePost(orgGroupAssetsMaterialUpdateScanImagePostRequest?: OrgGroupAssetsMaterialUpdateScanImagePostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.orgGroupAssetsMaterialUpdateScanImagePost(orgGroupAssetsMaterialUpdateScanImagePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27221,7 +34500,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsMaterialUpdateUploadAttachmentPost(orgGroupAssetsMaterialUpdateUploadAttachmentPostRequest?: OrgGroupAssetsMaterialUpdateUploadAttachmentPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
+        orgGroupAssetsMaterialUpdateUploadAttachmentPost(orgGroupAssetsMaterialUpdateUploadAttachmentPostRequest?: OrgGroupAssetsMaterialUpdateUploadAttachmentPostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.orgGroupAssetsMaterialUpdateUploadAttachmentPost(orgGroupAssetsMaterialUpdateUploadAttachmentPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27251,7 +34530,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsUploadProgressExcelGetMaterialListPost(orgGroupAssetsUploadProgressExcelDeletePostRequest?: OrgGroupAssetsUploadProgressExcelDeletePostRequest, options?: any): AxiosPromise<OrgAssetsUploadProgressExcelGetMaterialListPost200Response> {
+        orgGroupAssetsUploadProgressExcelGetMaterialListPost(orgGroupAssetsUploadProgressExcelDeletePostRequest?: OrgGroupAssetsUploadProgressExcelDeletePostRequest, options?: any): AxiosPromise<GetExcelProgressMaterialList200Response> {
             return localVarFp.orgGroupAssetsUploadProgressExcelGetMaterialListPost(orgGroupAssetsUploadProgressExcelDeletePostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -27291,7 +34570,7 @@ export const GroupAssetsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupAssetsUploadProgressU3mGetListPost(orgGroupAssetsUploadProgressU3mGetListPostRequest?: OrgGroupAssetsUploadProgressU3mGetListPostRequest, options?: any): AxiosPromise<OrgAssetsUploadProgressU3mGetListPost200Response> {
+        orgGroupAssetsUploadProgressU3mGetListPost(orgGroupAssetsUploadProgressU3mGetListPostRequest?: OrgGroupAssetsUploadProgressU3mGetListPostRequest, options?: any): AxiosPromise<OrgGroupAssetsUploadProgressU3mGetListPost200Response> {
             return localVarFp.orgGroupAssetsUploadProgressU3mGetListPost(orgGroupAssetsUploadProgressU3mGetListPostRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -27331,13 +34610,13 @@ export class GroupAssetsApi extends BaseAPI {
     /**
      * 
      * @summary Carbon copy
-     * @param {OrgGroupAssetsMaterialGetPostRequest} [orgGroupAssetsMaterialGetPostRequest] 
+     * @param {OrgGroupAssetsMaterialCarbonCopyPostRequest} [orgGroupAssetsMaterialCarbonCopyPostRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GroupAssetsApi
      */
-    public orgGroupAssetsMaterialCarbonCopyPost(orgGroupAssetsMaterialGetPostRequest?: OrgGroupAssetsMaterialGetPostRequest, options?: AxiosRequestConfig) {
-        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialCarbonCopyPost(orgGroupAssetsMaterialGetPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public orgGroupAssetsMaterialCarbonCopyPost(orgGroupAssetsMaterialCarbonCopyPostRequest?: OrgGroupAssetsMaterialCarbonCopyPostRequest, options?: AxiosRequestConfig) {
+        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialCarbonCopyPost(orgGroupAssetsMaterialCarbonCopyPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -27367,13 +34646,13 @@ export class GroupAssetsApi extends BaseAPI {
     /**
      * **Access roles:** To be clear define
      * @summary 確定新增布料資訊
-     * @param {OrgGroupAssetsMaterialCreatePostRequest} [orgGroupAssetsMaterialCreatePostRequest] 
+     * @param {CreateAssetsMaterialRequest} [createAssetsMaterialRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GroupAssetsApi
      */
-    public orgGroupAssetsMaterialCreatePost(orgGroupAssetsMaterialCreatePostRequest?: OrgGroupAssetsMaterialCreatePostRequest, options?: AxiosRequestConfig) {
-        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialCreatePost(orgGroupAssetsMaterialCreatePostRequest, options).then((request) => request(this.axios, this.basePath));
+    public orgGroupAssetsMaterialCreatePost(createAssetsMaterialRequest?: CreateAssetsMaterialRequest, options?: AxiosRequestConfig) {
+        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialCreatePost(createAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -27458,18 +34737,6 @@ export class GroupAssetsApi extends BaseAPI {
      */
     public orgGroupAssetsMaterialGetListPost(orgGroupAssetsMaterialGetListPostRequest?: OrgGroupAssetsMaterialGetListPostRequest, options?: AxiosRequestConfig) {
         return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialGetListPost(orgGroupAssetsMaterialGetListPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 取得單一布料資料
-     * @param {OrgGroupAssetsMaterialGetPostRequest} [orgGroupAssetsMaterialGetPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof GroupAssetsApi
-     */
-    public orgGroupAssetsMaterialGetPost(orgGroupAssetsMaterialGetPostRequest?: OrgGroupAssetsMaterialGetPostRequest, options?: AxiosRequestConfig) {
-        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialGetPost(orgGroupAssetsMaterialGetPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -27583,13 +34850,13 @@ export class GroupAssetsApi extends BaseAPI {
     /**
      * **Access roles:** To be clear define
      * @summary 編輯布料資訊
-     * @param {OrgGroupAssetsMaterialUpdatePostRequest} [orgGroupAssetsMaterialUpdatePostRequest] 
+     * @param {MaterialUpdate} [materialUpdate] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GroupAssetsApi
      */
-    public orgGroupAssetsMaterialUpdatePost(orgGroupAssetsMaterialUpdatePostRequest?: OrgGroupAssetsMaterialUpdatePostRequest, options?: AxiosRequestConfig) {
-        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialUpdatePost(orgGroupAssetsMaterialUpdatePostRequest, options).then((request) => request(this.axios, this.basePath));
+    public orgGroupAssetsMaterialUpdatePost(materialUpdate?: MaterialUpdate, options?: AxiosRequestConfig) {
+        return GroupAssetsApiFp(this.configuration).orgGroupAssetsMaterialUpdatePost(materialUpdate, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -29323,7 +36590,7 @@ export const GroupMoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGroupMoodboardOfferPickedExportPost(orgGroupMoodboardOfferPickedExportPostRequest?: OrgGroupMoodboardOfferPickedExportPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialExportPost200Response>> {
+        async orgGroupMoodboardOfferPickedExportPost(orgGroupMoodboardOfferPickedExportPostRequest?: OrgGroupMoodboardOfferPickedExportPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgMoodboardOfferPickedExportPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGroupMoodboardOfferPickedExportPost(orgGroupMoodboardOfferPickedExportPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -29570,7 +36837,7 @@ export const GroupMoodboardApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGroupMoodboardOfferPickedExportPost(orgGroupMoodboardOfferPickedExportPostRequest?: OrgGroupMoodboardOfferPickedExportPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialExportPost200Response> {
+        orgGroupMoodboardOfferPickedExportPost(orgGroupMoodboardOfferPickedExportPostRequest?: OrgGroupMoodboardOfferPickedExportPostRequest, options?: any): AxiosPromise<OrgMoodboardOfferPickedExportPost200Response> {
             return localVarFp.orgGroupMoodboardOfferPickedExportPost(orgGroupMoodboardOfferPickedExportPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -32488,2955 +39755,6 @@ export class OrgApi extends BaseAPI {
 
 
 /**
- * OrgAssetsApi - axios parameter creator
- * @export
- */
-export const OrgAssetsApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary assets add to workspace
-         * @param {OrgAssetsMaterialAddToWorkspacePostRequest} [orgAssetsMaterialAddToWorkspacePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialAddToWorkspacePost: async (orgAssetsMaterialAddToWorkspacePostRequest?: OrgAssetsMaterialAddToWorkspacePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/add-to-workspace`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialAddToWorkspacePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *  **Access roles:** To be clear define
-         * @summary 批量上傳
-         * @param {OrgAssetsMaterialBatchUploadPostRequest} [orgAssetsMaterialBatchUploadPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialBatchUploadPost: async (orgAssetsMaterialBatchUploadPostRequest?: OrgAssetsMaterialBatchUploadPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/batch-upload`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialBatchUploadPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Carbon copy
-         * @param {OrgAssetsMaterialCarbonCopyPostRequest} [orgAssetsMaterialCarbonCopyPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCarbonCopyPost: async (orgAssetsMaterialCarbonCopyPostRequest?: OrgAssetsMaterialCarbonCopyPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/carbon-copy`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialCarbonCopyPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 取得此次 Clone 產生 quota 數量
-         * @param {OrgAssetsMaterialCloneCheckPostRequest} [orgAssetsMaterialCloneCheckPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCloneCheckPost: async (orgAssetsMaterialCloneCheckPostRequest?: OrgAssetsMaterialCloneCheckPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/clone-check`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialCloneCheckPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Clone
-         * @param {OrgAssetsMaterialClonePostRequest} [orgAssetsMaterialClonePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialClonePost: async (orgAssetsMaterialClonePostRequest?: OrgAssetsMaterialClonePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/clone`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialClonePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 確定新增布料資訊
-         * @param {OrgAssetsMaterialCreatePostRequest} [orgAssetsMaterialCreatePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCreatePost: async (orgAssetsMaterialCreatePostRequest?: OrgAssetsMaterialCreatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/create`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialCreatePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 建立單一布料時移除補充資料
-         * @param {OrgAssetsMaterialCreateRemoveAttachmentPostRequest} [orgAssetsMaterialCreateRemoveAttachmentPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCreateRemoveAttachmentPost: async (orgAssetsMaterialCreateRemoveAttachmentPostRequest?: OrgAssetsMaterialCreateRemoveAttachmentPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/create/remove-attachment`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialCreateRemoveAttachmentPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 建立單一布料時上傳補充資料
-         * @param {OrgAssetsMaterialCreateUploadAttachmentPostRequest} [orgAssetsMaterialCreateUploadAttachmentPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCreateUploadAttachmentPost: async (orgAssetsMaterialCreateUploadAttachmentPostRequest?: OrgAssetsMaterialCreateUploadAttachmentPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/create/upload-attachment`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialCreateUploadAttachmentPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Client 端 取消上傳 Custom 3D Material
-         * @param {OrgAssetsMaterialCustomU3mUploadCancelPostRequest} [orgAssetsMaterialCustomU3mUploadCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCustomU3mUploadCancelPost: async (orgAssetsMaterialCustomU3mUploadCancelPostRequest?: OrgAssetsMaterialCustomU3mUploadCancelPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/custom-u3m-upload/cancel`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialCustomU3mUploadCancelPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Client 端 上傳 Custom 3D Material
-         * @param {OrgAssetsMaterialCustomU3mUploadPostRequest} [orgAssetsMaterialCustomU3mUploadPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCustomU3mUploadPost: async (orgAssetsMaterialCustomU3mUploadPostRequest?: OrgAssetsMaterialCustomU3mUploadPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/custom-u3m-upload`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialCustomU3mUploadPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 確認要刪除布料是否可以刪除
-         * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialDeleteCheckPost: async (orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/delete-check`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialDeletePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 刪除布料
-         * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialDeletePost: async (orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/delete`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialDeletePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 匯出 Excel
-         * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialExportPost: async (orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/export`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialDeletePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 取得布料清單
-         * @param {OrgAssetsMaterialGetListPostRequest} [orgAssetsMaterialGetListPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialGetListPost: async (orgAssetsMaterialGetListPostRequest?: OrgAssetsMaterialGetListPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/get-list`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialGetListPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 取得單一布料資料
-         * @param {OrgAssetsMaterialGetPostRequest} [orgAssetsMaterialGetPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialGetPost: async (orgAssetsMaterialGetPostRequest?: OrgAssetsMaterialGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/get`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialGetPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 大量匯出 Excel
-         * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialMassExportPost: async (orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/mass-export`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialDeletePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 合併布卡
-         * @param {OrgAssetsMaterialMergePostRequest} [orgAssetsMaterialMergePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialMergePost: async (orgAssetsMaterialMergePostRequest?: OrgAssetsMaterialMergePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/merge`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialMergePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 取得布料相關選項資訊
-         * @param {OrgGetPostRequest} [orgGetPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialOptionsPost: async (orgGetPostRequest?: OrgGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/options`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgGetPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *  **Access roles:** To be clear define
-         * @summary Client 端 Smart Upload
-         * @param {OrgAssetsMaterialSmartUploadPostRequest} [orgAssetsMaterialSmartUploadPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialSmartUploadPost: async (orgAssetsMaterialSmartUploadPostRequest?: OrgAssetsMaterialSmartUploadPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/smart-upload`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialSmartUploadPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 新增 pantone 色號
-         * @param {OrgAssetsMaterialUpdateAddPantonePostRequest} [orgAssetsMaterialUpdateAddPantonePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateAddPantonePost: async (orgAssetsMaterialUpdateAddPantonePostRequest?: OrgAssetsMaterialUpdateAddPantonePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/add-pantone`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateAddPantonePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 設定產品預覽圖
-         * @param {OrgAssetsMaterialUpdateCoverImgPostRequest} [orgAssetsMaterialUpdateCoverImgPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateCoverImgPost: async (orgAssetsMaterialUpdateCoverImgPostRequest?: OrgAssetsMaterialUpdateCoverImgPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/cover-img`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateCoverImgPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 建立 U3M-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateGenerateU3mGetUploadUrlPost: async (orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/generate-u3m/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 建立 U3M
-         * @param {OrgAssetsMaterialUpdateGenerateU3mPostRequest} [orgAssetsMaterialUpdateGenerateU3mPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateGenerateU3mPost: async (orgAssetsMaterialUpdateGenerateU3mPostRequest?: OrgAssetsMaterialUpdateGenerateU3mPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/generate-u3m`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateGenerateU3mPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 設定單面布或雙面布
-         * @param {OrgAssetsMaterialUpdateIsDoubleSidePostRequest} [orgAssetsMaterialUpdateIsDoubleSidePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateIsDoubleSidePost: async (orgAssetsMaterialUpdateIsDoubleSidePostRequest?: OrgAssetsMaterialUpdateIsDoubleSidePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/is-double-side`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateIsDoubleSidePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 編輯布料資訊
-         * @param {OrgAssetsMaterialUpdatePostRequest} [orgAssetsMaterialUpdatePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdatePost: async (orgAssetsMaterialUpdatePostRequest?: OrgAssetsMaterialUpdatePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdatePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 編輯布料時移除補充資料
-         * @param {OrgAssetsMaterialUpdateRemoveAttachmentPostRequest} [orgAssetsMaterialUpdateRemoveAttachmentPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateRemoveAttachmentPost: async (orgAssetsMaterialUpdateRemoveAttachmentPostRequest?: OrgAssetsMaterialUpdateRemoveAttachmentPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/remove-attachment`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateRemoveAttachmentPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 刪除 pantone 色號
-         * @param {OrgAssetsMaterialUpdateRemovePantonePostRequest} [orgAssetsMaterialUpdateRemovePantonePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateRemovePantonePost: async (orgAssetsMaterialUpdateRemovePantonePostRequest?: OrgAssetsMaterialUpdateRemovePantonePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/remove-pantone`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateRemovePantonePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 編輯正反面-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateScanImageGetUploadUrlPost: async (orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/scan-image/get-upload-url`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 編輯正反面
-         * @param {OrgAssetsMaterialUpdateScanImagePostRequest} [orgAssetsMaterialUpdateScanImagePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateScanImagePost: async (orgAssetsMaterialUpdateScanImagePostRequest?: OrgAssetsMaterialUpdateScanImagePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/scan-image`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateScanImagePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 簡易編輯布料 inventory
-         * @param {OrgAssetsMaterialUpdateSimpleInventoryPostRequest} [orgAssetsMaterialUpdateSimpleInventoryPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateSimpleInventoryPost: async (orgAssetsMaterialUpdateSimpleInventoryPostRequest?: OrgAssetsMaterialUpdateSimpleInventoryPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/simple/inventory`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateSimpleInventoryPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 簡易編輯布料 public price
-         * @param {OrgAssetsMaterialUpdateSimplePublicPricePostRequest} [orgAssetsMaterialUpdateSimplePublicPricePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateSimplePublicPricePost: async (orgAssetsMaterialUpdateSimplePublicPricePostRequest?: OrgAssetsMaterialUpdateSimplePublicPricePostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/simple/public-price`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateSimplePublicPricePostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 簡易編輯布料 spec
-         * @param {OrgAssetsMaterialUpdateSimpleSpecPostRequest} [orgAssetsMaterialUpdateSimpleSpecPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateSimpleSpecPost: async (orgAssetsMaterialUpdateSimpleSpecPostRequest?: OrgAssetsMaterialUpdateSimpleSpecPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/simple/spec`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateSimpleSpecPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 簡易編輯布料 tag
-         * @param {OrgAssetsMaterialUpdateSimpleTagPostRequest} [orgAssetsMaterialUpdateSimpleTagPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateSimpleTagPost: async (orgAssetsMaterialUpdateSimpleTagPostRequest?: OrgAssetsMaterialUpdateSimpleTagPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/simple/tag`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateSimpleTagPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 編輯布料時上傳補充資料
-         * @param {OrgAssetsMaterialUpdateUploadAttachmentPostRequest} [orgAssetsMaterialUpdateUploadAttachmentPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateUploadAttachmentPost: async (orgAssetsMaterialUpdateUploadAttachmentPostRequest?: OrgAssetsMaterialUpdateUploadAttachmentPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/material/update/upload-attachment`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsMaterialUpdateUploadAttachmentPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Upload Progress - excel
-         * @param {OrgAssetsUploadProgressExcelCancelPostRequest} [orgAssetsUploadProgressExcelCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressExcelCancelPost: async (orgAssetsUploadProgressExcelCancelPostRequest?: OrgAssetsUploadProgressExcelCancelPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/upload-progress/excel/cancel`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsUploadProgressExcelCancelPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Upload Progress - excel
-         * @param {OrgAssetsUploadProgressExcelGetListPostRequest} [orgAssetsUploadProgressExcelGetListPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressExcelGetListPost: async (orgAssetsUploadProgressExcelGetListPostRequest?: OrgAssetsUploadProgressExcelGetListPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/upload-progress/excel/get-list`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsUploadProgressExcelGetListPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Upload Progress - excel
-         * @param {OrgAssetsUploadProgressExcelCancelPostRequest} [orgAssetsUploadProgressExcelCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressExcelGetMaterialListPost: async (orgAssetsUploadProgressExcelCancelPostRequest?: OrgAssetsUploadProgressExcelCancelPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/upload-progress/excel/get-material-list`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsUploadProgressExcelCancelPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Upload Progress - Material
-         * @param {OrgAssetsUploadProgressMaterialCancelPostRequest} [orgAssetsUploadProgressMaterialCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressMaterialCancelPost: async (orgAssetsUploadProgressMaterialCancelPostRequest?: OrgAssetsUploadProgressMaterialCancelPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/upload-progress/material/cancel`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsUploadProgressMaterialCancelPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Upload Progress - Material
-         * @param {OrgAssetsUploadProgressMaterialGetListPostRequest} [orgAssetsUploadProgressMaterialGetListPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressMaterialGetListPost: async (orgAssetsUploadProgressMaterialGetListPostRequest?: OrgAssetsUploadProgressMaterialGetListPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/upload-progress/material/get-list`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsUploadProgressMaterialGetListPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Upload Progress - u3m
-         * @param {OrgAssetsUploadProgressU3mCancelPostRequest} [orgAssetsUploadProgressU3mCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressU3mCancelPost: async (orgAssetsUploadProgressU3mCancelPostRequest?: OrgAssetsUploadProgressU3mCancelPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/upload-progress/u3m/cancel`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsUploadProgressU3mCancelPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Upload Progress - u3m
-         * @param {OrgAssetsUploadProgressU3mGetListPostRequest} [orgAssetsUploadProgressU3mGetListPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressU3mGetListPost: async (orgAssetsUploadProgressU3mGetListPostRequest?: OrgAssetsUploadProgressU3mGetListPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/org/assets/upload-progress/u3m/get-list`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orgAssetsUploadProgressU3mGetListPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * OrgAssetsApi - functional programming interface
- * @export
- */
-export const OrgAssetsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = OrgAssetsApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * 
-         * @summary assets add to workspace
-         * @param {OrgAssetsMaterialAddToWorkspacePostRequest} [orgAssetsMaterialAddToWorkspacePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialAddToWorkspacePost(orgAssetsMaterialAddToWorkspacePostRequest?: OrgAssetsMaterialAddToWorkspacePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialAddToWorkspacePost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialAddToWorkspacePost(orgAssetsMaterialAddToWorkspacePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         *  **Access roles:** To be clear define
-         * @summary 批量上傳
-         * @param {OrgAssetsMaterialBatchUploadPostRequest} [orgAssetsMaterialBatchUploadPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialBatchUploadPost(orgAssetsMaterialBatchUploadPostRequest?: OrgAssetsMaterialBatchUploadPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialBatchUploadPost(orgAssetsMaterialBatchUploadPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Carbon copy
-         * @param {OrgAssetsMaterialCarbonCopyPostRequest} [orgAssetsMaterialCarbonCopyPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialCarbonCopyPost(orgAssetsMaterialCarbonCopyPostRequest?: OrgAssetsMaterialCarbonCopyPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialCarbonCopyPost(orgAssetsMaterialCarbonCopyPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 取得此次 Clone 產生 quota 數量
-         * @param {OrgAssetsMaterialCloneCheckPostRequest} [orgAssetsMaterialCloneCheckPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialCloneCheckPost(orgAssetsMaterialCloneCheckPostRequest?: OrgAssetsMaterialCloneCheckPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShareGetReceivedCloneCheckPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialCloneCheckPost(orgAssetsMaterialCloneCheckPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Clone
-         * @param {OrgAssetsMaterialClonePostRequest} [orgAssetsMaterialClonePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialClonePost(orgAssetsMaterialClonePostRequest?: OrgAssetsMaterialClonePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialClonePost(orgAssetsMaterialClonePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 確定新增布料資訊
-         * @param {OrgAssetsMaterialCreatePostRequest} [orgAssetsMaterialCreatePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialCreatePost(orgAssetsMaterialCreatePostRequest?: OrgAssetsMaterialCreatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialCreatePost(orgAssetsMaterialCreatePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 建立單一布料時移除補充資料
-         * @param {OrgAssetsMaterialCreateRemoveAttachmentPostRequest} [orgAssetsMaterialCreateRemoveAttachmentPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialCreateRemoveAttachmentPost(orgAssetsMaterialCreateRemoveAttachmentPostRequest?: OrgAssetsMaterialCreateRemoveAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialCreateUploadAttachmentPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialCreateRemoveAttachmentPost(orgAssetsMaterialCreateRemoveAttachmentPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 建立單一布料時上傳補充資料
-         * @param {OrgAssetsMaterialCreateUploadAttachmentPostRequest} [orgAssetsMaterialCreateUploadAttachmentPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialCreateUploadAttachmentPost(orgAssetsMaterialCreateUploadAttachmentPostRequest?: OrgAssetsMaterialCreateUploadAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialCreateUploadAttachmentPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialCreateUploadAttachmentPost(orgAssetsMaterialCreateUploadAttachmentPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Client 端 取消上傳 Custom 3D Material
-         * @param {OrgAssetsMaterialCustomU3mUploadCancelPostRequest} [orgAssetsMaterialCustomU3mUploadCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialCustomU3mUploadCancelPost(orgAssetsMaterialCustomU3mUploadCancelPostRequest?: OrgAssetsMaterialCustomU3mUploadCancelPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialCustomU3mUploadCancelPost(orgAssetsMaterialCustomU3mUploadCancelPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Client 端 上傳 Custom 3D Material
-         * @param {OrgAssetsMaterialCustomU3mUploadPostRequest} [orgAssetsMaterialCustomU3mUploadPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialCustomU3mUploadPost(orgAssetsMaterialCustomU3mUploadPostRequest?: OrgAssetsMaterialCustomU3mUploadPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialCustomU3mUploadPost(orgAssetsMaterialCustomU3mUploadPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 確認要刪除布料是否可以刪除
-         * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialDeleteCheckPost(orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialDeleteCheckPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialDeleteCheckPost(orgAssetsMaterialDeletePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 刪除布料
-         * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialDeletePost(orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialDeletePost(orgAssetsMaterialDeletePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 匯出 Excel
-         * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialExportPost(orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialExportPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialExportPost(orgAssetsMaterialDeletePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 取得布料清單
-         * @param {OrgAssetsMaterialGetListPostRequest} [orgAssetsMaterialGetListPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialGetListPost(orgAssetsMaterialGetListPostRequest?: OrgAssetsMaterialGetListPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetListPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialGetListPost(orgAssetsMaterialGetListPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 取得單一布料資料
-         * @param {OrgAssetsMaterialGetPostRequest} [orgAssetsMaterialGetPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialGetPost(orgAssetsMaterialGetPostRequest?: OrgAssetsMaterialGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialGetPost(orgAssetsMaterialGetPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 大量匯出 Excel
-         * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialMassExportPost(orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialMassExportPost(orgAssetsMaterialDeletePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 合併布卡
-         * @param {OrgAssetsMaterialMergePostRequest} [orgAssetsMaterialMergePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialMergePost(orgAssetsMaterialMergePostRequest?: OrgAssetsMaterialMergePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialMergePost(orgAssetsMaterialMergePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 取得布料相關選項資訊
-         * @param {OrgGetPostRequest} [orgGetPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialOptionsPost(orgGetPostRequest?: OrgGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialOptionsPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialOptionsPost(orgGetPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         *  **Access roles:** To be clear define
-         * @summary Client 端 Smart Upload
-         * @param {OrgAssetsMaterialSmartUploadPostRequest} [orgAssetsMaterialSmartUploadPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialSmartUploadPost(orgAssetsMaterialSmartUploadPostRequest?: OrgAssetsMaterialSmartUploadPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialSmartUploadPost(orgAssetsMaterialSmartUploadPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 新增 pantone 色號
-         * @param {OrgAssetsMaterialUpdateAddPantonePostRequest} [orgAssetsMaterialUpdateAddPantonePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateAddPantonePost(orgAssetsMaterialUpdateAddPantonePostRequest?: OrgAssetsMaterialUpdateAddPantonePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateAddPantonePost(orgAssetsMaterialUpdateAddPantonePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 設定產品預覽圖
-         * @param {OrgAssetsMaterialUpdateCoverImgPostRequest} [orgAssetsMaterialUpdateCoverImgPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateCoverImgPost(orgAssetsMaterialUpdateCoverImgPostRequest?: OrgAssetsMaterialUpdateCoverImgPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateCoverImgPost(orgAssetsMaterialUpdateCoverImgPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 建立 U3M-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 建立 U3M
-         * @param {OrgAssetsMaterialUpdateGenerateU3mPostRequest} [orgAssetsMaterialUpdateGenerateU3mPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateGenerateU3mPost(orgAssetsMaterialUpdateGenerateU3mPostRequest?: OrgAssetsMaterialUpdateGenerateU3mPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateGenerateU3mPost(orgAssetsMaterialUpdateGenerateU3mPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 設定單面布或雙面布
-         * @param {OrgAssetsMaterialUpdateIsDoubleSidePostRequest} [orgAssetsMaterialUpdateIsDoubleSidePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateIsDoubleSidePost(orgAssetsMaterialUpdateIsDoubleSidePostRequest?: OrgAssetsMaterialUpdateIsDoubleSidePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateIsDoubleSidePost(orgAssetsMaterialUpdateIsDoubleSidePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 編輯布料資訊
-         * @param {OrgAssetsMaterialUpdatePostRequest} [orgAssetsMaterialUpdatePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdatePost(orgAssetsMaterialUpdatePostRequest?: OrgAssetsMaterialUpdatePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdatePost(orgAssetsMaterialUpdatePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 編輯布料時移除補充資料
-         * @param {OrgAssetsMaterialUpdateRemoveAttachmentPostRequest} [orgAssetsMaterialUpdateRemoveAttachmentPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateRemoveAttachmentPost(orgAssetsMaterialUpdateRemoveAttachmentPostRequest?: OrgAssetsMaterialUpdateRemoveAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateRemoveAttachmentPost(orgAssetsMaterialUpdateRemoveAttachmentPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 刪除 pantone 色號
-         * @param {OrgAssetsMaterialUpdateRemovePantonePostRequest} [orgAssetsMaterialUpdateRemovePantonePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateRemovePantonePost(orgAssetsMaterialUpdateRemovePantonePostRequest?: OrgAssetsMaterialUpdateRemovePantonePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateRemovePantonePost(orgAssetsMaterialUpdateRemovePantonePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 編輯正反面-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateScanImageGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateScanImageGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 編輯正反面
-         * @param {OrgAssetsMaterialUpdateScanImagePostRequest} [orgAssetsMaterialUpdateScanImagePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateScanImagePost(orgAssetsMaterialUpdateScanImagePostRequest?: OrgAssetsMaterialUpdateScanImagePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateScanImagePost(orgAssetsMaterialUpdateScanImagePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 簡易編輯布料 inventory
-         * @param {OrgAssetsMaterialUpdateSimpleInventoryPostRequest} [orgAssetsMaterialUpdateSimpleInventoryPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateSimpleInventoryPost(orgAssetsMaterialUpdateSimpleInventoryPostRequest?: OrgAssetsMaterialUpdateSimpleInventoryPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateSimpleInventoryPost(orgAssetsMaterialUpdateSimpleInventoryPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 簡易編輯布料 public price
-         * @param {OrgAssetsMaterialUpdateSimplePublicPricePostRequest} [orgAssetsMaterialUpdateSimplePublicPricePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateSimplePublicPricePost(orgAssetsMaterialUpdateSimplePublicPricePostRequest?: OrgAssetsMaterialUpdateSimplePublicPricePostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateSimplePublicPricePost(orgAssetsMaterialUpdateSimplePublicPricePostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 簡易編輯布料 spec
-         * @param {OrgAssetsMaterialUpdateSimpleSpecPostRequest} [orgAssetsMaterialUpdateSimpleSpecPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateSimpleSpecPost(orgAssetsMaterialUpdateSimpleSpecPostRequest?: OrgAssetsMaterialUpdateSimpleSpecPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateSimpleSpecPost(orgAssetsMaterialUpdateSimpleSpecPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 簡易編輯布料 tag
-         * @param {OrgAssetsMaterialUpdateSimpleTagPostRequest} [orgAssetsMaterialUpdateSimpleTagPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateSimpleTagPost(orgAssetsMaterialUpdateSimpleTagPostRequest?: OrgAssetsMaterialUpdateSimpleTagPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateSimpleTagPost(orgAssetsMaterialUpdateSimpleTagPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 編輯布料時上傳補充資料
-         * @param {OrgAssetsMaterialUpdateUploadAttachmentPostRequest} [orgAssetsMaterialUpdateUploadAttachmentPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsMaterialUpdateUploadAttachmentPost(orgAssetsMaterialUpdateUploadAttachmentPostRequest?: OrgAssetsMaterialUpdateUploadAttachmentPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialGetPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsMaterialUpdateUploadAttachmentPost(orgAssetsMaterialUpdateUploadAttachmentPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Upload Progress - excel
-         * @param {OrgAssetsUploadProgressExcelCancelPostRequest} [orgAssetsUploadProgressExcelCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsUploadProgressExcelCancelPost(orgAssetsUploadProgressExcelCancelPostRequest?: OrgAssetsUploadProgressExcelCancelPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsUploadProgressExcelCancelPost(orgAssetsUploadProgressExcelCancelPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Upload Progress - excel
-         * @param {OrgAssetsUploadProgressExcelGetListPostRequest} [orgAssetsUploadProgressExcelGetListPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsUploadProgressExcelGetListPost(orgAssetsUploadProgressExcelGetListPostRequest?: OrgAssetsUploadProgressExcelGetListPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsUploadProgressExcelGetListPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsUploadProgressExcelGetListPost(orgAssetsUploadProgressExcelGetListPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Upload Progress - excel
-         * @param {OrgAssetsUploadProgressExcelCancelPostRequest} [orgAssetsUploadProgressExcelCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsUploadProgressExcelGetMaterialListPost(orgAssetsUploadProgressExcelCancelPostRequest?: OrgAssetsUploadProgressExcelCancelPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsUploadProgressExcelGetMaterialListPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsUploadProgressExcelGetMaterialListPost(orgAssetsUploadProgressExcelCancelPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Upload Progress - Material
-         * @param {OrgAssetsUploadProgressMaterialCancelPostRequest} [orgAssetsUploadProgressMaterialCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsUploadProgressMaterialCancelPost(orgAssetsUploadProgressMaterialCancelPostRequest?: OrgAssetsUploadProgressMaterialCancelPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsUploadProgressMaterialCancelPost(orgAssetsUploadProgressMaterialCancelPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Upload Progress - Material
-         * @param {OrgAssetsUploadProgressMaterialGetListPostRequest} [orgAssetsUploadProgressMaterialGetListPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsUploadProgressMaterialGetListPost(orgAssetsUploadProgressMaterialGetListPostRequest?: OrgAssetsUploadProgressMaterialGetListPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsUploadProgressMaterialGetListPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsUploadProgressMaterialGetListPost(orgAssetsUploadProgressMaterialGetListPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Upload Progress - u3m
-         * @param {OrgAssetsUploadProgressU3mCancelPostRequest} [orgAssetsUploadProgressU3mCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsUploadProgressU3mCancelPost(orgAssetsUploadProgressU3mCancelPostRequest?: OrgAssetsUploadProgressU3mCancelPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsUploadProgressU3mCancelPost(orgAssetsUploadProgressU3mCancelPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Upload Progress - u3m
-         * @param {OrgAssetsUploadProgressU3mGetListPostRequest} [orgAssetsUploadProgressU3mGetListPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async orgAssetsUploadProgressU3mGetListPost(orgAssetsUploadProgressU3mGetListPostRequest?: OrgAssetsUploadProgressU3mGetListPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsUploadProgressU3mGetListPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orgAssetsUploadProgressU3mGetListPost(orgAssetsUploadProgressU3mGetListPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-    }
-};
-
-/**
- * OrgAssetsApi - factory interface
- * @export
- */
-export const OrgAssetsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = OrgAssetsApiFp(configuration)
-    return {
-        /**
-         * 
-         * @summary assets add to workspace
-         * @param {OrgAssetsMaterialAddToWorkspacePostRequest} [orgAssetsMaterialAddToWorkspacePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialAddToWorkspacePost(orgAssetsMaterialAddToWorkspacePostRequest?: OrgAssetsMaterialAddToWorkspacePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialAddToWorkspacePost200Response> {
-            return localVarFp.orgAssetsMaterialAddToWorkspacePost(orgAssetsMaterialAddToWorkspacePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         *  **Access roles:** To be clear define
-         * @summary 批量上傳
-         * @param {OrgAssetsMaterialBatchUploadPostRequest} [orgAssetsMaterialBatchUploadPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialBatchUploadPost(orgAssetsMaterialBatchUploadPostRequest?: OrgAssetsMaterialBatchUploadPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialBatchUploadPost(orgAssetsMaterialBatchUploadPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Carbon copy
-         * @param {OrgAssetsMaterialCarbonCopyPostRequest} [orgAssetsMaterialCarbonCopyPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCarbonCopyPost(orgAssetsMaterialCarbonCopyPostRequest?: OrgAssetsMaterialCarbonCopyPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialCarbonCopyPost(orgAssetsMaterialCarbonCopyPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 取得此次 Clone 產生 quota 數量
-         * @param {OrgAssetsMaterialCloneCheckPostRequest} [orgAssetsMaterialCloneCheckPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCloneCheckPost(orgAssetsMaterialCloneCheckPostRequest?: OrgAssetsMaterialCloneCheckPostRequest, options?: any): AxiosPromise<ShareGetReceivedCloneCheckPost200Response> {
-            return localVarFp.orgAssetsMaterialCloneCheckPost(orgAssetsMaterialCloneCheckPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Clone
-         * @param {OrgAssetsMaterialClonePostRequest} [orgAssetsMaterialClonePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialClonePost(orgAssetsMaterialClonePostRequest?: OrgAssetsMaterialClonePostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialClonePost(orgAssetsMaterialClonePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 確定新增布料資訊
-         * @param {OrgAssetsMaterialCreatePostRequest} [orgAssetsMaterialCreatePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCreatePost(orgAssetsMaterialCreatePostRequest?: OrgAssetsMaterialCreatePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
-            return localVarFp.orgAssetsMaterialCreatePost(orgAssetsMaterialCreatePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 建立單一布料時移除補充資料
-         * @param {OrgAssetsMaterialCreateRemoveAttachmentPostRequest} [orgAssetsMaterialCreateRemoveAttachmentPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCreateRemoveAttachmentPost(orgAssetsMaterialCreateRemoveAttachmentPostRequest?: OrgAssetsMaterialCreateRemoveAttachmentPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialCreateUploadAttachmentPost200Response> {
-            return localVarFp.orgAssetsMaterialCreateRemoveAttachmentPost(orgAssetsMaterialCreateRemoveAttachmentPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 建立單一布料時上傳補充資料
-         * @param {OrgAssetsMaterialCreateUploadAttachmentPostRequest} [orgAssetsMaterialCreateUploadAttachmentPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCreateUploadAttachmentPost(orgAssetsMaterialCreateUploadAttachmentPostRequest?: OrgAssetsMaterialCreateUploadAttachmentPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialCreateUploadAttachmentPost200Response> {
-            return localVarFp.orgAssetsMaterialCreateUploadAttachmentPost(orgAssetsMaterialCreateUploadAttachmentPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Client 端 取消上傳 Custom 3D Material
-         * @param {OrgAssetsMaterialCustomU3mUploadCancelPostRequest} [orgAssetsMaterialCustomU3mUploadCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCustomU3mUploadCancelPost(orgAssetsMaterialCustomU3mUploadCancelPostRequest?: OrgAssetsMaterialCustomU3mUploadCancelPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialCustomU3mUploadCancelPost(orgAssetsMaterialCustomU3mUploadCancelPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Client 端 上傳 Custom 3D Material
-         * @param {OrgAssetsMaterialCustomU3mUploadPostRequest} [orgAssetsMaterialCustomU3mUploadPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialCustomU3mUploadPost(orgAssetsMaterialCustomU3mUploadPostRequest?: OrgAssetsMaterialCustomU3mUploadPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialCustomU3mUploadPost(orgAssetsMaterialCustomU3mUploadPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 確認要刪除布料是否可以刪除
-         * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialDeleteCheckPost(orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialDeleteCheckPost200Response> {
-            return localVarFp.orgAssetsMaterialDeleteCheckPost(orgAssetsMaterialDeletePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 刪除布料
-         * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialDeletePost(orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialDeletePost(orgAssetsMaterialDeletePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 匯出 Excel
-         * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialExportPost(orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialExportPost200Response> {
-            return localVarFp.orgAssetsMaterialExportPost(orgAssetsMaterialDeletePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 取得布料清單
-         * @param {OrgAssetsMaterialGetListPostRequest} [orgAssetsMaterialGetListPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialGetListPost(orgAssetsMaterialGetListPostRequest?: OrgAssetsMaterialGetListPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetListPost200Response> {
-            return localVarFp.orgAssetsMaterialGetListPost(orgAssetsMaterialGetListPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 取得單一布料資料
-         * @param {OrgAssetsMaterialGetPostRequest} [orgAssetsMaterialGetPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialGetPost(orgAssetsMaterialGetPostRequest?: OrgAssetsMaterialGetPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
-            return localVarFp.orgAssetsMaterialGetPost(orgAssetsMaterialGetPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 大量匯出 Excel
-         * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialMassExportPost(orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialMassExportPost(orgAssetsMaterialDeletePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 合併布卡
-         * @param {OrgAssetsMaterialMergePostRequest} [orgAssetsMaterialMergePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialMergePost(orgAssetsMaterialMergePostRequest?: OrgAssetsMaterialMergePostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialMergePost(orgAssetsMaterialMergePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 取得布料相關選項資訊
-         * @param {OrgGetPostRequest} [orgGetPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialOptionsPost(orgGetPostRequest?: OrgGetPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialOptionsPost200Response> {
-            return localVarFp.orgAssetsMaterialOptionsPost(orgGetPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         *  **Access roles:** To be clear define
-         * @summary Client 端 Smart Upload
-         * @param {OrgAssetsMaterialSmartUploadPostRequest} [orgAssetsMaterialSmartUploadPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialSmartUploadPost(orgAssetsMaterialSmartUploadPostRequest?: OrgAssetsMaterialSmartUploadPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialSmartUploadPost(orgAssetsMaterialSmartUploadPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 新增 pantone 色號
-         * @param {OrgAssetsMaterialUpdateAddPantonePostRequest} [orgAssetsMaterialUpdateAddPantonePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateAddPantonePost(orgAssetsMaterialUpdateAddPantonePostRequest?: OrgAssetsMaterialUpdateAddPantonePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
-            return localVarFp.orgAssetsMaterialUpdateAddPantonePost(orgAssetsMaterialUpdateAddPantonePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 設定產品預覽圖
-         * @param {OrgAssetsMaterialUpdateCoverImgPostRequest} [orgAssetsMaterialUpdateCoverImgPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateCoverImgPost(orgAssetsMaterialUpdateCoverImgPostRequest?: OrgAssetsMaterialUpdateCoverImgPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
-            return localVarFp.orgAssetsMaterialUpdateCoverImgPost(orgAssetsMaterialUpdateCoverImgPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 建立 U3M-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response> {
-            return localVarFp.orgAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 建立 U3M
-         * @param {OrgAssetsMaterialUpdateGenerateU3mPostRequest} [orgAssetsMaterialUpdateGenerateU3mPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateGenerateU3mPost(orgAssetsMaterialUpdateGenerateU3mPostRequest?: OrgAssetsMaterialUpdateGenerateU3mPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
-            return localVarFp.orgAssetsMaterialUpdateGenerateU3mPost(orgAssetsMaterialUpdateGenerateU3mPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 設定單面布或雙面布
-         * @param {OrgAssetsMaterialUpdateIsDoubleSidePostRequest} [orgAssetsMaterialUpdateIsDoubleSidePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateIsDoubleSidePost(orgAssetsMaterialUpdateIsDoubleSidePostRequest?: OrgAssetsMaterialUpdateIsDoubleSidePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
-            return localVarFp.orgAssetsMaterialUpdateIsDoubleSidePost(orgAssetsMaterialUpdateIsDoubleSidePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 編輯布料資訊
-         * @param {OrgAssetsMaterialUpdatePostRequest} [orgAssetsMaterialUpdatePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdatePost(orgAssetsMaterialUpdatePostRequest?: OrgAssetsMaterialUpdatePostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialUpdatePost(orgAssetsMaterialUpdatePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 編輯布料時移除補充資料
-         * @param {OrgAssetsMaterialUpdateRemoveAttachmentPostRequest} [orgAssetsMaterialUpdateRemoveAttachmentPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateRemoveAttachmentPost(orgAssetsMaterialUpdateRemoveAttachmentPostRequest?: OrgAssetsMaterialUpdateRemoveAttachmentPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
-            return localVarFp.orgAssetsMaterialUpdateRemoveAttachmentPost(orgAssetsMaterialUpdateRemoveAttachmentPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 刪除 pantone 色號
-         * @param {OrgAssetsMaterialUpdateRemovePantonePostRequest} [orgAssetsMaterialUpdateRemovePantonePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateRemovePantonePost(orgAssetsMaterialUpdateRemovePantonePostRequest?: OrgAssetsMaterialUpdateRemovePantonePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
-            return localVarFp.orgAssetsMaterialUpdateRemovePantonePost(orgAssetsMaterialUpdateRemovePantonePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 編輯正反面-產生S3檔案上傳url
-         * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateScanImageGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialUpdateScanImageGetUploadUrlPost200Response> {
-            return localVarFp.orgAssetsMaterialUpdateScanImageGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 編輯正反面
-         * @param {OrgAssetsMaterialUpdateScanImagePostRequest} [orgAssetsMaterialUpdateScanImagePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateScanImagePost(orgAssetsMaterialUpdateScanImagePostRequest?: OrgAssetsMaterialUpdateScanImagePostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
-            return localVarFp.orgAssetsMaterialUpdateScanImagePost(orgAssetsMaterialUpdateScanImagePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 簡易編輯布料 inventory
-         * @param {OrgAssetsMaterialUpdateSimpleInventoryPostRequest} [orgAssetsMaterialUpdateSimpleInventoryPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateSimpleInventoryPost(orgAssetsMaterialUpdateSimpleInventoryPostRequest?: OrgAssetsMaterialUpdateSimpleInventoryPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialUpdateSimpleInventoryPost(orgAssetsMaterialUpdateSimpleInventoryPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 簡易編輯布料 public price
-         * @param {OrgAssetsMaterialUpdateSimplePublicPricePostRequest} [orgAssetsMaterialUpdateSimplePublicPricePostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateSimplePublicPricePost(orgAssetsMaterialUpdateSimplePublicPricePostRequest?: OrgAssetsMaterialUpdateSimplePublicPricePostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialUpdateSimplePublicPricePost(orgAssetsMaterialUpdateSimplePublicPricePostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 簡易編輯布料 spec
-         * @param {OrgAssetsMaterialUpdateSimpleSpecPostRequest} [orgAssetsMaterialUpdateSimpleSpecPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateSimpleSpecPost(orgAssetsMaterialUpdateSimpleSpecPostRequest?: OrgAssetsMaterialUpdateSimpleSpecPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialUpdateSimpleSpecPost(orgAssetsMaterialUpdateSimpleSpecPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * **Access roles:** To be clear define
-         * @summary 簡易編輯布料 tag
-         * @param {OrgAssetsMaterialUpdateSimpleTagPostRequest} [orgAssetsMaterialUpdateSimpleTagPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateSimpleTagPost(orgAssetsMaterialUpdateSimpleTagPostRequest?: OrgAssetsMaterialUpdateSimpleTagPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsMaterialUpdateSimpleTagPost(orgAssetsMaterialUpdateSimpleTagPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 編輯布料時上傳補充資料
-         * @param {OrgAssetsMaterialUpdateUploadAttachmentPostRequest} [orgAssetsMaterialUpdateUploadAttachmentPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsMaterialUpdateUploadAttachmentPost(orgAssetsMaterialUpdateUploadAttachmentPostRequest?: OrgAssetsMaterialUpdateUploadAttachmentPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialGetPost200Response> {
-            return localVarFp.orgAssetsMaterialUpdateUploadAttachmentPost(orgAssetsMaterialUpdateUploadAttachmentPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Upload Progress - excel
-         * @param {OrgAssetsUploadProgressExcelCancelPostRequest} [orgAssetsUploadProgressExcelCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressExcelCancelPost(orgAssetsUploadProgressExcelCancelPostRequest?: OrgAssetsUploadProgressExcelCancelPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsUploadProgressExcelCancelPost(orgAssetsUploadProgressExcelCancelPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Upload Progress - excel
-         * @param {OrgAssetsUploadProgressExcelGetListPostRequest} [orgAssetsUploadProgressExcelGetListPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressExcelGetListPost(orgAssetsUploadProgressExcelGetListPostRequest?: OrgAssetsUploadProgressExcelGetListPostRequest, options?: any): AxiosPromise<OrgAssetsUploadProgressExcelGetListPost200Response> {
-            return localVarFp.orgAssetsUploadProgressExcelGetListPost(orgAssetsUploadProgressExcelGetListPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Upload Progress - excel
-         * @param {OrgAssetsUploadProgressExcelCancelPostRequest} [orgAssetsUploadProgressExcelCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressExcelGetMaterialListPost(orgAssetsUploadProgressExcelCancelPostRequest?: OrgAssetsUploadProgressExcelCancelPostRequest, options?: any): AxiosPromise<OrgAssetsUploadProgressExcelGetMaterialListPost200Response> {
-            return localVarFp.orgAssetsUploadProgressExcelGetMaterialListPost(orgAssetsUploadProgressExcelCancelPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Upload Progress - Material
-         * @param {OrgAssetsUploadProgressMaterialCancelPostRequest} [orgAssetsUploadProgressMaterialCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressMaterialCancelPost(orgAssetsUploadProgressMaterialCancelPostRequest?: OrgAssetsUploadProgressMaterialCancelPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsUploadProgressMaterialCancelPost(orgAssetsUploadProgressMaterialCancelPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Upload Progress - Material
-         * @param {OrgAssetsUploadProgressMaterialGetListPostRequest} [orgAssetsUploadProgressMaterialGetListPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressMaterialGetListPost(orgAssetsUploadProgressMaterialGetListPostRequest?: OrgAssetsUploadProgressMaterialGetListPostRequest, options?: any): AxiosPromise<OrgAssetsUploadProgressMaterialGetListPost200Response> {
-            return localVarFp.orgAssetsUploadProgressMaterialGetListPost(orgAssetsUploadProgressMaterialGetListPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Upload Progress - u3m
-         * @param {OrgAssetsUploadProgressU3mCancelPostRequest} [orgAssetsUploadProgressU3mCancelPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressU3mCancelPost(orgAssetsUploadProgressU3mCancelPostRequest?: OrgAssetsUploadProgressU3mCancelPostRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
-            return localVarFp.orgAssetsUploadProgressU3mCancelPost(orgAssetsUploadProgressU3mCancelPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Upload Progress - u3m
-         * @param {OrgAssetsUploadProgressU3mGetListPostRequest} [orgAssetsUploadProgressU3mGetListPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        orgAssetsUploadProgressU3mGetListPost(orgAssetsUploadProgressU3mGetListPostRequest?: OrgAssetsUploadProgressU3mGetListPostRequest, options?: any): AxiosPromise<OrgAssetsUploadProgressU3mGetListPost200Response> {
-            return localVarFp.orgAssetsUploadProgressU3mGetListPost(orgAssetsUploadProgressU3mGetListPostRequest, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * OrgAssetsApi - object-oriented interface
- * @export
- * @class OrgAssetsApi
- * @extends {BaseAPI}
- */
-export class OrgAssetsApi extends BaseAPI {
-    /**
-     * 
-     * @summary assets add to workspace
-     * @param {OrgAssetsMaterialAddToWorkspacePostRequest} [orgAssetsMaterialAddToWorkspacePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialAddToWorkspacePost(orgAssetsMaterialAddToWorkspacePostRequest?: OrgAssetsMaterialAddToWorkspacePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialAddToWorkspacePost(orgAssetsMaterialAddToWorkspacePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     *  **Access roles:** To be clear define
-     * @summary 批量上傳
-     * @param {OrgAssetsMaterialBatchUploadPostRequest} [orgAssetsMaterialBatchUploadPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialBatchUploadPost(orgAssetsMaterialBatchUploadPostRequest?: OrgAssetsMaterialBatchUploadPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialBatchUploadPost(orgAssetsMaterialBatchUploadPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Carbon copy
-     * @param {OrgAssetsMaterialCarbonCopyPostRequest} [orgAssetsMaterialCarbonCopyPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialCarbonCopyPost(orgAssetsMaterialCarbonCopyPostRequest?: OrgAssetsMaterialCarbonCopyPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialCarbonCopyPost(orgAssetsMaterialCarbonCopyPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 取得此次 Clone 產生 quota 數量
-     * @param {OrgAssetsMaterialCloneCheckPostRequest} [orgAssetsMaterialCloneCheckPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialCloneCheckPost(orgAssetsMaterialCloneCheckPostRequest?: OrgAssetsMaterialCloneCheckPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialCloneCheckPost(orgAssetsMaterialCloneCheckPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Clone
-     * @param {OrgAssetsMaterialClonePostRequest} [orgAssetsMaterialClonePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialClonePost(orgAssetsMaterialClonePostRequest?: OrgAssetsMaterialClonePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialClonePost(orgAssetsMaterialClonePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 確定新增布料資訊
-     * @param {OrgAssetsMaterialCreatePostRequest} [orgAssetsMaterialCreatePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialCreatePost(orgAssetsMaterialCreatePostRequest?: OrgAssetsMaterialCreatePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialCreatePost(orgAssetsMaterialCreatePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 建立單一布料時移除補充資料
-     * @param {OrgAssetsMaterialCreateRemoveAttachmentPostRequest} [orgAssetsMaterialCreateRemoveAttachmentPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialCreateRemoveAttachmentPost(orgAssetsMaterialCreateRemoveAttachmentPostRequest?: OrgAssetsMaterialCreateRemoveAttachmentPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialCreateRemoveAttachmentPost(orgAssetsMaterialCreateRemoveAttachmentPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 建立單一布料時上傳補充資料
-     * @param {OrgAssetsMaterialCreateUploadAttachmentPostRequest} [orgAssetsMaterialCreateUploadAttachmentPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialCreateUploadAttachmentPost(orgAssetsMaterialCreateUploadAttachmentPostRequest?: OrgAssetsMaterialCreateUploadAttachmentPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialCreateUploadAttachmentPost(orgAssetsMaterialCreateUploadAttachmentPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Client 端 取消上傳 Custom 3D Material
-     * @param {OrgAssetsMaterialCustomU3mUploadCancelPostRequest} [orgAssetsMaterialCustomU3mUploadCancelPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialCustomU3mUploadCancelPost(orgAssetsMaterialCustomU3mUploadCancelPostRequest?: OrgAssetsMaterialCustomU3mUploadCancelPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialCustomU3mUploadCancelPost(orgAssetsMaterialCustomU3mUploadCancelPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Client 端 上傳 Custom 3D Material
-     * @param {OrgAssetsMaterialCustomU3mUploadPostRequest} [orgAssetsMaterialCustomU3mUploadPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialCustomU3mUploadPost(orgAssetsMaterialCustomU3mUploadPostRequest?: OrgAssetsMaterialCustomU3mUploadPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialCustomU3mUploadPost(orgAssetsMaterialCustomU3mUploadPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 確認要刪除布料是否可以刪除
-     * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialDeleteCheckPost(orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialDeleteCheckPost(orgAssetsMaterialDeletePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 刪除布料
-     * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialDeletePost(orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialDeletePost(orgAssetsMaterialDeletePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 匯出 Excel
-     * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialExportPost(orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialExportPost(orgAssetsMaterialDeletePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 取得布料清單
-     * @param {OrgAssetsMaterialGetListPostRequest} [orgAssetsMaterialGetListPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialGetListPost(orgAssetsMaterialGetListPostRequest?: OrgAssetsMaterialGetListPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialGetListPost(orgAssetsMaterialGetListPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 取得單一布料資料
-     * @param {OrgAssetsMaterialGetPostRequest} [orgAssetsMaterialGetPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialGetPost(orgAssetsMaterialGetPostRequest?: OrgAssetsMaterialGetPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialGetPost(orgAssetsMaterialGetPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 大量匯出 Excel
-     * @param {OrgAssetsMaterialDeletePostRequest} [orgAssetsMaterialDeletePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialMassExportPost(orgAssetsMaterialDeletePostRequest?: OrgAssetsMaterialDeletePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialMassExportPost(orgAssetsMaterialDeletePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 合併布卡
-     * @param {OrgAssetsMaterialMergePostRequest} [orgAssetsMaterialMergePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialMergePost(orgAssetsMaterialMergePostRequest?: OrgAssetsMaterialMergePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialMergePost(orgAssetsMaterialMergePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * **Access roles:** To be clear define
-     * @summary 取得布料相關選項資訊
-     * @param {OrgGetPostRequest} [orgGetPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialOptionsPost(orgGetPostRequest?: OrgGetPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialOptionsPost(orgGetPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     *  **Access roles:** To be clear define
-     * @summary Client 端 Smart Upload
-     * @param {OrgAssetsMaterialSmartUploadPostRequest} [orgAssetsMaterialSmartUploadPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialSmartUploadPost(orgAssetsMaterialSmartUploadPostRequest?: OrgAssetsMaterialSmartUploadPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialSmartUploadPost(orgAssetsMaterialSmartUploadPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 新增 pantone 色號
-     * @param {OrgAssetsMaterialUpdateAddPantonePostRequest} [orgAssetsMaterialUpdateAddPantonePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateAddPantonePost(orgAssetsMaterialUpdateAddPantonePostRequest?: OrgAssetsMaterialUpdateAddPantonePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateAddPantonePost(orgAssetsMaterialUpdateAddPantonePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 設定產品預覽圖
-     * @param {OrgAssetsMaterialUpdateCoverImgPostRequest} [orgAssetsMaterialUpdateCoverImgPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateCoverImgPost(orgAssetsMaterialUpdateCoverImgPostRequest?: OrgAssetsMaterialUpdateCoverImgPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateCoverImgPost(orgAssetsMaterialUpdateCoverImgPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 建立 U3M-產生S3檔案上傳url
-     * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateGenerateU3mGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 建立 U3M
-     * @param {OrgAssetsMaterialUpdateGenerateU3mPostRequest} [orgAssetsMaterialUpdateGenerateU3mPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateGenerateU3mPost(orgAssetsMaterialUpdateGenerateU3mPostRequest?: OrgAssetsMaterialUpdateGenerateU3mPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateGenerateU3mPost(orgAssetsMaterialUpdateGenerateU3mPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 設定單面布或雙面布
-     * @param {OrgAssetsMaterialUpdateIsDoubleSidePostRequest} [orgAssetsMaterialUpdateIsDoubleSidePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateIsDoubleSidePost(orgAssetsMaterialUpdateIsDoubleSidePostRequest?: OrgAssetsMaterialUpdateIsDoubleSidePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateIsDoubleSidePost(orgAssetsMaterialUpdateIsDoubleSidePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * **Access roles:** To be clear define
-     * @summary 編輯布料資訊
-     * @param {OrgAssetsMaterialUpdatePostRequest} [orgAssetsMaterialUpdatePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdatePost(orgAssetsMaterialUpdatePostRequest?: OrgAssetsMaterialUpdatePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdatePost(orgAssetsMaterialUpdatePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 編輯布料時移除補充資料
-     * @param {OrgAssetsMaterialUpdateRemoveAttachmentPostRequest} [orgAssetsMaterialUpdateRemoveAttachmentPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateRemoveAttachmentPost(orgAssetsMaterialUpdateRemoveAttachmentPostRequest?: OrgAssetsMaterialUpdateRemoveAttachmentPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateRemoveAttachmentPost(orgAssetsMaterialUpdateRemoveAttachmentPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 刪除 pantone 色號
-     * @param {OrgAssetsMaterialUpdateRemovePantonePostRequest} [orgAssetsMaterialUpdateRemovePantonePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateRemovePantonePost(orgAssetsMaterialUpdateRemovePantonePostRequest?: OrgAssetsMaterialUpdateRemovePantonePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateRemovePantonePost(orgAssetsMaterialUpdateRemovePantonePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 編輯正反面-產生S3檔案上傳url
-     * @param {OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest} [orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateScanImageGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest?: OrgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateScanImageGetUploadUrlPost(orgAssetsMaterialUpdateScanImageGetUploadUrlPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 編輯正反面
-     * @param {OrgAssetsMaterialUpdateScanImagePostRequest} [orgAssetsMaterialUpdateScanImagePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateScanImagePost(orgAssetsMaterialUpdateScanImagePostRequest?: OrgAssetsMaterialUpdateScanImagePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateScanImagePost(orgAssetsMaterialUpdateScanImagePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * **Access roles:** To be clear define
-     * @summary 簡易編輯布料 inventory
-     * @param {OrgAssetsMaterialUpdateSimpleInventoryPostRequest} [orgAssetsMaterialUpdateSimpleInventoryPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateSimpleInventoryPost(orgAssetsMaterialUpdateSimpleInventoryPostRequest?: OrgAssetsMaterialUpdateSimpleInventoryPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateSimpleInventoryPost(orgAssetsMaterialUpdateSimpleInventoryPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * **Access roles:** To be clear define
-     * @summary 簡易編輯布料 public price
-     * @param {OrgAssetsMaterialUpdateSimplePublicPricePostRequest} [orgAssetsMaterialUpdateSimplePublicPricePostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateSimplePublicPricePost(orgAssetsMaterialUpdateSimplePublicPricePostRequest?: OrgAssetsMaterialUpdateSimplePublicPricePostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateSimplePublicPricePost(orgAssetsMaterialUpdateSimplePublicPricePostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * **Access roles:** To be clear define
-     * @summary 簡易編輯布料 spec
-     * @param {OrgAssetsMaterialUpdateSimpleSpecPostRequest} [orgAssetsMaterialUpdateSimpleSpecPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateSimpleSpecPost(orgAssetsMaterialUpdateSimpleSpecPostRequest?: OrgAssetsMaterialUpdateSimpleSpecPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateSimpleSpecPost(orgAssetsMaterialUpdateSimpleSpecPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * **Access roles:** To be clear define
-     * @summary 簡易編輯布料 tag
-     * @param {OrgAssetsMaterialUpdateSimpleTagPostRequest} [orgAssetsMaterialUpdateSimpleTagPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateSimpleTagPost(orgAssetsMaterialUpdateSimpleTagPostRequest?: OrgAssetsMaterialUpdateSimpleTagPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateSimpleTagPost(orgAssetsMaterialUpdateSimpleTagPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 編輯布料時上傳補充資料
-     * @param {OrgAssetsMaterialUpdateUploadAttachmentPostRequest} [orgAssetsMaterialUpdateUploadAttachmentPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsMaterialUpdateUploadAttachmentPost(orgAssetsMaterialUpdateUploadAttachmentPostRequest?: OrgAssetsMaterialUpdateUploadAttachmentPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsMaterialUpdateUploadAttachmentPost(orgAssetsMaterialUpdateUploadAttachmentPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Upload Progress - excel
-     * @param {OrgAssetsUploadProgressExcelCancelPostRequest} [orgAssetsUploadProgressExcelCancelPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsUploadProgressExcelCancelPost(orgAssetsUploadProgressExcelCancelPostRequest?: OrgAssetsUploadProgressExcelCancelPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsUploadProgressExcelCancelPost(orgAssetsUploadProgressExcelCancelPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Upload Progress - excel
-     * @param {OrgAssetsUploadProgressExcelGetListPostRequest} [orgAssetsUploadProgressExcelGetListPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsUploadProgressExcelGetListPost(orgAssetsUploadProgressExcelGetListPostRequest?: OrgAssetsUploadProgressExcelGetListPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsUploadProgressExcelGetListPost(orgAssetsUploadProgressExcelGetListPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Upload Progress - excel
-     * @param {OrgAssetsUploadProgressExcelCancelPostRequest} [orgAssetsUploadProgressExcelCancelPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsUploadProgressExcelGetMaterialListPost(orgAssetsUploadProgressExcelCancelPostRequest?: OrgAssetsUploadProgressExcelCancelPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsUploadProgressExcelGetMaterialListPost(orgAssetsUploadProgressExcelCancelPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Upload Progress - Material
-     * @param {OrgAssetsUploadProgressMaterialCancelPostRequest} [orgAssetsUploadProgressMaterialCancelPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsUploadProgressMaterialCancelPost(orgAssetsUploadProgressMaterialCancelPostRequest?: OrgAssetsUploadProgressMaterialCancelPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsUploadProgressMaterialCancelPost(orgAssetsUploadProgressMaterialCancelPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Upload Progress - Material
-     * @param {OrgAssetsUploadProgressMaterialGetListPostRequest} [orgAssetsUploadProgressMaterialGetListPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsUploadProgressMaterialGetListPost(orgAssetsUploadProgressMaterialGetListPostRequest?: OrgAssetsUploadProgressMaterialGetListPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsUploadProgressMaterialGetListPost(orgAssetsUploadProgressMaterialGetListPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Upload Progress - u3m
-     * @param {OrgAssetsUploadProgressU3mCancelPostRequest} [orgAssetsUploadProgressU3mCancelPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsUploadProgressU3mCancelPost(orgAssetsUploadProgressU3mCancelPostRequest?: OrgAssetsUploadProgressU3mCancelPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsUploadProgressU3mCancelPost(orgAssetsUploadProgressU3mCancelPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Upload Progress - u3m
-     * @param {OrgAssetsUploadProgressU3mGetListPostRequest} [orgAssetsUploadProgressU3mGetListPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof OrgAssetsApi
-     */
-    public orgAssetsUploadProgressU3mGetListPost(orgAssetsUploadProgressU3mGetListPostRequest?: OrgAssetsUploadProgressU3mGetListPostRequest, options?: AxiosRequestConfig) {
-        return OrgAssetsApiFp(this.configuration).orgAssetsUploadProgressU3mGetListPost(orgAssetsUploadProgressU3mGetListPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-/**
  * OrgMemberApi - axios parameter creator
  * @export
  */
@@ -36902,7 +41220,7 @@ export const OrgMoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgMoodboardOfferPickedExportPost(orgMoodboardOfferPickedExportPostRequest?: OrgMoodboardOfferPickedExportPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgAssetsMaterialExportPost200Response>> {
+        async orgMoodboardOfferPickedExportPost(orgMoodboardOfferPickedExportPostRequest?: OrgMoodboardOfferPickedExportPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgMoodboardOfferPickedExportPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgMoodboardOfferPickedExportPost(orgMoodboardOfferPickedExportPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -37149,7 +41467,7 @@ export const OrgMoodboardApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgMoodboardOfferPickedExportPost(orgMoodboardOfferPickedExportPostRequest?: OrgMoodboardOfferPickedExportPostRequest, options?: any): AxiosPromise<OrgAssetsMaterialExportPost200Response> {
+        orgMoodboardOfferPickedExportPost(orgMoodboardOfferPickedExportPostRequest?: OrgMoodboardOfferPickedExportPostRequest, options?: any): AxiosPromise<OrgMoodboardOfferPickedExportPost200Response> {
             return localVarFp.orgMoodboardOfferPickedExportPost(orgMoodboardOfferPickedExportPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -41406,6 +45724,541 @@ export class PollingApi extends BaseAPI {
 
 
 /**
+ * ProgressApi - axios parameter creator
+ * @export
+ */
+export const ProgressApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Upload Progress - excel
+         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cancelExcelProgress: async (cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/progress/excel/cancel`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cancelMaterialUploadProgressRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Upload Progress - Material
+         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cancelMaterialUploadProgress: async (cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/progress/material-upload/cancel`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cancelMaterialUploadProgressRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 停止 U3M 排程
+         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cancelU3mProgress: async (cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/progress/u3m/cancel`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cancelMaterialUploadProgressRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Upload Progress - excel
+         * @param {GetExcelProgressListRequest} [getExcelProgressListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getExcelProgressList: async (getExcelProgressListRequest?: GetExcelProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/progress/excel/get-list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getExcelProgressListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Excel Progress取得Material清單
+         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getExcelProgressMaterialList: async (cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/progress/excel/get-material-list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(cancelMaterialUploadProgressRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Upload Progress - Material
+         * @param {GetMaterialUploadProgressListRequest} [getMaterialUploadProgressListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMaterialUploadProgressList: async (getMaterialUploadProgressListRequest?: GetMaterialUploadProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/progress/material-upload/get-list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getMaterialUploadProgressListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Upload Progress - u3m
+         * @param {GetU3mProgressListRequest} [getU3mProgressListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getU3mProgressList: async (getU3mProgressListRequest?: GetU3mProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/progress/u3m/get-list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getU3mProgressListRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ProgressApi - functional programming interface
+ * @export
+ */
+export const ProgressApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ProgressApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Upload Progress - excel
+         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cancelExcelProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cancelExcelProgress(cancelMaterialUploadProgressRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Upload Progress - Material
+         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 停止 U3M 排程
+         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cancelU3mProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeRolePermissionGet200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cancelU3mProgress(cancelMaterialUploadProgressRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Upload Progress - excel
+         * @param {GetExcelProgressListRequest} [getExcelProgressListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getExcelProgressList(getExcelProgressListRequest?: GetExcelProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getExcelProgressList(getExcelProgressListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Excel Progress取得Material清單
+         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getExcelProgressMaterialList(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressMaterialList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getExcelProgressMaterialList(cancelMaterialUploadProgressRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Upload Progress - Material
+         * @param {GetMaterialUploadProgressListRequest} [getMaterialUploadProgressListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMaterialUploadProgressList(getMaterialUploadProgressListRequest?: GetMaterialUploadProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMaterialUploadProgressList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMaterialUploadProgressList(getMaterialUploadProgressListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Upload Progress - u3m
+         * @param {GetU3mProgressListRequest} [getU3mProgressListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getU3mProgressList(getU3mProgressListRequest?: GetU3mProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetU3mProgressList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getU3mProgressList(getU3mProgressListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * ProgressApi - factory interface
+ * @export
+ */
+export const ProgressApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ProgressApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Upload Progress - excel
+         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cancelExcelProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.cancelExcelProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Upload Progress - Material
+         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 停止 U3M 排程
+         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cancelU3mProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<CodeRolePermissionGet200Response> {
+            return localVarFp.cancelU3mProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Upload Progress - excel
+         * @param {GetExcelProgressListRequest} [getExcelProgressListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getExcelProgressList(getExcelProgressListRequest?: GetExcelProgressListRequest, options?: any): AxiosPromise<GetExcelProgressList200Response> {
+            return localVarFp.getExcelProgressList(getExcelProgressListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Excel Progress取得Material清單
+         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getExcelProgressMaterialList(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<GetExcelProgressMaterialList200Response> {
+            return localVarFp.getExcelProgressMaterialList(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Upload Progress - Material
+         * @param {GetMaterialUploadProgressListRequest} [getMaterialUploadProgressListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMaterialUploadProgressList(getMaterialUploadProgressListRequest?: GetMaterialUploadProgressListRequest, options?: any): AxiosPromise<GetMaterialUploadProgressList200Response> {
+            return localVarFp.getMaterialUploadProgressList(getMaterialUploadProgressListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Upload Progress - u3m
+         * @param {GetU3mProgressListRequest} [getU3mProgressListRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getU3mProgressList(getU3mProgressListRequest?: GetU3mProgressListRequest, options?: any): AxiosPromise<GetU3mProgressList200Response> {
+            return localVarFp.getU3mProgressList(getU3mProgressListRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ProgressApi - object-oriented interface
+ * @export
+ * @class ProgressApi
+ * @extends {BaseAPI}
+ */
+export class ProgressApi extends BaseAPI {
+    /**
+     * 
+     * @summary Upload Progress - excel
+     * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgressApi
+     */
+    public cancelExcelProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+        return ProgressApiFp(this.configuration).cancelExcelProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Upload Progress - Material
+     * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgressApi
+     */
+    public cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+        return ProgressApiFp(this.configuration).cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 停止 U3M 排程
+     * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgressApi
+     */
+    public cancelU3mProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+        return ProgressApiFp(this.configuration).cancelU3mProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Upload Progress - excel
+     * @param {GetExcelProgressListRequest} [getExcelProgressListRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgressApi
+     */
+    public getExcelProgressList(getExcelProgressListRequest?: GetExcelProgressListRequest, options?: AxiosRequestConfig) {
+        return ProgressApiFp(this.configuration).getExcelProgressList(getExcelProgressListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Excel Progress取得Material清單
+     * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgressApi
+     */
+    public getExcelProgressMaterialList(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+        return ProgressApiFp(this.configuration).getExcelProgressMaterialList(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Upload Progress - Material
+     * @param {GetMaterialUploadProgressListRequest} [getMaterialUploadProgressListRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgressApi
+     */
+    public getMaterialUploadProgressList(getMaterialUploadProgressListRequest?: GetMaterialUploadProgressListRequest, options?: AxiosRequestConfig) {
+        return ProgressApiFp(this.configuration).getMaterialUploadProgressList(getMaterialUploadProgressListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Upload Progress - u3m
+     * @param {GetU3mProgressListRequest} [getU3mProgressListRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProgressApi
+     */
+    public getU3mProgressList(getU3mProgressListRequest?: GetU3mProgressListRequest, options?: AxiosRequestConfig) {
+        return ProgressApiFp(this.configuration).getU3mProgressList(getU3mProgressListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
  * PublicApi - axios parameter creator
  * @export
  */
@@ -42124,6 +46977,36 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
     return {
         /**
          * 
+         * @summary 取得 search filter 選項
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSearchFilterOptions: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/search/filter-options`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 取得布料相關 tag
          * @param {SearchGetAiTagsPostRequest} [searchGetAiTagsPostRequest] 
          * @param {*} [options] Override http request option.
@@ -42172,6 +47055,16 @@ export const SearchApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary 取得 search filter 選項
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSearchFilterOptions(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetSearchFilterOptions200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSearchFilterOptions(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary 取得布料相關 tag
          * @param {SearchGetAiTagsPostRequest} [searchGetAiTagsPostRequest] 
          * @param {*} [options] Override http request option.
@@ -42193,6 +47086,15 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
     return {
         /**
          * 
+         * @summary 取得 search filter 選項
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSearchFilterOptions(options?: any): AxiosPromise<GetSearchFilterOptions200Response> {
+            return localVarFp.getSearchFilterOptions(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 取得布料相關 tag
          * @param {SearchGetAiTagsPostRequest} [searchGetAiTagsPostRequest] 
          * @param {*} [options] Override http request option.
@@ -42211,6 +47113,17 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
  * @extends {BaseAPI}
  */
 export class SearchApi extends BaseAPI {
+    /**
+     * 
+     * @summary 取得 search filter 選項
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SearchApi
+     */
+    public getSearchFilterOptions(options?: AxiosRequestConfig) {
+        return SearchApiFp(this.configuration).getSearchFilterOptions(options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary 取得布料相關 tag
