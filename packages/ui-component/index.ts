@@ -12,7 +12,6 @@ export default {
 
 import FButton from './src/FButton/FButton.vue'
 import FButtonLabel from './src/FButtonLabel/FButtonLabel.vue'
-
 import FSvgIcon from './src/FSvgIcon/FSvgIcon.vue'
 import FLabel from './src/FLabel/FLabel.vue'
 import FScrollbarContainer from './src/FScrollbarContainer/FScrollbarContainer.vue'
@@ -25,6 +24,10 @@ import FTabs from './src/FTabs/FTabs.vue'
 import FInputCheckbox from './src/FInput/FInputCheckbox/FInputCheckbox.vue'
 import FInputSlider from './src/FInput/FInputSlider/FInputSlider.vue'
 import FInputTap from './src/FInput/FInputTap/FInputTap.vue'
+import FTooltipStandard from './src/FTooltip/FTooltipStandard/FTooltipStandard.vue'
+import FTooltipMedia from './src/FTooltip/FTooltipMedia/FTooltipMedia.vue'
+import FAvatar from './src/FAvatar/FAvatar.vue'
+import FTag from './src/FTag/FTag.vue'
 
 export {
   FButton,
@@ -41,6 +44,10 @@ export {
   FInputCheckbox,
   FInputSlider,
   FInputTap,
+  FTooltipStandard,
+  FTooltipMedia,
+  FAvatar,
+  FTag,
 }
 
 import type { NotifyBannerProps } from './src/FNotify/FBanner/FBanner.vue'

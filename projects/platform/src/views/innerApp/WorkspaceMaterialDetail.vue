@@ -1,12 +1,10 @@
 <template lang="pug">
 div
-  div(class="mx-auto w-230 h-fit pb-25")
-    material-detail-internal-header(
-      :breadcrumbList="breadcrumbList"
-      :material="material"
-      @goToEdit="editMaterial(material.materialId, material.sourceAssetLocation)"
-    )
-    material-detail-internal(:material="material")
+  material-detail-internal(
+    :material="material"
+    :breadcrumbList="breadcrumbList"
+    class="mx-auto w-230 pb-25"
+  )
 </template>
 
 <script setup>
@@ -15,9 +13,13 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import useWorkspace from '@/composables/useWorkspace'
-import MaterialDetailInternal from '@/components/common/material/detail/MaterialDetailInternal.vue'
-import MaterialDetailInternalHeader from '@/components/common/material/detail/MaterialDetailInternalHeader.vue'
+import MaterialDetailInternal from '@/components/common/material/detail/internal/MaterialDetailInternal.vue'
+
+// temp
+import { useAssetsStore } from '@/stores/assets'
+import { storeToRefs } from 'pinia'
+const assetsStore = useAssetsStore()
+const { material } = storeToRefs(assetsStore)
 
 const props = defineProps({
   nodeKey: {
@@ -29,15 +31,14 @@ const props = defineProps({
 const { t } = useI18n()
 const store = useStore()
 const route = useRoute()
-const { editMaterial } = useWorkspace()
 const { parsePath, prefixPath } = useNavigation()
 
-await store.dispatch('workspace/getWorkspaceMaterial', {
-  nodeKey: props.nodeKey,
-  rank: Number(route.query.rank),
-})
+// await store.dispatch('workspace/getWorkspaceMaterial', {
+//   nodeKey: props.nodeKey,
+//   rank: Number(route.query.rank),
+// })
 
-const material = computed(() => store.getters['workspace/material'])
+// const material = computed(() => store.getters['workspace/material'])
 const breadcrumbList = computed(() => {
   const defaultWorkspaceNodeKey =
     store.getters['workspace/defaultWorkspaceNodeKey']
@@ -57,7 +58,7 @@ const breadcrumbList = computed(() => {
           }
         } else {
           return {
-            name: material.value.materialNo,
+            name: material.value.itemNo,
             path: parsePath(`${prefixPath.value}/workspace/material/:nodeKey`),
           }
         }

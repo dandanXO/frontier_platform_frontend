@@ -82,7 +82,7 @@ import GridOrRow from '@/components/common/GridOrRow.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
-import useAssets from '@/composables/useAssets'
+import useAssetsOld from '@/composables/useAssetsOld'
 import { SEARCH_TYPE, DISPLAY_NODE, useConstants } from '@/utils/constants'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
@@ -150,7 +150,7 @@ const {
   printQRCode,
   mergeCard,
   deleteMaterial,
-} = useAssets()
+} = useAssetsOld()
 
 const optionList = (material) => {
   const getValueByMaterial = (value, material) => {

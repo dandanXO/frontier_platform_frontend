@@ -1,4 +1,4 @@
-import assetsApi from '@/apis/assets'
+import assetsApi from '@/apis/assetsOld'
 import { downloadBase64File } from '@frontier/lib'
 import {
   OG_TYPE,

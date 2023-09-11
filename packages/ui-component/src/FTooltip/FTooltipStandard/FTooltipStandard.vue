@@ -38,7 +38,7 @@ import { useTooltip } from '../../FTooltip'
 
 export interface TooltipStandardProps {
   theme: `${THEME}`
-  placement?: TOOLTIP_PLACEMENT
+  placement?: `${TOOLTIP_PLACEMENT}`
   offset?: [number, number]
   isNotFitWidth?: boolean
   disabledTooltip?: boolean

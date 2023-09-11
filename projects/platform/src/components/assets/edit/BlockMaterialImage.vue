@@ -93,7 +93,7 @@ div(class="pb-15")
 <script setup>
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
-import useMaterial from '@/composables/useMaterial'
+import useMaterialOld from '@/composables/useMaterialOld'
 import { SIDE_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
@@ -102,7 +102,7 @@ const { t } = useI18n()
 const store = useStore()
 const material = computed(() => store.getters['assets/material'])
 const { materialScanImageStatus, imageList, defaultCoverImgIndex } =
-  useMaterial(material.value)
+  useMaterialOld(material.value)
 const { goToMaterialUpload } = useNavigation()
 
 const uploadMaterialEmail = computed(() => {

@@ -13,33 +13,24 @@ div(:class="classSize.avatar" class="relative")
   )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import defaultUser from './default_user.png'
 import defaultOrg from './default_org.png'
 
-const props = defineProps({
-  type: {
-    type: String,
-    default: 'user', // user | org
-  },
-  imageUrl: {
-    type: String,
-    default: '',
-  },
-  size: {
-    type: String,
-    default: 'xs',
-  },
-  labelColor: {
-    type: String,
-    default: '',
-  },
-  hasBorder: {
-    type: Boolean,
-    default: true,
-  },
-})
+const props = withDefaults(
+  defineProps<{
+    type: 'user' | 'org'
+    imageUrl?: string | null
+    size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'
+    labelColor?: string | null
+    hasBorder?: boolean
+  }>(),
+  {
+    type: 'user',
+    size: 'xs',
+  }
+)
 
 const defaultImage = props.type === 'user' ? defaultUser : defaultOrg
 
@@ -85,7 +76,7 @@ const classSize = computed(() => {
 })
 </script>
 
-<script>
+<script lang="ts">
 export default {
   name: 'FAvatar',
 }

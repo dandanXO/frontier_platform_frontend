@@ -4,37 +4,68 @@ import { useNotifyStore } from '@/stores/notify'
 import useNavigation from '@/composables/useNavigation'
 import { U3M_STATUS, NOTIFY_TYPE } from '@/utils/constants'
 import { printA4Card, printGeneralLabel } from '@/utils/print'
+import type { Material, OgType } from '@frontier/platform-web-sdk'
 
-const toMaterialList = (material) =>
-  Array.isArray(material) ? material : [material]
-const toMaterialIdList = (material) =>
-  toMaterialList(material).map((m) => m.materialId)
+enum ASSETS_MATERIAL_FUNCTION {
+  EDIT = 0,
+  CLONE = 1,
+  ADD_TO_WORKSPACE = 2,
+  CREATE_U3M = 3,
+  DOWNLOAD_U3M = 4,
+  EXPORT_EXCEL = 5,
+  PRINT_QR_CODE = 6,
+  PRINT_A4_CARD = 7,
+  MERGE = 8,
+  DELETE = 9,
+}
+
+interface AssetsMaterialOption {
+  id: ASSETS_MATERIAL_FUNCTION
+  name: (m?: Material | Material[]) => string
+  func: (m: Material | Material[]) => any
+  icon?: (m?: Material | Material[]) => string
+  disabled?: (m: Material | Material[]) => boolean
+}
 
 export default function useAssets() {
+  const toMaterial = (m: Material | Material[]) => (Array.isArray(m) ? m[0] : m)
+  const toMaterialList = (m: Material | Material[]) =>
+    Array.isArray(m) ? m : [m]
+  const toMaterialIdList = (m: Material | Material[]) =>
+    toMaterialList(m).map(({ materialId }) => materialId)
+
   const { t } = useI18n()
   const store = useStore()
   const notify = useNotifyStore()
   const { goToAssetMaterialEdit, goToMaterialUpload, goToProgress } =
     useNavigation()
 
-  const editMaterial = {
-    id: 'editMaterial',
-    icon: 'create',
-    name: t('RR0054'),
-    func: goToAssetMaterialEdit,
+  const editMaterial: AssetsMaterialOption = {
+    id: ASSETS_MATERIAL_FUNCTION.EDIT,
+    icon: () => 'create',
+    name: () => t('RR0054'),
+    func: (m) => {
+      const material = toMaterial(m)
+      goToAssetMaterialEdit(
+        material.materialId,
+        material.metaData.materialOwnerOGType
+      )
+    },
   }
-
-  const cloneTo = {
-    id: 'cloneTo',
-    name: t('RR0167'),
-    func: (material) => {
-      const materialIdList = toMaterialIdList(material)
+  const cloneTo: AssetsMaterialOption = {
+    id: ASSETS_MATERIAL_FUNCTION.CLONE,
+    name: () => t('RR0167'),
+    func: (m) => {
+      const materialIdList = toMaterialIdList(m)
       store.dispatch('helper/openModalBehavior', {
         component: 'modal-clone-to',
         properties: {
           checkHandler: () =>
             store.dispatch('assets/cloneCheck', { materialIdList }),
-          cloneHandler: async (targetLocationList, optional) => {
+          cloneHandler: async (
+            targetLocationList: { id: number; location: OgType }[],
+            optional: { u3m: boolean; attachment: boolean }
+          ) => {
             await store.dispatch('assets/cloneMaterial', {
               targetLocationList,
               materialIdList,
@@ -47,14 +78,13 @@ export default function useAssets() {
       })
     },
   }
-
-  const addToWorkspace = {
-    id: 'addToWorkspace',
-    name: t('RR0057'),
-    func: (material) => {
-      const materialList = toMaterialList(material)
-      const materialIdList = toMaterialIdList(material)
-      if (materialList.length === 1 && !materialList[0].isComplete) {
+  const addToWorkspace: AssetsMaterialOption = {
+    id: ASSETS_MATERIAL_FUNCTION.ADD_TO_WORKSPACE,
+    name: () => t('RR0057'),
+    func: (m) => {
+      const materialList = toMaterialList(m)
+      const materialIdList = toMaterialIdList(m)
+      if (materialList.length === 1 && !materialList[0].metaData.isComplete) {
         return store.dispatch('helper/openModalConfirm', {
           type: NOTIFY_TYPE.WARNING,
           header: t('EE0096'),
@@ -68,7 +98,7 @@ export default function useAssets() {
         properties: {
           modalTitle: t('EE0057'),
           actionText: t('UU0035'),
-          actionCallback: async (nodeList) => {
+          actionCallback: async (nodeList: { nodeKey: string }[]) => {
             const failMaterialList = await store.dispatch(
               'assets/addToWorkspace',
               {
@@ -108,21 +138,26 @@ export default function useAssets() {
       })
     },
   }
+  const createU3m: AssetsMaterialOption = {
+    id: ASSETS_MATERIAL_FUNCTION.CREATE_U3M,
+    name: (m) => {
+      if (!m) {
+        return t('RR0058')
+      }
 
-  const create3DMaterial = {
-    id: 'create3DMaterial',
-    name: (material) =>
-      material.u3m.status === U3M_STATUS.COMPLETED ? t('RR0074') : t('RR0058'),
-    func: (material) => {
+      const material = toMaterial(m)
+      return material.u3m.status === U3M_STATUS.COMPLETED
+        ? t('RR0074')
+        : t('RR0058')
+    },
+    func: (m) => {
+      const material = toMaterial(m)
       store.dispatch('assets/setMaterial', material)
-
-      const { faceSideImg, backSideImg } = material
-      const hasScannedImage = !!faceSideImg.original || !!backSideImg.original
-
-      // isComplete 的規則是，所以必填欄位 + 有封面圖或上傳正或反面圖
+      const { faceSide, backSide } = material
+      const hasScannedImage = !!faceSide?.sideImage || !!backSide?.sideImage
 
       // 檢查是否缺少必填欄位。
-      if (!material.isComplete && hasScannedImage) {
+      if (!material.metaData.isComplete && hasScannedImage) {
         return store.dispatch('helper/openModalConfirm', {
           type: NOTIFY_TYPE.INFO,
           header: t('EE0142'),
@@ -206,31 +241,29 @@ export default function useAssets() {
       }
     },
   }
-
-  const downloadU3M = {
-    id: 'downloadU3M',
-    icon: '3D_material',
-    name: t('RR0059'),
-    disabled: (material) =>
-      toMaterialList(material).every(
+  const downloadU3m: AssetsMaterialOption = {
+    id: ASSETS_MATERIAL_FUNCTION.DOWNLOAD_U3M,
+    icon: () => '3D_material',
+    name: () => t('RR0059'),
+    disabled: (m) =>
+      toMaterialList(m).every(
         (material) =>
           material.u3m.status !== U3M_STATUS.COMPLETED &&
           material.customU3m.status !== U3M_STATUS.COMPLETED
       ),
-    func: (material) => {
-      const materialList = toMaterialList(material)
+    func: (m) => {
+      const materialList = toMaterialList(m)
       store.dispatch('helper/openModalBehavior', {
         component: 'modal-u3m-download',
         properties: { materialList },
       })
     },
   }
-
-  const exportExcel = {
-    id: 'exportExcel',
-    name: t('RR0060'),
-    func: async (material) => {
-      const materialIdList = toMaterialIdList(material)
+  const exportExcel: AssetsMaterialOption = {
+    id: ASSETS_MATERIAL_FUNCTION.EXPORT_EXCEL,
+    name: () => t('RR0060'),
+    func: async (m) => {
+      const materialIdList = toMaterialIdList(m)
       if (materialIdList.length >= 100) {
         await store.dispatch('assets/massExportMaterial', { materialIdList })
         store.dispatch('helper/openModalConfirm', {
@@ -251,43 +284,37 @@ export default function useAssets() {
       }
     },
   }
-
-  const printQRCode = {
-    id: 'printQRCode',
-    name: t('RR0061'),
-    func: (material) => {
-      const materialList = toMaterialList(material)
-      printGeneralLabel(materialList)
+  const printQRCode: AssetsMaterialOption = {
+    id: ASSETS_MATERIAL_FUNCTION.PRINT_QR_CODE,
+    name: () => t('RR0061'),
+    func: (m) => {
+      printGeneralLabel(toMaterialList(m))
     },
   }
-
-  const printCard = {
-    id: 'printCard',
-    icon: 'print',
-    name: t('RR0062'),
-    func: (material) => {
-      const materialList = toMaterialList(material)
-      printA4Card(materialList)
+  const printA4Swatch: AssetsMaterialOption = {
+    id: ASSETS_MATERIAL_FUNCTION.PRINT_A4_CARD,
+    icon: () => 'print',
+    name: () => t('RR0062'),
+    func: (m) => {
+      printA4Card(toMaterialList(m))
     },
   }
-
-  const mergeCard = {
-    id: 'mergeCard',
-    name: t('RR0072'),
-    disabled: (materialList) => materialList.length < 2,
-    func: (materialList) => {
+  const merge: AssetsMaterialOption = {
+    id: ASSETS_MATERIAL_FUNCTION.MERGE,
+    name: () => t('RR0072'),
+    disabled: (m) => toMaterialList(m).length < 2,
+    func: (m) => {
       store.dispatch('helper/openModal', {
         component: 'modal-material-merge',
-        properties: { materialList },
+        properties: { materialList: toMaterialList(m) },
       })
     },
   }
-
-  const deleteMaterial = {
-    id: 'deleteMaterial',
-    name: t('RR0063'),
-    func: async (material) => {
-      const materialIdList = toMaterialIdList(material)
+  const deleteMaterial: AssetsMaterialOption = {
+    id: ASSETS_MATERIAL_FUNCTION.DELETE,
+    name: () => t('RR0063'),
+    func: async (m) => {
+      const materialIdList = toMaterialIdList(m)
       const { isOnExportingExcel, isOnGeneratingU3m, materialNoList } =
         await store.dispatch('assets/deleteCheckMaterial', { materialIdList })
       if (!isOnExportingExcel && !isOnGeneratingU3m) {
@@ -323,7 +350,9 @@ export default function useAssets() {
             textBtnText: t('UU0002'),
             primaryBtnHandler: async () => {
               store.dispatch('helper/openModalLoading')
-              await store.dispatch('assets/deleteMaterial', { materialIdList })
+              await store.dispatch('assets/deleteMaterial', {
+                materialIdList,
+              })
               store.dispatch('helper/closeModalLoading')
               store.dispatch('helper/reloadInnerApp')
             },
@@ -350,7 +379,9 @@ export default function useAssets() {
             secondaryBtnText: t('UU0002'),
             primaryBtnHandler: async () => {
               store.dispatch('helper/openModalLoading')
-              await store.dispatch('assets/deleteMaterial', { materialIdList })
+              await store.dispatch('assets/deleteMaterial', {
+                materialIdList,
+              })
               store.dispatch('helper/closeModalLoading')
               store.dispatch('helper/reloadInnerApp')
             },
@@ -362,14 +393,14 @@ export default function useAssets() {
 
   return {
     editMaterial,
+    downloadU3m,
     cloneTo,
     addToWorkspace,
-    create3DMaterial,
-    downloadU3M,
+    createU3m,
     exportExcel,
     printQRCode,
-    printCard,
-    mergeCard,
+    printA4Swatch,
     deleteMaterial,
+    merge,
   }
 }

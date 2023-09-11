@@ -1,92 +1,92 @@
-<style lang="scss" scoped>
-.prev {
-  background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0) 91.41%);
-}
-
-.next {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #ffffff 91.41%);
-}
-</style>
-
 <template lang="pug">
-div(class="relative overflow-hidden")
-  div(v-if="currentX < 0" class="z-1 prev absolute left-0 w-16 flex justify-center")
+div(class="relative")
+  div(v-if="currentX < 0" :class="classLinerBg" class="left-0 bg-gradient-to-r")
     div(
-      class="h-8.5 w-8.5 flex justify-center items-center bg-grey-0 rounded-full cursor-pointer"
+      class="h-8 w-8 flex justify-center items-center bg-grey-0 rounded-full cursor-pointer absolute left-0 transform -translate-x-1/2"
       @click="forward"
     )
       f-svg-icon(iconName="keyboard_arrow_left" size="24" class="text-grey-600")
-  div(v-if="widthLeft > 0" class="z-1 next absolute right-0 w-16 flex justify-center")
+  div(v-if="remainingWidth > 0" :class="classLinerBg" class="right-0 bg-gradient-to-l")
     div(
-      class="h-8.5 w-8.5 flex justify-center items-center bg-grey-0 rounded-full cursor-pointer"
+      class="h-8 w-8 flex justify-center items-center bg-grey-0 rounded-full cursor-pointer absolute right-0 transform translate-x-1/2"
       @click="backward"
     )
       f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-grey-600")
-  div(ref="slider" class="transition-all duration-500" :style="translateX")
-    slot
+  div(class="overflow-hidden")
+    div(ref="refSlider" class="transition-all duration-500" :style="translateX")
+      slot(ref="test")
 </template>
 
-<script>
-import { computed, ref, watchEffect } from 'vue'
+<script setup lang="ts">
+import { computed, ref, onMounted } from 'vue'
 
-export default {
-  name: 'Slider',
-  setup() {
-    const slider = ref(null)
-    const currentX = ref(0)
-    const contentTotalWidth = ref(0)
-    const sliderWidth = ref(0)
-    const widthLeft = ref(0)
+const props = withDefaults(
+  defineProps<{
+    heightLinerBg: string // tailwindcss class,
+    scrollPerItem?: number
+  }>(),
+  {
+    heightLinerBg: 'h-full',
+  }
+)
 
-    const translateX = computed(() => {
-      return `transform: translateX(${currentX.value}px)`
-    })
+const classLinerBg = computed(() => {
+  return [
+    'absolute',
+    'z-1',
+    'top-0',
+    'w-12',
+    props.heightLinerBg,
+    'flex',
+    'justify-center',
+    'items-center',
+    'from-grey-0',
+    'to-transparent',
+  ]
+})
 
-    const forward = () => {
-      if (currentX.value >= 0) return
+const refSlider = ref<HTMLDivElement>()
+const test = ref()
+const currentX = ref(0)
+const remainingWidth = ref(0)
+const movement = ref(0)
 
-      if (currentX.value + sliderWidth.value / 2 > 0) {
-        currentX.value = 0
-        widthLeft.value = contentTotalWidth.value - sliderWidth.value
-      } else {
-        currentX.value += sliderWidth.value / 2
-        widthLeft.value += sliderWidth.value / 2
-      }
-    }
+const translateX = computed(() => {
+  return `transform: translateX(${currentX.value}px)`
+})
 
-    const backward = () => {
-      if (widthLeft.value < 0) return
+const forward = () => {
+  if (currentX.value >= 0) {
+    return
+  }
 
-      if (widthLeft.value < sliderWidth.value / 2) {
-        currentX.value = contentTotalWidth.value * -1 + sliderWidth.value - 30
-        widthLeft.value = 0
-      } else {
-        currentX.value += (sliderWidth.value / 2) * -1
-        widthLeft.value -= sliderWidth.value / 2
-      }
-    }
-
-    watchEffect(
-      () => {
-        if (slider.value) {
-          contentTotalWidth.value = slider.value.scrollWidth
-          sliderWidth.value = slider.value.clientWidth
-          widthLeft.value = contentTotalWidth.value - sliderWidth.value
-        }
-      },
-      {
-        flush: 'post',
-      }
-    )
-
-    return {
-      slider,
-      translateX,
-      forward,
-      backward,
-      currentX,
-      widthLeft,
-    }
-  },
+  currentX.value += movement.value
+  remainingWidth.value += movement.value
 }
+
+const backward = () => {
+  if (remainingWidth.value < 0) {
+    return
+  }
+
+  currentX.value -= movement.value
+  remainingWidth.value -= movement.value
+}
+
+onMounted(() => {
+  if (refSlider.value) {
+    const totalWidth = refSlider.value.scrollWidth
+    const sliderWidth = refSlider.value.clientWidth
+    remainingWidth.value = totalWidth - sliderWidth
+
+    if (!props.scrollPerItem || refSlider.value.children.length === 0) {
+      movement.value = sliderWidth
+    } else {
+      movement.value =
+        refSlider.value.children[0].children[0].clientWidth *
+          props.scrollPerItem +
+        8 * (props.scrollPerItem - 1)
+    }
+  }
+})
 </script>

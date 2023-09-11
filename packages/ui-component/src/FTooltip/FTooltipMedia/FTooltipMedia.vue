@@ -43,7 +43,7 @@ import { useTooltip } from '../../FTooltip'
 // https://popper.js.org/docs/v2/
 
 export interface TooltipMediaProps {
-  placement?: TOOLTIP_PLACEMENT
+  placement?: `${TOOLTIP_PLACEMENT}`
   offset?: [number, number]
   isNotFitWidth?: boolean
   disabledTooltip?: boolean

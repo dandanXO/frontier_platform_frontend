@@ -1,9 +1,9 @@
 <template lang="pug">
 div
-  div(class="flex items-center text-grey-900 pb-1.5")
-    h5(class="text-h5 font-bold") {{ $t('RR0132') }}
+  div(class="flex items-center gap-x-2 pb-2")
+    f-svg-icon(iconName="3D_material" size="20" class="text-grey-900")
+    p(class="text-body2 font-bold text-grey-900") {{ $t('RR0132') }}
     f-tooltip-media(
-      class="ml-2"
       :tooltipTitle="$t('UU0029')"
       :tooltipMessage="$t('EE0066')"
       :imageUrl="u3mInstructionImage"

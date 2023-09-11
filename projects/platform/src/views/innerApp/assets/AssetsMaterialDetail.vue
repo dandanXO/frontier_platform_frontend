@@ -1,60 +1,43 @@
 <template lang="pug">
 div
-  div(class="mx-auto w-230 h-fit pb-25")
-    material-detail-internal-header(
-      :breadcrumbList="breadcrumbList"
-      :material="material"
-      @goToEdit="goToAssetMaterialEdit(material)"
-    )
-    material-detail-internal(:material="material")
+  material-detail-internal(
+    :material="material"
+    :breadcrumbList="breadcrumbList"
+    class="mx-auto w-230 pb-25"
+  )
 </template>
 
-<script>
+<script setup lang="ts">
 import useNavigation from '@/composables/useNavigation'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
-import MaterialDetailInternal from '@/components/common/material/detail/MaterialDetailInternal.vue'
-import MaterialDetailInternalHeader from '@/components/common/material/detail/MaterialDetailInternalHeader.vue'
+// import { useRoute } from 'vue-router'
+import MaterialDetailInternal from '@/components/common/material/detail/internal/MaterialDetailInternal.vue'
+import { useAssetsStore } from '@/stores/assets'
+import { storeToRefs } from 'pinia'
 
-export default {
-  name: 'AssetsMaterialDetail',
-  components: {
-    MaterialDetailInternal,
-    MaterialDetailInternalHeader,
-  },
-  async setup() {
-    const { t } = useI18n()
-    const store = useStore()
-    const route = useRoute()
-    const { parsePath, goToAssetMaterialEdit } = useNavigation()
+const { t } = useI18n()
+const store = useStore()
+// const route = useRoute()
+const { parsePath } = useNavigation()
+const assetsStore = useAssetsStore()
+const { material } = storeToRefs(assetsStore)
 
-    await store.dispatch('assets/getMaterial', {
-      materialId: route.params.materialId,
-    })
+// await assetsStore.getAssetsMaterial(route.params.materialId)
 
-    const material = computed(() => store.getters['assets/material'])
-    const routeLocation = computed(() => store.getters['helper/routeLocation'])
-    const breadcrumbList = computed(() => {
-      const prefix =
-        routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
-      return [
-        {
-          name: t('DD0044'),
-          path: parsePath(`${prefix}/assets`),
-        },
-        {
-          name: material.value.materialNo,
-          path: parsePath(`${prefix}/assets/:materialId`),
-        },
-      ]
-    })
-    return {
-      material,
-      breadcrumbList,
-      goToAssetMaterialEdit,
-    }
-  },
-}
+const routeLocation = computed(() => store.getters['helper/routeLocation'])
+const breadcrumbList = computed(() => {
+  const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
+  return [
+    {
+      name: t('DD0044'),
+      path: parsePath(`${prefix}/assets`),
+    },
+    {
+      name: material.value.itemNo,
+      path: parsePath(`${prefix}/assets/:materialId`),
+    },
+  ]
+})
 </script>

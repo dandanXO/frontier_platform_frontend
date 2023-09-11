@@ -80,7 +80,7 @@ div
 </template>
 
 <script setup>
-import useMaterial from '@/composables/useMaterial'
+import useMaterialOld from '@/composables/useMaterialOld'
 import { ref, computed, nextTick } from 'vue'
 import { COVER_MODE } from '@/utils/constants'
 
@@ -91,7 +91,7 @@ const props = defineProps({
   },
 })
 
-const { imageList, defaultCoverImgIndex } = useMaterial(props.material)
+const { imageList, defaultCoverImgIndex } = useMaterialOld(props.material)
 const currentDisplayIndex = ref(defaultCoverImgIndex.value)
 const hideMagnifier = computed(
   () =>

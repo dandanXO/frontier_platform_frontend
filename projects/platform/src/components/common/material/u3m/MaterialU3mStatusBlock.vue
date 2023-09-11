@@ -22,7 +22,7 @@ div(class="bg-grey-50 rounded py-2 px-4 box-border flex flex-col gap-y-2")
       )
       div
         p(class="text-body2 text-grey-900 pb-1") {{ u3m.creator }}
-        p(class="text-caption text-grey-600") {{ toStandardFormat(u3m.createDate) }}
+        p(v-if="u3m.createDate" class="text-caption text-grey-600") {{ toStandardFormat(u3m.createDate) }}
   slot(name="slot:append-item")
 </template>
 

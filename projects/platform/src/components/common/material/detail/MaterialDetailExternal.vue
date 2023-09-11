@@ -62,7 +62,7 @@ div
 </template>
 
 <script setup>
-import useMaterial from '@/composables/useMaterial'
+import useMaterialOld from '@/composables/useMaterialOld'
 import AttachmentItem from '@/components/common/material/attachment/AttachmentItem.vue'
 import MaterialDetailPreviewImg from '@/components/common/material/detail/MaterialDetailPreviewImg.vue'
 import MaterialDetailPantone from '@/components/common/material/detail/MaterialDetailPantone.vue'
@@ -95,7 +95,7 @@ const store = useStore()
 const logSender = useLogSender()
 
 const { materialInfo, materialPublicPriceInfo, attachmentSortedList } =
-  useMaterial(props.material)
+  useMaterialOld(props.material)
 
 const downloadU3m = async ({ materialId, url, format }) => {
   const needCheckTokenStatus = [

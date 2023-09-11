@@ -30,6 +30,7 @@ export default {
 <script setup lang="ts">
 import { ref, nextTick } from 'vue'
 import { createPopper } from '@popperjs/core'
+import type { TOOLTIP_PLACEMENT } from '../constants'
 // https://popper.js.org/docs/v2/
 
 const emit = defineEmits<{
@@ -39,20 +40,7 @@ const emit = defineEmits<{
 
 const props = withDefaults(
   defineProps<{
-    placement:
-      | 'auto'
-      | 'top'
-      | 'top-start'
-      | 'top-end'
-      | 'bottom'
-      | 'bottom-start'
-      | 'bottom-end'
-      | 'right'
-      | 'right-start'
-      | 'right-end'
-      | 'left'
-      | 'left-start'
-      | 'left-end'
+    placement: `${TOOLTIP_PLACEMENT}`
     offset: [number, number]
     disabled: boolean
     onFirstUpdate: () => void
@@ -66,8 +54,8 @@ const props = withDefaults(
 )
 
 const isExpand = ref(false)
-const refTrigger = ref(null)
-const refPopper = ref(null)
+const refTrigger = ref<HTMLElement>()
+const refPopper = ref<HTMLElement>()
 
 const expandPopper = async () => {
   if (isExpand.value || props.disabled) {
@@ -77,6 +65,10 @@ const expandPopper = async () => {
   isExpand.value = true
 
   await nextTick()
+
+  if (!refTrigger.value || !refPopper.value) {
+    return
+  }
 
   createPopper(refTrigger.value, refPopper.value, {
     onFirstUpdate: props.onFirstUpdate,

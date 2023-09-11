@@ -3,7 +3,7 @@ import QRCode from 'qrcode'
 import domtoimage from 'dom-to-image'
 import { jsPDF as JsPDF } from 'jspdf'
 import store from '@/store'
-import useMaterial from '@/composables/useMaterial'
+import useMaterialOld from '@/composables/useMaterialOld'
 import { SIDE_TYPE } from '@/utils/constants'
 import i18n from '@frontier/i18n'
 import imgPdfOutLine from '@/assets/images/pdf-outline.png'
@@ -41,7 +41,7 @@ const formatMaterialList = (materialList) => {
   })
 
   list.forEach((item) => {
-    const { materialInfo } = useMaterial(item)
+    const { materialInfo } = useMaterialOld(item)
     item.materialWeight = materialInfo.weight.value
     item.materialYarnCount = materialInfo.yarn.value
     item.materialDensity = materialInfo.density.value

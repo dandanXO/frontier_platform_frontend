@@ -73,7 +73,7 @@ div(class="grid gap-x-14 grid-cols-2")
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import useMaterial from '@/composables/useMaterial'
+import useMaterialOld from '@/composables/useMaterialOld'
 import listViewMask from '@/assets/images/list_view_mask.png'
 import { VALUE_ADDED_SERVICE_ID, DISPLAY } from '@/utils/constants'
 
@@ -84,7 +84,7 @@ const props = defineProps({
 })
 const store = useStore()
 const router = useRouter()
-const { materialBasicInfo, materialInfo, carbonEmissionInfo } = useMaterial(
+const { materialBasicInfo, materialInfo, carbonEmissionInfo } = useMaterialOld(
   props.material
 )
 

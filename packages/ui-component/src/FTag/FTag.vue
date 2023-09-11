@@ -8,29 +8,26 @@ div(:class="classes")
   )
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'FTag',
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 
-const props = defineProps({
-  size: {
-    type: String,
-    default: 'lg',
-  },
-  appendIcon: {
-    type: String,
-    default: '',
-  },
-  isActive: {
-    type: Boolean,
-    default: false,
-  },
-})
+const props = withDefaults(
+  defineProps<{
+    size: 'sm' | 'lg'
+    appendIcon?: string
+    isActive: boolean
+  }>(),
+  {
+    size: 'lg',
+    isActive: false,
+  }
+)
 
 const classes = computed(() => {
   const classList = [

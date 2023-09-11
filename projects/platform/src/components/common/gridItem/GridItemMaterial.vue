@@ -47,7 +47,7 @@ grid-item-wrapper(
 <script setup>
 import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
 import { computed } from 'vue'
-import useMaterial from '@/composables/useMaterial'
+import useMaterialOld from '@/composables/useMaterialOld'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 import { useStore } from 'vuex'
 
@@ -85,7 +85,7 @@ const currentMaterialId = computed(
   () => store.getters['sticker/currentMaterialId']
 )
 
-const { hasNoCoverImage, materialInfo } = useMaterial(props.material)
+const { hasNoCoverImage, materialInfo } = useMaterialOld(props.material)
 
 const innerSelectedValue = computed({
   get: () => props.selectedValue,

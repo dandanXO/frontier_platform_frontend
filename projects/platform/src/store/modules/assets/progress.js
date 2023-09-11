@@ -1,4 +1,4 @@
-import assetsApi from '@/apis/assets'
+import assetsApi from '@/apis/assetsOld'
 
 export default {
   namespaced: true,

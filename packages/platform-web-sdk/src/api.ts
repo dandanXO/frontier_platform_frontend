@@ -5185,10 +5185,10 @@ export interface GenerateAssetsMaterialU3mRequestAllOfFaceSide {
     'fileName': string;
     /**
      * 
-     * @type {MultimediaFileAllOfCropRecord}
+     * @type {MaterialGenerateU3mSideSquareCropRecord}
      * @memberof GenerateAssetsMaterialU3mRequestAllOfFaceSide
      */
-    'squareCropRecord': MultimediaFileAllOfCropRecord;
+    'squareCropRecord': MaterialGenerateU3mSideSquareCropRecord;
     /**
      * 
      * @type {MaterialGenerateU3mSidePerspectiveCropRecord}
@@ -7283,10 +7283,10 @@ export interface Material {
     'itemNo': string;
     /**
      * 
-     * @type {OgType & object}
+     * @type {OgType}
      * @memberof Material
      */
-    'assetOgType': OgType & object;
+    'assetOgType': OgType;
     /**
      * 
      * @type {MaterialCoverImage}
@@ -7316,7 +7316,7 @@ export interface Material {
      * @type {MaterialSeasonInfo}
      * @memberof Material
      */
-    'seasonInfo': MaterialSeasonInfo;
+    'seasonInfo': MaterialSeasonInfo | null;
     /**
      * 
      * @type {MaterialU3m}
@@ -7358,19 +7358,19 @@ export interface Material {
      * @type {MaterialFaceSide}
      * @memberof Material
      */
-    'faceSide': MaterialFaceSide;
+    'faceSide': MaterialFaceSide | null;
     /**
      * 
      * @type {MaterialMiddleSide}
      * @memberof Material
      */
-    'middleSide': MaterialMiddleSide;
+    'middleSide': MaterialMiddleSide | null;
     /**
      * 
      * @type {MaterialBackSide}
      * @memberof Material
      */
-    'backSide': MaterialBackSide;
+    'backSide': MaterialBackSide | null;
     /**
      * 
      * @type {MaterialTagInfo}
@@ -7394,7 +7394,7 @@ export interface Material {
      * @type {MaterialCarbonEmission}
      * @memberof Material
      */
-    'carbonEmission': MaterialCarbonEmission;
+    'carbonEmission': MaterialCarbonEmission | null;
     /**
      * 
      * @type {MaterialDigitalThreadInfo}
@@ -7423,7 +7423,7 @@ export interface Material {
 
 
 /**
- * 
+ * 背面布資訊
  * @export
  * @interface MaterialBackSide
  */
@@ -7463,7 +7463,7 @@ export interface MaterialBackSide {
      * @type {MaterialSideAllOfSideImage}
      * @memberof MaterialBackSide
      */
-    'sideImage': MaterialSideAllOfSideImage;
+    'sideImage': MaterialSideAllOfSideImage | null;
     /**
      * 
      * @type {MaterialSideAllOfU3mImage}
@@ -7484,10 +7484,10 @@ export interface MaterialBackSide {
     'descriptionList': Array<MaterialDescription>;
     /**
      * 
-     * @type {MaterialSideAllOfConstruction}
+     * @type {MaterialConstruction}
      * @memberof MaterialBackSide
      */
-    'construction': MaterialSideAllOfConstruction;
+    'construction': MaterialConstruction | null;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialSideAllOfConstructionCustomPropertyListInner>}
@@ -7516,7 +7516,7 @@ export interface MaterialBackSide {
 
 
 /**
- * 
+ * 碳排放資訊 如果沒有可視權限，則為 null 
  * @export
  * @interface MaterialCarbonEmission
  */
@@ -7711,6 +7711,7 @@ export interface MaterialColorInfoUpdatePayloadCustomPropertyListInner {
 }
 /**
  * @type MaterialConstruction
+ * 規格資訊 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
  * @export
  */
 export type MaterialConstruction = MaterialKnitConstruction | MaterialLeatherConstruction | MaterialNonWovenConstruction | MaterialTrimConstruction | MaterialWovenConstruction;
@@ -7879,10 +7880,10 @@ export interface MaterialCreateBackSide {
     'descriptionList': Array<MaterialSideCreateAllOfDescriptionList> | null;
     /**
      * 
-     * @type {MaterialSideCreateAllOfConstruction}
+     * @type {MaterialConstruction}
      * @memberof MaterialCreateBackSide
      */
-    'construction': MaterialSideCreateAllOfConstruction;
+    'construction': MaterialConstruction;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialCustomConstructionBase>}
@@ -7942,10 +7943,10 @@ export interface MaterialCreateFaceSide {
     'descriptionList': Array<MaterialSideCreateAllOfDescriptionList> | null;
     /**
      * 
-     * @type {MaterialSideCreateAllOfConstruction}
+     * @type {MaterialConstruction}
      * @memberof MaterialCreateFaceSide
      */
-    'construction': MaterialSideCreateAllOfConstruction;
+    'construction': MaterialConstruction;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialCustomConstructionBase>}
@@ -8171,97 +8172,97 @@ export interface MaterialCustomU3m {
      * @type {boolean}
      * @memberof MaterialCustomU3m
      */
-    'hasPhysicalData': boolean;
+    'hasPhysicalData': boolean | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'zipUrl': string;
+    'zipUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'u3maUrl': string;
+    'u3maUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'baseImgUrl': string;
+    'baseImgUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'normalImgUrl': string;
+    'normalImgUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'roughImgUrl': string;
+    'roughImgUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'dispImgUrl': string;
+    'dispImgUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'gltfUrl': string;
+    'gltfUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'u3mSpecUrl': string;
+    'u3mSpecUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'u3mPhysicSpecUrl': string;
+    'u3mPhysicSpecUrl': string | null;
     /**
      * 
      * @type {number}
      * @memberof MaterialCustomU3m
      */
-    'dpi': number;
+    'dpi': number | null;
     /**
      * 建立者的單位的標籤顏色，檢視者所屬組織和建立者單位那方所屬組織相同時為:呈現建立者組織或團隊的label color，非建立者那方單位所屬組織為Null值
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'creatorUnitLabelColor': string;
+    'creatorUnitLabelColor': string | null;
     /**
      * 建立者的使用者名稱，檢視者所屬組織和建立者單位那方所屬組織相同時呈現建立者的使用者名稱，非建立者那方單位所屬組織為Null值
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'creator': string;
+    'creator': string | null;
     /**
      * 建立者的大頭貼，檢視者所屬組織和建立者單位那方所屬組織相同時呈現建立者的大頭貼，非建立者那方單位所屬組織為Null值
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'creatorAvatar': string;
+    'creatorAvatar': string | null;
     /**
      * 建立時間
      * @type {number}
      * @memberof MaterialCustomU3m
      */
-    'createDate': number;
+    'createDate': number | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialCustomU3m
      */
-    'customFileName': string;
+    'customFileName': string | null;
 }
 
 
@@ -8276,7 +8277,7 @@ export interface MaterialCustomU3mAllOf {
      * @type {string}
      * @memberof MaterialCustomU3mAllOf
      */
-    'customFileName': string;
+    'customFileName': string | null;
 }
 /**
  * 布種材料描述
@@ -8317,7 +8318,7 @@ export interface MaterialDigitalThreadInfo {
     'hasUnreadThread': boolean;
 }
 /**
- * 
+ * 正面布資訊
  * @export
  * @interface MaterialFaceSide
  */
@@ -8357,7 +8358,7 @@ export interface MaterialFaceSide {
      * @type {MaterialSideAllOfSideImage}
      * @memberof MaterialFaceSide
      */
-    'sideImage': MaterialSideAllOfSideImage;
+    'sideImage': MaterialSideAllOfSideImage | null;
     /**
      * 
      * @type {MaterialSideAllOfU3mImage}
@@ -8378,10 +8379,10 @@ export interface MaterialFaceSide {
     'descriptionList': Array<MaterialDescription>;
     /**
      * 
-     * @type {MaterialSideAllOfConstruction}
+     * @type {MaterialConstruction}
      * @memberof MaterialFaceSide
      */
-    'construction': MaterialSideAllOfConstruction;
+    'construction': MaterialConstruction | null;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialSideAllOfConstructionCustomPropertyListInner>}
@@ -8467,10 +8468,10 @@ export interface MaterialGenerateU3mSide {
     'fileName': string;
     /**
      * 
-     * @type {MultimediaFileAllOfCropRecord}
+     * @type {MaterialGenerateU3mSideSquareCropRecord}
      * @memberof MaterialGenerateU3mSide
      */
-    'squareCropRecord': MultimediaFileAllOfCropRecord;
+    'squareCropRecord': MaterialGenerateU3mSideSquareCropRecord;
     /**
      * 
      * @type {MaterialGenerateU3mSidePerspectiveCropRecord}
@@ -8514,6 +8515,37 @@ export interface MaterialGenerateU3mSidePerspectiveCropRecord {
      * @memberof MaterialGenerateU3mSidePerspectiveCropRecord
      */
     'rotateDeg': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialGenerateU3mSideSquareCropRecord
+ */
+export interface MaterialGenerateU3mSideSquareCropRecord {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialGenerateU3mSideSquareCropRecord
+     */
+    'x': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialGenerateU3mSideSquareCropRecord
+     */
+    'y': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialGenerateU3mSideSquareCropRecord
+     */
+    'rotateDeg': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialGenerateU3mSideSquareCropRecord
+     */
+    'scaleRatio': number;
 }
 /**
  * External Page(非Asset或WorkSpace的頁面)時，回應 null
@@ -8821,6 +8853,12 @@ export interface MaterialInventoryRemainingInfoBase {
  */
 export interface MaterialKnitConstruction {
     /**
+     * 是否公開規格資訊
+     * @type {boolean}
+     * @memberof MaterialKnitConstruction
+     */
+    'isPublic': boolean;
+    /**
      * 針織布種織機類型
      * @type {string}
      * @memberof MaterialKnitConstruction
@@ -8858,6 +8896,12 @@ export interface MaterialKnitConstruction {
  */
 export interface MaterialLeatherConstruction {
     /**
+     * 是否公開規格資訊
+     * @type {boolean}
+     * @memberof MaterialLeatherConstruction
+     */
+    'isPublic': boolean;
+    /**
      * 皮革布種AverageSkin
      * @type {string}
      * @memberof MaterialLeatherConstruction
@@ -8883,7 +8927,7 @@ export interface MaterialLeatherConstruction {
     'thicknessPerMm': number | null;
 }
 /**
- * 
+ * 中間布資訊
  * @export
  * @interface MaterialMiddleSide
  */
@@ -8994,6 +9038,12 @@ export interface MaterialMiddleSideCreate {
  * @interface MaterialNonWovenConstruction
  */
 export interface MaterialNonWovenConstruction {
+    /**
+     * 是否公開規格資訊
+     * @type {boolean}
+     * @memberof MaterialNonWovenConstruction
+     */
+    'isPublic': boolean;
     /**
      * 無紡布種粘合法
      * @type {string}
@@ -9608,7 +9658,7 @@ export interface MaterialPrivateMetaDataCopiedFromInfo {
     'copiedFromItemNo'?: string;
 }
 /**
- * 
+ * Created By - 對 Material owner 所屬的組織或團隊成員 顯示   Org or Group name + Color label + Avatar + User name - 若布料為 Copy得來，建立者顯示複製布料的 user   Org or Group name + Color label + Avatar+User name - 若布料使用 smart upload 建立，系統因無法抓到建立使用者，建立者資訊 顯示   Org or Group name + Color label + 預設 Avatar+User name 以 ‘─’ 顯示 由於布料建立者一定是同組織成員建置，因此組織資訊非必要不秀。 
  * @export
  * @interface MaterialPrivateMetaDataCreatedByInfo
  */
@@ -9619,6 +9669,12 @@ export interface MaterialPrivateMetaDataCreatedByInfo {
      * @memberof MaterialPrivateMetaDataCreatedByInfo
      */
     'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataCreatedByInfo
+     */
+    'avatar'?: string;
     /**
      * 
      * @type {string}
@@ -9639,7 +9695,7 @@ export interface MaterialPrivateMetaDataCreatedByInfo {
     'date': number;
 }
 /**
- * 
+ * Last modified by - 對 Material owner 所屬的組織或團隊成員 顯示   Org or Group name + Color label + Avatar + User name 由於布料編輯者一定是同組織成員建置，因此組織資訊非必要不秀。 
  * @export
  * @interface MaterialPrivateMetaDataLastModifiedByInfo
  */
@@ -9650,6 +9706,12 @@ export interface MaterialPrivateMetaDataLastModifiedByInfo {
      * @memberof MaterialPrivateMetaDataLastModifiedByInfo
      */
     'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialPrivateMetaDataLastModifiedByInfo
+     */
+    'avatar'?: string;
     /**
      * 
      * @type {string}
@@ -9746,7 +9808,7 @@ export type MaterialQuantityUnit = typeof MaterialQuantityUnit[keyof typeof Mate
 
 
 /**
- * 
+ * 布片季節資訊
  * @export
  * @interface MaterialSeasonInfo
  */
@@ -9874,7 +9936,7 @@ export interface MaterialSide {
      * @type {MaterialSideAllOfSideImage}
      * @memberof MaterialSide
      */
-    'sideImage': MaterialSideAllOfSideImage;
+    'sideImage': MaterialSideAllOfSideImage | null;
     /**
      * 
      * @type {MaterialSideAllOfU3mImage}
@@ -9895,10 +9957,10 @@ export interface MaterialSide {
     'descriptionList': Array<MaterialDescription>;
     /**
      * 
-     * @type {MaterialSideAllOfConstruction}
+     * @type {MaterialConstruction}
      * @memberof MaterialSide
      */
-    'construction': MaterialSideAllOfConstruction;
+    'construction': MaterialConstruction | null;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialSideAllOfConstructionCustomPropertyListInner>}
@@ -9943,7 +10005,7 @@ export interface MaterialSideAllOf {
      * @type {MaterialSideAllOfSideImage}
      * @memberof MaterialSideAllOf
      */
-    'sideImage': MaterialSideAllOfSideImage;
+    'sideImage': MaterialSideAllOfSideImage | null;
     /**
      * 
      * @type {MaterialSideAllOfU3mImage}
@@ -9964,10 +10026,10 @@ export interface MaterialSideAllOf {
     'descriptionList': Array<MaterialDescription>;
     /**
      * 
-     * @type {MaterialSideAllOfConstruction}
+     * @type {MaterialConstruction}
      * @memberof MaterialSideAllOf
      */
-    'construction': MaterialSideAllOfConstruction;
+    'construction': MaterialConstruction | null;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialSideAllOfConstructionCustomPropertyListInner>}
@@ -9995,140 +10057,6 @@ export interface MaterialSideAllOf {
 }
 
 
-/**
- * 
- * @export
- * @interface MaterialSideAllOfConstruction
- */
-export interface MaterialSideAllOfConstruction {
-    /**
-     * 梭織布種密度(經向)
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'warpDensity': string | null;
-    /**
-     * 梭織布種密度(緯向)
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'weftDensity': string | null;
-    /**
-     * 梭織布種紗支數(經向)
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'warpYarnSize': string | null;
-    /**
-     * 梭織布種紗支數(緯向)
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'weftYarnSize': string | null;
-    /**
-     * 針織布種織機類型
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'machineType': string | null;
-    /**
-     * 針織布種經向密度
-     * @type {number}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'walesPerInch': number | null;
-    /**
-     * 針織布種緯向密度
-     * @type {number}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'coursesPerInch': number | null;
-    /**
-     * 針織布種紗支數
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'yarnSize': string | null;
-    /**
-     * 針織布種機台針數
-     * @type {number}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'machineGaugeInGg': number | null;
-    /**
-     * 皮革布種AverageSkin
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'averageSkinPerMeterSquare': string | null;
-    /**
-     * 皮革布種級別
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'grade': string | null;
-    /**
-     * 皮革布種鞣製
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'tannage': string | null;
-    /**
-     * 無紡布種厚度
-     * @type {number}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'thicknessPerMm': number | null;
-    /**
-     * 無紡布種粘合法
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'bondingMethod': string | null;
-    /**
-     * 副料布種外徑
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'outerDiameter': string | null;
-    /**
-     * 副料布種長度
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'length': string | null;
-    /**
-     * 副料布種厚度
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'thickness': string | null;
-    /**
-     * 副料布種寬度
-     * @type {string}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'width': string | null;
-    /**
-     * 是否公開規格資訊
-     * @type {boolean}
-     * @memberof MaterialSideAllOfConstruction
-     */
-    'isPublic': boolean;
-}
-/**
- * 規格資訊 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
- * @export
- * @interface MaterialSideAllOfConstructionAllOf
- */
-export interface MaterialSideAllOfConstructionAllOf {
-    /**
-     * 是否公開規格資訊
-     * @type {boolean}
-     * @memberof MaterialSideAllOfConstructionAllOf
-     */
-    'isPublic': boolean;
-}
 /**
  * 
  * @export
@@ -10199,7 +10127,7 @@ export interface MaterialSideAllOfContentList {
     'percentage'?: number;
 }
 /**
- * 
+ * 布面圖片
  * @export
  * @interface MaterialSideAllOfSideImage
  */
@@ -10280,16 +10208,16 @@ export interface MaterialSideAllOfU3mImage {
 export interface MaterialSideAllOfU3mImageCropRecord {
     /**
      * 
-     * @type {CropImageRecord & object}
+     * @type {CropImageRecord}
      * @memberof MaterialSideAllOfU3mImageCropRecord
      */
-    'squareCropRecord': CropImageRecord & object;
+    'squareCropRecord': CropImageRecord | null;
     /**
      * 
-     * @type {PerspectiveCropImageRecord & object}
+     * @type {PerspectiveCropImageRecord}
      * @memberof MaterialSideAllOfU3mImageCropRecord
      */
-    'perspectiveCropRecord': PerspectiveCropImageRecord & object;
+    'perspectiveCropRecord': PerspectiveCropImageRecord | null;
 }
 /**
  * 
@@ -10354,10 +10282,10 @@ export interface MaterialSideCreate {
     'descriptionList': Array<MaterialSideCreateAllOfDescriptionList> | null;
     /**
      * 
-     * @type {MaterialSideCreateAllOfConstruction}
+     * @type {MaterialConstruction}
      * @memberof MaterialSideCreate
      */
-    'construction': MaterialSideCreateAllOfConstruction;
+    'construction': MaterialConstruction;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialCustomConstructionBase>}
@@ -10405,10 +10333,10 @@ export interface MaterialSideCreateAllOf {
     'descriptionList': Array<MaterialSideCreateAllOfDescriptionList> | null;
     /**
      * 
-     * @type {MaterialSideCreateAllOfConstruction}
+     * @type {MaterialConstruction}
      * @memberof MaterialSideCreateAllOf
      */
-    'construction': MaterialSideCreateAllOfConstruction;
+    'construction': MaterialConstruction;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialCustomConstructionBase>}
@@ -10436,140 +10364,6 @@ export interface MaterialSideCreateAllOf {
 }
 
 
-/**
- * 
- * @export
- * @interface MaterialSideCreateAllOfConstruction
- */
-export interface MaterialSideCreateAllOfConstruction {
-    /**
-     * 梭織布種密度(經向)
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'warpDensity': string | null;
-    /**
-     * 梭織布種密度(緯向)
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'weftDensity': string | null;
-    /**
-     * 梭織布種紗支數(經向)
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'warpYarnSize': string | null;
-    /**
-     * 梭織布種紗支數(緯向)
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'weftYarnSize': string | null;
-    /**
-     * 針織布種織機類型
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'machineType': string | null;
-    /**
-     * 針織布種經向密度
-     * @type {number}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'walesPerInch': number | null;
-    /**
-     * 針織布種緯向密度
-     * @type {number}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'coursesPerInch': number | null;
-    /**
-     * 針織布種紗支數
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'yarnSize': string | null;
-    /**
-     * 針織布種機台針數
-     * @type {number}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'machineGaugeInGg': number | null;
-    /**
-     * 皮革布種AverageSkin
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'averageSkinPerMeterSquare': string | null;
-    /**
-     * 皮革布種級別
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'grade': string | null;
-    /**
-     * 皮革布種鞣製
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'tannage': string | null;
-    /**
-     * 無紡布種厚度
-     * @type {number}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'thicknessPerMm': number | null;
-    /**
-     * 無紡布種粘合法
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'bondingMethod': string | null;
-    /**
-     * 副料布種外徑
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'outerDiameter': string | null;
-    /**
-     * 副料布種長度
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'length': string | null;
-    /**
-     * 副料布種厚度
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'thickness': string | null;
-    /**
-     * 副料布種寬度
-     * @type {string}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'width': string | null;
-    /**
-     * 是否公開規格資訊
-     * @type {boolean}
-     * @memberof MaterialSideCreateAllOfConstruction
-     */
-    'isPublic': boolean;
-}
-/**
- * 規格資訊 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
- * @export
- * @interface MaterialSideCreateAllOfConstructionAllOf
- */
-export interface MaterialSideCreateAllOfConstructionAllOf {
-    /**
-     * 是否公開規格資訊
-     * @type {boolean}
-     * @memberof MaterialSideCreateAllOfConstructionAllOf
-     */
-    'isPublic': boolean;
-}
 /**
  * 
  * @export
@@ -10760,6 +10554,12 @@ export interface MaterialTagInfo {
  */
 export interface MaterialTrimConstruction {
     /**
+     * 是否公開規格資訊
+     * @type {boolean}
+     * @memberof MaterialTrimConstruction
+     */
+    'isPublic': boolean;
+    /**
      * 副料布種外徑
      * @type {string}
      * @memberof MaterialTrimConstruction
@@ -10819,91 +10619,91 @@ export interface MaterialU3m {
      * @type {boolean}
      * @memberof MaterialU3m
      */
-    'hasPhysicalData': boolean;
+    'hasPhysicalData': boolean | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'zipUrl': string;
+    'zipUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'u3maUrl': string;
+    'u3maUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'baseImgUrl': string;
+    'baseImgUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'normalImgUrl': string;
+    'normalImgUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'roughImgUrl': string;
+    'roughImgUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'dispImgUrl': string;
+    'dispImgUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'gltfUrl': string;
+    'gltfUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'u3mSpecUrl': string;
+    'u3mSpecUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialU3m
      */
-    'u3mPhysicSpecUrl': string;
+    'u3mPhysicSpecUrl': string | null;
     /**
      * 
      * @type {number}
      * @memberof MaterialU3m
      */
-    'dpi': number;
+    'dpi': number | null;
     /**
      * 建立者的單位的標籤顏色，檢視者所屬組織和建立者單位那方所屬組織相同時為:呈現建立者組織或團隊的label color，非建立者那方單位所屬組織為Null值
      * @type {string}
      * @memberof MaterialU3m
      */
-    'creatorUnitLabelColor': string;
+    'creatorUnitLabelColor': string | null;
     /**
      * 建立者的使用者名稱，檢視者所屬組織和建立者單位那方所屬組織相同時呈現建立者的使用者名稱，非建立者那方單位所屬組織為Null值
      * @type {string}
      * @memberof MaterialU3m
      */
-    'creator': string;
+    'creator': string | null;
     /**
      * 建立者的大頭貼，檢視者所屬組織和建立者單位那方所屬組織相同時呈現建立者的大頭貼，非建立者那方單位所屬組織為Null值
      * @type {string}
      * @memberof MaterialU3m
      */
-    'creatorAvatar': string;
+    'creatorAvatar': string | null;
     /**
      * 建立時間
      * @type {number}
      * @memberof MaterialU3m
      */
-    'createDate': number;
+    'createDate': number | null;
 }
 
 
@@ -11042,10 +10842,10 @@ export interface MaterialUpdateFaceSide {
     'descriptionList': Array<MaterialSideCreateAllOfDescriptionList> | null;
     /**
      * 
-     * @type {MaterialSideCreateAllOfConstruction}
+     * @type {MaterialConstruction}
      * @memberof MaterialUpdateFaceSide
      */
-    'construction': MaterialSideCreateAllOfConstruction;
+    'construction': MaterialConstruction;
     /**
      * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
      * @type {Array<MaterialCustomConstructionBase>}
@@ -11340,6 +11140,12 @@ export interface MaterialUserInfo {
      * @type {string}
      * @memberof MaterialUserInfo
      */
+    'avatar'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialUserInfo
+     */
     'unitName': string;
     /**
      * 
@@ -11408,6 +11214,12 @@ export interface MaterialWidth {
  * @interface MaterialWovenConstruction
  */
 export interface MaterialWovenConstruction {
+    /**
+     * 是否公開規格資訊
+     * @type {boolean}
+     * @memberof MaterialWovenConstruction
+     */
+    'isPublic': boolean;
     /**
      * 梭織布種密度(經向)
      * @type {string}
@@ -12318,7 +12130,7 @@ export interface MultimediaFile {
      * @type {MultimediaFileAllOfCropRecord}
      * @memberof MultimediaFile
      */
-    'cropRecord': MultimediaFileAllOfCropRecord;
+    'cropRecord': MultimediaFileAllOfCropRecord | null;
 }
 /**
  * 
@@ -12337,7 +12149,7 @@ export interface MultimediaFileAllOf {
      * @type {MultimediaFileAllOfCropRecord}
      * @memberof MultimediaFileAllOf
      */
-    'cropRecord': MultimediaFileAllOfCropRecord;
+    'cropRecord': MultimediaFileAllOfCropRecord | null;
 }
 /**
  * 
@@ -27785,11 +27597,13 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetsMaterial: async (getAssetsMaterialRequest?: GetAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAssetsMaterial: async (getAssetsMaterialRequest: GetAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getAssetsMaterialRequest' is not null or undefined
+            assertParamExists('getAssetsMaterial', 'getAssetsMaterialRequest', getAssetsMaterialRequest)
             const localVarPath = `/assets/material/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28727,11 +28541,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+        async getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetsMaterial(getAssetsMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -29088,11 +28902,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+        getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29452,12 +29266,12 @@ export class AssetsApi extends BaseAPI {
     /**
      * 
      * @summary 取得單一布料資料
-     * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+     * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: AxiosRequestConfig) {
+    public getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 

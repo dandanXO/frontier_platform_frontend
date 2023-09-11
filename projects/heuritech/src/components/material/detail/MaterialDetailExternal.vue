@@ -56,7 +56,7 @@ div
 </template>
 
 <script setup>
-import useMaterial from '@/composables/useMaterial'
+import useMaterialOld from '@/composables/useMaterialOld'
 import AttachmentItem from '@/components/material/attachment/AttachmentItem.vue'
 import MaterialDetailPreviewImg from '@/components/material/detail/MaterialDetailPreviewImg.vue'
 import MaterialDetailPantone from '@/components/material/detail/MaterialDetailPantone.vue'
@@ -86,7 +86,7 @@ const { t } = useI18n()
 const modalStore = useModalStore()
 
 const { materialInfo, materialPublicPriceInfo, attachmentSortedList } =
-  useMaterial(props.material)
+  useMaterialOld(props.material)
 
 const downloadU3m = async ({ url }) => {
   if (!props.isCanDownloadU3M) {

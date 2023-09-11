@@ -5,7 +5,7 @@ div(class="flex flex-col")
     :label="$t('RR0241')"
     iconSize="20"
     binary
-    :disabled="!made2flowSubscribed"
+    :disabled="!carbonEmissionInfo.hasPermission"
     class="self-end"
   )
   div(class="mt-2 md:mb-10 relative")
@@ -22,8 +22,7 @@ div(class="flex flex-col")
       v-if="!isShowGraph"
       class="absolute left-0 top-12 grid grid-cols-12 w-full h-54.5 z-1 pointer-events-none"
     )
-      template(v-if="planType.PERSONALIZED || planType.PERSONALIZED_PRO")
-      template(v-else-if="planType.STANDARD")
+      template(v-if="carbonEmissionInfo.hasPermission")
         div(class="col-span-6")
         div(
           class="col-span-6 bg-contain bg-no-repeat flex items-center bg-grey-0"
@@ -58,7 +57,7 @@ div(class="flex flex-col")
           div(
             class="w-5/6 mx-auto md:w-full flex flex-col items-center justify-center w-full"
           )
-            template(v-if="isInnerApp")
+            template(v-if="isInInnerApp")
               f-svg-icon(iconName="subscribe" size="30" class="mb-3.5 text-grey-900")
               p(class="text-body2 leading-1.6 text-grey-900") {{ $t('VV0048') }}
               i18n-t(
@@ -98,14 +97,14 @@ div(class="flex flex-col")
 
     div(class="pt-2 grid gap-y-1 relative")
       div(
-        v-for="property in carbonEmissionInfo"
+        v-for="property in carbonEmissionInfo.carbonEmission"
         :key="property.title"
         class="px-2 md:px-10 py-4 grid grid-cols-12 gap-x-1 md:gap-x-6 items-start"
-        :class="{ 'hover:bg-grey-100': made2flowSubscribed }"
+        :class="{ 'hover:bg-grey-100': carbonEmissionInfo.hasPermission }"
       )
         div(
           class="col-span-3 h-9.5 flex items-center gap-x-3"
-          :class="[made2flowSubscribed ? 'text-grey-900' : 'text-grey-250']"
+          :class="[carbonEmissionInfo.hasPermission ? 'text-grey-900' : 'text-grey-250']"
         )
           f-svg-icon(
             :iconName="property.icon"
@@ -116,102 +115,72 @@ div(class="flex flex-col")
         div(class="col-span-7")
           div(class="h-9.5 grid grid-cols-7 gap-x-6")
             div(class="col-span-3 flex items-center gap-x-1 md:gap-x-2")
-              template(v-if="property.personalized != null")
+              template(v-if="property.value != null")
                 div(class="w-2 h-2 rounded-sm bg-primary-400 shrink-0")
-                p(class="text-caption2 md:text-body2 text-grey-900") {{ property.personalized }} {{ property.unitLong }}
+                p(class="text-caption2 md:text-body2 text-grey-900") {{ property.value }} {{ property.unitLong }}
               hr(v-else class="w-4 border-grey-250")
             div(class="col-span-2 flex items-center gap-x-2")
               hr(class="w-4 border-grey-250")
             div(class="col-span-2 flex items-center")
               hr(class="w-4 border-grey-250")
-          div(v-if="isShowGraph" class="pt-2")
-            div(class="relative")
-              div(
-                class="grid grid-cols-5 h-10 divide-x divide-grey-100 bg-grey-50 border border-grey-100 rounded mb-3.5"
-              )
-                div(v-for="i in 5" class="relative" :key="i")
-                  span(
-                    v-if="i === 1"
-                    class="absolute -bottom-0.5 translate-y-full left-0 text-caption text-grey-250"
-                  ) 0
-                  span(
-                    class="absolute -bottom-0.5 translate-y-full right-0 text-caption text-grey-250"
-                  ) {{ i * 10 }}
-              div(
-                class="border-0 absolute z-1 left-0 top-3 bg-primary-400 h-1"
-                :style="{ width: 100 * (property.personalized / 50) + '%' }"
-              )
-              div(
-                class="border-0 absolute z-2 right-1 top-1 text-primary-500 text-caption"
-              ) {{ property.personalized }}
+          div(v-if="isShowGraph && property.value != null" class="relative mt-2")
+            div(
+              class="grid grid-cols-5 h-10 divide-x divide-grey-100 bg-grey-50 border border-grey-100 rounded mb-3.5"
+            )
+              div(v-for="i in 5" class="relative" :key="i")
+                span(
+                  v-if="i === 1"
+                  class="absolute -bottom-0.5 translate-y-full left-0 text-caption text-grey-250"
+                ) 0
+                span(
+                  class="absolute -bottom-0.5 translate-y-full right-0 text-caption text-grey-250"
+                ) {{ i * 10 }}
+            div(
+              class="border-0 absolute z-1 left-0 top-3 bg-primary-400 h-1"
+              :style="{ width: 100 * (property.value / 50) + '%' }"
+            )
+            div(class="border-0 absolute z-2 right-1 top-1 text-primary-500 text-caption") {{ property.value }}
         div(class="col-span-2 h-9.5 flex items-center gap-x-1")
           hr(class="w-4 border-grey-250")
-  div(v-if="made2flowSubscribed" class="flex items-center gap-x-4")
+  div(v-if="carbonEmissionInfo.hasPermission" class="flex items-center gap-x-4")
     img(src="@/assets/images/m2f_logo.png" class="w-16 h-4.5")
     div(
-      v-if="isInnerApp"
+      v-if="isInInnerApp"
       class="flex items-center gap-x-1.5 text-grey-600 cursor-pointer"
       @click="goToAppointment"
     )
       f-svg-icon(iconName="info_outline" size="14")
       p(class="text-caption") {{ $t('UU0078') }}
-    p(class="text-caption text-grey-600") {{ $t('RR0066') }}: {{ toStandardFormat(material.carbonEmission.lastUpdateTime) }}
+    p(v-if="carbonEmissionInfo.lastUpdateTime" class="text-caption text-grey-600") {{ $t('RR0066') }}: {{ toStandardFormat(carbonEmissionInfo.lastUpdateTime) }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { ref, computed } from 'vue'
-import useMaterial from '@/composables/useMaterial'
 import maskFull from '@/assets/images/mask_full.png'
 import maskHalf from '@/assets/images/mask_half.jpg'
-import {
-  VALUE_ADDED_SERVICE_ID,
-  MADE2FLOW_PLAN_TYPE,
-  useConstants,
-} from '@/utils/constants'
+import { VALUE_ADDED_SERVICE_ID, useConstants } from '@/utils/constants'
 import useReceivedShare from '@/composables/useReceivedShare'
 import { toStandardFormat } from '@frontier/lib'
+import type { Material } from '@frontier/platform-web-sdk'
+import useMaterial from '@/composables/material/useMaterial'
+import useNavigation from '@/composables/useNavigation'
 
 const router = useRouter()
 const route = useRoute()
 const { saveReceivedShare } = useReceivedShare()
 const { MADE2FLOW_TAG_LIST } = useConstants()
-const props = defineProps({
-  material: {
-    type: Object,
-    required: true,
-  },
-})
+const { isInInnerApp } = useNavigation()
+const props = defineProps<{
+  material: Material
+}>()
 
 const isShowGraph = ref(false)
-const { carbonEmissionInfo } = useMaterial(props.material)
+const { carbonEmissionInfo } = useMaterial(ref(props.material))
 
-const planType = computed(() => {
-  const {
-    carbonEmission: { materialOwnerMade2FlowPlanType, viewerMade2FlowPlanType },
-  } = props.material
-  const { STANDARD, PERSONALIZED, PERSONALIZED_PRO } = MADE2FLOW_PLAN_TYPE
-  const maxPlanType = Math.max(
-    materialOwnerMade2FlowPlanType,
-    viewerMade2FlowPlanType
-  )
-
-  return {
-    STANDARD: maxPlanType === STANDARD,
-    PERSONALIZED: materialOwnerMade2FlowPlanType === PERSONALIZED,
-    PERSONALIZED_PRO: materialOwnerMade2FlowPlanType === PERSONALIZED_PRO,
-  }
-})
-const isInnerApp = computed(() => !!route.params.orgNo)
 const isReceivedShare = computed(() => route.path.includes('received-share'))
 const isInternalMaterial = computed(
   () => route.path.includes('assets') || route.path.includes('workspace')
-)
-const made2flowSubscribed = computed(
-  () =>
-    planType.value.STANDARD ||
-    planType.value.PERSONALIZED ||
-    planType.value.PERSONALIZED_PRO
 )
 
 const viewTheProgram = () => {

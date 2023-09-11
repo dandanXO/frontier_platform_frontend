@@ -33,16 +33,16 @@ div(class="grid")
       @click="isOpenFilterPanel = !isOpenFilterPanel"
       :tooltipMessage="$t('RR0085')"
     )
-    //- div(class="w-0.5 h-4 bg-grey-250")
-    //- f-svg-icon(size="24" iconName="camera_border" class="text-grey-900 cursor-pointer")
-  slider(v-if="innerTagList.length > 0")
-    div(class="flex items-center gap-x-2 pb-5 pl-7.5")
-      f-label(
-        v-for="tag in innerTagList"
-        size="lg"
-        @click="selectTag(tag)"
-        :active="tag.isSelected"
-      ) {{ tag.name }}
+  div(v-if="innerTagList.length > 0" class="mb-5 px-7.5 overflow-hidden")
+    slider
+      div(class="flex items-center gap-x-2")
+        f-label(
+          v-for="tag in innerTagList"
+          size="lg"
+          @click="selectTag(tag)"
+          :active="tag.isSelected"
+          :key="tag.name"
+        ) {{ tag.name }}
   div(v-show="isOpenFilterPanel" class="px-7.5")
     div(class="bg-grey-50 p-5 rounded")
       div(class="flex items-end pb-4")

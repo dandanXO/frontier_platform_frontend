@@ -134,7 +134,7 @@ import MaterialU3mDownloadButton from '@/components/common/material/u3m/Material
 import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
 import MaterialU3mStatusBlock from '@/components/common/material/u3m/MaterialU3mStatusBlock.vue'
 import BlockMaterialUploadU3m from '@/components/assets/edit/BlockMaterialUploadU3m.vue'
-import useAssets from '@/composables/useAssets'
+import useAssetsOld from '@/composables/useAssetsOld'
 import { U3M_STATUS, CREATE_EDIT } from '@/utils/constants'
 import u3mInstructionImage from '@/assets/images/u3m.png'
 import { inputValidator } from '@frontier/lib'
@@ -154,7 +154,7 @@ const material = computed(() => props.material)
 
 const { t } = useI18n()
 const store = useStore()
-const { create3DMaterial } = useAssets()
+const { create3DMaterial } = useAssetsOld()
 
 const refBlockMaterialUploadU3m =
   ref<InstanceType<typeof BlockMaterialUploadU3m>>()

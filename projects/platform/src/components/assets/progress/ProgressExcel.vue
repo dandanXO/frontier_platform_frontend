@@ -188,7 +188,7 @@ import {
 import TableStatusLabel from '@/components/assets/progress/TableStatusLabel.vue'
 import TableStatusProgress from '@/components/assets/progress/TableStatusProgress.vue'
 import useNavigation from '@/composables/useNavigation'
-import useAssets from '@/composables/useAssets'
+import useAssetsOld from '@/composables/useAssetsOld'
 import { printGeneralLabel, printA4Card } from '@/utils/print'
 import { toStandardFormat } from '@frontier/lib'
 
@@ -215,7 +215,7 @@ const { t } = useI18n()
 const store = useStore()
 const route = useRoute()
 const { goToAssets } = useNavigation()
-const { exportExcel } = useAssets()
+const { exportExcel } = useAssetsOld()
 
 const isLoading = ref(false)
 const keyword = ref('')

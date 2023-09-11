@@ -10,7 +10,7 @@ div
 </template>
 
 <script>
-import useMaterial from '@/composables/useMaterial'
+import useMaterialOld from '@/composables/useMaterialOld'
 export default {
   name: 'BlockMaterialSpecification',
   props: {
@@ -20,7 +20,7 @@ export default {
     },
   },
   setup(props) {
-    const { materialBasicInfo } = useMaterial(props.material)
+    const { materialBasicInfo } = useMaterialOld(props.material)
 
     return {
       materialBasicInfo,

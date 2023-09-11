@@ -3,6 +3,7 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import { MOODBOARD_TAB, SIGNUP_SOURCE } from '@/utils/constants'
+import { OgType } from '@frontier/platform-web-sdk'
 
 export default function useNavigation() {
   const store = useStore()
@@ -93,17 +94,12 @@ export default function useNavigation() {
     router.push(parsePath(`${prefixPath.value}/assets/${material.materialId}`))
   }
 
-  const goToAssetMaterialEdit = (material) => {
-    router.push(
-      parsePath(`${prefixPath.value}/assets/${material.materialId}/edit`)
-    )
-  }
-
-  const goToOrgAssetMaterialEdit = (materialId) => {
-    router.push(parsePath(`/:orgNo/assets/${materialId}/edit`))
-  }
-  const goToGroupAssetMaterialEdit = (materialId) => {
-    router.push(parsePath(`/:orgNo/:groupId/assets/${materialId}/edit`))
+  const goToAssetMaterialEdit = (materialId, ogType) => {
+    if (ogType === OgType.ORG) {
+      router.push(parsePath(`/:orgNo/assets/${materialId}/edit`))
+    } else {
+      router.push(parsePath(`/:orgNo/:groupId/assets/${materialId}/edit`))
+    }
   }
 
   const goToAssetsMaterialCreate = () => {
@@ -201,8 +197,6 @@ export default function useNavigation() {
     goToPublicLibraryMaterialDetail,
     goShowroom,
     goShowroomMaterialDetail,
-    goToOrgAssetMaterialEdit,
-    goToGroupAssetMaterialEdit,
     goToReceivedShareMaterial,
     goToShareToMeMaterial,
     goToBillings,

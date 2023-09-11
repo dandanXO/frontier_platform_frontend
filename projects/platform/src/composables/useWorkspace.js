@@ -9,8 +9,7 @@ export default function useWorkspace() {
   const { t } = useI18n()
   const store = useStore()
   const notify = useNotifyStore()
-  const { goToOrgAssetMaterialEdit, goToGroupAssetMaterialEdit } =
-    useNavigation()
+  const { goToAssetMaterialEdit } = useNavigation()
 
   const routeLocation = computed(() => store.getters['helper/routeLocation'])
 
@@ -43,16 +42,8 @@ export default function useWorkspace() {
     name: t('RR0054'),
     func: (node) => {
       const { materialId, sourceAssetLocation } = node.properties
-      editMaterial(materialId, sourceAssetLocation)
+      goToAssetMaterialEdit(materialId, sourceAssetLocation)
     },
-  }
-
-  const editMaterial = (materialId, sourceAssetLocation) => {
-    if (sourceAssetLocation === OG_TYPE.ORG) {
-      goToOrgAssetMaterialEdit(materialId)
-    } else {
-      goToGroupAssetMaterialEdit(materialId)
-    }
   }
 
   const duplicateNode = {
@@ -218,6 +209,5 @@ export default function useWorkspace() {
     deleteMultipleNode,
     deleteCollection,
     deleteMaterial,
-    editMaterial,
   }
 }

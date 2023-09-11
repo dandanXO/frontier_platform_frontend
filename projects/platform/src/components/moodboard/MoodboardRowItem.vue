@@ -138,7 +138,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
 <script setup>
 import { ref, computed } from 'vue'
 import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
-import useMaterial from '@/composables/useMaterial'
+import useMaterialOld from '@/composables/useMaterialOld'
 import { U3M_STATUS } from '@/utils/constants'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -190,7 +190,7 @@ const {
   materialInfo,
   carbonEmissionInfo,
   materialScanImageStatus,
-} = useMaterial(props.properties)
+} = useMaterialOld(props.properties)
 
 const innerSelectedList = computed({
   get: () => props.selectedList,

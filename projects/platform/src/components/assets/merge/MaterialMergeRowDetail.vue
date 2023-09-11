@@ -11,7 +11,7 @@ div(class="h-full pt-5 px-7.5 overflow-y-auto text-body2")
 </template>
 
 <script>
-import useMaterial from '@/composables/useMaterial'
+import useMaterialOld from '@/composables/useMaterialOld'
 
 export default {
   name: 'MaterialMergeRowDetail',
@@ -21,7 +21,7 @@ export default {
     },
   },
   setup(props) {
-    const { materialBasicInfo } = useMaterial(props.material)
+    const { materialBasicInfo } = useMaterialOld(props.material)
     return {
       materialBasicInfo,
     }

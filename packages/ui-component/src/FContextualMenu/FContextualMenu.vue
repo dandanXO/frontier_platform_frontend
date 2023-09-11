@@ -129,7 +129,7 @@ const props = withDefaults(
      *
      * If `selectMode` is 3 (Multiple Select) then inputSelectValue must be an Array
      */
-    inputSelectValue: any
+    inputSelectValue?: any
     /**
      * * 0 - 不可選
      * * 1 - 單選，可取消

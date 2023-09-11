@@ -36,7 +36,7 @@ div(class="text-grey-600 flex flex-col gap-3.5")
 
 <script setup>
 import { computed } from 'vue'
-import useAssets from '@/composables/useAssets'
+import useAssetsOld from '@/composables/useAssetsOld'
 
 const props = defineProps({
   material: {
@@ -55,7 +55,7 @@ const {
   exportExcel,
   printQRCode,
   deleteMaterial,
-} = useAssets()
+} = useAssetsOld()
 
 const optionList = [
   [cloneTo, addToWorkspace],

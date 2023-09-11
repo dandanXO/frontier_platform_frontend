@@ -26,7 +26,9 @@ export const useNotifyStore = defineStore('notify', () => {
   const notifySnackbarProps = ref<NotifySnackbarProps>({
     isShowSnackbar: false,
   })
-  const showNotifySnackbar = (props: NotifySnackbarProps) => {
+  const showNotifySnackbar = (
+    props: Omit<NotifySnackbarProps, 'isShowSnackbar' | 'id'>
+  ) => {
     notifySnackbarProps.value = {
       ...props,
       id: Date.now(),

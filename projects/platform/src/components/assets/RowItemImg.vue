@@ -42,7 +42,7 @@ div(class="w-full min-w-42.5 max-w-67.5")
 
 <script>
 import { ref, computed } from 'vue'
-import useMaterial from '@/composables/useMaterial'
+import useMaterialOld from '@/composables/useMaterialOld'
 import useNavigation from '@/composables/useNavigation'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 
@@ -63,7 +63,7 @@ export default {
   setup(props, { emit }) {
     const { goToAssetMaterialDetail } = useNavigation()
     const isHover = ref(false)
-    const { materialScanImageStatus } = useMaterial(props.material)
+    const { materialScanImageStatus } = useMaterialOld(props.material)
 
     const innerSelectedList = computed({
       get: () => props.selectedList,
