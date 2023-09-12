@@ -124,8 +124,8 @@ const alternativeUploadOptions = [
   },
   {
     icon: 'add_box_outline',
-    title: t('DD0090'),
-    content: t('DD0091'),
+    title: t('DD0116'),
+    content: t('DD0117'),
     action: goToAssetsMaterialCreate,
     testId: 'manual-upload',
   },
