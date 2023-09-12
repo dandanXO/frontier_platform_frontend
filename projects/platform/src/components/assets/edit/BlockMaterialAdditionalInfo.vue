@@ -72,6 +72,7 @@ const openModalUploadFileGeneral = () => {
         'mov',
         'mp4',
         'scch',
+        'ydt',
       ],
       uploadHandler: async (file, displayFileName) => {
         if (isEditMode.value) {

@@ -84,6 +84,7 @@ export enum CUSTOMIZED_EXTENSION {
   FOLDER = 'folder',
   U3M = 'u3m',
   SCCH = 'scch',
+  YDT = 'ydt',
 }
 
 export const EXTENSION = {
