@@ -380,43 +380,43 @@ export interface AssetsMaterialAddToWorkspaceRequestAllOfTargetWorkspaceNodeList
  */
 export interface AttachmentFile {
     /**
-     * 
+     * 檔案ID
      * @type {number}
      * @memberof AttachmentFile
      */
     'fileId': number;
     /**
-     * 
+     * 原始檔案名稱
      * @type {string}
      * @memberof AttachmentFile
      */
     'fileName': string;
     /**
-     * 
+     * 顯示檔案名稱
      * @type {string}
      * @memberof AttachmentFile
      */
     'displayFileName': string;
     /**
-     * 
+     * 原始圖檔路徑
      * @type {string}
      * @memberof AttachmentFile
      */
     'originalUrl': string;
     /**
-     * 非 image, pdf 時為 null
+     * 用來呈現的大圖URL，非 image、pdf 時為 null
      * @type {string}
      * @memberof AttachmentFile
      */
     'displayUrl': string | null;
     /**
-     * 非 image, pdf 時為 null
+     * 縮圖URL，非 image、pdf 時為 null
      * @type {string}
      * @memberof AttachmentFile
      */
     'thumbnailUrl': string | null;
     /**
-     * 
+     * 副檔名
      * @type {string}
      * @memberof AttachmentFile
      */
@@ -2367,16 +2367,16 @@ export interface CreateAssetsMaterialRequest {
     'itemNo': string;
     /**
      * 
-     * @type {MaterialPatternInfoCreate}
+     * @type {MaterialWidth}
      * @memberof CreateAssetsMaterialRequest
      */
-    'patternInfo': MaterialPatternInfoCreate;
+    'width': MaterialWidth;
     /**
      * 
-     * @type {MaterialColorInfoCreate}
+     * @type {MaterialWeight}
      * @memberof CreateAssetsMaterialRequest
      */
-    'colorInfo': MaterialColorInfoCreate;
+    'weight': MaterialWeight;
     /**
      * 
      * @type {MaterialSeasonInfoCreate}
@@ -7283,34 +7283,22 @@ export interface Material {
     'itemNo': string;
     /**
      * 
-     * @type {OgType}
-     * @memberof Material
-     */
-    'assetOgType': OgType;
-    /**
-     * 
      * @type {MaterialCoverImage}
      * @memberof Material
      */
     'coverImage': MaterialCoverImage | null;
     /**
-     * Pantone Color清單
-     * @type {Array<MaterialPantoneListInner>}
+     * 
+     * @type {MaterialWidth}
      * @memberof Material
      */
-    'pantoneList': Array<MaterialPantoneListInner>;
+    'width': MaterialWidth;
     /**
      * 
-     * @type {MaterialPatternInfo}
+     * @type {MaterialWeight}
      * @memberof Material
      */
-    'patternInfo': MaterialPatternInfo;
-    /**
-     * 
-     * @type {MaterialColorInfo}
-     * @memberof Material
-     */
-    'colorInfo': MaterialColorInfo;
+    'weight': MaterialWeight;
     /**
      * 
      * @type {MaterialSeasonInfo}
@@ -7501,17 +7489,23 @@ export interface MaterialBackSide {
      */
     'contentList': Array<MaterialSideAllOfContentList>;
     /**
-     * 
-     * @type {MaterialWidth}
+     * Pantone Color清單
+     * @type {Array<MaterialSideAllOfPantoneListInner>}
      * @memberof MaterialBackSide
      */
-    'width': MaterialWidth;
+    'pantoneList': Array<MaterialSideAllOfPantoneListInner>;
     /**
      * 
-     * @type {MaterialWeight}
+     * @type {MaterialPatternInfo}
      * @memberof MaterialBackSide
      */
-    'weight': MaterialWeight;
+    'patternInfo': MaterialPatternInfo;
+    /**
+     * 
+     * @type {MaterialColorInfo}
+     * @memberof MaterialBackSide
+     */
+    'colorInfo': MaterialColorInfo;
 }
 
 
@@ -7775,16 +7769,16 @@ export interface MaterialCreate {
     'itemNo': string;
     /**
      * 
-     * @type {MaterialPatternInfoCreate}
+     * @type {MaterialWidth}
      * @memberof MaterialCreate
      */
-    'patternInfo': MaterialPatternInfoCreate;
+    'width': MaterialWidth;
     /**
      * 
-     * @type {MaterialColorInfoCreate}
+     * @type {MaterialWeight}
      * @memberof MaterialCreate
      */
-    'colorInfo': MaterialColorInfoCreate;
+    'weight': MaterialWeight;
     /**
      * 
      * @type {MaterialSeasonInfoCreate}
@@ -7898,16 +7892,16 @@ export interface MaterialCreateBackSide {
     'contentList': Array<MaterialSideCreateAllOfContentList>;
     /**
      * 
-     * @type {MaterialWidth}
+     * @type {MaterialPatternInfoCreate}
      * @memberof MaterialCreateBackSide
      */
-    'width': MaterialWidth;
+    'patternInfo': MaterialPatternInfoCreate;
     /**
      * 
-     * @type {MaterialWeight}
+     * @type {MaterialColorInfoCreate}
      * @memberof MaterialCreateBackSide
      */
-    'weight': MaterialWeight;
+    'colorInfo': MaterialColorInfoCreate;
 }
 
 
@@ -7961,16 +7955,16 @@ export interface MaterialCreateFaceSide {
     'contentList': Array<MaterialSideCreateAllOfContentList>;
     /**
      * 
-     * @type {MaterialWidth}
+     * @type {MaterialPatternInfoCreate}
      * @memberof MaterialCreateFaceSide
      */
-    'width': MaterialWidth;
+    'patternInfo': MaterialPatternInfoCreate;
     /**
      * 
-     * @type {MaterialWeight}
+     * @type {MaterialColorInfoCreate}
      * @memberof MaterialCreateFaceSide
      */
-    'weight': MaterialWeight;
+    'colorInfo': MaterialColorInfoCreate;
 }
 
 
@@ -8396,17 +8390,23 @@ export interface MaterialFaceSide {
      */
     'contentList': Array<MaterialSideAllOfContentList>;
     /**
-     * 
-     * @type {MaterialWidth}
+     * Pantone Color清單
+     * @type {Array<MaterialSideAllOfPantoneListInner>}
      * @memberof MaterialFaceSide
      */
-    'width': MaterialWidth;
+    'pantoneList': Array<MaterialSideAllOfPantoneListInner>;
     /**
      * 
-     * @type {MaterialWeight}
+     * @type {MaterialPatternInfo}
      * @memberof MaterialFaceSide
      */
-    'weight': MaterialWeight;
+    'patternInfo': MaterialPatternInfo;
+    /**
+     * 
+     * @type {MaterialColorInfo}
+     * @memberof MaterialFaceSide
+     */
+    'colorInfo': MaterialColorInfo;
 }
 
 
@@ -9081,7 +9081,7 @@ export interface MaterialOptionsCode {
      * @type {MaterialOptionsCodeSeasonList}
      * @memberof MaterialOptionsCode
      */
-    'seasonList'?: MaterialOptionsCodeSeasonList;
+    'seasonList': MaterialOptionsCodeSeasonList;
     /**
      * 
      * @type {MaterialOptionsCodeContentList}
@@ -9263,74 +9263,6 @@ export interface MaterialOptionsCodeSeasonListDefaultInner {
      * @memberof MaterialOptionsCodeSeasonListDefaultInner
      */
     'name': string;
-}
-/**
- * 
- * @export
- * @interface MaterialPantoneListInner
- */
-export interface MaterialPantoneListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialPantoneListInner
-     */
-    'pantoneId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialPantoneListInner
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialPantoneListInner
-     */
-    'majorColorName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialPantoneListInner
-     */
-    'colorName': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialPantoneListInner
-     */
-    'r': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialPantoneListInner
-     */
-    'g': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialPantoneListInner
-     */
-    'b': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialPantoneListInner
-     */
-    'materialPantoneId': number;
-}
-/**
- * 
- * @export
- * @interface MaterialPantoneListInnerAllOf
- */
-export interface MaterialPantoneListInnerAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialPantoneListInnerAllOf
-     */
-    'materialPantoneId': number;
 }
 /**
  * 
@@ -9618,7 +9550,7 @@ export interface MaterialPrivateMetaData {
      * @type {MaterialPrivateMetaDataLastModifiedByInfo}
      * @memberof MaterialPrivateMetaData
      */
-    'lastModifiedByInfo': MaterialPrivateMetaDataLastModifiedByInfo;
+    'lastModifiedByInfo': MaterialPrivateMetaDataLastModifiedByInfo | null;
     /**
      * 
      * @type {MaterialPrivateMetaDataCopiedFromInfo}
@@ -9633,25 +9565,25 @@ export interface MaterialPrivateMetaData {
  */
 export interface MaterialPrivateMetaDataCopiedFromInfo {
     /**
-     * 
+     * copy時間
      * @type {number}
      * @memberof MaterialPrivateMetaDataCopiedFromInfo
      */
     'date': number;
     /**
-     * 
+     * copy來源組織名稱
      * @type {string}
      * @memberof MaterialPrivateMetaDataCopiedFromInfo
      */
     'orgName': string;
     /**
-     * 
+     * copy來源組織logo
      * @type {string}
      * @memberof MaterialPrivateMetaDataCopiedFromInfo
      */
     'orgLogo': string;
     /**
-     * 
+     * copy來源ItemNo
      * @type {string}
      * @memberof MaterialPrivateMetaDataCopiedFromInfo
      */
@@ -9664,31 +9596,31 @@ export interface MaterialPrivateMetaDataCopiedFromInfo {
  */
 export interface MaterialPrivateMetaDataCreatedByInfo {
     /**
-     * 
+     * 使用者名稱
      * @type {string}
      * @memberof MaterialPrivateMetaDataCreatedByInfo
      */
-    'username': string;
+    'userName': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialPrivateMetaDataCreatedByInfo
      */
-    'avatar'?: string;
+    'avatar': string;
     /**
-     * 
+     * 使用者單位標籤顏色
      * @type {string}
      * @memberof MaterialPrivateMetaDataCreatedByInfo
      */
     'unitName': string;
     /**
-     * 
+     * 使用者單位標籤顏色
      * @type {string}
      * @memberof MaterialPrivateMetaDataCreatedByInfo
      */
     'unitLabelColor': string | null;
     /**
-     * 
+     * 新增或修改日期
      * @type {number}
      * @memberof MaterialPrivateMetaDataCreatedByInfo
      */
@@ -9701,31 +9633,31 @@ export interface MaterialPrivateMetaDataCreatedByInfo {
  */
 export interface MaterialPrivateMetaDataLastModifiedByInfo {
     /**
-     * 
+     * 使用者名稱
      * @type {string}
      * @memberof MaterialPrivateMetaDataLastModifiedByInfo
      */
-    'username': string;
+    'userName': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialPrivateMetaDataLastModifiedByInfo
      */
-    'avatar'?: string;
+    'avatar': string;
     /**
-     * 
+     * 使用者單位標籤顏色
      * @type {string}
      * @memberof MaterialPrivateMetaDataLastModifiedByInfo
      */
     'unitName': string;
     /**
-     * 
+     * 使用者單位標籤顏色
      * @type {string}
      * @memberof MaterialPrivateMetaDataLastModifiedByInfo
      */
     'unitLabelColor': string | null;
     /**
-     * 
+     * 新增或修改日期
      * @type {number}
      * @memberof MaterialPrivateMetaDataLastModifiedByInfo
      */
@@ -9760,7 +9692,7 @@ export interface MaterialPublicMetaData {
      * @type {number}
      * @memberof MaterialPublicMetaData
      */
-    'updateDate': number;
+    'updateDate': number | null;
     /**
      * 布片擁有者的單位名稱，檢視角度為布片擁有者時為:布片擁有者的組織(+團隊)名稱，非布片擁有者為:布片擁有者的組織名稱
      * @type {string}
@@ -9974,17 +9906,23 @@ export interface MaterialSide {
      */
     'contentList': Array<MaterialSideAllOfContentList>;
     /**
-     * 
-     * @type {MaterialWidth}
+     * Pantone Color清單
+     * @type {Array<MaterialSideAllOfPantoneListInner>}
      * @memberof MaterialSide
      */
-    'width': MaterialWidth;
+    'pantoneList': Array<MaterialSideAllOfPantoneListInner>;
     /**
      * 
-     * @type {MaterialWeight}
+     * @type {MaterialPatternInfo}
      * @memberof MaterialSide
      */
-    'weight': MaterialWeight;
+    'patternInfo': MaterialPatternInfo;
+    /**
+     * 
+     * @type {MaterialColorInfo}
+     * @memberof MaterialSide
+     */
+    'colorInfo': MaterialColorInfo;
 }
 
 
@@ -10043,17 +9981,23 @@ export interface MaterialSideAllOf {
      */
     'contentList': Array<MaterialSideAllOfContentList>;
     /**
-     * 
-     * @type {MaterialWidth}
+     * Pantone Color清單
+     * @type {Array<MaterialSideAllOfPantoneListInner>}
      * @memberof MaterialSideAllOf
      */
-    'width': MaterialWidth;
+    'pantoneList': Array<MaterialSideAllOfPantoneListInner>;
     /**
      * 
-     * @type {MaterialWeight}
+     * @type {MaterialPatternInfo}
      * @memberof MaterialSideAllOf
      */
-    'weight': MaterialWeight;
+    'patternInfo': MaterialPatternInfo;
+    /**
+     * 
+     * @type {MaterialColorInfo}
+     * @memberof MaterialSideAllOf
+     */
+    'colorInfo': MaterialColorInfo;
 }
 
 
@@ -10125,6 +10069,74 @@ export interface MaterialSideAllOfContentList {
      * @memberof MaterialSideAllOfContentList
      */
     'percentage'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideAllOfPantoneListInner
+ */
+export interface MaterialSideAllOfPantoneListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfPantoneListInner
+     */
+    'pantoneId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideAllOfPantoneListInner
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideAllOfPantoneListInner
+     */
+    'majorColorName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideAllOfPantoneListInner
+     */
+    'colorName': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfPantoneListInner
+     */
+    'r': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfPantoneListInner
+     */
+    'g': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfPantoneListInner
+     */
+    'b': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfPantoneListInner
+     */
+    'materialPantoneId': number;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialSideAllOfPantoneListInnerAllOf
+ */
+export interface MaterialSideAllOfPantoneListInnerAllOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof MaterialSideAllOfPantoneListInnerAllOf
+     */
+    'materialPantoneId': number;
 }
 /**
  * 布面圖片
@@ -10300,16 +10312,16 @@ export interface MaterialSideCreate {
     'contentList': Array<MaterialSideCreateAllOfContentList>;
     /**
      * 
-     * @type {MaterialWidth}
+     * @type {MaterialPatternInfoCreate}
      * @memberof MaterialSideCreate
      */
-    'width': MaterialWidth;
+    'patternInfo': MaterialPatternInfoCreate;
     /**
      * 
-     * @type {MaterialWeight}
+     * @type {MaterialColorInfoCreate}
      * @memberof MaterialSideCreate
      */
-    'weight': MaterialWeight;
+    'colorInfo': MaterialColorInfoCreate;
 }
 
 
@@ -10351,16 +10363,16 @@ export interface MaterialSideCreateAllOf {
     'contentList': Array<MaterialSideCreateAllOfContentList>;
     /**
      * 
-     * @type {MaterialWidth}
+     * @type {MaterialPatternInfoCreate}
      * @memberof MaterialSideCreateAllOf
      */
-    'width': MaterialWidth;
+    'patternInfo': MaterialPatternInfoCreate;
     /**
      * 
-     * @type {MaterialWeight}
+     * @type {MaterialColorInfoCreate}
      * @memberof MaterialSideCreateAllOf
      */
-    'weight': MaterialWeight;
+    'colorInfo': MaterialColorInfoCreate;
 }
 
 
@@ -10745,16 +10757,16 @@ export interface MaterialUpdate {
     'itemNo': string;
     /**
      * 
-     * @type {MaterialPatternInfoCreate}
+     * @type {MaterialWidth}
      * @memberof MaterialUpdate
      */
-    'patternInfo': MaterialPatternInfoCreate;
+    'width': MaterialWidth;
     /**
      * 
-     * @type {MaterialColorInfoCreate}
+     * @type {MaterialWeight}
      * @memberof MaterialUpdate
      */
-    'colorInfo': MaterialColorInfoCreate;
+    'weight': MaterialWeight;
     /**
      * 
      * @type {MaterialSeasonInfoCreate}
@@ -10772,19 +10784,19 @@ export interface MaterialUpdate {
      * @type {MaterialUpdateFaceSide}
      * @memberof MaterialUpdate
      */
-    'faceSide': MaterialUpdateFaceSide;
+    'faceSide': MaterialUpdateFaceSide | null;
     /**
      * 
-     * @type {MaterialUpdateMiddleSide}
+     * @type {MaterialMiddleSideCreate}
      * @memberof MaterialUpdate
      */
-    'middleSide': MaterialUpdateMiddleSide;
+    'middleSide': MaterialMiddleSideCreate | null;
     /**
      * 
      * @type {MaterialUpdateFaceSide}
      * @memberof MaterialUpdate
      */
-    'backSide': MaterialUpdateFaceSide;
+    'backSide': MaterialUpdateFaceSide | null;
     /**
      * 
      * @type {MaterialUpdateTagInfo}
@@ -10816,6 +10828,12 @@ export interface MaterialUpdate {
  * @interface MaterialUpdateFaceSide
  */
 export interface MaterialUpdateFaceSide {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof MaterialUpdateFaceSide
+     */
+    'pantoneNameList': Array<string>;
     /**
      * 布面特性清單
      * @type {Array<MaterialSideCreateBaseFeatureListInner>}
@@ -10860,16 +10878,16 @@ export interface MaterialUpdateFaceSide {
     'contentList': Array<MaterialSideCreateAllOfContentList>;
     /**
      * 
-     * @type {MaterialWidth}
+     * @type {MaterialPatternInfoCreate}
      * @memberof MaterialUpdateFaceSide
      */
-    'width': MaterialWidth;
+    'patternInfo': MaterialPatternInfoCreate;
     /**
      * 
-     * @type {MaterialWeight}
+     * @type {MaterialColorInfoCreate}
      * @memberof MaterialUpdateFaceSide
      */
-    'weight': MaterialWeight;
+    'colorInfo': MaterialColorInfoCreate;
 }
 
 
@@ -10951,31 +10969,6 @@ export interface MaterialUpdateInventoryInternalInfo {
 /**
  * 
  * @export
- * @interface MaterialUpdateMiddleSide
- */
-export interface MaterialUpdateMiddleSide {
-    /**
-     * 布面特性清單
-     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
-     * @memberof MaterialUpdateMiddleSide
-     */
-    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
-    /**
-     * 布面後處理清單
-     * @type {Array<MaterialSideCreateBaseFinishListInner>}
-     * @memberof MaterialUpdateMiddleSide
-     */
-    'finishList': Array<MaterialSideCreateBaseFinishListInner> | null;
-    /**
-     * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
-     * @type {Array<MaterialCreateMiddleSideAllOfCustomPropertyList>}
-     * @memberof MaterialUpdateMiddleSide
-     */
-    'customPropertyList': Array<MaterialCreateMiddleSideAllOfCustomPropertyList>;
-}
-/**
- * 
- * @export
  * @interface MaterialUpdatePublicPrice
  */
 export interface MaterialUpdatePublicPrice {
@@ -11012,6 +11005,18 @@ export interface MaterialUpdateSpec {
     'itemNo': string;
     /**
      * 
+     * @type {MaterialWidth}
+     * @memberof MaterialUpdateSpec
+     */
+    'width': MaterialWidth;
+    /**
+     * 
+     * @type {MaterialWeight}
+     * @memberof MaterialUpdateSpec
+     */
+    'weight': MaterialWeight;
+    /**
+     * 
      * @type {MaterialSeasonInfoCreate}
      * @memberof MaterialUpdateSpec
      */
@@ -11027,19 +11032,19 @@ export interface MaterialUpdateSpec {
      * @type {MaterialUpdateFaceSide}
      * @memberof MaterialUpdateSpec
      */
-    'faceSide': MaterialUpdateFaceSide;
+    'faceSide': MaterialUpdateFaceSide | null;
     /**
      * 
-     * @type {MaterialUpdateMiddleSide}
+     * @type {MaterialMiddleSideCreate}
      * @memberof MaterialUpdateSpec
      */
-    'middleSide': MaterialUpdateMiddleSide;
+    'middleSide': MaterialMiddleSideCreate | null;
     /**
      * 
      * @type {MaterialUpdateFaceSide}
      * @memberof MaterialUpdateSpec
      */
-    'backSide': MaterialUpdateFaceSide;
+    'backSide': MaterialUpdateFaceSide | null;
 }
 /**
  * 
@@ -11130,31 +11135,31 @@ export interface MaterialUpdateTagTagInfo {
  */
 export interface MaterialUserInfo {
     /**
-     * 
+     * 使用者名稱
      * @type {string}
      * @memberof MaterialUserInfo
      */
-    'username': string;
+    'userName': string;
     /**
      * 
      * @type {string}
      * @memberof MaterialUserInfo
      */
-    'avatar'?: string;
+    'avatar': string;
     /**
-     * 
+     * 使用者單位標籤顏色
      * @type {string}
      * @memberof MaterialUserInfo
      */
     'unitName': string;
     /**
-     * 
+     * 使用者單位標籤顏色
      * @type {string}
      * @memberof MaterialUserInfo
      */
     'unitLabelColor': string | null;
     /**
-     * 
+     * 新增或修改日期
      * @type {number}
      * @memberof MaterialUserInfo
      */
@@ -12078,49 +12083,49 @@ export interface MoveWorkflowStageRequest {
  */
 export interface MultimediaFile {
     /**
-     * 
+     * 檔案ID
      * @type {number}
      * @memberof MultimediaFile
      */
     'fileId': number;
     /**
-     * 
+     * 原始檔案名稱
      * @type {string}
      * @memberof MultimediaFile
      */
     'fileName': string;
     /**
-     * 
+     * 顯示檔案名稱
      * @type {string}
      * @memberof MultimediaFile
      */
     'displayFileName': string;
     /**
-     * 
+     * 原始圖檔路徑
      * @type {string}
      * @memberof MultimediaFile
      */
     'originalUrl': string;
     /**
-     * 非 image, pdf 時為 null
+     * 用來呈現的大圖URL，非 image、pdf 時為 null
      * @type {string}
      * @memberof MultimediaFile
      */
     'displayUrl': string | null;
     /**
-     * 非 image, pdf 時為 null
+     * 縮圖URL，非 image、pdf 時為 null
      * @type {string}
      * @memberof MultimediaFile
      */
     'thumbnailUrl': string | null;
     /**
-     * 
+     * 副檔名
      * @type {string}
      * @memberof MultimediaFile
      */
     'extension': string;
     /**
-     * 
+     * 是否為封面圖
      * @type {boolean}
      * @memberof MultimediaFile
      */
@@ -12139,7 +12144,7 @@ export interface MultimediaFile {
  */
 export interface MultimediaFileAllOf {
     /**
-     * 
+     * 是否為封面圖
      * @type {boolean}
      * @memberof MultimediaFileAllOf
      */
@@ -25265,16 +25270,16 @@ export interface UpdateAssetsMaterialRequest {
     'itemNo': string;
     /**
      * 
-     * @type {MaterialPatternInfoCreate}
+     * @type {MaterialWidth}
      * @memberof UpdateAssetsMaterialRequest
      */
-    'patternInfo': MaterialPatternInfoCreate;
+    'width': MaterialWidth;
     /**
      * 
-     * @type {MaterialColorInfoCreate}
+     * @type {MaterialWeight}
      * @memberof UpdateAssetsMaterialRequest
      */
-    'colorInfo': MaterialColorInfoCreate;
+    'weight': MaterialWeight;
     /**
      * 
      * @type {MaterialSeasonInfoCreate}
@@ -25292,19 +25297,19 @@ export interface UpdateAssetsMaterialRequest {
      * @type {MaterialUpdateFaceSide}
      * @memberof UpdateAssetsMaterialRequest
      */
-    'faceSide': MaterialUpdateFaceSide;
+    'faceSide': MaterialUpdateFaceSide | null;
     /**
      * 
-     * @type {MaterialUpdateMiddleSide}
+     * @type {MaterialMiddleSideCreate}
      * @memberof UpdateAssetsMaterialRequest
      */
-    'middleSide': MaterialUpdateMiddleSide;
+    'middleSide': MaterialMiddleSideCreate | null;
     /**
      * 
      * @type {MaterialUpdateFaceSide}
      * @memberof UpdateAssetsMaterialRequest
      */
-    'backSide': MaterialUpdateFaceSide;
+    'backSide': MaterialUpdateFaceSide | null;
     /**
      * 
      * @type {MaterialUpdateTagInfo}
@@ -25371,59 +25376,90 @@ export interface UpdateAssetsMaterialSideImage200Response {
 export interface UpdateAssetsMaterialSideImage200ResponseResult {
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage}
+     * @type {UpdateAssetsMaterialSideImage200ResponseResultFaceSide}
      * @memberof UpdateAssetsMaterialSideImage200ResponseResult
      */
-    'faceSideImage': UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage;
+    'faceSide': UpdateAssetsMaterialSideImage200ResponseResultFaceSide | null;
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage}
+     * @type {UpdateAssetsMaterialSideImage200ResponseResultFaceSide}
      * @memberof UpdateAssetsMaterialSideImage200ResponseResult
      */
-    'backSideImage': UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage;
+    'backSide': UpdateAssetsMaterialSideImage200ResponseResultFaceSide | null;
 }
 /**
  * 
  * @export
- * @interface UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
+ * @interface UpdateAssetsMaterialSideImage200ResponseResultFaceSide
  */
-export interface UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage {
+export interface UpdateAssetsMaterialSideImage200ResponseResultFaceSide {
     /**
      * 
-     * @type {string}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
+     * @type {MaterialSideImage}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSide
      */
-    'originalUrl': string;
+    'sideImage': MaterialSideImage | null;
     /**
-     * 
-     * @type {string}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
+     * Pantone Color 清單
+     * @type {Array<UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner>}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSide
      */
-    'displayUrl': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
-     */
-    'thumbnailUrl': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
-     */
-    'rulerUrl': string;
-    /**
-     * 
-     * @type {CropImageRecord}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
-     */
-    'cropRecord': CropImageRecord;
+    'pantoneList': Array<UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner> | null;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+ */
+export interface UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner {
     /**
      * 
      * @type {number}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
      */
-    'dpi': number;
+    'materialPantoneId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'pantoneId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'majorColorName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'colorName': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'r': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'g': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'b': number;
 }
 /**
  * 
@@ -25431,6 +25467,24 @@ export interface UpdateAssetsMaterialSideImage200ResponseResultFaceSideImage {
  * @interface UpdateAssetsMaterialSideImageRequest
  */
 export interface UpdateAssetsMaterialSideImageRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateAssetsMaterialSideImageRequest
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImage}
+     * @memberof UpdateAssetsMaterialSideImageRequest
+     */
+    'faceSideImage': UpdateAssetsMaterialSideImageRequestFaceSideImage | null;
+    /**
+     * 
+     * @type {UpdateAssetsMaterialSideImageRequestBackSideImage}
+     * @memberof UpdateAssetsMaterialSideImageRequest
+     */
+    'backSideImage': UpdateAssetsMaterialSideImageRequestBackSideImage | null;
     /**
      * 組織ID
      * @type {number}
@@ -25452,6 +25506,94 @@ export interface UpdateAssetsMaterialSideImageRequest {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface UpdateAssetsMaterialSideImageRequestBackSideImage
+ */
+export interface UpdateAssetsMaterialSideImageRequestBackSideImage {
+    /**
+     * 
+     * @type {object}
+     * @memberof UpdateAssetsMaterialSideImageRequestBackSideImage
+     */
+    'original': object | null;
+    /**
+     * 
+     * @type {UpdateAssetsMaterialSideImageRequestBackSideImageCropped}
+     * @memberof UpdateAssetsMaterialSideImageRequestBackSideImage
+     */
+    'cropped': UpdateAssetsMaterialSideImageRequestBackSideImageCropped | null;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateAssetsMaterialSideImageRequestBackSideImageCropped
+ */
+export interface UpdateAssetsMaterialSideImageRequestBackSideImageCropped {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetsMaterialSideImageRequestBackSideImageCropped
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetsMaterialSideImageRequestBackSideImageCropped
+     */
+    'fileName': string;
+    /**
+     * 
+     * @type {CropImageRecord}
+     * @memberof UpdateAssetsMaterialSideImageRequestBackSideImageCropped
+     */
+    'cropImageRecord': CropImageRecord;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateAssetsMaterialSideImageRequestFaceSideImage
+ */
+export interface UpdateAssetsMaterialSideImageRequestFaceSideImage {
+    /**
+     * 
+     * @type {object}
+     * @memberof UpdateAssetsMaterialSideImageRequestFaceSideImage
+     */
+    'original': object | null;
+    /**
+     * 
+     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageCropped}
+     * @memberof UpdateAssetsMaterialSideImageRequestFaceSideImage
+     */
+    'cropped': UpdateAssetsMaterialSideImageRequestFaceSideImageCropped | null;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateAssetsMaterialSideImageRequestFaceSideImageCropped
+ */
+export interface UpdateAssetsMaterialSideImageRequestFaceSideImageCropped {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetsMaterialSideImageRequestFaceSideImageCropped
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetsMaterialSideImageRequestFaceSideImageCropped
+     */
+    'fileName': string;
+    /**
+     * 
+     * @type {CropImageRecord}
+     * @memberof UpdateAssetsMaterialSideImageRequestFaceSideImageCropped
+     */
+    'cropImageRecord': CropImageRecord;
+}
 /**
  * 
  * @export
@@ -25658,6 +25800,18 @@ export interface UpdateMaterialSimpleSpecRequest {
     'itemNo': string;
     /**
      * 
+     * @type {MaterialWidth}
+     * @memberof UpdateMaterialSimpleSpecRequest
+     */
+    'width': MaterialWidth;
+    /**
+     * 
+     * @type {MaterialWeight}
+     * @memberof UpdateMaterialSimpleSpecRequest
+     */
+    'weight': MaterialWeight;
+    /**
+     * 
      * @type {MaterialSeasonInfoCreate}
      * @memberof UpdateMaterialSimpleSpecRequest
      */
@@ -25673,19 +25827,19 @@ export interface UpdateMaterialSimpleSpecRequest {
      * @type {MaterialUpdateFaceSide}
      * @memberof UpdateMaterialSimpleSpecRequest
      */
-    'faceSide': MaterialUpdateFaceSide;
+    'faceSide': MaterialUpdateFaceSide | null;
     /**
      * 
-     * @type {MaterialUpdateMiddleSide}
+     * @type {MaterialMiddleSideCreate}
      * @memberof UpdateMaterialSimpleSpecRequest
      */
-    'middleSide': MaterialUpdateMiddleSide;
+    'middleSide': MaterialMiddleSideCreate | null;
     /**
      * 
      * @type {MaterialUpdateFaceSide}
      * @memberof UpdateMaterialSimpleSpecRequest
      */
-    'backSide': MaterialUpdateFaceSide;
+    'backSide': MaterialUpdateFaceSide | null;
 }
 
 
@@ -27597,13 +27751,11 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
+         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetsMaterial: async (getAssetsMaterialRequest: GetAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getAssetsMaterialRequest' is not null or undefined
-            assertParamExists('getAssetsMaterial', 'getAssetsMaterialRequest', getAssetsMaterialRequest)
+        getAssetsMaterial: async (getAssetsMaterialRequest?: GetAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28541,11 +28693,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
+         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+        async getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetsMaterial(getAssetsMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -28902,11 +29054,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
+         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+        getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29266,12 +29418,12 @@ export class AssetsApi extends BaseAPI {
     /**
      * 
      * @summary 取得單一布料資料
-     * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
+     * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: AxiosRequestConfig) {
+    public getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
