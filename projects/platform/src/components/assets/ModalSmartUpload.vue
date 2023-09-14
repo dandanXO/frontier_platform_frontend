@@ -19,7 +19,7 @@ modal-behavior(
       div(class="w-62.5") {{ $t('DD0106') }}
   div(class="w-94")
     template(v-if="readyToUploadFile.length === 0")
-      div(class="text-caption leading-1.6 grid grid-cols-2 grid-rows-3 pr-3 mb-3")
+      div(class="text-caption leading-1.6 grid grid-cols-2 grid-rows-4 pr-3 mb-3")
         div(class="text-grey-600") {{ $t('RR0243') }}
         div(class="text-grey-900 font-bold") {{ acceptType.join(', ').toUpperCase() }}
         div(class="text-grey-600") {{ $t('RR0145') }}
@@ -27,6 +27,8 @@ modal-behavior(
           template(#number) {{ fileSizeMaxLimit / Math.pow(1024, 2) }}
         div(class="text-grey-600") {{ $t('DD0102') }}
         div(class="text-grey-900 font-bold") {{ $t('DD0103') }}
+        div(class="text-grey-600") {{ $t('DD0118') }}
+        div(class="text-grey-900 font-bold") {{ $t('DD0119') }}
       div(
         class="rounded border-grey-250 bg-grey-50 border border-dashed h-57 flex justify-center items-center"
         data-cy="modal-smart-upload_dropzone"

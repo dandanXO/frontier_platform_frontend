@@ -55,7 +55,7 @@ f-table(
         f-svg-icon(iconName="warning_amber_round" size="16" class="mr-1.5 mt-0.5")
         p(v-if="item.msgCode === ERROR_MSG.INCORRECT_FORMAT") {{ $t('WW0091') }}
         p(v-else-if="item.msgCode === ERROR_MSG.INACTIVE") {{ $t('WW0092') }}
-        p(v-else-if="item.msgCode === ERROR_MSG.INCORRECT_DPI") {{ $t('WW0093') }}
+        p(v-else-if="item.msgCode === ERROR_MSG.INCORRECT_DPI") {{ $t('WW0141') }}
         p(v-else-if="item.msgCode === ERROR_MSG.INSUFFICIENT_STORAGE") {{ $t('WW0097') }}
           span(class="text-cyan-400 ml-0.5 cursor-pointer" @click="goToBillings") {{ $t('RR0210') }}
       //- Completed
