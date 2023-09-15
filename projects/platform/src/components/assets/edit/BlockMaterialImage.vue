@@ -71,7 +71,7 @@ div(class="pb-15")
             )
               f-tooltip-media(
                 placement="right-end"
-                :pantone="{ r: pantone.r, g: pantone.g, b: pantone.g }"
+                :pantone="{ r: pantone.r, g: pantone.g, b: pantone.b }"
                 :tooltipTitle="pantone.name"
                 :tooltipMessage="pantone.colorName"
               )
