@@ -138,7 +138,10 @@ f-table(
 import { useI18n } from 'vue-i18n'
 import TableStatusLabel from '@/components/assets/progress/TableStatusLabel.vue'
 import TableStatusProgress from '@/components/assets/progress/TableStatusProgress.vue'
-import { UPLOAD_PROGRESS } from '@/utils/constants'
+import {
+  CUSTOM_3D_VIEWER_MODEL_ORG_ID,
+  UPLOAD_PROGRESS,
+} from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
@@ -183,6 +186,7 @@ const tableData = computed<ProgressU3mItem[]>(
   () => store.getters['assets/progress/u3mProgressList']
 )
 const material = computed<Material>(() => store.getters['assets/material'])
+const orgId = computed(() => store.getters['organization/orgId'])
 
 const headers = [
   {
@@ -282,6 +286,7 @@ const openModal3dViewer = async (
         sourceType === U3M_PROVIDER.FRONTIER
           ? material.value.u3m
           : material.value.customU3m,
+      showCustomModels: orgId.value === CUSTOM_3D_VIEWER_MODEL_ORG_ID,
     },
   })
 }

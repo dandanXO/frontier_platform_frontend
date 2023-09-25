@@ -5,6 +5,8 @@ import Pica from 'pica'
 import { image2Object } from '../utils/cropper'
 import MODELS from '../constants/models'
 import useColors from './useColors'
+import croppedTopModel from '../assets/models/croppedTop/scene.glb'
+import croppedTopCoverImg from '../assets/models/croppedTop/cover.png'
 import type { Ref } from 'vue'
 import type { U3M } from './useU3M'
 
@@ -117,6 +119,15 @@ const useMoireEffectPreventSwitch = (
   }
 }
 
+const orgCustomModels = [
+  {
+    name: 'croppedTop',
+    filePath: croppedTopModel,
+    coverImg: croppedTopCoverImg,
+    size: 100,
+  },
+]
+
 export default function useModels(
   scene: Ref<THREE.Scene | undefined>,
   u3m: Ref<U3M | undefined>,
@@ -124,10 +135,12 @@ export default function useModels(
   baseImgUrl: string,
   normalImgUrl: string,
   roughImgUrl: string,
-  dispImgUrl: string
+  dispImgUrl: string,
+  showCustomModels = false
 ) {
   const isLoading = ref(true)
 
+  const models = [...MODELS, ...(showCustomModels ? orgCustomModels : [])]
   const modelIndex = ref<number>(0)
   const material = ref<THREE.MeshPhysicalMaterial>()
   const baseTexture = ref<THREE.Texture>()
@@ -144,7 +157,7 @@ export default function useModels(
   const textureRatio = ref(1)
   const repeatTimesX = computed(() => originRepeatTimesX.value / scale.value)
   const repeatTimesY = computed(() => repeatTimesX.value * textureRatio.value)
-  const currentModel = computed(() => MODELS[modelIndex.value])
+  const currentModel = computed(() => models[modelIndex.value])
 
   const {
     pantoneList,
@@ -260,7 +273,7 @@ export default function useModels(
     }
 
     modelIndex.value = index
-    const model = MODELS[index]
+    const model = models[index]
 
     const { width: widthInPx } = await image2Object(baseImgUrl)
     const widthInCm = (widthInPx / dpi) * 2.54
@@ -337,9 +350,9 @@ export default function useModels(
       moireEffectPreventedNormalTexture.value,
       moireEffectPreventedRoughnessTexture.value,
       moireEffectPreventedDisplacementTexture.value,
-    ].forEach((texture) =>
+    ].forEach((texture) => {
       texture?.repeat.set(repeatTimesX.value, repeatTimesY.value)
-    )
+    })
     if (material.value) {
       material.value.displacementScale =
         DISPLACEMENT_SCALE_BASE / repeatTimesX.value
@@ -363,6 +376,7 @@ export default function useModels(
 
   return {
     isLoading,
+    models,
     modelIndex,
     currentModel,
     loadModel,

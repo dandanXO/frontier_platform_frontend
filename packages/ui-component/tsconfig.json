@@ -5,13 +5,11 @@
     "src/**/*.js",
     "src/**/*.vue",
     "components.d.ts",
-    "vitest.config.ts",
+    "vitest.config.ts"
   ],
   "compilerOptions": {
     "paths": {
-      "@/*": [
-        "./src/*",
-      ]
-    },
-  },
+      "@/*": ["./src/*"]
+    }
+  }
 }

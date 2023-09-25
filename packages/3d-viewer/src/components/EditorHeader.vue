@@ -17,7 +17,7 @@ div(
       div(ref="carousel" class="relative flex flex-row overflow-x-scroll hide-scrollbar")
         template(v-if="displayMode === DISPLAY_MODE.MODEL")
           div(
-            v-for="(model, index) in MODELS"
+            v-for="(model, index) in models"
             :key="model.name"
             class="mx-1 h-[42px] w-[42px] hover:opacity-70 border border-grey-700 rounded shrink-0 cursor-pointer"
             :class="{ '!border-primary-400': currentModel.name === model.name }"
@@ -79,7 +79,6 @@ div(
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { DISPLAY_MODE, TEXTURE_TYPE, THEME } from '../constants'
-import MODELS from '../constants/models'
 import type { Model } from '../constants/models'
 import { useBreakpoints } from '@frontier/lib'
 import { useI18n } from 'vue-i18n'
@@ -88,6 +87,7 @@ const { t } = useI18n()
 
 defineProps<{
   displayMode: number
+  models: Model[]
   currentModel: Model
   textureType: number
 }>()

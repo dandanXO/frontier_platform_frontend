@@ -21,6 +21,7 @@ const props = defineProps<{
   normalImgUrl: string
   dispImgUrl: string
   roughImgUrl: string
+  showCustomModels?: boolean
   onClose?: () => void
 }>()
 
@@ -40,6 +41,7 @@ const {
 } = useU3M(props.u3mPath)
 const {
   isLoading: isLoadingModel,
+  models,
   modelIndex,
   currentModel,
   scale,
@@ -61,7 +63,8 @@ const {
   props.baseImgUrl,
   props.normalImgUrl,
   props.roughImgUrl,
-  props.dispImgUrl
+  props.dispImgUrl,
+  props.showCustomModels || false
 )
 
 const displayMode = ref(DISPLAY_MODE.MODEL)
@@ -73,7 +76,14 @@ const handleClose = () => {
   props.onClose()
 }
 
-useKeyboard(displayMode, textureType, modelIndex, loadModel, handleClose)
+useKeyboard(
+  displayMode,
+  textureType,
+  models,
+  modelIndex,
+  loadModel,
+  handleClose
+)
 
 const textureImages = {
   [TEXTURE_TYPE.BASE]: props.baseImgUrl,
@@ -97,6 +107,7 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
     :displayMode="displayMode"
     :currentModel="currentModel"
     :textureType="textureType"
+    :models="models"
     @displayModeChange="handleDisplayModeChange"
     @modelClick="loadModel"
     @textureClick="handleTextureClick"

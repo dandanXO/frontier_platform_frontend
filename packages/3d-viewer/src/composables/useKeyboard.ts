@@ -1,18 +1,19 @@
 import { onMounted, onUnmounted, type Ref } from 'vue'
 import { clamp } from 'ramda'
 import { DISPLAY_MODE, TEXTURE_TYPE } from '../constants'
-import MODELS from '../constants/models'
+import type { Model } from '../constants/models'
 
 const useKeyboard = (
   displayMode: Ref<number>,
   textureType: Ref<number>,
+  models: Model[],
   modelIndex: Ref<number>,
   onChangeModel: (index: number) => void,
   onClose: () => void
 ) => {
   const keyDownHandler = (e: KeyboardEvent) => {
     const textureClamp = clamp(TEXTURE_TYPE.BASE, TEXTURE_TYPE.DISPLACEMENT)
-    const modelClamp = clamp(0, MODELS.length - 1)
+    const modelClamp = clamp(0, models.length - 1)
     const handleRightKey = () => {
       if (displayMode.value === DISPLAY_MODE.TEXTURE) {
         textureType.value = textureClamp(textureType.value + 1)
