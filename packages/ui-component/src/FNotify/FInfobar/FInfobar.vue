@@ -11,10 +11,12 @@ div(
     class="mt-[3px]"
   )
   div(
-    class="flex-grow min-h-5.5"
+    class="flex-grow"
     :class="[!shouldBeNextLine && display === DISPLAY.FLEX ? 'flex items-start gap-x-4' : '']"
   )
-    div(class="flex-grow self-center text-grey-600 text-caption/1.6")
+    div(
+      class="flex-grow min-h-5.5 flex flex-col justify-center text-grey-600 text-caption/1.6"
+    )
       p(v-if="!!title" class="font-bold flex-shrink-0") {{ title }}
       p(v-if="!!messageText" ref="refMessage") {{ messageText }}
       p(v-else ref="refMessage")

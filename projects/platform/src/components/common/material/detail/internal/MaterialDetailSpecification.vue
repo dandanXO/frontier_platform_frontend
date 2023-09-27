@@ -4,32 +4,39 @@ div
     f-svg-icon(iconName="swatch_small" size="20" class="text-grey-900")
     p(class="text-body2 font-bold text-grey-900") {{ $t('RR0130') }}
   f-input-tap(
-    v-if="material.isDoubleSide"
+    v-if="sideOptionList.length > 1"
     :optionList="sideOptionList"
-    v-model:inputValue="currentSelectedSideType"
+    :inputValue="currentSideType"
+    @update:inputValue="$emit('switchSideType', $event)"
     class="pt-4 pb-3"
   )
-  div(class="grid gap-y-1.5 w-full")
+  f-infobar(
+    v-if="isAutoSyncFaceToBackSideInfo && currentSideType === MATERIAL_SIDE_TYPE.BACK"
+    :notifyType="NOTIFY_TYPE.TIPS"
+    :messageText="'Same material information on the back and face.'"
+  )
+  div(v-else class="grid gap-y-1.5 w-full")
     div(
       v-if="specificationInfo.seasonInfo.value"
-      :class="{ 'bg-grey-50 px-3 py-2 rounded !text-grey-600': !specificationInfo.seasonInfo.isPublic }"
+      class="text-body2/1.6"
+      :class="[specificationInfo.seasonInfo.textColor, { 'bg-grey-50 px-3 py-2 rounded ': !specificationInfo.seasonInfo.isPublic }]"
     ) {{ specificationInfo.seasonInfo.value }}
     div(v-if="specificationInfo.featureList.value.length > 0")
       p(
-        :class="{ 'line-clamp-2': !hasExtendContent }"
-        class="text-body2/1.6 text-grey-900"
+        :class="[specificationInfo.featureList.textColor, { 'line-clamp-2': !hasExtendedContent }]"
+        class="text-body2/1.6"
       ) {{ specificationInfo.featureList.value }}
       button(
-        v-if="!hasExtendContent"
+        v-if="!hasExtendedContent"
         class="text-caption text-cyan-400 pt-2 pb-3"
-        @click="hasExtendContent = true"
+        @click="hasExtendedContent = true"
       ) Show More
     template(v-for="(property, key) in specificationInfo" :key="key")
       template(v-if="['seasonInfo', 'featureList'].includes(key)")
       div(
         v-else-if="key === 'construction' && specificationInfo['construction']"
-        class="w-full grid gap-y-1.5 text-grey-900"
-        :class="{ 'bg-grey-50 px-3 py-2 rounded !text-grey-600': !specificationInfo['construction'].isPublic }"
+        class="w-full grid gap-y-1.5"
+        :class="[specificationInfo['construction'].textColor, { 'bg-grey-50 px-3 py-2 rounded': !specificationInfo['construction'].isPublic }]"
       )
         div(
           v-for="(constructionProperty, constructionKey) in specificationInfo['construction'].value"
@@ -47,27 +54,35 @@ div
           v-for="constructionProperty in specificationInfo['constructionCustomPropertyList'].value"
           :key="constructionProperty.customId"
           class="flex"
-          :class="{ 'bg-grey-50 px-3 py-2 rounded !text-grey-600': !constructionProperty.isPublic }"
+          :class="[specificationInfo['constructionCustomPropertyList'].textColor, { 'bg-grey-50 px-3 py-2 rounded': !constructionProperty.isPublic }]"
         )
           template(v-if="constructionProperty")
             p(class="text-body2/1.6 break-words") {{ constructionProperty.name }}：
             p(class="text-body2/1.6 break-words") {{ constructionProperty.value }}
-      div(v-else-if="property" class="flex w-full")
-        p(class="text-body2/1.6 text-grey-900 break-words") {{ property.name }}：
-        p(class="text-body2/1.6 text-grey-900 break-words") {{ property.value }}
+      div(v-else-if="property" class="flex w-full" :class="property.textColor")
+        p(class="text-body2/1.6 break-words") {{ property.name }}：
+        p(class="text-body2/1.6 break-words") {{ property.value }}
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { Material } from '@frontier/platform-web-sdk'
-import useMaterial from '@/composables/material/useMaterial'
+import { ref, onMounted } from 'vue'
+import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
+import { NOTIFY_TYPE } from '@/utils/constants'
+import type {
+  MaterialSpecificationInfo,
+  SideOption,
+} from '@/composables/material/useMaterial'
 
 const props = defineProps<{
-  material: Material
+  isAutoSyncFaceToBackSideInfo: boolean
+  currentSideType: MATERIAL_SIDE_TYPE
+  specificationInfo: MaterialSpecificationInfo
+  sideOptionList: SideOption[]
 }>()
 
-const { currentSelectedSideType, sideOptionList, specificationInfo } =
-  useMaterial(ref(props.material))
+defineEmits<{
+  (e: 'switchSideType', sideType: MATERIAL_SIDE_TYPE): void
+}>()
 
 const canExtendContent = (text: string, numberOfLine: number) => {
   const p = document.createElement('p')
@@ -76,11 +91,18 @@ const canExtendContent = (text: string, numberOfLine: number) => {
   p.style.fontSize = '14px'
   p.style.lineHeight = '1.6'
   document.body.appendChild(p)
-  const isEllipsis = Math.floor(Number(p.offsetHeight / 22.4)) > numberOfLine
+  const isEllipsis =
+    Number(p.getBoundingClientRect().height / 22.4) > numberOfLine
+
   document.body.removeChild(p)
   return isEllipsis
 }
-const hasExtendContent = ref(
-  !canExtendContent(specificationInfo.value.featureList.value, 2)
-)
+const hasExtendedContent = ref(false)
+
+onMounted(() => {
+  hasExtendedContent.value = !canExtendContent(
+    props.specificationInfo.featureList.value,
+    2
+  )
+})
 </script>

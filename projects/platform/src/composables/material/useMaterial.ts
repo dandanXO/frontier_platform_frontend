@@ -19,6 +19,71 @@ import { useI18n } from 'vue-i18n'
 import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import { useStore } from 'vuex'
 
+export type MaterialSpecificationInfo = {
+  seasonInfo: {
+    name: string
+    isPublic: boolean
+    value: string
+    textColor: string
+  }
+  featureList: {
+    name: string
+    value: string
+    textColor: string
+  }
+  finishList: {
+    name: string
+    value: string
+    textColor: string
+  }
+  materialType: {
+    name: string
+    value: string
+    textColor: string
+  } | null
+  construction: {
+    name: string
+    isPublic: boolean
+    value:
+      | {
+          [key: string]: any
+        }
+      | undefined
+    textColor: string
+  } | null
+  constructionCustomPropertyList: {
+    name: string
+    value: {
+      isPublic: boolean
+      name: string
+      value: string
+      customId: number
+    }[]
+    textColor: string
+  } | null
+  contentList: {
+    name: string
+    value: string
+    textColor: string
+  } | null
+  width: {
+    name: string
+    value: string
+    textColor: string
+  } | null
+  weight: {
+    name: string
+    value: string
+    textColor: string
+  } | null
+}
+export type SideOption = {
+  label: string
+  selectValue: MATERIAL_SIDE_TYPE
+  icon: string
+  selectedIcon: string
+}
+
 export default function useMaterial(
   material: ComputedRef<Material> | Ref<Material>
 ) {
@@ -45,65 +110,6 @@ export default function useMaterial(
     [WeightUnit.GY]: `g/y`,
     [WeightUnit.GM]: `g/m`,
   }
-
-  // enum DISPLAY_TYPE {
-  //   ONLY_INTERNAL = 0, // 只顯示在 internal
-  //   ONLY_EXTERNAL = 1, // 只顯示在 external
-  //   BOTH_MUST = 2, // 兩邊都要顯示，無論是否有值
-  //   BOTH_OPTIONAL_VALUE = 3, // 兩邊都要顯示，但是只有在有值時才顯示
-  //   INTERNAL_MUST_EXTERNAL_OPTIONAL_PUBLIC = 4, // internal 時必顯示，external 時如果有值且 isPublic 為 true 才顯示
-  //   INTERNAL_MUST_EXTERNAL_OPTIONAL_VALUE = 5, // internal 時必顯示，external 時如果有值才顯示
-  //   INTERNAL_OPTIONAL_VALUE_EXTERNAL_OPTIONAL_PUBLIC = 6, // internal 時如果有值才顯示，external 時如果有值且 isPublic 為 true 才顯示
-  // }
-
-  // const propertyDisplayConfig = {
-  //   // Item# 產品編號
-  //   itemNo: DISPLAY_TYPE.BOTH_MUST,
-  //   // Features 產品特色
-  //   featureList: DISPLAY_TYPE.BOTH_OPTIONAL_VALUE,
-  //   // Content 成分
-  //   contentList: DISPLAY_TYPE.BOTH_MUST,
-  //   // Material Type 布種
-  //   materialType: DISPLAY_TYPE.BOTH_MUST,
-  //   // Material Description 布種描述
-  //   descriptionList: DISPLAY_TYPE.BOTH_OPTIONAL_VALUE,
-  //   // Construction 規格
-  //   construction: DISPLAY_TYPE.INTERNAL_OPTIONAL_VALUE_EXTERNAL_OPTIONAL_PUBLIC,
-  //   // Custom Construction 自訂規格
-  //   constructionCustomPropertyList:
-  //     DISPLAY_TYPE.INTERNAL_MUST_EXTERNAL_OPTIONAL_PUBLIC,
-  //   // Weight 布重
-  //   weight: DISPLAY_TYPE.BOTH_MUST,
-  //   // cuttable width 幅寬 (可裁)
-  //   cuttableWidth: DISPLAY_TYPE.BOTH_MUST,
-  //   // full width 幅寬 (全)
-  //   fullWidth: DISPLAY_TYPE.BOTH_MUST,
-  //   // finish 加工
-  //   finishList: DISPLAY_TYPE.BOTH_MUST,
-  //   // pantone 顏色資訊
-  //   pantone: DISPLAY_TYPE.BOTH_MUST,
-  //   // color 顏色資訊 (系統預設)
-  //   color: DISPLAY_TYPE.BOTH_OPTIONAL_VALUE,
-  //   // custom color 顏色資訊 (自訂)
-  //   colorCustomPropertyList:
-  //     DISPLAY_TYPE.INTERNAL_MUST_EXTERNAL_OPTIONAL_PUBLIC,
-  //   // pattern 顏色資訊 (系統預設)
-  //   pattern: DISPLAY_TYPE.BOTH_OPTIONAL_VALUE,
-  //   // custom pattern 顏色資訊 (自訂)
-  //   patternCustomPropertyList:
-  //     DISPLAY_TYPE.INTERNAL_MUST_EXTERNAL_OPTIONAL_PUBLIC,
-  //   // inventory 庫存資訊 (公開)
-  //   inventoryTotalQtyInYard:
-  //     DISPLAY_TYPE.INTERNAL_MUST_EXTERNAL_OPTIONAL_PUBLIC,
-  //   // pricing 價格資訊 (公開)
-  //   priceInfo: DISPLAY_TYPE.INTERNAL_MUST_EXTERNAL_OPTIONAL_VALUE,
-  //   // Public, AI, Certificate Tags 標籤資訊 （公開）
-  //   tagInfo: DISPLAY_TYPE.INTERNAL_MUST_EXTERNAL_OPTIONAL_VALUE,
-  //   // internalInfo 內部資訊 (非公開) tagInfo, priceInfo, inventoryInfo, attachmentList
-  //   internalInfo: DISPLAY_TYPE.ONLY_INTERNAL,
-  //   // carbonEmission 碳排資訊
-  //   carbonEmission: DISPLAY_TYPE.BOTH_MUST,
-  // }
 
   /**
    * A: cover image
@@ -162,49 +168,96 @@ export default function useMaterial(
     return list
   })
 
-  const currentSelectedSideType = ref<MATERIAL_SIDE_TYPE>(mainSideType.value)
-  const sideOptionList = computed(() => {
-    const { isComposite, faceSide, middleSide, backSide } = material.value
-    const list = []
+  const currentSideType = ref<MATERIAL_SIDE_TYPE>(mainSideType.value)
+  const currentSide = computed<
+    MaterialFaceSide | MaterialBackSide | MaterialMiddleSide
+  >(() => {
+    const { faceSide, middleSide, backSide } = material.value
+    return currentSideType.value === MATERIAL_SIDE_TYPE.FACE
+      ? (faceSide as MaterialFaceSide)
+      : currentSideType.value === MATERIAL_SIDE_TYPE.BACK
+      ? (backSide as MaterialBackSide)
+      : (middleSide as MaterialMiddleSide)
+  })
+  const switchSideType = (sideType: MATERIAL_SIDE_TYPE) =>
+    (currentSideType.value = sideType)
+  const sideOptionList = computed<SideOption[]>(() => {
+    const { isDoubleSide, isComposite, sideType } = material.value
+    const list: {
+      label: string
+      selectValue: MATERIAL_SIDE_TYPE
+      icon: string
+      selectedIcon: string
+    }[] = []
 
-    if (faceSide) {
+    const addFace = () =>
       list.push({
         label: t('MI0007'),
         selectValue: MATERIAL_SIDE_TYPE.FACE,
         icon: 'front',
         selectedIcon: 'face_full',
       })
-    }
-
-    if (isComposite && middleSide) {
+    const addMiddle = () =>
       list.push({
         label: t('MI0008'),
         selectValue: MATERIAL_SIDE_TYPE.MIDDLE,
         icon: 'middle',
         selectedIcon: 'middle_full',
       })
-    }
-
-    if (backSide) {
+    const addBack = () =>
       list.push({
         label: t('MI0009'),
         selectValue: MATERIAL_SIDE_TYPE.BACK,
         icon: 'back',
         selectedIcon: 'back_full',
       })
+
+    if (isDoubleSide) {
+      addFace()
+      if (isComposite) {
+        addMiddle()
+      }
+      addBack()
+    } else {
+      if (sideType === MaterialSideType.FACE_SIDE) {
+        addFace()
+      } else {
+        addBack()
+      }
+      if (isComposite) {
+        addMiddle()
+      }
     }
 
     return list
   })
-  const specificationInfo = computed(() => {
-    const { isComposite, faceSide, middleSide, backSide, seasonInfo } =
+  const getTextColor = (
+    isPublic = true,
+    isMaterialProperty: boolean,
+    isCompositeSideProperty: boolean
+  ) => {
+    const { isComposite } = material.value
+    currentSideType.value
+
+    if (currentSideType.value === MATERIAL_SIDE_TYPE.BACK) {
+      if (isMaterialProperty && !isCompositeSideProperty) {
+        return 'text-grey-300'
+      }
+      if (isCompositeSideProperty) {
+        return isComposite
+          ? isPublic
+            ? 'text-grey-900'
+            : 'text-grey-600'
+          : 'text-grey-300'
+      }
+    }
+
+    return isPublic ? 'text-grey-900' : 'text-grey-600'
+  }
+
+  const specificationInfo = computed<MaterialSpecificationInfo>(() => {
+    const { isComposite, faceSide, backSide, seasonInfo, width, weight } =
       material.value
-    const side: MaterialFaceSide | MaterialBackSide | MaterialMiddleSide =
-      currentSelectedSideType.value === MATERIAL_SIDE_TYPE.FACE
-        ? faceSide
-        : currentSelectedSideType.value === MATERIAL_SIDE_TYPE.BACK
-        ? backSide
-        : middleSide
 
     const getSeasonInfo = () => ({
       name: t('MI0011'),
@@ -220,18 +273,27 @@ export default function useMaterial(
         }
         return string
       })(),
+      textColor: getTextColor(seasonInfo?.isPublic ?? false, true, false),
     })
     const getFeatureList = () => ({
       name: t('MI0016'),
-      value: side.featureList.map((feature) => feature.name).join(', '),
+      value: currentSide.value.featureList
+        .map((feature) => feature.name)
+        .join(', '),
+      textColor: getTextColor(true, false, false),
     })
     const getFinishList = () => ({
       name: 'Finish',
-      value: side.finishList.map((finish) => finish.name).join(', '),
+      value: currentSide.value.finishList
+        .map((finish) => finish.name)
+        .join(', '),
+      textColor: getTextColor(true, false, false),
     })
 
-    if (currentSelectedSideType.value !== MATERIAL_SIDE_TYPE.MIDDLE) {
-      const sideWithoutMiddleSide = side as MaterialFaceSide | MaterialBackSide
+    if (currentSideType.value !== MATERIAL_SIDE_TYPE.MIDDLE) {
+      const sideWithoutMiddleSide = currentSide.value as
+        | MaterialFaceSide
+        | MaterialBackSide
       return {
         seasonInfo: getSeasonInfo(),
         featureList: getFeatureList(),
@@ -251,10 +313,16 @@ export default function useMaterial(
 
             return stringList.join(', ')
           })(),
+          textColor: getTextColor(true, false, true),
         },
         construction: {
           name: t('MI0026'),
           isPublic: sideWithoutMiddleSide.construction?.isPublic ?? false,
+          textColor: getTextColor(
+            sideWithoutMiddleSide.construction?.isPublic ?? false,
+            false,
+            true
+          ),
           value: (() => {
             if (!sideWithoutMiddleSide.construction) {
               return {}
@@ -374,22 +442,24 @@ export default function useMaterial(
         constructionCustomPropertyList: {
           name: 'Custom Construction',
           value: sideWithoutMiddleSide.constructionCustomPropertyList,
+          textColor: getTextColor(true, false, true),
         },
         contentList: {
           name: t('RR0021'),
           value: sideWithoutMiddleSide.contentList
             .map((content) => content.name)
             .join(', '),
+          textColor: getTextColor(true, false, true),
         },
         width: {
           name: t('RR0088'),
-          value: `${sideWithoutMiddleSide.width.cuttable}/${sideWithoutMiddleSide.width.full}`,
+          value: `${width.cuttable}/${width.full}`,
+          textColor: getTextColor(true, true, false),
         },
         weight: {
           name: 'Weight',
-          value: `${sideWithoutMiddleSide.weight.value}${
-            WEIGHT_UNIT[sideWithoutMiddleSide.weight.unit]
-          }`,
+          value: `${weight.value}${WEIGHT_UNIT[weight.unit]}`,
+          textColor: getTextColor(true, true, false),
         },
         finishList: getFinishList(),
       }
@@ -398,7 +468,44 @@ export default function useMaterial(
         seasonInfo: getSeasonInfo(),
         featureList: getFeatureList(),
         finishList: getFinishList(),
+        materialType: null,
+        construction: null,
+        constructionCustomPropertyList: null,
+        contentList: null,
+        width: null,
+        weight: null,
       }
+    }
+  })
+
+  const pantoneList = computed(() => {
+    if (currentSideType.value === MATERIAL_SIDE_TYPE.MIDDLE) {
+      return null
+    }
+
+    const side = currentSide.value as MaterialFaceSide | MaterialBackSide
+    return side.pantoneList
+  })
+  const colorInfo = computed(() => {
+    if (currentSideType.value === MATERIAL_SIDE_TYPE.MIDDLE) {
+      return null
+    }
+
+    const side = currentSide.value as MaterialFaceSide | MaterialBackSide
+    return {
+      name: 'Color',
+      value: side.colorInfo,
+    }
+  })
+  const patternInfo = computed(() => {
+    if (currentSideType.value === MATERIAL_SIDE_TYPE.MIDDLE) {
+      return null
+    }
+
+    const side = currentSide.value as MaterialFaceSide | MaterialBackSide
+    return {
+      name: 'Pattern',
+      value: side.patternInfo,
     }
   })
 
@@ -529,11 +636,15 @@ export default function useMaterial(
 
   return {
     displayImageList,
-    currentSelectedSideType,
+    currentSideType,
     sideOptionList,
     specificationInfo,
+    pantoneList,
+    colorInfo,
+    patternInfo,
     getPriceInfo,
     hasScannedImage,
     carbonEmissionInfo,
+    switchSideType,
   }
 }

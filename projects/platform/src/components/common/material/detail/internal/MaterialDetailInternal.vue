@@ -59,7 +59,7 @@ div
                 p(v-if="material.backSide?.frontierNo") {{ material.backSide?.frontierNo }}
             div(class="text-body2 text-grey-900 grid grid-cols-11")
               p(class="col-span-3") Last Modified
-              p(class="col-span-8") {{ toStandardFormat(material.metaData.updateDate) }}
+              p(v-if="material.metaData.updateDate" class="col-span-8") {{ toStandardFormat(material.metaData.updateDate) }}
           div(v-if="material.internalInfo" class="rounded-md bg-grey-50 p-7.5")
             h6(class="text-h6 font-bold text-grey-600") {{ $t('EE0026') }}
             div(class="pt-7.5 grid gap-y-8")
@@ -75,9 +75,12 @@ div
                       :hasBorder="false"
                     )
                     div
-                      p(class="text-body2 text-grey-900 pb-1") {{ material.internalInfo.metaData.createdByInfo.username }}
+                      p(class="text-body2 text-grey-900 pb-1") {{ material.internalInfo.metaData.createdByInfo.userName }}
                       p(class="text-caption text-grey-600") {{ material.internalInfo.metaData.createdByInfo.unitName }}・{{ toStandardFormat(material.internalInfo.metaData.createdByInfo.date) }}
-                div(class="text-body2 text-grey-900 grid grid-cols-11")
+                div(
+                  v-if="material.internalInfo.metaData.lastModifiedByInfo"
+                  class="text-body2 text-grey-900 grid grid-cols-11"
+                )
                   p(class="col-span-3") Last Modified By
                   div(class="col-span-8 flex items-center gap-x-3")
                     f-avatar(
@@ -88,7 +91,7 @@ div
                       :hasBorder="false"
                     )
                     div
-                      p(class="text-body2 text-grey-900 pb-1") {{ material.internalInfo.metaData.lastModifiedByInfo.username }}
+                      p(class="text-body2 text-grey-900 pb-1") {{ material.internalInfo.metaData.lastModifiedByInfo.userName }}
                       p(class="text-caption text-grey-600") {{ material.internalInfo.metaData.lastModifiedByInfo.unitName }}・{{ toStandardFormat(material.internalInfo.metaData.lastModifiedByInfo.date) }}
               div(class="w-full h-px bg-grey-150")
               div(

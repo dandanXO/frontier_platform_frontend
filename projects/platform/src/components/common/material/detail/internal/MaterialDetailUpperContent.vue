@@ -13,8 +13,19 @@ div(class="flex items-start gap-x-10")
         f-avatar(type="org" :imageUrl="material.metaData.unitLogo" size="md")
         p(class="text-body2/1.6 text-grey-800 font-bold break-words") {{ material.metaData.unitName }}
     div(class="flex flex-col gap-y-10")
-      material-detail-specification(:material="material")
-      material-detail-color-and-pattern(:material="material")
+      material-detail-specification(
+        :isAutoSyncFaceToBackSideInfo="material.isAutoSyncFaceToBackSideInfo"
+        :currentSideType="currentSideType"
+        :specificationInfo="specificationInfo"
+        :sideOptionList="sideOptionList"
+        @switchSideType="switchSideType"
+      )
+      material-detail-color-and-pattern(
+        v-if="currentSideType !== MATERIAL_SIDE_TYPE.MIDDLE && !(currentSideType === MATERIAL_SIDE_TYPE.BACK && material.isAutoSyncFaceToBackSideInfo)"
+        :pantoneList="pantoneList ?? undefined"
+        :colorInfo="colorInfo ?? undefined"
+        :patternInfo="patternInfo ?? undefined"
+      )
       material-detail-u3m(
         :materialId="material.materialId"
         :u3m="material.u3m"
@@ -30,12 +41,21 @@ import MaterialDetailColorAndPattern from '@/components/common/material/detail/i
 import MaterialDetailU3m from '@/components/common/material/detail/MaterialDetailU3m.vue'
 import useMaterial from '@/composables/material/useMaterial'
 import type { Material } from '@frontier/platform-web-sdk'
-import { PLATFORM_LOCATION_TYPE } from '@/utils/constants'
+import { PLATFORM_LOCATION_TYPE, MATERIAL_SIDE_TYPE } from '@/utils/constants'
 
 const props = defineProps<{
   material: Material
   platformLocationType: PLATFORM_LOCATION_TYPE
 }>()
 
-const { displayImageList } = useMaterial(ref(props.material))
+const {
+  displayImageList,
+  currentSideType,
+  specificationInfo,
+  sideOptionList,
+  switchSideType,
+  pantoneList,
+  colorInfo,
+  patternInfo,
+} = useMaterial(ref(props.material))
 </script>
