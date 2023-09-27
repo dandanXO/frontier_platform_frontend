@@ -19,6 +19,17 @@ import showroom from '@/store/modules/showroom'
 
 export default createStore({
   actions: {
+    trackError({ rootGetters }, payload) {
+      axios('/system/send-error-message', {
+        method: 'POST',
+        data: {
+          orgId: rootGetters['organization/orgId'] ?? null,
+          ogType: rootGetters['helper/routeLocation'] === 'org' ? 1 : 2,
+          ogId: rootGetters['helper/routeLocationId'] ?? null,
+          ...payload,
+        },
+      })
+    },
     async getUploadUrl(_, { fileName }) {
       const { data } = await axios('/general/get-upload-url', {
         method: 'POST',

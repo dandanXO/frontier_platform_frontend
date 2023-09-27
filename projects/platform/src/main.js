@@ -28,7 +28,15 @@ app.config.globalProperties.$dayjs = dayjs
 app.config.errorHandler = (err, vm, info) => {
   const { status, message } = err
 
-  if (!status || [400, 404, 500].includes(status)) {
+  if (!status || [400, 403, 404, 500].includes(status)) {
+    !status &&
+      store.dispatch('trackError', {
+        info: `${info}`,
+        errorMsg: message,
+        errorStack: err.stack,
+        url: window.location.href,
+      }) // Client Side Error
+
     store.dispatch('helper/openModalConfirm', {
       type: NOTIFY_TYPE.ALERT,
       header: i18n.global.t('RR0107'),
