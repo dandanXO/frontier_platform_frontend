@@ -113,7 +113,7 @@ watch(
 )
 
 const copyInviteLink = () => {
-  copyText(inviteLink)
+  copyText(inviteLink.value)
   notify.showNotifySnackbar({ messageText: t('BB0108') })
 }
 </script>
