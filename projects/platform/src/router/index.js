@@ -290,8 +290,7 @@ const routes = [
           } else if (fromWhere === 'group') {
             await store.dispatch('group/joinGroupViaLink', { inviteCode })
           }
-          await store.dispatch('user/getUser')
-          return next(`/${orgNo}`)
+          return next(`/${orgNo}/public-library`)
         },
       },
       {

@@ -236,11 +236,10 @@ export default {
       dispatch('setOrganization', data.result.organization)
     },
     async joinOrgViaLink({ dispatch }, params) {
-      const { data } = await dispatch('callOrgApi', {
+      await dispatch('callOrgApi', {
         func: 'joinOrgViaLink',
         params,
       })
-      dispatch('setOrganization', data.result.organization)
     },
     resetCreateForm({ commit }) {
       commit('SET_createForm', {

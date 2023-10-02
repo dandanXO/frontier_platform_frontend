@@ -135,11 +135,10 @@ export default {
       dispatch('setGroup', data.result.group)
     },
     async joinGroupViaLink({ dispatch }, params) {
-      const { data } = await dispatch('callGroupApi', {
+      await dispatch('callGroupApi', {
         func: 'joinGroupViaLink',
         params,
       })
-      dispatch('setGroup', data.result.group)
     },
     resetCreateForm({ commit }) {
       commit('SET_createForm_groupName', '')
