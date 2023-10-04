@@ -3,14 +3,19 @@ import i18n from '@frontier/i18n'
 import Made2FlowLogo from '@/assets/images/Made2Flow_logo.png'
 import Made2FlowBannerCh from '@/assets/images/Made2Flow_banner_ch.jpg'
 import Made2FlowBannerEn from '@/assets/images/Made2Flow_banner_en.jpg'
+import Made2FlowBannerJp from '@/assets/images/Made2Flow_banner_jp.jpg'
 import Made2FlowPriceCh from '@/assets/images/Made2Flow_price_ch.jpg'
 import Made2FlowPriceEn from '@/assets/images/Made2Flow_price_en.jpg'
+import Made2FlowPriceJp from '@/assets/images/Made2Flow_price_jp.jpg'
 import Made2FlowSlide1Ch from '@/assets/images/Made2Flow_slide_1_ch.jpg'
-import Made2FlowSlide1En from '@/assets/images/Made2Flow_slide_1_en.jpg'
 import Made2FlowSlide2Ch from '@/assets/images/Made2Flow_slide_2_ch.jpg'
-import Made2FlowSlide2En from '@/assets/images/Made2Flow_slide_2_en.jpg'
 import Made2FlowSlide3Ch from '@/assets/images/Made2Flow_slide_3_ch.jpg'
+import Made2FlowSlide1En from '@/assets/images/Made2Flow_slide_1_en.jpg'
+import Made2FlowSlide2En from '@/assets/images/Made2Flow_slide_2_en.jpg'
 import Made2FlowSlide3En from '@/assets/images/Made2Flow_slide_3_en.jpg'
+import Made2FlowSlide1Jp from '@/assets/images/Made2Flow_slide_1_jp.jpg'
+import Made2FlowSlide2Jp from '@/assets/images/Made2Flow_slide_2_jp.jpg'
+import Made2FlowSlide3Jp from '@/assets/images/Made2Flow_slide_3_jp.jpg'
 
 const t = i18n.global.t
 
@@ -23,13 +28,24 @@ export default function valueAddedServiceList() {
       // logo 需使用 2x 解析度才會夠（程式中會自動縮小0.5）
       providerName: t('M2F040'),
       projectName: t('M2F031'),
-      bannerImage: locale === 'en-US' ? Made2FlowBannerEn : Made2FlowBannerCh,
+      bannerImage: (() => {
+        const map = {
+          'en-US': Made2FlowBannerEn,
+          'zh-TW': Made2FlowBannerCh,
+          'ja-JP': Made2FlowBannerJp,
+        }
+        return map[locale]
+      })(),
       description: t('M2F032'),
       detail: {
-        slideImage:
-          locale === 'en-US'
-            ? [Made2FlowSlide1En, Made2FlowSlide2En, Made2FlowSlide3En]
-            : [Made2FlowSlide1Ch, Made2FlowSlide2Ch, Made2FlowSlide3Ch],
+        slideImage: (() => {
+          const map = {
+            'en-US': [Made2FlowSlide1En, Made2FlowSlide2En, Made2FlowSlide3En],
+            'zh-TW': [Made2FlowSlide1Ch, Made2FlowSlide2Ch, Made2FlowSlide3Ch],
+            'ja-JP': [Made2FlowSlide1Jp, Made2FlowSlide2Jp, Made2FlowSlide3Jp],
+          }
+          return map[locale]
+        })(),
         faqList: [
           {
             title: t('M2F001'),
@@ -92,7 +108,14 @@ export default function valueAddedServiceList() {
             answer: t('M2F030'),
           },
         ],
-        planAndPrice: locale === 'en-US' ? Made2FlowPriceEn : Made2FlowPriceCh,
+        planAndPrice: (() => {
+          const map = {
+            'en-US': Made2FlowPriceEn,
+            'zh-TW': Made2FlowPriceCh,
+            'ja-JP': Made2FlowPriceJp,
+          }
+          return map[locale]
+        })(),
       },
     },
   ]
