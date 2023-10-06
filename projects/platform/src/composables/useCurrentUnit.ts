@@ -81,7 +81,19 @@ const useCurrentUnit = () => {
   const group = computed(() => (isGroup.value ? storeGroup.value : null))
   const orgUser = computed(() => store.getters['organization/orgUser/orgUser'])
 
-  return { isGroup, ogType, unit, organization, group, orgUser }
+  const defaultWorkspaceNodeId = computed(() =>
+    group.value ? group.value.nodeId : organization.value.nodeId
+  )
+
+  return {
+    isGroup,
+    ogType,
+    unit,
+    organization,
+    group,
+    orgUser,
+    defaultWorkspaceNodeId,
+  }
 }
 
 export default useCurrentUnit

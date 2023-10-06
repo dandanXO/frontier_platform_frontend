@@ -5,8 +5,9 @@ import useNavigation from '@/composables/useNavigation'
 import { U3M_STATUS, NOTIFY_TYPE } from '@/utils/constants'
 import { printA4Card, printGeneralLabel } from '@/utils/print'
 import type { Material, OgType } from '@frontier/platform-web-sdk'
+import type { FunctionOption } from '@/types'
 
-enum ASSETS_MATERIAL_FUNCTION {
+export enum ASSETS_MATERIAL_FUNCTION {
   EDIT = 0,
   CLONE = 1,
   ADD_TO_WORKSPACE = 2,
@@ -19,13 +20,10 @@ enum ASSETS_MATERIAL_FUNCTION {
   DELETE = 9,
 }
 
-interface AssetsMaterialOption {
-  id: ASSETS_MATERIAL_FUNCTION
-  name: (m?: Material | Material[]) => string
-  func: (m: Material | Material[]) => any
-  icon?: (m?: Material | Material[]) => string
-  disabled?: (m: Material | Material[]) => boolean
-}
+export type AssetsFunctionOption = FunctionOption<
+  Material,
+  ASSETS_MATERIAL_FUNCTION
+>
 
 export default function useAssets() {
   const toMaterial = (m: Material | Material[]) => (Array.isArray(m) ? m[0] : m)
@@ -40,7 +38,7 @@ export default function useAssets() {
   const { goToAssetMaterialEdit, goToMaterialUpload, goToProgress } =
     useNavigation()
 
-  const editMaterial: AssetsMaterialOption = {
+  const editMaterial: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.EDIT,
     icon: () => 'create',
     name: () => t('RR0054'),
@@ -52,7 +50,7 @@ export default function useAssets() {
       )
     },
   }
-  const cloneTo: AssetsMaterialOption = {
+  const cloneTo: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.CLONE,
     name: () => t('RR0167'),
     func: (m) => {
@@ -78,7 +76,7 @@ export default function useAssets() {
       })
     },
   }
-  const addToWorkspace: AssetsMaterialOption = {
+  const addToWorkspace: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.ADD_TO_WORKSPACE,
     name: () => t('RR0057'),
     func: (m) => {
@@ -138,7 +136,7 @@ export default function useAssets() {
       })
     },
   }
-  const createU3m: AssetsMaterialOption = {
+  const createU3m: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.CREATE_U3M,
     name: (m) => {
       if (!m) {
@@ -241,7 +239,7 @@ export default function useAssets() {
       }
     },
   }
-  const downloadU3m: AssetsMaterialOption = {
+  const downloadU3m: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.DOWNLOAD_U3M,
     icon: () => '3D_material',
     name: () => t('RR0059'),
@@ -259,7 +257,7 @@ export default function useAssets() {
       })
     },
   }
-  const exportExcel: AssetsMaterialOption = {
+  const exportExcel: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.EXPORT_EXCEL,
     name: () => t('RR0060'),
     func: async (m) => {
@@ -284,14 +282,14 @@ export default function useAssets() {
       }
     },
   }
-  const printQRCode: AssetsMaterialOption = {
+  const printQRCode: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.PRINT_QR_CODE,
     name: () => t('RR0061'),
     func: (m) => {
       printGeneralLabel(toMaterialList(m))
     },
   }
-  const printA4Swatch: AssetsMaterialOption = {
+  const printA4Swatch: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.PRINT_A4_CARD,
     icon: () => 'print',
     name: () => t('RR0062'),
@@ -299,7 +297,7 @@ export default function useAssets() {
       printA4Card(toMaterialList(m))
     },
   }
-  const merge: AssetsMaterialOption = {
+  const mergeMaterial: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.MERGE,
     name: () => t('RR0072'),
     disabled: (m) => toMaterialList(m).length < 2,
@@ -310,7 +308,7 @@ export default function useAssets() {
       })
     },
   }
-  const deleteMaterial: AssetsMaterialOption = {
+  const deleteMaterial: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.DELETE,
     name: () => t('RR0063'),
     func: async (m) => {
@@ -401,6 +399,6 @@ export default function useAssets() {
     printQRCode,
     printA4Swatch,
     deleteMaterial,
-    merge,
+    mergeMaterial,
   }
 }

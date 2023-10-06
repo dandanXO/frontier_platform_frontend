@@ -125,6 +125,11 @@ export const DISPLAY_NODE = {
   GRID: 2,
 }
 
+export enum ASSET_LIST_DISPLAY_MODE {
+  LIST = 1,
+  GRID = 2,
+}
+
 export const SHARING_FROM = {
   WORKSPACE: 1,
   PUBLIC_LIBRARY: 2,

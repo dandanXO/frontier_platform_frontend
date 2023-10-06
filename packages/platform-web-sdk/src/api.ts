@@ -332,144 +332,134 @@ export interface AddWorkspaceNodeShareAssignedRequestAllOf {
 /**
  * 
  * @export
- * @interface AssetFilter
+ * @interface AssetsFilter
  */
-export interface AssetFilter {
+export interface AssetsFilter {
+    /**
+     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
+     * @type {Array<number>}
+     * @memberof AssetsFilter
+     */
+    'materialTypeList'?: Array<number> | null;
     /**
      * 
-     * @type {string}
-     * @memberof AssetFilter
+     * @type {Array<number>}
+     * @memberof AssetsFilter
      */
-    'category'?: string;
+    'descriptionList': Array<number> | null;
     /**
      * 
      * @type {Array<FilterContentListInner>}
-     * @memberof AssetFilter
+     * @memberof AssetsFilter
      */
-    'contentList'?: Array<FilterContentListInner>;
+    'contentList': Array<FilterContentListInner> | null;
     /**
      * 
      * @type {string}
-     * @memberof AssetFilter
+     * @memberof AssetsFilter
      */
-    'pattern'?: string;
+    'pattern': string | null;
     /**
      * 
      * @type {string}
-     * @memberof AssetFilter
+     * @memberof AssetsFilter
      */
-    'color'?: string;
+    'color': string | null;
     /**
      * 
      * @type {FilterWidth}
-     * @memberof AssetFilter
+     * @memberof AssetsFilter
      */
-    'width'?: FilterWidth;
+    'width': FilterWidth | null;
     /**
      * 
      * @type {FilterWeight}
-     * @memberof AssetFilter
+     * @memberof AssetsFilter
      */
-    'weight'?: FilterWeight;
+    'weight': FilterWeight | null;
     /**
-     * 梭織布種密度(經向)
-     * @type {string}
-     * @memberof AssetFilter
+     * 
+     * @type {FilterDensityAndYarn}
+     * @memberof AssetsFilter
      */
-    'wovenWarpDensity'?: string | null;
-    /**
-     * 梭織布種密度(緯向)
-     * @type {string}
-     * @memberof AssetFilter
-     */
-    'wovenWeftDensity'?: string | null;
-    /**
-     * 梭織布種紗支數(經向)
-     * @type {string}
-     * @memberof AssetFilter
-     */
-    'wovenWarpYarnSize'?: string | null;
-    /**
-     * 梭織布種紗支數(緯向)
-     * @type {string}
-     * @memberof AssetFilter
-     */
-    'wovenWeftYarnSize'?: string | null;
-    /**
-     * 針織布種紗支數
-     * @type {string}
-     * @memberof AssetFilter
-     */
-    'knitYarnSize'?: string | null;
+    'densityAndYarn': FilterDensityAndYarn | null;
     /**
      * 
      * @type {Array<string>}
-     * @memberof AssetFilter
+     * @memberof AssetsFilter
      */
-    'finishList'?: Array<string>;
+    'finishList'?: Array<string> | null;
     /**
      * 
-     * @type {FilterInventory}
-     * @memberof AssetFilter
+     * @type {FilterPrice}
+     * @memberof AssetsFilter
      */
-    'inventory'?: FilterInventory;
+    'price': FilterPrice | null;
     /**
      * 
      * @type {boolean}
-     * @memberof AssetFilter
+     * @memberof AssetsFilter
      */
-    'hasPrice'?: boolean;
+    'hasU3M': boolean | null;
     /**
-     * - \'1. 未加入工作區的\' - \'2. 已生成U3M\' - \'3. 待生成U3M (有掃描圖)\' - \'4. 沒有掃描圖 (無法生成3D)\' - \'5. 沒有任何圖 (包含掃描跟封面)\' - \'6. 沒有文字資訊 (沒有完整必填欄位)\' - \'7. 沒有填碳排認證資料\' 
-     * @type {number}
-     * @memberof AssetFilter
+     * 
+     * @type {FilterInventory}
+     * @memberof AssetsFilter
      */
-    'complete'?: AssetFilterCompleteEnum;
+    'inventory': FilterInventory | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AssetsFilter
+     */
+    'withOutEcoImpactor': boolean | null;
+    /**
+     * - \'1. 未加入工作區的\' - \'2. 沒有掃描圖 (無法生成3D)\' - \'3. 沒有任何圖 (包含掃描跟封面)\' - \'4. 沒有文字資訊 (沒有完整必填欄位)\' - \'5. 重複布號\' 
+     * @type {number}
+     * @memberof AssetsFilter
+     */
+    'status': AssetsFilterStatusEnum;
 }
 
-export const AssetFilterCompleteEnum = {
-    NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3,
-    NUMBER_4: 4,
-    NUMBER_5: 5,
-    NUMBER_6: 6,
-    NUMBER_7: 7
+export const AssetsFilterStatusEnum = {
+    NOT_IN_WORKSPACE: 1,
+    NO_SCAN_IMAGE: 2,
+    NO_IMAGE: 3,
+    NO_REQUIRED_FIELD: 4,
+    DUPLICATE_ITEM_NO: 5
 } as const;
 
-export type AssetFilterCompleteEnum = typeof AssetFilterCompleteEnum[keyof typeof AssetFilterCompleteEnum];
+export type AssetsFilterStatusEnum = typeof AssetsFilterStatusEnum[keyof typeof AssetsFilterStatusEnum];
 
 /**
  * 
  * @export
- * @interface AssetFilterAllOf
+ * @interface AssetsFilterAllOf
  */
-export interface AssetFilterAllOf {
+export interface AssetsFilterAllOf {
     /**
      * 
      * @type {boolean}
-     * @memberof AssetFilterAllOf
+     * @memberof AssetsFilterAllOf
      */
-    'hasPrice'?: boolean;
+    'withOutEcoImpactor': boolean | null;
     /**
-     * - \'1. 未加入工作區的\' - \'2. 已生成U3M\' - \'3. 待生成U3M (有掃描圖)\' - \'4. 沒有掃描圖 (無法生成3D)\' - \'5. 沒有任何圖 (包含掃描跟封面)\' - \'6. 沒有文字資訊 (沒有完整必填欄位)\' - \'7. 沒有填碳排認證資料\' 
+     * - \'1. 未加入工作區的\' - \'2. 沒有掃描圖 (無法生成3D)\' - \'3. 沒有任何圖 (包含掃描跟封面)\' - \'4. 沒有文字資訊 (沒有完整必填欄位)\' - \'5. 重複布號\' 
      * @type {number}
-     * @memberof AssetFilterAllOf
+     * @memberof AssetsFilterAllOf
      */
-    'complete'?: AssetFilterAllOfCompleteEnum;
+    'status': AssetsFilterAllOfStatusEnum;
 }
 
-export const AssetFilterAllOfCompleteEnum = {
-    NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3,
-    NUMBER_4: 4,
-    NUMBER_5: 5,
-    NUMBER_6: 6,
-    NUMBER_7: 7
+export const AssetsFilterAllOfStatusEnum = {
+    NOT_IN_WORKSPACE: 1,
+    NO_SCAN_IMAGE: 2,
+    NO_IMAGE: 3,
+    NO_REQUIRED_FIELD: 4,
+    DUPLICATE_ITEM_NO: 5
 } as const;
 
-export type AssetFilterAllOfCompleteEnum = typeof AssetFilterAllOfCompleteEnum[keyof typeof AssetFilterAllOfCompleteEnum];
+export type AssetsFilterAllOfStatusEnum = typeof AssetsFilterAllOfStatusEnum[keyof typeof AssetsFilterAllOfStatusEnum];
 
 /**
  * 
@@ -1765,214 +1755,6 @@ export interface CodeCountryGet200ResponseResultCodeCountryListInner {
      * @memberof CodeCountryGet200ResponseResultCodeCountryListInner
      */
     'emoji'?: string;
-}
-/**
- * 
- * @export
- * @interface CodeFilterOptionGet200Response
- */
-export interface CodeFilterOptionGet200Response {
-    /**
-     * 
-     * @type {CodeFilterOptionGet200ResponseResult}
-     * @memberof CodeFilterOptionGet200Response
-     */
-    'result'?: CodeFilterOptionGet200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CodeFilterOptionGet200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeFilterOptionGet200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof CodeFilterOptionGet200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface CodeFilterOptionGet200ResponseResult
- */
-export interface CodeFilterOptionGet200ResponseResult {
-    /**
-     * 
-     * @type {CodeFilterOptionGet200ResponseResultCode}
-     * @memberof CodeFilterOptionGet200ResponseResult
-     */
-    'code'?: CodeFilterOptionGet200ResponseResultCode;
-}
-/**
- * 
- * @export
- * @interface CodeFilterOptionGet200ResponseResultCode
- */
-export interface CodeFilterOptionGet200ResponseResultCode {
-    /**
-     * 
-     * @type {CodeFilterOptionGet200ResponseResultCodeFilter}
-     * @memberof CodeFilterOptionGet200ResponseResultCode
-     */
-    'filter'?: CodeFilterOptionGet200ResponseResultCodeFilter;
-}
-/**
- * 
- * @export
- * @interface CodeFilterOptionGet200ResponseResultCodeFilter
- */
-export interface CodeFilterOptionGet200ResponseResultCodeFilter {
-    /**
-     * 
-     * @type {Array<CodeFilterOptionGet200ResponseResultCodeFilterCategoryListInner>}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilter
-     */
-    'categoryList'?: Array<CodeFilterOptionGet200ResponseResultCodeFilterCategoryListInner>;
-    /**
-     * 
-     * @type {Array<CodeFilterOptionGet200ResponseResultCodeFilterContentListInner>}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilter
-     */
-    'contentList'?: Array<CodeFilterOptionGet200ResponseResultCodeFilterContentListInner>;
-    /**
-     * 
-     * @type {Array<CodeFilterOptionGet200ResponseResultCodeFilterPatternListInner>}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilter
-     */
-    'patternList'?: Array<CodeFilterOptionGet200ResponseResultCodeFilterPatternListInner>;
-    /**
-     * 
-     * @type {Array<CodeFilterOptionGet200ResponseResultCodeFilterColorListInner>}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilter
-     */
-    'colorList'?: Array<CodeFilterOptionGet200ResponseResultCodeFilterColorListInner>;
-    /**
-     * 
-     * @type {Array<CodeFilterOptionGet200ResponseResultCodeFilterContentListInner>}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilter
-     */
-    'finishList'?: Array<CodeFilterOptionGet200ResponseResultCodeFilterContentListInner>;
-}
-/**
- * 
- * @export
- * @interface CodeFilterOptionGet200ResponseResultCodeFilterCategoryListInner
- */
-export interface CodeFilterOptionGet200ResponseResultCodeFilterCategoryListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilterCategoryListInner
-     */
-    'key'?: string;
-    /**
-     * 
-     * @type {Array<CodeFilterOptionGet200ResponseResultCodeFilterCategoryListInnerListInner>}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilterCategoryListInner
-     */
-    'list'?: Array<CodeFilterOptionGet200ResponseResultCodeFilterCategoryListInnerListInner>;
-}
-/**
- * 
- * @export
- * @interface CodeFilterOptionGet200ResponseResultCodeFilterCategoryListInnerListInner
- */
-export interface CodeFilterOptionGet200ResponseResultCodeFilterCategoryListInnerListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilterCategoryListInnerListInner
-     */
-    'displayName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilterCategoryListInnerListInner
-     */
-    'value'?: string;
-}
-/**
- * 
- * @export
- * @interface CodeFilterOptionGet200ResponseResultCodeFilterColorListInner
- */
-export interface CodeFilterOptionGet200ResponseResultCodeFilterColorListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilterColorListInner
-     */
-    'value'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilterColorListInner
-     */
-    'hex'?: string;
-}
-/**
- * 
- * @export
- * @interface CodeFilterOptionGet200ResponseResultCodeFilterContentListInner
- */
-export interface CodeFilterOptionGet200ResponseResultCodeFilterContentListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilterContentListInner
-     */
-    'displayName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilterContentListInner
-     */
-    'value'?: string;
-}
-/**
- * 
- * @export
- * @interface CodeFilterOptionGet200ResponseResultCodeFilterPatternListInner
- */
-export interface CodeFilterOptionGet200ResponseResultCodeFilterPatternListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilterPatternListInner
-     */
-    'key'?: string;
-    /**
-     * 
-     * @type {Array<CodeFilterOptionGet200ResponseResultCodeFilterPatternListInnerListInner>}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilterPatternListInner
-     */
-    'list'?: Array<CodeFilterOptionGet200ResponseResultCodeFilterPatternListInnerListInner>;
-}
-/**
- * 
- * @export
- * @interface CodeFilterOptionGet200ResponseResultCodeFilterPatternListInnerListInner
- */
-export interface CodeFilterOptionGet200ResponseResultCodeFilterPatternListInnerListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilterPatternListInnerListInner
-     */
-    'value'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeFilterOptionGet200ResponseResultCodeFilterPatternListInnerListInner
-     */
-    'img'?: string;
 }
 /**
  * 
@@ -5090,154 +4872,78 @@ export interface ExportMoodboardOfferPickedRequestAllOf {
  */
 export interface ExternalFilter {
     /**
-     * 
-     * @type {string}
+     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
+     * @type {Array<number>}
      * @memberof ExternalFilter
      */
-    'category'?: string;
+    'materialTypeList'?: Array<number> | null;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof ExternalFilter
+     */
+    'descriptionList': Array<number> | null;
     /**
      * 
      * @type {Array<FilterContentListInner>}
      * @memberof ExternalFilter
      */
-    'contentList'?: Array<FilterContentListInner>;
+    'contentList': Array<FilterContentListInner> | null;
     /**
      * 
      * @type {string}
      * @memberof ExternalFilter
      */
-    'pattern'?: string;
+    'pattern': string | null;
     /**
      * 
      * @type {string}
      * @memberof ExternalFilter
      */
-    'color'?: string;
+    'color': string | null;
     /**
      * 
      * @type {FilterWidth}
      * @memberof ExternalFilter
      */
-    'width'?: FilterWidth;
+    'width': FilterWidth | null;
     /**
      * 
      * @type {FilterWeight}
      * @memberof ExternalFilter
      */
-    'weight'?: FilterWeight;
+    'weight': FilterWeight | null;
     /**
-     * 梭織布種密度(經向)
-     * @type {string}
+     * 
+     * @type {FilterDensityAndYarn}
      * @memberof ExternalFilter
      */
-    'wovenWarpDensity'?: string | null;
-    /**
-     * 梭織布種密度(緯向)
-     * @type {string}
-     * @memberof ExternalFilter
-     */
-    'wovenWeftDensity'?: string | null;
-    /**
-     * 梭織布種紗支數(經向)
-     * @type {string}
-     * @memberof ExternalFilter
-     */
-    'wovenWarpYarnSize'?: string | null;
-    /**
-     * 梭織布種紗支數(緯向)
-     * @type {string}
-     * @memberof ExternalFilter
-     */
-    'wovenWeftYarnSize'?: string | null;
-    /**
-     * 針織布種紗支數
-     * @type {string}
-     * @memberof ExternalFilter
-     */
-    'knitYarnSize'?: string | null;
+    'densityAndYarn': FilterDensityAndYarn | null;
     /**
      * 
      * @type {Array<string>}
      * @memberof ExternalFilter
      */
-    'finishList'?: Array<string>;
+    'finishList'?: Array<string> | null;
+    /**
+     * 
+     * @type {FilterPrice}
+     * @memberof ExternalFilter
+     */
+    'price': FilterPrice | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ExternalFilter
+     */
+    'hasU3M': boolean | null;
     /**
      * 
      * @type {FilterInventory}
      * @memberof ExternalFilter
      */
-    'inventory'?: FilterInventory;
-    /**
-     * 
-     * @type {ExternalFilterAllOfPrice}
-     * @memberof ExternalFilter
-     */
-    'price'?: ExternalFilterAllOfPrice;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ExternalFilter
-     */
-    'hasU3M'?: boolean;
+    'inventory': FilterInventory | null;
 }
-/**
- * 
- * @export
- * @interface ExternalFilterAllOf
- */
-export interface ExternalFilterAllOf {
-    /**
-     * 
-     * @type {ExternalFilterAllOfPrice}
-     * @memberof ExternalFilterAllOf
-     */
-    'price'?: ExternalFilterAllOfPrice;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ExternalFilterAllOf
-     */
-    'hasU3M'?: boolean;
-}
-/**
- * 
- * @export
- * @interface ExternalFilterAllOfPrice
- */
-export interface ExternalFilterAllOfPrice {
-    /**
-     * 
-     * @type {number}
-     * @memberof ExternalFilterAllOfPrice
-     */
-    'min': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ExternalFilterAllOfPrice
-     */
-    'max': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ExternalFilterAllOfPrice
-     */
-    'isInfinity': boolean;
-    /**
-     * 
-     * @type {CurrencyCode}
-     * @memberof ExternalFilterAllOfPrice
-     */
-    'currency'?: CurrencyCode;
-    /**
-     * 
-     * @type {MaterialQuantityUnit}
-     * @memberof ExternalFilterAllOfPrice
-     */
-    'unit'?: MaterialQuantityUnit;
-}
-
-
 /**
  * 功能列表Enum
  * @export
@@ -5267,83 +4973,77 @@ export type FeatureType = typeof FeatureType[keyof typeof FeatureType];
  */
 export interface Filter {
     /**
-     * 
-     * @type {string}
+     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
+     * @type {Array<number>}
      * @memberof Filter
      */
-    'category'?: string;
+    'materialTypeList'?: Array<number> | null;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof Filter
+     */
+    'descriptionList': Array<number> | null;
     /**
      * 
      * @type {Array<FilterContentListInner>}
      * @memberof Filter
      */
-    'contentList'?: Array<FilterContentListInner>;
+    'contentList': Array<FilterContentListInner> | null;
     /**
      * 
      * @type {string}
      * @memberof Filter
      */
-    'pattern'?: string;
+    'pattern': string | null;
     /**
      * 
      * @type {string}
      * @memberof Filter
      */
-    'color'?: string;
+    'color': string | null;
     /**
      * 
      * @type {FilterWidth}
      * @memberof Filter
      */
-    'width'?: FilterWidth;
+    'width': FilterWidth | null;
     /**
      * 
      * @type {FilterWeight}
      * @memberof Filter
      */
-    'weight'?: FilterWeight;
+    'weight': FilterWeight | null;
     /**
-     * 梭織布種密度(經向)
-     * @type {string}
+     * 
+     * @type {FilterDensityAndYarn}
      * @memberof Filter
      */
-    'wovenWarpDensity'?: string | null;
-    /**
-     * 梭織布種密度(緯向)
-     * @type {string}
-     * @memberof Filter
-     */
-    'wovenWeftDensity'?: string | null;
-    /**
-     * 梭織布種紗支數(經向)
-     * @type {string}
-     * @memberof Filter
-     */
-    'wovenWarpYarnSize'?: string | null;
-    /**
-     * 梭織布種紗支數(緯向)
-     * @type {string}
-     * @memberof Filter
-     */
-    'wovenWeftYarnSize'?: string | null;
-    /**
-     * 針織布種紗支數
-     * @type {string}
-     * @memberof Filter
-     */
-    'knitYarnSize'?: string | null;
+    'densityAndYarn': FilterDensityAndYarn | null;
     /**
      * 
      * @type {Array<string>}
      * @memberof Filter
      */
-    'finishList'?: Array<string>;
+    'finishList'?: Array<string> | null;
+    /**
+     * 
+     * @type {FilterPrice}
+     * @memberof Filter
+     */
+    'price': FilterPrice | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Filter
+     */
+    'hasU3M': boolean | null;
     /**
      * 
      * @type {FilterInventory}
      * @memberof Filter
      */
-    'inventory'?: FilterInventory;
+    'inventory': FilterInventory | null;
 }
 /**
  * 
@@ -5363,6 +5063,69 @@ export interface FilterContentListInner {
      * @memberof FilterContentListInner
      */
     'percentage'?: number;
+}
+/**
+ * woven 或 knit 至少會有一者為 null，不能同時有值
+ * @export
+ * @interface FilterDensityAndYarn
+ */
+export interface FilterDensityAndYarn {
+    /**
+     * 
+     * @type {FilterDensityAndYarnWoven}
+     * @memberof FilterDensityAndYarn
+     */
+    'woven': FilterDensityAndYarnWoven | null;
+    /**
+     * 
+     * @type {FilterDensityAndYarnKnit}
+     * @memberof FilterDensityAndYarn
+     */
+    'knit': FilterDensityAndYarnKnit | null;
+}
+/**
+ * 
+ * @export
+ * @interface FilterDensityAndYarnKnit
+ */
+export interface FilterDensityAndYarnKnit {
+    /**
+     * 針織布種紗支數
+     * @type {string}
+     * @memberof FilterDensityAndYarnKnit
+     */
+    'knitYarnSize': string;
+}
+/**
+ * 
+ * @export
+ * @interface FilterDensityAndYarnWoven
+ */
+export interface FilterDensityAndYarnWoven {
+    /**
+     * 梭織布種密度(經向)
+     * @type {string}
+     * @memberof FilterDensityAndYarnWoven
+     */
+    'warpDensity': string | null;
+    /**
+     * 梭織布種密度(緯向)
+     * @type {string}
+     * @memberof FilterDensityAndYarnWoven
+     */
+    'weftDensity': string | null;
+    /**
+     * 梭織布種紗支數(經向)
+     * @type {string}
+     * @memberof FilterDensityAndYarnWoven
+     */
+    'warpYarnSize': string | null;
+    /**
+     * 梭織布種紗支數(緯向)
+     * @type {string}
+     * @memberof FilterDensityAndYarnWoven
+     */
+    'weftYarnSize': string | null;
 }
 /**
  * 
@@ -5413,6 +5176,45 @@ export interface FilterInventoryQuantity {
 /**
  * 
  * @export
+ * @interface FilterPrice
+ */
+export interface FilterPrice {
+    /**
+     * 
+     * @type {number}
+     * @memberof FilterPrice
+     */
+    'min': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof FilterPrice
+     */
+    'max': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FilterPrice
+     */
+    'isInfinity': boolean;
+    /**
+     * 
+     * @type {CurrencyCode}
+     * @memberof FilterPrice
+     */
+    'currency': CurrencyCode;
+    /**
+     * 
+     * @type {MaterialQuantityUnit}
+     * @memberof FilterPrice
+     */
+    'unit': MaterialQuantityUnit;
+}
+
+
+/**
+ * 
+ * @export
  * @interface FilterWeight
  */
 export interface FilterWeight {
@@ -5454,13 +5256,13 @@ export interface FilterWidth {
      * @type {FilterWidthCuttable}
      * @memberof FilterWidth
      */
-    'cuttable': FilterWidthCuttable;
+    'cuttable': FilterWidthCuttable | null;
     /**
      * 
      * @type {FilterWidthCuttable}
      * @memberof FilterWidth
      */
-    'full': FilterWidthCuttable;
+    'full': FilterWidthCuttable | null;
 }
 /**
  * 
@@ -5895,12 +5697,6 @@ export type GenerateWorkspaceNodeShareSocialRequestAllOfTypeEnum = typeof Genera
 export interface GetAssetMaterialList200Response {
     /**
      * 
-     * @type {GetAssetMaterialList200ResponseResult}
-     * @memberof GetAssetMaterialList200Response
-     */
-    'result'?: GetAssetMaterialList200ResponseResult;
-    /**
-     * 
      * @type {boolean}
      * @memberof GetAssetMaterialList200Response
      */
@@ -5913,6 +5709,12 @@ export interface GetAssetMaterialList200Response {
     'code'?: string | null;
     /**
      * 
+     * @type {GetAssetMaterialList200ResponseAllOfResult}
+     * @memberof GetAssetMaterialList200Response
+     */
+    'result': GetAssetMaterialList200ResponseAllOfResult;
+    /**
+     * 
      * @type {object}
      * @memberof GetAssetMaterialList200Response
      */
@@ -5921,34 +5723,34 @@ export interface GetAssetMaterialList200Response {
 /**
  * 
  * @export
- * @interface GetAssetMaterialList200ResponseResult
+ * @interface GetAssetMaterialList200ResponseAllOf
  */
-export interface GetAssetMaterialList200ResponseResult {
+export interface GetAssetMaterialList200ResponseAllOf {
     /**
      * 
-     * @type {PaginationRes}
-     * @memberof GetAssetMaterialList200ResponseResult
+     * @type {GetAssetMaterialList200ResponseAllOfResult}
+     * @memberof GetAssetMaterialList200ResponseAllOf
      */
-    'pagination'?: PaginationRes;
-    /**
-     * 
-     * @type {GetAssetMaterialList200ResponseResultAssets}
-     * @memberof GetAssetMaterialList200ResponseResult
-     */
-    'assets'?: GetAssetMaterialList200ResponseResultAssets;
+    'result': GetAssetMaterialList200ResponseAllOfResult;
 }
 /**
  * 
  * @export
- * @interface GetAssetMaterialList200ResponseResultAssets
+ * @interface GetAssetMaterialList200ResponseAllOfResult
  */
-export interface GetAssetMaterialList200ResponseResultAssets {
+export interface GetAssetMaterialList200ResponseAllOfResult {
+    /**
+     * 
+     * @type {PaginationRes}
+     * @memberof GetAssetMaterialList200ResponseAllOfResult
+     */
+    'pagination': PaginationRes;
     /**
      * 
      * @type {Array<Material>}
-     * @memberof GetAssetMaterialList200ResponseResultAssets
+     * @memberof GetAssetMaterialList200ResponseAllOfResult
      */
-    'materialList'?: Array<Material>;
+    'materialList': Array<Material>;
 }
 /**
  * 
@@ -5982,10 +5784,10 @@ export interface GetAssetMaterialListRequest {
     'search': Search;
     /**
      * 
-     * @type {AssetFilter}
+     * @type {AssetsFilter}
      * @memberof GetAssetMaterialListRequest
      */
-    'filter': AssetFilter;
+    'filter': AssetsFilter;
     /**
      * 
      * @type {PaginationReq}
@@ -6009,10 +5811,10 @@ export interface GetAssetMaterialListRequestAllOf {
     'search': Search;
     /**
      * 
-     * @type {AssetFilter}
+     * @type {AssetsFilter}
      * @memberof GetAssetMaterialListRequestAllOf
      */
-    'filter': AssetFilter;
+    'filter': AssetsFilter;
     /**
      * 
      * @type {PaginationReq}
@@ -6389,7 +6191,62 @@ export interface GetExcelProgressList200ResponseAllOfResult {
      * @memberof GetExcelProgressList200ResponseAllOfResult
      */
     'progressList': Array<GetExcelProgressList200ResponseAllOfResultProgressListInner>;
+    /**
+     * 
+     * @type {GetExcelProgressList200ResponseAllOfResultPagination}
+     * @memberof GetExcelProgressList200ResponseAllOfResult
+     */
+    'pagination': GetExcelProgressList200ResponseAllOfResultPagination;
 }
+/**
+ * 
+ * @export
+ * @interface GetExcelProgressList200ResponseAllOfResultPagination
+ */
+export interface GetExcelProgressList200ResponseAllOfResultPagination {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetExcelProgressList200ResponseAllOfResultPagination
+     */
+    'perPageCount': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetExcelProgressList200ResponseAllOfResultPagination
+     */
+    'currentPage': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetExcelProgressList200ResponseAllOfResultPagination
+     */
+    'totalPage': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetExcelProgressList200ResponseAllOfResultPagination
+     */
+    'totalCount': number;
+    /**
+     * 1: newest first 2: oldest first 3: status (In Queue > Processing > Unsuccessful > Complete) 4: status (Complete > Unsuccessful > Processing > In Queue) 5: type (Upload > Export) 6: type (Export > Upload) 
+     * @type {number}
+     * @memberof GetExcelProgressList200ResponseAllOfResultPagination
+     */
+    'sort': GetExcelProgressList200ResponseAllOfResultPaginationSortEnum;
+}
+
+export const GetExcelProgressList200ResponseAllOfResultPaginationSortEnum = {
+    NEWEST_FIRST: 1,
+    OLDEST_FIRST: 2,
+    IN_QUEUE_FIRST: 3,
+    COMPLETE_FIRST: 4,
+    UPLOAD_FIRST: 5,
+    EXPORT_FIRST: 6
+} as const;
+
+export type GetExcelProgressList200ResponseAllOfResultPaginationSortEnum = typeof GetExcelProgressList200ResponseAllOfResultPaginationSortEnum[keyof typeof GetExcelProgressList200ResponseAllOfResultPaginationSortEnum];
+
 /**
  * 
  * @export
@@ -6667,10 +6524,10 @@ export type GetExcelProgressListRequestAllOfPaginationSortEnum = typeof GetExcel
 export interface GetExcelProgressMaterialList200Response {
     /**
      * 
-     * @type {GetAssetMaterialList200ResponseResultAssets}
+     * @type {GetExcelProgressMaterialList200ResponseResult}
      * @memberof GetExcelProgressMaterialList200Response
      */
-    'result'?: GetAssetMaterialList200ResponseResultAssets;
+    'result'?: GetExcelProgressMaterialList200ResponseResult;
     /**
      * 
      * @type {boolean}
@@ -6690,6 +6547,371 @@ export interface GetExcelProgressMaterialList200Response {
      */
     'message'?: object | null;
 }
+/**
+ * 
+ * @export
+ * @interface GetExcelProgressMaterialList200ResponseResult
+ */
+export interface GetExcelProgressMaterialList200ResponseResult {
+    /**
+     * 
+     * @type {Array<Material>}
+     * @memberof GetExcelProgressMaterialList200ResponseResult
+     */
+    'materialList'?: Array<Material>;
+}
+/**
+ * 
+ * @export
+ * @interface GetExternalSearchFilterOptions200Response
+ */
+export interface GetExternalSearchFilterOptions200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetExternalSearchFilterOptions200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetExternalSearchFilterOptions200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GetExternalSearchFilterOptions200ResponseAllOfResult}
+     * @memberof GetExternalSearchFilterOptions200Response
+     */
+    'result': GetExternalSearchFilterOptions200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetExternalSearchFilterOptions200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetExternalSearchFilterOptions200ResponseAllOf
+ */
+export interface GetExternalSearchFilterOptions200ResponseAllOf {
+    /**
+     * 
+     * @type {GetExternalSearchFilterOptions200ResponseAllOfResult}
+     * @memberof GetExternalSearchFilterOptions200ResponseAllOf
+     */
+    'result': GetExternalSearchFilterOptions200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetExternalSearchFilterOptions200ResponseAllOfResult
+ */
+export interface GetExternalSearchFilterOptions200ResponseAllOfResult {
+    /**
+     * 
+     * @type {GetExternalSearchFilterOptions200ResponseAllOfResultDescriptionList}
+     * @memberof GetExternalSearchFilterOptions200ResponseAllOfResult
+     */
+    'descriptionList': GetExternalSearchFilterOptions200ResponseAllOfResultDescriptionList;
+    /**
+     * 
+     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>}
+     * @memberof GetExternalSearchFilterOptions200ResponseAllOfResult
+     */
+    'contentList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>;
+    /**
+     * 
+     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner>}
+     * @memberof GetExternalSearchFilterOptions200ResponseAllOfResult
+     */
+    'patternList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner>;
+    /**
+     * 
+     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner>}
+     * @memberof GetExternalSearchFilterOptions200ResponseAllOfResult
+     */
+    'colorList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner>;
+    /**
+     * 
+     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>}
+     * @memberof GetExternalSearchFilterOptions200ResponseAllOfResult
+     */
+    'finishList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface GetExternalSearchFilterOptions200ResponseAllOfResultDescriptionList
+ */
+export interface GetExternalSearchFilterOptions200ResponseAllOfResultDescriptionList {
+    /**
+     * 
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
+     * @memberof GetExternalSearchFilterOptions200ResponseAllOfResultDescriptionList
+     */
+    'woven': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
+    /**
+     * 
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
+     * @memberof GetExternalSearchFilterOptions200ResponseAllOfResultDescriptionList
+     */
+    'knit': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
+    /**
+     * 
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
+     * @memberof GetExternalSearchFilterOptions200ResponseAllOfResultDescriptionList
+     */
+    'leather': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
+}
+/**
+ * 
+ * @export
+ * @interface GetInternalSearchFilterOptions200Response
+ */
+export interface GetInternalSearchFilterOptions200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetInternalSearchFilterOptions200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInternalSearchFilterOptions200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResult}
+     * @memberof GetInternalSearchFilterOptions200Response
+     */
+    'result': GetInternalSearchFilterOptions200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetInternalSearchFilterOptions200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetInternalSearchFilterOptions200ResponseAllOf
+ */
+export interface GetInternalSearchFilterOptions200ResponseAllOf {
+    /**
+     * 
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResult}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOf
+     */
+    'result': GetInternalSearchFilterOptions200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetInternalSearchFilterOptions200ResponseAllOfResult
+ */
+export interface GetInternalSearchFilterOptions200ResponseAllOfResult {
+    /**
+     * 
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionList}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResult
+     */
+    'descriptionList': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionList;
+    /**
+     * 
+     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResult
+     */
+    'contentList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>;
+    /**
+     * 
+     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner>}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResult
+     */
+    'patternList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner>;
+    /**
+     * 
+     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner>}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResult
+     */
+    'colorList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner>;
+    /**
+     * 
+     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResult
+     */
+    'finishList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner
+ */
+export interface GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner
+     */
+    'value'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner
+     */
+    'hex'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner
+ */
+export interface GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner
+     */
+    'displayName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner
+     */
+    'value'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionList
+ */
+export interface GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionList {
+    /**
+     * 
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionList
+     */
+    'woven': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
+    /**
+     * 
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionList
+     */
+    'knit': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
+    /**
+     * 
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionList
+     */
+    'leather': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
+    /**
+     * 
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionList
+     */
+    'nonWoven': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
+    /**
+     * 
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionList
+     */
+    'trim': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
+    /**
+     * 
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionList
+     */
+    'others': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
+}
+/**
+ * 
+ * @export
+ * @interface GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven
+ */
+export interface GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven {
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialDescription>}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven
+     */
+    'default': Array<MaterialDescription>;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialDescription>}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven
+     */
+    'custom': Array<MaterialDescription>;
+}
+/**
+ * 
+ * @export
+ * @interface GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner
+ */
+export interface GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner
+     */
+    'key'?: string;
+    /**
+     * 
+     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner>}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner
+     */
+    'list'?: Array<GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner
+ */
+export interface GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner
+     */
+    'value'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner
+     */
+    'img'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface GetInternalSearchFilterOptionsRequest
+ */
+export interface GetInternalSearchFilterOptionsRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof GetInternalSearchFilterOptionsRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof GetInternalSearchFilterOptionsRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof GetInternalSearchFilterOptionsRequest
+     */
+    'ogId': number;
+}
+
+
 /**
  * 
  * @export
@@ -6790,7 +7012,60 @@ export interface GetMaterialUploadProgressList200ResponseAllOfResult {
      * @memberof GetMaterialUploadProgressList200ResponseAllOfResult
      */
     'progressList': Array<GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner>;
+    /**
+     * 
+     * @type {GetMaterialUploadProgressList200ResponseAllOfResultPagination}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResult
+     */
+    'pagination': GetMaterialUploadProgressList200ResponseAllOfResultPagination;
 }
+/**
+ * 
+ * @export
+ * @interface GetMaterialUploadProgressList200ResponseAllOfResultPagination
+ */
+export interface GetMaterialUploadProgressList200ResponseAllOfResultPagination {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultPagination
+     */
+    'perPageCount': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultPagination
+     */
+    'currentPage': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultPagination
+     */
+    'totalPage': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultPagination
+     */
+    'totalCount': number;
+    /**
+     * 排序方式 3:status (In Queue > Processing > Unsuccessful > Complete),4: status (Complete > Unsuccessful > Processing > In Queue)
+     * @type {number}
+     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultPagination
+     */
+    'sort': GetMaterialUploadProgressList200ResponseAllOfResultPaginationSortEnum;
+}
+
+export const GetMaterialUploadProgressList200ResponseAllOfResultPaginationSortEnum = {
+    NEWEST_FIRST: 1,
+    OLDEST_FIRST: 2,
+    IN_QUEUE_FIRST: 3,
+    COMPLETE_FIRST: 4
+} as const;
+
+export type GetMaterialUploadProgressList200ResponseAllOfResultPaginationSortEnum = typeof GetMaterialUploadProgressList200ResponseAllOfResultPaginationSortEnum[keyof typeof GetMaterialUploadProgressList200ResponseAllOfResultPaginationSortEnum];
+
 /**
  * 
  * @export
@@ -7254,33 +7529,6 @@ export interface GetMoodboardList200ResponseAllOfResult {
      */
     'moodboardList': Array<MoodboardBase>;
 }
-/**
- * 
- * @export
- * @interface GetMoodboardListRequest
- */
-export interface GetMoodboardListRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof GetMoodboardListRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof GetMoodboardListRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof GetMoodboardListRequest
-     */
-    'ogId': number;
-}
-
-
 /**
  * 
  * @export
@@ -8080,163 +8328,6 @@ export interface GetS3UploadUrl200ResponseAllOfResult {
 /**
  * 
  * @export
- * @interface GetSearchFilterOptions200Response
- */
-export interface GetSearchFilterOptions200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetSearchFilterOptions200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetSearchFilterOptions200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {GetSearchFilterOptions200ResponseAllOfResult}
-     * @memberof GetSearchFilterOptions200Response
-     */
-    'result': GetSearchFilterOptions200ResponseAllOfResult;
-    /**
-     * 
-     * @type {object}
-     * @memberof GetSearchFilterOptions200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface GetSearchFilterOptions200ResponseAllOf
- */
-export interface GetSearchFilterOptions200ResponseAllOf {
-    /**
-     * 
-     * @type {GetSearchFilterOptions200ResponseAllOfResult}
-     * @memberof GetSearchFilterOptions200ResponseAllOf
-     */
-    'result': GetSearchFilterOptions200ResponseAllOfResult;
-}
-/**
- * 
- * @export
- * @interface GetSearchFilterOptions200ResponseAllOfResult
- */
-export interface GetSearchFilterOptions200ResponseAllOfResult {
-    /**
-     * 
-     * @type {object}
-     * @memberof GetSearchFilterOptions200ResponseAllOfResult
-     */
-    'descriptionList': object;
-    /**
-     * 
-     * @type {Array<GetSearchFilterOptions200ResponseAllOfResultContentListInner>}
-     * @memberof GetSearchFilterOptions200ResponseAllOfResult
-     */
-    'contentList': Array<GetSearchFilterOptions200ResponseAllOfResultContentListInner>;
-    /**
-     * 
-     * @type {Array<GetSearchFilterOptions200ResponseAllOfResultPatternListInner>}
-     * @memberof GetSearchFilterOptions200ResponseAllOfResult
-     */
-    'patternList': Array<GetSearchFilterOptions200ResponseAllOfResultPatternListInner>;
-    /**
-     * 
-     * @type {Array<GetSearchFilterOptions200ResponseAllOfResultColorListInner>}
-     * @memberof GetSearchFilterOptions200ResponseAllOfResult
-     */
-    'colorList': Array<GetSearchFilterOptions200ResponseAllOfResultColorListInner>;
-    /**
-     * 
-     * @type {Array<GetSearchFilterOptions200ResponseAllOfResultContentListInner>}
-     * @memberof GetSearchFilterOptions200ResponseAllOfResult
-     */
-    'finishList': Array<GetSearchFilterOptions200ResponseAllOfResultContentListInner>;
-}
-/**
- * 
- * @export
- * @interface GetSearchFilterOptions200ResponseAllOfResultColorListInner
- */
-export interface GetSearchFilterOptions200ResponseAllOfResultColorListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetSearchFilterOptions200ResponseAllOfResultColorListInner
-     */
-    'value'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetSearchFilterOptions200ResponseAllOfResultColorListInner
-     */
-    'hex'?: string;
-}
-/**
- * 
- * @export
- * @interface GetSearchFilterOptions200ResponseAllOfResultContentListInner
- */
-export interface GetSearchFilterOptions200ResponseAllOfResultContentListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetSearchFilterOptions200ResponseAllOfResultContentListInner
-     */
-    'displayName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetSearchFilterOptions200ResponseAllOfResultContentListInner
-     */
-    'value'?: string;
-}
-/**
- * 
- * @export
- * @interface GetSearchFilterOptions200ResponseAllOfResultPatternListInner
- */
-export interface GetSearchFilterOptions200ResponseAllOfResultPatternListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetSearchFilterOptions200ResponseAllOfResultPatternListInner
-     */
-    'key'?: string;
-    /**
-     * 
-     * @type {Array<GetSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner>}
-     * @memberof GetSearchFilterOptions200ResponseAllOfResultPatternListInner
-     */
-    'list'?: Array<GetSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner>;
-}
-/**
- * 
- * @export
- * @interface GetSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner
- */
-export interface GetSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner
-     */
-    'value'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner
-     */
-    'img'?: string;
-}
-/**
- * 
- * @export
  * @interface GetShareToMeList200Response
  */
 export interface GetShareToMeList200Response {
@@ -8868,7 +8959,52 @@ export interface GetU3mProgressList200ResponseAllOfResult {
      * @memberof GetU3mProgressList200ResponseAllOfResult
      */
     'progressList': Array<ProgressU3mItem>;
+    /**
+     * 
+     * @type {GetU3mProgressList200ResponseAllOfResultPagination}
+     * @memberof GetU3mProgressList200ResponseAllOfResult
+     */
+    'pagination': GetU3mProgressList200ResponseAllOfResultPagination;
 }
+/**
+ * 
+ * @export
+ * @interface GetU3mProgressList200ResponseAllOfResultPagination
+ */
+export interface GetU3mProgressList200ResponseAllOfResultPagination {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetU3mProgressList200ResponseAllOfResultPagination
+     */
+    'perPageCount': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetU3mProgressList200ResponseAllOfResultPagination
+     */
+    'currentPage': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetU3mProgressList200ResponseAllOfResultPagination
+     */
+    'totalPage': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetU3mProgressList200ResponseAllOfResultPagination
+     */
+    'totalCount': number;
+    /**
+     * 
+     * @type {ProgressU3mSort}
+     * @memberof GetU3mProgressList200ResponseAllOfResultPagination
+     */
+    'sort': ProgressU3mSort;
+}
+
+
 /**
  * 
  * @export
@@ -10012,6 +10148,24 @@ export interface MainMaterial {
      */
     'coverImage': MainMaterialCoverImage;
     /**
+     * 是否為複合布
+     * @type {boolean}
+     * @memberof MainMaterial
+     */
+    'isComposite': boolean;
+    /**
+     * 
+     * @type {MaterialWidth}
+     * @memberof MainMaterial
+     */
+    'width': MaterialWidth;
+    /**
+     * 
+     * @type {MaterialWeight}
+     * @memberof MainMaterial
+     */
+    'weight': MaterialWeight;
+    /**
      * 
      * @type {MainMaterialMainSide}
      * @memberof MainMaterial
@@ -10025,10 +10179,10 @@ export interface MainMaterial {
     'digitalThreadInfo': MainMaterialDigitalThreadInfo;
     /**
      * 
-     * @type {object}
+     * @type {MainMaterialMetaData}
      * @memberof MainMaterial
      */
-    'metaData'?: object;
+    'metaData': MainMaterialMetaData;
 }
 /**
  * 封面圖
@@ -10082,22 +10236,10 @@ export interface MainMaterialMainSide {
     'descriptionList': Array<MaterialDescription>;
     /**
      * 
-     * @type {MaterialWidth}
-     * @memberof MainMaterialMainSide
-     */
-    'width': MaterialWidth;
-    /**
-     * 
      * @type {Array<MainMaterialMainSideContentListInner>}
      * @memberof MainMaterialMainSide
      */
     'contentList': Array<MainMaterialMainSideContentListInner>;
-    /**
-     * 
-     * @type {MaterialWeight}
-     * @memberof MainMaterialMainSide
-     */
-    'weight': MaterialWeight;
     /**
      * 
      * @type {Array<MaterialFinish>}
@@ -10132,6 +10274,21 @@ export interface MainMaterialMainSideContentListInner {
      */
     'percentage'?: number;
 }
+/**
+ * 
+ * @export
+ * @interface MainMaterialMetaData
+ */
+export interface MainMaterialMetaData {
+    /**
+     * 
+     * @type {OgType}
+     * @memberof MainMaterialMetaData
+     */
+    'materialOwnerOGType': OgType;
+}
+
+
 /**
  * 
  * @export
@@ -10332,10 +10489,10 @@ export interface MaterialBackSide {
     'frontierNo': string;
     /**
      * 
-     * @type {Array<MaterialFeature>}
+     * @type {Array<string>}
      * @memberof MaterialBackSide
      */
-    'featureList': Array<MaterialFeature>;
+    'featureList': Array<string>;
     /**
      * 
      * @type {Array<MaterialFinish>}
@@ -11233,10 +11390,10 @@ export interface MaterialFaceSide {
     'frontierNo': string;
     /**
      * 
-     * @type {Array<MaterialFeature>}
+     * @type {Array<string>}
      * @memberof MaterialFaceSide
      */
-    'featureList': Array<MaterialFeature>;
+    'featureList': Array<string>;
     /**
      * 
      * @type {Array<MaterialFinish>}
@@ -11312,25 +11469,6 @@ export interface MaterialFaceSide {
 }
 
 
-/**
- * 
- * @export
- * @interface MaterialFeature
- */
-export interface MaterialFeature {
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialFeature
-     */
-    'featureId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialFeature
-     */
-    'name': string;
-}
 /**
  * 後處理
  * @export
@@ -11637,7 +11775,7 @@ export interface MaterialInternalInventoryInfoYardageRemainingInfoListInner {
      */
     'lot': string | null;
     /**
-     * 庫存數量 1~999999，整數 
+     * 庫存數量 1~999999，可填寫至小數2位 
      * @type {number}
      * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInner
      */
@@ -11668,7 +11806,7 @@ export interface MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
      */
     'lot': string | null;
     /**
-     * 庫存數量 1~999999，整數 
+     * 庫存數量 1~999999，可填寫至小數2位 
      * @type {number}
      * @memberof MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
      */
@@ -11836,10 +11974,10 @@ export interface MaterialMiddleSide {
     'frontierNo': string;
     /**
      * 
-     * @type {Array<MaterialFeature>}
+     * @type {Array<string>}
      * @memberof MaterialMiddleSide
      */
-    'featureList': Array<MaterialFeature>;
+    'featureList': Array<string>;
     /**
      * 
      * @type {Array<MaterialFinish>}
@@ -12043,59 +12181,40 @@ export interface MaterialOptionsCodeContentListDefaultInner {
 export interface MaterialOptionsCodeDescriptionList {
     /**
      * 
-     * @type {MaterialOptionsCodeDescriptionListWoven}
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
      * @memberof MaterialOptionsCodeDescriptionList
      */
-    'woven': MaterialOptionsCodeDescriptionListWoven;
+    'woven': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
     /**
      * 
-     * @type {MaterialOptionsCodeDescriptionListWoven}
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
      * @memberof MaterialOptionsCodeDescriptionList
      */
-    'knit': MaterialOptionsCodeDescriptionListWoven;
+    'knit': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
     /**
      * 
-     * @type {MaterialOptionsCodeDescriptionListWoven}
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
      * @memberof MaterialOptionsCodeDescriptionList
      */
-    'leather': MaterialOptionsCodeDescriptionListWoven;
+    'leather': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
     /**
      * 
-     * @type {MaterialOptionsCodeDescriptionListWoven}
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
      * @memberof MaterialOptionsCodeDescriptionList
      */
-    'nonWoven': MaterialOptionsCodeDescriptionListWoven;
+    'nonWoven': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
     /**
      * 
-     * @type {MaterialOptionsCodeDescriptionListWoven}
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
      * @memberof MaterialOptionsCodeDescriptionList
      */
-    'trim': MaterialOptionsCodeDescriptionListWoven;
+    'trim': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
     /**
      * 
-     * @type {MaterialOptionsCodeDescriptionListWoven}
+     * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
      * @memberof MaterialOptionsCodeDescriptionList
      */
-    'others': MaterialOptionsCodeDescriptionListWoven;
-}
-/**
- * 
- * @export
- * @interface MaterialOptionsCodeDescriptionListWoven
- */
-export interface MaterialOptionsCodeDescriptionListWoven {
-    /**
-     * 布種材料描述清單
-     * @type {Array<MaterialDescription>}
-     * @memberof MaterialOptionsCodeDescriptionListWoven
-     */
-    'default': Array<MaterialDescription>;
-    /**
-     * 布種材料描述清單
-     * @type {Array<MaterialDescription>}
-     * @memberof MaterialOptionsCodeDescriptionListWoven
-     */
-    'custom': Array<MaterialDescription>;
+    'others': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
 }
 /**
  * 後處理
@@ -12737,10 +12856,10 @@ export interface MaterialSide {
     'frontierNo': string;
     /**
      * 
-     * @type {Array<MaterialFeature>}
+     * @type {Array<string>}
      * @memberof MaterialSide
      */
-    'featureList': Array<MaterialFeature>;
+    'featureList': Array<string>;
     /**
      * 
      * @type {Array<MaterialFinish>}
@@ -13141,10 +13260,10 @@ export interface MaterialSideBase {
     'frontierNo': string;
     /**
      * 
-     * @type {Array<MaterialFeature>}
+     * @type {Array<string>}
      * @memberof MaterialSideBase
      */
-    'featureList': Array<MaterialFeature>;
+    'featureList': Array<string>;
     /**
      * 
      * @type {Array<MaterialFinish>}
@@ -15287,6 +15406,12 @@ export interface NodeMeta {
     'nodeType': NodeType;
     /**
      * 
+     * @type {number}
+     * @memberof NodeMeta
+     */
+    'rank': number | null;
+    /**
+     * 
      * @type {Array<NodeMetaLocationListInner>}
      * @memberof NodeMeta
      */
@@ -15353,13 +15478,13 @@ export interface NodeMetaLocationListInner {
      * @type {number}
      * @memberof NodeMetaLocationListInner
      */
-    'nodeId'?: number;
+    'nodeId': number;
     /**
      * 
      * @type {string}
      * @memberof NodeMetaLocationListInner
      */
-    'name'?: string;
+    'name': string;
 }
 /**
  * 節點型態：1:Collection，2:Material
@@ -24275,111 +24400,84 @@ export interface WorkflowStage {
  */
 export interface WorkspaceFilter {
     /**
-     * 
-     * @type {string}
+     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
+     * @type {Array<number>}
      * @memberof WorkspaceFilter
      */
-    'category'?: string;
+    'materialTypeList'?: Array<number> | null;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof WorkspaceFilter
+     */
+    'descriptionList': Array<number> | null;
     /**
      * 
      * @type {Array<FilterContentListInner>}
      * @memberof WorkspaceFilter
      */
-    'contentList'?: Array<FilterContentListInner>;
+    'contentList': Array<FilterContentListInner> | null;
     /**
      * 
      * @type {string}
      * @memberof WorkspaceFilter
      */
-    'pattern'?: string;
+    'pattern': string | null;
     /**
      * 
      * @type {string}
      * @memberof WorkspaceFilter
      */
-    'color'?: string;
+    'color': string | null;
     /**
      * 
      * @type {FilterWidth}
      * @memberof WorkspaceFilter
      */
-    'width'?: FilterWidth;
+    'width': FilterWidth | null;
     /**
      * 
      * @type {FilterWeight}
      * @memberof WorkspaceFilter
      */
-    'weight'?: FilterWeight;
+    'weight': FilterWeight | null;
     /**
-     * 梭織布種密度(經向)
-     * @type {string}
+     * 
+     * @type {FilterDensityAndYarn}
      * @memberof WorkspaceFilter
      */
-    'wovenWarpDensity'?: string | null;
-    /**
-     * 梭織布種密度(緯向)
-     * @type {string}
-     * @memberof WorkspaceFilter
-     */
-    'wovenWeftDensity'?: string | null;
-    /**
-     * 梭織布種紗支數(經向)
-     * @type {string}
-     * @memberof WorkspaceFilter
-     */
-    'wovenWarpYarnSize'?: string | null;
-    /**
-     * 梭織布種紗支數(緯向)
-     * @type {string}
-     * @memberof WorkspaceFilter
-     */
-    'wovenWeftYarnSize'?: string | null;
-    /**
-     * 針織布種紗支數
-     * @type {string}
-     * @memberof WorkspaceFilter
-     */
-    'knitYarnSize'?: string | null;
+    'densityAndYarn': FilterDensityAndYarn | null;
     /**
      * 
      * @type {Array<string>}
      * @memberof WorkspaceFilter
      */
-    'finishList'?: Array<string>;
+    'finishList'?: Array<string> | null;
+    /**
+     * 
+     * @type {FilterPrice}
+     * @memberof WorkspaceFilter
+     */
+    'price': FilterPrice | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof WorkspaceFilter
+     */
+    'hasU3M': boolean | null;
     /**
      * 
      * @type {FilterInventory}
      * @memberof WorkspaceFilter
      */
-    'inventory'?: FilterInventory;
+    'inventory': FilterInventory | null;
     /**
      * 
      * @type {boolean}
      * @memberof WorkspaceFilter
      */
-    'hasPrice'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof WorkspaceFilter
-     */
-    'hasU3M'?: boolean;
-    /**
-     * - 1. Unfilled Certification - 2. Public Lock Values - 3. Shared Fabric 
-     * @type {number}
-     * @memberof WorkspaceFilter
-     */
-    'made2Flow'?: WorkspaceFilterMade2FlowEnum;
+    'withOutEcoImpactor': boolean | null;
 }
-
-export const WorkspaceFilterMade2FlowEnum = {
-    UNFILLED_CERTIFICATION: 1,
-    PUBLIC_LOCK_VALUES: 2,
-    SHARED_FABRIC: 3
-} as const;
-
-export type WorkspaceFilterMade2FlowEnum = typeof WorkspaceFilterMade2FlowEnum[keyof typeof WorkspaceFilterMade2FlowEnum];
-
 /**
  * 
  * @export
@@ -24391,29 +24489,8 @@ export interface WorkspaceFilterAllOf {
      * @type {boolean}
      * @memberof WorkspaceFilterAllOf
      */
-    'hasPrice'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof WorkspaceFilterAllOf
-     */
-    'hasU3M'?: boolean;
-    /**
-     * - 1. Unfilled Certification - 2. Public Lock Values - 3. Shared Fabric 
-     * @type {number}
-     * @memberof WorkspaceFilterAllOf
-     */
-    'made2Flow'?: WorkspaceFilterAllOfMade2FlowEnum;
+    'withOutEcoImpactor': boolean | null;
 }
-
-export const WorkspaceFilterAllOfMade2FlowEnum = {
-    UNFILLED_CERTIFICATION: 1,
-    PUBLIC_LOCK_VALUES: 2,
-    SHARED_FABRIC: 3
-} as const;
-
-export type WorkspaceFilterAllOfMade2FlowEnum = typeof WorkspaceFilterAllOfMade2FlowEnum[keyof typeof WorkspaceFilterAllOfMade2FlowEnum];
-
 /**
  * 
  * @export
@@ -24931,7 +25008,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         getMaterialOptions: async (oGBaseRequestBody: OGBaseRequestBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'oGBaseRequestBody' is not null or undefined
             assertParamExists('getMaterialOptions', 'oGBaseRequestBody', oGBaseRequestBody)
-            const localVarPath = `/org/assets/material/options`;
+            const localVarPath = `/assets/material/options`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -26809,36 +26886,6 @@ export const CodeApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @summary 取得filter選項
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        codeFilterOptionGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/code/filter-option`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 取得組織種類 code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27025,16 +27072,6 @@ export const CodeApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 取得filter選項
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async codeFilterOptionGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodeFilterOptionGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.codeFilterOptionGet(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
          * @summary 取得組織種類 code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27104,15 +27141,6 @@ export const CodeApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
-         * @summary 取得filter選項
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        codeFilterOptionGet(options?: any): AxiosPromise<CodeFilterOptionGet200Response> {
-            return localVarFp.codeFilterOptionGet(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 取得組織種類 code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27175,17 +27203,6 @@ export class CodeApi extends BaseAPI {
      */
     public codeCountryGet(options?: AxiosRequestConfig) {
         return CodeApiFp(this.configuration).codeCountryGet(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 取得filter選項
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CodeApi
-     */
-    public codeFilterOptionGet(options?: AxiosRequestConfig) {
-        return CodeApiFp(this.configuration).codeFilterOptionGet(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -30803,13 +30820,13 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
         /**
          * 
          * @summary 取得 Moodboard 清單
-         * @param {GetMoodboardListRequest} getMoodboardListRequest 
+         * @param {GetInternalSearchFilterOptionsRequest} getInternalSearchFilterOptionsRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardList: async (getMoodboardListRequest: GetMoodboardListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getMoodboardListRequest' is not null or undefined
-            assertParamExists('getMoodboardList', 'getMoodboardListRequest', getMoodboardListRequest)
+        getMoodboardList: async (getInternalSearchFilterOptionsRequest: GetInternalSearchFilterOptionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getInternalSearchFilterOptionsRequest' is not null or undefined
+            assertParamExists('getMoodboardList', 'getInternalSearchFilterOptionsRequest', getInternalSearchFilterOptionsRequest)
             const localVarPath = `/moodboard/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30833,7 +30850,7 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getMoodboardListRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getInternalSearchFilterOptionsRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -31436,12 +31453,12 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得 Moodboard 清單
-         * @param {GetMoodboardListRequest} getMoodboardListRequest 
+         * @param {GetInternalSearchFilterOptionsRequest} getInternalSearchFilterOptionsRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMoodboardList(getMoodboardListRequest: GetMoodboardListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardList200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardList(getMoodboardListRequest, options);
+        async getMoodboardList(getInternalSearchFilterOptionsRequest: GetInternalSearchFilterOptionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardList(getInternalSearchFilterOptionsRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -31708,12 +31725,12 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
         /**
          * 
          * @summary 取得 Moodboard 清單
-         * @param {GetMoodboardListRequest} getMoodboardListRequest 
+         * @param {GetInternalSearchFilterOptionsRequest} getInternalSearchFilterOptionsRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMoodboardList(getMoodboardListRequest: GetMoodboardListRequest, options?: any): AxiosPromise<GetMoodboardList200Response> {
-            return localVarFp.getMoodboardList(getMoodboardListRequest, options).then((request) => request(axios, basePath));
+        getMoodboardList(getInternalSearchFilterOptionsRequest: GetInternalSearchFilterOptionsRequest, options?: any): AxiosPromise<GetMoodboardList200Response> {
+            return localVarFp.getMoodboardList(getInternalSearchFilterOptionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -31994,13 +32011,13 @@ export class MoodboardApi extends BaseAPI {
     /**
      * 
      * @summary 取得 Moodboard 清單
-     * @param {GetMoodboardListRequest} getMoodboardListRequest 
+     * @param {GetInternalSearchFilterOptionsRequest} getInternalSearchFilterOptionsRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public getMoodboardList(getMoodboardListRequest: GetMoodboardListRequest, options?: AxiosRequestConfig) {
-        return MoodboardApiFp(this.configuration).getMoodboardList(getMoodboardListRequest, options).then((request) => request(this.axios, this.basePath));
+    public getMoodboardList(getInternalSearchFilterOptionsRequest: GetInternalSearchFilterOptionsRequest, options?: AxiosRequestConfig) {
+        return MoodboardApiFp(this.configuration).getMoodboardList(getInternalSearchFilterOptionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -36977,12 +36994,12 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
     return {
         /**
          * 
-         * @summary 取得 search filter 選項
+         * @summary 取得 external search filter 選項
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSearchFilterOptions: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/search/filter-options`;
+        getExternalSearchFilterOptions: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/search/filter-external-options`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -36990,7 +37007,7 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -36999,6 +37016,40 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 取得 internal search filter 選項
+         * @param {GetInternalSearchFilterOptionsRequest} [getInternalSearchFilterOptionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInternalSearchFilterOptions: async (getInternalSearchFilterOptionsRequest?: GetInternalSearchFilterOptionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/search/filter-intenral-options`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getInternalSearchFilterOptionsRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -37055,12 +37106,23 @@ export const SearchApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary 取得 search filter 選項
+         * @summary 取得 external search filter 選項
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSearchFilterOptions(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetSearchFilterOptions200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getSearchFilterOptions(options);
+        async getExternalSearchFilterOptions(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExternalSearchFilterOptions200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getExternalSearchFilterOptions(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 取得 internal search filter 選項
+         * @param {GetInternalSearchFilterOptionsRequest} [getInternalSearchFilterOptionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest?: GetInternalSearchFilterOptionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInternalSearchFilterOptions200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -37086,12 +37148,22 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
     return {
         /**
          * 
-         * @summary 取得 search filter 選項
+         * @summary 取得 external search filter 選項
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSearchFilterOptions(options?: any): AxiosPromise<GetSearchFilterOptions200Response> {
-            return localVarFp.getSearchFilterOptions(options).then((request) => request(axios, basePath));
+        getExternalSearchFilterOptions(options?: any): AxiosPromise<GetExternalSearchFilterOptions200Response> {
+            return localVarFp.getExternalSearchFilterOptions(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 取得 internal search filter 選項
+         * @param {GetInternalSearchFilterOptionsRequest} [getInternalSearchFilterOptionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest?: GetInternalSearchFilterOptionsRequest, options?: any): AxiosPromise<GetInternalSearchFilterOptions200Response> {
+            return localVarFp.getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -37115,13 +37187,25 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
 export class SearchApi extends BaseAPI {
     /**
      * 
-     * @summary 取得 search filter 選項
+     * @summary 取得 external search filter 選項
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SearchApi
      */
-    public getSearchFilterOptions(options?: AxiosRequestConfig) {
-        return SearchApiFp(this.configuration).getSearchFilterOptions(options).then((request) => request(this.axios, this.basePath));
+    public getExternalSearchFilterOptions(options?: AxiosRequestConfig) {
+        return SearchApiFp(this.configuration).getExternalSearchFilterOptions(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 取得 internal search filter 選項
+     * @param {GetInternalSearchFilterOptionsRequest} [getInternalSearchFilterOptionsRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SearchApi
+     */
+    public getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest?: GetInternalSearchFilterOptionsRequest, options?: AxiosRequestConfig) {
+        return SearchApiFp(this.configuration).getInternalSearchFilterOptions(getInternalSearchFilterOptionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

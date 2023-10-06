@@ -1,6 +1,5 @@
 import {
   type Material,
-  WeightUnit,
   type MaterialBackSide,
   type MaterialFaceSide,
   MaterialType,
@@ -18,6 +17,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import { useStore } from 'vuex'
+import { unitFormatter } from '@frontier/lib'
 
 export type MaterialSpecificationInfo = {
   seasonInfo: {
@@ -91,25 +91,54 @@ export default function useMaterial(
   const store = useStore()
 
   const mainSideType = computed(() => {
-    const { isDoubleSide, faceSide } = material.value
+    const { isDoubleSide, faceSide, sideType } = material.value
     if (isDoubleSide && faceSide) {
       return faceSide.isMainSide
         ? MATERIAL_SIDE_TYPE.FACE
         : MATERIAL_SIDE_TYPE.BACK
     } else {
-      return material.value.sideType === MaterialSideType.FACE_SIDE
+      return sideType === MaterialSideType.FACE_SIDE
         ? MATERIAL_SIDE_TYPE.FACE
         : MATERIAL_SIDE_TYPE.BACK
     }
   })
 
-  const square = String.fromCodePoint(0xb2)
-  const WEIGHT_UNIT: Record<WeightUnit, string> = {
-    [WeightUnit.GSM]: `g/m${square}`,
-    [WeightUnit.OZ]: `oz/yd${square}`,
-    [WeightUnit.GY]: `g/y`,
-    [WeightUnit.GM]: `g/m`,
-  }
+  const hasScannedImage = computed(() => {
+    const { faceSide, backSide } = material.value
+    return !!faceSide?.sideImage || !!backSide?.sideImage
+  })
+
+  const scanImageStatus = computed(() => {
+    const { isDoubleSide, faceSide, backSide, sideType } = material.value
+    const hasScannedFaceSide = !!faceSide?.sideImage
+    const hasScannedBackSide = !!backSide?.sideImage
+    let iconName = 'front'
+    let tooltipMessage = t('RR0266')
+    if (isDoubleSide) {
+      if (hasScannedFaceSide && hasScannedBackSide) {
+        iconName = 'double'
+        tooltipMessage = t('RR0270')
+      } else if (hasScannedFaceSide && !hasScannedBackSide) {
+        iconName = 'double_front'
+        tooltipMessage = t('RR0268')
+      } else if (!hasScannedFaceSide && hasScannedBackSide) {
+        iconName = 'double_back'
+        tooltipMessage = t('RR0269')
+      } else if (!hasScannedFaceSide && !hasScannedBackSide) {
+        iconName = 'no_image_double'
+        tooltipMessage = t('RR0271')
+      }
+    } else if (sideType !== null) {
+      if (sideType === MATERIAL_SIDE_TYPE.FACE) {
+        iconName = hasScannedFaceSide ? 'front' : 'no_image_front'
+        tooltipMessage = hasScannedFaceSide ? t('RR0266') : t('RR0264')
+      } else {
+        iconName = hasScannedBackSide ? 'back' : 'no_image_back'
+        tooltipMessage = hasScannedBackSide ? t('RR0267') : t('RR0265')
+      }
+    }
+    return { iconName, tooltipMessage }
+  })
 
   /**
    * A: cover image
@@ -277,9 +306,7 @@ export default function useMaterial(
     })
     const getFeatureList = () => ({
       name: t('MI0016'),
-      value: currentSide.value.featureList
-        .map((feature) => feature.name)
-        .join(', '),
+      value: currentSide.value.featureList.join(', '),
       textColor: getTextColor(true, false, false),
     })
     const getFinishList = () => ({
@@ -458,7 +485,7 @@ export default function useMaterial(
         },
         weight: {
           name: 'Weight',
-          value: `${weight.value}${WEIGHT_UNIT[weight.unit]}`,
+          value: `${weight.value}${unitFormatter.weight(weight.unit)}`,
           textColor: getTextColor(true, true, false),
         },
         finishList: getFinishList(),
@@ -570,11 +597,6 @@ export default function useMaterial(
     }
   }
 
-  const hasScannedImage = computed(() => {
-    const { faceSide, backSide } = material.value
-    return !!faceSide?.sideImage || !!backSide?.sideImage
-  })
-
   const carbonEmissionInfo = computed(() => {
     if (!material.value.carbonEmission) {
       return {
@@ -636,6 +658,7 @@ export default function useMaterial(
 
   return {
     displayImageList,
+    currentSide,
     currentSideType,
     sideOptionList,
     specificationInfo,
@@ -644,7 +667,9 @@ export default function useMaterial(
     patternInfo,
     getPriceInfo,
     hasScannedImage,
+    scanImageStatus,
     carbonEmissionInfo,
     switchSideType,
+    mainSideType,
   }
 }

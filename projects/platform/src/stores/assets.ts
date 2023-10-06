@@ -6,18 +6,16 @@ import {
   MaterialType,
   LengthUnit,
   WeightUnit,
+  type AssetsFilter,
 } from '@frontier/platform-web-sdk'
 import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
-import useCurrentUnit from '@/composables/useCurrentUnit'
 import assetsApi from '@/apis/assets'
+import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
+import { useStore } from 'vuex'
 
 export const useAssetsStore = defineStore('assets', () => {
-  const { unit } = useCurrentUnit()
-  const baseReq = computed(() => ({
-    orgId: unit.value.orgId,
-    ogType: unit.value.ogType,
-    ogId: unit.value.ogId,
-  }))
+  const store = useStore()
+  const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
 
   const material = ref<Material>({
     materialId: 0,
@@ -25,7 +23,7 @@ export const useAssetsStore = defineStore('assets', () => {
     itemNo: 'Item No',
     coverImage: {
       mode: CoverMode.FACE,
-      thumbnailUrl: `https://picsum.photos/200`,
+      thumbnailUrl: `https://picsum.photos/seed/cover/200`,
       displayUrl: `https://picsum.photos/200`,
     },
     seasonInfo: {
@@ -53,10 +51,10 @@ export const useAssetsStore = defineStore('assets', () => {
       materialSideId: 1,
       isMainSide: true,
       sideImage: {
-        originalUrl: `https://picsum.photos/200`,
-        displayUrl: `https://picsum.photos/200`,
-        thumbnailUrl: `https://picsum.photos/200`,
-        rulerUrl: `https://picsum.photos/200`,
+        originalUrl: `https://picsum.photos/seed/face/200`,
+        displayUrl: `https://picsum.photos/seed/face/200`,
+        thumbnailUrl: `https://picsum.photos/seed/face/200`,
+        rulerUrl: `https://picsum.photos/seed/face/200`,
         dpi: 300,
         cropRecord: {
           x: 0,
@@ -67,10 +65,9 @@ export const useAssetsStore = defineStore('assets', () => {
       },
       u3mImage: null,
       materialType: MaterialType.WOVEN,
-      featureList: new Array(7).fill(0).map((_, index) => ({
-        featureId: index,
-        name: `Feature Name ${index}`,
-      })),
+      featureList: new Array(7)
+        .fill(0)
+        .map((_, index) => `Feature Name ${index}`),
       descriptionList: [],
       construction: {
         isPublic: false,
@@ -257,10 +254,9 @@ export const useAssetsStore = defineStore('assets', () => {
       },
       u3mImage: null,
       materialType: MaterialType.KNIT,
-      featureList: new Array(7).fill(0).map((_, index) => ({
-        featureId: index,
-        name: `Feature Name ${index}`,
-      })),
+      featureList: new Array(7)
+        .fill(0)
+        .map((_, index) => `Feature Name ${index}`),
       descriptionList: [],
       construction: {
         isPublic: false,
@@ -582,14 +578,14 @@ export const useAssetsStore = defineStore('assets', () => {
       },
       metaData: {
         createdByInfo: {
-          username: 'Username',
+          userName: 'Username',
           date: 1669652617,
           unitName: 'Unit Name',
           unitLabelColor: '#F2C94C',
           avatar: 'https://picsum.photos/200',
         },
         lastModifiedByInfo: {
-          username: 'Username',
+          userName: 'Username',
           avatar: 'https://picsum.photos/200',
           unitName: 'Unit Name',
           unitLabelColor: '#F2C94C',
@@ -658,17 +654,38 @@ export const useAssetsStore = defineStore('assets', () => {
       land: 0.22,
       lastUpdateTime: 1669652617,
     },
+    digitalThreadInfo: {
+      threadQty: 1,
+      hasUnreadThread: true,
+    },
   })
 
   const getAssetsMaterial = async (materialId: number) => {
-    assetsApi.getAssetsMaterial({
-      ...baseReq.value,
+    ogBaseAssetsApi(assetsApi.getAssetsMaterial)({
       materialId,
     })
+  }
+
+  const materialList = ref<Material[]>([])
+  const getAssetsMaterialList = async (targetPage = 1) => {
+    const searchParams = store.getters['helper/search/getSearchParams'](
+      targetPage
+    ) as {
+      pagination: object
+      filter: AssetsFilter
+      search: object
+    }
+    const { data } = await ogBaseAssetsApi(assetsApi.getAssetMaterialList)(
+      searchParams
+    )
+    materialList.value = data.result.materialList
+    store.dispatch('helper/search/setPagination', data.result.pagination)
   }
 
   return {
     material,
     getAssetsMaterial,
+    materialList,
+    getAssetsMaterialList,
   }
 })

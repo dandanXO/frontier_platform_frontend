@@ -26,36 +26,20 @@ div(
       slot(:option="option")
         div(
           class="whitespace-nowrap px-5"
-          :class="[getValueByMaterial(option.disabled, innerSelectedList) ? 'text-grey-250' : 'cursor-pointer hover:text-primary-400']"
+          :class="[(option.disabled ? option.disabled(innerSelectedList) : false) ? 'text-grey-250' : 'cursor-pointer hover:text-primary-400']"
           @click="handleClick(option)"
-        ) {{ getValueByMaterial(option.name, innerSelectedList) }}
+        ) {{ option.name(innerSelectedList) }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
+import type { FunctionOption } from '@/types'
 
-const getValueByMaterial = (value, material) => {
-  if (typeof value === 'function') return value(material)
-  return value
-}
+const props = defineProps<{
+  optionMultiSelect: Array<FunctionOption<any>>
+  selectedList: Array<any>
+}>()
 
-const props = defineProps({
-  optionMultiSelect: {
-    type: Array,
-    required: true,
-    default: () => [
-      {
-        name: '',
-        disabled: false,
-        func: () => {},
-      },
-    ],
-  },
-  selectedList: {
-    type: Array,
-    required: true,
-  },
-})
 const emit = defineEmits(['update:selectedList'])
 
 const innerSelectedList = computed({
@@ -64,11 +48,8 @@ const innerSelectedList = computed({
 })
 
 const clearList = () => emit('update:selectedList', [])
-const handleClick = (option) => {
-  if (
-    !option.func ||
-    getValueByMaterial(option.disabled, innerSelectedList.value)
-  ) {
+const handleClick = (option: FunctionOption<any>) => {
+  if (option.disabled && option.disabled(innerSelectedList.value)) {
     return
   }
   option.func(innerSelectedList.value)

@@ -1,11 +1,3 @@
-<style lang="scss">
-.vue-recycle-scroller__item-view {
-  &[data-last-hover='true'] {
-    z-index: 99;
-  }
-}
-</style>
-
 <template lang="pug">
 search-table(
   :searchType="SEARCH_TYPE.ASSETS"
@@ -23,12 +15,15 @@ search-table(
           template(#number) {{ pagination.totalCount }}
         span )
   template(#header-right)
-    grid-or-row(v-model:displayMode="displayMode" class="justify-self-end")
+    f-input-tap(
+      :optionList="displayModeOptionList"
+      v-model:inputValue="displayMode"
+    )
     f-button(size="sm" prependIcon="add" @click="goToMaterialUpload") {{ $t('UU0020') }}
   template(#default)
     template(v-if="materialList.length > 0")
       recycle-scroller(
-        v-show="displayMode === DISPLAY_NODE.LIST"
+        v-show="displayMode === ASSET_LIST_DISPLAY_MODE.LIST"
         :items="materialList"
         :itemSize="currentItemSize"
         key-field="materialId"
@@ -39,9 +34,8 @@ search-table(
       )
         row-item(
           :key="item.materialId"
-          :material="item"
+          :material="tempMaterial"
           v-model:selectedList="selectedMaterialList"
-          @mouseenter="onMouseEnter"
           data-cy="assets"
         )
         div(
@@ -49,20 +43,16 @@ search-table(
           class="border-b border-grey-250 mx-7.5 my-5"
         )
       div(
-        v-show="displayMode === DISPLAY_NODE.GRID"
+        v-show="displayMode === ASSET_LIST_DISPLAY_MODE.GRID"
         class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
       )
-        grid-item-material(
-          v-for="(material, index) in materialList"
+        grid-item(
+          v-for="material in materialList"
           :key="material.materialId"
-          :material="material"
+          :material="tempMaterial"
           v-model:selectedValue="selectedMaterialList"
-          isSelectable
-          :selectValue="material"
-          :optionList="optionList(material)"
-          @click:option="$event.func(material)"
+          :optionList="optionList"
           @click.stop="goToAssetMaterialDetail(material)"
-          :drawerOpenFromLocationList="[]"
         )
     div(v-else class="flex h-full justify-center items-center")
       div(class="flex flex-col justify-center items-center")
@@ -74,21 +64,29 @@ search-table(
         p(class="text-body2 text-grey-900 pt-3") {{ $t('EE0079') }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import SearchTable from '@/components/common/SearchTable.vue'
 import RowItem from '@/components/assets/RowItem.vue'
-import GridItemMaterial from '@/components/common/gridItem/GridItemMaterial.vue'
-import GridOrRow from '@/components/common/GridOrRow.vue'
+import GridItem from '@/components/assets/GridItem.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
-import useAssetsOld from '@/composables/useAssetsOld'
-import { SEARCH_TYPE, DISPLAY_NODE, useConstants } from '@/utils/constants'
+import useAssets from '@/composables/useAssets'
+import {
+  SEARCH_TYPE,
+  ASSET_LIST_DISPLAY_MODE,
+  useConstants,
+} from '@/utils/constants'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useRoute, useRouter } from 'vue-router'
 // https://github.com/Akryum/vue-virtual-scroller/tree/next/packages/vue-virtual-scroller
 import { useI18n } from 'vue-i18n'
+import { useAssetsStore } from '@/stores/assets'
+import { storeToRefs } from 'pinia'
+
+const assetsStore = useAssetsStore()
+const { material: tempMaterial } = storeToRefs(assetsStore)
 
 const { t } = useI18n()
 const router = useRouter()
@@ -97,7 +95,7 @@ const store = useStore()
 const { goToMaterialUpload, goToAssetMaterialDetail } = useNavigation()
 
 const selectedMaterialList = ref([])
-const displayMode = ref(DISPLAY_NODE.LIST)
+const displayMode = ref<ASSET_LIST_DISPLAY_MODE>(ASSET_LIST_DISPLAY_MODE.LIST)
 const materialList = computed(() => store.getters['assets/materialList'])
 const pagination = computed(() => store.getters['helper/search/pagination'])
 const optionSort = computed(() => {
@@ -141,47 +139,33 @@ const optionSort = computed(() => {
 
 const {
   editMaterial,
-  create3DMaterial,
-  printCard,
-  downloadU3M,
+  createU3m,
+  printA4Swatch,
+  downloadU3m,
   cloneTo,
   addToWorkspace,
   exportExcel,
   printQRCode,
-  mergeCard,
+  mergeMaterial,
   deleteMaterial,
-} = useAssetsOld()
+} = useAssets()
 
-const optionList = (material) => {
-  const getValueByMaterial = (value, material) => {
-    if (typeof value === 'function') return value(material)
-    return value
-  }
-
-  return [
-    [editMaterial],
-    [cloneTo, addToWorkspace],
-    [create3DMaterial, downloadU3M, exportExcel],
-    [printQRCode, printCard],
-    [deleteMaterial],
-  ].map((block) =>
-    block.map((option) => ({
-      id: option.id,
-      name: getValueByMaterial(option.name, material),
-      func: () => option.func(material),
-      disabled: getValueByMaterial(option.disabled, material) || false,
-    }))
-  )
-}
+const optionList = computed(() => [
+  [editMaterial],
+  [cloneTo, addToWorkspace],
+  [createU3m, downloadU3m, exportExcel],
+  [printQRCode, printA4Swatch],
+  [deleteMaterial],
+])
 
 const optionMultiSelect = computed(() => [
   cloneTo,
   addToWorkspace,
-  printCard,
+  printA4Swatch,
   printQRCode,
-  downloadU3M,
+  downloadU3m,
   exportExcel,
-  mergeCard,
+  mergeMaterial,
   deleteMaterial,
 ])
 
@@ -191,18 +175,19 @@ const getMaterialList = async (targetPage = 1, query) => {
     query,
   })
   await store.dispatch('assets/getMaterialList', { targetPage })
+  // await  assetsStore.getAssetsMaterialList(targetPage)
 }
 
-const onMouseEnter = (e) => {
-  /**
-   * Choose to set the state in the dataset instead of setting it in class
-   * is because DynamicScroller will re-overwrite class when hovered on.
-   */
-  document.querySelectorAll('[data-last-hover="true"]').forEach((element) => {
-    element.dataset.lastHover = false
-  })
-  e.target.parentElement.dataset.lastHover = true
-}
+const displayModeOptionList = [
+  {
+    selectValue: ASSET_LIST_DISPLAY_MODE.GRID,
+    icon: 'apps',
+  },
+  {
+    selectValue: ASSET_LIST_DISPLAY_MODE.LIST,
+    icon: 'format_list_bulleted',
+  },
+]
 
 const currentItemSize = ref(379)
 const resize = () => {
@@ -210,9 +195,9 @@ const resize = () => {
    * @Todo figure out what happen in Safari
    */
   if (document.querySelector('.vue-recycle-scroller__item-view')) {
-    currentItemSize.value = document?.querySelector(
-      '.vue-recycle-scroller__item-view'
-    )?.clientHeight
+    currentItemSize.value =
+      document?.querySelector('.vue-recycle-scroller__item-view')
+        ?.clientHeight ?? 379
   } else {
     currentItemSize.value = 379
   }

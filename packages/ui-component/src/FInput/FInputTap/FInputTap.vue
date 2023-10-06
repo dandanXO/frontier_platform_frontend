@@ -1,12 +1,12 @@
 <template lang="pug">
-div(class="flex items-center cursor-pointer")
+div(class="flex items-center")
   template(v-for="(option, index) in optionList" :key="option.text")
     div(
       :class="[getClasses(index, option.selectValue), { 'rounded-l': index === 0, 'rounded-r': index === optionList.length - 1 }]"
       @click="$emit('update:inputValue', option.selectValue)"
     )
-      f-svg-icon(:iconName="getIcon(option)" size="24")
-      span(class="text-body2 font-bold") {{ option.label }}
+      f-svg-icon(v-if="option.icon?.length > 0" :iconName="getIcon(option)" size="24")
+      span(v-if="option.label?.length > 0" class="text-body2 font-bold") {{ option.label }}
 </template>
 
 <script setup lang="ts">
@@ -14,9 +14,9 @@ import { THEME } from '@frontier/constants'
 import { computed } from 'vue'
 
 interface Option {
-  label: string
+  label?: string
   selectValue: string | number
-  icon: string
+  icon?: string
   selectedIcon?: string
 }
 
@@ -50,6 +50,8 @@ const getClasses = (index: number, selectValue: Option['selectValue']) => {
     'py-0.5',
     'px-1.5',
     'border-y',
+    'min-h-7.5',
+    'cursor-pointer',
   ]
 
   if (index === 0) {

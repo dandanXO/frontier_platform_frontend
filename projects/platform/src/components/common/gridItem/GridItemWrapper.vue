@@ -7,7 +7,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
     )
       div(class="bg-linear w-full h-full rounded-t-md")
       f-input-checkbox#input-checkbox(
-        v-if="isMultiSelect"
+        v-if="isMultiSelect && Array.isArray(innerSelectedValue)"
         v-model:inputValue="innerSelectedValue"
         :value="selectValue"
         iconSize="24"
@@ -63,43 +63,42 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
   slot(name="caption")
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
+import type { FunctionOption } from '@/types'
+import type { MenuTree } from '@frontier/ui-component'
 
-const props = defineProps({
-  isSelectable: {
-    type: Boolean,
-    default: false,
-  },
-  selectOnHover: {
-    // false 時不用 hover 就可以選取
-    type: Boolean,
-    default: true,
-  },
-  isMultiSelect: {
-    type: Boolean,
-    default: true,
-  },
-  selectedValue: {
-    // 用於綁定在 input-checkbox 或 input radio 儲存 selectValue 的變數
-    type: [Array, String, Object],
-    default: [],
-  },
-  selectValue: {
-    // 選取時要儲存的值
-    validator: (v) => true,
-  },
-  optionList: {
-    type: Array,
-    default: () => [], // [[{ name: '', func: () => { }, disabled: false }]]
-  },
-  cornerTopRightHover: {
-    type: Boolean,
-    default: true,
-  },
-})
-const emit = defineEmits(['update:selectedValue', 'click:option'])
+const props = withDefaults(
+  defineProps<{
+    isSelectable?: boolean
+    /**
+     * false 時不用 hover 就可以選取
+     */
+    selectOnHover?: boolean
+    isMultiSelect: boolean
+    /**
+     * // 選取時要儲存的值
+     */
+    selectValue: any
+    /**
+     * 用於綁定在 input-checkbox 或 input radio 儲存 selectValue 的變數
+     * isMultiSelect 為 true 時，selectValue 為 Array
+     */
+    selectedValue: Array<any> | any
+    optionList: Array<Array<FunctionOption<any>>>
+    cornerTopRightHover?: boolean
+  }>(),
+  {
+    isSelectable: false,
+    selectOnHover: true,
+    isMultiSelect: true,
+    cornerTopRightHover: true,
+  }
+)
 
+const emit = defineEmits<{
+  (e: 'update:selectedValue', v: Array<any> | string | object): void
+}>()
 const isHover = ref(false)
 
 const innerSelectedValue = computed({
@@ -108,18 +107,19 @@ const innerSelectedValue = computed({
 })
 
 const haveSelectedMoreThanOne = computed(
-  () => props.isSelectable && props.selectedValue.length > 0
+  () =>
+    props.isSelectable &&
+    props.isMultiSelect &&
+    Array.isArray(props.selectedValue) &&
+    props.selectedValue.length > 0
 )
 
-const menuTree = computed(() => ({
+const menuTree = computed<MenuTree>(() => ({
   blockList: props.optionList.map((block) => ({
     menuList: block.map((option) => ({
-      title: option.name,
-      clickHandler: () => {
-        if (option.disabled) return
-        emit('click:option', option)
-      },
-      disabled: option.disabled || false,
+      title: option.name(props.selectValue),
+      clickHandler: () => option.func(props.selectValue),
+      disabled: option.disabled ? option.disabled(props.selectValue) : false,
     })),
   })),
 }))
