@@ -167,18 +167,15 @@ const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
 const nodeList = computed(() => store.getters['publicLibrary/nodeList'])
 const publishBy = computed(() => collection.value.publish.displayName)
 const optionNode = computed(() => {
-  const optionList = [
+  return [
     [
       {
         name: t('RR0167'),
         func: publicCloneByNode,
       },
+      optionShareNode,
     ],
   ]
-  if (isFirstLayer.value) {
-    optionList[0].push(optionShareNode)
-  }
-  return optionList
 })
 
 const currentNodeKey = ref(props.nodeKey)
