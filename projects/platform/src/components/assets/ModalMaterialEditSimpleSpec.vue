@@ -20,7 +20,7 @@ modal-behavior(
       :dropdownMenuTree="specOptions.descriptionList"
       @addNew="addDescriptionOption($event)"
       :label="$t('RR0014')"
-      :placeholder="$t('DD0016')"
+      :placeholder="$t('RR0292')"
       multiple
     )
     f-input-container(
@@ -39,7 +39,7 @@ modal-behavior(
             @update:selectValue="selectContent($event, contentItemIndex)"
             :dropdownMenuTree="specOptions.contentList"
             @addNew="addContentOption($event)"
-            :placeholder="$t('DD0016')"
+            :placeholder="$t('RR0292')"
             required
             class="w-100 mr-3"
             :style="{ zIndex: material.contentList.length - contentItemIndex }"
@@ -136,7 +136,7 @@ modal-behavior(
       :dropdownMenuTree="specOptions.finishList"
       @addNew="addFinishOption($event)"
       :label="$t('RR0022')"
-      :placeholder="$t('DD0016')"
+      :placeholder="$t('RR0292')"
       multiple
     )
 </template>

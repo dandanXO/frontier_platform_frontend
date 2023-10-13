@@ -109,7 +109,7 @@ div(class="w-79")
                 p(class="text-body2/1.6 text-grey-800 line-clamp-1") {{ material.customU3m.customFileName }}
         i18n-t(
           v-if="material.customU3m.status === UNSUCCESSFUL"
-          keypath="PP0014"
+          keypath="WW0140"
           tag="p"
           scope="global"
           class="text-red-400 text-caption/1.6"

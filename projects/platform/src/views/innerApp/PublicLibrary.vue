@@ -159,7 +159,7 @@ const pagination = computed(() => store.getters['helper/search/pagination'])
 const collection = computed(() => store.getters['publicLibrary/collection'])
 const breadcrumbList = computed(() =>
   store.getters['publicLibrary/collectionBreadcrumbList']({
-    name: t('II0001'),
+    name: t('RR0003'),
     nodeKey: null,
   })
 )

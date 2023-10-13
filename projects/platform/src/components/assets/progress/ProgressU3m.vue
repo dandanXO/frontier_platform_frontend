@@ -62,7 +62,7 @@ f-table(
       )
         f-svg-icon(iconName="warning_amber_round" size="16" class="mr-1.5 mt-0.5")
         p(v-if="item.msgCode === ERROR_MSG.SOURCE_DELETED") {{ $t('PP0034') }}
-        i18n-t(v-else keypath="PP0014" tag="p" scope="global")
+        i18n-t(v-else keypath="WW0140" tag="p" scope="global")
           template(#RR0123)
             span(
               class="text-cyan-400 ml-0.5 cursor-pointer"

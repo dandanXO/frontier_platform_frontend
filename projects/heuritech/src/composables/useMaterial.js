@@ -169,7 +169,7 @@ export default function useMaterial(material) {
         value: '',
       },
       pricing: {
-        name: t('RR0043'),
+        name: t('RR0134'),
         value:
           price && currency && unit ? `${price} ${currency} / ${unit}` : '',
       },

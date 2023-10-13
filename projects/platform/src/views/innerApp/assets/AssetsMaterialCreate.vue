@@ -32,7 +32,7 @@ div(class="w-full h-full flex justify-center")
       f-expansion-panel
         template(#trigger="{ isExpand }")
           div(class="h-15 flex items-center justify-between")
-            h5(class="text-h5 text-grey-900 font-bold") {{ $t('EE0165') }}
+            h5(class="text-h5 text-grey-900 font-bold") {{ $t('RR0299') }}
             f-svg-icon(
               iconName="keyboard_arrow_right"
               size="20"
@@ -41,7 +41,7 @@ div(class="w-full h-full flex justify-center")
             )
         template(#content)
           div(class="px-15 pt-5")
-            p(class="text-body2 font-bold text-grey-900") {{ $t('EE0165') }}
+            p(class="text-body2 font-bold text-grey-900") {{ $t('RR0299') }}
             p(class="py-5 text-body2 text-grey-900") {{ $t('EE0166') }}
             block-material-upload-u3m(
               ref="refBlockMaterialUploadU3m"
@@ -125,7 +125,7 @@ const breadcrumbList = computed(() => {
   const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
   return [
     {
-      name: t('DD0044'),
+      name: t('RR0008'),
       path: parsePath(`${prefix}/assets`),
     },
     {

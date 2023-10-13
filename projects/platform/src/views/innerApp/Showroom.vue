@@ -16,7 +16,7 @@ div(class="w-full h-full relative")
             p(
               class="text-grey-900 hover:text-primary-400 cursor-pointer text-h6"
               @click="goToPublicLibrary"
-            ) {{ $t('II0001') }}
+            ) {{ $t('RR0003') }}
             f-svg-icon(size="20" iconName="slash" class="text-grey-200")
             global-breadcrumb-list(
               :breadcrumbList="breadcrumbList"

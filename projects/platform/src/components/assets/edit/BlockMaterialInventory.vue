@@ -2,7 +2,7 @@
 f-expansion-panel
   template(#trigger="{ isExpand }")
     div(class="h-15 flex items-center justify-between")
-      h5(class="text-h5 text-grey-900 font-bold") {{ $t('DD0021') }}
+      h5(class="text-h5 text-grey-900 font-bold") {{ $t('RR0135') }}
       f-svg-icon(
         iconName="keyboard_arrow_right"
         size="20"
@@ -11,7 +11,7 @@ f-expansion-panel
       )
   template(#content)
     div(class="bg-grey-50 px-15 py-12.5 mb-15 grid gap-y-7.5")
-      h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
+      h6(class="text-h6 text-grey-600 font-bold") {{ $t('RR0289') }}
       f-input-text(
         class="w-100"
         v-model:textValue="material.materialSeq"
@@ -46,7 +46,7 @@ f-expansion-panel
             :hintError="invalidation.hangersLocation"
             class="w-50"
           )
-      h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0023') }}
+      h6(class="text-h6 text-grey-600 font-bold") {{ $t('RR0296') }}
       f-input-container(:label="$t('RR0034')")
         div(class="flex items-center gap-x-3")
           f-input-text(

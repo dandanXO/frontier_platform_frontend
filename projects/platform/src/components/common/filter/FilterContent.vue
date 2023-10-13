@@ -20,7 +20,7 @@ filter-wrapper(
         f-select-dropdown(
           v-model:selectValue="content.name"
           :dropdownMenuTree="menuTree"
-          :placeholder="$t('JJ0001')"
+          :placeholder="$t('RR0292')"
           class="w-64 mr-3"
           :style="{ zIndex: contentList.length - contentItemIndex }"
         )

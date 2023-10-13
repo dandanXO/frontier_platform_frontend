@@ -5,7 +5,7 @@ div(class="rounded border border-grey-150")
     :class="[attachmentList.length > 0 ? 'text-grey-900 hover:bg-grey-100 cursor-pointer' : 'text-grey-250', { 'bg-grey-100': isExpand }]"
     @click="handleExpand"
   )
-    p(class="text-caption font-bold") {{ $t('QQ0015') }} ({{ attachmentList.length }})
+    p(class="text-caption font-bold") {{ $t('RR0298') }} ({{ attachmentList.length }})
     f-svg-icon(v-if="!isExpand" iconName="keyboard_arrow_down" size="24")
     f-svg-icon(v-else iconName="keyboard_arrow_up" size="24")
   f-scrollbar-container(v-if="isExpand && attachmentList.length > 0" class="max-h-105")

@@ -8,7 +8,7 @@ search-table(
   v-model:selectedItemList="selectedMaterialList"
 )
   template(#header-left)
-    h5(class="text-h5 font-bold text-grey-900") {{ $t('EE0001') }}
+    h5(class="text-h5 font-bold text-grey-900") {{ $t('RR0008') }}
       span(class="text-caption text-grey-600 pl-1")
         span (
         i18n-t(keypath="RR0068" tag="span" scope="global")

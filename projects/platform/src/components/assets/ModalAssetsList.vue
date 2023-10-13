@@ -152,7 +152,7 @@ const totalPage = ref(1)
 const selectedValue = ref(props.isMultiSelect ? [] : '')
 const breadcrumbList = ref([
   {
-    name: t('FF0016'),
+    name: t('RR0008'),
     key: 'root',
   },
 ])

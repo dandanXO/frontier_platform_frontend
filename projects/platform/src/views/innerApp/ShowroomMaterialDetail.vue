@@ -55,7 +55,7 @@ const publish = computed(() => store.getters['showroom/materialPublish'])
 const breadcrumbList = computed(() => {
   return [
     {
-      name: t('II0001'),
+      name: t('RR0003'),
       path: parsePath('/:orgNo/public-library'),
     },
     {

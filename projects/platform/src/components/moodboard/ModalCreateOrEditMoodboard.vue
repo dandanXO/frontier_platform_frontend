@@ -55,7 +55,7 @@ modal-behavior(
       minHeight="min-h-44.5"
       :rules="[$inputRules.required(), (v) => v.length > 1000 && $t('WW0073')]"
     )
-    f-input-container(:label="$t('QQ0015')")
+    f-input-container(:label="$t('RR0298')")
       f-scrollbar-container(class="max-h-18 mb-2.5")
         div(class="grid gap-y-2 max-w-121.5")
           div(

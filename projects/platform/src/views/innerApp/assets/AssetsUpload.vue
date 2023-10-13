@@ -142,7 +142,7 @@ const routeLocation = computed(() => store.getters['helper/routeLocation'])
 const breadcrumbList = computed(() => {
   return [
     {
-      name: t('DD0044'),
+      name: t('RR0008'),
       path: parsePath(`${prefixPath.value}/assets`),
     },
     {

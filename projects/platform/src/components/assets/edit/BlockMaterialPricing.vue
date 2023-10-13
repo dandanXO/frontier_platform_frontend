@@ -2,7 +2,7 @@
 f-expansion-panel
   template(#trigger="{ isExpand }")
     div(class="h-15 flex items-center justify-between")
-      h5(class="text-h5 text-grey-900 font-bold") {{ $t('DD0025') }}
+      h5(class="text-h5 text-grey-900 font-bold") {{ $t('RR0134') }}
       f-svg-icon(
         iconName="keyboard_arrow_right"
         size="20"
@@ -16,10 +16,10 @@ f-expansion-panel
         v-model:selectValue="material.publicPrice.countryCode"
         :dropdownMenuTree="countryMenuTree"
         :label="$t('RR0042')"
-        :placeholder="$t('DD0016')"
+        :placeholder="$t('RR0292')"
       )
       f-input-text(
-        :label="$t('RR0043')"
+        :label="$t('RR0134')"
         v-model:textValue="material.publicPrice.price"
         inputType="number"
         class="w-50"
@@ -64,18 +64,18 @@ f-expansion-panel
         :addOnRight="$t('RR0050')"
       )
       div(class="-mx-15 bg-grey-50 px-15 py-12.5 grid gap-y-7.5")
-        h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
+        h6(class="text-h6 text-grey-600 font-bold") {{ $t('RR0289') }}
         f-select-dropdown(
           class="w-100"
           v-model:selectValue="material.privatePrice.countryCode"
           :dropdownMenuTree="countryMenuTree"
           :label="$t('RR0042')"
-          :placeholder="$t('DD0016')"
+          :placeholder="$t('RR0292')"
         )
         f-input-text(
           v-model:textValue="material.privatePrice.price"
           inputType="number"
-          :label="$t('RR0043')"
+          :label="$t('RR0134')"
           class="w-70"
           :hintError="invalidation.privatePricePrice"
           v-model:leftSelectValue="material.privatePrice.currency"

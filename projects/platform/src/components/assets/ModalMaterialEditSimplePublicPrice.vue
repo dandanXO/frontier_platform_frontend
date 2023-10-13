@@ -12,10 +12,10 @@ modal-behavior(
       v-model:selectValue="material.publicPrice.countryCode"
       :dropdownMenuTree="countryMenuTree"
       :label="$t('RR0042')"
-      :placeholder="$t('DD0016')"
+      :placeholder="$t('RR0292')"
     )
     f-input-text(
-      :label="$t('RR0043')"
+      :label="$t('RR0134')"
       v-model:textValue="material.publicPrice.price"
       inputType="number"
       class="w-50"

@@ -24,7 +24,7 @@ div
           :key="tag"
         ) {{ tag }}
     div
-      h5(class="text-h5 font-bold text-grey-900 pb-5") {{ $t('RR0043') }}
+      h5(class="text-h5 font-bold text-grey-900 pb-5") {{ $t('RR0134') }}
       div(class="grid gap-y-2")
         p(
           v-for="item in materialPublicPriceInfo"
@@ -44,7 +44,7 @@ div
           div(class="flex flex-wrap gap-x-2 gap-y-3")
             f-tag(v-for="tag in material.certificateList" :key="tag") {{ tag.name }}
         div(v-if="attachmentSortedList.length > 0")
-          p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('EE0130') }}
+          p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('RR0298') }}
           div(class="grid grid-cols-2 md:flex md:flex-wrap gap-5")
             attachment-item(
               v-for="(attachment, index) in attachmentSortedList"

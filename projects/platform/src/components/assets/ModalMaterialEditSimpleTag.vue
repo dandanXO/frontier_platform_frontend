@@ -13,7 +13,7 @@ modal-behavior(
         :dropdownMenuTree="menuTreePublicTag"
         @addNew="addNew($event, menuTreePublicTag)"
         :label="$t('RR0027')"
-        :placeholder="$t('DD0018')"
+        :placeholder="$t('RR0288')"
         multiple
       )
       div(class="relative")
@@ -22,18 +22,18 @@ modal-behavior(
           :dropdownMenuTree="menuTreeAiTag"
           @addNew="addNew($event, menuTreeAiTag)"
           :label="$t('RR0071')"
-          :placeholder="$t('DD0018')"
+          :placeholder="$t('RR0288')"
           multiple
         )
         p(class="absolute right-0 top-0 text-caption text-grey-900") {{ $t('EE0036') }}
     div(class="bg-grey-50 px-7.5 py-7.5")
-      h6(class="text-h6 text-grey-600 font-bold mb-7.5") {{ $t('DD0019') }}
+      h6(class="text-h6 text-grey-600 font-bold mb-7.5") {{ $t('RR0289') }}
       f-select-input(
         v-model:selectValue="material.privateTagList"
         :dropdownMenuTree="menuTreePrivateTag"
         @addNew="addNew($event, menuTreePrivateTag)"
         :label="$t('RR0028')"
-        :placeholder="$t('DD0020')"
+        :placeholder="$t('RR0290')"
         multiple
       )
 </template>

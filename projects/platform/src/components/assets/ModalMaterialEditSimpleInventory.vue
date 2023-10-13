@@ -7,7 +7,7 @@ modal-behavior(
   @click:secondary="$store.dispatch('helper/closeModal')"
 )
   div(class="min-w-200 bg-grey-50 px-7.5 py-7.5 grid gap-y-7.5")
-    h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
+    h6(class="text-h6 text-grey-600 font-bold") {{ $t('RR0289') }}
     f-input-container(:label="`${$t('RR0031')} / ${$t('RR0032')}`")
       div(class="flex items-center gap-x-3")
         f-input-text(
@@ -36,7 +36,7 @@ modal-behavior(
           :hintError="invalidation.hangersLocation"
           class="w-50"
         )
-    h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0023') }}
+    h6(class="text-h6 text-grey-600 font-bold") {{ $t('RR0296') }}
     f-input-container(:label="$t('RR0034')")
       div(class="flex items-center gap-x-3")
         f-input-text(

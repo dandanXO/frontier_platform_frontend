@@ -34,7 +34,7 @@ div(data-scroll-to="block-material-information" class="pb-15")
           :dropdownMenuTree="specOptions.descriptionList"
           @addNew="addDescriptionOption($event)"
           :label="$t('RR0014')"
-          :placeholder="$t('DD0016')"
+          :placeholder="$t('RR0292')"
           multiple
         )
         f-input-container(:label="$t('RR0015')" required)
@@ -83,7 +83,7 @@ div(data-scroll-to="block-material-information" class="pb-15")
                 @update:selectValue="selectContent($event, contentItemIndex)"
                 :dropdownMenuTree="specOptions.contentList"
                 @addNew="addContentOption($event)"
-                :placeholder="$t('DD0016')"
+                :placeholder="$t('RR0292')"
                 required
                 class="w-100 mr-3"
                 :style="{ zIndex: material.contentList.length - contentItemIndex }"
@@ -115,7 +115,7 @@ div(data-scroll-to="block-material-information" class="pb-15")
           :dropdownMenuTree="specOptions.finishList"
           @addNew="addFinishOption($event)"
           :label="$t('RR0022')"
-          :placeholder="$t('DD0016')"
+          :placeholder="$t('RR0292')"
           multiple
         )
         f-input-container(:label="$t('RR0023')")
@@ -166,7 +166,7 @@ div(data-scroll-to="block-material-information" class="pb-15")
           :dropdownMenuTree="menuTreePublicTag"
           @addNew="addNew($event, menuTreePublicTag)"
           :label="$t('RR0027')"
-          :placeholder="$t('DD0018')"
+          :placeholder="$t('RR0288')"
           multiple
         )
         div(v-if="isEditMode" class="relative")
@@ -175,7 +175,7 @@ div(data-scroll-to="block-material-information" class="pb-15")
             :dropdownMenuTree="menuTreeAiTag"
             @addNew="addNew($event, menuTreeAiTag)"
             :label="$t('RR0071')"
-            :placeholder="$t('DD0018')"
+            :placeholder="$t('RR0288')"
             multiple
           )
           p(class="absolute right-0 top-0 text-caption text-grey-900") {{ $t('EE0036') }}
@@ -196,13 +196,13 @@ div(data-scroll-to="block-material-information" class="pb-15")
         div(v-else class="h-111 flex justify-center items-center")
           f-svg-icon(iconName="loading" size="54" class="text-primary-400")
     div(class="bg-grey-50 px-15 py-12.5 mt-7.5 grid gap-y-7.5")
-      h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
+      h6(class="text-h6 text-grey-600 font-bold") {{ $t('RR0289') }}
       f-select-input(
         v-model:selectValue="material.privateTagList"
         :dropdownMenuTree="menuTreePrivateTag"
         @addNew="addNew($event, menuTreePrivateTag)"
         :label="$t('RR0028')"
-        :placeholder="$t('DD0020')"
+        :placeholder="$t('RR0290')"
         multiple
       )
       f-input-textarea(

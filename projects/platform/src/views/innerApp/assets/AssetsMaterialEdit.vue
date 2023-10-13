@@ -52,7 +52,7 @@ const breadcrumbList = computed(() => {
   const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
   return [
     {
-      name: t('DD0044'),
+      name: t('RR0008'),
       path: parsePath(`${prefix}/assets`),
     },
     {

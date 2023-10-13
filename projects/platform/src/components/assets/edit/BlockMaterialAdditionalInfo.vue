@@ -21,7 +21,7 @@ f-expansion-panel
       )
       div
         div(class="pb-10")
-          p(class="text-body2 font-bold text-grey-900") {{ $t('EE0130') }}
+          p(class="text-body2 font-bold text-grey-900") {{ $t('RR0298') }}
           div(class="py-5 text-body2") {{ $t('DD0027') }}
           f-button(size="md" @click="openModalUploadFileGeneral") {{ $t('UU0022') }}
         div(v-if="attachmentList.length > 0" class="flex flex-wrap gap-5")

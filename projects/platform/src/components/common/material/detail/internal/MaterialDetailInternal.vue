@@ -61,7 +61,7 @@ div
               p(class="col-span-3") Last Modified
               p(v-if="material.metaData.updateDate" class="col-span-8") {{ toStandardFormat(material.metaData.updateDate) }}
           div(v-if="material.internalInfo" class="rounded-md bg-grey-50 p-7.5")
-            h6(class="text-h6 font-bold text-grey-600") {{ $t('EE0026') }}
+            h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
             div(class="pt-7.5 grid gap-y-8")
               div(class="grid gap-y-3")
                 div(class="text-body2 text-grey-900 grid grid-cols-11")
@@ -140,7 +140,7 @@ div
                 ) {{ tag.name }}
           //- Internal
           div(class="rounded-md bg-grey-50 p-7.5")
-            h6(class="text-h6 font-bold text-grey-600") {{ $t('EE0026') }}
+            h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
             div(class="pt-7.5")
               p(class="pb-3 text-body2 font-bold text-grey-900") {{ $t('RR0028') }}
               div(class="flex flex-wrap gap-x-2 gap-y-3")
@@ -160,7 +160,7 @@ div
               p(class="col-span-8") {{ property.value }}
           //- Internal
           div(class="rounded-md bg-grey-50 p-7.5")
-            h6(class="text-h6 font-bold text-grey-600") {{ $t('EE0026') }}
+            h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
             div(class="pt-7.5")
               div(class="grid gap-y-5")
                 div(
@@ -175,7 +175,7 @@ div
             p(class="col-span-4") {{ t('RR0034') }}
             p(class="col-span-8") {{ material.inventoryTotalQtyInYard }} Y
           div(class="rounded-md bg-grey-50 p-7.5")
-            h6(class="text-h6 font-bold text-grey-600") {{ $t('EE0026') }}
+            h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
             div(class="grid gap-y-15 pt-7.5")
               //- Native Code
               div(class="text-body2 text-grey-900 grid grid-cols-12")
@@ -207,7 +207,7 @@ div
                 )
         template(v-else-if="currentTab === TAB.ATTACHMENT")
           div(class="rounded-md bg-grey-50 p-7.5")
-            h6(class="text-h6 font-bold text-grey-600") {{ $t('EE0026') }}
+            h6(class="text-h6 font-bold text-grey-600") {{ $t('RR0289') }}
             div(class="pt-7.5 flex flex-wrap gap-5")
               material-file-item(
                 v-for="(attachment, index) in material.internalInfo?.attachmentList"
