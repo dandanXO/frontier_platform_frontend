@@ -77,3 +77,56 @@ export const SlotErrorMsg = (args) => ({
       </template>
     </f-input-text>`,
 })
+
+export const Addon = Template.bind({})
+Addon.args = {
+  addOnLeft: 'Addon',
+}
+
+export const AddonDropdown = (args) => ({
+  components: { FInputText },
+  setup() {
+    const inputText = ref('')
+    const leftSelectValue = ref('Menu 1')
+    return {
+      args: {
+        ...args,
+        leftDropdownOption: {
+          selectMode: 2,
+          menuTree: {
+            blockList: [
+              {
+                menuList: [
+                  {
+                    title: 'Menu 1',
+                    selectValue: 'Menu 1',
+                  },
+                  {
+                    title: 'Menu 2',
+                    selectValue: 'Menu 2',
+                  },
+                  {
+                    title: 'Menu 3',
+                    selectValue: 'Menu 3',
+                  },
+                  {
+                    title: 'Menu 4',
+                    selectValue: 'Menu 4',
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+      inputText,
+      leftSelectValue,
+    }
+  },
+  template: `
+    <f-input-text v-model:textValue="inputText"  v-model:leftSelectValue="leftSelectValue" v-bind="args">
+      <template #slot:left-dropdown-trigger="{ selectedMenu }">
+        {{ selectedMenu?.title }}
+      </template>
+    </f-input-text>`,
+})
