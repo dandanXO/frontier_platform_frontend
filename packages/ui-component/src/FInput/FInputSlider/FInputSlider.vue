@@ -353,6 +353,10 @@ onMounted(() => {
   refSlider.value.noUiSlider.on('end', () => {
     isDragging.value = false
   })
+
+  props.disabled
+    ? refSlider.value.noUiSlider.disable()
+    : refSlider.value.noUiSlider.enable()
 })
 
 watch(

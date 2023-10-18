@@ -6,6 +6,7 @@ f-input-container(:required="required" :label="label")
       v-model:inputValue="innerInputValue"
       :label="option[keyOptionName]"
       :value="option[keyOptionValue]"
+      :disabled="disabled"
       :iconSize="radioSize"
       data-cy="input-radio"
     )
@@ -64,6 +65,10 @@ export default {
     radioSize: {
       type: String,
       default: '24',
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['update:inputValue'],

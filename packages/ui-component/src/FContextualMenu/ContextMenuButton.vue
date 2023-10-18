@@ -3,7 +3,7 @@ div(:class="[position === 'top' ? 'flex-col' : 'flex-col-reverse']" class="flex"
   div(
     :class="{ 'hover:bg-grey-100 active:bg-grey-150': !disabled }"
     class="group h-8.5 px-4 flex items-center"
-    @click="!disabled && !!clickHandler && clickHandler()"
+    @click.stop="!disabled && !!clickHandler && clickHandler()"
   )
     f-svg-icon(
       :iconName="icon"

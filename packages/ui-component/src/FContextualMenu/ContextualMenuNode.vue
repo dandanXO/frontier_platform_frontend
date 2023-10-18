@@ -264,7 +264,12 @@ const mouseLeaveHandler = () => {
 
 const clickMenuHandler = () => {
   const { disabled, selectable } = innerMenu.value
-  if (disabled || !selectable) {
+  if (
+    (props.selectMode !== CONTEXTUAL_MENU_MODE.NONE_SELECT &&
+      hasNextLevel.value) ||
+    disabled ||
+    !selectable
+  ) {
     return
   }
 
@@ -374,7 +379,7 @@ const filteredBlockList = computed(() => {
   const blockList: MenuBlock[] = []
   innerMenu.value.blockList.forEach((block) => {
     const filteredMenuList = block.menuList.filter((menu) =>
-      menu.title.includes(searchInput.value)
+      menu.title.toLowerCase().includes(searchInput.value.toLowerCase())
     )
     if (filteredMenuList.length > 0) {
       blockList.push({

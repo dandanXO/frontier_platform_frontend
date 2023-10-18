@@ -4,20 +4,28 @@ label(class="flex items-center")
     v-if="checked"
     iconName="radio_button_checked"
     :size="iconSize"
-    :class="[checkColor]"
+    :class="disabled ? 'text-grey-250' : checkColor"
     class="cursor-pointer"
   )
   f-svg-icon(
     v-else
     iconName="radio_button_unchecked"
     :size="iconSize"
-    :class="[uncheckColor]"
+    :class="[disabled ? 'text-grey-250' : uncheckColor]"
     class="cursor-pointer"
   )
-  input(type="radio" class="hidden" :checked="checked" :value="value" @input="check")
+  input(
+    type="radio"
+    class="hidden"
+    :checked="checked"
+    :disabled="disabled"
+    :value="value"
+    @input="check"
+  )
   div(
     v-if="label !== ''"
-    class="pl-1 text-body2 text-grey-900 whitespace-nowrap cursor-pointer"
+    class="pl-1 text-body2 whitespace-nowrap cursor-pointer"
+    :class="[disabled ? 'text-grey-250' : 'text-grey-900']"
   ) {{ label }}
 </template>
 
@@ -47,6 +55,10 @@ export default {
     iconSize: {
       type: String,
       default: '24',
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
     checkColor: {
       type: String,

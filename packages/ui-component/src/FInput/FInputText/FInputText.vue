@@ -474,13 +474,25 @@ const clear = () => {
 const increase = () => {
   refInput.value.focus()
   let textValue = innerTextValue.value || 0
-  textValue = Number(Number.parseFloat(textValue + props.step).toFixed(2))
+  if (typeof props.max === 'number') {
+    textValue = Number(
+      Number.parseFloat(Math.min(textValue + props.step, props.max)).toFixed(2)
+    )
+  } else {
+    textValue = Number(Number.parseFloat(textValue + props.step).toFixed(2))
+  }
   emit('update:textValue', textValue)
 }
 const decrease = () => {
   refInput.value.focus()
   let textValue = innerTextValue.value || 0
-  textValue = Number(Number.parseFloat(textValue - props.step).toFixed(2))
+  if (typeof props.min === 'number') {
+    textValue = Number(
+      Number.parseFloat(Math.max(textValue - props.step, props.min)).toFixed(2)
+    )
+  } else {
+    textValue = Number(Number.parseFloat(textValue - props.step).toFixed(2))
+  }
   emit('update:textValue', textValue)
 }
 

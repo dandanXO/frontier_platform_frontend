@@ -20,7 +20,10 @@ label(class="flex items-center" :class="{ 'cursor-pointer': !disabled }")
     @input="check($event)"
     :disabled="disabled"
   )
-  div(class="flex flex-row gap-x-2 items-center px-2")
+  div(
+    v-if="label !== '' || slots.default"
+    class="flex flex-row gap-x-2 items-center px-2"
+  )
     slot
     div(
       v-if="label !== ''"
@@ -34,11 +37,12 @@ export default { name: 'FInputCheckbox' }
 </script>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, useSlots } from 'vue'
 
 type ArrayInputValue = Array<any>
 type InputValue = boolean | ArrayInputValue
 
+const slots = useSlots()
 const props = withDefaults(
   defineProps<{
     /**
@@ -59,7 +63,7 @@ const props = withDefaults(
     iconSize?: string
     iconColor?: string
     uncheckColor?: string
-    disabled: boolean
+    disabled?: boolean
   }>(),
   {
     binary: false,
