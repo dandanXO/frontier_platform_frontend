@@ -6,6 +6,7 @@ import useModels from '../composables/useModels'
 import useU3M from '../composables/useU3M'
 import { useBreakpoints } from '@frontier/lib'
 import useKeyboard from '../composables/useKeyboard'
+import useScreenshot from '../composables/useScreenshot'
 import { DISPLAY_MODE, TEXTURE_TYPE } from '../constants'
 import EditorHeader from './EditorHeader.vue'
 import EditorSidebar from './sidebar/EditorSidebar.vue'
@@ -27,7 +28,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{ (e: 'close'): void }>()
 
-const { scene, container, canvas, takeScreenShot } = useScene()
+const { scene, camera, container, canvas } = useScene()
 const {
   isLoading: isLoadingU3M,
   originU3m,
@@ -44,6 +45,7 @@ const {
   models,
   modelIndex,
   currentModel,
+  modelObject,
   scale,
   pantoneList,
   currentColors,
@@ -66,6 +68,7 @@ const {
   props.dispImgUrl,
   props.showCustomModels || false
 )
+const { takeScreenshot } = useScreenshot(camera, canvas, modelObject)
 
 const displayMode = ref(DISPLAY_MODE.MODEL)
 const textureType = ref(TEXTURE_TYPE.BASE)
@@ -139,7 +142,7 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
           @roughnessChange="handleRoughnessChange"
           @specularChange="handleSpecularChange"
           @scaleChange="handleScaleChange"
-          @screenshot="takeScreenShot"
+          @screenshot="takeScreenshot"
           @toggleMoireEffectPrevent="moireEffectPreventToggle"
         )
       hidden-sidebar(

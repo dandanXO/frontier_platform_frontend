@@ -142,6 +142,7 @@ export default function useModels(
 
   const models = [...MODELS, ...(showCustomModels ? orgCustomModels : [])]
   const modelIndex = ref<number>(0)
+  const modelObject = ref<THREE.Group>()
   const material = ref<THREE.MeshPhysicalMaterial>()
   const baseTexture = ref<THREE.Texture>()
   const normalTexture = ref<THREE.Texture>()
@@ -303,9 +304,9 @@ export default function useModels(
         throw new Error('error')
       }
 
-      const model = gltf.scene
-      model.scale.set(0.5, 0.5, 0.5)
-      model.traverse((obj) => {
+      modelObject.value = gltf.scene
+      modelObject.value.scale.set(0.5, 0.5, 0.5)
+      modelObject.value.traverse((obj) => {
         const mesh = obj as THREE.Mesh
         if (!mesh.isMesh || !material.value) {
           return
@@ -325,7 +326,7 @@ export default function useModels(
           })
         }
       })
-      scene.value.add(model)
+      scene.value.add(modelObject.value)
     })
     updateMaterialRepeatTimes()
   }
@@ -380,6 +381,7 @@ export default function useModels(
     modelIndex,
     currentModel,
     loadModel,
+    modelObject,
     scale,
     pantoneList,
     currentColors,
