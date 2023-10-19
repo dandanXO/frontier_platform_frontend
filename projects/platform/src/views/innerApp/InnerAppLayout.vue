@@ -45,10 +45,12 @@ export default {
 <script setup>
 import { setOptions, bootstrap } from 'vue-gtag'
 import { useStore } from 'vuex'
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, watch } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
 import useNavigation from '@/composables/useNavigation'
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
+import { useFilterStore } from '@/stores/filter'
+import useCurrentUnit from '@/composables/useCurrentUnit'
 
 const NotifyBarBuffer = defineAsyncComponent(() =>
   import('@/components/billings/NotifyBarBuffer.vue')
@@ -58,7 +60,9 @@ const ModalAnnouncement = defineAsyncComponent(() =>
 )
 
 const store = useStore()
+const filterStore = useFilterStore()
 const { isInInnerApp } = useNavigation()
+const { unit } = useCurrentUnit()
 const isReloadInnerApp = computed(
   () => store.getters['helper/isReloadInnerApp']
 )
@@ -87,4 +91,14 @@ setOptions({
   },
 })
 bootstrap()
+
+watch(
+  () => unit.value.ogId + unit.value.ogType,
+  () => {
+    isInInnerApp.value && filterStore.getInternalFilterOption()
+  },
+  {
+    immediate: true,
+  }
+)
 </script>

@@ -1,6 +1,6 @@
 import { useStore } from 'vuex'
 import { computed, shallowRef, h } from 'vue'
-import useNavigation from '@/composables/useNavigation.js'
+import useNavigation from '@/composables/useNavigation'
 import { useI18n, Translation } from 'vue-i18n'
 import { NOTIFY_TYPE } from '@/utils/constants'
 

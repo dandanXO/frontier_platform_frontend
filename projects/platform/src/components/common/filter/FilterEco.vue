@@ -1,51 +1,63 @@
 <template lang="pug">
 filter-wrapper(
   iconName="co2"
-  :displayName="$t('RR0254')"
-  :dirty="filterDirty.made2Flow"
+  :displayName="$t('RR0219')"
+  :dirty="filterDirty.withOutEcoImpactor"
+  :confirmButton="false"
   :disabled="disabled"
 )
   p(v-if="disabled" class="max-w-72") {{ $t('VV0047') }}
   f-contextual-menu(
     v-else
-    v-model:inputSelectValue="made2Flow"
+    v-model:inputSelectValue="hasU3M"
     :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_CANCEL"
     :menuTree="menuTree"
+    class="-mx-5 -my-4"
   )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
-import { useStore } from 'vuex'
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { CONTEXTUAL_MENU_MODE } from '@/utils/constants'
+import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
+import { useFilterStore } from '@/stores/filter'
+import { storeToRefs } from 'pinia'
+import { useStore } from 'vuex'
+
+const emit = defineEmits<{
+  (e: 'search'): void
+}>()
 
 const { t } = useI18n()
 const store = useStore()
-
-const filterDirty = computed(() => store.getters['helper/search/filterDirty'])
+const filterStore = useFilterStore()
+const { filterDirty, filterState } = storeToRefs(filterStore)
 const valueAddedService = computed(
   () => store.getters['polling/valueAddedService']
 )
 const disabled = computed(
   () => !valueAddedService.value.made2flow.planStatus.ACTIVATE
 )
+
 const menuTree = computed(() => ({
   blockList: [
     {
       menuList: [
         {
           title: t('RR0250'),
-          selectValue: 1,
+          selectValue: true,
         },
       ],
     },
   ],
 }))
 
-const made2Flow = computed({
-  get: () => store.getters['helper/search/filter'].made2Flow,
-  set: (v) => store.dispatch('helper/search/setFilter', { made2Flow: v }),
+const hasU3M = computed({
+  get: () => filterState.value.withOutEcoImpactor,
+  set: (v) => {
+    filterStore.setFilterStateByProperty('withOutEcoImpactor', v)
+    emit('search')
+  },
 })
 </script>

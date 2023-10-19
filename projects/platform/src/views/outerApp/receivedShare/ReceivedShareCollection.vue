@@ -87,7 +87,7 @@ import { useRoute, useRouter } from 'vue-router'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'
 import { useI18n } from 'vue-i18n'
-import useNavigation from '@/composables/useNavigation.js'
+import useNavigation from '@/composables/useNavigation'
 import CollectionOverview from '@/components/outerApp/CollectionOverview.vue'
 
 const { t } = useI18n()

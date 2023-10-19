@@ -3,9 +3,10 @@ filter-wrapper(
   iconName="ingredient"
   :displayName="$t('RR0021')"
   :dirty="filterDirty.contentList"
-  @expand="init"
+  :confirmDisabled="!!errorMsg"
+  @confirm="update"
 )
-  div(class="w-120.5 px-5 py-4 rounded shadow-16 flex flex-col gap-y-3")
+  div(class="w-110 flex flex-col gap-y-3")
     div(class="flex justify-between items-center")
       div(class="flex items-center gap-x-2")
         p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0021') }}
@@ -16,20 +17,26 @@ filter-wrapper(
         ) {{ $t('UU0040') }}
       f-svg-icon(size="20" iconName="add_box" class="text-grey-600" @click="addItem")
     div(v-if="contentList.length > 0" class="grid gap-y-5 relative py-2")
-      div(v-for="(content, contentItemIndex) in contentList" class="flex items-center")
+      div(
+        v-for="(content, contentItemIndex) in contentList"
+        :key="contentItemIndex"
+        class="flex items-center gap-x-3"
+      )
         f-select-dropdown(
           v-model:selectValue="content.name"
           :dropdownMenuTree="menuTree"
           :placeholder="$t('RR0292')"
-          class="w-64 mr-3"
+          class="w-58 mr-3"
           :style="{ zIndex: contentList.length - contentItemIndex }"
         )
         f-input-text(
           v-model:textValue="content.percentage"
           inputType="number"
-          class="w-30 mr-3"
+          class="w-38"
+          addOnRight="%"
+          :min="0"
+          :max="100"
         )
-        p(class="text-body2 text-grey-900 pr-2") %
         f-svg-icon(
           size="20"
           iconName="delete"
@@ -43,112 +50,84 @@ filter-wrapper(
     f-infobar
       p {{ $t('JJ0003') }}
       p {{ $t('JJ0004') }}
-    f-button(size="sm" :disabled="errorMsg" class="self-end" @click="update") {{ $t('UU0001') }}
 </template>
 
-<script>
+<script setup lang="ts">
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
-import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { inputValidator } from '@frontier/lib'
+import { useFilterStore, type FilterState } from '@/stores/filter'
+import { storeToRefs } from 'pinia'
+import { clone } from 'ramda'
 
-export default {
-  name: 'FilterContent',
-  components: {
-    FilterWrapper,
-  },
-  setup() {
-    const { t } = useI18n()
-    const store = useStore()
+const emit = defineEmits<{
+  (e: 'search'): void
+}>()
 
-    const filterDirty = computed(
-      () => store.getters['helper/search/filterDirty']
-    )
+const { t } = useI18n()
+const filterStore = useFilterStore()
+const { filterOption, filterState, filterDirty } = storeToRefs(filterStore)
 
-    const menuTree = computed(() => {
-      const { contentList } = store.getters['code/filterOptionList']
-      return {
-        width: 'w-64',
-        blockList: [
-          {
-            menuList: contentList.map(({ displayName, value }) => ({
-              title: displayName,
-              selectValue: value,
-            })),
-          },
-        ],
-      }
-    })
+const menuTree = computed(() => {
+  return {
+    width: 'w-64',
+    blockList: [
+      {
+        menuList:
+          filterOption.value?.contentList?.map(({ displayName, value }) => ({
+            title: displayName,
+            selectValue: value,
+          })) ?? [],
+      },
+    ],
+  }
+})
 
-    const contentList = ref([])
+const contentList = ref<
+  {
+    name: string | null
+    percentage: number | null
+  }[]
+>(clone(filterState.value.contentList))
 
-    const errorMsg = computed(() => {
-      let total = 0
-      for (let i = 0; i < contentList.value.length; i++) {
-        const { name, percentage } = contentList.value[i]
+const errorMsg = computed(() => {
+  let total = 0
+  for (let i = 0; i < contentList.value.length; i++) {
+    const { name, percentage } = contentList.value[i]
 
-        if (name === null) {
-          return t('WW0002')
-        }
-
-        if (!inputValidator.maxIntegerDecimal(3, 2, percentage)) {
-          return t('WW0010')
-        }
-
-        total += percentage
-      }
-      if (total > 100) {
-        return t('WW0060')
-      }
-
-      return false
-    })
-
-    const contentItem = () => ({
-      name: null,
-      percentage: null,
-    })
-
-    const addItem = () => contentList.value.push(contentItem())
-    const removeItem = (index) => contentList.value.splice(index, 1)
-    const reset = () => {
-      contentList.value.length = 0
+    if (name === null || percentage === null) {
+      return t('WW0002')
     }
 
-    const init = () => {
-      const filter = store.getters['helper/search/filter']
-      contentList.value =
-        filter.contentList.length > 0
-          ? JSON.parse(JSON.stringify(filter.contentList))
-          : []
+    if (!inputValidator.maxIntegerDecimal(3, 2, percentage)) {
+      return t('WW0010')
     }
 
-    const update = () => {
-      contentList.value.forEach((content) => {
-        if (content.percentage === '') {
-          content.percentage = null
-        }
-      })
-      store.dispatch('helper/search/setFilter', {
-        contentList:
-          contentList.value.length > 0
-            ? JSON.parse(JSON.stringify(contentList.value))
-            : [],
-      })
-    }
+    total += percentage
+  }
+  if (total > 100) {
+    return t('WW0060')
+  }
 
-    return {
-      contentList,
-      filterDirty,
-      menuTree,
-      addItem,
-      removeItem,
-      reset,
-      init,
-      update,
-      errorMsg,
-    }
-  },
+  return false
+})
+
+const addItem = () =>
+  contentList.value.push({
+    name: null,
+    percentage: null,
+  })
+const removeItem = (index: number) => contentList.value.splice(index, 1)
+const reset = () => {
+  contentList.value.length = 0
+}
+
+const update = () => {
+  filterStore.setFilterStateByProperty(
+    'contentList',
+    contentList.value as FilterState['contentList']
+  )
+  emit('search')
 }
 </script>

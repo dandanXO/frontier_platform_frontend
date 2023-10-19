@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import useNavigation from '@/composables/useNavigation.js'
+import useNavigation from '@/composables/useNavigation'
 import { NOTIFY_TYPE } from '@/utils/constants'
 
 export default function useReceivedShare() {

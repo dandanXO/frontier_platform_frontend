@@ -340,7 +340,7 @@ export interface AssetsFilter {
      * @type {Array<number>}
      * @memberof AssetsFilter
      */
-    'materialTypeList'?: Array<number> | null;
+    'materialTypeList': Array<number> | null;
     /**
      * 
      * @type {Array<number>}
@@ -403,10 +403,10 @@ export interface AssetsFilter {
     'hasU3M': boolean | null;
     /**
      * 
-     * @type {FilterInventory}
+     * @type {AssetsFilterAllOfInventory}
      * @memberof AssetsFilter
      */
-    'inventory': FilterInventory | null;
+    'inventory': AssetsFilterAllOfInventory | null;
     /**
      * 
      * @type {boolean}
@@ -439,6 +439,12 @@ export type AssetsFilterStatusEnum = typeof AssetsFilterStatusEnum[keyof typeof 
 export interface AssetsFilterAllOf {
     /**
      * 
+     * @type {AssetsFilterAllOfInventory}
+     * @memberof AssetsFilterAllOf
+     */
+    'inventory': AssetsFilterAllOfInventory | null;
+    /**
+     * 
      * @type {boolean}
      * @memberof AssetsFilterAllOf
      */
@@ -461,6 +467,37 @@ export const AssetsFilterAllOfStatusEnum = {
 
 export type AssetsFilterAllOfStatusEnum = typeof AssetsFilterAllOfStatusEnum[keyof typeof AssetsFilterAllOfStatusEnum];
 
+/**
+ * 
+ * @export
+ * @interface AssetsFilterAllOfInventory
+ */
+export interface AssetsFilterAllOfInventory {
+    /**
+     * 
+     * @type {number}
+     * @memberof AssetsFilterAllOfInventory
+     */
+    'min': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof AssetsFilterAllOfInventory
+     */
+    'max': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AssetsFilterAllOfInventory
+     */
+    'isInfinity': boolean;
+    /**
+     * 
+     * @type {Array<MaterialQuantityUnit>}
+     * @memberof AssetsFilterAllOfInventory
+     */
+    'unitList': Array<MaterialQuantityUnit>;
+}
 /**
  * 
  * @export
@@ -2223,6 +2260,50 @@ export interface CreateAndEditAttachmentFileAllOf {
      * @memberof CreateAndEditAttachmentFileAllOf
      */
     'displayFileName': string;
+}
+/**
+ * 
+ * @export
+ * @interface CreateAssetsMaterial200Response
+ */
+export interface CreateAssetsMaterial200Response {
+    /**
+     * 
+     * @type {CreateAssetsMaterial200ResponseResult}
+     * @memberof CreateAssetsMaterial200Response
+     */
+    'result'?: CreateAssetsMaterial200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CreateAssetsMaterial200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateAssetsMaterial200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof CreateAssetsMaterial200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface CreateAssetsMaterial200ResponseResult
+ */
+export interface CreateAssetsMaterial200ResponseResult {
+    /**
+     * 
+     * @type {Material}
+     * @memberof CreateAssetsMaterial200ResponseResult
+     */
+    'material'?: Material;
 }
 /**
  * 
@@ -4876,7 +4957,7 @@ export interface ExternalFilter {
      * @type {Array<number>}
      * @memberof ExternalFilter
      */
-    'materialTypeList'?: Array<number> | null;
+    'materialTypeList': Array<number> | null;
     /**
      * 
      * @type {Array<number>}
@@ -4939,10 +5020,48 @@ export interface ExternalFilter {
     'hasU3M': boolean | null;
     /**
      * 
-     * @type {FilterInventory}
+     * @type {ExternalFilterAllOfInventory}
      * @memberof ExternalFilter
      */
-    'inventory': FilterInventory | null;
+    'inventory': ExternalFilterAllOfInventory | null;
+}
+/**
+ * 
+ * @export
+ * @interface ExternalFilterAllOf
+ */
+export interface ExternalFilterAllOf {
+    /**
+     * 
+     * @type {ExternalFilterAllOfInventory}
+     * @memberof ExternalFilterAllOf
+     */
+    'inventory': ExternalFilterAllOfInventory | null;
+}
+/**
+ * 
+ * @export
+ * @interface ExternalFilterAllOfInventory
+ */
+export interface ExternalFilterAllOfInventory {
+    /**
+     * 
+     * @type {number}
+     * @memberof ExternalFilterAllOfInventory
+     */
+    'min': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ExternalFilterAllOfInventory
+     */
+    'max': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ExternalFilterAllOfInventory
+     */
+    'isInfinity': boolean;
 }
 /**
  * 功能列表Enum
@@ -4977,7 +5096,7 @@ export interface Filter {
      * @type {Array<number>}
      * @memberof Filter
      */
-    'materialTypeList'?: Array<number> | null;
+    'materialTypeList': Array<number> | null;
     /**
      * 
      * @type {Array<number>}
@@ -5038,12 +5157,6 @@ export interface Filter {
      * @memberof Filter
      */
     'hasU3M': boolean | null;
-    /**
-     * 
-     * @type {FilterInventory}
-     * @memberof Filter
-     */
-    'inventory': FilterInventory | null;
 }
 /**
  * 
@@ -5130,48 +5243,109 @@ export interface FilterDensityAndYarnWoven {
 /**
  * 
  * @export
- * @interface FilterInventory
+ * @interface FilterOptionBase
  */
-export interface FilterInventory {
+export interface FilterOptionBase {
     /**
      * 
-     * @type {MaterialQuantityUnit}
-     * @memberof FilterInventory
+     * @type {Array<FilterOptionBaseContentListInner>}
+     * @memberof FilterOptionBase
      */
-    'unit'?: MaterialQuantityUnit;
+    'contentList': Array<FilterOptionBaseContentListInner>;
     /**
      * 
-     * @type {FilterInventoryQuantity}
-     * @memberof FilterInventory
+     * @type {Array<FilterOptionBasePatternListInner>}
+     * @memberof FilterOptionBase
      */
-    'quantity'?: FilterInventoryQuantity;
+    'patternList': Array<FilterOptionBasePatternListInner>;
+    /**
+     * 
+     * @type {Array<FilterOptionBaseColorListInner>}
+     * @memberof FilterOptionBase
+     */
+    'colorList': Array<FilterOptionBaseColorListInner>;
+    /**
+     * 
+     * @type {Array<FilterOptionBaseContentListInner>}
+     * @memberof FilterOptionBase
+     */
+    'finishList': Array<FilterOptionBaseContentListInner>;
 }
-
-
 /**
  * 
  * @export
- * @interface FilterInventoryQuantity
+ * @interface FilterOptionBaseColorListInner
  */
-export interface FilterInventoryQuantity {
+export interface FilterOptionBaseColorListInner {
     /**
      * 
-     * @type {number}
-     * @memberof FilterInventoryQuantity
+     * @type {string}
+     * @memberof FilterOptionBaseColorListInner
      */
-    'min': number;
+    'value': string;
     /**
      * 
-     * @type {number}
-     * @memberof FilterInventoryQuantity
+     * @type {string}
+     * @memberof FilterOptionBaseColorListInner
      */
-    'max': number;
+    'hex': string;
+}
+/**
+ * 
+ * @export
+ * @interface FilterOptionBaseContentListInner
+ */
+export interface FilterOptionBaseContentListInner {
     /**
      * 
-     * @type {boolean}
-     * @memberof FilterInventoryQuantity
+     * @type {string}
+     * @memberof FilterOptionBaseContentListInner
      */
-    'isInfinity': boolean;
+    'displayName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FilterOptionBaseContentListInner
+     */
+    'value': string;
+}
+/**
+ * 
+ * @export
+ * @interface FilterOptionBasePatternListInner
+ */
+export interface FilterOptionBasePatternListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof FilterOptionBasePatternListInner
+     */
+    'key': string;
+    /**
+     * 
+     * @type {Array<FilterOptionBasePatternListInnerListInner>}
+     * @memberof FilterOptionBasePatternListInner
+     */
+    'list': Array<FilterOptionBasePatternListInnerListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface FilterOptionBasePatternListInnerListInner
+ */
+export interface FilterOptionBasePatternListInnerListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof FilterOptionBasePatternListInnerListInner
+     */
+    'value': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FilterOptionBasePatternListInnerListInner
+     */
+    'img': string;
 }
 /**
  * 
@@ -5199,19 +5373,17 @@ export interface FilterPrice {
     'isInfinity': boolean;
     /**
      * 
-     * @type {CurrencyCode}
+     * @type {Array<CurrencyCode>}
      * @memberof FilterPrice
      */
-    'currency': CurrencyCode;
+    'currencyList': Array<CurrencyCode>;
     /**
      * 
-     * @type {MaterialQuantityUnit}
+     * @type {Array<MaterialQuantityUnit>}
      * @memberof FilterPrice
      */
-    'unit': MaterialQuantityUnit;
+    'unitList': Array<MaterialQuantityUnit>;
 }
-
-
 /**
  * 
  * @export
@@ -5238,13 +5410,11 @@ export interface FilterWeight {
     'isInfinity': boolean;
     /**
      * 
-     * @type {WeightUnit}
+     * @type {Array<WeightUnit>}
      * @memberof FilterWeight
      */
-    'unit': WeightUnit;
+    'unitList': Array<WeightUnit>;
 }
-
-
 /**
  * 
  * @export
@@ -5263,6 +5433,12 @@ export interface FilterWidth {
      * @memberof FilterWidth
      */
     'full': FilterWidthCuttable | null;
+    /**
+     * 
+     * @type {Array<LengthUnit>}
+     * @memberof FilterWidth
+     */
+    'unitList': Array<LengthUnit>;
 }
 /**
  * 
@@ -5288,15 +5464,7 @@ export interface FilterWidthCuttable {
      * @memberof FilterWidthCuttable
      */
     'isInfinity': boolean;
-    /**
-     * 
-     * @type {LengthUnit}
-     * @memberof FilterWidthCuttable
-     */
-    'unit': LengthUnit;
 }
-
-
 /**
  * 資料夾型態書籤
  * @export
@@ -5778,22 +5946,22 @@ export interface GetAssetMaterialListRequest {
     'ogId': number;
     /**
      * 
+     * @type {PaginationReq}
+     * @memberof GetAssetMaterialListRequest
+     */
+    'pagination': PaginationReq;
+    /**
+     * 
      * @type {Search}
      * @memberof GetAssetMaterialListRequest
      */
-    'search': Search;
+    'search': Search | null;
     /**
      * 
      * @type {AssetsFilter}
      * @memberof GetAssetMaterialListRequest
      */
-    'filter': AssetsFilter;
-    /**
-     * 
-     * @type {PaginationReq}
-     * @memberof GetAssetMaterialListRequest
-     */
-    'pagination': PaginationReq;
+    'filter': AssetsFilter | null;
 }
 
 
@@ -5805,22 +5973,22 @@ export interface GetAssetMaterialListRequest {
 export interface GetAssetMaterialListRequestAllOf {
     /**
      * 
+     * @type {PaginationReq}
+     * @memberof GetAssetMaterialListRequestAllOf
+     */
+    'pagination': PaginationReq;
+    /**
+     * 
      * @type {Search}
      * @memberof GetAssetMaterialListRequestAllOf
      */
-    'search': Search;
+    'search': Search | null;
     /**
      * 
      * @type {AssetsFilter}
      * @memberof GetAssetMaterialListRequestAllOf
      */
-    'filter': AssetsFilter;
-    /**
-     * 
-     * @type {PaginationReq}
-     * @memberof GetAssetMaterialListRequestAllOf
-     */
-    'pagination': PaginationReq;
+    'filter': AssetsFilter | null;
 }
 /**
  * 
@@ -5828,12 +5996,6 @@ export interface GetAssetMaterialListRequestAllOf {
  * @interface GetAssetsMaterial200Response
  */
 export interface GetAssetsMaterial200Response {
-    /**
-     * 
-     * @type {GetAssetsMaterial200ResponseResult}
-     * @memberof GetAssetsMaterial200Response
-     */
-    'result'?: GetAssetsMaterial200ResponseResult;
     /**
      * 
      * @type {boolean}
@@ -5848,6 +6010,12 @@ export interface GetAssetsMaterial200Response {
     'code'?: string | null;
     /**
      * 
+     * @type {GetAssetsMaterial200ResponseAllOfResult}
+     * @memberof GetAssetsMaterial200Response
+     */
+    'result': GetAssetsMaterial200ResponseAllOfResult;
+    /**
+     * 
      * @type {object}
      * @memberof GetAssetsMaterial200Response
      */
@@ -5856,15 +6024,28 @@ export interface GetAssetsMaterial200Response {
 /**
  * 
  * @export
- * @interface GetAssetsMaterial200ResponseResult
+ * @interface GetAssetsMaterial200ResponseAllOf
  */
-export interface GetAssetsMaterial200ResponseResult {
+export interface GetAssetsMaterial200ResponseAllOf {
+    /**
+     * 
+     * @type {GetAssetsMaterial200ResponseAllOfResult}
+     * @memberof GetAssetsMaterial200ResponseAllOf
+     */
+    'result': GetAssetsMaterial200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetsMaterial200ResponseAllOfResult
+ */
+export interface GetAssetsMaterial200ResponseAllOfResult {
     /**
      * 
      * @type {Material}
-     * @memberof GetAssetsMaterial200ResponseResult
+     * @memberof GetAssetsMaterial200ResponseAllOfResult
      */
-    'material'?: Material;
+    'material': Material;
 }
 /**
  * 
@@ -6618,28 +6799,28 @@ export interface GetExternalSearchFilterOptions200ResponseAllOfResult {
     'descriptionList': GetExternalSearchFilterOptions200ResponseAllOfResultDescriptionList;
     /**
      * 
-     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>}
+     * @type {Array<FilterOptionBaseContentListInner>}
      * @memberof GetExternalSearchFilterOptions200ResponseAllOfResult
      */
-    'contentList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>;
+    'contentList': Array<FilterOptionBaseContentListInner>;
     /**
      * 
-     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner>}
+     * @type {Array<FilterOptionBasePatternListInner>}
      * @memberof GetExternalSearchFilterOptions200ResponseAllOfResult
      */
-    'patternList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner>;
+    'patternList': Array<FilterOptionBasePatternListInner>;
     /**
      * 
-     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner>}
+     * @type {Array<FilterOptionBaseColorListInner>}
      * @memberof GetExternalSearchFilterOptions200ResponseAllOfResult
      */
-    'colorList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner>;
+    'colorList': Array<FilterOptionBaseColorListInner>;
     /**
      * 
-     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>}
+     * @type {Array<FilterOptionBaseContentListInner>}
      * @memberof GetExternalSearchFilterOptions200ResponseAllOfResult
      */
-    'finishList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>;
+    'finishList': Array<FilterOptionBaseContentListInner>;
 }
 /**
  * 
@@ -6724,66 +6905,28 @@ export interface GetInternalSearchFilterOptions200ResponseAllOfResult {
     'descriptionList': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionList;
     /**
      * 
-     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>}
+     * @type {Array<FilterOptionBaseContentListInner>}
      * @memberof GetInternalSearchFilterOptions200ResponseAllOfResult
      */
-    'contentList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>;
+    'contentList': Array<FilterOptionBaseContentListInner>;
     /**
      * 
-     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner>}
+     * @type {Array<FilterOptionBasePatternListInner>}
      * @memberof GetInternalSearchFilterOptions200ResponseAllOfResult
      */
-    'patternList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner>;
+    'patternList': Array<FilterOptionBasePatternListInner>;
     /**
      * 
-     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner>}
+     * @type {Array<FilterOptionBaseColorListInner>}
      * @memberof GetInternalSearchFilterOptions200ResponseAllOfResult
      */
-    'colorList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner>;
+    'colorList': Array<FilterOptionBaseColorListInner>;
     /**
      * 
-     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>}
+     * @type {Array<FilterOptionBaseContentListInner>}
      * @memberof GetInternalSearchFilterOptions200ResponseAllOfResult
      */
-    'finishList': Array<GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner>;
-}
-/**
- * 
- * @export
- * @interface GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner
- */
-export interface GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner
-     */
-    'value'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultColorListInner
-     */
-    'hex'?: string;
-}
-/**
- * 
- * @export
- * @interface GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner
- */
-export interface GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner
-     */
-    'displayName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultContentListInner
-     */
-    'value'?: string;
+    'finishList': Array<FilterOptionBaseContentListInner>;
 }
 /**
  * 
@@ -6846,44 +6989,6 @@ export interface GetInternalSearchFilterOptions200ResponseAllOfResultDescription
      * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven
      */
     'custom': Array<MaterialDescription>;
-}
-/**
- * 
- * @export
- * @interface GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner
- */
-export interface GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner
-     */
-    'key'?: string;
-    /**
-     * 
-     * @type {Array<GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner>}
-     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInner
-     */
-    'list'?: Array<GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner>;
-}
-/**
- * 
- * @export
- * @interface GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner
- */
-export interface GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner
-     */
-    'value'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetInternalSearchFilterOptions200ResponseAllOfResultPatternListInnerListInner
-     */
-    'img'?: string;
 }
 /**
  * 
@@ -10158,13 +10263,13 @@ export interface MainMaterial {
      * @type {MaterialWidth}
      * @memberof MainMaterial
      */
-    'width': MaterialWidth;
+    'width': MaterialWidth | null;
     /**
      * 
      * @type {MaterialWeight}
      * @memberof MainMaterial
      */
-    'weight': MaterialWeight;
+    'weight': MaterialWeight | null;
     /**
      * 
      * @type {MainMaterialMainSide}
@@ -10339,7 +10444,7 @@ export interface Material {
      * @type {string}
      * @memberof Material
      */
-    'itemNo': string;
+    'itemNo': string | null;
     /**
      * 
      * @type {MaterialCoverImage}
@@ -10351,13 +10456,13 @@ export interface Material {
      * @type {MaterialWidth}
      * @memberof Material
      */
-    'width': MaterialWidth;
+    'width': MaterialWidth | null;
     /**
      * 
      * @type {MaterialWeight}
      * @memberof Material
      */
-    'weight': MaterialWeight;
+    'weight': MaterialWeight | null;
     /**
      * 
      * @type {MaterialSeasonInfo}
@@ -10429,7 +10534,7 @@ export interface Material {
      * @type {MaterialPriceInfo}
      * @memberof Material
      */
-    'priceInfo': MaterialPriceInfo;
+    'priceInfo': MaterialPriceInfo | null;
     /**
      * 庫存總數 數值1~999,999，可填寫至小數2位 
      * @type {number}
@@ -11598,7 +11703,7 @@ export interface MaterialInternalInfo {
      * @type {MaterialPriceInfo}
      * @memberof MaterialInternalInfo
      */
-    'priceInfo': MaterialPriceInfo;
+    'priceInfo': MaterialPriceInfo | null;
     /**
      * 
      * @type {MaterialInternalInventoryInfo}
@@ -13182,13 +13287,13 @@ export interface MaterialSideAllOfSideImage {
      * @type {CropImageRecord}
      * @memberof MaterialSideAllOfSideImage
      */
-    'cropRecord': CropImageRecord;
+    'cropRecord': CropImageRecord | null;
     /**
      * 
      * @type {number}
      * @memberof MaterialSideAllOfSideImage
      */
-    'dpi': number;
+    'dpi': number | null;
 }
 /**
  * 
@@ -13219,7 +13324,7 @@ export interface MaterialSideAllOfU3mImage {
      * @type {number}
      * @memberof MaterialSideAllOfU3mImage
      */
-    'dpi': number;
+    'dpi': number | null;
 }
 /**
  * 記錄U3M裁切圖片的參數
@@ -13521,13 +13626,13 @@ export interface MaterialSideImage {
      * @type {CropImageRecord}
      * @memberof MaterialSideImage
      */
-    'cropRecord': CropImageRecord;
+    'cropRecord': CropImageRecord | null;
     /**
      * 
      * @type {number}
      * @memberof MaterialSideImage
      */
-    'dpi': number;
+    'dpi': number | null;
 }
 /**
  * 
@@ -13612,12 +13717,12 @@ export interface MaterialTrimConstruction {
  */
 
 export const MaterialType = {
-    WOVEN: 'woven',
-    KNIT: 'knit',
-    LEATHER: 'leather',
-    NON_WOVEN: 'nonWoven',
-    TRIM: 'trim',
-    OTHERS: 'others'
+    WOVEN: 1,
+    KNIT: 2,
+    LEATHER: 3,
+    NON_WOVEN: 4,
+    TRIM: 5,
+    OTHERS: 6
 } as const;
 
 export type MaterialType = typeof MaterialType[keyof typeof MaterialType];
@@ -18432,37 +18537,37 @@ export interface Pagination {
      * @type {boolean}
      * @memberof Pagination
      */
-    'isShowMatch'?: boolean;
+    'isShowMatch': boolean;
     /**
      * - 1. 關聯度 Relevance：照分數高至低排名 - 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名 - 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名 - 4. 字母順序 A to Z - 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z) - 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z) - 7. 建立時間：最新建立的排前 - 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前 - 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前 - 10. 最新加入 (New arrived)：最新加入的排前 - 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新 - 12. 隨機排序 (Random)：隨機重新排序 - 13. GHG results (Low to High)：GHG數值由低到高排序 - 14. Water Depletion results (Low to High)：用水量數值由低到高排序 - 15. Land Use results (Low to High)：土地面積數值由低到高排序 
      * @type {number}
      * @memberof Pagination
      */
-    'sort'?: PaginationSortEnum;
+    'sort': PaginationSortEnum;
     /**
      * 
      * @type {number}
      * @memberof Pagination
      */
-    'perPageCount'?: number;
+    'perPageCount': number;
 }
 
 export const PaginationSortEnum = {
-    NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3,
-    NUMBER_4: 4,
-    NUMBER_5: 5,
-    NUMBER_6: 6,
-    NUMBER_7: 7,
-    NUMBER_8: 8,
-    NUMBER_9: 9,
-    NUMBER_10: 10,
-    NUMBER_11: 11,
-    NUMBER_12: 12,
-    NUMBER_13: 13,
-    NUMBER_14: 14,
-    NUMBER_15: 15
+    RELEVANCE: 1,
+    RELEVANCE_C_M: 2,
+    RELEVANCE_M_C: 3,
+    ITEM_NO_A_Z: 4,
+    ITEM_NO_A_Z_C_M: 5,
+    ITEM_NO_A_Z_M_C: 6,
+    CREATE_DATE: 7,
+    CREATE_DATE_C_M: 8,
+    CREATE_DATE_M_C: 9,
+    NEW_ARRIVED: 10,
+    LAST_UPDATE: 11,
+    RANDOM: 12,
+    GHG_LOW_TO_HIGH: 13,
+    WATER_LOW_TO_HIGH: 14,
+    LAND_LOW_TO_HIGH: 15
 } as const;
 
 export type PaginationSortEnum = typeof PaginationSortEnum[keyof typeof PaginationSortEnum];
@@ -18478,43 +18583,43 @@ export interface PaginationReq {
      * @type {boolean}
      * @memberof PaginationReq
      */
-    'isShowMatch'?: boolean;
+    'isShowMatch': boolean;
     /**
      * - 1. 關聯度 Relevance：照分數高至低排名 - 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名 - 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名 - 4. 字母順序 A to Z - 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z) - 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z) - 7. 建立時間：最新建立的排前 - 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前 - 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前 - 10. 最新加入 (New arrived)：最新加入的排前 - 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新 - 12. 隨機排序 (Random)：隨機重新排序 - 13. GHG results (Low to High)：GHG數值由低到高排序 - 14. Water Depletion results (Low to High)：用水量數值由低到高排序 - 15. Land Use results (Low to High)：土地面積數值由低到高排序 
      * @type {number}
      * @memberof PaginationReq
      */
-    'sort'?: PaginationReqSortEnum;
+    'sort': PaginationReqSortEnum;
     /**
      * 
      * @type {number}
      * @memberof PaginationReq
      */
-    'perPageCount'?: number;
+    'perPageCount': number;
     /**
      * 
      * @type {number}
      * @memberof PaginationReq
      */
-    'targetPage'?: number;
+    'targetPage': number;
 }
 
 export const PaginationReqSortEnum = {
-    NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3,
-    NUMBER_4: 4,
-    NUMBER_5: 5,
-    NUMBER_6: 6,
-    NUMBER_7: 7,
-    NUMBER_8: 8,
-    NUMBER_9: 9,
-    NUMBER_10: 10,
-    NUMBER_11: 11,
-    NUMBER_12: 12,
-    NUMBER_13: 13,
-    NUMBER_14: 14,
-    NUMBER_15: 15
+    RELEVANCE: 1,
+    RELEVANCE_C_M: 2,
+    RELEVANCE_M_C: 3,
+    ITEM_NO_A_Z: 4,
+    ITEM_NO_A_Z_C_M: 5,
+    ITEM_NO_A_Z_M_C: 6,
+    CREATE_DATE: 7,
+    CREATE_DATE_C_M: 8,
+    CREATE_DATE_M_C: 9,
+    NEW_ARRIVED: 10,
+    LAST_UPDATE: 11,
+    RANDOM: 12,
+    GHG_LOW_TO_HIGH: 13,
+    WATER_LOW_TO_HIGH: 14,
+    LAND_LOW_TO_HIGH: 15
 } as const;
 
 export type PaginationReqSortEnum = typeof PaginationReqSortEnum[keyof typeof PaginationReqSortEnum];
@@ -18530,7 +18635,7 @@ export interface PaginationReqAllOf {
      * @type {number}
      * @memberof PaginationReqAllOf
      */
-    'targetPage'?: number;
+    'targetPage': number;
 }
 /**
  * 
@@ -18543,55 +18648,55 @@ export interface PaginationRes {
      * @type {boolean}
      * @memberof PaginationRes
      */
-    'isShowMatch'?: boolean;
+    'isShowMatch': boolean;
     /**
      * - 1. 關聯度 Relevance：照分數高至低排名 - 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名 - 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名 - 4. 字母順序 A to Z - 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z) - 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z) - 7. 建立時間：最新建立的排前 - 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前 - 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前 - 10. 最新加入 (New arrived)：最新加入的排前 - 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新 - 12. 隨機排序 (Random)：隨機重新排序 - 13. GHG results (Low to High)：GHG數值由低到高排序 - 14. Water Depletion results (Low to High)：用水量數值由低到高排序 - 15. Land Use results (Low to High)：土地面積數值由低到高排序 
      * @type {number}
      * @memberof PaginationRes
      */
-    'sort'?: PaginationResSortEnum;
+    'sort': PaginationResSortEnum;
     /**
      * 
      * @type {number}
      * @memberof PaginationRes
      */
-    'perPageCount'?: number;
+    'perPageCount': number;
     /**
      * 
      * @type {number}
      * @memberof PaginationRes
      */
-    'currentPage'?: number;
+    'currentPage': number;
     /**
      * 
      * @type {number}
      * @memberof PaginationRes
      */
-    'totalPage'?: number;
+    'totalPage': number;
     /**
      * 
      * @type {number}
      * @memberof PaginationRes
      */
-    'totalCount'?: number;
+    'totalCount': number;
 }
 
 export const PaginationResSortEnum = {
-    NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3,
-    NUMBER_4: 4,
-    NUMBER_5: 5,
-    NUMBER_6: 6,
-    NUMBER_7: 7,
-    NUMBER_8: 8,
-    NUMBER_9: 9,
-    NUMBER_10: 10,
-    NUMBER_11: 11,
-    NUMBER_12: 12,
-    NUMBER_13: 13,
-    NUMBER_14: 14,
-    NUMBER_15: 15
+    RELEVANCE: 1,
+    RELEVANCE_C_M: 2,
+    RELEVANCE_M_C: 3,
+    ITEM_NO_A_Z: 4,
+    ITEM_NO_A_Z_C_M: 5,
+    ITEM_NO_A_Z_M_C: 6,
+    CREATE_DATE: 7,
+    CREATE_DATE_C_M: 8,
+    CREATE_DATE_M_C: 9,
+    NEW_ARRIVED: 10,
+    LAST_UPDATE: 11,
+    RANDOM: 12,
+    GHG_LOW_TO_HIGH: 13,
+    WATER_LOW_TO_HIGH: 14,
+    LAND_LOW_TO_HIGH: 15
 } as const;
 
 export type PaginationResSortEnum = typeof PaginationResSortEnum[keyof typeof PaginationResSortEnum];
@@ -18607,19 +18712,19 @@ export interface PaginationResAllOf {
      * @type {number}
      * @memberof PaginationResAllOf
      */
-    'currentPage'?: number;
+    'currentPage': number;
     /**
      * 
      * @type {number}
      * @memberof PaginationResAllOf
      */
-    'totalPage'?: number;
+    'totalPage': number;
     /**
      * 
      * @type {number}
      * @memberof PaginationResAllOf
      */
-    'totalCount'?: number;
+    'totalCount': number;
 }
 /**
  * 
@@ -20095,26 +20200,47 @@ export interface Search {
      * @type {string}
      * @memberof Search
      */
-    'keyword'?: string;
+    'keyword': string | null;
     /**
      * 
-     * @type {Array<SearchTagListInner>}
+     * @type {Array<SearchAITag>}
      * @memberof Search
      */
-    'tagList'?: Array<SearchTagListInner>;
+    'tagList': Array<SearchAITag>;
 }
+/**
+ * 
+ * @export
+ * @interface SearchAITag
+ */
+export interface SearchAITag {
+    /**
+     * - 1 布名 - 2 布性 
+     * @type {number}
+     * @memberof SearchAITag
+     */
+    'type': SearchAITagTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof SearchAITag
+     */
+    'name': string;
+}
+
+export const SearchAITagTypeEnum = {
+    MATERIAL_NAME: 1,
+    MATERIAL_PROPERTY: 2
+} as const;
+
+export type SearchAITagTypeEnum = typeof SearchAITagTypeEnum[keyof typeof SearchAITagTypeEnum];
+
 /**
  * 
  * @export
  * @interface SearchGetAiTagsPost200Response
  */
 export interface SearchGetAiTagsPost200Response {
-    /**
-     * 
-     * @type {SearchGetAiTagsPost200ResponseResult}
-     * @memberof SearchGetAiTagsPost200Response
-     */
-    'result'?: SearchGetAiTagsPost200ResponseResult;
     /**
      * 
      * @type {boolean}
@@ -20129,6 +20255,12 @@ export interface SearchGetAiTagsPost200Response {
     'code'?: string | null;
     /**
      * 
+     * @type {SearchGetAiTagsPost200ResponseAllOfResult}
+     * @memberof SearchGetAiTagsPost200Response
+     */
+    'result': SearchGetAiTagsPost200ResponseAllOfResult;
+    /**
+     * 
      * @type {object}
      * @memberof SearchGetAiTagsPost200Response
      */
@@ -20137,43 +20269,29 @@ export interface SearchGetAiTagsPost200Response {
 /**
  * 
  * @export
- * @interface SearchGetAiTagsPost200ResponseResult
+ * @interface SearchGetAiTagsPost200ResponseAllOf
  */
-export interface SearchGetAiTagsPost200ResponseResult {
+export interface SearchGetAiTagsPost200ResponseAllOf {
     /**
      * 
-     * @type {Array<SearchGetAiTagsPost200ResponseResultTagListInner>}
-     * @memberof SearchGetAiTagsPost200ResponseResult
+     * @type {SearchGetAiTagsPost200ResponseAllOfResult}
+     * @memberof SearchGetAiTagsPost200ResponseAllOf
      */
-    'tagList'?: Array<SearchGetAiTagsPost200ResponseResultTagListInner>;
+    'result': SearchGetAiTagsPost200ResponseAllOfResult;
 }
 /**
  * 
  * @export
- * @interface SearchGetAiTagsPost200ResponseResultTagListInner
+ * @interface SearchGetAiTagsPost200ResponseAllOfResult
  */
-export interface SearchGetAiTagsPost200ResponseResultTagListInner {
+export interface SearchGetAiTagsPost200ResponseAllOfResult {
     /**
      * 
-     * @type {number}
-     * @memberof SearchGetAiTagsPost200ResponseResultTagListInner
+     * @type {Array<SearchAITag>}
+     * @memberof SearchGetAiTagsPost200ResponseAllOfResult
      */
-    'type'?: SearchGetAiTagsPost200ResponseResultTagListInnerTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof SearchGetAiTagsPost200ResponseResultTagListInner
-     */
-    'name'?: string;
+    'tagList': Array<SearchAITag>;
 }
-
-export const SearchGetAiTagsPost200ResponseResultTagListInnerTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type SearchGetAiTagsPost200ResponseResultTagListInnerTypeEnum = typeof SearchGetAiTagsPost200ResponseResultTagListInnerTypeEnum[keyof typeof SearchGetAiTagsPost200ResponseResultTagListInnerTypeEnum];
-
 /**
  * 
  * @export
@@ -20206,33 +20324,6 @@ export interface SearchLog {
      */
     'rank': number;
 }
-/**
- * 
- * @export
- * @interface SearchTagListInner
- */
-export interface SearchTagListInner {
-    /**
-     * - 1 布名 - 2 布性 
-     * @type {number}
-     * @memberof SearchTagListInner
-     */
-    'type'?: SearchTagListInnerTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof SearchTagListInner
-     */
-    'name'?: string;
-}
-
-export const SearchTagListInnerTypeEnum = {
-    NUMBER_1: 1,
-    NUMBER_2: 2
-} as const;
-
-export type SearchTagListInnerTypeEnum = typeof SearchTagListInnerTypeEnum[keyof typeof SearchTagListInnerTypeEnum];
-
 /**
  * 
  * @export
@@ -24404,7 +24495,7 @@ export interface WorkspaceFilter {
      * @type {Array<number>}
      * @memberof WorkspaceFilter
      */
-    'materialTypeList'?: Array<number> | null;
+    'materialTypeList': Array<number> | null;
     /**
      * 
      * @type {Array<number>}
@@ -24467,10 +24558,10 @@ export interface WorkspaceFilter {
     'hasU3M': boolean | null;
     /**
      * 
-     * @type {FilterInventory}
+     * @type {AssetsFilterAllOfInventory}
      * @memberof WorkspaceFilter
      */
-    'inventory': FilterInventory | null;
+    'inventory': AssetsFilterAllOfInventory | null;
     /**
      * 
      * @type {boolean}
@@ -24484,6 +24575,12 @@ export interface WorkspaceFilter {
  * @interface WorkspaceFilterAllOf
  */
 export interface WorkspaceFilterAllOf {
+    /**
+     * 
+     * @type {AssetsFilterAllOfInventory}
+     * @memberof WorkspaceFilterAllOf
+     */
+    'inventory': AssetsFilterAllOfInventory | null;
     /**
      * 
      * @type {boolean}
@@ -25832,7 +25929,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+        async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createAssetsMaterial(createAssetsMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26189,7 +26286,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+        createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: any): AxiosPromise<CreateAssetsMaterial200Response> {
             return localVarFp.createAssetsMaterial(createAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -28280,7 +28377,7 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -28430,7 +28527,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+        digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: any): AxiosPromise<CreateAssetsMaterial200Response> {
             return localVarFp.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -37030,7 +37127,7 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
          * @throws {RequiredError}
          */
         getInternalSearchFilterOptions: async (getInternalSearchFilterOptionsRequest?: GetInternalSearchFilterOptionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/search/filter-intenral-options`;
+            const localVarPath = `/search/filter-internal-options`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;

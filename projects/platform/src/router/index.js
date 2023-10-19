@@ -67,6 +67,7 @@ const reuseRoutes = (prefix) => [
         name: `${prefix}AssetsMaterialDetail`,
         component: () =>
           import('@/views/innerApp/assets/AssetsMaterialDetail.vue'),
+        props: true,
       },
       {
         path: ':materialId/edit',
@@ -179,7 +180,6 @@ const routes = [
     name: 'SharePage',
     beforeEnter: async (to, from, next) => {
       const { sharingKey } = to.query
-      store.dispatch('code/getFilterOptions')
       await store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey })
       const share = store.getters['receivedShare/share']
       const logSender = useLogSender()

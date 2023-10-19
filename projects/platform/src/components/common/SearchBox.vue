@@ -12,9 +12,10 @@ div(class="grid")
       )
       input(
         type="text"
-        v-model.trim="keyword"
+        :value="keyword"
         :placeholder="$t('RR0053')"
-        @keydown.enter="onEnter"
+        @input="typing"
+        @keydown.enter="$emit('search')"
         class="placeholder:text-grey-250 placeholder:overflow-visible flex-grow outline-none bg-transparent overflow-hidden text-grey-900 text-body1 disabled:text-grey-600"
       )
       f-svg-icon(
@@ -22,14 +23,14 @@ div(class="grid")
         size="24"
         iconName="clear"
         class="text-grey-250 cursor-pointer"
-        @click="keyword = ''"
+        @click="searchStore.setKeyword('')"
       )
     div(class="w-0.5 h-4 bg-grey-250")
     f-svg-icon(
       size="24"
       iconName="filter_border"
       class="cursor-pointer"
-      :class="[isOpenFilterPanel ? 'text-primary-400' : 'text-grey-900']"
+      :class="[isOpenFilterPanel || isFilterDirty ? 'text-primary-400' : 'text-grey-900']"
       @click="isOpenFilterPanel = !isOpenFilterPanel"
       :tooltipMessage="$t('RR0085')"
     )
@@ -43,170 +44,125 @@ div(class="grid")
           :active="tag.isSelected"
           :key="tag.name"
         ) {{ tag.name }}
-  div(v-show="isOpenFilterPanel" class="px-7.5")
+  div(v-if="isOpenFilterPanel" class="px-7.5")
     div(class="bg-grey-50 p-5 rounded")
       div(class="flex items-end pb-4")
         p(class="text-body1 text-grey-900") {{ $t('RR0085') }}
-        p(class="text-caption text-grey-250 pl-3 cursor-pointer" @click="resetFilter") {{ $t('UU0041') }}
+        p(
+          class="text-caption text-grey-250 pl-3 cursor-pointer"
+          @click="resetFilterHandler"
+        ) {{ $t('UU0041') }}
       div(class="flex flex-wrap gap-x-2 gap-y-4")
-        filter-category
-        filter-content
-        filter-pattern
-        filter-color
-        filter-width-weight
-        filter-yarn-density
-        filter-finish
-        filter-inventory(:searchType="searchType")
-        filter-has-price(
+        filter-material-type(@search="$emit('search')")
+        filter-material-description(@search="$emit('search')")
+        filter-content(@search="$emit('search')")
+        filter-pattern(@search="$emit('search')")
+        filter-color(@search="$emit('search')")
+        filter-width(@search="$emit('search')")
+        filter-weight(@search="$emit('search')")
+        filter-yarn-density(@search="$emit('search')")
+        filter-finish(@search="$emit('search')")
+        filter-inventory(:searchType="searchType" @search="$emit('search')")
+        filter-price(@search="$emit('search')")
+        filter-has-u3m(@search="$emit('search')")
+        filter-eco(
           v-if="[SEARCH_TYPE.ASSETS, SEARCH_TYPE.WORKSPACE].includes(searchType)"
+          @search="$emit('search')"
         )
-        filter-price(
-          v-if="[SEARCH_TYPE.PUBLIC_LIBRARY, SEARCH_TYPE.SHARE].includes(searchType)"
+        filter-asset-status(
+          v-if="searchType === SEARCH_TYPE.ASSETS"
+          @search="$emit('search')"
         )
-        filter-complete(v-if="searchType === SEARCH_TYPE.ASSETS")
-        filter-has-u3m(v-if="searchType !== SEARCH_TYPE.ASSETS")
-        filter-made2flow(v-if="searchType === SEARCH_TYPE.WORKSPACE")
 </template>
 
-<script>
+<script setup lang="ts">
 import Slider from '@/components/common/Slider.vue'
-import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
+import FilterMaterialType from '@/components/common/filter/FilterMaterialType.vue'
+import FilterMaterialDescription from '@/components/common/filter/FilterMaterialDescription.vue'
 import FilterContent from '@/components/common/filter/FilterContent.vue'
 import FilterYarnDensity from '@/components/common/filter/FilterYarnDensity.vue'
-import FilterWidthWeight from '@/components/common/filter/FilterWidthWeight.vue'
+import FilterWidth from '@/components/common/filter/FilterWidth.vue'
+import FilterWeight from '@/components/common/filter/FilterWeight.vue'
 import FilterInventory from '@/components/common/filter/FilterInventory.vue'
 import FilterPattern from '@/components/common/filter/FilterPattern.vue'
 import FilterColor from '@/components/common/filter/FilterColor.vue'
-import FilterCategory from '@/components/common/filter/FilterCategory.vue'
 import FilterFinish from '@/components/common/filter/FilterFinish.vue'
-import FilterHasPrice from '@/components/common/filter/FilterHasPrice.vue'
 import FilterHasU3m from '@/components/common/filter/FilterHasU3m.vue'
-import FilterComplete from '@/components/common/filter/FilterComplete.vue'
+import FilterEco from '@/components/common/filter/FilterEco.vue'
+import FilterAssetStatus from '@/components/common/filter/FilterAssetStatus.vue'
 import FilterPrice from '@/components/common/filter/FilterPrice.vue'
-import FilterMade2flow from '@/components/common/filter/FilterMade2flow.vue'
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import { SEARCH_TYPE } from '@/utils/constants'
+import { useSearchStore } from '@/stores/search'
+import { useFilterStore } from '@/stores/filter'
+import { storeToRefs } from 'pinia'
+import type { SearchAITag } from '@frontier/platform-web-sdk'
+import { isEqual } from '@frontier/lib'
+import debounce from 'debounce'
 
-export default {
-  name: 'SearchBox',
-  components: {
-    Slider,
-    FilterWrapper,
-    FilterYarnDensity,
-    FilterWidthWeight,
-    FilterInventory,
-    FilterPattern,
-    FilterColor,
-    FilterCategory,
-    FilterFinish,
-    FilterHasPrice,
-    FilterComplete,
-    FilterContent,
-    FilterHasU3m,
-    FilterPrice,
-    FilterMade2flow,
-  },
-  props: {
-    searchType: {
-      type: Number,
-      required: true,
-    },
-  },
-  emits: ['blur', 'search'],
-  setup(props, context) {
-    const store = useStore()
-    const keyword = computed({
-      get: () => store.getters['helper/search/keyword'],
-      set: (v) => store.dispatch('helper/search/setKeyword', v),
-    })
-    let timer
-    const isOpenFilterPanel = ref(false)
-    const filter = computed(() => store.getters['helper/search/filter'])
-    const tagList = computed(() => store.getters['helper/search/tagList'])
-    const selectedTagList = computed(
-      () => store.getters['helper/search/selectedTagList']
-    )
-    const innerTagList = computed(() => {
-      return tagList.value.map((tag) => ({
-        ...tag,
-        isSelected: selectedTagList.value.some(
-          (selectedTag) => selectedTag.name === tag.name
-        ),
-      }))
-    })
-
-    const selectTag = (tag) => {
-      delete tag.isSelected
-      const tempTagList = [...selectedTagList.value]
-      const index = tempTagList.findIndex(
-        (item) => JSON.stringify(item) === JSON.stringify(tag)
-      )
-
-      if (!~index) {
-        tempTagList.push(tag)
-      } else {
-        tempTagList.splice(index, 1)
-      }
-
-      store.dispatch('helper/search/setSelectedTagList', tempTagList)
-      context.emit('search')
-    }
-
-    const onEnter = () => {
-      context.emit('search')
-    }
-
-    const resetFilter = () => {
-      store.dispatch('helper/search/resetFilter')
-    }
-
-    watch(
-      () => filter.value,
-      () => {
-        context.emit('search')
-      },
-      {
-        deep: true,
-      }
-    )
-
-    watch(
-      () => keyword.value,
-      () => {
-        clearTimeout(timer)
-        timer = undefined
-        if (keyword.value !== '') {
-          timer = setTimeout(() => {
-            store.dispatch('helper/search/getAITags', {
-              searchKeyword: keyword.value,
-            })
-          }, 300)
-        } else {
-          store.dispatch('helper/search/resetTagList')
-          store.dispatch('helper/search/resetSelectedTagList')
-        }
-      },
-      {
-        immediate: true,
-      }
-    )
-
-    onBeforeUnmount(() => {
-      store.dispatch('helper/search/resetTagList')
-      store.dispatch('helper/search/resetSelectedTagList')
-    })
-
-    return {
-      keyword,
-      selectTag,
-      innerTagList,
-      onEnter,
-      isOpenFilterPanel,
-      filter,
-      resetFilter,
-      SEARCH_TYPE,
-    }
-  },
+interface InnerTag extends SearchAITag {
+  isSelected: boolean
 }
+
+defineProps<{
+  searchType: SEARCH_TYPE
+}>()
+
+const emit = defineEmits<{
+  (e: 'search'): void
+}>()
+
+const filterStore = useFilterStore()
+const { isFilterDirty } = storeToRefs(filterStore)
+const searchStore = useSearchStore()
+const { keyword, tagList, selectedTagList } = storeToRefs(searchStore)
+const isOpenFilterPanel = ref(false)
+const innerTagList = computed<InnerTag[]>(() => {
+  return tagList.value.map((tag) => ({
+    ...tag,
+    isSelected: selectedTagList.value.some(
+      (selectedTag) => selectedTag.name === tag.name
+    ),
+  }))
+})
+
+const selectTag = (tag: InnerTag) => {
+  const tempTag = { name: tag.name, type: tag.type }
+  const tempTagList = [...selectedTagList.value]
+  const index = tempTagList.findIndex((item) => isEqual(item, tempTag))
+
+  if (!~index) {
+    tempTagList.push(tempTag)
+  } else {
+    tempTagList.splice(index, 1)
+  }
+
+  searchStore.setSelectedTagList(tempTagList)
+  emit('search')
+}
+
+const debounceSearchAITag = debounce(searchStore.getAITags, 300)
+
+const typing = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  const v = target.value.trim()
+  searchStore.setKeyword(v)
+  debounceSearchAITag()
+  if (v === '') {
+    searchStore.setTagList([])
+    searchStore.setSelectedTagList([])
+  }
+}
+
+const resetFilterHandler = () => {
+  if (isFilterDirty.value) {
+    filterStore.resetFilterState()
+    emit('search')
+  }
+}
+
+onBeforeUnmount(() => {
+  searchStore.setTagList([])
+  searchStore.setSelectedTagList([])
+})
 </script>

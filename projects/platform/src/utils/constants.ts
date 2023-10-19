@@ -2,6 +2,8 @@ export * from '@frontier/constants'
 import i18n from '@frontier/i18n'
 import { computed } from 'vue'
 import colors from '@frontier/tailwindcss/colors'
+import { WeightUnit } from '@frontier/platform-web-sdk'
+import { getEnumTextValueMap } from '@/utils/mapping'
 
 export const ROLE_ID = {
   OWNER: 1,
@@ -113,11 +115,12 @@ export const NODE_TYPE = {
   MATERIAL: 2,
 }
 
-export const SEARCH_TYPE = {
-  ASSETS: 1,
-  WORKSPACE: 2,
-  PUBLIC_LIBRARY: 3,
-  SHARE: 4,
+export enum SEARCH_TYPE {
+  ASSETS = 1,
+  WORKSPACE = 2,
+  PUBLIC_LIBRARY = 3,
+  SHARE = 4,
+  EXTERNAL = 5,
 }
 
 export const DISPLAY_NODE = {
@@ -361,130 +364,21 @@ export const useConstants = () => {
     },
   }))
 
-  /**
-   * 1. 關聯度 Relevance：照分數高至低排名
-   * 2. 關聯度 Relevance (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，照分數高至低排名
-   * 3. 關聯度 Relevance (布片優先 Fabrics to collections)：布片排前，資料夾排後，照分數高至低排名
-   * 4. 字母順序 A to Z
-   * 5. 字母順序 A to Z (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，按照字母順序(A to Z)
-   * 6. 字母順序 A to Z (布片優先 Fabrics to collections)：布片排前，資料夾排後，按照字母順序(A to Z)
-   * 7. 建立時間：最新建立的排前
-   * 8. 建立時間 Created date (資料夾優先 Collections to fabrics)：資料夾排前，布片排後，最新建立的排前
-   * 9. 建立時間 Created date (布片優先 Fabrics to collections)：布片排前，資料夾排後，最新建立的排前
-   * 10. 最新加入 (New arrived)：最新加入的排前
-   * 11. 最新更新：最新更新的排前，布料編輯所做的任何更動即為更新
-   * 12. 隨機排序 (Random)：隨機重新排序
-   */
-  const SORT_BY = computed(() => ({
-    RELEVANCE: {
-      text: i18n.global.t('RR0070'),
-      value: 1,
-    },
-    RELEVANCE_C_M: {
-      text: i18n.global.t('RR0114'),
-      value: 2,
-    },
-    RELEVANCE_M_C: {
-      text: i18n.global.t('RR0115'),
-      value: 3,
-    },
-    MATERIAL_NO_A_Z: {
-      text: i18n.global.t('RR0067'),
-      value: 4,
-    },
-    MATERIAL_NO_A_Z_C_M: {
-      text: i18n.global.t('RR0110'),
-      value: 5,
-    },
-    MATERIAL_NO_A_Z_M_C: {
-      text: i18n.global.t('RR0111'),
-      value: 6,
-    },
-    CREATE_DATE: {
-      text: i18n.global.t('RR0065'),
-      value: 7,
-    },
-    CREATE_DATE_C_M: {
-      text: i18n.global.t('RR0112'),
-      value: 8,
-    },
-    CREATE_DATE_M_C: {
-      text: i18n.global.t('RR0113'),
-      value: 9,
-    },
-    NEW_ARRIVED: {
-      text: i18n.global.t('RR0129'),
-      value: 10,
-    },
-    LAST_UPDATE: {
-      text: i18n.global.t('RR0066'),
-      value: 11,
-    },
-    RANDOM: {
-      text: i18n.global.t('RR0128'),
-      value: 12,
-    },
-    GHG_RESULTS: {
-      text: i18n.global.t('RR0251'),
-      value: 13,
-    },
-    WATER_DEPLETION_RESULTS: {
-      text: i18n.global.t('RR0252'),
-      value: 14,
-    },
-    LAND_USE_RESULTS: {
-      text: i18n.global.t('RR0253'),
-      value: 15,
-    },
-  }))
-
-  const FILTER_COMPLETE = computed(() => ({
-    NOT_IN_WORKSPACE: {
-      text: i18n.global.t('RR0099'),
-      value: 1,
-    },
-    WITH_U3M: {
-      text: i18n.global.t('RR0100'),
-      value: 2,
-    },
-    WITHOUT_U3M: {
-      text: i18n.global.t('RR0101'),
-      value: 3,
-    },
-    NO_SCAN_IMG: {
-      text: i18n.global.t('RR0102'),
-      value: 4,
-    },
-    NO_IMG: {
-      text: i18n.global.t('RR0103'),
-      value: 5,
-    },
-    WITH_REQUIRED_FIELDS: {
-      text: i18n.global.t('RR0104'),
-      value: 6,
-    },
-    UNFILLED_CERTIFICATION: {
-      text: i18n.global.t('RR0250'),
-      value: 7,
-    },
-  }))
-
-  const WEIGHT_UNIT = computed(() => ({
-    GSM: {
-      text: i18n.global.t('RR0016'),
-      value: 1,
-    },
-    OZ: {
-      text: i18n.global.t('RR0017'),
-      value: 2,
-    },
-  }))
+  const WEIGHT_UNIT = computed(() =>
+    getEnumTextValueMap<typeof WeightUnit>(
+      {
+        [WeightUnit.GSM]: i18n.global.t('RR0016'),
+        [WeightUnit.OZ]: i18n.global.t('RR0017'),
+        [WeightUnit.GY]: i18n.global.t('RR0018'),
+        [WeightUnit.GM]: 'g/m',
+      },
+      WeightUnit
+    )
+  )
 
   return {
     MADE2FLOW_TAG_LIST,
     FEEDBACK_CATEGORY,
-    SORT_BY,
-    FILTER_COMPLETE,
     WEIGHT_UNIT,
   }
 }

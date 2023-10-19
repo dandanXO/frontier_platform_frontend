@@ -1,22 +1,35 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import useCurrentUnit from '@/composables/useCurrentUnit'
 import { MOODBOARD_TAB, SIGNUP_SOURCE } from '@/utils/constants'
-import { OgType } from '@frontier/platform-web-sdk'
+import {
+  OgType,
+  type Organization,
+  type Group,
+} from '@frontier/platform-web-sdk'
 
 export default function useNavigation() {
   const store = useStore()
   const router = useRouter()
   const route = useRoute()
-  const { organization } = useCurrentUnit()
 
-  const routeLocation = computed(() => store.getters['helper/routeLocation'])
-  const prefixPath = computed(() =>
-    routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
+  const routeLocation = computed(() =>
+    router.currentRoute.value.params.groupId ? 'group' : 'org'
   )
+  const isGroup = computed(() => routeLocation.value === 'group')
+  const ogType = computed(() => {
+    return isGroup.value ? OgType.GROUP : OgType.ORG
+  })
+  const organization = computed<Organization>(
+    () => store.getters['organization/organization']
+  )
+  const group = computed<Group>(() => store.getters['group/group'])
+
   const isInInnerApp = computed(() =>
     route.matched.some((r) => r.name === 'InnerAppRoot')
+  )
+  const prefixPath = computed(() =>
+    routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
   )
 
   const nextAfterSignIn = async () => {
@@ -51,12 +64,16 @@ export default function useNavigation() {
     await goToLobby()
   }
 
-  const parsePath = (path) => {
+  const parsePath = (path: string, orgNo?: string, groupId?: number) => {
     let temp = path
-    Object.keys(route.params).forEach((key) => {
-      const regex = new RegExp(':' + key)
-      temp = temp.replace(regex, route.params[key])
-    })
+    if (!orgNo) {
+      orgNo = organization.value.orgNo
+    }
+    if (!groupId) {
+      groupId = group.value?.groupId
+    }
+    temp = temp.replace(new RegExp(':orgNo'), orgNo)
+    temp = temp.replace(new RegExp(':groupId'), String(groupId))
     temp = temp.replace(/\(\\d\+\)/, '')
     return temp
   }
@@ -79,19 +96,25 @@ export default function useNavigation() {
     router.push(parsePath('/:orgNo/billings/payment'))
   }
 
-  const goToAssets = async () => {
-    await router.push(parsePath(`${prefixPath.value}/assets`))
+  const goToAssets = async (orgNo?: string, groupId?: number) => {
+    await router.push(parsePath(`${prefixPath.value}/assets`, orgNo, groupId))
   }
 
   const goToMaterialUpload = () => {
     router.push(parsePath(`${prefixPath.value}/assets/upload`))
   }
 
-  const goToAssetMaterialDetail = async (material) => {
-    if (material.materialId !== store.getters['sticker/currentMaterialId']) {
+  const goToAssetMaterialDetail = async (
+    materialId: number,
+    orgNo?: string,
+    groupId?: number
+  ) => {
+    if (materialId !== store.getters['sticker/currentMaterialId']) {
       await store.dispatch('sticker/closeStickerDrawer')
     }
-    router.push(parsePath(`${prefixPath.value}/assets/${material.materialId}`))
+    router.push(
+      parsePath(`${prefixPath.value}/assets/${materialId}`, orgNo, groupId)
+    )
   }
 
   const goToAssetMaterialEdit = (materialId, ogType) => {
@@ -184,6 +207,9 @@ export default function useNavigation() {
   }
 
   return {
+    routeLocation,
+    isGroup,
+    ogType,
     nextAfterSignIn,
     parsePath,
     goToLobby,

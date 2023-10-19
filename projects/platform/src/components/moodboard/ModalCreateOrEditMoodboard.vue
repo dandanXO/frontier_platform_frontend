@@ -102,7 +102,7 @@ import { reactive, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { FileOperator, bytesToSize, previewFile } from '@frontier/lib'
 import { CREATE_EDIT } from '@/utils/constants'
-import useNavigation from '@/composables/useNavigation.js'
+import useNavigation from '@/composables/useNavigation'
 
 const store = useStore()
 const { goToMoodboardDetail } = useNavigation()

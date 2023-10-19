@@ -1,12 +1,12 @@
 <template lang="pug">
 filter-wrapper(
-  iconName="cube"
-  :displayName="$t('RR0132')"
-  :dirty="filterDirty.hasU3M"
+  iconName="paper"
+  :displayName="$t('RR0098')"
+  :dirty="filterDirty.status"
   :confirmButton="false"
 )
   f-contextual-menu(
-    v-model:inputSelectValue="hasU3M"
+    v-model:inputSelectValue="complete"
     :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_CANCEL"
     :menuTree="menuTree"
     class="-mx-5 -my-4"
@@ -16,40 +16,38 @@ filter-wrapper(
 <script setup lang="ts">
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import { CONTEXTUAL_MENU_MODE } from '@/utils/constants'
-import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { useFilterStore } from '@/stores/filter'
 import { storeToRefs } from 'pinia'
+import useEnumText from '@/composables/useEnumText'
 
 const emit = defineEmits<{
   (e: 'search'): void
 }>()
 
-const { t } = useI18n()
 const filterStore = useFilterStore()
 const { filterDirty, filterState } = storeToRefs(filterStore)
+const { AssetsFilterStatusText } = useEnumText()
 
-const menuTree = computed(() => ({
-  blockList: [
-    {
-      menuList: [
-        {
-          title: t('RR0100'),
-          selectValue: true,
-        },
-        {
-          title: t('RR0101'),
-          selectValue: false,
-        },
-      ],
-    },
-  ],
-}))
+const menuTree = computed(() => {
+  return {
+    blockList: [
+      {
+        menuList: Object.entries(AssetsFilterStatusText).map(
+          ([selectValue, title]) => ({
+            title,
+            selectValue,
+          })
+        ),
+      },
+    ],
+  }
+})
 
-const hasU3M = computed({
-  get: () => filterState.value.hasU3M,
+const complete = computed({
+  get: () => filterState.value.status,
   set: (v) => {
-    filterStore.setFilterStateByProperty('hasU3M', v)
+    filterStore.setFilterStateByProperty('status', v)
     emit('search')
   },
 })

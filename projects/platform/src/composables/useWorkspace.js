@@ -3,7 +3,7 @@ import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { computed } from 'vue'
 import { OG_TYPE, NOTIFY_TYPE } from '@/utils/constants'
-import useNavigation from '@/composables/useNavigation.js'
+import useNavigation from '@/composables/useNavigation'
 
 export default function useWorkspace() {
   const { t } = useI18n()

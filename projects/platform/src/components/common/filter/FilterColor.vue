@@ -1,58 +1,45 @@
 <template lang="pug">
 filter-wrapper(
+  v-if="filterOption?.colorList"
   iconName="color_circle"
   :displayName="$t('RR0026')"
   :dirty="filterDirty.color"
+  :confirmButton="false"
 )
-  div(class="px-5 py-4 rounded shadow-16 grid grid-cols-4 grid-rows-3 gap-2")
+  div(class="grid grid-cols-4 grid-rows-3 gap-2")
     div(
-      v-for="color in filterOptions.colorList"
+      v-for="color in filterOption.colorList"
+      :key="color.value"
       class="w-15 h-12.5 rounded flex items-center justify-center"
       :class="{ 'border border-grey-250': color.value === 'White' }"
       :style="{ backgroundColor: `${color.hex}` }"
       @click="select(color.value)"
     )
       f-svg-icon(
-        v-if="filter.color === color.value"
+        v-if="filterState.color === color.value"
         iconName="done"
         size="24"
         :class="[color.value === 'White' ? ' text-grey-600' : 'text-grey-0']"
       )
 </template>
 
-<script>
+<script setup lang="ts">
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
-import { useStore } from 'vuex'
-import { computed } from 'vue'
+import { useFilterStore } from '@/stores/filter'
+import { storeToRefs } from 'pinia'
 
-export default {
-  name: 'FilterColor',
-  components: {
-    FilterWrapper,
-  },
-  setup() {
-    const store = useStore()
+const emit = defineEmits<{
+  (e: 'search'): void
+}>()
 
-    const filter = computed(() => store.getters['helper/search/filter'])
-    const filterDirty = computed(
-      () => store.getters['helper/search/filterDirty']
-    )
-    const filterOptions = computed(
-      () => store.getters['helper/search/filterOptions']
-    )
+const filterStore = useFilterStore()
+const { filterOption, filterState, filterDirty } = storeToRefs(filterStore)
 
-    const select = (color) => {
-      store.dispatch('helper/search/setFilter', {
-        color: filter.value.color === color ? null : color,
-      })
-    }
-
-    return {
-      filter,
-      filterDirty,
-      filterOptions,
-      select,
-    }
-  },
+const select = (color: string) => {
+  filterStore.setFilterStateByProperty(
+    'color',
+    filterState.value.color === color ? null : color
+  )
+  emit('search')
 }
 </script>

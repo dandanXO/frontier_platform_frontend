@@ -1,137 +1,112 @@
 <template lang="pug">
 filter-wrapper(
-  iconName="fabric_2"
+  iconName="yarn"
   :displayName="`${$t('RR0023')}/${$t('RR0024')}`"
-  :dirty="filterDirty.yarnAndDensity"
-  @expand="initFormYarnAndDensity"
+  :dirty="filterDirty.densityAndYarn"
+  @confirm="updateYarnAndDensity"
 )
-  div(class="w-121 py-4 rounded shadow-16")
-    div(class="px-5 grid gap-y-7.5")
-      div(class="flex flex-col gap-y-5")
-        div(class="flex gap-x-1.5")
-          f-input-radio(
-            v-model:inputValue="currentYarnType"
-            :label="$t('RR0091')"
-            :value="YARN_TYPE.WOVEN"
-            iconSize="20"
-          )
-          f-button-label(size="sm" @click="clearYarnWoven") {{ $t('UU0040') }}
-        f-input-container(:label="$t('RR0023')")
-          div(class="flex items-center gap-x-3")
-            f-input-text(
-              v-model:textValue="formYarnAndDensity.wovenWarpYarnCount"
-              :disabled="currentYarnType !== YARN_TYPE.WOVEN"
-              class="w-50"
-            )
-            f-svg-icon(iconName="clear" size="20" class="text-grey-900")
-            f-input-text(
-              v-model:textValue="formYarnAndDensity.wovenWeftYarnCount"
-              :disabled="currentYarnType !== YARN_TYPE.WOVEN"
-              class="w-50"
-            )
-        f-input-container(:label="$t('RR0024')")
-          div(class="flex items-center gap-x-3")
-            f-input-text(
-              v-model:textValue="formYarnAndDensity.warpDensity"
-              :disabled="currentYarnType !== YARN_TYPE.WOVEN"
-              class="w-50"
-            )
-            f-svg-icon(iconName="clear" size="20" class="text-grey-900")
-            f-input-text(
-              v-model:textValue="formYarnAndDensity.weftDensity"
-              :disabled="currentYarnType !== YARN_TYPE.WOVEN"
-              class="w-50"
-            )
-      div(class="flex flex-col gap-y-5")
-        div(class="flex gap-x-1.5")
-          f-input-radio(
-            v-model:inputValue="currentYarnType"
-            :label="$t('RR0092')"
-            :value="YARN_TYPE.KNIT"
-            iconSize="20"
-          )
-          f-button-label(size="sm" @click="clearYarnKnit") {{ $t('UU0040') }}
-        f-input-text(
-          v-model:textValue="formYarnAndDensity.knitYarnCount"
-          :label="$t('RR0023')"
-          :disabled="currentYarnType !== YARN_TYPE.KNIT"
-          class="w-50"
+  div(class="w-111")
+    div(class="flex flex-col gap-y-5")
+      div(class="flex gap-x-1.5")
+        f-input-radio(
+          v-model:inputValue="currentYarnType"
+          :label="$t('RR0091')"
+          :value="YARN_TYPE.WOVEN"
+          iconSize="20"
         )
-    div(class="flex justify-end px-5 mt-2")
-      f-button(size="sm" @click="updateYarnAndDensity") {{ $t('UU0001') }}
+        f-button-label(size="sm" @click="clearYarnWoven") {{ $t('UU0040') }}
+      f-input-container(:label="$t('RR0024')")
+        div(class="flex items-center gap-x-3")
+          f-input-text(
+            v-model:textValue="woven.warpDensity"
+            :disabled="currentYarnType !== YARN_TYPE.WOVEN"
+            class="w-50"
+          )
+          f-svg-icon(iconName="clear" size="20" class="text-grey-900")
+          f-input-text(
+            v-model:textValue="woven.weftDensity"
+            :disabled="currentYarnType !== YARN_TYPE.WOVEN"
+            class="w-50"
+          )
+      f-input-container(:label="$t('RR0023')")
+        div(class="flex items-center gap-x-3")
+          f-input-text(
+            v-model:textValue="woven.warpYarnSize"
+            :disabled="currentYarnType !== YARN_TYPE.WOVEN"
+            class="w-50"
+          )
+          f-svg-icon(iconName="clear" size="20" class="text-grey-900")
+          f-input-text(
+            v-model:textValue="woven.weftYarnSize"
+            :disabled="currentYarnType !== YARN_TYPE.WOVEN"
+            class="w-50"
+          )
+    div(class="border-t border-grey-150 my-4 -mx-5")
+    div(class="flex flex-col gap-y-5")
+      div(class="flex gap-x-1.5")
+        f-input-radio(
+          v-model:inputValue="currentYarnType"
+          :label="$t('RR0092')"
+          :value="YARN_TYPE.KNIT"
+          iconSize="20"
+        )
+        f-button-label(size="sm" @click="clearYarnKnit") {{ $t('UU0040') }}
+      f-input-text(
+        v-model:textValue="knit.knitYarnSize"
+        :label="$t('RR0023')"
+        :disabled="currentYarnType !== YARN_TYPE.KNIT"
+        class="w-50"
+      )
 </template>
 
-<script>
+<script setup lang="ts">
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
-import { computed, ref, watch, reactive } from 'vue'
-import { useStore } from 'vuex'
+import { ref, watch, reactive } from 'vue'
+import { useFilterStore } from '@/stores/filter'
+import { storeToRefs } from 'pinia'
+import { clone } from 'ramda'
 
-export default {
-  name: 'FilterYarnDensity',
-  components: {
-    FilterWrapper,
-  },
-  setup() {
-    const YARN_TYPE = {
-      WOVEN: 0,
-      KNIT: 1,
-    }
-    const store = useStore()
-    const filter = computed(() => store.getters['helper/search/filter'])
-    const filterDirty = computed(
-      () => store.getters['helper/search/filterDirty']
-    )
-    const currentYarnType = ref(0)
-    const formYarnAndDensity = reactive({
-      wovenWarpYarnCount: null,
-      wovenWeftYarnCount: null,
-      knitYarnCount: null,
-      warpDensity: null,
-      weftDensity: null,
-    })
+const emit = defineEmits<{
+  (e: 'search'): void
+}>()
 
-    const initFormYarnAndDensity = () => {
-      currentYarnType.value =
-        filter.value.knitYarnCount === null ? YARN_TYPE.WOVEN : YARN_TYPE.KNIT
-      Object.keys(formYarnAndDensity).forEach((key) => {
-        formYarnAndDensity[key] = filter.value[key]
-      })
-    }
-    const updateYarnAndDensity = () => {
-      store.dispatch('helper/search/setFilter', formYarnAndDensity)
-    }
+const filterStore = useFilterStore()
+const { filterState, filterDirty } = storeToRefs(filterStore)
 
-    const clearYarnWoven = () => {
-      formYarnAndDensity.wovenWarpYarnCount = null
-      formYarnAndDensity.wovenWeftYarnCount = null
-      formYarnAndDensity.warpDensity = null
-      formYarnAndDensity.weftDensity = null
-    }
-    const clearYarnKnit = () => {
-      formYarnAndDensity.knitYarnCount = null
-    }
-
-    watch(
-      () => currentYarnType.value,
-      () => {
-        if (currentYarnType.value === YARN_TYPE.WOVEN) {
-          clearYarnKnit()
-        } else {
-          clearYarnWoven()
-        }
-      }
-    )
-
-    return {
-      YARN_TYPE,
-      filterDirty,
-      currentYarnType,
-      formYarnAndDensity,
-      initFormYarnAndDensity,
-      updateYarnAndDensity,
-      clearYarnWoven,
-      clearYarnKnit,
-    }
-  },
+const YARN_TYPE = {
+  WOVEN: 0,
+  KNIT: 1,
 }
+
+const { densityAndYarn } = clone(filterState.value)
+const woven = reactive(densityAndYarn.woven)
+const knit = reactive(densityAndYarn.knit)
+const currentYarnType = ref(
+  knit.knitYarnSize === null ? YARN_TYPE.WOVEN : YARN_TYPE.KNIT
+)
+
+const updateYarnAndDensity = () => {
+  filterStore.setFilterStateByProperty('densityAndYarn', { woven, knit })
+  emit('search')
+}
+
+const clearYarnWoven = () => {
+  Object.keys(woven).forEach((key) => {
+    woven[key as keyof typeof woven] = null
+  })
+}
+const clearYarnKnit = () => {
+  knit.knitYarnSize = null
+}
+
+watch(
+  () => currentYarnType.value,
+  () => {
+    if (currentYarnType.value === YARN_TYPE.WOVEN) {
+      clearYarnKnit()
+    } else {
+      clearYarnWoven()
+    }
+  }
+)
 </script>

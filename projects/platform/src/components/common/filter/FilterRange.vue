@@ -1,173 +1,151 @@
 <template lang="pug">
-div(class="px-5 relative")
+div(class="relative")
+  div(class="flex items-center pb-3")
+    p(class="text-body2 font-bold pr-1.5") {{ label }}
+    f-button-label(size="sm" @click="reset") {{ $t('UU0040') }}
   f-input-slider(
-    ref="refInputRange"
+    ref="refInputSlider"
     v-model:range="innerRange"
     v-bind="options"
-    :label="label"
+    :canReset="false"
   )
-  div(v-if="slots['right']" class="absolute top-0 right-5")
-    slot(name="right")
-  div(class="grid grid-cols-2 gap-4 mt-4")
+  div(class="grid grid-cols-2 gap-4 pt-3")
     div
-      div(class="text-caption text-grey-600 pb-2") {{ $t('JJ0006') }}
-      div(class="h-13")
-        f-input-text(
-          v-model:textValue="formattedMinValue"
-          size="md"
-          @change="handleMinValueChange"
-        )
-          template(#slot:hint-error v-if="isFromError")
-            i18n-t(
-              keypath="JJ0007"
-              tag="p"
-              class="text-caption text-red-400 pt-1"
-              scope="global"
-            )
-              template(#JJ0005) 
-                span(class="font-bold") {{ $t('JJ0005') }}
+      p(class="text-caption text-grey-600 pb-2") {{ $t('JJ0006') }}
+      f-input-text(
+        v-model:textValue="formattedMinValue"
+        size="md"
+        @change="handleMinValueChange"
+      )
+        template(#slot:hint-error v-if="isFromError")
+          i18n-t(
+            keypath="JJ0007"
+            tag="p"
+            class="text-caption text-red-400 pt-1"
+            scope="global"
+          )
+            template(#JJ0005) 
+              span(class="font-bold") {{ $t('JJ0005') }}
     div
-      div(class="text-caption text-grey-600 pb-2") {{ $t('JJ0005') }}
-      div(class="h-13")
-        f-input-text(
-          v-model:textValue="formattedMaxValue"
-          size="md"
-          @change="handleMaxValueChange"
-        )
-          template(#slot:hint-error v-if="isToError")
-            i18n-t(
-              keypath="JJ0008"
-              tag="p"
-              class="text-caption text-red-400 pt-1"
-              scope="global"
-            )
-              template(#JJ0006) 
-                span(class="font-bold") {{ $t('JJ0006') }}
+      p(class="text-caption text-grey-600 pb-2") {{ $t('JJ0005') }}
+      f-input-text(
+        v-model:textValue="formattedMaxValue"
+        size="md"
+        @change="handleMaxValueChange"
+      )
+        template(#slot:hint-error v-if="isToError")
+          i18n-t(
+            keypath="JJ0008"
+            tag="p"
+            class="text-caption text-red-400 pt-1"
+            scope="global"
+          )
+            template(#JJ0006) 
+              span(class="font-bold") {{ $t('JJ0006') }}
 </template>
 
-<script>
+<script setup lang="ts">
+import type { FInputSlider } from '@frontier/ui-component'
 import { computed, ref } from 'vue'
 
-export default {
-  name: 'FilterRange',
-  props: {
-    min: {
-      type: Number,
-      default: 0,
-    },
-    max: {
-      type: Number,
-      default: 200,
-    },
-    range: {
-      type: Array,
-      required: true,
-    },
-    label: {
-      type: String,
-      default: '',
-    },
+const emit = defineEmits<{
+  (e: 'update:range', v: Array<number>): void
+  (e: 'reset'): void
+}>()
+
+const props = withDefaults(
+  defineProps<{
+    min: number
+    max: number
+    range: Array<number>
+    label?: string
+  }>(),
+  {
+    min: 0,
+    max: 200,
+  }
+)
+const isFromError = ref(false)
+const isToError = ref(false)
+
+const fakeMaxValue = props.max + 1
+const refInputSlider = ref<InstanceType<typeof FInputSlider>>()
+const innerRange = computed({
+  get: () => props.range,
+  set: ([min, max]) => {
+    isToError.value = false
+    isFromError.value = false
+    emit('update:range', [Number(min), Number(max)])
   },
-  emits: ['update:range'],
-  setup(props, { emit, slots }) {
-    const isFromError = ref(false)
-    const isToError = ref(false)
+})
 
-    const fakeMaxValue = props.max + 1
-    const refInputRange = ref(null)
-    const innerRange = computed({
-      get: () => {
-        const inputMin = props.range[0] === null ? props.min : props.range[0]
-        const inputMax = props.range[1] === null ? fakeMaxValue : props.range[1]
-        return [inputMin, inputMax]
-      },
-      set: ([min, max]) => {
-        isToError.value = false
-        isFromError.value = false
-        if (props.min === Number(min) && props.max === Number(max) - 1) {
-          emit('update:range', [null, null])
-        } else {
-          emit('update:range', [Number(min), Number(max)])
-        }
-      },
-    })
-
-    const formattedMinValue = computed({
-      get: () => {
-        const inputMin = props.range[0] === null ? props.min : props.range[0]
-        return customFormatter(inputMin)
-      },
-      set: (v) => {
-        innerRange.value = [v, innerRange.value[1]]
-      },
-    })
-
-    const formattedMaxValue = computed({
-      get: () => {
-        const inputMax = props.range[1] === null ? fakeMaxValue : props.range[1]
-        return customFormatter(inputMax)
-      },
-      set: (v) => {
-        innerRange.value = [innerRange.value[0], v]
-      },
-    })
-
-    const handleMinValueChange = (e) => {
-      const value = Number(e.target.value)
-      if (value <= innerRange.value[1]) {
-        refInputRange.value.setValue([value, innerRange.value[1]])
-      } else {
-        isFromError.value = true
-      }
-    }
-
-    const handleMaxValueChange = (e) => {
-      const value = Number(e.target.value)
-      if (value >= innerRange.value[0]) {
-        refInputRange.value.setValue([innerRange.value[0], value])
-      } else {
-        isToError.value = true
-      }
-    }
-
-    const customFormatter = (v) => {
-      if (v <= props.max) {
-        return Number.parseFloat(v).toFixed(0)
-      } else {
-        // e.g. When max is 200, 201 -> 200+
-        return `${props.max}+`
-      }
-    }
-
-    const options = {
-      tooltips: [
-        {
-          from: (v) => v,
-          to: (v) => customFormatter(v),
-        },
-        {
-          from: (v) => v,
-          to: (v) => customFormatter(v),
-        },
-      ],
-      min: props.min,
-      max: fakeMaxValue,
-      defaultRange: [props.min, fakeMaxValue],
-    }
-
-    return {
-      innerRange,
-      formattedMinValue,
-      formattedMaxValue,
-      handleMinValueChange,
-      handleMaxValueChange,
-      refInputRange,
-      options,
-      fakeMaxValue,
-      isFromError,
-      isToError,
-      slots,
-    }
+const formattedMinValue = computed({
+  get: () => customFormatter(props.range[0]),
+  set: (v: string) => {
+    innerRange.value = [Number(v), innerRange.value[1]]
   },
+})
+
+const formattedMaxValue = computed({
+  get: () => customFormatter(props.range[1]),
+  set: (v: string) => {
+    innerRange.value = [innerRange.value[0], Number(v)]
+  },
+})
+
+const handleMinValueChange = (e: Event) => {
+  if (!e.target) {
+    return
+  }
+  const target = e.target as HTMLInputElement
+  const value = Number(target.value)
+  if (value <= innerRange.value[1]) {
+    refInputSlider.value!.setValue([value, innerRange.value[1]])
+  } else {
+    isFromError.value = true
+  }
+}
+
+const handleMaxValueChange = (e: Event) => {
+  if (!e.target) {
+    return
+  }
+  const target = e.target as HTMLInputElement
+  const value = Number(target.value)
+  if (value >= innerRange.value[0]) {
+    refInputSlider.value!.setValue([innerRange.value[0], value])
+  } else {
+    isToError.value = true
+  }
+}
+
+const customFormatter = (v: number) => {
+  if (v <= props.max) {
+    return String(Math.round(v))
+  } else {
+    // e.g. When max is 200, 201 -> 200+
+    return `${props.max}+`
+  }
+}
+
+const options = {
+  tooltips: [
+    {
+      from: (v: number) => v,
+      to: (v: number) => customFormatter(v),
+    },
+    {
+      from: (v: number) => v,
+      to: (v: number) => customFormatter(v),
+    },
+  ],
+  min: props.min,
+  max: fakeMaxValue,
+  defaultRange: [props.min, fakeMaxValue],
+}
+
+const reset = () => {
+  refInputSlider.value && refInputSlider.value.reset()
+  emit('reset')
 }
 </script>

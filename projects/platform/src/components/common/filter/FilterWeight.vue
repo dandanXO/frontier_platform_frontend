@@ -1,19 +1,21 @@
 <template lang="pug">
 filter-wrapper(
-  iconName="stock"
-  :displayName="$t('RR0093')"
-  :dirty="filterDirty.inventory"
+  v-if="filterOption?.weight"
+  iconName="weight"
+  :displayName="$t('RR0015')"
+  :dirty="filterDirty.weight"
   :confirmDisabled="disabled"
   @confirm="update"
 )
   div(class="w-95")
     filter-range(
       v-model:range="inputRange"
-      :min="filterOption.inventory.min"
-      :max="filterOption.inventory.max"
-      :label="$t('RR0109')"
+      :min="filterOption.weight.min"
+      :max="filterOption.weight.max"
+      :label="$t('RR0015')"
+      @reset="reset"
     )
-    div(v-if="searchType !== SEARCH_TYPE.EXTERNAL" class="flex items-center gap-x-6 pt-5")
+    div(class="flex items-center gap-x-6 pt-5")
       f-input-checkbox(
         v-for="unit in unitOptionList"
         :key="unit.name"
@@ -27,14 +29,10 @@ filter-wrapper(
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import FilterRange from '@/components/common/filter/FilterRange.vue'
 import { ref, computed } from 'vue'
-import { SEARCH_TYPE } from '@/utils/constants'
 import { useFilterStore } from '@/stores/filter'
 import { storeToRefs } from 'pinia'
-import { MaterialQuantityUnit } from '@frontier/platform-web-sdk'
-
-defineProps<{
-  searchType: SEARCH_TYPE
-}>()
+import type { WeightUnit } from '@frontier/platform-web-sdk'
+import useEnumText from '@/composables/useEnumText'
 
 const emit = defineEmits<{
   (e: 'search'): void
@@ -42,16 +40,17 @@ const emit = defineEmits<{
 
 const filterStore = useFilterStore()
 const { filterOption, filterState, filterDirty } = storeToRefs(filterStore)
-const unitOptionList = Object.entries(MaterialQuantityUnit).map(
-  ([key, value]) => ({
-    name: key,
-    value,
-  })
-)
+const { WeightUnitText } = useEnumText()
 
-const inventory = filterState.value.inventory
-const inputRange = ref([inventory.min, inventory.max])
-const unitList = ref<MaterialQuantityUnit[]>(inventory.unitList)
+const unitOptionList = computed(() =>
+  Object.entries(WeightUnitText).map(([value, name]) => ({
+    name,
+    value,
+  }))
+)
+const weight = filterState.value.weight
+const inputRange = ref([weight.min, weight.max])
+const unitList = ref<WeightUnit[]>(weight.unitList)
 
 const disabled = computed(() => {
   const [min, max] = inputRange.value
@@ -60,12 +59,17 @@ const disabled = computed(() => {
 
 const update = () => {
   const [min, max] = inputRange.value
-  filterStore.setFilterStateByProperty('inventory', {
-    min,
-    max,
-    isInfinity: max > filterOption.value.inventory.max,
+  filterStore.setFilterStateByProperty('weight', {
+    min: min,
+    max: max,
+    isInfinity: max > filterOption.value.weight.max,
     unitList: unitList.value,
   })
+
   emit('search')
+}
+
+const reset = () => {
+  unitList.value.length = 0
 }
 </script>

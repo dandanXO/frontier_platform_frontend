@@ -29,31 +29,38 @@ f-popper(
         :class="[isExpand ? '-rotate-90' : 'rotate-90']"
       )
   template(#content)
-    div(class="bg-grey-0 shadow-4 rounded")
+    div(class="bg-grey-0 px-5 py-4 rounded shadow-16 flex flex-col gap-y-5")
       slot
+      f-button(
+        v-if="confirmButton"
+        size="sm"
+        :disabled="confirmDisabled"
+        class="self-end"
+        @click="$emit('confirm')"
+      ) {{ $t('UU0001') }}
 </template>
 
-<script>
-export default {
-  name: 'FilterWrapper',
-  props: {
-    iconName: {
-      type: String,
-      required: true,
-    },
-    displayName: {
-      type: String,
-      required: true,
-    },
-    dirty: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ['expand', 'collapse'],
-}
+<script setup lang="ts">
+withDefaults(
+  defineProps<{
+    iconName: string
+    displayName: string
+    dirty: boolean
+    disabled: boolean
+    confirmButton: boolean
+    confirmDisabled: boolean
+  }>(),
+  {
+    dirty: false,
+    disabled: false,
+    confirmButton: true,
+    confirmDisabled: false,
+  }
+)
+
+defineEmits<{
+  (e: 'expand'): void
+  (e: 'collapse'): void
+  (e: 'confirm'): void
+}>()
 </script>

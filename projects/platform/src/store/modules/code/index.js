@@ -88,7 +88,6 @@ const actions = {
     dispatch('getOrgCategoryList')
     dispatch('getRoleLimitTable')
     dispatch('getCountryList')
-    dispatch('getFilterOptions')
   },
   async getCountryList({ commit }) {
     const { data } = await codeApi.getCountryList()
@@ -105,10 +104,6 @@ const actions = {
   async getRoleLimitTable({ commit }) {
     const { data } = await codeApi.getRoleLimitTable()
     commit('SET_roleLimit', data.result.code.roleLimit)
-  },
-  async getFilterOptions({ commit }) {
-    const { data } = await codeApi.getFilterOptions()
-    commit('SET_filter', data.result.code.filter)
   },
 }
 

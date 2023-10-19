@@ -67,7 +67,7 @@ div(class="w-full h-full flex flex-col items-center md:pt-10")
 import SearchTable from '@/components/common/SearchTable.vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
-import useNavigation from '@/composables/useNavigation.js'
+import useNavigation from '@/composables/useNavigation'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'

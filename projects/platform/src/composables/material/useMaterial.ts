@@ -18,6 +18,9 @@ import { useI18n } from 'vue-i18n'
 import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import { useStore } from 'vuex'
 import { unitFormatter } from '@frontier/lib'
+import { getNameValueMap } from '@/utils/mapping'
+import { LengthUnit } from '@frontier/platform-web-sdk'
+import useEnumText from '@/composables/useEnumText'
 
 export type MaterialSpecificationInfo = {
   seasonInfo: {
@@ -89,6 +92,7 @@ export default function useMaterial(
 ) {
   const { t } = useI18n()
   const store = useStore()
+  const { LengthUnitText, MaterialTypeText } = useEnumText()
 
   const mainSideType = computed(() => {
     const { isDoubleSide, faceSide, sideType } = material.value
@@ -266,7 +270,6 @@ export default function useMaterial(
     isCompositeSideProperty: boolean
   ) => {
     const { isComposite } = material.value
-    currentSideType.value
 
     if (currentSideType.value === MATERIAL_SIDE_TYPE.BACK) {
       if (isMaterialProperty && !isCompositeSideProperty) {
@@ -287,7 +290,6 @@ export default function useMaterial(
   const specificationInfo = computed<MaterialSpecificationInfo>(() => {
     const { isComposite, faceSide, backSide, seasonInfo, width, weight } =
       material.value
-
     const getSeasonInfo = () => ({
       name: t('MI0011'),
       isPublic: seasonInfo?.isPublic ?? false,
@@ -332,10 +334,10 @@ export default function useMaterial(
               stringList.push('Composite')
             }
             if (faceSide) {
-              stringList.push(faceSide.materialType)
+              stringList.push(MaterialTypeText[faceSide.materialType])
             }
             if (backSide) {
-              stringList.push(backSide.materialType)
+              stringList.push(MaterialTypeText[backSide.materialType])
             }
 
             return stringList.join(', ')
@@ -362,106 +364,70 @@ export default function useMaterial(
                 return {
                   density: {
                     name: t('MI0027'),
-                    value: `${warpDensity} X ${weftDensity}`,
+                    value:
+                      warpDensity && weftDensity
+                        ? `${warpDensity} X ${weftDensity}`
+                        : warpDensity || weftDensity,
                   },
                   yarnSize: {
                     name: t('RR0023'),
-                    value: `${warpYarnSize} X ${weftYarnSize}`,
+                    value:
+                      warpYarnSize && weftYarnSize
+                        ? `${warpYarnSize} X ${weftYarnSize}`
+                        : warpYarnSize || weftYarnSize,
                   },
                 }
               }
               case MaterialType.KNIT: {
-                const {
-                  machineType,
-                  walesPerInch,
-                  coursesPerInch,
-                  yarnSize,
-                  machineGaugeInGg,
-                } = sideWithoutMiddleSide.construction as MaterialKnitConstruction
-                return {
-                  machineType: {
-                    name: 'Machine Type',
-                    value: machineType,
+                return getNameValueMap<
+                  Omit<MaterialKnitConstruction, 'isPublic'>
+                >(
+                  {
+                    machineType: 'Machine Type',
+                    walesPerInch: 'Wales Per Inch',
+                    coursesPerInch: 'Courses Per Inch',
+                    yarnSize: 'Yarn Size',
+                    machineGaugeInGg: 'Machine Gauge In Gg',
                   },
-                  walesPerInch: {
-                    name: 'Wales Per Inch',
-                    value: walesPerInch,
-                  },
-                  coursesPerInch: {
-                    name: 'Courses Per Inch',
-                    value: coursesPerInch,
-                  },
-                  yarnSize: {
-                    name: 'Yarn Size',
-                    value: yarnSize,
-                  },
-                  machineGaugeInGg: {
-                    name: 'Machine Gauge In Gg',
-                    value: machineGaugeInGg,
-                  },
-                }
+                  sideWithoutMiddleSide.construction as MaterialKnitConstruction
+                )
               }
               case MaterialType.LEATHER: {
-                const {
-                  averageSkinPerMeterSquare,
-                  grade,
-                  tannage,
-                  thicknessPerMm,
-                } = sideWithoutMiddleSide.construction as MaterialLeatherConstruction
-                return {
-                  averageSkinPerMeterSquare: {
-                    name: 'Average Skin Per Meter Square',
-                    value: averageSkinPerMeterSquare,
+                return getNameValueMap<
+                  Omit<MaterialLeatherConstruction, 'isPublic'>
+                >(
+                  {
+                    averageSkinPerMeterSquare: 'Average Skin Per Meter Square',
+                    grade: 'Grade',
+                    tannage: 'Tannage',
+                    thicknessPerMm: 'Thickness Per Mm',
                   },
-                  grade: {
-                    name: 'Grade',
-                    value: grade,
-                  },
-                  tannage: {
-                    name: 'Tannage',
-                    value: tannage,
-                  },
-                  thicknessPerMm: {
-                    name: 'Thickness Per Mm',
-                    value: thicknessPerMm,
-                  },
-                }
+                  sideWithoutMiddleSide.construction as MaterialLeatherConstruction
+                )
               }
               case MaterialType.NON_WOVEN: {
-                const { bondingMethod, thicknessPerMm } =
+                return getNameValueMap<
+                  Omit<MaterialNonWovenConstruction, 'isPublic'>
+                >(
+                  {
+                    bondingMethod: 'Bonding Method',
+                    thicknessPerMm: 'Thickness Per Mm',
+                  },
                   sideWithoutMiddleSide.construction as MaterialNonWovenConstruction
-                return {
-                  bondingMethod: {
-                    name: 'Bonding Method',
-                    value: bondingMethod,
-                  },
-                  thicknessPerMm: {
-                    name: 'Thickness Per Mm',
-                    value: thicknessPerMm,
-                  },
-                }
+                )
               }
               case MaterialType.TRIM: {
-                const { outerDiameter, length, thickness, width } =
+                return getNameValueMap<
+                  Omit<MaterialTrimConstruction, 'isPublic'>
+                >(
+                  {
+                    outerDiameter: 'Outer Diameter',
+                    length: 'Length',
+                    thickness: 'Thickness',
+                    width: 'Width',
+                  },
                   sideWithoutMiddleSide.construction as MaterialTrimConstruction
-                return {
-                  outerDiameter: {
-                    name: 'Outer Diameter',
-                    value: outerDiameter,
-                  },
-                  length: {
-                    name: 'Length',
-                    value: length,
-                  },
-                  thickness: {
-                    name: 'Thickness',
-                    value: thickness,
-                  },
-                  width: {
-                    name: 'Width',
-                    value: width,
-                  },
-                }
+                )
               }
             }
           })(),
@@ -480,12 +446,23 @@ export default function useMaterial(
         },
         width: {
           name: t('RR0088'),
-          value: `${width.cuttable}/${width.full}`,
+          value: (() => {
+            if (!width) {
+              return ''
+            }
+            const { cuttable, full } = width
+            const unit =
+              width.unit === LengthUnit.INCH ? '"' : LengthUnitText[width.unit]
+
+            return `${cuttable}/${full} ${unit}`
+          })(),
           textColor: getTextColor(true, true, false),
         },
         weight: {
           name: 'Weight',
-          value: `${weight.value}${unitFormatter.weight(weight.unit)}`,
+          value: weight
+            ? `${weight.value} ${unitFormatter.weight(weight.unit)}`
+            : '',
           textColor: getTextColor(true, true, false),
         },
         finishList: getFinishList(),
@@ -536,22 +513,18 @@ export default function useMaterial(
     }
   })
 
-  const getPriceInfo = (priceInfo: MaterialPriceInfo | undefined) => {
-    if (!priceInfo) {
-      return undefined
-    }
-
+  const getPriceInfo = (priceInfo: MaterialPriceInfo | null) => {
     const countryList = store.getters['code/countryList']
-    const { currencyCode, price, unit: priceUnit } = priceInfo.pricing || {}
+    const { currencyCode, price, unit: priceUnit } = priceInfo?.pricing || {}
     const { qty: minimumOrderQty, unit: minimumOrderUnit } =
-      priceInfo.minimumOrder || {}
+      priceInfo?.minimumOrder || {}
     const { qty: minimumColorQty, unit: minimumColorUnit } =
-      priceInfo.minimumColor || {}
+      priceInfo?.minimumColor || {}
     const {
       countryOfOriginal,
       productionLeadTimeInDays,
       sampleLeadTimeInDays,
-    } = priceInfo
+    } = priceInfo || {}
 
     return {
       countryOfOriginal: {

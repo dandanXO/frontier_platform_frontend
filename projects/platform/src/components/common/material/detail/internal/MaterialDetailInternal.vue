@@ -4,8 +4,8 @@ div
   div(class="pt-10 pb-15 flex items-center justify-between")
     //- BreadCrumb
     global-breadcrumb-list(
-      :breadcrumbList="breadcrumbList"
-      @click:item="$router.push($event.path)"
+      :breadcrumbList="locationList"
+      @click:item="$event.goTo()"
       fontSize="text-h6"
     )
     //- Action Group
@@ -93,26 +93,24 @@ div
                     div
                       p(class="text-body2 text-grey-900 pb-1") {{ material.internalInfo.metaData.lastModifiedByInfo.userName }}
                       p(class="text-caption text-grey-600") {{ material.internalInfo.metaData.lastModifiedByInfo.unitName }}・{{ toStandardFormat(material.internalInfo.metaData.lastModifiedByInfo.date) }}
-              div(class="w-full h-px bg-grey-150")
-              div(
-                v-if="material.internalInfo.metaData.copiedFromInfo"
-                class="grid gap-y-3"
-              )
-                div(class="text-body2 text-grey-900 grid grid-cols-11")
-                  p(class="col-span-3") Copied From
-                  div(class="col-span-8 flex items-center gap-x-3")
-                    f-avatar(
-                      :imageUrl="material.internalInfo.metaData.copiedFromInfo.orgLogo"
-                      type="user"
-                      size="sm"
-                      :hasBorder="false"
-                    )
-                    p
-                      span(class="text-body2 text-grey-900") {{ material.internalInfo.metaData.copiedFromInfo.orgName }}・
-                      span(class="text-caption text-grey-600") {{ toStandardFormat(material.internalInfo.metaData.copiedFromInfo.date) }}
-                div(class="text-body2 text-grey-900 grid grid-cols-11")
-                  p(class="col-span-3") Material reference
-                  p(class="col-span-8") {{ material.internalInfo.metaData.copiedFromInfo.copiedFromItemNo }}
+              template(v-if="material.internalInfo.metaData.copiedFromInfo")
+                div(class="w-full h-px bg-grey-150")
+                div(class="grid gap-y-3")
+                  div(class="text-body2 text-grey-900 grid grid-cols-11")
+                    p(class="col-span-3") Copied From
+                    div(class="col-span-8 flex items-center gap-x-3")
+                      f-avatar(
+                        :imageUrl="material.internalInfo.metaData.copiedFromInfo.orgLogo"
+                        type="user"
+                        size="sm"
+                        :hasBorder="false"
+                      )
+                      p
+                        span(class="text-body2 text-grey-900") {{ material.internalInfo.metaData.copiedFromInfo.orgName }}・
+                        span(class="text-caption text-grey-600") {{ toStandardFormat(material.internalInfo.metaData.copiedFromInfo.date) }}
+                  div(class="text-body2 text-grey-900 grid grid-cols-11")
+                    p(class="col-span-3") Material reference
+                    p(class="col-span-8") {{ material.internalInfo.metaData.copiedFromInfo.copiedFromItemNo }}
         template(v-if="currentTab === TAB.TAGS")
           //- External
           div(class="grid gap-y-7")
@@ -164,7 +162,7 @@ div
             div(class="pt-7.5")
               div(class="grid gap-y-5")
                 div(
-                  v-for="(property, key) in getPriceInfo(material.internalInfo?.priceInfo)"
+                  v-for="(property, key) in getPriceInfo(material.internalInfo?.priceInfo ?? null)"
                   :key="key"
                   class="text-body2 text-grey-900 grid grid-cols-11"
                 )
@@ -258,16 +256,16 @@ import { toStandardFormat } from '@frontier/lib'
 
 const props = defineProps<{
   material: Material
-  breadcrumbList: {
+  locationList: {
     name: string
-    path: string
+    goTo: () => void
   }[]
 }>()
 
 const { t } = useI18n()
 
 const drawerOpenFromLocationList = useStickerLocationList(
-  props.breadcrumbList.map((b) => b.name)
+  props.locationList.map((b) => b.name)
 )
 
 const {

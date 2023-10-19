@@ -17,13 +17,4 @@ export default {
     axios('/code/role-limit-table', {
       method: 'GET',
     }),
-  getFilterOptions: () =>
-    axios('/code/filter-option', {
-      method: 'GET',
-    }),
-  getAITags: ({ searchKeyword }) =>
-    axios('/search/get-ai-tags', {
-      method: 'POST',
-      data: { searchKeyword },
-    }),
 }

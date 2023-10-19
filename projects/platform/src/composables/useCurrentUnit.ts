@@ -8,6 +8,7 @@ import {
   type OrgUser,
 } from '@frontier/platform-web-sdk'
 import { ROLE_ID } from '@/utils/constants'
+import useNavigation from '@/composables/useNavigation'
 
 export interface Unit {
   orgId: number
@@ -34,16 +35,13 @@ export type ActiveGroupUser = NonNullableField<
 
 const useCurrentUnit = () => {
   const store = useStore()
-  const routeLocation = computed(() => store.getters['helper/routeLocation'])
+  const { isGroup, ogType } = useNavigation()
+
   const organization = computed<Organization>(
     () => store.getters['organization/organization']
   )
   const storeGroup = computed<Group>(() => store.getters['group/group'])
 
-  const isGroup = computed(() => routeLocation.value === 'group')
-  const ogType = computed(() => {
-    return isGroup.value ? OgType.GROUP : OgType.ORG
-  })
   const unit = computed(() => {
     return {
       orgId: organization.value.orgId,

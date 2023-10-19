@@ -96,6 +96,8 @@ import { NodeType } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
 import { unitFormatter } from '@frontier/lib'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
+import { LengthUnit } from '@frontier/platform-web-sdk'
+import useEnumText from '@/composables/useEnumText'
 
 const props = withDefaults(
   defineProps<{
@@ -112,8 +114,9 @@ const emit = defineEmits<{
   (e: 'update:selectedValue', v: NodeChild[]): void
   (e: 'click:node', v: NodeChild): void
 }>()
-const store = useStore()
 
+const { LengthUnitText, MaterialTypeText } = useEnumText()
+const store = useStore()
 const nodeType = computed(() => props.node.nodeMeta.nodeType)
 const collection = computed(() =>
   nodeType.value === NodeType.COLLECTION
@@ -132,18 +135,40 @@ const materialInfo = computed(() => {
   const { isComposite, width, weight, mainSide } = mainMaterial.value
   const { materialType, descriptionList, contentList, finishList } = mainSide
 
-  return [
+  const list = [
     [
-      ...(isComposite ? [`Composite`, materialType] : [materialType]),
+      ...(isComposite
+        ? [`Composite`, MaterialTypeText[materialType]]
+        : [MaterialTypeText[materialType]]),
       ...descriptionList.map(({ name }) => name),
     ].join(', '),
-    contentList
-      .map(({ name, percentage }) => `${percentage}%${name}`)
-      .join(', '),
-    `${width.cuttable}/${width.full}`,
-    `${weight.value}${unitFormatter.weight(weight.unit)}`,
-    finishList.map(({ name }) => name).join(', '),
   ]
+
+  if (contentList.length > 0) {
+    list.push(
+      contentList
+        .map(({ name, percentage }) => `${percentage}%${name}`)
+        .join(', ')
+    )
+  }
+
+  if (width) {
+    const { cuttable, full } = width
+    const unit =
+      width.unit === LengthUnit.INCH ? '"' : LengthUnitText[width.unit]
+
+    list.push(`${cuttable}/${full} ${unit}`)
+  }
+
+  if (weight) {
+    list.push(`${weight.value}${unitFormatter.weight(weight.unit)}`)
+  }
+
+  if (finishList.length > 0) {
+    list.push(finishList.map(({ name }) => name).join(', '))
+  }
+
+  return list
 })
 
 const innerSelectedValue = computed({

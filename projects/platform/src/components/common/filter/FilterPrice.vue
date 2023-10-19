@@ -3,69 +3,82 @@ filter-wrapper(
   iconName="price"
   :displayName="$t('RR0094')"
   :dirty="filterDirty.price"
+  :confirmDisabled="disabled"
+  @confirm="update"
 )
-  div(class="w-131 py-4 rounded shadow-16")
+  div(class="w-95")
     filter-range(
       v-model:range="inputRange"
-      :min="filterOptions.price.min"
-      :max="filterOptions.price.max"
+      :min="filterOption.price.min"
+      :max="filterOption.price.max"
       :label="$t('RR0095')"
     )
-    div(class="flex justify-end px-5 mt-2")
-      f-button(size="sm" @click="update") {{ $t('UU0001') }}
+    div(class="pt-5")
+      p(class="text-caption font-bold text-grey-600 pb-4") Currency
+      div(class="flex items-center flex-wrap gap-4")
+        f-input-checkbox(
+          v-for="currency in currencyOptionList"
+          :key="currency.name"
+          v-model:inputValue="currencyList"
+          :label="currency.name"
+          :value="currency.value"
+        )
+    div(class="pt-8")
+      p(class="text-caption font-bold text-grey-600 pb-4") Fabric Unit
+      div(class="flex items-center flex-wrap gap-4")
+        f-input-checkbox(
+          v-for="unit in unitOptionList"
+          :key="unit.name"
+          v-model:inputValue="unitList"
+          :label="unit.name"
+          :value="unit.value"
+        )
 </template>
 
-<script>
+<script setup lang="ts">
 import FilterWrapper from '@/components/common/filter/FilterWrapper.vue'
 import FilterRange from '@/components/common/filter/FilterRange.vue'
-import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
-import { SEARCH_TYPE } from '@/utils/constants'
+import { useFilterStore } from '@/stores/filter'
+import { storeToRefs } from 'pinia'
+import { MaterialQuantityUnit, CurrencyCode } from '@frontier/platform-web-sdk'
 
-export default {
-  name: 'FilterPrice',
-  components: {
-    FilterWrapper,
-    FilterRange,
-  },
-  props: {
-    searchType: {
-      type: Number,
-    },
-  },
-  setup() {
-    const store = useStore()
+const emit = defineEmits<{
+  (e: 'search'): void
+}>()
 
-    const filter = computed(() => store.getters['helper/search/filter'])
-    const filterDirty = computed(
-      () => store.getters['helper/search/filterDirty']
-    )
-    const filterOptions = computed(
-      () => store.getters['helper/search/filterOptions']
-    )
+const filterStore = useFilterStore()
+const { filterOption, filterState, filterDirty } = storeToRefs(filterStore)
+const unitOptionList = Object.entries(MaterialQuantityUnit).map(
+  ([key, value]) => ({
+    name: key,
+    value,
+  })
+)
+const currencyOptionList = Object.entries(CurrencyCode).map(([key, value]) => ({
+  name: key,
+  value,
+}))
 
-    const inputRange = ref([null, null])
-    const { price } = filter.value
-    inputRange.value = [price.min, price.max]
+const price = filterState.value.price
+const inputRange = ref([price.min, price.max])
+const currencyList = ref<CurrencyCode[]>(price.currencyList)
+const unitList = ref<MaterialQuantityUnit[]>(price.unitList)
 
-    const update = () => {
-      const [min, max] = inputRange.value
-      store.dispatch('helper/search/setFilter', {
-        price: {
-          min,
-          max,
-          isInfinity: max > filterOptions.value.price.max,
-        },
-      })
-    }
+const disabled = computed(() => {
+  const [min, max] = inputRange.value
+  return min > max
+})
 
-    return {
-      filterDirty,
-      filterOptions,
-      inputRange,
-      update,
-      SEARCH_TYPE,
-    }
-  },
+const update = () => {
+  const [min, max] = inputRange.value
+  filterStore.setFilterStateByProperty('price', {
+    min,
+    max,
+    isInfinity: max > filterOption.value.price.max,
+    unitList: unitList.value,
+    currencyList: currencyList.value,
+  })
+  emit('search')
 }
 </script>

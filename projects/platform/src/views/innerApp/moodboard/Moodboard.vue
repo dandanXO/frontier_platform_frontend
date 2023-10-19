@@ -72,7 +72,7 @@ import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
-import useNavigation from '@/composables/useNavigation.js'
+import useNavigation from '@/composables/useNavigation'
 import { MOODBOARD_TYPE, CREATE_EDIT, NOTIFY_TYPE } from '@/utils/constants'
 import { toStandardFormat } from '@frontier/lib'
 

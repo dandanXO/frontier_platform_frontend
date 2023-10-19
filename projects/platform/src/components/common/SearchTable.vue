@@ -1,18 +1,22 @@
 <template lang="pug">
 div(class="w-full h-full flex flex-col" v-bind="$attrs")
-  search-box(:searchType="searchType" @search="search")
+  search-box(:searchType="searchType" @search="search()")
   slot(name="header-above" :goTo="goTo")
   div(
     data-tooltip-boundary-reference="search-table-header"
     class="py-3 md:pt-7.5 md:pb-2.5 mx-7.5 flex justify-between items-center"
   )
     div
-      slot(name="header-left" :goTo="goTo")
+      slot(
+        name="header-left"
+        :goTo="goTo"
+        :totalCount="pagination?.totalCount ?? 0"
+      )
     div(class="flex items-center gap-x-5")
       f-input-checkbox(
-        v-if="keywordDirty"
-        v-model:inputValue="isShowMatch"
-        @update:inputValue="search()"
+        v-if="isKeywordDirty"
+        :inputValue="isShowMatch"
+        @update:inputValue="searchStore.setIsShowMatch($event); search()"
         :label="$t('RR0069')"
         binary
         iconSize="20"
@@ -29,14 +33,15 @@ div(class="w-full h-full flex flex-col" v-bind="$attrs")
           )
         template(#content)
           f-contextual-menu(
-            v-model:inputSelectValue="sort"
+            :inputSelectValue="sort"
+            @update:inputSelectValue="searchStore.setSort"
             :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
             :menuTree="sortMenuTree"
             @click:menu="search()"
           )
       slot(name="header-right")
   slot(name="sub-header")
-  div(class="md:overflow-y-auto flex-grow flex flex-col")
+  div(v-if="pagination" class="md:overflow-y-auto flex-grow flex flex-col")
     div(
       v-if="isSearching || (inSearch && pagination.totalCount === 0)"
       class="flex-grow flex flex-col justify-center items-center"
@@ -72,61 +77,102 @@ multi-select-menu(
     slot(name="menu-option" :option="option")
 </template>
 
-<script setup>
+<script setup lang="ts">
 import SearchBox from '@/components/common/SearchBox.vue'
 import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
-import { useStore } from 'vuex'
 import { ref, computed, defineOptions } from 'vue'
 import { useRoute } from 'vue-router'
 import { SEARCH_TYPE, CONTEXTUAL_MENU_MODE } from '@/utils/constants'
+import type { FunctionOption } from '@/types'
+import type {
+  Material,
+  NodeChild,
+  PaginationReqSortEnum,
+  AssetsFilter,
+  WorkspaceFilter,
+  ExternalFilter,
+  Search,
+  PaginationReq,
+} from '@frontier/platform-web-sdk'
+import { useSearchStore } from '@/stores/search'
+import { useFilterStore } from '@/stores/filter'
+import { storeToRefs } from 'pinia'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps({
-  searchType: {
-    type: Number,
-    default: SEARCH_TYPE.ASSETS,
-  },
-  optionSort: {
-    type: Object,
-    required: true,
-  },
-  optionMultiSelect: {
-    type: Array,
-    default: [],
-  },
-  searchCallback: {
-    type: Function,
-    required: true,
-  },
-  itemList: {
-    type: Array,
-    required: true,
-  },
-  canSelectAll: {
-    type: Boolean,
-    default: true,
-  },
-  selectedItemList: {
-    type: Array,
-    default: [],
-  },
-})
+export interface SortOption {
+  text: string
+  value: PaginationReqSortEnum
+  disabled?: boolean
+  tooltipMessage?: string
+}
+
+export interface SearchPayload<FilterType> {
+  pagination: PaginationReq
+  search: Search | null
+  filter: FilterType | null
+}
+
+export interface RouteQuery {
+  currentPage: number
+  sort: PaginationReqSortEnum
+  isShowMatch?: boolean
+  keyword?: string
+  tagList?: string
+  filter?: string
+}
+
+const props = withDefaults(
+  defineProps<{
+    searchType: SEARCH_TYPE
+    optionSort: {
+      base: SortOption[]
+      keywordSearch: SortOption[]
+    }
+    optionMultiSelect: FunctionOption<Material>[] | FunctionOption<NodeChild>[]
+    searchCallback: (
+      payload:
+        | SearchPayload<AssetsFilter>
+        | SearchPayload<WorkspaceFilter>
+        | SearchPayload<ExternalFilter>,
+      query: RouteQuery
+    ) => Promise<void>
+    itemList: Material[] | NodeChild[]
+    canSelectAll: boolean
+    selectedItemList: Material[] | NodeChild[]
+  }>(),
+  {
+    canSelectAll: true,
+  }
+)
+
 const emit = defineEmits(['update:selectedItemList'])
 
-const store = useStore()
 const route = useRoute()
+const searchStore = useSearchStore()
+const filterStore = useFilterStore()
+const {
+  keyword,
+  selectedTagList,
+  sort,
+  isShowMatch,
+  paginationRes: pagination,
+} = storeToRefs(searchStore)
+const { isFilterDirty, filterState, filterDirty } = storeToRefs(filterStore)
 
 const isSearching = ref(false)
 const inSearch = ref(false)
-const keywordDirty = ref(false)
-
+const isKeywordDirty = ref(false)
+const defaultSort = computed(() => props.optionSort.base[0].value)
+const searchDirty = computed(() => {
+  return isKeywordDirty.value || isFilterDirty.value
+})
 const sortMenuTree = computed(() => {
   const { base, keywordSearch } = props.optionSort
   const temp = [...base]
-  if (keywordDirty.value) {
+  if (isKeywordDirty.value) {
     temp.unshift(...keywordSearch)
   }
 
@@ -146,24 +192,6 @@ const sortMenuTree = computed(() => {
     ],
   }
 })
-const keyword = computed(() => store.getters['helper/search/keyword'])
-const filter = computed(() => store.getters['helper/search/filter'])
-const selectedTagList = computed(
-  () => store.getters['helper/search/selectedTagList']
-)
-const pagination = computed(() => store.getters['helper/search/pagination'])
-const sort = computed({
-  get: () => pagination.value.sort,
-  set: (v) => store.dispatch('helper/search/setPagination', { sort: v }),
-})
-const isShowMatch = computed({
-  get: () => pagination.value.isShowMatch,
-  set: (v) => store.dispatch('helper/search/setPagination', { isShowMatch: v }),
-})
-const searchDirty = computed(() => {
-  const isFilterDirty = store.getters['helper/search/isFilterDirty']
-  return keywordDirty.value || isFilterDirty
-})
 
 const goTo = () => {
   /**
@@ -172,9 +200,7 @@ const goTo = () => {
    *  Also helper/search/reset includes reset filer,
    *  This means it will call search event
    */
-  store.dispatch('helper/search/reset', {
-    sort: props.optionSort.base[0].value,
-  })
+  searchStore.setSort(defaultSort.value)
 }
 
 const innerSelectedItemList = computed({
@@ -200,39 +226,114 @@ const search = async (targetPage = 1) => {
    * when first time using keyword search (no keyword -> with keyword),
    * sort value will automatically change to optionSort.keywordSearch[0].value,
    * and when first time searching without keyword (with keyword -> no keyword),
-   * sort value will automatically change to props.optionSort.base[0].value
+   * sort value will automatically change to defaultSort.value
    */
   if (props.optionSort.keywordSearch.length > 0) {
-    if (!keywordDirty.value && !!keyword.value) {
-      store.dispatch('helper/search/setPagination', {
-        sort: props.optionSort.keywordSearch[0].value,
-      })
-    } else if (keywordDirty.value && !keyword.value) {
-      store.dispatch('helper/search/setPagination', {
-        sort: props.optionSort.base[0].value,
-      })
+    if (!isKeywordDirty.value && !!keyword.value) {
+      searchStore.setSort(props.optionSort.keywordSearch[0].value)
+    } else if (isKeywordDirty.value && !keyword.value) {
+      searchStore.setSort(defaultSort.value)
     }
   }
 
-  keywordDirty.value = !!keyword.value
+  isKeywordDirty.value = !!keyword.value
 
   // only when searchDirty is true, it's considered a search mode
   inSearch.value = searchDirty.value
 
-  await props.searchCallback(targetPage, {
-    currentPage: targetPage,
-    sort: pagination.value.sort,
-    isShowMatch: pagination.value.isShowMatch,
-    keyword: keyword.value,
-    tagList: encodeURI(JSON.stringify(selectedTagList.value)),
-    filter: encodeURI(JSON.stringify(filter.value)),
-  })
+  const { densityAndYarn } = filterState.value
+  const woven = filterDirty.value.densityAndYarn
+    ? densityAndYarn.knit.knitYarnSize === null
+      ? densityAndYarn.woven
+      : null
+    : null
+  const knit =
+    woven === null && filterDirty.value.densityAndYarn
+      ? {
+          knitYarnSize: densityAndYarn.knit.knitYarnSize as string,
+        }
+      : null
+  await props.searchCallback(
+    {
+      pagination: {
+        sort: sort.value,
+        isShowMatch: isShowMatch.value,
+        targetPage,
+        perPageCount: 40,
+      },
+      search: (() => {
+        return keyword.value === '' && selectedTagList.value.length === 0
+          ? null
+          : {
+              keyword: keyword.value,
+              tagList: selectedTagList.value,
+            }
+      })(),
+      filter: (() => {
+        if (!isFilterDirty.value) {
+          return null
+        }
+
+        return {
+          ...Object.keys(filterState.value).reduce((acc, key) => {
+            const property = key as keyof typeof filterState.value
+
+            if (props.searchType !== SEARCH_TYPE.ASSETS) {
+              if (property === 'status') {
+                return acc
+              }
+              if (props.searchType !== SEARCH_TYPE.WORKSPACE) {
+                if (property === 'withOutEcoImpactor') {
+                  return acc
+                }
+              }
+            }
+
+            return {
+              ...acc,
+              [property]: filterDirty.value[property]
+                ? filterState.value[property]
+                : null,
+            }
+          }, {}),
+          densityAndYarn: woven || knit ? { woven, knit } : null,
+        } as AssetsFilter | WorkspaceFilter | ExternalFilter
+      })(),
+    },
+    {
+      currentPage: targetPage,
+      sort: sort.value,
+      isShowMatch: isShowMatch.value ? isShowMatch.value : undefined,
+      keyword: keyword.value === '' ? undefined : keyword.value,
+      tagList:
+        selectedTagList.value.length > 0
+          ? encodeURI(JSON.stringify(selectedTagList.value))
+          : undefined,
+      filter: (() => {
+        if (!isFilterDirty.value) {
+          return undefined
+        }
+        return encodeURI(
+          JSON.stringify(
+            Object.keys(filterState.value).reduce((acc, key) => {
+              const property = key as keyof typeof filterState.value
+
+              return filterDirty.value[property]
+                ? {
+                    ...acc,
+                    [property]: filterState.value[property],
+                  }
+                : acc
+            }, {})
+          )
+        )
+      })(),
+    }
+  )
 
   isSearching.value = false
 }
-
-// INIT
-store.dispatch('helper/search/reset', { sort: props.optionSort.base[0].value })
+// Initialize search and filter
 const {
   currentPage,
   sort: qSort,
@@ -241,26 +342,20 @@ const {
   tagList: qTagList,
   filter: qFilter,
 } = route.query
-if (qSort) {
-  store.dispatch('helper/search/setPagination', { sort: Number(qSort) })
-}
-if (qIsShowMatch) {
-  store.dispatch('helper/search/setPagination', {
-    isShowMatch: qIsShowMatch === 'true',
-  })
-}
-if (qKeyword) {
-  store.dispatch('helper/search/setKeyword', qKeyword)
-}
-if (qTagList) {
-  store.dispatch(
-    'helper/search/setSelectedTagList',
-    JSON.parse(decodeURI(qTagList))
-  )
-}
-if (qFilter) {
-  store.dispatch('helper/search/setFilter', JSON.parse(decodeURI(qFilter)))
-}
 
-search(currentPage)
+searchStore.setSort(
+  qSort ? (Number(qSort) as PaginationReqSortEnum) : defaultSort.value
+)
+searchStore.setIsShowMatch(qIsShowMatch === 'true')
+if (qKeyword) {
+  searchStore.setKeyword(qKeyword as string)
+  searchStore.getAITags()
+}
+searchStore.setSelectedTagList(
+  qTagList ? JSON.parse(decodeURI(qTagList as string)) : []
+)
+
+filterStore.setFilterStateByQueryString(qFilter ? (qFilter as string) : '{}')
+
+search(currentPage ? Number(currentPage) : 1)
 </script>

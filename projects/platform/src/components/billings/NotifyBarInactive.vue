@@ -39,7 +39,7 @@ div(
 <script>
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
-import useNavigation from '@/composables/useNavigation.js'
+import useNavigation from '@/composables/useNavigation'
 import { FUNC_ID } from '@/utils/constants'
 
 export default {

@@ -7,12 +7,12 @@ search-table(
   :itemList="materialList"
   v-model:selectedItemList="selectedMaterialList"
 )
-  template(#header-left)
+  template(#header-left="{ totalCount }")
     h5(class="text-h5 font-bold text-grey-900") {{ $t('RR0008') }}
       span(class="text-caption text-grey-600 pl-1")
         span (
         i18n-t(keypath="RR0068" tag="span" scope="global")
-          template(#number) {{ pagination.totalCount }}
+          template(#number) {{ totalCount }}
         span )
   template(#header-right)
     f-input-tap(
@@ -34,7 +34,7 @@ search-table(
       )
         row-item(
           :key="item.materialId"
-          :material="tempMaterial"
+          :material="item"
           v-model:selectedList="selectedMaterialList"
           data-cy="assets"
         )
@@ -49,10 +49,10 @@ search-table(
         grid-item(
           v-for="material in materialList"
           :key="material.materialId"
-          :material="tempMaterial"
+          :material="material"
           v-model:selectedValue="selectedMaterialList"
           :optionList="optionList"
-          @click.stop="goToAssetMaterialDetail(material)"
+          @click.stop="goToAssetMaterialDetail(material.materialId)"
         )
     div(v-else class="flex h-full justify-center items-center")
       div(class="flex flex-col justify-center items-center")
@@ -65,28 +65,31 @@ search-table(
 </template>
 
 <script setup lang="ts">
-import SearchTable from '@/components/common/SearchTable.vue'
+import SearchTable, {
+  type RouteQuery,
+  type SearchPayload,
+  type SortOption,
+} from '@/components/common/SearchTable.vue'
 import RowItem from '@/components/assets/RowItem.vue'
 import GridItem from '@/components/assets/GridItem.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
 import useAssets from '@/composables/useAssets'
-import {
-  SEARCH_TYPE,
-  ASSET_LIST_DISPLAY_MODE,
-  useConstants,
-} from '@/utils/constants'
+import { SEARCH_TYPE, ASSET_LIST_DISPLAY_MODE } from '@/utils/constants'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { useRoute, useRouter } from 'vue-router'
 // https://github.com/Akryum/vue-virtual-scroller/tree/next/packages/vue-virtual-scroller
 import { useI18n } from 'vue-i18n'
 import { useAssetsStore } from '@/stores/assets'
+import { useSearchStore } from '@/stores/search'
 import { storeToRefs } from 'pinia'
+import type { AssetsFilter, Material } from '@frontier/platform-web-sdk'
 
 const assetsStore = useAssetsStore()
-const { material: tempMaterial } = storeToRefs(assetsStore)
+const searchStore = useSearchStore()
+const { materialList } = storeToRefs(assetsStore)
 
 const { t } = useI18n()
 const router = useRouter()
@@ -94,21 +97,18 @@ const route = useRoute()
 const store = useStore()
 const { goToMaterialUpload, goToAssetMaterialDetail } = useNavigation()
 
-const selectedMaterialList = ref([])
+const selectedMaterialList = ref<Material[]>([])
 const displayMode = ref<ASSET_LIST_DISPLAY_MODE>(ASSET_LIST_DISPLAY_MODE.LIST)
-const materialList = computed(() => store.getters['assets/materialList'])
-const pagination = computed(() => store.getters['helper/search/pagination'])
 const optionSort = computed(() => {
-  const { SORT_BY } = useConstants()
   const {
     CREATE_DATE,
     LAST_UPDATE,
-    MATERIAL_NO_A_Z,
-    GHG_RESULTS,
-    WATER_DEPLETION_RESULTS,
-    LAND_USE_RESULTS,
+    ITEM_NO_A_Z,
+    GHG_LOW_TO_HIGH,
+    WATER_LOW_TO_HIGH,
+    LAND_LOW_TO_HIGH,
     RELEVANCE,
-  } = SORT_BY.value
+  } = searchStore.sortOption
   const made2flowPlanStatus = computed(
     () => store.getters['polling/valueAddedService'].made2flow.planStatus
   )
@@ -116,24 +116,24 @@ const optionSort = computed(() => {
     base: [
       CREATE_DATE,
       LAST_UPDATE,
-      MATERIAL_NO_A_Z,
+      ITEM_NO_A_Z,
       {
-        ...GHG_RESULTS,
+        ...GHG_LOW_TO_HIGH,
         disabled: !made2flowPlanStatus.value.ACTIVATE,
         tooltipMessage: !made2flowPlanStatus.value.ACTIVATE && t('VV0047'),
       },
       {
-        ...WATER_DEPLETION_RESULTS,
+        ...WATER_LOW_TO_HIGH,
         disabled: !made2flowPlanStatus.value.ACTIVATE,
         tooltipMessage: !made2flowPlanStatus.value.ACTIVATE && t('VV0047'),
       },
       {
-        ...LAND_USE_RESULTS,
+        ...LAND_LOW_TO_HIGH,
         disabled: !made2flowPlanStatus.value.ACTIVATE,
         tooltipMessage: !made2flowPlanStatus.value.ACTIVATE && t('VV0047'),
       },
-    ],
-    keywordSearch: [RELEVANCE],
+    ] as SortOption[],
+    keywordSearch: [RELEVANCE] as SortOption[],
   }
 })
 
@@ -169,13 +169,15 @@ const optionMultiSelect = computed(() => [
   deleteMaterial,
 ])
 
-const getMaterialList = async (targetPage = 1, query) => {
+const getMaterialList = async (
+  payload: SearchPayload<AssetsFilter>,
+  query: RouteQuery
+) => {
   router.push({
     name: route.name,
     query,
   })
-  await store.dispatch('assets/getMaterialList', { targetPage })
-  // await  assetsStore.getAssetsMaterialList(targetPage)
+  await assetsStore.getAssetsMaterialList(payload)
 }
 
 const displayModeOptionList = [

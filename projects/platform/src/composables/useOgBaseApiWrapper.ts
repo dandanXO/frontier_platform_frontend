@@ -6,7 +6,7 @@ type RestArgs<T extends (...args: any[]) => any> = Omit<
 >
 
 type OgBaseApiWrapper<T extends (...args: any[]) => any> = (
-  args: RestArgs<T>
+  args?: RestArgs<T>
 ) => ReturnType<T>
 
 const useOgBaseApiWrapper = (apiInstance: any) => {
@@ -14,7 +14,7 @@ const useOgBaseApiWrapper = (apiInstance: any) => {
   const ogBaseApiWrapper = <T extends (...args: any[]) => any>(
     func: T
   ): OgBaseApiWrapper<T> => {
-    return (args: RestArgs<T>) => {
+    return (args?: RestArgs<T>) => {
       return func.bind(apiInstance)({
         orgId: unit.value.orgId,
         ogType: unit.value.ogType,

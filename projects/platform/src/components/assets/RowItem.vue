@@ -12,7 +12,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
       div(
         v-if="isHover"
         class="absolute z-9 inset-0 w-full h-full rounded bg-grey-900/70"
-        @click.stop="goToAssetMaterialDetail(material)"
+        @click.stop="goToAssetMaterialDetail(material.materialId)"
       )
       div(
         v-if="isHover || haveSelectedMoreThanOne"
@@ -68,20 +68,20 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
           p(class="text-body2/1.6 font-bold text-grey-900") {{ $t('RR0135') }}
           f-button-label(@click="openModalMaterialEditSimple('inventory')") {{ $t('UU0027') }}
         div(class="grid gap-3")
-          p(class="text-body2 line-clamp-1 !break-all") Total Quantity: {{ material.inventoryTotalQtyInYard }}
+          p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0034') }}： {{ material.inventoryTotalQtyInYard }}
       div
         div(class="flex justify-between pb-2 border-grey-250 border-b mb-2")
           p(class="text-body2/1.6 font-bold text-grey-900") {{ $t('RR0134') }}
           f-button-label(@click="openModalMaterialEditSimple('public-price')") {{ $t('UU0027') }}
         div(class="grid gap-3")
-          p(class="text-body2 !break-all") {{ getPriceInfo(material.priceInfo)?.pricing.name }}: {{ getPriceInfo(material.priceInfo)?.pricing.value }}
+          p(class="text-body2 !break-all") {{ getPriceInfo(material.priceInfo)?.pricing.name }}： {{ getPriceInfo(material.priceInfo)?.pricing.value }}
       div
         div(class="flex justify-between pb-2 border-grey-250 border-b mb-2")
           p(class="text-body2/1.6 font-bold text-grey-900") {{ $t('RR0133') }}
           f-button-label(@click="openModalMaterialEditSimple('tag')") {{ $t('UU0027') }}
         div(class="grid gap-3")
-          p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0027') }}: {{ publicTagList }}
-          p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0028') }}: {{ privateTagList }}
+          p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0027') }}： {{ publicTagList }}
+          p(class="text-body2 line-clamp-1 !break-all") {{ $t('RR0028') }}： {{ privateTagList }}
       div
         div(class="flex justify-between items-end pb-2 border-grey-250 border-b")
           div(
