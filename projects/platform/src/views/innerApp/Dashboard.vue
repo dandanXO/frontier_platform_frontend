@@ -1,79 +1,95 @@
 <template lang="pug">
-div(
-  ref="refContainer"
-  :style="{ width: containerWidth + PADDING_X_FOR_SHADOW + 'px' }"
-  class="my-5"
-  :class="{ 'mx-auto': containerWidth === 1140 }"
-)
-  div(v-if="isLoading" class="w-full flex justify-center items-center")
-    f-svg-icon(iconName="loading" size="92" class="text-primary-400")
-  template(v-else)
-    div(:style="{ padding: `0 ${PADDING_X_FOR_SHADOW / 2}px` }")
-      f-infobar(:messageText="$t('BB0115')")
-    div(
-      :style="{ width: containerWidth + 'px', padding: `0 ${PADDING_X_FOR_SHADOW / 2}px` }"
-      class="flex flex-col gap-y-5 mt-5 overflow-x-auto overflow-y-hidden hide-scrollbar"
-      :class="{ '!w-287.5': containerWidth === 1140 }"
+div(class="px-6 pt-6.5 h-full flex flex-col") 
+  div(class="h-11 flex justify-between items-center")
+    div(class="text-h6 font-bold text-grey-900 pl-1.5") {{ $t('BB0138') }}
+    f-select-dropdown(
+      :selectValue="currentMenu"
+      :dropdownMenuTree="menuOrgOrGroup"
+      @update:selectValue="toggleOrgOrGroup"
+      class="w-75"
     )
-      div(class="w-285 h-40 pt-5 pb-9 border border-grey-100 rounded shadow-4")
-        p(class="text-body1 font-bold text-grey-900 pl-5 pb-6") {{ $t('RR0246') }}
-        div(class="flex items-center justify-center gap-x-15")
-          div(
-            v-for="item in createCountsItemList"
-            :key="item.name"
-            class="flex items-center gap-x-5"
-          )
-            f-svg-icon(:iconName="item.icon" size="64" class="text-grey-600")
-            div
-              p(class="text-body2 text-grey-600") {{ item.name }}
-              p(class="flex items-end")
-                span(class="text-h1 font-bold text-primary-400") {{ item.amount }}
-                span(v-if="item.isOverflow" class="text-h4 font-bold text-primary-400") +
-                span(class="text-caption/1.6 text-grey-600 pl-1") {{ item.unit }}
-      div(class="w-285 flex items-center gap-x-5")
-        div(class="min-w-91.5 h-80 bg-grey-0 py-5 border border-grey-100 rounded shadow-4")
-          v-chart(class="w-full h-69.5" :option="textureOption")
-        div(
-          class="min-w-188.5 h-80 bg-grey-0 py-5 border border-grey-100 rounded shadow-4 relative"
-        )
-          div(class="absolute z-1 right-5 top-5 flex items-center gap-x-4")
-            f-button-label(
-              :active="keywordDate === KEYWORD_DATE.LAST_MONTH"
-              @click="keywordDate = KEYWORD_DATE.LAST_MONTH"
-            ) {{ t('BB0126') }}
-            f-button-label(
-              :active="keywordDate === KEYWORD_DATE.LAST_3_MONTH"
-              @click="keywordDate = KEYWORD_DATE.LAST_3_MONTH"
-            ) {{ t('BB0127') }}
-          v-chart(class="w-full h-69.5" :option="keywordOption")
-      div(class="w-285 h-80 bg-grey-0 pt-4 border border-grey-100 rounded shadow-4 mb-2.5")
-        div(class="px-5 flex items-center justify-between")
-          p(class="text-body1 font-bold text-grey-900") {{ t('BB0130') }}
-          div(class="flex items-center gap-x-4")
-            div(class="flex items-center gap-x-4")
-              div(
-                v-for="(type, key) in ecoTypeList"
-                :key="key"
-                class="flex items-center gap-x-2"
-              )
-                f-svg-icon(:iconName="type.icon" size="24" class="text-grey-900")
-                f-button-label(
-                  :active="ecoType === key"
-                  @click="ecoType = key"
-                ) {{ type.name }} ({{ type.unit }})
-            div(class="w-px h-[15px] bg-grey-400")
-            f-tooltip-standard(
-              :tooltipMessage="'Subscribe to Eco-Impactor to unlock this feature'"
-              :disabledTooltip="hasSubscribedMade2flow"
+  div(
+    ref="refContainer"
+    :style="{ width: containerWidth + PADDING_X_FOR_SHADOW + 'px' }"
+    class="my-5"
+    :class="{ 'mx-auto': containerWidth === 1140 }"
+  )
+    div(v-if="isLoading" class="w-full flex justify-center items-center")
+      f-svg-icon(iconName="loading" size="92" class="text-primary-400")
+    template(v-else)
+      div(:style="{ padding: `0 ${PADDING_X_FOR_SHADOW / 2}px` }")
+        f-infobar(:messageText="$t('BB0115')")
+      div(
+        :style="{ width: containerWidth + 'px', padding: `0 ${PADDING_X_FOR_SHADOW / 2}px` }"
+        class="flex flex-col gap-y-5 mt-5 overflow-x-auto overflow-y-hidden hide-scrollbar"
+        :class="{ '!w-287.5': containerWidth === 1140 }"
+      )
+        div(class="w-285 h-40 pt-5 pb-9 border border-grey-100 rounded shadow-4")
+          p(class="text-body1 font-bold text-grey-900 pl-5 pb-6") {{ $t('RR0246') }}
+          div(class="flex items-center justify-center gap-x-15")
+            div(
+              v-for="item in createCountsItemList"
+              :key="item.name"
+              class="flex items-center gap-x-5"
             )
-              template(#slot:tooltip-trigger)
-                f-input-switch(
-                  iconSize="30"
-                  :label="t('BB0134')"
-                  v-model:inputValue="isShowAssetsStatus"
-                  :disabled="!hasSubscribedMade2flow"
+              f-svg-icon(:iconName="item.icon" size="64" class="text-grey-600")
+              div
+                p(class="text-body2 text-grey-600") {{ item.name }}
+                p(class="flex items-end")
+                  span(class="text-h1 font-bold text-primary-400") {{ item.amount }}
+                  span(
+                    v-if="item.isOverflow"
+                    class="text-h4 font-bold text-primary-400"
+                  ) +
+                  span(class="text-caption/1.6 text-grey-600 pl-1") {{ item.unit }}
+        div(class="w-285 flex items-center gap-x-5")
+          div(
+            class="min-w-91.5 h-80 bg-grey-0 py-5 border border-grey-100 rounded shadow-4"
+          )
+            v-chart(class="w-full h-69.5" :option="textureOption")
+          div(
+            class="min-w-188.5 h-80 bg-grey-0 py-5 border border-grey-100 rounded shadow-4 relative"
+          )
+            div(class="absolute z-1 right-5 top-5 flex items-center gap-x-4")
+              f-button-label(
+                :active="keywordDate === KEYWORD_DATE.LAST_MONTH"
+                @click="keywordDate = KEYWORD_DATE.LAST_MONTH"
+              ) {{ t('BB0126') }}
+              f-button-label(
+                :active="keywordDate === KEYWORD_DATE.LAST_3_MONTH"
+                @click="keywordDate = KEYWORD_DATE.LAST_3_MONTH"
+              ) {{ t('BB0127') }}
+            v-chart(class="w-full h-69.5" :option="keywordOption")
+        div(
+          class="w-285 h-80 bg-grey-0 pt-4 border border-grey-100 rounded shadow-4 mb-2.5"
+        )
+          div(class="px-5 flex items-center justify-between")
+            p(class="text-body1 font-bold text-grey-900") {{ t('BB0130') }}
+            div(class="flex items-center gap-x-4")
+              div(class="flex items-center gap-x-4")
+                div(
+                  v-for="(type, key) in ecoTypeList"
+                  :key="key"
+                  class="flex items-center gap-x-2"
                 )
-        v-chart(class="w-full" :option="ecoOption")
+                  f-svg-icon(:iconName="type.icon" size="24" class="text-grey-900")
+                  f-button-label(
+                    :active="ecoType === key"
+                    @click="ecoType = key"
+                  ) {{ type.name }} ({{ type.unit }})
+              div(class="w-px h-[15px] bg-grey-400")
+              f-tooltip-standard(
+                :tooltipMessage="'Subscribe to Eco-Impactor to unlock this feature'"
+                :disabledTooltip="hasSubscribedMade2flow"
+              )
+                template(#slot:tooltip-trigger)
+                  f-input-switch(
+                    iconSize="30"
+                    :label="t('BB0134')"
+                    v-model:inputValue="isShowAssetsStatus"
+                    :disabled="!hasSubscribedMade2flow"
+                  )
+          v-chart(class="w-full" :option="ecoOption")
 </template>
 
 <script setup lang="ts">
@@ -93,9 +109,52 @@ import { useDashboardStore } from '@/stores/dashboard'
 import { storeToRefs } from 'pinia'
 import colors from '@frontier/tailwindcss/colors'
 import { useI18n } from 'vue-i18n'
+import { useRoute, useRouter } from 'vue-router'
 
 const { t } = useI18n()
 const store = useStore()
+const route = useRoute()
+const router = useRouter()
+
+const routeLocation = computed(() =>
+  route.name === 'OrgDashboard' ? 'org' : 'group'
+)
+const organization = computed(() => store.getters['organization/organization'])
+const menuOrgOrGroup = computed(() => {
+  const { orgNo, orgName, labelColor } = organization.value
+  return {
+    width: 'w-75',
+    blockList: [
+      {
+        menuList: [
+          {
+            title: orgName,
+            selectValue: `/${orgNo}/dashboard`,
+            labelColor,
+          },
+          ...store.getters['organization/groupList'].map((group) => {
+            const { groupId, groupName, labelColor } = group
+            return {
+              title: groupName,
+              selectValue: `/${orgNo}/${groupId}/dashboard`,
+              labelColor,
+            }
+          }),
+        ],
+      },
+    ],
+  }
+})
+const currentMenu = computed(() => {
+  const { orgNo } = organization.value
+  return routeLocation.value === 'org'
+    ? `/${orgNo}/dashboard`
+    : `/${orgNo}/${route.params.groupId}/dashboard`
+})
+const toggleOrgOrGroup = (path: string) => {
+  router.push(path)
+}
+
 const dashboard = useDashboardStore()
 const {
   createCounts,

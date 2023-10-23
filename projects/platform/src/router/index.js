@@ -33,6 +33,11 @@ const checkOrgIsInactive = (to, from, next) => {
 
 const reuseRoutes = (prefix) => [
   {
+    path: 'dashboard',
+    name: `${prefix}Dashboard`,
+    component: () => import('@/views/innerApp/Dashboard.vue'),
+  },
+  {
     path: 'management/:tab(about|members|history|dashboard)',
     name: `${prefix}Management`,
     component: () => import('@/views/innerApp/Management.vue'),

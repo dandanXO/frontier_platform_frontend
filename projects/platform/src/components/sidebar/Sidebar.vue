@@ -12,6 +12,12 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex fle
     div(class="w-auto h-px bg-grey-150 mx-1.5 my-1.5")
     f-scrollbar-container(class="flex-grow")
       div(class="grid gap-y-1.5")
+        sidebar-item(
+          :title="$t('BB0138')"
+          :path="`/${organization.orgNo}/dashboard`"
+          icon="dashboard"
+          :disabled="planStatus.INACTIVE"
+        )
         sidebar-item#management(
           :title="$t('RR0004')"
           :path="`/${organization.orgNo}/management/about`"

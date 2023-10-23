@@ -39,7 +39,6 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
           group-about(v-else :key="$route.params.groupId")
         member-list(v-else-if="currentTab === 'members'")
         history-list(v-else-if="currentTab === 'history'")
-        dashboard(v-else-if="currentTab === 'dashboard'")
 </template>
 
 <script setup>
@@ -59,9 +58,6 @@ const MemberList = defineAsyncComponent(() =>
 )
 const HistoryList = defineAsyncComponent(() =>
   import('@/components/management/HistoryList.vue')
-)
-const Dashboard = defineAsyncComponent(() =>
-  import('@/components/management/Dashboard.vue')
 )
 
 const { t } = useI18n()
@@ -117,10 +113,6 @@ const tabList = reactive([
   {
     name: t('BB0010'),
     path: 'history',
-  },
-  {
-    name: t('BB0138'),
-    path: 'dashboard',
   },
 ])
 
