@@ -7,6 +7,14 @@ search-table(
   :itemList="nodeList"
   v-model:selectedItemList="selectedNodeList"
 )
+  template(#box-above)
+    f-tabs(
+      :tabList="tabList"
+      class="py-4 px-7.5"
+      :initValue="tabList[1].id"
+      keyField="id"
+      @switch="$event.goTo()"
+    )
   template(#header-left="{ goTo }")
     div(class="flex items-center")
       div(class="flex items-end")
@@ -110,7 +118,30 @@ const {
   shareToMeDeleteByNode,
   shareToMeDeleteByNodeList,
 } = useShareToMe()
-const { goToShareToMeMaterial } = useNavigation()
+const { goToShareToMeMaterial, parsePath, prefixPath } = useNavigation()
+const defaultWorkspaceNodeKey = computed(
+  () => store.getters['workspace/defaultWorkspaceNodeKey']
+)
+
+const tabList = ref([
+  {
+    name: t('FF0001'),
+    id: 'workspace',
+    goTo: () => {
+      router.push(
+        parsePath(
+          `${prefixPath.value}/workspace/${defaultWorkspaceNodeKey.value}`
+        )
+      )
+    },
+  },
+  {
+    name: t('RR0010'),
+    id: 'share-to-me',
+    goTo: () => {},
+  },
+])
+
 const optionSort = computed(() => {
   const { SORT_BY } = useConstants()
   const { MATERIAL_NO_A_Z_C_M, LAST_UPDATE, RELEVANCE_C_M } = SORT_BY.value

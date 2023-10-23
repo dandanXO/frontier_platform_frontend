@@ -1,5 +1,6 @@
 <template lang="pug">
 div(class="w-full h-full flex flex-col" v-bind="$attrs")
+  slot(name="box-above")
   search-box(:searchType="searchType" @search="search()")
   slot(name="header-above" :goTo="goTo")
   div(

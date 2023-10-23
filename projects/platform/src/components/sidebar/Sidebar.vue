@@ -142,11 +142,6 @@ const menuOrgOrGroup = computed(() => {
           path: `/${orgNo}/moodboard`,
         },
         {
-          id: 'shareToMe',
-          title: t('RR0010'),
-          path: `/${orgNo}/share-to-me`,
-        },
-        {
           id: 'threadBoard',
           title: t('TT0132'),
           path: `/${orgNo}/thread-board`,
@@ -177,11 +172,6 @@ const menuOrgOrGroup = computed(() => {
             id: 'moodboard',
             title: t('QQ0001'),
             path: `/${orgNo}/${groupId}/moodboard`,
-          },
-          {
-            id: 'shareToMe',
-            title: t('RR0010'),
-            path: `/${orgNo}/${groupId}/share-to-me`,
           },
           {
             id: 'threadBoard',

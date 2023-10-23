@@ -1,5 +1,6 @@
 <template lang="pug">
 search-table(
+  class="flex-grow"
   :searchType="SEARCH_TYPE.WORKSPACE"
   :searchCallback="getWorkspace"
   :optionSort="optionSort"
@@ -7,6 +8,14 @@ search-table(
   :itemList="nodeList"
   v-model:selectedItemList="selectedNodeList"
 )
+  template(#box-above)
+    f-tabs(
+      :tabList="tabList"
+      class="py-4 px-7.5"
+      :initValue="tabList[0].id"
+      keyField="id"
+      @switch="$event.goTo()"
+    )
   template(#header-left="{ goTo }")
     div(class="flex items-end")
       global-breadcrumb-list(
@@ -87,7 +96,7 @@ const store = useStore()
 const notify = useNotifyStore()
 const router = useRouter()
 const route = useRoute()
-const { goToWorkspaceMaterialDetail } = useNavigation()
+const { goToWorkspaceMaterialDetail, prefixPath, parsePath } = useNavigation()
 const {
   editNodeCollection,
   editNodeMaterial,
@@ -98,6 +107,21 @@ const {
   deleteMaterial,
   deleteMultipleNode,
 } = useWorkspace()
+
+const tabList = ref([
+  {
+    name: t('FF0001'),
+    id: 'workspace',
+    goTo: () => {},
+  },
+  {
+    name: t('RR0010'),
+    id: 'share-to-me',
+    goTo: () => {
+      router.push(parsePath(`${prefixPath.value}/share-to-me`))
+    },
+  },
+])
 
 const optionSort = computed(() => {
   const { SORT_BY } = useConstants()
