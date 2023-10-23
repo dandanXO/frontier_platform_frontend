@@ -33,8 +33,8 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
               v-if="currentTab === MOODBOARD_TAB.OFFER"
               size="sm"
               prependIcon="add"
-              @click="openModalAssetsList"
-            ) {{ $t('UU0055') }}
+              @click="openModalCreateOrEditMoodboardCollection(CREATE_EDIT.CREATE, currentNodeId)"
+            ) {{ $t('FF0003') }}
         div(class="py-2 flex justify-between items-center")
           global-breadcrumb-list(
             :breadcrumbList="moodboardOfferNodeCollection.locationList"
@@ -54,11 +54,11 @@ div(class="h-242.5 pt-16 pb-6.5 px-8 bg-grey-50 flex flex-col")
           div(
             v-if="currentTab === MOODBOARD_TAB.OFFER"
             class="aspect-square border border-grey-250 border-dashed rounded-md flex justify-center items-center cursor-pointer"
-            @click="openModalCreateOrEditMoodboardCollection(CREATE_EDIT.CREATE, currentNodeId)"
+            @click="openModalAssetsList"
           )
             div(class="flex flex-col justify-center items-center")
               f-svg-icon(iconName="add" size="24" class="text-grey-900 mb-3.5")
-              span(class="text-body1 text-grey-900") {{ $t('FF0003') }}
+              span(class="text-body1 text-grey-900") {{ $t('UU0055') }}
           grid-item-node(
             v-for="node in moodboardOfferNodeCollection.childNodeList"
             :key="node.nodeId"

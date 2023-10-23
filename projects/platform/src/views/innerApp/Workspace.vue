@@ -35,7 +35,7 @@ search-table(
       type="secondary"
       @click="openModalCollectionDetail"
     ) {{ $t('UU0057') }}
-    f-button(size="sm" prependIcon="add" @click="openModalAssetsList") {{ $t('UU0055') }}
+    f-button(size="sm" prependIcon="add" @click="openModalCreateCollection") {{ $t('FF0003') }}
   template(v-if="!isFirstLayer" #sub-header)
     p(class="mx-7.5 mb-7.5 text-caption text-grey-600") {{ $t('FF0002') }}: {{ toYYYYMMDDFormat(collection.createDate) }}
   template(#default="{ inSearch, goTo }")
@@ -44,11 +44,11 @@ search-table(
     )
       div(
         class="aspect-square border border-grey-250 border-dashed rounded-md flex justify-center items-center cursor-pointer"
-        @click="openModalCreateCollection"
+        @click="openModalAssetsList"
       )
         div(class="flex flex-col justify-center items-center")
           f-svg-icon(iconName="add" size="24" class="text-grey-900 mb-3.5")
-          span(class="text-body1 text-grey-900") {{ $t('FF0003') }}
+          span(class="text-body1 text-grey-900") {{ $t('UU0055') }}
       grid-item-node(
         v-for="node in nodeList"
         :key="node.nodeKey"
