@@ -150,7 +150,7 @@ div
           //- External
           div(class="grid gap-y-5")
             div(
-              v-for="(property, key) in getPriceInfo(material.priceInfo)"
+              v-for="(property, key) in materialInfoForDisplay.priceInfo(material.priceInfo)"
               :key="key"
               class="text-body2 text-grey-900 grid grid-cols-11"
             )
@@ -162,7 +162,7 @@ div
             div(class="pt-7.5")
               div(class="grid gap-y-5")
                 div(
-                  v-for="(property, key) in getPriceInfo(material.internalInfo?.priceInfo ?? null)"
+                  v-for="(property, key) in materialInfoForDisplay.priceInfo(material.internalInfo?.priceInfo ?? null)"
                   :key="key"
                   class="text-body2 text-grey-900 grid grid-cols-11"
                 )
@@ -253,6 +253,7 @@ import type { MenuTree } from '@frontier/ui-component'
 import { PLATFORM_LOCATION_TYPE } from '@/utils/constants'
 import useMaterial from '@/composables/material/useMaterial'
 import { toStandardFormat } from '@frontier/lib'
+import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 
 const props = defineProps<{
   material: Material
@@ -337,7 +338,7 @@ const tabList = computed(() => [
   },
 ])
 
-const { getPriceInfo, hasScannedImage } = useMaterial(ref(props.material))
+const { hasScannedImage } = useMaterial(ref(props.material))
 
 const sampleCardsRemaining = computed(() => {
   return {

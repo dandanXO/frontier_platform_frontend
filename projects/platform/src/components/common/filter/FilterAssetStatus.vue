@@ -19,7 +19,7 @@ import { CONTEXTUAL_MENU_MODE } from '@/utils/constants'
 import { computed } from 'vue'
 import { useFilterStore } from '@/stores/filter'
 import { storeToRefs } from 'pinia'
-import useEnumText from '@/composables/useEnumText'
+import { AssetsFilterStatusText } from '@/utils/enumText'
 
 const emit = defineEmits<{
   (e: 'search'): void
@@ -27,7 +27,6 @@ const emit = defineEmits<{
 
 const filterStore = useFilterStore()
 const { filterDirty, filterState } = storeToRefs(filterStore)
-const { AssetsFilterStatusText } = useEnumText()
 
 const menuTree = computed(() => {
   return {

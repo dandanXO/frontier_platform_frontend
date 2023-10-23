@@ -40,7 +40,7 @@ import { ref, computed } from 'vue'
 import { useFilterStore } from '@/stores/filter'
 import { storeToRefs } from 'pinia'
 import type { LengthUnit } from '@frontier/platform-web-sdk'
-import useEnumText from '@/composables/useEnumText'
+import { LengthUnitText } from '@/utils/enumText'
 
 const emit = defineEmits<{
   (e: 'search'): void
@@ -48,7 +48,6 @@ const emit = defineEmits<{
 
 const filterStore = useFilterStore()
 const { filterOption, filterState, filterDirty } = storeToRefs(filterStore)
-const { LengthUnitText } = useEnumText()
 
 const unitOptionList = computed(() =>
   Object.entries(LengthUnitText).map(([value, name]) => ({

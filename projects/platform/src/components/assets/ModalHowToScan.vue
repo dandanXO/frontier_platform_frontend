@@ -7,7 +7,7 @@ modal-behavior(
   @click:secondary="secondaryHandler"
   data-cy="modal-how-to-scan"
 )
-  template(#note v-if="materialList.length > 0")
+  template(#note v-if="materialList && materialList.length > 0")
     div(class="flex items-center text-grey-600 w-170")
       f-svg-icon(iconName="info_outline" size="14" class="mr-1.5")
       i18n-t(
@@ -19,7 +19,7 @@ modal-behavior(
         template(#RR0062)
           div(
             class="inline-flex items-center text-cyan-400 cursor-pointer"
-            @click="printA4Card(materialList)"
+            @click="printA4Swatch(materialList)"
           ) {{ $t('RR0062') }}
             f-svg-icon(iconName="open_in_new" size="15")
         template(#RR0061)
@@ -61,45 +61,28 @@ modal-behavior(
               template(#RR0008)
                 span(
                   class="text-cyan-400 underline cursor-pointer"
-                  @click="goToAssets"
+                  @click="goToAssets()"
                 ) {{ $t('RR0008') }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import useNavigation from '@/composables/useNavigation'
-import { printA4Card, printGeneralLabel } from '@/utils/print'
+import { printGeneralLabel } from '@/utils/print'
+import usePrint from '@/composables/material/usePrint'
+import type { Material } from '@frontier/platform-web-sdk'
 
-defineProps({
-  header: {
-    type: String,
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-  },
-  primaryBtnText: {
-    type: String,
-  },
-  secondaryBtnText: {
-    type: String,
-  },
-  primaryHandler: {
-    type: Function,
-  },
-  secondaryHandler: {
-    type: Function,
-  },
-  materialList: {
-    type: Array,
-    default: () => {
-      return []
-    },
-  },
-})
+defineProps<{
+  header: string
+  title: string
+  description?: string
+  primaryBtnText?: string
+  secondaryBtnText?: string
+  primaryHandler?: () => void
+  secondaryHandler?: () => void
+  materialList?: Material[]
+}>()
 
 const { goToAssets } = useNavigation()
+
+const { printA4Swatch } = usePrint()
 </script>

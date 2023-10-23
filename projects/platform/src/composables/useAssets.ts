@@ -3,9 +3,10 @@ import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import useNavigation from '@/composables/useNavigation'
 import { U3M_STATUS, NOTIFY_TYPE } from '@/utils/constants'
-import { printA4Card, printGeneralLabel } from '@/utils/print'
+import { printGeneralLabel } from '@/utils/print'
 import type { Material, OgType } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
+import usePrint from '@/composables/material/usePrint'
 
 export enum ASSETS_MATERIAL_FUNCTION {
   EDIT = 0,
@@ -26,6 +27,7 @@ export type AssetsFunctionOption = FunctionOption<
 >
 
 export default function useAssets() {
+  const print = usePrint()
   const toMaterial = (m: Material | Material[]) => (Array.isArray(m) ? m[0] : m)
   const toMaterialList = (m: Material | Material[]) =>
     Array.isArray(m) ? m : [m]
@@ -294,7 +296,7 @@ export default function useAssets() {
     icon: () => 'print',
     name: () => t('RR0062'),
     func: (m) => {
-      printA4Card(toMaterialList(m))
+      print.printA4Swatch(toMaterialList(m))
     },
   }
   const mergeMaterial: AssetsFunctionOption = {

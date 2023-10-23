@@ -6,12 +6,10 @@ import {
   type PaginationRes,
   type SearchAITag,
 } from '@frontier/platform-web-sdk'
-import useEnumText from '@/composables/useEnumText'
 import { getEnumTextValueMap } from '@/utils/mapping'
+import { SortByText } from '@/utils/enumText'
 
 export const useSearchStore = defineStore('search', () => {
-  const { SortByText } = useEnumText()
-
   const keyword = ref('')
   const setKeyword = (k: string) => (keyword.value = k)
   const tagList = ref<SearchAITag[]>([])

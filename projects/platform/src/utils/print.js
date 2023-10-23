@@ -6,7 +6,7 @@ import store from '@/store'
 import useMaterialOld from '@/composables/useMaterialOld'
 import { SIDE_TYPE } from '@/utils/constants'
 import i18n from '@frontier/i18n'
-import imgPdfOutLine from '@/assets/images/pdf-outline.png'
+import imgPdfOutLine from '@/assets/images/pdf_outline.png'
 import { computed } from 'vue'
 
 const t = i18n.global.t

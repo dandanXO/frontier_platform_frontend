@@ -74,7 +74,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
           p(class="text-body2/1.6 font-bold text-grey-900") {{ $t('RR0134') }}
           f-button-label(@click="openModalMaterialEditSimple('public-price')") {{ $t('UU0027') }}
         div(class="grid gap-3")
-          p(class="text-body2 !break-all") {{ getPriceInfo(material.priceInfo)?.pricing.name }}： {{ getPriceInfo(material.priceInfo)?.pricing.value }}
+          p(class="text-body2 !break-all") {{ pricing.name }}： {{ pricing.value }}
       div
         div(class="flex justify-between pb-2 border-grey-250 border-b mb-2")
           p(class="text-body2/1.6 font-bold text-grey-900") {{ $t('RR0133') }}
@@ -99,15 +99,14 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
           v-if="made2flowSubscribed && carbonEmissionInfo.carbonEmission"
           class="flex items-center gap-x-4 pt-3"
         )
-          div(class="flex items-center gap-x-1")
-            f-svg-icon(iconName="co2" size="20")
-            p(class="text-body2 text-grey-900") {{ carbonEmissionInfo.carbonEmission.co2.value }} {{ carbonEmissionInfo.carbonEmission.co2.unitShort }}
-          div(class="flex items-center gap-x-1")
-            f-svg-icon(iconName="water" size="20")
-            p(class="text-body2 text-grey-900") {{ carbonEmissionInfo.carbonEmission.water.value }} {{ carbonEmissionInfo.carbonEmission.water.unitShort }}
-          div(class="flex items-center gap-x-1")
-            f-svg-icon(iconName="land" size="20")
-            p(class="text-body2 text-grey-900") {{ carbonEmissionInfo.carbonEmission.land.value }} {{ carbonEmissionInfo.carbonEmission.land.unitShort }}
+          div(
+            v-for="property in carbonEmissionInfo.carbonEmission"
+            :key="property.title"
+            class="flex items-center gap-x-2"
+          )
+            f-svg-icon(:iconName="property.icon" size="20")
+            p(v-if="property.value" class="text-body2 text-grey-900") {{ property.value }} {{ property.unitShort }}
+            hr(v-else class="w-4 border-grey-250")
         div(
           v-else
           class="bg-no-repeat"
@@ -139,6 +138,7 @@ import {
 } from '@/utils/constants'
 import listViewMask from '@/assets/images/list_view_mask.png'
 import BlockSpecification from '@/components/common/material/detail/internal/BlockSpecification.vue'
+import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 
 const props = defineProps<{
   selectedList: Material[]
@@ -163,7 +163,6 @@ const {
   switchSideType,
   sideOptionList,
   specificationInfo,
-  getPriceInfo,
   carbonEmissionInfo,
   scanImageStatus,
 } = useMaterial(ref(props.material))
@@ -174,6 +173,9 @@ const publicTagList = computed(() => {
 })
 const privateTagList = computed(() => {
   return props.material.internalInfo?.tagList.join(', ') ?? ''
+})
+const pricing = computed(() => {
+  return materialInfoForDisplay.priceInfo(props.material.priceInfo).pricing
 })
 
 const SIDE_COVER = 0

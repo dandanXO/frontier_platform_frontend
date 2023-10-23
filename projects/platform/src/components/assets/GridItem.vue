@@ -50,9 +50,7 @@ import type {
   MaterialFaceSide,
 } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
-import { unitFormatter } from '@frontier/lib'
-import { LengthUnit } from '@frontier/platform-web-sdk'
-import useEnumText from '@/composables/useEnumText'
+import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 
 const props = defineProps<{
   material: Material
@@ -61,8 +59,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['update:selectedValue', 'click:option'])
-
-const { LengthUnitText, MaterialTypeText } = useEnumText()
 
 const store = useStore()
 const currentMaterialId = computed(
@@ -89,40 +85,31 @@ const materialInfo = computed(() => {
     mainSide = faceSide
   }
 
-  const { materialType, descriptionList, contentList, finishList } =
-    mainSide as MaterialFaceSide | MaterialBackSide
+  const { contentList, finishList, descriptionList } = mainSide as
+    | MaterialFaceSide
+    | MaterialBackSide
 
   const list = [
-    [
-      ...(isComposite
-        ? [`Composite`, MaterialTypeText[materialType]]
-        : [MaterialTypeText[materialType]]),
-      ...descriptionList.map(({ name }) => name),
-    ].join(', '),
+    materialInfoForDisplay.materialType(isComposite, {
+      face: faceSide?.materialType,
+      back: backSide?.materialType,
+    }).value + descriptionList.map(({ name }) => name).join(', '),
   ]
 
   if (contentList.length > 0) {
-    list.push(
-      contentList
-        .map(({ name, percentage }) => `${percentage}%${name}`)
-        .join(', ')
-    )
+    list.push(materialInfoForDisplay.contentList(contentList).value)
   }
 
   if (width) {
-    const { cuttable, full } = width
-    const unit =
-      width.unit === LengthUnit.INCH ? '"' : LengthUnitText[width.unit]
-
-    list.push(`${cuttable}/${full} ${unit}`)
+    list.push(materialInfoForDisplay.width(width).value)
   }
 
   if (weight) {
-    list.push(`${weight.value}${unitFormatter.weight(weight.unit)}`)
+    list.push(materialInfoForDisplay.weight(weight).value)
   }
 
   if (finishList.length > 0) {
-    list.push(finishList.map(({ name }) => name).join(', '))
+    list.push(materialInfoForDisplay.finishList(finishList).value)
   }
 
   return list

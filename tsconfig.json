@@ -22,7 +22,9 @@
       "vitest/globals",
       "@frontier/ui-component/components.d.ts",
       "@frontier/3d-viewer/components.d.ts",
-      "node"
+      "node",
+      "@types/qrcode",
+      "@types/dom-to-image"
     ],
   },
   "vueCompilerOptions": {
