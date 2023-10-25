@@ -276,7 +276,7 @@ const {
   addToWorkspace,
   createU3m,
   exportExcel,
-  printQRCode,
+  printLabel,
   printA4Swatch,
   deleteMaterial,
 } = useAssets()
@@ -286,7 +286,7 @@ const menuTree = computed<MenuTree>(() => {
     [editMaterial],
     [cloneTo, addToWorkspace],
     [createU3m, downloadU3m, exportExcel],
-    [printQRCode, printA4Swatch],
+    [printLabel, printA4Swatch],
     [deleteMaterial],
   ]
 

@@ -3,7 +3,6 @@ import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import useNavigation from '@/composables/useNavigation'
 import { U3M_STATUS, NOTIFY_TYPE } from '@/utils/constants'
-import { printGeneralLabel } from '@/utils/print'
 import type { Material, OgType } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
 import usePrint from '@/composables/material/usePrint'
@@ -284,11 +283,11 @@ export default function useAssets() {
       }
     },
   }
-  const printQRCode: AssetsFunctionOption = {
+  const printLabel: AssetsFunctionOption = {
     id: ASSETS_MATERIAL_FUNCTION.PRINT_QR_CODE,
     name: () => t('RR0061'),
     func: (m) => {
-      printGeneralLabel(toMaterialList(m))
+      print.printLabel(toMaterialList(m))
     },
   }
   const printA4Swatch: AssetsFunctionOption = {
@@ -398,7 +397,7 @@ export default function useAssets() {
     addToWorkspace,
     createU3m,
     exportExcel,
-    printQRCode,
+    printLabel,
     printA4Swatch,
     deleteMaterial,
     mergeMaterial,

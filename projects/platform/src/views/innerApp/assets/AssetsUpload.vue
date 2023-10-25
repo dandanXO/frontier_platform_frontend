@@ -82,6 +82,7 @@ f-scrollbar-container(class="w-full h-full")
           div(class="grid gap-3")
             div(
               v-for="option in alternativeUploadOptions"
+              :key="option.title"
               class="flex py-6 px-7.5 cursor-pointer border border-grey-250 rounded"
               :data-cy="option.testId"
               @click="option.action"
@@ -92,17 +93,18 @@ f-scrollbar-container(class="w-full h-full")
                 div(class="text-caption text-grey-600") {{ option.content }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import useNavigation from '@/composables/useNavigation'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { printBackSideLabel } from '@/utils/print'
+import usePrint from '@/composables/material/usePrint'
 
 const { t } = useI18n()
 const store = useStore()
 const { prefixPath, parsePath, goToAssets, goToAssetsMaterialCreate } =
   useNavigation()
+const { printBackSideLabel } = usePrint()
 const openModalSmartUpload = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-smart-upload',

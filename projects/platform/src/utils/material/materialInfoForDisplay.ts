@@ -51,7 +51,9 @@ const materialInfoForDisplay = {
   }),
   contentList: (contentList: MaterialSideAllOfContentList[]) => ({
     name: t('RR0021'),
-    value: contentList.map((content) => content.name).join(', '),
+    value: contentList
+      .map((content) => `${content.percentage}% ${content.name}`)
+      .join(', '),
   }),
   materialType: (
     isComposite: boolean,

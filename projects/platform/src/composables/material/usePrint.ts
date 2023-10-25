@@ -16,7 +16,12 @@ import { MaterialSideType } from '@frontier/platform-web-sdk'
 import frontierLogo from '@/assets/images/frontier_logo.png'
 import imgPdfOutLine from '@/assets/images/pdf_outline.png'
 
-const printPdf = async (pdf: JsPDF, imgDataUrlList: string[]) => {
+type DomGenerator = (item: {
+  sideType: MaterialSideType
+  material: Material
+}) => Promise<HTMLDivElement>
+
+const makePdf = async (pdf: JsPDF, imgDataUrlList: string[]) => {
   for (let i = 0; i < imgDataUrlList.length; i++) {
     pdf.addImage(
       imgDataUrlList[i],
@@ -35,6 +40,69 @@ const printPdf = async (pdf: JsPDF, imgDataUrlList: string[]) => {
   window.open(pdf.output('bloburl').toString())
 }
 
+const makeQrCode = async (
+  key: string,
+  containerHtmlId: string,
+  width: number
+) => {
+  const qrCodeContainer = document.getElementById(containerHtmlId)!
+  const qrcode = await QRCode.toCanvas(key, {
+    width,
+    margin: 0,
+  })
+  qrCodeContainer.appendChild(qrcode)
+}
+
+const getImageDataUrl = (node: Node, width: number, height: number) => {
+  const scale = 5
+  return domtoimage.toJpeg(node, {
+    width: width * scale,
+    height: height * scale,
+    style: {
+      transform: 'scale(' + scale + ')',
+      transformOrigin: 'top left',
+    },
+  })
+}
+
+const generate = async (
+  generator: DomGenerator,
+  materialList: Material[],
+  width: number,
+  height: number,
+  jsPDF: JsPDF
+) => {
+  const imgDataUrlList = []
+  for (const material of materialList) {
+    const { isDoubleSide, sideType } = material
+    const sideList = []
+
+    if (isDoubleSide) {
+      sideList.push({
+        sideType: MaterialSideType.FACE_SIDE,
+        material,
+      })
+      sideList.push({
+        sideType: MaterialSideType.BACK_SIDE,
+        material,
+      })
+    } else {
+      sideList.push({
+        sideType: sideType as MaterialSideType,
+        material,
+      })
+    }
+
+    for (const side of sideList) {
+      const pdfVirtualDom = await generator(side)
+      const imgDataUrl = await getImageDataUrl(pdfVirtualDom, width, height)
+      imgDataUrlList.push(imgDataUrl)
+      pdfVirtualDom.remove()
+    }
+  }
+  await makePdf(jsPDF, imgDataUrlList)
+}
+
 const usePrint = () => {
   const { t } = useI18n()
   const store = useStore()
@@ -46,10 +114,7 @@ const usePrint = () => {
   const printA4Swatch = async (materialList: Material[]) => {
     store.dispatch('helper/pushModalLoading')
 
-    const domGenerator = async (item: {
-      sideType: MaterialSideType
-      material: Material
-    }) => {
+    const domGenerator: DomGenerator = async (item) => {
       const { sideType, material } = item
       const {
         itemNo,
@@ -157,62 +222,145 @@ const usePrint = () => {
         infoContainer.appendChild(row)
       })
 
-      const qrCodeContainer = document.getElementById('qr-code-container')!
-      const qrcode = await QRCode.toCanvas(frontierNo, {
-        width: 60,
-        margin: 0,
-      })
-      qrCodeContainer.appendChild(qrcode)
+      await makeQrCode(frontierNo, 'qr-code-container', 60)
 
       return virtualDom
     }
-    const imgDataUrlList = []
-    for (const material of materialList) {
-      const { isDoubleSide, sideType } = material
-      const sideList = []
 
-      if (isDoubleSide) {
-        sideList.push({
-          sideType: MaterialSideType.FACE_SIDE,
-          material,
-        })
-        sideList.push({
-          sideType: MaterialSideType.BACK_SIDE,
-          material,
-        })
-      } else {
-        sideList.push({
-          sideType: sideType as MaterialSideType,
-          material,
-        })
-      }
-
-      for (const side of sideList) {
-        const pdfVirtualDom = await domGenerator(side)
-        const scale = 3
-        const A4_WIDTH = 594
-        const A4_HEIGHT = 842
-        const imgDataUrl = await domtoimage.toJpeg(pdfVirtualDom, {
-          width: A4_WIDTH * scale,
-          height: A4_HEIGHT * scale,
-          style: {
-            transform: 'scale(' + scale + ')',
-            transformOrigin: 'top left',
-          },
-        })
-        imgDataUrlList.push(imgDataUrl)
-        pdfVirtualDom.remove()
-      }
-    }
-    await printPdf(
-      new JsPDF({ unit: 'cm', format: 'a4', orientation: 'p' }),
-      imgDataUrlList
+    const A4_WIDTH = 594
+    const A4_HEIGHT = 842
+    await generate(
+      domGenerator,
+      materialList,
+      A4_WIDTH,
+      A4_HEIGHT,
+      new JsPDF({ unit: 'cm', format: 'a4', orientation: 'p' })
     )
+
+    store.dispatch('helper/closeModalLoading')
+  }
+
+  const printLabel = async (materialList: Material[]) => {
+    store.dispatch('helper/pushModalLoading')
+
+    const domGenerator = async (item: {
+      sideType: MaterialSideType
+      material: Material
+    }) => {
+      const { sideType, material } = item
+      const { itemNo, isComposite, faceSide, backSide, weight } = material
+      const mainSide: MaterialFaceSide | MaterialBackSide =
+        sideType === MaterialSideType.FACE_SIDE ? faceSide! : backSide!
+      const {
+        frontierNo,
+        descriptionList,
+        contentList,
+        finishList,
+        construction,
+        materialType,
+      } = mainSide
+
+      const virtualDom = document.createElement('div')
+      virtualDom.classList.add('w-0', 'h-0', 'overflow-hidden')
+      virtualDom.innerHTML = `
+        <div class="w-56.5 h-[113px] p-1.5 bg-grey-0 flex items-start gap-x-2">
+          <img src="${logo.value}" class="w-4 h-4 rounded flex-shrink-0" />
+          <div class="pt-0.5 flex items-center">
+            <div class="pt-3">
+              <div id="qr-code-container"></div>
+              <p class="text-[7px] pt-2 text-grey-900 text-center">${
+                sideType === MaterialSideType.FACE_SIDE
+                  ? t('DD0046')
+                  : t('DD0047')
+              }</p>
+              <p class="text-[7px] text-grey-600 text-center">${frontierNo}</p>
+            </div>
+            <div class="w-px h-20.5 mx-3 bg-grey-250"></div>
+            <div id="info-container" class="w-full text-grey-900 grid gap-y-[1px]">
+              <p class="text-[8px] font-bold pb-[3px]">${itemNo}</p>
+          </div>
+        </div>
+      `
+      document.body.appendChild(virtualDom)
+      await makeQrCode(frontierNo, 'qr-code-container', 50)
+
+      const infoContainer = document.getElementById('info-container')!
+      const constructionList =
+        materialInfoForDisplay.construction(materialType, construction ?? {})
+          .value ?? []
+      const infoList = [
+        materialInfoForDisplay.materialType(isComposite, {
+          face: faceSide?.materialType,
+          back: backSide?.materialType,
+        }).value + descriptionList.map(({ name }) => name).join(', '),
+        ...Object.values(constructionList).map((item) => String(item.value)),
+        materialInfoForDisplay.contentList(contentList).value,
+        materialInfoForDisplay.weight(weight).value,
+        materialInfoForDisplay.finishList(finishList).value,
+      ]
+
+      infoList.forEach((value) => {
+        const row = document.createElement('p')
+        row.classList.add('line-clamp-1')
+        row.innerHTML = `
+          <p class="flex-grow text-[7px] line-clamp-1">${value}</p>
+        `
+        infoContainer.appendChild(row)
+      })
+
+      return virtualDom
+    }
+    const LABEL_WIDTH = 226
+    const LABEL_HEIGHT = 113
+    await generate(
+      domGenerator,
+      materialList,
+      LABEL_WIDTH,
+      LABEL_HEIGHT,
+      new JsPDF({ unit: 'cm', format: [4, 8], orientation: 'l' })
+    )
+
+    store.dispatch('helper/closeModalLoading')
+  }
+
+  const printBackSideLabel = async () => {
+    store.dispatch('helper/pushModalLoading')
+
+    const LABEL_WIDTH = 452
+    const LABEL_HEIGHT = 226
+    const pdfVirtualDom = document.createElement('div')
+    pdfVirtualDom.classList.add('w-0', 'h-0', 'overflow-hidden')
+    pdfVirtualDom.innerHTML = `
+    <div class="relative flex items-center bg-grey-0 px-8 py-8" style="width: ${LABEL_WIDTH}px; height: ${LABEL_HEIGHT}px">
+      <div id="qr-code-container" class="mr-5.5"></div>
+      <div class="flex flex-col">
+        <span class="mb-2 text-grey-900 font-bold text-h5">${t('DD0051')}</span>
+        <span class="text-body2 leading-1.5">${t('DD0052')}</span>
+      </div>
+      <div class="absolute bottom-2.5 right-2.5 text-grey-250 font-bold">${t(
+        'DD0053'
+      )}</div>
+    </div>
+  `
+    document.body.appendChild(pdfVirtualDom)
+    await makeQrCode('Scan Back Side', 'qr-code-container', 100)
+    const imgDataUrl = await getImageDataUrl(
+      pdfVirtualDom,
+      LABEL_WIDTH,
+      LABEL_HEIGHT
+    )
+    pdfVirtualDom.remove()
+    await makePdf(new JsPDF({ unit: 'cm', format: [4, 8], orientation: 'l' }), [
+      imgDataUrl,
+    ])
+
     store.dispatch('helper/closeModalLoading')
   }
 
   return {
     printA4Swatch,
+    printLabel,
+    printBackSideLabel,
   }
 }
 

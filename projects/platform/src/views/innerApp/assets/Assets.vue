@@ -145,7 +145,7 @@ const {
   cloneTo,
   addToWorkspace,
   exportExcel,
-  printQRCode,
+  printLabel,
   mergeMaterial,
   deleteMaterial,
 } = useAssets()
@@ -154,7 +154,7 @@ const optionList = computed(() => [
   [editMaterial],
   [cloneTo, addToWorkspace],
   [createU3m, downloadU3m, exportExcel],
-  [printQRCode, printA4Swatch],
+  [printLabel, printA4Swatch],
   [deleteMaterial],
 ])
 
@@ -162,7 +162,7 @@ const optionMultiSelect = computed(() => [
   cloneTo,
   addToWorkspace,
   printA4Swatch,
-  printQRCode,
+  printLabel,
   downloadU3m,
   exportExcel,
   mergeMaterial,

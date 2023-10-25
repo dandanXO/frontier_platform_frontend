@@ -25,7 +25,7 @@ modal-behavior(
         template(#RR0061)
           div(
             class="inline-flex items-center text-cyan-400 cursor-pointer"
-            @click="printGeneralLabel(materialList)"
+            @click="printLabel(materialList)"
           ) {{ $t('RR0061') }}
             f-svg-icon(iconName="open_in_new" size="15")
   div(class="w-230")
@@ -67,7 +67,6 @@ modal-behavior(
 
 <script setup lang="ts">
 import useNavigation from '@/composables/useNavigation'
-import { printGeneralLabel } from '@/utils/print'
 import usePrint from '@/composables/material/usePrint'
 import type { Material } from '@frontier/platform-web-sdk'
 
@@ -84,5 +83,5 @@ defineProps<{
 
 const { goToAssets } = useNavigation()
 
-const { printA4Swatch } = usePrint()
+const { printA4Swatch, printLabel } = usePrint()
 </script>
