@@ -15,16 +15,21 @@ import EditorLoader from './EditorLoader.vue'
 import MobileModelControlBar from './MobileModelControlBar.vue'
 import MobileTextureControlBar from './MobileTextureControlBar.vue'
 
-const props = defineProps<{
-  u3mPath: string
-  dpi: number
-  baseImgUrl: string
-  normalImgUrl: string
-  dispImgUrl: string
-  roughImgUrl: string
-  showCustomModels?: boolean
-  onClose?: () => void
-}>()
+const props = withDefaults(
+  defineProps<{
+    u3mPath: string
+    dpi: number
+    baseImgUrl: string
+    normalImgUrl: string
+    dispImgUrl: string
+    roughImgUrl: string
+    showCustomModels?: boolean
+    onClose?: () => void
+  }>(),
+  {
+    showCustomModels: false,
+  }
+)
 
 const emit = defineEmits<{ (e: 'close'): void }>()
 
@@ -66,7 +71,7 @@ const {
   props.normalImgUrl,
   props.roughImgUrl,
   props.dispImgUrl,
-  props.showCustomModels || false
+  props.showCustomModels
 )
 const { takeScreenshot } = useScreenshot(camera, canvas, modelObject)
 
@@ -76,7 +81,7 @@ const handleDisplayModeChange = (v: number) => (displayMode.value = v)
 const handleTextureClick = (v: number) => (textureType.value = v)
 const handleClose = () => {
   emit('close')
-  props.onClose()
+  props.onClose?.()
 }
 
 useKeyboard(

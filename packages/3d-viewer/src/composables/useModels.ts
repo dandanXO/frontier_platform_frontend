@@ -7,6 +7,10 @@ import MODELS from '../constants/models'
 import useColors from './useColors'
 import croppedTopModel from '../assets/models/croppedTop/scene.glb'
 import croppedTopCoverImg from '../assets/models/croppedTop/cover.png'
+import mansShortsModel from '../assets/models/mansShorts/scene.glb'
+import mansShortsCoverImg from '../assets/models/mansShorts/cover.png'
+import tightModel from '../assets/models/tight/scene.glb'
+import tightCoverImg from '../assets/models/tight/cover.png'
 import type { Ref } from 'vue'
 import type { U3M } from './useU3M'
 
@@ -124,6 +128,18 @@ const orgCustomModels = [
     name: 'croppedTop',
     filePath: croppedTopModel,
     coverImg: croppedTopCoverImg,
+    size: 100,
+  },
+  {
+    name: 'mansShorts',
+    filePath: mansShortsModel,
+    coverImg: mansShortsCoverImg,
+    size: 100,
+  },
+  {
+    name: 'tight',
+    filePath: tightModel,
+    coverImg: tightCoverImg,
     size: 100,
   },
 ]
