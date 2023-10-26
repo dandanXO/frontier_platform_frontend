@@ -1,15 +1,21 @@
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { OgType, type Material } from '@frontier/platform-web-sdk'
-import type { DigitalThreadBase } from '@frontier/platform-web-sdk'
+import { OgType } from '@frontier/platform-web-sdk'
+import type {
+  DigitalThreadBase,
+  Organization,
+  Material,
+} from '@frontier/platform-web-sdk'
 import useNavigation from '@/composables/useNavigation'
-import useCurrentUnit from '@/composables/useCurrentUnit'
 
 const useGotoMaterialDetail = () => {
   const store = useStore()
   const router = useRouter()
   const { parsePath } = useNavigation()
-  const { organization } = useCurrentUnit()
+  const organization = computed<Organization>(
+    () => store.getters['organization/organization']
+  )
 
   return (
     material: Material,

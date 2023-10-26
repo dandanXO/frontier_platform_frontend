@@ -2,16 +2,15 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { defineStore } from 'pinia'
-import useCurrentUnit from '@/composables/useCurrentUnit'
 import digitalThreadApi from '@/apis/digitalThread'
 import { useNotifyStore } from '@/stores/notify'
 import type {
   ChangeDigitalThreadWorkflowStageRequest,
   DigitalThreadBase,
-  GetDigitalThreadWorkflowStageOptionsRequest,
 } from '@frontier/platform-web-sdk'
 import { getBoldInterpolationMessageComponent } from '@/utils/render'
 import useThreadBoardStore from '@/stores/threadBoard'
+import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 
 interface WorkflowStageOption {
   workflowStageId: number
@@ -25,8 +24,9 @@ const useDigitalThreadWorkflowStageStore = defineStore(
     const { t } = useI18n()
     const store = useStore()
     const notify = useNotifyStore()
-    const { unit } = useCurrentUnit()
+    const orgId = computed(() => store.getters['organization/orgId'])
     const threadBoardStore = useThreadBoardStore()
+    const ogBaseDigitalThreadApi = useOgBaseApiWrapper(digitalThreadApi)
 
     const digitalThread = computed(
       () => store.getters['sticker/digitalThread'] as DigitalThreadBase
@@ -34,14 +34,9 @@ const useDigitalThreadWorkflowStageStore = defineStore(
     const workflowStageOptionList = ref<WorkflowStageOption[]>([])
 
     const getWorkflowStageOptionList = async () => {
-      const req: GetDigitalThreadWorkflowStageOptionsRequest = {
-        orgId: unit.value.orgId,
-        ogId: unit.value.ogId,
-        ogType: unit.value.ogType,
-      }
-      const res = await digitalThreadApi.getDigitalThreadWorkflowStageOptions(
-        req
-      )
+      const res = await ogBaseDigitalThreadApi(
+        digitalThreadApi.getDigitalThreadWorkflowStageOptions
+      )()
       workflowStageOptionList.value = res.data.result!.workflowStageList.map(
         (w) => {
           if (w.isDefault) {
@@ -57,7 +52,7 @@ const useDigitalThreadWorkflowStageStore = defineStore(
 
     const changeDigitalThreadWorkflow = async (workflowStageId: number) => {
       const req: ChangeDigitalThreadWorkflowStageRequest = {
-        orgId: unit.value.orgId,
+        orgId: orgId.value,
         digitalThreadSideId: digitalThread.value.digitalThreadSideId,
         workflowStageId,
       }

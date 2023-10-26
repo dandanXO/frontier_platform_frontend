@@ -9,8 +9,8 @@ div(
       class="flex flex-row gap-2 items-center px-2 h-6"
       :style="{ background: '#0A6665', 'box-shadow': 'inset 0px 1px 3px rgba(0, 0, 0, 0.25)', 'border-radius': '21px' }"
     )
-      div(class="w-3 h-3 rounded-sm" :style="{ background: unit.labelColor }")
-      span(class="text-body2 text-grey-100") {{ unit.ogName }}
+      div(class="w-3 h-3 rounded-sm" :style="{ background: ogLabelColor }")
+      span(class="text-body2 text-grey-100") {{ ogName }}
     f-tooltip-standard(
       :tooltipMessage="$t('TT0173')"
       boundaryReference="search-table-header"
@@ -29,7 +29,7 @@ import { useStore } from 'vuex'
 import useCurrentUnit from '@/composables/useCurrentUnit'
 import BookmarkBar from '@/components/threadBoard/bookmark/BookmarkBar.vue'
 
-const { unit } = useCurrentUnit()
+const { ogName, ogLabelColor } = useCurrentUnit()
 const store = useStore()
 </script>
 

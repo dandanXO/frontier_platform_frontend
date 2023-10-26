@@ -141,7 +141,7 @@ const props = withDefaults(
 const store = useStore()
 const threadBoardStore = useThreadBoardStore()
 const { t } = useI18n()
-const { unit } = useCurrentUnit()
+const { ogName } = useCurrentUnit()
 
 const workflowStageName = computed(() => props.workflowStage.workflowStageName)
 const { isEditingName, currentName, isNameValid, startEdit, doneEdit } =
@@ -229,7 +229,7 @@ const menuTree = computed(() => ({
             tooltipMessage: disabled ? t('TT0155') : null,
             tooltipContentComponent: !disabled
               ? getBoldInterpolationMessageComponent('TT0158', {
-                  currentThreadBoard: unit.value.ogName,
+                  currentThreadBoard: ogName.value,
                 }).value
               : null,
             disabled,

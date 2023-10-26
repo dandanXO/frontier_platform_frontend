@@ -1,21 +1,13 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import {
-  OgType,
-  type Organization,
-  type Group,
-  type GroupUser,
-  type OrgUser,
+import type {
+  Organization,
+  Group,
+  GroupUser,
+  OrgUser,
 } from '@frontier/platform-web-sdk'
 import { ROLE_ID } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
-
-export interface Unit {
-  orgId: number
-  ogType: OgType
-  ogId: number
-  ogName: string
-}
 
 export type NonNullableFields<T> = {
   [P in keyof T]: NonNullable<T[P]>
@@ -35,29 +27,30 @@ export type ActiveGroupUser = NonNullableField<
 
 const useCurrentUnit = () => {
   const store = useStore()
-  const { isGroup, ogType } = useNavigation()
+  const { isGroup, ogId, ogType } = useNavigation()
 
   const organization = computed<Organization>(
     () => store.getters['organization/organization']
   )
-  const storeGroup = computed<Group>(() => store.getters['group/group'])
+  const group = computed<Group>(() => store.getters['group/group'])
 
-  const unit = computed(() => {
-    return {
-      orgId: organization.value.orgId,
-      ogType: ogType.value,
-      ogId: isGroup.value ? storeGroup.value.groupId : organization.value.orgId,
-      labelColor: isGroup.value
-        ? storeGroup.value.labelColor
-        : organization.value.labelColor,
-      ogName: isGroup.value
-        ? storeGroup.value.groupName
-        : organization.value.orgName,
-      memberList: isGroup.value
-        ? storeGroup.value.memberList
-        : organization.value.memberList,
-      activeMemberList: isGroup.value
-        ? (storeGroup.value.memberList.concat(
+  const unit = computed(() =>
+    isGroup.value ? group.value : organization.value
+  )
+
+  return {
+    ogId,
+    ogType,
+    ogName: computed(() =>
+      isGroup.value ? group.value.groupName : organization.value.orgName
+    ),
+    ogLabelColor: computed(() => unit.value.labelColor),
+    ogUploadMaterialEmail: computed(() => unit.value.uploadMaterialEmail),
+    ogNodeId: computed(() => unit.value.nodeId),
+    ogMemberList: computed(() => unit.value.memberList),
+    ogActiveMemberList: computed(() =>
+      isGroup.value
+        ? (group.value.memberList.concat(
             organization.value.memberList
               .filter(
                 (member) =>
@@ -73,24 +66,8 @@ const useCurrentUnit = () => {
           ) as ActiveGroupUser[])
         : (organization.value.memberList.filter((m) => {
             return !m.notificationList
-          }) as ActiveOrgUser[]),
-    }
-  })
-  const group = computed(() => (isGroup.value ? storeGroup.value : null))
-  const orgUser = computed(() => store.getters['organization/orgUser/orgUser'])
-
-  const defaultWorkspaceNodeId = computed(() =>
-    group.value ? group.value.nodeId : organization.value.nodeId
-  )
-
-  return {
-    isGroup,
-    ogType,
-    unit,
-    organization,
-    group,
-    orgUser,
-    defaultWorkspaceNodeId,
+          }) as ActiveOrgUser[])
+    ),
   }
 }
 

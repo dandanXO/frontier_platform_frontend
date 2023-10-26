@@ -10872,7 +10872,7 @@ export interface MaterialColorInfoUpdatePayloadCustomPropertyListInner {
  * 規格資訊 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
  * @export
  */
-export type MaterialConstruction = MaterialKnitConstruction | MaterialLeatherConstruction | MaterialNonWovenConstruction | MaterialTrimConstruction | MaterialWovenConstruction;
+export type MaterialConstruction = MaterialKnitConstruction | MaterialLeatherConstruction | MaterialNonWovenConstruction | MaterialOthersConstruction | MaterialTrimConstruction | MaterialWovenConstruction;
 
 /**
  * 封面圖
@@ -12381,6 +12381,19 @@ export interface MaterialOptionsCodeSeasonListDefaultInner {
 /**
  * 
  * @export
+ * @interface MaterialOthersConstruction
+ */
+export interface MaterialOthersConstruction {
+    /**
+     * 是否公開規格資訊
+     * @type {boolean}
+     * @memberof MaterialOthersConstruction
+     */
+    'isPublic': boolean;
+}
+/**
+ * 
+ * @export
  * @interface MaterialPatternCustomPropertyBase
  */
 export interface MaterialPatternCustomPropertyBase {
@@ -12891,7 +12904,7 @@ export interface MaterialSeasonInfoCreate {
      */
     'season': MaterialSeasonInfoCreateSeason | null;
     /**
-     * 
+     * 年份
      * @type {number}
      * @memberof MaterialSeasonInfoCreate
      */
@@ -12910,13 +12923,13 @@ export interface MaterialSeasonInfoCreate {
  */
 export interface MaterialSeasonInfoCreateSeason {
     /**
-     * 
+     * 季節代碼ID
      * @type {number}
      * @memberof MaterialSeasonInfoCreateSeason
      */
     'seasonId': number | null;
     /**
-     * 
+     * 季節名稱
      * @type {string}
      * @memberof MaterialSeasonInfoCreateSeason
      */
@@ -13497,7 +13510,7 @@ export interface MaterialSideCreateAllOf {
  */
 export interface MaterialSideCreateAllOfContentList {
     /**
-     * 成分代碼ID user 新增的 contentId 為 null 
+     * 成分代碼ID user 新增新的Content的時候 contentId 為 null 
      * @type {number}
      * @memberof MaterialSideCreateAllOfContentList
      */
@@ -25060,11 +25073,13 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetsMaterial: async (getAssetsMaterialRequest?: GetAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAssetsMaterial: async (getAssetsMaterialRequest: GetAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getAssetsMaterialRequest' is not null or undefined
+            assertParamExists('getAssetsMaterial', 'getAssetsMaterialRequest', getAssetsMaterialRequest)
             const localVarPath = `/assets/material/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25991,11 +26006,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+        async getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetsMaterial(getAssetsMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26342,11 +26357,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+        getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26694,12 +26709,12 @@ export class AssetsApi extends BaseAPI {
     /**
      * 
      * @summary 取得單一布料資料
-     * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+     * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: AxiosRequestConfig) {
+    public getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 

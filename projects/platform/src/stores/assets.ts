@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import {
-  type Material,
-  type PaginationReq,
-  type Search,
-  type AssetsFilter,
+import type {
+  Material,
+  PaginationReq,
+  Search,
+  AssetsFilter,
 } from '@frontier/platform-web-sdk'
 import assetsApi from '@/apis/assets'
 import { useSearchStore } from '@/stores/search'

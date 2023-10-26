@@ -10,10 +10,8 @@ import {
   type FolderBookmark,
   type OrgBookmark,
   type OrgBookmarkAllOfOrg,
-  type SaveThreadBoardBookmarkListRequest,
 } from '@frontier/platform-web-sdk'
 import { NOTIFY_TYPE } from '@frontier/constants'
-import useCurrentUnit from '@/composables/useCurrentUnit'
 import threadBoardApi from '@/apis/threadBoard'
 import { processBookmarkByType } from '@/utils/bookmark'
 import type {
@@ -25,14 +23,15 @@ import { isCaseInsensitiveMatch } from '@/utils/string'
 import type { MenuBlock, MenuItem, MenuTree } from '@frontier/ui-component'
 import { useNotifyStore } from '@/stores/notify'
 import useNameEditor from '@/composables/useNameEditor'
+import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 
 const useBookmarkManagerStore = defineStore(
   'threadBoard/bookmarkManager',
   () => {
     const { t } = useI18n()
-    const { unit } = useCurrentUnit()
     const store = useStore()
     const notify = useNotifyStore()
+    const ogBaseThreadBoardApi = useOgBaseApiWrapper(threadBoardApi)
     const threadBoardStore = useThreadBoardStore()
 
     const { bookmarkList, contactOrgList } = storeToRefs(threadBoardStore)
@@ -47,12 +46,6 @@ const useBookmarkManagerStore = defineStore(
       BookmarkManagerBookmarkId | 'bookmarkBar' | null
     >(null)
     const editingNameBookmarkId = ref<BookmarkManagerBookmarkId | null>(null)
-
-    const baseReq = computed(() => ({
-      orgId: unit.value.orgId,
-      ogType: unit.value.ogType,
-      ogId: unit.value.ogId,
-    }))
 
     const isDirty = computed(() => {
       if (!bookmarkList.value || !bookmarkBarBookmarkList.value) {
@@ -607,11 +600,9 @@ const useBookmarkManagerStore = defineStore(
         }
       })
 
-      const req: SaveThreadBoardBookmarkListRequest = {
-        ...baseReq.value,
+      await ogBaseThreadBoardApi(threadBoardApi.saveThreadBoardBookmarkList)({
         bookmarkList,
-      }
-      await threadBoardApi.saveThreadBoardBookmarkList(req)
+      })
       threadBoardStore.fetchBookmarkList()
 
       if (!currentBookmark.value) {

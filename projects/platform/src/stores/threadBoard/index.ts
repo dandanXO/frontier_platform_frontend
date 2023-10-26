@@ -11,21 +11,15 @@ import {
   BookmarkType,
   type ThreadBoardQuery,
   type WorkflowStage,
-  type GetThreadBoardRequest,
   type ThreadBoardQueryFilter,
   type DigitalThreadBase,
-  type MoveWorkflowStageRequest,
-  type HideWorkflowStageRequest,
   type CheckCanDeleteWorkflowStageRequest,
-  type ReadAllUnreadDigitalThreadRequest,
-  type CreateWorkflowStageRequest,
   type RenameWorkflowStageRequest,
-  type MoveWorkflowStageAllDigitalThreadRequest,
-  type MoveWorkflowStageDigitalThreadRequest,
   type GetThreadBoardRequestBookmarkFilter,
   type OrgBookmark,
   type FolderBookmark,
-  type MoveBookmarkRequest,
+  type Organization,
+  type OrgUser,
 } from '@frontier/platform-web-sdk'
 import threadBoardApi from '@/apis/threadBoard'
 import stickerApi from '@/apis/sticker.js'
@@ -41,6 +35,7 @@ import type {
   WorkflowStageMoveAllThreadsPayload,
   CreatingGhostWorkflowStage,
 } from '@/types'
+import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 
 const defaultFilter = (): ThreadBoardQueryFilter => ({
   createdBy: {
@@ -66,12 +61,22 @@ const defaultThreadBoardQuery = (): ThreadBoardQuery => ({
 
 const useThreadBoardStore = defineStore('threadBoard', () => {
   const { t } = useI18n()
-  const { unit, organization, orgUser } = useCurrentUnit()
-  const notify = useNotifyStore()
-  const gotoMaterialDetail = useGotoMaterialDetail()
   const store = useStore()
-  const permissionList = usePermission()
+  const notify = useNotifyStore()
+  const ogBaseThreadBoardApi = useOgBaseApiWrapper(threadBoardApi)
+  const { ogActiveMemberList } = useCurrentUnit()
+  const gotoMaterialDetail = useGotoMaterialDetail()
   const { gotoThreadBoard } = useNavigation()
+  const organization = computed<Organization>(
+    () => store.getters['organization/organization']
+  )
+  const orgUser = computed<OrgUser>(
+    () => store.getters['organization/orgUser/orgUser']
+  )
+  const orgId = computed<number>(
+    () => store.getters['organization/orgId'] as number
+  )
+  const permissionList = usePermission()
 
   const fetchThreadBoardAbortController = ref<AbortController | null>(null)
   const isActive = ref(false)
@@ -210,7 +215,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   }))
 
   const memberListMenu = computed(() => {
-    return unit.value.activeMemberList.map((m) => {
+    return ogActiveMemberList.value.map((m) => {
       const checked = threadBoardQuery.filter.participantUserIdList.includes(
         m.userId
       )
@@ -441,12 +446,6 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     }
   })
 
-  const baseReq = computed(() => ({
-    orgId: unit.value.orgId,
-    ogType: unit.value.ogType,
-    ogId: unit.value.ogId,
-  }))
-
   const setLoading = (v: boolean) => (loading.value = v)
 
   const getWorkflowStageById = (id: number) => {
@@ -542,16 +541,13 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       fetchThreadBoardAbortController.value = null
     }
 
-    const threadBoardReq: GetThreadBoardRequest = {
-      ...baseReq.value,
-      threadBoardQuery: threadBoardQuery,
-      bookmarkFilter: bookmarkFilter.value,
-    }
-
     fetchThreadBoardAbortController.value = new AbortController()
     try {
-      const res = await threadBoardApi.getThreadBoard(threadBoardReq, {
+      const res = await ogBaseThreadBoardApi(threadBoardApi.getThreadBoard, {
         signal: fetchThreadBoardAbortController.value.signal,
+      })({
+        threadBoardQuery,
+        bookmarkFilter: bookmarkFilter.value,
       })
       rawWorkflowStageList.value =
         res.data.result!.threadBoard.workflowStageList
@@ -591,14 +587,6 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       throw new Error('workflowStageList undefined')
     }
 
-    const req: CreateWorkflowStageRequest = {
-      ...baseReq.value,
-      workflowStageName: creatingWorkflowStageName.value || '',
-      digitalThreadSideIdList: creatingWorkflowStageThreadList.value.map(
-        (t) => t.digitalThreadSideId
-      ),
-    }
-
     creatingGhostWorkflowStage.value = {
       workflowStageId: 'creatingWorkflowStage',
       workflowStageName: creatingWorkflowStageName.value || '',
@@ -615,10 +603,14 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
 
     setLoading(true)
     try {
-      await threadBoardApi.createWorkflowStage(req)
+      await ogBaseThreadBoardApi(threadBoardApi.createWorkflowStage)({
+        workflowStageName: creatingWorkflowStageName.value || '',
+        digitalThreadSideIdList: creatingWorkflowStageThreadList.value.map(
+          (t) => t.digitalThreadSideId
+        ),
+      })
       await fetchThreadBoard()
       notify.showNotifySnackbar({
-        isShowSnackbar: true,
         messageText: t('WW0129'),
       })
     } finally {
@@ -641,7 +633,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     workflowStageList.value[targetIndex].workflowStageName = v.workflowStageName
 
     const req: RenameWorkflowStageRequest = {
-      orgId: baseReq.value.orgId,
+      orgId: orgId.value,
       workflowStageId: v.workflowStageId,
       workflowStageName: v.workflowStageName,
     }
@@ -649,7 +641,6 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     fetchThreadBoard()
 
     notify.showNotifySnackbar({
-      isShowSnackbar: true,
       messageText: t('WW0130'),
     })
   }
@@ -724,12 +715,14 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   }
 
   const getContactOrgList = async () => {
-    const res = await threadBoardApi.getContactOrgList(baseReq.value)
+    const res = await ogBaseThreadBoardApi(threadBoardApi.getContactOrgList)()
     contactOrgList.value = res.data.result!.orgList!
   }
 
   const fetchBookmarkList = async () => {
-    const res = await threadBoardApi.getThreadBoardBookmarkList(baseReq.value)
+    const res = await ogBaseThreadBoardApi(
+      threadBoardApi.getThreadBoardBookmarkList
+    )()
     bookmarkList.value = res.data.result!.bookmarkList!
   }
 
@@ -744,8 +737,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       throw new Error('bookmarkId undefined')
     }
 
-    const res = await threadBoardApi.getThreadBoardQuery({
-      ...baseReq.value,
+    const res = await ogBaseThreadBoardApi(threadBoardApi.getThreadBoardQuery)({
       bookmarkId: bookmarkFilter.value.bookmarkId,
     })
     Object.assign(threadBoardQuery, res.data.result!.threadBoardQuery)
@@ -802,11 +794,9 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   }
 
   const markAsAllRead = async () => {
-    const req: ReadAllUnreadDigitalThreadRequest = {
-      ...baseReq.value,
+    await ogBaseThreadBoardApi(threadBoardApi.readAllUnreadDigitalThread)({
       digitalThreadSideIdList: unreadDigitalThreadSideIdList.value,
-    }
-    await threadBoardApi.readAllUnreadDigitalThread(req)
+    })
     threadBoardQuery.onlyShowUnread = false
     fetchThreadBoard()
   }
@@ -816,19 +806,16 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     oldIndex: number,
     newIndex: number
   ) => {
-    const req: MoveWorkflowStageRequest = {
-      ...baseReq.value,
+    await ogBaseThreadBoardApi(threadBoardApi.moveWorkflowStage)({
       workflowStageId,
       targetWorkflowStageId:
         draggableWorkflowStageList.value[
           newIndex === 0 ? newIndex + 1 : newIndex - 1
         ].workflowStageId,
       isMoveToBeforeTarget: newIndex === 0,
-    }
-    await threadBoardApi.moveWorkflowStage(req)
+    })
     fetchThreadBoard()
     notify.showNotifySnackbar({
-      isShowSnackbar: true,
       messageText: t('WW0131'),
     })
   }
@@ -856,13 +843,12 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
             isMoveToBeforeTarget,
           }
         : null
-    const req: MoveWorkflowStageDigitalThreadRequest = {
-      ...baseReq.value,
+
+    await ogBaseThreadBoardApi(threadBoardApi.moveWorkflowStageDigitalThread)({
       digitalThreadSideId,
       targetWorkflowStageId: toWorkflowStageId,
       customOrderPayload,
-    }
-    await threadBoardApi.moveWorkflowStageDigitalThread(req)
+    })
     fetchThreadBoard()
 
     if (fromWorkflowStageId === toWorkflowStageId) {
@@ -879,7 +865,6 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     }
 
     notify.showNotifySnackbar({
-      isShowSnackbar: true,
       messageComponent: getBoldInterpolationMessageComponent('WW0133', {
         lastStage: fromWorkflowStage.workflowStageName,
         newStage: toWorkflowStage.workflowStageName,
@@ -940,15 +925,15 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
 
     const sourceName = getWorkStageNameByIndex(sourceIndex)
     const targetName = getWorkStageNameByIndex(targetIndex)
-    const req: MoveWorkflowStageAllDigitalThreadRequest = {
-      ...baseReq.value,
+
+    await ogBaseThreadBoardApi(
+      threadBoardApi.moveWorkflowStageAllDigitalThread
+    )({
       workflowStageId: v.sourceWorkflowStageId,
       targetWorkflowStageId: v.targetWorkflowStageId,
-    }
-    await threadBoardApi.moveWorkflowStageAllDigitalThread(req)
+    })
     fetchThreadBoard()
     notify.showNotifySnackbar({
-      isShowSnackbar: true,
       messageComponent: getBoldInterpolationMessageComponent('WW0134', {
         lastStage: sourceName,
         newStage: targetName,
@@ -958,7 +943,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
 
   const deleteWorkflowStage = async (id: number) => {
     const req: CheckCanDeleteWorkflowStageRequest = {
-      orgId: baseReq.value.orgId,
+      orgId: orgId.value,
       workflowStageId: id,
     }
     try {
@@ -1022,7 +1007,6 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
         await threadBoardApi.deleteWorkflowStage(req)
         fetchThreadBoard()
         notify.showNotifySnackbar({
-          isShowSnackbar: true,
           messageText: t('WW0132'),
         })
       },
@@ -1043,16 +1027,14 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     }
 
     workflowStageList.value[targetIndex].isHidden = false
-    const req: HideWorkflowStageRequest = {
-      ...baseReq.value,
-      workflowStageId: id,
-    }
 
     if (hiddenWorkflowStageList.value.length === 0) {
       isHiddenWorkflowListExpanded.value = false
     }
 
-    await threadBoardApi.showWorkflowStage(req)
+    await ogBaseThreadBoardApi(threadBoardApi.showWorkflowStage)({
+      workflowStageId: id,
+    })
     fetchThreadBoard()
   }
 
@@ -1069,26 +1051,22 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     }
 
     workflowStageList.value[targetIndex].isHidden = true
-    const req: HideWorkflowStageRequest = {
-      ...baseReq.value,
-      workflowStageId: id,
-    }
 
-    await threadBoardApi.hideWorkflowStage(req)
+    await ogBaseThreadBoardApi(threadBoardApi.hideWorkflowStage)({
+      workflowStageId: id,
+    })
     fetchThreadBoard()
   }
 
   const addOrgBookmark = async (orgId: number) => {
-    await threadBoardApi.addOrgBookmark({
-      ...baseReq.value,
+    await ogBaseThreadBoardApi(threadBoardApi.addOrgBookmark)({
       bookmarkOrgId: orgId,
     })
     fetchBookmarkList()
   }
 
   const addFolderBookmark = async (folderName: string, orgIdList: number[]) => {
-    await threadBoardApi.addFolderBookmark({
-      ...baseReq.value,
+    await ogBaseThreadBoardApi(threadBoardApi.addFolderBookmark)({
       folderName,
       orgIdList,
     })
@@ -1100,8 +1078,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     folderName: string,
     orgIdList: number[]
   ) => {
-    await threadBoardApi.updateFolderBookmark({
-      ...baseReq.value,
+    await ogBaseThreadBoardApi(threadBoardApi.updateFolderBookmark)({
       bookmarkId,
       folderName,
       orgIdList,
@@ -1114,15 +1091,13 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       throw new Error('bookmarkList undefined')
     }
 
-    const req: MoveBookmarkRequest = {
-      ...baseReq.value,
+    await ogBaseThreadBoardApi(threadBoardApi.moveBookmark)({
       bookmarkId,
       targetBookmarkId:
         bookmarkList.value[newIndex === 0 ? newIndex + 1 : newIndex - 1]
           .bookmarkId,
       isMoveToBeforeTarget: newIndex === 0,
-    }
-    await threadBoardApi.moveBookmark(req)
+    })
     fetchBookmarkList()
   }
 
@@ -1151,8 +1126,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     bookmarkList.value = bookmarkList.value.filter(
       (b) => b.bookmarkId !== bookmarkId
     )
-    await threadBoardApi.removeBookmark({
-      ...baseReq.value,
+    await ogBaseThreadBoardApi(threadBoardApi.removeBookmark)({
       bookmarkId,
     })
     fetchBookmarkList()
@@ -1231,12 +1205,11 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       searchText.value =
         threadBoardQuery.search == null ? '' : threadBoardQuery.search
       await fetchThreadBoard(true)
-      const updateQueryReq = {
-        ...baseReq.value,
+
+      ogBaseThreadBoardApi(threadBoardApi.saveThreadBoardQuery)({
         threadBoardQuery,
         bookmarkId: bookmarkFilter.value.bookmarkId,
-      }
-      threadBoardApi.saveThreadBoardQuery(updateQueryReq)
+      })
 
       onFetchSuccess?.()
       isFirstThreadBoardFetch.value = false

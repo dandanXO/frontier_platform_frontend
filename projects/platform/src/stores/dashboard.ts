@@ -8,26 +8,18 @@ import type {
   DashboardEcoImpactorInformation,
 } from '@frontier/platform-web-sdk'
 import dashboardApi from '@/apis/dashboard'
-import useCurrentUnit from '@/composables/useCurrentUnit'
+import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 
 export const useDashboardStore = defineStore('dashboard', () => {
-  // Management - Dashboard Page
-  const { unit } = useCurrentUnit()
+  const ogBaseDashboardApi = useOgBaseApiWrapper(dashboardApi)
 
   const createCounts = ref<DashboardCreateCounts>()
   const textureCounts = ref<DashboardTextureCountsInner[]>()
   const fabricKeywordCounts = ref<DashboardFabricKeywordCounts>()
   const ecoImpactorInformation = ref<DashboardEcoImpactorInformation>()
 
-  const getBasedReq = () => ({
-    orgId: unit.value.orgId,
-    ogId: unit.value.ogId,
-    ogType: unit.value.ogType,
-  })
-
   const getDashboard = async () => {
-    const req = getBasedReq()
-    const { data } = await dashboardApi.getDashboard(req)
+    const { data } = await ogBaseDashboardApi(dashboardApi.getDashboard)()
 
     const dashboard = data.result as Dashboard
     createCounts.value = dashboard.createCounts

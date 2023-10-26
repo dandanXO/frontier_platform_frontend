@@ -16,15 +16,17 @@ export default function useNavigation() {
   const routeLocation = computed(() =>
     router.currentRoute.value.params.groupId ? 'group' : 'org'
   )
-  const isGroup = computed(() => routeLocation.value === 'group')
-  const ogType = computed(() => {
-    return isGroup.value ? OgType.GROUP : OgType.ORG
-  })
   const organization = computed<Organization>(
     () => store.getters['organization/organization']
   )
   const group = computed<Group>(() => store.getters['group/group'])
-
+  const isGroup = computed(() => routeLocation.value === 'group')
+  const ogId = computed(() =>
+    isGroup.value ? group.value.groupId : organization.value.orgId
+  )
+  const ogType = computed<OgType>(() =>
+    isGroup.value ? OgType.GROUP : OgType.ORG
+  )
   const isInInnerApp = computed(() =>
     route.matched.some((r) => r.name === 'InnerAppRoot')
   )
@@ -209,6 +211,7 @@ export default function useNavigation() {
   return {
     routeLocation,
     isGroup,
+    ogId,
     ogType,
     nextAfterSignIn,
     parsePath,

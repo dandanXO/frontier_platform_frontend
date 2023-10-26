@@ -1,12 +1,12 @@
 import { useRoute } from 'vue-router'
 import { FeatureType } from '@frontier/platform-web-sdk'
 import dashboardApi from '@/apis/dashboard'
-import useCurrentUnit from '@/composables/useCurrentUnit'
 import { U3M_FILE_TYPE, U3M_DOWNLOAD_PROP } from '@/utils/constants'
+import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 
 const useLogSender = () => {
+  const ogBaseDashboardApi = useOgBaseApiWrapper(dashboardApi)
   const route = useRoute()
-  const { unit } = useCurrentUnit()
 
   const getFeatureType = (): FeatureType => {
     if (route.path.match(/public-library|showroom/)) {
@@ -32,12 +32,6 @@ const useLogSender = () => {
     }
     throw new Error('unexpected error')
   }
-
-  const getBasedReq = () => ({
-    orgId: unit.value.orgId,
-    ogId: unit.value.ogId,
-    ogType: unit.value.ogType,
-  })
 
   const createDownloadLog = (materialId: number, selectedFormat: string) => {
     const getCategory = (selectedFormat: string): U3M_FILE_TYPE => {
@@ -73,8 +67,7 @@ const useLogSender = () => {
   }
 
   const createStickerTagFilterLog = async () => {
-    const req = getBasedReq()
-    await dashboardApi.createStickerTagFilterLog(req)
+    await ogBaseDashboardApi(dashboardApi.createStickerTagFilterLog)()
   }
 
   return {
