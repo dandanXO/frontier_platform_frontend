@@ -19,7 +19,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
   const ecoImpactorInformation = ref<DashboardEcoImpactorInformation>()
 
   const getDashboard = async () => {
-    const { data } = await ogBaseDashboardApi(dashboardApi.getDashboard)()
+    const { data } = await ogBaseDashboardApi('getDashboard')
 
     const dashboard = data.result as Dashboard
     createCounts.value = dashboard.createCounts

@@ -26,7 +26,7 @@ export const useAssetsStore = defineStore('assets', () => {
   const uploadingU3mMaterialIdList = ref<number[]>([])
 
   const getAssetsMaterial = async (materialId: number) => {
-    const { data } = await ogBaseAssetsApi(assetsApi.getAssetsMaterial)({
+    const { data } = await ogBaseAssetsApi('getAssetsMaterial', {
       materialId,
     })
     material.value = data.result.material
@@ -38,9 +38,7 @@ export const useAssetsStore = defineStore('assets', () => {
     search: Search | null
     filter: AssetsFilter | null
   }) => {
-    const { data } = await ogBaseAssetsApi(assetsApi.getAssetMaterialList)(
-      payload
-    )
+    const { data } = await ogBaseAssetsApi('getAssetMaterialList', payload)
     materialList.value = data.result.materialList
     searchStore.setPaginationRes(data.result.pagination)
   }
@@ -68,7 +66,7 @@ export const useAssetsStore = defineStore('assets', () => {
     uploadingU3mMaterialIdList.value.push(materialId)
 
     const { s3UploadId, fileName } = await uploadFileToS3(u3mFile, u3mFile.name)
-    await ogBaseAssetsApi(assetsApi.uploadAssetsMaterialCustomU3m)({
+    await ogBaseAssetsApi('uploadAssetsMaterialCustomU3m', {
       materialId,
       s3UploadId,
       fileName,
@@ -117,5 +115,6 @@ export const useAssetsStore = defineStore('assets', () => {
     getAssetsMaterialList,
     uploadingU3mMaterialIdList,
     uploadCustomU3m,
+    ogBaseAssetsApi,
   }
 })

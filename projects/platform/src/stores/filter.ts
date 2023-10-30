@@ -145,9 +145,7 @@ export const useFilterStore = defineStore('filter', () => {
     },
   })
   const getInternalFilterOption = async () => {
-    const { data } = await ogBaseSearchApi(
-      searchApi.getInternalSearchFilterOptions
-    )()
+    const { data } = await ogBaseSearchApi('getInternalSearchFilterOptions')
     filterOption.value = Object.assign(filterOption.value, data.result)
   }
   const getInitFilterState: () => FilterState = () => ({

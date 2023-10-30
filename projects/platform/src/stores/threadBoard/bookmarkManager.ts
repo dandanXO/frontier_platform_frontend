@@ -600,7 +600,7 @@ const useBookmarkManagerStore = defineStore(
         }
       })
 
-      await ogBaseThreadBoardApi(threadBoardApi.saveThreadBoardBookmarkList)({
+      await ogBaseThreadBoardApi('saveThreadBoardBookmarkList', {
         bookmarkList,
       })
       threadBoardStore.fetchBookmarkList()

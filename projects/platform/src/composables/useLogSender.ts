@@ -67,7 +67,7 @@ const useLogSender = () => {
   }
 
   const createStickerTagFilterLog = async () => {
-    await ogBaseDashboardApi(dashboardApi.createStickerTagFilterLog)()
+    await ogBaseDashboardApi('createStickerTagFilterLog')
   }
 
   return {

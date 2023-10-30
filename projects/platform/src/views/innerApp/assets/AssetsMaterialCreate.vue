@@ -25,17 +25,14 @@ import { useAssetsStore } from '@/stores/assets'
 import type { MaterialOptionsCode } from '@frontier/platform-web-sdk'
 import mockMaterialOptions from '@/stores/assets/mockMaterialOptions'
 import { NOTIFY_TYPE } from '@/utils/constants'
-import assetsApi from '@/apis/assets'
 import type { Multimedia } from '@/composables/material/useMultimediaSelect'
 import type { Attachment } from '@/composables/material/useAttachmentSelect'
 import type useMaterialForm from '@/composables/material/useMaterialForm'
-import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 
 const { t } = useI18n()
 const store = useStore()
-const { uploadCustomU3m } = useAssetsStore()
-const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
+const { uploadCustomU3m, ogBaseAssetsApi } = useAssetsStore()
 const { goToAssets, goToMaterialUpload, goToAssetsMaterialCreate } =
   useNavigation()
 
@@ -112,7 +109,7 @@ const createMaterial = async (payload: {
   }
 
   // const res = await assetsApi.createAssetsMaterial(req)
-  const res = await ogBaseAssetsApi(assetsApi.createAssetsMaterial)(req)
+  const res = await ogBaseAssetsApi('createAssetsMaterial', req)
   store.dispatch('helper/closeModalLoading')
 
   const material = res.data.result!.material!

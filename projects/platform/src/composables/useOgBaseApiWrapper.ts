@@ -8,31 +8,28 @@ type RestArgs<T extends (...args: any[]) => any> = Omit<
   'ogId' | 'ogType' | 'orgId'
 >
 
-type OgBaseApiWrapper<T extends (...args: any[]) => any> = (
-  args?: RestArgs<T>
-) => ReturnType<T>
-
-const useOgBaseApiWrapper = (apiInstance: any) => {
+const useOgBaseApiWrapper = <Class extends Record<string, any>>(
+  apiInstance: Class
+) => {
   const store = useStore()
   const orgId = computed(
     () => store.getters['organization/organization'].orgId as number
   )
   const { ogId, ogType } = useNavigation()
-  const ogBaseApiWrapper = <T extends (...args: any[]) => any>(
-    func: T,
+  const ogBaseApiWrapper = <FunctionName extends keyof Class>(
+    func: FunctionName,
+    args?: RestArgs<Class[FunctionName]>,
     config: AxiosRequestConfig = {}
-  ): OgBaseApiWrapper<T> => {
-    return (args?: RestArgs<T>) => {
-      return func.bind(apiInstance)(
-        {
-          orgId: orgId.value,
-          ogType: ogType.value,
-          ogId: ogId.value,
-          ...args,
-        },
-        config
-      )
-    }
+  ) => {
+    return apiInstance[func](
+      {
+        orgId: orgId.value,
+        ogType: ogType.value,
+        ogId: ogId.value,
+        ...args,
+      },
+      config
+    ) as ReturnType<Class[FunctionName]>
   }
 
   return ogBaseApiWrapper

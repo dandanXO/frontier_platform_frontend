@@ -35,8 +35,8 @@ const useDigitalThreadWorkflowStageStore = defineStore(
 
     const getWorkflowStageOptionList = async () => {
       const res = await ogBaseDigitalThreadApi(
-        digitalThreadApi.getDigitalThreadWorkflowStageOptions
-      )()
+        'getDigitalThreadWorkflowStageOptions'
+      )
       workflowStageOptionList.value = res.data.result!.workflowStageList.map(
         (w) => {
           if (w.isDefault) {
