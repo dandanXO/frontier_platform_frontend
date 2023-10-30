@@ -44,6 +44,7 @@ export default function useMaterialEdit() {
 
   const newContentList = reactive([])
   const newDescriptionList = reactive([])
+  const newFeatureList = reactive([])
   const newFinishList = reactive([])
 
   const specOptions = reactive({

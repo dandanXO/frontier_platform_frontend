@@ -50,20 +50,24 @@ const dataUrlToBlob = (dataUrl: string) => {
   return new Blob([ab], { type: mimeString })
 }
 
-const downloadDataURLFile = async (dataUrl: string, fileName = 'file') => {
-  const response = await fetch(dataUrl)
-  const blobImage = await response.blob()
-  const href = URL.createObjectURL(blobImage)
+const downloadFile = async (url: string, fileName = 'file') => {
   const link = document.createElement('a')
   link.hidden = true
   link.download = decodeURIComponent(fileName)
-  link.href = href
+  link.href = url
   link.text = 'downloading...'
   link.target = '_blank'
 
   document.body.appendChild(link)
   link.click()
   link.remove()
+}
+
+const downloadDataURLFile = async (dataUrl: string, fileName = 'file') => {
+  const response = await fetch(dataUrl)
+  const blobImage = await response.blob()
+  const href = URL.createObjectURL(blobImage)
+  downloadFile(href, fileName)
   window.URL.revokeObjectURL(href)
 }
 
@@ -114,14 +118,27 @@ const unzip = async (zipFile: File, parseExtensionTypeList: EXTENSION[]) => {
   )) as UnzippedFile[]
 }
 
+const getFileExtension = (filename: string) => {
+  const parts = filename.split('.')
+  return parts[parts.length - 1]
+}
+
+const getFileNameExcludeExtension = (filename: string) => {
+  const parts = filename.split('.')
+  return parts.slice(0, parts.length - 1).join('.')
+}
+
 class FileOperator {
-  validType: NATIVE_EXTENSION[]
+  validType: EXTENSION[]
   acceptedExtension: string
   fileSizeMaxLimit: number
   event: EventEmitter
   eventHash: { [key: string]: any } = {}
 
-  constructor(validType = generalImageType, fileSizeMaxLimit = 20971520) {
+  constructor(
+    validType: EXTENSION[] = generalImageType,
+    fileSizeMaxLimit = 20971520
+  ) {
     this.validType = validType
     this.acceptedExtension = validType.map((type) => `.${type}`).join(',')
     this.fileSizeMaxLimit = fileSizeMaxLimit
@@ -232,11 +249,14 @@ class ImageOperator extends FileOperator {
 
 export {
   dataUrlToBlob,
+  downloadFile,
   downloadDataURLFile,
   downloadBase64File,
   FileOperator,
   ImageOperator,
   bytesToSize,
   previewFile,
+  getFileExtension,
+  getFileNameExcludeExtension,
   unzip,
 }

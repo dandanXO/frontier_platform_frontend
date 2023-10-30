@@ -6,30 +6,39 @@ f-breadcrumb(
 )
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'GlobalBreadcrumbList',
 }
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { useStore } from 'vuex'
 
-defineProps({
-  breadcrumbList: {
-    type: Array,
-    required: true,
-  },
-  fontSize: {
-    type: String,
-    default: 'text-body1',
-  },
-})
-const emit = defineEmits(['click:item'])
+interface BreadcrumbItem {
+  name: string
+  path?: string
+  goTo?: () => void
+}
+
+withDefaults(
+  defineProps<{
+    breadcrumbList: BreadcrumbItem[]
+    fontSize: string
+  }>(),
+  {
+    fontSize: 'text-body1',
+  }
+)
+
+const emits = defineEmits<{
+  (e: 'click:item', item: BreadcrumbItem): void
+}>()
+
 const store = useStore()
 
-const clickMenuHandler = async (item) => {
+const clickMenuHandler = async (item: BreadcrumbItem) => {
   await store.dispatch('sticker/closeStickerDrawer')
-  emit('click:item', item)
+  emits('click:item', item)
 }
 </script>

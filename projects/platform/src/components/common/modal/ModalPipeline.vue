@@ -270,6 +270,12 @@ export default {
     ModalUploadU3mFile: defineAsyncComponent(() =>
       import('@/components/common/material/u3m/ModalUploadU3mFile.vue')
     ),
+    ModalRenameFile: defineAsyncComponent(() =>
+      import('@/components/common/material/file/ModalRenameFile.vue')
+    ),
+    ModalUploadAttachment: defineAsyncComponent(() =>
+      import('@/components/assets/edit/ModalUploadAttachment.vue')
+    ),
   },
   setup() {
     const store = useStore()

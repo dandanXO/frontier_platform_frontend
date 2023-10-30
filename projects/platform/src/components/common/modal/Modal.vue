@@ -23,10 +23,8 @@ import { useStore } from 'vuex'
 export default {
   name: 'Modal',
   components: {
-    ModalPreviewAttachment: defineAsyncComponent(() =>
-      import(
-        '@/components/common/material/attachment/ModalPreviewAttachment.vue'
-      )
+    ModalPreviewFile: defineAsyncComponent(() =>
+      import('@/components/common/material/file/ModalPreviewFile.vue')
     ),
     ModalU3mRecut: defineAsyncComponent(() =>
       import('@/components/assets/modalU3mRecut/ModalU3mRecut.vue')

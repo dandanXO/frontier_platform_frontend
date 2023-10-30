@@ -1992,5 +1992,10 @@
   "MI0082": "Trim Width",
   "MI0083": "Frontier provides physical data for woven and knit fabrics. To access 3D materials with detailed physical properties, please contact our Digital Center at support{'@'}frontier.cool. We'll be delighted to assist you in creating the files you need.",
   "MI0084": "If you require material specifications that are not currently available, please don't hesitate to contact us at support{'@'}frontier.cool.",
-  "MI0085": ""
+  "MI0085": "",
+  "MOCK00": "Maximum length: {qty} characters",
+  "MOCK01": "Do not greater than {qty} number",
+  "MOCK02": "Do not smaller than {qty} number",
+  "MOCK03": "Only allow decimal places to {dp}",
+  "MOCK04": "Maximum length: {qty} characters"
 }

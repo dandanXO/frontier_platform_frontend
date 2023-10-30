@@ -24,6 +24,7 @@
     "@tiptap/suggestion": "2.0.0-beta.209",
     "@tiptap/vue-3": "2.0.0-beta.209",
     "@types/uuid": "^9.0.2",
+    "@vee-validate/zod": "^4.11.3",
     "@vueuse/core": "^9.11.0",
     "decimal.js": "^10.4.3",
     "dom-to-image": "^2.6.0",
@@ -44,17 +45,19 @@
     "qrcode": "^1.5.0",
     "tippy.js": "^6.3.7",
     "uuid": "^8.3.2",
+    "vee-validate": "^4.11.8",
     "vue-echarts": "^6.5.5",
     "vue-gtag": "^2.0.1",
     "vue-konva": "^3.0.2",
     "vue-virtual-scroller": "^2.0.0-alpha.1",
     "vuedraggable": "^4.1.0",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "zod": "^3.22.2"
   },
   "devDependencies": {
     "@types/pica": "^9.0.1"
   },
   "peerDependencies": {
-    "vue": "3.3.1"
+    "vue": "3.3.4"
   }
 }

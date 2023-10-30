@@ -1,5 +1,5 @@
 import axios from '@/apis'
-import putBinaryData from '@/utils/put-binary-data'
+import { putBinaryData } from '@/utils/fileUpload'
 
 export default {
   generalSignUp: ({ email, lastName, firstName, password, signupSourceType }) =>

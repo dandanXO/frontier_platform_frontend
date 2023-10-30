@@ -4,167 +4,125 @@ div(class="w-full h-full flex justify-center")
     div(class="pt-12 pb-9 flex justify-between")
       global-breadcrumb-list(
         :breadcrumbList="breadcrumbList"
-        @click:item="$router.push($event.path)"
+        @click:item="$event.goTo?.()"
       )
       f-button(size="sm" type="secondary" class="ml-5" @click="openModalMassUpload") {{ $t('UU0009') }}
-    div(class="grid grid-cols-1 divide-y divide-grey-250")
-      div(class="pb-15")
-        div(class="h-16 flex items-center")
-          h5(class="text-h5 text-grey-900 font-bold pr-1.5") {{ $t('DD0063') }}
-        div(class="pl-15")
-          f-input-container(:label="$t('DD0062')")
-            div(class="flex items-center gap-x-3")
-              f-select-dropdown(
-                v-model:selectValue="material.isDoubleSideMaterial"
-                :dropdownMenuTree="singleOrDoubleMenuTree"
-                class="w-50"
-              )
-              f-select-dropdown(
-                v-if="!material.isDoubleSideMaterial"
-                v-model:selectValue="material.sideType"
-                :dropdownMenuTree="sideTypeMenuTree"
-                class="w-25"
-              )
-      block-material-information(:invalidation="invalidation")
-      block-material-inventory(:invalidation="invalidation")
-      block-material-pricing(:invalidation="invalidation")
-      block-material-additional-info(:tempMaterialId="tempMaterialId")
-      f-expansion-panel
-        template(#trigger="{ isExpand }")
-          div(class="h-15 flex items-center justify-between")
-            h5(class="text-h5 text-grey-900 font-bold") {{ $t('RR0299') }}
-            f-svg-icon(
-              iconName="keyboard_arrow_right"
-              size="20"
-              class="transform text-grey-900"
-              :class="[isExpand ? '-rotate-90' : 'rotate-90']"
-            )
-        template(#content)
-          div(class="px-15 pt-5")
-            p(class="text-body2 font-bold text-grey-900") {{ $t('RR0299') }}
-            p(class="py-5 text-body2 text-grey-900") {{ $t('EE0166') }}
-            block-material-upload-u3m(
-              ref="refBlockMaterialUploadU3m"
-              :mode="CREATE_EDIT.CREATE"
-              class="w-95"
-            )
-    div(class="flex justify-center items-center pt-17.5")
-      div(class="grid grid-cols-2 gap-x-2")
-        f-button(size="md" type="secondary" class="h-10" @click="cancel") {{ $t('UU0002') }}
-        f-button(
-          size="md"
-          class="h-10"
-          :disabled="isInvalid"
-          @click="createMaterial"
-          data-cy="create-material"
-        ) {{ $t('UU0020') }}
+    block-material-create(
+      v-if="materialOptions != null"
+      :materialOptions="materialOptions"
+      @submit="createMaterial"
+    )
 </template>
 
-<script setup>
-import BlockMaterialInformation from '@/components/assets/edit/BlockMaterialInformation.vue'
-import BlockMaterialInventory from '@/components/assets/edit/BlockMaterialInventory.vue'
-import BlockMaterialPricing from '@/components/assets/edit/BlockMaterialPricing.vue'
-import BlockMaterialAdditionalInfo from '@/components/assets/edit/BlockMaterialAdditionalInfo.vue'
-import BlockMaterialUploadU3m from '@/components/assets/edit/BlockMaterialUploadU3m.vue'
-import useMaterialValidation from '@/composables/useMaterialValidation'
-import useNavigation from '@/composables/useNavigation'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
-import { v4 as uuidv4 } from 'uuid'
-import { SIDE_TYPE, NOTIFY_TYPE, CREATE_EDIT } from '@/utils/constants'
-import { computed, ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
-import scrollTo from '@/utils/scrollTo'
+import BlockMaterialCreate from '@/components/assets/edit/BlockMaterialCreate.vue'
+import useNavigation from '@/composables/useNavigation'
+import { useAssetsStore } from '@/stores/assets'
+import type { MaterialOptionsCode } from '@frontier/platform-web-sdk'
+import mockMaterialOptions from '@/stores/assets/mockMaterialOptions'
+import { NOTIFY_TYPE } from '@/utils/constants'
+import assetsApi from '@/apis/assets'
+import type { Multimedia } from '@/composables/material/useMultimediaSelect'
+import type { Attachment } from '@/composables/material/useAttachmentSelect'
+import type useMaterialForm from '@/composables/material/useMaterialForm'
+import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
+import { uploadFileToS3 } from '@/utils/fileUpload'
 
 const { t } = useI18n()
 const store = useStore()
-const material = computed(() => store.getters['assets/material'])
-const { invalidation, validate, isInvalid } = useMaterialValidation(material)
-const { parsePath, goToMaterialUpload, goToAssets } = useNavigation()
-const tempMaterialId = uuidv4()
-
-const sideTypeMenuTree = computed(() => ({
-  width: 'w-25',
-  blockList: [
-    {
-      menuList: [
-        {
-          title: t('DD0048'),
-          selectValue: SIDE_TYPE.FACE,
-        },
-        {
-          title: t('DD0049'),
-          selectValue: SIDE_TYPE.BACK,
-        },
-      ],
-    },
-  ],
-}))
-
-const singleOrDoubleMenuTree = computed(() => ({
-  width: 'w-50',
-  blockList: [
-    {
-      menuList: [
-        {
-          title: t('DD0014'),
-          selectValue: true,
-        },
-        {
-          title: t('DD0061'),
-          selectValue: false,
-        },
-      ],
-    },
-  ],
-}))
+const { uploadCustomU3m } = useAssetsStore()
+const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
+const { goToAssets, goToMaterialUpload, goToAssetsMaterialCreate } =
+  useNavigation()
 
 const isConfirmedToLeave = ref(false)
-const routeLocation = computed(() => store.getters['helper/routeLocation'])
 const breadcrumbList = computed(() => {
-  const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
   return [
     {
       name: t('RR0008'),
-      path: parsePath(`${prefix}/assets`),
+      goTo: goToAssets,
     },
     {
       name: t('DD0045'),
-      path: parsePath(`${prefix}/assets/upload`),
+      goTo: goToMaterialUpload,
     },
     {
       name: t('DD0012'),
-      path: parsePath(`${prefix}/assets/upload/manual`),
+      goTo: goToAssetsMaterialCreate,
     },
   ]
 })
 
-const openModalMassUpload = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-mass-upload',
-  })
+const materialOptions = ref<MaterialOptionsCode | null>(null)
+
+const fetchMaterialOptions = async () => {
+  // const res = await assetsApi.getMaterialOptions(req)
+  // materialOptions.value = res.data.result!.code
+  await new Promise((resolve) => setTimeout(resolve, 1000))
+  materialOptions.value = mockMaterialOptions
 }
 
-const refBlockMaterialUploadU3m = ref(null)
-
-const createMaterial = async () => {
-  if (!validate()) {
-    scrollTo('block-material-information')
-    return
-  }
-
+const createMaterial = async (payload: {
+  form: ReturnType<typeof useMaterialForm>['values']
+  multimediaList: Multimedia[]
+  attachmentList: Attachment[]
+  u3m?: {
+    u3mFile: File
+    needToGeneratePhysical: boolean
+    hasUploadedU3mFile: boolean
+  } | null
+}) => {
+  const { form, multimediaList, attachmentList, u3m } = payload
   store.dispatch('helper/openModalLoading')
 
-  const { hasUploadedU3mFile, u3mFile, needToGeneratePhysical } =
-    refBlockMaterialUploadU3m.value
-  await store.dispatch('assets/createMaterial', {
-    tempMaterialId,
-    hasCustomU3mUploading: hasUploadedU3mFile,
-    u3mFile,
-    needToGeneratePhysical,
-  })
+  const uploadMultiMediaTasks = Promise.all(
+    multimediaList.map((m) => uploadFileToS3(m.file, m.file.name))
+  )
+  const uploadAttachmentTasks = Promise.all(
+    attachmentList.map((m) => uploadFileToS3(m.file, m.file.name))
+  )
 
+  const [multimediaResult, attachmentResult] = await Promise.all([
+    uploadMultiMediaTasks,
+    uploadAttachmentTasks,
+  ])
+
+  const req = {
+    ...form,
+    hasCustomU3mUploading: u3m.hasUploadedU3mFile || false,
+    multimediaList: multimediaResult.map((m) => ({
+      s3UploadId: m.s3UploadId,
+      fileName: m.fileName,
+      displayFileName: m.fileName,
+      isCover: true,
+      croppedImage: null,
+    })),
+    internalInfo: {
+      ...form.internalInfo,
+      attachmentList: attachmentResult.map((m) => ({
+        s3UploadId: m.s3UploadId,
+        fileName: m.fileName,
+        displayFileName: m.fileName,
+      })),
+    },
+  }
+
+  // const res = await assetsApi.createAssetsMaterial(req)
+  const res = await ogBaseAssetsApi(assetsApi.createAssetsMaterial)(req)
   store.dispatch('helper/closeModalLoading')
+
+  const material = res.data.result!.material!
+  if (u3m) {
+    uploadCustomU3m({
+      materialId: material.materialId,
+      u3mFile: u3m.u3mFile,
+      needToGeneratePhysical: u3m.needToGeneratePhysical,
+    })
+  }
 
   isConfirmedToLeave.value = true
   store.dispatch('helper/openModalBehavior', {
@@ -182,22 +140,16 @@ const createMaterial = async () => {
         goToMaterialUpload()
         store.dispatch('helper/closeModalBehavior')
       },
-      materialList: [material.value],
+      materialList: [material],
     },
   })
+
+  return material
 }
 
-const cancel = async () => {
-  store.dispatch('helper/pushModalConfirm', {
-    type: NOTIFY_TYPE.WARNING,
-    header: t('DD0033'),
-    contentText: t('DD0034'),
-    primaryBtnText: t('UU0001'),
-    primaryBtnHandler: () => {
-      isConfirmedToLeave.value = true
-      goToMaterialUpload()
-    },
-    secondaryBtnText: t('UU0002'),
+const openModalMassUpload = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-mass-upload',
   })
 }
 
@@ -220,6 +172,5 @@ onBeforeRouteLeave(async () => {
   return result === 'confirm'
 })
 
-store.dispatch('assets/resetMaterial')
-await store.dispatch('assets/getMaterialOptions')
+fetchMaterialOptions()
 </script>

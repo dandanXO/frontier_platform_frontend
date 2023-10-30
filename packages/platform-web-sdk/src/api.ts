@@ -2264,50 +2264,6 @@ export interface CreateAndEditAttachmentFileAllOf {
 /**
  * 
  * @export
- * @interface CreateAssetsMaterial200Response
- */
-export interface CreateAssetsMaterial200Response {
-    /**
-     * 
-     * @type {CreateAssetsMaterial200ResponseResult}
-     * @memberof CreateAssetsMaterial200Response
-     */
-    'result'?: CreateAssetsMaterial200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CreateAssetsMaterial200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateAssetsMaterial200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof CreateAssetsMaterial200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface CreateAssetsMaterial200ResponseResult
- */
-export interface CreateAssetsMaterial200ResponseResult {
-    /**
-     * 
-     * @type {Material}
-     * @memberof CreateAssetsMaterial200ResponseResult
-     */
-    'material'?: Material;
-}
-/**
- * 
- * @export
  * @interface CreateAssetsMaterialRequest
  */
 export interface CreateAssetsMaterialRequest {
@@ -5998,6 +5954,12 @@ export interface GetAssetMaterialListRequestAllOf {
 export interface GetAssetsMaterial200Response {
     /**
      * 
+     * @type {GetAssetsMaterial200ResponseResult}
+     * @memberof GetAssetsMaterial200Response
+     */
+    'result'?: GetAssetsMaterial200ResponseResult;
+    /**
+     * 
      * @type {boolean}
      * @memberof GetAssetsMaterial200Response
      */
@@ -6010,12 +5972,6 @@ export interface GetAssetsMaterial200Response {
     'code'?: string | null;
     /**
      * 
-     * @type {GetAssetsMaterial200ResponseAllOfResult}
-     * @memberof GetAssetsMaterial200Response
-     */
-    'result': GetAssetsMaterial200ResponseAllOfResult;
-    /**
-     * 
      * @type {object}
      * @memberof GetAssetsMaterial200Response
      */
@@ -6024,28 +5980,15 @@ export interface GetAssetsMaterial200Response {
 /**
  * 
  * @export
- * @interface GetAssetsMaterial200ResponseAllOf
+ * @interface GetAssetsMaterial200ResponseResult
  */
-export interface GetAssetsMaterial200ResponseAllOf {
-    /**
-     * 
-     * @type {GetAssetsMaterial200ResponseAllOfResult}
-     * @memberof GetAssetsMaterial200ResponseAllOf
-     */
-    'result': GetAssetsMaterial200ResponseAllOfResult;
-}
-/**
- * 
- * @export
- * @interface GetAssetsMaterial200ResponseAllOfResult
- */
-export interface GetAssetsMaterial200ResponseAllOfResult {
+export interface GetAssetsMaterial200ResponseResult {
     /**
      * 
      * @type {Material}
-     * @memberof GetAssetsMaterial200ResponseAllOfResult
+     * @memberof GetAssetsMaterial200ResponseResult
      */
-    'material': Material;
+    'material'?: Material;
 }
 /**
  * 
@@ -11703,7 +11646,7 @@ export interface MaterialInternalInfo {
      * @type {MaterialPriceInfo}
      * @memberof MaterialInternalInfo
      */
-    'priceInfo': MaterialPriceInfo | null;
+    'priceInfo': MaterialPriceInfo;
     /**
      * 
      * @type {MaterialInternalInventoryInfo}
@@ -25944,7 +25887,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
+        async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createAssetsMaterial(createAssetsMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26301,7 +26244,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: any): AxiosPromise<CreateAssetsMaterial200Response> {
+        createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.createAssetsMaterial(createAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -28392,7 +28335,7 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
+        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -28542,7 +28485,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: any): AxiosPromise<CreateAssetsMaterial200Response> {
+        digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options).then((request) => request(axios, basePath));
         },
         /**

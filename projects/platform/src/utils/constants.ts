@@ -4,6 +4,7 @@ import { computed } from 'vue'
 import colors from '@frontier/tailwindcss/colors'
 import { WeightUnit } from '@frontier/platform-web-sdk'
 import { getEnumTextValueMap } from '@/utils/mapping'
+import { EXTENSION } from '@frontier/constants'
 
 export const ROLE_ID = {
   OWNER: 1,
@@ -72,6 +73,19 @@ export const MATERIAL_PRICING_CURRENCY = {
   RMB: 'RMB',
   TWD: 'TWD',
 }
+
+export const MATERIAL_UPLOAD_FILE_ACCEPT_TYPE = [
+  EXTENSION.PDF,
+  EXTENSION.JPG,
+  EXTENSION.JPEG,
+  EXTENSION.PNG,
+  EXTENSION.ZIP,
+  EXTENSION.GIF,
+  EXTENSION.MOV,
+  EXTENSION.MP4,
+  EXTENSION.SCCH,
+  EXTENSION.YDT,
+]
 
 export const COVER_MODE = {
   FACE: 1,
@@ -426,3 +440,19 @@ export const COLLECTION_NAME_MAX_LENGTH = 100
 export const COLLECTION_DESCRIPTION_MAX_LENGTH = 1000
 
 export const CUSTOM_3D_VIEWER_MODEL_ORG_ID = 1713
+
+export const materialFormServiceKey = Symbol('MaterialFormService')
+export const materialU3mCreateServiceKey = Symbol('MaterialU3mCreateService')
+export const materialU3mUpdateServiceKey = Symbol('MaterialU3mUpdateService')
+export const materialMultimediaCreateServiceKey = Symbol(
+  'MaterialMultimediaCreateService'
+)
+export const materialMultimediaUpdateServiceKey = Symbol(
+  'MaterialMultimediaUpdateService'
+)
+export const materialAttachmentCreateServiceKey = Symbol(
+  'MaterialAttachmentCreateService'
+)
+export const materialAttachmentUpdateServiceKey = Symbol(
+  'MaterialAttachmentUpdateService'
+)

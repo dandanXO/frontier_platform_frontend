@@ -6,11 +6,11 @@ import {
   MATERIAL_PRICING_CURRENCY,
   NOTIFY_TYPE,
 } from '@/utils/constants'
-import putBinaryData from '@/utils/put-binary-data'
+import i18n from '@frontier/i18n'
+import { putBinaryData } from '@/utils/fileUpload'
 import Material from '@/store/reuseModules/material.js'
 import progress from './progress'
 import { useNotifyStore } from '@/stores/notify'
-import i18n from '@frontier/i18n'
 
 export default {
   namespaced: true,

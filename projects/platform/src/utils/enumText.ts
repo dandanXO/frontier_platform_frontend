@@ -4,6 +4,9 @@ import {
   WeightUnit,
   MaterialType,
   AssetsFilterStatusEnum,
+  MaterialQuantityUnit,
+  MaterialSideType,
+  CurrencyCode,
 } from '@frontier/platform-web-sdk'
 import i18n from '@frontier/i18n'
 
@@ -21,6 +24,12 @@ export const WeightUnitText: { [key in WeightUnit]: string } = {
   [WeightUnit.GM]: 'g/m',
 }
 
+export const MaterialQuantityText: { [key in MaterialQuantityUnit]: string } = {
+  [MaterialQuantityUnit.Y]: t('RR0039'),
+  [MaterialQuantityUnit.M]: t('RR0040'),
+  [MaterialQuantityUnit.KG]: t('RR0041'),
+}
+
 export const MaterialTypeText: { [key in MaterialType]: string } = {
   [MaterialType.WOVEN]: t('RR0091'),
   [MaterialType.KNIT]: t('RR0092'),
@@ -28,6 +37,20 @@ export const MaterialTypeText: { [key in MaterialType]: string } = {
   [MaterialType.NON_WOVEN]: t('MI0020'),
   [MaterialType.TRIM]: t('MI0021'),
   [MaterialType.OTHERS]: t('MI0022'),
+}
+
+export const MaterialSideTypeText: { [key in MaterialSideType]: string } = {
+  [MaterialSideType.FACE_SIDE]: t('DD0048'),
+  [MaterialSideType.BACK_SIDE]: t('DD0049'),
+}
+
+export const CurrencyText: { [key in CurrencyCode]: string } = {
+  [CurrencyCode.USD]: t('RR0044'),
+  [CurrencyCode.EUR]: t('RR0293'),
+  [CurrencyCode.CNY]: t('RR0045'),
+  [CurrencyCode.TWD]: t('RR0046'),
+  [CurrencyCode.JPY]: t('RR0294'),
+  [CurrencyCode.INR]: t('RR0295'),
 }
 
 export const SortByText: { [key in PaginationReqSortEnum]: string } = {

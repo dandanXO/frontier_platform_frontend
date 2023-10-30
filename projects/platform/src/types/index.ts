@@ -9,6 +9,10 @@ import type {
   U3M_DOWNLOAD_PROP,
 } from '@/utils/constants'
 import type Decimal from 'decimal.js'
+import type useMaterialForm from '@/composables/material/useMaterialForm'
+import type useU3mSelect from '@/composables/material/useU3mSelect'
+import type useAttachmentSelect from '@/composables/material/useAttachmentSelect'
+import type useMultimediaSelect from '@/composables/material/useMultimediaSelect'
 
 export interface DownloadU3mPayload {
   materialId: number
@@ -156,3 +160,19 @@ export interface FunctionOption<Type, Id = number> {
   icon?: (n?: Type | [Type]) => string
   disabled?: (n: Type | [Type]) => boolean
 }
+
+export type MaterialFormService = ReturnType<typeof useMaterialForm>
+export type MaterialU3mCreateService = ReturnType<typeof useU3mSelect>
+export type MaterialU3mUpdateService = ReturnType<typeof useU3mSelect>
+export type MaterialMultimediaCreateService = ReturnType<
+  typeof useMultimediaSelect
+>
+export type MaterialMultimediaUpdateService = ReturnType<
+  typeof useMultimediaSelect
+>
+export type MaterialAttachmentCreateService = ReturnType<
+  typeof useAttachmentSelect
+>
+export type MaterialAttachmentUpdateService = ReturnType<
+  typeof useAttachmentSelect
+>

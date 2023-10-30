@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import axios from '@/apis'
-import putBinaryData from '@/utils/put-binary-data'
+import { putBinaryData } from '@/utils/fileUpload'
 import user from '@/store/modules/user'
 import code from '@/store/modules/code'
 import organization from '@/store/modules/management/organization'

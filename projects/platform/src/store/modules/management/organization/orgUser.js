@@ -1,4 +1,4 @@
-import putBinaryData from '@/utils/put-binary-data'
+import { putBinaryData } from '@/utils/fileUpload'
 import axios from '@/apis'
 import { ROLE_ID } from '@/utils/constants'
 
