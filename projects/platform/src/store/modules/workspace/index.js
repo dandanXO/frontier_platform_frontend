@@ -1,6 +1,6 @@
 import { WorkspaceCollection } from '@/store/reuseModules/collection'
 import Material from '@/store/reuseModules/material.js'
-import workspaceApi from '@/apis/workspace'
+import workspaceApi from '@/apis/workspaceOld'
 import { OG_TYPE } from '@/utils/constants'
 
 export default {

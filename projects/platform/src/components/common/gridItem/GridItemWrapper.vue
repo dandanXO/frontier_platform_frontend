@@ -35,7 +35,7 @@ div(@mouseenter="isHover = true" @mouseleave="isHover = false" class="relative")
     div(v-if="isHover" class="absolute z-10 bottom-3 left-3")
       slot(name="corner-bottom-left")
     f-popper(
-      v-if="optionList.length > 0 && !haveSelectedMoreThanOne"
+      v-if="optionList && optionList.length > 0 && !haveSelectedMoreThanOne"
       placement="right-start"
       class="absolute z-10 bottom-3 right-3 cursor-pointer"
       :class="[isHover ? 'visible' : 'invisible']"
@@ -85,7 +85,7 @@ const props = withDefaults(
      * isMultiSelect 為 true 時，selectValue 為 Array
      */
     selectedValue: Array<any> | any
-    optionList: Array<Array<FunctionOption<any>>>
+    optionList?: Array<Array<FunctionOption<any>>>
     cornerTopRightHover?: boolean
   }>(),
   {

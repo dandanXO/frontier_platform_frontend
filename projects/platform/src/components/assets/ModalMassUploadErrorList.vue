@@ -10,6 +10,7 @@ modal-behavior(
     f-scrollbar-container(class="max-h-89.5")
       div(
         v-for="(error, index) in errorList"
+        :key="error.key"
         class="flex gap-3 border-grey-250 py-2.5 text-body2 text-grey-900 leading-1.6"
         :class="{ 'border-b': index !== errorList.length - 1 }"
       )
@@ -17,15 +18,13 @@ modal-behavior(
         div {{ error.value }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useStore } from 'vuex'
+import type { BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner } from '@frontier/platform-web-sdk'
 
-defineProps({
-  errorList: {
-    type: Array,
-    required: true,
-  },
-})
+defineProps<{
+  errorList: BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner[]
+}>()
 
 const store = useStore()
 

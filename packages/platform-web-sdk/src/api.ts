@@ -1281,10 +1281,10 @@ export interface CloneAssetsMaterialListRequest {
     'materialIdList': Array<number>;
     /**
      * 
-     * @type {Array<number>}
+     * @type {Array<TargetOg>}
      * @memberof CloneAssetsMaterialListRequest
      */
-    'targetNodeIdList': Array<number>;
+    'targetOgList': Array<TargetOg>;
     /**
      * 
      * @type {CloneOption}
@@ -1308,10 +1308,10 @@ export interface CloneAssetsMaterialListRequestAllOf {
     'materialIdList': Array<number>;
     /**
      * 
-     * @type {Array<number>}
+     * @type {Array<TargetOg>}
      * @memberof CloneAssetsMaterialListRequestAllOf
      */
-    'targetNodeIdList': Array<number>;
+    'targetOgList': Array<TargetOg>;
     /**
      * 
      * @type {CloneOption}
@@ -1452,13 +1452,13 @@ export interface CloneEstimateQuota {
      * @type {number}
      * @memberof CloneEstimateQuota
      */
-    'u3m'?: number;
+    'u3m': number;
     /**
      * 
      * @type {number}
      * @memberof CloneEstimateQuota
      */
-    'material'?: number;
+    'material': number;
 }
 /**
  * 
@@ -1492,10 +1492,10 @@ export interface CloneMoodboardNodeRequest {
     'nodeIdList': Array<number>;
     /**
      * 
-     * @type {Array<number>}
+     * @type {Array<TargetOg>}
      * @memberof CloneMoodboardNodeRequest
      */
-    'targetNodeIdList': Array<number>;
+    'targetOgList': Array<TargetOg>;
     /**
      * 
      * @type {CloneOption}
@@ -1519,10 +1519,10 @@ export interface CloneMoodboardNodeRequestAllOf {
     'nodeIdList': Array<number>;
     /**
      * 
-     * @type {Array<number>}
+     * @type {Array<TargetOg>}
      * @memberof CloneMoodboardNodeRequestAllOf
      */
-    'targetNodeIdList': Array<number>;
+    'targetOgList': Array<TargetOg>;
     /**
      * 
      * @type {CloneOption}
@@ -1541,13 +1541,13 @@ export interface CloneOption {
      * @type {boolean}
      * @memberof CloneOption
      */
-    'u3m'?: boolean;
+    'u3m': boolean;
     /**
      * 
      * @type {boolean}
      * @memberof CloneOption
      */
-    'attachment'?: boolean;
+    'attachment': boolean;
 }
 /**
  * 
@@ -1569,10 +1569,10 @@ export interface ClonePublicLibraryNodeRequest {
     'nodeIdList': Array<number>;
     /**
      * 
-     * @type {Array<number>}
+     * @type {Array<TargetOg>}
      * @memberof ClonePublicLibraryNodeRequest
      */
-    'targetNodeIdList': Array<number>;
+    'targetOgList': Array<TargetOg>;
     /**
      * 
      * @type {CloneOption}
@@ -1606,10 +1606,10 @@ export interface CloneReceivedShareNodeRequest {
     'nodeIdList': Array<number>;
     /**
      * 
-     * @type {Array<number>}
+     * @type {Array<TargetOg>}
      * @memberof CloneReceivedShareNodeRequest
      */
-    'targetNodeIdList': Array<number>;
+    'targetOgList': Array<TargetOg>;
     /**
      * 
      * @type {CloneOption}
@@ -1655,10 +1655,10 @@ export interface CloneShareToMeNodeRequest {
     'nodeIdList': Array<number>;
     /**
      * 
-     * @type {Array<number>}
+     * @type {Array<TargetOg>}
      * @memberof CloneShareToMeNodeRequest
      */
-    'targetNodeIdList': Array<number>;
+    'targetOgList': Array<TargetOg>;
     /**
      * 
      * @type {CloneOption}
@@ -1688,10 +1688,10 @@ export interface CloneShareToMeNodeRequestAllOf {
     'nodeIdList': Array<number>;
     /**
      * 
-     * @type {Array<number>}
+     * @type {Array<TargetOg>}
      * @memberof CloneShareToMeNodeRequestAllOf
      */
-    'targetNodeIdList': Array<number>;
+    'targetOgList': Array<TargetOg>;
     /**
      * 
      * @type {CloneOption}
@@ -2260,6 +2260,50 @@ export interface CreateAndEditAttachmentFileAllOf {
      * @memberof CreateAndEditAttachmentFileAllOf
      */
     'displayFileName': string;
+}
+/**
+ * 
+ * @export
+ * @interface CreateAssetsMaterial200Response
+ */
+export interface CreateAssetsMaterial200Response {
+    /**
+     * 
+     * @type {CreateAssetsMaterial200ResponseResult}
+     * @memberof CreateAssetsMaterial200Response
+     */
+    'result'?: CreateAssetsMaterial200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CreateAssetsMaterial200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateAssetsMaterial200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof CreateAssetsMaterial200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface CreateAssetsMaterial200ResponseResult
+ */
+export interface CreateAssetsMaterial200ResponseResult {
+    /**
+     * 
+     * @type {Material}
+     * @memberof CreateAssetsMaterial200ResponseResult
+     */
+    'material'?: Material;
 }
 /**
  * 
@@ -4980,6 +5024,12 @@ export interface ExternalFilter {
      * @memberof ExternalFilter
      */
     'inventory': ExternalFilterAllOfInventory | null;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ExternalFilter
+     */
+    'countryList': Array<string> | null;
 }
 /**
  * 
@@ -4993,6 +5043,12 @@ export interface ExternalFilterAllOf {
      * @memberof ExternalFilterAllOf
      */
     'inventory': ExternalFilterAllOfInventory | null;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ExternalFilterAllOf
+     */
+    'countryList': Array<string> | null;
 }
 /**
  * 
@@ -5954,12 +6010,6 @@ export interface GetAssetMaterialListRequestAllOf {
 export interface GetAssetsMaterial200Response {
     /**
      * 
-     * @type {GetAssetsMaterial200ResponseResult}
-     * @memberof GetAssetsMaterial200Response
-     */
-    'result'?: GetAssetsMaterial200ResponseResult;
-    /**
-     * 
      * @type {boolean}
      * @memberof GetAssetsMaterial200Response
      */
@@ -5972,6 +6022,12 @@ export interface GetAssetsMaterial200Response {
     'code'?: string | null;
     /**
      * 
+     * @type {GetAssetsMaterial200ResponseAllOfResult}
+     * @memberof GetAssetsMaterial200Response
+     */
+    'result': GetAssetsMaterial200ResponseAllOfResult;
+    /**
+     * 
      * @type {object}
      * @memberof GetAssetsMaterial200Response
      */
@@ -5980,15 +6036,28 @@ export interface GetAssetsMaterial200Response {
 /**
  * 
  * @export
- * @interface GetAssetsMaterial200ResponseResult
+ * @interface GetAssetsMaterial200ResponseAllOf
  */
-export interface GetAssetsMaterial200ResponseResult {
+export interface GetAssetsMaterial200ResponseAllOf {
+    /**
+     * 
+     * @type {GetAssetsMaterial200ResponseAllOfResult}
+     * @memberof GetAssetsMaterial200ResponseAllOf
+     */
+    'result': GetAssetsMaterial200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetsMaterial200ResponseAllOfResult
+ */
+export interface GetAssetsMaterial200ResponseAllOfResult {
     /**
      * 
      * @type {Material}
-     * @memberof GetAssetsMaterial200ResponseResult
+     * @memberof GetAssetsMaterial200ResponseAllOfResult
      */
-    'material'?: Material;
+    'material': Material;
 }
 /**
  * 
@@ -8042,6 +8111,12 @@ export interface GetPublicLibraryListRequest {
      * @memberof GetPublicLibraryListRequest
      */
     'orgId': number;
+    /**
+     * 搜尋特定組織Id
+     * @type {number}
+     * @memberof GetPublicLibraryListRequest
+     */
+    'searchOrgId': number | null;
     /**
      * 
      * @type {number}
@@ -11646,7 +11721,7 @@ export interface MaterialInternalInfo {
      * @type {MaterialPriceInfo}
      * @memberof MaterialInternalInfo
      */
-    'priceInfo': MaterialPriceInfo;
+    'priceInfo': MaterialPriceInfo | null;
     /**
      * 
      * @type {MaterialInternalInventoryInfo}
@@ -12782,11 +12857,11 @@ export interface MaterialPublicMetaData {
      */
     'isMaterialOwnerSide': boolean;
     /**
-     * 該布片所屬單位的組織或團隊型態，IsMaterialOwnerSide為true時才有值
-     * @type {number}
+     * 
+     * @type {OgType}
      * @memberof MaterialPublicMetaData
      */
-    'materialOwnerOGType': number | null;
+    'materialOwnerOGType': OgType | null;
     /**
      * 該布片所屬單位的組織或團隊ID，IsMaterialOwnerSide為true時才有值
      * @type {number}
@@ -12794,6 +12869,8 @@ export interface MaterialPublicMetaData {
      */
     'materialOwnerOGId': number | null;
 }
+
+
 /**
  * 單位
  * @export
@@ -18809,7 +18886,7 @@ export interface Plan {
      * @type {PlanQuota}
      * @memberof Plan
      */
-    'quota'?: PlanQuota;
+    'quota': PlanQuota;
     /**
      * 
      * @type {boolean}
@@ -18845,13 +18922,13 @@ export interface PlanQuota {
      * @type {PlanQuotaMaterial}
      * @memberof PlanQuota
      */
-    'material'?: PlanQuotaMaterial;
+    'material': PlanQuotaMaterial;
     /**
      * 
      * @type {PlanQuotaMaterial}
      * @memberof PlanQuota
      */
-    'u3m'?: PlanQuotaMaterial;
+    'u3m': PlanQuotaMaterial;
     /**
      * 
      * @type {PlanQuotaMember}
@@ -18870,19 +18947,19 @@ export interface PlanQuotaMaterial {
      * @type {number}
      * @memberof PlanQuotaMaterial
      */
-    'max'?: number;
+    'max': number;
     /**
      * 
      * @type {number}
      * @memberof PlanQuotaMaterial
      */
-    'used'?: number;
+    'used': number;
     /**
      * 
      * @type {boolean}
      * @memberof PlanQuotaMaterial
      */
-    'isUnlimited'?: boolean;
+    'isUnlimited': boolean;
 }
 /**
  * 
@@ -18895,13 +18972,13 @@ export interface PlanQuotaMember {
      * @type {number}
      * @memberof PlanQuotaMember
      */
-    'max'?: number;
+    'max': number;
     /**
      * 
      * @type {number}
      * @memberof PlanQuotaMember
      */
-    'used'?: number;
+    'used': number;
 }
 /**
  * 
@@ -21908,6 +21985,27 @@ export type StickerBaseTypeEnum = typeof StickerBaseTypeEnum[keyof typeof Sticke
 /**
  * 
  * @export
+ * @interface TargetOg
+ */
+export interface TargetOg {
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof TargetOg
+     */
+    'ogId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof TargetOg
+     */
+    'ogType': OgType;
+}
+
+
+/**
+ * 
+ * @export
  * @interface ThreadBoard
  */
 export interface ThreadBoard {
@@ -24598,11 +24696,13 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary assets add to workspace
-         * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
+         * @param {AssetsMaterialAddToWorkspaceRequest} assetsMaterialAddToWorkspaceRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        assetsMaterialAddToWorkspace: async (assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        assetsMaterialAddToWorkspace: async (assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'assetsMaterialAddToWorkspaceRequest' is not null or undefined
+            assertParamExists('assetsMaterialAddToWorkspace', 'assetsMaterialAddToWorkspaceRequest', assetsMaterialAddToWorkspaceRequest)
             const localVarPath = `/assets/material/add-to-workspace`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -24748,11 +24848,13 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary Clone
-         * @param {CloneAssetsMaterialListRequest} [cloneAssetsMaterialListRequest] 
+         * @param {CloneAssetsMaterialListRequest} cloneAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneAssetsMaterialList: async (cloneAssetsMaterialListRequest?: CloneAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cloneAssetsMaterialList: async (cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cloneAssetsMaterialListRequest' is not null or undefined
+            assertParamExists('cloneAssetsMaterialList', 'cloneAssetsMaterialListRequest', cloneAssetsMaterialListRequest)
             const localVarPath = `/assets/material/clone`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25438,11 +25540,13 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          *  **Access roles:** To be clear define
          * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
-         * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
+         * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        smartUploadAssetsMaterialList: async (smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        smartUploadAssetsMaterialList: async (smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'smartUploadAssetsMaterialListRequest' is not null or undefined
+            assertParamExists('smartUploadAssetsMaterialList', 'smartUploadAssetsMaterialListRequest', smartUploadAssetsMaterialListRequest)
             const localVarPath = `/assets/material/smart-upload`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25828,11 +25932,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary assets add to workspace
-         * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
+         * @param {AssetsMaterialAddToWorkspaceRequest} assetsMaterialAddToWorkspaceRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetsMaterialAddToWorkspace200Response>> {
+        async assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetsMaterialAddToWorkspace200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -25872,11 +25976,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Clone
-         * @param {CloneAssetsMaterialListRequest} [cloneAssetsMaterialListRequest] 
+         * @param {CloneAssetsMaterialListRequest} cloneAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cloneAssetsMaterialList(cloneAssetsMaterialListRequest?: CloneAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneAssetsMaterialList(cloneAssetsMaterialListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -25887,7 +25991,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+        async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createAssetsMaterial(createAssetsMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26070,11 +26174,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          *  **Access roles:** To be clear define
          * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
-         * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
+         * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26190,11 +26294,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary assets add to workspace
-         * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
+         * @param {AssetsMaterialAddToWorkspaceRequest} assetsMaterialAddToWorkspaceRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options?: any): AxiosPromise<AssetsMaterialAddToWorkspace200Response> {
+        assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: any): AxiosPromise<AssetsMaterialAddToWorkspace200Response> {
             return localVarFp.assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26230,11 +26334,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary Clone
-         * @param {CloneAssetsMaterialListRequest} [cloneAssetsMaterialListRequest] 
+         * @param {CloneAssetsMaterialListRequest} cloneAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneAssetsMaterialList(cloneAssetsMaterialListRequest?: CloneAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.cloneAssetsMaterialList(cloneAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26244,7 +26348,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+        createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: any): AxiosPromise<CreateAssetsMaterial200Response> {
             return localVarFp.createAssetsMaterial(createAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26410,11 +26514,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          *  **Access roles:** To be clear define
          * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
-         * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
+         * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26520,12 +26624,12 @@ export class AssetsApi extends BaseAPI {
     /**
      * 
      * @summary assets add to workspace
-     * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
+     * @param {AssetsMaterialAddToWorkspaceRequest} assetsMaterialAddToWorkspaceRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig) {
+    public assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -26568,12 +26672,12 @@ export class AssetsApi extends BaseAPI {
     /**
      * 
      * @summary Clone
-     * @param {CloneAssetsMaterialListRequest} [cloneAssetsMaterialListRequest] 
+     * @param {CloneAssetsMaterialListRequest} cloneAssetsMaterialListRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public cloneAssetsMaterialList(cloneAssetsMaterialListRequest?: CloneAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+    public cloneAssetsMaterialList(cloneAssetsMaterialListRequest: CloneAssetsMaterialListRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).cloneAssetsMaterialList(cloneAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -26784,12 +26888,12 @@ export class AssetsApi extends BaseAPI {
     /**
      *  **Access roles:** To be clear define
      * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
-     * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
+     * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+    public smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28335,7 +28439,7 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -28485,7 +28589,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+        digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: any): AxiosPromise<CreateAssetsMaterial200Response> {
             return localVarFp.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -32370,11 +32474,13 @@ export const OrgApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * 
          * @summary 取得組織資訊
-         * @param {OrgGetPostRequest} [orgGetPostRequest] 
+         * @param {OrgGetPostRequest} orgGetPostRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGetPost: async (orgGetPostRequest?: OrgGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orgGetPost: async (orgGetPostRequest: OrgGetPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'orgGetPostRequest' is not null or undefined
+            assertParamExists('orgGetPost', 'orgGetPostRequest', orgGetPostRequest)
             const localVarPath = `/org/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -32614,11 +32720,11 @@ export const OrgApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得組織資訊
-         * @param {OrgGetPostRequest} [orgGetPostRequest] 
+         * @param {OrgGetPostRequest} orgGetPostRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orgGetPost(orgGetPostRequest?: OrgGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
+        async orgGetPost(orgGetPostRequest: OrgGetPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrgGetPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.orgGetPost(orgGetPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -32719,11 +32825,11 @@ export const OrgApiFactory = function (configuration?: Configuration, basePath?:
         /**
          * 
          * @summary 取得組織資訊
-         * @param {OrgGetPostRequest} [orgGetPostRequest] 
+         * @param {OrgGetPostRequest} orgGetPostRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orgGetPost(orgGetPostRequest?: OrgGetPostRequest, options?: any): AxiosPromise<OrgGetPost200Response> {
+        orgGetPost(orgGetPostRequest: OrgGetPostRequest, options?: any): AxiosPromise<OrgGetPost200Response> {
             return localVarFp.orgGetPost(orgGetPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -32827,12 +32933,12 @@ export class OrgApi extends BaseAPI {
     /**
      * 
      * @summary 取得組織資訊
-     * @param {OrgGetPostRequest} [orgGetPostRequest] 
+     * @param {OrgGetPostRequest} orgGetPostRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrgApi
      */
-    public orgGetPost(orgGetPostRequest?: OrgGetPostRequest, options?: AxiosRequestConfig) {
+    public orgGetPost(orgGetPostRequest: OrgGetPostRequest, options?: AxiosRequestConfig) {
         return OrgApiFp(this.configuration).orgGetPost(orgGetPostRequest, options).then((request) => request(this.axios, this.basePath));
     }
 

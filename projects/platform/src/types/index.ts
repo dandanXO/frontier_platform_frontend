@@ -3,22 +3,12 @@ import type {
   FolderBookmark,
   WorkflowStage,
 } from '@frontier/platform-web-sdk'
-import type {
-  CROP_MODE,
-  U3M_CUT_SIDE,
-  U3M_DOWNLOAD_PROP,
-} from '@/utils/constants'
+import type { CROP_MODE, U3M_CUT_SIDE } from '@/utils/constants'
 import type Decimal from 'decimal.js'
 import type useMaterialForm from '@/composables/material/useMaterialForm'
 import type useU3mSelect from '@/composables/material/useU3mSelect'
 import type useAttachmentSelect from '@/composables/material/useAttachmentSelect'
 import type useMultimediaSelect from '@/composables/material/useMultimediaSelect'
-
-export interface DownloadU3mPayload {
-  materialId: number
-  url: string
-  format: U3M_DOWNLOAD_PROP
-}
 
 export interface Image {
   width: number

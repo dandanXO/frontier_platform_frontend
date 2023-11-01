@@ -5,8 +5,8 @@ div(class="flex items-center")
       :class="[getClasses(index, option.selectValue), { 'rounded-l': index === 0, 'rounded-r': index === optionList.length - 1 }]"
       @click="$emit('update:inputValue', option.selectValue)"
     )
-      f-svg-icon(v-if="option.icon?.length > 0" :iconName="getIcon(option)" size="24")
-      span(v-if="option.label?.length > 0" class="text-body2 font-bold") {{ option.label }}
+      f-svg-icon(v-if="option.icon" :iconName="getIcon(option)" size="24")
+      span(v-if="option.label" class="text-body2 font-bold") {{ option.label }}
 </template>
 
 <script setup lang="ts">

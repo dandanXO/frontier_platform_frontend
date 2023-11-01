@@ -15,20 +15,23 @@ modal-behavior(
 )
   div(class="w-151 h-101 flex flex-col")
     f-input-text(
-      v-model:textValue="keyword"
+      v-model:textValue="queryParams.keyword"
       prependIcon="search"
       :placeholder="$t('RR0118')"
       :disabled="isInRoot"
-      @enter="getWorkspaceForModal()"
+      @enter="getWorkspaceList()"
     )
     div(class="flex-grow flex flex-col")
       div(class="relative z-20 flex justify-between items-center py-4")
         global-breadcrumb-list(
-          :breadcrumbList="breadcrumbList"
-          @click:item="goTo($event.key)"
+          :breadcrumbList="locationList"
+          @click:item="goTo($event.nodeId)"
         )
         div(class="flex items-center")
-          div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
+          div(
+            v-if="isMultiSelect && Array.isArray(selectedValue) && selectedValue.length > 0"
+            class="flex items-center"
+          )
             f-svg-icon(
               iconName="cancel"
               size="14"
@@ -55,7 +58,7 @@ modal-behavior(
                 :menuTree="sortMenuTree"
                 v-model:inputSelectValue="queryParams.sort"
                 :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
-                @click:menu="getWorkspaceForModal()"
+                @click:menu="getWorkspaceList()"
               )
       div(
         v-show="isSearching && nodeList.length === 0"
@@ -70,19 +73,20 @@ modal-behavior(
         div(class="grid grid-flow-row grid-cols-5 auto-rows-auto gap-5 px-5")
           template(v-if="isInRoot")
             grid-item-wrapper(
-              v-for="item in orgAndGroupList"
+              v-for="og in ogList"
+              :key="og.ogId"
               v-model:selectedValue="selectedValue"
               isSelectable
               :selectOnHover="false"
               :isMultiSelect="isMultiSelect"
-              :selectValue="item"
+              :selectValue="og.nodeId"
               class="w-25 h-25 border rounded-md overflow-hidden"
-              :class="[isMultiSelect && selectedValue.map((v) => JSON.stringify(v)).includes(JSON.stringify(item)) ? 'border-primary-400 bg-primary-50 text-primary-400' : 'border-grey-250 bg-grey-50 text-grey-900']"
-              @click="goTo(item.nodeKey), setRootId(item.id)"
+              :class="[isMultiSelect && Array.isArray(selectedValue) && selectedValue.some((v) => isEqual(v, og)) ? 'border-primary-400 bg-primary-50 text-primary-400' : 'border-grey-250 bg-grey-50 text-grey-900']"
+              @click="goTo(og.nodeId), (selectedOg = og)"
             )
               template(#content)
                 div(class="h-full flex justify-center items-center")
-                  p(class="text-caption text-center font-bold line-clamp-3 leading-1.6") {{ item.name }}
+                  p(class="text-caption text-center font-bold line-clamp-3 leading-1.6") {{ og.ogName }}
           template(v-else)
             div(
               class="w-25 h-25 rounded-md border border-grey-250 border-dashed flex items-center justify-center cursor-pointer"
@@ -91,20 +95,22 @@ modal-behavior(
               f-svg-icon(iconName="add" size="24" class="text-grey-900")
             template(v-for="node in nodeList")
               grid-item-node-for-modal(
-                v-if="node.nodeType === NODE_TYPE.COLLECTION"
+                v-if="node.nodeMeta.nodeType === NODE_TYPE.COLLECTION"
+                :key="node.nodeMeta.nodeId"
                 class="w-25 cursor-pointer"
-                v-model:selectedValue="selectedValue"
                 :node="node"
+                v-model:selectedValue="selectedValue"
                 :isMultiSelect="isMultiSelect"
-                @click="goTo(node.nodeKey)"
+                @click="goTo(node.nodeMeta.nodeId)"
               )
                 template(#title-right-icon)
                   tooltip-location(
                     v-if="isInKeywordSearch"
-                    :location="node.location"
+                    :locationList="node.nodeMeta.locationList"
                   )
               grid-item-node-for-modal(
-                v-if="node.nodeType === NODE_TYPE.MATERIAL"
+                v-if="node.nodeMeta.nodeType === NODE_TYPE.MATERIAL"
+                :key="node.nodeMeta.nodeId"
                 class="w-25"
                 :node="node"
                 :isSelectable="false"
@@ -112,7 +118,7 @@ modal-behavior(
                 template(#title-right-icon)
                   tooltip-location(
                     v-if="isInKeywordSearch"
-                    :location="node.location"
+                    :locationList="node.nodeMeta.locationList"
                   )
         div(
           v-if="isSearching && nodeList.length > 0"
@@ -127,66 +133,59 @@ modal-behavior(
     )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, reactive } from 'vue'
 import { useStore } from 'vuex'
-import {
-  OG_TYPE,
-  NODE_TYPE,
-  useConstants,
-  CONTEXTUAL_MENU_MODE,
-} from '@/utils/constants'
+import { NODE_TYPE, CONTEXTUAL_MENU_MODE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
 import GridItemNodeForModal from '@/components/common/gridItem/GridItemNodeForModal.vue'
 import TooltipLocation from '@/components/common/TooltipLocation.vue'
+import { useSearchStore } from '@/stores/search'
+import useNavigation from '@/composables/useNavigation'
+import {
+  OgType,
+  type Organization,
+  type Group,
+  type NodeMetaLocationListInner,
+  type NodeChild,
+  NodeType,
+} from '@frontier/platform-web-sdk'
+import { isEqual } from '@frontier/lib'
+import { useWorkspaceStore } from '@/stores/workspace'
+import useCurrentUnit from '@/composables/useCurrentUnit'
 
-const props = defineProps({
-  modalTitle: {
-    type: String,
-    required: true,
-  },
-  actionText: {
-    type: String,
-    required: true,
-  },
-  actionCallback: {
-    type: Function,
-    required: true,
-  },
-  isMultiSelect: {
-    type: Boolean,
-    default: true,
-  },
-  canCrossLocation: {
-    type: Boolean,
-    default: true,
-  },
-  canSelectSelf: {
-    type: Boolean,
-    default: true,
-  },
-  // only have value when canSelectSelf is false
-  selfNodeKey: {
-    type: String,
-    default: '',
-  },
+export interface PropsModalWorkspaceNodeList {
+  modalTitle: string
+  actionText: string
+  actionCallback: (nodeIdList: number[]) => void
+  isMultiSelect?: boolean
+  canCrossLocation?: boolean
+  canSelectSelf?: boolean
+  selfNodeId?: number
+}
+
+const props = withDefaults(defineProps<PropsModalWorkspaceNodeList>(), {
+  isMultiSelect: true,
+  canCrossLocation: true,
+  canSelectSelf: true,
 })
 
 const { t } = useI18n()
+const { ogType } = useNavigation()
+const { ogNodeId } = useCurrentUnit()
+const searchStore = useSearchStore()
+const workspaceStore = useWorkspaceStore()
 const store = useStore()
-const { SORT_BY } = useConstants()
 const sortMenuTree = computed(() => {
-  const { CREATE_DATE_C_M, MATERIAL_NO_A_Z_C_M } = SORT_BY.value
+  const { CREATE_DATE_C_M, ITEM_NO_A_Z_C_M } = searchStore.sortOption
   return {
     blockList: [
       {
-        menuList: [CREATE_DATE_C_M, MATERIAL_NO_A_Z_C_M].map(
-          ({ text, value }) => ({
-            title: text,
-            selectValue: value,
-          })
-        ),
+        menuList: [CREATE_DATE_C_M, ITEM_NO_A_Z_C_M].map(({ text, value }) => ({
+          title: text,
+          selectValue: value,
+        })),
       },
     ],
   }
@@ -194,226 +193,142 @@ const sortMenuTree = computed(() => {
 
 const isSearching = ref(false)
 const isOnlyShowCollection = ref(false)
-const pureNodeList = ref([])
-const selectedValue = ref(props.isMultiSelect ? [] : '')
-const appendedBreadcrumbList = ref([])
-const keyword = ref('')
+const pureNodeList = ref<NodeChild[]>([])
+const selectedValue = ref<number[] | number | null>(
+  props.isMultiSelect ? [] : null
+)
+const appendedLocationList = ref<NodeMetaLocationListInner[]>([])
 const queryParams = reactive({
-  keyword: '',
+  keyword: null as string | null,
   targetPage: 1,
-  sort: SORT_BY.value.CREATE_DATE_C_M.value,
-  workspaceNodeId: null,
-  workspaceNodeLocation: null,
+  sort: searchStore.sortOption.CREATE_DATE_C_M.value,
+  nodeId: ogNodeId.value,
 })
 const totalPage = ref(1)
-const rootId = ref(0)
 
-const routeLocation = computed(() => store.getters['helper/routeLocation'])
-const orgAndGroupList = computed(() => {
+const ogList = computed(() => {
   const list = []
-  if (routeLocation.value === 'org') {
-    const organization = store.getters['organization/organization']
+  if (ogType.value === OgType.ORG) {
+    const organization = store.getters[
+      'organization/organization'
+    ] as Organization
     list.push({
-      id: organization.orgId,
-      nodeKey: `${OG_TYPE.ORG}-${organization.workspaceNodeId}`,
-      name: organization.orgName,
+      ogId: organization.orgId,
+      nodeId: organization.nodeId,
+      ogName: organization.orgName,
     })
     if (props.canCrossLocation) {
       organization.groupList.forEach((group) => {
         list.push({
-          id: group.groupId,
-          nodeKey: `${OG_TYPE.GROUP}-${group.workspaceNodeId}`,
-          name: group.groupName,
+          ogId: group.groupId,
+          nodeId: group.nodeId,
+          ogName: group.groupName,
         })
       })
     }
   } else {
-    const { groupId, workspaceNodeId, groupName } = store.getters['group/group']
+    const { groupId, nodeId, groupName } = store.getters['group/group'] as Group
     list.push({
-      id: groupId,
-      nodeKey: `${OG_TYPE.GROUP}-${workspaceNodeId}`,
-      name: groupName,
+      ogId: groupId,
+      nodeId,
+      ogName: groupName,
     })
   }
   return list
 })
-const breadcrumbList = computed(() => {
-  const list = [...appendedBreadcrumbList.value]
-  list.unshift({
-    name: t('RR0142'),
-    key: 'root',
-  })
+const selectedOg = ref<{
+  ogId: number
+  ogName: string
+}>()
+const locationList = computed(() => {
+  const list = [
+    {
+      name: t('RR0142'),
+      nodeId: -1,
+    },
+  ]
+
+  if (selectedOg.value) {
+    list.push({
+      name: selectedOg.value.ogName,
+      nodeId: selectedOg.value.ogId,
+    })
+  }
+  list.push(...appendedLocationList.value)
   return list
 })
 const isInKeywordSearch = computed(() => !!queryParams.keyword)
-const isInRoot = computed(() => breadcrumbList.value.length === 1)
-const nodeList = computed(() => {
-  let temp = pureNodeList.value
-  if (isOnlyShowCollection.value) {
-    temp = temp.filter((node) => node.nodeType === NODE_TYPE.COLLECTION)
-  }
-  if (isInKeywordSearch.value) {
-    temp = temp.filter((node) => node.nodeType === NODE_TYPE.COLLECTION)
-  }
-  if (!props.canSelectSelf) {
-    temp = temp.filter((node) => node.nodeKey !== props.selfNodeKey)
-  }
-  return temp
+const isInRoot = computed(() => locationList.value.length === 1)
+const nodeList = computed<NodeChild[]>(() => {
+  return pureNodeList.value.filter((node) => {
+    if (isOnlyShowCollection.value) {
+      return node.nodeMeta.nodeType === NodeType.COLLECTION
+    }
+    if (isInKeywordSearch.value) {
+      return node.nodeMeta.nodeType === NodeType.COLLECTION
+    }
+    if (!props.canSelectSelf) {
+      return node.nodeMeta.nodeId !== props.selfNodeId
+    }
+    return true
+  })
 })
 const actionButtonDisabled = computed(() => {
   return props.isMultiSelect
-    ? selectedValue.value.length === 0
+    ? Array.isArray(selectedValue.value) && selectedValue.value.length === 0
     : !selectedValue.value
 })
 
-const setRootId = (id) => (rootId.value = id)
-
-const getWorkspaceForModal = async (targetPage = 1, needReset = true) => {
+const getWorkspaceList = async (targetPage = 1, needReset = true) => {
   isSearching.value = true
 
   queryParams.targetPage = targetPage
-  queryParams.keyword = keyword.value
 
   // first time clear for loading UI
   needReset && (pureNodeList.value.length = 0)
 
-  const { pagination, workspaceCollection } = await store.dispatch(
-    'workspace/getWorkspaceForModal',
-    queryParams
-  )
+  const {
+    data: {
+      result: { workspaceNodeCollection, pagination },
+    },
+  } = await workspaceStore.ogBaseWorkspaceApi('getWorkspaceList', {
+    nodeId: queryParams.nodeId,
+    pagination: {
+      isShowMatch: false,
+      perPageCount: 40,
+      sort: queryParams.sort,
+      targetPage: queryParams.targetPage,
+    },
+    search: queryParams.keyword
+      ? {
+          keyword: queryParams.keyword,
+          tagList: [],
+        }
+      : null,
+    filter: null,
+  })
+
   totalPage.value = pagination.totalPage
 
-  appendedBreadcrumbList.value = workspaceCollection.breadcrumbList.map(
-    (item) => ({
-      key: `${item.workspaceNodeLocation}-${item.workspaceNodeId}`,
-      name: item.name,
-    })
-  )
+  appendedLocationList.value = workspaceNodeCollection.nodeMeta.locationList
 
   needReset && (pureNodeList.value.length = 0)
 
-  if (workspaceCollection.childCollectionList.length > 0) {
-    workspaceCollection.childCollectionList.forEach((collection) => {
-      const {
-        workspaceNodeLocation,
-        workspaceNodeId,
-        isPublic,
-        isCanShared,
-        isCanClone,
-        isCanDownloadU3M,
-        location,
-        publicDate,
-        share,
-        publish,
-        /** collection property */
-        collectionId,
-        name,
-        coverImgList,
-        itemCounts,
-        hasChildCollection,
-      } = collection
-      pureNodeList.value.push({
-        workspaceNodeId,
-        workspaceNodeLocation,
-        nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}`,
-        nodeType: NODE_TYPE.COLLECTION,
-        location,
-        isPublic,
-        isCanShared,
-        isCanClone,
-        isCanDownloadU3M,
-        publicDate,
-        share,
-        publish,
-        properties: {
-          collectionId,
-          name,
-          coverImgList,
-          itemCounts,
-          hasChildCollection,
-        },
-      })
-    })
-  }
-
-  if (workspaceCollection.childMaterialList.length > 0) {
-    workspaceCollection.childMaterialList.forEach((material) => {
-      const {
-        workspaceNodeId,
-        workspaceNodeLocation,
-        isPublic,
-        isCanShared,
-        isCanClone,
-        isCanDownloadU3M,
-        location,
-        publicDate,
-        share,
-        publish,
-        rank,
-        /** material property */
-        materialId,
-        materialNo,
-        content,
-        description,
-        finish,
-        width,
-        weightUnit,
-        weightGsm,
-        weightOz,
-        weightOy,
-        warpDensity,
-        weftDensity,
-        warpYarnCount,
-        weftYarnCount,
-        coverImg,
-      } = material
-      pureNodeList.value.push({
-        workspaceNodeId,
-        workspaceNodeLocation,
-        nodeKey: `${workspaceNodeLocation}-${workspaceNodeId}`,
-        nodeType: NODE_TYPE.MATERIAL,
-        location,
-        isPublic,
-        isCanShared,
-        isCanClone,
-        isCanDownloadU3M,
-        publicDate,
-        share,
-        publish,
-        rank,
-        properties: {
-          materialId,
-          materialNo,
-          content,
-          description,
-          finish,
-          width,
-          weightUnit,
-          weightGsm,
-          weightOz,
-          weightOy,
-          warpDensity,
-          weftDensity,
-          warpYarnCount,
-          weftYarnCount,
-          coverImg,
-        },
-      })
-    })
-  }
+  workspaceNodeCollection.childNodeList.forEach((node) =>
+    pureNodeList.value.push(node)
+  )
 
   isSearching.value = false
 }
 
-const goTo = (key) => {
-  keyword.value = null
-  if (key === 'root') {
-    appendedBreadcrumbList.value.length = 0
+const goTo = (nodeId: number) => {
+  queryParams.keyword = null
+  if (nodeId === -1) {
+    appendedLocationList.value.length = 0
+    selectedOg.value = undefined
   } else {
-    const [workspaceNodeLocation, workspaceNodeId] = key.split('-')
-    queryParams.workspaceNodeLocation = workspaceNodeLocation
-    queryParams.workspaceNodeId = workspaceNodeId
-    getWorkspaceForModal()
+    queryParams.nodeId = nodeId
+    getWorkspaceList()
   }
 }
 
@@ -424,25 +339,33 @@ const infiniteScroll = () => {
 
   const currentPage = queryParams.targetPage
   if (currentPage !== totalPage.value) {
-    getWorkspaceForModal(Math.min(currentPage + 1, totalPage.value), false)
+    getWorkspaceList(Math.min(currentPage + 1, totalPage.value), false)
   }
 }
 
-const clearSelect = () => (selectedValue.value.length = 0)
+const clearSelect = () => {
+  Array.isArray(selectedValue.value) && (selectedValue.value.length = 0)
+}
 
 const openModalCreateCollectionSimple = () => {
   store.dispatch('helper/pushModalBehavior', {
     component: 'modal-create-collection-simple',
     properties: {
-      id: rootId.value,
-      workspaceNodeLocation: Number(queryParams.workspaceNodeLocation),
-      workspaceNodeId: Number(queryParams.workspaceNodeId),
-      callback: getWorkspaceForModal,
+      nodeId: queryParams.nodeId,
+      callback: () => {
+        getWorkspaceList()
+      },
     },
   })
 }
 
 const innerActionCallback = async () => {
-  await props.actionCallback(selectedValue.value)
+  await props.actionCallback(
+    Array.isArray(selectedValue.value)
+      ? selectedValue.value
+      : selectedValue.value !== null
+      ? [selectedValue.value]
+      : []
+  )
 }
 </script>

@@ -24,8 +24,7 @@ modal-behavior(
     f-input-file(
       class="w-full mb-12"
       :label="$t('DD0038')"
-      v-model:fileName="fileName"
-      :acceptType="acceptType"
+      :acceptType="[EXTENSION.XLSX]"
       :maximumSize="fileSizeMaxLimit"
       :text="$t('UU0025')"
       @finish="onFinish"
@@ -42,30 +41,36 @@ modal-behavior(
       p {{ $t('DD0037') }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import { UPLOAD_ERROR_CODE } from '@/utils/constants'
+import { useAssetsStore } from '@/stores/assets'
+import { uploadFileToS3 } from '@/utils/fileUpload'
+import type {
+  BatchUploadAssetsMaterialList200Response,
+  BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner,
+} from '@frontier/platform-web-sdk'
+import { EXTENSION } from '@frontier/constants'
 
 const { t, locale } = useI18n()
 const store = useStore()
-const fileName = ref('')
-const errorCode = ref('')
+const { ogBaseAssetsApi } = useAssetsStore()
+const errorCode = ref<UPLOAD_ERROR_CODE>()
 const showErrorList = ref(false)
 const disabledUpload = computed(
   () =>
-    !fileName.value.length > 0 ||
-    showErrorList.value ||
-    errorCode.value.length !== 0
+    !uploadedFile.value || showErrorList.value || errorCode.value !== undefined
 )
 const { goToProgress, goToAssets } = useNavigation()
-let errorList
-let binaryFile
+const errorList = ref<
+  BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner[]
+>([])
+const uploadedFile = ref<File>()
 
 const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
-const acceptType = ['xlsx']
 
 const excelTemplateDownloadLink = computed(() => {
   const endpoint = import.meta.env.VITE_APP_WEB_URL
@@ -74,21 +79,32 @@ const excelTemplateDownloadLink = computed(() => {
     'en-US': 'MassUploadFromat(英文版)',
     'ja-JP': 'MassUploadFromat(日文版)',
   }
-  return `${endpoint}/Resource/MaterialExportTemplate/${
-    fileNameLocaleMap[locale.value]
-  }.xlsx`
+  const lang = locale.value as keyof typeof fileNameLocaleMap
+  return `${endpoint}/Resource/MaterialExportTemplate/${fileNameLocaleMap[lang]}.xlsx`
 })
 
-const onFinish = (file) => {
-  binaryFile = file
-  errorCode.value = ''
+const onFinish = (file: File) => {
+  uploadedFile.value = file
+  errorCode.value = undefined
   showErrorList.value = false
 }
 
 const handleUpload = async () => {
   try {
+    if (!uploadedFile.value) {
+      return
+    }
+
     store.dispatch('helper/pushModalLoading')
-    await store.dispatch('assets/batchUpload', { xlsxFile: binaryFile })
+
+    const { s3UploadId, fileName } = await uploadFileToS3(
+      uploadedFile.value,
+      uploadedFile.value.name
+    )
+    await ogBaseAssetsApi('batchUploadAssetsMaterialList', {
+      s3UploadId,
+      fileName,
+    })
     store.dispatch('helper/clearModalPipeline')
     store.dispatch('helper/openModalBehavior', {
       component: 'modal-how-to-scan',
@@ -108,7 +124,7 @@ const handleUpload = async () => {
       },
     })
   } catch (error) {
-    const { code, result } = error
+    const { code, result } = error as BatchUploadAssetsMaterialList200Response
     store.dispatch('helper/closeModalLoading')
 
     switch (code) {
@@ -117,7 +133,7 @@ const handleUpload = async () => {
         break
       case 'ERR0017':
         showErrorList.value = true
-        errorList = result.errorList
+        errorList.value = result?.errorList ?? []
         break
       default:
         throw error

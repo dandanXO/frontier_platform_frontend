@@ -70,7 +70,7 @@ import useNavigation from '@/composables/useNavigation'
 import usePrint from '@/composables/material/usePrint'
 import type { Material } from '@frontier/platform-web-sdk'
 
-defineProps<{
+export interface PropsModalHowToScan {
   header: string
   title: string
   description?: string
@@ -79,7 +79,9 @@ defineProps<{
   primaryHandler?: () => void
   secondaryHandler?: () => void
   materialList?: Material[]
-}>()
+}
+
+defineProps<PropsModalHowToScan>()
 
 const { goToAssets } = useNavigation()
 

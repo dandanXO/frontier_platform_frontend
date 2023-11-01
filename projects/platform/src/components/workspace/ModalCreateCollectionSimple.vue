@@ -11,36 +11,25 @@ modal-behavior(
       ref="refInputCollectionName"
       v-model:textValue="collectionName"
       required
-      :rules="[$inputRules.required(), $inputRules.maxLength(COLLECTION_NAME_MAX_LENGTH)]"
+      :rules="[inputRules.required(), inputRules.maxLength(COLLECTION_NAME_MAX_LENGTH)]"
       :hintError="isCollectionNameExist ? $t('WW0001') : ''"
     )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import { useStore } from 'vuex'
 import { COLLECTION_NAME_MAX_LENGTH } from '@/utils/constants'
+import { useWorkspaceStore } from '@/stores/workspace'
+import { inputRules } from '@frontier/lib'
+
+const props = defineProps<{
+  nodeId: number
+  callback: () => void
+}>()
+
 const store = useStore()
-
-const props = defineProps({
-  id: {
-    type: Number,
-    required: true,
-  },
-  workspaceNodeLocation: {
-    type: Number,
-    required: true,
-  },
-  workspaceNodeId: {
-    type: Number,
-    required: true,
-  },
-  callback: {
-    type: Function,
-    required: true,
-  },
-})
-
+const workspaceStore = useWorkspaceStore()
 const collectionName = ref('')
 const isCollectionNameExist = ref(false)
 const refInputCollectionName = ref(null)
@@ -56,11 +45,11 @@ watch(
 )
 const createCollectionForModal = async () => {
   try {
-    await store.dispatch('workspace/createCollectionForModal', {
-      id: props.id,
-      workspaceNodeLocation: props.workspaceNodeLocation,
-      workspaceNodeId: props.workspaceNodeId,
+    await workspaceStore.ogBaseWorkspaceApi('createWorkspaceCollection', {
+      nodeId: props.nodeId,
       collectionName: collectionName.value,
+      description: null,
+      trendBoard: null,
     })
     store.dispatch('helper/closeModal')
     props.callback()

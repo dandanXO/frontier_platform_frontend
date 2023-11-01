@@ -155,6 +155,9 @@ export default {
     ModalMaterialNoList: defineAsyncComponent(() =>
       import('@/components/assets/progress/ModalMaterialNoList.vue')
     ),
+    ModalItemNoList: defineAsyncComponent(() =>
+      import('@/components/common/material/ModalItemNoList.vue')
+    ),
     ModalAssetsList: defineAsyncComponent(() =>
       import('@/components/assets/ModalAssetsList.vue')
     ),

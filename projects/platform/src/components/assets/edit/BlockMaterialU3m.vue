@@ -28,10 +28,6 @@ div(class="w-79")
             :materialId="material.materialId"
             :u3m="material.u3m"
           )
-          material-u3m-download-button(
-            :materialId="material.materialId"
-            :u3m="material.u3m"
-          )
         material-u3m-status-block(:u3m="material.u3m")
           template(
             v-if="[INITIAL, UNQUALIFIED].includes(material.u3m.status)"
@@ -92,10 +88,7 @@ div(class="w-79")
             :materialId="material.materialId"
             :u3m="material.customU3m"
           )
-          material-u3m-download-button(
-            :materialId="material.materialId"
-            :u3m="material.customU3m"
-          )
+
         material-u3m-status-block(:u3m="material.customU3m")
           template(
             v-if="material.customU3m.status === COMPLETED"

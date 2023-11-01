@@ -3,9 +3,16 @@ import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import useNavigation from '@/composables/useNavigation'
 import { U3M_STATUS, NOTIFY_TYPE } from '@/utils/constants'
-import type { Material, OgType } from '@frontier/platform-web-sdk'
+import type { Material } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
 import usePrint from '@/composables/material/usePrint'
+import generalApi from '@/apis/general'
+import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
+import type { PropsModalCloneTo } from '@/components/common/ModalCloneTo.vue'
+import { useAssetsStore } from '@/stores/assets'
+import type { PropsModalItemNoList } from '@/components/common/material/ModalItemNoList.vue'
+import type { PropsModalHowToScan } from '@/components/assets/ModalHowToScan.vue'
+import type { PropsModalWorkspaceNodeList } from '@/components/workspace/ModalWorkspaceNodeList.vue'
 
 export enum ASSETS_MATERIAL_FUNCTION {
   EDIT = 0,
@@ -32,9 +39,11 @@ export default function useAssets() {
     Array.isArray(m) ? m : [m]
   const toMaterialIdList = (m: Material | Material[]) =>
     toMaterialList(m).map(({ materialId }) => materialId)
+  const ogBaseGeneralApiWrapper = useOgBaseApiWrapper(generalApi)
 
   const { t } = useI18n()
   const store = useStore()
+  const { ogBaseAssetsApi } = useAssetsStore()
   const notify = useNotifyStore()
   const { goToAssetMaterialEdit, goToMaterialUpload, goToProgress } =
     useNavigation()
@@ -47,7 +56,7 @@ export default function useAssets() {
       const material = toMaterial(m)
       goToAssetMaterialEdit(
         material.materialId,
-        material.metaData.materialOwnerOGType
+        material.metaData.materialOwnerOGType!
       )
     },
   }
@@ -56,24 +65,30 @@ export default function useAssets() {
     name: () => t('RR0167'),
     func: (m) => {
       const materialIdList = toMaterialIdList(m)
+      const properties: PropsModalCloneTo = {
+        checkHandler: async () => {
+          const { data } = await ogBaseGeneralApiWrapper(
+            'cloneCheckByMaterial',
+            {
+              materialIdList,
+            }
+          )
+          return data.result.estimatedQuota
+        },
+        cloneHandler: async (targetOgList, optional) => {
+          await ogBaseAssetsApi('cloneAssetsMaterialList', {
+            targetOgList,
+            materialIdList,
+            optional,
+          })
+          store.dispatch('helper/reloadInnerApp')
+          notify.showNotifySnackbar({ messageText: t('EE0056') })
+        },
+      }
+
       store.dispatch('helper/openModalBehavior', {
         component: 'modal-clone-to',
-        properties: {
-          checkHandler: () =>
-            store.dispatch('assets/cloneCheck', { materialIdList }),
-          cloneHandler: async (
-            targetLocationList: { id: number; location: OgType }[],
-            optional: { u3m: boolean; attachment: boolean }
-          ) => {
-            await store.dispatch('assets/cloneMaterial', {
-              targetLocationList,
-              materialIdList,
-              optional,
-            })
-            store.dispatch('helper/reloadInnerApp')
-            notify.showNotifySnackbar({ messageText: t('EE0056') })
-          },
-        },
+        properties,
       })
     },
   }
@@ -97,43 +112,42 @@ export default function useAssets() {
         properties: {
           modalTitle: t('EE0057'),
           actionText: t('UU0035'),
-          actionCallback: async (nodeList: { nodeKey: string }[]) => {
-            const failMaterialList = await store.dispatch(
-              'assets/addToWorkspace',
-              {
-                materialIdList,
-                targetWorkspaceNodeList: nodeList.map(({ nodeKey }) => {
-                  const [location, id] = nodeKey.split('-')
-                  return { id, location }
-                }),
-              }
-            )
-
-            if (failMaterialList && failMaterialList.length > 0) {
+          actionCallback: async (targetNodeIdList) => {
+            const {
+              data: {
+                result: { failMaterialItemNoList },
+              },
+            } = await ogBaseAssetsApi('assetsMaterialAddToWorkspace', {
+              materialIdList,
+              targetNodeIdList,
+            })
+            if (failMaterialItemNoList && failMaterialItemNoList.length > 0) {
               store.dispatch('helper/openModalBehavior', {
-                component: 'modal-material-no-list',
+                component: 'modal-item-no-list',
                 properties: {
-                  header: t('EE0063', { number: failMaterialList.length }),
+                  header: t('EE0063', {
+                    number: failMaterialItemNoList.length,
+                  }),
                   primaryBtnText: t('UU0031'),
                   primaryBtnHandler: () => {
                     store.dispatch('helper/closeModalBehavior')
                   },
                   content: t('EE0064'),
-                  materialNoList: failMaterialList,
-                },
+                  itemNoList: failMaterialItemNoList,
+                } as PropsModalItemNoList,
               })
             } else {
               store.dispatch('helper/closeModal')
             }
 
             if (
-              !failMaterialList ||
-              failMaterialList.length !== materialIdList.length
+              !failMaterialItemNoList ||
+              failMaterialItemNoList.length !== materialIdList.length
             ) {
               notify.showNotifySnackbar({ messageText: t('EE0062') })
             }
           },
-        },
+        } as PropsModalWorkspaceNodeList,
       })
     },
   }
@@ -151,7 +165,6 @@ export default function useAssets() {
     },
     func: (m) => {
       const material = toMaterial(m)
-      store.dispatch('assets/setMaterial', material)
       const { faceSide, backSide } = material
       const hasScannedImage = !!faceSide?.sideImage || !!backSide?.sideImage
 
@@ -163,7 +176,10 @@ export default function useAssets() {
           contentText: t('EE0143'),
           primaryBtnText: t('UU0126'),
           primaryBtnHandler: () => {
-            goToAssetMaterialEdit(material)
+            goToAssetMaterialEdit(
+              material.materialId,
+              material.metaData.materialOwnerOGType!
+            )
             store.dispatch('helper/closeModalBehavior')
           },
           secondaryBtnText: t('UU0127'),
@@ -196,7 +212,7 @@ export default function useAssets() {
                   store.dispatch('helper/closeModalBehavior')
                 },
                 materialList: toMaterialList(material),
-              },
+              } as PropsModalHowToScan,
             })
           },
         })
@@ -264,7 +280,9 @@ export default function useAssets() {
     func: async (m) => {
       const materialIdList = toMaterialIdList(m)
       if (materialIdList.length >= 100) {
-        await store.dispatch('assets/massExportMaterial', { materialIdList })
+        await ogBaseAssetsApi('massExportAssetsMaterialExcel', {
+          materialIdList,
+        })
         store.dispatch('helper/openModalConfirm', {
           type: NOTIFY_TYPE.SUCCESS,
           header: t('PP0030'),
@@ -278,7 +296,7 @@ export default function useAssets() {
         })
       } else {
         store.dispatch('helper/openModalLoading')
-        await store.dispatch('assets/exportMaterial', { materialIdList })
+        await ogBaseAssetsApi('exportAssetsMaterialExcel', { materialIdList })
         store.dispatch('helper/closeModalLoading')
       }
     },
@@ -314,8 +332,13 @@ export default function useAssets() {
     name: () => t('RR0063'),
     func: async (m) => {
       const materialIdList = toMaterialIdList(m)
-      const { isOnExportingExcel, isOnGeneratingU3m, materialNoList } =
-        await store.dispatch('assets/deleteCheckMaterial', { materialIdList })
+      const {
+        data: {
+          result: { isOnExportingExcel, isOnGeneratingU3m, itemNoList },
+        },
+      } = await ogBaseAssetsApi('checkDeleteAssetsMaterialList', {
+        materialIdList,
+      })
       if (!isOnExportingExcel && !isOnGeneratingU3m) {
         store.dispatch('helper/openModalConfirm', {
           type: NOTIFY_TYPE.WARNING,
@@ -324,7 +347,9 @@ export default function useAssets() {
           primaryBtnText: t('UU0001'),
           primaryBtnHandler: async () => {
             store.dispatch('helper/openModalLoading')
-            await store.dispatch('assets/deleteMaterial', { materialIdList })
+            await ogBaseAssetsApi('deleteAssetsMaterialList', {
+              materialIdList,
+            })
             store.dispatch('helper/closeModalLoading')
             store.dispatch('helper/reloadInnerApp')
           },
@@ -349,7 +374,7 @@ export default function useAssets() {
             textBtnText: t('UU0002'),
             primaryBtnHandler: async () => {
               store.dispatch('helper/openModalLoading')
-              await store.dispatch('assets/deleteMaterial', {
+              await ogBaseAssetsApi('deleteAssetsMaterialList', {
                 materialIdList,
               })
               store.dispatch('helper/closeModalLoading')
@@ -357,15 +382,15 @@ export default function useAssets() {
             },
             secondaryBtnHandler: () => {
               store.dispatch('helper/pushModalBehavior', {
-                component: 'modal-material-no-list',
+                component: 'modal-item-no-list',
                 properties: {
                   header: t('EE0116'),
                   secondaryBtnText: t('UU0026'),
                   secondaryBtnHandler: () => {
                     store.dispatch('helper/closeModalBehavior')
                   },
-                  materialNoList,
-                },
+                  itemNoList,
+                } as PropsModalItemNoList,
               })
             },
           })
@@ -378,7 +403,7 @@ export default function useAssets() {
             secondaryBtnText: t('UU0002'),
             primaryBtnHandler: async () => {
               store.dispatch('helper/openModalLoading')
-              await store.dispatch('assets/deleteMaterial', {
+              await ogBaseAssetsApi('deleteAssetsMaterialList', {
                 materialIdList,
               })
               store.dispatch('helper/closeModalLoading')

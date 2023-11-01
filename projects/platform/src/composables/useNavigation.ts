@@ -85,9 +85,9 @@ export default function useNavigation() {
     await router.push('/')
   }
 
-  const goToBillings = async () => {
+  const goToBillings = async (orgNo?: string) => {
     await store.dispatch('sticker/closeStickerDrawer')
-    router.push(parsePath('/:orgNo/billings/plan'))
+    router.push(parsePath('/:orgNo/billings/plan', orgNo))
   }
 
   const goToProgress = async (tabName = 'material') => {
@@ -119,7 +119,7 @@ export default function useNavigation() {
     )
   }
 
-  const goToAssetMaterialEdit = (materialId, ogType) => {
+  const goToAssetMaterialEdit = (materialId: number, ogType: OgType) => {
     if (ogType === OgType.ORG) {
       router.push(parsePath(`/:orgNo/assets/${materialId}/edit`))
     } else {

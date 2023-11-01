@@ -7,32 +7,32 @@ grid-item-wrapper(
   :selectOnHover="false"
 )
   template(#title="{ isHover }")
-    span(:class="{ 'text-primary-400': isHover }") {{ node.nodeType === NODE_TYPE.COLLECTION ? node.properties.name : node.properties.materialNo }}
+    span(:class="{ 'text-primary-400': isHover }") {{ node.nodeMeta.nodeType === NodeType.COLLECTION ? collection?.name : mainMaterial?.itemNo }}
   template(#content)
-    template(v-if="node.nodeType === NODE_TYPE.COLLECTION")
+    template(v-if="collection")
       div(
         class="grid grid-rows-2 grid-cols-2 grid-flow-col h-full rounded-md overflow-hidden"
       )
         div(class="row-span-2 bg-grey-150")
           img(
-            v-if="node.properties.coverImgList[0]"
-            :src="node.properties.coverImgList[0]"
+            v-if="collection.coverImgList[0]"
+            :src="collection.coverImgList[0]"
             class="w-full h-full object-cover"
           )
         div(class="bg-grey-100")
           img(
-            v-if="node.properties.coverImgList[1]"
-            :src="node.properties.coverImgList[1]"
+            v-if="collection.coverImgList[1]"
+            :src="collection.coverImgList[1]"
             class="w-full h-full"
           )
         div(class="bg-grey-50")
           img(
-            v-if="node.properties.coverImgList[2]"
-            :src="node.properties.coverImgList[2]"
+            v-if="collection.coverImgList[2]"
+            :src="collection.coverImgList[2]"
             class="w-full h-full"
           )
       div(
-        v-if="node.properties.hasChildCollection"
+        v-if="collection.hasChildCollection"
         class="w-full h-7.5 absolute bottom-0 left-0"
       )
         div(class="bg-linear w-full h-full rounded-t-md transform rotate-180")
@@ -41,40 +41,52 @@ grid-item-wrapper(
           size="14"
           class="text-grey-0 absolute right-2 bottom-2"
         )
-    template(v-if="node.nodeType === NODE_TYPE.MATERIAL")
+    template(v-if="mainMaterial")
       img(
         v-defaultImg
-        :src="node.properties.coverImg"
+        :src="mainMaterial.coverImage.thumbnailUrl"
         class="w-full h-full rounded-md overflow-hidden"
       )
   template(#title-right-icon)
     slot(name="title-right-icon")
 </template>
 
-<script setup>
+<script setup lang="ts">
 import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
-import { NODE_TYPE } from '@/utils/constants'
 import { computed } from 'vue'
+import {
+  type NodeChild,
+  NodeType,
+  type Collection,
+  type MainMaterial,
+} from '@frontier/platform-web-sdk'
 
-const emit = defineEmits(['update:selectedValue'])
-const props = defineProps({
-  node: {
-    type: Object,
-    required: true,
-  },
-  isSelectable: {
-    type: Boolean,
-    default: true,
-  },
-  isMultiSelect: {
-    type: Boolean,
-    default: true,
-  },
-  selectedValue: {
-    type: [Array, String, Object],
-  },
-})
+const props = withDefaults(
+  defineProps<{
+    node: NodeChild
+    selectedValue: Array<number> | number | null
+    isSelectable?: boolean
+    isMultiSelect?: boolean
+  }>(),
+  {
+    isMultiSelect: true,
+    isSelectable: true,
+  }
+)
+const emit = defineEmits<{
+  (e: 'update:selectedValue', v: Array<number> | number | null): void
+}>()
 
+const collection = computed(() =>
+  props.node.nodeMeta.nodeType === NodeType.COLLECTION
+    ? (props.node.nodeProperty as Collection)
+    : null
+)
+const mainMaterial = computed(() =>
+  props.node.nodeMeta.nodeType === NodeType.MATERIAL
+    ? (props.node.nodeProperty as MainMaterial)
+    : null
+)
 const innerSelectedValue = computed({
   get: () => props.selectedValue,
   set: (v) => emit('update:selectedValue', v),

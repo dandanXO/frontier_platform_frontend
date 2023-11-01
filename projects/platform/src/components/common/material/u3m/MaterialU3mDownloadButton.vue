@@ -24,32 +24,25 @@ f-popper(placement="bottom-start" :disabled="disabled" :offset="[0, -4]")
 </template>
 
 <script setup lang="ts">
-import { U3M_STATUS, U3M_DOWNLOAD_PROP } from '@/utils/constants'
+import { U3M_DOWNLOAD_PROP } from '@/utils/constants'
 import type { MenuTree } from '@frontier/ui-component'
-import type { MaterialCustomU3m, MaterialU3m } from '@frontier/platform-web-sdk'
+import { MaterialU3mStatus } from '@frontier/platform-web-sdk'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import useLogSender from '@/composables/useLogSender'
-import { downloadDataURLFile } from '@frontier/lib'
-import type { DownloadU3mPayload } from '@/types'
 
-const props = withDefaults(
-  defineProps<{
-    materialId: number
-    u3m: MaterialU3m | MaterialCustomU3m
-    downloadHandler?: (payload: DownloadU3mPayload) => void
-    isMultiple?: boolean
-  }>(),
-  {
-    isMultiple: false,
-  }
-)
+const props = defineProps<{
+  isMultiple: boolean
+  status: MaterialU3mStatus
+  hasPhysicalData: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'download', format: U3M_DOWNLOAD_PROP): void
+}>()
 
 const { t } = useI18n()
-const logSender = useLogSender()
 
-const status = computed(() => props.u3m.status)
-const disabled = computed(() => status.value !== U3M_STATUS.COMPLETED)
+const disabled = computed(() => props.status !== MaterialU3mStatus.COMPLETED)
 
 const menuTree = computed<MenuTree>(() => ({
   blockList: [
@@ -58,17 +51,14 @@ const menuTree = computed<MenuTree>(() => ({
         return [
           {
             title: t('UU0005'),
-            url: props.u3m.zipUrl!,
             format: U3M_DOWNLOAD_PROP.U3M,
           },
           {
             title: t('UU0058'),
-            url: props.u3m.u3maUrl!,
             format: U3M_DOWNLOAD_PROP.U3MA,
           },
           {
             title: t('UU0129'),
-            url: props.u3m.gltfUrl!,
             format: U3M_DOWNLOAD_PROP.GLTF,
           },
         ].map((item) => ({
@@ -79,28 +69,17 @@ const menuTree = computed<MenuTree>(() => ({
               if (props.isMultiple) {
                 return t('RR0284')
               }
-              return props.u3m.hasPhysicalData ? t('RR0285') : t('RR0286')
+              return props.hasPhysicalData ? t('RR0285') : t('RR0286')
             }
 
             if (props.isMultiple) {
               return t('RR0283')
             }
-            return props.u3m.hasPhysicalData ? t('RR0282') : t('RR0281')
+            return props.hasPhysicalData ? t('RR0282') : t('RR0281')
           })(),
           descriptionLineClamp: 2,
           clickHandler: () => {
-            if (props.downloadHandler) {
-              props.downloadHandler({
-                materialId: props.materialId,
-                url: item.url,
-                format: item.format,
-              })
-            } else {
-              const fileName =
-                item.url.split('/')[item.url.split('/').length - 1]
-              downloadDataURLFile(item.url, fileName)
-              logSender.createDownloadLog(props.materialId, item.format)
-            }
+            emit('download', item.format)
           },
         }))
       })(),

@@ -8,27 +8,24 @@ f-tooltip-standard
     )
   template(#slot:tooltip-content)
     div(class="flex items-center flex-wrap")
-      template(v-for="(path, index) in location")
+      template(v-for="(location, index) in locationList" :key="location.name")
         p(
           class="text-grey-50 text-caption leading-1.3"
-          :class="[index === location.length - 1 ? 'font-bold' : 'font-normal']"
-        ) {{ path }}
+          :class="[index === locationList.length - 1 ? 'font-bold' : 'font-normal']"
+        ) {{ location.name }}
         f-svg-icon(
-          v-if="index !== location.length - 1"
+          v-if="index !== locationList.length - 1"
           size="20"
           iconName="slash"
           class="text-grey-50"
         )
 </template>
 
-<script>
-export default {
-  name: 'TooltipLocation',
-  props: {
-    location: {
-      type: Array,
-      required: true,
-    },
-  },
-}
+<script setup lang="ts">
+defineProps<{
+  locationList: {
+    name: string
+    nodeId: number
+  }[]
+}>()
 </script>

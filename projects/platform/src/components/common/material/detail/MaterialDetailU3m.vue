@@ -18,9 +18,10 @@ div
         :u3m="selectedU3m"
       )
       material-u3m-download-button(
-        :materialId="materialId"
-        :u3m="selectedU3m"
-        :downloadHandler="downloadHandler"
+        :isMultiple="false"
+        :status="selectedU3m.status"
+        :hasPhysicalData="selectedU3m?.hasPhysicalData ?? false"
+        @download="downloadHandler"
       )
     material-u3m-status-block(v-if="showStatusBlock" :u3m="selectedU3m")
 </template>
@@ -33,11 +34,13 @@ import MaterialU3mStatusBlock from '@/components/common/material/u3m/MaterialU3m
 import MaterialU3mDownloadButton from '@/components/common/material/u3m/MaterialU3mDownloadButton.vue'
 import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
 import u3mInstructionImage from '@/assets/images/u3m.png'
-import type { DownloadU3mPayload } from '@/types'
-import { U3M_PROVIDER, U3M_STATUS } from '@/utils/constants'
+import { U3M_PROVIDER, U3M_STATUS, U3M_DOWNLOAD_PROP } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
+import useLogSender from '@/composables/useLogSender'
+import { downloadDataURLFile } from '@frontier/lib'
 
 const { t } = useI18n()
+const logSender = useLogSender()
 
 const props = withDefaults(
   defineProps<{
@@ -45,7 +48,6 @@ const props = withDefaults(
     u3m: MaterialU3m
     customU3m: MaterialCustomU3m
     showStatusBlock?: boolean
-    downloadHandler?: (payload: DownloadU3mPayload) => void
   }>(),
   {
     showStatusBlock: true,
@@ -89,4 +91,11 @@ const currentTab = computed<U3M_PROVIDER>(
 const selectedU3m = computed<MaterialU3m | MaterialCustomU3m>(() =>
   currentTab.value === U3M_PROVIDER.FRONTIER ? props.u3m : props.customU3m
 )
+
+const downloadHandler = (format: U3M_DOWNLOAD_PROP) => {
+  const url = selectedU3m.value[format]!
+  const fileName = url.split('/')[url.split('/').length - 1]
+  downloadDataURLFile(url, fileName)
+  logSender.createDownloadLog(props.materialId, format)
+}
 </script>

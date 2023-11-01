@@ -19,12 +19,13 @@ interface BreadcrumbItem {
   name: string
   path?: string
   goTo?: () => void
+  [key: string]: any
 }
 
 withDefaults(
   defineProps<{
     breadcrumbList: BreadcrumbItem[]
-    fontSize: string
+    fontSize?: string
   }>(),
   {
     fontSize: 'text-body1',

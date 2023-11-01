@@ -2,8 +2,8 @@
 f-scrollbar-container(class="w-full h-full")
   div(class="ml-7.5 mt-7.5")
     global-breadcrumb-list(
-      :breadcrumbList="breadcrumbList"
-      @click:item="$router.push($event.path)"
+      :breadcrumbList="locationList"
+      @click:item="$event.goTo()"
     )
   div(class="w-full h-full flex justify-center")
     div(class="w-240")
@@ -60,7 +60,7 @@ f-scrollbar-container(class="w-full h-full")
                 div(class="text-grey-900 text-body1 font-bold leading-1.6") {{ $t('DD0083') }}
             div(class="pl-5 pt-6 font-bold leading-1.6 text-body2")
               p(class="text-grey-900 mb-1.5") {{ $t('DD0086') }}:
-              p(class="text-primary-400") {{ uploadMaterialEmail }}
+              p(class="text-primary-400") {{ ogUploadMaterialEmail }}
           div
             div(class="border border-grey-250 rounded-md")
               div(class="h-64 flex items-end justify-center")
@@ -75,7 +75,7 @@ f-scrollbar-container(class="w-full h-full")
                     template(#RR0008)
                       span(
                         class="text-cyan-400 underline cursor-pointer"
-                        @click="goToAssets"
+                        @click="goToAssets()"
                       ) {{ $t('RR0008') }}
         div(class="pt-26 pb-18")
           div(class="text-h6 font-bold text-grey-600 pb-5") {{ $t('DD0087') }}
@@ -98,12 +98,14 @@ import useNavigation from '@/composables/useNavigation'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
+import useCurrentUnit from '@/composables/useCurrentUnit'
 import usePrint from '@/composables/material/usePrint'
 
 const { t } = useI18n()
 const store = useStore()
-const { prefixPath, parsePath, goToAssets, goToAssetsMaterialCreate } =
+const { goToAssets, goToMaterialUpload, goToAssetsMaterialCreate } =
   useNavigation()
+const { ogUploadMaterialEmail } = useCurrentUnit()
 const { printBackSideLabel } = usePrint()
 const openModalSmartUpload = () => {
   store.dispatch('helper/openModalBehavior', {
@@ -140,23 +142,16 @@ const alternativeUploadOptions = [
   },
 ]
 
-const routeLocation = computed(() => store.getters['helper/routeLocation'])
-const breadcrumbList = computed(() => {
+const locationList = computed(() => {
   return [
     {
       name: t('RR0008'),
-      path: parsePath(`${prefixPath.value}/assets`),
+      goTo: goToAssets,
     },
     {
       name: t('DD0045'),
-      path: parsePath(`${prefixPath.value}/assets/upload`),
+      goTo: goToMaterialUpload,
     },
   ]
-})
-
-const uploadMaterialEmail = computed(() => {
-  return routeLocation.value === 'org'
-    ? store.getters['organization/uploadMaterialEmail']
-    : store.getters['group/uploadMaterialEmail']
 })
 </script>

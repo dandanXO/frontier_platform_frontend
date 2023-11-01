@@ -16,7 +16,7 @@ modal-behavior(
         :class="{ 'border-b': index !== disallowedList.length - 1 }"
       )
         div(class="w-31 pl-15 font-bold flex-shrink-0") {{ index + 1 }}
-        div {{ material.materialNo }}
+        div {{ material.itemNo }}
   div(v-show="!isShowDisallowedList" class="w-92.5 h-49")
     f-tabs(
       ref="refTab"
@@ -26,12 +26,15 @@ modal-behavior(
     )
     material-u3m-download-button(
       class="my-3"
-      :materialId="materialU3mDownloadItemList[0].materialId"
-      :u3m="selectedU3m"
-      :downloadHandler="downloadHandler"
       :isMultiple="isMultiple"
+      :hasPhysicalData="hasPhysicalData"
+      :status="status"
+      @download="downloadHandler"
     )
-    material-u3m-status-block(v-if="!isMultiple" :u3m="selectedU3m")
+    material-u3m-status-block(
+      v-if="!isMultiple"
+      :u3m="materialU3mDownloadItemList[0].u3m"
+    )
 </template>
 
 <script setup lang="ts">
@@ -40,8 +43,8 @@ import type { MaterialCustomU3m, MaterialU3m } from '@frontier/platform-web-sdk'
 import MaterialU3mStatusBlock from '@/components/common/material/u3m/MaterialU3mStatusBlock.vue'
 import MaterialU3mDownloadButton from '@/components/common/material/u3m/MaterialU3mDownloadButton.vue'
 import type { Material } from '@frontier/platform-web-sdk'
-import type { DownloadU3mPayload } from '@/types'
-import { U3M_STATUS, U3M_PROVIDER, U3M_DOWNLOAD_PROP } from '@/utils/constants'
+import { MaterialU3mStatus } from '@frontier/platform-web-sdk'
+import { U3M_PROVIDER, U3M_DOWNLOAD_PROP } from '@/utils/constants'
 import { downloadDataURLFile } from '@frontier/lib'
 import useLogSender from '@/composables/useLogSender'
 import { useStore } from 'vuex'
@@ -75,10 +78,10 @@ const defaultTab = computed(() => {
    * 3. if there is no custom u3m, the default tab is Frontier
    */
   const hasAtLeastOneU3m = props.materialList.some(
-    (material) => material.u3m?.status === U3M_STATUS.COMPLETED
+    (material) => material.u3m?.status === MaterialU3mStatus.COMPLETED
   )
   const hasAtLeastOneCustomU3m = props.materialList.some(
-    (material) => material.customU3m?.status === U3M_STATUS.COMPLETED
+    (material) => material.customU3m?.status === MaterialU3mStatus.COMPLETED
   )
 
   if (hasAtLeastOneU3m) {
@@ -97,7 +100,7 @@ const currentTab = computed<U3M_PROVIDER>(
 
 interface MaterialU3mDownloadItem {
   materialId: number
-  materialNo: string
+  itemNo: string
   u3m: MaterialU3m | MaterialCustomU3m
 }
 
@@ -105,49 +108,42 @@ const materialU3mDownloadItemList = computed<MaterialU3mDownloadItem[]>(() =>
   props.materialList.map((material) => {
     const u3m =
       currentTab.value === U3M_PROVIDER.FRONTIER
-        ? material.u3m!
-        : material.customU3m!
+        ? material.u3m
+        : material.customU3m
 
     return {
       materialId: material.materialId!,
-      materialNo: material.materialNo!,
+      itemNo: material.itemNo!,
       u3m,
     }
   })
 )
 
 const isMultiple = computed(() => materialU3mDownloadItemList.value.length > 1)
-const allowedList = computed(() =>
-  materialU3mDownloadItemList.value.filter(
-    (item) => item.u3m.status === U3M_STATUS.COMPLETED
-  )
-)
+
 const disallowedList = computed(() =>
   materialU3mDownloadItemList.value.filter(
-    (item) => item.u3m.status !== U3M_STATUS.COMPLETED
+    (item) => item.u3m.status !== MaterialU3mStatus.COMPLETED
   )
 )
 
-const selectedU3m = computed<MaterialU3m | MaterialCustomU3m>(() => {
+const status = computed(() => {
   if (isMultiple.value) {
-    return {
-      status:
-        disallowedList.value.length === materialU3mDownloadItemList.value.length
-          ? U3M_STATUS.INITIAL
-          : U3M_STATUS.COMPLETED,
-      hasPhysicalData: true,
-      createDate: 0,
-    }
+    return materialU3mDownloadItemList.value.some(
+      ({ u3m }) => u3m.status === MaterialU3mStatus.COMPLETED
+    )
+      ? MaterialU3mStatus.COMPLETED
+      : MaterialU3mStatus.INITIAL
   }
 
-  return materialU3mDownloadItemList.value[0].u3m
+  return materialU3mDownloadItemList.value[0].u3m.status
 })
 
-const downloadU3m = (materialId: number, url: string, format: string) => {
-  const fileName = url.split('/')[url.split('/').length - 1]
-  downloadDataURLFile(url, fileName)
-  logSender.createDownloadLog(materialId, format)
-}
+const hasPhysicalData = computed(() =>
+  isMultiple.value
+    ? true
+    : materialU3mDownloadItemList.value[0].u3m?.hasPhysicalData ?? false
+)
 
 const multipleDownloadU3m = async (format: U3M_DOWNLOAD_PROP) => {
   /**
@@ -166,9 +162,9 @@ const multipleDownloadU3m = async (format: U3M_DOWNLOAD_PROP) => {
   store.dispatch('helper/pushModalLoading')
 
   await Promise.all(
-    allowedList.value.map((material) => {
-      return addFileToZip(material.u3m[format]!)
-    })
+    materialU3mDownloadItemList.value
+      .filter(({ u3m }) => u3m.status === MaterialU3mStatus.COMPLETED)
+      .map(({ u3m }) => addFileToZip(u3m[format]!))
   )
   const content = await zip.generateAsync({ type: 'blob' })
   downloadDataURLFile(
@@ -182,10 +178,14 @@ const multipleDownloadU3m = async (format: U3M_DOWNLOAD_PROP) => {
 const isShowDisallowedList = ref(false)
 const selectedU3mFormat = ref<U3M_DOWNLOAD_PROP>(U3M_DOWNLOAD_PROP.U3M)
 
-const downloadHandler = ({ materialId, url, format }: DownloadU3mPayload) => {
+const downloadHandler = (format: U3M_DOWNLOAD_PROP) => {
   selectedU3mFormat.value = format
   if (!isMultiple.value) {
-    downloadU3m(materialId, url, selectedU3mFormat.value)
+    const { materialId, u3m } = materialU3mDownloadItemList.value[0]
+    const url = u3m[format]!
+    const fileName = url.split('/')[url.split('/').length - 1]
+    downloadDataURLFile(url, fileName)
+    logSender.createDownloadLog(materialId, format)
   } else {
     if (disallowedList.value.length > 0) {
       isShowDisallowedList.value = true
