@@ -25,7 +25,7 @@ modal-behavior(
       div(class="relative z-20 flex justify-between items-center py-4")
         global-breadcrumb-list(
           :breadcrumbList="locationList"
-          @click:item="goTo($event.nodeId)"
+          @click:item="visit($event.nodeId)"
         )
         div(class="flex items-center")
           div(
@@ -82,7 +82,7 @@ modal-behavior(
               :selectValue="og.nodeId"
               class="w-25 h-25 border rounded-md overflow-hidden"
               :class="[isMultiSelect && Array.isArray(selectedValue) && selectedValue.some((v) => isEqual(v, og)) ? 'border-primary-400 bg-primary-50 text-primary-400' : 'border-grey-250 bg-grey-50 text-grey-900']"
-              @click="goTo(og.nodeId), (selectedOg = og)"
+              @click="(selectedOg = og), visit(og.nodeId)"
             )
               template(#content)
                 div(class="h-full flex justify-center items-center")
@@ -101,7 +101,7 @@ modal-behavior(
                 :node="node"
                 v-model:selectedValue="selectedValue"
                 :isMultiSelect="isMultiSelect"
-                @click="goTo(node.nodeMeta.nodeId)"
+                @click="visit(node.nodeMeta.nodeId)"
               )
                 template(#title-right-icon)
                   tooltip-location(
@@ -321,7 +321,7 @@ const getWorkspaceList = async (targetPage = 1, needReset = true) => {
   isSearching.value = false
 }
 
-const goTo = (nodeId: number) => {
+const visit = (nodeId: number) => {
   queryParams.keyword = null
   if (nodeId === -1) {
     appendedLocationList.value.length = 0

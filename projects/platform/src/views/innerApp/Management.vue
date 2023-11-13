@@ -3,9 +3,9 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
   div(class="h-11 flex justify-between items-center mb-12.5")
     f-select-dropdown(
       class="w-75"
-      :selectValue="currentMenu"
+      :selectValue="`${ogType}-${ogId}`"
       :dropdownMenuTree="menuOrgOrGroup"
-      @update:selectValue="toggleOrgOrGroup"
+      @update:selectValue="($event) => goToManagement({ ogKey: $event })"
       data-cy="management_select"
     )
     div(class="flex gap-x-6 items-center")
@@ -27,51 +27,48 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
     :tabList="tabList"
     :initValue="$route.params.tab"
     @switch="toggleTab($event.path)"
-    :key="isLoading"
     class="flex-grow pr-3"
   )
     template(#default="{ currentTab }")
-      div(v-if="isLoading" class="w-full h-full flex justify-center items-center")
-        f-svg-icon(iconName="loading" size="92" class="text-primary-400")
-      template(v-else)
-        template(v-if="currentTab === 'about'")
-          org-about(v-if="routeLocation === 'org'")
-          group-about(v-else :key="$route.params.groupId")
-        member-list(v-else-if="currentTab === 'members'")
-        history-list(v-else-if="currentTab === 'history'")
+      template(v-if="currentTab === 'about'")
+        org-about(v-if="ogType === OgType.ORG")
+        group-about(v-else :key="ogId")
+      member-list(v-else-if="currentTab === 'members'")
+      history-list(v-else-if="currentTab === 'history'")
 </template>
 
-<script setup>
-import { ref, computed, reactive, defineAsyncComponent } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+<script setup lang="ts">
+import { computed, reactive, defineAsyncComponent } from 'vue'
 import { useStore } from 'vuex'
 import OrgAbout from '@/components/management/OrgAbout.vue'
 import { useI18n } from 'vue-i18n'
 import { FUNC_ID } from '@/utils/constants'
 import usePlan from '@/composables/usePlan.js'
+import { OgType, type Organization } from '@frontier/platform-web-sdk'
+import useNavigation from '@/composables/useNavigation'
 
-const GroupAbout = defineAsyncComponent(() =>
-  import('@/components/management/GroupAbout.vue')
+const GroupAbout = defineAsyncComponent(
+  () => import('@/components/management/GroupAbout.vue')
 )
-const MemberList = defineAsyncComponent(() =>
-  import('@/components/management/MemberList.vue')
+const MemberList = defineAsyncComponent(
+  () => import('@/components/management/MemberList.vue')
 )
-const HistoryList = defineAsyncComponent(() =>
-  import('@/components/management/HistoryList.vue')
+const HistoryList = defineAsyncComponent(
+  () => import('@/components/management/HistoryList.vue')
 )
 
 const { t } = useI18n()
-const route = useRoute()
-const router = useRouter()
 const store = useStore()
+const { goToManagement, ogType, ogId } = useNavigation()
 const { checkCanInvitedPeople } = usePlan()
 
-const routeLocation = computed(() =>
-  route.name === 'OrgManagement' ? 'org' : 'group'
+console.log(typeof ogType.value)
+
+const organization = computed<Organization>(
+  () => store.getters['organization/organization']
 )
-const organization = computed(() => store.getters['organization/organization'])
 const menuOrgOrGroup = computed(() => {
-  const { orgNo, orgName, labelColor } = organization.value
+  const { orgId, orgName, labelColor } = organization.value
   return {
     width: 'w-75',
     blockList: [
@@ -79,14 +76,14 @@ const menuOrgOrGroup = computed(() => {
         menuList: [
           {
             title: orgName,
-            selectValue: `/${orgNo}/management`,
+            selectValue: `${OgType.ORG}-${orgId}`,
             labelColor,
           },
-          ...store.getters['organization/groupList'].map((group) => {
+          ...organization.value.groupList.map((group) => {
             const { groupId, groupName, labelColor } = group
             return {
               title: groupName,
-              selectValue: `/${orgNo}/${groupId}/management`,
+              selectValue: `${OgType.GROUP}-${groupId}`,
               labelColor,
             }
           }),
@@ -94,12 +91,6 @@ const menuOrgOrGroup = computed(() => {
       },
     ],
   }
-})
-const currentMenu = computed(() => {
-  const { orgNo } = organization.value
-  return routeLocation.value === 'org'
-    ? `/${orgNo}/management`
-    : `/${orgNo}/${route.params.groupId}/management`
 })
 const tabList = reactive([
   {
@@ -116,14 +107,8 @@ const tabList = reactive([
   },
 ])
 
-const isLoading = ref(false)
-const toggleOrgOrGroup = async (path) => {
-  isLoading.value = true
-  await router.push(path + '/about')
-  isLoading.value = false
-}
-const toggleTab = (tab) => {
-  router.push({ name: route.name, params: { tab } })
+const toggleTab = (tab: string) => {
+  goToManagement({}, tab)
 }
 const openModalCreateGroup = () => {
   store.dispatch('group/resetCreateForm')
@@ -133,7 +118,7 @@ const openModalCreateGroup = () => {
 }
 
 const inviteHandler = () => {
-  if (routeLocation.value === 'org') {
+  if (ogType.value === OgType.ORG) {
     checkCanInvitedPeople() && openModalInviteToOrg()
   } else {
     openModalAddToGroup()

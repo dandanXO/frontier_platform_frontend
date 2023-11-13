@@ -29,23 +29,22 @@ modal-behavior(
         )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { reactive, toRefs } from 'vue'
+import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
+import { useWorkspaceStore } from '@/stores/workspace'
+import type { NodeMeta } from '@frontier/platform-web-sdk'
 
-const props = defineProps({
-  workspaceNode: {
-    type: Object,
-    required: true,
-  },
-})
+const props = defineProps<{
+  nodeMeta: NodeMeta
+}>()
 
 const { t } = useI18n()
 const store = useStore()
 const notify = useNotifyStore()
-const { workspaceNode } = toRefs(props)
+const { ogBaseWorkspaceApi } = useWorkspaceStore()
 const optionIsPublic = [
   {
     name: t('FF0030'),
@@ -58,16 +57,16 @@ const optionIsPublic = [
 ]
 
 const params = reactive({
-  isPublic: workspaceNode.value.isPublic,
-  isCanDownloadU3M: workspaceNode.value.isCanDownloadU3M,
-  isCanClone: workspaceNode.value.isCanClone,
+  isPublic: props.nodeMeta.isPublic,
+  isCanDownloadU3M: props.nodeMeta.isCanDownloadU3M,
+  isCanClone: props.nodeMeta.isCanClone,
 })
 
 const publishNode = async () => {
   store.dispatch('helper/openModalLoading')
-  await store.dispatch('workspace/publishNode', {
+  await ogBaseWorkspaceApi('publishWorkspaceNode', {
+    nodeId: props.nodeMeta.nodeId,
     ...params,
-    workspaceNodeId: workspaceNode.value.workspaceNodeId,
   })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/reloadInnerApp')

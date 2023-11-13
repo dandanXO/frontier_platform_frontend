@@ -70,21 +70,22 @@ import type { MenuTree } from '@frontier/ui-component'
 
 const props = withDefaults(
   defineProps<{
-    isSelectable?: boolean
     /**
      * false 時不用 hover 就可以選取
      */
     selectOnHover?: boolean
-    isMultiSelect: boolean
+    isMultiSelect?: boolean
+    isSelectable?: boolean
     /**
-     * // 選取時要儲存的值
+     * 選取時要儲存的值，如果 isSelectable 為 false，則為 undefined
      */
-    selectValue: any
+    selectValue?: any
     /**
      * 用於綁定在 input-checkbox 或 input radio 儲存 selectValue 的變數
      * isMultiSelect 為 true 時，selectValue 為 Array
+     * 如果 isSelectable 為 false，則為 undefined
      */
-    selectedValue: Array<any> | any
+    selectedValue?: Array<any> | any
     optionList?: Array<Array<FunctionOption<any>>>
     cornerTopRightHover?: boolean
   }>(),
@@ -115,12 +116,13 @@ const haveSelectedMoreThanOne = computed(
 )
 
 const menuTree = computed<MenuTree>(() => ({
-  blockList: props.optionList.map((block) => ({
-    menuList: block.map((option) => ({
-      title: option.name(props.selectValue),
-      clickHandler: () => option.func(props.selectValue),
-      disabled: option.disabled ? option.disabled(props.selectValue) : false,
-    })),
-  })),
+  blockList:
+    props.optionList?.map((block) => ({
+      menuList: block.map((option) => ({
+        title: option.name(props.selectValue),
+        clickHandler: () => option.func(props.selectValue),
+        disabled: option.disabled ? option.disabled(props.selectValue) : false,
+      })),
+    })) ?? [],
 }))
 </script>

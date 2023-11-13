@@ -16,17 +16,17 @@ search-table(
       keyField="id"
       @switch="$event.goTo()"
     )
-  template(#header-left="{ goTo }")
+  template(#header-left="{ visit, totalCount }")
     div(class="flex items-end")
       global-breadcrumb-list(
-        :breadcrumbList="breadcrumbList"
-        @click:item="currentNodeKey = $event.nodeKey; goTo()"
+        :breadcrumbList="locationList"
+        @click:item="currentNodeId = $event.nodeId; visit()"
         fontSize="text-h6"
       )
       p(class="flex text-caption text-grey-600 pl-1")
         span (
         i18n-t(keypath="RR0068" tag="span" scope="global")
-          template(#number) {{ pagination.totalCount }}
+          template(#number) {{ totalCount }}
         span )
   template(#header-right)
     f-button(
@@ -35,10 +35,10 @@ search-table(
       type="secondary"
       @click="openModalCollectionDetail"
     ) {{ $t('UU0057') }}
-    f-button(size="sm" prependIcon="add" @click="openModalCreateCollection") {{ $t('FF0003') }}
+    f-button(size="sm" prependIcon="add" @click="createCollection") {{ $t('FF0003') }}
   template(v-if="!isFirstLayer" #sub-header)
-    p(class="mx-7.5 mb-7.5 text-caption text-grey-600") {{ $t('FF0002') }}: {{ toYYYYMMDDFormat(collection.createDate) }}
-  template(#default="{ inSearch, goTo }")
+    p(v-if="workspaceNodeCollection" class="mx-7.5 mb-7.5 text-caption text-grey-600") {{ $t('FF0002') }}: {{ toYYYYMMDDFormat(workspaceNodeCollection.nodeMeta.createDate) }}
+  template(#default="{ inSearch, visit }")
     div(
       class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
     )
@@ -51,28 +51,33 @@ search-table(
           span(class="text-body1 text-grey-900") {{ $t('UU0055') }}
       grid-item-node(
         v-for="node in nodeList"
-        :key="node.nodeKey"
+        :key="node.nodeMeta.nodeId"
         v-model:selectedValue="selectedNodeList"
         :node="node"
         :optionList="optionNode(node)"
-        @click:option="$event.func(node)"
-        @click:node="handleNodeClick(node, goTo)"
+        @click:node="handleNodeClick(node, visit)"
       )
         template(#corner-bottom-left v-if="isFirstLayer")
           f-svg-icon(
-            :iconName="node.isPublic ? 'public' : 'internal'"
-            :tooltipMessage="node.isPublic ? $t('FF0072') : $t('FF0073')"
+            :iconName="node.nodeMeta.isPublic ? 'public' : 'internal'"
+            :tooltipMessage="node.nodeMeta.isPublic ? $t('FF0072') : $t('FF0073')"
             size="20"
             class="cursor-pointer text-grey-250"
-            @click.stop="openModalPublish(node)"
+            @click.stop="openModalPublish(node.nodeMeta)"
           )
         template(#title-right-icon)
-          tooltip-location(v-if="inSearch" :location="node.location")
+          tooltip-location(
+            v-if="inSearch"
+            :locationList="node.nodeMeta.locationList"
+          )
 </template>
 
-<script setup>
-import SearchTable from '@/components/common/SearchTable.vue'
-import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
+<script setup lang="ts">
+import SearchTable, {
+  type RouteQuery,
+  type SearchPayload,
+} from '@/components/common/SearchTable.vue'
+import { SEARCH_TYPE, CREATE_EDIT } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
@@ -83,20 +88,35 @@ import { useRoute, useRouter } from 'vue-router'
 import useWorkspace from '@/composables/useWorkspace'
 import useNavigation from '@/composables/useNavigation'
 import { toYYYYMMDDFormat } from '@frontier/lib'
+import { useWorkspaceStore } from '@/stores/workspace'
+import { useSearchStore } from '@/stores/search'
+import {
+  NodeType,
+  type NodeChild,
+  type NodeMeta,
+  type WorkspaceNodeCollection,
+  type WorkspaceFilter,
+} from '@frontier/platform-web-sdk'
+import useCurrentUnit from '@/composables/useCurrentUnit'
+import type { PropsModalCollectionDetail } from '@/components/common/ModalCollectionDetail.vue'
+import type { PropsModalAssetsList } from '@/components/assets/ModalAssetsList.vue'
+import type { PropsModalItemNoList } from '@/components/common/material/ModalItemNoList.vue'
+import { useAssetsStore } from '@/stores/assets'
 
-const props = defineProps({
-  nodeKey: {
-    type: String,
-    default: null,
-  },
-})
+const props = defineProps<{
+  nodeId: string
+}>()
 
 const { t } = useI18n()
 const store = useStore()
+const searchStore = useSearchStore()
+const { ogBaseAssetsApi } = useAssetsStore()
+const { ogBaseWorkspaceApi } = useWorkspaceStore()
+const { ogNodeId } = useCurrentUnit()
 const notify = useNotifyStore()
 const router = useRouter()
 const route = useRoute()
-const { goToWorkspaceMaterialDetail, prefixPath, parsePath } = useNavigation()
+const { goToWorkspaceMaterialDetail, goToShareToMe } = useNavigation()
 const {
   editNodeCollection,
   editNodeMaterial,
@@ -106,7 +126,10 @@ const {
   deleteCollection,
   deleteMaterial,
   deleteMultipleNode,
+  openModalCreateOrEditCollection,
 } = useWorkspace()
+
+const workspaceNodeCollection = ref<WorkspaceNodeCollection>()
 
 const tabList = ref([
   {
@@ -117,46 +140,57 @@ const tabList = ref([
   {
     name: t('RR0010'),
     id: 'share-to-me',
-    goTo: () => {
-      router.push(parsePath(`${prefixPath.value}/share-to-me`))
-    },
+    goTo: goToShareToMe,
   },
 ])
 
+const locationList = computed(() => {
+  const root = {
+    nodeId: ogNodeId.value,
+    name: t('FF0001'),
+  }
+  return workspaceNodeCollection.value
+    ? [root, ...workspaceNodeCollection.value.nodeMeta.locationList]
+    : [root]
+})
+
+const isFirstLayer = computed(() => locationList.value.length === 1)
+const nodeList = computed(
+  () => workspaceNodeCollection.value?.childNodeList ?? []
+)
 const optionSort = computed(() => {
-  const { SORT_BY } = useConstants()
   const {
-    MATERIAL_NO_A_Z_C_M,
-    MATERIAL_NO_A_Z_M_C,
+    ITEM_NO_A_Z_C_M,
+    ITEM_NO_A_Z_M_C,
     CREATE_DATE_C_M,
     CREATE_DATE_M_C,
-    GHG_RESULTS,
-    WATER_DEPLETION_RESULTS,
-    LAND_USE_RESULTS,
+    GHG_LOW_TO_HIGH,
+    WATER_LOW_TO_HIGH,
+    LAND_LOW_TO_HIGH,
     RELEVANCE_C_M,
     RELEVANCE_M_C,
-  } = SORT_BY.value
+  } = searchStore.sortOption
   const valueAddedService = computed(
     () => store.getters['polling/valueAddedService']
   )
   return {
     base: [
-      MATERIAL_NO_A_Z_C_M,
-      MATERIAL_NO_A_Z_M_C,
+      ITEM_NO_A_Z_C_M,
+      ITEM_NO_A_Z_M_C,
       CREATE_DATE_C_M,
       CREATE_DATE_M_C,
       {
-        ...GHG_RESULTS,
+        ...GHG_LOW_TO_HIGH,
         disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
         tooltipMessage: t('VV0047'),
       },
       {
-        ...WATER_DEPLETION_RESULTS,
+        ...WATER_LOW_TO_HIGH,
         disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
         tooltipMessage: t('VV0047'),
       },
       {
-        ...LAND_USE_RESULTS,
+        ...LAND_LOW_TO_HIGH,
         disabled: !valueAddedService.value.made2flow.planStatus.ACTIVATE,
         tooltipMessage: t('VV0047'),
       },
@@ -164,25 +198,9 @@ const optionSort = computed(() => {
     keywordSearch: [RELEVANCE_C_M, RELEVANCE_M_C],
   }
 })
-
 const optionMultiSelect = computed(() => [deleteMultipleNode])
-
-const pagination = computed(() => store.getters['helper/search/pagination'])
-const collection = computed(() => store.getters['workspace/collection'])
-const defaultWorkspaceNodeKey = computed(
-  () => store.getters['workspace/defaultWorkspaceNodeKey']
-)
-const breadcrumbList = computed(() =>
-  store.getters['workspace/collectionBreadcrumbList']({
-    name: t('FF0001'),
-    nodeKey: defaultWorkspaceNodeKey.value,
-  })
-)
-const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
-const nodeList = computed(() => store.getters['workspace/nodeList'])
-const optionNode = (node) => {
-  const { nodeType } = node
-  if (nodeType === NODE_TYPE.COLLECTION) {
+const optionNode = (node: NodeChild) => {
+  if (node.nodeMeta.nodeType === NodeType.COLLECTION) {
     return [
       [editNodeCollection],
       [duplicateNode, moveNode, shareNode],
@@ -192,40 +210,47 @@ const optionNode = (node) => {
     return [[editNodeMaterial], [moveNode, shareNode], [deleteMaterial]]
   }
 }
-const currentNodeKey = ref(props.nodeKey)
+const currentNodeId = ref(Number(props.nodeId))
 const selectedNodeList = ref([])
 
-const getWorkspace = async (targetPage = 1, query) => {
+const getWorkspace = async (
+  payload: SearchPayload<WorkspaceFilter>,
+  query: RouteQuery
+) => {
   router.push({
-    name: route.name,
+    name: route.name as string,
     params: {
-      nodeKey: currentNodeKey.value,
+      nodeId: currentNodeId.value,
     },
     query,
   })
-  await store.dispatch('workspace/getWorkspace', {
-    targetPage,
-    nodeKey: currentNodeKey.value,
+  const {
+    data: { result },
+  } = await ogBaseWorkspaceApi('getWorkspaceList', {
+    nodeId: currentNodeId.value,
+    ...payload,
   })
+
+  workspaceNodeCollection.value = result.workspaceNodeCollection
+  searchStore.setPaginationRes(result.pagination)
 }
 
-const openModalCreateCollection = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-create-or-edit-collection',
-    properties: {
-      mode: 1,
-      workspaceNodeId: currentNodeKey.value.split('-')[1],
-    },
-  })
+const createCollection = () => {
+  workspaceNodeCollection.value &&
+    openModalCreateOrEditCollection(
+      CREATE_EDIT.CREATE,
+      workspaceNodeCollection.value.nodeMeta,
+      workspaceNodeCollection.value.collection
+    )
 }
 
 const openModalCollectionDetail = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-collection-detail',
     properties: {
-      ...collection.value,
+      nodeCollection: workspaceNodeCollection.value,
       canEdit: true,
-    },
+    } as PropsModalCollectionDetail,
   })
 }
 
@@ -233,32 +258,30 @@ const openModalAssetsList = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-assets-list',
     properties: {
-      modalTitle: t('RR0008'),
+      modalTitle: t('FF0016'),
       actionText: t('UU0035'),
-      actionCallback: async (materialList) => {
-        const materialIdList = materialList.map(({ materialId }) => materialId)
-        const failMaterialList = await store.dispatch('assets/addToWorkspace', {
+      actionCallback: async (materialIdList) => {
+        const {
+          data: {
+            result: { failMaterialItemNoList },
+          },
+        } = await ogBaseAssetsApi('assetsMaterialAddToWorkspace', {
           materialIdList,
-          targetWorkspaceNodeList: [
-            {
-              id: collection.value.workspaceNodeId,
-              location: collection.value.workspaceNodeLocation,
-            },
-          ],
+          targetNodeIdList: [currentNodeId.value],
         })
 
-        if (failMaterialList && failMaterialList.length > 0) {
+        if (failMaterialItemNoList && failMaterialItemNoList.length > 0) {
           store.dispatch('helper/openModalBehavior', {
-            component: 'modal-material-no-list',
+            component: 'modal-item-no-list',
             properties: {
-              header: t('EE0063', { number: failMaterialList.length }),
+              header: t('EE0063', { number: failMaterialItemNoList.length }),
               primaryBtnText: t('UU0031'),
               primaryBtnHandler: () => {
                 store.dispatch('helper/closeModalBehavior')
               },
               content: t('EE0064'),
-              materialNoList: failMaterialList,
-            },
+              itemNoList: failMaterialItemNoList,
+            } as PropsModalItemNoList,
           })
         } else {
           store.dispatch('helper/closeModal')
@@ -267,32 +290,35 @@ const openModalAssetsList = () => {
         store.dispatch('helper/reloadInnerApp')
 
         if (
-          !failMaterialList ||
-          failMaterialList.length !== materialIdList.length
+          !failMaterialItemNoList ||
+          failMaterialItemNoList.length !== materialIdList.length
         ) {
           notify.showNotifySnackbar({ messageText: t('FF0018') })
         }
       },
-    },
+    } as PropsModalAssetsList,
   })
 }
 
-const openModalPublish = (workspaceNode) => {
+const openModalPublish = (nodeMeta: NodeMeta) => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-publish',
     properties: {
-      workspaceNode,
+      nodeMeta,
     },
   })
 }
 
-const handleNodeClick = (node, goTo) => {
-  console.log('here')
-  if (node.nodeType === NODE_TYPE.COLLECTION) {
-    currentNodeKey.value = node.nodeKey
-    goTo()
+const handleNodeClick = (node: NodeChild, visit: Function) => {
+  if (node.nodeMeta.nodeType === NodeType.COLLECTION) {
+    currentNodeId.value = node.nodeMeta.nodeId
+    visit()
   } else {
-    goToWorkspaceMaterialDetail(node.nodeKey, node.rank)
+    if (node.nodeMeta.rank) {
+      goToWorkspaceMaterialDetail({}, node.nodeMeta.nodeId, node.nodeMeta.rank)
+    } else {
+      goToWorkspaceMaterialDetail({}, node.nodeMeta.nodeId)
+    }
   }
 }
 </script>

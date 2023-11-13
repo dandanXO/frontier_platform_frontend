@@ -35,8 +35,8 @@ import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
-import { SHARE_TARGET_TYPE } from '@/utils/constants'
 import { inputValidator } from '@frontier/lib'
+import { ShareToType } from '@frontier/platform-web-sdk'
 
 const props = defineProps({
   nodeKey: {
@@ -62,13 +62,13 @@ const addToTargetList = async () => {
       name === frozenTargetValue || number === frozenTargetValue
   )
   if (existedTarget) {
-    const { ORG, GROUP, EMAIL } = SHARE_TARGET_TYPE
+    const { ORG, GROUP, USER } = ShareToType
     switch (existedTarget.type) {
       case ORG:
         return (errorMsg.value = t('WW0058'))
       case GROUP:
         return (errorMsg.value = t('WW0059'))
-      case EMAIL:
+      case USER:
         return (errorMsg.value = t('WW0057'))
     }
   }

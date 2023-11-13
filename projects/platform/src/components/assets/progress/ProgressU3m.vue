@@ -307,7 +307,7 @@ const openModalCreate3DMaterial = async (materialId: number) => {
 }
 
 const handleViewMaterial = (material: Material) => {
-  goToAssetMaterialDetail(material)
+  goToAssetMaterialDetail({}, material.materialId)
 }
 
 const handleCancel = async (

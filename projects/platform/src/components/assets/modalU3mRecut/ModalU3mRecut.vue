@@ -396,7 +396,7 @@ const handleConfirm = async () => {
     contentText: t('EE0122', { RR0008: t('RR0008') }),
     primaryBtnText: t('UU0103'),
     secondaryBtnText: t('UU0090'),
-    secondaryBtnHandler: () => goToProgress('u3m'),
+    secondaryBtnHandler: () => goToProgress({}, 'u3m'),
   })
 }
 

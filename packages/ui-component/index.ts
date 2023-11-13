@@ -22,6 +22,7 @@ import FPopper from './src/FPopper/FPopper.vue'
 import FContextualMenu from './src/FContextualMenu/FContextualMenu.vue'
 import FTabs from './src/FTabs/FTabs.vue'
 import FInputCheckbox from './src/FInput/FInputCheckbox/FInputCheckbox.vue'
+import FInputText from './src/FInput/FInputText/FInputText.vue'
 import FInputSlider from './src/FInput/FInputSlider/FInputSlider.vue'
 import FInputTap from './src/FInput/FInputTap/FInputTap.vue'
 import FTooltipStandard from './src/FTooltip/FTooltipStandard/FTooltipStandard.vue'
@@ -41,6 +42,7 @@ export {
   FPopper,
   FContextualMenu,
   FTabs,
+  FInputText,
   FInputCheckbox,
   FInputSlider,
   FInputTap,

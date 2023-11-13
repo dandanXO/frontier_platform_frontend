@@ -13,4 +13,7 @@ export default createI18n({
     'ja-JP': jaJP,
   },
   globalInjection: true,
+  fallbackWarn: false,
+  missingWarn: false,
+  silentTranslationWarn: true,
 })

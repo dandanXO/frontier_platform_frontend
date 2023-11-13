@@ -234,7 +234,7 @@ const getList = async (targetPage = 1, showSpinner = true) => {
 }
 
 const handleViewMaterial = (material) => {
-  goToAssetMaterialDetail(material)
+  goToAssetMaterialDetail({}, material.materialId)
 }
 
 const handleCancel = async (materialProgressId) => {

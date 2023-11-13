@@ -1,8 +1,8 @@
 <template lang="pug">
 div(class="flex flex-col gap-y-3")
-  div(class="aspect-square relative")
+  div(class="w-125 h-125 relative")
     img(
-      class="w-full h-full overflow-hidden rounded"
+      class="w-full h-full overflow-hidden rounded object-cover"
       :class="{ 'border border-grey-250': !displayImageList[currentDisplayIndex].displayUrl }"
       :src="displayImageList[currentDisplayIndex].displayUrl || undefined"
       :key="currentDisplayIndex"
@@ -26,7 +26,7 @@ div(class="flex flex-col gap-y-3")
         v-for="(image, index) in displayImageList"
         :key="image.thumbnailUrl"
       )
-        div(class="flex flex-col items-center gap-y-0.5")
+        div(class="w-18 flex flex-col items-center gap-y-0.5")
           div(
             class="w-18 h-18 rounded box-border overflow-hidden border-grey-250 bg-grey-100"
             :class="[currentDisplayIndex === index ? 'border-4 border-primary-400' : 'border']"
@@ -40,7 +40,7 @@ div(class="flex flex-col gap-y-3")
             )
             div(v-else class="w-full h-full flex items-center justify-center")
               p(class="text-caption/1.3 text-grey-250") {{ $t('RR0103') }}
-          span(class="text-caption/1.6 text-grey-900") {{ image.imgName }}
+          span(class="text-caption/1.6 text-grey-900 line-clamp-1") {{ image.imgName }}
           span(v-if="image.caption !== null" class="text-caption/1.6 text-grey-900") ({{ image.caption }})
 </template>
 
@@ -56,7 +56,7 @@ withDefaults(
       imgName: string
       caption: string | null
     }>
-    canEdit: boolean
+    canEdit?: boolean
   }>(),
   {
     canEdit: false,

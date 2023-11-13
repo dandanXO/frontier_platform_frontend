@@ -14,15 +14,15 @@ modal-behavior(:header="$t('RR0079')")
             div(class="flex items-center justify-between")
               div(class="flex items-center")
                 f-avatar-group(
-                  v-if="shareInfo.shareList.length > 0"
-                  :itemList="shareInfo.shareList.map((share) => ({ imageUrl: share.logo, name: share.name }))"
+                  v-if="shareList.length > 0"
+                  :itemList="shareList.map((share) => ({ imageUrl: share.unitLogo, name: share.unitName }))"
                   class="mr-6"
                 )
-                p {{ $t('FF0058', { number: shareInfo.shareList.length }) }}
+                p {{ $t('FF0058', { number: shareList.length }) }}
               f-button(
                 size="sm"
                 type="secondary"
-                :disabled="shareInfo.shareList.length === 0"
+                :disabled="shareList.length === 0"
                 @click="openModalShareAssignedList"
               ) {{ $t('UU0027') }}
         template(v-else-if="currentTab === TAB.COPY_LINK")
@@ -32,12 +32,12 @@ modal-behavior(:header="$t('RR0079')")
                 f-input-switch(
                   iconSize="30"
                   :label="$t('FF0064')"
-                  v-model:inputValue="shareInfo.isCanShared"
+                  v-model:inputValue="isCanShared"
                   @update:inputValue="toggleCopyLink"
                 )
               f-button(
                 size="sm"
-                :disabled="!shareInfo.isCanShared"
+                :disabled="!isCanShared"
                 @click="generateCopyLink"
               ) {{ $t('UU0068') }}
             f-infobar(:messageText="$t('FF0062')")
@@ -70,39 +70,38 @@ modal-behavior(:header="$t('RR0079')")
                 f-input-switch(
                   iconSize="30"
                   :label="$t('FF0033')"
-                  v-model:inputValue="shareInfo.embed.isCanDownloadU3M"
+                  v-model:inputValue="embed.isCanDownloadU3M"
                   @update:inputValue="updateEmbedDownloadPermission"
                 )
               f-button(size="sm" @click="copyEmbedIFrameCode") {{ $t('UU0068') }}
             f-infobar(:messageText="$t('FF0071')")
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
-import { SOCIAL_MEDIA_TYPE } from '@/utils/constants'
-import { shareViaCopyLink, shareViaSocialMedia } from '@/utils/share.js'
-import { NODE_TYPE } from '@/utils/constants'
+import {
+  shareViaCopyLink,
+  shareViaSocialMedia,
+  SOCIAL_MEDIA_TYPE,
+} from '@/utils/share'
 import { copyText } from '@frontier/lib'
+import { type NodeChild, NodeType } from '@frontier/platform-web-sdk'
+import { useWorkspaceStore } from '@/stores/workspace'
+import { storeToRefs } from 'pinia'
 
-const props = defineProps({
-  workspaceNodeId: {
-    type: [String, Number],
-    required: true,
-  },
-  nodeKey: {
-    type: String,
-    required: true,
-  },
-  nodeType: {
-    type: Number,
-    required: true,
-  },
-})
+export interface PropsModalShare {
+  node: NodeChild
+}
+
+const props = defineProps<PropsModalShare>()
 
 const { t } = useI18n()
+const workspaceStore = useWorkspaceStore()
+const { ogBaseWorkspaceApi, getWorkspaceNodeShareInfo } = workspaceStore
+const { shareList, embed, isCanShared } = storeToRefs(workspaceStore)
 const store = useStore()
 const notify = useNotifyStore()
 
@@ -112,7 +111,10 @@ const TAB = {
   SOCIAL_MEDIA: 2,
   EMBED: 3,
 }
-const shareInfo = computed(() => store.getters['workspace/shareInfo'])
+const nodeId = computed(() => props.node.nodeMeta.nodeId)
+
+await getWorkspaceNodeShareInfo(nodeId.value)
+
 const tabList = computed(() => {
   const list = [
     {
@@ -128,7 +130,7 @@ const tabList = computed(() => {
       name: t('FF0053'),
     },
   ]
-  if (props.nodeType === NODE_TYPE.COLLECTION) {
+  if (props.node.nodeMeta.nodeType === NodeType.COLLECTION) {
     list.push({
       id: TAB.EMBED,
       name: t('FF0054'),
@@ -140,7 +142,7 @@ const openModalShareAssigned = () => {
   store.dispatch('helper/pushModalBehavior', {
     component: 'modal-share-assigned',
     properties: {
-      workspaceNodeId: props.workspaceNodeId,
+      nodeId: nodeId.value,
     },
   })
 }
@@ -149,49 +151,47 @@ const openModalShareAssignedList = () => {
   store.dispatch('helper/pushModalBehavior', {
     component: 'modal-share-assigned-list',
     properties: {
-      workspaceNodeId: props.workspaceNodeId,
+      nodeId: nodeId.value,
     },
   })
 }
 
-const shareToSocialMedia = async (type) => {
-  const sharingKey = await store.dispatch('workspace/generateSocialMedia', {
-    workspaceNodeId: props.workspaceNodeId,
+const shareToSocialMedia = async (type: SOCIAL_MEDIA_TYPE) => {
+  const res = await ogBaseWorkspaceApi('generateWorkspaceNodeShareSocial', {
+    nodeId: nodeId.value,
     type,
   })
-  shareViaSocialMedia(sharingKey, type)
+  shareViaSocialMedia(res.data.result.key, type)
 }
 
 const toggleCopyLink = () =>
-  store.dispatch('workspace/toggleCopyLink', {
-    workspaceNodeId: props.workspaceNodeId,
-    isCanShared: shareInfo.value.isCanShared,
+  ogBaseWorkspaceApi('updateWorkspaceNodeShareCopyLink', {
+    nodeId: nodeId.value,
+    isCanShared: isCanShared.value,
   })
 
 const generateCopyLink = async () => {
   store.dispatch('helper/pushModalLoading')
-  const sharingKey = await store.dispatch('workspace/generateCopyLink', {
-    workspaceNodeId: props.workspaceNodeId,
+  const res = await ogBaseWorkspaceApi('generateWorkspaceNodeShareCopyLink', {
+    nodeId: nodeId.value,
   })
-  shareViaCopyLink(sharingKey)
+  shareViaCopyLink(res.data.result.key)
   store.dispatch('helper/closeModalLoading')
   notify.showNotifySnackbar({ messageText: t('RR0149') })
 }
 
 const updateEmbedDownloadPermission = () =>
-  store.dispatch('workspace/updateEmbedDownloadPermission', {
-    embedKey: shareInfo.value.embed.key,
-    isCanDownloadU3M: shareInfo.value.embed.isCanDownloadU3M,
+  embed.value &&
+  ogBaseWorkspaceApi('updateWorkspaceNodeShareEmbed', {
+    embedKey: embed.value.key,
+    isCanDownloadU3M: embed.value.isCanDownloadU3M,
   })
 
 const copyEmbedIFrameCode = () => {
-  copyText(
-    `<iframe width="100%" height="100%" src="${window.location.origin}/embed/${shareInfo.value.embed.key}/${props.nodeKey}" title="Frontier.cool" frameborder="0"></iframe>`
-  )
+  embed.value &&
+    copyText(
+      `<iframe width="100%" height="100%" src="${window.location.origin}/embed/${embed.value.key}/${nodeId.value}" title="Frontier.cool" frameborder="0"></iframe>`
+    )
   notify.showNotifySnackbar({ messageText: t('RR0149') })
 }
-
-await store.dispatch('workspace/getShareInfo', {
-  workspaceNodeId: props.workspaceNodeId,
-})
 </script>

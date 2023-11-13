@@ -2,6 +2,7 @@ import search from './search'
 import { MODAL_TYPE } from '@/utils/constants'
 import { nextTick } from 'vue'
 import router from '@/router'
+import { OgType } from '@frontier/platform-web-sdk'
 
 const state = () => ({
   modalPipeline: [],
@@ -12,11 +13,16 @@ const getters = {
   modalPipeline: (state) => state.modalPipeline,
   /**
    * control by route
-   * /:orgNo -> org
-   * /:orgNo/:groupId -> group
+   * /:orgNo/?:ogKey(OgType-OgId) -> org
    */
-  routeLocation: () =>
-    !!router.currentRoute.value.params.groupId ? 'group' : 'org',
+  routeLocation: () => {
+    if (router.currentRoute.value.params.ogKey) {
+      const [ogType] = router.currentRoute.value.params.ogKey.split('-')
+      return Number(ogType) === OgType.Group ? 'group' : 'org'
+    }
+
+    return 'org'
+  },
   routeLocationId: (state, getters, rootState, rootGetters) => {
     return getters.routeLocation === 'org'
       ? rootGetters['organization/orgId']

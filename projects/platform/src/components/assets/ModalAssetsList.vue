@@ -11,20 +11,20 @@ modal-behavior(
     component(:is="noteComponent")
   div(class="w-145 h-89 flex flex-col")
     f-input-text(
-      v-model:textValue="keyword"
+      v-model:textValue="queryParams.keyword"
       prependIcon="search"
       :placeholder="$t('FF0017')"
       :disabled="isInRoot"
-      @enter="getMaterialListForModal()"
+      @enter="getMaterialList()"
     )
     div(class="flex-grow flex flex-col")
       div(class="relative z-20 flex justify-between items-center py-4")
         global-breadcrumb-list(
-          :breadcrumbList="breadcrumbList"
-          @click:item="goTo($event)"
+          :breadcrumbList="locationList"
+          @click:item="visit($event.ogId, $event.ogType)"
         )
         div(class="flex items-center")
-          div(v-if="isMultiSelect && selectedValue.length > 0" class="flex items-center")
+          div(v-if="selectedValue.length > 0" class="flex items-center")
             f-svg-icon(
               iconName="cancel"
               size="14"
@@ -51,84 +51,80 @@ modal-behavior(
                 :menuTree="sortMenuTree"
                 v-model:inputSelectValue="queryParams.sort"
                 :selectMode="CONTEXTUAL_MENU_MODE.SINGLE_NONE_CANCEL"
-                @click:menu="getMaterialListForModal()"
+                @click:menu="getMaterialList()"
               )
       div(
-        v-show="isSearching && nodeMaterialList.length === 0"
+        v-show="isSearching && materialList.length === 0"
         class="flex-grow flex items-center justify-center"
       )
         f-svg-icon(iconName="loading" size="92" class="text-primary-400")
       f-scrollbar-container(
-        v-if="!isSearching || nodeMaterialList.length > 0"
+        v-if="!isSearching || materialList.length > 0"
         class="h-64.5 -mx-5"
         @reachBottom="infiniteScroll"
       )
         div(class="grid grid-flow-row grid-cols-5 auto-rows-auto gap-5 px-5")
           template(v-if="isInRoot")
             div(
-              v-for="item in orgAndGroupList"
+              v-for="og in ogList"
+              :key="og.ogId"
               class="w-25 h-25 border rounded-md relative flex justify-center items-center cursor-pointer overflow-hidden border-grey-250 bg-grey-50 text-grey-900"
-              @click="goTo(item)"
+              @click="(selectedOg = og), visit(og.ogType, og.ogId)"
             )
-              p(class="text-caption text-center font-bold line-clamp-3") {{ item.name }}
+              p(class="text-caption text-center font-bold line-clamp-3") {{ og.ogName }}
           template(v-else)
-            grid-item-node-for-modal(
-              v-for="nodeMaterial in nodeMaterialList"
+            grid-item-material-for-modal(
+              v-for="material in materialList"
               class="w-25"
+              :key="material.materialId"
               v-model:selectedValue="selectedValue"
-              :node="nodeMaterial"
-              :isMultiSelect="isMultiSelect"
+              :material="material"
             )
         div(
-          v-if="isSearching && nodeMaterialList.length > 0"
+          v-if="isSearching && materialList.length > 0"
           class="flex justify-center items-center"
         )
           f-svg-icon(iconName="loading" size="54" class="text-primary-400")
 </template>
 
-<script setup>
-import { ref, reactive, computed } from 'vue'
-import {
-  NODE_TYPE,
-  OG_TYPE,
-  useConstants,
-  CONTEXTUAL_MENU_MODE,
-} from '@/utils/constants'
-import GridItemNodeForModal from '@/components/common/gridItem/GridItemNodeForModal.vue'
+<script setup lang="ts">
+import { ref, reactive, computed, type Component } from 'vue'
+import { CONTEXTUAL_MENU_MODE } from '@/utils/constants'
+import GridItemMaterialForModal from '@/components/common/gridItem/GridItemMaterialForModal.vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
+import { useSearchStore } from '@/stores/search'
+import useNavigation from '@/composables/useNavigation'
+import {
+  OgType,
+  type Material,
+  type Organization,
+  type Group,
+} from '@frontier/platform-web-sdk'
+import assetsApi from '@/apis/assets'
 
-const props = defineProps({
-  modalTitle: {
-    type: String,
-    required: true,
-  },
-  actionText: {
-    type: String,
-    required: true,
-  },
-  actionCallback: {
-    type: Function,
-    required: true,
-  },
-  isMultiSelect: {
-    type: Boolean,
-    default: true,
-  },
-  noteComponent: {
-    type: Object,
-  },
-})
+export interface PropsModalAssetsList {
+  modalTitle: string
+  actionText: string
+  actionCallback: (materialIdList: number[]) => void
+  noteComponent?: Component
+}
+
+const props = defineProps<PropsModalAssetsList>()
 
 const { t } = useI18n()
+const { ogType: initOgType, ogId: initOgId } = useNavigation()
 const store = useStore()
-const { SORT_BY } = useConstants()
+const organization = computed<Organization>(
+  () => store.getters['organization/organization']
+)
+const searchStore = useSearchStore()
 const sortMenuTree = computed(() => {
-  const { CREATE_DATE, LAST_UPDATE, MATERIAL_NO_A_Z } = SORT_BY.value
+  const { CREATE_DATE, LAST_UPDATE, ITEM_NO_A_Z } = searchStore.sortOption
   return {
     blockList: [
       {
-        menuList: [CREATE_DATE, LAST_UPDATE, MATERIAL_NO_A_Z].map(
+        menuList: [CREATE_DATE, LAST_UPDATE, ITEM_NO_A_Z].map(
           ({ text, value }) => ({
             title: text,
             selectValue: value,
@@ -138,80 +134,105 @@ const sortMenuTree = computed(() => {
     ],
   }
 })
-const keyword = ref('')
 const isSearching = ref(false)
-const nodeMaterialList = ref([])
+const materialList = ref<Material[]>([])
 const queryParams = reactive({
-  keyword: '',
+  keyword: null as string | null,
   targetPage: 1,
-  sort: SORT_BY.value.CREATE_DATE.value,
-  id: null,
-  nodeLocation: null,
+  sort: searchStore.sortOption.CREATE_DATE.value,
+  ogId: initOgId.value,
+  ogType: initOgType.value,
 })
 const totalPage = ref(1)
-const selectedValue = ref(props.isMultiSelect ? [] : '')
-const breadcrumbList = ref([
-  {
-    name: t('RR0008'),
-    key: 'root',
-  },
-])
-
-const routeLocation = computed(() => store.getters['helper/routeLocation'])
-const isInRoot = computed(
-  () => routeLocation.value === 'group' && breadcrumbList.value.length === 1
-)
-const actionButtonDisabled = computed(() => {
-  return props.isMultiSelect
-    ? selectedValue.value.length === 0
-    : !selectedValue.value
+const selectedValue = ref<number[]>([])
+const ogList = computed(() => {
+  const group = store.getters['group/group'] as Group
+  return [
+    {
+      ogId: organization.value.orgId,
+      ogType: OgType.ORG,
+      ogName: organization.value.orgName,
+    },
+    {
+      ogId: group.groupId,
+      ogType: OgType.GROUP,
+      ogName: group.groupName,
+    },
+  ]
 })
-const orgAndGroupList = computed(() => {
-  const organization = store.getters['organization/organization']
-  const list = []
-  list.push({
-    key: `${OG_TYPE.ORG}-${organization.orgId}`,
-    name: organization.orgName,
-  })
-  if (routeLocation.value === 'group') {
-    const { groupId, groupName } = store.getters['group/group']
+const selectedOg = ref<{
+  ogId: number
+  ogType: number
+  ogName: string
+}>()
+const locationList = computed(() => {
+  const list = [
+    {
+      name: t('RR0008'),
+      ogId: -1,
+      ogType: -1,
+    },
+  ]
+
+  if (selectedOg.value) {
     list.push({
-      key: `${OG_TYPE.GROUP}-${groupId}`,
-      name: groupName,
+      name: selectedOg.value.ogName,
+      ogId: selectedOg.value.ogId,
+      ogType: selectedOg.value.ogType,
     })
   }
   return list
 })
+const isInRoot = computed(
+  () => queryParams.ogType === OgType.GROUP && locationList.value.length === 1
+)
+const actionButtonDisabled = computed(() => selectedValue.value.length === 0)
 
 const innerActionCallback = async () => {
-  const tempSelectValue = props.isMultiSelect
-    ? selectedValue.value.map((v) => v.properties)
-    : selectedValue.value.properties
-  await props.actionCallback(tempSelectValue)
+  await props.actionCallback(
+    Array.isArray(selectedValue.value)
+      ? selectedValue.value
+      : selectedValue.value !== null
+      ? [selectedValue.value]
+      : []
+  )
 }
 
-const getMaterialListForModal = async (targetPage = 1, needReset = true) => {
+const getMaterialList = async (targetPage = 1, needReset = true) => {
   isSearching.value = true
 
   queryParams.targetPage = targetPage
-  queryParams.keyword = keyword.value
 
   // first time clear for loading UI
-  needReset && (nodeMaterialList.value.length = 0)
+  needReset && (materialList.value.length = 0)
 
-  const { pagination, assets } = await store.dispatch(
-    'assets/getMaterialListForModal',
-    queryParams
-  )
-  totalPage.value = pagination.totalPage
+  const {
+    data: { result },
+  } = await assetsApi.getAssetMaterialList({
+    orgId: organization.value.orgId,
+    ogType: queryParams.ogType,
+    ogId: queryParams.ogId,
+    pagination: {
+      isShowMatch: false,
+      perPageCount: 40,
+      sort: queryParams.sort,
+      targetPage: queryParams.targetPage,
+    },
+    search: queryParams.keyword
+      ? {
+          keyword: queryParams.keyword,
+          tagList: [],
+        }
+      : null,
+    filter: null,
+  })
 
-  needReset && (nodeMaterialList.value.length = 0)
+  totalPage.value = result.pagination.totalPage
 
-  assets.materialList.forEach((material) => {
-    nodeMaterialList.value.push({
-      nodeType: NODE_TYPE.MATERIAL,
-      properties: material,
-    })
+  needReset && (materialList.value.length = 0)
+
+  result.materialList.forEach((material) => {
+    materialList.value.push(material)
   })
 
   isSearching.value = false
@@ -224,28 +245,24 @@ const infiniteScroll = () => {
 
   const currentPage = queryParams.targetPage
   if (currentPage !== totalPage.value) {
-    getMaterialListForModal(Math.min(currentPage + 1, totalPage.value), false)
+    getMaterialList(Math.min(currentPage + 1, totalPage.value), false)
   }
 }
 
-const goTo = (option) => {
-  keyword.value = null
-  if (option.key === 'root') {
-    breadcrumbList.value.length = 1
-  } else if (!breadcrumbList.value.some((item) => item.key === option.key)) {
-    breadcrumbList.value.push(option)
-    const [nodeLocation, id] = option.key.split('-')
-    queryParams.nodeLocation = nodeLocation
-    queryParams.id = id
-    getMaterialListForModal()
+const visit = (ogType: OgType | -1, ogId: number) => {
+  queryParams.keyword = null
+  if (ogId === -1 || ogType === -1) {
+    selectedOg.value = undefined
+  } else {
+    queryParams.ogId = ogId
+    queryParams.ogType = ogType
+    getMaterialList()
   }
 }
 
 const clearSelect = () => (selectedValue.value.length = 0)
 
-if (routeLocation.value === 'org') {
-  queryParams.nodeLocation = OG_TYPE.ORG
-  queryParams.id = store.getters['organization/organization'].orgId
-  getMaterialListForModal()
+if (initOgType.value === OgType.ORG) {
+  getMaterialList()
 }
 </script>

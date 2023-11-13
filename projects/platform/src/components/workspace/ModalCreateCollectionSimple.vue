@@ -22,6 +22,7 @@ import { useStore } from 'vuex'
 import { COLLECTION_NAME_MAX_LENGTH } from '@/utils/constants'
 import { useWorkspaceStore } from '@/stores/workspace'
 import { inputRules } from '@frontier/lib'
+import { FInputText } from '@frontier/ui-component'
 
 const props = defineProps<{
   nodeId: number
@@ -32,7 +33,7 @@ const store = useStore()
 const workspaceStore = useWorkspaceStore()
 const collectionName = ref('')
 const isCollectionNameExist = ref(false)
-const refInputCollectionName = ref(null)
+const refInputCollectionName = ref<InstanceType<typeof FInputText>>()
 
 const isFormValid = computed(
   () =>

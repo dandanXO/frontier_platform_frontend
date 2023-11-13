@@ -1,12 +1,18 @@
-import { SOCIAL_MEDIA_TYPE } from '@/utils/constants'
 import { copyText } from '@frontier/lib'
+
+export enum SOCIAL_MEDIA_TYPE {
+  LINKEDIN = 1,
+  FACEBOOK = 2,
+  TWITTER = 3,
+}
 
 const { VITE_APP_FACEBOOK_APP_ID } = import.meta.env
 const SHARE_BASE_URL = `${window.location.origin}/share-page/index.html`
-const getSharedUrl = (sharingKey) =>
+
+const getSharedUrl = (sharingKey: string) =>
   `${SHARE_BASE_URL}?sharingKey=${sharingKey}`
 
-const shareViaSocialMedia = (sharingKey, type) => {
+const shareViaSocialMedia = (sharingKey: string, type: SOCIAL_MEDIA_TYPE) => {
   const sharedUrl = getSharedUrl(sharingKey)
   let openedUrl = ''
 
@@ -26,7 +32,7 @@ const shareViaSocialMedia = (sharingKey, type) => {
   window.open(openedUrl, 'mywindow', 'popup=yes,width=570,height=746')
 }
 
-const shareViaCopyLink = (sharingKey) => {
+const shareViaCopyLink = (sharingKey: string) => {
   copyText(getSharedUrl(sharingKey))
 }
 

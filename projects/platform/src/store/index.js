@@ -7,7 +7,6 @@ import organization from '@/store/modules/management/organization'
 import group from '@/store/modules/management/group'
 import helper from '@/store/modules/helper'
 import assets from '@/store/modules/assets'
-import workspace from '@/store/modules/workspace'
 import publicLibrary from '@/store/modules/publicLibrary'
 import receivedShare from '@/store/modules/receivedShare'
 import embed from '@/store/modules/embed'
@@ -63,7 +62,6 @@ export default createStore({
     group,
     helper,
     assets,
-    workspace,
     publicLibrary,
     receivedShare,
     shareToMe,

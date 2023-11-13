@@ -240,7 +240,7 @@ export default function useAssetsOld() {
           primaryBtnText: t('UU0031'),
           secondaryBtnText: t('UU0090'),
           secondaryBtnHandler: () => {
-            goToProgress('excel')
+            goToProgress({}, 'excel')
             store.dispatch('helper/closeModalBehavior')
           },
         })

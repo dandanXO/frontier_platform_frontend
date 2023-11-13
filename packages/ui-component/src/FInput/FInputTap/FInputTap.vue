@@ -22,7 +22,7 @@ interface Option {
 
 const props = withDefaults(
   defineProps<{
-    theme: `${THEME}`
+    theme?: `${THEME}`
     optionList: Option[]
     inputValue: Option['selectValue']
   }>(),

@@ -52,13 +52,13 @@ search-table(
           :material="material"
           v-model:selectedValue="selectedMaterialList"
           :optionList="optionList"
-          @click.stop="goToAssetMaterialDetail(material.materialId)"
+          @click.stop="goToAssetMaterialDetail({}, material.materialId)"
         )
     div(v-else class="flex h-full justify-center items-center")
       div(class="flex flex-col justify-center items-center")
         div(
           class="border border-grey-250 rounded-md border-dashed p-2 cursor-pointer"
-          @click="goToMaterialUpload"
+          @click="goToMaterialUpload()"
         )
           f-svg-icon(iconName="add" size="24" class="text-grey-900")
         p(class="text-body2 text-grey-900 pt-3") {{ $t('EE0079') }}

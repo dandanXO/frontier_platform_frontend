@@ -10,11 +10,16 @@ modal-behavior(
     f-scrollbar-container(class="h-100.5 -mx-5 px-5")
       div(class="grid gap-y-7.5")
         div(
-          v-for="item in copyShareList"
+          v-for="item in extendedShareList"
+          :key="item.number"
           class="flex items-center justify-between h-10.5"
         )
           div(class="flex items-center gap-x-2.5")
-            img(v-if="item.logo" :src="item.logo" class="w-10 h-10 rounded-full")
+            img(
+              v-if="item.unitLogo"
+              :src="item.unitLogo"
+              class="w-10 h-10 rounded-full"
+            )
             div(
               v-else
               class="w-10 h-10 rounded-full border-grey-250 border border-dashed"
@@ -23,7 +28,7 @@ modal-behavior(
               p(
                 class="text-body2 font-bold w-86 line-clamp-1 mb-2"
                 :class="[item.isRemove ? 'text-grey-250' : 'text-grey-900']"
-              ) {{ item.name }}
+              ) {{ item.unitName }}
               div(class="flex items-center gap-x-3")
                 f-input-checkbox(
                   binary
@@ -54,27 +59,28 @@ modal-behavior(
             ) {{ $t('FF0060') }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useStore } from 'vuex'
-import { reactive, computed } from 'vue'
+import { reactive } from 'vue'
+import { useWorkspaceStore } from '@/stores/workspace'
+import { storeToRefs } from 'pinia'
 
-const props = defineProps({
-  workspaceNodeId: {
-    type: [String, Number],
-    required: true,
-  },
-})
+const props = defineProps<{
+  nodeId: number
+}>()
 
+const workspaceStore = useWorkspaceStore()
+const { ogBaseWorkspaceApi, getWorkspaceNodeShareInfo } = workspaceStore
+const { shareList } = storeToRefs(workspaceStore)
 const store = useStore()
-const shareList = computed(() => store.getters['workspace/shareInfo'].shareList)
-const copyShareList = reactive(
+const extendedShareList = reactive(
   shareList.value.map((item) => {
     return { ...item, isRemove: false }
   })
 )
 
-const updateList = reactive([])
-const addToUpdateList = (item) => {
+const updateList = reactive<typeof extendedShareList>([])
+const addToUpdateList = (item: typeof extendedShareList[0]) => {
   const existIndex = updateList.findIndex((listItem) => listItem.id === item.id)
   if (existIndex !== -1) {
     updateList[existIndex] = item
@@ -84,19 +90,18 @@ const addToUpdateList = (item) => {
 }
 
 const updateAssignedShare = async () => {
-  const removeList = copyShareList.filter((item) => item.isRemove)
+  const removeList = extendedShareList.filter((item) => item.isRemove)
   if (updateList.length === 0 && removeList.length === 0) {
     closeModal()
     return
   }
   store.dispatch('helper/pushModalLoading')
-  await store.dispatch('workspace/updateAssignedShare', {
+  await ogBaseWorkspaceApi('updateWorkspaceNodeShareAssigned', {
+    nodeId: props.nodeId,
     updateList,
     removeList,
   })
-  await store.dispatch('workspace/getShareInfo', {
-    workspaceNodeId: props.workspaceNodeId,
-  })
+  await getWorkspaceNodeShareInfo(props.nodeId)
   store.dispatch('helper/closeModalLoading')
   closeModal()
 }

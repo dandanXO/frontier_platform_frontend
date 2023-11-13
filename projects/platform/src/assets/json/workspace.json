@@ -1,0 +1,241 @@
+{
+  "result": {
+    "pagination": {
+      "isShowMatch": false,
+      "sort": 5,
+      "currentPage": 1,
+      "totalPage": 1,
+      "perPageCount": 40,
+      "totalCount": 4
+    },
+    "workspaceNodeCollection": {
+      "nodeMeta": {
+        "nodeId": 9,
+        "nodeType": 1,
+        "locationList": [],
+        "unitLogo": "",
+        "unitName": "",
+        "isCanClone": false,
+        "isCanShared": true,
+        "isCanDownloadU3M": false,
+        "isPublic": false,
+        "publicDate": null,
+        "createDate": 1640857364,
+        "rank": null
+      },
+      "collection": {
+        "collectionId": 8,
+        "name": "Root",
+        "description": "",
+        "coverImgList": [],
+        "itemCounts": 40,
+        "hasChildCollection": true,
+        "trendBoard": null
+      },
+      "childNodeList": [
+        {
+          "nodeMeta": {
+            "nodeId": 92417,
+            "nodeType": 1,
+            "rank": 1,
+            "locationList": ["Workspace", "123"],
+            "unitLogo": "",
+            "unitName": "",
+            "isCanClone": false,
+            "isCanShared": true,
+            "isCanDownloadU3M": false,
+            "isPublic": false,
+            "publicDate": null,
+            "createDate": 1640857364
+          },
+          "nodeProperty": {
+            "collectionId": 8,
+            "name": "123",
+            "description": "",
+            "itemCounts": 0,
+            "coverImgList": [],
+            "hasChildCollection": false,
+            "trendBoard": null
+          }
+        },
+        {
+          "nodeMeta": {
+            "nodeId": 88874,
+            "nodeType": 1,
+            "rank": 3,
+            "locationList": ["Workspace", "20230526-org"],
+            "unitLogo": "",
+            "unitName": "",
+            "isCanClone": false,
+            "isCanShared": true,
+            "isCanDownloadU3M": false,
+            "isPublic": true,
+            "publicDate": null,
+            "createDate": 1640857364
+          },
+          "nodeProperty": {
+            "collectionId": 7540,
+            "name": "20230526-org",
+            "description": "",
+            "itemCounts": 11,
+            "coverImgList": [
+              "https://textile-dev.frontier.cool/Resource/MaterialAttachCover/F323637995377_202306121543102764.png",
+              "https://textile-dev.frontier.cool/Resource/MaterialCut/Thumbnail/F544523707066_202305221724409015.jpg",
+              "https://textile-dev.frontier.cool/Resource/MaterialCut/Thumbnail/F376649301055_202305171133016326.jpg"
+            ],
+            "hasChildCollection": true,
+            "trendBoard": null
+          }
+        },
+        {
+          "nodeMeta": {
+            "nodeId": 4033,
+            "nodeType": 2,
+            "rank": 2,
+            "locationList": ["Workspace", "EP15715"],
+            "unitLogo": "",
+            "unitName": "",
+            "isCanClone": false,
+            "isCanShared": true,
+            "isCanDownloadU3M": false,
+            "isPublic": true,
+            "publicDate": 1661320010,
+            "createDate": 1640857364
+          },
+          "nodeProperty": {
+            "materialId": 12237,
+            "itemNo": "EP15715",
+            "coverImage": {
+              "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialCut/Thumbnail/F072547576578_202208161751057759.jpg"
+            },
+            "mainSide": {
+              "materialType": "woven",
+              "descriptionList": [
+                {
+                  "descriptionId": 1,
+                  "name": "description 1"
+                },
+                {
+                  "descriptionId": 2,
+                  "name": "description 2"
+                }
+              ],
+              "contentList": [
+                {
+                  "contentId": 1,
+                  "name": "content 1",
+                  "percentage": 30
+                },
+                {
+                  "contentId": 2,
+                  "name": "content 2",
+                  "percentage": 70
+                }
+              ],
+              "width": {
+                "cuttable": 57.0,
+                "full": 60,
+                "unit": 1
+              },
+              "weight": {
+                "value": 100.0,
+                "unit": 1
+              },
+              "finishList": [
+                {
+                  "finishId": 1,
+                  "name": "finish 1"
+                },
+                {
+                  "finishId": 2,
+                  "name": "finish 2"
+                }
+              ]
+            },
+            "digitalThreadInfo": {
+              "threadQty": 1,
+              "hasUnreadThread": true
+            },
+            "metaData": {
+              "materialOwnerOGType": 1
+            }
+          }
+        },
+        {
+          "nodeMeta": {
+            "nodeId": 78765,
+            "nodeType": 2,
+            "rank": 4,
+            "locationList": ["Workspace", "N1061(H.T)"],
+            "unitLogo": "",
+            "unitName": "",
+            "isCanClone": false,
+            "isCanShared": true,
+            "isCanDownloadU3M": false,
+            "isPublic": true,
+            "publicDate": 1661320010,
+            "createDate": 1640857364
+          },
+          "nodeProperty": {
+            "materialId": 69994,
+            "itemNo": "N1061(H.T)",
+            "coverImage": {
+              "thumbnailUrl": "https://textile-dev.frontier.cool/Resource/MaterialAttachCover/F103077199930_202211241512198273.jpg"
+            },
+            "mainSide": {
+              "materialType": "woven",
+              "descriptionList": [
+                {
+                  "descriptionId": 1,
+                  "name": "description 1"
+                },
+                {
+                  "descriptionId": 2,
+                  "name": "description 2"
+                }
+              ],
+              "contentList": [
+                {
+                  "contentId": 1,
+                  "name": "content 1",
+                  "percentage": 30
+                },
+                {
+                  "contentId": 2,
+                  "name": "content 2",
+                  "percentage": 70
+                }
+              ],
+              "width": {
+                "cuttable": 57.0,
+                "full": 60,
+                "unit": 1
+              },
+              "weight": {
+                "value": 100.0,
+                "unit": 1
+              },
+              "finishList": [
+                {
+                  "finishId": 1,
+                  "name": "finish 1"
+                },
+                {
+                  "finishId": 2,
+                  "name": "finish 2"
+                }
+              ]
+            },
+            "digitalThreadInfo": {
+              "threadQty": 1,
+              "hasUnreadThread": true
+            },
+            "metaData": {
+              "materialOwnerOGType": 1
+            }
+          }
+        }
+      ]
+    }
+  }
+}

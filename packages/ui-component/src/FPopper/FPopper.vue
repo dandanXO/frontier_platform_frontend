@@ -40,10 +40,10 @@ const emit = defineEmits<{
 
 const props = withDefaults(
   defineProps<{
-    placement: `${TOOLTIP_PLACEMENT}`
-    offset: [number, number]
-    disabled: boolean
-    onFirstUpdate: () => void
+    placement?: `${TOOLTIP_PLACEMENT}`
+    offset?: [number, number]
+    disabled?: boolean
+    onFirstUpdate?: () => void
   }>(),
   {
     placement: 'auto',

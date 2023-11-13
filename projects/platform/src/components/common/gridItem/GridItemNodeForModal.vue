@@ -3,7 +3,7 @@ grid-item-wrapper(
   :isSelectable="isSelectable"
   :isMultiSelect="isMultiSelect"
   v-model:selectedValue="innerSelectedValue"
-  :selectValue="node"
+  :selectValue="node.nodeMeta.nodeId"
   :selectOnHover="false"
 )
   template(#title="{ isHover }")
@@ -64,7 +64,7 @@ import {
 const props = withDefaults(
   defineProps<{
     node: NodeChild
-    selectedValue: Array<number> | number | null
+    selectedValue?: Array<number> | number | null
     isSelectable?: boolean
     isMultiSelect?: boolean
   }>(),

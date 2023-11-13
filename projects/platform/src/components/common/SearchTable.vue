@@ -2,7 +2,7 @@
 div(class="w-full h-full flex flex-col" v-bind="$attrs")
   slot(name="box-above")
   search-box(:searchType="searchType" @search="search()")
-  slot(name="header-above" :goTo="goTo")
+  slot(name="header-above" :visit="visit")
   div(
     data-tooltip-boundary-reference="search-table-header"
     class="py-3 md:pt-7.5 md:pb-2.5 mx-7.5 flex justify-between items-center"
@@ -10,7 +10,7 @@ div(class="w-full h-full flex flex-col" v-bind="$attrs")
     div
       slot(
         name="header-left"
-        :goTo="goTo"
+        :visit="visit"
         :totalCount="pagination?.totalCount ?? 0"
       )
     div(class="flex items-center gap-x-5")
@@ -59,7 +59,7 @@ div(class="w-full h-full flex flex-col" v-bind="$attrs")
       ) {{ $t('RR0105') }}
     div(v-else class="flex-grow")
       slot(:inSearch="inSearch" name="banner")
-      slot(:inSearch="inSearch" :goTo="goTo")
+      slot(:inSearch="inSearch" :visit="visit")
     #pagination-container(
       v-if="!isSearching && pagination.totalCount > 0"
       class="py-9.5 self-center"
@@ -67,7 +67,7 @@ div(class="w-full h-full flex flex-col" v-bind="$attrs")
       f-paginator(
         v-model:currentPage="pagination.currentPage"
         :totalPage="pagination.totalPage"
-        @goTo="search($event)"
+        @visit="search($event)"
       )
 multi-select-menu(
   v-if="optionMultiSelect.length > 0"
@@ -141,7 +141,7 @@ const props = withDefaults(
       query: RouteQuery
     ) => Promise<void>
     itemList: Material[] | NodeChild[]
-    canSelectAll: boolean
+    canSelectAll?: boolean
     selectedItemList: Material[] | NodeChild[]
   }>(),
   {
@@ -194,14 +194,9 @@ const sortMenuTree = computed(() => {
   }
 })
 
-const goTo = () => {
-  /**
-   *  Since helper/search/filter is watched in the SearchBox.vue
-   *  and when its watcher is triggered, it emits a search event,
-   *  Also helper/search/reset includes reset filer,
-   *  This means it will call search event
-   */
+const visit = () => {
   searchStore.setSort(defaultSort.value)
+  search()
 }
 
 const innerSelectedItemList = computed({

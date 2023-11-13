@@ -136,7 +136,7 @@ const props = withDefaults(
      * * 2 - 單選，不可取消
      * * 3 - 多選
      */
-    selectMode: CONTEXTUAL_MENU_MODE
+    selectMode?: CONTEXTUAL_MENU_MODE
     /**
      * ```
      * {

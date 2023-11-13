@@ -37,7 +37,7 @@ import { useTooltip } from '../../FTooltip'
 // https://popper.js.org/docs/v2/
 
 export interface TooltipStandardProps {
-  theme: `${THEME}`
+  theme?: `${THEME}`
   placement?: `${TOOLTIP_PLACEMENT}`
   offset?: [number, number]
   isNotFitWidth?: boolean
@@ -69,7 +69,6 @@ const props = withDefaults(defineProps<TooltipStandardProps>(), {
   isNotFitWidth: false,
   disabledTooltip: false,
 })
-
 const slots = useSlots()
 const { disabledTooltip, offset, boundaryReference, placement } = toRefs(props)
 const {

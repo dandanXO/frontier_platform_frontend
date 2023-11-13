@@ -3,31 +3,27 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex fle
   menu-org
   div(class="border-t border-grey-150 px-1 py-1.5 flex flex-col")
     div(class="grid gap-y-1.5")
-      sidebar-item#publicLibrary(
-        :path="`/${organization.orgNo}/public-library`"
-      )
+      sidebar-item#PublicLibrary(:goTo="goToPublicLibrary")
         img(src="@/assets/images/logo.png" class="w-5 h-5")
         p(class="text-body2 text-grey-900 line-clamp-1") {{ $t('RR0003') }}
   div(class="flex-grow px-1 flex flex-col")
     div(class="w-auto h-px bg-grey-150 mx-1.5 my-1.5")
     f-scrollbar-container(class="flex-grow")
       div(class="grid gap-y-1.5")
-        sidebar-item(
+        sidebar-item#Dashboard(
           :title="$t('BB0138')"
-          :path="`/${organization.orgNo}/dashboard`"
+          :goTo="goToDashboard"
           icon="dashboard"
           :disabled="planStatus.INACTIVE"
         )
-        sidebar-item#management(
+        sidebar-item#Management(
           :title="$t('RR0004')"
-          :path="`/${organization.orgNo}/management/about`"
+          :goTo="goToManagement"
           icon="member_setting"
           :disabled="planStatus.INACTIVE"
           data-cy="sidebar_management"
         )
-        sidebar-item#progress(
-          :path="`/${organization.orgNo}/progress/material`"
-        )
+        sidebar-item#Progress(:goTo="goToProgress")
           f-svg-icon(
             iconName="progress"
             size="20"
@@ -43,45 +39,48 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex fle
           )
             f-svg-icon(iconName="loading" size="20" class="text-primary-400")
         f-expansion-panel(
-          v-for="item in menuOrgOrGroup"
-          :class="[{ 'pointer-events-none': item.disabled }]"
+          v-for="og in ogList"
+          :key="og.ogId"
+          :class="[{ 'pointer-events-none': og.disabled }]"
           data-cy="sidebar_location"
         )
           template(#trigger="{ isExpand }")
             div(class="flex items-center h-9 pl-4 pr-5 hover:bg-grey-100")
               label(
                 class="w-3 h-3 rounded-sm mr-3"
-                :style="{ backgroundColor: item.disabled ? '#c4c4c4' : item.labelColor }"
+                :style="{ backgroundColor: og.disabled ? '#c4c4c4' : og.labelColor }"
               )
               span(
                 class="flex-grow text-body2 line-clamp-1"
-                :class="[item.disabled ? 'text-grey-250' : 'text-grey-900']"
-              ) {{ item.name }}
+                :class="[og.disabled ? 'text-grey-250' : 'text-grey-900']"
+              ) {{ og.name }}
               f-svg-icon(
                 iconName="keyboard_arrow_right"
                 size="24"
                 class="transform"
-                :class="[isExpand ? 'rotate-90' : 'rotate-0', item.disabled ? 'text-grey-250' : 'text-grey-600']"
+                :class="[isExpand ? 'rotate-90' : 'rotate-0', og.disabled ? 'text-grey-250' : 'text-grey-600']"
               )
           template(#content)
             div(class="flex flex-col gap-y-0.5")
               sidebar-item(
-                v-for="(menu, index) in item.menuList"
+                v-for="(menu, index) in ogSideItemList(og.ogType, og.ogId, og.nodeId)"
+                :key="menu.id"
+                :ogKey="`${og.ogType}-${og.ogId}`"
                 v-bind="menu"
                 class="relative flex justify-between"
                 :style="{ zIndex: 20 - index }"
               )
                 p(class="pl-7 text-body2 text-grey-900 line-clamp-1") {{ menu.title }}
-                template(v-if="menu.id === 'assets'")
+                template(v-if="menu.id === 'Assets'")
                   f-tooltip-standard(class="mr-3" :tooltipMessage="$t('RR0012')")
                     template(#slot:tooltip-trigger)
                       div(
                         class="flex justify-center items-center w-6 h-6 rounded bg-grey-100"
                         data-cy="upload-page"
-                        @click.stop="goToAssetsUpload(menu.path)"
+                        @click.stop="goToMaterialUpload({ orgNo: organization.orgNo, ogKey: `${og.ogType}-${og.ogId}` })"
                       )
                         f-svg-icon(
-                          :iconName="menu.icon"
+                          :iconName="'upload'"
                           size="20"
                           class="text-grey-600"
                         )
@@ -95,101 +94,98 @@ div(class="relative z-sidebar min-w-60 w-60 h-full bg-grey-50 shadow-16 flex fle
   menu-org-user
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useStore } from 'vuex'
 import { computed, onUnmounted } from 'vue'
 import SidebarItem from '@/components/sidebar/SidebarItem.vue'
 import MenuOrg from '@/components/sidebar/MenuOrg.vue'
 import MenuOrgUser from '@/components/sidebar/MenuOrgUser.vue'
 import { useI18n } from 'vue-i18n'
-import { OG_TYPE } from '@/utils/constants'
-import { useRouter } from 'vue-router'
+import useNavigation from '@/composables/useNavigation'
+import { OgType, type Organization } from '@frontier/platform-web-sdk'
 
 const { t } = useI18n()
 const store = useStore()
-const router = useRouter()
+const {
+  goToPublicLibrary,
+  goToDashboard,
+  goToManagement,
+  goToProgress,
+  goToAssets,
+  goToWorkspace,
+  goToMoodboard,
+  goToThreadBoard,
+  goToMaterialUpload,
+} = useNavigation()
+
 const isPromotingNewFeature = computed(
   () => store.getters['user/isPromotingNewFeature']
 )
-const organization = computed(() => store.getters['organization/organization'])
+const organization = computed<Organization>(
+  () => store.getters['organization/organization']
+)
 const isProcessing = computed(() => store.getters['polling/isProcessing'])
 const planStatus = computed(() => store.getters['polling/planStatus'])
-const menuOrgOrGroup = computed(() => {
-  const { orgId, orgNo, orgName, labelColor, workspaceNodeId } =
-    organization.value
+const ogList = computed(() => {
+  const { orgId, orgName, labelColor, nodeId } = organization.value
   return [
     {
-      id: orgId,
+      ogType: OgType.ORG,
+      ogId: orgId,
+      nodeId,
       name: orgName,
       labelColor: labelColor,
-      disabled: planStatus.value.INACTIVE,
-      menuList: [
-        {
-          id: 'assets',
-          title: t('RR0008'),
-          path: `/${orgNo}/assets`,
-          icon: 'upload',
-        },
-        {
-          id: 'workspace',
-          title: t('RR0009'),
-          path: `/${orgNo}/workspace/${OG_TYPE.ORG}-${workspaceNodeId}`,
-          pathUseToMatch: `/${orgNo}/workspace`,
-        },
-        {
-          id: 'moodboard',
-          title: t('QQ0001'),
-          path: `/${orgNo}/moodboard`,
-        },
-        {
-          id: 'threadBoard',
-          title: t('TT0132'),
-          path: `/${orgNo}/thread-board`,
-        },
-      ],
+      disabled: planStatus.value.INACTIVE as boolean,
     },
-    ...store.getters['organization/groupList'].map((group) => {
-      const { groupId, groupName, labelColor, workspaceNodeId } = group
+    ...organization.value.groupList.map((group) => {
+      const { groupId, groupName, labelColor, nodeId } = group
       return {
-        id: groupId,
+        ogType: OgType.GROUP,
+        ogId: groupId,
+        nodeId,
         name: groupName,
         labelColor: labelColor,
-        disabled: planStatus.value.INACTIVE,
-        menuList: [
-          {
-            id: 'assets',
-            title: t('RR0008'),
-            path: `/${orgNo}/${groupId}/assets`,
-            icon: 'upload',
-          },
-          {
-            id: 'workspace',
-            title: t('RR0009'),
-            path: `/${orgNo}/${groupId}/workspace/${OG_TYPE.GROUP}-${workspaceNodeId}`,
-            pathUseToMatch: `/${orgNo}/${groupId}/workspace`,
-          },
-          {
-            id: 'moodboard',
-            title: t('QQ0001'),
-            path: `/${orgNo}/${groupId}/moodboard`,
-          },
-          {
-            id: 'threadBoard',
-            title: t('TT0132'),
-            path: `/${orgNo}/${groupId}/thread-board`,
-          },
-        ],
+        disabled: planStatus.value.INACTIVE as boolean,
       }
     }),
-  ]
+  ] as {
+    ogType: OgType
+    ogId: number
+    nodeId: number
+    name: string
+    labelColor: string
+    disabled: boolean
+  }[]
 })
-
+const ogSideItemList = (ogType: OgType, ogId: number, nodeId: number) => {
+  const navReq = {
+    orgNo: organization.value.orgNo,
+    ogKey: `${ogType}-${ogId}`,
+  }
+  return [
+    {
+      id: 'Assets',
+      title: t('RR0008'),
+      goTo: goToAssets.bind(null, navReq),
+    },
+    {
+      id: 'Workspace',
+      title: t('RR0009'),
+      goTo: goToWorkspace.bind(null, navReq, nodeId),
+    },
+    {
+      id: 'Moodboard',
+      title: t('QQ0001'),
+      goTo: goToMoodboard.bind(null, navReq),
+    },
+    {
+      id: 'ThreadBoard',
+      title: t('TT0132'),
+      goTo: goToThreadBoard.bind(null, navReq),
+    },
+  ]
+}
 onUnmounted(() => {
   store.dispatch('polling/stopPollingSidebar')
 })
-
-const goToAssetsUpload = async (path) => {
-  await store.dispatch('sticker/closeStickerDrawer')
-  router.push(path + '/upload')
-}
 </script>

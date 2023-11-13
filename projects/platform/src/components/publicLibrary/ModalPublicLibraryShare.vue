@@ -47,8 +47,11 @@ modal-behavior(
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
-import { SOCIAL_MEDIA_TYPE } from '@/utils/constants'
-import { shareViaCopyLink, shareViaSocialMedia } from '@/utils/share.js'
+import {
+  shareViaCopyLink,
+  shareViaSocialMedia,
+  SOCIAL_MEDIA_TYPE,
+} from '@/utils/share'
 
 const props = defineProps({
   nodeKey: {

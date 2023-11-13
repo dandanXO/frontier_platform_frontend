@@ -22,7 +22,7 @@ const props = withDefaults(
     size?: `${SIZE}` | 'special'
     type?: 'primary' | 'secondary' | 'text' | 'special'
     prependIcon?: string
-    disabled: boolean
+    disabled?: boolean
   }>(),
   {
     theme: THEME.LIGHT,

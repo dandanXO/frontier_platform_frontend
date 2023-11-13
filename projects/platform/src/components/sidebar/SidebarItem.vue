@@ -2,10 +2,11 @@
 div(
   class="flex items-center gap-x-2 h-9 pl-3 pr-2 hover:bg-grey-100 cursor-pointer"
   :class="[{ 'bg-grey-150': isActive }, { 'pointer-events-none': disabled }]"
-  @click="goTo"
+  @click="innerGoTo"
 )
   slot
     f-svg-icon(
+      v-if="icon"
       :iconName="icon"
       size="20"
       :class="[disabled ? 'text-grey-250' : 'text-grey-600']"
@@ -16,91 +17,43 @@ div(
     ) {{ title }}
 </template>
 
-<script>
+<script setup lang="ts">
 import { computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 
-export default {
-  name: 'SidebarItem',
-  props: {
-    title: {
-      type: String,
-      default: '',
-    },
-    icon: {
-      type: String,
-      default: '',
-    },
-    path: {
-      type: String,
-      required: true,
-    },
-    pathUseToMatch: {
-      type: String,
-      default: '',
-    },
-    id: {
-      type: String,
-      required: true,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props) {
-    const store = useStore()
-    const route = useRoute()
-    const router = useRouter()
+const props = defineProps<{
+  id: string
+  title?: string
+  icon?: string
+  disabled?: boolean
+  goTo?: () => any
+  ogKey?: string
+}>()
 
-    const isActive = computed(() => {
-      // Special case
-      if (
-        (props.id === 'management' &&
-          ['OrgManagement', 'GroupManagement'].includes(route.name)) ||
-        (props.id === 'progress' &&
-          ['OrgProgress', 'GroupProgress'].includes(route.name))
-      ) {
-        return true
-      }
+const store = useStore()
+const route = useRoute()
 
-      const matched = route.matched
-      const matchedPathList = matched.map((item) => {
-        let path = item.path
-        Object.keys(route.params).forEach((key) => {
-          const regex = new RegExp(':' + key)
-          path = path.replace(regex, route.params[key])
-        })
-        path = path.replace(/\(\\d\+\)/, '')
-        return path
-      })
+const isActive = computed(() => {
+  if (props.ogKey) {
+    return (
+      (route.path as string).includes(props.ogKey) &&
+      (route.name as string).includes(props.id)
+    )
+  }
+  return (route.name as string).includes(props.id)
+})
 
-      return matchedPathList.some((matchedPath) =>
-        matchedPath.includes(
-          props.pathUseToMatch !== '' ? props.pathUseToMatch : props.path
-        )
-      )
-    })
-
-    const goTo = async () => {
-      if (props.disabled) {
-        return
-      }
-      try {
-        await store.dispatch('sticker/closeStickerDrawer')
-        await router.push(props.path)
-        store.dispatch('helper/reloadInnerApp')
-      } catch (err) {
-        console.error(err)
-        // cancel to switch page
-      }
-    }
-
-    return {
-      goTo,
-      isActive,
-    }
-  },
+const innerGoTo = async () => {
+  if (props.disabled || !props.goTo) {
+    return
+  }
+  try {
+    await store.dispatch('sticker/closeStickerDrawer')
+    await props.goTo()
+  } catch (err) {
+    console.error(err)
+    // cancel to switch page
+  }
 }
 </script>

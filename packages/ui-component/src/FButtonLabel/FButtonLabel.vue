@@ -20,7 +20,7 @@ const props = withDefaults(
   defineProps<{
     theme?: `${THEME}`
     size?: `${SIZE.LG}` | `${SIZE.SM}`
-    active: boolean
+    active?: boolean
   }>(),
   {
     size: SIZE.SM,

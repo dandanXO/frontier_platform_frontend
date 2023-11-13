@@ -20,9 +20,9 @@ import defaultOrg from './default_org.png'
 
 const props = withDefaults(
   defineProps<{
-    type: 'user' | 'org'
+    type?: 'user' | 'org'
     imageUrl?: string | null
-    size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'
     labelColor?: string | null
     hasBorder?: boolean
   }>(),

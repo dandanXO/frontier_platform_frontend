@@ -13,7 +13,7 @@
 
 <template lang="pug">
 div(class="h-full flex overflow-x-hidden")
-  router-view(name="sidebar")
+  sidebar
   main(class="flex-grow relative flex flex-col")
     router-view(
       v-if="isReloadInnerApp"
@@ -36,26 +36,27 @@ div(class="h-full flex overflow-x-hidden")
     sticker-drawer(v-if="isStickerDrawerOpen")
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'InnerAppLayout',
 }
 </script>
 
-<script setup>
-import { setOptions, bootstrap } from 'vue-gtag'
+<script setup lang="ts">
 import { useStore } from 'vuex'
 import { computed, defineAsyncComponent, watch } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
+import Sidebar from '@/components/sidebar/Sidebar.vue'
 import useNavigation from '@/composables/useNavigation'
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
 import { useFilterStore } from '@/stores/filter'
+import { OgType } from '@frontier/platform-web-sdk'
 
-const NotifyBarBuffer = defineAsyncComponent(() =>
-  import('@/components/billings/NotifyBarBuffer.vue')
+const NotifyBarBuffer = defineAsyncComponent(
+  () => import('@/components/billings/NotifyBarBuffer.vue')
 )
-const ModalAnnouncement = defineAsyncComponent(() =>
-  import('@/components/common/ModalAnnouncement.vue')
+const ModalAnnouncement = defineAsyncComponent(
+  () => import('@/components/common/ModalAnnouncement.vue')
 )
 
 const store = useStore()
@@ -71,24 +72,20 @@ const isStickerDrawerOpen = computed(
 )
 
 onBeforeRouteUpdate(async (to, from) => {
-  const isFromGroup = 'groupId' in from.params
-  const isToGroup = 'groupId' in to.params
-  if (isFromGroup && isToGroup && from.params.groupId !== to.params.groupId) {
-    await store.dispatch('group/getGroup', { groupId: to.params.groupId })
-    await store.dispatch('group/groupUser/getGroupUser')
+  if (
+    to.params.ogKey &&
+    from.params.ogKey &&
+    to.params.ogKey !== from.params.ogKey
+  ) {
+    const [ogType, ogId] = (to.params.ogKey as string).split('-')
+    if (Number(ogType) === OgType.GROUP) {
+      await store.dispatch('group/getGroup', {
+        groupId: Number(ogId),
+      })
+      await store.dispatch('group/groupUser/getGroupUser')
+    }
   }
 })
-
-/** GA */
-setOptions({
-  config: {
-    id: import.meta.env.VITE_APP_GA_MEASUREMENT_ID,
-    params: {
-      user_id: user.value.email,
-    },
-  },
-})
-bootstrap()
 
 watch(
   () => ogId.value + ogType.value,

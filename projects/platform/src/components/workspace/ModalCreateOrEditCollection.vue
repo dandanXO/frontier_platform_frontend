@@ -16,20 +16,20 @@ modal-behavior(
     p(class="text-right pb-0.5 text-caption text-grey-600") *{{ $t('RR0163') }}
     f-input-text(
       ref="refInputCollectionName"
-      v-model:textValue="formData.collectionName"
+      v-model:textValue="collectionName"
       required
       :label="$t('FF0010')"
       class="mb-7.5"
-      :rules="[$inputRules.required(), $inputRules.maxLength(COLLECTION_NAME_MAX_LENGTH)]"
+      :rules="[inputRules.required(), inputRules.maxLength(COLLECTION_NAME_MAX_LENGTH)]"
       :hintError="isCollectionNameExist ? $t('WW0001') : ''"
     )
     div(class="h-5.5 flex items-center pb-1")
       p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
       f-button-label(
-        v-if="uploadTrendBoardName"
+        v-if="trendBoardFile"
         size="sm"
         class="ml-1.5"
-        @click="previewFile(formData.trendBoardFile)"
+        @click="previewFile(trendBoardFile)"
       ) {{ $t('UU0060') }}
     f-input-file(
       class="w-full mb-15"
@@ -43,96 +43,133 @@ modal-behavior(
     )
     f-input-textarea(
       ref="refInputDescription"
-      v-model:textValue="formData.description"
+      v-model:textValue="collectionDescription"
       :label="$t('RR0014')"
-      :rules="[$inputRules.maxLength(COLLECTION_DESCRIPTION_MAX_LENGTH, $t('WW0073'))]"
+      :rules="[inputRules.maxLength(COLLECTION_DESCRIPTION_MAX_LENGTH, $t('WW0073'))]"
       minHeight="min-h-30"
     )
 </template>
 
-<script setup>
-import { ref, reactive, computed, watch } from 'vue'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
-import { previewFile } from '@frontier/lib'
+import { previewFile, inputRules } from '@frontier/lib'
 import { useI18n } from 'vue-i18n'
 import {
   CREATE_EDIT,
   COLLECTION_NAME_MAX_LENGTH,
   COLLECTION_DESCRIPTION_MAX_LENGTH,
 } from '@/utils/constants'
+import { type UPLOAD_ERROR_CODE, EXTENSION } from '@frontier/constants'
+import { FInputText } from '@frontier/ui-component'
+import { useWorkspaceStore } from '@/stores/workspace'
+import type { Collection, NodeMeta } from '@frontier/platform-web-sdk'
+import { uploadFileToS3 } from '@/utils/fileUpload'
 
+export interface PropsModalCreateOrEditCollection {
+  mode: CREATE_EDIT
+  nodeMeta: NodeMeta
+  collection: Collection
+}
+const props = defineProps<PropsModalCreateOrEditCollection>()
+
+const collection = ref(props.collection)
 const { t } = useI18n()
+const { ogBaseWorkspaceApi } = useWorkspaceStore()
 const store = useStore()
 const notify = useNotifyStore()
 
-const props = defineProps({
-  mode: {
-    type: Number,
-    default: CREATE_EDIT.CREATE,
-  },
-  workspaceNodeId: {
-    type: [Number, String],
-    required: true,
-  },
-})
-
 const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
-const acceptType = ['pdf']
-const errorCode = ref('')
-const finishUpload = (file) => {
-  errorCode.value = ''
-  formData.trendBoardFile = file
+const acceptType = [EXTENSION.PDF]
+const errorCode = ref<UPLOAD_ERROR_CODE | null>(null)
+const finishUpload = (file: File) => {
+  errorCode.value = null
+  trendBoardFile.value = file
 }
 
+const collectionName = ref<string | null>(null)
+const collectionDescription = ref<string | null>(null)
+const trendBoardFile = ref<File | string | null>(null)
+const uploadTrendBoardName = ref<string | null>(null)
+if (props.mode === CREATE_EDIT.EDIT) {
+  const { name, description, trendBoard } = collection.value
+  collectionName.value = name
+  collectionDescription.value = description
+  trendBoardFile.value = trendBoard?.originalUrl ?? null
+  uploadTrendBoardName.value = trendBoard?.displayName ?? null
+}
 const removeTrendBoard = () => {
-  props.mode === CREATE_EDIT.EDIT &&
-    store.dispatch('workspace/removeTrendBoard', {
-      collectionId: collectionId.value,
+  trendBoardFile.value = null
+  if (props.mode === CREATE_EDIT.EDIT) {
+    ogBaseWorkspaceApi('removeWorkspaceCollectionTrendBoard', {
+      collectionId: collection.value.collectionId,
     })
+  }
 }
 
-const refInputCollectionName = ref(null)
-const refInputDescription = ref(null)
-const uploadTrendBoardName = ref('')
-const collectionId = ref(null) // only use when CREATE_EDIT is equal to EDIT
-const formData = reactive({
-  collectionName: '',
-  trendBoardFile: null,
-  description: '',
-})
-const isCollectionNameExist = ref(false)
+const refInputCollectionName = ref<InstanceType<typeof FInputText>>()
+const refInputDescription = ref<InstanceType<typeof FInputText>>()
 const isFormValid = computed(
   () =>
-    formData.collectionName?.length > 0 &&
+    collectionName.value &&
     !refInputCollectionName.value?.isError &&
     !refInputDescription.value?.isError
 )
 
+const isCollectionNameExist = ref(false)
 watch(
-  () => formData.collectionName,
+  () => collectionName.value,
   () => (isCollectionNameExist.value = false)
 )
 
 const actionHandler = async () => {
-  if (uploadTrendBoardName.value === '') {
-    formData.trendBoardFile = null
+  if (!collectionName.value) {
+    return
   }
+
   try {
     store.dispatch('helper/pushModalLoading')
+
+    const getTrendBoard = async () => {
+      if (
+        typeof trendBoardFile.value === 'object' &&
+        trendBoardFile.value !== null
+      ) {
+        const { s3UploadId, fileName } = await uploadFileToS3(
+          trendBoardFile.value as File,
+          uploadTrendBoardName.value as string
+        )
+        return {
+          s3UploadId,
+          fileName,
+        }
+      } else {
+        return null
+      }
+    }
+
     if (props.mode === CREATE_EDIT.EDIT) {
-      await store.dispatch('workspace/updateCollection', {
-        ...formData,
-        collectionId: collectionId.value,
+      const trendBoard = await getTrendBoard()
+      await ogBaseWorkspaceApi('updateWorkspaceCollection', {
+        collectionId: collection.value.collectionId,
+        collectionName: collectionName.value,
+        description: collectionDescription.value,
+        trendBoard,
       })
+
       notify.showNotifySnackbar({ messageText: t('FF0035') })
     } else {
-      await store.dispatch('workspace/createCollection', {
-        ...formData,
-        workspaceNodeId: props.workspaceNodeId,
+      const trendBoard = await getTrendBoard()
+      await ogBaseWorkspaceApi('createWorkspaceCollection', {
+        nodeId: props.nodeMeta.nodeId,
+        collectionName: collectionName.value,
+        description: collectionDescription.value,
+        trendBoard,
       })
       notify.showNotifySnackbar({ messageText: t('FF0027') })
     }
+
     store.dispatch('helper/reloadInnerApp')
     store.dispatch('helper/clearModalPipeline')
   } catch (error) {
@@ -146,24 +183,5 @@ const actionHandler = async () => {
         throw error
     }
   }
-}
-
-if (props.mode === CREATE_EDIT.EDIT) {
-  const {
-    collectionId: cId,
-    name,
-    description,
-    trendBoardUrl,
-    trendBoardDisplayFileName,
-  } = await store.dispatch('workspace/getCollection', {
-    workspaceNodeId: props.workspaceNodeId,
-  })
-  Object.assign(formData, {
-    collectionName: name,
-    description: description || '',
-    trendBoardFile: trendBoardUrl,
-  })
-  collectionId.value = cId
-  uploadTrendBoardName.value = trendBoardDisplayFileName
 }
 </script>

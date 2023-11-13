@@ -1,65 +1,60 @@
 <template lang="pug">
 div
   material-detail-internal(
-    :material="material"
-    :breadcrumbList="breadcrumbList"
+    :material="nodeMaterial.material"
+    :locationList="breadcrumbList"
     class="mx-auto w-230 pb-25"
   )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import useNavigation from '@/composables/useNavigation'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import MaterialDetailInternal from '@/components/common/material/detail/internal/MaterialDetailInternal.vue'
+import { useWorkspaceStore } from '@/stores/workspace'
+import useCurrentUnit from '@/composables/useCurrentUnit'
+import type { WorkspaceNodeMaterial } from '@frontier/platform-web-sdk'
 
-// temp
-import { useAssetsStore } from '@/stores/assets'
-import { storeToRefs } from 'pinia'
-const assetsStore = useAssetsStore()
-const { material } = storeToRefs(assetsStore)
-
-const props = defineProps({
-  nodeKey: {
-    type: String,
-    required: true,
-  },
-})
+const props = defineProps<{
+  nodeId: string
+}>()
 
 const { t } = useI18n()
-const store = useStore()
 const route = useRoute()
-const { parsePath, prefixPath } = useNavigation()
+const { ogNodeId } = useCurrentUnit()
+const { ogBaseWorkspaceApi } = useWorkspaceStore()
+const { goToWorkspace, goToWorkspaceMaterialDetail } = useNavigation()
 
-// await store.dispatch('workspace/getWorkspaceMaterial', {
-//   nodeKey: props.nodeKey,
-//   rank: Number(route.query.rank),
-// })
+const res = await ogBaseWorkspaceApi('getWorkspaceMaterial', {
+  nodeId: Number(props.nodeId),
+  searchLog: {
+    keyword: '',
+    rank: Number(route.query.rank),
+  },
+})
+const nodeMaterial = ref<WorkspaceNodeMaterial>(
+  res.data.result.workspaceNodeMaterial
+)
 
-// const material = computed(() => store.getters['workspace/material'])
 const breadcrumbList = computed(() => {
-  const defaultWorkspaceNodeKey =
-    store.getters['workspace/defaultWorkspaceNodeKey']
   return [
     {
       name: t('FF0001'),
-      path: parsePath(
-        `${prefixPath.value}/workspace/${defaultWorkspaceNodeKey}`
-      ),
+      goTo: goToWorkspace.bind(null, {}, ogNodeId.value),
     },
-    ...store.getters['workspace/materialBreadcrumbList'].map(
-      ({ name, nodeKey }, index, array) => {
+    ...nodeMaterial.value.nodeMeta.locationList.map(
+      ({ name, nodeId }, index, array) => {
         if (index !== array.length - 1) {
           return {
             name,
-            path: parsePath(`${prefixPath.value}/workspace/${nodeKey}`),
+            goTo: goToWorkspace.bind(null, {}, nodeId),
           }
         } else {
           return {
-            name: material.value.itemNo,
-            path: parsePath(`${prefixPath.value}/workspace/material/:nodeKey`),
+            name: nodeMaterial.value.material.itemNo,
+            goTo: goToWorkspaceMaterialDetail.bind(null, {}, nodeId),
           }
         }
       }

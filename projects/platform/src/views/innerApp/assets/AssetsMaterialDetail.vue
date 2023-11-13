@@ -35,7 +35,7 @@ const locationList = computed(() => {
     },
     {
       name: material.value?.itemNo ?? '',
-      goTo: goToAssetMaterialDetail.bind(null, Number(props.materialId)),
+      goTo: goToAssetMaterialDetail.bind(null, {}, Number(props.materialId)),
     },
   ]
 })

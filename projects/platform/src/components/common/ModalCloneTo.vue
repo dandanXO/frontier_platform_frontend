@@ -54,12 +54,12 @@ modal-behavior(
       f-svg-icon(iconName="warning_amber_round" class="text-red-400" size="14")
       div(class="text-caption leading-1.6 pl-1.5")
         p(class="text-red-400") {{ $t('WW0090') }}
-        p(class="text-cyan-400" @click="goToBillings(selectedOrgNo)") {{ $t('RR0169') }}
+        p(class="text-cyan-400" @click="goToBillings({ orgNo: selectedOrgNo })") {{ $t('RR0169') }}
     div(v-else-if="isExceedU3mStorage" class="flex items-center")
       f-svg-icon(iconName="error_outline" class="text-grey-600" size="14")
       div(class="text-caption leading-1.6 pl-1.5")
         p(class="text-grey-600") {{ $t('RR0170') }}
-        p(class="text-cyan-400" @click="goToBillings(selectedOrgNo)") {{ $t('RR0169') }}
+        p(class="text-cyan-400" @click="goToBillings({ orgNo: selectedOrgNo })") {{ $t('RR0169') }}
 </template>
 
 <script setup lang="ts">
@@ -205,7 +205,7 @@ const openModalConfirmReachMaterialStorage = () => {
     contentText: t('RR0183', { amount: remainingQuota.value.material.max }),
     primaryBtnText: t('UU0082'),
     secondaryBtnText: t('UU0085'),
-    secondaryBtnHandler: () => goToBillings(selectedOrgNo.value),
+    secondaryBtnHandler: () => goToBillings({ orgNo: selectedOrgNo.value }),
   })
 }
 

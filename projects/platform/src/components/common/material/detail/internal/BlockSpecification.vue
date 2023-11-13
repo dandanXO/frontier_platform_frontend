@@ -41,7 +41,7 @@ import type { MaterialSpecificationInfo } from '@/composables/material/useMateri
 const props = withDefaults(
   defineProps<{
     specificationInfo: MaterialSpecificationInfo
-    isListView: boolean
+    isListView?: boolean
   }>(),
   {
     isListView: false,

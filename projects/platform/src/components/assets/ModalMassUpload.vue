@@ -115,7 +115,7 @@ const handleUpload = async () => {
         secondaryBtnText: t('UU0093'),
         primaryHandler: () => {
           store.dispatch('helper/closeModalBehavior')
-          goToProgress('excel')
+          goToProgress({}, 'excel')
         },
         secondaryHandler: () => {
           store.dispatch('helper/closeModalBehavior')

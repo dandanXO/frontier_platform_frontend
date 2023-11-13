@@ -118,7 +118,6 @@ export enum U3M_DOWNLOAD_PROP {
   U3MA = 'u3maUrl',
   GLTF = 'gltfUrl',
 }
-
 export const OG_TYPE = {
   ORG: 1,
   GROUP: 2,
@@ -156,12 +155,6 @@ export const RECEIVED_SHARE_ACTION_TYPE = {
   SAVE: 1,
   CLONE: 2,
   DOWNLOAD: 3,
-}
-
-export const SHARE_TARGET_TYPE = {
-  ORG: 1,
-  GROUP: 2,
-  EMAIL: 3,
 }
 
 export const PLAN_TYPE = {
@@ -237,12 +230,6 @@ export const PERMISSION_MAP = {
   [ROLE_ID.MEMBER1]: MEMBER1_PERMISSION_LIST,
   [ROLE_ID.MEMBER2]: MEMBER2_PERMISSION_LIST,
   [ROLE_ID.MEMBER3]: MEMBER3_PERMISSION_LIST,
-}
-
-export const SOCIAL_MEDIA_TYPE = {
-  LINKEDIN: 1,
-  FACEBOOK: 2,
-  TWITTER: 3,
 }
 
 export const UPLOAD_PROGRESS = {

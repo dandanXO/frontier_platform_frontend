@@ -45,10 +45,10 @@ withDefaults(
   defineProps<{
     iconName: string
     displayName: string
-    dirty: boolean
-    disabled: boolean
-    confirmButton: boolean
-    confirmDisabled: boolean
+    dirty?: boolean
+    disabled?: boolean
+    confirmButton?: boolean
+    confirmDisabled?: boolean
   }>(),
   {
     dirty: false,

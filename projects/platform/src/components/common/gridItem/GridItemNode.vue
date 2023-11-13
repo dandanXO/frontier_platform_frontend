@@ -114,6 +114,9 @@ const emit = defineEmits<{
 }>()
 
 const store = useStore()
+const drawerOpenFromLocationList = useStickerLocationList(
+  props.node.nodeMeta.locationList.map((location) => location.name)
+)
 const nodeType = computed(() => props.node.nodeMeta.nodeType)
 const collection = computed(() =>
   nodeType.value === NodeType.COLLECTION
@@ -163,9 +166,6 @@ const innerSelectedValue = computed({
   set: (v) => emit('update:selectedValue', v),
 })
 
-const drawerOpenFromLocationList = useStickerLocationList(
-  props.node.nodeMeta.locationList.map((location) => location.name)
-)
 const currentMaterialId = computed(
   () => store.getters['sticker/currentMaterialId']
 )

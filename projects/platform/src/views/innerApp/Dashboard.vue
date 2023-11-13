@@ -3,9 +3,9 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
   div(class="h-11 flex justify-between items-center")
     div(class="text-h6 font-bold text-grey-900 pl-1.5") {{ $t('BB0138') }}
     f-select-dropdown(
-      :selectValue="currentMenu"
+      :selectValue="`${ogType}-${ogId}`"
       :dropdownMenuTree="menuOrgOrGroup"
-      @update:selectValue="toggleOrgOrGroup"
+      @update:selectValue="($event) => goToDashboard({ ogKey: $event })"
       class="w-75"
     )
   div(
@@ -109,19 +109,19 @@ import { useDashboardStore } from '@/stores/dashboard'
 import { storeToRefs } from 'pinia'
 import colors from '@frontier/tailwindcss/colors'
 import { useI18n } from 'vue-i18n'
-import { useRoute, useRouter } from 'vue-router'
+import useNavigation from '@/composables/useNavigation'
+import { OgType, type Organization } from '@frontier/platform-web-sdk'
+import type { MenuItem } from '@frontier/ui-component'
 
 const { t } = useI18n()
 const store = useStore()
-const route = useRoute()
-const router = useRouter()
+const { goToDashboard, ogType, ogId } = useNavigation()
 
-const routeLocation = computed(() =>
-  route.name === 'OrgDashboard' ? 'org' : 'group'
+const organization = computed<Organization>(
+  () => store.getters['organization/organization']
 )
-const organization = computed(() => store.getters['organization/organization'])
 const menuOrgOrGroup = computed(() => {
-  const { orgNo, orgName, labelColor } = organization.value
+  const { orgName, labelColor, orgId } = organization.value
   return {
     width: 'w-75',
     blockList: [
@@ -129,32 +129,22 @@ const menuOrgOrGroup = computed(() => {
         menuList: [
           {
             title: orgName,
-            selectValue: `/${orgNo}/dashboard`,
+            selectValue: `${OgType.ORG}-${orgId}`,
             labelColor,
           },
-          ...store.getters['organization/groupList'].map((group) => {
+          ...organization.value.groupList.map((group) => {
             const { groupId, groupName, labelColor } = group
             return {
               title: groupName,
-              selectValue: `/${orgNo}/${groupId}/dashboard`,
+              selectValue: `${OgType.GROUP}-${groupId}`,
               labelColor,
             }
           }),
-        ],
+        ] as MenuItem[],
       },
     ],
   }
 })
-const currentMenu = computed(() => {
-  const { orgNo } = organization.value
-  return routeLocation.value === 'org'
-    ? `/${orgNo}/dashboard`
-    : `/${orgNo}/${route.params.groupId}/dashboard`
-})
-const toggleOrgOrGroup = (path: string) => {
-  router.push(path)
-}
-
 const dashboard = useDashboardStore()
 const {
   createCounts,

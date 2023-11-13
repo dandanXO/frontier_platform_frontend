@@ -2998,10 +2998,10 @@ export interface CreateWorkspaceCollectionRequest {
     'description': string | null;
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @type {S3UploadedObject}
      * @memberof CreateWorkspaceCollectionRequest
      */
-    'trendBoard': UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal | null;
+    'trendBoard': S3UploadedObject | null;
 }
 
 
@@ -3031,10 +3031,10 @@ export interface CreateWorkspaceCollectionRequestAllOf {
     'description': string | null;
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @type {S3UploadedObject}
      * @memberof CreateWorkspaceCollectionRequestAllOf
      */
-    'trendBoard': UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal | null;
+    'trendBoard': S3UploadedObject | null;
 }
 /**
  * 
@@ -5024,12 +5024,6 @@ export interface ExternalFilter {
      * @memberof ExternalFilter
      */
     'inventory': ExternalFilterAllOfInventory | null;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ExternalFilter
-     */
-    'countryList': Array<string> | null;
 }
 /**
  * 
@@ -5043,12 +5037,6 @@ export interface ExternalFilterAllOf {
      * @memberof ExternalFilterAllOf
      */
     'inventory': ExternalFilterAllOfInventory | null;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ExternalFilterAllOf
-     */
-    'countryList': Array<string> | null;
 }
 /**
  * 
@@ -5830,7 +5818,7 @@ export interface GenerateWorkspaceNodeShareSocialRequest {
      * @type {number}
      * @memberof GenerateWorkspaceNodeShareSocialRequest
      */
-    'type'?: GenerateWorkspaceNodeShareSocialRequestTypeEnum;
+    'type': GenerateWorkspaceNodeShareSocialRequestTypeEnum;
 }
 
 export const GenerateWorkspaceNodeShareSocialRequestTypeEnum = {
@@ -5858,7 +5846,7 @@ export interface GenerateWorkspaceNodeShareSocialRequestAllOf {
      * @type {number}
      * @memberof GenerateWorkspaceNodeShareSocialRequestAllOf
      */
-    'type'?: GenerateWorkspaceNodeShareSocialRequestAllOfTypeEnum;
+    'type': GenerateWorkspaceNodeShareSocialRequestAllOfTypeEnum;
 }
 
 export const GenerateWorkspaceNodeShareSocialRequestAllOfTypeEnum = {
@@ -8137,10 +8125,10 @@ export interface GetPublicLibraryListRequest {
     'search': Search | null;
     /**
      * 
-     * @type {ExternalFilter}
+     * @type {InnerExternalFilter}
      * @memberof GetPublicLibraryListRequest
      */
-    'filter': ExternalFilter | null;
+    'filter': InnerExternalFilter | null;
 }
 /**
  * 
@@ -8561,10 +8549,10 @@ export interface GetShareToMeListRequest {
     'search': Search | null;
     /**
      * 
-     * @type {ExternalFilter}
+     * @type {InnerExternalFilter}
      * @memberof GetShareToMeListRequest
      */
-    'filter': ExternalFilter | null;
+    'filter': InnerExternalFilter | null;
 }
 
 
@@ -8600,10 +8588,10 @@ export interface GetShareToMeListRequestAllOf {
     'search': Search | null;
     /**
      * 
-     * @type {ExternalFilter}
+     * @type {InnerExternalFilter}
      * @memberof GetShareToMeListRequestAllOf
      */
-    'filter': ExternalFilter | null;
+    'filter': InnerExternalFilter | null;
 }
 /**
  * 
@@ -10102,6 +10090,104 @@ export interface HideWorkflowStageRequest {
 /**
  * 
  * @export
+ * @interface InnerExternalFilter
+ */
+export interface InnerExternalFilter {
+    /**
+     * 1 - Woven 2 - Knit 3 - Leather 4 - Non-woven 5 - Composite 6 - Trim 7 - Others 
+     * @type {Array<number>}
+     * @memberof InnerExternalFilter
+     */
+    'materialTypeList': Array<number> | null;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof InnerExternalFilter
+     */
+    'descriptionList': Array<number> | null;
+    /**
+     * 
+     * @type {Array<FilterContentListInner>}
+     * @memberof InnerExternalFilter
+     */
+    'contentList': Array<FilterContentListInner> | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof InnerExternalFilter
+     */
+    'pattern': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof InnerExternalFilter
+     */
+    'color': string | null;
+    /**
+     * 
+     * @type {FilterWidth}
+     * @memberof InnerExternalFilter
+     */
+    'width': FilterWidth | null;
+    /**
+     * 
+     * @type {FilterWeight}
+     * @memberof InnerExternalFilter
+     */
+    'weight': FilterWeight | null;
+    /**
+     * 
+     * @type {FilterDensityAndYarn}
+     * @memberof InnerExternalFilter
+     */
+    'densityAndYarn': FilterDensityAndYarn | null;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof InnerExternalFilter
+     */
+    'finishList'?: Array<string> | null;
+    /**
+     * 
+     * @type {FilterPrice}
+     * @memberof InnerExternalFilter
+     */
+    'price': FilterPrice | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof InnerExternalFilter
+     */
+    'hasU3M': boolean | null;
+    /**
+     * 
+     * @type {ExternalFilterAllOfInventory}
+     * @memberof InnerExternalFilter
+     */
+    'inventory': ExternalFilterAllOfInventory | null;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof InnerExternalFilter
+     */
+    'countryList': Array<string> | null;
+}
+/**
+ * 
+ * @export
+ * @interface InnerExternalFilterAllOf
+ */
+export interface InnerExternalFilterAllOf {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof InnerExternalFilterAllOf
+     */
+    'countryList': Array<string> | null;
+}
+/**
+ * 
+ * @export
  * @interface InvoiceInfo
  */
 export interface InvoiceInfo {
@@ -11031,11 +11117,11 @@ export interface MaterialCreate {
  */
 export interface MaterialCreateBackSide {
     /**
-     * 布面特性清單
-     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * 布面特性名稱清單
+     * @type {Array<string>}
      * @memberof MaterialCreateBackSide
      */
-    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    'featureList': Array<string> | null;
     /**
      * 布面後處理清單
      * @type {Array<MaterialSideCreateBaseFinishListInner>}
@@ -11094,11 +11180,11 @@ export interface MaterialCreateBackSide {
  */
 export interface MaterialCreateFaceSide {
     /**
-     * 布面特性清單
-     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * 布面特性名稱清單
+     * @type {Array<string>}
      * @memberof MaterialCreateFaceSide
      */
-    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    'featureList': Array<string> | null;
     /**
      * 布面後處理清單
      * @type {Array<MaterialSideCreateBaseFinishListInner>}
@@ -11231,11 +11317,11 @@ export interface MaterialCreateInternalInfoInventoryInfo {
  */
 export interface MaterialCreateMiddleSide {
     /**
-     * 布面特性清單
-     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * 布面特性名稱清單
+     * @type {Array<string>}
      * @memberof MaterialCreateMiddleSide
      */
-    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    'featureList': Array<string> | null;
     /**
      * 布面後處理清單
      * @type {Array<MaterialSideCreateBaseFinishListInner>}
@@ -12165,11 +12251,11 @@ export interface MaterialMiddleSideAllOfCustomPropertyList {
  */
 export interface MaterialMiddleSideCreate {
     /**
-     * 布面特性清單
-     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * 布面特性名稱清單
+     * @type {Array<string>}
      * @memberof MaterialMiddleSideCreate
      */
-    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    'featureList': Array<string> | null;
     /**
      * 布面後處理清單
      * @type {Array<MaterialSideCreateBaseFinishListInner>}
@@ -13416,11 +13502,11 @@ export interface MaterialSideBase {
  */
 export interface MaterialSideCreate {
     /**
-     * 布面特性清單
-     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * 布面特性名稱清單
+     * @type {Array<string>}
      * @memberof MaterialSideCreate
      */
-    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    'featureList': Array<string> | null;
     /**
      * 布面後處理清單
      * @type {Array<MaterialSideCreateBaseFinishListInner>}
@@ -13574,36 +13660,17 @@ export interface MaterialSideCreateAllOfDescriptionList {
  */
 export interface MaterialSideCreateBase {
     /**
-     * 布面特性清單
-     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * 布面特性名稱清單
+     * @type {Array<string>}
      * @memberof MaterialSideCreateBase
      */
-    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    'featureList': Array<string> | null;
     /**
      * 布面後處理清單
      * @type {Array<MaterialSideCreateBaseFinishListInner>}
      * @memberof MaterialSideCreateBase
      */
     'finishList': Array<MaterialSideCreateBaseFinishListInner> | null;
-}
-/**
- * 
- * @export
- * @interface MaterialSideCreateBaseFeatureListInner
- */
-export interface MaterialSideCreateBaseFeatureListInner {
-    /**
-     * 布面特性代碼ID
-     * @type {number}
-     * @memberof MaterialSideCreateBaseFeatureListInner
-     */
-    'featureId': number | null;
-    /**
-     * 布面特性名稱
-     * @type {string}
-     * @memberof MaterialSideCreateBaseFeatureListInner
-     */
-    'name': string | null;
 }
 /**
  * 
@@ -13976,17 +14043,17 @@ export interface MaterialUpdate {
  */
 export interface MaterialUpdateFaceSide {
     /**
-     * 
+     * Pantone色號清單
      * @type {Array<string>}
      * @memberof MaterialUpdateFaceSide
      */
-    'pantoneNameList': Array<string>;
+    'pantoneNameList': Array<string> | null;
     /**
-     * 布面特性清單
-     * @type {Array<MaterialSideCreateBaseFeatureListInner>}
+     * 布面特性名稱清單
+     * @type {Array<string>}
      * @memberof MaterialUpdateFaceSide
      */
-    'featureList': Array<MaterialSideCreateBaseFeatureListInner> | null;
+    'featureList': Array<string> | null;
     /**
      * 布面後處理清單
      * @type {Array<MaterialSideCreateBaseFinishListInner>}
@@ -14176,10 +14243,10 @@ export interface MaterialUpdateSpec {
     'isAutoSyncFaceToBackSideInfo'?: boolean;
     /**
      * 
-     * @type {MaterialUpdateFaceSide}
+     * @type {MaterialUpdateSpecFaceSide}
      * @memberof MaterialUpdateSpec
      */
-    'faceSide': MaterialUpdateFaceSide | null;
+    'faceSide': MaterialUpdateSpecFaceSide | null;
     /**
      * 
      * @type {MaterialMiddleSideCreate}
@@ -14188,11 +14255,80 @@ export interface MaterialUpdateSpec {
     'middleSide': MaterialMiddleSideCreate | null;
     /**
      * 
-     * @type {MaterialUpdateFaceSide}
+     * @type {MaterialUpdateSpecFaceSide}
      * @memberof MaterialUpdateSpec
      */
-    'backSide': MaterialUpdateFaceSide | null;
+    'backSide': MaterialUpdateSpecFaceSide | null;
 }
+/**
+ * 
+ * @export
+ * @interface MaterialUpdateSpecFaceSide
+ */
+export interface MaterialUpdateSpecFaceSide {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof MaterialUpdateSpecFaceSide
+     */
+    'pantoneNameList': Array<string>;
+    /**
+     * 布面特性名稱清單
+     * @type {Array<string>}
+     * @memberof MaterialUpdateSpecFaceSide
+     */
+    'featureList': Array<string> | null;
+    /**
+     * 布面後處理清單
+     * @type {Array<MaterialSideCreateBaseFinishListInner>}
+     * @memberof MaterialUpdateSpecFaceSide
+     */
+    'finishList': Array<MaterialSideCreateBaseFinishListInner> | null;
+    /**
+     * 
+     * @type {MaterialType}
+     * @memberof MaterialUpdateSpecFaceSide
+     */
+    'materialType': MaterialType;
+    /**
+     * 布種材料描述清單
+     * @type {Array<MaterialSideCreateAllOfDescriptionList>}
+     * @memberof MaterialUpdateSpecFaceSide
+     */
+    'descriptionList': Array<MaterialSideCreateAllOfDescriptionList> | null;
+    /**
+     * 
+     * @type {MaterialConstruction}
+     * @memberof MaterialUpdateSpecFaceSide
+     */
+    'construction': MaterialConstruction;
+    /**
+     * 規格自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialCustomConstructionBase>}
+     * @memberof MaterialUpdateSpecFaceSide
+     */
+    'constructionCustomPropertyList': Array<MaterialCustomConstructionBase> | null;
+    /**
+     * 布面成分清單
+     * @type {Array<MaterialSideCreateAllOfContentList>}
+     * @memberof MaterialUpdateSpecFaceSide
+     */
+    'contentList': Array<MaterialSideCreateAllOfContentList>;
+    /**
+     * 
+     * @type {MaterialPatternInfoCreate}
+     * @memberof MaterialUpdateSpecFaceSide
+     */
+    'patternInfo': MaterialPatternInfoCreate;
+    /**
+     * 
+     * @type {MaterialColorInfoCreate}
+     * @memberof MaterialUpdateSpecFaceSide
+     */
+    'colorInfo': MaterialColorInfoCreate;
+}
+
+
 /**
  * 
  * @export
@@ -22766,10 +22902,10 @@ export interface UpdateMaterialSimpleSpecRequest {
     'isAutoSyncFaceToBackSideInfo'?: boolean;
     /**
      * 
-     * @type {MaterialUpdateFaceSide}
+     * @type {MaterialUpdateSpecFaceSide}
      * @memberof UpdateMaterialSimpleSpecRequest
      */
-    'faceSide': MaterialUpdateFaceSide | null;
+    'faceSide': MaterialUpdateSpecFaceSide | null;
     /**
      * 
      * @type {MaterialMiddleSideCreate}
@@ -22778,10 +22914,10 @@ export interface UpdateMaterialSimpleSpecRequest {
     'middleSide': MaterialMiddleSideCreate | null;
     /**
      * 
-     * @type {MaterialUpdateFaceSide}
+     * @type {MaterialUpdateSpecFaceSide}
      * @memberof UpdateMaterialSimpleSpecRequest
      */
-    'backSide': MaterialUpdateFaceSide | null;
+    'backSide': MaterialUpdateSpecFaceSide | null;
 }
 
 
@@ -23041,10 +23177,10 @@ export interface UpdateWorkspaceCollectionRequest {
     'description': string | null;
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @type {S3UploadedObject}
      * @memberof UpdateWorkspaceCollectionRequest
      */
-    'trendBoard': UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal | null;
+    'trendBoard': S3UploadedObject | null;
 }
 
 
@@ -23074,10 +23210,10 @@ export interface UpdateWorkspaceCollectionRequestAllOf {
     'description': string | null;
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @type {S3UploadedObject}
      * @memberof UpdateWorkspaceCollectionRequestAllOf
      */
-    'trendBoard': UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal | null;
+    'trendBoard': S3UploadedObject | null;
 }
 /**
  * 

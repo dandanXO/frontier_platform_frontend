@@ -12,7 +12,7 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
       div(
         v-if="isHover"
         class="absolute z-9 inset-0 w-full h-full rounded bg-grey-900/70"
-        @click.stop="goToAssetMaterialDetail(material.materialId)"
+        @click.stop="goToAssetMaterialDetail({}, material.materialId)"
       )
       div(
         v-if="isHover || haveSelectedMoreThanOne"
