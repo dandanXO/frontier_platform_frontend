@@ -163,6 +163,17 @@ export default function useNavigation() {
     router.push(parsePath(`${prefixPath}/share-to-me`, navReq))
   }
 
+  const goToShareToMeMaterial = (
+    navReq: NavigationReq = {},
+    sharingId: number,
+    nodeId: number,
+    rank?: number
+  ) => {
+    const basePath = `${prefixPath}/share-to-me/${sharingId}/material/${nodeId}`
+    const path = rank ? `${basePath}?rank=${rank}` : basePath
+    router.push(parsePath(path, navReq))
+  }
+
   const goToPublicLibrary = async () => {
     await store.dispatch('sticker/closeStickerDrawer')
     router.push(parsePath(`/:orgNo/public-library`))
@@ -195,14 +206,6 @@ export default function useNavigation() {
 
   // const goToEmbedMaterialDetail = (nodeKey, sharingKey, rank) => {
   //   router.push(`/embed/${sharingKey}/material/${nodeKey}?rank=${rank}`)
-  // }
-
-  // const goToShareToMeMaterial = (nodeKey, sharingId, rank) => {
-  //   router.push(
-  //     parsePath(
-  //       `${prefixPath}/share-to-me/material/${nodeKey}?sharingId=${sharingId}&rank=${rank}`
-  //     )
-  //   )
   // }
 
   const goToMoodboard = (navReq: NavigationReq = {}) => {
@@ -248,7 +251,7 @@ export default function useNavigation() {
     // goShowroom,
     // goShowroomMaterialDetail,
     // goToReceivedShareMaterial,
-    // goToShareToMeMaterial,
+    goToShareToMeMaterial,
     goToBillings,
     goToProgress,
     goToPaymentDetail,

@@ -11,7 +11,6 @@ import publicLibrary from '@/store/modules/publicLibrary'
 import receivedShare from '@/store/modules/receivedShare'
 import embed from '@/store/modules/embed'
 import moodboard from '@/store/modules/moodboard'
-import shareToMe from '@/store/modules/shareToMe'
 import polling from '@/store/modules/polling'
 import sticker from '@/store/modules/sticker'
 import showroom from '@/store/modules/showroom'
@@ -64,7 +63,6 @@ export default createStore({
     assets,
     publicLibrary,
     receivedShare,
-    shareToMe,
     embed,
     polling,
     moodboard,

@@ -91,6 +91,7 @@ import type {
   Collection,
   MainMaterial,
   NodeChild,
+  ShareNodeChild,
 } from '@frontier/platform-web-sdk'
 import { NodeType } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
@@ -99,10 +100,12 @@ import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 
 const props = withDefaults(
   defineProps<{
-    node: NodeChild
+    node: NodeChild | ShareNodeChild
     isSelectable?: boolean
-    selectedValue: NodeChild[]
-    optionList: FunctionOption<NodeChild>[][]
+    selectedValue: NodeChild[] | ShareNodeChild[]
+    optionList:
+      | FunctionOption<NodeChild>[][]
+      | FunctionOption<ShareNodeChild>[][]
   }>(),
   {
     isSelectable: true,

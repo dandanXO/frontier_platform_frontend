@@ -34,9 +34,17 @@ div(
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { FunctionOption } from '@/types'
+import type {
+  Material,
+  NodeChild,
+  ShareNodeChild,
+} from '@frontier/platform-web-sdk'
 
 const props = defineProps<{
-  optionMultiSelect: Array<FunctionOption<any>>
+  optionMultiSelect:
+    | FunctionOption<Material>[]
+    | FunctionOption<NodeChild>[]
+    | FunctionOption<ShareNodeChild>[]
   selectedList: Array<any>
 }>()
 

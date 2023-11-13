@@ -46,13 +46,13 @@ modal-behavior(
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useStore } from 'vuex'
-import type { WorkspaceNodeCollection } from '@frontier/platform-web-sdk'
+import type { Collection, NodeMeta } from '@frontier/platform-web-sdk'
 import type { PropsModalCreateOrEditCollection } from '@/components/workspace/ModalCreateOrEditCollection.vue'
 
 export interface PropsModalCollectionDetail {
-  nodeCollection: WorkspaceNodeCollection
+  nodeMeta: NodeMeta
+  collection: Collection
   canEdit: boolean
 }
 
@@ -67,13 +67,11 @@ const goToEditCollection = () => {
     component: 'modal-create-or-edit-collection',
     properties: {
       mode: 2,
-      nodeMeta: props.nodeCollection.nodeMeta,
-      collection: props.nodeCollection.collection,
+      nodeMeta: props.nodeMeta,
+      collection: props.collection,
     } as PropsModalCreateOrEditCollection,
   })
 }
-
-const collection = computed(() => props.nodeCollection.collection)
 
 const closeModal = () => store.dispatch('helper/closeModal')
 </script>

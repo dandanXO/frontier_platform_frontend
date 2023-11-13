@@ -92,8 +92,10 @@ import type {
   AssetsFilter,
   WorkspaceFilter,
   ExternalFilter,
+  InnerExternalFilter,
   Search,
   PaginationReq,
+  ShareNodeChild,
 } from '@frontier/platform-web-sdk'
 import { useSearchStore } from '@/stores/search'
 import { useFilterStore } from '@/stores/filter'
@@ -132,17 +134,21 @@ const props = withDefaults(
       base: SortOption[]
       keywordSearch: SortOption[]
     }
-    optionMultiSelect: FunctionOption<Material>[] | FunctionOption<NodeChild>[]
+    optionMultiSelect:
+      | FunctionOption<Material>[]
+      | FunctionOption<NodeChild>[]
+      | FunctionOption<ShareNodeChild>[]
     searchCallback: (
       payload:
         | SearchPayload<AssetsFilter>
         | SearchPayload<WorkspaceFilter>
+        | SearchPayload<InnerExternalFilter>
         | SearchPayload<ExternalFilter>,
       query: RouteQuery
     ) => Promise<void>
-    itemList: Material[] | NodeChild[]
+    itemList: Material[] | NodeChild[] | ShareNodeChild[]
     canSelectAll?: boolean
-    selectedItemList: Material[] | NodeChild[]
+    selectedItemList: Material[] | NodeChild[] | ShareNodeChild[]
   }>(),
   {
     canSelectAll: true,
@@ -293,7 +299,11 @@ const search = async (targetPage = 1) => {
             }
           }, {}),
           densityAndYarn: woven || knit ? { woven, knit } : null,
-        } as AssetsFilter | WorkspaceFilter | ExternalFilter
+        } as
+          | AssetsFilter
+          | WorkspaceFilter
+          | InnerExternalFilter
+          | ExternalFilter
       })(),
     },
     {

@@ -1,6 +1,6 @@
 <template lang="pug">
 search-table(
-  :searchType="SEARCH_TYPE.SHARE"
+  :searchType="SEARCH_TYPE.INNER_EXTERNAL"
   :searchCallback="getShareToMeList"
   :optionSort="optionSort"
   :optionMultiSelect="optionMultiSelect"
@@ -15,26 +15,29 @@ search-table(
       keyField="id"
       @switch="$event.goTo()"
     )
-  template(#header-left="{ goTo }")
+  template(#header-left="{ visit, totalCount }")
     div(class="flex items-center")
       div(class="flex items-end")
         global-breadcrumb-list(
-          :breadcrumbList="breadcrumbList"
-          @click:item="setSharingIdAndNodeKey($event.nodeKey); goTo()"
+          :breadcrumbList="locationList"
+          @click:item="setSharingIdAndNodeKey($event.nodeId); visit()"
           fontSize="text-h6"
         )
         p(class="flex text-caption text-grey-600 pl-1")
           span (
           i18n-t(keypath="RR0068" tag="span" scope="global")
-            template(#number) {{ pagination.totalCount }}
+            template(#number) {{ totalCount }}
           span )
-      f-tooltip-standard(v-if="!isFirstLayer" :tooltipMessage="$t('RR0056')")
+      f-tooltip-standard(
+        v-if="!isFirstLayer && shareNodeCollection"
+        :tooltipMessage="$t('RR0056')"
+      )
         template(#slot:tooltip-trigger)
           f-svg-icon(
             iconName="clone"
             class="text-grey-600 cursor-pointer hover:text-primary-400 ml-1"
             size="24"
-            @click="shareToMeCloneByCollection(currentNodeKey, collection.share.sharingId, collection.isCanClone)"
+            @click="shareToMeClone(shareNodeCollection.shareInfo.sharingId, [shareNodeCollection.nodeMeta.nodeId], shareNodeCollection.shareInfo.isCanClone, $t('II0009'))"
           )
   template(#header-right)
     div(
@@ -54,86 +57,98 @@ search-table(
       @click="openModalCollectionDetail"
     ) {{ $t('UU0057') }}
   template(v-if="!isFirstLayer" #sub-header)
-    div(class="mx-7.5 mb-7.5 text-caption text-grey-600 flex items-center")
-      p(class="pr-2.5") {{ collection.share.displayName }}
-      p {{ $t('RR0148') }} {{ toYYYYMMDDFormat(collection.share.shareDate) }}
-  template(#default="{ inSearch, goTo }")
+    div(
+      v-if="shareNodeCollection"
+      class="mx-7.5 mb-7.5 text-caption text-grey-600 flex items-center"
+    )
+      p(class="pr-2.5") {{ shareNodeCollection.nodeMeta.unitName }}
+      p {{ $t('RR0148') }} {{ toYYYYMMDDFormat(shareNodeCollection.shareInfo.shareDate) }}
+  template(#default="{ inSearch, visit }")
     div(
       v-if="nodeList.length > 0"
       class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
     )
       grid-item-node(
         v-for="node in nodeList"
-        :key="node.nodeKey"
+        :key="node.nodeMeta.nodeId"
         v-model:selectedValue="selectedNodeList"
         :node="node"
         :optionList="optionNode"
-        @click:option="$event.func(node, node.share.sharingId)"
-        @click:node="handleNodeClick(node, goTo)"
+        @click:node="handleNodeClick(node, visit)"
       )
         template(#title-right-icon)
-          tooltip-location(v-if="inSearch" :location="node.location")
+          tooltip-location(
+            v-if="inSearch"
+            :locationList="node.nodeMeta.locationList"
+          )
         template(#caption v-if="isFirstLayer")
           div(class="mt-1.5 h-6 flex items-center")
-            img(:src="node.share.logo" class="aspect-square h-full rounded-full")
-            p(class="pl-1 font-bold text-caption text-grey-900") {{ node.share.displayName }}
+            img(
+              :src="node.nodeMeta.unitLogo"
+              class="aspect-square h-full rounded-full"
+            )
+            p(class="pl-1 font-bold text-caption text-grey-900") {{ node.nodeMeta.unitName }}
     div(v-else class="flex h-full justify-center items-center")
       p(class="text-body1 text-grey-900") {{ $t('HH0001') }}
-  template(#menu-option="{ option }")
-    div(
-      v-if="option.name === $t('RR0167')"
-      class="whitespace-nowrap cursor-pointer hover:text-primary-400 px-5"
-      @click="shareToMeCloneByNodeList(selectedNodeList, collection.share.sharingId)"
-    ) {{ option.name }}
 </template>
 
-<script setup>
-import SearchTable from '@/components/common/SearchTable.vue'
-import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
+<script setup lang="ts">
+import SearchTable, {
+  type RouteQuery,
+  type SearchPayload,
+} from '@/components/common/SearchTable.vue'
+import { SEARCH_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import TooltipLocation from '@/components/common/TooltipLocation.vue'
 import { useRoute, useRouter } from 'vue-router'
 import useShareToMe from '@/composables/useShareToMe'
 import useNavigation from '@/composables/useNavigation'
 import { toYYYYMMDDFormat } from '@frontier/lib'
+import { useSearchStore } from '@/stores/search'
+import { useShareToMeStore } from '@/stores/shareToMe'
+import {
+  type InnerExternalFilter,
+  type ShareNodeChild,
+  type ShareNodeCollection,
+  NodeType,
+} from '@frontier/platform-web-sdk'
+import useCurrentUnit from '@/composables/useCurrentUnit'
+import type { PropsModalCollectionDetail } from '@/components/common/ModalCollectionDetail.vue'
 
-const props = defineProps({
-  nodeKey: {
-    type: String,
-    default: null,
-  },
-})
+const props = defineProps<{
+  sharingId?: string
+  nodeId?: string
+}>()
+
+const currentSharingId = ref<number | null>(
+  props.sharingId ? Number(props.sharingId) : null
+)
+
+const currentNodeId = ref<number | null>(
+  props.nodeId ? Number(props.nodeId) : null
+)
 
 const { t } = useI18n()
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
-const {
-  shareToMeCloneByNode,
-  shareToMeCloneByNodeList,
-  shareToMeCloneByCollection,
-  shareToMeDeleteByNode,
-  shareToMeDeleteByNodeList,
-} = useShareToMe()
-const { goToShareToMeMaterial, parsePath, prefixPath } = useNavigation()
-const defaultWorkspaceNodeKey = computed(
-  () => store.getters['workspace/defaultWorkspaceNodeKey']
-)
+const searchStore = useSearchStore()
+const { ogNodeId } = useCurrentUnit()
+const { ogBaseShareToMeApi } = useShareToMeStore()
+const { shareToMeClone, shareToMeCloneByNodeList, shareToMeDeleteByNodeList } =
+  useShareToMe()
+const { goToShareToMeMaterial, goToWorkspace } = useNavigation()
+
+const shareNodeCollection = ref<ShareNodeCollection>()
 
 const tabList = ref([
   {
     name: t('FF0001'),
     id: 'workspace',
-    goTo: () => {
-      router.push(
-        parsePath(
-          `${prefixPath.value}/workspace/${defaultWorkspaceNodeKey.value}`
-        )
-      )
-    },
+    goTo: goToWorkspace.bind(null, {}, ogNodeId.value),
   },
   {
     name: t('RR0010'),
@@ -143,76 +158,73 @@ const tabList = ref([
 ])
 
 const optionSort = computed(() => {
-  const { SORT_BY } = useConstants()
-  const { MATERIAL_NO_A_Z_C_M, LAST_UPDATE, RELEVANCE_C_M } = SORT_BY.value
+  const { ITEM_NO_A_Z_C_M, LAST_UPDATE, RELEVANCE_C_M } = searchStore.sortOption
   return {
-    base: [MATERIAL_NO_A_Z_C_M, LAST_UPDATE],
+    base: [ITEM_NO_A_Z_C_M, LAST_UPDATE],
     keywordSearch: [RELEVANCE_C_M],
   }
 })
 const optionMultiSelect = computed(() => {
   return isFirstLayer.value
-    ? [{ name: t('RR0063'), func: shareToMeDeleteByNodeList }]
-    : [{ name: t('RR0167'), func: shareToMeCloneByNodeList }]
+    ? [shareToMeDeleteByNodeList]
+    : [shareToMeCloneByNodeList]
 })
-const pagination = computed(() => store.getters['helper/search/pagination'])
-const collection = computed(() => store.getters['shareToMe/collection'])
-const breadcrumbList = computed(() =>
-  store.getters['shareToMe/collectionBreadcrumbList']({
+const locationList = computed(() => {
+  const root = {
     name: t('RR0010'),
-    nodeKey: null,
-  })
-)
-const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
-const nodeList = computed(() => store.getters['shareToMe/nodeList'])
+    nodeId: -1,
+  }
+  return shareNodeCollection.value && shareNodeCollection.value.nodeMeta
+    ? [root, ...shareNodeCollection.value.nodeMeta.locationList]
+    : [root]
+})
+const isFirstLayer = computed(() => locationList.value.length === 1)
+const nodeList = computed(() => shareNodeCollection.value?.childNodeList ?? [])
 const optionNode = computed(() => {
-  const optionList = [[{ name: t('RR0167'), func: shareToMeCloneByNode }]]
+  const optionList = [[shareToMeCloneByNodeList]]
   if (isFirstLayer.value) {
-    optionList[0].push({ name: t('RR0063'), func: shareToMeDeleteByNode })
+    optionList[0].push(shareToMeDeleteByNodeList)
   }
   return optionList
 })
-const currentNodeKey = ref(props.nodeKey)
-const sharingId = ref(route.query.sharingId || null)
 const selectedNodeList = ref([])
 const isFirstTime = ref(true)
 const haveMsgAndFirstRead = computed(
-  () => !!collection.value?.share?.message && isFirstTime.value
+  () => !!shareNodeCollection.value?.shareInfo.message && isFirstTime.value
 )
 
-const getShareToMeList = async (targetPage = 1, query) => {
+const getShareToMeList = async (
+  payload: SearchPayload<InnerExternalFilter>,
+  query: RouteQuery
+) => {
   router.push({
-    name: route.name,
+    name: route.name as string,
     params: {
-      nodeKey: currentNodeKey.value,
+      sharingId: currentSharingId.value,
+      nodeId: currentNodeId.value,
     },
-    query: {
-      sharingId: sharingId.value,
-      ...query,
-    },
+    query,
   })
-  await store.dispatch('shareToMe/getShareToMeList', {
-    targetPage,
-    sharingId: sharingId.value,
-    nodeKey: currentNodeKey.value,
+  const {
+    data: { result },
+  } = await ogBaseShareToMeApi('getShareToMeList', {
+    sharingId: currentSharingId.value,
+    nodeId: currentNodeId.value,
+    ...payload,
   })
-}
 
-const setSharingIdAndNodeKey = (nodeKey, targetSharingId = null) => {
-  currentNodeKey.value = nodeKey
-  if (targetSharingId && isFirstLayer.value) {
-    sharingId.value = targetSharingId
-  } else if (nodeKey === null && targetSharingId === null) {
-    sharingId.value = null
-  }
+  shareNodeCollection.value = result.shareNodeCollection
+  searchStore.setPaginationRes(result.pagination)
 }
 
 const openModalCollectionDetail = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-collection-detail',
     properties: {
-      ...collection.value,
-    },
+      nodeMeta: shareNodeCollection.value?.nodeMeta,
+      collection: shareNodeCollection.value?.collection,
+      canEdit: false,
+    } as PropsModalCollectionDetail,
   })
 }
 
@@ -221,22 +233,39 @@ const openModalShareMessage = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-share-message',
     properties: {
-      message: collection.value.share.message,
+      message: shareNodeCollection.value?.shareInfo.message,
     },
   })
 }
 
-const handleNodeClick = (node, goTo) => {
-  if (node.nodeType === NODE_TYPE.COLLECTION) {
-    setSharingIdAndNodeKey(node.nodeKey, node.share.sharingId)
-    goTo()
-  } else {
-    goToShareToMeMaterial(node.nodeKey, node.share.sharingId, node.rank)
+const setSharingIdAndNodeKey = (nodeId: number, targetSharingId?: number) => {
+  if (nodeId === -1 && !targetSharingId) {
+    currentSharingId.value = null
+    currentNodeId.value = null
+    return
+  }
+
+  currentNodeId.value = nodeId
+  if (targetSharingId) {
+    currentSharingId.value = targetSharingId
   }
 }
 
-watch(
-  () => isFirstLayer.value,
-  () => (selectedNodeList.value.length = 0)
-)
+const handleNodeClick = (node: ShareNodeChild, visit: Function) => {
+  if (node.nodeMeta.nodeType === NodeType.COLLECTION) {
+    setSharingIdAndNodeKey(node.nodeMeta.nodeId, node.shareInfo.sharingId)
+    visit()
+  } else {
+    if (node.nodeMeta.rank) {
+      goToShareToMeMaterial(
+        {},
+        node.shareInfo.sharingId,
+        node.nodeMeta.nodeId,
+        node.nodeMeta.rank
+      )
+    } else {
+      goToShareToMeMaterial({}, node.shareInfo.sharingId, node.nodeMeta.nodeId)
+    }
+  }
+}
 </script>

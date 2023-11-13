@@ -20727,6 +20727,31 @@ export type ShareInfoSharingFromEnum = typeof ShareInfoSharingFromEnum[keyof typ
 /**
  * 
  * @export
+ * @interface ShareNodeChild
+ */
+export interface ShareNodeChild {
+    /**
+     * 
+     * @type {NodeMeta}
+     * @memberof ShareNodeChild
+     */
+    'nodeMeta': NodeMeta;
+    /**
+     * 
+     * @type {NodeChildNodeProperty}
+     * @memberof ShareNodeChild
+     */
+    'nodeProperty': NodeChildNodeProperty;
+    /**
+     * 
+     * @type {ShareInfo}
+     * @memberof ShareNodeChild
+     */
+    'shareInfo': ShareInfo;
+}
+/**
+ * 
+ * @export
  * @interface ShareNodeCollection
  */
 export interface ShareNodeCollection {
@@ -20744,10 +20769,10 @@ export interface ShareNodeCollection {
     'collection': Collection;
     /**
      * 
-     * @type {Array<ShareNodeCollectionAllOfChildNodeListInner>}
+     * @type {Array<ShareNodeChild>}
      * @memberof ShareNodeCollection
      */
-    'childNodeList': Array<ShareNodeCollectionAllOfChildNodeListInner>;
+    'childNodeList': Array<ShareNodeChild>;
     /**
      * 
      * @type {ShareInfo}
@@ -20763,39 +20788,14 @@ export interface ShareNodeCollection {
 export interface ShareNodeCollectionAllOf {
     /**
      * 
-     * @type {Array<ShareNodeCollectionAllOfChildNodeListInner>}
+     * @type {Array<ShareNodeChild>}
      * @memberof ShareNodeCollectionAllOf
      */
-    'childNodeList': Array<ShareNodeCollectionAllOfChildNodeListInner>;
+    'childNodeList': Array<ShareNodeChild>;
     /**
      * 
      * @type {ShareInfo}
      * @memberof ShareNodeCollectionAllOf
-     */
-    'shareInfo': ShareInfo;
-}
-/**
- * 
- * @export
- * @interface ShareNodeCollectionAllOfChildNodeListInner
- */
-export interface ShareNodeCollectionAllOfChildNodeListInner {
-    /**
-     * 
-     * @type {NodeMeta}
-     * @memberof ShareNodeCollectionAllOfChildNodeListInner
-     */
-    'nodeMeta': NodeMeta;
-    /**
-     * 
-     * @type {NodeChildNodeProperty}
-     * @memberof ShareNodeCollectionAllOfChildNodeListInner
-     */
-    'nodeProperty': NodeChildNodeProperty;
-    /**
-     * 
-     * @type {ShareInfo}
-     * @memberof ShareNodeCollectionAllOfChildNodeListInner
      */
     'shareInfo': ShareInfo;
 }
@@ -37572,9 +37572,9 @@ export const ShareToMeApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneShareToMeNode_1: async (deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteShareToMeNode: async (deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'deleteWorkspaceNodeRequest' is not null or undefined
-            assertParamExists('cloneShareToMeNode_1', 'deleteWorkspaceNodeRequest', deleteWorkspaceNodeRequest)
+            assertParamExists('deleteShareToMeNode', 'deleteWorkspaceNodeRequest', deleteWorkspaceNodeRequest)
             const localVarPath = `/share-to-me/node/delete`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -37713,8 +37713,8 @@ export const ShareToMeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cloneShareToMeNode_1(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.cloneShareToMeNode_1(deleteWorkspaceNodeRequest, options);
+        async deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteShareToMeNode(deleteWorkspaceNodeRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -37766,8 +37766,8 @@ export const ShareToMeApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneShareToMeNode_1(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
-            return localVarFp.cloneShareToMeNode_1(deleteWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
+        deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+            return localVarFp.deleteShareToMeNode(deleteWorkspaceNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -37819,8 +37819,8 @@ export class ShareToMeApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ShareToMeApi
      */
-    public cloneShareToMeNode_1(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig) {
-        return ShareToMeApiFp(this.configuration).cloneShareToMeNode_1(deleteWorkspaceNodeRequest, options).then((request) => request(this.axios, this.basePath));
+    public deleteShareToMeNode(deleteWorkspaceNodeRequest: DeleteWorkspaceNodeRequest, options?: AxiosRequestConfig) {
+        return ShareToMeApiFp(this.configuration).deleteShareToMeNode(deleteWorkspaceNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

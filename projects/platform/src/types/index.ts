@@ -145,10 +145,10 @@ export type MakePropertiesRequired<Type, Key extends keyof Type> = Type & {
 
 export interface FunctionOption<Type, Id = number> {
   id: Id
-  name: (n?: Type | [Type]) => string
-  func: (n: Type | [Type]) => any
-  icon?: (n?: Type | [Type]) => string
-  disabled?: (n: Type | [Type]) => boolean
+  name: (n?: Type | Type[]) => string
+  func: (n: Type | Type[]) => any
+  icon?: (n?: Type | Type[]) => string
+  disabled?: (n: Type | Type[]) => boolean
 }
 
 export type MaterialFormService = ReturnType<typeof useMaterialForm>

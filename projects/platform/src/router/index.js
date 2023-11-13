@@ -330,13 +330,13 @@ const routes = [
               import('@/views/innerApp/WorkspaceMaterialDetail.vue'),
           },
           {
-            path: 'share-to-me/:nodeKey?',
+            path: 'share-to-me/:sharingId?/:nodeId?',
             name: 'ShareToMe',
             props: true,
             component: () => import('@/views/innerApp/ShareToMe.vue'),
           },
           {
-            path: 'share-to-me/material/:nodeKey',
+            path: 'share-to-me/:sharingId/material/:nodeId',
             name: 'ShareToMeMaterial',
             props: true,
             component: () =>

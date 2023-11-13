@@ -131,9 +131,8 @@ export const NODE_TYPE = {
 export enum SEARCH_TYPE {
   ASSETS = 1,
   WORKSPACE = 2,
-  PUBLIC_LIBRARY = 3,
-  SHARE = 4,
   EXTERNAL = 5,
+  INNER_EXTERNAL = 6,
 }
 
 export const DISPLAY_NODE = {

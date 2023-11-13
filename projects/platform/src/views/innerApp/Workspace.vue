@@ -248,7 +248,8 @@ const openModalCollectionDetail = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-collection-detail',
     properties: {
-      nodeCollection: workspaceNodeCollection.value,
+      nodeMeta: workspaceNodeCollection.value?.nodeMeta,
+      collection: workspaceNodeCollection.value?.collection,
       canEdit: true,
     } as PropsModalCollectionDetail,
   })

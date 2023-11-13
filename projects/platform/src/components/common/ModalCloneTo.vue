@@ -80,11 +80,11 @@ import useNavigation from '@/composables/useNavigation'
 
 export interface PropsModalCloneTo {
   crossOrg?: boolean
-  checkHandler: (orgId?: number) => Promise<CloneEstimateQuota>
+  checkHandler: (orgId: number) => Promise<CloneEstimateQuota>
   cloneHandler: (
     targetOgList: TargetOg[],
     optional: CloneOption,
-    orgId?: number
+    orgId: number
   ) => Promise<void>
 }
 
