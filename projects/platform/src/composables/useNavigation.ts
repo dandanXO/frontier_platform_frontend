@@ -179,11 +179,15 @@ export default function useNavigation() {
     router.push(parsePath(`/:orgNo/public-library`))
   }
 
-  // const goToPublicLibraryMaterialDetail = (nodeKey, rank) => {
-  //   router.push(
-  //     parsePath(`/:orgNo/public-library/material/${nodeKey}?rank=${rank}`)
-  //   )
-  // }
+  const goToPublicLibraryMaterialDetail = (
+    navReq: NavigationReq = {},
+    nodeId: number,
+    rank?: number
+  ) => {
+    const basePath = `${prefixPath}/public-library/material/${nodeId}`
+    const path = rank ? `${basePath}?rank=${rank}` : basePath
+    router.push(parsePath(path, navReq))
+  }
 
   // const goShowroom = async (showroomId) => {
   //   await store.dispatch('sticker/closeStickerDrawer')
@@ -247,7 +251,7 @@ export default function useNavigation() {
     goToShareToMe,
     goToWorkspaceMaterialDetail,
     goToPublicLibrary,
-    // goToPublicLibraryMaterialDetail,
+    goToPublicLibraryMaterialDetail,
     // goShowroom,
     // goShowroomMaterialDetail,
     // goToReceivedShareMaterial,

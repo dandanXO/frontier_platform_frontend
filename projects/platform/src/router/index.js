@@ -380,13 +380,13 @@ const routes = [
         ],
       },
       {
-        path: 'public-library/:nodeKey?',
+        path: 'public-library/:nodeId?',
         name: 'PublicLibrary',
         props: true,
         component: () => import('@/views/innerApp/PublicLibrary.vue'),
       },
       {
-        path: 'public-library/material/:nodeKey',
+        path: 'public-library/material/:nodeId',
         name: 'PublicLibraryMaterialDetail',
         props: true,
         component: () =>

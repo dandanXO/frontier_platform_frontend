@@ -37,7 +37,10 @@ search-table(
     ) {{ $t('UU0057') }}
     f-button(size="sm" prependIcon="add" @click="createCollection") {{ $t('FF0003') }}
   template(v-if="!isFirstLayer" #sub-header)
-    p(v-if="workspaceNodeCollection" class="mx-7.5 mb-7.5 text-caption text-grey-600") {{ $t('FF0002') }}: {{ toYYYYMMDDFormat(workspaceNodeCollection.nodeMeta.createDate) }}
+    p(
+      v-if="workspaceNodeCollection?.nodeMeta.createDate"
+      class="mx-7.5 mb-7.5 text-caption text-grey-600"
+    ) {{ $t('FF0002') }}: {{ toYYYYMMDDFormat(workspaceNodeCollection.nodeMeta.createDate) }}
   template(#default="{ inSearch, visit }")
     div(
       class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
@@ -315,11 +318,11 @@ const handleNodeClick = (node: NodeChild, visit: Function) => {
     currentNodeId.value = node.nodeMeta.nodeId
     visit()
   } else {
-    if (node.nodeMeta.rank) {
-      goToWorkspaceMaterialDetail({}, node.nodeMeta.nodeId, node.nodeMeta.rank)
-    } else {
-      goToWorkspaceMaterialDetail({}, node.nodeMeta.nodeId)
-    }
+    goToWorkspaceMaterialDetail(
+      {},
+      node.nodeMeta.nodeId,
+      node.nodeMeta.rank ?? undefined
+    )
   }
 }
 </script>

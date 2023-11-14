@@ -256,16 +256,12 @@ const handleNodeClick = (node: ShareNodeChild, visit: Function) => {
     setSharingIdAndNodeKey(node.nodeMeta.nodeId, node.shareInfo.sharingId)
     visit()
   } else {
-    if (node.nodeMeta.rank) {
-      goToShareToMeMaterial(
-        {},
-        node.shareInfo.sharingId,
-        node.nodeMeta.nodeId,
-        node.nodeMeta.rank
-      )
-    } else {
-      goToShareToMeMaterial({}, node.shareInfo.sharingId, node.nodeMeta.nodeId)
-    }
+    goToShareToMeMaterial(
+      {},
+      node.shareInfo.sharingId,
+      node.nodeMeta.nodeId,
+      node.nodeMeta.rank ?? undefined
+    )
   }
 }
 </script>

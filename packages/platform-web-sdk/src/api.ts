@@ -15691,6 +15691,12 @@ export interface NodeMeta {
      */
     'locationList': Array<NodeMetaLocationListInner>;
     /**
+     * 
+     * @type {number}
+     * @memberof NodeMeta
+     */
+    'orgId': number;
+    /**
      * 節點 (Node) 擁有者的單位 Logo
      * @type {string}
      * @memberof NodeMeta
@@ -15737,7 +15743,7 @@ export interface NodeMeta {
      * @type {number}
      * @memberof NodeMeta
      */
-    'createDate': number;
+    'createDate': number | null;
 }
 
 

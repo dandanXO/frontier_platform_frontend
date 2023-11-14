@@ -1,56 +1,64 @@
 <template lang="pug">
 div(class="relative")
   search-table(
-    :searchType="SEARCH_TYPE.PUBLIC_LIBRARY"
+    :searchType="SEARCH_TYPE.INNER_EXTERNAL"
     :searchCallback="getPublicList"
     :optionSort="optionSort"
     :optionMultiSelect="optionMultiSelect"
-    :canSelectAll="!isFirstLayer"
+    :canSelectAll="isNode"
     :itemList="nodeList"
     v-model:selectedItemList="selectedNodeList"
   )
-    template(#header-left="{ goTo }")
+    template(#header-left="{ visit, totalCount }")
       div(class="flex items-center")
         div(class="flex items-end")
           global-breadcrumb-list(
-            :breadcrumbList="breadcrumbList"
-            @click:item="currentNodeKey = $event.nodeKey; goTo()"
+            :breadcrumbList="locationList"
+            @click:item="$event.goTo(); visit()"
             fontSize="text-h6"
           )
           p(class="flex text-caption text-grey-600 pl-1")
             span (
             i18n-t(keypath="RR0068" tag="span" scope="global")
-              template(#number) {{ pagination.totalCount }}
+              template(#number) {{ totalCount }}
             span )
-        f-tooltip-standard(v-if="!isFirstLayer" :tooltipMessage="$t('RR0167')")
+        f-tooltip-standard(
+          v-if="isNode && workspaceNodeCollection"
+          :tooltipMessage="$t('RR0167')"
+        )
           template(#slot:tooltip-trigger)
             f-svg-icon(
               iconName="clone"
               class="text-grey-600 cursor-pointer hover:text-primary-400 ml-1"
               size="24"
-              @click="publicCloneByCollection(currentNodeKey, collection.publish.isCanClone)"
+              @click="publicLibraryClone([workspaceNodeCollection.nodeMeta.nodeId], workspaceNodeCollection.nodeMeta.isCanClone, $t('II0009'))"
             )
     template(#header-right)
       f-button(
-        v-if="!isFirstLayer"
+        v-if="isNode"
         size="sm"
         type="secondary"
         @click="openModalCollectionDetail"
       ) {{ $t('UU0057') }}
     template(#sub-header)
-      i18n-t(
-        v-if="!isFirstLayer"
-        keypath="II0002"
-        tag="p"
-        class="mx-7.5 mb-7.5 text-caption text-grey-600"
-        scope="global"
+      div(
+        v-if="!isFirstLayer && workspaceNodeCollection"
+        class="mx-7.5 mb-4 flex items-center gap-x-2"
       )
-        template(#displayName) {{ publishBy }}
-    template(
-      #banner="{ inSearch }"
-      v-if="pagination.currentPage === 1 && isFirstLayer"
-    )
-      div(v-if="!inSearch" class="pb-6 px-7.5")
+        i18n-t(
+          keypath="II0002"
+          tag="p"
+          class="text-caption text-grey-600"
+          scope="global"
+        )
+        f-avatar(
+          type="org"
+          size="md"
+          :imageUrl="workspaceNodeCollection.nodeMeta.unitLogo"
+        )
+        p(v-if="isNode") {{ workspaceNodeCollection.nodeMeta.unitName }}
+    template(v-if="isFirstLayer" #banner="{ inSearch, currentPage }")
+      div(v-if="!inSearch && currentPage === 1" class="pb-6 px-7.5")
         div(
           class="rounded-md box-border p-5 flex flex-col gap-y-4 justify-between shadow-2 bg-center bg-cover"
           :style="{ backgroundImage: `url(${banner.coverImg})` }"
@@ -62,25 +70,27 @@ div(class="relative")
           component(:is="bannerDescriptionComponent")
         div(class="mt-4 w-full")
           showroom-carousel
-    template(#default="{ goTo }")
+    template(#default="{ visit }")
       div(
         v-if="nodeList.length > 0"
         class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6.5 gap-x-5 mx-7.5 grid-flow-row auto-rows-auto content-start"
       )
         grid-item-node(
           v-for="node in nodeList"
-          :key="node.nodeKey"
+          :key="node.nodeMeta.nodeId"
           v-model:selectedValue="selectedNodeList"
           :node="node"
-          :isSelectable="!isFirstLayer"
+          :isSelectable="isNode"
           :optionList="optionNode"
-          @click:option="$event.func(node)"
-          @click:node="handleNodeClick(node, goTo)"
+          @click:node="handleNodeClick(node, visit)"
         )
           template(#caption v-if="isFirstLayer")
-            div(class="mt-1.5 h-6 flex items-center")
-              f-avatar(:imageUrl="node.publish.logo" type="org" size="sm")
-              p(class="pl-1 font-bold text-caption text-grey-900") {{ node.publish.displayName }}
+            div(
+              class="mt-1.5 h-6 flex items-center"
+              @click.stop="searchOrgId = node.nodeMeta.orgId; visit()"
+            )
+              f-avatar(:imageUrl="node.nodeMeta.unitLogo" type="org" size="sm")
+              p(class="pl-1 font-bold text-caption text-grey-900") {{ node.nodeMeta.unitName }}
       div(v-else class="flex h-full justify-center items-end")
         p(class="text-body1 text-grey-900") {{ $t('II0007') }}
   div(v-if="planStatus.INACTIVE" class="absolute inset-0 z-99 opacity-30 bg-grey-0")
@@ -90,14 +100,12 @@ div(class="relative")
   )
 </template>
 
-<script setup>
-import SearchTable from '@/components/common/SearchTable.vue'
-import {
-  SEARCH_TYPE,
-  NODE_TYPE,
-  useConstants,
-  BANNER_TEXT_COLOR,
-} from '@/utils/constants'
+<script setup lang="ts">
+import SearchTable, {
+  type RouteQuery,
+  type SearchPayload,
+} from '@/components/common/SearchTable.vue'
+import { SEARCH_TYPE, BANNER_TEXT_COLOR } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { watch, ref, computed } from 'vue'
@@ -107,109 +115,154 @@ import usePublicLibrary from '@/composables/usePublicLibrary'
 import useNavigation from '@/composables/useNavigation'
 import NotifyBarInactive from '@/components/billings/NotifyBarInactive.vue'
 import ShowroomCarousel from '@/components/showroom/ShowroomCarousel.vue'
+import { useSearchStore } from '@/stores/search'
+import { usePublicLibraryStore } from '@/stores/publicLibrary'
+import {
+  NodeType,
+  type NodeChild,
+  type WorkspaceNodeCollection,
+  type InnerExternalFilter,
+} from '@frontier/platform-web-sdk'
+import type { PropsModalCollectionDetail } from '@/components/common/ModalCollectionDetail.vue'
+
+const props = defineProps<{
+  nodeId?: string
+}>()
+
+const currentNodeId = ref<number | null>(
+  props.nodeId ? Number(props.nodeId) : null
+)
 
 const { t } = useI18n()
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
-const {
-  publicCloneByNode,
-  publicCloneByNodeList,
-  publicCloneByCollection,
-  optionShareNode,
-} = usePublicLibrary()
+const searchStore = useSearchStore()
+const { ogBasePublicLibraryApi } = usePublicLibraryStore()
+const { publicLibraryClone, publicLibraryShare, publicLibraryCloneByNodeList } =
+  usePublicLibrary()
 const { goToPublicLibraryMaterialDetail } = useNavigation()
 
-const props = defineProps({
-  nodeKey: {
-    type: String,
-    default: null,
-  },
-})
+const workspaceNodeCollection = ref<WorkspaceNodeCollection>()
+
+const selectedNodeList = ref([])
+const searchOrgId = ref<number | null>(
+  (route.query.searchOrgId as unknown as number) ?? null
+)
+const hasSpecifiedOrg = computed(() => searchOrgId.value !== null)
 
 const optionSort = computed(() => {
-  const { SORT_BY } = useConstants()
   const {
     RANDOM,
     NEW_ARRIVED,
-    GHG_RESULTS,
-    WATER_DEPLETION_RESULTS,
-    LAND_USE_RESULTS,
-  } = SORT_BY.value
+    GHG_LOW_TO_HIGH,
+    WATER_LOW_TO_HIGH,
+    LAND_LOW_TO_HIGH,
+  } = searchStore.sortOption
   return {
     base: [
       RANDOM,
       NEW_ARRIVED,
-      GHG_RESULTS,
-      WATER_DEPLETION_RESULTS,
-      LAND_USE_RESULTS,
+      GHG_LOW_TO_HIGH,
+      WATER_LOW_TO_HIGH,
+      LAND_LOW_TO_HIGH,
     ],
     keywordSearch: [],
   }
 })
 
-const optionMultiSelect = computed(() => [
-  {
-    name: t('RR0167'),
-    func: publicCloneByNodeList,
-  },
-])
+const optionMultiSelect = computed(() => [publicLibraryCloneByNodeList])
 const planStatus = computed(() => store.getters['polling/planStatus'])
-const pagination = computed(() => store.getters['helper/search/pagination'])
-const collection = computed(() => store.getters['publicLibrary/collection'])
-const breadcrumbList = computed(() =>
-  store.getters['publicLibrary/collectionBreadcrumbList']({
-    name: t('RR0003'),
-    nodeKey: null,
-  })
+const isNode = computed(
+  () =>
+    workspaceNodeCollection.value?.nodeMeta &&
+    workspaceNodeCollection.value?.nodeMeta?.nodeId !== -1
 )
-const isFirstLayer = computed(() => breadcrumbList.value.length === 1)
-const nodeList = computed(() => store.getters['publicLibrary/nodeList'])
-const publishBy = computed(() => collection.value.publish.displayName)
-const optionNode = computed(() => {
+const locationList = computed(() => {
   return [
-    [
-      {
-        name: t('RR0167'),
-        func: publicCloneByNode,
+    {
+      name: t('RR0003'),
+      goTo: () => {
+        currentNodeId.value = null
+        searchOrgId.value = null
       },
-      optionShareNode,
-    ],
+    },
+    ...(workspaceNodeCollection.value?.nodeMeta?.locationList.map(
+      ({ name, nodeId }, index) => {
+        if (hasSpecifiedOrg.value && index === 0) {
+          return {
+            name,
+            goTo: () => {
+              currentNodeId.value = null
+            },
+          }
+        }
+
+        return {
+          name,
+          goTo: () => {
+            currentNodeId.value = nodeId
+          },
+        }
+      }
+    ) ?? []),
   ]
 })
+const isFirstLayer = computed(() => locationList.value.length === 1)
+const nodeList = computed(
+  () => workspaceNodeCollection.value?.childNodeList ?? []
+)
+const optionNode = computed(() => [
+  [publicLibraryCloneByNodeList, publicLibraryShare],
+])
 
-const currentNodeKey = ref(props.nodeKey)
-const selectedNodeList = ref([])
-
-const getPublicList = async (targetPage = 1, query) => {
+const getPublicList = async (
+  payload: SearchPayload<InnerExternalFilter>,
+  query: RouteQuery
+) => {
   router.push({
-    name: route.name,
+    name: route.name as string,
     params: {
-      nodeKey: currentNodeKey.value,
+      nodeId: currentNodeId.value,
     },
-    query,
+    query: {
+      searchOrgId: searchOrgId.value,
+      ...query,
+    },
   })
-  await store.dispatch('publicLibrary/getPublicList', {
-    targetPage,
-    nodeKey: currentNodeKey.value === '' ? null : currentNodeKey.value,
+  const {
+    data: { result },
+  } = await ogBasePublicLibraryApi('getPublicLibraryList', {
+    ...payload,
+    nodeId: currentNodeId.value,
+    searchOrgId: searchOrgId.value,
   })
+
+  workspaceNodeCollection.value = result.workspaceNodeCollection
+  searchStore.setPaginationRes(result.pagination)
 }
 
 const openModalCollectionDetail = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-collection-detail',
     properties: {
-      ...collection.value,
-    },
+      nodeMeta: workspaceNodeCollection.value?.nodeMeta,
+      collection: workspaceNodeCollection.value?.collection,
+      canEdit: false,
+    } as PropsModalCollectionDetail,
   })
 }
 
-const handleNodeClick = (node, goTo) => {
-  if (node.nodeType === NODE_TYPE.COLLECTION) {
-    currentNodeKey.value = node.nodeKey
-    goTo()
+const handleNodeClick = (node: NodeChild, visit: Function) => {
+  if (node.nodeMeta.nodeType === NodeType.COLLECTION) {
+    currentNodeId.value = node.nodeMeta.nodeId
+    visit()
   } else {
-    goToPublicLibraryMaterialDetail(node.nodeKey, node.rank)
+    goToPublicLibraryMaterialDetail(
+      {},
+      node.nodeMeta.nodeId,
+      node.nodeMeta.rank ?? undefined
+    )
   }
 }
 

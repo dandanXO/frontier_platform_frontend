@@ -58,7 +58,11 @@ div(class="w-full h-full flex flex-col" v-bind="$attrs")
         class="text-center text-body2 text-grey-900"
       ) {{ $t('RR0105') }}
     div(v-else class="flex-grow")
-      slot(:inSearch="inSearch" name="banner")
+      slot(
+        :inSearch="inSearch"
+        :currentPage="pagination.currentPage"
+        name="banner"
+      )
       slot(:inSearch="inSearch" :visit="visit")
     #pagination-container(
       v-if="!isSearching && pagination.totalCount > 0"
