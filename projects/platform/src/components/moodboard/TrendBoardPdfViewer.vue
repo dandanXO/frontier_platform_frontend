@@ -1,18 +1,29 @@
 <template lang="pug">
 div(class="w-full flex flex-col border border-grey-150 rounded")
-  div(ref="containerRef" class="w-full bg-grey-100 flex items-center justify-center")
+  div(
+    v-if="hasPdfFile"
+    ref="containerRef"
+    class="w-full bg-grey-100 flex items-center justify-center"
+  )
     canvas(ref="canvasRef")
+  div(
+    v-else
+    class="w-full aspect-[908/540] bg-grey-100 flex flex-col items-center justify-center gap-y-3"
+  )
+    f-svg-icon(iconName="file" size="110" class="text-grey-300") 
+    span(class="text-body1 text-grey-300 font-bold") {{ $t('RR0247') }}
   div(
     class="relative h-16 px-8 flex flex-row items-center justify-between border-t border-grey-150"
   )
-    span(class="text-body-2 text-grey-900") {{ name }}
+    span(class="text-body-2 text-grey-900")
+      span(v-if="hasPdfFile") {{ name }}
     div(
       class="absolute transform top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-row gap-x-5"
     )
       f-svg-icon(
         iconName="keyboard_arrow_left"
         size="24"
-        :class="[currentPageIndex === 1 ? 'text-grey-300' : 'text-grey-900 cursor-pointer']"
+        :class="[currentPageIndex <= 1 ? 'text-grey-300' : 'text-grey-900 cursor-pointer']"
         @click="handlePrevClick"
       )
       span(class="text-body2 text-grey-900 font-bold flex items-center") {{ currentPageIndex }} / {{ pageCount }}
@@ -27,6 +38,7 @@ div(class="w-full flex flex-col border border-grey-150 rounded")
         type="text"
         size="sm"
         prependIcon="download"
+        :disabled="!hasPdfFile"
         @click="handleDownload"
       ) {{ $t('UU0059') }}
       f-button(
@@ -34,6 +46,7 @@ div(class="w-full flex flex-col border border-grey-150 rounded")
         size="sm"
         prependIcon="open_in_new"
         @click="handleOpenInNewWindow"
+        :disabled="!hasPdfFile"
       ) {{ $t('DD0070') }}
 </template>
 
@@ -46,12 +59,14 @@ import { downloadDataURLFile } from '@frontier/lib'
 /**
  * fixed display area width/height ratio from Figma mockup
  */
-const CONTAINER_ASPECT_RATIO = 604 / 540
+const CONTAINER_ASPECT_RATIO = 908 / 540
 
 const props = defineProps<{
-  src: string
-  name: string
+  src?: string
+  name?: string
 }>()
+
+const hasPdfFile = computed(() => !!props.src)
 
 const containerRef = ref<HTMLDivElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
@@ -62,7 +77,7 @@ let pageIndexPending: number | null = null
 
 const pageCount = computed(() => {
   if (!pdfDoc.value) {
-    return null
+    return 0
   }
 
   return pdfDoc.value.numPages
@@ -120,6 +135,11 @@ const renderPage = async (pageIndex: number) => {
 }
 
 const init = async () => {
+  if (!props.src) {
+    currentPageIndex.value = 0
+    return
+  }
+
   if (!containerRef.value) {
     throw new Error('containerRef is null')
   }
@@ -165,6 +185,9 @@ const queueRenderPage = (pageIndex: number) => {
 }
 
 const handleDownload = () => {
+  if (!props.src) {
+    throw new Error('src is null')
+  }
   /**
    * workaround:
    *
@@ -180,10 +203,20 @@ const handleDownload = () => {
 }
 
 const handleOpenInNewWindow = () => {
+  if (!props.src) {
+    throw new Error('src is null')
+  }
+
   window.open(props.src, '_blank')
 }
 
-watch(currentPageIndex, () => queueRenderPage(currentPageIndex.value))
+watch(currentPageIndex, () => {
+  if (!hasPdfFile.value) {
+    return
+  }
+
+  queueRenderPage(currentPageIndex.value)
+})
 
 onMounted(init)
 </script>

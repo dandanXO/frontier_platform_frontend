@@ -48,10 +48,6 @@ div(class="w-227 mx-auto pb-13.5")
       :src="moodboard.trendBoardUrl"
       :name="moodboard.trendBoardFileName"
     )
-    //- trend-board-pdf-viewer(
-      //- src="https://textile-stg.frontier.cool/Resource/Moodboard/TrendBoard/202310241536520324.pdf"
-    //-   src="https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf"
-    //- )
 </template>
 
 <script setup>
