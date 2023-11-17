@@ -45,6 +45,7 @@ div(class="w-227 mx-auto pb-13.5")
   div(class="flex flex-col gap-y-4")
     p(class="text-caption text-grey-900 font-bold") {{ $t('RR0249') }}
     trend-board-pdf-viewer(
+      :key="moodboard.trendBoardUrl"
       :src="moodboard.trendBoardUrl"
       :name="moodboard.trendBoardFileName"
     )
