@@ -1,28 +1,61 @@
 import { computed, ref, watch } from 'vue'
 import { useForm, configure } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
+import { clone } from 'ramda'
 import {
   MaterialSideType,
   type Material,
-  type MaterialOptionsCode,
+  type MaterialOptions,
   MaterialType,
+  type PantoneColor,
 } from '@frontier/platform-web-sdk'
+import { CREATE_EDIT } from '@/utils/constants'
 import useMaterialSchema from '@/composables/material/useMaterialSchema'
-import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
-import { clone } from 'ramda'
 import useMaterialInputMenu from '@/composables/material/useMaterialInputMenu'
+import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import { getInventoryQtyInY } from '@/utils/material'
+import type { z } from 'zod'
 
 configure({ validateOnInput: true })
 
 type PrimarySideKey = 'faceSide' | 'backSide'
 
+const mapMaterialToForm = (
+  material: Material
+): z.infer<ReturnType<typeof useMaterialSchema>> => {
+  return {
+    ...material,
+    faceSide: {
+      ...material.faceSide,
+      pantoneList: material.faceSide?.pantoneList.map((p) => p.name) || [],
+    },
+    middleSide: { ...material.middleSide },
+    backSide: {
+      ...material.backSide,
+      pantoneList: material.backSide?.pantoneList.map((p) => p.name) || [],
+    },
+    tagInfo: {
+      ...material.tagInfo,
+      certificationTagIdList:
+        material.tagInfo?.certificationTagList.map((t) => t.certificateId) ||
+        [],
+    },
+    priceInfo: { ...material.priceInfo },
+    internalInfo: {
+      ...material.internalInfo,
+      priceInfo: { ...material.internalInfo?.priceInfo },
+    },
+  }
+}
+
 const useMaterialForm = ({
   material,
   materialOptions,
+  pantoneList,
 }: {
   material?: Material
-  materialOptions: MaterialOptionsCode
+  materialOptions: MaterialOptions
+  pantoneList?: PantoneColor[]
 }) => {
   const materialSchema = useMaterialSchema()
 
@@ -37,9 +70,13 @@ const useMaterialForm = ({
     handleSubmit,
     submitCount,
   } = useForm({
-    initialValues: material,
+    initialValues: material ? mapMaterialToForm(material) : undefined,
     validationSchema: toTypedSchema(materialSchema),
   })
+
+  const mode = computed(() =>
+    material != null ? CREATE_EDIT.EDIT : CREATE_EDIT.CREATE
+  )
 
   const currentMaterialSide = ref<MATERIAL_SIDE_TYPE>(MATERIAL_SIDE_TYPE.FACE)
 
@@ -48,6 +85,53 @@ const useMaterialForm = ({
     materialOptions,
     currentMaterialSide
   )
+
+  const displayErrors = computed(() => {
+    if (mode.value === CREATE_EDIT.CREATE && submitCount.value > 0) {
+      return errors.value
+    }
+
+    if (mode.value === CREATE_EDIT.EDIT) {
+      return errors.value
+    }
+
+    return {}
+  })
+
+  const totalInventoryQtyInY = computed(() => {
+    const fullWidth = values.width?.full
+    const widthUnit = values.width?.unit
+    const weightValue = values.weight?.value
+    const weightUnit = values.weight?.unit
+    const inventoryList =
+      values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.list || []
+    const inventoryUnit =
+      values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit
+
+    if (
+      !fullWidth ||
+      !widthUnit ||
+      !weightUnit ||
+      !weightValue ||
+      !inventoryUnit ||
+      !inventoryList
+    ) {
+      return 0
+    }
+
+    const inventoryTotalQty = inventoryList
+      .map((a) => a.qty || 0)
+      .reduce((prev, current) => prev + current, 0)
+
+    return getInventoryQtyInY(
+      fullWidth,
+      widthUnit,
+      weightValue,
+      weightUnit,
+      inventoryTotalQty,
+      inventoryUnit
+    )
+  })
 
   const clearMaterialDescription = (sideKey: PrimarySideKey) => {
     setFieldValue(`${sideKey}.descriptionList`, [])
@@ -147,6 +231,36 @@ const useMaterialForm = ({
     setValues({ backSide: clone(faceSide) })
   }
 
+  const selectSeason = (name: string) => {
+    const targetSeason = inputMenu.allSeasonList.value.find(
+      (s) => s.name === name
+    )
+    setFieldValue('seasonInfo.season.name', name)
+    setFieldValue('seasonInfo.season.seasonId', targetSeason?.seasonId)
+  }
+
+  const addPantone = (newPantoneCode: string, sideKey: PrimarySideKey) => {
+    const oldValues = values[sideKey]?.pantoneList || []
+
+    if (oldValues.includes(newPantoneCode)) {
+      return
+    }
+
+    if (!pantoneList?.find((p) => p.name === newPantoneCode)) {
+      return
+    }
+
+    setFieldValue(`${sideKey}.pantoneList`, [...oldValues, newPantoneCode])
+  }
+
+  const removePantone = (pantoneCode: string, sideKey: PrimarySideKey) => {
+    const oldValues = values[sideKey]?.pantoneList || []
+    setFieldValue(
+      `${sideKey}.pantoneList`,
+      oldValues.filter((p) => p !== pantoneCode)
+    )
+  }
+
   watch(
     () => values.isDoubleSide,
     () => {
@@ -208,69 +322,22 @@ const useMaterialForm = ({
     { deep: true }
   )
 
-  const displayErrors = computed(() => {
-    if (submitCount.value > 0) {
-      return errors.value
-    }
-
-    return {}
-  })
-
-  const totalInventoryQtyInY = computed(() => {
-    const fullWidth = values.width?.full
-    const widthUnit = values.width?.unit
-    const weightValue = values.weight?.value
-    const weightUnit = values.weight?.unit
-    const inventoryList =
-      values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.list || []
-    const inventoryUnit =
-      values.internalInfo?.inventoryInfo?.yardageRemainingInfo?.unit
-
-    if (
-      !fullWidth ||
-      !widthUnit ||
-      !weightUnit ||
-      !weightValue ||
-      !inventoryUnit ||
-      !inventoryList
-    ) {
-      return 0
-    }
-
-    const inventoryTotalQty = inventoryList
-      .map((a) => a.qty || 0)
-      .reduce((prev, current) => prev + current, 0)
-
-    return getInventoryQtyInY(
-      fullWidth,
-      widthUnit,
-      weightValue,
-      weightUnit,
-      inventoryTotalQty,
-      inventoryUnit
-    )
-  })
-
-  const selectSeason = (name: string) => {
-    const targetSeason = inputMenu.allSeasonList.value.find(
-      (s) => s.name === name
-    )
-    setFieldValue('seasonInfo.season.name', name)
-    setFieldValue('seasonInfo.season.seasonId', targetSeason?.seasonId)
-  }
-
   return {
-    defineInputBinds,
+    mode,
     values,
-    errors,
     displayErrors,
+    errors,
     meta,
+    pantoneList,
+    defineInputBinds,
     submitCount,
     currentMaterialSide,
     totalInventoryQtyInY,
     handleSubmit,
     setFieldValue,
     selectSeason,
+    addPantone,
+    removePantone,
     validate,
     copyFaceSideToBackSide,
     clearMaterialTypeConstructionFields,

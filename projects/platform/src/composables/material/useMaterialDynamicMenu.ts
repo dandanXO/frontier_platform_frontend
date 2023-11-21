@@ -3,17 +3,15 @@ import { useI18n } from 'vue-i18n'
 import type { z } from 'zod'
 import type {
   MaterialDescription,
-  MaterialFeature,
   MaterialFinish,
-  MaterialOptionsCode,
-  MaterialOptionsCodeContentListDefaultInner,
+  MaterialOptions,
+  MaterialOptionsContentListDefaultInner,
   MaterialSeasonInfoSeason,
 } from '@frontier/platform-web-sdk'
 import { MaterialType } from '@frontier/platform-web-sdk'
 import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import type useMaterialSchema from '@/composables/material/useMaterialSchema'
 import type { MenuTree } from '@frontier/ui-component'
-import { MaterialTypeText } from '@/utils/enumText'
 
 type Nullable<T> = { [K in keyof T]: T[K] | null }
 
@@ -24,7 +22,7 @@ interface DescriptionListByType {
 
 const useMaterialDynamicMenu = (
   materialFormValues: z.infer<ReturnType<typeof useMaterialSchema>>,
-  materialOptions: MaterialOptionsCode,
+  materialOptions: MaterialOptions,
   currentMaterialSide: Ref<MATERIAL_SIDE_TYPE>
 ) => {
   const { t } = useI18n()
@@ -55,7 +53,7 @@ const useMaterialDynamicMenu = (
 
   const newSeasonList = reactive<Nullable<MaterialSeasonInfoSeason>[]>([])
   const newContentList = reactive<
-    Nullable<MaterialOptionsCodeContentListDefaultInner>[]
+    Nullable<MaterialOptionsContentListDefaultInner>[]
   >([])
 
   const newDescriptionList = reactive<{
@@ -73,7 +71,13 @@ const useMaterialDynamicMenu = (
     trim: { default: [], custom: [] },
     others: { default: [], custom: [] },
   })
-  const newFeatureList = reactive<Nullable<MaterialFeature>[]>([])
+
+  const getInitialFeatureList = () => [
+    ...(materialFormValues.faceSide?.featureList || []),
+    ...(materialFormValues.middleSide?.featureList || []),
+    ...(materialFormValues.backSide?.featureList || []),
+  ]
+  const featureList = reactive<string[]>(getInitialFeatureList())
   const newFinishList = reactive<Nullable<MaterialFinish>[]>([])
 
   const currentSideMaterialType = computed(() => {
@@ -210,8 +214,8 @@ const useMaterialDynamicMenu = (
       blockList: [
         {
           blockTitle: t('RR0258'),
-          menuList: newFeatureList.concat([]).map((feature) => ({
-            title: feature.name,
+          menuList: featureList.concat([]).map((feature) => ({
+            title: feature,
             selectValue: feature,
           })),
         },
@@ -251,10 +255,7 @@ const useMaterialDynamicMenu = (
           menuList:
             materialOptions.certificateList.map(({ name, certificateId }) => ({
               title: name,
-              selectValue: {
-                name,
-                certificateId,
-              },
+              selectValue: certificateId,
             })) || [],
         },
       ],
@@ -269,10 +270,7 @@ const useMaterialDynamicMenu = (
   }
 
   const addFeatureOption = (featureName: string) => {
-    newFeatureList.push({
-      featureId: null,
-      name: featureName,
-    })
+    featureList.push(featureName)
   }
 
   const addDescriptionOption = (descriptionName: string) => {

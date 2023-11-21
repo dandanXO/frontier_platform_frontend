@@ -2,13 +2,16 @@ import type {
   OrgBookmark,
   FolderBookmark,
   WorkflowStage,
+  CropAssetsMaterialMultimediaRequestAllOfCroppedImage,
 } from '@frontier/platform-web-sdk'
-import type { CROP_MODE, U3M_CUT_SIDE } from '@/utils/constants'
+import type { CROP_MODE, EXTENSION, U3M_CUT_SIDE } from '@/utils/constants'
 import type Decimal from 'decimal.js'
 import type useMaterialForm from '@/composables/material/useMaterialForm'
 import type useU3mSelect from '@/composables/material/useU3mSelect'
-import type useAttachmentSelect from '@/composables/material/useAttachmentSelect'
-import type useMultimediaSelect from '@/composables/material/useMultimediaSelect'
+import type useAttachmentCreate from '@/composables/material/useAttachmentCreate'
+import type useMultimediaCreate from '@/composables/material/useMultimediaCreate'
+import type useAttachmentUpdate from '@/composables/material/useAttachmentUpdate'
+import type useMultimediaUpdate from '@/composables/material/useMultimediaUpdate'
 
 export interface Image {
   width: number
@@ -155,14 +158,36 @@ export type MaterialFormService = ReturnType<typeof useMaterialForm>
 export type MaterialU3mCreateService = ReturnType<typeof useU3mSelect>
 export type MaterialU3mUpdateService = ReturnType<typeof useU3mSelect>
 export type MaterialMultimediaCreateService = ReturnType<
-  typeof useMultimediaSelect
+  typeof useMultimediaCreate
 >
 export type MaterialMultimediaUpdateService = ReturnType<
-  typeof useMultimediaSelect
+  typeof useMultimediaUpdate
 >
 export type MaterialAttachmentCreateService = ReturnType<
-  typeof useAttachmentSelect
+  typeof useAttachmentCreate
 >
 export type MaterialAttachmentUpdateService = ReturnType<
-  typeof useAttachmentSelect
+  typeof useAttachmentUpdate
 >
+
+export interface AttachmentCreateItem {
+  id: string
+  file: File
+  originalUrl: string
+  thumbnailUrl: string
+  displayFileName: string
+  extension: EXTENSION
+  displayFileNameExcludeExtension: string
+}
+
+export interface MultimediaCreateItem {
+  id: string
+  file: File
+  originalUrl: string
+  thumbnailUrl: string
+  displayFileName: string
+  extension: EXTENSION
+  displayFileNameExcludeExtension: string
+  isCover: boolean
+  croppedImage: CropAssetsMaterialMultimediaRequestAllOfCroppedImage | null
+}

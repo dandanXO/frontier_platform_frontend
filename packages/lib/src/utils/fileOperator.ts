@@ -120,6 +120,9 @@ const unzip = async (zipFile: File, parseExtensionTypeList: EXTENSION[]) => {
 
 const getFileExtension = (filename: string) => {
   const parts = filename.split('.')
+  if (parts.length === 1) {
+    return ''
+  }
   return parts[parts.length - 1]
 }
 

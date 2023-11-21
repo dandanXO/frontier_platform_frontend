@@ -5,61 +5,51 @@ import { v4 as uuidv4 } from 'uuid'
 import { EXTENSION } from '@/utils/constants'
 import {
   NOTIFY_TYPE,
-  downloadFile,
+  downloadDataURLFile,
   getFileExtension,
   getFileNameExcludeExtension,
 } from '@frontier/lib'
-import type { CropAssetsMaterialMultimediaRequestAllOfCroppedImage } from '@frontier/platform-web-sdk'
 import type { MenuTree } from '@frontier/ui-component'
+import type { MultimediaCreateItem } from '@/types'
+import { getPreviewUrl } from '@/utils/pdf'
 
-export interface Multimedia {
-  id: string
-  file: File
-  url: string
-  displayFileName: string
-  extension: EXTENSION
-  displayFileNameExcludeExtension: string
-  isCover: boolean
-  croppedImage: CropAssetsMaterialMultimediaRequestAllOfCroppedImage | null
-}
-
-const useMultimediaSelect = () => {
+const useMultimediaCreate = () => {
   const { t } = useI18n()
   const store = useStore()
 
-  const multimediaList = reactive<Multimedia[]>([])
+  const multimediaList = reactive<MultimediaCreateItem[]>([])
 
   const openModalMultimediaSelect = () => {
     store.dispatch('helper/openModalBehavior', {
       component: 'modal-upload-attachment',
       properties: {
         uploadHandler: async (fileList: File[]) => {
-          const toMultimedia = (file: File) => ({
-            id: uuidv4(),
-            file,
-            url: URL.createObjectURL(file),
-            displayFileName: file.name,
-            extension: getFileExtension(file.name) as EXTENSION,
-            displayFileNameExcludeExtension: getFileNameExcludeExtension(
-              file.name
-            ),
-            isCover: false,
-            croppedImage: null,
-          })
-          multimediaList.push(...fileList.map(toMultimedia))
+          const toMultimedia = async (file: File) => {
+            const extension = getFileExtension(file.name) as EXTENSION
+            const originalUrl = URL.createObjectURL(file)
+            const thumbnailUrl = await (extension === EXTENSION.PDF
+              ? getPreviewUrl(URL.createObjectURL(file))
+              : Promise.resolve(originalUrl))
 
-          // if (isEditMode) {
-          //   await store.dispatch('assets/uploadAttachmentWhenUpdate', {
-          //     file,
-          //     displayFileName,
-          //   })
-          // } else {
-          //   await store.dispatch('assets/uploadAttachmentWhenCreate', {
-          //     tempMaterialId: props.tempMaterialId,
-          //     file,
-          //     displayFileName,
-          //   })
-          // }
+            return {
+              id: uuidv4(),
+              file,
+              originalUrl,
+              thumbnailUrl,
+              extension,
+              displayFileName: file.name,
+              displayFileNameExcludeExtension: getFileNameExcludeExtension(
+                file.name
+              ),
+              isCover: false,
+              croppedImage: null,
+            }
+          }
+
+          const newMultimediaList = await Promise.all(
+            fileList.map(toMultimedia)
+          )
+          multimediaList.push(...newMultimediaList)
         },
       },
     })
@@ -81,7 +71,7 @@ const useMultimediaSelect = () => {
 
   const downloadMultimediaSelect = (index: number) => {
     const target = multimediaList[index]
-    downloadFile(target.url, target.displayFileName)
+    downloadDataURLFile(target.originalUrl, target.displayFileName)
   }
 
   const removeMultimediaSelect = (index: number) => {
@@ -92,7 +82,8 @@ const useMultimediaSelect = () => {
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: async () => {
         const target = multimediaList[index]
-        URL.revokeObjectURL(target.url)
+        URL.revokeObjectURL(target.originalUrl)
+        URL.revokeObjectURL(target.thumbnailUrl)
         multimediaList.splice(index, 1)
       },
       secondaryBtnText: t('UU0002'),
@@ -113,7 +104,7 @@ const useMultimediaSelect = () => {
     })
   }
 
-  const updateMultimediaList = (list: Multimedia[]) => {
+  const updateMultimediaList = (list: MultimediaCreateItem[]) => {
     multimediaList.splice(0, multimediaList.length, ...list)
   }
 
@@ -150,7 +141,7 @@ const useMultimediaSelect = () => {
               menuList.unshift({
                 title: 'Open new page',
                 icon: 'open_in_new',
-                clickHandler: () => window.open(target.url, '_blank'),
+                clickHandler: () => window.open(target.originalUrl, '_blank'),
               })
             }
             return menuList
@@ -182,4 +173,4 @@ const useMultimediaSelect = () => {
   }
 }
 
-export default useMultimediaSelect
+export default useMultimediaCreate

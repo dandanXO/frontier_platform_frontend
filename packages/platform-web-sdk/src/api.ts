@@ -1890,63 +1890,6 @@ export type CodeOrgCategoryListGet200ResponseResultCodeOrgCategoryListInnerOrgCa
 /**
  * 
  * @export
- * @interface CodePantoneGet200Response
- */
-export interface CodePantoneGet200Response {
-    /**
-     * 
-     * @type {CodePantoneGet200ResponseResult}
-     * @memberof CodePantoneGet200Response
-     */
-    'result'?: CodePantoneGet200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CodePantoneGet200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodePantoneGet200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof CodePantoneGet200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface CodePantoneGet200ResponseResult
- */
-export interface CodePantoneGet200ResponseResult {
-    /**
-     * 
-     * @type {CodePantoneGet200ResponseResultCode}
-     * @memberof CodePantoneGet200ResponseResult
-     */
-    'code'?: CodePantoneGet200ResponseResultCode;
-}
-/**
- * 
- * @export
- * @interface CodePantoneGet200ResponseResultCode
- */
-export interface CodePantoneGet200ResponseResultCode {
-    /**
-     * 
-     * @type {Array<PantoneColor>}
-     * @memberof CodePantoneGet200ResponseResultCode
-     */
-    'pantoneList'?: Array<PantoneColor>;
-}
-/**
- * 
- * @export
  * @interface CodeRoleLimitTableGet200Response
  */
 export interface CodeRoleLimitTableGet200Response {
@@ -2260,50 +2203,6 @@ export interface CreateAndEditAttachmentFileAllOf {
      * @memberof CreateAndEditAttachmentFileAllOf
      */
     'displayFileName': string;
-}
-/**
- * 
- * @export
- * @interface CreateAssetsMaterial200Response
- */
-export interface CreateAssetsMaterial200Response {
-    /**
-     * 
-     * @type {CreateAssetsMaterial200ResponseResult}
-     * @memberof CreateAssetsMaterial200Response
-     */
-    'result'?: CreateAssetsMaterial200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CreateAssetsMaterial200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateAssetsMaterial200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof CreateAssetsMaterial200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface CreateAssetsMaterial200ResponseResult
- */
-export interface CreateAssetsMaterial200ResponseResult {
-    /**
-     * 
-     * @type {Material}
-     * @memberof CreateAssetsMaterial200ResponseResult
-     */
-    'material'?: Material;
 }
 /**
  * 
@@ -5998,6 +5897,12 @@ export interface GetAssetMaterialListRequestAllOf {
 export interface GetAssetsMaterial200Response {
     /**
      * 
+     * @type {GetAssetsMaterial200ResponseResult}
+     * @memberof GetAssetsMaterial200Response
+     */
+    'result'?: GetAssetsMaterial200ResponseResult;
+    /**
+     * 
      * @type {boolean}
      * @memberof GetAssetsMaterial200Response
      */
@@ -6010,12 +5915,6 @@ export interface GetAssetsMaterial200Response {
     'code'?: string | null;
     /**
      * 
-     * @type {GetAssetsMaterial200ResponseAllOfResult}
-     * @memberof GetAssetsMaterial200Response
-     */
-    'result': GetAssetsMaterial200ResponseAllOfResult;
-    /**
-     * 
      * @type {object}
      * @memberof GetAssetsMaterial200Response
      */
@@ -6024,28 +5923,15 @@ export interface GetAssetsMaterial200Response {
 /**
  * 
  * @export
- * @interface GetAssetsMaterial200ResponseAllOf
+ * @interface GetAssetsMaterial200ResponseResult
  */
-export interface GetAssetsMaterial200ResponseAllOf {
-    /**
-     * 
-     * @type {GetAssetsMaterial200ResponseAllOfResult}
-     * @memberof GetAssetsMaterial200ResponseAllOf
-     */
-    'result': GetAssetsMaterial200ResponseAllOfResult;
-}
-/**
- * 
- * @export
- * @interface GetAssetsMaterial200ResponseAllOfResult
- */
-export interface GetAssetsMaterial200ResponseAllOfResult {
+export interface GetAssetsMaterial200ResponseResult {
     /**
      * 
      * @type {Material}
-     * @memberof GetAssetsMaterial200ResponseAllOfResult
+     * @memberof GetAssetsMaterial200ResponseResult
      */
-    'material': Material;
+    'material'?: Material;
 }
 /**
  * 
@@ -8086,6 +7972,63 @@ export interface GetMoodboardShareTargetRequestAllOf {
      * @memberof GetMoodboardShareTargetRequestAllOf
      */
     'targetNumber': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetPantoneList200Response
+ */
+export interface GetPantoneList200Response {
+    /**
+     * 
+     * @type {GetPantoneList200ResponseResult}
+     * @memberof GetPantoneList200Response
+     */
+    'result'?: GetPantoneList200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPantoneList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPantoneList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetPantoneList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetPantoneList200ResponseResult
+ */
+export interface GetPantoneList200ResponseResult {
+    /**
+     * 
+     * @type {GetPantoneList200ResponseResultCode}
+     * @memberof GetPantoneList200ResponseResult
+     */
+    'code': GetPantoneList200ResponseResultCode;
+}
+/**
+ * 
+ * @export
+ * @interface GetPantoneList200ResponseResultCode
+ */
+export interface GetPantoneList200ResponseResultCode {
+    /**
+     * 
+     * @type {Array<PantoneColor>}
+     * @memberof GetPantoneList200ResponseResultCode
+     */
+    'pantoneList': Array<PantoneColor>;
 }
 /**
  * 
@@ -11807,7 +11750,7 @@ export interface MaterialInternalInfo {
      * @type {MaterialPriceInfo}
      * @memberof MaterialInternalInfo
      */
-    'priceInfo': MaterialPriceInfo | null;
+    'priceInfo': MaterialPriceInfo;
     /**
      * 
      * @type {MaterialInternalInventoryInfo}
@@ -12302,183 +12245,170 @@ export interface MaterialNonWovenConstruction {
 export interface MaterialOptions {
     /**
      * 
-     * @type {MaterialOptionsCode}
+     * @type {MaterialOptionsSeasonList}
      * @memberof MaterialOptions
      */
-    'code': MaterialOptionsCode;
-}
-/**
- * 
- * @export
- * @interface MaterialOptionsCode
- */
-export interface MaterialOptionsCode {
+    'seasonList': MaterialOptionsSeasonList;
     /**
      * 
-     * @type {MaterialOptionsCodeSeasonList}
-     * @memberof MaterialOptionsCode
+     * @type {MaterialOptionsContentList}
+     * @memberof MaterialOptions
      */
-    'seasonList': MaterialOptionsCodeSeasonList;
+    'contentList': MaterialOptionsContentList;
     /**
      * 
-     * @type {MaterialOptionsCodeContentList}
-     * @memberof MaterialOptionsCode
+     * @type {MaterialOptionsDescriptionList}
+     * @memberof MaterialOptions
      */
-    'contentList': MaterialOptionsCodeContentList;
+    'descriptionList': MaterialOptionsDescriptionList;
     /**
      * 
-     * @type {MaterialOptionsCodeDescriptionList}
-     * @memberof MaterialOptionsCode
+     * @type {MaterialOptionsFinishList}
+     * @memberof MaterialOptions
      */
-    'descriptionList': MaterialOptionsCodeDescriptionList;
-    /**
-     * 
-     * @type {MaterialOptionsCodeFinishList}
-     * @memberof MaterialOptionsCode
-     */
-    'finishList': MaterialOptionsCodeFinishList;
+    'finishList': MaterialOptionsFinishList;
     /**
      * 憑證
      * @type {Array<MaterialCertification>}
-     * @memberof MaterialOptionsCode
+     * @memberof MaterialOptions
      */
     'certificateList': Array<MaterialCertification>;
 }
 /**
  * 成分
  * @export
- * @interface MaterialOptionsCodeContentList
+ * @interface MaterialOptionsContentList
  */
-export interface MaterialOptionsCodeContentList {
+export interface MaterialOptionsContentList {
     /**
      * 
-     * @type {Array<MaterialOptionsCodeContentListDefaultInner>}
-     * @memberof MaterialOptionsCodeContentList
+     * @type {Array<MaterialOptionsContentListDefaultInner>}
+     * @memberof MaterialOptionsContentList
      */
-    'default': Array<MaterialOptionsCodeContentListDefaultInner>;
+    'default': Array<MaterialOptionsContentListDefaultInner>;
     /**
      * 
-     * @type {Array<MaterialOptionsCodeContentListDefaultInner>}
-     * @memberof MaterialOptionsCodeContentList
+     * @type {Array<MaterialOptionsContentListDefaultInner>}
+     * @memberof MaterialOptionsContentList
      */
-    'custom': Array<MaterialOptionsCodeContentListDefaultInner>;
+    'custom': Array<MaterialOptionsContentListDefaultInner>;
 }
 /**
  * 
  * @export
- * @interface MaterialOptionsCodeContentListDefaultInner
+ * @interface MaterialOptionsContentListDefaultInner
  */
-export interface MaterialOptionsCodeContentListDefaultInner {
+export interface MaterialOptionsContentListDefaultInner {
     /**
      * 
      * @type {number}
-     * @memberof MaterialOptionsCodeContentListDefaultInner
+     * @memberof MaterialOptionsContentListDefaultInner
      */
     'contentId': number;
     /**
      * 
      * @type {string}
-     * @memberof MaterialOptionsCodeContentListDefaultInner
+     * @memberof MaterialOptionsContentListDefaultInner
      */
     'name': string;
 }
 /**
  * 布種材料描述
  * @export
- * @interface MaterialOptionsCodeDescriptionList
+ * @interface MaterialOptionsDescriptionList
  */
-export interface MaterialOptionsCodeDescriptionList {
+export interface MaterialOptionsDescriptionList {
     /**
      * 
      * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
-     * @memberof MaterialOptionsCodeDescriptionList
+     * @memberof MaterialOptionsDescriptionList
      */
     'woven': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
     /**
      * 
      * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
-     * @memberof MaterialOptionsCodeDescriptionList
+     * @memberof MaterialOptionsDescriptionList
      */
     'knit': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
     /**
      * 
      * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
-     * @memberof MaterialOptionsCodeDescriptionList
+     * @memberof MaterialOptionsDescriptionList
      */
     'leather': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
     /**
      * 
      * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
-     * @memberof MaterialOptionsCodeDescriptionList
+     * @memberof MaterialOptionsDescriptionList
      */
     'nonWoven': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
     /**
      * 
      * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
-     * @memberof MaterialOptionsCodeDescriptionList
+     * @memberof MaterialOptionsDescriptionList
      */
     'trim': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
     /**
      * 
      * @type {GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven}
-     * @memberof MaterialOptionsCodeDescriptionList
+     * @memberof MaterialOptionsDescriptionList
      */
     'others': GetInternalSearchFilterOptions200ResponseAllOfResultDescriptionListWoven;
 }
 /**
  * 後處理
  * @export
- * @interface MaterialOptionsCodeFinishList
+ * @interface MaterialOptionsFinishList
  */
-export interface MaterialOptionsCodeFinishList {
+export interface MaterialOptionsFinishList {
     /**
      * 
      * @type {Array<MaterialFinish>}
-     * @memberof MaterialOptionsCodeFinishList
+     * @memberof MaterialOptionsFinishList
      */
     'default': Array<MaterialFinish>;
     /**
      * 
      * @type {Array<MaterialFinish>}
-     * @memberof MaterialOptionsCodeFinishList
+     * @memberof MaterialOptionsFinishList
      */
     'custom': Array<MaterialFinish>;
 }
 /**
  * season options
  * @export
- * @interface MaterialOptionsCodeSeasonList
+ * @interface MaterialOptionsSeasonList
  */
-export interface MaterialOptionsCodeSeasonList {
+export interface MaterialOptionsSeasonList {
     /**
      * 
-     * @type {Array<MaterialOptionsCodeSeasonListDefaultInner>}
-     * @memberof MaterialOptionsCodeSeasonList
+     * @type {Array<MaterialOptionsSeasonListDefaultInner>}
+     * @memberof MaterialOptionsSeasonList
      */
-    'default': Array<MaterialOptionsCodeSeasonListDefaultInner>;
+    'default': Array<MaterialOptionsSeasonListDefaultInner>;
     /**
      * 
-     * @type {Array<MaterialOptionsCodeSeasonListDefaultInner>}
-     * @memberof MaterialOptionsCodeSeasonList
+     * @type {Array<MaterialOptionsSeasonListDefaultInner>}
+     * @memberof MaterialOptionsSeasonList
      */
-    'custom': Array<MaterialOptionsCodeSeasonListDefaultInner>;
+    'custom': Array<MaterialOptionsSeasonListDefaultInner>;
 }
 /**
  * 
  * @export
- * @interface MaterialOptionsCodeSeasonListDefaultInner
+ * @interface MaterialOptionsSeasonListDefaultInner
  */
-export interface MaterialOptionsCodeSeasonListDefaultInner {
+export interface MaterialOptionsSeasonListDefaultInner {
     /**
      * 
      * @type {number}
-     * @memberof MaterialOptionsCodeSeasonListDefaultInner
+     * @memberof MaterialOptionsSeasonListDefaultInner
      */
     'seasonId': number;
     /**
      * 
      * @type {string}
-     * @memberof MaterialOptionsCodeSeasonListDefaultInner
+     * @memberof MaterialOptionsSeasonListDefaultInner
      */
     'name': string;
 }
@@ -12943,11 +12873,11 @@ export interface MaterialPublicMetaData {
      */
     'isMaterialOwnerSide': boolean;
     /**
-     * 
-     * @type {OgType}
+     * 該布片所屬單位的組織或團隊型態，IsMaterialOwnerSide為true時才有值
+     * @type {number}
      * @memberof MaterialPublicMetaData
      */
-    'materialOwnerOGType': OgType | null;
+    'materialOwnerOGType': number | null;
     /**
      * 該布片所屬單位的組織或團隊ID，IsMaterialOwnerSide為true時才有值
      * @type {number}
@@ -12955,8 +12885,6 @@ export interface MaterialPublicMetaData {
      */
     'materialOwnerOGId': number | null;
 }
-
-
 /**
  * 單位
  * @export
@@ -24838,13 +24766,11 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary assets add to workspace
-         * @param {AssetsMaterialAddToWorkspaceRequest} assetsMaterialAddToWorkspaceRequest 
+         * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        assetsMaterialAddToWorkspace: async (assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'assetsMaterialAddToWorkspaceRequest' is not null or undefined
-            assertParamExists('assetsMaterialAddToWorkspace', 'assetsMaterialAddToWorkspaceRequest', assetsMaterialAddToWorkspaceRequest)
+        assetsMaterialAddToWorkspace: async (assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/add-to-workspace`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25260,13 +25186,11 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
+         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetsMaterial: async (getAssetsMaterialRequest: GetAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getAssetsMaterialRequest' is not null or undefined
-            assertParamExists('getAssetsMaterial', 'getAssetsMaterialRequest', getAssetsMaterialRequest)
+        getAssetsMaterial: async (getAssetsMaterialRequest?: GetAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25682,13 +25606,11 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          *  **Access roles:** To be clear define
          * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
-         * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
+         * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        smartUploadAssetsMaterialList: async (smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'smartUploadAssetsMaterialListRequest' is not null or undefined
-            assertParamExists('smartUploadAssetsMaterialList', 'smartUploadAssetsMaterialListRequest', smartUploadAssetsMaterialListRequest)
+        smartUploadAssetsMaterialList: async (smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/smart-upload`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26074,11 +25996,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary assets add to workspace
-         * @param {AssetsMaterialAddToWorkspaceRequest} assetsMaterialAddToWorkspaceRequest 
+         * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetsMaterialAddToWorkspace200Response>> {
+        async assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetsMaterialAddToWorkspace200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26133,7 +26055,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
+        async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createAssetsMaterial(createAssetsMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26195,11 +26117,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
+         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+        async getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetsMaterial(getAssetsMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26316,11 +26238,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          *  **Access roles:** To be clear define
          * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
-         * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
+         * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26436,11 +26358,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary assets add to workspace
-         * @param {AssetsMaterialAddToWorkspaceRequest} assetsMaterialAddToWorkspaceRequest 
+         * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: any): AxiosPromise<AssetsMaterialAddToWorkspace200Response> {
+        assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options?: any): AxiosPromise<AssetsMaterialAddToWorkspace200Response> {
             return localVarFp.assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26490,7 +26412,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: any): AxiosPromise<CreateAssetsMaterial200Response> {
+        createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.createAssetsMaterial(createAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26546,11 +26468,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
+         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+        getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26656,11 +26578,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          *  **Access roles:** To be clear define
          * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
-         * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
+         * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26766,12 +26688,12 @@ export class AssetsApi extends BaseAPI {
     /**
      * 
      * @summary assets add to workspace
-     * @param {AssetsMaterialAddToWorkspaceRequest} assetsMaterialAddToWorkspaceRequest 
+     * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig) {
+    public assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -26898,12 +26820,12 @@ export class AssetsApi extends BaseAPI {
     /**
      * 
      * @summary 取得單一布料資料
-     * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
+     * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: AxiosRequestConfig) {
+    public getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27030,12 +26952,12 @@ export class AssetsApi extends BaseAPI {
     /**
      *  **Access roles:** To be clear define
      * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
-     * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
+     * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+    public smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -27221,36 +27143,6 @@ export const CodeApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @summary 取得pantone
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        codePantoneGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/code/pantone`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 取得角色轉換限制 code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27351,6 +27243,36 @@ export const CodeApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary 取得 pantone code
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPantoneList: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/code/pantone`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -27383,16 +27305,6 @@ export const CodeApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 取得pantone
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async codePantoneGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CodePantoneGet200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.codePantoneGet(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
          * @summary 取得角色轉換限制 code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27419,6 +27331,16 @@ export const CodeApiFp = function(configuration?: Configuration) {
          */
         async codeRolePermissionGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.codeRolePermissionGet(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 取得 pantone code
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getPantoneList(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetPantoneList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPantoneList(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -27451,15 +27373,6 @@ export const CodeApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
-         * @summary 取得pantone
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        codePantoneGet(options?: any): AxiosPromise<CodePantoneGet200Response> {
-            return localVarFp.codePantoneGet(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 取得角色轉換限制 code
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -27484,6 +27397,15 @@ export const CodeApiFactory = function (configuration?: Configuration, basePath?
          */
         codeRolePermissionGet(options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.codeRolePermissionGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 取得 pantone code
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPantoneList(options?: any): AxiosPromise<GetPantoneList200Response> {
+            return localVarFp.getPantoneList(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -27519,17 +27441,6 @@ export class CodeApi extends BaseAPI {
 
     /**
      * 
-     * @summary 取得pantone
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CodeApi
-     */
-    public codePantoneGet(options?: AxiosRequestConfig) {
-        return CodeApiFp(this.configuration).codePantoneGet(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary 取得角色轉換限制 code
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -27559,6 +27470,17 @@ export class CodeApi extends BaseAPI {
      */
     public codeRolePermissionGet(options?: AxiosRequestConfig) {
         return CodeApiFp(this.configuration).codeRolePermissionGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 取得 pantone code
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CodeApi
+     */
+    public getPantoneList(options?: AxiosRequestConfig) {
+        return CodeApiFp(this.configuration).getPantoneList(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -28581,7 +28503,7 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
+        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -28731,7 +28653,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: any): AxiosPromise<CreateAssetsMaterial200Response> {
+        digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options).then((request) => request(axios, basePath));
         },
         /**

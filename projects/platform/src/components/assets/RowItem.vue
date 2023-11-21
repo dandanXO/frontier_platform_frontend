@@ -139,6 +139,8 @@ import {
 import listViewMask from '@/assets/images/list_view_mask.png'
 import BlockSpecification from '@/components/common/material/detail/internal/BlockSpecification.vue'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
+import assetsApi from '@/apis/assets'
+import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 
 const props = defineProps<{
   selectedList: Material[]
@@ -152,6 +154,7 @@ const emit = defineEmits<{
 const store = useStore()
 const router = useRouter()
 const { goToAssetMaterialDetail } = useNavigation()
+const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
 
 const innerSelectedList = computed({
   get: () => props.selectedList,
@@ -227,12 +230,12 @@ const made2flowSubscribed = computed(
 )
 
 const openModalMaterialEditSimple = async (type: string) => {
-  store.dispatch(
-    'assets/setMaterial',
-    JSON.parse(JSON.stringify(props.material))
-  )
+  const materialOptionsRes = await ogBaseAssetsApi('getMaterialOptions')
+  const materialOptions = materialOptionsRes.data.result!
+
   store.dispatch('helper/openModalBehavior', {
     component: `modal-material-edit-simple-${type}`,
+    properties: { material: props.material, materialOptions },
   })
 }
 

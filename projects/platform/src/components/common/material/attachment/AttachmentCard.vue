@@ -1,24 +1,18 @@
 <template lang="pug">
 material-file-card(
-  :attachment="attachment"
-  :isReadOnly="isReadOnly"
+  :thumbnailUrl="thumbnailUrl"
+  :displayFileName="fileName"
   :menuTree="menuTree"
 )
 </template>
 
 <script setup lang="ts">
 import type { MenuTree } from '@frontier/ui-component'
-import type { Attachment } from '@/composables/material/useAttachmentSelect'
-import MaterialFileCard from '../file/MaterialFileCard.vue'
+import MaterialFileCard from '@/components/common/material/file/MaterialFileCard.vue'
 
-withDefaults(
-  defineProps<{
-    attachment: Attachment
-    isReadOnly?: boolean
-    menuTree: MenuTree
-  }>(),
-  {
-    isReadOnly: false,
-  }
-)
+defineProps<{
+  thumbnailUrl: string
+  fileName: string
+  menuTree?: MenuTree
+}>()
 </script>

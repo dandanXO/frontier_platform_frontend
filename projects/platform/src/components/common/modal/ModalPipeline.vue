@@ -228,16 +228,16 @@ export default {
       import('@/components/common/ModalChangeLocale.vue')
     ),
     ModalMaterialEditSimpleSpec: defineAsyncComponent(() =>
-      import('@/components/assets/ModalMaterialEditSimpleSpec.vue')
+      import('@/components/assets/edit/ModalMaterialEditSimpleSpec.vue')
     ),
     ModalMaterialEditSimpleInventory: defineAsyncComponent(() =>
-      import('@/components/assets/ModalMaterialEditSimpleInventory.vue')
+      import('@/components/assets/edit/ModalMaterialEditSimpleInventory.vue')
     ),
     ModalMaterialEditSimplePublicPrice: defineAsyncComponent(() =>
-      import('@/components/assets/ModalMaterialEditSimplePublicPrice.vue')
+      import('@/components/assets/edit/ModalMaterialEditSimplePublicPrice.vue')
     ),
     ModalMaterialEditSimpleTag: defineAsyncComponent(() =>
-      import('@/components/assets/ModalMaterialEditSimpleTag.vue')
+      import('@/components/assets/edit/ModalMaterialEditSimpleTag.vue')
     ),
     Modal3dViewer: defineAsyncComponent(() =>
       import('@/components/common/material/u3m/Modal3dViewer.vue')

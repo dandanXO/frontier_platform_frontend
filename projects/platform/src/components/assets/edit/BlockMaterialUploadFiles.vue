@@ -1,4 +1,11 @@
 <template lang="pug">
+//- material-detail-file-preview(
+//-   v-if="openMagnifierMode != null && getMenuTree"
+//-   :startIndex="previewStartIndex"
+//-   :fileList="fileList"
+//-   :getMenuTree="getMenuTree"
+//-   @close="openMagnifierMode = null"
+//- )
 div(class="flex flex-col gap-y-15")
   div(class="flex flex-col gap-y-15")
     div(class="flex flex-col gap-y-5")
@@ -26,16 +33,18 @@ div(class="flex flex-col gap-y-15")
             template(#item="{ element: multimedia, index }")
               multimedia-card(
                 :key="multimedia.id"
-                :multimedia="multimedia"
+                :isCover="multimedia.isCover"
+                :thumbnailUrl="multimedia.thumbnailUrl"
+                :fileName="multimedia.displayFileName"
                 :menuTree="getMultimediaMenuTree(index)"
                 @setCover="setMultimediaAsCover(index)"
-                @click="openModalPreviewMultimedia"
+                @click="openMultimediaPreview(index)"
               )
     div(class="flex flex-col gap-y-5")
       div(class="flex flex-col gap-y-2")
         p(class="text-body2 text-grey-800 font-bold") 3D Material File
         p(class="text-caption text-grey-600") Add pictures, videos, test reports, and other information that can be helpful to the material.
-      div(v-if="mode === CREATE_EDIT.CREATE" class="flex items-center gap-x-6.5")
+      div(class="flex items-center gap-x-6.5")
         div
           div
             f-button(
@@ -107,65 +116,69 @@ div(class="flex flex-col gap-y-15")
             template(#item="{ element: attachment, index }")
               attachment-card(
                 :key="attachment.id"
-                :attachment="attachment"
+                :thumbnailUrl="attachment.thumbnailUrl"
+                :fileName="attachment.displayFileName"
                 :menuTree="getAttachmentMenuTree(index)"
+                @click="openAttachmentPreview(index)"
               )
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from 'vue'
+import { computed, inject, ref, watchEffect } from 'vue'
 import Draggable from 'vuedraggable'
 import useNavigation from '@/composables/useNavigation'
 import {
   NOTIFY_TYPE,
   DISPLAY,
-  CREATE_EDIT,
   materialU3mUpdateServiceKey,
   materialMultimediaCreateServiceKey,
   materialAttachmentCreateServiceKey,
+  THEME,
 } from '@/utils/constants'
 import AttachmentCard from '@/components/common/material/attachment/AttachmentCard.vue'
 import MultimediaCard from '@/components/common/material/multimedia/MultimediaCard.vue'
+// import MaterialDetailFilePreview from '@/components/common/material/detail/MaterialDetailFilePreview.vue'
 import type {
   MaterialU3mCreateService,
   MaterialMultimediaCreateService,
   MaterialAttachmentCreateService,
 } from '@/types'
+import type { MenuTree } from '@frontier/ui-component'
+import { getFileExtension } from '@frontier/lib'
 
 const u3mSelectService = inject<MaterialU3mCreateService>(
   materialU3mUpdateServiceKey
 )
-const multimediaSelectService = inject<MaterialMultimediaCreateService>(
+const multimediaCreateService = inject<MaterialMultimediaCreateService>(
   materialMultimediaCreateServiceKey
 )
-const attachmentSelectService = inject<MaterialAttachmentCreateService>(
+const attachmentCreateService = inject<MaterialAttachmentCreateService>(
   materialAttachmentCreateServiceKey
 )
 
 if (!u3mSelectService) {
   throw new Error('MaterialU3mCreateService is not provided')
 }
-if (!multimediaSelectService) {
+if (!multimediaCreateService) {
   throw new Error('MaterialMultimediaCreateService is not provided')
 }
-if (!attachmentSelectService) {
+if (!attachmentCreateService) {
   throw new Error('MaterialAttachmentCreateService is not provided')
 }
 
 const {
   multimediaList,
   openModalMultimediaSelect,
-  openModalPreviewMultimedia,
   setMultimediaAsCover,
   getMultimediaMenuTree,
   updateMultimediaList,
-} = multimediaSelectService
+} = multimediaCreateService
 const {
   attachmentList,
   getAttachmentMenuTree,
   openModalAttachmentSelect,
   updateAttachmentList,
-} = attachmentSelectService
+} = attachmentCreateService
 const {
   u3mFile,
   hasU3mQuota,
@@ -176,8 +189,9 @@ const {
   removeU3mFile,
 } = u3mSelectService
 
-const mode = CREATE_EDIT.CREATE
 const { goToBillings } = useNavigation()
+
+const openMagnifierMode = ref<'multimedia' | 'attachment' | null>(null)
 
 const multimediaListForDraggable = computed({
   get: () => multimediaList,
@@ -196,6 +210,59 @@ const cardDragOptions = {
   scrollSpeed: 7,
   animation: 250,
   disabled: false,
+}
+
+const previewStartIndex = ref(0)
+const getMenuTree = ref<((index: number, theme: THEME) => MenuTree) | null>(
+  null
+)
+
+const fileList = computed(() => {
+  if (openMagnifierMode.value === 'multimedia') {
+    return multimediaList.map((m) => ({
+      originalUrl: m.originalUrl,
+      thumbnailUrl: m.thumbnailUrl,
+      displayName: m.displayFileName,
+      extension: getFileExtension(m.displayFileName),
+    }))
+  }
+
+  if (openMagnifierMode.value === 'attachment') {
+    return attachmentList.map((a) => ({
+      originalUrl: a.originalUrl,
+      thumbnailUrl: a.thumbnailUrl,
+      displayName: a.displayFileName,
+      extension: getFileExtension(a.displayFileName),
+    }))
+  }
+
+  return []
+})
+
+watchEffect(() => {
+  if (openMagnifierMode.value === 'multimedia') {
+    if (multimediaList.length === 0) {
+      openMagnifierMode.value = null
+    }
+  }
+
+  if (openMagnifierMode.value === 'attachment') {
+    if (attachmentList.length === 0) {
+      openMagnifierMode.value = null
+    }
+  }
+})
+
+const openMultimediaPreview = (index: number) => {
+  openMagnifierMode.value = 'multimedia'
+  previewStartIndex.value = index
+  getMenuTree.value = getMultimediaMenuTree
+}
+
+const openAttachmentPreview = (index: number) => {
+  openMagnifierMode.value = 'attachment'
+  previewStartIndex.value = index
+  getMenuTree.value = getAttachmentMenuTree
 }
 </script>
 

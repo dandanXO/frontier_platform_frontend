@@ -1,11 +1,11 @@
 <template lang="pug">
 material-file-card(
-  :attachment="multimedia"
-  :isReadOnly="isReadOnly"
+  :thumbnailUrl="thumbnailUrl"
+  :displayFileName="fileName"
   :menuTree="menuTree"
 )
   f-svg-icon(
-    :class="[multimedia.isCover ? 'text-primary-400' : 'text-grey-400', 'cursor-pointer']"
+    :class="[isCover ? 'text-primary-400' : 'text-grey-400', 'cursor-pointer']"
     iconName="star"
     size="24"
     @click.stop="emits('setCover')"
@@ -13,18 +13,15 @@ material-file-card(
 </template>
 
 <script setup lang="ts">
-import type { Multimedia } from '@/composables/material/useMultimediaSelect'
 import MaterialFileCard from '../file/MaterialFileCard.vue'
 import type { MenuTree } from '@frontier/ui-component'
 
-withDefaults(
-  defineProps<{
-    multimedia: Multimedia
-    menuTree: MenuTree
-    isReadOnly?: boolean
-  }>(),
-  { isReadOnly: false }
-)
+defineProps<{
+  isCover: boolean
+  thumbnailUrl: string
+  fileName: string
+  menuTree: MenuTree
+}>()
 
 const emits = defineEmits<{
   (e: 'setCover'): void

@@ -26,8 +26,8 @@ div(class="flex flex-col gap-y-7.5")
       p If the face and back information are the same, it is recommended to turn on Auto sync face-back info so that you can focus on maintaining the face side information only.
   f-select-input(
     :disabled="disableBackSideFields"
-    :selectValue="FeatureList.value"
-    @update:selectValue="FeatureList.onInput"
+    :selectValue="featureList.value"
+    @update:selectValue="featureList.onInput"
     :dropdownMenuTree="specOptions.featureList"
     @addNew="addFeatureOption($event)"
     label="Feature"
@@ -74,8 +74,8 @@ div(class="flex flex-col gap-y-7.5")
             p(class="font-bold text-grey-600") support@frontier.cool
         f-select-input(
           :disabled="disableBackSideFields"
-          :selectValue="DescriptionList.value"
-          @update:selectValue="DescriptionList.onInput"
+          :selectValue="descriptionList.value"
+          @update:selectValue="descriptionList.onInput"
           :dropdownMenuTree="specOptions.descriptionList"
           @addNew="addDescriptionOption($event)"
           label="Material Description"
@@ -343,18 +343,6 @@ div(class="flex flex-col gap-y-7.5")
     v-for="(error, index) in colorInfoCustomPropertyDisplayErrors"
     :key="index"
   ) {{ error }}
-  f-select-input(
-    :disabled="disableBackSideFields"
-    :selectValue="FinishList.value"
-    @update:selectValue="FinishList.onInput"
-    :dropdownMenuTree="specOptions.finishList"
-    @addNew="addFinishOption($event)"
-    label="finish"
-    :placeholder="$t('DD0016')"
-    :hintError="displayErrors[`${primarySideType}.finishList`]"
-    multiple
-  )
-
   f-input-container(
     v-if="!hideBackSideFields"
     :label="$t('RR0021')"
@@ -450,7 +438,50 @@ div(class="flex flex-col gap-y-7.5")
     )
       template(#slot:right-dropdown-trigger="{ selectedMenu }")
         p {{ selectedMenu?.title }}
-
+  f-select-input(
+    :disabled="disableBackSideFields"
+    :selectValue="finishList.value"
+    @update:selectValue="finishList.onInput"
+    :dropdownMenuTree="specOptions.finishList"
+    @addNew="addFinishOption($event)"
+    label="finish"
+    :placeholder="$t('DD0016')"
+    :hintError="displayErrors[`${primarySideType}.finishList`]"
+    multiple
+  )
+  f-input-container(v-if="mode === CREATE_EDIT.EDIT" :label="$t('EE0040')")
+    div(class="flex flex-col gap-y-4")
+      f-input-text(
+        class="w-72"
+        v-model:textValue="pantoneColor"
+        placeholder="Ex.g., 11-0102TCX"
+        :button="{ type: 'primary', icon: 'add', isFile: false }"
+        @click:button="handleAddPantone"
+      )
+      div(class="grid gap-y-3")
+        div(
+          v-for="pantone in pantoneValueDisplayList"
+          :key="pantone.name"
+          class="flex items-center gap-x-3"
+        )
+          f-tooltip-media(
+            placement="right-end"
+            :pantone="{ r: pantone.r, g: pantone.g, b: pantone.b }"
+            :tooltipTitle="pantone.name"
+            :tooltipMessage="pantone.colorName"
+          )
+            template(#slot:tooltip-trigger)
+              div(
+                class="rounded w-5.5 h-5.5"
+                :style="{ backgroundColor: `rgb(${pantone.r}, ${pantone.g}, ${pantone.b})` }"
+              )
+          p(class="text-body2 text-grey-900") {{ pantone.name }}
+          f-svg-icon(
+            iconName="clear"
+            size="20"
+            class="text-grey-250 cursor-pointer"
+            @click="removePantone(pantone.name, props.primarySideType)"
+          )
   f-input-container(label="color")
     div(class="flex flex-row gap-x-4.5")
       div(class="w-1.5 bg-grey-100")
@@ -567,7 +598,7 @@ div(class="flex flex-col gap-y-7.5")
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { useFieldArray } from 'vee-validate'
 import { useStore } from 'vuex'
 import {
@@ -575,6 +606,7 @@ import {
   MaterialType,
 } from '@frontier/platform-web-sdk'
 import { NOTIFY_TYPE, DISPLAY } from '@frontier/constants'
+import { CREATE_EDIT } from '@/utils/constants'
 import IconButton from '@/components/assets/edit/blockMaterialSpecification/IconButton.vue'
 import type { MaterialFormService } from '@/types'
 import { materialFormServiceKey } from '@/utils/constants'
@@ -591,12 +623,16 @@ if (!materialFormService) {
 }
 
 const {
+  mode,
   values,
   inputMenu,
+  pantoneList,
   defineInputBinds,
   displayErrors,
   copyFaceSideToBackSide,
   clearMaterialTypeConstructionFields,
+  addPantone,
+  removePantone,
 } = materialFormService
 const {
   specOptions,
@@ -614,9 +650,9 @@ const isAutoSyncFaceToBackSideInfo = defineInputBinds(
   'isAutoSyncFaceToBackSideInfo'
 )
 
-const FeatureList = defineInputBinds(`${props.primarySideType}.featureList`)
-const FinishList = defineInputBinds(`${props.primarySideType}.finishList`)
-const DescriptionList = defineInputBinds(
+const featureList = defineInputBinds(`${props.primarySideType}.featureList`)
+const finishList = defineInputBinds(`${props.primarySideType}.finishList`)
+const descriptionList = defineInputBinds(
   `${props.primarySideType}.descriptionList`
 )
 const materialType = defineInputBinds(`${props.primarySideType}.materialType`)
@@ -801,6 +837,8 @@ const colorInfoCustomPropertyDisplayErrors = computed(() => {
   return errors
 })
 
+const pantoneColor = ref<string | null>('')
+
 const showCopyAndSyncBtn = computed(
   () => props.primarySideType === 'backSide' && values.isDoubleSide
 )
@@ -843,15 +881,36 @@ const showInfoBar = computed(() => {
   return false
 })
 
-const openModalSendFeedback = () => {
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-send-feedback',
-  })
-}
+const pantoneValueDisplayList = computed(() => {
+  return (
+    values[props.primarySideType]?.pantoneList?.map((pantoneCode) => {
+      const result = pantoneList?.find((p) => p.name === pantoneCode)
+      if (!result) {
+        throw new Error(`Pantone ${pantoneCode} not found`)
+      }
+      return result
+    }) || []
+  )
+})
 
 const handleMaterialTypeChange = (v: MaterialType) => {
   clearMaterialTypeConstructionFields(props.primarySideType)
   materialType.value.onInput(v)
+}
+
+const handleAddPantone = () => {
+  if (!pantoneColor.value) {
+    return
+  }
+
+  addPantone(pantoneColor.value, props.primarySideType)
+  pantoneColor.value = ''
+}
+
+const openModalSendFeedback = () => {
+  store.dispatch('helper/openModalBehavior', {
+    component: 'modal-send-feedback',
+  })
 }
 </script>
 

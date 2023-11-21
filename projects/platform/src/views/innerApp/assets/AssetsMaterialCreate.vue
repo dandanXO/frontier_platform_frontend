@@ -22,11 +22,14 @@ import { onBeforeRouteLeave } from 'vue-router'
 import BlockMaterialCreate from '@/components/assets/edit/BlockMaterialCreate.vue'
 import useNavigation from '@/composables/useNavigation'
 import { useAssetsStore } from '@/stores/assets'
-import type { MaterialOptionsCode } from '@frontier/platform-web-sdk'
-import mockMaterialOptions from '@/stores/assets/mockMaterialOptions'
+import {
+  MaterialSideType,
+  type MaterialOptions,
+  type MaterialPriceInfo,
+  type CreateAssetsMaterialRequest,
+} from '@frontier/platform-web-sdk'
 import { NOTIFY_TYPE } from '@/utils/constants'
-import type { Multimedia } from '@/composables/material/useMultimediaSelect'
-import type { Attachment } from '@/composables/material/useAttachmentSelect'
+import type { AttachmentCreateItem, MultimediaCreateItem } from '@/types'
 import type useMaterialForm from '@/composables/material/useMaterialForm'
 import { uploadFileToS3 } from '@/utils/fileUpload'
 
@@ -54,33 +57,40 @@ const breadcrumbList = computed(() => {
   ]
 })
 
-const materialOptions = ref<MaterialOptionsCode | null>(null)
+const materialOptions = ref<MaterialOptions | null>(null)
 
 const fetchMaterialOptions = async () => {
-  // const res = await assetsApi.getMaterialOptions(req)
-  // materialOptions.value = res.data.result!.code
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  materialOptions.value = mockMaterialOptions
+  const res = await ogBaseAssetsApi('getMaterialOptions')
+  materialOptions.value = res.data.result!
 }
 
 const createMaterial = async (payload: {
   form: ReturnType<typeof useMaterialForm>['values']
-  multimediaList: Multimedia[]
-  attachmentList: Attachment[]
+  multimediaList: MultimediaCreateItem[]
+  attachmentList: AttachmentCreateItem[]
   u3m?: {
     u3mFile: File
     needToGeneratePhysical: boolean
-    hasUploadedU3mFile: boolean
   } | null
 }) => {
-  const { form, multimediaList, attachmentList, u3m } = payload
   store.dispatch('helper/openModalLoading')
+  const { form, multimediaList, attachmentList, u3m } = payload
 
   const uploadMultiMediaTasks = Promise.all(
-    multimediaList.map((m) => uploadFileToS3(m.file, m.file.name))
+    multimediaList.map(async (m) => {
+      const result = await uploadFileToS3(m.file, m.file.name)
+      return {
+        ...result,
+        displayFileName: m.displayFileName,
+        isCover: m.isCover,
+      }
+    })
   )
   const uploadAttachmentTasks = Promise.all(
-    attachmentList.map((m) => uploadFileToS3(m.file, m.file.name))
+    attachmentList.map(async (a) => {
+      const result = await uploadFileToS3(a.file, a.file.name)
+      return { ...result, displayFileName: a.displayFileName }
+    })
   )
 
   const [multimediaResult, attachmentResult] = await Promise.all([
@@ -88,28 +98,79 @@ const createMaterial = async (payload: {
     uploadAttachmentTasks,
   ])
 
-  const req = {
-    ...form,
-    hasCustomU3mUploading: u3m.hasUploadedU3mFile || false,
-    multimediaList: multimediaResult.map((m) => ({
-      s3UploadId: m.s3UploadId,
-      fileName: m.fileName,
-      displayFileName: m.fileName,
-      isCover: true,
-      croppedImage: null,
-    })),
-    internalInfo: {
-      ...form.internalInfo,
-      attachmentList: attachmentResult.map((m) => ({
-        s3UploadId: m.s3UploadId,
-        fileName: m.fileName,
-        displayFileName: m.fileName,
-      })),
-    },
+  const convertPriceInfoFormToReq = (
+    priceInfo: MaterialPriceInfo
+  ): MaterialPriceInfo => {
+    return {
+      ...priceInfo,
+      pricing: priceInfo.pricing?.price ? priceInfo.pricing : null,
+      minimumColor: priceInfo.minimumColor?.qty
+        ? {
+            qty: priceInfo.minimumColor.qty,
+            unit: priceInfo.minimumColor.unit,
+          }
+        : null,
+      minimumOrder: priceInfo.minimumOrder?.qty
+        ? {
+            qty: priceInfo.minimumOrder.qty,
+            unit: priceInfo.minimumOrder.unit,
+          }
+        : null,
+    }
   }
 
-  // const res = await assetsApi.createAssetsMaterial(req)
-  const res = await ogBaseAssetsApi('createAssetsMaterial', req)
+  const processMaterialSideFormToReq = (
+    form: ReturnType<typeof useMaterialForm>['values']
+  ) => {
+    let req: Omit<CreateAssetsMaterialRequest, 'orgId' | 'ogType' | 'ogId'> = {
+      ...form,
+    }
+
+    if (!form.isDoubleSide) {
+      if (form.sideType === MaterialSideType.FACE_SIDE) {
+        req = { ...req, backSide: null }
+      } else if (form.sideType === MaterialSideType.BACK_SIDE) {
+        req = { ...req, faceSide: null }
+      }
+    }
+
+    if (!form.isComposite) {
+      req = { ...req, middleSide: null }
+    }
+
+    return req
+  }
+
+  const getReq = () => {
+    let req = processMaterialSideFormToReq(form)
+
+    req.priceInfo = convertPriceInfoFormToReq(req.priceInfo)
+    req.internalInfo.priceInfo = convertPriceInfoFormToReq(req.priceInfo)
+
+    req = {
+      ...req,
+      hasCustomU3mUploading: u3m != null,
+      multimediaList: multimediaResult.map((m) => ({
+        s3UploadId: m.s3UploadId,
+        fileName: m.fileName,
+        displayFileName: m.displayFileName,
+        isCover: m.isCover,
+        croppedImage: null,
+      })),
+      internalInfo: {
+        ...form.internalInfo,
+        attachmentList: attachmentResult.map((a) => ({
+          s3UploadId: a.s3UploadId,
+          fileName: a.fileName,
+          displayFileName: a.displayFileName,
+        })),
+      },
+    }
+
+    return req
+  }
+
+  const res = await ogBaseAssetsApi('createAssetsMaterial', getReq())
   store.dispatch('helper/closeModalLoading')
 
   const material = res.data.result!.material!

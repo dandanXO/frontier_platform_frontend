@@ -74,7 +74,7 @@ div(class="mb-15 grid gap-y-7.5")
     :hintError="displayErrors['priceInfo.sampleLeadTimeInDays']"
     :addOnRight="$t('RR0050')"
   )
-  div(class="bg-grey-50 rounded px-15 py-12.5 grid gap-y-7.5")
+  div(v-if="!onlyPublic" class="bg-grey-50 rounded px-15 py-12.5 grid gap-y-7.5")
     h6(class="text-h6 text-grey-600 font-bold") {{ $t('DD0019') }}
     f-select-dropdown(
       class="w-100"
@@ -157,6 +157,15 @@ import { computed, inject } from 'vue'
 import { useStore } from 'vuex'
 import type { MaterialFormService } from '@/types'
 import { materialFormServiceKey } from '@/utils/constants'
+
+withDefaults(
+  defineProps<{
+    onlyPublic: boolean
+  }>(),
+  {
+    onlyPublic: false,
+  }
+)
 
 const store = useStore()
 

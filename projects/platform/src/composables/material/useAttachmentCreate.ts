@@ -1,85 +1,95 @@
 import { reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
-import { EXTENSION, NOTIFY_TYPE } from '@frontier/constants'
+import { v4 as uuidv4 } from 'uuid'
+import { EXTENSION, NOTIFY_TYPE, THEME } from '@frontier/constants'
 import {
-  downloadFile,
+  downloadDataURLFile,
   getFileExtension,
   getFileNameExcludeExtension,
 } from '@frontier/lib'
 import type { MenuTree } from '@frontier/ui-component'
+import type { AttachmentCreateItem } from '@/types'
+import { getPreviewUrl } from '@/utils/pdf'
 
-export interface Attachment {
-  file: File
-  url: string
-  displayFileName: string
-  extension: EXTENSION
-  displayFileNameExcludeExtension: string
-}
-
-const useAttachmentSelect = () => {
+const useAttachmentCreate = () => {
   const { t } = useI18n()
   const store = useStore()
 
-  const attachmentList = reactive<Attachment[]>([])
+  const attachmentList = reactive<AttachmentCreateItem[]>([])
 
   const openModalAttachmentSelect = () => {
     store.dispatch('helper/openModalBehavior', {
       component: 'modal-upload-attachment',
       properties: {
         uploadHandler: async (fileList: File[]) => {
-          const toAttachment = (file: File) => {
+          const toAttachment = async (file: File) => {
+            const extension = getFileExtension(file.name) as EXTENSION
+            const originalUrl = URL.createObjectURL(file)
+            const thumbnailUrl = await (extension === EXTENSION.PDF
+              ? getPreviewUrl(URL.createObjectURL(file))
+              : Promise.resolve(originalUrl))
+
             return {
+              id: uuidv4(),
               file,
-              url: URL.createObjectURL(file),
-              extension: getFileExtension(file.name) as EXTENSION,
+              originalUrl,
+              thumbnailUrl,
+              extension,
               displayFileName: file.name,
               displayFileNameExcludeExtension: getFileNameExcludeExtension(
                 file.name
               ),
             }
           }
-          attachmentList.push(...fileList.map(toAttachment))
+          const newAttachmentList = await Promise.all(
+            fileList.map(toAttachment)
+          )
+          attachmentList.push(...newAttachmentList)
         },
       },
     })
   }
 
-  const openModalPreviewAttachment = (openIndex: number) => {
-    store.dispatch('helper/pushModal', {
-      component: 'modal-preview-file',
-      header: t('DD0060'),
-      properties: {
-        fileList: attachmentList,
-        index: openIndex,
-        getMenuTree: getAttachmentMenuTree,
-        onRename: (index: number) => renameAttachmentSelect(index),
-        onRemove: (index: number) => removeAttachmentSelect(index),
-      },
-    })
-  }
+  // const openModalPreviewAttachment = (openIndex: number) => {
+  //   store.dispatch('helper/pushModal', {
+  //     component: 'modal-preview-file',
+  //     header: t('DD0060'),
+  //     properties: {
+  //       fileList: attachmentList,
+  //       index: openIndex,
+  //       getMenuTree: getAttachmentMenuTree,
+  //       onRename: (index: number) => renameAttachmentSelect(index),
+  //       onRemove: (index: number) => removeAttachmentSelect(index),
+  //     },
+  //   })
+  // }
 
-  const removeAttachmentSelect = (index: number) => {
+  const removeAttachmentSelect = (index: number, theme: THEME) => {
     store.dispatch('helper/pushModalConfirm', {
       type: NOTIFY_TYPE.WARNING,
+      theme,
       header: t('DD0068'),
       contentText: t('DD0069'),
       primaryBtnText: t('UU0001'),
       primaryBtnHandler: async () => {
         const target = attachmentList[index]
-        URL.revokeObjectURL(target.url)
+        URL.revokeObjectURL(target.originalUrl)
+        URL.revokeObjectURL(target.thumbnailUrl)
         attachmentList.splice(index, 1)
       },
       secondaryBtnText: t('UU0002'),
     })
   }
 
-  const renameAttachmentSelect = (index: number) => {
+  const renameAttachmentSelect = (index: number, theme: THEME) => {
     const target = attachmentList[index]
     store.dispatch('helper/pushModalBehavior', {
       component: 'modal-rename-file',
       properties: {
+        theme,
         fileName: target.displayFileNameExcludeExtension,
+        closable: false,
         onSubmit: (newFileNameExcludeExtension: string) => {
           target.displayFileNameExcludeExtension = newFileNameExcludeExtension
           target.displayFileName = `${newFileNameExcludeExtension}.${target.extension}`
@@ -90,10 +100,13 @@ const useAttachmentSelect = () => {
 
   const downloadAttachmentSelect = (index: number) => {
     const target = attachmentList[index]
-    downloadFile(target.url, target.displayFileName)
+    downloadDataURLFile(target.originalUrl, target.displayFileName)
   }
 
-  const getAttachmentMenuTree = (index: number): MenuTree => {
+  const getAttachmentMenuTree = (
+    index: number,
+    theme = THEME.LIGHT
+  ): MenuTree => {
     const target = attachmentList[index]
     return {
       width: 'w-44',
@@ -109,14 +122,14 @@ const useAttachmentSelect = () => {
               {
                 title: 'Rename',
                 icon: 'create',
-                clickHandler: () => renameAttachmentSelect(index),
+                clickHandler: () => renameAttachmentSelect(index, theme),
               },
             ]
             if (target.extension === EXTENSION.PDF) {
               menuList.unshift({
                 title: 'Open new page',
                 icon: 'open_in_new',
-                clickHandler: () => window.open(target.url, '_blank'),
+                clickHandler: () => window.open(target.originalUrl, '_blank'),
               })
             }
             return menuList
@@ -127,7 +140,7 @@ const useAttachmentSelect = () => {
             {
               title: 'Delete',
               icon: 'delete',
-              clickHandler: () => removeAttachmentSelect(index),
+              clickHandler: () => removeAttachmentSelect(index, theme),
             },
           ],
         },
@@ -135,7 +148,7 @@ const useAttachmentSelect = () => {
     }
   }
 
-  const updateAttachmentList = (list: Attachment[]) => {
+  const updateAttachmentList = (list: AttachmentCreateItem[]) => {
     attachmentList.splice(0, attachmentList.length, ...list)
   }
 
@@ -143,7 +156,7 @@ const useAttachmentSelect = () => {
     attachmentList,
     getAttachmentMenuTree,
     openModalAttachmentSelect,
-    openModalPreviewAttachment,
+    // openModalPreviewAttachment,
     renameAttachmentSelect,
     removeAttachmentSelect,
     downloadAttachmentSelect,
@@ -151,4 +164,4 @@ const useAttachmentSelect = () => {
   }
 }
 
-export default useAttachmentSelect
+export default useAttachmentCreate

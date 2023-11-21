@@ -43,13 +43,12 @@ import type {
   MaterialMultimediaCreateService,
   MaterialAttachmentCreateService,
 } from '@/types'
-import type { MaterialOptionsCode } from '@frontier/platform-web-sdk'
+import type { MaterialOptions } from '@frontier/platform-web-sdk'
 import useMaterialForm from '@/composables/material/useMaterialForm'
-import type { Multimedia } from '@/composables/material/useMultimediaSelect'
-import type { Attachment } from '@/composables/material/useAttachmentSelect'
+import type { AttachmentCreateItem, MultimediaCreateItem } from '@/types'
 import useU3mSelect from '@/composables/material/useU3mSelect'
-import useMultimediaSelect from '@/composables/material/useMultimediaSelect'
-import useAttachmentSelect from '@/composables/material/useAttachmentSelect'
+import useMultimediaCreate from '@/composables/material/useMultimediaCreate'
+import useAttachmentCreate from '@/composables/material/useAttachmentCreate'
 import {
   materialAttachmentCreateServiceKey,
   materialFormServiceKey,
@@ -58,7 +57,7 @@ import {
 } from '@/utils/constants'
 
 const props = defineProps<{
-  materialOptions: MaterialOptionsCode
+  materialOptions: MaterialOptions
 }>()
 
 const emits = defineEmits<{
@@ -66,12 +65,11 @@ const emits = defineEmits<{
     e: 'submit',
     payload: {
       form: ReturnType<typeof useMaterialForm>['values']
-      multimediaList: Multimedia[]
-      attachmentList: Attachment[]
+      multimediaList: MultimediaCreateItem[]
+      attachmentList: AttachmentCreateItem[]
       u3m?: {
         u3mFile: File
         needToGeneratePhysical: boolean
-        hasUploadedU3mFile: boolean
       } | null
     }
   ): void
@@ -86,9 +84,9 @@ const materialFormService: MaterialFormService = useMaterialForm({
 
 const u3mSelectService: MaterialU3mCreateService = useU3mSelect()
 const multimediaCreateService: MaterialMultimediaCreateService =
-  useMultimediaSelect()
+  useMultimediaCreate()
 const attachmentCreateService: MaterialAttachmentCreateService =
-  useAttachmentSelect()
+  useAttachmentCreate()
 
 provide(materialFormServiceKey, materialFormService)
 provide(materialU3mUpdateServiceKey, u3mSelectService)
@@ -122,7 +120,6 @@ const submit = handleSubmit(async (form) => {
       ? {
           u3mFile: u3mSelectService.u3mFile.value,
           needToGeneratePhysical: u3mSelectService.needToGeneratePhysical.value,
-          hasUploadedU3mFile: u3mSelectService.hasUploadedU3mFile.value,
         }
       : undefined,
   })

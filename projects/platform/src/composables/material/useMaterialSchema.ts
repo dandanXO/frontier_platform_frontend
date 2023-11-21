@@ -46,14 +46,7 @@ const getMaxDecimalPlacesParams = (dp: number) => {
 }
 
 const useMaterialSchema = () => {
-  const featureListSchema = z
-    .array(
-      z.object({
-        featureId: z.number().int(integerOnlyMessage).nullable(),
-        name: z.string().nullable(),
-      })
-    )
-    .default([])
+  const featureListSchema = z.array(z.string()).default([])
 
   const finishListSchema = z
     .array(
@@ -285,6 +278,14 @@ const useMaterialSchema = () => {
         .default(null),
       customPropertyList: customPropertyListSchema.default([]),
     }),
+    pantoneList: z
+      .array(
+        z
+          .string(nonNullParams)
+          .nonempty(requiredMessage)
+          .max(...getMaxLengthParams(20))
+      )
+      .default([]),
   })
 
   const materialPriceInfoSchema = z.object({

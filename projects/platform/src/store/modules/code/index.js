@@ -12,6 +12,7 @@ const state = () => ({
     patternList: [],
     colorList: [],
     finishList: [],
+    pantoneList: [],
   },
 })
 
@@ -61,6 +62,7 @@ const getters = {
       }))
   },
   orgCategoryList: (state) => state.orgCategoryList,
+  pantoneList: (state) => state.pantoneList,
   filterOptionList: (state) => state.filter,
 }
 
@@ -77,6 +79,9 @@ const mutations = {
   SET_roleLimit(state, roleLimit) {
     state.roleLimit = roleLimit
   },
+  SET_pantoneList(state, pantoneList) {
+    state.pantoneList = pantoneList
+  },
   SET_filter(state, filter) {
     state.filter = filter
   },
@@ -88,6 +93,7 @@ const actions = {
     dispatch('getOrgCategoryList')
     dispatch('getRoleLimitTable')
     dispatch('getCountryList')
+    dispatch('getPantoneList')
   },
   async getCountryList({ commit }) {
     const { data } = await codeApi.getCountryList()
@@ -104,6 +110,10 @@ const actions = {
   async getRoleLimitTable({ commit }) {
     const { data } = await codeApi.getRoleLimitTable()
     commit('SET_roleLimit', data.result.code.roleLimit)
+  },
+  async getPantoneList({ commit }) {
+    const { data } = await codeApi.getPantoneList()
+    commit('SET_pantoneList', data.result.code.pantoneList)
   },
 }
 
