@@ -4,17 +4,14 @@ div(class="flex items-center bg-grey-50 w-fit px-3.5 h-8.5 rounded")
   p(class="text-body2 text-grey-900") {{ label.text }}
 </template>
 
-<script setup>
-import { UPLOAD_PROGRESS } from '@/utils/constants'
+<script setup lang="ts">
+import { ProgressStatus } from '@frontier/platform-web-sdk'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-const props = defineProps({
-  status: {
-    type: Number,
-    required: true,
-  },
-})
+const props = defineProps<{
+  status: ProgressStatus
+}>()
 
 const { t } = useI18n()
 
@@ -22,23 +19,23 @@ const label = computed(() => {
   let text
   let color
   switch (props.status) {
-    case UPLOAD_PROGRESS.IN_QUEUE:
+    case ProgressStatus.IN_QUEUE:
       text = t('PP0004')
       color = 'bg-cyan-300'
       break
-    case UPLOAD_PROGRESS.PROCESSING:
+    case ProgressStatus.PROCESSING:
       text = t('PP0005')
       color = 'bg-yellow-400'
       break
-    case UPLOAD_PROGRESS.UNSUCCESSFUL:
+    case ProgressStatus.UNSUCCESSFUL:
       text = t('PP0007')
       color = 'bg-red-400'
       break
-    case UPLOAD_PROGRESS.COMPLETE:
+    case ProgressStatus.COMPLETE:
       text = t('PP0006')
       color = 'bg-primary-400'
       break
-    case UPLOAD_PROGRESS.CANCELED:
+    case ProgressStatus.CANCELED:
       text = t('UU0099')
       color = 'bg-grey-600'
       break

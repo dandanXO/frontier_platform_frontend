@@ -85,7 +85,7 @@ div(class="relative")
               :index="index"
             )
               div {{ item[header.prop] }}
-      div(v-else class="text-body1 text-grey-600 mt-10 text-center") {{ emptyText }}
+      div(v-else class="text-body1 text-grey-600 my-10 text-center") {{ emptyText }}
   div(v-if="innerPagination.totalPage > 1" class="py-6 flex justify-center")
     f-paginator(
       v-model:currentPage="innerPagination.currentPage"

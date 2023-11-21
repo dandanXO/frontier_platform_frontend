@@ -3,7 +3,7 @@ f-table(
   v-model:pagination="pagination"
   v-model:keyword="keyword"
   :headers="headers"
-  :items="tableData"
+  :items="progressList"
   :emptyText="$t('RR0105')"
   :searchPlaceholder="$t('RR0053')"
   :isLoading="isLoading"
@@ -67,7 +67,7 @@ f-table(
               iconName="visibility"
               size="20"
               class="text-grey-250 ml-3 w-5 flex-shrink-0 cursor-pointer"
-              @click="openModalMaterialNoList(item.materialNoList)"
+              @click="openModalItemNoList(item)"
             )
     template(v-if="prop === 'createdTime'")
       p(class="text-body2/1.6 text-grey-600") {{ toStandardFormat(item.createDate) }}
@@ -75,23 +75,25 @@ f-table(
     table-status-progress(v-if="prop === 'procedure'" :status="item.status")
       //- Unsuccessful
       div(
-        v-if="item.status === UPLOAD_PROGRESS.UNSUCCESSFUL"
+        v-if="item.status === ProgressStatus.UNSUCCESSFUL"
         class="text-red-400 inline-flex"
       )
         f-svg-icon(iconName="warning_amber_round" size="16" class="mr-1.5 mt-0.5")
-        p(v-if="item.msgCode === ERROR_MSG.INACTIVE") {{ $t('WW0092') }}
-        p(v-else-if="item.msgCode === ERROR_MSG.INSUFFICIENT_STORAGE") {{ $t('WW0090') }}
-          span(class="text-cyan-400 ml-0.5 cursor-pointer" @click="goToBillings") {{ $t('RR0169') }}
+        p(v-if="item.unsuccessfulMsgCode === ERROR_MSG.INACTIVE") {{ $t('WW0092') }}
+        p(
+          v-else-if="item.unsuccessfulMsgCode === ERROR_MSG.INSUFFICIENT_STORAGE"
+        ) {{ $t('WW0090') }}
+          span(class="text-cyan-400 ml-0.5 cursor-pointer" @click="goToBillings()") {{ $t('RR0169') }}
       //- In Queue
       div(
-        v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE"
+        v-else-if="item.status === ProgressStatus.IN_QUEUE"
         class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         p {{ $t('PP0028') }}
       //- Processing
       div(
-        v-else-if="item.status === UPLOAD_PROGRESS.PROCESSING"
+        v-else-if="item.status === ProgressStatus.PROCESSING"
         class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
@@ -107,10 +109,10 @@ f-table(
       img(:src="item.createAvatar" class="w-6 h-6 rounded-full")
       p(class="text-body2 text-grey-900 ml-2 line-clamp-1") {{ item.createUser }}
     div(v-if="prop === 'action'" class="flex justify-end items-center")
-      template(v-if="item.status === UPLOAD_PROGRESS.COMPLETE")
+      template(v-if="item.status === ProgressStatus.COMPLETE")
         //- Upload Complete
         template(v-if="item.category === EXCEL_CATEGORY.UPLOAD")
-          f-button(type="secondary" size="sm" class="mr-2.5" @click="goToAssets") {{ $t('UU0088') }}
+          f-button(type="secondary" size="sm" class="mr-2.5" @click="goToAssets()") {{ $t('UU0088') }}
           f-popper(
             placement="bottom-end"
             class="w-7.5"
@@ -128,17 +130,17 @@ f-table(
                 )
             template(#content="{ collapsePopper }")
               f-list(
-                v-if="item.status === UPLOAD_PROGRESS.COMPLETE && item.category === EXCEL_CATEGORY.UPLOAD"
+                v-if="item.status === ProgressStatus.COMPLETE && item.category === EXCEL_CATEGORY.UPLOAD"
               )
                 f-list-item(
-                  @click="handleAction(PRINT_TYPE.CARD, item.excelProgressId); collapsePopper()"
+                  @click="handleAction(ASSETS_MATERIAL_FUNCTION.PRINT_A4_SWATCH, item); collapsePopper()"
                 ) {{ $t('RR0062') }}
                 f-list-item(
-                  @click="handleAction(PRINT_TYPE.LABEL, item.excelProgressId); collapsePopper()"
+                  @click="handleAction(ASSETS_MATERIAL_FUNCTION.PRINT_LABEL, item); collapsePopper()"
                 ) {{ $t('RR0061') }}
                 div(class="border-t border-grey-250 my-1")
                 f-list-item(
-                  @click="handleAction(_, item.excelProgressId); collapsePopper()"
+                  @click="handleAction(ASSETS_MATERIAL_FUNCTION.EXPORT_EXCEL, item); collapsePopper()"
                 ) {{ $t('RR0060') }}
         //- Export Complete
         f-button(
@@ -150,7 +152,7 @@ f-table(
         ) {{ $t('UU0089') }}
       //- In queue & Unsuccessful
       f-popper(
-        v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE"
+        v-else-if="item.status === ProgressStatus.IN_QUEUE"
         placement="bottom-end"
         class="w-7.5"
         :class="[isHover ? 'visible' : 'invisible']"
@@ -167,83 +169,54 @@ f-table(
             )
         template(#content="{ collapsePopper }")
           f-list
-            f-list-item(
-              @click="handleCancel(item.excelProgressId); collapsePopper()"
-            ) {{ $t('UU0002') }}
+            f-list-item(@click="handleCancel(item); collapsePopper()") {{ $t('UU0002') }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { ref, computed, reactive, watch } from 'vue'
-import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
-import { downloadDataURLFile } from '@frontier/lib'
-import {
-  UPLOAD_PROGRESS_EXCEL_SORT_BY,
-  UPLOAD_PROGRESS,
-  EXCEL_CATEGORY,
-  NOTIFY_TYPE,
-} from '@/utils/constants'
+import { ref, reactive, watch, onUnmounted } from 'vue'
+import { downloadDataURLFile, toStandardFormat } from '@frontier/lib'
+import { NOTIFY_TYPE } from '@/utils/constants'
 import TableStatusLabel from '@/components/assets/progress/TableStatusLabel.vue'
 import TableStatusProgress from '@/components/assets/progress/TableStatusProgress.vue'
 import useNavigation from '@/composables/useNavigation'
-import useAssetsOld from '@/composables/useAssetsOld'
-import { printGeneralLabel, printA4Card } from '@/utils/print'
-import { toStandardFormat } from '@frontier/lib'
+import {
+  ProgressStatus,
+  type ProgressExcelItem,
+  GetExcelProgressList200ResponseAllOfResultPaginationSortEnum,
+  GetExcelProgressListRequestCategoryEnum,
+} from '@frontier/platform-web-sdk'
+import { useProgressStore } from '@/stores/progress'
+import usePrint from '@/composables/material/usePrint'
+import useAssets, { ASSETS_MATERIAL_FUNCTION } from '@/composables/useAssets'
 
 const ERROR_MSG = {
   INACTIVE: 1,
   INSUFFICIENT_STORAGE: 2,
 }
 
-const PRINT_TYPE = {
-  CARD: 1,
-  LABEL: 2,
-}
+const EXCEL_SORT_BY =
+  GetExcelProgressList200ResponseAllOfResultPaginationSortEnum
+const EXCEL_CATEGORY = GetExcelProgressListRequestCategoryEnum
 
-const props = defineProps({
-  currentStatus: {
-    type: Number,
-  },
-  path: {
-    type: String,
-  },
-})
+const props = defineProps<{
+  currentStatus: ProgressStatus
+}>()
 
 const { t } = useI18n()
 const store = useStore()
-const route = useRoute()
-const { goToAssets } = useNavigation()
-const { exportExcel } = useAssetsOld()
-
-const isLoading = ref(false)
-const keyword = ref('')
-const pagination = ref({
-  sort: UPLOAD_PROGRESS_EXCEL_SORT_BY.NEWEST_FIRST,
-  currentPage: 1,
-  totalPage: 1,
-  perPageCount: 8,
-})
-const queryParams = reactive({
-  startDate: '',
-  endDate: '',
-  category: EXCEL_CATEGORY.ALL,
-})
-
-const tableData = computed(
-  () => store.getters['assets/progress/excelProgressList']
-)
+const { goToAssets, goToBillings } = useNavigation()
+const { ogBaseProgressApi } = useProgressStore()
+const { exportExcel } = useAssets()
+const { printA4Swatch, printLabel } = usePrint()
 
 const headers = [
   {
     prop: 'type',
     label: t('RR0087'),
     colSpan: 'col-span-1',
-    sortBy: [
-      UPLOAD_PROGRESS_EXCEL_SORT_BY.UPLOAD_FIRST,
-      UPLOAD_PROGRESS_EXCEL_SORT_BY.EXPORT_FIRST,
-    ],
+    sortBy: [EXCEL_SORT_BY.UPLOAD_FIRST, EXCEL_SORT_BY.EXPORT_FIRST],
   },
   {
     prop: 'itemListAndFileName',
@@ -254,10 +227,7 @@ const headers = [
     prop: 'statusLabel',
     label: t('PP0010'),
     colSpan: 'col-span-2',
-    sortBy: [
-      UPLOAD_PROGRESS_EXCEL_SORT_BY.IN_QUEUE_FIRST,
-      UPLOAD_PROGRESS_EXCEL_SORT_BY.COMPLETE_FIRST,
-    ],
+    sortBy: [EXCEL_SORT_BY.IN_QUEUE_FIRST, EXCEL_SORT_BY.COMPLETE_FIRST],
   },
   {
     prop: 'procedure',
@@ -268,10 +238,7 @@ const headers = [
     prop: 'createdTime',
     label: t('RR0189'),
     colSpan: 'col-span-1',
-    sortBy: [
-      UPLOAD_PROGRESS_EXCEL_SORT_BY.NEWEST_FIRST,
-      UPLOAD_PROGRESS_EXCEL_SORT_BY.OLDEST_FIRST,
-    ],
+    sortBy: [EXCEL_SORT_BY.NEWEST_FIRST, EXCEL_SORT_BY.OLDEST_FIRST],
   },
   {
     prop: 'createBy',
@@ -285,6 +252,24 @@ const headers = [
   },
 ]
 
+const isLoading = ref(false)
+const keyword = ref(null)
+const pagination = ref({
+  sort: EXCEL_SORT_BY.NEWEST_FIRST as GetExcelProgressList200ResponseAllOfResultPaginationSortEnum,
+  currentPage: 1,
+  totalPage: 1,
+  perPageCount: 8,
+})
+const queryParams = reactive({
+  startDate: null,
+  endDate: null,
+  category: EXCEL_CATEGORY.ALL as GetExcelProgressListRequestCategoryEnum,
+})
+const clearDate = async () => {
+  queryParams.startDate = null
+  queryParams.endDate = null
+  await getList()
+}
 const categoryOptions = [
   {
     label: t('RR0060'),
@@ -295,66 +280,72 @@ const categoryOptions = [
     value: EXCEL_CATEGORY.UPLOAD,
   },
 ]
-
-const clearDate = async () => {
-  queryParams.startDate = ''
-  queryParams.endDate = ''
-  await getList()
-}
-
-const changeCategory = async (category) => {
+const changeCategory = async (
+  category: GetExcelProgressListRequestCategoryEnum
+) => {
   queryParams.category = category
   await getList()
 }
 
-let timerId
-
+const progressList = ref<ProgressExcelItem[]>([])
+let timerId: ReturnType<typeof setTimeout>
 const getList = async (targetPage = 1, showSpinner = true) => {
   clearTimeout(timerId)
   isLoading.value = showSpinner
 
-  const result = await store.dispatch(
-    'assets/progress/getExcelUploadProgress',
-    {
-      ...queryParams,
-      keyword: keyword.value,
-      status: props.currentStatus,
-      pagination: {
-        perPageCount: pagination.value.perPageCount,
-        sort: pagination.value.sort,
-        targetPage,
-      },
-    }
-  )
-  pagination.value = result.pagination
+  const { data } = await ogBaseProgressApi('getExcelProgressList', {
+    ...queryParams,
+    keyword: keyword.value,
+    status: props.currentStatus,
+    pagination: {
+      perPageCount: pagination.value.perPageCount,
+      sort: pagination.value.sort,
+      targetPage,
+    },
+  })
+  pagination.value = data.result.pagination
+  progressList.value = data.result.progressList
   isLoading.value = false
 
-  if (props.path === route.params.tab) {
-    setTimer()
-  }
+  timerId = setTimeout(() => {
+    getList(pagination.value.currentPage, false)
+  }, 30000)
 }
+watch(
+  () => props.currentStatus,
+  () => getList(),
+  {
+    immediate: true,
+  }
+)
+onUnmounted(() => {
+  clearTimeout(timerId)
+})
 
-const openModalMaterialNoList = (materialNoList) => {
+const openModalItemNoList = (item: ProgressExcelItem) => {
   store.dispatch('helper/openModalBehavior', {
-    component: 'modal-material-no-list',
+    component: 'modal-item-no-list',
     properties: {
       header: t('PP0023'),
       secondaryBtnText: t('UU0026'),
       secondaryBtnHandler: () => {
         store.dispatch('helper/closeModalBehavior')
       },
-      materialNoList,
+      itemNoList: item.itemNoList,
     },
   })
 }
 
-const handleAction = async (type, excelProgressId) => {
-  const { materialList } = await store.dispatch(
-    'assets/progress/getExcelUploadMaterialList',
-    { excelProgressId }
-  )
+const handleAction = async (
+  type: ASSETS_MATERIAL_FUNCTION,
+  item: ProgressExcelItem
+) => {
+  const { data } = await ogBaseProgressApi('getExcelProgressMaterialList', {
+    progressId: item.progressId,
+  })
+  const materialList = data.result.materialList
   const deletedMaterialList = materialList.filter(
-    (material) => material.isDelete
+    (material) => material.metaData.isDelete
   )
 
   if (deletedMaterialList.length > 0) {
@@ -367,66 +358,43 @@ const handleAction = async (type, excelProgressId) => {
       closeAfterSecondaryBtnHandler: false,
       textBtnText: t('UU0002'),
       primaryBtnHandler: async () => {
-        if (type === PRINT_TYPE.CARD) {
-          printA4Card(materialList)
-        } else if (type === PRINT_TYPE.LABEL) {
-          printGeneralLabel(materialList)
+        if (type === ASSETS_MATERIAL_FUNCTION.PRINT_A4_SWATCH) {
+          printA4Swatch(materialList)
+        } else if (type === ASSETS_MATERIAL_FUNCTION.PRINT_LABEL) {
+          printLabel(materialList)
         } else {
           exportExcel.func(materialList)
         }
       },
       secondaryBtnHandler: () => {
         store.dispatch('helper/pushModalBehavior', {
-          component: 'modal-material-no-list',
+          component: 'modal-item-no-list',
           properties: {
             header: t('RR0211'),
             secondaryBtnText: t('UU0026'),
             secondaryBtnHandler: () => {
               store.dispatch('helper/closeModalBehavior')
             },
-            materialNoList: deletedMaterialList.map(
-              (material) => material.materialNo
-            ),
+            itemNoList: deletedMaterialList.map((material) => material.itemNo),
           },
         })
       },
     })
   } else {
-    if (type === PRINT_TYPE.CARD) {
-      printA4Card(materialList)
-    } else if (type === PRINT_TYPE.LABEL) {
-      printGeneralLabel(materialList)
+    if (type === ASSETS_MATERIAL_FUNCTION.PRINT_A4_SWATCH) {
+      printA4Swatch(materialList)
+    } else if (type === ASSETS_MATERIAL_FUNCTION.PRINT_LABEL) {
+      printLabel(materialList)
     } else {
       exportExcel.func(materialList)
     }
   }
 }
 
-const handleCancel = async (excelProgressId) => {
-  await store.dispatch('assets/progress/cancelExcelUploadProgress', {
-    excelProgressId,
+const handleCancel = async (item: ProgressExcelItem) => {
+  await ogBaseProgressApi('cancelExcelProgress', {
+    progressId: item.progressId,
   })
   await getList(pagination.value.currentPage)
 }
-
-// Polling
-const setTimer = () => {
-  timerId = setTimeout(async () => {
-    await getList(pagination.value.currentPage, false)
-  }, 30000)
-}
-
-onBeforeRouteLeave(() => clearTimeout(timerId))
-onBeforeRouteUpdate(() => clearTimeout(timerId))
-
-watch(
-  () => props.currentStatus,
-  async () => {
-    await getList()
-  },
-  {
-    immediate: true,
-    deep: true,
-  }
-)
 </script>

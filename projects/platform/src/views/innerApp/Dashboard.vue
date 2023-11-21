@@ -2,12 +2,7 @@
 div(class="px-6 pt-6.5 h-full flex flex-col") 
   div(class="h-11 flex justify-between items-center")
     div(class="text-h6 font-bold text-grey-900 pl-1.5") {{ $t('BB0138') }}
-    f-select-dropdown(
-      :selectValue="`${ogType}-${ogId}`"
-      :dropdownMenuTree="menuOrgOrGroup"
-      @update:selectValue="($event) => goToDashboard({ ogKey: $event })"
-      class="w-75"
-    )
+    dropdown-og-menu(@select="goToDashboard({ ogKey: $event })")
   div(
     ref="refContainer"
     :style="{ width: containerWidth + PADDING_X_FOR_SHADOW + 'px' }"
@@ -110,41 +105,12 @@ import { storeToRefs } from 'pinia'
 import colors from '@frontier/tailwindcss/colors'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
-import { OgType, type Organization } from '@frontier/platform-web-sdk'
-import type { MenuItem } from '@frontier/ui-component'
+import DropdownOgMenu from '@/components/common/DropdownOgMenu.vue'
 
 const { t } = useI18n()
 const store = useStore()
-const { goToDashboard, ogType, ogId } = useNavigation()
+const { goToDashboard } = useNavigation()
 
-const organization = computed<Organization>(
-  () => store.getters['organization/organization']
-)
-const menuOrgOrGroup = computed(() => {
-  const { orgName, labelColor, orgId } = organization.value
-  return {
-    width: 'w-75',
-    blockList: [
-      {
-        menuList: [
-          {
-            title: orgName,
-            selectValue: `${OgType.ORG}-${orgId}`,
-            labelColor,
-          },
-          ...organization.value.groupList.map((group) => {
-            const { groupId, groupName, labelColor } = group
-            return {
-              title: groupName,
-              selectValue: `${OgType.GROUP}-${groupId}`,
-              labelColor,
-            }
-          }),
-        ] as MenuItem[],
-      },
-    ],
-  }
-})
 const dashboard = useDashboardStore()
 const {
   createCounts,

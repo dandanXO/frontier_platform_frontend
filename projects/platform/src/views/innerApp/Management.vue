@@ -1,13 +1,7 @@
 <template lang="pug">
 div(class="px-6 pt-6.5 h-full flex flex-col")
   div(class="h-11 flex justify-between items-center mb-12.5")
-    f-select-dropdown(
-      class="w-75"
-      :selectValue="`${ogType}-${ogId}`"
-      :dropdownMenuTree="menuOrgOrGroup"
-      @update:selectValue="($event) => goToManagement({ ogKey: $event })"
-      data-cy="management_select"
-    )
+    dropdown-og-menu(@select="goToManagement({ ogKey: $event })")
     div(class="flex gap-x-6 items-center")
       div(
         v-permission="FUNC_ID.OPEN_CREATE_GROUP"
@@ -25,8 +19,8 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
       ) {{ $t('UU0014') }}
   f-tabs(
     :tabList="tabList"
-    :initValue="$route.params.tab"
-    @switch="toggleTab($event.path)"
+    :initValue="tab"
+    @switch="goToManagement({}, $event.path)"
     class="flex-grow pr-3"
   )
     template(#default="{ currentTab }")
@@ -38,14 +32,15 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, defineAsyncComponent } from 'vue'
+import { reactive, defineAsyncComponent } from 'vue'
 import { useStore } from 'vuex'
 import OrgAbout from '@/components/management/OrgAbout.vue'
 import { useI18n } from 'vue-i18n'
 import { FUNC_ID } from '@/utils/constants'
 import usePlan from '@/composables/usePlan.js'
-import { OgType, type Organization } from '@frontier/platform-web-sdk'
+import { OgType } from '@frontier/platform-web-sdk'
 import useNavigation from '@/composables/useNavigation'
+import DropdownOgMenu from '@/components/common/DropdownOgMenu.vue'
 
 const GroupAbout = defineAsyncComponent(
   () => import('@/components/management/GroupAbout.vue')
@@ -57,41 +52,15 @@ const HistoryList = defineAsyncComponent(
   () => import('@/components/management/HistoryList.vue')
 )
 
+defineProps<{
+  tab: string
+}>()
+
 const { t } = useI18n()
 const store = useStore()
 const { goToManagement, ogType, ogId } = useNavigation()
 const { checkCanInvitedPeople } = usePlan()
 
-console.log(typeof ogType.value)
-
-const organization = computed<Organization>(
-  () => store.getters['organization/organization']
-)
-const menuOrgOrGroup = computed(() => {
-  const { orgId, orgName, labelColor } = organization.value
-  return {
-    width: 'w-75',
-    blockList: [
-      {
-        menuList: [
-          {
-            title: orgName,
-            selectValue: `${OgType.ORG}-${orgId}`,
-            labelColor,
-          },
-          ...organization.value.groupList.map((group) => {
-            const { groupId, groupName, labelColor } = group
-            return {
-              title: groupName,
-              selectValue: `${OgType.GROUP}-${groupId}`,
-              labelColor,
-            }
-          }),
-        ],
-      },
-    ],
-  }
-})
 const tabList = reactive([
   {
     name: t('BB0008'),
@@ -107,9 +76,6 @@ const tabList = reactive([
   },
 ])
 
-const toggleTab = (tab: string) => {
-  goToManagement({}, tab)
-}
 const openModalCreateGroup = () => {
   store.dispatch('group/resetCreateForm')
   store.dispatch('helper/openModalBehavior', {

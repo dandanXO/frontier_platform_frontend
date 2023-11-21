@@ -278,11 +278,13 @@ const routes = [
             path: 'management/:tab(about|members|history|dashboard)',
             name: 'Management',
             component: () => import('@/views/innerApp/Management.vue'),
+            props: true,
           },
           {
             path: 'progress/:tab(material|u3m|excel)',
             name: 'Progress',
             component: () => import('@/views/innerApp/Progress.vue'),
+            props: true,
           },
           // Assets
           {

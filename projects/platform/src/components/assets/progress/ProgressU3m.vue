@@ -3,7 +3,7 @@ f-table(
   v-model:pagination="pagination"
   v-model:keyword="keyword"
   :headers="headers"
-  :items="tableData"
+  :items="progressList"
   :emptyText="$t('RR0105')"
   :searchPlaceholder="$t('RR0053')"
   :isLoading="isLoading"
@@ -50,18 +50,18 @@ f-table(
     template(v-if="prop === 'sourceType'")
       p {{ item.sourceType == U3M_PROVIDER.FRONTIER ? $t('EE0174') : $t('EE0175') }}
     template(v-if="prop === 'itemNumber'")
-      p {{ item.materialNo }}
+      p {{ item.itemNo }}
     template(v-if="prop === 'createdTime'")
       p(class="text-body2/1.6 text-grey-600") {{ toStandardFormat(item.createDate) }}
     table-status-label(v-if="prop === 'statusLabel'" :status="item.status")
     table-status-progress(v-if="prop === 'procedure'" :status="item.status")
       //- Unsuccessful
       div(
-        v-if="item.status === UPLOAD_PROGRESS.UNSUCCESSFUL"
+        v-if="item.status === ProgressStatus.UNSUCCESSFUL"
         class="text-red-400 inline-flex"
       )
         f-svg-icon(iconName="warning_amber_round" size="16" class="mr-1.5 mt-0.5")
-        p(v-if="item.msgCode === ERROR_MSG.SOURCE_DELETED") {{ $t('PP0034') }}
+        p(v-if="item.unsuccessfulMsgCode === ERROR_MSG.SOURCE_DELETED") {{ $t('PP0034') }}
         i18n-t(v-else keypath="WW0140" tag="p" scope="global")
           template(#RR0123)
             span(
@@ -70,14 +70,14 @@ f-table(
             ) {{ $t('RR0123') }}
       //- In Queue
       div(
-        v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE"
+        v-else-if="item.status === ProgressStatus.IN_QUEUE"
         class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         p {{ $t('PP0029') }}
       //- Processing
       div(
-        v-else-if="item.status === UPLOAD_PROGRESS.PROCESSING"
+        v-else-if="item.status === ProgressStatus.PROCESSING"
         class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
@@ -87,21 +87,21 @@ f-table(
       p(class="text-body2 text-grey-900 ml-2 line-clamp-1") {{ item.createUser }}
     div(v-if="prop === 'action'" class="flex justify-end items-center")
       template(
-        v-if="item.isMaterialDeleted && item.status === UPLOAD_PROGRESS.COMPLETE"
+        v-if="item.isMaterialDeleted && item.status === ProgressStatus.COMPLETE"
       )
         f-button(type="secondary" size="sm" class="mr-2.5" disabled) {{ $t('UU0006') }}
         div(class="group w-7.5 h-7.5 flex items-center justify-center rounded-full")
           f-svg-icon(iconName="more_horiz" size="24" class="text-grey-150")
       template(v-else)
         f-button(
-          v-if="item.status === UPLOAD_PROGRESS.COMPLETE"
+          v-if="item.status === ProgressStatus.COMPLETE"
           type="secondary"
           size="sm"
           class="mr-2.5"
-          @click="openModal3dViewer(item.materialId, item.sourceType)"
+          @click="openModal3dViewer(item)"
         ) {{ $t('UU0006') }}
         f-popper(
-          v-if="[UPLOAD_PROGRESS.IN_QUEUE, UPLOAD_PROGRESS.COMPLETE].includes(item.status)"
+          v-if="[ProgressStatus.IN_QUEUE, ProgressStatus.COMPLETE].includes(item.status)"
           class="w-7.5"
           placement="bottom-end"
           :class="[isHover ? 'visible' : 'invisible']"
@@ -118,16 +118,14 @@ f-table(
               )
           template(#content="{ collapsePopper }")
             f-list
-              template(v-if="item.status === UPLOAD_PROGRESS.IN_QUEUE")
+              template(v-if="item.status === ProgressStatus.IN_QUEUE")
+                f-list-item(@click="handleCancel(item); collapsePopper()") {{ $t('UU0002') }}
+              template(v-else-if="item.status === ProgressStatus.COMPLETE")
                 f-list-item(
-                  @click="handleCancel(item.u3mProgressId); collapsePopper()"
-                ) {{ $t('UU0002') }}
-              template(v-else-if="item.status === UPLOAD_PROGRESS.COMPLETE")
-                f-list-item(
-                  @click="openModalU3mDownload(item.materialId); collapsePopper()"
+                  @click="openModalU3mDownload(item); collapsePopper()"
                 ) {{ $t('RR0059') }}
                 f-list-item(
-                  @click="openModalCreate3DMaterial(item.materialId); collapsePopper()"
+                  @click="openModalCreate3DMaterial(); collapsePopper()"
                 ) {{ $t('PP0019') }}
                 f-list-item(
                   @click="handleViewMaterial(item); collapsePopper()"
@@ -138,55 +136,33 @@ f-table(
 import { useI18n } from 'vue-i18n'
 import TableStatusLabel from '@/components/assets/progress/TableStatusLabel.vue'
 import TableStatusProgress from '@/components/assets/progress/TableStatusProgress.vue'
-import {
-  CUSTOM_3D_VIEWER_MODEL_ORG_ID,
-  UPLOAD_PROGRESS,
-} from '@/utils/constants'
+import { CUSTOM_3D_VIEWER_MODEL_ORG_ID } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
-import { ref, computed, reactive, watch } from 'vue'
-import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
-import type { ProgressU3mItem, Material } from '@frontier/platform-web-sdk'
+import { ref, computed, reactive, watch, onUnmounted } from 'vue'
+import {
+  type ProgressU3mItem,
+  ProgressStatus,
+} from '@frontier/platform-web-sdk'
 import { ProgressU3mSort } from '@frontier/platform-web-sdk'
 import { toStandardFormat } from '@frontier/lib'
 import { U3M_PROVIDER } from '@/utils/constants'
+import { useProgressStore } from '@/stores/progress'
+import { useAssetsStore } from '@/stores/assets'
 
 const ERROR_MSG = {
   SOURCE_DELETED: 1,
 }
 
-const props = defineProps({
-  currentStatus: {
-    type: Number,
-  },
-  path: {
-    type: String,
-  },
-})
+const props = defineProps<{
+  currentStatus: ProgressStatus
+}>()
 
 const { t } = useI18n()
 const store = useStore()
-const route = useRoute()
+const { ogBaseProgressApi } = useProgressStore()
+const { ogBaseAssetsApi } = useAssetsStore()
 const { goToAssetMaterialDetail } = useNavigation()
-
-const isLoading = ref(false)
-const keyword = ref('')
-const pagination = ref({
-  sort: ProgressU3mSort.NEWEST_FIRST,
-  currentPage: 1,
-  totalPage: 1,
-  perPageCount: 8,
-})
-const queryParams = reactive({
-  startDate: '',
-  endDate: '',
-})
-const tableData = computed<ProgressU3mItem[]>(
-  () => store.getters['assets/progress/u3mProgressList']
-)
-const material = computed<Material>(() => store.getters['assets/material'])
-const orgId = computed(() => store.getters['organization/orgId'])
 
 const headers = [
   {
@@ -236,20 +212,34 @@ const headers = [
   },
 ]
 
+const isLoading = ref(false)
+const keyword = ref(null)
+const pagination = ref({
+  sort: ProgressU3mSort.NEWEST_FIRST as ProgressU3mSort,
+  currentPage: 1,
+  totalPage: 1,
+  perPageCount: 8,
+})
+const queryParams = reactive({
+  startDate: null,
+  endDate: null,
+})
+const progressList = ref<ProgressU3mItem[]>([])
+const orgId = computed(() => store.getters['organization/orgId'])
+
 const clearDate = () => {
-  queryParams.startDate = ''
-  queryParams.endDate = ''
+  queryParams.startDate = null
+  queryParams.endDate = null
   getList()
 }
 
-type Timeout = ReturnType<typeof setTimeout>
-let timerId: Timeout
+let timerId: ReturnType<typeof setTimeout>
 
 const getList = async (targetPage = 1, showSpinner = true) => {
   clearTimeout(timerId)
   isLoading.value = showSpinner
 
-  const result = await store.dispatch('assets/progress/getU3mUploadProgress', {
+  const { data } = await ogBaseProgressApi('getU3mProgressList', {
     ...queryParams,
     keyword: keyword.value,
     status: props.currentStatus,
@@ -259,13 +249,24 @@ const getList = async (targetPage = 1, showSpinner = true) => {
       targetPage,
     },
   })
-  pagination.value = result.pagination
+  pagination.value = data.result.pagination
+  progressList.value = data.result.progressList
   isLoading.value = false
 
-  if (props.path === route.params.tab) {
-    setTimer()
-  }
+  timerId = setTimeout(() => {
+    getList(pagination.value.currentPage, false)
+  }, 30000)
 }
+watch(
+  () => props.currentStatus,
+  () => getList(),
+  {
+    immediate: true,
+  }
+)
+onUnmounted(() => {
+  clearTimeout(timerId)
+})
 
 const openModalSendFeedback = () => {
   store.dispatch('helper/openModalBehavior', {
@@ -273,70 +274,50 @@ const openModalSendFeedback = () => {
   })
 }
 
-const openModal3dViewer = async (
-  materialId: number,
-  sourceType: U3M_PROVIDER
-) => {
-  await store.dispatch('assets/getMaterial', { materialId })
+const getMaterial = async (materialId: number) => {
+  const { data } = await ogBaseAssetsApi('getAssetsMaterial', {
+    materialId,
+  })
+  return data.result.material
+}
+
+const openModal3dViewer = async (item: ProgressU3mItem) => {
+  const material = await getMaterial(item.materialId)
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-3d-viewer',
     properties: {
-      materialId,
+      materialId: item.materialId,
       u3m:
-        sourceType === U3M_PROVIDER.FRONTIER
-          ? material.value.u3m
-          : material.value.customU3m,
+        item.sourceType === U3M_PROVIDER.FRONTIER
+          ? material.u3m
+          : material.customU3m,
       showCustomModels: orgId.value === CUSTOM_3D_VIEWER_MODEL_ORG_ID,
     },
   })
 }
 
-const openModalU3mDownload = async (materialId: number) => {
-  await store.dispatch('assets/getMaterial', { materialId })
+const openModalU3mDownload = async (item: ProgressU3mItem) => {
+  const material = await getMaterial(item.materialId)
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-u3m-download',
-    properties: { materialList: [material.value] },
+    properties: { materialList: [material] },
   })
 }
 
-const openModalCreate3DMaterial = async (materialId: number) => {
-  await store.dispatch('assets/getMaterial', { materialId })
+const openModalCreate3DMaterial = async () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-u3m-preview',
   })
 }
 
-const handleViewMaterial = (material: Material) => {
-  goToAssetMaterialDetail({}, material.materialId)
+const handleViewMaterial = (item: ProgressU3mItem) => {
+  goToAssetMaterialDetail({}, item.materialId)
 }
 
-const handleCancel = async (
-  u3mProgressId: ProgressU3mItem['u3mProgressId']
-) => {
-  await store.dispatch('assets/progress/cancelU3mUploadProgress', {
-    u3mProgressId,
+const handleCancel = async (item: ProgressU3mItem) => {
+  await ogBaseProgressApi('cancelU3mProgress', {
+    progressId: item.progressId,
   })
   await getList(pagination.value.currentPage)
 }
-
-// Polling
-const setTimer = () => {
-  timerId = setTimeout(async () => {
-    await getList(pagination.value.currentPage, false)
-  }, 30000)
-}
-
-onBeforeRouteLeave(() => clearTimeout(timerId))
-onBeforeRouteUpdate(() => clearTimeout(timerId))
-
-watch(
-  () => props.currentStatus,
-  async () => {
-    await getList()
-  },
-  {
-    immediate: true,
-    deep: true,
-  }
-)
 </script>

@@ -2,7 +2,7 @@
 f-table(
   v-model:pagination="pagination"
   :headers="headers"
-  :items="tableData"
+  :items="progressList"
   rowHeight="124px"
   :emptyText="$t('RR0105')"
   :isLoading="isLoading"
@@ -40,7 +40,7 @@ f-table(
       div(
         class="absolute inset-0 w-25 h-25 bg-cover bg-center rounded"
         :class="{ 'opacity-20': item.isMaterialDeleted }"
-        :style="{ 'background-image': `url(${item.image})` }"
+        :style="{ 'background-image': `url(${item.materialImageUrl})` }"
       )
       div(v-if="item.isMaterialDeleted" class="text-body1 text-grey-250 font-bold z-1") {{ $t('RR0063') }}
     template(v-if="prop === 'createdTime'")
@@ -49,43 +49,55 @@ f-table(
     table-status-progress(v-if="prop === 'procedure'" :status="item.status")
       //- Unsuccessful
       div(
-        v-if="item.status === UPLOAD_PROGRESS.UNSUCCESSFUL"
+        v-if="item.status === ProgressStatus.UNSUCCESSFUL"
         class="text-red-400 inline-flex"
       )
         f-svg-icon(iconName="warning_amber_round" size="16" class="mr-1.5 mt-0.5")
-        p(v-if="item.msgCode === ERROR_MSG.INCORRECT_FORMAT") {{ $t('WW0091') }}
-        p(v-else-if="item.msgCode === ERROR_MSG.INACTIVE") {{ $t('WW0092') }}
-        p(v-else-if="item.msgCode === ERROR_MSG.INCORRECT_DPI") {{ $t('WW0141') }}
-        p(v-else-if="item.msgCode === ERROR_MSG.INSUFFICIENT_STORAGE") {{ $t('WW0097') }}
-          span(class="text-cyan-400 ml-0.5 cursor-pointer" @click="goToBillings") {{ $t('RR0210') }}
+        p(
+          v-if="item.unsuccessfulMsgCode === UnsuccessfulMsgCode.IMAGE_FORMAT_ERROR"
+        ) {{ $t('WW0091') }}
+        p(
+          v-else-if="item.unsuccessfulMsgCode === UnsuccessfulMsgCode.ORG_DEACTIVATED"
+        ) {{ $t('WW0092') }}
+        p(
+          v-else-if="item.unsuccessfulMsgCode === UnsuccessfulMsgCode.IMAGE_DPI_ERROR"
+        ) {{ $t('WW0141') }}
+        p(
+          v-else-if="item.unsuccessfulMsgCode === UnsuccessfulMsgCode.ORG_STORAGE_NOT_ENOUGH"
+        ) {{ $t('WW0097') }}
+          span(class="text-cyan-400 ml-0.5 cursor-pointer" @click="goToBillings()") {{ $t('RR0210') }}
       //- Completed
       div(
-        v-else-if="item.status === UPLOAD_PROGRESS.COMPLETE && item.isMapping"
+        v-else-if="item.status === ProgressStatus.COMPLETE && item.mappingWith"
         class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         i18n-t(keypath="PP0025" tag="p" scope="global")
           template(#fabricSide)
-            span(v-if="item.sideType === SIDE_TYPE.FACE") {{ $t('PP0033') }}
-            span(v-if="item.sideType === SIDE_TYPE.BACK") {{ $t('PP0032') }}
-          template(#materialNo) {{ item.materialNo }}
+            span(
+              v-if="item.mappingWith.sideType === MaterialSideType.FACE_SIDE"
+            ) {{ $t('PP0033') }}
+            span(
+              v-if="item.mappingWith.sideType === MaterialSideType.BACK_SIDE"
+            ) {{ $t('PP0032') }}
+          template(#materialNo) {{ item.mappingWith.itemNo }}
       //- In Queue
       div(
-        v-else-if="item.status === UPLOAD_PROGRESS.IN_QUEUE"
+        v-else-if="item.status === ProgressStatus.IN_QUEUE"
         class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         p {{ $t('PP0012') }}
       //- Processing
       div(
-        v-else-if="item.status === UPLOAD_PROGRESS.PROCESSING"
+        v-else-if="item.status === ProgressStatus.PROCESSING"
         class="text-grey-250 inline-flex"
       )
         f-svg-icon(iconName="info_outline" size="16" class="mr-1.5 mt-0.5")
         p {{ $t('PP0013') }}
     div(v-if="prop === 'action'" class="flex justify-end")
       f-button(
-        v-if="item.status === UPLOAD_PROGRESS.COMPLETE"
+        v-if="item.status === ProgressStatus.COMPLETE"
         type="secondary"
         size="sm"
         :disabled="item.isMaterialDeleted"
@@ -108,63 +120,36 @@ f-table(
             )
         template(#content="{ collapsePopper }")
           f-list
-            f-list-item(
-              @click="handleCancel(item.materialProgressId); collapsePopper()"
-            ) {{ $t('UU0002') }}
+            f-list-item(@click="handleCancel(item); collapsePopper()") {{ $t('UU0002') }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import TableStatusLabel from '@/components/assets/progress/TableStatusLabel.vue'
 import TableStatusProgress from '@/components/assets/progress/TableStatusProgress.vue'
-import {
-  UPLOAD_PROGRESS_SORT_BY,
-  UPLOAD_PROGRESS,
-  SIDE_TYPE,
-} from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
-import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
-import { ref, computed, reactive, watch } from 'vue'
-import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
+import { ref, reactive, watch, onUnmounted } from 'vue'
 import { toStandardFormat } from '@frontier/lib'
+import { useProgressStore } from '@/stores/progress'
+import {
+  ProgressStatus,
+  type ProgressMaterialUploadItem,
+  ProgressMaterialUploadUnsuccessfulMsgCode,
+  MaterialSideType,
+  GetMaterialUploadProgressList200ResponseAllOfResultPaginationSortEnum,
+} from '@frontier/platform-web-sdk'
 
-const props = defineProps({
-  currentStatus: {
-    type: Number,
-    required: true,
-  },
-  path: {
-    type: String,
-  },
-})
+const props = defineProps<{
+  currentStatus: ProgressStatus
+}>()
 
-const ERROR_MSG = {
-  INCORRECT_FORMAT: 1,
-  INACTIVE: 2,
-  INCORRECT_DPI: 3,
-  INSUFFICIENT_STORAGE: 4,
-}
+const UnsuccessfulMsgCode = ProgressMaterialUploadUnsuccessfulMsgCode
+const UPLOAD_PROGRESS_SORT_BY =
+  GetMaterialUploadProgressList200ResponseAllOfResultPaginationSortEnum
 
 const { t } = useI18n()
-const store = useStore()
-const route = useRoute()
+const { ogBaseProgressApi } = useProgressStore()
 const { goToBillings, goToAssetMaterialDetail } = useNavigation()
-
-const isLoading = ref(false)
-const pagination = ref({
-  sort: UPLOAD_PROGRESS_SORT_BY.NEWEST_FIRST,
-  currentPage: 1,
-  totalPage: 1,
-  perPageCount: 8,
-})
-const queryParams = reactive({
-  startDate: '',
-  endDate: '',
-})
-const tableData = computed(
-  () => store.getters['assets/progress/materialProgressList']
-)
 
 const headers = [
   {
@@ -202,80 +187,81 @@ const headers = [
   },
 ]
 
+const isLoading = ref(false)
+const pagination = ref({
+  sort: UPLOAD_PROGRESS_SORT_BY.NEWEST_FIRST as GetMaterialUploadProgressList200ResponseAllOfResultPaginationSortEnum,
+  currentPage: 1,
+  totalPage: 1,
+  perPageCount: 8,
+})
+const queryParams = reactive({
+  startDate: null,
+  endDate: null,
+})
+const progressList = ref<ProgressMaterialUploadItem[]>([])
+
 const clearDate = () => {
-  queryParams.startDate = ''
-  queryParams.endDate = ''
+  queryParams.startDate = null
+  queryParams.endDate = null
   getList()
 }
 
-let timerId
+let timerId: ReturnType<typeof setTimeout>
 
 const getList = async (targetPage = 1, showSpinner = true) => {
   clearTimeout(timerId)
   isLoading.value = showSpinner
-  const result = await store.dispatch(
-    'assets/progress/getMaterialUploadProgress',
-    {
-      ...queryParams,
-      status: props.currentStatus,
-      pagination: {
-        perPageCount: pagination.value.perPageCount,
-        sort: pagination.value.sort,
-        targetPage,
-      },
-    }
-  )
-  pagination.value = result.pagination
+
+  const { data } = await ogBaseProgressApi('getMaterialUploadProgressList', {
+    ...queryParams,
+    status: props.currentStatus,
+    pagination: {
+      perPageCount: pagination.value.perPageCount,
+      sort: pagination.value.sort,
+      targetPage,
+    },
+  })
+  pagination.value = data.result.pagination
+  progressList.value = data.result.progressList
   isLoading.value = false
 
-  if (props.path === route.params.tab) {
-    setTimer()
+  timerId = setTimeout(() => {
+    getList(pagination.value.currentPage, false)
+  }, 30000)
+}
+watch(
+  () => props.currentStatus,
+  () => getList(),
+  {
+    immediate: true,
   }
+)
+onUnmounted(() => {
+  clearTimeout(timerId)
+})
+
+const handleViewMaterial = (item: ProgressMaterialUploadItem) => {
+  goToAssetMaterialDetail({}, item.materialId)
 }
 
-const handleViewMaterial = (material) => {
-  goToAssetMaterialDetail({}, material.materialId)
-}
-
-const handleCancel = async (materialProgressId) => {
-  await store.dispatch('assets/progress/cancelMaterialUploadProgress', {
-    materialProgressId,
+const handleCancel = async (item: ProgressMaterialUploadItem) => {
+  await ogBaseProgressApi('cancelMaterialUploadProgress', {
+    progressId: item.progressId,
   })
   await getList(pagination.value.currentPage)
 }
 
-const isCanCancel = (material) => {
-  const { status, msgCode } = material
-  if (status === UPLOAD_PROGRESS.IN_QUEUE) {
+const isCanCancel = (item: ProgressMaterialUploadItem) => {
+  const { status, unsuccessfulMsgCode } = item
+  if (status === ProgressStatus.IN_QUEUE) {
     return true
-  } else if (status === UPLOAD_PROGRESS.UNSUCCESSFUL) {
+  } else if (status === ProgressStatus.UNSUCCESSFUL) {
     return (
-      msgCode === ERROR_MSG.INACTIVE ||
-      msgCode === ERROR_MSG.INSUFFICIENT_STORAGE
+      unsuccessfulMsgCode === UnsuccessfulMsgCode.ORG_DEACTIVATED ||
+      unsuccessfulMsgCode === UnsuccessfulMsgCode.ORG_STORAGE_NOT_ENOUGH
     )
   } else {
     return false
   }
 }
-
-// Polling
-const setTimer = () => {
-  timerId = setTimeout(async () => {
-    await getList(pagination.value.currentPage, false)
-  }, 30000)
-}
-
-onBeforeRouteLeave(() => clearTimeout(timerId))
-onBeforeRouteUpdate(() => clearTimeout(timerId))
-
-watch(
-  () => props.currentStatus,
-  async () => {
-    await getList()
-  },
-  {
-    immediate: true,
-    deep: true,
-  }
-)
 </script>

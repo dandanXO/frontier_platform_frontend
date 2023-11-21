@@ -21,16 +21,7 @@ export const useAssetsStore = defineStore('assets', () => {
   const { showNotifyBanner, closeNotifyBanner } = useNotifyStore()
   const searchStore = useSearchStore()
   const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
-
-  const material = ref<Material>()
   const uploadingU3mMaterialIdList = ref<number[]>([])
-
-  const getAssetsMaterial = async (materialId: number) => {
-    const { data } = await ogBaseAssetsApi('getAssetsMaterial', {
-      materialId,
-    })
-    material.value = data.result.material
-  }
 
   const materialList = ref<Material[]>([])
   const getAssetsMaterialList = async (payload: {
@@ -109,8 +100,6 @@ export const useAssetsStore = defineStore('assets', () => {
   }
 
   return {
-    material,
-    getAssetsMaterial,
     materialList,
     getAssetsMaterialList,
     uploadingU3mMaterialIdList,

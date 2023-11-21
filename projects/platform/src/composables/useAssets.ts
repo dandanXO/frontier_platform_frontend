@@ -21,8 +21,8 @@ export enum ASSETS_MATERIAL_FUNCTION {
   CREATE_U3M = 3,
   DOWNLOAD_U3M = 4,
   EXPORT_EXCEL = 5,
-  PRINT_QR_CODE = 6,
-  PRINT_A4_CARD = 7,
+  PRINT_LABEL = 6,
+  PRINT_A4_SWATCH = 7,
   MERGE = 8,
   DELETE = 9,
 }
@@ -302,14 +302,14 @@ export default function useAssets() {
     },
   }
   const printLabel: AssetsFunctionOption = {
-    id: ASSETS_MATERIAL_FUNCTION.PRINT_QR_CODE,
+    id: ASSETS_MATERIAL_FUNCTION.PRINT_LABEL,
     name: () => t('RR0061'),
     func: (m) => {
       print.printLabel(toMaterialList(m))
     },
   }
   const printA4Swatch: AssetsFunctionOption = {
-    id: ASSETS_MATERIAL_FUNCTION.PRINT_A4_CARD,
+    id: ASSETS_MATERIAL_FUNCTION.PRINT_A4_SWATCH,
     icon: () => 'print',
     name: () => t('RR0062'),
     func: (m) => {

@@ -10,10 +10,9 @@ div
 
 <script setup lang="ts">
 import MaterialDetailInternal from '@/components/common/material/detail/internal/MaterialDetailInternal.vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAssetsStore } from '@/stores/assets'
-import { storeToRefs } from 'pinia'
 import useNavigation from '@/composables/useNavigation'
 
 const props = defineProps<{
@@ -22,10 +21,12 @@ const props = defineProps<{
 
 const { t } = useI18n()
 const { goToAssets, goToAssetMaterialDetail } = useNavigation()
-const assetsStore = useAssetsStore()
-const { material } = storeToRefs(assetsStore)
+const { ogBaseAssetsApi } = useAssetsStore()
 
-await assetsStore.getAssetsMaterial(Number(props.materialId))
+const { data } = await ogBaseAssetsApi('getAssetsMaterial', {
+  materialId: Number(props.materialId),
+})
+const material = ref(data.result.material)
 
 const locationList = computed(() => {
   return [

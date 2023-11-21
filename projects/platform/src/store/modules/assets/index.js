@@ -9,14 +9,12 @@ import {
 import i18n from '@frontier/i18n'
 import { putBinaryData } from '@/utils/fileUpload'
 import Material from '@/store/reuseModules/material.js'
-import progress from './progress'
 import { useNotifyStore } from '@/stores/notify'
 
 export default {
   namespaced: true,
   modules: {
     material: Material,
-    progress,
   },
   state: {
     materialList: [],

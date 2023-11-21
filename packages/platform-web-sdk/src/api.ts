@@ -2207,6 +2207,50 @@ export interface CreateAndEditAttachmentFileAllOf {
 /**
  * 
  * @export
+ * @interface CreateAssetsMaterial200Response
+ */
+export interface CreateAssetsMaterial200Response {
+    /**
+     * 
+     * @type {CreateAssetsMaterial200ResponseResult}
+     * @memberof CreateAssetsMaterial200Response
+     */
+    'result'?: CreateAssetsMaterial200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CreateAssetsMaterial200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateAssetsMaterial200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof CreateAssetsMaterial200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface CreateAssetsMaterial200ResponseResult
+ */
+export interface CreateAssetsMaterial200ResponseResult {
+    /**
+     * 
+     * @type {Material}
+     * @memberof CreateAssetsMaterial200ResponseResult
+     */
+    'material'?: Material;
+}
+/**
+ * 
+ * @export
  * @interface CreateAssetsMaterialRequest
  */
 export interface CreateAssetsMaterialRequest {
@@ -2960,6 +3004,12 @@ export interface CropAssetsMaterialMultimediaRequest {
      */
     'ogId': number;
     /**
+     * 布料ID
+     * @type {number}
+     * @memberof CropAssetsMaterialMultimediaRequest
+     */
+    'materialId': number;
+    /**
      * 
      * @type {string}
      * @memberof CropAssetsMaterialMultimediaRequest
@@ -2980,6 +3030,12 @@ export interface CropAssetsMaterialMultimediaRequest {
  * @interface CropAssetsMaterialMultimediaRequestAllOf
  */
 export interface CropAssetsMaterialMultimediaRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof CropAssetsMaterialMultimediaRequestAllOf
+     */
+    'materialId': number;
     /**
      * 
      * @type {string}
@@ -3501,7 +3557,7 @@ export interface DigitalThread {
      * @type {string}
      * @memberof DigitalThread
      */
-    'materialNo': string;
+    'itemNo': string;
     /**
      * 
      * @type {string}
@@ -3678,7 +3734,7 @@ export interface DigitalThreadBase {
      * @type {string}
      * @memberof DigitalThreadBase
      */
-    'materialNo': string;
+    'itemNo': string;
     /**
      * 
      * @type {string}
@@ -4093,7 +4149,7 @@ export interface DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
      * @type {string}
      * @memberof DigitalThreadGetListPost200ResponseResultDigitalThreadListInner
      */
-    'materialNo': string;
+    'itemNo': string;
     /**
      * 
      * @type {string}
@@ -5484,7 +5540,7 @@ export interface GenerateAssetsMaterialU3mRequest {
      */
     'ogId': number;
     /**
-     * 
+     * 布料ID
      * @type {number}
      * @memberof GenerateAssetsMaterialU3mRequest
      */
@@ -5517,7 +5573,7 @@ export interface GenerateAssetsMaterialU3mRequest {
  */
 export interface GenerateAssetsMaterialU3mRequestAllOf {
     /**
-     * 
+     * 布料ID
      * @type {number}
      * @memberof GenerateAssetsMaterialU3mRequestAllOf
      */
@@ -5897,12 +5953,6 @@ export interface GetAssetMaterialListRequestAllOf {
 export interface GetAssetsMaterial200Response {
     /**
      * 
-     * @type {GetAssetsMaterial200ResponseResult}
-     * @memberof GetAssetsMaterial200Response
-     */
-    'result'?: GetAssetsMaterial200ResponseResult;
-    /**
-     * 
      * @type {boolean}
      * @memberof GetAssetsMaterial200Response
      */
@@ -5915,6 +5965,12 @@ export interface GetAssetsMaterial200Response {
     'code'?: string | null;
     /**
      * 
+     * @type {GetAssetsMaterial200ResponseAllOfResult}
+     * @memberof GetAssetsMaterial200Response
+     */
+    'result': GetAssetsMaterial200ResponseAllOfResult;
+    /**
+     * 
      * @type {object}
      * @memberof GetAssetsMaterial200Response
      */
@@ -5923,15 +5979,28 @@ export interface GetAssetsMaterial200Response {
 /**
  * 
  * @export
- * @interface GetAssetsMaterial200ResponseResult
+ * @interface GetAssetsMaterial200ResponseAllOf
  */
-export interface GetAssetsMaterial200ResponseResult {
+export interface GetAssetsMaterial200ResponseAllOf {
+    /**
+     * 
+     * @type {GetAssetsMaterial200ResponseAllOfResult}
+     * @memberof GetAssetsMaterial200ResponseAllOf
+     */
+    'result': GetAssetsMaterial200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetAssetsMaterial200ResponseAllOfResult
+ */
+export interface GetAssetsMaterial200ResponseAllOfResult {
     /**
      * 
      * @type {Material}
-     * @memberof GetAssetsMaterial200ResponseResult
+     * @memberof GetAssetsMaterial200ResponseAllOfResult
      */
-    'material'?: Material;
+    'material': Material;
 }
 /**
  * 
@@ -6254,10 +6323,10 @@ export interface GetExcelProgressList200ResponseAllOf {
 export interface GetExcelProgressList200ResponseAllOfResult {
     /**
      * 
-     * @type {Array<GetExcelProgressList200ResponseAllOfResultProgressListInner>}
+     * @type {Array<ProgressExcelItem>}
      * @memberof GetExcelProgressList200ResponseAllOfResult
      */
-    'progressList': Array<GetExcelProgressList200ResponseAllOfResultProgressListInner>;
+    'progressList': Array<ProgressExcelItem>;
     /**
      * 
      * @type {GetExcelProgressList200ResponseAllOfResultPagination}
@@ -6317,96 +6386,6 @@ export type GetExcelProgressList200ResponseAllOfResultPaginationSortEnum = typeo
 /**
  * 
  * @export
- * @interface GetExcelProgressList200ResponseAllOfResultProgressListInner
- */
-export interface GetExcelProgressList200ResponseAllOfResultProgressListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
-     */
-    'progressId': number;
-    /**
-     * 1: Upload 2: Export 
-     * @type {number}
-     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
-     */
-    'category': GetExcelProgressList200ResponseAllOfResultProgressListInnerCategoryEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
-     */
-    'fileName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
-     */
-    'fileUrl': string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
-     */
-    'itemNoList': Array<string>;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
-     */
-    'createDate': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
-     */
-    'createUser': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
-     */
-    'createAvatar': string;
-    /**
-     * 1: In Queue 2: Processing 3: Unsuccessful 4: Complete 5: Canceled 
-     * @type {number}
-     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
-     */
-    'status': GetExcelProgressList200ResponseAllOfResultProgressListInnerStatusEnum;
-    /**
-     * status 為 3 Unsuccessful 時 msgCode 才有值 - 1 該組織停用中 - 2 該組織方案中的空間不足 
-     * @type {number}
-     * @memberof GetExcelProgressList200ResponseAllOfResultProgressListInner
-     */
-    'unsuccessfulMsgCode': GetExcelProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum;
-}
-
-export const GetExcelProgressList200ResponseAllOfResultProgressListInnerCategoryEnum = {
-    UPLOAD: 1,
-    EXPORT: 2
-} as const;
-
-export type GetExcelProgressList200ResponseAllOfResultProgressListInnerCategoryEnum = typeof GetExcelProgressList200ResponseAllOfResultProgressListInnerCategoryEnum[keyof typeof GetExcelProgressList200ResponseAllOfResultProgressListInnerCategoryEnum];
-export const GetExcelProgressList200ResponseAllOfResultProgressListInnerStatusEnum = {
-    IN_QUEUE: 1,
-    PROCESSING: 2,
-    UNSUCCESSFUL: 3,
-    COMPLETED: 4,
-    CANCELED: 5
-} as const;
-
-export type GetExcelProgressList200ResponseAllOfResultProgressListInnerStatusEnum = typeof GetExcelProgressList200ResponseAllOfResultProgressListInnerStatusEnum[keyof typeof GetExcelProgressList200ResponseAllOfResultProgressListInnerStatusEnum];
-export const GetExcelProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum = {
-    ORG_DEACTIVATED: 1,
-    ORG_STORAGE_NOT_ENOUGH: 2
-} as const;
-
-export type GetExcelProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum = typeof GetExcelProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum[keyof typeof GetExcelProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum];
-
-/**
- * 
- * @export
  * @interface GetExcelProgressListRequest
  */
 export interface GetExcelProgressListRequest {
@@ -6442,10 +6421,10 @@ export interface GetExcelProgressListRequest {
     'endDate': string | null;
     /**
      * 
-     * @type {number}
+     * @type {ProgressStatus}
      * @memberof GetExcelProgressListRequest
      */
-    'status': GetExcelProgressListRequestStatusEnum;
+    'status': ProgressStatus;
     /**
      * 0: ALL 1: Upload 2: Export 
      * @type {number}
@@ -6466,16 +6445,6 @@ export interface GetExcelProgressListRequest {
     'pagination': GetExcelProgressListRequestAllOfPagination;
 }
 
-export const GetExcelProgressListRequestStatusEnum = {
-    ALL: 0,
-    IN_QUEUE: 1,
-    PROCESSING: 2,
-    UNSUCCESSFUL: 3,
-    COMPLETE: 4,
-    CANCELED: 5
-} as const;
-
-export type GetExcelProgressListRequestStatusEnum = typeof GetExcelProgressListRequestStatusEnum[keyof typeof GetExcelProgressListRequestStatusEnum];
 export const GetExcelProgressListRequestCategoryEnum = {
     ALL: 0,
     UPLOAD: 1,
@@ -6504,10 +6473,10 @@ export interface GetExcelProgressListRequestAllOf {
     'endDate': string | null;
     /**
      * 
-     * @type {number}
+     * @type {ProgressStatus}
      * @memberof GetExcelProgressListRequestAllOf
      */
-    'status': GetExcelProgressListRequestAllOfStatusEnum;
+    'status': ProgressStatus;
     /**
      * 0: ALL 1: Upload 2: Export 
      * @type {number}
@@ -6528,16 +6497,6 @@ export interface GetExcelProgressListRequestAllOf {
     'pagination': GetExcelProgressListRequestAllOfPagination;
 }
 
-export const GetExcelProgressListRequestAllOfStatusEnum = {
-    ALL: 0,
-    IN_QUEUE: 1,
-    PROCESSING: 2,
-    UNSUCCESSFUL: 3,
-    COMPLETE: 4,
-    CANCELED: 5
-} as const;
-
-export type GetExcelProgressListRequestAllOfStatusEnum = typeof GetExcelProgressListRequestAllOfStatusEnum[keyof typeof GetExcelProgressListRequestAllOfStatusEnum];
 export const GetExcelProgressListRequestAllOfCategoryEnum = {
     ALL: 0,
     UPLOAD: 1,
@@ -6591,12 +6550,6 @@ export type GetExcelProgressListRequestAllOfPaginationSortEnum = typeof GetExcel
 export interface GetExcelProgressMaterialList200Response {
     /**
      * 
-     * @type {GetExcelProgressMaterialList200ResponseResult}
-     * @memberof GetExcelProgressMaterialList200Response
-     */
-    'result'?: GetExcelProgressMaterialList200ResponseResult;
-    /**
-     * 
      * @type {boolean}
      * @memberof GetExcelProgressMaterialList200Response
      */
@@ -6609,6 +6562,12 @@ export interface GetExcelProgressMaterialList200Response {
     'code'?: string | null;
     /**
      * 
+     * @type {GetExcelProgressMaterialList200ResponseAllOfResult}
+     * @memberof GetExcelProgressMaterialList200Response
+     */
+    'result': GetExcelProgressMaterialList200ResponseAllOfResult;
+    /**
+     * 
      * @type {object}
      * @memberof GetExcelProgressMaterialList200Response
      */
@@ -6617,15 +6576,28 @@ export interface GetExcelProgressMaterialList200Response {
 /**
  * 
  * @export
- * @interface GetExcelProgressMaterialList200ResponseResult
+ * @interface GetExcelProgressMaterialList200ResponseAllOf
  */
-export interface GetExcelProgressMaterialList200ResponseResult {
+export interface GetExcelProgressMaterialList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetExcelProgressMaterialList200ResponseAllOfResult}
+     * @memberof GetExcelProgressMaterialList200ResponseAllOf
+     */
+    'result': GetExcelProgressMaterialList200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetExcelProgressMaterialList200ResponseAllOfResult
+ */
+export interface GetExcelProgressMaterialList200ResponseAllOfResult {
     /**
      * 
      * @type {Array<Material>}
-     * @memberof GetExcelProgressMaterialList200ResponseResult
+     * @memberof GetExcelProgressMaterialList200ResponseAllOfResult
      */
-    'materialList'?: Array<Material>;
+    'materialList': Array<Material>;
 }
 /**
  * 
@@ -6999,10 +6971,10 @@ export interface GetMaterialUploadProgressList200ResponseAllOf {
 export interface GetMaterialUploadProgressList200ResponseAllOfResult {
     /**
      * 
-     * @type {Array<GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner>}
+     * @type {Array<ProgressMaterialUploadItem>}
      * @memberof GetMaterialUploadProgressList200ResponseAllOfResult
      */
-    'progressList': Array<GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner>;
+    'progressList': Array<ProgressMaterialUploadItem>;
     /**
      * 
      * @type {GetMaterialUploadProgressList200ResponseAllOfResultPagination}
@@ -7060,101 +7032,6 @@ export type GetMaterialUploadProgressList200ResponseAllOfResultPaginationSortEnu
 /**
  * 
  * @export
- * @interface GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
- */
-export interface GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
-     */
-    'progressId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
-     */
-    'materialImageUrl': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
-     */
-    'createDate': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
-     */
-    'status': GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerStatusEnum;
-    /**
-     * status 為 3 Unsuccessful 時 msgCode 才有值 - 1 圖片檔案格式不對 - 2 該組織停用中 - 3 圖片檔案 dpi 不對 - 4 該組織方案中的空間不足 
-     * @type {number}
-     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
-     */
-    'unsuccessfulMsgCode': GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum;
-    /**
-     * 
-     * @type {GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerMappingWith}
-     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
-     */
-    'mappingWith': GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerMappingWith | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInner
-     */
-    'isMaterialDeleted'?: boolean;
-}
-
-export const GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerStatusEnum = {
-    IN_QUEUE: 1,
-    PROCESSING: 2,
-    UNSUCCESSFUL: 3,
-    COMPLETE: 4,
-    CANCELED: 5
-} as const;
-
-export type GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerStatusEnum = typeof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerStatusEnum[keyof typeof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerStatusEnum];
-export const GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum = {
-    IMAGE_FORMAT_ERROR: 1,
-    ORG_DEACTIVATED: 2,
-    IMAGE_DPI_ERROR: 3,
-    ORG_STORAGE_NOT_ENOUGH: 4
-} as const;
-
-export type GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum = typeof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum[keyof typeof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerUnsuccessfulMsgCodeEnum];
-
-/**
- * 
- * @export
- * @interface GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerMappingWith
- */
-export interface GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerMappingWith {
-    /**
-     * 
-     * @type {MaterialSideType}
-     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerMappingWith
-     */
-    'sideType': MaterialSideType;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetMaterialUploadProgressList200ResponseAllOfResultProgressListInnerMappingWith
-     */
-    'itemNo': string;
-}
-
-
-/**
- * 
- * @export
  * @interface GetMaterialUploadProgressListRequest
  */
 export interface GetMaterialUploadProgressListRequest {
@@ -7190,10 +7067,10 @@ export interface GetMaterialUploadProgressListRequest {
     'endDate': string | null;
     /**
      * 
-     * @type {number}
+     * @type {ProgressStatus}
      * @memberof GetMaterialUploadProgressListRequest
      */
-    'status': GetMaterialUploadProgressListRequestStatusEnum;
+    'status': ProgressStatus;
     /**
      * 
      * @type {GetMaterialUploadProgressListRequestAllOfPagination}
@@ -7202,16 +7079,6 @@ export interface GetMaterialUploadProgressListRequest {
     'pagination': GetMaterialUploadProgressListRequestAllOfPagination;
 }
 
-export const GetMaterialUploadProgressListRequestStatusEnum = {
-    ALL: 0,
-    IN_QUEUE: 1,
-    PROCESSING: 2,
-    UNSUCCESSFUL: 3,
-    COMPLETE: 4,
-    CANCELED: 5
-} as const;
-
-export type GetMaterialUploadProgressListRequestStatusEnum = typeof GetMaterialUploadProgressListRequestStatusEnum[keyof typeof GetMaterialUploadProgressListRequestStatusEnum];
 
 /**
  * 
@@ -7233,10 +7100,10 @@ export interface GetMaterialUploadProgressListRequestAllOf {
     'endDate': string | null;
     /**
      * 
-     * @type {number}
+     * @type {ProgressStatus}
      * @memberof GetMaterialUploadProgressListRequestAllOf
      */
-    'status': GetMaterialUploadProgressListRequestAllOfStatusEnum;
+    'status': ProgressStatus;
     /**
      * 
      * @type {GetMaterialUploadProgressListRequestAllOfPagination}
@@ -7245,16 +7112,6 @@ export interface GetMaterialUploadProgressListRequestAllOf {
     'pagination': GetMaterialUploadProgressListRequestAllOfPagination;
 }
 
-export const GetMaterialUploadProgressListRequestAllOfStatusEnum = {
-    ALL: 0,
-    IN_QUEUE: 1,
-    PROCESSING: 2,
-    UNSUCCESSFUL: 3,
-    COMPLETE: 4,
-    CANCELED: 5
-} as const;
-
-export type GetMaterialUploadProgressListRequestAllOfStatusEnum = typeof GetMaterialUploadProgressListRequestAllOfStatusEnum[keyof typeof GetMaterialUploadProgressListRequestAllOfStatusEnum];
 
 /**
  * 
@@ -7876,32 +7733,12 @@ export interface GetMoodboardShareReceivedInfo200ResponseAllOfResultMoodboardSha
  */
 export interface GetMoodboardShareReceivedInfoRequest {
     /**
-     * 組織ID
-     * @type {number}
-     * @memberof GetMoodboardShareReceivedInfoRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof GetMoodboardShareReceivedInfoRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof GetMoodboardShareReceivedInfoRequest
-     */
-    'ogId': number;
-    /**
      * 
      * @type {string}
      * @memberof GetMoodboardShareReceivedInfoRequest
      */
     'sharingKey': string;
 }
-
-
 /**
  * 
  * @export
@@ -9096,11 +8933,11 @@ export interface GetU3mProgressListRequest {
      */
     'endDate': string | null;
     /**
-     * 0: ALL 1: In Queue 2: Processing 3: Unsuccessful 4: Complete 5: Canceled 
-     * @type {number}
+     * 
+     * @type {ProgressStatus}
      * @memberof GetU3mProgressListRequest
      */
-    'status': GetU3mProgressListRequestStatusEnum;
+    'status': ProgressStatus;
     /**
      * 
      * @type {string}
@@ -9115,16 +8952,6 @@ export interface GetU3mProgressListRequest {
     'pagination': GetU3mProgressListRequestAllOfPagination;
 }
 
-export const GetU3mProgressListRequestStatusEnum = {
-    ALL: 0,
-    IN_QUEUE: 1,
-    PROCESSING: 2,
-    UNSUCCESSFUL: 3,
-    COMPLETE: 4,
-    CANCELED: 5
-} as const;
-
-export type GetU3mProgressListRequestStatusEnum = typeof GetU3mProgressListRequestStatusEnum[keyof typeof GetU3mProgressListRequestStatusEnum];
 
 /**
  * 
@@ -9145,11 +8972,11 @@ export interface GetU3mProgressListRequestAllOf {
      */
     'endDate': string | null;
     /**
-     * 0: ALL 1: In Queue 2: Processing 3: Unsuccessful 4: Complete 5: Canceled 
-     * @type {number}
+     * 
+     * @type {ProgressStatus}
      * @memberof GetU3mProgressListRequestAllOf
      */
-    'status': GetU3mProgressListRequestAllOfStatusEnum;
+    'status': ProgressStatus;
     /**
      * 
      * @type {string}
@@ -9164,16 +8991,6 @@ export interface GetU3mProgressListRequestAllOf {
     'pagination': GetU3mProgressListRequestAllOfPagination;
 }
 
-export const GetU3mProgressListRequestAllOfStatusEnum = {
-    ALL: 0,
-    IN_QUEUE: 1,
-    PROCESSING: 2,
-    UNSUCCESSFUL: 3,
-    COMPLETE: 4,
-    CANCELED: 5
-} as const;
-
-export type GetU3mProgressListRequestAllOfStatusEnum = typeof GetU3mProgressListRequestAllOfStatusEnum[keyof typeof GetU3mProgressListRequestAllOfStatusEnum];
 
 /**
  * 
@@ -10347,7 +10164,7 @@ export interface MainMaterialCoverImage {
      * @type {string}
      * @memberof MainMaterialCoverImage
      */
-    'thumbnailUrl': string;
+    'thumbnailUrl': string | null;
 }
 /**
  * 
@@ -10497,7 +10314,7 @@ export interface Material {
      * @type {MaterialCoverImage}
      * @memberof Material
      */
-    'coverImage': MaterialCoverImage | null;
+    'coverImage': MaterialCoverImage;
     /**
      * 
      * @type {MaterialWidth}
@@ -10938,13 +10755,13 @@ export interface MaterialCoverImage {
      * @type {string}
      * @memberof MaterialCoverImage
      */
-    'thumbnailUrl': string;
+    'thumbnailUrl': string | null;
     /**
      * 
      * @type {string}
      * @memberof MaterialCoverImage
      */
-    'displayUrl': string;
+    'displayUrl': string | null;
 }
 
 
@@ -11750,7 +11567,7 @@ export interface MaterialInternalInfo {
      * @type {MaterialPriceInfo}
      * @memberof MaterialInternalInfo
      */
-    'priceInfo': MaterialPriceInfo;
+    'priceInfo': MaterialPriceInfo | null;
     /**
      * 
      * @type {MaterialInternalInventoryInfo}
@@ -12873,11 +12690,11 @@ export interface MaterialPublicMetaData {
      */
     'isMaterialOwnerSide': boolean;
     /**
-     * 該布片所屬單位的組織或團隊型態，IsMaterialOwnerSide為true時才有值
-     * @type {number}
+     * 
+     * @type {OgType}
      * @memberof MaterialPublicMetaData
      */
-    'materialOwnerOGType': number | null;
+    'materialOwnerOGType': OgType | null;
     /**
      * 該布片所屬單位的組織或團隊ID，IsMaterialOwnerSide為true時才有值
      * @type {number}
@@ -12885,6 +12702,8 @@ export interface MaterialPublicMetaData {
      */
     'materialOwnerOGId': number | null;
 }
+
+
 /**
  * 單位
  * @export
@@ -15112,6 +14931,12 @@ export interface MoveAssetsMaterialAttachmentRequest {
      */
     'ogId': number;
     /**
+     * 布料ID
+     * @type {number}
+     * @memberof MoveAssetsMaterialAttachmentRequest
+     */
+    'materialId': number;
+    /**
      * 欲移動之 fileId
      * @type {number}
      * @memberof MoveAssetsMaterialAttachmentRequest
@@ -15138,6 +14963,12 @@ export interface MoveAssetsMaterialAttachmentRequest {
  * @interface MoveAssetsMaterialAttachmentRequestAllOf
  */
 export interface MoveAssetsMaterialAttachmentRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof MoveAssetsMaterialAttachmentRequestAllOf
+     */
+    'materialId': number;
     /**
      * 欲移動之 fileId
      * @type {number}
@@ -19314,6 +19145,199 @@ export interface PricingPro {
 /**
  * 
  * @export
+ * @interface ProgressExcelItem
+ */
+export interface ProgressExcelItem {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgressExcelItem
+     */
+    'progressId': number;
+    /**
+     * 1: Upload 2: Export 
+     * @type {number}
+     * @memberof ProgressExcelItem
+     */
+    'category': ProgressExcelItemCategoryEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgressExcelItem
+     */
+    'fileName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgressExcelItem
+     */
+    'fileUrl': string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ProgressExcelItem
+     */
+    'itemNoList': Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgressExcelItem
+     */
+    'createDate': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgressExcelItem
+     */
+    'createUser': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgressExcelItem
+     */
+    'createAvatar': string;
+    /**
+     * 
+     * @type {ProgressStatus}
+     * @memberof ProgressExcelItem
+     */
+    'status': ProgressStatus;
+    /**
+     * status 為 3 Unsuccessful 時 msgCode 才有值 - 1 該組織停用中 - 2 該組織方案中的空間不足 
+     * @type {number}
+     * @memberof ProgressExcelItem
+     */
+    'unsuccessfulMsgCode': ProgressExcelItemUnsuccessfulMsgCodeEnum;
+}
+
+export const ProgressExcelItemCategoryEnum = {
+    UPLOAD: 1,
+    EXPORT: 2
+} as const;
+
+export type ProgressExcelItemCategoryEnum = typeof ProgressExcelItemCategoryEnum[keyof typeof ProgressExcelItemCategoryEnum];
+export const ProgressExcelItemUnsuccessfulMsgCodeEnum = {
+    ORG_DEACTIVATED: 1,
+    ORG_STORAGE_NOT_ENOUGH: 2
+} as const;
+
+export type ProgressExcelItemUnsuccessfulMsgCodeEnum = typeof ProgressExcelItemUnsuccessfulMsgCodeEnum[keyof typeof ProgressExcelItemUnsuccessfulMsgCodeEnum];
+
+/**
+ * 
+ * @export
+ * @interface ProgressMaterialUploadItem
+ */
+export interface ProgressMaterialUploadItem {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgressMaterialUploadItem
+     */
+    'progressId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgressMaterialUploadItem
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgressMaterialUploadItem
+     */
+    'materialImageUrl': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProgressMaterialUploadItem
+     */
+    'createDate': number;
+    /**
+     * 
+     * @type {ProgressStatus}
+     * @memberof ProgressMaterialUploadItem
+     */
+    'status': ProgressStatus;
+    /**
+     * 
+     * @type {ProgressMaterialUploadUnsuccessfulMsgCode}
+     * @memberof ProgressMaterialUploadItem
+     */
+    'unsuccessfulMsgCode': ProgressMaterialUploadUnsuccessfulMsgCode | null;
+    /**
+     * 
+     * @type {ProgressMaterialUploadItemMappingWith}
+     * @memberof ProgressMaterialUploadItem
+     */
+    'mappingWith': ProgressMaterialUploadItemMappingWith | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProgressMaterialUploadItem
+     */
+    'isMaterialDeleted'?: boolean;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface ProgressMaterialUploadItemMappingWith
+ */
+export interface ProgressMaterialUploadItemMappingWith {
+    /**
+     * 
+     * @type {MaterialSideType}
+     * @memberof ProgressMaterialUploadItemMappingWith
+     */
+    'sideType': MaterialSideType;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProgressMaterialUploadItemMappingWith
+     */
+    'itemNo': string;
+}
+
+
+/**
+ * status 為 3 Unsuccessful 時 msgCode 才有值 - 1 圖片檔案格式不對 - 2 該組織停用中 - 3 圖片檔案 dpi 不對 - 4 該組織方案中的空間不足 
+ * @export
+ * @enum {string}
+ */
+
+export const ProgressMaterialUploadUnsuccessfulMsgCode = {
+    IMAGE_FORMAT_ERROR: 1,
+    ORG_DEACTIVATED: 2,
+    IMAGE_DPI_ERROR: 3,
+    ORG_STORAGE_NOT_ENOUGH: 4
+} as const;
+
+export type ProgressMaterialUploadUnsuccessfulMsgCode = typeof ProgressMaterialUploadUnsuccessfulMsgCode[keyof typeof ProgressMaterialUploadUnsuccessfulMsgCode];
+
+
+/**
+ * 0: ALL 1: In Queue 2: Processing 3: Unsuccessful 4: Complete 5: Canceled 
+ * @export
+ * @enum {string}
+ */
+
+export const ProgressStatus = {
+    ALL: 0,
+    IN_QUEUE: 1,
+    PROCESSING: 2,
+    UNSUCCESSFUL: 3,
+    COMPLETE: 4,
+    CANCELED: 5
+} as const;
+
+export type ProgressStatus = typeof ProgressStatus[keyof typeof ProgressStatus];
+
+
+/**
+ * 
+ * @export
  * @interface ProgressU3mItem
  */
 export interface ProgressU3mItem {
@@ -19361,10 +19385,10 @@ export interface ProgressU3mItem {
     'createAvatar': string;
     /**
      * 
-     * @type {number}
+     * @type {ProgressStatus}
      * @memberof ProgressU3mItem
      */
-    'status': ProgressU3mItemStatusEnum;
+    'status': ProgressStatus;
     /**
      * 
      * @type {boolean}
@@ -19385,16 +19409,6 @@ export interface ProgressU3mItem {
     'sourceType': ProgressU3mItemSourceTypeEnum;
 }
 
-export const ProgressU3mItemStatusEnum = {
-    ALL: 0,
-    IN_QUEUE: 1,
-    PROCESSING: 2,
-    UNSUCCESSFUL: 3,
-    COMPLETED: 4,
-    CANCELED: 5
-} as const;
-
-export type ProgressU3mItemStatusEnum = typeof ProgressU3mItemStatusEnum[keyof typeof ProgressU3mItemStatusEnum];
 export const ProgressU3mItemUnsuccessfulMsgCodeEnum = {
     SOURCE_DELETED: 1
 } as const;
@@ -19641,6 +19655,12 @@ export interface RemoveAssetsMaterialAttachmentRequest {
      */
     'ogId': number;
     /**
+     * 布料ID
+     * @type {number}
+     * @memberof RemoveAssetsMaterialAttachmentRequest
+     */
+    'materialId': number;
+    /**
      * 
      * @type {string}
      * @memberof RemoveAssetsMaterialAttachmentRequest
@@ -19656,39 +19676,18 @@ export interface RemoveAssetsMaterialAttachmentRequest {
  */
 export interface RemoveAssetsMaterialAttachmentRequestAllOf {
     /**
+     * 布料ID
+     * @type {number}
+     * @memberof RemoveAssetsMaterialAttachmentRequestAllOf
+     */
+    'materialId': number;
+    /**
      * 
      * @type {string}
      * @memberof RemoveAssetsMaterialAttachmentRequestAllOf
      */
     'fileId': string;
 }
-/**
- * 
- * @export
- * @interface RemoveAssetsMaterialMultimediaRequest
- */
-export interface RemoveAssetsMaterialMultimediaRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof RemoveAssetsMaterialMultimediaRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof RemoveAssetsMaterialMultimediaRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof RemoveAssetsMaterialMultimediaRequest
-     */
-    'ogId': number;
-}
-
-
 /**
  * 
  * @export
@@ -19878,6 +19877,12 @@ export interface RenameAssetsMaterialAttachmentRequest {
      */
     'ogId': number;
     /**
+     * 布料ID
+     * @type {number}
+     * @memberof RenameAssetsMaterialAttachmentRequest
+     */
+    'materialId': number;
+    /**
      * 
      * @type {string}
      * @memberof RenameAssetsMaterialAttachmentRequest
@@ -19898,6 +19903,12 @@ export interface RenameAssetsMaterialAttachmentRequest {
  * @interface RenameAssetsMaterialAttachmentRequestAllOf
  */
 export interface RenameAssetsMaterialAttachmentRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof RenameAssetsMaterialAttachmentRequestAllOf
+     */
+    'materialId': number;
     /**
      * 
      * @type {string}
@@ -20101,62 +20112,31 @@ export interface SamplePostRequest {
 export interface SaveMoodboardShareReceivedRequest {
     /**
      * 
+     * @type {string}
+     * @memberof SaveMoodboardShareReceivedRequest
+     */
+    'sharingKey': string;
+    /**
+     * save目標的組織ID
      * @type {number}
      * @memberof SaveMoodboardShareReceivedRequest
      */
-    'orgId': number;
+    'targetOrgId': number;
     /**
      * 
      * @type {OgType}
      * @memberof SaveMoodboardShareReceivedRequest
      */
-    'ogType': OgType;
+    'targetOgType': OgType;
     /**
-     * 單位(組織或團隊)ID
+     * save目標的單位(組織或團隊)ID
      * @type {number}
      * @memberof SaveMoodboardShareReceivedRequest
      */
-    'ogId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof SaveMoodboardShareReceivedRequest
-     */
-    'sharingKey': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof SaveMoodboardShareReceivedRequest
-     */
-    'groupId': number | null;
+    'targetOgId': number;
 }
 
 
-/**
- * 
- * @export
- * @interface SaveMoodboardShareReceivedRequestAllOf
- */
-export interface SaveMoodboardShareReceivedRequestAllOf {
-    /**
-     * 
-     * @type {string}
-     * @memberof SaveMoodboardShareReceivedRequestAllOf
-     */
-    'sharingKey': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof SaveMoodboardShareReceivedRequestAllOf
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof SaveMoodboardShareReceivedRequestAllOf
-     */
-    'groupId': number | null;
-}
 /**
  * 
  * @export
@@ -20536,6 +20516,12 @@ export interface SetAssetsMaterialCoverRequest {
      */
     'ogId': number;
     /**
+     * 布料ID
+     * @type {number}
+     * @memberof SetAssetsMaterialCoverRequest
+     */
+    'materialId': number;
+    /**
      * 
      * @type {CoverMode}
      * @memberof SetAssetsMaterialCoverRequest
@@ -20556,6 +20542,12 @@ export interface SetAssetsMaterialCoverRequest {
  * @interface SetAssetsMaterialCoverRequestAllOf
  */
 export interface SetAssetsMaterialCoverRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof SetAssetsMaterialCoverRequestAllOf
+     */
+    'materialId': number;
     /**
      * 
      * @type {CoverMode}
@@ -22492,7 +22484,7 @@ export interface UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneLi
  */
 export interface UpdateAssetsMaterialSideImageRequest {
     /**
-     * 
+     * 布料ID
      * @type {number}
      * @memberof UpdateAssetsMaterialSideImageRequest
      */
@@ -23471,6 +23463,12 @@ export interface UploadAssetsMaterialAttachmentRequest {
      */
     'ogId': number;
     /**
+     * 布料ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialAttachmentRequest
+     */
+    'materialId': number;
+    /**
      * 
      * @type {Array<CreateAndEditAttachmentFile>}
      * @memberof UploadAssetsMaterialAttachmentRequest
@@ -23485,6 +23483,12 @@ export interface UploadAssetsMaterialAttachmentRequest {
  * @interface UploadAssetsMaterialAttachmentRequestAllOf
  */
 export interface UploadAssetsMaterialAttachmentRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialAttachmentRequestAllOf
+     */
+    'materialId': number;
     /**
      * 
      * @type {Array<CreateAndEditAttachmentFile>}
@@ -23644,6 +23648,12 @@ export interface UploadAssetsMaterialMultimediaRequest {
      */
     'ogId': number;
     /**
+     * 布料ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialMultimediaRequest
+     */
+    'materialId': number;
+    /**
      * 
      * @type {Array<CreateAndEditAttachmentFile>}
      * @memberof UploadAssetsMaterialMultimediaRequest
@@ -23658,6 +23668,12 @@ export interface UploadAssetsMaterialMultimediaRequest {
  * @interface UploadAssetsMaterialMultimediaRequestAllOf
  */
 export interface UploadAssetsMaterialMultimediaRequestAllOf {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialMultimediaRequestAllOf
+     */
+    'materialId': number;
     /**
      * 
      * @type {Array<CreateAndEditAttachmentFile>}
@@ -24766,11 +24782,13 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary assets add to workspace
-         * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
+         * @param {AssetsMaterialAddToWorkspaceRequest} assetsMaterialAddToWorkspaceRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        assetsMaterialAddToWorkspace: async (assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        assetsMaterialAddToWorkspace: async (assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'assetsMaterialAddToWorkspaceRequest' is not null or undefined
+            assertParamExists('assetsMaterialAddToWorkspace', 'assetsMaterialAddToWorkspaceRequest', assetsMaterialAddToWorkspaceRequest)
             const localVarPath = `/assets/material/add-to-workspace`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25186,11 +25204,13 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetsMaterial: async (getAssetsMaterialRequest?: GetAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAssetsMaterial: async (getAssetsMaterialRequest: GetAssetsMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getAssetsMaterialRequest' is not null or undefined
+            assertParamExists('getAssetsMaterial', 'getAssetsMaterialRequest', getAssetsMaterialRequest)
             const localVarPath = `/assets/material/get`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25454,11 +25474,11 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary 刪除布料的 Multimedia
-         * @param {RemoveAssetsMaterialMultimediaRequest} [removeAssetsMaterialMultimediaRequest] 
+         * @param {RemoveAssetsMaterialAttachmentRequest} [removeAssetsMaterialAttachmentRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeAssetsMaterialMultimedia: async (removeAssetsMaterialMultimediaRequest?: RemoveAssetsMaterialMultimediaRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        removeAssetsMaterialMultimedia: async (removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/assets/material/multimedia/remove`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25482,7 +25502,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(removeAssetsMaterialMultimediaRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(removeAssetsMaterialAttachmentRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -25606,11 +25626,13 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          *  **Access roles:** To be clear define
          * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
-         * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
+         * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        smartUploadAssetsMaterialList: async (smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        smartUploadAssetsMaterialList: async (smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'smartUploadAssetsMaterialListRequest' is not null or undefined
+            assertParamExists('smartUploadAssetsMaterialList', 'smartUploadAssetsMaterialListRequest', smartUploadAssetsMaterialListRequest)
             const localVarPath = `/assets/material/smart-upload`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25996,11 +26018,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary assets add to workspace
-         * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
+         * @param {AssetsMaterialAddToWorkspaceRequest} assetsMaterialAddToWorkspaceRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetsMaterialAddToWorkspace200Response>> {
+        async assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetsMaterialAddToWorkspace200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26055,7 +26077,7 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+        async createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createAssetsMaterial(createAssetsMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26117,11 +26139,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+        async getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetsMaterial(getAssetsMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26194,12 +26216,12 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 刪除布料的 Multimedia
-         * @param {RemoveAssetsMaterialMultimediaRequest} [removeAssetsMaterialMultimediaRequest] 
+         * @param {RemoveAssetsMaterialAttachmentRequest} [removeAssetsMaterialAttachmentRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeAssetsMaterialMultimedia(removeAssetsMaterialMultimediaRequest?: RemoveAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.removeAssetsMaterialMultimedia(removeAssetsMaterialMultimediaRequest, options);
+        async removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -26238,11 +26260,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          *  **Access roles:** To be clear define
          * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
-         * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
+         * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26358,11 +26380,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary assets add to workspace
-         * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
+         * @param {AssetsMaterialAddToWorkspaceRequest} assetsMaterialAddToWorkspaceRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options?: any): AxiosPromise<AssetsMaterialAddToWorkspace200Response> {
+        assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: any): AxiosPromise<AssetsMaterialAddToWorkspace200Response> {
             return localVarFp.assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26412,7 +26434,7 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+        createAssetsMaterial(createAssetsMaterialRequest: CreateAssetsMaterialRequest, options?: any): AxiosPromise<CreateAssetsMaterial200Response> {
             return localVarFp.createAssetsMaterial(createAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26468,11 +26490,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary 取得單一布料資料
-         * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+         * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+        getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
             return localVarFp.getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26538,12 +26560,12 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary 刪除布料的 Multimedia
-         * @param {RemoveAssetsMaterialMultimediaRequest} [removeAssetsMaterialMultimediaRequest] 
+         * @param {RemoveAssetsMaterialAttachmentRequest} [removeAssetsMaterialAttachmentRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeAssetsMaterialMultimedia(removeAssetsMaterialMultimediaRequest?: RemoveAssetsMaterialMultimediaRequest, options?: any): AxiosPromise<UploadAssetsMaterialMultimedia200Response> {
-            return localVarFp.removeAssetsMaterialMultimedia(removeAssetsMaterialMultimediaRequest, options).then((request) => request(axios, basePath));
+        removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: any): AxiosPromise<UploadAssetsMaterialMultimedia200Response> {
+            return localVarFp.removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -26578,11 +26600,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          *  **Access roles:** To be clear define
          * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
-         * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
+         * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26688,12 +26710,12 @@ export class AssetsApi extends BaseAPI {
     /**
      * 
      * @summary assets add to workspace
-     * @param {AssetsMaterialAddToWorkspaceRequest} [assetsMaterialAddToWorkspaceRequest] 
+     * @param {AssetsMaterialAddToWorkspaceRequest} assetsMaterialAddToWorkspaceRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest?: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig) {
+    public assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest: AssetsMaterialAddToWorkspaceRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).assetsMaterialAddToWorkspace(assetsMaterialAddToWorkspaceRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -26820,12 +26842,12 @@ export class AssetsApi extends BaseAPI {
     /**
      * 
      * @summary 取得單一布料資料
-     * @param {GetAssetsMaterialRequest} [getAssetsMaterialRequest] 
+     * @param {GetAssetsMaterialRequest} getAssetsMaterialRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public getAssetsMaterial(getAssetsMaterialRequest?: GetAssetsMaterialRequest, options?: AxiosRequestConfig) {
+    public getAssetsMaterial(getAssetsMaterialRequest: GetAssetsMaterialRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).getAssetsMaterial(getAssetsMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -26904,13 +26926,13 @@ export class AssetsApi extends BaseAPI {
     /**
      * 
      * @summary 刪除布料的 Multimedia
-     * @param {RemoveAssetsMaterialMultimediaRequest} [removeAssetsMaterialMultimediaRequest] 
+     * @param {RemoveAssetsMaterialAttachmentRequest} [removeAssetsMaterialAttachmentRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public removeAssetsMaterialMultimedia(removeAssetsMaterialMultimediaRequest?: RemoveAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig) {
-        return AssetsApiFp(this.configuration).removeAssetsMaterialMultimedia(removeAssetsMaterialMultimediaRequest, options).then((request) => request(this.axios, this.basePath));
+    public removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest?: RemoveAssetsMaterialAttachmentRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).removeAssetsMaterialMultimedia(removeAssetsMaterialAttachmentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -26952,12 +26974,12 @@ export class AssetsApi extends BaseAPI {
     /**
      *  **Access roles:** To be clear define
      * @summary 透過 Smart Upload 批量上傳布料掃描圖片，並產生布料資訊
-     * @param {SmartUploadAssetsMaterialListRequest} [smartUploadAssetsMaterialListRequest] 
+     * @param {SmartUploadAssetsMaterialListRequest} smartUploadAssetsMaterialListRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest?: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig) {
+    public smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest: SmartUploadAssetsMaterialListRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).smartUploadAssetsMaterialList(smartUploadAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -28503,7 +28525,7 @@ export const DigitalThreadApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetsMaterial200Response>> {
+        async digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetsMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -28653,7 +28675,7 @@ export const DigitalThreadApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: any): AxiosPromise<GetAssetsMaterial200Response> {
+        digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest?: DigitalThreadGetMaterialPostRequest, options?: any): AxiosPromise<CreateAssetsMaterial200Response> {
             return localVarFp.digitalThreadGetMaterialPost(digitalThreadGetMaterialPostRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -35583,11 +35605,13 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Upload Progress - excel
-         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelExcelProgress: async (cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cancelExcelProgress: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cancelMaterialUploadProgressRequest' is not null or undefined
+            assertParamExists('cancelExcelProgress', 'cancelMaterialUploadProgressRequest', cancelMaterialUploadProgressRequest)
             const localVarPath = `/progress/excel/cancel`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35621,11 +35645,13 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Upload Progress - Material
-         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelMaterialUploadProgress: async (cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cancelMaterialUploadProgress: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cancelMaterialUploadProgressRequest' is not null or undefined
+            assertParamExists('cancelMaterialUploadProgress', 'cancelMaterialUploadProgressRequest', cancelMaterialUploadProgressRequest)
             const localVarPath = `/progress/material-upload/cancel`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35659,11 +35685,13 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary 停止 U3M 排程
-         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelU3mProgress: async (cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cancelU3mProgress: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cancelMaterialUploadProgressRequest' is not null or undefined
+            assertParamExists('cancelU3mProgress', 'cancelMaterialUploadProgressRequest', cancelMaterialUploadProgressRequest)
             const localVarPath = `/progress/u3m/cancel`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35697,11 +35725,13 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Upload Progress - excel
-         * @param {GetExcelProgressListRequest} [getExcelProgressListRequest] 
+         * @param {GetExcelProgressListRequest} getExcelProgressListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getExcelProgressList: async (getExcelProgressListRequest?: GetExcelProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getExcelProgressList: async (getExcelProgressListRequest: GetExcelProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getExcelProgressListRequest' is not null or undefined
+            assertParamExists('getExcelProgressList', 'getExcelProgressListRequest', getExcelProgressListRequest)
             const localVarPath = `/progress/excel/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35735,11 +35765,13 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Excel Progress取得Material清單
-         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getExcelProgressMaterialList: async (cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getExcelProgressMaterialList: async (cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cancelMaterialUploadProgressRequest' is not null or undefined
+            assertParamExists('getExcelProgressMaterialList', 'cancelMaterialUploadProgressRequest', cancelMaterialUploadProgressRequest)
             const localVarPath = `/progress/excel/get-material-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35773,11 +35805,13 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Upload Progress - Material
-         * @param {GetMaterialUploadProgressListRequest} [getMaterialUploadProgressListRequest] 
+         * @param {GetMaterialUploadProgressListRequest} getMaterialUploadProgressListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMaterialUploadProgressList: async (getMaterialUploadProgressListRequest?: GetMaterialUploadProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getMaterialUploadProgressList: async (getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getMaterialUploadProgressListRequest' is not null or undefined
+            assertParamExists('getMaterialUploadProgressList', 'getMaterialUploadProgressListRequest', getMaterialUploadProgressListRequest)
             const localVarPath = `/progress/material-upload/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35811,11 +35845,13 @@ export const ProgressApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Upload Progress - u3m
-         * @param {GetU3mProgressListRequest} [getU3mProgressListRequest] 
+         * @param {GetU3mProgressListRequest} getU3mProgressListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getU3mProgressList: async (getU3mProgressListRequest?: GetU3mProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getU3mProgressList: async (getU3mProgressListRequest: GetU3mProgressListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getU3mProgressListRequest' is not null or undefined
+            assertParamExists('getU3mProgressList', 'getU3mProgressListRequest', getU3mProgressListRequest)
             const localVarPath = `/progress/u3m/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35859,77 +35895,77 @@ export const ProgressApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Upload Progress - excel
-         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cancelExcelProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelExcelProgress(cancelMaterialUploadProgressRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary Upload Progress - Material
-         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary 停止 U3M 排程
-         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cancelU3mProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cancelU3mProgress(cancelMaterialUploadProgressRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary Upload Progress - excel
-         * @param {GetExcelProgressListRequest} [getExcelProgressListRequest] 
+         * @param {GetExcelProgressListRequest} getExcelProgressListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getExcelProgressList(getExcelProgressListRequest?: GetExcelProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressList200Response>> {
+        async getExcelProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getExcelProgressList(getExcelProgressListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary Excel Progress取得Material清單
-         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getExcelProgressMaterialList(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressMaterialList200Response>> {
+        async getExcelProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExcelProgressMaterialList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getExcelProgressMaterialList(cancelMaterialUploadProgressRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary Upload Progress - Material
-         * @param {GetMaterialUploadProgressListRequest} [getMaterialUploadProgressListRequest] 
+         * @param {GetMaterialUploadProgressListRequest} getMaterialUploadProgressListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMaterialUploadProgressList(getMaterialUploadProgressListRequest?: GetMaterialUploadProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMaterialUploadProgressList200Response>> {
+        async getMaterialUploadProgressList(getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMaterialUploadProgressList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMaterialUploadProgressList(getMaterialUploadProgressListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary Upload Progress - u3m
-         * @param {GetU3mProgressListRequest} [getU3mProgressListRequest] 
+         * @param {GetU3mProgressListRequest} getU3mProgressListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getU3mProgressList(getU3mProgressListRequest?: GetU3mProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetU3mProgressList200Response>> {
+        async getU3mProgressList(getU3mProgressListRequest: GetU3mProgressListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetU3mProgressList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getU3mProgressList(getU3mProgressListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -35946,71 +35982,71 @@ export const ProgressApiFactory = function (configuration?: Configuration, baseP
         /**
          * 
          * @summary Upload Progress - excel
-         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelExcelProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.cancelExcelProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Upload Progress - Material
-         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 停止 U3M 排程
-         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cancelU3mProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.cancelU3mProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Upload Progress - excel
-         * @param {GetExcelProgressListRequest} [getExcelProgressListRequest] 
+         * @param {GetExcelProgressListRequest} getExcelProgressListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getExcelProgressList(getExcelProgressListRequest?: GetExcelProgressListRequest, options?: any): AxiosPromise<GetExcelProgressList200Response> {
+        getExcelProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: any): AxiosPromise<GetExcelProgressList200Response> {
             return localVarFp.getExcelProgressList(getExcelProgressListRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Excel Progress取得Material清單
-         * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+         * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getExcelProgressMaterialList(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<GetExcelProgressMaterialList200Response> {
+        getExcelProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: any): AxiosPromise<GetExcelProgressMaterialList200Response> {
             return localVarFp.getExcelProgressMaterialList(cancelMaterialUploadProgressRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Upload Progress - Material
-         * @param {GetMaterialUploadProgressListRequest} [getMaterialUploadProgressListRequest] 
+         * @param {GetMaterialUploadProgressListRequest} getMaterialUploadProgressListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMaterialUploadProgressList(getMaterialUploadProgressListRequest?: GetMaterialUploadProgressListRequest, options?: any): AxiosPromise<GetMaterialUploadProgressList200Response> {
+        getMaterialUploadProgressList(getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options?: any): AxiosPromise<GetMaterialUploadProgressList200Response> {
             return localVarFp.getMaterialUploadProgressList(getMaterialUploadProgressListRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Upload Progress - u3m
-         * @param {GetU3mProgressListRequest} [getU3mProgressListRequest] 
+         * @param {GetU3mProgressListRequest} getU3mProgressListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getU3mProgressList(getU3mProgressListRequest?: GetU3mProgressListRequest, options?: any): AxiosPromise<GetU3mProgressList200Response> {
+        getU3mProgressList(getU3mProgressListRequest: GetU3mProgressListRequest, options?: any): AxiosPromise<GetU3mProgressList200Response> {
             return localVarFp.getU3mProgressList(getU3mProgressListRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -36026,84 +36062,84 @@ export class ProgressApi extends BaseAPI {
     /**
      * 
      * @summary Upload Progress - excel
-     * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+     * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public cancelExcelProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+    public cancelExcelProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
         return ProgressApiFp(this.configuration).cancelExcelProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Upload Progress - Material
-     * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+     * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+    public cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
         return ProgressApiFp(this.configuration).cancelMaterialUploadProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 停止 U3M 排程
-     * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+     * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public cancelU3mProgress(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+    public cancelU3mProgress(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
         return ProgressApiFp(this.configuration).cancelU3mProgress(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Upload Progress - excel
-     * @param {GetExcelProgressListRequest} [getExcelProgressListRequest] 
+     * @param {GetExcelProgressListRequest} getExcelProgressListRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public getExcelProgressList(getExcelProgressListRequest?: GetExcelProgressListRequest, options?: AxiosRequestConfig) {
+    public getExcelProgressList(getExcelProgressListRequest: GetExcelProgressListRequest, options?: AxiosRequestConfig) {
         return ProgressApiFp(this.configuration).getExcelProgressList(getExcelProgressListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Excel Progress取得Material清單
-     * @param {CancelMaterialUploadProgressRequest} [cancelMaterialUploadProgressRequest] 
+     * @param {CancelMaterialUploadProgressRequest} cancelMaterialUploadProgressRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public getExcelProgressMaterialList(cancelMaterialUploadProgressRequest?: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
+    public getExcelProgressMaterialList(cancelMaterialUploadProgressRequest: CancelMaterialUploadProgressRequest, options?: AxiosRequestConfig) {
         return ProgressApiFp(this.configuration).getExcelProgressMaterialList(cancelMaterialUploadProgressRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Upload Progress - Material
-     * @param {GetMaterialUploadProgressListRequest} [getMaterialUploadProgressListRequest] 
+     * @param {GetMaterialUploadProgressListRequest} getMaterialUploadProgressListRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public getMaterialUploadProgressList(getMaterialUploadProgressListRequest?: GetMaterialUploadProgressListRequest, options?: AxiosRequestConfig) {
+    public getMaterialUploadProgressList(getMaterialUploadProgressListRequest: GetMaterialUploadProgressListRequest, options?: AxiosRequestConfig) {
         return ProgressApiFp(this.configuration).getMaterialUploadProgressList(getMaterialUploadProgressListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Upload Progress - u3m
-     * @param {GetU3mProgressListRequest} [getU3mProgressListRequest] 
+     * @param {GetU3mProgressListRequest} getU3mProgressListRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProgressApi
      */
-    public getU3mProgressList(getU3mProgressListRequest?: GetU3mProgressListRequest, options?: AxiosRequestConfig) {
+    public getU3mProgressList(getU3mProgressListRequest: GetU3mProgressListRequest, options?: AxiosRequestConfig) {
         return ProgressApiFp(this.configuration).getU3mProgressList(getU3mProgressListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
