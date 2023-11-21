@@ -159,8 +159,14 @@ export default function useNavigation() {
     router.push(parsePath(path, navReq))
   }
 
-  const goToShareToMe = (navReq: NavigationReq = {}) => {
-    router.push(parsePath(`${prefixPath}/share-to-me`, navReq))
+  const goToShareToMe = (
+    navReq: NavigationReq = {},
+    sharingId?: number,
+    nodeId?: number
+  ) => {
+    const basePath = `${prefixPath}/share-to-me`
+    const path = sharingId ? `${basePath}/${sharingId}/${nodeId}` : basePath
+    router.push(parsePath(path, navReq))
   }
 
   const goToShareToMeMaterial = (
@@ -174,9 +180,14 @@ export default function useNavigation() {
     router.push(parsePath(path, navReq))
   }
 
-  const goToPublicLibrary = async () => {
+  const goToPublicLibrary = async (
+    navReq: NavigationReq = {},
+    nodeId?: number
+  ) => {
     await store.dispatch('sticker/closeStickerDrawer')
-    router.push(parsePath(`/:orgNo/public-library`))
+    const basePath = `/:orgNo/public-library`
+    const path = nodeId ? `${basePath}/${nodeId}` : basePath
+    router.push(parsePath(path, navReq))
   }
 
   const goToPublicLibraryMaterialDetail = (
@@ -184,7 +195,7 @@ export default function useNavigation() {
     nodeId: number,
     rank?: number
   ) => {
-    const basePath = `${prefixPath}/public-library/material/${nodeId}`
+    const basePath = `/:orgNo/public-library/material/${nodeId}`
     const path = rank ? `${basePath}?rank=${rank}` : basePath
     router.push(parsePath(path, navReq))
   }

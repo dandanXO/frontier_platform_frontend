@@ -1,76 +1,59 @@
 <template lang="pug">
-div
-  div(class="mx-auto w-230 h-fit pb-25")
-    material-detail-external-header(
-      :breadcrumbList="breadcrumbList"
-      :material="material"
-      @clone="publicCloneByMaterial(nodeKey, publish.isCanClone)"
-    )
-      template(#caption)
-        i18n-t(
-          keypath="II0002"
-          tag="p"
-          class="text-caption text-grey-600"
-          scope="global"
-        )
-          template(#displayName) {{ publish.displayName }}
-    material-detail-external(
-      :material="material"
-      :isCanDownloadU3M="publish.isCanDownloadU3M"
-    )
+material-detail-inner-external(
+  :material="material"
+  :nodeMeta="nodeMeta"
+  :locationList="locationList"
+  :publishedDate="nodeMeta.publicDate ?? undefined"
+  @clone="publicLibraryClone([nodeMeta.nodeId], nodeMeta.isCanClone, $t('II0008'))"
+)
 </template>
 
-<script setup>
-import { computed } from 'vue'
+<script setup lang="ts">
+import { computed, reactive, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
+import MaterialDetailInnerExternal from '@/components/common/material/detail/external/MaterialDetailInnerExternal.vue'
 import useNavigation from '@/composables/useNavigation'
-import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
 import usePublicLibrary from '@/composables/usePublicLibrary'
-import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
-import MaterialDetailExternalHeader from '@/components/common/material/detail/MaterialDetailExternalHeader.vue'
+import { usePublicLibraryStore } from '@/stores/publicLibrary'
 
-const props = defineProps({
-  nodeKey: {
-    type: String,
-    required: true,
-  },
-})
+const props = defineProps<{
+  nodeId: string
+}>()
 
 const { t } = useI18n()
-const store = useStore()
-const route = useRoute()
-const { parsePath } = useNavigation()
-const { publicCloneByMaterial } = usePublicLibrary()
+const { ogBasePublicLibraryApi } = usePublicLibraryStore()
+const { goToPublicLibrary } = useNavigation()
+const { publicLibraryClone } = usePublicLibrary()
 
-await store.dispatch('publicLibrary/getPublicMaterial', {
-  nodeKey: props.nodeKey,
-  rank: Number(route.query.rank),
+const res = await ogBasePublicLibraryApi('getPublicLibraryMaterial', {
+  nodeId: Number(props.nodeId),
+  searchLog: null,
 })
+const { material, nodeMeta } = toRefs(
+  reactive(res.data.result.workspaceNodeMaterial)
+)
 
-const material = computed(() => store.getters['publicLibrary/material'])
-const publish = computed(() => store.getters['publicLibrary/materialPublish'])
-const breadcrumbList = computed(() => {
+const locationList = computed(() => {
   return [
     {
       name: t('RR0003'),
-      path: parsePath('/:orgNo/public-library'),
+      goTo: () => {
+        goToPublicLibrary()
+      },
     },
-    ...store.getters['publicLibrary/materialBreadcrumbList'].map(
-      ({ name, nodeKey }, index, array) => {
-        if (index !== array.length - 1) {
-          return {
-            name,
-            path: parsePath(`/:orgNo/public-library/${nodeKey}`),
-          }
-        } else {
-          return {
-            name: material.value.materialNo,
-            path: parsePath('/:orgNo/public-library/material/:nodeKey'),
-          }
+    ...nodeMeta.value.locationList.map(({ name, nodeId }, index, array) => {
+      if (index !== array.length - 1) {
+        return {
+          name,
+          goTo: goToPublicLibrary.bind(null, {}, nodeId),
+        }
+      } else {
+        return {
+          name: material.value.itemNo!,
+          goTo: () => {},
         }
       }
-    ),
+    }),
   ]
 })
 </script>

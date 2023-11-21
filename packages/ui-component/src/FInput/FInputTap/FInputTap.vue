@@ -15,7 +15,7 @@ import { computed } from 'vue'
 
 interface Option {
   label?: string
-  selectValue: string | number
+  selectValue: any
   icon?: string
   selectedIcon?: string
 }

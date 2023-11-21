@@ -14,6 +14,7 @@ import type {
   MaterialPriceInfo,
   MaterialCarbonEmission,
   MaterialSideAllOfContentList,
+  Country,
 } from '@frontier/platform-web-sdk'
 import {
   MaterialTypeText,
@@ -81,11 +82,15 @@ const materialInfoForDisplay = {
     return {
       name: t('MI0026'),
       value: (() => {
+        type OmitIsPublic<T> = Omit<T, 'isPublic'>
+
+        let temp: any = {}
+
         switch (materialType) {
           case MaterialType.WOVEN: {
             const { warpDensity, weftDensity, warpYarnSize, weftYarnSize } =
               (construction as MaterialWovenConstruction) ?? {}
-            return {
+            temp = {
               density: {
                 name: t('MI0027'),
                 value:
@@ -101,9 +106,10 @@ const materialInfoForDisplay = {
                     : warpYarnSize || weftYarnSize,
               },
             }
+            break
           }
           case MaterialType.KNIT: {
-            return getNameValueMap<Omit<MaterialKnitConstruction, 'isPublic'>>(
+            temp = getNameValueMap<OmitIsPublic<MaterialKnitConstruction>>(
               {
                 machineType: 'Machine Type',
                 walesPerInch: 'Wales Per Inch',
@@ -113,11 +119,10 @@ const materialInfoForDisplay = {
               },
               (construction as MaterialKnitConstruction) ?? {}
             )
+            break
           }
           case MaterialType.LEATHER: {
-            return getNameValueMap<
-              Omit<MaterialLeatherConstruction, 'isPublic'>
-            >(
+            temp = getNameValueMap<OmitIsPublic<MaterialLeatherConstruction>>(
               {
                 averageSkinPerMeterSquare: 'Average Skin Per Meter Square',
                 grade: 'Grade',
@@ -126,20 +131,20 @@ const materialInfoForDisplay = {
               },
               (construction as MaterialLeatherConstruction) ?? {}
             )
+            break
           }
           case MaterialType.NON_WOVEN: {
-            return getNameValueMap<
-              Omit<MaterialNonWovenConstruction, 'isPublic'>
-            >(
+            temp = getNameValueMap<OmitIsPublic<MaterialNonWovenConstruction>>(
               {
                 bondingMethod: 'Bonding Method',
                 thicknessPerMm: 'Thickness Per Mm',
               },
               (construction as MaterialNonWovenConstruction) ?? {}
             )
+            break
           }
           case MaterialType.TRIM: {
-            return getNameValueMap<Omit<MaterialTrimConstruction, 'isPublic'>>(
+            temp = getNameValueMap<OmitIsPublic<MaterialTrimConstruction>>(
               {
                 outerDiameter: 'Outer Diameter',
                 length: 'Length',
@@ -148,8 +153,20 @@ const materialInfoForDisplay = {
               },
               (construction as MaterialTrimConstruction) ?? {}
             )
+            break
           }
         }
+
+        if (!temp.isPublic) {
+          return null
+        }
+        delete temp.isPublic
+
+        if (Object.keys(temp).some((key) => !temp[key].value)) {
+          return null
+        }
+
+        return temp as Record<string, { name: string; value: string }>
       })(),
     }
   },
@@ -177,7 +194,7 @@ const materialInfoForDisplay = {
     value: weight ? `${weight.value} ${WeightUnitText[weight.unit]}` : '',
   }),
   priceInfo: (priceInfo: MaterialPriceInfo | null) => {
-    const countryList = store.getters['code/countryList']
+    const countryList = store.getters['code/countryList'] as Country[]
     const { currencyCode, price, unit: priceUnit } = priceInfo?.pricing || {}
     const { qty: minimumOrderQty, unit: minimumOrderUnit } =
       priceInfo?.minimumOrder || {}
@@ -232,8 +249,12 @@ const materialInfoForDisplay = {
       },
     }
   },
-  carbonEmission: (carbonEmission: MaterialCarbonEmission) => {
-    const { co2, water, land } = carbonEmission ?? {}
+  carbonEmission: (carbonEmission: MaterialCarbonEmission | null) => {
+    const { co2, water, land } = carbonEmission ?? {
+      co2: null,
+      water: null,
+      land: null,
+    }
 
     const makeObj = (
       value: number | null,

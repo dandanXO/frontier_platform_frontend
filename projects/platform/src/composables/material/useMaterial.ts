@@ -36,11 +36,7 @@ export type MaterialSpecificationInfo = {
   construction: {
     name: string
     isPublic: boolean
-    value:
-      | {
-          [key: string]: any
-        }
-      | undefined
+    value: Record<string, { name: string; value: string }> | null
     textColor: string
   } | null
   constructionCustomPropertyList: {
@@ -391,7 +387,9 @@ export default function useMaterial(
     if (!material.value.carbonEmission) {
       return {
         hasPermission: false,
-        carbonEmission: null,
+        carbonEmission: materialInfoForDisplay.carbonEmission(
+          material.value.carbonEmission
+        ),
         lastUpdateTime: null,
       }
     }

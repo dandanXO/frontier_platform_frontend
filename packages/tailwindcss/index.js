@@ -78,6 +78,8 @@ module.exports = plugin(function () {}, {
       minHeight: spacing,
       lineHeight: lineHeight,
       screens: {
+        tablet: '600px',
+        desktop: '905px',
         '2xl': '1440px',
       },
       gridTemplateColumns: {

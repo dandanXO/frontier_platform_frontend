@@ -1,5 +1,5 @@
 <template lang="pug">
-div
+div(class="grid gap-y-4.5")
   div(class="flex items-center gap-x-2")
     f-svg-icon(iconName="swatch_small" size="20" class="text-grey-900")
     p(class="text-body2 font-bold text-grey-900") {{ $t('RR0130') }}
@@ -8,7 +8,7 @@ div
     :optionList="sideOptionList"
     :inputValue="currentSideType"
     @update:inputValue="$emit('switchSideType', $event)"
-    class="pt-4 pb-3"
+    class="pb-3"
   )
   f-infobar(
     v-if="isAutoSyncFaceToBackSideInfo && currentSideType === MATERIAL_SIDE_TYPE.BACK"
@@ -28,7 +28,7 @@ div
       ) {{ specificationInfo.featureList.value }}
       button(
         v-if="!hasExtendedContent"
-        class="text-caption text-cyan-400 pt-2 pb-3"
+        class="text-caption text-cyan-400 pt-2"
         @click="hasExtendedContent = true"
       ) Show More
     block-specification(:specificationInfo="specificationInfo")

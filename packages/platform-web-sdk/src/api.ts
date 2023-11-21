@@ -1751,47 +1751,10 @@ export interface CodeCountryGet200ResponseResult {
 export interface CodeCountryGet200ResponseResultCode {
     /**
      * 
-     * @type {Array<CodeCountryGet200ResponseResultCodeCountryListInner>}
+     * @type {Array<Country>}
      * @memberof CodeCountryGet200ResponseResultCode
      */
-    'countryList'?: Array<CodeCountryGet200ResponseResultCodeCountryListInner>;
-}
-/**
- * 
- * @export
- * @interface CodeCountryGet200ResponseResultCodeCountryListInner
- */
-export interface CodeCountryGet200ResponseResultCodeCountryListInner {
-    /**
-     * 國家代碼
-     * @type {string}
-     * @memberof CodeCountryGet200ResponseResultCodeCountryListInner
-     */
-    'countryCode'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeCountryGet200ResponseResultCodeCountryListInner
-     */
-    'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeCountryGet200ResponseResultCodeCountryListInner
-     */
-    'native'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeCountryGet200ResponseResultCodeCountryListInner
-     */
-    'phone'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeCountryGet200ResponseResultCodeCountryListInner
-     */
-    'emoji'?: string;
+    'countryList': Array<Country>;
 }
 /**
  * 
@@ -2150,6 +2113,43 @@ export interface Coordinate {
      * @memberof Coordinate
      */
     'y': number;
+}
+/**
+ * 
+ * @export
+ * @interface Country
+ */
+export interface Country {
+    /**
+     * 國家代碼
+     * @type {string}
+     * @memberof Country
+     */
+    'countryCode': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Country
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Country
+     */
+    'native': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Country
+     */
+    'phone': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Country
+     */
+    'emoji': string;
 }
 /**
  * 1 (正面為封面) 2 (背面為封面) 3 (多媒體資料為封面)
@@ -15595,7 +15595,7 @@ export type NodeChildNodeProperty = Collection | MainMaterial;
  */
 export interface NodeMeta {
     /**
-     * 
+     * 若為虛構的節點，則 nodeId 為 -1
      * @type {number}
      * @memberof NodeMeta
      */
@@ -15682,7 +15682,7 @@ export interface NodeMeta {
  */
 export interface NodeMetaLocationListInner {
     /**
-     * 
+     * 若為虛構的節點，則 nodeId 為 -1
      * @type {number}
      * @memberof NodeMetaLocationListInner
      */

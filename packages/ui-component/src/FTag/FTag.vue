@@ -19,9 +19,9 @@ import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    size: 'sm' | 'lg'
+    size?: 'sm' | 'lg'
     appendIcon?: string
-    isActive: boolean
+    isActive?: boolean
   }>(),
   {
     size: 'lg',

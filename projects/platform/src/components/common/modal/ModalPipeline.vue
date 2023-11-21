@@ -279,6 +279,11 @@ export default {
     ModalUploadAttachment: defineAsyncComponent(() =>
       import('@/components/assets/edit/ModalUploadAttachment.vue')
     ),
+    ModalMaterialSpecification: defineAsyncComponent(() =>
+      import(
+        '@/components/common/material/detail/external/ModalMaterialSpecification.vue'
+      )
+    ),
   },
   setup() {
     const store = useStore()

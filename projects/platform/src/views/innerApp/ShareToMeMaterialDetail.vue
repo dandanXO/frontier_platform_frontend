@@ -1,100 +1,61 @@
 <template lang="pug">
-div
-  div(class="mx-auto w-230 h-fit pb-25")
-    material-detail-external-header(
-      :breadcrumbList="breadcrumbList"
-      :material="material"
-      @clone="shareToMeCloneByMaterial(nodeKey, sharingId, share.isCanClone)"
-    )
-      template(#action-list)
-        div(class="relative cursor-pointer ml-3" @click="openModalShareMessage")
-          f-svg-icon(iconName="chat" size="24" class="text-grey-600")
-          div(
-            v-if="haveMsgAndFirstRead"
-            class="absolute -top-px -right-px w-2 h-2 rounded-full border border-grey-0 bg-red-400"
-          )
-      template(#caption)
-        div(class="text-caption text-grey-600 flex items-center")
-          p(class="pr-2.5") {{ share.displayName }}
-          p {{ $t('RR0148') }} {{ toYYYYMMDDFormat(share.shareDate) }}
-    material-detail-external(
-      :material="material"
-      :isCanDownloadU3M="share.isCanDownloadU3M"
-    )
+material-detail-inner-external(
+  :material="material"
+  :nodeMeta="nodeMeta"
+  :locationList="locationList"
+  :publishedDate="shareInfo.shareDate"
+  @clone="shareToMeClone(Number(sharingId), [nodeMeta.nodeId], nodeMeta.isCanClone, $t('II0008'))"
+)
 </template>
 
-<script setup>
-import { computed, ref } from 'vue'
+<script setup lang="ts">
+import { computed, reactive, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
+import MaterialDetailInnerExternal from '@/components/common/material/detail/external/MaterialDetailInnerExternal.vue'
 import useNavigation from '@/composables/useNavigation'
-import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
 import useShareToMe from '@/composables/useShareToMe'
-import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
-import MaterialDetailExternalHeader from '@/components/common/material/detail/MaterialDetailExternalHeader.vue'
-import { toYYYYMMDDFormat } from '@frontier/lib'
+import { useShareToMeStore } from '@/stores/shareToMe'
 
-const props = defineProps({
-  nodeKey: {
-    type: String,
-    required: true,
-  },
-})
+const props = defineProps<{
+  sharingId: string
+  nodeId: string
+}>()
 
 const { t } = useI18n()
-const store = useStore()
-const route = useRoute()
-const { parsePath, prefixPath } = useNavigation()
-const { shareToMeCloneByMaterial } = useShareToMe()
-const sharingId = ref(route.query.sharingId)
+const { ogBaseShareToMeApi } = useShareToMeStore()
+const { goToShareToMe } = useNavigation()
+const { shareToMeClone } = useShareToMe()
 
-await store.dispatch('shareToMe/getShareToMeMaterial', {
-  nodeKey: props.nodeKey,
-  sharingId: sharingId.value,
-  rank: Number(route.query.rank),
+const res = await ogBaseShareToMeApi('getShareToMeMaterial', {
+  sharingId: Number(props.sharingId),
+  nodeId: Number(props.nodeId),
+  searchLog: null,
 })
+const { material, nodeMeta, shareInfo } = toRefs(
+  reactive(res.data.result.shareNodeMaterial)
+)
 
-const material = computed(() => store.getters['shareToMe/material'])
-const share = computed(() => store.getters['shareToMe/materialShare'])
-const breadcrumbList = computed(() => {
+const locationList = computed(() => {
   return [
     {
       name: t('RR0010'),
-      path: parsePath(`${prefixPath.value}/share-to-me`),
+      goTo: () => {
+        goToShareToMe()
+      },
     },
-    ...store.getters['shareToMe/materialBreadcrumbList'].map(
-      ({ name, nodeKey }, index, array) => {
-        if (index !== array.length - 1) {
-          return {
-            name,
-            path: parsePath(
-              `${prefixPath.value}/share-to-me/${nodeKey}?sharingId=${sharingId.value}`
-            ),
-          }
-        } else {
-          return {
-            name: material.value.materialNo,
-            path: parsePath(
-              `${prefixPath.value}/share-to-me/material/${nodeKey}?sharingId=${sharingId.value}`
-            ),
-          }
+    ...nodeMeta.value.locationList.map(({ name, nodeId }, index, array) => {
+      if (index !== array.length - 1) {
+        return {
+          name,
+          goTo: goToShareToMe.bind(null, {}, Number(props.sharingId), nodeId),
+        }
+      } else {
+        return {
+          name: material.value.itemNo!,
+          goTo: () => {},
         }
       }
-    ),
+    }),
   ]
 })
-const isFirstTime = ref(true)
-const haveMsgAndFirstRead = computed(
-  () => !!share.value?.message && isFirstTime.value
-)
-
-const openModalShareMessage = () => {
-  isFirstTime.value = false
-  store.dispatch('helper/openModalBehavior', {
-    component: 'modal-share-message',
-    properties: {
-      message: share.value.message,
-    },
-  })
-}
 </script>

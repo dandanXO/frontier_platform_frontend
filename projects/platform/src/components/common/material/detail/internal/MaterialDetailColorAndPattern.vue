@@ -5,11 +5,11 @@ div
     p(class="text-body2 font-bold text-grey-900") Colors and Pattern
   div(class="grid gap-y-2 pt-4")
     //- Pantone
-    div(class="flex items-center gap-x-2")
+    div(v-if="pantoneList" class="flex items-center gap-x-2")
       div(v-for="pantone in pantoneList" :key="pantone.name")
         f-tooltip-media(
           placement="right-end"
-          :pantone="{ r: pantone.r, g: pantone.g, b: pantone.g }"
+          :pantone="{ r: pantone.r, g: pantone.g, b: pantone.b }"
           :tooltipTitle="pantone.name"
           :tooltipMessage="pantone.colorName"
         )
