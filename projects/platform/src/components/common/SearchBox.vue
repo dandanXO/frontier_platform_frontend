@@ -73,6 +73,10 @@ div(class="grid")
           v-if="searchType === SEARCH_TYPE.ASSETS"
           @search="$emit('search')"
         )
+        filter-country(
+          v-if="![SEARCH_TYPE.ASSETS, SEARCH_TYPE.WORKSPACE].includes(searchType)"
+          @search="$emit('search')"
+        )
 </template>
 
 <script setup lang="ts">
@@ -91,6 +95,7 @@ import FilterHasU3m from '@/components/common/filter/FilterHasU3m.vue'
 import FilterEco from '@/components/common/filter/FilterEco.vue'
 import FilterAssetStatus from '@/components/common/filter/FilterAssetStatus.vue'
 import FilterPrice from '@/components/common/filter/FilterPrice.vue'
+import FilterCountry from '@/components/common/filter/FilterCountry.vue'
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { SEARCH_TYPE } from '@/utils/constants'
 import { useSearchStore } from '@/stores/search'

@@ -295,6 +295,12 @@ const search = async (targetPage = 1) => {
               }
             }
 
+            if (props.searchType !== SEARCH_TYPE.INNER_EXTERNAL) {
+              if (property === 'countryList') {
+                return acc
+              }
+            }
+
             return {
               ...acc,
               [property]: filterDirty.value[property]

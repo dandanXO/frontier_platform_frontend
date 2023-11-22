@@ -8,9 +8,11 @@ import type {
   CurrencyCode,
   MaterialQuantityUnit,
   AssetsFilterStatusEnum,
+  Country,
 } from '@frontier/platform-web-sdk'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import { isEqual } from '@frontier/lib'
+import { useStore } from 'vuex'
 
 export interface FilterState {
   materialTypeList: number[]
@@ -70,6 +72,7 @@ export interface FilterState {
   withOutEcoImpactor: boolean | null
   // for assets
   status: AssetsFilterStatusEnum | null
+  countryList: string[]
 }
 
 interface Description {
@@ -121,11 +124,16 @@ export interface FilterOption {
     displayName: string
     value: string
   }[]
+  countryList: {
+    name: string
+    countryCode: string
+  }[]
 }
 
 export const useFilterStore = defineStore('filter', () => {
   const ogBaseSearchApi = useOgBaseApiWrapper(searchApi)
-
+  const store = useStore()
+  const countryList = store.getters['code/countryList'] as Country[]
   const filterOption = ref<FilterOption>({
     width: {
       min: 0,
@@ -143,6 +151,10 @@ export const useFilterStore = defineStore('filter', () => {
       min: 0,
       max: 10000,
     },
+    countryList: countryList.map(({ name, countryCode }) => ({
+      name,
+      countryCode,
+    })),
   })
   const getInternalFilterOption = async () => {
     const { data } = await ogBaseSearchApi('getInternalSearchFilterOptions')
@@ -203,6 +215,8 @@ export const useFilterStore = defineStore('filter', () => {
     withOutEcoImpactor: null,
     // for assets
     status: null,
+    // for Inner External
+    countryList: [],
   })
   const filterState = ref<FilterState>(getInitFilterState())
   const setFilterState = (filter: FilterState) => (filterState.value = filter)
