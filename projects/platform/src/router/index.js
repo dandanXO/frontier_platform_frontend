@@ -222,7 +222,6 @@ const routes = [
         const apiList = [
           'organization/orgUser/getOrgUser',
           'organization/getPricing',
-          'showroom/getShowroomBannerAndList',
         ]
 
         if (to.params.orgNo && !from.params.orgNo) {
@@ -263,12 +262,6 @@ const routes = [
           next()
         },
         children: [
-          {
-            path: 'billings/:tab(plan|value-added-service|payment|history)',
-            name: 'Billings',
-            props: true,
-            component: () => import('@/views/innerApp/Billings.vue'),
-          },
           {
             path: 'dashboard',
             name: 'Dashboard',
@@ -382,6 +375,12 @@ const routes = [
         ],
       },
       {
+        path: 'billings/:tab(plan|value-added-service|payment|history)',
+        name: 'Billings',
+        props: true,
+        component: () => import('@/views/innerApp/Billings.vue'),
+      },
+      {
         path: 'public-library/:nodeId?',
         name: 'PublicLibrary',
         props: true,
@@ -395,13 +394,13 @@ const routes = [
           import('@/views/innerApp/PublicLibraryMaterialDetail.vue'),
       },
       {
-        path: 'showroom/:showroomId/:nodeKey?',
+        path: 'showroom/:showroomId/:nodeId?',
         name: 'Showroom',
         props: true,
         component: () => import('@/views/innerApp/Showroom.vue'),
       },
       {
-        path: 'showroom/:showroomId/material/:nodeKey',
+        path: 'showroom/:showroomId/material/:nodeId',
         name: 'ShowroomMaterialDetail',
         props: true,
         component: () => import('@/views/innerApp/ShowroomMaterialDetail.vue'),

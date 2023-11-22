@@ -82,10 +82,7 @@ div(class="w-full pt-3")
       v-else-if="tagList[indexOfActiveTag] === MADE2FLOW_TAG_LIST.METHODOLOGY.text"
       class="pb-19"
     )
-      p(class="text-body2 text-grey-900 leading-1.6 pb-3") {{ $t('RR0235') }}
-      img(src="@/assets/images/methodology_visual_1.png")
-      p(class="text-body2 text-grey-900 leading-1.6 pt-8 pb-2") {{ $t('RR0236') }}
-      img(src="@/assets/images/methodology_visual_2.png")
+      indicator-methodology
     div(
       v-else-if="tagList[indexOfActiveTag] === MADE2FLOW_TAG_LIST.FAQ.text"
       class="pb-19"
@@ -129,6 +126,7 @@ import { VALUE_ADDED_SERVICE_ID, useConstants } from '@/utils/constants'
 import valueAddedServiceList from '@/components/billings/valueAddedServiceList.js'
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide } from 'vue3-carousel'
+import IndicatorMethodology from '@/components/billings/IndicatorMethodology.vue'
 // https://ismail9k.github.io/vue3-carousel/
 
 const ValueAddedServiceMade2flowAppointment = defineAsyncComponent(() =>

@@ -15,6 +15,7 @@ import MaterialDetailInnerExternal from '@/components/common/material/detail/ext
 import useNavigation from '@/composables/useNavigation'
 import usePublicLibrary from '@/composables/usePublicLibrary'
 import { usePublicLibraryStore } from '@/stores/publicLibrary'
+import { useSearchStore } from '@/stores/search'
 
 const props = defineProps<{
   nodeId: string
@@ -23,11 +24,12 @@ const props = defineProps<{
 const { t } = useI18n()
 const { ogBasePublicLibraryApi } = usePublicLibraryStore()
 const { goToPublicLibrary } = useNavigation()
+const { getSearchLog } = useSearchStore()
 const { publicLibraryClone } = usePublicLibrary()
 
 const res = await ogBasePublicLibraryApi('getPublicLibraryMaterial', {
   nodeId: Number(props.nodeId),
-  searchLog: null,
+  searchLog: getSearchLog(),
 })
 const { material, nodeMeta } = toRefs(
   reactive(res.data.result.workspaceNodeMaterial)
@@ -45,7 +47,9 @@ const locationList = computed(() => {
       if (index !== array.length - 1) {
         return {
           name,
-          goTo: goToPublicLibrary.bind(null, {}, nodeId),
+          goTo: () => {
+            goToPublicLibrary({}, nodeId)
+          },
         }
       } else {
         return {

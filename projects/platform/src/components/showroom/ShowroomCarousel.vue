@@ -14,7 +14,7 @@ carousel(
     v-for="showroom in showroomList"
     :key="showroom.title"
     class="px-2.5 group/card cursor-pointer"
-    @click="goShowroom(showroom.showroomId)"
+    @click="goToShowroom({}, showroom.showroomId)"
   )
     div(
       class="w-full h-80 relative text-left bg-center bg-cover rounded overflow-hidden"
@@ -45,6 +45,7 @@ carousel(
           div(class="grid gap-x-3 grid-flow-col w-fit mx-auto pt-4")
             div(
               v-for="page in totalPage"
+              :key="page"
               class="w-3 h-3 rounded-full cursor-pointer"
               :class="[currentPage === page ? 'bg-grey-900' : 'bg-grey-150']"
               @click="slideTo(page)"
@@ -71,29 +72,31 @@ carousel(
             )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide } from 'vue3-carousel'
-import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { SHOWROOM_STATUS } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
+import { ShowroomStatus } from '@frontier/platform-web-sdk'
+import type { ShowroomBase } from '@frontier/platform-web-sdk'
 
-const store = useStore()
+const props = defineProps<{
+  showroomList: ShowroomBase[]
+}>()
+
 const { t } = useI18n()
+const { goToShowroom } = useNavigation()
 
-const { goShowroom } = useNavigation()
-
-const getStatusProps = (status) => {
+const getStatusProps = (status: ShowroomStatus) => {
   let text
   let color
   switch (status) {
-    case SHOWROOM_STATUS.CLOSE:
+    case ShowroomStatus.CLOSE:
       text = t('II0062')
       color = 'text-grey-200'
       break
-    case SHOWROOM_STATUS.COMING_SOON:
+    case ShowroomStatus.COMING_SOON:
       text = t('II0061')
       color = 'text-yellow-0'
       break
@@ -107,9 +110,8 @@ const getStatusProps = (status) => {
     color,
   }
 }
-const showroomList = computed(() => store.getters['showroom/showroomList'])
 const refCarousel = ref(null)
-const totalSlide = computed(() => showroomList.value.length)
+const totalSlide = computed(() => props.showroomList.length)
 const currentSlide = ref(0)
 const currentPage = computed(() => Math.round(currentSlide.value / 2) + 1)
 const totalPage = computed(() => Math.round(totalSlide.value / 2))
@@ -133,7 +135,7 @@ const nextSlide = () => {
   )
 }
 
-const slideTo = (page) => {
+const slideTo = (page: number) => {
   currentSlide.value = 2 * (page - 1)
 }
 </script>

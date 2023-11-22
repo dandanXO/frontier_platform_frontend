@@ -35,7 +35,7 @@ export default function useNavigation() {
   const nextAfterSignIn = async () => {
     const user = store.getters['user/user']
     const organizationList = user.organizationList
-    const redirect = route.query.redirect
+    const redirect = route.query.redirect as string | undefined
 
     if (redirect !== undefined) {
       if (
@@ -200,18 +200,27 @@ export default function useNavigation() {
     router.push(parsePath(path, navReq))
   }
 
-  // const goShowroom = async (showroomId) => {
-  //   await store.dispatch('sticker/closeStickerDrawer')
-  //   router.push(parsePath(`/:orgNo/showroom/${showroomId}`))
-  // }
+  const goToShowroom = async (
+    navReq: NavigationReq = {},
+    showroomId: number,
+    nodeId?: number
+  ) => {
+    await store.dispatch('sticker/closeStickerDrawer')
+    const basePath = `/:orgNo/showroom/${showroomId}`
+    const path = nodeId ? `${basePath}/${nodeId}` : basePath
+    router.push(parsePath(path, navReq))
+  }
 
-  // const goShowroomMaterialDetail = (nodeKey, showroomId, rank) => {
-  //   router.push(
-  //     parsePath(
-  //       `/:orgNo/showroom/${showroomId}/material/${nodeKey}?&rank=${rank}`
-  //     )
-  //   )
-  // }
+  const goToShowroomMaterialDetail = (
+    navReq: NavigationReq = {},
+    showroomId: number,
+    nodeId: number,
+    rank?: number
+  ) => {
+    const basePath = `/:orgNo/showroom/${showroomId}/material/${nodeId}`
+    const path = rank ? `${basePath}?rank=${rank}` : basePath
+    router.push(parsePath(path, navReq))
+  }
 
   // const goToReceivedShareMaterial = (nodeKey, sharingKey, rank) => {
   //   router.push(
@@ -263,8 +272,8 @@ export default function useNavigation() {
     goToWorkspaceMaterialDetail,
     goToPublicLibrary,
     goToPublicLibraryMaterialDetail,
-    // goShowroom,
-    // goShowroomMaterialDetail,
+    goToShowroom,
+    goToShowroomMaterialDetail,
     // goToReceivedShareMaterial,
     goToShareToMeMaterial,
     goToBillings,

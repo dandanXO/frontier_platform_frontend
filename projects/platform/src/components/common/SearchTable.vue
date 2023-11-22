@@ -268,7 +268,7 @@ const search = async (targetPage = 1) => {
         perPageCount: 40,
       },
       search: (() => {
-        return keyword.value === '' && selectedTagList.value.length === 0
+        return !keyword.value && selectedTagList.value.length === 0
           ? null
           : {
               keyword: keyword.value,
@@ -314,7 +314,7 @@ const search = async (targetPage = 1) => {
       currentPage: targetPage,
       sort: sort.value,
       isShowMatch: isShowMatch.value ? isShowMatch.value : undefined,
-      keyword: keyword.value === '' ? undefined : keyword.value,
+      keyword: keyword.value ?? undefined,
       tagList:
         selectedTagList.value.length > 0
           ? encodeURI(JSON.stringify(selectedTagList.value))
@@ -357,10 +357,8 @@ searchStore.setSort(
   qSort ? (Number(qSort) as PaginationReqSortEnum) : defaultSort.value
 )
 searchStore.setIsShowMatch(qIsShowMatch === 'true')
-if (qKeyword) {
-  searchStore.setKeyword(qKeyword as string)
-  searchStore.getAITags()
-}
+searchStore.setKeyword(qKeyword ? (qKeyword as string) : null)
+searchStore.getAITags()
 searchStore.setSelectedTagList(
   qTagList ? JSON.parse(decodeURI(qTagList as string)) : []
 )

@@ -15,6 +15,7 @@ import MaterialDetailInnerExternal from '@/components/common/material/detail/ext
 import useNavigation from '@/composables/useNavigation'
 import useShareToMe from '@/composables/useShareToMe'
 import { useShareToMeStore } from '@/stores/shareToMe'
+import { useSearchStore } from '@/stores/search'
 
 const props = defineProps<{
   sharingId: string
@@ -25,11 +26,12 @@ const { t } = useI18n()
 const { ogBaseShareToMeApi } = useShareToMeStore()
 const { goToShareToMe } = useNavigation()
 const { shareToMeClone } = useShareToMe()
+const { getSearchLog } = useSearchStore()
 
 const res = await ogBaseShareToMeApi('getShareToMeMaterial', {
   sharingId: Number(props.sharingId),
   nodeId: Number(props.nodeId),
-  searchLog: null,
+  searchLog: getSearchLog(),
 })
 const { material, nodeMeta, shareInfo } = toRefs(
   reactive(res.data.result.shareNodeMaterial)
@@ -47,7 +49,9 @@ const locationList = computed(() => {
       if (index !== array.length - 1) {
         return {
           name,
-          goTo: goToShareToMe.bind(null, {}, Number(props.sharingId), nodeId),
+          goTo: () => {
+            goToShareToMe({}, Number(props.sharingId), nodeId)
+          },
         }
       } else {
         return {

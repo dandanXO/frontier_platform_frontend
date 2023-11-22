@@ -369,20 +369,9 @@ export enum CONTENT_PARSED_TYPE {
   NEWLINE = 3,
 }
 
-export enum SHOWROOM_STATUS {
-  CLOSE = 0,
-  COMING_SOON = 1,
-  CURRENT = 2,
-}
-
 export enum CREATE_EDIT {
   CREATE = 1,
   EDIT = 2,
-}
-
-export enum BANNER_TEXT_COLOR {
-  WHITE = 0,
-  EDIT = 1,
 }
 
 export const COLLECTION_NAME_MAX_LENGTH = 100

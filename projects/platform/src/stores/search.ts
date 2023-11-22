@@ -8,10 +8,12 @@ import {
 } from '@frontier/platform-web-sdk'
 import { getEnumTextValueMap } from '@/utils/mapping'
 import { SortByText } from '@/utils/enumText'
+import { useRoute } from 'vue-router'
 
 export const useSearchStore = defineStore('search', () => {
-  const keyword = ref('')
-  const setKeyword = (k: string) => (keyword.value = k)
+  const route = useRoute()
+  const keyword = ref<string | null>(null)
+  const setKeyword = (k: string | null) => (keyword.value = k)
   const tagList = ref<SearchAITag[]>([])
   const setTagList = (tags: SearchAITag[]) => (tagList.value = tags)
   const selectedTagList = ref<SearchAITag[]>([])
@@ -29,7 +31,7 @@ export const useSearchStore = defineStore('search', () => {
   const setIsShowMatch = (isMatch: boolean) => (isShowMatch.value = isMatch)
 
   const getAITags = async () => {
-    if (keyword.value === '') {
+    if (!keyword.value) {
       return
     }
 
@@ -47,6 +49,18 @@ export const useSearchStore = defineStore('search', () => {
   const paginationRes = ref<PaginationRes>()
   const setPaginationRes = (res: PaginationRes) => (paginationRes.value = res)
 
+  const getSearchLog = () => {
+    const rank = route.query.rank ?? null
+    if (!rank || !keyword.value) {
+      return null
+    }
+
+    return {
+      keyword: keyword.value,
+      rank: Number(rank),
+    }
+  }
+
   return {
     keyword,
     setKeyword,
@@ -62,5 +76,6 @@ export const useSearchStore = defineStore('search', () => {
     setPaginationRes,
     getAITags,
     sortOption,
+    getSearchLog,
   }
 })

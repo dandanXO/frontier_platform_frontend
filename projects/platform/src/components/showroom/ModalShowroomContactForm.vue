@@ -41,62 +41,58 @@ modal-behavior(
     )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import type { FInputText } from '@frontier/ui-component'
+import type { ShowroomAllOfParticipatedOrgList } from '@frontier/platform-web-sdk'
+import { useShowroomStore } from '@/stores/showroom'
 
-const props = defineProps({
-  toOrgId: {
-    type: Number,
-  },
+const props = defineProps<{
+  toOrgId: number
   // 只能發送給預設的 toOrgId 對象，不能選擇其他的 (從單一 showroom 開啟的)
-  onlyToOne: {
-    type: Boolean,
-    default: false,
-  },
-})
+  onlyToOne: boolean
+  showroomId: number
+  participatedOrgList: ShowroomAllOfParticipatedOrgList[]
+}>()
 
 const store = useStore()
 const notify = useNotifyStore()
 const { t } = useI18n()
+const { ogBaseShowroomApi } = useShowroomStore()
 
-const showroom = computed(() => store.getters['showroom/showroom'])
 const formData = reactive({
-  showroomId: showroom.value.showroomId,
+  showroomId: props.showroomId,
   toOrgId: props.toOrgId,
-  fromEmail: store.getters['user/email'],
+  fromEmail: store.getters['user/email'] as string,
   subject: '',
   content: '',
 })
 
-const refFromEmail = ref(null)
+const refFromEmail = ref<typeof FInputText>()
 const primaryBtnDisabled = computed(
   () => refFromEmail.value?.isError || !formData.subject || !formData.content
 )
 const orgMenuTree = computed(() => ({
   blockList: [
     {
-      menuList: showroom.value.participatedOrgList.map(
-        ({ orgName, logo, orgId }) => ({
-          title: orgName,
-          selectValue: orgId,
-          thumbnail: logo,
-        })
-      ),
+      menuList: props.participatedOrgList.map(({ orgName, logo, orgId }) => ({
+        title: orgName,
+        selectValue: orgId,
+        thumbnail: logo,
+      })),
     },
   ],
 }))
-const selectedOrg = computed(() =>
-  showroom.value.participatedOrgList.find(
-    (org) => org.orgId === formData.toOrgId
-  )
+const selectedOrg = computed(
+  () => props.participatedOrgList.find((org) => org.orgId === formData.toOrgId)!
 )
 
 const contactShowroomOrg = async () => {
   store.dispatch('helper/clearModalPipeline')
-  await store.dispatch('showroom/contactShowroomOrg', formData)
+  await ogBaseShowroomApi('sendShowroomEmail', formData)
   notify.showNotifySnackbar({
     messageText: t('II0033', { orgName: selectedOrg.value.orgName }),
   })

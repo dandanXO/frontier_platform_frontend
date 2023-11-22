@@ -59,17 +59,15 @@ div(class="relative")
         p(v-if="isNode") {{ workspaceNodeCollection.nodeMeta.unitName }}
     template(v-if="isFirstLayer" #banner="{ inSearch, currentPage }")
       div(v-if="!inSearch && currentPage === 1" class="pb-6 px-7.5")
-        div(
-          class="rounded-md box-border p-5 flex flex-col gap-y-4 justify-between shadow-2 bg-center bg-cover"
-          :style="{ backgroundImage: `url(${banner.coverImg})` }"
+        showroom-banner(
+          v-if="banner"
+          :title="banner.title"
+          :coverImg="banner.coverImg"
+          :textColor="banner.color"
+          :slotContent="banner.description"
         )
-          h6(
-            class="text-h6 font-bold"
-            :class="[banner.color === BANNER_TEXT_COLOR.WHITE ? 'text-grey-0' : 'text-grey-900']"
-          ) {{ banner.title }}
-          component(:is="bannerDescriptionComponent")
         div(class="mt-4 w-full")
-          showroom-carousel
+          showroom-carousel(:showroomList="showroomList")
     template(#default="{ visit }")
       div(
         v-if="nodeList.length > 0"
@@ -105,7 +103,7 @@ import SearchTable, {
   type RouteQuery,
   type SearchPayload,
 } from '@/components/common/SearchTable.vue'
-import { SEARCH_TYPE, BANNER_TEXT_COLOR } from '@/utils/constants'
+import { SEARCH_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { watch, ref, computed } from 'vue'
@@ -124,6 +122,8 @@ import {
   type InnerExternalFilter,
 } from '@frontier/platform-web-sdk'
 import type { PropsModalCollectionDetail } from '@/components/common/ModalCollectionDetail.vue'
+import { useShowroomStore } from '@/stores/showroom'
+import ShowroomBanner from '@/components/showroom/ShowroomBanner.vue'
 
 const props = defineProps<{
   nodeId?: string
@@ -142,10 +142,13 @@ const { ogBasePublicLibraryApi } = usePublicLibraryStore()
 const { publicLibraryClone, publicLibraryShare, publicLibraryCloneByNodeList } =
   usePublicLibrary()
 const { goToPublicLibraryMaterialDetail } = useNavigation()
-
+const { ogBaseShowroomApi } = useShowroomStore()
+const { data } = await ogBaseShowroomApi('getShowroomBannerAndShowroomList')
+const banner = data.result.banner
+const showroomList = data.result.showroomList
 const workspaceNodeCollection = ref<WorkspaceNodeCollection>()
 
-const selectedNodeList = ref([])
+const selectedNodeList = ref<NodeChild[]>([])
 const searchOrgId = ref<number | null>(
   (route.query.searchOrgId as unknown as number) ?? null
 )
@@ -269,11 +272,5 @@ const handleNodeClick = (node: NodeChild, visit: Function) => {
 watch(
   () => isFirstLayer.value,
   () => (selectedNodeList.value.length = 0)
-)
-
-/** Showroom */
-const banner = computed(() => store.getters['showroom/banner'])
-const bannerDescriptionComponent = computed(
-  () => store.getters['showroom/bannerDescriptionComponent']
 )
 </script>

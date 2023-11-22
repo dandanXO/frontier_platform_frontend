@@ -13,7 +13,6 @@ import embed from '@/store/modules/embed'
 import moodboard from '@/store/modules/moodboard'
 import polling from '@/store/modules/polling'
 import sticker from '@/store/modules/sticker'
-import showroom from '@/store/modules/showroom'
 
 export default createStore({
   actions: {
@@ -67,6 +66,5 @@ export default createStore({
     polling,
     moodboard,
     sticker,
-    showroom,
   },
 })

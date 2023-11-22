@@ -332,6 +332,49 @@ export interface AddWorkspaceNodeShareAssignedRequestAllOf {
 /**
  * 
  * @export
+ * @interface Announcement
+ */
+export interface Announcement {
+    /**
+     * 
+     * @type {number}
+     * @memberof Announcement
+     */
+    'showroomId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Announcement
+     */
+    'coverImg': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Announcement
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Announcement
+     */
+    'subtitle': string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Announcement
+     */
+    'participatedOrgLogoList': Array<string>;
+    /**
+     * 
+     * @type {SlotContent}
+     * @memberof Announcement
+     */
+    'description': SlotContent;
+}
+/**
+ * 
+ * @export
  * @interface AssetsFilter
  */
 export interface AssetsFilter {
@@ -662,6 +705,45 @@ export interface AttachmentFile {
      */
     'extension': string;
 }
+/**
+ * 
+ * @export
+ * @interface Banner
+ */
+export interface Banner {
+    /**
+     * 
+     * @type {string}
+     * @memberof Banner
+     */
+    'coverImg': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Banner
+     */
+    'color': BannerColorEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof Banner
+     */
+    'title': string;
+    /**
+     * 
+     * @type {SlotContent}
+     * @memberof Banner
+     */
+    'description': SlotContent;
+}
+
+export const BannerColorEnum = {
+    WHITE: 0,
+    BLACK: 1
+} as const;
+
+export type BannerColorEnum = typeof BannerColorEnum[keyof typeof BannerColorEnum];
+
 /**
  * 基礎書籤物件
  * @export
@@ -8503,6 +8585,289 @@ export interface GetShareToMeMaterialRequestAllOf {
 /**
  * 
  * @export
+ * @interface GetShowroom200Response
+ */
+export interface GetShowroom200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetShowroom200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetShowroom200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GetShowroom200ResponseAllOfResult}
+     * @memberof GetShowroom200Response
+     */
+    'result': GetShowroom200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetShowroom200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroom200ResponseAllOf
+ */
+export interface GetShowroom200ResponseAllOf {
+    /**
+     * 
+     * @type {GetShowroom200ResponseAllOfResult}
+     * @memberof GetShowroom200ResponseAllOf
+     */
+    'result': GetShowroom200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroom200ResponseAllOfResult
+ */
+export interface GetShowroom200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Showroom}
+     * @memberof GetShowroom200ResponseAllOfResult
+     */
+    'showroom': Showroom;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroomAnnouncement200Response
+ */
+export interface GetShowroomAnnouncement200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetShowroomAnnouncement200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetShowroomAnnouncement200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GetShowroomAnnouncement200ResponseAllOfResult}
+     * @memberof GetShowroomAnnouncement200Response
+     */
+    'result': GetShowroomAnnouncement200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetShowroomAnnouncement200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroomAnnouncement200ResponseAllOf
+ */
+export interface GetShowroomAnnouncement200ResponseAllOf {
+    /**
+     * 
+     * @type {GetShowroomAnnouncement200ResponseAllOfResult}
+     * @memberof GetShowroomAnnouncement200ResponseAllOf
+     */
+    'result': GetShowroomAnnouncement200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroomAnnouncement200ResponseAllOfResult
+ */
+export interface GetShowroomAnnouncement200ResponseAllOfResult {
+    /**
+     * 用來判斷要不要跳showroom的 announcement modal
+     * @type {boolean}
+     * @memberof GetShowroomAnnouncement200ResponseAllOfResult
+     */
+    'isPromoting': boolean;
+    /**
+     * 
+     * @type {Announcement}
+     * @memberof GetShowroomAnnouncement200ResponseAllOfResult
+     */
+    'announcement': Announcement;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroomAnnouncementRequest
+ */
+export interface GetShowroomAnnouncementRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetShowroomAnnouncementRequest
+     */
+    'orgId': number;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroomBannerAndShowroomList200Response
+ */
+export interface GetShowroomBannerAndShowroomList200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetShowroomBannerAndShowroomList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetShowroomBannerAndShowroomList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GetShowroomBannerAndShowroomList200ResponseAllOfResult}
+     * @memberof GetShowroomBannerAndShowroomList200Response
+     */
+    'result': GetShowroomBannerAndShowroomList200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetShowroomBannerAndShowroomList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroomBannerAndShowroomList200ResponseAllOf
+ */
+export interface GetShowroomBannerAndShowroomList200ResponseAllOf {
+    /**
+     * 
+     * @type {GetShowroomBannerAndShowroomList200ResponseAllOfResult}
+     * @memberof GetShowroomBannerAndShowroomList200ResponseAllOf
+     */
+    'result': GetShowroomBannerAndShowroomList200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroomBannerAndShowroomList200ResponseAllOfResult
+ */
+export interface GetShowroomBannerAndShowroomList200ResponseAllOfResult {
+    /**
+     * 
+     * @type {Banner}
+     * @memberof GetShowroomBannerAndShowroomList200ResponseAllOfResult
+     */
+    'banner': Banner;
+    /**
+     * 
+     * @type {Array<ShowroomBase>}
+     * @memberof GetShowroomBannerAndShowroomList200ResponseAllOfResult
+     */
+    'showroomList': Array<ShowroomBase>;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroomListRequest
+ */
+export interface GetShowroomListRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetShowroomListRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetShowroomListRequest
+     */
+    'showroomId': number;
+    /**
+     * showroom root層的時候不用傳
+     * @type {number}
+     * @memberof GetShowroomListRequest
+     */
+    'nodeId': number | null;
+    /**
+     * 
+     * @type {PaginationReq}
+     * @memberof GetShowroomListRequest
+     */
+    'pagination': PaginationReq;
+    /**
+     * 
+     * @type {Search}
+     * @memberof GetShowroomListRequest
+     */
+    'search': Search | null;
+    /**
+     * 
+     * @type {InnerExternalFilter}
+     * @memberof GetShowroomListRequest
+     */
+    'filter': InnerExternalFilter | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroomMaterialRequest
+ */
+export interface GetShowroomMaterialRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetShowroomMaterialRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetShowroomMaterialRequest
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {SearchLog}
+     * @memberof GetShowroomMaterialRequest
+     */
+    'searchLog': SearchLog | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetShowroomRequest
+ */
+export interface GetShowroomRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetShowroomRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetShowroomRequest
+     */
+    'showroomId': number;
+}
+/**
+ * 
+ * @export
  * @interface GetThreadBoard200Response
  */
 export interface GetThreadBoard200Response {
@@ -10682,56 +11047,6 @@ export interface MaterialColorInfoCustomPropertyListInner {
     'customId': number;
 }
 /**
- * 布片顏色資訊
- * @export
- * @interface MaterialColorInfoUpdatePayload
- */
-export interface MaterialColorInfoUpdatePayload {
-    /**
-     * 顏色名稱
-     * @type {string}
-     * @memberof MaterialColorInfoUpdatePayload
-     */
-    'color': string;
-    /**
-     * 自定義欄位清單，External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳
-     * @type {Array<MaterialColorInfoUpdatePayloadCustomPropertyListInner>}
-     * @memberof MaterialColorInfoUpdatePayload
-     */
-    'customPropertyList': Array<MaterialColorInfoUpdatePayloadCustomPropertyListInner>;
-}
-/**
- * 
- * @export
- * @interface MaterialColorInfoUpdatePayloadCustomPropertyListInner
- */
-export interface MaterialColorInfoUpdatePayloadCustomPropertyListInner {
-    /**
-     * 是否公開欄位資訊
-     * @type {boolean}
-     * @memberof MaterialColorInfoUpdatePayloadCustomPropertyListInner
-     */
-    'isPublic': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialColorInfoUpdatePayloadCustomPropertyListInner
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialColorInfoUpdatePayloadCustomPropertyListInner
-     */
-    'value': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialColorInfoUpdatePayloadCustomPropertyListInner
-     */
-    'customId'?: number | null;
-}
-/**
  * @type MaterialConstruction
  * 規格資訊 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
  * @export
@@ -11090,48 +11405,10 @@ export interface MaterialCreateMiddleSide {
     'finishList': Array<MaterialSideCreateBaseFinishListInner> | null;
     /**
      * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
-     * @type {Array<MaterialCreateMiddleSideAllOfCustomPropertyList>}
+     * @type {Array<MaterialMiddleSideCreateAllOfCustomPropertyList>}
      * @memberof MaterialCreateMiddleSide
      */
-    'customPropertyList': Array<MaterialCreateMiddleSideAllOfCustomPropertyList>;
-}
-/**
- * 
- * @export
- * @interface MaterialCreateMiddleSideAllOf
- */
-export interface MaterialCreateMiddleSideAllOf {
-    /**
-     * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
-     * @type {Array<MaterialCreateMiddleSideAllOfCustomPropertyList>}
-     * @memberof MaterialCreateMiddleSideAllOf
-     */
-    'customPropertyList': Array<MaterialCreateMiddleSideAllOfCustomPropertyList>;
-}
-/**
- * 
- * @export
- * @interface MaterialCreateMiddleSideAllOfCustomPropertyList
- */
-export interface MaterialCreateMiddleSideAllOfCustomPropertyList {
-    /**
-     * 是否公開欄位資訊
-     * @type {boolean}
-     * @memberof MaterialCreateMiddleSideAllOfCustomPropertyList
-     */
-    'isPublic': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialCreateMiddleSideAllOfCustomPropertyList
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialCreateMiddleSideAllOfCustomPropertyList
-     */
-    'value': string;
+    'customPropertyList': Array<MaterialMiddleSideCreateAllOfCustomPropertyList>;
 }
 /**
  * Tag資訊
@@ -11784,37 +12061,6 @@ export interface MaterialInternalInventoryInfoYardageRemainingInfoListInnerAllOf
 /**
  * 
  * @export
- * @interface MaterialInventoryRemaingInfoBase
- */
-export interface MaterialInventoryRemaingInfoBase {
-    /**
-     * 布卡來源
-     * @type {string}
-     * @memberof MaterialInventoryRemaingInfoBase
-     */
-    'source': string | null;
-    /**
-     * 櫃位1
-     * @type {string}
-     * @memberof MaterialInventoryRemaingInfoBase
-     */
-    'shelf1': string | null;
-    /**
-     * 櫃位2
-     * @type {string}
-     * @memberof MaterialInventoryRemaingInfoBase
-     */
-    'shelf2': string | null;
-    /**
-     * 地點
-     * @type {string}
-     * @memberof MaterialInventoryRemaingInfoBase
-     */
-    'location': string | null;
-}
-/**
- * 
- * @export
  * @interface MaterialInventoryRemainingInfoBase
  */
 export interface MaterialInventoryRemainingInfoBase {
@@ -12024,10 +12270,48 @@ export interface MaterialMiddleSideCreate {
     'finishList': Array<MaterialSideCreateBaseFinishListInner> | null;
     /**
      * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
-     * @type {Array<MaterialCreateMiddleSideAllOfCustomPropertyList>}
+     * @type {Array<MaterialMiddleSideCreateAllOfCustomPropertyList>}
      * @memberof MaterialMiddleSideCreate
      */
-    'customPropertyList': Array<MaterialCreateMiddleSideAllOfCustomPropertyList>;
+    'customPropertyList': Array<MaterialMiddleSideCreateAllOfCustomPropertyList>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialMiddleSideCreateAllOf
+ */
+export interface MaterialMiddleSideCreateAllOf {
+    /**
+     * 自定義欄位清單 External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳 
+     * @type {Array<MaterialMiddleSideCreateAllOfCustomPropertyList>}
+     * @memberof MaterialMiddleSideCreateAllOf
+     */
+    'customPropertyList': Array<MaterialMiddleSideCreateAllOfCustomPropertyList>;
+}
+/**
+ * 
+ * @export
+ * @interface MaterialMiddleSideCreateAllOfCustomPropertyList
+ */
+export interface MaterialMiddleSideCreateAllOfCustomPropertyList {
+    /**
+     * 是否公開欄位資訊
+     * @type {boolean}
+     * @memberof MaterialMiddleSideCreateAllOfCustomPropertyList
+     */
+    'isPublic': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialMiddleSideCreateAllOfCustomPropertyList
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialMiddleSideCreateAllOfCustomPropertyList
+     */
+    'value': string;
 }
 /**
  * 
@@ -12335,69 +12619,6 @@ export interface MaterialPatternInfoCustomPropertyListInner {
      * @memberof MaterialPatternInfoCustomPropertyListInner
      */
     'customId': number;
-}
-/**
- * 布片花型資訊
- * @export
- * @interface MaterialPatternInfoUpdatePayload
- */
-export interface MaterialPatternInfoUpdatePayload {
-    /**
-     * 花型名稱
-     * @type {string}
-     * @memberof MaterialPatternInfoUpdatePayload
-     */
-    'pattern': string;
-    /**
-     * 自定義欄位清單，External Page(非Asset或WorkSpace的頁面)時，後端會過濾掉isPublic=false的資料後回傳
-     * @type {Array<MaterialPatternInfoUpdatePayloadCustomPropertyListInner>}
-     * @memberof MaterialPatternInfoUpdatePayload
-     */
-    'customPropertyList': Array<MaterialPatternInfoUpdatePayloadCustomPropertyListInner>;
-}
-/**
- * 
- * @export
- * @interface MaterialPatternInfoUpdatePayloadCustomPropertyListInner
- */
-export interface MaterialPatternInfoUpdatePayloadCustomPropertyListInner {
-    /**
-     * 是否公開欄位資訊
-     * @type {boolean}
-     * @memberof MaterialPatternInfoUpdatePayloadCustomPropertyListInner
-     */
-    'isPublic': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialPatternInfoUpdatePayloadCustomPropertyListInner
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialPatternInfoUpdatePayloadCustomPropertyListInner
-     */
-    'value': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialPatternInfoUpdatePayloadCustomPropertyListInner
-     */
-    'customId'?: number | null;
-}
-/**
- * 
- * @export
- * @interface MaterialPatternInfoUpdatePayloadCustomPropertyListInnerAllOf
- */
-export interface MaterialPatternInfoUpdatePayloadCustomPropertyListInnerAllOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof MaterialPatternInfoUpdatePayloadCustomPropertyListInnerAllOf
-     */
-    'customId'?: number | null;
 }
 /**
  * 
@@ -15547,28 +15768,47 @@ export type NodeType = typeof NodeType[keyof typeof NodeType];
 export interface NotificationListInner {
     /**
      * 
+     * @type {string}
+     * @memberof NotificationListInner
+     */
+    'content': string;
+    /**
+     * 
+     * @type {Array<SlotContentContentValueInner>}
+     * @memberof NotificationListInner
+     */
+    'contentValue': Array<SlotContentContentValueInner>;
+    /**
+     * 
      * @type {boolean}
      * @memberof NotificationListInner
      */
-    'isRead'?: boolean;
+    'isRead': boolean;
     /**
      * 
      * @type {number}
      * @memberof NotificationListInner
      */
-    'createDate'?: number;
+    'createDate': number;
+}
+/**
+ * 
+ * @export
+ * @interface NotificationListInnerAllOf
+ */
+export interface NotificationListInnerAllOf {
     /**
      * 
-     * @type {string}
-     * @memberof NotificationListInner
+     * @type {boolean}
+     * @memberof NotificationListInnerAllOf
      */
-    'content'?: string;
+    'isRead': boolean;
     /**
      * 
-     * @type {Array<ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInner>}
-     * @memberof NotificationListInner
+     * @type {number}
+     * @memberof NotificationListInnerAllOf
      */
-    'contentValue'?: Array<ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInner>;
+    'createDate': number;
 }
 /**
  * 
@@ -20410,6 +20650,49 @@ export interface SearchLog {
 /**
  * 
  * @export
+ * @interface SendShowroomEmailRequest
+ */
+export interface SendShowroomEmailRequest {
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof SendShowroomEmailRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SendShowroomEmailRequest
+     */
+    'showroomId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof SendShowroomEmailRequest
+     */
+    'fromEmail': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof SendShowroomEmailRequest
+     */
+    'toOrgId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof SendShowroomEmailRequest
+     */
+    'subject': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SendShowroomEmailRequest
+     */
+    'content': string;
+}
+/**
+ * 
+ * @export
  * @interface SetAssetsMaterialCover200Response
  */
 export interface SetAssetsMaterialCover200Response {
@@ -20814,720 +21097,218 @@ export type ShareToType = typeof ShareToType[keyof typeof ShareToType];
 /**
  * 
  * @export
- * @interface ShowroomGetAnnouncementPost200Response
+ * @interface Showroom
  */
-export interface ShowroomGetAnnouncementPost200Response {
-    /**
-     * 
-     * @type {ShowroomGetAnnouncementPost200ResponseResult}
-     * @memberof ShowroomGetAnnouncementPost200Response
-     */
-    'result'?: ShowroomGetAnnouncementPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ShowroomGetAnnouncementPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetAnnouncementPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof ShowroomGetAnnouncementPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetAnnouncementPost200ResponseResult
- */
-export interface ShowroomGetAnnouncementPost200ResponseResult {
-    /**
-     * 用來判斷要不要跳showroom的annoucement modal
-     * @type {boolean}
-     * @memberof ShowroomGetAnnouncementPost200ResponseResult
-     */
-    'isPromoting'?: boolean;
-    /**
-     * 
-     * @type {ShowroomGetAnnouncementPost200ResponseResultAnnouncement}
-     * @memberof ShowroomGetAnnouncementPost200ResponseResult
-     */
-    'announcement'?: ShowroomGetAnnouncementPost200ResponseResultAnnouncement;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetAnnouncementPost200ResponseResultAnnouncement
- */
-export interface ShowroomGetAnnouncementPost200ResponseResultAnnouncement {
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetAnnouncementPost200ResponseResultAnnouncement
-     */
-    'coverImg'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetAnnouncementPost200ResponseResultAnnouncement
-     */
-    'title'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetAnnouncementPost200ResponseResultAnnouncement
-     */
-    'subtitle'?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ShowroomGetAnnouncementPost200ResponseResultAnnouncement
-     */
-    'participatedOrgLogoList'?: Array<string>;
-    /**
-     * 
-     * @type {ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescription}
-     * @memberof ShowroomGetAnnouncementPost200ResponseResultAnnouncement
-     */
-    'description'?: ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescription;
+export interface Showroom {
     /**
      * 
      * @type {number}
-     * @memberof ShowroomGetAnnouncementPost200ResponseResultAnnouncement
-     */
-    'showroomId'?: number;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescription
- */
-export interface ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescription {
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescription
-     */
-    'content'?: string;
-    /**
-     * 
-     * @type {Array<ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInner>}
-     * @memberof ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescription
-     */
-    'contentValue'?: Array<ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInner>;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInner
- */
-export interface ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInner
-     */
-    'type'?: ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInnerTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInner
-     */
-    'text'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInner
-     */
-    'value'?: string;
-}
-
-export const ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInnerTypeEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInnerTypeEnum = typeof ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInnerTypeEnum[keyof typeof ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInnerTypeEnum];
-
-/**
- * 
- * @export
- * @interface ShowroomGetAnnouncementPostRequest
- */
-export interface ShowroomGetAnnouncementPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetAnnouncementPostRequest
-     */
-    'orgId': number;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetBannerAndListPost200Response
- */
-export interface ShowroomGetBannerAndListPost200Response {
-    /**
-     * 
-     * @type {ShowroomGetBannerAndListPost200ResponseResult}
-     * @memberof ShowroomGetBannerAndListPost200Response
-     */
-    'result'?: ShowroomGetBannerAndListPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ShowroomGetBannerAndListPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetBannerAndListPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof ShowroomGetBannerAndListPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetBannerAndListPost200ResponseResult
- */
-export interface ShowroomGetBannerAndListPost200ResponseResult {
-    /**
-     * 
-     * @type {ShowroomGetBannerAndListPost200ResponseResultBanner}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResult
-     */
-    'banner'?: ShowroomGetBannerAndListPost200ResponseResultBanner;
-    /**
-     * 
-     * @type {Array<ShowroomGetBannerAndListPost200ResponseResultShowroomListInner>}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResult
-     */
-    'showroomList'?: Array<ShowroomGetBannerAndListPost200ResponseResultShowroomListInner>;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetBannerAndListPost200ResponseResultBanner
- */
-export interface ShowroomGetBannerAndListPost200ResponseResultBanner {
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultBanner
-     */
-    'coverImg'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultBanner
-     */
-    'color'?: ShowroomGetBannerAndListPost200ResponseResultBannerColorEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultBanner
-     */
-    'title'?: string;
-    /**
-     * 
-     * @type {ShowroomGetBannerAndListPost200ResponseResultBannerDescription}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultBanner
-     */
-    'description'?: ShowroomGetBannerAndListPost200ResponseResultBannerDescription;
-}
-
-export const ShowroomGetBannerAndListPost200ResponseResultBannerColorEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type ShowroomGetBannerAndListPost200ResponseResultBannerColorEnum = typeof ShowroomGetBannerAndListPost200ResponseResultBannerColorEnum[keyof typeof ShowroomGetBannerAndListPost200ResponseResultBannerColorEnum];
-
-/**
- * 
- * @export
- * @interface ShowroomGetBannerAndListPost200ResponseResultBannerDescription
- */
-export interface ShowroomGetBannerAndListPost200ResponseResultBannerDescription {
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultBannerDescription
-     */
-    'content'?: string;
-    /**
-     * 
-     * @type {Array<ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInner>}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultBannerDescription
-     */
-    'contentValue'?: Array<ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescriptionContentValueInner>;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetBannerAndListPost200ResponseResultShowroomListInner
- */
-export interface ShowroomGetBannerAndListPost200ResponseResultShowroomListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultShowroomListInner
-     */
-    'showroomId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultShowroomListInner
-     */
-    'coverImg'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultShowroomListInner
-     */
-    'status'?: ShowroomGetBannerAndListPost200ResponseResultShowroomListInnerStatusEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultShowroomListInner
-     */
-    'period'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultShowroomListInner
-     */
-    'title'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultShowroomListInner
-     */
-    'location'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultShowroomListInner
-     */
-    'subtitle'?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ShowroomGetBannerAndListPost200ResponseResultShowroomListInner
-     */
-    'categoryList'?: Array<string>;
-}
-
-export const ShowroomGetBannerAndListPost200ResponseResultShowroomListInnerStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type ShowroomGetBannerAndListPost200ResponseResultShowroomListInnerStatusEnum = typeof ShowroomGetBannerAndListPost200ResponseResultShowroomListInnerStatusEnum[keyof typeof ShowroomGetBannerAndListPost200ResponseResultShowroomListInnerStatusEnum];
-
-/**
- * 
- * @export
- * @interface ShowroomGetInfoPost200Response
- */
-export interface ShowroomGetInfoPost200Response {
-    /**
-     * 
-     * @type {ShowroomGetInfoPost200ResponseResult}
-     * @memberof ShowroomGetInfoPost200Response
-     */
-    'result'?: ShowroomGetInfoPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ShowroomGetInfoPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetInfoPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof ShowroomGetInfoPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetInfoPost200ResponseResult
- */
-export interface ShowroomGetInfoPost200ResponseResult {
-    /**
-     * 
-     * @type {ShowroomGetInfoPost200ResponseResultShowroom}
-     * @memberof ShowroomGetInfoPost200ResponseResult
-     */
-    'showroom'?: ShowroomGetInfoPost200ResponseResultShowroom;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetInfoPost200ResponseResultShowroom
- */
-export interface ShowroomGetInfoPost200ResponseResultShowroom {
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroom
-     */
-    'showroomId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroom
-     */
-    'coverImg'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroom
-     */
-    'color'?: ShowroomGetInfoPost200ResponseResultShowroomColorEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroom
-     */
-    'status'?: ShowroomGetInfoPost200ResponseResultShowroomStatusEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroom
-     */
-    'period'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroom
-     */
-    'title'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroom
-     */
-    'location'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroom
-     */
-    'subtitle'?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroom
-     */
-    'categoryList'?: Array<string>;
-    /**
-     * 
-     * @type {ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescription}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroom
-     */
-    'description'?: ShowroomGetAnnouncementPost200ResponseResultAnnouncementDescription;
-    /**
-     * 
-     * @type {Array<ShowroomGetInfoPost200ResponseResultShowroomParticipatedOrgListInner>}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroom
-     */
-    'participatedOrgList'?: Array<ShowroomGetInfoPost200ResponseResultShowroomParticipatedOrgListInner>;
-}
-
-export const ShowroomGetInfoPost200ResponseResultShowroomColorEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type ShowroomGetInfoPost200ResponseResultShowroomColorEnum = typeof ShowroomGetInfoPost200ResponseResultShowroomColorEnum[keyof typeof ShowroomGetInfoPost200ResponseResultShowroomColorEnum];
-export const ShowroomGetInfoPost200ResponseResultShowroomStatusEnum = {
-    NUMBER_null: null,
-    NUMBER_null: null,
-    NUMBER_null: null
-} as const;
-
-export type ShowroomGetInfoPost200ResponseResultShowroomStatusEnum = typeof ShowroomGetInfoPost200ResponseResultShowroomStatusEnum[keyof typeof ShowroomGetInfoPost200ResponseResultShowroomStatusEnum];
-
-/**
- * 
- * @export
- * @interface ShowroomGetInfoPost200ResponseResultShowroomParticipatedOrgListInner
- */
-export interface ShowroomGetInfoPost200ResponseResultShowroomParticipatedOrgListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroomParticipatedOrgListInner
-     */
-    'orgId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroomParticipatedOrgListInner
-     */
-    'logo'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroomParticipatedOrgListInner
-     */
-    'orgName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetInfoPost200ResponseResultShowroomParticipatedOrgListInner
-     */
-    'contactEmail'?: string;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetInfoPostRequest
- */
-export interface ShowroomGetInfoPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetInfoPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetInfoPostRequest
-     */
-    'showroomId': number;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetListPost200Response
- */
-export interface ShowroomGetListPost200Response {
-    /**
-     * 
-     * @type {ShowroomGetListPost200ResponseResult}
-     * @memberof ShowroomGetListPost200Response
-     */
-    'result'?: ShowroomGetListPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ShowroomGetListPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetListPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof ShowroomGetListPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetListPost200ResponseResult
- */
-export interface ShowroomGetListPost200ResponseResult {
-    /**
-     * 
-     * @type {PaginationRes}
-     * @memberof ShowroomGetListPost200ResponseResult
-     */
-    'pagination'?: PaginationRes;
-    /**
-     * 
-     * @type {WorkspaceNodeCollection}
-     * @memberof ShowroomGetListPost200ResponseResult
-     */
-    'workspaceNodeCollection'?: WorkspaceNodeCollection;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetListPostRequest
- */
-export interface ShowroomGetListPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetListPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetListPostRequest
-     */
-    'showroomId': number;
-    /**
-     * showroom root層的時候不用傳
-     * @type {number}
-     * @memberof ShowroomGetListPostRequest
-     */
-    'nodeId'?: number | null;
-    /**
-     * 
-     * @type {PaginationReq}
-     * @memberof ShowroomGetListPostRequest
-     */
-    'pagination': PaginationReq;
-    /**
-     * 
-     * @type {Search}
-     * @memberof ShowroomGetListPostRequest
-     */
-    'search': Search | null;
-    /**
-     * 
-     * @type {ExternalFilter}
-     * @memberof ShowroomGetListPostRequest
-     */
-    'filter': ExternalFilter | null;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetMaterialPost200Response
- */
-export interface ShowroomGetMaterialPost200Response {
-    /**
-     * 
-     * @type {ShowroomGetMaterialPost200ResponseResult}
-     * @memberof ShowroomGetMaterialPost200Response
-     */
-    'result'?: ShowroomGetMaterialPost200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ShowroomGetMaterialPost200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ShowroomGetMaterialPost200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof ShowroomGetMaterialPost200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetMaterialPost200ResponseResult
- */
-export interface ShowroomGetMaterialPost200ResponseResult {
-    /**
-     * 
-     * @type {WorkspaceNodeMaterial}
-     * @memberof ShowroomGetMaterialPost200ResponseResult
-     */
-    'workspaceNodeMaterial'?: WorkspaceNodeMaterial;
-}
-/**
- * 
- * @export
- * @interface ShowroomGetMaterialPostRequest
- */
-export interface ShowroomGetMaterialPostRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetMaterialPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomGetMaterialPostRequest
-     */
-    'nodeId': number;
-    /**
-     * 
-     * @type {SearchLog}
-     * @memberof ShowroomGetMaterialPostRequest
-     */
-    'searchLog': SearchLog | null;
-}
-/**
- * 
- * @export
- * @interface ShowroomSendMailPostRequest
- */
-export interface ShowroomSendMailPostRequest {
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof ShowroomSendMailPostRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ShowroomSendMailPostRequest
+     * @memberof Showroom
      */
     'showroomId': number;
     /**
      * 
      * @type {string}
-     * @memberof ShowroomSendMailPostRequest
+     * @memberof Showroom
      */
-    'fromEmail': string;
+    'coverImg': string;
     /**
      * 
      * @type {number}
-     * @memberof ShowroomSendMailPostRequest
+     * @memberof Showroom
      */
-    'toOrgId': number;
+    'color': ShowroomColorEnum;
+    /**
+     * 
+     * @type {ShowroomStatus}
+     * @memberof Showroom
+     */
+    'status': ShowroomStatus;
     /**
      * 
      * @type {string}
-     * @memberof ShowroomSendMailPostRequest
+     * @memberof Showroom
      */
-    'subject': string;
+    'period': string;
     /**
      * 
      * @type {string}
-     * @memberof ShowroomSendMailPostRequest
+     * @memberof Showroom
      */
-    'message': string;
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Showroom
+     */
+    'location': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Showroom
+     */
+    'subtitle': string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Showroom
+     */
+    'categoryList': Array<string>;
+    /**
+     * 
+     * @type {SlotContent}
+     * @memberof Showroom
+     */
+    'description': SlotContent;
+    /**
+     * 
+     * @type {Array<ShowroomAllOfParticipatedOrgList>}
+     * @memberof Showroom
+     */
+    'participatedOrgList': Array<ShowroomAllOfParticipatedOrgList>;
 }
+
+export const ShowroomColorEnum = {
+    WHITE: 0,
+    BLACK: 1
+} as const;
+
+export type ShowroomColorEnum = typeof ShowroomColorEnum[keyof typeof ShowroomColorEnum];
+
+/**
+ * 
+ * @export
+ * @interface ShowroomAllOf
+ */
+export interface ShowroomAllOf {
+    /**
+     * 
+     * @type {SlotContent}
+     * @memberof ShowroomAllOf
+     */
+    'description': SlotContent;
+    /**
+     * 
+     * @type {Array<ShowroomAllOfParticipatedOrgList>}
+     * @memberof ShowroomAllOf
+     */
+    'participatedOrgList': Array<ShowroomAllOfParticipatedOrgList>;
+}
+/**
+ * 
+ * @export
+ * @interface ShowroomAllOfParticipatedOrgList
+ */
+export interface ShowroomAllOfParticipatedOrgList {
+    /**
+     * 
+     * @type {number}
+     * @memberof ShowroomAllOfParticipatedOrgList
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ShowroomAllOfParticipatedOrgList
+     */
+    'logo': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ShowroomAllOfParticipatedOrgList
+     */
+    'orgName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ShowroomAllOfParticipatedOrgList
+     */
+    'contactEmail': string;
+}
+/**
+ * 
+ * @export
+ * @interface ShowroomBase
+ */
+export interface ShowroomBase {
+    /**
+     * 
+     * @type {number}
+     * @memberof ShowroomBase
+     */
+    'showroomId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ShowroomBase
+     */
+    'coverImg': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ShowroomBase
+     */
+    'color': ShowroomBaseColorEnum;
+    /**
+     * 
+     * @type {ShowroomStatus}
+     * @memberof ShowroomBase
+     */
+    'status': ShowroomStatus;
+    /**
+     * 
+     * @type {string}
+     * @memberof ShowroomBase
+     */
+    'period': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ShowroomBase
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ShowroomBase
+     */
+    'location': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ShowroomBase
+     */
+    'subtitle': string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ShowroomBase
+     */
+    'categoryList': Array<string>;
+}
+
+export const ShowroomBaseColorEnum = {
+    WHITE: 0,
+    BLACK: 1
+} as const;
+
+export type ShowroomBaseColorEnum = typeof ShowroomBaseColorEnum[keyof typeof ShowroomBaseColorEnum];
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const ShowroomStatus = {
+    CLOSE: 0,
+    COMING_SOON: 1,
+    CURRENT: 2
+} as const;
+
+export type ShowroomStatus = typeof ShowroomStatus[keyof typeof ShowroomStatus];
+
+
 /**
  * 
  * @export
@@ -21780,6 +21561,66 @@ export interface SignUpRequestPostRequest {
      */
     'description'?: string;
 }
+/**
+ * 
+ * @export
+ * @interface SlotContent
+ */
+export interface SlotContent {
+    /**
+     * 
+     * @type {string}
+     * @memberof SlotContent
+     */
+    'content': string;
+    /**
+     * 
+     * @type {Array<SlotContentContentValueInner>}
+     * @memberof SlotContent
+     */
+    'contentValue': Array<SlotContentContentValueInner>;
+}
+/**
+ * 
+ * @export
+ * @interface SlotContentContentValueInner
+ */
+export interface SlotContentContentValueInner {
+    /**
+     * 
+     * @type {SlotContentType}
+     * @memberof SlotContentContentValueInner
+     */
+    'type': SlotContentType;
+    /**
+     * 
+     * @type {string}
+     * @memberof SlotContentContentValueInner
+     */
+    'text': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SlotContentContentValueInner
+     */
+    'value': string;
+}
+
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const SlotContentType = {
+    URL: 1,
+    STICKER: 2
+} as const;
+
+export type SlotContentType = typeof SlotContentType[keyof typeof SlotContentType];
+
+
 /**
  * 
  * @export
@@ -37821,88 +37662,14 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
     return {
         /**
          * 
-         * @summary 取得Showroom的announcement
-         * @param {ShowroomGetAnnouncementPostRequest} [showroomGetAnnouncementPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        showroomGetAnnouncementPost: async (showroomGetAnnouncementPostRequest?: ShowroomGetAnnouncementPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/showroom/get-announcement`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(showroomGetAnnouncementPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 取得Showroom的banner和showroom list
-         * @param {ShowroomGetAnnouncementPostRequest} [showroomGetAnnouncementPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        showroomGetBannerAndListPost: async (showroomGetAnnouncementPostRequest?: ShowroomGetAnnouncementPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/showroom/get-banner-and-list`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(showroomGetAnnouncementPostRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 依ShowroomId取得展會資料
-         * @param {ShowroomGetInfoPostRequest} [showroomGetInfoPostRequest] 
+         * @param {GetShowroomRequest} getShowroomRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        showroomGetInfoPost: async (showroomGetInfoPostRequest?: ShowroomGetInfoPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getShowroom: async (getShowroomRequest: GetShowroomRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getShowroomRequest' is not null or undefined
+            assertParamExists('getShowroom', 'getShowroomRequest', getShowroomRequest)
             const localVarPath = `/showroom/get-info`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -37926,7 +37693,87 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(showroomGetInfoPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getShowroomRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 取得Showroom的announcement
+         * @param {GetShowroomAnnouncementRequest} getShowroomAnnouncementRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getShowroomAnnouncement: async (getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getShowroomAnnouncementRequest' is not null or undefined
+            assertParamExists('getShowroomAnnouncement', 'getShowroomAnnouncementRequest', getShowroomAnnouncementRequest)
+            const localVarPath = `/showroom/get-announcement`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getShowroomAnnouncementRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 取得Showroom的banner和showroom list
+         * @param {GetShowroomAnnouncementRequest} getShowroomAnnouncementRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getShowroomBannerAndShowroomList: async (getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getShowroomAnnouncementRequest' is not null or undefined
+            assertParamExists('getShowroomBannerAndShowroomList', 'getShowroomAnnouncementRequest', getShowroomAnnouncementRequest)
+            const localVarPath = `/showroom/get-banner-and-list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getShowroomAnnouncementRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -37936,11 +37783,13 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary 取得 Showroom collection 清單(且collection需公開)
-         * @param {ShowroomGetListPostRequest} [showroomGetListPostRequest] 
+         * @param {GetShowroomListRequest} getShowroomListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        showroomGetListPost: async (showroomGetListPostRequest?: ShowroomGetListPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getShowroomList: async (getShowroomListRequest: GetShowroomListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getShowroomListRequest' is not null or undefined
+            assertParamExists('getShowroomList', 'getShowroomListRequest', getShowroomListRequest)
             const localVarPath = `/showroom/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -37964,7 +37813,7 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(showroomGetListPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getShowroomListRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -37974,11 +37823,13 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary 取得 Showroom 布片詳細資料
-         * @param {ShowroomGetMaterialPostRequest} [showroomGetMaterialPostRequest] 
+         * @param {GetShowroomMaterialRequest} getShowroomMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        showroomGetMaterialPost: async (showroomGetMaterialPostRequest?: ShowroomGetMaterialPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getShowroomMaterial: async (getShowroomMaterialRequest: GetShowroomMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getShowroomMaterialRequest' is not null or undefined
+            assertParamExists('getShowroomMaterial', 'getShowroomMaterialRequest', getShowroomMaterialRequest)
             const localVarPath = `/showroom/get-material`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -38002,7 +37853,7 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(showroomGetMaterialPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getShowroomMaterialRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -38012,11 +37863,13 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 由noreply@frontier.cool代為發送
          * @summary 使用者發送Email訊息給某一組織的showroom信箱
-         * @param {ShowroomSendMailPostRequest} [showroomSendMailPostRequest] 
+         * @param {SendShowroomEmailRequest} sendShowroomEmailRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        showroomSendMailPost: async (showroomSendMailPostRequest?: ShowroomSendMailPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sendShowroomEmail: async (sendShowroomEmailRequest: SendShowroomEmailRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sendShowroomEmailRequest' is not null or undefined
+            assertParamExists('sendShowroomEmail', 'sendShowroomEmailRequest', sendShowroomEmailRequest)
             const localVarPath = `/showroom/send-mail`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -38040,7 +37893,7 @@ export const ShowroomApiAxiosParamCreator = function (configuration?: Configurat
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(showroomSendMailPostRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(sendShowroomEmailRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -38059,68 +37912,68 @@ export const ShowroomApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary 取得Showroom的announcement
-         * @param {ShowroomGetAnnouncementPostRequest} [showroomGetAnnouncementPostRequest] 
+         * @summary 依ShowroomId取得展會資料
+         * @param {GetShowroomRequest} getShowroomRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async showroomGetAnnouncementPost(showroomGetAnnouncementPostRequest?: ShowroomGetAnnouncementPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShowroomGetAnnouncementPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.showroomGetAnnouncementPost(showroomGetAnnouncementPostRequest, options);
+        async getShowroom(getShowroomRequest: GetShowroomRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShowroom200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroom(getShowroomRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 取得Showroom的announcement
+         * @param {GetShowroomAnnouncementRequest} getShowroomAnnouncementRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getShowroomAnnouncement(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShowroomAnnouncement200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroomAnnouncement(getShowroomAnnouncementRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary 取得Showroom的banner和showroom list
-         * @param {ShowroomGetAnnouncementPostRequest} [showroomGetAnnouncementPostRequest] 
+         * @param {GetShowroomAnnouncementRequest} getShowroomAnnouncementRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async showroomGetBannerAndListPost(showroomGetAnnouncementPostRequest?: ShowroomGetAnnouncementPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShowroomGetBannerAndListPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.showroomGetBannerAndListPost(showroomGetAnnouncementPostRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary 依ShowroomId取得展會資料
-         * @param {ShowroomGetInfoPostRequest} [showroomGetInfoPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async showroomGetInfoPost(showroomGetInfoPostRequest?: ShowroomGetInfoPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShowroomGetInfoPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.showroomGetInfoPost(showroomGetInfoPostRequest, options);
+        async getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetShowroomBannerAndShowroomList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary 取得 Showroom collection 清單(且collection需公開)
-         * @param {ShowroomGetListPostRequest} [showroomGetListPostRequest] 
+         * @param {GetShowroomListRequest} getShowroomListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async showroomGetListPost(showroomGetListPostRequest?: ShowroomGetListPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShowroomGetListPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.showroomGetListPost(showroomGetListPostRequest, options);
+        async getShowroomList(getShowroomListRequest: GetShowroomListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroomList(getShowroomListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary 取得 Showroom 布片詳細資料
-         * @param {ShowroomGetMaterialPostRequest} [showroomGetMaterialPostRequest] 
+         * @param {GetShowroomMaterialRequest} getShowroomMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async showroomGetMaterialPost(showroomGetMaterialPostRequest?: ShowroomGetMaterialPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShowroomGetMaterialPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.showroomGetMaterialPost(showroomGetMaterialPostRequest, options);
+        async getShowroomMaterial(getShowroomMaterialRequest: GetShowroomMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getShowroomMaterial(getShowroomMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 由noreply@frontier.cool代為發送
          * @summary 使用者發送Email訊息給某一組織的showroom信箱
-         * @param {ShowroomSendMailPostRequest} [showroomSendMailPostRequest] 
+         * @param {SendShowroomEmailRequest} sendShowroomEmailRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async showroomSendMailPost(showroomSendMailPostRequest?: ShowroomSendMailPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.showroomSendMailPost(showroomSendMailPostRequest, options);
+        async sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sendShowroomEmail(sendShowroomEmailRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -38135,63 +37988,63 @@ export const ShowroomApiFactory = function (configuration?: Configuration, baseP
     return {
         /**
          * 
-         * @summary 取得Showroom的announcement
-         * @param {ShowroomGetAnnouncementPostRequest} [showroomGetAnnouncementPostRequest] 
+         * @summary 依ShowroomId取得展會資料
+         * @param {GetShowroomRequest} getShowroomRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        showroomGetAnnouncementPost(showroomGetAnnouncementPostRequest?: ShowroomGetAnnouncementPostRequest, options?: any): AxiosPromise<ShowroomGetAnnouncementPost200Response> {
-            return localVarFp.showroomGetAnnouncementPost(showroomGetAnnouncementPostRequest, options).then((request) => request(axios, basePath));
+        getShowroom(getShowroomRequest: GetShowroomRequest, options?: any): AxiosPromise<GetShowroom200Response> {
+            return localVarFp.getShowroom(getShowroomRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 取得Showroom的announcement
+         * @param {GetShowroomAnnouncementRequest} getShowroomAnnouncementRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getShowroomAnnouncement(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: any): AxiosPromise<GetShowroomAnnouncement200Response> {
+            return localVarFp.getShowroomAnnouncement(getShowroomAnnouncementRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 取得Showroom的banner和showroom list
-         * @param {ShowroomGetAnnouncementPostRequest} [showroomGetAnnouncementPostRequest] 
+         * @param {GetShowroomAnnouncementRequest} getShowroomAnnouncementRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        showroomGetBannerAndListPost(showroomGetAnnouncementPostRequest?: ShowroomGetAnnouncementPostRequest, options?: any): AxiosPromise<ShowroomGetBannerAndListPost200Response> {
-            return localVarFp.showroomGetBannerAndListPost(showroomGetAnnouncementPostRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 依ShowroomId取得展會資料
-         * @param {ShowroomGetInfoPostRequest} [showroomGetInfoPostRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        showroomGetInfoPost(showroomGetInfoPostRequest?: ShowroomGetInfoPostRequest, options?: any): AxiosPromise<ShowroomGetInfoPost200Response> {
-            return localVarFp.showroomGetInfoPost(showroomGetInfoPostRequest, options).then((request) => request(axios, basePath));
+        getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: any): AxiosPromise<GetShowroomBannerAndShowroomList200Response> {
+            return localVarFp.getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 取得 Showroom collection 清單(且collection需公開)
-         * @param {ShowroomGetListPostRequest} [showroomGetListPostRequest] 
+         * @param {GetShowroomListRequest} getShowroomListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        showroomGetListPost(showroomGetListPostRequest?: ShowroomGetListPostRequest, options?: any): AxiosPromise<ShowroomGetListPost200Response> {
-            return localVarFp.showroomGetListPost(showroomGetListPostRequest, options).then((request) => request(axios, basePath));
+        getShowroomList(getShowroomListRequest: GetShowroomListRequest, options?: any): AxiosPromise<GetWorkspaceList200Response> {
+            return localVarFp.getShowroomList(getShowroomListRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 取得 Showroom 布片詳細資料
-         * @param {ShowroomGetMaterialPostRequest} [showroomGetMaterialPostRequest] 
+         * @param {GetShowroomMaterialRequest} getShowroomMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        showroomGetMaterialPost(showroomGetMaterialPostRequest?: ShowroomGetMaterialPostRequest, options?: any): AxiosPromise<ShowroomGetMaterialPost200Response> {
-            return localVarFp.showroomGetMaterialPost(showroomGetMaterialPostRequest, options).then((request) => request(axios, basePath));
+        getShowroomMaterial(getShowroomMaterialRequest: GetShowroomMaterialRequest, options?: any): AxiosPromise<GetWorkspaceMaterial200Response> {
+            return localVarFp.getShowroomMaterial(getShowroomMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 由noreply@frontier.cool代為發送
          * @summary 使用者發送Email訊息給某一組織的showroom信箱
-         * @param {ShowroomSendMailPostRequest} [showroomSendMailPostRequest] 
+         * @param {SendShowroomEmailRequest} sendShowroomEmailRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        showroomSendMailPost(showroomSendMailPostRequest?: ShowroomSendMailPostRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
-            return localVarFp.showroomSendMailPost(showroomSendMailPostRequest, options).then((request) => request(axios, basePath));
+        sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+            return localVarFp.sendShowroomEmail(sendShowroomEmailRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -38205,74 +38058,74 @@ export const ShowroomApiFactory = function (configuration?: Configuration, baseP
 export class ShowroomApi extends BaseAPI {
     /**
      * 
-     * @summary 取得Showroom的announcement
-     * @param {ShowroomGetAnnouncementPostRequest} [showroomGetAnnouncementPostRequest] 
+     * @summary 依ShowroomId取得展會資料
+     * @param {GetShowroomRequest} getShowroomRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ShowroomApi
      */
-    public showroomGetAnnouncementPost(showroomGetAnnouncementPostRequest?: ShowroomGetAnnouncementPostRequest, options?: AxiosRequestConfig) {
-        return ShowroomApiFp(this.configuration).showroomGetAnnouncementPost(showroomGetAnnouncementPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public getShowroom(getShowroomRequest: GetShowroomRequest, options?: AxiosRequestConfig) {
+        return ShowroomApiFp(this.configuration).getShowroom(getShowroomRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 取得Showroom的announcement
+     * @param {GetShowroomAnnouncementRequest} getShowroomAnnouncementRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ShowroomApi
+     */
+    public getShowroomAnnouncement(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: AxiosRequestConfig) {
+        return ShowroomApiFp(this.configuration).getShowroomAnnouncement(getShowroomAnnouncementRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得Showroom的banner和showroom list
-     * @param {ShowroomGetAnnouncementPostRequest} [showroomGetAnnouncementPostRequest] 
+     * @param {GetShowroomAnnouncementRequest} getShowroomAnnouncementRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ShowroomApi
      */
-    public showroomGetBannerAndListPost(showroomGetAnnouncementPostRequest?: ShowroomGetAnnouncementPostRequest, options?: AxiosRequestConfig) {
-        return ShowroomApiFp(this.configuration).showroomGetBannerAndListPost(showroomGetAnnouncementPostRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 依ShowroomId取得展會資料
-     * @param {ShowroomGetInfoPostRequest} [showroomGetInfoPostRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ShowroomApi
-     */
-    public showroomGetInfoPost(showroomGetInfoPostRequest?: ShowroomGetInfoPostRequest, options?: AxiosRequestConfig) {
-        return ShowroomApiFp(this.configuration).showroomGetInfoPost(showroomGetInfoPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest: GetShowroomAnnouncementRequest, options?: AxiosRequestConfig) {
+        return ShowroomApiFp(this.configuration).getShowroomBannerAndShowroomList(getShowroomAnnouncementRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得 Showroom collection 清單(且collection需公開)
-     * @param {ShowroomGetListPostRequest} [showroomGetListPostRequest] 
+     * @param {GetShowroomListRequest} getShowroomListRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ShowroomApi
      */
-    public showroomGetListPost(showroomGetListPostRequest?: ShowroomGetListPostRequest, options?: AxiosRequestConfig) {
-        return ShowroomApiFp(this.configuration).showroomGetListPost(showroomGetListPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public getShowroomList(getShowroomListRequest: GetShowroomListRequest, options?: AxiosRequestConfig) {
+        return ShowroomApiFp(this.configuration).getShowroomList(getShowroomListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得 Showroom 布片詳細資料
-     * @param {ShowroomGetMaterialPostRequest} [showroomGetMaterialPostRequest] 
+     * @param {GetShowroomMaterialRequest} getShowroomMaterialRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ShowroomApi
      */
-    public showroomGetMaterialPost(showroomGetMaterialPostRequest?: ShowroomGetMaterialPostRequest, options?: AxiosRequestConfig) {
-        return ShowroomApiFp(this.configuration).showroomGetMaterialPost(showroomGetMaterialPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public getShowroomMaterial(getShowroomMaterialRequest: GetShowroomMaterialRequest, options?: AxiosRequestConfig) {
+        return ShowroomApiFp(this.configuration).getShowroomMaterial(getShowroomMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 由noreply@frontier.cool代為發送
      * @summary 使用者發送Email訊息給某一組織的showroom信箱
-     * @param {ShowroomSendMailPostRequest} [showroomSendMailPostRequest] 
+     * @param {SendShowroomEmailRequest} sendShowroomEmailRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ShowroomApi
      */
-    public showroomSendMailPost(showroomSendMailPostRequest?: ShowroomSendMailPostRequest, options?: AxiosRequestConfig) {
-        return ShowroomApiFp(this.configuration).showroomSendMailPost(showroomSendMailPostRequest, options).then((request) => request(this.axios, this.basePath));
+    public sendShowroomEmail(sendShowroomEmailRequest: SendShowroomEmailRequest, options?: AxiosRequestConfig) {
+        return ShowroomApiFp(this.configuration).sendShowroomEmail(sendShowroomEmailRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

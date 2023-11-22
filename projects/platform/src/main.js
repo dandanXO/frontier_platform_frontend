@@ -82,6 +82,7 @@ for (const path in globalComponents) {
 }
 
 app
+  .use(store)
   .use(createPinia())
   .use(router)
   .use(VueGtag, {
@@ -90,7 +91,6 @@ app
       id: import.meta.env.VITE_APP_GA_MEASUREMENT_ID,
     },
   })
-  .use(store)
   .use(i18n)
   .use(uiComponents)
   .use(ModelEditor)

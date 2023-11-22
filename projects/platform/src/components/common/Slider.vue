@@ -22,7 +22,7 @@ import { computed, ref, onMounted } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    heightLinerBg: string // tailwindcss class,
+    heightLinerBg?: string // tailwindcss class,
     scrollPerItem?: number
   }>(),
   {
