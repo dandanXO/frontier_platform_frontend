@@ -2,12 +2,12 @@
 div
   div(class="mx-auto max-w-[1032px] min-w-[665px] h-fit")
     //- Header
-    div(class="py-3 flex justify-between items-center")
+    div(class="h-16 flex justify-between items-center")
       //- BreadCrumb
       global-breadcrumb-list(
         :breadcrumbList="locationList"
         @click:item="$event.goTo()"
-        fontSize="text-h6"
+        fontSize="text-caption"
       )
       //- Function Button
       div(class="flex items-center gap-x-4")

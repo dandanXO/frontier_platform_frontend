@@ -15,34 +15,33 @@ modal-behavior(
       class="mb-7.5"
     )
     f-select-dropdown(
-      v-model:selectValue="selectedSavePlace"
+      v-model:selectValue="selectedOgKey"
       :dropdownMenuTree="savePlaceMenuTree"
       :label="$t('RR0174')"
     )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import organizationApi from '@/apis/organization'
+import { OgType, type Organization } from '@frontier/platform-web-sdk'
 
-const props = defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-  actionHandler: {
-    type: Function,
-    required: true,
-  },
-})
-const store = useStore()
-const SAVE_PLACE_TYPE = {
-  ORG: 1,
-  GROUP: 2,
+export interface PropsModalChooseSavePlace {
+  title: string
+  actionHandler: (
+    targetOrgId: number,
+    targetOgType: OgType,
+    targetOgId: number
+  ) => Promise<void>
 }
 
-const orgList = computed(() => store.getters['user/organizationList'])
+const props = defineProps<PropsModalChooseSavePlace>()
+const store = useStore()
+
+const orgList = computed(
+  () => store.getters['user/organizationList'] as Organization[]
+)
 const orgMenuTree = computed(() => ({
   width: 'w-94',
   blockList: [
@@ -55,9 +54,13 @@ const orgMenuTree = computed(() => ({
   ],
 }))
 const selectedOrgId = ref(orgList.value[0]?.orgId || null)
-const selectedOrg = ref(null)
-const selectedSavePlace = ref(null)
+const selectedOrg = ref<Organization | null>(null)
+const selectedOgKey = ref<string | null>(null)
 const savePlaceMenuTree = computed(() => {
+  if (!selectedOrg.value) {
+    return { width: 'w-94', blockList: [] }
+  }
+
   const { orgName, orgId } = selectedOrg.value
   return {
     width: 'w-94',
@@ -66,11 +69,11 @@ const savePlaceMenuTree = computed(() => {
         menuList: [
           {
             title: orgName,
-            selectValue: `${SAVE_PLACE_TYPE.ORG}-${orgId}`,
+            selectValue: `${OgType.ORG}-${orgId}`,
           },
           ...selectedOrg.value.groupList.map(({ groupId, groupName }) => ({
             title: groupName,
-            selectValue: `${SAVE_PLACE_TYPE.GROUP}-${groupId}`,
+            selectValue: `${OgType.GROUP}-${groupId}`,
           })),
         ],
       },
@@ -79,11 +82,12 @@ const savePlaceMenuTree = computed(() => {
 })
 
 const innerActionHandler = async () => {
-  const [savePlaceType, id] = selectedSavePlace.value.split('-')
-  const orgId = selectedOrgId.value
-  const groupId =
-    Number(savePlaceType) === SAVE_PLACE_TYPE.GROUP ? Number(id) : null
-  await props.actionHandler({ orgId, groupId })
+  const [targetOgType, targetOrgId] = selectedOgKey.value!.split('-')
+  await props.actionHandler(
+    selectedOrgId.value!,
+    targetOgType as unknown as OgType,
+    Number(targetOrgId)
+  )
 }
 
 const closeModalBehavior = () => {
@@ -95,7 +99,7 @@ const fetchData = async () => {
   isFetch.value = true
   const { data } = await organizationApi.getOrg(selectedOrgId.value)
   selectedOrg.value = data.result.organization
-  selectedSavePlace.value =
+  selectedOgKey.value =
     savePlaceMenuTree.value?.blockList[0].menuList[0].selectValue || null
   isFetch.value = false
 }

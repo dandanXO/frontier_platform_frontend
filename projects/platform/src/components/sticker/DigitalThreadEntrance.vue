@@ -21,9 +21,11 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { FeatureType } from '@frontier/platform-web-sdk'
 import { computed } from 'vue'
+import { useReceivedShareStore } from '@/stores/receivedShare'
 
 const store = useStore()
 const route = useRoute()
+const receivedShareStore = useReceivedShareStore()
 
 const props = defineProps({
   isHover: {
@@ -94,13 +96,11 @@ const openStickerDrawer = async () => {
   }
 
   if (drawerOpenFromLocationType === FeatureType.RECEIVED_SHARE) {
-    if (!store.getters['receivedShare/hasLogin']) {
+    if (!receivedShareStore.hasLogin) {
       return openStickerDrawerForLogin()
     }
 
-    const hasSelectedStickerAddFromOG =
-      store.getters['receivedShare/hasSelectedStickerAddFromOG']
-    if (hasSelectedStickerAddFromOG) {
+    if (receivedShareStore.hasSelectedStickerAddFromOG) {
       return openStickerDrawer()
     }
 
@@ -110,8 +110,7 @@ const openStickerDrawer = async () => {
         actionHandler: async (orgNo) => {
           store.dispatch('helper/openModalLoading')
           await store.dispatch('organization/getOrg', { orgNo })
-          store.commit('receivedShare/SET_hasSelectedStickerAddFromOG', true)
-          store.dispatch('receivedShare/reload')
+          receivedShareStore.setHasSelectedStickerAddFromOG(true)
           await Promise.all([
             store.dispatch('organization/orgUser/getOrgUser'),
             openStickerDrawer(),

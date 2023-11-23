@@ -1,138 +1,118 @@
-<style lang="scss">
-#pagination-container {
-  @apply pb-20 md:pb-30;
-}
-.v-enter-active {
-  transition: all 0.2s ease-out;
-}
-.v-leave-active {
-  transition: all 0.2s ease-in;
-}
-
-.v-enter-to {
-  opacity: 0;
-  height: 324px;
-}
-.v-enter-from {
-  opacity: 0;
-  height: 0px;
-}
-.v-leave-to {
-  opacity: 0;
-  height: 0px;
-}
-</style>
-
 <template lang="pug">
-div(class="w-full h-full flex flex-col items-center mx-auto")
-  search-table(
-    class="max-w-315"
-    :searchType="SEARCH_TYPE.SHARE"
-    :optionSort="optionSort"
-    :optionMultiSelect="optionMultiSelect"
-    :searchCallback="getShareReceivedList"
-    :itemList="nodeList"
-    v-model:selectedItemList="selectedNodeList"
-  )
-    template(#header-left="{ goTo }")
-      div(class="flex items-start")
-        div(class="flex items-end pr-3")
-          global-breadcrumb-list(
-            :breadcrumbList="breadcrumbList"
-            @click:item="currentNodeKey = $event.nodeKey; goTo()"
-            fontSize="text-h5"
-          )
-          p(class="flex text-caption text-grey-600 pl-1")
-            span (
-            i18n-t(keypath="RR0068" tag="span" scope="global")
-              template(#number) {{ pagination.totalCount }}
-            span )
-        f-tooltip-standard(:tooltipMessage="$t('RR0056')")
-          template(#slot:tooltip-trigger)
-            f-svg-icon(
-              iconName="clone"
-              class="text-grey-600 hover:text-primary-400 cursor-pointer"
-              size="24"
-              @click="receivedShareCloneByNodeKey(currentNodeKey)"
-            )
-    template(#sub-header)
-      collection-overview(:collection="collection")
-    template(#default="{ goTo }")
-      div(
-        v-if="nodeList.length > 0"
-        class="mx-7.5 grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-y-6.5 md:gap-x-5 grid-flow-row auto-rows-auto content-start"
-      )
-        grid-item-node(
-          v-for="node in nodeList"
-          :key="node.nodeKey"
-          v-model:selectedValue="selectedNodeList"
-          :node="node"
-          @click:node="handleNodeClick(node, goTo)"
+search-table(
+  :searchType="SEARCH_TYPE.EXTERNAL"
+  :optionSort="optionSort"
+  :optionMultiSelect="optionMultiSelect"
+  :searchCallback="getShareReceivedList"
+  :itemList="nodeList"
+  v-model:selectedItemList="selectedNodeList"
+)
+  template(#header-left="{ visit, totalCount }")
+    div(class="flex items-start")
+      div(class="flex items-end pr-3")
+        global-breadcrumb-list(
+          :breadcrumbList="locationList"
+          @click:item="currentNodeId = $event.nodeId; visit()"
+          fontSize="text-h5"
         )
-          template(#corner-bottom-left)
-            f-svg-icon(
-              iconName="clone"
-              size="20"
-              class="cursor-pointer text-grey-250"
-              @click.stop="receivedShareCloneByNodeKey(node.nodeKey)"
-            )
+        p(class="flex text-caption text-grey-600 pl-1")
+          span (
+          i18n-t(keypath="RR0068" tag="span" scope="global")
+            template(#number) {{ totalCount }}
+          span )
+  template(#sub-header)
+    collection-overview(
+      v-if="workspaceNodeCollection"
+      :collection="workspaceNodeCollection.collection"
+    )
+  template(#default="{ visit }")
+    div(
+      v-if="nodeList.length > 0"
+      class="mx-7.5 grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-y-6.5 md:gap-x-5 grid-flow-row auto-rows-auto content-start"
+    )
+      grid-item-node(
+        v-for="node in nodeList"
+        :key="node.nodeMeta.nodeId"
+        v-model:selectedValue="selectedNodeList"
+        :node="node"
+        @click:node="handleNodeClick(node, visit)"
+      )
+        template(#corner-bottom-left)
+          f-svg-icon(
+            iconName="clone"
+            size="20"
+            class="cursor-pointer text-grey-250"
+            @click.stop="receivedShareClone([node.nodeMeta.nodeId])"
+          )
 </template>
 
-<script setup>
-import SearchTable from '@/components/common/SearchTable.vue'
-import { useStore } from 'vuex'
+<script setup lang="ts">
+import SearchTable, {
+  type RouteQuery,
+  type SearchPayload,
+} from '@/components/common/SearchTable.vue'
 import { computed, ref } from 'vue'
-import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
+import { SEARCH_TYPE } from '@/utils/constants'
 import { useRoute, useRouter } from 'vue-router'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import CollectionOverview from '@/components/outerApp/CollectionOverview.vue'
+import { useReceivedShareStore } from '@/stores/receivedShare'
+import {
+  type WorkspaceNodeCollection,
+  type ExternalFilter,
+  type NodeChild,
+  NodeType,
+} from '@frontier/platform-web-sdk'
+import { useSearchStore } from '@/stores/search'
+import { storeToRefs } from 'pinia'
+
+const props = defineProps<{
+  sharingKey: string
+  nodeId: string
+}>()
+
+const currentNodeId = ref<number>(Number(props.nodeId))
 
 const { t } = useI18n()
-const store = useStore()
 const route = useRoute()
 const router = useRouter()
-const props = defineProps({
-  nodeKey: {
-    type: String,
-    required: true,
-  },
-})
-
-const { receivedShareCloneByNodeKey, receivedShareCloneByNodeList } =
-  useReceivedShare()
+const searchStore = useSearchStore()
+const receivedShareStore = useReceivedShareStore()
+const { ogBaseReceivedShareApi } = receivedShareStore
+const { shareInfo } = storeToRefs(receivedShareStore)
+const workspaceNodeCollection = ref<WorkspaceNodeCollection>()
+const { receivedShareClone, receivedShareCloneByNodeList } = useReceivedShare()
 const { goToReceivedShareMaterial } = useNavigation()
 
-const share = computed(() => store.getters['receivedShare/share'])
 const optionSort = computed(() => {
-  const { SORT_BY } = useConstants()
   const {
-    MATERIAL_NO_A_Z_C_M,
+    ITEM_NO_A_Z_C_M,
     NEW_ARRIVED,
-    GHG_RESULTS,
-    WATER_DEPLETION_RESULTS,
-    LAND_USE_RESULTS,
+    GHG_LOW_TO_HIGH,
+    WATER_LOW_TO_HIGH,
+    LAND_LOW_TO_HIGH,
     RELEVANCE_M_C,
-  } = SORT_BY.value
+  } = searchStore.sortOption
   return {
     base: [
-      MATERIAL_NO_A_Z_C_M,
+      ITEM_NO_A_Z_C_M,
       NEW_ARRIVED,
       {
-        ...GHG_RESULTS,
-        disabled: !share.value.isSourceOrgHasMade2FlowPlan,
+        ...GHG_LOW_TO_HIGH,
+        disabled: !shareInfo.value?.isSourceOrgHasMade2FlowPlan,
         tooltipMessage: t('VV0047'),
       },
       {
-        ...WATER_DEPLETION_RESULTS,
-        disabled: !share.value.isSourceOrgHasMade2FlowPlan,
+        ...WATER_LOW_TO_HIGH,
+        disabled: !shareInfo.value?.isSourceOrgHasMade2FlowPlan,
         tooltipMessage: t('VV0047'),
       },
       {
-        ...LAND_USE_RESULTS,
-        disabled: !share.value.isSourceOrgHasMade2FlowPlan,
+        ...LAND_LOW_TO_HIGH,
+        disabled: !shareInfo.value?.isSourceOrgHasMade2FlowPlan,
         tooltipMessage: t('VV0047'),
       },
     ],
@@ -140,43 +120,50 @@ const optionSort = computed(() => {
   }
 })
 
-const optionMultiSelect = computed(() => [
-  {
-    name: t('RR0167'),
-    func: receivedShareCloneByNodeList,
-  },
-])
+const optionMultiSelect = computed(() => [receivedShareCloneByNodeList])
 
-const pagination = computed(() => store.getters['helper/search/pagination'])
-const nodeList = computed(() => store.getters['receivedShare/nodeList'])
-const breadcrumbList = computed(() =>
-  store.getters['receivedShare/collectionBreadcrumbList']()
+const nodeList = computed(
+  () => workspaceNodeCollection.value?.childNodeList ?? []
 )
-const collection = computed(() => store.getters['receivedShare/collection'])
-const currentNodeKey = ref(props.nodeKey)
+const locationList = computed(
+  () => workspaceNodeCollection.value?.nodeMeta.locationList ?? []
+)
 const selectedNodeList = ref([])
 
-const getShareReceivedList = async (targetPage = 1, query) => {
+const getShareReceivedList = async (
+  payload: SearchPayload<ExternalFilter>,
+  query: RouteQuery
+) => {
   router.push({
-    name: route.name,
+    name: route.name as string,
     params: {
-      nodeKey: currentNodeKey.value,
+      sharingId: props.sharingKey,
+      nodeId: currentNodeId.value,
     },
     query,
   })
-  await store.dispatch('receivedShare/getShareReceivedList', {
-    targetPage,
-    sharingKey: share.value.sharingKey,
-    nodeKey: currentNodeKey.value,
+  const {
+    data: { result },
+  } = await ogBaseReceivedShareApi('getReceivedShareList', {
+    ...payload,
+    sharingKey: props.sharingKey,
+    nodeId: currentNodeId.value,
   })
+
+  workspaceNodeCollection.value = result.workspaceNodeCollection
+  searchStore.setPaginationRes(result.pagination)
 }
 
-const handleNodeClick = (node, goTo) => {
-  if (node.nodeType === NODE_TYPE.COLLECTION) {
-    currentNodeKey.value = node.nodeKey
-    goTo()
+const handleNodeClick = (node: NodeChild, visit: Function) => {
+  if (node.nodeMeta.nodeType === NodeType.COLLECTION) {
+    currentNodeId.value = node.nodeMeta.nodeId
+    visit()
   } else {
-    goToReceivedShareMaterial(node.nodeKey, share.value.sharingKey, node.rank)
+    goToReceivedShareMaterial(
+      props.sharingKey,
+      node.nodeMeta.nodeId,
+      node.nodeMeta.rank ?? undefined
+    )
   }
 }
 </script>

@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import { useNotifyStore } from '@/stores/notify'
 import useLogSender from '@/composables/useLogSender'
-import { ROLE_ID, NODE_TYPE } from '@/utils/constants'
+import { ROLE_ID } from '@/utils/constants'
 import i18n from '@frontier/i18n'
 import remindVerifyEmail from '@/utils/remind-verify-email'
 import { pageview } from 'vue-gtag'
@@ -68,52 +68,39 @@ const routes = [
     },
   },
   {
-    path: '/share-page',
-    name: 'SharePage',
-    beforeEnter: async (to, from, next) => {
-      const { sharingKey } = to.query
-      await store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey })
-      const share = store.getters['receivedShare/share']
-      const logSender = useLogSender()
-      logSender.createReceivePageLog(sharingKey)
-      const nodeKey = `${share.workspaceNodeLocation}-${share.workspaceNodeId}`
-      if (share.workspaceNodeType === NODE_TYPE.COLLECTION) {
-        next(`/received-share/${sharingKey}/${nodeKey}`)
-      } else {
-        next(`/received-share/${sharingKey}/material/${nodeKey}`)
-      }
-    },
-  },
-  {
     path: '/received-share/:sharingKey',
     name: 'ReceivedShare',
-    component: () =>
-      import('@/views/outerApp/receivedShare/ReceivedShareContainer.vue'),
-    beforeEnter: async (to, from, next) => {
-      const sharingKey = to.params.sharingKey
-      await Promise.all([
-        store.dispatch('receivedShare/checkHasLogin'),
-        store.dispatch('receivedShare/getShareReceivedInfo', { sharingKey }),
-      ])
-      if (store.getters['receivedShare/hasLogin']) {
-        await store.dispatch('user/getUser')
-      }
-      next()
-    },
+    props: true,
+    component: () => import('@/views/outerApp/OuterApp.vue'),
     children: [
       {
-        path: ':nodeKey',
-        name: 'ReceivedShareCollection',
+        path: 'navigator',
+        name: 'ReceivedShareNavigator',
         props: true,
         component: () =>
-          import('@/views/outerApp/receivedShare/ReceivedShareCollection.vue'),
+          import('@/views/outerApp/receivedShare/ReceivedShareNavigator.vue'),
       },
       {
-        path: 'material/:nodeKey',
+        path: ':nodeId',
+        name: 'ReceivedShareCollection',
+        props: true,
+        components: {
+          default: () =>
+            import(
+              '@/views/outerApp/receivedShare/ReceivedShareCollection.vue'
+            ),
+          header: () => import('@/components/outerApp/ReceivedShareHeader.vue'),
+        },
+      },
+      {
+        path: 'material/:nodeId',
         name: 'ReceivedShareMaterial',
         props: true,
-        component: () =>
-          import('@/views/outerApp/receivedShare/ReceivedShareMaterial.vue'),
+        components: {
+          default: () =>
+            import('@/views/outerApp/receivedShare/ReceivedShareMaterial.vue'),
+          header: () => import('@/components/outerApp/ReceivedShareHeader.vue'),
+        },
       },
     ],
   },

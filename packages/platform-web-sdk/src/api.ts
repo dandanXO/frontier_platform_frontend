@@ -6356,6 +6356,186 @@ export interface GetDigitalThreadWorkflowStageOptionsRequest {
 /**
  * 
  * @export
+ * @interface GetEmbedInfo200Response
+ */
+export interface GetEmbedInfo200Response {
+    /**
+     * 
+     * @type {GetReceivedShareInfo200ResponseAllOfResult}
+     * @memberof GetEmbedInfo200Response
+     */
+    'result'?: GetReceivedShareInfo200ResponseAllOfResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetEmbedInfo200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetEmbedInfo200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetEmbedInfo200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetEmbedInfoRequest
+ */
+export interface GetEmbedInfoRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetEmbedInfoRequest
+     */
+    'sharingKey': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetEmbedList200Response
+ */
+export interface GetEmbedList200Response {
+    /**
+     * 
+     * @type {GetWorkspaceList200ResponseAllOfResult}
+     * @memberof GetEmbedList200Response
+     */
+    'result'?: GetWorkspaceList200ResponseAllOfResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetEmbedList200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetEmbedList200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetEmbedList200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetEmbedListRequest
+ */
+export interface GetEmbedListRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetEmbedListRequest
+     */
+    'sharingKey': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetEmbedListRequest
+     */
+    'orgId': number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetEmbedListRequest
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {PaginationReq}
+     * @memberof GetEmbedListRequest
+     */
+    'pagination': PaginationReq;
+    /**
+     * 
+     * @type {Search}
+     * @memberof GetEmbedListRequest
+     */
+    'search': Search | null;
+    /**
+     * 
+     * @type {ExternalFilter}
+     * @memberof GetEmbedListRequest
+     */
+    'filter': ExternalFilter | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetEmbedMaterial200Response
+ */
+export interface GetEmbedMaterial200Response {
+    /**
+     * 
+     * @type {GetWorkspaceMaterial200ResponseAllOfResult}
+     * @memberof GetEmbedMaterial200Response
+     */
+    'result'?: GetWorkspaceMaterial200ResponseAllOfResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetEmbedMaterial200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetEmbedMaterial200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetEmbedMaterial200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetEmbedMaterialRequest
+ */
+export interface GetEmbedMaterialRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetEmbedMaterialRequest
+     */
+    'sharingKey': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetEmbedMaterialRequest
+     */
+    'orgId': number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetEmbedMaterialRequest
+     */
+    'nodeId': number;
+    /**
+     * 
+     * @type {SearchLog}
+     * @memberof GetEmbedMaterialRequest
+     */
+    'searchLog': SearchLog | null;
+}
+/**
+ * 
+ * @export
  * @interface GetExcelProgressList200Response
  */
 export interface GetExcelProgressList200Response {
@@ -7824,19 +8004,6 @@ export interface GetMoodboardShareReceivedInfoRequest {
 /**
  * 
  * @export
- * @interface GetMoodboardShareReceivedInfoRequestAllOf
- */
-export interface GetMoodboardShareReceivedInfoRequestAllOf {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetMoodboardShareReceivedInfoRequestAllOf
-     */
-    'sharingKey': string;
-}
-/**
- * 
- * @export
  * @interface GetMoodboardShareTargetRequest
  */
 export interface GetMoodboardShareTargetRequest {
@@ -8050,12 +8217,6 @@ export interface GetPublicLibraryNodeShareAssignedTargetRequest {
 export interface GetReceivedShareInfo200Response {
     /**
      * 
-     * @type {GetReceivedShareInfo200ResponseResult}
-     * @memberof GetReceivedShareInfo200Response
-     */
-    'result'?: GetReceivedShareInfo200ResponseResult;
-    /**
-     * 
      * @type {boolean}
      * @memberof GetReceivedShareInfo200Response
      */
@@ -8068,6 +8229,12 @@ export interface GetReceivedShareInfo200Response {
     'code'?: string | null;
     /**
      * 
+     * @type {GetReceivedShareInfo200ResponseAllOfResult}
+     * @memberof GetReceivedShareInfo200Response
+     */
+    'result': GetReceivedShareInfo200ResponseAllOfResult;
+    /**
+     * 
      * @type {object}
      * @memberof GetReceivedShareInfo200Response
      */
@@ -8076,13 +8243,26 @@ export interface GetReceivedShareInfo200Response {
 /**
  * 
  * @export
- * @interface GetReceivedShareInfo200ResponseResult
+ * @interface GetReceivedShareInfo200ResponseAllOf
  */
-export interface GetReceivedShareInfo200ResponseResult {
+export interface GetReceivedShareInfo200ResponseAllOf {
+    /**
+     * 
+     * @type {GetReceivedShareInfo200ResponseAllOfResult}
+     * @memberof GetReceivedShareInfo200ResponseAllOf
+     */
+    'result': GetReceivedShareInfo200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetReceivedShareInfo200ResponseAllOfResult
+ */
+export interface GetReceivedShareInfo200ResponseAllOfResult {
     /**
      * 
      * @type {ShareInfo}
-     * @memberof GetReceivedShareInfo200ResponseResult
+     * @memberof GetReceivedShareInfo200ResponseAllOfResult
      */
     'shareInfo': ShareInfo;
 }
@@ -8098,37 +8278,6 @@ export interface GetReceivedShareInfoRequest {
      * @memberof GetReceivedShareInfoRequest
      */
     'sharingKey': string;
-}
-/**
- * 
- * @export
- * @interface GetReceivedShareList200Response
- */
-export interface GetReceivedShareList200Response {
-    /**
-     * 
-     * @type {GetWorkspaceList200ResponseAllOfResult}
-     * @memberof GetReceivedShareList200Response
-     */
-    'result'?: GetWorkspaceList200ResponseAllOfResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetReceivedShareList200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetReceivedShareList200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof GetReceivedShareList200Response
-     */
-    'message'?: object | null;
 }
 /**
  * 
@@ -8172,37 +8321,6 @@ export interface GetReceivedShareListRequest {
      * @memberof GetReceivedShareListRequest
      */
     'filter': ExternalFilter | null;
-}
-/**
- * 
- * @export
- * @interface GetReceivedShareMaterial200Response
- */
-export interface GetReceivedShareMaterial200Response {
-    /**
-     * 
-     * @type {GetWorkspaceMaterial200ResponseAllOfResult}
-     * @memberof GetReceivedShareMaterial200Response
-     */
-    'result'?: GetWorkspaceMaterial200ResponseAllOfResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetReceivedShareMaterial200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetReceivedShareMaterial200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof GetReceivedShareMaterial200Response
-     */
-    'message'?: object | null;
 }
 /**
  * 
@@ -20394,14 +20512,22 @@ export interface SaveReceivedShareRequest {
      * @type {number}
      * @memberof SaveReceivedShareRequest
      */
-    'orgId': number;
+    'targetOrgId': number;
     /**
      * 
      * @type {number}
      * @memberof SaveReceivedShareRequest
      */
-    'groupId': number | null;
+    'targetOgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof SaveReceivedShareRequest
+     */
+    'targetOgType': OgType;
 }
+
+
 /**
  * 
  * @export
@@ -20882,6 +21008,18 @@ export interface ShareInfo {
      * @memberof ShareInfo
      */
     'sharingFrom': ShareInfoSharingFromEnum;
+    /**
+     * 節點 (Node) 擁有者的單位 Logo
+     * @type {string}
+     * @memberof ShareInfo
+     */
+    'unitLogo': string;
+    /**
+     * 節點 (Node) 擁有者的單位名稱，Moodboard ：單位名稱 = 組織 (團隊)名稱，Moodboard 以外 ：單位名稱 = 組織名稱
+     * @type {string}
+     * @memberof ShareInfo
+     */
+    'unitName': string;
     /**
      * 
      * @type {string}
@@ -27395,11 +27533,11 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
         /**
          * 可在使用者未登入狀態下紀錄
          * @summary 新增開啟EmbedPage記錄
-         * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+         * @param {GetEmbedInfoRequest} [getEmbedInfoRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createEmbedPageLog: async (getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createEmbedPageLog: async (getEmbedInfoRequest?: GetEmbedInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/dashboard/embed-page-log/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27423,7 +27561,7 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getReceivedShareInfoRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getEmbedInfoRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -27433,11 +27571,11 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
         /**
          * 可在使用者未登入狀態下紀錄
          * @summary 新增開啟ReceivePage記錄
-         * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+         * @param {GetEmbedInfoRequest} [getEmbedInfoRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createReceivePageLog: async (getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createReceivePageLog: async (getEmbedInfoRequest?: GetEmbedInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/dashboard/receive-page-log/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27461,7 +27599,7 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getReceivedShareInfoRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getEmbedInfoRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -27606,23 +27744,23 @@ export const DashboardApiFp = function(configuration?: Configuration) {
         /**
          * 可在使用者未登入狀態下紀錄
          * @summary 新增開啟EmbedPage記錄
-         * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+         * @param {GetEmbedInfoRequest} [getEmbedInfoRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createEmbedPageLog(getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createEmbedPageLog(getReceivedShareInfoRequest, options);
+        async createEmbedPageLog(getEmbedInfoRequest?: GetEmbedInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createEmbedPageLog(getEmbedInfoRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 可在使用者未登入狀態下紀錄
          * @summary 新增開啟ReceivePage記錄
-         * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+         * @param {GetEmbedInfoRequest} [getEmbedInfoRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createReceivePageLog(getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createReceivePageLog(getReceivedShareInfoRequest, options);
+        async createReceivePageLog(getEmbedInfoRequest?: GetEmbedInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createReceivePageLog(getEmbedInfoRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -27681,22 +27819,22 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
         /**
          * 可在使用者未登入狀態下紀錄
          * @summary 新增開啟EmbedPage記錄
-         * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+         * @param {GetEmbedInfoRequest} [getEmbedInfoRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createEmbedPageLog(getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
-            return localVarFp.createEmbedPageLog(getReceivedShareInfoRequest, options).then((request) => request(axios, basePath));
+        createEmbedPageLog(getEmbedInfoRequest?: GetEmbedInfoRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+            return localVarFp.createEmbedPageLog(getEmbedInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 可在使用者未登入狀態下紀錄
          * @summary 新增開啟ReceivePage記錄
-         * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+         * @param {GetEmbedInfoRequest} [getEmbedInfoRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createReceivePageLog(getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
-            return localVarFp.createReceivePageLog(getReceivedShareInfoRequest, options).then((request) => request(axios, basePath));
+        createReceivePageLog(getEmbedInfoRequest?: GetEmbedInfoRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+            return localVarFp.createReceivePageLog(getEmbedInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -27753,25 +27891,25 @@ export class DashboardApi extends BaseAPI {
     /**
      * 可在使用者未登入狀態下紀錄
      * @summary 新增開啟EmbedPage記錄
-     * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+     * @param {GetEmbedInfoRequest} [getEmbedInfoRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DashboardApi
      */
-    public createEmbedPageLog(getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options?: AxiosRequestConfig) {
-        return DashboardApiFp(this.configuration).createEmbedPageLog(getReceivedShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
+    public createEmbedPageLog(getEmbedInfoRequest?: GetEmbedInfoRequest, options?: AxiosRequestConfig) {
+        return DashboardApiFp(this.configuration).createEmbedPageLog(getEmbedInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 可在使用者未登入狀態下紀錄
      * @summary 新增開啟ReceivePage記錄
-     * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+     * @param {GetEmbedInfoRequest} [getEmbedInfoRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DashboardApi
      */
-    public createReceivePageLog(getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options?: AxiosRequestConfig) {
-        return DashboardApiFp(this.configuration).createReceivePageLog(getReceivedShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
+    public createReceivePageLog(getEmbedInfoRequest?: GetEmbedInfoRequest, options?: AxiosRequestConfig) {
+        return DashboardApiFp(this.configuration).createReceivePageLog(getEmbedInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -28786,11 +28924,11 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary 取得 embed page 資料
-         * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+         * @param {GetEmbedInfoRequest} [getEmbedInfoRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedInfo: async (getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getEmbedInfo: async (getEmbedInfoRequest?: GetEmbedInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/embed/get-info`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28810,7 +28948,7 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getReceivedShareInfoRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getEmbedInfoRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -28820,11 +28958,11 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary 取得 embed page 的 collection
-         * @param {GetReceivedShareListRequest} [getReceivedShareListRequest] 
+         * @param {GetEmbedListRequest} [getEmbedListRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedList: async (getReceivedShareListRequest?: GetReceivedShareListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getEmbedList: async (getEmbedListRequest?: GetEmbedListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/embed/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28844,7 +28982,7 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getReceivedShareListRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getEmbedListRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -28854,11 +28992,11 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary 取得 embed page collection 中的material明細
-         * @param {GetReceivedShareMaterialRequest} [getReceivedShareMaterialRequest] 
+         * @param {GetEmbedMaterialRequest} [getEmbedMaterialRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedMaterial: async (getReceivedShareMaterialRequest?: GetReceivedShareMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getEmbedMaterial: async (getEmbedMaterialRequest?: GetEmbedMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/embed/get-material`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28878,7 +29016,7 @@ export const EmbedApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getReceivedShareMaterialRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getEmbedMaterialRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -28898,34 +29036,34 @@ export const EmbedApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 取得 embed page 資料
-         * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+         * @param {GetEmbedInfoRequest} [getEmbedInfoRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEmbedInfo(getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareInfo200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedInfo(getReceivedShareInfoRequest, options);
+        async getEmbedInfo(getEmbedInfoRequest?: GetEmbedInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetEmbedInfo200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedInfo(getEmbedInfoRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary 取得 embed page 的 collection
-         * @param {GetReceivedShareListRequest} [getReceivedShareListRequest] 
+         * @param {GetEmbedListRequest} [getEmbedListRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEmbedList(getReceivedShareListRequest?: GetReceivedShareListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareList200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedList(getReceivedShareListRequest, options);
+        async getEmbedList(getEmbedListRequest?: GetEmbedListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetEmbedList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedList(getEmbedListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary 取得 embed page collection 中的material明細
-         * @param {GetReceivedShareMaterialRequest} [getReceivedShareMaterialRequest] 
+         * @param {GetEmbedMaterialRequest} [getEmbedMaterialRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEmbedMaterial(getReceivedShareMaterialRequest?: GetReceivedShareMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareMaterial200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedMaterial(getReceivedShareMaterialRequest, options);
+        async getEmbedMaterial(getEmbedMaterialRequest?: GetEmbedMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetEmbedMaterial200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getEmbedMaterial(getEmbedMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -28941,32 +29079,32 @@ export const EmbedApiFactory = function (configuration?: Configuration, basePath
         /**
          * 
          * @summary 取得 embed page 資料
-         * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+         * @param {GetEmbedInfoRequest} [getEmbedInfoRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedInfo(getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options?: any): AxiosPromise<GetReceivedShareInfo200Response> {
-            return localVarFp.getEmbedInfo(getReceivedShareInfoRequest, options).then((request) => request(axios, basePath));
+        getEmbedInfo(getEmbedInfoRequest?: GetEmbedInfoRequest, options?: any): AxiosPromise<GetEmbedInfo200Response> {
+            return localVarFp.getEmbedInfo(getEmbedInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 取得 embed page 的 collection
-         * @param {GetReceivedShareListRequest} [getReceivedShareListRequest] 
+         * @param {GetEmbedListRequest} [getEmbedListRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedList(getReceivedShareListRequest?: GetReceivedShareListRequest, options?: any): AxiosPromise<GetReceivedShareList200Response> {
-            return localVarFp.getEmbedList(getReceivedShareListRequest, options).then((request) => request(axios, basePath));
+        getEmbedList(getEmbedListRequest?: GetEmbedListRequest, options?: any): AxiosPromise<GetEmbedList200Response> {
+            return localVarFp.getEmbedList(getEmbedListRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 取得 embed page collection 中的material明細
-         * @param {GetReceivedShareMaterialRequest} [getReceivedShareMaterialRequest] 
+         * @param {GetEmbedMaterialRequest} [getEmbedMaterialRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEmbedMaterial(getReceivedShareMaterialRequest?: GetReceivedShareMaterialRequest, options?: any): AxiosPromise<GetReceivedShareMaterial200Response> {
-            return localVarFp.getEmbedMaterial(getReceivedShareMaterialRequest, options).then((request) => request(axios, basePath));
+        getEmbedMaterial(getEmbedMaterialRequest?: GetEmbedMaterialRequest, options?: any): AxiosPromise<GetEmbedMaterial200Response> {
+            return localVarFp.getEmbedMaterial(getEmbedMaterialRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -28981,37 +29119,37 @@ export class EmbedApi extends BaseAPI {
     /**
      * 
      * @summary 取得 embed page 資料
-     * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+     * @param {GetEmbedInfoRequest} [getEmbedInfoRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmbedApi
      */
-    public getEmbedInfo(getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options?: AxiosRequestConfig) {
-        return EmbedApiFp(this.configuration).getEmbedInfo(getReceivedShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
+    public getEmbedInfo(getEmbedInfoRequest?: GetEmbedInfoRequest, options?: AxiosRequestConfig) {
+        return EmbedApiFp(this.configuration).getEmbedInfo(getEmbedInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得 embed page 的 collection
-     * @param {GetReceivedShareListRequest} [getReceivedShareListRequest] 
+     * @param {GetEmbedListRequest} [getEmbedListRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmbedApi
      */
-    public getEmbedList(getReceivedShareListRequest?: GetReceivedShareListRequest, options?: AxiosRequestConfig) {
-        return EmbedApiFp(this.configuration).getEmbedList(getReceivedShareListRequest, options).then((request) => request(this.axios, this.basePath));
+    public getEmbedList(getEmbedListRequest?: GetEmbedListRequest, options?: AxiosRequestConfig) {
+        return EmbedApiFp(this.configuration).getEmbedList(getEmbedListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得 embed page collection 中的material明細
-     * @param {GetReceivedShareMaterialRequest} [getReceivedShareMaterialRequest] 
+     * @param {GetEmbedMaterialRequest} [getEmbedMaterialRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof EmbedApi
      */
-    public getEmbedMaterial(getReceivedShareMaterialRequest?: GetReceivedShareMaterialRequest, options?: AxiosRequestConfig) {
-        return EmbedApiFp(this.configuration).getEmbedMaterial(getReceivedShareMaterialRequest, options).then((request) => request(this.axios, this.basePath));
+    public getEmbedMaterial(getEmbedMaterialRequest?: GetEmbedMaterialRequest, options?: AxiosRequestConfig) {
+        return EmbedApiFp(this.configuration).getEmbedMaterial(getEmbedMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -29025,11 +29163,13 @@ export const GeneralApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary 確認 token 狀態
-         * @param {CheckTokenStatusRequest} [checkTokenStatusRequest] 
+         * @param {CheckTokenStatusRequest} checkTokenStatusRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkTokenStatus: async (checkTokenStatusRequest?: CheckTokenStatusRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        checkTokenStatus: async (checkTokenStatusRequest: CheckTokenStatusRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'checkTokenStatusRequest' is not null or undefined
+            assertParamExists('checkTokenStatus', 'checkTokenStatusRequest', checkTokenStatusRequest)
             const localVarPath = `/general/check-token-status`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29265,11 +29405,11 @@ export const GeneralApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 確認 token 狀態
-         * @param {CheckTokenStatusRequest} [checkTokenStatusRequest] 
+         * @param {CheckTokenStatusRequest} checkTokenStatusRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkTokenStatus(checkTokenStatusRequest?: CheckTokenStatusRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckTokenStatus200Response>> {
+        async checkTokenStatus(checkTokenStatusRequest: CheckTokenStatusRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CheckTokenStatus200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.checkTokenStatus(checkTokenStatusRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -29341,11 +29481,11 @@ export const GeneralApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary 確認 token 狀態
-         * @param {CheckTokenStatusRequest} [checkTokenStatusRequest] 
+         * @param {CheckTokenStatusRequest} checkTokenStatusRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkTokenStatus(checkTokenStatusRequest?: CheckTokenStatusRequest, options?: any): AxiosPromise<CheckTokenStatus200Response> {
+        checkTokenStatus(checkTokenStatusRequest: CheckTokenStatusRequest, options?: any): AxiosPromise<CheckTokenStatus200Response> {
             return localVarFp.checkTokenStatus(checkTokenStatusRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -29411,12 +29551,12 @@ export class GeneralApi extends BaseAPI {
     /**
      * 
      * @summary 確認 token 狀態
-     * @param {CheckTokenStatusRequest} [checkTokenStatusRequest] 
+     * @param {CheckTokenStatusRequest} checkTokenStatusRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GeneralApi
      */
-    public checkTokenStatus(checkTokenStatusRequest?: CheckTokenStatusRequest, options?: AxiosRequestConfig) {
+    public checkTokenStatus(checkTokenStatusRequest: CheckTokenStatusRequest, options?: AxiosRequestConfig) {
         return GeneralApiFp(this.configuration).checkTokenStatus(checkTokenStatusRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -36578,11 +36718,13 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
         /**
          * 
          * @summary clone
-         * @param {CloneReceivedShareNodeRequest} [cloneReceivedShareNodeRequest] 
+         * @param {CloneReceivedShareNodeRequest} cloneReceivedShareNodeRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneReceivedShareNode: async (cloneReceivedShareNodeRequest?: CloneReceivedShareNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cloneReceivedShareNode: async (cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cloneReceivedShareNodeRequest' is not null or undefined
+            assertParamExists('cloneReceivedShareNode', 'cloneReceivedShareNodeRequest', cloneReceivedShareNodeRequest)
             const localVarPath = `/received-share/node/clone`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36616,11 +36758,13 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
         /**
          * 
          * @summary 取得 received page 資料
-         * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+         * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getReceivedShareInfo: async (getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getReceivedShareInfo: async (getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getReceivedShareInfoRequest' is not null or undefined
+            assertParamExists('getReceivedShareInfo', 'getReceivedShareInfoRequest', getReceivedShareInfoRequest)
             const localVarPath = `/received-share/get-info`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36650,11 +36794,13 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
         /**
          * 
          * @summary 取得 received page collection
-         * @param {GetReceivedShareListRequest} [getReceivedShareListRequest] 
+         * @param {GetReceivedShareListRequest} getReceivedShareListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getReceivedShareList: async (getReceivedShareListRequest?: GetReceivedShareListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getReceivedShareList: async (getReceivedShareListRequest: GetReceivedShareListRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getReceivedShareListRequest' is not null or undefined
+            assertParamExists('getReceivedShareList', 'getReceivedShareListRequest', getReceivedShareListRequest)
             const localVarPath = `/received-share/get-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36684,11 +36830,13 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
         /**
          * 
          * @summary 取得 received page collection 中的material明細
-         * @param {GetReceivedShareMaterialRequest} [getReceivedShareMaterialRequest] 
+         * @param {GetReceivedShareMaterialRequest} getReceivedShareMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getReceivedShareMaterial: async (getReceivedShareMaterialRequest?: GetReceivedShareMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getReceivedShareMaterial: async (getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getReceivedShareMaterialRequest' is not null or undefined
+            assertParamExists('getReceivedShareMaterial', 'getReceivedShareMaterialRequest', getReceivedShareMaterialRequest)
             const localVarPath = `/received-share/get-material`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36718,11 +36866,13 @@ export const ReceivedShareApiAxiosParamCreator = function (configuration?: Confi
         /**
          * 
          * @summary save
-         * @param {SaveReceivedShareRequest} [saveReceivedShareRequest] 
+         * @param {SaveReceivedShareRequest} saveReceivedShareRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveReceivedShare: async (saveReceivedShareRequest?: SaveReceivedShareRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        saveReceivedShare: async (saveReceivedShareRequest: SaveReceivedShareRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'saveReceivedShareRequest' is not null or undefined
+            assertParamExists('saveReceivedShare', 'saveReceivedShareRequest', saveReceivedShareRequest)
             const localVarPath = `/received-share/save`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36777,55 +36927,55 @@ export const ReceivedShareApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary clone
-         * @param {CloneReceivedShareNodeRequest} [cloneReceivedShareNodeRequest] 
+         * @param {CloneReceivedShareNodeRequest} cloneReceivedShareNodeRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cloneReceivedShareNode(cloneReceivedShareNodeRequest?: CloneReceivedShareNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cloneReceivedShareNode(cloneReceivedShareNodeRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary 取得 received page 資料
-         * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+         * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getReceivedShareInfo(getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareInfo200Response>> {
+        async getReceivedShareInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareInfo200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getReceivedShareInfo(getReceivedShareInfoRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary 取得 received page collection
-         * @param {GetReceivedShareListRequest} [getReceivedShareListRequest] 
+         * @param {GetReceivedShareListRequest} getReceivedShareListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getReceivedShareList(getReceivedShareListRequest?: GetReceivedShareListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareList200Response>> {
+        async getReceivedShareList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getReceivedShareList(getReceivedShareListRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary 取得 received page collection 中的material明細
-         * @param {GetReceivedShareMaterialRequest} [getReceivedShareMaterialRequest] 
+         * @param {GetReceivedShareMaterialRequest} getReceivedShareMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getReceivedShareMaterial(getReceivedShareMaterialRequest?: GetReceivedShareMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetReceivedShareMaterial200Response>> {
+        async getReceivedShareMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetWorkspaceMaterial200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getReceivedShareMaterial(getReceivedShareMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary save
-         * @param {SaveReceivedShareRequest} [saveReceivedShareRequest] 
+         * @param {SaveReceivedShareRequest} saveReceivedShareRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async saveReceivedShare(saveReceivedShareRequest?: SaveReceivedShareRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
+        async saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.saveReceivedShare(saveReceivedShareRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -36852,51 +37002,51 @@ export const ReceivedShareApiFactory = function (configuration?: Configuration, 
         /**
          * 
          * @summary clone
-         * @param {CloneReceivedShareNodeRequest} [cloneReceivedShareNodeRequest] 
+         * @param {CloneReceivedShareNodeRequest} cloneReceivedShareNodeRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cloneReceivedShareNode(cloneReceivedShareNodeRequest?: CloneReceivedShareNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.cloneReceivedShareNode(cloneReceivedShareNodeRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 取得 received page 資料
-         * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+         * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getReceivedShareInfo(getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options?: any): AxiosPromise<GetReceivedShareInfo200Response> {
+        getReceivedShareInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: any): AxiosPromise<GetReceivedShareInfo200Response> {
             return localVarFp.getReceivedShareInfo(getReceivedShareInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 取得 received page collection
-         * @param {GetReceivedShareListRequest} [getReceivedShareListRequest] 
+         * @param {GetReceivedShareListRequest} getReceivedShareListRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getReceivedShareList(getReceivedShareListRequest?: GetReceivedShareListRequest, options?: any): AxiosPromise<GetReceivedShareList200Response> {
+        getReceivedShareList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: any): AxiosPromise<GetWorkspaceList200Response> {
             return localVarFp.getReceivedShareList(getReceivedShareListRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 取得 received page collection 中的material明細
-         * @param {GetReceivedShareMaterialRequest} [getReceivedShareMaterialRequest] 
+         * @param {GetReceivedShareMaterialRequest} getReceivedShareMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getReceivedShareMaterial(getReceivedShareMaterialRequest?: GetReceivedShareMaterialRequest, options?: any): AxiosPromise<GetReceivedShareMaterial200Response> {
+        getReceivedShareMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: any): AxiosPromise<GetWorkspaceMaterial200Response> {
             return localVarFp.getReceivedShareMaterial(getReceivedShareMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary save
-         * @param {SaveReceivedShareRequest} [saveReceivedShareRequest] 
+         * @param {SaveReceivedShareRequest} saveReceivedShareRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveReceivedShare(saveReceivedShareRequest?: SaveReceivedShareRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
+        saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.saveReceivedShare(saveReceivedShareRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -36924,60 +37074,60 @@ export class ReceivedShareApi extends BaseAPI {
     /**
      * 
      * @summary clone
-     * @param {CloneReceivedShareNodeRequest} [cloneReceivedShareNodeRequest] 
+     * @param {CloneReceivedShareNodeRequest} cloneReceivedShareNodeRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReceivedShareApi
      */
-    public cloneReceivedShareNode(cloneReceivedShareNodeRequest?: CloneReceivedShareNodeRequest, options?: AxiosRequestConfig) {
+    public cloneReceivedShareNode(cloneReceivedShareNodeRequest: CloneReceivedShareNodeRequest, options?: AxiosRequestConfig) {
         return ReceivedShareApiFp(this.configuration).cloneReceivedShareNode(cloneReceivedShareNodeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得 received page 資料
-     * @param {GetReceivedShareInfoRequest} [getReceivedShareInfoRequest] 
+     * @param {GetReceivedShareInfoRequest} getReceivedShareInfoRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReceivedShareApi
      */
-    public getReceivedShareInfo(getReceivedShareInfoRequest?: GetReceivedShareInfoRequest, options?: AxiosRequestConfig) {
+    public getReceivedShareInfo(getReceivedShareInfoRequest: GetReceivedShareInfoRequest, options?: AxiosRequestConfig) {
         return ReceivedShareApiFp(this.configuration).getReceivedShareInfo(getReceivedShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得 received page collection
-     * @param {GetReceivedShareListRequest} [getReceivedShareListRequest] 
+     * @param {GetReceivedShareListRequest} getReceivedShareListRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReceivedShareApi
      */
-    public getReceivedShareList(getReceivedShareListRequest?: GetReceivedShareListRequest, options?: AxiosRequestConfig) {
+    public getReceivedShareList(getReceivedShareListRequest: GetReceivedShareListRequest, options?: AxiosRequestConfig) {
         return ReceivedShareApiFp(this.configuration).getReceivedShareList(getReceivedShareListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 取得 received page collection 中的material明細
-     * @param {GetReceivedShareMaterialRequest} [getReceivedShareMaterialRequest] 
+     * @param {GetReceivedShareMaterialRequest} getReceivedShareMaterialRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReceivedShareApi
      */
-    public getReceivedShareMaterial(getReceivedShareMaterialRequest?: GetReceivedShareMaterialRequest, options?: AxiosRequestConfig) {
+    public getReceivedShareMaterial(getReceivedShareMaterialRequest: GetReceivedShareMaterialRequest, options?: AxiosRequestConfig) {
         return ReceivedShareApiFp(this.configuration).getReceivedShareMaterial(getReceivedShareMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary save
-     * @param {SaveReceivedShareRequest} [saveReceivedShareRequest] 
+     * @param {SaveReceivedShareRequest} saveReceivedShareRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ReceivedShareApi
      */
-    public saveReceivedShare(saveReceivedShareRequest?: SaveReceivedShareRequest, options?: AxiosRequestConfig) {
+    public saveReceivedShare(saveReceivedShareRequest: SaveReceivedShareRequest, options?: AxiosRequestConfig) {
         return ReceivedShareApiFp(this.configuration).saveReceivedShare(saveReceivedShareRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }

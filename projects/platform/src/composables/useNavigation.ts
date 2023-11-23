@@ -222,11 +222,21 @@ export default function useNavigation() {
     router.push(parsePath(path, navReq))
   }
 
-  // const goToReceivedShareMaterial = (nodeKey, sharingKey, rank) => {
-  //   router.push(
-  //     `/received-share/${sharingKey}/material/${nodeKey}?rank=${rank}`
-  //   )
-  // }
+  const goToReceivedShare = (sharingKey: string, nodeId?: number) => {
+    const basePath = `/received-share/${sharingKey}`
+    const path = nodeId ? `${basePath}/${nodeId}` : basePath
+    router.push(path)
+  }
+
+  const goToReceivedShareMaterial = (
+    sharingKey: string,
+    nodeId: number,
+    rank?: number
+  ) => {
+    const basePath = `/received-share/${sharingKey}/material/${nodeId}`
+    const path = rank ? `${basePath}?rank=${rank}` : basePath
+    router.push(path)
+  }
 
   // const goToEmbedMaterialDetail = (nodeKey, sharingKey, rank) => {
   //   router.push(`/embed/${sharingKey}/material/${nodeKey}?rank=${rank}`)
@@ -274,11 +284,12 @@ export default function useNavigation() {
     goToPublicLibraryMaterialDetail,
     goToShowroom,
     goToShowroomMaterialDetail,
-    // goToReceivedShareMaterial,
     goToShareToMeMaterial,
     goToBillings,
     goToProgress,
     goToPaymentDetail,
+    goToReceivedShare,
+    goToReceivedShareMaterial,
     // goToEmbedMaterialDetail,
     goToMoodboard,
     // goToMoodboardDetail,

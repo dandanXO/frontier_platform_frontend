@@ -103,7 +103,7 @@ const props = withDefaults(
     node: NodeChild | ShareNodeChild
     isSelectable?: boolean
     selectedValue: NodeChild[] | ShareNodeChild[]
-    optionList:
+    optionList?:
       | FunctionOption<NodeChild>[][]
       | FunctionOption<ShareNodeChild>[][]
   }>(),

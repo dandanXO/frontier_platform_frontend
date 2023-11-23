@@ -1,6 +1,6 @@
 <template lang="pug">
 footer(
-  class="fixed z-footer bottom-0 w-full h-13 bg-grey-50 px-5 md:px-36 flex items-center justify-end shadow-4 border-t border-grey-150"
+  class="fixed z-footer bottom-0 w-full h-13 bg-grey-50 px-5 md:px-36 flex items-center justify-end shadow-4"
 )
   a(href="https://www.frontier.cool/" target="_blank" class="flex items-center")
     img(

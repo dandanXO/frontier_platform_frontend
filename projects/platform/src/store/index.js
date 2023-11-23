@@ -8,7 +8,6 @@ import group from '@/store/modules/management/group'
 import helper from '@/store/modules/helper'
 import assets from '@/store/modules/assets'
 import publicLibrary from '@/store/modules/publicLibrary'
-import receivedShare from '@/store/modules/receivedShare'
 import embed from '@/store/modules/embed'
 import moodboard from '@/store/modules/moodboard'
 import polling from '@/store/modules/polling'
@@ -61,7 +60,6 @@ export default createStore({
     helper,
     assets,
     publicLibrary,
-    receivedShare,
     embed,
     polling,
     moodboard,

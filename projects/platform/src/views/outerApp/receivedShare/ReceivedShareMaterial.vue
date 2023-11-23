@@ -1,69 +1,54 @@
 <template lang="pug">
-div(class="w-full h-full flex justify-center")
-  div(v-if="!isLoading" class="px-5 md:px-0 md:w-230 h-fit pb-20 md:pb-25")
-    material-detail-external-header(
-      :breadcrumbList="breadcrumbList"
-      :material="material"
-      @clone="receivedShareCloneByNodeKey(nodeKey)"
-    )
-    material-detail-external(
-      :material="material"
-      :isCanDownloadU3M="share.isCanDownloadU3M"
-    )
-  div(v-else class="h-full flex justify-center items-center")
-    f-svg-icon(iconName="loading" size="92" class="text-primary-500")
+div(class="w-full")
+  //- BreadCrumb
+  global-breadcrumb-list(
+    :breadcrumbList="locationList"
+    @click:item="$event.goTo()"
+    fontSize="text-caption"
+  )
+  div(class="w-full flex justify-between pt-6 relative")
 </template>
 
-<script setup>
-import { computed, onMounted, ref } from 'vue'
-import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
-import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
-import MaterialDetailExternalHeader from '@/components/common/material/detail/MaterialDetailExternalHeader.vue'
-import useReceivedShare from '@/composables/useReceivedShare.js'
+<script setup lang="ts">
+import { computed, toRefs, reactive } from 'vue'
+import { useReceivedShareStore } from '@/stores/receivedShare'
+import { useSearchStore } from '@/stores/search'
+import useNavigation from '@/composables/useNavigation'
 
-const props = defineProps({
-  sharingKey: {
-    type: String,
-    required: true,
-  },
-  nodeKey: {
-    type: String,
-    required: true,
-  },
+const props = defineProps<{
+  sharingKey: string
+  nodeId: string
+}>()
+
+const { goToReceivedShare } = useNavigation()
+const { ogBaseReceivedShareApi } = useReceivedShareStore()
+const { getSearchLog } = useSearchStore()
+
+const res = await ogBaseReceivedShareApi('getReceivedShareMaterial', {
+  sharingKey: props.sharingKey,
+  nodeId: Number(props.nodeId),
+  searchLog: getSearchLog(),
 })
 
-const store = useStore()
-const route = useRoute()
-const { receivedShareCloneByNodeKey } = useReceivedShare()
+const { material, nodeMeta } = toRefs(
+  reactive(res.data.result.workspaceNodeMaterial)
+)
 
-const isLoading = ref(true)
-const share = computed(() => store.getters['receivedShare/share'])
-const material = computed(() => store.getters['receivedShare/material'])
-const breadcrumbList = computed(() => {
-  return store.getters['receivedShare/materialBreadcrumbList'].map(
-    ({ name, nodeKey }, index, array) => {
-      if (index !== array.length - 1) {
-        return {
-          name,
-          path: `/received-share/${props.sharingKey}/${nodeKey}`,
-        }
-      } else {
-        return {
-          name: material.value.materialNo,
-          path: `/received-share/${props.sharingKey}/material/${nodeKey}`,
-        }
+const locationList = computed(() => {
+  return nodeMeta.value.locationList.map(({ name, nodeId }, index, array) => {
+    if (index !== array.length - 1) {
+      return {
+        name,
+        goTo: () => {
+          goToReceivedShare(props.sharingKey, nodeId)
+        },
+      }
+    } else {
+      return {
+        name: material.value.itemNo!,
+        goTo: () => {},
       }
     }
-  )
-})
-
-onMounted(async () => {
-  await store.dispatch('receivedShare/getShareReceivedMaterial', {
-    sharingKey: props.sharingKey,
-    nodeKey: props.nodeKey,
-    rank: Number(route.query.rank),
   })
-  isLoading.value = false
 })
 </script>
