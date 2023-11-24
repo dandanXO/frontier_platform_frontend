@@ -13,25 +13,24 @@
 
 <template lang="pug">
 main(class="flex flex-col h-full")
-  div(class="flex-grow mx-auto max-w-[1032px] w-full min-w-[737px] flex flex-col")
-    router-view(name="header")
-    div(class="flex-grow")
-      router-view(v-slot="{ Component }")
-        suspense
-          component(:is="Component")
-          template(#fallback)
-            div(class="h-full flex justify-center items-center")
-              f-svg-icon(iconName="loading" size="92" class="text-primary-500")
-  footer(class="w-full h-13 bg-grey-50 shadow-4")
+  router-view(name="header" class="rwd-app-padding-x shrink-0")
+  div(class="flex-grow overflow-y-auto rwd-app-padding-x")
+    router-view(v-slot="{ Component }")
+      suspense
+        component(:is="Component")
+        template(#fallback)
+          div(class="h-full flex justify-center items-center")
+            f-svg-icon(iconName="loading" size="92" class="text-primary-500")
+  footer(class="w-full h-13 bg-grey-50 shadow-4 shrink-0 rwd-app-padding-x")
     div(
-      class="h-full mx-auto max-w-[1032px] w-full min-w-[737px] flex items-center justify-end"
+      class="h-full mx-auto w-full rwd-outer-external-container flex items-center justify-end"
     )
       a(href="https://www.frontier.cool/" target="_blank" class="flex items-center")
         img(
           src="@/assets/images/frontier_logo.png"
           class="w-14 object-contain md:w-20.5 h-4 mr-2"
         )
-        p(class="text-caption md:text-body2 text-grey-900") {{ $t('GG0004') }}
+        p(class="text-caption text-grey-900") {{ $t('GG0004') }}
   transition(name="sticker-drawer")
     sticker-drawer-for-login(v-if="isStickerDrawerForLoginOpen")
   transition(name="sticker-drawer")

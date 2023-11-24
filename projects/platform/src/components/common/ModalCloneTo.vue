@@ -5,7 +5,7 @@ modal-behavior(
   :primaryBtnDisabled="targetOgList.length <= 0 || isExceedMaterialStorage"
   @click:primary="submit"
 )
-  div(class="w-94 relative z-20")
+  div(class="w-[min(376px,calc(100vw_-_80px_-_40px))] relative z-20")
     p(class="pb-3 text-grey-600 text-body2 leading-1.6") {{ $t('RR0180') }}
     f-select-dropdown(
       v-if="crossOrg"
@@ -109,7 +109,7 @@ const orgList = computed<Organization[]>(
   () => store.getters['user/organizationList']
 )
 const orgIdMenuTree = computed(() => ({
-  width: 'w-94',
+  width: 'w-[min(376px,calc(100vw_-_80px_-_40px))]',
   blockList: [
     {
       menuList: orgList.value.map(({ orgName, orgId }) => ({

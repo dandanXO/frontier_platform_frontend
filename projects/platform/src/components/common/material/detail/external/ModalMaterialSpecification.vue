@@ -1,7 +1,14 @@
 <template lang="pug">
-modal-behavior(:header="$t('RR0130')")
-  div(class="w-160 grid gap-y-8")
-    div(class="flex justify-between items-start")
+modal-behavior(
+  :header="$t('RR0130')"
+  :secondaryBtnText="$t('UU0026')"
+  @click:secondary="$store.dispatch('helper/closeModalBehavior')"
+  :footer="!isMobile"
+)
+  div(class="w-[min(640px,calc(100vw_-_80px_-_40px))] grid gap-y-8")
+    div(
+      class="flex flex-col gap-y-5 tablet:flex-row tablet:justify-between tablet:items-start"
+    )
       div
         p(class="text-body2 text-grey-900 mb-3") {{ material.metaData.unitName }}
         h4(class="text-h4 text-grey-900 font-bold") {{ material.itemNo }}
@@ -162,6 +169,7 @@ import { ref } from 'vue'
 import type { Material } from '@frontier/platform-web-sdk'
 import useMaterial from '@/composables/material/useMaterial'
 import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
+import { useBreakpoints } from '@frontier/lib'
 
 export interface PropsModalMaterialSpecification {
   material: Material
@@ -169,6 +177,7 @@ export interface PropsModalMaterialSpecification {
 
 const props = defineProps<PropsModalMaterialSpecification>()
 
+const { isMobile } = useBreakpoints()
 const {
   currentSideType,
   specificationInfo,

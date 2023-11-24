@@ -14,7 +14,7 @@ import { THEME } from '@frontier/constants'
 import { computed } from 'vue'
 
 interface Option {
-  label?: string
+  label?: string | null
   selectValue: any
   icon?: string
   selectedIcon?: string

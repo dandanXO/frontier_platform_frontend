@@ -1,26 +1,38 @@
 <template lang="pug">
-div(class="w-full flex justify-between items-center h-16")
+div(
+  class="mx-auto w-full rwd-outer-external-container flex justify-between items-center h-16"
+)
   template(v-if="shareInfo")
-    div(class="flex items-center gap-x-3")
-      p(class="text-caption2 md:text-body1 font-bold text-grey-900 pr-2.5") {{ $t('GG0032') }}
+    div(ref="refLeft" class="flex items-center gap-x-3")
+      p(class="hidden tablet:block text-body1 font-bold text-grey-900 pr-2.5") {{ $t('GG0032') }}
       f-avatar(:imageUrl="shareInfo.unitLogo" type="org" size="lg")
-      p(class="text-caption2 md:text-body1 font-bold text-grey-900 pl-2.5") {{ shareInfo.unitName }}
-    div(class="flex items-center gap-x-6")
-      dropdown-locale
-      f-tooltip-standard(:tooltipMessage="$t('RR0056')")
-        template(#slot:tooltip-trigger)
-          f-svg-icon(
-            iconName="content_copy"
-            class="text-grey-600 hover:text-primary-400 cursor-pointer"
-            size="24"
-            @click="receivedShareClone([shareInfo.nodeId])"
+      p(class="hidden tablet:block text-body1 font-bold text-grey-900 pl-2.5") {{ shareInfo.unitName }}
+    div(ref="refRight" class="flex items-center gap-x-6")
+      template(v-if="!isCollapsed")
+        dropdown-locale
+        f-tooltip-standard(:tooltipMessage="$t('RR0056')")
+          template(#slot:tooltip-trigger)
+            f-svg-icon(
+              iconName="content_copy"
+              class="text-grey-600 hover:text-primary-400 cursor-pointer"
+              size="24"
+              @click="receivedShareClone([shareInfo.nodeId])"
+            )
+        div(class="relative cursor-pointer" @click="openModalShareMessage")
+          f-svg-icon(iconName="chat" size="24" class="text-grey-600")
+          div(
+            v-if="haveMsgAndFirstRead"
+            class="absolute -top-px -right-px w-2 h-2 rounded-full border border-grey-0 bg-red-400"
           )
-      div(class="relative cursor-pointer" @click="openModalShareMessage")
-        f-svg-icon(iconName="chat" size="24" class="text-grey-600")
-        div(
-          v-if="haveMsgAndFirstRead"
-          class="absolute -top-px -right-px w-2 h-2 rounded-full border border-grey-0 bg-red-400"
-        )
+      f-popper(v-else @click.stop placement="top-end")
+        template(#trigger)
+          f-svg-icon(
+            iconName="more_horiz"
+            size="24"
+            class="text-grey-600 hover:text-primary-400"
+          )
+        template(#content="{ collapsePopper }")
+          f-contextual-menu(:menuTree="menuTree" @click:menu="collapsePopper")
       f-button(
         size="md"
         :disabled="shareInfo.isClosed"
@@ -36,11 +48,15 @@ import DropdownLocale from '@/components/common/DropdownLocale.vue'
 import useLogSender from '@/composables/useLogSender'
 import { useReceivedShareStore } from '@/stores/receivedShare'
 import { storeToRefs } from 'pinia'
+import type { MenuTree } from '@frontier/ui-component'
+import { useI18n } from 'vue-i18n'
+import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
 
 const props = defineProps<{
   sharingKey: string
 }>()
 
+const { locale } = useI18n()
 const store = useStore()
 const logSender = useLogSender()
 logSender.createReceivePageLog(props.sharingKey)
@@ -69,6 +85,88 @@ const openModalShareMessage = () => {
 const isStickerDrawerForLoginOpen = computed<boolean>(
   () => store.getters['sticker/isStickerDrawerForLoginOpen']
 )
+
+const refLeft = ref<HTMLElement>()
+const refRight = ref<HTMLElement>()
+const isCollapsed = ref(false)
+
+const menuTree = computed<MenuTree>(() => ({
+  width: 'w-50',
+  blockList: [
+    {
+      menuList: [
+        {
+          title: 'Language',
+          icon: 'public',
+          blockList: [
+            {
+              menuList: [
+                {
+                  title: 'English',
+                  selectValue: 'en-US',
+                  clickHandler(menu) {
+                    locale.value = menu.selectValue
+                  },
+                },
+                {
+                  title: '繁體中文',
+                  selectValue: 'zh-TW',
+                  clickHandler(menu) {
+                    locale.value = menu.selectValue
+                  },
+                },
+                {
+                  title: '日本語',
+                  selectValue: 'ja-JP',
+                  clickHandler(menu) {
+                    locale.value = menu.selectValue
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      menuList: [
+        {
+          title: 'Copy',
+          icon: 'content_copy',
+          clickHandler: () => {
+            shareInfo.value && receivedShareClone([shareInfo.value.nodeId])
+          },
+        },
+      ],
+    },
+    {
+      menuList: [
+        {
+          title: 'Message',
+          icon: 'chat',
+          clickHandler: openModalShareMessage,
+        },
+      ],
+    },
+    {
+      menuList: [
+        {
+          title: 'Digital Thread™',
+          icon: 'sticker_thread',
+          clickHandler: () => {
+            // store.dispatch('sticker/openStickerDrawer', {
+            //   // materialId: ,
+            //   drawerOpenFromLocationList:
+            //     store.getters['sticker/drawerOpenFromLocationList'],
+            //   drawerOpenFromLocationType:
+            //     store.getters['sticker/drawerOpenFromLocationType'],
+            // })
+          },
+        },
+      ],
+    },
+  ],
+}))
 
 onMounted(async () => {
   await getReceivedShareInfo(props.sharingKey)
@@ -107,6 +205,12 @@ onMounted(async () => {
         },
       })
     }, 0)
+  }
+
+  const right = refLeft.value?.getBoundingClientRect().right ?? -1
+  const left = refRight.value?.getBoundingClientRect().left ?? 0
+  if (right >= left) {
+    isCollapsed.value = true
   }
 })
 </script>

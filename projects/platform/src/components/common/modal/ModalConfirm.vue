@@ -5,7 +5,7 @@ div(
   data-cy="modal-confirm"
 )
   div(
-    class="w-80 md:w-104 max-h-125 min-h-30 md:min-h-54 px-4 md:px-8 py-4 md:py-6 bg-grey-0 rounded flex flex-col shadow-32"
+    class="w-[min(416px,calc(100vw_-_80px))] max-h-125 min-h-30 md:min-h-54 px-4 md:px-8 py-4 md:py-6 bg-grey-0 rounded flex flex-col shadow-32"
     :class="[theme === THEME.DARK ? 'bg-grey-800' : 'bg-grey-0']"
     @click.stop
   )

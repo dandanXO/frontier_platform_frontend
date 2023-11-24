@@ -7,7 +7,7 @@ div(
   @mouseenter="mouseEnterHandler"
   @mouseleave="mouseLeaveHandler"
   @click.prevent="clickMenuHandler"
-  @touchstart.prevent="clickMenuHandler"
+  @touchstart.prevent.stop="clickMenuHandler"
 )
   f-tooltip-standard(
     :placement="innerMenu.tooltipPlacement"
@@ -175,6 +175,7 @@ import { createPopper } from '@popperjs/core'
 import { CONTEXTUAL_MENU_MODE, DISPLAY, SIZE, THEME } from '../constants'
 import type { MenuItem, MenuBlock } from '../types'
 import { isEqual } from '@frontier/lib'
+import { useBreakpoints } from '@frontier/lib'
 
 const { NONE_SELECT, MULTIPLE } = CONTEXTUAL_MENU_MODE
 
@@ -193,6 +194,8 @@ const props = withDefaults(
     theme: THEME.LIGHT,
   }
 )
+
+const { isDesktop } = useBreakpoints()
 
 const innerMenu = computed<Required<MenuItem>>(() =>
   Object.assign(
@@ -220,7 +223,7 @@ const innerMenu = computed<Required<MenuItem>>(() =>
       width: 'w-fit',
       scrollAreaMaxHeight: '',
       hasNotify: false,
-      clickHandler: () => {},
+      clickHandler: (v: MenuItem) => {},
       mouseEnterHandler: () => {},
       mouseLeaveHandler: () => {},
     },
@@ -264,6 +267,18 @@ const mouseLeaveHandler = () => {
 
 const clickMenuHandler = () => {
   const { disabled, selectable } = innerMenu.value
+
+  // for mobile and tablet
+  if (!isDesktop.value) {
+    if (
+      props.selectMode === CONTEXTUAL_MENU_MODE.NONE_SELECT &&
+      hasNextLevel.value
+    ) {
+      mouseEnterHandler()
+      return
+    }
+  }
+
   if (
     (props.selectMode !== CONTEXTUAL_MENU_MODE.NONE_SELECT &&
       hasNextLevel.value) ||
@@ -273,7 +288,7 @@ const clickMenuHandler = () => {
     return
   }
 
-  innerMenu.value.clickHandler && innerMenu.value.clickHandler()
+  innerMenu.value.clickHandler && innerMenu.value.clickHandler(innerMenu.value)
   emit('click:menu', innerMenu.value)
 }
 const isSelect = computed(() => {

@@ -5,7 +5,7 @@ f-popper(placement="bottom-end" :offset="[0, 3]")
       span(class="text-grey-900 font-bold text-caption") {{ currentLocaleAbbr($i18n.locale) }}
       f-svg-icon(
         iconName="keyboard_arrow_right"
-        size="24"
+        size="14"
         class="text-grey-600 transform"
         :class="[isExpand ? '-rotate-90' : 'rotate-90']"
       )
@@ -13,6 +13,7 @@ f-popper(placement="bottom-end" :offset="[0, 3]")
     f-list(class="px-1")
       div(
         v-for="option in localeOptionList"
+        :key="option.locale"
         class="rounded text-body2 text-grey-900 hover:bg-grey-100 w-18 h-6 flex justify-center items-center"
         @click="$i18n.locale = option.locale"
       ) {{ option.lang }}

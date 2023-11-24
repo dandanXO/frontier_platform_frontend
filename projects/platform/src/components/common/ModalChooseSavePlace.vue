@@ -7,7 +7,7 @@ modal-behavior(
   @click:primary="innerActionHandler"
   @click:secondary="closeModalBehavior"
 )
-  div(class="w-80 md:w-94")
+  div(class="w-[min(376px,calc(100vw_-_80px_-_40px))]")
     f-select-dropdown(
       v-model:selectValue="selectedOrgId"
       :dropdownMenuTree="orgMenuTree"
@@ -43,7 +43,7 @@ const orgList = computed(
   () => store.getters['user/organizationList'] as Organization[]
 )
 const orgMenuTree = computed(() => ({
-  width: 'w-94',
+  width: 'w-[min(376px,calc(100vw_-_80px_-_40px))]',
   blockList: [
     {
       menuList: orgList.value.map(({ orgName, orgId }) => ({
@@ -58,12 +58,12 @@ const selectedOrg = ref<Organization | null>(null)
 const selectedOgKey = ref<string | null>(null)
 const savePlaceMenuTree = computed(() => {
   if (!selectedOrg.value) {
-    return { width: 'w-94', blockList: [] }
+    return { width: 'w-[min(376px,calc(100vw_-_80px_-_40px))]', blockList: [] }
   }
 
   const { orgName, orgId } = selectedOrg.value
   return {
-    width: 'w-94',
+    width: 'w-[min(376px,calc(100vw_-_80px_-_40px))]',
     blockList: [
       {
         menuList: [

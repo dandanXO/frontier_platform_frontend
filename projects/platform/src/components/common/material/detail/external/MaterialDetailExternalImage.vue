@@ -1,26 +1,40 @@
+<style lang="scss" scoped>
+.rwd-left-cover {
+  @apply absolute bottom-0 from-grey-0 to-transparent z-1 left-0 pointer-events-none;
+  @apply tablet:w-full w-10;
+  @apply tablet:h-10 h-full;
+  @apply tablet:bg-gradient-to-b bg-gradient-to-r;
+}
+.rwd-right-cover {
+  @apply absolute bottom-0 from-grey-0 to-transparent z-1 pointer-events-none;
+  @apply tablet:left-0 right-0;
+  @apply tablet:w-full w-10;
+  @apply tablet:h-10 h-full;
+  @apply tablet:bg-gradient-to-t bg-gradient-to-l;
+}
+</style>
+
 <template lang="pug">
-div(class="flex gap-x-4")
-  div(:style="styleHeight" class="overflow-hidden w-16 flex-shrink-0 relative")
-    div(
-      v-if="currentY < 0"
-      class="absolute top-0 left-0 w-full h-10 bg-gradient-to-b from-grey-0 to-transparent z-1"
-    )
-    div(
-      v-if="remainingHeight > 0"
-      class="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-grey-0 to-transparent z-1"
-    )
+div(class="flex flex-col-reverse tablet:flex-row gap-4")
+  div(:style="style" class="overflow-hidden w-16 flex-shrink-0 relative")
+    div(v-if="currentTranslate < 0" class="rwd-left-cover")
+    div(v-if="remainingDistance > 0" class="rwd-right-cover")
     div(
       ref="refSlider"
-      class="w-16 grid gap-y-2 content-start transition-all duration-500"
+      class="tablet:w-16 tablet:h-auto h-16 grid gap-2 tablet:grid-flow-row grid-flow-col content-start transition-all duration-500"
       :style="styleTranslateY"
       @wheel.prevent="wheelHandler"
+      @touchstart.prevent="touchstartHandler"
+      @touchmove.prevent="touchmoveHandler"
+      @touchend.prevent="touchendHandler"
     )
       div(
         v-for="(image, index) in displayImageList"
         :key="image.imgName"
         class="w-16 h-16 rounded box-border overflow-hidden border-grey-250 bg-grey-100"
         :class="[currentIndex === index ? 'border-4 border-primary-400' : 'border']"
-        @click="currentIndex = index"
+        @click.prevent="currentIndex = index"
+        @touchend.prevent="!isTouchMoving && (currentIndex = index)"
       )
         img(
           v-if="!!image.thumbnailUrl"
@@ -32,58 +46,67 @@ div(class="flex gap-x-4")
           p(class="text-caption/1.3 text-grey-250") {{ $t('RR0103') }}
   div(ref="refImage" class="flex-grow relative aspect-square")
     img(
-      class="w-full h-full overflow-hidden rounded object-cover"
+      class="w-full aspect-square overflow-hidden rounded object-cover"
       :class="{ 'border border-grey-250': !displayImageList[currentIndex].displayUrl }"
       :src="displayImageList[currentIndex].displayUrl || undefined"
       :key="currentIndex"
       v-default-img
     )
-    button(
-      v-if="!!displayImageList[currentIndex].displayUrl"
-      class="absolute w-10 h-10 rounded-full bg-grey-0/80 bottom-5 left-5 flex items-center justify-center cursor-pointer"
-      @click="openModalFileViewer"
-    )
-      f-svg-icon(iconName="search" size="24" class="text-grey-900")
-    div(class="absolute bottom-5 right-5 flex items-center gap-x-2")
+    template(v-if="!isMobile")
       button(
-        @click="backward"
-        class="w-10 h-10 rounded-full bg-grey-0/80 flex items-center justify-center cursor-pointer"
+        v-if="!!displayImageList[currentIndex].displayUrl"
+        class="absolute w-10 h-10 rounded-full bg-grey-0/80 bottom-5 left-5 flex items-center justify-center cursor-pointer"
+        @click="openModalFileViewer"
       )
-        f-svg-icon(iconName="keyboard_arrow_left" size="24" class="text-grey-900")
-      button(
-        @click="forward"
-        class="w-10 h-10 rounded-full bg-grey-0/80 flex items-center justify-center cursor-pointer"
-      )
-        f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-grey-900")
+        f-svg-icon(iconName="search" size="24" class="text-grey-900")
+      div(class="absolute bottom-5 right-5 flex items-center gap-x-2")
+        button(
+          @click="backward"
+          class="w-10 h-10 rounded-full bg-grey-0/80 flex items-center justify-center cursor-pointer"
+        )
+          f-svg-icon(iconName="keyboard_arrow_left" size="24" class="text-grey-900")
+        button(
+          @click="forward"
+          class="w-10 h-10 rounded-full bg-grey-0/80 flex items-center justify-center cursor-pointer"
+        )
+          f-svg-icon(iconName="keyboard_arrow_right" size="24" class="text-grey-900")
 </template>
 
 <script setup lang="ts">
 import type { Material } from '@frontier/platform-web-sdk'
 import { ref, computed, onMounted } from 'vue'
 import useMaterial from '@/composables/material/useMaterial'
+import { useBreakpoints } from '@frontier/lib'
 
 const props = defineProps<{
   material: Material
 }>()
 
+const { isMobile } = useBreakpoints()
 const { displayImageList } = useMaterial(ref(props.material))
 const currentIndex = ref(0)
 
 const refSlider = ref<HTMLDivElement | null>(null)
-const remainingHeight = ref(0)
+const remainingDistance = ref(0)
 const refImage = ref<HTMLDivElement | null>(null)
-const imageHeight = computed(
-  () => refImage.value?.getBoundingClientRect().height ?? 507
+const imageWidth = computed(
+  () => refImage.value?.getBoundingClientRect().width ?? 507
 )
-const styleHeight = computed(() => `height: ${imageHeight.value}px`)
-const currentY = ref(0)
-const styleTranslateY = computed(
-  () => `transform:  translateY(${currentY.value}px)`
+const style = computed(() =>
+  isMobile.value
+    ? `width: ${imageWidth.value}px`
+    : `height: ${imageWidth.value}px`
+)
+const currentTranslate = ref(0)
+const styleTranslateY = computed(() =>
+  isMobile.value
+    ? `transform:  translateX(${currentTranslate.value}px)`
+    : `transform:  translateY(${currentTranslate.value}px)`
 )
 
 const ELEMENT_HEIGHT_AND_GAP = 64 + 8
 const maxElement = computed(() => {
-  return Math.floor(imageHeight.value / ELEMENT_HEIGHT_AND_GAP)
+  return Math.floor(imageWidth.value / ELEMENT_HEIGHT_AND_GAP)
 })
 
 const forward = () => {
@@ -92,9 +115,9 @@ const forward = () => {
   }
   currentIndex.value++
 
-  if (currentIndex.value >= maxElement.value && remainingHeight.value > 0) {
-    currentY.value -= ELEMENT_HEIGHT_AND_GAP
-    remainingHeight.value -= ELEMENT_HEIGHT_AND_GAP
+  if (currentIndex.value >= maxElement.value && remainingDistance.value > 0) {
+    currentTranslate.value -= ELEMENT_HEIGHT_AND_GAP
+    remainingDistance.value -= ELEMENT_HEIGHT_AND_GAP
   }
 }
 
@@ -105,22 +128,25 @@ const backward = () => {
   currentIndex.value--
 
   if (currentIndex.value < displayImageList.value.length - maxElement.value) {
-    currentY.value = Math.min(0, currentY.value + ELEMENT_HEIGHT_AND_GAP)
-    remainingHeight.value += ELEMENT_HEIGHT_AND_GAP
+    currentTranslate.value = Math.min(
+      0,
+      currentTranslate.value + ELEMENT_HEIGHT_AND_GAP
+    )
+    remainingDistance.value += ELEMENT_HEIGHT_AND_GAP
   }
 }
 
 let scrollDistance = 0
 const wheelHandler = (e: WheelEvent) => {
-  const deltaY = e.deltaY
+  const delta = isMobile.value ? e.deltaX : e.deltaY
 
-  scrollDistance += Math.abs(deltaY)
+  scrollDistance += Math.abs(delta)
 
-  if (scrollDistance < 150) {
+  if (scrollDistance < 120) {
     return
   }
 
-  if (deltaY > 0) {
+  if (delta > 0) {
     forward()
   } else {
     backward()
@@ -128,9 +154,57 @@ const wheelHandler = (e: WheelEvent) => {
   scrollDistance = 0
 }
 
+const startX = ref(0)
+const offsetX = ref(0)
+const isTouchMoving = ref(false)
+const touchstartHandler = (e: TouchEvent) => {
+  startX.value = e.touches[0].pageX
+}
+const touchmoveHandler = (e: TouchEvent) => {
+  isTouchMoving.value = true
+  const maxMovingDistance =
+    (refSlider.value?.scrollWidth ?? 0) - imageWidth.value
+  offsetX.value = e.touches[0].pageX - startX.value
+
+  scrollDistance += Math.abs(offsetX.value / 2)
+
+  if (scrollDistance < 80) {
+    return
+  }
+  console.log(scrollDistance)
+
+  if (offsetX.value > 0) {
+    currentTranslate.value = Math.min(
+      0,
+      currentTranslate.value + scrollDistance
+    )
+    remainingDistance.value = Math.min(
+      maxMovingDistance,
+      remainingDistance.value + scrollDistance
+    )
+  } else {
+    currentTranslate.value = Math.max(
+      currentTranslate.value - scrollDistance,
+      -maxMovingDistance
+    )
+    remainingDistance.value = Math.max(
+      remainingDistance.value - scrollDistance,
+      0
+    )
+  }
+
+  scrollDistance = 0
+}
+const touchendHandler = () => {
+  isTouchMoving.value = false
+  offsetX.value = 0
+}
+
 onMounted(() => {
   if (refSlider.value) {
-    remainingHeight.value = refSlider.value.scrollHeight - imageHeight.value
+    remainingDistance.value = isMobile.value
+      ? refSlider.value.scrollWidth - imageWidth.value
+      : refSlider.value.scrollHeight - imageWidth.value
   }
 })
 

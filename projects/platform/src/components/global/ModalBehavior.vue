@@ -3,7 +3,7 @@ div(
   class="fixed inset-0 z-modal w-screen h-screen bg-grey-900/40 flex justify-center items-center"
 )
   div(class="w-screen h-screen" @click="closable && closeModalBehavior()")
-  div(class="absolute w-min bg-grey-0 rounded card-show py-5 shadow-32")
+  div(class="absolute w-min bg-grey-0 rounded card-show pt-5 shadow-32")
     div(class="h-8.5 px-5 pb-5 flex justify-between items-start border-b border-grey-100")
       p(class="text-body2 font-bold text-grey-900") {{ header }}
       f-svg-icon(
@@ -15,7 +15,10 @@ div(
       )
     f-scrollbar-container(class="px-5 pt-5 pb-10 w-fit max-h-103 box-content relative")
       slot(name="default")
-    div(class="px-5 h-13.5 border-t border-grey-100 flex items-end")
+    div(
+      v-if="footer"
+      class="p-5 h-18.5 border-content border-t border-grey-100 flex items-center"
+    )
       div(class="w-full flex justify-between")
         div(class="flex items-center text-caption leading-1.6")
           slot(name="note")
@@ -108,6 +111,10 @@ defineProps({
   textBtnDisabled: {
     type: Boolean,
     default: false,
+  },
+  footer: {
+    type: Boolean,
+    default: true,
   },
 })
 

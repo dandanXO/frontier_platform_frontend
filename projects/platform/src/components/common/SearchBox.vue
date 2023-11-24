@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="grid")
   div(
-    class="justify-self-center my-3.5 w-4/5 md:w-200 h-11 bg-grey-50 rounded-full px-7.5 flex items-center gap-x-4.5"
+    class="justify-self-center my-3.5 w-[min(calc(100vw_-_40px),800px)] h-11 bg-grey-50 rounded-full px-7.5 flex items-center gap-x-4.5"
   )
     div(class="flex-grow flex items-center")
       f-svg-icon(
@@ -16,7 +16,7 @@ div(class="grid")
         :placeholder="$t('RR0053')"
         @input="typing"
         @keydown.enter="$emit('search')"
-        class="placeholder:text-grey-250 placeholder:overflow-visible flex-grow outline-none bg-transparent overflow-hidden text-grey-900 text-body1 disabled:text-grey-600"
+        class="placeholder:text-grey-250 placeholder:overflow-visible flex-grow w-full outline-none bg-transparent overflow-hidden text-grey-900 text-body1 disabled:text-grey-600"
       )
       f-svg-icon(
         v-if="!!keyword"

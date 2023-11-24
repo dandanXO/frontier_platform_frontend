@@ -21,3 +21,14 @@ body {
   background: linear-gradient(180deg, #000000 0%, rgba(34, 34, 34, 0) 100%);
   opacity: 0.15;
 }
+
+.rwd {
+  &-app-padding-x {
+    @apply desktop:px-21 tablet:px-10 px-4;
+  }
+
+  &-outer-external-container {
+    @apply desktop:max-w-[1032px];
+    @apply desktop:min-w-[737px];
+  }
+}

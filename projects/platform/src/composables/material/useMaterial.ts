@@ -10,6 +10,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { MATERIAL_SIDE_TYPE } from '@/utils/constants'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
+import { useBreakpoints } from '@frontier/lib'
 
 export type MaterialSpecificationInfo = {
   seasonInfo: {
@@ -76,6 +77,7 @@ export default function useMaterial(
   material: ComputedRef<Material> | Ref<Material>
 ) {
   const { t } = useI18n()
+  const { isMobile } = useBreakpoints()
 
   const mainSideType = computed(() => {
     const { isDoubleSide, faceSide, sideType } = material.value
@@ -200,7 +202,7 @@ export default function useMaterial(
   const sideOptionList = computed<SideOption[]>(() => {
     const { isDoubleSide, isComposite, sideType } = material.value
     const list: {
-      label: string
+      label: string | null
       selectValue: MATERIAL_SIDE_TYPE
       icon: string
       selectedIcon: string
@@ -208,21 +210,21 @@ export default function useMaterial(
 
     const addFace = () =>
       list.push({
-        label: t('MI0007'),
+        label: isMobile.value ? null : t('MI0007'),
         selectValue: MATERIAL_SIDE_TYPE.FACE,
         icon: 'front',
         selectedIcon: 'face_full',
       })
     const addMiddle = () =>
       list.push({
-        label: t('MI0008'),
+        label: isMobile.value ? null : t('MI0008'),
         selectValue: MATERIAL_SIDE_TYPE.MIDDLE,
         icon: 'middle',
         selectedIcon: 'middle_full',
       })
     const addBack = () =>
       list.push({
-        label: t('MI0009'),
+        label: isMobile.value ? null : t('MI0009'),
         selectValue: MATERIAL_SIDE_TYPE.BACK,
         icon: 'back',
         selectedIcon: 'back_full',

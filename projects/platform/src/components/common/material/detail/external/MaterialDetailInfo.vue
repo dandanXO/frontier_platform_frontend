@@ -60,7 +60,7 @@ div(class="grid gap-y-8 content-start")
         :key="property.title"
       )
         f-svg-icon(:iconName="property.icon" size="40" class="text-grey-600")
-        div(class="")
+        div(class="desktop:block flex items-center gap-x-1")
           p(class="text-grey-900 text-caption/1.3") {{ property.title }}
           p(v-if="property.value" class="text-caption/1.6 text-grey-900 font-bold") {{ property.value }}&nbsp{{ property.unitShort }}
           p(v-else class="text-caption/1.6 text-grey-600") {{ '--' }}
@@ -132,7 +132,7 @@ div(class="grid gap-y-8 content-start")
       div(class="grid gap-y-1.5 text-body2/1.6 pt-3")
         div(class="grid grid-cols-7 gap-x-6")
           p(class="col-span-2") Frontier No
-          p(class="col-span-5") {{  }}
+          p(class="col-span-5") {{ material.faceSide?.frontierNo ?? material.backSide?.frontierNo }}
         template(v-if="publishedDate")
           div(class="grid grid-cols-7 gap-x-6")
             p(class="col-span-2") Published By
