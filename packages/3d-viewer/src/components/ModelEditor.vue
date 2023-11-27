@@ -102,8 +102,8 @@ const textureImages = {
 
 const textureImage = computed(() => textureImages[textureType.value])
 
-const { largerThenMd } = useBreakpoints()
-const sidebarExpanded = ref(largerThenMd.value)
+const { isMobile } = useBreakpoints()
+const sidebarExpanded = ref(!isMobile.value)
 const handleSidebarToggle = () => {
   sidebarExpanded.value = !sidebarExpanded.value
 }
@@ -151,13 +151,13 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
           @toggleMoireEffectPrevent="moireEffectPreventToggle"
         )
       hidden-sidebar(
-        v-show="!sidebarExpanded && largerThenMd"
+        v-show="!sidebarExpanded && !isMobile"
         @toggle-expand="handleSidebarToggle"
       )
       div(ref="container" class="flex-1")
         canvas(ref="canvas")
     mobile-model-control-bar(
-      v-if="!largerThenMd"
+      v-if="isMobile"
       :expanded="sidebarExpanded"
       @toggleExpand="handleSidebarToggle"
       @close="handleClose"
@@ -172,7 +172,7 @@ div(class="w-screen h-screen fixed z-popper bg-grey-900/90 left-0 top-0 flex fle
       :src="textureImage"
     )
     mobile-texture-control-bar(
-      v-if="!largerThenMd"
+      v-if="!!isMobile"
       :expanded="sidebarExpanded"
       @toggleExpand="handleSidebarToggle"
       @close="handleClose"

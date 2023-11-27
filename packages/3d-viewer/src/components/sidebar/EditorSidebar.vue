@@ -1,15 +1,15 @@
 <template lang="pug">
 div(
   class="flex flex-col"
-  :class="largerThenMd ? 'relative' : 'absolute pt-12'"
+  :class="isMobile ? 'absolute pt-12' : 'relative'"
   :style="{ height: 'calc(100vh - 80px)' }"
 )
   f-scrollbar-container(sizeAutoCapable class="flex flex-1 min-h-0 bg-grey-900")
     div(
       class="flex flex-col items-stretch border-r border-grey-800 pt-6 pb-[26px] text-grey-100"
-      :class="largerThenMd ? 'w-[340px] pl-10 pr-6' : 'w-[310px] pl-5 pr-[14px]'"
+      :class="isMobile ? 'w-77.5 pl-5 pr-3.5' : 'w-85 pl-10 pr-6'"
     )
-      h5(v-if="largerThenMd" class="text-body1 font-bold mb-4") {{ $t('EE0137') }}
+      h5(v-if="!isMobile" class="text-body1 font-bold mb-4") {{ $t('EE0137') }}
       f-input-slider(
         :range="alpha"
         @update:range="(v: number) => emit('alphaChange', v)"
@@ -115,7 +115,7 @@ div(
       //- input(ref="fileInput" type="file" @change="handleUploadModel")
   toggle-expand-button(
     class="z-1"
-    v-if="largerThenMd"
+    v-if="!isMobile"
     expanded
     @click="emit('toggleExpand')"
   )
@@ -155,5 +155,5 @@ const emit = defineEmits<{
   (e: 'toggleMoireEffectPrevent'): void
 }>()
 
-const { largerThenMd } = useBreakpoints()
+const { isMobile } = useBreakpoints()
 </script>

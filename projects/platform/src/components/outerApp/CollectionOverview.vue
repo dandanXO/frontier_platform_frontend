@@ -31,7 +31,7 @@ div(
       )
         div(class="w-full md:w-155.5 md:h-full pb-3 md:pb-0")
           f-scrollbar-container(
-            v-if="collection.description && largerThenLg"
+            v-if="collection.description && isDesktop"
             :sizeAutoCapable="false"
             class="h-full -ml-6.5 px-6.5 break-all text-body2 text-grey-900 leading-1.6"
           )
@@ -60,5 +60,5 @@ defineProps<{
   collection: Collection
 }>()
 
-const { largerThenLg } = useBreakpoints()
+const { isDesktop } = useBreakpoints()
 </script>

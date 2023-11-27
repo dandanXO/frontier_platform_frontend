@@ -8,7 +8,7 @@ div(
     v-if="breadcrumbList.length > 1"
     :breadcrumbList="breadcrumbList"
     @click:item="$router.push($event.path)"
-    :fontSize="largerThenLg ? 'text-body1' : 'text-caption'"
+    :fontSize="isDesktop ? 'text-body1' : 'text-caption'"
   )
 div(class="pb-1 md:pb-4" :class="{ 'md:pt-5': breadcrumbList.length <= 1 }")
   div(class="flex items-center pb-1 gap-x-4")
@@ -53,7 +53,7 @@ const props = defineProps({
 })
 defineEmits(['clone'])
 
-const { largerThenLg } = useBreakpoints()
+const { isDesktop } = useBreakpoints()
 
 const drawerOpenFromLocationList = useStickerLocationList(
   props.breadcrumbList.map((b) => b.name)

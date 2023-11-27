@@ -67,7 +67,10 @@ div(class="grid gap-y-8 content-start")
             span(class="font-bold") &nbsp{{ property.unitShort }}
   //- 3D Viewer
   div(class="w-full p-4 rounded grid gap-y-4 bg-grey-50")
-    f-button(prependIcon="3D_viewer" size="md" class="w-full" type="secondary") {{ $t('UU0006') }}
+    material-u3m-viewer-button(
+      :materialId="material.materialId"
+      :u3m="selectedU3m"
+    )
     f-tabs(ref="refTab" :tabList="tabList" keyField="id")
     div(class="flex items-center gap-x-3")
       div(
@@ -158,6 +161,7 @@ import useLogSender from '@/composables/useLogSender'
 import { downloadDataURLFile, toStandardFormat } from '@frontier/lib'
 import useMaterial from '@/composables/material/useMaterial'
 import { useStore } from 'vuex'
+import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3mViewerButton.vue'
 
 const props = defineProps<{
   material: Material

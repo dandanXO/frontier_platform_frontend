@@ -8,18 +8,12 @@ const useBreakpoints = () => {
     desktop: 905,
   })
 
-  const largerThenMd = breakpoints.greaterOrEqual('md')
-  const largerThenLg = breakpoints.greaterOrEqual('lg')
   const isMobile = breakpoints.smaller('tablet')
-  const isTablet = breakpoints.greaterOrEqual('tablet')
   const isDesktop = breakpoints.greaterOrEqual('desktop')
 
   return {
     breakpoints,
-    largerThenMd,
-    largerThenLg,
     isMobile,
-    isTablet,
     isDesktop,
   }
 }

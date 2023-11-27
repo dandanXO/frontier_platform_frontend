@@ -1,5 +1,6 @@
 <template lang="pug">
 f-button(
+  prependIcon="3D_viewer"
   size="md"
   type="secondary"
   :disabled="disabled"
