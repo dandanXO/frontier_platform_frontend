@@ -23,7 +23,7 @@ const EMBED_TYPE = {
   PAGE: 1,
 }
 
-const embedType = ref(EMBED_TYPE['3D_VIEWER'])
+const embedType = ref(EMBED_TYPE['PAGE'])
 </script>
 
 <style scoped>

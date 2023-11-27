@@ -74,7 +74,7 @@ div(class="w-full h-full flex flex-col" v-bind="$attrs")
         @visit="search($event)"
       )
 multi-select-menu(
-  v-if="optionMultiSelect.length > 0"
+  v-if="optionMultiSelect && optionMultiSelect.length > 0 && innerSelectedItemList"
   :optionMultiSelect="optionMultiSelect"
   v-model:selectedList="innerSelectedItemList"
 )
@@ -138,7 +138,7 @@ const props = withDefaults(
       base: SortOption[]
       keywordSearch: SortOption[]
     }
-    optionMultiSelect:
+    optionMultiSelect?:
       | FunctionOption<Material>[]
       | FunctionOption<NodeChild>[]
       | FunctionOption<ShareNodeChild>[]
@@ -152,7 +152,7 @@ const props = withDefaults(
     ) => Promise<void>
     itemList: Material[] | NodeChild[] | ShareNodeChild[]
     canSelectAll?: boolean
-    selectedItemList: Material[] | NodeChild[] | ShareNodeChild[]
+    selectedItemList?: Material[] | NodeChild[] | ShareNodeChild[]
   }>(),
   {
     canSelectAll: true,
@@ -215,6 +215,10 @@ const innerSelectedItemList = computed({
 })
 
 const selectAll = () => {
+  if (!props.canSelectAll || !props.selectedItemList) {
+    return
+  }
+
   const stringifyItemList = props.itemList.map((item) => JSON.stringify(item))
   const stringifySelectedItemList = props.selectedItemList.map((item) =>
     JSON.stringify(item)

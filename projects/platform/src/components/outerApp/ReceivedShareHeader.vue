@@ -45,8 +45,7 @@ import { useStore } from 'vuex'
 import { computed, ref, onMounted } from 'vue'
 import useReceivedShare from '@/composables/useReceivedShare.js'
 import DropdownLocale from '@/components/common/DropdownLocale.vue'
-import useLogSender from '@/composables/useLogSender'
-import { useReceivedShareStore } from '@/stores/receivedShare'
+import { useOuterStore } from '@/stores/outer'
 import { storeToRefs } from 'pinia'
 import type { MenuTree } from '@frontier/ui-component'
 import { useI18n } from 'vue-i18n'
@@ -58,13 +57,11 @@ const props = defineProps<{
 
 const { locale } = useI18n()
 const store = useStore()
-const logSender = useLogSender()
-logSender.createReceivePageLog(props.sharingKey)
-const receivedShareStore = useReceivedShareStore()
-const { getReceivedShareInfo, setHasSelectedStickerAddFromOG } =
-  receivedShareStore
+
+const outerStore = useOuterStore()
+const { getReceivedShareInfo, setHasSelectedStickerAddFromOG } = outerStore
 const { shareInfo, hasLogin, hasSelectedStickerAddFromOG } =
-  storeToRefs(receivedShareStore)
+  storeToRefs(outerStore)
 const { saveReceivedShare, receivedShareClone } = useReceivedShare()
 
 const isFirstTime = ref(true)

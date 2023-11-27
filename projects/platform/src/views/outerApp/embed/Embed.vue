@@ -1,160 +1,167 @@
-<style lang="scss">
-#pagination-container {
-  @apply pb-20 md:pb-30;
-}
-
-.v-enter-active {
-  transition: all 0.2s ease-out;
-}
-.v-leave-active {
-  transition: all 0.2s ease-in;
-}
-
-.v-enter-to {
-  opacity: 0;
-  height: 324px;
-}
-.v-enter-from {
-  opacity: 0;
-  height: 0px;
-}
-.v-leave-to {
-  opacity: 0;
-  height: 0px;
-}
-</style>
-
 <template lang="pug">
-div(class="w-full h-full flex flex-col items-center md:pt-10")
-  search-table(
-    class="max-w-315"
-    :searchType="SEARCH_TYPE.SHARE"
-    :canSelectAll="false"
-    :optionSort="optionSort"
-    :searchCallback="getEmbedList"
-    :itemList="nodeList"
-  )
-    template(#header-left="{ goTo }")
-      div(class="flex items-center")
-        img(:src="logo" class="w-10 h-10 rounded-full")
-        div(class="flex items-end pl-2.5")
-          global-breadcrumb-list(
-            :breadcrumbList="breadcrumbList"
-            @click:item="currentNodeKey = $event.nodeKey; goTo()"
-          )
-          p(class="flex text-caption text-grey-600 pl-1")
-            span (
-            i18n-t(keypath="RR0068" tag="span" scope="global")
-              template(#number) {{ pagination.totalCount }}
-            span )
-    template(#sub-header)
-      collection-overview(:collection="collection")
-    template(#default="{ goTo }")
-      div(
-        v-if="nodeList.length > 0"
-        class="mx-7.5 grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-y-6.5 md:gap-x-5 grid-flow-row auto-rows-auto content-start"
-      )
-        grid-item-node(
-          v-for="node in nodeList"
-          :key="node.nodeKey"
-          :node="node"
-          :isSelectable="false"
-          @click:node="handleNodeClick(node, goTo)"
+search-table(
+  :searchType="SEARCH_TYPE.EXTERNAL"
+  :canSelectAll="false"
+  :optionSort="optionSort"
+  :searchCallback="getEmbedList"
+  :itemList="nodeList"
+)
+  template(#header-left="{ visit, totalCount }")
+    div(class="flex items-center")
+      img(:src="shareInfo?.unitLogo" class="w-10 h-10 rounded-full")
+      div(class="flex items-end pl-2.5")
+        global-breadcrumb-list(
+          :breadcrumbList="locationList"
+          @click:item="currentNodeId = $event.nodeId; visit()"
         )
+        p(class="flex text-caption text-grey-600 pl-1")
+          span (
+          i18n-t(keypath="RR0068" tag="span" scope="global")
+            template(#number) {{ totalCount }}
+          span )
+  template(#sub-header)
+    collection-overview(
+      v-if="workspaceNodeCollection"
+      :collection="workspaceNodeCollection.collection"
+    )
+  template(#default="{ visit }")
+    div(
+      v-if="nodeList.length > 0"
+      class="mx-7.5 grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-y-6.5 md:gap-x-5 grid-flow-row auto-rows-auto content-start"
+    )
+      grid-item-node(
+        v-for="node in nodeList"
+        :key="node.nodeMeta.nodeId"
+        :node="node"
+        :isSelectable="false"
+        @click:node="handleNodeClick(node, visit)"
+      )
 </template>
 
-<script setup>
-import SearchTable from '@/components/common/SearchTable.vue'
+<script setup lang="ts">
+import SearchTable, {
+  type RouteQuery,
+  type SearchPayload,
+} from '@/components/common/SearchTable.vue'
 import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
-import { SEARCH_TYPE, NODE_TYPE, useConstants } from '@/utils/constants'
+import { SEARCH_TYPE } from '@/utils/constants'
 import useNavigation from '@/composables/useNavigation'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import CollectionOverview from '@/components/outerApp/CollectionOverview.vue'
+import { useSearchStore } from '@/stores/search'
+import { useOuterStore } from '@/stores/outer'
+import {
+  type WorkspaceNodeCollection,
+  type ExternalFilter,
+  type NodeChild,
+  NodeType,
+} from '@frontier/platform-web-sdk'
+import { storeToRefs } from 'pinia'
+
+const props = defineProps<{
+  sharingKey: string
+  nodeId: string
+}>()
 
 const { t } = useI18n()
-const store = useStore()
 const route = useRoute()
 const router = useRouter()
+const searchStore = useSearchStore()
+const outerStore = useOuterStore()
+const { getEmbedInfo, ogBaseEmbedApi } = outerStore
+const { shareInfo } = storeToRefs(outerStore)
+const workspaceNodeCollection = ref<WorkspaceNodeCollection>()
 const { goToEmbedMaterialDetail } = useNavigation()
 
-const props = defineProps({
-  sharingKey: {
-    type: String,
-    required: true,
-  },
-  nodeKey: {
-    type: String,
-    required: true,
-  },
-})
+await getEmbedInfo(props.sharingKey)
 
-const share = computed(() => store.getters['embed/share'])
+if (!shareInfo.value) {
+  throw 'shareInfo is not defined'
+}
+
+/**
+ * 因舊有的 URL 組成為 BASE_URL/sharingKey/nodeKey(NodeLocation-NodeId)，
+ * 而新的 URL 組成為 BASE_URL/sharingKey/nodeId，
+ * 所以如果直接取用 props.nodeId 會誤將 nodeKey(NodeLocation-NodeId) 當作 nodeId，
+ * 造成無法正確取得資料，故取用 sharingKey 所取得的 shareInfo 中的 nodeId。
+ */
+const currentNodeId = ref<number>(shareInfo.value.nodeId)
+
 const optionSort = computed(() => {
-  const { SORT_BY } = useConstants()
   const {
-    MATERIAL_NO_A_Z_C_M,
+    ITEM_NO_A_Z_C_M,
     NEW_ARRIVED,
-    GHG_RESULTS,
-    WATER_DEPLETION_RESULTS,
-    LAND_USE_RESULTS,
+    GHG_LOW_TO_HIGH,
+    WATER_LOW_TO_HIGH,
+    LAND_LOW_TO_HIGH,
     RELEVANCE_M_C,
-  } = SORT_BY.value
+  } = searchStore.sortOption
   return {
     base: [
-      MATERIAL_NO_A_Z_C_M,
+      ITEM_NO_A_Z_C_M,
       NEW_ARRIVED,
       {
-        ...GHG_RESULTS,
-        disabled: !share.value.isSourceOrgHasMade2FlowPlan,
+        ...GHG_LOW_TO_HIGH,
+        disabled: shareInfo.value?.isSourceOrgHasMade2FlowPlan,
         tooltipMessage: t('VV0047'),
       },
       {
-        ...WATER_DEPLETION_RESULTS,
-        disabled: !share.value.isSourceOrgHasMade2FlowPlan,
+        ...WATER_LOW_TO_HIGH,
+        disabled: shareInfo.value?.isSourceOrgHasMade2FlowPlan,
         tooltipMessage: t('VV0047'),
       },
       {
-        ...LAND_USE_RESULTS,
-        disabled: !share.value.isSourceOrgHasMade2FlowPlan,
+        ...LAND_LOW_TO_HIGH,
+        disabled: shareInfo.value?.isSourceOrgHasMade2FlowPlan,
         tooltipMessage: t('VV0047'),
       },
     ],
     keywordSearch: [RELEVANCE_M_C],
   }
 })
-const logo = computed(() => store.getters['embed/logo'])
-const pagination = computed(() => store.getters['helper/search/pagination'])
-const nodeList = computed(() => store.getters['embed/nodeList'])
-const breadcrumbList = computed(() =>
-  store.getters['embed/collectionBreadcrumbList']()
+const nodeList = computed(
+  () => workspaceNodeCollection.value?.childNodeList ?? []
 )
-const collection = computed(() => store.getters['embed/collection'])
-const currentNodeKey = ref(props.nodeKey)
+const locationList = computed(
+  () => workspaceNodeCollection.value?.nodeMeta.locationList ?? []
+)
 
-const getEmbedList = async (targetPage = 1, query) => {
+const getEmbedList = async (
+  payload: SearchPayload<ExternalFilter>,
+  query: RouteQuery
+) => {
   router.push({
-    name: route.name,
+    name: route.name as string,
     params: {
-      nodeKey: currentNodeKey.value,
+      sharingKey: props.sharingKey,
+      nodeId: currentNodeId.value,
     },
     query,
   })
-  await store.dispatch('embed/getEmbedList', {
-    targetPage,
-    sharingKey: share.value.sharingKey,
-    nodeKey: currentNodeKey.value,
+  const {
+    data: { result },
+  } = await ogBaseEmbedApi('getEmbedList', {
+    ...payload,
+    sharingKey: props.sharingKey,
+    nodeId: currentNodeId.value,
   })
+
+  workspaceNodeCollection.value = result.workspaceNodeCollection
+  searchStore.setPaginationRes(result.pagination)
 }
 
-const handleNodeClick = (node, goTo) => {
-  if (node.nodeType === NODE_TYPE.COLLECTION) {
-    currentNodeKey.value = node.nodeKey
-    goTo()
+const handleNodeClick = (node: NodeChild, visit: Function) => {
+  if (node.nodeMeta.nodeType === NodeType.COLLECTION) {
+    currentNodeId.value = node.nodeMeta.nodeId
+    visit()
   } else {
-    goToEmbedMaterialDetail(node.nodeKey, share.value.sharingKey, node.rank)
+    goToEmbedMaterialDetail(
+      props.sharingKey,
+      node.nodeMeta.nodeId,
+      node.nodeMeta.rank ?? undefined
+    )
   }
 }
 </script>

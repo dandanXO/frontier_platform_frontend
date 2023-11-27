@@ -43,8 +43,17 @@ import StickerDrawerForLogin from '@/components/sticker/StickerDrawerForLogin.vu
 import { useStore } from 'vuex'
 import { computed, onMounted, ref } from 'vue'
 import generalApi from '@/apis/general'
+import { useFilterStore } from '@/stores/filter'
+import useLogSender from '@/composables/useLogSender'
+
+const props = defineProps<{
+  sharingKey: string
+}>()
 
 const store = useStore()
+const { getExternalFilterOption } = useFilterStore()
+const logSender = useLogSender()
+logSender.createReceivePageLog(props.sharingKey)
 
 const isStickerDrawerOpen = computed<boolean>(
   () => store.getters['sticker/isStickerDrawerOpen']
@@ -70,9 +79,28 @@ const checkHasLogin = async () => {
 
 onMounted(async () => {
   await checkHasLogin()
+  getExternalFilterOption()
 
   if (hasLogin.value) {
     await store.dispatch('user/getUser')
   }
 })
+
+// For embed page
+window.onmessage = (e) => {
+  if (e.origin + '/' !== document.referrer) {
+    return false
+  }
+
+  const { method, params } = e.data
+
+  if (method === 'setToken') {
+    const { accessToken, refreshToken } = params
+    localStorage.setItem('accessToken', accessToken)
+    localStorage.setItem('refreshToken', refreshToken)
+  } else if (method === 'clearToken') {
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+  }
+}
 </script>

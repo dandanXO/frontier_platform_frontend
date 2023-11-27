@@ -3,7 +3,7 @@ div
 </template>
 
 <script setup lang="ts">
-import { useReceivedShareStore } from '@/stores/receivedShare'
+import { useOuterStore } from '@/stores/outer'
 import { storeToRefs } from 'pinia'
 import { NodeType } from '@frontier/platform-web-sdk'
 import useNavigation from '@/composables/useNavigation'
@@ -12,9 +12,9 @@ const props = defineProps<{
   sharingKey: string
 }>()
 
-const receivedShareStore = useReceivedShareStore()
-const { getReceivedShareInfo } = receivedShareStore
-const { shareInfo } = storeToRefs(receivedShareStore)
+const outerStore = useOuterStore()
+const { getReceivedShareInfo } = outerStore
+const { shareInfo } = storeToRefs(outerStore)
 const { goToReceivedShare, goToReceivedShareMaterial } = useNavigation()
 
 await getReceivedShareInfo(props.sharingKey)

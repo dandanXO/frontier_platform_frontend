@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import { useNotifyStore } from '@/stores/notify'
-import useLogSender from '@/composables/useLogSender'
 import { ROLE_ID } from '@/utils/constants'
 import i18n from '@frontier/i18n'
 import remindVerifyEmail from '@/utils/remind-verify-email'
@@ -107,23 +106,17 @@ const routes = [
   {
     path: '/embed/:sharingKey',
     name: 'Embed',
-    component: () => import('@/views/outerApp/embed/EmbedContainer.vue'),
-    beforeEnter: async (to, from, next) => {
-      const sharingKey = to.params.sharingKey
-      await store.dispatch('embed/getEmbedInfo', { sharingKey })
-      const logSender = useLogSender()
-      logSender.createEmbedPageLog(sharingKey)
-      next()
-    },
+    props: true,
+    component: () => import('@/views/outerApp/OuterApp.vue'),
     children: [
       {
-        path: ':nodeKey',
+        path: ':nodeId',
         name: 'EmbedCollection',
         props: true,
         component: () => import('@/views/outerApp/embed/Embed.vue'),
       },
       {
-        path: 'material/:nodeKey',
+        path: 'material/:nodeId',
         name: 'EmbedMaterialDetail',
         props: true,
         component: () =>

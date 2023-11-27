@@ -74,7 +74,7 @@ div(class="grid")
           @search="$emit('search')"
         )
         filter-country(
-          v-if="![SEARCH_TYPE.ASSETS, SEARCH_TYPE.WORKSPACE].includes(searchType)"
+          v-if="searchType === SEARCH_TYPE.INNER_EXTERNAL"
           @search="$emit('search')"
         )
 </template>

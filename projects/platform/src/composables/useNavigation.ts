@@ -238,9 +238,21 @@ export default function useNavigation() {
     router.push(path)
   }
 
-  // const goToEmbedMaterialDetail = (nodeKey, sharingKey, rank) => {
-  //   router.push(`/embed/${sharingKey}/material/${nodeKey}?rank=${rank}`)
-  // }
+  const goToEmbed = (sharingKey: string, nodeId?: number) => {
+    const basePath = `/embed/${sharingKey}`
+    const path = nodeId ? `${basePath}/${nodeId}` : basePath
+    router.push(path)
+  }
+
+  const goToEmbedMaterialDetail = (
+    sharingKey: string,
+    nodeId: number,
+    rank?: number
+  ) => {
+    const basePath = `/embed/${sharingKey}/material/${nodeId}`
+    const path = rank ? `${basePath}?rank=${rank}` : basePath
+    router.push(path)
+  }
 
   const goToMoodboard = (navReq: NavigationReq = {}) => {
     router.push(parsePath(`${prefixPath}/moodboard`, navReq))
@@ -290,7 +302,8 @@ export default function useNavigation() {
     goToPaymentDetail,
     goToReceivedShare,
     goToReceivedShareMaterial,
-    // goToEmbedMaterialDetail,
+    goToEmbed,
+    goToEmbedMaterialDetail,
     goToMoodboard,
     // goToMoodboardDetail,
     // goToMoodboardPickedList,

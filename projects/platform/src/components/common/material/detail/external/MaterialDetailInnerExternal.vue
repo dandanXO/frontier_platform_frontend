@@ -26,7 +26,7 @@ div
     div(class="w-full flex justify-between pt-10 relative")
       material-detail-external-image(
         :material="material"
-        class="w-[57%] h-fit sticky top-14"
+        class="w-[57%] h-fit sticky top-16"
       )
       div(class="w-[40%] mb-24")
         div(class="mb-6")
@@ -40,6 +40,7 @@ div
         material-detail-info(
           :material="material"
           :publishedDate="publishedDate"
+          :isCanDownloadU3M="nodeMeta.isCanDownloadU3M"
         )
 </template>
 

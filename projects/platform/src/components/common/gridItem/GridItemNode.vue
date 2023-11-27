@@ -102,7 +102,7 @@ const props = withDefaults(
   defineProps<{
     node: NodeChild | ShareNodeChild
     isSelectable?: boolean
-    selectedValue: NodeChild[] | ShareNodeChild[]
+    selectedValue?: NodeChild[] | ShareNodeChild[]
     optionList?:
       | FunctionOption<NodeChild>[][]
       | FunctionOption<ShareNodeChild>[][]
@@ -112,8 +112,8 @@ const props = withDefaults(
   }
 )
 const emit = defineEmits<{
-  (e: 'update:selectedValue', v: NodeChild[]): void
-  (e: 'click:node', v: NodeChild): void
+  (e: 'update:selectedValue', v: NodeChild[] | ShareNodeChild[]): void
+  (e: 'click:node', v: NodeChild | ShareNodeChild): void
 }>()
 
 const store = useStore()
@@ -166,7 +166,7 @@ const materialInfo = computed(() => {
 
 const innerSelectedValue = computed({
   get: () => props.selectedValue,
-  set: (v) => emit('update:selectedValue', v),
+  set: (v) => emit('update:selectedValue', v!),
 })
 
 const currentMaterialId = computed(

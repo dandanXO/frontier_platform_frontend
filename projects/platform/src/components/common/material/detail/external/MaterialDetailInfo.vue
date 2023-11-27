@@ -149,7 +149,7 @@ div(class="grid gap-y-8 content-start")
 import { computed, toRefs, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import materialForDisplay from '@/utils/material/materialInfoForDisplay'
-import { U3M_PROVIDER, U3M_DOWNLOAD_PROP } from '@/utils/constants'
+import { U3M_PROVIDER, U3M_DOWNLOAD_PROP, NOTIFY_TYPE } from '@/utils/constants'
 import { FTabs } from '@frontier/ui-component'
 import {
   type MaterialU3m,
@@ -166,6 +166,7 @@ import MaterialU3mViewerButton from '@/components/common/material/u3m/MaterialU3
 const props = defineProps<{
   material: Material
   publishedDate?: number
+  isCanDownloadU3M: boolean
 }>()
 
 const { t } = useI18n()
@@ -233,8 +234,37 @@ const selectedU3m = computed<MaterialU3m | MaterialCustomU3m>(() =>
     : props.material.customU3m
 )
 
-const downloadU3m = (format: U3M_DOWNLOAD_PROP) => {
+const downloadU3m = async (format: U3M_DOWNLOAD_PROP) => {
   if (selectedU3m.value.status !== MaterialU3mStatus.COMPLETED) {
+    return
+  }
+
+  const needCheckTokenStatus = [
+    'metafabric.design', // 青望科技
+    'bluehope.4pt.tw', // 青望科技 Demo 網域
+  ].some((hostname) => document.referrer.includes(hostname))
+
+  if (needCheckTokenStatus) {
+    const status = await store.dispatch('checkTokenStatus', {
+      accessToken: localStorage.getItem('accessToken'),
+    })
+
+    if (status === 1) {
+      parent.postMessage({ error: 'Unauthorized' }, document.referrer)
+      return
+    } else if (status === 2) {
+      parent.postMessage({ error: 'Unverified' }, document.referrer)
+      return
+    }
+  }
+
+  if (!props.isCanDownloadU3M) {
+    store.dispatch('helper/openModalConfirm', {
+      type: NOTIFY_TYPE.WARNING,
+      header: t('II0003'),
+      contentText: t('II0004'),
+      primaryBtnText: t('UU0031'),
+    })
     return
   }
 

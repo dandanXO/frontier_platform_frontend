@@ -2,7 +2,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import useNavigation from '@/composables/useNavigation'
 import { NOTIFY_TYPE } from '@/utils/constants'
-import { useReceivedShareStore } from '@/stores/receivedShare'
+import { useOuterStore } from '@/stores/outer'
 import type { FunctionOption } from '@/types'
 import {
   type NodeChild,
@@ -31,9 +31,9 @@ export default function useReceivedShare() {
   const { t } = useI18n()
   const store = useStore()
   const { goToLobby } = useNavigation()
-  const receivedShareStore = useReceivedShareStore()
-  const { ogBaseReceivedShareApi } = receivedShareStore
-  const { shareInfo } = storeToRefs(receivedShareStore)
+  const outerStore = useOuterStore()
+  const { ogBaseReceivedShareApi } = outerStore
+  const { shareInfo } = storeToRefs(outerStore)
 
   const organizationList = computed(
     () => store.getters['user/organizationList'] as Organization[]

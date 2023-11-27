@@ -59,7 +59,7 @@ import useReceivedShare from '@/composables/useReceivedShare.js'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import CollectionOverview from '@/components/outerApp/CollectionOverview.vue'
-import { useReceivedShareStore } from '@/stores/receivedShare'
+import { useOuterStore } from '@/stores/outer'
 import {
   type WorkspaceNodeCollection,
   type ExternalFilter,
@@ -80,9 +80,9 @@ const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const searchStore = useSearchStore()
-const receivedShareStore = useReceivedShareStore()
-const { ogBaseReceivedShareApi } = receivedShareStore
-const { shareInfo } = storeToRefs(receivedShareStore)
+const outerStore = useOuterStore()
+const { ogBaseReceivedShareApi } = outerStore
+const { shareInfo } = storeToRefs(outerStore)
 const workspaceNodeCollection = ref<WorkspaceNodeCollection>()
 const { receivedShareClone, receivedShareCloneByNodeList } = useReceivedShare()
 const { goToReceivedShareMaterial } = useNavigation()
@@ -137,7 +137,7 @@ const getShareReceivedList = async (
   router.push({
     name: route.name as string,
     params: {
-      sharingId: props.sharingKey,
+      sharingKey: props.sharingKey,
       nodeId: currentNodeId.value,
     },
     query,

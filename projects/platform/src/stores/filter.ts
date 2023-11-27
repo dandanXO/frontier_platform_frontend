@@ -160,6 +160,10 @@ export const useFilterStore = defineStore('filter', () => {
     const { data } = await ogBaseSearchApi('getInternalSearchFilterOptions')
     filterOption.value = Object.assign(filterOption.value, data.result)
   }
+  const getExternalFilterOption = async () => {
+    const { data } = await ogBaseSearchApi('getExternalSearchFilterOptions')
+    filterOption.value = Object.assign(filterOption.value, data.result)
+  }
   const getInitFilterState: () => FilterState = () => ({
     materialTypeList: [],
     descriptionList: [],
@@ -272,6 +276,7 @@ export const useFilterStore = defineStore('filter', () => {
     resetFilterState,
     filterOption,
     getInternalFilterOption,
+    getExternalFilterOption,
     setFilterStateByProperty,
     filterDirty,
     isFilterDirty,

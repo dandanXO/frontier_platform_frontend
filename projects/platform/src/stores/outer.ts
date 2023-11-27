@@ -1,16 +1,25 @@
 import { defineStore } from 'pinia'
 import receivedShareApi from '@/apis/receivedShare'
+import embedApi from '@/apis/embed'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 import type { ShareInfo } from '@frontier/platform-web-sdk'
 import { ref } from 'vue'
 import generalApi from '@/apis/general'
 
-export const useReceivedShareStore = defineStore('receivedShare', () => {
+export const useOuterStore = defineStore('outer', () => {
   const ogBaseReceivedShareApi = useOgBaseApiWrapper(receivedShareApi)
+  const ogBaseEmbedApi = useOgBaseApiWrapper(embedApi)
 
   const shareInfo = ref<ShareInfo>()
   const getReceivedShareInfo = async (sharingKey: string) => {
     const { data } = await ogBaseReceivedShareApi('getReceivedShareInfo', {
+      sharingKey,
+    })
+
+    shareInfo.value = data.result.shareInfo
+  }
+  const getEmbedInfo = async (sharingKey: string) => {
+    const { data } = await ogBaseEmbedApi('getEmbedInfo', {
       sharingKey,
     })
 
@@ -39,6 +48,8 @@ export const useReceivedShareStore = defineStore('receivedShare', () => {
   return {
     ogBaseReceivedShareApi,
     getReceivedShareInfo,
+    ogBaseEmbedApi,
+    getEmbedInfo,
     shareInfo,
     hasLogin,
     checkHasLogin,

@@ -21,11 +21,11 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { FeatureType } from '@frontier/platform-web-sdk'
 import { computed } from 'vue'
-import { useReceivedShareStore } from '@/stores/receivedShare'
+import { useOuterStore } from '@/stores/outer'
 
 const store = useStore()
 const route = useRoute()
-const receivedShareStore = useReceivedShareStore()
+const outerStore = useOuterStore()
 
 const props = defineProps({
   isHover: {
@@ -96,11 +96,11 @@ const openStickerDrawer = async () => {
   }
 
   if (drawerOpenFromLocationType === FeatureType.RECEIVED_SHARE) {
-    if (!receivedShareStore.hasLogin) {
+    if (!outerStore.hasLogin) {
       return openStickerDrawerForLogin()
     }
 
-    if (receivedShareStore.hasSelectedStickerAddFromOG) {
+    if (outerStore.hasSelectedStickerAddFromOG) {
       return openStickerDrawer()
     }
 
@@ -110,7 +110,7 @@ const openStickerDrawer = async () => {
         actionHandler: async (orgNo) => {
           store.dispatch('helper/openModalLoading')
           await store.dispatch('organization/getOrg', { orgNo })
-          receivedShareStore.setHasSelectedStickerAddFromOG(true)
+          outerStore.setHasSelectedStickerAddFromOG(true)
           await Promise.all([
             store.dispatch('organization/orgUser/getOrgUser'),
             openStickerDrawer(),
@@ -122,13 +122,11 @@ const openStickerDrawer = async () => {
   }
 
   if (drawerOpenFromLocationType === FeatureType.EMBED) {
-    if (localStorage.getItem('accessToken') === null) {
+    if (!outerStore.hasLogin) {
       return openStickerDrawerForLogin()
     }
 
-    const hasSelectedStickerAddFromOG =
-      store.getters['embed/hasSelectedStickerAddFromOG']
-    if (hasSelectedStickerAddFromOG) {
+    if (outerStore.hasSelectedStickerAddFromOG) {
       return openStickerDrawer()
     }
 
@@ -139,8 +137,7 @@ const openStickerDrawer = async () => {
         actionHandler: async (orgNo) => {
           store.dispatch('helper/openModalLoading')
           await store.dispatch('organization/getOrg', { orgNo })
-          store.commit('embed/SET_hasSelectedStickerAddFromOG', true)
-          store.dispatch('embed/reload')
+          outerStore.setHasSelectedStickerAddFromOG(true)
           await Promise.all([
             store.dispatch('organization/orgUser/getOrgUser'),
             openStickerDrawer(),
