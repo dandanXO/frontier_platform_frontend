@@ -27,6 +27,8 @@ import {
   type MaterialOptions,
   type MaterialPriceInfo,
   type CreateAssetsMaterialRequest,
+  type MaterialInternalInventoryInfo,
+  type MaterialInternalInventoryInfoSampleCardsRemainingListInner,
 } from '@frontier/platform-web-sdk'
 import { NOTIFY_TYPE } from '@/utils/constants'
 import type { AttachmentCreateItem, MultimediaCreateItem } from '@/types'
@@ -98,6 +100,71 @@ const createMaterial = async (payload: {
     uploadAttachmentTasks,
   ])
 
+  const convertInventoryFormToReq = (
+    inventoryInfo: MaterialInternalInventoryInfo
+  ): MaterialInternalInventoryInfo => {
+    const processRemainingList = (
+      list: MaterialInternalInventoryInfoSampleCardsRemainingListInner[] | null
+    ): MaterialInternalInventoryInfoSampleCardsRemainingListInner[] | null => {
+      if (!list) {
+        return null
+      }
+
+      const haveValues = list.some((h) => {
+        if (
+          h.location ||
+          h.qtyInPcs != null ||
+          h.shelf1 ||
+          h.shelf2 ||
+          h.source
+        ) {
+          return true
+        }
+        return false
+      })
+      return haveValues ? inventoryInfo.hangersRemainingList : null
+    }
+
+    const processYardageRemainingInfo = (
+      info: MaterialInternalInventoryInfo['yardageRemainingInfo']
+    ): MaterialInternalInventoryInfo['yardageRemainingInfo'] => {
+      if (!info) {
+        return null
+      }
+
+      const haveValues = info.list.some((i) => {
+        if (
+          i.location ||
+          i.lot ||
+          i.productionNo ||
+          i.qty != null ||
+          i.roll ||
+          i.shelf1 ||
+          i.shelf2 ||
+          i.source
+        ) {
+          return true
+        }
+        return false
+      })
+
+      return haveValues ? info : null
+    }
+
+    return {
+      isTotalPublic: inventoryInfo.isTotalPublic,
+      hangersRemainingList: processRemainingList(
+        inventoryInfo.hangersRemainingList
+      ),
+      sampleCardsRemainingList: processRemainingList(
+        inventoryInfo.sampleCardsRemainingList
+      ),
+      yardageRemainingInfo: processYardageRemainingInfo(
+        inventoryInfo.yardageRemainingInfo
+      ),
+    }
+  }
+
   const convertPriceInfoFormToReq = (
     priceInfo: MaterialPriceInfo
   ): MaterialPriceInfo => {
@@ -145,7 +212,14 @@ const createMaterial = async (payload: {
     let req = processMaterialSideFormToReq(form)
 
     req.priceInfo = convertPriceInfoFormToReq(req.priceInfo)
-    req.internalInfo.priceInfo = convertPriceInfoFormToReq(req.priceInfo)
+    if (req.internalInfo) {
+      req.internalInfo.priceInfo = convertPriceInfoFormToReq(
+        req.internalInfo.priceInfo
+      )
+      req.internalInfo.inventoryInfo = convertInventoryFormToReq(
+        req.internalInfo.inventoryInfo
+      )
+    }
 
     req = {
       ...req,

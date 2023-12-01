@@ -8,6 +8,7 @@ import {
   type MaterialOptions,
   MaterialType,
   type PantoneColor,
+  MaterialQuantityUnit,
 } from '@frontier/platform-web-sdk'
 import { CREATE_EDIT } from '@/utils/constants'
 import useMaterialSchema from '@/composables/material/useMaterialSchema'
@@ -44,6 +45,51 @@ const mapMaterialToForm = (
     internalInfo: {
       ...material.internalInfo,
       priceInfo: { ...material.internalInfo?.priceInfo },
+      inventoryInfo: {
+        ...material.internalInfo?.inventoryInfo,
+        hangersRemainingList: material.internalInfo?.inventoryInfo
+          .hangersRemainingList?.length
+          ? material.internalInfo?.inventoryInfo.hangersRemainingList
+          : [
+              {
+                source: null,
+                shelf1: null,
+                shelf2: null,
+                location: null,
+                qtyInPcs: null,
+              },
+            ],
+        sampleCardsRemainingList: material.internalInfo?.inventoryInfo
+          .sampleCardsRemainingList?.length
+          ? material.internalInfo?.inventoryInfo.sampleCardsRemainingList
+          : [
+              {
+                source: null,
+                shelf1: null,
+                shelf2: null,
+                location: null,
+                qtyInPcs: null,
+              },
+            ],
+        yardageRemainingInfo:
+          material.internalInfo?.inventoryInfo.yardageRemainingInfo != null
+            ? material.internalInfo?.inventoryInfo.yardageRemainingInfo
+            : {
+                unit: MaterialQuantityUnit.Y,
+                list: [
+                  {
+                    source: null,
+                    shelf1: null,
+                    shelf2: null,
+                    location: null,
+                    productionNo: null,
+                    roll: null,
+                    lot: null,
+                    qty: null,
+                  },
+                ],
+              },
+      },
     },
   }
 }

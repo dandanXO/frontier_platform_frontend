@@ -767,7 +767,7 @@ const contentDisplayError = computed(() => {
 })
 
 const selectContent = (
-  name: string,
+  name: string | null,
   index: number,
   fieldValue: {
     contentId: number | null
@@ -775,12 +775,18 @@ const selectContent = (
     percentage: number
   }
 ) => {
+  if (name == null || name.length === 0) {
+    updateContentField(index, { ...fieldValue, contentId: null, name: null })
+    return
+  }
+
   const targetContent = allContentList.value.find((c) => c.name === name)
   if (targetContent) {
     updateContentField(index, { ...fieldValue, ...targetContent })
-  } else {
-    updateContentField(index, { ...fieldValue, contentId: null, name })
+    return
   }
+
+  updateContentField(index, { ...fieldValue, contentId: null, name })
 }
 
 const {

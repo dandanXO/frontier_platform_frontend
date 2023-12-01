@@ -232,7 +232,6 @@ const made2flowSubscribed = computed(
 const openModalMaterialEditSimple = async (type: string) => {
   const materialOptionsRes = await ogBaseAssetsApi('getMaterialOptions')
   const materialOptions = materialOptionsRes.data.result!
-
   store.dispatch('helper/openModalBehavior', {
     component: `modal-material-edit-simple-${type}`,
     properties: { material: props.material, materialOptions },

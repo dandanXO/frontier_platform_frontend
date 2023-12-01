@@ -2234,6 +2234,33 @@ export interface Country {
     'emoji': string;
 }
 /**
+ * 封面圖
+ * @export
+ * @interface CoverImage
+ */
+export interface CoverImage {
+    /**
+     * 
+     * @type {CoverMode}
+     * @memberof CoverImage
+     */
+    'mode': CoverMode;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoverImage
+     */
+    'thumbnailUrl': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoverImage
+     */
+    'displayUrl': string | null;
+}
+
+
+/**
  * 1 (正面為封面) 2 (背面為封面) 3 (多媒體資料為封面)
  * @export
  * @enum {string}
@@ -3106,10 +3133,10 @@ export interface CropAssetsMaterialMultimediaRequest {
     'materialId': number;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof CropAssetsMaterialMultimediaRequest
      */
-    'fileId': string;
+    'fileId': number;
     /**
      * 
      * @type {CropAssetsMaterialMultimediaRequestAllOfCroppedImage}
@@ -3133,10 +3160,10 @@ export interface CropAssetsMaterialMultimediaRequestAllOf {
     'materialId': number;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof CropAssetsMaterialMultimediaRequestAllOf
      */
-    'fileId': string;
+    'fileId': number;
     /**
      * 
      * @type {CropAssetsMaterialMultimediaRequestAllOfCroppedImage}
@@ -10627,10 +10654,10 @@ export interface Material {
     'itemNo': string | null;
     /**
      * 
-     * @type {MaterialCoverImage}
+     * @type {CoverImage}
      * @memberof Material
      */
-    'coverImage': MaterialCoverImage;
+    'coverImage': CoverImage;
     /**
      * 
      * @type {MaterialWidth}
@@ -11003,33 +11030,6 @@ export interface MaterialColorInfoCustomPropertyListInner {
  * @export
  */
 export type MaterialConstruction = MaterialKnitConstruction | MaterialLeatherConstruction | MaterialNonWovenConstruction | MaterialOthersConstruction | MaterialTrimConstruction | MaterialWovenConstruction;
-
-/**
- * 封面圖
- * @export
- * @interface MaterialCoverImage
- */
-export interface MaterialCoverImage {
-    /**
-     * 
-     * @type {CoverMode}
-     * @memberof MaterialCoverImage
-     */
-    'mode': CoverMode;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialCoverImage
-     */
-    'thumbnailUrl': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof MaterialCoverImage
-     */
-    'displayUrl': string | null;
-}
-
 
 /**
  * 
@@ -20701,10 +20701,10 @@ export interface SetAssetsMaterialCover200ResponseAllOf {
 export interface SetAssetsMaterialCover200ResponseAllOfResult {
     /**
      * 
-     * @type {SetAssetsMaterialCover200ResponseAllOfResultCoverImage}
+     * @type {CoverImage}
      * @memberof SetAssetsMaterialCover200ResponseAllOfResult
      */
-    'coverImage': SetAssetsMaterialCover200ResponseAllOfResultCoverImage;
+    'coverImage': CoverImage;
     /**
      * 
      * @type {Array<MultimediaFile>}
@@ -20712,27 +20712,6 @@ export interface SetAssetsMaterialCover200ResponseAllOfResult {
      */
     'multimediaList': Array<MultimediaFile>;
 }
-/**
- * 封面圖
- * @export
- * @interface SetAssetsMaterialCover200ResponseAllOfResultCoverImage
- */
-export interface SetAssetsMaterialCover200ResponseAllOfResultCoverImage {
-    /**
-     * 
-     * @type {CoverMode}
-     * @memberof SetAssetsMaterialCover200ResponseAllOfResultCoverImage
-     */
-    'mode': CoverMode;
-    /**
-     * 
-     * @type {string}
-     * @memberof SetAssetsMaterialCover200ResponseAllOfResultCoverImage
-     */
-    'url': string;
-}
-
-
 /**
  * 
  * @export
@@ -24826,11 +24805,13 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary 裁切單一布料的 Multimedia
-         * @param {CropAssetsMaterialMultimediaRequest} [cropAssetsMaterialMultimediaRequest] 
+         * @param {CropAssetsMaterialMultimediaRequest} cropAssetsMaterialMultimediaRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cropAssetsMaterialMultimedia: async (cropAssetsMaterialMultimediaRequest?: CropAssetsMaterialMultimediaRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        cropAssetsMaterialMultimedia: async (cropAssetsMaterialMultimediaRequest: CropAssetsMaterialMultimediaRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'cropAssetsMaterialMultimediaRequest' is not null or undefined
+            assertParamExists('cropAssetsMaterialMultimedia', 'cropAssetsMaterialMultimediaRequest', cropAssetsMaterialMultimediaRequest)
             const localVarPath = `/assets/material/multimedia/crop`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25400,11 +25381,13 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary 設定布料資產封面
-         * @param {SetAssetsMaterialCoverRequest} [setAssetsMaterialCoverRequest] 
+         * @param {SetAssetsMaterialCoverRequest} setAssetsMaterialCoverRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        setAssetsMaterialCover: async (setAssetsMaterialCoverRequest?: SetAssetsMaterialCoverRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        setAssetsMaterialCover: async (setAssetsMaterialCoverRequest: SetAssetsMaterialCoverRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'setAssetsMaterialCoverRequest' is not null or undefined
+            assertParamExists('setAssetsMaterialCover', 'setAssetsMaterialCoverRequest', setAssetsMaterialCoverRequest)
             const localVarPath = `/assets/material/update/set-cover`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25896,11 +25879,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 裁切單一布料的 Multimedia
-         * @param {CropAssetsMaterialMultimediaRequest} [cropAssetsMaterialMultimediaRequest] 
+         * @param {CropAssetsMaterialMultimediaRequest} cropAssetsMaterialMultimediaRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest?: CropAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
+        async cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest: CropAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26061,11 +26044,11 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 設定布料資產封面
-         * @param {SetAssetsMaterialCoverRequest} [setAssetsMaterialCoverRequest] 
+         * @param {SetAssetsMaterialCoverRequest} setAssetsMaterialCoverRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async setAssetsMaterialCover(setAssetsMaterialCoverRequest?: SetAssetsMaterialCoverRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SetAssetsMaterialCover200Response>> {
+        async setAssetsMaterialCover(setAssetsMaterialCoverRequest: SetAssetsMaterialCoverRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SetAssetsMaterialCover200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.setAssetsMaterialCover(setAssetsMaterialCoverRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -26252,11 +26235,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary 裁切單一布料的 Multimedia
-         * @param {CropAssetsMaterialMultimediaRequest} [cropAssetsMaterialMultimediaRequest] 
+         * @param {CropAssetsMaterialMultimediaRequest} cropAssetsMaterialMultimediaRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest?: CropAssetsMaterialMultimediaRequest, options?: any): AxiosPromise<UploadAssetsMaterialMultimedia200Response> {
+        cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest: CropAssetsMaterialMultimediaRequest, options?: any): AxiosPromise<UploadAssetsMaterialMultimedia200Response> {
             return localVarFp.cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26402,11 +26385,11 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary 設定布料資產封面
-         * @param {SetAssetsMaterialCoverRequest} [setAssetsMaterialCoverRequest] 
+         * @param {SetAssetsMaterialCoverRequest} setAssetsMaterialCoverRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        setAssetsMaterialCover(setAssetsMaterialCoverRequest?: SetAssetsMaterialCoverRequest, options?: any): AxiosPromise<SetAssetsMaterialCover200Response> {
+        setAssetsMaterialCover(setAssetsMaterialCoverRequest: SetAssetsMaterialCoverRequest, options?: any): AxiosPromise<SetAssetsMaterialCover200Response> {
             return localVarFp.setAssetsMaterialCover(setAssetsMaterialCoverRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -26594,12 +26577,12 @@ export class AssetsApi extends BaseAPI {
     /**
      * 
      * @summary 裁切單一布料的 Multimedia
-     * @param {CropAssetsMaterialMultimediaRequest} [cropAssetsMaterialMultimediaRequest] 
+     * @param {CropAssetsMaterialMultimediaRequest} cropAssetsMaterialMultimediaRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest?: CropAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig) {
+    public cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest: CropAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).cropAssetsMaterialMultimedia(cropAssetsMaterialMultimediaRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -26774,12 +26757,12 @@ export class AssetsApi extends BaseAPI {
     /**
      * 
      * @summary 設定布料資產封面
-     * @param {SetAssetsMaterialCoverRequest} [setAssetsMaterialCoverRequest] 
+     * @param {SetAssetsMaterialCoverRequest} setAssetsMaterialCoverRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AssetsApi
      */
-    public setAssetsMaterialCover(setAssetsMaterialCoverRequest?: SetAssetsMaterialCoverRequest, options?: AxiosRequestConfig) {
+    public setAssetsMaterialCover(setAssetsMaterialCoverRequest: SetAssetsMaterialCoverRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).setAssetsMaterialCover(setAssetsMaterialCoverRequest, options).then((request) => request(this.axios, this.basePath));
     }
 

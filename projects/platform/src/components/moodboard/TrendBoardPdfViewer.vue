@@ -52,7 +52,7 @@ div(class="w-full flex flex-col border border-grey-150 rounded")
 
 <script setup lang="ts">
 import { computed, onMounted, ref, toRaw, watch } from 'vue'
-import * as pdfjs from 'pdfjs-dist'
+import { pdfjs } from '@/utils/pdf'
 import type { PDFDocumentProxy } from 'pdfjs-dist'
 import { downloadDataURLFile } from '@frontier/lib'
 
@@ -147,14 +147,6 @@ const init = async () => {
   containerRef.value.style.height = `${
     containerRef.value.offsetWidth / CONTAINER_ASPECT_RATIO
   }px`
-
-  /**
-   * pdfjs needs to specify workerSrc to load worker file
-   * ref: https://github.com/mozilla/pdf.js/issues/10478
-   */
-  // @ts-ignore
-  const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.entry')
-  pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker
 
   const loadingTask = pdfjs.getDocument(props.src)
   const doc = await loadingTask.promise

@@ -4,88 +4,129 @@ div(class="w-full h-full flex justify-center")
     div(class="pt-12 pb-9 flex justify-between")
       global-breadcrumb-list(
         :breadcrumbList="breadcrumbList"
-        @click:item="$router.push($event.path)"
+        @click:item="$event.goTo?.()"
       )
-    div(class="grid grid-cols-1 divide-y divide-grey-250")
-      block-material-image
-        template(#slot:block-material-u3m)
-          block-material-u3m(ref="refBlockMaterialU3m" :material="material")
-      block-material-information(:invalidation="invalidation")
-      block-material-inventory(:invalidation="invalidation")
-      block-material-pricing(:invalidation="invalidation")
-      block-material-additional-info
-    div(class="flex justify-center items-center pt-17.5")
-      div(class="grid grid-cols-2 gap-x-2")
-        f-button(size="md" type="secondary" class="h-10" @click="cancel") {{ $t('UU0002') }}
-        f-button(size="md" class="h-10" :disabled="isInvalid" @click="updateMaterial") {{ $t('UU0018') }}
+      div(class="flex flex-row gap-x-2")
+        f-button(type="secondary" size="md" @click="cancel") {{ $t('UU0002') }}
+        f-button(
+          type="primary"
+          size="md"
+          :disabled="!valid"
+          @click="refBlockMaterialEdit?.submit()"
+        ) {{ $t('UU0020') }}
+    block-material-edit(
+      ref="refBlockMaterialEdit"
+      :material="material"
+      :materialOptions="materialOptions"
+      :pantoneList="pantoneList"
+      @submit="updateMaterial"
+      @cancel="cancel"
+    )
 </template>
 
-<script setup>
-import BlockMaterialImage from '@/components/assets/edit/BlockMaterialImage.vue'
-import BlockMaterialInformation from '@/components/assets/edit/BlockMaterialInformation.vue'
-import BlockMaterialInventory from '@/components/assets/edit/BlockMaterialInventory.vue'
-import BlockMaterialPricing from '@/components/assets/edit/BlockMaterialPricing.vue'
-import BlockMaterialAdditionalInfo from '@/components/assets/edit/BlockMaterialAdditionalInfo.vue'
-import BlockMaterialU3m from '@/components/assets/edit/BlockMaterialU3m.vue'
+<script setup lang="ts">
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
-import useMaterialValidation from '@/composables/useMaterialValidation'
 import { computed, ref } from 'vue'
-import { onBeforeRouteLeave, useRoute } from 'vue-router'
-import scrollTo from '@/utils/scrollTo'
+import { onBeforeRouteLeave } from 'vue-router'
 import { NOTIFY_TYPE } from '@/utils/constants'
 import { useNotifyStore } from '@/stores/notify'
+import {
+  OgType,
+  type MaterialOptions,
+  type Material,
+  type PantoneColor,
+} from '@frontier/platform-web-sdk'
+import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
+import assetsApi from '@/apis/assets'
+import BlockMaterialEdit from '@/components/assets/edit/BlockMaterialEdit.vue'
+import type useMaterialForm from '@/composables/material/useMaterialForm'
+
+const props = defineProps<{
+  materialId: string
+}>()
 
 const { t } = useI18n()
 const store = useStore()
+const ogBaseAssetsApi = useOgBaseApiWrapper(assetsApi)
 const notify = useNotifyStore()
-const route = useRoute()
-const { parsePath, goToAssetMaterialDetail } = useNavigation()
-const material = computed(() => store.getters['assets/material'])
-const { invalidation, validate, isInvalid } = useMaterialValidation(material)
+const { goToAssets, goToAssetMaterialDetail, goToAssetMaterialEdit } =
+  useNavigation()
 
+const materialId = computed(() => Number(props.materialId))
+const [materialOptionsRes, materialRes] = await Promise.all([
+  ogBaseAssetsApi('getMaterialOptions'),
+  ogBaseAssetsApi('getAssetsMaterial', {
+    materialId: materialId.value,
+  }),
+])
+const materialOptions = ref(materialOptionsRes.data.result!)
+const material = ref(materialRes.data.result!.material)
+
+const refBlockMaterialEdit = ref<InstanceType<typeof BlockMaterialEdit> | null>(
+  null
+)
 const isConfirmedToLeave = ref(false)
 
-const routeLocation = computed(() => store.getters['helper/routeLocation'])
 const breadcrumbList = computed(() => {
-  const prefix = routeLocation.value === 'org' ? '/:orgNo' : '/:orgNo/:groupId'
   return [
     {
       name: t('RR0008'),
-      path: parsePath(`${prefix}/assets`),
+      goTo: goToAssets,
     },
     {
-      name: material.value.materialNo,
-      path: parsePath(`${prefix}/assets/:materialId`),
+      name: material.value?.itemNo || '',
+      goTo: () => goToAssetMaterialDetail({}, materialId.value),
     },
     {
       name: t('EE0037'),
-      path: parsePath(`${prefix}/assets/:materialId/edit`),
+      goTo: () => goToAssetMaterialEdit(materialId.value, OgType.ORG),
     },
   ]
 })
 
-const refBlockMaterialU3m = ref()
-
-const updateMaterial = async () => {
-  if (!validate()) {
-    scrollTo('block-material-information')
-    return
+const valid = computed(() => {
+  if (!refBlockMaterialEdit.value) {
+    return false
   }
-  store.dispatch('helper/pushModalLoading')
 
-  const { hasUploadedU3mFile, u3mFile, needToGeneratePhysical } =
-    refBlockMaterialU3m.value
-  await store.dispatch('assets/updateMaterial', {
-    hasCustomU3mUploading: hasUploadedU3mFile,
-    u3mFile,
-    needToGeneratePhysical,
-  })
+  return refBlockMaterialEdit.value.meta.valid
+})
+
+const pantoneList = computed(
+  () => store.getters['code/pantoneList'] as PantoneColor[]
+)
+
+const updateMaterial = async (payload: {
+  form: ReturnType<typeof useMaterialForm>['values']
+  u3m?: {
+    u3mFile: File
+    needToGeneratePhysical: boolean
+    hasUploadedU3mFile: boolean
+  } | null
+}) => {
+  store.dispatch('helper/pushModalLoading')
+  // const { hasUploadedU3mFile, u3mFile, needToGeneratePhysical } =
+  //   refBlockMaterialU3m.value
+  // await store.dispatch('assets/updateMaterial', {
+  //   hasCustomU3mUploading: hasUploadedU3mFile,
+  //   u3mFile,
+  //   needToGeneratePhysical,
+  // })
+
+  const { form, u3m } = payload
+
+  const req = {
+    materialId: materialId.value,
+    ...form,
+    hasCustomU3mUploading: u3m?.hasUploadedU3mFile || false,
+  }
+  const res = await ogBaseAssetsApi('updateAssetsMaterial', req)
 
   store.dispatch('helper/closeModalLoading')
   isConfirmedToLeave.value = true
-  goToAssetMaterialDetail(material.value)
+  goToAssetMaterialDetail({}, materialId.value)
   notify.showNotifySnackbar({ messageText: t('EE0164') })
 }
 
@@ -97,7 +138,7 @@ const cancel = async () => {
     primaryBtnText: t('UU0001'),
     primaryBtnHandler: () => {
       isConfirmedToLeave.value = true
-      goToAssetMaterialDetail(material.value)
+      goToAssetMaterialDetail({}, materialId.value)
     },
     secondaryBtnText: t('UU0002'),
   })
@@ -121,10 +162,5 @@ onBeforeRouteLeave(async () => {
   })
 
   return result === 'confirm'
-})
-
-await store.dispatch('assets/getMaterialOptions')
-await store.dispatch('assets/getMaterial', {
-  materialId: route.params.materialId,
 })
 </script>
