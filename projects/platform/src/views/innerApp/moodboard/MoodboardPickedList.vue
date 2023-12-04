@@ -2,8 +2,8 @@
 div(class="h-full")
   div(data-tooltip-boundary-reference="pick-list-header" class="mx-8")
     global-breadcrumb-list(
-      :breadcrumbList="breadcrumbList"
-      @click:item="$router.push($event.path)"
+      :breadcrumbList="locationList"
+      @click:item="$event.goTo()"
       class="mt-12 mb-9"
     )
     div(class="flex items-end mb-4")
@@ -14,7 +14,7 @@ div(class="h-full")
         class="text-caption text-grey-250 pb-0.5"
         scope="global"
       )
-        template(#number) {{ moodboardOfferNodeCollection.childNodeList.length }}
+        template(#number) {{ moodboardNodeCollection?.childNodeList.length ?? 0 }}
     p(class="text-body2 text-grey-600 mb-4") {{ $t('QQ0035') }}
     div(class="flex items-center justify-between mb-2")
       f-input-text(
@@ -28,52 +28,59 @@ div(class="h-full")
       )
       div(class="flex items-center")
         f-button-label(size="lg" @click="selectAll" class="mr-6") {{ $t('RR0052') }}
-        grid-or-row(v-model:displayMode="displayMode")
+        f-input-tap(
+          v-model:inputValue="displayMode"
+          :optionList="displayModeOptionList"
+        )
   div(v-if="isLoading" class="flex-grow flex items-center justify-center")
     f-svg-icon(iconName="loading" size="92" class="text-primary-400")
-  template(
-    v-else-if="!isLoading && moodboardOfferNodeCollection.childNodeList.length > 0"
-  )
+  template(v-else-if="!isLoading && moodboardNodeCollection")
     template(v-if="displayMode === DISPLAY_NODE.LIST")
-      div(v-for="(node, index) in moodboardOfferNodeCollection.childNodeList")
-        moodboard-row-item(
+      div(
+        v-for="(node, index) in moodboardNodeCollection.childNodeList"
+        :key="node.nodeMeta.nodeId"
+      )
+        row-item-node-moodboard(
           v-model:selectedList="selectedNodeList"
           :node="node"
-          :properties="node.properties"
-          :key="node.properties.materialId"
+          :optionList="optionNode"
+          @togglePick="togglePick(node, true, false)"
         )
         div(
-          v-if="index !== moodboardOfferNodeCollection.childNodeList.length - 1"
+          v-if="index !== moodboardNodeCollection.childNodeList.length - 1"
           class="border-b border-grey-250 mx-7.5 my-5"
         )
     div(
       v-else-if="displayMode === DISPLAY_NODE.GRID"
       class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
     )
-      grid-item-node(
-        v-for="node in moodboardOfferNodeCollection.childNodeList"
+      grid-item-node-moodboard(
+        v-for="node in moodboardNodeCollection.childNodeList"
+        :key="node.nodeMeta.nodeId"
         v-model:selectedValue="selectedNodeList"
         :node="node"
-        :optionList="optionMaterial(node)"
-        @click:option="$event.func(node)"
+        :optionList="optionNode"
         @click.stop="openModalMoodboardMaterialDetail(node, true, true)"
       )
         template(#caption)
           btn-pick-tooltip(
             class="absolute right-0 bottom-6"
-            :isPicked="node.isPicked"
+            :isPicked="node.moodboardInfo.isPicked"
             @togglePick="togglePick(node, true, false)"
           )
           div(class="mt-1.5 h-6 flex items-center")
-            img(:src="node.creatorLogo" class="aspect-square h-full rounded-full")
-            p(class="pl-1 font-bold text-caption text-grey-900") {{ node.creator }}
+            img(
+              :src="node.nodeMeta.unitLogo"
+              class="aspect-square h-full rounded-full"
+            )
+            p(class="pl-1 font-bold text-caption text-grey-900") {{ node.nodeMeta.unitName }}
   div(v-else class="flex flex-col justify-center items-center mt-16")
     p(class="text-h4 text-grey-900 mb-6") {{ $t('QQ0018') }}
     i18n-t(keypath="QQ0087" tag="p" class="text-body1 text-grey-600" scope="global")
       template(#number)
         span(
           class="text-cyan-400 cursor-pointer"
-          @click="goToMoodboardDetail(moodboard.moodboardId)"
+          @click="goToMoodboardDetail({}, moodboard.moodboardId)"
         ) {{ $t('QQ0088') }}
   multi-select-menu(
     :optionMultiSelect="optionMultiSelect"
@@ -81,91 +88,85 @@ div(class="h-full")
   )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
-import { MOODBOARD_TAB, DISPLAY_NODE, U3M_STATUS } from '@/utils/constants'
-import GridItemNode from '@/components/common/gridItem/GridItemNode.vue'
+import {
+  DISPLAY_NODE,
+  MOODBOARD_OFFER_ID_ALL,
+  ASSET_LIST_DISPLAY_MODE,
+} from '@/utils/constants'
 import MultiSelectMenu from '@/components/common/MultiSelectMenu.vue'
 import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
-import GridOrRow from '@/components/common/GridOrRow.vue'
-import MoodboardRowItem from '@/components/moodboard/MoodboardRowItem.vue'
+import RowItemNodeMoodboard from '@/components/moodboard/RowItemNodeMoodboard.vue'
+import useMoodboardDetail from '@/composables/useMoodboardDetail.js'
 import useMoodboardNode from '@/composables/useMoodboardNode.js'
+import { useMoodboardStore } from '@/stores/moodboard'
+import GridItemNodeMoodboard from '@/components/moodboard/GridItemNodeMoodboard.vue'
 
+const props = defineProps<{
+  moodboardId: string
+}>()
+
+const moodboardId = computed(() => Number(props.moodboardId))
 const { t } = useI18n()
-const store = useStore()
-const { prefixPath, parsePath, goToMoodboardDetail } = useNavigation()
-const displayMode = ref(DISPLAY_NODE.LIST)
+const { ogBaseMoodboardApi } = useMoodboardStore()
+const { goToMoodboard, goToMoodboardDetail, goToMoodboardPickedList } =
+  useNavigation()
+const displayMode = ref<ASSET_LIST_DISPLAY_MODE>(ASSET_LIST_DISPLAY_MODE.LIST)
+const displayModeOptionList = [
+  {
+    selectValue: ASSET_LIST_DISPLAY_MODE.GRID,
+    icon: 'apps',
+  },
+  {
+    selectValue: ASSET_LIST_DISPLAY_MODE.LIST,
+    icon: 'format_list_bulleted',
+  },
+]
 
-const moodboard = computed(() => store.getters['moodboard/moodboard'])
-const moodboardOfferNodeCollection = computed(
-  () => store.getters['moodboard/moodboardOfferNodeCollection']
-)
+const { data } = await ogBaseMoodboardApi('getMoodboard', {
+  moodboardId: Number(props.moodboardId),
+})
+const moodboard = ref(data.result.moodboard)
 const {
+  keyword,
+  isLoading,
+  search,
+  moodboardNodeCollection,
   selectedNodeList,
   selectAll,
+} = useMoodboardDetail(moodboardId.value, MOODBOARD_OFFER_ID_ALL, null)
+
+const {
   cloneMoodboardNode,
-  openModalU3mDownload,
+  downloadU3m,
   exportMoodboardNode,
   openModalMoodboardMaterialDetail,
   togglePick,
-} = useMoodboardNode(moodboard, moodboardOfferNodeCollection)
-const breadcrumbList = computed(() => {
+} = useMoodboardNode(moodboard, moodboardNodeCollection)
+
+const locationList = computed(() => {
   return [
     {
       name: t('QQ0001'),
-      path: parsePath(`${prefixPath.value}/moodboard`),
+      goTo: () => goToMoodboard(),
     },
     {
       name: moodboard.value.moodboardName,
-      path: parsePath(
-        `${prefixPath.value}/moodboard/${moodboard.value.moodboardId}?tab=${MOODBOARD_TAB.OFFER}`
-      ),
+      goTo: () => {
+        goToMoodboardDetail({}, moodboardId.value)
+      },
     },
     {
       name: t('QQ0033'),
-      path: parsePath(
-        `${prefixPath.value}/moodboard/${moodboard.value.moodboardId}/picked-list`
-      ),
+      goTo: () => {
+        goToMoodboardPickedList({}, moodboardId.value)
+      },
     },
   ]
 })
-
-const optionMaterial = (node) => {
-  return [
-    [
-      { name: t('UU0015'), func: (n) => cloneMoodboardNode([n]) },
-      {
-        name: t('RR0059'),
-        disabled: node.properties.u3m.status !== U3M_STATUS.COMPLETED,
-        func: (n) => openModalU3mDownload([n]),
-      },
-    ],
-  ]
-}
-
-const optionMultiSelect = computed(() => [
-  {
-    name: t('RR0060'),
-    func: exportMoodboardNode,
-  },
-])
-
-const isLoading = ref(false)
-const keyword = ref('')
-const search = async () => {
-  isLoading.value = true
-  const moodboardId = moodboard.value.moodboardId
-
-  await store.dispatch('moodboard/getPickedMoodboardNode', {
-    moodboardId,
-    keyword: keyword.value || null,
-  })
-
-  isLoading.value = false
-}
-
-await search()
+const optionNode = computed(() => [[downloadU3m, cloneMoodboardNode]])
+const optionMultiSelect = computed(() => [exportMoodboardNode])
 </script>

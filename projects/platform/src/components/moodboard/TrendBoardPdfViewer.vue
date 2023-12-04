@@ -148,6 +148,16 @@ const init = async () => {
     containerRef.value.offsetWidth / CONTAINER_ASPECT_RATIO
   }px`
 
+  if (!pdfjs.GlobalWorkerOptions.workerSrc) {
+    /**
+     * pdfjs needs to specify workerSrc to load worker file
+     * ref: https://github.com/mozilla/pdf.js/issues/10478
+     */
+    // @ts-ignore
+    const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.entry')
+    pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker
+  }
+
   const loadingTask = pdfjs.getDocument(props.src)
   const doc = await loadingTask.promise
   pdfDoc.value = doc

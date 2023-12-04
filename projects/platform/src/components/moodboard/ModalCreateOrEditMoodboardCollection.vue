@@ -7,146 +7,123 @@ modal-behavior(
 )
   template(#note)
     file-upload-error-note(
-      v-if="fileUploadErrorCode"
-      :errorCode="fileUploadErrorCode"
-      :fileSizeMaxLimit="fileSizeMaxLimit"
-    ) 
+      v-if="refInputTrendBoardUpload && refInputTrendBoardUpload.errorCode"
+      :errorCode="refInputTrendBoardUpload.errorCode"
+      :fileSizeMaxLimit="refInputTrendBoardUpload.fileSizeMaxLimit"
+      data-cy="modal-mass-upload_error"
+    )
     div(v-else-if="mode === CREATE_EDIT.CREATE" class="flex items-center text-grey-600")
       f-svg-icon(iconName="info_outline" size="20")
       p(class="text-caption leading-1.6 pl-1.5") {{ $t('QQ0060') }}
   div(class="w-95")
     f-input-text(
       ref="refInputCollectionName"
-      v-model:textValue="formData.name"
+      v-model:textValue="collectionName"
       required
-      :rules="[$inputRules.required(), $inputRules.maxLength(COLLECTION_NAME_MAX_LENGTH)]"
+      :rules="[inputRules.required(), inputRules.maxLength(COLLECTION_NAME_MAX_LENGTH)]"
       :label="$t('FF0010')"
       :placeholder="$t('QQ0058')"
-      class="pb-6"
+      class="mb-7.5"
     )
-    div(class="h-5.5 flex items-center pb-1")
-      p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
-      f-button-label(
-        v-if="uploadTrendBoardName"
-        size="sm"
-        class="ml-1.5"
-        @click="previewFile(formData.trendBoardFile)"
-      ) {{ $t('UU0060') }}
-    f-input-file(
-      class="w-full mb-15"
-      v-model:fileName="uploadTrendBoardName"
-      :acceptType="trendBoardFileAcceptType"
-      :maximumSize="fileSizeMaxLimit"
-      :text="$t('UU0025')"
-      :placeholder="$t('QQ0009')"
-      @finish="onFinish"
-      @clear="removeTrendBoard"
-      @error="fileUploadErrorCode = $event"
+    input-trend-board-upload(
+      ref="refInputTrendBoardUpload"
+      :defaultTrendBoard="defaultTrendBoard"
+      class="mb-7.5"
     )
     f-input-textarea(
       ref="refInputDescription"
-      v-model:textValue="formData.description"
+      v-model:textValue="collectionDescription"
       :label="$t('RR0014')"
       :placeholder="$t('QQ0059')"
+      :rules="[inputRules.maxLength(COLLECTION_DESCRIPTION_MAX_LENGTH, $t('WW0073'))]"
       minHeight="min-h-30"
-      :rules="[$inputRules.maxLength(COLLECTION_DESCRIPTION_MAX_LENGTH, $t('WW0073'))]"
     )
 </template>
 
-<script setup>
-import { ref, reactive, computed } from 'vue'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
-import { previewFile } from '@frontier/lib'
+import { inputRules } from '@frontier/lib'
 import {
   CREATE_EDIT,
   COLLECTION_NAME_MAX_LENGTH,
   COLLECTION_DESCRIPTION_MAX_LENGTH,
 } from '@/utils/constants'
+import { FInputText } from '@frontier/ui-component'
+import type { Collection, TrendBoard } from '@frontier/platform-web-sdk'
+import InputTrendBoardUpload from '@/components/common/collection/InputTrendBoardUpload.vue'
+import { useMoodboardStore } from '@/stores/moodboard'
 
-const props = defineProps({
-  mode: {
-    type: Number,
-    default: CREATE_EDIT.CREATE,
-  },
-  nodeId: {
-    // if is create mode then nodeId is refer to parent nodeId, otherwise is refer to that node collection
-    type: Number,
-    required: true,
-  },
-})
+export interface PropsModalCreateOrEditMoodboardCollection {
+  mode: CREATE_EDIT
+  nodeId: number
+  collection?: Collection
+}
+const props = defineProps<PropsModalCreateOrEditMoodboardCollection>()
 
+const collection = ref(props.collection)
 const { t } = useI18n()
 const store = useStore()
 const notify = useNotifyStore()
-const formData = reactive({
-  nodeId: props.nodeId,
-  name: '',
-  description: '',
-  trendBoardFile: null,
-  // the below variables only use for edit mode
-  isDeleteTrendBoard: false,
-})
+const { ogBaseMoodboardApi } = useMoodboardStore()
 
-const refInputCollectionName = ref(null)
-const refInputDescription = ref(null)
+const collectionName = ref<string | null>(null)
+const collectionDescription = ref<string | null>(null)
+const refInputTrendBoardUpload =
+  ref<InstanceType<typeof InputTrendBoardUpload>>()
+const defaultTrendBoard = ref<TrendBoard | null>(null)
 
-const isUploadNewTrendBoard = ref(false)
-const uploadTrendBoardName = ref('')
-
-const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
-const trendBoardFileAcceptType = ['pdf']
-const fileUploadErrorCode = ref(0)
-
-const onFinish = (file) => {
-  store.dispatch('helper/pushModalLoading')
-  formData.trendBoardFile = file
-  isUploadNewTrendBoard.value = true
-  fileUploadErrorCode.value = 0
-  store.dispatch('helper/closeModalLoading')
-}
-const removeTrendBoard = () => {
-  formData.trendBoardFile = null
-  if (props.mode === CREATE_EDIT.EDIT) {
-    formData.isDeleteTrendBoard = true
-  }
+if (props.mode === CREATE_EDIT.EDIT && collection.value) {
+  const { name, description, trendBoard } = collection.value
+  collectionName.value = name
+  collectionDescription.value = description
+  defaultTrendBoard.value = trendBoard
 }
 
+const refInputCollectionName = ref<InstanceType<typeof FInputText>>()
+const refInputDescription = ref<InstanceType<typeof FInputText>>()
 const isFormValid = computed(
   () =>
-    formData.name?.length > 0 &&
+    collectionName.value &&
     !refInputCollectionName.value?.isError &&
     !refInputDescription.value?.isError
 )
 
 const primaryHandler = async () => {
-  store.dispatch('helper/pushModalLoading')
-  if (props.mode === CREATE_EDIT.EDIT) {
-    if (!isUploadNewTrendBoard.value) {
-      formData.trendBoardFile = null
-    }
-    await store.dispatch('moodboard/updateMoodboardNodeCollection', formData)
-    notify.showNotifySnackbar({ messageText: t('QQ0064') })
-    store.dispatch('helper/reloadInnerApp')
-  } else {
-    await store.dispatch('moodboard/createMoodboardNodeCollection', formData)
-    notify.showNotifySnackbar({ messageText: t('QQ0063') })
+  if (!collectionName.value) {
+    return
   }
-  store.dispatch('helper/clearModalPipeline')
-}
 
-if (props.mode === CREATE_EDIT.EDIT) {
-  const { nodeId, name, description, trendBoardUrl, trendBoardFileName } =
-    await store.dispatch('moodboard/getMoodboardNodeCollectionForModal', {
+  store.dispatch('helper/pushModalLoading')
+
+  const trendBoard = refInputTrendBoardUpload.value
+    ? await refInputTrendBoardUpload.value.getTrendBoardS3Object()
+    : null
+
+  if (props.mode === CREATE_EDIT.EDIT) {
+    await ogBaseMoodboardApi('updateMoodboardOfferNodeCollection', {
       nodeId: props.nodeId,
+      name: collectionName.value,
+      description: collectionDescription.value,
+      newTrendBoard: trendBoard,
+      isDeleteTrendBoard:
+        refInputTrendBoardUpload.value?.isDeleteTrendBoard ?? false,
     })
-  Object.assign(formData, {
-    nodeId,
-    name,
-    description,
-    trendBoardFile: trendBoardUrl,
-  })
-  uploadTrendBoardName.value = trendBoardFileName
+
+    notify.showNotifySnackbar({ messageText: t('FF0035') })
+  } else {
+    await ogBaseMoodboardApi('createMoodboardOfferNodeCollection', {
+      nodeId: props.nodeId,
+      name: collectionName.value,
+      description: collectionDescription.value,
+      trendBoard,
+    })
+    notify.showNotifySnackbar({ messageText: t('FF0027') })
+  }
+
+  store.dispatch('helper/reloadInnerApp')
+  store.dispatch('helper/clearModalPipeline')
 }
 </script>

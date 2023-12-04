@@ -15,6 +15,7 @@ modal-behavior(:header="$t('RR0155')")
         div(class="grid gap-y-1")
           div(
             v-for="shareTarget in shareList"
+            :key="shareTarget.shareId"
             class="group flex items-center h-12 pl-2 pr-4 gap-x-4 hover:bg-grey-100"
           )
             img(
@@ -30,26 +31,39 @@ modal-behavior(:header="$t('RR0155')")
             ) {{ $t('UU0016') }}
 </template>
 
-<script setup>
-import { computed } from 'vue'
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { NOTIFY_TYPE } from '@/utils/constants'
+import type { MoodboardPropertiesDemander } from '@frontier/platform-web-sdk'
+import { useMoodboardStore } from '@/stores/moodboard'
+import type { PropsModalMoodboardShare } from './ModalMoodboardShare.vue'
+
+export interface PropsModalMoodboardShareList {
+  moodboardId: number
+  shareList: MoodboardPropertiesDemander['shareList']
+}
+
+const props = defineProps<PropsModalMoodboardShareList>()
 
 const store = useStore()
 const notify = useNotifyStore()
 const { t } = useI18n()
-
-const shareList = computed(() => store.getters['moodboard/moodboardShareList'])
+const { ogBaseMoodboardApi } = useMoodboardStore()
 
 const openModalMoodboardShare = () => {
   store.dispatch('helper/pushModalBehavior', {
     component: 'modal-moodboard-share',
+    properties: {
+      moodboardId: props.moodboardId,
+    } as PropsModalMoodboardShare,
   })
 }
 
-const removeMoodboardShare = (shareTarget) => {
+const removeMoodboardShare = (
+  shareTarget: MoodboardPropertiesDemander['shareList'][0]
+) => {
   store.dispatch('helper/pushModalConfirm', {
     type: NOTIFY_TYPE.WARNING,
     header: t('QQ0025', { orgName: shareTarget.name }),
@@ -57,7 +71,7 @@ const removeMoodboardShare = (shareTarget) => {
     primaryBtnText: t('UU0097'),
     primaryBtnHandler: async () => {
       store.dispatch('helper/pushModalLoading')
-      await store.dispatch('moodboard/removeMoodboardShare', {
+      await ogBaseMoodboardApi('removeMoodboardShare', {
         shareId: shareTarget.shareId,
       })
       store.dispatch('helper/closeModalLoading')

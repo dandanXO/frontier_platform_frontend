@@ -20,11 +20,11 @@ div(class="flex flex-col items-center")
           class="w-134 mr-2"
           minHeight="min-h-20.5"
         )
-        f-button(size="sm" :disabled="text === ''" @click="handleSubmit") {{ $t('UU0049') }}
+        f-button(size="sm" :disabled="text === null" @click="handleSubmit") {{ $t('UU0049') }}
   div(class="w-full border-t border-grey-100")
   f-scrollbar-container(class="h-90 mt-11.5 w-144 -mx-5 px-5")
     div(v-if="moodboardCommentList.length > 0" class="flex flex-col gap-7.5")
-      div(v-for="comment in moodboardCommentList")
+      div(v-for="comment in moodboardCommentList" :key="comment.comment")
         div(class="flex items-center mb-3")
           img(:src="comment.logo" class="w-8 h-8 rounded-full mr-3")
           div
@@ -42,34 +42,38 @@ div(class="flex flex-col items-center")
         br
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useMoodboardStore } from '@/stores/moodboard'
+import type { Organization } from '@frontier/platform-web-sdk'
 
-const AUTO_TEXT = {
-  CUSTOM: 1,
-  SAMPLE_CARD_INQUIRY: 2,
-  SAMPLE_INQUIRY: 3,
-  PRICE_INQUIRY: 4,
+const props = defineProps<{
+  moodboardId: number
+  offerId: number
+}>()
+
+enum AUTO_TEXT {
+  CUSTOM = 1,
+  SAMPLE_CARD_INQUIRY = 2,
+  SAMPLE_INQUIRY = 3,
+  PRICE_INQUIRY = 4,
 }
-
-const props = defineProps({
-  moodboardId: {
-    type: Number,
-    required: true,
-  },
-  offerId: {
-    type: Number,
-    required: true,
-  },
-})
 
 const { t } = useI18n()
 const store = useStore()
+const { ogBaseMoodboardApi } = useMoodboardStore()
 
-const text = ref('')
-const autoText = ref(null)
+const { data } = await ogBaseMoodboardApi('getMoodboardComment', {
+  moodboardId: props.moodboardId,
+  offerId: props.offerId,
+})
+
+const moodboardCommentList = ref(data.result.moodboardCommentList)
+
+const text = ref<string | null>(null)
+const autoText = ref<AUTO_TEXT | null>(null)
 
 const autoTextMenuTree = computed(() => ({
   blockList: [
@@ -96,9 +100,8 @@ const autoTextMenuTree = computed(() => ({
   ],
 }))
 
-const org = computed(() => store.getters['organization/organization'])
-const moodboardCommentList = computed(
-  () => store.getters['moodboard/moodboardCommentList']
+const org = computed<Organization>(
+  () => store.getters['organization/organization']
 )
 
 const handleSelect = () => {
@@ -110,17 +113,23 @@ const handleSelect = () => {
     case AUTO_TEXT.PRICE_INQUIRY:
       return (text.value = t('QQ0080'))
     default:
-      text.value = ''
+      text.value = null
   }
 }
 
 const handleSubmit = async () => {
-  await store.dispatch('moodboard/createMoodboardComment', {
+  if (!text.value) {
+    return
+  }
+
+  const { data } = await ogBaseMoodboardApi('createMoodboardComment', {
     moodboardId: props.moodboardId,
     offerId: props.offerId,
     comment: text.value,
   })
+  store.dispatch('helper/reloadInnerApp')
   autoText.value = null
-  text.value = ''
+  text.value = null
+  moodboardCommentList.value = data.result.moodboardCommentList
 }
 </script>

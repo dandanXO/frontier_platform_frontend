@@ -101,7 +101,7 @@ import {
   type WorkspaceFilter,
 } from '@frontier/platform-web-sdk'
 import useCurrentUnit from '@/composables/useCurrentUnit'
-import type { PropsModalCollectionDetail } from '@/components/common/ModalCollectionDetail.vue'
+import type { PropsModalCollectionDetail } from '@/components/common/collection/ModalCollectionDetail.vue'
 import type { PropsModalAssetsList } from '@/components/assets/ModalAssetsList.vue'
 import type { PropsModalItemNoList } from '@/components/common/material/ModalItemNoList.vue'
 import { useAssetsStore } from '@/stores/assets'

@@ -323,28 +323,18 @@ const routes = [
             component: () => import('@/views/innerApp/moodboard/Moodboard.vue'),
           },
           {
-            path: 'moodboard/:moodboardId',
+            path: 'moodboard/:moodboardId/:tab(offer|members|picked|comment)',
             name: 'MoodboardDetail',
-            props: (route) => {
-              const moodboardId = Number.parseInt(route.params.moodboardId, 10)
-              if (Number.isNaN(moodboardId)) {
-                return 0
-              }
-              return { moodboardId }
-            },
+            props: true,
             component: () =>
               import('@/views/innerApp/moodboard/MoodboardDetail.vue'),
           },
           {
             path: 'moodboard/:moodboardId/picked-list',
             name: 'MoodboardPickedList',
+            props: true,
             component: () =>
               import('@/views/innerApp/moodboard/MoodboardPickedList.vue'),
-            beforeEnter: async (to, from, next) => {
-              const moodboardId = Number.parseInt(to.params.moodboardId, 10)
-              await store.dispatch('moodboard/getMoodboard', { moodboardId })
-              next()
-            },
           },
           {
             path: 'thread-board',

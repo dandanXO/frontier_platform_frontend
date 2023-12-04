@@ -236,11 +236,19 @@ export const MOODBOARD_TYPE = {
   PROVIDER: 2,
 }
 
-export const MOODBOARD_TAB = {
-  OFFER: 'offer',
-  PICKED: 'picked',
-  COMMENT: 'comment',
+export enum PROGRESS_TAB {
+  MATERIAL = 'material',
+  U3M = 'u3m',
+  EXCEL = 'excel',
 }
+
+export enum MOODBOARD_TAB {
+  OFFER = 'offer',
+  PICKED = 'picked',
+  COMMENT = 'comment',
+}
+
+export const MOODBOARD_OFFER_ID_ALL = -1
 
 export const MADE2FLOW_PLAN_TYPE = {
   STANDARD: 1,

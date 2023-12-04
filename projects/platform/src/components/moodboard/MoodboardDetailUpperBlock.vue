@@ -3,7 +3,7 @@ div(class="w-227 mx-auto pb-13.5")
   div(class="mb-7")
     div(class="flex items-center mb-4")
       p(class="text-h4 text-grey-900 font-bold mr-6") {{ moodboard.moodboardName }}
-      template(v-if="moodboard.moodboardType === MOODBOARD_TYPE.DEMANDER")
+      template(v-if="moodboard.moodboardType === MoodboardType.DEMANDER")
         f-tooltip-standard(class="mr-2" :tooltipMessage="$t('RR0054')")
           template(#slot:tooltip-trigger)
             div(
@@ -45,34 +45,39 @@ div(class="w-227 mx-auto pb-13.5")
   div(class="flex flex-col gap-y-4")
     p(class="text-caption text-grey-900 font-bold") {{ $t('RR0249') }}
     trend-board-pdf-viewer(
-      :key="moodboard.trendBoardUrl"
-      :src="moodboard.trendBoardUrl"
-      :name="moodboard.trendBoardFileName"
+      :key="moodboard.trendBoard?.thumbnailUrl"
+      :src="moodboard.trendBoard?.originalUrl"
+      :name="moodboard.trendBoard?.displayName"
     )
 </template>
 
-<script setup>
-import { computed } from 'vue'
+<script setup lang="ts">
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import BlockAttachment from '@/components/moodboard/BlockAttachment.vue'
-import { MOODBOARD_TYPE, CREATE_EDIT, NOTIFY_TYPE } from '@/utils/constants'
+import { NOTIFY_TYPE } from '@/utils/constants'
 import { toStandardFormat } from '@frontier/lib'
 import TrendBoardPdfViewer from './TrendBoardPdfViewer.vue'
+import { type Moodboard, MoodboardType } from '@frontier/platform-web-sdk'
+import { useMoodboardStore } from '@/stores/moodboard'
+
+const props = defineProps<{
+  moodboard: Moodboard
+}>()
 
 const { t } = useI18n()
 const store = useStore()
 const notify = useNotifyStore()
 const { goToMoodboard } = useNavigation()
-const moodboard = computed(() => store.getters['moodboard/moodboard'])
+const { ogBaseMoodboardApi } = useMoodboardStore()
 
 const openCreateOrEditMoodboard = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-create-or-edit-moodboard',
     properties: {
-      mode: CREATE_EDIT.EDIT,
+      moodboard: props.moodboard,
     },
   })
 }
@@ -84,8 +89,8 @@ const handleDelete = () => {
     contentText: t('QQ0076'),
     primaryBtnText: t('UU0105'),
     primaryBtnHandler: () => {
-      store.dispatch('moodboard/deleteMoodboard', {
-        moodboardId: moodboard.value.moodboardId,
+      ogBaseMoodboardApi('deleteMoodboard', {
+        moodboardId: props.moodboard.moodboardId,
       })
       goToMoodboard()
       notify.showNotifySnackbar({ messageText: t('QQ0077') })

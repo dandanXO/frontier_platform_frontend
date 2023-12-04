@@ -42,7 +42,6 @@ import { ref, computed } from 'vue'
 import type { MaterialCustomU3m, MaterialU3m } from '@frontier/platform-web-sdk'
 import MaterialU3mStatusBlock from '@/components/common/material/u3m/MaterialU3mStatusBlock.vue'
 import MaterialU3mDownloadButton from '@/components/common/material/u3m/MaterialU3mDownloadButton.vue'
-import type { Material } from '@frontier/platform-web-sdk'
 import { MaterialU3mStatus } from '@frontier/platform-web-sdk'
 import { U3M_PROVIDER, U3M_DOWNLOAD_PROP } from '@/utils/constants'
 import { downloadDataURLFile } from '@frontier/lib'
@@ -51,13 +50,27 @@ import { useStore } from 'vuex'
 import { FTabs } from '@frontier/ui-component'
 import JSZip from 'jszip'
 
+interface MaterialU3mItem {
+  materialId: number
+  itemNo: string
+  u3m: MaterialU3m
+  customU3m: MaterialCustomU3m
+}
+
+interface MaterialU3mDownloadItem {
+  materialId: number
+  itemNo: string
+  u3m: MaterialU3m | MaterialCustomU3m
+}
+
+export interface PropsModalU3mDownload {
+  materialU3mList: MaterialU3mItem[]
+}
+
+const props = defineProps<PropsModalU3mDownload>()
+
 const logSender = useLogSender()
 const store = useStore()
-
-const props = defineProps<{
-  materialList: Material[]
-}>()
-
 const refTab = ref<InstanceType<typeof FTabs>>()
 const tabList = ref([
   {
@@ -77,10 +90,10 @@ const defaultTab = computed(() => {
    * 2. if there is no u3m created by Frontier, check if there is at least one custom u3m uploaded by user
    * 3. if there is no custom u3m, the default tab is Frontier
    */
-  const hasAtLeastOneU3m = props.materialList.some(
+  const hasAtLeastOneU3m = props.materialU3mList.some(
     (material) => material.u3m?.status === MaterialU3mStatus.COMPLETED
   )
-  const hasAtLeastOneCustomU3m = props.materialList.some(
+  const hasAtLeastOneCustomU3m = props.materialU3mList.some(
     (material) => material.customU3m?.status === MaterialU3mStatus.COMPLETED
   )
 
@@ -98,14 +111,8 @@ const currentTab = computed<U3M_PROVIDER>(
   () => refTab.value?.currentTab || tabList.value[0].id
 )
 
-interface MaterialU3mDownloadItem {
-  materialId: number
-  itemNo: string
-  u3m: MaterialU3m | MaterialCustomU3m
-}
-
 const materialU3mDownloadItemList = computed<MaterialU3mDownloadItem[]>(() =>
-  props.materialList.map((material) => {
+  props.materialU3mList.map((material) => {
     const u3m =
       currentTab.value === U3M_PROVIDER.FRONTIER
         ? material.u3m

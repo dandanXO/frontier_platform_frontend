@@ -154,7 +154,7 @@ import {
   type WorkspaceNodeCollection,
   type InnerExternalFilter,
 } from '@frontier/platform-web-sdk'
-import type { PropsModalCollectionDetail } from '@/components/common/ModalCollectionDetail.vue'
+import type { PropsModalCollectionDetail } from '@/components/common/collection/ModalCollectionDetail.vue'
 
 const props = defineProps<{
   showroomId: string

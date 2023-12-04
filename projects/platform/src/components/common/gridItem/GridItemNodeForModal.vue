@@ -44,7 +44,7 @@ grid-item-wrapper(
     template(v-if="mainMaterial")
       img(
         v-defaultImg
-        :src="mainMaterial.coverImage.thumbnailUrl"
+        :src="mainMaterial.coverImage?.thumbnailUrl"
         class="w-full h-full rounded-md overflow-hidden"
       )
   template(#title-right-icon)

@@ -81,7 +81,7 @@ export default {
       import('@/components/common/cropper/ModalCropImage.vue')
     ),
     ModalCollectionDetail: defineAsyncComponent(() =>
-      import('@/components/common/ModalCollectionDetail.vue')
+      import('@/components/common/collection/ModalCollectionDetail.vue')
     ),
     ModalShareMessage: defineAsyncComponent(() =>
       import('@/components/common/ModalShareMessage.vue')

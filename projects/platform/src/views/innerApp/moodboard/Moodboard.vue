@@ -5,12 +5,13 @@ div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
     p(class="text-body2 text-grey-600") {{ $t('QQ0002') }}
   f-tabs(
     :tabList="tabList"
-    :initValue="currentTab"
-    @switch="toggleTab($event.path)"
+    :initValue="currentMoodboardType"
+    @switch="toggleTab($event.moodboardType)"
+    keyField="moodboardType"
   )
-  div(class="flex-grow overflow-y-scroll")
+  div(class="flex-grow overflow-y-auto")
     div(
-      v-if="currentTab === MOODBOARD_TYPE.DEMANDER"
+      v-if="currentMoodboardType === MoodboardType.DEMANDER"
       class="h-12 flex items-center justify-center text-grey-900 mt-4 rounded-md border border-dashed border-grey-250 cursor-pointer"
       @click="openCreateOrEditMoodboard"
     )
@@ -19,14 +20,17 @@ div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
     div(v-if="moodboardList.length > 0" class="grid gap-3 mt-4")
       div(
         v-for="moodboard in moodboardList"
-        class="flex h-37.5 rounded border border-grey-250 cursor-pointer hover:bg-grey-50"
-        @click="goToMoodboardDetail(moodboard.moodboardId)"
+        :key="moodboard.moodboardId"
+        class="flex h-37.5 rounded overflow-hidden border border-grey-250 cursor-pointer hover:bg-grey-50"
+        @click="goToMoodboardDetail({}, moodboard.moodboardId)"
       )
-        div(
-          class="w-53 bg-cover bg-center rounded-l bg-grey-250 flex flex-col items-center justify-center"
-          :style="{ backgroundImage: `url(${moodboard.trendBoardCoverImg})` }"
-        )
-          template(v-if="!moodboard.trendBoardCoverImg")
+        div(class="w-53 bg-grey-250 flex flex-col items-center justify-center")
+          img(
+            v-if="moodboard.trendBoard"
+            :src="moodboard.trendBoard.thumbnailUrl"
+            class="w-full h-full object-cover object-center"
+          )
+          template(v-else)
             f-svg-icon(iconName="file" size="50" class="text-grey-50 mb-4")
             p(class="text-body2 leading-1.6 text-grey-50") {{ $t('RR0247') }}
         div(class="px-5 pt-6 pb-5 flex flex-col justify-between")
@@ -42,7 +46,7 @@ div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
               class="text-caption text-primary-400 leading-1.6 font-bold"
             ) {{ $t('QQ0005') }}
         f-popper(
-          v-if="currentTab === MOODBOARD_TYPE.DEMANDER"
+          v-if="currentMoodboardType === MoodboardType.DEMANDER"
           placement="bottom-end"
           class="my-auto mr-7 ml-auto"
           @click.stop
@@ -65,65 +69,66 @@ div(class="px-8 pt-13 pb-4.5 h-full flex flex-col")
     p(v-else class="mt-29 text-body1 text-grey-900 text-center") {{ $t('QQ0071') }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
-import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'
-import { MOODBOARD_TYPE, CREATE_EDIT, NOTIFY_TYPE } from '@/utils/constants'
+import { NOTIFY_TYPE } from '@/utils/constants'
 import { toStandardFormat } from '@frontier/lib'
+import { useMoodboardStore } from '@/stores/moodboard'
+import { MoodboardType } from '@frontier/platform-web-sdk'
 
 const { t } = useI18n()
 const store = useStore()
 const notify = useNotifyStore()
-const route = useRoute()
+const { ogBaseMoodboardApi } = useMoodboardStore()
 const { goToMoodboardDetail } = useNavigation()
+
+const { data } = await ogBaseMoodboardApi('getMoodboardList')
 
 const tabList = [
   {
     name: t('QQ0004'),
-    path: MOODBOARD_TYPE.DEMANDER,
+    moodboardType: MoodboardType.DEMANDER,
   },
   {
     name: t('RR0010'),
-    path: MOODBOARD_TYPE.PROVIDER,
+    moodboardType: MoodboardType.PROVIDER,
   },
 ]
 
-const currentTab = ref(Number(route.query.tab) || tabList[0].path)
+const currentMoodboardType = ref(tabList[0].moodboardType)
 const moodboardList = computed(() =>
-  store.getters['moodboard/moodboardList'](Number(currentTab.value))
+  data.result.moodboardList.filter(
+    (moodboard) => moodboard.moodboardType === currentMoodboardType.value
+  )
 )
 
-const toggleTab = (tab) => {
-  currentTab.value = tab
+const toggleTab = (moodboardType: MoodboardType) => {
+  currentMoodboardType.value = moodboardType
 }
 
 const openCreateOrEditMoodboard = () => {
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-create-or-edit-moodboard',
-    properties: {
-      mode: CREATE_EDIT.CREATE,
-    },
   })
 }
 
-const handleDelete = (moodboardId) => {
+const handleDelete = (moodboardId: number) => {
   store.dispatch('helper/openModalConfirm', {
     type: NOTIFY_TYPE.WARNING,
     header: t('QQ0075'),
     contentText: t('QQ0076'),
     primaryBtnText: t('UU0105'),
-    primaryBtnHandler: () => {
-      store.dispatch('moodboard/deleteMoodboard', { moodboardId })
+    primaryBtnHandler: async () => {
+      await ogBaseMoodboardApi('deleteMoodboard', { moodboardId })
+      store.dispatch('helper/reloadInnerApp')
       notify.showNotifySnackbar({ messageText: t('QQ0077') })
     },
     textBtnText: t('UU0002'),
   })
 }
-
-await store.dispatch('moodboard/getMoodboardList')
 </script>

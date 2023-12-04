@@ -116,7 +116,7 @@ import {
   NodeType,
 } from '@frontier/platform-web-sdk'
 import useCurrentUnit from '@/composables/useCurrentUnit'
-import type { PropsModalCollectionDetail } from '@/components/common/ModalCollectionDetail.vue'
+import type { PropsModalCollectionDetail } from '@/components/common/collection/ModalCollectionDetail.vue'
 
 const props = defineProps<{
   sharingId?: string

@@ -1,43 +1,54 @@
 <template lang="pug">
 modal-behavior(
-  :header="$t('QQ0085', { materialNo: nodeMaterial.properties.materialNo })"
+  :header="$t('QQ0085', { materialNo: material.itemNo })"
   :secondaryBtnText="$t('UU0026')"
   @click:secondary="$store.dispatch('helper/closeModalBehavior')"
 )
-  div(class="box-content w-203 px-21")
-    div(class="pb-4")
-      div(class="flex items-center pb-2")
-        p(class="text-body2 text-grey-900 font-bold line-clamp-1 !break-all pr-4") {{ `${nodeMaterial.properties.materialNo} ${nodeMaterial.properties.description}` }}
-        btn-pick-tooltip(
-          :isPicked="nodeMaterial.isPicked"
-          @togglePick="moodboardType === MOODBOARD_TYPE.DEMANDER && pickHandler()"
-        )
-      p(class="text-caption text-grey-600")
-        span {{ $t('RR0066') }}:
-        span {{ toStandardFormat(nodeMaterial.properties.updateDate) }}
-    material-detail-external(
-      :material="nodeMaterial.properties"
-      isCanDownloadU3M
+  div(class="w-[min(992px,calc(100vw_-_80px_-_40px))] flex justify-between px-10")
+    material-detail-external-image(
+      :material="material"
+      class="w-[54%] h-fit sticky top-5"
     )
+    div(class="w-[43%] mb-24")
+      div(class="mb-6")
+        //- Org Logo & Name
+        div(class="flex items-center gap-x-2 mb-2")
+          f-avatar(type="org" size="lg" :imageUrl="nodeMeta.unitLogo")
+          p(class="text-body2 text-grey-900") {{ nodeMeta.unitName }}
+        //- Item No & Pin
+        div(class="flex items-center justify-between")
+          h4(class="text-h4 text-grey-900 font-bold") {{ material.itemNo }}
+          btn-pick-tooltip(
+            :isPicked="moodboardInfo.isPicked"
+            @togglePick="moodboardType === MoodboardType.DEMANDER && pickHandler()"
+          )
+      //- Material Info
+      material-detail-info(
+        :material="material"
+        :publishedDate="nodeMeta.publicDate ?? undefined"
+        :isCanDownloadU3M="nodeMeta.isCanDownloadU3M"
+      )
 </template>
 
-<script setup>
-import MaterialDetailExternal from '@/components/common/material/detail/MaterialDetailExternal.vue'
+<script setup lang="ts">
+import { ref, toRefs } from 'vue'
 import BtnPickTooltip from '@/components/moodboard/BtnPickTooltip.vue'
-import { MOODBOARD_TYPE } from '@/utils/constants'
-import { toStandardFormat } from '@frontier/lib'
+import {
+  MoodboardType,
+  type MoodboardNodeChild,
+  type Material,
+} from '@frontier/platform-web-sdk'
+import MaterialDetailExternalImage from '@/components/common/material/detail/external/MaterialDetailExternalImage.vue'
+import MaterialDetailInfo from '@/components/common/material/detail/external/MaterialDetailInfo.vue'
 
-defineProps({
-  nodeMaterial: {
-    type: Object,
-    required: true,
-  },
-  moodboardType: {
-    type: Number,
-    default: MOODBOARD_TYPE.DEMANDER,
-  },
-  pickHandler: {
-    type: Function,
-  },
-})
+export interface PropsModalMoodboardMaterialDetail {
+  node: MoodboardNodeChild
+  moodboardType: MoodboardType
+  pickHandler: () => void
+}
+
+const props = defineProps<PropsModalMoodboardMaterialDetail>()
+
+const { nodeMeta, moodboardInfo } = toRefs(props.node)
+const material = ref(props.node.nodeProperty as Material)
 </script>

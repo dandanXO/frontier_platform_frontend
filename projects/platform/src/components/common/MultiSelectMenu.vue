@@ -38,6 +38,7 @@ import type {
   Material,
   NodeChild,
   ShareNodeChild,
+  MoodboardNodeChild,
 } from '@frontier/platform-web-sdk'
 
 const props = defineProps<{
@@ -45,6 +46,7 @@ const props = defineProps<{
     | FunctionOption<Material>[]
     | FunctionOption<NodeChild>[]
     | FunctionOption<ShareNodeChild>[]
+    | FunctionOption<MoodboardNodeChild>[]
   selectedList: Array<any>
 }>()
 

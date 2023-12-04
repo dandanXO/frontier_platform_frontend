@@ -149,6 +149,7 @@ import { toStandardFormat } from '@frontier/lib'
 import { U3M_PROVIDER } from '@/utils/constants'
 import { useProgressStore } from '@/stores/progress'
 import { useAssetsStore } from '@/stores/assets'
+import type { PropsModalU3mDownload } from '@/components/common/material/u3m/ModalU3mDownload.vue'
 
 const ERROR_MSG = {
   SOURCE_DELETED: 1,
@@ -297,10 +298,18 @@ const openModal3dViewer = async (item: ProgressU3mItem) => {
 }
 
 const openModalU3mDownload = async (item: ProgressU3mItem) => {
-  const material = await getMaterial(item.materialId)
   store.dispatch('helper/openModalBehavior', {
     component: 'modal-u3m-download',
-    properties: { materialList: [material] },
+    properties: {
+      materialU3mList: [
+        {
+          materialId: item.materialId,
+          itemNo: item.itemNo,
+          u3m: item.u3m,
+          customU3m: item.customU3m,
+        },
+      ],
+    } as PropsModalU3mDownload,
   })
 }
 

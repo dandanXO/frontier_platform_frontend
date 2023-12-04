@@ -46,10 +46,11 @@ search-table(
         v-show="displayMode === ASSET_LIST_DISPLAY_MODE.GRID"
         class="grid grid-cols-3 md:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-5 mx-7.5"
       )
-        grid-item(
+        grid-item-material(
           v-for="material in materialList"
           :key="material.materialId"
           :material="material"
+          :selectValue="material"
           v-model:selectedValue="selectedMaterialList"
           :optionList="optionList"
           @click.stop="goToAssetMaterialDetail({}, material.materialId)"
@@ -71,7 +72,7 @@ import SearchTable, {
   type SortOption,
 } from '@/components/common/SearchTable.vue'
 import RowItem from '@/components/assets/RowItem.vue'
-import GridItem from '@/components/assets/GridItem.vue'
+import GridItemMaterial from '@/components/common/gridItem/GridItemMaterial.vue'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import useNavigation from '@/composables/useNavigation'

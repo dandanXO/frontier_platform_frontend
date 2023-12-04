@@ -13,7 +13,7 @@ grid-item-wrapper(
     div(class="w-full h-full rounded-md border-grey-250 overflow-hidden bg-cover")
       img(
         v-defaultImg
-        :src="mainMaterial.coverImage.thumbnailUrl"
+        :src="mainMaterial.coverImage?.thumbnailUrl"
         class="w-full h-full"
       )
   template(#hover-content)
@@ -39,39 +39,15 @@ grid-item-wrapper(
     slot(name="title-right-icon")
   template(#caption)
     slot(name="caption")
-grid-item-wrapper(
+grid-item-collection(
   v-else-if="nodeType === NodeType.COLLECTION && collection"
+  :collection="collection"
   v-model:selectedValue="innerSelectedValue"
   :isSelectable="isSelectable"
   :selectValue="node"
   :optionList="optionList"
   @click="clickNodeHandler"
 )
-  template(#title) {{ collection.name }}
-  template(#content)
-    div(
-      class="grid grid-rows-2 grid-cols-2 grid-flow-col h-full rounded-md overflow-hidden"
-    )
-      div(class="row-span-2 bg-grey-150")
-        img(
-          v-if="collection.coverImgList[0]"
-          :src="collection.coverImgList[0]"
-          class="w-full h-full object-cover"
-        )
-      div(class="bg-grey-100")
-        img(
-          v-if="collection.coverImgList[1]"
-          :src="collection.coverImgList[1]"
-          class="w-full h-full"
-        )
-      div(class="bg-grey-50")
-        img(
-          v-if="collection.coverImgList[2]"
-          :src="collection.coverImgList[2]"
-          class="w-full h-full"
-        )
-  template(#hover-content)
-    p(class="text-caption2 md:text-body1/1.6 font-bold text-grey-0") {{ $t('RR0068', { number: collection.itemCounts }) }}
   template(#corner-top-right)
     slot(name="corner-top-right")
   template(#corner-bottom-left)
@@ -84,6 +60,7 @@ grid-item-wrapper(
 
 <script setup lang="ts">
 import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
+import GridItemCollection from '@/components/common/gridItem/GridItemCollection.vue'
 import { computed } from 'vue'
 import useStickerLocationList from '@/composables/useStickerLocationList'
 import { useStore } from 'vuex'

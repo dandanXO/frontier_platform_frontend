@@ -1,7 +1,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
-import { MOODBOARD_TAB, SIGNUP_SOURCE } from '@/utils/constants'
+import { MOODBOARD_TAB, SIGNUP_SOURCE, PROGRESS_TAB } from '@/utils/constants'
 import { OgType, type Organization } from '@frontier/platform-web-sdk'
 
 export interface NavigationReq {
@@ -101,7 +101,7 @@ export default function useNavigation() {
 
   const goToProgress = async (
     navReq: NavigationReq = {},
-    tabName = 'material'
+    tabName: PROGRESS_TAB = PROGRESS_TAB.MATERIAL
   ) => {
     await router.push(parsePath(`${prefixPath}/progress/${tabName}`, navReq))
   }
@@ -258,17 +258,29 @@ export default function useNavigation() {
     router.push(parsePath(`${prefixPath}/moodboard`, navReq))
   }
 
-  // const goToMoodboardDetail = (moodboardId) => {
-  //   router.push(
-  //     parsePath(
-  //       `${prefixPath}/moodboard/${moodboardId}?tab=${MOODBOARD_TAB.OFFER}`
-  //     )
-  //   )
-  // }
+  const goToMoodboardDetail = (
+    navReq: NavigationReq = {},
+    moodboardId: number,
+    tab: MOODBOARD_TAB = MOODBOARD_TAB.OFFER,
+    query?: {
+      offerId: number
+      nodeId: number | null
+    }
+  ) => {
+    router.push({
+      path: parsePath(`${prefixPath}/moodboard/${moodboardId}/${tab}`, navReq),
+      query,
+    })
+  }
 
-  // const goToMoodboardPickedList = (moodboardId) => {
-  //   router.push(parsePath(`${prefixPath}/moodboard/${moodboardId}/picked-list`))
-  // }
+  const goToMoodboardPickedList = (
+    navReq: NavigationReq = {},
+    moodboardId: number
+  ) => {
+    router.push(
+      parsePath(`${prefixPath}/moodboard/${moodboardId}/picked-list`, navReq)
+    )
+  }
 
   const goToThreadBoard = async (navReq: NavigationReq = {}) => {
     await router.push(parsePath(`${prefixPath}/thread-board`, navReq))
@@ -305,8 +317,8 @@ export default function useNavigation() {
     goToEmbed,
     goToEmbedMaterialDetail,
     goToMoodboard,
-    // goToMoodboardDetail,
-    // goToMoodboardPickedList,
+    goToMoodboardDetail,
+    goToMoodboardPickedList,
     goToThreadBoard,
     prefixPath,
     isInInnerApp,

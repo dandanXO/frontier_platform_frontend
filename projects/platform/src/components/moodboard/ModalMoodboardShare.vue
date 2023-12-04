@@ -8,28 +8,10 @@ modal-behavior(
   @click:secondary="$store.dispatch('helper/closeModalBehavior')"
 )
   div(class="w-177.5 grid grid-cols-2 gap-x-7.5")
-    div
-      f-input-text(
-        v-model:textValue="target"
-        :label="$t('RR0156')"
-        :placeholder="$t('RR0245')"
-        :hintError="errorMsg"
-        :button="{ type: 'primary', icon: 'add' }"
-        @click:button="addToTargetList"
-        class="mb-5"
-      )
-      f-scrollbar-container(class="h-32.5")
-        div(class="grid gap-y-5")
-          div(v-for="(item, index) in targetList" class="flex items-center gap-x-3")
-            img(v-if="item.logo" :src="item.logo" class="w-9 h-9 rounded-full")
-            div(v-else class="w-9 h-9 rounded-full border-grey-250 border border-dashed")
-            div(class="text-body2 flex-grow")
-              p(class="text-grey-900 line-clamp-1") {{ item.name }}
-              p(v-if="item.number" class="text-grey-250") {{ item.number }}
-            p(
-              class="text-body2 text-grey-250 pr-2.5 cursor-pointer"
-              @click="removeTarget(index)"
-            ) {{ $t('FF0060') }}
+    input-share-assigned-list(
+      v-model:inputShareList="targetList"
+      :callbackGetTarget="getTarget"
+    )
     f-input-textarea(
       v-model:textValue="message"
       :label="$t('RR0146')"
@@ -39,69 +21,41 @@ modal-behavior(
     )
 </template>
 
-<script setup>
-import { ref, watch } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
-import { inputValidator } from '@frontier/lib'
-import { ShareToType } from '@frontier/platform-web-sdk'
+import type { ShareTarget } from '@frontier/platform-web-sdk'
+import InputShareAssignedList from '@/components/common/InputShareAssignedList.vue'
+import { useMoodboardStore } from '@/stores/moodboard'
+
+export interface PropsModalMoodboardShare {
+  moodboardId: number
+}
+
+const props = defineProps<PropsModalMoodboardShare>()
 
 const { t } = useI18n()
 const store = useStore()
+const { ogBaseMoodboardApi } = useMoodboardStore()
 const notify = useNotifyStore()
-const target = ref('')
 const message = ref('')
-const errorMsg = ref('')
-const targetList = ref([])
+const targetList = ref<ShareTarget[]>([])
 
-const addToTargetList = async () => {
-  const frozenTargetValue = target.value.trim()
-  if (!inputValidator.required(frozenTargetValue)) {
-    return (errorMsg.value = t('WW0002'))
-  }
-  const existedTarget = targetList.value.find(
-    ({ name, number }) =>
-      name === frozenTargetValue || number === frozenTargetValue
-  )
-  if (existedTarget) {
-    const { ORG, GROUP, USER } = ShareToType
-    switch (existedTarget.type) {
-      case ORG:
-        return (errorMsg.value = t('WW0058'))
-      case GROUP:
-        return (errorMsg.value = t('WW0059'))
-      case USER:
-        return (errorMsg.value = t('WW0057'))
-    }
-  }
-  try {
-    const temp = await store.dispatch('moodboard/getMoodboardShareTarget', {
-      target: frozenTargetValue,
-    })
-    targetList.value.push(temp)
-    target.value = ''
-  } catch (error) {
-    const { code } = error
+const getTarget = async (targetNumber: string) => {
+  const { data } = await ogBaseMoodboardApi('getMoodboardShareTarget', {
+    moodboardId: props.moodboardId,
+    targetNumber,
+  })
 
-    switch (code) {
-      case 'ERR0022':
-        return (errorMsg.value = t('WW0055'))
-      case 'ERR0023':
-        return (errorMsg.value = t('WW0057'))
-      case 'ERR0024':
-        return (errorMsg.value = t('WW0058'))
-      case 'ERR0025':
-        return (errorMsg.value = t('WW0059'))
-      default:
-        throw error
-    }
-  }
+  return data.result.target
 }
 
 const assignedShare = async () => {
   store.dispatch('helper/pushModalLoading')
-  await store.dispatch('moodboard/shareMoodboard', {
+  await ogBaseMoodboardApi('addMoodboardShare', {
+    moodboardId: props.moodboardId,
     targetList: targetList.value,
     message: message.value,
   })
@@ -109,11 +63,4 @@ const assignedShare = async () => {
   store.dispatch('helper/closeModalBehavior')
   notify.showNotifySnackbar({ messageText: t('RR0157') })
 }
-
-const removeTarget = (index) => targetList.value.splice(index, 1)
-
-watch(
-  () => target.value,
-  () => (errorMsg.value = '')
-)
 </script>

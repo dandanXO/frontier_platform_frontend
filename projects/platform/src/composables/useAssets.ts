@@ -2,7 +2,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import useNavigation from '@/composables/useNavigation'
-import { U3M_STATUS, NOTIFY_TYPE } from '@/utils/constants'
+import { U3M_STATUS, NOTIFY_TYPE, PROGRESS_TAB } from '@/utils/constants'
 import type { Material } from '@frontier/platform-web-sdk'
 import type { FunctionOption } from '@/types'
 import usePrint from '@/composables/material/usePrint'
@@ -13,6 +13,7 @@ import { useAssetsStore } from '@/stores/assets'
 import type { PropsModalItemNoList } from '@/components/common/material/ModalItemNoList.vue'
 import type { PropsModalHowToScan } from '@/components/assets/ModalHowToScan.vue'
 import type { PropsModalWorkspaceNodeList } from '@/components/workspace/ModalWorkspaceNodeList.vue'
+import type { PropsModalU3mDownload } from '@/components/common/material/u3m/ModalU3mDownload.vue'
 
 export enum ASSETS_MATERIAL_FUNCTION {
   EDIT = 0,
@@ -267,10 +268,17 @@ export default function useAssets() {
           material.customU3m.status !== U3M_STATUS.COMPLETED
       ),
     func: (m) => {
-      const materialList = toMaterialList(m)
+      const materialU3mList = toMaterialList(m).map(
+        ({ materialId, itemNo, u3m, customU3m }) => ({
+          materialId,
+          itemNo,
+          u3m,
+          customU3m,
+        })
+      )
       store.dispatch('helper/openModalBehavior', {
         component: 'modal-u3m-download',
-        properties: { materialList },
+        properties: { materialU3mList } as PropsModalU3mDownload,
       })
     },
   }
@@ -290,7 +298,7 @@ export default function useAssets() {
           primaryBtnText: t('UU0031'),
           secondaryBtnText: t('UU0090'),
           secondaryBtnHandler: () => {
-            goToProgress({}, 'excel')
+            goToProgress({}, PROGRESS_TAB.EXCEL)
             store.dispatch('helper/closeModalBehavior')
           },
         })

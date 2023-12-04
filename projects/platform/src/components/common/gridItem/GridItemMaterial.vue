@@ -1,10 +1,9 @@
 <template lang="pug">
 grid-item-wrapper(
   v-model:selectedValue="innerSelectedValue"
-  :selectValue="material"
-  isSelectable
+  :isSelectable="isSelectable"
+  :selectValue="selectValue"
   :optionList="optionList"
-  @click:option="$emit('click:option', $event)"
   :cornerTopRightHover="material.digitalThreadInfo.threadQty === 0 && currentMaterialId !== material.materialId"
 )
   template(#title) {{ material.itemNo }}
@@ -52,13 +51,20 @@ import type {
 import type { FunctionOption } from '@/types'
 import materialInfoForDisplay from '@/utils/material/materialInfoForDisplay'
 
-const props = defineProps<{
-  material: Material
-  selectedValue: Material[]
-  optionList: FunctionOption<Material>[][]
-}>()
+const props = withDefaults(
+  defineProps<{
+    material: Material
+    isSelectable?: boolean
+    selectValue?: any
+    selectedValue?: Array<any>
+    optionList?: FunctionOption<any>[][]
+  }>(),
+  {
+    isSelectable: true,
+  }
+)
 
-const emit = defineEmits(['update:selectedValue', 'click:option'])
+const emit = defineEmits(['update:selectedValue'])
 
 const store = useStore()
 const currentMaterialId = computed(

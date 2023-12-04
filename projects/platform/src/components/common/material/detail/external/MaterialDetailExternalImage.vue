@@ -1,6 +1,6 @@
 <style lang="scss" scoped>
 .rwd-left-cover {
-  @apply absolute bottom-0 from-grey-0 to-transparent z-1 left-0 pointer-events-none;
+  @apply absolute top-0 from-grey-0 to-transparent z-1 left-0 pointer-events-none;
   @apply tablet:w-full w-10;
   @apply tablet:h-10 h-full;
   @apply tablet:bg-gradient-to-b bg-gradient-to-r;
@@ -171,7 +171,6 @@ const touchmoveHandler = (e: TouchEvent) => {
   if (scrollDistance < 80) {
     return
   }
-  console.log(scrollDistance)
 
   if (offsetX.value > 0) {
     currentTranslate.value = Math.min(

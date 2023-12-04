@@ -98,6 +98,12 @@ export interface AddMoodboardShareRequest {
      * @memberof AddMoodboardShareRequest
      */
     'targetList': Array<ShareTarget>;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddMoodboardShareRequest
+     */
+    'message': string;
 }
 
 
@@ -119,6 +125,12 @@ export interface AddMoodboardShareRequestAllOf {
      * @memberof AddMoodboardShareRequestAllOf
      */
     'targetList': Array<ShareTarget>;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddMoodboardShareRequestAllOf
+     */
+    'message': string;
 }
 /**
  * 
@@ -2172,10 +2184,10 @@ export interface Collection {
     'hasChildCollection': boolean;
     /**
      * 
-     * @type {MoodboardBaseTrendBoard}
+     * @type {TrendBoard}
      * @memberof Collection
      */
-    'trendBoard': MoodboardBaseTrendBoard | null;
+    'trendBoard': TrendBoard | null;
 }
 /**
  * 
@@ -2625,13 +2637,13 @@ export interface CreateMoodboardOfferNodeCollectionRequest {
      * @type {string}
      * @memberof CreateMoodboardOfferNodeCollectionRequest
      */
-    'description': string;
+    'description': string | null;
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @type {CreateMoodboardRequestAllOfTrendBoard}
      * @memberof CreateMoodboardOfferNodeCollectionRequest
      */
-    'trendBoard': UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal | null;
+    'trendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
 }
 
 
@@ -2658,70 +2670,13 @@ export interface CreateMoodboardOfferNodeCollectionRequestAllOf {
      * @type {string}
      * @memberof CreateMoodboardOfferNodeCollectionRequestAllOf
      */
-    'description': string;
+    'description': string | null;
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @type {CreateMoodboardRequestAllOfTrendBoard}
      * @memberof CreateMoodboardOfferNodeCollectionRequestAllOf
      */
-    'trendBoard': UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal | null;
-}
-/**
- * 
- * @export
- * @interface CreateMoodboardOfferNodeMaterial200Response
- */
-export interface CreateMoodboardOfferNodeMaterial200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CreateMoodboardOfferNodeMaterial200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateMoodboardOfferNodeMaterial200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {CreateMoodboardOfferNodeMaterial200ResponseAllOfResult}
-     * @memberof CreateMoodboardOfferNodeMaterial200Response
-     */
-    'result': CreateMoodboardOfferNodeMaterial200ResponseAllOfResult;
-    /**
-     * 
-     * @type {object}
-     * @memberof CreateMoodboardOfferNodeMaterial200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface CreateMoodboardOfferNodeMaterial200ResponseAllOf
- */
-export interface CreateMoodboardOfferNodeMaterial200ResponseAllOf {
-    /**
-     * 
-     * @type {CreateMoodboardOfferNodeMaterial200ResponseAllOfResult}
-     * @memberof CreateMoodboardOfferNodeMaterial200ResponseAllOf
-     */
-    'result': CreateMoodboardOfferNodeMaterial200ResponseAllOfResult;
-}
-/**
- * 
- * @export
- * @interface CreateMoodboardOfferNodeMaterial200ResponseAllOfResult
- */
-export interface CreateMoodboardOfferNodeMaterial200ResponseAllOfResult {
-    /**
-     * 
-     * @type {MoodboardNodeMaterial}
-     * @memberof CreateMoodboardOfferNodeMaterial200ResponseAllOfResult
-     */
-    'moodboardNodeMaterial': MoodboardNodeMaterial;
+    'trendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
 }
 /**
  * 
@@ -2819,10 +2774,10 @@ export interface CreateMoodboardRequest {
     'description': string;
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @type {CreateMoodboardRequestAllOfTrendBoard}
      * @memberof CreateMoodboardRequest
      */
-    'trendBoard': UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal | null;
+    'trendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
     /**
      * 
      * @type {Array<S3UploadedObject>}
@@ -2852,16 +2807,35 @@ export interface CreateMoodboardRequestAllOf {
     'description': string;
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @type {CreateMoodboardRequestAllOfTrendBoard}
      * @memberof CreateMoodboardRequestAllOf
      */
-    'trendBoard': UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal | null;
+    'trendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
     /**
      * 
      * @type {Array<S3UploadedObject>}
      * @memberof CreateMoodboardRequestAllOf
      */
     'attachmentList': Array<S3UploadedObject> | null;
+}
+/**
+ * 
+ * @export
+ * @interface CreateMoodboardRequestAllOfTrendBoard
+ */
+export interface CreateMoodboardRequestAllOfTrendBoard {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateMoodboardRequestAllOfTrendBoard
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateMoodboardRequestAllOfTrendBoard
+     */
+    'fileName': string;
 }
 /**
  * 
@@ -4780,6 +4754,108 @@ export interface DuplicateWorkspaceNodeRequestAllOf {
      * @memberof DuplicateWorkspaceNodeRequestAllOf
      */
     'targetNodeIdList': Array<number>;
+}
+/**
+ * 
+ * @export
+ * @interface EditAssetsMaterialSideImageRequest
+ */
+export interface EditAssetsMaterialSideImageRequest {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof EditAssetsMaterialSideImageRequest
+     */
+    'materialId': number;
+    /**
+     * 是否交換正反面
+     * @type {boolean}
+     * @memberof EditAssetsMaterialSideImageRequest
+     */
+    'isExchange': boolean;
+    /**
+     * 
+     * @type {EditAssetsMaterialSideImageRequestFaceSideImage}
+     * @memberof EditAssetsMaterialSideImageRequest
+     */
+    'faceSideImage': EditAssetsMaterialSideImageRequestFaceSideImage | null;
+    /**
+     * 
+     * @type {EditAssetsMaterialSideImageRequestFaceSideImage}
+     * @memberof EditAssetsMaterialSideImageRequest
+     */
+    'backSideImage': EditAssetsMaterialSideImageRequestFaceSideImage | null;
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof EditAssetsMaterialSideImageRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof EditAssetsMaterialSideImageRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof EditAssetsMaterialSideImageRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface EditAssetsMaterialSideImageRequestFaceSideImage
+ */
+export interface EditAssetsMaterialSideImageRequestFaceSideImage {
+    /**
+     * 
+     * @type {EditAssetsMaterialSideImageRequestFaceSideImageCropped}
+     * @memberof EditAssetsMaterialSideImageRequestFaceSideImage
+     */
+    'cropped': EditAssetsMaterialSideImageRequestFaceSideImageCropped;
+}
+/**
+ * 
+ * @export
+ * @interface EditAssetsMaterialSideImageRequestFaceSideImageCropped
+ */
+export interface EditAssetsMaterialSideImageRequestFaceSideImageCropped {
+    /**
+     * 
+     * @type {string}
+     * @memberof EditAssetsMaterialSideImageRequestFaceSideImageCropped
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EditAssetsMaterialSideImageRequestFaceSideImageCropped
+     */
+    'fileName': string;
+    /**
+     * 
+     * @type {CropImageRecord}
+     * @memberof EditAssetsMaterialSideImageRequestFaceSideImageCropped
+     */
+    'cropImageRecord': CropImageRecord;
+}
+/**
+ * 
+ * @export
+ * @interface EditAssetsMaterialSideImageRequestFaceSideImageCroppedAllOf
+ */
+export interface EditAssetsMaterialSideImageRequestFaceSideImageCroppedAllOf {
+    /**
+     * 
+     * @type {CropImageRecord}
+     * @memberof EditAssetsMaterialSideImageRequestFaceSideImageCroppedAllOf
+     */
+    'cropImageRecord': CropImageRecord;
 }
 /**
  * 
@@ -7540,7 +7616,7 @@ export interface GetMoodboardOfferNodeCollectionRequest {
      * @type {string}
      * @memberof GetMoodboardOfferNodeCollectionRequest
      */
-    'keyword': string;
+    'keyword': string | null;
 }
 
 
@@ -7567,7 +7643,64 @@ export interface GetMoodboardOfferNodeCollectionRequestAllOf {
      * @type {string}
      * @memberof GetMoodboardOfferNodeCollectionRequestAllOf
      */
-    'keyword': string;
+    'keyword': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetMoodboardOfferNodeMaterial200Response
+ */
+export interface GetMoodboardOfferNodeMaterial200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetMoodboardOfferNodeMaterial200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetMoodboardOfferNodeMaterial200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {GetMoodboardOfferNodeMaterial200ResponseAllOfResult}
+     * @memberof GetMoodboardOfferNodeMaterial200Response
+     */
+    'result': GetMoodboardOfferNodeMaterial200ResponseAllOfResult;
+    /**
+     * 
+     * @type {object}
+     * @memberof GetMoodboardOfferNodeMaterial200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface GetMoodboardOfferNodeMaterial200ResponseAllOf
+ */
+export interface GetMoodboardOfferNodeMaterial200ResponseAllOf {
+    /**
+     * 
+     * @type {GetMoodboardOfferNodeMaterial200ResponseAllOfResult}
+     * @memberof GetMoodboardOfferNodeMaterial200ResponseAllOf
+     */
+    'result': GetMoodboardOfferNodeMaterial200ResponseAllOfResult;
+}
+/**
+ * 
+ * @export
+ * @interface GetMoodboardOfferNodeMaterial200ResponseAllOfResult
+ */
+export interface GetMoodboardOfferNodeMaterial200ResponseAllOfResult {
+    /**
+     * 
+     * @type {MoodboardNodeMaterial}
+     * @memberof GetMoodboardOfferNodeMaterial200ResponseAllOfResult
+     */
+    'moodboardNodeMaterial': MoodboardNodeMaterial;
 }
 /**
  * 
@@ -7667,7 +7800,7 @@ export interface GetMoodboardOfferPickedListRequest {
      * @type {string}
      * @memberof GetMoodboardOfferPickedListRequest
      */
-    'keyword': string;
+    'keyword': string | null;
 }
 
 
@@ -7694,7 +7827,7 @@ export interface GetMoodboardOfferPickedListRequestAllOf {
      * @type {string}
      * @memberof GetMoodboardOfferPickedListRequestAllOf
      */
-    'keyword': string;
+    'keyword': string | null;
 }
 /**
  * 
@@ -13322,6 +13455,12 @@ export interface MaterialSideAllOfSideImage {
     'rulerUrl': string;
     /**
      * 
+     * @type {string}
+     * @memberof MaterialSideAllOfSideImage
+     */
+    'rulerThumbnailUrl': string;
+    /**
+     * 
      * @type {CropImageRecord}
      * @memberof MaterialSideAllOfSideImage
      */
@@ -13640,6 +13779,12 @@ export interface MaterialSideImage {
      * @memberof MaterialSideImage
      */
     'rulerUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MaterialSideImage
+     */
+    'rulerThumbnailUrl': string;
     /**
      * 
      * @type {CropImageRecord}
@@ -14543,10 +14688,10 @@ export interface Moodboard {
     'moodboardId': number;
     /**
      * 
-     * @type {number}
+     * @type {MoodboardType}
      * @memberof Moodboard
      */
-    'moodboardType': MoodboardMoodboardTypeEnum;
+    'moodboardType': MoodboardType;
     /**
      * 
      * @type {string}
@@ -14561,10 +14706,10 @@ export interface Moodboard {
     'description': string;
     /**
      * 
-     * @type {MoodboardBaseTrendBoard}
+     * @type {TrendBoard}
      * @memberof Moodboard
      */
-    'trendBoard': MoodboardBaseTrendBoard | null;
+    'trendBoard': TrendBoard | null;
     /**
      * 
      * @type {boolean}
@@ -14609,12 +14754,6 @@ export interface Moodboard {
     'properties': MoodboardAllOfProperties;
 }
 
-export const MoodboardMoodboardTypeEnum = {
-    DEMANDER: 1,
-    PROVIDER: 2
-} as const;
-
-export type MoodboardMoodboardTypeEnum = typeof MoodboardMoodboardTypeEnum[keyof typeof MoodboardMoodboardTypeEnum];
 
 /**
  * 
@@ -14676,138 +14815,8 @@ export interface MoodboardAllOfAttachmentList {
  * @type MoodboardAllOfProperties
  * @export
  */
-export type MoodboardAllOfProperties = MoodboardAllOfPropertiesOneOf | MoodboardAllOfPropertiesOneOf1;
+export type MoodboardAllOfProperties = MoodboardPropertiesDemander | MoodboardPropertiesProvider;
 
-/**
- * 
- * @export
- * @interface MoodboardAllOfPropertiesOneOf
- */
-export interface MoodboardAllOfPropertiesOneOf {
-    /**
-     * 
-     * @type {number}
-     * @memberof MoodboardAllOfPropertiesOneOf
-     */
-    'myOfferId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MoodboardAllOfPropertiesOneOf
-     */
-    'myRootNodeId': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof MoodboardAllOfPropertiesOneOf
-     */
-    'hasNewComment': boolean;
-}
-/**
- * 
- * @export
- * @interface MoodboardAllOfPropertiesOneOf1
- */
-export interface MoodboardAllOfPropertiesOneOf1 {
-    /**
-     * 
-     * @type {Array<MoodboardAllOfPropertiesOneOf1ShareListInner>}
-     * @memberof MoodboardAllOfPropertiesOneOf1
-     */
-    'shareList': Array<MoodboardAllOfPropertiesOneOf1ShareListInner>;
-    /**
-     * 
-     * @type {Array<MoodboardAllOfPropertiesOneOf1OfferListInner>}
-     * @memberof MoodboardAllOfPropertiesOneOf1
-     */
-    'offerList': Array<MoodboardAllOfPropertiesOneOf1OfferListInner>;
-}
-/**
- * 
- * @export
- * @interface MoodboardAllOfPropertiesOneOf1OfferListInner
- */
-export interface MoodboardAllOfPropertiesOneOf1OfferListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof MoodboardAllOfPropertiesOneOf1OfferListInner
-     */
-    'offerId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof MoodboardAllOfPropertiesOneOf1OfferListInner
-     */
-    'rootNodeId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof MoodboardAllOfPropertiesOneOf1OfferListInner
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MoodboardAllOfPropertiesOneOf1OfferListInner
-     */
-    'logo': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof MoodboardAllOfPropertiesOneOf1OfferListInner
-     */
-    'itemCounts': number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof MoodboardAllOfPropertiesOneOf1OfferListInner
-     */
-    'hasNewUpdate': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof MoodboardAllOfPropertiesOneOf1OfferListInner
-     */
-    'lastUpdateTime': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof MoodboardAllOfPropertiesOneOf1OfferListInner
-     */
-    'hasNewComment': boolean;
-}
-/**
- * 
- * @export
- * @interface MoodboardAllOfPropertiesOneOf1ShareListInner
- */
-export interface MoodboardAllOfPropertiesOneOf1ShareListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof MoodboardAllOfPropertiesOneOf1ShareListInner
-     */
-    'shareId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof MoodboardAllOfPropertiesOneOf1ShareListInner
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MoodboardAllOfPropertiesOneOf1ShareListInner
-     */
-    'logo': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof MoodboardAllOfPropertiesOneOf1ShareListInner
-     */
-    'itemCounts': number;
-}
 /**
  * 
  * @export
@@ -14822,10 +14831,10 @@ export interface MoodboardBase {
     'moodboardId': number;
     /**
      * 
-     * @type {number}
+     * @type {MoodboardType}
      * @memberof MoodboardBase
      */
-    'moodboardType': MoodboardBaseMoodboardTypeEnum;
+    'moodboardType': MoodboardType;
     /**
      * 
      * @type {string}
@@ -14840,10 +14849,10 @@ export interface MoodboardBase {
     'description': string;
     /**
      * 
-     * @type {MoodboardBaseTrendBoard}
+     * @type {TrendBoard}
      * @memberof MoodboardBase
      */
-    'trendBoard': MoodboardBaseTrendBoard | null;
+    'trendBoard': TrendBoard | null;
     /**
      * 
      * @type {boolean}
@@ -14876,38 +14885,7 @@ export interface MoodboardBase {
     'updateDate': number;
 }
 
-export const MoodboardBaseMoodboardTypeEnum = {
-    DEMANDER: 1,
-    PROVIDER: 2
-} as const;
 
-export type MoodboardBaseMoodboardTypeEnum = typeof MoodboardBaseMoodboardTypeEnum[keyof typeof MoodboardBaseMoodboardTypeEnum];
-
-/**
- * 
- * @export
- * @interface MoodboardBaseTrendBoard
- */
-export interface MoodboardBaseTrendBoard {
-    /**
-     * 
-     * @type {string}
-     * @memberof MoodboardBaseTrendBoard
-     */
-    'displayName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MoodboardBaseTrendBoard
-     */
-    'thumbnailUrl': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MoodboardBaseTrendBoard
-     */
-    'originalUrl': string;
-}
 /**
  * 
  * @export
@@ -14955,6 +14933,37 @@ export interface MoodboardInfo {
 /**
  * 
  * @export
+ * @interface MoodboardNodeChild
+ */
+export interface MoodboardNodeChild {
+    /**
+     * 
+     * @type {NodeMeta}
+     * @memberof MoodboardNodeChild
+     */
+    'nodeMeta': NodeMeta;
+    /**
+     * 
+     * @type {MoodboardNodeChildNodeProperty}
+     * @memberof MoodboardNodeChild
+     */
+    'nodeProperty': MoodboardNodeChildNodeProperty;
+    /**
+     * 
+     * @type {MoodboardInfo}
+     * @memberof MoodboardNodeChild
+     */
+    'moodboardInfo': MoodboardInfo;
+}
+/**
+ * @type MoodboardNodeChildNodeProperty
+ * @export
+ */
+export type MoodboardNodeChildNodeProperty = Collection | Material;
+
+/**
+ * 
+ * @export
  * @interface MoodboardNodeCollection
  */
 export interface MoodboardNodeCollection {
@@ -14972,10 +14981,10 @@ export interface MoodboardNodeCollection {
     'collection': Collection;
     /**
      * 
-     * @type {Array<MoodboardNodeCollectionAllOfChildNodeListInner>}
+     * @type {Array<MoodboardNodeChild>}
      * @memberof MoodboardNodeCollection
      */
-    'childNodeList': Array<MoodboardNodeCollectionAllOfChildNodeListInner>;
+    'childNodeList': Array<MoodboardNodeChild>;
     /**
      * 
      * @type {MoodboardInfo}
@@ -14991,52 +15000,14 @@ export interface MoodboardNodeCollection {
 export interface MoodboardNodeCollectionAllOf {
     /**
      * 
-     * @type {Array<MoodboardNodeCollectionAllOfChildNodeListInner>}
+     * @type {Array<MoodboardNodeChild>}
      * @memberof MoodboardNodeCollectionAllOf
      */
-    'childNodeList': Array<MoodboardNodeCollectionAllOfChildNodeListInner>;
+    'childNodeList': Array<MoodboardNodeChild>;
     /**
      * 
      * @type {MoodboardInfo}
      * @memberof MoodboardNodeCollectionAllOf
-     */
-    'moodboardInfo': MoodboardInfo;
-}
-/**
- * 
- * @export
- * @interface MoodboardNodeCollectionAllOfChildNodeListInner
- */
-export interface MoodboardNodeCollectionAllOfChildNodeListInner {
-    /**
-     * 
-     * @type {NodeMeta}
-     * @memberof MoodboardNodeCollectionAllOfChildNodeListInner
-     */
-    'nodeMeta': NodeMeta;
-    /**
-     * 
-     * @type {NodeChildNodeProperty}
-     * @memberof MoodboardNodeCollectionAllOfChildNodeListInner
-     */
-    'nodeProperty': NodeChildNodeProperty;
-    /**
-     * 
-     * @type {MoodboardInfo}
-     * @memberof MoodboardNodeCollectionAllOfChildNodeListInner
-     */
-    'moodboardInfo': MoodboardInfo;
-}
-/**
- * 
- * @export
- * @interface MoodboardNodeCollectionAllOfChildNodeListInnerAllOf
- */
-export interface MoodboardNodeCollectionAllOfChildNodeListInnerAllOf {
-    /**
-     * 
-     * @type {MoodboardInfo}
-     * @memberof MoodboardNodeCollectionAllOfChildNodeListInnerAllOf
      */
     'moodboardInfo': MoodboardInfo;
 }
@@ -15078,6 +15049,150 @@ export interface MoodboardNodeMaterialAllOf {
      */
     'moodboardInfo': MoodboardInfo;
 }
+/**
+ * 
+ * @export
+ * @interface MoodboardPropertiesDemander
+ */
+export interface MoodboardPropertiesDemander {
+    /**
+     * 
+     * @type {Array<MoodboardPropertiesDemanderShareListInner>}
+     * @memberof MoodboardPropertiesDemander
+     */
+    'shareList': Array<MoodboardPropertiesDemanderShareListInner>;
+    /**
+     * 
+     * @type {Array<MoodboardPropertiesDemanderOfferListInner>}
+     * @memberof MoodboardPropertiesDemander
+     */
+    'offerList': Array<MoodboardPropertiesDemanderOfferListInner>;
+}
+/**
+ * 
+ * @export
+ * @interface MoodboardPropertiesDemanderOfferListInner
+ */
+export interface MoodboardPropertiesDemanderOfferListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof MoodboardPropertiesDemanderOfferListInner
+     */
+    'offerId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MoodboardPropertiesDemanderOfferListInner
+     */
+    'rootNodeId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MoodboardPropertiesDemanderOfferListInner
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MoodboardPropertiesDemanderOfferListInner
+     */
+    'logo': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof MoodboardPropertiesDemanderOfferListInner
+     */
+    'itemCounts': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MoodboardPropertiesDemanderOfferListInner
+     */
+    'hasNewUpdate': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof MoodboardPropertiesDemanderOfferListInner
+     */
+    'lastUpdateTime': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MoodboardPropertiesDemanderOfferListInner
+     */
+    'hasNewComment': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface MoodboardPropertiesDemanderShareListInner
+ */
+export interface MoodboardPropertiesDemanderShareListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof MoodboardPropertiesDemanderShareListInner
+     */
+    'shareId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MoodboardPropertiesDemanderShareListInner
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MoodboardPropertiesDemanderShareListInner
+     */
+    'logo': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof MoodboardPropertiesDemanderShareListInner
+     */
+    'itemCounts': number;
+}
+/**
+ * 
+ * @export
+ * @interface MoodboardPropertiesProvider
+ */
+export interface MoodboardPropertiesProvider {
+    /**
+     * 
+     * @type {number}
+     * @memberof MoodboardPropertiesProvider
+     */
+    'myOfferId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MoodboardPropertiesProvider
+     */
+    'myRootNodeId': number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MoodboardPropertiesProvider
+     */
+    'hasNewComment': boolean;
+}
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const MoodboardType = {
+    DEMANDER: 1,
+    PROVIDER: 2
+} as const;
+
+export type MoodboardType = typeof MoodboardType[keyof typeof MoodboardType];
+
+
 /**
  * 
  * @export
@@ -19552,6 +19667,18 @@ export interface ProgressU3mItem {
     'itemNo': string;
     /**
      * 
+     * @type {MaterialU3m}
+     * @memberof ProgressU3mItem
+     */
+    'u3m': MaterialU3m;
+    /**
+     * 
+     * @type {MaterialCustomU3m}
+     * @memberof ProgressU3mItem
+     */
+    'customU3m': MaterialCustomU3m;
+    /**
+     * 
      * @type {string}
      * @memberof ProgressU3mItem
      */
@@ -22042,6 +22169,31 @@ export interface ThreadBoardWorkflowStageListInner {
 /**
  * 
  * @export
+ * @interface TrendBoard
+ */
+export interface TrendBoard {
+    /**
+     * 
+     * @type {string}
+     * @memberof TrendBoard
+     */
+    'displayName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrendBoard
+     */
+    'thumbnailUrl': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TrendBoard
+     */
+    'originalUrl': string;
+}
+/**
+ * 
+ * @export
  * @interface UpdateAssetsMaterialRequest
  */
 export interface UpdateAssetsMaterialRequest {
@@ -22144,251 +22296,6 @@ export interface UpdateAssetsMaterialRequest {
 }
 
 
-/**
- * 
- * @export
- * @interface UpdateAssetsMaterialSideImage200Response
- */
-export interface UpdateAssetsMaterialSideImage200Response {
-    /**
-     * 
-     * @type {UpdateAssetsMaterialSideImage200ResponseResult}
-     * @memberof UpdateAssetsMaterialSideImage200Response
-     */
-    'result'?: UpdateAssetsMaterialSideImage200ResponseResult;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UpdateAssetsMaterialSideImage200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAssetsMaterialSideImage200Response
-     */
-    'code'?: string | null;
-    /**
-     * 
-     * @type {object}
-     * @memberof UpdateAssetsMaterialSideImage200Response
-     */
-    'message'?: object | null;
-}
-/**
- * 
- * @export
- * @interface UpdateAssetsMaterialSideImage200ResponseResult
- */
-export interface UpdateAssetsMaterialSideImage200ResponseResult {
-    /**
-     * 
-     * @type {UpdateAssetsMaterialSideImage200ResponseResultFaceSide}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResult
-     */
-    'faceSide': UpdateAssetsMaterialSideImage200ResponseResultFaceSide | null;
-    /**
-     * 
-     * @type {UpdateAssetsMaterialSideImage200ResponseResultFaceSide}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResult
-     */
-    'backSide': UpdateAssetsMaterialSideImage200ResponseResultFaceSide | null;
-}
-/**
- * 
- * @export
- * @interface UpdateAssetsMaterialSideImage200ResponseResultFaceSide
- */
-export interface UpdateAssetsMaterialSideImage200ResponseResultFaceSide {
-    /**
-     * 
-     * @type {MaterialSideImage}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSide
-     */
-    'sideImage': MaterialSideImage | null;
-    /**
-     * Pantone Color 清單
-     * @type {Array<UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner>}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSide
-     */
-    'pantoneList': Array<UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner> | null;
-}
-/**
- * 
- * @export
- * @interface UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
- */
-export interface UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
-     */
-    'materialPantoneId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
-     */
-    'pantoneId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
-     */
-    'majorColorName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
-     */
-    'colorName': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
-     */
-    'r': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
-     */
-    'g': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof UpdateAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
-     */
-    'b': number;
-}
-/**
- * 
- * @export
- * @interface UpdateAssetsMaterialSideImageRequest
- */
-export interface UpdateAssetsMaterialSideImageRequest {
-    /**
-     * 布料ID
-     * @type {number}
-     * @memberof UpdateAssetsMaterialSideImageRequest
-     */
-    'materialId': number;
-    /**
-     * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImage}
-     * @memberof UpdateAssetsMaterialSideImageRequest
-     */
-    'faceSideImage': UpdateAssetsMaterialSideImageRequestFaceSideImage | null;
-    /**
-     * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImage}
-     * @memberof UpdateAssetsMaterialSideImageRequest
-     */
-    'backSideImage': UpdateAssetsMaterialSideImageRequestFaceSideImage | null;
-    /**
-     * 組織ID
-     * @type {number}
-     * @memberof UpdateAssetsMaterialSideImageRequest
-     */
-    'orgId': number;
-    /**
-     * 
-     * @type {OgType}
-     * @memberof UpdateAssetsMaterialSideImageRequest
-     */
-    'ogType': OgType;
-    /**
-     * 單位(組織或團隊)ID
-     * @type {number}
-     * @memberof UpdateAssetsMaterialSideImageRequest
-     */
-    'ogId': number;
-}
-
-
-/**
- * 
- * @export
- * @interface UpdateAssetsMaterialSideImageRequestFaceSideImage
- */
-export interface UpdateAssetsMaterialSideImageRequestFaceSideImage {
-    /**
-     * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal}
-     * @memberof UpdateAssetsMaterialSideImageRequestFaceSideImage
-     */
-    'original': UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal | null;
-    /**
-     * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageCropped}
-     * @memberof UpdateAssetsMaterialSideImageRequestFaceSideImage
-     */
-    'cropped': UpdateAssetsMaterialSideImageRequestFaceSideImageCropped | null;
-}
-/**
- * 
- * @export
- * @interface UpdateAssetsMaterialSideImageRequestFaceSideImageCropped
- */
-export interface UpdateAssetsMaterialSideImageRequestFaceSideImageCropped {
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAssetsMaterialSideImageRequestFaceSideImageCropped
-     */
-    's3UploadId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAssetsMaterialSideImageRequestFaceSideImageCropped
-     */
-    'fileName': string;
-    /**
-     * 
-     * @type {CropImageRecord}
-     * @memberof UpdateAssetsMaterialSideImageRequestFaceSideImageCropped
-     */
-    'cropImageRecord': CropImageRecord;
-}
-/**
- * 
- * @export
- * @interface UpdateAssetsMaterialSideImageRequestFaceSideImageCroppedAllOf
- */
-export interface UpdateAssetsMaterialSideImageRequestFaceSideImageCroppedAllOf {
-    /**
-     * 
-     * @type {CropImageRecord}
-     * @memberof UpdateAssetsMaterialSideImageRequestFaceSideImageCroppedAllOf
-     */
-    'cropImageRecord': CropImageRecord;
-}
-/**
- * 
- * @export
- * @interface UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal
- */
-export interface UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal {
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal
-     */
-    's3UploadId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal
-     */
-    'fileName': string;
-}
 /**
  * 
  * @export
@@ -22679,13 +22586,13 @@ export interface UpdateMoodboardOfferNodeCollectionRequest {
      * @type {string}
      * @memberof UpdateMoodboardOfferNodeCollectionRequest
      */
-    'description': string;
+    'description': string | null;
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @type {CreateMoodboardRequestAllOfTrendBoard}
      * @memberof UpdateMoodboardOfferNodeCollectionRequest
      */
-    'newTrendBoard': UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal | null;
+    'newTrendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
     /**
      * 
      * @type {boolean}
@@ -22718,13 +22625,13 @@ export interface UpdateMoodboardOfferNodeCollectionRequestAllOf {
      * @type {string}
      * @memberof UpdateMoodboardOfferNodeCollectionRequestAllOf
      */
-    'description': string;
+    'description': string | null;
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @type {CreateMoodboardRequestAllOfTrendBoard}
      * @memberof UpdateMoodboardOfferNodeCollectionRequestAllOf
      */
-    'newTrendBoard': UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal | null;
+    'newTrendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
     /**
      * 
      * @type {boolean}
@@ -22776,10 +22683,10 @@ export interface UpdateMoodboardRequest {
     'description': string;
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @type {CreateMoodboardRequestAllOfTrendBoard}
      * @memberof UpdateMoodboardRequest
      */
-    'newTrendBoard': UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal | null;
+    'newTrendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
     /**
      * 
      * @type {Array<S3UploadedObject>}
@@ -22827,10 +22734,10 @@ export interface UpdateMoodboardRequestAllOf {
     'description': string;
     /**
      * 
-     * @type {UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @type {CreateMoodboardRequestAllOfTrendBoard}
      * @memberof UpdateMoodboardRequestAllOf
      */
-    'newTrendBoard': UpdateAssetsMaterialSideImageRequestFaceSideImageOriginal | null;
+    'newTrendBoard': CreateMoodboardRequestAllOfTrendBoard | null;
     /**
      * 
      * @type {Array<S3UploadedObject>}
@@ -23471,6 +23378,213 @@ export interface UploadAssetsMaterialMultimediaRequestAllOf {
      * @memberof UploadAssetsMaterialMultimediaRequestAllOf
      */
     'multimediaList': Array<CreateAndEditAttachmentFile>;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialSideImage200Response
+ */
+export interface UploadAssetsMaterialSideImage200Response {
+    /**
+     * 
+     * @type {UploadAssetsMaterialSideImage200ResponseResult}
+     * @memberof UploadAssetsMaterialSideImage200Response
+     */
+    'result'?: UploadAssetsMaterialSideImage200ResponseResult;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UploadAssetsMaterialSideImage200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadAssetsMaterialSideImage200Response
+     */
+    'code'?: string | null;
+    /**
+     * 
+     * @type {object}
+     * @memberof UploadAssetsMaterialSideImage200Response
+     */
+    'message'?: object | null;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialSideImage200ResponseResult
+ */
+export interface UploadAssetsMaterialSideImage200ResponseResult {
+    /**
+     * 
+     * @type {CoverImage}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResult
+     */
+    'coverImage': CoverImage;
+    /**
+     * 
+     * @type {UploadAssetsMaterialSideImage200ResponseResultFaceSide}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResult
+     */
+    'faceSide': UploadAssetsMaterialSideImage200ResponseResultFaceSide | null;
+    /**
+     * 
+     * @type {UploadAssetsMaterialSideImage200ResponseResultFaceSide}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResult
+     */
+    'backSide': UploadAssetsMaterialSideImage200ResponseResultFaceSide | null;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialSideImage200ResponseResultFaceSide
+ */
+export interface UploadAssetsMaterialSideImage200ResponseResultFaceSide {
+    /**
+     * 
+     * @type {MaterialSideImage}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResultFaceSide
+     */
+    'sideImage': MaterialSideImage | null;
+    /**
+     * Pantone Color 清單
+     * @type {Array<UploadAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner>}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResultFaceSide
+     */
+    'pantoneList': Array<UploadAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner> | null;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+ */
+export interface UploadAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'materialPantoneId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'pantoneId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'majorColorName': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'colorName': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'r': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'g': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UploadAssetsMaterialSideImage200ResponseResultFaceSidePantoneListInner
+     */
+    'b': number;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialSideImageRequest
+ */
+export interface UploadAssetsMaterialSideImageRequest {
+    /**
+     * 布料ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialSideImageRequest
+     */
+    'materialId': number;
+    /**
+     * 
+     * @type {UploadAssetsMaterialSideImageRequestFaceSideImage}
+     * @memberof UploadAssetsMaterialSideImageRequest
+     */
+    'faceSideImage': UploadAssetsMaterialSideImageRequestFaceSideImage | null;
+    /**
+     * 
+     * @type {UploadAssetsMaterialSideImageRequestFaceSideImage}
+     * @memberof UploadAssetsMaterialSideImageRequest
+     */
+    'backSideImage': UploadAssetsMaterialSideImageRequestFaceSideImage | null;
+    /**
+     * 組織ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialSideImageRequest
+     */
+    'orgId': number;
+    /**
+     * 
+     * @type {OgType}
+     * @memberof UploadAssetsMaterialSideImageRequest
+     */
+    'ogType': OgType;
+    /**
+     * 單位(組織或團隊)ID
+     * @type {number}
+     * @memberof UploadAssetsMaterialSideImageRequest
+     */
+    'ogId': number;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialSideImageRequestFaceSideImage
+ */
+export interface UploadAssetsMaterialSideImageRequestFaceSideImage {
+    /**
+     * 
+     * @type {UploadAssetsMaterialSideImageRequestFaceSideImageOriginal}
+     * @memberof UploadAssetsMaterialSideImageRequestFaceSideImage
+     */
+    'original': UploadAssetsMaterialSideImageRequestFaceSideImageOriginal;
+}
+/**
+ * 
+ * @export
+ * @interface UploadAssetsMaterialSideImageRequestFaceSideImageOriginal
+ */
+export interface UploadAssetsMaterialSideImageRequestFaceSideImageOriginal {
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadAssetsMaterialSideImageRequestFaceSideImageOriginal
+     */
+    's3UploadId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadAssetsMaterialSideImageRequestFaceSideImageOriginal
+     */
+    'fileName': string;
 }
 /**
  * 
@@ -24882,6 +24996,46 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
         },
         /**
          * 
+         * @summary 編輯正反面圖片
+         * @param {EditAssetsMaterialSideImageRequest} editAssetsMaterialSideImageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        editAssetsMaterialSideImage: async (editAssetsMaterialSideImageRequest: EditAssetsMaterialSideImageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'editAssetsMaterialSideImageRequest' is not null or undefined
+            assertParamExists('editAssetsMaterialSideImage', 'editAssetsMaterialSideImageRequest', editAssetsMaterialSideImageRequest)
+            const localVarPath = `/assets/material/side-image/edit`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(editAssetsMaterialSideImageRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 匯出 Excel
          * @param {ExportAssetsMaterialExcelRequest} [exportAssetsMaterialExcelRequest] 
          * @param {*} [options] Override http request option.
@@ -25497,44 +25651,6 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             };
         },
         /**
-         * 
-         * @summary 編輯正反面
-         * @param {UpdateAssetsMaterialSideImageRequest} [updateAssetsMaterialSideImageRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateAssetsMaterialSideImage: async (updateAssetsMaterialSideImageRequest?: UpdateAssetsMaterialSideImageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/assets/material/side-image/update`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateAssetsMaterialSideImageRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * **Access roles:** To be clear define
          * @summary 簡易編輯布料 inventory
          * @param {UpdateAssetsMaterialSimpleInventoryRequest} [updateAssetsMaterialSimpleInventoryRequest] 
@@ -25800,6 +25916,46 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary 上傳正反面圖片
+         * @param {UploadAssetsMaterialSideImageRequest} uploadAssetsMaterialSideImageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadAssetsMaterialSideImage: async (uploadAssetsMaterialSideImageRequest: UploadAssetsMaterialSideImageRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'uploadAssetsMaterialSideImageRequest' is not null or undefined
+            assertParamExists('uploadAssetsMaterialSideImage', 'uploadAssetsMaterialSideImageRequest', uploadAssetsMaterialSideImageRequest)
+            const localVarPath = `/assets/material/side-image/upload`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(uploadAssetsMaterialSideImageRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -25896,6 +26052,17 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignUpRequestPost200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteAssetsMaterialList(deleteAssetsMaterialListRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 編輯正反面圖片
+         * @param {EditAssetsMaterialSideImageRequest} editAssetsMaterialSideImageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest: EditAssetsMaterialSideImageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialSideImage200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -26075,17 +26242,6 @@ export const AssetsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * 
-         * @summary 編輯正反面
-         * @param {UpdateAssetsMaterialSideImageRequest} [updateAssetsMaterialSideImageRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateAssetsMaterialSideImage(updateAssetsMaterialSideImageRequest?: UpdateAssetsMaterialSideImageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateAssetsMaterialSideImage200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateAssetsMaterialSideImage(updateAssetsMaterialSideImageRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
          * **Access roles:** To be clear define
          * @summary 簡易編輯布料 inventory
          * @param {UpdateAssetsMaterialSimpleInventoryRequest} [updateAssetsMaterialSimpleInventoryRequest] 
@@ -26160,6 +26316,17 @@ export const AssetsApiFp = function(configuration?: Configuration) {
          */
         async uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialMultimedia200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 上傳正反面圖片
+         * @param {UploadAssetsMaterialSideImageRequest} uploadAssetsMaterialSideImageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest: UploadAssetsMaterialSideImageRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UploadAssetsMaterialSideImage200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -26251,6 +26418,16 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          */
         deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: any): AxiosPromise<SignUpRequestPost200Response> {
             return localVarFp.deleteAssetsMaterialList(deleteAssetsMaterialListRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 編輯正反面圖片
+         * @param {EditAssetsMaterialSideImageRequest} editAssetsMaterialSideImageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest: EditAssetsMaterialSideImageRequest, options?: any): AxiosPromise<UploadAssetsMaterialSideImage200Response> {
+            return localVarFp.editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -26413,16 +26590,6 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
             return localVarFp.updateAssetsMaterial(updateAssetsMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @summary 編輯正反面
-         * @param {UpdateAssetsMaterialSideImageRequest} [updateAssetsMaterialSideImageRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateAssetsMaterialSideImage(updateAssetsMaterialSideImageRequest?: UpdateAssetsMaterialSideImageRequest, options?: any): AxiosPromise<UpdateAssetsMaterialSideImage200Response> {
-            return localVarFp.updateAssetsMaterialSideImage(updateAssetsMaterialSideImageRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
          * **Access roles:** To be clear define
          * @summary 簡易編輯布料 inventory
          * @param {UpdateAssetsMaterialSimpleInventoryRequest} [updateAssetsMaterialSimpleInventoryRequest] 
@@ -26491,6 +26658,16 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          */
         uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options?: any): AxiosPromise<UploadAssetsMaterialMultimedia200Response> {
             return localVarFp.uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 上傳正反面圖片
+         * @param {UploadAssetsMaterialSideImageRequest} uploadAssetsMaterialSideImageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest: UploadAssetsMaterialSideImageRequest, options?: any): AxiosPromise<UploadAssetsMaterialSideImage200Response> {
+            return localVarFp.uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -26596,6 +26773,18 @@ export class AssetsApi extends BaseAPI {
      */
     public deleteAssetsMaterialList(deleteAssetsMaterialListRequest?: DeleteAssetsMaterialListRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).deleteAssetsMaterialList(deleteAssetsMaterialListRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 編輯正反面圖片
+     * @param {EditAssetsMaterialSideImageRequest} editAssetsMaterialSideImageRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest: EditAssetsMaterialSideImageRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).editAssetsMaterialSideImage(editAssetsMaterialSideImageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -26791,18 +26980,6 @@ export class AssetsApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary 編輯正反面
-     * @param {UpdateAssetsMaterialSideImageRequest} [updateAssetsMaterialSideImageRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AssetsApi
-     */
-    public updateAssetsMaterialSideImage(updateAssetsMaterialSideImageRequest?: UpdateAssetsMaterialSideImageRequest, options?: AxiosRequestConfig) {
-        return AssetsApiFp(this.configuration).updateAssetsMaterialSideImage(updateAssetsMaterialSideImageRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
      * **Access roles:** To be clear define
      * @summary 簡易編輯布料 inventory
      * @param {UpdateAssetsMaterialSimpleInventoryRequest} [updateAssetsMaterialSimpleInventoryRequest] 
@@ -26884,6 +27061,18 @@ export class AssetsApi extends BaseAPI {
      */
     public uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest?: UploadAssetsMaterialMultimediaRequest, options?: AxiosRequestConfig) {
         return AssetsApiFp(this.configuration).uploadAssetsMaterialMultimedia(uploadAssetsMaterialMultimediaRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 上傳正反面圖片
+     * @param {UploadAssetsMaterialSideImageRequest} uploadAssetsMaterialSideImageRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest: UploadAssetsMaterialSideImageRequest, options?: AxiosRequestConfig) {
+        return AssetsApiFp(this.configuration).uploadAssetsMaterialSideImage(uploadAssetsMaterialSideImageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -30587,54 +30776,14 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
-         * @summary 取得 node material
-         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createMoodboardOfferNodeMaterial: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getWorkspaceNodeShareInfoRequest' is not null or undefined
-            assertParamExists('createMoodboardOfferNodeMaterial', 'getWorkspaceNodeShareInfoRequest', getWorkspaceNodeShareInfoRequest)
-            const localVarPath = `/moodboard/offer/node/material/get`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getWorkspaceNodeShareInfoRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 新增 Moodboard node material
          * @param {CreateMoodboardOfferNodeMaterialRequest} createMoodboardOfferNodeMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createMoodboardOfferNodeMaterial_1: async (createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createMoodboardOfferNodeMaterial: async (createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'createMoodboardOfferNodeMaterialRequest' is not null or undefined
-            assertParamExists('createMoodboardOfferNodeMaterial_1', 'createMoodboardOfferNodeMaterialRequest', createMoodboardOfferNodeMaterialRequest)
+            assertParamExists('createMoodboardOfferNodeMaterial', 'createMoodboardOfferNodeMaterialRequest', createMoodboardOfferNodeMaterialRequest)
             const localVarPath = `/moodboard/offer/node/material/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30939,6 +31088,46 @@ export const MoodboardApiAxiosParamCreator = function (configuration?: Configura
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(getMoodboardOfferNodeCollectionRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 取得 node material
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMoodboardOfferNodeMaterial: async (getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getWorkspaceNodeShareInfoRequest' is not null or undefined
+            assertParamExists('getMoodboardOfferNodeMaterial', 'getWorkspaceNodeShareInfoRequest', getWorkspaceNodeShareInfoRequest)
+            const localVarPath = `/moodboard/offer/node/material/get`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getWorkspaceNodeShareInfoRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -31395,7 +31584,7 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createMoodboard(createMoodboardRequest: CreateMoodboardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async createMoodboard(createMoodboardRequest: CreateMoodboardRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboard200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createMoodboard(createMoodboardRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -31423,24 +31612,13 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 取得 node material
-         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateMoodboardOfferNodeMaterial200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
          * @summary 新增 Moodboard node material
          * @param {CreateMoodboardOfferNodeMaterialRequest} createMoodboardOfferNodeMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createMoodboardOfferNodeMaterial_1(createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createMoodboardOfferNodeMaterial_1(createMoodboardOfferNodeMaterialRequest, options);
+        async createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -31518,6 +31696,17 @@ export const MoodboardApiFp = function(configuration?: Configuration) {
          */
         async getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest: GetMoodboardOfferNodeCollectionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferPickedList200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary 取得 node material
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetMoodboardOfferNodeMaterial200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -31677,7 +31866,7 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createMoodboard(createMoodboardRequest: CreateMoodboardRequest, options?: any): AxiosPromise<void> {
+        createMoodboard(createMoodboardRequest: CreateMoodboardRequest, options?: any): AxiosPromise<GetMoodboard200Response> {
             return localVarFp.createMoodboard(createMoodboardRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -31702,23 +31891,13 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
-         * @summary 取得 node material
-         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<CreateMoodboardOfferNodeMaterial200Response> {
-            return localVarFp.createMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 新增 Moodboard node material
          * @param {CreateMoodboardOfferNodeMaterialRequest} createMoodboardOfferNodeMaterialRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createMoodboardOfferNodeMaterial_1(createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options?: any): AxiosPromise<GetMoodboardOfferPickedList200Response> {
-            return localVarFp.createMoodboardOfferNodeMaterial_1(createMoodboardOfferNodeMaterialRequest, options).then((request) => request(axios, basePath));
+        createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options?: any): AxiosPromise<GetMoodboardOfferPickedList200Response> {
+            return localVarFp.createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -31789,6 +31968,16 @@ export const MoodboardApiFactory = function (configuration?: Configuration, base
          */
         getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest: GetMoodboardOfferNodeCollectionRequest, options?: any): AxiosPromise<GetMoodboardOfferPickedList200Response> {
             return localVarFp.getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 取得 node material
+         * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: any): AxiosPromise<GetMoodboardOfferNodeMaterial200Response> {
+            return localVarFp.getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -31974,26 +32163,14 @@ export class MoodboardApi extends BaseAPI {
 
     /**
      * 
-     * @summary 取得 node material
-     * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof MoodboardApi
-     */
-    public createMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig) {
-        return MoodboardApiFp(this.configuration).createMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary 新增 Moodboard node material
      * @param {CreateMoodboardOfferNodeMaterialRequest} createMoodboardOfferNodeMaterialRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MoodboardApi
      */
-    public createMoodboardOfferNodeMaterial_1(createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options?: AxiosRequestConfig) {
-        return MoodboardApiFp(this.configuration).createMoodboardOfferNodeMaterial_1(createMoodboardOfferNodeMaterialRequest, options).then((request) => request(this.axios, this.basePath));
+    public createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest: CreateMoodboardOfferNodeMaterialRequest, options?: AxiosRequestConfig) {
+        return MoodboardApiFp(this.configuration).createMoodboardOfferNodeMaterial(createMoodboardOfferNodeMaterialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -32078,6 +32255,18 @@ export class MoodboardApi extends BaseAPI {
      */
     public getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest: GetMoodboardOfferNodeCollectionRequest, options?: AxiosRequestConfig) {
         return MoodboardApiFp(this.configuration).getMoodboardOfferNodeCollection(getMoodboardOfferNodeCollectionRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 取得 node material
+     * @param {GetWorkspaceNodeShareInfoRequest} getWorkspaceNodeShareInfoRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MoodboardApi
+     */
+    public getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest: GetWorkspaceNodeShareInfoRequest, options?: AxiosRequestConfig) {
+        return MoodboardApiFp(this.configuration).getMoodboardOfferNodeMaterial(getWorkspaceNodeShareInfoRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

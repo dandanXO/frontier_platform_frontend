@@ -46,7 +46,7 @@ import useNavigation from '@/composables/useNavigation'
 import FullscreenHeader from '@/components/common/FullScreenHeader.vue'
 import BlockAttachment from '@/components/moodboard/BlockAttachment.vue'
 import { MOODBOARD_TYPE, NOTIFY_TYPE } from '@/utils/constants'
-import CollectionTrendBoard from '@/components/common/CollectionTrendBoard.vue'
+import CollectionTrendBoard from '@/components/common/collection/CollectionTrendBoard.vue'
 import { toYYYYMMDDFormat } from '@frontier/lib'
 
 const { t } = useI18n()

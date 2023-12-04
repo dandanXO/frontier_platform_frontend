@@ -9,57 +9,41 @@ modal-behavior(
 )
   template(#note)
     file-upload-error-note(
-      v-if="fileUploadErrorCode"
-      :errorCode="fileUploadErrorCode"
+      v-if="(refInputTrendBoardUpload && refInputTrendBoardUpload.errorCode) || fileUploadErrorCode"
+      :errorCode="(refInputTrendBoardUpload && refInputTrendBoardUpload.errorCode) || fileUploadErrorCode"
       :fileSizeMaxLimit="fileSizeMaxLimit"
     )
   div(class="w-121.5 flex flex-col gap-y-6")
     f-input-text(
       ref="refInputName"
-      v-model:textValue="formData.moodboardName"
+      v-model:textValue="moodboardName"
       required
       :label="$t('QQ0006')"
       :placeholder="$t('QQ0006')"
-      :rules="[$inputRules.required(), (v) => v.length > 60 && $t('WW0108')]"
+      :rules="[inputRules.required(), inputRules.maxLength(60, $t('WW0108'))]"
     )
     f-input-container(:label="$t('QQ0007')")
       div(class="flex items-center")
         img(class="w-5 h-5 rounded-full" :src="orgLogo")
-        p(class="pl-2 text-body2 text-grey-900") {{ creator }}
-    div
-      div(class="h-5.5 flex items-center pb-1")
-        p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
-        f-button-label(
-          v-if="uploadTrendBoardName"
-          size="sm"
-          class="ml-1.5"
-          @click="previewFile(formData.trendBoardFile)"
-        ) {{ $t('UU0060') }}
-      f-input-file(
-        class="w-full mb-9"
-        v-model:fileName="uploadTrendBoardName"
-        :text="$t('UU0025')"
-        :placeholder="$t('QQ0009')"
-        :acceptType="trendBoardFileAcceptType"
-        :maximumSize="fileSizeMaxLimit"
-        @finish="trendBoardUploadFinish"
-        @clear="removeTrendBoard"
-        @error="fileUploadErrorCode = $event"
-      )
+        p(class="pl-2 text-body2 text-grey-900") {{ ogName }}
+    input-trend-board-upload(
+      ref="refInputTrendBoardUpload"
+      :defaultTrendBoard="defaultTrendBoard"
+    )
     f-input-textarea(
       ref="refInputDescription"
-      v-model:textValue="formData.description"
+      v-model:textValue="description"
       :label="$t('RR0014')"
       :placeholder="$t('QQ0013')"
       required
       minHeight="min-h-44.5"
-      :rules="[$inputRules.required(), (v) => v.length > 1000 && $t('WW0073')]"
+      :rules="[inputRules.required(), inputRules.maxLength(1000, $t('WW0073'))]"
     )
     f-input-container(:label="$t('RR0298')")
       f-scrollbar-container(class="max-h-18 mb-2.5")
         div(class="grid gap-y-2 max-w-121.5")
           div(
-            v-for="(attachment, index) in formData.attachmentFileList"
+            v-for="(attachment, index) in attachmentFileList"
             :key="attachment.name"
             class="h-8 flex justify-between items-center px-4 bg-grey-50"
           )
@@ -97,148 +81,141 @@ modal-behavior(
         p {{ $t('RR0145') }} {{ bytesToSize(fileSizeMaxLimit) }}
 </template>
 
-<script setup>
-import { reactive, computed, ref } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
-import { FileOperator, bytesToSize, previewFile } from '@frontier/lib'
+import { FileOperator, bytesToSize, inputRules } from '@frontier/lib'
 import { CREATE_EDIT } from '@/utils/constants'
+import { type UPLOAD_ERROR_CODE, EXTENSION } from '@frontier/constants'
 import useNavigation from '@/composables/useNavigation'
+import useCurrentUnit from '@/composables/useCurrentUnit'
+import { FInputText } from '@frontier/ui-component'
+import { uploadFileToS3 } from '@/utils/fileUpload'
+import { useMoodboardStore } from '@/stores/moodboard'
+import type {
+  Moodboard,
+  MoodboardAllOfAttachmentList,
+  TrendBoard,
+} from '@frontier/platform-web-sdk'
+import InputTrendBoardUpload from '@/components/common/collection/InputTrendBoardUpload.vue'
 
+const props = defineProps<{
+  moodboard?: Moodboard
+}>()
+
+const moodboard = ref(props.moodboard)
+const mode = computed(() =>
+  moodboard.value ? CREATE_EDIT.EDIT : CREATE_EDIT.CREATE
+)
 const store = useStore()
+const { ogBaseMoodboardApi } = useMoodboardStore()
+const { ogName } = useCurrentUnit()
 const { goToMoodboardDetail } = useNavigation()
-
-const props = defineProps({
-  mode: {
-    type: Number,
-    default: CREATE_EDIT.CREATE,
-  },
-})
-
-const formData = reactive({
-  moodboardName: '',
-  description: '',
-  trendBoardFile: null,
-  attachmentFileList: [],
-  // the below variables only use for edit mode
-  moodboardId: 0,
-  deleteAttachmentIdList: [],
-  isDeleteTrendBoard: false,
-})
-const isUploadNewTrendBoard = ref(false)
-const uploadTrendBoardName = ref('')
-
-// Use to EDIT mode
-const originalAttachmentList = ref([])
-
 const orgLogo = computed(() => store.getters['organization/orgLogo'])
-const creator = computed(() => {
-  return store.getters['helper/routeLocation'] === 'org'
-    ? store.getters['organization/organization'].orgName
-    : store.getters['group/group'].groupName
-})
 
-const refInputName = ref(null)
-const refInputDescription = ref(null)
-const fileUploadErrorCode = ref(0)
+const moodboardName = ref<string | null>(null)
+const description = ref<string | null>(null)
+const refInputTrendBoardUpload =
+  ref<InstanceType<typeof InputTrendBoardUpload>>()
+const defaultTrendBoard = ref<TrendBoard | null>(null)
+const attachmentFileList = ref<File[]>([])
+const originalAttachmentList = ref<MoodboardAllOfAttachmentList[]>([]) // Use to EDIT mode
+const deleteAttachmentIdList = ref<number[]>([]) // Use to EDIT mode
+
+if (mode.value === CREATE_EDIT.EDIT && moodboard.value) {
+  moodboardName.value = moodboard.value.moodboardName
+  description.value = moodboard.value.description
+  defaultTrendBoard.value = moodboard.value.trendBoard
+  originalAttachmentList.value = moodboard.value.attachmentList
+}
+
+const fileUploadErrorCode = ref<UPLOAD_ERROR_CODE | null>(null)
 const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
-const trendBoardFileAcceptType = ['pdf']
-
-const trendBoardUploadFinish = (file) => {
-  store.dispatch('helper/pushModalLoading')
-  formData.trendBoardFile = file
-  isUploadNewTrendBoard.value = true
-  fileUploadErrorCode.value = 0
-  store.dispatch('helper/closeModalLoading')
-}
-
-const removeTrendBoard = () => {
-  formData.trendBoardFile = null
-  if (props.mode === CREATE_EDIT.EDIT) {
-    formData.isDeleteTrendBoard = true
-  }
-}
-
 const attachmentFileAcceptType = [
-  'pdf',
-  'jpg',
-  'jpeg',
-  'png',
-  'zip',
-  'gif',
-  'mov',
-  'mp4',
+  EXTENSION.PDF,
+  EXTENSION.JPG,
+  EXTENSION.JPEG,
+  EXTENSION.PNG,
+  EXTENSION.ZIP,
+  EXTENSION.GIF,
+  EXTENSION.MOV,
+  EXTENSION.MP4,
 ]
 const attachmentFileOperator = new FileOperator(
   attachmentFileAcceptType,
-  fileSizeMaxLimit,
-  true
+  fileSizeMaxLimit
 )
 const chooseAttachment = () => attachmentFileOperator.upload()
-attachmentFileOperator.on('finish', (file) => {
-  store.dispatch('helper/pushModalLoading')
-  formData.attachmentFileList.unshift(file)
-  fileUploadErrorCode.value = 0
-  store.dispatch('helper/closeModalLoading')
+attachmentFileOperator.on('finish', (file: File) => {
+  attachmentFileList.value.unshift(file)
+  fileUploadErrorCode.value = null
 })
-attachmentFileOperator.on('error', (code) => {
+attachmentFileOperator.on('error', (code: UPLOAD_ERROR_CODE) => {
   fileUploadErrorCode.value = code
 })
-
-const removeAttachment = (index) => formData.attachmentFileList.splice(index, 1)
-
-const removeOriginalAttachment = (index, attachmentId) => {
+const removeAttachment = (index: number) =>
+  attachmentFileList.value.splice(index, 1)
+const removeOriginalAttachment = (index: number, attachmentId: number) => {
   originalAttachmentList.value.splice(index, 1)
-  formData.deleteAttachmentIdList.push(attachmentId)
+  deleteAttachmentIdList.value.push(attachmentId)
 }
 
+const refInputName = ref<InstanceType<typeof FInputText>>()
+const refInputDescription = ref<InstanceType<typeof FInputText>>()
 const primaryBtnDisabled = computed(
   () =>
-    !formData.moodboardName ||
+    !moodboardName.value ||
     refInputName.value?.isError ||
-    !formData.description ||
+    !description.value ||
     refInputDescription.value?.isError
 )
 const primaryHandler = async () => {
-  store.dispatch('helper/openModalLoading')
-  if (props.mode === CREATE_EDIT.CREATE) {
-    const { moodboardName, description, trendBoardFile, attachmentFileList } =
-      formData
-    const { moodboard } = await store.dispatch('moodboard/createMoodboard', {
-      moodboardName,
-      description,
-      trendBoardFile,
-      attachmentFileList,
-    })
-    goToMoodboardDetail(moodboard.moodboardId)
-  } else {
-    if (!isUploadNewTrendBoard.value) {
-      formData.trendBoardFile = null
-    }
-    await store.dispatch('moodboard/updateMoodboard', formData)
+  if (!moodboardName.value || !description.value) {
+    return
   }
-  store.dispatch('helper/closeModalLoading')
+
+  store.dispatch('helper/pushModalLoading')
+
+  const attachmentList = await Promise.all(
+    attachmentFileList.value.map(async (file) => {
+      const { s3UploadId, fileName } = await uploadFileToS3(file, file.name)
+      return {
+        s3UploadId,
+        fileName,
+      }
+    })
+  )
+
+  const uploadedTrendBoard = refInputTrendBoardUpload.value
+    ? await refInputTrendBoardUpload.value.getTrendBoardS3Object()
+    : null
+
+  if (mode.value === CREATE_EDIT.CREATE) {
+    const { data } = await ogBaseMoodboardApi('createMoodboard', {
+      moodboardName: moodboardName.value,
+      description: description.value,
+      trendBoard: uploadedTrendBoard,
+      attachmentList,
+    })
+    goToMoodboardDetail({}, data.result.moodboard.moodboardId)
+  } else {
+    await ogBaseMoodboardApi('updateMoodboard', {
+      moodboardId: moodboard.value!.moodboardId,
+      moodboardName: moodboardName.value,
+      description: description.value,
+      newTrendBoard: uploadedTrendBoard,
+      newAttachmentList: attachmentList,
+      deleteAttachmentIdList: deleteAttachmentIdList.value,
+      isDeleteTrendBoard:
+        refInputTrendBoardUpload.value?.isDeleteTrendBoard ?? false,
+    })
+  }
+
+  store.dispatch('helper/reloadInnerApp')
+  store.dispatch('helper/clearModalPipeline')
 }
 
 const closeModal = () => {
   store.dispatch('helper/closeModalBehavior')
-}
-
-if (props.mode === CREATE_EDIT.EDIT) {
-  const {
-    moodboardId,
-    moodboardName,
-    description,
-    attachmentList,
-    trendBoardUrl,
-    trendBoardFileName,
-  } = JSON.parse(JSON.stringify(store.getters['moodboard/moodboard']))
-  Object.assign(formData, {
-    moodboardId,
-    moodboardName,
-    description,
-    trendBoardFile: trendBoardUrl,
-  })
-  originalAttachmentList.value = attachmentList
-  uploadTrendBoardName.value = trendBoardFileName
 }
 </script>

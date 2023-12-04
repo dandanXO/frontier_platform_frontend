@@ -18,18 +18,16 @@ div(class="px-6 pt-6.5 h-full flex flex-col")
           :active="selectedStatus === status.id"
         ) {{ status.label }}
       progress-material(
-        v-if="currentTab === 'material'"
+        v-if="currentTab === PROGRESS_TAB.MATERIAL"
         :currentStatus="selectedStatus"
       )
       progress-u3m(
-        v-else-if="currentTab === 'u3m'"
+        v-else-if="currentTab === PROGRESS_TAB.U3M"
         :currentStatus="selectedStatus"
-        :path="PROGRESS_PATH.U3M"
       )
       progress-excel(
-        v-else-if="currentTab === 'excel'"
+        v-else-if="currentTab === PROGRESS_TAB.EXCEL"
         :currentStatus="selectedStatus"
-        :path="PROGRESS_PATH.EXCEL"
       )
 </template>
 
@@ -39,6 +37,7 @@ import { useI18n } from 'vue-i18n'
 import useNavigation from '@/composables/useNavigation'
 import DropdownOgMenu from '@/components/common/DropdownOgMenu.vue'
 import { ProgressStatus } from '@frontier/platform-web-sdk'
+import { PROGRESS_TAB } from '@/utils/constants'
 
 const ProgressMaterial = defineAsyncComponent(
   () => import('@/components/assets/progress/ProgressMaterial.vue')
@@ -57,23 +56,18 @@ defineProps<{
 const { t } = useI18n()
 const { goToProgress } = useNavigation()
 
-const PROGRESS_PATH = {
-  MATERIAL: 'material',
-  U3M: 'u3m',
-  EXCEL: 'excel',
-}
 const tabList = reactive([
   {
     name: t('PP0002'),
-    path: PROGRESS_PATH.MATERIAL,
+    path: PROGRESS_TAB.MATERIAL,
   },
   {
     name: t('RR0199'),
-    path: PROGRESS_PATH.U3M,
+    path: PROGRESS_TAB.U3M,
   },
   {
     name: t('PP0003'),
-    path: PROGRESS_PATH.EXCEL,
+    path: PROGRESS_TAB.EXCEL,
   },
 ])
 

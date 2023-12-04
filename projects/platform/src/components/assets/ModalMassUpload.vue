@@ -54,6 +54,7 @@ import type {
   BatchUploadAssetsMaterialList200ResponseAllOfResultErrorListInner,
 } from '@frontier/platform-web-sdk'
 import { EXTENSION } from '@frontier/constants'
+import { PROGRESS_TAB } from '@/utils/constants'
 
 const { t, locale } = useI18n()
 const store = useStore()
@@ -115,7 +116,7 @@ const handleUpload = async () => {
         secondaryBtnText: t('UU0093'),
         primaryHandler: () => {
           store.dispatch('helper/closeModalBehavior')
-          goToProgress({}, 'excel')
+          goToProgress({}, PROGRESS_TAB.EXCEL)
         },
         secondaryHandler: () => {
           store.dispatch('helper/closeModalBehavior')

@@ -7,9 +7,9 @@ modal-behavior(
 )
   template(#note)
     file-upload-error-note(
-      v-if="errorCode"
-      :errorCode="errorCode"
-      :fileSizeMaxLimit="fileSizeMaxLimit"
+      v-if="refInputTrendBoardUpload && refInputTrendBoardUpload.errorCode"
+      :errorCode="refInputTrendBoardUpload.errorCode"
+      :fileSizeMaxLimit="refInputTrendBoardUpload.fileSizeMaxLimit"
       data-cy="modal-mass-upload_error"
     )
   div(class="w-101")
@@ -23,23 +23,11 @@ modal-behavior(
       :rules="[inputRules.required(), inputRules.maxLength(COLLECTION_NAME_MAX_LENGTH)]"
       :hintError="isCollectionNameExist ? $t('WW0001') : ''"
     )
-    div(class="h-5.5 flex items-center pb-1")
-      p(class="text-body2 text-grey-900 font-bold") {{ $t('RR0249') }}
-      f-button-label(
-        v-if="trendBoardFile"
-        size="sm"
-        class="ml-1.5"
-        @click="previewFile(trendBoardFile)"
-      ) {{ $t('UU0060') }}
-    f-input-file(
-      class="w-full mb-15"
-      v-model:fileName="uploadTrendBoardName"
-      :text="$t('UU0025')"
-      :acceptType="acceptType"
-      :maximumSize="fileSizeMaxLimit"
-      @finish="finishUpload"
-      @clear="removeTrendBoard"
-      @error="errorCode = $event"
+    input-trend-board-upload(
+      ref="refInputTrendBoardUpload"
+      :defaultTrendBoard="defaultTrendBoard"
+      @remove="removeHandler"
+      class="mb-7.5"
     )
     f-input-textarea(
       ref="refInputDescription"
@@ -54,18 +42,21 @@ modal-behavior(
 import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
-import { previewFile, inputRules } from '@frontier/lib'
+import { inputRules } from '@frontier/lib'
 import { useI18n } from 'vue-i18n'
 import {
   CREATE_EDIT,
   COLLECTION_NAME_MAX_LENGTH,
   COLLECTION_DESCRIPTION_MAX_LENGTH,
 } from '@/utils/constants'
-import { type UPLOAD_ERROR_CODE, EXTENSION } from '@frontier/constants'
 import { FInputText } from '@frontier/ui-component'
 import { useWorkspaceStore } from '@/stores/workspace'
-import type { Collection, NodeMeta } from '@frontier/platform-web-sdk'
-import { uploadFileToS3 } from '@/utils/fileUpload'
+import type {
+  Collection,
+  NodeMeta,
+  TrendBoard,
+} from '@frontier/platform-web-sdk'
+import InputTrendBoardUpload from '@/components/common/collection/InputTrendBoardUpload.vue'
 
 export interface PropsModalCreateOrEditCollection {
   mode: CREATE_EDIT
@@ -80,27 +71,19 @@ const { ogBaseWorkspaceApi } = useWorkspaceStore()
 const store = useStore()
 const notify = useNotifyStore()
 
-const fileSizeMaxLimit = 20 * Math.pow(1024, 2)
-const acceptType = [EXTENSION.PDF]
-const errorCode = ref<UPLOAD_ERROR_CODE | null>(null)
-const finishUpload = (file: File) => {
-  errorCode.value = null
-  trendBoardFile.value = file
-}
-
 const collectionName = ref<string | null>(null)
 const collectionDescription = ref<string | null>(null)
-const trendBoardFile = ref<File | string | null>(null)
-const uploadTrendBoardName = ref<string | null>(null)
+const refInputTrendBoardUpload =
+  ref<InstanceType<typeof InputTrendBoardUpload>>()
+const defaultTrendBoard = ref<TrendBoard | null>(null)
+
 if (props.mode === CREATE_EDIT.EDIT) {
   const { name, description, trendBoard } = collection.value
   collectionName.value = name
   collectionDescription.value = description
-  trendBoardFile.value = trendBoard?.originalUrl ?? null
-  uploadTrendBoardName.value = trendBoard?.displayName ?? null
+  defaultTrendBoard.value = trendBoard
 }
-const removeTrendBoard = () => {
-  trendBoardFile.value = null
+const removeHandler = () => {
   if (props.mode === CREATE_EDIT.EDIT) {
     ogBaseWorkspaceApi('removeWorkspaceCollectionTrendBoard', {
       collectionId: collection.value.collectionId,
@@ -131,26 +114,11 @@ const actionHandler = async () => {
   try {
     store.dispatch('helper/pushModalLoading')
 
-    const getTrendBoard = async () => {
-      if (
-        typeof trendBoardFile.value === 'object' &&
-        trendBoardFile.value !== null
-      ) {
-        const { s3UploadId, fileName } = await uploadFileToS3(
-          trendBoardFile.value as File,
-          uploadTrendBoardName.value as string
-        )
-        return {
-          s3UploadId,
-          fileName,
-        }
-      } else {
-        return null
-      }
-    }
+    const trendBoard = refInputTrendBoardUpload.value
+      ? await refInputTrendBoardUpload.value.getTrendBoardS3Object()
+      : null
 
     if (props.mode === CREATE_EDIT.EDIT) {
-      const trendBoard = await getTrendBoard()
       await ogBaseWorkspaceApi('updateWorkspaceCollection', {
         collectionId: collection.value.collectionId,
         collectionName: collectionName.value,
@@ -160,7 +128,6 @@ const actionHandler = async () => {
 
       notify.showNotifySnackbar({ messageText: t('FF0035') })
     } else {
-      const trendBoard = await getTrendBoard()
       await ogBaseWorkspaceApi('createWorkspaceCollection', {
         nodeId: props.nodeMeta.nodeId,
         collectionName: collectionName.value,

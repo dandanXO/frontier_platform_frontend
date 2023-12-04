@@ -11,29 +11,30 @@ modal-behavior(
 
 <script setup lang="ts">
 import { useStore } from 'vuex'
-import { CREATE_EDIT } from '@/utils/constants'
+import type { Collection, NodeMeta } from '@frontier/platform-web-sdk'
+import type { PropsModalCreateOrEditCollection } from '@/components/workspace/ModalCreateOrEditCollection.vue'
 import CollectionDetail from '@/components/common/collection/CollectionDetail.vue'
-import type { Collection } from '@frontier/platform-web-sdk'
-import type { PropsModalCreateOrEditMoodboardCollection } from '@/components/moodboard/ModalCreateOrEditMoodboardCollection.vue'
 
-export interface PropsModalMoodboardCollectionDetail {
-  canEdit: boolean
-  nodeId: number
+export interface PropsModalCollectionDetail {
+  nodeMeta: NodeMeta
   collection: Collection
+  canEdit: boolean
 }
 
-const props = defineProps<PropsModalMoodboardCollectionDetail>()
+const props = withDefaults(defineProps<PropsModalCollectionDetail>(), {
+  canEdit: false,
+})
 
 const store = useStore()
 
 const goToEditCollection = () => {
   store.dispatch('helper/openModalBehavior', {
-    component: 'modal-create-or-edit-moodboard-collection',
+    component: 'modal-create-or-edit-collection',
     properties: {
-      mode: CREATE_EDIT.EDIT,
-      nodeId: props.nodeId,
+      mode: 2,
+      nodeMeta: props.nodeMeta,
       collection: props.collection,
-    } as PropsModalCreateOrEditMoodboardCollection,
+    } as PropsModalCreateOrEditCollection,
   })
 }
 

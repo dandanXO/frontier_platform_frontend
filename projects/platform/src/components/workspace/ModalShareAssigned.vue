@@ -7,40 +7,7 @@ modal-behavior(
 )
   div(class="w-197.5")
     div(class="h-72.5 grid grid-cols-2 gap-x-7.5")
-      div
-        f-input-text(
-          v-model:textValue="targetNumber"
-          prependIcon="search"
-          :label="$t('RR0156')"
-          :placeholder="$t('RR0150')"
-          :hintError="errorMsg"
-          :button="{ type: 'primary', icon: 'add' }"
-          @click:button="addToTargetList"
-          class="mb-5"
-        )
-        f-scrollbar-container(class="h-51")
-          div(class="grid gap-y-5")
-            div(
-              v-for="(item, index) in targetList"
-              :key="item.number"
-              class="flex items-center gap-x-3"
-            )
-              img(
-                v-if="item.unitLogo"
-                :src="item.unitLogo"
-                class="w-9 h-9 rounded-full"
-              )
-              div(
-                v-else
-                class="w-9 h-9 rounded-full border-grey-250 border border-dashed"
-              )
-              div(class="text-body2 flex-grow")
-                p(class="text-grey-900 line-clamp-1") {{ item.unitName }}
-                p(v-if="item.number" class="text-grey-250") {{ item.number }}
-              p(
-                class="text-body2 text-grey-250 pr-2.5 cursor-pointer"
-                @click="removeTarget(index)"
-              ) {{ $t('FF0060') }}
+      input-share-assigned-list(v-model:inputShareList="targetList" :callbackGetTarget="getTarget")
       div
         f-input-container(:label="$t('FF0032')" class="pb-5")
           f-input-checkbox(
@@ -65,13 +32,13 @@ modal-behavior(
 </template>
 
 <script setup lang="ts">
-import { ref, watch, reactive } from 'vue'
+import { ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
-import { inputValidator } from '@frontier/lib'
-import { type ShareTarget, ShareToType } from '@frontier/platform-web-sdk'
+import type { ShareTarget } from '@frontier/platform-web-sdk'
 import { useWorkspaceStore } from '@/stores/workspace'
+import InputShareAssignedList from '@/components/common/InputShareAssignedList.vue'
 
 const props = defineProps<{
   nodeId: number
@@ -83,42 +50,22 @@ const { ogBaseWorkspaceApi, addWorkspaceNodeShareAssigned } =
 const store = useStore()
 const notify = useNotifyStore()
 
-const targetNumber = ref('')
 const formData = reactive({
   isCanClone: false,
   isCanDownloadU3M: false,
   messages: '',
 })
-const errorMsg = ref('')
 const targetList = ref<ShareTarget[]>([])
 
-const addToTargetList = async () => {
-  const frozenTargetValue = targetNumber.value.trim()
-  if (!inputValidator.required(frozenTargetValue)) {
-    return (errorMsg.value = t('WW0002'))
-  }
-  const existedTarget = targetList.value.find(
-    ({ unitName, number }) =>
-      unitName === frozenTargetValue || number === frozenTargetValue
-  )
-  if (existedTarget) {
-    const { ORG, GROUP, USER } = ShareToType
-    switch (existedTarget.type) {
-      case ORG:
-        return (errorMsg.value = t('WW0058'))
-      case GROUP:
-        return (errorMsg.value = t('WW0059'))
-      case USER:
-        return (errorMsg.value = t('WW0057'))
+const getTarget = async (targetNumber: string) => {
+  const { data } = await ogBaseWorkspaceApi(
+    'getWorkspaceNodeShareAssignedTarget',
+    {
+      nodeId: props.nodeId,
+      targetNumber,
     }
-  }
-
-  const res = await ogBaseWorkspaceApi('getWorkspaceNodeShareAssignedTarget', {
-    nodeId: props.nodeId,
-    targetNumber: targetNumber.value,
-  })
-  targetList.value.push(res.data.result.target)
-  targetNumber.value = ''
+  )
+  return data.result.target
 }
 
 const assignedShare = async () => {
@@ -132,11 +79,4 @@ const assignedShare = async () => {
   store.dispatch('helper/closeModal')
   notify.showNotifySnackbar({ messageText: t('RR0157') })
 }
-
-const removeTarget = (index: number) => targetList.value.splice(index, 1)
-
-watch(
-  () => targetNumber.value,
-  () => (errorMsg.value = '')
-)
 </script>

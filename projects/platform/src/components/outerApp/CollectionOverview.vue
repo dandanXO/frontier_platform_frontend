@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  v-if="collection.description || collection.trendBoardCoverImg"
+  v-if="collection.description || collection.trendBoard"
   class="px-7.5 pb-4 md:pb-8 pt-1.5"
 )
   f-expansion-panel(
@@ -46,13 +46,13 @@ div(
           ) {{ collection.description }}
           p(v-else class="text-body2 text-grey-900 leading-1.6") {{ $t('FF0008') }}
         collection-trend-board(
-          :trendBoardCoverImg="collection.trendBoardCoverImg"
-          :trendBoardUrl="collection.trendBoardUrl"
+          :trendBoardCoverImg="collection.trendBoard?.thumbnailUrl"
+          :trendBoardUrl="collection.trendBoard?.originalUrl"
         )
 </template>
 
 <script setup lang="ts">
-import CollectionTrendBoard from '@/components/common/CollectionTrendBoard.vue'
+import CollectionTrendBoard from '@/components/common/collection/CollectionTrendBoard.vue'
 import type { Collection } from '@frontier/platform-web-sdk'
 import { useBreakpoints } from '@frontier/lib'
 

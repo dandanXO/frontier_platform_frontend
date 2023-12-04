@@ -121,7 +121,7 @@ import {
   type WorkspaceNodeCollection,
   type InnerExternalFilter,
 } from '@frontier/platform-web-sdk'
-import type { PropsModalCollectionDetail } from '@/components/common/ModalCollectionDetail.vue'
+import type { PropsModalCollectionDetail } from '@/components/common/collection/ModalCollectionDetail.vue'
 import { useShowroomStore } from '@/stores/showroom'
 import ShowroomBanner from '@/components/showroom/ShowroomBanner.vue'
 
