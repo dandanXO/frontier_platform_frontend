@@ -71,7 +71,7 @@ div(class="w-full h-full flex flex-col" v-bind="$attrs")
       f-paginator(
         v-model:currentPage="pagination.currentPage"
         :totalPage="pagination.totalPage"
-        @visit="search($event)"
+        @goTo="search($event)"
       )
 multi-select-menu(
   v-if="optionMultiSelect && optionMultiSelect.length > 0 && innerSelectedItemList"
