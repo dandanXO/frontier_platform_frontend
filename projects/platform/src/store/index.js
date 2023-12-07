@@ -7,8 +7,6 @@ import organization from '@/store/modules/management/organization'
 import group from '@/store/modules/management/group'
 import helper from '@/store/modules/helper'
 import assets from '@/store/modules/assets'
-import publicLibrary from '@/store/modules/publicLibrary'
-import moodboard from '@/store/modules/moodboard'
 import polling from '@/store/modules/polling'
 import sticker from '@/store/modules/sticker'
 
@@ -58,9 +56,7 @@ export default createStore({
     group,
     helper,
     assets,
-    publicLibrary,
     polling,
-    moodboard,
     sticker,
   },
 })

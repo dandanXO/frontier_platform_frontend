@@ -6,91 +6,50 @@ modal-behavior(
   @click:primary="assignedShare"
 )
   div(class="w-104.5")
-    f-input-text(
-      v-model:textValue="target"
-      prependIcon="search"
-      :label="$t('RR0156')"
-      :placeholder="$t('RR0150')"
-      :hintError="errorMsg"
-      :button="{ type: 'primary', icon: 'add' }"
-      @click:button="addToTargetList"
-      class="mb-6"
+    input-share-assigned-list(
+      v-model:inputShareList="targetList"
+      :callbackGetTarget="getTarget"
     )
-    f-scrollbar-container(class="max-h-69")
-      div(class="grid gap-y-6")
-        div(v-for="(item, index) in targetList" class="flex items-center gap-x-3")
-          img(v-if="item.logo" :src="item.logo" class="w-9 h-9 rounded-full")
-          div(v-else class="w-9 h-9 rounded-full border-grey-250 border border-dashed")
-          div(class="text-body2 flex-grow")
-            p(class="text-grey-900 line-clamp-1") {{ item.name }}
-            p(v-if="item.number" class="text-grey-250") {{ item.number }}
-          p(
-            class="text-body2 text-grey-250 pr-2.5 cursor-pointer"
-            @click="removeTarget(index)"
-          ) {{ $t('FF0060') }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useNotifyStore } from '@/stores/notify'
 import { useI18n } from 'vue-i18n'
-import { inputValidator } from '@frontier/lib'
-import { ShareToType } from '@frontier/platform-web-sdk'
+import InputShareAssignedList from '@/components/common/InputShareAssignedList.vue'
+import { usePublicLibraryStore } from '@/stores/publicLibrary'
+import type { ShareTarget } from '@frontier/platform-web-sdk'
 
-const props = defineProps({
-  nodeKey: {
-    type: String,
-    required: true,
-  },
-})
+const props = defineProps<{
+  nodeId: number
+}>()
 
 const { t } = useI18n()
 const store = useStore()
 const notify = useNotifyStore()
-const target = ref('')
-const targetList = ref([])
-const errorMsg = ref('')
+const { ogBasePublicLibraryApi } = usePublicLibraryStore()
+const targetList = ref<ShareTarget[]>([])
 
-const addToTargetList = async () => {
-  const frozenTargetValue = target.value.trim()
-  if (!inputValidator.required(frozenTargetValue)) {
-    return (errorMsg.value = t('WW0002'))
-  }
-  const existedTarget = targetList.value.find(
-    ({ name, number }) =>
-      name === frozenTargetValue || number === frozenTargetValue
-  )
-  if (existedTarget) {
-    const { ORG, GROUP, USER } = ShareToType
-    switch (existedTarget.type) {
-      case ORG:
-        return (errorMsg.value = t('WW0058'))
-      case GROUP:
-        return (errorMsg.value = t('WW0059'))
-      case USER:
-        return (errorMsg.value = t('WW0057'))
+const getTarget = async (targetNumber: string) => {
+  const { data } = await ogBasePublicLibraryApi(
+    'getPublicLibraryNodeShareAssignedTarget',
+    {
+      nodeId: props.nodeId,
+      targetNumber,
     }
-  }
-
-  const temp = await store.dispatch('publicLibrary/getShareTarget', {
-    nodeKey: props.nodeKey,
-    target: frozenTargetValue,
-  })
-  targetList.value.push(temp)
-  target.value = ''
+  )
+  return data.result.target
 }
 
 const assignedShare = async () => {
   store.dispatch('helper/pushModalLoading')
-  await store.dispatch('publicLibrary/assignedShare', {
-    nodeKey: props.nodeKey,
+  await ogBasePublicLibraryApi('addPublicLibraryNodeShareAssigned', {
+    nodeId: props.nodeId,
     targetList: targetList.value,
   })
   store.dispatch('helper/closeModalLoading')
   store.dispatch('helper/closeModal')
   notify.showNotifySnackbar({ messageText: t('RR0157') })
 }
-
-const removeTarget = (index) => targetList.value.splice(index, 1)
 </script>
