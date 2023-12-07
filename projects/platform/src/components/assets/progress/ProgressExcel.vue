@@ -139,9 +139,9 @@ f-table(
                   @click="handleAction(ASSETS_MATERIAL_FUNCTION.PRINT_LABEL, item); collapsePopper()"
                 ) {{ $t('RR0061') }}
                 div(class="border-t border-grey-250 my-1")
-                f-list-item(
-                  @click="handleAction(ASSETS_MATERIAL_FUNCTION.EXPORT_EXCEL, item); collapsePopper()"
-                ) {{ $t('RR0060') }}
+                //- f-list-item(
+                //-   @click="handleAction(ASSETS_MATERIAL_FUNCTION.EXPORT_EXCEL, item); collapsePopper()"
+                //- ) {{ $t('RR0060') }}
         //- Export Complete
         f-button(
           v-else-if="item.category === EXCEL_CATEGORY.EXPORT"
@@ -189,7 +189,7 @@ import {
 } from '@frontier/platform-web-sdk'
 import { useProgressStore } from '@/stores/progress'
 import usePrint from '@/composables/material/usePrint'
-import useAssets, { ASSETS_MATERIAL_FUNCTION } from '@/composables/useAssets'
+import { ASSETS_MATERIAL_FUNCTION } from '@/composables/useAssets'
 
 const ERROR_MSG = {
   INACTIVE: 1,
@@ -208,7 +208,6 @@ const { t } = useI18n()
 const store = useStore()
 const { goToAssets, goToBillings } = useNavigation()
 const { ogBaseProgressApi } = useProgressStore()
-const { exportExcel } = useAssets()
 const { printA4Swatch, printLabel } = usePrint()
 
 const headers = [
@@ -363,7 +362,7 @@ const handleAction = async (
         } else if (type === ASSETS_MATERIAL_FUNCTION.PRINT_LABEL) {
           printLabel(materialList)
         } else {
-          exportExcel.func(materialList)
+          // exportExcel.func(materialList)
         }
       },
       secondaryBtnHandler: () => {
@@ -386,7 +385,7 @@ const handleAction = async (
     } else if (type === ASSETS_MATERIAL_FUNCTION.PRINT_LABEL) {
       printLabel(materialList)
     } else {
-      exportExcel.func(materialList)
+      // exportExcel.func(materialList)
     }
   }
 }

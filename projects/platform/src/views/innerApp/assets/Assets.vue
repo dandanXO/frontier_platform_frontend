@@ -146,7 +146,7 @@ const {
   downloadU3m,
   cloneTo,
   addToWorkspace,
-  exportExcel,
+  // exportExcel,
   printLabel,
   mergeMaterial,
   deleteMaterial,
@@ -155,7 +155,8 @@ const {
 const optionList = computed(() => [
   [editMaterial],
   [cloneTo, addToWorkspace],
-  [createU3m, downloadU3m, exportExcel],
+  // [createU3m, downloadU3m, exportExcel],
+  [createU3m, downloadU3m],
   [printLabel, printA4Swatch],
   [deleteMaterial],
 ])
@@ -166,7 +167,7 @@ const optionMultiSelect = computed(() => [
   printA4Swatch,
   printLabel,
   downloadU3m,
-  exportExcel,
+  // exportExcel,
   mergeMaterial,
   deleteMaterial,
 ])
