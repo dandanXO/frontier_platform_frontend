@@ -1,5 +1,4 @@
 import { computed, unref } from 'vue'
-import { LOCATION_TYPE } from '@/utils/constants'
 import { useI18n } from 'vue-i18n'
 import type { Ref } from 'vue'
 import { type DigitalThread, FeatureType } from '@frontier/platform-web-sdk'
@@ -16,7 +15,7 @@ const useAddFromDisplayList = (
       case FeatureType.SHOWROOM:
         list.unshift(t('RR0003'))
         break
-      case FeatureType.ASSET:
+      case FeatureType.ASSETS:
         list.unshift(t('RR0008'))
         break
       case FeatureType.WORKSPACE:

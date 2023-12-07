@@ -24,11 +24,10 @@ grid-item-wrapper(
         :class="{ 'font-bold': index === 0 }"
         class="text-caption2 md:text-body2/1.6 line-clamp-1"
       ) {{ info }}
-  template(#corner-top-right="{ isHover }")
+  template(#corner-top-right)
     digital-thread-entrance(
-      :isHover="isHover"
       :material="material"
-      :drawerOpenFromLocationList="[]"
+      :drawerOpenFromLocationList="drawerOpenFromLocationList"
     )
   template(#corner-bottom-left)
     slot(name="corner-bottom-left")
@@ -58,6 +57,7 @@ const props = withDefaults(
     selectValue?: any
     selectedValue?: Array<any>
     optionList?: FunctionOption<any>[][]
+    drawerOpenFromLocationList: string[]
   }>(),
   {
     isSelectable: true,

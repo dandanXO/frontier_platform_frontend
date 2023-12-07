@@ -27,11 +27,10 @@ grid-item-wrapper(
         :class="{ 'font-bold': index === 0 }"
         class="text-caption2 md:text-body2/1.6 line-clamp-1"
       ) {{ info }}
-  template(#corner-top-right="{ isHover }")
+  template(#corner-top-right)
     digital-thread-entrance(
-      :isHover="isHover"
       :material="mainMaterial"
-      :drawerOpenFromLocationList="drawerOpenFromLocationList"
+      :drawerOpenFromLocationList="node.nodeMeta.locationList.map((l) => l.name)"
     )
   template(#corner-bottom-left)
     slot(name="corner-bottom-left")
@@ -62,7 +61,6 @@ grid-item-collection(
 import GridItemWrapper from '@/components/common/gridItem/GridItemWrapper.vue'
 import GridItemCollection from '@/components/common/gridItem/GridItemCollection.vue'
 import { computed } from 'vue'
-import useStickerLocationList from '@/composables/useStickerLocationList'
 import { useStore } from 'vuex'
 import type {
   Collection,
@@ -94,9 +92,6 @@ const emit = defineEmits<{
 }>()
 
 const store = useStore()
-const drawerOpenFromLocationList = useStickerLocationList(
-  props.node.nodeMeta.locationList.map((location) => location.name)
-)
 const nodeType = computed(() => props.node.nodeMeta.nodeType)
 const collection = computed(() =>
   nodeType.value === NodeType.COLLECTION

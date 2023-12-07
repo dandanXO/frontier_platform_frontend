@@ -6,9 +6,8 @@ div(class="grid grid-cols-12 max-w-405 gap-12 lg:gap-14 px-14 py-5 hover:bg-grey
     @update:selectedList="emit('update:selectedList', $event)"
     canEdit
   )
-    template(#slot:action="{ isHover }")
+    template(#slot:action)
       digital-thread-entrance(
-        :isHover="isHover"
         :material="material"
         :drawerOpenFromLocationList="[]"
       )

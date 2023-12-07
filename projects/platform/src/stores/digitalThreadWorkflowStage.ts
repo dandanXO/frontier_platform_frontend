@@ -12,7 +12,7 @@ import { getBoldInterpolationMessageComponent } from '@/utils/render'
 import useThreadBoardStore from '@/stores/threadBoard'
 import useOgBaseApiWrapper from '@/composables/useOgBaseApiWrapper'
 
-interface WorkflowStageOption {
+export interface WorkflowStageOption {
   workflowStageId: number
   workflowStageName: string
   isDefault: boolean
@@ -76,7 +76,6 @@ const useDigitalThreadWorkflowStageStore = defineStore(
       }
 
       notify.showNotifySnackbar({
-        isShowSnackbar: true,
         messageComponent: getBoldInterpolationMessageComponent('TT0210', {
           lastStage: oldWorkflowStage.workflowStageName,
           newStage: newWorkflowStage.workflowStageName,

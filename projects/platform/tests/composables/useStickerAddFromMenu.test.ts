@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import useStickerAddFromMenu from '@/composables/useStickerAddFromMenu'
-import { OG_TYPE } from '@/utils/constants'
+import { OgType } from 'frontier/platform-web-sdk'
 
 const mockStore = createStore({
   modules: {
@@ -45,7 +45,7 @@ describe('useStickerAddFromMenu', () => {
         labelColor: '#ffffff',
         selectValue: {
           addFromOGId: 10,
-          addFromOGType: OG_TYPE.ORG,
+          addFromOGType: OgType.ORG,
           name: 'Raven Org',
           labelColor: '#ffffff',
         },
@@ -55,7 +55,7 @@ describe('useStickerAddFromMenu', () => {
         labelColor: '#000000',
         selectValue: {
           addFromOGId: 11,
-          addFromOGType: OG_TYPE.GROUP,
+          addFromOGType: OgType.GROUP,
           name: 'Raven Group 1',
           labelColor: '#000000',
         },
@@ -65,7 +65,7 @@ describe('useStickerAddFromMenu', () => {
         labelColor: '#888888',
         selectValue: {
           addFromOGId: 12,
-          addFromOGType: OG_TYPE.GROUP,
+          addFromOGType: OgType.GROUP,
           name: 'Raven Group 2',
           labelColor: '#888888',
         },

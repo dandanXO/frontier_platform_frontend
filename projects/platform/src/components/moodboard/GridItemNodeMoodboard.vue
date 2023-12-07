@@ -8,6 +8,7 @@ grid-item-material(
   v-model:selectedValue="innerSelectedValue"
   :selectValue="node"
   :optionList="optionList"
+  :drawerOpenFromLocationList="node.nodeMeta.locationList.map((l) => l.name)"
   @click="clickNodeHandler"
 )
   template(#corner-bottom-left)

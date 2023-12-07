@@ -54,6 +54,7 @@ search-table(
           v-model:selectedValue="selectedMaterialList"
           :optionList="optionList"
           @click.stop="goToAssetMaterialDetail({}, material.materialId)"
+          :drawerOpenFromLocationList="[]"
         )
     div(v-else class="flex h-full justify-center items-center")
       div(class="flex flex-col justify-center items-center")

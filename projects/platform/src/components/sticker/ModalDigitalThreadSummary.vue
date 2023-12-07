@@ -78,7 +78,10 @@ modal-behavior(:header="$t('TT0067')")
         div
           p(class="text-caption text-grey-500 pb-4") {{ $t('TT0061') }}
           div(class="flex items-center flex-wrap text-body2 text-grey-900 leading-1.6")
-            template(v-for="(location, index) in addFromLocationList")
+            template(
+              v-for="(location, index) in addFromLocationList"
+              :key="location"
+            )
               p {{ location }}
               span(v-if="index !== addFromLocationList.length - 1" class="px-1") /
         //- Create By
@@ -139,10 +142,10 @@ modal-behavior(:header="$t('TT0067')")
               iconName="internal"
               size="16"
               class="text-grey-300"
-              :tooltipMessage="$t('TT0101', { addFrom: digitalThread.sideOGType === OG_TYPE.ORG ? $t('RR0262') : $t('RR0263') })"
+              :tooltipMessage="$t('TT0101', { addFrom: digitalThread.sideOGType === OgType.ORG ? $t('RR0262') : $t('RR0263') })"
             )
           div(class="flex items-center flex-wrap gap-x-2 gap-y-2")
-            f-tag(v-for="tag in digitalThread.tagList" size="sm") {{ tag }}
+            f-tag(v-for="tag in digitalThread.tagList" size="sm" :key="tag") {{ tag }}
         //- Participants
         div(class="py-4 px-5 border border-grey-150 rounded")
           div(class="flex items-center pb-4")
@@ -153,32 +156,36 @@ modal-behavior(:header="$t('TT0067')")
               iconName="internal"
               size="16"
               class="text-grey-300"
-              :tooltipMessage="$t('TT0101', { addFrom: digitalThread.sideOGType === OG_TYPE.ORG ? $t('RR0262') : $t('RR0263') })"
+              :tooltipMessage="$t('TT0101', { addFrom: digitalThread.sideOGType === OgType.ORG ? $t('RR0262') : $t('RR0263') })"
             )
           div(class="flex flex-col gap-y-2")
             div(
               v-for="participant in digitalThread.participantList"
+              :key="participant.userId"
               class="flex items-center gap-x-2"
             )
               f-avatar(:imageUrl="participant.avatar" type="user" size="sm")
               span(class="text-caption leading-1.6 line-clamp-1 text-grey-900") {{ participant.name }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import useAddFromDisplayList from '@/composables/useAddFromLocationListDisplay'
-import { OG_TYPE } from '@/utils/constants'
 import { toStandardFormat } from '@frontier/lib'
 import useDigitalThreadWorkflowStageStore from '@/stores/digitalThreadWorkflowStage'
+import { OgType, type DigitalThread } from '@frontier/platform-web-sdk'
+import type { WorkflowStageOption } from '@/stores/digitalThreadWorkflowStage'
 
 const store = useStore()
 
-const digitalThread = computed(() => store.getters['sticker/digitalThread'])
+const digitalThread = computed<DigitalThread>(
+  () => store.getters['sticker/digitalThread']
+)
 const selectedWorkflowStageId = ref(digitalThread.value.workflowStageId)
 const workflowStageStore = useDigitalThreadWorkflowStageStore()
 
-const toMenuItem = (opt) => ({
+const toMenuItem = (opt: WorkflowStageOption) => ({
   title: opt.workflowStageName,
   selectValue: opt.workflowStageId,
 })

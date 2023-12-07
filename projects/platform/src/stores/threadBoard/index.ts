@@ -25,7 +25,7 @@ import threadBoardApi from '@/apis/threadBoard'
 import stickerApi from '@/apis/sticker.js'
 import { useNotifyStore } from '@/stores/notify'
 import useCurrentUnit from '@/composables/useCurrentUnit'
-import useGotoMaterialDetail from '@/composables/useGotoMaterialDetail'
+import useGoToStickerMaterialDetail from '@/composables/useGoToStickerMaterialDetail'
 import usePermission from '@/composables/usePermission'
 import useNavigation from '@/composables/useNavigation'
 import { FUNC_ID, NOTIFY_TYPE } from '@/utils/constants'
@@ -65,7 +65,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
   const notify = useNotifyStore()
   const ogBaseThreadBoardApi = useOgBaseApiWrapper(threadBoardApi)
   const { ogActiveMemberList } = useCurrentUnit()
-  const gotoMaterialDetail = useGotoMaterialDetail()
+  const goToStickerMaterialDetail = useGoToStickerMaterialDetail()
   const { gotoThreadBoard } = useNavigation()
   const organization = computed<Organization>(
     () => store.getters['organization/organization']
@@ -659,7 +659,7 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
     })
 
     const { material } = data.result
-    gotoMaterialDetail(material, thread, openInNew)
+    goToStickerMaterialDetail(material, thread, openInNew)
   }
 
   const openStickerDrawerByThread = async (thread: DigitalThreadBase) => {
@@ -668,7 +668,6 @@ const useThreadBoardStore = defineStore('threadBoard', () => {
       return store.dispatch('sticker/openStickerDrawer', {
         digitalThreadSideId: thread.digitalThreadSideId,
         drawerOpenFromLocationList: [],
-        drawerOpenFromLocationType: FeatureType.THREAD_BOARD,
       })
     }
 

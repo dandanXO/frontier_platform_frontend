@@ -93,7 +93,12 @@ div(class="grid gap-y-8 content-start")
           :class="[selectedU3m.status === MaterialU3mStatus.COMPLETED ? 'text-grey-900 group-hover:text-primary-400' : 'text-grey-300']"
         )
   //- Sticker
-  f-button(prependIcon="sticker_thread" size="md" class="w-full -mt-2") Conversation
+  f-button(
+    prependIcon="sticker_thread"
+    size="md"
+    class="w-full -mt-2"
+    @click="store.dispatch('sticker/preOpenStickerDrawer', { material, drawerOpenFromLocationList })"
+  ) Conversation
   //- Specifications
   div(class="text-grey-900 text-body2/1.6 grid gap-y-2")
     p(
@@ -167,6 +172,7 @@ const props = defineProps<{
   material: Material
   publishedDate?: number
   isCanDownloadU3M: boolean
+  drawerOpenFromLocationList: string[]
 }>()
 
 const { t } = useI18n()

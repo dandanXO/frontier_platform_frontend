@@ -6,20 +6,20 @@ div(
     img(
       v-defaultImg
       class="w-8 h-8 rounded cursor-pointer"
-      :src="material.coverImg"
-      @click.stop="$emit('goToMaterialDetail', false)"
+      :src="material.coverImage?.thumbnailUrl"
+      @click.stop="goToStickerMaterialDetail(material, digitalThread, false)"
     )
     p(
       class="text-body2 text-grey-800"
       :class="{ 'hover:text-primary-400 hover:underline hover:cursor-pointer': !digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess }"
-      @click.stop="$emit('goToMaterialDetail', false)"
-    ) {{ material.materialNo }}
+      @click.stop="goToStickerMaterialDetail(material, digitalThread, false)"
+    ) {{ material.itemNo }}
     f-svg-icon(
       v-if="!digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess"
       iconName="open_in_new"
       size="14"
       class="invisible group-hover/material-no:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
-      @click.stop="$emit('goToMaterialDetail', true)"
+      @click.stop="goToStickerMaterialDetail(material, digitalThread, true)"
       tooltipMessage="TT0074"
     )
   div(class="pb-1 flex items-center gap-x-2")
@@ -70,22 +70,21 @@ div(
     )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { toStandardFormat } from '@frontier/lib'
+import type { Material, DigitalThreadBase } from '@frontier/platform-web-sdk'
+import useGoToStickerMaterialDetail from '@/composables/useGoToStickerMaterialDetail'
+
+const props = defineProps<{
+  digitalThread: DigitalThreadBase
+}>()
 
 const store = useStore()
+const goToStickerMaterialDetail = useGoToStickerMaterialDetail()
 
-defineEmits(['goToMaterialDetail'])
-const props = defineProps({
-  digitalThread: {
-    type: Object,
-    required: true,
-  },
-})
-
-const material = computed(() => store.getters['sticker/material'])
+const material = computed<Material>(() => store.getters['sticker/material'])
 const uncreated = computed(
   () => props.digitalThread.digitalThreadSideId === null
 )

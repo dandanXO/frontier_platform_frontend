@@ -6,14 +6,16 @@ import type { DigitalThread } from '@frontier/platform-web-sdk'
 type LocationList = DigitalThread['addFromLocationList']
 
 const useStickerLocationList = (
-  locationList: Ref<LocationList> | LocationList
+  locationList: Ref<LocationList> | LocationList | null
 ) => {
   const route = useRoute()
   const drawerOpenFromLocationList = computed(() => {
     let resultList = unref(locationList)
 
     // 在 public library 第一層 的 material node location 後端回應 null，為了維持資料一致性使用空陣列
-    if (!resultList) return []
+    if (!resultList) {
+      return []
+    }
 
     // 若路徑不是 embed, received-share，material node location 或是 material detail breadcrumb 不會包含 location type
     // => 去除陣列第一個元素

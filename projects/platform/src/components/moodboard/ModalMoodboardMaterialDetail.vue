@@ -27,6 +27,7 @@ modal-behavior(
         :material="material"
         :publishedDate="nodeMeta.publicDate ?? undefined"
         :isCanDownloadU3M="nodeMeta.isCanDownloadU3M"
+        :drawerOpenFromLocationList="nodeMeta.locationList.map((l) => l.name)"
       )
 </template>
 

@@ -13,7 +13,7 @@ const useLogSender = () => {
       return FeatureType.PUBLIC_LIBRARY
     }
     if (route.path.match(/assets|progress/)) {
-      return FeatureType.ASSET
+      return FeatureType.ASSETS
     }
     if (route.path.includes('workspace')) {
       return FeatureType.WORKSPACE

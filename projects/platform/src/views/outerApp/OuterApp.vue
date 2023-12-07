@@ -41,10 +41,10 @@ main(class="flex flex-col h-full")
 import StickerDrawer from '@/components/sticker/StickerDrawer.vue'
 import StickerDrawerForLogin from '@/components/sticker/StickerDrawerForLogin.vue'
 import { useStore } from 'vuex'
-import { computed, onMounted, ref } from 'vue'
-import generalApi from '@/apis/general'
+import { computed, onMounted } from 'vue'
 import { useFilterStore } from '@/stores/filter'
 import useLogSender from '@/composables/useLogSender'
+import { useOuterStore } from '@/stores/outer'
 
 const props = defineProps<{
   sharingKey: string
@@ -52,6 +52,7 @@ const props = defineProps<{
 
 const store = useStore()
 const { getExternalFilterOption } = useFilterStore()
+const outerStore = useOuterStore()
 const logSender = useLogSender()
 logSender.createReceivePageLog(props.sharingKey)
 
@@ -62,27 +63,21 @@ const isStickerDrawerForLoginOpen = computed<boolean>(
   () => store.getters['sticker/isStickerDrawerForLoginOpen']
 )
 
-const hasLogin = ref(false)
-const checkHasLogin = async () => {
-  const accessToken = localStorage.getItem('accessToken')
-
-  if (!accessToken) {
-    hasLogin.value = false
-    return
-  }
-
-  const { data } = await generalApi.checkTokenStatus({
-    accessToken,
-  })
-  hasLogin.value = data.result.status !== 1
-}
-
 onMounted(async () => {
-  await checkHasLogin()
+  await outerStore.checkHasLogin()
   getExternalFilterOption()
 
-  if (hasLogin.value) {
-    await store.dispatch('user/getUser')
+  if (isStickerDrawerForLoginOpen.value) {
+    /**
+     * 如果 isStickerDrawerForLoginOpen 為 true，表示之前呼叫過 sticker/openStickerDrawerForLogin
+     * 所以 sticker/material, sticker/drawerOpenFromLocationList, sticker/drawerOpenFromLocationType 一定有值
+     */
+    store.commit('sticker/SET_isStickerDrawerForLoginOpen', false)
+    store.dispatch('sticker/preOpenStickerDrawer', {
+      material: store.getters['sticker/material'],
+      drawerOpenFromLocationList:
+        store.getters['sticker/drawerOpenFromLocationList'],
+    })
   }
 })
 

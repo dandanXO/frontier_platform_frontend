@@ -8,7 +8,7 @@ div(
       f-avatar(:imageUrl="shareInfo.unitLogo" type="org" size="lg")
       p(class="hidden tablet:block text-body1 font-bold text-grey-900 pl-2.5") {{ shareInfo.unitName }}
     div(ref="refRight" class="flex items-center gap-x-6")
-      template(v-if="!isCollapsed")
+      template(v-if="!isCollapsed && !isMobile")
         dropdown-locale
         f-tooltip-standard(:tooltipMessage="$t('RR0056')")
           template(#slot:tooltip-trigger)
@@ -24,6 +24,11 @@ div(
             v-if="haveMsgAndFirstRead"
             class="absolute -top-px -right-px w-2 h-2 rounded-full border border-grey-0 bg-red-400"
           )
+        digital-thread-entrance(
+          v-if="route.name === 'ReceivedShareMaterial' && material && drawerOpenFromLocationList"
+          :material="material"
+          :drawerOpenFromLocationList="drawerOpenFromLocationList"
+        )
       f-popper(v-else @click.stop placement="top-end")
         template(#trigger)
           f-svg-icon(
@@ -50,19 +55,24 @@ import { storeToRefs } from 'pinia'
 import type { MenuTree } from '@frontier/ui-component'
 import { useI18n } from 'vue-i18n'
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
+import { useRoute } from 'vue-router'
+import { useBreakpoints } from '@frontier/lib'
 
 const props = defineProps<{
   sharingKey: string
 }>()
 
+const { isMobile } = useBreakpoints()
 const { locale } = useI18n()
 const store = useStore()
-
+const route = useRoute()
 const outerStore = useOuterStore()
-const { getReceivedShareInfo, setHasSelectedStickerAddFromOG } = outerStore
-const { shareInfo, hasLogin, hasSelectedStickerAddFromOG } =
-  storeToRefs(outerStore)
+const { getReceivedShareInfo } = outerStore
+const { shareInfo, material, nodeMeta } = storeToRefs(outerStore)
 const { saveReceivedShare, receivedShareClone } = useReceivedShare()
+const drawerOpenFromLocationList = computed(() =>
+  nodeMeta.value?.locationList.map(({ name }) => name)
+)
 
 const isFirstTime = ref(true)
 const haveMsgAndFirstRead = computed(
@@ -78,10 +88,6 @@ const openModalShareMessage = () => {
     },
   })
 }
-
-const isStickerDrawerForLoginOpen = computed<boolean>(
-  () => store.getters['sticker/isStickerDrawerForLoginOpen']
-)
 
 const refLeft = ref<HTMLElement>()
 const refRight = ref<HTMLElement>()
@@ -151,13 +157,10 @@ const menuTree = computed<MenuTree>(() => ({
           title: 'Digital Thread™',
           icon: 'sticker_thread',
           clickHandler: () => {
-            // store.dispatch('sticker/openStickerDrawer', {
-            //   // materialId: ,
-            //   drawerOpenFromLocationList:
-            //     store.getters['sticker/drawerOpenFromLocationList'],
-            //   drawerOpenFromLocationType:
-            //     store.getters['sticker/drawerOpenFromLocationType'],
-            // })
+            store.dispatch('sticker/preOpenStickerDrawer', {
+              material: material.value,
+              drawerOpenFromLocationList: drawerOpenFromLocationList.value,
+            })
           },
         },
       ],
@@ -168,44 +171,9 @@ const menuTree = computed<MenuTree>(() => ({
 onMounted(async () => {
   await getReceivedShareInfo(props.sharingKey)
 
-  if (!shareInfo.value) {
-    return
-  }
-
-  if (
-    hasLogin.value &&
-    isStickerDrawerForLoginOpen.value &&
-    !hasSelectedStickerAddFromOG.value
-  ) {
-    store.commit('sticker/SET_isStickerDrawerForLoginOpen', false)
-    // 檢查是否有選擇過組織
-    setTimeout(() => {
-      store.dispatch('helper/openModalBehavior', {
-        component: 'modal-choose-sticker-add-from',
-        properties: {
-          actionHandler: async (orgNo: string) => {
-            store.dispatch('helper/openModalLoading')
-            await store.dispatch('organization/getOrg', { orgNo })
-            setHasSelectedStickerAddFromOG(true)
-            await Promise.all([
-              store.dispatch('organization/orgUser/getOrgUser'),
-              store.dispatch('sticker/openStickerDrawer', {
-                materialId: store.getters['sticker/currentMaterialId'],
-                drawerOpenFromLocationList:
-                  store.getters['sticker/drawerOpenFromLocationList'],
-                drawerOpenFromLocationType:
-                  store.getters['sticker/drawerOpenFromLocationType'],
-              }),
-            ])
-            store.dispatch('helper/closeModalLoading')
-          },
-        },
-      })
-    }, 0)
-  }
-
   const right = refLeft.value?.getBoundingClientRect().right ?? -1
   const left = refRight.value?.getBoundingClientRect().left ?? 0
+
   if (right >= left) {
     isCollapsed.value = true
   }

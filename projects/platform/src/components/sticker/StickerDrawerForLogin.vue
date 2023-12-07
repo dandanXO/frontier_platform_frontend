@@ -28,14 +28,18 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
         img(
           v-defaultImg
           class="flex-shrink-0 w-13 h-13 rounded overflow-hidden"
-          :src="material.coverImg"
+          :src="material.coverImage.thumbnailUrl"
         )
         div(class="flex-grow h-11")
           p(class="pb-2 flex items-center text-body2 text-grey-800")
-            span(class="font-bold line-clamp-1") {{ material.materialNo }}
+            span(class="font-bold line-clamp-1") {{ material.itemNo }}
           div(class="flex items-center gap-x-2")
-            f-avatar(:imageUrl="material.unitLogo" type="org" size="xs")
-            span(class="text-caption text-grey-800") {{ material.unitName }}
+            f-avatar(
+              :imageUrl="material.metaData.unitLogo"
+              type="org"
+              size="xs"
+            )
+            span(class="text-caption text-grey-800") {{ material.metaData.unitName }}
       //- Filter
       div(class="pt-2.5 flex items-center gap-x-2")
         f-select-dropdown(
@@ -69,12 +73,13 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           p(class="text-body2 text-grey-600 leading-1.6 text-center") {{ $t('TT0108') }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useStore } from 'vuex'
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { STICKER_ADD_TO, SIGNUP_SOURCE } from '@/utils/constants'
 import { useRouter } from 'vue-router'
+import type { Material, MainMaterial } from '@frontier/platform-web-sdk'
 
 const store = useStore()
 const { t } = useI18n()
@@ -82,7 +87,9 @@ const router = useRouter()
 
 const addTo = ref(STICKER_ADD_TO.ALL)
 
-const material = computed(() => store.getters['sticker/material'])
+const material = computed<Material | MainMaterial>(
+  () => store.getters['sticker/material']
+)
 
 const menuAddTo = computed(() => ({
   blockList: [

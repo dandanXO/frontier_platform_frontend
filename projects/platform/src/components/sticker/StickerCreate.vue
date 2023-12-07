@@ -56,12 +56,12 @@ div(class="relative w-full rounded-md shadow-8 overflow-hidden")
             )
               f-svg-icon(iconName="internal" size="14")
               p(class="text-caption") {{ $t('TT0010') }}
-        p(class="w-73.5 self-end text-grey-300 text-caption leading-1.6") {{ addTo === EXTERNAL ? $t('TT0018', { addFrom: addFrom.addFromOGType === OG_TYPE.ORG ? $t('RR0262') : $t('RR0263') }) : $t('TT0030', { addFrom: addFrom.addFromOGType === OG_TYPE.ORG ? $t('RR0262') : $t('RR0263') }) }}
+        p(class="w-73.5 self-end text-grey-300 text-caption leading-1.6") {{ addTo === EXTERNAL ? $t('TT0018', { addFrom: addFrom.addFromOGType === OgType.ORG ? $t('RR0262') : $t('RR0263') }) : $t('TT0030', { addFrom: addFrom.addFromOGType === OgType.ORG ? $t('RR0262') : $t('RR0263') }) }}
       //- Type
       div(v-if="addTo === EXTERNAL" class="h-7 flex items-center gap-x-1.5")
         p(class="w-17.5 text-caption text-grey-900") {{ $t('TT0008') }}
         div(class="flex-grow flex items-center gap-x-8")
-          template(v-for="item in STICKER_TYPE")
+          template(v-for="item in STICKER_TYPE" :key="item.text")
             p(v-if="item.value === type" class="text-body2 text-grey-900 font-bold") {{ item.text }}
             f-tooltip-standard(v-else :tooltipMessage="$t('TT0093')")
               template(#slot:tooltip-trigger)
@@ -83,16 +83,16 @@ div(class="relative w-full rounded-md shadow-8 overflow-hidden")
       :addTo="addTo"
       :addFrom="addFrom"
       :addButtonDisabled="content.length === 0"
-      @mentionTrigger="() => refStickerTextEditor.mentionPerson()"
-      @tagInputTrigger="() => refStickerTagInput.focus()"
+      @mentionTrigger="() => refStickerTextEditor?.mentionPerson()"
+      @tagInputTrigger="() => refStickerTagInput?.focus()"
       @addButtonClick="createStickerOrDigitalThread"
     )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onUnmounted, watch } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
-import { STICKER_ADD_TO, OG_TYPE, LOCATION_TYPE } from '@/utils/constants'
+import { STICKER_ADD_TO } from '@/utils/constants'
 import useStickerAddFromMenu from '@/composables/useStickerAddFromMenu'
 import StickerLabelAddTo from '@/components/sticker/StickerLabelAddTo.vue'
 import StickerTagInput from '@/components/sticker/StickerTagInput.vue'
@@ -100,24 +100,21 @@ import CommonStickerTextEditor from '@/components/sticker/stickerTextEditor/Comm
 import CommonStickerTextEditorFooter from '@/components/sticker/stickerTextEditor/CommonStickerTextEditorFooter.vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
+import { type Material, OgType, FeatureType } from '@frontier/platform-web-sdk'
+import useCurrentUnit from '@/composables/useCurrentUnit'
 
-const { EXTERNAL, INTERNAL } = STICKER_ADD_TO
-
-const tempCreatingStickerId = uuidv4()
+const props = defineProps<{
+  isCreatingDigitalThread: boolean // 當 digital thread (全新) 要建立第一筆 sticker 時為 true
+  digitalThreadName: string
+}>()
 
 const emit = defineEmits(['close'])
-const props = defineProps({
-  // 當 digital thread (全新) 要建立第一筆 sticker 時為 true
-  isCreatingDigitalThread: {
-    default: false,
-  },
-  digitalThreadName: {
-    type: String,
-    required: true,
-  },
-})
+
+const { EXTERNAL, INTERNAL } = STICKER_ADD_TO
+const tempCreatingStickerId = uuidv4()
 const { t } = useI18n()
 const store = useStore()
+const { ogId: currentOgId, ogType: currentOgType } = useCurrentUnit()
 
 const menuAddFrom = useStickerAddFromMenu()
 
@@ -139,7 +136,7 @@ const STICKER_TYPE = {
 const canChooseAddFrom = computed(() => {
   const drawerOpenFromLocationType =
     store.getters['sticker/drawerOpenFromLocationType']
-  const { ASSETS, WORKSPACE, NOTIFICATION } = LOCATION_TYPE
+  const { ASSETS, WORKSPACE, NOTIFICATION } = FeatureType
 
   return (
     props.isCreatingDigitalThread &&
@@ -160,22 +157,20 @@ const getDefaultAddFrom = () => {
       ogType = sideOGType
       ogId = sideOGId
     } else {
-      ogType =
-        store.getters['helper/routeLocation'] === 'org'
-          ? OG_TYPE.ORG
-          : OG_TYPE.GROUP
-      ogId = store.getters['helper/routeLocationId']
+      ogType = currentOgType.value
+      ogId = currentOgId.value
     }
 
     return addFromOGType === ogType && addFromOGId === ogId
   })
-  return menuItem.selectValue
+  return menuItem!.selectValue
 }
 const addFrom = ref(getDefaultAddFrom())
 
 const canChooseAddToExternal = computed(() => {
-  const { materialOwnerOGId, materialOwnerOGType } =
-    store.getters['sticker/material']
+  const {
+    metaData: { materialOwnerOGId, materialOwnerOGType },
+  } = store.getters['sticker/material'] as Material
   const isSameUnit =
     addFrom.value.addFromOGType === materialOwnerOGType &&
     addFrom.value.addFromOGId === materialOwnerOGId
@@ -183,7 +178,7 @@ const canChooseAddToExternal = computed(() => {
   if (props.isCreatingDigitalThread) {
     const drawerOpenFromLocationType =
       store.getters['sticker/drawerOpenFromLocationType']
-    const { ASSETS } = LOCATION_TYPE
+    const { ASSETS } = FeatureType
 
     if (drawerOpenFromLocationType === ASSETS) {
       return false
@@ -233,8 +228,8 @@ const createStickerOrDigitalThread = async () => {
   emit('close')
 }
 
-const refStickerTextEditor = ref(null)
-const refStickerTagInput = ref(null)
+const refStickerTextEditor = ref<InstanceType<typeof CommonStickerTextEditor>>()
+const refStickerTagInput = ref<InstanceType<typeof StickerTagInput>>()
 
 if (props.isCreatingDigitalThread) {
   watch(

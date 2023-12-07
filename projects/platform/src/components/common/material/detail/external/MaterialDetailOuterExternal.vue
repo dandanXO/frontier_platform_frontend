@@ -50,6 +50,7 @@ div(class="w-full mx-auto rwd-outer-external-container")
         :material="material"
         :publishedDate="shareInfo?.shareDate"
         :isCanDownloadU3M="nodeMeta.isCanDownloadU3M"
+        :drawerOpenFromLocationList="nodeMeta.locationList.map((l) => l.name)"
       )
 </template>
 

@@ -1,11 +1,15 @@
 import stickerApi from '@/apis/sticker.js'
 import Material from '@/store/reuseModules/material.js'
-import { OG_TYPE, ROLE_ID, LOCATION_TYPE, NOTIFY_TYPE } from '@/utils/constants'
+import { ROLE_ID, NOTIFY_TYPE } from '@/utils/constants'
 import { isEqual } from '@frontier/lib'
 import groupApi from '@/apis/group'
 import i18n from '@frontier/i18n'
 import { nextTick } from 'vue'
 import { useNotifyStore } from '@/stores/notify'
+import { OgType, FeatureType } from '@frontier/platform-web-sdk'
+import router from '@/router'
+import { useOuterStore } from '@/stores/outer'
+import useStickerLocationList from '@/composables/useStickerLocationList'
 
 const defaultDigitalThreadBase = () => ({
   digitalThreadSideId: null,
@@ -160,11 +164,51 @@ export default {
     UNSHIFT_digitalThreadList(state, digitalThread) {
       state.digitalThreadList.unshift(digitalThread)
     },
-    SET_drawerOpenFrom(
-      state,
-      { drawerOpenFromLocationType, drawerOpenFromLocationList }
-    ) {
-      state.drawerOpenFromLocationList = drawerOpenFromLocationList
+    SET_drawerOpenFromLocationList(state, drawerOpenFromLocationList) {
+      state.drawerOpenFromLocationList = useStickerLocationList(
+        drawerOpenFromLocationList
+      )
+    },
+    SET_drawerOpenFromLocationType(state, drawerOpenFromLocationType = null) {
+      if (drawerOpenFromLocationType !== null) {
+        // Notification
+        state.drawerOpenFromLocationType = drawerOpenFromLocationType
+        return
+      }
+
+      const {
+        ASSETS,
+        WORKSPACE,
+        SHARED_WITH_ME,
+        PUBLIC_LIBRARY,
+        SHOWROOM,
+        RECEIVED_SHARE,
+        EMBED,
+        MOODBOARD,
+        THREAD_BOARD,
+      } = FeatureType
+      const routePath = router.currentRoute.value.path
+
+      if (routePath.includes('public-library')) {
+        drawerOpenFromLocationType = PUBLIC_LIBRARY
+      } else if (routePath.includes('showroom')) {
+        drawerOpenFromLocationType = SHOWROOM
+      } else if (routePath.includes('assets')) {
+        drawerOpenFromLocationType = ASSETS
+      } else if (routePath.includes('workspace')) {
+        drawerOpenFromLocationType = WORKSPACE
+      } else if (routePath.includes('moodboard')) {
+        drawerOpenFromLocationType = MOODBOARD
+      } else if (routePath.includes('share-to-me')) {
+        drawerOpenFromLocationType = SHARED_WITH_ME
+      } else if (routePath.includes('received-share')) {
+        drawerOpenFromLocationType = RECEIVED_SHARE
+      } else if (routePath.includes('embed')) {
+        drawerOpenFromLocationType = EMBED
+      } else if (routePath.includes('thread-board')) {
+        drawerOpenFromLocationType = THREAD_BOARD
+      }
+
       state.drawerOpenFromLocationType = drawerOpenFromLocationType
     },
     SET_sourceTagList(state, tagList) {
@@ -204,13 +248,72 @@ export default {
     },
   },
   actions: {
+    preOpenStickerDrawer(
+      { dispatch, commit, getters },
+      { material, drawerOpenFromLocationList }
+    ) {
+      const outerStore = useOuterStore()
+      commit('SET_drawerOpenFromLocationType')
+      const drawerOpenFromLocationType = getters.drawerOpenFromLocationType
+
+      const openStickerDrawer = () => {
+        dispatch('openStickerDrawer', {
+          materialId: material.materialId,
+          drawerOpenFromLocationList,
+        })
+      }
+
+      const openStickerDrawerForLogin = () => {
+        dispatch('openStickerDrawerForLogin', {
+          material,
+          drawerOpenFromLocationList,
+        })
+      }
+
+      if (
+        drawerOpenFromLocationType !== FeatureType.RECEIVED_SHARE &&
+        drawerOpenFromLocationType !== FeatureType.EMBED
+      ) {
+        return openStickerDrawer()
+      } else {
+        if (!outerStore.hasLogin) {
+          return openStickerDrawerForLogin()
+        }
+
+        if (outerStore.hasSelectedStickerAddFromOG) {
+          return openStickerDrawer()
+        }
+
+        return dispatch(
+          'helper/openModalBehavior',
+          {
+            component: 'modal-choose-sticker-add-from',
+            properties: {
+              actionHandler: async (orgNo) => {
+                dispatch('helper/openModalLoading', null, { root: true })
+                await dispatch('organization/getOrg', { orgNo }, { root: true })
+                outerStore.setHasSelectedStickerAddFromOG(true)
+                await Promise.all([
+                  dispatch('organization/orgUser/getOrgUser', null, {
+                    root: true,
+                  }),
+                  openStickerDrawer(),
+                ])
+                dispatch('helper/closeModalLoading', null, { root: true })
+              },
+            },
+          },
+          { root: true }
+        )
+      }
+    },
     async openStickerDrawer(
       { commit, dispatch, getters },
       {
         materialId = null,
         digitalThreadSideId = null,
-        drawerOpenFromLocationType = null,
         drawerOpenFromLocationList = null,
+        drawerOpenFromLocationType = null,
       }
     ) {
       /**
@@ -230,10 +333,9 @@ export default {
       await nextTick()
 
       dispatch('helper/openModalLoading', null, { root: true })
-      commit('SET_drawerOpenFrom', {
-        drawerOpenFromLocationType,
-        drawerOpenFromLocationList,
-      })
+
+      commit('SET_drawerOpenFromLocationType', drawerOpenFromLocationType)
+      commit('SET_drawerOpenFromLocationList', drawerOpenFromLocationList)
 
       if (materialId) {
         commit('SET_currentMaterialId', materialId)
@@ -277,12 +379,11 @@ export default {
     },
     openStickerDrawerForLogin(
       { commit },
-      { material, drawerOpenFromLocationType, drawerOpenFromLocationList }
+      { material, drawerOpenFromLocationList }
     ) {
-      commit('SET_drawerOpenFrom', {
-        drawerOpenFromLocationType,
-        drawerOpenFromLocationList,
-      })
+      commit('SET_currentMaterialId', material.materialId)
+      commit('SET_drawerOpenFromLocationType')
+      commit('SET_drawerOpenFromLocationList', drawerOpenFromLocationList)
       commit('SET_material', material)
       commit('SET_isStickerDrawerForLoginOpen', true)
     },
@@ -352,13 +453,13 @@ export default {
     async getDigitalThreadList({ commit, rootGetters, getters }) {
       let ogType =
         rootGetters['helper/routeLocation'] === 'org'
-          ? OG_TYPE.ORG
-          : OG_TYPE.GROUP
+          ? OgType.ORG
+          : OgType.GROUP
       let ogId = rootGetters['helper/routeLocationId']
 
       // 透過 Notification 或是由 Public 頁面開啟的 drawer 將會拉取全部的資料 (org & group)
       if (
-        [LOCATION_TYPE.PUBLIC, LOCATION_TYPE.NOTIFICATION].includes(
+        [FeatureType.PUBLIC, FeatureType.NOTIFICATION].includes(
           getters.drawerOpenFromLocationType
         )
       ) {
@@ -428,7 +529,7 @@ export default {
       const memberList = []
       let originalMemberList
 
-      if (ogType === OG_TYPE.ORG) {
+      if (ogType === OgType.ORG) {
         originalMemberList = rootGetters['organization/memberList']
       } else {
         const { data } = await groupApi.getGroup(ogId)

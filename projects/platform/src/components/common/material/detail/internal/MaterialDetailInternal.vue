@@ -12,7 +12,7 @@ div
     div(class="flex items-center gap-x-4")
       digital-thread-entrance(
         :material="material"
-        :drawerOpenFromLocationList="drawerOpenFromLocationList"
+        :drawerOpenFromLocationList="locationList.map((l) => l.name)"
       )
       f-tooltip-standard(:tooltipMessage="printA4Swatch.name()")
         template(#slot:tooltip-trigger)
@@ -246,7 +246,6 @@ import MaterialDetailUpperContent from '@/components/common/material/detail/inte
 import MaterialDetailInventoryTable from '@/components/common/material/detail/internal/MaterialDetailInventoryTable.vue'
 import MaterialDetailEnvironmentalIndicator from '@/components/common/material/detail/MaterialDetailEnvironmentalIndicator.vue'
 import MaterialFileItem from '@/components/common/material/file/MaterialFileItem.vue'
-import useStickerLocationList from '@/composables/useStickerLocationList'
 import useAssets from '@/composables/useAssets'
 import type { Material } from '@frontier/platform-web-sdk'
 import type { MenuTree } from '@frontier/ui-component'
@@ -264,10 +263,6 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
-
-const drawerOpenFromLocationList = useStickerLocationList(
-  props.locationList.map((b) => b.name)
-)
 
 const {
   editMaterial,

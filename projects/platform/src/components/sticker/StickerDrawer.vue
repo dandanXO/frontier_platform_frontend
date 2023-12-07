@@ -11,12 +11,12 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
             iconName="arrow_back"
             size="20"
             class="text-grey-600 hover:text-primary-400 cursor-pointer"
-            :class="{ 'text-primary-400 transform rotate-180': isExpandDigitalThreadList, '!text-grey-200': digitalThread.hasMaterialDeleted || drawerOpenFromLocationType === LOCATION_TYPE.NOTIFICATION }"
+            :class="{ 'text-primary-400 transform rotate-180': isExpandDigitalThreadList, '!text-grey-200': digitalThread.hasMaterialDeleted || drawerOpenFromLocationType === FeatureType.NOTIFICATION }"
             tooltipMessage="Show all threads"
-            @click="!(digitalThread.hasMaterialDeleted || drawerOpenFromLocationType === LOCATION_TYPE.NOTIFICATION) && (isExpandDigitalThreadList = !isExpandDigitalThreadList)"
+            @click="!(digitalThread.hasMaterialDeleted || drawerOpenFromLocationType === FeatureType.NOTIFICATION) && (isExpandDigitalThreadList = !isExpandDigitalThreadList)"
           )
           div(
-            v-if="hasAnyUnreadDigitalThread && drawerOpenFromLocationType !== LOCATION_TYPE.NOTIFICATION"
+            v-if="hasAnyUnreadDigitalThread && drawerOpenFromLocationType !== FeatureType.NOTIFICATION"
             class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary-400"
           )
         div(class="w-px h-6 bg-grey-150 mx-4")
@@ -92,25 +92,25 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           v-defaultImg
           class="flex-shrink-0 w-13 h-13 rounded overflow-hidden"
           :class="{ 'cursor-pointer': !digitalThread.hasMaterialDeleted || !digitalThread.hasMaterialNoAccess }"
-          :src="material.coverImg"
-          @click="goToMaterialDetail(false)"
+          :src="material.coverImage?.thumbnailUrl"
+          @click="goToStickerMaterialDetail(material, digitalThread, false)"
         )
         div(class="flex-grow h-11")
           p(
             class="group pb-2 flex items-center text-body2"
             :class="[digitalThread.hasMaterialDeleted || digitalThread.hasMaterialNoAccess ? 'text-grey-200' : 'text-grey-800']"
-            @click="goToMaterialDetail(false)"
+            @click="goToStickerMaterialDetail(material, digitalThread, false)"
           )
             span(
               class="font-bold line-clamp-1"
               :class="{ 'hover:text-primary-400 hover:underline hover:cursor-pointer': !digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess }"
-            ) {{ material.materialNo }}
+            ) {{ material.itemNo }}
             f-svg-icon(
               v-if="!digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess"
               iconName="open_in_new"
               size="14"
               class="ml-1 invisible group-hover:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
-              @click.stop="goToMaterialDetail(true)"
+              @click.stop="goToStickerMaterialDetail(material, digitalThread, true)"
               tooltipMessage="TT0074"
             )
             span(class="leading-1.4 pl-0.5" v-if="digitalThread.hasMaterialDeleted") ({{ $t('TT0112') }})
@@ -119,8 +119,12 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
               v-else-if="digitalThread.hasMaterialNoAccess"
             ) ({{ $t('TT0107') }})
           div(class="flex items-center gap-x-2")
-            f-avatar(:imageUrl="material.unitLogo" type="org" size="xs")
-            span(class="text-caption text-grey-800") {{ material.unitName }}
+            f-avatar(
+              :imageUrl="material.metaData.unitLogo"
+              type="org"
+              size="xs"
+            )
+            span(class="text-caption text-grey-800") {{ material.metaData.unitName }}
       //- Filter
       div(class="pt-2.5 flex items-center gap-x-2")
         f-select-dropdown(
@@ -246,6 +250,7 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
                       div(class="flex flex-wrap gap-x-2 gap-y-2")
                         f-tag(
                           v-for="tag in displayTagList"
+                          :key="tag.text"
                           size="sm"
                           class="cursor-pointer"
                           :isActive="tag.isSelect"
@@ -345,14 +350,14 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
         span(
           class="text-body1 font-bold text-grey-800 line-clamp-1"
           :class="{ 'hover:text-primary-400 hover:underline hover:cursor-pointer': !digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess }"
-          @click.stop="goToMaterialDetail(false)"
-        ) {{ material.materialNo }}
+          @click.stop="goToStickerMaterialDetail(material, digitalThread, false)"
+        ) {{ material.itemNo }}
         f-svg-icon(
           v-if="!digitalThread.hasMaterialDeleted && !digitalThread.hasMaterialNoAccess"
           iconName="open_in_new"
           size="14"
           class="invisible group-hover:visible text-grey-600 hover:text-primary-400 hover:cursor-pointer"
-          @click.stop="goToMaterialDetail(true)"
+          @click.stop="goToStickerMaterialDetail(material, digitalThread, true)"
           tooltipMessage="TT0074"
         )
       f-scrollbar-container(class="flex-grow")
@@ -368,33 +373,35 @@ div(class="fixed w-118.5 h-screen z-sidebar right-0")
           :digitalThread="digitalThread"
           :class="{ 'bg-grey-100': index === indexOfDrawerDigitalThread }"
           @click="openDigitalThread(digitalThread, index)"
-          @goToMaterialDetail="goToMaterialDetail"
         )
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import StickerCreate from '@/components/sticker/StickerCreate.vue'
-import { STICKER_ADD_TO, OG_TYPE, LOCATION_TYPE } from '@/utils/constants'
+import { STICKER_ADD_TO } from '@/utils/constants'
 import StickerCard from '@/components/sticker/StickerCard.vue'
 import DigitalThreadCard from '@/components/sticker/DigitalThreadCard.vue'
-import useNavigation from '@/composables/useNavigation'
 import useThreadBoardStore from '@/stores/threadBoard'
 import useDigitalThreadWorkflowStageStore from '@/stores/digitalThreadWorkflowStage'
 import useLogSender from '@/composables/useLogSender'
+import {
+  type Material,
+  type DigitalThreadBase,
+  FeatureType,
+} from '@frontier/platform-web-sdk'
+import useGoToStickerMaterialDetail from '@/composables/useGoToStickerMaterialDetail'
 
 const store = useStore()
 const threadBoardStore = useThreadBoardStore()
 const logSender = useLogSender()
 const { t } = useI18n()
-const router = useRouter()
-const { parsePath } = useNavigation()
 const workflowStageStore = useDigitalThreadWorkflowStageStore()
+const goToStickerMaterialDetail = useGoToStickerMaterialDetail()
 
-const material = computed(() => store.getters['sticker/material'])
+const material = computed<Material>(() => store.getters['sticker/material'])
 const digitalThread = computed(() => store.getters['sticker/digitalThread'])
 const drawerOpenFromLocationType = computed(
   () => store.getters['sticker/drawerOpenFromLocationType']
@@ -407,11 +414,11 @@ const isCreatingDigitalThread = computed(
     stickerList.value.length === 0
 ) // 全新的 digital thread 尚未建立任何一個 sticker
 
-const isFetchingDigitalThread = computed(
+const isFetchingDigitalThread = computed<boolean>(
   () => store.getters['sticker/isFetchingDigitalThread']
 )
 const isAddingSticker = ref(false)
-const setIsAddingSticker = (bool) => (isAddingSticker.value = bool)
+const setIsAddingSticker = (bool: boolean) => (isAddingSticker.value = bool)
 
 const isEditingDigitalThreadName = ref(false)
 const tempDigitalThreadName = ref('')
@@ -474,7 +481,7 @@ const isExpandDigitalThreadList = ref(false)
 const indexOfDrawerDigitalThread = computed(
   () => store.getters['sticker/indexOfDrawerDigitalThread']
 )
-const digitalThreadList = computed(() =>
+const digitalThreadList = computed<DigitalThreadBase[]>(() =>
   store.getters['sticker/tempDigitalThreadList'].concat(
     store.getters['sticker/digitalThreadList']
   )
@@ -485,7 +492,10 @@ const startToCreateDigitalThread = () => {
   store.dispatch('sticker/startToCreateDigitalThread')
 }
 
-const openDigitalThread = async (digitalThread, index) => {
+const openDigitalThread = async (
+  digitalThread: DigitalThreadBase,
+  index: number
+) => {
   if (indexOfDrawerDigitalThread.value === index) {
     return
   }
@@ -516,11 +526,13 @@ const openDigitalThread = async (digitalThread, index) => {
  */
 const isChangingDigitalThread = ref(false)
 const filter = computed(() => store.getters['sticker/filter'])
-const isFilterDirty = computed(() => store.getters['sticker/isFilterDirty'])
-const isAdvanceFilterDirty = computed(
+const isFilterDirty = computed<boolean>(
+  () => store.getters['sticker/isFilterDirty']
+)
+const isAdvanceFilterDirty = computed<boolean>(
   () => store.getters['sticker/isAdvanceFilterDirty']
 )
-const isCurrentThreadFilterTagListToggled = computed(
+const isCurrentThreadFilterTagListToggled = computed<boolean>(
   () => store.getters['sticker/isCurrentThreadFilterTagListToggled']
 )
 
@@ -540,20 +552,22 @@ watch(
     flush: 'post', // avoid it be invoked after component unmount
   }
 )
-const orgName = computed(
+const orgName = computed<string>(
   () => store.getters['organization/organization'].orgName
 )
-const username = computed(
+const username = computed<string>(
   () => store.getters['organization/orgUser/orgUser'].displayName
 )
 const inputSearchTagList = ref('')
-const sourceTagList = computed(() => store.getters['sticker/sourceTagList'])
+const sourceTagList = computed<string[]>(
+  () => store.getters['sticker/sourceTagList']
+)
 const isShowMore = ref(false)
 const displayTagList = computed(() => {
   const tagList = sourceTagList.value
     .filter((tag) => tag.includes(inputSearchTagList.value || ''))
     .map((tag) => ({
-      isSelect: filter.value.tagList.includes(tag),
+      isSelect: filter.value.tagList.includes(tag) as boolean,
       text: tag,
     }))
     .sort((a, b) => {
@@ -581,49 +595,11 @@ const displayTagList = computed(() => {
   return tagList.slice(0, Math.max(10, amountOfSelect))
 })
 
-const toggleTagList = (selectTag) => {
+const toggleTagList = (selectTag: string) => {
   if (!isCurrentThreadFilterTagListToggled.value) {
     logSender.createStickerTagFilterLog()
   }
   store.dispatch('sticker/toggleFilterTagList', selectTag)
-}
-
-const goToMaterialDetail = (openNewPage = false) => {
-  if (
-    digitalThread.value.hasMaterialDeleted ||
-    digitalThread.value.hasMaterialNoAccess
-  ) {
-    return
-  }
-  const {
-    isMaterialOwnerSide,
-    materialId,
-    materialOwnerOGId,
-    materialOwnerOGType,
-  } = material.value
-
-  if (!isMaterialOwnerSide) {
-    return store.dispatch('helper/openModalBehavior', {
-      component: 'modal-sticker-material-detail',
-      properties: {
-        material: material.value,
-      },
-    })
-  }
-
-  const orgNo = store.getters['organization/orgNo']
-  let unParsedPath
-  if (materialOwnerOGType === OG_TYPE.ORG) {
-    unParsedPath = `/${orgNo}/assets/${materialId}`
-  } else {
-    unParsedPath = `/${orgNo}/${materialOwnerOGId}/assets/${materialId}`
-  }
-
-  if (openNewPage) {
-    window.open(parsePath(unParsedPath), '_blank')
-  } else {
-    router.push(parsePath(unParsedPath))
-  }
 }
 
 const closeStickerDrawer = () => {
@@ -631,9 +607,9 @@ const closeStickerDrawer = () => {
   store.dispatch('sticker/closeStickerDrawer')
 }
 
-const hasAnyUnreadDigitalThread = computed(() =>
+const hasAnyUnreadDigitalThread = computed<boolean>(() =>
   store.getters['sticker/digitalThreadList'].some(
-    (digitalThread) => digitalThread.unreadStickerQty > 0
+    (digitalThread: DigitalThreadBase) => digitalThread.unreadStickerQty > 0
   )
 )
 

@@ -23,7 +23,7 @@ modal-behavior(:header="$t('TT0055')")
       //- Material No
       div(class="pt-7 pb-6")
         p(class="text-caption text-grey-500 pb-4") {{ $t('RR0257') }}
-        p(class="text-caption text-grey-900 break-all") {{ digitalThread.materialNo }}
+        p(class="text-caption text-grey-900 break-all") {{ digitalThread.itemNo }}
           span(v-if="digitalThread.hasMaterialDeleted") &nbsp({{ $t('TT0113') }})
           span(v-else-if="digitalThread.hasMaterialNoAccess") &nbsp({{ $t('TT0107') }})
       //- Material Owner
@@ -83,7 +83,10 @@ modal-behavior(:header="$t('TT0055')")
         div(class="border-b border-grey-150 pb-3 mb-3")
           p(class="text-caption text-grey-500 pb-4") {{ $t('TT0061') }}
           div(class="flex items-center flex-wrap text-body2 text-grey-900 leading-1.6")
-            template(v-for="(location, index) in addFromLocationList")
+            template(
+              v-for="(location, index) in addFromLocationList"
+              :key="location"
+            )
               p {{ location }}
               span(v-if="index !== addFromLocationList.length - 1" class="px-1") /
         //- Create By
@@ -114,26 +117,26 @@ modal-behavior(:header="$t('TT0055')")
           p(class="text-body2 text-grey-900") {{ toStandardFormat(digitalThread.createDate) }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useStore } from 'vuex'
 import { computed } from 'vue'
 import useAddFromDisplayList from '@/composables/useAddFromLocationListDisplay'
 import useDigitalThreadWorkflowStageStore from '@/stores/digitalThreadWorkflowStage'
 import { toStandardFormat } from '@frontier/lib'
+import type { DigitalThread, Sticker } from '@frontier/platform-web-sdk'
+
+defineProps<{
+  sticker: Sticker
+}>()
 
 const store = useStore()
-const workflowStageStore = useDigitalThreadWorkflowStageStore()
+const { getWorkflowStageNameById } = useDigitalThreadWorkflowStageStore()
 
-const props = defineProps({
-  sticker: {
-    type: Object,
-    required: true,
-  },
-})
-
-const digitalThread = computed(() => store.getters['sticker/digitalThread'])
+const digitalThread = computed<DigitalThread>(
+  () => store.getters['sticker/digitalThread']
+)
 const addFromLocationList = useAddFromDisplayList(digitalThread)
-const workflowStageName = workflowStageStore.getWorkflowStageNameById(
+const workflowStageName = getWorkflowStageNameById(
   digitalThread.value.workflowStageId
-).workflowStageName
+)!.workflowStageName
 </script>

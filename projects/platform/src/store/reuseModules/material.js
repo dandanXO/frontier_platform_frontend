@@ -2,9 +2,9 @@ import {
   SIDE_TYPE,
   INVENTORY_UNIT,
   MATERIAL_PRICING_CURRENCY,
-  OG_TYPE,
   useConstants,
 } from '@/utils/constants'
+import { OgType } from '@frontier/platform-web-sdk'
 
 const { WEIGHT_UNIT } = useConstants()
 
@@ -16,7 +16,7 @@ const Material = {
     relationFrontierNo: null,
     materialNo: '',
     materialSeq: null,
-    sourceAssetLocation: OG_TYPE.ORG,
+    sourceAssetLocation: OgType.ORG,
     coverMode: 0,
     coverImg: null,
     isDoubleSideMaterial: true,
@@ -152,7 +152,7 @@ const Material = {
     unitLogo: '',
     isMaterialOwnerSide: false,
     materialOwnerOGId: 0,
-    materialOwnerOGType: OG_TYPE.ORG,
+    materialOwnerOGType: OgType.ORG,
   }),
   getters: {
     material: (state) => state,

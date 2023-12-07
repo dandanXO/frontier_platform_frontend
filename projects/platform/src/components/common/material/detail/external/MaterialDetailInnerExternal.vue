@@ -21,7 +21,7 @@ div
             )
         digital-thread-entrance(
           :material="material"
-          :drawerOpenFromLocationList="drawerOpenFromLocationList"
+          :drawerOpenFromLocationList="nodeMeta.locationList.map((l) => l.name)"
         )
     div(class="w-full flex justify-between pt-10 relative")
       material-detail-external-image(
@@ -41,17 +41,17 @@ div
           :material="material"
           :publishedDate="publishedDate"
           :isCanDownloadU3M="nodeMeta.isCanDownloadU3M"
+          :drawerOpenFromLocationList="nodeMeta.locationList.map((l) => l.name)"
         )
 </template>
 
 <script setup lang="ts">
 import DigitalThreadEntrance from '@/components/sticker/DigitalThreadEntrance.vue'
-import useStickerLocationList from '@/composables/useStickerLocationList'
 import MaterialDetailExternalImage from '@/components/common/material/detail/external/MaterialDetailExternalImage.vue'
 import MaterialDetailInfo from '@/components/common/material/detail/external/MaterialDetailInfo.vue'
 import type { Material, NodeMeta } from '@frontier/platform-web-sdk'
 
-const props = defineProps<{
+defineProps<{
   material: Material
   nodeMeta: NodeMeta
   locationList: { name: string; goTo: () => void }[]
@@ -59,8 +59,4 @@ const props = defineProps<{
 }>()
 
 defineEmits<{ (e: 'clone'): void }>()
-
-const drawerOpenFromLocationList = useStickerLocationList(
-  props.nodeMeta.locationList.map((b) => b.name)
-)
 </script>

@@ -68,7 +68,7 @@ describe('useLogSender', () => {
         },
         expected: {
           materialId,
-          fromLocationType: FeatureType.ASSET,
+          fromLocationType: FeatureType.ASSETS,
         },
       },
       {
@@ -79,7 +79,7 @@ describe('useLogSender', () => {
         },
         expected: {
           materialId,
-          fromLocationType: FeatureType.ASSET,
+          fromLocationType: FeatureType.ASSETS,
         },
       },
       {
@@ -273,7 +273,7 @@ describe('useLogSender', () => {
           expected: {
             materialId,
             category: U3M_FILE_TYPE.U3M,
-            fromLocationType: FeatureType.ASSET,
+            fromLocationType: FeatureType.ASSETS,
           },
         },
         {
@@ -286,7 +286,7 @@ describe('useLogSender', () => {
           expected: {
             materialId,
             category: U3M_FILE_TYPE.U3M,
-            fromLocationType: FeatureType.ASSET,
+            fromLocationType: FeatureType.ASSETS,
           },
         },
         {

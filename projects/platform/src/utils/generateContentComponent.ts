@@ -1,6 +1,7 @@
 import { h } from 'vue'
-import { LOCATION_TYPE, CONTENT_PARSED_TYPE } from '@/utils/constants'
+import { CONTENT_PARSED_TYPE } from '@/utils/constants'
 import store from '@/store'
+import { FeatureType } from '@frontier/platform-web-sdk'
 
 interface ContentValue {
   type: CONTENT_PARSED_TYPE
@@ -71,7 +72,7 @@ export default (
                     onClick: () => {
                       store.dispatch('sticker/openStickerDrawer', {
                         digitalThreadSideId: value,
-                        drawerOpenFromLocationType: LOCATION_TYPE.NOTIFICATION,
+                        drawerOpenFromLocationType: FeatureType.NOTIFICATION,
                       })
                     },
                   },

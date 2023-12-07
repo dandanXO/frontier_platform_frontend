@@ -65,7 +65,9 @@ describe('useStickerLocationList', () => {
   })
 
   it('should handle Shared with me material location list', () => {
-    ;(useRoute as Mock).mockReturnValue({ path: 'share-to-me/nodeId' })
+    ;(useRoute as Mock).mockReturnValue({
+      path: 'share-to-me/sharingId/nodeId',
+    })
 
     const stickerLocationList = useStickerLocationList([
       'Shared with me',
